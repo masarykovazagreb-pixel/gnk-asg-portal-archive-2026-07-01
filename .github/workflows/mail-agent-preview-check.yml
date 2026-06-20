@@ -1,0 +1,67 @@
+name: GNK ASG Mail Agent Preview Check
+
+on:
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - 'workers/gnk-asg-mail-agent-worker/**'
+      - 'apps/portal/mail-studio-pro/**'
+      - 'apps/portal/assets/mail-studio-pro.js'
+      - 'apps/portal/assets/mail-studio-pro.css'
+      - '.github/workflows/mail-agent-preview-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: JavaScript syntax checks
+        run: |
+          find workers/gnk-asg-mail-agent-worker/src -name '*.js' -print0 | xargs -0 -n1 node --check
+          node --check apps/portal/assets/mail-studio-pro.js
+
+      - name: Wrangler route-free dry run
+        run: |
+          mkdir -p reports/mail-agent-preview
+          npx --yes wrangler@4 deploy \
+            --dry-run \
+            --config workers/gnk-asg-mail-agent-worker/wrangler.preview.toml \
+            --outdir reports/mail-agent-preview
+
+      - name: Verify production routes are absent
+        run: |
+          if grep -E '(^|[[:space:]])routes?[[:space:]]*=' workers/gnk-asg-mail-agent-worker/wrangler.preview.toml; then
+            echo 'Production route configuration detected.'
+            exit 1
+          fi
+
+      - name: Write preview summary
+        run: |
+          cat > reports/mail-agent-preview/README.txt <<'EOF'
+          GNK ASG Mail Agent preview check
+          Production route configured: false
+          Production deploy performed: false
+          Syntax check: completed
+          Wrangler dry run: completed
+          EOF
+
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-mail-agent-preview-check
+          path: reports/mail-agent-preview/
+          if-no-files-found: error
+          retention-days: 14
