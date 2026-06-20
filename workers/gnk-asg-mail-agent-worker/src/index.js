@@ -4,6 +4,7 @@ import { sendContextualReply, sendManualMail } from './sender.js';
 import { addMailboxItem, readMailbox } from './storage.js';
 import { MAIL_AUTOMATION_POLICY } from './policy.js';
 import { preserveThreadHeaders } from './thread-safety.js';
+import { buildMediaCampaignBatch, nextMediaCampaignWindow } from './media-campaign-batch.js';
 
 export default {
   async fetch(request, env) {
@@ -42,6 +43,10 @@ export default {
 
     if (request.method === 'POST' && url.pathname === '/api/mail-agent/send') {
       return handleManualSend(request, env);
+    }
+
+    if (request.method === 'POST' && url.pathname === '/api/mail-agent/media-campaign/preview') {
+      return handleMediaCampaignPreview(request, env);
     }
 
     return json(request, { ok: false, error: 'not_found', path: url.pathname }, 404);
@@ -98,6 +103,31 @@ async function handleManualSend(request, env) {
     await addMailboxItem(env, 'held', failed);
     return json(request, { ok: false, id: queued.id, error: failed.reason }, 400);
   }
+}
+
+async function handleMediaCampaignPreview(request, env) {
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return json(request, { ok: false, error: 'invalid_json' }, 400);
+  }
+
+  const batch = buildMediaCampaignBatch(payload);
+  const preview = nextMediaCampaignWindow(batch);
+  await addMailboxItem(env, 'held', {
+    type: 'media-campaign-preview',
+    batchId: batch.id,
+    total: batch.total,
+    sent: batch.sent,
+    failed: batch.failed,
+    remaining: batch.remaining,
+    rateLimitPerMinute: batch.rateLimitPerMinute,
+    status: batch.status,
+    createdAt: batch.createdAt
+  });
+
+  return json(request, { ok: true, batch, preview });
 }
 
 async function processIncoming(message, env) {
