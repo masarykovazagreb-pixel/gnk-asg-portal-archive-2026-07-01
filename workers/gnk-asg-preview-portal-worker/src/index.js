@@ -5,6 +5,18 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    if (url.pathname === '/__preview/locale') {
+      const country = String(request.cf?.country || request.headers.get('cf-ipcountry') || 'XX').toUpperCase();
+      return json({
+        ok: true,
+        country,
+        defaultLanguage: country === 'HR' ? 'hr' : 'en',
+        ipStored: false,
+        preferenceStorage: 'browser-only',
+        updatedAt: new Date().toISOString()
+      });
+    }
+
     if (url.pathname === '/__preview/status') {
       return json({
         ok: true,
@@ -99,7 +111,7 @@ function enhanceStaticResponse(response) {
   const transformed = new HTMLRewriter()
     .on('head', {
       element(element) {
-        element.append('<script defer src="/assets/admin-universal-shell.js?v=20260620-1"></script>', { html: true });
+        element.append('<script defer src="/assets/admin-universal-shell.js?v=20260620-10"></script>', { html: true });
       }
     })
     .transform(response);
