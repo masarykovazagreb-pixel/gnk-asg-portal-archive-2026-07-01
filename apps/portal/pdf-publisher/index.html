@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="hr" data-gnk-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>GNK ASG PDF Publisher</title>
+<link rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260620-7">
+<link rel="stylesheet" href="/assets/pdf-publisher.css?v=20260620-7">
+<script defer src="/assets/brand/gnk-asg-global-layer.js?v=20260620-7"></script>
+<script defer src="/assets/admin-universal-shell.js?v=20260620-7"></script>
+<script defer src="/assets/pdf-publisher.js?v=20260620-7"></script>
+</head>
+<body class="gnk-asg-premium-shell">
+<main class="pdf-shell">
+<section class="pdf-hero"><div><p class="eyebrow">Privatni administratorski modul</p><h1>PDF Publisher</h1><p>Učitavanje PDF dokumenata i prezentacija, izbor vrste objave, HR/EN metapodatci, naslovna slika, SEO provjera i objava unutar Objave/Publications.</p></div><div class="pdf-badge"><strong>PREVIEW</strong><span>R2 objava tek nakon povezivanja backenda</span></div></section>
+<section class="pdf-grid">
+<div class="pdf-editor">
+<label>Operator token<input id="operatorToken" type="password" autocomplete="off"></label>
+<label>PDF datoteka<input id="pdfFile" type="file" accept="application/pdf,.pdf"></label>
+<div class="two-col"><label>Vrsta<select id="type"><option value="publication">PDF objava</option><option value="report">Izvješće</option><option value="presentation">Prezentacija</option><option value="legal">Pravni dokument</option><option value="financial">Financijski dokument</option><option value="media">Media Kit</option><option value="other">Drugo</option></select></label><label>Jezik<select id="lang"><option value="hr">Hrvatski</option><option value="en">English</option></select></label></div>
+<div class="two-col"><label>Status<select id="status"><option value="draft">Draft</option><option value="published">Objavi</option></select></label><label>Autor<input id="author" value="Nermin Sefić"></label></div>
+<label>Naslov<input id="title" maxlength="180"></label>
+<label>Sažetak<textarea id="summary" maxlength="800"></textarea></label>
+<label>Kategorija<input id="category" value="Dokumenti"></label>
+<label>Naslovna slika<input id="image" type="url" value="https://gnk-asg.hr/assets/gnk-asg-social-card.png"></label>
+<label>Ključne riječi<input id="keywords" placeholder="GNK ASG, dokument, analiza"></label>
+<label>Izvorna poveznica<input id="sourceUrl" type="url"></label>
+<div class="pdf-actions"><button id="previewPdf" type="button">Pregled PDF-a</button><button id="saveDraft" type="button">Spremi lokalni draft</button><button id="publishPdf" class="primary" type="button">Pošalji u PDF Publisher</button></div>
+<div id="statusBox" class="status">Spremno.</div>
+</div>
+<aside class="pdf-preview"><h2>Pregled</h2><div id="metaPreview"></div><iframe id="pdfFrame" title="PDF pregled"></iframe><div id="seoCheck"></div></aside>
+</section>
+<section class="pdf-log"><header><h2>Lokalni draftovi</h2><button id="refreshDrafts" type="button">Osvježi</button></header><div id="draftList">Nema draftova.</div></section>
+</main>
+</body>
+</html>
