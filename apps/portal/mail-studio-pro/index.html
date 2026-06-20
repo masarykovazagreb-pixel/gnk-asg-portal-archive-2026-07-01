@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="hr" data-gnk-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GNK ASG Mail Studio</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260620-1">
+<link rel="stylesheet" href="/assets/mail-studio-pro.css?v=20260620-1">
+<script defer src="/assets/brand/gnk-asg-global-layer.js?v=20260620-1"></script>
+<script defer src="/assets/mail-studio-pro.js?v=20260620-1"></script>
+</head>
+<body>
+<main class="mail-studio-shell">
+<section class="mail-studio-header">
+<div class="mail-studio-brand">
+<img src="/assets/gnk-asg-email-logo-final.png" alt="GNK ASG">
+<div><p>Privatni komunikacijski centar</p><h1>GNK ASG Mail Studio</h1><span>Ručna komunikacija, AI pomoć i pregled svih pretinaca.</span></div>
+</div>
+<div class="mail-studio-auth">
+<input id="operatorToken" type="password" autocomplete="off" placeholder="Operator token">
+<button id="saveToken" type="button">Prijava</button>
+<button id="logout" type="button">Odjava</button>
+</div>
+</section>
+
+<section class="mail-studio-grid">
+<aside class="mail-studio-sidebar">
+<nav class="mail-tabs" aria-label="Pretinci">
+<button type="button" data-box="inbox" class="active">Inbox</button>
+<button type="button" data-box="sent">Sent</button>
+<button type="button" data-box="outbox">Outbox</button>
+<button type="button" data-box="held">Held</button>
+<button type="button" data-box="drafts">Drafts</button>
+</nav>
+<div class="mail-list" id="mailList"><p>Prijavite se za učitavanje poruka.</p></div>
+</aside>
+
+<section class="mail-studio-compose">
+<div class="compose-toolbar">
+<select id="profile" aria-label="Profil pošiljatelja"></select>
+<button id="newMessage" type="button">Nova poruka</button>
+<button id="saveDraft" type="button">Spremi draft</button>
+<button id="previewMessage" type="button">Pregled</button>
+</div>
+
+<div class="recipient-grid">
+<label>From<input id="from" readonly></label>
+<label>From naziv<input id="fromName" readonly></label>
+</div>
+<label>To — više primatelja odvojite zarezom ili točkom-zarezom<input id="to" placeholder="primatelj@domena.com, drugi@domena.com"></label>
+<div class="recipient-grid">
+<label>CC<input id="cc" placeholder="cc@domena.com"></label>
+<label>BCC<input id="bcc" placeholder="bcc@domena.com"></label>
+</div>
+<label>Predmet<input id="subject" placeholder="Predmet poruke"></label>
+<label>Tekst poruke<textarea id="bodyText" placeholder="Napišite poruku..."></textarea></label>
+
+<div class="attachment-row">
+<label>PDF privitci<input id="pdfFiles" type="file" accept="application/pdf,.pdf" multiple></label>
+<div id="attachmentList">Nema privitaka.</div>
+</div>
+
+<div class="ai-mail-tools">
+<strong>AI pomoć bez gotovih predložaka</strong>
+<div class="ai-mail-actions">
+<button id="aiSummarize" type="button">Sažmi odabranu poruku</button>
+<button id="aiReply" type="button">Napiši kontekstualni odgovor</button>
+<button id="aiImprove" type="button">Poboljšaj moj tekst</button>
+<button id="aiShorten" type="button">Skrati</button>
+<button id="aiTranslate" type="button">Prevedi HR/EN</button>
+</div>
+<textarea id="aiContext" placeholder="Dodatni kontekst, cilj ili uputa za AI..."></textarea>
+<div id="aiOutput">AI koristi sadržaj odabrane poruke i vaš dodatni kontekst. Ne koristi fiksne predloške.</div>
+</div>
+
+<div class="signature-preview" id="signaturePreview"></div>
+<div class="send-row">
+<button id="sendMessage" class="primary" type="button">Pošalji poruku</button>
+<span id="status">Spremno.</span>
+</div>
+</section>
+
+<aside class="mail-studio-reader">
+<header><h2>Odabrana poruka</h2><button id="refreshBox" type="button">Osvježi</button></header>
+<div id="originalMeta">Nije odabrana poruka.</div>
+<h3 id="originalSubject">—</h3>
+<pre id="originalBody">Odaberite poruku iz pretinca.</pre>
+</aside>
+</section>
+</main>
+</body>
+</html>
