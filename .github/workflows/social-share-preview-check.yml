@@ -1,0 +1,67 @@
+name: GNK ASG Social Share Preview Check
+
+on:
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - 'apps/portal/social-share/**'
+      - 'apps/portal/assets/social-share-center.js'
+      - 'apps/portal/assets/social-share-center.css'
+      - 'apps/portal/assets/admin-universal-shell.js'
+      - 'apps/portal/data/social-share-config.json'
+      - 'contracts/social-share-policy.json'
+      - 'workers/gnk-asg-social-share-worker/**'
+      - '.github/workflows/social-share-preview-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate JavaScript and JSON
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/social-share-center.js
+          node --check apps/portal/assets/admin-universal-shell.js
+          node --check workers/gnk-asg-social-share-worker/src/index.js
+          node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/social-share-config.json','utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('contracts/social-share-policy.json','utf8'))"
+
+      - name: Verify route-free preview
+        run: |
+          set -euo pipefail
+          if grep -E '(^|[[:space:]])routes?[[:space:]]*=' workers/gnk-asg-social-share-worker/wrangler.preview.toml; then
+            echo 'Production route configuration detected.'
+            exit 1
+          fi
+          grep -q 'workers_dev = true' workers/gnk-asg-social-share-worker/wrangler.preview.toml
+          grep -q 'productionLocked' contracts/social-share-policy.json
+
+      - name: Wrangler dry run
+        run: |
+          mkdir -p reports/social-share-preview
+          npx --yes wrangler@4 deploy \
+            --dry-run \
+            --config workers/gnk-asg-social-share-worker/wrangler.preview.toml \
+            --outdir reports/social-share-preview
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-social-share-preview-check
+          path: reports/social-share-preview/
+          if-no-files-found: error
+          retention-days: 14
