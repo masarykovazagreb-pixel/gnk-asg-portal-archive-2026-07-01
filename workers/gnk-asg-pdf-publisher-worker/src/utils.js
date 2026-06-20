@@ -1,0 +1,8 @@
+export function json(request,data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store',...cors(request)}})}
+export function cors(request){const origin=String(request.headers.get('origin')||'');const allowed=/^https:\/\/([a-z0-9-]+\.)?gnk-asg\.hr$/i.test(origin)||/^https:\/\/[a-z0-9.-]+\.workers\.dev$/i.test(origin)?origin:'https://gnk-asg.hr';return{'access-control-allow-origin':allowed,'access-control-allow-methods':'GET,POST,OPTIONS','access-control-allow-headers':'content-type,authorization,x-operator-token',vary:'Origin'}}
+export function suppliedToken(request){const bearer=String(request.headers.get('authorization')||'').replace(/^Bearer\s+/i,'').trim();return String(request.headers.get('x-operator-token')||bearer).trim()}
+export function authorized(request,env){const expected=String(env.OPERATOR_TOKEN||env.GNK_ASG_OPERATOR_TOKEN||'').trim();return Boolean(expected&&suppliedToken(request)===expected)}
+export function slugify(value){return String(value||'document').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,90)||'document'}
+export function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+export function safeHttps(value,fallback=''){try{const url=new URL(String(value||fallback));return url.protocol==='https:'?url.href:fallback}catch{return fallback}}
+export function cleanFilename(value){return String(value||'document.pdf').replace(/[^a-zA-Z0-9._-]+/g,'_').slice(0,150)}
