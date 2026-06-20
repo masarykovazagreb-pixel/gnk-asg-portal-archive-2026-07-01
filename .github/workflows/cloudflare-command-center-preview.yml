@@ -133,3 +133,5 @@ jobs:
       - name: Fail when preview was not deployed
         if: steps.credentials.outputs.ready != 'true' || steps.deploy.outputs.deployed != 'true' || steps.health.outcome != 'success'
         run: exit 1
+
+# Retriggered after repository secrets were added on 2026-06-20.
