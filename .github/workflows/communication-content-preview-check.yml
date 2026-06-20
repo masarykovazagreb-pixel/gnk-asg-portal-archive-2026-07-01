@@ -1,0 +1,72 @@
+name: GNK ASG Communication and Content Preview Check
+
+on:
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - 'apps/portal/wa-center/**'
+      - 'apps/portal/pdf-publisher/**'
+      - 'apps/portal/platforme/bpp/**'
+      - 'apps/portal/en/platforms/bpp/**'
+      - 'apps/portal/assets/wa-center.*'
+      - 'apps/portal/assets/pdf-publisher.*'
+      - 'apps/portal/data/wa-*.json'
+      - 'apps/portal/data/generated-gallery-30.json'
+      - 'packages/editorial/image-selector.mjs'
+      - 'contracts/editorial-automation-policy.json'
+      - '.github/workflows/communication-content-preview-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate JavaScript
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/wa-center.js
+          node --check apps/portal/assets/pdf-publisher.js
+          node --check packages/editorial/image-selector.mjs
+      - name: Validate JSON
+        run: |
+          set -euo pipefail
+          for file in apps/portal/data/wa-*.json apps/portal/data/generated-gallery-30.json contracts/editorial-automation-policy.json; do
+            node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" "$file"
+          done
+      - name: Verify pages and contracts
+        run: |
+          set -euo pipefail
+          test -f apps/portal/wa-center/index.html
+          test -f apps/portal/pdf-publisher/index.html
+          test -f apps/portal/platforme/bpp/index.html
+          test -f apps/portal/en/platforms/bpp/index.html
+          grep -q 'WhatsApp Communication Center' apps/portal/wa-center/index.html
+          grep -q 'PDF Publisher' apps/portal/pdf-publisher/index.html
+          grep -q 'www.bpp.is' apps/portal/platforme/bpp/index.html
+          grep -q 'generated-gallery-30.json' contracts/editorial-automation-policy.json
+          grep -q 'preventImageReuseDays' contracts/editorial-automation-policy.json
+      - name: Write report
+        run: |
+          mkdir -p reports/communication-content-preview
+          printf '%s\n' \
+            'WhatsApp Center syntax: OK' \
+            'PDF Publisher syntax: OK' \
+            'BPP HR/EN pages: OK' \
+            'Editorial image selector: OK' \
+            'Production changed: false' \
+            > reports/communication-content-preview/summary.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-communication-content-preview-check
+          path: reports/communication-content-preview/
+          if-no-files-found: error
+          retention-days: 14
