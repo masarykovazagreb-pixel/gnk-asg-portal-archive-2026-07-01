@@ -1,0 +1,14 @@
+name = "gnk-asg-business-light-preview"
+main = "src/index.js"
+compatibility_date = "2026-06-20"
+workers_dev = true
+preview_urls = true
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "business-light-preview"
+PRODUCTION_WRITE_LOCK = "true"
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
