@@ -1,0 +1,14 @@
+{
+  "version":"2026-06-20-v1",
+  "items":[
+    {
+      "id":"sensitive-request",
+      "group":"legal",
+      "phrasesHr":["ugovor","prigovor","tužba","privatnost","osobni podaci","sigurnosni problem"],
+      "phrasesEn":["contract","complaint","claim","privacy","personal data","security issue"],
+      "answerHr":"Upit je označen kao osjetljiv i neće dobiti automatski sadržajni odgovor. Razgovor se sažima i prosljeđuje odgovornoj osobi uz evidencijski broj.",
+      "answerEn":"The request has been marked as sensitive and will not receive an automated substantive reply. The conversation is summarised and forwarded to the responsible person with a reference number.",
+      "actions":["human_handover","create_case"]
+    }
+  ]
+}
