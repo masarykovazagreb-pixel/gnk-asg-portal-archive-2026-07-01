@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-06-20-v1",
+  "productionLocked": true,
+  "deploymentApproved": false,
+  "adminOnly": true,
+  "supportedContentTypes": [
+    "publication",
+    "news",
+    "market",
+    "media-kit",
+    "document",
+    "page"
+  ],
+  "providers": {
+    "linkedin": {"mode": "share-dialog", "apiAutoPostRequiresOAuth": true},
+    "facebook": {"mode": "share-dialog", "apiAutoPostRequiresOAuth": true},
+    "x": {"mode": "share-dialog", "apiAutoPostRequiresOAuth": true},
+    "whatsapp": {"mode": "share-dialog", "apiAutoPostRequiresOAuth": false},
+    "email": {"mode": "mailto", "apiAutoPostRequiresOAuth": false},
+    "webShare": {"mode": "native", "apiAutoPostRequiresOAuth": false},
+    "copy": {"mode": "clipboard", "apiAutoPostRequiresOAuth": false}
+  },
+  "imagePriority": [
+    "articleImage",
+    "pageOpenGraphImage",
+    "pageTwitterImage",
+    "firstContentImage",
+    "categoryIdentityImage",
+    "defaultBrandImage"
+  ],
+  "defaultBrandImage": "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png",
+  "requiredMetadata": [
+    "title",
+    "description",
+    "canonical",
+    "image",
+    "imageAlt",
+    "contentType",
+    "language"
+  ],
+  "seo": {
+    "canonicalRequired": true,
+    "openGraphRequired": true,
+    "twitterCardRequired": true,
+    "articleSchemaForPublicationsAndNews": true,
+    "imageObjectSchemaRequired": true,
+    "sitemapInclusionRequired": true,
+    "indexNowWhenConfigured": true,
+    "shareLandingCanonicalToTarget": true
+  },
+  "safety": {
+    "noAutomaticSocialPostingWithoutProviderOAuth": true,
+    "sensitiveDocumentsExcluded": true,
+    "privateAdminUrlsExcluded": true,
+    "draftUrlsExcluded": true,
+    "shareRecordRequiresOperatorToken": true,
+    "productionRouteRequiresExplicitApproval": true
+  },
+  "logging": {
+    "shareRecord": true,
+    "provider": true,
+    "targetUrl": true,
+    "selectedImage": true,
+    "createdAt": true,
+    "createdBy": true
+  }
+}
