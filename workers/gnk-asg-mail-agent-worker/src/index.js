@@ -3,6 +3,7 @@ import { parseIncoming, isAutomatedLoop, detectLanguage } from './parser.js';
 import { sendContextualReply, sendManualMail } from './sender.js';
 import { addMailboxItem, readMailbox } from './storage.js';
 import { MAIL_AUTOMATION_POLICY } from './policy.js';
+import { preserveThreadHeaders } from './thread-safety.js';
 
 export default {
   async fetch(request, env) {
@@ -129,8 +130,9 @@ async function processIncoming(message, env) {
     id: crypto.randomUUID(),
     sourceId: mail.id,
     caseId: mail.caseId,
+    ...preserveThreadHeaders(mail),
     from: senderAddress(mail.to, env),
-    to: mail.from,
+    to: mail.replyTo || mail.senderEmail || mail.from,
     subject: /^re:/i.test(mail.subject) ? mail.subject : `Re: ${mail.subject}`,
     body: decision.reply,
     language: detectLanguage(mail),
