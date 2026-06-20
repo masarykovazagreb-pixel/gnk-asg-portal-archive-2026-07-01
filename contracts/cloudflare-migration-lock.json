@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-06-20-v1",
+  "productionLocked": true,
+  "deploymentApproved": false,
+  "principle": "Add new isolated services and preserve all existing production routes, bindings, mail behaviour, contact behaviour and secrets.",
+  "protectedWorkers": [
+    {
+      "name": "gnk-asg-direct-operator",
+      "main": "workers/gnk-asg-direct-operator/src/index.js",
+      "routes": ["gnk-asg.hr/*", "www.gnk-asg.hr/*"],
+      "bindings": ["GNK_ASG_CONFIG_KV", "GNK_ASG_KV", "GNK_ASG_D1", "GNK_ASG_MEDIA_ASSETS", "EMAIL"],
+      "protectedFunctions": ["operator status", "mail operations", "contact inbox", "media upload", "text storage", "draft storage", "logs", "publications compatibility"],
+      "changePolicy": "No route, binding or secret changes during redesign deployment."
+    },
+    {
+      "name": "gnk-asg-contact-api",
+      "main": "workers/gnk-asg-contact-api-worker/src/index.js",
+      "routes": [
+        "/api/contact-submit*",
+        "/api/contact-mailboxes*",
+        "/api/operator-send-mail*",
+        "/api/operator-mailbox-config*",
+        "/api/operator-signature-load*",
+        "/api/operator-signature-save*"
+      ],
+      "bindings": ["GNK_ASG_CONFIG_KV", "GNK_ASG_KV", "GNK_ASG_MEDIA_ASSETS", "EMAIL"],
+      "protectedFunctions": ["contact form", "reference number", "internal notification to rht@gmx.com", "automatic reply", "mail sender profiles", "mail signatures"],
+      "changePolicy": "No route or binding changes; frontend remains a compatible client."
+    },
+    {
+      "name": "gnk-asg-ai-assist-worker",
+      "main": "workers/gnk-asg-ai-assist-worker/src/index.js",
+      "routes": ["/api/ai-assist*"],
+      "bindings": ["AI"],
+      "protectedFunctions": ["public AI assistant", "mail draft assistance", "page-aware fallback"],
+      "changePolicy": "Keep public assistant isolated from admin execution privileges."
+    },
+    {
+      "name": "gnk-asg-auto-editor",
+      "main": "workers/gnk-asg-auto-editor-worker/src/index.js",
+      "routes": [
+        "/auto-editor*",
+        "/api/auto-editor*",
+        "/data/auto-editor.json",
+        "/data/publications-auto.json",
+        "/objave/poslovni-pregled-*",
+        "/publications/poslovni-pregled-*"
+      ],
+      "bindings": ["GNK_ASG_KV", "GNK_ASG_CONFIG_KV"],
+      "protectedFunctions": ["topic selection", "duplicate protection", "HR/EN article generation", "images", "sources", "500-word minimum", "SEO", "article routes"],
+      "changePolicy": "Command Center invokes through a service binding; existing public routes remain unchanged."
+    },
+    {
+      "name": "gnk-asg-publish-operator",
+      "main": "workers/gnk-asg-publish-operator/src/index.js",
+      "routes": ["publish.gnk-asg.hr"],
+      "bindings": ["GNK_ASG_KV"],
+      "protectedFunctions": ["publication validation", "publication write", "deduplication", "audit"],
+      "changePolicy": "Command Center may call it only through an approved service binding and explicit publication policy."
+    }
+  ],
+  "newIsolatedWorker": {
+    "name": "gnk-asg-command-center-worker",
+    "main": "workers/gnk-asg-command-center-worker/src/index.js",
+    "proposedDomain": "command.gnk-asg.hr",
+    "previewOnlyUntilApproved": true,
+    "requiredBindings": ["GNK_ASG_KV", "AI", "AUTO_EDITOR_SERVICE", "DIRECT_OPERATOR_SERVICE", "PUBLISH_SERVICE"],
+    "requiredSecrets": ["OPERATOR_TOKEN", "INDEXNOW_KEY if enabled"],
+    "cron": "0 * * * *",
+    "cronLogic": "Hourly check with Europe/Zagreb guard; article every 3 hours and daily digest once at configured local hour.",
+    "productionRoutes": []
+  },
+  "deploymentOrder": [
+    "Create preview Command Center Worker without production routes",
+    "Attach existing KV and AI bindings without modifying source workers",
+    "Attach service bindings to existing Auto Editor, Direct Operator and Publish Operator",
+    "Add OPERATOR_TOKEN as a Cloudflare secret",
+    "Run dry-run plan, queue, schedule, editor and digest tests",
+    "Test mail, contact, AI, R2 upload, publications and all protected routes",
+    "Create Cloudflare version snapshot and GitHub repository snapshot",
+    "Only after explicit approval add command.gnk-asg.hr custom domain",
+    "Keep schedule disabled until explicit automation approval"
+  ],
+  "rollback": {
+    "existingWorkers": "No rollback needed because their routes and configs are not changed.",
+    "commandCenter": "Remove custom domain or disable the new Worker schedule.",
+    "frontend": "Return to the previous Git commit or Cloudflare Worker version.",
+    "data": "Queue, logs and schedule use isolated KV keys and can be disabled without deleting existing portal content."
+  },
+  "forbiddenWithoutExplicitApproval": [
+    "merge to main",
+    "production deploy",
+    "route changes",
+    "domain changes",
+    "binding replacement",
+    "secret rotation",
+    "automatic mail sending",
+    "public publication",
+    "deletion",
+    "financial or legal execution"
+  ]
+}
