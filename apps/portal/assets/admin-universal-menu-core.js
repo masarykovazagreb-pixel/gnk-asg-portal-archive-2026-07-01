@@ -2,13 +2,13 @@
   if (window.__GNK_ASG_ADMIN_MENU_CORE__) return;
   window.__GNK_ASG_ADMIN_MENU_CORE__ = true;
   const path=location.pathname.toLowerCase();
-  const adminPattern=/\/(operator-dashboard|operator-mobile|mail-center|mail-studio|mail-studio-pro|command-center|social-share|pdf-publisher|document-studio|media-kit-admin|admin)\//;
+  const adminPattern=/\/(operator-dashboard|operator-mobile|mail-center|mail-studio|mail-studio-pro|command-center|social-share|wa-center|pdf-publisher|document-studio|media-kit-admin|admin)\//;
   const privatePattern=adminPattern;
   const isAdmin=adminPattern.test(path);
   const items=[
     ['Pregled','/operator-dashboard/'],['Mobilni admin','/operator-mobile/'],['Mail Studio','/mail-studio-pro/'],
     ['Inbox','/mail-studio-pro/#inbox'],['Sent','/mail-studio-pro/#sent'],['Outbox','/mail-studio-pro/#outbox'],['Held','/mail-studio-pro/#held'],
-    ['Social Share','/social-share/'],['Objave','/operator-mobile/#publish'],['PDF Publisher','/pdf-publisher/'],['Fotografije','/operator-mobile/#media'],
+    ['WhatsApp Center','/wa-center/'],['Social Share','/social-share/'],['Objave','/operator-mobile/#publish'],['PDF Publisher','/pdf-publisher/'],['Fotografije','/operator-mobile/#media'],
     ['Command Center','/command-center/'],['Status','/backend-status'],['Media Kit','/media-kit/'],['Document Studio','/document-studio/']
   ];
   const current=href=>{try{const u=new URL(href,location.origin);if(u.hash)return path===u.pathname.toLowerCase()&&location.hash===u.hash;return path===u.pathname.toLowerCase()||path.startsWith(u.pathname.toLowerCase())}catch{return false}};
