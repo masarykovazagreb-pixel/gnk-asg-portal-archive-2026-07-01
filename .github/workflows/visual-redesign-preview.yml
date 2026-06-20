@@ -46,11 +46,19 @@ jobs:
           test -f apps/portal/operator-mobile/index.html
           test -f apps/portal/operator-dashboard/index.html
           test -f apps/portal/review/index.html
+          test -f apps/portal/mail-center/index.html
+          test -f apps/portal/command-center/index.html
           test -f apps/portal/assets/brand/gnk-asg-global-layer.css
           test -f apps/portal/assets/brand/gnk-asg-global-layer.js
           test -f apps/portal/data/navigation.json
           test -f apps/portal/data/review-status.json
           test -f apps/portal/data/design-system.json
+          test -f apps/portal/data/mail-signatures.json
+          test -f apps/portal/data/command-center-config.json
+          test -f contracts/editorial-automation-policy.json
+          test -f workers/gnk-asg-command-center-worker/src/index.js
+          test -f workers/gnk-asg-command-center-worker/src/editorial.js
+          test -f workers/gnk-asg-command-center-worker/wrangler.toml
           ! grep -R "GNK_ASG_FORCE_OPERATOR_TOKEN" apps/portal
 
       - name: Validate JavaScript and JSON
@@ -60,12 +68,17 @@ jobs:
           node --check apps/portal/assets/brand/gnk-asg-global-layer.js
           node --check apps/portal/assets/js/publications-shared.js
           node --check workers/gnk-asg-auto-editor-worker/src/index.js
+          node --check workers/gnk-asg-command-center-worker/src/index.js
+          node --check workers/gnk-asg-command-center-worker/src/editorial.js
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/navigation.json','utf8'))"
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/review-status.json','utf8'))"
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/design-system.json','utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/mail-signatures.json','utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/command-center-config.json','utf8'))"
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/site.webmanifest','utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('contracts/editorial-automation-policy.json','utf8'))"
 
-      - name: Verify premium features
+      - name: Verify premium and automation features
         shell: bash
         run: |
           set -euo pipefail
@@ -78,6 +91,13 @@ jobs:
           grep -q "operator/contact-inbox" apps/portal/operator-dashboard/index.html
           grep -q "api/mail-center/sent" apps/portal/operator-dashboard/index.html
           grep -q "GNK ASG Premium Preview" apps/portal/review/index.html
+          grep -q "Mail Intelligence Center" apps/portal/mail-center/index.html
+          grep -q "Command Center" apps/portal/command-center/index.html
+          grep -q "intervalHours: 3" workers/gnk-asg-command-center-worker/src/index.js
+          grep -q "MIN_ARTICLE_WORDS = 500" workers/gnk-asg-command-center-worker/src/editorial.js
+          grep -q "MIN_DIGEST_WORDS = 900" workers/gnk-asg-command-center-worker/src/editorial.js
+          grep -q 'crons = \["0 \* \* \* \*"\]' workers/gnk-asg-command-center-worker/wrangler.toml
+          grep -q '"productionLocked": true' contracts/editorial-automation-policy.json
 
       - name: Build static preview package
         shell: bash
