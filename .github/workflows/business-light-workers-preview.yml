@@ -16,7 +16,7 @@ permissions:
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -70,19 +70,35 @@ jobs:
           echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
           echo 'deployed=true' >> "$GITHUB_OUTPUT"
 
-      - name: Test deployed preview
+      - name: Wait for workers.dev DNS and test preview
         if: steps.deploy.outputs.deployed == 'true' && steps.deploy.outputs.preview_url != ''
+        shell: bash
         run: |
           set -euo pipefail
           url='${{ steps.deploy.outputs.preview_url }}'
-          curl --fail --silent --show-error "$url/__preview/status" | tee reports/workers-preview/status.json
-          curl --fail --silent --show-error "$url/" > /dev/null
-          curl --fail --silent --show-error "$url/en/" > /dev/null
-          curl --fail --silent --show-error "$url/trzista/" > /dev/null
-          curl --fail --silent --show-error "$url/mail-studio-pro/" > /dev/null
+          ready=false
+          for attempt in $(seq 1 24); do
+            if curl --fail --silent --show-error --connect-timeout 5 --max-time 15 "$url/__preview/status" \
+              > reports/workers-preview/status.json; then
+              ready=true
+              break
+            fi
+            echo "Waiting for workers.dev DNS/availability: attempt $attempt/24"
+            sleep 5
+          done
+          if [ "$ready" != 'true' ]; then
+            echo 'Preview deployment completed, but workers.dev URL did not become reachable within 120 seconds.' \
+              | tee reports/workers-preview/availability-error.txt
+            exit 1
+          fi
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/" > /dev/null
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/en/" > /dev/null
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/trzista/" > /dev/null
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/mail-studio-pro/" > /dev/null
           code=$(curl --silent --output reports/workers-preview/write-lock.json --write-out '%{http_code}' \
             -X POST -H 'content-type: application/json' -d '{}' "$url/api/operator-send-mail")
           test "$code" = '423'
+          printf '\nVerified reachable: true\nWrite lock verified: true\n' >> reports/workers-preview/deploy.txt
 
       - name: Publish preview summary
         if: always()
