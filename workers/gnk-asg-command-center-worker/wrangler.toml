@@ -1,0 +1,20 @@
+name = "gnk-asg-command-center-worker"
+main = "src/index.js"
+compatibility_date = "2026-06-20"
+workers_dev = true
+preview_urls = true
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "command-center-preview"
+COMMAND_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+PRODUCTION_LOCKED = "true"
+
+[triggers]
+crons = ["0 * * * *"]
+
+# Namjerno nema produkcijskih routes, custom domaina, KV/D1/R2/AI binding ID-jeva ni secretsa.
+# Prije odobrenog Cloudflare deploya treba povezati postojeći GNK_ASG_KV, AI binding,
+# AUTO_EDITOR_SERVICE, DIRECT_OPERATOR_SERVICE, PUBLISH_SERVICE i OPERATOR_TOKEN secret.
+# Satni cron samo provjerava Europe/Zagreb raspored; stvarna objava je svaka 3 sata,
+# a dnevni sažetak jednom dnevno u konfiguriranom lokalnom satu.
