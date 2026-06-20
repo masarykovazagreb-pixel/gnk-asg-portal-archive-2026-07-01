@@ -1,4 +1,5 @@
 const LIVE_ORIGIN = 'https://gnk-asg.hr';
+const SOCIAL_SHARE_ORIGIN = 'https://gnk-asg-social-share-preview.beckuphome.workers.dev';
 
 export default {
   async fetch(request, env) {
@@ -11,8 +12,13 @@ export default {
         productionRouteConfigured: false,
         productionWritesAllowed: false,
         liveReadProxy: true,
+        socialSharePreview: SOCIAL_SHARE_ORIGIN,
         updatedAt: new Date().toISOString()
       });
+    }
+
+    if (url.pathname.startsWith('/api/social-share/') || url.pathname.startsWith('/s/')) {
+      return proxySocialShare(request, url);
     }
 
     if (isWriteLocked(request, url.pathname)) {
@@ -29,7 +35,7 @@ export default {
     }
 
     const response = await env.ASSETS.fetch(request);
-    return withPreviewHeaders(response);
+    return enhanceStaticResponse(response);
   }
 };
 
@@ -70,12 +76,34 @@ async function proxyLiveRead(request, previewUrl) {
     redirect: 'follow'
   };
 
-  if (!['GET', 'HEAD'].includes(request.method)) {
-    init.body = request.body;
-  }
-
+  if (!['GET', 'HEAD'].includes(request.method)) init.body = request.body;
   const response = await fetch(liveUrl, init);
   return withPreviewHeaders(response);
+}
+
+async function proxySocialShare(request, previewUrl) {
+  const target = new URL(previewUrl.pathname + previewUrl.search, SOCIAL_SHARE_ORIGIN);
+  const headers = new Headers(request.headers);
+  headers.delete('host');
+  headers.delete('cookie');
+  headers.set('x-gnk-asg-preview-proxy', 'social-share');
+  const init = { method: request.method, headers, redirect: 'follow' };
+  if (!['GET', 'HEAD'].includes(request.method)) init.body = request.body;
+  const response = await fetch(target, init);
+  return withPreviewHeaders(response);
+}
+
+function enhanceStaticResponse(response) {
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('text/html') || !response.body) return withPreviewHeaders(response);
+  const transformed = new HTMLRewriter()
+    .on('head', {
+      element(element) {
+        element.append('<script defer src="/assets/admin-universal-shell.js?v=20260620-1"></script>', { html: true });
+      }
+    })
+    .transform(response);
+  return withPreviewHeaders(transformed);
 }
 
 function withPreviewHeaders(response) {
