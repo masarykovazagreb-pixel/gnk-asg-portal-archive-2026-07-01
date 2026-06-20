@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 2,
-  "version": "2026-06-20-v2-automatic",
+  "schemaVersion": 3,
+  "version": "2026-06-20-v3-image-routing",
   "productionLocked": true,
   "deploymentApproved": false,
   "operatingModel": {
@@ -18,6 +18,17 @@
     "enabledInPreview": true,
     "enabledInProduction": false
   },
+  "publicationRoutes": {
+    "sharedSource": true,
+    "hrIndex": "/objave/",
+    "hrArticle": "/objave/<slug>/",
+    "enIndex": "/publications/",
+    "enArticle": "/publications/<slug>/",
+    "canonical": "/objave/<slug>/",
+    "newsHr": "/vijesti/",
+    "newsEn": "/news/",
+    "newsSeparationRule": "Vijesti/News prikazuju vanjske aktualne izvore; Objave/Publications prikazuju vlastite tekstove GNK ASG-a."
+  },
   "articleRules": {
     "minimumWordsHr": 500,
     "minimumWordsEn": 500,
@@ -27,17 +38,59 @@
     "autoPublishStandardContent": true,
     "requireHrEn": true,
     "requireImage": true,
-    "imageSource": "https://gnk-asg.hr/visual-index/",
     "requireAtLeastOneSource": true,
     "requireWhyItMatters": true,
     "requireOwnConclusion": true,
     "duplicateProtection": true,
-    "categories": [
+    "primaryCategories": [
       "Poslovanje",
       "Tržišta",
       "AI i tehnologija",
       "Sport i ekonomija"
+    ],
+    "additionalCategories": [
+      "BPP i fintech",
+      "Mediji i komunikacija",
+      "Korporativno upravljanje",
+      "Održivost i infrastruktura"
     ]
+  },
+  "imageRules": {
+    "catalogs": [
+      "/data/visual_gallery.json",
+      "/data/generated-gallery-30.json",
+      "/data/auto-editor-image-catalog.json"
+    ],
+    "publicGallery": "https://gnk-asg.hr/visual-index/",
+    "requiredStatus": "ready",
+    "requiredEligibility": true,
+    "selectionPriority": [
+      "exact topic and keyword match",
+      "primary or additional category match",
+      "language-neutral editorial image",
+      "least recently used image",
+      "GNK ASG brand fallback"
+    ],
+    "preventImageReuseDays": 7,
+    "verifyImageHttpStatus": true,
+    "verifyMimeType": true,
+    "requiredWidth": 1200,
+    "preferredWidth": 2048,
+    "preferredHeight": 1152,
+    "preferredRatio": "16:9",
+    "requiredFields": [
+      "url",
+      "alt",
+      "title",
+      "caption",
+      "credit",
+      "width",
+      "height",
+      "mimeType"
+    ],
+    "fallback": "https://gnk-asg.hr/assets/gnk-asg-social-card.png",
+    "blockPublishWhenImageMissing": true,
+    "blockPublishWhenAltMissing": true
   },
   "dailyDigestRules": {
     "minimumWordsHr": 900,
@@ -83,11 +136,22 @@
     "twitterCards": true,
     "articleSchema": true,
     "imageObjectSchema": true,
+    "breadcrumbSchema": true,
     "imageAltTitleCaptionCredit": true,
     "sitemap": true,
     "imageSitemap": true,
+    "maxImagePreviewLarge": true,
     "indexNowWhenConfigured": true,
     "googleIndexingThroughSitemapAndSearchConsole": true
+  },
+  "pdfPublicationRules": {
+    "adminPath": "/pdf-publisher/",
+    "publicHrCollection": "/objave/?type=pdf",
+    "publicEnCollection": "/publications/?type=pdf",
+    "storePdfInR2": true,
+    "createDigitalDocumentSchema": true,
+    "requireTitleSummaryImageAndLanguage": true,
+    "draftOrPublishedStatus": true
   },
   "safetyRules": {
     "routineContentAutoPublishes": true,
@@ -106,6 +170,7 @@
     "classification": true,
     "execution": true,
     "sourceSelection": true,
+    "imageSelection": true,
     "publicationResult": true,
     "mailDecision": true,
     "mailReplyResult": true,
