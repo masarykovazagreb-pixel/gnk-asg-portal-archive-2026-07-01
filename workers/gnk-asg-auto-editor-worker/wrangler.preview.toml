@@ -1,0 +1,16 @@
+name = "gnk-asg-auto-editor-preview"
+main = "src/index.js"
+compatibility_date = "2026-06-20"
+workers_dev = true
+preview_urls = true
+
+[vars]
+PREVIEW_MODE = "true"
+PUBLIC_ENVIRONMENT = "preview"
+PUBLIC_BRAND = "GNK ASG Preview"
+
+# Namjerno nema:
+# - produkcijskih routes
+# - cron triggers
+# - produkcijskih KV/D1/R2/Email bindings
+# - secrets

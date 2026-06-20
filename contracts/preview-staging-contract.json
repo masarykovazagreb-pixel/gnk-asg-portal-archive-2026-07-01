@@ -1,0 +1,39 @@
+{
+    "schemaVersion":  1,
+    "generatedAt":  "2026-06-20T14:54:42.9274866+02:00",
+    "branch":  "visual-redesign",
+    "previewOnly":  true,
+    "productionLocked":  true,
+    "cloudflareDeployAllowed":  false,
+    "productionRoutesAllowed":  false,
+    "cronTriggersAllowed":  false,
+    "productionBindingsAllowed":  false,
+    "secretsAllowed":  false,
+    "localPreview":  {
+                         "host":  "127.0.0.1",
+                         "port":  4173,
+                         "baseUrl":  "http://127.0.0.1:4173",
+                         "server":  "scripts/preview-publications-server.mjs",
+                         "fixture":  "preview/fixtures/publications-auto.json"
+                     },
+    "testedRoutes":  [
+                         "/objave/",
+                         "/publications/",
+                         "/data/publications.json",
+                         "/data/publications-auto.json",
+                         "/api/auto-editor/status",
+                         "/objave/poslovni-pregled-preview-staging-test/",
+                         "/publications/poslovni-pregled-preview-staging-test/"
+                     ],
+    "requirements":  {
+                         "staticManifestMinimumItems":  52,
+                         "articleMinimumWordsHr":  500,
+                         "articleMinimumWordsEn":  500,
+                         "canonicalPointsToHr":  true,
+                         "hreflangHrEnRequired":  true,
+                         "sourceAttributionRequired":  true,
+                         "imageRequired":  true,
+                         "fallbackToStaticManifestRequired":  true,
+                         "oneAutoEditorRouteOwnerRequired":  true
+                     }
+}
