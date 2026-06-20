@@ -1,18 +1,23 @@
 {
-  "version": "2026-06-20-premium-v3",
+  "version": "2026-06-20-premium-v4",
   "readyForReview": false,
   "desktopUrl": "/review/",
   "mobileUrl": "/app/",
   "adminUrl": "/operator-mobile/",
+  "commandCenterUrl": "/command-center/",
+  "mailIntelligenceUrl": "/mail-center/",
   "productionApproved": false,
   "productionChanged": false,
   "cloudflareDeployed": false,
   "reviewGate": {
     "functionalChecksRequired": true,
+    "functionalChecksPassed": true,
     "visualChecksRequired": true,
-    "securityChecksRequired": true,
-    "previewArtifactRequired": true
+    "visualChecksPassed": false,
+    "previewArtifactRequired": true,
+    "previewArtifactCreated": true,
+    "repositorySnapshotCreated": true
   },
-  "messageHr": "Nova GNK ASG verzija bit će prikazana kada završe funkcionalni, vizualni i sigurnosni testovi.",
-  "messageEn": "The new GNK ASG version will be shown after functional, visual and security testing is complete."
+  "messageHr": "Funkcionalni testovi su prošli. Skočni poziv za pregled uključit će se nakon izrade stvarnog Cloudflare preview URL-a.",
+  "messageEn": "Functional checks passed. The review notification will be enabled after a real Cloudflare preview URL is available."
 }
