@@ -1,0 +1,32 @@
+{
+  "version": "2026-06-20-v1",
+  "items": [
+    {
+      "id":"general-about",
+      "group":"general",
+      "phrasesHr":["što je GNK ASG","čime se bavite","o tvrtki","tko ste"],
+      "phrasesEn":["what is GNK ASG","what do you do","about the company","who are you"],
+      "answerHr":"GNK ASG d.o.o. je korporativna i tehnološka platforma koja povezuje poslovanje, sport, umjetnu inteligenciju, tržišne informacije i razvoj digitalnih rješenja.",
+      "answerEn":"GNK ASG d.o.o. is a corporate and technology platform connecting business, sport, artificial intelligence, market information and digital solutions.",
+      "actions":["open_company_profile","open_contact"]
+    },
+    {
+      "id":"general-contact",
+      "group":"general",
+      "phrasesHr":["kontakt","telefon","email","kako vas kontaktirati"],
+      "phrasesEn":["contact","phone","email","how can I contact you"],
+      "answerHr":"Možete koristiti kontakt obrazac na portalu, poslati poruku odgovarajućem odjelu ili zatražiti razgovor s odgovornom osobom.",
+      "answerEn":"You can use the portal contact form, contact the relevant department or request a conversation with the responsible person.",
+      "actions":["open_contact","human_handover"]
+    },
+    {
+      "id":"general-hours",
+      "group":"general",
+      "phrasesHr":["radno vrijeme","kada odgovarate","kad ste dostupni"],
+      "phrasesEn":["business hours","when do you reply","when are you available"],
+      "answerHr":"Automatske informacije dostupne su stalno. Upiti koji traže ljudsku obradu evidentiraju se i prosljeđuju odgovornoj osobi.",
+      "answerEn":"Automated information is available continuously. Requests requiring human review are recorded and forwarded to the responsible person.",
+      "actions":["human_handover"]
+    }
+  ]
+}
