@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - visual-redesign
+      - experience-ai-live-overview
     paths:
       - 'apps/portal/**'
       - 'workers/**'
@@ -14,6 +15,7 @@ on:
   pull_request:
     branches:
       - main
+      - visual-redesign
     paths:
       - 'apps/portal/**'
       - 'workers/**'
@@ -27,14 +29,15 @@ permissions:
 jobs:
   build-preview:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
-      - name: Checkout visual-redesign
+      - name: Checkout current branch
         uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
 
       - name: Verify required portal files
         shell: bash
@@ -47,9 +50,17 @@ jobs:
           test -f apps/portal/operator-dashboard/index.html
           test -f apps/portal/review/index.html
           test -f apps/portal/mail-center/index.html
+          test -f apps/portal/mail-studio-pro/index.html
           test -f apps/portal/command-center/index.html
+          test -f apps/portal/trzista/index.html
           test -f apps/portal/assets/brand/gnk-asg-global-layer.css
           test -f apps/portal/assets/brand/gnk-asg-global-layer.js
+          test -f apps/portal/assets/experience-ai.js
+          test -f apps/portal/assets/experience-navigation.js
+          test -f apps/portal/assets/experience-overview.js
+          test -f apps/portal/assets/experience-layer.css
+          test -f apps/portal/assets/mail-studio-pro.js
+          test -f apps/portal/assets/mail-studio-pro.css
           test -f apps/portal/data/navigation.json
           test -f apps/portal/data/review-status.json
           test -f apps/portal/data/design-system.json
@@ -59,6 +70,8 @@ jobs:
           test -f workers/gnk-asg-command-center-worker/src/index.js
           test -f workers/gnk-asg-command-center-worker/src/editorial.js
           test -f workers/gnk-asg-command-center-worker/wrangler.toml
+          test -f workers/gnk-asg-mail-agent-worker/src/index.js
+          test -f workers/gnk-asg-mail-agent-worker/wrangler.preview.toml
           ! grep -R "GNK_ASG_FORCE_OPERATOR_TOKEN" apps/portal
 
       - name: Validate JavaScript and JSON
@@ -66,10 +79,15 @@ jobs:
         run: |
           set -euo pipefail
           node --check apps/portal/assets/brand/gnk-asg-global-layer.js
+          node --check apps/portal/assets/experience-ai.js
+          node --check apps/portal/assets/experience-navigation.js
+          node --check apps/portal/assets/experience-overview.js
+          node --check apps/portal/assets/mail-studio-pro.js
           node --check apps/portal/assets/js/publications-shared.js
           node --check workers/gnk-asg-auto-editor-worker/src/index.js
           node --check workers/gnk-asg-command-center-worker/src/index.js
           node --check workers/gnk-asg-command-center-worker/src/editorial.js
+          find workers/gnk-asg-mail-agent-worker/src -name '*.js' -print0 | xargs -0 -n1 node --check
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/navigation.json','utf8'))"
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/review-status.json','utf8'))"
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/design-system.json','utf8'))"
@@ -78,7 +96,7 @@ jobs:
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/site.webmanifest','utf8'))"
           node -e "JSON.parse(require('fs').readFileSync('contracts/editorial-automation-policy.json','utf8'))"
 
-      - name: Verify premium and automation features
+      - name: Verify premium, mail and automation features
         shell: bash
         run: |
           set -euo pipefail
@@ -92,7 +110,12 @@ jobs:
           grep -q "api/mail-center/sent" apps/portal/operator-dashboard/index.html
           grep -q "GNK ASG Premium Preview" apps/portal/review/index.html
           grep -q "Mail Intelligence Center" apps/portal/mail-center/index.html
+          grep -q "GNK ASG Mail Studio" apps/portal/mail-studio-pro/index.html
+          grep -q "data-box=\"outbox\"" apps/portal/mail-studio-pro/index.html
+          grep -q "data-box=\"held\"" apps/portal/mail-studio-pro/index.html
           grep -q "Command Center" apps/portal/command-center/index.html
+          grep -q "automationTargetPercent: 99" workers/gnk-asg-mail-agent-worker/src/policy.js
+          grep -q "productionRouteConfigured: false" workers/gnk-asg-mail-agent-worker/src/index.js
           grep -q "intervalHours: 3" workers/gnk-asg-command-center-worker/src/index.js
           grep -q "MIN_ARTICLE_WORDS = 500" workers/gnk-asg-command-center-worker/src/editorial.js
           grep -q "MIN_DIGEST_WORDS = 900" workers/gnk-asg-command-center-worker/src/editorial.js
@@ -105,20 +128,46 @@ jobs:
           set -euo pipefail
           mkdir -p preview-artifact
           cp -R apps/portal/. preview-artifact/
-          printf '%s\n' "Branch: visual-redesign" "Commit: $GITHUB_SHA" "Production changed: false" "Cloudflare deployed: false" > preview-artifact/PREVIEW_BUILD.txt
+          printf '%s\n' \
+            "Branch: ${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}" \
+            "Commit: $GITHUB_SHA" \
+            "Production changed: false" \
+            "Cloudflare deployed: false" \
+            "Mail Agent production route: false" \
+            > preview-artifact/PREVIEW_BUILD.txt
+
+      - name: Local HTTP preview smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --directory preview-artifact > /tmp/gnk-preview.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid || true' EXIT
+          sleep 2
+          curl --fail --silent --show-error http://127.0.0.1:4173/ > /dev/null
+          curl --fail --silent --show-error http://127.0.0.1:4173/en/ > /dev/null
+          curl --fail --silent --show-error http://127.0.0.1:4173/trzista/ > /dev/null
+          curl --fail --silent --show-error http://127.0.0.1:4173/mail-studio-pro/ > /dev/null
+          curl --fail --silent --show-error http://127.0.0.1:4173/operator-mobile/ > /dev/null
 
       - name: Build complete repository snapshot
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p repository-snapshot
-          git archive --format=zip --output="repository-snapshot/GNK_ASG_visual-redesign_${GITHUB_SHA}.zip" HEAD
-          printf '%s\n' "Branch: visual-redesign" "Commit: $GITHUB_SHA" "Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)" "Tracked files only: true" "Secrets included: false" > repository-snapshot/SNAPSHOT_MANIFEST.txt
+          git archive --format=zip --output="repository-snapshot/GNK_ASG_preview_${GITHUB_SHA}.zip" HEAD
+          printf '%s\n' \
+            "Branch: ${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}" \
+            "Commit: $GITHUB_SHA" \
+            "Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            "Tracked files only: true" \
+            "Secrets included: false" \
+            > repository-snapshot/SNAPSHOT_MANIFEST.txt
 
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4
         with:
-          name: gnk-asg-visual-redesign-preview
+          name: gnk-asg-business-light-preview
           path: preview-artifact
           if-no-files-found: error
           retention-days: 14
