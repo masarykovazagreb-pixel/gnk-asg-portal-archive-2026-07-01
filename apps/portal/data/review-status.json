@@ -7,6 +7,12 @@
   "productionApproved": false,
   "productionChanged": false,
   "cloudflareDeployed": false,
-  "messageHr": "Nova GNK ASG verzija bit će prikazana kada završe funkcionalni i vizualni testovi.",
-  "messageEn": "The new GNK ASG version will be shown after functional and visual testing is complete."
+  "reviewGate": {
+    "functionalChecksRequired": true,
+    "visualChecksRequired": true,
+    "securityChecksRequired": true,
+    "previewArtifactRequired": true
+  },
+  "messageHr": "Nova GNK ASG verzija bit će prikazana kada završe funkcionalni, vizualni i sigurnosni testovi.",
+  "messageEn": "The new GNK ASG version will be shown after functional, visual and security testing is complete."
 }
