@@ -1,19 +1,30 @@
 {
-  "schemaVersion": 1,
-  "version": "2026-06-20-v1",
+  "schemaVersion": 2,
+  "version": "2026-06-20-v2-automatic",
   "productionLocked": true,
   "deploymentApproved": false,
+  "operatingModel": {
+    "automationTargetPercent": 99,
+    "topicApprovalRequired": false,
+    "standardPublicationApprovalRequired": false,
+    "manualUploadAllowedForAuthorizedUsers": true,
+    "singleSharedPublicationSource": true,
+    "humanReviewOnlyForSensitiveExceptions": true
+  },
   "schedule": {
     "timeZone": "Europe/Zagreb",
     "articleIntervalHours": 3,
     "dailyDigestHour": 23,
-    "enabledInPreview": false,
+    "enabledInPreview": true,
     "enabledInProduction": false
   },
   "articleRules": {
     "minimumWordsHr": 500,
     "minimumWordsEn": 500,
     "author": "Nermin Sefić",
+    "autoSelectTopic": true,
+    "topicApprovalRequired": false,
+    "autoPublishStandardContent": true,
     "requireHrEn": true,
     "requireImage": true,
     "imageSource": "https://gnk-asg.hr/visual-index/",
@@ -31,12 +42,37 @@
   "dailyDigestRules": {
     "minimumWordsHr": 900,
     "minimumWordsEn": 900,
+    "autoPublish": true,
     "includeAllDailyPublications": true,
     "includeCommonThemes": true,
     "includeRisksAndOpportunities": true,
     "includeManagementCommentary": true,
     "includeNextDayWatchlist": true,
     "author": "Nermin Sefić"
+  },
+  "mailAutomation": {
+    "readInboundAutomatically": true,
+    "classifyAutomatically": true,
+    "summarizeAutomatically": true,
+    "generateContextualReply": true,
+    "useFixedReplyTemplates": false,
+    "autoSendLowRiskGeneralReplies": true,
+    "autoAssignMailboxProfile": true,
+    "autoApplyProfessionalSignature": true,
+    "storeInboxOutboxSentAndHeld": true,
+    "preventReplyLoops": true,
+    "sensitiveCategoriesHeldForReview": [
+      "legal",
+      "contract",
+      "financial_commitment",
+      "payment_instruction",
+      "complaint_or_claim",
+      "personal_data_request",
+      "security_incident",
+      "media_statement",
+      "employment",
+      "government_or_court"
+    ]
   },
   "seoRules": {
     "metaTitle": true,
@@ -54,8 +90,10 @@
     "googleIndexingThroughSitemapAndSearchConsole": true
   },
   "safetyRules": {
-    "publishRequiresConfiguredExecutor": true,
-    "mailSendRequiresExplicitApproval": true,
+    "routineContentAutoPublishes": true,
+    "routineGeneralMailAutoSends": true,
+    "sensitiveMailNeverAutoSends": true,
+    "mailSendRequiresExplicitApproval": false,
     "deployRequiresExplicitApproval": true,
     "routeChangesRequireExplicitApproval": true,
     "secretChangesRequireExplicitApproval": true,
@@ -65,10 +103,12 @@
   "logging": {
     "queue": true,
     "plan": true,
-    "approval": true,
+    "classification": true,
     "execution": true,
     "sourceSelection": true,
     "publicationResult": true,
+    "mailDecision": true,
+    "mailReplyResult": true,
     "indexingResult": true,
     "errors": true,
     "rollbackReference": true
