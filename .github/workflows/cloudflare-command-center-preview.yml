@@ -1,0 +1,147 @@
+name: Cloudflare Command Center Preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - visual-redesign
+    paths:
+      - 'workers/gnk-asg-command-center-worker/**'
+      - '.github/workflows/cloudflare-command-center-preview.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-command-center-preview
+  cancel-in-progress: false
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    environment: cloudflare-preview
+    steps:
+      - name: Checkout visual-redesign
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate Cloudflare credentials
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "Missing GitHub secret: CLOUDFLARE_API_TOKEN"
+            exit 11
+          fi
+          if [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "Missing GitHub secret: CLOUDFLARE_ACCOUNT_ID"
+            exit 12
+          fi
+
+      - name: Validate isolated preview configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          CONFIG="workers/gnk-asg-command-center-worker/wrangler.preview.toml"
+          test -f "$CONFIG"
+          grep -q 'name = "gnk-asg-command-center-preview"' "$CONFIG"
+          grep -q 'workers_dev = true' "$CONFIG"
+          grep -q 'preview_urls = true' "$CONFIG"
+          ! grep -q '\[\[routes\]\]' "$CONFIG"
+          ! grep -q 'custom_domain' "$CONFIG"
+          ! grep -q '\[triggers\]' "$CONFIG"
+          node --check workers/gnk-asg-command-center-worker/src/index.js
+          node --check workers/gnk-asg-command-center-worker/src/editorial.js
+
+      - name: Install Wrangler
+        shell: bash
+        run: npm install --no-save wrangler@latest
+
+      - name: Deploy isolated preview Worker
+        id: deploy
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          mkdir -p cloudflare-preview-result
+          npx wrangler deploy --config workers/gnk-asg-command-center-worker/wrangler.preview.toml 2>&1 | tee cloudflare-preview-result/deploy.log
+          PREVIEW_URL=$(grep -Eo 'https://[A-Za-z0-9._-]+\.workers\.dev' cloudflare-preview-result/deploy.log | tail -n 1 || true)
+          if [ -z "$PREVIEW_URL" ]; then
+            echo "Preview URL was not found in Wrangler output."
+            exit 21
+          fi
+          echo "preview_url=$PREVIEW_URL" >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$PREVIEW_URL" > cloudflare-preview-result/PREVIEW_URL.txt
+
+      - name: Set preview operator token
+        if: ${{ secrets.GNK_ASG_OPERATOR_TOKEN != '' }}
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | npx wrangler secret put OPERATOR_TOKEN --config workers/gnk-asg-command-center-worker/wrangler.preview.toml
+
+      - name: Test preview health
+        shell: bash
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.preview_url }}
+        run: |
+          set -euo pipefail
+          sleep 5
+          curl --fail --silent --show-error "$PREVIEW_URL/api/command-center/health" | tee cloudflare-preview-result/health.json
+          grep -q '"ok": true' cloudflare-preview-result/health.json
+          grep -q '"productionLocked": true' cloudflare-preview-result/health.json
+
+      - name: Write preview manifest
+        shell: bash
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.preview_url }}
+        run: |
+          set -euo pipefail
+          cat > cloudflare-preview-result/PREVIEW_MANIFEST.txt <<EOF
+          Branch: visual-redesign
+          Commit: $GITHUB_SHA
+          Preview URL: $PREVIEW_URL
+          Worker: gnk-asg-command-center-preview
+          Production routes: none
+          Custom domain: none
+          Cron: none
+          Production changed: false
+          Existing workers changed: false
+          EOF
+
+      - name: Upload Cloudflare preview result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-cloudflare-command-center-preview-${{ github.sha }}
+          path: cloudflare-preview-result
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish workflow summary
+        shell: bash
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.preview_url }}
+        run: |
+          {
+            echo '## GNK ASG Cloudflare Preview'
+            echo
+            echo "- Preview URL: $PREVIEW_URL"
+            echo '- Worker: `gnk-asg-command-center-preview`'
+            echo '- Production routes: none'
+            echo '- Custom domain: none'
+            echo '- Existing workers changed: no'
+            echo '- Production changed: no'
+          } >> "$GITHUB_STEP_SUMMARY"
