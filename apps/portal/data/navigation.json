@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 3,
-  "version": "2026-06-20-premium-v3",
+  "schemaVersion": 4,
+  "version": "2026-06-20-premium-v4",
   "brand": {
     "name": "GNK ASG",
     "logo": "/assets/logo-gnk-asg.svg",
@@ -22,7 +22,9 @@
     {"key":"contact","label":"Kontakt","href":"/contact/","public":true},
     {"key":"legal","label":"Legal","href":"/legal/","public":true},
     {"key":"app","label":"Mobilna aplikacija","href":"/app/","public":true},
-    {"key":"mail","label":"Mail Center","href":"/mail-studio/","public":false},
+    {"key":"mailIntelligence","label":"Mail Intelligence","href":"/mail-center/","public":false},
+    {"key":"mailLegacy","label":"Mail Studio","href":"/mail-studio/","public":false},
+    {"key":"commandCenter","label":"Command Center","href":"/command-center/","public":false},
     {"key":"adminMobile","label":"Mobilni Admin","href":"/operator-mobile/","public":false},
     {"key":"admin","label":"Admin","href":"/operator-dashboard/","public":false},
     {"key":"language","label":"EN","href":"/en/","public":true}
@@ -41,7 +43,9 @@
     {"key":"contact","label":"Contact","href":"/contact/","public":true},
     {"key":"legal","label":"Legal","href":"/legal/","public":true},
     {"key":"app","label":"Mobile App","href":"/app/","public":true},
-    {"key":"mail","label":"Mail Center","href":"/mail-studio/","public":false},
+    {"key":"mailIntelligence","label":"Mail Intelligence","href":"/mail-center/","public":false},
+    {"key":"mailLegacy","label":"Mail Studio","href":"/mail-studio/","public":false},
+    {"key":"commandCenter","label":"Command Center","href":"/command-center/","public":false},
     {"key":"adminMobile","label":"Mobile Admin","href":"/operator-mobile/","public":false},
     {"key":"admin","label":"Admin","href":"/operator-dashboard/","public":false},
     {"key":"language","label":"HR","href":"/","public":true}
