@@ -1,0 +1,38 @@
+name = "gnk-asg-command-center-worker"
+main = "src/index.js"
+compatibility_date = "2026-06-20"
+workers_dev = false
+preview_urls = false
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "command-center-production"
+COMMAND_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+PRODUCTION_LOCKED = "true"
+
+[triggers]
+crons = ["0 * * * *"]
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[ai]
+binding = "AI"
+
+[[services]]
+binding = "AUTO_EDITOR_SERVICE"
+service = "gnk-asg-auto-editor"
+
+[[services]]
+binding = "DIRECT_OPERATOR_SERVICE"
+service = "gnk-asg-direct-operator"
+
+[[services]]
+binding = "PUBLISH_SERVICE"
+service = "gnk-asg-publish-operator"
+
+# OPERATOR_TOKEN mora se dodati kroz `wrangler secret put OPERATOR_TOKEN`.
+# INDEXNOW_KEY dodaje se kao secret samo ako se aktivira IndexNow.
+# Custom domain command.gnk-asg.hr dodaje se tek nakon preview testa i izričitog odobrenja.
+# Ovaj predložak ne mijenja konfiguracije postojećih Workera.
