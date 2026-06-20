@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07122a">
+<meta name="robots" content="index,follow">
+<title>GNK ASG Mobilna aplikacija</title>
+<meta name="description" content="GNK ASG mobilna aplikacija za brzi pristup korporativnim podatcima, objavama, tržištima, vijestima, AI asistentu i kontaktu.">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260620-premium-v3">
+<script defer src="/assets/brand/gnk-asg-global-layer.js?v=20260620-premium-v3"></script>
+<style>
+main{width:min(820px,calc(100% - 24px));margin:26px auto 110px}.mobile-hero,.mobile-grid a,.mobile-status{border:1px solid var(--asg-line);background:var(--asg-panel);border-radius:26px;box-shadow:var(--asg-shadow)}.mobile-hero{padding:28px;text-align:center}.mobile-hero img{width:190px;max-width:72%;height:auto}.mobile-hero h1{margin:14px 0 8px;font-size:clamp(30px,8vw,52px)}.mobile-hero p{max-width:610px;margin:0 auto;color:var(--asg-muted);line-height:1.65}.mobile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.mobile-grid a{padding:19px;color:var(--asg-text)!important;text-decoration:none!important;transition:.18s}.mobile-grid a:hover{transform:translateY(-2px);border-color:var(--asg-gold)}.mobile-grid strong{display:block;color:var(--asg-gold-2);margin-bottom:7px;font-size:18px}.mobile-grid span{color:var(--asg-muted);font-size:13px;line-height:1.5}.install{margin-top:16px;width:100%;padding:14px;border:0;border-radius:999px;background:linear-gradient(135deg,var(--asg-gold),var(--asg-gold-2));color:#07101f;font-weight:950;cursor:pointer}.mobile-status{margin-top:14px;padding:16px;color:var(--asg-muted)}.mobile-status b{color:var(--asg-gold)}@media(max-width:580px){.mobile-grid{grid-template-columns:1fr}.mobile-hero{padding:22px}}
+</style>
+</head>
+<body class="gnk-asg-premium-shell">
+<main>
+<section class="mobile-hero">
+<img src="/assets/gnk-asg-email-logo-final.png" alt="GNK ASG">
+<h1>GNK ASG mobilna aplikacija</h1>
+<p>Brzi, pregledni i sigurni pristup najvažnijim javnim funkcijama korporativnog portala.</p>
+<button class="install" id="installApp" type="button">Instaliraj aplikaciju</button>
+</section>
+<section class="mobile-grid">
+<a href="/#o-nama"><strong>Profil</strong><span>Korporativni podatci, upravljanje i financijski pokazatelji.</span></a>
+<a href="/trzista/"><strong>Tržišta</strong><span>Market Intelligence, digitalna imovina i poslovni pokazatelji.</span></a>
+<a href="/objave/"><strong>Objave</strong><span>Analize, izvori, fotografije, SEO i zaključci.</span></a>
+<a href="/vijesti/"><strong>Vijesti</strong><span>Aktualne poslovne, tehnološke i sportske teme.</span></a>
+<a href="/assistant/"><strong>AI Pomoć</strong><span>Javni asistent za sadržaj i funkcije GNK ASG portala.</span></a>
+<a href="/contact/"><strong>Kontakt</strong><span>Kontakt forma, odjeli i evidencijski broj upita.</span></a>
+<a href="/visual-index/"><strong>Galerija</strong><span>Vizualni katalog i medijski materijali.</span></a>
+<a href="/legal/"><strong>Legal</strong><span>Pravni dokumenti, privatnost i GDPR informacije.</span></a>
+<a href="/media-kit/"><strong>Media Kit</strong><span>Korporativni materijali za medije i partnere.</span></a>
+<a href="/operator-mobile/" rel="nofollow"><strong>Mobilni Admin</strong><span>Zaštićeni pristup mailu, fotografijama i objavama.</span></a>
+</section>
+<section class="mobile-status" id="mobileStatus"><b>Status:</b> provjera javnih modula...</section>
+</main>
+<script>
+let installPrompt=null;
+window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event});
+document.getElementById('installApp').addEventListener('click',async()=>{if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null}else{alert('U pregledniku odaberite Dodaj na početni zaslon / Install app.')}});
+(async()=>{const box=document.getElementById('mobileStatus');for(const url of ['/data/status.json','/data/publications.json']){try{const r=await fetch(url+'?cb='+Date.now(),{cache:'no-store'});if(!r.ok)continue;const d=await r.json();box.innerHTML='<b>Status:</b> javni podatci dostupni · '+new Date().toLocaleString('hr-HR');return}catch{}}box.innerHTML='<b>Status:</b> dio podataka trenutačno koristi fallback.'})();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+</script>
+</body>
+</html>
