@@ -1,0 +1,30 @@
+name: Phase 1 Critical Audit
+on:
+  pull_request:
+    branches: [visual-redesign]
+    paths:
+      - 'apps/portal/**'
+      - 'workers/**'
+      - 'config/phase1-critical-checks.json'
+      - 'scripts/phase1-critical-audit.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/phase1-critical-audit.mjs
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase1-critical-audit
+          path: reports/phase1-critical-audit/
+          if-no-files-found: error
+          retention-days: 14
