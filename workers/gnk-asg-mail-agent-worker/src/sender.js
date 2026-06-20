@@ -5,7 +5,7 @@ const LOGO_URL = 'https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png';
 const MAX_TOTAL_ATTACHMENT_BYTES = 8_000_000;
 
 export async function sendContextualReply(env, outgoing) {
-  const result = await sendMessage(env, {
+  return sendMessage(env, {
     from: outgoing.from || env.MAIL_FROM || 'it@gnk-asg.hr',
     fromName: 'GNK ASG',
     to: outgoing.to,
@@ -17,7 +17,6 @@ export async function sendContextualReply(env, outgoing) {
     autoReply: true,
     attachments: []
   });
-  return result;
 }
 
 export async function sendManualMail(env, input) {
@@ -55,7 +54,9 @@ async function sendMessage(env, input) {
   if (!body) throw new Error('Nedostaje tekst poruke.');
 
   const attachments = normalizeAttachments(input.attachments);
-  const signatureText = signatureFor(input.profile, input.language, input.caseId);
+  const signatureText = signatureFor(input.profile, input.language, input.caseId, {
+    automated: input.autoReply === true
+  });
   const textBody = `${body}\r\n\r\n${signatureText}`;
   const htmlBody = buildHtmlBody(body, signatureText, input.fromName || 'GNK ASG');
   const raw = buildMimeMessage({
@@ -100,13 +101,19 @@ function buildMimeMessage({ from, fromName, to, cc, subject, textBody, htmlBody,
   const altBoundary = `gnk_alt_${crypto.randomUUID().replace(/-/g, '')}`;
   const lines = [
     `From: ${encodeHeader(fromName)} <${from}>`,
-    `To: ${to.join(', ')}`,
-    cc.length ? `Cc: ${cc.join(', ')}` : '',
+    `To: ${to.join(', ')}`
+  ];
+
+  if (cc.length) lines.push(`Cc: ${cc.join(', ')}`);
+  lines.push(
     `Reply-To: ${from}`,
     `Subject: ${encodeHeader(subject)}`,
-    'MIME-Version: 1.0',
-    autoReply ? 'Auto-Submitted: auto-replied' : '',
-    autoReply ? 'X-Auto-Response-Suppress: All' : '',
+    'MIME-Version: 1.0'
+  );
+  if (autoReply) {
+    lines.push('Auto-Submitted: auto-replied', 'X-Auto-Response-Suppress: All');
+  }
+  lines.push(
     `Content-Type: multipart/mixed; boundary="${mixedBoundary}"`,
     '',
     `--${mixedBoundary}`,
@@ -125,7 +132,7 @@ function buildMimeMessage({ from, fromName, to, cc, subject, textBody, htmlBody,
     htmlBody,
     '',
     `--${altBoundary}--`
-  ].filter(Boolean);
+  );
 
   for (const attachment of attachments) {
     lines.push(
