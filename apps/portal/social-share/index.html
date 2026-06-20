@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="hr" data-gnk-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>GNK ASG Social Share Center</title>
+<link rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260620-1">
+<link rel="stylesheet" href="/assets/social-share-center.css?v=20260620-1">
+<script defer src="/assets/brand/gnk-asg-global-layer.js?v=20260620-1"></script>
+<script defer src="/assets/social-share-center.js?v=20260620-1"></script>
+</head>
+<body class="gnk-asg-premium-shell">
+<main class="share-shell">
+<section class="share-hero">
+<img src="/assets/gnk-asg-email-logo-final.png" alt="GNK ASG">
+<div><p class="eyebrow">Privatni administratorski modul</p><h1>Social Share Center</h1><p>Dijeljenje objava, vijesti, tržišnih pregleda, Media Kita i drugih javnih stranica s automatskim odabirom slike, Open Graph metapodataka i evidencijom distribucije.</p></div>
+</section>
+
+<section class="share-auth">
+<label>Operator token<input id="operatorToken" type="password" autocomplete="off" placeholder="Unesite operator token"></label>
+<button id="saveToken" type="button">Sigurna prijava</button>
+<button id="logout" type="button">Odjava</button>
+<span id="authStatus">Niste prijavljeni.</span>
+</section>
+
+<section class="share-grid">
+<div class="share-editor">
+<label>Javni URL sadržaja<input id="targetUrl" type="url" placeholder="https://gnk-asg.hr/objave/slug/"></label>
+<div class="two-col">
+<label>Vrsta sadržaja<select id="contentType"><option value="publication">Objava</option><option value="news">Vijest</option><option value="market">Tržišta</option><option value="media-kit">Media Kit</option><option value="document">Dokument</option><option value="page">Druga stranica</option></select></label>
+<label>Jezik<select id="language"><option value="hr">Hrvatski</option><option value="en">English</option></select></label>
+</div>
+<div class="actions"><button id="readPage" class="primary" type="button">Učitaj stranicu</button><button id="useBrandImage" type="button">Koristi GNK ASG sliku</button><button id="generateCaption" type="button">AI tekst za objavu</button></div>
+<label>Naslov<input id="title" maxlength="180"></label>
+<label>Opis<textarea id="description" maxlength="500"></textarea></label>
+<label>Canonical URL<input id="canonical" type="url"></label>
+<label>Slika<input id="image" type="url"></label>
+<label>Alt tekst slike<input id="imageAlt" maxlength="220"></label>
+<label>Tekst za društvene mreže<textarea id="caption" class="caption"></textarea></label>
+<label>Hashtagovi<input id="hashtags" placeholder="#GNKASG #Business #AI"></label>
+<div class="actions"><button id="createShareLink" class="primary" type="button">Izradi indeksabilni share link</button><button id="copyCaption" type="button">Kopiraj tekst</button><button id="clearForm" type="button">Očisti</button></div>
+<div id="status" class="status">Spremno.</div>
+</div>
+
+<aside class="share-preview">
+<div class="preview-card">
+<img id="previewImage" src="/assets/gnk-asg-email-logo-final.png" alt="GNK ASG">
+<div><span id="previewType">Objava</span><h2 id="previewTitle">Naslov sadržaja</h2><p id="previewDescription">Opis sadržaja prikazat će se ovdje.</p><small id="previewUrl">gnk-asg.hr</small></div>
+</div>
+<div class="share-buttons">
+<button data-provider="linkedin" type="button">LinkedIn</button>
+<button data-provider="facebook" type="button">Facebook</button>
+<button data-provider="x" type="button">X</button>
+<button data-provider="whatsapp" type="button">WhatsApp</button>
+<button data-provider="email" type="button">E-mail</button>
+<button data-provider="native" type="button">Dijeli</button>
+<button data-provider="copy" type="button">Kopiraj link</button>
+</div>
+<div class="seo-check" id="seoCheck"></div>
+</aside>
+</section>
+
+<section class="share-log">
+<header><div><p class="eyebrow">Distribucija i evidencija</p><h2>Povijest dijeljenja</h2></div><button id="refreshLog" type="button">Osvježi</button></header>
+<div id="shareLog">Nema učitanih zapisa.</div>
+</section>
+</main>
+</body>
+</html>
