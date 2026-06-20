@@ -11,6 +11,8 @@ on:
 
 permissions:
   contents: read
+  issues: write
+  pull-requests: write
 
 concurrency:
   group: gnk-asg-command-center-preview
@@ -21,31 +23,32 @@ jobs:
     runs-on: ubuntu-latest
     environment: cloudflare-preview
     steps:
-      - name: Checkout visual-redesign
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '24'
 
-      - name: Validate Cloudflare credentials
+      - name: Detect preview credentials
+        id: credentials
         shell: bash
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
         run: |
           set -euo pipefail
-          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
-            echo "Missing GitHub secret: CLOUDFLARE_API_TOKEN"
-            exit 11
-          fi
-          if [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
-            echo "Missing GitHub secret: CLOUDFLARE_ACCOUNT_ID"
-            exit 12
-          fi
+          READY=true
+          MISSING=""
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then READY=false; MISSING="CLOUDFLARE_API_TOKEN"; fi
+          if [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then READY=false; MISSING="${MISSING:+$MISSING, }CLOUDFLARE_ACCOUNT_ID"; fi
+          if [ -n "${GNK_ASG_OPERATOR_TOKEN:-}" ]; then HAS_OPERATOR=true; else HAS_OPERATOR=false; fi
+          echo "ready=$READY" >> "$GITHUB_OUTPUT"
+          echo "missing=$MISSING" >> "$GITHUB_OUTPUT"
+          echo "has_operator=$HAS_OPERATOR" >> "$GITHUB_OUTPUT"
 
-      - name: Validate isolated preview configuration
+      - name: Validate isolated configuration
+        id: validation
         shell: bash
         run: |
           set -euo pipefail
@@ -61,87 +64,72 @@ jobs:
           node --check workers/gnk-asg-command-center-worker/src/editorial.js
 
       - name: Install Wrangler
-        shell: bash
+        if: steps.credentials.outputs.ready == 'true'
         run: npm install --no-save wrangler@latest
 
       - name: Deploy isolated preview Worker
         id: deploy
+        if: steps.credentials.outputs.ready == 'true'
+        continue-on-error: true
         shell: bash
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          set -euo pipefail
+          set -o pipefail
           mkdir -p cloudflare-preview-result
           npx wrangler deploy --config workers/gnk-asg-command-center-worker/wrangler.preview.toml 2>&1 | tee cloudflare-preview-result/deploy.log
+          STATUS=${PIPESTATUS[0]}
           PREVIEW_URL=$(grep -Eo 'https://[A-Za-z0-9._-]+\.workers\.dev' cloudflare-preview-result/deploy.log | tail -n 1 || true)
-          if [ -z "$PREVIEW_URL" ]; then
-            echo "Preview URL was not found in Wrangler output."
-            exit 21
-          fi
           echo "preview_url=$PREVIEW_URL" >> "$GITHUB_OUTPUT"
-          printf '%s\n' "$PREVIEW_URL" > cloudflare-preview-result/PREVIEW_URL.txt
+          if [ "$STATUS" -eq 0 ] && [ -n "$PREVIEW_URL" ]; then echo "deployed=true" >> "$GITHUB_OUTPUT"; else echo "deployed=false" >> "$GITHUB_OUTPUT"; fi
+          exit "$STATUS"
 
       - name: Set preview operator token
-        if: ${{ secrets.GNK_ASG_OPERATOR_TOKEN != '' }}
+        if: steps.deploy.outputs.deployed == 'true' && steps.credentials.outputs.has_operator == 'true'
+        continue-on-error: true
         shell: bash
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
-        run: |
-          set -euo pipefail
-          printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | npx wrangler secret put OPERATOR_TOKEN --config workers/gnk-asg-command-center-worker/wrangler.preview.toml
+        run: printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | npx wrangler secret put OPERATOR_TOKEN --config workers/gnk-asg-command-center-worker/wrangler.preview.toml
 
       - name: Test preview health
+        id: health
+        if: steps.deploy.outputs.deployed == 'true'
+        continue-on-error: true
         shell: bash
         env:
           PREVIEW_URL: ${{ steps.deploy.outputs.preview_url }}
         run: |
-          set -euo pipefail
           sleep 5
-          curl --fail --silent --show-error "$PREVIEW_URL/api/command-center/health" | tee cloudflare-preview-result/health.json
-          grep -q '"ok": true' cloudflare-preview-result/health.json
-          grep -q '"productionLocked": true' cloudflare-preview-result/health.json
+          curl --fail --silent --show-error "$PREVIEW_URL/api/command-center/health" | tee health.json
+          grep -q '"ok": true' health.json
+          grep -q '"productionLocked": true' health.json
 
-      - name: Write preview manifest
+      - name: Report preview result to draft PR
+        if: always()
         shell: bash
         env:
+          GH_TOKEN: ${{ github.token }}
+          READY: ${{ steps.credentials.outputs.ready }}
+          MISSING: ${{ steps.credentials.outputs.missing }}
+          DEPLOYED: ${{ steps.deploy.outputs.deployed }}
           PREVIEW_URL: ${{ steps.deploy.outputs.preview_url }}
+          DEPLOY_OUTCOME: ${{ steps.deploy.outcome }}
+          HEALTH_OUTCOME: ${{ steps.health.outcome }}
+          HAS_OPERATOR: ${{ steps.credentials.outputs.has_operator }}
         run: |
-          set -euo pipefail
-          cat > cloudflare-preview-result/PREVIEW_MANIFEST.txt <<EOF
-          Branch: visual-redesign
-          Commit: $GITHUB_SHA
-          Preview URL: $PREVIEW_URL
-          Worker: gnk-asg-command-center-preview
-          Production routes: none
-          Custom domain: none
-          Cron: none
-          Production changed: false
-          Existing workers changed: false
-          EOF
+          if [ "$READY" != "true" ]; then
+            BODY="## Cloudflare preview čeka GitHub secrets\n\nNedostaje: **$MISSING**.\n\nProdukcija nije promijenjena. Postojeći Workeri, rute, mail i kontakt nisu dirani."
+          elif [ "$DEPLOYED" = "true" ] && [ "$HEALTH_OUTCOME" = "success" ]; then
+            BODY="## Cloudflare preview uspješno deployan\n\n- URL: $PREVIEW_URL\n- Worker: \`gnk-asg-command-center-preview\`\n- Health: uspješan\n- Operator secret dostupan: $HAS_OPERATOR\n- Produkcijske rute: nema\n- Custom domena: nema\n- Cron: nema\n- Postojeći Workeri promijenjeni: ne\n- Produkcija promijenjena: ne"
+          else
+            BODY="## Cloudflare preview deploy nije prošao\n\n- Credentials: dostupni\n- Deploy outcome: $DEPLOY_OUTCOME\n- Health outcome: $HEALTH_OUTCOME\n- Produkcija nije promijenjena."
+          fi
+          gh api "repos/${GITHUB_REPOSITORY}/issues/1/comments" -f body="$BODY"
 
-      - name: Upload Cloudflare preview result
-        uses: actions/upload-artifact@v4
-        with:
-          name: gnk-asg-cloudflare-command-center-preview-${{ github.sha }}
-          path: cloudflare-preview-result
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Publish workflow summary
-        shell: bash
-        env:
-          PREVIEW_URL: ${{ steps.deploy.outputs.preview_url }}
-        run: |
-          {
-            echo '## GNK ASG Cloudflare Preview'
-            echo
-            echo "- Preview URL: $PREVIEW_URL"
-            echo '- Worker: `gnk-asg-command-center-preview`'
-            echo '- Production routes: none'
-            echo '- Custom domain: none'
-            echo '- Existing workers changed: no'
-            echo '- Production changed: no'
-          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Fail when preview was not deployed
+        if: steps.credentials.outputs.ready != 'true' || steps.deploy.outputs.deployed != 'true' || steps.health.outcome != 'success'
+        run: exit 1
