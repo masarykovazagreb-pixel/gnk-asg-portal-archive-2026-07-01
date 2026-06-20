@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-06-20-v1",
+  "productionLocked": true,
+  "deploymentApproved": false,
+  "schedule": {
+    "timeZone": "Europe/Zagreb",
+    "articleIntervalHours": 3,
+    "dailyDigestHour": 23,
+    "enabledInPreview": false,
+    "enabledInProduction": false
+  },
+  "articleRules": {
+    "minimumWordsHr": 500,
+    "minimumWordsEn": 500,
+    "author": "Nermin Sefić",
+    "requireHrEn": true,
+    "requireImage": true,
+    "imageSource": "https://gnk-asg.hr/visual-index/",
+    "requireAtLeastOneSource": true,
+    "requireWhyItMatters": true,
+    "requireOwnConclusion": true,
+    "duplicateProtection": true,
+    "categories": [
+      "Poslovanje",
+      "Tržišta",
+      "AI i tehnologija",
+      "Sport i ekonomija"
+    ]
+  },
+  "dailyDigestRules": {
+    "minimumWordsHr": 900,
+    "minimumWordsEn": 900,
+    "includeAllDailyPublications": true,
+    "includeCommonThemes": true,
+    "includeRisksAndOpportunities": true,
+    "includeManagementCommentary": true,
+    "includeNextDayWatchlist": true,
+    "author": "Nermin Sefić"
+  },
+  "seoRules": {
+    "metaTitle": true,
+    "metaDescription": true,
+    "canonicalHr": true,
+    "hreflangHrEn": true,
+    "openGraph": true,
+    "twitterCards": true,
+    "articleSchema": true,
+    "imageObjectSchema": true,
+    "imageAltTitleCaptionCredit": true,
+    "sitemap": true,
+    "imageSitemap": true,
+    "indexNowWhenConfigured": true,
+    "googleIndexingThroughSitemapAndSearchConsole": true
+  },
+  "safetyRules": {
+    "publishRequiresConfiguredExecutor": true,
+    "mailSendRequiresExplicitApproval": true,
+    "deployRequiresExplicitApproval": true,
+    "routeChangesRequireExplicitApproval": true,
+    "secretChangesRequireExplicitApproval": true,
+    "deleteRequiresExplicitApproval": true,
+    "financialAndLegalActionsNeverAutoExecute": true
+  },
+  "logging": {
+    "queue": true,
+    "plan": true,
+    "approval": true,
+    "execution": true,
+    "sourceSelection": true,
+    "publicationResult": true,
+    "indexingResult": true,
+    "errors": true,
+    "rollbackReference": true
+  }
+}
