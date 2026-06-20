@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-06-20-v1",
+  "productionLocked": true,
+  "contentSource": {
+    "shared": true,
+    "publishApi": "https://publish.gnk-asg.hr/api/publications/publish",
+    "listApi": "https://publish.gnk-asg.hr/api/publications",
+    "author": "Nermin Sefić"
+  },
+  "routes": {
+    "hr": {
+      "index": "/objave/",
+      "article": "/objave/<slug>/",
+      "canonical": "/objave/<slug>/"
+    },
+    "en": {
+      "index": "/publications/",
+      "article": "/publications/<slug>/",
+      "canonical": "/objave/<slug>/",
+      "hreflang": "en"
+    },
+    "news": {
+      "hr": "/vijesti/",
+      "en": "/news/",
+      "rule": "External-source business news only; never mixed with original GNK ASG publications."
+    },
+    "pdf": {
+      "admin": "/pdf-publisher/",
+      "publicCollection": "/objave/?type=pdf",
+      "englishCollection": "/publications/?type=pdf",
+      "rule": "PDF publication records join the shared publication source and keep the PDF as a downloadable DigitalDocument."
+    }
+  },
+  "imageSelection": {
+    "catalogs": [
+      "/data/visual_gallery.json",
+      "/data/generated-gallery-30.json"
+    ],
+    "eligibleStatus": "ready",
+    "eligibleFlag": true,
+    "priority": [
+      "exact topic match",
+      "category match",
+      "language-neutral editorial image",
+      "least recently used",
+      "GNK ASG brand fallback"
+    ],
+    "preventDuplicateDays": 7,
+    "fallback": "https://gnk-asg.hr/assets/gnk-asg-social-card.png"
+  },
+  "requiredImageMetadata": {
+    "alt": true,
+    "caption": true,
+    "credit": true,
+    "width": true,
+    "height": true,
+    "mimeType": true
+  },
+  "seo": {
+    "metaTitle": true,
+    "metaDescription": true,
+    "canonical": true,
+    "hreflangHrEn": true,
+    "openGraph": true,
+    "twitterCard": true,
+    "Article": true,
+    "ImageObject": true,
+    "BreadcrumbList": true,
+    "sitemap": true,
+    "imageSitemap": true,
+    "maxImagePreviewLarge": true,
+    "indexNowWhenConfigured": true,
+    "searchConsoleThroughSitemap": true
+  },
+  "publicationValidation": {
+    "minimumWordsHr": 500,
+    "minimumWordsEn": 500,
+    "imageRequired": true,
+    "sourceRequired": true,
+    "whyItMattersRequired": true,
+    "ownConclusionRequired": true,
+    "brokenImageBlocksPublish": true,
+    "missingAltBlocksPublish": true,
+    "missingCanonicalBlocksPublish": true
+  }
+}
