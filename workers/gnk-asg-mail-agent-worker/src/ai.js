@@ -1,5 +1,6 @@
 import { classifyRisk } from "./policy.js";
 import { buildMailPrompt, MAIL_SYSTEM_PROMPT } from "./prompts.js";
+import { mustHoldForApproval } from "./thread-safety.js";
 
 export async function analyseMail(env, mail) {
   const baseline = classifyRisk(mail.subject, mail.body);
@@ -23,13 +24,15 @@ export async function analyseMail(env, mail) {
     }
 
     const highRisk = baseline.risk === "high" || String(parsed.risk || "").toLowerCase() === "high";
-    return {
+    const decision = {
       category: highRisk ? baseline.category : String(parsed.category || baseline.category),
       risk: highRisk ? "high" : "low",
       autoSend: parsed.autoSend === true && !highRisk,
       summary: String(parsed.summary || "").trim(),
       reply: String(parsed.reply || "").trim()
     };
+
+    return mustHoldForApproval(decision) ? { ...decision, autoSend: false } : decision;
   } catch {
     return heldFallback(baseline, "AI analiza nije uspjela.");
   }
