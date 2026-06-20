@@ -1,0 +1,34 @@
+name = "gnk-asg-command-center-preview"
+main = "src/index.js"
+compatibility_date = "2026-06-20"
+workers_dev = true
+preview_urls = true
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "command-center-preview"
+COMMAND_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+PRODUCTION_LOCKED = "true"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[ai]
+binding = "AI"
+
+[[services]]
+binding = "AUTO_EDITOR_SERVICE"
+service = "gnk-asg-auto-editor"
+
+[[services]]
+binding = "DIRECT_OPERATOR_SERVICE"
+service = "gnk-asg-direct-operator"
+
+[[services]]
+binding = "PUBLISH_SERVICE"
+service = "gnk-asg-publish-operator"
+
+# Nema produkcijskih routes, custom domaina ni crona.
+# Raspored ostaje isključen u KV konfiguraciji.
+# OPERATOR_TOKEN postavlja se kao secret samo na preview Workeru.
