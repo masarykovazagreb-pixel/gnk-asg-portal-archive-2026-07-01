@@ -1,0 +1,17 @@
+{
+  "version": "2026-06-20-v1",
+  "enabled": false,
+  "apiBase": "https://command.gnk-asg.hr",
+  "productionLocked": true,
+  "defaultDryRun": true,
+  "schedule": {
+    "enabled": false,
+    "autoEditorEnabled": false,
+    "dailyDigestEnabled": false,
+    "intervalHours": 3,
+    "digestHour": 23,
+    "timeZone": "Europe/Zagreb"
+  },
+  "messageHr": "Command Center je pripremljen na GitHubu, ali još nije deployan na Cloudflare.",
+  "messageEn": "Command Center is prepared in GitHub but has not yet been deployed to Cloudflare."
+}
