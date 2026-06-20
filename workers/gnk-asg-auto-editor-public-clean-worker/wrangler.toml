@@ -1,7 +1,8 @@
 name = "gnk-asg-auto-editor-public-clean"
 main = "src/index.js"
 compatibility_date = "2026-06-17"
+workers_dev = true
+preview_urls = true
 
-routes = [
-  { pattern = "gnk-asg.hr/auto-editor*", zone_name = "gnk-asg.hr" }
-]
+# Nema produkcijskih ruta.
+# Jedini vlasnik /auto-editor* ruta je gnk-asg-auto-editor-worker.

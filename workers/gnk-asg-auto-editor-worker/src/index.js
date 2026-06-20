@@ -2,7 +2,7 @@ const AUTO_ARTICLES_KEY = "auto-editor:articles:v1";
 const AUTO_USED_KEY = "auto-editor:used-topics:v1";
 const MAX_ARTICLES = 1000;
 const PRUNE_TO = 500;
-const MIN_WORDS = 300;
+const MIN_WORDS = 500;
 
 const SOURCES = [
   { id: "index-novac", title: "Index.hr - Novac", url: "https://www.index.hr/rss/vijesti-novac", lang: "hr", group: "local", weight: 95 },
@@ -24,17 +24,17 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    if (path === "/auto-editor" || path === "/auto-editor/") return html(listPage(await getArticles(env)));
-    if (path === "/data/auto-editor.json") return json(await publicFeed(env));
+    if (path === "/auto-editor" || path === "/auto-editor/") return html(listPage(await getArticles(env), "hr"));
+    if (path === "/data/auto-editor.json" || path === "/data/publications-auto.json") return json(await publicFeed(env));
     if (path === "/api/auto-editor/status") return json(await status(env));
     if (path === "/api/auto-editor/run") return json(await runAutoEditor(env, "manual", true));
     if (path === "/auto-editor/sitemap.xml") return sitemap(await getArticles(env));
 
-    const match = path.match(/^\/auto-editor\/([^\/]+)\/?$/);
+    const match = path.match(/^\/(auto-editor|objave|publications)\/([^\/]+)\/?$/);
     if (match) {
-      const article = (await getArticles(env)).find(a => a.slug === match[1]);
-      if (!article) return html(notFoundPage(), 404);
-      return html(articlePage(article));
+      const article = (await getArticles(env)).find(a => a.slug === match[2]);
+      if (!article) return html(notFoundPage(match[1] === "publications" ? "en" : "hr"), 404);
+      return html(articlePage(article, match[1] === "publications" ? "en" : "hr"));
     }
 
     return json({ ok: false, error: "not_found", worker: "gnk-asg-auto-editor", path }, 404);
@@ -109,7 +109,7 @@ async function runAutoEditor(env, trigger, force) {
     ok: true,
     published: true,
     trigger,
-    articleUrl: "https://gnk-asg.hr/auto-editor/" + article.slug + "/",
+    articleUrl: "https://gnk-asg.hr/objave/" + article.slug + "/",
     article,
     wordCount: article.wordCount,
     image: article.imageUrl,
@@ -135,7 +135,7 @@ async function status(env) {
     maxArticles: MAX_ARTICLES,
     pruneTo: PRUNE_TO,
     visualSource: "https://gnk-asg.hr/data/visual-index.json",
-    latest: articles.slice(0, 5).map(a => ({ title: a.title, url: "/auto-editor/" + a.slug + "/", publishedAt: a.publishedAt, wordCount: a.wordCount, imageUrl: a.imageUrl }))
+    latest: articles.slice(0, 5).map(a => ({ title: a.titleHr || a.title, titleEn: a.titleEn || a.title, url: "/objave/" + a.slug + "/", enUrl: "/publications/" + a.slug + "/", publishedAt: a.publishedAt, wordCount: a.wordCountHr || a.wordCount, imageUrl: a.imageUrl }))
   };
 }
 
@@ -147,19 +147,29 @@ async function publicFeed(env) {
     author: "Nermin Sefić",
     schedule: "08:00, 12:00 i 17:00 Europe/Zagreb",
     minWords: MIN_WORDS,
+    sharedSource: "auto-editor:articles:v1",
     count: articles.length,
     items: articles.map(a => ({
-      title: a.title,
+      title: a.titleHr || a.title,
+      titleHr: a.titleHr || a.title,
+      titleEn: a.titleEn || a.title,
       slug: a.slug,
-      url: "/auto-editor/" + a.slug + "/",
-      canonical: "https://gnk-asg.hr/auto-editor/" + a.slug + "/",
+      url: "/objave/" + a.slug + "/",
+      hrUrl: "/objave/" + a.slug + "/",
+      enUrl: "/publications/" + a.slug + "/",
+      canonical: "https://gnk-asg.hr/objave/" + a.slug + "/",
       imageUrl: a.imageUrl,
       imageAlt: a.imageAlt,
-      summary: a.summary,
+      summary: a.summaryHr || a.summary,
+      summaryHr: a.summaryHr || a.summary,
+      summaryEn: a.summaryEn || a.summary,
       sourceTitle: a.sourceTitle,
       sourceUrl: a.sourceUrl,
+      sourceLang: a.sourceLang || "hr",
       publishedAt: a.publishedAt,
-      wordCount: a.wordCount,
+      wordCount: a.wordCountHr || a.wordCount,
+      wordCountHr: a.wordCountHr || a.wordCount,
+      wordCountEn: a.wordCountEn || a.wordCount,
       author: a.author
     }))
   };
@@ -238,26 +248,35 @@ async function chooseVisual(topic) {
 function buildArticle(topic, visual, trigger) {
   const now = new Date();
   const dateIso = now.toISOString();
-  const title = makeTitle(topic);
-  const slug = slugify(title + "-" + dateIso.slice(0, 13));
-  const paragraphs = buildParagraphs(topic, title);
-  let body = paragraphs.join("\n\n");
+  const titleHr = makeTitle(topic, "hr");
+  const titleEn = makeTitle(topic, "en");
+  const slug = slugify(titleHr + "-" + dateIso.slice(0, 13));
 
-  while (wordCount(body) < MIN_WORDS) {
-    body += "\n\n" + extraParagraph(topic);
-  }
+  let bodyHr = buildParagraphs(topic, titleHr, "hr").join("\n\n");
+  let bodyEn = buildParagraphs(topic, titleEn, "en").join("\n\n");
 
-  const words = wordCount(body);
-  const summary = makeSummary(topic, title);
+  while (wordCount(bodyHr) < MIN_WORDS) bodyHr += "\n\n" + extraParagraph(topic, "hr");
+  while (wordCount(bodyEn) < MIN_WORDS) bodyEn += "\n\n" + extraParagraph(topic, "en");
+
+  const summaryHr = makeSummary(topic, titleHr, "hr");
+  const summaryEn = makeSummary(topic, titleEn, "en");
 
   return {
     id: stableId(slug),
     topicKey: topic.topicKey,
-    title,
+    title: titleHr,
+    titleHr,
+    titleEn,
     slug,
-    summary,
-    body,
-    wordCount: words,
+    summary: summaryHr,
+    summaryHr,
+    summaryEn,
+    body: bodyHr,
+    bodyHr,
+    bodyEn,
+    wordCount: wordCount(bodyHr),
+    wordCountHr: wordCount(bodyHr),
+    wordCountEn: wordCount(bodyEn),
     author: "Nermin Sefić",
     publishedAt: dateIso,
     modifiedAt: dateIso,
@@ -273,130 +292,175 @@ function buildArticle(topic, visual, trigger) {
     imageAlt: visual.alt,
     imageTitle: visual.title,
     seo: {
-      canonical: "https://gnk-asg.hr/auto-editor/" + slug + "/",
-      description: summary,
-      keywords: "GNK ASG, GNK DINAMO Ltd, Nermin Sefić, poslovne vijesti, business desk, auto editor, tržišta, AI, financije, tehnologija"
+      canonical: "https://gnk-asg.hr/objave/" + slug + "/",
+      alternateEn: "https://gnk-asg.hr/publications/" + slug + "/",
+      description: summaryHr,
+      descriptionEn: summaryEn,
+      keywords: "GNK ASG, GNK DINAMO Ltd, Nermin Sefić, poslovne vijesti, business desk, tržišta, AI, financije, tehnologija"
     }
   };
 }
 
-function makeTitle(topic) {
-  const t = String(topic.title || "Poslovna tema dana").replace(/\s+/g, " ").trim();
+function makeTitle(topic, language = "hr") {
+  const fallback = language === "en" ? "Business topic of the day" : "Poslovna tema dana";
+  const t = String(topic.title || fallback).replace(/\s+/g, " ").trim();
   if (/gnk asg/i.test(t)) return t;
-  return "Poslovni pregled: " + t;
+  return language === "en" ? "Business review: " + t : "Poslovni pregled: " + t;
 }
 
-function makeSummary(topic, title) {
+function makeSummary(topic, title, language = "hr") {
   const base = cleanText(topic.text || "");
   if (base.length > 80) return base.slice(0, 220);
-  return title + " — autorska poslovna obrada najvažnije teme koju je Auto Editor izdvojio iz aktualnih izvora.";
+  return language === "en"
+    ? title + " — an original business analysis of a current topic selected from verified public sources."
+    : title + " — autorska poslovna obrada aktualne teme izdvojene iz provjerljivih javnih izvora.";
 }
 
-function buildParagraphs(topic, title) {
-  const source = topic.sourceTitle || "javni medijski izvor";
+function buildParagraphs(topic, title, language = "hr") {
+  const source = topic.sourceTitle || (language === "en" ? "a public media source" : "javni medijski izvor");
   const original = cleanText(topic.text || topic.title || "");
-  const lang = topic.lang || "hr";
+
+  if (language === "en") {
+    return [
+      `${title} is one of the topics selected by the GNK ASG Auto Editor from current business and media sources. The initial information comes from ${source}. This article does not reproduce the source; it places the signal into a wider corporate, market and technology context. The topic matters because companies increasingly operate under the combined pressure of capital costs, inflation, energy prices, regulation, artificial intelligence, cyber risk and rapidly changing expectations from clients, partners and investors.`,
+
+      `The first management question is why this development matters now. A news item can affect more than one operational area at the same time. Market movements influence financing and investment decisions. Technology developments influence productivity, governance and workforce organisation. Energy, commodity and interest-rate changes influence prices, margins and long-term planning. A company therefore needs a structured method that separates verified facts from interpretation and converts public information into a usable early-warning signal.`,
+
+      `The original source summary is: ${original || "The RSS source did not provide a complete summary, so the analysis relies on the available headline, source attribution and broader business context."} This source statement is only the starting point. The relevant business assessment is whether the event can increase costs, create a market opportunity, change investor expectations, accelerate digital transformation, affect reputation or require additional compliance and operational safeguards.`,
+
+      `For GNK ASG and GNK DINAMO Ltd., this type of daily review supports disciplined monitoring rather than reactive communication. The objective is to connect each topic with a documented source, publication time, image, metadata, search visibility and an archived analytical conclusion. Such a system improves transparency because readers can identify the original source while also understanding how the issue may relate to governance, investment, technology, sport economics and international business.`,
+
+      `The practical response should include verification of the source, comparison with other reliable information, identification of affected business functions and a clear distinction between facts, assumptions and scenarios. Management should avoid making decisions from a single headline. The stronger approach is to document what changed, why it may matter, which indicators should be monitored and what action would become necessary if the risk or opportunity develops further.`,
+
+      `In conclusion, this topic deserves continued attention because it may influence investment, communication, partnerships, costs and public positioning. The article is an original informational business analysis authored by Nermin Sefić for the GNK ASG portal. It is not financial, legal or investment advice. Readers should consult the cited original source for the underlying information, while this publication provides an independent corporate and market perspective.`
+    ];
+  }
 
   return [
-    `${title} jedna je od tema koju je GNK ASG Auto Editor izdvojio iz aktualnih poslovnih i medijskih izvora. Polazna informacija dolazi iz izvora ${source}, a obrada je pripremljena kao poslovni komentar za GNK ASG portal. Tema je važna jer se poslovno okruženje sve brže mijenja pod utjecajem tržišta kapitala, tehnologije, geopolitike, inflacije, energije i digitalne infrastrukture.`,
+    `${title} jedna je od tema koju je GNK ASG Auto Editor izdvojio iz aktualnih poslovnih i medijskih izvora. Polazna informacija dolazi iz izvora ${source}. Ovaj tekst ne prenosi izvorni članak, nego signal stavlja u širi korporativni, tržišni i tehnološki kontekst. Tema je važna jer kompanije istodobno djeluju pod utjecajem cijene kapitala, inflacije, energije, regulative, umjetne inteligencije, kibernetičkih rizika i promjenjivih očekivanja klijenata, partnera i investitora.`,
 
-    `U osnovi, ova tema pokazuje da kompanije više ne mogu promatrati vijesti izolirano. Svaki naslov treba povezati s pitanjem troška kapitala, operativnog rizika, reputacije, digitalne spremnosti i sposobnosti brze prilagodbe. Ako vijest govori o tržištima, ona utječe na investicijske odluke. Ako govori o tehnologiji ili umjetnoj inteligenciji, ona utječe na produktivnost i organizaciju rada. Ako govori o energiji, inflaciji ili kamatama, ona se prelijeva na cijene, marže i planiranje.`,
+    `Prvo upravljačko pitanje glasi zašto je ova promjena važna upravo sada. Jedna vijest može istodobno utjecati na više poslovnih područja. Tržišna kretanja utječu na financiranje i investicijske odluke. Tehnološke promjene utječu na produktivnost, upravljanje i organizaciju rada. Promjene cijena energije, roba i kamata prelijevaju se na cijene, marže i dugoročno planiranje. Zato je potreban strukturirani postupak koji odvaja provjerljive činjenice od interpretacije i javnu informaciju pretvara u rani poslovni signal.`,
 
-    `Izvorni sažetak teme glasi: ${original || "RSS izvor nije dostavio potpuni sažetak, pa je tema obrađena kroz poslovni kontekst i dostupne naslovne signale."} Ova rečenica nije dovoljna sama za sebe. Za menadžment je bitno razumjeti što tema znači u praksi: može li povećati troškove, otvoriti tržišnu priliku, promijeniti očekivanja investitora, ubrzati digitalizaciju ili stvoriti potrebu za dodatnim oprezom.`,
+    `Izvorni sažetak teme glasi: ${original || "RSS izvor nije dostavio potpuni sažetak, pa se analiza temelji na dostupnom naslovu, navedenom izvoru i širem poslovnom kontekstu."} Ta je informacija samo početna točka. Poslovna procjena mora odgovoriti može li događaj povećati troškove, otvoriti tržišnu priliku, promijeniti očekivanja investitora, ubrzati digitalizaciju, utjecati na reputaciju ili zahtijevati dodatne regulatorne i operativne mjere zaštite.`,
 
-    `Za GNK ASG i GNK DINAMO Ltd. ovakav tip dnevnog poslovnog pregleda ima funkciju ranog signala. Cilj nije kopirati medije, nego iz medijskih signala izgraditi strukturirani poslovni sloj: naslov, izvor, slika, kontekst, SEO podaci i arhiva. Time portal postaje korisniji jer povezuje javne informacije s poslovnom logikom, tržišnim razmišljanjem i internim razvojem digitalnih alata.`,
+    `Za GNK ASG i GNK DINAMO Ltd. ovakav dnevni pregled služi discipliniranom praćenju, a ne reaktivnoj komunikaciji. Cilj je svaku temu povezati s dokumentiranim izvorom, vremenom objave, slikom, metapodacima, vidljivošću u tražilicama i arhiviranim analitičkim zaključkom. Takav sustav povećava transparentnost jer čitatelj može prepoznati izvornu informaciju, ali i razumjeti moguću vezu s korporativnim upravljanjem, ulaganjima, tehnologijom, ekonomijom sporta i međunarodnim poslovanjem.`,
 
-    `Zaključno, tema zahtijeva pažljivo praćenje jer može utjecati na odluke o ulaganjima, komunikaciji, partnerstvima i javnom pozicioniranju. Ovaj tekst je informativna poslovna analiza, potpisuje ga Nermin Sefić kao autor uredničkog pregleda, i ne predstavlja financijski, pravni ni investicijski savjet. Čitatelj za izvornu informaciju treba otvoriti navedeni izvor, dok GNK ASG Business Desk daje širi poslovni okvir.`
+    `Praktičan odgovor uključuje provjeru izvora, usporedbu s drugim pouzdanim informacijama, utvrđivanje poslovnih funkcija na koje tema može utjecati te jasno odvajanje činjenica, pretpostavki i scenarija. Odluke se ne bi smjele temeljiti na jednom naslovu. Kvalitetniji pristup bilježi što se promijenilo, zašto bi to moglo biti važno, koje pokazatelje treba pratiti i koja bi radnja postala potrebna ako se rizik ili prilika dodatno razviju.`,
+
+    `Zaključno, temu treba nastaviti pratiti jer može utjecati na ulaganja, komunikaciju, partnerstva, troškove i javno pozicioniranje. Tekst je izvorna informativna poslovna analiza autora Nermina Sefića za portal GNK ASG. Ne predstavlja financijski, pravni ni investicijski savjet. Čitatelj izvornu informaciju treba provjeriti na navedenom izvoru, dok ova objava daje neovisni korporativni i tržišni okvir.`
   ];
 }
 
-function extraParagraph(topic) {
-  return `Dodatni poslovni kontekst ove teme odnosi se na potrebu da se svaka odluka temelji na provjerljivom izvoru, jasnom vremenskom okviru i razumijevanju šireg tržišnog okruženja. U dinamičnim uvjetima nije dovoljno imati samo informaciju; potrebno je imati sustav koji informaciju pretvara u pregled, arhivu, signal i odluku. Upravo zato GNK ASG Auto Editor povezuje temu, izvor, sliku, SEO i status objave u jedinstveni dnevni proces.`;
+function extraParagraph(topic, language = "hr") {
+  return language === "en"
+    ? `An additional layer of analysis concerns timing and evidence. Useful corporate intelligence must record the publication date, the reliability of the source, the assumptions used in interpretation and the indicators that could confirm or reject the initial assessment. This is why the GNK ASG publishing model connects source attribution, editorial analysis, images, SEO metadata, archive status and a clear conclusion in one controlled process.`
+    : `Dodatni sloj analize odnosi se na vrijeme i dokazivost. Korisna poslovna informacija mora sadržavati datum objave, procjenu pouzdanosti izvora, pretpostavke korištene u tumačenju i pokazatelje koji početnu procjenu mogu potvrditi ili osporiti. Zato GNK ASG model objave u jednom kontroliranom procesu povezuje izvor, uredničku analizu, sliku, SEO metapodatke, status arhive i jasan zaključak.`;
 }
 
-function articlePage(article) {
-  const title = escapeHtml(article.title);
-  const desc = escapeHtml(article.summary);
-  const canonical = article.seo?.canonical || ("https://gnk-asg.hr/auto-editor/" + article.slug + "/");
+function articlePage(article, language = "hr") {
+  const isEn = language === "en";
+  const rawTitle = isEn ? (article.titleEn || article.title) : (article.titleHr || article.title);
+  const rawSummary = isEn ? (article.summaryEn || article.summary) : (article.summaryHr || article.summary);
+  const rawBody = isEn ? (article.bodyEn || article.body) : (article.bodyHr || article.body);
+  const title = escapeHtml(rawTitle);
+  const desc = escapeHtml(rawSummary);
+  const canonical = "https://gnk-asg.hr/objave/" + article.slug + "/";
+  const alternateEn = "https://gnk-asg.hr/publications/" + article.slug + "/";
   const image = absoluteUrl(article.imageUrl);
-  const bodyHtml = article.body.split(/\n\s*\n/).map(p => "<p>" + escapeHtml(p) + "</p>").join("\n");
+  const bodyHtml = String(rawBody || "").split(/\n\s*\n/).map(p => "<p>" + escapeHtml(p) + "</p>").join("\n");
+  const words = isEn ? (article.wordCountEn || article.wordCount) : (article.wordCountHr || article.wordCount);
 
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": article.title,
-    "description": article.summary,
+    "headline": rawTitle,
+    "description": rawSummary,
     "image": image,
+    "inLanguage": isEn ? "en" : "hr",
     "author": { "@type": "Person", "name": "Nermin Sefić" },
     "publisher": { "@type": "Organization", "name": "GNK ASG", "url": "https://gnk-asg.hr" },
     "datePublished": article.publishedAt,
     "dateModified": article.modifiedAt || article.publishedAt,
-    "mainEntityOfPage": canonical
+    "mainEntityOfPage": canonical,
+    "isBasedOn": article.sourceUrl
   }, null, 2);
 
   return `<!doctype html>
-<html lang="hr">
+<html lang="${isEn ? "en" : "hr"}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${title} | GNK ASG Auto Editor</title>
+<title>${title} | GNK ASG</title>
 <meta name="description" content="${desc}">
-<meta name="keywords" content="${escapeHtml(article.seo?.keywords || "GNK ASG, GNK DINAMO Ltd, Nermin Sefić, poslovne vijesti")}">
+<meta name="keywords" content="${escapeHtml(article.seo?.keywords || "GNK ASG, GNK DINAMO Ltd, Nermin Sefić, business analysis")}">
 <link rel="canonical" href="${canonical}">
+<link rel="alternate" hreflang="hr" href="${canonical}">
+<link rel="alternate" hreflang="en" href="${alternateEn}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="${title}">
 <meta property="og:description" content="${desc}">
 <meta property="og:image" content="${image}">
-<meta property="og:url" content="${canonical}">
+<meta property="og:url" content="${isEn ? alternateEn : canonical}">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">${jsonLd}</script>
 ${style()}
 </head>
 <body>
 <main>
-<nav><a href="/">Početna</a><a href="/auto-editor/">Auto Editor</a><a href="/visual-index/">Visual Index</a><a href="/business-desk/">Business Desk</a><a href="/vijesti/">Vijesti</a></nav>
+<nav>
+<a href="/">${isEn ? "Home" : "Početna"}</a>
+<a href="${isEn ? "/publications/" : "/objave/"}">${isEn ? "Publications" : "Objave"}</a>
+<a href="${isEn ? canonical : alternateEn}">${isEn ? "Hrvatski" : "English"}</a>
+<a href="/visual-index/">Visual Index</a>
+<a href="/business-desk/">Business Desk</a>
+</nav>
 <article class="article">
-<span class="badge">Auto Editor · ${escapeHtml(article.sourceGroup || "business")}</span>
+<span class="badge">${isEn ? "Publication" : "Objava"} · ${escapeHtml(article.sourceGroup || "business")}</span>
 <h1>${title}</h1>
-<p class="meta">Autor: Nermin Sefić · ${formatDate(article.publishedAt)} · ${article.wordCount} riječi</p>
-<img class="cover" src="${escapeHtml(article.imageUrl)}" alt="${escapeHtml(article.imageAlt || article.title)}">
-<div class="sourcebox">Izvor teme: <a href="${escapeHtml(article.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(article.sourceTitle)}</a>. Tekst je autorska poslovna obrada za GNK ASG Auto Editor.</div>
+<p class="meta">${isEn ? "Author" : "Autor"}: Nermin Sefić · ${formatDate(article.publishedAt)} · ${words} ${isEn ? "words" : "riječi"}</p>
+<img class="cover" src="${escapeHtml(article.imageUrl)}" alt="${escapeHtml(article.imageAlt || rawTitle)}">
+<div class="sourcebox">${isEn ? "Topic source" : "Izvor teme"}: <a href="${escapeHtml(article.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(article.sourceTitle)}</a>. ${isEn ? "This is an original GNK ASG business analysis." : "Tekst je izvorna poslovna obrada za GNK ASG."}</div>
 ${bodyHtml}
-<p><strong>Napomena:</strong> Ovaj tekst je informativna poslovna analiza i ne predstavlja financijski, pravni ni investicijski savjet.</p>
-<a class="btn" href="/auto-editor/">Povratak na Auto Editor</a>
+<p><strong>${isEn ? "Notice" : "Napomena"}:</strong> ${isEn ? "This text is informational and is not financial, legal or investment advice." : "Ovaj tekst je informativna poslovna analiza i ne predstavlja financijski, pravni ni investicijski savjet."}</p>
+<a class="btn" href="${isEn ? "/publications/" : "/objave/"}">${isEn ? "Back to publications" : "Povratak na objave"}</a>
 </article>
 </main>
 </body>
 </html>`;
 }
 
-function listPage(articles) {
-  const cards = articles.map(a => `<article class="card"><img src="${escapeHtml(a.imageUrl)}" alt="${escapeHtml(a.imageAlt || a.title)}"><div class="card-body"><div class="meta">${formatDate(a.publishedAt)} · ${a.wordCount} riječi</div><h2>${escapeHtml(a.title)}</h2><p>${escapeHtml(a.summary)}</p><p class="meta">Autor: Nermin Sefić</p><a class="btn" href="/auto-editor/${a.slug}/">Otvori članak</a></div></article>`).join("\n");
+function listPage(articles, language = "hr") {
+  const isEn = language === "en";
+  const cards = articles.map(a => {
+    const title = isEn ? (a.titleEn || a.title) : (a.titleHr || a.title);
+    const summary = isEn ? (a.summaryEn || a.summary) : (a.summaryHr || a.summary);
+    const url = isEn ? `/publications/${a.slug}/` : `/objave/${a.slug}/`;
+    const words = isEn ? (a.wordCountEn || a.wordCount) : (a.wordCountHr || a.wordCount);
+    return `<article class="card"><img src="${escapeHtml(a.imageUrl)}" alt="${escapeHtml(a.imageAlt || title)}"><div class="card-body"><div class="meta">${formatDate(a.publishedAt)} · ${words} ${isEn ? "words" : "riječi"}</div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(summary)}</p><p class="meta">${isEn ? "Author" : "Autor"}: Nermin Sefić</p><a class="btn" href="${url}">${isEn ? "Open article" : "Otvori članak"}</a></div></article>`;
+  }).join("\n");
 
   return `<!doctype html>
-<html lang="hr">
+<html lang="${isEn ? "en" : "hr"}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GNK ASG Auto Editor | Dnevni poslovni članci</title>
-<meta name="description" content="GNK ASG Auto Editor automatski objavljuje poslovne članke u 08:00, 12:00 i 17:00 po hrvatskom vremenu, sa slikom, SEO podacima i autorom Nermin Sefić.">
-<link rel="canonical" href="https://gnk-asg.hr/auto-editor/">
-<meta property="og:title" content="GNK ASG Auto Editor">
-<meta property="og:description" content="Automatski dnevni poslovni članci s izvorima, slikama, SEO podacima i minimalno 300 riječi.">
+<title>${isEn ? "GNK ASG Publications" : "GNK ASG Auto Editor"} | GNK ASG</title>
+<meta name="description" content="${isEn ? "GNK ASG business publications with sources, images, SEO metadata and analysis by Nermin Sefić." : "GNK ASG poslovne objave s izvorima, slikama, SEO podacima i analizama autora Nermina Sefića."}">
+<link rel="canonical" href="${isEn ? "https://gnk-asg.hr/publications/" : "https://gnk-asg.hr/auto-editor/"}">
 <meta name="twitter:card" content="summary_large_image">
 ${style()}
 </head>
 <body>
 <main>
-<nav><a href="/">Početna</a><a href="/visual-index/">Visual Index</a><a href="/business-desk/">Business Desk</a><a href="/vijesti/">Vijesti</a><a href="/api/auto-editor/run">Ručno pokreni</a></nav>
-<section class="hero"><span class="badge">Auto Editor</span><h1>GNK ASG Auto Editor</h1><p>Automatsko objavljivanje u 08:00, 12:00 i 17:00 po hrvatskom vremenu. Svaki članak ima najmanje 300 riječi, sliku iz Visual Index kataloga, SEO/meta podatke i autora Nermin Sefić.</p></section>
-<section class="grid">${cards || '<article class="card"><div class="card-body"><h2>Još nema članaka</h2><p>Pokreni ručno /api/auto-editor/run ili pričekaj raspored.</p></div></article>'}</section>
+<nav><a href="/">${isEn ? "Home" : "Početna"}</a><a href="/objave/">Objave</a><a href="/publications/">Publications</a><a href="/visual-index/">Visual Index</a><a href="/business-desk/">Business Desk</a></nav>
+<section class="hero"><span class="badge">Auto Editor</span><h1>${isEn ? "GNK ASG Publications" : "GNK ASG Auto Editor"}</h1><p>${isEn ? "Three daily editorial reviews at 08:00, 12:00 and 17:00 Europe/Zagreb. Every article contains at least 500 words, a cited source, an image, SEO metadata and a clear conclusion." : "Tri dnevna urednička pregleda u 08:00, 12:00 i 17:00 po Zagrebu. Svaki članak ima najmanje 500 riječi, navedeni izvor, sliku, SEO metapodatke i jasan zaključak."}</p></section>
+<section class="grid">${cards || `<article class="card"><div class="card-body"><h2>${isEn ? "No publications yet" : "Još nema članaka"}</h2></div></article>`}</section>
 </main>
 </body>
 </html>`;
 }
 
-function notFoundPage() {
+function notFoundPage(language = "hr") {
   return `<!doctype html><html><head><meta charset="utf-8"><title>Nije pronađeno</title>${style()}</head><body><main><section class="hero"><h1>Nije pronađeno</h1><a class="btn" href="/auto-editor/">Auto Editor</a></section></main></body></html>`;
 }
 

@@ -9,7 +9,13 @@ routes = [
   { pattern = "gnk-asg.hr/api/auto-editor*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/api/auto-editor*", zone_name = "gnk-asg.hr" },
   { pattern = "gnk-asg.hr/data/auto-editor.json", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/data/auto-editor.json", zone_name = "gnk-asg.hr" }
+  { pattern = "www.gnk-asg.hr/data/auto-editor.json", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/data/publications-auto.json", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/data/publications-auto.json", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/objave/poslovni-pregled-*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/objave/poslovni-pregled-*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/publications/poslovni-pregled-*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/publications/poslovni-pregled-*", zone_name = "gnk-asg.hr" }
 ]
 
 [triggers]

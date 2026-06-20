@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Publications and GNK ASG Insights | GNK ASG</title>
+<meta name="description" content="Shared GNK ASG publication archive covering business, markets, artificial intelligence, technology, sport economics and corporate governance.">
+<link rel="canonical" href="https://gnk-asg.hr/publications/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/objave/">
+<link rel="alternate" hreflang="en" href="https://gnk-asg.hr/publications/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GNK ASG Publications">
+<meta property="og:description" content="GNK ASG publications and source-based business analysis.">
+<meta property="og:url" content="https://gnk-asg.hr/publications/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<style>
+:root{color-scheme:dark;--bg:#06101f;--panel:#0b1729;--panel2:#101f34;--text:#f5f7fb;--muted:#aab7ca;--gold:#d7b15a;--line:rgba(215,177,90,.25)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#10233d 0,#06101f 44%,#030914 100%);color:var(--text);font-family:Arial,Helvetica,sans-serif}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}header{border-bottom:1px solid var(--line);background:rgba(3,9,20,.9);position:sticky;top:0;z-index:5;backdrop-filter:blur(15px)}nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:14px 0}nav a,.open{color:#fff;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:9px 13px;font-weight:800}.brand{margin-right:auto;color:var(--gold);font-weight:900}.hero{padding:54px 0 24px}.hero h1{font-size:clamp(34px,6vw,64px);line-height:1;margin:0 0 14px}.hero p{max-width:860px;color:var(--muted);font-size:18px;line-height:1.65}.filters{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.filters input{flex:1;min-width:240px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:#fff}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;padding:18px 0 60px}.card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:22px;overflow:hidden}.image-link{display:block}.card img{width:100%;height:190px;object-fit:cover;background:#07162f}.card-body{padding:18px}.meta{display:flex;gap:8px;flex-wrap:wrap;color:var(--gold);font-size:12px;font-weight:900;text-transform:uppercase}.card h2{font-size:21px;line-height:1.25}.card h2 a{color:#fff;text-decoration:none}.card p{color:var(--muted);line-height:1.58}.hidden{display:none}footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted)}@media(max-width:700px){nav a{font-size:13px}.hero{padding-top:34px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-publication-page="en">
+<header><div class="wrap"><nav><a class="brand" href="/">GNK ASG</a><a href="/">Home</a><a href="/objave/">Objave</a><a href="/publications/">Publications</a><a href="/visual-index/">Visual Index</a><a href="/contact/">Contact</a></nav></div></header>
+<main class="wrap">
+<section class="hero">
+<h1>Publications and GNK ASG Insights</h1>
+<p>A shared bilingual archive of GNK ASG publications, market analysis, artificial intelligence, technology, corporate governance and sport economics. Total publications: <strong id="publication-count">0</strong>.</p>
+<div class="filters"><input id="search" type="search" placeholder="Search publications"></div>
+</section>
+<section><div class="grid" id="publication-grid"><article class="card"><div class="card-body"><h2>Loading publications</h2><p>The shared publication source is being loaded.</p></div></article></div></section>
+</main>
+<footer><div class="wrap">© 2026 GNK ASG d.o.o. · GNK DINAMO Ltd. · Nermin Sefić · GNK ASG Intelligence Desk</div></footer>
+<script src="/assets/js/publications-shared.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+ const search=document.getElementById("search");
+ const apply=()=>{
+  const q=search.value.trim().toLowerCase();
+  document.querySelectorAll("#publication-grid .card").forEach(card=>{
+   card.classList.toggle("hidden",Boolean(q)&&!String(card.dataset.search||card.textContent).toLowerCase().includes(q));
+  });
+ };
+ search.addEventListener("input",apply);
+ window.addEventListener("gnk-publications-rendered",apply);
+});
+</script>
+</body>
+</html>

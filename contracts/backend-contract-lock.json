@@ -1,80 +1,83 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-06-20T14:40:00+02:00",
-  "repository": "beckuphome-gnk/gnk-asg-portal",
-  "baselineBranch": "main",
-  "developmentBranch": "visual-redesign",
-  "productionLocked": true,
-  "cloudflareDeployAllowed": false,
-  "secretsAllowedInRepository": false,
-  "workers": [
-    "gnk-asg-ai-assist-worker",
-    "gnk-asg-auto-editor-public-clean-worker",
-    "gnk-asg-auto-editor-worker",
-    "gnk-asg-contact-api-worker",
-    "gnk-asg-direct-operator",
-    "gnk-asg-publish-operator"
-  ],
-  "lockedBindings": [
-    "GNK_ASG_CONFIG_KV",
-    "GNK_ASG_KV",
-    "GNK_ASG_D1",
-    "GNK_ASG_MEDIA_ASSETS",
-    "EMAIL",
-    "AI"
-  ],
-  "lockedEndpoints": [
-    "/api/contact-submit",
-    "/api/contact-mailboxes",
-    "/api/operator-send-mail",
-    "/api/operator-mailbox-config",
-    "/api/operator-signature-load",
-    "/api/operator-signature-save",
-    "/api/ai-assist*",
-    "/auto-editor*",
-    "/api/auto-editor*",
-    "/data/auto-editor.json"
-  ],
-  "lockedDomains": [
-    "gnk-asg.hr",
-    "www.gnk-asg.hr",
-    "publish.gnk-asg.hr"
-  ],
-  "compatibilityRequirements": {
-    "preserveExistingJsonResponses": true,
-    "preserveKvKeys": true,
-    "preserveD1Bindings": true,
-    "preserveR2ObjectKeys": true,
-    "preserveEmailBehavior": true,
-    "preserveContactCaseIds": true,
-    "preserveAdminAndMobileAdmin": true,
-    "preserveHrEnParity": true,
-    "requirePreviewBeforeProduction": true,
-    "requireBackupBeforeProduction": true,
-    "requireRollbackPlan": true
-  },
-  "knownFindings": {
-    "autoEditorRouteOverlap": true,
-    "productionRoutesPresentInWrangler": true,
-    "autoEditorCurrentMinimumWords": 300,
-    "autoEditorRequiredMinimumWords": 500,
-    "autoEditorTargetLocalTimes": [
-      "08:00",
-      "12:00",
-      "17:00"
-    ],
-    "autoEditorUsesZagrebGuard": true,
-    "operatorQueryTokenCompatibilityFallbackPresent": true,
-    "publicInternalForwardAddressPresent": true,
-    "runtimeBaselineContainsAbsoluteLocalPaths": true,
-    "publicationsRouteMissingFromBaseline": true
-  },
-  "targetPublishingModel": {
-    "sharedSourceRequired": true,
-    "hrIndex": "/objave/",
-    "hrArticle": "/objave/<slug>/",
-    "enIndex": "/publications/",
-    "enArticle": "/publications/<slug>/",
-    "canonicalArticle": "/objave/<slug>/"
-  }
+    "schemaVersion":  1,
+    "generatedAt":  "2026-06-20T14:40:00+02:00",
+    "repository":  "beckuphome-gnk/gnk-asg-portal",
+    "baselineBranch":  "main",
+    "developmentBranch":  "visual-redesign",
+    "productionLocked":  true,
+    "cloudflareDeployAllowed":  false,
+    "secretsAllowedInRepository":  false,
+    "workers":  [
+                    "gnk-asg-ai-assist-worker",
+                    "gnk-asg-auto-editor-public-clean-worker",
+                    "gnk-asg-auto-editor-worker",
+                    "gnk-asg-contact-api-worker",
+                    "gnk-asg-direct-operator",
+                    "gnk-asg-publish-operator"
+                ],
+    "lockedBindings":  [
+                           "GNK_ASG_CONFIG_KV",
+                           "GNK_ASG_KV",
+                           "GNK_ASG_D1",
+                           "GNK_ASG_MEDIA_ASSETS",
+                           "EMAIL",
+                           "AI"
+                       ],
+    "lockedEndpoints":  [
+                            "/api/contact-submit",
+                            "/api/contact-mailboxes",
+                            "/api/operator-send-mail",
+                            "/api/operator-mailbox-config",
+                            "/api/operator-signature-load",
+                            "/api/operator-signature-save",
+                            "/api/ai-assist*",
+                            "/auto-editor*",
+                            "/api/auto-editor*",
+                            "/data/auto-editor.json"
+                        ],
+    "lockedDomains":  [
+                          "gnk-asg.hr",
+                          "www.gnk-asg.hr",
+                          "publish.gnk-asg.hr"
+                      ],
+    "compatibilityRequirements":  {
+                                      "preserveExistingJsonResponses":  true,
+                                      "preserveKvKeys":  true,
+                                      "preserveD1Bindings":  true,
+                                      "preserveR2ObjectKeys":  true,
+                                      "preserveEmailBehavior":  true,
+                                      "preserveContactCaseIds":  true,
+                                      "preserveAdminAndMobileAdmin":  true,
+                                      "preserveHrEnParity":  true,
+                                      "requirePreviewBeforeProduction":  true,
+                                      "requireBackupBeforeProduction":  true,
+                                      "requireRollbackPlan":  true
+                                  },
+    "knownFindings":  {
+                          "autoEditorRouteOverlap":  false,
+                          "productionRoutesPresentInWrangler":  true,
+                          "autoEditorCurrentMinimumWords":  500,
+                          "autoEditorRequiredMinimumWords":  500,
+                          "autoEditorTargetLocalTimes":  [
+                                                             "08:00",
+                                                             "12:00",
+                                                             "17:00"
+                                                         ],
+                          "autoEditorUsesZagrebGuard":  true,
+                          "operatorQueryTokenCompatibilityFallbackPresent":  true,
+                          "publicInternalForwardAddressPresent":  true,
+                          "runtimeBaselineContainsAbsoluteLocalPaths":  true,
+                          "publicationsRouteMissingFromBaseline":  false,
+                          "sharedPublicationManifestAdded":  true,
+                          "bilingualAutoArticleRoutesAdded":  true
+                      },
+    "targetPublishingModel":  {
+                                  "sharedSourceRequired":  true,
+                                  "hrIndex":  "/objave/",
+                                  "hrArticle":  "/objave/\u003cslug\u003e/",
+                                  "enIndex":  "/publications/",
+                                  "enArticle":  "/publications/\u003cslug\u003e/",
+                                  "canonicalArticle":  "/objave/\u003cslug\u003e/"
+                              },
+    "developmentPatchAppliedAt":  "2026-06-20T14:51:58.1947123+02:00"
 }
