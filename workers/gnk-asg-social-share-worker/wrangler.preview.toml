@@ -1,0 +1,14 @@
+name = "gnk-asg-social-share-preview"
+main = "src/index.js"
+compatibility_date = "2026-06-20"
+workers_dev = true
+preview_urls = true
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "social-share-preview"
+DEFAULT_BRAND_IMAGE = "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
