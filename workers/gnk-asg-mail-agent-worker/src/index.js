@@ -1,6 +1,6 @@
 import { analyseMail } from './ai.js';
 import { parseIncoming, isAutomatedLoop, detectLanguage } from './parser.js';
-import { sendContextualReply } from './sender.js';
+import { sendContextualReply, sendManualMail } from './sender.js';
 import { addMailboxItem, readMailbox } from './storage.js';
 import { MAIL_AUTOMATION_POLICY } from './policy.js';
 
@@ -39,6 +39,10 @@ export default {
       return json(request, { ok: true, box, count: items.length, items });
     }
 
+    if (request.method === 'POST' && url.pathname === '/api/mail-agent/send') {
+      return handleManualSend(request, env);
+    }
+
     return json(request, { ok: false, error: 'not_found', path: url.pathname }, 404);
   },
 
@@ -46,6 +50,54 @@ export default {
     ctx.waitUntil(processIncoming(message, env));
   }
 };
+
+async function handleManualSend(request, env) {
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return json(request, { ok: false, error: 'invalid_json' }, 400);
+  }
+
+  const queued = {
+    id: crypto.randomUUID(),
+    type: 'manual-mail',
+    from: payload.from,
+    fromName: payload.fromName,
+    to: payload.to,
+    cc: payload.cc,
+    bccCount: countRecipients(payload.bcc),
+    subject: payload.subject,
+    bodyPreview: String(payload.body || '').slice(0, 500),
+    signatureProfile: payload.signatureProfile || payload.mailbox || 'office',
+    attachmentCount: Array.isArray(payload.attachments) ? payload.attachments.length : 0,
+    createdAt: new Date().toISOString(),
+    status: 'queued'
+  };
+
+  await addMailboxItem(env, 'outbox', queued);
+
+  try {
+    const result = await sendManualMail(env, payload);
+    const sent = {
+      ...queued,
+      status: result.ok ? 'sent' : 'partial_failure',
+      sentAt: new Date().toISOString(),
+      result
+    };
+    await addMailboxItem(env, result.ok ? 'sent' : 'held', sent);
+    return json(request, { ok: result.ok, id: queued.id, result }, result.ok ? 200 : 502);
+  } catch (error) {
+    const failed = {
+      ...queued,
+      status: 'failed',
+      failedAt: new Date().toISOString(),
+      reason: String(error?.message || error)
+    };
+    await addMailboxItem(env, 'held', failed);
+    return json(request, { ok: false, id: queued.id, error: failed.reason }, 400);
+  }
+}
 
 async function processIncoming(message, env) {
   const raw = await new Response(message.raw).text();
@@ -94,7 +146,7 @@ async function processIncoming(message, env) {
     const result = await sendContextualReply(env, outgoing);
     await addMailboxItem(env, 'sent', {
       ...outgoing,
-      status: 'sent',
+      status: result.ok ? 'sent' : 'partial_failure',
       sentAt: new Date().toISOString(),
       result
     });
@@ -106,6 +158,11 @@ async function processIncoming(message, env) {
       reason: String(error?.message || error)
     });
   }
+}
+
+function countRecipients(value) {
+  if (Array.isArray(value)) return value.length;
+  return String(value || '').split(/[;,\s]+/).filter(Boolean).length;
 }
 
 function senderAddress(recipient, env) {
@@ -135,6 +192,7 @@ function allowedOrigin(request) {
   if (!origin) return 'https://gnk-asg.hr';
   if (/^https:\/\/([a-z0-9-]+\.)?gnk-asg\.hr$/i.test(origin)) return origin;
   if (/^https:\/\/[a-z0-9-]+\.pages\.dev$/i.test(origin)) return origin;
+  if (/^https:\/\/[a-z0-9.-]+\.workers\.dev$/i.test(origin)) return origin;
   if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin)) return origin;
   return 'https://gnk-asg.hr';
 }
@@ -142,7 +200,7 @@ function allowedOrigin(request) {
 function corsHeaders(request) {
   return {
     'access-control-allow-origin': allowedOrigin(request),
-    'access-control-allow-methods': 'GET,OPTIONS',
+    'access-control-allow-methods': 'GET,POST,OPTIONS',
     'access-control-allow-headers': 'content-type,authorization,x-operator-token',
     'cache-control': 'no-store',
     vary: 'Origin'
