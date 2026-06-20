@@ -1,0 +1,139 @@
+name: Automated Market Data Refresh
+
+# Odvojeni automatski ciklus tržišnih i referentnih podataka.
+# Ne obrađuje vijesti niti mijenja njihov status.
+# Stale-safe pravilo: vanjski feed smije pasti, ali javni monitori moraju dobiti novi checked_at.
+# Ručni okidač tržišnog ciklusa: 2026-05-31-002.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/fast-market-update.yml'
+      - 'scripts/update_fast_market.py'
+      - 'scripts/update_reference_assets.py'
+      - 'scripts/market_heartbeat.py'
+      - 'assets/market-expansion.js'
+  schedule:
+    - cron: '*/5 * * * *'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: automated-fast-market-refresh-v3-stale-safe
+  cancel-in-progress: false
+
+jobs:
+  refresh-market:
+    name: Refresh public market and reference datasets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout current main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate market processors
+        run: python -m py_compile scripts/update_fast_market.py scripts/update_reference_assets.py scripts/market_heartbeat.py
+      - name: Refresh fast-moving market datasets without blocking heartbeat
+        shell: bash
+        run: |
+          python scripts/update_fast_market.py || echo "Fast market feed partial; heartbeat will preserve and timestamp previous values."
+      - name: Refresh stock-exchange and ASG gold references without blocking heartbeat
+        shell: bash
+        run: |
+          python scripts/update_reference_assets.py || echo "Reference feed partial; heartbeat will preserve and timestamp previous values."
+      - name: Apply stale-safe market heartbeat
+        run: python scripts/market_heartbeat.py
+      - name: Validate stale-safe market output
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          required = [
+              'data/fast_market_status.json',
+              'data/reference_assets_status.json',
+              'data/stock_exchanges.json',
+              'data/exchange_compare.json',
+              'data/asg_gold_asset.json',
+          ]
+          for item in required:
+              payload = json.loads(Path(item).read_text(encoding='utf-8'))
+              assert payload.get('checked_at') or payload.get('updated_at'), (item, payload)
+          stocks = json.loads(Path('data/stock_exchanges.json').read_text(encoding='utf-8'))
+          exchange = json.loads(Path('data/exchange_compare.json').read_text(encoding='utf-8'))
+          assert len(stocks.get('markets', [])) >= 2, stocks
+          assert isinstance(exchange.get('exchanges', []), list), exchange
+          print('Stale-safe market monitors ready:', exchange.get('checked_at') or exchange.get('updated_at'), stocks.get('checked_at'))
+          PY
+      - name: Commit market monitor data even after partial feeds
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-asg-market-bot"
+          git config user.email "actions@users.noreply.github.com"
+          rm -rf /tmp/gnk-market-output && mkdir -p /tmp/gnk-market-output
+          cp data/market.json data/stablecoins.json data/exchange_compare.json data/market_indices.json data/btc_chart.json data/fast_market_status.json data/stock_exchanges.json data/asg_gold_asset.json data/reference_assets_status.json /tmp/gnk-market-output/
+          publish_market() {
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/gnk-market-output/*.json data/
+            git add data/market.json data/stablecoins.json data/exchange_compare.json data/market_indices.json data/btc_chart.json data/fast_market_status.json data/stock_exchanges.json data/asg_gold_asset.json data/reference_assets_status.json
+            if git diff --cached --quiet; then
+              echo "Nema novih tržišnih promjena."
+              return 0
+            fi
+            git commit -m "Automated stale-safe market monitor refresh"
+            git push origin HEAD:main
+          }
+          publish_market || (sleep 5 && publish_market) || (sleep 10 && publish_market)
+
+  deploy-market-update:
+    name: Deploy portal with current market references
+    needs: refresh-market
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout current published main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Prepare public build
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'scripts/' \
+            --exclude '_site/' \
+            --exclude '*.py' \
+            ./ _site/
+          test -f _site/data/stock_exchanges.json
+          test -f _site/data/asg_gold_asset.json
+          test -f _site/data/reference_assets_status.json
+          test -f _site/data/exchange_compare.json
+          grep -q 'checked_at' _site/data/stock_exchanges.json
+      - name: Upload public portal artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy public portal
+        id: deployment
+        uses: actions/deploy-pages@v4

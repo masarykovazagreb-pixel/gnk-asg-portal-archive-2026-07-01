@@ -1,0 +1,147 @@
+{
+    "generatedAt":  "2026-06-17T16:03:13.1557583+02:00",
+    "rule":  "Direktni izvori, bez Google News kao glavnog izvora. Aktualno max 100; arhiva max 1000; prihvaća samo title + text + image + original source link.",
+    "schedule":  "09:00 i 16:00 Europe/Zagreb",
+    "sources":  [
+                    {
+                        "title":  "SEEbiz naslovnica",
+                        "url":  "https://www.seebiz.eu/",
+                        "active":  true,
+                        "type":  "html",
+                        "category":  "region-business"
+                    },
+                    {
+                        "title":  "SEEbiz tržišta",
+                        "url":  "https://www.seebiz.eu/trzista/",
+                        "active":  true,
+                        "type":  "html",
+                        "category":  "markets"
+                    },
+                    {
+                        "title":  "SEEbiz ekonomija",
+                        "url":  "https://www.seebiz.eu/ekonomija/",
+                        "active":  true,
+                        "type":  "html",
+                        "category":  "economy"
+                    },
+                    {
+                        "title":  "SEEbiz energetika",
+                        "url":  "https://www.seebiz.eu/energetika/",
+                        "active":  true,
+                        "type":  "html",
+                        "category":  "energy"
+                    },
+                    {
+                        "title":  "SEEbiz tehnologija",
+                        "url":  "https://www.seebiz.eu/tehnologija/",
+                        "active":  true,
+                        "type":  "html",
+                        "category":  "technology"
+                    },
+                    {
+                        "title":  "Lider naslovnica",
+                        "url":  "https://lidermedia.hr/",
+                        "active":  true,
+                        "type":  "html",
+                        "category":  "croatia-business"
+                    },
+                    {
+                        "title":  "Lider biznis i politika",
+                        "url":  "https://lidermedia.hr/biznis-i-politika/",
+                        "active":  true,
+                        "type":  "html",
+                        "category":  "croatia-business"
+                    },
+                    {
+                        "title":  "Poslovni dnevnik",
+                        "url":  "https://www.poslovni.hr/",
+                        "active":  true,
+                        "type":  "html",
+                        "category":  "croatia-business"
+                    },
+                    {
+                        "title":  "Poslovni dnevnik feed",
+                        "url":  "https://www.poslovni.hr/feed",
+                        "active":  true,
+                        "type":  "rss",
+                        "category":  "croatia-business"
+                    },
+                    {
+                        "title":  "Tportal Biznis",
+                        "url":  "https://www.tportal.hr/biznis",
+                        "active":  true,
+                        "type":  "html",
+                        "category":  "croatia-business"
+                    },
+                    {
+                        "title":  "N1 Biznis",
+                        "url":  "https://n1info.hr/biznis/",
+                        "active":  true,
+                        "type":  "html",
+                        "category":  "croatia-business"
+                    },
+                    {
+                        "title":  "CNBC Business",
+                        "url":  "https://www.cnbc.com/id/10001147/device/rss/rss.html",
+                        "active":  true,
+                        "type":  "rss",
+                        "category":  "global-business"
+                    },
+                    {
+                        "title":  "CNBC Markets",
+                        "url":  "https://www.cnbc.com/id/15839135/device/rss/rss.html",
+                        "active":  true,
+                        "type":  "rss",
+                        "category":  "global-markets"
+                    },
+                    {
+                        "title":  "MarketWatch Top Stories",
+                        "url":  "https://feeds.content.dowjones.io/public/rss/mw_topstories",
+                        "active":  true,
+                        "type":  "rss",
+                        "category":  "global-markets"
+                    },
+                    {
+                        "title":  "CoinDesk",
+                        "url":  "https://www.coindesk.com/arc/outboundfeeds/rss/",
+                        "active":  true,
+                        "type":  "rss",
+                        "category":  "crypto"
+                    },
+                    {
+                        "title":  "Cointelegraph",
+                        "url":  "https://cointelegraph.com/rss",
+                        "active":  true,
+                        "type":  "rss",
+                        "category":  "crypto"
+                    },
+                    {
+                        "title":  "Finextra",
+                        "url":  "https://www.finextra.com/rss/headlines.aspx",
+                        "active":  true,
+                        "type":  "rss",
+                        "category":  "fintech"
+                    },
+                    {
+                        "title":  "TechCrunch",
+                        "url":  "https://techcrunch.com/feed/",
+                        "active":  true,
+                        "type":  "rss",
+                        "category":  "technology"
+                    },
+                    {
+                        "title":  "The Verge",
+                        "url":  "https://www.theverge.com/rss/index.xml",
+                        "active":  true,
+                        "type":  "rss",
+                        "category":  "technology"
+                    },
+                    {
+                        "title":  "The Guardian Business",
+                        "url":  "https://www.theguardian.com/uk/business/rss",
+                        "active":  true,
+                        "type":  "rss",
+                        "category":  "global-business"
+                    }
+                ]
+}

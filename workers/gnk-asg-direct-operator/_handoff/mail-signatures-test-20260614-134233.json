@@ -1,0 +1,60 @@
+﻿[
+    {
+        "Url":  "https://operator.gnk-asg.hr/health?cb=20260614134250",
+        "Status":  200,
+        "Length":  166,
+        "ContentType":  "application/json; charset=utf-8",
+        "OK":  true,
+        "HasMailSignatures":  false,
+        "HasNotFound":  false
+    },
+    {
+        "Url":  "https://operator.gnk-asg.hr/mail-signatures?cb=20260614134250",
+        "Status":  "ERROR",
+        "Length":  0,
+        "ContentType":  "",
+        "OK":  false,
+        "HasMailSignatures":  false,
+        "HasNotFound":  false,
+        "Error":  "The remote server returned an error: (404) Not Found."
+    },
+    {
+        "Url":  "https://operator.gnk-asg.hr/data/mail-signatures.json?cb=20260614134250",
+        "Status":  "ERROR",
+        "Length":  0,
+        "ContentType":  "",
+        "OK":  false,
+        "HasMailSignatures":  false,
+        "HasNotFound":  false,
+        "Error":  "The remote server returned an error: (404) Not Found."
+    },
+    {
+        "Url":  "https://api.gnk-asg.hr/data/mail-signatures.json?cb=20260614134250",
+        "Status":  "ERROR",
+        "Length":  0,
+        "ContentType":  "",
+        "OK":  false,
+        "HasMailSignatures":  false,
+        "HasNotFound":  false,
+        "Error":  "The remote server returned an error: (404) Not Found."
+    },
+    {
+        "Url":  "https://assistant.gnk-asg.hr/mail-signatures?cb=20260614134250",
+        "Status":  "ERROR",
+        "Length":  0,
+        "ContentType":  "",
+        "OK":  false,
+        "HasMailSignatures":  false,
+        "HasNotFound":  false,
+        "Error":  "The remote server returned an error: (404) Not Found."
+    },
+    {
+        "Url":  "https://operator.gnk-asg.hr/operator/status?cb=20260614134250",
+        "Status":  200,
+        "Length":  6175,
+        "ContentType":  "application/json; charset=utf-8",
+        "OK":  true,
+        "HasMailSignatures":  false,
+        "HasNotFound":  false
+    }
+]

@@ -1,0 +1,57 @@
+name: Patch Static Portal Copy and Loader
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/patch-static-news-copy.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-static-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Replace stale static copy and update loader version
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          changes = {
+              Path('index.html'): [
+                  ('Ažuriranje svaki sat', 'Ažuriranje svakih 15 minuta'),
+                  ('Poslovne i tehnološke vijesti iz hrvatskih, regionalnih i međunarodnih izvora. Objave o GNK ASG d.o.o., GNK DINAMO Ltd. ili Nerminu Sefiću prikazuju se samo nakon ručnog odobrenja.', 'Javni prozor prikazuje do 500 najnovijih poslovnih i tehnoloških vijesti iz hrvatskih, regionalnih i međunarodnih izvora. Stariji višak ostaje spremljen u arhivi. Objave o GNK ASG d.o.o., GNK DINAMO Ltd. ili Nerminu Sefiću prikazuju se automatski i mogu se ukloniti kroz ovlaštenu kontrolu.'),
+                  ('Izvori se osvježavaju automatski kroz satni workflow.', 'Najnovijih 500 javnih stavki osvježava se automatski, a stariji višak ostaje spremljen u arhivi.'),
+                  ('assets/app.js?v=20260526-demographic-compact07', 'assets/app.js?v=20260528-cross-asset-chart-fixed07'),
+                  ('assets/app.js?v=20260528-news-archive-unified-refresh06', 'assets/app.js?v=20260528-cross-asset-chart-fixed07')
+              ],
+              Path('en/index.html'): [
+                  ('Hourly Refresh', 'Refresh every 15 minutes'),
+                  ('Business and technology news from Croatian, regional and international sources. Publications about GNK ASG d.o.o., GNK DINAMO Ltd. or Nermin Sefić are displayed only after manual approval.', 'The public window displays up to the 500 newest business and technology news items from Croatian, regional and international sources. Older overflow remains preserved in archive storage. Publications about GNK ASG d.o.o., GNK DINAMO Ltd. or Nermin Sefić are displayed automatically and may be removed through authorised control.'),
+                  ('Sources refresh automatically through the portal workflow.', 'The newest 500 public items refresh automatically; older overflow remains stored in the archive.'),
+                  ('assets/app.js?v=20260523-6', 'assets/app.js?v=20260528-cross-asset-chart-fixed07'),
+                  ('assets/app.js?v=20260528-news-archive-unified-refresh06', 'assets/app.js?v=20260528-cross-asset-chart-fixed07')
+              ]
+          }
+          for path, replacements in changes.items():
+              text = path.read_text(encoding='utf-8')
+              for old, new in replacements:
+                  text = text.replace(old, new)
+              path.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit corrected static portal copy and chart loader
+        run: |
+          git config user.name "gnk-asg-static-copy-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html en/index.html
+          if git diff --cached --quiet; then
+            echo "No static text or chart-loader changes required."
+            exit 0
+          fi
+          git commit -m "Load repaired cross-asset chart on public portal"
+          git push origin HEAD:main

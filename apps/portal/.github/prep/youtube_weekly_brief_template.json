@@ -1,0 +1,45 @@
+{
+  "version": "2026-05-30-02",
+  "module": "GNK ASG Weekly Intelligence Brief",
+  "activation_status": "locked_preparation",
+  "recommended_channel_name": "GNK ASG Insights",
+  "series_name": "GNK ASG Weekly Intelligence Brief",
+  "language": "en",
+  "initial_mode": "draft_only",
+  "recommended_duration_minutes": {"min": 4, "max": 7},
+  "source_material": [
+    "published GNK ASG Insights articles",
+    "safe public market and technology topics",
+    "public portal data and documents",
+    "neutral weekly theme summaries"
+  ],
+  "content_rule": "The weekly brief must remain informational, neutral, source-based and connected to already published portal material. Sensitive, private, unresolved or formally binding topics are not used for automatic video generation.",
+  "video_structure": [
+    {"section": "Opening", "duration_seconds": 8, "content": "GNK ASG Weekly Intelligence Brief title card"},
+    {"section": "Introduction", "duration_seconds": 30, "content": "What this week's brief covers and why it matters"},
+    {"section": "Key Insight 1", "duration_seconds": 70, "content": "Main corporate, AI, market or transparency theme"},
+    {"section": "Key Insight 2", "duration_seconds": 70, "content": "Second theme based on published material"},
+    {"section": "Key Insight 3", "duration_seconds": 70, "content": "Third theme based on published material"},
+    {"section": "GNK ASG Perspective", "duration_seconds": 55, "content": "How structured public data helps third-party understanding"},
+    {"section": "Disclosure", "duration_seconds": 25, "content": "Informational content and source-based context"},
+    {"section": "Closing", "duration_seconds": 12, "content": "Read more at gnk-asg.hr/en/insights/"}
+  ],
+  "metadata_template": {
+    "title_pattern": "{main_topic} | GNK ASG Weekly Intelligence Brief",
+    "description_sections": [
+      "Short summary of the weekly topic.",
+      "Link to the full written insight on gnk-asg.hr.",
+      "Publisher and editorial framework.",
+      "Information-only note.",
+      "Hashtags and topic tags."
+    ],
+    "standard_hashtags": ["GNKASG", "GNKDINAMOLtd", "NerminSefic", "BusinessIntelligence", "ArtificialIntelligence", "CorporateGovernance"]
+  },
+  "thumbnail_template": {
+    "size": "1280x720",
+    "visual_style": "dark blue and gold corporate design",
+    "required_text": ["GNK ASG", "Weekly Intelligence Brief", "main topic", "gnk-asg.hr"],
+    "avoid": ["realistic fake events", "fake portraits", "misleading documentary-style imagery"]
+  },
+  "approval_rule": "Weekly video can be generated as a draft automatically. Public release requires official channel connection and explicit activation mode."
+}

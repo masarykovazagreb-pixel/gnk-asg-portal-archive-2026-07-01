@@ -1,0 +1,96 @@
+name: Stable Market Supervisor
+
+# Test trigger: 2026-05-30-automation-test-002
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/stable-market-supervisor.yml'
+      - 'scripts/update_fast_market.py'
+      - 'scripts/update_reference_assets.py'
+      - 'scripts/market_heartbeat.py'
+  schedule:
+    - cron: '*/5 * * * *'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: stable-market-supervisor
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run market modules without hard stop
+        shell: bash
+        run: |
+          python -m py_compile scripts/update_fast_market.py scripts/update_reference_assets.py scripts/market_heartbeat.py
+          python scripts/update_fast_market.py || echo "fast market partial"
+          python scripts/update_reference_assets.py || echo "reference market partial"
+          python scripts/market_heartbeat.py
+      - name: Commit market data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-asg-market-supervisor"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/market.json data/stablecoins.json data/exchange_compare.json data/market_indices.json data/btc_chart.json data/fast_market_status.json data/stock_exchanges.json data/asg_gold_asset.json data/reference_assets_status.json
+          if git diff --cached --quiet; then
+            echo "No market data changes."
+          else
+            git commit -m "Stable market supervisor refresh"
+            git pull --rebase origin main || true
+            git push origin HEAD:main
+          fi
+
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    concurrency:
+      group: stable-pages-deploy
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Prepare public portal
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'scripts/' \
+            --exclude '_site/' \
+            --exclude '*.py' \
+            ./ _site/
+          test -f _site/data/exchange_compare.json
+          test -f _site/data/stock_exchanges.json
+          test -f _site/data/fast_market_status.json
+          grep -q 'checked_at' _site/data/exchange_compare.json
+          grep -q 'checked_at' _site/data/stock_exchanges.json
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

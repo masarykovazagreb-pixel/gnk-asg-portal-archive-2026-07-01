@@ -1,0 +1,91 @@
+{
+  "version": "2026-05-30-02",
+  "module": "GNK ASG Mail and Calendar Agent",
+  "activation_status": "locked_preparation",
+  "public_contact_address": "info@gnk-asg.hr",
+  "recommended_agent_sender_address": "assistant@gnk-asg.hr",
+  "alternative_agent_sender_address": "desk@gnk-asg.hr",
+  "recommended_press_address": "press@gnk-asg.hr",
+  "mail_provider_to_confirm": "Zoho or selected domain mail provider",
+  "identity_rule": "The agent must not pretend to be Nermin Sefic personally. It must clearly identify itself as a GNK ASG digital assistant writing on behalf of Nermin Sefic, Director, when allowed by policy.",
+  "sender_rule": "The agent reads authorised incoming mailboxes only after official mailbox connection is granted. Replies are sent from the agent's official GNK ASG address, not from the director's private or personal email address.",
+  "representation_rule": "For routine business communication, the agent may write 'on behalf of Nermin Sefic, Director' only when the message is within approved non-sensitive categories. Sensitive categories require human approval before sending.",
+  "privacy_rule": "The private calendar is used only for free/busy availability. Replies to external parties must never disclose private event titles, private locations, personal events, attendee names, or reasons why a slot is unavailable.",
+  "mailboxes_to_read_later_after_authorisation": [
+    "info@gnk-asg.hr",
+    "press@gnk-asg.hr if created",
+    "publish@gnk-asg.hr if created",
+    "other approved business mailboxes only after explicit connection"
+  ],
+  "mailboxes_not_to_read_without_explicit_approval": [
+    "private personal mailbox",
+    "banking mailbox",
+    "legal counsel mailbox",
+    "tax authority correspondence mailbox",
+    "any mailbox containing private family, health or confidential legal material"
+  ],
+  "mail_agent_flow": [
+    "Read incoming message after mailbox connection is authorised.",
+    "Classify the message by purpose, urgency, sender type and sensitivity.",
+    "Check whether the message can be handled autonomously or must be held for director approval.",
+    "Draft a concise, professional reply using public GNK ASG facts and the approved signature.",
+    "If a meeting is requested, check only free/busy availability in the connected private calendar.",
+    "Offer two or three available time windows without revealing private calendar details.",
+    "Create or update a calendar event only after the time is agreed or the director has expressly approved the proposed slot.",
+    "Log the action in the internal dashboard with subject summary, category, sender, status and next step."
+  ],
+  "automatic_reply_allowed": [
+    "general receipt confirmation",
+    "request for more information",
+    "non-sensitive business inquiry acknowledgement",
+    "press inquiry acknowledgement without substantive official position",
+    "meeting scheduling proposal based only on free time windows",
+    "confirmation that a matter has been forwarded for review"
+  ],
+  "approval_required_before_sending": [
+    "legal matters",
+    "tax or accounting matters",
+    "contracts and financial commitments",
+    "official corporate position",
+    "media statement beyond receipt acknowledgement",
+    "complaints or accusations",
+    "personal topics",
+    "messages from courts, authorities, banks, auditors, lawyers or regulators",
+    "calendar event that blocks more than two hours",
+    "calendar event outside normal working hours",
+    "any message implying acceptance of liability, debt, contractual obligation or public statement"
+  ],
+  "calendar_rules": {
+    "default_timezone": "Europe/Zagreb",
+    "availability_window_workdays": "09:30-17:00",
+    "default_meeting_duration_minutes": 30,
+    "preferred_meeting_duration_minutes": [30, 45, 60],
+    "minimum_buffer_between_meetings_minutes": 15,
+    "free_busy_only_external_policy": true,
+    "never_disclose_private_event_details": true,
+    "event_title_format": "GNK ASG - {subject_or_sender}",
+    "event_description_must_include": [
+      "sender email",
+      "meeting purpose summary",
+      "source message subject",
+      "whether the event was director-approved or sender-confirmed",
+      "agent action log reference if available"
+    ]
+  },
+  "reply_tone": {
+    "language_default": "Croatian for Croatian senders; English for international senders.",
+    "style": "professional, concise, clear, respectful, no unnecessary promises",
+    "signature": "GNK ASG digital assistant signature"
+  },
+  "later_connection_checklist": [
+    "Create info@gnk-asg.hr first.",
+    "Create assistant@gnk-asg.hr or desk@gnk-asg.hr as the agent sender address.",
+    "Create press@gnk-asg.hr only if press inquiries will be separated from general contact.",
+    "Connect mailbox access through official provider settings, not by storing passwords in the repository.",
+    "Connect the private calendar using official account permission and minimum necessary access.",
+    "Test read-only calendar free/busy lookup first.",
+    "Test draft-only email mode before enabling automatic replies.",
+    "Test calendar event creation with a dummy internal event.",
+    "Enable automatic actions only after reviewing logs and dashboard output."
+  ]
+}

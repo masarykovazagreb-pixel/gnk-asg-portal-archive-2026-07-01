@@ -1,0 +1,218 @@
+:root {
+  --gnk-asg-gold: #d4af37;
+  --gnk-asg-dark: #07122a;
+  --gnk-asg-panel: rgba(6, 12, 26, .94);
+  --gnk-asg-line: rgba(212, 175, 55, .34);
+  --gnk-asg-text: #f7f4e8;
+  --gnk-asg-muted: #aeb8c8;
+}
+
+#gnk-asg-global-layer-root {
+  position: relative;
+  z-index: 2147483000;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#gnk-asg-floating-dock {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2147483002;
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  justify-content: center;
+  padding: 9px;
+  border: 1px solid rgba(212,175,55,.36);
+  border-radius: 999px;
+  background: rgba(6,12,26,.86);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 22px 70px rgba(0,0,0,.35);
+}
+
+.gnk-asg-float-btn {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(212,175,55,.30);
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  user-select: none;
+}
+
+.gnk-asg-float-btn:hover {
+  background: rgba(212,175,55,.18);
+  border-color: rgba(212,175,55,.72);
+}
+
+.gnk-asg-float-btn.asg {
+  background: linear-gradient(135deg, #d4af37, #8e6d1f);
+  color: #070b12;
+  border: 0;
+}
+
+.gnk-asg-panel {
+  position: fixed;
+  right: 18px;
+  bottom: 86px;
+  z-index: 2147483003;
+  width: min(430px, calc(100vw - 30px));
+  max-height: min(76vh, 720px);
+  overflow: auto;
+  display: none;
+  border: 1px solid rgba(212,175,55,.36);
+  border-radius: 24px;
+  background: var(--gnk-asg-panel);
+  color: var(--gnk-asg-text);
+  box-shadow: 0 26px 90px rgba(0,0,0,.45);
+  backdrop-filter: blur(14px);
+}
+
+.gnk-asg-panel.open {
+  display: block;
+}
+
+.gnk-asg-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(212,175,55,.18);
+}
+
+.gnk-asg-panel-head strong {
+  font-size: 15px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.gnk-asg-panel-close {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(212,175,55,.25);
+  border-radius: 12px;
+  background: rgba(255,255,255,.07);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.gnk-asg-panel-body {
+  padding: 16px 18px 18px;
+}
+
+.gnk-asg-menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.gnk-asg-menu-grid a,
+.gnk-asg-asg-actions button,
+.gnk-asg-asg-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid rgba(212,175,55,.24);
+  border-radius: 14px;
+  background: rgba(255,255,255,.065);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.gnk-asg-menu-grid a:hover,
+.gnk-asg-asg-actions button:hover,
+.gnk-asg-asg-actions a:hover {
+  background: rgba(212,175,55,.16);
+}
+
+.gnk-asg-asg-title {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.gnk-asg-asg-title div {
+  line-height: 1.35;
+}
+
+.gnk-asg-asg-title span {
+  display: block;
+  color: var(--gnk-asg-muted);
+  font-size: 12px;
+}
+
+#gnk-asg-asg-query {
+  width: 100%;
+  min-height: 76px;
+  resize: vertical;
+  border: 1px solid rgba(212,175,55,.26);
+  border-radius: 16px;
+  background: rgba(255,255,255,.06);
+  color: #fff;
+  padding: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  outline: none;
+}
+
+.gnk-asg-asg-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin: 10px 0;
+}
+
+#gnk-asg-asg-output {
+  min-height: 140px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid rgba(212,175,55,.18);
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(0,0,0,.22);
+  color: #e6edf9;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media(max-width: 760px) {
+  #gnk-asg-floating-dock {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: 12px;
+  }
+
+  .gnk-asg-float-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 10px;
+  }
+
+  .gnk-asg-panel {
+    left: 10px;
+    right: 10px;
+    bottom: 74px;
+    width: auto;
+  }
+
+  .gnk-asg-menu-grid,
+  .gnk-asg-asg-actions {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,11 @@
+name = "gnk-asg-ai-assist-worker"
+main = "src/index.js"
+compatibility_date = "2026-06-18"
+workers_dev = true
+
+routes = [
+  { pattern = "gnk-asg.hr/api/ai-assist*", zone_name = "gnk-asg.hr" }
+]
+
+[ai]
+binding = "AI"

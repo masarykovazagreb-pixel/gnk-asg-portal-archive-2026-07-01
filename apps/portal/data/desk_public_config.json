@@ -1,0 +1,23 @@
+{
+  "version": "2026-05-24-active-ai",
+  "name": "GNK ASG Intelligence Desk",
+  "mode": "hybrid_public_context_and_external_ai",
+  "enabled": true,
+  "provider": "puter",
+  "provider_label": "Puter.js / Google Gemini",
+  "model": "gemini-2.5-flash-lite",
+  "model_label": "Google Gemini through Puter.js",
+  "library_url": "https://js.puter.com/v2/",
+  "max_question_characters": 1800,
+  "public_context_only": true,
+  "portal_answers": true,
+  "source_links": true,
+  "web_search_link": true,
+  "export_transcript": true,
+  "activation_hr": "Povezani AI aktivan je putem Puter.js usluge bez javno izloženog API ključa. Pri prvom korištenju Puter može zatražiti prijavu korisnika.",
+  "activation_en": "Connected AI is active through Puter.js without a publicly exposed API key. Puter may request user sign-in on first use.",
+  "privacy_hr": "U Povezani AI ne upisujte osobne, povjerljive, porezne, ugovorne ni druge nejavne podatke. Vanjski AI odgovor obrađuje Puter.js i odabrani model pružatelja.",
+  "privacy_en": "Do not enter personal, confidential, tax, contractual or other non-public data in Connected AI. External AI answers are processed through Puter.js and the selected model provider.",
+  "disclaimer_hr": "AI odgovori su informativni i moraju se provjeriti prema javnim izvorima. Korištenje vanjskog AI načina podliježe korisničkim uvjetima i raspoloživosti Puter.js usluge.",
+  "disclaimer_en": "AI answers are informational and must be verified against public sources. External AI mode is subject to Puter.js user terms and service availability."
+}

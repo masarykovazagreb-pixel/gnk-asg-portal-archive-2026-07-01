@@ -1,0 +1,58 @@
+{
+  "version": "2026-05-30-02",
+  "module": "GNK ASG Mail Agent Reply Templates",
+  "activation_status": "locked_preparation",
+  "sender_identity": "GNK ASG Digital Assistant",
+  "sender_address_recommendation": "assistant@gnk-asg.hr",
+  "templates": {
+    "receipt_confirmation_hr": {
+      "subject_prefix": "Zaprimljeno:",
+      "allowed_autonomous": true,
+      "body": "Poštovani,\n\npotvrđujemo primitak Vaše poruke. GNK ASG Digital Assistant evidentirao je upit i, ako bude potrebno, zatražit će dodatne informacije ili ga proslijediti na odgovarajući pregled.\n\nAko se Vaša poruka odnosi na pitanje koje zahtijeva službenu provjeru ili odluku ovlaštene osobe, sadržajni odgovor bit će dan nakon pregleda."
+    },
+    "receipt_confirmation_en": {
+      "subject_prefix": "Received:",
+      "allowed_autonomous": true,
+      "body": "Dear Sir or Madam,\n\nwe confirm receipt of your message. The GNK ASG Digital Assistant has recorded the inquiry and will request additional information or forward it for appropriate review if needed.\n\nIf your message concerns a matter requiring official review or a decision by an authorised person, a substantive response will be provided after review."
+    },
+    "request_more_information_hr": {
+      "subject_prefix": "Dodatne informacije:",
+      "allowed_autonomous": true,
+      "body": "Poštovani,\n\nkako bismo mogli smisleno obraditi Vaš upit, molimo da nam dostavite predmet upita, očekivani rok, relevantne dokumente ili poveznice te kontakt osobu za daljnju komunikaciju.\n\nNakon primitka dopune, upit će biti razvrstan i obrađen u skladu s njegovom naravi."
+    },
+    "request_more_information_en": {
+      "subject_prefix": "Additional information:",
+      "allowed_autonomous": true,
+      "body": "Dear Sir or Madam,\n\nin order to process your inquiry properly, please provide the subject of the request, expected timeline, relevant documents or links, and the contact person for further communication.\n\nAfter receiving the additional information, the inquiry will be classified and handled according to its nature."
+    },
+    "meeting_time_proposal_hr": {
+      "subject_prefix": "Prijedlog termina:",
+      "allowed_autonomous": true,
+      "requires_calendar_freebusy": true,
+      "body": "Poštovani,\n\nvezano uz Vaš prijedlog sastanka, možemo ponuditi sljedeće dostupne termine:\n\n1. {slot_1}\n2. {slot_2}\n3. {slot_3}\n\nMolimo potvrdite koji Vam termin odgovara. Nakon potvrde, termin će biti evidentiran u kalendaru."
+    },
+    "meeting_time_proposal_en": {
+      "subject_prefix": "Meeting time proposal:",
+      "allowed_autonomous": true,
+      "requires_calendar_freebusy": true,
+      "body": "Dear Sir or Madam,\n\nregarding your meeting request, the following time windows are available:\n\n1. {slot_1}\n2. {slot_2}\n3. {slot_3}\n\nPlease confirm which option works for you. Once confirmed, the meeting will be recorded in the calendar."
+    },
+    "forwarded_for_review_hr": {
+      "subject_prefix": "Proslijeđeno na pregled:",
+      "allowed_autonomous": true,
+      "body": "Poštovani,\n\nVaša poruka je zaprimljena i proslijeđena na pregled jer se odnosi na temu koja zahtijeva dodatnu provjeru prije sadržajnog odgovora.\n\nJavit ćemo se nakon pregleda ili ćemo zatražiti dodatne informacije ako budu potrebne."
+    },
+    "forwarded_for_review_en": {
+      "subject_prefix": "Forwarded for review:",
+      "allowed_autonomous": true,
+      "body": "Dear Sir or Madam,\n\nyour message has been received and forwarded for review because it concerns a subject that requires additional verification before a substantive response can be provided.\n\nWe will respond after review or request additional information if needed."
+    }
+  },
+  "hold_for_review_rule": "The agent must not autonomously send a substantive reply if the message is sensitive, unclear, binding, financially material, reputationally relevant, personal, official in nature, or outside routine business communication.",
+  "safe_autonomous_scope": [
+    "receipt confirmation",
+    "request for additional information",
+    "meeting time proposal based on free-busy availability",
+    "notice that the inquiry has been forwarded for review"
+  ]
+}

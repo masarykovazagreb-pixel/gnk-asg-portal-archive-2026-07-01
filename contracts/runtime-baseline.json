@@ -1,0 +1,68 @@
+﻿{
+    "GeneratedAt":  {
+                        "value":  "\/Date(1781956457015)\/",
+                        "DisplayHint":  2,
+                        "DateTime":  "20. lipnja 2026. 13:54:17"
+                    },
+    "Repository":  "beckuphome-gnk/gnk-asg-portal",
+    "BaselineBranch":  "main",
+    "DevelopmentBranch":  "visual-redesign",
+    "FrontendRoot":  "apps/portal",
+    "WorkerRoot":  "workers",
+    "WorkerCount":  6,
+    "BackendCompatibilityRequired":  true,
+    "ExistingCloudflareBindingsPreserved":  true,
+    "SecretsStoredInGitHub":  false,
+    "ProductionChanged":  false,
+    "CloudflareDeployed":  false,
+    "Workers":  [
+                    {
+                        "WorkerFolder":  "gnk-asg-ai-assist-worker",
+                        "ProjectRoot":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-ai-assist-worker",
+                        "ConfigFile":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-ai-assist-worker\\wrangler.toml",
+                        "ConfigSha256":  "CA019545D3E9CC12C9E04909E9F0B6AB3C2DAD81C051889E278CEC7022C74C55",
+                        "SourceIndex":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-ai-assist-worker\\src\\index.js",
+                        "SourceSha256":  "A0F361A2FA8AA5B4B960FBD519647EE9E9763A988357DFF11152F4DED8EEB656"
+                    },
+                    {
+                        "WorkerFolder":  "gnk-asg-auto-editor-public-clean-worker",
+                        "ProjectRoot":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-auto-editor-public-clean-worker",
+                        "ConfigFile":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-auto-editor-public-clean-worker\\wrangler.toml",
+                        "ConfigSha256":  "2E01AF7A8BBC1ECF17ED383B075DCD39A7463F7BAAFD9836E9DD0F4C469D7AEE",
+                        "SourceIndex":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-auto-editor-public-clean-worker\\src\\index.js",
+                        "SourceSha256":  "22C7AB4FEDA2AA2AA37A35D5BCB045AB23CC2CE643B2ACBEE543B4B7F8396A55"
+                    },
+                    {
+                        "WorkerFolder":  "gnk-asg-auto-editor-worker",
+                        "ProjectRoot":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-auto-editor-worker",
+                        "ConfigFile":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-auto-editor-worker\\wrangler.toml",
+                        "ConfigSha256":  "065C58A8F0FD3BBB780749D3DE450D98BF0AA4159E178C6C02578E13F8918935",
+                        "SourceIndex":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-auto-editor-worker\\src\\index.js",
+                        "SourceSha256":  "A832D519E0D7254DE217150C558ADACC98403990BED9E3ED177B086167782D37"
+                    },
+                    {
+                        "WorkerFolder":  "gnk-asg-contact-api-worker",
+                        "ProjectRoot":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-contact-api-worker",
+                        "ConfigFile":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-contact-api-worker\\wrangler.toml",
+                        "ConfigSha256":  "28F369346E940219EE222B077E76FCB9DA1FE04382A71CED658857D10510EAD0",
+                        "SourceIndex":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-contact-api-worker\\src\\index.js",
+                        "SourceSha256":  "7537310D21466841F8765182B0F02B73DD4A23B8282AC18CB1879CA04F07A8FA"
+                    },
+                    {
+                        "WorkerFolder":  "gnk-asg-direct-operator",
+                        "ProjectRoot":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-direct-operator",
+                        "ConfigFile":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-direct-operator\\wrangler.toml",
+                        "ConfigSha256":  "2246CDFC1427909F160FE478E2CC67867EFA28CC9BA71C48EA68B8D257E62EBA",
+                        "SourceIndex":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-direct-operator\\src\\index.js",
+                        "SourceSha256":  "89258032017BA29EC2DF526915DF0A39142708C3230D44314202CB81B5011705"
+                    },
+                    {
+                        "WorkerFolder":  "gnk-asg-publish-operator",
+                        "ProjectRoot":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-publish-operator",
+                        "ConfigFile":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-publish-operator\\wrangler.toml",
+                        "ConfigSha256":  "881F1002482AB25690D72EF09593DC96204829C231A7FD12050C34388EF361B0",
+                        "SourceIndex":  "G:\\GNK\\GNK_ASG_GITHUB_MONOREPO\\workers\\gnk-asg-publish-operator\\src\\index.js",
+                        "SourceSha256":  "5FF904083B11947AF6D14206FB99144D26DF876FF11233DFF72E31D377B15F8A"
+                    }
+                ]
+}

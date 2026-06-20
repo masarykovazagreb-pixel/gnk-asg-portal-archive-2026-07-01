@@ -1,0 +1,33 @@
+.seo-profile-link{
+  width:min(1240px,calc(100% - 40px));
+  margin:18px auto 0;
+  padding:12px 0 0;
+  border-top:1px solid rgba(255,255,255,.07);
+  color:#92a6be;
+  font-size:.68rem;
+  font-weight:400;
+  line-height:1.55;
+  letter-spacing:.015em;
+}
+footer .seo-profile-link a{
+  display:inline;
+  margin:0;
+  color:#b7c8db;
+  font-size:inherit;
+  font-weight:500;
+  text-decoration:underline;
+  text-decoration-color:rgba(183,200,219,.38);
+  text-underline-offset:2px;
+}
+footer .seo-profile-link a:hover{
+  color:#d7e1ed;
+  text-decoration-color:rgba(215,225,237,.72);
+}
+@media(max-width:680px){
+  .seo-profile-link{
+    margin-top:14px;
+    padding-top:10px;
+    font-size:.66rem;
+    line-height:1.5;
+  }
+}

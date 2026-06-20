@@ -1,0 +1,117 @@
+name: Automated Macro Market Refresh
+
+# Odvojeni ciklus za panel Bitcoin · zlato · Brent nafta · USD/EUR.
+# Ne ovisi o vijestima ni o petominutnom burzovnom monitoru.
+# Ručni okidač macro ciklusa: 2026-05-31-002.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/macro-market-refresh.yml'
+      - 'scripts/update_macro_data.py'
+      - 'data/macro_market.json'
+  schedule:
+    - cron: '7,37 * * * *'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: automated-macro-market-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh-macro-market:
+    name: Refresh BTC gold Brent and USD/EUR panel
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout current main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate macro market processor
+        run: python -m py_compile scripts/update_macro_data.py
+
+      - name: Refresh macro market dataset
+        run: python scripts/update_macro_data.py
+
+      - name: Validate macro market output
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('data/macro_market.json').read_text(encoding='utf-8'))
+          assert payload.get('updated_at'), payload
+          assert isinstance(payload.get('assets'), dict), payload
+          assert len(payload.get('assets', {})) >= 2, payload
+          print('Macro market ready:', payload.get('updated_at'), list(payload.get('assets', {}).keys()))
+          PY
+
+      - name: Commit macro market dataset
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-asg-macro-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/macro_market.json
+          if git diff --cached --quiet; then
+            echo "Nema novih macro market promjena."
+          else
+            git commit -m "Automated macro market refresh"
+            git push origin HEAD:main
+          fi
+
+  deploy-macro-market:
+    name: Deploy portal with current macro market data
+    needs: refresh-macro-market
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout current published main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Prepare public build
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'scripts/' \
+            --exclude '_site/' \
+            --exclude '*.py' \
+            ./ _site/
+          test -f _site/data/macro_market.json
+          grep -q 'updated_at' _site/data/macro_market.json
+
+      - name: Upload public portal artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy public portal
+        id: deployment
+        uses: actions/deploy-pages@v4

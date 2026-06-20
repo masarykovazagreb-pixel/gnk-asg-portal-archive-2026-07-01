@@ -1,0 +1,23 @@
+{
+  "id": "/",
+  "name": "GNK ASG d.o.o. — Corporate Technology Portal",
+  "short_name": "GNK ASG",
+  "description": "Korporativni i tehnološki portal GNK ASG d.o.o. — financije, umjetna inteligencija, tržišni pokazatelji i poslovne vijesti.",
+  "lang": "hr-HR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f7f9fc",
+  "theme_color": "#07162d",
+  "categories": ["business", "finance", "productivity", "news"],
+  "icons": [
+    {"src": "assets/app-icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any maskable"},
+    {"src": "assets/app-icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Intelligence Desk", "short_name": "AI Desk", "url": "/#assistant", "icons": [{"src":"assets/app-icon-192.svg", "sizes":"192x192", "type":"image/svg+xml"}]},
+    {"name": "Market Monitor", "short_name": "Markets", "url": "/#digital-assets", "icons": [{"src":"assets/app-icon-192.svg", "sizes":"192x192", "type":"image/svg+xml"}]},
+    {"name": "Business News", "short_name": "News", "url": "/#news", "icons": [{"src":"assets/app-icon-192.svg", "sizes":"192x192", "type":"image/svg+xml"}]}
+  ]
+}

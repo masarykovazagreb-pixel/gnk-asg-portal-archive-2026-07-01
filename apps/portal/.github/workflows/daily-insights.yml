@@ -1,0 +1,106 @@
+name: Tri dnevne autorske objave
+
+on:
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "Opcionalno: morning, afternoon ili evening"
+        required: false
+        default: ""
+  schedule:
+    # Europe/Zagreb 09:00: 07:00 UTC ljeti, 08:00 UTC zimi
+    - cron: "0 7 * * *"
+    - cron: "0 8 * * *"
+    # Europe/Zagreb 15:00: 13:00 UTC ljeti, 14:00 UTC zimi
+    - cron: "0 13 * * *"
+    - cron: "0 14 * * *"
+    # Europe/Zagreb 21:00: 19:00 UTC ljeti, 20:00 UTC zimi
+    - cron: "0 19 * * *"
+    - cron: "0 20 * * *"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  TZ: Europe/Zagreb
+  PYTHONUNBUFFERED: "1"
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+concurrency:
+  group: gnk-asg-daily-insights
+  cancel-in-progress: false
+
+jobs:
+  publish-daily-insight:
+    name: Objavi jednu dnevnu autorsku objavu
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repozitorija
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Postavi Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Objavi dnevnu objavu ako je lokalni termin
+        shell: bash
+        env:
+          DAILY_INSIGHT_SLOT: ${{ github.event.inputs.slot }}
+        run: |
+          set -euo pipefail
+          python scripts/publish_daily_insight.py
+
+      - name: Spremi promjene ako postoje
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add insights-hr data/daily_insight_log.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Nema novih dnevnih objava za spremanje."
+          else
+            git commit -m "Automatska dnevna autorska objava"
+            git pull --rebase origin main
+            git push origin HEAD:main
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  deploy-pages:
+    name: Objavi portal nakon dnevne objave
+    needs: publish-daily-insight
+    runs-on: ubuntu-latest
+    if: always()
+    concurrency:
+      group: gnk-asg-pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Preuzmi aktualni main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Konfiguriraj GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Pripremi portal za objavu
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+      - name: Objavi aktualni portal
+        id: deployment
+        uses: actions/deploy-pages@v4

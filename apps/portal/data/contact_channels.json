@@ -1,0 +1,65 @@
+{
+  "updated_at": "2026-06-01",
+  "company": "GNK ASG d.o.o.",
+  "primary_domain": "gnk-asg.hr",
+  "mail_provider": "Zoho Mail",
+  "security_principle": "The public GNK ASG portal must not request, process or store email passwords. Mailbox access is handled only through official provider authentication such as Zoho sign-in or approved backend integrations.",
+  "primary_form_email": "contact@gnk-asg.hr",
+  "general_email": "info@gnk-asg.hr",
+  "security_notice_hr": "Nakon aktivacije Zoho Mail sustava, korisničko ime i lozinka unosit će se isključivo na službenoj sigurnoj Zoho prijavnoj stranici. GNK ASG portal neće tražiti niti pohranjivati zaporku e-pošte.",
+  "security_notice_en": "After activation of the Zoho Mail system, the username and password will be entered only on the official secure Zoho sign-in page. The GNK ASG portal will not request or store any email password.",
+  "phone_display": "+385 91 610 4398",
+  "phone_e164": "385916104398",
+  "whatsapp_url": "https://wa.me/385916104398",
+  "planned_mailboxes": [
+    { "address": "info@gnk-asg.hr", "purpose_hr": "Opće informacije i standardni upiti", "purpose_en": "General public information and standard inquiries", "status": "planned_zoho" },
+    { "address": "office@gnk-asg.hr", "purpose_hr": "Ured, administracija i poslovna koordinacija", "purpose_en": "Office, administration and business coordination", "status": "planned_zoho" },
+    { "address": "contact@gnk-asg.hr", "purpose_hr": "Kontakt forma i javni upiti", "purpose_en": "Website contact form and public inquiries", "status": "planned_zoho" },
+    { "address": "press@gnk-asg.hr", "purpose_hr": "Mediji i javna komunikacija", "purpose_en": "Media and public communication", "status": "planned_zoho" },
+    { "address": "legal@gnk-asg.hr", "purpose_hr": "Pravna korespondencija i formalne obavijesti", "purpose_en": "Legal correspondence and formal notices", "status": "planned_zoho" },
+    { "address": "intelligence@gnk-asg.hr", "purpose_hr": "GNK ASG Intelligence Desk i objave", "purpose_en": "GNK ASG Intelligence Desk and publication workflow", "status": "planned_zoho" },
+    { "address": "it@gnk-asg.hr", "purpose_hr": "IT – Osobni digitalni asistent, tehnička podrška i All Desk", "purpose_en": "IT personal digital assistant, technical support and All Desk", "status": "planned_zoho" }
+  ],
+  "whatsapp": {
+    "number_display": "+385 91 610 4398",
+    "number_e164": "385916104398",
+    "default_message_hr": "Poštovani, šaljem upit putem GNK ASG kontakt centra. Tema upita: ",
+    "default_message_en": "Hello, I am sending an inquiry through the GNK ASG Contact Desk. Inquiry topic: "
+  },
+  "inquiry_categories": [
+    { "id": "business", "label_hr": "Poslovna suradnja", "label_en": "Business cooperation", "target_email": "office@gnk-asg.hr" },
+    { "id": "documents", "label_hr": "Javni dokumenti i izvori", "label_en": "Public documents and sources", "target_email": "contact@gnk-asg.hr" },
+    { "id": "media", "label_hr": "Medijski upit", "label_en": "Media inquiry", "target_email": "press@gnk-asg.hr" },
+    { "id": "legal", "label_hr": "Pravni / formalni upit", "label_en": "Legal / formal inquiry", "target_email": "legal@gnk-asg.hr" },
+    { "id": "technical", "label_hr": "Tehnička podrška za portal", "label_en": "Portal technical support", "target_email": "it@gnk-asg.hr" },
+    { "id": "intelligence", "label_hr": "GNK ASG Intelligence Desk", "label_en": "GNK ASG Intelligence Desk", "target_email": "intelligence@gnk-asg.hr" },
+    { "id": "general", "label_hr": "Opći upit", "label_en": "General inquiry", "target_email": "info@gnk-asg.hr" }
+  ],
+  "all_desk_pipeline": [
+    "receive inquiry",
+    "classify category",
+    "route to planned mailbox",
+    "prepare draft response",
+    "mark sensitive items for manual review",
+    "track unanswered items",
+    "connect with calendar when meeting is requested"
+  ],
+  "sensitive_review_required_for": [
+    "legal claims",
+    "tax matters",
+    "financial advice",
+    "medical matters",
+    "personal data",
+    "defamatory or accusatory content",
+    "contractual commitments",
+    "payment instructions",
+    "bank account changes"
+  ],
+  "additional_contacts": [
+    { "label": "USA fax", "value": "+1 (303) 731-0028" },
+    { "label": "USA mobile", "value": "+1 (970) 509-4044" },
+    { "label": "Croatia mobile", "value": "+385 91 535 8365" },
+    { "label": "Slovenia contact", "value": "+386 32 144 1786" },
+    { "label": "GNK ASG WhatsApp contact", "value": "+385 91 610 4398" }
+  ]
+}

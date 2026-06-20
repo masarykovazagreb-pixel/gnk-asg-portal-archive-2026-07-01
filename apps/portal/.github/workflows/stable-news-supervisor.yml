@@ -1,0 +1,84 @@
+name: Stable News Supervisor
+
+# Hourly news refresh trigger: 2026-05-30-001
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/stable-news-supervisor.yml'
+      - 'scripts/news_publication.py'
+      - 'scripts/news_heartbeat.py'
+      - 'data/news_config_v2.json'
+      - 'data/blocked_news.json'
+  schedule:
+    - cron: '0 * * * *'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: stable-news-supervisor
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install preview dependency
+        run: python -m pip install --disable-pip-version-check --quiet Pillow
+      - name: Run news modules without hard stop
+        shell: bash
+        run: |
+          python -m py_compile scripts/news_publication.py scripts/news_heartbeat.py
+          python scripts/news_publication.py || echo "news publication partial"
+          python scripts/news_heartbeat.py
+      - name: Commit news data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-asg-news-supervisor"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/news.json data/news_archive.json data/update_status.json assets/news-preview podijeli/vijest
+          if git diff --cached --quiet; then
+            echo "No news data changes."
+          else
+            git commit -m "Stable hourly news supervisor refresh"
+            git pull --rebase origin main || true
+            git push origin HEAD:main
+          fi
+
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    concurrency:
+      group: stable-pages-deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Prepare public portal
+        run: |
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete --exclude '.git/' --exclude '.github/' --exclude 'scripts/' --exclude '_site/' --exclude '*.py' ./ _site/
+          test -f _site/data/news.json
+          test -f _site/data/update_status.json
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v4

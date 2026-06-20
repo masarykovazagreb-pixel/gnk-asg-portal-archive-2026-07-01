@@ -1,0 +1,61 @@
+name: Browser Refresh Pages Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'assets/app.js'
+      - 'assets/browser-data-refresh.js'
+      - '.github/workflows/browser-refresh-pages-deploy.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: browser-refresh-pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Build static portal with fresh browser module
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete --exclude '.git/' --exclude '.github/' --exclude 'scripts/' --exclude '_site/' --exclude '*.py' ./ _site/
+          python - <<'PY'
+          from pathlib import Path
+          fresh = 'assets/app.js?v=20260531-browser-data-refresh01'
+          for file_name in ['_site/index.html', '_site/en/index.html']:
+              path = Path(file_name)
+              if not path.exists():
+                  continue
+              text = path.read_text(encoding='utf-8')
+              text = text.replace('assets/app.js?v=20260528-cross-asset-chart-fixed07', fresh)
+              text = text.replace('assets/app.js?v=20260529-publication-stable02', fresh)
+              path.write_text(text, encoding='utf-8')
+          PY
+          test -f _site/assets/browser-data-refresh.js
+          grep -q 'browser-data-refresh.js' _site/assets/app.js
+          grep -q '20260531-browser-data-refresh01' _site/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

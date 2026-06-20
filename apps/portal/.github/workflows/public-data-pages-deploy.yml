@@ -1,0 +1,78 @@
+name: Public Data Pages Deploy Controller
+
+# Kontrolni deploy sloj za javne JSON podatke i frontend module.
+# Ne generira vijesti niti tržišne podatke; samo objavljuje najnovije stanje iz main grane.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data/**.json'
+      - 'assets/app.js'
+      - 'assets/browser-data-refresh.js'
+      - 'assets/status.js'
+      - 'assets/market.js'
+      - 'assets/live-market-pulse.js'
+      - 'assets/bitcoin-chart.js'
+      - 'assets/market-expansion.js'
+      - 'index.html'
+      - 'en/index.html'
+      - '.github/workflows/public-data-pages-deploy.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: public-data-pages-deploy-controller
+  cancel-in-progress: true
+
+jobs:
+  deploy-current-main:
+    name: Deploy current public portal data
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout current main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Prepare public portal artifact
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'scripts/' \
+            --exclude '_site/' \
+            --exclude '*.py' \
+            ./ _site/
+          test -f _site/index.html
+          test -f _site/data/macro_market.json
+          test -f _site/data/stock_exchanges.json
+          test -f _site/data/market.json
+          test -f _site/assets/browser-data-refresh.js
+          grep -q 'browser-data-refresh.js' _site/assets/app.js
+
+      - name: Upload public portal artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy public portal
+        id: deployment
+        uses: actions/deploy-pages@v4

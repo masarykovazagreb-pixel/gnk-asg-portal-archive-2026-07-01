@@ -1,0 +1,89 @@
+name: Publish ASG Favicon for Search Results
+
+# Jednokratno i ponovljivo usklađivanje svih javnih stranica sa stabilnim
+# crvenim ASG faviconom koji Google može prikazati uz rezultat domene.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/favicon-search-result-refresh.yml'
+      - 'favicon.svg'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: asg-favicon-search-publication
+  cancel-in-progress: true
+
+jobs:
+  publish-favicon:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout current main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply stable root favicon to public HTML pages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          favicon = '<link rel="icon" href="https://gnk-asg.hr/favicon.svg" type="image/svg+xml" sizes="any">'
+          for path in Path('.').rglob('*.html'):
+              if any(part in {'.git', '_site'} for part in path.parts):
+                  continue
+              text = path.read_text(encoding='utf-8')
+              original = text
+              text = re.sub(r'\s*<link\s+rel="(?:shortcut icon|icon)"[^>]*>', '', text)
+              text = text.replace('</head>', '  ' + favicon + '\n</head>', 1)
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+          sw = Path('sw.js')
+          if sw.exists():
+              text = sw.read_text(encoding='utf-8')
+              if "'./favicon.svg'" not in text:
+                  text = text.replace("'./assets/favicon.svg'", "'./favicon.svg', './assets/favicon.svg'", 1)
+                  sw.write_text(text, encoding='utf-8')
+          PY
+      - name: Validate search favicon publication metadata
+        run: |
+          test -f favicon.svg
+          grep -q 'https://gnk-asg.hr/favicon.svg' index.html
+          grep -q 'https://gnk-asg.hr/favicon.svg' nermin-sefic/index.html
+          grep -q 'https://gnk-asg.hr/favicon.svg' en/index.html
+      - name: Commit stable favicon references
+        run: |
+          git config user.name "gnk-asg-favicon-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add favicon.svg sw.js index.html en/index.html nermin-sefic/index.html en/nermin-sefic/index.html financije/index.html registri/index.html tehnologija/index.html trzista/index.html intelligence-desk/index.html teme/index.html sadrzaj/index.html instalacija/index.html en/finance/index.html en/registries/index.html en/technology/index.html en/markets/index.html en/intelligence-desk/index.html 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Use red ASG badge as public search favicon"
+            git push origin HEAD:main
+          fi
+      - name: Prepare current public portal artifact
+        run: |
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete --exclude '.git/' --exclude '.github/' --exclude 'scripts/' --exclude '_site/' --exclude '*.py' ./ _site/
+          test -f _site/favicon.svg
+          grep -q 'https://gnk-asg.hr/favicon.svg' _site/index.html
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload public portal artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy current public portal with ASG favicon
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,55 @@
+name: Public JSON Pages Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data/*.json'
+      - 'assets/app.js'
+      - 'assets/browser-data-refresh.js'
+      - 'assets/market.js'
+      - 'assets/live-market-pulse.js'
+      - 'assets/bitcoin-chart.js'
+      - 'assets/market-expansion.js'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: public-json-pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Build static artifact
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete --exclude '.git/' --exclude '.github/' --exclude 'scripts/' --exclude '_site/' --exclude '*.py' ./ _site/
+          test -f _site/data/macro_market.json
+          test -f _site/data/stock_exchanges.json
+          test -f _site/data/market.json
+          test -f _site/assets/browser-data-refresh.js
+          grep -q 'browser-data-refresh.js' _site/assets/app.js
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

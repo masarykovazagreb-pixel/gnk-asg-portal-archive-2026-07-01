@@ -1,0 +1,40 @@
+name: Manual Corporate Media Refresh
+
+# Kontrolirani ručni postupak za rubricu GNK ASG u medijima.
+# Javna rubrika prikazuje samo odobrene stavke, a uklonjene poveznice ostaju isključene putem data/media_removed.json.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manual-media-controlled-publication
+  cancel-in-progress: false
+
+jobs:
+  publish-media:
+    name: Manually discover and publish controlled corporate media items
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Discover public corporate media results
+        run: python scripts/discover_corporate_media.py
+      - name: Publish approved media items and dedicated monitor status
+        run: |
+          set -e
+          git config user.name "gnk-asg-media-monitor-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/media_approved.json data/media_monitor_status.json
+          if git diff --cached --quiet; then
+            echo "No controlled media changes."
+            exit 0
+          fi
+          git commit -m "Manual controlled corporate media publication update"
+          git push origin HEAD:main

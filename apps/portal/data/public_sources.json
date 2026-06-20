@@ -1,0 +1,97 @@
+{
+  "updated_at": "2026-05-23",
+  "entity": {
+    "name": "GNK ASG d.o.o.",
+    "oib": "75227917632",
+    "mbs": "081512375"
+  },
+  "groups": [
+    {
+      "id": "registries",
+      "title_hr": "Registri društava i javne objave",
+      "title_en": "Company Registers and Public Filings",
+      "items": [
+        {
+          "name": "Sudski registar Republike Hrvatske",
+          "type_hr": "Službeni registar",
+          "type_en": "Official register",
+          "summary_hr": "Pretraga hrvatskih pravnih subjekata po nazivu, MBS-u ili OIB-u.",
+          "summary_en": "Search Croatian legal entities by name, court registration number or tax ID.",
+          "url": "https://sudreg.pravosudje.hr/ords/r/esudreg/public/1",
+          "lookup_hr": "Pretražite OIB: 75227917632 ili MBS: 081512375",
+          "lookup_en": "Search Tax ID: 75227917632 or MBS: 081512375",
+          "automated": false
+        },
+        {
+          "name": "FINA RGFI — Javna objava",
+          "type_hr": "Financijski izvještaji",
+          "type_en": "Financial statements",
+          "summary_hr": "Službeni javni pregled predanih financijskih izvještaja i povezanih objava.",
+          "summary_en": "Official public access to submitted financial statements and related disclosures.",
+          "url": "https://rgfi.fina.hr/JavnaObjava-web/",
+          "lookup_hr": "Pretraga prema OIB-u društva",
+          "lookup_en": "Search using the company Tax ID",
+          "automated": false
+        },
+        {
+          "name": "Colorado Secretary of State — Business Database",
+          "type_hr": "Međunarodni registar",
+          "type_en": "International register",
+          "summary_hr": "Javna pretraga poslovnih subjekata, naziva i ID brojeva u Coloradu.",
+          "summary_en": "Public search of business entities, names and ID numbers in Colorado.",
+          "url": "https://www.sos.state.co.us/biz/BusinessEntityCriteriaExt.do",
+          "lookup_hr": "Pretražite: GNK DINAMO Ltd. / Entity ID 20238180649",
+          "lookup_en": "Search: GNK DINAMO Ltd. / Entity ID 20238180649",
+          "automated": false
+        }
+      ]
+    },
+    {
+      "id": "rights",
+      "title_hr": "Žigovi i intelektualno vlasništvo",
+      "title_en": "Trade Marks and Intellectual Property",
+      "items": [
+        {
+          "name": "EUIPO eSearch plus",
+          "type_hr": "EU žigovi",
+          "type_en": "EU trade marks",
+          "summary_hr": "Službena javna pretraga žigova i dizajna Europske unije.",
+          "summary_en": "Official public search for European Union trade marks and designs.",
+          "url": "https://euipo.europa.eu/eSearch/",
+          "lookup_hr": "Pretražite naziv GNK DINAMO ili broj prijave",
+          "lookup_en": "Search GNK DINAMO or an application number",
+          "automated": false
+        }
+      ]
+    },
+    {
+      "id": "technology",
+      "title_hr": "IT, sigurnost i službeni tehnološki izvori",
+      "title_en": "IT, Security and Official Technology Sources",
+      "items": [
+        {
+          "name": "ENISA — European Union Agency for Cybersecurity",
+          "type_hr": "Kibernetička sigurnost",
+          "type_en": "Cybersecurity",
+          "summary_hr": "Aktualne javne objave o kibernetičkoj sigurnosti, NIS2, ranjivostima i digitalnom identitetu.",
+          "summary_en": "Current public updates on cybersecurity, NIS2, vulnerabilities and digital identity.",
+          "url": "https://www.enisa.europa.eu/news",
+          "lookup_hr": "Službene javne objave ENISA-e",
+          "lookup_en": "Official public ENISA updates",
+          "automated": true
+        },
+        {
+          "name": "European Central Bank — Reference Rates",
+          "type_hr": "Tržišni podatci",
+          "type_en": "Market data",
+          "summary_hr": "Službeni javni referentni tečajevi eura kao podloga za buduće financijsko proširenje portala.",
+          "summary_en": "Official public euro reference rates as a basis for future financial portal expansion.",
+          "url": "https://www.ecb.europa.eu/stats/eurofxref/",
+          "lookup_hr": "Javni podatci bez korisničke prijave",
+          "lookup_en": "Public data without account login",
+          "automated": true
+        }
+      ]
+    }
+  ]
+}

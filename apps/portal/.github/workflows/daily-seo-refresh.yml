@@ -1,0 +1,101 @@
+name: Daily SEO Refresh
+
+# Samostalni SEO proces objavljuje se iz najnovijeg main stanja.
+# Ne dijeli red izvršavanja s petominutnim tržišnim i satnim podatkovnim procesima.
+on:
+  schedule:
+    - cron: '42 4 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/generate_seo.py'
+      - 'scripts/generate_social_preview.py'
+      - 'assets/gnk-asg-social-card.svg'
+      - 'index.html'
+      - 'sadrzaj/index.html'
+      - 'teme/index.html'
+      - 'autorske-objave/**'
+      - 'podijeli/**'
+      - 'trzista/index.html'
+      - 'financije/index.html'
+      - 'tehnologija/index.html'
+      - 'intelligence-desk/index.html'
+      - 'registri/index.html'
+      - 'instalacija/index.html'
+      - 'en/index.html'
+      - 'en/markets/index.html'
+      - 'en/finance/index.html'
+      - 'en/technology/index.html'
+      - 'en/intelligence-desk/index.html'
+      - 'en/registries/index.html'
+      - '.github/workflows/daily-seo-refresh.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-seo-publication
+  cancel-in-progress: true
+
+jobs:
+  refresh-seo:
+    name: Generate and publish SEO metadata and social previews
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image generator dependency
+        run: python -m pip install --disable-pip-version-check pillow
+      - name: Validate SEO and preview generators
+        run: python -m py_compile scripts/generate_social_preview.py scripts/generate_seo.py
+      - name: Generate PNG preview metadata and search files
+        run: |
+          python scripts/generate_social_preview.py
+          python scripts/generate_seo.py
+      - name: Publish generated SEO output without concurrent-update conflicts
+        run: |
+          set -e
+          git config user.name "gnk-asg-seo-bot"
+          git config user.email "actions@users.noreply.github.com"
+          rm -rf /tmp/gnk-seo-output
+          mkdir -p /tmp/gnk-seo-output/assets /tmp/gnk-seo-output/en/markets /tmp/gnk-seo-output/en/finance /tmp/gnk-seo-output/en/technology /tmp/gnk-seo-output/en/intelligence-desk /tmp/gnk-seo-output/en/registries /tmp/gnk-seo-output/en /tmp/gnk-seo-output/trzista /tmp/gnk-seo-output/sadrzaj /tmp/gnk-seo-output/teme /tmp/gnk-seo-output/financije /tmp/gnk-seo-output/tehnologija /tmp/gnk-seo-output/intelligence-desk /tmp/gnk-seo-output/registri /tmp/gnk-seo-output/instalacija /tmp/gnk-seo-output/autorske-objave /tmp/gnk-seo-output/podijeli
+          cp assets/gnk-asg-social-card.png assets/share-financije.png assets/share-grupa.png assets/share-trzista.png assets/share-bpp.png assets/share-tehnologija.png assets/share-vijesti.png assets/share-teme.png assets/share-dokumenti.png /tmp/gnk-seo-output/assets/
+          cp index.html sitemap.xml robots.txt /tmp/gnk-seo-output/
+          cp en/index.html /tmp/gnk-seo-output/en/
+          cp trzista/index.html /tmp/gnk-seo-output/trzista/
+          cp en/markets/index.html /tmp/gnk-seo-output/en/markets/
+          cp sadrzaj/index.html /tmp/gnk-seo-output/sadrzaj/
+          cp teme/index.html /tmp/gnk-seo-output/teme/
+          cp autorske-objave/*.html /tmp/gnk-seo-output/autorske-objave/ 2>/dev/null || true
+          cp -R podijeli/. /tmp/gnk-seo-output/podijeli/ 2>/dev/null || true
+          cp financije/index.html /tmp/gnk-seo-output/financije/
+          cp en/finance/index.html /tmp/gnk-seo-output/en/finance/
+          cp tehnologija/index.html /tmp/gnk-seo-output/tehnologija/
+          cp en/technology/index.html /tmp/gnk-seo-output/en/technology/
+          cp intelligence-desk/index.html /tmp/gnk-seo-output/intelligence-desk/
+          cp en/intelligence-desk/index.html /tmp/gnk-seo-output/en/intelligence-desk/
+          cp registri/index.html /tmp/gnk-seo-output/registri/
+          cp en/registries/index.html /tmp/gnk-seo-output/en/registries/
+          cp instalacija/index.html /tmp/gnk-seo-output/instalacija/
+          publish_generated_seo() {
+            git fetch origin main
+            git reset --hard origin/main
+            cp -R /tmp/gnk-seo-output/. .
+            git add assets/gnk-asg-social-card.png assets/share-financije.png assets/share-grupa.png assets/share-trzista.png assets/share-bpp.png assets/share-tehnologija.png assets/share-vijesti.png assets/share-teme.png assets/share-dokumenti.png index.html en/index.html trzista/index.html en/markets/index.html sadrzaj/index.html teme/index.html autorske-objave/*.html podijeli/ financije/index.html en/finance/index.html tehnologija/index.html en/technology/index.html intelligence-desk/index.html en/intelligence-desk/index.html registri/index.html en/registries/index.html instalacija/index.html sitemap.xml robots.txt
+            if git diff --cached --quiet; then
+              echo "No SEO changes."
+              return 0
+            fi
+            git commit -m "Automated bilingual SEO and section-specific PNG preview refresh"
+            git push origin HEAD:main
+          }
+          publish_generated_seo || (sleep 8 && publish_generated_seo)

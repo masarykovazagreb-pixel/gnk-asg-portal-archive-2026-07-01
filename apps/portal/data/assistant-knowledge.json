@@ -1,0 +1,39 @@
+{
+    "generatedAt":  "2026-06-17T16:43:09.2992177+02:00",
+    "assistantName":  "GNK ASG AI Pomoć",
+    "publicMode":  true,
+    "adminAccess":  false,
+    "rules":  [
+                  "Odgovaraj samo o javnim informacijama portala.",
+                  "Ne provodi izmjene na portalu.",
+                  "Ne traži i ne obrađuj tajne tokene.",
+                  "Ne daj pravni, financijski, porezni ni investicijski savjet.",
+                  "Za osjetljiva pitanja korisnika uputi na službenu kontakt formu."
+              ],
+    "routes":  {
+                   "contact":  "https://gnk-asg.hr/contact/",
+                   "financials_hr":  "https://gnk-asg.hr/#financials",
+                   "network_hr":  "https://gnk-asg.hr/#grupa",
+                   "legal_hr":  "https://gnk-asg.hr/legal/",
+                   "profile_en":  "https://gnk-asg.hr/en/#o-nama",
+                   "profile_hr":  "https://gnk-asg.hr/#o-nama",
+                   "admin":  "https://gnk-asg.hr/operator-dashboard/",
+                   "markets_en":  "https://gnk-asg.hr/markets/",
+                   "financials_en":  "https://gnk-asg.hr/en/#financials",
+                   "markets_hr":  "https://gnk-asg.hr/trzista/",
+                   "network_en":  "https://gnk-asg.hr/en/#grupa",
+                   "news_en":  "https://gnk-asg.hr/news/",
+                   "news_hr":  "https://gnk-asg.hr/vijesti/",
+                   "legal_en":  "https://gnk-asg.hr/en/legal/"
+               },
+    "topics":  {
+                   "profil":  "Korporativni profil, osnovni podaci, sjedište, OIB, MBS i direktor.",
+                   "admin":  "Admin dashboard je zaštićen tokenom; javni asistent nema pristup admin funkcijama.",
+                   "financije":  "Revidirani financijski pokazatelji, aktiva, kapital, rezerve i javni financijski profil.",
+                   "trzista":  "Market backend, digitalna imovina, stablecoini, zlato, srebro, nafta, plin, FX i ASG Gold Reference.",
+                   "kontakt":  "Kontakt forma s odabirom odjela i evidencijskim brojem.",
+                   "mreza":  "Mreža i povezana društva, grupni prikaz i poslovna struktura.",
+                   "legal":  "Uvjeti korištenja, privatnost, kolačići, odricanje od odgovornosti i kontakt za pravna pitanja.",
+                   "vijesti":  "News backend; vijesti su odvojene od indexa i dostupne na posebnoj stranici."
+               }
+}

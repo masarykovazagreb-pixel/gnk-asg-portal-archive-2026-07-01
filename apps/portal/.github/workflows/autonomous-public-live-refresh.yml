@@ -1,0 +1,225 @@
+name: Automated News Publication
+
+# Jedini redovni automatski proces javnih vijesti portala.
+# Jedna skripta obavlja dohvat, deduplikaciju, arhivu, share prikaze i status.
+# Tržišni podaci nisu dio ovog ciklusa i ne mogu zaustaviti objavu vijesti.
+# Obrada vijesti i Pages deployment imaju odvojene redove izvođenja:
+# zastoj objave stranice ne smije blokirati sljedeći ciklus novih vijesti.
+# Redovni ritam objave: svakih 30 minuta radi stabilnog javnog statusa.
+# Ako dio vanjskih RSS izvora privremeno padne, postojeći valjani javni skup i degraded status se ipak objavljuju.
+# Status se nakon svakog ciklusa normalizira kroz checked_at i last_attempt_at.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/autonomous-public-live-refresh.yml'
+      - 'scripts/news_publication.py'
+      - 'data/news_config_v2.json'
+      - 'data/blocked_news.json'
+      - 'assets/app.js'
+      - 'assets/news-live.js'
+      - 'assets/hourly-data-disclosure.js'
+      - 'assets/status.js'
+      - 'sw.js'
+  schedule:
+    - cron: '*/30 * * * *'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  process-and-commit-news:
+    name: Process and commit public news
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    concurrency:
+      group: automated-news-processing-stable-v4
+      cancel-in-progress: false
+    steps:
+      - name: Checkout current main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install preview image dependency
+        run: python -m pip install --disable-pip-version-check --quiet Pillow
+
+      - name: Validate the single news engine
+        run: python -m py_compile scripts/news_publication.py
+
+      - name: Process public news, archive and share previews
+        run: |
+          set +e
+          python scripts/news_publication.py
+          code=$?
+          if [ "$code" -ne 0 ]; then
+            echo "News engine returned non-zero status $code. Continuing to validation because a degraded refresh may still have written valid public output."
+          fi
+          exit 0
+
+      - name: Normalize news status metadata
+        run: |
+          python - <<'PY'
+          import json
+          import datetime as dt
+          from pathlib import Path
+
+          status_path = Path('data/update_status.json')
+          news_path = Path('data/news.json')
+          archive_path = Path('data/news_archive.json')
+
+          status = json.loads(status_path.read_text(encoding='utf-8')) if status_path.exists() else {}
+          public = json.loads(news_path.read_text(encoding='utf-8')) if news_path.exists() else []
+          archive = json.loads(archive_path.read_text(encoding='utf-8')) if archive_path.exists() else []
+          now = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
+
+          news = status.get('news') if isinstance(status.get('news'), dict) else {}
+          ratio = float(news.get('source_success_ratio', 1) or 0)
+
+          news['checked_at'] = now
+          news['last_attempt_at'] = now
+          news['updated_at'] = news.get('updated_at') or now
+          news['status'] = 'ok' if public and ratio >= 0.8 else ('degraded' if public else 'failed')
+          news['engine'] = 'single_publication_engine_v1'
+          news['cadence'] = 'scheduled every 30 minutes'
+          news['source_success_policy'] = 'publish_valid_public_set_with_degraded_status_when_partial_sources_fail'
+          news['public_items'] = len(public)
+          news['max_public_items'] = 500
+          news['archive_items'] = len(archive)
+          news['max_archive_items'] = 400
+
+          status['updated_at'] = now
+          status['news'] = news
+          status_path.write_text(json.dumps(status, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(news, ensure_ascii=False))
+          PY
+
+      - name: Validate publication output
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          public = json.loads(Path('data/news.json').read_text(encoding='utf-8'))
+          archive = json.loads(Path('data/news_archive.json').read_text(encoding='utf-8'))
+          status = json.loads(Path('data/update_status.json').read_text(encoding='utf-8')).get('news', {})
+          assert isinstance(public, list) and 0 < len(public) <= 500, f'Neispravan javni skup: {len(public)}'
+          assert isinstance(archive, list) and len(archive) <= 400, f'Neispravna arhiva: {len(archive)}'
+          assert status.get('engine') == 'single_publication_engine_v1', status
+          assert status.get('status') in ('ok', 'degraded'), status
+          assert status.get('public_items') == len(public), status
+          assert status.get('archive_items') == len(archive), status
+          assert status.get('checked_at'), status
+          assert status.get('last_attempt_at'), status
+          print(f"Spremno: status={status.get('status')}, javno={len(public)}, arhiva={len(archive)}, share={status.get('share_previews_ready')}, provjereno={status.get('checked_at')}")
+          PY
+
+      - name: Commit news publication files safely
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-asg-news-bot"
+          git config user.email "actions@users.noreply.github.com"
+          rm -rf /tmp/gnk-news-output
+          mkdir -p /tmp/gnk-news-output/data /tmp/gnk-news-output/assets /tmp/gnk-news-output/podijeli
+          cp data/news.json data/news_archive.json data/update_status.json /tmp/gnk-news-output/data/
+          cp -R assets/news-preview /tmp/gnk-news-output/assets/ 2>/dev/null || true
+          cp -R podijeli/vijest /tmp/gnk-news-output/podijeli/ 2>/dev/null || true
+
+          publish_news() {
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/gnk-news-output/data/*.json data/
+            mkdir -p assets podijeli
+            cp -R /tmp/gnk-news-output/assets/news-preview assets/ 2>/dev/null || true
+            cp -R /tmp/gnk-news-output/podijeli/vijest podijeli/ 2>/dev/null || true
+            git add data/news.json data/news_archive.json data/update_status.json assets/news-preview podijeli/vijest
+            if git diff --cached --quiet; then
+              echo "Nema novih promjena za objavu."
+              return 0
+            fi
+            git commit -m "Automated news publication refresh"
+            git push origin HEAD:main
+          }
+          publish_news || (sleep 5 && publish_news) || (sleep 10 && publish_news)
+
+  deploy-portal:
+    name: Deploy committed portal with new news
+    needs: process-and-commit-news
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    concurrency:
+      group: portal-pages-news-deployment-v4
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout published main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Prepare public build
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'scripts/' \
+            --exclude '_site/' \
+            --exclude '*.py' \
+            ./ _site/
+          python - <<'PY'
+          from pathlib import Path
+          replacements = {
+              Path('_site/index.html'): [
+                  ('Stariji višak ostaje spremljen u arhivi.', 'Aktivna arhiva zadržava do sljedećih 400 starijih stavki.'),
+                  ('Najnovijih 500 javnih stavki osvježava se automatski, a stariji višak ostaje spremljen u arhivi.', 'Najnovijih 500 javnih stavki osvježava se automatski, a aktivna arhiva zadržava do 400 starijih stavki.'),
+              ],
+              Path('_site/en/index.html'): [
+                  ('Older overflow remains preserved in archive storage.', 'The active archive retains up to the next 400 older items.'),
+                  ('The newest 500 public items refresh automatically; older overflow remains stored in the archive.', 'The newest 500 public items refresh automatically; the active archive retains up to 400 older items.'),
+              ],
+          }
+          for path, pairs in replacements.items():
+              if not path.exists():
+                  raise SystemExit(f'Missing public start page: {path}')
+              content = path.read_text(encoding='utf-8')
+              for old, new in pairs:
+                  content = content.replace(old, new)
+              content = content.replace('assets/app.js?v=20260528-cross-asset-chart-fixed07', 'assets/app.js?v=20260531-news-stable04')
+              path.write_text(content, encoding='utf-8')
+          PY
+          test -f _site/index.html
+          test -f _site/CNAME
+          test -f _site/.nojekyll
+          test -f _site/data/news.json
+          test -f _site/data/news_archive.json
+          test -f _site/data/update_status.json
+          grep -q 'single_publication_engine_v1' _site/data/update_status.json
+
+      - name: Upload public portal artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy public portal
+        id: deployment
+        uses: actions/deploy-pages@v4

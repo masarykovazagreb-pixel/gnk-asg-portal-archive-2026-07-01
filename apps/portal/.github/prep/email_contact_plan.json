@@ -1,0 +1,64 @@
+{
+  "version": "2026-05-30-01",
+  "provider_to_confirm": "Zoho or selected domain mail provider",
+  "primary_public_contact": "info@gnk-asg.hr",
+  "principle": "Only public mailbox names and purposes are documented here. No passwords, app codes, recovery addresses, private login addresses or account secrets are stored in the repository.",
+  "recommended_mailboxes": [
+    {
+      "address": "info@gnk-asg.hr",
+      "priority": "required",
+      "purpose": "Main public contact address for GNK ASG portal visitors, partners, media and general inquiries.",
+      "public_display": true,
+      "portal_use": ["contact footer", "official contact panel", "press and business inquiries", "website forms if activated later"]
+    },
+    {
+      "address": "press@gnk-asg.hr",
+      "priority": "recommended_later",
+      "purpose": "Press releases, media inquiries and official public announcements.",
+      "public_display": true,
+      "portal_use": ["official press releases", "media contact", "public announcement archive"]
+    },
+    {
+      "address": "desk@gnk-asg.hr",
+      "priority": "optional_later",
+      "purpose": "GNK ASG Intelligence Desk inquiries and portal data questions.",
+      "public_display": false,
+      "portal_use": ["intelligence desk support", "publishing notifications", "internal editorial workflow"]
+    },
+    {
+      "address": "publish@gnk-asg.hr",
+      "priority": "optional_later",
+      "purpose": "Automated publishing status, daily insight notices and controlled editorial workflow.",
+      "public_display": false,
+      "portal_use": ["daily insight status", "weekly video brief status", "publication dashboard"]
+    },
+    {
+      "address": "social@gnk-asg.hr",
+      "priority": "optional_later",
+      "purpose": "Social channel administration and official network notifications.",
+      "public_display": false,
+      "portal_use": ["YouTube", "Facebook", "LinkedIn", "social publishing records"]
+    },
+    {
+      "address": "alerts@gnk-asg.hr",
+      "priority": "technical_optional",
+      "purpose": "Technical alerts, workflow failures and portal automation monitoring.",
+      "public_display": false,
+      "portal_use": ["automation alerts", "workflow failures", "status dashboard"]
+    }
+  ],
+  "minimum_starting_setup": [
+    "Create info@gnk-asg.hr first.",
+    "Add press@gnk-asg.hr if public press releases become a visible portal function.",
+    "Add publish@gnk-asg.hr and alerts@gnk-asg.hr only when automated email notices are enabled.",
+    "Use aliases or groups if the provider supports them, instead of paying for separate mailboxes where aliases are sufficient."
+  ],
+  "dns_items_to_prepare_later": [
+    "MX record for receiving mail",
+    "SPF record for allowed sending servers",
+    "DKIM signature record",
+    "DMARC policy record",
+    "Provider verification TXT or CNAME record if required"
+  ],
+  "activation_status": "prepared_not_connected"
+}

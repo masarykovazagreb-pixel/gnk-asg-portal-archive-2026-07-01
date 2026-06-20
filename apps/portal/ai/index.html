@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GNK ASG AI</title>
+<meta name="description" content="AI pomoćnik i javni informacijski sloj portala.">
+<style>
+body{margin:0;background:#f7f5ee;color:#0b1324;font-family:Inter,Arial,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:34px 20px}
+.top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+a.btn,button{border:1px solid rgba(176,132,35,.45);border-radius:999px;padding:10px 15px;background:#fff;color:#0b1324;text-decoration:none;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+.card{background:rgba(255,255,255,.82);border:1px solid rgba(176,132,35,.28);border-radius:24px;padding:22px;margin:16px 0;box-shadow:0 18px 40px rgba(15,23,42,.08)}
+h1{font-family:Georgia,serif;font-size:42px;margin:10px 0}
+label{display:block;font-weight:800;margin-top:12px}
+input,textarea,select{width:100%;box-sizing:border-box;border:1px solid #d8c394;border-radius:14px;padding:12px;margin-top:6px;font:inherit}
+textarea{min-height:150px}
+pre{white-space:pre-wrap;background:#07101f;color:#f4f4f4;padding:16px;border-radius:16px;overflow:auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}h1{font-size:32px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="btn" href="/">PROFIL</a>
+    <a class="btn" href="/vijesti/">VIJESTI</a>
+    <a class="btn" href="/objave/">OBJAVE</a>
+    <a class="btn" href="/trzista/">TRŽIŠTA</a>
+    
+    <a class="btn" href="/auto-editor/">AUTO EDITOR</a>
+    <a class="btn" href="/visual-index/">VISUAL INDEX</a>
+    <a class="btn" href="/operator-dashboard/">ADMIN</a>
+    
+  </div>
+  <div class="card">
+    <h1>GNK ASG AI</h1>
+    <p>AI pomoćnik i javni informacijski sloj portala.</p>
+  </div>
+  <div id="app"></div>
+</div>
+<script>
+const MODE="control";
+const app=document.getElementById("app");
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));}
+async function loadJson(url){const r=await fetch(url+"?cb="+Date.now(),{cache:"no-store"});return await r.json();}
+async function renderList(kind,url){
+  app.innerHTML='<div class="card"><b>Učitavanje...</b></div>';
+  try{
+    const data=await loadJson(url);
+    const items=Array.isArray(data.items)?data.items:[];
+    app.innerHTML='<div class="card"><h2>'+kind+'</h2><p>Ukupno: '+items.length+'</p></div>'+items.map(x=>'<div class="card"><h3>'+esc(x.title)+'</h3><p>'+esc(x.summary||x.excerpt||"")+'</p><p>'+esc(x.createdAt||x.publishedAt||"")+'</p></div>').join("");
+  }catch(e){
+    app.innerHTML='<div class="card"><h2>Greška</h2><pre>'+esc(e.message)+'</pre></div>';
+  }
+}
+function renderAdmin(){
+  app.innerHTML='<div class="grid"><div class="card"><h2>Objava vijesti</h2><label>Admin token</label><input id="tokenNews" type="password"><label>Jezik</label><select id="langNews"><option value="hr">HR</option><option value="en">EN</option></select><label>Naslov</label><input id="titleNews"><label>Sažetak</label><textarea id="summaryNews"></textarea><label>Tekst</label><textarea id="bodyNews"></textarea><label>Izvor URL</label><input id="sourceNews"><button onclick="publishItem(\\'news\\')">OBJAVI VIJEST</button><pre id="outNews"></pre></div><div class="card"><h2>Objava teksta / objave</h2><label>Admin token</label><input id="tokenArticle" type="password"><label>Jezik</label><select id="langArticle"><option value="hr">HR</option><option value="en">EN</option></select><label>Naslov</label><input id="titleArticle"><label>Sažetak</label><textarea id="summaryArticle"></textarea><label>Puni tekst</label><textarea id="bodyArticle"></textarea><label>Kategorija</label><input id="categoryArticle" value="GNK ASG"><button onclick="publishItem(\\'article\\')">OBJAVI TEKST</button><pre id="outArticle"></pre></div></div><div class="card"><h2>Status backend povezivanja</h2><button onclick="checkBackend()">PROVJERI BACKEND</button><pre id="backendOut"></pre></div>';
+}
+async function publishItem(type){
+  const isNews=type==="news";
+  const p=isNews?"News":"Article";
+  const token=document.getElementById(isNews?"tokenNews":"tokenArticle").value;
+  const payload={
+    lang:document.getElementById(isNews?"langNews":"langArticle").value,
+    title:document.getElementById(isNews?"titleNews":"titleArticle").value,
+    summary:document.getElementById(isNews?"summaryNews":"summaryArticle").value,
+    body:document.getElementById(isNews?"bodyNews":"bodyArticle").value,
+    sourceUrl:isNews?document.getElementById("sourceNews").value:"",
+    category:isNews?"news":document.getElementById("categoryArticle").value
+  };
+  const out=document.getElementById(isNews?"outNews":"outArticle");
+  out.textContent="Slanje...";
+  try{
+    const r=await fetch(isNews?"/operator/publish-news":"/operator/publish-article",{method:"POST",headers:{"content-type":"application/json","x-operator-token":token},body:JSON.stringify(payload)});
+    out.textContent=JSON.stringify(await r.json(),null,2);
+  }catch(e){out.textContent=e.message;}
+}
+async function checkBackend(){
+  const urls=["/data/backend-menu.json","/data/news.json","/data/articles.json","/operator/publish-status"];
+  const rows=[];
+  for(const u of urls){
+    try{const r=await fetch(u+"?cb="+Date.now(),{cache:"no-store"});rows.push({url:u,status:r.status,ok:r.ok});}
+    catch(e){rows.push({url:u,error:e.message});}
+  }
+  document.getElementById("backendOut").textContent=JSON.stringify(rows,null,2);
+}
+if(MODE==="news") renderList("Vijesti","/data/news.json");
+if(MODE==="articles") renderList("Objave i tekstovi","/data/articles.json");
+if(MODE==="admin") renderAdmin();
+if(MODE==="control"){app.innerHTML='<div class="card"><h2>Control Center</h2><p>Provjera povezanosti javnih data datoteka i operator endpointa.</p><button onclick="checkBackend()">PROVJERI BACKEND</button><pre id="backendOut"></pre></div>';}
+</script>
+<!-- GNK_ASG_FIXED_MENU_PATCH_START -->
+<style id="gnk-asg-fixed-menu-patch-style">
+html{scroll-padding-top:122px!important}
+body{padding-top:112px!important}
+.gnk-asg-full-menu-v2,
+.gnk-asg-rescue-menu,
+nav[aria-label="GNK ASG glavni izbornik"],
+nav[aria-label="GNK ASG main menu"]{
+position:fixed!important;
+top:14px!important;
+left:50%!important;
+right:auto!important;
+transform:translateX(-50%)!important;
+z-index:2147483000!important;
+width:min(1180px,calc(100vw - 44px))!important;
+margin:0!important;
+max-height:96px!important;
+overflow:visible!important;
+}
+.gnk-asg-full-menu-v2{
+background:rgba(255,255,255,.88)!important;
+border:1px solid rgba(190,150,70,.48)!important;
+box-shadow:0 18px 48px rgba(0,0,0,.18)!important;
+backdrop-filter:blur(18px)!important;
+}
+.gnk-asg-rescue-menu{
+background:rgba(255,255,255,.88)!important;
+border:1px solid rgba(190,150,70,.48)!important;
+border-radius:28px!important;
+box-shadow:0 18px 48px rgba(0,0,0,.18)!important;
+backdrop-filter:blur(18px)!important;
+}
+.gnk-asg-rescue-menu-inner{
+justify-content:center!important;
+}
+.gnk-asg-fixed-menu-spacer{
+height:112px!important;
+display:block!important;
+}
+@media(max-width:760px){
+body{padding-top:132px!important}
+html{scroll-padding-top:142px!important}
+.gnk-asg-full-menu-v2,
+.gnk-asg-rescue-menu,
+nav[aria-label="GNK ASG glavni izbornik"],
+nav[aria-label="GNK ASG main menu"]{
+top:8px!important;
+width:calc(100vw - 18px)!important;
+max-height:118px!important;
+overflow:auto!important;
+}
+.gnk-asg-fixed-menu-spacer{
+height:132px!important;
+}
+}
+</style>
+<script id="gnk-asg-fixed-menu-patch-script">
+(function(){
+  if(document.documentElement.dataset.gnkAsgFixedMenuPatch==="1") return;
+  document.documentElement.dataset.gnkAsgFixedMenuPatch="1";
+  function apply(){
+    var menus=document.querySelectorAll('.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,nav[aria-label="GNK ASG glavni izbornik"],nav[aria-label="GNK ASG main menu"]');
+    menus.forEach(function(m){
+      m.style.position='fixed';
+      m.style.top=window.innerWidth<=760?'8px':'14px';
+      m.style.left='50%';
+      m.style.transform='translateX(-50%)';
+      m.style.zIndex='2147483000';
+      m.style.margin='0';
+    });
+  }
+  apply();
+  window.addEventListener('resize',apply,{passive:true});
+  window.addEventListener('scroll',apply,{passive:true});
+})();
+</script>
+<!-- GNK_ASG_FIXED_MENU_PATCH_END -->
+<!-- GNK_ASG_GLOBAL_FLOAT_HOME_AI_V1_START -->
+<style id="gnk-asg-global-float-home-ai-v1-style">
+.gnk-global-float-home,.gnk-global-float-ai{position:fixed!important;z-index:2147482600!important;display:flex!important;align-items:center!important;justify-content:center!important;text-decoration:none!important;font-family:Inter,Arial,sans-serif!important;font-weight:950!important;box-shadow:0 16px 46px rgba(0,0,0,.28)!important}
+.gnk-global-float-home{left:14px!important;bottom:16px!important;width:52px!important;height:52px!important;border-radius:999px!important;border:1px solid rgba(214,173,79,.60)!important;background:linear-gradient(135deg,#b98b2d,#f1d37a)!important;color:#07101f!important;font-size:22px!important}
+.gnk-global-float-ai{right:14px!important;bottom:16px!important;height:52px!important;border-radius:999px!important;border:1px solid rgba(214,173,79,.60)!important;background:rgba(7,16,31,.94)!important;color:#fff!important;padding:0 16px!important;font-size:13px!important;letter-spacing:.08em!important;text-transform:uppercase!important}
+.gnk-global-float-ai:before{content:"";width:12px;height:12px;border-radius:999px;background:#22c55e;margin-right:8px;box-shadow:0 0 0 8px rgba(34,197,94,.16)}
+@media(max-width:820px){.gnk-global-float-home{left:10px!important;bottom:82px!important;width:46px!important;height:46px!important}.gnk-global-float-ai{right:10px!important;bottom:82px!important;height:46px!important;padding:0 12px!important;font-size:12px!important}}
+</style>
+<script id="gnk-asg-global-float-home-ai-v1-script">
+(function(){
+  function installFloat(){
+    document.querySelectorAll(".gnk-global-float-home,.gnk-global-float-ai").forEach(function(x){x.remove();});
+    document.body.insertAdjacentHTML("beforeend",'<a class="gnk-global-float-home" href="/" aria-label="Home">⌂</a><a class="gnk-global-float-ai" href="/assistant/" aria-label="AI pomoć">AI pomoć</a>');
+  }
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",installFloat);}else{installFloat();}
+})();
+</script>
+<!-- GNK_ASG_GLOBAL_FLOAT_HOME_AI_V1_END -->
+</body>
+</html>

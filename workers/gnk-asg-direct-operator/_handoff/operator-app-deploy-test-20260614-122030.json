@@ -1,0 +1,53 @@
+﻿[
+    {
+        "Url":  "https://operator.gnk-asg.hr/health",
+        "Status":  200,
+        "Length":  116,
+        "ContentType":  "application/json; charset=utf-8",
+        "OK":  true
+    },
+    {
+        "Url":  "https://operator.gnk-asg.hr/app",
+        "Status":  "ERROR",
+        "Length":  0,
+        "ContentType":  "",
+        "OK":  false,
+        "Error":  "The remote server returned an error: (404) Not Found."
+    },
+    {
+        "Url":  "https://operator.gnk-asg.hr/operator/status",
+        "Status":  "ERROR",
+        "Length":  0,
+        "ContentType":  "",
+        "OK":  false,
+        "Error":  "The remote server returned an error: (401) Unauthorized."
+    },
+    {
+        "Url":  "https://api.gnk-asg.hr/data/operator-public.json",
+        "Status":  200,
+        "Length":  3947,
+        "ContentType":  "application/json; charset=utf-8",
+        "OK":  true
+    },
+    {
+        "Url":  "https://media.gnk-asg.hr/media-kit",
+        "Status":  200,
+        "Length":  5409,
+        "ContentType":  "text/html; charset=utf-8",
+        "OK":  true
+    },
+    {
+        "Url":  "https://gnk-asg.hr/media-kit",
+        "Status":  200,
+        "Length":  4182,
+        "ContentType":  "text/html",
+        "OK":  true
+    },
+    {
+        "Url":  "https://www.gnk-asg.hr/media-kit",
+        "Status":  200,
+        "Length":  5409,
+        "ContentType":  "text/html; charset=utf-8",
+        "OK":  true
+    }
+]

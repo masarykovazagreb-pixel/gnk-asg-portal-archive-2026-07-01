@@ -1,0 +1,19 @@
+{
+  "name": "gnk-asg-cloudflare-direct-operator",
+  "version": "3.1.0",
+  "private": true,
+  "type": "module",
+  "description": "GNK ASG Cloudflare Direct Operator with HTTPS command endpoint, KV config, D1 logs and snapshots.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "kv:create": "wrangler kv namespace create GNK_ASG_CONFIG_KV",
+    "d1:create": "wrangler d1 create gnk_asg_operator_logs",
+    "d1:migrate": "wrangler d1 execute gnk_asg_operator_logs --file=./schema/d1.sql",
+    "secret:set": "wrangler secret put OPERATOR_TOKEN"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

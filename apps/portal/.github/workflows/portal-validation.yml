@@ -1,0 +1,154 @@
+name: Portal Validation and Live Data Test
+
+# Puna validacija funkcionalnog koda, javnih stranica i workflow logike.
+# Jedinstveni news engine izvršava dohvat, arhivu i individualne share prikaze.
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'assets/**'
+      - 'admin/**'
+      - 'webmail/**'
+      - 'data/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'teme/**'
+      - 'autorske-objave/**'
+      - 'podijeli/**'
+      - 'trzista/**'
+      - 'en/**'
+      - 'sadrzaj/**'
+      - 'financije/**'
+      - 'tehnologija/**'
+      - 'intelligence-desk/**'
+      - 'registri/**'
+      - 'instalacija/**'
+      - 'index.html'
+      - 'package.json'
+      - 'playwright.config.js'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'robots.txt'
+      - 'sitemap.xml'
+      - '.github/workflows/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'assets/**'
+      - 'admin/**'
+      - 'webmail/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'teme/**'
+      - 'autorske-objave/**'
+      - 'podijeli/**'
+      - 'trzista/**'
+      - 'en/**'
+      - 'sadrzaj/**'
+      - 'financije/**'
+      - 'tehnologija/**'
+      - 'intelligence-desk/**'
+      - 'registri/**'
+      - 'instalacija/**'
+      - 'index.html'
+      - 'package.json'
+      - 'playwright.config.js'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'robots.txt'
+      - 'sitemap.xml'
+      - '.github/workflows/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portal-validation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: ${{ github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'Automated ') }}
+    name: Validate SEO networks markets news sharing and browser UX
+    runs-on: ubuntu-latest
+    timeout-minutes: 32
+    steps:
+      - name: Checkout proposed portal version
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install preview image generator dependency
+        run: python -m pip install --disable-pip-version-check pillow
+      - name: Validate JavaScript syntax for active public modules
+        run: |
+          node --check assets/app.js
+          node --check assets/language-routing.js
+          node --check assets/portal-navigation.js
+          node --check assets/mobile-navigation.js
+          node --check assets/site-share.js
+          node --check assets/content-share.js
+          node --check assets/share-routing-fix.js
+          node --check assets/bpp-public-card.js
+          node --check assets/floating-intelligence.js
+          node --check assets/public-tools.js
+          node --check assets/group-network.js
+          node --check assets/network-motion.js
+          node --check assets/group-globe-3d.js
+          node --check assets/group-map-2d-geo.js
+          node --check assets/group-location-insights.js
+          node --check assets/group-overview-panel.js
+          node --check assets/group-market-coverage.js
+          node --check assets/portal-layout.js
+          node --check assets/market-centre-data.js
+          node --check assets/market-constellation.js
+          node --check assets/admin-status-only.js
+          node --check assets/market.js
+          node --check assets/market-expansion.js
+          node --check assets/news-live.js
+          node --check assets/status.js
+          node --check assets/hourly-data-disclosure.js
+          node --check assets/desk-hybrid.js
+          node --check sw.js
+          node --check playwright.config.js
+          node --check tests/market-centre.spec.js
+          node --check tests/desk-hybrid.spec.js
+      - name: Validate Python syntax for active processors
+        run: |
+          python -m py_compile scripts/news_publication.py scripts/update_macro_data.py scripts/update_fast_market.py scripts/update_reference_assets.py scripts/generate_daily_market_brief.py scripts/generate_social_preview.py scripts/discover_corporate_media.py scripts/generate_seo.py scripts/manage_approved_media.py scripts/validate_portal.py
+      - name: Validate committed portal structure and existing public datasets
+        run: python scripts/validate_portal.py
+      - name: Execute unified news publication processing
+        run: python scripts/news_publication.py
+      - name: Execute five-minute digital-asset stablecoin exchange and index retrieval
+        run: python scripts/update_fast_market.py
+      - name: Execute stock-exchange and ASG Gold reference retrieval
+        run: python scripts/update_reference_assets.py
+      - name: Execute live macro-market retrieval
+        run: python scripts/update_macro_data.py
+      - name: Generate daily professional market brief
+        run: python scripts/generate_daily_market_brief.py
+      - name: Execute safe media-monitor health retrieval
+        run: python scripts/discover_corporate_media.py
+      - name: Generate PNG social previews and complete SEO metadata
+        run: |
+          python scripts/generate_social_preview.py
+          python scripts/generate_seo.py
+      - name: Validate refreshed datasets secure workflows and full-page SEO
+        run: python scripts/validate_portal.py --post-fetch --seo
+      - name: Install browser smoke-test dependencies
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Run desktop and mobile browser interaction tests
+        run: npm run test:e2e
+      - name: Show generated validation files without publishing them
+        run: git status --short

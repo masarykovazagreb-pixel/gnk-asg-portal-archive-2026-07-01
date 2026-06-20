@@ -1,0 +1,24 @@
+name = "gnk-asg-auto-editor"
+main = "src/index.js"
+compatibility_date = "2026-06-17"
+workers_dev = true
+
+routes = [
+  { pattern = "gnk-asg.hr/auto-editor*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/auto-editor*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/auto-editor*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/auto-editor*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/data/auto-editor.json", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/data/auto-editor.json", zone_name = "gnk-asg.hr" }
+]
+
+[triggers]
+crons = ["0 6,7,10,11,15,16 * * *"]
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_CONFIG_KV"
+id = "d6f5dac9fa034d8d813db0de44eb7b1b"

@@ -1,0 +1,210 @@
+﻿{
+    "ok":  true,
+    "type":  "checkpoint",
+    "reason":  "mail-signatures-3-1-4-deployed",
+    "at":  "2026-06-14T11:42:48.482Z",
+    "version":  "3.1.3-operator-hardening",
+    "status":  {
+                   "ok":  true,
+                   "brand":  "GNK ASG",
+                   "service":  "GNK ASG Direct Operator",
+                   "version":  "3.1.3-operator-hardening",
+                   "checkedAt":  "2026-06-14T11:42:48.482Z",
+                   "automationLevel":  {
+                                           "current":  "90_PERCENT_READY_FOR_OPERATOR_AUTOMATION",
+                                           "target":  "99_PERCENT_ROUTINE_OPERATIONS_AUTOMATED",
+                                           "exceptions":  [
+                                                              "nova DNS/ruta",
+                                                              "vanjski API ključ",
+                                                              "rizična objava na homepageu",
+                                                              "slanje osjetljivog maila trećoj strani",
+                                                              "promjena gnk-asg.hr/*",
+                                                              "pravne/financijske tvrdnje koje traže provjeru"
+                                                          ]
+                                       },
+                   "modules":  {
+                                   "operator":  "ACTIVE",
+                                   "api":  "ACTIVE",
+                                   "menu":  "ACTIVE",
+                                   "mobileApp":  "ACTIVE",
+                                   "mediaKit":  "ACTIVE_MVP",
+                                   "assetsR2":  "ACTIVE_EMPTY_BUCKET",
+                                   "turnstile":  "CONFIGURED",
+                                   "emailRouting":  "CONFIGURED",
+                                   "contactForm":  "BASIC_ACTIVE",
+                                   "contactInbox":  "BASIC_ACTIVE",
+                                   "newsHub":  "SCAFFOLD_ACTIVE",
+                                   "autoEditor":  "PLANNED",
+                                   "marketHub":  "SCAFFOLD_ACTIVE",
+                                   "statusHub":  "ACTIVE",
+                                   "publicAssistant":  "SCAFFOLD_ACTIVE",
+                                   "mailOps":  "PLANNED",
+                                   "seoRefresh":  "PLANNED",
+                                   "homepageLink":  "PENDING_HOMEPAGE_ORIGIN_AUDIT",
+                                   "homepageIndex":  "DO_NOT_TOUCH_FAST_LIGHT_INDEX_RULE"
+                               },
+                   "rules":  {
+                                 "github":  "DISABLED",
+                                 "homepage":  "INDEX_FAST_LIGHT_DO_NOT_TOUCH_UNTIL_ORIGIN_IDENTIFIED",
+                                 "news":  "MOVE_HEAVY_NEWS_OFF_INDEX_OR_SHOW_LIGHT_SUMMARY_ONLY",
+                                 "menu":  "EVERY_NEW_PAGE_OR_SUBDOMAIN_MUST_BE_ADDED_TO_NAVIGATION",
+                                 "forbiddenRoutes":  [
+                                                         "gnk-asg.hr/*",
+                                                         "www.gnk-asg.hr/*"
+                                                     ],
+                                 "safeRoutes":  [
+                                                    "operator.gnk-asg.hr/*",
+                                                    "api.gnk-asg.hr/*",
+                                                    "media.gnk-asg.hr/*",
+                                                    "news.gnk-asg.hr/*",
+                                                    "market.gnk-asg.hr/*",
+                                                    "status.gnk-asg.hr/*",
+                                                    "contact.gnk-asg.hr/*",
+                                                    "assistant.gnk-asg.hr/*",
+                                                    "gnk-asg.hr/media-kit*",
+                                                    "www.gnk-asg.hr/media-kit*"
+                                                ]
+                             },
+                   "links":  {
+                                 "homepage":  "https://gnk-asg.hr",
+                                 "menu":  "https://operator.gnk-asg.hr/menu",
+                                 "app":  "https://operator.gnk-asg.hr/app",
+                                 "admin":  "https://operator.gnk-asg.hr/admin",
+                                 "health":  "https://operator.gnk-asg.hr/health",
+                                 "mediaKit":  "https://gnk-asg.hr/media-kit",
+                                 "media":  "https://media.gnk-asg.hr",
+                                 "assets":  "https://assets.gnk-asg.hr",
+                                 "news":  "https://news.gnk-asg.hr",
+                                 "market":  "https://market.gnk-asg.hr",
+                                 "status":  "https://status.gnk-asg.hr",
+                                 "contact":  "https://contact.gnk-asg.hr",
+                                 "assistant":  "https://assistant.gnk-asg.hr",
+                                 "publicJson":  "https://api.gnk-asg.hr/data/operator-public.json",
+                                 "navigationJson":  "https://api.gnk-asg.hr/data/navigation.json"
+                             },
+                   "lastCheckpoint":  null,
+                   "lastSystemHealth":  null,
+                   "recentLogs":  [
+                                      {
+                                          "id":  2,
+                                          "at":  "2026-06-14T11:39:40.647Z",
+                                          "type":  "checkpoint",
+                                          "ok":  true,
+                                          "message":  "operator-hardening-3-1-3-deployed",
+                                          "payload":  {
+                                                          "id":  "c4027073-84c9-4f41-86ea-d80c30ad678c",
+                                                          "at":  "2026-06-14T11:39:40.647Z",
+                                                          "version":  "3.1.3-operator-hardening",
+                                                          "ok":  true,
+                                                          "type":  "checkpoint",
+                                                          "message":  "operator-hardening-3-1-3-deployed"
+                                                      }
+                                      },
+                                      {
+                                          "id":  1,
+                                          "at":  "2026-06-14T11:39:37.300Z",
+                                          "type":  "system-health",
+                                          "ok":  false,
+                                          "message":  "Some endpoints failed",
+                                          "payload":  {
+                                                          "id":  "eb1eeec4-1136-49c3-a71d-28037c59bceb",
+                                                          "at":  "2026-06-14T11:39:37.300Z",
+                                                          "version":  "3.1.3-operator-hardening",
+                                                          "ok":  false,
+                                                          "type":  "system-health",
+                                                          "message":  "Some endpoints failed",
+                                                          "results":  [
+                                                                          {
+                                                                              "url":  "https://operator.gnk-asg.hr/health",
+                                                                              "ok":  false,
+                                                                              "status":  522,
+                                                                              "ms":  32,
+                                                                              "contentType":  "text/plain; charset=UTF-8",
+                                                                              "length":  15
+                                                                          },
+                                                                          {
+                                                                              "url":  "https://operator.gnk-asg.hr/menu",
+                                                                              "ok":  false,
+                                                                              "status":  522,
+                                                                              "ms":  13,
+                                                                              "contentType":  "text/plain; charset=UTF-8",
+                                                                              "length":  15
+                                                                          },
+                                                                          {
+                                                                              "url":  "https://operator.gnk-asg.hr/app",
+                                                                              "ok":  false,
+                                                                              "status":  522,
+                                                                              "ms":  17,
+                                                                              "contentType":  "text/plain; charset=UTF-8",
+                                                                              "length":  15
+                                                                          },
+                                                                          {
+                                                                              "url":  "https://api.gnk-asg.hr/data/operator-public.json",
+                                                                              "ok":  false,
+                                                                              "status":  522,
+                                                                              "ms":  29,
+                                                                              "contentType":  "text/plain; charset=UTF-8",
+                                                                              "length":  15
+                                                                          },
+                                                                          {
+                                                                              "url":  "https://media.gnk-asg.hr/media-kit",
+                                                                              "ok":  false,
+                                                                              "status":  522,
+                                                                              "ms":  33,
+                                                                              "contentType":  "text/plain; charset=UTF-8",
+                                                                              "length":  15
+                                                                          },
+                                                                          {
+                                                                              "url":  "https://gnk-asg.hr/media-kit",
+                                                                              "ok":  true,
+                                                                              "status":  200,
+                                                                              "ms":  88,
+                                                                              "contentType":  "text/html",
+                                                                              "length":  3652
+                                                                          },
+                                                                          {
+                                                                              "url":  "https://news.gnk-asg.hr/health",
+                                                                              "ok":  false,
+                                                                              "status":  522,
+                                                                              "ms":  43,
+                                                                              "contentType":  "text/plain; charset=UTF-8",
+                                                                              "length":  15
+                                                                          },
+                                                                          {
+                                                                              "url":  "https://market.gnk-asg.hr/health",
+                                                                              "ok":  false,
+                                                                              "status":  522,
+                                                                              "ms":  25,
+                                                                              "contentType":  "text/plain; charset=UTF-8",
+                                                                              "length":  15
+                                                                          },
+                                                                          {
+                                                                              "url":  "https://status.gnk-asg.hr/health",
+                                                                              "ok":  false,
+                                                                              "status":  522,
+                                                                              "ms":  24,
+                                                                              "contentType":  "text/plain; charset=UTF-8",
+                                                                              "length":  15
+                                                                          },
+                                                                          {
+                                                                              "url":  "https://contact.gnk-asg.hr/health",
+                                                                              "ok":  false,
+                                                                              "status":  522,
+                                                                              "ms":  33,
+                                                                              "contentType":  "text/plain; charset=UTF-8",
+                                                                              "length":  15
+                                                                          },
+                                                                          {
+                                                                              "url":  "https://assistant.gnk-asg.hr/health",
+                                                                              "ok":  false,
+                                                                              "status":  522,
+                                                                              "ms":  32,
+                                                                              "contentType":  "text/plain; charset=UTF-8",
+                                                                              "length":  15
+                                                                          }
+                                                                      ]
+                                                      }
+                                      }
+                                  ]
+               }
+}

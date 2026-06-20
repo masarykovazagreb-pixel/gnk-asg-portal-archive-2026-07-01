@@ -1,0 +1,63 @@
+{
+  "policy_name": "GNK ASG Autonomous Publishing Safety Policy",
+  "version": "2026-05-30-02",
+  "language": "en",
+  "default_publisher": "GNK ASG d.o.o.",
+  "public_content_framework": "GNK DINAMO Ltd.",
+  "safe_default_byline": "Prepared by GNK ASG Intelligence Desk",
+  "editorial_responsibility": "Nermin Sefic",
+  "minimum_words": 300,
+  "recommended_words": {"min": 450, "max": 750},
+  "autonomous_allowed_topics": [
+    "official press releases and public corporate announcements",
+    "corporate transparency",
+    "public documentation",
+    "business credibility",
+    "capital structure",
+    "technology and artificial intelligence",
+    "AI-assisted portal understanding",
+    "software platforms",
+    "market intelligence",
+    "digital assets as informational market data",
+    "sports technology",
+    "mobility and innovation",
+    "international business visibility",
+    "public corporate communication",
+    "functional improvements of the GNK ASG portal",
+    "third-party understanding of public corporate data"
+  ],
+  "autonomous_blocked_topics": [
+    "legal disputes",
+    "criminal proceedings",
+    "tax audits or tax disputes",
+    "regulatory accusations",
+    "political commentary",
+    "claims against third parties",
+    "investment advice",
+    "medical or private personal matters",
+    "non-public contracts",
+    "bank account details",
+    "passwords or credentials",
+    "unverified financial claims",
+    "content implying official corporate decision without source"
+  ],
+  "automatic_disclosures": {
+    "standard": "This publication is an informational GNK ASG Intelligence Desk brief based on public business, technology and market topics. It does not constitute legal, tax, financial or investment advice.",
+    "markets": "Market data is informational and may be delayed. Nothing in this publication constitutes investment advice, a recommendation to trade or a regulated financial service.",
+    "press": "This is a structured public-information brief and not a regulatory filing, prospectus or legally binding corporate announcement.",
+    "ai_visuals": "Visual materials may include AI-assisted or programmatically generated design elements. They are editorial illustrations, not documentary photographs."
+  },
+  "nermin_sefic_profile_rule": "Autonomous publications may mention Nermin Sefic as editorial responsibility and public corporate profile context, but may not present a text as a personal author statement by Nermin Sefic unless explicitly approved.",
+  "social_publication_rule": "Social posts must link back to the canonical publication page on gnk-asg.hr and must not be the only public source of the content.",
+  "youtube_rule": "Weekly videos may be generated as GNK ASG Intelligence Desk briefs. Videos personally authored by Nermin Sefic require explicit approval before public release.",
+  "quality_gate": {
+    "must_have_canonical_url": true,
+    "must_have_article_schema": true,
+    "must_have_image": true,
+    "must_have_meta_description": true,
+    "must_have_clear_byline": true,
+    "must_have_disclosure": true,
+    "must_pass_blocked_topic_scan": true,
+    "must_not_copy_external_articles": true
+  }
+}

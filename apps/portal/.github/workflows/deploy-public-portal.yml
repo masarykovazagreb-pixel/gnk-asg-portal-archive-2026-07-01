@@ -1,0 +1,102 @@
+name: Deploy Public Portal to GitHub Pages
+
+# Izričita objava aktualnog sadržaja grane main na javnu domenu gnk-asg.hr.
+# Objavljuje i commitove koje izrađuju SEO, news, watchdog i market botovi, jer se
+# automatizirani commit iz drugog workflowa ne smije oslanjati samo na novi push okidač.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  workflow_run:
+    workflows:
+      - Portal Live Data Refresh
+      - News Feed and Archive Refresh
+      - News Refresh Watchdog
+      - Refresh SEO Metadata and Sitemap
+      - Patch Static Portal Copy and Loader
+    types:
+      - completed
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: public-portal-pages-deployment
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Publish current portal build
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout current main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Prepare public portal artifact
+        run: |
+          set -e
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'scripts/' \
+            --exclude '_site/' \
+            --exclude '*.py' \
+            ./ _site/
+          test -f _site/index.html
+          test -f _site/CNAME
+          test -f _site/.nojekyll
+          test -f _site/nermin-sefic/index.html
+          test -f _site/en/nermin-sefic/index.html
+          test -f _site/sitemap.xml
+          test -f _site/robots.txt
+          test -f _site/data/news.json
+          test -f _site/data/news_archive.json
+          test -f _site/data/macro_market.json
+      - name: Validate identity SEO publication content
+        run: |
+          set -e
+          grep -q 'Nermin Sefić' _site/nermin-sefic/index.html
+          grep -q 'Nermin Sefic' _site/nermin-sefic/index.html
+          grep -q 'Sefić Nermin' _site/nermin-sefic/index.html
+          grep -q 'Sefic Nermin' _site/nermin-sefic/index.html
+          grep -q 'profile:first_name' _site/nermin-sefic/index.html
+          grep -q 'profile:last_name' _site/en/nermin-sefic/index.html
+          grep -q 'https://gnk-asg.hr/nermin-sefic/' _site/sitemap.xml
+          grep -q 'https://gnk-asg.hr/en/nermin-sefic/' _site/sitemap.xml
+          grep -q 'Sitemap: https://gnk-asg.hr/sitemap.xml' _site/robots.txt
+          grep -q 'href="nermin-sefic/"' _site/index.html
+          grep -q '<a href="/nermin-sefic/">Nermin Sefić</a>' _site/financije/index.html
+      - name: Validate news window and archive files before publication
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          public = json.loads(Path('_site/data/news.json').read_text(encoding='utf-8'))
+          archive = json.loads(Path('_site/data/news_archive.json').read_text(encoding='utf-8'))
+          status = json.loads(Path('_site/data/update_status.json').read_text(encoding='utf-8')).get('news', {})
+          assert len(public) <= 500, f'Public feed exceeds limit: {len(public)}'
+          assert status.get('public_items') == len(public), 'Public news status mismatch.'
+          assert status.get('archive_items') == len(archive), 'News archive status mismatch.'
+          print(f'Publishing public news={len(public)}, archived overflow={len(archive)}')
+          PY
+      - name: Upload public portal artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

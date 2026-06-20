@@ -1,0 +1,77 @@
+name: Macro Market Five Minute Fallback
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/macro-market-five-minute-fallback.yml'
+      - 'scripts/update_macro_data.py'
+  schedule:
+    - cron: '*/5 * * * *'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: macro-market-five-minute-fallback
+  cancel-in-progress: false
+
+jobs:
+  refresh-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Refresh macro dataset
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/update_macro_data.py
+          python scripts/update_macro_data.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('data/macro_market.json').read_text(encoding='utf-8'))
+          assert payload.get('updated_at'), payload
+          assert len(payload.get('assets', {})) >= 2, payload
+          print('macro_updated_at=', payload.get('updated_at'))
+          PY
+      - name: Commit macro dataset
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-asg-macro-fallback-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/macro_market.json
+          if git diff --cached --quiet; then
+            echo "Nema novih macro promjena."
+          else
+            git commit -m "Automated macro market fallback refresh"
+            git push origin HEAD:main
+          fi
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Build static portal
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a --delete --exclude '.git/' --exclude '.github/' --exclude 'scripts/' --exclude '_site/' --exclude '*.py' ./ _site/
+          test -f _site/data/macro_market.json
+          grep -q 'updated_at' _site/data/macro_market.json
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

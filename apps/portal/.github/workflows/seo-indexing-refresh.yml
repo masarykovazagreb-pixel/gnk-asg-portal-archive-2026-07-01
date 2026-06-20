@@ -1,0 +1,65 @@
+name: Refresh SEO Metadata and Sitemap
+
+# Generira dosljedne SEO meta-podatke, JSON-LD identitete, vidljive interne poveznice i sitemap.
+# Namjena: jasna indeksacija javnog portala, uključujući profil Nermin Sefić / Nermin Sefic / Sefić Nermin / Sefic Nermin.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/seo-indexing-refresh.yml'
+      - 'scripts/generate_seo.py'
+      - 'scripts/seo_postprocess.py'
+      - 'nermin-sefic/index.html'
+      - 'en/nermin-sefic/index.html'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seo-indexing-refresh
+  cancel-in-progress: true
+
+jobs:
+  generate-and-publish-seo:
+    name: Generate public SEO metadata and sitemap
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate SEO processors
+        run: python -m py_compile scripts/generate_seo.py scripts/seo_postprocess.py
+      - name: Generate metadata, JSON-LD, sitemap and robots
+        run: python scripts/generate_seo.py
+      - name: Preserve visible identity links and person profile metadata
+        run: python scripts/seo_postprocess.py
+      - name: Confirm profile pages, visible links, person metadata and sitemap entries
+        run: |
+          test -f nermin-sefic/index.html
+          test -f en/nermin-sefic/index.html
+          grep -q 'https://gnk-asg.hr/nermin-sefic/' sitemap.xml
+          grep -q 'https://gnk-asg.hr/en/nermin-sefic/' sitemap.xml
+          grep -q 'Sefić Nermin' nermin-sefic/index.html
+          grep -q 'Sefic Nermin' en/nermin-sefic/index.html
+          grep -q 'profile:first_name' nermin-sefic/index.html
+          grep -q 'profile:last_name' en/nermin-sefic/index.html
+          grep -q 'href="nermin-sefic/"' index.html
+          grep -q '<a href="/nermin-sefic/">Nermin Sefić</a>' financije/index.html
+          grep -q '<a href="/en/nermin-sefic/">Nermin Sefić</a>' en/finance/index.html
+      - name: Commit generated SEO publication files
+        run: |
+          git config user.name "gnk-asg-seo-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html en/index.html nermin-sefic/index.html en/nermin-sefic/index.html trzista/index.html en/markets/index.html sadrzaj/index.html teme/index.html financije/index.html en/finance/index.html tehnologija/index.html en/technology/index.html intelligence-desk/index.html en/intelligence-desk/index.html registri/index.html en/registries/index.html instalacija/index.html sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "SEO metadata, internal links and sitemap are already current."
+            exit 0
+          fi
+          git commit -m "Generate public identity SEO metadata and contextual links"
+          git push origin HEAD:main

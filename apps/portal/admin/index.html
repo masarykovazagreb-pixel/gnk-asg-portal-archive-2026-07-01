@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GNK ASG Admin</title>
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="refresh" content="0; url=/operator-dashboard/">
+<style>
+body{margin:0;background:#f7f5ee;color:#0b1324;font-family:Inter,Arial,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}
+.card{max-width:720px;margin:24px;padding:28px;border:1px solid rgba(176,132,35,.35);border-radius:24px;background:rgba(255,255,255,.86);box-shadow:0 20px 50px rgba(15,23,42,.12);text-align:center}
+a{display:inline-flex;margin-top:14px;border:1px solid rgba(176,132,35,.5);border-radius:999px;padding:12px 18px;color:#0b1324;text-decoration:none;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+</style>
+<script>
+location.replace("/operator-dashboard/");
+</script>
+</head>
+<body>
+<div class="card">
+<h1>GNK ASG Admin</h1>
+<p>Preusmjeravanje na Operator Dashboard.</p>
+<a href="/operator-dashboard/">Otvori Operator Dashboard</a>
+</div>
+<!-- GNK_ASG_ADMIN_MAIL_CENTER_CORPORATE_V3_START -->
+<style id="gnk-asg-admin-mail-center-corporate-v3-style">
+.gnk-mail-v3{margin:28px auto;padding:0;max-width:1320px;border:1px solid rgba(214,173,79,.38);border-radius:30px;background:linear-gradient(180deg,rgba(7,16,31,.98),rgba(9,18,34,.95));box-shadow:0 26px 90px rgba(0,0,0,.38);color:#f7f5ee;font-family:Inter,Arial,sans-serif;overflow:hidden}
+.gnk-mail-v3 *{box-sizing:border-box}
+.gnk-mail-v3-head{display:flex;align-items:center;gap:18px;padding:22px;border-bottom:1px solid rgba(214,173,79,.24);background:radial-gradient(circle at 14% 0%,rgba(214,173,79,.20),transparent 38%)}
+.gnk-mail-v3-head img{width:106px;height:auto;display:block;object-fit:contain;background:#fff;border-radius:18px;padding:7px}
+.gnk-mail-v3-head h2{margin:0;color:#f4d37a;font-family:Georgia,serif;font-size:32px;line-height:1.1}
+.gnk-mail-v3-head p{margin:7px 0 0;color:#d1d5db;line-height:1.45}
+.gnk-mail-v3-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;padding:18px}
+.gnk-mail-v3-card{border:1px solid rgba(214,173,79,.24);border-radius:22px;background:rgba(255,255,255,.07);padding:16px}
+.gnk-mail-v3-card h3{margin:0 0 12px;color:#f4d37a;font-size:18px}
+.gnk-mail-v3-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gnk-mail-v3 label{display:block;margin:10px 0 5px;color:#e5e7eb;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.gnk-mail-v3 input,.gnk-mail-v3 select,.gnk-mail-v3 textarea{width:100%;border:1px solid rgba(214,173,79,.30);border-radius:14px;background:rgba(255,255,255,.96);color:#07101f;padding:11px 12px;font:inherit;outline:none}
+.gnk-mail-v3 textarea{min-height:190px;resize:vertical;line-height:1.55}
+.gnk-mail-v3 input:focus,.gnk-mail-v3 select:focus,.gnk-mail-v3 textarea:focus{border-color:#f4d37a;box-shadow:0 0 0 4px rgba(214,173,79,.14)}
+.gnk-mail-v3-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.gnk-mail-v3-btn{border:1px solid rgba(214,173,79,.48);border-radius:999px;background:rgba(255,255,255,.09);color:#fff;text-decoration:none;font-weight:950;letter-spacing:.08em;text-transform:uppercase;padding:10px 13px;cursor:pointer;font-size:11.5px}
+.gnk-mail-v3-btn.gold{background:linear-gradient(135deg,#b98b2d,#f1d37a);color:#07101f;border-color:rgba(255,255,255,.18)}
+.gnk-mail-v3-btn.red{border-color:rgba(239,68,68,.55);color:#fecaca}
+.gnk-mail-v3-tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.gnk-mail-v3-tab{border:1px solid rgba(214,173,79,.32);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;padding:8px 11px;cursor:pointer;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.gnk-mail-v3-tab.active{background:linear-gradient(135deg,#b98b2d,#f1d37a);color:#07101f}
+.gnk-mail-v3-panel{display:none}
+.gnk-mail-v3-panel.active{display:block}
+.gnk-mail-v3-list{display:grid;gap:9px;max-height:470px;overflow:auto;padding-right:4px}
+.gnk-mail-v3-item{border:1px solid rgba(214,173,79,.18);border-radius:16px;background:rgba(0,0,0,.18);padding:11px;color:#e5e7eb}
+.gnk-mail-v3-item b{color:#f4d37a}
+.gnk-mail-v3-item small{display:block;color:#9ca3af;margin-top:4px}
+.gnk-mail-v3-status{margin-top:10px;border-radius:14px;background:rgba(255,255,255,.08);padding:11px;color:#e5e7eb;white-space:pre-wrap;line-height:1.45}
+.gnk-mail-v3-status.ok{border:1px solid rgba(34,197,94,.36)}
+.gnk-mail-v3-status.err{border:1px solid rgba(239,68,68,.36)}
+.gnk-mail-v3-signature-preview{background:#fff;color:#111827;border-radius:16px;padding:13px;overflow:auto}
+.gnk-mail-v3-signature-preview img{max-width:105px;height:auto}
+.gnk-mail-v3-table{width:100%;border-collapse:collapse;font-size:12px}
+.gnk-mail-v3-table th,.gnk-mail-v3-table td{border-bottom:1px solid rgba(214,173,79,.16);padding:8px;text-align:left;vertical-align:top}
+.gnk-mail-v3-table th{color:#f4d37a}
+.gnk-mail-v3-pill{display:inline-flex;border:1px solid rgba(214,173,79,.30);border-radius:999px;padding:4px 8px;font-size:11px;color:#fff}
+.gnk-mail-v3-note{font-size:12px;color:#9ca3af;line-height:1.45;margin-top:8px}
+@media(max-width:980px){.gnk-mail-v3-grid{grid-template-columns:1fr}.gnk-mail-v3-row{grid-template-columns:1fr}.gnk-mail-v3-head{align-items:flex-start}.gnk-mail-v3-head img{width:82px}.gnk-mail-v3-head h2{font-size:25px}}
+</style>
+
+<section id="gnkAdminMailCenterCorporateV3" class="gnk-mail-v3">
+  <div class="gnk-mail-v3-head">
+    <img src="/assets/gnk-asg-mail-logo.svg?v=20260618_190001" alt="GNK ASG logo">
+    <div>
+      <h2>GNK ASG Corporate Mail Center</h2>
+      <p>AI pomoćnik, korporativni potpisi, više primatelja, CC/BCC, zahtjev za potvrdu primitka, Draft, Outbox, Sent, Inbox, automatski odgovor i pregled backend modula.</p>
+    </div>
+  </div>
+
+  <div class="gnk-mail-v3-grid">
+    <div class="gnk-mail-v3-card">
+      <h3>Nova poruka</h3>
+
+      <div class="gnk-mail-v3-row">
+        <div>
+          <label>Pošiljateljski profil</label>
+          <select id="gnkV3Profile">
+            <option value="office">GNK ASG Office</option>
+            <option value="legal">GNK ASG Legal & Compliance</option>
+            <option value="media">GNK ASG Media Desk</option>
+            <option value="it">IT – Osobni digitalni asistent</option>
+            <option value="director">Nermin Sefić / Direktor</option>
+          </select>
+        </div>
+        <div>
+          <label>AI stil</label>
+          <select id="gnkV3Tone">
+            <option value="corporate">Korporativno ozbiljno</option>
+            <option value="short">Kratko i jasno</option>
+            <option value="legal">Pravno oprezno</option>
+            <option value="media">Medijski / press</option>
+            <option value="executive">Executive / direktorski</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Prima / To</label>
+      <input id="gnkV3To" placeholder="osoba1@example.com, osoba2@example.com">
+
+      <div class="gnk-mail-v3-row">
+        <div>
+          <label>Vidljiva kopija / CC</label>
+          <input id="gnkV3Cc" placeholder="cc1@example.com; cc2@example.com">
+        </div>
+        <div>
+          <label>Skrivena kopija / BCC</label>
+          <input id="gnkV3Bcc" placeholder="bcc@example.com">
+        </div>
+      </div>
+
+      <label>Predmet</label>
+      <input id="gnkV3Subject" placeholder="Predmet poruke">
+
+      <label>Tekst poruke</label>
+      <textarea id="gnkV3Body" placeholder="Upiši tekst. Zatim možeš koristiti AI doradu, AI odgovor, korporativni potpis, draft ili slanje."></textarea>
+
+      <div class="gnk-mail-v3-row">
+        <div>
+          <label>AI uputa</label>
+          <input id="gnkV3AiPrompt" placeholder="npr. učini ozbiljnije, pravno oprezno, kraće...">
+        </div>
+        <div>
+          <label>Potvrda primitka</label>
+          <select id="gnkV3Receipt">
+            <option value="yes">Traži potvrdu primitka i čitanja</option>
+            <option value="body">Samo tekstualno zatraži potvrdu</option>
+            <option value="no">Bez zahtjeva</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="gnk-mail-v3-actions">
+        <button type="button" class="gnk-mail-v3-btn" id="gnkV3AiPolish">AI doradi</button>
+        <button type="button" class="gnk-mail-v3-btn" id="gnkV3AiReply">AI odgovor</button>
+        <button type="button" class="gnk-mail-v3-btn" id="gnkV3InsertSignature">Umetni potpis</button>
+        <button type="button" class="gnk-mail-v3-btn" id="gnkV3SaveDraft">Spremi Draft</button>
+        <button type="button" class="gnk-mail-v3-btn gold" id="gnkV3SendMail">Pošalji</button>
+        <button type="button" class="gnk-mail-v3-btn red" id="gnkV3Clear">Očisti</button>
+      </div>
+
+      <div id="gnkV3Status" class="gnk-mail-v3-status">Status: spremno. Slanje će koristiti postojeći backend ako postoji; ako backend nije dostupan, poruka se sprema u Outbox.</div>
+    </div>
+
+    <div class="gnk-mail-v3-card">
+      <h3>Upravljanje i evidencija</h3>
+
+      <div class="gnk-mail-v3-tabs">
+        <button type="button" class="gnk-mail-v3-tab active" data-v3-tab="signature">Potpis</button>
+        <button type="button" class="gnk-mail-v3-tab" data-v3-tab="drafts">Draft</button>
+        <button type="button" class="gnk-mail-v3-tab" data-v3-tab="outbox">Outbox</button>
+        <button type="button" class="gnk-mail-v3-tab" data-v3-tab="sent">Sent</button>
+        <button type="button" class="gnk-mail-v3-tab" data-v3-tab="inbox">Inbox</button>
+        <button type="button" class="gnk-mail-v3-tab" data-v3-tab="autoreply">Auto reply</button>
+        <button type="button" class="gnk-mail-v3-tab" data-v3-tab="backend">Backend</button>
+      </div>
+
+      <div class="gnk-mail-v3-panel active" data-v3-panel="signature">
+        <div id="gnkV3SignaturePreview" class="gnk-mail-v3-signature-preview"></div>
+      </div>
+
+      <div class="gnk-mail-v3-panel" data-v3-panel="drafts">
+        <div class="gnk-mail-v3-actions"><button type="button" class="gnk-mail-v3-btn" id="gnkV3RefreshDrafts">Osvježi Draft</button></div>
+        <div id="gnkV3Drafts" class="gnk-mail-v3-list"></div>
+      </div>
+
+      <div class="gnk-mail-v3-panel" data-v3-panel="outbox">
+        <div class="gnk-mail-v3-actions"><button type="button" class="gnk-mail-v3-btn" id="gnkV3RefreshOutbox">Osvježi Outbox</button></div>
+        <div id="gnkV3Outbox" class="gnk-mail-v3-list"></div>
+      </div>
+
+      <div class="gnk-mail-v3-panel" data-v3-panel="sent">
+        <div class="gnk-mail-v3-actions"><button type="button" class="gnk-mail-v3-btn" id="gnkV3RefreshSent">Osvježi Sent</button></div>
+        <div id="gnkV3Sent" class="gnk-mail-v3-list"></div>
+      </div>
+
+      <div class="gnk-mail-v3-panel" data-v3-panel="inbox">
+        <div class="gnk-mail-v3-actions">
+          <button type="button" class="gnk-mail-v3-btn" id="gnkV3LoadInbox">Učitaj Inbox</button>
+          <button type="button" class="gnk-mail-v3-btn" id="gnkV3MockInbox">Test Inbox zapis</button>
+        </div>
+        <div id="gnkV3Inbox" class="gnk-mail-v3-list"></div>
+        <div class="gnk-mail-v3-note">Inbox čuva lokalnu kopiju u dashboardu. Ako postoji backend `/operator/contact-inbox` ili mail inbox endpoint, učitava ga. Prosljeđivanje na GMX i automatski odgovor zahtijevaju Cloudflare Email Routing/Email Worker ili postojeći mail endpoint.</div>
+      </div>
+
+      <div class="gnk-mail-v3-panel" data-v3-panel="autoreply">
+        <label>Automatski odgovor po primitku maila</label>
+        <select id="gnkV3AutoReplyEnabled">
+          <option value="on">Uključeno u predlošku / spremno za Email Worker</option>
+          <option value="manual">Samo ručna potvrda iz Inboxa</option>
+          <option value="off">Isključeno</option>
+        </select>
+
+        <label>GMX prosljeđivanje</label>
+        <input id="gnkV3ForwardGmx" value="rht@gmx.com">
+
+        <label>Auto reply tekst</label>
+        <textarea id="gnkV3AutoReplyText"></textarea>
+
+        <div class="gnk-mail-v3-actions">
+          <button type="button" class="gnk-mail-v3-btn" id="gnkV3SaveAutoReply">Spremi auto reply</button>
+          <button type="button" class="gnk-mail-v3-btn" id="gnkV3UseAutoReply">Učitaj kao poruku</button>
+        </div>
+        <div class="gnk-mail-v3-note">Automatski odgovor: po zaprimanju poruke šalje se potvrda pošiljatelju, kopija se čuva u Inboxu dashboarda, a interna kopija se prosljeđuje na GMX. Stvarno automatsko slanje aktivira se tek kada Cloudflare Email Routing preusmjeri adresu na Email Worker.</div>
+      </div>
+
+      <div class="gnk-mail-v3-panel" data-v3-panel="backend">
+        <div class="gnk-mail-v3-actions"><button type="button" class="gnk-mail-v3-btn" id="gnkV3ScanBackend">Provjeri backend module</button></div>
+        <div id="gnkV3Backend"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script id="gnk-asg-admin-mail-center-corporate-v3-script">
+(function(){
+  const logoUrl="/assets/gnk-asg-mail-logo.svg?v=20260618_190001";
+  const keys={drafts:"gnk_v3_mail_drafts",outbox:"gnk_v3_mail_outbox",sent:"gnk_v3_mail_sent",inbox:"gnk_v3_mail_inbox",auto:"gnk_v3_auto_reply"};
+  const profiles={
+    office:{from:"office@gnk-asg.hr",name:"GNK ASG Office",role:"Corporate Office",phone:"091 535 8365"},
+    legal:{from:"legal@gnk-asg.hr",name:"GNK ASG Legal & Compliance",role:"Legal, compliance and documentation",phone:"091 535 8365"},
+    media:{from:"media@gnk-asg.hr",name:"GNK ASG Media Desk",role:"Media, publishing and public communications",phone:"091 535 8365"},
+    it:{from:"it@gnk-asg.hr",name:"IT – Osobni digitalni asistent",role:"Digital assistant and portal operations",phone:"091 535 8365"},
+    director:{from:"office@gnk-asg.hr",name:"Nermin Sefić",role:"Direktor / GNK ASG d.o.o.",phone:"091 535 8365"}
+  };
+  function el(id){return document.getElementById(id)}
+  function h(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+  function emails(v){return String(v||"").split(/[;,]+/).map(x=>x.trim()).filter(Boolean)}
+  function get(k){try{return JSON.parse(localStorage.getItem(k)||"[]")}catch(e){return[]}}
+  function set(k,v){localStorage.setItem(k,JSON.stringify(v.slice(0,300)))}
+  function add(k,v){const a=get(k);a.unshift(v);set(k,a)}
+  function status(t,ok){const x=el("gnkV3Status");if(!x)return;x.className="gnk-mail-v3-status "+(ok?"ok":"err");x.textContent=t}
+  function profile(){return profiles[(el("gnkV3Profile")||{}).value]||profiles.office}
+  function signatureHtml(){
+    const p=profile();
+    return '<table style="font-family:Arial,sans-serif;border-collapse:collapse;color:#111827;max-width:720px;background:#ffffff"><tr><td style="padding:0 16px 0 0;vertical-align:top"><img src="'+logoUrl+'" alt="GNK ASG" style="width:104px;height:auto;display:block;border:0"></td><td style="border-left:4px solid #d6ad4f;padding-left:16px;vertical-align:top"><div style="font-size:17px;font-weight:800;color:#111827">'+h(p.name)+'</div><div style="font-size:13px;color:#6b7280;margin:2px 0 9px">'+h(p.role)+'</div><div style="font-size:13px;color:#111827"><b>GNK ASG d.o.o.</b></div><div style="font-size:13px;color:#374151">Zagrebačka cesta 130, 10090 Zagreb, Hrvatska</div><div style="font-size:13px;color:#374151">OIB: 75227917632 | MBS: 081512375 | MB: 05776112</div><div style="font-size:13px;color:#374151">Djelatnost: sportske djelatnosti / NKD 93190</div><div style="font-size:13px;color:#374151">E: '+h(p.from)+' | T: '+h(p.phone)+'</div><div style="font-size:13px;color:#374151">W: https://gnk-asg.hr</div><div style="margin-top:10px;font-size:11px;color:#6b7280;line-height:1.35">Ova poruka može sadržavati povjerljive informacije namijenjene isključivo primatelju. Ako ste poruku zaprimili greškom, molimo obavijestite pošiljatelja i obrišite poruku. Sadržaj poruke ne predstavlja pravni, financijski ni investicijski savjet osim ako je to izričito navedeno u službenom dokumentu.</div></td></tr></table>';
+  }
+  function signatureText(){
+    const p=profile();
+    return "\\n\\nS poštovanjem,\\n"+p.name+"\\n"+p.role+"\\nGNK ASG d.o.o.\\nZagrebačka cesta 130, 10090 Zagreb, Hrvatska\\nOIB: 75227917632 | MBS: 081512375 | MB: 05776112\\nDjelatnost: sportske djelatnosti / NKD 93190\\nE: "+p.from+" | T: "+p.phone+"\\nW: https://gnk-asg.hr\\n\\nNapomena: poruka može sadržavati povjerljive informacije i ne predstavlja pravni, financijski ni investicijski savjet osim ako je izričito navedeno.";
+  }
+  function refreshSig(){if(el("gnkV3SignaturePreview"))el("gnkV3SignaturePreview").innerHTML=signatureHtml()}
+  function autoReplyDefault(){
+    return "Poštovani,\\n\\nVaša poruka je zaprimljena u GNK ASG sustav komunikacije.\\n\\nDodijelit ćemo joj interni evidencijski broj i proslijediti je nadležnoj osobi / odjelu. Ako je poruka vezana uz pravnu, financijsku, medijsku ili tehničku dokumentaciju, molimo da sve dodatne priloge i pojašnjenja dostavite pisanim putem.\\n\\nOva automatska potvrda znači da je poruka tehnički zaprimljena, ali ne znači prihvat navoda, obveza, ugovora, zahtjeva ili pravnog stajališta.\\n\\nS poštovanjem,\\nIT – Osobni digitalni asistent\\nGNK ASG d.o.o.\\nhttps://gnk-asg.hr";
+  }
+  function payload(){
+    const p=profile();
+    let body=el("gnkV3Body").value||"";
+    const receipt=el("gnkV3Receipt").value;
+    if(receipt==="yes"||receipt==="body"){
+      if(!/potvrd/i.test(body)){
+        body=body+"\\n\\nMolimo potvrdu primitka ove poruke pisanim putem.";
+      }
+    }
+    return {id:"GNK-MAIL-"+new Date().toISOString().replace(/[-:.TZ]/g,"").slice(0,14)+"-"+Math.random().toString(16).slice(2,6),createdAt:new Date().toISOString(),profile:el("gnkV3Profile").value,from:p.from,fromName:p.name,to:emails(el("gnkV3To").value),cc:emails(el("gnkV3Cc").value),bcc:emails(el("gnkV3Bcc").value),subject:el("gnkV3Subject").value.trim(),body:body,html:h(body).replace(/\\n/g,"<br>")+"<br><br>"+signatureHtml(),signatureHtml:signatureHtml(),headers:receipt==="yes"?{"Disposition-Notification-To":p.from,"Return-Receipt-To":p.from}:{}};
+  }
+  function loadPayload(m){
+    el("gnkV3To").value=(m.to||[]).join(", ");
+    el("gnkV3Cc").value=(m.cc||[]).join(", ");
+    el("gnkV3Bcc").value=(m.bcc||[]).join(", ");
+    el("gnkV3Subject").value=m.subject||"";
+    el("gnkV3Body").value=m.body||"";
+    if(m.profile)el("gnkV3Profile").value=m.profile;
+    refreshSig();
+  }
+  function renderStore(name,target){
+    const box=el(target);if(!box)return;
+    const arr=get(keys[name]);
+    if(!arr.length){box.innerHTML='<div class="gnk-mail-v3-item">Nema zapisa.</div>';return}
+    box.innerHTML=arr.map((m,i)=>'<div class="gnk-mail-v3-item"><b>'+h(m.subject||"(bez predmeta)")+'</b><small>'+h(m.createdAt||m.sentAt||m.failedAt||"")+'</small><div>To: '+h((m.to||[]).join(", "))+'</div><div>CC: '+h((m.cc||[]).join(", "))+'</div><div>BCC: '+h((m.bcc||[]).join(", "))+'</div><div class="gnk-mail-v3-actions"><button type="button" class="gnk-mail-v3-btn" data-v3-load="'+name+':'+i+'">Učitaj</button></div></div>').join("");
+  }
+  function renderInbox(){
+    const box=el("gnkV3Inbox");if(!box)return;
+    const arr=get(keys.inbox);
+    if(!arr.length){box.innerHTML='<div class="gnk-mail-v3-item">Nema inbox zapisa.</div>';return}
+    box.innerHTML=arr.map((m,i)=>'<div class="gnk-mail-v3-item"><b>'+h(m.subject||"Inbox zapis")+'</b><small>'+h(m.createdAt||"")+'</small><div>From: '+h(m.from||m.email||"")+'</div><div>'+h(String(m.body||m.message||m.snippet||"").slice(0,360))+'</div><div class="gnk-mail-v3-actions"><button type="button" class="gnk-mail-v3-btn" data-v3-reply="'+i+'">Odgovori</button><button type="button" class="gnk-mail-v3-btn" data-v3-autoreply="'+i+'">Auto potvrda</button></div></div>').join("");
+  }
+  function renderAll(){renderStore("drafts","gnkV3Drafts");renderStore("outbox","gnkV3Outbox");renderStore("sent","gnkV3Sent");renderInbox()}
+  function ai(mode){
+    const tone=el("gnkV3Tone").value;
+    const prompt=(el("gnkV3AiPrompt").value||"").trim();
+    let t=(el("gnkV3Body").value||"").trim();
+    if(!t)t="Poštovani,\\n\\n";
+    if(mode==="reply")return "Poštovani,\\n\\nzahvaljujemo na dostavljenoj poruci. Nakon pregleda sadržaja i dostupne dokumentacije, dostavljamo očitovanje kako slijedi:\\n\\n"+t+"\\n\\nMolimo potvrdu primitka ove poruke pisanim putem.\\n\\nS poštovanjem,";
+    if(tone==="legal")return "Poštovani,\\n\\n"+t+"\\n\\nRadi izbjegavanja svake dvojbe, molimo da se sva daljnja očitovanja, dokumentacija i potvrde dostave pisanim putem. Sva prava i pravni interesi GNK ASG d.o.o. ostaju pridržani.\\n\\nMolimo potvrdu primitka ove poruke.\\n\\nS poštovanjem,";
+    if(tone==="executive")return "Poštovani,\\n\\n"+t+"\\n\\nPredlažemo da predmet zatvorimo jasno, učinkovito i dokumentirano, uz pisanu potvrdu daljnjih koraka.\\n\\nMolimo potvrdu primitka.\\n\\nS poštovanjem,";
+    if(tone==="media")return "Poštovani,\\n\\n"+t+"\\n\\nZa dodatne informacije, pojašnjenja ili usklađenje objave stojimo na raspolaganju pisanim putem.\\n\\nMolimo potvrdu primitka.\\n\\nS poštovanjem,";
+    if(tone==="short")return "Poštovani,\\n\\n"+t.replace(/\\s+/g," ").trim()+"\\n\\nMolimo potvrdu primitka.\\n\\nS poštovanjem,";
+    return "Poštovani,\\n\\n"+t+"\\n\\nMolimo potvrdu primitka ove poruke i dostavu eventualnih daljnjih očitovanja pisanim putem."+(prompt?"\\n\\nNapomena za doradu: "+prompt:"")+"\\n\\nS poštovanjem,";
+  }
+  async function trySend(p){
+    const endpoints=["/api/admin-mail-send","/operator/mail/send","/api/operator-send-mail","/operator/send-mail","/api/send-mail","/api/mail-center/send"];
+    const errors=[];
+    for(const ep of endpoints){
+      try{
+        const r=await fetch(ep,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)});
+        const text=await r.text();
+        if(r.ok){let data=null;try{data=JSON.parse(text)}catch(e){data={text:text}}return {ok:true,endpoint:ep,data:data};}
+        errors.push(ep+" -> "+r.status+" "+text.slice(0,140));
+      }catch(e){errors.push(ep+" -> "+e.message)}
+    }
+    return {ok:false,errors:errors};
+  }
+  async function loadInbox(){
+    const box=el("gnkV3Inbox");if(box)box.innerHTML='<div class="gnk-mail-v3-item">Učitavanje...</div>';
+    const endpoints=["/operator/contact-inbox","/api/contact-inbox","/operator/mail/inbox","/api/mail-inbox","/api/mail-center/inbox"];
+    const errors=[];
+    for(const ep of endpoints){
+      try{
+        const r=await fetch(ep,{headers:{"accept":"application/json"}});
+        const text=await r.text();
+        if(r.ok){
+          let data;try{data=JSON.parse(text)}catch(e){data=[{subject:"Inbox odgovor",body:text}]}
+          const arr=Array.isArray(data)?data:(data.items||data.messages||data.rows||[data]);
+          set(keys.inbox,arr.map((x,i)=>({id:x.id||("INBOX-"+i),createdAt:x.createdAt||x.date||new Date().toISOString(),from:x.from||x.email||x.sender||"",subject:x.subject||x.title||"Inbox zapis",body:x.body||x.message||x.snippet||JSON.stringify(x)})));
+          renderInbox();
+          status("Inbox učitan preko: "+ep,true);
+          return;
+        }
+        errors.push(ep+" -> "+r.status);
+      }catch(e){errors.push(ep+" -> "+e.message)}
+    }
+    renderInbox();
+    status("Inbox backend nije dostupan ili traži autorizaciju. Lokalni Inbox ostaje aktivan.\\n"+errors.join("\\n"),false);
+  }
+  async function scanBackend(){
+    const box=el("gnkV3Backend");if(!box)return;
+    const items=[["Portal","/"],["EN portal","/en/"],["Operator Dashboard","/operator-dashboard/"],["Admin redirect","/admin/"],["Contact","/contact/"],["Vijesti HR","/vijesti/"],["News EN","/news/"],["News sources","/api/news-sources"],["News refresh","/api/news-refresh"],["Data news","/data/news.json"],["Tržišta","/trzista/"],["Markets","/markets/"],["Objave / Insights","/objave/"],["Auto Editor","/auto-editor/"],["Visual Index","/visual-index/"],["AI Assistant","/assistant/"],["Legal","/legal/"],["Mobile App","/mobile-app/"],["Admin Mobile","/mobile-app/admin/"],["Mail send endpoint","/api/admin-mail-send"],["Mail inbox endpoint","/api/mail-center/inbox"],["Uklonjeno: Control","/control/"],["Uklonjeno: Business Desk","/business-desk/"],["Uklonjeno: Financije","/financije/"],["Uklonjeno: Mreža","/mreza/"]];
+    box.innerHTML='<div class="gnk-mail-v3-item">Provjera modula...</div>';
+    const rows=[];
+    for(const it of items){
+      try{const r=await fetch(it[1]+"?mc="+Date.now(),{method:"GET",headers:{"cache-control":"no-cache"}});rows.push([it[0],it[1],r.status,r.ok?"OK":"PROVJERI"])}
+      catch(e){rows.push([it[0],it[1],"ERR",e.message])}
+    }
+    box.innerHTML='<table class="gnk-mail-v3-table"><thead><tr><th>Modul</th><th>URL</th><th>Status</th><th>Napomena</th></tr></thead><tbody>'+rows.map(r=>'<tr><td>'+h(r[0])+'</td><td>'+h(r[1])+'</td><td><span class="gnk-mail-v3-pill">'+h(r[2])+'</span></td><td>'+h(r[3])+'</td></tr>').join("")+'</tbody></table>';
+  }
+  function defaultAuto(){
+    const saved=localStorage.getItem(keys.auto);
+    if(saved)return saved;
+    return autoReplyDefault();
+  }
+  document.addEventListener("click",async function(e){
+    const tab=e.target.closest(".gnk-mail-v3-tab");
+    if(tab){
+      document.querySelectorAll(".gnk-mail-v3-tab").forEach(x=>x.classList.remove("active"));
+      document.querySelectorAll(".gnk-mail-v3-panel").forEach(x=>x.classList.remove("active"));
+      tab.classList.add("active");
+      const p=document.querySelector('[data-v3-panel="'+tab.dataset.v3Tab+'"]');
+      if(p)p.classList.add("active");
+      renderAll();
+      if(tab.dataset.v3Tab==="autoreply"&&el("gnkV3AutoReplyText"))el("gnkV3AutoReplyText").value=defaultAuto();
+      return;
+    }
+    if(e.target.id==="gnkV3AiPolish"){el("gnkV3Body").value=ai("polish");status("AI dorada je primijenjena.",true);return}
+    if(e.target.id==="gnkV3AiReply"){el("gnkV3Body").value=ai("reply");status("AI odgovor je pripremljen.",true);return}
+    if(e.target.id==="gnkV3InsertSignature"){el("gnkV3Body").value=(el("gnkV3Body").value||"").replace(/\\s*$/,"")+signatureText();refreshSig();status("Korporativni potpis je umetnut.",true);return}
+    if(e.target.id==="gnkV3SaveDraft"){const p=payload();add(keys.drafts,p);renderAll();status("Draft je spremljen.",true);return}
+    if(e.target.id==="gnkV3Clear"){["gnkV3To","gnkV3Cc","gnkV3Bcc","gnkV3Subject","gnkV3Body","gnkV3AiPrompt"].forEach(id=>el(id).value="");status("Composer je očišćen.",true);return}
+    if(e.target.id==="gnkV3SendMail"){
+      const p=payload();
+      if(!p.to.length){status("Nedostaje To primatelj.",false);return}
+      if(!p.subject){status("Nedostaje predmet.",false);return}
+      if(!p.body.trim()){status("Nedostaje tekst.",false);return}
+      status("Slanje u tijeku...",true);
+      const res=await trySend(p);
+      if(res.ok){p.sentAt=new Date().toISOString();p.endpoint=res.endpoint;p.response=res.data;add(keys.sent,p);renderAll();status("Poruka je poslana preko endpointa: "+res.endpoint,true)}
+      else{p.failedAt=new Date().toISOString();p.errors=res.errors;add(keys.outbox,p);renderAll();status("Backend slanje nije potvrđeno. Poruka je spremljena u Outbox.\\n"+res.errors.join("\\n"),false)}
+      return;
+    }
+    if(e.target.id==="gnkV3LoadInbox"){loadInbox();return}
+    if(e.target.id==="gnkV3MockInbox"){add(keys.inbox,{createdAt:new Date().toISOString(),from:"primatelj@example.com",subject:"Test zaprimljene poruke",body:"Ovo je test zapisa za Inbox i auto reply."});renderInbox();status("Test Inbox zapis dodan.",true);return}
+    if(e.target.id==="gnkV3SaveAutoReply"){localStorage.setItem(keys.auto,el("gnkV3AutoReplyText").value||autoReplyDefault());status("Auto reply predložak je spremljen.",true);return}
+    if(e.target.id==="gnkV3UseAutoReply"){el("gnkV3Body").value=el("gnkV3AutoReplyText").value||autoReplyDefault();status("Auto reply tekst je učitan u composer.",true);return}
+    if(e.target.id==="gnkV3ScanBackend"){scanBackend();return}
+    if(e.target.id==="gnkV3RefreshDrafts"){renderStore("drafts","gnkV3Drafts");return}
+    if(e.target.id==="gnkV3RefreshOutbox"){renderStore("outbox","gnkV3Outbox");return}
+    if(e.target.id==="gnkV3RefreshSent"){renderStore("sent","gnkV3Sent");return}
+    const load=e.target.getAttribute("data-v3-load");
+    if(load){const parts=load.split(":");const arr=get(keys[parts[0]]);const m=arr[Number(parts[1])];if(m){loadPayload(m);status("Poruka je učitana.",true)}return}
+    const rep=e.target.getAttribute("data-v3-reply");
+    if(rep!==null){const arr=get(keys.inbox);const m=arr[Number(rep)];if(m){el("gnkV3To").value=m.from||"";el("gnkV3Subject").value="Re: "+(m.subject||"");el("gnkV3Body").value=ai("reply");status("Odgovor je pripremljen iz Inbox zapisa.",true)}return}
+    const ar=e.target.getAttribute("data-v3-autoreply");
+    if(ar!==null){const arr=get(keys.inbox);const m=arr[Number(ar)];if(m){el("gnkV3To").value=m.from||"";el("gnkV3Subject").value="Potvrda primitka: "+(m.subject||"Vaša poruka");el("gnkV3Body").value=defaultAuto();status("Automatska potvrda je pripremljena.",true)}return}
+  });
+  document.addEventListener("change",function(e){if(e.target&&e.target.id==="gnkV3Profile")refreshSig()});
+  if(el("gnkV3AutoReplyText"))el("gnkV3AutoReplyText").value=defaultAuto();
+  refreshSig();
+  renderAll();
+})();
+</script>
+<!-- GNK_ASG_ADMIN_MAIL_CENTER_CORPORATE_V3_END -->
+<!-- GNK_ASG_GLOBAL_FLOAT_HOME_AI_V1_START -->
+<style id="gnk-asg-global-float-home-ai-v1-style">
+.gnk-global-float-home,.gnk-global-float-ai{position:fixed!important;z-index:2147482600!important;display:flex!important;align-items:center!important;justify-content:center!important;text-decoration:none!important;font-family:Inter,Arial,sans-serif!important;font-weight:950!important;box-shadow:0 16px 46px rgba(0,0,0,.28)!important}
+.gnk-global-float-home{left:14px!important;bottom:16px!important;width:52px!important;height:52px!important;border-radius:999px!important;border:1px solid rgba(214,173,79,.60)!important;background:linear-gradient(135deg,#b98b2d,#f1d37a)!important;color:#07101f!important;font-size:22px!important}
+.gnk-global-float-ai{right:14px!important;bottom:16px!important;height:52px!important;border-radius:999px!important;border:1px solid rgba(214,173,79,.60)!important;background:rgba(7,16,31,.94)!important;color:#fff!important;padding:0 16px!important;font-size:13px!important;letter-spacing:.08em!important;text-transform:uppercase!important}
+.gnk-global-float-ai:before{content:"";width:12px;height:12px;border-radius:999px;background:#22c55e;margin-right:8px;box-shadow:0 0 0 8px rgba(34,197,94,.16)}
+@media(max-width:820px){.gnk-global-float-home{left:10px!important;bottom:82px!important;width:46px!important;height:46px!important}.gnk-global-float-ai{right:10px!important;bottom:82px!important;height:46px!important;padding:0 12px!important;font-size:12px!important}}
+</style>
+<script id="gnk-asg-global-float-home-ai-v1-script">
+(function(){
+  function installFloat(){
+    document.querySelectorAll(".gnk-global-float-home,.gnk-global-float-ai").forEach(function(x){x.remove();});
+    document.body.insertAdjacentHTML("beforeend",'<a class="gnk-global-float-home" href="/" aria-label="Home">⌂</a><a class="gnk-global-float-ai" href="/assistant/" aria-label="AI pomoć">AI pomoć</a>');
+  }
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",installFloat);}else{installFloat();}
+})();
+</script>
+<!-- GNK_ASG_GLOBAL_FLOAT_HOME_AI_V1_END -->
+</body>
+</html>

@@ -1,0 +1,149 @@
+﻿{
+    "brand":  "GNK ASG",
+    "endpoints":  {
+                      "articlesData":  "/data/articles.json",
+                      "newsData":  "/data/news.json",
+                      "contactInbox":  "/operator/contact-inbox",
+                      "publishNews":  "/operator/publish-news",
+                      "menuData":  "/data/backend-menu.json",
+                      "publishStatus":  "/operator/publish-status",
+                      "publishArticle":  "/operator/publish-article",
+                      "systemHealth":  "/operator/system-health"
+                  },
+    "generatedAt":  "2026-06-18T14:25:12",
+    "menu":  [
+                 {
+                     "en":  "PROFILE",
+                     "hrefEn":  "/en/",
+                     "type":  "page",
+                     "key":  "profile",
+                     "hrefHr":  "/",
+                     "hr":  "PROFIL"
+                 },
+                 {
+                     "en":  "FINANCIALS",
+                     "hrefEn":  "/en/#financials",
+                     "type":  "section",
+                     "key":  "financials",
+                     "hrefHr":  "/#financije",
+                     "hr":  "FINANCIJE"
+                 },
+                 {
+                     "en":  "NETWORK",
+                     "hrefEn":  "/en/#network",
+                     "type":  "section",
+                     "key":  "network",
+                     "hrefHr":  "/#mreza",
+                     "hr":  "MREŽA"
+                 },
+                 {
+                     "en":  "MARKETS",
+                     "data":  "/data/market.json",
+                     "hrefEn":  "/markets/",
+                     "type":  "backend-page",
+                     "key":  "markets",
+                     "hrefHr":  "/trzista/",
+                     "hr":  "TRŽIŠTA"
+                 },
+                 {
+                     "data":  "/data/articles.json",
+                     "hr":  "OBJAVE",
+                     "key":  "insights",
+                     "type":  "backend-page",
+                     "hrefHr":  "/objave/",
+                     "en":  "INSIGHTS",
+                     "hrefEn":  "/insights/",
+                     "publish":  "/operator/publish-article"
+                 },
+                 {
+                     "data":  "/data/news.json",
+                     "hr":  "VIJESTI",
+                     "key":  "news",
+                     "type":  "backend-page",
+                     "hrefHr":  "/vijesti/",
+                     "en":  "NEWS",
+                     "hrefEn":  "/news/",
+                     "publish":  "/operator/publish-news"
+                 },
+                 {
+                     "en":  "BUSINESS DESK",
+                     "hrefEn":  "/business-desk/",
+                     "type":  "page",
+                     "key":  "businessDesk",
+                     "hrefHr":  "/business-desk/",
+                     "hr":  "BUSINESS DESK"
+                 },
+                 {
+                     "en":  "AUTO EDITOR",
+                     "hrefEn":  "/auto-editor/",
+                     "type":  "backend-page",
+                     "key":  "autoEditor",
+                     "hrefHr":  "/auto-editor/",
+                     "hr":  "AUTO EDITOR"
+                 },
+                 {
+                     "en":  "VISUAL INDEX",
+                     "hrefEn":  "/visual-index/",
+                     "type":  "page",
+                     "key":  "visualIndex",
+                     "hrefHr":  "/visual-index/",
+                     "hr":  "VISUAL INDEX"
+                 },
+                 {
+                     "en":  "INSTALL",
+                     "hrefEn":  "/en/mobile-app/",
+                     "type":  "app",
+                     "key":  "install",
+                     "hrefHr":  "/mobile-app/",
+                     "hr":  "INSTALL"
+                 },
+                 {
+                     "en":  "APP",
+                     "hrefEn":  "/en/mobile-app/",
+                     "type":  "app",
+                     "key":  "app",
+                     "hrefHr":  "/mobile-app/",
+                     "hr":  "APP"
+                 },
+                 {
+                     "en":  "AI",
+                     "hrefEn":  "/ai/",
+                     "type":  "assistant",
+                     "key":  "ai",
+                     "hrefHr":  "/ai/",
+                     "hr":  "AI"
+                 },
+                 {
+                     "en":  "LEGAL",
+                     "hrefEn":  "/legal/",
+                     "type":  "page",
+                     "key":  "legal",
+                     "hrefHr":  "/legal/",
+                     "hr":  "LEGAL"
+                 },
+                 {
+                     "en":  "CONTACT",
+                     "hrefEn":  "/contact/",
+                     "type":  "backend-page",
+                     "key":  "contact",
+                     "hrefHr":  "/contact/",
+                     "hr":  "KONTAKT"
+                 },
+                 {
+                     "en":  "CONTROL",
+                     "hrefEn":  "/control/",
+                     "type":  "operator",
+                     "key":  "control",
+                     "hrefHr":  "/control/",
+                     "hr":  "CONTROL"
+                 },
+                 {
+                     "en":  "ADMIN",
+                     "hrefEn":  "/admin/",
+                     "type":  "operator",
+                     "key":  "admin",
+                     "hrefHr":  "/admin/",
+                     "hr":  "ADMIN"
+                 }
+             ]
+}

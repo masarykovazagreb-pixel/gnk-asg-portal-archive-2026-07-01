@@ -1,0 +1,81 @@
+{
+  "updated_at": "2026-06-01T00:17:00+00:00",
+  "cadence": "scheduled every five minutes",
+  "source": "Public market quote feed",
+  "indices": [
+    {
+      "id": "sp500",
+      "symbol": "^GSPC",
+      "label": "S&P 500",
+      "region": "SAD",
+      "current": 7580.06005859375,
+      "previous_close": 7445.72,
+      "change_percent": 1.8,
+      "currency": "USD",
+      "market_time": 1780088617
+    },
+    {
+      "id": "nasdaq",
+      "symbol": "^IXIC",
+      "label": "Nasdaq Composite",
+      "region": "SAD",
+      "current": 26972.619140625,
+      "previous_close": 26293.1,
+      "change_percent": 2.58,
+      "currency": "USD",
+      "market_time": 1780089359
+    },
+    {
+      "id": "stoxx50",
+      "symbol": "^STOXX50E",
+      "label": "EURO STOXX 50",
+      "region": "Europa",
+      "current": 6050.5400390625,
+      "previous_close": 6019.45,
+      "change_percent": 0.52,
+      "currency": "EUR",
+      "market_time": 1780070400
+    },
+    {
+      "id": "dax",
+      "symbol": "^GDAXI",
+      "label": "DAX",
+      "region": "Njemačka",
+      "current": 25104.69921875,
+      "previous_close": 24888.56,
+      "change_percent": 0.87,
+      "currency": "EUR",
+      "market_time": 1780070400
+    },
+    {
+      "id": "ftse",
+      "symbol": "^FTSE",
+      "label": "FTSE 100",
+      "region": "UK",
+      "current": 10409.2802734375,
+      "previous_close": 10443.5,
+      "change_percent": -0.33,
+      "currency": "GBP",
+      "market_time": 1780069559
+    },
+    {
+      "id": "nikkei",
+      "symbol": "^N225",
+      "label": "Nikkei 225",
+      "region": "Japan",
+      "current": 66383.15625,
+      "previous_close": 64996.09,
+      "change_percent": 2.13,
+      "currency": "JPY",
+      "market_time": 1780272115
+    }
+  ],
+  "errors": [],
+  "notice": "Informativni prikaz posljednjih dostupnih vrijednosti; podatci mogu biti odgođeni.",
+  "checked_at": "2026-06-01T00:17:00+00:00",
+  "last_attempt_at": "2026-06-01T00:17:00+00:00",
+  "heartbeat_policy": "timestamp_updates_on_every_automation_run",
+  "stale_safe": true,
+  "last_successful_refresh_at": "2026-06-01T00:17:00+00:00",
+  "data_status": "fresh_or_reference_checked"
+}

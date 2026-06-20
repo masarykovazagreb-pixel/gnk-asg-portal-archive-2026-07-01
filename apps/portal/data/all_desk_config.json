@@ -1,0 +1,68 @@
+{
+  "updated_at": "2026-06-01",
+  "name": "GNK ASG All Desk",
+  "status": "public_planning_layer",
+  "purpose": "Unified contact, mail, WhatsApp, publication and intelligence intake framework for GNK ASG d.o.o.",
+  "public_positioning": {
+    "hr": "GNK ASG All Desk je planirani okvir za strukturiranje službene komunikacije, kontakt forme, e-mail kanala, WhatsApp upita, medijskih zahtjeva i GNK ASG Intelligence Desk procesa.",
+    "en": "GNK ASG All Desk is the planned framework for structuring official communication, contact forms, email channels, WhatsApp inquiries, media requests and GNK ASG Intelligence Desk workflows."
+  },
+  "components": [
+    "Zoho Mail domain mailboxes",
+    "Contact Desk intake",
+    "WhatsApp inquiry routing",
+    "GNK ASG Intelligence Desk publications",
+    "inquiry classification",
+    "draft-response preparation",
+    "calendar and reminder layer",
+    "sensitive-content review rules"
+  ],
+  "planned_mailboxes": [
+    "info@gnk-asg.hr",
+    "office@gnk-asg.hr",
+    "contact@gnk-asg.hr",
+    "press@gnk-asg.hr",
+    "legal@gnk-asg.hr",
+    "intelligence@gnk-asg.hr",
+    "it@gnk-asg.hr"
+  ],
+  "security_rules": [
+    "The public portal must not request or store email passwords.",
+    "Authentication must be handled through the official mail provider or approved backend integrations.",
+    "Sensitive legal, financial, medical, personal-data, banking or contractual matters require manual review.",
+    "Payment instructions and bank-account changes must never be automated without human verification.",
+    "Public AI explanations must remain grounded in published portal content and public sources."
+  ],
+  "implementation_phases": [
+    {
+      "phase": 1,
+      "name": "Public contact and routing layer",
+      "status": "in_progress",
+      "description": "Contact pages, contact channel configuration, mailto routing and WhatsApp message preparation."
+    },
+    {
+      "phase": 2,
+      "name": "Zoho Mail activation",
+      "status": "pending_owner_action",
+      "description": "Domain verification, MX, SPF, DKIM and DMARC configuration inside DNS."
+    },
+    {
+      "phase": 3,
+      "name": "Mailbox classification and draft responses",
+      "status": "planned",
+      "description": "Incoming messages are classified and draft responses are prepared according to category and sensitivity."
+    },
+    {
+      "phase": 4,
+      "name": "Calendar, reminders and open-item tracking",
+      "status": "planned",
+      "description": "Meeting requests, deadlines and unanswered items are connected to reminders and calendar workflow."
+    },
+    {
+      "phase": 5,
+      "name": "Publication and social distribution workflow",
+      "status": "in_progress",
+      "description": "GNK ASG Intelligence Desk publications, SEO metadata, sitemap, LinkedIn and Facebook post preparation."
+    }
+  ]
+}

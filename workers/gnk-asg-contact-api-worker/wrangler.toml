@@ -1,0 +1,35 @@
+name = "gnk-asg-contact-api"
+main = "src/index.js"
+compatibility_date = "2026-06-17"
+workers_dev = true
+
+routes = [
+  { pattern = "gnk-asg.hr/api/contact-submit*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/contact-submit*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/contact-mailboxes*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/contact-mailboxes*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/operator-send-mail*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/operator-send-mail*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/operator-mailbox-config*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/operator-mailbox-config*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/operator-signature-load*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/operator-signature-load*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/operator-signature-save*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/operator-signature-save*", zone_name = "gnk-asg.hr" }
+]
+
+[[kv_namespaces]]
+binding = "GNK_ASG_CONFIG_KV"
+id = "d6f5dac9fa034d8d813db0de44eb7b1b"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[[r2_buckets]]
+binding = "GNK_ASG_MEDIA_ASSETS"
+bucket_name = "gnk-asg-media-assets"
+
+[[send_email]]
+name = "EMAIL"
+destination_address = "rht@gmx.com"
