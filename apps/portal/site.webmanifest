@@ -1,14 +1,27 @@
 {
-  "name": "GNK ASG",
+  "name": "GNK ASG Corporate Portal",
   "short_name": "GNK ASG",
+  "description": "GNK ASG corporate portal, publications, markets, news, AI assistant and mobile access.",
+  "start_url": "/app/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "theme_color": "#07122a",
+  "background_color": "#07122a",
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ],
-  "theme_color": "#07122a",
-  "background_color": "#07122a",
-  "display": "standalone"
+  "shortcuts": [
+    {"name":"Objave","short_name":"Objave","url":"/objave/"},
+    {"name":"Tržišta","short_name":"Tržišta","url":"/trzista/"},
+    {"name":"AI Pomoć","short_name":"AI","url":"/assistant/"},
+    {"name":"Kontakt","short_name":"Kontakt","url":"/contact/"},
+    {"name":"Mobilni Admin","short_name":"Admin","url":"/operator-mobile/"}
+  ]
 }
