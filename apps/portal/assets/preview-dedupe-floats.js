@@ -1,0 +1,1 @@
+(()=>{if(window.__GNK_DEDUPE_FLOATS__)return;window.__GNK_DEDUPE_FLOATS__=1;function clean(){document.querySelectorAll('.gnk-global-float-home,.gnk-global-float-ai,.float-home,#gnk-asg-float-home,#gnk-asg-float-ai,#gnk-asg-ai-help-float,#gnk-asg-single-ai-button-anchor').forEach(n=>n.remove())}clean();[250,700,1500,2800].forEach(t=>setTimeout(clean,t))})();
