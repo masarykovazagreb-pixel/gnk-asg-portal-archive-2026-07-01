@@ -1,31 +1,47 @@
 {
-  "version": "2026-06-20-premium-v3",
-  "source": "user-approved premium dark and light concept references",
+  "version": "2026-06-20-light-business-v1",
+  "source": "user-approved GNK ASG Business and Light concept references",
+  "themeNames": {
+    "dark": "Business",
+    "light": "Light"
+  },
   "principles": [
-    "preserve the existing globe and approximately 99 percent of homepage content",
-    "dark premium and light ivory themes must share the same corporate structure",
-    "deep navy and black foundations with restrained gold accents",
-    "light mode uses white and ivory surfaces, navy typography and gold borders",
-    "glass-like panels, soft shadows and generous spacing",
-    "one navigation system, one floating Home control and one AI control",
-    "desktop, mobile public app and mobile admin must look like one product family",
-    "dynamic functions stay on dedicated pages so the homepage remains fast"
+    "preserve the existing homepage content and all working functions",
+    "remove only clearly obsolete or contradictory presentation text after verification",
+    "Business and Light themes use the same HTML, navigation, data and backend contracts",
+    "the homepage remains lightweight and points dynamic modules to dedicated pages",
+    "deep navy and near-black foundations use restrained premium gold accents",
+    "Light mode uses warm white surfaces, graphite typography and restrained gold borders",
+    "one compact primary navigation and one complete connected menu",
+    "one floating Home control and one AI control",
+    "desktop, public mobile app and mobile admin remain one product family",
+    "HR and EN functionality must remain aligned"
   ],
-  "dark": {
-    "background": "#06101f",
-    "panel": "rgba(8,20,39,.94)",
+  "business": {
+    "background": "#050d19",
+    "backgroundSoft": "#09182a",
+    "panel": "rgba(7,20,38,.94)",
     "text": "#f7f9fc",
-    "muted": "#aebbd0",
-    "gold": "#d8b458",
-    "accentBlue": "#174d92"
+    "muted": "#aeb9cb",
+    "gold": "#d4af37",
+    "goldSoft": "#f0d77d",
+    "accentBlue": "#194f91"
   },
   "light": {
-    "background": "#f6f9fd",
-    "panel": "rgba(255,255,255,.95)",
-    "text": "#07122a",
-    "muted": "#57677d",
+    "background": "#f3f6fa",
+    "backgroundSoft": "#ffffff",
+    "panel": "rgba(255,255,255,.96)",
+    "text": "#071426",
+    "muted": "#56677d",
     "gold": "#9b6e1f",
+    "goldSoft": "#b78329",
     "accentBlue": "#164d91"
+  },
+  "homepage": {
+    "contentRemoved": false,
+    "dynamicModulesUseDedicatedPages": true,
+    "secondaryNavigationUsesDrawer": true,
+    "offscreenSectionsUseContentVisibility": true
   },
   "productionChanged": false,
   "cloudflareDeployed": false
