@@ -1,0 +1,52 @@
+name: Visual Redesign Preview Artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - visual-redesign
+    paths:
+      - 'apps/portal/**'
+      - 'docs/PREMIUM_DESIGN_IMPLEMENTATION_20260620.md'
+
+permissions:
+  contents: read
+
+jobs:
+  build-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout visual-redesign
+        uses: actions/checkout@v4
+
+      - name: Verify required portal files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f apps/portal/index.html
+          test -f apps/portal/en/index.html
+          test -f apps/portal/app/index.html
+          test -f apps/portal/operator-mobile/index.html
+          test -f apps/portal/operator-dashboard/index.html
+          test -f apps/portal/review/index.html
+          test -f apps/portal/assets/brand/gnk-asg-global-layer.css
+          test -f apps/portal/assets/brand/gnk-asg-global-layer.js
+          test -f apps/portal/data/navigation.json
+          test -f apps/portal/data/review-status.json
+          ! grep -R "GNK_ASG_FORCE_OPERATOR_TOKEN" apps/portal
+
+      - name: Build static preview package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p preview-artifact
+          cp -R apps/portal/. preview-artifact/
+          printf '%s\n' "Branch: visual-redesign" "Commit: $GITHUB_SHA" "Production changed: false" "Cloudflare deployed: false" > preview-artifact/PREVIEW_BUILD.txt
+
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-visual-redesign-preview
+          path: preview-artifact
+          if-no-files-found: error
+          retention-days: 14
