@@ -7,15 +7,19 @@ on:
       - visual-redesign
     paths:
       - 'apps/portal/**'
-      - 'workers/gnk-asg-auto-editor-worker/src/index.js'
-      - 'docs/PREMIUM_DESIGN_IMPLEMENTATION_20260620.md'
+      - 'workers/**'
+      - 'contracts/**'
+      - 'docs/**'
+      - '.github/workflows/visual-redesign-preview.yml'
   pull_request:
     branches:
       - main
     paths:
       - 'apps/portal/**'
-      - 'workers/gnk-asg-auto-editor-worker/src/index.js'
-      - 'docs/PREMIUM_DESIGN_IMPLEMENTATION_20260620.md'
+      - 'workers/**'
+      - 'contracts/**'
+      - 'docs/**'
+      - '.github/workflows/visual-redesign-preview.yml'
 
 permissions:
   contents: read
@@ -83,6 +87,14 @@ jobs:
           cp -R apps/portal/. preview-artifact/
           printf '%s\n' "Branch: visual-redesign" "Commit: $GITHUB_SHA" "Production changed: false" "Cloudflare deployed: false" > preview-artifact/PREVIEW_BUILD.txt
 
+      - name: Build complete repository snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p repository-snapshot
+          git archive --format=zip --output="repository-snapshot/GNK_ASG_visual-redesign_${GITHUB_SHA}.zip" HEAD
+          printf '%s\n' "Branch: visual-redesign" "Commit: $GITHUB_SHA" "Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)" "Tracked files only: true" "Secrets included: false" > repository-snapshot/SNAPSHOT_MANIFEST.txt
+
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4
         with:
@@ -90,3 +102,11 @@ jobs:
           path: preview-artifact
           if-no-files-found: error
           retention-days: 14
+
+      - name: Upload repository snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-repository-snapshot-${{ github.sha }}
+          path: repository-snapshot
+          if-no-files-found: error
+          retention-days: 30
