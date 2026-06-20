@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-06-20-v1",
+  "brand": {
+    "name": "GNK ASG",
+    "company": "GNK ASG d.o.o.",
+    "defaultImage": "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png",
+    "defaultImageAlt": "GNK ASG – Global Network Kapital",
+    "defaultHashtags": ["GNKASG", "Business", "Technology", "Sport", "AI"]
+  },
+  "categories": {
+    "publication": {
+      "label": "Objava",
+      "fallbackImage": "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png"
+    },
+    "news": {
+      "label": "Vijest",
+      "fallbackImage": "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png"
+    },
+    "market": {
+      "label": "Tržišta",
+      "fallbackImage": "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png"
+    },
+    "media-kit": {
+      "label": "Media Kit",
+      "fallbackImage": "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png"
+    },
+    "document": {
+      "label": "Dokument",
+      "fallbackImage": "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png"
+    },
+    "page": {
+      "label": "Stranica",
+      "fallbackImage": "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png"
+    }
+  },
+  "providers": [
+    {"key":"linkedin","label":"LinkedIn"},
+    {"key":"facebook","label":"Facebook"},
+    {"key":"x","label":"X"},
+    {"key":"whatsapp","label":"WhatsApp"},
+    {"key":"email","label":"E-mail"},
+    {"key":"native","label":"Dijeli"},
+    {"key":"copy","label":"Kopiraj"}
+  ],
+  "admin": {
+    "path": "/social-share/",
+    "logEndpoint": "/api/social-share/log",
+    "createEndpoint": "/api/social-share/create",
+    "metadataEndpoint": "/api/social-share/metadata"
+  }
+}
