@@ -1,0 +1,104 @@
+#grupa .section-head h2,
+#grupa .section-head h3,
+.group-section .section-head h2,
+.group-card h3,
+.group-overview h2,
+.group-overview-panel h2 {
+  color: #f0d77d !important;
+}
+
+#grupa .section-head p,
+.group-section .section-head p,
+.group-card p,
+.group-card dt,
+.group-overview p,
+.group-overview-panel p {
+  color: #c3cfdf !important;
+}
+
+#grupa .group-card:not(:first-child),
+.group-section .group-card:not(:first-child),
+.group-overview,
+.group-overview-panel,
+.group-network-panel {
+  background: #09182a !important;
+  border-color: rgba(212,175,55,.34) !important;
+  color: #f7f9fc !important;
+}
+
+#grupa .group-card:not(:first-child) h3,
+#grupa .group-card:not(:first-child) strong,
+#grupa .group-card:not(:first-child) dd,
+.group-section .group-card:not(:first-child) h3,
+.group-section .group-card:not(:first-child) strong,
+.group-section .group-card:not(:first-child) dd {
+  color: #f7f9fc !important;
+}
+
+#grupa .group-card:first-child,
+.group-section .group-card:first-child {
+  background: #ffffff !important;
+  color: #071426 !important;
+}
+
+#grupa .group-card:first-child h3,
+#grupa .group-card:first-child strong,
+#grupa .group-card:first-child dd,
+.group-section .group-card:first-child h3,
+.group-section .group-card:first-child strong,
+.group-section .group-card:first-child dd {
+  color: #071426 !important;
+}
+
+#visualGrid .item,
+.visual-grid .item,
+.gallery-card,
+.visual-card {
+  background: #09182a !important;
+  border-color: rgba(212,175,55,.34) !important;
+  color: #f7f9fc !important;
+}
+
+#visualGrid .item h2,
+.visual-grid .item h2,
+.gallery-card h2,
+.visual-card h2 {
+  color: #f0d77d !important;
+}
+
+#visualGrid .item p,
+.visual-grid .item p,
+.gallery-card p,
+.visual-card p {
+  color: #c3cfdf !important;
+}
+
+#visualGrid .tags span,
+.visual-grid .tags span,
+.gallery-card .tags span,
+.visual-card .tags span {
+  background: rgba(212,175,55,.10) !important;
+  border-color: rgba(212,175,55,.34) !important;
+  color: #f0d77d !important;
+}
+
+html[data-gnk-theme="light"] #grupa .section-head h2,
+html[data-gnk-theme="light"] .group-section .section-head h2,
+html[data-gnk-theme="light"] .group-card h3,
+html[data-gnk-theme="light"] #visualGrid .item h2 {
+  color: #9b6e1f !important;
+}
+
+html[data-gnk-theme="light"] #grupa .section-head p,
+html[data-gnk-theme="light"] .group-section .section-head p,
+html[data-gnk-theme="light"] #visualGrid .item p {
+  color: #56677d !important;
+}
+
+html[data-gnk-theme="light"] #visualGrid .item,
+html[data-gnk-theme="light"] .visual-grid .item,
+html[data-gnk-theme="light"] .gallery-card,
+html[data-gnk-theme="light"] .visual-card {
+  background: #ffffff !important;
+  color: #071426 !important;
+}
