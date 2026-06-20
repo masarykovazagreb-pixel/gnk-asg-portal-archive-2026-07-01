@@ -3,7 +3,7 @@ name: Install Generated Gallery 30
 on:
   push:
     branches: [experience-ai-live-overview]
-    paths: ['staging/generated-gallery/**']
+    paths: ['staging/generated-gallery/manifest.json']
   workflow_dispatch:
 
 permissions:
@@ -13,6 +13,7 @@ jobs:
   install:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,6 +23,16 @@ jobs:
         with:
           python-version: '3.12'
       - run: python scripts/install-generated-gallery-assets.py
+      - run: |
+          test "$(find apps/portal/assets/seo-gallery/generated-2026-06 -type f -name '*.webp' | wc -l)" = "30"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          catalog=json.loads(Path('apps/portal/data/generated-gallery-30.json').read_text(encoding='utf-8'))
+          assert catalog['readyCount'] == 30
+          assert all(item['status']=='ready' and item['eligible'] for item in catalog['items'])
+          print('Generated gallery validation passed.')
+          PY
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
