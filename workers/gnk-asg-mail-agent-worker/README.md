@@ -1,0 +1,1 @@
+GNK ASG Mail Agent preview worker. It will read incoming messages, classify them, generate contextual AI replies and automatically send only routine low-risk responses. Sensitive messages remain held for review. No production route is configured.
