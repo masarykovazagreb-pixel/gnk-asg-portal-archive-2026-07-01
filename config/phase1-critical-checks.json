@@ -1,5 +1,5 @@
 {
-  "version":"2026-06-20-v1",
+  "version":"2026-06-20-v2",
   "previewBase":"https://gnk-asg-business-light-preview.beckuphome.workers.dev",
   "liveBase":"https://gnk-asg.hr",
   "publishBase":"https://publish.gnk-asg.hr",
@@ -12,6 +12,9 @@
     {"name":"EN vijesti","base":"preview","path":"/news/","expected":[200],"kind":"html"},
     {"name":"HR tržišta","base":"preview","path":"/trzista/","expected":[200],"kind":"html"},
     {"name":"EN tržišta","base":"preview","path":"/markets/","expected":[200],"kind":"html"},
+    {"name":"HR videoteka","base":"preview","path":"/videoteka/","expected":[200],"kind":"html"},
+    {"name":"EN video library","base":"preview","path":"/en/video-library/","expected":[200],"kind":"html"},
+    {"name":"Video sitemap gate","base":"preview","path":"/video-sitemap.xml","expected":[200,204,404],"kind":"protected"},
     {"name":"Kontakt status","base":"live","path":"/api/contact-submit","expected":[200],"kind":"json"},
     {"name":"Kontakt mailboxes","base":"live","path":"/api/contact-mailboxes","expected":[200],"kind":"json"},
     {"name":"News feed","base":"live","path":"/data/news.json","expected":[200],"kind":"json"},
