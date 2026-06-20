@@ -1,0 +1,93 @@
+name: GNK ASG Social Share Workers Preview
+
+on:
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - 'apps/portal/social-share/**'
+      - 'apps/portal/assets/social-share-center.js'
+      - 'apps/portal/assets/admin-universal-shell.js'
+      - 'apps/portal/data/social-share-config.json'
+      - 'contracts/social-share-policy.json'
+      - 'workers/gnk-asg-social-share-worker/**'
+      - '.github/workflows/social-share-workers-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify preview safety
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-social-share-worker/src/index.js
+          node --check apps/portal/assets/social-share-center.js
+          node --check apps/portal/assets/admin-universal-shell.js
+          if grep -E '(^|[[:space:]])routes?[[:space:]]*=' workers/gnk-asg-social-share-worker/wrangler.preview.toml; then
+            echo 'Production route configuration detected.'
+            exit 1
+          fi
+
+      - name: Deploy route-free Social Share preview
+        id: deploy
+        run: |
+          set -euo pipefail
+          mkdir -p reports/social-share-workers-preview
+          npx --yes wrangler@4 deploy \
+            --config workers/gnk-asg-social-share-worker/wrangler.preview.toml \
+            2>&1 | tee reports/social-share-workers-preview/deploy.log
+          preview_url=$(grep -Eo 'https://[a-zA-Z0-9._-]+\.workers\.dev' reports/social-share-workers-preview/deploy.log | tail -1 || true)
+          echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
+          printf '%s\n' \
+            "Preview URL: ${preview_url:-not-detected}" \
+            'Production route configured: false' \
+            'Production changed: false' \
+            > reports/social-share-workers-preview/summary.txt
+
+      - name: Configure operator token when available
+        if: env.GNK_ASG_OPERATOR_TOKEN != ''
+        run: |
+          printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | npx --yes wrangler@4 secret put OPERATOR_TOKEN \
+            --config workers/gnk-asg-social-share-worker/wrangler.preview.toml
+          printf '%s\n' 'Operator token configured: true' >> reports/social-share-workers-preview/summary.txt
+
+      - name: Test preview status
+        if: steps.deploy.outputs.preview_url != ''
+        run: |
+          set -euo pipefail
+          url='${{ steps.deploy.outputs.preview_url }}'
+          for attempt in $(seq 1 24); do
+            if curl --fail --silent --show-error --connect-timeout 5 --max-time 15 "$url/api/social-share/status" \
+              > reports/social-share-workers-preview/status.json; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo 'Preview URL nije postao dostupan unutar 120 sekundi.'
+          exit 1
+
+      - name: Upload deployment report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-social-share-workers-preview
+          path: reports/social-share-workers-preview/
+          if-no-files-found: error
+          retention-days: 14
