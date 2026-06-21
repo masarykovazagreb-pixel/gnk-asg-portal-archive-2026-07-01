@@ -1,10 +1,10 @@
 {
-  "version": "2026-06-21-v13",
+  "version": "2026-06-21-v14",
   "branch": "experience-ai-live-overview",
   "productionTouched": false,
   "mergeAllowed": false,
   "draftPullRequest": 2,
-  "verifiedHead": "a7b3cf1833f893ab5e58e56ecc052dd0e97575dd",
+  "verifiedHead": "e9891fb79c225b85b745977a87a0a8115082c8f1",
   "pullRequestDescriptionPending": true,
   "releaseConstraints": {
     "keepDraft": true,
@@ -22,12 +22,14 @@
     "publications news and market regressions",
     "Data Sync V2 preview",
     "Auto Editor V2 preview",
-    "release candidate audit and rollback manifest"
+    "release candidate audit and rollback manifest",
+    "local all-phases audit fallback"
   ],
   "statuses": ["done", "in_progress", "pending_ci", "blocked_manual", "blocked_external", "not_started"],
   "items": [
-    {"id":"github-actions-runner","area":"quality","status":"blocked_external","blocking":true,"note":"Minimalni heartbeat job bez checkouta i bez projektnog koda pada prije izvršavanja koraka. Svi neovisni workflowi padaju jednako."},
-    {"id":"phase1-critical-audit","area":"quality","status":"pending_ci","blocking":true,"note":"Statičke i regresijske provjere su definirane, ali čekaju funkcionalan runner."},
+    {"id":"github-actions-runner","area":"quality","status":"blocked_external","blocking":true,"note":"Potvrđeni uzrok nije kvar koda ni runnera: račun beckuphome-gnk potrošio je 2.000/2.000 uključenih Actions minuta. Budžet od 0 USD blokira dodatnu potrošnju. Reset je 2026-07-01."},
+    {"id":"local-all-phases-audit","area":"quality","status":"blocked_manual","blocking":true,"note":"Manifest, PowerShell runner i workspace verifier spremljeni su u tools/local-all-phases. Za stvarno izvršenje potreban je uključeni korisnikov Windows računalni sustav i lokalni klon na G:\\GNK."},
+    {"id":"phase1-critical-audit","area":"quality","status":"pending_ci","blocking":true,"note":"Statičke i regresijske provjere su definirane. Do reseta Actions kvote validacija ide lokalnim all-phases runnerom; nakon 2026-07-01 prvo se pokreće heartbeat, zatim Phase 1 audit."},
     {"id":"operator-client-security","area":"security","status":"done","blocking":false,"note":"Aktivni privatni klijenti koriste session vault; vjerodajnica nije u URL-u ni trajnoj pohrani."},
     {"id":"operator-runtime-connection","area":"security","status":"blocked_manual","blocking":true,"note":"Za stvarni backend potreban je kontrolirani preview deploy i postojeća zaštićena konfiguracija."},
     {"id":"media-campaign-simulation","area":"mail","status":"pending_ci","blocking":false,"note":"Kod pokriva personalizaciju, PDF metapodatke, raspored, D1 lease i ograničenje slanja bez aktivnog live režima."},
@@ -39,12 +41,12 @@
     {"id":"video-library-routes","area":"video","status":"pending_ci","blocking":true,"note":"HR i EN canonical/alias rute dodane; treba potvrditi HTTP 200 na previewu."},
     {"id":"featured-4k-video","area":"video","status":"blocked_manual","blocking":false,"note":"Potreban je stvarni 4K asset, poster, trajanje i odobreni javni URL."},
     {"id":"video-seo","area":"video","status":"blocked_manual","blocking":false,"note":"Video schema i sitemap ostaju zaključani dok ne postoji stvarni film."},
-    {"id":"auto-editor-production","area":"editorial","status":"pending_ci","blocking":true,"note":"Auto Editor V2 preview ima tri termina dnevno, dvojezični 500+ riječi gate, izvore, sliku, SEO, zajednički draft izvor, sensitive hold, testove, route-free config i write-lock. Čeka runner, preview spremište, AI binding i kontrolirani deploy."},
-    {"id":"market-news-sync","area":"data","status":"pending_ci","blocking":true,"note":"Data Sync V2 preview ima vijesti u 09:00 i 16:00, 15-minutni market, last-good snapshot, poštene statuse, offline testove, route-free config i write-lock. Čeka runner, preview spremište i kontrolirani deploy."},
+    {"id":"auto-editor-production","area":"editorial","status":"pending_ci","blocking":true,"note":"Auto Editor V2 preview ima tri termina dnevno, dvojezični 500+ riječi gate, izvore, sliku, SEO, zajednički draft izvor, sensitive hold, testove, route-free config i write-lock. Čeka lokalnu validaciju, preview spremište, AI binding i kontrolirani deploy."},
+    {"id":"market-news-sync","area":"data","status":"pending_ci","blocking":true,"note":"Data Sync V2 preview ima vijesti u 09:00 i 16:00, 15-minutni market, last-good snapshot, poštene statuse, offline testove, route-free config i write-lock. Čeka lokalnu validaciju, preview spremište i kontrolirani deploy."},
     {"id":"social-oauth","area":"social","status":"blocked_manual","blocking":false,"note":"Potrebne su vanjske OAuth autorizacije i odobrenja računa."},
     {"id":"whatsapp-business","area":"communication","status":"blocked_manual","blocking":false,"note":"Potrebni su Meta račun, broj, webhook konfiguracija i odobrenje produkcijskog bota."},
     {"id":"media-brand-kits","area":"brand","status":"not_started","blocking":false,"note":"Konačni logo i korporativni download paketi čekaju vizualno odobrenje."},
-    {"id":"security-final","area":"security","status":"pending_ci","blocking":true,"note":"Preostaju zeleni CI, CORS i rate-limit provjera, backup dokaz i kontrolirani preview test."},
+    {"id":"security-final","area":"security","status":"pending_ci","blocking":true,"note":"Preostaju lokalni all-phases audit, kasniji zeleni CI, CORS i rate-limit provjera, backup dokaz i kontrolirani preview test."},
     {"id":"production-release","area":"release","status":"blocked_manual","blocking":true,"note":"Potreban je backup, izričito odobrenje, kontrolirani deploy, smoke test i rollback odluka."}
   ]
 }
