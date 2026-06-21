@@ -71,7 +71,7 @@ const env = {
           risk: 'low',
           autoSend: false,
           summary: 'Ana pita postoji li engleska verzija dokumentacije.',
-          reply: 'Poštovana Ana, hvala na poruci. Provjerit ćemo dostupnost engleske verzije dokumentacije.',
+          reply: 'Poštovana Ana,\n\nhvala na poruci. Provjerit ćemo dostupnost engleske verzije dokumentacije.\n\nSrdačan pozdrav',
           person: 'Ana Primjer',
           organization: '',
           topic: 'Engleska verzija dokumentacije',
@@ -121,5 +121,17 @@ if (decision.mailbox !== 'info') {
 if (!decision.reply.includes('Poštovana Ana')) {
   throw new Error('Personalized AI reply was not preserved.');
 }
+if (!decision.reply.includes('\n\n')) {
+  throw new Error('AI reply paragraph breaks were lost.');
+}
+if (decision.threadContext?.retainedMessageCount !== 3) {
+  throw new Error('Decision does not include the compact thread review snapshot.');
+}
+if (current.threadContext?.retainedMessageCount !== 3) {
+  throw new Error('Incoming mail object was not enriched with the review snapshot for Held storage.');
+}
+if (current.threadContext?.messages?.at(-1)?.id !== 'thread-current') {
+  throw new Error('Review snapshot does not retain the newest incoming message.');
+}
 
-console.log('AI thread context test passed: full chronology, prior answers, newest question and personalized reply.');
+console.log('AI thread context test passed: full chronology, prior answers, newest question, compact review snapshot and paragraph-safe personalized reply.');
