@@ -57,9 +57,9 @@ function normaliseVideo(item = {}, index = 0) {
     thumbnailUrl,
     contentUrl,
     playerUrl,
-    uploadDate: clean(item.uploadDate),
-    duration: clean(item.duration),
-    indexable: item.indexable !== false,
+    uploadDate: normaliseDate(item.uploadDate),
+    durationSeconds: durationToSeconds(item.duration),
+    indexable: item.indexable !== false && Boolean(thumbnailUrl),
     uploaded
   };
 }
@@ -68,11 +68,11 @@ function renderVideoEntry(item) {
   const video = [
     `<video:title>${escapeXml(item.title)}</video:title>`,
     `<video:description>${escapeXml(item.description)}</video:description>`,
-    item.thumbnailUrl ? `<video:thumbnail_loc>${escapeXml(item.thumbnailUrl)}</video:thumbnail_loc>` : '',
+    `<video:thumbnail_loc>${escapeXml(item.thumbnailUrl)}</video:thumbnail_loc>`,
     item.contentUrl ? `<video:content_loc>${escapeXml(item.contentUrl)}</video:content_loc>` : '',
     item.playerUrl ? `<video:player_loc>${escapeXml(item.playerUrl)}</video:player_loc>` : '',
     item.uploadDate ? `<video:publication_date>${escapeXml(item.uploadDate)}</video:publication_date>` : '',
-    item.duration ? `<video:duration>${escapeXml(item.duration)}</video:duration>` : ''
+    item.durationSeconds ? `<video:duration>${item.durationSeconds}</video:duration>` : ''
   ].filter(Boolean).join('');
 
   return `<url><loc>${PAGE_URL}#video-${escapeXml(item.id)}</loc><video:video>${video}</video:video></url>`;
@@ -97,6 +97,24 @@ function sitemapHeaders() {
     'x-gnk-asg-preview': 'true',
     'x-gnk-asg-production-changed': 'false'
   };
+}
+
+function durationToSeconds(value) {
+  const text = clean(value);
+  if (/^\d+$/.test(text)) return Number(text);
+  const match = text.match(/^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/i);
+  if (!match) return 0;
+  return Number(match[1] || 0) * 86400 +
+    Number(match[2] || 0) * 3600 +
+    Number(match[3] || 0) * 60 +
+    Number(match[4] || 0);
+}
+
+function normaliseDate(value) {
+  const text = clean(value);
+  if (!text) return '';
+  const parsed = new Date(text);
+  return Number.isNaN(parsed.getTime()) ? '' : parsed.toISOString();
 }
 
 function validUrl(value) {
