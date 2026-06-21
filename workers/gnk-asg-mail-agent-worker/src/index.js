@@ -4,10 +4,9 @@ import { sendContextualReply, sendManualMail } from './sender.js';
 import { addMailboxItem, readMailbox } from './storage.js';
 import { MAIL_AUTOMATION_POLICY } from './policy.js';
 import { preserveThreadHeaders } from './thread-safety.js';
-import { buildMediaCampaignBatch } from './media-campaign-batch.js';
 import { readMediaCampaigns, saveMediaCampaign, findMediaCampaign } from './media-campaign-state.js';
 import { mediaCampaignStatus, pauseMediaCampaign, planMediaCampaignWindow, resumeMediaCampaign } from './media-campaign-actions.js';
-import { executeMediaCampaignWindow } from './media-campaign-window.js';
+import { createMediaCampaign, runMediaCampaignWindow } from './media-campaign-service.js';
 import { runMailAgentSelfTest } from './mail-agent-self-test.js';
 import { phase1Readiness } from './phase1-readiness.js';
 import { rollbackReadiness } from './rollback-manifest.js';
@@ -47,6 +46,10 @@ export default {
           kv: Boolean(env.GNK_ASG_KV),
           ai: Boolean(env.AI),
           email: Boolean(env.EMAIL)
+        },
+        featureGates: {
+          routineAutoSend: env.MAIL_AUTOMATION_AUTO_SEND === 'true',
+          mediaCampaignLiveSend: env.MEDIA_CAMPAIGN_LIVE_SEND === 'true'
         },
         updatedAt: new Date().toISOString()
       }, readiness.ok ? 200 : 500);
@@ -145,23 +148,12 @@ async function handleMediaCampaignPreview(request, env) {
     return json(request, { ok: false, error: 'invalid_json' }, 400);
   }
 
-  const batch = buildMediaCampaignBatch(payload);
-  const preview = planMediaCampaignWindow(batch);
-  await saveMediaCampaign(env, batch);
-  await addMailboxItem(env, 'held', {
-    id: batch.id,
-    type: 'media-campaign-preview',
-    batchId: batch.id,
-    total: batch.total,
-    sent: batch.sent,
-    failed: batch.failed,
-    remaining: batch.remaining,
-    rateLimitPerMinute: batch.rateLimitPerMinute,
-    status: batch.status,
-    createdAt: batch.createdAt
-  });
-
-  return json(request, { ok: true, batch, preview });
+  try {
+    const result = await createMediaCampaign(env, payload);
+    return json(request, { ok: true, ...result });
+  } catch (error) {
+    return json(request, { ok: false, error: String(error?.message || error) }, 400);
+  }
 }
 
 async function handleMediaCampaignAction(request, env, id, action) {
@@ -182,18 +174,16 @@ async function handleMediaCampaignExecuteWindow(request, env, campaign) {
   if (request.method !== 'POST') return json(request, { ok: false, error: 'method_not_allowed' }, 405);
   if (campaign.status === 'paused') return json(request, { ok: false, error: 'campaign_paused', campaign: mediaCampaignStatus(campaign) }, 409);
 
-  const updated = executeMediaCampaignWindow(campaign, { liveSend: env.MEDIA_CAMPAIGN_LIVE_SEND === 'true' });
-  await saveMediaCampaign(env, updated);
-  await addMailboxItem(env, updated.productionSendEnabled ? 'outbox' : 'held', {
-    id: `${updated.id}:${updated.lastWindowAt}`,
-    type: 'media-campaign-window',
-    batchId: updated.id,
-    processed: updated.lastWindowCount,
-    productionSendEnabled: updated.productionSendEnabled,
-    campaign: mediaCampaignStatus(updated),
-    createdAt: updated.lastWindowAt
-  });
-  return json(request, { ok: true, campaign: mediaCampaignStatus(updated), productionSendEnabled: updated.productionSendEnabled });
+  let command = {};
+  try {
+    const raw = await request.text();
+    if (raw.trim()) command = JSON.parse(raw);
+  } catch {
+    return json(request, { ok: false, error: 'invalid_json' }, 400);
+  }
+
+  const result = await runMediaCampaignWindow(env, campaign, command);
+  return json(request, result, result.status || (result.ok ? 200 : 409));
 }
 
 async function processIncoming(message, env) {
@@ -211,28 +201,38 @@ async function processIncoming(message, env) {
 
   await addMailboxItem(env, 'inbox', mail);
   const decision = await analyseMail(env, mail);
+  const automaticSendingEnabled = env.MAIL_AUTOMATION_AUTO_SEND === 'true';
 
-  if (!decision.autoSend || !decision.reply) {
+  if (!decision.autoSend || !decision.reply || !automaticSendingEnabled) {
     await addMailboxItem(env, 'held', {
       ...mail,
-      status: 'held',
+      status: decision.reply ? 'draft_pending_approval' : 'held',
       classification: decision,
+      draft: decision.reply ? {
+        body: decision.reply,
+        mailbox: decision.mailbox,
+        language: decision.language,
+        subject: /^re:/i.test(mail.subject) ? mail.subject : `Re: ${mail.subject}`,
+        threadId: decision.threadId
+      } : null,
+      holdReason: automaticSendingEnabled ? decision.approvalReason : 'automatic_sending_not_enabled',
       heldAt: new Date().toISOString()
     });
     return;
   }
 
+  const mailboxAddress = decision.mailbox ? `${decision.mailbox}@gnk-asg.hr` : mail.to;
   const outgoing = {
     id: crypto.randomUUID(),
     sourceId: mail.id,
     caseId: mail.caseId,
     ...preserveThreadHeaders(mail),
-    from: senderAddress(mail.to, env),
+    from: senderAddress(mailboxAddress, env),
     to: mail.replyTo || mail.senderEmail || mail.from,
     subject: /^re:/i.test(mail.subject) ? mail.subject : `Re: ${mail.subject}`,
     body: decision.reply,
-    language: detectLanguage(mail),
-    profile: profileForRecipient(mail.to),
+    language: decision.language || detectLanguage(mail),
+    profile: profileForRecipient(mailboxAddress),
     classification: decision,
     createdAt: new Date().toISOString(),
     status: 'queued'
@@ -271,7 +271,7 @@ function senderAddress(recipient, env) {
 
 function profileForRecipient(recipient) {
   const local = String(recipient || '').split('@')[0].toLowerCase();
-  if (['info', 'contact', 'media', 'assistant', 'it'].includes(local)) return local;
+  if (['info', 'contact', 'media', 'assistant', 'it', 'legal', 'finance', 'office'].includes(local)) return local;
   return 'it';
 }
 
