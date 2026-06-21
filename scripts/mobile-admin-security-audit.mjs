@@ -8,7 +8,9 @@ const files = {
   publisher: path.join(ROOT, 'apps', 'portal', 'assets', 'mobile-admin-publisher.js'),
   mobile: path.join(ROOT, 'apps', 'portal', 'operator-mobile', 'index.html'),
   studio: path.join(ROOT, 'apps', 'portal', 'assets', 'mail-studio-pro.js'),
-  studioPage: path.join(ROOT, 'apps', 'portal', 'mail-studio-pro', 'index.html')
+  studioPage: path.join(ROOT, 'apps', 'portal', 'mail-studio-pro', 'index.html'),
+  pdf: path.join(ROOT, 'apps', 'portal', 'assets', 'pdf-publisher-secure.js'),
+  pdfPage: path.join(ROOT, 'apps', 'portal', 'pdf-publisher', 'index.html')
 };
 
 function read(file) {
@@ -28,12 +30,16 @@ const combinedSensitive = [
   source.publisher,
   source.mobile,
   source.studio,
-  source.studioPage
+  source.studioPage,
+  source.pdf,
+  source.pdfPage
 ].join('\n');
 const mobileVaultPosition = source.mobile.indexOf('/assets/operator-token-vault.js');
 const mobileTokenUsePosition = source.mobile.indexOf('const token=');
 const studioVaultPosition = source.studioPage.indexOf('/assets/operator-token-vault.js');
 const studioScriptPosition = source.studioPage.indexOf('/assets/mail-studio-pro.js');
+const pdfVaultPosition = source.pdfPage.indexOf('/assets/operator-token-vault.js');
+const pdfScriptPosition = source.pdfPage.indexOf('/assets/pdf-publisher-secure.js');
 
 check(
   'Token vault uses sessionStorage',
@@ -120,6 +126,30 @@ check(
   'AI assistance must receive the available conversation chronology.'
 );
 check(
+  'PDF Publisher reads token through vault',
+  source.pdf.includes('window.GNKOperatorToken') &&
+    source.pdf.includes("session()?.get?.()") &&
+    source.pdf.includes("session()?.set?.(entered)"),
+  'PDF Publisher must use the shared session vault.'
+);
+check(
+  'PDF Publisher loads vault before secure client',
+  pdfVaultPosition >= 0 && pdfScriptPosition >= 0 && pdfVaultPosition < pdfScriptPosition,
+  'The token vault must execute before the secure PDF client.'
+);
+check(
+  'PDF upload is authenticated',
+  source.pdf.includes("fetch('/api/pdf-publications/upload'") &&
+    source.pdf.includes('headers: session()?.headers?.() || {}'),
+  'PDF uploads must use operator authentication headers.'
+);
+check(
+  'Legacy PDF client is inactive',
+  source.pdfPage.includes('/assets/pdf-publisher-secure.js') &&
+    !source.pdfPage.includes('/assets/pdf-publisher.js'),
+  'The page must not load the legacy persistent-token PDF client.'
+);
+check(
   'No operator token is placed in a URL',
   !/[?&]token=|withToken\s*\(|URLSearchParams[\s\S]{0,120}token/i.test(combinedSensitive),
   'Operator credentials must be transported only in request headers.'
@@ -129,7 +159,7 @@ check(
   !/localStorage\.getItem\(\s*['"]GNK_ASG_OPERATOR_TOKEN['"]\s*\)/.test(combinedSensitive) &&
     !/const\s+TOKEN_KEY\s*=\s*['"]GNK_ASG_OPERATOR_TOKEN['"]/.test(combinedSensitive) &&
     !/localStorage\.setItem\(\s*TOKEN_KEY/.test(combinedSensitive),
-  'Mobile admin and Mail Studio must not persist the operator token in localStorage.'
+  'Active private tools must not persist the operator token in localStorage.'
 );
 check(
   'No obvious hardcoded operator secret exists',
