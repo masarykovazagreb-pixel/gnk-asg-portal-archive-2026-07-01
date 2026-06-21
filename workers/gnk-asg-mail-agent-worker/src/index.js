@@ -6,7 +6,7 @@ import { MAIL_AUTOMATION_POLICY } from './policy.js';
 import { preserveThreadHeaders } from './thread-safety.js';
 import { readMediaCampaigns, saveMediaCampaign, findMediaCampaign } from './media-campaign-state.js';
 import { mediaCampaignStatus, pauseMediaCampaign, planMediaCampaignWindow, resumeMediaCampaign } from './media-campaign-actions.js';
-import { createMediaCampaign, runMediaCampaignWindow } from './media-campaign-service.js';
+import { attachMediaCampaignPdf, createMediaCampaign, runMediaCampaignWindow } from './media-campaign-service.js';
 import { runMailAgentSelfTest } from './mail-agent-self-test.js';
 import { phase1Readiness } from './phase1-readiness.js';
 import { rollbackReadiness } from './rollback-manifest.js';
@@ -79,7 +79,7 @@ export default {
       return json(request, { ok: true, count: campaigns.length, campaigns: campaigns.map(mediaCampaignStatus) });
     }
 
-    const campaignAction = url.pathname.match(/^\/api\/mail-agent\/media-campaign\/([^/]+)\/(status|pause|resume|window|execute-window)$/);
+    const campaignAction = url.pathname.match(/^\/api\/mail-agent\/media-campaign\/([^/]+)\/(status|pause|resume|window|execute-window|attachment)$/);
     if (campaignAction) {
       return handleMediaCampaignAction(request, env, campaignAction[1], campaignAction[2]);
     }
@@ -163,11 +163,29 @@ async function handleMediaCampaignAction(request, env, id, action) {
 
   if (action === 'status') return json(request, { ok: true, campaign: mediaCampaignStatus(campaign) });
   if (action === 'window') return json(request, { ok: true, preview: planMediaCampaignWindow(campaign) });
+  if (action === 'attachment') return handleMediaCampaignAttachment(request, env, campaign);
   if (action === 'execute-window') return handleMediaCampaignExecuteWindow(request, env, campaign);
 
   const updated = action === 'pause' ? pauseMediaCampaign(campaign) : resumeMediaCampaign(campaign);
   await saveMediaCampaign(env, updated);
   return json(request, { ok: true, campaign: mediaCampaignStatus(updated) });
+}
+
+async function handleMediaCampaignAttachment(request, env, campaign) {
+  if (request.method !== 'POST') return json(request, { ok: false, error: 'method_not_allowed' }, 405);
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return json(request, { ok: false, error: 'invalid_json' }, 400);
+  }
+
+  try {
+    const updated = await attachMediaCampaignPdf(env, campaign, payload);
+    return json(request, { ok: true, campaign: mediaCampaignStatus(updated), attachmentStored: true });
+  } catch (error) {
+    return json(request, { ok: false, error: String(error?.message || error) }, 400);
+  }
 }
 
 async function handleMediaCampaignExecuteWindow(request, env, campaign) {
