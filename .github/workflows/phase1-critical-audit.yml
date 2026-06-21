@@ -13,6 +13,7 @@ on:
       - 'scripts/publications-regression-audit.mjs'
       - 'scripts/news-market-regression-audit.mjs'
       - 'scripts/mobile-admin-security-audit.mjs'
+      - 'scripts/mobile-admin-upload-publish-smoke.mjs'
       - '.github/workflows/phase1-critical-audit.yml'
   workflow_dispatch:
 permissions:
@@ -33,7 +34,9 @@ jobs:
           node --check apps/portal/assets/mobile-admin-publisher.js
           node --check apps/portal/assets/mail-studio-pro.js
           node --check apps/portal/assets/pdf-publisher-secure.js
+          node --check scripts/mobile-admin-upload-publish-smoke.mjs
           node scripts/mobile-admin-security-audit.mjs
+          node scripts/mobile-admin-upload-publish-smoke.mjs
           node scripts/release-candidate-audit.mjs
           node scripts/publications-regression-audit.mjs
           node scripts/news-market-regression-audit.mjs
@@ -51,6 +54,9 @@ jobs:
           fi
           if [ -f reports/mobile-admin-security/mobile-admin-security.md ]; then
             cat reports/mobile-admin-security/mobile-admin-security.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f reports/mobile-admin-upload-publish-smoke/report.md ]; then
+            cat reports/mobile-admin-upload-publish-smoke/report.md >> "$GITHUB_STEP_SUMMARY"
           fi
           if [ -f reports/publications-regression/publications-regression.md ]; then
             cat reports/publications-regression/publications-regression.md >> "$GITHUB_STEP_SUMMARY"
@@ -71,6 +77,7 @@ jobs:
             reports/release-candidate-audit/
             reports/phase1-critical-audit/
             reports/mobile-admin-security/
+            reports/mobile-admin-upload-publish-smoke/
             reports/publications-regression/
             reports/news-market-regression/
           if-no-files-found: warn
