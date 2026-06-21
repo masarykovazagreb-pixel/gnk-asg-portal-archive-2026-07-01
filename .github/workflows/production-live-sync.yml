@@ -67,6 +67,8 @@ jobs:
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-rate-limit.test.js
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-lease.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-suppression.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-retry.test.js
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js
           grep -q 'main = "src/index-secure.js"' workers/gnk-asg-direct-operator/wrangler.toml
@@ -151,7 +153,8 @@ jobs:
           - GitHub production environment approval: required
           - Direct operator: protected media routes enabled
           - Public pages Worker: `gnk-asg-public-pages-live`
-          - Mail Agent Worker: `gnk-asg-mail-agent-preview`
+          - Mail Agent Worker: `gnk-asg-mail-agent-preview` (stable legacy identifier)
+          - Suppression and bounded retry tests: required before deploy
           - Media campaign live send: disabled by default
           - Public and protected routes: smoke tested
           - Branch: `experience-ai-live-overview`
