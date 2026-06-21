@@ -1,5 +1,6 @@
 import { strictCampaignLeaseReady } from './media-campaign-lease.js';
 import { videoReadiness } from './video-readiness-contract.js';
+import { automationReadiness } from './automation-readiness.js';
 
 const REQUIRED_PUBLIC_ROUTES = [
   '/',
@@ -42,6 +43,7 @@ const REQUIRED_VIDEO_CAPABILITIES = [
 
 export function phase1Readiness(selfTest, env = {}) {
   const video = videoReadiness();
+  const automation = automationReadiness(env);
   const bindings = {
     kv: Boolean(env.GNK_ASG_KV),
     ai: Boolean(env.AI),
@@ -58,12 +60,15 @@ export function phase1Readiness(selfTest, env = {}) {
     backendCapabilitiesDeclared: REQUIRED_BACKEND_CAPABILITIES.length === 7,
     videoCapabilitiesDeclared: REQUIRED_VIDEO_CAPABILITIES.length === 5,
     uploadedVideoAssetsOnly: video.seo.videoObject.includes('uploaded') && video.seo.sitemap.includes('uploaded') && video.seo.placeholdersAllowed === false,
-    mailSelfTestPassing: Boolean(selfTest && selfTest.ok)
+    mailSelfTestPassing: Boolean(selfTest && selfTest.ok),
+    automationCodeDeclared: Boolean(automation.codeReady),
+    productionAutomationRoutesAbsent: automation.productionTouched === false
   };
   const codeReady = Object.values(checks).every(Boolean);
   const serviceBindingsReady = bindings.kv && bindings.ai && bindings.email;
-  const liveCampaignReady = codeReady && serviceBindingsReady && bindings.d1RateLease && featureGates.mediaCampaignLiveSend;
+  const mailLiveReady = codeReady && serviceBindingsReady && bindings.d1RateLease && featureGates.mediaCampaignLiveSend;
   const routineAutoSendReady = codeReady && serviceBindingsReady && featureGates.routineAutoSend;
+  const phase1LiveReady = mailLiveReady && automation.liveReady;
   const blockedItems = [];
 
   if (!bindings.kv) blockedItems.push('GNK_ASG_KV binding');
@@ -72,21 +77,26 @@ export function phase1Readiness(selfTest, env = {}) {
   if (!bindings.d1RateLease) blockedItems.push('GNK_ASG_D1 strict rate-limit binding');
   if (!featureGates.mediaCampaignLiveSend) blockedItems.push('MEDIA_CAMPAIGN_LIVE_SEND feature gate');
   if (!featureGates.routineAutoSend) blockedItems.push('MAIL_AUTOMATION_AUTO_SEND feature gate');
+  blockedItems.push(...automation.blockedItems);
 
   return {
     ok: codeReady,
     codeReady,
-    liveReady: liveCampaignReady,
+    liveReady: phase1LiveReady,
+    mailLiveReady,
+    automationPreviewReady: automation.previewReady,
+    automationLiveReady: automation.liveReady,
     routineAutoSendReady,
     phase: 'phase1',
     checks,
     bindings,
     featureGates,
+    automation,
     requiredPublicRoutes: REQUIRED_PUBLIC_ROUTES,
     requiredMailCapabilities: REQUIRED_MAIL_CAPABILITIES,
     requiredBackendCapabilities: REQUIRED_BACKEND_CAPABILITIES,
     requiredVideoCapabilities: REQUIRED_VIDEO_CAPABILITIES,
     video,
-    blockedItems
+    blockedItems: [...new Set(blockedItems)]
   };
 }
