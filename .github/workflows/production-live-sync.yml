@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       approved_commit:
-        description: 'Puni SHA odobrenog release commita'
+        description: 'Puni SHA odobrenog marker commita'
         required: true
         type: string
 
@@ -28,10 +28,11 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
-      - name: Checkout approved commit
+      - name: Checkout approved marker commit
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.approved_commit }}
+          fetch-depth: 2
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -47,7 +48,11 @@ jobs:
           test -f .github/release/PRODUCTION_APPROVED
           grep -Fxq 'approved: true' .github/release/PRODUCTION_APPROVED
           grep -Fxq 'target: production' .github/release/PRODUCTION_APPROVED
-          grep -Fxq "commit: ${GITHUB_SHA}" .github/release/PRODUCTION_APPROVED
+          grep -Fxq 'branch: experience-ai-live-overview' .github/release/PRODUCTION_APPROVED
+          SOURCE_COMMIT="$(git rev-parse HEAD^)"
+          grep -Fxq "source_commit: ${SOURCE_COMMIT}" .github/release/PRODUCTION_APPROVED
+          test "$(git diff --name-only HEAD^ HEAD | wc -l | tr -d ' ')" = '1'
+          git diff --name-only HEAD^ HEAD | grep -Fxq '.github/release/PRODUCTION_APPROVED'
 
       - name: Validate release safety
         shell: bash
@@ -140,8 +145,9 @@ jobs:
 
           - Manual workflow dispatch: required
           - Typed confirmation: required
-          - Exact approved commit SHA: required
-          - Repository approval marker: required
+          - Exact marker commit SHA: required
+          - Marker may change only the approval file: enforced
+          - Marker source commit must equal its parent: enforced
           - GitHub production environment approval: required
           - Direct operator: protected media routes enabled
           - Public pages Worker: `gnk-asg-public-pages-live`
