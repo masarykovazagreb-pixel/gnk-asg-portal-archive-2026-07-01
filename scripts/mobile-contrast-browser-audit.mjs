@@ -22,17 +22,20 @@ try {
         viewport: { width: 390, height: 844 },
         deviceScaleFactor: 1,
         isMobile: true,
-        hasTouch: true
+        hasTouch: true,
+        reducedMotion: 'reduce'
       });
       await context.addInitScript(value => localStorage.setItem('gnk-asg-theme', value), theme);
       const page = await context.newPage();
+      page.setDefaultTimeout(30000);
       const url = `${baseUrl}${route.path}`;
-      const response = await page.goto(url, { waitUntil: 'networkidle', timeout: 120000 });
+      const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
       if (!response || !response.ok()) throw new Error(`${url} returned ${response?.status() || 'no response'}`);
 
-      await page.waitForSelector('body.gnk-asg-premium-shell', { timeout: 30000 });
-      await page.waitForSelector('#gnk-final-contrast-contract-css', { timeout: 30000 });
-      await page.waitForTimeout(1800);
+      await page.waitForSelector('body.gnk-asg-premium-shell');
+      await page.waitForSelector('#gnk-final-contrast-contract-css');
+      await page.waitForSelector('#financials .kpi, #grupa .group-card');
+      await page.waitForTimeout(2200);
 
       const audit = await page.evaluate(({ routeKey, themeName }) => {
         const parse = value => {
