@@ -16,6 +16,7 @@ on:
       - 'workers/gnk-asg-direct-operator/**'
       - 'workers/gnk-asg-public-pages-live/**'
       - 'workers/gnk-asg-mail-agent-worker/**'
+      - 'scripts/operator-mobile-security-final-audit.mjs'
       - '.github/workflows/production-live-sync.yml'
   workflow_dispatch:
 
@@ -51,7 +52,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index.js
           node --check workers/gnk-asg-public-pages-live/src/index.js
           find workers/gnk-asg-mail-agent-worker/src -name '*.js' -print0 | xargs -0 -n1 node --check
-          node scripts/operator-mobile-bridge-security-audit.mjs
+          node scripts/operator-mobile-security-final-audit.mjs
           grep -q 'main = "src/index-secure.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_CAMPAIGN_LIVE_SEND = "false"' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
           grep -q 'gnk-asg.hr/api/mail-agent/\*' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
