@@ -5,7 +5,9 @@ import crypto from 'node:crypto';
 const ROOT = process.cwd();
 const OUT = path.join(ROOT, 'reports', 'release-package');
 const BRANCH = 'experience-ai-live-overview';
-const SOURCE_COMMIT = process.env.GITHUB_SHA || 'local';
+const SOURCE_COMMIT = normaliseSourceCommit(
+  process.env.RELEASE_SOURCE_COMMIT || process.env.GITHUB_SHA || 'local'
+);
 
 const files = {
   productionWorkflow: '.github/workflows/production-live-sync.yml',
@@ -44,6 +46,15 @@ const protectedRoutes = [
   'https://gnk-asg.hr/api/media-upload',
   'https://gnk-asg.hr/api/admin-asset-list'
 ];
+
+function normaliseSourceCommit(value) {
+  const source = String(value || '').trim();
+  if (!source || source === 'local') return 'local';
+  if (!/^[0-9a-f]{40}$/i.test(source)) {
+    throw new Error(`invalid_release_source_commit:${source}`);
+  }
+  return source.toLowerCase();
+}
 
 function absolute(relativePath) {
   return path.join(ROOT, relativePath);
@@ -87,10 +98,11 @@ const publicToml = read(files.publicPages);
 const rollback = read(files.rollbackManifest);
 
 const checks = [
+  check('Release source commit is explicit', SOURCE_COMMIT === 'local' || /^[0-9a-f]{40}$/.test(SOURCE_COMMIT), SOURCE_COMMIT),
   check('Manual production workflow dispatch only', workflow.includes('workflow_dispatch:') && !/^\s*push:\s*$/m.test(workflow), 'ordinary development pushes cannot deploy production'),
   check('Typed production confirmation required', workflow.includes('PRODUCTION_APPROVED'), 'manual release requires exact confirmation'),
   check('Exact marker commit required', workflow.includes('approved_commit') && workflow.includes('source_commit:'), 'marker commit and tested parent are linked'),
-  check('Marker-only commit enforced', workflow.includes("git diff --name-only HEAD^ HEAD") && workflow.includes(".github/release/PRODUCTION_APPROVED"), 'release marker commit cannot contain unrelated changes'),
+  check('Marker-only commit enforced', workflow.includes("git diff --name-only HEAD^ HEAD") && workflow.includes('.github/release/PRODUCTION_APPROVED'), 'release marker commit cannot contain unrelated changes'),
   check('Backlog keeps production locked', backlog.productionTouched === false && backlog.mergeAllowed === false, 'development branch remains non-production'),
   check('Explicit approval marker policy enabled', backlog.releaseConstraints?.explicitProductionApprovalMarkerRequired === true, 'release requires repository marker'),
   check('Mail campaign live sending disabled by default', /MEDIA_CAMPAIGN_LIVE_SEND\s*=\s*"false"/.test(mailToml), 'mass delivery cannot start accidentally'),
@@ -106,6 +118,7 @@ const manifest = {
   generatedAt: new Date().toISOString(),
   branch: BRANCH,
   sourceCommit: SOURCE_COMMIT,
+  sourceCommitInput: process.env.RELEASE_SOURCE_COMMIT ? 'RELEASE_SOURCE_COMMIT' : (process.env.GITHUB_SHA ? 'GITHUB_SHA' : 'local'),
   readOnlyGeneration: true,
   productionTouched: false,
   releaseStatus: failed.length ? 'BLOCKED' : 'READY_FOR_MANUAL_APPROVAL',
@@ -140,7 +153,7 @@ const rows = checks
   .map(item => `| ${item.pass ? 'PASS' : 'FAIL'} | ${item.name.replace(/\|/g, '\\|')} | ${item.detail.replace(/\|/g, '\\|')} |`)
   .join('\n');
 
-const summary = `# GNK ASG završni release paket\n\n- Status: **${manifest.releaseStatus}**\n- Grana: \`${BRANCH}\`\n- Izvorni commit: \`${SOURCE_COMMIT}\`\n- Produkcija promijenjena: NE\n- Javni URL-ovi: ${publicRoutes.length}\n- Zaštićeni URL-ovi: ${protectedRoutes.length}\n- Provjere: ${checks.length - failed.length}/${checks.length}\n\n| Rezultat | Provjera | Detalj |\n|---|---|---|\n${rows}\n`;
+const summary = `# GNK ASG završni release paket\n\n- Status: **${manifest.releaseStatus}**\n- Grana: \`${BRANCH}\`\n- Izvorni commit: \`${SOURCE_COMMIT}\`\n- Izvor SHA vrijednosti: \`${manifest.sourceCommitInput}\`\n- Produkcija promijenjena: NE\n- Javni URL-ovi: ${publicRoutes.length}\n- Zaštićeni URL-ovi: ${protectedRoutes.length}\n- Provjere: ${checks.length - failed.length}/${checks.length}\n\n| Rezultat | Provjera | Detalj |\n|---|---|---|\n${rows}\n`;
 
 fs.writeFileSync(path.join(OUT, 'release-summary.md'), summary);
 
