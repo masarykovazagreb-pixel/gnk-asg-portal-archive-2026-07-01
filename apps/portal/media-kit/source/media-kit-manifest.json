@@ -1,0 +1,53 @@
+{
+  "version": "2026-06-21-rc1",
+  "status": "release_candidate_pending_user_approval",
+  "productionApproved": false,
+  "publicDownloadEnabled": false,
+  "entities": [
+    {
+      "key": "gnk-asg-doo",
+      "legalName": "GNK ASG d.o.o.",
+      "jurisdiction": "Republic of Croatia",
+      "registeredOffice": "Zagreb, Republic of Croatia",
+      "oib": "75227917632",
+      "mbs": "081512375",
+      "director": "Nermin Sefić",
+      "packageName": "GNK_ASG_doo_Media_Kit_RC1.zip",
+      "factsheet": "gnk-asg-doo-factsheet.html"
+    },
+    {
+      "key": "gnk-dinamo-ltd",
+      "legalName": "GNK DINAMO Ltd.",
+      "jurisdiction": "Colorado, United States of America",
+      "registeredOffice": "Boulder, Colorado, United States of America",
+      "entityId": "20238180649",
+      "croatiaOperatingStatement": "GNK DINAMO Ltd. does not conduct business in the Republic of Croatia.",
+      "packageName": "GNK_DINAMO_Ltd_Media_Kit_RC1.zip",
+      "factsheet": "gnk-dinamo-ltd-factsheet.html"
+    },
+    {
+      "key": "corporate-group",
+      "legalName": "GNK ASG / GNK DINAMO Ltd. Corporate Information Pack",
+      "relatedCompaniesStatement": "The group comprises 33 related companies, subject to inclusion of the supporting evidence in the approved package.",
+      "packageName": "GNK_ASG_Corporate_Media_Kit_RC1.zip",
+      "factsheet": "corporate-information-pack.html"
+    }
+  ],
+  "mandatoryRules": [
+    "Use the exact legal names GNK ASG d.o.o. and GNK DINAMO Ltd.",
+    "Never use GNKK or another altered legal name.",
+    "Do not imply identity, ownership, affiliation or representation of a football club unless supported by an approved legal statement.",
+    "Do not publish any employee count for the group unless documented in the approved package.",
+    "Do not publish unverified consolidated financial figures, valuations or group-wide claims.",
+    "Do not publish draft logos or visual marks as final brand assets.",
+    "Every public package requires explicit user approval and a matching SHA-256 manifest."
+  ],
+  "includedSourceFiles": [
+    "README.md",
+    "gnk-asg-doo-factsheet.html",
+    "gnk-dinamo-ltd-factsheet.html",
+    "corporate-information-pack.html",
+    "brand-usage-guidelines.html",
+    "media-kit-manifest.json"
+  ]
+}
