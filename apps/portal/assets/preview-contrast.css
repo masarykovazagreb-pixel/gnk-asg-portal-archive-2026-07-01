@@ -1,19 +1,126 @@
+:root {
+  --gnk-contrast-ink: #071426;
+  --gnk-contrast-heading: #06152d;
+  --gnk-contrast-body: #334155;
+  --gnk-contrast-muted: #475569;
+  --gnk-contrast-gold-dark: #704a00;
+  --gnk-contrast-link: #0b3d73;
+  --gnk-contrast-light: #f7f9fc;
+  --gnk-contrast-light-muted: #d9e2ee;
+  --gnk-contrast-gold-light: #f0d77d;
+}
+
+/* Svijetle površine: uvijek tamni tekst, neovisno o temi. */
+.kpi,
+.card,
+.tech-card,
+.news-card,
+.chat,
+.doc,
+.profile-board,
+.quick-data > div,
+.mention-notice {
+  color: var(--gnk-contrast-ink) !important;
+}
+
+.kpi,
+.card,
+.tech-card,
+.news-card,
+.chat,
+.profile-board {
+  background: #ffffff !important;
+}
+
+.doc {
+  background: #f7f9fc !important;
+}
+
+.kpi .value,
+.card h2,
+.card h3,
+.card h4,
+.tech-card h2,
+.tech-card h3,
+.news-card h2,
+.news-card h3,
+.doc h2,
+.doc h3,
+.profile-board h2,
+.profile-board h3,
+.quick-data strong,
+.fact dd,
+.chat strong {
+  color: var(--gnk-contrast-heading) !important;
+}
+
+.kpi .label,
+.quick-data small,
+.fact dt,
+.news-card .meta,
+.doc .tag {
+  color: var(--gnk-contrast-body) !important;
+  opacity: 1 !important;
+}
+
+.kpi .meaning,
+.card p,
+.tech-card p,
+.news-card p,
+.doc p,
+.profile-board p,
+.section-head p,
+.chat p,
+.chat small {
+  color: var(--gnk-contrast-muted) !important;
+  opacity: 1 !important;
+}
+
+.kpi .label,
+.kpi .meaning,
+.kpi .value {
+  text-shadow: none !important;
+}
+
+.kpi {
+  border-color: #cbd5e1 !important;
+  border-top-color: #b68522 !important;
+  box-shadow: 0 10px 28px rgba(7,20,38,.08) !important;
+}
+
+.eyebrow,
+.doc .tag,
+.news-card .meta {
+  color: var(--gnk-contrast-gold-dark) !important;
+}
+
+.card a,
+.news-card a,
+.doc a,
+.fact dd a,
+.profile-board a {
+  color: var(--gnk-contrast-link) !important;
+}
+
+/* Tamni grupni blokovi: zadržati premium izgled i puni kontrast. */
 #grupa .section-head h2,
 #grupa .section-head h3,
 .group-section .section-head h2,
-.group-card h3,
+.group-section .section-head h3,
+.group-card:not(:first-child) h3,
 .group-overview h2,
 .group-overview-panel h2 {
-  color: #f0d77d !important;
+  color: var(--gnk-contrast-gold-light) !important;
 }
 
 #grupa .section-head p,
 .group-section .section-head p,
-.group-card p,
-.group-card dt,
+.group-card:not(:first-child) p,
+.group-card:not(:first-child) dt,
 .group-overview p,
 .group-overview-panel p {
-  color: #c3cfdf !important;
+  color: #cbd7e6 !important;
+  opacity: 1 !important;
 }
 
 #grupa .group-card:not(:first-child),
@@ -22,8 +129,8 @@
 .group-overview-panel,
 .group-network-panel {
   background: #09182a !important;
-  border-color: rgba(212,175,55,.34) !important;
-  color: #f7f9fc !important;
+  border-color: rgba(212,175,55,.42) !important;
+  color: var(--gnk-contrast-light) !important;
 }
 
 #grupa .group-card:not(:first-child) h3,
@@ -32,13 +139,37 @@
 .group-section .group-card:not(:first-child) h3,
 .group-section .group-card:not(:first-child) strong,
 .group-section .group-card:not(:first-child) dd {
-  color: #f7f9fc !important;
+  color: var(--gnk-contrast-light) !important;
 }
 
+#grupa .group-card:not(:first-child) h3,
+.group-section .group-card:not(:first-child) h3 {
+  color: var(--gnk-contrast-gold-light) !important;
+}
+
+#grupa .group-card:not(:first-child) .group-kpis small,
+.group-section .group-card:not(:first-child) .group-kpis small {
+  color: var(--gnk-contrast-light-muted) !important;
+  opacity: 1 !important;
+}
+
+#grupa .group-card:not(:first-child) .group-kpis strong,
+.group-section .group-card:not(:first-child) .group-kpis strong {
+  color: #ffffff !important;
+}
+
+#grupa .group-card:not(:first-child) .group-kpis > div,
+.group-section .group-card:not(:first-child) .group-kpis > div {
+  background: rgba(255,255,255,.09) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+}
+
+/* Bijela Parent company kartica unutar tamne sekcije. */
 #grupa .group-card:first-child,
 .group-section .group-card:first-child {
   background: #ffffff !important;
-  color: #071426 !important;
+  border-color: #c8a84d !important;
+  color: var(--gnk-contrast-ink) !important;
 }
 
 #grupa .group-card:first-child h3,
@@ -47,58 +178,105 @@
 .group-section .group-card:first-child h3,
 .group-section .group-card:first-child strong,
 .group-section .group-card:first-child dd {
-  color: #071426 !important;
+  color: var(--gnk-contrast-heading) !important;
 }
 
+#grupa .group-card:first-child p,
+#grupa .group-card:first-child dt,
+.group-section .group-card:first-child p,
+.group-section .group-card:first-child dt {
+  color: var(--gnk-contrast-muted) !important;
+  opacity: 1 !important;
+}
+
+#grupa .group-card:first-child a,
+.group-section .group-card:first-child a {
+  color: var(--gnk-contrast-link) !important;
+}
+
+/* Vizualna galerija: tamne kartice u business temi. */
 #visualGrid .item,
 .visual-grid .item,
 .gallery-card,
 .visual-card {
   background: #09182a !important;
-  border-color: rgba(212,175,55,.34) !important;
-  color: #f7f9fc !important;
+  border-color: rgba(212,175,55,.42) !important;
+  color: var(--gnk-contrast-light) !important;
 }
 
 #visualGrid .item h2,
 .visual-grid .item h2,
 .gallery-card h2,
 .visual-card h2 {
-  color: #f0d77d !important;
+  color: var(--gnk-contrast-gold-light) !important;
 }
 
 #visualGrid .item p,
 .visual-grid .item p,
 .gallery-card p,
 .visual-card p {
-  color: #c3cfdf !important;
+  color: #cbd7e6 !important;
+  opacity: 1 !important;
 }
 
 #visualGrid .tags span,
 .visual-grid .tags span,
 .gallery-card .tags span,
 .visual-card .tags span {
-  background: rgba(212,175,55,.10) !important;
-  border-color: rgba(212,175,55,.34) !important;
-  color: #f0d77d !important;
+  background: rgba(212,175,55,.14) !important;
+  border-color: rgba(212,175,55,.42) !important;
+  color: #f7df8d !important;
 }
 
-html[data-gnk-theme="light"] #grupa .section-head h2,
-html[data-gnk-theme="light"] .group-section .section-head h2,
-html[data-gnk-theme="light"] .group-card h3,
-html[data-gnk-theme="light"] #visualGrid .item h2 {
-  color: #9b6e1f !important;
-}
-
-html[data-gnk-theme="light"] #grupa .section-head p,
-html[data-gnk-theme="light"] .group-section .section-head p,
-html[data-gnk-theme="light"] #visualGrid .item p {
-  color: #56677d !important;
-}
-
+/* Light tema: svijetle galerijske kartice i strogo tamni tekst. */
 html[data-gnk-theme="light"] #visualGrid .item,
 html[data-gnk-theme="light"] .visual-grid .item,
 html[data-gnk-theme="light"] .gallery-card,
 html[data-gnk-theme="light"] .visual-card {
   background: #ffffff !important;
-  color: #071426 !important;
+  color: var(--gnk-contrast-ink) !important;
+  border-color: #cbd5e1 !important;
+}
+
+html[data-gnk-theme="light"] #visualGrid .item h2,
+html[data-gnk-theme="light"] .visual-grid .item h2,
+html[data-gnk-theme="light"] .gallery-card h2,
+html[data-gnk-theme="light"] .visual-card h2 {
+  color: var(--gnk-contrast-heading) !important;
+}
+
+html[data-gnk-theme="light"] #visualGrid .item p,
+html[data-gnk-theme="light"] .visual-grid .item p,
+html[data-gnk-theme="light"] .gallery-card p,
+html[data-gnk-theme="light"] .visual-card p {
+  color: var(--gnk-contrast-muted) !important;
+}
+
+html[data-gnk-theme="light"] #visualGrid .tags span,
+html[data-gnk-theme="light"] .visual-grid .tags span,
+html[data-gnk-theme="light"] .gallery-card .tags span,
+html[data-gnk-theme="light"] .visual-card .tags span {
+  background: #fff7db !important;
+  border-color: #d6b85b !important;
+  color: var(--gnk-contrast-gold-dark) !important;
+}
+
+/* U light temi tamna Group Overview sekcija ostaje tamna i čitljiva. */
+html[data-gnk-theme="light"] #grupa .section-head h2,
+html[data-gnk-theme="light"] .group-section .section-head h2,
+html[data-gnk-theme="light"] #grupa .group-card:not(:first-child) h3,
+html[data-gnk-theme="light"] .group-section .group-card:not(:first-child) h3 {
+  color: var(--gnk-contrast-gold-light) !important;
+}
+
+html[data-gnk-theme="light"] #grupa .section-head p,
+html[data-gnk-theme="light"] .group-section .section-head p,
+html[data-gnk-theme="light"] #grupa .group-card:not(:first-child) p,
+html[data-gnk-theme="light"] .group-section .group-card:not(:first-child) p {
+  color: #cbd7e6 !important;
+}
+
+html[data-gnk-theme="light"] #grupa .group-card:first-child h3,
+html[data-gnk-theme="light"] .group-section .group-card:first-child h3 {
+  color: var(--gnk-contrast-heading) !important;
 }
