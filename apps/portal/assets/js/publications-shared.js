@@ -1,5 +1,5 @@
 (() => {
-  const root = document.getElementById('publication-grid');
+  const root = document.getElementById('publication-grid') || document.getElementById('grid');
   if (!root) return;
 
   const pageLanguage = document.body.dataset.publicationPage === 'en' ? 'en' : 'hr';
