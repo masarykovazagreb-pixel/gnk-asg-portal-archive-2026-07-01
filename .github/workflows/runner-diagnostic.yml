@@ -1,0 +1,22 @@
+name: GNK ASG Runner Diagnostic
+
+on:
+  pull_request:
+    branches: [visual-redesign]
+    paths:
+      - '.github/workflows/runner-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runner:
+    name: GitHub hosted runner heartbeat
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Runner heartbeat
+        run: |
+          echo "runner-ok"
+          uname -a
