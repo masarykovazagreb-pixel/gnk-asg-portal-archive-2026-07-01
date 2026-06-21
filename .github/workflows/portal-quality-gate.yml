@@ -1,0 +1,69 @@
+name: Portal quality gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "apps/portal/**"
+      - "tools/portal-quality-gate.mjs"
+      - ".github/workflows/portal-quality-gate.yml"
+      - ".quality-gate-enforced"
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/portal/**"
+      - "tools/portal-quality-gate.mjs"
+      - ".github/workflows/portal-quality-gate.yml"
+      - ".quality-gate-enforced"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate audit script syntax
+        run: node --check tools/portal-quality-gate.mjs
+
+      - name: Audit portal
+        shell: bash
+        run: |
+          MODE=""
+          if [[ -f .quality-gate-enforced ]]; then
+            MODE="--strict"
+          fi
+          node tools/portal-quality-gate.mjs \
+            --root apps/portal \
+            --out reports/portal-quality-gate \
+            $MODE
+
+      - name: Publish audit summary
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f reports/portal-quality-gate/audit.md ]]; then
+            cat reports/portal-quality-gate/audit.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Portal audit report was not generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portal-quality-gate
+          path: reports/portal-quality-gate
+          if-no-files-found: warn
+          retention-days: 30
