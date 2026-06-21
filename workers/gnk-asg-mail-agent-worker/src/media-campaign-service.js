@@ -4,6 +4,7 @@ import { mediaCampaignStatus, planMediaCampaignWindow } from './media-campaign-a
 import { executeMediaCampaignWindow } from './media-campaign-window.js';
 import { deliverMediaCampaignWindow } from './media-campaign-delivery.js';
 import { normaliseCampaignAttachment, readCampaignAttachment, storeCampaignAttachment } from './media-campaign-attachment.js';
+import { acquireMediaCampaignLease, strictCampaignLeaseReady } from './media-campaign-lease.js';
 import { saveMediaCampaign } from './media-campaign-state.js';
 
 export async function createMediaCampaign(env, payload = {}) {
@@ -70,11 +71,27 @@ export async function runMediaCampaignWindow(env, campaign, command = {}) {
   if (liveRequested && !liveConfigured) {
     return blockedResult(campaign, 'live_send_not_configured', 409);
   }
+  if (liveRequested && !strictCampaignLeaseReady(env)) {
+    return blockedResult(campaign, 'strict_rate_limit_storage_unavailable', 409);
+  }
 
   let updated;
   if (liveRequested) {
     const attachment = await readCampaignAttachment(env, campaign);
+    if (!attachment) {
+      return blockedResult(campaign, 'pdf_attachment_unavailable', 409);
+    }
+
+    const lease = await acquireMediaCampaignLease(env, campaign.id);
+    if (!lease.acquired) {
+      return blockedResult(campaign, lease.reason, lease.reason === 'rate_limited' ? 429 : 409, lease);
+    }
+
     updated = await deliverMediaCampaignWindow(env, campaign, attachment);
+    updated.strictLeaseId = lease.leaseId;
+    updated.strictLeaseAcquiredAt = lease.acquiredAt;
+    updated.nextAllowedAt = lease.nextAllowedAt;
+    updated.retryAfterSeconds = lease.retryAfterSeconds;
   } else {
     updated = executeMediaCampaignWindow(campaign, { liveSend: false });
   }
@@ -90,6 +107,7 @@ export async function runMediaCampaignWindow(env, campaign, command = {}) {
     productionSendEnabled: updated.productionSendEnabled === true,
     executionBlocked: updated.executionBlocked === true,
     executionBlockReason: updated.executionBlockReason || null,
+    strictLeaseId: updated.strictLeaseId || null,
     campaign: mediaCampaignStatus(updated),
     createdAt
   });
@@ -127,17 +145,20 @@ function validateCampaignContent(payload) {
   if (!String(payload.pdfAttachmentName || payload.pdfAttachment?.filename || '').trim()) throw new Error('missing_pdf_attachment');
 }
 
-function blockedResult(campaign, reason, status) {
+function blockedResult(campaign, reason, status, details = {}) {
+  const blockedCampaign = {
+    ...campaign,
+    executionBlocked: true,
+    executionBlockReason: reason,
+    productionSendEnabled: false,
+    nextAllowedAt: details.nextAllowedAt || campaign.nextAllowedAt || null,
+    retryAfterSeconds: details.retryAfterSeconds ?? campaign.retryAfterSeconds ?? 0
+  };
   return {
     ok: false,
     status,
     error: reason,
-    campaign: mediaCampaignStatus({
-      ...campaign,
-      executionBlocked: true,
-      executionBlockReason: reason,
-      productionSendEnabled: false
-    }),
+    campaign: mediaCampaignStatus(blockedCampaign),
     productionSendEnabled: false
   };
 }
