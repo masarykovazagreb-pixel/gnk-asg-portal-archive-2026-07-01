@@ -7,6 +7,7 @@ on:
       - 'workers/**'
       - 'config/phase1-critical-checks.json'
       - 'scripts/phase1-critical-audit.mjs'
+      - 'scripts/publications-regression-audit.mjs'
       - '.github/workflows/phase1-critical-audit.yml'
   workflow_dispatch:
 permissions:
@@ -20,13 +21,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Run critical audit
+      - name: Run local Phase 1 regressions
+        id: local_regressions
+        run: |
+          node scripts/publications-regression-audit.mjs
+          node workers/gnk-asg-preview-portal-worker/test/video-sitemap.test.js
+        continue-on-error: true
+      - name: Run critical live audit
         id: critical_audit
         run: node scripts/phase1-critical-audit.mjs
         continue-on-error: true
       - name: Publish audit summary
         if: always()
         run: |
+          if [ -f reports/publications-regression/publications-regression.md ]; then
+            cat reports/publications-regression/publications-regression.md >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [ -f reports/phase1-critical-audit/phase1-critical-audit.md ]; then
             cat reports/phase1-critical-audit/phase1-critical-audit.md >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -36,9 +46,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: phase1-critical-audit-${{ github.run_id }}
-          path: reports/phase1-critical-audit/
+          path: |
+            reports/phase1-critical-audit/
+            reports/publications-regression/
           if-no-files-found: warn
           retention-days: 7
       - name: Enforce audit result
         if: always()
-        run: test "${{ steps.critical_audit.outcome }}" = "success"
+        run: |
+          test "${{ steps.local_regressions.outcome }}" = "success"
+          test "${{ steps.critical_audit.outcome }}" = "success"
