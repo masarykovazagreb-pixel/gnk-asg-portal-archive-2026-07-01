@@ -58,6 +58,9 @@ jobs:
       - name: Campaign suppression and opt-out test
         run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-suppression.test.js
 
+      - name: Campaign bounded retry policy test
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-retry.test.js
+
       - name: Campaign 100-recipient simulation
         run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
 
@@ -113,6 +116,8 @@ jobs:
           Suppression persistence: verified
           Import-time opt-out gate: verified
           Runtime opt-out gate: verified
+          Bounded retry policy: verified
+          Retry exhaustion protection: verified
           Live-send confirmation gate: verified
           Personalisation: verified
           Live sending: disabled
