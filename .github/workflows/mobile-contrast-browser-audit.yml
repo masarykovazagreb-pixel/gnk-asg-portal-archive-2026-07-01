@@ -35,7 +35,9 @@ permissions:
 jobs:
   mobile-contrast-browser-audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    container:
+      image: mcr.microsoft.com/playwright:v1.52.0-noble
+    timeout-minutes: 15
     env:
       PREVIEW_BASE_URL: https://gnk-asg-business-light-preview.beckuphome.workers.dev
     steps:
@@ -67,10 +69,8 @@ jobs:
           done
           test "$ready" = 'true'
 
-      - name: Install Playwright Chromium
-        run: |
-          npm install --no-save playwright@1.52.0
-          npx playwright install --with-deps chromium
+      - name: Install matching Playwright package
+        run: npm install --no-save playwright@1.52.0
 
       - name: Run HR and EN mobile contrast audit
         run: node scripts/mobile-contrast-browser-audit.mjs
