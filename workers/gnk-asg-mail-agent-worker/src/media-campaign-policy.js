@@ -4,7 +4,8 @@ export const MEDIA_CAMPAIGN_LIMITS = Object.freeze({
   requireOperatorToken: true,
   requirePdfAttachment: true,
   allowPauseResume: true,
-  trackStatuses: ['queued', 'sent', 'tested', 'failed', 'remaining', 'paused']
+  requireSuppressionCheck: true,
+  trackStatuses: ['queued', 'sent', 'tested', 'failed', 'remaining', 'paused', 'suppressed']
 });
 
 export function normaliseMediaRecipient(row = {}) {
