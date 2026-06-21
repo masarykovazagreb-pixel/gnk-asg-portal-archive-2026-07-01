@@ -6,7 +6,10 @@
 
   function ensureFloatingControls() {
     const isEn = location.pathname.startsWith('/en/');
-    if (!document.getElementById('gnk-asg-float-home') && !document.querySelector('.gnk-global-float-home,.gnk-functional-fallback-home')) {
+    const existingHome = document.getElementById('gnk-preview-home') || document.getElementById('gnk-asg-float-home') || document.querySelector('.gnk-global-float-home,.gnk-functional-fallback-home');
+    const existingAi = document.getElementById('gnk-preview-ai') || document.getElementById('gnk-asg-float-ai') || document.querySelector('.gnk-global-float-ai,.gnk-functional-fallback-ai');
+
+    if (!existingHome) {
       const home = document.createElement('a');
       home.id = 'gnk-asg-float-home';
       home.href = isEn ? '/en/' : '/';
@@ -14,7 +17,7 @@
       home.textContent = '⌂';
       document.body.appendChild(home);
     }
-    if (!document.getElementById('gnk-asg-float-ai') && !document.querySelector('.gnk-global-float-ai,.gnk-functional-fallback-ai')) {
+    if (!existingAi) {
       const ai = document.createElement('a');
       ai.id = 'gnk-asg-float-ai';
       ai.href = isEn ? '/en/assistant/' : '/assistant/';
@@ -22,19 +25,22 @@
       ai.innerHTML = `<span class="dot"></span><span><strong>${isEn ? 'AI Help' : 'AI Pomoć'}</strong><small>${isEn ? 'Online assistant' : 'Online asistent'}</small></span>`;
       document.body.appendChild(ai);
     }
-    const home = document.getElementById('gnk-asg-float-home');
+
+    const home = document.getElementById('gnk-preview-home') || document.getElementById('gnk-asg-float-home');
     if (home) {
       set(home,'position','fixed'); set(home,'left','16px'); set(home,'bottom','16px'); set(home,'z-index','2147482800');
       set(home,'display','flex'); set(home,'align-items','center'); set(home,'justify-content','center');
       set(home,'width','52px'); set(home,'height','52px'); set(home,'border-radius','50%'); set(home,'border','2px solid #d4af37');
-      set(home,'background','linear-gradient(135deg,#d4af37,#f0d77d)'); set(home,'color','#07101f'); set(home,'text-decoration','none');
+      set(home,'background','linear-gradient(135deg,#d4af37,#f0d77d)'); set(home,'color','#07101f'); set(home,'text-decoration','none'); set(home,'opacity','1');
     }
-    const ai = document.getElementById('gnk-asg-float-ai');
+
+    const ai = document.getElementById('gnk-preview-ai') || document.getElementById('gnk-asg-float-ai');
     if (ai) {
       set(ai,'position','fixed'); set(ai,'right','16px'); set(ai,'bottom','16px'); set(ai,'z-index','2147482800');
       set(ai,'display','flex'); set(ai,'align-items','center'); set(ai,'justify-content','center'); set(ai,'gap','10px');
       set(ai,'min-height','52px'); set(ai,'padding','10px 15px'); set(ai,'border-radius','999px'); set(ai,'border','2px solid #d4af37');
-      set(ai,'background','rgba(5,15,31,.98)'); set(ai,'color','#fff'); set(ai,'text-decoration','none');
+      set(ai,'background','#07101f'); set(ai,'color','#ffffff'); set(ai,'text-decoration','none'); set(ai,'opacity','1');
+      ai.querySelectorAll('*').forEach(el => { set(el,'color','#ffffff'); set(el,'opacity','1'); });
     }
   }
 
@@ -73,15 +79,16 @@
     document.querySelectorAll('#financials .section-head p,#grupa .section-head p,#dokumenti .section-head p').forEach(el => set(el,'color',palette.muted));
 
     const aiSelector = [
-      '#gnk-asg-float-ai','#gnk-asg-ai-help-float','#gnk-asg-single-ai-button-anchor',
+      '#gnk-preview-ai','#gnk-asg-float-ai','#gnk-asg-ai-help-float','#gnk-asg-single-ai-button-anchor',
       '.gnk-global-float-ai','.gnk-asg-ai-badge','[data-ai-badge]','button[aria-label*="AI" i]','a[aria-label*="AI" i]'
     ].join(',');
     document.querySelectorAll(aiSelector).forEach(ai => {
       if (!String(ai.textContent || '').match(/AI|Pomoć|Help/i)) return;
-      set(ai,'background','rgba(5,15,31,.98)');
+      set(ai,'background','#07101f');
       set(ai,'color','#ffffff');
+      set(ai,'opacity','1');
       ai.querySelectorAll('*').forEach(el => { set(el,'color','#ffffff'); set(el,'opacity','1'); });
-      set(ai.querySelector('small'),'color','rgba(255,255,255,.82)');
+      set(ai.querySelector('small'),'color','#d8e2ef');
     });
   }
 
