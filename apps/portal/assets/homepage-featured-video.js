@@ -10,7 +10,7 @@
     if (document.querySelector('link[data-gnk-video-styles]')) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = '/assets/portal-video.css?v=20260621-2';
+    link.href = '/assets/portal-video.css?v=20260621-3';
     link.dataset.gnkVideoStyles = 'true';
     document.head.appendChild(link);
   }
@@ -19,7 +19,7 @@
     if (ready()) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = `${src}?v=20260621-2`;
+      script.src = `${src}?v=20260621-3`;
       script.defer = true;
       script.onload = resolve;
       script.onerror = reject;
@@ -49,15 +49,16 @@
       return;
     }
 
+    if (!isUploaded(item)) return;
+
     ensureStyles();
-    const uploaded = isUploaded(item);
     const title = language === 'en' ? item.titleEn : item.titleHr;
     const description = language === 'en' ? item.descriptionEn : item.descriptionHr;
 
     const section = document.createElement('section');
     section.id = 'gnk-featured-video';
     section.className = 'gnk-video-teaser';
-    section.dataset.videoStatus = uploaded ? 'ready' : 'awaiting-upload';
+    section.dataset.videoStatus = 'ready';
 
     const inner = document.createElement('div');
     inner.className = 'gnk-video-teaser-inner';
@@ -69,9 +70,11 @@
     image.alt = title || 'GNK ASG video';
     image.width = 1280;
     image.height = 720;
+    image.loading = 'lazy';
+    image.decoding = 'async';
     const play = document.createElement('span');
     play.className = 'gnk-video-play';
-    play.textContent = uploaded ? '▶' : '4K';
+    play.textContent = '▶';
     poster.append(image, play);
 
     const copy = document.createElement('div');
@@ -87,25 +90,18 @@
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'gnk-video-open';
-    button.textContent = uploaded
-      ? (language === 'en' ? 'Play film' : 'Pokreni film')
-      : (language === 'en' ? 'Film in preparation' : 'Film u pripremi');
-    button.disabled = !uploaded;
-    button.setAttribute('aria-disabled', String(!uploaded));
-
-    if (uploaded) {
-      button.addEventListener('click', async () => {
-        await ensurePlayer();
-        window.GNKVideoPlayer.open({
-          ...item,
-          uploaded: true,
-          titleHr: item.titleHr || item.title,
-          titleEn: item.titleEn || item.titleHr || item.title,
-          descriptionHr: item.descriptionHr || item.description,
-          descriptionEn: item.descriptionEn || item.descriptionHr || item.description
-        }, language);
-      });
-    }
+    button.textContent = language === 'en' ? 'Play film' : 'Pokreni film';
+    button.addEventListener('click', async () => {
+      await ensurePlayer();
+      window.GNKVideoPlayer.open({
+        ...item,
+        uploaded: true,
+        titleHr: item.titleHr || item.title,
+        titleEn: item.titleEn || item.titleHr || item.title,
+        descriptionHr: item.descriptionHr || item.description,
+        descriptionEn: item.descriptionEn || item.descriptionHr || item.description
+      }, language);
+    });
 
     inner.append(poster, copy, button);
     section.appendChild(inner);
