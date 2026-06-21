@@ -7,8 +7,11 @@ on:
     paths:
       - 'scripts/build-release-package.mjs'
       - 'scripts/release-candidate-audit.mjs'
+      - 'scripts/backup-restore-rehearsal.mjs'
       - 'config/project-completion-backlog.json'
       - 'config/phase1-critical-checks.json'
+      - 'contracts/**'
+      - 'apps/portal/data/**'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
       - 'workers/gnk-asg-mail-agent-worker/wrangler.release.toml'
       - 'workers/gnk-asg-mail-agent-worker/src/rollback-manifest.js'
@@ -33,8 +36,19 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate release package generator
-        run: node --check scripts/build-release-package.mjs
+      - name: Validate release and restore generators
+        run: |
+          node --check scripts/build-release-package.mjs
+          node --check scripts/backup-restore-rehearsal.mjs
+
+      - name: Run backup and restore rehearsal
+        run: node scripts/backup-restore-rehearsal.mjs
+
+      - name: Validate restore proof
+        run: |
+          set -euo pipefail
+          node -e "const p=require('./reports/backup-restore-rehearsal/backup-manifest.json'); if(p.repositoryManagedState!=='PASS'||p.productionTouched!==false||p.managedFileCount!==p.restoredFileCount||p.failedFileCount!==0) process.exit(1)"
+          test -s reports/backup-restore-rehearsal/restore-proof.md
 
       - name: Build release package
         run: node scripts/build-release-package.mjs
@@ -46,13 +60,18 @@ jobs:
           test -s reports/release-package/release-summary.md
           test -s reports/release-package/rollback-plan.md
 
-      - name: Publish release summary
-        run: cat reports/release-package/release-summary.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Publish release and restore summaries
+        run: |
+          cat reports/backup-restore-rehearsal/restore-proof.md >> "$GITHUB_STEP_SUMMARY"
+          cat reports/release-package/release-summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload release package
         uses: actions/upload-artifact@v4
         with:
           name: gnk-asg-release-package-${{ github.run_id }}
-          path: reports/release-package/
+          path: |
+            reports/release-package/
+            reports/backup-restore-rehearsal/backup-manifest.json
+            reports/backup-restore-rehearsal/restore-proof.md
           if-no-files-found: error
           retention-days: 14
