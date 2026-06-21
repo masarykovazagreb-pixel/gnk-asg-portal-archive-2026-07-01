@@ -10,7 +10,7 @@ const REQUIRED_PUBLIC_ROUTES = [
   '/trzista/',
   '/markets/',
   '/contact/',
-  '/operator/mobile/'
+  '/operator-mobile/'
 ];
 
 const REQUIRED_MAIL_CAPABILITIES = [
@@ -53,7 +53,7 @@ export function phase1Readiness(selfTest, env = {}) {
     mediaCampaignLiveSend: env.MEDIA_CAMPAIGN_LIVE_SEND === 'true'
   };
   const checks = {
-    publicRoutesDeclared: REQUIRED_PUBLIC_ROUTES.length === 9,
+    publicRoutesDeclared: REQUIRED_PUBLIC_ROUTES.length === 9 && REQUIRED_PUBLIC_ROUTES.includes('/operator-mobile/'),
     mailCapabilitiesDeclared: REQUIRED_MAIL_CAPABILITIES.length === 6,
     backendCapabilitiesDeclared: REQUIRED_BACKEND_CAPABILITIES.length === 7,
     videoCapabilitiesDeclared: REQUIRED_VIDEO_CAPABILITIES.length === 5,
