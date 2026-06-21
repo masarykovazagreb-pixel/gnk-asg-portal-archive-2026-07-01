@@ -122,7 +122,7 @@ function enhanceStaticResponse(response) {
   const transformed = new HTMLRewriter()
     .on('head', {
       element(element) {
-        element.append('<script defer src="/assets/admin-universal-shell.js?v=20260620-10"></script>', { html: true });
+        element.append('<script defer src="/assets/admin-universal-shell.js?v=20260621-12"></script>', { html: true });
       }
     })
     .transform(response);
