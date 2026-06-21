@@ -1,0 +1,113 @@
+name: GNK ASG Functional Repair Live Hotfix
+
+on:
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - 'apps/portal/assets/portal-functional-repair-v1.css'
+      - 'apps/portal/assets/portal-ui-repair-v1.js'
+      - 'apps/portal/assets/contact-form-repair-v1.js'
+      - 'apps/portal/assets/admin-functional-repair-v1.js'
+      - 'apps/portal/assets/operator-dashboard-compat-v1.js'
+      - 'apps/portal/assets/final-contrast-enforcer.js'
+      - 'apps/portal/data/navigation.json'
+      - 'workers/gnk-asg-direct-operator/**'
+      - 'workers/gnk-asg-mail-agent-worker/**'
+      - 'workers/gnk-asg-public-pages-live/wrangler.live.toml'
+      - '.github/workflows/functional-repair-live-hotfix.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-functional-repair-live-hotfix
+  cancel-in-progress: false
+
+jobs:
+  deploy-and-test:
+    if: github.head_ref == 'experience-ai-live-overview'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate repair package
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/portal-ui-repair-v1.js
+          node --check apps/portal/assets/contact-form-repair-v1.js
+          node --check apps/portal/assets/admin-functional-repair-v1.js
+          node --check apps/portal/assets/operator-dashboard-compat-v1.js
+          node --check apps/portal/assets/final-contrast-enforcer.js
+          node --check workers/gnk-asg-direct-operator/src/index-secure.js
+          node --check workers/gnk-asg-mail-agent-worker/src/index-secure.js
+          grep -Fxq 'MEDIA_CAMPAIGN_LIVE_SEND = "false"' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
+          grep -Fxq 'main = "src/index-secure.js"' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
+          grep -Fxq 'main = "src/index-secure.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          ! grep -q 'gnk-asg.hr/mail-studio-pro' workers/gnk-asg-public-pages-live/wrangler.live.toml
+          ! grep -q 'gnk-asg.hr/operator-mobile' workers/gnk-asg-public-pages-live/wrangler.live.toml
+
+      - name: Deploy repaired main portal
+        run: npx --yes wrangler@4 deploy --config workers/gnk-asg-direct-operator/wrangler.toml
+
+      - name: Deploy repaired Mail Agent
+        run: npx --yes wrangler@4 deploy --config workers/gnk-asg-mail-agent-worker/wrangler.release.toml
+
+      - name: Deploy updated public route set
+        run: npx --yes wrangler@4 deploy --config workers/gnk-asg-public-pages-live/wrangler.live.toml
+
+      - name: Wait for Cloudflare propagation
+        run: sleep 18
+
+      - name: Verify public pages and injected repair layer
+        shell: bash
+        run: |
+          set -euo pipefail
+          urls=(
+            'https://gnk-asg.hr/'
+            'https://gnk-asg.hr/en/'
+            'https://gnk-asg.hr/platforme/bpp/'
+            'https://gnk-asg.hr/objave/'
+            'https://gnk-asg.hr/vijesti/'
+            'https://gnk-asg.hr/contact/'
+            'https://gnk-asg.hr/mail-studio-pro/'
+            'https://gnk-asg.hr/mail-studio-pro/campaign/'
+            'https://gnk-asg.hr/operator-dashboard/'
+            'https://gnk-asg.hr/operator-mobile/'
+          )
+          for url in "${urls[@]}"; do
+            file="page-$(echo "$url" | sed 's#https://##;s#[/:]#_#g').html"
+            code=$(curl --silent --show-error --location --output "$file" --write-out '%{http_code}' --retry 5 --retry-all-errors --retry-delay 3 "$url")
+            echo "$code $url"
+            test "$code" = '200'
+            grep -qi 'GNK ASG' "$file"
+            ! grep -qiE '^Not found$|>Not found<' "$file"
+            grep -q 'gnk-functional-repair-css' "$file"
+          done
+
+      - name: Verify APIs and safety locks
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(curl -sS -o /dev/null -w '%{http_code}' https://gnk-asg.hr/api/mail-agent/health)" = '200'
+          test "$(curl -sS -o /dev/null -w '%{http_code}' https://gnk-asg.hr/api/mail-agent/inbox)" = '401'
+          test "$(curl -sS -o /dev/null -w '%{http_code}' https://gnk-asg.hr/api/media-upload)" = '401'
+          test "$(curl -sS -o /dev/null -w '%{http_code}' https://gnk-asg.hr/api/admin-asset-list)" = '401'
+          test "$(curl -sS -o /dev/null -w '%{http_code}' https://gnk-asg.hr/api/contact-mailboxes)" = '200'
+
+      - name: Upload smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-functional-repair-live-${{ github.run_id }}
+          path: page-*.html
+          if-no-files-found: warn
+          retention-days: 7
