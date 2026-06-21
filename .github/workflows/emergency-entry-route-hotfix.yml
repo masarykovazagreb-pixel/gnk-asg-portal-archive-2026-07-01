@@ -19,14 +19,13 @@ permissions:
 
 concurrency:
   group: gnk-asg-emergency-entry-route-hotfix
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy-entry-fix:
     if: github.event_name == 'push' || github.head_ref == 'experience-ai-live-overview'
     runs-on: ubuntu-latest
     timeout-minutes: 12
-    environment: production
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
