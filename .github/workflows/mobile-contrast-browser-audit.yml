@@ -6,6 +6,7 @@ on:
       - experience-ai-live-overview
     paths:
       - 'apps/portal/assets/final-contrast-contract.css'
+      - 'apps/portal/assets/final-contrast-enforcer.js'
       - 'apps/portal/assets/preview-contrast.css'
       - 'apps/portal/assets/admin-universal-shell.js'
       - 'apps/portal/assets/brand/gnk-asg-global-layer.css'
@@ -19,6 +20,7 @@ on:
       - visual-redesign
     paths:
       - 'apps/portal/assets/final-contrast-contract.css'
+      - 'apps/portal/assets/final-contrast-enforcer.js'
       - 'apps/portal/assets/preview-contrast.css'
       - 'apps/portal/assets/admin-universal-shell.js'
       - 'apps/portal/assets/brand/gnk-asg-global-layer.css'
@@ -58,7 +60,8 @@ jobs:
           for attempt in $(seq 1 36); do
             css=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/final-contrast-contract.css?cb=$GITHUB_SHA" || true)
             shell=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/admin-universal-shell.js?cb=$GITHUB_SHA" || true)
-            if printf '%s' "$css" | grep -q -- '--gnk-dark-panel' && printf '%s' "$shell" | grep -q 'gnk-final-contrast-contract-css'; then
+            enforcer=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/final-contrast-enforcer.js?cb=$GITHUB_SHA" || true)
+            if printf '%s' "$css" | grep -q -- '--gnk-dark-panel' && printf '%s' "$shell" | grep -q 'gnk-final-contrast-enforcer-js' && printf '%s' "$enforcer" | grep -q '__GNK_FINAL_CONTRAST_ENFORCER__'; then
               ready=true
               break
             fi
@@ -86,7 +89,7 @@ jobs:
 
       - name: Validate audit result
         run: |
-          node -e "const r=require('./reports/mobile-contrast-browser-audit/report.json'); if(r.status!=='PASS'||r.totalFailures!==0||r.productionTouched!==false||r.scenarioCount!==4) process.exit(1)"
+          node -e "const r=require('./reports/mobile-contrast-browser-audit/report.json'); if(r.status!=='PASS'||r.totalFailures!==0||r.scenarioErrorCount!==0||r.productionTouched!==false||r.scenarioCount!==4) process.exit(1)"
           test -s reports/mobile-contrast-browser-audit/report.md
           test -s reports/mobile-contrast-browser-audit/hr-dark-financials.png
           test -s reports/mobile-contrast-browser-audit/hr-dark-grupa.png
