@@ -1,4 +1,18 @@
 const ASSET_ORIGIN = 'https://gnk-asg-public-pages-live.beckuphome.workers.dev';
+const PUBLIC_ORIGIN = 'https://gnk-asg.hr';
+
+const LANGUAGE_PAIRS = [
+  { hr: '/', en: '/en/' },
+  { hr: '/objave/', en: '/publications/' },
+  { hr: '/vijesti/', en: '/news/' },
+  { hr: '/trzista/', en: '/markets/' },
+  { hr: '/videoteka/', en: '/en/video-library/' },
+  { hr: '/video/', en: '/en/video/' },
+  { hr: '/platforme/bpp/', en: '/en/platforms/bpp/' },
+  { hr: '/privatnost/', en: '/en/privacy/' },
+  { hr: '/uvjeti-koristenja/', en: '/en/terms/' },
+  { hr: '/kolacici/', en: '/en/cookies/' }
+];
 
 export default {
   async fetch(request, env) {
@@ -9,6 +23,8 @@ export default {
       });
     }
 
+    const url = new URL(request.url);
+    const routeSeo = languageMetadata(url.pathname);
     const response = await env.ASSETS.fetch(request);
     const contentType = response.headers.get('content-type') || '';
 
@@ -16,7 +32,7 @@ export default {
       return withHeaders(response);
     }
 
-    const transformed = new HTMLRewriter()
+    let rewriter = new HTMLRewriter()
       .on('[src]', {
         element(element) {
           const value = element.getAttribute('src');
@@ -39,12 +55,89 @@ export default {
             element.setAttribute('href', ASSET_ORIGIN + value);
           }
         }
-      })
-      .transform(response);
+      });
 
-    return withHeaders(transformed);
+    if (routeSeo) {
+      rewriter = rewriter
+        .on('html', {
+          element(element) {
+            element.setAttribute('lang', routeSeo.language);
+          }
+        })
+        .on('link[rel="canonical"]', {
+          element(element) {
+            element.remove();
+          }
+        })
+        .on('link[rel="alternate"][hreflang]', {
+          element(element) {
+            element.remove();
+          }
+        })
+        .on('meta[property="og:url"]', {
+          element(element) {
+            element.remove();
+          }
+        })
+        .on('meta[property="og:locale"]', {
+          element(element) {
+            element.remove();
+          }
+        })
+        .on('head', {
+          element(element) {
+            element.append(seoMarkup(routeSeo), { html: true });
+          }
+        });
+    }
+
+    return withHeaders(rewriter.transform(response));
   }
 };
+
+function normalisePath(value) {
+  const path = String(value || '/').replace(/\/{2,}/g, '/');
+  if (path === '/') return '/';
+  return path.endsWith('/') ? path : `${path}/`;
+}
+
+function languageMetadata(pathname) {
+  const path = normalisePath(pathname);
+  for (const pair of LANGUAGE_PAIRS) {
+    if (path === pair.hr) {
+      return {
+        language: 'hr',
+        canonical: `${PUBLIC_ORIGIN}${pair.hr}`,
+        hr: `${PUBLIC_ORIGIN}${pair.hr}`,
+        en: `${PUBLIC_ORIGIN}${pair.en}`,
+        xDefault: `${PUBLIC_ORIGIN}${pair.hr}`,
+        ogLocale: 'hr_HR'
+      };
+    }
+    if (path === pair.en) {
+      return {
+        language: 'en',
+        canonical: `${PUBLIC_ORIGIN}${pair.en}`,
+        hr: `${PUBLIC_ORIGIN}${pair.hr}`,
+        en: `${PUBLIC_ORIGIN}${pair.en}`,
+        xDefault: `${PUBLIC_ORIGIN}${pair.hr}`,
+        ogLocale: 'en_US'
+      };
+    }
+  }
+  return null;
+}
+
+function seoMarkup(metadata) {
+  return [
+    `<link rel="canonical" href="${metadata.canonical}">`,
+    `<link rel="alternate" hreflang="hr" href="${metadata.hr}">`,
+    `<link rel="alternate" hreflang="en" href="${metadata.en}">`,
+    `<link rel="alternate" hreflang="x-default" href="${metadata.xDefault}">`,
+    `<meta property="og:url" content="${metadata.canonical}">`,
+    `<meta property="og:locale" content="${metadata.ogLocale}">`
+  ].join('');
+}
 
 function withHeaders(response) {
   const headers = new Headers(response.headers);
@@ -53,6 +146,7 @@ function withHeaders(response) {
   headers.set('referrer-policy', 'strict-origin-when-cross-origin');
   headers.set('x-frame-options', 'SAMEORIGIN');
   headers.set('x-gnk-asg-public-pages-live', 'true');
+  headers.set('content-language', response.url?.includes('/en/') ? 'en' : 'hr');
 
   return new Response(response.body, {
     status: response.status,
