@@ -8,6 +8,7 @@ on:
       - 'scripts/build-release-package.mjs'
       - 'scripts/release-candidate-audit.mjs'
       - 'scripts/backup-restore-rehearsal.mjs'
+      - 'scripts/hr-en-public-route-audit.mjs'
       - 'config/project-completion-backlog.json'
       - 'config/phase1-critical-checks.json'
       - 'contracts/**'
@@ -36,10 +37,20 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate release and restore generators
+      - name: Validate release, restore and route audit generators
         run: |
           node --check scripts/build-release-package.mjs
           node --check scripts/backup-restore-rehearsal.mjs
+          node --check scripts/hr-en-public-route-audit.mjs
+
+      - name: Run HR EN public route audit
+        run: node scripts/hr-en-public-route-audit.mjs
+
+      - name: Validate HR EN public route evidence
+        run: |
+          set -euo pipefail
+          node -e "const p=require('./reports/hr-en-public-route-audit/route-audit.json'); if(p.status!=='PASS'||p.failed!==0||p.productionTouched!==false||p.productionDeployPerformed!==false||!p.publicRouteCount) process.exit(1)"
+          test -s reports/hr-en-public-route-audit/route-audit.md
 
       - name: Run backup and restore rehearsal
         run: node scripts/backup-restore-rehearsal.mjs
@@ -60,8 +71,9 @@ jobs:
           test -s reports/release-package/release-summary.md
           test -s reports/release-package/rollback-plan.md
 
-      - name: Publish release and restore summaries
+      - name: Publish release, route and restore summaries
         run: |
+          cat reports/hr-en-public-route-audit/route-audit.md >> "$GITHUB_STEP_SUMMARY"
           cat reports/backup-restore-rehearsal/restore-proof.md >> "$GITHUB_STEP_SUMMARY"
           cat reports/release-package/release-summary.md >> "$GITHUB_STEP_SUMMARY"
 
@@ -71,6 +83,8 @@ jobs:
           name: gnk-asg-release-package-${{ github.run_id }}
           path: |
             reports/release-package/
+            reports/hr-en-public-route-audit/route-audit.json
+            reports/hr-en-public-route-audit/route-audit.md
             reports/backup-restore-rehearsal/backup-manifest.json
             reports/backup-restore-rehearsal/restore-proof.md
           if-no-files-found: error
