@@ -1,0 +1,89 @@
+name: GNK ASG Mobile Contrast Browser Audit
+
+on:
+  push:
+    branches:
+      - experience-ai-live-overview
+    paths:
+      - 'apps/portal/assets/final-contrast-contract.css'
+      - 'apps/portal/assets/preview-contrast.css'
+      - 'apps/portal/assets/admin-universal-shell.js'
+      - 'apps/portal/assets/brand/gnk-asg-global-layer.css'
+      - 'apps/portal/assets/brand/gnk-asg-global-layer.js'
+      - 'apps/portal/index.html'
+      - 'apps/portal/en/index.html'
+      - 'scripts/mobile-contrast-browser-audit.mjs'
+      - '.github/workflows/mobile-contrast-browser-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-contrast-browser-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PREVIEW_BASE_URL: https://gnk-asg-business-light-preview.beckuphome.workers.dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate audit syntax
+        run: node --check scripts/mobile-contrast-browser-audit.mjs
+
+      - name: Wait for current contrast assets on workers.dev
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=false
+          for attempt in $(seq 1 36); do
+            css=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/final-contrast-contract.css?cb=$GITHUB_SHA" || true)
+            shell=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/admin-universal-shell.js?cb=$GITHUB_SHA" || true)
+            if printf '%s' "$css" | grep -q -- '--gnk-dark-panel' && printf '%s' "$shell" | grep -q 'gnk-final-contrast-contract-css'; then
+              ready=true
+              break
+            fi
+            echo "Waiting for current preview assets: attempt $attempt/36"
+            sleep 5
+          done
+          test "$ready" = 'true'
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+
+      - name: Run HR and EN mobile contrast audit
+        run: node scripts/mobile-contrast-browser-audit.mjs
+
+      - name: Validate audit result
+        run: |
+          node -e "const r=require('./reports/mobile-contrast-browser-audit/report.json'); if(r.status!=='PASS'||r.totalFailures!==0||r.productionTouched!==false||r.scenarioCount!==4) process.exit(1)"
+          test -s reports/mobile-contrast-browser-audit/report.md
+          test -s reports/mobile-contrast-browser-audit/hr-dark-financials.png
+          test -s reports/mobile-contrast-browser-audit/hr-dark-grupa.png
+          test -s reports/mobile-contrast-browser-audit/hr-light-financials.png
+          test -s reports/mobile-contrast-browser-audit/en-dark-financials.png
+          test -s reports/mobile-contrast-browser-audit/en-light-grupa.png
+
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f reports/mobile-contrast-browser-audit/report.md ]; then
+            cat reports/mobile-contrast-browser-audit/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload mobile screenshots and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-mobile-contrast-browser-audit-${{ github.run_id }}
+          path: reports/mobile-contrast-browser-audit/
+          if-no-files-found: error
+          retention-days: 14
