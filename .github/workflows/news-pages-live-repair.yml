@@ -1,0 +1,81 @@
+name: GNK ASG News Pages Live Repair
+
+on:
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - 'workers/gnk-asg-news-pages-live/**'
+      - 'apps/portal/vijesti/index.html'
+      - 'apps/portal/news/index.html'
+      - 'apps/portal/assets/business-news.css'
+      - 'apps/portal/assets/business-news.js'
+      - 'apps/portal/assets/portal-functional-repair-v1.css'
+      - 'apps/portal/assets/portal-ui-repair-v1.js'
+      - '.github/workflows/news-pages-live-repair.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-news-pages-live-repair
+  cancel-in-progress: false
+
+jobs:
+  deploy-and-test:
+    if: github.head_ref == 'experience-ai-live-overview'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate isolated news worker
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-news-pages-live/src/index.js
+          test -s apps/portal/vijesti/index.html
+          test -s apps/portal/news/index.html
+          grep -Fxq 'pattern = "gnk-asg.hr/vijesti/*"' workers/gnk-asg-news-pages-live/wrangler.toml
+          grep -Fxq 'pattern = "gnk-asg.hr/news/*"' workers/gnk-asg-news-pages-live/wrangler.toml
+          grep -q 'gnk-functional-repair-css' apps/portal/vijesti/index.html
+          grep -q 'gnk-functional-repair-css' apps/portal/news/index.html
+
+      - name: Deploy repaired news routes
+        run: npx --yes wrangler@4 deploy --config workers/gnk-asg-news-pages-live/wrangler.toml
+
+      - name: Wait for propagation
+        run: sleep 15
+
+      - name: Verify HR and EN news pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in /vijesti/ /news/; do
+            file="news$(echo "$path" | tr '/' '_').html"
+            headers="news$(echo "$path" | tr '/' '_').headers"
+            code=$(curl --silent --show-error --location --dump-header "$headers" --output "$file" --write-out '%{http_code}' --retry 5 --retry-all-errors --retry-delay 3 "https://gnk-asg.hr${path}")
+            echo "$code https://gnk-asg.hr${path}"
+            test "$code" = '200'
+            grep -qi 'GNK ASG' "$file"
+            grep -q 'gnk-functional-repair-css' "$file"
+            grep -qi 'x-gnk-asg-news-pages-live: true' "$headers"
+            ! grep -qiE '>App<|>Mobilni portal<' "$file"
+          done
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-news-pages-live-${{ github.run_id }}
+          path: |
+            news*.html
+            news*.headers
+          if-no-files-found: warn
+          retention-days: 7
