@@ -3,226 +3,186 @@ import path from 'node:path';
 import { chromium } from 'playwright-core';
 
 const baseUrl = String(process.env.PREVIEW_BASE_URL || 'https://gnk-asg-business-light-preview.beckuphome.workers.dev').replace(/\/$/, '');
+const chromiumPath = process.env.CHROMIUM_PATH || process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
 const outDir = path.resolve('reports/mobile-contrast-browser-audit');
 fs.mkdirSync(outDir, { recursive: true });
 
-const routes = [
-  { key: 'hr', path: '/' },
-  { key: 'en', path: '/en/' }
+const scenarios = [
+  { language: 'hr', route: '/', theme: 'dark' },
+  { language: 'hr', route: '/', theme: 'light' },
+  { language: 'en', route: '/en/', theme: 'dark' },
+  { language: 'en', route: '/en/', theme: 'light' }
 ];
-const themes = ['dark', 'light'];
-const executablePath = process.env.CHROMIUM_PATH || process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefined;
+
+const targets = [
+  '#financials .kpi .label',
+  '#financials .kpi .value',
+  '#financials .kpi .meaning',
+  '#grupa .group-card h3',
+  '#grupa .group-card dt',
+  '#grupa .group-card dd',
+  '#grupa .group-card a',
+  '#grupa .group-kpis small',
+  '#grupa .group-kpis strong',
+  '#gnk-asg-float-ai strong',
+  '#gnk-asg-float-ai small'
+];
+
+const parseColor = value => {
+  const match = String(value || '').match(/rgba?\(([^)]+)\)/i);
+  if (!match) return null;
+  const values = match[1].split(',').map(item => Number(item.trim()));
+  return values.length >= 3 ? { r: values[0], g: values[1], b: values[2] } : null;
+};
+const linear = channel => {
+  const value = channel / 255;
+  return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+};
+const luminance = color => 0.2126 * linear(color.r) + 0.7152 * linear(color.g) + 0.0722 * linear(color.b);
+const ratio = (first, second) => {
+  const a = luminance(first);
+  const b = luminance(second);
+  return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+};
 
 const browser = await chromium.launch({
   headless: true,
-  executablePath,
+  executablePath: chromiumPath,
   args: ['--no-sandbox', '--disable-dev-shm-usage']
 });
 const results = [];
 
-const screenshotViewport = async (page, selector, targetPath) => {
-  const locator = page.locator(selector).first();
-  if (!(await locator.count())) return false;
-  await locator.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(250);
-  await page.screenshot({ path: targetPath, fullPage: false });
-  return true;
-};
-
 try {
-  for (const route of routes) {
-    for (const theme of themes) {
-      const context = await browser.newContext({
-        viewport: { width: 390, height: 844 },
-        deviceScaleFactor: 1,
-        isMobile: true,
-        hasTouch: true,
-        reducedMotion: 'reduce'
-      });
-      await context.addInitScript(value => localStorage.setItem('gnk-asg-theme', value), theme);
-      const page = await context.newPage();
-      page.setDefaultTimeout(30000);
-      const url = `${baseUrl}${route.path}`;
-      const scenario = {
-        route: route.key,
-        theme,
-        url,
-        htmlTheme: null,
-        contractLoaded: false,
-        containerCount: 0,
-        checkCount: 0,
-        passCount: 0,
-        failCount: 0,
-        failures: [],
-        checks: [],
-        error: null
-      };
+  for (const scenario of scenarios) {
+    const context = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+      reducedMotion: 'reduce'
+    });
+    await context.addInitScript(theme => localStorage.setItem('gnk-asg-theme', theme), scenario.theme);
+    const page = await context.newPage();
+    page.setDefaultTimeout(30000);
+    const record = { ...scenario, checks: [], failures: [], errors: [] };
 
-      try {
-        const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
-        if (!response || !response.ok()) throw new Error(`${url} returned ${response?.status() || 'no response'}`);
+    try {
+      const response = await page.goto(`${baseUrl}${scenario.route}`, { waitUntil: 'domcontentloaded', timeout: 45000 });
+      if (!response?.ok()) throw new Error(`HTTP ${response?.status() || 0}`);
+      await page.waitForSelector('body.gnk-asg-premium-shell');
+      await page.waitForSelector('#gnk-final-contrast-contract-css', { state: 'attached' });
+      await page.waitForSelector('#gnk-final-contrast-enforcer-js', { state: 'attached' });
+      await page.waitForFunction(() => window.__GNK_FINAL_CONTRAST_ENFORCER__ === true);
+      await page.waitForTimeout(3600);
 
-        await page.waitForSelector('body.gnk-asg-premium-shell');
-        await page.waitForSelector('#gnk-final-contrast-contract-css');
-        await page.waitForSelector('#financials .kpi, #grupa .group-card');
-        await page.waitForTimeout(2200);
-
-        const audit = await page.evaluate(({ routeKey, themeName }) => {
-          const parse = value => {
-            const match = String(value || '').match(/rgba?\(([^)]+)\)/i);
-            if (!match) return null;
-            const parts = match[1].split(',').map(item => Number(item.trim()));
-            if (parts.length < 3 || parts.some((item, index) => index < 3 && Number.isNaN(item))) return null;
-            return { r: parts[0], g: parts[1], b: parts[2], a: parts.length > 3 ? parts[3] : 1 };
-          };
-          const channel = value => {
-            const normalized = value / 255;
-            return normalized <= 0.03928 ? normalized / 12.92 : Math.pow((normalized + 0.055) / 1.055, 2.4);
-          };
-          const luminance = color => 0.2126 * channel(color.r) + 0.7152 * channel(color.g) + 0.0722 * channel(color.b);
-          const ratio = (a, b) => {
-            const l1 = luminance(a);
-            const l2 = luminance(b);
-            return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
-          };
-          const blend = (foreground, background) => {
-            const alpha = foreground.a ?? 1;
-            return {
-              r: foreground.r * alpha + background.r * (1 - alpha),
-              g: foreground.g * alpha + background.g * (1 - alpha),
-              b: foreground.b * alpha + background.b * (1 - alpha),
-              a: 1
-            };
-          };
-          const backgroundFor = element => {
-            let current = element;
-            let result = { r: 255, g: 255, b: 255, a: 1 };
-            const layers = [];
-            while (current && current !== document.documentElement) {
-              const color = parse(getComputedStyle(current).backgroundColor);
-              if (color && color.a > 0) layers.push(color);
+      for (const selector of targets) {
+        const elements = page.locator(selector);
+        const count = await elements.count();
+        if (!count) {
+          record.errors.push(`missing:${selector}`);
+          continue;
+        }
+        for (let index = 0; index < count; index += 1) {
+          const element = elements.nth(index);
+          if (!(await element.isVisible())) continue;
+          const styleData = await element.evaluate(node => {
+            const style = getComputedStyle(node);
+            let current = node;
+            let background = style.backgroundColor;
+            while (current && background === 'rgba(0, 0, 0, 0)') {
               current = current.parentElement;
+              if (current) background = getComputedStyle(current).backgroundColor;
             }
-            for (let index = layers.length - 1; index >= 0; index -= 1) result = blend(layers[index], result);
-            return result;
-          };
-          const isVisible = element => {
-            const style = getComputedStyle(element);
-            const rect = element.getBoundingClientRect();
-            return style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
-          };
-          const containers = Array.from(document.querySelectorAll('#financials .kpi, #grupa .group-card, #grupa .group-kpis > div, #o-nama .card, #dokumenti .doc'))
-            .filter(isVisible);
-          const textSelector = 'h1,h2,h3,h4,p,span,strong,small,dt,dd,a,.value,.label,.meaning,.eyebrow,.tag';
-          const checks = [];
-          containers.forEach((container, containerIndex) => {
-            const elements = Array.from(container.querySelectorAll(textSelector)).filter(element => {
-              if (!isVisible(element)) return false;
-              const text = String(element.textContent || '').replace(/\s+/g, ' ').trim();
-              if (!text) return false;
-              return !Array.from(element.children).some(child => String(child.textContent || '').trim() === text);
-            });
-            elements.forEach((element, elementIndex) => {
-              const style = getComputedStyle(element);
-              const foreground = parse(style.color);
-              const background = backgroundFor(element);
-              if (!foreground || !background) return;
-              const actualForeground = blend(foreground, background);
-              const contrast = ratio(actualForeground, background);
-              const fontSize = Number.parseFloat(style.fontSize) || 16;
-              const fontWeight = Number.parseInt(style.fontWeight, 10) || 400;
-              const large = fontSize >= 24 || (fontSize >= 18.66 && fontWeight >= 700);
-              const required = large ? 3 : 4.5;
-              checks.push({
-                id: `${routeKey}-${themeName}-${containerIndex}-${elementIndex}`,
-                container: container.className || container.tagName,
-                selector: element.className || element.tagName.toLowerCase(),
-                text: String(element.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 120),
-                color: style.color,
-                background: `rgb(${Math.round(background.r)}, ${Math.round(background.g)}, ${Math.round(background.b)})`,
-                fontSize,
-                fontWeight,
-                contrast: Number(contrast.toFixed(2)),
-                required,
-                pass: contrast >= required
-              });
-            });
+            return {
+              text: String(node.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 100),
+              color: style.color,
+              background,
+              fontSize: Number.parseFloat(style.fontSize) || 16,
+              fontWeight: Number.parseInt(style.fontWeight, 10) || 400
+            };
           });
-          const failures = checks.filter(item => !item.pass);
-          return {
-            route: routeKey,
-            theme: themeName,
-            htmlTheme: document.documentElement.dataset.gnkTheme,
-            contractLoaded: Boolean(document.getElementById('gnk-final-contrast-contract-css')),
-            containerCount: containers.length,
-            checkCount: checks.length,
-            passCount: checks.length - failures.length,
-            failCount: failures.length,
-            failures,
-            checks
-          };
-        }, { routeKey: route.key, themeName: theme });
-
-        Object.assign(scenario, audit);
-        await screenshotViewport(page, '#financials', path.join(outDir, `${route.key}-${theme}-financials.png`));
-        await screenshotViewport(page, '#grupa', path.join(outDir, `${route.key}-${theme}-grupa.png`));
-      } catch (error) {
-        scenario.error = String(error?.stack || error?.message || error);
-        try {
-          await page.screenshot({ path: path.join(outDir, `${route.key}-${theme}-error.png`), fullPage: false });
-        } catch {}
-      } finally {
-        results.push(scenario);
-        await context.close();
+          const foreground = parseColor(styleData.color);
+          const background = parseColor(styleData.background);
+          if (!foreground || !background) {
+            record.errors.push(`unparsed:${selector}:${index}`);
+            continue;
+          }
+          const contrast = ratio(foreground, background);
+          const large = styleData.fontSize >= 24 || (styleData.fontSize >= 18.66 && styleData.fontWeight >= 700);
+          const required = large ? 3 : 4.5;
+          record.checks.push({
+            selector,
+            index,
+            text: styleData.text,
+            color: styleData.color,
+            background: styleData.background,
+            contrast: Number(contrast.toFixed(2)),
+            required,
+            pass: contrast >= required
+          });
+        }
       }
+
+      for (const section of ['financials', 'grupa']) {
+        const locator = page.locator(`#${section}`).first();
+        if (await locator.count()) {
+          await locator.scrollIntoViewIfNeeded();
+          await page.waitForTimeout(200);
+          await page.screenshot({ path: path.join(outDir, `${scenario.language}-${scenario.theme}-${section}.png`), fullPage: false });
+        }
+      }
+    } catch (error) {
+      record.errors.push(String(error?.message || error));
+      try {
+        await page.screenshot({ path: path.join(outDir, `${scenario.language}-${scenario.theme}-error.png`), fullPage: false });
+      } catch {}
+    } finally {
+      record.failures = record.checks.filter(item => !item.pass);
+      results.push(record);
+      await context.close();
     }
   }
 } finally {
   await browser.close();
 }
 
-const failures = results.flatMap(result => result.failures.map(item => ({ route: result.route, theme: result.theme, ...item })));
-const scenarioErrors = results.filter(result => result.error).map(result => ({ route: result.route, theme: result.theme, error: result.error }));
-const status = failures.length === 0 && scenarioErrors.length === 0 && results.length === 4 ? 'PASS' : 'FAIL';
+const failures = results.flatMap(item => item.failures.map(failure => ({ language: item.language, theme: item.theme, ...failure })));
+const errors = results.flatMap(item => item.errors.map(error => ({ language: item.language, theme: item.theme, error })));
 const report = {
   generatedAt: new Date().toISOString(),
   baseUrl,
-  viewport: { width: 390, height: 844, mobile: true },
   scenarioCount: results.length,
-  totalChecks: results.reduce((sum, result) => sum + result.checkCount, 0),
+  totalChecks: results.reduce((sum, item) => sum + item.checks.length, 0),
   totalFailures: failures.length,
-  scenarioErrorCount: scenarioErrors.length,
-  status,
+  scenarioErrorCount: errors.length,
+  status: results.length === 4 && failures.length === 0 && errors.length === 0 ? 'PASS' : 'FAIL',
   productionTouched: false,
   results,
   failures,
-  scenarioErrors
+  errors
 };
-
 fs.writeFileSync(path.join(outDir, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
 const lines = [
   '# GNK ASG mobile contrast browser audit',
   '',
   `- Status: **${report.status}**`,
-  `- Preview: ${baseUrl}`,
   `- Scenarios: ${report.scenarioCount}`,
   `- Text checks: ${report.totalChecks}`,
-  `- Contrast failures: ${report.totalFailures}`,
-  `- Scenario errors: ${report.scenarioErrorCount}`,
+  `- Failures: ${report.totalFailures}`,
+  `- Errors: ${report.scenarioErrorCount}`,
   '- Production touched: **NO**',
   '',
-  '| Route | Theme | Containers | Checks | Failures | Error |',
-  '|---|---:|---:|---:|---:|---|',
-  ...results.map(item => `| ${item.route} | ${item.theme} | ${item.containerCount} | ${item.checkCount} | ${item.failCount} | ${item.error ? item.error.split('\n')[0].replace(/\|/g, '\\|') : ''} |`)
+  '| Language | Theme | Checks | Failures | Errors |',
+  '|---|---|---:|---:|---:|',
+  ...results.map(item => `| ${item.language} | ${item.theme} | ${item.checks.length} | ${item.failures.length} | ${item.errors.length} |`)
 ];
 if (failures.length) {
-  lines.push('', '## Contrast failures', '', '| Route | Theme | Text | Contrast | Required | Color | Background |', '|---|---|---|---:|---:|---|---|');
-  failures.slice(0, 100).forEach(item => lines.push(`| ${item.route} | ${item.theme} | ${item.text.replace(/\|/g, '\\|')} | ${item.contrast} | ${item.required} | ${item.color} | ${item.background} |`));
+  lines.push('', '## Contrast failures', '');
+  failures.forEach(item => lines.push(`- ${item.language}/${item.theme} ${item.selector}: ${item.contrast} < ${item.required} — ${item.text}`));
 }
-if (scenarioErrors.length) {
-  lines.push('', '## Scenario errors', '');
-  scenarioErrors.forEach(item => lines.push(`- ${item.route}/${item.theme}: ${item.error.split('\n')[0]}`));
+if (errors.length) {
+  lines.push('', '## Errors', '');
+  errors.forEach(item => lines.push(`- ${item.language}/${item.theme}: ${item.error}`));
 }
 fs.writeFileSync(path.join(outDir, 'report.md'), `${lines.join('\n')}\n`);
 console.log(lines.join('\n'));
-if (status !== 'PASS') process.exit(1);
+if (report.status !== 'PASS') process.exit(1);
