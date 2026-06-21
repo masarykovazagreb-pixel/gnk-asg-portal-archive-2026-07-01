@@ -1,17 +1,24 @@
 import { classifyRisk, MAIL_AUTOMATION_POLICY } from './policy.js';
 import { buildMailPrompt, MAIL_SYSTEM_PROMPT } from './prompts.js';
 import { mustHoldForApproval } from './thread-safety.js';
-import { buildThreadContext } from './thread-context.js';
+import { buildThreadContext, compactThreadContext } from './thread-context.js';
 
 export async function analyseMail(env, mail) {
-  const enrichedMail = mail.threadContext
-    ? mail
-    : { ...mail, threadContext: await buildThreadContext(env, mail) };
+  const fullThreadContext = mail.threadContext?.messages
+    ? mail.threadContext
+    : await buildThreadContext(env, mail);
+  const reviewThreadContext = compactThreadContext(fullThreadContext);
+  const enrichedMail = { ...mail, threadContext: fullThreadContext };
+
+  // processIncoming keeps using the same mail object after this function returns.
+  // Store only the compact snapshot there while the AI receives the full context.
+  if (mail && typeof mail === 'object') mail.threadContext = reviewThreadContext;
+
   const threadText = threadRiskText(enrichedMail);
   const baseline = classifyRisk(enrichedMail.subject, threadText);
 
   if (!env.AI || typeof env.AI.run !== 'function') {
-    return heldFallback(baseline, 'AI nije dostupan.', enrichedMail);
+    return heldFallback(baseline, 'AI nije dostupan.', enrichedMail, reviewThreadContext);
   }
 
   try {
@@ -26,7 +33,7 @@ export async function analyseMail(env, mail) {
 
     const parsed = parseObject(result?.response || result?.result || '');
     if (!parsed || typeof parsed.reply !== 'string') {
-      return heldFallback(baseline, 'AI odgovor nije valjan.', enrichedMail);
+      return heldFallback(baseline, 'AI odgovor nije valjan.', enrichedMail, reviewThreadContext);
     }
 
     const highRisk = baseline.risk === 'high' || String(parsed.risk || '').toLowerCase() === 'high';
@@ -35,7 +42,7 @@ export async function analyseMail(env, mail) {
       risk: highRisk ? 'high' : 'low',
       autoSend: false,
       summary: clean(parsed.summary),
-      reply: clean(parsed.reply),
+      reply: cleanReply(parsed.reply),
       person: clean(parsed.person || enrichedMail.senderName),
       organization: clean(parsed.organization),
       topic: clean(parsed.topic || enrichedMail.subject),
@@ -44,8 +51,9 @@ export async function analyseMail(env, mail) {
       questions: normaliseQuestions(parsed.questions),
       mailbox: normaliseMailbox(parsed.mailbox, enrichedMail.to),
       approvalReason: clean(parsed.approvalReason),
-      threadId: clean(enrichedMail.threadContext?.threadId),
-      threadMessageCount: Number(enrichedMail.threadContext?.messageCount || 1)
+      threadId: clean(fullThreadContext?.threadId),
+      threadMessageCount: Number(fullThreadContext?.messageCount || 1),
+      threadContext: reviewThreadContext
     };
 
     const approvalRequired = highRisk || mustHoldForApproval(provisional);
@@ -62,11 +70,12 @@ export async function analyseMail(env, mail) {
       status: approvalRequired ? 'draft_pending_approval' : 'draft_ready'
     };
   } catch {
-    return heldFallback(baseline, 'AI analiza nije uspjela.', enrichedMail);
+    return heldFallback(baseline, 'AI analiza nije uspjela.', enrichedMail, reviewThreadContext);
   }
 }
 
-function heldFallback(baseline, reason, mail = {}) {
+function heldFallback(baseline, reason, mail = {}, reviewThreadContext = null) {
+  const context = reviewThreadContext || compactThreadContext(mail.threadContext || {});
   return {
     ...baseline,
     autoSend: false,
@@ -82,8 +91,9 @@ function heldFallback(baseline, reason, mail = {}) {
     language: normaliseLanguage(mail.language),
     questions: [],
     mailbox: normaliseMailbox('', mail.to),
-    threadId: clean(mail.threadContext?.threadId),
-    threadMessageCount: Number(mail.threadContext?.messageCount || 1)
+    threadId: clean(context?.threadId),
+    threadMessageCount: Number(context?.messageCount || 1),
+    threadContext: context
   };
 }
 
@@ -98,7 +108,11 @@ function normaliseQuestions(value) {
   if (Array.isArray(value)) return value.map(clean).filter(Boolean).slice(0, 20);
   const text = clean(value);
   if (!text) return [];
-  return text.split(/\n+|(?<=\?)\s+/).map(clean).filter(Boolean).slice(0, 20);
+  return text
+    .split(/\n+|(?<=\?)\s+/)
+    .map(clean)
+    .filter(Boolean)
+    .slice(0, 20);
 }
 
 function normaliseMailbox(value, recipient) {
@@ -117,6 +131,16 @@ function normaliseLanguage(value) {
 
 function clean(value) {
   return String(value || '').replace(/\s+/g, ' ').trim();
+}
+
+function cleanReply(value) {
+  return String(value || '')
+    .replace(/\r\n/g, '\n')
+    .split(/\n{2,}/)
+    .map(paragraph => paragraph.replace(/[\t ]+/g, ' ').trim())
+    .filter(Boolean)
+    .join('\n\n')
+    .trim();
 }
 
 function parseObject(value) {
