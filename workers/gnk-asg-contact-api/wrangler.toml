@@ -1,0 +1,59 @@
+name = "gnk-asg-contact-api"
+main = "src/index.js"
+compatibility_date = "2026-06-21"
+workers_dev = true
+preview_urls = true
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[[d1_databases]]
+binding = "GNK_ASG_D1"
+database_name = "gnk_asg_operator_logs"
+database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
+
+[[r2_buckets]]
+binding = "GNK_ASG_MEDIA_ASSETS"
+bucket_name = "gnk-asg-media-assets"
+
+[[send_email]]
+name = "EMAIL"
+remote = true
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+CONTACT_TO_EMAIL = "rht@gmx.com"
+OUTBOUND_FROM = "info@gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/contact*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/en/contact*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/api/contact-submit*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/api/contact-mailboxes*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/contact*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/en/contact*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/api/contact-submit*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/api/contact-mailboxes*"
+zone_name = "gnk-asg.hr"
