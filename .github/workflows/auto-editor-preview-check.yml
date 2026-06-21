@@ -1,0 +1,46 @@
+name: GNK ASG Auto Editor V2 Preview Check
+
+on:
+  pull_request:
+    branches: [visual-redesign]
+    paths:
+      - 'workers/gnk-asg-auto-editor-preview/**'
+      - 'packages/editorial/image-selector.mjs'
+      - 'contracts/editorial-automation-policy.json'
+      - '.github/workflows/auto-editor-preview-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate sources and policy
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-auto-editor-preview/src/schedule.js
+          node --check workers/gnk-asg-auto-editor-preview/src/pipeline.js
+          node --check workers/gnk-asg-auto-editor-preview/src/index.js
+          node --check packages/editorial/image-selector.mjs
+          node -e "const p=JSON.parse(require('fs').readFileSync('contracts/editorial-automation-policy.json','utf8')); if(p.schedule.articlesPerDay!==3) process.exit(1); if(p.articleRules.minimumWordsHr!==500||p.articleRules.minimumWordsEn!==500) process.exit(1); if(p.articleRules.autoPublishStandardContent!==false) process.exit(1);"
+      - name: Run three-slot schedule test
+        run: node workers/gnk-asg-auto-editor-preview/test/schedule.test.js
+      - name: Run bilingual draft pipeline test
+        run: node workers/gnk-asg-auto-editor-preview/test/pipeline.test.js
+      - name: Verify preview locks
+        run: |
+          set -euo pipefail
+          grep -q 'workers_dev = true' workers/gnk-asg-auto-editor-preview/wrangler.preview.toml
+          grep -q 'AUTO_EDITOR_PREVIEW_WRITE = "false"' workers/gnk-asg-auto-editor-preview/wrangler.preview.toml
+          grep -q 'crons = \["\*/5 \* \* \* \*"\]' workers/gnk-asg-auto-editor-preview/wrangler.preview.toml
+          if grep -E '(^|[[:space:]])routes?[[:space:]]*=' workers/gnk-asg-auto-editor-preview/wrangler.preview.toml; then
+            echo 'Route mapping is forbidden in preview configuration.'
+            exit 1
+          fi
