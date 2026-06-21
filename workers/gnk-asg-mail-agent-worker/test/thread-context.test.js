@@ -1,4 +1,9 @@
-import { buildThreadContext, isRelatedMessage, normaliseSubject } from '../src/thread-context.js';
+import {
+  buildThreadContext,
+  compactThreadContext,
+  isRelatedMessage,
+  normaliseSubject
+} from '../src/thread-context.js';
 import { MAIL_KEYS } from '../src/storage.js';
 
 class MemoryKv {
@@ -19,7 +24,7 @@ const messages = Array.from({ length: 24 }, (_, index) => ({
   from: index % 2 ? 'Media Example <media@example.com>' : 'GNK ASG IT <it@gnk-asg.hr>',
   to: index % 2 ? 'it@gnk-asg.hr' : 'media@example.com',
   subject: index ? 'Re: Projekt GNK ASG' : 'Projekt GNK ASG',
-  body: `Poruka broj ${index + 1}`,
+  body: `Poruka broj ${index + 1} ${'x'.repeat(1800)}`,
   receivedAt: new Date(Date.parse('2026-06-20T08:00:00.000Z') + index * 60000).toISOString(),
   status: 'received'
 }));
@@ -42,7 +47,7 @@ const current = {
   from: 'Media Example <media@example.com>',
   to: 'it@gnk-asg.hr',
   subject: 'RE: Projekt GNK ASG',
-  body: 'Najnovija poruka',
+  body: `Najnovija poruka ${'y'.repeat(1800)}`,
   receivedAt: '2026-06-20T09:00:00.000Z'
 };
 
@@ -63,4 +68,11 @@ if (thread.messages.some((item, index, array) => index && Date.parse(item.timest
   throw new Error('Thread messages are not chronological.');
 }
 
-console.log('Thread context test passed: references, participants, chronology and 20-message limit.');
+const review = compactThreadContext(thread);
+if (review.messageCount !== 20) throw new Error('Original full thread count was not preserved.');
+if (review.retainedMessageCount !== 8) throw new Error(`Expected 8 review messages, got ${review.retainedMessageCount}.`);
+if (!review.truncated) throw new Error('Review snapshot must disclose truncation.');
+if (review.messages.at(-1)?.id !== 'current') throw new Error('Review snapshot must retain the newest message.');
+if (review.messages.some(item => item.body.length > 1500)) throw new Error('Review message body limit was not enforced.');
+
+console.log('Thread context test passed: references, participants, chronology, 20-message AI limit and compact 8-message review snapshot.');
