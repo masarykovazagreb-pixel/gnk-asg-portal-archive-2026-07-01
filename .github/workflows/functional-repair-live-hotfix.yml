@@ -80,7 +80,6 @@ jobs:
             'https://gnk-asg.hr/contact/'
             'https://gnk-asg.hr/mail-studio-pro/'
             'https://gnk-asg.hr/mail-studio-pro/campaign/'
-            'https://gnk-asg.hr/operator-dashboard/'
             'https://gnk-asg.hr/operator-mobile/'
           )
           for url in "${urls[@]}"; do
@@ -92,6 +91,19 @@ jobs:
             ! grep -qiE '^Not found$|>Not found<' "$file"
             grep -q 'gnk-functional-repair-css' "$file"
           done
+
+      - name: Verify protected Operator Center gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          file='page-gnk-asg.hr_operator-dashboard_.html'
+          code=$(curl --silent --show-error --location --output "$file" --write-out '%{http_code}' --retry 5 --retry-all-errors --retry-delay 3 'https://gnk-asg.hr/operator-dashboard/')
+          echo "$code https://gnk-asg.hr/operator-dashboard/"
+          test "$code" = '200'
+          grep -qi 'GNK ASG' "$file"
+          grep -qi 'Operator Center' "$file"
+          grep -qi 'Operator token' "$file"
+          ! grep -qiE '^Not found$|>Not found<' "$file"
 
       - name: Verify APIs and safety locks
         shell: bash
