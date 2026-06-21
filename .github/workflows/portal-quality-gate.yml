@@ -1,0 +1,81 @@
+name: Portal quality gate
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'tools/portal-audit.mjs'
+      - '.github/workflows/portal-quality-gate.yml'
+  push:
+    branches:
+      - main
+      - 'nightly-*'
+    paths:
+      - 'apps/portal/**'
+      - 'tools/portal-audit.mjs'
+      - '.github/workflows/portal-quality-gate.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '15 1 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portal-quality-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Audit HR/EN portal
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run portal audit
+        id: audit
+        shell: bash
+        run: |
+          set +e
+          node tools/portal-audit.mjs . artifacts/portal-audit
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Add report to job summary
+        if: always()
+        shell: bash
+        run: |
+          if [ -f artifacts/portal-audit/portal-audit.md ]; then
+            cat artifacts/portal-audit/portal-audit.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Portal audit did not produce a report.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portal-quality-gate-${{ github.sha }}
+          path: artifacts/portal-audit/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Enforce quality gate
+        if: always()
+        shell: bash
+        run: |
+          code='${{ steps.audit.outputs.exit_code }}'
+          if [ -z "$code" ]; then
+            echo 'Audit exit code is missing.'
+            exit 2
+          fi
+          exit "$code"
