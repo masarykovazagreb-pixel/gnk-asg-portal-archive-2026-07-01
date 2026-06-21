@@ -1,5 +1,6 @@
 import { EmailMessage } from 'cloudflare:email';
 import { signatureFor } from './signature.js';
+import { sendExternalMail, outboundProviderStatus } from './outbound-provider.js';
 
 const LOGO_URL = 'https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png';
 const MAX_TOTAL_ATTACHMENT_BYTES = 8_000_000;
@@ -15,6 +16,7 @@ export async function sendContextualReply(env, outgoing) {
     profile: outgoing.profile || 'it',
     caseId: outgoing.caseId || '',
     autoReply: true,
+    source: outgoing.source || 'mail-agent-auto-reply',
     attachments: []
   });
 }
@@ -32,15 +34,12 @@ export async function sendManualMail(env, input) {
     profile: input.signatureProfile || input.profile || 'office',
     caseId: input.caseId || '',
     autoReply: false,
+    source: input.source || 'mail-studio',
     attachments: Array.isArray(input.attachments) ? input.attachments : []
   });
 }
 
 async function sendMessage(env, input) {
-  if (!env.EMAIL || typeof env.EMAIL.send !== 'function') {
-    throw new Error('EMAIL binding nije konfiguriran.');
-  }
-
   const from = validSender(input.from);
   const to = parseRecipients(input.to);
   const cc = parseRecipients(input.cc);
@@ -59,6 +58,43 @@ async function sendMessage(env, input) {
   });
   const textBody = `${body}\r\n\r\n${signatureText}`;
   const htmlBody = buildHtmlBody(body, signatureText, input.fromName || 'GNK ASG');
+
+  const provider = outboundProviderStatus(env);
+  if (provider.configured) {
+    const external = await sendExternalMail(env, {
+      from,
+      fromName: input.fromName || 'GNK ASG',
+      to,
+      cc,
+      bcc,
+      subject,
+      text:textBody,
+      html:htmlBody,
+      replyTo:from,
+      caseId:input.caseId || '',
+      source:input.source || 'mail-agent',
+      attachments
+    });
+    return {
+      ok:Boolean(external?.ok),
+      provider:external?.provider || provider.provider,
+      from,
+      to,
+      cc,
+      bccCount:bcc.length,
+      subject,
+      attachmentCount:attachments.length,
+      recipientCount:envelopeRecipients.length,
+      messageId:external?.messageId || null,
+      deliveries:envelopeRecipients.map(recipient => ({ recipient, sent:Boolean(external?.ok), messageId:external?.messageId || null })),
+      failedCount:external?.ok ? 0 : envelopeRecipients.length
+    };
+  }
+
+  if (!env.EMAIL || typeof env.EMAIL.send !== 'function') {
+    throw new Error('Outbound mail provider nije konfiguriran. Dodajte RESEND_API_KEY ili BREVO_API_KEY kao Cloudflare secret.');
+  }
+
   const raw = buildMimeMessage({
     from,
     fromName: input.fromName || 'GNK ASG',
@@ -75,15 +111,16 @@ async function sendMessage(env, input) {
   for (const recipient of envelopeRecipients) {
     try {
       const response = await env.EMAIL.send(new EmailMessage(from, recipient, raw));
-      deliveries.push({ recipient, sent: true, messageId: response?.messageId || null });
+      deliveries.push({ recipient, sent: true, messageId: response?.messageId || null, provider:'cloudflare-email-binding' });
     } catch (error) {
-      deliveries.push({ recipient, sent: false, error: String(error?.message || error) });
+      deliveries.push({ recipient, sent: false, error: String(error?.message || error), provider:'cloudflare-email-binding' });
     }
   }
 
   const failed = deliveries.filter(item => !item.sent);
   return {
     ok: failed.length === 0,
+    provider:'cloudflare-email-binding',
     from,
     to,
     cc,
