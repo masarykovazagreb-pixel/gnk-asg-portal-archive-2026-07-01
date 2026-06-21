@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-06-21-v1",
+  "releaseCandidateCommit": "183ae4f34b1e084839b23a5038e5f59be5757f21",
+  "releaseCandidateBranch": "experience-ai-live-overview",
+  "validationBranch": "final-predeploy-validation-20260621",
+  "coreDeploy": {
+    "target": "production",
+    "status": "ready_for_manual_approval",
+    "technicalChecksRequired": true,
+    "explicitUserApprovalRequired": true,
+    "productionEnvironmentApprovalRequired": true,
+    "approvalMarkerRequired": true,
+    "productionSmokeTestRequired": true,
+    "rollbackDecisionRequired": true
+  },
+  "safetyLocks": {
+    "productionTouchedBeforeApproval": false,
+    "mergeAllowedBeforeApproval": false,
+    "routeChangeAllowedBeforeApproval": false,
+    "secretChangeAllowedBeforeApproval": false,
+    "massMailLiveSendEnabled": false,
+    "automaticSocialPostingEnabled": false,
+    "unapprovedMediaKitDownloadEnabled": false,
+    "unuploadedVideoIndexingEnabled": false
+  },
+  "requiredFiles": [
+    ".github/workflows/production-live-sync.yml",
+    "config/project-completion-backlog.json",
+    "workers/gnk-asg-direct-operator/wrangler.toml",
+    "workers/gnk-asg-mail-agent-worker/wrangler.release.toml",
+    "workers/gnk-asg-public-pages-live/wrangler.live.toml",
+    "scripts/release-candidate-audit.mjs",
+    "scripts/backup-restore-rehearsal.mjs",
+    "scripts/hr-en-public-route-audit.mjs",
+    "apps/portal/media-kit/source/media-kit-manifest.json",
+    "apps/portal/data/video-featured.json",
+    "contracts/social-share-policy.json",
+    "apps/portal/data/wa-actions.json"
+  ],
+  "optionalExternalIntegrations": [
+    {
+      "id": "whatsapp-business",
+      "status": "deferred_external",
+      "blocksCoreDeploy": false,
+      "requires": ["Meta business account", "approved number", "webhook configuration", "production bot approval"]
+    },
+    {
+      "id": "social-api-autopost",
+      "status": "deferred_external",
+      "blocksCoreDeploy": false,
+      "requires": ["provider OAuth", "approved social accounts"]
+    },
+    {
+      "id": "inbound-ai-mail-e2e",
+      "status": "deferred_external",
+      "blocksCoreDeploy": false,
+      "requires": ["real inbound email event"]
+    },
+    {
+      "id": "featured-4k-video",
+      "status": "deferred_asset",
+      "blocksCoreDeploy": false,
+      "requires": ["approved 4K video", "poster", "duration", "public stream URL"]
+    },
+    {
+      "id": "media-kit-public-download",
+      "status": "deferred_user_approval",
+      "blocksCoreDeploy": false,
+      "requires": ["final visual approval", "approved logo", "matching SHA-256 package manifest"]
+    },
+    {
+      "id": "mass-mail-live-test",
+      "status": "deferred_manual_sensitive",
+      "blocksCoreDeploy": false,
+      "requires": ["approved recipients", "real PDF", "EMAIL binding", "explicit campaign confirmation"]
+    }
+  ],
+  "deployDecisionRules": {
+    "technicalFailure": "BLOCK_DEPLOY",
+    "missingExplicitApproval": "WAIT_FOR_APPROVAL",
+    "optionalExternalDeferred": "ALLOW_CORE_DEPLOY_WITH_FEATURE_DISABLED",
+    "allTechnicalChecksPassAndApprovalGranted": "READY_TO_DEPLOY"
+  }
+}
