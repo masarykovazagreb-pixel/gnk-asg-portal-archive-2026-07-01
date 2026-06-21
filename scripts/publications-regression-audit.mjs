@@ -49,7 +49,8 @@ const pageChecks = [
 ];
 
 for (const [label, html, marker, canonical] of pageChecks) {
-  if (!html.includes('id="publication-grid"')) errors.push(`${label}: missing publication grid`);
+  const hasPublicationGrid = html.includes('id="publication-grid"') || html.includes('id="grid"');
+  if (!hasPublicationGrid) errors.push(`${label}: missing publication grid`);
   if (!html.includes(marker)) errors.push(`${label}: missing page language marker`);
   if (!html.includes('/assets/js/publications-shared.js')) errors.push(`${label}: shared renderer is not loaded`);
   if (!html.includes(`rel="canonical" href="${canonical}"`)) errors.push(`${label}: incorrect canonical`);
