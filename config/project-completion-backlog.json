@@ -1,18 +1,21 @@
 {
-  "version": "2026-06-21-v1",
+  "version": "2026-06-21-v2",
   "branch": "experience-ai-live-overview",
   "productionTouched": false,
   "mergeAllowed": false,
   "statuses": ["done", "in_progress", "pending_ci", "blocked_manual", "blocked_external", "not_started"],
   "items": [
-    {"id":"phase1-critical-audit","area":"quality","status":"pending_ci","blocking":true,"note":"Ponoviti audit nakon video aliasa, preview operator token rute i workflow popravka."},
+    {"id":"github-actions-runner","area":"quality","status":"blocked_external","blocking":true,"note":"Svi međusobno neovisni GitHub Actions jobovi padaju prije dostupnih logova; minimalni runner heartbeat dodan je radi potvrde problema računa ili hosted runnera."},
+    {"id":"phase1-critical-audit","area":"quality","status":"pending_ci","blocking":true,"note":"Lokalni audit kod je proširen na mobilni admin, Mail Studio i PDF Publisher; čeka funkcionalan GitHub Actions runner i završni zeleni run."},
+    {"id":"operator-token-client-security","area":"security","status":"done","blocking":false,"note":"Aktivni mobilni admin, quick publisher, Mail Studio Pro i PDF Publisher koriste session token vault; token nije u URL-u ni trajnoj pohrani."},
     {"id":"operator-token-live","area":"security","status":"blocked_manual","blocking":true,"note":"Za stvarni operator backend potreban je postojeći Cloudflare secret/token i kontrolirani preview deploy."},
-    {"id":"media-campaign-simulation","area":"mail","status":"pending_ci","blocking":false,"note":"Kod pokriva 100 primatelja, personalizaciju, PDF metapodatke, raspored i 10/min bez live slanja."},
+    {"id":"media-campaign-simulation","area":"mail","status":"pending_ci","blocking":false,"note":"Kod pokriva 100 primatelja, personalizaciju, PDF metapodatke, raspored, strogi D1 lease i 10/min bez live slanja; čeka zeleni CI."},
     {"id":"media-campaign-live-test","area":"mail","status":"blocked_manual","blocking":true,"note":"Potrebni su odobreni testni primatelji, stvarni PDF i izričito odobrenje za nekoliko testnih poruka."},
-    {"id":"inbound-ai-mail","area":"mail-ai","status":"blocked_external","blocking":true,"note":"Potreban je Email Routing/Worker inbound događaj i stvarni thread za kontrolirani test."},
-    {"id":"sensitive-mail-approval","area":"mail-ai","status":"in_progress","blocking":true,"note":"Politika hold/approval postoji; treba UI odobrenje i E2E potvrda na stvarnom inboxu."},
-    {"id":"mobile-admin-publish","area":"admin","status":"in_progress","blocking":true,"note":"Provjeriti token, fotografiranje/upload, SEO payload, objavu, error handling i rollback."},
-    {"id":"video-library-routes","area":"video","status":"pending_ci","blocking":true,"note":"HR i EN aliasi dodani; treba potvrditi HTTP 200 na novom preview deployu."},
+    {"id":"inbound-ai-mail","area":"mail-ai","status":"blocked_external","blocking":true,"note":"AI čita puni dostupni thread do 20 poruka i sprema kompaktni pregled; za E2E je potreban Email Routing inbound događaj i stvarni thread."},
+    {"id":"sensitive-mail-approval","area":"mail-ai","status":"pending_ci","blocking":true,"note":"Hold/approval politika, Held AI draft, mailbox profil i pregled threada ugrađeni su u Mail Studio; čeka CI i stvarni inbox test."},
+    {"id":"mobile-admin-publish","area":"admin","status":"pending_ci","blocking":true,"note":"Session token, fotografiranje/upload, AI priprema, SEO payload, dry-run, objava i error handling implementirani su; čeka funkcionalan CI i preview E2E."},
+    {"id":"pdf-publisher-security","area":"documents","status":"pending_ci","blocking":false,"note":"Aktivan je novi session-safe PDF klijent; stari persistent-token klijent više se ne učitava; čeka CI potvrdu."},
+    {"id":"video-library-routes","area":"video","status":"pending_ci","blocking":true,"note":"HR i EN canonical/alias rute dodane; treba potvrditi HTTP 200 na novom preview deployu."},
     {"id":"featured-4k-video","area":"video","status":"blocked_manual","blocking":false,"note":"Potreban je stvarni 4K asset, poster, trajanje i odobreni R2/public URL."},
     {"id":"video-seo","area":"video","status":"blocked_manual","blocking":false,"note":"VideoObject i sitemap ostaju zaključani dok ne postoji stvarno učitan film."},
     {"id":"auto-editor-production","area":"editorial","status":"in_progress","blocking":true,"note":"Dovršiti cron, izvore, draft/approval, HR/EN isti izvor, rollback i failure log."},
@@ -20,7 +23,7 @@
     {"id":"social-oauth","area":"social","status":"blocked_manual","blocking":false,"note":"Potrebne su vanjske OAuth autorizacije i odobrenja računa."},
     {"id":"whatsapp-business","area":"communication","status":"blocked_manual","blocking":false,"note":"Potrebni su Meta račun, broj, webhook secrets i odobrenje produkcijskog bota."},
     {"id":"media-brand-kits","area":"brand","status":"not_started","blocking":false,"note":"Konačni logo, GNK ASG, GNK DINAMO Ltd. i korporativni download paketi čekaju vizualno odobrenje."},
-    {"id":"security-final","area":"security","status":"in_progress","blocking":true,"note":"Secrets scan, CORS, rate limits, Turnstile, audit trail, backup i rollback dokaz."},
-    {"id":"production-release","area":"release","status":"blocked_manual","blocking":true,"note":"Backup aktivne produkcije, odobrenje, kontrolirani deploy, smoke test i rollback odluka."}
+    {"id":"security-final","area":"security","status":"pending_ci","blocking":true,"note":"Aktivni privatni klijenti pokriveni su auditom; preostaju zeleni CI, CORS/rate-limit provjera, backup dokaz i kontrolirani preview test."},
+    {"id":"production-release","area":"release","status":"blocked_manual","blocking":true,"note":"Backup aktivne produkcije, izričito odobrenje, kontrolirani deploy, smoke test i rollback odluka."}
   ]
 }
