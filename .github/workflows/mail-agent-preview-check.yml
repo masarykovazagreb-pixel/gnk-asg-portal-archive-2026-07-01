@@ -52,6 +52,9 @@ jobs:
       - name: Campaign strict lease test
         run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-lease.test.js
 
+      - name: Campaign suppression and opt-out test
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-suppression.test.js
+
       - name: Campaign 100-recipient simulation
         run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
 
@@ -102,6 +105,9 @@ jobs:
           Strict D1 lease: verified
           Scheduling gate: verified
           PDF attachment storage: verified
+          Suppression persistence: verified
+          Import-time opt-out gate: verified
+          Runtime opt-out gate: verified
           Live-send confirmation gate: verified
           Personalisation: verified
           Live sending: disabled
