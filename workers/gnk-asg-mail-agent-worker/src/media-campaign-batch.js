@@ -1,9 +1,13 @@
 import { MEDIA_CAMPAIGN_LIMITS, normaliseMediaRecipient, recipientDisplayName, validateMediaRecipient } from './media-campaign-policy.js';
 import { normaliseScheduledAt } from './media-campaign-message.js';
+import { normaliseSuppressionEmail } from './media-campaign-suppression.js';
 
 export function buildMediaCampaignBatch(payload = {}) {
   const rows = Array.isArray(payload.recipients) ? payload.recipients : [];
   const recipients = rows.slice(0, MEDIA_CAMPAIGN_LIMITS.maxRecipientsPerBatch).map(normaliseMediaRecipient);
+  const suppressionSet = new Set(
+    Array.from(payload.suppressedEmails || []).map(normaliseSuppressionEmail).filter(Boolean)
+  );
   const invalid = [];
   const valid = [];
   const seen = new Set();
@@ -12,6 +16,7 @@ export function buildMediaCampaignBatch(payload = {}) {
   for (const recipient of recipients) {
     let error = validateMediaRecipient(recipient);
     if (!error && seen.has(recipient.email)) error = 'duplicate_email';
+    if (!error && suppressionSet.has(recipient.email)) error = 'suppressed_recipient';
     if (error) invalid.push({ recipient, error });
     else {
       seen.add(recipient.email);
@@ -19,6 +24,8 @@ export function buildMediaCampaignBatch(payload = {}) {
     }
   }
 
+  const suppressed = invalid.filter(item => item.error === 'suppressed_recipient').length;
+  const failed = invalid.length - suppressed;
   const readyStatus = scheduledAt && new Date(scheduledAt).getTime() > Date.now() ? 'scheduled' : 'queued';
   const attachment = payload.attachmentMetadata || {};
 
@@ -36,10 +43,11 @@ export function buildMediaCampaignBatch(payload = {}) {
     total: recipients.length,
     sent: 0,
     tested: 0,
-    failed: invalid.length,
+    failed,
+    suppressed,
     remaining: valid.length,
     rateLimitPerMinute: MEDIA_CAMPAIGN_LIMITS.maxSendPerMinute,
-    status: invalid.length && !valid.length ? 'failed' : readyStatus,
+    status: valid.length ? readyStatus : (failed ? 'failed' : 'complete'),
     invalid,
     queue: valid.map((recipient, index) => ({
       id: `${index + 1}-${recipient.email}`,
