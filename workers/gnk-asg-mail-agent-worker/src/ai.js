@@ -1,19 +1,24 @@
 import { classifyRisk, MAIL_AUTOMATION_POLICY } from './policy.js';
 import { buildMailPrompt, MAIL_SYSTEM_PROMPT } from './prompts.js';
 import { mustHoldForApproval } from './thread-safety.js';
+import { buildThreadContext } from './thread-context.js';
 
 export async function analyseMail(env, mail) {
-  const threadText = threadRiskText(mail);
-  const baseline = classifyRisk(mail.subject, threadText);
+  const enrichedMail = mail.threadContext
+    ? mail
+    : { ...mail, threadContext: await buildThreadContext(env, mail) };
+  const threadText = threadRiskText(enrichedMail);
+  const baseline = classifyRisk(enrichedMail.subject, threadText);
+
   if (!env.AI || typeof env.AI.run !== 'function') {
-    return heldFallback(baseline, 'AI nije dostupan.', mail);
+    return heldFallback(baseline, 'AI nije dostupan.', enrichedMail);
   }
 
   try {
     const result = await env.AI.run(env.MAIL_AI_MODEL || '@cf/meta/llama-3.1-8b-instruct', {
       messages: [
         { role: 'system', content: MAIL_SYSTEM_PROMPT },
-        { role: 'user', content: buildMailPrompt(mail, baseline) }
+        { role: 'user', content: buildMailPrompt(enrichedMail, baseline) }
       ],
       temperature: 0.2,
       max_tokens: 1800
@@ -21,7 +26,7 @@ export async function analyseMail(env, mail) {
 
     const parsed = parseObject(result?.response || result?.result || '');
     if (!parsed || typeof parsed.reply !== 'string') {
-      return heldFallback(baseline, 'AI odgovor nije valjan.', mail);
+      return heldFallback(baseline, 'AI odgovor nije valjan.', enrichedMail);
     }
 
     const highRisk = baseline.risk === 'high' || String(parsed.risk || '').toLowerCase() === 'high';
@@ -31,16 +36,16 @@ export async function analyseMail(env, mail) {
       autoSend: false,
       summary: clean(parsed.summary),
       reply: clean(parsed.reply),
-      person: clean(parsed.person || mail.senderName),
+      person: clean(parsed.person || enrichedMail.senderName),
       organization: clean(parsed.organization),
-      topic: clean(parsed.topic || mail.subject),
+      topic: clean(parsed.topic || enrichedMail.subject),
       tone: clean(parsed.tone || 'neutral'),
-      language: normaliseLanguage(parsed.language || mail.language),
+      language: normaliseLanguage(parsed.language || enrichedMail.language),
       questions: normaliseQuestions(parsed.questions),
-      mailbox: normaliseMailbox(parsed.mailbox, mail.to),
+      mailbox: normaliseMailbox(parsed.mailbox, enrichedMail.to),
       approvalReason: clean(parsed.approvalReason),
-      threadId: clean(mail.threadContext?.threadId),
-      threadMessageCount: Number(mail.threadContext?.messageCount || 1)
+      threadId: clean(enrichedMail.threadContext?.threadId),
+      threadMessageCount: Number(enrichedMail.threadContext?.messageCount || 1)
     };
 
     const approvalRequired = highRisk || mustHoldForApproval(provisional);
@@ -57,7 +62,7 @@ export async function analyseMail(env, mail) {
       status: approvalRequired ? 'draft_pending_approval' : 'draft_ready'
     };
   } catch {
-    return heldFallback(baseline, 'AI analiza nije uspjela.', mail);
+    return heldFallback(baseline, 'AI analiza nije uspjela.', enrichedMail);
   }
 }
 
