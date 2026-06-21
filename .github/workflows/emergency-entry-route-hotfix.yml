@@ -1,6 +1,12 @@
 name: GNK ASG Emergency Entry Route Hotfix
 
 on:
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - 'workers/gnk-asg-emergency-entry-redirect/**'
+      - '.github/workflows/emergency-entry-route-hotfix.yml'
   push:
     branches:
       - experience-ai-live-overview
@@ -17,6 +23,7 @@ concurrency:
 
 jobs:
   deploy-entry-fix:
+    if: github.event_name == 'push' || github.head_ref == 'experience-ai-live-overview'
     runs-on: ubuntu-latest
     timeout-minutes: 12
     environment: production
@@ -39,6 +46,9 @@ jobs:
           grep -Fxq 'pattern = "gnk-asg.hr/app"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
           grep -Fxq 'pattern = "gnk-asg.hr/app/*"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
           grep -Fxq 'pattern = "www.gnk-asg.hr/*"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
+          grep -Fxq 'scope: /app redirect and www-to-apex normalization only' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
+          grep -Fxq 'new portal deployment: false' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
+          grep -Fxq 'production marker: absent' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
           test ! -e .github/release/PRODUCTION_APPROVED
 
       - name: Deploy isolated redirect only
