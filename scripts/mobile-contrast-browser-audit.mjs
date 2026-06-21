@@ -23,9 +23,7 @@ const selectors = [
   '#grupa .group-card dd',
   '#grupa .group-card a',
   '#grupa .group-kpis small',
-  '#grupa .group-kpis strong',
-  '#gnk-asg-float-ai strong',
-  '#gnk-asg-float-ai small'
+  '#grupa .group-kpis strong'
 ];
 
 const parseColor = value => {
@@ -51,6 +49,28 @@ const browser = await chromium.launch({
   args: ['--no-sandbox', '--disable-dev-shm-usage']
 });
 const results = [];
+
+const addCheck = (result, selector, index, computed) => {
+  const foreground = parseColor(computed.color);
+  const background = parseColor(computed.background);
+  if (!foreground || !background) {
+    result.errors.push(`unparsed:${selector}:${index}`);
+    return;
+  }
+  const value = contrast(foreground, background);
+  const large = computed.fontSize >= 24 || (computed.fontSize >= 18.66 && computed.fontWeight >= 700);
+  const required = large ? 3 : 4.5;
+  result.checks.push({
+    selector,
+    index,
+    text: computed.text,
+    color: computed.color,
+    background: computed.background,
+    contrast: Number(value.toFixed(2)),
+    required,
+    pass: value >= required
+  });
+};
 
 try {
   for (const scenario of scenarios) {
@@ -108,27 +128,42 @@ try {
               fontWeight: Number.parseInt(style.fontWeight, 10) || 400
             };
           });
-          const foreground = parseColor(computed.color);
-          const background = parseColor(computed.background);
-          if (!foreground || !background) {
-            result.errors.push(`unparsed:${selector}:${index}`);
-            continue;
-          }
-          const value = contrast(foreground, background);
-          const large = computed.fontSize >= 24 || (computed.fontSize >= 18.66 && computed.fontWeight >= 700);
-          const required = large ? 3 : 4.5;
-          result.checks.push({
-            selector,
-            index,
-            text: computed.text,
-            color: computed.color,
-            background: computed.background,
-            contrast: Number(value.toFixed(2)),
-            required,
-            pass: value >= required
-          });
+          addCheck(result, selector, index, computed);
         }
       }
+
+      const aiChecks = await page.evaluate(() => {
+        const visible = element => {
+          const style = getComputedStyle(element);
+          const rect = element.getBoundingClientRect();
+          return style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
+        };
+        const candidate = Array.from(document.querySelectorAll('button,a,[role="button"]')).find(element => {
+          const style = getComputedStyle(element);
+          const text = String(element.textContent || '').replace(/\s+/g, ' ').trim();
+          return visible(element) && style.position === 'fixed' && /AI|Pomoć|Help/i.test(text);
+        });
+        if (!candidate) return [];
+        const elements = [candidate, ...candidate.querySelectorAll('strong,small,span')].filter(visible);
+        return elements.map(element => {
+          const style = getComputedStyle(element);
+          let parent = element;
+          let background = style.backgroundColor;
+          while (parent && background === 'rgba(0, 0, 0, 0)') {
+            parent = parent.parentElement;
+            if (parent) background = getComputedStyle(parent).backgroundColor;
+          }
+          return {
+            text: String(element.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 100),
+            color: style.color,
+            background,
+            fontSize: Number.parseFloat(style.fontSize) || 16,
+            fontWeight: Number.parseInt(style.fontWeight, 10) || 400
+          };
+        });
+      });
+      if (!aiChecks.length) result.errors.push('missing:visible-fixed-ai-badge');
+      aiChecks.forEach((computed, index) => addCheck(result, 'visible-fixed-ai-badge', index, computed));
 
       for (const section of ['financials', 'grupa']) {
         const locator = page.locator(`#${section}`).first();
