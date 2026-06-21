@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="hr" data-gnk-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>GNK ASG Media Campaign Studio</title>
+<link rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260621-1">
+<link rel="stylesheet" href="/assets/media-campaign-studio.css?v=20260621-1">
+<script defer src="/assets/brand/gnk-asg-global-layer.js?v=20260621-1"></script>
+<script defer src="/assets/media-campaign-studio.js?v=20260621-1"></script>
+</head>
+<body>
+<main class="campaign-shell">
+<section class="campaign-card campaign-header">
+<div>
+<p>Privatni komunikacijski centar</p>
+<h1>GNK ASG Media Campaign Studio</h1>
+<p>Personalizirane pojedinačne poruke, PDF test, zakazivanje, 10 poruka u minuti i potpuna evidencija kampanje.</p>
+</div>
+<nav class="campaign-nav">
+<a href="/mail-studio-pro/">Mail Studio Pro</a>
+<a href="/operator-mobile/">Mobilni admin</a>
+<a href="/">Početna</a>
+</nav>
+</section>
+
+<section class="campaign-card">
+<div class="campaign-auth">
+<input id="operatorToken" type="password" autocomplete="off" placeholder="Operator token">
+<button id="saveToken" class="primary" type="button">Sigurna prijava</button>
+<button id="logout" type="button">Odjava</button>
+<span id="campaignStatus" class="campaign-status">Spremno.</span>
+</div>
+</section>
+
+<section class="campaign-card">
+<h2>1. Primatelji</h2>
+<p class="campaign-note">CSV, TSV ili datoteka odvojena točkom-zarezom. Obvezna polja: ime, prezime, medij i e-mail. Uvozi se najviše 100 valjanih jedinstvenih kontakata.</p>
+<label>Datoteka kontakata</label>
+<input id="recipientFile" type="file" accept=".csv,.txt,text/csv,text/plain">
+<p id="recipientStats">0 valjanih · 0 nevaljanih · maksimalno 100</p>
+<div class="campaign-table-wrap">
+<table class="campaign-table">
+<thead><tr><th>#</th><th>Ime</th><th>Prezime</th><th>Medij</th><th>E-mail</th></tr></thead>
+<tbody id="recipientTable"><tr><td colspan="5">Kontakti još nisu učitani.</td></tr></tbody>
+</table>
+</div>
+<details><summary>Nevaljani redci</summary><pre id="invalidRows">Nema nevaljanih redaka.</pre></details>
+</section>
+
+<section class="campaign-card">
+<h2>2. Poruka i PDF</h2>
+<div class="campaign-grid three">
+<div><label>Pošiljatelj</label><select id="campaignFrom"><option value="media@gnk-asg.hr">GNK ASG Media — media@gnk-asg.hr</option></select></div>
+<div><label>Potpis</label><select id="campaignProfile"><option value="media">Media</option></select></div>
+<div><label>Jezik</label><select id="campaignLanguage"><option value="hr">Hrvatski</option><option value="en">English</option></select></div>
+</div>
+<label>Predmet s personalizacijom</label>
+<input id="campaignSubject" value="Informacija za {{media}}">
+<label>Tekst poruke</label>
+<textarea id="campaignBody" placeholder="Poštovani {{fullName}},&#10;&#10;obraćamo Vam se u vezi medija {{media}}..."></textarea>
+<p class="campaign-note">Dostupna polja: {{firstName}}, {{lastName}}, {{fullName}}, {{media}} i {{email}}.</p>
+<label>PDF privitak</label>
+<input id="pdfFile" type="file" accept="application/pdf,.pdf">
+<p id="pdfStatus">PDF nije učitan.</p>
+</section>
+
+<section class="campaign-card">
+<h2>3. Zakazivanje i test</h2>
+<div class="campaign-grid">
+<div><label>Vrijeme početka</label><input id="campaignSchedule" type="datetime-local"></div>
+<div><label>Testna e-mail adresa</label><input id="testAddress" type="email" placeholder="test@domena.com"></div>
+</div>
+<div class="campaign-actions">
+<button id="testSend" type="button">Pošalji jednu testnu poruku</button>
+<button id="createCampaign" class="primary" type="button">Spremi kampanju u testni režim</button>
+</div>
+<p class="campaign-note">Stvarno masovno slanje je zaključano. Testna poruka šalje se samo na ručno unesenu testnu adresu.</p>
+</section>
+
+<section class="campaign-card">
+<h2>4. Kontrola kampanje</h2>
+<div class="campaign-stats">
+<div class="campaign-stat"><span>ID</span><strong id="campaignId">—</strong></div>
+<div class="campaign-stat"><span>Status</span><strong id="campaignState">—</strong></div>
+<div class="campaign-stat"><span>Sent</span><strong id="campaignSent">0</strong></div>
+<div class="campaign-stat"><span>Tested</span><strong id="campaignTested">0</strong></div>
+<div class="campaign-stat"><span>Failed</span><strong id="campaignFailed">0</strong></div>
+<div class="campaign-stat"><span>Remaining</span><strong id="campaignRemaining">0</strong></div>
+</div>
+<div class="campaign-actions">
+<button id="pauseCampaign" type="button">Pauza</button>
+<button id="resumeCampaign" type="button">Nastavi</button>
+<button id="windowCampaign" type="button">Pregled sljedećih 10</button>
+<button id="executeWindow" class="primary" type="button">Obradi testni prozor 10/min</button>
+<button id="refreshCampaigns" type="button">Osvježi evidenciju</button>
+</div>
+</section>
+
+<section class="campaign-card">
+<h2>Spremljene kampanje</h2>
+<div id="campaignList" class="campaign-list"><p>Prijavite se za učitavanje kampanja.</p></div>
+</section>
+</main>
+</body>
+</html>
