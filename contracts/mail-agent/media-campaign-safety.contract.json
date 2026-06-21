@@ -1,0 +1,44 @@
+{
+  "version": "2026-06-21-01",
+  "scope": "GNK ASG mail agent media outreach and all-inbox AI reply assistant",
+  "production_policy": {
+    "live_send_default": false,
+    "operator_token_required": true,
+    "max_messages_per_minute": 10,
+    "batch_target": 100,
+    "requires_explicit_operator_approval_for_live_send": true
+  },
+  "media_campaign_requirements": {
+    "recipient_fields": ["firstName", "lastName", "media", "email"],
+    "message_fields": ["subject", "body", "signatureProfile", "pdfAttachment"],
+    "personalization": ["firstName", "lastName", "media"],
+    "status_tracking": ["sent", "failed", "remaining", "paused", "scheduled", "testSent"],
+    "controls": ["testSend", "schedule", "pause", "resume", "cancel", "exportLog"],
+    "attachment_policy": "pdf_only_for_campaign_package",
+    "no_bulk_blind_send": true
+  },
+  "ai_reply_requirements": {
+    "applies_to": "all_incoming_mailboxes_and_threads",
+    "thread_reading": "full_thread_required_when_available",
+    "classify": ["person", "organization", "topic", "tone", "language", "questions", "risk"],
+    "draft_policy": "routine_messages_may_be_drafted; auto_send_only_when_policy_explicitly_allows",
+    "approval_required_for": [
+      "legal",
+      "financial",
+      "contractual",
+      "reputational",
+      "security",
+      "personal_data",
+      "sensitive",
+      "binding_commitment",
+      "unclear_authority"
+    ],
+    "context_preservation": ["threadId", "messageId", "mailbox", "signatureProfile", "language", "detectedOrganization"]
+  },
+  "blocked_actions": [
+    "changing_cloudflare_secrets",
+    "changing_dns_or_routes",
+    "merging_to_main",
+    "production_deploy_without_operator"
+  ]
+}
