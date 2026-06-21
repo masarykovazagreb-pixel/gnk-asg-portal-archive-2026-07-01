@@ -9,6 +9,9 @@ on:
       - 'apps/portal/mail-studio-pro/**'
       - 'apps/portal/assets/mail-studio-pro.js'
       - 'apps/portal/assets/mail-studio-pro.css'
+      - 'apps/portal/assets/media-campaign-studio.js'
+      - 'apps/portal/assets/media-campaign-pdf-upload.js'
+      - 'scripts/media-campaign-client-security-audit.mjs'
       - '.github/workflows/mail-agent-preview-check.yml'
   workflow_dispatch:
 
@@ -33,6 +36,12 @@ jobs:
           find workers/gnk-asg-mail-agent-worker/src -name '*.js' -print0 | xargs -0 -n1 node --check
           find workers/gnk-asg-mail-agent-worker/test -name '*.js' -print0 | xargs -0 -n1 node --check
           node --check apps/portal/assets/mail-studio-pro.js
+          node --check apps/portal/assets/media-campaign-studio.js
+          node --check apps/portal/assets/media-campaign-pdf-upload.js
+          node --check scripts/media-campaign-client-security-audit.mjs
+
+      - name: Campaign client session security audit
+        run: node scripts/media-campaign-client-security-audit.mjs
 
       - name: Automation readiness test
         run: node workers/gnk-asg-mail-agent-worker/test/automation-readiness.test.js
@@ -101,6 +110,11 @@ jobs:
           Production route configured: false
           Production deploy performed: false
           Syntax check: completed
+          Campaign client session vault: verified
+          Persistent campaign token: absent
+          Token in URL: absent
+          Duplicate PDF upload listener: absent
+          Bulk live controls in client: absent
           Automation readiness transitions: verified
           Full thread context up to 20 messages: verified
           AI receives chronological thread and prior answers: verified
@@ -130,6 +144,9 @@ jobs:
           if [ -f reports/mail-agent-preview/README.txt ]; then
             cat reports/mail-agent-preview/README.txt >> "$GITHUB_STEP_SUMMARY"
           fi
+          if [ -f reports/media-campaign-client-security/report.md ]; then
+            cat reports/media-campaign-client-security/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Upload preview artifact
         if: always()
@@ -137,6 +154,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gnk-asg-mail-agent-preview-check-${{ github.run_id }}
-          path: reports/mail-agent-preview/
+          path: |
+            reports/mail-agent-preview/
+            reports/media-campaign-client-security/
           if-no-files-found: warn
           retention-days: 7
