@@ -1,0 +1,15 @@
+name = "gnk-asg-auto-editor-v2-preview"
+main = "src/index.js"
+compatibility_date = "2026-06-21"
+workers_dev = true
+preview_urls = true
+
+[vars]
+AUTO_EDITOR_PREVIEW_WRITE = "false"
+PUBLIC_ENVIRONMENT = "preview-draft-first"
+
+[ai]
+binding = "AI"
+
+[triggers]
+crons = ["*/5 * * * *"]
