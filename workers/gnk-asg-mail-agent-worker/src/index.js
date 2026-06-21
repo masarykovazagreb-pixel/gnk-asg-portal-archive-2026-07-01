@@ -4,7 +4,9 @@ import { sendContextualReply, sendManualMail } from './sender.js';
 import { addMailboxItem, readMailbox } from './storage.js';
 import { MAIL_AUTOMATION_POLICY } from './policy.js';
 import { preserveThreadHeaders } from './thread-safety.js';
-import { buildMediaCampaignBatch, nextMediaCampaignWindow } from './media-campaign-batch.js';
+import { buildMediaCampaignBatch } from './media-campaign-batch.js';
+import { readMediaCampaigns, saveMediaCampaign, findMediaCampaign } from './media-campaign-state.js';
+import { mediaCampaignStatus, pauseMediaCampaign, planMediaCampaignWindow, resumeMediaCampaign } from './media-campaign-actions.js';
 
 export default {
   async fetch(request, env) {
@@ -47,6 +49,16 @@ export default {
 
     if (request.method === 'POST' && url.pathname === '/api/mail-agent/media-campaign/preview') {
       return handleMediaCampaignPreview(request, env);
+    }
+
+    if (request.method === 'GET' && url.pathname === '/api/mail-agent/media-campaigns') {
+      const campaigns = await readMediaCampaigns(env);
+      return json(request, { ok: true, count: campaigns.length, campaigns: campaigns.map(mediaCampaignStatus) });
+    }
+
+    const campaignAction = url.pathname.match(/^\/api\/mail-agent\/media-campaign\/([^/]+)\/(status|pause|resume|window)$/);
+    if (campaignAction) {
+      return handleMediaCampaignAction(request, env, campaignAction[1], campaignAction[2]);
     }
 
     return json(request, { ok: false, error: 'not_found', path: url.pathname }, 404);
@@ -114,8 +126,10 @@ async function handleMediaCampaignPreview(request, env) {
   }
 
   const batch = buildMediaCampaignBatch(payload);
-  const preview = nextMediaCampaignWindow(batch);
+  const preview = planMediaCampaignWindow(batch);
+  await saveMediaCampaign(env, batch);
   await addMailboxItem(env, 'held', {
+    id: batch.id,
     type: 'media-campaign-preview',
     batchId: batch.id,
     total: batch.total,
@@ -128,6 +142,19 @@ async function handleMediaCampaignPreview(request, env) {
   });
 
   return json(request, { ok: true, batch, preview });
+}
+
+async function handleMediaCampaignAction(request, env, id, action) {
+  const campaign = await findMediaCampaign(env, id);
+  if (!campaign) return json(request, { ok: false, error: 'campaign_not_found', id }, 404);
+  if (request.method !== 'GET' && request.method !== 'POST') return json(request, { ok: false, error: 'method_not_allowed' }, 405);
+
+  if (action === 'status') return json(request, { ok: true, campaign: mediaCampaignStatus(campaign) });
+  if (action === 'window') return json(request, { ok: true, preview: planMediaCampaignWindow(campaign) });
+
+  const updated = action === 'pause' ? pauseMediaCampaign(campaign) : resumeMediaCampaign(campaign);
+  await saveMediaCampaign(env, updated);
+  return json(request, { ok: true, campaign: mediaCampaignStatus(updated) });
 }
 
 async function processIncoming(message, env) {
