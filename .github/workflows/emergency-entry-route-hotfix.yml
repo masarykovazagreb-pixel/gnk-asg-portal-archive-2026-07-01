@@ -7,12 +7,6 @@ on:
     paths:
       - 'workers/gnk-asg-emergency-entry-redirect/**'
       - '.github/workflows/emergency-entry-route-hotfix.yml'
-  push:
-    branches:
-      - experience-ai-live-overview
-    paths:
-      - 'workers/gnk-asg-emergency-entry-redirect/**'
-      - '.github/workflows/emergency-entry-route-hotfix.yml'
 
 permissions:
   contents: read
@@ -23,7 +17,7 @@ concurrency:
 
 jobs:
   deploy-entry-fix:
-    if: github.event_name == 'push' || github.head_ref == 'experience-ai-live-overview'
+    if: github.head_ref == 'experience-ai-live-overview'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -70,7 +64,7 @@ jobs:
           path: |
             wrangler-hotfix.log
             wrangler-hotfix.exit
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 3
 
       - name: Stop after failed deploy
