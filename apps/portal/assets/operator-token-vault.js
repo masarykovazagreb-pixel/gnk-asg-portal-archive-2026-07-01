@@ -43,7 +43,9 @@
     const token = get();
     return token ? {
       authorization: `Bearer ${token}`,
-      'x-operator-token': token
+      'x-operator-token': token,
+      'x-admin-token': token,
+      'x-gnk-asg-token': token
     } : {};
   }
 
