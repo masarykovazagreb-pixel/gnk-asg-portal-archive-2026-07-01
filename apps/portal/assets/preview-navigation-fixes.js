@@ -41,7 +41,7 @@
   }
 
   function installFloats() {
-    ['gnk-preview-home','gnk-preview-language','gnk-preview-whatsapp','gnk-preview-ai'].forEach(id => document.getElementById(id)?.remove());
+    ['gnk-preview-home','gnk-preview-language','gnk-preview-whatsapp','gnk-preview-ai','gnk-asg-float-ai'].forEach(id => document.getElementById(id)?.remove());
     document.querySelectorAll('.gnk-global-float-home,.gnk-global-float-ai').forEach(node => node.remove());
 
     const home = document.createElement('a');
@@ -70,9 +70,15 @@
     ai.id = 'gnk-preview-ai';
     ai.className = 'gnk-preview-float';
     ai.href = english ? '/en/assistant/' : '/assistant/';
-    ai.textContent = 'AI';
+    ai.setAttribute('aria-label',english ? 'AI Help' : 'AI Pomoć');
+    ai.textContent = english ? 'AI Help' : 'AI Pomoć';
+    ai.style.setProperty('background','#07101f','important');
+    ai.style.setProperty('color','#ffffff','important');
+    ai.style.setProperty('border-color','#d4af37','important');
+    ai.style.setProperty('opacity','1','important');
 
-    document.body.append(home,language,ai,whatsapp);
+    document.body.prepend(ai);
+    document.body.append(home,language,whatsapp);
   }
 
   function addDinamoLogo() {
@@ -92,7 +98,7 @@
     normalizeLinks();
     installFloats();
     addDinamoLogo();
-    [300,900,1800].forEach(delay => setTimeout(() => {
+    [300,900,1800,3000].forEach(delay => setTimeout(() => {
       normalizeLinks();
       installFloats();
       addDinamoLogo();
