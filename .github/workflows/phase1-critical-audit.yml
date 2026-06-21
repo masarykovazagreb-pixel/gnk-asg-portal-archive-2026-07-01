@@ -9,6 +9,7 @@ on:
       - 'scripts/phase1-critical-audit.mjs'
       - 'scripts/publications-regression-audit.mjs'
       - 'scripts/news-market-regression-audit.mjs'
+      - 'scripts/mobile-admin-security-audit.mjs'
       - '.github/workflows/phase1-critical-audit.yml'
   workflow_dispatch:
 permissions:
@@ -25,6 +26,9 @@ jobs:
       - name: Run local Phase 1 regressions
         id: local_regressions
         run: |
+          node --check apps/portal/assets/operator-token-vault.js
+          node --check apps/portal/assets/mobile-admin-publisher.js
+          node scripts/mobile-admin-security-audit.mjs
           node scripts/publications-regression-audit.mjs
           node scripts/news-market-regression-audit.mjs
           node workers/gnk-asg-preview-portal-worker/test/video-sitemap.test.js
@@ -36,6 +40,9 @@ jobs:
       - name: Publish audit summary
         if: always()
         run: |
+          if [ -f reports/mobile-admin-security/mobile-admin-security.md ]; then
+            cat reports/mobile-admin-security/mobile-admin-security.md >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [ -f reports/publications-regression/publications-regression.md ]; then
             cat reports/publications-regression/publications-regression.md >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -53,6 +60,7 @@ jobs:
           name: phase1-critical-audit-${{ github.run_id }}
           path: |
             reports/phase1-critical-audit/
+            reports/mobile-admin-security/
             reports/publications-regression/
             reports/news-market-regression/
           if-no-files-found: warn
