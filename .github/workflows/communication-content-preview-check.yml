@@ -10,7 +10,8 @@ on:
       - 'apps/portal/platforme/bpp/**'
       - 'apps/portal/en/platforms/bpp/**'
       - 'apps/portal/assets/wa-center.*'
-      - 'apps/portal/assets/pdf-publisher.*'
+      - 'apps/portal/assets/pdf-publisher*'
+      - 'apps/portal/assets/operator-token-vault.js'
       - 'apps/portal/data/wa-*.json'
       - 'apps/portal/data/generated-gallery-30.json'
       - 'packages/editorial/image-selector.mjs'
@@ -34,7 +35,8 @@ jobs:
         run: |
           set -euo pipefail
           node --check apps/portal/assets/wa-center.js
-          node --check apps/portal/assets/pdf-publisher.js
+          node --check apps/portal/assets/operator-token-vault.js
+          node --check apps/portal/assets/pdf-publisher-secure.js
           node --check packages/editorial/image-selector.mjs
       - name: Validate JSON
         run: |
@@ -51,6 +53,12 @@ jobs:
           test -f apps/portal/en/platforms/bpp/index.html
           grep -q 'WhatsApp Communication Center' apps/portal/wa-center/index.html
           grep -q 'PDF Publisher' apps/portal/pdf-publisher/index.html
+          grep -q 'operator-token-vault.js' apps/portal/pdf-publisher/index.html
+          grep -q 'pdf-publisher-secure.js' apps/portal/pdf-publisher/index.html
+          if grep -q 'assets/pdf-publisher.js' apps/portal/pdf-publisher/index.html; then
+            echo 'Legacy PDF Publisher client is still active.'
+            exit 1
+          fi
           grep -q 'www.bpp.is' apps/portal/platforme/bpp/index.html
           grep -q 'generated-gallery-30.json' contracts/editorial-automation-policy.json
           grep -q 'preventImageReuseDays' contracts/editorial-automation-policy.json
@@ -59,7 +67,9 @@ jobs:
           mkdir -p reports/communication-content-preview
           printf '%s\n' \
             'WhatsApp Center syntax: OK' \
-            'PDF Publisher syntax: OK' \
+            'PDF Publisher secure client: OK' \
+            'Session token vault: OK' \
+            'Legacy PDF client active: false' \
             'BPP HR/EN pages: OK' \
             'Editorial image selector: OK' \
             'Production changed: false' \
