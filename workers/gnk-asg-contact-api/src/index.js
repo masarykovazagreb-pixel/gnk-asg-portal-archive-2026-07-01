@@ -1,6 +1,3 @@
-import { EmailMessage } from 'cloudflare:email';
-import { sendExternalMail, providerStatus } from './outbound-provider.js';
-
 const MAILBOXES = {
   info:{label:'Info',address:'info@gnk-asg.hr'},
   contact:{label:'Kontakt',address:'contact@gnk-asg.hr'},
@@ -14,7 +11,7 @@ const MAILBOXES = {
   assistant:{label:'IT – Osobni digitalni asistent',address:'assistant@gnk-asg.hr'}
 };
 
-function headers(origin='https://gnk-asg.hr') {
+function responseHeaders(origin='https://gnk-asg.hr') {
   return {
     'content-type':'application/json; charset=utf-8',
     'cache-control':'no-store, max-age=0',
@@ -26,7 +23,7 @@ function headers(origin='https://gnk-asg.hr') {
 }
 
 function json(request,data,status=200) {
-  return new Response(JSON.stringify(data,null,2),{status,headers:headers(request.headers.get('origin') || '')});
+  return new Response(JSON.stringify(data,null,2),{status,headers:responseHeaders(request.headers.get('origin') || '')});
 }
 
 function esc(value) {
@@ -38,7 +35,7 @@ function validEmail(value) {
 }
 
 function mailboxKey(value) {
-  const key = String(value || 'info').trim().toLowerCase();
+  const key=String(value || 'info').trim().toLowerCase();
   return MAILBOXES[key] ? key : 'info';
 }
 
@@ -50,46 +47,11 @@ function cleanHeader(value) {
   return String(value || '').replace(/[\r\n]+/g,' ').trim().slice(0,240);
 }
 
-function base64(bytes) {
-  let binary='';
-  for(let index=0;index<bytes.length;index+=0x8000) binary+=String.fromCharCode(...bytes.subarray(index,Math.min(index+0x8000,bytes.length)));
-  return btoa(binary);
-}
-
-function fold(value) {
-  return String(value || '').replace(/(.{76})/g,'$1\r\n');
-}
-
-function internalMime({from,to,replyTo,subject,text,pdfBytes,pdfName}) {
-  const boundary=`gnk_${crypto.randomUUID().replace(/-/g,'')}`;
-  const lines=[
-    `From: GNK ASG Contact <${from}>`,
-    `To: ${to}`,
-    `Reply-To: ${replyTo}`,
-    `Subject: ${cleanHeader(subject)}`,
-    'MIME-Version: 1.0',
-    `Content-Type: multipart/mixed; boundary="${boundary}"`,
-    '',
-    `--${boundary}`,
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
-    '',
-    text,
-    ''
-  ];
-  if(pdfBytes?.length){
-    lines.push(
-      `--${boundary}`,
-      `Content-Type: application/pdf; name="${cleanHeader(pdfName || 'attachment.pdf')}"`,
-      `Content-Disposition: attachment; filename="${cleanHeader(pdfName || 'attachment.pdf')}"`,
-      'Content-Transfer-Encoding: base64',
-      '',
-      fold(base64(pdfBytes)),
-      ''
-    );
-  }
-  lines.push(`--${boundary}--`,'');
-  return lines.join('\r\n');
+function mailProvider(env) {
+  return {
+    configured:Boolean(env.EMAIL && typeof env.EMAIL.send === 'function'),
+    provider:'cloudflare-email-service'
+  };
 }
 
 async function rateLimit(request,env) {
@@ -125,16 +87,52 @@ async function saveRecord(env,record) {
 
 async function parsePayload(request) {
   const type=String(request.headers.get('content-type') || '').toLowerCase();
-  if(type.includes('application/json')){
-    const data=await request.json();
-    return {data,pdf:null};
-  }
+  if(type.includes('application/json')) return {data:await request.json(),pdf:null};
   const form=await request.formData();
-  return {data:Object.fromEntries([...form.entries()].filter(([,value])=>typeof value === 'string')),pdf:form.get('pdf')};
+  return {data:Object.fromEntries([...form.entries()].filter(([,value])=>typeof value==='string')),pdf:form.get('pdf')};
+}
+
+function attachmentPayload(pdfBytes,attachmentName) {
+  if(!pdfBytes?.length) return undefined;
+  return [{
+    content:pdfBytes,
+    filename:attachmentName || 'attachment.pdf',
+    type:'application/pdf',
+    disposition:'attachment'
+  }];
+}
+
+async function sendInternal(env,{from,to,replyTo,subject,text,pdfBytes,attachmentName,caseId}) {
+  const result=await env.EMAIL.send({
+    from:{email:from,name:'GNK ASG Contact'},
+    to,
+    replyTo,
+    subject:cleanHeader(subject),
+    text,
+    html:`<div style="font-family:Arial,sans-serif;line-height:1.6;color:#111827">${esc(text).replace(/\n/g,'<br>')}</div>`,
+    attachments:attachmentPayload(pdfBytes,attachmentName),
+    headers:caseId ? {'X-GNK-ASG-Case':cleanHeader(caseId)} : undefined
+  });
+  return result?.messageId || null;
+}
+
+async function sendAutoReply(env,{from,to,subject,text,caseId}) {
+  const result=await env.EMAIL.send({
+    from:{email:from,name:'GNK ASG'},
+    to,
+    replyTo:from,
+    subject:cleanHeader(subject),
+    text,
+    html:`<div style="font-family:Arial,sans-serif;line-height:1.6;color:#111827">${esc(text).replace(/\n/g,'<br>')}</div>`,
+    headers:caseId ? {'X-GNK-ASG-Case':cleanHeader(caseId)} : undefined
+  });
+  return result?.messageId || null;
 }
 
 async function submit(request,env) {
   if(!await rateLimit(request,env)) return json(request,{ok:false,error:'rate_limited',message:'Previše pokušaja. Pokušajte ponovno kasnije.'},429);
+  if(!env.EMAIL || typeof env.EMAIL.send !== 'function') return json(request,{ok:false,error:'email_binding_missing',message:'Cloudflare Email Service nije dostupan.'},503);
+
   let parsed;
   try{parsed=await parsePayload(request)}catch{return json(request,{ok:false,error:'invalid_payload',message:'Forma nije pravilno poslana.'},400)}
   const data=parsed.data || {};
@@ -158,9 +156,9 @@ async function submit(request,env) {
   let r2Saved=false;
   let r2Error=null;
   const pdf=parsed.pdf;
-  if(pdf && typeof pdf.arrayBuffer === 'function' && Number(pdf.size || 0)>0){
+  if(pdf && typeof pdf.arrayBuffer==='function' && Number(pdf.size || 0)>0){
     attachmentName=String(pdf.name || 'attachment.pdf');
-    if(Number(pdf.size || 0)>10*1024*1024) return json(request,{ok:false,error:'attachment_too_large',message:'PDF može imati najviše 10 MB.'},413);
+    if(Number(pdf.size || 0)>4*1024*1024) return json(request,{ok:false,error:'attachment_too_large',message:'PDF može imati najviše 4 MB.'},413);
     if(!attachmentName.toLowerCase().endsWith('.pdf') && String(pdf.type || '').toLowerCase()!=='application/pdf') return json(request,{ok:false,error:'invalid_attachment',message:'Dopušten je samo PDF.'},400);
     pdfBytes=new Uint8Array(await pdf.arrayBuffer());
     attachmentKey=`contact-pdf/${id}/${attachmentName.replace(/[^a-zA-Z0-9._-]+/g,'_').slice(0,140)}`;
@@ -194,34 +192,19 @@ async function submit(request,env) {
     'Srdačan pozdrav,',mailbox.label,'GNK ASG d.o.o.','https://gnk-asg.hr'
   ].join('\n');
 
-  const internalMail={attempted:false,sent:false,error:null,messageId:null};
+  const internalMail={attempted:true,sent:false,error:null,messageId:null,provider:'cloudflare-email-service'};
   try{
-    internalMail.attempted=true;
-    const raw=internalMime({from:mailbox.address,to:internalTo,replyTo:email,subject:`[${id}] ${subject}`,text:internalText,pdfBytes,pdfName:attachmentName});
-    const response=await env.EMAIL.send(new EmailMessage(mailbox.address,internalTo,raw));
+    internalMail.messageId=await sendInternal(env,{from:mailbox.address,to:internalTo,replyTo:email,subject:`[${id}] ${subject}`,text:internalText,pdfBytes,attachmentName,caseId:id});
     internalMail.sent=true;
-    internalMail.messageId=response?.messageId || null;
   }catch(error){internalMail.error=String(error?.message || error)}
 
-  const autoReply={attempted:true,sent:false,error:null,messageId:null,provider:null};
+  const autoReply={attempted:true,sent:false,error:null,messageId:null,provider:'cloudflare-email-service'};
   try{
-    const response=await sendExternalMail(env,{
-      from:mailbox.address,
-      fromName:`GNK ASG · ${mailbox.label}`,
-      to:email,
-      replyTo:mailbox.address,
-      subject:`Potvrda zaprimanja upita ${id}`,
-      text:confirmation,
-      html:`<div style="font-family:Arial,sans-serif;line-height:1.6;color:#111827">${esc(confirmation).replace(/\n/g,'<br>')}</div>`,
-      caseId:id,
-      source:'contact-auto-reply'
-    });
+    autoReply.messageId=await sendAutoReply(env,{from:mailbox.address,to:email,subject:`Potvrda zaprimanja upita ${id}`,text:confirmation,caseId:id});
     autoReply.sent=true;
-    autoReply.messageId=response?.messageId || null;
-    autoReply.provider=response?.provider || null;
   }catch(error){autoReply.error=String(error?.message || error)}
 
-  const record={caseId:id,receivedAt,mailboxKey:key,recipientEmail:mailbox.address,name,email,phone,subject,message,attachmentKey,attachmentName,r2Saved,r2Error,internalMail,autoReply,outboundProvider:providerStatus(env),status:'received',source:'gnk-asg-contact-api-v4'};
+  const record={caseId:id,receivedAt,mailboxKey:key,recipientEmail:mailbox.address,name,email,phone,subject,message,attachmentKey,attachmentName,r2Saved,r2Error,internalMail,autoReply,mailProvider:mailProvider(env),status:'received',source:'gnk-asg-contact-api-v4-cloudflare'};
   const storage=await saveRecord(env,record);
 
   return json(request,{
@@ -239,6 +222,7 @@ async function submit(request,env) {
     r2Saved,
     internalMail,
     autoReply,
+    mailProvider:mailProvider(env),
     storage
   });
 }
@@ -253,11 +237,11 @@ export default {
   async fetch(request,env) {
     const url=new URL(request.url);
     const path=url.pathname.replace(/\/+$/,'') || '/';
-    if(request.method==='OPTIONS') return new Response(null,{status:204,headers:headers(request.headers.get('origin') || '')});
-    if(request.method==='GET' && path==='/api/contact-mailboxes') return json(request,{ok:true,mailboxes:Object.entries(MAILBOXES).map(([key,value])=>({key,...value})),outboundProvider:providerStatus(env)});
-    if(request.method==='GET' && path==='/api/contact-submit') return json(request,{ok:true,service:'GNK ASG Contact API V4',mailboxes:Object.entries(MAILBOXES).map(([key,value])=>({key,...value})),outboundProvider:providerStatus(env),updatedAt:new Date().toISOString()});
+    if(request.method==='OPTIONS') return new Response(null,{status:204,headers:responseHeaders(request.headers.get('origin') || '')});
+    if(request.method==='GET' && path==='/api/contact-mailboxes') return json(request,{ok:true,mailboxes:Object.entries(MAILBOXES).map(([key,value])=>({key,...value})),mailProvider:mailProvider(env)});
+    if(request.method==='GET' && path==='/api/contact-submit') return json(request,{ok:true,service:'GNK ASG Contact API V4 Cloudflare',mailboxes:Object.entries(MAILBOXES).map(([key,value])=>({key,...value})),mailProvider:mailProvider(env),updatedAt:new Date().toISOString()});
     if(request.method==='POST' && path==='/api/contact-submit') return submit(request,env);
-    if(request.method==='GET' && (path==='/contact' || path==='/en/contact')) return new Response(page(path.startsWith('/en/')?'en':'hr'),{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store, max-age=0','x-gnk-asg-contact':'v4'}});
+    if(request.method==='GET' && (path==='/contact' || path==='/en/contact')) return new Response(page(path.startsWith('/en/')?'en':'hr'),{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store, max-age=0','x-gnk-asg-contact':'v4-cloudflare'}});
     return json(request,{ok:false,error:'not_found',path},404);
   }
 };
