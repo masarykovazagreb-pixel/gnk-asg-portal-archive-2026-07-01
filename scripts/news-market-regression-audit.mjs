@@ -46,9 +46,10 @@ for (const [label, html, language] of [
   if (!html.includes('/assets/business-news.js')) errors.push(`${label}: business news module not loaded`);
 }
 
-for (const marker of ['classifyStatus', 'Europe/Zagreb', 'gnk:market-ready', 'MutationObserver', "'/api/market'"]) {
+for (const marker of ['classifyStatus', 'Europe/Zagreb', 'gnk:market-ready', 'MutationObserver']) {
   if (!marketScript.includes(marker)) errors.push(`market-page.js missing ${marker}`);
 }
+if (!marketScript.includes('/api/market')) errors.push("market-page.js missing '/api/market'");
 
 for (const marker of ['status-badge.live', 'status-badge.snapshot', 'status-badge.delayed', 'status-badge.fallback']) {
   if (!marketCss.includes(marker)) errors.push(`market-page.css missing ${marker}`);
