@@ -1,0 +1,41 @@
+name = "gnk-asg-public-pages-live"
+main = "src/index.js"
+compatibility_date = "2026-06-21"
+workers_dev = true
+preview_urls = true
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+
+[[routes]]
+pattern = "gnk-asg.hr/videoteka/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/en/video-library/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/mail-studio-pro/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/operator-mobile/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/videoteka/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/en/video-library/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/mail-studio-pro/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/operator-mobile/*"
+zone_name = "gnk-asg.hr"
