@@ -16,6 +16,18 @@ function protectedCorsHeaders(request) {
   };
 }
 
+async function delegateWithStaticAssetFallback(request, env, ctx) {
+  const response = await core.fetch(request, env, ctx);
+  const methodAllowsAssets = request.method === 'GET' || request.method === 'HEAD';
+
+  if (!methodAllowsAssets || response.status !== 404 || !env.ASSETS || typeof env.ASSETS.fetch !== 'function') {
+    return response;
+  }
+
+  const assetResponse = await env.ASSETS.fetch(request);
+  return assetResponse.status === 404 ? response : assetResponse;
+}
+
 export default {
   async fetch(request, env, ctx) {
     const path = new URL(request.url).pathname;
@@ -50,7 +62,7 @@ export default {
       }
     }
 
-    return core.fetch(request, env, ctx);
+    return delegateWithStaticAssetFallback(request, env, ctx);
   },
 
   async scheduled(event, env, ctx) {
