@@ -6,7 +6,10 @@ on:
       - 'apps/portal/**'
       - 'workers/**'
       - 'config/phase1-critical-checks.json'
+      - 'config/project-completion-backlog.json'
+      - 'contracts/**'
       - 'scripts/phase1-critical-audit.mjs'
+      - 'scripts/release-candidate-audit.mjs'
       - 'scripts/publications-regression-audit.mjs'
       - 'scripts/news-market-regression-audit.mjs'
       - 'scripts/mobile-admin-security-audit.mjs'
@@ -28,7 +31,10 @@ jobs:
         run: |
           node --check apps/portal/assets/operator-token-vault.js
           node --check apps/portal/assets/mobile-admin-publisher.js
+          node --check apps/portal/assets/mail-studio-pro.js
+          node --check apps/portal/assets/pdf-publisher-secure.js
           node scripts/mobile-admin-security-audit.mjs
+          node scripts/release-candidate-audit.mjs
           node scripts/publications-regression-audit.mjs
           node scripts/news-market-regression-audit.mjs
           node workers/gnk-asg-preview-portal-worker/test/video-sitemap.test.js
@@ -40,6 +46,9 @@ jobs:
       - name: Publish audit summary
         if: always()
         run: |
+          if [ -f reports/release-candidate-audit/release-candidate-audit.md ]; then
+            cat reports/release-candidate-audit/release-candidate-audit.md >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [ -f reports/mobile-admin-security/mobile-admin-security.md ]; then
             cat reports/mobile-admin-security/mobile-admin-security.md >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -59,6 +68,7 @@ jobs:
         with:
           name: phase1-critical-audit-${{ github.run_id }}
           path: |
+            reports/release-candidate-audit/
             reports/phase1-critical-audit/
             reports/mobile-admin-security/
             reports/publications-regression/
