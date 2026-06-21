@@ -1,0 +1,54 @@
+{
+  "version": "2026-06-21-v1",
+  "branch": "experience-ai-live-overview",
+  "readOnly": true,
+  "productionWrites": false,
+  "phases": [
+    {
+      "id": "phase-1-core",
+      "scope": ["frontend", "public-routes", "contact", "mail", "publications", "news", "markets", "mobile-admin", "security", "backup", "rollback", "health"]
+    },
+    {
+      "id": "phase-2-automation",
+      "scope": ["auto-editor", "data-sync", "ai-mail", "pdf-publisher", "social-share", "whatsapp-center", "operator-tools"]
+    },
+    {
+      "id": "phase-3-media-seo",
+      "scope": ["featured-video", "video-library-hr-en", "video-object", "video-sitemap", "image-seo", "media-assets", "brand-kits"]
+    },
+    {
+      "id": "phase-4-release",
+      "scope": ["release-candidate", "preview-e2e", "cloudflare-manual-gates", "production-approval", "rollback-evidence"]
+    }
+  ],
+  "offlineAudits": [
+    "scripts/mobile-admin-security-audit.mjs",
+    "scripts/operator-mobile-bridge-security-audit.mjs",
+    "scripts/operator-mobile-security-final-audit.mjs",
+    "scripts/preview-regression-audit.mjs",
+    "scripts/publications-regression-audit.mjs",
+    "scripts/news-market-regression-audit.mjs",
+    "scripts/release-candidate-audit.mjs",
+    "tools/phase1/validate-mail-campaign-contract.mjs"
+  ],
+  "networkAudits": [
+    "scripts/phase1-critical-audit.mjs",
+    "scripts/live-backend-smoke-audit.mjs"
+  ],
+  "testRoots": [
+    "workers/gnk-asg-preview-portal-worker/test",
+    "workers/gnk-asg-mail-agent-worker/test",
+    "workers/gnk-asg-auto-editor-preview/test",
+    "workers/gnk-asg-data-sync-preview/test"
+  ],
+  "manualGates": [
+    "GitHub Actions runner recovery",
+    "Cloudflare preview deploy",
+    "operator token validation",
+    "real inbound mail event",
+    "approved test recipients and PDF",
+    "real 4K video asset and poster",
+    "OAuth and WhatsApp Business authorization",
+    "final production approval"
+  ]
+}
