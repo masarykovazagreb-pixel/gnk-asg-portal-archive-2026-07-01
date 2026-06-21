@@ -18,13 +18,17 @@ export function resumeMediaCampaign(campaign = {}, now = new Date()) {
 export function mediaCampaignStatus(campaign = {}) {
   const queue = Array.isArray(campaign.queue) ? campaign.queue : [];
   const count = status => queue.filter(item => item.status === status).length;
+  const invalid = Array.isArray(campaign.invalid) ? campaign.invalid : [];
+  const importedSuppressed = invalid.filter(item => item?.error === 'suppressed_recipient').length;
+  const invalidFailed = invalid.length - importedSuppressed;
   return {
     id: campaign.id,
     status: campaign.status,
     total: Number(campaign.total || queue.length),
     sent: count('sent'),
     tested: count('tested'),
-    failed: (Array.isArray(campaign.invalid) ? campaign.invalid.length : 0) + count('failed'),
+    failed: invalidFailed + count('failed'),
+    suppressed: importedSuppressed + count('suppressed'),
     remaining: count('remaining'),
     scheduledAt: campaign.scheduledAt || null,
     lastWindowAt: campaign.lastWindowAt || null,
@@ -34,6 +38,7 @@ export function mediaCampaignStatus(campaign = {}) {
     executionBlocked: campaign.executionBlocked === true,
     executionBlockReason: campaign.executionBlockReason || null,
     rateLimitPerMinute: MEDIA_CAMPAIGN_LIMITS.maxSendPerMinute,
+    suppressionCheckRequired: MEDIA_CAMPAIGN_LIMITS.requireSuppressionCheck === true,
     productionSendEnabled: campaign.productionSendEnabled === true
   };
 }
