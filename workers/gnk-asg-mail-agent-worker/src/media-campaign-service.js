@@ -2,7 +2,6 @@ import { addMailboxItem } from './storage.js';
 import { buildMediaCampaignBatch } from './media-campaign-batch.js';
 import { mediaCampaignStatus, planMediaCampaignWindow } from './media-campaign-actions.js';
 import { executeMediaCampaignWindow } from './media-campaign-window.js';
-import { deliverMediaCampaignWindow } from './media-campaign-delivery.js';
 import { normaliseCampaignAttachment, readCampaignAttachment, storeCampaignAttachment } from './media-campaign-attachment.js';
 import { acquireMediaCampaignLease, strictCampaignLeaseReady } from './media-campaign-lease.js';
 import { saveMediaCampaign } from './media-campaign-state.js';
@@ -87,6 +86,7 @@ export async function runMediaCampaignWindow(env, campaign, command = {}) {
       return blockedResult(campaign, lease.reason, lease.reason === 'rate_limited' ? 429 : 409, lease);
     }
 
+    const { deliverMediaCampaignWindow } = await import('./media-campaign-delivery.js');
     updated = await deliverMediaCampaignWindow(env, campaign, attachment);
     updated.strictLeaseId = lease.leaseId;
     updated.strictLeaseAcquiredAt = lease.acquiredAt;
