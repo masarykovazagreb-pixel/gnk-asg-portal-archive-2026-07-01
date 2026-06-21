@@ -38,6 +38,7 @@ jobs:
         run: |
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-rate-limit.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-lease.test.js
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js
 
@@ -66,6 +67,7 @@ jobs:
           100-recipient E2E simulation: completed
           Rate limit 10/min: verified
           Repeated-window lock: verified
+          Strict D1 lease: verified
           Scheduling gate: verified
           PDF attachment storage: verified
           Live-send confirmation gate: verified
