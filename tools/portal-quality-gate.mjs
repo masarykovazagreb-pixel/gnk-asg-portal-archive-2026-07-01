@@ -108,10 +108,24 @@ function route(file) {
   return `/${name}`;
 }
 
+function isCanonicalAliasFile(file) {
+  return /^(?:podijeli|dijeli)\//i.test(relative(file));
+}
+
+function isVerificationFile(file) {
+  return /^google[a-z0-9_-]+\.html?$/i.test(relative(file));
+}
+
+function isAuditUtilityFile(file) {
+  return /^assets\/seo-gallery\/preview\.html?$/i.test(relative(file));
+}
+
 function isExternal(reference) {
-  return /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(reference)
-    || reference.includes('{{')
-    || reference.includes('${');
+  const value = String(reference || '').trim();
+  return /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)
+    || value.includes('{{')
+    || value.includes('${')
+    || /^\+[A-Za-z_$][\w$]*\+$/.test(value);
 }
 
 function candidates(sourceFile, reference) {
@@ -189,23 +203,28 @@ for (const file of htmlFiles) {
 
   const noindex = hasNoIndex(html);
   const hiddenPath = relative(file).split('/').some((part) => part.startsWith('.') || part.startsWith('__'));
-  const publicPage = !noindex && !hiddenPath;
+  const canonicalAlias = isCanonicalAliasFile(file);
+  const verificationFile = isVerificationFile(file);
+  const auditUtility = isAuditUtilityFile(file);
+  const excludedFromPublicAudit = verificationFile || auditUtility;
+  const publicPage = !noindex && !hiddenPath && !excludedFromPublicAudit;
+  const canonicalOwner = publicPage && !canonicalAlias;
   const lang = (html.match(/<html\b[^>]*\blang\s*=\s*["']([^"']+)["']/i)?.[1] || '').trim();
   const title = (html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '').replace(/<[^>]*>/g, '').trim();
   const description = meta(html, 'name', 'description');
   const viewport = meta(html, 'name', 'viewport');
   const canonicalUrl = canonical(html);
 
-  if (!lang) report('error', 'MISSING_LANG', file, 'Missing html lang attribute.');
-  if (!title) report('error', 'MISSING_TITLE', file, 'Missing document title.');
-  if (!viewport) report('warning', 'MISSING_VIEWPORT', file, 'Missing viewport meta tag.');
+  if (!excludedFromPublicAudit && !lang) report('error', 'MISSING_LANG', file, 'Missing html lang attribute.');
+  if (!excludedFromPublicAudit && !title) report('error', 'MISSING_TITLE', file, 'Missing document title.');
+  if (!excludedFromPublicAudit && !viewport) report('warning', 'MISSING_VIEWPORT', file, 'Missing viewport meta tag.');
   if (publicPage && !description) report('warning', 'MISSING_DESCRIPTION', file, 'Public page is missing a meta description.');
-  if (publicPage && !canonicalUrl) report('warning', 'MISSING_CANONICAL', file, 'Public page is missing a canonical URL.');
+  if (canonicalOwner && !canonicalUrl) report('warning', 'MISSING_CANONICAL', file, 'Public canonical-owner page is missing a canonical URL.');
   if (/^(?:admin|operator|private|internal)\//i.test(relative(file)) && !noindex) {
     report('error', 'PRIVATE_ROUTE_INDEXABLE', file, 'Administrative or private route is not marked noindex.');
   }
 
-  if (canonicalUrl) {
+  if (canonicalUrl && canonicalOwner) {
     const normalized = normalizeCanonical(canonicalUrl);
     const current = canonicals.get(normalized) || [];
     current.push(relative(file));
@@ -264,13 +283,26 @@ for (const file of htmlFiles) {
     if (count > 1) report('warning', 'DUPLICATE_INSTALL_LINK', file, 'Install/app link is repeated on the same page.', { target: href, count });
   }
 
-  pageSummary.push({ file: relative(file), route: route(file), public: publicPage, noindex, lang, title, description, canonical: canonicalUrl });
+  pageSummary.push({
+    file: relative(file),
+    route: route(file),
+    public: publicPage,
+    canonicalOwner,
+    canonicalAlias,
+    verificationFile,
+    auditUtility,
+    noindex,
+    lang,
+    title,
+    description,
+    canonical: canonicalUrl
+  });
 }
 
 for (const [canonicalUrl, pages] of canonicals) {
   if (!canonicalUrl || pages.length < 2) continue;
   for (const page of pages) {
-    report('error', 'DUPLICATE_CANONICAL', path.join(root, page), 'Canonical URL is shared by multiple HTML pages.', { canonical: canonicalUrl, pages });
+    report('error', 'DUPLICATE_CANONICAL', path.join(root, page), 'Canonical URL is shared by multiple canonical-owner HTML pages.', { canonical: canonicalUrl, pages });
   }
 }
 
@@ -293,7 +325,7 @@ const totals = issues.reduce((result, issue) => {
 issues.sort((a, b) => a.severity.localeCompare(b.severity) || (a.file || '').localeCompare(b.file || '') || a.code.localeCompare(b.code));
 
 const result = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   generatedAt,
   root: path.relative(process.cwd(), root).split(path.sep).join('/'),
   strict,
@@ -301,6 +333,10 @@ const result = {
     scannedFiles: files.length,
     htmlFiles: htmlFiles.length,
     publicHtmlFiles: pageSummary.filter((page) => page.public).length,
+    canonicalOwnerFiles: pageSummary.filter((page) => page.canonicalOwner).length,
+    canonicalAliasFiles: pageSummary.filter((page) => page.canonicalAlias).length,
+    verificationFiles: pageSummary.filter((page) => page.verificationFile).length,
+    auditUtilityFiles: pageSummary.filter((page) => page.auditUtility).length,
     canonicalUrls: canonicals.size,
     indexedImages: imageRegistry.length,
     bppReferences: bppReferences.length,
@@ -330,6 +366,10 @@ const markdown = [
   `- Scanned files: ${result.summary.scannedFiles}`,
   `- HTML files: ${result.summary.htmlFiles}`,
   `- Public HTML files: ${result.summary.publicHtmlFiles}`,
+  `- Canonical owner files: ${result.summary.canonicalOwnerFiles}`,
+  `- Canonical alias files: ${result.summary.canonicalAliasFiles}`,
+  `- Verification files: ${result.summary.verificationFiles}`,
+  `- Audit utility files: ${result.summary.auditUtilityFiles}`,
   `- Canonical URLs: ${result.summary.canonicalUrls}`,
   `- Indexed images: ${result.summary.indexedImages}`,
   `- BPP references: ${result.summary.bppReferences}`,
@@ -341,6 +381,12 @@ const markdown = [
   '',
   '- Official host: `bpp.is`',
   '- Official URL: `https://bpp.is/`',
+  '',
+  '## Canonical classification',
+  '',
+  '- Canonical owners participate in duplicate-canonical enforcement.',
+  '- `podijeli/` and `dijeli/` pages are canonical aliases and are excluded from ownership collisions.',
+  '- Search-engine verification files and the SEO gallery preview utility are excluded from normal page-metadata requirements.',
   '',
   '## Issues',
   ''
