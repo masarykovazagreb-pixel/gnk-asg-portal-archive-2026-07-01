@@ -82,16 +82,49 @@ jobs:
         run: sleep 12
 
       - name: Prove app entry route
+        id: smoke
+        continue-on-error: true
         shell: bash
         run: |
-          set -euo pipefail
-          app_code=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' --max-redirs 0 https://gnk-asg.hr/app/)
-          app_location=$(curl --silent --show-error --head --max-redirs 0 https://gnk-asg.hr/app/ | tr -d '\r' | awk 'tolower($1)=="location:" {print $2}' | tail -n 1)
+          set +e
+          curl --silent --show-error --dump-header app-entry.headers --output /dev/null --max-redirs 0 https://gnk-asg.hr/app/
+          header_curl=$?
+          app_code=$(awk 'toupper($1) ~ /^HTTP\// {code=$2} END {print code}' app-entry.headers)
+          app_location=$(awk 'tolower($1)=="location:" {gsub("\r", "", $2); value=$2} END {print value}' app-entry.headers)
+          app_marker=$(awk 'tolower($1)=="x-gnk-asg-emergency-entry-fix:" {gsub("\r", "", $2); value=$2} END {print value}' app-entry.headers)
           app_final=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 https://gnk-asg.hr/app/)
-          echo "app initial=${app_code} location=${app_location} final=${app_final}"
-          test "$app_code" = '307'
-          test "$app_location" = 'https://gnk-asg.hr/'
-          test "$app_final" = '200'
+          final_curl=$?
+          {
+            echo "header_curl=${header_curl}"
+            echo "app_code=${app_code}"
+            echo "app_location=${app_location}"
+            echo "app_marker=${app_marker}"
+            echo "final_curl=${final_curl}"
+            echo "app_final=${app_final}"
+          } | tee app-entry-result.txt
+          status=0
+          test "$header_curl" = '0' || status=1
+          [[ "$app_code" =~ ^30[1278]$ ]] || status=1
+          [[ "$app_location" =~ ^https://gnk-asg\.hr/?$ ]] || status=1
+          test "$app_marker" = 'pwa-start-to-home' || status=1
+          test "$final_curl" = '0' || status=1
+          test "$app_final" = '200' || status=1
+          exit "$status"
+
+      - name: Upload runtime proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-emergency-entry-runtime-${{ github.run_id }}
+          path: |
+            app-entry.headers
+            app-entry-result.txt
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Stop after failed runtime proof
+        if: steps.smoke.outcome != 'success'
+        run: exit 1
 
       - name: Confirm existing homepage remained available
         run: |
