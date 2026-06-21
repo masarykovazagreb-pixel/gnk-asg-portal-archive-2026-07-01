@@ -11,6 +11,7 @@ const valueAfter = (flag, fallback) => {
 
 const root = path.resolve(valueAfter('--root', 'apps/portal'));
 const outDir = path.resolve(valueAfter('--out', 'reports/portal-quality-gate'));
+const repoRoot = path.resolve(root, '..', '..');
 const strict = args.includes('--strict');
 const generatedAt = new Date().toISOString();
 
@@ -22,6 +23,7 @@ if (!fs.existsSync(root) || !fs.statSync(root).isDirectory()) {
 const skippedDirectories = new Set(['.git', 'node_modules', 'reports', 'coverage', 'dist', 'build', '.wrangler']);
 const issues = [];
 const files = [];
+const bppReferences = [];
 
 function walk(directory) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
@@ -131,7 +133,46 @@ function imageKey(sourceFile, reference) {
   return path.relative(root, possible[0]).split(path.sep).join('/').toLowerCase();
 }
 
+function collectBppReferences() {
+  const roots = ['apps', 'workers', 'packages', 'contracts', 'docs'];
+  const extensions = new Set(['.html', '.htm', '.css', '.js', '.mjs', '.cjs', '.ts', '.tsx', '.jsx', '.json', '.jsonc', '.md', '.txt', '.yml', '.yaml', '.toml', '.xml', '.svg', '.py', '.ps1', '.sh', '.sql']);
+  const phrase = /bpp\.is|bitcoin\s+payment\s+processor|online\s+currency\s+exchange\s*\/\s*payment\s+processor|(?:bpp|bitcoin-payment-processor|bitcoinpaymentprocessor|payment-processor)\.gnk-asg\.hr|gnk-asg\.hr\/(?:bpp|bitcoin-payment-processor|bitcoinpaymentprocessor|payment-processor)/i;
+  const forbidden = /https?:\/\/(?:www\.)?(?:bpp|bitcoin-payment-processor|bitcoinpaymentprocessor|payment-processor)\.gnk-asg\.hr|https?:\/\/(?:www\.)?gnk-asg\.hr\/(?:bpp|bitcoin-payment-processor|bitcoinpaymentprocessor|payment-processor)|http:\/\/(?:www\.)?bpp\.is|https?:\/\/www\.bpp\.is/i;
+
+  function scan(directory) {
+    if (!fs.existsSync(directory) || !fs.statSync(directory).isDirectory()) return;
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      if (entry.isDirectory() && skippedDirectories.has(entry.name)) continue;
+      const absolute = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        scan(absolute);
+        continue;
+      }
+      if (!entry.isFile() || !extensions.has(path.extname(entry.name).toLowerCase())) continue;
+      const text = read(absolute);
+      if (text == null || text.includes('\u0000')) continue;
+      const lines = text.split(/\r?\n/);
+      lines.forEach((line, index) => {
+        if (!phrase.test(line)) return;
+        const item = {
+          file: path.relative(repoRoot, absolute).split(path.sep).join('/'),
+          line: index + 1,
+          text: line.trim().slice(0, 600),
+          forbiddenAlias: forbidden.test(line)
+        };
+        bppReferences.push(item);
+        if (item.forbiddenAlias) {
+          report('error', 'BPP_DOMAIN_ALIAS', absolute, 'Deprecated BPP domain alias found; use https://bpp.is/.', { line: item.line, excerpt: item.text });
+        }
+      });
+    }
+  }
+
+  for (const item of roots) scan(path.join(repoRoot, item));
+}
+
 walk(root);
+collectBppReferences();
 
 const htmlFiles = files.filter((file) => /\.html?$/i.test(file));
 const allFiles = new Set(files.map((file) => path.resolve(file)));
@@ -252,7 +293,7 @@ const totals = issues.reduce((result, issue) => {
 issues.sort((a, b) => a.severity.localeCompare(b.severity) || (a.file || '').localeCompare(b.file || '') || a.code.localeCompare(b.code));
 
 const result = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt,
   root: path.relative(process.cwd(), root).split(path.sep).join('/'),
   strict,
@@ -262,18 +303,22 @@ const result = {
     publicHtmlFiles: pageSummary.filter((page) => page.public).length,
     canonicalUrls: canonicals.size,
     indexedImages: imageRegistry.length,
+    bppReferences: bppReferences.length,
+    bppForbiddenAliases: bppReferences.filter((item) => item.forbiddenAlias).length,
     errors: totals.error,
     warnings: totals.warning,
     infos: totals.info
   },
   pages: pageSummary,
   imageRegistry,
+  bppReferences,
   issues
 };
 
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(path.join(outDir, 'audit.json'), `${JSON.stringify(result, null, 2)}\n`, 'utf8');
 fs.writeFileSync(path.join(outDir, 'image-usage-registry.json'), `${JSON.stringify({ generatedAt, images: imageRegistry }, null, 2)}\n`, 'utf8');
+fs.writeFileSync(path.join(outDir, 'bpp-references.json'), `${JSON.stringify({ generatedAt, canonicalUrl: 'https://bpp.is/', references: bppReferences }, null, 2)}\n`, 'utf8');
 
 const markdown = [
   '# GNK ASG Portal Quality Gate',
@@ -287,8 +332,15 @@ const markdown = [
   `- Public HTML files: ${result.summary.publicHtmlFiles}`,
   `- Canonical URLs: ${result.summary.canonicalUrls}`,
   `- Indexed images: ${result.summary.indexedImages}`,
+  `- BPP references: ${result.summary.bppReferences}`,
+  `- Forbidden BPP aliases: ${result.summary.bppForbiddenAliases}`,
   `- Errors: ${result.summary.errors}`,
   `- Warnings: ${result.summary.warnings}`,
+  '',
+  '## BPP domain policy',
+  '',
+  '- Official host: `bpp.is`',
+  '- Official URL: `https://bpp.is/`',
   '',
   '## Issues',
   ''
@@ -304,7 +356,8 @@ markdown.push('', '## Gate mode', '', strict ? 'Strict mode: errors fail the com
 fs.writeFileSync(path.join(outDir, 'audit.md'), `${markdown.join('\n')}\n`, 'utf8');
 
 const fingerprint = crypto.createHash('sha256').update(JSON.stringify(issues)).digest('hex').slice(0, 16);
-console.log(`GNK ASG quality gate: ${totals.error} error(s), ${totals.warning} warning(s), fingerprint ${fingerprint}`);
+console.log(`GNK ASG quality gate: ${totals.error} error(s), ${totals.warning} warning(s), ${bppReferences.length} BPP reference(s), fingerprint ${fingerprint}`);
+console.log(`BPP reference report: ${path.join(outDir, 'bpp-references.json')}`);
 console.log(`Report: ${path.join(outDir, 'audit.md')}`);
 
 if (strict && totals.error > 0) process.exit(1);
