@@ -22,7 +22,7 @@ export default {
 
     if (url.pathname === '/api/mail-agent/health') {
       const selfTest = runMailAgentSelfTest();
-      const readiness = phase1Readiness(selfTest);
+      const readiness = phase1Readiness(selfTest, env);
       const rollback = rollbackReadiness();
       const health = buildHealthSummary({ selfTest, readiness, rollback });
       return json(request, { ...health, updatedAt: new Date().toISOString() }, health.ok ? 200 : 500);
@@ -30,10 +30,11 @@ export default {
 
     if (url.pathname === '/api/mail-agent/status') {
       const selfTest = runMailAgentSelfTest();
-      const readiness = phase1Readiness(selfTest);
+      const readiness = phase1Readiness(selfTest, env);
       const rollback = rollbackReadiness();
       return json(request, {
         ok: readiness.ok,
+        liveReady: readiness.liveReady,
         service: 'GNK ASG Mail Agent',
         mode: 'preview',
         productionRouteConfigured: false,
@@ -42,15 +43,8 @@ export default {
         selfTest,
         readiness,
         rollback,
-        bindings: {
-          kv: Boolean(env.GNK_ASG_KV),
-          ai: Boolean(env.AI),
-          email: Boolean(env.EMAIL)
-        },
-        featureGates: {
-          routineAutoSend: env.MAIL_AUTOMATION_AUTO_SEND === 'true',
-          mediaCampaignLiveSend: env.MEDIA_CAMPAIGN_LIVE_SEND === 'true'
-        },
+        bindings: readiness.bindings,
+        featureGates: readiness.featureGates,
         updatedAt: new Date().toISOString()
       }, readiness.ok ? 200 : 500);
     }
