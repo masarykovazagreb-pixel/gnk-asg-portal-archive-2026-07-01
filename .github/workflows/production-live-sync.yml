@@ -1,24 +1,12 @@
 name: GNK ASG Production Live Sync
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - experience-ai-live-overview
     paths:
-      - 'apps/portal/operator-mobile/**'
-      - 'apps/portal/mail-studio-pro/**'
-      - 'apps/portal/videoteka/**'
-      - 'apps/portal/en/video-library/**'
-      - 'apps/portal/assets/operator-mobile-live-bridge.js'
-      - 'apps/portal/assets/operator-token-vault.js'
-      - 'apps/portal/assets/mail-studio-pro*.js'
-      - 'apps/portal/assets/mail-studio-pro*.css'
-      - 'workers/gnk-asg-direct-operator/**'
-      - 'workers/gnk-asg-public-pages-live/**'
-      - 'workers/gnk-asg-mail-agent-worker/**'
-      - 'scripts/operator-mobile-security-final-audit.mjs'
-      - '.github/workflows/production-live-sync.yml'
-  workflow_dispatch:
+      - '.github/release/PRODUCTION_APPROVED'
 
 permissions:
   contents: read
@@ -44,6 +32,16 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Validate explicit release approval
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+            test -f .github/release/PRODUCTION_APPROVED
+            grep -q '^approved: true$' .github/release/PRODUCTION_APPROVED
+            grep -q '^target: production$' .github/release/PRODUCTION_APPROVED
+          fi
+
       - name: Validate release safety
         shell: bash
         run: |
@@ -53,6 +51,12 @@ jobs:
           node --check workers/gnk-asg-public-pages-live/src/index.js
           find workers/gnk-asg-mail-agent-worker/src -name '*.js' -print0 | xargs -0 -n1 node --check
           node scripts/operator-mobile-security-final-audit.mjs
+          node scripts/release-candidate-audit.mjs
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-rate-limit.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-lease.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js
           grep -q 'main = "src/index-secure.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_CAMPAIGN_LIVE_SEND = "false"' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
           grep -q 'gnk-asg.hr/api/mail-agent/\*' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
@@ -127,10 +131,11 @@ jobs:
           cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
           ## GNK ASG production live sync
 
+          - Explicit release approval: required
           - Direct operator: protected media routes enabled
           - Public pages Worker: `gnk-asg-public-pages-live`
           - Mail Agent Worker: `gnk-asg-mail-agent-preview`
-          - Media campaign live send: disabled
+          - Media campaign live send: disabled by default
           - Public and protected routes: smoke tested
           - Branch: `experience-ai-live-overview`
           EOF
