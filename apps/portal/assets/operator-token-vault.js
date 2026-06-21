@@ -49,6 +49,25 @@
     } : {};
   }
 
+  function installSecureGate() {
+    const path = location.pathname.toLowerCase();
+    const protectedPath = /\/(operator-dashboard|operator-mobile|mail-studio|mail-studio-pro|pdf-publisher|admin)\//.test(path);
+    if (!protectedPath) return;
+    if (![...document.styleSheets].some(sheet => String(sheet.href || '').includes('approved-ui-layout-20260621.css'))) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/assets/approved-ui-layout-20260621.css?v=20260621-mailfix';
+      document.head.appendChild(link);
+    }
+    if (![...document.scripts].some(script => String(script.src || '').includes('admin-secure-gate.js'))) {
+      const script = document.createElement('script');
+      script.src = '/assets/admin-secure-gate.js?v=20260621-mailfix';
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+  }
+
   migrateLegacyToken();
   window.GNKOperatorToken = Object.freeze({ get, set, clear, headers });
+  installSecureGate();
 })();
