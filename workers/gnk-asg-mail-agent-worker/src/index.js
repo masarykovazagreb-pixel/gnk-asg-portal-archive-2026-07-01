@@ -10,6 +10,7 @@ import { mediaCampaignStatus, pauseMediaCampaign, planMediaCampaignWindow, resum
 import { executeMediaCampaignWindow } from './media-campaign-window.js';
 import { runMailAgentSelfTest } from './mail-agent-self-test.js';
 import { phase1Readiness } from './phase1-readiness.js';
+import { rollbackReadiness } from './rollback-manifest.js';
 
 export default {
   async fetch(request, env) {
@@ -30,6 +31,7 @@ export default {
         policy: MAIL_AUTOMATION_POLICY,
         selfTest,
         readiness,
+        rollback: rollbackReadiness(),
         bindings: {
           kv: Boolean(env.GNK_ASG_KV),
           ai: Boolean(env.AI),
