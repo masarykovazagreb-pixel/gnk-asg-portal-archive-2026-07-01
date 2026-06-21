@@ -12,6 +12,9 @@ const pairs = [
   ['Markets', '/trzista/', '/markets/'],
   ['Video library', '/videoteka/', '/en/video-library/'],
   ['BPP', '/platforme/bpp/', '/en/platforms/bpp/'],
+  ['Media Kit', '/media-kit/', '/en/media-kit/'],
+  ['Contact', '/contact/', '/en/contact/'],
+  ['Legal', '/legal/', '/en/legal/'],
   ['Privacy', '/privatnost/', '/en/privacy/'],
   ['Terms', '/uvjeti-koristenja/', '/en/terms/'],
   ['Cookies', '/kolacici/', '/en/cookies/']
@@ -52,6 +55,14 @@ for (const [label, hr, en] of pairs) {
   add(`Canonical pair ${label}`, worker.includes(`hr: '${hr}'`) && worker.includes(`en: '${en}'`), `${hr} ↔ ${en}`);
 }
 add('Canonical and hreflang normalizer', worker.includes('link[rel="canonical"]') && worker.includes('link[rel="alternate"][hreflang]') && worker.includes('hreflang="x-default"'));
+add('Route-aware content language', worker.includes('withHeaders(response, routeSeo?.language)') && worker.includes("headers.set('content-language', language"));
+
+const mediaKitHr = read('apps/portal/media-kit/index.html');
+const mediaKitEn = read('apps/portal/en/media-kit/index.html');
+add('Media Kit legal entity naming', mediaKitHr.includes('GNK ASG d.o.o.') && mediaKitEn.includes('GNK ASG d.o.o.') && !mediaKitHr.includes('GNKK') && !mediaKitEn.includes('GNKK'));
+add('Media Kit controlled release notice', mediaKitHr.includes('Kontrolirano izdanje') && mediaKitEn.includes('Controlled release') && mediaKitHr.includes('ne označava ih konačnima') && mediaKitEn.includes('does not mark them as final'));
+add('Media Kit contact and legal navigation', mediaKitHr.includes('/contact/') && mediaKitHr.includes('/legal/') && mediaKitEn.includes('/en/contact/') && mediaKitEn.includes('/en/legal/'));
+add('Media Kit does not expose unapproved downloads', !/href=["'][^"']+\.(zip|pdf)["']/i.test(mediaKitHr) && !/href=["'][^"']+\.(zip|pdf)["']/i.test(mediaKitEn));
 
 const mobilePage = read('apps/portal/operator-mobile/index.html');
 const publisher = read('apps/portal/assets/mobile-admin-publisher.js');
@@ -59,6 +70,11 @@ const bridge = read('apps/portal/assets/operator-mobile-live-bridge.js');
 add('Mobile camera and upload', publisher.includes('capture="environment"') && publisher.includes("fetch('/operator/media-upload'") && bridge.includes("request('/api/media-upload'") && bridge.includes('fileToBase64'));
 add('Mobile AI and SEO', publisher.includes("fetch('/api/ai-assist'") && publisher.includes('AI pripremi 500+ riječi') && publisher.includes('seo:') && publisher.includes('keywords'));
 add('Mobile dry-run and publish', publisher.includes('dryRun') && publisher.includes('PUBLISH_URL') && mobilePage.includes('operator-token-vault.js'));
+
+const campaignClient = read('apps/portal/assets/media-campaign-studio.js');
+const campaignUpload = read('apps/portal/assets/media-campaign-pdf-upload.js');
+add('Campaign client uses session-only credentials', campaignClient.includes('sessionStorage.getItem(SESSION_KEY)') && campaignClient.includes('window.GNKOperatorToken || localSession') && !/localStorage\.setItem\(\s*['"]GNK_ASG_OPERATOR_TOKEN['"]/.test(campaignClient) && !campaignUpload.includes('GNK_ASG_OPERATOR_TOKEN'));
+add('Campaign client keeps live bulk sending absent', !/mode\s*:\s*['"]live['"]|live\s*:\s*true|confirmCampaignId/.test(campaignClient) && campaignClient.includes('Stvarno masovno slanje ostaje isključeno.'));
 
 const pdfPage = read('apps/portal/pdf-publisher/index.html');
 const pdfClient = read('apps/portal/assets/pdf-publisher-secure.js');
