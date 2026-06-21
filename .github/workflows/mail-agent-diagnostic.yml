@@ -1,0 +1,57 @@
+name: GNK ASG Mail Agent Diagnostic
+
+on:
+  pull_request:
+    branches: [visual-redesign]
+    paths:
+      - 'workers/gnk-asg-mail-agent-worker/**'
+      - 'apps/portal/mail-studio-pro/**'
+      - 'apps/portal/assets/mail-studio-pro.js'
+      - 'apps/portal/assets/operator-token-vault.js'
+      - '.github/workflows/mail-agent-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    name: Syntax and active client
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: |
+          set -euo pipefail
+          find workers/gnk-asg-mail-agent-worker/src -name '*.js' -print0 | xargs -0 -n1 node --check
+          find workers/gnk-asg-mail-agent-worker/test -name '*.js' -print0 | xargs -0 -n1 node --check
+          node --check apps/portal/assets/operator-token-vault.js
+          node --check apps/portal/assets/mail-studio-pro.js
+          grep -q 'operator-token-vault.js' apps/portal/mail-studio-pro/index.html
+
+  thread-ai:
+    name: Thread and AI context
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node workers/gnk-asg-mail-agent-worker/test/thread-context.test.js
+      - run: node workers/gnk-asg-mail-agent-worker/test/ai-thread-context.test.js
+
+  campaigns:
+    name: Campaign safety tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
+      - run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-rate-limit.test.js
+      - run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-lease.test.js
+      - run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
+      - run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js
