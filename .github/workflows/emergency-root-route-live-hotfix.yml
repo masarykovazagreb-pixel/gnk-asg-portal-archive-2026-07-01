@@ -1,0 +1,96 @@
+name: GNK ASG Emergency Root Route Live Hotfix
+
+on:
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/index-secure.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
+      - 'apps/portal/index.html'
+      - 'apps/portal/en/index.html'
+      - '.github/workflows/emergency-root-route-live-hotfix.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-emergency-root-route-live-hotfix
+  cancel-in-progress: true
+
+jobs:
+  deploy-root-hotfix:
+    if: github.head_ref == 'experience-ai-live-overview'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Checkout approved hotfix branch
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate root asset fallback and production route
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-secure.js
+          node --check workers/gnk-asg-direct-operator/src/index.js
+          test -s apps/portal/index.html
+          test -s apps/portal/en/index.html
+          grep -q 'delegateWithStaticAssetFallback' workers/gnk-asg-direct-operator/src/index-secure.js
+          grep -q 'env.ASSETS.fetch(request)' workers/gnk-asg-direct-operator/src/index-secure.js
+          grep -Fxq 'main = "src/index-secure.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -Fxq 'pattern = "gnk-asg.hr/*"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -Fxq 'pattern = "www.gnk-asg.hr/*"' workers/gnk-asg-direct-operator/wrangler.toml
+
+      - name: Deploy root route hotfix live
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config workers/gnk-asg-direct-operator/wrangler.toml | tee root-hotfix-deploy.log
+
+      - name: Wait for Cloudflare propagation
+        run: sleep 15
+
+      - name: Verify HR and EN homepage live
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in / /en/; do
+            url="https://gnk-asg.hr${path}"
+            body_file="root-hotfix$(echo "$path" | tr '/' '_').html"
+            header_file="root-hotfix$(echo "$path" | tr '/' '_').headers"
+            code=$(curl --silent --show-error --location --dump-header "$header_file" --output "$body_file" --write-out '%{http_code}' --retry 5 --retry-all-errors --retry-delay 3 "$url")
+            echo "$code $url"
+            test "$code" = '200'
+            grep -qi 'GNK ASG' "$body_file"
+            ! grep -qiE '^Not found$|>Not found<' "$body_file"
+          done
+
+      - name: Verify protected media routes remain closed
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in /api/media-upload /api/admin-asset-list; do
+            code=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "https://gnk-asg.hr${path}")
+            echo "$code $path"
+            test "$code" = '401'
+          done
+
+      - name: Upload live hotfix evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-emergency-root-live-${{ github.run_id }}
+          path: |
+            root-hotfix-deploy.log
+            root-hotfix*.headers
+            root-hotfix*.html
+          if-no-files-found: warn
+          retention-days: 7
