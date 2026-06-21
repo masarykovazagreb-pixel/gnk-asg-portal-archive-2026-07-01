@@ -62,28 +62,28 @@ main{width:min(860px,calc(100% - 20px));margin:22px auto 110px}.admin-card{borde
 </div>
 </section>
 </main>
+<script src="/assets/operator-token-vault.js?v=20260621-1"></script>
 <script>
 const q=id=>document.getElementById(id);
-const token=()=>localStorage.getItem('GNK_ASG_OPERATOR_TOKEN')||'';
-const auth=()=>token()?{'authorization':'Bearer '+token(),'x-operator-token':token()}:{};
-const withToken=url=>token()?url+(url.includes('?')?'&':'?')+'token='+encodeURIComponent(token()):url;
+const token=()=>window.GNKOperatorToken?.get()||'';
+const auth=()=>window.GNKOperatorToken?.headers()||{};
 const show=(id,data)=>q(id).textContent=typeof data==='string'?data:JSON.stringify(data,null,2);
 const esc=s=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const words=text=>(String(text||'').match(/[\p{L}\p{N}][\p{L}\p{N}'-]*/gu)||[]).length;
 const bodyHtml=text=>String(text||'').split(/\n\s*\n/).map(p=>'<p>'+esc(p)+'</p>').join('');
 q('operatorToken').value=token();
-q('saveToken').onclick=()=>{const value=q('operatorToken').value.trim();if(value)localStorage.setItem('GNK_ASG_OPERATOR_TOKEN',value);loadAll()};
-q('clearToken').onclick=()=>{localStorage.removeItem('GNK_ASG_OPERATOR_TOKEN');q('operatorToken').value=''};
+q('saveToken').onclick=()=>{const value=q('operatorToken').value.trim();if(value)window.GNKOperatorToken.set(value);loadAll()};
+q('clearToken').onclick=()=>{window.GNKOperatorToken.clear();q('operatorToken').value=''};
 document.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>{document.querySelectorAll('.admin-panel').forEach(panel=>panel.classList.remove('active'));document.querySelectorAll('[data-tab]').forEach(item=>item.classList.remove('active'));q(button.dataset.tab).classList.add('active');button.classList.add('active')});
-async function request(url,opt={}){const response=await fetch(withToken(url),opt);const raw=await response.text();let data;try{data=JSON.parse(raw)}catch{data={raw}}return{ok:response.ok,status:response.status,data}}
-async function loadStatus(){show('statusOut',await request('/operator/dashboard-status?cb='+Date.now(),{headers:auth()}))}
-async function loadBoxes(){const result=await request('/api/operator-mailbox-config?cb='+Date.now(),{headers:auth()});const items=result.data?.mailboxes||[{key:'info',label:'Info',address:'info@gnk-asg.hr'},{key:'it',label:'IT',address:'it@gnk-asg.hr'},{key:'legal',label:'Legal',address:'legal@gnk-asg.hr'},{key:'media',label:'Media',address:'media@gnk-asg.hr'}];q('mailbox').innerHTML=items.map(item=>'<option value="'+esc(item.key)+'">'+esc((item.label||item.key)+' — '+(item.address||''))+'</option>').join('')}
-async function sendMail(){const form=new FormData();form.append('mailbox',q('mailbox').value);form.append('to',q('mailTo').value);form.append('subject',q('mailSubject').value);form.append('body',q('mailBody').value);form.append('addSignature','yes');show('mailOut',await request('/api/operator-send-mail',{method:'POST',headers:auth(),body:form}));loadSent()}
+async function request(url,opt={}){const headers=new Headers(opt.headers||{});Object.entries(auth()).forEach(([key,value])=>headers.set(key,value));const response=await fetch(url,{...opt,headers,cache:opt.cache||'no-store'});const raw=await response.text();let data;try{data=JSON.parse(raw)}catch{data={raw}}return{ok:response.ok,status:response.status,data}}
+async function loadStatus(){show('statusOut',await request('/operator/dashboard-status?cb='+Date.now()))}
+async function loadBoxes(){const result=await request('/api/operator-mailbox-config?cb='+Date.now());const items=result.data?.mailboxes||[{key:'info',label:'Info',address:'info@gnk-asg.hr'},{key:'it',label:'IT',address:'it@gnk-asg.hr'},{key:'legal',label:'Legal',address:'legal@gnk-asg.hr'},{key:'media',label:'Media',address:'media@gnk-asg.hr'}];q('mailbox').innerHTML=items.map(item=>'<option value="'+esc(item.key)+'">'+esc((item.label||item.key)+' — '+(item.address||''))+'</option>').join('')}
+async function sendMail(){const form=new FormData();form.append('mailbox',q('mailbox').value);form.append('to',q('mailTo').value);form.append('subject',q('mailSubject').value);form.append('body',q('mailBody').value);form.append('addSignature','yes');show('mailOut',await request('/api/operator-send-mail',{method:'POST',body:form}));loadSent()}
 function renderList(id,data){const items=Array.isArray(data)?data:(data?.items||data?.messages||data?.logs||data?.data||[]);q(id).innerHTML=items.length?items.slice(0,100).map(item=>'<article class="mail-item"><strong>'+esc(item.subject||item.title||item.event||'(bez predmeta)')+'</strong><small>'+esc(item.from||item.to||item.email||item.createdAt||item.sentAt||'')+'</small><div>'+esc(String(item.snippet||item.message||item.body||JSON.stringify(item)).slice(0,450))+'</div></article>').join(''):'<article class="mail-item">Nema zapisa ili backend nije dostupan.</article>'}
-async function loadInbox(){let result=await request('/operator/contact-inbox?cb='+Date.now(),{headers:auth()});if(!result.ok)result=await request('/api/mail-center/inbox?cb='+Date.now(),{headers:auth()});renderList('inboxOut',result.data)}
-async function loadSent(){let result=await request('/api/mail-center/sent?cb='+Date.now(),{headers:auth()});if(!result.ok)result=await request('/operator/mail-log-list?cb='+Date.now(),{headers:auth()});renderList('sentOut',result.data)}
-async function uploadMedia(){const form=new FormData();form.append('title',q('mediaTitle').value);const file=q('mediaFile').files[0];if(file)form.append('file',file);const result=await request('/operator/media-upload',{method:'POST',headers:auth(),body:form});show('mediaOut',result);const url=result.data?.url||result.data?.publicUrl||result.data?.imageUrl;if(url)q('pubImage').value=url}
-async function listMedia(){show('mediaOut',await request('/operator/media-list?cb='+Date.now(),{headers:auth()}))}
+async function loadInbox(){let result=await request('/operator/contact-inbox?cb='+Date.now());if(!result.ok)result=await request('/api/mail-center/inbox?cb='+Date.now());renderList('inboxOut',result.data)}
+async function loadSent(){let result=await request('/api/mail-center/sent?cb='+Date.now());if(!result.ok)result=await request('/operator/mail-log-list?cb='+Date.now());renderList('sentOut',result.data)}
+async function uploadMedia(){const form=new FormData();form.append('title',q('mediaTitle').value);const file=q('mediaFile').files[0];if(file)form.append('file',file);const result=await request('/operator/media-upload',{method:'POST',body:form});show('mediaOut',result);const url=result.data?.url||result.data?.publicUrl||result.data?.imageUrl;if(url)q('pubImage').value=url}
+async function listMedia(){show('mediaOut',await request('/operator/media-list?cb='+Date.now()))}
 function updateWordCount(){const count=words(q('pubBody').value);q('wordCount').textContent=count+' riječi';q('wordCount').className='word-count '+(count>=500?'ok':'bad');return count}
 function prepareSeo(){const title=q('pubTitle').value.trim(),body=q('pubBody').value.trim();if(!q('pubSummary').value.trim())q('pubSummary').value=(body.replace(/\s+/g,' ').slice(0,260)||title);show('publishOut',{wordCount:updateWordCount(),title,summary:q('pubSummary').value,imageAlt:title,author:'Nermin Sefić',keywords:['GNK ASG','GNK DINAMO Ltd.','Nermin Sefić',...title.toLowerCase().split(/\W+/).filter(x=>x.length>4).slice(0,8)]})}
 async function publish(dryRun){prepareSeo();const body=q('pubBody').value,summary=q('pubSummary').value,title=q('pubTitle').value;if(words(body)<500){show('publishOut','Članak mora imati najmanje 500 riječi. Trenutno: '+words(body));return}const payload={title,lang:q('pubLang').value,summary,bodyHtml:bodyHtml(body),image:q('pubImage').value,imageAlt:title,author:'Nermin Sefić',sources:q('pubSource').value?[{title:'Izvor',url:q('pubSource').value}]:[],keywords:['GNK ASG','GNK DINAMO Ltd.','Nermin Sefić'],seo:{description:summary},dryRun};const response=await fetch('https://publish.gnk-asg.hr/api/publications/publish',{method:'POST',headers:{'content-type':'application/json',...auth()},body:JSON.stringify(payload)});const raw=await response.text();let data;try{data=JSON.parse(raw)}catch{data={raw}}show('publishOut',{ok:response.ok,status:response.status,data})}
