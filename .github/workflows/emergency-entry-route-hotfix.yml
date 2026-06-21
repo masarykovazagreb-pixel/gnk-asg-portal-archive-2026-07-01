@@ -44,10 +44,11 @@ jobs:
           node --check workers/gnk-asg-emergency-entry-redirect/src/index.js
           grep -Fxq 'pattern = "gnk-asg.hr/app"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
           grep -Fxq 'pattern = "gnk-asg.hr/app/*"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
-          grep -Fxq 'pattern = "www.gnk-asg.hr/*"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
-          grep -Fxq 'scope: /app redirect and www-to-apex normalization only' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
+          ! grep -q 'www.gnk-asg.hr' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
+          grep -Fxq 'scope: /app redirect to existing homepage only' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
           grep -Fxq 'new portal deployment: false' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
           grep -Fxq 'production marker: absent' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
+          grep -Fxq 'www route ownership: unchanged' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
           test ! -e .github/release/PRODUCTION_APPROVED
 
       - name: Deploy isolated redirect only
@@ -80,22 +81,19 @@ jobs:
       - name: Wait for route propagation
         run: sleep 12
 
-      - name: Prove entry routes
+      - name: Prove app entry route
         shell: bash
         run: |
           set -euo pipefail
           app_code=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' --max-redirs 0 https://gnk-asg.hr/app/)
-          www_code=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' --max-redirs 0 https://www.gnk-asg.hr/)
+          app_location=$(curl --silent --show-error --head --max-redirs 0 https://gnk-asg.hr/app/ | tr -d '\r' | awk 'tolower($1)=="location:" {print $2}' | tail -n 1)
           app_final=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 https://gnk-asg.hr/app/)
-          www_final=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 https://www.gnk-asg.hr/)
-          echo "app initial=${app_code} final=${app_final}"
-          echo "www initial=${www_code} final=${www_final}"
+          echo "app initial=${app_code} location=${app_location} final=${app_final}"
           test "$app_code" = '307'
-          test "$www_code" = '308'
+          test "$app_location" = 'https://gnk-asg.hr/'
           test "$app_final" = '200'
-          test "$www_final" = '200'
 
-      - name: Confirm apex remained available
+      - name: Confirm existing homepage remained available
         run: |
           set -euo pipefail
           code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 https://gnk-asg.hr/)
