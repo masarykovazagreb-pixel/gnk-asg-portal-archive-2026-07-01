@@ -10,8 +10,10 @@ on:
       - 'apps/portal/videoteka/**'
       - 'apps/portal/en/video-library/**'
       - 'apps/portal/assets/operator-mobile-live-bridge.js'
+      - 'apps/portal/assets/operator-token-vault.js'
       - 'apps/portal/assets/mail-studio-pro*.js'
       - 'apps/portal/assets/mail-studio-pro*.css'
+      - 'workers/gnk-asg-direct-operator/**'
       - 'workers/gnk-asg-public-pages-live/**'
       - 'workers/gnk-asg-mail-agent-worker/**'
       - '.github/workflows/production-live-sync.yml'
@@ -45,11 +47,20 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-secure.js
+          node --check workers/gnk-asg-direct-operator/src/index.js
           node --check workers/gnk-asg-public-pages-live/src/index.js
           find workers/gnk-asg-mail-agent-worker/src -name '*.js' -print0 | xargs -0 -n1 node --check
+          node scripts/operator-mobile-bridge-security-audit.mjs
+          grep -q 'main = "src/index-secure.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_CAMPAIGN_LIVE_SEND = "false"' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
           grep -q 'gnk-asg.hr/api/mail-agent/\*' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
           grep -q 'gnk-asg.hr/operator-mobile/\*' workers/gnk-asg-public-pages-live/wrangler.live.toml
+
+      - name: Deploy protected direct operator
+        run: |
+          npx --yes wrangler@4 deploy \
+            --config workers/gnk-asg-direct-operator/wrangler.toml
 
       - name: Deploy Mail Agent
         run: |
@@ -69,9 +80,18 @@ jobs:
         run: |
           set -euo pipefail
           urls=(
+            'https://gnk-asg.hr/'
+            'https://gnk-asg.hr/en/'
+            'https://gnk-asg.hr/objave/'
+            'https://gnk-asg.hr/publications/'
+            'https://gnk-asg.hr/vijesti/'
+            'https://gnk-asg.hr/news/'
+            'https://gnk-asg.hr/trzista/'
+            'https://gnk-asg.hr/markets/'
             'https://gnk-asg.hr/videoteka/'
             'https://gnk-asg.hr/en/video-library/'
             'https://gnk-asg.hr/mail-studio-pro/'
+            'https://gnk-asg.hr/mail-studio-pro/campaign/'
             'https://gnk-asg.hr/operator-mobile/'
             'https://gnk-asg.hr/api/mail-agent/health'
             'https://gnk-asg.hr/api/contact-mailboxes'
@@ -85,13 +105,20 @@ jobs:
             test "$code" = '200'
           done
 
-      - name: Verify protected Mail Agent
+      - name: Verify protected private routes
         shell: bash
         run: |
           set -euo pipefail
-          code=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' 'https://gnk-asg.hr/api/mail-agent/inbox')
-          echo "$code https://gnk-asg.hr/api/mail-agent/inbox"
-          test "$code" = '401'
+          protected_urls=(
+            'https://gnk-asg.hr/api/mail-agent/inbox'
+            'https://gnk-asg.hr/api/media-upload'
+            'https://gnk-asg.hr/api/admin-asset-list'
+          )
+          for url in "${protected_urls[@]}"; do
+            code=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "$url")
+            echo "$code $url"
+            test "$code" = '401'
+          done
 
       - name: Publish release summary
         if: always()
@@ -99,9 +126,10 @@ jobs:
           cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
           ## GNK ASG production live sync
 
+          - Direct operator: protected media routes enabled
           - Public pages Worker: `gnk-asg-public-pages-live`
           - Mail Agent Worker: `gnk-asg-mail-agent-preview`
           - Media campaign live send: disabled
-          - Production routes: smoke tested
+          - Public and protected routes: smoke tested
           - Branch: `experience-ai-live-overview`
           EOF
