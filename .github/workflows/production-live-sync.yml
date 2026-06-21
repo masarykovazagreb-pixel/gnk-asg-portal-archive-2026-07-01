@@ -2,11 +2,15 @@ name: GNK ASG Production Live Sync
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - experience-ai-live-overview
-    paths:
-      - '.github/release/PRODUCTION_APPROVED'
+    inputs:
+      confirmation:
+        description: 'Upišite točno PRODUCTION_APPROVED'
+        required: true
+        type: string
+      approved_commit:
+        description: 'Puni SHA odobrenog release commita'
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -24,8 +28,10 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
-      - name: Checkout
+      - name: Checkout approved commit
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.approved_commit }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -36,11 +42,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
-            test -f .github/release/PRODUCTION_APPROVED
-            grep -q '^approved: true$' .github/release/PRODUCTION_APPROVED
-            grep -q '^target: production$' .github/release/PRODUCTION_APPROVED
-          fi
+          test "${{ inputs.confirmation }}" = 'PRODUCTION_APPROVED'
+          test "${{ inputs.approved_commit }}" = "${GITHUB_SHA}"
+          test -f .github/release/PRODUCTION_APPROVED
+          grep -Fxq 'approved: true' .github/release/PRODUCTION_APPROVED
+          grep -Fxq 'target: production' .github/release/PRODUCTION_APPROVED
+          grep -Fxq "commit: ${GITHUB_SHA}" .github/release/PRODUCTION_APPROVED
 
       - name: Validate release safety
         shell: bash
@@ -131,7 +138,11 @@ jobs:
           cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
           ## GNK ASG production live sync
 
-          - Explicit release approval: required
+          - Manual workflow dispatch: required
+          - Typed confirmation: required
+          - Exact approved commit SHA: required
+          - Repository approval marker: required
+          - GitHub production environment approval: required
           - Direct operator: protected media routes enabled
           - Public pages Worker: `gnk-asg-public-pages-live`
           - Mail Agent Worker: `gnk-asg-mail-agent-preview`
