@@ -1,6 +1,20 @@
 import { MEDIA_CAMPAIGN_LIMITS } from './media-campaign-policy.js';
+import { mediaCampaignScheduleState } from './media-campaign-schedule.js';
 
 export function executeMediaCampaignWindow(campaign = {}, options = {}) {
+  const now = options.now instanceof Date ? options.now : new Date(options.now || Date.now());
+  const schedule = mediaCampaignScheduleState(campaign, now);
+  if (!schedule.ready) {
+    return {
+      ...campaign,
+      lastWindowAt: now.toISOString(),
+      lastWindowCount: 0,
+      productionSendEnabled: options.liveSend === true,
+      executionBlocked: true,
+      executionBlockReason: schedule.reason
+    };
+  }
+
   const queue = Array.isArray(campaign.queue) ? campaign.queue : [];
   const limit = MEDIA_CAMPAIGN_LIMITS.maxSendPerMinute;
   const liveSend = options.liveSend === true;
@@ -13,7 +27,7 @@ export function executeMediaCampaignWindow(campaign = {}, options = {}) {
       ...item,
       status: liveSend ? 'sent' : 'tested',
       simulated: !liveSend,
-      processedAt: new Date().toISOString()
+      processedAt: now.toISOString()
     };
   });
 
@@ -30,8 +44,10 @@ export function executeMediaCampaignWindow(campaign = {}, options = {}) {
     failed,
     remaining,
     status: remaining ? 'queued' : 'complete',
-    lastWindowAt: new Date().toISOString(),
+    lastWindowAt: now.toISOString(),
     lastWindowCount: processed,
-    productionSendEnabled: liveSend
+    productionSendEnabled: liveSend,
+    executionBlocked: false,
+    executionBlockReason: null
   };
 }
