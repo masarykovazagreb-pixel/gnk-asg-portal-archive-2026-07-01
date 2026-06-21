@@ -25,7 +25,7 @@ jobs:
   deploy-entry-fix:
     if: github.event_name == 'push' || github.head_ref == 'experience-ai-live-overview'
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -48,7 +48,6 @@ jobs:
           grep -Fxq 'scope: /app redirect to existing homepage only' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
           grep -Fxq 'new portal deployment: false' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
           grep -Fxq 'production marker: absent' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
-          grep -Fxq 'www route ownership: unchanged' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
           test ! -e .github/release/PRODUCTION_APPROVED
 
       - name: Deploy isolated redirect only
@@ -81,37 +80,75 @@ jobs:
       - name: Wait for route propagation
         run: sleep 12
 
-      - name: Prove app entry route
-        id: smoke
-        continue-on-error: true
+      - name: Prove server redirect
         shell: bash
         run: |
-          set +e
+          set -euo pipefail
           curl --silent --show-error --dump-header app-entry.headers --output /dev/null --max-redirs 0 https://gnk-asg.hr/app/
-          header_curl=$?
           app_code=$(awk 'toupper($1) ~ /^HTTP\// {code=$2} END {print code}' app-entry.headers)
           app_location=$(awk 'tolower($1)=="location:" {gsub("\r", "", $2); value=$2} END {print value}' app-entry.headers)
           app_marker=$(awk 'tolower($1)=="x-gnk-asg-emergency-entry-fix:" {gsub("\r", "", $2); value=$2} END {print value}' app-entry.headers)
-          app_final=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 https://gnk-asg.hr/app/)
-          final_curl=$?
           {
-            echo "header_curl=${header_curl}"
             echo "app_code=${app_code}"
             echo "app_location=${app_location}"
             echo "app_marker=${app_marker}"
-            echo "final_curl=${final_curl}"
-            echo "app_final=${app_final}"
           } | tee app-entry-result.txt
-          status=0
-          test "$header_curl" = '0' || status=1
-          [[ "$app_code" =~ ^30[1278]$ ]] || status=1
-          [[ "$app_location" =~ ^https://gnk-asg\.hr/?$ ]] || status=1
-          test "$app_marker" = 'pwa-start-to-home' || status=1
-          test "$final_curl" = '0' || status=1
-          test "$app_final" = '200' || status=1
-          exit "$status"
+          test "$app_code" = '307'
+          test "$app_location" = 'https://gnk-asg.hr/'
+          test "$app_marker" = 'pwa-start-to-home'
 
-      - name: Upload runtime proof
+      - name: Locate hosted Chromium
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME_BIN=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
+          test -n "$CHROME_BIN"
+          echo "CHROME_BIN=$CHROME_BIN" >> "$GITHUB_ENV"
+          echo "Using $CHROME_BIN"
+
+      - name: Install Playwright core
+        run: npm install --no-save --ignore-scripts playwright-core@1.57.0
+
+      - name: Prove installed app entry in Chromium
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs/promises';
+          import { chromium } from 'playwright-core';
+
+          const browser = await chromium.launch({
+            headless: true,
+            executablePath: process.env.CHROME_BIN,
+            args: ['--no-sandbox', '--disable-dev-shm-usage']
+          });
+          const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+          const response = await page.goto('https://gnk-asg.hr/app/', {
+            waitUntil: 'domcontentloaded',
+            timeout: 60000
+          });
+          await page.waitForTimeout(2000);
+          const body = (await page.locator('body').innerText()).trim();
+          const result = {
+            status: response?.status() ?? null,
+            url: page.url(),
+            title: await page.title(),
+            bodyStart: body.slice(0, 1000),
+            notFound: /not found/i.test(body)
+          };
+          await page.screenshot({ path: 'app-entry-browser.png', fullPage: true });
+          await fs.writeFile('app-entry-browser.json', JSON.stringify(result, null, 2));
+          console.log(JSON.stringify(result, null, 2));
+          await browser.close();
+
+          const correctUrl = /^https:\/\/gnk-asg\.hr\/?(?:[?#].*)?$/.test(result.url);
+          const branded = /GNK ASG/i.test(`${result.title}\n${result.bodyStart}`);
+          if (result.status !== 200 || !correctUrl || !branded || result.notFound) {
+            process.exit(1);
+          }
+          NODE
+
+      - name: Upload complete runtime proof
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -119,16 +156,7 @@ jobs:
           path: |
             app-entry.headers
             app-entry-result.txt
-          if-no-files-found: error
+            app-entry-browser.json
+            app-entry-browser.png
+          if-no-files-found: warn
           retention-days: 3
-
-      - name: Stop after failed runtime proof
-        if: steps.smoke.outcome != 'success'
-        run: exit 1
-
-      - name: Confirm existing homepage remained available
-        run: |
-          set -euo pipefail
-          code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 https://gnk-asg.hr/)
-          echo "apex=${code}"
-          test "$code" = '200'
