@@ -11,6 +11,7 @@ import { executeMediaCampaignWindow } from './media-campaign-window.js';
 import { runMailAgentSelfTest } from './mail-agent-self-test.js';
 import { phase1Readiness } from './phase1-readiness.js';
 import { rollbackReadiness } from './rollback-manifest.js';
+import { buildHealthSummary } from './health-summary.js';
 
 export default {
   async fetch(request, env) {
@@ -20,18 +21,28 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders(request) });
     }
 
+    if (url.pathname === '/api/mail-agent/health') {
+      const selfTest = runMailAgentSelfTest();
+      const readiness = phase1Readiness(selfTest);
+      const rollback = rollbackReadiness();
+      const health = buildHealthSummary({ selfTest, readiness, rollback });
+      return json(request, { ...health, updatedAt: new Date().toISOString() }, health.ok ? 200 : 500);
+    }
+
     if (url.pathname === '/api/mail-agent/status') {
       const selfTest = runMailAgentSelfTest();
       const readiness = phase1Readiness(selfTest);
+      const rollback = rollbackReadiness();
       return json(request, {
         ok: readiness.ok,
         service: 'GNK ASG Mail Agent',
         mode: 'preview',
         productionRouteConfigured: false,
         policy: MAIL_AUTOMATION_POLICY,
+        health: buildHealthSummary({ selfTest, readiness, rollback }),
         selfTest,
         readiness,
-        rollback: rollbackReadiness(),
+        rollback,
         bindings: {
           kv: Boolean(env.GNK_ASG_KV),
           ai: Boolean(env.AI),
