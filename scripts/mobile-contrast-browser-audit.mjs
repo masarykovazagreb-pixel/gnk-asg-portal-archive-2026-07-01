@@ -44,6 +44,27 @@ const ratio = (first, second) => {
   const b = luminance(second);
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 };
+const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
+
+async function loadCurrentPreview(page, route) {
+  for (let attempt = 1; attempt <= 24; attempt += 1) {
+    const separator = route.includes('?') ? '&' : '?';
+    const url = `${baseUrl}${route}${separator}contrastAudit=${Date.now()}-${attempt}`;
+    const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
+    if (response?.ok()) {
+      await page.waitForTimeout(1800);
+      const ready = await page.evaluate(() => ({
+        shell: Array.from(document.scripts).some(item => String(item.src).includes('admin-universal-shell.js')),
+        enforcerScript: Boolean(document.getElementById('gnk-final-contrast-enforcer-js')),
+        enforcerRuntime: window.__GNK_FINAL_CONTRAST_ENFORCER__ === true,
+        contrastCss: Boolean(document.getElementById('gnk-final-contrast-contract-css'))
+      }));
+      if (ready.shell && ready.enforcerScript && ready.enforcerRuntime && ready.contrastCss) return ready;
+    }
+    await sleep(4000);
+  }
+  throw new Error('current_preview_contrast_assets_not_loaded');
+}
 
 const browser = await chromium.launch({
   headless: true,
@@ -63,15 +84,12 @@ try {
     await context.addInitScript(theme => localStorage.setItem('gnk-asg-theme', theme), scenario.theme);
     const page = await context.newPage();
     page.setDefaultTimeout(30000);
-    const record = { ...scenario, checks: [], failures: [], errors: [] };
+    const record = { ...scenario, checks: [], failures: [], errors: [], readiness: null };
 
     try {
-      const response = await page.goto(`${baseUrl}${scenario.route}`, { waitUntil: 'domcontentloaded', timeout: 45000 });
-      if (!response?.ok()) throw new Error(`HTTP ${response?.status() || 0}`);
+      record.readiness = await loadCurrentPreview(page, scenario.route);
       await page.waitForSelector('body.gnk-asg-premium-shell');
-      await page.waitForSelector('#gnk-final-contrast-contract-css', { state: 'attached' });
-      await page.waitForSelector('#gnk-final-contrast-enforcer-js', { state: 'attached' });
-      await page.waitForFunction(() => window.__GNK_FINAL_CONTRAST_ENFORCER__ === true);
+      await page.waitForSelector('#financials .kpi, #grupa .group-card');
       await page.waitForTimeout(3600);
 
       for (const selector of targets) {
