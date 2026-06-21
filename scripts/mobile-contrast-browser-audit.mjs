@@ -3,7 +3,7 @@ import path from 'node:path';
 import { chromium } from 'playwright-core';
 
 const baseUrl = String(process.env.PREVIEW_BASE_URL || 'https://gnk-asg-business-light-preview.beckuphome.workers.dev').replace(/\/$/, '');
-const chromiumPath = process.env.CHROMIUM_PATH || process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
+const executablePath = process.env.CHROMIUM_PATH || process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
 const outDir = path.resolve('reports/mobile-contrast-browser-audit');
 fs.mkdirSync(outDir, { recursive: true });
 
@@ -14,7 +14,7 @@ const scenarios = [
   { language: 'en', route: '/en/', theme: 'light' }
 ];
 
-const targets = [
+const selectors = [
   '#financials .kpi .label',
   '#financials .kpi .value',
   '#financials .kpi .meaning',
@@ -39,36 +39,15 @@ const linear = channel => {
   return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
 };
 const luminance = color => 0.2126 * linear(color.r) + 0.7152 * linear(color.g) + 0.0722 * linear(color.b);
-const ratio = (first, second) => {
+const contrast = (first, second) => {
   const a = luminance(first);
   const b = luminance(second);
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 };
-const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
-
-async function loadCurrentPreview(page, route) {
-  for (let attempt = 1; attempt <= 24; attempt += 1) {
-    const separator = route.includes('?') ? '&' : '?';
-    const url = `${baseUrl}${route}${separator}contrastAudit=${Date.now()}-${attempt}`;
-    const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    if (response?.ok()) {
-      await page.waitForTimeout(1800);
-      const ready = await page.evaluate(() => ({
-        shell: Array.from(document.scripts).some(item => String(item.src).includes('admin-universal-shell.js')),
-        enforcerScript: Boolean(document.getElementById('gnk-final-contrast-enforcer-js')),
-        enforcerRuntime: window.__GNK_FINAL_CONTRAST_ENFORCER__ === true,
-        contrastCss: Boolean(document.getElementById('gnk-final-contrast-contract-css'))
-      }));
-      if (ready.shell && ready.enforcerScript && ready.enforcerRuntime && ready.contrastCss) return ready;
-    }
-    await sleep(4000);
-  }
-  throw new Error('current_preview_contrast_assets_not_loaded');
-}
 
 const browser = await chromium.launch({
   headless: true,
-  executablePath: chromiumPath,
+  executablePath,
   args: ['--no-sandbox', '--disable-dev-shm-usage']
 });
 const results = [];
@@ -83,59 +62,70 @@ try {
     });
     await context.addInitScript(theme => localStorage.setItem('gnk-asg-theme', theme), scenario.theme);
     const page = await context.newPage();
-    page.setDefaultTimeout(30000);
-    const record = { ...scenario, checks: [], failures: [], errors: [], readiness: null };
+    page.setDefaultTimeout(15000);
+    const result = { ...scenario, checks: [], failures: [], errors: [] };
 
     try {
-      record.readiness = await loadCurrentPreview(page, scenario.route);
-      await page.waitForSelector('body.gnk-asg-premium-shell');
-      await page.waitForSelector('#financials .kpi, #grupa .group-card');
-      await page.waitForTimeout(3600);
+      const url = `${baseUrl}${scenario.route}${scenario.route.includes('?') ? '&' : '?'}audit=${Date.now()}`;
+      const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      if (!response?.ok()) throw new Error(`HTTP ${response?.status() || 0}`);
+      await page.waitForSelector('body.gnk-asg-premium-shell', { timeout: 15000 });
+      await page.waitForTimeout(4500);
 
-      for (const selector of targets) {
-        const elements = page.locator(selector);
-        const count = await elements.count();
+      const readiness = await page.evaluate(() => ({
+        css: Boolean(document.getElementById('gnk-final-contrast-contract-css')),
+        script: Boolean(document.getElementById('gnk-final-contrast-enforcer-js')),
+        runtime: window.__GNK_FINAL_CONTRAST_ENFORCER__ === true,
+        theme: document.documentElement.dataset.gnkTheme
+      }));
+      result.readiness = readiness;
+      if (!readiness.css || !readiness.script || !readiness.runtime) throw new Error(`contrast_assets_inactive:${JSON.stringify(readiness)}`);
+      if (readiness.theme !== scenario.theme) throw new Error(`theme_mismatch:${readiness.theme}`);
+
+      for (const selector of selectors) {
+        const nodes = page.locator(selector);
+        const count = await nodes.count();
         if (!count) {
-          record.errors.push(`missing:${selector}`);
+          result.errors.push(`missing:${selector}`);
           continue;
         }
         for (let index = 0; index < count; index += 1) {
-          const element = elements.nth(index);
-          if (!(await element.isVisible())) continue;
-          const styleData = await element.evaluate(node => {
-            const style = getComputedStyle(node);
-            let current = node;
+          const node = nodes.nth(index);
+          if (!(await node.isVisible())) continue;
+          const computed = await node.evaluate(element => {
+            const style = getComputedStyle(element);
+            let parent = element;
             let background = style.backgroundColor;
-            while (current && background === 'rgba(0, 0, 0, 0)') {
-              current = current.parentElement;
-              if (current) background = getComputedStyle(current).backgroundColor;
+            while (parent && background === 'rgba(0, 0, 0, 0)') {
+              parent = parent.parentElement;
+              if (parent) background = getComputedStyle(parent).backgroundColor;
             }
             return {
-              text: String(node.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 100),
+              text: String(element.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 100),
               color: style.color,
               background,
               fontSize: Number.parseFloat(style.fontSize) || 16,
               fontWeight: Number.parseInt(style.fontWeight, 10) || 400
             };
           });
-          const foreground = parseColor(styleData.color);
-          const background = parseColor(styleData.background);
+          const foreground = parseColor(computed.color);
+          const background = parseColor(computed.background);
           if (!foreground || !background) {
-            record.errors.push(`unparsed:${selector}:${index}`);
+            result.errors.push(`unparsed:${selector}:${index}`);
             continue;
           }
-          const contrast = ratio(foreground, background);
-          const large = styleData.fontSize >= 24 || (styleData.fontSize >= 18.66 && styleData.fontWeight >= 700);
+          const value = contrast(foreground, background);
+          const large = computed.fontSize >= 24 || (computed.fontSize >= 18.66 && computed.fontWeight >= 700);
           const required = large ? 3 : 4.5;
-          record.checks.push({
+          result.checks.push({
             selector,
             index,
-            text: styleData.text,
-            color: styleData.color,
-            background: styleData.background,
-            contrast: Number(contrast.toFixed(2)),
+            text: computed.text,
+            color: computed.color,
+            background: computed.background,
+            contrast: Number(value.toFixed(2)),
             required,
-            pass: contrast >= required
+            pass: value >= required
           });
         }
       }
@@ -144,18 +134,18 @@ try {
         const locator = page.locator(`#${section}`).first();
         if (await locator.count()) {
           await locator.scrollIntoViewIfNeeded();
-          await page.waitForTimeout(200);
+          await page.waitForTimeout(150);
           await page.screenshot({ path: path.join(outDir, `${scenario.language}-${scenario.theme}-${section}.png`), fullPage: false });
         }
       }
     } catch (error) {
-      record.errors.push(String(error?.message || error));
+      result.errors.push(String(error?.message || error));
       try {
         await page.screenshot({ path: path.join(outDir, `${scenario.language}-${scenario.theme}-error.png`), fullPage: false });
       } catch {}
     } finally {
-      record.failures = record.checks.filter(item => !item.pass);
-      results.push(record);
+      result.failures = result.checks.filter(item => !item.pass);
+      results.push(result);
       await context.close();
     }
   }
