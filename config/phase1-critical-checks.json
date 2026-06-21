@@ -1,5 +1,5 @@
 {
-  "version":"2026-06-20-v2",
+  "version":"2026-06-21-v3",
   "previewBase":"https://gnk-asg-business-light-preview.beckuphome.workers.dev",
   "liveBase":"https://gnk-asg.hr",
   "publishBase":"https://publish.gnk-asg.hr",
@@ -21,7 +21,7 @@
     {"name":"Market feed","base":"live","path":"/data/market.json","expected":[200],"kind":"json"},
     {"name":"Publish list","base":"publish","path":"/api/publications","expected":[200],"kind":"json"},
     {"name":"Publish protected","base":"publish","path":"/api/publications/status","expected":[401,403],"kind":"protected"},
-    {"name":"Operator protected","base":"live","path":"/operator/contact-inbox","expected":[401,403],"kind":"protected"},
+    {"name":"Operator protected","base":"preview","path":"/__preview/operator/status","expected":[401,403],"kind":"protected"},
     {"name":"Mobilni admin","base":"preview","path":"/operator-mobile/","expected":[200],"kind":"html"},
     {"name":"Mail Studio Pro","base":"preview","path":"/mail-studio-pro/","expected":[200],"kind":"html"},
     {"name":"Legal HR","base":"preview","path":"/legal/","expected":[200],"kind":"html"},
