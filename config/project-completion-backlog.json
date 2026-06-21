@@ -1,8 +1,20 @@
 {
-  "version": "2026-06-21-v5",
+  "version": "2026-06-21-v6",
   "branch": "experience-ai-live-overview",
   "productionTouched": false,
   "mergeAllowed": false,
+  "draftPullRequest": 2,
+  "currentScope": [
+    "mobile admin and secure quick publisher",
+    "Mail Studio Pro and full-thread AI context",
+    "media campaign safety",
+    "secure PDF Publisher client",
+    "video canonical routes and sitemap rules",
+    "publications news and market regressions",
+    "Data Sync V2 preview",
+    "Auto Editor V2 preview",
+    "release candidate audit and rollback manifest"
+  ],
   "statuses": ["done", "in_progress", "pending_ci", "blocked_manual", "blocked_external", "not_started"],
   "items": [
     {"id":"github-actions-runner","area":"quality","status":"blocked_external","blocking":true,"note":"Minimalni heartbeat job bez checkouta i bez projektnog koda pada prije izvršavanja koraka. Svi neovisni workflowi padaju jednako."},
