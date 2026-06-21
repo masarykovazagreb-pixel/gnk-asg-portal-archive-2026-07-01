@@ -3,14 +3,14 @@ import core from './index.js';
 const protectedPaths = new Set(['/api/media-upload', '/api/admin-asset-list']);
 const allowedOrigins = new Set(['https://gnk-asg.hr']);
 const repairMarkup = [
-  '<link id="gnk-global-layer-css" rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260621-functional-v1">',
-  '<link id="gnk-functional-repair-css" rel="stylesheet" href="/assets/portal-functional-repair-v1.css?v=20260621-1">',
-  '<script id="gnk-global-layer-js" defer src="/assets/brand/gnk-asg-global-layer.js?v=20260621-functional-v1"></script>',
-  '<script id="gnk-operator-token-vault" defer src="/assets/operator-token-vault.js?v=20260621-functional-v1"></script>',
-  '<script id="gnk-portal-ui-repair" defer src="/assets/portal-ui-repair-v1.js?v=20260621-1"></script>',
-  '<script id="gnk-contact-form-repair" defer src="/assets/contact-form-repair-v1.js?v=20260621-1"></script>',
-  '<script id="gnk-admin-functional-repair" defer src="/assets/admin-functional-repair-v1.js?v=20260621-1"></script>',
-  '<script id="gnk-dashboard-compat" defer src="/assets/operator-dashboard-compat-v1.js?v=20260621-1"></script>'
+  '<link id="gnk-global-layer-css" rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260621-functional-v2">',
+  '<link id="gnk-functional-repair-css" rel="stylesheet" href="/assets/portal-functional-repair-v1.css?v=20260621-2">',
+  '<script id="gnk-global-layer-js" defer src="/assets/brand/gnk-asg-global-layer.js?v=20260621-functional-v2"></script>',
+  '<script id="gnk-operator-token-vault" defer src="/assets/operator-token-vault.js?v=20260621-functional-v2"></script>',
+  '<script id="gnk-portal-ui-repair" defer src="/assets/portal-ui-repair-v1.js?v=20260621-2"></script>',
+  '<script id="gnk-contact-form-repair" defer src="/assets/contact-form-repair-v1.js?v=20260621-2"></script>',
+  '<script id="gnk-admin-functional-repair" defer src="/assets/admin-functional-repair-v1.js?v=20260621-2"></script>',
+  '<script id="gnk-dashboard-compat" defer src="/assets/operator-dashboard-compat-v1.js?v=20260621-2"></script>'
 ].join('');
 
 function protectedCorsHeaders(request) {
