@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Validate JavaScript
         run: |
           set -euo pipefail
@@ -64,9 +64,19 @@ jobs:
             'Editorial image selector: OK' \
             'Production changed: false' \
             > reports/communication-content-preview/summary.txt
-      - uses: actions/upload-artifact@v4
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f reports/communication-content-preview/summary.txt ]; then
+            printf '%s\n' '## Communication and Content Preview Check' >> "$GITHUB_STEP_SUMMARY"
+            cat reports/communication-content-preview/summary.txt >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload report artifact
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
         with:
-          name: gnk-asg-communication-content-preview-check
+          name: gnk-asg-communication-content-preview-check-${{ github.run_id }}
           path: reports/communication-content-preview/
-          if-no-files-found: error
-          retention-days: 14
+          if-no-files-found: warn
+          retention-days: 7
