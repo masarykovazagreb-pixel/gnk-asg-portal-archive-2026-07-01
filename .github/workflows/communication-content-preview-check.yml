@@ -14,6 +14,7 @@ on:
       - 'apps/portal/assets/operator-token-vault.js'
       - 'apps/portal/data/wa-*.json'
       - 'apps/portal/data/generated-gallery-30.json'
+      - 'workers/gnk-asg-pdf-publisher-worker/**'
       - 'packages/editorial/image-selector.mjs'
       - 'contracts/editorial-automation-policy.json'
       - '.github/workflows/communication-content-preview-check.yml'
@@ -38,6 +39,11 @@ jobs:
           node --check apps/portal/assets/operator-token-vault.js
           node --check apps/portal/assets/pdf-publisher-secure.js
           node --check packages/editorial/image-selector.mjs
+          node --check workers/gnk-asg-pdf-publisher-worker/src/index.js
+          node --check workers/gnk-asg-pdf-publisher-worker/src/upload.js
+          node --check workers/gnk-asg-pdf-publisher-worker/src/storage.js
+          node --check workers/gnk-asg-pdf-publisher-worker/src/utils.js
+          node --check workers/gnk-asg-pdf-publisher-worker/test/pdf-publisher-e2e.test.mjs
       - name: Validate JSON
         run: |
           set -euo pipefail
@@ -62,12 +68,20 @@ jobs:
           grep -q 'www.bpp.is' apps/portal/platforme/bpp/index.html
           grep -q 'generated-gallery-30.json' contracts/editorial-automation-policy.json
           grep -q 'preventImageReuseDays' contracts/editorial-automation-policy.json
+      - name: Run PDF Publisher E2E smoke
+        run: |
+          set -euo pipefail
+          node workers/gnk-asg-pdf-publisher-worker/test/pdf-publisher-e2e.test.mjs
+          node -e "const report=require('./reports/pdf-publisher-e2e-smoke/report.json'); if(report.status!=='PASS'||report.failed!==0||report.productionNetworkCalls!==0||report.productionWrites!==0) process.exit(1)"
       - name: Write report
         run: |
           mkdir -p reports/communication-content-preview
           printf '%s\n' \
             'WhatsApp Center syntax: OK' \
             'PDF Publisher secure client: OK' \
+            'PDF Publisher E2E smoke: 13/13 PASS' \
+            'PDF Publisher production network calls: 0' \
+            'PDF Publisher production writes: 0' \
             'Session token vault: OK' \
             'Legacy PDF client active: false' \
             'BPP HR/EN pages: OK' \
@@ -81,12 +95,17 @@ jobs:
             printf '%s\n' '## Communication and Content Preview Check' >> "$GITHUB_STEP_SUMMARY"
             cat reports/communication-content-preview/summary.txt >> "$GITHUB_STEP_SUMMARY"
           fi
+          if [ -f reports/pdf-publisher-e2e-smoke/summary.md ]; then
+            cat reports/pdf-publisher-e2e-smoke/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Upload report artifact
         if: always()
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: gnk-asg-communication-content-preview-check-${{ github.run_id }}
-          path: reports/communication-content-preview/
+          path: |
+            reports/communication-content-preview/
+            reports/pdf-publisher-e2e-smoke/
           if-no-files-found: warn
           retention-days: 7
