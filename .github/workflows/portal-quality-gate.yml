@@ -5,7 +5,11 @@ on:
   pull_request:
     paths:
       - "apps/portal/**"
+      - "workers/**"
+      - "packages/**"
+      - "contracts/**"
       - "tools/portal-quality-gate.mjs"
+      - "tools/build-bpp-domain-patch.mjs"
       - ".github/workflows/portal-quality-gate.yml"
       - ".quality-gate-enforced"
   push:
@@ -13,7 +17,11 @@ on:
       - main
     paths:
       - "apps/portal/**"
+      - "workers/**"
+      - "packages/**"
+      - "contracts/**"
       - "tools/portal-quality-gate.mjs"
+      - "tools/build-bpp-domain-patch.mjs"
       - ".github/workflows/portal-quality-gate.yml"
       - ".quality-gate-enforced"
 
@@ -35,8 +43,10 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate audit script syntax
-        run: node --check tools/portal-quality-gate.mjs
+      - name: Validate audit tooling syntax
+        run: |
+          node --check tools/portal-quality-gate.mjs
+          node --check tools/build-bpp-domain-patch.mjs
 
       - name: Audit portal
         shell: bash
@@ -50,6 +60,20 @@ jobs:
             --out reports/portal-quality-gate \
             $MODE
 
+      - name: Prepare non-destructive BPP domain patch package
+        shell: bash
+        run: |
+          node tools/build-bpp-domain-patch.mjs \
+            --out reports/portal-quality-gate
+          test -f reports/portal-quality-gate/bpp-patched/manifest.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const file = 'reports/portal-quality-gate/bpp-patched/manifest.json';
+          const manifest = JSON.parse(fs.readFileSync(file, 'utf8'));
+          if (!Array.isArray(manifest.files)) throw new Error('BPP patch manifest is invalid.');
+          console.log(`Prepared ${manifest.files.length} BPP patch file(s).`);
+          NODE
+
       - name: Publish audit summary
         if: always()
         shell: bash
@@ -58,6 +82,17 @@ jobs:
             cat reports/portal-quality-gate/audit.md >> "$GITHUB_STEP_SUMMARY"
           else
             echo "Portal audit report was not generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [[ -f reports/portal-quality-gate/bpp-patched/manifest.json ]]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "## BPP patch package" >> "$GITHUB_STEP_SUMMARY"
+            node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
+          const fs = require('fs');
+          const manifest = JSON.parse(fs.readFileSync('reports/portal-quality-gate/bpp-patched/manifest.json', 'utf8'));
+          console.log(`- Canonical URL: https://bpp.is/`);
+          console.log(`- Prepared files: ${manifest.files.length}`);
+          console.log(`- Mode: generated artifact only; repository and production are unchanged`);
+          NODE
           fi
 
       - name: Update pull request audit comment
@@ -68,9 +103,14 @@ jobs:
             const fs = require('fs');
             const marker = '<!-- gnk-asg-portal-quality-gate -->';
             const reportPath = 'reports/portal-quality-gate/audit.md';
-            const report = fs.existsSync(reportPath)
-              ? fs.readFileSync(reportPath, 'utf8').slice(0, 60000)
+            let report = fs.existsSync(reportPath)
+              ? fs.readFileSync(reportPath, 'utf8').slice(0, 56000)
               : 'Portal audit report was not generated.';
+            const manifestPath = 'reports/portal-quality-gate/bpp-patched/manifest.json';
+            if (fs.existsSync(manifestPath)) {
+              const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+              report += `\n## BPP patch package\n\n- Canonical URL: \`https://bpp.is/\`\n- Prepared files: ${manifest.files.length}\n- Mode: generated artifact only; repository and production are unchanged\n`;
+            }
             const body = `${marker}\n${report}`;
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,
@@ -95,7 +135,7 @@ jobs:
               });
             }
 
-      - name: Upload audit reports
+      - name: Upload audit reports and patch package
         if: always()
         uses: actions/upload-artifact@v4
         with:
