@@ -18,6 +18,9 @@ const checks = [
   ['vault before bridge', page.indexOf('operator-token-vault.js') >= 0 && page.indexOf('operator-token-vault.js') < page.indexOf('operator-mobile-live-bridge.js')],
   ['protected upload route', secureEntry.includes("'/api/media-upload'") && secureEntry.includes('status: 401')],
   ['protected asset list route', secureEntry.includes("'/api/admin-asset-list'") && secureEntry.includes('status: 401')],
+  ['protected preflight route', secureEntry.includes("request.method === 'OPTIONS' && protectedPaths.has(path)") && secureEntry.includes('protectedCorsHeaders(request)')],
+  ['operator token CORS headers', secureEntry.includes('x-operator-token') && secureEntry.includes('x-admin-token')],
+  ['restricted CORS origin', secureEntry.includes("const allowedOrigins = new Set(['https://gnk-asg.hr'])")],
   ['preflight preserved', secureEntry.includes("request.method === 'OPTIONS'")],
   ['secure entry active', /main\s*=\s*"src\/index-secure\.js"/.test(wrangler)]
 ].map(([name, pass]) => ({ name, pass }));
