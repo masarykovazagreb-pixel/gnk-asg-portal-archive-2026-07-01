@@ -34,10 +34,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: gnk-asg-mobile-contrast-browser-audit
+  cancel-in-progress: true
+
 jobs:
   mobile-contrast-browser-audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 8
     env:
       PREVIEW_BASE_URL: https://gnk-asg-business-light-preview.beckuphome.workers.dev
     steps:
@@ -57,7 +61,7 @@ jobs:
         run: |
           set -euo pipefail
           ready=false
-          for attempt in $(seq 1 36); do
+          for attempt in $(seq 1 24); do
             css=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/final-contrast-contract.css?cb=$GITHUB_SHA" || true)
             shell=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/admin-universal-shell.js?cb=$GITHUB_SHA" || true)
             enforcer=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/final-contrast-enforcer.js?cb=$GITHUB_SHA" || true)
@@ -65,7 +69,6 @@ jobs:
               ready=true
               break
             fi
-            echo "Waiting for current preview assets: attempt $attempt/36"
             sleep 5
           done
           test "$ready" = 'true'
@@ -77,7 +80,6 @@ jobs:
           browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           test -n "$browser"
           echo "CHROMIUM_PATH=$browser" >> "$GITHUB_ENV"
-          "$browser" --version
 
       - name: Install Playwright core
         env:
@@ -91,11 +93,6 @@ jobs:
         run: |
           node -e "const r=require('./reports/mobile-contrast-browser-audit/report.json'); if(r.status!=='PASS'||r.totalFailures!==0||r.scenarioErrorCount!==0||r.productionTouched!==false||r.scenarioCount!==4) process.exit(1)"
           test -s reports/mobile-contrast-browser-audit/report.md
-          test -s reports/mobile-contrast-browser-audit/hr-dark-financials.png
-          test -s reports/mobile-contrast-browser-audit/hr-dark-grupa.png
-          test -s reports/mobile-contrast-browser-audit/hr-light-financials.png
-          test -s reports/mobile-contrast-browser-audit/en-dark-financials.png
-          test -s reports/mobile-contrast-browser-audit/en-light-grupa.png
 
       - name: Publish summary
         if: always()
@@ -104,7 +101,7 @@ jobs:
             cat reports/mobile-contrast-browser-audit/report.md >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Upload mobile screenshots and evidence
+      - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
