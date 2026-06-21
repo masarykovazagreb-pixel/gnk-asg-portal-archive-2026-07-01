@@ -1,22 +1,26 @@
 {
-  "schemaVersion": 3,
-  "version": "2026-06-20-v3-image-routing",
+  "schemaVersion": 4,
+  "version": "2026-06-21-v4-three-daily-draft-first",
   "productionLocked": true,
   "deploymentApproved": false,
   "operatingModel": {
     "automationTargetPercent": 99,
     "topicApprovalRequired": false,
-    "standardPublicationApprovalRequired": false,
+    "standardPublicationApprovalRequired": true,
+    "previewMode": "draft_first",
     "manualUploadAllowedForAuthorizedUsers": true,
     "singleSharedPublicationSource": true,
-    "humanReviewOnlyForSensitiveExceptions": true
+    "humanReviewOnlyForSensitiveExceptions": false,
+    "automaticProductionPublishingEnabled": false
   },
   "schedule": {
     "timeZone": "Europe/Zagreb",
-    "articleIntervalHours": 3,
+    "localTimes": ["09:15", "13:00", "17:00"],
+    "articlesPerDay": 3,
     "dailyDigestHour": 23,
     "enabledInPreview": true,
-    "enabledInProduction": false
+    "enabledInProduction": false,
+    "deduplicateByLocalSlot": true
   },
   "publicationRoutes": {
     "sharedSource": true,
@@ -35,13 +39,15 @@
     "author": "Nermin Sefić",
     "autoSelectTopic": true,
     "topicApprovalRequired": false,
-    "autoPublishStandardContent": true,
+    "autoPublishStandardContent": false,
     "requireHrEn": true,
     "requireImage": true,
     "requireAtLeastOneSource": true,
+    "preferredSourceCount": 2,
     "requireWhyItMatters": true,
     "requireOwnConclusion": true,
     "duplicateProtection": true,
+    "blockUnsupportedClaims": true,
     "primaryCategories": [
       "Poslovanje",
       "Tržišta",
@@ -95,7 +101,7 @@
   "dailyDigestRules": {
     "minimumWordsHr": 900,
     "minimumWordsEn": 900,
-    "autoPublish": true,
+    "autoPublish": false,
     "includeAllDailyPublications": true,
     "includeCommonThemes": true,
     "includeRisksAndOpportunities": true,
@@ -154,7 +160,7 @@
     "draftOrPublishedStatus": true
   },
   "safetyRules": {
-    "routineContentAutoPublishes": true,
+    "routineContentAutoPublishes": false,
     "routineGeneralMailAutoSends": true,
     "sensitiveMailNeverAutoSends": true,
     "mailSendRequiresExplicitApproval": false,
