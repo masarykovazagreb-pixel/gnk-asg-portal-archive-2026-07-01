@@ -9,6 +9,7 @@ on:
       - 'apps/portal/pdf-publisher/**'
       - 'apps/portal/platforme/bpp/**'
       - 'apps/portal/en/platforms/bpp/**'
+      - 'apps/portal/assets/preview-bpp-integration.js'
       - 'apps/portal/assets/wa-center.*'
       - 'apps/portal/assets/pdf-publisher*'
       - 'apps/portal/assets/operator-token-vault.js'
@@ -38,6 +39,7 @@ jobs:
           node --check apps/portal/assets/wa-center.js
           node --check apps/portal/assets/operator-token-vault.js
           node --check apps/portal/assets/pdf-publisher-secure.js
+          node --check apps/portal/assets/preview-bpp-integration.js
           node --check packages/editorial/image-selector.mjs
           node --check workers/gnk-asg-pdf-publisher-worker/src/index.js
           node --check workers/gnk-asg-pdf-publisher-worker/src/upload.js
@@ -65,7 +67,11 @@ jobs:
             echo 'Legacy PDF Publisher client is still active.'
             exit 1
           fi
-          grep -q 'www.bpp.is' apps/portal/platforme/bpp/index.html
+          grep -q 'https://bpp.is/' apps/portal/platforme/bpp/index.html
+          grep -q 'https://bpp.is/' apps/portal/en/platforms/bpp/index.html
+          grep -q "card.href='https://bpp.is/'" apps/portal/assets/preview-bpp-integration.js
+          ! grep -q 'www.bpp.is' apps/portal/platforme/bpp/index.html
+          ! grep -q 'www.bpp.is' apps/portal/en/platforms/bpp/index.html
           grep -q 'generated-gallery-30.json' contracts/editorial-automation-policy.json
           grep -q 'preventImageReuseDays' contracts/editorial-automation-policy.json
       - name: Run PDF Publisher E2E smoke
@@ -84,7 +90,7 @@ jobs:
             'PDF Publisher production writes: 0' \
             'Session token vault: OK' \
             'Legacy PDF client active: false' \
-            'BPP HR/EN pages: OK' \
+            'BPP menu and HR/EN pages: https://bpp.is/' \
             'Editorial image selector: OK' \
             'Production changed: false' \
             > reports/communication-content-preview/summary.txt
