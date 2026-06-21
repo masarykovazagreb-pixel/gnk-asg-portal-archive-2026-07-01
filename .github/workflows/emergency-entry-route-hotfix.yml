@@ -1,0 +1,71 @@
+name: GNK ASG Emergency Entry Route Hotfix
+
+on:
+  push:
+    branches:
+      - experience-ai-live-overview
+    paths:
+      - 'workers/gnk-asg-emergency-entry-redirect/**'
+      - '.github/workflows/emergency-entry-route-hotfix.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-emergency-entry-route-hotfix
+  cancel-in-progress: false
+
+jobs:
+  deploy-entry-fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment: production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Checkout hotfix branch
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate isolated worker
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-emergency-entry-redirect/src/index.js
+          grep -Fxq 'pattern = "gnk-asg.hr/app"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
+          grep -Fxq 'pattern = "gnk-asg.hr/app/*"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
+          grep -Fxq 'pattern = "www.gnk-asg.hr/*"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
+          test ! -e .github/release/PRODUCTION_APPROVED
+
+      - name: Deploy isolated redirect only
+        run: |
+          npx --yes wrangler@4 deploy --config workers/gnk-asg-emergency-entry-redirect/wrangler.toml
+
+      - name: Wait for route propagation
+        run: sleep 12
+
+      - name: Prove entry routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          app_code=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' --max-redirs 0 https://gnk-asg.hr/app/)
+          www_code=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' --max-redirs 0 https://www.gnk-asg.hr/)
+          app_final=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 https://gnk-asg.hr/app/)
+          www_final=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 https://www.gnk-asg.hr/)
+          echo "app initial=${app_code} final=${app_final}"
+          echo "www initial=${www_code} final=${www_final}"
+          test "$app_code" = '307'
+          test "$www_code" = '308'
+          test "$app_final" = '200'
+          test "$www_final" = '200'
+
+      - name: Confirm apex remained available
+        run: |
+          set -euo pipefail
+          code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 https://gnk-asg.hr/)
+          echo "apex=${code}"
+          test "$code" = '200'
