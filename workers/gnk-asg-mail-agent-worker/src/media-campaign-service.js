@@ -5,12 +5,19 @@ import { executeMediaCampaignWindow } from './media-campaign-window.js';
 import { normaliseCampaignAttachment, readCampaignAttachment, storeCampaignAttachment } from './media-campaign-attachment.js';
 import { acquireMediaCampaignLease, strictCampaignLeaseReady } from './media-campaign-lease.js';
 import { saveMediaCampaign } from './media-campaign-state.js';
+import { applySuppressionToCampaign, readSuppressionSet } from './media-campaign-suppression.js';
 
 export async function createMediaCampaign(env, payload = {}) {
   validateCampaignContent(payload);
   const campaignId = String(payload.id || crypto.randomUUID());
   const attachmentMetadata = await optionalAttachmentMetadata(env, campaignId, payload);
-  const batch = buildMediaCampaignBatch({ ...payload, id: campaignId, attachmentMetadata });
+  const suppressionSet = await readSuppressionSet(env);
+  const batch = buildMediaCampaignBatch({
+    ...payload,
+    id: campaignId,
+    attachmentMetadata,
+    suppressedEmails: suppressionSet
+  });
   const preview = planMediaCampaignWindow(batch);
 
   await saveMediaCampaign(env, batch);
@@ -22,6 +29,7 @@ export async function createMediaCampaign(env, payload = {}) {
     sent: batch.sent,
     tested: batch.tested,
     failed: batch.failed,
+    suppressed: batch.suppressed,
     remaining: batch.remaining,
     rateLimitPerMinute: batch.rateLimitPerMinute,
     attachment: {
@@ -74,26 +82,31 @@ export async function runMediaCampaignWindow(env, campaign, command = {}) {
     return blockedResult(campaign, 'strict_rate_limit_storage_unavailable', 409);
   }
 
+  const suppressionSet = await readSuppressionSet(env);
+  const guardedCampaign = applySuppressionToCampaign(campaign, suppressionSet);
   let updated;
-  if (liveRequested) {
-    const attachment = await readCampaignAttachment(env, campaign);
+
+  if (!guardedCampaign.remaining) {
+    updated = guardedCampaign;
+  } else if (liveRequested) {
+    const attachment = await readCampaignAttachment(env, guardedCampaign);
     if (!attachment) {
-      return blockedResult(campaign, 'pdf_attachment_unavailable', 409);
+      return blockedResult(guardedCampaign, 'pdf_attachment_unavailable', 409);
     }
 
-    const lease = await acquireMediaCampaignLease(env, campaign.id);
+    const lease = await acquireMediaCampaignLease(env, guardedCampaign.id);
     if (!lease.acquired) {
-      return blockedResult(campaign, lease.reason, lease.reason === 'rate_limited' ? 429 : 409, lease);
+      return blockedResult(guardedCampaign, lease.reason, lease.reason === 'rate_limited' ? 429 : 409, lease);
     }
 
     const { deliverMediaCampaignWindow } = await import('./media-campaign-delivery.js');
-    updated = await deliverMediaCampaignWindow(env, campaign, attachment);
+    updated = await deliverMediaCampaignWindow(env, guardedCampaign, attachment);
     updated.strictLeaseId = lease.leaseId;
     updated.strictLeaseAcquiredAt = lease.acquiredAt;
     updated.nextAllowedAt = lease.nextAllowedAt;
     updated.retryAfterSeconds = lease.retryAfterSeconds;
   } else {
-    updated = executeMediaCampaignWindow(campaign, { liveSend: false });
+    updated = executeMediaCampaignWindow(guardedCampaign, { liveSend: false });
   }
 
   await saveMediaCampaign(env, updated);
