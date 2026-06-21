@@ -17,7 +17,7 @@ const payload = {
   signatureProfile: 'media',
   language: 'hr',
   pdfAttachmentName: 'GNK_ASG_Media_Release.pdf',
-  scheduledAt: '2026-06-21T10:00:00.000Z',
+  scheduledAt: '2099-06-21T10:00:00.000Z',
   recipients
 };
 
@@ -31,7 +31,7 @@ if (campaign.status !== 'scheduled') throw new Error('Expected scheduled status 
 
 const beforeDue = executeMediaCampaignWindow(campaign, {
   liveSend: false,
-  now: new Date('2026-06-21T09:59:00.000Z')
+  now: new Date('2099-06-21T09:59:00.000Z')
 });
 if (!beforeDue.executionBlocked || beforeDue.lastWindowCount !== 0) {
   throw new Error('Campaign must not execute before scheduled time.');
@@ -50,7 +50,7 @@ if (!sampleMessages.every(item => item.signatureProfile === 'media')) throw new 
 for (let minute = 0; minute < 10; minute += 1) {
   campaign = executeMediaCampaignWindow(campaign, {
     liveSend: false,
-    now: new Date(Date.parse('2026-06-21T10:00:00.000Z') + minute * 60_000)
+    now: new Date(Date.parse('2099-06-21T10:00:00.000Z') + minute * 60_000)
   });
   if (campaign.lastWindowCount !== 10) throw new Error(`Window ${minute + 1} did not process exactly 10 messages.`);
 }
