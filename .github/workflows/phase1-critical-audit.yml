@@ -7,6 +7,7 @@ on:
       - 'workers/**'
       - 'config/phase1-critical-checks.json'
       - 'scripts/phase1-critical-audit.mjs'
+      - '.github/workflows/phase1-critical-audit.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -18,13 +19,26 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - run: node scripts/phase1-critical-audit.mjs
+          node-version: '24'
+      - name: Run critical audit
+        id: critical_audit
+        run: node scripts/phase1-critical-audit.mjs
         continue-on-error: true
-      - uses: actions/upload-artifact@v4
+      - name: Publish audit summary
         if: always()
+        run: |
+          if [ -f reports/phase1-critical-audit/phase1-critical-audit.md ]; then
+            cat reports/phase1-critical-audit/phase1-critical-audit.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload audit report
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
         with:
-          name: phase1-critical-audit
+          name: phase1-critical-audit-${{ github.run_id }}
           path: reports/phase1-critical-audit/
-          if-no-files-found: error
-          retention-days: 14
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Enforce audit result
+        if: always()
+        run: test "${{ steps.critical_audit.outcome }}" = "success"
