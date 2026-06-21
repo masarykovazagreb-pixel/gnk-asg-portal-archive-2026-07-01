@@ -1,0 +1,46 @@
+name: GNK ASG Data Sync V2 Preview Check
+
+on:
+  pull_request:
+    branches: [visual-redesign]
+    paths:
+      - 'workers/gnk-asg-data-sync-preview/**'
+      - 'contracts/data-sync-policy.json'
+      - '.github/workflows/data-sync-preview-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate source and policy
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-data-sync-preview/src/schedule.js
+          node --check workers/gnk-asg-data-sync-preview/src/refresh.js
+          node --check workers/gnk-asg-data-sync-preview/src/index.js
+          node -e "JSON.parse(require('fs').readFileSync('contracts/data-sync-policy.json','utf8'))"
+      - name: Run offline scheduler test
+        run: node workers/gnk-asg-data-sync-preview/test/schedule.test.js
+      - name: Run offline refresh test
+        run: node workers/gnk-asg-data-sync-preview/test/refresh.test.js
+      - name: Run locked worker test
+        run: node workers/gnk-asg-data-sync-preview/test/worker.test.js
+      - name: Verify route and write locks
+        run: |
+          set -euo pipefail
+          grep -q 'workers_dev = true' workers/gnk-asg-data-sync-preview/wrangler.preview.toml
+          grep -q 'DATA_SYNC_PREVIEW_WRITE = "false"' workers/gnk-asg-data-sync-preview/wrangler.preview.toml
+          grep -q 'crons = \["\*/5 \* \* \* \*"\]' workers/gnk-asg-data-sync-preview/wrangler.preview.toml
+          if grep -E '(^|[[:space:]])routes?[[:space:]]*=' workers/gnk-asg-data-sync-preview/wrangler.preview.toml; then
+            echo 'Route mapping is forbidden in preview configuration.'
+            exit 1
+          fi
