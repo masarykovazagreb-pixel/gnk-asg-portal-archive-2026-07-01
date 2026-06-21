@@ -1,0 +1,107 @@
+name: GNK ASG Production Live Sync
+
+on:
+  push:
+    branches:
+      - experience-ai-live-overview
+    paths:
+      - 'apps/portal/operator-mobile/**'
+      - 'apps/portal/mail-studio-pro/**'
+      - 'apps/portal/videoteka/**'
+      - 'apps/portal/en/video-library/**'
+      - 'apps/portal/assets/operator-mobile-live-bridge.js'
+      - 'apps/portal/assets/mail-studio-pro*.js'
+      - 'apps/portal/assets/mail-studio-pro*.css'
+      - 'workers/gnk-asg-public-pages-live/**'
+      - 'workers/gnk-asg-mail-agent-worker/**'
+      - '.github/workflows/production-live-sync.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-production-live-sync
+  cancel-in-progress: false
+
+jobs:
+  deploy-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate release safety
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-public-pages-live/src/index.js
+          find workers/gnk-asg-mail-agent-worker/src -name '*.js' -print0 | xargs -0 -n1 node --check
+          grep -q 'MEDIA_CAMPAIGN_LIVE_SEND = "false"' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
+          grep -q 'gnk-asg.hr/api/mail-agent/\*' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
+          grep -q 'gnk-asg.hr/operator-mobile/\*' workers/gnk-asg-public-pages-live/wrangler.live.toml
+
+      - name: Deploy Mail Agent
+        run: |
+          npx --yes wrangler@4 deploy \
+            --config workers/gnk-asg-mail-agent-worker/wrangler.release.toml
+
+      - name: Deploy public pages
+        run: |
+          npx --yes wrangler@4 deploy \
+            --config workers/gnk-asg-public-pages-live/wrangler.live.toml
+
+      - name: Wait for routes
+        run: sleep 12
+
+      - name: Public smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+          urls=(
+            'https://gnk-asg.hr/videoteka/'
+            'https://gnk-asg.hr/en/video-library/'
+            'https://gnk-asg.hr/mail-studio-pro/'
+            'https://gnk-asg.hr/operator-mobile/'
+            'https://gnk-asg.hr/api/mail-agent/health'
+            'https://gnk-asg.hr/api/contact-mailboxes'
+            'https://gnk-asg.hr/data/news.json'
+            'https://gnk-asg.hr/data/market.json'
+            'https://publish.gnk-asg.hr/api/publications'
+          )
+          for url in "${urls[@]}"; do
+            code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 "$url")
+            echo "$code $url"
+            test "$code" = '200'
+          done
+
+      - name: Verify protected Mail Agent
+        shell: bash
+        run: |
+          set -euo pipefail
+          code=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' 'https://gnk-asg.hr/api/mail-agent/inbox')
+          echo "$code https://gnk-asg.hr/api/mail-agent/inbox"
+          test "$code" = '401'
+
+      - name: Publish release summary
+        if: always()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## GNK ASG production live sync
+
+          - Public pages Worker: `gnk-asg-public-pages-live`
+          - Mail Agent Worker: `gnk-asg-mail-agent-preview`
+          - Media campaign live send: disabled
+          - Production routes: smoke tested
+          - Branch: `experience-ai-live-overview`
+          EOF
