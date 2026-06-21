@@ -34,8 +34,9 @@ jobs:
           find workers/gnk-asg-mail-agent-worker/test -name '*.js' -print0 | xargs -0 -n1 node --check
           node --check apps/portal/assets/mail-studio-pro.js
 
-      - name: Mail thread and AI context tests
+      - name: Readiness, mail thread and AI context tests
         run: |
+          node workers/gnk-asg-mail-agent-worker/test/automation-readiness.test.js
           node workers/gnk-asg-mail-agent-worker/test/thread-context.test.js
           node workers/gnk-asg-mail-agent-worker/test/ai-thread-context.test.js
 
@@ -69,6 +70,7 @@ jobs:
           Production route configured: false
           Production deploy performed: false
           Syntax check: completed
+          Automation readiness transitions: verified
           Full thread context up to 20 messages: verified
           AI receives chronological thread and prior answers: verified
           Personalized contextual reply: verified
