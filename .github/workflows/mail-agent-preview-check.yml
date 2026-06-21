@@ -34,19 +34,29 @@ jobs:
           find workers/gnk-asg-mail-agent-worker/test -name '*.js' -print0 | xargs -0 -n1 node --check
           node --check apps/portal/assets/mail-studio-pro.js
 
-      - name: Readiness, mail thread and AI context tests
-        run: |
-          node workers/gnk-asg-mail-agent-worker/test/automation-readiness.test.js
-          node workers/gnk-asg-mail-agent-worker/test/thread-context.test.js
-          node workers/gnk-asg-mail-agent-worker/test/ai-thread-context.test.js
+      - name: Automation readiness test
+        run: node workers/gnk-asg-mail-agent-worker/test/automation-readiness.test.js
 
-      - name: Mail campaign regression tests
-        run: |
-          node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
-          node workers/gnk-asg-mail-agent-worker/test/media-campaign-rate-limit.test.js
-          node workers/gnk-asg-mail-agent-worker/test/media-campaign-lease.test.js
-          node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
-          node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js
+      - name: Mail thread context test
+        run: node workers/gnk-asg-mail-agent-worker/test/thread-context.test.js
+
+      - name: AI thread context test
+        run: node workers/gnk-asg-mail-agent-worker/test/ai-thread-context.test.js
+
+      - name: Campaign window test
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
+
+      - name: Campaign rate-limit test
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-rate-limit.test.js
+
+      - name: Campaign strict lease test
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-lease.test.js
+
+      - name: Campaign 100-recipient simulation
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
+
+      - name: Campaign service safety test
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js
 
       - name: Wrangler route-free dry run
         run: |
