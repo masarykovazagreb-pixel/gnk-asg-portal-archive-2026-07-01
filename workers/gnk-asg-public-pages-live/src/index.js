@@ -9,6 +9,9 @@ const LANGUAGE_PAIRS = [
   { hr: '/videoteka/', en: '/en/video-library/' },
   { hr: '/video/', en: '/en/video/' },
   { hr: '/platforme/bpp/', en: '/en/platforms/bpp/' },
+  { hr: '/media-kit/', en: '/en/media-kit/' },
+  { hr: '/contact/', en: '/en/contact/' },
+  { hr: '/legal/', en: '/en/legal/' },
   { hr: '/privatnost/', en: '/en/privacy/' },
   { hr: '/uvjeti-koristenja/', en: '/en/terms/' },
   { hr: '/kolacici/', en: '/en/cookies/' }
@@ -29,7 +32,7 @@ export default {
     const contentType = response.headers.get('content-type') || '';
 
     if (!contentType.includes('text/html') || !response.body) {
-      return withHeaders(response);
+      return withHeaders(response, routeSeo?.language);
     }
 
     let rewriter = new HTMLRewriter()
@@ -91,7 +94,7 @@ export default {
         });
     }
 
-    return withHeaders(rewriter.transform(response));
+    return withHeaders(rewriter.transform(response), routeSeo?.language);
   }
 };
 
@@ -139,14 +142,14 @@ function seoMarkup(metadata) {
   ].join('');
 }
 
-function withHeaders(response) {
+function withHeaders(response, language) {
   const headers = new Headers(response.headers);
   headers.set('cache-control', 'no-store');
   headers.set('x-content-type-options', 'nosniff');
   headers.set('referrer-policy', 'strict-origin-when-cross-origin');
   headers.set('x-frame-options', 'SAMEORIGIN');
   headers.set('x-gnk-asg-public-pages-live', 'true');
-  headers.set('content-language', response.url?.includes('/en/') ? 'en' : 'hr');
+  headers.set('content-language', language || (response.url?.includes('/en/') ? 'en' : 'hr'));
 
   return new Response(response.body, {
     status: response.status,
