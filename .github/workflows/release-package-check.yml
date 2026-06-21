@@ -28,6 +28,8 @@ jobs:
   build-release-package:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      RELEASE_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -79,7 +81,7 @@ jobs:
       - name: Validate generated manifest
         run: |
           set -euo pipefail
-          node -e "const p=require('./reports/release-package/release-manifest.json'); if(p.releaseStatus!=='READY_FOR_MANUAL_APPROVAL'||p.productionTouched!==false||!p.components?.length||!p.publicRoutes?.length||!p.protectedRoutes?.length) process.exit(1)"
+          node -e "const p=require('./reports/release-package/release-manifest.json'); if(p.releaseStatus!=='READY_FOR_MANUAL_APPROVAL'||p.productionTouched!==false||!p.components?.length||!p.publicRoutes?.length||!p.protectedRoutes?.length||p.sourceCommit!==process.env.RELEASE_SOURCE_COMMIT||p.sourceCommitInput!=='RELEASE_SOURCE_COMMIT') process.exit(1)"
           test -s reports/release-package/release-summary.md
           test -s reports/release-package/rollback-plan.md
 
