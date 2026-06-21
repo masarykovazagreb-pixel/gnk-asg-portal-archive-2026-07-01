@@ -55,8 +55,20 @@ jobs:
       - name: Campaign 100-recipient simulation
         run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
 
-      - name: Campaign service safety test
-        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js
+      - name: Campaign service create and attachment test
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js create
+
+      - name: Campaign live confirmation gate test
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js confirmation
+
+      - name: Campaign live disabled gate test
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js disabled
+
+      - name: Campaign strict storage gate test
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js lease
+
+      - name: Campaign safe test-mode execution
+        run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js test
 
       - name: Wrangler route-free dry run
         run: |
