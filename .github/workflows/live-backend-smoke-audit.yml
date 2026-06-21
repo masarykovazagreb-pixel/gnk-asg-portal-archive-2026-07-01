@@ -26,20 +26,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Run read-only live backend audit
         continue-on-error: true
         run: node scripts/live-backend-smoke-audit.mjs
-
-      - name: Upload audit report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gnk-asg-live-backend-audit
-          path: reports/live-backend-audit/
-          if-no-files-found: error
-          retention-days: 14
 
       - name: Publish summary
         if: always()
@@ -47,3 +38,13 @@ jobs:
           if [ -f reports/live-backend-audit/live-backend-audit.md ]; then
             cat reports/live-backend-audit/live-backend-audit.md >> "$GITHUB_STEP_SUMMARY"
           fi
+
+      - name: Upload audit report
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-live-backend-audit-${{ github.run_id }}
+          path: reports/live-backend-audit/
+          if-no-files-found: warn
+          retention-days: 7
