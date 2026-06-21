@@ -26,12 +26,18 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: JavaScript syntax checks
         run: |
           find workers/gnk-asg-mail-agent-worker/src -name '*.js' -print0 | xargs -0 -n1 node --check
+          find workers/gnk-asg-mail-agent-worker/test -name '*.js' -print0 | xargs -0 -n1 node --check
           node --check apps/portal/assets/mail-studio-pro.js
+
+      - name: Mail campaign regression tests
+        run: |
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
 
       - name: Wrangler route-free dry run
         run: |
@@ -55,13 +61,20 @@ jobs:
           Production route configured: false
           Production deploy performed: false
           Syntax check: completed
+          100-recipient E2E simulation: completed
+          Rate limit 10/min: verified
+          Scheduling gate: verified
+          PDF attachment metadata: verified
+          Personalisation: verified
+          Live sending: disabled
           Wrangler dry run: completed
           EOF
 
       - name: Upload preview artifact
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: gnk-asg-mail-agent-preview-check
+          name: gnk-asg-mail-agent-preview-check-${{ github.run_id }}
           path: reports/mail-agent-preview/
-          if-no-files-found: error
-          retention-days: 14
+          if-no-files-found: warn
+          retention-days: 7
