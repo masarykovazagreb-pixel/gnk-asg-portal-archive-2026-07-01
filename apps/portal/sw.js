@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gnk-asg-live-v55-menu-navigation-fix';
+const CACHE_NAME = 'gnk-asg-live-v56-functional-repair';
 const STATIC_ASSETS = [
   './', './index.html', './en/', './en/index.html', './sadrzaj/', './teme/', './teme/index.html', './tehnologija/',
   './nermin-sefic/', './nermin-sefic/index.html', './en/nermin-sefic/', './en/nermin-sefic/index.html',
@@ -14,6 +14,9 @@ const STATIC_ASSETS = [
   './assets/intelligence-desk.css', './assets/desk-hybrid.css', './assets/mobile-app.css', './assets/desk-search.css',
   './assets/floating-intelligence.css', './assets/public-sources.css', './assets/site-share.css', './assets/mobile-stability.css', './assets/group-mobile-accessible.css',
   './assets/market-centre.css', './assets/market-centre-panels.css',
+  './assets/portal-functional-repair-v1.css', './assets/portal-ui-repair-v1.js', './assets/contact-form-repair-v1.js',
+  './assets/admin-functional-repair-v1.js', './assets/operator-dashboard-compat-v1.js', './assets/operator-token-vault.js',
+  './assets/final-contrast-enforcer.js', './assets/brand/gnk-asg-global-layer.css', './assets/brand/gnk-asg-global-layer.js',
   './assets/logo-gnk-asg.svg', './assets/asg-gold-coin.svg', './assets/gnk-asg-social-card.svg', './assets/gnk-asg-social-card.png', './assets/share-financije.png', './assets/share-grupa.png', './assets/share-trzista.png', './assets/share-bpp.png', './assets/share-tehnologija.png', './assets/share-vijesti.png', './assets/share-teme.png', './assets/share-dokumenti.png', './assets/gnk-global-static-overview-accurate.svg',
   './favicon.svg', './assets/favicon.svg', './assets/app-icon-192.svg', './assets/app-icon-512.svg',
   './assets/app.js', './assets/i18n.js', './assets/language-routing.js', './assets/portal-navigation.js',
@@ -48,7 +51,7 @@ self.addEventListener('fetch', event => {
   const sameOrigin = new URL(event.request.url).origin === self.location.origin;
   if (!sameOrigin) return;
   const path = new URL(event.request.url).pathname;
-  const dynamicData = path.startsWith('/data/') || path === '/sw.js' || path.endsWith('/assets/status.js') || path.endsWith('/assets/app.js') || path.endsWith('/assets/portal-navigation.js') || path.endsWith('/assets/menu-fix.css');
+  const dynamicData = path.startsWith('/data/') || path === '/sw.js' || path.endsWith('/assets/status.js') || path.endsWith('/assets/app.js') || path.endsWith('/assets/portal-navigation.js') || path.endsWith('/assets/menu-fix.css') || path.includes('repair-v1') || path.endsWith('/assets/final-contrast-enforcer.js') || path.includes('/assets/brand/gnk-asg-global-layer');
   if (dynamicData) {
     event.respondWith(fetch(event.request, { cache: 'no-store' }).catch(() => caches.match(event.request)));
     return;
