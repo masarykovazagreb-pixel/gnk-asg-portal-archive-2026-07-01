@@ -1,6 +1,6 @@
 name = "gnk-asg-mail-agent-preview"
 main = "src/index.js"
-compatibility_date = "2026-06-20"
+compatibility_date = "2026-06-21"
 workers_dev = true
 preview_urls = true
 
@@ -9,6 +9,7 @@ PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "mail-agent-preview"
 MAIL_FROM = "it@gnk-asg.hr"
 MAIL_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+MEDIA_CAMPAIGN_LIVE_SEND = "false"
 
 [ai]
 binding = "AI"
@@ -16,6 +17,10 @@ binding = "AI"
 [[kv_namespaces]]
 binding = "GNK_ASG_KV"
 id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[[r2_buckets]]
+binding = "GNK_ASG_MEDIA_ASSETS"
+bucket_name = "gnk-asg-media-assets"
 
 [[send_email]]
 name = "EMAIL"
