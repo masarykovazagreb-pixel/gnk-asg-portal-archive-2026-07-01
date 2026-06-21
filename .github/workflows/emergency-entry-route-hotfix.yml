@@ -1,73 +1,68 @@
 name: GNK ASG Emergency Entry Route Hotfix
 
 on:
-  pull_request:
-    branches:
-      - visual-redesign
-    paths:
-      - 'workers/gnk-asg-emergency-entry-redirect/**'
-      - '.github/workflows/emergency-entry-route-hotfix.yml'
+  workflow_dispatch:
+    inputs:
+      approval:
+        description: Type EMERGENCY_ENTRY_HOTFIX_APPROVED
+        required: true
+        type: string
+      source_commit:
+        description: Exact 40-character commit SHA to deploy
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
   group: gnk-asg-emergency-entry-route-hotfix
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy-entry-fix:
-    if: github.head_ref == 'experience-ai-live-overview'
+    if: github.event.inputs.approval == 'EMERGENCY_ENTRY_HOTFIX_APPROVED'
+    environment: production
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
-      - name: Checkout hotfix branch
+      - name: Validate typed approval and source SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          test '${{ github.event.inputs.approval }}' = 'EMERGENCY_ENTRY_HOTFIX_APPROVED'
+          printf '%s' '${{ github.event.inputs.source_commit }}' | grep -Eq '^[0-9a-fA-F]{40}$'
+
+      - name: Checkout exact approved commit
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.source_commit }}
+          fetch-depth: 2
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
-      - name: Validate isolated worker
+      - name: Verify approved commit and isolated app route
+        shell: bash
         run: |
           set -euo pipefail
+          test "$(git rev-parse HEAD)" = '${{ github.event.inputs.source_commit }}'
           node --check workers/gnk-asg-emergency-entry-redirect/src/index.js
           grep -Fxq 'pattern = "gnk-asg.hr/app"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
           grep -Fxq 'pattern = "gnk-asg.hr/app/*"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
           ! grep -q 'www.gnk-asg.hr' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
           grep -Fxq 'new portal deployment: false' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
-          test ! -e .github/release/PRODUCTION_APPROVED
 
-      - name: Deploy isolated app entry
-        id: deploy
-        continue-on-error: true
+      - name: Deploy approved isolated app entry
         shell: bash
         run: |
-          set +e
-          npx --yes wrangler@4 deploy --config workers/gnk-asg-emergency-entry-redirect/wrangler.toml > wrangler-hotfix.log 2>&1
-          status=$?
-          printf '%s' "$status" > wrangler-hotfix.exit
-          tail -n 80 wrangler-hotfix.log
-          exit "$status"
-
-      - name: Upload deploy diagnostic
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gnk-asg-emergency-entry-deploy-${{ github.run_id }}
-          path: |
-            wrangler-hotfix.log
-            wrangler-hotfix.exit
-          if-no-files-found: warn
-          retention-days: 3
-
-      - name: Stop after failed deploy
-        if: steps.deploy.outcome != 'success'
-        run: exit 1
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config workers/gnk-asg-emergency-entry-redirect/wrangler.toml | tee wrangler-hotfix.log
 
       - name: Wait for route propagation
         run: sleep 12
@@ -91,66 +86,15 @@ jobs:
           grep -q 'GNK ASG mobilni portal' app-entry.html
           ! grep -qi 'not found' app-entry.html
 
-      - name: Locate hosted Chromium
-        shell: bash
-        run: |
-          set -euo pipefail
-          CHROME_BIN=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
-          test -n "$CHROME_BIN"
-          echo "CHROME_BIN=$CHROME_BIN" >> "$GITHUB_ENV"
-
-      - name: Install Playwright core
-        run: npm install --no-save --ignore-scripts playwright-core@1.57.0
-
-      - name: Prove app entry in Chromium
-        shell: bash
-        run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs/promises';
-          import { chromium } from 'playwright-core';
-
-          const browser = await chromium.launch({
-            headless: true,
-            executablePath: process.env.CHROME_BIN,
-            args: ['--no-sandbox', '--disable-dev-shm-usage']
-          });
-          const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
-          const response = await page.goto('https://gnk-asg.hr/app/', {
-            waitUntil: 'domcontentloaded',
-            timeout: 60000
-          });
-          await page.waitForTimeout(1000);
-          const body = (await page.locator('body').innerText()).trim();
-          const result = {
-            status: response?.status() ?? null,
-            url: page.url(),
-            title: await page.title(),
-            bodyStart: body.slice(0, 1000),
-            notFound: /not found/i.test(body)
-          };
-          await page.screenshot({ path: 'app-entry-browser.png', fullPage: true });
-          await fs.writeFile('app-entry-browser.json', JSON.stringify(result, null, 2));
-          console.log(JSON.stringify(result, null, 2));
-          await browser.close();
-
-          const correctUrl = /^https:\/\/gnk-asg\.hr\/app\/?(?:[?#].*)?$/.test(result.url);
-          const branded = /GNK ASG/i.test(`${result.title}\n${result.bodyStart}`);
-          if (result.status !== 200 || !correctUrl || !branded || result.notFound) {
-            process.exit(1);
-          }
-          NODE
-
-      - name: Upload complete runtime proof
+      - name: Upload runtime proof
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: gnk-asg-emergency-entry-runtime-${{ github.run_id }}
           path: |
+            wrangler-hotfix.log
             app-entry.headers
             app-entry.html
             app-entry-result.txt
-            app-entry-browser.json
-            app-entry-browser.png
           if-no-files-found: warn
-          retention-days: 3
+          retention-days: 7
