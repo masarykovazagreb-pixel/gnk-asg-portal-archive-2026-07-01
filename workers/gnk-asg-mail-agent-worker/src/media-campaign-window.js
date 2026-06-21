@@ -11,20 +11,22 @@ export function executeMediaCampaignWindow(campaign = {}, options = {}) {
     processed += 1;
     return {
       ...item,
-      status: liveSend ? 'queued' : 'sent',
+      status: liveSend ? 'sent' : 'tested',
       simulated: !liveSend,
       processedAt: new Date().toISOString()
     };
   });
 
   const sent = nextQueue.filter(item => item.status === 'sent').length;
-  const failed = Number(campaign.failed || 0) + nextQueue.filter(item => item.status === 'failed').length;
+  const tested = nextQueue.filter(item => item.status === 'tested').length;
+  const failed = nextQueue.filter(item => item.status === 'failed').length;
   const remaining = nextQueue.filter(item => item.status === 'remaining').length;
 
   return {
     ...campaign,
     queue: nextQueue,
     sent,
+    tested,
     failed,
     remaining,
     status: remaining ? 'queued' : 'complete',
