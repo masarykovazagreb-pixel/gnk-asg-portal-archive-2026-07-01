@@ -7,6 +7,7 @@ import { preserveThreadHeaders } from './thread-safety.js';
 import { buildMediaCampaignBatch } from './media-campaign-batch.js';
 import { readMediaCampaigns, saveMediaCampaign, findMediaCampaign } from './media-campaign-state.js';
 import { mediaCampaignStatus, pauseMediaCampaign, planMediaCampaignWindow, resumeMediaCampaign } from './media-campaign-actions.js';
+import { executeMediaCampaignWindow } from './media-campaign-window.js';
 
 export default {
   async fetch(request, env) {
@@ -56,7 +57,7 @@ export default {
       return json(request, { ok: true, count: campaigns.length, campaigns: campaigns.map(mediaCampaignStatus) });
     }
 
-    const campaignAction = url.pathname.match(/^\/api\/mail-agent\/media-campaign\/([^/]+)\/(status|pause|resume|window)$/);
+    const campaignAction = url.pathname.match(/^\/api\/mail-agent\/media-campaign\/([^/]+)\/(status|pause|resume|window|execute-window)$/);
     if (campaignAction) {
       return handleMediaCampaignAction(request, env, campaignAction[1], campaignAction[2]);
     }
@@ -151,10 +152,29 @@ async function handleMediaCampaignAction(request, env, id, action) {
 
   if (action === 'status') return json(request, { ok: true, campaign: mediaCampaignStatus(campaign) });
   if (action === 'window') return json(request, { ok: true, preview: planMediaCampaignWindow(campaign) });
+  if (action === 'execute-window') return handleMediaCampaignExecuteWindow(request, env, campaign);
 
   const updated = action === 'pause' ? pauseMediaCampaign(campaign) : resumeMediaCampaign(campaign);
   await saveMediaCampaign(env, updated);
   return json(request, { ok: true, campaign: mediaCampaignStatus(updated) });
+}
+
+async function handleMediaCampaignExecuteWindow(request, env, campaign) {
+  if (request.method !== 'POST') return json(request, { ok: false, error: 'method_not_allowed' }, 405);
+  if (campaign.status === 'paused') return json(request, { ok: false, error: 'campaign_paused', campaign: mediaCampaignStatus(campaign) }, 409);
+
+  const updated = executeMediaCampaignWindow(campaign, { liveSend: env.MEDIA_CAMPAIGN_LIVE_SEND === 'true' });
+  await saveMediaCampaign(env, updated);
+  await addMailboxItem(env, updated.productionSendEnabled ? 'outbox' : 'held', {
+    id: `${updated.id}:${updated.lastWindowAt}`,
+    type: 'media-campaign-window',
+    batchId: updated.id,
+    processed: updated.lastWindowCount,
+    productionSendEnabled: updated.productionSendEnabled,
+    campaign: mediaCampaignStatus(updated),
+    createdAt: updated.lastWindowAt
+  });
+  return json(request, { ok: true, campaign: mediaCampaignStatus(updated), productionSendEnabled: updated.productionSendEnabled });
 }
 
 async function processIncoming(message, env) {
