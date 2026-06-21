@@ -9,7 +9,15 @@ directory = "../../apps/portal"
 binding = "ASSETS"
 
 [[routes]]
+pattern = "gnk-asg.hr/video/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
 pattern = "gnk-asg.hr/videoteka/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/en/video/*"
 zone_name = "gnk-asg.hr"
 
 [[routes]]
@@ -25,7 +33,39 @@ pattern = "gnk-asg.hr/operator-mobile/*"
 zone_name = "gnk-asg.hr"
 
 [[routes]]
+pattern = "gnk-asg.hr/assets/video-*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/assets/homepage-featured-video.js"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/assets/portal-video.css"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/assets/media-campaign-*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/assets/operator-mobile-live-bridge.js"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/data/video-*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/video/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
 pattern = "www.gnk-asg.hr/videoteka/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/en/video/*"
 zone_name = "gnk-asg.hr"
 
 [[routes]]
