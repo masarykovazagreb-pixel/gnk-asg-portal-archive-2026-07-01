@@ -1,0 +1,66 @@
+{
+  "version": "2026-06-21-v1",
+  "branch": "experience-ai-live-overview",
+  "readOnly": true,
+  "productionWrites": false,
+  "groups": [
+    {
+      "id": "static-security",
+      "network": false,
+      "commands": [
+        ["node", "scripts/mobile-admin-security-audit.mjs"],
+        ["node", "scripts/operator-mobile-bridge-security-audit.mjs"],
+        ["node", "scripts/operator-mobile-security-final-audit.mjs"],
+        ["node", "scripts/release-candidate-audit.mjs"]
+      ]
+    },
+    {
+      "id": "content-regression",
+      "network": false,
+      "commands": [
+        ["node", "scripts/preview-regression-audit.mjs"],
+        ["node", "scripts/publications-regression-audit.mjs"],
+        ["node", "scripts/news-market-regression-audit.mjs"]
+      ]
+    },
+    {
+      "id": "video",
+      "network": false,
+      "commands": [
+        ["node", "workers/gnk-asg-preview-portal-worker/test/video-sitemap.test.js"]
+      ]
+    },
+    {
+      "id": "mail-agent",
+      "network": false,
+      "commands": [
+        ["node", "--test", "workers/gnk-asg-mail-agent-worker/test"]
+      ]
+    },
+    {
+      "id": "auto-editor",
+      "network": false,
+      "commands": [
+        ["node", "workers/gnk-asg-auto-editor-preview/test/schedule.test.js"],
+        ["node", "workers/gnk-asg-auto-editor-preview/test/pipeline.test.js"]
+      ]
+    },
+    {
+      "id": "data-sync",
+      "network": false,
+      "commands": [
+        ["node", "workers/gnk-asg-data-sync-preview/test/schedule.test.js"],
+        ["node", "workers/gnk-asg-data-sync-preview/test/refresh.test.js"],
+        ["node", "workers/gnk-asg-data-sync-preview/test/worker.test.js"]
+      ]
+    },
+    {
+      "id": "live-read-only",
+      "network": true,
+      "commands": [
+        ["node", "scripts/phase1-critical-audit.mjs"],
+        ["node", "scripts/live-backend-smoke-audit.mjs"]
+      ]
+    }
+  ]
+}
