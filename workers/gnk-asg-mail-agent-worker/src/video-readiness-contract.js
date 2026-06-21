@@ -7,7 +7,7 @@ export const VIDEO_READINESS_CONTRACT = {
   },
   libraries: {
     hr: '/videoteka/',
-    en: '/video-library/'
+    en: '/en/video-library/'
   },
   seo: {
     videoObject: 'emit-only-for-uploaded-video-assets',
