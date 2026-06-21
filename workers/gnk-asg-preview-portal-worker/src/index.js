@@ -1,3 +1,5 @@
+import { handlePreviewOperatorStatus } from './operator-auth.js';
+
 const LIVE_ORIGIN = 'https://gnk-asg.hr';
 const SOCIAL_SHARE_ORIGIN = 'https://gnk-asg-social-share-preview.beckuphome.workers.dev';
 
@@ -27,6 +29,10 @@ export default {
         socialSharePreview: SOCIAL_SHARE_ORIGIN,
         updatedAt: new Date().toISOString()
       });
+    }
+
+    if (url.pathname === '/__preview/operator/status') {
+      return handlePreviewOperatorStatus(request, env);
     }
 
     if (url.pathname.startsWith('/api/social-share/') || url.pathname.startsWith('/s/')) {
