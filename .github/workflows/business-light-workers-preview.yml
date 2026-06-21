@@ -33,8 +33,11 @@ jobs:
         run: |
           set -euo pipefail
           test -f workers/gnk-asg-preview-portal-worker/src/index.js
+          test -f workers/gnk-asg-preview-portal-worker/src/video-sitemap.js
           test -f workers/gnk-asg-preview-portal-worker/wrangler.toml
           node --check workers/gnk-asg-preview-portal-worker/src/index.js
+          node --check workers/gnk-asg-preview-portal-worker/src/video-sitemap.js
+          node workers/gnk-asg-preview-portal-worker/test/video-sitemap.test.js
           if grep -E '(^|[[:space:]])routes?[[:space:]]*=' workers/gnk-asg-preview-portal-worker/wrangler.toml; then
             echo 'Production route configuration detected.'
             exit 1
@@ -95,10 +98,12 @@ jobs:
           curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/en/" > /dev/null
           curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/trzista/" > /dev/null
           curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/mail-studio-pro/" > /dev/null
+          sitemap_code=$(curl --silent --output reports/workers-preview/video-sitemap.xml --write-out '%{http_code}' "$url/video-sitemap.xml")
+          test "$sitemap_code" = '200' || test "$sitemap_code" = '204'
           code=$(curl --silent --output reports/workers-preview/write-lock.json --write-out '%{http_code}' \
             -X POST -H 'content-type: application/json' -d '{}' "$url/api/operator-send-mail")
           test "$code" = '423'
-          printf '\nVerified reachable: true\nWrite lock verified: true\n' >> reports/workers-preview/deploy.txt
+          printf '\nVerified reachable: true\nWrite lock verified: true\nVideo sitemap gate verified: true\n' >> reports/workers-preview/deploy.txt
 
       - name: Publish preview summary
         if: always()
