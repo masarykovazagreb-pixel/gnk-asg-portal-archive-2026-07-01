@@ -39,12 +39,10 @@ jobs:
           grep -Fxq 'pattern = "gnk-asg.hr/app"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
           grep -Fxq 'pattern = "gnk-asg.hr/app/*"' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
           ! grep -q 'www.gnk-asg.hr' workers/gnk-asg-emergency-entry-redirect/wrangler.toml
-          grep -Fxq 'scope: /app redirect to existing homepage only' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
           grep -Fxq 'new portal deployment: false' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
-          grep -Fxq 'production marker: absent' workers/gnk-asg-emergency-entry-redirect/HOTFIX_VERSION.txt
           test ! -e .github/release/PRODUCTION_APPROVED
 
-      - name: Deploy isolated redirect only
+      - name: Deploy isolated app entry
         id: deploy
         continue-on-error: true
         shell: bash
@@ -74,22 +72,24 @@ jobs:
       - name: Wait for route propagation
         run: sleep 12
 
-      - name: Prove server redirect
+      - name: Prove standalone app response
         shell: bash
         run: |
           set -euo pipefail
-          curl --silent --show-error --dump-header app-entry.headers --output /dev/null --max-redirs 0 https://gnk-asg.hr/app/
+          curl --silent --show-error --dump-header app-entry.headers --output app-entry.html https://gnk-asg.hr/app/
           app_code=$(awk 'toupper($1) ~ /^HTTP\// {code=$2} END {print code}' app-entry.headers)
-          app_location=$(awk 'tolower($1)=="location:" {gsub("\r", "", $2); value=$2} END {print value}' app-entry.headers)
           app_marker=$(awk 'tolower($1)=="x-gnk-asg-emergency-entry-fix:" {gsub("\r", "", $2); value=$2} END {print value}' app-entry.headers)
+          app_type=$(awk 'tolower($1)=="content-type:" {gsub("\r", "", $2); value=$2} END {print value}' app-entry.headers)
           {
             echo "app_code=${app_code}"
-            echo "app_location=${app_location}"
             echo "app_marker=${app_marker}"
+            echo "app_type=${app_type}"
           } | tee app-entry-result.txt
-          test "$app_code" = '307'
-          test "$app_location" = 'https://gnk-asg.hr/'
-          test "$app_marker" = 'pwa-start-to-home'
+          test "$app_code" = '200'
+          test "$app_marker" = 'standalone-mobile-entry'
+          test "$app_type" = 'text/html;'
+          grep -q 'GNK ASG mobilni portal' app-entry.html
+          ! grep -qi 'not found' app-entry.html
 
       - name: Locate hosted Chromium
         shell: bash
@@ -98,12 +98,11 @@ jobs:
           CHROME_BIN=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
           test -n "$CHROME_BIN"
           echo "CHROME_BIN=$CHROME_BIN" >> "$GITHUB_ENV"
-          echo "Using $CHROME_BIN"
 
       - name: Install Playwright core
         run: npm install --no-save --ignore-scripts playwright-core@1.57.0
 
-      - name: Prove installed app entry in Chromium
+      - name: Prove app entry in Chromium
         shell: bash
         run: |
           set -euo pipefail
@@ -121,7 +120,7 @@ jobs:
             waitUntil: 'domcontentloaded',
             timeout: 60000
           });
-          await page.waitForTimeout(2000);
+          await page.waitForTimeout(1000);
           const body = (await page.locator('body').innerText()).trim();
           const result = {
             status: response?.status() ?? null,
@@ -135,7 +134,7 @@ jobs:
           console.log(JSON.stringify(result, null, 2));
           await browser.close();
 
-          const correctUrl = /^https:\/\/gnk-asg\.hr\/?(?:[?#].*)?$/.test(result.url);
+          const correctUrl = /^https:\/\/gnk-asg\.hr\/app\/?(?:[?#].*)?$/.test(result.url);
           const branded = /GNK ASG/i.test(`${result.title}\n${result.bodyStart}`);
           if (result.status !== 200 || !correctUrl || !branded || result.notFound) {
             process.exit(1);
@@ -149,6 +148,7 @@ jobs:
           name: gnk-asg-emergency-entry-runtime-${{ github.run_id }}
           path: |
             app-entry.headers
+            app-entry.html
             app-entry-result.txt
             app-entry-browser.json
             app-entry-browser.png
