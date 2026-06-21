@@ -6,15 +6,21 @@ export function buildMediaCampaignBatch(payload = {}) {
   const recipients = rows.slice(0, MEDIA_CAMPAIGN_LIMITS.maxRecipientsPerBatch).map(normaliseMediaRecipient);
   const invalid = [];
   const valid = [];
+  const seen = new Set();
   const scheduledAt = normaliseScheduledAt(payload.scheduledAt);
 
   for (const recipient of recipients) {
-    const error = validateMediaRecipient(recipient);
+    let error = validateMediaRecipient(recipient);
+    if (!error && seen.has(recipient.email)) error = 'duplicate_email';
     if (error) invalid.push({ recipient, error });
-    else valid.push(recipient);
+    else {
+      seen.add(recipient.email);
+      valid.push(recipient);
+    }
   }
 
   const readyStatus = scheduledAt && new Date(scheduledAt).getTime() > Date.now() ? 'scheduled' : 'queued';
+  const attachment = payload.attachmentMetadata || {};
 
   return {
     id: payload.id || crypto.randomUUID(),
@@ -23,7 +29,9 @@ export function buildMediaCampaignBatch(payload = {}) {
     from: String(payload.from || payload.senderMailbox || 'media@gnk-asg.hr').trim().toLowerCase(),
     signatureProfile: String(payload.signatureProfile || 'media').trim(),
     language: String(payload.language || 'hr').trim().toLowerCase(),
-    pdfAttachmentName: String(payload.pdfAttachmentName || '').trim(),
+    pdfAttachmentName: String(attachment.filename || payload.pdfAttachmentName || '').trim(),
+    attachmentKey: String(attachment.key || '').trim(),
+    attachmentSize: Number(attachment.size || 0),
     scheduledAt,
     total: recipients.length,
     sent: 0,
