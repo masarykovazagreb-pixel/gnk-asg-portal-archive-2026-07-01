@@ -1,5 +1,5 @@
 name: GNK ASG Mobile Contrast Browser Audit
-# audit revision: final-fast-v2
+# audit revision: final-fast-v3
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
       - 'apps/portal/assets/final-contrast-contract.css'
       - 'apps/portal/assets/final-contrast-enforcer.js'
       - 'apps/portal/assets/preview-contrast.css'
+      - 'apps/portal/assets/preview-dedupe-floats.js'
       - 'apps/portal/assets/admin-universal-shell.js'
       - 'apps/portal/assets/brand/gnk-asg-global-layer.css'
       - 'apps/portal/assets/brand/gnk-asg-global-layer.js'
@@ -23,6 +24,7 @@ on:
       - 'apps/portal/assets/final-contrast-contract.css'
       - 'apps/portal/assets/final-contrast-enforcer.js'
       - 'apps/portal/assets/preview-contrast.css'
+      - 'apps/portal/assets/preview-dedupe-floats.js'
       - 'apps/portal/assets/admin-universal-shell.js'
       - 'apps/portal/assets/brand/gnk-asg-global-layer.css'
       - 'apps/portal/assets/brand/gnk-asg-global-layer.js'
@@ -66,7 +68,8 @@ jobs:
             css=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/final-contrast-contract.css?cb=$GITHUB_SHA" || true)
             shell=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/admin-universal-shell.js?cb=$GITHUB_SHA" || true)
             enforcer=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/final-contrast-enforcer.js?cb=$GITHUB_SHA" || true)
-            if printf '%s' "$css" | grep -q -- '--gnk-dark-panel' && printf '%s' "$shell" | grep -q 'gnk-final-contrast-enforcer-js' && printf '%s' "$enforcer" | grep -q '__GNK_FINAL_CONTRAST_ENFORCER__'; then
+            dedupe=$(curl --silent --show-error --connect-timeout 5 --max-time 15 "$PREVIEW_BASE_URL/assets/preview-dedupe-floats.js?cb=$GITHUB_SHA" || true)
+            if printf '%s' "$css" | grep -q -- '--gnk-dark-panel' && printf '%s' "$shell" | grep -q 'gnk-final-contrast-enforcer-js' && printf '%s' "$enforcer" | grep -q '__GNK_FINAL_CONTRAST_ENFORCER__' && printf '%s' "$dedupe" | grep -q 'keepLast'; then
               ready=true
               break
             fi
