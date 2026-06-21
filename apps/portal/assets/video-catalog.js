@@ -18,15 +18,26 @@
     return READY_STATUSES.has(status) && (validAssetUrl(item.mp4Url) || validAssetUrl(item.streamUrl));
   }
 
+  function isIndexable(item = {}) {
+    return Boolean(
+      isUploaded(item) &&
+      item.indexable !== false &&
+      clean(item.titleHr || item.titleEn || item.title) &&
+      clean(item.descriptionHr || item.descriptionEn || item.description) &&
+      validAssetUrl(item.poster) &&
+      clean(item.uploadDate) &&
+      clean(item.duration)
+    );
+  }
+
   function normalise(item = {}, index = 0) {
     const contentUrl = validAssetUrl(item.mp4Url) ? clean(item.mp4Url) : '';
     const embedUrl = validAssetUrl(item.streamUrl) ? clean(item.streamUrl) : '';
     const uploaded = isUploaded(item);
-    return {
+    const normalised = {
       id: clean(item.id) || `video-${index + 1}`,
       status: clean(item.status).toLowerCase() || 'draft',
       featured: item.featured === true,
-      indexable: uploaded && item.indexable !== false,
       uploaded,
       titleHr: clean(item.titleHr || item.title),
       titleEn: clean(item.titleEn || item.titleHr || item.title),
@@ -38,6 +49,8 @@
       mp4Url: contentUrl,
       streamUrl: embedUrl
     };
+    normalised.indexable = isIndexable({ ...item, ...normalised });
+    return normalised;
   }
 
   async function loadJson(url) {
@@ -69,5 +82,5 @@
       .sort((left, right) => Number(right.featured) - Number(left.featured));
   }
 
-  window.GNKVideoCatalog = { load, normalise, isUploaded, validAssetUrl };
+  window.GNKVideoCatalog = { load, normalise, isUploaded, isIndexable, validAssetUrl };
 })();
