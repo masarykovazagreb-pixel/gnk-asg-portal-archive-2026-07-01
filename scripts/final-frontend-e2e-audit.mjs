@@ -66,12 +66,14 @@ add('PDF Publisher E2E contract', pdfPage.includes('operator-token-vault.js') &&
 const mailStudio = read('apps/portal/assets/mail-studio-pro.js');
 add('AI draft review workflow', mailStudio.includes("request('/api/ai-assist'") && mailStudio.includes("currentBox === 'held' && selected.draft?.body") && mailStudio.includes('Slanje ostaje ručna radnja'));
 
-const videos = JSON.parse(read('apps/portal/data/video-library-items.json'));
+const videoCatalog = JSON.parse(read('apps/portal/data/video-library-items.json'));
+const videoItems = Array.isArray(videoCatalog) ? videoCatalog : videoCatalog.items;
 const videoPage = read('apps/portal/assets/video-library-page.js');
-add('Video library workflow', Array.isArray(videos) && videoPage.includes('video-library-items.json') && videoPage.includes('VideoObject'));
+const videoSeo = read('apps/portal/assets/video-seo.js');
+add('Video library workflow', Array.isArray(videoItems) && videoPage.includes('/assets/video-seo.js') && videoPage.includes('GNKVideoSEO.apply') && videoSeo.includes("'@type': 'VideoObject'"));
 
 const liveAudit = read('scripts/live-backend-smoke-audit.mjs');
-add('Contact submit evidence', liveAudit.includes("url:'https://gnk-asg.hr/api/contact-submit'") && liveAudit.includes("expected:[200]"));
+add('Contact submit evidence', liveAudit.includes("url:'https://gnk-asg.hr/api/contact-submit'") && liveAudit.includes('expected:[200]'));
 add('Contact mailbox evidence', liveAudit.includes("url:'https://gnk-asg.hr/api/contact-mailboxes'") && bridge.includes("'/api/contact-mailboxes'"));
 add('Protected contact inbox evidence', liveAudit.includes("url:'https://gnk-asg.hr/operator/contact-inbox'") && bridge.includes("'/operator/contact-inbox'"));
 
