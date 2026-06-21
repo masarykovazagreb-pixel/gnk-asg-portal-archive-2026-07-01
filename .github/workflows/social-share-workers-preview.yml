@@ -32,7 +32,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Verify preview safety
         run: |
@@ -83,11 +83,19 @@ jobs:
           echo 'Preview URL nije postao dostupan unutar 120 sekundi.'
           exit 1
 
+      - name: Publish preview summary
+        if: always()
+        run: |
+          if [ -f reports/social-share-workers-preview/summary.txt ]; then
+            cat reports/social-share-workers-preview/summary.txt >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Upload deployment report
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: gnk-asg-social-share-workers-preview
+          name: gnk-asg-social-share-workers-preview-${{ github.run_id }}
           path: reports/social-share-workers-preview/
-          if-no-files-found: error
-          retention-days: 14
+          if-no-files-found: warn
+          retention-days: 7
