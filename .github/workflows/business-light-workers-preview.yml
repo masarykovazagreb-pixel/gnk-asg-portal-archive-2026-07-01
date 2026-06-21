@@ -13,6 +13,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: gnk-asg-business-light-workers-preview
+  cancel-in-progress: true
+
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
@@ -35,8 +39,11 @@ jobs:
           test -f workers/gnk-asg-preview-portal-worker/src/index.js
           test -f workers/gnk-asg-preview-portal-worker/src/video-sitemap.js
           test -f workers/gnk-asg-preview-portal-worker/wrangler.toml
+          test -f apps/portal/assets/final-contrast-contract.css
+          test -f apps/portal/assets/final-contrast-enforcer.js
           node --check workers/gnk-asg-preview-portal-worker/src/index.js
           node --check workers/gnk-asg-preview-portal-worker/src/video-sitemap.js
+          node --check apps/portal/assets/final-contrast-enforcer.js
           node workers/gnk-asg-preview-portal-worker/test/video-sitemap.test.js
           if grep -E '(^|[[:space:]])routes?[[:space:]]*=' workers/gnk-asg-preview-portal-worker/wrangler.toml; then
             echo 'Production route configuration detected.'
@@ -44,6 +51,8 @@ jobs:
           fi
           grep -q 'PRODUCTION_WRITE_LOCK = "true"' workers/gnk-asg-preview-portal-worker/wrangler.toml
           grep -q 'preview_write_locked' workers/gnk-asg-preview-portal-worker/src/index.js
+          grep -q 'gnk-final-contrast-contract-css' workers/gnk-asg-preview-portal-worker/src/index.js
+          grep -q 'gnk-final-contrast-enforcer-js' workers/gnk-asg-preview-portal-worker/src/index.js
 
       - name: Deploy route-free workers.dev preview
         id: deploy
@@ -94,8 +103,12 @@ jobs:
               | tee reports/workers-preview/availability-error.txt
             exit 1
           fi
-          curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/" > /dev/null
-          curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/en/" > /dev/null
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/?verify=$GITHUB_SHA" > reports/workers-preview/home.html
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/en/?verify=$GITHUB_SHA" > reports/workers-preview/home-en.html
+          grep -q 'id="gnk-final-contrast-contract-css"' reports/workers-preview/home.html
+          grep -q 'id="gnk-final-contrast-enforcer-js"' reports/workers-preview/home.html
+          grep -q 'id="gnk-final-contrast-contract-css"' reports/workers-preview/home-en.html
+          grep -q 'id="gnk-final-contrast-enforcer-js"' reports/workers-preview/home-en.html
           curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/trzista/" > /dev/null
           curl --fail --silent --show-error --retry 4 --retry-all-errors --retry-delay 3 "$url/mail-studio-pro/" > /dev/null
           sitemap_code=$(curl --silent --output reports/workers-preview/video-sitemap.xml --write-out '%{http_code}' "$url/video-sitemap.xml")
@@ -103,7 +116,7 @@ jobs:
           code=$(curl --silent --output reports/workers-preview/write-lock.json --write-out '%{http_code}' \
             -X POST -H 'content-type: application/json' -d '{}' "$url/api/operator-send-mail")
           test "$code" = '423'
-          printf '\nVerified reachable: true\nWrite lock verified: true\nVideo sitemap gate verified: true\n' >> reports/workers-preview/deploy.txt
+          printf '\nVerified reachable: true\nWrite lock verified: true\nVideo sitemap gate verified: true\nContrast injection verified: true\n' >> reports/workers-preview/deploy.txt
 
       - name: Publish preview summary
         if: always()
