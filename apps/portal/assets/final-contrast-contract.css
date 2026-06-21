@@ -1,0 +1,219 @@
+/* GNK ASG final contrast contract
+   Loaded last in preview. It intentionally uses stronger selectors than the legacy premium layer. */
+
+:root {
+  --gnk-dark-panel: #102036;
+  --gnk-dark-panel-2: #142840;
+  --gnk-dark-text: #ffffff;
+  --gnk-dark-muted: #d1dbea;
+  --gnk-dark-label: #b9c7da;
+  --gnk-dark-link: #8fc7ff;
+  --gnk-dark-gold: #f3d477;
+  --gnk-light-panel: #ffffff;
+  --gnk-light-panel-2: #f7f9fc;
+  --gnk-light-text: #071426;
+  --gnk-light-muted: #3f5067;
+  --gnk-light-label: #334155;
+  --gnk-light-link: #0b4f91;
+  --gnk-light-gold: #765100;
+}
+
+/* DARK / BUSINESS THEME */
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell main > section > .container,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .kpi,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .card,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .doc,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .tech-card,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .news-card,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .profile-board,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .quick-data > div,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-kpis > div,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .gnk-asg-hub-card,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .gnk-asg-live-block,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell #gnk-asg-stock-reference-monitor .asg-market-card,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell #gnk-asg-stock-reference-monitor .asg-market-item {
+  background: var(--gnk-dark-panel) !important;
+  color: var(--gnk-dark-text) !important;
+  border-color: rgba(212,175,55,.44) !important;
+}
+
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card:first-child,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .kpi:nth-child(even),
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-kpis > div {
+  background: var(--gnk-dark-panel-2) !important;
+}
+
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .kpi *,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .card *,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card *,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .doc *,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .tech-card *,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .news-card *,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .profile-board *,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .gnk-asg-hub-card *,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .gnk-asg-live-block * {
+  color: var(--gnk-dark-text) !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .section-head h1,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .section-head h2,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .section-head h3,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .kpi .value,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card h1,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card h2,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card h3,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card h4,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card dd,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card strong,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-kpis strong,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell #gnk-asg-stock-reference-monitor .asg-value {
+  color: var(--gnk-dark-text) !important;
+  opacity: 1 !important;
+}
+
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .section-head p,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .kpi .meaning,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .card p,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card p,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card dt,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .doc p,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .news-card p,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .tech-card p,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .gnk-asg-live-block p,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .gnk-asg-live-block small,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell #gnk-asg-stock-reference-monitor p,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell #gnk-asg-stock-reference-monitor .asg-note {
+  color: var(--gnk-dark-muted) !important;
+  opacity: 1 !important;
+}
+
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .kpi .label,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .fact dt,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card dt,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .quick-data small,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-kpis small {
+  color: var(--gnk-dark-label) !important;
+  opacity: 1 !important;
+}
+
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .eyebrow,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .tag,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .news-card .meta,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card .eyebrow,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .gnk-asg-live-block > header span {
+  color: var(--gnk-dark-gold) !important;
+}
+
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .card a,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .group-card a,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .doc a,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .news-card a,
+html:not([data-gnk-theme="light"]) body.gnk-asg-premium-shell .fact dd a {
+  color: var(--gnk-dark-link) !important;
+  text-decoration-color: rgba(143,199,255,.62) !important;
+}
+
+/* LIGHT THEME */
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell main > section > .container,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .kpi,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .card,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .group-card,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .doc,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .tech-card,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .news-card,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .profile-board,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .quick-data > div,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .group-kpis > div,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .gnk-asg-hub-card,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .gnk-asg-live-block,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell #gnk-asg-stock-reference-monitor .asg-market-card,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell #gnk-asg-stock-reference-monitor .asg-market-item {
+  background: var(--gnk-light-panel) !important;
+  color: var(--gnk-light-text) !important;
+  border-color: rgba(7,20,38,.18) !important;
+}
+
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .doc,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .quick-data > div,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .group-kpis > div {
+  background: var(--gnk-light-panel-2) !important;
+}
+
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .kpi *,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .card *,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .group-card *,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .doc *,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .tech-card *,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .news-card *,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .profile-board *,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .gnk-asg-hub-card *,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .gnk-asg-live-block * {
+  color: var(--gnk-light-text) !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .section-head p,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .kpi .meaning,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .card p,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .group-card p,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .group-card dt,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .doc p,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .news-card p,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .tech-card p,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .gnk-asg-live-block p,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .gnk-asg-live-block small {
+  color: var(--gnk-light-muted) !important;
+  opacity: 1 !important;
+}
+
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .kpi .label,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .fact dt,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .group-card dt,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .quick-data small,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .group-kpis small {
+  color: var(--gnk-light-label) !important;
+  opacity: 1 !important;
+}
+
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .eyebrow,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .tag,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .news-card .meta {
+  color: var(--gnk-light-gold) !important;
+}
+
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .card a,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .group-card a,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .doc a,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .news-card a,
+html[data-gnk-theme="light"] body.gnk-asg-premium-shell .fact dd a {
+  color: var(--gnk-light-link) !important;
+}
+
+/* Focus and minimum readable contrast for both themes. */
+body.gnk-asg-premium-shell a:focus-visible,
+body.gnk-asg-premium-shell button:focus-visible,
+body.gnk-asg-premium-shell select:focus-visible,
+body.gnk-asg-premium-shell input:focus-visible,
+body.gnk-asg-premium-shell textarea:focus-visible {
+  outline: 3px solid #f0d77d !important;
+  outline-offset: 3px !important;
+}
+
+@media (max-width: 820px) {
+  body.gnk-asg-premium-shell .kpi .value {
+    font-size: clamp(1.65rem,8vw,2.25rem) !important;
+    line-height: 1.16 !important;
+  }
+  body.gnk-asg-premium-shell .group-card h3 {
+    line-height: 1.15 !important;
+  }
+  body.gnk-asg-premium-shell .fact dt,
+  body.gnk-asg-premium-shell .fact dd {
+    font-size: .92rem !important;
+    line-height: 1.45 !important;
+  }
+}
