@@ -19,6 +19,15 @@ const REQUIRED_MAIL_CAPABILITIES = [
   'sensitive_reply_hold'
 ];
 
+const REQUIRED_BACKEND_CAPABILITIES = [
+  'operator_token_required',
+  'kv_state_storage',
+  'mailbox_audit_trail',
+  'health_status_endpoint',
+  'rollback_manifest',
+  'regression_self_test'
+];
+
 const REQUIRED_VIDEO_CAPABILITIES = [
   'featured_4k_teaser',
   'popup_minimize_maximize_close',
@@ -31,6 +40,7 @@ export function phase1Readiness(selfTest) {
   const checks = {
     publicRoutesDeclared: REQUIRED_PUBLIC_ROUTES.length === 9,
     mailCapabilitiesDeclared: REQUIRED_MAIL_CAPABILITIES.length === 6,
+    backendCapabilitiesDeclared: REQUIRED_BACKEND_CAPABILITIES.length === 6,
     videoCapabilitiesDeclared: REQUIRED_VIDEO_CAPABILITIES.length === 5,
     mailSelfTestPassing: Boolean(selfTest && selfTest.ok)
   };
@@ -40,6 +50,7 @@ export function phase1Readiness(selfTest) {
     checks,
     requiredPublicRoutes: REQUIRED_PUBLIC_ROUTES,
     requiredMailCapabilities: REQUIRED_MAIL_CAPABILITIES,
+    requiredBackendCapabilities: REQUIRED_BACKEND_CAPABILITIES,
     requiredVideoCapabilities: REQUIRED_VIDEO_CAPABILITIES,
     blockedItems: []
   };
