@@ -1,9 +1,7 @@
-import { EmailMessage } from 'cloudflare:email';
 import { signatureFor } from './signature.js';
-import { sendExternalMail, outboundProviderStatus } from './outbound-provider.js';
 
 const LOGO_URL = 'https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png';
-const MAX_TOTAL_ATTACHMENT_BYTES = 8_000_000;
+const MAX_TOTAL_ATTACHMENT_BYTES = 4_500_000;
 
 export async function sendContextualReply(env, outgoing) {
   return sendMessage(env, {
@@ -16,7 +14,6 @@ export async function sendContextualReply(env, outgoing) {
     profile: outgoing.profile || 'it',
     caseId: outgoing.caseId || '',
     autoReply: true,
-    source: outgoing.source || 'mail-agent-auto-reply',
     attachments: []
   });
 }
@@ -34,17 +31,19 @@ export async function sendManualMail(env, input) {
     profile: input.signatureProfile || input.profile || 'office',
     caseId: input.caseId || '',
     autoReply: false,
-    source: input.source || 'mail-studio',
     attachments: Array.isArray(input.attachments) ? input.attachments : []
   });
 }
 
 async function sendMessage(env, input) {
+  if (!env.EMAIL || typeof env.EMAIL.send !== 'function') {
+    throw new Error('Cloudflare EMAIL binding nije konfiguriran.');
+  }
+
   const from = validSender(input.from);
   const to = parseRecipients(input.to);
   const cc = parseRecipients(input.cc);
   const bcc = parseRecipients(input.bcc);
-  const envelopeRecipients = [...new Set([...to, ...cc, ...bcc])];
   const subject = cleanHeader(input.subject || 'GNK ASG poruka');
   const body = String(input.body || '').trim();
 
@@ -59,132 +58,43 @@ async function sendMessage(env, input) {
   const textBody = `${body}\r\n\r\n${signatureText}`;
   const htmlBody = buildHtmlBody(body, signatureText, input.fromName || 'GNK ASG');
 
-  const provider = outboundProviderStatus(env);
-  if (provider.configured) {
-    const external = await sendExternalMail(env, {
-      from,
-      fromName: input.fromName || 'GNK ASG',
-      to,
-      cc,
-      bcc,
-      subject,
-      text:textBody,
-      html:htmlBody,
-      replyTo:from,
-      caseId:input.caseId || '',
-      source:input.source || 'mail-agent',
-      attachments
-    });
-    return {
-      ok:Boolean(external?.ok),
-      provider:external?.provider || provider.provider,
-      from,
-      to,
-      cc,
-      bccCount:bcc.length,
-      subject,
-      attachmentCount:attachments.length,
-      recipientCount:envelopeRecipients.length,
-      messageId:external?.messageId || null,
-      deliveries:envelopeRecipients.map(recipient => ({ recipient, sent:Boolean(external?.ok), messageId:external?.messageId || null })),
-      failedCount:external?.ok ? 0 : envelopeRecipients.length
-    };
-  }
-
-  if (!env.EMAIL || typeof env.EMAIL.send !== 'function') {
-    throw new Error('Outbound mail provider nije konfiguriran. Dodajte RESEND_API_KEY ili BREVO_API_KEY kao Cloudflare secret.');
-  }
-
-  const raw = buildMimeMessage({
-    from,
-    fromName: input.fromName || 'GNK ASG',
+  const result = await env.EMAIL.send({
+    from: { email: from, name: input.fromName || 'GNK ASG' },
     to,
-    cc,
+    cc: cc.length ? cc : undefined,
+    bcc: bcc.length ? bcc : undefined,
+    replyTo: from,
     subject,
-    textBody,
-    htmlBody,
-    attachments,
-    autoReply: input.autoReply === true
+    text: textBody,
+    html: htmlBody,
+    attachments: attachments.length ? attachments.map(item => ({
+      content: item.base64,
+      filename: item.filename,
+      type: item.mimeType,
+      disposition: 'attachment'
+    })) : undefined,
+    headers: input.caseId ? { 'X-GNK-ASG-Case': cleanHeader(input.caseId) } : undefined
   });
 
-  const deliveries = [];
-  for (const recipient of envelopeRecipients) {
-    try {
-      const response = await env.EMAIL.send(new EmailMessage(from, recipient, raw));
-      deliveries.push({ recipient, sent: true, messageId: response?.messageId || null, provider:'cloudflare-email-binding' });
-    } catch (error) {
-      deliveries.push({ recipient, sent: false, error: String(error?.message || error), provider:'cloudflare-email-binding' });
-    }
-  }
-
-  const failed = deliveries.filter(item => !item.sent);
   return {
-    ok: failed.length === 0,
-    provider:'cloudflare-email-binding',
+    ok: true,
+    provider: 'cloudflare-email-service',
     from,
     to,
     cc,
     bccCount: bcc.length,
     subject,
     attachmentCount: attachments.length,
-    recipientCount: envelopeRecipients.length,
-    deliveries,
-    failedCount: failed.length
+    recipientCount: [...new Set([...to, ...cc, ...bcc])].length,
+    messageId: result?.messageId || null,
+    deliveries: [...new Set([...to, ...cc, ...bcc])].map(recipient => ({
+      recipient,
+      sent: true,
+      messageId: result?.messageId || null,
+      provider: 'cloudflare-email-service'
+    })),
+    failedCount: 0
   };
-}
-
-function buildMimeMessage({ from, fromName, to, cc, subject, textBody, htmlBody, attachments, autoReply }) {
-  const mixedBoundary = `gnk_mixed_${crypto.randomUUID().replace(/-/g, '')}`;
-  const altBoundary = `gnk_alt_${crypto.randomUUID().replace(/-/g, '')}`;
-  const lines = [
-    `From: ${encodeHeader(fromName)} <${from}>`,
-    `To: ${to.join(', ')}`
-  ];
-
-  if (cc.length) lines.push(`Cc: ${cc.join(', ')}`);
-  lines.push(
-    `Reply-To: ${from}`,
-    `Subject: ${encodeHeader(subject)}`,
-    'MIME-Version: 1.0'
-  );
-  if (autoReply) {
-    lines.push('Auto-Submitted: auto-replied', 'X-Auto-Response-Suppress: All');
-  }
-  lines.push(
-    `Content-Type: multipart/mixed; boundary="${mixedBoundary}"`,
-    '',
-    `--${mixedBoundary}`,
-    `Content-Type: multipart/alternative; boundary="${altBoundary}"`,
-    '',
-    `--${altBoundary}`,
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
-    '',
-    textBody,
-    '',
-    `--${altBoundary}`,
-    'Content-Type: text/html; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
-    '',
-    htmlBody,
-    '',
-    `--${altBoundary}--`
-  );
-
-  for (const attachment of attachments) {
-    lines.push(
-      `--${mixedBoundary}`,
-      `Content-Type: ${attachment.mimeType}; name="${attachment.filename}"`,
-      `Content-Disposition: attachment; filename="${attachment.filename}"`,
-      'Content-Transfer-Encoding: base64',
-      '',
-      foldBase64(attachment.base64),
-      ''
-    );
-  }
-
-  lines.push(`--${mixedBoundary}--`, '');
-  return lines.join('\r\n');
 }
 
 function buildHtmlBody(body, signatureText, fromName) {
@@ -204,7 +114,7 @@ function normalizeAttachments(items) {
     if (!base64) continue;
     if (mimeType !== 'application/pdf' && !filename.toLowerCase().endsWith('.pdf')) continue;
     total += size;
-    if (total > MAX_TOTAL_ATTACHMENT_BYTES) throw new Error('Ukupna veličina PDF privitaka prelazi 8 MB.');
+    if (total > MAX_TOTAL_ATTACHMENT_BYTES) throw new Error('Ukupna veličina PDF privitaka prelazi dopušteni Cloudflare limit.');
     result.push({ filename, mimeType: 'application/pdf', base64, size });
   }
   return result;
@@ -231,17 +141,6 @@ function cleanHeader(value) {
 
 function cleanFilename(value) {
   return String(value || 'attachment.pdf').replace(/[^a-zA-Z0-9._-]+/g, '_').slice(0, 140);
-}
-
-function encodeHeader(value) {
-  const bytes = new TextEncoder().encode(cleanHeader(value));
-  let binary = '';
-  for (const byte of bytes) binary += String.fromCharCode(byte);
-  return `=?UTF-8?B?${btoa(binary)}?=`;
-}
-
-function foldBase64(value) {
-  return String(value || '').replace(/(.{76})/g, '$1\r\n');
 }
 
 function escapeHtml(value) {
