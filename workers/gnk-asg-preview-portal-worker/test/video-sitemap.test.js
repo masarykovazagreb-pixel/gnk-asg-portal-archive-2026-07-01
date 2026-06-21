@@ -42,6 +42,7 @@ const readyEnv = {
       descriptionHr: 'Korporativni film.',
       mp4Url: '/media/film-4k.mp4',
       poster: '/media/film-4k.jpg',
+      duration: 'PT3M',
       uploadDate: '2026-06-21T08:00:00Z'
     },
     '/data/video-library-items.json': {
@@ -51,6 +52,13 @@ const readyEnv = {
           status: 'draft',
           titleHr: 'Placeholder',
           mp4Url: ''
+        },
+        {
+          id: 'missing-thumbnail',
+          status: 'ready',
+          indexable: true,
+          titleHr: 'Bez naslovne slike',
+          mp4Url: '/media/no-poster.mp4'
         }
       ]
     }
@@ -59,7 +67,7 @@ const readyEnv = {
 
 const readyItems = await readUploadedVideos(readyEnv);
 if (readyItems.length !== 1 || readyItems[0].id !== 'film-4k') {
-  throw new Error('Only the uploaded film may enter the sitemap.');
+  throw new Error('Only the uploaded film with a thumbnail may enter the sitemap.');
 }
 
 const response = await handleVideoSitemap(readyEnv);
@@ -68,6 +76,14 @@ const xml = await response.text();
 if (!xml.includes('<video:content_loc>https://gnk-asg.hr/media/film-4k.mp4</video:content_loc>')) {
   throw new Error('Uploaded film content URL is missing.');
 }
-if (xml.includes('Placeholder')) throw new Error('Placeholder video leaked into sitemap.');
+if (!xml.includes('<video:thumbnail_loc>https://gnk-asg.hr/media/film-4k.jpg</video:thumbnail_loc>')) {
+  throw new Error('Uploaded film thumbnail URL is missing.');
+}
+if (!xml.includes('<video:duration>180</video:duration>')) {
+  throw new Error('ISO duration was not converted to seconds.');
+}
+if (xml.includes('Placeholder') || xml.includes('Bez naslovne slike')) {
+  throw new Error('Non-indexable video leaked into sitemap.');
+}
 
 console.log('Video sitemap gate test passed.');
