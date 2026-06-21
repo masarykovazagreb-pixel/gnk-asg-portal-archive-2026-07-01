@@ -37,7 +37,12 @@ const requiredFiles = [
   'workers/gnk-asg-mail-agent-worker/src/ai.js',
   'workers/gnk-asg-mail-agent-worker/src/thread-context.js',
   'workers/gnk-asg-mail-agent-worker/src/media-campaign-lease.js',
+  'workers/gnk-asg-mail-agent-worker/src/media-campaign-suppression.js',
+  'workers/gnk-asg-mail-agent-worker/src/operator-audit-log.js',
   'workers/gnk-asg-mail-agent-worker/src/rollback-manifest.js',
+  'workers/gnk-asg-mail-agent-worker/test/media-campaign-suppression.test.js',
+  'workers/gnk-asg-mail-agent-worker/test/operator-audit-log.test.js',
+  'scripts/backup-restore-rehearsal.mjs',
   'scripts/mobile-admin-security-audit.mjs',
   'scripts/publications-regression-audit.mjs',
   'scripts/news-market-regression-audit.mjs',
@@ -140,6 +145,60 @@ check(
   'Campaign production lock is present',
   campaignContract.productionLocked === true || campaignContract.liveSendingEnabled === false,
   'campaign delivery must remain locked by default'
+);
+
+const suppression = read('workers/gnk-asg-mail-agent-worker/src/media-campaign-suppression.js');
+const campaignService = read('workers/gnk-asg-mail-agent-worker/src/media-campaign-service.js');
+const mailIndex = read('workers/gnk-asg-mail-agent-worker/src/index.js');
+check(
+  'Persistent suppression registry is active',
+  suppression.includes('MEDIA_CAMPAIGN_SUPPRESSION_KEY') &&
+    suppression.includes('addSuppressionEntry') &&
+    suppression.includes('removeSuppressionEntry'),
+  'opt-out state must persist in KV and be reversible only by an operator action'
+);
+check(
+  'Suppression is enforced before every campaign window',
+  campaignService.includes('readSuppressionSet') &&
+    campaignService.includes('applySuppressionToCampaign'),
+  'late opt-out must block already-created campaigns'
+);
+check(
+  'Suppression management routes are protected by the operator gate',
+  mailIndex.indexOf("if (!authorized(request, env))") >= 0 &&
+    mailIndex.indexOf("/api/mail-agent/suppressions") > mailIndex.indexOf("if (!authorized(request, env))"),
+  'suppression list must not be publicly readable or writable'
+);
+
+const auditLog = read('workers/gnk-asg-mail-agent-worker/src/operator-audit-log.js');
+check(
+  'Operator audit log is persistent and redacts sensitive metadata',
+  auditLog.includes('OPERATOR_AUDIT_LOG_KEY') &&
+    auditLog.includes("'token'") &&
+    auditLog.includes("'authorization'") &&
+    auditLog.includes("'secret'"),
+  'operator actions must be traceable without storing credentials or message bodies'
+);
+check(
+  'Operator audit route is protected',
+  mailIndex.indexOf("/api/mail-agent/audit-log") > mailIndex.indexOf("if (!authorized(request, env))"),
+  'audit records must require operator authorization'
+);
+
+const restoreRehearsal = read('scripts/backup-restore-rehearsal.mjs');
+check(
+  'Backup and restore rehearsal is deterministic and non-production',
+  restoreRehearsal.includes('byteExactRestore') &&
+    restoreRehearsal.includes('sourceSha256') &&
+    restoreRehearsal.includes('restoredSha256') &&
+    restoreRehearsal.includes('productionTouched: false'),
+  'repository-managed state must be restored byte-for-byte in isolation'
+);
+check(
+  'Cloud runtime restore is explicitly gated',
+  restoreRehearsal.includes("cloudRuntimeState: 'PLANNED_NOT_EXECUTED'") &&
+    restoreRehearsal.includes('controlled production access'),
+  'KV, D1 and R2 restore cannot be claimed before authorized runtime rehearsal'
 );
 
 for (const config of [
