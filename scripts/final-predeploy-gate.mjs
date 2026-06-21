@@ -72,7 +72,7 @@ const checks = [
   check('video-awaiting-upload-not-indexed', video.status === 'awaiting_upload' && video.indexable === false && !video.streamUrl && !video.mp4Url, `status=${video.status}, indexable=${video.indexable}`),
   check('social-autopost-production-locked', social.productionLocked === true && social.deploymentApproved === false && social.safety?.noAutomaticSocialPostingWithoutProviderOAuth === true, 'automatic provider posting remains locked'),
   check('whatsapp-actions-contain-no-secrets', !JSON.stringify(waActions).match(/token|secret|api[_-]?key/i), 'navigation and handover actions only'),
-  check('core-deploy-status-defined', config.coreDeploy?.status === 'ready_for_manual_approval', config.coreDeploy?.status || 'missing'),
+  check('core-deploy-status-defined', ['ready_for_manual_approval', 'ready_for_explicit_production_approval'].includes(config.coreDeploy?.status), config.coreDeploy?.status || 'missing'),
   check('optional-integrations-nonblocking', config.optionalExternalIntegrations.every(item => item.blocksCoreDeploy === false), `${config.optionalExternalIntegrations.length} optional integrations explicitly nonblocking`, 'advisory'),
   check('production-not-preapproved', config.safetyLocks?.productionTouchedBeforeApproval === false && config.safetyLocks?.mergeAllowedBeforeApproval === false, 'preapproval production and merge remain disabled')
 ];
