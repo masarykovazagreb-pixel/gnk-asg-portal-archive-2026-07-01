@@ -1,3 +1,5 @@
+import { videoReadiness } from './video-readiness-contract.js';
+
 const REQUIRED_PUBLIC_ROUTES = [
   '/',
   '/objave/',
@@ -37,11 +39,13 @@ const REQUIRED_VIDEO_CAPABILITIES = [
 ];
 
 export function phase1Readiness(selfTest) {
+  const video = videoReadiness();
   const checks = {
     publicRoutesDeclared: REQUIRED_PUBLIC_ROUTES.length === 9,
     mailCapabilitiesDeclared: REQUIRED_MAIL_CAPABILITIES.length === 6,
     backendCapabilitiesDeclared: REQUIRED_BACKEND_CAPABILITIES.length === 6,
     videoCapabilitiesDeclared: REQUIRED_VIDEO_CAPABILITIES.length === 5,
+    uploadedVideoAssetsOnly: video.seo.videoObject.includes('uploaded') && video.seo.sitemap.includes('uploaded') && video.seo.placeholdersAllowed === false,
     mailSelfTestPassing: Boolean(selfTest && selfTest.ok)
   };
   return {
@@ -52,6 +56,7 @@ export function phase1Readiness(selfTest) {
     requiredMailCapabilities: REQUIRED_MAIL_CAPABILITIES,
     requiredBackendCapabilities: REQUIRED_BACKEND_CAPABILITIES,
     requiredVideoCapabilities: REQUIRED_VIDEO_CAPABILITIES,
+    video,
     blockedItems: []
   };
 }
