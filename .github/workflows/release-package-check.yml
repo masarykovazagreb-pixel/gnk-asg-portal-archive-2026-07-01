@@ -44,11 +44,23 @@ jobs:
           node --check scripts/hr-en-public-route-audit.mjs
 
       - name: Run HR EN public route audit
+        id: hr_en_route_audit
+        continue-on-error: true
         run: node scripts/hr-en-public-route-audit.mjs
+
+      - name: Upload HR EN route audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-hr-en-route-audit-${{ github.run_id }}
+          path: reports/hr-en-public-route-audit/
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Validate HR EN public route evidence
         run: |
           set -euo pipefail
+          test "${{ steps.hr_en_route_audit.outcome }}" = "success"
           node -e "const p=require('./reports/hr-en-public-route-audit/route-audit.json'); if(p.status!=='PASS'||p.failed!==0||p.productionTouched!==false||p.productionDeployPerformed!==false||!p.publicRouteCount) process.exit(1)"
           test -s reports/hr-en-public-route-audit/route-audit.md
 
