@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { chromium } from 'playwright';
+import { chromium } from 'playwright-core';
 
 const baseUrl = String(process.env.PREVIEW_BASE_URL || 'https://gnk-asg-business-light-preview.beckuphome.workers.dev').replace(/\/$/, '');
 const outDir = path.resolve('reports/mobile-contrast-browser-audit');
@@ -11,8 +11,13 @@ const routes = [
   { key: 'en', path: '/en/' }
 ];
 const themes = ['dark', 'light'];
+const executablePath = process.env.CHROMIUM_PATH || process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefined;
 
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({
+  headless: true,
+  executablePath,
+  args: ['--no-sandbox', '--disable-dev-shm-usage']
+});
 const results = [];
 
 try {
