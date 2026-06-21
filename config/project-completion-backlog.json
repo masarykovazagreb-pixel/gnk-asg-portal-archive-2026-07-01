@@ -1,9 +1,16 @@
 {
-  "version": "2026-06-21-v6",
+  "version": "2026-06-21-v7",
   "branch": "experience-ai-live-overview",
   "productionTouched": false,
   "mergeAllowed": false,
   "draftPullRequest": 2,
+  "releaseConstraints": {
+    "keepDraft": true,
+    "noMergeWithoutApproval": true,
+    "noProductionDeployWithoutApproval": true,
+    "noRouteChangeWithoutApproval": true,
+    "noSecretChangeWithoutApproval": true
+  },
   "currentScope": [
     "mobile admin and secure quick publisher",
     "Mail Studio Pro and full-thread AI context",
