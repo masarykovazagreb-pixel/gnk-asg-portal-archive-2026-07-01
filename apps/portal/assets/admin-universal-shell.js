@@ -36,4 +36,5 @@
     style('/assets/mobile-admin-publisher.css?v=20260621-1','gnk-mobile-publisher-css');
     script('/assets/mobile-admin-publisher.js?v=20260621-1','gnk-mobile-publisher-js');
   }
+  style('/assets/final-contrast-contract.css?v=20260621-1','gnk-final-contrast-contract-css');
 })();
