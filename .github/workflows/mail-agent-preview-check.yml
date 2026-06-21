@@ -39,6 +39,7 @@ jobs:
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-rate-limit.test.js
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js
 
       - name: Wrangler route-free dry run
         run: |
@@ -66,13 +67,22 @@ jobs:
           Rate limit 10/min: verified
           Repeated-window lock: verified
           Scheduling gate: verified
-          PDF attachment metadata: verified
+          PDF attachment storage: verified
+          Live-send confirmation gate: verified
           Personalisation: verified
           Live sending: disabled
           Wrangler dry run: completed
           EOF
 
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f reports/mail-agent-preview/README.txt ]; then
+            cat reports/mail-agent-preview/README.txt >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Upload preview artifact
+        if: always()
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
