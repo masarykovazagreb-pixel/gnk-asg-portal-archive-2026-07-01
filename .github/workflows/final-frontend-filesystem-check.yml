@@ -1,0 +1,67 @@
+name: GNK ASG Final Frontend Filesystem Check
+
+on:
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - 'apps/portal/**'
+      - 'workers/gnk-asg-public-pages-live/**'
+      - 'scripts/final-frontend-filesystem-audit.mjs'
+      - '.github/workflows/final-frontend-filesystem-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate sources
+        run: |
+          set -euo pipefail
+          node --check scripts/final-frontend-filesystem-audit.mjs
+          node --check workers/gnk-asg-public-pages-live/src/index.js
+          node --check apps/portal/assets/media-campaign-studio.js
+          node --check apps/portal/assets/media-campaign-pdf-upload.js
+
+      - name: Build isolated static preview
+        run: |
+          set -euo pipefail
+          mkdir -p preview-artifact
+          cp -R apps/portal/. preview-artifact/
+
+      - name: Run final filesystem audit
+        run: PREVIEW_ROOT='preview-artifact' node scripts/final-frontend-filesystem-audit.mjs
+
+      - name: Validate report
+        run: |
+          set -euo pipefail
+          node -e "const p=require('./reports/final-frontend-filesystem/report.json'); if(p.status!=='PASS'||p.productionWrites!==false||p.productionTouched!==false||p.failed!==0) process.exit(1)"
+          test -s reports/final-frontend-filesystem/report.md
+
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f reports/final-frontend-filesystem/report.md ]; then
+            cat reports/final-frontend-filesystem/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-final-frontend-filesystem-${{ github.run_id }}
+          path: reports/final-frontend-filesystem/
+          if-no-files-found: error
+          retention-days: 14
