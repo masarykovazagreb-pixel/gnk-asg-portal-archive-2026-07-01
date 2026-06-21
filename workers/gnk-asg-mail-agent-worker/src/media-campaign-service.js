@@ -9,8 +9,7 @@ import { saveMediaCampaign } from './media-campaign-state.js';
 export async function createMediaCampaign(env, payload = {}) {
   validateCampaignContent(payload);
   const campaignId = String(payload.id || crypto.randomUUID());
-  const attachment = normaliseCampaignAttachment(payload.pdfAttachment || payload.attachment);
-  const attachmentMetadata = await storeCampaignAttachment(env, campaignId, attachment);
+  const attachmentMetadata = await optionalAttachmentMetadata(env, campaignId, payload);
   const batch = buildMediaCampaignBatch({ ...payload, id: campaignId, attachmentMetadata });
   const preview = planMediaCampaignWindow(batch);
 
@@ -27,13 +26,37 @@ export async function createMediaCampaign(env, payload = {}) {
     rateLimitPerMinute: batch.rateLimitPerMinute,
     attachment: {
       filename: batch.pdfAttachmentName,
-      size: batch.attachmentSize
+      size: batch.attachmentSize,
+      stored: Boolean(batch.attachmentKey)
     },
     status: batch.status,
     createdAt: batch.createdAt
   });
 
   return { batch, preview };
+}
+
+export async function attachMediaCampaignPdf(env, campaign, input = {}) {
+  const attachment = normaliseCampaignAttachment(input.pdfAttachment || input.attachment || input);
+  const metadata = await storeCampaignAttachment(env, campaign.id, attachment);
+  const updated = {
+    ...campaign,
+    pdfAttachmentName: metadata.filename,
+    attachmentKey: metadata.key,
+    attachmentSize: metadata.size,
+    attachmentStoredAt: new Date().toISOString()
+  };
+  await saveMediaCampaign(env, updated);
+  await addMailboxItem(env, 'held', {
+    id: `${updated.id}:attachment`,
+    type: 'media-campaign-attachment',
+    batchId: updated.id,
+    filename: metadata.filename,
+    size: metadata.size,
+    stored: true,
+    createdAt: updated.attachmentStoredAt
+  });
+  return updated;
 }
 
 export async function runMediaCampaignWindow(env, campaign, command = {}) {
@@ -82,10 +105,26 @@ export async function runMediaCampaignWindow(env, campaign, command = {}) {
   };
 }
 
+async function optionalAttachmentMetadata(env, campaignId, payload) {
+  const input = payload.pdfAttachment || payload.attachment;
+  if (input?.base64) {
+    const attachment = normaliseCampaignAttachment(input);
+    return storeCampaignAttachment(env, campaignId, attachment);
+  }
+  return {
+    key: '',
+    filename: String(payload.pdfAttachmentName || '').trim(),
+    mimeType: 'application/pdf',
+    size: 0,
+    stored: false
+  };
+}
+
 function validateCampaignContent(payload) {
   if (!String(payload.subject || '').trim()) throw new Error('missing_subject');
   if (!String(payload.bodyTemplate || payload.body || '').trim()) throw new Error('missing_body');
   if (!Array.isArray(payload.recipients) || !payload.recipients.length) throw new Error('missing_recipients');
+  if (!String(payload.pdfAttachmentName || payload.pdfAttachment?.filename || '').trim()) throw new Error('missing_pdf_attachment');
 }
 
 function blockedResult(campaign, reason, status) {
