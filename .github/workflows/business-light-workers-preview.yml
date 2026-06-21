@@ -27,7 +27,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Verify preview safety
         run: |
@@ -109,9 +109,10 @@ jobs:
 
       - name: Upload deployment report
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: gnk-asg-business-light-workers-preview
+          name: gnk-asg-business-light-workers-preview-${{ github.run_id }}
           path: reports/workers-preview/
-          if-no-files-found: error
-          retention-days: 14
+          if-no-files-found: warn
+          retention-days: 7
