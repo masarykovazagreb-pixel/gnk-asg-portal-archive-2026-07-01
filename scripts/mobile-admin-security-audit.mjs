@@ -6,27 +6,34 @@ const REPORT_DIR = path.join(ROOT, 'reports', 'mobile-admin-security');
 const files = {
   vault: path.join(ROOT, 'apps', 'portal', 'assets', 'operator-token-vault.js'),
   publisher: path.join(ROOT, 'apps', 'portal', 'assets', 'mobile-admin-publisher.js'),
-  mobile: path.join(ROOT, 'apps', 'portal', 'operator-mobile', 'index.html')
+  mobile: path.join(ROOT, 'apps', 'portal', 'operator-mobile', 'index.html'),
+  studio: path.join(ROOT, 'apps', 'portal', 'assets', 'mail-studio-pro.js'),
+  studioPage: path.join(ROOT, 'apps', 'portal', 'mail-studio-pro', 'index.html')
 };
 
 function read(file) {
   return fs.readFileSync(file, 'utf8');
 }
 
-const source = {
-  vault: read(files.vault),
-  publisher: read(files.publisher),
-  mobile: read(files.mobile)
-};
+const source = Object.fromEntries(
+  Object.entries(files).map(([key, file]) => [key, read(file)])
+);
 
 const checks = [];
 function check(name, pass, detail) {
   checks.push({ name, pass: Boolean(pass), detail });
 }
 
-const combinedSensitive = `${source.publisher}\n${source.mobile}`;
-const vaultPosition = source.mobile.indexOf('/assets/operator-token-vault.js');
-const tokenUsePosition = source.mobile.indexOf('const token=');
+const combinedSensitive = [
+  source.publisher,
+  source.mobile,
+  source.studio,
+  source.studioPage
+].join('\n');
+const mobileVaultPosition = source.mobile.indexOf('/assets/operator-token-vault.js');
+const mobileTokenUsePosition = source.mobile.indexOf('const token=');
+const studioVaultPosition = source.studioPage.indexOf('/assets/operator-token-vault.js');
+const studioScriptPosition = source.studioPage.indexOf('/assets/mail-studio-pro.js');
 
 check(
   'Token vault uses sessionStorage',
@@ -36,7 +43,7 @@ check(
 );
 check(
   'Legacy persistent token is removed',
-  source.vault.includes("localStorage.removeItem(key)") &&
+  source.vault.includes('localStorage.removeItem(key)') &&
     source.vault.includes("LEGACY_KEYS = ['GNK_ASG_OPERATOR_TOKEN']"),
   'Legacy localStorage token must be migrated once and deleted.'
 );
@@ -59,9 +66,9 @@ check(
   'Token removal or replacement must immediately invalidate the verified state.'
 );
 check(
-  'AI preparation is authenticated',
+  'AI publication preparation is authenticated',
   /fetch\('\/api\/ai-assist'[\s\S]*?headers:\s*\{[\s\S]*?\.\.\.auth\(\)/.test(source.publisher),
-  'Private AI preparation must include operator authentication.'
+  'Private publication AI preparation must include operator authentication.'
 );
 check(
   'Media upload is authenticated',
@@ -75,8 +82,42 @@ check(
 );
 check(
   'Mobile page loads vault before token use',
-  vaultPosition >= 0 && tokenUsePosition >= 0 && vaultPosition < tokenUsePosition,
+  mobileVaultPosition >= 0 && mobileTokenUsePosition >= 0 && mobileVaultPosition < mobileTokenUsePosition,
   'The session vault must exist before inline mobile admin code reads the token.'
+);
+check(
+  'Mail Studio reads token through vault',
+  source.studio.includes('window.GNKOperatorToken?.get?.()') &&
+    source.studio.includes('window.GNKOperatorToken?.headers?.()') &&
+    source.studio.includes('window.GNKOperatorToken?.set?.(value)') &&
+    source.studio.includes('window.GNKOperatorToken?.clear?.()'),
+  'Mail Studio authentication must use the shared session vault.'
+);
+check(
+  'Mail Studio loads vault before application code',
+  studioVaultPosition >= 0 && studioScriptPosition >= 0 && studioVaultPosition < studioScriptPosition,
+  'The vault script must execute before Mail Studio Pro.'
+);
+check(
+  'Mail Studio protected requests receive auth headers',
+  source.studio.includes('for (const [key, value] of Object.entries(auth())) headers.set(key, value)') &&
+    source.studio.includes("request('/api/ai-assist'") &&
+    source.studio.includes("request('/api/admin-mail-send'"),
+  'AI and send requests must pass through the authenticated request helper.'
+);
+check(
+  'Held AI draft is reviewable before manual sending',
+  source.studio.includes("currentBox === 'held' && selected.draft?.body") &&
+    source.studio.includes('AI draft je učitan za provjeru') &&
+    source.studio.includes('Slanje ostaje ručna radnja'),
+  'Sensitive or non-automatic replies must remain visible for human approval.'
+);
+check(
+  'Mail Studio forwards thread context to AI',
+  source.studio.includes('threadContext: compactThreadContext()') &&
+    source.studio.includes('threadMessageCount:') &&
+    source.studio.includes('cijeli dostupni thread'),
+  'AI assistance must receive the available conversation chronology.'
 );
 check(
   'No operator token is placed in a URL',
@@ -86,8 +127,9 @@ check(
 check(
   'No persistent raw token reads remain',
   !/localStorage\.getItem\(\s*['"]GNK_ASG_OPERATOR_TOKEN['"]\s*\)/.test(combinedSensitive) &&
-    !/const\s+TOKEN_KEY\s*=\s*['"]GNK_ASG_OPERATOR_TOKEN['"]/.test(combinedSensitive),
-  'The quick publisher and mobile page must not read the operator token from localStorage.'
+    !/const\s+TOKEN_KEY\s*=\s*['"]GNK_ASG_OPERATOR_TOKEN['"]/.test(combinedSensitive) &&
+    !/localStorage\.setItem\(\s*TOKEN_KEY/.test(combinedSensitive),
+  'Mobile admin and Mail Studio must not persist the operator token in localStorage.'
 );
 check(
   'No obvious hardcoded operator secret exists',
@@ -111,7 +153,7 @@ fs.writeFileSync(
 );
 
 const markdown = [
-  '# Mobile Admin Security Audit',
+  '# Operator Security Audit',
   '',
   `Status: **${result.status}**`,
   '',
