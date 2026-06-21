@@ -26,12 +26,15 @@ jobs:
           set -euo pipefail
           node --check workers/gnk-asg-data-sync-preview/src/schedule.js
           node --check workers/gnk-asg-data-sync-preview/src/refresh.js
+          node --check workers/gnk-asg-data-sync-preview/src/public-market-fallbacks.js
           node --check workers/gnk-asg-data-sync-preview/src/index.js
           node -e "JSON.parse(require('fs').readFileSync('contracts/data-sync-policy.json','utf8'))"
       - name: Run offline scheduler test
         run: node workers/gnk-asg-data-sync-preview/test/schedule.test.js
       - name: Run offline refresh test
         run: node workers/gnk-asg-data-sync-preview/test/refresh.test.js
+      - name: Run public market fallback test
+        run: node workers/gnk-asg-data-sync-preview/test/public-market-fallbacks.test.js
       - name: Run locked worker test
         run: node workers/gnk-asg-data-sync-preview/test/worker.test.js
       - name: Verify route and write locks
