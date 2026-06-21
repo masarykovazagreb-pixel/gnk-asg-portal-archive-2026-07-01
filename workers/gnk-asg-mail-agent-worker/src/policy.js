@@ -3,6 +3,7 @@ export const MAIL_AUTOMATION_POLICY = {
   contextualRepliesOnly: true,
   fixedTemplatesAllowed: false,
   autoSendLowRiskGeneralReplies: true,
+  autoSendRequiresEnvironmentOptIn: true,
   holdSensitiveMessages: true,
   preventReplyLoops: true,
   sensitiveCategories: [
