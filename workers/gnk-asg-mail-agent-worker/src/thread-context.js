@@ -2,6 +2,8 @@ import { readMailbox } from './storage.js';
 
 const BOXES = ['inbox', 'outbox', 'sent', 'held'];
 const MAX_THREAD_MESSAGES = 20;
+const MAX_REVIEW_MESSAGES = 8;
+const MAX_REVIEW_BODY = 1500;
 
 export async function buildThreadContext(env, currentMail, maximum = MAX_THREAD_MESSAGES) {
   const all = (await Promise.all(BOXES.map(box => readMailbox(env, box))))
@@ -19,6 +21,36 @@ export async function buildThreadContext(env, currentMail, maximum = MAX_THREAD_
     participants: unique(ordered.flatMap(messageParticipants)),
     messageCount: ordered.length,
     messages: ordered.map(toThreadMessage)
+  };
+}
+
+export function compactThreadContext(
+  context,
+  maximum = MAX_REVIEW_MESSAGES,
+  bodyLimit = MAX_REVIEW_BODY
+) {
+  const source = Array.isArray(context?.messages) ? context.messages : [];
+  const messages = source.slice(-Math.max(1, maximum)).map(message => ({
+    id: message?.id || '',
+    messageId: message?.messageId || '',
+    caseId: message?.caseId || '',
+    from: message?.from || '',
+    senderEmail: message?.senderEmail || '',
+    to: message?.to || '',
+    subject: message?.subject || '',
+    body: String(message?.body || '').slice(0, Math.max(200, bodyLimit)),
+    status: message?.status || '',
+    timestamp: message?.timestamp || ''
+  }));
+
+  return {
+    threadId: context?.threadId || '',
+    subject: context?.subject || '',
+    participants: unique(Array.isArray(context?.participants) ? context.participants : []),
+    messageCount: Number(context?.messageCount || source.length || messages.length),
+    retainedMessageCount: messages.length,
+    truncated: source.length > messages.length,
+    messages
   };
 }
 
@@ -106,7 +138,9 @@ function timestamp(message) {
 function deduplicate(items) {
   const seen = new Set();
   return items.filter(item => {
-    const key = item?.id || item?.messageId || `${item?.subject}|${item?.receivedAt || item?.createdAt || ''}|${item?.from || ''}`;
+    const key = item?.id
+      || item?.messageId
+      || `${item?.subject}|${item?.receivedAt || item?.createdAt || ''}|${item?.from || ''}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
