@@ -3,7 +3,7 @@
   window.__GNK_ASG_PREVIEW_BOOTSTRAP__ = true;
   function style(href,id){if(document.getElementById(id))return;const link=document.createElement('link');link.id=id;link.rel='stylesheet';link.href=href;document.head.appendChild(link)}
   function script(src,id){if(document.getElementById(id))return;const node=document.createElement('script');node.id=id;node.defer=true;node.src=src;document.head.appendChild(node)}
-  style('/assets/preview-contrast.css?v=20260621-1','gnk-preview-contrast-css');
+  style('/assets/preview-contrast.css?v=20260621-2','gnk-preview-contrast-css');
   style('/assets/preview-floats.css?v=20260621-1','gnk-preview-floats-css');
   style('/assets/preview-discovery.css?v=20260621-1','gnk-preview-discovery-css');
   style('/assets/portal-language-preference.css?v=20260621-1','gnk-language-preference-css');
