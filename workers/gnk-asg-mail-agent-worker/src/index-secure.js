@@ -8,11 +8,16 @@ function suppliedToken(request) {
 }
 
 async function operatorAuthorized(request) {
-  if (!suppliedToken(request)) return false;
+  const token = suppliedToken(request);
+  if (!token) return false;
   try {
     const response = await fetch('https://operator.gnk-asg.hr/operator/status', {
       method:'GET',
-      headers:request.headers,
+      headers:{
+        authorization:`Bearer ${token}`,
+        'x-operator-token':token,
+        accept:'application/json'
+      },
       redirect:'manual'
     });
     return response.status === 200;
@@ -40,14 +45,14 @@ export default {
     if (directMatch) return core.fetch(request,env,ctx);
 
     if (!await operatorAuthorized(request)) {
-      return new Response(JSON.stringify({ok:false,error:'unauthorized',message:'Operator sesija nije potvrđena.'}), {
+      return new Response(JSON.stringify({ok:false,error:'unauthorized',message:'Token nije valjan ili je operator sesija istekla.'}), {
         status:401,
         headers:{
           'content-type':'application/json; charset=utf-8',
           'cache-control':'no-store',
           'access-control-allow-origin':'https://gnk-asg.hr',
           'access-control-allow-methods':'GET,POST,OPTIONS',
-          'access-control-allow-headers':'content-type,authorization,x-operator-token',
+          'access-control-allow-headers':'content-type,authorization,x-operator-token,x-admin-token,x-gnk-asg-token',
           'vary':'Origin'
         }
       });
