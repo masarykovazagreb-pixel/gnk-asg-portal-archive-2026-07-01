@@ -9,6 +9,7 @@ import { readMediaCampaigns, saveMediaCampaign, findMediaCampaign } from './medi
 import { mediaCampaignStatus, pauseMediaCampaign, planMediaCampaignWindow, resumeMediaCampaign } from './media-campaign-actions.js';
 import { executeMediaCampaignWindow } from './media-campaign-window.js';
 import { runMailAgentSelfTest } from './mail-agent-self-test.js';
+import { phase1Readiness } from './phase1-readiness.js';
 
 export default {
   async fetch(request, env) {
@@ -20,20 +21,22 @@ export default {
 
     if (url.pathname === '/api/mail-agent/status') {
       const selfTest = runMailAgentSelfTest();
+      const readiness = phase1Readiness(selfTest);
       return json(request, {
-        ok: true,
+        ok: readiness.ok,
         service: 'GNK ASG Mail Agent',
         mode: 'preview',
         productionRouteConfigured: false,
         policy: MAIL_AUTOMATION_POLICY,
         selfTest,
+        readiness,
         bindings: {
           kv: Boolean(env.GNK_ASG_KV),
           ai: Boolean(env.AI),
           email: Boolean(env.EMAIL)
         },
         updatedAt: new Date().toISOString()
-      }, selfTest.ok ? 200 : 500);
+      }, readiness.ok ? 200 : 500);
     }
 
     if (!authorized(request, env)) {
