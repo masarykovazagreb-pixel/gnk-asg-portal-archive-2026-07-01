@@ -7,6 +7,8 @@ import { preserveThreadHeaders } from './thread-safety.js';
 import { readMediaCampaigns, saveMediaCampaign, findMediaCampaign } from './media-campaign-state.js';
 import { mediaCampaignStatus, pauseMediaCampaign, planMediaCampaignWindow, resumeMediaCampaign } from './media-campaign-actions.js';
 import { attachMediaCampaignPdf, createMediaCampaign, runMediaCampaignWindow } from './media-campaign-service.js';
+import { addSuppressionEntry, readSuppressionEntries, removeSuppressionEntry } from './media-campaign-suppression.js';
+import { readOperatorAuditLog, writeOperatorAuditLog } from './operator-audit-log.js';
 import { runMailAgentSelfTest } from './mail-agent-self-test.js';
 import { phase1Readiness } from './phase1-readiness.js';
 import { rollbackReadiness } from './rollback-manifest.js';
@@ -60,6 +62,20 @@ export default {
       return json(request, { ok: true, box, count: items.length, items });
     }
 
+    if (request.method === 'GET' && url.pathname === '/api/mail-agent/audit-log') {
+      const limit = Number(url.searchParams.get('limit') || 200);
+      const items = await readOperatorAuditLog(env, limit);
+      return json(request, { ok: true, count: items.length, items });
+    }
+
+    if (url.pathname === '/api/mail-agent/suppressions') {
+      return handleSuppressions(request, env);
+    }
+
+    if (request.method === 'POST' && url.pathname === '/api/mail-agent/suppressions/remove') {
+      return handleSuppressionRemoval(request, env);
+    }
+
     if (request.method === 'POST' && url.pathname === '/api/mail-agent/send') {
       return handleManualSend(request, env);
     }
@@ -86,6 +102,63 @@ export default {
   }
 };
 
+async function handleSuppressions(request, env) {
+  if (request.method === 'GET') {
+    const items = await readSuppressionEntries(env);
+    return json(request, { ok: true, count: items.length, items });
+  }
+  if (request.method !== 'POST') return json(request, { ok: false, error: 'method_not_allowed' }, 405);
+
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return json(request, { ok: false, error: 'invalid_json' }, 400);
+  }
+
+  try {
+    const entry = await addSuppressionEntry(env, payload);
+    await writeOperatorAuditLog(env, {
+      action: 'suppression.add',
+      entityType: 'email',
+      entityId: entry.email,
+      metadata: { reason: entry.reason, source: entry.source }
+    });
+    return json(request, { ok: true, entry }, 201);
+  } catch (error) {
+    await writeOperatorAuditLog(env, {
+      action: 'suppression.add',
+      entityType: 'email',
+      entityId: payload?.email,
+      result: 'failed',
+      metadata: { reason: String(error?.message || error) }
+    });
+    return json(request, { ok: false, error: String(error?.message || error) }, 400);
+  }
+}
+
+async function handleSuppressionRemoval(request, env) {
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return json(request, { ok: false, error: 'invalid_json' }, 400);
+  }
+
+  try {
+    const result = await removeSuppressionEntry(env, payload?.email);
+    await writeOperatorAuditLog(env, {
+      action: 'suppression.remove',
+      entityType: 'email',
+      entityId: result.email,
+      metadata: { removed: result.removed }
+    });
+    return json(request, { ok: true, ...result });
+  } catch (error) {
+    return json(request, { ok: false, error: String(error?.message || error) }, 400);
+  }
+}
+
 async function handleManualSend(request, env) {
   let payload;
   try {
@@ -111,6 +184,12 @@ async function handleManualSend(request, env) {
   };
 
   await addMailboxItem(env, 'outbox', queued);
+  await writeOperatorAuditLog(env, {
+    action: 'manual-mail.queue',
+    entityType: 'mail',
+    entityId: queued.id,
+    metadata: { from: queued.from, to: queued.to, attachmentCount: queued.attachmentCount }
+  });
 
   try {
     const result = await sendManualMail(env, payload);
@@ -121,6 +200,13 @@ async function handleManualSend(request, env) {
       result
     };
     await addMailboxItem(env, result.ok ? 'sent' : 'held', sent);
+    await writeOperatorAuditLog(env, {
+      action: 'manual-mail.send',
+      entityType: 'mail',
+      entityId: queued.id,
+      result: result.ok ? 'success' : 'partial_failure',
+      metadata: { from: queued.from, to: queued.to }
+    });
     return json(request, { ok: result.ok, id: queued.id, result }, result.ok ? 200 : 502);
   } catch (error) {
     const failed = {
@@ -130,6 +216,13 @@ async function handleManualSend(request, env) {
       reason: String(error?.message || error)
     };
     await addMailboxItem(env, 'held', failed);
+    await writeOperatorAuditLog(env, {
+      action: 'manual-mail.send',
+      entityType: 'mail',
+      entityId: queued.id,
+      result: 'failed',
+      metadata: { reason: failed.reason }
+    });
     return json(request, { ok: false, id: queued.id, error: failed.reason }, 400);
   }
 }
@@ -144,6 +237,17 @@ async function handleMediaCampaignPreview(request, env) {
 
   try {
     const result = await createMediaCampaign(env, payload);
+    await writeOperatorAuditLog(env, {
+      action: 'media-campaign.create',
+      entityType: 'media-campaign',
+      entityId: result.batch.id,
+      metadata: {
+        total: result.batch.total,
+        remaining: result.batch.remaining,
+        suppressed: result.batch.suppressed,
+        failed: result.batch.failed
+      }
+    });
     return json(request, { ok: true, ...result });
   } catch (error) {
     return json(request, { ok: false, error: String(error?.message || error) }, 400);
@@ -162,6 +266,12 @@ async function handleMediaCampaignAction(request, env, id, action) {
 
   const updated = action === 'pause' ? pauseMediaCampaign(campaign) : resumeMediaCampaign(campaign);
   await saveMediaCampaign(env, updated);
+  await writeOperatorAuditLog(env, {
+    action: `media-campaign.${action}`,
+    entityType: 'media-campaign',
+    entityId: updated.id,
+    metadata: { status: updated.status, remaining: updated.remaining }
+  });
   return json(request, { ok: true, campaign: mediaCampaignStatus(updated) });
 }
 
@@ -176,6 +286,12 @@ async function handleMediaCampaignAttachment(request, env, campaign) {
 
   try {
     const updated = await attachMediaCampaignPdf(env, campaign, payload);
+    await writeOperatorAuditLog(env, {
+      action: 'media-campaign.attachment',
+      entityType: 'media-campaign',
+      entityId: updated.id,
+      metadata: { filename: updated.pdfAttachmentName, size: updated.attachmentSize }
+    });
     return json(request, { ok: true, campaign: mediaCampaignStatus(updated), attachmentStored: true });
   } catch (error) {
     return json(request, { ok: false, error: String(error?.message || error) }, 400);
@@ -195,6 +311,18 @@ async function handleMediaCampaignExecuteWindow(request, env, campaign) {
   }
 
   const result = await runMediaCampaignWindow(env, campaign, command);
+  await writeOperatorAuditLog(env, {
+    action: 'media-campaign.execute-window',
+    entityType: 'media-campaign',
+    entityId: campaign.id,
+    result: result.ok ? 'success' : 'blocked',
+    metadata: {
+      mode: command.mode || 'test',
+      remaining: result.campaign?.remaining,
+      suppressed: result.campaign?.suppressed,
+      error: result.error || null
+    }
+  });
   return json(request, result, result.status || (result.ok ? 200 : 409));
 }
 
