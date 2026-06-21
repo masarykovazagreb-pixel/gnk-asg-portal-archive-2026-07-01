@@ -12,6 +12,7 @@ on:
       - 'apps/portal/assets/operator-dashboard-compat-v1.js'
       - 'apps/portal/assets/final-contrast-enforcer.js'
       - 'apps/portal/data/navigation.json'
+      - 'apps/portal/sw.js'
       - 'workers/gnk-asg-direct-operator/**'
       - 'workers/gnk-asg-mail-agent-worker/**'
       - 'workers/gnk-asg-public-pages-live/wrangler.live.toml'
@@ -47,8 +48,10 @@ jobs:
           node --check apps/portal/assets/admin-functional-repair-v1.js
           node --check apps/portal/assets/operator-dashboard-compat-v1.js
           node --check apps/portal/assets/final-contrast-enforcer.js
+          node --check apps/portal/sw.js
           node --check workers/gnk-asg-direct-operator/src/index-secure.js
           node --check workers/gnk-asg-mail-agent-worker/src/index-secure.js
+          grep -Fxq "const CACHE_NAME = 'gnk-asg-live-v56-functional-repair';" apps/portal/sw.js
           grep -Fxq 'MEDIA_CAMPAIGN_LIVE_SEND = "false"' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
           grep -Fxq 'main = "src/index-secure.js"' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
           grep -Fxq 'main = "src/index-secure.js"' workers/gnk-asg-direct-operator/wrangler.toml
@@ -105,6 +108,14 @@ jobs:
           grep -qi 'Operator token' "$file"
           ! grep -qiE '^Not found$|>Not found<' "$file"
 
+      - name: Verify PWA cache release
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --silent --show-error --location --retry 5 --retry-all-errors --retry-delay 3 'https://gnk-asg.hr/sw.js?cb=functional-v56' > service-worker-live.js
+          grep -Fxq "const CACHE_NAME = 'gnk-asg-live-v56-functional-repair';" service-worker-live.js
+          grep -q 'portal-functional-repair-v1.css' service-worker-live.js
+
       - name: Verify APIs and safety locks
         shell: bash
         run: |
@@ -120,6 +131,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gnk-asg-functional-repair-live-${{ github.run_id }}
-          path: page-*.html
+          path: |
+            page-*.html
+            service-worker-live.js
           if-no-files-found: warn
           retention-days: 7
