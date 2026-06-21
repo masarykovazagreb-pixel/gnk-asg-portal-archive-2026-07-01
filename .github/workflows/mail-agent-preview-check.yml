@@ -43,6 +43,9 @@ jobs:
       - name: AI thread context test
         run: node workers/gnk-asg-mail-agent-worker/test/ai-thread-context.test.js
 
+      - name: Operator audit log test
+        run: node workers/gnk-asg-mail-agent-worker/test/operator-audit-log.test.js
+
       - name: Campaign window test
         run: node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
 
@@ -99,6 +102,8 @@ jobs:
           Full thread context up to 20 messages: verified
           AI receives chronological thread and prior answers: verified
           Personalized contextual reply: verified
+          Operator audit persistence: verified
+          Audit metadata redaction: verified
           100-recipient E2E simulation: completed
           Rate limit 10/min: verified
           Repeated-window lock: verified
