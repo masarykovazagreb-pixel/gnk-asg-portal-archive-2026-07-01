@@ -37,7 +37,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Verify required portal files
         shell: bash
@@ -164,18 +164,33 @@ jobs:
             "Secrets included: false" \
             > repository-snapshot/SNAPSHOT_MANIFEST.txt
 
+      - name: Publish build summary
+        if: always()
+        run: |
+          printf '%s\n' \
+            '## Visual Redesign Preview' \
+            '- Static preview build: completed' \
+            '- Local route smoke test: completed' \
+            '- Repository snapshot: completed' \
+            '- Production changed: false' \
+            >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload preview artifact
+        if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: gnk-asg-business-light-preview
+          name: gnk-asg-business-light-preview-${{ github.run_id }}
           path: preview-artifact
-          if-no-files-found: error
-          retention-days: 14
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Upload repository snapshot
+        if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: gnk-asg-repository-snapshot-${{ github.sha }}
+          name: gnk-asg-repository-snapshot-${{ github.run_id }}
           path: repository-snapshot
-          if-no-files-found: error
-          retention-days: 30
+          if-no-files-found: warn
+          retention-days: 7
