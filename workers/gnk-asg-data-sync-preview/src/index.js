@@ -3,9 +3,9 @@ import {
   DATA_KEYS,
   readSnapshot,
   readUpdateStatus,
-  refreshMarket,
   refreshNews
 } from './refresh.js';
+import { refreshMarketWithPublicFallbacks } from './public-market-fallbacks.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -25,6 +25,7 @@ export default {
         timeZone: 'Europe/Zagreb',
         newsLocalTimes: ['09:00', '16:00'],
         marketIntervalMinutes: 15,
+        publicFallbackProviders: ['CoinPaprika'],
         status: await readUpdateStatus(env)
       });
     }
@@ -55,9 +56,9 @@ export default {
 
       const task = path.split('/').pop();
       if (task === 'run-news') return json(await refreshNews(env));
-      if (task === 'run-market') return json(await refreshMarket(env));
+      if (task === 'run-market') return json(await refreshMarketWithPublicFallbacks(env));
       if (task === 'run-all') {
-        const market = await refreshMarket(env);
+        const market = await refreshMarketWithPublicFallbacks(env);
         const news = await refreshNews(env);
         return json({ ok: market.ok !== false && news.ok !== false, market, news });
       }
@@ -72,7 +73,7 @@ export default {
       env,
       now: new Date(event?.scheduledTime || Date.now()),
       refreshNews: () => refreshNews(env),
-      refreshMarket: () => refreshMarket(env)
+      refreshMarket: () => refreshMarketWithPublicFallbacks(env)
     });
     if (ctx?.waitUntil) ctx.waitUntil(task);
     else await task;
