@@ -6,6 +6,9 @@
 <title>Tržišta | GNK ASG</title>
 <meta name="description" content="GNK ASG tržišni pregled: Bitcoin, Ethereum, zlato, Brent, EUR/USD i drugi referentni pokazatelji iz postojećeg market backenda.">
 <link rel="canonical" href="https://gnk-asg.hr/trzista/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/trzista/">
+<link rel="alternate" hreflang="en" href="https://gnk-asg.hr/markets/">
+<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/trzista/">
 <link rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260620-1">
 <link rel="stylesheet" href="/assets/experience-layer.css?v=20260620-1">
 <style>
@@ -53,44 +56,27 @@ canvas{display:block;width:100%;height:320px}
 <div class="controls">
 <button id="refresh" type="button">Ručno osvježi</button>
 <a class="action-link" href="/">Početna</a>
+<a class="action-link" href="/markets/" hreflang="en">EN</a>
 <span id="marketBadge" class="status-badge fallback">FALLBACK</span>
 <span id="status">Učitavanje backenda…</span>
 </div>
 </section>
-
 <section class="grid" id="cards" aria-live="polite"></section>
-
 <section class="chartbox">
 <h2>Grafikon kretanja</h2>
 <div class="chart-wrap"><canvas id="chart" width="1100" height="320" aria-label="Grafikon tržišnih podataka"></canvas></div>
 <div class="legend"><span><i style="background:#d4af37"></i>BTC EUR</span><span><i style="background:#6fb7ff"></i>ETH EUR</span><span><i style="background:#f8fafc"></i>ASG Gold EUR</span><span><i style="background:#ff9d5c"></i>Brent USD</span></div>
 <p class="muted">Grafikon koristi spremljene backend snapshot točke. Nakon novog osvježavanja povijest se dopunjava kroz sljedeća ažuriranja.</p>
 </section>
-
 <div class="disclaimer">Tržišni podatci služe isključivo u informativne svrhe, mogu kasniti i ne predstavljaju financijski, investicijski, porezni ni pravni savjet.</div>
 </main>
-
 <script>
 const fmt=(n,s='')=>n===null||n===undefined||Number.isNaN(Number(n))?'—':Number(n).toLocaleString('hr-HR',{maximumFractionDigits:2})+s;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function card(label,value,note){return `<article class="card"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div><div class="note">${esc(note||'')}</div></article>`}
 function classifyStatus(value){const s=String(value||'').toLowerCase();if(s.includes('live'))return['LIVE','live'];if(s.includes('delay'))return['DELAYED','delayed'];if(s.includes('snapshot'))return['SNAPSHOT','snapshot'];return['FALLBACK','fallback']}
-function draw(history){
- const c=document.getElementById('chart'),ctx=c.getContext('2d'),w=c.width,h=c.height;
- ctx.clearRect(0,0,w,h);ctx.strokeStyle='rgba(212,175,55,.20)';ctx.lineWidth=1;
- for(let i=0;i<6;i++){const y=30+i*(h-60)/5;ctx.beginPath();ctx.moveTo(40,y);ctx.lineTo(w-20,y);ctx.stroke()}
- const rows=(history||[]).filter(Boolean),series=[['btc_eur','BTC EUR','#d4af37'],['eth_eur','ETH EUR','#6fb7ff'],['asg_gold_eur','ASG GOLD EUR','#f8fafc'],['brent_usd','BRENT USD','#ff9d5c']];
- if(rows.length<2){ctx.fillStyle='#aab3c4';ctx.font='16px Inter, Arial';ctx.fillText('Čekaju se dodatni snapshot podatci za grafikon.',50,160);return}
- series.forEach((s,idx)=>{const vals=rows.map(x=>Number(x[s[0]])).filter(Number.isFinite);if(vals.length<2)return;const min=Math.min(...vals),max=Math.max(...vals),span=max-min||1;ctx.strokeStyle=s[2];ctx.lineWidth=2;ctx.beginPath();rows.forEach((r,i)=>{const v=Number(r[s[0]]);if(!Number.isFinite(v))return;const x=50+i*(w-80)/(rows.length-1),y=h-35-((v-min)/span)*(h-75);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.stroke();ctx.fillStyle=s[2];ctx.font='13px Inter, Arial';ctx.fillText(s[1],60+idx*145,22)})
-}
-async function load(refresh=false){
- const status=document.getElementById('status'),cards=document.getElementById('cards'),badge=document.getElementById('marketBadge');status.textContent='Učitavanje backenda…';
- try{
-  const response=await fetch('/api/market'+(refresh?'?refresh=1':'?cb='+Date.now()),{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'HTTP '+response.status);
-  const rows=Array.isArray(data.cards)?data.cards:[];cards.innerHTML=rows.length?rows.map(x=>card(x.label,fmt(x.value,x.suffix),x.note)).join(''):card('Backend','—','Trenutačno nema dostupnih tržišnih podataka.');
-  const [label,css]=classifyStatus(data.status);badge.textContent=label;badge.className='status-badge '+css;status.textContent='Ažurirano: '+(data.updatedAt||'—')+' · stavki: '+rows.length;draw(data.history||[]);
- }catch(error){badge.textContent='FALLBACK';badge.className='status-badge fallback';status.textContent='Greška backenda: '+error.message;cards.innerHTML=card('Backend','—','Tržišni backend trenutačno nije dostupan.');draw([])}
-}
+function draw(history){const c=document.getElementById('chart'),ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);ctx.strokeStyle='rgba(212,175,55,.20)';ctx.lineWidth=1;for(let i=0;i<6;i++){const y=30+i*(h-60)/5;ctx.beginPath();ctx.moveTo(40,y);ctx.lineTo(w-20,y);ctx.stroke()}const rows=(history||[]).filter(Boolean),series=[['btc_eur','BTC EUR','#d4af37'],['eth_eur','ETH EUR','#6fb7ff'],['asg_gold_eur','ASG GOLD EUR','#f8fafc'],['brent_usd','BRENT USD','#ff9d5c']];if(rows.length<2){ctx.fillStyle='#aab3c4';ctx.font='16px Inter, Arial';ctx.fillText('Čekaju se dodatni snapshot podatci za grafikon.',50,160);return}series.forEach((s,idx)=>{const vals=rows.map(x=>Number(x[s[0]])).filter(Number.isFinite);if(vals.length<2)return;const min=Math.min(...vals),max=Math.max(...vals),span=max-min||1;ctx.strokeStyle=s[2];ctx.lineWidth=2;ctx.beginPath();rows.forEach((r,i)=>{const v=Number(r[s[0]]);if(!Number.isFinite(v))return;const x=50+i*(w-80)/(rows.length-1),y=h-35-((v-min)/span)*(h-75);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.stroke();ctx.fillStyle=s[2];ctx.font='13px Inter, Arial';ctx.fillText(s[1],60+idx*145,22)})}
+async function load(refresh=false){const status=document.getElementById('status'),cards=document.getElementById('cards'),badge=document.getElementById('marketBadge');status.textContent='Učitavanje backenda…';try{const response=await fetch('/api/market'+(refresh?'?refresh=1':'?cb='+Date.now()),{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'HTTP '+response.status);const rows=Array.isArray(data.cards)?data.cards:[];cards.innerHTML=rows.length?rows.map(x=>card(x.label,fmt(x.value,x.suffix),x.note)).join(''):card('Backend','—','Trenutačno nema dostupnih tržišnih podataka.');const [label,css]=classifyStatus(data.status);badge.textContent=label;badge.className='status-badge '+css;status.textContent='Ažurirano: '+(data.updatedAt||'—')+' · stavki: '+rows.length;draw(data.history||[])}catch(error){badge.textContent='FALLBACK';badge.className='status-badge fallback';status.textContent='Greška backenda: '+error.message;cards.innerHTML=card('Backend','—','Tržišni backend trenutačno nije dostupan.');draw([])}}
 document.getElementById('refresh').addEventListener('click',()=>load(true));load();
 </script>
 </body>
