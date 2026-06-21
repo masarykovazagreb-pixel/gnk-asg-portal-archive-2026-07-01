@@ -3,12 +3,8 @@
   window.__GNK_ASG_OPERATOR_MOBILE_LIVE_BRIDGE__ = true;
 
   const $ = id => document.getElementById(id);
-  const TOKEN_KEY = 'GNK_ASG_OPERATOR_TOKEN';
-  const token = () => localStorage.getItem(TOKEN_KEY) || '';
-  const auth = () => token() ? {
-    authorization: `Bearer ${token()}`,
-    'x-operator-token': token()
-  } : {};
+  const token = () => window.GNKOperatorToken?.get?.() || '';
+  const auth = () => window.GNKOperatorToken?.headers?.() || {};
   const show = (id, value) => {
     const node = $(id);
     if (!node) return;
@@ -19,9 +15,11 @@
   })[character]);
 
   async function request(url, options = {}) {
+    const headers = new Headers(options.headers || {});
+    for (const [key, value] of Object.entries(auth())) headers.set(key, value);
     const response = await fetch(url, {
       ...options,
-      headers: { ...(options.headers || {}), ...auth() },
+      headers,
       cache: options.cache || 'no-store'
     });
     const raw = await response.text();
@@ -44,20 +42,26 @@
     return last;
   }
 
-  function renderList(id, data) {
-    const node = $(id);
-    if (!node) return;
-    const items = Array.isArray(data)
-      ? data
-      : (data?.items || data?.messages || data?.logs || data?.data || []);
-    node.innerHTML = items.length
-      ? items.slice(0, 100).map(item => `
-          <article class="mail-item">
-            <strong>${esc(item.subject || item.title || item.event || '(bez predmeta)')}</strong>
-            <small>${esc(item.from || item.to || item.email || item.createdAt || item.sentAt || '')}</small>
-            <div>${esc(String(item.snippet || item.message || item.body || item.bodyPreview || JSON.stringify(item)).slice(0, 450))}</div>
-          </article>`).join('')
-      : '<article class="mail-item">Nema zapisa ili backend nije dostupan.</article>';
+  function readinessView(mail) {
+    const data = mail?.data || {};
+    const automation = data.automation || data.readiness?.automation || {};
+    const modules = automation.modules || {};
+    return {
+      status: data.status || (mail.ok ? 'available' : 'unavailable'),
+      codeReady: Boolean(data.ok ?? data.readiness?.codeReady),
+      liveReady: Boolean(data.liveReady ?? data.readiness?.liveReady),
+      mailLiveReady: Boolean(data.mailLiveReady ?? data.readiness?.mailLiveReady),
+      routineAutoSendReady: Boolean(data.routineAutoSendReady ?? data.readiness?.routineAutoSendReady),
+      automation: {
+        codeReady: Boolean(automation.codeReady),
+        previewReady: Boolean(automation.previewReady),
+        liveReady: Boolean(automation.liveReady),
+        productionTouched: Boolean(automation.productionTouched),
+        dataSync: modules.dataSync || null,
+        autoEditor: modules.autoEditor || null
+      },
+      blockedItems: data.blockedItems || data.readiness?.blockedItems || []
+    };
   }
 
   async function loadStatus() {
@@ -67,8 +71,17 @@
     ]);
     show('statusOut', {
       ok: mail.ok && admin.ok,
-      mailAgent: mail,
-      adminBackend: admin,
+      readiness: readinessView(mail),
+      adminBackend: {
+        ok: admin.ok,
+        status: admin.status,
+        data: admin.data
+      },
+      security: {
+        tokenStorage: 'session',
+        tokenInUrl: false
+      },
+      productionTouched: Boolean(mail.data?.productionTouched),
       checkedAt: new Date().toISOString()
     });
   }
@@ -146,6 +159,22 @@
     renderList('sentOut', result.data);
   }
 
+  function renderList(id, data) {
+    const node = $(id);
+    if (!node) return;
+    const items = Array.isArray(data)
+      ? data
+      : (data?.items || data?.messages || data?.logs || data?.data || []);
+    node.innerHTML = items.length
+      ? items.slice(0, 100).map(item => `
+          <article class="mail-item">
+            <strong>${esc(item.subject || item.title || item.event || '(bez predmeta)')}</strong>
+            <small>${esc(item.from || item.to || item.email || item.createdAt || item.sentAt || '')}</small>
+            <div>${esc(String(item.snippet || item.message || item.body || item.bodyPreview || JSON.stringify(item)).slice(0, 450))}</div>
+          </article>`).join('')
+      : '<article class="mail-item">Nema zapisa ili backend nije dostupan.</article>';
+  }
+
   function fileToBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -213,6 +242,16 @@
 
     const desktopMail = document.querySelector('.admin-tabs a[href="/mail-studio/"]');
     if (desktopMail) desktopMail.href = '/mail-studio-pro/';
+
+    window.addEventListener('gnk:operator-token-changed', event => {
+      if (event.detail?.present) {
+        Promise.allSettled([loadStatus(), loadInbox(), loadSent()]);
+      } else {
+        show('statusOut', 'Operator je odjavljen. Status i privatni podatci nisu učitani.');
+        renderList('inboxOut', []);
+        renderList('sentOut', []);
+      }
+    });
 
     loadBoxes();
     if (token()) Promise.allSettled([loadStatus(), loadInbox(), loadSent()]);
