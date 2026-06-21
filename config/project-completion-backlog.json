@@ -1,20 +1,20 @@
 {
-  "version": "2026-06-21-v17",
+  "version": "2026-06-21-v18",
   "branch": "experience-ai-live-overview",
   "productionTouched": false,
   "mergeAllowed": false,
   "draftPullRequest": 2,
-  "verifiedHead": "11408a1551b11e1656d106bd400b7fb5f6c43d60",
-  "verifiedWorkflowCount": 13,
-  "verifiedWorkflowSuccessCount": 13,
+  "verifiedHead": "1f137f3679cbadd609503e82492c7a16ac9f05b4",
+  "verifiedWorkflowCount": 14,
+  "verifiedWorkflowSuccessCount": 14,
   "pullRequestDescriptionPending": false,
-  "overallProgressPercent": 97,
+  "overallProgressPercent": 98,
   "phaseProgress": {
     "phase1": 100,
-    "phase2": 99,
-    "phase3": 97,
-    "phase4": 95,
-    "phase5": 93
+    "phase2": 100,
+    "phase3": 99,
+    "phase4": 97,
+    "phase5": 95
   },
   "releaseConstraints": {
     "keepDraft": true,
@@ -31,12 +31,14 @@
     "releasePackageArtifactDigest": "sha256:19877256cbb8a4801b528d9abdf652c1d47db9a6df04d00fd5a5dcc77bf752bf",
     "releasePackageArtifactExpiresAt": "2026-07-05T13:10:35Z",
     "productionTouched": false,
-    "massMailLiveSendEnabled": false
+    "massMailLiveSendEnabled": false,
+    "allCurrentHeadChecksGreen": true,
+    "currentHeadWorkflowCount": 14
   },
   "currentScope": [
     "mobile admin and secure quick publisher",
     "Mail Studio Pro and full-thread AI context",
-    "media campaign safety and 100-recipient simulation",
+    "media campaign safety, suppression, retry and 100-recipient simulation",
     "secure PDF Publisher client",
     "video canonical routes and sitemap rules",
     "publications news and market regressions",
@@ -49,12 +51,13 @@
   ],
   "statuses": ["done", "in_progress", "blocked_manual", "blocked_external"],
   "items": [
-    {"id":"github-actions-runner","area":"quality","status":"done","blocking":false,"note":"GitHub-hosted runner radi; svih 13 provjernih workflowa zeleno je na verifiedHead commitu."},
+    {"id":"github-actions-runner","area":"quality","status":"done","blocking":false,"note":"GitHub-hosted runner radi; svih 14 provjernih workflowa zeleno je na verifiedHead commitu."},
     {"id":"phase1-critical-audit","area":"quality","status":"done","blocking":false,"note":"Phase 1 Critical Audit prolazi."},
     {"id":"release-package-check","area":"release","status":"done","blocking":false,"note":"Release paket generira manifest, SHA-256 checksumove, javne i zaštićene rute, sažetak i rollback plan; validacija prolazi."},
     {"id":"operator-client-security","area":"security","status":"done","blocking":false,"note":"Privatni klijenti koriste session vault; vjerodajnica nije u URL-u ni trajnoj pohrani."},
     {"id":"operator-runtime-connection","area":"security","status":"in_progress","blocking":true,"note":"Kod, privatne rute, CORS i token provjere postoje; preostaje kontrolirani produkcijski smoke test nakon odobrenog releasea."},
     {"id":"media-campaign-simulation","area":"mail","status":"done","blocking":false,"note":"Potvrđena je simulacija 100 individualnih primatelja, personalizacija, PDF privitak, raspored, D1 lease i ograničenje 10 poruka u minuti bez live slanja."},
+    {"id":"media-campaign-suppression-retry","area":"mail","status":"done","blocking":false,"note":"Suppression/opt-out lista provjerava se pri kreiranju i prije svakog prozora; retry neuspjelih primatelja ograničen je na tri pokušaja i ne uključuje produkcijsko slanje."},
     {"id":"media-campaign-service-safety","area":"mail","status":"done","blocking":false,"note":"Mail Agent Diagnostic i Mail Agent Preview Check prolaze; Cloudflare email modul učitava se samo u stvarnom live slanju."},
     {"id":"media-campaign-live-test","area":"mail","status":"blocked_manual","blocking":true,"note":"Stvarno slanje zahtijeva odobrene primatelje, stvarni PDF, aktivan EMAIL binding i izričitu potvrdu kampanje."},
     {"id":"inbound-ai-mail","area":"mail-ai","status":"blocked_external","blocking":false,"note":"AI čita thread do 20 poruka i sprema pregled; puni E2E zahtijeva stvarni inbound email događaj."},
