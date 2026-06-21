@@ -37,6 +37,7 @@ jobs:
       - name: Mail campaign regression tests
         run: |
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-rate-limit.test.js
           node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
 
       - name: Wrangler route-free dry run
@@ -63,6 +64,7 @@ jobs:
           Syntax check: completed
           100-recipient E2E simulation: completed
           Rate limit 10/min: verified
+          Repeated-window lock: verified
           Scheduling gate: verified
           PDF attachment metadata: verified
           Personalisation: verified
