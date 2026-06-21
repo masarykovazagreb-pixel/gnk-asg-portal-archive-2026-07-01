@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-06-21-v1",
+  "timeZone": "Europe/Zagreb",
+  "previewOnly": true,
+  "approvalRequiredForActivation": true,
+  "news": {
+    "localTimes": ["09:00", "16:00"],
+    "deduplicateByLocalSlot": true,
+    "fallbackToLastSnapshot": true
+  },
+  "market": {
+    "intervalMinutes": 15,
+    "deduplicateByInterval": true,
+    "fallbackToLastSnapshot": true,
+    "allowedStatuses": ["LIVE", "DELAYED", "SNAPSHOT", "FALLBACK"]
+  },
+  "safety": {
+    "requireStorageForExecution": true,
+    "noFakeRealtimeLabels": true,
+    "retainLastGoodSnapshot": true,
+    "writeExecutionLog": true,
+    "maximumExecutionLogItems": 200
+  }
+}
