@@ -11,6 +11,7 @@ on:
       - 'workers/**'
       - 'contracts/**'
       - 'docs/**'
+      - 'scripts/final-frontend-e2e-audit.mjs'
       - '.github/workflows/visual-redesign-preview.yml'
   pull_request:
     branches:
@@ -21,6 +22,7 @@ on:
       - 'workers/**'
       - 'contracts/**'
       - 'docs/**'
+      - 'scripts/final-frontend-e2e-audit.mjs'
       - '.github/workflows/visual-redesign-preview.yml'
 
 permissions:
@@ -53,6 +55,7 @@ jobs:
           test -f apps/portal/mail-studio-pro/index.html
           test -f apps/portal/command-center/index.html
           test -f apps/portal/trzista/index.html
+          test -f apps/portal/markets/index.html
           test -f apps/portal/assets/brand/gnk-asg-global-layer.css
           test -f apps/portal/assets/brand/gnk-asg-global-layer.js
           test -f apps/portal/assets/experience-ai.js
@@ -67,11 +70,13 @@ jobs:
           test -f apps/portal/data/mail-signatures.json
           test -f apps/portal/data/command-center-config.json
           test -f contracts/editorial-automation-policy.json
+          test -f scripts/final-frontend-e2e-audit.mjs
           test -f workers/gnk-asg-command-center-worker/src/index.js
           test -f workers/gnk-asg-command-center-worker/src/editorial.js
           test -f workers/gnk-asg-command-center-worker/wrangler.toml
           test -f workers/gnk-asg-mail-agent-worker/src/index.js
           test -f workers/gnk-asg-mail-agent-worker/wrangler.preview.toml
+          test -f workers/gnk-asg-public-pages-live/src/index.js
           ! grep -R "GNK_ASG_FORCE_OPERATOR_TOKEN" apps/portal
 
       - name: Validate JavaScript and JSON
@@ -84,6 +89,8 @@ jobs:
           node --check apps/portal/assets/experience-overview.js
           node --check apps/portal/assets/mail-studio-pro.js
           node --check apps/portal/assets/js/publications-shared.js
+          node --check scripts/final-frontend-e2e-audit.mjs
+          node --check workers/gnk-asg-public-pages-live/src/index.js
           node --check workers/gnk-asg-auto-editor-worker/src/index.js
           node --check workers/gnk-asg-command-center-worker/src/index.js
           node --check workers/gnk-asg-command-center-worker/src/editorial.js
@@ -136,7 +143,7 @@ jobs:
             "Mail Agent production route: false" \
             > preview-artifact/PREVIEW_BUILD.txt
 
-      - name: Local HTTP preview smoke test
+      - name: Local HTTP preview and final E2E audit
         shell: bash
         run: |
           set -euo pipefail
@@ -147,8 +154,17 @@ jobs:
           curl --fail --silent --show-error http://127.0.0.1:4173/ > /dev/null
           curl --fail --silent --show-error http://127.0.0.1:4173/en/ > /dev/null
           curl --fail --silent --show-error http://127.0.0.1:4173/trzista/ > /dev/null
+          curl --fail --silent --show-error http://127.0.0.1:4173/markets/ > /dev/null
           curl --fail --silent --show-error http://127.0.0.1:4173/mail-studio-pro/ > /dev/null
           curl --fail --silent --show-error http://127.0.0.1:4173/operator-mobile/ > /dev/null
+          PREVIEW_BASE_URL='http://127.0.0.1:4173' node scripts/final-frontend-e2e-audit.mjs
+
+      - name: Validate final E2E report
+        shell: bash
+        run: |
+          set -euo pipefail
+          node -e "const p=require('./reports/final-frontend-e2e/report.json'); if(p.status!=='PASS'||p.productionWrites!==false||p.productionTouched!==false||p.failed!==0) process.exit(1)"
+          test -s reports/final-frontend-e2e/report.md
 
       - name: Build complete repository snapshot
         shell: bash
@@ -170,10 +186,13 @@ jobs:
           printf '%s\n' \
             '## Visual Redesign Preview' \
             '- Static preview build: completed' \
-            '- Local route smoke test: completed' \
+            '- Final HR/EN and operator E2E audit: completed' \
             '- Repository snapshot: completed' \
             '- Production changed: false' \
             >> "$GITHUB_STEP_SUMMARY"
+          if [ -f reports/final-frontend-e2e/report.md ]; then
+            cat reports/final-frontend-e2e/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Upload preview artifact
         if: always()
@@ -181,7 +200,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gnk-asg-business-light-preview-${{ github.run_id }}
-          path: preview-artifact
+          path: |
+            preview-artifact
+            reports/final-frontend-e2e/
           if-no-files-found: warn
           retention-days: 7
 
