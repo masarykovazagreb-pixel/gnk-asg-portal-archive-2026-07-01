@@ -26,19 +26,28 @@
       box.querySelectorAll('p,.meaning,.note,.muted').forEach(el => { set(el,'color',palette.muted); set(el,'opacity','1'); });
       box.querySelectorAll('dt,.label,small').forEach(el => { set(el,'color',palette.label); set(el,'opacity','1'); });
       box.querySelectorAll('.eyebrow,.tag,.meta').forEach(el => { set(el,'color',palette.gold); set(el,'opacity','1'); });
-      box.querySelectorAll('a').forEach(el => { set(el,'color',palette.link); set(el,'opacity','1'); });
+      box.querySelectorAll('a').forEach(el => {
+        const isGoldDownload = /download\s+pdf/i.test(String(el.textContent || '')) || /\.pdf(?:$|[?#])/i.test(String(el.getAttribute('href') || ''));
+        set(el,'color',isGoldDownload ? '#071426' : palette.link);
+        set(el,'opacity','1');
+        if (isGoldDownload) set(el,'text-shadow','none');
+      });
     });
 
     document.querySelectorAll('#financials .section-head h1,#financials .section-head h2,#grupa .section-head h1,#grupa .section-head h2,#dokumenti .section-head h1,#dokumenti .section-head h2').forEach(el => set(el,'color',palette.text));
     document.querySelectorAll('#financials .section-head p,#grupa .section-head p,#dokumenti .section-head p').forEach(el => set(el,'color',palette.muted));
 
-    const ai = document.getElementById('gnk-asg-float-ai');
-    if (ai) {
+    const aiSelector = [
+      '#gnk-asg-float-ai','#gnk-asg-ai-help-float','#gnk-asg-single-ai-button-anchor',
+      '.gnk-global-float-ai','.gnk-asg-ai-badge','[data-ai-badge]','button[aria-label*="AI" i]','a[aria-label*="AI" i]'
+    ].join(',');
+    document.querySelectorAll(aiSelector).forEach(ai => {
+      if (!String(ai.textContent || '').match(/AI|Pomoć|Help/i)) return;
       set(ai,'background','rgba(5,15,31,.98)');
       set(ai,'color','#ffffff');
       ai.querySelectorAll('*').forEach(el => { set(el,'color','#ffffff'); set(el,'opacity','1'); });
-      set(ai.querySelector('small'),'color','rgba(255,255,255,.78)');
-    }
+      set(ai.querySelector('small'),'color','rgba(255,255,255,.82)');
+    });
   }
 
   function schedule() {
