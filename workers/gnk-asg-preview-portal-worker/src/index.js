@@ -32,17 +32,9 @@ export default {
       });
     }
 
-    if (url.pathname === '/__preview/operator/status') {
-      return handlePreviewOperatorStatus(request, env);
-    }
-
-    if (url.pathname === '/video-sitemap.xml') {
-      return handleVideoSitemap(env);
-    }
-
-    if (url.pathname.startsWith('/api/social-share/') || url.pathname.startsWith('/s/')) {
-      return proxySocialShare(request, url);
-    }
+    if (url.pathname === '/__preview/operator/status') return handlePreviewOperatorStatus(request, env);
+    if (url.pathname === '/video-sitemap.xml') return handleVideoSitemap(env);
+    if (url.pathname.startsWith('/api/social-share/') || url.pathname.startsWith('/s/')) return proxySocialShare(request, url);
 
     if (isWriteLocked(request, url.pathname)) {
       return json({
@@ -53,9 +45,7 @@ export default {
       }, 423);
     }
 
-    if (shouldProxyRead(request, url.pathname)) {
-      return proxyLiveRead(request, url);
-    }
+    if (shouldProxyRead(request, url.pathname)) return proxyLiveRead(request, url);
 
     const response = await env.ASSETS.fetch(request);
     return enhanceStaticResponse(response);
@@ -92,16 +82,9 @@ async function proxyLiveRead(request, previewUrl) {
   headers.delete('host');
   headers.delete('cookie');
   headers.set('x-gnk-asg-preview-proxy', 'read-only');
-
-  const init = {
-    method: request.method,
-    headers,
-    redirect: 'follow'
-  };
-
+  const init = { method: request.method, headers, redirect: 'follow' };
   if (!['GET', 'HEAD'].includes(request.method)) init.body = request.body;
-  const response = await fetch(liveUrl, init);
-  return withPreviewHeaders(response);
+  return withPreviewHeaders(await fetch(liveUrl, init));
 }
 
 async function proxySocialShare(request, previewUrl) {
@@ -112,8 +95,7 @@ async function proxySocialShare(request, previewUrl) {
   headers.set('x-gnk-asg-preview-proxy', 'social-share');
   const init = { method: request.method, headers, redirect: 'follow' };
   if (!['GET', 'HEAD'].includes(request.method)) init.body = request.body;
-  const response = await fetch(target, init);
-  return withPreviewHeaders(response);
+  return withPreviewHeaders(await fetch(target, init));
 }
 
 function enhanceStaticResponse(response) {
@@ -122,7 +104,9 @@ function enhanceStaticResponse(response) {
   const transformed = new HTMLRewriter()
     .on('head', {
       element(element) {
-        element.append('<script defer src="/assets/admin-universal-shell.js?v=20260621-12"></script>', { html: true });
+        element.append('<link id="gnk-final-contrast-contract-css" rel="stylesheet" href="/assets/final-contrast-contract.css?v=20260621-3">', { html: true });
+        element.append('<script defer id="gnk-final-contrast-enforcer-js" src="/assets/final-contrast-enforcer.js?v=20260621-2"></script>', { html: true });
+        element.append('<script defer src="/assets/admin-universal-shell.js?v=20260621-13"></script>', { html: true });
       }
     })
     .transform(response);
