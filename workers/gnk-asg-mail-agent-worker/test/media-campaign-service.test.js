@@ -60,6 +60,16 @@ if (disabledLive.ok || disabledLive.error !== 'live_send_not_configured') {
   throw new Error('Live sending must remain disabled without the environment gate.');
 }
 
+env.MEDIA_CAMPAIGN_LIVE_SEND = 'true';
+const missingStrictLease = await runMediaCampaignWindow(env, created.batch, {
+  mode: 'live',
+  confirmCampaignId: created.batch.id
+});
+if (missingStrictLease.ok || missingStrictLease.error !== 'strict_rate_limit_storage_unavailable') {
+  throw new Error('Live sending must require strict D1 rate-limit storage.');
+}
+env.MEDIA_CAMPAIGN_LIVE_SEND = 'false';
+
 const testRun = await runMediaCampaignWindow(env, created.batch, { mode: 'test' });
 if (!testRun.ok || testRun.productionSendEnabled !== false) {
   throw new Error('Test window must execute without enabling production sending.');
