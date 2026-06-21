@@ -1,0 +1,77 @@
+name: GNK ASG Final Predeploy Gate
+
+on:
+  pull_request:
+    branches:
+      - experience-ai-live-overview
+    paths:
+      - 'config/final-predeploy-gate.json'
+      - 'config/project-completion-backlog.json'
+      - 'scripts/final-predeploy-gate.mjs'
+      - 'scripts/release-candidate-audit.mjs'
+      - '.github/workflows/final-predeploy-gate.yml'
+      - '.github/workflows/production-live-sync.yml'
+      - 'workers/gnk-asg-direct-operator/**'
+      - 'workers/gnk-asg-mail-agent-worker/**'
+      - 'workers/gnk-asg-public-pages-live/**'
+      - 'apps/portal/media-kit/source/**'
+      - 'apps/portal/data/video-featured.json'
+      - 'apps/portal/data/wa-actions.json'
+      - 'contracts/social-share-policy.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  final-predeploy-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate audit syntax
+        run: |
+          node --check scripts/final-predeploy-gate.mjs
+          node --check scripts/release-candidate-audit.mjs
+
+      - name: Run existing release candidate audit
+        run: node scripts/release-candidate-audit.mjs
+
+      - name: Run final predeploy gate
+        run: node scripts/final-predeploy-gate.mjs
+
+      - name: Validate gate evidence
+        run: |
+          set -euo pipefail
+          node -e "const r=require('./reports/final-predeploy-gate/predeploy-gate-report.json'); if(r.deployStatus!=='READY_FOR_EXPLICIT_PRODUCTION_APPROVAL'||r.technicalReady!==true||r.productionDeployExecuted!==false||r.productionTouched!==false||r.massMailLiveSendEnabled!==false||r.automaticSocialPostingEnabled!==false||r.approvalStillRequired!==true||r.blockingFailures.length!==0) process.exit(1)"
+          test -s reports/final-predeploy-gate/predeploy-gate-report.md
+
+      - name: Re-run critical mail safety tests
+        run: |
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-suppression.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-retry.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js
+
+      - name: Publish predeploy summary
+        if: always()
+        run: |
+          if [ -f reports/final-predeploy-gate/predeploy-gate-report.md ]; then
+            cat reports/final-predeploy-gate/predeploy-gate-report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload predeploy evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-final-predeploy-gate-${{ github.run_id }}
+          path: reports/final-predeploy-gate/
+          if-no-files-found: error
+          retention-days: 14
