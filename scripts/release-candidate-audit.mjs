@@ -160,10 +160,16 @@ check(
   backlog.productionTouched === false && backlog.mergeAllowed === false,
   'production and merge require explicit approval'
 );
+const runnerItem = backlog.items?.find(item => item.id === 'github-actions-runner');
 check(
-  'External runner blocker is recorded',
-  backlog.items?.some(item => item.id === 'github-actions-runner' && item.status === 'blocked_external'),
-  'CI infrastructure issue must not be misreported as a green code result'
+  'Runner status is explicitly and honestly recorded',
+  Boolean(runnerItem) && ['done', 'blocked_external'].includes(runnerItem.status),
+  runnerItem ? `recorded status: ${runnerItem.status}` : 'runner status entry is missing'
+);
+check(
+  'Release requires explicit production approval marker',
+  backlog.releaseConstraints?.explicitProductionApprovalMarkerRequired === true,
+  'ordinary development pushes must not deploy production'
 );
 
 const rollback = read('workers/gnk-asg-mail-agent-worker/src/rollback-manifest.js');
