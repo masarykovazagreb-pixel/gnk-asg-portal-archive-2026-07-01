@@ -1,0 +1,12 @@
+name = "gnk-asg-data-sync-v2-preview"
+main = "src/index.js"
+compatibility_date = "2026-06-21"
+workers_dev = true
+preview_urls = true
+
+[vars]
+DATA_SYNC_PREVIEW_WRITE = "false"
+PUBLIC_ENVIRONMENT = "preview-locked"
+
+[triggers]
+crons = ["*/5 * * * *"]
