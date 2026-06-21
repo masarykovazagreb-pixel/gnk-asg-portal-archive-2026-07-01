@@ -14,6 +14,19 @@ on:
       - 'apps/portal/en/index.html'
       - 'scripts/mobile-contrast-browser-audit.mjs'
       - '.github/workflows/mobile-contrast-browser-audit.yml'
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - 'apps/portal/assets/final-contrast-contract.css'
+      - 'apps/portal/assets/preview-contrast.css'
+      - 'apps/portal/assets/admin-universal-shell.js'
+      - 'apps/portal/assets/brand/gnk-asg-global-layer.css'
+      - 'apps/portal/assets/brand/gnk-asg-global-layer.js'
+      - 'apps/portal/index.html'
+      - 'apps/portal/en/index.html'
+      - 'scripts/mobile-contrast-browser-audit.mjs'
+      - '.github/workflows/mobile-contrast-browser-audit.yml'
   workflow_dispatch:
 
 permissions:
