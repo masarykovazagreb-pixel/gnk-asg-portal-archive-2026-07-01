@@ -17,7 +17,8 @@ const files = {
   mailAgent: 'workers/gnk-asg-mail-agent-worker/wrangler.release.toml',
   publicPages: 'workers/gnk-asg-public-pages-live/wrangler.live.toml',
   rollbackManifest: 'workers/gnk-asg-mail-agent-worker/src/rollback-manifest.js',
-  releaseAudit: 'scripts/release-candidate-audit.mjs'
+  releaseAudit: 'scripts/release-candidate-audit.mjs',
+  workflowSafetyAudit: 'scripts/workflow-production-trigger-audit.mjs'
 };
 
 const publicRoutes = [
@@ -31,6 +32,10 @@ const publicRoutes = [
   'https://gnk-asg.hr/markets/',
   'https://gnk-asg.hr/videoteka/',
   'https://gnk-asg.hr/en/video-library/',
+  'https://gnk-asg.hr/platforme/bpp/',
+  'https://gnk-asg.hr/en/platforms/bpp/',
+  'https://gnk-asg.hr/contact/',
+  'https://gnk-asg.hr/en/contact/',
   'https://gnk-asg.hr/mail-studio-pro/',
   'https://gnk-asg.hr/mail-studio-pro/campaign/',
   'https://gnk-asg.hr/operator-mobile/',
@@ -99,12 +104,15 @@ const rollback = read(files.rollbackManifest);
 
 const checks = [
   check('Release source commit is explicit', SOURCE_COMMIT === 'local' || /^[0-9a-f]{40}$/.test(SOURCE_COMMIT), SOURCE_COMMIT),
-  check('Manual production workflow dispatch only', workflow.includes('workflow_dispatch:') && !/^\s*push:\s*$/m.test(workflow), 'ordinary development pushes cannot deploy production'),
+  check('Manual production workflow dispatch only', workflow.includes('workflow_dispatch:') && !/^\s*push:\s*$/m.test(workflow) && !/^\s*pull_request:\s*$/m.test(workflow), 'ordinary development events cannot deploy production'),
   check('Typed production confirmation required', workflow.includes('PRODUCTION_APPROVED'), 'manual release requires exact confirmation'),
   check('Exact marker commit required', workflow.includes('approved_commit') && workflow.includes('source_commit:'), 'marker commit and tested parent are linked'),
-  check('Marker-only commit enforced', workflow.includes("git diff --name-only HEAD^ HEAD") && workflow.includes('.github/release/PRODUCTION_APPROVED'), 'release marker commit cannot contain unrelated changes'),
-  check('Backlog keeps production locked', backlog.productionTouched === false && backlog.mergeAllowed === false, 'development branch remains non-production'),
+  check('Full marker SHA format enforced', /\^\[0-9a-fA-F\]\{40\}\$/.test(workflow), 'approved marker commit must be a full SHA'),
+  check('Marker-only commit enforced', workflow.includes('git diff --name-only HEAD^ HEAD') && workflow.includes('.github/release/PRODUCTION_APPROVED'), 'release marker commit cannot contain unrelated changes'),
+  check('Backlog keeps full release locked', backlog.fullProductionReleaseExecuted === false && backlog.mergeAllowed === false && backlog.releaseConstraints?.noProductionDeployWithoutApproval === true, 'limited hotfix history does not authorize the full release'),
+  check('Limited hotfix history is explicitly recorded', backlog.limitedEmergencyHotfixesExecuted === true && backlog.productionTouched === true, 'production history is recorded without claiming a full release'),
   check('Explicit approval marker policy enabled', backlog.releaseConstraints?.explicitProductionApprovalMarkerRequired === true, 'release requires repository marker'),
+  check('Automatic production deploy triggers prohibited', backlog.releaseConstraints?.automaticProductionDeployTriggersAllowed === false, 'production deploys must remain manual'),
   check('Mail campaign live sending disabled by default', /MEDIA_CAMPAIGN_LIVE_SEND\s*=\s*"false"/.test(mailToml), 'mass delivery cannot start accidentally'),
   check('Protected operator entry point enabled', /main\s*=\s*"src\/index-secure\.js"/.test(directToml), 'direct operator uses the secure wrapper'),
   check('Rollback disables runtime gates first', rollback.includes('disable runtime feature gates before reverting code'), 'rollback order is explicit'),
@@ -120,7 +128,9 @@ const manifest = {
   sourceCommit: SOURCE_COMMIT,
   sourceCommitInput: process.env.RELEASE_SOURCE_COMMIT ? 'RELEASE_SOURCE_COMMIT' : (process.env.GITHUB_SHA ? 'GITHUB_SHA' : 'local'),
   readOnlyGeneration: true,
-  productionTouched: false,
+  productionWrites: false,
+  fullProductionReleaseExecuted: backlog.fullProductionReleaseExecuted === true,
+  limitedEmergencyHotfixesExecuted: backlog.limitedEmergencyHotfixesExecuted === true,
   releaseStatus: failed.length ? 'BLOCKED' : 'READY_FOR_MANUAL_APPROVAL',
   publicRoutes,
   protectedRoutes,
@@ -153,7 +163,7 @@ const rows = checks
   .map(item => `| ${item.pass ? 'PASS' : 'FAIL'} | ${item.name.replace(/\|/g, '\\|')} | ${item.detail.replace(/\|/g, '\\|')} |`)
   .join('\n');
 
-const summary = `# GNK ASG završni release paket\n\n- Status: **${manifest.releaseStatus}**\n- Grana: \`${BRANCH}\`\n- Izvorni commit: \`${SOURCE_COMMIT}\`\n- Izvor SHA vrijednosti: \`${manifest.sourceCommitInput}\`\n- Produkcija promijenjena: NE\n- Javni URL-ovi: ${publicRoutes.length}\n- Zaštićeni URL-ovi: ${protectedRoutes.length}\n- Provjere: ${checks.length - failed.length}/${checks.length}\n\n| Rezultat | Provjera | Detalj |\n|---|---|---|\n${rows}\n`;
+const summary = `# GNK ASG završni release paket\n\n- Status: **${manifest.releaseStatus}**\n- Grana: \`${BRANCH}\`\n- Izvorni commit: \`${SOURCE_COMMIT}\`\n- Izvor SHA vrijednosti: \`${manifest.sourceCommitInput}\`\n- Ova izrada piše u produkciju: NE\n- Puni produkcijski release ranije izvršen: ${manifest.fullProductionReleaseExecuted ? 'DA' : 'NE'}\n- Ograničeni hotfixevi evidentirani: ${manifest.limitedEmergencyHotfixesExecuted ? 'DA' : 'NE'}\n- Javni URL-ovi: ${publicRoutes.length}\n- Zaštićeni URL-ovi: ${protectedRoutes.length}\n- Provjere: ${checks.length - failed.length}/${checks.length}\n\n| Rezultat | Provjera | Detalj |\n|---|---|---|\n${rows}\n`;
 
 fs.writeFileSync(path.join(OUT, 'release-summary.md'), summary);
 
