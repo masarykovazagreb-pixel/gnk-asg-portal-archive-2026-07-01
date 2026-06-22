@@ -880,4 +880,130 @@ setTimeout(gnkV6FixedRun,400);
 setTimeout(gnkV6FixedRun,1200);
 
 /* GNK_ASG_INDEX_POLISH_V6_FIXED_END */
+
+
+/* GNK_ASG_REMOVE_CORPORATE_GALLERY_V9_START */
+
+const GNK_ASG_REMOVE_CORPORATE_GALLERY_V9 = true;
+
+function gnkRemoveCorporateGalleryV9() {
+  const selectors = [
+    ".gnk-v6-public-gallery",
+    ".gnk-v6-fixed-public-gallery",
+    ".gnk-empty-visual-fill.gnk-public-visuals",
+    ".gnk-v6-gallery.gnk-v6-public-gallery",
+    ".gnk-v6-gallery.gnk-v6-fixed-public-gallery",
+    ".gnk-v6-gallery.gnk-v6-fixed-public-gallery",
+    ".gnk-v6-public-gallery",
+    ".gnk-v6-fixed-public-gallery"
+  ];
+
+  document.querySelectorAll(selectors.join(",")).forEach(element => {
+    element.remove();
+  });
+
+  const titles = [
+    "gnk asg korporativna galerija",
+    "gnk asg corporate gallery"
+  ];
+
+  document.querySelectorAll(
+    "h1,h2,h3,h4,h5,h6,p,span,strong,div"
+  ).forEach(element => {
+    const value = String(element.textContent || "")
+      .replace(/\s+/g," ")
+      .trim()
+      .toLowerCase();
+
+    if (!titles.includes(value)) {
+      return;
+    }
+
+    let block = element.closest(
+      ".gnk-v6-gallery," +
+      ".gnk-empty-visual-fill," +
+      ".gnk-public-visuals," +
+      ".gnk-v6-public-gallery," +
+      ".gnk-v6-fixed-public-gallery"
+    );
+
+    if (!block) {
+      let current = element.parentElement;
+
+      for (let level = 0; current && level < 6; level++) {
+        const currentText = String(current.textContent || "")
+          .replace(/\s+/g," ")
+          .trim()
+          .toLowerCase();
+
+        const imageCount = current.querySelectorAll("img").length;
+        const rect = current.getBoundingClientRect();
+
+        if (
+          titles.some(title => currentText.includes(title)) &&
+          imageCount >= 1 &&
+          rect.width > 250
+        ) {
+          block = current;
+          break;
+        }
+
+        current = current.parentElement;
+      }
+    }
+
+    if (block) {
+      block.remove();
+    }
+  });
+}
+
+try {
+  if (typeof insertPublicSourcesVisuals === "function") {
+    insertPublicSourcesVisuals = function() {
+      gnkRemoveCorporateGalleryV9();
+    };
+  }
+
+  if (typeof gnkV6FillPublicSources === "function") {
+    gnkV6FillPublicSources = function() {
+      gnkRemoveCorporateGalleryV9();
+    };
+  }
+
+  if (typeof gnkV6FixedSources === "function") {
+    gnkV6FixedSources = function() {
+      gnkRemoveCorporateGalleryV9();
+    };
+  }
+} catch (error) {}
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    gnkRemoveCorporateGalleryV9,
+    {once:true}
+  );
+} else {
+  gnkRemoveCorporateGalleryV9();
+}
+
+window.addEventListener(
+  "load",
+  gnkRemoveCorporateGalleryV9,
+  {once:true}
+);
+
+[100,300,700,1200,2200,4000].forEach(delay => {
+  setTimeout(gnkRemoveCorporateGalleryV9,delay);
+});
+
+new MutationObserver(() => {
+  gnkRemoveCorporateGalleryV9();
+}).observe(document.documentElement,{
+  childList:true,
+  subtree:true
+});
+
+/* GNK_ASG_REMOVE_CORPORATE_GALLERY_V9_END */
 })();
