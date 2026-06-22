@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260622-install-dedupe01';
+  var VERSION = '20260622-mail-home-polish01';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
   style('/assets/seo-profile-link.css');
   style('/assets/menu-fix.css');
   style('/assets/quality-patch.css');
+  style('/assets/homepage-polish.css');
   script('/assets/i18n.js');
   script('/assets/language-routing.js');
   script('/assets/portal-navigation.js');
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/hourly-data-disclosure.js');
   script('/assets/portal-layout.js');
   script('/assets/home-activity-model.js');
+  script('/assets/homepage-polish.js');
 
   function isEnglish() {
     return /\/en\/?$/.test(window.location.pathname) || /\/en\//.test(window.location.pathname) || (window.GNK_LANG && window.GNK_LANG.get && window.GNK_LANG.get() === 'en');
