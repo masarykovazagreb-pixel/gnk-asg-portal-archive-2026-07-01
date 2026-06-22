@@ -19,7 +19,7 @@ function protectedCorsHeaders(request) {
   return {
     'access-control-allow-origin': allowedOrigin,
     'access-control-allow-methods': 'GET,POST,OPTIONS',
-    'access-control-allow-headers': 'content-type,authorization,x-operator-token,x-admin-token,x-gnk-asg-token',
+    'access-control-allow-headers': 'content-type,authorization,x-news-publish-token,x-operator-token,x-admin-token,x-gnk-asg-token',
     'access-control-max-age': '600',
     'vary': 'Origin'
   };
@@ -67,7 +67,50 @@ function GNK_NEWS_SLUG(value) {
     .slice(0, 80) || 'vijest';
 }
 
-async function GNK_NEWS_AUTHORIZED(request) {
+const GNK_ASG_NEWS_DIRECT_TOKEN_V1 = true;
+
+function GNK_NEWS_REQUEST_TOKEN(request) {
+  const authorization = request.headers.get('authorization') || '';
+  const bearer = authorization.match(/^Bearer\s+(.+)$/i);
+
+  return String(
+    (bearer && bearer[1]) ||
+    request.headers.get('x-news-publish-token') ||
+    request.headers.get('x-operator-token') ||
+    request.headers.get('x-admin-token') ||
+    request.headers.get('x-gnk-asg-token') ||
+    ''
+  ).trim();
+}
+
+function GNK_NEWS_SAFE_EQUAL(left, right) {
+  const a = String(left || '');
+  const b = String(right || '');
+
+  if (!a || !b || a.length !== b.length) {
+    return false;
+  }
+
+  let difference = 0;
+
+  for (let index = 0; index < a.length; index += 1) {
+    difference |= a.charCodeAt(index) ^ b.charCodeAt(index);
+  }
+
+  return difference === 0;
+}
+
+async function GNK_NEWS_AUTHORIZED(request, env) {
+  const candidate = GNK_NEWS_REQUEST_TOKEN(request);
+  const dedicatedToken = String(env.NEWS_PUBLISH_TOKEN || '').trim();
+
+  if (
+    dedicatedToken &&
+    GNK_NEWS_SAFE_EQUAL(candidate, dedicatedToken)
+  ) {
+    return true;
+  }
+
   try {
     const check = await fetch(
       'https://operator.gnk-asg.hr/operator/status',
@@ -83,7 +126,6 @@ async function GNK_NEWS_AUTHORIZED(request) {
     return false;
   }
 }
-
 async function GNK_NEWS_READ_LIST(env) {
   if (!env.GNK_ASG_KV) return [];
 
@@ -104,7 +146,7 @@ async function GNK_NEWS_PUBLISH(request, env) {
     );
   }
 
-  if (!(await GNK_NEWS_AUTHORIZED(request))) {
+  if (!(await GNK_NEWS_AUTHORIZED(request, env))) {
     return GNK_NEWS_JSON(
       { ok: false, error: 'authorization_required' },
       401
