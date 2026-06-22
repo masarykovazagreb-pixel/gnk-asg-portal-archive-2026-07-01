@@ -235,4 +235,159 @@ boot = function() {
   addYellowGroupOverviewLeft();
   fixPdfCardsAppearance();
 };
+
+
+
+/* GNK_ASG_INDEX_IMAGE_FILL_V1 */
+function gnkImageCandidates() {
+  return [
+    {
+      src: "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png",
+      label: "GNK ASG",
+      text: "Korporativni identitet"
+    },
+    {
+      src: "https://gnk-asg.hr/r2/seo-gallery/business/gnk-asg-business-corporate-overview.jpg",
+      label: "Business",
+      text: "Poslovni i korporativni pregled"
+    },
+    {
+      src: "https://gnk-asg.hr/r2/seo-gallery/ai-technology/gnk-asg-ai-technology-network.jpg",
+      label: "AI & Tech",
+      text: "AI, podaci i digitalna infrastruktura"
+    },
+    {
+      src: "https://gnk-asg.hr/r2/seo-gallery/finance/gnk-asg-financial-market-intelligence.jpg",
+      label: "Markets",
+      text: "Tržišta, financije i analitika"
+    },
+    {
+      src: "https://gnk-asg.hr/r2/seo-gallery/sport/gnk-asg-sport-global-network.jpg",
+      label: "Sport",
+      text: "Sport, mreža i međunarodni okvir"
+    }
+  ];
+}
+
+function buildVisualFill(className, title, subtitle, count) {
+  const wrap = document.createElement("div");
+  wrap.className = `gnk-empty-visual-fill ${className}`;
+
+  const header = document.createElement("div");
+  header.className = "gnk-empty-visual-fill-header";
+
+  const titleWrap = document.createElement("div");
+  const titleEl = document.createElement("div");
+  titleEl.className = "gnk-empty-visual-fill-title";
+  titleEl.textContent = title;
+
+  const subtitleEl = document.createElement("div");
+  subtitleEl.className = "gnk-empty-visual-fill-subtitle";
+  subtitleEl.textContent = subtitle;
+
+  titleWrap.appendChild(titleEl);
+  titleWrap.appendChild(subtitleEl);
+  header.appendChild(titleWrap);
+  wrap.appendChild(header);
+
+  const grid = document.createElement("div");
+  grid.className = "gnk-visual-grid";
+
+  gnkImageCandidates().slice(0, count).forEach(item => {
+    const card = document.createElement("div");
+    card.className = "gnk-visual-card";
+
+    const img = document.createElement("img");
+    img.src = item.src;
+    img.alt = item.text;
+
+    const overlay = document.createElement("div");
+    overlay.className = "gnk-visual-card-overlay";
+
+    const label = document.createElement("div");
+    label.className = "gnk-visual-card-label";
+    label.textContent = item.label;
+
+    const text = document.createElement("div");
+    text.className = "gnk-visual-card-text";
+    text.textContent = item.text;
+
+    overlay.appendChild(label);
+    overlay.appendChild(text);
+    card.appendChild(img);
+    card.appendChild(overlay);
+    grid.appendChild(card);
+  });
+
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+function insertCommandCentreVisuals() {
+  const section = findSection(/Command Centre/i);
+  if (!section || section.querySelector(".gnk-command-visuals")) return;
+
+  const targets = [...section.querySelectorAll("div,section,article")].filter(el => {
+    const txt = textOf(el);
+    const rect = el.getBoundingClientRect();
+    return rect.height > 220 && rect.width > 260 && !txt && !el.querySelector("img");
+  });
+
+  const host = targets.sort((a,b) => (b.getBoundingClientRect().height * b.getBoundingClientRect().width) - (a.getBoundingClientRect().height * a.getBoundingClientRect().width))[0];
+
+  if (host) {
+    host.classList.add("gnk-command-visuals");
+    host.appendChild(buildVisualFill(
+      "gnk-command-visuals",
+      "Vizualni pregled",
+      "Odabrani GNK ASG vizuali u praznom prostoru modula",
+      3
+    ));
+    return;
+  }
+
+  const fallback = [...section.querySelectorAll("div,section,article,.panel,.card")]
+    .sort((a,b) => b.getBoundingClientRect().width - a.getBoundingClientRect().width)[0];
+
+  if (fallback && !fallback.querySelector(".gnk-command-visuals")) {
+    const fill = buildVisualFill(
+      "gnk-command-visuals",
+      "Vizualni pregled",
+      "Odabrani GNK ASG vizuali u praznom prostoru modula",
+      3
+    );
+    fallback.appendChild(fill);
+  }
+}
+
+function insertPublicSourcesVisuals() {
+  const section = findSection(/Javni izvori i službeni registri|Public sources and official registers/i);
+  if (!section || section.querySelector(".gnk-public-visuals")) return;
+
+  const cards = [...section.querySelectorAll("div,section,article,.card")]
+    .filter(el => /OTVORI IZVOR|OPEN SOURCE/i.test(textOf(el)));
+
+  if (cards.length < 2) return;
+
+  const lastCard = cards[cards.length - 1];
+  const rowParent = lastCard.parentElement;
+
+  if (!rowParent) return;
+
+  const fill = buildVisualFill(
+    "gnk-public-visuals",
+    "GNK ASG vizuali",
+    "Vizualna dopuna praznih prostora u sekciji javnih izvora",
+    2
+  );
+
+  rowParent.insertAdjacentElement("afterend", fill);
+}
+
+const __originalBoot_ImageFill = boot;
+boot = function() {
+  __originalBoot_ImageFill();
+  insertCommandCentreVisuals();
+  insertPublicSourcesVisuals();
+};
 })();
