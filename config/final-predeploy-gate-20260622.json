@@ -1,0 +1,33 @@
+{
+  "gateVersion": "2026-06-22-final-v1",
+  "sourceBranch": "experience-ai-live-overview",
+  "sourceCommit": "987e14d9874a76235957873be1262d901d5b0c3a",
+  "checkpointBranch": "predeploy-checkpoint-20260622-987e14d",
+  "minimumSuccessfulSourceWorkflows": 16,
+  "requiredSourceWorkflows": [
+    "GNK ASG Auto Editor V2 Preview Check",
+    "GNK ASG Business Light Workers Preview",
+    "GNK ASG Communication and Content Preview Check",
+    "GNK ASG Data Sync V2 Preview Check",
+    "GNK ASG Final Frontend Filesystem Check",
+    "GNK ASG Live Backend Smoke Audit",
+    "GNK ASG Mail Agent Diagnostic",
+    "GNK ASG Mail Agent Preview Check",
+    "GNK ASG Mobile Contrast Browser Audit",
+    "GNK ASG Production Workflow Trigger Audit",
+    "GNK ASG Release Package Check",
+    "GNK ASG Runner Diagnostic",
+    "GNK ASG Social Share Preview Check",
+    "GNK ASG Social Share Workers Preview",
+    "Phase 1 Critical Audit",
+    "Visual Redesign Preview Artifact"
+  ],
+  "requiredPublicRoutes": 22,
+  "requiredProtectedRoutes": 3,
+  "requiredMobileContrastScenarios": 4,
+  "productionDeployAllowed": false,
+  "productionMarkerAllowed": false,
+  "mergeAllowed": false,
+  "massMailLiveSendRequired": false,
+  "expectedStatus": "READY_FOR_EXPLICIT_PRODUCTION_APPROVAL"
+}
