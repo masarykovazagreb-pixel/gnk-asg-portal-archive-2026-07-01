@@ -1,69 +1,49 @@
 <!doctype html>
-<html lang="en" data-gnk-theme="dark">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Markets | GNK ASG</title>
-<meta name="description" content="GNK ASG market overview covering Bitcoin, Ethereum, gold, Brent crude, EUR/USD and other reference indicators from the existing market backend.">
-<link rel="canonical" href="https://gnk-asg.hr/markets/">
-<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/trzista/">
-<link rel="alternate" hreflang="en" href="https://gnk-asg.hr/markets/">
-<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/trzista/">
-<link rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260620-1">
-<link rel="stylesheet" href="/assets/experience-layer.css?v=20260620-1">
-<style>
-:root{--market-bg:#050b16;--market-panel:#09172b;--market-card:#0d2039;--market-text:#f8fafc;--market-muted:#aab7ca;--market-line:rgba(212,175,55,.28);--market-gold:#d4af37;--market-positive:#4ade80;--market-negative:#fb7185}
-html[data-gnk-theme="light"]{--market-bg:#f4f7fb;--market-panel:#fff;--market-card:#fff;--market-text:#07162d;--market-muted:#61758d;--market-line:#dbe5ef;--market-positive:#16804a;--market-negative:#c23c48}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at 16% 0%,rgba(34,88,150,.28),transparent 35%),var(--market-bg);color:var(--market-text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-main{width:min(1220px,calc(100% - 28px));margin:0 auto;padding:110px 0 42px}
-.hero,.chartbox{border:1px solid var(--market-line);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012)),var(--market-panel);box-shadow:0 24px 70px rgba(0,0,0,.20)}
-.hero{padding:28px;margin-bottom:16px}.eyebrow{margin:0 0 8px;color:var(--market-gold);font-size:12px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
-h1,h2{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.025em}h1{margin:0 0 12px;font-size:clamp(2.2rem,6vw,4.2rem);line-height:1.03}h2{margin:0 0 12px;font-size:clamp(1.5rem,3vw,2.25rem)}
-.hero p,.muted{color:var(--market-muted);line-height:1.62}.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
-button,.action-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border:1px solid var(--market-gold);border-radius:14px;background:linear-gradient(135deg,#071b3a,#0b2b5a);color:#fff;font:800 13px/1.2 Inter,Arial,sans-serif;text-decoration:none;cursor:pointer}
-button:hover,.action-link:hover{background:linear-gradient(135deg,#0b2b5a,#123d7a)}#status{font-size:13px;color:var(--market-muted)}
-.status-badge{display:inline-flex;align-items:center;min-height:28px;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.08em}.status-badge.live{background:rgba(34,197,94,.14);color:#86efac}.status-badge.delayed{background:rgba(245,158,11,.14);color:#fcd34d}.status-badge.snapshot,.status-badge.fallback{background:rgba(239,68,68,.13);color:#fca5a5}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:14px;margin:16px 0}.card{min-width:0;padding:18px;border:1px solid var(--market-line);border-radius:20px;background:var(--market-card);box-shadow:0 16px 40px rgba(0,0,0,.12)}
-.card .label{color:var(--market-gold);font-size:11px;font-weight:900;letter-spacing:.11em;text-transform:uppercase}.card .value{margin:9px 0 5px;color:var(--market-text);font-size:clamp(1.35rem,3vw,1.8rem);font-weight:900;font-variant-numeric:tabular-nums}.card .note{color:var(--market-muted);font-size:12px;line-height:1.45}
-.chartbox{padding:20px;margin-top:16px}.chart-wrap{position:relative;min-height:320px;border:1px solid var(--market-line);border-radius:18px;background:rgba(0,0,0,.08);overflow:hidden}canvas{display:block;width:100%;height:320px}.legend{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 0;color:var(--market-muted);font-size:12px}.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{display:inline-block;width:10px;height:10px;border-radius:50%}
-.disclaimer{margin-top:16px;padding:15px 18px;border:1px solid var(--market-line);border-radius:17px;color:var(--market-muted);background:rgba(212,175,55,.06);font-size:13px;line-height:1.58}@media(max-width:700px){main{padding-top:92px}.hero{padding:20px}.chartbox{padding:14px}.chart-wrap,canvas{height:270px;min-height:270px}}
-</style>
-<script defer src="/assets/brand/gnk-asg-global-layer.js?v=20260620-1"></script>
-<script defer src="/assets/experience-navigation.js?v=20260620-1"></script>
-<script defer src="/assets/experience-ai.js?v=20260620-1"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Markets and Reference Assets | GNK ASG</title>
+  <meta name="description" content="GNK ASG market monitor for Bitcoin, gold, Brent oil, USD/EUR and reference assets, with normalized backend fields and transparent LIVE, DELAYED, SNAPSHOT or FALLBACK status.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://gnk-asg.hr/markets/">
+  <link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/trzista/">
+  <link rel="alternate" hreflang="en" href="https://gnk-asg.hr/markets/">
+  <link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/trzista/">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="GNK ASG"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="hr_HR"><meta property="og:title" content="Markets and Reference Assets | GNK ASG"><meta property="og:description" content="Market monitor with transparent data status and last successful update time."><meta property="og:url" content="https://gnk-asg.hr/markets/"><meta property="og:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Markets and Reference Assets | GNK ASG"><meta name="twitter:description" content="Market monitor with transparent data status and last successful update time."><meta name="twitter:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png">
+  <meta name="theme-color" content="#07122a"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/portal-shell.css?v=20260622-4"><script defer src="/assets/portal-shell.js?v=20260622-4"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"GNK ASG Markets and Reference Assets","url":"https://gnk-asg.hr/markets/","description":"Market monitor with transparent data status.","inLanguage":"en","publisher":{"@type":"Organization","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}}</script>
+  <style>
+  :root{color-scheme:dark;--bg:#030914;--panel:#0b1729;--text:#f5f7fb;--muted:#aab7ca;--gold:#d7b15a;--line:rgba(215,177,90,.24)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#10233d 0,#06101f 44%,var(--bg) 100%);color:var(--text);font-family:Inter,Arial,sans-serif;min-height:100vh}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}.hero{padding:132px 0 38px;border-bottom:1px solid var(--line)}.eyebrow{color:var(--gold);font-size:.76rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}.hero h1{font-size:clamp(2rem,5vw,3.8rem);margin:8px 0}.hero p{max-width:840px;color:var(--muted);line-height:1.7}.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:20px}.button{border:1px solid var(--gold);border-radius:12px;padding:11px 15px;background:linear-gradient(135deg,#071b3a,#0b2b5a);color:#fff;font-weight:900;cursor:pointer}.status{padding:9px 12px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:.84rem}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding:28px 0}.card{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#101f34,#071326);padding:20px}.label{color:var(--gold);font-size:.73rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.value{font-size:1.65rem;font-weight:900;margin:10px 0}.note{color:var(--muted);font-size:.86rem;line-height:1.5}.chartbox{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:20px;margin-bottom:64px}.chartbox h2{margin-top:0}.chartbox p{color:var(--muted)}canvas{width:100%;height:320px;background:rgba(255,255,255,.025);border-radius:14px}footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted)}@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.grid{grid-template-columns:1fr}.hero{padding-top:108px}.wrap{width:min(100% - 22px,1180px)}}
+  </style>
 </head>
 <body>
-<main>
-<section class="hero">
-<p class="eyebrow">GNK ASG Market Intelligence</p>
-<h1>Markets and reference assets</h1>
-<p>Overview of Bitcoin, Ethereum, gold, Brent crude, foreign exchange rates and other reference indicators from the existing GNK ASG market backend. Every value clearly states whether it is LIVE, DELAYED, SNAPSHOT or FALLBACK.</p>
-<div class="controls">
-<button id="refresh" type="button">Refresh data</button>
-<a class="action-link" href="/en/">Home</a>
-<a class="action-link" href="/trzista/" hreflang="hr">HR</a>
-<span id="marketBadge" class="status-badge fallback">FALLBACK</span>
-<span id="status">Loading backend…</span>
-</div>
-</section>
-<section class="grid" id="cards" aria-live="polite"></section>
-<section class="chartbox">
-<h2>Market chart</h2>
-<div class="chart-wrap"><canvas id="chart" width="1100" height="320" aria-label="Market data chart"></canvas></div>
-<div class="legend"><span><i style="background:#d4af37"></i>BTC EUR</span><span><i style="background:#6fb7ff"></i>ETH EUR</span><span><i style="background:#f8fafc"></i>ASG Gold EUR</span><span><i style="background:#ff9d5c"></i>Brent USD</span></div>
-<p class="muted">The chart uses saved backend snapshot points and expands after subsequent refreshes.</p>
-</section>
-<div class="disclaimer">Market data is provided for information only, may be delayed and does not constitute financial, investment, tax or legal advice.</div>
-</main>
-<script>
-const fmt=(n,s='')=>n===null||n===undefined||Number.isNaN(Number(n))?'—':Number(n).toLocaleString('en-GB',{maximumFractionDigits:2})+s;
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-function card(label,value,note){return `<article class="card"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div><div class="note">${esc(note||'')}</div></article>`}
-function classifyStatus(value){const s=String(value||'').toLowerCase();if(s.includes('live'))return['LIVE','live'];if(s.includes('delay'))return['DELAYED','delayed'];if(s.includes('snapshot'))return['SNAPSHOT','snapshot'];return['FALLBACK','fallback']}
-function draw(history){const c=document.getElementById('chart'),ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);ctx.strokeStyle='rgba(212,175,55,.20)';ctx.lineWidth=1;for(let i=0;i<6;i++){const y=30+i*(h-60)/5;ctx.beginPath();ctx.moveTo(40,y);ctx.lineTo(w-20,y);ctx.stroke()}const rows=(history||[]).filter(Boolean),series=[['btc_eur','BTC EUR','#d4af37'],['eth_eur','ETH EUR','#6fb7ff'],['asg_gold_eur','ASG GOLD EUR','#f8fafc'],['brent_usd','BRENT USD','#ff9d5c']];if(rows.length<2){ctx.fillStyle='#aab3c4';ctx.font='16px Inter, Arial';ctx.fillText('Waiting for additional snapshot data.',50,160);return}series.forEach((s,idx)=>{const vals=rows.map(x=>Number(x[s[0]])).filter(Number.isFinite);if(vals.length<2)return;const min=Math.min(...vals),max=Math.max(...vals),span=max-min||1;ctx.strokeStyle=s[2];ctx.lineWidth=2;ctx.beginPath();rows.forEach((r,i)=>{const v=Number(r[s[0]]);if(!Number.isFinite(v))return;const x=50+i*(w-80)/(rows.length-1),y=h-35-((v-min)/span)*(h-75);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.stroke();ctx.fillStyle=s[2];ctx.font='13px Inter, Arial';ctx.fillText(s[1],60+idx*145,22)})}
-async function load(refresh=false){const status=document.getElementById('status'),cards=document.getElementById('cards'),badge=document.getElementById('marketBadge');status.textContent='Loading backend…';try{const response=await fetch('/api/market'+(refresh?'?refresh=1':'?cb='+Date.now()),{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'HTTP '+response.status);const rows=Array.isArray(data.cards)?data.cards:[];cards.innerHTML=rows.length?rows.map(x=>card(x.label,fmt(x.value,x.suffix),x.note)).join(''):card('Backend','—','Market data is currently unavailable.');const [label,css]=classifyStatus(data.status);badge.textContent=label;badge.className='status-badge '+css;status.textContent='Updated: '+(data.updatedAt||'—')+' · items: '+rows.length;draw(data.history||[])}catch(error){badge.textContent='FALLBACK';badge.className='status-badge fallback';status.textContent='Backend error: '+error.message;cards.innerHTML=card('Backend','—','The market backend is currently unavailable.');draw([])}}
-document.getElementById('refresh').addEventListener('click',()=>load(true));load();
-</script>
+  <nav class="asg-topnav" aria-label="GNK ASG English navigation"><a href="/en/">Profile</a><a href="/markets/" aria-current="page">Markets</a><a href="/publications/">Publications</a><a href="/news/">News</a><a href="/en/assistant/">AI Help</a><a href="/en/legal/">Legal</a><a href="/en/contact/">Contact</a><a href="/operator-dashboard/" rel="nofollow">Admin</a></nav>
+  <div class="asg-mobile-nav"><strong>GNK ASG</strong><label class="asg-shell-visually-hidden" for="marketsMobileNav">Portal navigation</label><select id="marketsMobileNav"><option value="">Menu</option><option value="/en/">Profile</option><option value="/markets/">Markets</option><option value="/publications/">Publications</option><option value="/news/">News</option><option value="/en/assistant/">AI Help</option><option value="/en/legal/">Legal</option><option value="/en/contact/">Contact</option><option value="/operator-dashboard/">Admin</option><option value="/trzista/">Croatian markets</option></select></div>
+  <a class="asg-ai-float" href="/en/assistant/" aria-label="GNK ASG AI Help">AI Help</a>
+  <header class="hero"><div class="wrap"><div class="eyebrow">Market intelligence</div><h1>Markets and Reference Assets</h1><p>Bitcoin, gold, Brent oil, USD/EUR and other reference assets from the GNK ASG market backend. Data may be delayed and are informational, not financial advice.</p><div class="actions"><button class="button" id="refresh" type="button">Refresh data</button><div class="status" id="status">Loading backend…</div></div></div></header>
+  <main class="wrap"><section class="grid" id="cards" aria-label="Market values"><article class="card"><div class="label">Backend</div><div class="value">—</div><div class="note">Loading data…</div></article></section><section class="chartbox"><h2>Stored snapshot chart</h2><canvas id="chart" width="1100" height="320"></canvas><p>The chart uses stored backend points and does not imply real-time trading data.</p></section></main>
+  <footer><div class="wrap">© 2026 GNK ASG d.o.o. · Informational data may be delayed and are not financial advice.</div></footer>
+  <script>
+  (function(){
+    'use strict';
+    var allowed={LIVE:1,DELAYED:1,SNAPSHOT:1,FALLBACK:1};
+    function number(value){var n=Number(value);return Number.isFinite(n)?n:null;}
+    function pick(){for(var i=0;i<arguments.length;i++){var n=number(arguments[i]);if(n!==null)return n;}return null;}
+    function fmt(value,suffix){var n=number(value);return n===null?'—':n.toLocaleString('en-US',{maximumFractionDigits:2})+(suffix||'');}
+    function safeStatus(value){var s=String(value||'SNAPSHOT').toUpperCase();return allowed[s]?s:'SNAPSHOT';}
+    function card(label,value,note){return '<article class="card"><div class="label">'+label+'</div><div class="value">'+value+'</div><div class="note">'+note+'</div></article>';}
+    function normalizedCards(data){if(Array.isArray(data.cards)&&data.cards.length)return data.cards.map(function(x){return {label:x.label||'Asset',value:pick(x.value,x.price,x.price_eur,x.price_usd,x.rate),suffix:x.suffix||'',note:x.note||''};});var a=data.assets||{};return [
+      {label:'Bitcoin',value:pick(a.bitcoin&&a.bitcoin.price_eur,a.bitcoin&&a.bitcoin.price,a.btc_eur),suffix:' EUR',note:'BTC/EUR reference'},
+      {label:'Gold',value:pick(a.asg_gold_reference&&a.asg_gold_reference.value_eur,a.gold&&a.gold.price_eur,a.gold&&a.gold.price_usd,a.gold&&a.gold.price),suffix:' EUR',note:'Reference ounce value'},
+      {label:'Brent oil',value:pick(a.brent&&a.brent.price_usd,a.brent&&a.brent.price,a.brent_usd),suffix:' USD',note:'Brent reference'},
+      {label:'USD/EUR',value:pick(a.usd_eur&&a.usd_eur.rate,a.usd_eur&&a.usd_eur.price,a.fx&&a.fx.usd_eur),suffix:'',note:'Foreign-exchange reference'}
+    ];}
+    function draw(history){var c=document.getElementById('chart'),ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);ctx.strokeStyle='rgba(215,177,90,.22)';for(var i=0;i<6;i++){var y=30+i*(h-60)/5;ctx.beginPath();ctx.moveTo(40,y);ctx.lineTo(w-20,y);ctx.stroke();}var rows=(history||[]).filter(Boolean),series=[['btc_eur','BTC EUR'],['asg_gold_eur','GOLD EUR'],['brent_usd','BRENT USD']];if(rows.length<2){ctx.fillStyle='#aab7ca';ctx.font='18px Arial';ctx.fillText('Waiting for additional stored snapshot points.',50,160);return;}series.forEach(function(s,idx){var vals=rows.map(function(r){return number(r[s[0]]);}).filter(function(v){return v!==null;});if(vals.length<2)return;var min=Math.min.apply(null,vals),max=Math.max.apply(null,vals),span=max-min||1;ctx.strokeStyle=['#d7b15a','#f5f7fb','#aab7ca'][idx];ctx.lineWidth=2;ctx.beginPath();var started=false;rows.forEach(function(r,i){var v=number(r[s[0]]);if(v===null)return;var x=50+i*(w-80)/(rows.length-1),y=h-35-((v-min)/span)*(h-75);if(!started){ctx.moveTo(x,y);started=true;}else ctx.lineTo(x,y);});ctx.stroke();ctx.fillStyle=['#d7b15a','#f5f7fb','#aab7ca'][idx];ctx.font='13px Arial';ctx.fillText(s[1],60+idx*150,22);});}
+    async function load(force){var status=document.getElementById('status'),cards=document.getElementById('cards');status.textContent='Loading backend…';try{var response=await fetch('/api/market'+(force?'?refresh=1':'?cb='+Date.now()),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);var data=await response.json(),items=normalizedCards(data);cards.innerHTML=items.map(function(x){return card(x.label,fmt(x.value,x.suffix),x.note);}).join('');var mode=safeStatus(data.status);status.textContent=mode+' · last successful update: '+(data.updatedAt||data.lastUpdated||'unavailable');draw(data.history||[]);}catch(error){status.textContent='FALLBACK · backend unavailable';cards.innerHTML=card('Market data','—','The last valid backend snapshot is currently unavailable.');draw([]);console.error('[GNK ASG markets]',error);}}
+    document.getElementById('refresh').addEventListener('click',function(){load(true);});load(false);
+  })();
+  </script>
 </body>
 </html>
