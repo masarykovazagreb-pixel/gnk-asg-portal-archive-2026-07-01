@@ -10,8 +10,6 @@ export async function analyseMail(env, mail) {
   const reviewThreadContext = compactThreadContext(fullThreadContext);
   const enrichedMail = { ...mail, threadContext: fullThreadContext };
 
-  // processIncoming keeps using the same mail object after this function returns.
-  // Store only the compact snapshot there while the AI receives the full context.
   if (mail && typeof mail === 'object') mail.threadContext = reviewThreadContext;
 
   const threadText = threadRiskText(enrichedMail);
@@ -37,13 +35,14 @@ export async function analyseMail(env, mail) {
     }
 
     const highRisk = baseline.risk === 'high' || String(parsed.risk || '').toLowerCase() === 'high';
+    const senderName = clean(enrichedMail.senderName);
     const provisional = {
       category: highRisk ? baseline.category : clean(parsed.category || baseline.category),
       risk: highRisk ? 'high' : 'low',
       autoSend: false,
       summary: clean(parsed.summary),
-      reply: cleanReply(parsed.reply),
-      person: clean(parsed.person || enrichedMail.senderName),
+      reply: normaliseReplyName(cleanReply(parsed.reply), senderName),
+      person: normalisePersonName(parsed.person || senderName),
       organization: clean(parsed.organization),
       topic: clean(parsed.topic || enrichedMail.subject),
       tone: clean(parsed.tone || 'neutral'),
@@ -84,7 +83,7 @@ function heldFallback(baseline, reason, mail = {}, reviewThreadContext = null) {
     status: 'draft_pending_approval',
     summary: `${reason} Poruka je zadržana bez automatskog slanja.`,
     reply: '',
-    person: clean(mail.senderName),
+    person: normalisePersonName(mail.senderName),
     organization: '',
     topic: clean(mail.subject),
     tone: 'unknown',
@@ -141,6 +140,31 @@ function cleanReply(value) {
     .filter(Boolean)
     .join('\n\n')
     .trim();
+}
+
+function normalisePersonName(value) {
+  const source = clean(value);
+  if (!source) return '';
+
+  const letters = source.replace(/[^A-Za-zÀ-ž]/g, '');
+  const upper = letters.replace(/[^A-ZÀ-Ž]/g, '').length;
+  const lower = letters.replace(/[^a-zà-ž]/g, '').length;
+
+  if (!letters || upper <= lower) return source;
+
+  return source
+    .toLocaleLowerCase('hr-HR')
+    .replace(/(^|[\s-])([a-zà-ž])/g, (_, separator, letter) => separator + letter.toLocaleUpperCase('hr-HR'));
+}
+
+function normaliseReplyName(reply, senderName) {
+  const source = clean(senderName);
+  const normalised = normalisePersonName(source);
+
+  if (!source || !normalised || source === normalised) return reply;
+
+  const escaped = source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return String(reply || '').replace(new RegExp(escaped, 'gi'), normalised);
 }
 
 function parseObject(value) {
