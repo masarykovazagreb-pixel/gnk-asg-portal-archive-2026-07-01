@@ -1005,5 +1005,135 @@ body{padding-bottom:92px!important;overflow-x:hidden!important}
   });
 })();
 </script>
+<style id="gnk-parent-card-white-v12-style">
+.gnk-parent-card-white-v12,
+.gnk-parent-card-white-v12 * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+.gnk-parent-card-white-v12 a,
+.gnk-parent-card-white-v12 a:link,
+.gnk-parent-card-white-v12 a:visited,
+.gnk-parent-card-white-v12 a:hover {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  text-decoration-color: rgba(255,255,255,.7) !important;
+}
+
+.gnk-parent-card-white-v12 hr,
+.gnk-parent-card-white-v12 [class*="divider"],
+.gnk-parent-card-white-v12 [class*="line"] {
+  border-color: rgba(255,255,255,.7) !important;
+}
+</style>
+
+<script id="gnk-parent-card-white-v12">
+(function(){
+  function clean(value){
+    return String(value || "")
+      .replace(/\s+/g," ")
+      .trim()
+      .toLowerCase();
+  }
+
+  function makeWhite(){
+    var headings = Array.from(
+      document.querySelectorAll("h1,h2,h3,h4,h5,h6,strong")
+    );
+
+    var heading = headings.find(function(node){
+      var value = clean(node.textContent);
+
+      return value === "parent company" ||
+        value === "parent company" ||
+        value === "matično društvo";
+    });
+
+    if(!heading){
+      return;
+    }
+
+    var card = heading;
+
+    while(card && card !== document.body){
+      var text = clean(card.textContent);
+      var rect = card.getBoundingClientRect();
+
+      var englishMatch =
+        text.indexOf("parent company") >= 0 &&
+        text.indexOf("registered office") >= 0 &&
+        text.indexOf("entity id") >= 0 &&
+        text.indexOf("companies in the group") >= 0;
+
+      var croatianMatch =
+        text.indexOf("parent company") >= 0 &&
+        text.indexOf("sjedište") >= 0 &&
+        text.indexOf("entity id") >= 0 &&
+        text.indexOf("broj društava u grupi") >= 0;
+
+      if(
+        (englishMatch || croatianMatch) &&
+        rect.width > 250 &&
+        rect.height > 180
+      ){
+        card.classList.remove(
+          "gnk-group-profile-light-card",
+          "gnk-v6-light-surface",
+          "gnk-v6-auto-dark",
+          "gnk-group-left-yellow"
+        );
+
+        card.classList.add(
+          "gnk-parent-card-white-v12",
+          "gnk-v6-dark-surface"
+        );
+
+        card.removeAttribute("data-gnk-group-black-v4");
+        card.removeAttribute("data-gnk-left-yellow");
+
+        card.style.setProperty("color","#ffffff","important");
+        card.style.setProperty("-webkit-text-fill-color","#ffffff","important");
+
+        card.querySelectorAll("*").forEach(function(node){
+          node.classList.remove(
+            "gnk-v6-auto-dark",
+            "gnk-v6-light-surface",
+            "gnk-group-profile-light-card",
+            "gnk-group-left-yellow"
+          );
+
+          node.removeAttribute("data-gnk-group-black-v4");
+          node.removeAttribute("data-gnk-left-yellow");
+
+          node.style.setProperty("color","#ffffff","important");
+          node.style.setProperty("-webkit-text-fill-color","#ffffff","important");
+          node.style.setProperty("opacity","1","important");
+          node.style.setProperty("text-shadow","none","important");
+        });
+
+        return;
+      }
+
+      card = card.parentElement;
+    }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded",makeWhite,{once:true});
+  }else{
+    makeWhite();
+  }
+
+  window.addEventListener("load",makeWhite,{once:true});
+
+  setTimeout(makeWhite,200);
+  setTimeout(makeWhite,700);
+  setTimeout(makeWhite,1500);
+  setTimeout(makeWhite,3000);
+})();
+</script>
 </body>
 </html>
