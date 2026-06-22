@@ -650,5 +650,61 @@ body{padding-bottom:92px!important;overflow-x:hidden!important}
 </script>
 <!-- GNK_ASG_GLOBAL_FLOAT_HOME_AI_V1_END -->
 <script defer src="/assets/index-hotfix-20260622.js?v=20260622-index-hotfix-1"></script>
+<script id="gnk-asg-audit-black-final-v7">
+(function(){
+  var targets = [
+    "neovisna revizija",
+    "izvješće neovisnog revizora i financijski izvještaji",
+    "s bilješkama koje uključuju konsolidirane financijske podatke gnk dinamo ltd. group."
+  ];
+
+  function normalise(value){
+    return String(value || "").replace(/\s+/g," ").trim().toLowerCase();
+  }
+
+  function applyBlack(){
+    document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,span,strong,small,div,a").forEach(function(element){
+      var text = normalise(element.textContent);
+
+      if(targets.indexOf(text) === -1){
+        return;
+      }
+
+      element.classList.remove("gnk-v6-auto-light");
+      element.classList.remove("gnk-financial-contrast");
+      element.classList.add("gnk-audit-black-final-v7");
+
+      element.style.setProperty("color","#111827","important");
+      element.style.setProperty("-webkit-text-fill-color","#111827","important");
+      element.style.setProperty("opacity","1","important");
+      element.style.setProperty("text-shadow","none","important");
+
+      element.querySelectorAll("*").forEach(function(child){
+        child.style.setProperty("color","#111827","important");
+        child.style.setProperty("-webkit-text-fill-color","#111827","important");
+        child.style.setProperty("opacity","1","important");
+        child.style.setProperty("text-shadow","none","important");
+      });
+    });
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded",applyBlack);
+  }else{
+    applyBlack();
+  }
+
+  window.addEventListener("load",applyBlack);
+
+  [100,400,900,1800,3000].forEach(function(delay){
+    setTimeout(applyBlack,delay);
+  });
+
+  new MutationObserver(applyBlack).observe(document.documentElement,{
+    childList:true,
+    subtree:true
+  });
+})();
+</script>
 </body>
 </html>
