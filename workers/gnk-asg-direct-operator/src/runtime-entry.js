@@ -1,4 +1,5 @@
 import application from "./index.js";
+import { handleMailContactRoute } from "./gnk-asg-mail-contact-v1.js";
 import { handleRefreshRoute, runScheduledRefresh } from "./gnk-asg-refresh-backend-v1.js";
 
 function refreshRequestFor(request) {
@@ -16,6 +17,9 @@ function refreshRequestFor(request) {
 
 export default {
   async fetch(request, env, ctx) {
+    const mailResponse = await handleMailContactRoute(request, env, ctx);
+    if (mailResponse) return mailResponse;
+
     // Validator compatibility marker: handleRefreshRoute(request, env, ctx)
     const refreshResponse = await handleRefreshRoute(refreshRequestFor(request), env, ctx);
     if (refreshResponse) return refreshResponse;
