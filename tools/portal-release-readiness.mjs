@@ -2,6 +2,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+await import("./validate-mail-contact.mjs");
+
 const root = process.cwd();
 const portal = path.join(root, "apps/portal");
 const out = path.join(root, "reports/release-readiness");
@@ -74,7 +76,7 @@ for (const file of ["contact/index.html", "en/contact/index.html"]) {
     [/name=["']consent["']/i, "privacy consent"],
     [/\/api\/contact-submit/i, "contact API"],
     [/data\.set\(["']department["']/i, "department compatibility"],
-    [/payload\.caseId/i, "case reference"]
+    [/payload\.caseId|payload\.referenceNumber/i, "case reference"]
   ];
   for (const [rule, label] of rules) if (!rule.test(html)) add("error", "CONTACT_CONTRACT", file, `Missing ${label}.`);
 }
@@ -104,14 +106,30 @@ for (const file of ["ai/index.html", "control/index.html", "mail-studio/index.ht
 
 const runtime = fs.readFileSync(path.join(root, "workers/gnk-asg-direct-operator/src/runtime-entry.js"), "utf8");
 const wrangler = fs.readFileSync(path.join(root, "workers/gnk-asg-direct-operator/wrangler.toml"), "utf8");
+const mailModule = fs.readFileSync(path.join(root, "workers/gnk-asg-direct-operator/src/gnk-asg-mail-contact-v1.js"), "utf8");
 if (!runtime.includes('\"/api/market\": \"/data/market.json\"')) add("error", "MARKET_ALIAS", "runtime-entry.js", "Market API alias is missing.");
+if (!runtime.includes("handleMailContactRoute(request, env, ctx)")) add("error", "MAIL_ROUTE", "runtime-entry.js", "Mail/contact route is not evaluated by the active runtime.");
+if (runtime.indexOf("handleMailContactRoute(request, env, ctx)") > runtime.indexOf("application.fetch(request, env, ctx)")) add("error", "MAIL_ROUTE_ORDER", "runtime-entry.js", "Mail/contact route must be evaluated before legacy handlers.");
 if (!runtime.includes("handleRefreshRoute(refreshRequestFor(request), env, ctx)")) add("error", "ROUTE_ORDER", "runtime-entry.js", "Refresh routes are not evaluated first.");
 if (!wrangler.includes('crons = [\"*/15 * * * *\"]')) add("error", "CRON", "wrangler.toml", "15-minute cron is missing.");
+if (!mailModule.includes("/operator/mail/test") || !mailModule.includes("recipient_not_allowlisted")) add("error", "MAIL_TEST_SAFETY", "gnk-asg-mail-contact-v1.js", "Allowlisted operator mail test is missing.");
+if (!mailModule.includes("internalNotification") || !mailModule.includes("automaticReply")) add("error", "MAIL_DELIVERY_RESULT", "gnk-asg-mail-contact-v1.js", "Separate internal and automatic reply results are missing.");
 
 const homepage = checkFile("index.html");
+const app = checkFile("assets/app.js");
+const homeCss = checkFile("assets/homepage-polish.css");
+const homeJs = checkFile("assets/homepage-polish.js");
 if (homepage) {
   const links = [...homepage.matchAll(/<a[^>]+href=["']\/mobile-app\/["']/gi)].length;
-  if (links > 1) add("warning", "KNOWN_INSTALL_DEBT", "index.html", `${links} legacy /mobile-app/ links remain in the homepage generator.`);
+  if (links > 1) add("warning", "KNOWN_INSTALL_DEBT", "index.html", `${links} legacy /mobile-app/ links remain in the homepage generator; runtime de-duplication is active.`);
+}
+if (app && (!app.includes("/assets/homepage-polish.css") || !app.includes("/assets/homepage-polish.js"))) add("error", "HOME_ASSET_LOADING", "assets/app.js", "Homepage polish assets are not loaded.");
+if (homeCss && (!homeCss.includes("gnk-home-hero") || !homeCss.includes("gnk-home-overview") || !homeCss.includes("color:#07162d"))) add("error", "HOME_CONTRAST", "assets/homepage-polish.css", "Homepage contrast or layout rules are incomplete.");
+if (homeJs) {
+  for (const endpoint of ["/api/backend-status", "/api/market", "/data/news.json", "/api/contact-submit"]) {
+    if (!homeJs.includes(endpoint)) add("error", "HOME_FUNCTIONAL_STATUS", "assets/homepage-polish.js", `Homepage status integration is missing ${endpoint}.`);
+  }
+  if (!homeJs.includes("UNAVAILABLE") || !homeJs.includes("FALLBACK") || !homeJs.includes("SNAPSHOT")) add("error", "HOME_STATUS_TRANSPARENCY", "assets/homepage-polish.js", "Homepage status states are incomplete.");
 }
 
 const signature = checkFile(".github/prep/mail_signature_templates.html");
@@ -125,13 +143,13 @@ const summary = findings.reduce((r, item) => {
 }, { error: 0, warning: 0 });
 
 const status = summary.error === 0 ? "READY_WITH_KNOWN_WARNINGS" : "NOT_READY";
-const result = { generatedAt: new Date().toISOString(), status, summary, checkedPairs: pairs.length, findings };
+const result = { generatedAt: new Date().toISOString(), status, summary, checkedPairs: pairs.length, mailContactTest:"passed", findings };
 fs.mkdirSync(out, { recursive: true });
 fs.writeFileSync(path.join(out, "release-readiness.json"), `${JSON.stringify(result, null, 2)}\n`);
 
 const lines = [
   "# GNK ASG Release Readiness", "", `Generated: ${result.generatedAt}`, "",
-  `- Status: **${status}**`, `- Errors: ${summary.error}`, `- Warnings: ${summary.warning}`, `- HR/EN pairs: ${pairs.length}`, "", "## Findings", ""
+  `- Status: **${status}**`, `- Errors: ${summary.error}`, `- Warnings: ${summary.warning}`, `- HR/EN pairs: ${pairs.length}`, `- Mail/contact functional test: ${result.mailContactTest}`, "", "## Findings", ""
 ];
 if (!findings.length) lines.push("No findings.");
 for (const item of findings) lines.push(`- **${item.severity.toUpperCase()} ${item.code}** — ${item.file} — ${item.message}`);
