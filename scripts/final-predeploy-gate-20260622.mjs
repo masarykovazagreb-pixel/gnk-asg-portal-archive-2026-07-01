@@ -70,7 +70,7 @@ check('Contact repair markup is injected centrally', publicWorker.includes('cont
 
 const workflowEvidence = json('reports/final-predeploy-gate-20260622/source-workflows.json');
 check('Source workflow evidence belongs to pinned commit', workflowEvidence.sourceCommit === config.sourceCommit, workflowEvidence.sourceCommit);
-check('All required source workflows are successful', workflowEvidence.status === 'PASS' && workflowEvidence.failed.length === 0 && workflowEvidence.missing.length === 0, `${workflowEvidence.successfulCount}/${config.requiredSourceWorkflows.length}`);
+check('All required source workflows are successful', workflowEvidence.status === 'PASS' && workflowEvidence.failed.length === 0 && workflowEvidence.missing.length === 0, `${workflowEvidence.successfulCount}/${config.requiredSourceRuns.length}`);
 check('Minimum successful source workflow count reached', workflowEvidence.successfulCount >= config.minimumSuccessfulSourceWorkflows, workflowEvidence.successfulCount);
 
 const routeAudit = json('reports/hr-en-public-route-audit/route-audit.json');
