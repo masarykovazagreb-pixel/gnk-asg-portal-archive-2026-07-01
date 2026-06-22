@@ -390,4 +390,72 @@ boot = function() {
   insertCommandCentreVisuals();
   insertPublicSourcesVisuals();
 };
+
+/* GNK_ASG_FORCE_AUDIT_TEXT_BLACK_V3 */
+function forceAuditTextBlack() {
+  const requiredTexts = [
+    "Neovisna revizija",
+    "Izvješće neovisnog revizora i financijski izvještaji",
+    "S bilješkama koje uključuju konsolidirane financijske podatke GNK DINAMO Ltd. Group.",
+    "Independent audit",
+    "Independent auditor report and financial statements"
+  ];
+
+  const candidates = [
+    ...document.querySelectorAll(
+      "h1,h2,h3,h4,h5,h6,p,span,div,strong,small,a,button"
+    )
+  ];
+
+  candidates.forEach(node => {
+    const value = String(node.textContent || "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    const matches = requiredTexts.some(text =>
+      value === text || value.includes(text)
+    );
+
+    if (!matches) return;
+
+    node.setAttribute("data-gnk-audit-black-v3", "1");
+    node.style.setProperty("color", "#111827", "important");
+    node.style.setProperty("opacity", "1", "important");
+    node.style.setProperty("text-shadow", "none", "important");
+    node.style.setProperty("-webkit-text-fill-color", "#111827", "important");
+
+    node.querySelectorAll("*").forEach(child => {
+      child.style.setProperty("color", "#111827", "important");
+      child.style.setProperty("opacity", "1", "important");
+      child.style.setProperty("text-shadow", "none", "important");
+      child.style.setProperty("-webkit-text-fill-color", "#111827", "important");
+    });
+
+    let parent = node.parentElement;
+
+    for (let level = 0; parent && level < 3; level++, parent = parent.parentElement) {
+      const parentText = String(parent.textContent || "")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      if (
+        parentText.includes("Neovisna revizija") &&
+        parentText.includes("Izvješće neovisnog revizora")
+      ) {
+        parent.classList.add("gnk-pdf-card-blacktext");
+      }
+    }
+  });
+}
+
+const __gnkOriginalBootAuditBlackV3 = boot;
+
+boot = function() {
+  __gnkOriginalBootAuditBlackV3();
+  forceAuditTextBlack();
+
+  [100, 400, 1000, 2200].forEach(delay => {
+    setTimeout(forceAuditTextBlack, delay);
+  });
+};
 })();
