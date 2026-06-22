@@ -585,4 +585,299 @@ boot = function() {
     setTimeout(forcePdfButtonBlackV5, delay);
   });
 };
+
+
+/* GNK_ASG_INDEX_POLISH_V6_FIXED_START */
+
+const GNK_V6_FIXED_IMAGES = [{"src":"/assets/objave/seo-20/upravljanje-likvidnoscu-u-rastucoj-kompaniji-gnk-asg-nermin-sefic.jpg","alt":"Poslovanje i međunarodna mreža","title":"Poslovanje i međunarodna mreža"},{"src":"/assets/seo-gallery/gnk-asg-financije-poslovanje-009.jpg","alt":"Tehnologija i tržišna inteligencija","title":"Tehnologija i tržišna inteligencija"},{"src":"/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-009.jpg","alt":"Korporativna galerija GNK ASG","title":"Korporativna galerija GNK ASG"}];
+
+function gnkV6FixedText(element) {
+  return String(element && element.textContent || "")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function gnkV6FixedFindSection(pattern) {
+  const nodes = Array.from(
+    document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,strong,span")
+  );
+
+  const heading = nodes.find(node => pattern.test(gnkV6FixedText(node)));
+
+  if (!heading) {
+    return null;
+  }
+
+  let current = heading;
+  let fallback = heading.parentElement;
+
+  for (let level = 0; current && current !== document.body && level < 9; level++) {
+    const rect = current.getBoundingClientRect();
+
+    if (rect.width > Math.min(620,window.innerWidth * .68) && rect.height > 220) {
+      return current;
+    }
+
+    fallback = current;
+    current = current.parentElement;
+  }
+
+  return fallback;
+}
+
+function gnkV6FixedRgb(value) {
+  const match = String(value || "").match(
+    /rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:\s*[,/]\s*([\d.]+))?\s*\)/i
+  );
+
+  if (!match) {
+    return null;
+  }
+
+  return {
+    r: Number(match[1]),
+    g: Number(match[2]),
+    b: Number(match[3]),
+    a: match[4] === undefined ? 1 : Number(match[4])
+  };
+}
+
+function gnkV6FixedLuminance(color) {
+  if (!color) {
+    return .5;
+  }
+
+  const channel = value => {
+    const normalized = value / 255;
+
+    return normalized <= .03928
+      ? normalized / 12.92
+      : Math.pow((normalized + .055) / 1.055,2.4);
+  };
+
+  return .2126 * channel(color.r) +
+    .7152 * channel(color.g) +
+    .0722 * channel(color.b);
+}
+
+function gnkV6FixedSurfaceColor(element) {
+  let current = element;
+
+  for (let level = 0; current && level < 9; level++) {
+    const color = gnkV6FixedRgb(
+      getComputedStyle(current).backgroundColor
+    );
+
+    if (color && color.a > .2) {
+      return color;
+    }
+
+    current = current.parentElement;
+  }
+
+  return {r:255,g:255,b:255,a:1};
+}
+
+function gnkV6FixedContrast(section) {
+  if (!section) {
+    return;
+  }
+
+  Array.from(
+    section.querySelectorAll(
+      "section,article,.card,.panel,[class*='card'],[class*='panel']"
+    )
+  ).forEach(surface => {
+    const rect = surface.getBoundingClientRect();
+
+    if (rect.width < 120 || rect.height < 45) {
+      return;
+    }
+
+    if (
+      surface.closest(
+        ".gnk-pdf-card-blacktext,.gnk-group-profile-light-card"
+      )
+    ) {
+      return;
+    }
+
+    const luminance = gnkV6FixedLuminance(
+      gnkV6FixedSurfaceColor(surface)
+    );
+
+    surface.classList.remove(
+      "gnk-v6-dark-surface",
+      "gnk-v6-light-surface"
+    );
+
+    surface.classList.add(
+      luminance < .45
+        ? "gnk-v6-dark-surface"
+        : "gnk-v6-light-surface"
+    );
+  });
+}
+
+function gnkV6FixedGallery(className,title) {
+  const gallery = document.createElement("div");
+  gallery.className = "gnk-v6-gallery " + className;
+
+  const heading = document.createElement("div");
+  heading.className = "gnk-v6-gallery-title";
+  heading.textContent = title;
+
+  const grid = document.createElement("div");
+  grid.className = "gnk-v6-gallery-grid";
+
+  GNK_V6_FIXED_IMAGES.forEach(item => {
+    const figure = document.createElement("figure");
+    figure.className = "gnk-v6-gallery-card";
+
+    const image = document.createElement("img");
+    image.src = item.src;
+    image.alt = item.alt;
+    image.loading = "lazy";
+    image.decoding = "async";
+
+    image.addEventListener("error",() => {
+      figure.remove();
+    },{once:true});
+
+    const caption = document.createElement("figcaption");
+    caption.className = "gnk-v6-gallery-caption";
+    caption.textContent = item.title;
+
+    figure.appendChild(image);
+    figure.appendChild(caption);
+    grid.appendChild(figure);
+  });
+
+  gallery.appendChild(heading);
+  gallery.appendChild(grid);
+
+  return gallery;
+}
+
+function gnkV6FixedSources() {
+  const section = gnkV6FixedFindSection(
+    /Javni izvori i službeni registri|Public sources and official registers/i
+  );
+
+  if (!section) {
+    return;
+  }
+
+  Array.from(section.querySelectorAll("div,section,article")).forEach(container => {
+    const cards = Array.from(container.children).filter(child =>
+      /OTVORI IZVOR|OPEN SOURCE/i.test(gnkV6FixedText(child))
+    );
+
+    if (cards.length >= 2) {
+      container.classList.add("gnk-v6-source-grid");
+    }
+  });
+
+  section.querySelectorAll(".gnk-v6-fixed-public-gallery").forEach(node => {
+    node.remove();
+  });
+
+  section.appendChild(
+    gnkV6FixedGallery(
+      "gnk-v6-fixed-public-gallery",
+      document.documentElement.lang === "en"
+        ? "GNK ASG corporate gallery"
+        : "GNK ASG korporativna galerija"
+    )
+  );
+}
+
+function gnkV6FixedCommandCentre() {
+  const section = gnkV6FixedFindSection(/Command Centre/i);
+
+  if (!section) {
+    return;
+  }
+
+  section.querySelectorAll(
+    ".gnk-v6-fixed-command-gallery"
+  ).forEach(node => {
+    node.remove();
+  });
+
+  const candidates = Array.from(
+    section.querySelectorAll("div,section,article")
+  ).filter(element => {
+    const rect = element.getBoundingClientRect();
+    const textLength = gnkV6FixedText(element).length;
+
+    return rect.width > 280 &&
+      rect.height > 180 &&
+      textLength < 180 &&
+      !element.querySelector("img") &&
+      !element.querySelector("form,input,textarea,select");
+  }).sort((first,second) => {
+    const firstRect = first.getBoundingClientRect();
+    const secondRect = second.getBoundingClientRect();
+
+    return secondRect.width * secondRect.height -
+      firstRect.width * firstRect.height;
+  });
+
+  const host = candidates[0] || section;
+
+  host.appendChild(
+    gnkV6FixedGallery(
+      "gnk-v6-fixed-command-gallery",
+      document.documentElement.lang === "en"
+        ? "GNK ASG visual overview"
+        : "GNK ASG vizualni pregled"
+    )
+  );
+}
+
+function gnkV6FixedRun() {
+  const sections = [
+    gnkV6FixedFindSection(
+      /Financijski profil GNK ASG d\.o\.o\.|Financial profile/i
+    ),
+    gnkV6FixedFindSection(
+      /GNK DINAMO Ltd\. Group Overview/i
+    ),
+    gnkV6FixedFindSection(
+      /Command Centre/i
+    ),
+    gnkV6FixedFindSection(
+      /Javni izvori i službeni registri|Public sources and official registers/i
+    )
+  ].filter(Boolean);
+
+  Array.from(new Set(sections)).forEach(
+    gnkV6FixedContrast
+  );
+
+  gnkV6FixedCommandCentre();
+  gnkV6FixedSources();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    gnkV6FixedRun,
+    {once:true}
+  );
+} else {
+  gnkV6FixedRun();
+}
+
+window.addEventListener(
+  "load",
+  gnkV6FixedRun,
+  {once:true}
+);
+
+setTimeout(gnkV6FixedRun,400);
+setTimeout(gnkV6FixedRun,1200);
+
+/* GNK_ASG_INDEX_POLISH_V6_FIXED_END */
 })();
