@@ -25,7 +25,13 @@ function protectedCorsHeaders(request) {
   };
 }
 
-function withRepairLayer(response) {
+function shouldSkipRepairLayer(request) {
+  const path = new URL(request.url).pathname;
+  return path === '/mail-studio-pro' || path.startsWith('/mail-studio-pro/');
+}
+
+function withRepairLayer(response, request) {
+  if (shouldSkipRepairLayer(request)) return response;
   const contentType = response.headers.get('content-type') || '';
   if (!contentType.includes('text/html') || !response.body) return response;
   return new HTMLRewriter().on('head', {
@@ -39,10 +45,10 @@ async function delegateWithStaticAssetFallback(request, env, ctx) {
   const response = await core.fetch(request, env, ctx);
   const methodAllowsAssets = request.method === 'GET' || request.method === 'HEAD';
   if (!methodAllowsAssets || response.status !== 404 || !env.ASSETS || typeof env.ASSETS.fetch !== 'function') {
-    return withRepairLayer(response);
+    return withRepairLayer(response, request);
   }
   const assetResponse = await env.ASSETS.fetch(request);
-  return withRepairLayer(assetResponse.status === 404 ? response : assetResponse);
+  return withRepairLayer(assetResponse.status === 404 ? response : assetResponse, request);
 }
 
 const GNK_ASG_SECURE_NEWS_PUBLISH_V1 = true;
