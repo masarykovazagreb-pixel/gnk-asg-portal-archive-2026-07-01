@@ -46,6 +46,7 @@ const requiredFiles = [
   'scripts/mobile-admin-security-audit.mjs',
   'scripts/publications-regression-audit.mjs',
   'scripts/news-market-regression-audit.mjs',
+  'scripts/workflow-production-trigger-audit.mjs',
   'workers/gnk-asg-preview-portal-worker/test/video-sitemap.test.js'
 ];
 
@@ -166,7 +167,7 @@ check(
 check(
   'Suppression management routes are protected by the operator gate',
   mailIndex.indexOf("if (!authorized(request, env))") >= 0 &&
-    mailIndex.indexOf("/api/mail-agent/suppressions") > mailIndex.indexOf("if (!authorized(request, env))"),
+    mailIndex.indexOf('/api/mail-agent/suppressions') > mailIndex.indexOf("if (!authorized(request, env))"),
   'suppression list must not be publicly readable or writable'
 );
 
@@ -181,7 +182,7 @@ check(
 );
 check(
   'Operator audit route is protected',
-  mailIndex.indexOf("/api/mail-agent/audit-log") > mailIndex.indexOf("if (!authorized(request, env))"),
+  mailIndex.indexOf('/api/mail-agent/audit-log') > mailIndex.indexOf("if (!authorized(request, env))"),
   'audit records must require operator authorization'
 );
 
@@ -215,9 +216,19 @@ for (const config of [
 
 const backlog = JSON.parse(read('config/project-completion-backlog.json'));
 check(
-  'Backlog keeps production locked',
-  backlog.productionTouched === false && backlog.mergeAllowed === false,
-  'production and merge require explicit approval'
+  'Backlog keeps full release locked',
+  backlog.fullProductionReleaseExecuted === false &&
+    backlog.mergeAllowed === false &&
+    backlog.releaseConstraints?.noProductionDeployWithoutApproval === true,
+  'limited hotfix history does not authorize full release or merge'
+);
+check(
+  'Backlog records limited hotfix history honestly',
+  backlog.productionTouched === true &&
+    backlog.limitedEmergencyHotfixesExecuted === true &&
+    Array.isArray(backlog.productionHistory?.limitedHotfixes) &&
+    backlog.productionHistory.limitedHotfixes.length > 0,
+  'historical production hotfixes must not be erased from release evidence'
 );
 const runnerItem = backlog.items?.find(item => item.id === 'github-actions-runner');
 check(
@@ -230,6 +241,11 @@ check(
   backlog.releaseConstraints?.explicitProductionApprovalMarkerRequired === true,
   'ordinary development pushes must not deploy production'
 );
+check(
+  'Automatic production deploy triggers are prohibited',
+  backlog.releaseConstraints?.automaticProductionDeployTriggersAllowed === false,
+  'all production-capable workflows must remain manually gated'
+);
 
 const rollback = read('workers/gnk-asg-mail-agent-worker/src/rollback-manifest.js');
 check(
@@ -239,7 +255,7 @@ check(
     rollback.includes('dnsTouched: false') &&
     rollback.includes('cloudflareRoutesTouched: false') &&
     rollback.includes('disable runtime feature gates before reverting code'),
-  'rollback must remain development-branch only'
+  'rollback operation itself must remain isolated and explicitly gated'
 );
 
 const failed = checks.filter(item => !item.pass);
@@ -248,7 +264,8 @@ const report = {
   branch: 'experience-ai-live-overview',
   readOnly: true,
   productionWrites: false,
-  productionTouched: false,
+  historicalProductionHotfixesRecorded: backlog.limitedEmergencyHotfixesExecuted === true,
+  fullProductionReleaseExecuted: backlog.fullProductionReleaseExecuted === true,
   mergeAllowed: false,
   status: failed.length ? 'FAIL' : 'PASS',
   total: checks.length,
@@ -266,7 +283,7 @@ fs.writeFileSync(
 const rows = checks
   .map(item => `| ${item.pass ? 'PASS' : 'FAIL'} | ${item.name.replace(/\|/g, '\\|')} | ${item.detail.replace(/\|/g, '\\|')} |`)
   .join('\n');
-const markdown = `# GNK ASG Release Candidate Audit\n\n- Status: **${report.status}**\n- Read-only: YES\n- Production writes: NO\n- Production touched: NO\n- Merge allowed: NO\n- Passed: ${report.passed}/${report.total}\n\n| Result | Check | Detail |\n|---|---|---|\n${rows}\n`;
+const markdown = `# GNK ASG Release Candidate Audit\n\n- Status: **${report.status}**\n- Read-only audit: YES\n- Production writes by audit: NO\n- Historical limited hotfixes recorded: ${report.historicalProductionHotfixesRecorded ? 'YES' : 'NO'}\n- Full production release executed: ${report.fullProductionReleaseExecuted ? 'YES' : 'NO'}\n- Merge allowed: NO\n- Passed: ${report.passed}/${report.total}\n\n| Result | Check | Detail |\n|---|---|---|\n${rows}\n`;
 fs.writeFileSync(path.join(REPORT_DIR, 'release-candidate-audit.md'), markdown);
 
 console.log(markdown);
