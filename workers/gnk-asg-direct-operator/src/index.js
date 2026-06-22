@@ -467,7 +467,7 @@ ${item.image?`<img src="${GNK_PUB_ESC(item.image)}" alt="${GNK_PUB_ESC(item.titl
 </html>`);
 }
 
-export default{
+const __GNK_ASG_BACKUP_DEFAULT__={
   async fetch(request,env,ctx){
     const url=new URL(request.url);
     const path=url.pathname;
@@ -497,3 +497,38 @@ export default{
 };
 
 const GNK_ASG_PUBLICATIONS_ONLY_FIX_END=true;
+const GNK_ASG_BACKUP_STATIC_ASSETS_FALLBACK=true;
+
+export default {
+  async fetch(request, env, ctx) {
+    const response = await __GNK_ASG_BACKUP_DEFAULT__.fetch(request, env, ctx);
+
+    if (response && response.status !== 404) {
+      return response;
+    }
+
+    if (env.ASSETS && typeof env.ASSETS.fetch === "function") {
+      return await env.ASSETS.fetch(request);
+    }
+
+    return response || new Response("Not Found", { status: 404 });
+  },
+
+  async scheduled(event, env, ctx) {
+    if (
+      __GNK_ASG_BACKUP_DEFAULT__ &&
+      typeof __GNK_ASG_BACKUP_DEFAULT__.scheduled === "function"
+    ) {
+      return await __GNK_ASG_BACKUP_DEFAULT__.scheduled(event, env, ctx);
+    }
+  },
+
+  async email(message, env, ctx) {
+    if (
+      __GNK_ASG_BACKUP_DEFAULT__ &&
+      typeof __GNK_ASG_BACKUP_DEFAULT__.email === "function"
+    ) {
+      return await __GNK_ASG_BACKUP_DEFAULT__.email(message, env, ctx);
+    }
+  }
+};

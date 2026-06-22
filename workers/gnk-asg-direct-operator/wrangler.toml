@@ -1,4 +1,4 @@
-﻿name = "gnk-asg-direct-operator"
+name = "gnk-asg-direct-operator"
 main = "src/index.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
@@ -39,4 +39,7 @@ zone_name = "gnk-asg.hr"
 [[routes]]
 pattern = "www.gnk-asg.hr/*"
 zone_name = "gnk-asg.hr"
-
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
