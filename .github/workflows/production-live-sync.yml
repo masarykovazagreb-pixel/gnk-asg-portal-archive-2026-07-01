@@ -1,0 +1,169 @@
+name: GNK ASG Production Live Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Upišite točno PRODUCTION_APPROVED'
+        required: true
+        type: string
+      approved_commit:
+        description: 'Puni 40-znamenkasti SHA odobrenog marker commita'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-production-live-sync
+  cancel-in-progress: false
+
+jobs:
+  deploy-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Validate typed approval and full marker SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ inputs.confirmation }}" = 'PRODUCTION_APPROVED'
+          printf '%s' "${{ inputs.approved_commit }}" | grep -Eq '^[0-9a-fA-F]{40}$'
+
+      - name: Checkout approved marker commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.approved_commit }}
+          fetch-depth: 2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate explicit release approval
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ inputs.confirmation }}" = 'PRODUCTION_APPROVED'
+          test "${{ inputs.approved_commit }}" = "${GITHUB_SHA}"
+          test -f .github/release/PRODUCTION_APPROVED
+          grep -Fxq 'approved: true' .github/release/PRODUCTION_APPROVED
+          grep -Fxq 'target: production' .github/release/PRODUCTION_APPROVED
+          grep -Fxq 'branch: experience-ai-live-overview' .github/release/PRODUCTION_APPROVED
+          SOURCE_COMMIT="$(git rev-parse HEAD^)"
+          grep -Fxq "source_commit: ${SOURCE_COMMIT}" .github/release/PRODUCTION_APPROVED
+          test "$(git diff --name-only HEAD^ HEAD | wc -l | tr -d ' ')" = '1'
+          git diff --name-only HEAD^ HEAD | grep -Fxq '.github/release/PRODUCTION_APPROVED'
+
+      - name: Validate release safety
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-secure.js
+          node --check workers/gnk-asg-direct-operator/src/index.js
+          node --check workers/gnk-asg-public-pages-live/src/index.js
+          find workers/gnk-asg-mail-agent-worker/src -name '*.js' -print0 | xargs -0 -n1 node --check
+          node scripts/operator-mobile-security-final-audit.mjs
+          node scripts/release-candidate-audit.mjs
+          node scripts/workflow-production-trigger-audit.mjs
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-window.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-rate-limit.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-lease.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-suppression.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-retry.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-e2e.test.js
+          node workers/gnk-asg-mail-agent-worker/test/media-campaign-service.test.js
+          grep -q 'main = "src/index-secure.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_CAMPAIGN_LIVE_SEND = "false"' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
+          grep -q 'gnk-asg.hr/api/mail-agent/\*' workers/gnk-asg-mail-agent-worker/wrangler.release.toml
+          grep -q 'gnk-asg.hr/operator-mobile/\*' workers/gnk-asg-public-pages-live/wrangler.live.toml
+
+      - name: Deploy protected direct operator
+        run: |
+          npx --yes wrangler@4 deploy \
+            --config workers/gnk-asg-direct-operator/wrangler.toml
+
+      - name: Deploy Mail Agent
+        run: |
+          npx --yes wrangler@4 deploy \
+            --config workers/gnk-asg-mail-agent-worker/wrangler.release.toml
+
+      - name: Deploy public pages
+        run: |
+          npx --yes wrangler@4 deploy \
+            --config workers/gnk-asg-public-pages-live/wrangler.live.toml
+
+      - name: Wait for routes
+        run: sleep 12
+
+      - name: Public smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+          urls=(
+            'https://gnk-asg.hr/'
+            'https://gnk-asg.hr/en/'
+            'https://gnk-asg.hr/objave/'
+            'https://gnk-asg.hr/publications/'
+            'https://gnk-asg.hr/vijesti/'
+            'https://gnk-asg.hr/news/'
+            'https://gnk-asg.hr/trzista/'
+            'https://gnk-asg.hr/markets/'
+            'https://gnk-asg.hr/videoteka/'
+            'https://gnk-asg.hr/en/video-library/'
+            'https://gnk-asg.hr/mail-studio-pro/'
+            'https://gnk-asg.hr/mail-studio-pro/campaign/'
+            'https://gnk-asg.hr/operator-mobile/'
+            'https://gnk-asg.hr/api/mail-agent/health'
+            'https://gnk-asg.hr/api/contact-mailboxes'
+            'https://gnk-asg.hr/data/news.json'
+            'https://gnk-asg.hr/data/market.json'
+            'https://publish.gnk-asg.hr/api/publications'
+          )
+          for url in "${urls[@]}"; do
+            code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 3 "$url")
+            echo "$code $url"
+            test "$code" = '200'
+          done
+
+      - name: Verify protected private routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          protected_urls=(
+            'https://gnk-asg.hr/api/mail-agent/inbox'
+            'https://gnk-asg.hr/api/media-upload'
+            'https://gnk-asg.hr/api/admin-asset-list'
+          )
+          for url in "${protected_urls[@]}"; do
+            code=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "$url")
+            echo "$code $url"
+            test "$code" = '401'
+          done
+
+      - name: Publish release summary
+        if: always()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## GNK ASG production live sync
+
+          - Manual workflow dispatch: required
+          - Typed confirmation: required
+          - Exact 40-character marker commit SHA: required
+          - Marker may change only the approval file: enforced
+          - Marker source commit must equal its parent: enforced
+          - GitHub production environment approval: required
+          - Direct operator: protected media routes enabled
+          - Public pages Worker: `gnk-asg-public-pages-live`
+          - Mail Agent Worker: `gnk-asg-mail-agent-preview` (stable legacy identifier)
+          - Suppression and bounded retry tests: required before deploy
+          - Media campaign live send: disabled by default
+          - Public and protected routes: smoke tested
+          - Branch: `experience-ai-live-overview`
+          EOF
