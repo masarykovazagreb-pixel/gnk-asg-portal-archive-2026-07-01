@@ -128,12 +128,19 @@ function isDeclaredBppAliasPolicyFile(file) {
   return repoRelative(file) === 'contracts/bpp-domain.json';
 }
 
+function isScriptExpressionReference(reference) {
+  const value = String(reference || '').trim();
+  return /^\+\s*[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\[[^\]]+\]|\([^)]*\))*\s*\+?$/.test(value)
+    || /\+\s*[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\[[^\]]+\]|\([^)]*\))*\s*\+/.test(value)
+    || /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\[[^\]]+\]|\([^)]*\))*\s*\+$/.test(value);
+}
+
 function isExternal(reference) {
   const value = String(reference || '').trim();
   return /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)
     || value.includes('{{')
     || value.includes('${')
-    || /^\+[A-Za-z_$][\w$]*\+$/.test(value);
+    || isScriptExpressionReference(value);
 }
 
 function candidates(sourceFile, reference) {
