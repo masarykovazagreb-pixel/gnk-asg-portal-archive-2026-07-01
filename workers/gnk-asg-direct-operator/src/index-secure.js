@@ -1,4 +1,5 @@
 import core from './index.js';
+import { handleMailAgentProxy } from './mail-agent-proxy.js';
 
 const protectedPaths = new Set(['/api/media-upload', '/api/admin-asset-list']);
 const allowedOrigins = new Set(['https://gnk-asg.hr']);
@@ -296,6 +297,9 @@ async function GNK_ASG_SERVE_NEWS_ADMIN(request, env) {
 export default {
   async fetch(request, env, ctx) {
     const path = new URL(request.url).pathname;
+
+    const mailProxyResponse = await handleMailAgentProxy(request, env);
+    if (mailProxyResponse) return mailProxyResponse;
 
     if (
       (request.method === 'GET' || request.method === 'HEAD') &&
