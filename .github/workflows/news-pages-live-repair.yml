@@ -1,18 +1,16 @@
 name: GNK ASG News Pages Live Repair
 
 on:
-  pull_request:
-    branches:
-      - visual-redesign
-    paths:
-      - 'workers/gnk-asg-news-pages-live/**'
-      - 'apps/portal/vijesti/index.html'
-      - 'apps/portal/news/index.html'
-      - 'apps/portal/assets/business-news.css'
-      - 'apps/portal/assets/business-news.js'
-      - 'apps/portal/assets/portal-functional-repair-v1.css'
-      - 'apps/portal/assets/portal-ui-repair-v1.js'
-      - '.github/workflows/news-pages-live-repair.yml'
+  workflow_dispatch:
+    inputs:
+      approval:
+        description: Type NEWS_LIVE_REPAIR_APPROVED
+        required: true
+        type: string
+      source_commit:
+        description: Exact 40-character commit SHA to deploy
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -23,15 +21,29 @@ concurrency:
 
 jobs:
   deploy-and-test:
-    if: github.head_ref == 'experience-ai-live-overview'
+    if: github.event.inputs.approval == 'NEWS_LIVE_REPAIR_APPROVED'
+    environment: production
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Validate typed approval and source SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          test '${{ github.event.inputs.approval }}' = 'NEWS_LIVE_REPAIR_APPROVED'
+          printf '%s' '${{ github.event.inputs.source_commit }}' | grep -Eq '^[0-9a-fA-F]{40}$'
+
+      - name: Checkout exact approved commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.source_commit }}
+          fetch-depth: 2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
 
@@ -39,6 +51,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          test "$(git rev-parse HEAD)" = '${{ github.event.inputs.source_commit }}'
           node --check workers/gnk-asg-news-pages-live/src/index.js
           test -s apps/portal/vijesti/index.html
           test -s apps/portal/news/index.html
@@ -47,7 +60,7 @@ jobs:
           grep -q 'gnk-functional-repair-css' apps/portal/vijesti/index.html
           grep -q 'gnk-functional-repair-css' apps/portal/news/index.html
 
-      - name: Deploy repaired news routes
+      - name: Deploy approved repaired news routes
         run: npx --yes wrangler@4 deploy --config workers/gnk-asg-news-pages-live/wrangler.toml
 
       - name: Wait for propagation
