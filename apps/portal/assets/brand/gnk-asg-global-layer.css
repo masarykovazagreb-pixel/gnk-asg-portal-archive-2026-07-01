@@ -216,3 +216,153 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* GNK_ASG_OVERNIGHT_CONSOLIDATION_20260622 */
+html {
+  scroll-padding-top: 148px;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+body main > div:empty,
+body main > section:empty,
+body main > p:empty,
+body main > br,
+body main > div > div:empty {
+  display: none !important;
+}
+
+body .kpi-grid,
+body .doc-grid,
+body .group-layout,
+body .two-col,
+body .asg-market-grid {
+  align-items: stretch !important;
+}
+
+body .kpi-grid > *,
+body .doc-grid > *,
+body .group-layout > *,
+body .two-col > * {
+  min-height: 100% !important;
+}
+
+html body .gnk-asg-final-menu-wrap {
+  top: 76px !important;
+  width: min(1180px, calc(100vw - 28px)) !important;
+  display: flex !important;
+  justify-content: center !important;
+  pointer-events: none !important;
+}
+
+html body .gnk-asg-final-menu {
+  pointer-events: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 7px !important;
+  padding: 9px 12px !important;
+  border: 1px solid rgba(212,175,55,.52) !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, rgba(7,27,58,.97), rgba(11,43,90,.97)) !important;
+  box-shadow: 0 14px 42px rgba(0,0,0,.22) !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+html body .gnk-asg-final-menu a,
+html body .gnk-asg-final-menu a:link,
+html body .gnk-asg-final-menu a:visited,
+html body .gnk-asg-final-menu a.gnk-asg-final-admin,
+html body .gnk-asg-final-menu a.gnk-asg-final-contact,
+html body .gnk-asg-final-menu a.gnk-asg-final-news,
+html body .gnk-asg-final-menu a.gnk-asg-final-market,
+html body .gnk-asg-final-menu a.gnk-asg-final-legal,
+html body .gnk-asg-final-menu a.gnk-asg-final-ai {
+  min-height: 34px !important;
+  padding: 9px 13px !important;
+  border: 1px solid rgba(212,175,55,.48) !important;
+  border-radius: 999px !important;
+  background: rgba(7,18,42,.72) !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+html body .gnk-asg-final-menu a:hover,
+html body .gnk-asg-final-menu a:focus {
+  background: rgba(212,175,55,.18) !important;
+  border-color: #f0cc62 !important;
+  color: #fff !important;
+  outline: none !important;
+}
+
+html body #gnk-asg-ai-help-float,
+html body #gnk-asg-single-ai-button-anchor,
+html body .gnk-asg-ai-hidden-duplicate {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@media (min-width: 901px) {
+  html body #gnk-asg-floating-dock {
+    right: 18px !important;
+    left: auto !important;
+    bottom: 18px !important;
+    transform: none !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html body #gnk-asg-floating-dock #gnk-asg-menu-btn,
+  html body #gnk-asg-floating-dock a[href="/"],
+  html body #gnk-asg-floating-dock a[href="/en/"] {
+    display: none !important;
+  }
+
+  html body #gnk-asg-floating-dock #gnk-asg-asg-btn {
+    width: 54px !important;
+    height: 54px !important;
+    border: 2px solid #d4af37 !important;
+    background: linear-gradient(135deg, #0b7a4b, #075c3a) !important;
+    color: #fff !important;
+    box-shadow: 0 16px 48px rgba(0,0,0,.28) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  html body .gnk-asg-final-menu-wrap {
+    display: none !important;
+  }
+
+  html body #gnk-asg-floating-dock {
+    display: flex !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: 12px !important;
+    transform: translateX(-50%) !important;
+    max-width: calc(100vw - 18px) !important;
+  }
+
+  html body #gnk-asg-floating-dock .gnk-asg-float-btn {
+    display: inline-flex !important;
+  }
+
+  html {
+    scroll-padding-top: 84px;
+  }
+}
