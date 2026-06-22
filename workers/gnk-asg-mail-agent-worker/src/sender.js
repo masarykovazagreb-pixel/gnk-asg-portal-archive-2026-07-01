@@ -1,5 +1,5 @@
 import { EmailMessage } from 'cloudflare:email';
-import { signatureFor } from './signature.js';
+import { signatureFor, signatureDataFor } from './signature.js';
 
 const LOGO_URL = 'https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png';
 const MAX_TOTAL_ATTACHMENT_BYTES = 8_000_000;
@@ -54,11 +54,14 @@ async function sendMessage(env, input) {
   if (!body) throw new Error('Nedostaje tekst poruke.');
 
   const attachments = normalizeAttachments(input.attachments);
-  const signatureText = signatureFor(input.profile, input.language, input.caseId, {
-    automated: input.autoReply === true
-  });
+  const signatureOptions = {
+    automated: input.autoReply === true,
+    from
+  };
+  const signatureText = signatureFor(input.profile, input.language, input.caseId, signatureOptions);
+  const signatureData = signatureDataFor(input.profile, input.language, input.caseId, signatureOptions);
   const textBody = `${body}\r\n\r\n${signatureText}`;
-  const htmlBody = buildHtmlBody(body, signatureText, input.fromName || 'GNK ASG');
+  const htmlBody = buildHtmlBody(body, signatureData);
   const raw = buildMimeMessage({
     from,
     fromName: input.fromName || 'GNK ASG',
@@ -150,10 +153,61 @@ function buildMimeMessage({ from, fromName, to, cc, subject, textBody, htmlBody,
   return lines.join('\r\n');
 }
 
-function buildHtmlBody(body, signatureText, fromName) {
+function buildHtmlBody(body, signature) {
   const bodyHtml = escapeHtml(body).replace(/\r?\n/g, '<br>');
-  const signatureHtml = escapeHtml(signatureText).replace(/\r?\n/g, '<br>');
-  return `<!doctype html><html><body style="margin:0;padding:0;background:#ffffff;color:#111827;font-family:Arial,Helvetica,sans-serif;line-height:1.55"><div style="max-width:720px;padding:24px"><div style="font-size:15px">${bodyHtml}</div><div style="margin-top:28px;padding-top:18px;border-top:1px solid #d4af37"><img src="${LOGO_URL}" alt="GNK ASG" width="145" style="display:block;width:145px;height:auto;margin-bottom:12px"><div style="font-size:13px;color:#374151">${signatureHtml}</div><div style="margin-top:8px;font-size:11px;color:#6b7280">${escapeHtml(fromName)} · GNK ASG</div></div></div></body></html>`;
+  const caseHtml = signature.caseId
+    ? `<tr><td style="padding:8px 0 0;color:#6b7280;font-size:12px"><strong>Evidencijski broj:</strong> ${escapeHtml(signature.caseId)}</td></tr>`
+    : '';
+  const disclosureHtml = signature.disclosure
+    ? `<div style="margin-top:16px;padding-top:12px;border-top:1px solid #e5e7eb;color:#6b7280;font-size:11px;line-height:1.45">${escapeHtml(signature.disclosure)}</div>`
+    : '';
+
+  return `<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body style="margin:0;padding:0;background:#f5f7fb;color:#111827;font-family:Arial,Helvetica,sans-serif;line-height:1.55">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#f5f7fb">
+<tr>
+<td align="center" style="padding:24px 12px">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:720px;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px">
+<tr>
+<td style="padding:30px 30px 18px;font-size:15px;color:#111827">${bodyHtml}</td>
+</tr>
+<tr>
+<td style="padding:0 30px 30px">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;border-top:2px solid #d4af37;padding-top:18px">
+<tr>
+<td width="175" valign="top" style="width:175px;padding:18px 22px 0 0">
+<img src="${LOGO_URL}" alt="GNK ASG" width="155" style="display:block;width:155px;max-width:155px;height:auto;border:0;outline:none;text-decoration:none">
+</td>
+<td valign="top" style="padding:18px 0 0">
+<table role="presentation" cellspacing="0" cellpadding="0" border="0">
+<tr><td style="color:#6b7280;font-size:13px;padding-bottom:8px">${escapeHtml(signature.closing)}</td></tr>
+<tr><td style="color:#111827;font-size:16px;font-weight:700">${escapeHtml(signature.profile.name)}</td></tr>
+<tr><td style="color:#9a7418;font-size:13px;font-weight:700;padding-bottom:10px">${escapeHtml(signature.profile.title)}</td></tr>
+<tr><td style="color:#111827;font-size:13px;font-weight:700">${escapeHtml(signature.company.name)}</td></tr>
+<tr><td style="color:#4b5563;font-size:12px">${escapeHtml(signature.company.address)}</td></tr>
+<tr><td style="color:#4b5563;font-size:12px">OIB: ${escapeHtml(signature.company.oib)} · MBS: ${escapeHtml(signature.company.mbs)}</td></tr>
+<tr><td style="padding-top:6px;font-size:12px"><a href="mailto:${escapeHtml(signature.senderEmail)}" style="color:#9a7418;text-decoration:none">${escapeHtml(signature.senderEmail)}</a></td></tr>
+<tr><td style="font-size:12px"><a href="${escapeHtml(signature.company.web)}" style="color:#9a7418;text-decoration:none">${escapeHtml(signature.company.web)}</a> · <a href="tel:+385915358365" style="color:#9a7418;text-decoration:none">${escapeHtml(signature.company.phone)}</a></td></tr>
+${caseHtml}
+</table>
+</td>
+</tr>
+</table>
+${disclosureHtml}
+<div style="margin-top:8px;color:#6b7280;font-size:11px;line-height:1.45">${escapeHtml(signature.disclaimer)}</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>`;
 }
 
 function normalizeAttachments(items) {
