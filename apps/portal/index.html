@@ -865,5 +865,145 @@ body{padding-bottom:92px!important;overflow-x:hidden!important}
   });
 })();
 </script>
+<style id="gnk-asg-en-profile-white-final-v11-style">
+[data-gnk-en-profile-white-v11="1"],
+[data-gnk-en-profile-white-v11="1"] * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+.gnk-en-profile-white-card-v11 {
+  background-color: #101f34 !important;
+}
+
+.gnk-en-profile-white-card-v11 [data-gnk-en-profile-white-v11="1"],
+.gnk-en-profile-white-card-v11 [data-gnk-en-profile-white-v11="1"] * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+</style>
+
+<script id="gnk-asg-en-profile-white-final-v11">
+(function(){
+  var targets = [
+    "parent company",
+    "company",
+    "gnk dinamo ltd.",
+    "registered office",
+    "boulder, colorado, usa",
+    "entity id",
+    "20238180649",
+    "authorized representative",
+    "nermin sefić",
+    "ultimate beneficial owner / ubo of the group",
+    "companies in the group",
+    "33, including gnk dinamo ltd."
+  ];
+
+  function normalize(value){
+    return String(value || "")
+      .replace(/\s+/g," ")
+      .trim()
+      .toLowerCase();
+  }
+
+  function forceWhite(){
+    var matches = [];
+
+    document.querySelectorAll(
+      "h1,h2,h3,h4,h5,h6,p,span,strong,small,a,div,td,li"
+    ).forEach(function(element){
+      var value = normalize(element.textContent);
+
+      if(targets.indexOf(value) === -1){
+        return;
+      }
+
+      matches.push(element);
+
+      element.removeAttribute("data-gnk-left-yellow");
+      element.removeAttribute("data-gnk-group-black-v4");
+      element.removeAttribute("data-gnk-group-white-v8");
+
+      element.classList.remove(
+        "gnk-v6-auto-dark",
+        "gnk-v6-light-surface",
+        "gnk-group-profile-light-card",
+        "gnk-group-left-yellow"
+      );
+
+      element.setAttribute("data-gnk-en-profile-white-v11","1");
+
+      element.style.setProperty("color","#ffffff","important");
+      element.style.setProperty("-webkit-text-fill-color","#ffffff","important");
+      element.style.setProperty("opacity","1","important");
+      element.style.setProperty("text-shadow","none","important");
+
+      element.querySelectorAll("*").forEach(function(child){
+        child.style.setProperty("color","#ffffff","important");
+        child.style.setProperty("-webkit-text-fill-color","#ffffff","important");
+        child.style.setProperty("opacity","1","important");
+        child.style.setProperty("text-shadow","none","important");
+      });
+    });
+
+    var anchor = matches.find(function(element){
+      return normalize(element.textContent) === "parent company";
+    });
+
+    var card = anchor;
+
+    while(card && card !== document.body){
+      var text = normalize(card.textContent);
+      var rect = card.getBoundingClientRect();
+
+      if(
+        text.indexOf("parent company") >= 0 &&
+        text.indexOf("registered office") >= 0 &&
+        text.indexOf("entity id") >= 0 &&
+        text.indexOf("companies in the group") >= 0 &&
+        rect.width > 250 &&
+        rect.height > 180
+      ){
+        card.classList.remove(
+          "gnk-group-profile-light-card",
+          "gnk-v6-light-surface"
+        );
+
+        card.classList.add(
+          "gnk-en-profile-white-card-v11",
+          "gnk-v6-dark-surface"
+        );
+
+        card.style.setProperty("background-color","#101f34","important");
+        break;
+      }
+
+      card = card.parentElement;
+    }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded",forceWhite);
+  }else{
+    forceWhite();
+  }
+
+  window.addEventListener("load",forceWhite);
+
+  [100,300,700,1200,2200,4000].forEach(function(delay){
+    setTimeout(forceWhite,delay);
+  });
+
+  new MutationObserver(function(){
+    forceWhite();
+  }).observe(document.documentElement,{
+    childList:true,
+    subtree:true
+  });
+})();
+</script>
 </body>
 </html>
