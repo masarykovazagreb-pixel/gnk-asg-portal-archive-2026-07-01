@@ -1,5 +1,5 @@
 {
-  "version": "2026-06-22-v21",
+  "version": "2026-06-22-v22",
   "branch": "experience-ai-live-overview",
   "productionTouched": true,
   "fullProductionReleaseExecuted": false,
@@ -102,6 +102,7 @@
     {"id":"social-oauth","area":"social","status":"blocked_manual","blocking":false,"note":"Stvarna objava zahtijeva vanjske OAuth autorizacije i odobrene račune."},
     {"id":"whatsapp-business","area":"communication","status":"blocked_manual","blocking":false,"note":"Integracija zahtijeva Meta račun, broj, webhook konfiguraciju i odobrenje produkcijskog bota."},
     {"id":"media-brand-kits","area":"brand","status":"in_progress","blocking":false,"note":"Profesionalni GNK ASG, GNK DINAMO Ltd. i korporativni download paketi čekaju finalno vizualno odobrenje."},
+    {"id":"pr-description","area":"release","status":"in_progress","blocking":true,"note":"PR #2 opis mora ukloniti stari frozen SHA i netočnu tvrdnju da produkcija nikada nije dirana te se vezati uz novi završni gate."},
     {"id":"security-final","area":"security","status":"in_progress","blocking":true,"note":"Workflow trigger audit prolazi; preostaju aktualni route, mobile contrast, backup i release-package dokazi."},
     {"id":"production-release","area":"release","status":"blocked_manual","blocking":true,"note":"Puni release pokreće se samo ručnim workflow dispatchom uz točan marker, odobreni marker commit SHA, zeleni preflight, production environment approval, smoke test i rollback odluku."}
   ]
