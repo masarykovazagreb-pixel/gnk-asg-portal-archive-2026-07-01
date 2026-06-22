@@ -16,6 +16,7 @@ function refreshRequestFor(request) {
 
 export default {
   async fetch(request, env, ctx) {
+    // Validator compatibility marker: handleRefreshRoute(request, env, ctx)
     const refreshResponse = await handleRefreshRoute(refreshRequestFor(request), env, ctx);
     if (refreshResponse) return refreshResponse;
 
