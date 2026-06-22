@@ -1,0 +1,6 @@
+/* GNK ASG AI layer compatibility shim.
+ * Keeps legacy operator-dashboard references valid while the public AI badge
+ * remains controlled by the consolidated portal layer.
+ */
+#gnk-asg-single-ai-button-anchor{display:none!important}
+.gnk-asg-ai-hidden-duplicate{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
