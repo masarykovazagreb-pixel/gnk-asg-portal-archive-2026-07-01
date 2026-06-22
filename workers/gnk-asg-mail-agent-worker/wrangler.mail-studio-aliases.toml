@@ -1,0 +1,51 @@
+name = "gnk-asg-mail-agent-preview"
+main = "src/index-route-aliases.js"
+compatibility_date = "2026-06-21"
+workers_dev = true
+preview_urls = true
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "mail-agent-production"
+MAIL_FROM = "it@gnk-asg.hr"
+MAIL_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+MEDIA_CAMPAIGN_LIVE_SEND = "false"
+
+[ai]
+binding = "AI"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[[r2_buckets]]
+binding = "GNK_ASG_MEDIA_ASSETS"
+bucket_name = "gnk-asg-media-assets"
+
+[[send_email]]
+name = "EMAIL"
+remote = true
+
+[[routes]]
+pattern = "gnk-asg.hr/api/mail-agent/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/api/mail-agent/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/api/admin-mail-send*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/api/admin-mail-send*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/api/operator-send-mail*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/api/operator-send-mail*"
+zone_name = "gnk-asg.hr"
