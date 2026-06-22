@@ -59,7 +59,7 @@ export default {
       });
       if (check.status !== 200) {
         return new Response(JSON.stringify({ok:false,error:'authorization_required'}), {
-          status:401,
+          status: 401,
           headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store',...protectedCorsHeaders(request)}
         });
       }
