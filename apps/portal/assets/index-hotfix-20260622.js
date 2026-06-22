@@ -458,4 +458,90 @@ boot = function() {
     setTimeout(forceAuditTextBlack, delay);
   });
 };
+
+/* GNK_ASG_FORCE_GROUP_PROFILE_BLACK_V4 */
+function forceGroupProfileBlackV4() {
+  const exactTexts = [
+    "Parent company",
+    "Tvrtka",
+    "GNK DINAMO Ltd.",
+    "Sjedište",
+    "Boulder, Colorado, USA",
+    "Entity ID",
+    "20238180649",
+    "Ovlašteni predstavnik",
+    "Nermin Sefić",
+    "Stvarni vlasnik / UBO grupe",
+    "Broj društava u grupi",
+    "33, uključujući GNK DINAMO Ltd."
+  ];
+
+  const section = findSection(/GNK DINAMO Ltd\. Group Overview/i);
+  if (!section) return;
+
+  const matchingNodes = [
+    ...section.querySelectorAll(
+      "h1,h2,h3,h4,h5,h6,p,span,div,strong,small,a,td,li"
+    )
+  ].filter(node => {
+    const value = String(node.textContent || "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    return exactTexts.includes(value);
+  });
+
+  matchingNodes.forEach(node => {
+    node.setAttribute("data-gnk-group-black-v4", "1");
+    node.style.setProperty("color", "#111827", "important");
+    node.style.setProperty("-webkit-text-fill-color", "#111827", "important");
+    node.style.setProperty("opacity", "1", "important");
+    node.style.setProperty("text-shadow", "none", "important");
+
+    node.querySelectorAll("*").forEach(child => {
+      child.style.setProperty("color", "#111827", "important");
+      child.style.setProperty("-webkit-text-fill-color", "#111827", "important");
+      child.style.setProperty("opacity", "1", "important");
+      child.style.setProperty("text-shadow", "none", "important");
+    });
+  });
+
+  const parentNode = matchingNodes.find(node =>
+    String(node.textContent || "").replace(/\s+/g, " ").trim() === "Parent company"
+  );
+
+  let card = parentNode;
+
+  while (card && card !== section) {
+    const cardText = String(card.textContent || "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (
+      cardText.includes("Parent company") &&
+      cardText.includes("Entity ID") &&
+      cardText.includes("Broj društava u grupi")
+    ) {
+      const rect = card.getBoundingClientRect();
+
+      if (rect.width > 260 && rect.height > 200) {
+        card.classList.add("gnk-group-profile-light-card");
+        break;
+      }
+    }
+
+    card = card.parentElement;
+  }
+}
+
+const __gnkOriginalBootGroupProfileBlackV4 = boot;
+
+boot = function() {
+  __gnkOriginalBootGroupProfileBlackV4();
+  forceGroupProfileBlackV4();
+
+  [100, 400, 1000, 2200].forEach(delay => {
+    setTimeout(forceGroupProfileBlackV4, delay);
+  });
+};
 })();
