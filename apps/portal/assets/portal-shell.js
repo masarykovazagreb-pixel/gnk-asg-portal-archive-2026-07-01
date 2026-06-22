@@ -9,6 +9,20 @@
     return path.length > 1 && !path.endsWith('/') ? path + '/' : path;
   }
 
+  function isEnglishContext(){
+    return document.documentElement.lang === 'en' || /^\/en(?:\/|$)/.test(window.location.pathname) || /^\/publications(?:\/|$)/.test(window.location.pathname);
+  }
+
+  function normalizeEnglishPublicationLinks(){
+    if(!isEnglishContext()) return;
+    document.querySelectorAll('.asg-topnav a[href]').forEach(function(link){
+      if((link.textContent || '').trim() === 'Publications') link.setAttribute('href','/publications/');
+    });
+    document.querySelectorAll('.asg-mobile-nav select option').forEach(function(option){
+      if((option.textContent || '').trim() === 'Publications') option.value = '/publications/';
+    });
+  }
+
   function markActiveNavigation(){
     var current = normalizedPath(window.location.pathname);
     document.querySelectorAll('.asg-topnav a[href]').forEach(function(link){
@@ -31,14 +45,26 @@
     });
   }
 
+  function syncMobileSelection(){
+    var current = normalizedPath(window.location.pathname);
+    document.querySelectorAll('.asg-mobile-nav select').forEach(function(select){
+      var matching = Array.from(select.options).find(function(option){
+        return option.value && normalizedPath(option.value) === current;
+      });
+      if(matching) select.value = matching.value;
+    });
+  }
+
   function keepSingleAiFloat(){
     var controls = Array.from(document.querySelectorAll('.asg-ai-float'));
     controls.slice(1).forEach(function(control){ control.remove(); });
   }
 
   function init(){
+    normalizeEnglishPublicationLinks();
     markActiveNavigation();
     bindMobileNavigation();
+    syncMobileSelection();
     keepSingleAiFloat();
   }
 
