@@ -1,9 +1,10 @@
 (() => {
   if (window.__GNK_BUSINESS_NEWS__) return;
-  window.__GNK_BUSINESS_NEWS__ = 1;
+  window.__GNK_BUSINESS_NEWS__ = 2;
 
   const root = document.getElementById('newsGrid');
   const statusNode = document.getElementById('newsStatus');
+  const actionsNode = document.querySelector('.news-actions');
   if (!root || !statusNode) return;
 
   const isEnglish = document.body.dataset.language === 'en';
@@ -19,19 +20,24 @@
 
   const text = {
     loading: isEnglish ? 'Loading business news…' : 'Učitavanje poslovnih vijesti…',
-    open: isEnglish ? 'Open source' : 'Otvori izvor',
+    open: isEnglish ? 'Open article or source' : 'Otvori članak ili izvor',
     unavailable: isEnglish ? 'News feed is temporarily unavailable.' : 'Vijesti trenutačno nisu dostupne.',
-    fallback: isEnglish ? 'FALLBACK' : 'FALLBACK',
+    fallback: 'FALLBACK',
     delayed: isEnglish ? 'DELAYED' : 'ODGOĐENO',
     snapshot: isEnglish ? 'SNAPSHOT' : 'SNIMKA',
     live: 'LIVE',
-    updated: isEnglish ? 'Newest item' : 'Najnovija vijest',
-    items: isEnglish ? 'items' : 'vijesti'
+    updated: isEnglish ? 'Last refresh' : 'Zadnje osvježavanje',
+    items: isEnglish ? 'items' : 'vijesti',
+    refresh: isEnglish ? 'Refresh news' : 'Osvježi vijesti',
+    refreshing: isEnglish ? 'Refreshing…' : 'Osvježavanje…',
+    refreshed: isEnglish ? 'News refreshed.' : 'Vijesti su osvježene.',
+    cooldown: isEnglish ? 'Refresh was recently completed.' : 'Osvježavanje je nedavno već provedeno.',
+    failed: isEnglish ? 'Refresh failed.' : 'Osvježavanje nije uspjelo.'
   };
 
   function validUrl(value) {
     try {
-      const url = new URL(String(value || ''));
+      const url = new URL(String(value || ''), window.location.origin);
       return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
     } catch {
       return '';
@@ -50,7 +56,7 @@
     const items = [];
 
     for (const raw of rawItems) {
-      const url = validUrl(raw?.url);
+      const url = validUrl(raw?.url || raw?.sourceUrl);
       const title = String(raw?.title || '').trim();
       if (!url || !title) continue;
       const key = String(raw?.id || url).trim().toLowerCase();
@@ -87,7 +93,7 @@
     if (feed.declaredStatus === 'fallback') return 'fallback';
     if (feed.declaredStatus === 'delayed') return 'delayed';
     if (feed.declaredStatus === 'snapshot') return ageHours <= 24 ? 'snapshot' : 'delayed';
-    if (feed.declaredStatus === 'live' && ageHours <= 2) return 'live';
+    if (feed.declaredStatus === 'live' && ageHours <= 3) return 'live';
     if (ageHours <= 18) return 'snapshot';
     if (ageHours <= 72) return 'delayed';
     return 'fallback';
@@ -120,12 +126,16 @@
     const published = publishedTimestamp ? formatDate(publishedTimestamp) : '';
     const meta = [item.source, published].filter(Boolean).map(esc).join(' · ');
     const summary = item.summary ? `<p>${esc(item.summary)}</p>` : '';
+    const image = item.image
+      ? `<img src="${esc(validUrl(item.image))}" alt="${esc(item.imageAlt || item.title)}" loading="lazy">`
+      : '';
 
     return `<article class="news-card">
+      ${image}
       <small>${meta || 'GNK ASG'}</small>
       <h2>${esc(item.title)}</h2>
       ${summary}
-      <a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">${text.open} →</a>
+      <a href="${esc(item.url)}" target="${item.url.startsWith(window.location.origin) ? '_self' : '_blank'}" rel="noopener noreferrer">${text.open} →</a>
     </article>`;
   }
 
@@ -139,7 +149,7 @@
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const feed = normalizePayload(await response.json());
       if (!feed.items.length) throw new Error('empty_news_feed');
-      root.innerHTML = feed.items.slice(0, 36).map(renderCard).join('');
+      root.innerHTML = feed.items.slice(0, 48).map(renderCard).join('');
       renderStatus(feed);
       document.documentElement.dataset.gnkNewsStatus = deriveStatus(feed);
       window.dispatchEvent(new CustomEvent('gnk:news-ready', {
@@ -155,6 +165,48 @@
       statusNode.innerHTML = `<strong>${text.fallback}</strong> · ${text.unavailable}`;
       document.documentElement.dataset.gnkNewsStatus = 'fallback';
     }
+  }
+
+  async function refreshNews(button) {
+    button.disabled = true;
+    button.dataset.loading = 'true';
+    button.textContent = text.refreshing;
+
+    try {
+      const response = await fetch('/api/news-refresh', {
+        method: 'POST',
+        cache: 'no-store',
+        headers: { accept: 'application/json' }
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (response.status === 429) {
+        statusNode.textContent = `${text.cooldown}${result.retryAfter ? ` (${result.retryAfter}s)` : ''}`;
+      } else if (!response.ok || result.ok === false) {
+        throw new Error(result.error || `HTTP ${response.status}`);
+      } else {
+        statusNode.textContent = text.refreshed;
+      }
+
+      await load();
+    } catch (error) {
+      statusNode.textContent = `${text.failed} ${error.message}`;
+    } finally {
+      button.disabled = false;
+      button.dataset.loading = 'false';
+      button.textContent = text.refresh;
+    }
+  }
+
+  if (actionsNode && !document.getElementById('newsRefreshButton')) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.id = 'newsRefreshButton';
+    button.className = 'news-refresh-button';
+    button.textContent = text.refresh;
+    button.addEventListener('click', () => refreshNews(button));
+    actionsNode.appendChild(button);
   }
 
   load();
