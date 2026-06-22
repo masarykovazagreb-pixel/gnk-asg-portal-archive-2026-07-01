@@ -18,8 +18,20 @@
     '"': '&quot;',
     "'": '&#039;'
   })[ch]);
-  const token = () => window.GNKOperatorToken?.get?.() || '';
-  const auth = () => window.GNKOperatorToken?.headers?.() || {};
+  const token = () => String(
+    document.getElementById('operatorToken')?.value
+    || window.GNKOperatorToken?.get?.()
+    || sessionStorage.getItem('GNK_ASG_OPERATOR_TOKEN_SESSION')
+    || ''
+  ).trim();
+
+  const auth = () => {
+    const value = token();
+    return value ? {
+      authorization: `Bearer ${value}`,
+      'x-operator-token': value
+    } : {};
+  };
   const status = text => {
     if (q('status')) q('status').textContent = text;
   };
@@ -446,7 +458,7 @@
     };
 
     status('Slanje…');
-    let result = await request('/api/admin-mail-send', {
+    let result = await request('/api/mail-agent/send', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(payload)
