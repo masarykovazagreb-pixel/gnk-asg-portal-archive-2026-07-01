@@ -1135,5 +1135,145 @@ body{padding-bottom:92px!important;overflow-x:hidden!important}
   setTimeout(makeWhite,3000);
 })();
 </script>
+<style id="gnk-audit-card-yellow-v13-style">
+.gnk-audit-card-yellow-v13{
+  background:#f4dd86 !important;
+  border:1px solid rgba(180,135,20,.42) !important;
+}
+
+.gnk-audit-card-yellow-v13,
+.gnk-audit-card-yellow-v13 *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+}
+
+.gnk-audit-card-yellow-v13 a,
+.gnk-audit-card-yellow-v13 a:link,
+.gnk-audit-card-yellow-v13 a:visited,
+.gnk-audit-card-yellow-v13 a:hover,
+.gnk-audit-card-yellow-v13 button{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+.gnk-audit-card-yellow-v13 [class*="button"],
+.gnk-audit-card-yellow-v13 [class*="btn"]{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+.gnk-audit-card-yellow-v13 [data-gnk-audit-black-v13="1"],
+.gnk-audit-card-yellow-v13 [data-gnk-audit-black-v13="1"] *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+.gnk-audit-card-yellow-v13 svg,
+.gnk-audit-card-yellow-v13 path{
+  fill:currentColor !important;
+}
+</style>
+
+<script id="gnk-audit-card-yellow-v13">
+(function(){
+  var targets = [
+    "independent audit",
+    "independent auditor report and financial statements",
+    "with notes including consolidated financial data of gnk dinamo ltd. group.",
+    "neovisna revizija",
+    "izvješće neovisnog revizora i financijski izvještaji",
+    "s bilješkama koje uključuju konsolidirane financijske podatke gnk dinamo ltd. group."
+  ];
+
+  function normalize(value){
+    return String(value || "")
+      .replace(/\s+/g," ")
+      .trim()
+      .toLowerCase();
+  }
+
+  function paintAuditCard(){
+    var nodes = Array.from(document.querySelectorAll(
+      "h1,h2,h3,h4,h5,h6,p,span,strong,small,div,a,button"
+    ));
+
+    var anchor = nodes.find(function(node){
+      return targets.indexOf(normalize(node.textContent)) >= 0;
+    });
+
+    if(!anchor){
+      return;
+    }
+
+    nodes.forEach(function(node){
+      if(targets.indexOf(normalize(node.textContent)) >= 0){
+        node.setAttribute("data-gnk-audit-black-v13","1");
+        node.style.setProperty("color","#111827","important");
+        node.style.setProperty("-webkit-text-fill-color","#111827","important");
+        node.style.setProperty("opacity","1","important");
+        node.style.setProperty("text-shadow","none","important");
+      }
+    });
+
+    var card = anchor;
+
+    while(card && card !== document.body){
+      var text = normalize(card.textContent);
+      var rect = card.getBoundingClientRect();
+
+      var isAuditCard =
+        (
+          text.indexOf("independent audit") >= 0 ||
+          text.indexOf("neovisna revizija") >= 0
+        ) &&
+        (
+          text.indexOf("download pdf") >= 0 ||
+          text.indexOf("preuzmi pdf") >= 0
+        ) &&
+        rect.width > 300 &&
+        rect.height > 60;
+
+      if(isAuditCard){
+        card.classList.add("gnk-audit-card-yellow-v13");
+        card.style.setProperty("background","#f4dd86","important");
+        card.style.setProperty("color","#111827","important");
+        card.style.setProperty("-webkit-text-fill-color","#111827","important");
+
+        card.querySelectorAll("*").forEach(function(child){
+          child.style.setProperty("color","#111827","important");
+          child.style.setProperty("-webkit-text-fill-color","#111827","important");
+          child.style.setProperty("opacity","1","important");
+          child.style.setProperty("text-shadow","none","important");
+        });
+
+        break;
+      }
+
+      card = card.parentElement;
+    }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded",paintAuditCard);
+  }else{
+    paintAuditCard();
+  }
+
+  window.addEventListener("load",paintAuditCard);
+
+  [100,300,700,1200,2200,4000].forEach(function(delay){
+    setTimeout(paintAuditCard,delay);
+  });
+
+  new MutationObserver(function(){
+    paintAuditCard();
+  }).observe(document.documentElement,{
+    childList:true,
+    subtree:true
+  });
+})();
+</script>
 </body>
 </html>
