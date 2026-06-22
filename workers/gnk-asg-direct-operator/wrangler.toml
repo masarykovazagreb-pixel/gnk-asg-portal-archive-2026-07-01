@@ -1,36 +1,37 @@
-﻿name = "gnk-asg-direct-operator"
-main = "src/index.js"
+name = "gnk-asg-direct-operator"
+main = "src/runtime-entry.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
 
+[triggers]
+crons = ["*/15 * * * *"]
+
 [[kv_namespaces]]
 binding = "GNK_ASG_CONFIG_KV"
 id = "d6f5dac9fa034d8d813db0de44eb7b1b"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
 
 [[d1_databases]]
 binding = "GNK_ASG_D1"
 database_name = "gnk_asg_operator_logs"
 database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
 
-[vars]
-PUBLIC_BRAND = "GNK ASG"
-PUBLIC_ENVIRONMENT = "direct-operator"
-SAFE_GET_DIRECT_MODE = "true"
-
-[triggers]
-# GNK ASG SEO/R2 media assets binding
 [[r2_buckets]]
 binding = "GNK_ASG_MEDIA_ASSETS"
 bucket_name = "gnk-asg-media-assets"
+
 [[send_email]]
 name = "EMAIL"
 remote = true
 
-
-[[kv_namespaces]]
-binding = "GNK_ASG_KV"
-id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "direct-operator"
+SAFE_GET_DIRECT_MODE = "true"
 
 [[routes]]
 pattern = "gnk-asg.hr/*"
@@ -39,4 +40,3 @@ zone_name = "gnk-asg.hr"
 [[routes]]
 pattern = "www.gnk-asg.hr/*"
 zone_name = "gnk-asg.hr"
-
