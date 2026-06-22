@@ -544,4 +544,45 @@ boot = function() {
     setTimeout(forceGroupProfileBlackV4, delay);
   });
 };
+
+/* GNK_ASG_FORCE_PDF_BUTTON_BLACK_V5 */
+function forcePdfButtonBlackV5() {
+  [...document.querySelectorAll("a,button,span,div")].forEach(node => {
+    const value = String(node.textContent || "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toUpperCase();
+
+    if (value !== "PREUZMI PDF ↓" && value !== "PREUZMI PDF" && value !== "DOWNLOAD PDF ↓" && value !== "DOWNLOAD PDF") {
+      return;
+    }
+
+    const button = node.closest("a,button") || node;
+
+    button.classList.add("gnk-force-pdf-button-black-v5");
+    button.style.setProperty("color", "#000000", "important");
+    button.style.setProperty("-webkit-text-fill-color", "#000000", "important");
+    button.style.setProperty("text-shadow", "none", "important");
+    button.style.setProperty("opacity", "1", "important");
+
+    button.querySelectorAll("*").forEach(child => {
+      child.style.setProperty("color", "#000000", "important");
+      child.style.setProperty("-webkit-text-fill-color", "#000000", "important");
+      child.style.setProperty("fill", "#000000", "important");
+      child.style.setProperty("text-shadow", "none", "important");
+      child.style.setProperty("opacity", "1", "important");
+    });
+  });
+}
+
+const __gnkOriginalBootPdfButtonBlackV5 = boot;
+
+boot = function() {
+  __gnkOriginalBootPdfButtonBlackV5();
+  forcePdfButtonBlackV5();
+
+  [100,400,1000,2200].forEach(delay => {
+    setTimeout(forcePdfButtonBlackV5, delay);
+  });
+};
 })();
