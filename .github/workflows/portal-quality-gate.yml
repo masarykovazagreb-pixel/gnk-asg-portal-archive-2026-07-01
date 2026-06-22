@@ -10,6 +10,7 @@ on:
       - "contracts/**"
       - "tools/portal-quality-gate.mjs"
       - "tools/build-bpp-domain-patch.mjs"
+      - "tools/validate-refresh-backend.mjs"
       - ".github/workflows/portal-quality-gate.yml"
       - ".quality-gate-enforced"
   push:
@@ -22,6 +23,7 @@ on:
       - "contracts/**"
       - "tools/portal-quality-gate.mjs"
       - "tools/build-bpp-domain-patch.mjs"
+      - "tools/validate-refresh-backend.mjs"
       - ".github/workflows/portal-quality-gate.yml"
       - ".quality-gate-enforced"
 
@@ -43,10 +45,14 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate audit tooling syntax
+      - name: Validate audit and refresh backend
         run: |
           node --check tools/portal-quality-gate.mjs
           node --check tools/build-bpp-domain-patch.mjs
+          node --check tools/validate-refresh-backend.mjs
+          node --check workers/gnk-asg-direct-operator/src/runtime-entry.js
+          node --check workers/gnk-asg-direct-operator/src/gnk-asg-refresh-backend-v1.js
+          node tools/validate-refresh-backend.mjs
 
       - name: Audit portal
         shell: bash
