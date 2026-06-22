@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260601-activity-model-fix01';
+  var VERSION = '20260622-install-dedupe01';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -126,13 +126,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var eyebrow = head.querySelector('.eyebrow');
     var paragraph = head.querySelector('p:not(.eyebrow)');
     if (isEnglish()) {
-      if (eyebrow) eyebrow.textContent = 'Refresh every hour';
-      if (paragraph) paragraph.textContent = 'The public window displays up to the 500 newest business and technology news items. The active archive retains up to the next 400 older items. Publications about GNK ASG d.o.o., GNK DINAMO Ltd. or Nermin Sefić are displayed automatically from public sources.';
-      if (loading && /workflow|refresh/i.test(loading.textContent)) loading.textContent = 'The newest 500 public items refresh automatically every hour; the active archive retains up to 400 older items.';
+      if (eyebrow) eyebrow.textContent = 'Stored news snapshot';
+      if (paragraph) paragraph.textContent = 'The homepage shows only a lightweight summary. The complete source-linked news archive is available on the News page and displays the last valid stored snapshot.';
+      if (loading && /workflow|refresh/i.test(loading.textContent)) loading.textContent = 'Loading the last valid stored news snapshot.';
     } else {
-      if (eyebrow) eyebrow.textContent = 'Ažuriranje svakih sat vremena';
-      if (paragraph) paragraph.textContent = 'Javni prozor prikazuje do 500 najnovijih poslovnih i tehnoloških vijesti. Aktivna arhiva zadržava do sljedećih 400 starijih stavki. Objave o GNK ASG d.o.o., GNK DINAMO Ltd. ili Nerminu Sefiću prikazuju se automatski iz javnih izvora.';
-      if (loading && /workflow|osvjež/i.test(loading.textContent)) loading.textContent = 'Najnovijih 500 javnih stavki osvježava se automatski svakih sat vremena, a aktivna arhiva zadržava do 400 starijih stavki.';
+      if (eyebrow) eyebrow.textContent = 'Spremljeni snapshot vijesti';
+      if (paragraph) paragraph.textContent = 'Početna stranica prikazuje samo lagani sažetak. Potpuna arhiva vijesti s poveznicama prema izvorima dostupna je na stranici Vijesti i prikazuje posljednji valjani spremljeni snapshot.';
+      if (loading && /workflow|osvjež/i.test(loading.textContent)) loading.textContent = 'Učitavanje posljednjeg valjanog snapshota vijesti.';
     }
   }
 
@@ -144,11 +144,30 @@ document.addEventListener('DOMContentLoaded', function () {
       Array.prototype.forEach.call(card.querySelectorAll('a:not(.wa):not(.in):not(.mail)'), function (link) { link.remove(); });
     });
   }
+
+  function removeDuplicateInstallLinks(root) {
+    var scope = root || document;
+    Array.prototype.forEach.call(scope.querySelectorAll('nav,.gnk-asg-final-menu,.gnk-asg-menu-restore-final'), function (container) {
+      var seen = Object.create(null);
+      Array.prototype.forEach.call(container.querySelectorAll('a[href]'), function (link) {
+        var href = (link.getAttribute('href') || '').replace(/\/$/, '');
+        if (href !== '/mobile-app' && href !== '/instalacija') return;
+        var key = href === '/mobile-app' ? 'install' : href;
+        if (seen[key]) link.remove();
+        else seen[key] = true;
+      });
+    });
+  }
+
   normaliseMenuLabels();
   alignNewsAutomationText();
-  window.addEventListener('gnk-language-change', function () { alignNewsAutomationText(); });
   removeCorporateInformationExternalAction(document);
-  new MutationObserver(function () { removeCorporateInformationExternalAction(document); }).observe(document.body, { childList: true, subtree: true });
+  removeDuplicateInstallLinks(document);
+  window.addEventListener('gnk-language-change', function () { alignNewsAutomationText(); });
+  new MutationObserver(function () {
+    removeCorporateInformationExternalAction(document);
+    removeDuplicateInstallLinks(document);
+  }).observe(document.body, { childList: true, subtree: true });
 
   var menuButton = document.getElementById('menuToggle');
   var menu = document.getElementById('navLinks');
