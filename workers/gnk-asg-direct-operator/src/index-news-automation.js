@@ -5,26 +5,44 @@ import {
 } from "./gnk-asg-news-automation-v2.js";
 
 const GNK_ASG_NEWS_AUTOMATION_ENTRY_V2 = true;
-const GNK_ASG_FORCE_NEWS_ASSETS_V1 = true;
+const GNK_ASG_FORCE_NEWS_ASSETS_V2 = true;
 
 const FORCED_NEWS_ASSET_PATHS = new Set([
   "/vijesti",
   "/vijesti/",
+  "/vijesti/index.html",
   "/news",
   "/news/",
+  "/news/index.html",
   "/assets/business-news.js",
   "/assets/business-news.css"
 ]);
+
+function resolveForcedAssetPath(pathname) {
+  if (
+    pathname === "/vijesti" ||
+    pathname === "/vijesti/" ||
+    pathname === "/vijesti/index.html"
+  ) {
+    return "/vijesti/index.html";
+  }
+
+  if (
+    pathname === "/news" ||
+    pathname === "/news/" ||
+    pathname === "/news/index.html"
+  ) {
+    return "/news/index.html";
+  }
+
+  return pathname;
+}
 
 async function serveForcedNewsAsset(request, env) {
   if (!env.ASSETS || typeof env.ASSETS.fetch !== "function") return null;
 
   const currentUrl = new URL(request.url);
-  let assetPath = currentUrl.pathname;
-
-  if (assetPath === "/vijesti") assetPath = "/vijesti/";
-  if (assetPath === "/news") assetPath = "/news/";
-
+  const assetPath = resolveForcedAssetPath(currentUrl.pathname);
   const assetUrl = new URL(assetPath, currentUrl.origin);
   assetUrl.search = currentUrl.search;
 
@@ -37,7 +55,7 @@ async function serveForcedNewsAsset(request, env) {
 
   const headers = new Headers(assetResponse.headers);
   headers.set("cache-control", "no-store, no-cache, must-revalidate");
-  headers.set("x-gnk-asg-page-source", "news-automation-assets-v1");
+  headers.set("x-gnk-asg-page-source", "news-automation-assets-v2");
 
   return new Response(assetResponse.body, {
     status: assetResponse.status,
