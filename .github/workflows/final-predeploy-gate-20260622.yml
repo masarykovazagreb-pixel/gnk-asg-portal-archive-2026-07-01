@@ -8,6 +8,13 @@ on:
       - 'config/final-predeploy-gate-20260622.json'
       - 'scripts/final-predeploy-gate-20260622.mjs'
       - '.github/workflows/final-predeploy-gate-20260622.yml'
+  pull_request:
+    branches:
+      - predeploy-checkpoint-20260622-987e14d
+    paths:
+      - 'config/final-predeploy-gate-20260622.json'
+      - 'scripts/final-predeploy-gate-20260622.mjs'
+      - '.github/workflows/final-predeploy-gate-20260622.yml'
   workflow_dispatch:
 
 permissions:
