@@ -1,0 +1,57 @@
+name: GNK ASG Production Workflow Trigger Audit
+
+on:
+  pull_request:
+    branches:
+      - visual-redesign
+    paths:
+      - '.github/workflows/**'
+      - 'scripts/workflow-production-trigger-audit.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-production-workflow-trigger-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate audit syntax
+        run: node --check scripts/workflow-production-trigger-audit.mjs
+
+      - name: Audit all workflow triggers
+        run: node scripts/workflow-production-trigger-audit.mjs
+
+      - name: Validate report
+        run: |
+          node -e "const r=require('./reports/workflow-production-trigger-audit/report.json'); if(r.status!=='PASS'||r.violationCount!==0||r.productionTouched!==false) process.exit(1)"
+          test -s reports/workflow-production-trigger-audit/report.md
+
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f reports/workflow-production-trigger-audit/report.md ]; then
+            cat reports/workflow-production-trigger-audit/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-production-workflow-trigger-audit-${{ github.run_id }}
+          path: reports/workflow-production-trigger-audit/
+          if-no-files-found: error
+          retention-days: 14
