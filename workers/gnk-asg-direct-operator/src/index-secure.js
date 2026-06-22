@@ -208,11 +208,63 @@ async function GNK_NEWS_PUBLISH(request, env) {
     item
   });
 }
+const GNK_ASG_NEWS_ADMIN_ASSET_ROUTE_V1 = true;
+
+async function GNK_ASG_SERVE_NEWS_ADMIN(request, env) {
+  if (!env.ASSETS || typeof env.ASSETS.fetch !== 'function') {
+    return new Response(
+      JSON.stringify({ ok: false, error: 'assets_binding_unavailable' }),
+      {
+        status: 503,
+        headers: {
+          'content-type': 'application/json; charset=utf-8',
+          'cache-control': 'no-store'
+        }
+      }
+    );
+  }
+
+  const currentUrl = new URL(request.url);
+  const assetUrl = new URL('/news-admin/', currentUrl.origin);
+  assetUrl.search = currentUrl.search;
+
+  const assetResponse = await env.ASSETS.fetch(
+    new Request(assetUrl.toString(), {
+      method: request.method,
+      headers: request.headers
+    })
+  );
+
+  const headers = new Headers(assetResponse.headers);
+  headers.set('cache-control', 'no-store, no-cache, must-revalidate');
+  headers.set('x-gnk-asg-page-source', 'direct-operator-assets');
+
+  return new Response(assetResponse.body, {
+    status: assetResponse.status,
+    statusText: assetResponse.statusText,
+    headers
+  });
+}
 export default {
   async fetch(request, env, ctx) {
     const path = new URL(request.url).pathname;
 
+    if (
+      (request.method === 'GET' || request.method === 'HEAD') &&
+      (
+        path === '/news-admin' ||
+        path === '/news-admin/' ||
+        path === '/news-admin/index.html'
+      )
+    ) {
+      return await GNK_ASG_SERVE_NEWS_ADMIN(request, env);
+    }
+
     if (path === '/operator/publish-news') {
+      if (request.method === 'GET' || request.method === 'HEAD') {
+        return await GNK_ASG_SERVE_NEWS_ADMIN(request, env);
+      }
+
       return await GNK_NEWS_PUBLISH(request, env);
     }
     if (request.method === 'OPTIONS' && protectedPaths.has(path)) {

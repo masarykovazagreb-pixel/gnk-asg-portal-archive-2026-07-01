@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07122a">
+<title>GNK ASG News Admin</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260620-premium-v3">
+<script defer src="/assets/brand/gnk-asg-global-layer.js?v=20260620-premium-v3"></script>
+<style>
+main{width:min(900px,calc(100% - 20px));margin:24px auto 110px}
+.card{border:1px solid var(--asg-line);border-radius:26px;background:var(--asg-panel);padding:18px;margin-bottom:14px;box-shadow:var(--asg-shadow)}
+.brand{display:flex;gap:16px;align-items:center}.brand img{width:145px;height:auto}.brand h1{margin:0 0 7px}.brand p{margin:0;color:var(--asg-muted);line-height:1.55}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;margin:11px 0 6px;color:var(--asg-gold);font-size:11px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+input,select,textarea{width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--asg-line);border-radius:14px;background:#fff;color:#07101f;font:inherit}
+textarea{min-height:145px;resize:vertical}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+button,a.button{display:inline-flex;align-items:center;justify-content:center;padding:11px 14px;border:1px solid var(--asg-line);border-radius:999px;background:rgba(255,255,255,.06);color:var(--asg-text)!important;text-decoration:none!important;font-weight:900;cursor:pointer}
+button.primary{background:linear-gradient(135deg,var(--asg-gold),var(--asg-gold-2));color:#07101f!important}
+pre{white-space:pre-wrap;word-break:break-word;max-height:420px;overflow:auto;background:#02050b;border:1px solid var(--asg-line);border-radius:14px;padding:13px;color:#dfe7f8}
+.ok{color:#86efac}.bad{color:#fca5a5}
+@media(max-width:680px){.grid{grid-template-columns:1fr}.brand{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body class="gnk-asg-premium-shell">
+<main data-module="GNK_ASG_NEWS_ADMIN_V1">
+<section class="card brand">
+<img src="/assets/gnk-asg-email-logo-final.png" alt="GNK ASG">
+<div>
+<h1>GNK ASG News Admin</h1>
+<p>Zaštićeni unos poslovnih vijesti u Cloudflare KV i trenutna provjera javnog Business News feeda.</p>
+</div>
+</section>
+
+<section class="card">
+<label>Operator token</label>
+<input id="token" type="password" autocomplete="off" placeholder="Unesite operator token">
+<div class="actions">
+<button class="primary" id="saveToken" type="button">Sigurna prijava</button>
+<button id="clearToken" type="button">Odjava</button>
+<a class="button" href="/vijesti/">Otvori Vijesti</a>
+</div>
+<pre id="authOut">Operator nije prijavljen.</pre>
+</section>
+
+<section class="card">
+<div class="grid">
+<div>
+<label>Jezik</label>
+<select id="lang">
+<option value="hr">HR</option>
+<option value="en">EN</option>
+</select>
+
+<label>Naslov</label>
+<input id="title" placeholder="Naslov vijesti">
+
+<label>Izvor</label>
+<input id="source" value="GNK ASG">
+
+<label>Izvor URL</label>
+<input id="url" type="url" placeholder="https://">
+
+<label>Kategorija</label>
+<select id="category">
+<option value="business">Poslovanje</option>
+<option value="markets">Tržišta</option>
+<option value="technology">AI i tehnologija</option>
+<option value="sport">Sport i ekonomija</option>
+<option value="digital-assets">Digitalna imovina</option>
+<option value="automotive">Mobilnost</option>
+</select>
+</div>
+
+<div>
+<label>Sažetak</label>
+<textarea id="summary" placeholder="Sažetak vijesti"></textarea>
+
+<label>URL slike</label>
+<input id="image" type="url" placeholder="https://">
+
+<label>Regija</label>
+<input id="region" value="GNK ASG">
+</div>
+</div>
+
+<div class="actions">
+<button class="primary" id="publish" type="button">Objavi vijest</button>
+<button id="checkFeed" type="button">Provjeri javni feed</button>
+<button id="clearForm" type="button">Očisti obrazac</button>
+</div>
+
+<pre id="out">Vijest još nije poslana.</pre>
+</section>
+</main>
+
+<script src="/assets/operator-token-vault.js?v=20260621-1"></script>
+<script>
+const GNK_ASG_NEWS_ADMIN_V1=true;
+const q=id=>document.getElementById(id);
+const token=()=>window.GNKOperatorToken?.get?.()||localStorage.getItem('GNK_ASG_OPERATOR_TOKEN')||'';
+const auth=()=>token()?{
+  'authorization':'Bearer '+token(),
+  'x-operator-token':token()
+}:{};
+const show=(id,value)=>q(id).textContent=typeof value==='string'?value:JSON.stringify(value,null,2);
+
+q('token').value=token();
+
+q('saveToken').onclick=()=>{
+  const value=q('token').value.trim();
+  if(!value){
+    show('authOut','Token nije upisan.');
+    return;
+  }
+  if(window.GNKOperatorToken?.set)window.GNKOperatorToken.set(value);
+  localStorage.setItem('GNK_ASG_OPERATOR_TOKEN',value);
+  show('authOut','Operator token je spremljen lokalno.');
+};
+
+q('clearToken').onclick=()=>{
+  if(window.GNKOperatorToken?.clear)window.GNKOperatorToken.clear();
+  localStorage.removeItem('GNK_ASG_OPERATOR_TOKEN');
+  q('token').value='';
+  show('authOut','Operator je odjavljen.');
+};
+
+async function readJson(url,options={}){
+  const headers=new Headers(options.headers||{});
+  Object.entries(auth()).forEach(([key,value])=>headers.set(key,value));
+  const response=await fetch(url,{
+    ...options,
+    headers,
+    cache:'no-store'
+  });
+  const raw=await response.text();
+  let data;
+  try{data=JSON.parse(raw)}catch{data={raw}}
+  return{ok:response.ok,status:response.status,data};
+}
+
+async function getFeed(){
+  const response=await fetch('/data/news.json?cb='+Date.now(),{
+    method:'GET',
+    cache:'no-store',
+    headers:{
+      accept:'application/json',
+      'cache-control':'no-cache'
+    }
+  });
+  const raw=await response.text();
+  let data;
+  try{data=JSON.parse(raw)}catch{data=[]}
+  return{
+    ok:response.ok,
+    status:response.status,
+    items:Array.isArray(data)?data:(Array.isArray(data?.items)?data.items:[])
+  };
+}
+
+q('checkFeed').onclick=async()=>{
+  const feed=await getFeed();
+  show('out',{
+    ok:feed.ok,
+    status:feed.status,
+    total:feed.items.length,
+    latest:feed.items.slice(0,5)
+  });
+};
+
+q('publish').onclick=async()=>{
+  const payload={
+    lang:q('lang').value,
+    title:q('title').value.trim(),
+    summary:q('summary').value.trim(),
+    source:q('source').value.trim()||'GNK ASG',
+    url:q('url').value.trim(),
+    sourceUrl:q('url').value.trim(),
+    category:q('category').value,
+    group:q('category').value,
+    region:q('region').value.trim()||'GNK ASG',
+    image:q('image').value.trim(),
+    published_at:new Date().toISOString()
+  };
+
+  if(!payload.title){
+    show('out','Nedostaje naslov vijesti.');
+    return;
+  }
+
+  if(!payload.summary){
+    show('out','Nedostaje sažetak vijesti.');
+    return;
+  }
+
+  if(!token()){
+    show('out','Operator token nije upisan.');
+    return;
+  }
+
+  show('out','Objavljivanje vijesti…');
+
+  const result=await readJson('/operator/publish-news',{
+    method:'POST',
+    headers:{'content-type':'application/json'},
+    body:JSON.stringify(payload)
+  });
+
+  if(!result.ok){
+    show('out',result);
+    return;
+  }
+
+  await new Promise(resolve=>setTimeout(resolve,800));
+
+  const feed=await getFeed();
+  const id=result.data?.id||result.data?.item?.id||'';
+  const found=feed.items.find(item=>
+    String(item.id||'')===String(id)||
+    String(item.title||'')===payload.title
+  );
+
+  show('out',{
+    publish:result,
+    publicFeed:{
+      ok:feed.ok,
+      status:feed.status,
+      total:feed.items.length,
+      found:!!found,
+      item:found||null
+    }
+  });
+};
+
+q('clearForm').onclick=()=>{
+  q('title').value='';
+  q('summary').value='';
+  q('url').value='';
+  q('image').value='';
+  q('source').value='GNK ASG';
+  q('region').value='GNK ASG';
+  q('category').value='business';
+  show('out','Obrazac je očišćen.');
+};
+</script>
+</body>
+</html>
