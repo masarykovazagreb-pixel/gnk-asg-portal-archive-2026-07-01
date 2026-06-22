@@ -17,6 +17,8 @@ const LANGUAGE_PAIRS = [
   { hr: '/kolacici/', en: '/en/cookies/' }
 ];
 
+const CONTACT_PATHS = new Set(['/contact/', '/en/contact/']);
+
 export default {
   async fetch(request, env) {
     if (!['GET', 'HEAD'].includes(request.method)) {
@@ -27,7 +29,9 @@ export default {
     }
 
     const url = new URL(request.url);
-    const routeSeo = languageMetadata(url.pathname);
+    const normalisedPath = normalisePath(url.pathname);
+    const routeSeo = languageMetadata(normalisedPath);
+    const isContactRoute = CONTACT_PATHS.has(normalisedPath);
     const response = await env.ASSETS.fetch(request);
     const contentType = response.headers.get('content-type') || '';
 
@@ -90,6 +94,9 @@ export default {
         .on('head', {
           element(element) {
             element.append(seoMarkup(routeSeo), { html: true });
+            if (isContactRoute) {
+              element.append(contactRepairMarkup(), { html: true });
+            }
           }
         });
     }
@@ -139,6 +146,14 @@ function seoMarkup(metadata) {
     `<link rel="alternate" hreflang="x-default" href="${metadata.xDefault}">`,
     `<meta property="og:url" content="${metadata.canonical}">`,
     `<meta property="og:locale" content="${metadata.ogLocale}">`
+  ].join('');
+}
+
+function contactRepairMarkup() {
+  return [
+    `<link id="gnk-functional-repair-css" rel="stylesheet" href="${ASSET_ORIGIN}/assets/portal-functional-repair-v1.css?v=20260622-1">`,
+    `<script defer src="${ASSET_ORIGIN}/assets/portal-ui-repair-v1.js?v=20260622-1"></script>`,
+    `<script defer src="${ASSET_ORIGIN}/assets/contact-form-repair-v1.js?v=20260622-1"></script>`
   ].join('');
 }
 
