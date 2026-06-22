@@ -94,3 +94,50 @@
     grid-template-columns: 1fr !important;
   }
 }
+
+
+/* GNK_ASG_INDEX_HOTFIX_COLOR_V2 */
+.gnk-group-left-yellow [data-gnk-left-yellow="1"] {
+  color: #e2bc49 !important;
+  font-weight: 800 !important;
+  opacity: 1 !important;
+  text-shadow: 0 0 0 transparent !important;
+}
+
+.gnk-group-left-yellow a[data-gnk-left-yellow="1"] {
+  color: #e2bc49 !important;
+  text-decoration-color: rgba(226,188,73,.55) !important;
+}
+
+.gnk-pdf-card-blacktext [data-gnk-pdf-black="1"],
+.gnk-pdf-card-blacktext p,
+.gnk-pdf-card-blacktext span,
+.gnk-pdf-card-blacktext div,
+.gnk-pdf-card-blacktext strong,
+.gnk-pdf-card-blacktext small,
+.gnk-pdf-card-blacktext h3,
+.gnk-pdf-card-blacktext h4 {
+  color: #111827 !important;
+  opacity: 1 !important;
+}
+
+.gnk-pdf-card-blacktext a,
+.gnk-pdf-card-blacktext button {
+  color: #111827 !important;
+}
+
+.gnk-pdf-card-blacktext .gnk-pdf-yellow-button,
+.gnk-pdf-card-blacktext a.gnk-pdf-yellow-button,
+.gnk-pdf-card-blacktext button.gnk-pdf-yellow-button {
+  color: #111827 !important;
+  font-weight: 800 !important;
+}
+
+.gnk-pdf-card-blacktext .gnk-pdf-yellow-button * {
+  color: #111827 !important;
+  fill: #111827 !important;
+}
+
+.gnk-pdf-card-blacktext .gnk-pdf-badge {
+  color: #111827 !important;
+}

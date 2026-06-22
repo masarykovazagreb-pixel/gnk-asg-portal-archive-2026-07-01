@@ -153,4 +153,86 @@
   } else {
     boot();
   }
+
+
+
+/* GNK_ASG_INDEX_HOTFIX_COLOR_V2 */
+function addYellowGroupOverviewLeft() {
+  const section = findSection(/GNK DINAMO Ltd\. Group Overview/i);
+  if (!section) return;
+
+  section.classList.add("gnk-group-left-yellow");
+
+  const exactMatches = [
+    /^Parent company$/i,
+    /^Tvrtka$/i,
+    /^GNK DINAMO Ltd\.$/i,
+    /^Sjedište$/i,
+    /^Boulder,\s*Colorado,\s*USA$/i,
+    /^Entity ID$/i,
+    /^20238180649$/i,
+    /^Ovlašteni predstavnik$/i,
+    /^Nermin Sefić$/i,
+    /^Stvarni vlasnik \/ UBO grupe$/i,
+    /^Broj društava u grupi$/i,
+    /^33,\s*uključujući GNK DINAMO Ltd\.?$/i
+  ];
+
+  [...section.querySelectorAll("h1,h2,h3,h4,h5,h6,p,span,div,strong,a,small,td,li")]
+    .forEach(node => {
+      const txt = textOf(node);
+      if (exactMatches.some(rx => rx.test(txt))) {
+        node.setAttribute("data-gnk-left-yellow", "1");
+      }
+    });
+}
+
+function elevatePdfCard(card) {
+  if (!card) return;
+  card.classList.add("gnk-pdf-card-blacktext");
+
+  [...card.querySelectorAll("h1,h2,h3,h4,h5,h6,p,span,div,strong,small,a,button")]
+    .forEach(node => {
+      const txt = textOf(node);
+      if (
+        /Neovisna revizija|Izvješće neovisnog revizora i financijski izvještaji|S bilješkama koje uključuju konsolidirane financijske podatke GNK DINAMO Ltd\. Group\.|FILED IN COLORADO|Konsolidirani financijski izvještaj grupe|Certificirani Colorado podnesak/i.test(txt)
+      ) {
+        node.setAttribute("data-gnk-pdf-black", "1");
+      }
+
+      if (/PREUZMI PDF/i.test(txt)) {
+        node.classList.add("gnk-pdf-yellow-button");
+      }
+
+      if (/PDF/i.test(txt) && txt.length <= 24) {
+        node.classList.add("gnk-pdf-badge");
+      }
+    });
+}
+
+function fixPdfCardsAppearance() {
+  const financialSection = findSection(/Financijski profil GNK ASG d\.o\.o\./i);
+  const groupSection = findSection(/GNK DINAMO Ltd\. Group Overview/i);
+
+  const cardHints = [
+    /Neovisna revizija/i,
+    /FILED IN COLORADO/i
+  ];
+
+  [financialSection, groupSection].filter(Boolean).forEach(section => {
+    [...section.querySelectorAll("div,article,section,.card,.panel")].forEach(candidate => {
+      const txt = textOf(candidate);
+      if (cardHints.some(rx => rx.test(txt)) && /PREUZMI PDF/i.test(txt)) {
+        elevatePdfCard(candidate);
+      }
+    });
+  });
+}
+
+const __originalBoot_20260622 = boot;
+boot = function() {
+  __originalBoot_20260622();
+  addYellowGroupOverviewLeft();
+  fixPdfCardsAppearance();
+};
 })();
