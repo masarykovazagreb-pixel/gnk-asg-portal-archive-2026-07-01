@@ -38,6 +38,10 @@ function relative(file) {
   return path.relative(root, file).split(path.sep).join('/');
 }
 
+function repoRelative(file) {
+  return path.relative(repoRoot, file).split(path.sep).join('/');
+}
+
 function report(severity, code, file, message, details = {}) {
   issues.push({ severity, code, file: file ? relative(file) : null, message, ...details });
 }
@@ -120,6 +124,10 @@ function isAuditUtilityFile(file) {
   return /^assets\/seo-gallery\/preview\.html?$/i.test(relative(file));
 }
 
+function isDeclaredBppAliasPolicyFile(file) {
+  return repoRelative(file) === 'contracts/bpp-domain.json';
+}
+
 function isExternal(reference) {
   const value = String(reference || '').trim();
   return /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)
@@ -165,17 +173,21 @@ function collectBppReferences() {
       if (!entry.isFile() || !extensions.has(path.extname(entry.name).toLowerCase())) continue;
       const text = read(absolute);
       if (text == null || text.includes('\u0000')) continue;
+      const declaredAliasPolicy = isDeclaredBppAliasPolicyFile(absolute);
       const lines = text.split(/\r?\n/);
       lines.forEach((line, index) => {
         if (!phrase.test(line)) return;
+        const forbiddenAlias = forbidden.test(line);
         const item = {
-          file: path.relative(repoRoot, absolute).split(path.sep).join('/'),
+          file: repoRelative(absolute),
           line: index + 1,
           text: line.trim().slice(0, 600),
-          forbiddenAlias: forbidden.test(line)
+          forbiddenAlias,
+          declaredAliasPolicy,
+          activeForbiddenAlias: forbiddenAlias && !declaredAliasPolicy
         };
         bppReferences.push(item);
-        if (item.forbiddenAlias) {
+        if (item.activeForbiddenAlias) {
           report('error', 'BPP_DOMAIN_ALIAS', absolute, 'Deprecated BPP domain alias found; use https://bpp.is/.', { line: item.line, excerpt: item.text });
         }
       });
@@ -324,8 +336,11 @@ const totals = issues.reduce((result, issue) => {
 
 issues.sort((a, b) => a.severity.localeCompare(b.severity) || (a.file || '').localeCompare(b.file || '') || a.code.localeCompare(b.code));
 
+const activeBppForbiddenAliases = bppReferences.filter((item) => item.activeForbiddenAlias).length;
+const declaredBppDeprecatedAliases = bppReferences.filter((item) => item.declaredAliasPolicy && item.forbiddenAlias).length;
+
 const result = {
-  schemaVersion: 3,
+  schemaVersion: 4,
   generatedAt,
   root: path.relative(process.cwd(), root).split(path.sep).join('/'),
   strict,
@@ -340,7 +355,8 @@ const result = {
     canonicalUrls: canonicals.size,
     indexedImages: imageRegistry.length,
     bppReferences: bppReferences.length,
-    bppForbiddenAliases: bppReferences.filter((item) => item.forbiddenAlias).length,
+    bppForbiddenAliases: activeBppForbiddenAliases,
+    bppDeclaredDeprecatedAliases: declaredBppDeprecatedAliases,
     errors: totals.error,
     warnings: totals.warning,
     infos: totals.info
@@ -374,6 +390,7 @@ const markdown = [
   `- Indexed images: ${result.summary.indexedImages}`,
   `- BPP references: ${result.summary.bppReferences}`,
   `- Forbidden BPP aliases: ${result.summary.bppForbiddenAliases}`,
+  `- Declared deprecated BPP aliases: ${result.summary.bppDeclaredDeprecatedAliases}`,
   `- Errors: ${result.summary.errors}`,
   `- Warnings: ${result.summary.warnings}`,
   '',
@@ -381,6 +398,7 @@ const markdown = [
   '',
   '- Official host: `bpp.is`',
   '- Official URL: `https://bpp.is/`',
+  '- Deprecated aliases declared in `contracts/bpp-domain.json` remain inventoried but are not counted as active frontend/backend alias violations.',
   '',
   '## Canonical classification',
   '',
@@ -402,7 +420,7 @@ markdown.push('', '## Gate mode', '', strict ? 'Strict mode: errors fail the com
 fs.writeFileSync(path.join(outDir, 'audit.md'), `${markdown.join('\n')}\n`, 'utf8');
 
 const fingerprint = crypto.createHash('sha256').update(JSON.stringify(issues)).digest('hex').slice(0, 16);
-console.log(`GNK ASG quality gate: ${totals.error} error(s), ${totals.warning} warning(s), ${bppReferences.length} BPP reference(s), fingerprint ${fingerprint}`);
+console.log(`GNK ASG quality gate: ${totals.error} error(s), ${totals.warning} warning(s), ${bppReferences.length} BPP reference(s), ${activeBppForbiddenAliases} active BPP alias violation(s), fingerprint ${fingerprint}`);
 console.log(`BPP reference report: ${path.join(outDir, 'bpp-references.json')}`);
 console.log(`Report: ${path.join(outDir, 'audit.md')}`);
 
