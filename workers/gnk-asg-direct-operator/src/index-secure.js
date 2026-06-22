@@ -45,9 +45,176 @@ async function delegateWithStaticAssetFallback(request, env, ctx) {
   return withRepairLayer(assetResponse.status === 404 ? response : assetResponse);
 }
 
+const GNK_ASG_SECURE_NEWS_PUBLISH_V1 = true;
+
+function GNK_NEWS_JSON(data, status = 200) {
+  return new Response(JSON.stringify(data, null, 2), {
+    status,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store'
+    }
+  });
+}
+
+function GNK_NEWS_SLUG(value) {
+  return String(value || 'vijest')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80) || 'vijest';
+}
+
+async function GNK_NEWS_AUTHORIZED(request) {
+  try {
+    const check = await fetch(
+      'https://operator.gnk-asg.hr/operator/status',
+      {
+        method: 'GET',
+        headers: request.headers,
+        redirect: 'manual'
+      }
+    );
+
+    return check.status === 200;
+  } catch {
+    return false;
+  }
+}
+
+async function GNK_NEWS_READ_LIST(env) {
+  if (!env.GNK_ASG_KV) return [];
+
+  try {
+    const raw = await env.GNK_ASG_KV.get('data:news:items');
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+async function GNK_NEWS_PUBLISH(request, env) {
+  if (request.method !== 'POST') {
+    return GNK_NEWS_JSON(
+      { ok: false, error: 'method_not_allowed' },
+      405
+    );
+  }
+
+  if (!(await GNK_NEWS_AUTHORIZED(request))) {
+    return GNK_NEWS_JSON(
+      { ok: false, error: 'authorization_required' },
+      401
+    );
+  }
+
+  if (!env.GNK_ASG_KV) {
+    return GNK_NEWS_JSON(
+      { ok: false, error: 'GNK_ASG_KV_missing' },
+      500
+    );
+  }
+
+  let body = {};
+
+  try {
+    body = await request.json();
+  } catch {
+    return GNK_NEWS_JSON(
+      { ok: false, error: 'invalid_json' },
+      400
+    );
+  }
+
+  const title = String(body.title || '').trim();
+
+  if (!title) {
+    return GNK_NEWS_JSON(
+      { ok: false, error: 'missing_title' },
+      400
+    );
+  }
+
+  const now = new Date().toISOString();
+  const id = String(
+    body.id ||
+    `news-${now.replace(/[^0-9]/g, '').slice(0, 14)}-${GNK_NEWS_SLUG(title)}`
+  );
+
+  const sourceUrl = String(
+    body.url ||
+    body.sourceUrl ||
+    ''
+  ).trim();
+
+  const item = {
+    id,
+    kind: 'news',
+    lang: String(body.lang || 'hr'),
+    title,
+    slug: String(body.slug || GNK_NEWS_SLUG(title)),
+    summary: String(body.summary || '').trim(),
+    body: String(body.body || body.bodyHtml || '').trim(),
+    url: sourceUrl,
+    sourceUrl,
+    source: String(body.source || 'GNK ASG').trim(),
+    region: String(body.region || body.source || 'GNK ASG').trim(),
+    group: String(body.group || body.category || 'business').trim(),
+    category: String(body.category || body.group || 'business').trim(),
+    image: String(body.image || '').trim(),
+    published_at: String(
+      body.published_at ||
+      body.publishedAt ||
+      now
+    ),
+    share_url: String(
+      body.share_url ||
+      `/podijeli/vijest/${encodeURIComponent(id)}/`
+    ),
+    status: 'published',
+    createdAt: now,
+    updatedAt: now
+  };
+
+  const current = await GNK_NEWS_READ_LIST(env);
+
+  const next = [
+    item,
+    ...current.filter(entry =>
+      entry &&
+      entry.id !== id &&
+      String(entry.url || entry.sourceUrl || '') !== sourceUrl
+    )
+  ].slice(0, 500);
+
+  await env.GNK_ASG_KV.put(
+    `news:${id}`,
+    JSON.stringify(item, null, 2)
+  );
+
+  await env.GNK_ASG_KV.put(
+    'data:news:items',
+    JSON.stringify(next, null, 2)
+  );
+
+  return GNK_NEWS_JSON({
+    ok: true,
+    stored: 'data:news:items',
+    id,
+    total: next.length,
+    item
+  });
+}
 export default {
   async fetch(request, env, ctx) {
     const path = new URL(request.url).pathname;
+
+    if (path === '/operator/publish-news') {
+      return await GNK_NEWS_PUBLISH(request, env);
+    }
     if (request.method === 'OPTIONS' && protectedPaths.has(path)) {
       return new Response(null, { status:204, headers:protectedCorsHeaders(request) });
     }

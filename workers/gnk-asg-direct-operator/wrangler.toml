@@ -44,3 +44,10 @@ zone_name = "gnk-asg.hr"
 [[routes]]
 pattern = "www.gnk-asg.hr/*"
 zone_name = "gnk-asg.hr"
+[[routes]]
+pattern = "gnk-asg.hr/operator/publish-news*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/operator/publish-news*"
+zone_name = "gnk-asg.hr"

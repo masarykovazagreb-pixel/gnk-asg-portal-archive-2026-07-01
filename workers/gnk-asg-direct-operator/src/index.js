@@ -92,6 +92,22 @@ async function handlePublish(request, env, kind) {
     updatedAt: now
   };
 
+  if (kind === 'news') {
+    item.url = String(body.url || body.sourceUrl || '').trim();
+    item.sourceUrl = item.url;
+    item.source = String(body.source || 'GNK ASG').trim();
+    item.region = String(body.region || item.source || 'GNK ASG').trim();
+    item.group = String(body.group || body.category || 'business').trim();
+    item.category = String(body.category || body.group || 'business').trim();
+    item.published_at =
+      body.published_at ||
+      body.publishedAt ||
+      now;
+    item.share_url =
+      body.share_url ||
+      `/podijeli/vijest/${encodeURIComponent(id)}/`;
+  }
+
   const listKey = kind === 'news' ? 'data:news:items' : 'data:articles:items';
   const itemKey = kind + ':' + id;
 
@@ -105,6 +121,22 @@ async function handlePublish(request, env, kind) {
 }
 
 async function handleData(env, kind) {
+  if (kind === 'news') {
+    item.url = String(body.url || body.sourceUrl || '').trim();
+    item.sourceUrl = item.url;
+    item.source = String(body.source || 'GNK ASG').trim();
+    item.region = String(body.region || item.source || 'GNK ASG').trim();
+    item.group = String(body.group || body.category || 'business').trim();
+    item.category = String(body.category || body.group || 'business').trim();
+    item.published_at =
+      body.published_at ||
+      body.publishedAt ||
+      now;
+    item.share_url =
+      body.share_url ||
+      `/podijeli/vijest/${encodeURIComponent(id)}/`;
+  }
+
   const listKey = kind === 'news' ? 'data:news:items' : 'data:articles:items';
   const items = await getList(env, listKey);
   return json({
@@ -115,6 +147,119 @@ async function handleData(env, kind) {
   });
 }
 
+const GNK_ASG_NEWS_DATA_BRIDGE_V1 = true;
+
+function GNK_NEWS_TIME(item) {
+  const value =
+    item?.published_at ||
+    item?.publishedAt ||
+    item?.createdAt ||
+    item?.updatedAt ||
+    '';
+
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function GNK_NEWS_NORMALIZE(item) {
+  if (!item || typeof item !== 'object') return null;
+
+  const id = String(
+    item.id ||
+    `news-${GNK_NEWS_TIME(item)}-${slugify(item.title || 'vijest')}`
+  );
+
+  const url = String(
+    item.url ||
+    item.sourceUrl ||
+    ''
+  ).trim();
+
+  return {
+    ...item,
+    id,
+    title: String(item.title || '').trim(),
+    url,
+    sourceUrl: url,
+    summary: String(item.summary || '').trim(),
+    source: String(item.source || 'GNK ASG').trim(),
+    region: String(item.region || item.source || 'GNK ASG').trim(),
+    group: String(item.group || item.category || 'business').trim(),
+    category: String(item.category || item.group || 'business').trim(),
+    published_at:
+      item.published_at ||
+      item.publishedAt ||
+      item.createdAt ||
+      new Date().toISOString(),
+    share_url:
+      item.share_url ||
+      `/podijeli/vijest/${encodeURIComponent(id)}/`
+  };
+}
+
+async function GNK_READ_STATIC_NEWS(request, env) {
+  if (!env.ASSETS || typeof env.ASSETS.fetch !== 'function') return [];
+
+  try {
+    const assetUrl = new URL('/data/news.json', request.url);
+    const response = await env.ASSETS.fetch(
+      new Request(assetUrl.toString(), {
+        method: 'GET',
+        headers: {
+          accept: 'application/json'
+        }
+      })
+    );
+
+    if (!response.ok) return [];
+
+    const parsed = await response.json();
+
+    if (Array.isArray(parsed)) return parsed;
+    if (Array.isArray(parsed?.items)) return parsed.items;
+
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+async function GNK_HANDLE_NEWS_DATA(request, env) {
+  const stored = await getList(env, 'data:news:items');
+  const fallback = await GNK_READ_STATIC_NEWS(request, env);
+  const seen = new Set();
+
+  const items = [...stored, ...fallback]
+    .map(GNK_NEWS_NORMALIZE)
+    .filter(item => {
+      if (!item || !item.title) return false;
+
+      const key = String(
+        item.id ||
+        item.url ||
+        item.title
+      ).toLowerCase();
+
+      if (seen.has(key)) return false;
+
+      seen.add(key);
+      return true;
+    })
+    .sort((a, b) => GNK_NEWS_TIME(b) - GNK_NEWS_TIME(a))
+    .slice(0, 500);
+
+  return new Response(JSON.stringify(items, null, 2), {
+    status: 200,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store, no-cache, must-revalidate',
+      'x-gnk-asg-news-source':
+        stored.length > 0 ? 'kv-and-static' : 'static-fallback',
+      'x-gnk-asg-news-kv-count': String(stored.length),
+      'x-gnk-asg-news-total-count': String(items.length)
+    }
+  });
+}
 async function handlePublishLayer(request, env) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/+$/, '') || '/';
@@ -137,6 +282,7 @@ async function handlePublishLayer(request, env) {
 
   if (path === '/operator/publish-news') return await handlePublish(request, env, 'news');
   if (path === '/operator/publish-article') return await handlePublish(request, env, 'article');
+  if (path === '/data/news.json') return await GNK_HANDLE_NEWS_DATA(request, env);
   if (path === '/data/articles.json') return await handleData(env, 'article');
 
   return null;
