@@ -1,0 +1,171 @@
+name: GNK ASG Final Predeploy Gate 20260622
+
+on:
+  push:
+    branches:
+      - final-predeploy-gate-20260622-987e14d
+    paths:
+      - 'config/final-predeploy-gate-20260622.json'
+      - 'scripts/final-predeploy-gate-20260622.mjs'
+      - '.github/workflows/final-predeploy-gate-20260622.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: gnk-asg-final-predeploy-gate-20260622
+  cancel-in-progress: true
+
+jobs:
+  final-predeploy-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SOURCE_COMMIT: 987e14d9874a76235957873be1262d901d5b0c3a
+      PREVIEW_BASE_URL: https://gnk-asg-business-light-preview.beckuphome.workers.dev
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout validation branch with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate gate and existing audit syntax
+        run: |
+          set -euo pipefail
+          node --check scripts/final-predeploy-gate-20260622.mjs
+          node --check scripts/workflow-production-trigger-audit.mjs
+          node --check scripts/release-candidate-audit.mjs
+          node --check scripts/hr-en-public-route-audit.mjs
+          node --check scripts/backup-restore-rehearsal.mjs
+          node --check scripts/build-release-package.mjs
+          node --check scripts/mobile-contrast-browser-audit.mjs
+
+      - name: Verify pinned source ancestry and checkpoint
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$SOURCE_COMMIT" HEAD
+          git ls-remote --exit-code --heads origin predeploy-checkpoint-20260622-987e14d
+          test ! -f .github/release/PRODUCTION_APPROVED
+
+      - name: Collect source workflow evidence from GitHub
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/final-predeploy-gate-20260622
+          node <<'NODE'
+          const fs = require('fs');
+          const config = require('./config/final-predeploy-gate-20260622.json');
+          const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+          const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?head_sha=${config.sourceCommit}&event=pull_request&per_page=100`;
+          const response = await fetch(url, {
+            headers: {
+              authorization: `Bearer ${process.env.GH_TOKEN}`,
+              accept: 'application/vnd.github+json',
+              'x-github-api-version': '2022-11-28'
+            }
+          });
+          if (!response.ok) throw new Error(`github_actions_api_${response.status}`);
+          const payload = await response.json();
+          const required = config.requiredSourceWorkflows;
+          const latest = new Map();
+          for (const run of payload.workflow_runs || []) {
+            if (!required.includes(run.name)) continue;
+            const current = latest.get(run.name);
+            if (!current || Number(run.id) > Number(current.id)) latest.set(run.name, run);
+          }
+          const missing = required.filter(name => !latest.has(name));
+          const failed = [];
+          const successful = [];
+          const runs = [];
+          for (const name of required) {
+            const run = latest.get(name);
+            if (!run) continue;
+            runs.push({ name, id: run.id, status: run.status, conclusion: run.conclusion, htmlUrl: run.html_url });
+            if (run.status === 'completed' && run.conclusion === 'success') successful.push(name);
+            else failed.push({ name, status: run.status, conclusion: run.conclusion, id: run.id });
+          }
+          const report = {
+            generatedAt: new Date().toISOString(),
+            sourceCommit: config.sourceCommit,
+            requiredCount: required.length,
+            successfulCount: successful.length,
+            missing,
+            failed,
+            runs,
+            status: missing.length === 0 && failed.length === 0 && successful.length >= config.minimumSuccessfulSourceWorkflows ? 'PASS' : 'FAIL',
+            productionTouched: false
+          };
+          fs.writeFileSync('reports/final-predeploy-gate-20260622/source-workflows.json', JSON.stringify(report, null, 2) + '\n');
+          if (report.status !== 'PASS') process.exit(1);
+          NODE
+
+      - name: Run production workflow trigger audit
+        run: node scripts/workflow-production-trigger-audit.mjs
+
+      - name: Run release candidate audit
+        run: node scripts/release-candidate-audit.mjs
+
+      - name: Run HR EN public route audit
+        run: node scripts/hr-en-public-route-audit.mjs
+
+      - name: Run backup and restore rehearsal
+        run: node scripts/backup-restore-rehearsal.mjs
+
+      - name: Build release package from pinned source
+        run: RELEASE_SOURCE_COMMIT="$SOURCE_COMMIT" node scripts/build-release-package.mjs
+
+      - name: Locate hosted Chromium
+        run: |
+          set -euo pipefail
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$browser"
+          echo "CHROMIUM_PATH=$browser" >> "$GITHUB_ENV"
+
+      - name: Install Playwright core without browser download
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+        run: npm install --no-save playwright-core@1.52.0
+
+      - name: Run four-scenario mobile contrast audit
+        run: node scripts/mobile-contrast-browser-audit.mjs
+
+      - name: Run final consolidated gate
+        run: node scripts/final-predeploy-gate-20260622.mjs
+
+      - name: Validate final gate status
+        run: |
+          set -euo pipefail
+          node -e "const r=require('./reports/final-predeploy-gate-20260622/report.json'); if(r.status!=='READY_FOR_EXPLICIT_PRODUCTION_APPROVAL'||r.failedChecks!==0||r.productionDeployExecuted!==false||r.productionMarkerCreated!==false||r.mergeExecuted!==false||r.massMailLiveSendEnabled!==false) process.exit(1)"
+          test -s reports/final-predeploy-gate-20260622/report.md
+
+      - name: Publish final gate summary
+        if: always()
+        run: |
+          if [ -f reports/final-predeploy-gate-20260622/report.md ]; then
+            cat reports/final-predeploy-gate-20260622/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload final predeploy evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-final-predeploy-gate-20260622-${{ github.run_id }}
+          path: |
+            reports/final-predeploy-gate-20260622/
+            reports/workflow-production-trigger-audit/
+            reports/release-candidate-audit/
+            reports/hr-en-public-route-audit/
+            reports/backup-restore-rehearsal/
+            reports/release-package/
+            reports/mobile-contrast-browser-audit/
+          if-no-files-found: error
+          retention-days: 14
