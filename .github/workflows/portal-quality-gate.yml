@@ -11,6 +11,7 @@ on:
       - "tools/portal-quality-gate.mjs"
       - "tools/build-bpp-domain-patch.mjs"
       - "tools/validate-refresh-backend.mjs"
+      - "tools/portal-release-readiness.mjs"
       - ".github/workflows/portal-quality-gate.yml"
       - ".quality-gate-enforced"
   push:
@@ -24,6 +25,7 @@ on:
       - "tools/portal-quality-gate.mjs"
       - "tools/build-bpp-domain-patch.mjs"
       - "tools/validate-refresh-backend.mjs"
+      - "tools/portal-release-readiness.mjs"
       - ".github/workflows/portal-quality-gate.yml"
       - ".quality-gate-enforced"
 
@@ -50,6 +52,7 @@ jobs:
           node --check tools/portal-quality-gate.mjs
           node --check tools/build-bpp-domain-patch.mjs
           node --check tools/validate-refresh-backend.mjs
+          node --check tools/portal-release-readiness.mjs
           node --check workers/gnk-asg-direct-operator/src/runtime-entry.js
           node --check workers/gnk-asg-direct-operator/src/gnk-asg-refresh-backend-v1.js
           node tools/validate-refresh-backend.mjs
@@ -65,6 +68,9 @@ jobs:
             --root apps/portal \
             --out reports/portal-quality-gate \
             $MODE
+
+      - name: Validate release readiness
+        run: node tools/portal-release-readiness.mjs
 
       - name: Prepare non-destructive BPP domain patch package
         shell: bash
@@ -89,6 +95,12 @@ jobs:
           else
             echo "Portal audit report was not generated." >> "$GITHUB_STEP_SUMMARY"
           fi
+          if [[ -f reports/release-readiness/release-readiness.md ]]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            cat reports/release-readiness/release-readiness.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Release readiness report was not generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [[ -f reports/portal-quality-gate/bpp-patched/manifest.json ]]; then
             echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "## BPP patch package" >> "$GITHUB_STEP_SUMMARY"
@@ -110,8 +122,12 @@ jobs:
             const marker = '<!-- gnk-asg-portal-quality-gate -->';
             const reportPath = 'reports/portal-quality-gate/audit.md';
             let report = fs.existsSync(reportPath)
-              ? fs.readFileSync(reportPath, 'utf8').slice(0, 56000)
+              ? fs.readFileSync(reportPath, 'utf8').slice(0, 42000)
               : 'Portal audit report was not generated.';
+            const readinessPath = 'reports/release-readiness/release-readiness.md';
+            if (fs.existsSync(readinessPath)) {
+              report += `\n${fs.readFileSync(readinessPath, 'utf8').slice(0, 12000)}\n`;
+            }
             const manifestPath = 'reports/portal-quality-gate/bpp-patched/manifest.json';
             if (fs.existsSync(manifestPath)) {
               const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
@@ -146,6 +162,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: portal-quality-gate
-          path: reports/portal-quality-gate
+          path: |
+            reports/portal-quality-gate
+            reports/release-readiness
           if-no-files-found: warn
           retention-days: 30
