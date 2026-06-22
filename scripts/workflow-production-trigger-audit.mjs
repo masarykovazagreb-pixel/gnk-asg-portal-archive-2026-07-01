@@ -32,9 +32,16 @@ for (const file of files) {
   const hasWranglerDeploy = /\bwrangler(?:@[^\s]+)?\s+deploy\b|\bwrangler\s+deploy\b/i.test(text);
   const hasProductionIndicator = productionIndicators.some(pattern => pattern.test(text));
   const hasProductionEnvironment = /^\s+environment\s*:\s*production\s*$/m.test(text);
-  const hasTypedApproval = /APPROVED/.test(text) && /github\.event\.inputs\.(?:approval|confirmation)/.test(text);
+  const hasTypedApproval = /APPROVED/.test(text) && (
+    /github\.event\.inputs\.(?:approval|confirmation)/.test(text) ||
+    /inputs\.(?:approval|confirmation)/.test(text)
+  );
   const hasSourceCommitInput = /source_commit|approved_commit/.test(text);
-  const validatesFullSha = /\^\[0-9a-fA-F\]\{40\}\$/.test(text) || /40-character commit SHA/i.test(text);
+  const validatesFullSha = (
+    /\^\[0-9a-fA-F\]\{40\}\$/.test(text) ||
+    /40-character commit SHA/i.test(text) ||
+    /40-znamenkasti SHA/i.test(text)
+  );
   const hasApprovalMarker = /PRODUCTION_APPROVED/.test(text) || hasTypedApproval;
   const autoTriggered = hasPullRequest || hasPush;
   const productionDeploy = hasWranglerDeploy && hasProductionIndicator;
