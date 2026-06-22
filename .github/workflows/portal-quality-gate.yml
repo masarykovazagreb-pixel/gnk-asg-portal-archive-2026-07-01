@@ -11,6 +11,7 @@ on:
       - "tools/portal-quality-gate.mjs"
       - "tools/build-bpp-domain-patch.mjs"
       - "tools/validate-refresh-backend.mjs"
+      - "tools/validate-homepage-final.mjs"
       - "tools/portal-release-readiness.mjs"
       - ".github/workflows/portal-quality-gate.yml"
       - ".quality-gate-enforced"
@@ -25,6 +26,7 @@ on:
       - "tools/portal-quality-gate.mjs"
       - "tools/build-bpp-domain-patch.mjs"
       - "tools/validate-refresh-backend.mjs"
+      - "tools/validate-homepage-final.mjs"
       - "tools/portal-release-readiness.mjs"
       - ".github/workflows/portal-quality-gate.yml"
       - ".quality-gate-enforced"
@@ -47,15 +49,21 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate audit and refresh backend
+      - name: Validate audit, homepage and backend
         run: |
           node --check tools/portal-quality-gate.mjs
           node --check tools/build-bpp-domain-patch.mjs
           node --check tools/validate-refresh-backend.mjs
+          node --check tools/validate-homepage-final.mjs
+          node --check tools/validate-mail-contact.mjs
           node --check tools/portal-release-readiness.mjs
+          node --check apps/portal/assets/homepage-polish.js
           node --check workers/gnk-asg-direct-operator/src/runtime-entry.js
           node --check workers/gnk-asg-direct-operator/src/gnk-asg-refresh-backend-v1.js
+          node --check workers/gnk-asg-direct-operator/src/gnk-asg-mail-contact-v1.js
           node tools/validate-refresh-backend.mjs
+          node tools/validate-homepage-final.mjs
+          node tools/validate-mail-contact.mjs
 
       - name: Audit portal
         shell: bash
@@ -120,27 +128,22 @@ jobs:
           script: |
             const fs = require('fs');
             const marker = '<!-- gnk-asg-portal-quality-gate -->';
-            const reportPath = 'reports/portal-quality-gate/audit.md';
-            let report = fs.existsSync(reportPath)
-              ? fs.readFileSync(reportPath, 'utf8').slice(0, 42000)
-              : 'Portal audit report was not generated.';
-            const readinessPath = 'reports/release-readiness/release-readiness.md';
-            if (fs.existsSync(readinessPath)) {
-              report += `\n${fs.readFileSync(readinessPath, 'utf8').slice(0, 12000)}\n`;
+            let body = `${marker}\n`;
+            if (fs.existsSync('reports/portal-quality-gate/audit.md')) {
+              body += fs.readFileSync('reports/portal-quality-gate/audit.md', 'utf8');
+            } else {
+              body += '# GNK ASG Portal Quality Gate\n\nAudit report was not generated.\n';
             }
-            const manifestPath = 'reports/portal-quality-gate/bpp-patched/manifest.json';
-            if (fs.existsSync(manifestPath)) {
-              const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-              report += `\n## BPP patch package\n\n- Canonical URL: \`https://bpp.is/\`\n- Prepared files: ${manifest.files.length}\n- Mode: generated artifact only; repository and production are unchanged\n`;
+            if (fs.existsSync('reports/release-readiness/release-readiness.md')) {
+              body += `\n\n${fs.readFileSync('reports/release-readiness/release-readiness.md', 'utf8')}`;
             }
-            const body = `${marker}\n${report}`;
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
               per_page: 100
             });
-            const existing = comments.find((comment) => comment.body?.includes(marker));
+            const existing = comments.find(comment => comment.body && comment.body.startsWith(marker));
             if (existing) {
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,
@@ -161,9 +164,9 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: portal-quality-gate
+          name: portal-quality-gate-${{ github.run_id }}
           path: |
             reports/portal-quality-gate
             reports/release-readiness
           if-no-files-found: warn
-          retention-days: 30
+          retention-days: 14
