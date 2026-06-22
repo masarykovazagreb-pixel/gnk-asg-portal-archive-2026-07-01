@@ -706,5 +706,164 @@ body{padding-bottom:92px!important;overflow-x:hidden!important}
   });
 })();
 </script>
+<style id="gnk-asg-group-white-final-v8-style">
+.gnk-group-profile-dark-final-v8 {
+  background: #101f34 !important;
+  border-color: rgba(226,188,73,.42) !important;
+}
+
+.gnk-group-profile-dark-final-v8 [data-gnk-group-white-v8="1"],
+.gnk-group-profile-dark-final-v8 [data-gnk-group-white-v8="1"] *,
+[data-gnk-group-white-v8="1"],
+[data-gnk-group-white-v8="1"] * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+.gnk-group-profile-dark-final-v8 a,
+.gnk-group-profile-dark-final-v8 a:link,
+.gnk-group-profile-dark-final-v8 a:visited {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  text-decoration-color: rgba(255,255,255,.55) !important;
+}
+</style>
+
+<script id="gnk-asg-group-white-final-v8">
+(function(){
+  var targets = [
+    "parent company",
+    "tvrtka",
+    "gnk dinamo ltd.",
+    "sjedište",
+    "boulder, colorado, usa",
+    "entity id",
+    "20238180649",
+    "ovlašteni predstavnik",
+    "nermin sefić",
+    "stvarni vlasnik / ubo grupe",
+    "broj društava u grupi",
+    "33, uključujući gnk dinamo ltd.",
+    "company",
+    "headquarters",
+    "authorized representative",
+    "ultimate beneficial owner / group ubo",
+    "number of companies in the group",
+    "33, including gnk dinamo ltd."
+  ];
+
+  function normalize(value){
+    return String(value || "")
+      .replace(/\s+/g," ")
+      .trim()
+      .toLowerCase();
+  }
+
+  function applyWhite(){
+    var matches = [];
+
+    document.querySelectorAll(
+      "h1,h2,h3,h4,h5,h6,p,span,strong,small,a,div,td,li"
+    ).forEach(function(element){
+      var value = normalize(element.textContent);
+
+      if(targets.indexOf(value) === -1){
+        return;
+      }
+
+      matches.push(element);
+
+      element.removeAttribute("data-gnk-left-yellow");
+      element.removeAttribute("data-gnk-group-black-v4");
+
+      element.classList.remove(
+        "gnk-v6-auto-dark",
+        "gnk-v6-light-surface",
+        "gnk-group-left-yellow"
+      );
+
+      element.setAttribute("data-gnk-group-white-v8","1");
+
+      element.style.setProperty("color","#ffffff","important");
+      element.style.setProperty("-webkit-text-fill-color","#ffffff","important");
+      element.style.setProperty("opacity","1","important");
+      element.style.setProperty("text-shadow","none","important");
+
+      element.querySelectorAll("*").forEach(function(child){
+        child.style.setProperty("color","#ffffff","important");
+        child.style.setProperty("-webkit-text-fill-color","#ffffff","important");
+        child.style.setProperty("opacity","1","important");
+        child.style.setProperty("text-shadow","none","important");
+      });
+    });
+
+    var anchor = matches.find(function(element){
+      return normalize(element.textContent) === "parent company";
+    });
+
+    var card = anchor;
+
+    while(card && card !== document.body){
+      var text = normalize(card.textContent);
+      var rect = card.getBoundingClientRect();
+
+      if(
+        text.indexOf("parent company") >= 0 &&
+        text.indexOf("entity id") >= 0 &&
+        (
+          text.indexOf("broj društava u grupi") >= 0 ||
+          text.indexOf("number of companies in the group") >= 0
+        ) &&
+        rect.width > 260 &&
+        rect.height > 180
+      ){
+        card.classList.remove(
+          "gnk-group-profile-light-card",
+          "gnk-v6-light-surface"
+        );
+
+        card.classList.add(
+          "gnk-group-profile-dark-final-v8",
+          "gnk-v6-dark-surface"
+        );
+
+        card.style.setProperty("background","#101f34","important");
+
+        card.querySelectorAll(
+          "[data-gnk-left-yellow],[data-gnk-group-black-v4]"
+        ).forEach(function(node){
+          node.removeAttribute("data-gnk-left-yellow");
+          node.removeAttribute("data-gnk-group-black-v4");
+        });
+
+        break;
+      }
+
+      card = card.parentElement;
+    }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded",applyWhite);
+  }else{
+    applyWhite();
+  }
+
+  window.addEventListener("load",applyWhite);
+
+  [100,400,900,1600,2800].forEach(function(delay){
+    setTimeout(applyWhite,delay);
+  });
+
+  new MutationObserver(function(){
+    applyWhite();
+  }).observe(document.documentElement,{
+    childList:true,
+    subtree:true
+  });
+})();
+</script>
 </body>
 </html>
