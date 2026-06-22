@@ -406,6 +406,72 @@ ${mailbox.signature}`;
   });
 }
 
+const GNK_ASG_CONTACT_HTML_CONFIRMATION_V1 = true;
+
+function contactEscapeHtml(value) {
+  return String(value || "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+function contactConfirmationProfile(mailbox) {
+  const key = String(mailbox?.address || "info@gnk-asg.hr")
+    .split("@")[0]
+    .toLowerCase();
+
+  const profiles = {
+    info: {
+      name: "GNK ASG Info Desk",
+      title: "Informacije i opći upiti"
+    },
+    contact: {
+      name: "GNK ASG Contact Desk",
+      title: "Kontakt i korisnička komunikacija"
+    },
+    it: {
+      name: "IT – Osobni digitalni asistent",
+      title: "Digitalna i tehnička podrška"
+    },
+    legal: {
+      name: "GNK ASG Legal & Compliance",
+      title: "Pravni i regulatorni poslovi"
+    },
+    privacy: {
+      name: "GNK ASG Privacy Desk",
+      title: "Privatnost i zaštita osobnih podataka"
+    },
+    media: {
+      name: "GNK ASG Media Desk",
+      title: "Mediji, objave i javne informacije"
+    },
+    press: {
+      name: "GNK ASG Press Desk",
+      title: "Odnosi s medijima"
+    },
+    ubo: {
+      name: "GNK ASG UBO Desk",
+      title: "Korporativni podaci"
+    },
+    sefic: {
+      name: "Office of Nermin Sefić",
+      title: "Ured direktora"
+    },
+    assistant: {
+      name: "IT – Osobni digitalni asistent",
+      title: "AI komunikacijska podrška"
+    }
+  };
+
+  return profiles[key] || {
+    name: `GNK ASG ${mailbox?.label || "Office"}`,
+    title: "Korporativna komunikacija"
+  };
+}
+
 async function sendAutoReply(env, record, mailbox) {
   const text =
 `Poštovani/Poštovana ${record.name},
@@ -432,13 +498,86 @@ ${mailbox.signature}
 
 Ovo je automatska potvrda zaprimanja.`;
 
+  const profile = contactConfirmationProfile(mailbox);
+  const logoUrl = "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png";
+
+  const html = `<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body style="margin:0;padding:0;background:#f5f7fb;color:#111827;font-family:Arial,Helvetica,sans-serif;line-height:1.55">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#f5f7fb">
+<tr>
+<td align="center" style="padding:24px 12px">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:720px;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px">
+<tr>
+<td style="padding:30px 30px 12px">
+<div style="font-size:18px;font-weight:700;color:#111827">Potvrda zaprimanja upita</div>
+<div style="margin-top:4px;color:#9a7418;font-size:13px;font-weight:700">${contactEscapeHtml(record.caseId)}</div>
+</td>
+</tr>
+<tr>
+<td style="padding:8px 30px 24px;font-size:15px;color:#111827">
+<p style="margin:0 0 16px">Poštovani/Poštovana ${contactEscapeHtml(record.name)},</p>
+<p style="margin:0 0 16px">zaprimili smo Vaš upit: <strong>${contactEscapeHtml(record.subject)}</strong>.</p>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px">
+<tr>
+<td style="padding:16px;font-size:13px;color:#374151">
+<div style="margin-bottom:8px"><strong>Odjel:</strong> ${contactEscapeHtml(record.mailboxLabel)}</div>
+<div style="margin-bottom:8px"><strong>Adresa:</strong> ${contactEscapeHtml(record.mailboxAddress)}</div>
+<div style="margin-bottom:8px"><strong>Evidencijski broj:</strong> ${contactEscapeHtml(record.caseId)}</div>
+<div style="margin-bottom:8px"><strong>Vrijeme zaprimanja:</strong> ${contactEscapeHtml(record.receivedAt)}</div>
+<div><strong>PDF prilog:</strong> ${contactEscapeHtml(record.attachmentStatus)}</div>
+</td>
+</tr>
+</table>
+<p style="margin:18px 0 0">Sačuvajte evidencijski broj radi buduće komunikacije.</p>
+</td>
+</tr>
+<tr>
+<td style="padding:0 30px 30px">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;border-top:2px solid #d4af37">
+<tr>
+<td width="175" valign="top" style="width:175px;padding:18px 22px 0 0">
+<img src="${logoUrl}" alt="GNK ASG" width="155" style="display:block;width:155px;max-width:155px;height:auto;border:0;outline:none;text-decoration:none">
+</td>
+<td valign="top" style="padding:18px 0 0">
+<table role="presentation" cellspacing="0" cellpadding="0" border="0">
+<tr><td style="color:#6b7280;font-size:13px;padding-bottom:8px">Srdačan pozdrav,</td></tr>
+<tr><td style="color:#111827;font-size:16px;font-weight:700">${contactEscapeHtml(profile.name)}</td></tr>
+<tr><td style="color:#9a7418;font-size:13px;font-weight:700;padding-bottom:10px">${contactEscapeHtml(profile.title)}</td></tr>
+<tr><td style="color:#111827;font-size:13px;font-weight:700">GNK ASG d.o.o.</td></tr>
+<tr><td style="color:#4b5563;font-size:12px">Zagrebačka cesta 130, 10090 Zagreb</td></tr>
+<tr><td style="color:#4b5563;font-size:12px">OIB: 75227917632 · MBS: 081512375</td></tr>
+<tr><td style="padding-top:6px;font-size:12px"><a href="mailto:${contactEscapeHtml(mailbox.address)}" style="color:#9a7418;text-decoration:none">${contactEscapeHtml(mailbox.address)}</a></td></tr>
+<tr><td style="font-size:12px"><a href="https://gnk-asg.hr" style="color:#9a7418;text-decoration:none">gnk-asg.hr</a> · <a href="tel:+385915358365" style="color:#9a7418;text-decoration:none">091 535 8365</a></td></tr>
+</table>
+</td>
+</tr>
+</table>
+<div style="margin-top:16px;padding-top:12px;border-top:1px solid #e5e7eb;color:#6b7280;font-size:11px;line-height:1.45">
+Ovo je automatska potvrda zaprimanja. Informacije u poruci ne predstavljaju pravni, financijski ni investicijski savjet.
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>`;
+
   return await sendMailRaw(env, {
     to: record.email,
     from: mailbox.address,
     fromName: `GNK ASG ${mailbox.label}`,
     replyTo: mailbox.address,
     subject: `[${record.caseId}] Potvrda zaprimanja upita`,
-    text
+    text,
+    html,
+    autoReply: true
   });
 }
 
@@ -523,6 +662,11 @@ async function sendMailRaw(env, data) {
     raw += `Subject: ${encodeHeader(data.subject)}\r\n`;
     raw += `MIME-Version: 1.0\r\n`;
 
+    if (data.autoReply) {
+      raw += `Auto-Submitted: auto-replied\r\n`;
+      raw += `X-Auto-Response-Suppress: All\r\n`;
+    }
+
     if (data.attachment) {
       raw += `Content-Type: multipart/mixed; boundary="${boundary}"\r\n\r\n`;
       raw += `--${boundary}\r\n`;
@@ -535,6 +679,18 @@ async function sendMailRaw(env, data) {
       raw += `Content-Transfer-Encoding: base64\r\n\r\n`;
       raw += `${foldBase64(data.attachment.base64)}\r\n`;
       raw += `--${boundary}--\r\n`;
+    } else if (data.html) {
+      const alternativeBoundary = `gnk_asg_alt_${crypto.randomUUID().replace(/-/g, "")}`;
+      raw += `Content-Type: multipart/alternative; boundary="${alternativeBoundary}"\r\n\r\n`;
+      raw += `--${alternativeBoundary}\r\n`;
+      raw += `Content-Type: text/plain; charset=UTF-8\r\n`;
+      raw += `Content-Transfer-Encoding: 8bit\r\n\r\n`;
+      raw += `${data.text}\r\n\r\n`;
+      raw += `--${alternativeBoundary}\r\n`;
+      raw += `Content-Type: text/html; charset=UTF-8\r\n`;
+      raw += `Content-Transfer-Encoding: 8bit\r\n\r\n`;
+      raw += `${data.html}\r\n\r\n`;
+      raw += `--${alternativeBoundary}--\r\n`;
     } else {
       raw += `Content-Type: text/plain; charset=UTF-8\r\n`;
       raw += `Content-Transfer-Encoding: 8bit\r\n\r\n`;
