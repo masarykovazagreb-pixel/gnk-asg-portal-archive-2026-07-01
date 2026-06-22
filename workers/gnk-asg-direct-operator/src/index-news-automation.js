@@ -3,9 +3,11 @@ import {
   handleNewsAutomationRoute,
   runNewsAutomation
 } from "./gnk-asg-news-automation-v2.js";
+import { handleNewsDetailRoute } from "./gnk-asg-news-detail-v1.js";
 
 const GNK_ASG_NEWS_AUTOMATION_ENTRY_V2 = true;
 const GNK_ASG_FORCE_NEWS_ASSETS_V2 = true;
+const GNK_ASG_NEWS_DETAIL_ROUTE_V1 = true;
 
 const FORCED_NEWS_ASSET_PATHS = new Set([
   "/vijesti",
@@ -75,6 +77,9 @@ export default {
       const assetResponse = await serveForcedNewsAsset(request, env);
       if (assetResponse) return assetResponse;
     }
+
+    const detailResponse = await handleNewsDetailRoute(request, env);
+    if (detailResponse) return detailResponse;
 
     const automated = await handleNewsAutomationRoute(request, env, ctx);
     if (automated) return automated;
