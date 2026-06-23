@@ -1,7 +1,7 @@
 import app from './index-publication-news-hotfix.js';
 import { handleRefreshRoute, runScheduledRefresh } from './gnk-asg-refresh-backend-v1.js';
 
-const DEPLOY_TRIGGER = '2026-06-23-business-dark-v1';
+const DEPLOY_TRIGGER = '2026-06-23-business-dark-v2-debug';
 
 const jsonHeaders = {
   'content-type': 'application/json; charset=utf-8',
@@ -124,7 +124,7 @@ async function marketApi(request, env, ctx) {
   }
 
   return json(marketPayload(market, chart), marketResponse.ok ? 200 : marketResponse.status, {
-    'x-gnk-asg-market-recovery': 'business-dark-v1',
+    'x-gnk-asg-market-recovery': 'business-dark-v2',
     'x-gnk-asg-deploy-trigger': DEPLOY_TRIGGER
   });
 }
@@ -139,6 +139,73 @@ async function serveExplicitAsset(path, request, env) {
   });
   const response = await env.ASSETS.fetch(assetRequest);
   return response.status === 404 ? null : response;
+}
+
+async function readAsset(env, requestUrl, assetPath) {
+  if (!env.ASSETS?.fetch) return { status: 503, text: '' };
+  const response = await env.ASSETS.fetch(new Request(new URL(assetPath, requestUrl).toString()));
+  return { status: response.status, text: await response.text() };
+}
+
+async function themeDebug(request, env) {
+  const [home, css, js, appJs, networkJs, globeJs] = await Promise.all([
+    readAsset(env, request.url, '/index.html'),
+    readAsset(env, request.url, '/assets/brand/gnk-asg-global-layer.css'),
+    readAsset(env, request.url, '/assets/brand/gnk-asg-global-layer.js'),
+    readAsset(env, request.url, '/assets/app.js'),
+    readAsset(env, request.url, '/assets/group-network.js'),
+    readAsset(env, request.url, '/assets/group-globe-3d.js')
+  ]);
+
+  const checks = {
+    workerActive: true,
+    deployTrigger: DEPLOY_TRIGGER,
+    homeAsset200: home.status === 200,
+    homeLoadsGlobalCss: home.text.includes('gnk-asg-global-layer.css'),
+    homeLoadsGlobalJs: home.text.includes('gnk-asg-global-layer.js'),
+    homeLoadsAppJs: home.text.includes('assets/app.js'),
+    premiumCss200: css.status === 200,
+    premiumCssDarkVariables: css.text.includes('--asg-bg:#050d19'),
+    premiumCssShell: css.text.includes('gnk-asg-premium-shell'),
+    premiumJs200: js.status === 200,
+    premiumJsV3: js.text.includes('__GNK_ASG_PREMIUM_V3__'),
+    premiumJsInstallsShell: js.text.includes("classList.add('gnk-asg-premium-shell')"),
+    appLoadsNetwork: appJs.text.includes('group-network.js'),
+    appLoadsGlobe: appJs.text.includes('group-globe-3d.js'),
+    networkAsset200: networkJs.status === 200,
+    networkMarker: networkJs.text.includes('global-network'),
+    globeAsset200: globeJs.status === 200,
+    globeMarker: globeJs.text.includes('globe-panel'),
+    darkLockInjectedByWorker: true
+  };
+
+  const required = [
+    checks.homeAsset200,
+    checks.homeLoadsGlobalCss,
+    checks.homeLoadsGlobalJs,
+    checks.homeLoadsAppJs,
+    checks.premiumCss200,
+    checks.premiumCssDarkVariables,
+    checks.premiumCssShell,
+    checks.premiumJs200,
+    checks.premiumJsV3,
+    checks.premiumJsInstallsShell,
+    checks.appLoadsNetwork,
+    checks.appLoadsGlobe,
+    checks.networkAsset200,
+    checks.networkMarker,
+    checks.globeAsset200,
+    checks.globeMarker
+  ];
+
+  return json({
+    ok: required.every(Boolean),
+    theme: 'dark-business',
+    checks
+  }, required.every(Boolean) ? 200 : 503, {
+    'x-gnk-asg-business-theme': 'dark-v2',
+    'x-gnk-asg-deploy-trigger': DEPLOY_TRIGGER
+  });
 }
 
 async function fixHomepage(response, path) {
@@ -158,8 +225,8 @@ async function fixHomepage(response, path) {
   }
 
   html = html
-    .replace(/gnk-asg-global-layer\.css\?v=[^"']+/g, 'gnk-asg-global-layer.css?v=20260623-business-dark-v1')
-    .replace(/gnk-asg-global-layer\.js\?v=[^"']+/g, 'gnk-asg-global-layer.js?v=20260623-business-dark-v1');
+    .replace(/gnk-asg-global-layer\.css\?v=[^"']+/g, 'gnk-asg-global-layer.css?v=20260623-business-dark-v2')
+    .replace(/gnk-asg-global-layer\.js\?v=[^"']+/g, 'gnk-asg-global-layer.js?v=20260623-business-dark-v2');
 
   const lock = `<style id="gnk-business-dark-inline">#gnk-asg-theme-toggle{display:none!important}</style><script id="gnk-business-dark-lock">try{localStorage.setItem('gnk-asg-theme','dark')}catch(e){}document.documentElement.dataset.gnkTheme='dark';new MutationObserver(function(){if(document.documentElement.dataset.gnkTheme!=='dark')document.documentElement.dataset.gnkTheme='dark';var b=document.getElementById('gnk-asg-theme-toggle');if(b)b.remove()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-gnk-theme']});</script>`;
   html = html.includes('gnk-business-dark-lock') ? html : html.replace('</head>', `${lock}</head>`);
@@ -167,7 +234,7 @@ async function fixHomepage(response, path) {
   const headers = new Headers(response.headers);
   headers.delete('content-length');
   headers.set('cache-control', 'no-store, no-cache, must-revalidate, max-age=0');
-  headers.set('x-gnk-asg-business-theme', 'dark-v1');
+  headers.set('x-gnk-asg-business-theme', 'dark-v2');
   headers.set('x-gnk-asg-deploy-trigger', DEPLOY_TRIGGER);
   if (path.startsWith('/en')) headers.set('x-gnk-asg-menu-fix', 'en-routes-v1');
   return new Response(html, { status: response.status, headers });
@@ -179,6 +246,7 @@ async function fetchHandler(request, env, ctx) {
   const originalPath = url.pathname;
 
   if (path === '/api/market') return marketApi(request, env, ctx);
+  if (path === '/theme-debug') return themeDebug(request, env);
 
   const explicitAsset = await serveExplicitAsset(originalPath, request, env) ||
     await serveExplicitAsset(path, request, env);
