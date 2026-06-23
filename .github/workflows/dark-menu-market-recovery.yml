@@ -7,22 +7,26 @@ on:
       - main
     paths:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
+      - "workers/gnk-asg-direct-operator/src/index-public-page-routes.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
       - "apps/portal/trzista/index.html"
       - "apps/portal/assets/app.js"
       - "apps/portal/assets/menu-deduplicate.js"
       - "apps/portal/auto-editor/index.html"
+      - "apps/portal/media-kit/index.html"
       - ".github/workflows/dark-menu-market-recovery.yml"
   pull_request:
     branches:
       - main
     paths:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
+      - "workers/gnk-asg-direct-operator/src/index-public-page-routes.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
       - "apps/portal/trzista/index.html"
       - "apps/portal/assets/app.js"
       - "apps/portal/assets/menu-deduplicate.js"
       - "apps/portal/auto-editor/index.html"
+      - "apps/portal/media-kit/index.html"
       - ".github/workflows/dark-menu-market-recovery.yml"
 
 concurrency:
@@ -45,11 +49,12 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate full globe portal package
+      - name: Validate portal package and limited routes
         working-directory: workers/gnk-asg-direct-operator
         run: |
           node --check src/index-dark-market-recovery.js
-          grep -q 'main = "src/index-dark-market-recovery.js"' wrangler.dark-market.toml
+          node --check src/index-public-page-routes.js
+          grep -q 'main = "src/index-public-page-routes.js"' wrangler.dark-market.toml
           grep -q 'assets/app.js' ../../apps/portal/index.html
           grep -q 'assets/app.js' ../../apps/portal/en/index.html
           grep -q 'group-network.js' ../../apps/portal/assets/app.js
@@ -57,7 +62,11 @@ jobs:
           grep -q 'menu-deduplicate.js' ../../apps/portal/assets/app.js
           grep -q 'Tržišta i referentna imovina' ../../apps/portal/trzista/index.html
           grep -q 'Auto Editor feeda' ../../apps/portal/auto-editor/index.html
-          grep -q '/auto-editor/index.html' ../../apps/portal/assets/menu-deduplicate.js
+          grep -q 'Službeni medijski resursi' ../../apps/portal/media-kit/index.html
+          grep -q "'/auto-editor/'" src/index-public-page-routes.js
+          grep -q "'/media-kit/'" src/index-public-page-routes.js
+          grep -q 'isInstallDuplicate' ../../apps/portal/assets/menu-deduplicate.js
+          grep -q 'isMediaKit' ../../apps/portal/assets/menu-deduplicate.js
           node --check ../../apps/portal/assets/app.js
           node --check ../../apps/portal/assets/menu-deduplicate.js
           node --check ../../apps/portal/assets/group-network.js
@@ -75,14 +84,23 @@ jobs:
           sleep 12
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'menu-deduplicate.js'
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q 'isInstallDuplicate'
-          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q '/auto-editor/index.html'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q 'isMediaKit'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q '/auto-editor/'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q '/media-kit/'
 
-      - name: Verify Auto Editor frontend
+      - name: Verify Auto Editor public route
         run: |
-          code=$(curl --silent --show-error --location --output /tmp/auto-editor.html --write-out '%{http_code}' https://gnk-asg.hr/auto-editor/index.html)
-          echo "$code https://gnk-asg.hr/auto-editor/index.html"
+          code=$(curl --silent --show-error --location --output /tmp/auto-editor.html --write-out '%{http_code}' https://gnk-asg.hr/auto-editor/)
+          echo "$code https://gnk-asg.hr/auto-editor/"
           test "$code" = "200"
           grep -q 'Auto Editor feeda' /tmp/auto-editor.html
+
+      - name: Verify Media Kit public route
+        run: |
+          code=$(curl --silent --show-error --location --output /tmp/media-kit.html --write-out '%{http_code}' https://gnk-asg.hr/media-kit/)
+          echo "$code https://gnk-asg.hr/media-kit/"
+          test "$code" = "200"
+          grep -q 'Službeni medijski resursi' /tmp/media-kit.html
 
       - name: Verify Auto Editor feed
         run: |
@@ -113,7 +131,8 @@ jobs:
             https://gnk-asg.hr/news/ \
             https://gnk-asg.hr/objave/ \
             https://gnk-asg.hr/publications/ \
-            https://gnk-asg.hr/auto-editor/index.html \
+            https://gnk-asg.hr/auto-editor/ \
+            https://gnk-asg.hr/media-kit/ \
             https://gnk-asg.hr/assistant/ \
             https://gnk-asg.hr/en/assistant/ \
             https://gnk-asg.hr/legal/ \
@@ -127,4 +146,4 @@ jobs:
             test "$code" = "200"
           done
 
-# Index menu cleanup and exact public Auto Editor route: 2026-06-23
+# Index menu cleanup and public Auto Editor/Media Kit routes: 2026-06-23
