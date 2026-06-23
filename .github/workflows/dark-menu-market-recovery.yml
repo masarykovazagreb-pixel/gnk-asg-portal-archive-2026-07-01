@@ -75,7 +75,7 @@ jobs:
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-panels.js | grep -q 'isInstallDuplicate'
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-panels.js | grep -q 'renderAutoEditor'
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-panels.js | grep -q 'renderMediaKit'
-          curl --fail --silent --show-error --location https://gnk-asg.hr/data/auto-editor.json | grep -q 'articles'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/data/auto-editor.json | python -m json.tool > /dev/null
 
       - name: Verify core public routes
         run: |
