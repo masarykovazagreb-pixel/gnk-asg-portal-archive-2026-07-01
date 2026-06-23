@@ -1,0 +1,60 @@
+name: GNK ASG News Publications Hotfix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/gnk-asg-direct-operator/**'
+      - 'apps/portal/vijesti/**'
+      - 'apps/portal/news/**'
+      - 'apps/portal/assets/business-news.css'
+      - 'apps/portal/assets/business-news.js'
+      - '.github/workflows/news-publications-hotfix-live.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-news-publications-hotfix
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-publication-news-hotfix.js
+          node --check apps/portal/assets/business-news.js
+          ! grep -qi 'http-equiv="refresh"' apps/portal/vijesti/index.html
+          ! grep -qi 'http-equiv="refresh"' apps/portal/news/index.html
+      - name: Deploy isolated Worker
+        run: npx --yes wrangler@4 deploy --config workers/gnk-asg-direct-operator/wrangler.toml
+      - name: Wait
+        run: sleep 15
+      - name: Refresh and verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          code=$(curl --silent --show-error --location --output refresh.json --write-out '%{http_code}' --request POST https://gnk-asg.hr/api/news-refresh)
+          cat refresh.json
+          test "$code" = '200' -o "$code" = '429'
+          for url in https://gnk-asg.hr/data/news.json https://gnk-asg.hr/data/news-automation-status.json https://gnk-asg.hr/vijesti/ https://gnk-asg.hr/news/ https://gnk-asg.hr/objave/ https://gnk-asg.hr/publications/; do
+            code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 5 --retry-all-errors --retry-delay 3 "$url")
+            echo "$code $url"
+            test "$code" = '200'
+          done
+          curl --silent --show-error --location --dump-header headers.txt --output news.json 'https://gnk-asg.hr/data/news.json?cb=hotfix'
+          grep -qi 'x-gnk-asg-news-automation: hotfix-v1' headers.txt
+          grep -q '"items"' news.json
