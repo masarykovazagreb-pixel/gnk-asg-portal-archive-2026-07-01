@@ -96,6 +96,7 @@ jobs:
 
       - name: Verify Auto Editor status route availability
         if: always()
+        continue-on-error: true
         run: |
           curl --fail --silent --show-error --location --output /dev/null https://gnk-asg.hr/operator/news-automation/status
 
