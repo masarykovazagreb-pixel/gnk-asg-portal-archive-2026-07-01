@@ -6,6 +6,17 @@ const jsonHeaders = {
   'cache-control': 'no-store, no-cache, must-revalidate, max-age=0'
 };
 
+const explicitPublicAssets = new Map([
+  ['/markets', '/markets/index.html'],
+  ['/markets/', '/markets/index.html'],
+  ['/news', '/news/index.html'],
+  ['/news/', '/news/index.html'],
+  ['/en/assistant', '/en/assistant/index.html'],
+  ['/en/assistant/', '/en/assistant/index.html'],
+  ['/en/legal', '/en/legal/index.html'],
+  ['/en/legal/', '/en/legal/index.html']
+]);
+
 function json(data, status = 200, extra = {}) {
   return new Response(JSON.stringify(data, null, 2), {
     status,
@@ -111,14 +122,51 @@ async function marketApi(request, env, ctx) {
   }
 
   return json(marketPayload(market, chart), marketResponse.ok ? 200 : marketResponse.status, {
-    'x-gnk-asg-market-recovery': 'dark-v1'
+    'x-gnk-asg-market-recovery': 'dark-v2'
   });
 }
 
+async function serveExplicitAsset(path, request, env) {
+  const assetPath = explicitPublicAssets.get(path);
+  if (!assetPath || !env.ASSETS?.fetch) return null;
+
+  const assetRequest = new Request(new URL(assetPath, request.url).toString(), {
+    method: request.method === 'HEAD' ? 'HEAD' : 'GET',
+    headers: request.headers
+  });
+  const response = await env.ASSETS.fetch(assetRequest);
+  return response.status === 404 ? null : response;
+}
+
+async function fixEnglishHomepage(response, path) {
+  if (path !== '/en' && path !== '/en/') return response;
+  if (!response?.headers?.get('content-type')?.includes('text/html')) return response;
+
+  let html = await response.text();
+  html = html
+    .replaceAll('https://gnk-asg.hr/objave/', 'https://gnk-asg.hr/publications/')
+    .replaceAll('href="/objave/"', 'href="/publications/"')
+    .replaceAll("href='/objave/'", "href='/publications/'")
+    .replaceAll('value="/objave/"', 'value="/publications/"')
+    .replaceAll("value='/objave/'", "value='/publications/'");
+
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  headers.set('cache-control', 'no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('x-gnk-asg-menu-fix', 'en-routes-v1');
+  return new Response(html, { status: response.status, headers });
+}
+
 async function fetchHandler(request, env, ctx) {
-  const path = new URL(request.url).pathname.replace(/\/+$/, '') || '/';
+  const url = new URL(request.url);
+  const path = url.pathname.replace(/\/+$/, '') || '/';
+  const originalPath = url.pathname;
 
   if (path === '/api/market') return marketApi(request, env, ctx);
+
+  const explicitAsset = await serveExplicitAsset(originalPath, request, env) ||
+    await serveExplicitAsset(path, request, env);
+  if (explicitAsset) return explicitAsset;
 
   if (
     path === '/data/market.json' ||
@@ -137,7 +185,8 @@ async function fetchHandler(request, env, ctx) {
     return handleRefreshRoute(request, env, ctx);
   }
 
-  return app.fetch(request, env, ctx);
+  const response = await app.fetch(request, env, ctx);
+  return fixEnglishHomepage(response, originalPath);
 }
 
 export default {
