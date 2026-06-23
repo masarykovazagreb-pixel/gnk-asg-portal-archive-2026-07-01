@@ -68,16 +68,38 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.dark-market.toml
 
-      - name: Verify index menu panel assets
+      - name: Verify app loader
+        if: always()
         run: |
           sleep 12
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'menu-panels.js'
-          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-panels.js | grep -q 'isInstallDuplicate'
-          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-panels.js | grep -q 'renderAutoEditor'
-          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-panels.js | grep -q 'renderMediaKit'
+
+      - name: Verify menu panel asset exists
+        if: always()
+        run: |
+          code=$(curl --silent --show-error --location --output /tmp/menu-panels.js --write-out '%{http_code}' https://gnk-asg.hr/assets/menu-panels.js)
+          echo "$code"
+          test "$code" = "200"
+
+      - name: Verify INSTALL removal logic
+        if: always()
+        run: grep -q 'isInstallDuplicate' /tmp/menu-panels.js
+
+      - name: Verify Auto Editor panel logic
+        if: always()
+        run: grep -q 'renderAutoEditor' /tmp/menu-panels.js
+
+      - name: Verify Media Kit panel logic
+        if: always()
+        run: grep -q 'renderMediaKit' /tmp/menu-panels.js
+
+      - name: Verify Auto Editor feed JSON
+        if: always()
+        run: |
           curl --fail --silent --show-error --location https://gnk-asg.hr/data/auto-editor.json | python -m json.tool > /dev/null
 
       - name: Verify core public routes
+        if: always()
         run: |
           for url in \
             https://gnk-asg.hr/ \
