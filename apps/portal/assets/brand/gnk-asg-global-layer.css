@@ -572,3 +572,106 @@ body{
   }
 }
 /* GNK_ASG_HEADER_POSITION_FIX_V4_END */
+
+/* GNK_ASG_HEADER_WIDTH_FIX_V5_START */
+#gnk-asg-premium-header{
+  left:50%!important;
+  right:auto!important;
+  width:min(1260px,calc(100vw - 24px))!important;
+  max-width:1260px!important;
+  transform:translateX(-50%)!important;
+  overflow:hidden!important;
+}
+
+#gnk-asg-premium-header .gnk-asg-brand{
+  flex:0 0 165px!important;
+  min-width:165px!important;
+  max-width:165px!important;
+  padding-right:8px!important;
+}
+
+#gnk-asg-premium-header .gnk-asg-brand img{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  max-width:34px!important;
+}
+
+#gnk-asg-premium-header .gnk-asg-brand strong{
+  font-size:14px!important;
+}
+
+#gnk-asg-premium-menu{
+  flex:1 1 auto!important;
+  justify-content:flex-start!important;
+  overflow:hidden!important;
+}
+
+#gnk-asg-premium-menu a{
+  padding-left:9px!important;
+  padding-right:9px!important;
+  font-size:9.5px!important;
+}
+
+#gnk-asg-premium-menu a[href="/media-kit/"],
+#gnk-asg-premium-menu a[href="/visual-index/"],
+#gnk-asg-premium-menu a[href="/assistant/"],
+#gnk-asg-premium-menu a[href="/legal/"],
+#gnk-asg-premium-menu a[href="/en/legal/"],
+#gnk-asg-premium-menu a[href="/app/"],
+#gnk-asg-premium-menu a[href="/mail-studio/"],
+#gnk-asg-premium-menu a[href="/operator-mobile/"],
+#gnk-asg-premium-menu a[href="/operator-dashboard/"],
+#gnk-asg-premium-menu a[href="/admin-center/"]{
+  display:none!important;
+}
+
+#gnk-asg-premium-menu a:last-child{
+  display:none!important;
+}
+
+#gnk-asg-theme-toggle{
+  display:none!important;
+}
+
+#gnk-asg-menu-toggle{
+  min-width:88px!important;
+  padding-left:11px!important;
+  padding-right:11px!important;
+}
+
+@media(max-width:1050px){
+  #gnk-asg-premium-header{
+    width:calc(100vw - 16px)!important;
+  }
+
+  #gnk-asg-premium-menu a:nth-child(n+7){
+    display:none!important;
+  }
+}
+
+@media(max-width:800px){
+  #gnk-asg-premium-header{
+    left:8px!important;
+    right:8px!important;
+    width:auto!important;
+    max-width:none!important;
+    transform:none!important;
+    overflow:visible!important;
+  }
+
+  #gnk-asg-premium-header .gnk-asg-brand{
+    flex:1 1 auto!important;
+    min-width:0!important;
+    max-width:none!important;
+  }
+
+  #gnk-asg-premium-menu{
+    display:none!important;
+  }
+
+  #gnk-asg-menu-toggle{
+    display:inline-flex!important;
+  }
+}
+/* GNK_ASG_HEADER_WIDTH_FIX_V5_END */
