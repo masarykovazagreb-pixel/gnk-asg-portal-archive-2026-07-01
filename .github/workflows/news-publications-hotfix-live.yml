@@ -12,7 +12,7 @@ on:
       - '.github/workflows/news-publications-hotfix-live.yml'
   workflow_dispatch:
   issues:
-    types: [opened]
+    types: [opened, reopened]
 
 permissions:
   contents: read
