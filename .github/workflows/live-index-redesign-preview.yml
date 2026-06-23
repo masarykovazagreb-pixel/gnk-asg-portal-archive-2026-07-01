@@ -1,0 +1,81 @@
+name: Live Index Redesign Preview
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "apps/portal/redizajn-indexa/**"
+      - ".github/workflows/live-index-redesign-preview.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/portal/redizajn-indexa/**"
+      - ".github/workflows/live-index-redesign-preview.yml"
+
+concurrency:
+  group: gnk-asg-live-index-redesign-preview
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate preview package
+        working-directory: workers/gnk-asg-direct-operator
+        run: |
+          test -f ../../apps/portal/redizajn-indexa/index.html
+          grep -q 'Živa probna verzija redizajna' ../../apps/portal/redizajn-indexa/index.html
+          grep -q 'GNK ASG d.o.o.' ../../apps/portal/redizajn-indexa/index.html
+          grep -q 'GNK DINAMO Ltd.' ../../apps/portal/redizajn-indexa/index.html
+          grep -q '33 postojeće' ../../apps/portal/redizajn-indexa/index.html
+          grep -q 'Planirano širenje 2026.' ../../apps/portal/redizajn-indexa/index.html
+          grep -q '/data/group_network.json' ../../apps/portal/redizajn-indexa/index.html
+          grep -q '/api/market' ../../apps/portal/redizajn-indexa/index.html
+          grep -q '/data/news.json' ../../apps/portal/redizajn-indexa/index.html
+          grep -q 'noindex,nofollow' ../../apps/portal/redizajn-indexa/index.html
+
+      - name: Deploy preview asset with current direct operator
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.dark-market.toml
+
+      - name: Verify live preview
+        run: |
+          sleep 12
+          curl --fail --silent --show-error --location https://gnk-asg.hr/redizajn-indexa/ | grep -q 'Živa probna verzija redizajna'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/redizajn-indexa/ | grep -q 'Korporativni i'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/redizajn-indexa/ | grep -q 'PDF i Download centar'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/redizajn-indexa/ | grep -q 'Kontinenti, države, gradovi i širenje'
+
+      - name: Verify existing production routes remain available
+        run: |
+          for url in \
+            https://gnk-asg.hr/ \
+            https://gnk-asg.hr/contact/ \
+            https://gnk-asg.hr/operator-dashboard/ \
+            https://gnk-asg.hr/api/market \
+            https://gnk-asg.hr/data/group_network.json
+          do
+            code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 3 --retry-all-errors "$url")
+            echo "$code $url"
+            test "$code" = "200"
+          done
+
+# Preview only. Existing index, mail, admin and contact source files are not changed.
