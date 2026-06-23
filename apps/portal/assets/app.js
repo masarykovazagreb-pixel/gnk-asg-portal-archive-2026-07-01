@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260601-activity-model-fix01';
+  var VERSION = '20260623-index-menu-panels01';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/desk-search.js');
   script('/assets/mobile-app.js');
   script('/assets/mobile-navigation.js');
+  script('/assets/menu-panels.js');
   script('/assets/floating-intelligence.js');
   script('/assets/world-geography.js');
   script('/assets/group-network.js');
