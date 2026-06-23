@@ -41,27 +41,3 @@ crons = ["0 * * * *"]
 
 [ai]
 binding = "AI"
-
-[[routes]]
-pattern = "gnk-asg.hr/en/*"
-zone_name = "gnk-asg.hr"
-
-[[routes]]
-pattern = "gnk-asg.hr/markets*"
-zone_name = "gnk-asg.hr"
-
-[[routes]]
-pattern = "gnk-asg.hr/news*"
-zone_name = "gnk-asg.hr"
-
-[[routes]]
-pattern = "www.gnk-asg.hr/en/*"
-zone_name = "gnk-asg.hr"
-
-[[routes]]
-pattern = "www.gnk-asg.hr/markets*"
-zone_name = "gnk-asg.hr"
-
-[[routes]]
-pattern = "www.gnk-asg.hr/news*"
-zone_name = "gnk-asg.hr"
