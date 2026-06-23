@@ -37,13 +37,18 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate isolated recovery entry
+      - name: Validate full globe portal package
         working-directory: workers/gnk-asg-direct-operator
         run: |
           node --check src/index-dark-market-recovery.js
           grep -q 'main = "src/index-dark-market-recovery.js"' wrangler.dark-market.toml
-          grep -q 'homepage-polish.css' ../../apps/portal/index.html
-          grep -q 'GNK ASG d.o.o. | GNK DINAMO Ltd. Group' ../../apps/portal/en/index.html
+          grep -q 'assets/app.js' ../../apps/portal/index.html
+          grep -q 'assets/app.js' ../../apps/portal/en/index.html
+          grep -q 'group-network.js' ../../apps/portal/assets/app.js
+          grep -q 'group-globe-3d.js' ../../apps/portal/assets/app.js
+          node --check ../../apps/portal/assets/app.js
+          node --check ../../apps/portal/assets/group-network.js
+          node --check ../../apps/portal/assets/group-globe-3d.js
 
       - name: Deploy direct operator only
         working-directory: workers/gnk-asg-direct-operator
@@ -52,12 +57,15 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.dark-market.toml
 
-      - name: Verify Business homepages and public routes
+      - name: Verify globe portal and public routes
         run: |
           sleep 12
-          curl --silent --show-error --location https://gnk-asg.hr/ | grep -q 'homepage-polish.css'
-          curl --silent --show-error --location https://gnk-asg.hr/ | grep -q 'module-grid'
-          curl --silent --show-error --location https://gnk-asg.hr/en/ | grep -q 'GNK ASG d.o.o. | GNK DINAMO Ltd. Group'
+          curl --silent --show-error --location https://gnk-asg.hr/ | grep -q 'assets/app.js'
+          curl --silent --show-error --location https://gnk-asg.hr/en/ | grep -q 'assets/app.js'
+          curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-network.js'
+          curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-globe-3d.js'
+          curl --silent --show-error --location https://gnk-asg.hr/assets/group-network.js | grep -q 'global-network'
+          curl --silent --show-error --location https://gnk-asg.hr/assets/group-globe-3d.js | grep -q 'globe-panel'
           for url in \
             https://gnk-asg.hr/ \
             https://gnk-asg.hr/en/ \
@@ -80,4 +88,4 @@ jobs:
             test "$code" = "200"
           done
 
-# Tracked Business homepage asset deploy: 2026-06-23-2
+# Full app.js globe portal deployment: 2026-06-23
