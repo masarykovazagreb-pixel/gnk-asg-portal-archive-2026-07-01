@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event_name != 'issues' || github.event.issue.title == 'RUN GNK ASG NEWS PUBLICATIONS HOTFIX'
+    if: github.event_name != 'issues' || contains(github.event.issue.title, 'RUN GNK ASG NEWS PUBLICATIONS HOTFIX')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
