@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/desk-search.js');
   script('/assets/mobile-app.js');
   script('/assets/mobile-navigation.js');
+  script('/assets/menu-deduplicate.js');
   script('/assets/floating-intelligence.js');
   script('/assets/world-geography.js');
   script('/assets/group-network.js');
