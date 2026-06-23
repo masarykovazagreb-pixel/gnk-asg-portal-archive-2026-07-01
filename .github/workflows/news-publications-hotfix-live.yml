@@ -11,9 +11,12 @@ on:
       - 'apps/portal/assets/business-news.js'
       - '.github/workflows/news-publications-hotfix-live.yml'
   workflow_dispatch:
+  issues:
+    types: [opened]
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: gnk-asg-news-publications-hotfix
@@ -21,6 +24,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.event_name != 'issues' || github.event.issue.title == 'RUN GNK ASG NEWS PUBLICATIONS HOTFIX'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -58,3 +62,10 @@ jobs:
           curl --silent --show-error --location --dump-header headers.txt --output news.json 'https://gnk-asg.hr/data/news.json?cb=hotfix'
           grep -qi 'x-gnk-asg-news-automation: hotfix-v1' headers.txt
           grep -q '"items"' news.json
+      - name: Report issue-triggered result
+        if: always() && github.event_name == 'issues'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --body "GNK_ASG_HOTFIX_RESULT=${{ job.status }}; commit=${GITHUB_SHA}; workflow=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
