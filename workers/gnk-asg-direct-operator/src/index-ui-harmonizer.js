@@ -1,6 +1,7 @@
 import core from './index-news-quality-v2.js';
 
 const BACKEND_PREFIXES = [
+  '/auto-editor',
   '/operator-dashboard',
   '/operator-mobile',
   '/mail-studio',
@@ -24,8 +25,8 @@ const CONTACT_PATHS = new Set([
 ]);
 
 const BACKEND_ASSETS =
-  '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-4">' +
-  '<script defer src="/assets/backend-ui-shell.js?v=20260623-backend-4"></script>';
+  '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-5">' +
+  '<script defer src="/assets/backend-ui-shell.js?v=20260623-backend-5"></script>';
 
 const INDEX_ASSETS =
   '<link rel="stylesheet" href="/assets/index-iq200.css?v=20260623-iq200-2">' +
