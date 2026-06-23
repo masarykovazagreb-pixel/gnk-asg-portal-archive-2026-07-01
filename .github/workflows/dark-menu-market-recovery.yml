@@ -141,20 +141,42 @@ jobs:
           if grep -q 'Živa probna verzija' /tmp/index-hr.html; then exit 1; fi
           if grep -q 'noindex,nofollow' /tmp/index-hr.html; then exit 1; fi
 
-      - name: Verify production assets and functional endpoints
+      - name: Verify base redesign asset
+        if: always()
+        run: curl --fail --silent --show-error --location https://gnk-asg.hr/assets/index-redesign-production.css | grep -q 'quick-grid'
+
+      - name: Verify IQ200 index assets
+        if: always()
         run: |
-          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/index-redesign-production.css | grep -q 'quick-grid'
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/index-iq200.css | grep -q 'GNK ASG INDEX IQ200'
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/index-iq200.js | grep -q 'hero-network-canvas'
+
+      - name: Verify backend shell assets
+        if: always()
+        run: |
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/backend-ui-shell.css | grep -q 'SHARED BACKEND UI SHELL'
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/backend-ui-shell.js | grep -q 'gnk-backend-shell'
+
+      - name: Verify data endpoints
+        if: always()
+        run: |
           curl --fail --silent --show-error --location https://gnk-asg.hr/data/group_network.json | python -m json.tool > /dev/null
           curl --fail --silent --show-error --location https://gnk-asg.hr/api/market | python -m json.tool > /dev/null
-          for url in https://gnk-asg.hr/operator-dashboard/ https://gnk-asg.hr/operator-mobile/ https://gnk-asg.hr/mail-studio/; do
-            curl --fail --silent --show-error --location "$url" | grep -q 'backend-ui-shell.css'
-          done
+
+      - name: Verify Operator Dashboard shell
+        if: always()
+        run: curl --fail --silent --show-error --location https://gnk-asg.hr/operator-dashboard/ | grep -q 'backend-ui-shell.css'
+
+      - name: Verify Mobile Admin shell
+        if: always()
+        run: curl --fail --silent --show-error --location https://gnk-asg.hr/operator-mobile/ | grep -q 'backend-ui-shell.css'
+
+      - name: Verify Mail Studio shell
+        if: always()
+        run: curl --fail --silent --show-error --location https://gnk-asg.hr/mail-studio/ | grep -q 'backend-ui-shell.css'
 
       - name: Verify public routes and protected modules remain available
+        if: always()
         run: |
           for url in \
             https://gnk-asg.hr/trzista/ \
