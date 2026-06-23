@@ -1,6 +1,8 @@
 import app from './index-publication-news-hotfix.js';
 import { handleRefreshRoute, runScheduledRefresh } from './gnk-asg-refresh-backend-v1.js';
 
+const DEPLOY_TRIGGER = '2026-06-23-menu-routes-v3';
+
 const jsonHeaders = {
   'content-type': 'application/json; charset=utf-8',
   'cache-control': 'no-store, no-cache, must-revalidate, max-age=0'
@@ -122,7 +124,8 @@ async function marketApi(request, env, ctx) {
   }
 
   return json(marketPayload(market, chart), marketResponse.ok ? 200 : marketResponse.status, {
-    'x-gnk-asg-market-recovery': 'dark-v2'
+    'x-gnk-asg-market-recovery': 'dark-v3',
+    'x-gnk-asg-deploy-trigger': DEPLOY_TRIGGER
   });
 }
 
@@ -154,6 +157,7 @@ async function fixEnglishHomepage(response, path) {
   headers.delete('content-length');
   headers.set('cache-control', 'no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-menu-fix', 'en-routes-v1');
+  headers.set('x-gnk-asg-deploy-trigger', DEPLOY_TRIGGER);
   return new Response(html, { status: response.status, headers });
 }
 
