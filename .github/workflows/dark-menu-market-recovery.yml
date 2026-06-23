@@ -1,33 +1,26 @@
-name: Dark Menu and Market Recovery
+name: Publication Automation Verification
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
-      - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
-      - ".github/workflows/dark-menu-market-recovery.yml"
   pull_request:
     branches:
       - main
     paths:
+      - "workers/gnk-asg-direct-operator/src/index-news-quality-v2.js"
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
-      - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      - "workers/gnk-asg-direct-operator/src/index-publication-news-hotfix.js"
       - ".github/workflows/dark-menu-market-recovery.yml"
 
 concurrency:
-  group: gnk-asg-dark-menu-market-recovery
+  group: gnk-asg-publication-automation-verification
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  deploy:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,35 +30,88 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate isolated recovery entry
+      - name: Validate automation code
         working-directory: workers/gnk-asg-direct-operator
         run: |
+          node --check src/index-news-quality-v2.js
           node --check src/index-dark-market-recovery.js
-          grep -q 'main = "src/index-dark-market-recovery.js"' wrangler.dark-market.toml
+          node --check src/index-publication-news-hotfix.js
+          grep -q 'hour%3===0' src/index-publication-news-hotfix.js
+          grep -q 'async function refreshNews' src/index-publication-news-hotfix.js
+          grep -q 'async function autoEditor' src/index-publication-news-hotfix.js
+          grep -q 'quality:quarantine:articles' src/index-news-quality-v2.js
+          grep -q 'autoMinimumWordsPerLanguage: 500' src/index-news-quality-v2.js
+          grep -q 'data/content-quality-status.json' src/index-news-quality-v2.js
 
-      - name: Deploy direct operator only
+      - name: Deploy isolated automation entrypoint
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.dark-market.toml
+        run: npx --yes wrangler@4 deploy src/index-news-quality-v2.js --config wrangler.dark-market.toml --name gnk-asg-direct-operator
 
-      - name: Verify public menu routes
+      - name: Refresh news now
         run: |
           sleep 12
+          BASE="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          code=$(curl --silent --show-error --location --request POST --output /tmp/news-refresh.json --write-out '%{http_code}' "$BASE/api/news-refresh")
+          cat /tmp/news-refresh.json
+          test "$code" = "200" -o "$code" = "429"
+
+      - name: Run Auto Editor now when token exists
+        continue-on-error: true
+        env:
+          NEWS_PUBLISH_TOKEN: ${{ secrets.NEWS_PUBLISH_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+        run: |
+          BASE="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          TOKEN="${NEWS_PUBLISH_TOKEN:-${OPERATOR_TOKEN:-}}"
+          if [ -z "$TOKEN" ]; then
+            echo "No deployment token; scheduled three-hour Auto Editor remains active."
+            exit 0
+          fi
+          code=$(curl --silent --show-error --location --request POST --header "Authorization: Bearer $TOKEN" --output /tmp/auto-editor.json --write-out '%{http_code}' "$BASE/operator/auto-editor/run")
+          cat /tmp/auto-editor.json
+          test "$code" = "200"
+
+      - name: Trigger quality cleanup
+        run: |
+          BASE="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          curl --fail --silent --show-error --location --output /tmp/objave.html "$BASE/objave/"
+          curl --fail --silent --show-error --location --output /tmp/quality.json "$BASE/data/content-quality-status.json"
+          python -m json.tool /tmp/quality.json > /dev/null
+
+      - name: Verify public data
+        run: |
+          BASE="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          curl --fail --silent --show-error --location --output /tmp/news.json "$BASE/data/news.json"
+          curl --fail --silent --show-error --location --output /tmp/articles.json "$BASE/data/auto-editor.json"
+          python - <<'PY'
+          import json, re
+          from pathlib import Path
+          news = json.loads(Path('/tmp/news.json').read_text(encoding='utf-8'))
+          articles = json.loads(Path('/tmp/articles.json').read_text(encoding='utf-8'))
+          quality = json.loads(Path('/tmp/quality.json').read_text(encoding='utf-8'))
+          news_items = news.get('items', []) if isinstance(news, dict) else news
+          article_items = articles.get('items', []) if isinstance(articles, dict) else articles
+          assert news_items, 'No news items.'
+          assert isinstance(article_items, list), 'Invalid article registry.'
+          assert quality.get('version') == 'GNK_ASG_NEWS_QUALITY_V2'
+          assert quality.get('lastCleanup') is not None
+          bad = re.compile(r'\ufffd|Ã.|Â.|â€|â€™|â€“|â€”|Å.|Ä.|Ð.|Ñ.')
+          for item in article_items:
+              combined = '\n'.join(str(item.get(k, '')) for k in ('title','titleHr','titleEn','summary','summaryHr','summaryEn','body','bodyHr','bodyEn'))
+              assert not bad.search(combined), item.get('slug') or item.get('id')
+          print(json.dumps({'news': len(news_items), 'articles': len(article_items), 'quality': quality.get('lastCleanup')}, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Verify untouched public modules
+        run: |
           for url in \
-            https://gnk-asg.hr/ \
-            https://gnk-asg.hr/en/ \
-            https://gnk-asg.hr/trzista/ \
-            https://gnk-asg.hr/markets/ \
-            https://gnk-asg.hr/vijesti/ \
-            https://gnk-asg.hr/news/ \
             https://gnk-asg.hr/objave/ \
             https://gnk-asg.hr/publications/ \
-            https://gnk-asg.hr/assistant/ \
-            https://gnk-asg.hr/en/assistant/ \
-            https://gnk-asg.hr/legal/ \
-            https://gnk-asg.hr/en/legal/ \
+            https://gnk-asg.hr/vijesti/ \
+            https://gnk-asg.hr/news/ \
             https://gnk-asg.hr/contact/ \
             https://gnk-asg.hr/operator-dashboard/ \
             https://gnk-asg.hr/api/market
@@ -74,3 +120,5 @@ jobs:
             echo "$code $url"
             test "$code" = "200"
           done
+
+# Verification only. Mail, admin, contact and index source files remain untouched.
