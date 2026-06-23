@@ -56,6 +56,7 @@ jobs:
           grep -q 'isInstallDuplicate' ../../apps/portal/assets/menu-panels.js
           grep -q 'renderAutoEditor' ../../apps/portal/assets/menu-panels.js
           grep -q 'renderMediaKit' ../../apps/portal/assets/menu-panels.js
+          grep -q 'news-automation/status' ../../apps/portal/assets/menu-panels.js
           node --check ../../apps/portal/assets/app.js
           node --check ../../apps/portal/assets/menu-panels.js
           node --check ../../apps/portal/assets/group-network.js
@@ -93,10 +94,10 @@ jobs:
         if: always()
         run: grep -q 'renderMediaKit' /tmp/menu-panels.js
 
-      - name: Verify Auto Editor feed JSON
+      - name: Verify Auto Editor status JSON
         if: always()
         run: |
-          curl --fail --silent --show-error --location https://gnk-asg.hr/data/auto-editor.json | python -m json.tool > /dev/null
+          curl --fail --silent --show-error --location https://gnk-asg.hr/operator/news-automation/status | python -m json.tool > /dev/null
 
       - name: Verify core public routes
         if: always()
