@@ -10,15 +10,24 @@ jobs:
   status:
     runs-on: ubuntu-latest
     steps:
-      - name: Test live URLs
+      - name: Test live URLs and data
         shell: bash
         run: |
+          : > result.txt
           for url in https://gnk-asg.hr/data/news-automation-status.json https://gnk-asg.hr/data/news.json https://gnk-asg.hr/vijesti/ https://gnk-asg.hr/news/ https://gnk-asg.hr/objave/ https://gnk-asg.hr/publications/; do
             code=$(curl -L -sS -o /dev/null -w '%{http_code}' "$url")
             echo "$code $url" >> result.txt
           done
+          echo >> result.txt
+          echo 'STATUS_JSON:' >> result.txt
+          curl -L -sS https://gnk-asg.hr/data/news-automation-status.json | head -c 4000 >> result.txt
+          echo >> result.txt
+          echo 'NEWS_JSON_HEAD:' >> result.txt
+          curl -L -sS https://gnk-asg.hr/data/news.json | head -c 5000 >> result.txt
+          echo >> result.txt
           cat result.txt
       - name: Report
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue comment 15 --repo "$GITHUB_REPOSITORY" --body "$(cat result.txt)"
+        shell: bash
+        run: gh issue comment 15 --repo "$GITHUB_REPOSITORY" --body-file result.txt
