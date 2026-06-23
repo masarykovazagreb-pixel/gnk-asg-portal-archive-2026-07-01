@@ -1,0 +1,24 @@
+name: GNK ASG News Live Status
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/news-live-status.yml']
+permissions:
+  contents: read
+  issues: write
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test live URLs
+        shell: bash
+        run: |
+          for url in https://gnk-asg.hr/data/news-automation-status.json https://gnk-asg.hr/data/news.json https://gnk-asg.hr/vijesti/ https://gnk-asg.hr/news/ https://gnk-asg.hr/objave/ https://gnk-asg.hr/publications/; do
+            code=$(curl -L -sS -o /dev/null -w '%{http_code}' "$url")
+            echo "$code $url" >> result.txt
+          done
+          cat result.txt
+      - name: Report
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 15 --repo "$GITHUB_REPOSITORY" --body "$(cat result.txt)"
