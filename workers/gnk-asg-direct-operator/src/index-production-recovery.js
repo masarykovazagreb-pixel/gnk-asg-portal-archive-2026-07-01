@@ -1,5 +1,5 @@
 import app from './index-news-automation.js';
-import { handleRefreshRoute, runScheduledRefresh } from './gnk-asg-refresh-backend-v1.js';
+import { handleRefreshRoute } from './gnk-asg-refresh-backend-v1.js';
 
 const JSON_HEADERS = {
   'content-type': 'application/json; charset=utf-8',
@@ -13,9 +13,19 @@ function json(data, status = 200, extra = {}) {
   });
 }
 
-function normalizeMarket(data) {
+function requestFor(origin, path, request) {
+  const url = new URL(path, origin);
+  return new Request(url.toString(), {
+    method: request?.method === 'HEAD' ? 'HEAD' : 'GET',
+    headers: request?.headers || undefined
+  });
+}
+
+function normalizeMarket(data, chartData = null) {
   const crypto = Array.isArray(data?.crypto) ? data.crypto : [];
-  const bySymbol = Object.fromEntries(crypto.map(item => [String(item?.symbol || '').toUpperCase(), item]));
+  const bySymbol = Object.fromEntries(
+    crypto.map(item => [String(item?.symbol || '').toUpperCase(), item])
+  );
   const btc = bySymbol.BTC || {};
   const eth = bySymbol.ETH || {};
   const sol = bySymbol.SOL || {};
@@ -29,12 +39,14 @@ function normalizeMarket(data) {
     { label: 'Solana', value: sol.priceEur ?? null, suffix: ' EUR', note: `SOL/EUR · ${sol.status || overallStatus}` },
     { label: 'XRP', value: xrp.priceEur ?? null, suffix: ' EUR', note: `XRP/EUR · ${xrp.status || overallStatus}` },
     { label: 'USD/EUR', value: fxValue, suffix: '', note: `FX · ${data?.fx?.status || overallStatus}` },
-    { label: 'Zlato', value: null, suffix: ' EUR', note: 'SNAPSHOT · izvor za robu još nije povezan' },
-    { label: 'Brent', value: null, suffix: ' USD', note: 'SNAPSHOT · izvor za robu još nije povezan' }
+    { label: 'Zlato', value: null, suffix: ' EUR', note: 'SNAPSHOT · robni izvor nije povezan' },
+    { label: 'Brent', value: null, suffix: ' USD', note: 'SNAPSHOT · robni izvor nije povezan' }
   ];
 
-  const btcHistory = Array.isArray(data?.btcChart?.prices)
-    ? data.btcChart.prices.map(point => ({ at: point.time, btc_eur: point.value }))
+  const history = Array.isArray(chartData?.prices)
+    ? chartData.prices
+        .filter(point => point && Number.isFinite(Number(point.value)))
+        .map(point => ({ at: point.time, btc_eur: Number(point.value) }))
     : [];
 
   return {
@@ -42,15 +54,41 @@ function normalizeMarket(data) {
     status: overallStatus,
     updatedAt: data?.updatedAt || new Date().toISOString(),
     cache: data?.cache || null,
-    disclaimer: data?.disclaimer || 'Podatci su informativni, mogu kasniti i nisu financijski savjet.',
+    disclaimer:
+      data?.disclaimer ||
+      'Podatci su informativni, mogu kasniti i nisu financijski savjet.',
     cards,
-    history: Array.isArray(data?.history) ? data.history : btcHistory,
+    history,
     assets: {
-      bitcoin: { price_eur: btc.priceEur ?? null, price_usd: btc.priceUsd ?? null, change_24h: btc.change24hEur ?? null, status: btc.status || overallStatus },
-      ethereum: { price_eur: eth.priceEur ?? null, price_usd: eth.priceUsd ?? null, change_24h: eth.change24hEur ?? null, status: eth.status || overallStatus },
-      solana: { price_eur: sol.priceEur ?? null, price_usd: sol.priceUsd ?? null, change_24h: sol.change24hEur ?? null, status: sol.status || overallStatus },
-      xrp: { price_eur: xrp.priceEur ?? null, price_usd: xrp.priceUsd ?? null, change_24h: xrp.change24hEur ?? null, status: xrp.status || overallStatus },
-      usd_eur: { rate: fxValue, date: data?.fx?.date || null, status: data?.fx?.status || overallStatus },
+      bitcoin: {
+        price_eur: btc.priceEur ?? null,
+        price_usd: btc.priceUsd ?? null,
+        change_24h: btc.change24hEur ?? null,
+        status: btc.status || overallStatus
+      },
+      ethereum: {
+        price_eur: eth.priceEur ?? null,
+        price_usd: eth.priceUsd ?? null,
+        change_24h: eth.change24hEur ?? null,
+        status: eth.status || overallStatus
+      },
+      solana: {
+        price_eur: sol.priceEur ?? null,
+        price_usd: sol.priceUsd ?? null,
+        change_24h: sol.change24hEur ?? null,
+        status: sol.status || overallStatus
+      },
+      xrp: {
+        price_eur: xrp.priceEur ?? null,
+        price_usd: xrp.priceUsd ?? null,
+        change_24h: xrp.change24hEur ?? null,
+        status: xrp.status || overallStatus
+      },
+      usd_eur: {
+        rate: fxValue,
+        date: data?.fx?.date || null,
+        status: data?.fx?.status || overallStatus
+      },
       asg_gold_reference: { value_eur: null, status: 'SNAPSHOT' },
       brent: { price: null, status: 'SNAPSHOT' }
     },
@@ -67,27 +105,56 @@ async function readJsonResponse(response) {
   }
 }
 
+async function handleMarketApi(request, env, ctx) {
+  const origin = new URL(request.url).origin;
+  const marketResponse = await handleRefreshRoute(
+    requestFor(origin, '/data/market.json', request),
+    env,
+    ctx
+  );
+
+  if (!marketResponse) {
+    return json({ ok: false, error: 'market_route_unavailable' }, 503);
+  }
+
+  const marketData = await readJsonResponse(marketResponse);
+  let chartData = null;
+
+  try {
+    const chartResponse = await handleRefreshRoute(
+      requestFor(origin, '/data/btc_chart.json', request),
+      env,
+      ctx
+    );
+    if (chartResponse?.ok) chartData = await readJsonResponse(chartResponse);
+  } catch {
+    chartData = null;
+  }
+
+  return json(
+    normalizeMarket(marketData, chartData),
+    marketResponse.ok ? 200 : marketResponse.status,
+    { 'x-gnk-asg-recovery': 'market-compat-v2' }
+  );
+}
+
 async function handleRecoveryRoute(request, env, ctx) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/+$/, '') || '/';
 
   if (path === '/api/market') {
-    const refreshUrl = new URL('/data/market.json', url.origin);
-    if (url.searchParams.get('refresh') === '1') refreshUrl.searchParams.set('refresh', '1');
-    const routed = await handleRefreshRoute(new Request(refreshUrl.toString(), request), env, ctx);
-    if (!routed) return json({ ok: false, error: 'market_route_unavailable' }, 503);
-    const data = await readJsonResponse(routed);
-    return json(normalizeMarket(data), routed.ok ? 200 : routed.status, {
-      'x-gnk-asg-recovery': 'market-compat-v1'
-    });
+    return handleMarketApi(request, env, ctx);
   }
 
   if (path === '/api/news') {
-    const routed = await handleRefreshRoute(new Request(new URL('/data/news.json', url.origin).toString(), request), env, ctx);
-    if (!routed) return json({ ok: false, error: 'news_route_unavailable' }, 503);
-    const data = await readJsonResponse(routed);
-    return json(data, routed.ok ? 200 : routed.status, {
-      'x-gnk-asg-recovery': 'news-compat-v1'
+    const response = await app.fetch(
+      requestFor(url.origin, '/data/news.json', request),
+      env,
+      ctx
+    );
+    const data = await readJsonResponse(response);
+    return json(data, response.ok ? 200 : response.status, {
+      'x-gnk-asg-recovery': 'news-compat-v2'
     });
   }
 
@@ -106,7 +173,7 @@ async function handleRecoveryRoute(request, env, ctx) {
     path === '/operator/refresh-status' ||
     path === '/operator/refresh-help'
   ) {
-    return await handleRefreshRoute(request, env, ctx);
+    return handleRefreshRoute(request, env, ctx);
   }
 
   return null;
@@ -120,8 +187,17 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
-    const tasks = [runScheduledRefresh(env, ctx)];
-    if (typeof app.scheduled === 'function') tasks.push(app.scheduled(event, env, ctx));
+    const marketTask = handleRefreshRoute(
+      new Request('https://gnk-asg.hr/data/market.json'),
+      env,
+      ctx
+    );
+    const tasks = [marketTask];
+
+    if (typeof app.scheduled === 'function') {
+      tasks.push(app.scheduled(event, env, ctx));
+    }
+
     const task = Promise.allSettled(tasks);
     if (ctx && typeof ctx.waitUntil === 'function') {
       ctx.waitUntil(task);
