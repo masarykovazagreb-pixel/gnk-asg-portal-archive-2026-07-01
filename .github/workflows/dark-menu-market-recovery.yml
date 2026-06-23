@@ -65,10 +65,10 @@ jobs:
           grep -q 'group-globe-3d.js' ../../apps/portal/assets/app.js
           grep -q 'menu-deduplicate.js' ../../apps/portal/assets/app.js
           grep -q 'Tržišta i referentna imovina' ../../apps/portal/trzista/index.html
-          grep -q 'Auto Editor feeda' ../../apps/portal/public-pages/auto-editor.txt
-          grep -q 'Službeni medijski resursi' ../../apps/portal/public-pages/media-kit.txt
-          grep -q 'public-pages/auto-editor.txt' src/index-public-page-routes.js
-          grep -q 'public-pages/media-kit.txt' src/index-public-page-routes.js
+          grep -q 'AUTO_EDITOR_HTML' src/index-public-page-routes.js
+          grep -q 'MEDIA_KIT_HTML' src/index-public-page-routes.js
+          grep -q 'Auto Editor feeda' src/index-public-page-routes.js
+          grep -q 'Službeni medijski resursi' src/index-public-page-routes.js
           grep -q 'isInstallDuplicate' ../../apps/portal/assets/menu-deduplicate.js
           grep -q 'isMediaKit' ../../apps/portal/assets/menu-deduplicate.js
           node --check ../../apps/portal/assets/app.js
@@ -150,4 +150,4 @@ jobs:
             test "$code" = "200"
           done
 
-# Non-redirecting Auto Editor and Media Kit public routes: 2026-06-23
+# Inline Auto Editor and Media Kit public routes: 2026-06-23
