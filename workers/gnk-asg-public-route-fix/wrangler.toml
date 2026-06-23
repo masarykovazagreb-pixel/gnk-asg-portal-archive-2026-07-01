@@ -1,0 +1,34 @@
+name = "gnk-asg-public-route-fix"
+main = "src/index.js"
+compatibility_date = "2026-06-23"
+workers_dev = true
+preview_urls = true
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+
+[[routes]]
+pattern = "gnk-asg.hr/en/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/markets*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/news*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/en/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/markets*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/news*"
+zone_name = "gnk-asg.hr"
