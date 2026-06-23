@@ -38,43 +38,39 @@ jobs:
           node-version: "22"
 
       - name: Validate isolated recovery entry
+        working-directory: workers/gnk-asg-direct-operator
         run: |
-          node --check workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js
-          grep -q 'main = "src/index-dark-market-recovery.js"' workers/gnk-asg-direct-operator/wrangler.dark-market.toml
+          node --check src/index-dark-market-recovery.js
+          grep -q 'main = "src/index-dark-market-recovery.js"' wrangler.dark-market.toml
 
-      - name: Deploy stable direct operator
+      - name: Deploy direct operator only
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.dark-market.toml
 
-  diagnose:
-    needs: deploy
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Inspect active public routing
-        shell: bash
+      - name: Verify public menu routes
         run: |
-          set -euo pipefail
           sleep 12
-          curl --silent --show-error --location --dump-header en.headers --output en.html https://gnk-asg.hr/en/
-          echo '--- RESPONSE HEADERS ---'
-          cat en.headers
-          echo '--- MENU TARGETS ---'
-          grep -oE 'href="[^"]+"[^>]*>[^<]*(Markets|Insights|News|AI Help|Legal|Contact|Admin)' en.html | head -n 20 || true
-          echo '--- OBJAVE/PUBLICATIONS REFERENCES ---'
-          grep -oE 'https://gnk-asg.hr/(objave|publications)/|href="/(objave|publications)/"|value="/(objave|publications)/"' en.html | sort -u || true
-          echo '--- ROUTE STATUS ---'
           for url in \
+            https://gnk-asg.hr/ \
+            https://gnk-asg.hr/en/ \
+            https://gnk-asg.hr/trzista/ \
             https://gnk-asg.hr/markets/ \
+            https://gnk-asg.hr/vijesti/ \
             https://gnk-asg.hr/news/ \
-            https://gnk-asg.hr/en/assistant/ \
-            https://gnk-asg.hr/en/legal/ \
+            https://gnk-asg.hr/objave/ \
             https://gnk-asg.hr/publications/ \
+            https://gnk-asg.hr/assistant/ \
+            https://gnk-asg.hr/en/assistant/ \
+            https://gnk-asg.hr/legal/ \
+            https://gnk-asg.hr/en/legal/ \
+            https://gnk-asg.hr/contact/ \
+            https://gnk-asg.hr/operator-dashboard/ \
             https://gnk-asg.hr/api/market
           do
-            code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' "$url")
+            code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 3 --retry-all-errors "$url")
             echo "$code $url"
+            test "$code" = "200"
           done
