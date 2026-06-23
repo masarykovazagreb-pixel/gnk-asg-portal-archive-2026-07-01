@@ -165,7 +165,7 @@ jobs:
 
       - name: Verify Operator Dashboard shell
         if: always()
-        run: curl --fail --silent --show-error --location https://gnk-asg.hr/operator-dashboard/ | grep -q 'backend-ui-shell.css'
+        run: curl --fail --silent --show-error --location "https://gnk-asg.hr/operator-dashboard/?cb=${{ github.run_id }}" | grep -q 'backend-ui-shell.css'
 
       - name: Verify Mobile Admin shell
         if: always()
