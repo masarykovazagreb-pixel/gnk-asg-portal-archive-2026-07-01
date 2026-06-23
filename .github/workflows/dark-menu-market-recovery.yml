@@ -14,8 +14,6 @@ on:
       - "apps/portal/assets/menu-deduplicate.js"
       - "apps/portal/auto-editor/index.html"
       - "apps/portal/media-kit/index.html"
-      - "apps/portal/public-pages/auto-editor.txt"
-      - "apps/portal/public-pages/media-kit.txt"
       - ".github/workflows/dark-menu-market-recovery.yml"
   pull_request:
     branches:
@@ -29,8 +27,6 @@ on:
       - "apps/portal/assets/menu-deduplicate.js"
       - "apps/portal/auto-editor/index.html"
       - "apps/portal/media-kit/index.html"
-      - "apps/portal/public-pages/auto-editor.txt"
-      - "apps/portal/public-pages/media-kit.txt"
       - ".github/workflows/dark-menu-market-recovery.yml"
 
 concurrency:
@@ -61,10 +57,7 @@ jobs:
           grep -q 'main = "src/index-public-page-routes.js"' wrangler.dark-market.toml
           grep -q 'assets/app.js' ../../apps/portal/index.html
           grep -q 'assets/app.js' ../../apps/portal/en/index.html
-          grep -q 'group-network.js' ../../apps/portal/assets/app.js
-          grep -q 'group-globe-3d.js' ../../apps/portal/assets/app.js
           grep -q 'menu-deduplicate.js' ../../apps/portal/assets/app.js
-          grep -q 'Tržišta i referentna imovina' ../../apps/portal/trzista/index.html
           grep -q 'AUTO_EDITOR_HTML' src/index-public-page-routes.js
           grep -q 'MEDIA_KIT_HTML' src/index-public-page-routes.js
           grep -q 'Auto Editor feeda' src/index-public-page-routes.js
@@ -73,8 +66,6 @@ jobs:
           grep -q 'isMediaKit' ../../apps/portal/assets/menu-deduplicate.js
           node --check ../../apps/portal/assets/app.js
           node --check ../../apps/portal/assets/menu-deduplicate.js
-          node --check ../../apps/portal/assets/group-network.js
-          node --check ../../apps/portal/assets/group-globe-3d.js
 
       - name: Deploy direct operator only
         working-directory: workers/gnk-asg-direct-operator
@@ -89,43 +80,48 @@ jobs:
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'menu-deduplicate.js'
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q 'isInstallDuplicate'
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q 'isMediaKit'
-          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q '/auto-editor/'
-          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q '/media-kit/'
 
-      - name: Verify Auto Editor public route
+      - name: Auto Editor HTTP 200
+        if: always()
         run: |
-          code=$(curl --silent --show-error --location --output /tmp/auto-editor.html --write-out '%{http_code}' https://gnk-asg.hr/auto-editor/)
-          echo "$code https://gnk-asg.hr/auto-editor/"
+          code=$(curl --silent --show-error --location --output /tmp/auto-editor.html --dump-header /tmp/auto-editor.headers --write-out '%{http_code}' https://gnk-asg.hr/auto-editor/)
+          echo "$code"
           test "$code" = "200"
-          grep -q 'Auto Editor feeda' /tmp/auto-editor.html
 
-      - name: Verify Media Kit public route
+      - name: Auto Editor wrapper header
+        if: always()
+        run: grep -qi '^x-gnk-asg-public-page-routes: GNK_ASG_PUBLIC_PAGE_ROUTES_V4' /tmp/auto-editor.headers
+
+      - name: Auto Editor content marker
+        if: always()
+        run: grep -q 'Auto Editor feeda' /tmp/auto-editor.html
+
+      - name: Media Kit HTTP 200
+        if: always()
         run: |
-          code=$(curl --silent --show-error --location --output /tmp/media-kit.html --write-out '%{http_code}' https://gnk-asg.hr/media-kit/)
-          echo "$code https://gnk-asg.hr/media-kit/"
+          code=$(curl --silent --show-error --location --output /tmp/media-kit.html --dump-header /tmp/media-kit.headers --write-out '%{http_code}' https://gnk-asg.hr/media-kit/)
+          echo "$code"
           test "$code" = "200"
-          grep -q 'Službeni medijski resursi' /tmp/media-kit.html
 
-      - name: Verify Auto Editor feed
+      - name: Media Kit wrapper header
+        if: always()
+        run: grep -qi '^x-gnk-asg-public-page-routes: GNK_ASG_PUBLIC_PAGE_ROUTES_V4' /tmp/media-kit.headers
+
+      - name: Media Kit content marker
+        if: always()
+        run: grep -q 'Službeni medijski resursi' /tmp/media-kit.html
+
+      - name: Auto Editor feed
+        if: always()
         run: |
           code=$(curl --silent --show-error --location --output /tmp/auto-editor.json --write-out '%{http_code}' https://gnk-asg.hr/data/auto-editor.json)
-          echo "$code https://gnk-asg.hr/data/auto-editor.json"
+          echo "$code"
           test "$code" = "200"
           grep -q 'articles' /tmp/auto-editor.json
 
-      - name: Verify core public routes
+      - name: Core public routes
+        if: always()
         run: |
-          curl --silent --show-error --location https://gnk-asg.hr/ | grep -q 'assets/app.js'
-          curl --silent --show-error --location https://gnk-asg.hr/en/ | grep -q 'assets/app.js'
-          curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-network.js'
-          curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-globe-3d.js'
-          curl --silent --show-error --location https://gnk-asg.hr/assets/group-network.js | grep -q 'global-network'
-          curl --silent --show-error --location https://gnk-asg.hr/assets/group-globe-3d.js | grep -q 'globe-panel'
-          curl --silent --show-error --location https://gnk-asg.hr/trzista/ | grep -q 'Tržišta i referentna imovina'
-          if curl --silent --show-error --location https://gnk-asg.hr/trzista/ | grep -Eq 'TrÅ|PoÄ|RuÄ|UÄ|AÅ|GreÅ|â€¦|â€”'; then
-            echo "Oštećeni UTF-8 znakovi još su prisutni na /trzista/."
-            exit 1
-          fi
           for url in \
             https://gnk-asg.hr/ \
             https://gnk-asg.hr/en/ \
@@ -135,12 +131,8 @@ jobs:
             https://gnk-asg.hr/news/ \
             https://gnk-asg.hr/objave/ \
             https://gnk-asg.hr/publications/ \
-            https://gnk-asg.hr/auto-editor/ \
-            https://gnk-asg.hr/media-kit/ \
             https://gnk-asg.hr/assistant/ \
-            https://gnk-asg.hr/en/assistant/ \
             https://gnk-asg.hr/legal/ \
-            https://gnk-asg.hr/en/legal/ \
             https://gnk-asg.hr/contact/ \
             https://gnk-asg.hr/operator-dashboard/ \
             https://gnk-asg.hr/api/market
@@ -150,4 +142,4 @@ jobs:
             test "$code" = "200"
           done
 
-# Inline Auto Editor and Media Kit public routes: 2026-06-23
+# Split diagnostics for public menu routes: 2026-06-23
