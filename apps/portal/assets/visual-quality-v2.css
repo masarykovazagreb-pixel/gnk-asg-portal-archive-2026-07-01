@@ -1,0 +1,18 @@
+/* GNK ASG VISUAL QUALITY V2 - HiDPI globe, imagery and motion */
+:root{--vq-gold:#e7bc50;--vq-gold2:#ffe9a3;--vq-blue:#2e9cff;--vq-cyan:#55ddff;--vq-ink:#010713}
+.hero-visual{isolation:isolate;background:radial-gradient(circle at 64% 42%,rgba(46,156,255,.12),transparent 34%)}
+.globe{overflow:visible!important;isolation:isolate;background:radial-gradient(circle at 37% 28%,rgba(255,242,186,.18),transparent 14%),radial-gradient(circle at 50% 52%,rgba(28,126,211,.31),rgba(2,13,27,.96) 68%)!important;transform-style:preserve-3d;will-change:transform}
+.globe::before{inset:-5%!important;border:1px solid rgba(255,233,163,.48)!important;box-shadow:0 0 38px rgba(231,188,80,.24),inset 0 0 42px rgba(46,156,255,.1)!important;animation:vqHalo 8s ease-in-out infinite}
+.globe::after{inset:-13%!important;border:1px solid rgba(85,221,255,.18)!important;box-shadow:0 0 90px rgba(46,156,255,.24)!important;transform:rotate(-18deg)!important;animation:vqOrbit 18s linear infinite}
+.iq-globe-canvas{position:absolute;inset:-2%;width:104%;height:104%;z-index:3;border-radius:50%;pointer-events:none;filter:drop-shadow(0 0 26px rgba(46,156,255,.32)) drop-shadow(0 0 18px rgba(231,188,80,.18))}
+.iq-globe-label{position:absolute;z-index:5;right:9%;bottom:10%;display:flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid rgba(231,188,80,.38);border-radius:999px;background:rgba(2,10,21,.74);backdrop-filter:blur(12px);color:#eef6ff;font:900 9px/1 Arial,sans-serif;letter-spacing:.11em;text-transform:uppercase;box-shadow:0 14px 34px rgba(0,0,0,.32)}
+.iq-globe-label::before{content:"";width:7px;height:7px;border-radius:50%;background:#31d47c;box-shadow:0 0 14px #31d47c}
+.hero-network-canvas{image-rendering:auto;filter:drop-shadow(0 0 8px rgba(85,221,255,.16))}
+.brand-mark,.mini-mark,.gnk-shell-logo{shape-rendering:geometricPrecision;text-rendering:geometricPrecision}
+.featured{background-image:radial-gradient(circle at 27% 49%,rgba(46,156,255,.52),transparent 23%),radial-gradient(circle at 65% 34%,rgba(231,188,80,.18),transparent 18%),linear-gradient(135deg,#0c315b,#020812)!important}
+.featured::before{backdrop-filter:saturate(118%)}
+.hero img,.section img,.gnk-asg-premium-spotlight img{max-width:100%;height:auto;image-rendering:auto;object-fit:cover;filter:saturate(1.04) contrast(1.025)}
+@keyframes vqHalo{50%{transform:scale(1.035) rotate(1deg);opacity:.78}}
+@keyframes vqOrbit{to{transform:rotate(342deg)!important}}
+@media(max-width:760px){.iq-globe-label{right:5%;bottom:6%;font-size:8px}.iq-globe-canvas{opacity:.88}}
+@media(prefers-reduced-motion:reduce){.globe::before,.globe::after{animation:none!important}.iq-globe-canvas{filter:none}.hero-network-canvas{filter:none}}
