@@ -6,16 +6,8 @@ on:
     branches:
       - main
     paths:
-      - "apps/portal/index.html"
-      - "apps/portal/en/index.html"
-      - "apps/portal/app/index.html"
-      - "apps/portal/operator-mobile/index.html"
-      - "apps/portal/assets/index-redesign-production.css"
-      - "apps/portal/assets/index-redesign-production.js"
-      - "apps/portal/assets/index-iq200.css"
-      - "apps/portal/assets/index-iq200.js"
-      - "apps/portal/assets/backend-ui-shell.css"
-      - "apps/portal/assets/backend-ui-shell.js"
+      - "apps/portal/**"
+      - "scripts/generate_media_kit_pdfs.py"
       - "workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js"
       - "workers/gnk-asg-direct-operator/src/index-news-quality-v2.js"
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
@@ -26,16 +18,8 @@ on:
     branches:
       - main
     paths:
-      - "apps/portal/index.html"
-      - "apps/portal/en/index.html"
-      - "apps/portal/app/index.html"
-      - "apps/portal/operator-mobile/index.html"
-      - "apps/portal/assets/index-redesign-production.css"
-      - "apps/portal/assets/index-redesign-production.js"
-      - "apps/portal/assets/index-iq200.css"
-      - "apps/portal/assets/index-iq200.js"
-      - "apps/portal/assets/backend-ui-shell.css"
-      - "apps/portal/assets/backend-ui-shell.js"
+      - "apps/portal/**"
+      - "scripts/generate_media_kit_pdfs.py"
       - "workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js"
       - "workers/gnk-asg-direct-operator/src/index-news-quality-v2.js"
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
@@ -63,16 +47,41 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Generate and validate public PDF package
+        run: |
+          python -m py_compile scripts/generate_media_kit_pdfs.py
+          python scripts/generate_media_kit_pdfs.py
+          test -s apps/portal/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2_HR.pdf
+          test -s apps/portal/downloads/GNK_ASG_GNK_DINAMO_LTD_MEDIA_KIT_EN.pdf
+          head -c 8 apps/portal/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2_HR.pdf | grep -q '%PDF-1.'
+          head -c 8 apps/portal/downloads/GNK_ASG_GNK_DINAMO_LTD_MEDIA_KIT_EN.pdf | grep -q '%PDF-1.'
+
       - name: Validate production index package
         working-directory: workers/gnk-asg-direct-operator
         run: |
           node --check ../../apps/portal/assets/index-redesign-production.js
           node --check ../../apps/portal/assets/index-iq200.js
+          node --check ../../apps/portal/assets/visual-quality-v2.js
+          node --check ../../apps/portal/assets/document-center-v2.js
+          node --check ../../apps/portal/assets/contact-quality-v2.js
           node --check ../../apps/portal/assets/backend-ui-shell.js
+          node --check ../../apps/portal/assets/brand/gnk-asg-global-layer.js
           node --check src/index-ui-harmonizer.js
           test -f ../../apps/portal/assets/index-redesign-production.css
           test -f ../../apps/portal/assets/index-iq200.css
+          test -f ../../apps/portal/assets/visual-quality-v2.css
+          test -f ../../apps/portal/assets/visual-quality-v2.js
+          test -f ../../apps/portal/assets/document-center-v2.js
+          test -f ../../apps/portal/assets/contact-quality-v2.css
+          test -f ../../apps/portal/assets/contact-quality-v2.js
           test -f ../../apps/portal/assets/backend-ui-shell.css
+          test -f ../../apps/portal/assets/gnk-asg-ai-layer.css
+          test -f ../../apps/portal/assets/brand/gnk-asg-global-layer.css
+          test -f ../../apps/portal/assets/brand/gnk-asg-global-layer.js
+          test -f ../../apps/portal/downloads/index.html
+          test -f ../../apps/portal/en/downloads/index.html
+          test -f ../../apps/portal/contact/index.html
+          test -f ../../apps/portal/en/contact/index.html
           test -f ../../apps/portal/app/index.html
           test -f ../../apps/portal/operator-mobile/index.html
           grep -q 'Korporativni portal GNK ASG' ../../apps/portal/index.html
@@ -81,6 +90,9 @@ jobs:
           grep -q '12 pozicija' ../../apps/portal/index.html
           grep -q 'PDF i Download centar' ../../apps/portal/index.html
           grep -q 'Media Kit' ../../apps/portal/index.html
+          grep -q 'GNK_ASG_GNK_DINAMO_LTD_MEDIA_KIT_EN.pdf' ../../apps/portal/downloads/index.html
+          grep -q 'GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2_HR.pdf' ../../apps/portal/en/downloads/index.html
+          grep -q 'Contact and secure communication' ../../apps/portal/en/contact/index.html
           grep -q '/operator-dashboard/' ../../apps/portal/index.html
           grep -q '/mail-studio/' ../../apps/portal/index.html
           grep -q '/contact/' ../../apps/portal/index.html
@@ -90,8 +102,19 @@ jobs:
           grep -q '/data/auto-editor.json' ../../apps/portal/assets/index-redesign-production.js
           grep -q 'Korporativni <span>ekosustav</span>' src/index-ui-harmonizer.js
           grep -q 'Corporate <span>ecosystem</span>' src/index-ui-harmonizer.js
+          grep -q 'visual-quality-v2.js' src/index-ui-harmonizer.js
+          grep -q 'contact-quality-v2.js' src/index-ui-harmonizer.js
+          grep -q '__GNK_ASG_VISUAL_QUALITY_V2__' ../../apps/portal/assets/visual-quality-v2.js
+          grep -q '__GNK_ASG_DOCUMENT_CENTER_V2__' ../../apps/portal/assets/document-center-v2.js
+          grep -q '__GNK_ASG_CONTACT_V2__' ../../apps/portal/assets/contact-quality-v2.js
           grep -q 'hero-network-canvas' ../../apps/portal/assets/index-iq200.js
+          grep -q 'iq-globe-canvas' ../../apps/portal/assets/visual-quality-v2.js
+          grep -q 'PDF / Media' ../../apps/portal/assets/backend-ui-shell.js
           grep -q 'gnk-backend-shell' ../../apps/portal/assets/backend-ui-shell.js
+          grep -q 'backend-ui-shell.css' ../../apps/portal/assets/gnk-asg-ai-layer.css
+          grep -q '__GNK_ASG_PREMIUM_V3__' ../../apps/portal/assets/brand/gnk-asg-global-layer.js
+          grep -q 'BACKEND_ASSETS' src/index-ui-harmonizer.js
+          grep -q 'CONTACT_ASSETS' src/index-ui-harmonizer.js
           if grep -q 'noindex,nofollow' ../../apps/portal/index.html; then exit 1; fi
           if grep -q 'Živa probna verzija' ../../apps/portal/index.html; then exit 1; fi
 
@@ -109,6 +132,7 @@ jobs:
           grep -q 'quality:quarantine:articles' src/index-news-quality-v2.js
 
       - name: Deploy production portal and UI harmonizer
+        if: github.event_name != 'pull_request'
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -116,6 +140,7 @@ jobs:
         run: npx --yes wrangler@4 deploy src/index-ui-harmonizer.js --config wrangler.dark-market.toml --name gnk-asg-direct-operator
 
       - name: Refresh public news immediately
+        if: github.event_name != 'pull_request'
         continue-on-error: true
         run: |
           sleep 12
@@ -125,15 +150,16 @@ jobs:
           test "$code" = "200" -o "$code" = "429"
 
       - name: Verify Croatian and English production index
+        if: github.event_name != 'pull_request'
         run: |
           curl --fail --silent --show-error --location https://gnk-asg.hr/ > /tmp/index-hr.html
           curl --fail --silent --show-error --location https://gnk-asg.hr/en/ > /tmp/index-en.html
           grep -q 'Korporativni <span>ekosustav</span>' /tmp/index-hr.html
           grep -q 'Corporate <span>ecosystem</span>' /tmp/index-en.html
+          grep -q 'visual-quality-v2.js' /tmp/index-hr.html
+          grep -q 'visual-quality-v2.js' /tmp/index-en.html
           grep -q 'PDF i Download centar' /tmp/index-hr.html
           grep -q 'PDF and Download centre' /tmp/index-en.html
-          grep -q '33' /tmp/index-hr.html
-          grep -q '12' /tmp/index-hr.html
           if grep -q 'Index /' /tmp/index-hr.html; then exit 1; fi
           if grep -q 'početna stranica' /tmp/index-hr.html; then exit 1; fi
           if grep -q 'Index /' /tmp/index-en.html; then exit 1; fi
@@ -141,42 +167,53 @@ jobs:
           if grep -q 'Živa probna verzija' /tmp/index-hr.html; then exit 1; fi
           if grep -q 'noindex,nofollow' /tmp/index-hr.html; then exit 1; fi
 
-      - name: Verify base redesign asset
-        if: always()
-        run: curl --fail --silent --show-error --location https://gnk-asg.hr/assets/index-redesign-production.css | grep -q 'quick-grid'
-
-      - name: Verify IQ200 index assets
-        if: always()
+      - name: Verify visual, backend and contact assets
+        if: ${{ github.event_name != 'pull_request' && always() }}
         run: |
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/index-iq200.css | grep -q 'GNK ASG INDEX IQ200'
-          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/index-iq200.js | grep -q 'hero-network-canvas'
-
-      - name: Verify backend shell assets
-        if: always()
-        run: |
-          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/backend-ui-shell.css | grep -q 'SHARED BACKEND UI SHELL'
-          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/backend-ui-shell.js | grep -q 'gnk-backend-shell'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/visual-quality-v2.js | grep -q '__GNK_ASG_VISUAL_QUALITY_V2__'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/document-center-v2.js | grep -q '__GNK_ASG_DOCUMENT_CENTER_V2__'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/contact-quality-v2.js | grep -q '__GNK_ASG_CONTACT_V2__'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/backend-ui-shell.css | grep -q 'SHARED BACKEND UI SHELL V2'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/backend-ui-shell.js | grep -q '__GNK_ASG_BACKEND_SHELL_V2__'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/gnk-asg-ai-layer.css | grep -q 'backend-ui-shell.css'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/brand/gnk-asg-global-layer.js | grep -q '__GNK_ASG_PREMIUM_V3__'
 
       - name: Verify data endpoints
-        if: always()
+        if: ${{ github.event_name != 'pull_request' && always() }}
         run: |
           curl --fail --silent --show-error --location https://gnk-asg.hr/data/group_network.json | python -m json.tool > /dev/null
           curl --fail --silent --show-error --location https://gnk-asg.hr/api/market | python -m json.tool > /dev/null
 
-      - name: Verify Operator Dashboard shell
-        if: always()
-        run: curl --fail --silent --show-error --location "https://gnk-asg.hr/operator-dashboard/?cb=${{ github.run_id }}" | grep -q 'backend-ui-shell.css'
+      - name: Verify Operator Dashboard premium design chain
+        if: ${{ github.event_name != 'pull_request' && always() }}
+        run: |
+          curl --fail --silent --show-error --location "https://gnk-asg.hr/operator-dashboard/?cb=${{ github.run_id }}" > /tmp/operator-dashboard.html
+          grep -q 'gnk-asg-ai-layer.css' /tmp/operator-dashboard.html
+          grep -q 'gnk-asg-global-layer.css' /tmp/operator-dashboard.html
+          grep -q 'gnk-asg-global-layer.js' /tmp/operator-dashboard.html
+          grep -q 'backend-ui-shell.js' /tmp/operator-dashboard.html
+
+      - name: Verify contact and download centre
+        if: ${{ github.event_name != 'pull_request' && always() }}
+        run: |
+          curl --fail --silent --show-error --location "https://gnk-asg.hr/contact/?cb=${{ github.run_id }}" | grep -q 'contact-quality-v2.js'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/en/contact/ | grep -q 'Contact and secure communication'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/downloads/ | grep -q 'GNK_ASG_GNK_DINAMO_LTD_MEDIA_KIT_EN.pdf'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/en/downloads/ | grep -q 'GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2_HR.pdf'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2_HR.pdf | head -c 8 | grep -q '%PDF-1.'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/downloads/GNK_ASG_GNK_DINAMO_LTD_MEDIA_KIT_EN.pdf | head -c 8 | grep -q '%PDF-1.'
 
       - name: Verify Mobile Admin shell
-        if: always()
-        run: curl --fail --silent --show-error --location https://gnk-asg.hr/operator-mobile/ | grep -q 'backend-ui-shell.css'
+        if: ${{ github.event_name != 'pull_request' && always() }}
+        run: curl --fail --silent --show-error --location "https://gnk-asg.hr/operator-mobile/?cb=${{ github.run_id }}" | grep -q 'backend-ui-shell.css'
 
       - name: Verify Mail Studio shell
-        if: always()
-        run: curl --fail --silent --show-error --location https://gnk-asg.hr/mail-studio/ | grep -q 'backend-ui-shell.css'
+        if: ${{ github.event_name != 'pull_request' && always() }}
+        run: curl --fail --silent --show-error --location "https://gnk-asg.hr/mail-studio/?cb=${{ github.run_id }}" | grep -q 'backend-ui-shell.css'
 
       - name: Verify public routes and protected modules remain available
-        if: always()
+        if: ${{ github.event_name != 'pull_request' && always() }}
         run: |
           for url in \
             https://gnk-asg.hr/trzista/ \
@@ -191,6 +228,9 @@ jobs:
             https://gnk-asg.hr/legal/ \
             https://gnk-asg.hr/en/legal/ \
             https://gnk-asg.hr/contact/ \
+            https://gnk-asg.hr/en/contact/ \
+            https://gnk-asg.hr/downloads/ \
+            https://gnk-asg.hr/en/downloads/ \
             https://gnk-asg.hr/app/ \
             https://gnk-asg.hr/operator-dashboard/ \
             https://gnk-asg.hr/operator-mobile/ \
@@ -201,4 +241,4 @@ jobs:
             test "$code" = "200"
           done
 
-# IQ200 graphics and unified backend menu. Backend business logic remains unchanged.
+# Pull requests validate only. Production deploy and live smoke tests run on main or workflow_dispatch.
