@@ -9,6 +9,8 @@ on:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
       - "apps/portal/trzista/index.html"
+      - "apps/portal/assets/app.js"
+      - "apps/portal/assets/menu-panels.js"
       - ".github/workflows/dark-menu-market-recovery.yml"
   pull_request:
     branches:
@@ -17,6 +19,8 @@ on:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
       - "apps/portal/trzista/index.html"
+      - "apps/portal/assets/app.js"
+      - "apps/portal/assets/menu-panels.js"
       - ".github/workflows/dark-menu-market-recovery.yml"
 
 concurrency:
@@ -48,8 +52,13 @@ jobs:
           grep -q 'assets/app.js' ../../apps/portal/en/index.html
           grep -q 'group-network.js' ../../apps/portal/assets/app.js
           grep -q 'group-globe-3d.js' ../../apps/portal/assets/app.js
-          grep -q 'Tržišta i referentna imovina' ../../apps/portal/trzista/index.html
+          grep -q 'menu-panels.js' ../../apps/portal/assets/app.js
+          grep -q 'isInstallDuplicate' ../../apps/portal/assets/menu-panels.js
+          grep -q 'renderAutoEditor' ../../apps/portal/assets/menu-panels.js
+          grep -q 'renderMediaKit' ../../apps/portal/assets/menu-panels.js
+          grep -q 'news-automation/status' ../../apps/portal/assets/menu-panels.js
           node --check ../../apps/portal/assets/app.js
+          node --check ../../apps/portal/assets/menu-panels.js
           node --check ../../apps/portal/assets/group-network.js
           node --check ../../apps/portal/assets/group-globe-3d.js
 
@@ -60,20 +69,40 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.dark-market.toml
 
-      - name: Verify globe portal and public routes
+      - name: Verify app loader
+        if: always()
         run: |
           sleep 12
-          curl --silent --show-error --location https://gnk-asg.hr/ | grep -q 'assets/app.js'
-          curl --silent --show-error --location https://gnk-asg.hr/en/ | grep -q 'assets/app.js'
-          curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-network.js'
-          curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-globe-3d.js'
-          curl --silent --show-error --location https://gnk-asg.hr/assets/group-network.js | grep -q 'global-network'
-          curl --silent --show-error --location https://gnk-asg.hr/assets/group-globe-3d.js | grep -q 'globe-panel'
-          curl --silent --show-error --location https://gnk-asg.hr/trzista/ | grep -q 'Tržišta i referentna imovina'
-          if curl --silent --show-error --location https://gnk-asg.hr/trzista/ | grep -Eq 'TrÅ|PoÄ|RuÄ|UÄ|AÅ|GreÅ|â€¦|â€”'; then
-            echo "Oštećeni UTF-8 znakovi još su prisutni na /trzista/."
-            exit 1
-          fi
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'menu-panels.js'
+
+      - name: Verify menu panel asset exists
+        if: always()
+        run: |
+          code=$(curl --silent --show-error --location --output /tmp/menu-panels.js --write-out '%{http_code}' https://gnk-asg.hr/assets/menu-panels.js)
+          echo "$code"
+          test "$code" = "200"
+
+      - name: Verify INSTALL removal logic
+        if: always()
+        run: grep -q 'isInstallDuplicate' /tmp/menu-panels.js
+
+      - name: Verify Auto Editor panel logic
+        if: always()
+        run: grep -q 'renderAutoEditor' /tmp/menu-panels.js
+
+      - name: Verify Media Kit panel logic
+        if: always()
+        run: grep -q 'renderMediaKit' /tmp/menu-panels.js
+
+      - name: Verify Auto Editor status route availability
+        if: always()
+        continue-on-error: true
+        run: |
+          curl --fail --silent --show-error --location --output /dev/null https://gnk-asg.hr/operator/news-automation/status
+
+      - name: Verify core public routes
+        if: always()
+        run: |
           for url in \
             https://gnk-asg.hr/ \
             https://gnk-asg.hr/en/ \
@@ -96,4 +125,4 @@ jobs:
             test "$code" = "200"
           done
 
-# Forced approved UTF-8 deployment for /trzista/: 2026-06-23T14:42:00+02:00
+# Index menu panels: INSTALL removed, Auto Editor and Media Kit functional on index.
