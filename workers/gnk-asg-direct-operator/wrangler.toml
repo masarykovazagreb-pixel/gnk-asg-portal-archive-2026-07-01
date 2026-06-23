@@ -1,4 +1,4 @@
-name = "gnk-asg-direct-operator"
+name = "gnk-asg-news-publications-hotfix"
 main = "src/index-publication-news-hotfix.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
@@ -8,15 +8,13 @@ preview_urls = true
 binding = "GNK_ASG_CONFIG_KV"
 id = "d6f5dac9fa034d8d813db0de44eb7b1b"
 
-[[d1_databases]]
-binding = "GNK_ASG_D1"
-database_name = "gnk_asg_operator_logs"
-database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
 
 [vars]
 PUBLIC_BRAND = "GNK ASG"
-PUBLIC_ENVIRONMENT = "direct-operator"
-SAFE_GET_DIRECT_MODE = "true"
+PUBLIC_ENVIRONMENT = "news-publications-hotfix"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 
 [assets]
@@ -30,22 +28,38 @@ crons = ["0 * * * *"]
 [ai]
 binding = "AI"
 
-[[r2_buckets]]
-binding = "GNK_ASG_MEDIA_ASSETS"
-bucket_name = "gnk-asg-media-assets"
-
-[[send_email]]
-name = "EMAIL"
-remote = true
-
-[[kv_namespaces]]
-binding = "GNK_ASG_KV"
-id = "a3e9e78c7d554d7fa10996da9a89e7bc"
-
 [[routes]]
-pattern = "gnk-asg.hr/*"
+pattern = "gnk-asg.hr/data/news*"
 zone_name = "gnk-asg.hr"
 
 [[routes]]
-pattern = "www.gnk-asg.hr/*"
+pattern = "gnk-asg.hr/data/auto-editor*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/api/news-refresh*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/operator/news*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/operator/auto-editor*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/objave*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/publications*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/vijesti*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/news*"
 zone_name = "gnk-asg.hr"
