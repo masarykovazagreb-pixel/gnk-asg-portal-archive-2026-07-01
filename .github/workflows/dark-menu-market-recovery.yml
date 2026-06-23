@@ -42,6 +42,8 @@ jobs:
         run: |
           node --check src/index-dark-market-recovery.js
           grep -q 'main = "src/index-dark-market-recovery.js"' wrangler.dark-market.toml
+          grep -q 'homepage-polish.css' ../../apps/portal/index.html
+          grep -q 'GNK ASG d.o.o. | GNK DINAMO Ltd. Group' ../../apps/portal/en/index.html
 
       - name: Deploy direct operator only
         working-directory: workers/gnk-asg-direct-operator
@@ -50,9 +52,12 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.dark-market.toml
 
-      - name: Verify public menu routes
+      - name: Verify Business homepages and public routes
         run: |
           sleep 12
+          curl --silent --show-error --location https://gnk-asg.hr/ | grep -q 'homepage-polish.css'
+          curl --silent --show-error --location https://gnk-asg.hr/ | grep -q 'module-grid'
+          curl --silent --show-error --location https://gnk-asg.hr/en/ | grep -q 'GNK ASG d.o.o. | GNK DINAMO Ltd. Group'
           for url in \
             https://gnk-asg.hr/ \
             https://gnk-asg.hr/en/ \
@@ -75,4 +80,4 @@ jobs:
             test "$code" = "200"
           done
 
-# Business homepage production deploy trigger: 2026-06-23
+# Tracked Business homepage asset deploy: 2026-06-23-2
