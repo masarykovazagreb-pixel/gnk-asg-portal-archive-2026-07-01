@@ -8,6 +8,8 @@ on:
     paths:
       - "apps/portal/index.html"
       - "apps/portal/en/index.html"
+      - "apps/portal/app/index.html"
+      - "apps/portal/operator-mobile/index.html"
       - "apps/portal/assets/index-redesign-production.css"
       - "apps/portal/assets/index-redesign-production.js"
       - "workers/gnk-asg-direct-operator/src/index-news-quality-v2.js"
@@ -21,6 +23,8 @@ on:
     paths:
       - "apps/portal/index.html"
       - "apps/portal/en/index.html"
+      - "apps/portal/app/index.html"
+      - "apps/portal/operator-mobile/index.html"
       - "apps/portal/assets/index-redesign-production.css"
       - "apps/portal/assets/index-redesign-production.js"
       - "workers/gnk-asg-direct-operator/src/index-news-quality-v2.js"
@@ -54,6 +58,8 @@ jobs:
         run: |
           node --check ../../apps/portal/assets/index-redesign-production.js
           test -f ../../apps/portal/assets/index-redesign-production.css
+          test -f ../../apps/portal/app/index.html
+          test -f ../../apps/portal/operator-mobile/index.html
           grep -q 'Korporativni portal GNK ASG' ../../apps/portal/index.html
           grep -q 'Corporate portal for GNK ASG' ../../apps/portal/en/index.html
           grep -q 'index-redesign-production.css' ../../apps/portal/index.html
