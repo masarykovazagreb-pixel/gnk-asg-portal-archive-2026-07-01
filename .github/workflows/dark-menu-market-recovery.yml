@@ -8,6 +8,7 @@ on:
     paths:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      - "workers/gnk-asg-public-route-fix/**"
       - ".github/workflows/dark-menu-market-recovery.yml"
   pull_request:
     branches:
@@ -15,6 +16,7 @@ on:
     paths:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      - "workers/gnk-asg-public-route-fix/**"
       - ".github/workflows/dark-menu-market-recovery.yml"
 
 concurrency:
@@ -37,20 +39,28 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate isolated recovery entry
-        working-directory: workers/gnk-asg-direct-operator
+      - name: Validate isolated recovery entries
         run: |
-          node --check src/index-dark-market-recovery.js
-          grep -q 'main = "src/index-dark-market-recovery.js"' wrangler.dark-market.toml
+          node --check workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js
+          node --check workers/gnk-asg-public-route-fix/src/index.js
+          grep -q 'main = "src/index-dark-market-recovery.js"' workers/gnk-asg-direct-operator/wrangler.dark-market.toml
+          grep -q 'main = "src/index.js"' workers/gnk-asg-public-route-fix/wrangler.toml
 
-      - name: Deploy direct operator only
+      - name: Deploy direct operator
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.dark-market.toml
 
-      - name: Verify public menu routes
+      - name: Deploy public route fix
+        working-directory: workers/gnk-asg-public-route-fix
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml
+
+      - name: Verify public menu routes and content
         run: |
           sleep 12
           for url in \
@@ -74,5 +84,7 @@ jobs:
             echo "$code $url"
             test "$code" = "200"
           done
-
-# tracked PR deployment trigger: route-check-2
+          curl --silent --show-error --location https://gnk-asg.hr/en/ | grep -q 'https://gnk-asg.hr/publications/'
+          curl --silent --show-error --head https://gnk-asg.hr/en/ | grep -qi 'x-gnk-asg-public-route-fix: 2026-06-23-v1'
+          curl --silent --show-error --head https://gnk-asg.hr/markets/ | grep -qi 'x-gnk-asg-public-route-fix: 2026-06-23-v1'
+          curl --silent --show-error --head https://gnk-asg.hr/news/ | grep -qi 'x-gnk-asg-public-route-fix: 2026-06-23-v1'
