@@ -28,6 +28,13 @@
     return key === 'auto-editor' || key === 'autoeditor' || text === 'auto editor' || href.includes('/auto-editor');
   }
 
+  function isMediaKit(link) {
+    const text = normalise(link.textContent);
+    const href = normalise(link.getAttribute('href'));
+    const key = normalise(link.dataset.key || link.getAttribute('data-nav-key'));
+    return key === 'media' || key === 'media-kit' || text === 'media kit' || href.includes('/media-kit');
+  }
+
   function repairMenu() {
     const selectors = [
       '#gnk-asg-premium-menu a',
@@ -44,8 +51,14 @@
       }
 
       if (isAutoEditor(link)) {
-        link.href = isEnglish() ? '/auto-editor/index.html?lang=en' : '/auto-editor/index.html';
+        link.href = isEnglish() ? '/auto-editor/?lang=en' : '/auto-editor/';
         link.textContent = 'Auto Editor';
+        return;
+      }
+
+      if (isMediaKit(link)) {
+        link.href = isEnglish() ? '/media-kit/?lang=en' : '/media-kit/';
+        link.textContent = 'Media Kit';
       }
     });
   }
