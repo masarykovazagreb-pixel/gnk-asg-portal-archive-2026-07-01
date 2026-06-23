@@ -44,10 +44,21 @@ jobs:
           ! grep -qi 'http-equiv="refresh"' apps/portal/vijesti/index.html
           ! grep -qi 'http-equiv="refresh"' apps/portal/news/index.html
       - name: Deploy isolated Worker
-        run: npx --yes wrangler@4 deploy --config workers/gnk-asg-direct-operator/wrangler.toml
+        id: deploy
+        shell: bash
+        run: |
+          set +e
+          npx --yes wrangler@4 deploy --config workers/gnk-asg-direct-operator/wrangler.toml > deploy.log 2>&1
+          code=$?
+          cat deploy.log
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
       - name: Wait
+        if: steps.deploy.outputs.code == '0'
         run: sleep 15
       - name: Refresh and verify
+        id: verify
+        if: steps.deploy.outputs.code == '0'
         shell: bash
         run: |
           set -euo pipefail
@@ -68,4 +79,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          gh issue comment "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --body "GNK_ASG_HOTFIX_RESULT=${{ job.status }}; commit=${GITHUB_SHA}; workflow=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          {
+            echo "GNK_ASG_HOTFIX_DEPLOY_CODE=${{ steps.deploy.outputs.code }}"
+            echo "commit=${GITHUB_SHA}"
+            echo "workflow=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo
+            echo 'DEPLOY_LOG:'
+            echo '```text'
+            tail -c 5000 deploy.log 2>/dev/null || true
+            echo '```'
+          } > issue-report.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --body-file issue-report.md
+      - name: Fail when deployment failed
+        if: steps.deploy.outputs.code != '0'
+        run: exit 1
