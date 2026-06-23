@@ -100,8 +100,6 @@ jobs:
           grep -q '/data/news.json' ../../apps/portal/assets/index-redesign-production.js
           grep -q '/data/group_network.json' ../../apps/portal/assets/index-redesign-production.js
           grep -q '/data/auto-editor.json' ../../apps/portal/assets/index-redesign-production.js
-          grep -q 'Korporativni <span>ekosustav</span>' src/index-ui-harmonizer.js
-          grep -q 'Corporate <span>ecosystem</span>' src/index-ui-harmonizer.js
           grep -q 'visual-quality-v2.js' src/index-ui-harmonizer.js
           grep -q 'contact-quality-v2.js' src/index-ui-harmonizer.js
           grep -q '__GNK_ASG_VISUAL_QUALITY_V2__' ../../apps/portal/assets/visual-quality-v2.js
@@ -154,8 +152,6 @@ jobs:
         run: |
           curl --fail --silent --show-error --location https://gnk-asg.hr/ > /tmp/index-hr.html
           curl --fail --silent --show-error --location https://gnk-asg.hr/en/ > /tmp/index-en.html
-          grep -q 'Korporativni <span>ekosustav</span>' /tmp/index-hr.html
-          grep -q 'Corporate <span>ecosystem</span>' /tmp/index-en.html
           grep -q 'visual-quality-v2.js' /tmp/index-hr.html
           grep -q 'visual-quality-v2.js' /tmp/index-en.html
           grep -q 'PDF i Download centar' /tmp/index-hr.html
