@@ -1,5 +1,7 @@
 (() => {
   'use strict';
+  if (window.__GNK_ASG_BACKEND_SHELL_V2__) return;
+  window.__GNK_ASG_BACKEND_SHELL_V2__ = true;
 
   const inFrame = window.self !== window.top;
   document.body.classList.add('gnk-backend-ui');
@@ -7,27 +9,34 @@
     document.body.classList.add('gnk-backend-embedded');
     return;
   }
-  if (document.getElementById('gnk-backend-shell')) return;
+  document.getElementById('gnk-backend-shell')?.remove();
 
   const path = location.pathname.replace(/\/+$/, '') || '/';
   const items = [
-    ['Portal', '/'],
-    ['Profil', '/#profil'],
-    ['Financije', '/#financije'],
-    ['Grupa', '/#mreza-grupe'],
-    ['Tržišta', '/trzista/'],
-    ['Objave', '/objave/'],
-    ['Vijesti', '/vijesti/'],
-    ['PDF / Media', '/#dokumenti'],
-    ['Visual Index', '/visual-index/'],
-    ['AI pomoć', '/assistant/'],
-    ['Kontakt', '/contact/'],
-    ['Legal', '/legal/'],
-    ['App', '/app/'],
-    ['Mail Center', '/mail-studio/'],
-    ['Mobilni Admin', '/operator-mobile/'],
-    ['Admin', '/operator-dashboard/']
+    {label:'Portal',href:'/',icon:'⌂'},
+    {label:'Profil',href:'/#profil',icon:'◫'},
+    {label:'Financije',href:'/#financije',icon:'▥'},
+    {label:'Grupa',href:'/#mreza-grupe',icon:'◎'},
+    {label:'Tržišta',href:'/trzista/',icon:'↗'},
+    {label:'Objave',href:'/objave/',icon:'▤'},
+    {label:'Vijesti',href:'/vijesti/',icon:'▦'},
+    {label:'PDF / Media',href:'/downloads/',icon:'⇩'},
+    {label:'Visual Index',href:'/visual-index/',icon:'◇'},
+    {label:'AI pomoć',href:'/assistant/',icon:'◉'},
+    {label:'Kontakt',href:'/contact/',icon:'✉'},
+    {label:'Mail Center',href:'/mail-studio/',icon:'✦'},
+    {label:'Mobilni Admin',href:'/operator-mobile/',icon:'▯'},
+    {label:'Admin',href:'/operator-dashboard/',icon:'⚙'}
   ];
+  const routePath = href => {
+    try { return new URL(href,location.origin).pathname.replace(/\/+$/,'') || '/'; }
+    catch { return href; }
+  };
+  const active = href => {
+    const target = routePath(href);
+    if (target === '/') return path === '/';
+    return path === target || path.startsWith(target + '/');
+  };
 
   const shell = document.createElement('header');
   shell.id = 'gnk-backend-shell';
@@ -43,15 +52,30 @@
         <span><strong>GNK ASG d.o.o.</strong><span>Secure Operations Layer</span></span>
       </a>
       <nav class="gnk-shell-nav" aria-label="GNK ASG backend navigation">
-        ${items.map(([label, href]) => `<a href="${href}" class="${path === href.replace(/\/+$/, '') ? 'active' : ''}">${label}</a>`).join('')}
+        ${items.map(item => `<a href="${item.href}" class="${active(item.href)?'active':''}"><i aria-hidden="true">${item.icon}</i>${item.label}</a>`).join('')}
       </nav>
+      <div class="gnk-shell-identity"><strong>GNK DINAMO Ltd.</strong><small>Boulder · Colorado</small></div>
       <span class="gnk-shell-status"><i></i> Sustav aktivan</span>
-    </div>`;
-  document.body.insertBefore(shell, document.body.firstChild);
+    </div>
+    <div class="gnk-shell-progress" aria-hidden="true"><span></span></div>`;
+  document.body.insertBefore(shell,document.body.firstChild);
 
-  const currentTitle = document.querySelector('h1');
-  if (currentTitle && !currentTitle.dataset.gnkEnhanced) {
-    currentTitle.dataset.gnkEnhanced = '1';
-    currentTitle.setAttribute('title', currentTitle.textContent.trim());
+  const current = shell.querySelector('.gnk-shell-nav a.active');
+  current?.scrollIntoView({block:'nearest',inline:'center'});
+
+  const title = document.querySelector('h1');
+  if (title && !title.dataset.gnkEnhanced) {
+    title.dataset.gnkEnhanced='1';
+    title.setAttribute('title',title.textContent.trim());
   }
+
+  let ticking=false;
+  const updateProgress=()=>{
+    const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+    const value=Math.max(0,Math.min(1,scrollY/max));
+    shell.querySelector('.gnk-shell-progress span')?.style.setProperty('transform',`scaleX(${value})`);
+    ticking=false;
+  };
+  addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(updateProgress)}},{passive:true});
+  updateProgress();
 })();
