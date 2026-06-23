@@ -55,16 +55,14 @@ function isBackendPath(path) {
 
 function cleanIndexTitle(html, path) {
   if (path === '/') {
-    return html.replace(
-      'Index / <span>početna stranica</span>',
-      'Korporativni <span>ekosustav</span>'
-    );
+    return html
+      .replace('<h1>Index / <span>početna stranica</span></h1>', '')
+      .replace('Index / <span>početna stranica</span>', '');
   }
 
-  return html.replace(
-    'Index / <span>home page</span>',
-    'Corporate <span>ecosystem</span>'
-  );
+  return html
+    .replace('<h1>Index / <span>home page</span></h1>', '')
+    .replace('Index / <span>home page</span>', '');
 }
 
 function stripSharedAssets(html) {
