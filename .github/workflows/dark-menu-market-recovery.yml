@@ -9,6 +9,9 @@ on:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
       - "apps/portal/trzista/index.html"
+      - "apps/portal/assets/app.js"
+      - "apps/portal/assets/menu-deduplicate.js"
+      - "apps/portal/auto-editor/index.html"
       - ".github/workflows/dark-menu-market-recovery.yml"
   pull_request:
     branches:
@@ -17,6 +20,9 @@ on:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
       - "apps/portal/trzista/index.html"
+      - "apps/portal/assets/app.js"
+      - "apps/portal/assets/menu-deduplicate.js"
+      - "apps/portal/auto-editor/index.html"
       - ".github/workflows/dark-menu-market-recovery.yml"
 
 concurrency:
@@ -48,8 +54,11 @@ jobs:
           grep -q 'assets/app.js' ../../apps/portal/en/index.html
           grep -q 'group-network.js' ../../apps/portal/assets/app.js
           grep -q 'group-globe-3d.js' ../../apps/portal/assets/app.js
+          grep -q 'menu-deduplicate.js' ../../apps/portal/assets/app.js
           grep -q 'Tržišta i referentna imovina' ../../apps/portal/trzista/index.html
+          grep -q 'Auto Editor feeda' ../../apps/portal/auto-editor/index.html
           node --check ../../apps/portal/assets/app.js
+          node --check ../../apps/portal/assets/menu-deduplicate.js
           node --check ../../apps/portal/assets/group-network.js
           node --check ../../apps/portal/assets/group-globe-3d.js
 
@@ -67,9 +76,13 @@ jobs:
           curl --silent --show-error --location https://gnk-asg.hr/en/ | grep -q 'assets/app.js'
           curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-network.js'
           curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-globe-3d.js'
+          curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'menu-deduplicate.js'
+          curl --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q 'isInstallDuplicate'
           curl --silent --show-error --location https://gnk-asg.hr/assets/group-network.js | grep -q 'global-network'
           curl --silent --show-error --location https://gnk-asg.hr/assets/group-globe-3d.js | grep -q 'globe-panel'
           curl --silent --show-error --location https://gnk-asg.hr/trzista/ | grep -q 'Tržišta i referentna imovina'
+          curl --silent --show-error --location https://gnk-asg.hr/auto-editor/ | grep -q 'Auto Editor feeda'
+          curl --silent --show-error --location https://gnk-asg.hr/data/auto-editor.json | grep -q 'articles'
           if curl --silent --show-error --location https://gnk-asg.hr/trzista/ | grep -Eq 'TrÅ|PoÄ|RuÄ|UÄ|AÅ|GreÅ|â€¦|â€”'; then
             echo "Oštećeni UTF-8 znakovi još su prisutni na /trzista/."
             exit 1
@@ -83,6 +96,7 @@ jobs:
             https://gnk-asg.hr/news/ \
             https://gnk-asg.hr/objave/ \
             https://gnk-asg.hr/publications/ \
+            https://gnk-asg.hr/auto-editor/ \
             https://gnk-asg.hr/assistant/ \
             https://gnk-asg.hr/en/assistant/ \
             https://gnk-asg.hr/legal/ \
@@ -96,4 +110,4 @@ jobs:
             test "$code" = "200"
           done
 
-# Forced approved UTF-8 deployment for /trzista/: 2026-06-23T14:42:00+02:00
+# Index menu cleanup and public Auto Editor page: 2026-06-23
