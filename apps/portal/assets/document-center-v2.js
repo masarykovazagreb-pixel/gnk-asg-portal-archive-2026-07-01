@@ -5,15 +5,16 @@
 
   const isEn = document.documentElement.lang === 'en';
   const centre = isEn ? '/en/downloads/' : '/downloads/';
-  const hrPdf = '/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2_HR.pdf';
-  const enPdf = '/downloads/GNK_ASG_GNK_DINAMO_LTD_MEDIA_KIT_EN.pdf';
+  const hrKit = '/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_HR_2026.pdf';
+  const enKit = '/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_EN_2026.pdf';
+  const asgReport = '/documents/GNK_ASG_Izvjesce_neovisnog_revizora_i_financijski_izvjestaji_2025.pdf';
 
-  function replaceButton(button, href) {
+  function replaceButton(button,href) {
     if (!button || button.tagName === 'A') return button;
     const anchor = document.createElement('a');
-    for (const attr of button.attributes) {
-      if (attr.name !== 'data-open' && attr.name !== 'type') anchor.setAttribute(attr.name, attr.value);
-    }
+    [...button.attributes].forEach(attr => {
+      if (attr.name !== 'data-open' && attr.name !== 'type') anchor.setAttribute(attr.name,attr.value);
+    });
     anchor.href = href;
     anchor.innerHTML = button.innerHTML;
     button.replaceWith(anchor);
@@ -21,8 +22,7 @@
   }
 
   function connectNavigation() {
-    document.querySelectorAll('[data-open="documents-modal"]').forEach(button => replaceButton(button, centre));
-    document.querySelectorAll('[data-open="media-kit-modal"]').forEach(button => replaceButton(button, centre));
+    document.querySelectorAll('[data-open="documents-modal"],[data-open="media-kit-modal"]').forEach(button => replaceButton(button,centre));
   }
 
   function buildCards() {
@@ -30,24 +30,21 @@
     const grid = section?.querySelector('.pdf-grid');
     if (!grid) return;
     const cards = isEn ? [
-      [enPdf,'▣','GNK ASG / GNK DINAMO Ltd. Media Kit','English corporate profile, approved facts, visual guidance and contacts.','Download PDF'],
-      [hrPdf,'▣','Media Kit — hrvatski','Korporativni profil, javne činjenice, vizualne smjernice i kontakti.','Preuzmi PDF'],
-      [centre,'⇩','PDF and Download Centre','All available documents and verified public sources.','Open centre'],
-      ['/visual-index/','▦','Visual Index','Photography, gallery and approved visual assets.','Open gallery'],
-      ['/en/legal/','⚖','Legal documents','Terms, privacy, GDPR and legal notices.','Open legal'],
-      ['/en/contact/','✉','Request a signed document','Use the secure contact form for audited or legal originals.','Contact']
+      [asgReport,'▣','GNK ASG d.o.o. FY 2025','Independent auditor report and audited financial statements.'],
+      [centre,'▣','GNK DINAMO Ltd. FY 2025','Management-certified and internally reviewed consolidated report; unaudited.'],
+      [centre,'✓','Certificate of Good Standing','Official Colorado Secretary of State certificate, issued 16 June 2026.'],
+      [enKit,'▤','Corporate Media Kit 2026','New seven-page English corporate and media package.'],
+      [hrKit,'▤','Media Kit 2026 — Hrvatski','Novi sedmostranični hrvatski korporativni i medijski paket.'],
+      [centre,'⇩','PDF and Download Centre','All source documents, Media Kits and verification notes.']
     ] : [
-      [hrPdf,'▣','GNK ASG / GNK DINAMO Ltd. Media Kit','Hrvatski korporativni profil, javne činjenice, vizualne smjernice i kontakti.','Preuzmi PDF'],
-      [enPdf,'▣','Corporate Media Kit — English','Company profiles, approved facts, visual guidance and contacts.','Download PDF'],
-      [centre,'⇩','PDF i Download centar','Svi dostupni dokumenti i provjereni javni izvori.','Otvori centar'],
-      ['/visual-index/','▦','Visual Index','Fotografije, galerija i odobreni vizualni materijali.','Otvori galeriju'],
-      ['/legal/','⚖','Pravni dokumenti','Uvjeti, privatnost, GDPR i pravne obavijesti.','Otvori legal'],
-      ['/contact/','✉','Zatraži potpisani dokument','Za revizorske ili pravne originale koristite sigurnu kontakt formu.','Kontakt']
+      [asgReport,'▣','GNK ASG d.o.o. FY 2025','Izvješće neovisnog revizora i revidirani financijski izvještaji.'],
+      [centre,'▣','GNK DINAMO Ltd. FY 2025','Upravljački potvrđeno i interno pregledano konsolidirano izvješće; nerevidirano.'],
+      [centre,'✓','Certificate of Good Standing','Službeni certifikat Colorado Secretary of State, izdan 16. lipnja 2026.'],
+      [hrKit,'▤','Media Kit 2026 — Hrvatski','Novi sedmostranični hrvatski korporativni i medijski paket.'],
+      [enKit,'▤','Corporate Media Kit 2026','New seven-page English corporate and media package.'],
+      [centre,'⇩','PDF i Download centar','Svi izvorni dokumenti, Media Kitovi i napomene o provjeri.']
     ];
-    grid.innerHTML = cards.map(([href,icon,title,description,action],index) => {
-      const download = index < 2 ? ' download' : '';
-      return `<a class="pdf-card" href="${href}"${download}><span>${icon}</span><b>${title}</b><small>${description}</small><em style="display:block;margin-top:10px;color:var(--gold);font-style:normal;font-size:10px;font-weight:900;text-transform:uppercase">${action} ↓</em></a>`;
-    }).join('');
+    grid.innerHTML = cards.map(([href,icon,title,description],index) => `<a class="pdf-card" href="${href}"${index===0||index===3||index===4?' target="_blank" rel="noopener"':''}><span>${icon}</span><b>${title}</b><small>${description}</small></a>`).join('');
   }
 
   function enhanceModal() {
@@ -56,11 +53,11 @@
     const grid = modal.querySelector('.modal-grid');
     const actions = modal.querySelector('.actions');
     if (grid) grid.innerHTML = isEn
-      ? `<article class="modal-item"><h4>Corporate Media Kit — English</h4><p>Five-page public company and media profile, available for direct download.</p></article><article class="modal-item"><h4>Media Kit — Croatian</h4><p>Hrvatski korporativni i medijski paket dostupan za izravno preuzimanje.</p></article><article class="modal-item"><h4>Signed financial documents</h4><p>Audited or consolidated originals are shown only after physical upload and verification.</p></article><article class="modal-item"><h4>Legal and visual sources</h4><p>Legal notices, Visual Index and official corporate sources remain available separately.</p></article>`
-      : `<article class="modal-item"><h4>Media Kit — hrvatski</h4><p>Javni korporativni i medijski paket od pet stranica dostupan je za izravno preuzimanje.</p></article><article class="modal-item"><h4>Corporate Media Kit — English</h4><p>Engleski profil društava, javne činjenice, vizualne smjernice i kontakti.</p></article><article class="modal-item"><h4>Potpisani financijski dokumenti</h4><p>Revizorski i konsolidirani originali prikazuju se tek nakon fizičkog učitavanja i provjere.</p></article><article class="modal-item"><h4>Pravni i vizualni izvori</h4><p>Legal, Visual Index i službeni korporativni izvori dostupni su zasebno.</p></article>`;
+      ? `<article class="modal-item"><h4>GNK ASG d.o.o. FY 2025</h4><p>Independent auditor report and audited standalone financial statements.</p></article><article class="modal-item"><h4>GNK DINAMO Ltd. FY 2025</h4><p>Management-certified and internally reviewed consolidated report; not independently audited.</p></article><article class="modal-item"><h4>Colorado Good Standing</h4><p>Official Certificate of Fact of Good Standing for Entity ID 20238180649.</p></article><article class="modal-item"><h4>Media Kits 2026</h4><p>New English and Croatian seven-page corporate and media packages.</p></article>`
+      : `<article class="modal-item"><h4>GNK ASG d.o.o. FY 2025</h4><p>Izvješće neovisnog revizora i revidirani samostalni financijski izvještaji.</p></article><article class="modal-item"><h4>GNK DINAMO Ltd. FY 2025</h4><p>Upravljački potvrđeno i interno pregledano konsolidirano izvješće; nije neovisno revidirano.</p></article><article class="modal-item"><h4>Colorado Good Standing</h4><p>Službeni Certificate of Fact of Good Standing za Entity ID 20238180649.</p></article><article class="modal-item"><h4>Media Kitovi 2026.</h4><p>Novi hrvatski i engleski sedmostranični korporativni i medijski paketi.</p></article>`;
     if (actions) actions.innerHTML = isEn
-      ? `<a class="btn" href="${enPdf}" download>Download English PDF</a><a class="btn" href="${hrPdf}" download>Preuzmi HR PDF</a><a class="btn" href="${centre}">Open Download Centre</a>`
-      : `<a class="btn" href="${hrPdf}" download>Preuzmi hrvatski PDF</a><a class="btn" href="${enPdf}" download>Download English PDF</a><a class="btn" href="${centre}">Otvori Download centar</a>`;
+      ? `<a class="btn" href="${centre}">Open Download Centre</a><a class="btn" href="${asgReport}" target="_blank" rel="noopener">Audited GNK ASG report</a><a class="btn" href="${enKit}" target="_blank" rel="noopener">English Media Kit</a>`
+      : `<a class="btn" href="${centre}">Otvori Download centar</a><a class="btn" href="${asgReport}" target="_blank" rel="noopener">Revidirani GNK ASG izvještaj</a><a class="btn" href="${hrKit}" target="_blank" rel="noopener">Hrvatski Media Kit</a>`;
   }
 
   connectNavigation();
