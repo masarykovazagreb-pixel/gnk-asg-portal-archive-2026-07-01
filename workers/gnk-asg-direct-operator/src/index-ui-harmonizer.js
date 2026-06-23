@@ -93,9 +93,17 @@ function injectHtml(response, html, assets, cacheControl) {
   );
 }
 
+async function explicitAutoEditor(request, env, path) {
+  if (!env.ASSETS?.fetch) return null;
+  if (path !== '/auto-editor' && path !== '/auto-editor/') return null;
+  const assetUrl = new URL('/auto-editor/index.html',request.url);
+  return env.ASSETS.fetch(new Request(assetUrl.toString(),request));
+}
+
 async function fetchHandler(request, env, ctx) {
-  const response = await core.fetch(request,env,ctx);
   const path = new URL(request.url).pathname;
+  const explicit = await explicitAutoEditor(request,env,path);
+  const response = explicit || await core.fetch(request,env,ctx);
   const type = response.headers.get('content-type') || '';
   const isHtml = request.method === 'GET' && type.includes('text/html');
 
