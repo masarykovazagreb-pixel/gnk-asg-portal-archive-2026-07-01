@@ -150,4 +150,5 @@
   window.addEventListener('pagehide',()=>cancelAnimationFrame(raf),{once:true});
   resize();
   frame();
+  import('/assets/document-center-v2.js?v=20260623-v2').catch(()=>{});
 })();
