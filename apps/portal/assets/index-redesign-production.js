@@ -1,6 +1,16 @@
 (() => {
   'use strict';
 
+  const iqCss = document.createElement('link');
+  iqCss.rel = 'stylesheet';
+  iqCss.href = '/assets/index-iq200.css?v=20260623-iq200-1';
+  document.head.appendChild(iqCss);
+
+  const iqScript = document.createElement('script');
+  iqScript.src = '/assets/index-iq200.js?v=20260623-iq200-1';
+  iqScript.defer = true;
+  document.head.appendChild(iqScript);
+
   const lang = document.documentElement.lang === 'en' ? 'en' : 'hr';
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
