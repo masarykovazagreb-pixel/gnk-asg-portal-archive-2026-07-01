@@ -284,3 +284,5 @@ export default {
     if (typeof core.email === 'function') return core.email(message, env, ctx);
   }
 };
+
+// CI verification trigger only; runtime behavior is unchanged.
