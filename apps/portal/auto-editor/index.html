@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="GNK ASG Auto Editor – javni pregled automatski pripremljenih poslovnih, tehnoloških i tržišnih objava.">
+<title>Auto Editor | GNK ASG</title>
+<link rel="canonical" href="https://gnk-asg.hr/auto-editor/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<style>
+:root{--bg:#050d19;--panel:#0b1c34;--panel2:#0f294b;--gold:#d4af37;--text:#f7f9fc;--muted:#b8c5d8;--line:rgba(212,175,55,.34)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 0%,#18345e 0,#071426 42%,#03070e 100%);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+a{color:inherit}
+header{position:sticky;top:0;z-index:20;background:rgba(3,8,17,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.header-inner{width:min(1120px,calc(100% - 28px));min-height:70px;margin:auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{color:#f3d36d;font-weight:900;letter-spacing:.11em;text-decoration:none}
+nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+nav a{padding:9px 12px;border:1px solid rgba(212,175,55,.28);border-radius:999px;text-decoration:none;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+nav a:hover{background:rgba(212,175,55,.13)}
+main{width:min(1120px,calc(100% - 28px));margin:auto;padding:38px 0 78px}
+.hero,.status,.article{border:1px solid var(--line);background:linear-gradient(145deg,rgba(11,28,52,.96),rgba(5,14,28,.96));box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.hero{padding:26px;border-radius:26px}
+.eyebrow{margin:0 0 10px;color:var(--gold);font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+h1{margin:0;font:700 clamp(2.5rem,7vw,5.3rem)/.96 Georgia,serif;letter-spacing:-.04em}
+.hero p{max-width:850px;color:var(--muted);font-size:17px;line-height:1.65;margin:18px 0 0}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:20px}
+button,.button{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--gold);border-radius:13px;padding:11px 15px;background:linear-gradient(135deg,#0b2b5a,#071b3a);color:#fff;text-decoration:none;font-weight:900;cursor:pointer}
+.status{margin:16px 0;padding:15px 17px;border-radius:17px;color:var(--muted);line-height:1.5}
+.status.ok{color:#9be9b0}.status.error{color:#ffb0b0}
+.grid{display:grid;gap:17px}
+.article{border-radius:24px;padding:22px}
+.meta{display:flex;gap:10px;flex-wrap:wrap;color:var(--gold);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}
+.article h2{font:700 clamp(1.55rem,4vw,2.35rem)/1.1 Georgia,serif;margin:13px 0;color:#fff}
+.excerpt{color:#d1daea;font-size:16px;line-height:1.65}
+.article details{margin-top:16px;border-top:1px solid rgba(212,175,55,.22);padding-top:14px}
+.article summary{cursor:pointer;color:#f3d36d;font-weight:900}
+.body{color:var(--muted);line-height:1.7}
+.body p{margin:14px 0}
+.empty{text-align:center;padding:35px}
+footer{padding:24px 14px;text-align:center;color:#8f9bb0;font-size:12px;border-top:1px solid rgba(212,175,55,.18)}
+@media(max-width:700px){.header-inner{padding:10px 0}.brand{width:100%}nav{margin-left:0}nav a{flex:1 1 auto}.hero,.article{border-radius:19px}.hero{padding:20px}main{padding-top:20px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a class="brand" href="/">GNK ASG</a>
+    <nav aria-label="Auto Editor navigation">
+      <a href="/">Početna</a>
+      <a href="/objave/">Objave</a>
+      <a href="/vijesti/">Vijesti</a>
+      <a href="/visual-index/">Visual Index</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <p class="eyebrow" id="eyebrow">GNK ASG Intelligence Desk</p>
+    <h1>Auto Editor</h1>
+    <p id="intro">Javni pregled sadržaja koje Auto Editor priprema iz strukturiranog GNK ASG feeda. Stranica prikazuje postojeće zapise bez upućivanja na nepostojeće pojedinačne rute.</p>
+    <div class="toolbar">
+      <button id="refresh" type="button">Osvježi prikaz</button>
+      <a class="button" href="/data/auto-editor.json" target="_blank" rel="noopener">Otvori JSON feed</a>
+    </div>
+  </section>
+  <div class="status" id="status" role="status" aria-live="polite">Učitavanje Auto Editor feeda…</div>
+  <section class="grid" id="articles" aria-label="Auto Editor objave"></section>
+</main>
+<footer>GNK ASG Auto Editor · Informativni sadržaj · Nije pravni, financijski ni investicijski savjet.</footer>
+<script>
+(() => {
+  'use strict';
+  const params = new URLSearchParams(location.search);
+  const en = params.get('lang') === 'en';
+  const copy = en ? {
+    home:'Home', publications:'Publications', news:'News', intro:'Public overview of content prepared through the structured GNK ASG Auto Editor feed. The page displays existing records without linking to unavailable article routes.',
+    refresh:'Refresh', json:'Open JSON feed', loading:'Loading Auto Editor feed…', open:'Read full entry', close:'Close entry', noItems:'No Auto Editor entries are currently available.',
+    loaded:count => `Loaded ${count} Auto Editor entries.`, error:'The Auto Editor feed is currently unavailable.'
+  } : {
+    home:'Početna', publications:'Objave', news:'Vijesti', intro:'Javni pregled sadržaja koje Auto Editor priprema iz strukturiranog GNK ASG feeda. Stranica prikazuje postojeće zapise bez upućivanja na nepostojeće pojedinačne rute.',
+    refresh:'Osvježi prikaz', json:'Otvori JSON feed', loading:'Učitavanje Auto Editor feeda…', open:'Pročitaj cijeli zapis', close:'Zatvori zapis', noItems:'Trenutačno nema dostupnih Auto Editor zapisa.',
+    loaded:count => `Učitano zapisa: ${count}.`, error:'Auto Editor feed trenutačno nije dostupan.'
+  };
+
+  document.documentElement.lang = en ? 'en' : 'hr';
+  document.title = en ? 'Auto Editor | GNK ASG' : 'Auto Editor | GNK ASG';
+  document.getElementById('intro').textContent = copy.intro;
+  document.getElementById('refresh').textContent = copy.refresh;
+  const navLinks = document.querySelectorAll('header nav a');
+  navLinks[0].textContent = copy.home;
+  navLinks[0].href = en ? '/en/' : '/';
+  navLinks[1].textContent = copy.publications;
+  navLinks[1].href = en ? '/publications/' : '/objave/';
+  navLinks[2].textContent = copy.news;
+  navLinks[2].href = en ? '/news/' : '/vijesti/';
+  document.querySelector('.toolbar .button').textContent = copy.json;
+
+  const status = document.getElementById('status');
+  const articles = document.getElementById('articles');
+
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+  const formatDate = value => {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? String(value || '') : new Intl.DateTimeFormat(en ? 'en-GB' : 'hr-HR', {dateStyle:'medium',timeStyle:'short'}).format(date);
+  };
+  const bodyHtml = body => {
+    const paragraphs = Array.isArray(body) ? body : String(body || '').split(/\n{2,}/);
+    return paragraphs.filter(Boolean).map(item => `<p>${escapeHtml(item)}</p>`).join('');
+  };
+
+  function renderItem(item) {
+    const article = document.createElement('article');
+    article.className = 'article';
+    const title = item.title || item.titleHr || 'Auto Editor';
+    const excerpt = item.excerpt || item.summary || '';
+    article.innerHTML = `
+      <div class="meta"><span>${escapeHtml(item.slot || '')}</span><span>${escapeHtml(formatDate(item.publishedAt || item.updatedAt))}</span><span>${escapeHtml(item.entity || item.focus || '')}</span></div>
+      <h2>${escapeHtml(title)}</h2>
+      <p class="excerpt">${escapeHtml(excerpt)}</p>
+      <details><summary>${copy.open}</summary><div class="body">${bodyHtml(item.body)}</div></details>`;
+    return article;
+  }
+
+  async function load() {
+    status.className = 'status';
+    status.textContent = copy.loading;
+    articles.replaceChildren();
+    try {
+      const response = await fetch(`/data/auto-editor.json?cb=${Date.now()}`, {cache:'no-store'});
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const payload = await response.json();
+      const items = Array.isArray(payload) ? payload : (Array.isArray(payload.articles) ? payload.articles : (Array.isArray(payload.items) ? payload.items : []));
+      if (!items.length) {
+        articles.innerHTML = `<article class="article empty"><p>${copy.noItems}</p></article>`;
+      } else {
+        items.forEach(item => articles.appendChild(renderItem(item)));
+      }
+      status.className = 'status ok';
+      status.textContent = copy.loaded(items.length);
+    } catch (error) {
+      status.className = 'status error';
+      status.textContent = `${copy.error} ${error.message}`;
+      articles.innerHTML = `<article class="article empty"><p>${copy.error}</p></article>`;
+    }
+  }
+
+  document.getElementById('refresh').addEventListener('click', load);
+  load();
+})();
+</script>
+</body>
+</html>
