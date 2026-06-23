@@ -7,8 +7,8 @@ const BACKEND_PATHS = new Set([
 ]);
 const INDEX_PATHS = new Set(['/', '/en', '/en/']);
 
-const BACKEND_ASSETS = '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-1"><script defer src="/assets/backend-ui-shell.js?v=20260623-backend-1"></script>';
-const INDEX_ASSETS = '<link rel="stylesheet" href="/assets/index-iq200.css?v=20260623-iq200-1"><script defer src="/assets/index-iq200.js?v=20260623-iq200-1"></script>';
+const BACKEND_ASSETS = '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-3"><script defer src="/assets/backend-ui-shell.js?v=20260623-backend-3"></script>';
+const INDEX_ASSETS = '<link rel="stylesheet" href="/assets/index-iq200.css?v=20260623-iq200-1"><script defer src="/assets/index-iq200.js?v=20260623-iq200-1"></script><script defer src="/assets/admin-route-bridge.js?v=20260623-admin-1"></script>';
 
 function cleanIndexTitle(html, path) {
   if (path === '/') {
