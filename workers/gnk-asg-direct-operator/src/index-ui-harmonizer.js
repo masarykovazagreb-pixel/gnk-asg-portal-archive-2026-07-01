@@ -40,10 +40,11 @@ const CONTACT_ASSETS =
   '<script defer src="/assets/contact-quality-v2.js?v=20260623-v2"></script>';
 
 const PUBLIC_ASSETS =
-  '<link rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260623-global-6">' +
-  '<link rel="stylesheet" href="/assets/public-site-unified-v6.css?v=20260623-public-6">' +
-  '<script defer src="/assets/brand/gnk-asg-global-layer.js?v=20260623-global-6"></script>' +
-  '<script defer src="/assets/public-site-unified-v6.js?v=20260623-public-6"></script>';
+  '<link rel="stylesheet" href="/assets/brand/gnk-asg-global-layer.css?v=20260624-global-7">' +
+  '<link rel="stylesheet" href="/assets/public-site-unified-v6.css?v=20260624-public-7">' +
+  '<link rel="stylesheet" href="/assets/public-menu-centered-v7.css?v=20260624-menu-center-7">' +
+  '<script defer src="/assets/brand/gnk-asg-global-layer.js?v=20260624-global-7"></script>' +
+  '<script defer src="/assets/public-site-unified-v6.js?v=20260624-public-7"></script>';
 
 function isBackendPath(path) {
   return BACKEND_PREFIXES.some(prefix =>
@@ -70,7 +71,8 @@ function stripSharedAssets(html) {
     .replace(/<link[^>]+gnk-asg-global-layer\.css[^>]*>/gi,'')
     .replace(/<script[^>]+gnk-asg-global-layer\.js[^>]*><\/script>/gi,'')
     .replace(/<link[^>]+public-site-unified-v6\.css[^>]*>/gi,'')
-    .replace(/<script[^>]+public-site-unified-v6\.js[^>]*><\/script>/gi,'');
+    .replace(/<script[^>]+public-site-unified-v6\.js[^>]*><\/script>/gi,'')
+    .replace(/<link[^>]+public-menu-centered-v7\.css[^>]*>/gi,'');
 }
 
 function injectHtml(response, html, assets, cacheControl) {
