@@ -1,0 +1,1 @@
+Restore the approved Business homepage files only. HR and EN homepage assets come from production frontend integration commit aec31eae8ab8d5c8b48c351952b0c33fd162e541. Backend, mail, news, publications, markets and admin logic are unchanged.
