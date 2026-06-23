@@ -1,14 +1,14 @@
 import app from './index-dark-market-recovery.js';
 
-const VERSION = 'GNK_ASG_PUBLIC_PAGE_ROUTES_V1';
+const VERSION = 'GNK_ASG_PUBLIC_PAGE_ROUTES_V2';
 
-const publicAssets = new Map([
-  ['/auto-editor', '/auto-editor/index.html'],
-  ['/auto-editor/', '/auto-editor/index.html'],
-  ['/auto-editor/index.html', '/auto-editor/index.html'],
-  ['/media-kit', '/media-kit/index.html'],
-  ['/media-kit/', '/media-kit/index.html'],
-  ['/media-kit/index.html', '/media-kit/index.html']
+const publicPaths = new Set([
+  '/auto-editor',
+  '/auto-editor/',
+  '/auto-editor/index.html',
+  '/media-kit',
+  '/media-kit/',
+  '/media-kit/index.html'
 ]);
 
 async function servePublicAsset(request, env) {
@@ -16,14 +16,9 @@ async function servePublicAsset(request, env) {
   if (!env.ASSETS || typeof env.ASSETS.fetch !== 'function') return null;
 
   const url = new URL(request.url);
-  const assetPath = publicAssets.get(url.pathname);
-  if (!assetPath) return null;
+  if (!publicPaths.has(url.pathname)) return null;
 
-  const assetRequest = new Request(new URL(assetPath, url.origin), {
-    method: request.method,
-    headers: request.headers
-  });
-  const response = await env.ASSETS.fetch(assetRequest);
+  const response = await env.ASSETS.fetch(request);
   if (response.status === 404) return null;
 
   const headers = new Headers(response.headers);
