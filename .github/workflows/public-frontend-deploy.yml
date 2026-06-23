@@ -1,0 +1,72 @@
+name: Deploy public GNK ASG portal
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'scripts/generate_media_kit_pdfs.py'
+      - 'workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js'
+      - '.github/workflows/public-frontend-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-public-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generate new HR and EN Media Kits
+        run: |
+          python scripts/generate_media_kit_pdfs.py
+          python - <<'PY'
+          from pathlib import Path
+          required = [
+              Path('apps/portal/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_HR_2026.pdf'),
+              Path('apps/portal/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_EN_2026.pdf'),
+              Path('apps/portal/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2_HR.pdf'),
+              Path('apps/portal/downloads/GNK_ASG_GNK_DINAMO_LTD_MEDIA_KIT_EN.pdf'),
+          ]
+          for path in required:
+              data = path.read_bytes()
+              assert data.startswith(b'%PDF-'), path
+              assert len(data) > 5000, (path,len(data))
+          assert required[0].read_bytes().count(b'/Type /Page ') == 7
+          assert required[1].read_bytes().count(b'/Type /Page ') == 7
+          print('MEDIA_KITS_OK')
+          PY
+
+      - name: Validate centred public menu and document layer
+        run: |
+          grep -q 'justify-content:center' apps/portal/assets/public-menu-centered-v7.css
+          grep -q 'public-navigation-documents-v7.js' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
+          grep -q 'GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_HR_2026.pdf' apps/portal/downloads/index.html
+          grep -q 'GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_EN_2026.pdf' apps/portal/en/downloads/index.html
+
+      - name: Deploy public portal
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy src/index-ui-harmonizer.js --config wrangler.dark-market.toml --name gnk-asg-direct-operator
+
+      - name: Production smoke test
+        run: |
+          sleep 15
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/public-menu-centered-v7.css | grep -q 'PUBLIC MENU CENTERED V7'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/public-navigation-documents-v7.js | grep -q 'PUBLIC_NAV_DOCS_V7'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/downloads/ | grep -q 'Media Kit 2026'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/en/downloads/ | grep -q 'Corporate Media Kit 2026'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_HR_2026.pdf | head -c 5 | grep -q '%PDF-'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_EN_2026.pdf | head -c 5 | grep -q '%PDF-'
