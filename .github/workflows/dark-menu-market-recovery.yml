@@ -57,6 +57,7 @@ jobs:
           grep -q 'menu-deduplicate.js' ../../apps/portal/assets/app.js
           grep -q 'Tržišta i referentna imovina' ../../apps/portal/trzista/index.html
           grep -q 'Auto Editor feeda' ../../apps/portal/auto-editor/index.html
+          grep -q '/auto-editor/index.html' ../../apps/portal/assets/menu-deduplicate.js
           node --check ../../apps/portal/assets/app.js
           node --check ../../apps/portal/assets/menu-deduplicate.js
           node --check ../../apps/portal/assets/group-network.js
@@ -69,20 +70,36 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.dark-market.toml
 
-      - name: Verify globe portal and public routes
+      - name: Verify menu cleanup assets
         run: |
           sleep 12
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'menu-deduplicate.js'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q 'isInstallDuplicate'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q '/auto-editor/index.html'
+
+      - name: Verify Auto Editor frontend
+        run: |
+          code=$(curl --silent --show-error --location --output /tmp/auto-editor.html --write-out '%{http_code}' https://gnk-asg.hr/auto-editor/index.html)
+          echo "$code https://gnk-asg.hr/auto-editor/index.html"
+          test "$code" = "200"
+          grep -q 'Auto Editor feeda' /tmp/auto-editor.html
+
+      - name: Verify Auto Editor feed
+        run: |
+          code=$(curl --silent --show-error --location --output /tmp/auto-editor.json --write-out '%{http_code}' https://gnk-asg.hr/data/auto-editor.json)
+          echo "$code https://gnk-asg.hr/data/auto-editor.json"
+          test "$code" = "200"
+          grep -q 'articles' /tmp/auto-editor.json
+
+      - name: Verify core public routes
+        run: |
           curl --silent --show-error --location https://gnk-asg.hr/ | grep -q 'assets/app.js'
           curl --silent --show-error --location https://gnk-asg.hr/en/ | grep -q 'assets/app.js'
           curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-network.js'
           curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-globe-3d.js'
-          curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'menu-deduplicate.js'
-          curl --silent --show-error --location https://gnk-asg.hr/assets/menu-deduplicate.js | grep -q 'isInstallDuplicate'
           curl --silent --show-error --location https://gnk-asg.hr/assets/group-network.js | grep -q 'global-network'
           curl --silent --show-error --location https://gnk-asg.hr/assets/group-globe-3d.js | grep -q 'globe-panel'
           curl --silent --show-error --location https://gnk-asg.hr/trzista/ | grep -q 'Tržišta i referentna imovina'
-          curl --silent --show-error --location https://gnk-asg.hr/auto-editor/ | grep -q 'Auto Editor feeda'
-          curl --silent --show-error --location https://gnk-asg.hr/data/auto-editor.json | grep -q 'articles'
           if curl --silent --show-error --location https://gnk-asg.hr/trzista/ | grep -Eq 'TrÅ|PoÄ|RuÄ|UÄ|AÅ|GreÅ|â€¦|â€”'; then
             echo "Oštećeni UTF-8 znakovi još su prisutni na /trzista/."
             exit 1
@@ -96,7 +113,7 @@ jobs:
             https://gnk-asg.hr/news/ \
             https://gnk-asg.hr/objave/ \
             https://gnk-asg.hr/publications/ \
-            https://gnk-asg.hr/auto-editor/ \
+            https://gnk-asg.hr/auto-editor/index.html \
             https://gnk-asg.hr/assistant/ \
             https://gnk-asg.hr/en/assistant/ \
             https://gnk-asg.hr/legal/ \
@@ -110,4 +127,4 @@ jobs:
             test "$code" = "200"
           done
 
-# Index menu cleanup and public Auto Editor page: 2026-06-23
+# Index menu cleanup and exact public Auto Editor route: 2026-06-23
