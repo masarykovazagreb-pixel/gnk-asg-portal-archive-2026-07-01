@@ -1,0 +1,38 @@
+name: Deploy public portal
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-portal-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify public package
+        shell: bash
+        run: |
+          test -s apps/portal/assets/public-menu-centered-v7.css
+          test -s apps/portal/documents/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf
+          test -s apps/portal/documents/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf
+          test -s apps/portal/documents/GNK_DINAMO_Ltd_Certificate_of_Good_Standing_2026.pdf
+          test -s apps/portal/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2026_HR.pdf
+          test -s apps/portal/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2026_EN.pdf
+
+      - name: Deploy with Wrangler
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: workers/gnk-asg-direct-operator
+          command: deploy src/index-ui-harmonizer.js --config wrangler.dark-market.toml --name gnk-asg-direct-operator
