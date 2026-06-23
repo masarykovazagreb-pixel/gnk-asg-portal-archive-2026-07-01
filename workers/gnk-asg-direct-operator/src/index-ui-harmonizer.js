@@ -6,15 +6,28 @@ const BACKEND_PATHS = new Set([
   '/mail-studio', '/mail-studio/'
 ]);
 const INDEX_PATHS = new Set(['/', '/en', '/en/']);
+const CONTACT_PATHS = new Set(['/contact', '/contact/', '/en/contact', '/en/contact/']);
 
-const BACKEND_ASSETS = '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-1"><script defer src="/assets/backend-ui-shell.js?v=20260623-backend-1"></script>';
-const INDEX_ASSETS = '<link rel="stylesheet" href="/assets/index-iq200.css?v=20260623-iq200-1"><script defer src="/assets/index-iq200.js?v=20260623-iq200-1"></script>';
+const BACKEND_ASSETS = '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-2"><script defer src="/assets/backend-ui-shell.js?v=20260623-backend-2"></script>';
+const INDEX_ASSETS = '<link rel="stylesheet" href="/assets/index-iq200.css?v=20260623-iq200-2"><link rel="stylesheet" href="/assets/visual-quality-v2.css?v=20260623-v2"><script defer src="/assets/index-iq200.js?v=20260623-iq200-2"></script><script defer src="/assets/visual-quality-v2.js?v=20260623-v2"></script>';
+const CONTACT_ASSETS = '<link rel="stylesheet" href="/assets/contact-quality-v2.css?v=20260623-v2"><script defer src="/assets/contact-quality-v2.js?v=20260623-v2"></script>';
 
 function cleanIndexTitle(html, path) {
   if (path === '/') {
     return html.replace('Index / <span>početna stranica</span>', 'Korporativni <span>ekosustav</span>');
   }
   return html.replace('Index / <span>home page</span>', 'Corporate <span>ecosystem</span>');
+}
+
+function injectHtml(response, html, assets, cacheControl) {
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  if (cacheControl) headers.set('cache-control', cacheControl);
+  return new Response(html.replace('</head>', `${assets}</head>`), {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
 }
 
 async function fetchHandler(request, env, ctx) {
@@ -26,26 +39,17 @@ async function fetchHandler(request, env, ctx) {
 
   if (BACKEND_PATHS.has(path)) {
     const html = await response.text();
-    const headers = new Headers(response.headers);
-    headers.delete('content-length');
-    headers.set('cache-control', 'no-store, no-cache, must-revalidate, max-age=0');
-    return new Response(html.replace('</head>', `${BACKEND_ASSETS}</head>`), {
-      status: response.status,
-      statusText: response.statusText,
-      headers
-    });
+    return injectHtml(response, html, BACKEND_ASSETS, 'no-store, no-cache, must-revalidate, max-age=0');
+  }
+
+  if (CONTACT_PATHS.has(path)) {
+    const html = await response.text();
+    return injectHtml(response, html, CONTACT_ASSETS, 'no-store, no-cache, must-revalidate, max-age=0');
   }
 
   if (INDEX_PATHS.has(path)) {
     const html = await response.text();
-    const headers = new Headers(response.headers);
-    headers.delete('content-length');
-    const updated = cleanIndexTitle(html, path).replace('</head>', `${INDEX_ASSETS}</head>`);
-    return new Response(updated, {
-      status: response.status,
-      statusText: response.statusText,
-      headers
-    });
+    return injectHtml(response, cleanIndexTitle(html, path), INDEX_ASSETS);
   }
 
   return response;
