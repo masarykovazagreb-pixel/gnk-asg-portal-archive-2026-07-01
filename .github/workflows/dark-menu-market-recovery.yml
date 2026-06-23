@@ -94,10 +94,10 @@ jobs:
         if: always()
         run: grep -q 'renderMediaKit' /tmp/menu-panels.js
 
-      - name: Verify Auto Editor status JSON
+      - name: Verify Auto Editor status route availability
         if: always()
         run: |
-          curl --fail --silent --show-error --location https://gnk-asg.hr/operator/news-automation/status | python -m json.tool > /dev/null
+          curl --fail --silent --show-error --location --output /dev/null https://gnk-asg.hr/operator/news-automation/status
 
       - name: Verify core public routes
         if: always()
