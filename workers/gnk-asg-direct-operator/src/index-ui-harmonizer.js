@@ -8,6 +8,7 @@ const BACKEND_PATHS = new Set([
 const INDEX_PATHS = new Set(['/', '/en', '/en/']);
 
 const BACKEND_ASSETS = '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-1"><script defer src="/assets/backend-ui-shell.js?v=20260623-backend-1"></script>';
+const INDEX_ASSETS = '<link rel="stylesheet" href="/assets/index-iq200.css?v=20260623-iq200-1"><script defer src="/assets/index-iq200.js?v=20260623-iq200-1"></script>';
 
 function cleanIndexTitle(html, path) {
   if (path === '/') {
@@ -39,7 +40,8 @@ async function fetchHandler(request, env, ctx) {
     const html = await response.text();
     const headers = new Headers(response.headers);
     headers.delete('content-length');
-    return new Response(cleanIndexTitle(html, path), {
+    const updated = cleanIndexTitle(html, path).replace('</head>', `${INDEX_ASSETS}</head>`);
+    return new Response(updated, {
       status: response.status,
       statusText: response.statusText,
       headers
