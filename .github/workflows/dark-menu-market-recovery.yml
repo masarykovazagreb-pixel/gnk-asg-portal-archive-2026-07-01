@@ -8,6 +8,7 @@ on:
     paths:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      - "apps/portal/trzista/index.html"
       - ".github/workflows/dark-menu-market-recovery.yml"
   pull_request:
     branches:
@@ -15,6 +16,7 @@ on:
     paths:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      - "apps/portal/trzista/index.html"
       - ".github/workflows/dark-menu-market-recovery.yml"
 
 concurrency:
@@ -46,6 +48,7 @@ jobs:
           grep -q 'assets/app.js' ../../apps/portal/en/index.html
           grep -q 'group-network.js' ../../apps/portal/assets/app.js
           grep -q 'group-globe-3d.js' ../../apps/portal/assets/app.js
+          grep -q 'Tržišta i referentna imovina' ../../apps/portal/trzista/index.html
           node --check ../../apps/portal/assets/app.js
           node --check ../../apps/portal/assets/group-network.js
           node --check ../../apps/portal/assets/group-globe-3d.js
@@ -66,6 +69,11 @@ jobs:
           curl --silent --show-error --location https://gnk-asg.hr/assets/app.js | grep -q 'group-globe-3d.js'
           curl --silent --show-error --location https://gnk-asg.hr/assets/group-network.js | grep -q 'global-network'
           curl --silent --show-error --location https://gnk-asg.hr/assets/group-globe-3d.js | grep -q 'globe-panel'
+          curl --silent --show-error --location https://gnk-asg.hr/trzista/ | grep -q 'Tržišta i referentna imovina'
+          if curl --silent --show-error --location https://gnk-asg.hr/trzista/ | grep -Eq 'TrÅ|PoÄ|RuÄ|UÄ|AÅ|GreÅ|â€¦|â€”'; then
+            echo "Oštećeni UTF-8 znakovi još su prisutni na /trzista/."
+            exit 1
+          fi
           for url in \
             https://gnk-asg.hr/ \
             https://gnk-asg.hr/en/ \
@@ -88,4 +96,4 @@ jobs:
             test "$code" = "200"
           done
 
-# Full app.js globe portal deployment: 2026-06-23
+# Frontend UTF-8 deploy trigger for /trzista/: 2026-06-23
