@@ -12,14 +12,21 @@
   const path = location.pathname.replace(/\/+$/, '') || '/';
   const items = [
     ['Portal', '/'],
-    ['Operator Dashboard', '/operator-dashboard/'],
-    ['Mobilni Admin', '/operator-mobile/'],
-    ['Mail Center', '/mail-studio/'],
-    ['Kontakt', '/contact/'],
+    ['Profil', '/#profil'],
+    ['Financije', '/#financije'],
+    ['Grupa', '/#mreza-grupe'],
+    ['Tržišta', '/trzista/'],
     ['Objave', '/objave/'],
     ['Vijesti', '/vijesti/'],
-    ['Tržišta', '/trzista/'],
-    ['Visual Index', '/visual-index/']
+    ['PDF / Media', '/#dokumenti'],
+    ['Visual Index', '/visual-index/'],
+    ['AI pomoć', '/assistant/'],
+    ['Kontakt', '/contact/'],
+    ['Legal', '/legal/'],
+    ['App', '/app/'],
+    ['Mail Center', '/mail-studio/'],
+    ['Mobilni Admin', '/operator-mobile/'],
+    ['Admin', '/operator-dashboard/']
   ];
 
   const shell = document.createElement('header');
