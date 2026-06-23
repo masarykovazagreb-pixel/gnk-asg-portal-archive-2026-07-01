@@ -22,6 +22,17 @@
 
   if (excludedPrefixes.some(prefix => path === prefix || path.startsWith(prefix + '/'))) return;
 
+  const installMenuStyles = () => {
+    if (document.getElementById('gnk-public-menu-centered-v7')) return;
+    const link = document.createElement('link');
+    link.id = 'gnk-public-menu-centered-v7';
+    link.rel = 'stylesheet';
+    link.href = '/assets/public-menu-centered-v7.css?v=20260624-menu-center-7';
+    document.head.appendChild(link);
+  };
+
+  installMenuStyles();
+
   const isEn =
     path === '/en' ||
     path.startsWith('/en/') ||
@@ -116,6 +127,7 @@
   };
 
   const install = () => {
+    installMenuStyles();
     document.documentElement.dataset.gnkTheme = 'dark';
     localStorage.setItem('gnk-asg-theme','dark');
 
@@ -160,6 +172,7 @@
     }
 
     header.dataset.publicUnifiedV6 = '1';
+    header.dataset.publicMenuCentered = '7';
     return true;
   };
 
