@@ -26,7 +26,7 @@
     ['App', '/app/'],
     ['Mail Center', '/mail-studio/'],
     ['Mobilni Admin', '/operator-mobile/'],
-    ['Admin', '/operator-dashboard/']
+    ['Admin', '/admin-center/']
   ];
 
   const shell = document.createElement('header');
