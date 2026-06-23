@@ -24,9 +24,11 @@
     {label:'Visual Index',href:'/visual-index/',icon:'◇'},
     {label:'AI pomoć',href:'/assistant/',icon:'◉'},
     {label:'Kontakt',href:'/contact/',icon:'✉'},
+    {label:'Legal',href:'/legal/',icon:'⚖'},
+    {label:'App',href:'/app/',icon:'▯'},
     {label:'Mail Center',href:'/mail-studio/',icon:'✦'},
     {label:'Mobilni Admin',href:'/operator-mobile/',icon:'▯'},
-    {label:'Admin',href:'/operator-dashboard/',icon:'⚙'}
+    {label:'Admin',href:'/admin-center/',icon:'⚙'}
   ];
   const routePath = href => {
     try { return new URL(href,location.origin).pathname.replace(/\/+$/,'') || '/'; }

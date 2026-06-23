@@ -8,8 +8,8 @@ const BACKEND_PATHS = new Set([
 const INDEX_PATHS = new Set(['/', '/en', '/en/']);
 const CONTACT_PATHS = new Set(['/contact', '/contact/', '/en/contact', '/en/contact/']);
 
-const BACKEND_ASSETS = '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-2"><script defer src="/assets/backend-ui-shell.js?v=20260623-backend-2"></script>';
-const INDEX_ASSETS = '<link rel="stylesheet" href="/assets/index-iq200.css?v=20260623-iq200-2"><link rel="stylesheet" href="/assets/visual-quality-v2.css?v=20260623-v2"><script defer src="/assets/index-iq200.js?v=20260623-iq200-2"></script><script defer src="/assets/visual-quality-v2.js?v=20260623-v2"></script>';
+const BACKEND_ASSETS = '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-4"><script defer src="/assets/backend-ui-shell.js?v=20260623-backend-4"></script>';
+const INDEX_ASSETS = '<link rel="stylesheet" href="/assets/index-iq200.css?v=20260623-iq200-2"><link rel="stylesheet" href="/assets/visual-quality-v2.css?v=20260623-v2"><script defer src="/assets/index-iq200.js?v=20260623-iq200-2"></script><script defer src="/assets/visual-quality-v2.js?v=20260623-v2"></script><script defer src="/assets/admin-route-bridge.js?v=20260623-admin-1"></script>';
 const CONTACT_ASSETS = '<link rel="stylesheet" href="/assets/contact-quality-v2.css?v=20260623-v2"><script defer src="/assets/contact-quality-v2.js?v=20260623-v2"></script>';
 
 function cleanIndexTitle(html, path) {
