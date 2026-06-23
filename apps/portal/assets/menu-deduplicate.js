@@ -44,7 +44,7 @@
       }
 
       if (isAutoEditor(link)) {
-        link.href = isEnglish() ? '/auto-editor/?lang=en' : '/auto-editor/';
+        link.href = isEnglish() ? '/auto-editor/index.html?lang=en' : '/auto-editor/index.html';
         link.textContent = 'Auto Editor';
       }
     });
