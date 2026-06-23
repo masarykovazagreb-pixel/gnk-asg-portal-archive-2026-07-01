@@ -1,0 +1,5 @@
+@import url('/assets/backend-ui-shell.css?v=20260623-backend-2');
+
+/* Existing Operator Dashboard already loads this stylesheet. The shared backend
+   design activates only after the premium global layer marks the page as admin. */
+body.gnk-asg-admin-page{background:radial-gradient(circle at 80% -10%,rgba(46,156,255,.30),transparent 30%),linear-gradient(180deg,#01050c,#061425 45%,#020812)!important;color:#f7f9fc!important}
