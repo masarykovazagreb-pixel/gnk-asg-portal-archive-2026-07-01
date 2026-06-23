@@ -1,4 +1,4 @@
-import app from './index-publication-news-hotfix.js';
+import app from './index-publication-news-v2.js';
 import { handleRefreshRoute, runScheduledRefresh } from './gnk-asg-refresh-backend-v1.js';
 
 const DEPLOY_TRIGGER = '2026-06-23-business-dark-v2-debug';
