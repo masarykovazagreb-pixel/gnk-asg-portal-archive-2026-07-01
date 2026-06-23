@@ -14,6 +14,8 @@ on:
       - "apps/portal/assets/menu-deduplicate.js"
       - "apps/portal/auto-editor/index.html"
       - "apps/portal/media-kit/index.html"
+      - "apps/portal/public-pages/auto-editor.txt"
+      - "apps/portal/public-pages/media-kit.txt"
       - ".github/workflows/dark-menu-market-recovery.yml"
   pull_request:
     branches:
@@ -27,6 +29,8 @@ on:
       - "apps/portal/assets/menu-deduplicate.js"
       - "apps/portal/auto-editor/index.html"
       - "apps/portal/media-kit/index.html"
+      - "apps/portal/public-pages/auto-editor.txt"
+      - "apps/portal/public-pages/media-kit.txt"
       - ".github/workflows/dark-menu-market-recovery.yml"
 
 concurrency:
@@ -61,10 +65,10 @@ jobs:
           grep -q 'group-globe-3d.js' ../../apps/portal/assets/app.js
           grep -q 'menu-deduplicate.js' ../../apps/portal/assets/app.js
           grep -q 'Tržišta i referentna imovina' ../../apps/portal/trzista/index.html
-          grep -q 'Auto Editor feeda' ../../apps/portal/auto-editor/index.html
-          grep -q 'Službeni medijski resursi' ../../apps/portal/media-kit/index.html
-          grep -q "'/auto-editor/'" src/index-public-page-routes.js
-          grep -q "'/media-kit/'" src/index-public-page-routes.js
+          grep -q 'Auto Editor feeda' ../../apps/portal/public-pages/auto-editor.txt
+          grep -q 'Službeni medijski resursi' ../../apps/portal/public-pages/media-kit.txt
+          grep -q 'public-pages/auto-editor.txt' src/index-public-page-routes.js
+          grep -q 'public-pages/media-kit.txt' src/index-public-page-routes.js
           grep -q 'isInstallDuplicate' ../../apps/portal/assets/menu-deduplicate.js
           grep -q 'isMediaKit' ../../apps/portal/assets/menu-deduplicate.js
           node --check ../../apps/portal/assets/app.js
@@ -146,4 +150,4 @@ jobs:
             test "$code" = "200"
           done
 
-# Index menu cleanup and public Auto Editor/Media Kit routes: 2026-06-23
+# Non-redirecting Auto Editor and Media Kit public routes: 2026-06-23
