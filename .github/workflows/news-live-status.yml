@@ -18,15 +18,18 @@ jobs:
             code=$(curl -L -sS -o /dev/null -w '%{http_code}' "$url")
             echo "$code $url" >> result.txt
           done
+          curl -L -sS -o status.json https://gnk-asg.hr/data/news-automation-status.json
+          curl -L -sS -o news.json https://gnk-asg.hr/data/news.json
           echo >> result.txt
           echo 'STATUS_JSON:' >> result.txt
-          curl -L -sS https://gnk-asg.hr/data/news-automation-status.json | head -c 4000 >> result.txt
+          head -c 4000 status.json >> result.txt
           echo >> result.txt
           echo 'NEWS_JSON_HEAD:' >> result.txt
-          curl -L -sS https://gnk-asg.hr/data/news.json | head -c 5000 >> result.txt
+          head -c 5000 news.json >> result.txt
           echo >> result.txt
           cat result.txt
       - name: Report
+        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
