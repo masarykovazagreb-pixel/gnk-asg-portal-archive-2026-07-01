@@ -9,6 +9,13 @@ on:
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
       - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
       - ".github/workflows/dark-menu-market-recovery.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
+      - "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      - ".github/workflows/dark-menu-market-recovery.yml"
 
 concurrency:
   group: gnk-asg-dark-menu-market-recovery
@@ -68,4 +75,4 @@ jobs:
             test "$code" = "200"
           done
 
-# production trigger: 2026-06-23T12:50 Europe/Zagreb
+# tracked PR deployment trigger: 2026-06-23
