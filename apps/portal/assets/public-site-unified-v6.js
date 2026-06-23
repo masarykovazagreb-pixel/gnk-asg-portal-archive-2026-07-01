@@ -27,7 +27,7 @@
     const link = document.createElement('link');
     link.id = 'gnk-public-menu-centered-v7';
     link.rel = 'stylesheet';
-    link.href = '/assets/public-menu-centered-v7.css?v=20260624-menu-center-7';
+    link.href = '/assets/public-menu-centered-v7.css?v=20260624-menu-center-8';
     document.head.appendChild(link);
   };
 
@@ -54,7 +54,9 @@
     ['Tržišta','/trzista/'],
     ['Objave','/objave/'],
     ['Vijesti','/vijesti/'],
-    ['Kontakt','/contact/']
+    ['Kontakt','/contact/'],
+    ['App','/app/'],
+    ['Admin','/admin-center/','nofollow']
   ];
 
   const enCore = [
@@ -65,7 +67,9 @@
     ['Markets','/markets/'],
     ['Publications','/publications/'],
     ['News','/news/'],
-    ['Contact','/en/contact/']
+    ['Contact','/en/contact/'],
+    ['App','/app/'],
+    ['Admin','/admin-center/','nofollow']
   ];
 
   const hrFull = [
@@ -75,10 +79,9 @@
     ['Galerija','/visual-index/'],
     ['AI pomoć','/assistant/'],
     ['Legal','/legal/'],
-    ['Mobilna aplikacija','/app/'],
-    ['Mail Center','/mail-studio/','nofollow'],
     ['Mobilni Admin','/operator-mobile/','nofollow'],
-    ['Admin','/admin-center/','nofollow']
+    ['Admin pregled','/operator-dashboard/','nofollow'],
+    ['Mail Center','/mail-studio/','nofollow']
   ];
 
   const enFull = [
@@ -88,10 +91,9 @@
     ['Gallery','/visual-index/'],
     ['AI Help','/assistant/'],
     ['Legal','/en/legal/'],
-    ['Mobile App','/app/'],
-    ['Mail Center','/mail-studio/','nofollow'],
     ['Mobile Admin','/operator-mobile/','nofollow'],
-    ['Admin','/admin-center/','nofollow']
+    ['Admin Overview','/operator-dashboard/','nofollow'],
+    ['Mail Center','/mail-studio/','nofollow']
   ];
 
   const active = href => {
@@ -124,6 +126,30 @@
     document.querySelectorAll(
       '.gnk-global-float-home,.gnk-global-float-ai,.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-final-menu-wrap'
     ).forEach(node => node.remove());
+  };
+
+  const bindDrawer = () => {
+    const menuButton = document.getElementById('gnk-asg-menu-toggle');
+    const closeButton = document.getElementById('gnk-asg-drawer-close');
+    const overlay = document.getElementById('gnk-asg-overlay');
+
+    if (menuButton) {
+      menuButton.textContent = isEn ? 'Full menu' : 'Puni meni';
+      menuButton.setAttribute('aria-controls','gnk-asg-drawer');
+      menuButton.setAttribute('aria-expanded',document.body.classList.contains('gnk-asg-menu-open') ? 'true' : 'false');
+      menuButton.onclick = () => {
+        document.body.classList.add('gnk-asg-menu-open');
+        menuButton.setAttribute('aria-expanded','true');
+      };
+    }
+
+    const closeMenu = () => {
+      document.body.classList.remove('gnk-asg-menu-open');
+      menuButton?.setAttribute('aria-expanded','false');
+    };
+
+    if (closeButton) closeButton.onclick = closeMenu;
+    if (overlay) overlay.onclick = closeMenu;
   };
 
   const install = () => {
@@ -166,13 +192,10 @@
     language.textContent = isEn ? 'HR' : 'EN';
     language.setAttribute('hreflang',isEn ? 'hr' : 'en');
 
-    const menuButton = document.getElementById('gnk-asg-menu-toggle');
-    if (menuButton) {
-      menuButton.textContent = isEn ? 'Full menu' : 'Puni meni';
-    }
+    bindDrawer();
 
     header.dataset.publicUnifiedV6 = '1';
-    header.dataset.publicMenuCentered = '7';
+    header.dataset.publicMenuCentered = '8';
     return true;
   };
 
