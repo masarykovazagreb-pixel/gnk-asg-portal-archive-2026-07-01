@@ -1,7 +1,7 @@
 import app from './index-publication-news-hotfix.js';
 import { handleRefreshRoute, runScheduledRefresh } from './gnk-asg-refresh-backend-v1.js';
 
-const DEPLOY_TRIGGER = '2026-06-23-menu-routes-v3';
+const DEPLOY_TRIGGER = '2026-06-23-business-dark-v1';
 
 const jsonHeaders = {
   'content-type': 'application/json; charset=utf-8',
@@ -124,7 +124,7 @@ async function marketApi(request, env, ctx) {
   }
 
   return json(marketPayload(market, chart), marketResponse.ok ? 200 : marketResponse.status, {
-    'x-gnk-asg-market-recovery': 'dark-v3',
+    'x-gnk-asg-market-recovery': 'business-dark-v1',
     'x-gnk-asg-deploy-trigger': DEPLOY_TRIGGER
   });
 }
@@ -141,23 +141,35 @@ async function serveExplicitAsset(path, request, env) {
   return response.status === 404 ? null : response;
 }
 
-async function fixEnglishHomepage(response, path) {
-  if (path !== '/en' && path !== '/en/') return response;
+async function fixHomepage(response, path) {
+  const isHome = path === '/' || path === '/index.html' || path === '/en' || path === '/en/' || path === '/en/index.html';
+  if (!isHome) return response;
   if (!response?.headers?.get('content-type')?.includes('text/html')) return response;
 
   let html = await response.text();
+
+  if (path.startsWith('/en')) {
+    html = html
+      .replaceAll('https://gnk-asg.hr/objave/', 'https://gnk-asg.hr/publications/')
+      .replaceAll('href="/objave/"', 'href="/publications/"')
+      .replaceAll("href='/objave/'", "href='/publications/'")
+      .replaceAll('value="/objave/"', 'value="/publications/"')
+      .replaceAll("value='/objave/'", "value='/publications/'");
+  }
+
   html = html
-    .replaceAll('https://gnk-asg.hr/objave/', 'https://gnk-asg.hr/publications/')
-    .replaceAll('href="/objave/"', 'href="/publications/"')
-    .replaceAll("href='/objave/'", "href='/publications/'")
-    .replaceAll('value="/objave/"', 'value="/publications/"')
-    .replaceAll("value='/objave/'", "value='/publications/'");
+    .replace(/gnk-asg-global-layer\.css\?v=[^"']+/g, 'gnk-asg-global-layer.css?v=20260623-business-dark-v1')
+    .replace(/gnk-asg-global-layer\.js\?v=[^"']+/g, 'gnk-asg-global-layer.js?v=20260623-business-dark-v1');
+
+  const lock = `<style id="gnk-business-dark-inline">#gnk-asg-theme-toggle{display:none!important}</style><script id="gnk-business-dark-lock">try{localStorage.setItem('gnk-asg-theme','dark')}catch(e){}document.documentElement.dataset.gnkTheme='dark';new MutationObserver(function(){if(document.documentElement.dataset.gnkTheme!=='dark')document.documentElement.dataset.gnkTheme='dark';var b=document.getElementById('gnk-asg-theme-toggle');if(b)b.remove()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-gnk-theme']});</script>`;
+  html = html.includes('gnk-business-dark-lock') ? html : html.replace('</head>', `${lock}</head>`);
 
   const headers = new Headers(response.headers);
   headers.delete('content-length');
   headers.set('cache-control', 'no-store, no-cache, must-revalidate, max-age=0');
-  headers.set('x-gnk-asg-menu-fix', 'en-routes-v1');
+  headers.set('x-gnk-asg-business-theme', 'dark-v1');
   headers.set('x-gnk-asg-deploy-trigger', DEPLOY_TRIGGER);
+  if (path.startsWith('/en')) headers.set('x-gnk-asg-menu-fix', 'en-routes-v1');
   return new Response(html, { status: response.status, headers });
 }
 
@@ -190,7 +202,7 @@ async function fetchHandler(request, env, ctx) {
   }
 
   const response = await app.fetch(request, env, ctx);
-  return fixEnglishHomepage(response, originalPath);
+  return fixHomepage(response, originalPath);
 }
 
 export default {
