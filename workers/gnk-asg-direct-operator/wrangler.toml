@@ -1,5 +1,5 @@
-﻿name = "gnk-asg-direct-operator"
-main = "src/index.js"
+name = "gnk-asg-direct-operator"
+main = "src/index-publication-news-hotfix.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
@@ -17,16 +17,26 @@ database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
 SAFE_GET_DIRECT_MODE = "true"
+AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
 
 [triggers]
-# GNK ASG SEO/R2 media assets binding
+crons = ["0 * * * *"]
+
+[ai]
+binding = "AI"
+
 [[r2_buckets]]
 binding = "GNK_ASG_MEDIA_ASSETS"
 bucket_name = "gnk-asg-media-assets"
+
 [[send_email]]
 name = "EMAIL"
 remote = true
-
 
 [[kv_namespaces]]
 binding = "GNK_ASG_KV"
@@ -39,4 +49,3 @@ zone_name = "gnk-asg.hr"
 [[routes]]
 pattern = "www.gnk-asg.hr/*"
 zone_name = "gnk-asg.hr"
-
