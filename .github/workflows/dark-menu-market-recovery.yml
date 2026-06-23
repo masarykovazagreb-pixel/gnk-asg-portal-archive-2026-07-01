@@ -16,6 +16,7 @@ on:
       - "apps/portal/assets/index-iq200.js"
       - "apps/portal/assets/backend-ui-shell.css"
       - "apps/portal/assets/backend-ui-shell.js"
+      - "apps/portal/assets/gnk-asg-ai-layer.css"
       - "workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js"
       - "workers/gnk-asg-direct-operator/src/index-news-quality-v2.js"
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
@@ -36,6 +37,7 @@ on:
       - "apps/portal/assets/index-iq200.js"
       - "apps/portal/assets/backend-ui-shell.css"
       - "apps/portal/assets/backend-ui-shell.js"
+      - "apps/portal/assets/gnk-asg-ai-layer.css"
       - "workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js"
       - "workers/gnk-asg-direct-operator/src/index-news-quality-v2.js"
       - "workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js"
@@ -73,6 +75,7 @@ jobs:
           test -f ../../apps/portal/assets/index-redesign-production.css
           test -f ../../apps/portal/assets/index-iq200.css
           test -f ../../apps/portal/assets/backend-ui-shell.css
+          test -f ../../apps/portal/assets/gnk-asg-ai-layer.css
           test -f ../../apps/portal/app/index.html
           test -f ../../apps/portal/operator-mobile/index.html
           grep -q 'Korporativni portal GNK ASG' ../../apps/portal/index.html
@@ -92,6 +95,7 @@ jobs:
           grep -q 'Corporate <span>ecosystem</span>' src/index-ui-harmonizer.js
           grep -q 'hero-network-canvas' ../../apps/portal/assets/index-iq200.js
           grep -q 'gnk-backend-shell' ../../apps/portal/assets/backend-ui-shell.js
+          grep -q 'backend-ui-shell.css' ../../apps/portal/assets/gnk-asg-ai-layer.css
           if grep -q 'noindex,nofollow' ../../apps/portal/index.html; then exit 1; fi
           if grep -q 'Živa probna verzija' ../../apps/portal/index.html; then exit 1; fi
 
@@ -156,6 +160,7 @@ jobs:
         run: |
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/backend-ui-shell.css | grep -q 'SHARED BACKEND UI SHELL'
           curl --fail --silent --show-error --location https://gnk-asg.hr/assets/backend-ui-shell.js | grep -q 'gnk-backend-shell'
+          curl --fail --silent --show-error --location https://gnk-asg.hr/assets/gnk-asg-ai-layer.css | grep -q 'backend-ui-shell.css'
 
       - name: Verify data endpoints
         if: always()
@@ -163,9 +168,13 @@ jobs:
           curl --fail --silent --show-error --location https://gnk-asg.hr/data/group_network.json | python -m json.tool > /dev/null
           curl --fail --silent --show-error --location https://gnk-asg.hr/api/market | python -m json.tool > /dev/null
 
-      - name: Verify Operator Dashboard shell
+      - name: Verify Operator Dashboard premium design chain
         if: always()
-        run: curl --fail --silent --show-error --location "https://gnk-asg.hr/operator-dashboard/?cb=${{ github.run_id }}" | grep -q 'backend-ui-shell.css'
+        run: |
+          curl --fail --silent --show-error --location https://gnk-asg.hr/operator-dashboard/ > /tmp/operator-dashboard.html
+          grep -q 'gnk-asg-ai-layer.css' /tmp/operator-dashboard.html
+          grep -q 'gnk-asg-global-layer.css' /tmp/operator-dashboard.html
+          grep -q 'gnk-asg-global-layer.js' /tmp/operator-dashboard.html
 
       - name: Verify Mobile Admin shell
         if: always()
@@ -201,4 +210,4 @@ jobs:
             test "$code" = "200"
           done
 
-# IQ200 graphics and unified backend menu. Backend business logic remains unchanged.
+# IQ200 graphics and unified backend visual standard. Backend business logic remains unchanged.
