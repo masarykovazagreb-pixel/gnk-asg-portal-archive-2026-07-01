@@ -5,24 +5,47 @@ const BACKEND_PATHS = new Set([
   '/operator-mobile', '/operator-mobile/',
   '/mail-studio', '/mail-studio/'
 ]);
+const INDEX_PATHS = new Set(['/', '/en', '/en/']);
 
-const ASSETS = '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-1"><script defer src="/assets/backend-ui-shell.js?v=20260623-backend-1"></script>';
+const BACKEND_ASSETS = '<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-1"><script defer src="/assets/backend-ui-shell.js?v=20260623-backend-1"></script>';
+
+function cleanIndexTitle(html, path) {
+  if (path === '/') {
+    return html.replace('Index / <span>početna stranica</span>', 'Korporativni <span>ekosustav</span>');
+  }
+  return html.replace('Index / <span>home page</span>', 'Corporate <span>ecosystem</span>');
+}
 
 async function fetchHandler(request, env, ctx) {
   const response = await core.fetch(request, env, ctx);
   const path = new URL(request.url).pathname;
   const type = response.headers.get('content-type') || '';
-  if (request.method === 'GET' && BACKEND_PATHS.has(path) && type.includes('text/html')) {
+  const isHtml = request.method === 'GET' && type.includes('text/html');
+  if (!isHtml) return response;
+
+  if (BACKEND_PATHS.has(path)) {
     const html = await response.text();
     const headers = new Headers(response.headers);
     headers.delete('content-length');
     headers.set('cache-control', 'no-store, no-cache, must-revalidate, max-age=0');
-    return new Response(html.replace('</head>', `${ASSETS}</head>`), {
+    return new Response(html.replace('</head>', `${BACKEND_ASSETS}</head>`), {
       status: response.status,
       statusText: response.statusText,
       headers
     });
   }
+
+  if (INDEX_PATHS.has(path)) {
+    const html = await response.text();
+    const headers = new Headers(response.headers);
+    headers.delete('content-length');
+    return new Response(cleanIndexTitle(html, path), {
+      status: response.status,
+      statusText: response.statusText,
+      headers
+    });
+  }
+
   return response;
 }
 
