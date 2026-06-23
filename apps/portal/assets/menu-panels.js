@@ -117,29 +117,50 @@
       </div>`);
   }
 
+  function renderAutoEditorItems(items, grid, copy) {
+    grid.innerHTML = items.map(item => {
+      const body = (Array.isArray(item.body) ? item.body : String(item.body || '').split(/\n{2,}/)).filter(Boolean).map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join('');
+      return `<article class="gnk-index-panel-item"><div class="gnk-index-panel-meta">${escapeHtml(item.slot || item.category || '')}</div><h3>${escapeHtml(item.title || item.titleHr || 'Auto Editor')}</h3><p>${escapeHtml(item.excerpt || item.summary || item.summaryHr || '')}</p>${body ? `<details><summary>${copy.open}</summary>${body}</details>` : ''}</article>`;
+    }).join('');
+  }
+
   async function renderAutoEditor() {
     const en = isEnglish();
     const copy = en ? {
-      title: 'Auto Editor', intro: 'Public overview of content available in the structured GNK ASG Auto Editor feed.', loading: 'Loading Auto Editor feed…', empty: 'No Auto Editor entries are currently available.', open: 'Read full entry', error: 'The Auto Editor feed is currently unavailable.'
+      title: 'Auto Editor', intro: 'Public overview and current automation status for GNK ASG Auto Editor.', loading: 'Loading Auto Editor data…', open: 'Read full entry', publications: 'Open Publications', news: 'Open News', status: 'Automation status', lastRun: 'Last Auto Editor run', unavailable: 'Public article feed is unavailable; automation status is shown instead.'
     } : {
-      title: 'Auto Editor', intro: 'Javni pregled sadržaja dostupnog u strukturiranom GNK ASG Auto Editor feedu.', loading: 'Učitavanje Auto Editor feeda…', empty: 'Trenutačno nema dostupnih Auto Editor zapisa.', open: 'Pročitaj cijeli zapis', error: 'Auto Editor feed trenutačno nije dostupan.'
+      title: 'Auto Editor', intro: 'Javni pregled i trenutačni status automatizacije GNK ASG Auto Editora.', loading: 'Učitavanje Auto Editor podataka…', open: 'Pročitaj cijeli zapis', publications: 'Otvori Objave', news: 'Otvori Vijesti', status: 'Status automatizacije', lastRun: 'Zadnje Auto Editor izvršenje', unavailable: 'Javni feed zapisa trenutačno nije dostupan; prikazan je status automatizacije.'
     };
-    const panel = openPanel(copy.title, `<p class="gnk-index-panel-intro">${copy.intro}</p><p class="gnk-index-panel-status">${copy.loading}</p><div class="gnk-index-panel-grid"></div>`);
+    const panel = openPanel(copy.title, `<p class="gnk-index-panel-intro">${copy.intro}</p><div class="gnk-index-panel-actions"><a class="gnk-index-panel-button" href="${en ? '/publications/' : '/objave/'}">${copy.publications}</a><a class="gnk-index-panel-button" href="${en ? '/news/' : '/vijesti/'}">${copy.news}</a></div><p class="gnk-index-panel-status">${copy.loading}</p><div class="gnk-index-panel-grid"></div>`);
     const status = panel.querySelector('.gnk-index-panel-status');
     const grid = panel.querySelector('.gnk-index-panel-grid');
+
     try {
       const response = await fetch(`/data/auto-editor.json?cb=${Date.now()}`, { cache: 'no-store' });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const payload = await response.json();
       const items = Array.isArray(payload) ? payload : (payload.articles || payload.items || []);
+      if (!items.length) throw new Error('no_public_entries');
       status.textContent = en ? `Loaded ${items.length} entries.` : `Učitano zapisa: ${items.length}.`;
-      grid.innerHTML = items.length ? items.map(item => {
-        const body = (Array.isArray(item.body) ? item.body : String(item.body || '').split(/\n{2,}/)).filter(Boolean).map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join('');
-        return `<article class="gnk-index-panel-item"><div class="gnk-index-panel-meta">${escapeHtml(item.slot || '')} ${item.entity || item.focus ? `· ${escapeHtml(item.entity || item.focus)}` : ''}</div><h3>${escapeHtml(item.title || item.titleHr || 'Auto Editor')}</h3><p>${escapeHtml(item.excerpt || item.summary || '')}</p><details><summary>${copy.open}</summary>${body}</details></article>`;
-      }).join('') : `<article class="gnk-index-panel-item"><p>${copy.empty}</p></article>`;
-    } catch (error) {
-      status.textContent = `${copy.error} ${error.message}`;
-      grid.innerHTML = '<article class="gnk-index-panel-item"><a class="gnk-index-panel-button" href="/data/auto-editor.json" target="_blank" rel="noopener">JSON feed</a></article>';
+      renderAutoEditorItems(items, grid, copy);
+      return;
+    } catch (feedError) {
+      status.textContent = copy.unavailable;
+    }
+
+    try {
+      const response = await fetch(`/operator/news-automation/status?cb=${Date.now()}`, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const payload = await response.json();
+      const last = payload.lastAutoEditor || {};
+      const scheduled = payload.lastScheduledRun || {};
+      const lastState = last.ok === true ? 'OK' : (last.ok === false ? 'ERROR' : 'N/A');
+      const lastTime = last.finishedAt || last.startedAt || scheduled.finishedAt || scheduled.startedAt || 'N/A';
+      grid.innerHTML = `
+        <article class="gnk-index-panel-item"><div class="gnk-index-panel-meta">${copy.status}</div><h3>${escapeHtml(payload.version || 'GNK ASG Auto Editor')}</h3><p>Cron: ${escapeHtml(payload.cron || 'hourly')}</p><p>Auto Editor: ${escapeHtml(payload.autoEditor || 'every 3 hours')}</p></article>
+        <article class="gnk-index-panel-item"><div class="gnk-index-panel-meta">${copy.lastRun}</div><h3>${escapeHtml(lastState)}</h3><p>${escapeHtml(lastTime)}</p>${last.error ? `<p>${escapeHtml(last.error)}</p>` : ''}</article>`;
+    } catch (statusError) {
+      grid.innerHTML = `<article class="gnk-index-panel-item"><h3>${copy.status}</h3><p>${copy.unavailable}</p><p>${escapeHtml(statusError.message)}</p></article>`;
     }
   }
 
