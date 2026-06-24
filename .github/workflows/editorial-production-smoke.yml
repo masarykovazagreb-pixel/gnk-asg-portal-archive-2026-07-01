@@ -1,0 +1,68 @@
+name: Editorial Production Smoke
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/editorial-production-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+    steps:
+      - name: Wait for final production deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 24); do
+            code=$(curl --silent --show-error --output health.json --write-out '%{http_code}' "https://gnk-asg.hr/api/editorial-public-health?cb=$(date +%s)" || true)
+            echo "ATTEMPT=$attempt HTTP=$code"
+            cat health.json 2>/dev/null || true
+            if [ "$code" = "200" ] && grep -q 'GNK_ASG_EDITORIAL_CENTER_V1_20260624' health.json; then
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
+      - name: Verify protected Editorial Center
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$GNK_ASG_OPERATOR_TOKEN"
+          login_code=$(curl --silent --show-error --output login.html --dump-header login.headers --write-out '%{http_code}' --cookie-jar cookies.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' 'https://gnk-asg.hr/auto-editor/')
+          test "$login_code" = "303"
+          editor_code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie cookies.txt "https://gnk-asg.hr/auto-editor/?cb=$(date +%s)")
+          test "$editor_code" = "200"
+          grep -q 'Urednički centar' editor.html
+          status_code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' --cookie cookies.txt "https://gnk-asg.hr/auto-editor/editorial/api/status?cb=$(date +%s)")
+          test "$status_code" = "200"
+          grep -q 'GNK_ASG_EDITORIAL_CENTER_V1_20260624' status.json
+      - name: Refresh business sources and monitor publications
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_code=$(curl --silent --show-error --output sources.json --write-out '%{http_code}' --cookie cookies.txt --request POST 'https://gnk-asg.hr/auto-editor/editorial/api/sources/refresh')
+          cat sources.json
+          test "$source_code" = "200"
+          grep -q '"ok": true' sources.json
+          monitor_code=$(curl --silent --show-error --output monitor.json --write-out '%{http_code}' --cookie cookies.txt --request POST 'https://gnk-asg.hr/auto-editor/editorial/api/monitor/run')
+          cat monitor.json
+          test "$monitor_code" = "200"
+          grep -q '"checkedAt"' monitor.json
+      - name: Verify public publication routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in objave publications; do
+            code=$(curl --silent --show-error --output "$path.html" --write-out '%{http_code}' "https://gnk-asg.hr/$path/?cb=$(date +%s)")
+            test "$code" = "200"
+          done
+          grep -q 'GNK ASG' objave.html
+          grep -q 'GNK ASG' publications.html
