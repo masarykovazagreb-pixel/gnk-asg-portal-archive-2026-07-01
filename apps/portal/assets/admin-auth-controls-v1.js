@@ -32,7 +32,8 @@
         <label>Operatorski token<input name="token" type="password" required autocomplete="current-password" placeholder="Unesite token"></label>
         <button type="submit" class="gnk-auth-login">Prijava / obnovi sesiju</button>
       </form>
-      <form method="post" action="/operator/session/logout">
+      <form method="get" action="/mail-studio/">
+        <input type="hidden" name="logout" value="1">
         <button type="submit" class="gnk-auth-logout">Odjava</button>
       </form>`;
     const shell = document.getElementById('gnk-backend-shell');
