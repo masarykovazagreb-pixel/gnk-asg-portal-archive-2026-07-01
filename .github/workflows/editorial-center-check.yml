@@ -1,0 +1,44 @@
+name: Editorial Center Check
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/portal/auto-editor/index.html"
+      - "workers/gnk-asg-direct-operator/src/index-auto-editor-fallback-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js"
+      - "workers/gnk-asg-direct-operator/src/editorial-core-v1.js"
+      - "workers/gnk-asg-direct-operator/src/editorial-sources-v1.js"
+      - "workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml"
+      - ".github/workflows/editorial-center-check.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate JavaScript and configuration
+        run: |
+          node --check workers/gnk-asg-direct-operator/src/index-auto-editor-fallback-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
+          node --check workers/gnk-asg-direct-operator/src/editorial-core-v1.js
+          node --check workers/gnk-asg-direct-operator/src/editorial-sources-v1.js
+          grep -q 'main = "src/index-editorial-center-v1.js"' workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
+          grep -q '0 7,8,14,15' workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
+          grep -q 'Urednički centar' apps/portal/auto-editor/index.html
+          grep -q 'ručne potvrde' apps/portal/auto-editor/index.html
+          grep -q '/auto-editor/editorial/api/' apps/portal/auto-editor/index.html
+      - name: Verify publication safeguards
+        run: |
+          grep -q "status:'draft'" workers/gnk-asg-direct-operator/src/editorial-core-v1.js
+          grep -q 'approvedForPublic:false' workers/gnk-asg-direct-operator/src/editorial-core-v1.js
+          grep -q 'publish:approved' workers/gnk-asg-direct-operator/src/editorial-core-v1.js
+          grep -q 'MIN_WORDS' workers/gnk-asg-direct-operator/src/editorial-core-v1.js
+          grep -q "AUTHOR='Nermin Sefić'" workers/gnk-asg-direct-operator/src/editorial-core-v1.js
