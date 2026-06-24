@@ -1,0 +1,23 @@
+name: Mail Backend Inventory
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locate mail and contact backend code
+        shell: bash
+        run: |
+          echo '=== MAIL AND CONTACT FILES ==='
+          find . -type f \( -iname '*mail*' -o -iname '*contact*' -o -iname '*email*' \) -not -path './.git/*' | sort | head -300
+          echo '=== ENDPOINT AND PROVIDER REFERENCES ==='
+          grep -RInE --exclude-dir=.git --exclude='*.pdf' --exclude='*.zip' --exclude='*.png' --exclude='*.jpg' --exclude='*.jpeg' --exclude='*.webp' --exclude='*.gif' \
+            'admin-mail-send|contact-submit|RESEND|BREVO|POSTMARK|SENDGRID|MAILGUN|SMTP|EMAIL\.send|env\.EMAIL|send_email' . | head -500 || true
