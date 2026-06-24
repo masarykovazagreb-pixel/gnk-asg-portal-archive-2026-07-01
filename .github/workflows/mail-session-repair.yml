@@ -109,4 +109,4 @@ jobs:
           if not (contact.get('autoReply') or {}).get('sent'): raise SystemExit(1)
           PY
 
-# hash-auth active worker repair 2026-06-24
+# rerun after active entrypoint correction 2026-06-24
