@@ -1,13 +1,22 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_BACKEND_SHELL_V4__) return;
-  window.__GNK_ASG_BACKEND_SHELL_V4__ = true;
+  if (window.__GNK_ASG_BACKEND_SHELL_V5__) return;
+  window.__GNK_ASG_BACKEND_SHELL_V5__ = true;
+
+  const gridCssId = 'gnk-backend-grid-alignment-v4';
+  if (!document.getElementById(gridCssId)) {
+    const link = document.createElement('link');
+    link.id = gridCssId;
+    link.rel = 'stylesheet';
+    link.href = '/assets/backend-grid-alignment-v4.css?v=20260624-grid-4';
+    document.head.appendChild(link);
+  }
 
   const path = location.pathname.replace(/\/+$/, '') || '/';
   if ((path === '/mail-studio' || path === '/mail-studio-pro') && !document.getElementById('gnk-mail-studio-token-v1')) {
     const script = document.createElement('script');
     script.id = 'gnk-mail-studio-token-v1';
-    script.src = '/assets/mail-studio-token-v1.js?v=20260624-1';
+    script.src = '/assets/mail-studio-token-v1.js?v=20260624-2';
     document.head.appendChild(script);
   }
 
