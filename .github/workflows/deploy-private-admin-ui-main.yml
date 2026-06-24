@@ -1,6 +1,7 @@
 name: Deploy Private Admin UI Main
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -28,6 +29,7 @@ jobs:
           node-version: "22"
       - name: Validate
         run: |
+          test -n "$GNK_ASG_OPERATOR_TOKEN"
           node --check workers/gnk-asg-direct-operator/src/index-private-ui-assets-v1.js
           node --check apps/portal/assets/private-admin-menu-v1.js
           node --check apps/portal/assets/admin-auth-controls-v1.js
@@ -38,16 +40,20 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           token_hash=$(printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | sha256sum | awk '{print $1}')
-          npx --yes wrangler@4 deploy --config wrangler.mail-proxy-no-routes.toml --name gnk-asg-direct-operator --var "OPERATOR_TOKEN_SHA256:$token_hash"
-      - name: Verify
+          test ${#token_hash} -eq 64
+          npx --yes wrangler@4 deploy --config wrangler.mail-proxy-no-routes.toml --name gnk-asg-direct-operator --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars
+      - name: Verify raw token and session
         run: |
-          sleep 10
+          sleep 15
+          code=$(curl --silent --show-error --output auth.json --write-out '%{http_code}' --header "Authorization: Bearer $GNK_ASG_OPERATOR_TOKEN" --header "x-operator-token: $GNK_ASG_OPERATOR_TOKEN" "https://gnk-asg.hr/api/operator-auth-check?cb=$(date +%s)")
+          cat auth.json
+          test "$code" = "200"
           code=$(curl --silent --show-error --output login.html --dump-header login.headers --write-out '%{http_code}' --cookie-jar cookies.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/mail-studio/' 'https://gnk-asg.hr/mail-studio/')
           test "$code" = "303"
           for path in mail-studio admin-center operator-dashboard operator-mobile mail-studio-pro; do
-            code=$(curl --silent --show-error --output "$path.html" --write-out '%{http_code}' --cookie cookies.txt "https://gnk-asg.hr/$path/")
+            code=$(curl --silent --show-error --output "$path.html" --write-out '%{http_code}' --cookie cookies.txt "https://gnk-asg.hr/$path/?cb=$(date +%s)")
             test "$code" = "200"
             grep -q 'private-admin-menu-v1.js' "$path.html"
             grep -q 'admin-auth-controls-v1.js' "$path.html"
           done
-          echo "PRIVATE_ADMIN_UI_MAIN_OK=true"
+          echo "PRIVATE_ADMIN_AUTH_MAIN_OK=true"
