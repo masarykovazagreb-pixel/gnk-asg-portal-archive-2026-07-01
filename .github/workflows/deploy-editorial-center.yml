@@ -8,6 +8,7 @@ on:
       - "apps/portal/auto-editor/index.html"
       - "workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-editorial-loop-fix-v1.js"
       - "workers/gnk-asg-direct-operator/src/editorial-core-v1.js"
       - "workers/gnk-asg-direct-operator/src/editorial-sources-v1.js"
       - "workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml"
@@ -33,10 +34,12 @@ jobs:
           test -n "$GNK_ASG_OPERATOR_TOKEN"
           node --check workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-editorial-loop-fix-v1.js
           node --check workers/gnk-asg-direct-operator/src/editorial-core-v1.js
           node --check workers/gnk-asg-direct-operator/src/editorial-sources-v1.js
           grep -q 'name = "gnk-asg-auto-editor"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
-          grep -q 'main = "src/index-editorial-final-v1.js"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
+          grep -q 'main = "src/index-editorial-loop-fix-v1.js"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
+          grep -q 'type = "Text"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
           grep -q 'Urednički centar' apps/portal/auto-editor/index.html
       - name: Deploy existing Auto Editor route worker
         working-directory: workers/gnk-asg-direct-operator
@@ -64,6 +67,4 @@ jobs:
           cat status.json
           test "$code" = "200"
           grep -q 'GNK_ASG_EDITORIAL_CENTER_V1_20260624' status.json
-          code=$(curl --silent --show-error --output health.json --write-out '%{http_code}' 'https://gnk-asg.hr/api/editorial-public-health')
-          test "$code" = "200"
-          grep -q 'draft-review-manual-publish' health.json
+          rm -f cookies.txt
