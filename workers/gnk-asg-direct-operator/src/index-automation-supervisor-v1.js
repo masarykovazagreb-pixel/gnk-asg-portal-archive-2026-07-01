@@ -1,10 +1,10 @@
 import app from './index-article-repair-v1.js';
 
-const VERSION = 'GNK_ASG_AUTOMATION_SUPERVISOR_V1';
+const VERSION = 'GNK_ASG_AUTOMATION_SUPERVISOR_V2';
 const NEWS_MAX_AGE_MINUTES = 90;
 const MARKET_MAX_AGE_MINUTES = 90;
-const SCHEDULE_MAX_AGE_MINUTES = 90;
-const AUTO_EDITOR_MAX_AGE_MINUTES = 240;
+const SCHEDULE_MAX_AGE_MINUTES = 150;
+const AUTO_EDITOR_MAX_AGE_MINUTES = 180;
 const QUALITY_MAX_AGE_MINUTES = 180;
 
 const json = (data, status = 200) => new Response(JSON.stringify(data, null, 2), {
@@ -223,11 +223,11 @@ async function snapshot(env) {
     version: VERSION,
     checkedAt: nowIso(),
     schedule: {
-      cron: '0 * * * *',
-      newsRefresh: 'hourly',
-      marketRefresh: 'hourly',
-      autoEditor: 'every 3 hours with stale-run recovery after 4 hours',
-      contentQuality: 'hourly',
+      cron: '0 */2 * * *',
+      newsRefresh: 'every 2 hours',
+      marketRefresh: 'every 2 hours',
+      autoEditor: 'every 2 hours with stale-run recovery after 3 hours',
+      contentQuality: 'every 2 hours',
       imageRotation: 'after each successful automatic publication'
     },
     modules,
