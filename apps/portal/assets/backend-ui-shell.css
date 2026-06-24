@@ -1,4 +1,5 @@
-/* GNK ASG SHARED BACKEND UI SHELL V3 */
+@import url('/assets/backend-grid-alignment-v4.css?v=20260624-grid-4');
+/* GNK ASG SHARED BACKEND UI SHELL V4 */
 :root{--gnk-admin-bg:#020812;--gnk-admin-bg2:#061425;--gnk-admin-panel:#07172a;--gnk-admin-panel2:#0a213b;--gnk-admin-gold:#d7aa3c;--gnk-admin-gold2:#ffe08a;--gnk-admin-blue:#2e9cff;--gnk-admin-text:#f7f9fc;--gnk-admin-muted:#a9b7c9;--gnk-admin-line:rgba(215,170,60,.40);--gnk-admin-shadow:0 24px 70px rgba(0,0,0,.38)}
 html,body.gnk-backend-ui{max-width:100%;overflow-x:hidden}
 body.gnk-backend-ui{padding-top:0!important;background:radial-gradient(circle at 80% -10%,rgba(46,156,255,.28),transparent 31%),radial-gradient(circle at 14% 8%,rgba(215,170,60,.09),transparent 24%),linear-gradient(180deg,#01050c,#061425 45%,#020812)!important;color:var(--gnk-admin-text)!important;min-height:100vh}
