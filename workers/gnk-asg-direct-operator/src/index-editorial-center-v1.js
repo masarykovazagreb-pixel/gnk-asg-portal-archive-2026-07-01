@@ -21,6 +21,16 @@ const API='/auto-editor/editorial/api/';
 const clean=value=>String(value??'').trim();
 async function body(request){try{return await request.json();}catch{return{};}}
 
+async function isNotFound(response){
+  if(response.status===404)return true;
+  const type=response.headers.get('content-type')||'';
+  if(!type.includes('application/json'))return false;
+  try{
+    const data=await response.clone().json();
+    return data?.error==='not_found'||data?.code==='not_found';
+  }catch{return false;}
+}
+
 async function servePage(request,env){
   if(!env.ASSETS?.fetch)return json({ok:false,error:'assets_binding_missing'},503);
   const assetUrl=new URL('/auto-editor/index.html',request.url);
@@ -29,7 +39,7 @@ async function servePage(request,env){
   const headers=new Headers(response.headers);
   headers.delete('content-length');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-  return new Response(await response.text(),{status:response.status,statusText:response.statusText,headers});
+  return new Response(await response.text(),{status:200,headers});
 }
 
 async function api(request,env,path){
@@ -84,7 +94,7 @@ export default{
     const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
     const response=await app.fetch(request,env,ctx);
     if(path!==ROOT&&!path.startsWith(API))return response;
-    if(response.status!==404)return response;
+    if(!(await isNotFound(response)))return response;
     if(path===ROOT&&(request.method==='GET'||request.method==='HEAD'))return servePage(request,env);
     if(path.startsWith(API))return api(request,env,path);
     return response;
