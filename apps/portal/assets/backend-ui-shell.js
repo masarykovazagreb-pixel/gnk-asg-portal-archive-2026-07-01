@@ -1,7 +1,15 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_BACKEND_SHELL_V3__) return;
-  window.__GNK_ASG_BACKEND_SHELL_V3__ = true;
+  if (window.__GNK_ASG_BACKEND_SHELL_V4__) return;
+  window.__GNK_ASG_BACKEND_SHELL_V4__ = true;
+
+  const path = location.pathname.replace(/\/+$/, '') || '/';
+  if ((path === '/mail-studio' || path === '/mail-studio-pro') && !document.getElementById('gnk-mail-studio-token-v1')) {
+    const script = document.createElement('script');
+    script.id = 'gnk-mail-studio-token-v1';
+    script.src = '/assets/mail-studio-token-v1.js?v=20260624-1';
+    document.head.appendChild(script);
+  }
 
   const inFrame = window.self !== window.top;
   document.body.classList.add('gnk-backend-ui');
@@ -12,7 +20,6 @@
 
   document.getElementById('gnk-backend-shell')?.remove();
 
-  const path = location.pathname.replace(/\/+$/, '') || '/';
   const items = [
     { label:'Portal', href:'/', icon:'⌂' },
     { label:'Auto Editor', href:'/auto-editor/', icon:'✎' },
