@@ -1,0 +1,76 @@
+/* GNK ASG BACKEND GRID ALIGNMENT V4 */
+:root{
+  --gnk-unified-grid-width:1280px;
+  --gnk-unified-side-gap:14px;
+}
+
+#gnk-backend-shell{
+  position:sticky!important;
+  top:8px!important;
+  width:min(var(--gnk-unified-grid-width),calc(100% - 28px))!important;
+  max-width:var(--gnk-unified-grid-width)!important;
+  margin:8px auto 0!important;
+  padding:8px 12px 7px!important;
+  box-sizing:border-box!important;
+  border:1px solid var(--gnk-admin-line)!important;
+  border-radius:16px!important;
+  overflow:hidden!important;
+}
+
+#gnk-backend-shell .gnk-shell-wrap{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+}
+
+body.gnk-backend-ui > main,
+body.gnk-backend-ui > .wrap,
+body.gnk-backend-ui > .app,
+body.gnk-backend-ui > .box,
+body.gnk-backend-ui > .studio,
+body.gnk-backend-ui > .container,
+body.gnk-asg-admin-page > main,
+body.gnk-asg-admin-page > .wrap,
+body.gnk-asg-admin-page > .app,
+body.gnk-asg-admin-page > .box,
+body.gnk-asg-admin-page > .studio,
+body.gnk-asg-admin-page > .container{
+  width:min(var(--gnk-unified-grid-width),calc(100% - 28px))!important;
+  max-width:var(--gnk-unified-grid-width)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+
+body.gnk-backend-ui > .wrap > .studio,
+body.gnk-backend-ui > .wrap > .app,
+body.gnk-backend-ui > .wrap > .box,
+body.gnk-asg-admin-page > .wrap > .studio,
+body.gnk-asg-admin-page > .wrap > .app,
+body.gnk-asg-admin-page > .wrap > .box{
+  width:100%!important;
+  max-width:none!important;
+  box-sizing:border-box!important;
+}
+
+@media(max-width:900px){
+  :root{--gnk-unified-side-gap:8px}
+
+  #gnk-backend-shell,
+  body.gnk-backend-ui > main,
+  body.gnk-backend-ui > .wrap,
+  body.gnk-backend-ui > .app,
+  body.gnk-backend-ui > .box,
+  body.gnk-backend-ui > .studio,
+  body.gnk-backend-ui > .container,
+  body.gnk-asg-admin-page > main,
+  body.gnk-asg-admin-page > .wrap,
+  body.gnk-asg-admin-page > .app,
+  body.gnk-asg-admin-page > .box,
+  body.gnk-asg-admin-page > .studio,
+  body.gnk-asg-admin-page > .container{
+    width:calc(100% - 16px)!important;
+  }
+}
+
+/* GNK ASG BACKEND GRID ALIGNMENT V4 END */
