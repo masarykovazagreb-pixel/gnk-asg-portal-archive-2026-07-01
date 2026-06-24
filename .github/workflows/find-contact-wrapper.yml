@@ -1,0 +1,21 @@
+name: Find Contact Wrapper
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Locate contact wrapper
+        run: |
+          grep -RIn --exclude-dir=.git 'Kontakt endpoint je aktivan preko top-level wrappera' workers apps || true
+          grep -RIn --exclude-dir=.git 'wrapper.*contact-submit\|contact-submit.*wrapper' workers apps | head -80 || true
