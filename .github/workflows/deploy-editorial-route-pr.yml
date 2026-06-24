@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Validate route package
+      - name: Validate existing Auto Editor worker package
         run: |
           set -euo pipefail
           test -n "$GNK_ASG_OPERATOR_TOKEN"
@@ -28,8 +28,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js
           node --check workers/gnk-asg-direct-operator/src/editorial-core-v1.js
           node --check workers/gnk-asg-direct-operator/src/editorial-sources-v1.js
-          grep -q 'gnk-asg.hr/auto-editor' workers/gnk-asg-direct-operator/wrangler.editorial-route.toml
-      - name: Deploy dedicated Editorial Center worker
+          grep -q 'name = "gnk-asg-auto-editor"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
+      - name: Deploy existing Auto Editor route worker
         id: deploy
         continue-on-error: true
         working-directory: workers/gnk-asg-direct-operator
@@ -39,24 +39,13 @@ jobs:
         run: |
           set +e
           token_hash=$(printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | sha256sum | awk '{print $1}')
-          npx --yes wrangler@4 deploy --config wrangler.editorial-route.toml --name gnk-asg-editorial-center --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars > deploy.log 2>&1
+          npx --yes wrangler@4 deploy --config wrangler.editorial-existing.toml --name gnk-asg-auto-editor --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars > deploy.log 2>&1
           code=$?
           mkdir -p wrangler-debug
           cp -f "$HOME"/.config/.wrangler/logs/*.log wrangler-debug/ 2>/dev/null || true
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           tail -n 120 deploy.log
           exit $code
-      - name: Inspect conflicting Cloudflare routes
-        if: steps.deploy.outputs.exit_code != '0'
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: |
-          set -euo pipefail
-          zone_id=$(curl --silent --show-error --fail --header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" --header 'Content-Type: application/json' 'https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr' | jq -r '.result[0].id')
-          test -n "$zone_id"
-          curl --silent --show-error --fail --header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" --header 'Content-Type: application/json' "https://api.cloudflare.com/client/v4/zones/$zone_id/workers/routes" | jq '{success,result:[.result[]|{id,pattern,script}]}' > route-inventory.json
-          cat route-inventory.json
       - name: Upload deployment logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -64,7 +53,6 @@ jobs:
           name: editorial-route-deploy-log
           path: |
             workers/gnk-asg-direct-operator/deploy.log
-            workers/gnk-asg-direct-operator/route-inventory.json
             workers/gnk-asg-direct-operator/wrangler-debug/*.log
           if-no-files-found: error
           retention-days: 3
