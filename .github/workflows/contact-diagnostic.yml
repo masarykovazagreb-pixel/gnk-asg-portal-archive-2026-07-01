@@ -1,0 +1,69 @@
+name: Contact Form Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/contact-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  contact-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Test contact page and submit endpoint
+        shell: bash
+        run: |
+          set -u
+          mkdir -p diagnostic
+
+          PAGE_CODE=$(curl --silent --show-error --location \
+            --output diagnostic/contact-page.html \
+            --dump-header diagnostic/contact-page-headers.txt \
+            --write-out '%{http_code}' \
+            'https://gnk-asg.hr/contact/?diagnostic=20260624')
+
+          API_CODE=$(curl --silent --show-error --location \
+            --output diagnostic/contact-submit.json \
+            --dump-header diagnostic/contact-submit-headers.txt \
+            --write-out '%{http_code}' \
+            --request POST \
+            --form 'mailbox=info' \
+            --form 'name=GNK ASG kontakt dijagnostika' \
+            --form 'email=beckuphome@gmail.com' \
+            --form 'phone=' \
+            --form 'subject=[TEST] Kontakt forma 24.06.2026' \
+            --form 'message=Automatski dijagnostički test stvarnog GNK ASG kontaktnog sustava. Poruku nije potrebno obrađivati.' \
+            --form 'consent=yes' \
+            'https://gnk-asg.hr/api/contact-submit?diagnostic=20260624')
+
+          echo "CONTACT_PAGE_HTTP=$PAGE_CODE"
+          echo "CONTACT_API_HTTP=$API_CODE"
+          echo 'CONTACT_API_RESPONSE_BEGIN'
+          cat diagnostic/contact-submit.json || true
+          echo
+          echo 'CONTACT_API_RESPONSE_END'
+
+          test "$PAGE_CODE" = "200"
+          test "$API_CODE" = "200"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('diagnostic/contact-submit.json').read_text(encoding='utf-8'))
+          print('CONTACT_API_OK=' + str(bool(data.get('ok'))))
+          print('CONTACT_API_ERROR=' + str(data.get('error') or ''))
+          print('CONTACT_REFERENCE=' + str(data.get('reference') or data.get('id') or data.get('ticket') or ''))
+          if not data.get('ok'):
+              raise SystemExit(1)
+          PY
+
+      - name: Upload diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: contact-diagnostic-${{ github.run_id }}
+          path: diagnostic/
+          retention-days: 7
