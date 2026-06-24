@@ -1,0 +1,65 @@
+name: Operator Session and Mail Diagnostic
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+      GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+      ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+      GNK_ASG_ADMIN_TOKEN: ${{ secrets.GNK_ASG_ADMIN_TOKEN }}
+    steps:
+      - name: Check secret availability and authenticated endpoints
+        shell: bash
+        run: |
+          token="$OPERATOR_TOKEN"
+          [ -n "$token" ] || token="$GNK_ASG_OPERATOR_TOKEN"
+          [ -n "$token" ] || token="$ADMIN_TOKEN"
+          [ -n "$token" ] || token="$GNK_ASG_ADMIN_TOKEN"
+
+          if [ -z "$token" ]; then
+            echo 'TOKEN_SECRET_AVAILABLE=false'
+            exit 2
+          fi
+          echo 'TOKEN_SECRET_AVAILABLE=true'
+
+          status_code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' \
+            -H "Authorization: Bearer $token" \
+            'https://gnk-asg.hr/operator/session/status')
+          echo "SESSION_STATUS_HTTP=$status_code"
+          cat status.json
+
+          login_code=$(curl --silent --show-error --output login.html --dump-header login.headers --write-out '%{http_code}' \
+            --cookie-jar cookies.txt \
+            --request POST \
+            --data-urlencode "token=$token" \
+            --data-urlencode 'next=/mail-studio/' \
+            'https://gnk-asg.hr/operator/session/login')
+          echo "SESSION_LOGIN_HTTP=$login_code"
+          grep -iE '^(location|set-cookie):' login.headers | sed -E 's/(gnk_asg_admin_session=)[^;]+/\1[REDACTED]/g' || true
+
+          mail_code=$(curl --silent --show-error --output mail.json --write-out '%{http_code}' \
+            --cookie cookies.txt \
+            --request POST \
+            -H 'content-type: application/json' \
+            --data '{"from":"info@gnk-asg.hr","fromName":"GNK ASG Info","to":"beckuphome@gmail.com","subject":"[TEST] GNK ASG Mail Studio autentifikacija 24.06.2026","body":"Automatska provjera operatorske sesije i mail API-ja. Poruku nije potrebno obrađivati.","text":"Automatska provjera operatorske sesije i mail API-ja. Poruku nije potrebno obrađivati."}' \
+            'https://gnk-asg.hr/api/admin-mail-send')
+          echo "ADMIN_MAIL_HTTP=$mail_code"
+          cat mail.json
+
+          direct_code=$(curl --silent --show-error --output direct-mail.json --write-out '%{http_code}' \
+            --request POST \
+            -H "Authorization: Bearer $token" \
+            -H 'content-type: application/json' \
+            --data '{"mailbox":"info","to":"beckuphome@gmail.com","subject":"[TEST] GNK ASG operator mail 24.06.2026","body":"Automatska provjera izravnog operator mail endpointa. Poruku nije potrebno obrađivati.","addSignature":"yes"}' \
+            'https://gnk-asg.hr/api/operator-send-mail')
+          echo "DIRECT_MAIL_HTTP=$direct_code"
+          cat direct-mail.json
