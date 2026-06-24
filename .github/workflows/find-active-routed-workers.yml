@@ -1,0 +1,23 @@
+name: Find Active Routed Workers
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: List Worker route configurations
+        run: |
+          echo '=== ROUTE CONFIGS ==='
+          grep -RIn --include='wrangler*.toml' --include='*.jsonc' --include='*.json' --include='*.yml' --include='*.yaml' 'gnk-asg.hr' workers .github | head -300 || true
+          echo '=== WORKER NAMES ==='
+          grep -RIn --include='wrangler*.toml' '^name[[:space:]]*=' workers | head -300 || true
