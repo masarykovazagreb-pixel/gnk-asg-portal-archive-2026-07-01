@@ -10,7 +10,7 @@ on:
       - "workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js"
       - "workers/gnk-asg-direct-operator/src/editorial-core-v1.js"
       - "workers/gnk-asg-direct-operator/src/editorial-sources-v1.js"
-      - "workers/gnk-asg-direct-operator/wrangler.editorial-final.toml"
+      - "workers/gnk-asg-direct-operator/wrangler.editorial-route.toml"
       - ".github/workflows/deploy-editorial-center.yml"
 
 permissions:
@@ -34,8 +34,10 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js
           node --check workers/gnk-asg-direct-operator/src/editorial-core-v1.js
           node --check workers/gnk-asg-direct-operator/src/editorial-sources-v1.js
+          grep -q 'main = "src/index-editorial-final-v1.js"' workers/gnk-asg-direct-operator/wrangler.editorial-route.toml
+          grep -q 'gnk-asg.hr/auto-editor' workers/gnk-asg-direct-operator/wrangler.editorial-route.toml
           grep -q 'Urednički centar' apps/portal/auto-editor/index.html
-      - name: Deploy
+      - name: Deploy dedicated route worker
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -43,15 +45,20 @@ jobs:
         run: |
           token_hash=$(printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | sha256sum | awk '{print $1}')
           test ${#token_hash} -eq 64
-          npx --yes wrangler@4 deploy --config wrangler.editorial-final.toml --name gnk-asg-direct-operator --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars
-      - name: Verify
+          npx --yes wrangler@4 deploy --config wrangler.editorial-route.toml --name gnk-asg-editorial-center --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars
+      - name: Verify protected Editorial Center
         run: |
           sleep 18
           code=$(curl --silent --show-error --output login.html --write-out '%{http_code}' --cookie-jar cookies.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' 'https://gnk-asg.hr/auto-editor/')
+          cat login.html || true
           test "$code" = "303"
           code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie cookies.txt 'https://gnk-asg.hr/auto-editor/')
           test "$code" = "200"
           grep -q 'Urednički centar' editor.html
           code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' --cookie cookies.txt 'https://gnk-asg.hr/auto-editor/editorial/api/status')
+          cat status.json
           test "$code" = "200"
           grep -q 'GNK_ASG_EDITORIAL_CENTER_V1_20260624' status.json
+          code=$(curl --silent --show-error --output health.json --write-out '%{http_code}' 'https://gnk-asg.hr/api/editorial-public-health')
+          test "$code" = "200"
+          grep -q 'draft-review-manual-publish' health.json
