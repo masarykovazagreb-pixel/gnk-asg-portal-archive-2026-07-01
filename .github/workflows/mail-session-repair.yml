@@ -13,35 +13,103 @@ permissions:
 jobs:
   repair:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
+    env:
+      OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+      GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+      ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+      GNK_ASG_ADMIN_TOKEN: ${{ secrets.GNK_ASG_ADMIN_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Validate session worker
+      - name: Validate unified mail worker
         working-directory: workers/gnk-asg-direct-operator
         run: |
+          node --check src/index-mail-repair-v1.js
           node --check src/index-ui-harmonizer.js
           grep -q "operator/session/login" src/index-ui-harmonizer.js
-          grep -q "operator/session/status" src/index-ui-harmonizer.js
-          grep -q "gnk_asg_admin_session" src/index-ui-harmonizer.js
-      - name: Deploy session repair
+          grep -q "api/admin-mail-send" src/index-mail-repair-v1.js
+          grep -q "api/contact-submit" src/index-mail-repair-v1.js
+          grep -q "routes =" wrangler.dark-market.toml
+      - name: Deploy unified mail worker and routes
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy src/index-ui-harmonizer.js --config wrangler.dark-market.toml --name gnk-asg-direct-operator
-      - name: Verify session routes
+        run: npx --yes wrangler@4 deploy --config wrangler.dark-market.toml
+      - name: Verify session, Mail Studio and contact
+        shell: bash
         run: |
-          sleep 10
+          set -u
+          sleep 12
+          token="$OPERATOR_TOKEN"
+          [ -n "$token" ] || token="$GNK_ASG_OPERATOR_TOKEN"
+          [ -n "$token" ] || token="$ADMIN_TOKEN"
+          [ -n "$token" ] || token="$GNK_ASG_ADMIN_TOKEN"
+          test -n "$token"
+
           status_code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' 'https://gnk-asg.hr/operator/session/status')
-          login_code=$(curl --silent --show-error --output login.html --write-out '%{http_code}' 'https://gnk-asg.hr/operator/session/login?next=%2Fmail-studio%2F')
+          login_page_code=$(curl --silent --show-error --output login-page.html --write-out '%{http_code}' 'https://gnk-asg.hr/operator/session/login?next=%2Fmail-studio%2F')
+          login_code=$(curl --silent --show-error --output login-result.html --dump-header login.headers --write-out '%{http_code}' \
+            --cookie-jar cookies.txt \
+            --request POST \
+            --data-urlencode "token=$token" \
+            --data-urlencode 'next=/mail-studio/' \
+            'https://gnk-asg.hr/operator/session/login')
+
+          mail_code=$(curl --silent --show-error --output mail.json --write-out '%{http_code}' \
+            --cookie cookies.txt \
+            --request POST \
+            -H 'content-type: application/json' \
+            --data '{"mailbox":"info","from":"info@gnk-asg.hr","fromName":"GNK ASG Info Desk","to":"beckuphome@gmail.com","subject":"[TEST] GNK ASG Mail Studio popravak 24.06.2026","body":"Mail Studio autorizacija i izlazno slanje sada se produkcijski provjeravaju.","text":"Mail Studio autorizacija i izlazno slanje sada se produkcijski provjeravaju."}' \
+            'https://gnk-asg.hr/api/admin-mail-send')
+
+          contact_code=$(curl --silent --show-error --output contact.json --write-out '%{http_code}' \
+            --request POST \
+            --form 'mailbox=info' \
+            --form 'name=GNK ASG produkcijski test' \
+            --form 'email=beckuphome@gmail.com' \
+            --form 'phone=' \
+            --form 'subject=[TEST] Kontakt popravak 24.06.2026' \
+            --form 'message=Produkcijska provjera kontakta i automatske potvrde. Poruku nije potrebno obrađivati.' \
+            --form 'consent=yes' \
+            'https://gnk-asg.hr/api/contact-submit')
+
           echo "SESSION_STATUS_HTTP=$status_code"
           cat status.json
-          echo "SESSION_LOGIN_HTTP=$login_code"
-          grep -q 'Operatorski token' login.html
-          test "$status_code" = "200"
-          test "$login_code" = "401"
+          echo "SESSION_LOGIN_PAGE_HTTP=$login_page_code"
+          echo "SESSION_LOGIN_POST_HTTP=$login_code"
+          grep -iE '^(location|set-cookie):' login.headers | sed -E 's/(gnk_asg_admin_session=)[^;]+/\1[REDACTED]/g' || true
+          echo "ADMIN_MAIL_HTTP=$mail_code"
+          cat mail.json
+          echo "CONTACT_HTTP=$contact_code"
+          cat contact.json
 
-# production trigger 2026-06-24T15:30:00+02:00
+          test "$status_code" = "200"
+          test "$login_page_code" = "401"
+          test "$login_code" = "303"
+          test "$mail_code" = "200"
+          test "$contact_code" = "200"
+
+          python - <<'PY'
+          import json
+          mail=json.load(open('mail.json',encoding='utf-8'))
+          contact=json.load(open('contact.json',encoding='utf-8'))
+          print('MAIL_OK='+str(bool(mail.get('ok'))))
+          print('CONTACT_OK='+str(bool(contact.get('ok'))))
+          print('CONTACT_CASE_ID='+str(contact.get('caseId') or ''))
+          print('INTERNAL_MAIL_SENT='+str(bool((contact.get('internalMail') or {}).get('sent'))))
+          print('AUTO_REPLY_SENT='+str(bool((contact.get('autoReply') or {}).get('sent'))))
+          if not mail.get('ok'):
+              raise SystemExit('Mail Studio test nije prošao')
+          if not contact.get('ok'):
+              raise SystemExit('Kontakt test nije prošao')
+          if not (contact.get('internalMail') or {}).get('sent'):
+              raise SystemExit('Interna kontakt obavijest nije poslana')
+          if not (contact.get('autoReply') or {}).get('sent'):
+              raise SystemExit('Automatska kontakt potvrda nije poslana')
+          PY
+
+# unified production mail repair trigger 2026-06-24
