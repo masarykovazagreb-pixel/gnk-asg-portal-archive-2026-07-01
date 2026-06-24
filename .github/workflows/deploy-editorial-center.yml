@@ -10,7 +10,7 @@ on:
       - "workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js"
       - "workers/gnk-asg-direct-operator/src/editorial-core-v1.js"
       - "workers/gnk-asg-direct-operator/src/editorial-sources-v1.js"
-      - "workers/gnk-asg-direct-operator/wrangler.editorial-route.toml"
+      - "workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml"
       - ".github/workflows/deploy-editorial-center.yml"
 
 permissions:
@@ -29,33 +29,38 @@ jobs:
           node-version: "22"
       - name: Validate
         run: |
+          set -euo pipefail
           test -n "$GNK_ASG_OPERATOR_TOKEN"
           node --check workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js
           node --check workers/gnk-asg-direct-operator/src/editorial-core-v1.js
           node --check workers/gnk-asg-direct-operator/src/editorial-sources-v1.js
-          grep -q 'main = "src/index-editorial-final-v1.js"' workers/gnk-asg-direct-operator/wrangler.editorial-route.toml
-          grep -q 'gnk-asg.hr/auto-editor' workers/gnk-asg-direct-operator/wrangler.editorial-route.toml
+          grep -q 'name = "gnk-asg-auto-editor"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
+          grep -q 'main = "src/index-editorial-final-v1.js"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
           grep -q 'Urednički centar' apps/portal/auto-editor/index.html
-      - name: Deploy dedicated route worker
+      - name: Deploy existing Auto Editor route worker
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
+          set -euo pipefail
           token_hash=$(printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | sha256sum | awk '{print $1}')
           test ${#token_hash} -eq 64
-          npx --yes wrangler@4 deploy --config wrangler.editorial-route.toml --name gnk-asg-editorial-center --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars
+          npx --yes wrangler@4 deploy --config wrangler.editorial-existing.toml --name gnk-asg-auto-editor --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars
       - name: Verify protected Editorial Center
         run: |
+          set -euo pipefail
           sleep 18
           code=$(curl --silent --show-error --output login.html --write-out '%{http_code}' --cookie-jar cookies.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' 'https://gnk-asg.hr/auto-editor/')
-          cat login.html || true
+          echo "LOGIN_HTTP=$code"
           test "$code" = "303"
           code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie cookies.txt 'https://gnk-asg.hr/auto-editor/')
+          echo "EDITOR_HTTP=$code"
           test "$code" = "200"
           grep -q 'Urednički centar' editor.html
           code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' --cookie cookies.txt 'https://gnk-asg.hr/auto-editor/editorial/api/status')
+          echo "STATUS_HTTP=$code"
           cat status.json
           test "$code" = "200"
           grep -q 'GNK_ASG_EDITORIAL_CENTER_V1_20260624' status.json
