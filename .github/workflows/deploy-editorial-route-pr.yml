@@ -41,15 +41,19 @@ jobs:
           token_hash=$(printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | sha256sum | awk '{print $1}')
           npx --yes wrangler@4 deploy --config wrangler.editorial-route.toml --name gnk-asg-editorial-center --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars > deploy.log 2>&1
           code=$?
+          mkdir -p wrangler-debug
+          cp -f "$HOME"/.config/.wrangler/logs/*.log wrangler-debug/ 2>/dev/null || true
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           tail -n 120 deploy.log
           exit $code
-      - name: Upload deployment log
+      - name: Upload deployment logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: editorial-route-deploy-log
-          path: workers/gnk-asg-direct-operator/deploy.log
+          path: |
+            workers/gnk-asg-direct-operator/deploy.log
+            workers/gnk-asg-direct-operator/wrangler-debug/*.log
           if-no-files-found: error
           retention-days: 3
       - name: Stop after failed deployment
