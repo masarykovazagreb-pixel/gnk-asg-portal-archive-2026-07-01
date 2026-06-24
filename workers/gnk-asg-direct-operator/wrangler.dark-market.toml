@@ -1,8 +1,29 @@
 name = "gnk-asg-direct-operator"
-main = "src/index-operator-core-routes-v1.js"
+main = "src/index-mail-repair-v1.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
+
+routes = [
+  { pattern = "gnk-asg.hr/operator/session/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/operator/session/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/admin-mail-send*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/admin-mail-send*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/operator-send-mail*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/operator-send-mail*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/contact-submit*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/contact-submit*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/mail-studio*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/mail-studio*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/mail-studio-pro*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/mail-studio-pro*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/admin-center*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/admin-center*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/operator-dashboard*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/operator-dashboard*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/operator-mobile*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/operator-mobile*", zone_name = "gnk-asg.hr" }
+]
 
 [[kv_namespaces]]
 binding = "GNK_ASG_CONFIG_KV"
