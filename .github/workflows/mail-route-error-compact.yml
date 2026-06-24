@@ -1,0 +1,29 @@
+name: Mail Route Error Compact
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Run compact deploy diagnostic
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          git clone -q --depth 1 --branch main "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo
+          cd repo/workers/gnk-asg-direct-operator
+          set +e
+          npx --yes wrangler@4 deploy --config wrangler.dark-market.toml >deploy.log 2>&1
+          code=$?
+          echo "DEPLOY_EXIT=$code"
+          tail -120 deploy.log
+          exit 0
