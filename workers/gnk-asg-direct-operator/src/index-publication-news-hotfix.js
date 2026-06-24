@@ -1,6 +1,6 @@
 import core from './index.js';
 
-const VERSION = 'GNK_ASG_PUBLICATION_NEWS_2H_V4';
+const VERSION = 'GNK_ASG_PUBLICATION_NEWS_2H_V5';
 const MODEL = '@cf/meta/llama-3.1-8b-instruct-fast';
 const FEEDS = [
   ['BBC Business','business','world','https://feeds.bbci.co.uk/news/business/rss.xml'],
@@ -11,14 +11,12 @@ const FEEDS = [
   ['Balkan Green Energy News','industry','region','https://balkangreenenergynews.com/feed/']
 ];
 const IMAGE_POOL = [
-  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-financijska-analiza.jpg',alt:'GNK ASG financijska analiza i javni pokazatelji',categories:['business','markets','finance']},
   {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-ai-asistent.jpg',alt:'GNK ASG AI asistent i digitalne operacije',categories:['technology','ai']},
   {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-globalna-mreza.jpg',alt:'GNK ASG globalna poslovna mreža',categories:['region','world','business']},
   {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-burze-i-trzista.jpg',alt:'GNK ASG burze, tržišta i digitalna imovina',categories:['business','markets','technology']},
   {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-sportska-infrastruktura.jpg',alt:'GNK ASG sportska infrastruktura i urbani razvoj',categories:['sport','industry','region']},
   {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-odrziva-buducnost.jpg',alt:'GNK ASG održiva budućnost i partnerstva',categories:['industry','region','sustainability']},
   {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-kartice-i-placanja.jpg',alt:'GNK ASG kartice, plaćanja i fintech',categories:['business','technology','fintech']},
-  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-korporativna-recepcija.jpg',alt:'GNK ASG korporativni portal i poslovni identitet',categories:['business','region']},
   {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-poslovna-zgrada.jpg',alt:'GNK ASG međunarodno poslovanje i korporativni razvoj',categories:['business','world']},
   {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-komunikacija-i-kontakt.jpg',alt:'GNK ASG komunikacija i digitalni kanali',categories:['technology','region']}
 ];
