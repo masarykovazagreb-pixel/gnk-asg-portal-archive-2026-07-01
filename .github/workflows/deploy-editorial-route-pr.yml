@@ -1,0 +1,58 @@
+name: Deploy Editorial Route PR
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-editorial-route-pr.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate route package
+        run: |
+          set -euo pipefail
+          test -n "$GNK_ASG_OPERATOR_TOKEN"
+          node --check workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js
+          node --check workers/gnk-asg-direct-operator/src/editorial-core-v1.js
+          node --check workers/gnk-asg-direct-operator/src/editorial-sources-v1.js
+          grep -q 'gnk-asg.hr/auto-editor' workers/gnk-asg-direct-operator/wrangler.editorial-route.toml
+      - name: Deploy dedicated Editorial Center worker
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          token_hash=$(printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | sha256sum | awk '{print $1}')
+          test ${#token_hash} -eq 64
+          npx --yes wrangler@4 deploy --config wrangler.editorial-route.toml --name gnk-asg-editorial-center --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars
+      - name: Verify production route
+        run: |
+          set -euo pipefail
+          sleep 15
+          login_code=$(curl --silent --show-error --output login.html --dump-header login.headers --write-out '%{http_code}' --cookie-jar cookies.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' 'https://gnk-asg.hr/auto-editor/')
+          echo "LOGIN_HTTP=$login_code"
+          cat login.html || true
+          test "$login_code" = "303"
+          editor_code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie cookies.txt 'https://gnk-asg.hr/auto-editor/')
+          echo "EDITOR_HTTP=$editor_code"
+          test "$editor_code" = "200"
+          grep -q 'Urednički centar' editor.html
+          status_code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' --cookie cookies.txt 'https://gnk-asg.hr/auto-editor/editorial/api/status')
+          echo "STATUS_HTTP=$status_code"
+          cat status.json
+          test "$status_code" = "200"
+          grep -q 'GNK_ASG_EDITORIAL_CENTER_V1_20260624' status.json
