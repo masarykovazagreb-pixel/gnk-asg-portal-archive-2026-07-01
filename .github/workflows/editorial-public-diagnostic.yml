@@ -1,5 +1,6 @@
 name: Editorial Public Diagnostic
 
+# Validates the latest main deployment and redirect-loop fix.
 on:
   pull_request:
     branches: [main]
