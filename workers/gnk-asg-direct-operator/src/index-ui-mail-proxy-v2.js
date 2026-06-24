@@ -1,6 +1,7 @@
 import app from './index-ui-harmonizer.js';
 
 const MAIL_API_ORIGIN = 'https://gnk-asg-contact-api.beckuphome.workers.dev';
+const MAIL_UI_PATHS = new Set(['/mail-studio','/mail-studio-pro']);
 const PROXY_PATHS = new Set([
   '/api/operator-auth-check',
   '/api/operator-send-mail',
@@ -42,9 +43,17 @@ async function proxyMailApi(request) {
   });
 }
 
+function redirectMailUi(request) {
+  const target = new URL('/operator-dashboard/?view=mail',request.url);
+  return Response.redirect(target.toString(),302);
+}
+
 export default {
   async fetch(request, env, ctx) {
     const path = new URL(request.url).pathname.replace(/\/+$/, '') || '/';
+    if ((request.method === 'GET' || request.method === 'HEAD') && MAIL_UI_PATHS.has(path)) {
+      return redirectMailUi(request);
+    }
     if (PROXY_PATHS.has(path)) return proxyMailApi(request);
     return app.fetch(request, env, ctx);
   },
