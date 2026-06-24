@@ -1,0 +1,42 @@
+name: Mail Backend Targeted Inventory
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  targeted-inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print targeted mail backend references
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          patterns = [
+              'admin-mail-send', 'mail-center/inbox', 'mail-center/sent',
+              'mail-center/outbox', 'mail-center/status', 'contact-submit',
+              'RESEND', 'BREVO', 'POSTMARK', 'SENDGRID', 'MAILGUN',
+              'env.EMAIL', 'EMAIL.send', 'send_email'
+          ]
+          allowed = {'.js','.mjs','.cjs','.ts','.tsx','.html','.toml','.yml','.yaml','.json','.md','.txt','.ps1','.py'}
+          results=[]
+          for path in Path('.').rglob('*'):
+              if not path.is_file() or '.git' in path.parts or path.suffix.lower() not in allowed:
+                  continue
+              try:
+                  lines=path.read_text(encoding='utf-8',errors='ignore').splitlines()
+              except Exception:
+                  continue
+              for i,line in enumerate(lines,1):
+                  if any(p.lower() in line.lower() for p in patterns):
+                      results.append((str(path),i,line.strip()[:500]))
+          print('MATCH_COUNT='+str(len(results)))
+          for path,line,text in results[:180]:
+              print(f'{path}:{line}: {text}')
+          PY
