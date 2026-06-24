@@ -1,0 +1,35 @@
+name: Find Active Routed Workers Compact
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Compact route inventory
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git clone -q --depth 1 --branch main "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo
+          cd repo
+          python - <<'PY'
+          from pathlib import Path
+          for p in sorted(Path('workers').rglob('wrangler*.toml')):
+              t=p.read_text(encoding='utf-8',errors='ignore')
+              name=''
+              for line in t.splitlines():
+                  s=line.strip()
+                  if s.startswith('name') and '=' in s:
+                      name=s.split('=',1)[1].strip().strip('"')
+                      break
+              routes=[line.strip() for line in t.splitlines() if 'gnk-asg.hr' in line]
+              if routes:
+                  print(f'FILE={p} WORKER={name}')
+                  for route in routes: print('  '+route)
+          PY
