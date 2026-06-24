@@ -42,7 +42,8 @@
     ['AI pomoć','/assistant/'],
     ['Kontakt','/contact/'],
     ['Legal','/legal/'],
-    ['App','/app/']
+    ['App','/app/'],
+    ['Admin','/operator-dashboard/','nofollow']
   ];
 
   const enLinks = [
@@ -58,7 +59,8 @@
     ['AI Help','/assistant/'],
     ['Contact','/en/contact/'],
     ['Legal','/en/legal/'],
-    ['App','/app/']
+    ['App','/app/'],
+    ['Admin','/operator-dashboard/','nofollow']
   ];
 
   const isActive = href => {
