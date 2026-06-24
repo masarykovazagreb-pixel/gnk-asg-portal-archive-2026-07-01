@@ -5,11 +5,16 @@ on:
   push:
     branches: [main]
     paths:
+      - "apps/portal/auto-editor/index.html"
       - "apps/portal/assets/private-admin-menu-v1.js"
       - "apps/portal/assets/private-admin-menu-v1.css"
       - "apps/portal/assets/admin-auth-controls-v1.js"
       - "apps/portal/assets/admin-auth-controls-v1.css"
       - "workers/gnk-asg-direct-operator/src/index-private-ui-assets-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-auto-editor-fallback-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js"
+      - "workers/gnk-asg-direct-operator/src/editorial-core-v1.js"
+      - "workers/gnk-asg-direct-operator/src/editorial-sources-v1.js"
       - "workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml"
       - ".github/workflows/deploy-private-admin-ui-main.yml"
 
@@ -19,7 +24,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     env:
       GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
     steps:
@@ -31,8 +36,15 @@ jobs:
         run: |
           test -n "$GNK_ASG_OPERATOR_TOKEN"
           node --check workers/gnk-asg-direct-operator/src/index-private-ui-assets-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-auto-editor-fallback-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
+          node --check workers/gnk-asg-direct-operator/src/editorial-core-v1.js
+          node --check workers/gnk-asg-direct-operator/src/editorial-sources-v1.js
           node --check apps/portal/assets/private-admin-menu-v1.js
           node --check apps/portal/assets/admin-auth-controls-v1.js
+          grep -q 'GNK ASG Urednički centar' apps/portal/auto-editor/index.html
+          grep -q '09:00 i 16:00' apps/portal/auto-editor/index.html
+          grep -q 'ručne potvrde' apps/portal/auto-editor/index.html
       - name: Deploy
         working-directory: workers/gnk-asg-direct-operator
         env:
@@ -42,18 +54,24 @@ jobs:
           token_hash=$(printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | sha256sum | awk '{print $1}')
           test ${#token_hash} -eq 64
           npx --yes wrangler@4 deploy --config wrangler.mail-proxy-no-routes.toml --name gnk-asg-direct-operator --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars
-      - name: Verify raw token and session
+      - name: Verify authentication and Editorial Center
         run: |
-          sleep 15
+          sleep 18
           code=$(curl --silent --show-error --output auth.json --write-out '%{http_code}' --header "Authorization: Bearer $GNK_ASG_OPERATOR_TOKEN" --header "x-operator-token: $GNK_ASG_OPERATOR_TOKEN" "https://gnk-asg.hr/api/operator-auth-check?cb=$(date +%s)")
           cat auth.json
           test "$code" = "200"
           code=$(curl --silent --show-error --output login.html --dump-header login.headers --write-out '%{http_code}' --cookie-jar cookies.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/mail-studio/' 'https://gnk-asg.hr/mail-studio/')
           test "$code" = "303"
-          for path in mail-studio admin-center operator-dashboard operator-mobile mail-studio-pro; do
-            code=$(curl --silent --show-error --output "$path.html" --write-out '%{http_code}' --cookie cookies.txt "https://gnk-asg.hr/$path/?cb=$(date +%s)")
+          for path in mail-studio admin-center operator-dashboard operator-mobile mail-studio-pro auto-editor; do
+            file=$(echo "$path" | tr '/' '-')
+            code=$(curl --silent --show-error --output "$file.html" --write-out '%{http_code}' --cookie cookies.txt "https://gnk-asg.hr/$path/?cb=$(date +%s)")
             test "$code" = "200"
-            grep -q 'private-admin-menu-v1.js' "$path.html"
-            grep -q 'admin-auth-controls-v1.js' "$path.html"
           done
-          echo "PRIVATE_ADMIN_AUTH_MAIN_OK=true"
+          grep -q 'Urednički centar' auto-editor.html
+          code=$(curl --silent --show-error --output editorial-status.json --write-out '%{http_code}' --cookie cookies.txt "https://gnk-asg.hr/auto-editor/editorial/api/status?cb=$(date +%s)")
+          cat editorial-status.json
+          test "$code" = "200"
+          grep -q 'GNK_ASG_EDITORIAL_CENTER_V1_20260624' editorial-status.json
+          code=$(curl --silent --show-error --output publications.html --write-out '%{http_code}' 'https://gnk-asg.hr/objave/')
+          test "$code" = "200"
+          echo "EDITORIAL_CENTER_DEPLOY_OK=true"
