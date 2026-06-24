@@ -6,7 +6,11 @@ function injectSecurityPatch(html) {
     ''
   );
 
-  const patch = `<script id="gnk-asg-secure-manual-token-v2">
+  const sharedShell = `<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260624-backend-6">
+<style id="gnk-operator-shared-auth-only">#login{display:none!important}#gnk-asg-premium-header,#gnk-asg-overlay,#gnk-asg-drawer,#gnk-asg-admin-launcher,.gnk-asg-final-menu-wrap{display:none!important}</style>
+<script src="/assets/backend-ui-shell.js?v=20260624-backend-6"></script>`;
+
+  const patch = `<script id="gnk-asg-secure-manual-token-v3">
 (() => {
   'use strict';
   const KEY = 'gnk_asg_operator_token_session';
@@ -39,6 +43,7 @@ function injectSecurityPatch(html) {
   const unlock = async () => {
     document.getElementById('login')?.classList.add('hidden');
     document.getElementById('app')?.classList.remove('hidden');
+    document.body.classList.add('gnk-admin-authenticated');
     try { await window.init?.(); } catch {}
   };
 
@@ -57,8 +62,9 @@ function injectSecurityPatch(html) {
     } catch {}
   };
   window.saveToken = async () => {
+    const sharedInput = document.getElementById('gnkAdminToken');
     const input = document.getElementById('tokenInput');
-    const value = String(input?.value || '').trim();
+    const value = String(sharedInput?.value || input?.value || '').trim();
     if (!value) { output('Token nije upisan.'); return; }
     output('Provjera tokena…');
     if (!(await verify(value))) {
@@ -68,6 +74,7 @@ function injectSecurityPatch(html) {
       return;
     }
     write(value);
+    if (input) input.value=value;
     output('Token je potvrđen. Mail funkcije su otključane.');
     await unlock();
   };
@@ -75,33 +82,35 @@ function injectSecurityPatch(html) {
     write('');
     const input = document.getElementById('tokenInput');
     if (input) input.value='';
+    document.getElementById('app')?.classList.add('hidden');
+    document.body.classList.remove('gnk-admin-authenticated');
     output('Token je uklonjen iz ove kartice.');
   };
-  window.logout = () => { write(''); location.reload(); };
+  window.logout = window.clearToken;
 
   const nativeFetch = window.fetch.bind(window);
   window.fetch = (input,init={}) => {
     const raw = typeof input === 'string' ? input : input?.url || '';
     const url = new URL(raw,location.origin);
-    const protectedApi = url.pathname.startsWith('/api/operator-') || url.pathname.startsWith('/operator/');
+    const protectedApi = url.pathname.startsWith('/api/operator-') || url.pathname.startsWith('/operator/') || url.pathname.startsWith('/api/admin-mail-send') || url.pathname.startsWith('/api/mail-center/');
     if (!protectedApi) return nativeFetch(input,init);
     const value = read();
     const requestHeaders = new Headers(init.headers || {});
-    if (value) {
+    if (value && !requestHeaders.has('authorization')) {
       requestHeaders.set('authorization','Bearer '+value);
       requestHeaders.set('x-operator-token',value);
     }
     return nativeFetch(input,{...init,headers:requestHeaders,credentials:'same-origin'});
   };
 
-  const start = () => {
+  const start = async () => {
     try { localStorage.removeItem('GNK_ASG_OPERATOR_TOKEN'); } catch {}
     document.getElementById('gnk-asg-force-token-sync')?.remove();
     const input = document.getElementById('tokenInput');
     if (input) input.value = read();
-    document.getElementById('login')?.classList.remove('hidden');
-    document.getElementById('app')?.classList.add('hidden');
-    output(read() ? 'Token je spremljen u ovoj kartici. Kliknite Uđi za provjeru.' : 'Unesite operator token.');
+    document.getElementById('login')?.classList.add('hidden');
+    if (read() && await verify(read())) await unlock();
+    else document.getElementById('app')?.classList.add('hidden');
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',start,{once:true});
@@ -110,8 +119,8 @@ function injectSecurityPatch(html) {
 </script>`;
 
   return withoutForcedToken.includes('</body>')
-    ? withoutForcedToken.replace('</body>',`${patch}</body>`)
-    : `${withoutForcedToken}${patch}`;
+    ? withoutForcedToken.replace('</body>',`${sharedShell}${patch}</body>`)
+    : `${withoutForcedToken}${sharedShell}${patch}`;
 }
 
 export default {
@@ -137,7 +146,7 @@ export default {
     headers.delete('content-length');
     headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
     headers.set('x-robots-tag','noindex, nofollow, noarchive');
-    headers.set('x-gnk-asg-operator-center','secure-manual-token-v2');
+    headers.set('x-gnk-asg-operator-center','secure-manual-token-v3');
 
     if (request.method === 'HEAD') return new Response(null,{status:asset.status,headers});
     if (!String(asset.headers.get('content-type') || '').includes('text/html')) {
