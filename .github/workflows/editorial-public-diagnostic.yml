@@ -21,18 +21,18 @@ jobs:
         run: |
           set +e
           base='https://gnk-asg-auto-editor.beckuphome.workers.dev'
-          login_code=$(curl --silent --show-error --output login.html --write-out '%{http_code}' --cookie-jar session.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' "$base/auto-editor/")
-          editor_code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie session.txt "$base/auto-editor/")
+          login_code=$(curl --silent --show-error --dump-header login.headers --output login.html --write-out '%{http_code}' --cookie-jar session.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' "$base/auto-editor/")
+          editor_code=$(curl --silent --show-error --dump-header editor.headers --output editor.html --write-out '%{http_code}' --cookie session.txt "$base/auto-editor/")
+          editor_final_code=$(curl --silent --show-error --location --dump-header editor-final.headers --output editor-final.html --write-out '%{http_code}' --cookie session.txt "$base/auto-editor/")
           status_code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' --cookie session.txt "$base/auto-editor/editorial/api/status")
-          routed_code=$(curl --silent --show-error --output routed.html --write-out '%{http_code}' 'https://gnk-asg.hr/auto-editor/')
           echo "DIRECT_LOGIN_HTTP=$login_code"
           echo "DIRECT_EDITOR_HTTP=$editor_code"
+          echo "DIRECT_EDITOR_FINAL_HTTP=$editor_final_code"
           echo "DIRECT_STATUS_HTTP=$status_code"
-          echo "ROUTED_AUTO_EDITOR_HTTP=$routed_code"
-          echo "EDITOR_MARKER=$(grep -c 'Urednički centar' editor.html || true)"
+          echo "EDITOR_LOCATION=$(grep -i '^location:' editor.headers | tr -d '\r' | head -1)"
+          echo "EDITOR_MARKER=$(grep -c 'Urednički centar' editor-final.html || true)"
           echo "STATUS_MARKER=$(grep -c 'GNK_ASG_EDITORIAL_CENTER_V1_20260624' status.json || true)"
-          echo "ROUTED_LOGIN_MARKER=$(grep -c 'Sigurna administratorska prijava' routed.html || true)"
-          echo "LOGIN_BODY=$(head -c 180 login.html | tr '\n' ' ')"
+          echo "EDITOR_BODY=$(head -c 250 editor-final.html | tr '\n' ' ')"
           echo "STATUS_BODY=$(head -c 300 status.json | tr '\n' ' ')"
           rm -f session.txt
           exit 0
