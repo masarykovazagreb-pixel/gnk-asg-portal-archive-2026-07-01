@@ -1,0 +1,41 @@
+name: Contact Endpoint PR Diagnostic
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test-contact-endpoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check public contact route
+        run: |
+          mkdir -p diagnostic
+          page_code=$(curl --silent --show-error --location --output diagnostic/page.html --write-out '%{http_code}' 'https://gnk-asg.hr/contact/')
+          api_code=$(curl --silent --show-error --location --output diagnostic/api.json --write-out '%{http_code}' --request POST --form 'mailbox=info' --form 'name=GNK ASG dijagnostika' --form 'email=it@gnk-asg.hr' --form 'subject=[TEST] Kontakt endpoint' --form 'message=Automatska provjera kontaktnog endpointa.' --form 'consent=yes' 'https://gnk-asg.hr/api/contact-submit')
+          echo "CONTACT_PAGE_HTTP=$page_code"
+          echo "CONTACT_API_HTTP=$api_code"
+          cat diagnostic/api.json || true
+          test "$page_code" = "200"
+          test "$api_code" = "200"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('diagnostic/api.json').read_text(encoding='utf-8'))
+          print('CONTACT_OK=' + str(bool(data.get('ok'))))
+          print('CONTACT_ERROR=' + str(data.get('error') or ''))
+          if not data.get('ok'):
+              raise SystemExit(1)
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: contact-endpoint-evidence
+          path: diagnostic/
+          retention-days: 7
