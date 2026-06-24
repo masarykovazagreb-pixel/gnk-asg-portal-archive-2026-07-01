@@ -39,7 +39,7 @@ jobs:
           login_code=$(curl --silent --show-error --output login.html --write-out '%{http_code}' --cookie-jar session.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' "$base/auto-editor/")
           echo "LOGIN_HTTP=$login_code"
           test "$login_code" = "303"
-          editor_code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie session.txt "$base/auto-editor/")
+          editor_code=$(curl --silent --show-error --location --output editor.html --write-out '%{http_code}' --cookie session.txt "$base/auto-editor/")
           echo "EDITOR_HTTP=$editor_code"
           test "$editor_code" = "200"
           grep -q 'Urednički centar' editor.html
