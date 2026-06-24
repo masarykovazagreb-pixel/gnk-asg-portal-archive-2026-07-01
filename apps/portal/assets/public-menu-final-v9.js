@@ -42,10 +42,7 @@
     ['AI pomoć','/assistant/'],
     ['Kontakt','/contact/'],
     ['Legal','/legal/'],
-    ['App','/app/'],
-    ['Mobilni Admin','/operator-mobile/','nofollow'],
-    ['Admin','/operator-dashboard/','nofollow'],
-    ['Mail Center','/mail-studio/','nofollow']
+    ['App','/app/']
   ];
 
   const enLinks = [
@@ -61,10 +58,7 @@
     ['AI Help','/assistant/'],
     ['Contact','/en/contact/'],
     ['Legal','/en/legal/'],
-    ['App','/app/'],
-    ['Mobile Admin','/operator-mobile/','nofollow'],
-    ['Admin','/operator-dashboard/','nofollow'],
-    ['Mail Center','/mail-studio/','nofollow']
+    ['App','/app/']
   ];
 
   const isActive = href => {
