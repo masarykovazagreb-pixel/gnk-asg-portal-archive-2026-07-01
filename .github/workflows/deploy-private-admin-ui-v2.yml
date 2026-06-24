@@ -1,0 +1,46 @@
+name: Deploy Private Admin UI V2
+
+on:
+  push:
+    branches:
+      - fix/private-admin-menu-auth-v2-20260624
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate
+        run: |
+          node --check workers/gnk-asg-direct-operator/src/index-private-ui-assets-v1.js
+          node --check apps/portal/assets/private-admin-menu-v1.js
+          node --check apps/portal/assets/admin-auth-controls-v1.js
+      - name: Deploy
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          token_hash=$(printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | sha256sum | awk '{print $1}')
+          npx --yes wrangler@4 deploy --config wrangler.mail-proxy-no-routes.toml --name gnk-asg-direct-operator --var "OPERATOR_TOKEN_SHA256:$token_hash"
+      - name: Verify
+        run: |
+          sleep 10
+          code=$(curl --silent --show-error --output login.html --dump-header login.headers --write-out '%{http_code}' --cookie-jar cookies.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/mail-studio/' 'https://gnk-asg.hr/mail-studio/')
+          test "$code" = "303"
+          for path in mail-studio admin-center operator-dashboard operator-mobile mail-studio-pro; do
+            code=$(curl --silent --show-error --output "$path.html" --write-out '%{http_code}' --cookie cookies.txt "https://gnk-asg.hr/$path/")
+            test "$code" = "200"
+            grep -q 'private-admin-menu-v1.js' "$path.html"
+            grep -q 'admin-auth-controls-v1.js' "$path.html"
+          done
+          echo "PRIVATE_ADMIN_UI_V2_OK=true"
