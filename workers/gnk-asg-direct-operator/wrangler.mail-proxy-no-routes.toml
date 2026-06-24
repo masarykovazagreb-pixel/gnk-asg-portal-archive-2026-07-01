@@ -1,0 +1,43 @@
+name = "gnk-asg-direct-operator"
+main = "src/index-ui-mail-proxy-v2.js"
+compatibility_date = "2026-06-13"
+workers_dev = true
+preview_urls = true
+
+[[kv_namespaces]]
+binding = "GNK_ASG_CONFIG_KV"
+id = "d6f5dac9fa034d8d813db0de44eb7b1b"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[[d1_databases]]
+binding = "GNK_ASG_D1"
+database_name = "gnk_asg_operator_logs"
+database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
+
+[[r2_buckets]]
+binding = "GNK_ASG_MEDIA_ASSETS"
+bucket_name = "gnk-asg-media-assets"
+
+[[send_email]]
+name = "EMAIL"
+remote = true
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "direct-operator"
+SAFE_GET_DIRECT_MODE = "true"
+AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+
+[triggers]
+crons = ["0 */2 * * *"]
+
+[ai]
+binding = "AI"
