@@ -1,9 +1,10 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_OPERATOR_AUTH_V1__) return;
-  window.__GNK_ASG_OPERATOR_AUTH_V1__ = true;
+  if (window.__GNK_ASG_OPERATOR_AUTH_V2__) return;
+  window.__GNK_ASG_OPERATOR_AUTH_V2__ = true;
 
   const KEY = 'gnk_asg_operator_token_v1';
+  let sessionActive = false;
   const read = () => {
     try { return sessionStorage.getItem(KEY) || ''; }
     catch (_) { return ''; }
@@ -31,20 +32,21 @@
   const layer = document.createElement('div');
   layer.className = 'gnk-auth-layer';
   layer.hidden = true;
-  layer.innerHTML = `<section class="gnk-auth-box" role="dialog" aria-modal="true"><h2>Operatorska prijava</h2><p>Token se čuva samo u ovoj kartici preglednika do njezina zatvaranja.</p><label for="gnk-auth-value">Operatorski token</label><input id="gnk-auth-value" type="password" autocomplete="current-password"><div class="gnk-auth-actions"><button class="primary" id="gnk-auth-save" type="button">Provjeri i spremi</button><button id="gnk-auth-clear" type="button">Odjavi</button><button id="gnk-auth-close" type="button">Zatvori</button></div><p class="gnk-auth-msg" id="gnk-auth-msg"></p></section>`;
+  layer.innerHTML = `<section class="gnk-auth-box" role="dialog" aria-modal="true"><h2>Operatorska prijava</h2><p>Token se čuva samo u ovoj kartici preglednika do njezina zatvaranja. Ako ste se prijavili na sigurnom ulazu, koristi se HttpOnly sesija.</p><label for="gnk-auth-value">Operatorski token</label><input id="gnk-auth-value" type="password" autocomplete="current-password"><div class="gnk-auth-actions"><button class="primary" id="gnk-auth-save" type="button">Provjeri i spremi</button><button id="gnk-auth-clear" type="button">Odjavi lokalni token</button><button id="gnk-auth-close" type="button">Zatvori</button></div><p class="gnk-auth-msg" id="gnk-auth-msg"></p></section>`;
   document.body.appendChild(layer);
 
   const input = layer.querySelector('#gnk-auth-value');
   const msg = layer.querySelector('#gnk-auth-msg');
   const render = () => {
-    const active = Boolean(read());
-    launch.textContent = active ? 'Token aktivan' : 'Unesi token';
+    const tokenActive = Boolean(read());
+    const active = tokenActive || sessionActive;
+    launch.textContent = sessionActive ? 'Sesija aktivna' : (tokenActive ? 'Token aktivan' : 'Unesi token');
     launch.classList.toggle('ok', active);
   };
   const open = note => {
     layer.hidden = false;
     input.value = read();
-    msg.textContent = note || '';
+    msg.textContent = note || (sessionActive ? 'Sigurna operatorska sesija već je aktivna.' : '');
     setTimeout(() => input.focus(), 0);
   };
   const close = () => { layer.hidden = true; };
@@ -52,6 +54,21 @@
     const token = read();
     return token ? { authorization: `Bearer ${token}`, 'x-operator-token': token } : {};
   };
+
+  async function checkSession() {
+    try {
+      const response = await fetch('/operator/session/status?cb=' + Date.now(), { credentials:'same-origin', cache:'no-store' });
+      if (!response.ok) return false;
+      const data = await response.json();
+      sessionActive = Boolean(data?.authenticated);
+      render();
+      return sessionActive;
+    } catch (_) {
+      sessionActive = false;
+      render();
+      return false;
+    }
+  }
 
   async function verify(candidate) {
     const response = await fetch('/api/operator-signature-load?mailbox=info&cb=' + Date.now(), {
@@ -74,16 +91,18 @@
       msg.textContent = 'Provjera nije uspjela: ' + error.message;
     }
   });
-  layer.querySelector('#gnk-auth-clear').addEventListener('click', () => { write(''); input.value = ''; render(); msg.textContent = 'Token je uklonjen.'; });
+  layer.querySelector('#gnk-auth-clear').addEventListener('click', () => { write(''); input.value = ''; render(); msg.textContent = sessionActive ? 'Lokalni token je uklonjen; HttpOnly sesija ostaje aktivna.' : 'Token je uklonjen.'; });
   layer.querySelector('#gnk-auth-close').addEventListener('click', close);
   launch.addEventListener('click', () => open(''));
   layer.addEventListener('click', event => { if (event.target === layer) close(); });
 
-  window.GNK_ASG_OPERATOR_AUTH = { read, write, headers, open, close, verify };
+  window.GNK_ASG_OPERATOR_AUTH = { read, write, headers, open, close, verify, checkSession, hasSession:() => sessionActive };
   render();
 
   const path = location.pathname.replace(/\/+$/, '') || '/';
-  if (['/mail-studio','/mail-studio-pro','/admin-center'].includes(path) && !read()) {
-    setTimeout(() => open('Za rad s mailom potrebno je jednom unijeti operatorski token.'), 300);
-  }
+  checkSession().then(active => {
+    if (['/mail-studio','/mail-studio-pro','/admin-center'].includes(path) && !active && !read()) {
+      setTimeout(() => open('Za rad s mailom potrebno je jednom unijeti operatorski token.'), 250);
+    }
+  });
 })();
