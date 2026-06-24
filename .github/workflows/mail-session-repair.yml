@@ -31,6 +31,19 @@ jobs:
           grep -q 'remote = true' wrangler.no-routes.toml
           grep -q '/api/operator-send-mail' src/index.js
           grep -q '/api/contact-submit' src/index.js
+      - name: Synchronize operator secret
+        working-directory: workers/gnk-asg-contact-api-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          token="$GNK_ASG_OPERATOR_TOKEN"
+          [ -n "$token" ] || token="$OPERATOR_TOKEN"
+          [ -n "$token" ] || token="$GNK_ASG_ADMIN_TOKEN"
+          [ -n "$token" ] || token="$ADMIN_TOKEN"
+          test -n "$token"
+          printf '%s' "$token" | npx --yes wrangler@4 secret put GNK_ASG_OPERATOR_TOKEN --name gnk-asg-contact-api
       - name: Deploy active contact worker without route changes
         working-directory: workers/gnk-asg-contact-api-worker
         env:
@@ -88,4 +101,4 @@ jobs:
           if not (contact.get('autoReply') or {}).get('sent'): raise SystemExit(1)
           PY
 
-# active routed worker repair 2026-06-24
+# active routed worker repair with synchronized secret 2026-06-24
