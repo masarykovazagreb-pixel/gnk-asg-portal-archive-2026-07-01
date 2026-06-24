@@ -43,3 +43,5 @@ jobs:
           grep -q 'Operatorski token' login.html
           test "$status_code" = "200"
           test "$login_code" = "401"
+
+# production trigger 2026-06-24T15:30:00+02:00
