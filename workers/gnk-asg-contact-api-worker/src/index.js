@@ -1,589 +1,401 @@
-import { EmailMessage } from "cloudflare:email";
-
-const MAILBOXES = {
-  "info": { address: "info@gnk-asg.hr", label: "Info", signature: "Srdačan pozdrav,\n\nInfo Desk\nGNK ASG d.o.o.\nhttps://gnk-asg.hr" },
-  "contact": { address: "contact@gnk-asg.hr", label: "Kontakt", signature: "Srdačan pozdrav,\n\nContact Desk\nGNK ASG d.o.o.\nhttps://gnk-asg.hr" },
-  "it": { address: "it@gnk-asg.hr", label: "IT podrška", signature: "Srdačan pozdrav,\n\nIT – Osobni digitalni asistent\nGNK ASG d.o.o.\nhttps://gnk-asg.hr" },
-  "legal": { address: "legal@gnk-asg.hr", label: "Legal", signature: "Srdačan pozdrav,\n\nLegal Desk\nGNK ASG d.o.o.\nhttps://gnk-asg.hr" },
-  "privacy": { address: "privacy@gnk-asg.hr", label: "Privatnost / GDPR", signature: "Srdačan pozdrav,\n\nPrivacy Desk\nGNK ASG d.o.o.\nhttps://gnk-asg.hr" },
-  "media": { address: "media@gnk-asg.hr", label: "Media", signature: "Srdačan pozdrav,\n\nMedia Desk\nGNK ASG d.o.o.\nhttps://gnk-asg.hr" },
-  "press": { address: "press@gnk-asg.hr", label: "Press", signature: "Srdačan pozdrav,\n\nPress Desk\nGNK ASG d.o.o.\nhttps://gnk-asg.hr" },
-  "ubo": { address: "ubo@gnk-asg.hr", label: "UBO / korporativni podaci", signature: "Srdačan pozdrav,\n\nUBO Desk\nGNK ASG d.o.o.\nhttps://gnk-asg.hr" },
-  "sefic": { address: "sefic@gnk-asg.hr", label: "Sefić", signature: "Srdačan pozdrav,\n\nOffice of Nermin Sefić\nGNK ASG d.o.o.\nhttps://gnk-asg.hr" },
-  "assistant": { address: "assistant@gnk-asg.hr", label: "AI asistent", signature: "Srdačan pozdrav,\n\nIT – Osobni digitalni asistent\nGNK ASG d.o.o.\nhttps://gnk-asg.hr" }
+const VERSION = "gnk-asg-mail-unified-v2-20260624";
+const INTERNAL_TO = "rht@gmx.com";
+const COMPANY = {
+  name: "GNK ASG d.o.o.",
+  address: "Zagrebačka cesta 130, 10090 Zagreb",
+  oib: "75227917632",
+  mbs: "081512375",
+  phone: "+385 91 535 8365",
+  web: "https://gnk-asg.hr",
+  logo: "https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png"
 };
 
-const INTERNAL_TO = "rht@gmx.com";
+const MAILBOXES = {
+  info: { address:"info@gnk-asg.hr", label:"Info Desk", title:"GNK ASG Info Desk" },
+  contact: { address:"contact@gnk-asg.hr", label:"Kontakt", title:"GNK ASG Contact Desk" },
+  office: { address:"office@gnk-asg.hr", label:"Office", title:"GNK ASG Office" },
+  it: { address:"it@gnk-asg.hr", label:"IT podrška", title:"IT – Osobni digitalni asistent", subtitle:"Automatizirana komunikacijska podrška" },
+  assistant: { address:"assistant@gnk-asg.hr", label:"AI asistent", title:"IT – Osobni digitalni asistent", subtitle:"Automatizirana komunikacijska podrška" },
+  legal: { address:"legal@gnk-asg.hr", label:"Legal & Compliance", title:"GNK ASG Legal & Compliance" },
+  privacy: { address:"privacy@gnk-asg.hr", label:"Privatnost / GDPR", title:"GNK ASG Privacy Desk" },
+  media: { address:"media@gnk-asg.hr", label:"Media", title:"GNK ASG Media Desk" },
+  press: { address:"press@gnk-asg.hr", label:"Press", title:"GNK ASG Press Desk" },
+  ubo: { address:"ubo@gnk-asg.hr", label:"UBO / korporativni podaci", title:"GNK ASG UBO Desk" },
+  sefic: { address:"sefic@gnk-asg.hr", label:"Office of Nermin Sefić", title:"Office of Nermin Sefić" },
+  director: { address:"nermin.sefic@gnk-asg.hr", label:"Nermin Sefić / Direktor", title:"Nermin Sefić", subtitle:"Direktor · GNK ASG d.o.o." }
+};
+
+const MAX_ATTACHMENT_BYTES = 4 * 1024 * 1024;
+const MAX_RECIPIENTS = 50;
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const path = url.pathname;
+    const path = url.pathname.replace(/\/+$/, "") || "/";
 
-    if (request.method === "OPTIONS") {
-      return new Response(null, { status: 204, headers: corsHeaders() });
+    if (request.method === "OPTIONS") return new Response(null,{status:204,headers:corsHeaders()});
+
+    if (path === "/api/contact-mailboxes") {
+      return json({ok:true,version:VERSION,mailboxes:publicMailboxes(),updatedAt:new Date().toISOString()});
     }
 
-    if (path === "/api/contact-mailboxes" || path === "/api/operator-mailbox-config") {
-      return json({
-        ok: true,
-        worker: "gnk-asg-contact-api",
-        mailboxes: publicMailboxes(),
-        signatures: defaultSignatures(),
-        internalForward: INTERNAL_TO,
-        updatedAt: new Date().toISOString()
-      });
+    if (path === "/api/operator-auth-check") {
+      const ok = await authorized(request,env);
+      return json({ok,authenticated:ok,worker:"gnk-asg-contact-api",version:VERSION},ok?200:401);
+    }
+
+    if (path === "/api/operator-mailbox-config") {
+      if (!(await authorized(request,env))) return json({ok:false,error:"unauthorized"},401);
+      return json({ok:true,version:VERSION,mailboxes:await operatorMailboxes(env),updatedAt:new Date().toISOString()});
     }
 
     if (path === "/api/operator-signature-load") {
-      if (!tokenOk(request, env)) return json({ ok: false, error: "unauthorized" }, 401);
-      const mailboxKey = safeMailbox(url.searchParams.get("mailbox") || "info");
-      const mailbox = MAILBOXES[mailboxKey] || MAILBOXES.info;
-      const signature = await getSignature(env, mailboxKey, mailbox.signature);
-      return json({ ok: true, mailboxKey, address: mailbox.address, label: mailbox.label, signature });
+      if (!(await authorized(request,env))) return json({ok:false,error:"unauthorized"},401);
+      const key = safeMailbox(url.searchParams.get("mailbox"));
+      const mailbox = MAILBOXES[key];
+      const signature = await getSignature(env,key);
+      return json({ok:true,mailboxKey:key,address:mailbox.address,label:mailbox.label,signature,signatureHtml:signatureHtml(mailbox,signature)});
     }
 
     if (path === "/api/operator-signature-save") {
-      if (!tokenOk(request, env)) return json({ ok: false, error: "unauthorized" }, 401);
-      if (request.method !== "POST") return json({ ok: false, error: "method_not_allowed" }, 405);
+      if (!(await authorized(request,env))) return json({ok:false,error:"unauthorized"},401);
+      if (request.method !== "POST") return json({ok:false,error:"method_not_allowed"},405);
+      const data = await readJson(request);
+      const key = safeMailbox(data.mailbox);
+      const signature = clean(data.signature).slice(0,5000);
+      if (!signature) return json({ok:false,error:"signature_required"},400);
+      if (!env.GNK_ASG_KV?.put) return json({ok:false,error:"kv_binding_missing"},503);
+      await env.GNK_ASG_KV.put(`operator:signature:${key}`,signature);
+      return json({ok:true,saved:true,mailboxKey:key,signature});
+    }
 
-      let payload = {};
-      try { payload = await request.json(); } catch (e) {}
+    if (path === "/api/operator-send-mail" || path === "/api/admin-mail-send") {
+      if (!(await authorized(request,env))) return json({ok:false,error:"unauthorized",message:"Unesite valjani operatorski token."},401);
+      if (request.method !== "POST") return json({ok:false,error:"method_not_allowed"},405);
+      return handleOperatorMail(request,env);
+    }
 
-      const mailboxKey = safeMailbox(payload.mailbox || "info");
-      const signature = String(payload.signature || "");
-      const key = `operator:signature:${mailboxKey}`;
-      let saved = false;
-      let error = null;
+    if (path === "/api/operator-mail-log") {
+      if (!(await authorized(request,env))) return json({ok:false,error:"unauthorized"},401);
+      return listMailLog(env);
+    }
 
-      try {
-        if (env.GNK_ASG_KV && typeof env.GNK_ASG_KV.put === "function") {
-          await env.GNK_ASG_KV.put(key, signature);
-          saved = true;
-        } else {
-          error = "GNK_ASG_KV binding nije dostupan.";
-        }
-      } catch (err) {
-        error = String(err && err.message ? err.message : err);
+    if (path === "/api/contact-submit") {
+      if (request.method === "GET") {
+        return json({
+          ok:true,worker:"gnk-asg-contact-api",version:VERSION,status:"READY",
+          endpoint:"/api/contact-submit",mailboxes:publicMailboxes(),
+          bindings:{kv:Boolean(env.GNK_ASG_KV),r2:Boolean(env.GNK_ASG_MEDIA_ASSETS),email:Boolean(env.EMAIL)},
+          updatedAt:new Date().toISOString()
+        });
       }
-
-      return json({ ok: saved, saved, mailboxKey, signature, error });
+      if (request.method !== "POST") return json({ok:false,error:"method_not_allowed"},405);
+      return handleContact(request,env);
     }
 
-    if (path === "/api/operator-send-mail") {
-      if (!tokenOk(request, env)) return json({ ok: false, error: "unauthorized" }, 401);
-      if (request.method !== "POST") return json({ ok: false, error: "method_not_allowed" }, 405);
-      return await handleOperatorSendMail(request, env);
-    }
-
-    if (path !== "/api/contact-submit") {
-      return json({ ok: false, error: "not_found", worker: "gnk-asg-contact-api", path }, 404);
-    }
-
-    if (request.method === "GET") {
-      return json({
-        ok: true,
-        worker: "gnk-asg-contact-api",
-        endpoint: "/api/contact-submit",
-        status: "READY",
-        accepts: "multipart/form-data",
-        pdfUpload: true,
-        maxPdfBytes: 10485760,
-        internalForward: INTERNAL_TO,
-        mailboxes: publicMailboxes(),
-        bindings: {
-          kv: Boolean(env.GNK_ASG_KV),
-          r2: Boolean(env.GNK_ASG_MEDIA_ASSETS),
-          email: Boolean(env.EMAIL)
-        },
-        updatedAt: new Date().toISOString()
-      });
-    }
-
-    if (request.method !== "POST") {
-      return json({ ok: false, error: "method_not_allowed", message: "Dopušten je samo POST." }, 405);
-    }
-
-    return await handleContactSubmit(request, env);
+    return json({ok:false,error:"not_found",worker:"gnk-asg-contact-api",version:VERSION,path},404);
   }
 };
 
-async function handleContactSubmit(request, env) {
-  let form;
-  try {
-    form = await request.formData();
-  } catch (err) {
-    return json({ ok: false, error: "invalid_form", message: "Forma nije pravilno poslana." }, 400);
+async function handleOperatorMail(request,env){
+  const parsed = await parsePayload(request);
+  if (!parsed.ok) return json(parsed,parsed.status||400);
+  const data = parsed.data;
+  const mailboxKey = safeMailbox(data.mailbox || data.profile || profileToMailbox(data.signatureProfile));
+  const mailbox = MAILBOXES[mailboxKey];
+  const to = parseAddresses(data.to);
+  const cc = parseAddresses(data.cc);
+  const bcc = parseAddresses(data.bcc);
+  const subject = clean(data.subject);
+  const body = clean(data.body || data.text || data.plainText);
+
+  if (!to.length || !subject || !body) {
+    return json({ok:false,error:"missing_fields",message:"Nedostaju primatelj, predmet ili tekst poruke."},400);
+  }
+  if (to.length + cc.length + bcc.length > MAX_RECIPIENTS) {
+    return json({ok:false,error:"too_many_recipients",message:`Najviše ${MAX_RECIPIENTS} primatelja ukupno.`},400);
   }
 
-  const mailboxKey = safeMailbox(String(form.get("mailbox") || form.get("departmentKey") || "info"));
-  const mailbox = MAILBOXES[mailboxKey] || MAILBOXES.info;
+  const addSignature = String(data.addSignature ?? "yes").toLowerCase() !== "no";
+  const customSignature = clean(data.signature) || await getSignature(env,mailboxKey);
+  const plain = addSignature ? appendTextSignature(body,customSignature) : body;
+  const suppliedHtml = clean(data.bodyHtml || data.htmlBody || data.messageHtml || data.contentHtml || data.html);
+  const htmlBody = suppliedHtml && !looksLikeEscapedHtml(body)
+    ? suppliedHtml
+    : paragraphsHtml(body);
+  const html = addSignature ? appendHtmlSignature(htmlBody,mailbox,customSignature) : htmlBody;
 
-  const name = String(form.get("name") || "").trim();
-  const email = String(form.get("email") || "").trim();
-  const phone = String(form.get("phone") || "").trim();
-  const subject = String(form.get("subject") || "Upit putem GNK ASG portala").trim();
-  const messageText = String(form.get("message") || "").trim();
-  const consent = String(form.get("consent") || "").trim();
-  const pdf = form.get("pdf");
+  const attachments = normalizeAttachments(data.attachments || data.pdfAttachments || []);
+  if (parsed.pdf) attachments.push(parsed.pdf);
+  const attachmentError = validateAttachments(attachments);
+  if (attachmentError) return json({ok:false,...attachmentError},400);
 
-  if (!name || !email || !subject || !messageText || consent !== "yes") {
-    return json({ ok: false, error: "missing_required_fields", message: "Nedostaju obvezna polja." }, 400);
+  const result = await sendEmail(env,{
+    to,cc,bcc,
+    from:{email:mailbox.address,name:mailbox.title},
+    replyTo:mailbox.address,
+    subject,text:plain,html,attachments
+  });
+
+  const record = {
+    type:"operator-mail",sentAt:new Date().toISOString(),mailboxKey,from:mailbox.address,
+    to,cc,bcc,subject,addSignature,attachmentCount:attachments.length,result
+  };
+  await saveMailLog(env,record);
+
+  return json({
+    ok:result.sent,worker:"gnk-asg-contact-api",version:VERSION,
+    mailboxKey,from:mailbox.address,fromLabel:mailbox.label,to,cc,bcc,subject,
+    signatureUsed:addSignature,attachmentCount:attachments.length,result
+  },result.sent?200:502);
+}
+
+async function handleContact(request,env){
+  let form;
+  try{form=await request.formData();}catch(error){return json({ok:false,error:"invalid_form",message:"Forma nije pravilno poslana."},400);}
+
+  const honeypot = clean(form.get("website") || form.get("company_website"));
+  if (honeypot) return json({ok:true,message:"Upit je zaprimljen."});
+
+  const mailboxKey = safeMailbox(form.get("mailbox") || form.get("departmentKey"));
+  const mailbox = MAILBOXES[mailboxKey];
+  const name = clean(form.get("name"));
+  const email = clean(form.get("email"));
+  const phone = clean(form.get("phone"));
+  const subject = clean(form.get("subject") || "Upit putem GNK ASG portala");
+  const message = clean(form.get("message"));
+  const consent = clean(form.get("consent"));
+
+  if (!name || !validEmail(email) || !subject || !message || !["yes","on","true","1"].includes(consent.toLowerCase())) {
+    return json({ok:false,error:"missing_or_invalid_fields",message:"Provjerite obvezna polja, e-mail adresu i privolu."},400);
   }
 
   const now = new Date();
   const caseId = `GNK-ASG-${now.toISOString().slice(0,10).replace(/-/g,"")}-${crypto.randomUUID().slice(0,8).toUpperCase()}`;
-
-  const pdfInfo = await savePdfIfAny(env, pdf, `contact-pdf/${caseId}`);
+  const pdf = await readPdf(form.get("pdf"));
+  if (pdf.error) return json({ok:false,error:pdf.error,message:pdf.message},400);
+  const savedPdf = pdf.attachment ? await savePdf(env,pdf.attachment,caseId) : {saved:false,key:null,error:null};
 
   const record = {
-    caseId,
-    receivedAt: now.toISOString(),
-    mailboxKey,
-    mailboxAddress: mailbox.address,
-    mailboxLabel: mailbox.label,
-    internalForward: INTERNAL_TO,
-    name,
-    email,
-    phone,
-    subject,
-    message: messageText,
-    consent: true,
-    attachmentStatus: pdfInfo.status,
-    attachmentKey: pdfInfo.key,
-    attachmentName: pdfInfo.name,
-    attachmentSize: pdfInfo.size,
-    r2Saved: pdfInfo.saved,
-    r2Error: pdfInfo.error,
-    source: "public-contact-form",
-    worker: "gnk-asg-contact-api",
-    status: "received"
+    caseId,receivedAt:now.toISOString(),mailboxKey,mailboxAddress:mailbox.address,mailboxLabel:mailbox.label,
+    internalForward:INTERNAL_TO,name,email,phone,subject,message,consent:true,
+    attachmentName:pdf.attachment?.filename||null,attachmentSize:pdf.attachment?.size||0,
+    attachmentKey:savedPdf.key,r2Saved:savedPdf.saved,r2Error:savedPdf.error,
+    source:"public-contact-form",worker:"gnk-asg-contact-api",status:"received"
   };
+  await saveContact(env,record);
 
-  let kvSaved = false;
-  let kvError = null;
+  const internalText = contactInternalText(record);
+  const internalHtml = contactInternalHtml(record);
+  const internalAttachments = pdf.attachment ? [stripSize(pdf.attachment)] : [];
+  const internalMail = await sendEmail(env,{
+    to:[INTERNAL_TO],from:{email:mailbox.address,name:mailbox.title},replyTo:email,
+    subject:`[${caseId}] ${subject}`,text:internalText,html:internalHtml,attachments:internalAttachments
+  });
 
-  try {
-    if (env.GNK_ASG_KV && typeof env.GNK_ASG_KV.put === "function") {
-      await env.GNK_ASG_KV.put(`contact:${caseId}`, JSON.stringify(record, null, 2));
-      await env.GNK_ASG_KV.put("contact:last", JSON.stringify(record, null, 2));
-      kvSaved = true;
-    }
-  } catch (err) {
-    kvError = String(err && err.message ? err.message : err);
-  }
+  const autoText = contactReplyText(record,mailbox);
+  const autoHtml = contactReplyHtml(record,mailbox);
+  const autoReply = await sendEmail(env,{
+    to:[email],from:{email:mailbox.address,name:mailbox.title},replyTo:mailbox.address,
+    subject:`[${caseId}] Potvrda zaprimanja upita`,text:autoText,html:autoHtml,attachments:[]
+  });
 
-  const internalMail = await sendInternalNotice(env, record, mailbox);
-  const autoReply = await sendAutoReply(env, record, mailbox);
+  record.status = internalMail.sent ? "delivered-internal" : "delivery-failed";
+  record.internalMail = internalMail;
+  record.autoReply = autoReply;
+  await saveContact(env,record);
+  await saveMailLog(env,{type:"contact",sentAt:new Date().toISOString(),caseId,from:mailbox.address,to:[INTERNAL_TO,email],subject,result:{internalMail,autoReply}});
 
   return json({
-    ok: true,
-    worker: "gnk-asg-contact-api",
-    caseId,
-    receivedAt: record.receivedAt,
-    selectedMailbox: mailbox.address,
-    selectedMailboxLabel: mailbox.label,
-    internalForward: INTERNAL_TO,
-    name,
-    email,
-    phone,
-    subject,
-    message: "Upit je zaprimljen.",
-    attachmentStatus: record.attachmentStatus,
-    attachmentKey: record.attachmentKey,
-    r2Saved: record.r2Saved,
-    kvSaved,
-    kvError,
-    internalMail,
-    autoReply
-  });
+    ok:internalMail.sent,deliveryOk:internalMail.sent&&autoReply.sent,worker:"gnk-asg-contact-api",version:VERSION,
+    caseId,receivedAt:record.receivedAt,selectedMailbox:mailbox.address,selectedMailboxLabel:mailbox.label,
+    message:internalMail.sent?"Upit je zaprimljen i proslijeđen.":"Upit je spremljen, ali e-mail prosljeđivanje nije uspjelo.",
+    r2Saved:savedPdf.saved,internalMail,autoReply
+  },internalMail.sent?200:502);
 }
 
-async function handleOperatorSendMail(request, env) {
-  let data = {};
-  let pdf = null;
-
-  const contentType = request.headers.get("content-type") || "";
-
-  if (contentType.includes("multipart/form-data")) {
-    let form;
-    try {
-      form = await request.formData();
-    } catch (err) {
-      return json({ ok: false, error: "invalid_form", message: "Mail forma nije pravilno poslana." }, 400);
-    }
-
-    data.mailbox = String(form.get("mailbox") || "info");
-    data.to = String(form.get("to") || "");
-    data.subject = String(form.get("subject") || "");
-    data.body = String(form.get("body") || "");
-    data.signature = String(form.get("signature") || "");
-    data.addSignature = String(form.get("addSignature") || "yes");
-    pdf = form.get("pdf");
-  } else {
-    try { data = await request.json(); } catch (e) { data = {}; }
-  }
-
-  const mailboxKey = safeMailbox(data.mailbox || "info");
-  const mailbox = MAILBOXES[mailboxKey] || MAILBOXES.info;
-  const to = String(data.to || "").trim();
-  const subject = String(data.subject || "").trim();
-  const body = String(data.body || "").trim();
-  const storedSignature = await getSignature(env, mailboxKey, mailbox.signature);
-  const signature = String(data.signature || storedSignature);
-  const addSignature = String(data.addSignature || "yes") !== "no";
-
-  if (!to || !subject || !body) {
-    return json({ ok: false, error: "missing_fields", message: "Nedostaju primatelj, predmet ili tekst poruke." }, 400);
-  }
-
-  let attachment = null;
-  let pdfMeta = { attached: false, name: null, size: 0, error: null };
-
-  if (pdf && typeof pdf === "object" && "arrayBuffer" in pdf && Number(pdf.size || 0) > 0) {
-    const name = String(pdf.name || "attachment.pdf");
-    const size = Number(pdf.size || 0);
-    const type = String(pdf.type || "application/pdf").toLowerCase();
-
-    if (!name.toLowerCase().endsWith(".pdf") && type !== "application/pdf") {
-      return json({ ok: false, error: "invalid_pdf", message: "Dopušten je samo PDF prilog." }, 400);
-    }
-
-    if (size > 10485760) {
-      return json({ ok: false, error: "pdf_too_large", message: "PDF prilog je prevelik. Maksimalno 10 MB." }, 400);
-    }
-
-    const buffer = await pdf.arrayBuffer();
-    const safeName = name.replace(/[^a-zA-Z0-9._-]+/g, "_").slice(0, 140);
-
-    attachment = {
-      filename: safeName,
-      contentType: "application/pdf",
-      base64: arrayBufferToBase64(buffer)
+async function sendEmail(env,payload){
+  const result = {attempted:false,sent:false,messageId:null,error:null,code:null};
+  if (!env.EMAIL?.send){result.error="EMAIL binding nije dostupan.";result.code="EMAIL_BINDING_MISSING";return result;}
+  try{
+    result.attempted=true;
+    const message = {
+      to:payload.to,
+      from:payload.from,
+      subject:payload.subject,
+      text:payload.text,
+      html:payload.html,
+      replyTo:payload.replyTo
     };
-
-    pdfMeta = { attached: true, name: safeName, size, error: null };
-  }
-
-  const finalBody = addSignature ? `${body}\n\n---\n${signature}` : body;
-
-  const result = await sendMailRaw(env, {
-    to,
-    from: mailbox.address,
-    fromName: `GNK ASG ${mailbox.label}`,
-    replyTo: mailbox.address,
-    subject,
-    text: finalBody,
-    attachment
-  });
-
-  const logRecord = {
-    type: "operator-mail",
-    sentAt: new Date().toISOString(),
-    mailboxKey,
-    from: mailbox.address,
-    to,
-    subject,
-    addSignature,
-    pdfMeta,
-    result
-  };
-
-  try {
-    if (env.GNK_ASG_KV && typeof env.GNK_ASG_KV.put === "function") {
-      const key = `operator:mail-log:${Date.now()}:${crypto.randomUUID()}`;
-      await env.GNK_ASG_KV.put(key, JSON.stringify(logRecord, null, 2));
-      await updateIndex(env, "operator:mail-log:index", { key, from: mailbox.address, to, subject, sentAt: logRecord.sentAt, sent: result.sent, pdf: pdfMeta.attached });
-    }
-  } catch (e) {}
-
-  return json({
-    ok: result.sent,
-    worker: "gnk-asg-contact-api",
-    operatorEndpoint: "/api/operator-send-mail",
-    mailboxKey,
-    from: mailbox.address,
-    fromLabel: mailbox.label,
-    to,
-    subject,
-    addSignature,
-    signatureUsed: addSignature,
-    pdfMeta,
-    result
-  });
-}
-
-async function savePdfIfAny(env, pdf, prefix) {
-  const out = { status: "nije priložen", key: null, name: null, size: 0, saved: false, error: null };
-
-  if (!(pdf && typeof pdf === "object" && "arrayBuffer" in pdf && Number(pdf.size || 0) > 0)) return out;
-
-  out.name = String(pdf.name || "attachment.pdf");
-  out.size = Number(pdf.size || 0);
-
-  const lowerName = out.name.toLowerCase();
-  const pdfType = String(pdf.type || "").toLowerCase();
-
-  if (!lowerName.endsWith(".pdf") && pdfType !== "application/pdf") {
-    out.status = "neispravan PDF";
-    out.error = "Dopušten je samo PDF dokument.";
-    return out;
-  }
-
-  if (out.size > 10485760) {
-    out.status = "PDF je prevelik";
-    out.error = "PDF dokument je prevelik. Najveća dopuštena veličina je 10 MB.";
-    return out;
-  }
-
-  const safeName = out.name.replace(/[^a-zA-Z0-9._-]+/g, "_").slice(0, 140);
-  out.key = `${prefix}/${safeName}`;
-
-  try {
-    if (env.GNK_ASG_MEDIA_ASSETS && typeof env.GNK_ASG_MEDIA_ASSETS.put === "function") {
-      await env.GNK_ASG_MEDIA_ASSETS.put(out.key, await pdf.arrayBuffer(), {
-        httpMetadata: { contentType: "application/pdf" },
-        customMetadata: { originalName: out.name, uploadedAt: new Date().toISOString() }
-      });
-      out.saved = true;
-      out.status = `zaprimljen PDF: ${out.name}`;
-    } else {
-      out.status = `PDF priložen, ali R2 binding nije dostupan: ${out.name}`;
-    }
-  } catch (err) {
-    out.error = String(err && err.message ? err.message : err);
-    out.status = `PDF priložen, ali R2 spremanje nije uspjelo: ${out.name}`;
-  }
-
-  return out;
-}
-
-async function sendInternalNotice(env, record, mailbox) {
-  const text =
-`GNK ASG - novi upit putem kontakt forme
-
-Evidencijski broj:
-${record.caseId}
-
-Odabrana adresa / odjel:
-${record.mailboxLabel}
-${record.mailboxAddress}
-
-Interno prosljeđivanje:
-${INTERNAL_TO}
-
-Vrijeme zaprimanja:
-${record.receivedAt}
-
-Podnositelj:
-${record.name}
-
-E-mail:
-${record.email}
-
-Telefon:
-${record.phone || "-"}
-
-Predmet:
-${record.subject}
-
-PDF:
-${record.attachmentStatus}
-
-Poruka:
-${record.message}
-
----
-${mailbox.signature}`;
-
-  return await sendMailRaw(env, {
-    to: INTERNAL_TO,
-    from: mailbox.address,
-    fromName: `GNK ASG ${mailbox.label}`,
-    replyTo: record.email,
-    subject: `[${record.caseId}] ${record.subject}`,
-    text
-  });
-}
-
-async function sendAutoReply(env, record, mailbox) {
-  const text =
-`Poštovani/Poštovana ${record.name},
-
-zaprimili smo Vaš upit: "${record.subject}".
-
-Upit je zaprimljen za:
-${record.mailboxLabel}
-${record.mailboxAddress}
-
-Kod nas je zaveden pod evidencijskim brojem:
-${record.caseId}
-
-Vrijeme zaprimanja:
-${record.receivedAt}
-
-PDF prilog:
-${record.attachmentStatus}
-
-Sačuvajte ovaj broj radi buduće komunikacije.
-
----
-${mailbox.signature}
-
-Ovo je automatska potvrda zaprimanja.`;
-
-  return await sendMailRaw(env, {
-    to: record.email,
-    from: mailbox.address,
-    fromName: `GNK ASG ${mailbox.label}`,
-    replyTo: mailbox.address,
-    subject: `[${record.caseId}] Potvrda zaprimanja upita`,
-    text
-  });
-}
-
-function publicMailboxes() {
-  return Object.entries(MAILBOXES).map(([key, value]) => ({ key, address: value.address, label: value.label, signature: value.signature }));
-}
-
-function defaultSignatures() {
-  const obj = {};
-  for (const [key, value] of Object.entries(MAILBOXES)) obj[key] = value.signature;
-  return obj;
-}
-
-function safeMailbox(value) {
-  const key = String(value || "info").trim().toLowerCase().replace(/[^a-z0-9_-]+/g, "");
-  return MAILBOXES[key] ? key : "info";
-}
-
-function tokenOk(request, env) {
-  const header = request.headers.get("authorization") || "";
-  const bearer = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
-  const url = new URL(request.url);
-  const queryToken = url.searchParams.get("token") || "";
-  const supplied = bearer || queryToken;
-  const expected = env.OPERATOR_TOKEN || env.GNK_ASG_OPERATOR_TOKEN || env.ADMIN_TOKEN || env.GNK_ASG_ADMIN_TOKEN || env.PORTAL_OPERATOR_TOKEN || "";
-  return Boolean(expected && supplied && supplied === expected);
-}
-
-async function getSignature(env, mailboxKey, fallback) {
-  try {
-    if (env.GNK_ASG_KV && typeof env.GNK_ASG_KV.get === "function") {
-      const raw = await env.GNK_ASG_KV.get(`operator:signature:${mailboxKey}`);
-      if (raw) return raw;
-    }
-  } catch (e) {}
-  return fallback;
-}
-
-function utf8Base64(value) {
-  const bytes = new TextEncoder().encode(String(value || ""));
-  let binary = "";
-  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-  return btoa(binary);
-}
-
-function encodeHeader(value) {
-  return `=?UTF-8?B?${utf8Base64(String(value || "").replace(/\r|\n/g, " "))}?=`;
-}
-
-function foldBase64(value) {
-  return String(value || "").replace(/(.{76})/g, "$1\r\n");
-}
-
-function arrayBufferToBase64(buffer) {
-  let binary = "";
-  const bytes = new Uint8Array(buffer);
-  const chunk = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunk) {
-    binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
-  }
-  return btoa(binary);
-}
-
-async function sendMailRaw(env, data) {
-  const result = { attempted: false, sent: false, error: null, messageId: null };
-
-  try {
-    if (!env.EMAIL || typeof env.EMAIL.send !== "function") {
-      result.error = "EMAIL binding nije dostupan.";
-      return result;
-    }
-
-    result.attempted = true;
-
-    const boundary = `gnk_asg_${crypto.randomUUID().replace(/-/g, "")}`;
-    const safeFile = data.attachment ? String(data.attachment.filename || "attachment.pdf").replace(/"/g, "") : null;
-
-    let raw = "";
-    raw += `From: ${encodeHeader(data.fromName || data.from)} <${data.from}>\r\n`;
-    raw += `To: ${data.to}\r\n`;
-    raw += `Reply-To: ${data.replyTo || data.from}\r\n`;
-    raw += `Subject: ${encodeHeader(data.subject)}\r\n`;
-    raw += `MIME-Version: 1.0\r\n`;
-
-    if (data.attachment) {
-      raw += `Content-Type: multipart/mixed; boundary="${boundary}"\r\n\r\n`;
-      raw += `--${boundary}\r\n`;
-      raw += `Content-Type: text/plain; charset=UTF-8\r\n`;
-      raw += `Content-Transfer-Encoding: 8bit\r\n\r\n`;
-      raw += `${data.text}\r\n\r\n`;
-      raw += `--${boundary}\r\n`;
-      raw += `Content-Type: application/pdf; name="${safeFile}"\r\n`;
-      raw += `Content-Disposition: attachment; filename="${safeFile}"\r\n`;
-      raw += `Content-Transfer-Encoding: base64\r\n\r\n`;
-      raw += `${foldBase64(data.attachment.base64)}\r\n`;
-      raw += `--${boundary}--\r\n`;
-    } else {
-      raw += `Content-Type: text/plain; charset=UTF-8\r\n`;
-      raw += `Content-Transfer-Encoding: 8bit\r\n\r\n`;
-      raw += `${data.text}\r\n`;
-    }
-
-    const message = new EmailMessage(data.from, data.to, raw);
+    if (payload.cc?.length) message.cc=payload.cc;
+    if (payload.bcc?.length) message.bcc=payload.bcc;
+    if (payload.attachments?.length) message.attachments=payload.attachments.map(stripSize);
     const response = await env.EMAIL.send(message);
-    result.sent = true;
-    result.messageId = response && response.messageId ? response.messageId : null;
-  } catch (err) {
-    result.error = String(err && err.message ? err.message : err);
+    result.sent=true;
+    result.messageId=response?.messageId||null;
+  }catch(error){
+    result.error=String(error?.message||error);
+    result.code=String(error?.code||"EMAIL_SEND_FAILED");
   }
-
   return result;
 }
 
-async function updateIndex(env, indexKey, item) {
-  let index = [];
-  try {
-    const raw = env.GNK_ASG_KV && await env.GNK_ASG_KV.get(indexKey);
-    if (raw) {
-      try { index = JSON.parse(raw); } catch (e) { index = []; }
+async function parsePayload(request){
+  const type=request.headers.get("content-type")||"";
+  if (type.includes("multipart/form-data")){
+    let form;
+    try{form=await request.formData();}catch{return{ok:false,status:400,error:"invalid_form",message:"Mail forma nije pravilno poslana."};}
+    const data={};
+    for (const key of ["mailbox","profile","signatureProfile","to","cc","bcc","subject","body","text","html","bodyHtml","signature","addSignature"]){
+      const value=form.get(key); if(typeof value==="string") data[key]=value;
     }
-    index = index.filter(x => x.key !== item.key);
-    index.unshift(item);
-    index = index.slice(0, 300);
-    await env.GNK_ASG_KV.put(indexKey, JSON.stringify(index, null, 2));
-    return true;
-  } catch (e) {
-    return false;
+    const pdf=await readPdf(form.get("pdf"));
+    if(pdf.error)return{ok:false,status:400,error:pdf.error,message:pdf.message};
+    return{ok:true,data,pdf:pdf.attachment};
   }
+  const data=await readJson(request);
+  return{ok:true,data};
 }
 
-function corsHeaders() {
-  return {
-    "access-control-allow-origin": "*",
-    "access-control-allow-methods": "GET, POST, OPTIONS",
-    "access-control-allow-headers": "content-type, authorization"
-  };
+async function readPdf(file){
+  if (!(file && typeof file==="object" && "arrayBuffer" in file && Number(file.size||0)>0)) return{attachment:null};
+  const filename=clean(file.name||"attachment.pdf").replace(/[^a-zA-Z0-9._-]+/g,"_").slice(0,140);
+  const size=Number(file.size||0);
+  const type=clean(file.type||"application/pdf").toLowerCase();
+  if (!filename.toLowerCase().endsWith(".pdf") && type!=="application/pdf") return{error:"invalid_pdf",message:"Dopušten je samo PDF prilog."};
+  if (size>MAX_ATTACHMENT_BYTES) return{error:"pdf_too_large",message:"PDF prilog smije imati najviše 4 MB."};
+  return{attachment:{content:arrayBufferToBase64(await file.arrayBuffer()),filename,type:"application/pdf",disposition:"attachment",size}};
 }
 
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data, null, 2), {
-    status,
-    headers: {
-      "content-type": "application/json; charset=utf-8",
-      "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
-      ...corsHeaders()
-    }
-  });
+function normalizeAttachments(value){
+  if(!Array.isArray(value))return[];
+  return value.slice(0,32).map(item=>({
+    content:clean(item?.content||item?.base64),
+    filename:clean(item?.filename||item?.name||"attachment.pdf").replace(/[^a-zA-Z0-9._-]+/g,"_").slice(0,140),
+    type:clean(item?.type||item?.contentType||item?.mimeType||"application/pdf"),
+    disposition:"attachment",
+    size:Number(item?.size||Math.ceil(clean(item?.content||item?.base64).length*0.75))
+  })).filter(item=>item.content&&item.filename);
 }
+
+function validateAttachments(items){
+  if(items.length>32)return{error:"too_many_attachments",message:"Najviše 32 priloga."};
+  const total=items.reduce((sum,item)=>sum+Number(item.size||0),0);
+  if(total>MAX_ATTACHMENT_BYTES)return{error:"attachments_too_large",message:"Ukupna veličina priloga smije biti najviše 4 MB."};
+  return null;
+}
+
+function stripSize(item){const {size,...out}=item;return out;}
+
+async function savePdf(env,attachment,caseId){
+  if(!env.GNK_ASG_MEDIA_ASSETS?.put)return{saved:false,key:null,error:"R2 binding nije dostupan."};
+  const key=`contact-pdf/${caseId}/${attachment.filename}`;
+  try{
+    await env.GNK_ASG_MEDIA_ASSETS.put(key,base64ToArrayBuffer(attachment.content),{
+      httpMetadata:{contentType:attachment.type},customMetadata:{uploadedAt:new Date().toISOString()}
+    });
+    return{saved:true,key,error:null};
+  }catch(error){return{saved:false,key,error:String(error?.message||error)};}
+}
+
+async function saveContact(env,record){
+  if(!env.GNK_ASG_KV?.put)return false;
+  try{
+    await env.GNK_ASG_KV.put(`contact:${record.caseId}`,JSON.stringify(record));
+    await env.GNK_ASG_KV.put("contact:last",JSON.stringify(record));
+    const raw=await env.GNK_ASG_KV.get("contact:index");
+    let index=[];try{index=raw?JSON.parse(raw):[];}catch{}
+    index=[{caseId:record.caseId,receivedAt:record.receivedAt,name:record.name,email:record.email,subject:record.subject,status:record.status},...index.filter(x=>x.caseId!==record.caseId)].slice(0,500);
+    await env.GNK_ASG_KV.put("contact:index",JSON.stringify(index));
+    return true;
+  }catch{return false;}
+}
+
+async function saveMailLog(env,record){
+  if(!env.GNK_ASG_KV?.put)return false;
+  try{
+    const key=`operator:mail-log:${Date.now()}:${crypto.randomUUID()}`;
+    await env.GNK_ASG_KV.put(key,JSON.stringify(record));
+    const raw=await env.GNK_ASG_KV.get("operator:mail-log:index");
+    let index=[];try{index=raw?JSON.parse(raw):[];}catch{}
+    index=[{key,type:record.type,sentAt:record.sentAt,from:record.from,to:record.to,subject:record.subject,sent:Boolean(record.result?.sent||record.result?.internalMail?.sent)},...index].slice(0,500);
+    await env.GNK_ASG_KV.put("operator:mail-log:index",JSON.stringify(index));
+    return true;
+  }catch{return false;}
+}
+
+async function listMailLog(env){
+  if(!env.GNK_ASG_KV?.get)return json({ok:false,error:"kv_binding_missing"},503);
+  let items=[];try{items=JSON.parse(await env.GNK_ASG_KV.get("operator:mail-log:index")||"[]");}catch{}
+  return json({ok:true,version:VERSION,items});
+}
+
+async function operatorMailboxes(env){
+  const list=[];
+  for(const [key,mailbox] of Object.entries(MAILBOXES)){
+    list.push({key,address:mailbox.address,label:mailbox.label,title:mailbox.title,signature:await getSignature(env,key)});
+  }
+  return list;
+}
+
+function publicMailboxes(){
+  return Object.entries(MAILBOXES).filter(([key])=>key!=="director"&&key!=="sefic").map(([key,m])=>({key,address:m.address,label:m.label}));
+}
+
+async function getSignature(env,key){
+  try{const stored=await env.GNK_ASG_KV?.get(`operator:signature:${key}`);if(stored)return stored;}catch{}
+  return defaultSignature(MAILBOXES[key]);
+}
+
+function defaultSignature(mailbox){
+  return `${mailbox.title}\n${mailbox.subtitle?mailbox.subtitle+"\n":""}${COMPANY.name}\n${COMPANY.address}\nOIB: ${COMPANY.oib} · MBS: ${COMPANY.mbs}\nTelefon: ${COMPANY.phone}\nWeb: ${COMPANY.web}\nE-mail: ${mailbox.address}`;
+}
+
+function appendTextSignature(body,signature){
+  const trimmed=body.trim();
+  const hasClosing=/(srdačan pozdrav|s poštovanjem|kind regards|best regards)[,!]?\s*$/i.test(trimmed);
+  return `${trimmed}${hasClosing?"\n\n":"\n\nSrdačan pozdrav,\n\n"}${signature}`;
+}
+
+function appendHtmlSignature(bodyHtml,mailbox,signature){
+  return `${bodyHtml}${signatureHtml(mailbox,signature)}`;
+}
+
+function signatureHtml(mailbox,signature){
+  const lines=signature.split(/\r?\n/).filter(Boolean);
+  const title=escapeHtml(lines.shift()||mailbox.title);
+  const rest=lines.map(line=>`<div>${escapeHtml(line)}</div>`).join("");
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><img src="${COMPANY.logo}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0"></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${title}</div>${rest}</td></tr></table>`;
+}
+
+function paragraphsHtml(value){return clean(value).split(/\n{2,}/).map(p=>`<p style="margin:0 0 14px;line-height:1.6">${escapeHtml(p).replace(/\n/g,"<br>")}</p>`).join("");}
+function looksLikeEscapedHtml(value){return /<\/?[a-z][\s\S]*>/i.test(value);}
+
+function contactInternalText(r){return `GNK ASG – novi upit putem kontakt forme\n\nEvidencijski broj: ${r.caseId}\nOdjel: ${r.mailboxLabel} (${r.mailboxAddress})\nVrijeme: ${r.receivedAt}\n\nPodnositelj: ${r.name}\nE-mail: ${r.email}\nTelefon: ${r.phone||"-"}\nPredmet: ${r.subject}\nPDF: ${r.attachmentName||"nije priložen"}\n\nPoruka:\n${r.message}`;}
+function contactInternalHtml(r){return `<div style="font-family:Arial,sans-serif;color:#111827"><h2>GNK ASG – novi kontaktni upit</h2><p><b>Evidencijski broj:</b> ${escapeHtml(r.caseId)}<br><b>Odjel:</b> ${escapeHtml(r.mailboxLabel)} (${escapeHtml(r.mailboxAddress)})<br><b>Vrijeme:</b> ${escapeHtml(r.receivedAt)}</p><p><b>Podnositelj:</b> ${escapeHtml(r.name)}<br><b>E-mail:</b> ${escapeHtml(r.email)}<br><b>Telefon:</b> ${escapeHtml(r.phone||"-")}<br><b>Predmet:</b> ${escapeHtml(r.subject)}<br><b>PDF:</b> ${escapeHtml(r.attachmentName||"nije priložen")}</p><h3>Poruka</h3>${paragraphsHtml(r.message)}</div>`;}
+function contactReplyText(r,m){return `Poštovani/Poštovana ${r.name},\n\nzaprimili smo Vaš upit „${r.subject}”.\n\nEvidencijski broj: ${r.caseId}\nOdjel: ${m.label}\nVrijeme zaprimanja: ${r.receivedAt}\n\nSačuvajte evidencijski broj radi buduće komunikacije.\n\nSrdačan pozdrav,\n\n${defaultSignature(m)}\n\nOvo je automatska potvrda zaprimanja.`;}
+function contactReplyHtml(r,m){return `<div style="font-family:Arial,sans-serif;color:#111827;font-size:15px"><p>Poštovani/Poštovana ${escapeHtml(r.name)},</p><p>zaprimili smo Vaš upit „${escapeHtml(r.subject)}”.</p><p><b>Evidencijski broj:</b> ${escapeHtml(r.caseId)}<br><b>Odjel:</b> ${escapeHtml(m.label)}<br><b>Vrijeme zaprimanja:</b> ${escapeHtml(r.receivedAt)}</p><p>Sačuvajte evidencijski broj radi buduće komunikacije.</p>${signatureHtml(m,defaultSignature(m))}<p style="color:#6b7280;font-size:12px">Ovo je automatska potvrda zaprimanja.</p></div>`;}
+
+function profileToMailbox(value){return({office:"office",legal:"legal",media:"media",it:"it",director:"director"})[clean(value).toLowerCase()]||"info";}
+function safeMailbox(value){const key=clean(value||"info").toLowerCase().replace(/[^a-z0-9_-]/g,"");return MAILBOXES[key]?key:"info";}
+function parseAddresses(value){return clean(value).split(/[;,\n]+/).map(x=>x.trim()).filter(validEmail).slice(0,MAX_RECIPIENTS);}
+function validEmail(value){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(value));}
+function clean(value){return String(value??"").trim();}
+function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[ch]);}
+async function readJson(request){try{return await request.json();}catch{return{};}}
+
+async function authorized(request,env){
+  const token=suppliedToken(request);
+  if(!token)return false;
+  const expectedHash=clean(env.OPERATOR_TOKEN_SHA256).toLowerCase();
+  if(expectedHash&&expectedHash.length===64)return constantTimeEqual(await sha256(token),expectedHash);
+  const secrets=[env.GNK_ASG_OPERATOR_TOKEN,env.OPERATOR_TOKEN,env.GNK_ASG_ADMIN_TOKEN,env.ADMIN_TOKEN,env.PORTAL_OPERATOR_TOKEN].map(clean).filter(Boolean);
+  return secrets.some(secret=>constantTimeEqual(token,secret));
+}
+function suppliedToken(request){const auth=request.headers.get("authorization")||"";const match=auth.match(/^Bearer\s+(.+)$/i);const url=new URL(request.url);return clean(match?.[1]||request.headers.get("x-operator-token")||request.headers.get("x-admin-token")||url.searchParams.get("token"));}
+async function sha256(value){const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(value));return [...new Uint8Array(digest)].map(x=>x.toString(16).padStart(2,"0")).join("");}
+function constantTimeEqual(a,b){a=String(a||"");b=String(b||"");let mismatch=a.length^b.length;for(let i=0;i<Math.max(a.length,b.length);i++)mismatch|=(a.charCodeAt(i)||0)^(b.charCodeAt(i)||0);return mismatch===0;}
+function arrayBufferToBase64(buffer){let binary="";const bytes=new Uint8Array(buffer);for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(binary);}
+function base64ToArrayBuffer(value){const binary=atob(value);const bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);return bytes.buffer;}
+function corsHeaders(){return{"access-control-allow-origin":"*","access-control-allow-methods":"GET, POST, OPTIONS","access-control-allow-headers":"content-type, authorization, x-operator-token, x-admin-token"};}
+function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store, no-cache, must-revalidate, max-age=0",...corsHeaders()}});}
