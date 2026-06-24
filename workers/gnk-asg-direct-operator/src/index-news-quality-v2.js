@@ -1,6 +1,6 @@
 import core from './index-dark-market-recovery.js';
 
-const VERSION = 'GNK_ASG_NEWS_QUALITY_V2';
+const VERSION = 'GNK_ASG_NEWS_QUALITY_V4';
 const QUALITY_INTERVAL_MS = 15 * 60 * 1000;
 const PUBLICATION_KEYS = ['publish:approved', 'data:articles:items'];
 const MOJIBAKE = /(?:\uFFFD|Ã.|Â.|â€|â€™|â€“|â€”|Å.|Ä.|Ð.|Ñ.)/;
@@ -125,8 +125,8 @@ function qualityReasons(item) {
     if (enWords < 500 || enWords > 1500) reasons.push(`invalid_en_length_${enWords}`);
     if (languageScore(bodyHr, 'hr') < 14) reasons.push('hr_language_quality');
     if (languageScore(bodyEn, 'en') < 14) reasons.push('en_language_quality');
-    if (repeatedSentenceRatio(bodyHr) > 0.2) reasons.push('hr_repetition');
-    if (repeatedSentenceRatio(bodyEn) > 0.2) reasons.push('en_repetition');
+    if (repeatedSentenceRatio(bodyHr) > 0.45) reasons.push('hr_repetition');
+    if (repeatedSentenceRatio(bodyEn) > 0.45) reasons.push('en_repetition');
     if (!Array.isArray(item.sources) || !item.sources.some(source => /^https?:\/\//i.test(String(source?.url || '')))) {
       reasons.push('missing_sources');
     }
