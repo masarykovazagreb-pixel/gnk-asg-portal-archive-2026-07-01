@@ -13,19 +13,26 @@ jobs:
   diagnose:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
     steps:
-      - name: Print production responses
+      - name: Print concise production responses
         shell: bash
         run: |
           set +e
-          for url in \
-            'https://gnk-asg.hr/api/editorial-public-health' \
-            'https://gnk-asg.hr/auto-editor/' \
-            'https://gnk-asg.hr/auto-editor/editorial/api/status'; do
-            code=$(curl --silent --show-error --output response.txt --write-out '%{http_code}' "$url?cb=$(date +%s)")
-            echo "URL=$url HTTP=$code"
-            head -c 1000 response.txt
-            echo
-            echo '---'
-          done
+          base='https://gnk-asg-auto-editor.beckuphome.workers.dev'
+          login_code=$(curl --silent --show-error --output login.html --write-out '%{http_code}' --cookie-jar session.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' "$base/auto-editor/")
+          editor_code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie session.txt "$base/auto-editor/")
+          status_code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' --cookie session.txt "$base/auto-editor/editorial/api/status")
+          routed_code=$(curl --silent --show-error --output routed.html --write-out '%{http_code}' 'https://gnk-asg.hr/auto-editor/')
+          echo "DIRECT_LOGIN_HTTP=$login_code"
+          echo "DIRECT_EDITOR_HTTP=$editor_code"
+          echo "DIRECT_STATUS_HTTP=$status_code"
+          echo "ROUTED_AUTO_EDITOR_HTTP=$routed_code"
+          echo "EDITOR_MARKER=$(grep -c 'Urednički centar' editor.html || true)"
+          echo "STATUS_MARKER=$(grep -c 'GNK_ASG_EDITORIAL_CENTER_V1_20260624' status.json || true)"
+          echo "ROUTED_LOGIN_MARKER=$(grep -c 'Sigurna administratorska prijava' routed.html || true)"
+          echo "LOGIN_BODY=$(head -c 180 login.html | tr '\n' ' ')"
+          echo "STATUS_BODY=$(head -c 300 status.json | tr '\n' ' ')"
+          rm -f session.txt
           exit 0
