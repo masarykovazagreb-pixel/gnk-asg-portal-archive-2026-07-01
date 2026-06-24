@@ -1,0 +1,22 @@
+name: Find Operator Session Error
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Locate exact 401 message
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git clone -q --depth 1 "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo
+          cd repo
+          grep -RIn --exclude-dir=.git --exclude='*.pdf' --exclude='*.zip' --exclude='*.png' --exclude='*.jpg' --exclude='*.webp' 'Operator sesija nije potvrđena' . || true
+          grep -RIn --exclude-dir=.git --exclude='*.pdf' --exclude='*.zip' --exclude='*.png' --exclude='*.jpg' --exclude='*.webp' 'admin-mail-send' workers apps | head -100 || true
