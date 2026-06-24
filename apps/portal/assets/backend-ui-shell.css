@@ -1,5 +1,5 @@
 @import url('/assets/backend-grid-alignment-v4.css?v=20260624-grid-4');
-/* GNK ASG SHARED BACKEND UI SHELL V4 */
+/* GNK ASG SHARED BACKEND UI SHELL V5 */
 :root{--gnk-admin-bg:#020812;--gnk-admin-bg2:#061425;--gnk-admin-panel:#07172a;--gnk-admin-panel2:#0a213b;--gnk-admin-gold:#d7aa3c;--gnk-admin-gold2:#ffe08a;--gnk-admin-blue:#2e9cff;--gnk-admin-text:#f7f9fc;--gnk-admin-muted:#a9b7c9;--gnk-admin-line:rgba(215,170,60,.40);--gnk-admin-shadow:0 24px 70px rgba(0,0,0,.38)}
 html,body.gnk-backend-ui{max-width:100%;overflow-x:hidden}
 body.gnk-backend-ui{padding-top:0!important;background:radial-gradient(circle at 80% -10%,rgba(46,156,255,.28),transparent 31%),radial-gradient(circle at 14% 8%,rgba(215,170,60,.09),transparent 24%),linear-gradient(180deg,#01050c,#061425 45%,#020812)!important;color:var(--gnk-admin-text)!important;min-height:100vh}
@@ -30,6 +30,8 @@ body.gnk-backend-ui input,body.gnk-backend-ui select,body.gnk-backend-ui textare
 body.gnk-backend-ui input:focus,body.gnk-backend-ui select:focus,body.gnk-backend-ui textarea:focus,body.gnk-asg-admin-page input:focus,body.gnk-asg-admin-page select:focus,body.gnk-asg-admin-page textarea:focus{outline:none!important;border-color:var(--gnk-admin-gold2)!important;box-shadow:0 0 0 3px rgba(215,170,60,.11)!important}
 body.gnk-backend-ui h1,body.gnk-backend-ui h2,body.gnk-asg-admin-page h1,body.gnk-asg-admin-page h2{background:linear-gradient(90deg,#fff,var(--gnk-admin-gold2));-webkit-background-clip:text;background-clip:text;color:transparent!important}
 body.gnk-backend-ui .gnk-asg-final-menu-wrap{display:none!important}
+body.gnk-asg-admin-page #gnk-asg-premium-header,body.gnk-asg-admin-page #gnk-asg-overlay,body.gnk-asg-admin-page #gnk-asg-drawer,body.gnk-asg-admin-page #gnk-asg-float-home,body.gnk-asg-admin-page .gnk-asg-final-menu-wrap{display:none!important}
+body.gnk-asg-admin-page{padding-top:0!important}
 body.gnk-backend-embedded{padding-top:0!important}body.gnk-backend-embedded #gnk-backend-shell{display:none!important}
 @media(max-width:900px){#gnk-backend-shell{padding:7px 8px 6px}#gnk-backend-shell .gnk-shell-brand{min-width:0;flex:1}#gnk-backend-shell .gnk-shell-identity{display:none}#gnk-backend-shell .gnk-shell-nav a{font-size:9px;padding:7px 9px}}
 @media(max-width:560px){#gnk-backend-shell .gnk-shell-brand span span{display:none}#gnk-backend-shell .gnk-shell-status{font-size:0;padding:7px}#gnk-backend-shell .gnk-shell-nav{margin-top:4px}#gnk-backend-shell .gnk-shell-nav a{font-size:8.5px}}
