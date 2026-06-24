@@ -1,7 +1,23 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_BACKEND_SHELL_V3__) return;
-  window.__GNK_ASG_BACKEND_SHELL_V3__ = true;
+  if (window.__GNK_ASG_BACKEND_SHELL_V4__) return;
+  window.__GNK_ASG_BACKEND_SHELL_V4__ = true;
+
+  const loadOperatorModules = () => {
+    if (document.getElementById('gnk-operator-auth-session-v1')) return;
+    const auth = document.createElement('script');
+    auth.id = 'gnk-operator-auth-session-v1';
+    auth.src = '/assets/operator-auth-session-v1.js?v=20260624-1';
+    auth.addEventListener('load', () => {
+      if (document.getElementById('gnk-mail-studio-operator-bridge-v1')) return;
+      const bridge = document.createElement('script');
+      bridge.id = 'gnk-mail-studio-operator-bridge-v1';
+      bridge.src = '/assets/mail-studio-operator-bridge-v1.js?v=20260624-1';
+      document.head.appendChild(bridge);
+    }, { once:true });
+    document.head.appendChild(auth);
+  };
+  loadOperatorModules();
 
   const inFrame = window.self !== window.top;
   document.body.classList.add('gnk-backend-ui');
