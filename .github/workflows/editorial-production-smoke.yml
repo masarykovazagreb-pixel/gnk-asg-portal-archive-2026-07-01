@@ -32,23 +32,18 @@ jobs:
           grep -q '09:00 and 16:00 Europe/Zagreb' health.json
           grep -q 'every 2 hours' health.json
           grep -q '"automaticPublicPublication": false' health.json
-      - name: Diagnose protected routes
+      - name: Verify protected routes exist
         shell: bash
         run: |
-          set +e
+          set -euo pipefail
           editor_code=$(curl --silent --show-error --location --output editor.html --write-out '%{http_code}' "https://gnk-asg.hr/auto-editor/?cb=$(date +%s)")
           echo "AUTO_EDITOR_HTTP=$editor_code"
-          echo "AUTO_EDITOR_BODY_START"
-          head -c 1200 editor.html || true
-          echo
-          echo "AUTO_EDITOR_BODY_END"
+          test "$editor_code" != "404"
+          ! grep -q '"error"[[:space:]]*:[[:space:]]*"not_found"' editor.html
           status_code=$(curl --silent --show-error --location --output status.json --write-out '%{http_code}' "https://gnk-asg.hr/auto-editor/editorial/api/status?cb=$(date +%s)")
           echo "EDITORIAL_STATUS_HTTP=$status_code"
-          echo "EDITORIAL_STATUS_BODY_START"
-          head -c 1200 status.json || true
-          echo
-          echo "EDITORIAL_STATUS_BODY_END"
-          exit 0
+          test "$status_code" != "404"
+          ! grep -q '"error"[[:space:]]*:[[:space:]]*"not_found"' status.json
       - name: Verify live business source candidates
         shell: bash
         run: |
