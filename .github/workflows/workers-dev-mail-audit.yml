@@ -1,0 +1,22 @@
+name: Workers Dev Mail Audit
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Audit deployed worker endpoints
+        run: |
+          for path in operator/session/status api/contact-submit api/operator-send-mail api/admin-mail-send; do
+            code=$(curl --silent --show-error --output "$(echo "$path" | tr '/' '_').txt" --write-out '%{http_code}' "https://gnk-asg-direct-operator.beckuphome.workers.dev/$path")
+            echo "PATH=$path HTTP=$code"
+            cat "$(echo "$path" | tr '/' '_').txt"
+            echo
+          done
