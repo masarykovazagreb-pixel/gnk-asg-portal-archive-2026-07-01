@@ -1,0 +1,51 @@
+name: Contact External Reply Diagnostic
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test-external-auto-reply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Submit contact request to external address
+        run: |
+          mkdir -p diagnostic-external
+          api_code=$(curl --silent --show-error --location \
+            --output diagnostic-external/api.json \
+            --write-out '%{http_code}' \
+            --request POST \
+            --form 'mailbox=info' \
+            --form 'name=GNK ASG vanjski test' \
+            --form 'email=beckuphome@gmail.com' \
+            --form 'subject=[TEST] GNK ASG vanjski automatski odgovor 24.06.2026' \
+            --form 'message=Automatska produkcijska provjera kontaktnog sustava. Poruku nije potrebno obrađivati.' \
+            --form 'consent=yes' \
+            'https://gnk-asg.hr/api/contact-submit')
+          echo "CONTACT_API_HTTP=$api_code"
+          cat diagnostic-external/api.json
+          test "$api_code" = "200"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('diagnostic-external/api.json').read_text(encoding='utf-8'))
+          print('CONTACT_OK=' + str(bool(data.get('ok'))))
+          print('CASE_ID=' + str(data.get('caseId') or ''))
+          print('INTERNAL_SENT=' + str(bool((data.get('internalMail') or {}).get('sent'))))
+          print('AUTO_REPLY_SENT=' + str(bool((data.get('autoReply') or {}).get('sent'))))
+          print('AUTO_REPLY_ERROR=' + str((data.get('autoReply') or {}).get('error') or ''))
+          if not data.get('ok'):
+              raise SystemExit(1)
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: contact-external-reply-evidence
+          path: diagnostic-external/
+          retention-days: 7
