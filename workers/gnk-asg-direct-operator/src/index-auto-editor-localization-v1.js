@@ -1,6 +1,6 @@
 import app from './index-automation-supervisor-v2.js';
 
-const VERSION = 'GNK_ASG_AUTO_EDITOR_LOCALIZATION_V1';
+const VERSION = 'GNK_ASG_AUTO_EDITOR_LOCALIZATION_V2';
 const MODEL = '@cf/meta/llama-3.1-8b-instruct-fast';
 
 const text = value => String(value || '').trim();
@@ -160,7 +160,7 @@ async function localizeAndPersist(env, original) {
     hrUrl: `/objave/${newSlug}/`,
     enUrl: `/publications/${newSlug}/`,
     publicUrl: `/objave/${newSlug}/`,
-    author: 'Nermin SefiÄ‡',
+    author: 'Nermin Sefi\u0107',
     updatedAt: nowIso(),
     seo: {
       ...(original.seo || {}),
@@ -168,7 +168,7 @@ async function localizeAndPersist(env, original) {
       titleHr: cleanTitle(original.seo?.titleHr || titleHr).slice(0, 75),
       titleEn: cleanTitle(original.seo?.titleEn || titleEn).slice(0, 75),
       canonical,
-      author: 'Nermin SefiÄ‡'
+      author: 'Nermin Sefi\u0107'
     }
   };
 

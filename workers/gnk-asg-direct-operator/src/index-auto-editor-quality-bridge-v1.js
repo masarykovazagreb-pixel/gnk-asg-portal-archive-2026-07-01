@@ -1,11 +1,44 @@
 import app from './index-auto-editor-localization-v1.js';
 
-const VERSION = 'GNK_ASG_AUTO_EDITOR_QUALITY_BRIDGE_V1';
+const VERSION = 'GNK_ASG_AUTO_EDITOR_QUALITY_BRIDGE_V2';
 const AUTHOR = 'Nermin Sefi\u0107';
 
 const text = value => String(value || '').trim();
 const store = env => env.GNK_ASG_KV || env.GNK_ASG_CONFIG_KV || null;
 const nowIso = () => new Date().toISOString();
+const CYRILLIC_LOOKALIKES = {
+  '\u0410': 'A',
+  '\u0412': 'B',
+  '\u0415': 'E',
+  '\u041A': 'K',
+  '\u041C': 'M',
+  '\u041D': 'H',
+  '\u041E': 'O',
+  '\u0420': 'P',
+  '\u0421': 'C',
+  '\u0422': 'T',
+  '\u0425': 'X',
+  '\u0430': 'a',
+  '\u0432': 'b',
+  '\u0435': 'e',
+  '\u043A': 'k',
+  '\u043C': 'm',
+  '\u043D': 'h',
+  '\u043E': 'o',
+  '\u0440': 'p',
+  '\u0441': 'c',
+  '\u0442': 't',
+  '\u0445': 'x',
+  '\u0456': 'i',
+  '\u0458': 'j'
+};
+
+function latinCroatian(value) {
+  return text(value).replace(
+    /[\u0400-\u04FF]/g,
+    character => CYRILLIC_LOOKALIKES[character] || ''
+  );
+}
 
 const json = (data, status = 200) => new Response(JSON.stringify(data, null, 2), {
   status,
