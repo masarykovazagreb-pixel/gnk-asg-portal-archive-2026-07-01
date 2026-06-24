@@ -18,13 +18,12 @@ import {
 
 const ROOT='/auto-editor/editorial';
 const API='/auto-editor/editorial/api/';
-
 const clean=value=>String(value??'').trim();
 async function body(request){try{return await request.json();}catch{return{};}}
 
 async function servePage(request,env){
   if(!env.ASSETS?.fetch)return json({ok:false,error:'assets_binding_missing'},503);
-  const assetUrl=new URL('/editorial-center/index.html',request.url);
+  const assetUrl=new URL('/auto-editor/index.html',request.url);
   const response=await env.ASSETS.fetch(new Request(assetUrl.toString(),request));
   if(!response.ok)return json({ok:false,error:'editorial_asset_not_found'},404);
   const headers=new Headers(response.headers);
@@ -64,9 +63,10 @@ function localTime(){
 
 async function scheduledRun(event,env,ctx){
   const local=localTime();
+  const monitorSlot=Math.floor(Date.now()/(2*60*60*1000));
   const result={ok:true,version:EDITORIAL_VERSION,cron:event?.cron||'',local,startedAt:new Date().toISOString(),market:null,monitor:null,sourceRefresh:null,draft:null};
-  try{result.market=await runScheduledRefresh(env,ctx);}catch(error){result.market={ok:false,error:clean(error?.message||error)};}
-  if(local.hour%2===0&&await scheduleLock(env,`editorial:lock:monitor:${local.date}:${local.hour}`,7200)){
+  if(await scheduleLock(env,`editorial:lock:monitor:${monitorSlot}`,7100)){
+    try{result.market=await runScheduledRefresh(env,ctx);}catch(error){result.market={ok:false,error:clean(error?.message||error)};}
     result.monitor=await monitorPublications(env);
   }
   if((local.hour===9||local.hour===16)&&await scheduleLock(env,`editorial:lock:source:${local.date}:${local.hour}`,21600)){
