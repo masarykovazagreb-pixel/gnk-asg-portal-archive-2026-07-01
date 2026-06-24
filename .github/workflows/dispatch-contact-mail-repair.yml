@@ -1,0 +1,18 @@
+name: Dispatch Contact and Mail Repair
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch production repair workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run mail-session-repair.yml --ref main
