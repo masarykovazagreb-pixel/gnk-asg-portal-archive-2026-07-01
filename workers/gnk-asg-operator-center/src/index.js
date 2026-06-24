@@ -1,4 +1,4 @@
-const DASHBOARD_ASSET = '/operator-dashboard/index.html';
+const DASHBOARD_ASSET = '/operator-dashboard/';
 
 function injectSecurityPatch(html) {
   const withoutForcedToken = html.replace(
