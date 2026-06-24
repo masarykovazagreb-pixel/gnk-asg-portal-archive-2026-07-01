@@ -1,6 +1,6 @@
 import core from './index.js';
 
-const VERSION = 'GNK_ASG_PUBLICATION_NEWS_LONGFORM_V3';
+const VERSION = 'GNK_ASG_PUBLICATION_NEWS_2H_V4';
 const MODEL = '@cf/meta/llama-3.1-8b-instruct-fast';
 const FEEDS = [
   ['BBC Business','business','world','https://feeds.bbci.co.uk/news/business/rss.xml'],
@@ -10,6 +10,34 @@ const FEEDS = [
   ['EURACTIV','region','Europe','https://www.euractiv.com/feed/'],
   ['Balkan Green Energy News','industry','region','https://balkangreenenergynews.com/feed/']
 ];
+const IMAGE_POOL = [
+  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-financijska-analiza.jpg',alt:'GNK ASG financijska analiza i javni pokazatelji',categories:['business','markets','finance']},
+  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-ai-asistent.jpg',alt:'GNK ASG AI asistent i digitalne operacije',categories:['technology','ai']},
+  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-globalna-mreza.jpg',alt:'GNK ASG globalna poslovna mreža',categories:['region','world','business']},
+  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-burze-i-trzista.jpg',alt:'GNK ASG burze, tržišta i digitalna imovina',categories:['business','markets','technology']},
+  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-sportska-infrastruktura.jpg',alt:'GNK ASG sportska infrastruktura i urbani razvoj',categories:['sport','industry','region']},
+  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-odrziva-buducnost.jpg',alt:'GNK ASG održiva budućnost i partnerstva',categories:['industry','region','sustainability']},
+  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-kartice-i-placanja.jpg',alt:'GNK ASG kartice, plaćanja i fintech',categories:['business','technology','fintech']},
+  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-korporativna-recepcija.jpg',alt:'GNK ASG korporativni portal i poslovni identitet',categories:['business','region']},
+  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-poslovna-zgrada.jpg',alt:'GNK ASG međunarodno poslovanje i korporativni razvoj',categories:['business','world']},
+  {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-komunikacija-i-kontakt.jpg',alt:'GNK ASG komunikacija i digitalni kanali',categories:['technology','region']}
+];
+
+function chooseArticleImage(category,recentArticles,seed){
+  const normalized = String(category || '').toLowerCase();
+  const recent = new Set(
+    (Array.isArray(recentArticles) ? recentArticles : [])
+      .slice(0,8)
+      .map(item => String(item?.image || ''))
+      .filter(Boolean)
+  );
+  const matching = IMAGE_POOL.filter(item => item.categories.includes(normalized));
+  const base = matching.length ? matching : IMAGE_POOL;
+  const unused = base.filter(item => !recent.has(item.src));
+  const candidates = unused.length ? unused : base;
+  const hash = [...String(seed || '')].reduce((sum,char) => (sum * 31 + char.charCodeAt(0)) >>> 0,0);
+  return candidates[hash % candidates.length];
+}
 
 const json = (data,status=200,extra={}) => new Response(JSON.stringify(data,null,2),{
   status,
@@ -317,8 +345,14 @@ async function autoEditor(env){
 
     const source = await fetchNews();
     const history = await readList(env,'auto-editor:history');
+    const approvedExisting = await readList(env,'publish:approved');
     const used = new Set(history.slice(0,300).map(item => String(item.sourceUrl || '').toLowerCase()));
-    const primary = source.items.find(item => !used.has(String(item.url).toLowerCase())) || source.items[0];
+    const recentCategory = String(approvedExisting[0]?.category || '').toLowerCase();
+    const unusedItems = source.items.filter(item => !used.has(String(item.url).toLowerCase()));
+    const primary =
+      unusedItems.find(item => String(item.category || '').toLowerCase() !== recentCategory) ||
+      unusedItems[0] ||
+      source.items[0];
     if(!primary) throw new Error('no_suitable_source');
 
     const related = source.items
@@ -371,6 +405,11 @@ async function autoEditor(env){
     const slug = slugify(titleHr);
     const now = nowIso();
     const canonical = `https://gnk-asg.hr/objave/${slug}/`;
+    const selectedImage = chooseArticleImage(
+      clean(data.category || primary.category || 'business'),
+      approvedExisting,
+      `${primary.url}-${now}`
+    );
     const sourceLines = sources.map((item,index) => `${index + 1}. ${item.source}: ${item.title} – ${item.url}`).join('\n');
 
     const article = {
@@ -391,8 +430,8 @@ async function autoEditor(env){
       bodyEn:`${bodyEn}\n\nInformation sources:\n${sourceLines}\n\nAuthor: Nermin Sefić`,
       category:clean(data.category || primary.category || 'business'),
       region:clean(data.region || primary.region || 'world'),
-      image:'https://gnk-asg.hr/assets/insights/ai-razvojni-alati-stvarna-cijena-gnk-asg.svg',
-      imageAlt:`${titleHr} – GNK ASG analiza`,
+      image:selectedImage.src,
+      imageAlt:`${selectedImage.alt}: ${titleHr}`,
       imageCredit:'GNK ASG Visual Index',
       author:'Nermin Sefić',
       source:'GNK ASG Intelligence Desk',
@@ -455,7 +494,9 @@ async function autoEditor(env){
       sourceUrl:primary.url,
       publishedAt:now,
       wordCountHr:article.wordCountHr,
-      wordCountEn:article.wordCountEn
+      wordCountEn:article.wordCountEn,
+      category:article.category,
+      image:article.image
     };
 
     await writeList(env,'auto-editor:history',[historyEntry,...history],500);
@@ -523,8 +564,8 @@ async function handle(request,env,ctx){
     return json({
       ok:true,
       version:VERSION,
-      cron:'hourly',
-      autoEditor:'every 3 hours',
+      cron:'every 2 hours',
+      autoEditor:'every 2 hours',
       lastNewsRefresh:await readJson(env,'automation:news-refresh:last',null),
       lastAutoEditor:await readJson(env,'auto-editor:last',null),
       lastScheduledRun:await readJson(env,'automation:scheduled:last',null)
@@ -589,7 +630,7 @@ export default {
       };
 
       result.newsRefresh = await refreshNews(env);
-      if(hour % 3 === 0) result.autoEditor = await autoEditor(env);
+      if(hour % 2 === 0) result.autoEditor = await autoEditor(env);
       result.finishedAt = nowIso();
       result.ok = result.newsRefresh?.ok !== false && (!result.autoEditor || result.autoEditor.ok !== false);
       await writeJson(env,'automation:scheduled:last',result);

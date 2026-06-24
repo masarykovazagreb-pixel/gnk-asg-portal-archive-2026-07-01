@@ -35,4 +35,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: workers/gnk-asg-direct-operator
-          command: deploy src/index-auto-editor-localization-v1.js --config wrangler.dark-market.toml --name gnk-asg-direct-operator
+          command: deploy src/index-auto-editor-quality-bridge-v1.js --config wrangler.dark-market.toml --name gnk-asg-direct-operator
