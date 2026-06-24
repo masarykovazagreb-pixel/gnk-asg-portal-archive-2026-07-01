@@ -21,19 +21,29 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Verify protected Editorial Center
+      - name: Verify routed production protection
+        shell: bash
+        run: |
+          set -euo pipefail
+          code=$(curl --silent --show-error --output routed.html --write-out '%{http_code}' 'https://gnk-asg.hr/auto-editor/')
+          echo "ROUTED_HTTP=$code"
+          test "$code" = "401"
+          grep -q 'Sigurna administratorska prijava' routed.html
+          ! grep -q '"error"[[:space:]]*:[[:space:]]*"not_found"' routed.html
+      - name: Verify Editorial Center worker directly
         shell: bash
         run: |
           set -euo pipefail
           test -n "$GNK_ASG_OPERATOR_TOKEN"
-          login_code=$(curl --silent --show-error --output login.html --write-out '%{http_code}' --cookie-jar session.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' 'https://gnk-asg.hr/auto-editor/')
+          base='https://gnk-asg-auto-editor.beckuphome.workers.dev'
+          login_code=$(curl --silent --show-error --output login.html --write-out '%{http_code}' --cookie-jar session.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' "$base/auto-editor/")
           echo "LOGIN_HTTP=$login_code"
           test "$login_code" = "303"
-          editor_code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie session.txt 'https://gnk-asg.hr/auto-editor/')
+          editor_code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie session.txt "$base/auto-editor/")
           echo "EDITOR_HTTP=$editor_code"
           test "$editor_code" = "200"
           grep -q 'Urednički centar' editor.html
-          status_code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' --cookie session.txt 'https://gnk-asg.hr/auto-editor/editorial/api/status')
+          status_code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' --cookie session.txt "$base/auto-editor/editorial/api/status")
           echo "STATUS_HTTP=$status_code"
           cat status.json
           test "$status_code" = "200"
