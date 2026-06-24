@@ -1,4 +1,4 @@
-import app from './index-mail-session-final-v1.js';
+import app from './index-private-ui-assets-v1.js';
 
 const COOKIE='gnk_asg_admin_session';
 
