@@ -24,14 +24,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Validate active contact worker
+      - name: Validate hash-auth mail worker
         working-directory: workers/gnk-asg-contact-api-worker
         run: |
           node --check src/index.js
+          node --check src/index-hash-auth-v1.js
           grep -q 'remote = true' wrangler.no-routes.toml
+          grep -q '/api/operator-auth-check' src/index-hash-auth-v1.js
           grep -q '/api/operator-send-mail' src/index.js
           grep -q '/api/contact-submit' src/index.js
-      - name: Synchronize operator secret
+      - name: Deploy active worker with token hash
         working-directory: workers/gnk-asg-contact-api-worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -43,22 +45,22 @@ jobs:
           [ -n "$token" ] || token="$GNK_ASG_ADMIN_TOKEN"
           [ -n "$token" ] || token="$ADMIN_TOKEN"
           test -n "$token"
-          printf '%s' "$token" | npx --yes wrangler@4 secret put GNK_ASG_OPERATOR_TOKEN --name gnk-asg-contact-api
-      - name: Deploy active contact worker without route changes
-        working-directory: workers/gnk-asg-contact-api-worker
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.no-routes.toml --name gnk-asg-contact-api
+          token_hash=$(printf '%s' "$token" | sha256sum | awk '{print $1}')
+          test ${#token_hash} -eq 64
+          npx --yes wrangler@4 deploy src/index-hash-auth-v1.js --config wrangler.no-routes.toml --name gnk-asg-contact-api --var "OPERATOR_TOKEN_SHA256:$token_hash"
       - name: Verify operator mail and contact reply
         shell: bash
         run: |
           sleep 10
-          token="$OPERATOR_TOKEN"
-          [ -n "$token" ] || token="$GNK_ASG_OPERATOR_TOKEN"
-          [ -n "$token" ] || token="$ADMIN_TOKEN"
+          token="$GNK_ASG_OPERATOR_TOKEN"
+          [ -n "$token" ] || token="$OPERATOR_TOKEN"
           [ -n "$token" ] || token="$GNK_ASG_ADMIN_TOKEN"
+          [ -n "$token" ] || token="$ADMIN_TOKEN"
           test -n "$token"
+
+          auth_code=$(curl --silent --show-error --output auth.json --write-out '%{http_code}' \
+            -H "Authorization: Bearer $token" \
+            'https://gnk-asg.hr/api/operator-auth-check')
 
           mail_code=$(curl --silent --show-error --output mail.json --write-out '%{http_code}' \
             --request POST \
@@ -73,32 +75,38 @@ jobs:
             --form 'name=GNK ASG kontakt test' \
             --form 'email=beckuphome@gmail.com' \
             --form 'phone=' \
-            --form 'subject=[TEST] GNK ASG kontakt nakon popravka' \
+            --form 'subject=[TEST] GNK ASG kontakt nakon hash popravka' \
             --form 'message=Produkcijska provjera kontakta i automatskog odgovora.' \
             --form 'consent=yes' \
             'https://gnk-asg.hr/api/contact-submit')
 
+          echo "OPERATOR_AUTH_HTTP=$auth_code"
+          cat auth.json
           echo "OPERATOR_MAIL_HTTP=$mail_code"
           cat mail.json
           echo "CONTACT_HTTP=$contact_code"
           cat contact.json
 
+          test "$auth_code" = "200"
           test "$mail_code" = "200"
           test "$contact_code" = "200"
 
           python - <<'PY'
           import json
+          auth=json.load(open('auth.json',encoding='utf-8'))
           mail=json.load(open('mail.json',encoding='utf-8'))
           contact=json.load(open('contact.json',encoding='utf-8'))
+          print('AUTH_OK='+str(bool(auth.get('ok'))))
           print('MAIL_OK='+str(bool(mail.get('ok'))))
           print('CONTACT_OK='+str(bool(contact.get('ok'))))
           print('CONTACT_CASE_ID='+str(contact.get('caseId') or ''))
           print('INTERNAL_MAIL_SENT='+str(bool((contact.get('internalMail') or {}).get('sent'))))
           print('AUTO_REPLY_SENT='+str(bool((contact.get('autoReply') or {}).get('sent'))))
+          if not auth.get('ok'): raise SystemExit(1)
           if not mail.get('ok'): raise SystemExit(1)
           if not contact.get('ok'): raise SystemExit(1)
           if not (contact.get('internalMail') or {}).get('sent'): raise SystemExit(1)
           if not (contact.get('autoReply') or {}).get('sent'): raise SystemExit(1)
           PY
 
-# active routed worker repair with synchronized secret 2026-06-24
+# hash-auth active worker repair 2026-06-24
