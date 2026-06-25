@@ -6,6 +6,9 @@ on:
     paths:
       - ".github/workflows/deploy-mail-studio-bridge-v15.yml"
       - "apps/portal/assets/mail-studio-auth-bridge-v15.js"
+      - "apps/portal/assets/mail-studio-controls-v18.js"
+      - "apps/portal/assets/mail-studio-click-feedback-v19.js"
+      - "apps/portal/assets/admin-session-fallback-v17.js"
       - "workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js"
   workflow_run:
     workflows: ["Deploy Unified Auth V14"]
@@ -43,8 +46,14 @@ jobs:
           test -s src/index-mail-studio-bridge-v15.js
           test -s src/index-unified-auth-v14.js
           test -s ../../apps/portal/assets/mail-studio-auth-bridge-v15.js
+          test -s ../../apps/portal/assets/mail-studio-controls-v18.js
+          test -s ../../apps/portal/assets/mail-studio-click-feedback-v19.js
+          test -s ../../apps/portal/assets/admin-session-fallback-v17.js
           node --check src/index-mail-studio-bridge-v15.js
           node --check ../../apps/portal/assets/mail-studio-auth-bridge-v15.js
+          node --check ../../apps/portal/assets/mail-studio-controls-v18.js
+          node --check ../../apps/portal/assets/mail-studio-click-feedback-v19.js
+          node --check ../../apps/portal/assets/admin-session-fallback-v17.js
           npx --yes wrangler@4 deploy src/index-mail-studio-bridge-v15.js --dry-run --config wrangler.toml
 
       - name: Deploy Mail Studio bridge
@@ -68,21 +77,23 @@ jobs:
           for attempt in $(seq 1 18); do
             stamp=$(date +%s)
             version_code=$(curl -sSL -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
-            asset_code=$(curl -sSL -o bridge.js -w '%{http_code}' "$base/assets/mail-studio-auth-bridge-v15.js?cb=$stamp" || true)
+            auth_code=$(curl -sSL -o auth.js -w '%{http_code}' "$base/assets/mail-studio-auth-bridge-v15.js?cb=$stamp" || true)
+            controls_code=$(curl -sSL -o controls.js -w '%{http_code}' "$base/assets/mail-studio-controls-v18.js?cb=$stamp" || true)
+            click_code=$(curl -sSL -o click.js -w '%{http_code}' "$base/assets/mail-studio-click-feedback-v19.js?cb=$stamp" || true)
             studio_code=$(curl -sSL -o studio.html -w '%{http_code}' "$base/mail-studio/?cb=$stamp" || true)
             root_code=$(curl -sSL -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
-            if [ "$version_code" = "200" ] && [ "$asset_code" = "200" ] && [ "$studio_code" = "401" ] && [ "$root_code" = "200" ] && grep -q 'GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260626' version.json && grep -q 'src/index-mail-studio-bridge-v15.js' version.json && grep -q 'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V15_20260626' bridge.js && grep -q 'mail-studio-auth-bridge-v15.js' studio.html; then
+            if [ "$version_code" = "200" ] && [ "$auth_code" = "200" ] && [ "$controls_code" = "200" ] && [ "$click_code" = "200" ] && [ "$studio_code" = "401" ] && [ "$root_code" = "200" ] && grep -q 'GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260626' version.json && grep -q 'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626' version.json && grep -q 'GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626' version.json && grep -q 'src/index-mail-studio-bridge-v15.js' version.json && grep -q 'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V15_20260626' auth.js && grep -q 'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626' controls.js && grep -q 'GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626' click.js && grep -q 'mail-studio-click-feedback-v19.js' studio.html; then
               success=true
               break
             fi
             sleep 10
           done
           if [ "$success" != "true" ]; then
-            echo "VERSION_HTTP=$version_code ASSET_HTTP=$asset_code STUDIO_HTTP=$studio_code ROOT_HTTP=$root_code"
+            echo "VERSION_HTTP=$version_code AUTH_HTTP=$auth_code CONTROLS_HTTP=$controls_code CLICK_HTTP=$click_code STUDIO_HTTP=$studio_code ROOT_HTTP=$root_code"
             cat version.json || true
             exit 1
           fi
-          echo "GNK_ASG_MAIL_STUDIO_BRIDGE_V15_OK=true"
+          echo "GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_OK=true"
 
       - name: Report Mail Studio result
         if: always()
@@ -95,5 +106,5 @@ jobs:
           PRODUCTION_OUTCOME: ${{ steps.production.outcome }}
         shell: bash
         run: |
-          body=$(printf '## Mail Studio Bridge V15 — %s\n\n- Commit: `%s`\n- Provjera izvora: **%s**\n- Cloudflare deploy: **%s**\n- Produkcijska provjera: **%s**\n- Run: https://github.com/%s/actions/runs/%s\n' "$JOB_STATUS" "$GITHUB_SHA" "$SOURCE_OUTCOME" "$CLOUDFLARE_OUTCOME" "$PRODUCTION_OUTCOME" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          body=$(printf '## Mail Studio Click Feedback V19 — %s\n\n- Commit: `%s`\n- Provjera izvora: **%s**\n- Cloudflare deploy: **%s**\n- Produkcijska provjera: **%s**\n- Run: https://github.com/%s/actions/runs/%s\n' "$JOB_STATUS" "$GITHUB_SHA" "$SOURCE_OUTCOME" "$CLOUDFLARE_OUTCOME" "$PRODUCTION_OUTCOME" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
           gh api "repos/${GITHUB_REPOSITORY}/issues/83/comments" -f body="$body"
