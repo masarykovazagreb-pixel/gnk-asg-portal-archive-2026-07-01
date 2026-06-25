@@ -19,14 +19,14 @@
     ['Početna','/'],['Profil','/#profil'],['Financije','/#financije'],['Grupa','/#mreza-grupe'],
     ['Tržišta','/trzista/'],['Objave','/objave/'],['Vijesti','/vijesti/'],['PDF / Media','/downloads/'],
     ['Galerija','/visual-index/'],['AI pomoć','/assistant/'],['Kontakt','/contact/'],['Legal','/legal/'],
-    ['Status','/status-automatizacije/'],['App','/app/'],['Admin','/operator-dashboard/','protected']
+    ['Status','/status-automatizacije/'],['App','/app/'],['Admin','/operator-dashboard/','nofollow']
   ];
 
   const enLinks = [
     ['Home','/en/'],['Profile','/en/#profile'],['Financials','/en/#financials'],['Group','/en/#group-network'],
     ['Markets','/markets/'],['Publications','/publications/'],['News','/news/'],['PDF / Media','/en/downloads/'],
     ['Gallery','/visual-index/'],['AI Help','/en/assistant/'],['Contact','/en/contact/'],['Legal','/en/legal/'],
-    ['Status','/automation-status/'],['App','/app/'],['Admin','/operator-dashboard/','protected']
+    ['Status','/automation-status/'],['App','/app/'],['Admin','/operator-dashboard/','nofollow']
   ];
 
   const isActive = href => {
@@ -39,7 +39,7 @@
   };
 
   const renderLinks = links => links.map(([label, href, mode]) => {
-    if (mode === 'protected') {
+    if (mode === 'nofollow') {
       return `<form action="${href}" method="get" class="gnk-protected-nav"><button type="submit" aria-label="${label}">${label}</button></form>`;
     }
     const current = isActive(href) ? ' aria-current="page"' : '';
@@ -57,9 +57,7 @@
       form.style.display = 'inline-flex';
       form.style.margin = '0';
       const button = form.querySelector('button');
-      if (button) {
-        button.style.cssText = 'display:inline-flex;align-items:center;min-height:34px;padding:8px 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:#eaf0f8;font:800 12px/1 Arial,sans-serif;cursor:pointer';
-      }
+      if (button) button.style.cssText = 'display:inline-flex;align-items:center;min-height:34px;padding:8px 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:#eaf0f8;font:800 12px/1 Arial,sans-serif;cursor:pointer';
     });
 
     document.getElementById('gnk-asg-menu-toggle')?.remove();
