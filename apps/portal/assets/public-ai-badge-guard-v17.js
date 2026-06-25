@@ -1,6 +1,7 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_AI_BADGE_GUARD_V21__) return;
+  if (window.__GNK_ASG_AI_BADGE_GUARD_V22__) return;
+  window.__GNK_ASG_AI_BADGE_GUARD_V22__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V21__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V19__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V18__ = true;
@@ -13,7 +14,8 @@
   const params = new URLSearchParams(location.search);
   const english = path === '/en' || path.startsWith('/en/') || path.startsWith('/markets') || path.startsWith('/news') || path.startsWith('/publications') || path.startsWith('/automation-status') || ((path.startsWith('/visual-index') || path.startsWith('/app')) && params.get('lang') === 'en');
   const indexPage = path === '/' || path === '/en';
-  const VERSION = '20260625-v21';
+  const visualIndexPage = path === '/visual-index';
+  const VERSION = '20260625-v22';
 
   function ensureStyle(href, marker) {
     if (document.querySelector(`link[data-${marker}]`) || [...document.styleSheets].some(sheet => String(sheet.href || '').includes(href.split('?')[0]))) return;
@@ -62,12 +64,18 @@
     ]);
   }
 
+  async function ensureVisualGallery() {
+    if (!visualIndexPage) return;
+    await ensureScript(`/assets/visual-index-verified-gallery-v2.js?v=${VERSION}`, 'gnkVerifiedGallery');
+  }
+
   let running = false;
   async function ensure() {
     if (running || !document.body) return;
     running = true;
     try {
       await ensureIndexModules();
+      await ensureVisualGallery();
       let badge = document.getElementById('gnk-ai-badge-v13');
       if (!badge) {
         badge = document.createElement('a');
@@ -100,8 +108,9 @@
     const networkMissing = indexPage && !document.querySelector('#mreza-grupe .gnk-network-map');
     const chartMissing = indexPage && !document.getElementById('gnk-live-market-chart-v3');
     const newsMissing = indexPage && !window.__GNK_ASG_INDEX_NEWS_ROTATION_V1__;
+    const galleryMissing = visualIndexPage && !window.__GNK_ASG_VISUAL_INDEX_VERIFIED_V2__;
     const badgeMissing = !badge || badge.classList.contains('gnk-asg-ai-hidden-duplicate') || badge.classList.contains('gnk-v13-legacy-hidden') || (badge && (getComputedStyle(badge).display === 'none' || getComputedStyle(badge).visibility === 'hidden'));
-    if (!networkMissing && !chartMissing && !newsMissing && !badgeMissing) return;
+    if (!networkMissing && !chartMissing && !newsMissing && !galleryMissing && !badgeMissing) return;
     queued = true;
     requestAnimationFrame(() => {
       queued = false;
