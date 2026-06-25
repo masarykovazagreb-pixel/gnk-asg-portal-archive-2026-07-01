@@ -32,7 +32,7 @@
       .gnk-market-v4-badge i{width:7px;height:7px;border-radius:50%;background:#31d47c;box-shadow:0 0 10px #31d47c}
       .gnk-market-v4-frame{position:relative;height:300px;border:1px solid rgba(215,170,60,.16);border-radius:14px;overflow:hidden;background:linear-gradient(180deg,rgba(43,143,230,.08),rgba(2,8,18,.18))}
       .gnk-market-v4-frame iframe{display:block;width:100%;height:100%;border:0;background:transparent}
-      .gnk-market-v4-loading{position:absolute;inset:0;display:grid;place-items:center;padding:14px;color:#a9b7c9;font-size:9px;text-align:center;pointer-events:none;background:linear-gradient(180deg,rgba(7,18,38,.92),rgba(2,8,18,.92));transition:opacity .25s ease}
+      .gnk-market-v4-loading{position:absolute;inset:0;display:grid;place-items:center;padding:14px;color:#a9b7c9;font-size:9px;text-align:center;pointer-events:none;background:linear-gradient(180deg,rgba(7,18,38,.96),rgba(2,8,18,.96));transition:opacity .25s ease}
       .gnk-market-v4-frame.is-ready .gnk-market-v4-loading{opacity:0}
       .gnk-market-v4-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;color:#8fa1b8;font-size:8px}
       .gnk-market-v4-foot a{color:#ffe08a;text-decoration:none;font-weight:900}
@@ -43,6 +43,33 @@
 
   function sourceUrl() {
     return `/trzista/?embed=chart&cb=${Date.now()}`;
+  }
+
+  function prepareEmbeddedPage() {
+    if (!frame) return;
+    try {
+      const doc = frame.contentDocument;
+      if (!doc?.head || !doc?.body) return;
+      let style = doc.getElementById('gnk-index-market-embed-style');
+      if (!style) {
+        style = doc.createElement('style');
+        style.id = 'gnk-index-market-embed-style';
+        style.textContent = `
+          html,body{margin:0!important;width:100%!important;min-height:100%!important;background:transparent!important;overflow:hidden!important}
+          .site-header,#gnk-asg-premium-header,.hero,.grid,.notice,.floating-home,.floating-ai,#gnk-ai-badge-v13,#gnk-asg-float-home,#gnk-asg-float-ai,.gnk-v13-header{display:none!important}
+          main{width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+          .chartbox{margin:0!important;padding:8px!important;width:100%!important;height:100vh!important;min-height:240px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+          .chartbox h2,.chartbox .muted{display:none!important}
+          .chart-wrap{height:100%!important;min-height:240px!important}
+          canvas{height:100%!important;border-radius:12px!important;background:linear-gradient(180deg,rgba(43,143,230,.08),rgba(2,8,18,.18))!important}
+        `;
+        doc.head.appendChild(style);
+      }
+      frame.closest('.gnk-market-v4-frame')?.classList.add('is-ready');
+      frame.contentWindow?.dispatchEvent(new Event('resize'));
+    } catch (_) {
+      frame.closest('.gnk-market-v4-frame')?.classList.add('is-ready');
+    }
   }
 
   function build() {
@@ -68,14 +95,17 @@
     host.appendChild(panel);
 
     frame = panel.querySelector('iframe');
-    frame.addEventListener('load', () => panel.querySelector('.gnk-market-v4-frame')?.classList.add('is-ready'));
+    frame.addEventListener('load', () => {
+      prepareEmbeddedPage();
+      setTimeout(prepareEmbeddedPage,250);
+      setTimeout(prepareEmbeddedPage,900);
+    });
     return panel;
   }
 
   function refreshFrame() {
     if (!frame || !document.documentElement.contains(frame)) return;
-    const holder = frame.closest('.gnk-market-v4-frame');
-    holder?.classList.remove('is-ready');
+    frame.closest('.gnk-market-v4-frame')?.classList.remove('is-ready');
     frame.src = sourceUrl();
   }
 
@@ -83,11 +113,6 @@
     addStyle();
     if (!document.getElementById('gnk-live-market-chart-v3')) build();
   }
-
-  window.addEventListener('message', event => {
-    if (event.origin !== location.origin || event.data?.type !== 'GNK_ASG_MARKET_EMBED_READY') return;
-    document.querySelector('.gnk-market-v4-frame')?.classList.add('is-ready');
-  });
 
   ensure();
   [100,350,900,1800,3500].forEach(delay => setTimeout(ensure,delay));
