@@ -1,2 +1,2 @@
 inspection=GNK_ASG_PUBLIC_ROUTE_OWNERS
-revision=1
+revision=2
