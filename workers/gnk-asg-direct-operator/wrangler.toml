@@ -60,7 +60,7 @@ binding = "ASSETS"
 run_worker_first = true
 
 [triggers]
-crons = ["0 * * * *"]
+crons = ["*/5 * * * *"]
 
 [ai]
 binding = "AI"
