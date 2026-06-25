@@ -1,0 +1,341 @@
+name: Full Production Design Audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/full-production-design-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install browser
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install playwright@1.52.0 >/dev/null
+          npx playwright install --with-deps chromium
+
+      - name: Run visual, functional and link audit
+        shell: bash
+        run: |
+          cat > audit.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+          import path from 'node:path';
+
+          const base = 'https://gnk-asg.hr';
+          const routes = [
+            '/', '/en/', '/trzista/', '/markets/', '/objave/', '/publications/',
+            '/vijesti/', '/news/', '/assistant/', '/en/assistant/', '/contact/',
+            '/en/contact/', '/legal/', '/en/legal/', '/downloads/', '/en/downloads/',
+            '/visual-index/', '/app/', '/operator-dashboard/'
+          ];
+          const endpoints = [
+            '/api/market', '/data/news.json', '/data/auto-editor.json',
+            '/data/group_network.json', '/data/content-quality-status.json',
+            '/sitemap.xml', '/robots.txt'
+          ];
+          const viewports = [
+            { name: 'desktop', width: 1440, height: 1050 },
+            { name: 'mobile', width: 390, height: 844 }
+          ];
+
+          fs.mkdirSync('audit/screenshots', { recursive: true });
+          const browser = await chromium.launch({ headless: true });
+          const report = {
+            generatedAt: new Date().toISOString(),
+            base,
+            pages: [],
+            links: [],
+            endpoints: [],
+            summary: {}
+          };
+          const discovered = new Set();
+
+          function fileName(route, viewport) {
+            const slug = route === '/' ? 'home' : route.replace(/^\/+|\/+$/g, '').replaceAll('/', '--') || 'home';
+            return `audit/screenshots/${slug}-${viewport}.png`;
+          }
+
+          for (const viewport of viewports) {
+            const context = await browser.newContext({
+              viewport: { width: viewport.width, height: viewport.height },
+              deviceScaleFactor: 1,
+              locale: 'hr-HR',
+              timezoneId: 'Europe/Zagreb',
+              userAgent: `GNK-ASG-Production-Audit/${viewport.name}`
+            });
+
+            for (const route of routes) {
+              const page = await context.newPage();
+              const consoleErrors = [];
+              const pageErrors = [];
+              const failedRequests = [];
+              page.on('console', msg => {
+                if (msg.type() === 'error') consoleErrors.push(msg.text());
+              });
+              page.on('pageerror', error => pageErrors.push(String(error)));
+              page.on('requestfailed', request => failedRequests.push({
+                url: request.url(),
+                reason: request.failure()?.errorText || 'unknown'
+              }));
+
+              const started = Date.now();
+              let response = null;
+              let navigationError = null;
+              try {
+                response = await page.goto(`${base}${route}?audit=${Date.now()}`, {
+                  waitUntil: 'networkidle',
+                  timeout: 45000
+                });
+              } catch (error) {
+                navigationError = String(error);
+                try { await page.waitForTimeout(3000); } catch {}
+              }
+              await page.waitForTimeout(1800);
+
+              const metrics = await page.evaluate(() => {
+                const body = document.body;
+                const html = document.documentElement;
+                const nav = performance.getEntriesByType('navigation')[0];
+                const images = [...document.images];
+                const links = [...document.querySelectorAll('a[href]')].map(link => ({
+                  href: link.href,
+                  text: (link.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 160),
+                  visible: Boolean(link.offsetWidth || link.offsetHeight || link.getClientRects().length)
+                }));
+                const buttons = [...document.querySelectorAll('button')];
+                const forms = [...document.forms];
+                const headings = [...document.querySelectorAll('h1,h2,h3')].map(h => ({
+                  tag: h.tagName,
+                  text: (h.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 180)
+                }));
+                const loadingText = [...document.querySelectorAll('body *')]
+                  .filter(el => el.children.length === 0 && /Učitavanje|Loading|NaN|undefined|null/i.test(el.textContent || ''))
+                  .map(el => (el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 180))
+                  .filter(Boolean)
+                  .slice(0, 30);
+                const fixed = [...document.querySelectorAll('body *')].filter(el => {
+                  const style = getComputedStyle(el);
+                  return style.position === 'fixed' && el.getBoundingClientRect().width > 0 && el.getBoundingClientRect().height > 0;
+                }).map(el => ({
+                  tag: el.tagName,
+                  id: el.id,
+                  cls: el.className,
+                  rect: el.getBoundingClientRect().toJSON()
+                })).slice(0, 30);
+                const badContrastCandidates = [...document.querySelectorAll('body *')].filter(el => {
+                  const rect = el.getBoundingClientRect();
+                  if (!rect.width || !rect.height || !(el.textContent || '').trim()) return false;
+                  const style = getComputedStyle(el);
+                  const color = style.color;
+                  const bg = style.backgroundColor;
+                  return color === bg;
+                }).length;
+                return {
+                  title: document.title,
+                  lang: html.lang,
+                  canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+                  description: document.querySelector('meta[name="description"]')?.content || '',
+                  h1Count: document.querySelectorAll('h1').length,
+                  headings,
+                  links,
+                  linkCount: links.length,
+                  visibleLinkCount: links.filter(x => x.visible).length,
+                  buttonCount: buttons.length,
+                  formCount: forms.length,
+                  imageCount: images.length,
+                  imagesWithoutAlt: images.filter(img => !img.hasAttribute('alt') || !img.alt.trim()).length,
+                  brokenImages: images.filter(img => img.complete && img.naturalWidth === 0).map(img => img.src),
+                  duplicateIds: [...new Set([...document.querySelectorAll('[id]')].map(el => el.id).filter((id, i, all) => all.indexOf(id) !== i))],
+                  horizontalOverflow: Math.max(body?.scrollWidth || 0, html.scrollWidth || 0) - html.clientWidth,
+                  bodyWidth: body?.scrollWidth || 0,
+                  viewportWidth: html.clientWidth,
+                  loadingText,
+                  fixed,
+                  badContrastCandidates,
+                  navTiming: nav ? {
+                    domContentLoaded: Math.round(nav.domContentLoadedEventEnd),
+                    load: Math.round(nav.loadEventEnd),
+                    transferSize: nav.transferSize,
+                    encodedBodySize: nav.encodedBodySize
+                  } : null,
+                  bodyTextLength: (body?.innerText || '').length
+                };
+              });
+
+              for (const link of metrics.links) {
+                try {
+                  const url = new URL(link.href);
+                  if (['http:', 'https:'].includes(url.protocol)) {
+                    url.hash = '';
+                    discovered.add(url.toString());
+                  }
+                } catch {}
+              }
+
+              const screenshot = fileName(route, viewport.name);
+              await page.screenshot({ path: screenshot, fullPage: true });
+
+              report.pages.push({
+                route,
+                viewport: viewport.name,
+                status: response?.status() ?? null,
+                finalUrl: page.url(),
+                durationMs: Date.now() - started,
+                navigationError,
+                consoleErrors: [...new Set(consoleErrors)].slice(0, 30),
+                pageErrors: [...new Set(pageErrors)].slice(0, 30),
+                failedRequests: failedRequests.slice(0, 40),
+                screenshot,
+                ...metrics
+              });
+              await page.close();
+            }
+            await context.close();
+          }
+
+          const requestContext = await browser.newContext({
+            userAgent: 'GNK-ASG-Link-Audit/1.0',
+            ignoreHTTPSErrors: true
+          });
+          const requestPage = await requestContext.newPage();
+          const allLinks = [...discovered].sort();
+          const limitedLinks = allLinks.filter(url => {
+            const parsed = new URL(url);
+            return parsed.hostname === 'gnk-asg.hr' || parsed.hostname === 'www.gnk-asg.hr' || parsed.hostname === 'gnkdinamo.eu';
+          }).slice(0, 300);
+
+          for (const url of limitedLinks) {
+            let status = null;
+            let error = null;
+            let finalUrl = null;
+            const started = Date.now();
+            try {
+              const res = await requestPage.request.get(url, { timeout: 25000, maxRedirects: 10 });
+              status = res.status();
+              finalUrl = res.url();
+            } catch (e) {
+              error = String(e);
+            }
+            report.links.push({ url, status, finalUrl, error, durationMs: Date.now() - started });
+          }
+
+          for (const route of endpoints) {
+            let status = null;
+            let valid = false;
+            let type = '';
+            let preview = '';
+            let error = null;
+            try {
+              const res = await requestPage.request.get(`${base}${route}?audit=${Date.now()}`, { timeout: 25000 });
+              status = res.status();
+              type = res.headers()['content-type'] || '';
+              const body = await res.text();
+              preview = body.slice(0, 220);
+              if (route.endsWith('.json') || route.startsWith('/api/')) {
+                try { JSON.parse(body); valid = true; } catch { valid = false; }
+              } else {
+                valid = body.length > 0;
+              }
+            } catch (e) {
+              error = String(e);
+            }
+            report.endpoints.push({ route, status, valid, type, preview, error });
+          }
+
+          await requestPage.close();
+          await requestContext.close();
+          await browser.close();
+
+          const pageFailures = report.pages.filter(p => !p.status || p.status >= 400 || p.navigationError);
+          const brokenInternalLinks = report.links.filter(l => {
+            try {
+              const u = new URL(l.url);
+              return (u.hostname === 'gnk-asg.hr' || u.hostname === 'www.gnk-asg.hr') && (!l.status || l.status >= 400);
+            } catch { return false; }
+          });
+          const pagesWithConsoleErrors = report.pages.filter(p => p.consoleErrors.length || p.pageErrors.length);
+          const pagesWithOverflow = report.pages.filter(p => p.horizontalOverflow > 4);
+          const pagesWithLoading = report.pages.filter(p => p.loadingText.length);
+          report.summary = {
+            pageChecks: report.pages.length,
+            pageFailures: pageFailures.length,
+            checkedLinks: report.links.length,
+            brokenInternalLinks: brokenInternalLinks.length,
+            endpointChecks: report.endpoints.length,
+            invalidEndpoints: report.endpoints.filter(e => !e.valid || !e.status || e.status >= 400).length,
+            pagesWithConsoleErrors: pagesWithConsoleErrors.length,
+            pagesWithHorizontalOverflow: pagesWithOverflow.length,
+            pagesWithLoadingPlaceholders: pagesWithLoading.length,
+            screenshots: report.pages.length
+          };
+
+          fs.writeFileSync('audit/audit.json', JSON.stringify(report, null, 2));
+          const md = [];
+          md.push('# GNK ASG produkcijski dizajn i funkcionalni audit');
+          md.push('');
+          md.push(`Generirano: ${report.generatedAt}`);
+          md.push('');
+          md.push('## Sažetak');
+          for (const [key, value] of Object.entries(report.summary)) md.push(`- ${key}: ${value}`);
+          md.push('');
+          md.push('## Neuspjele stranice');
+          for (const p of pageFailures) md.push(`- ${p.viewport} ${p.route}: status=${p.status} error=${p.navigationError || ''}`);
+          md.push('');
+          md.push('## Neispravne interne poveznice');
+          for (const l of brokenInternalLinks) md.push(`- ${l.status || 'ERR'} ${l.url} ${l.error || ''}`);
+          md.push('');
+          md.push('## Konzolne i JavaScript pogreške');
+          for (const p of pagesWithConsoleErrors) md.push(`- ${p.viewport} ${p.route}: console=${p.consoleErrors.join(' | ')} page=${p.pageErrors.join(' | ')}`);
+          md.push('');
+          md.push('## Horizontalni overflow');
+          for (const p of pagesWithOverflow) md.push(`- ${p.viewport} ${p.route}: ${p.horizontalOverflow}px`);
+          md.push('');
+          md.push('## Preostali loading placeholderi');
+          for (const p of pagesWithLoading) md.push(`- ${p.viewport} ${p.route}: ${p.loadingText.join(' | ')}`);
+          md.push('');
+          md.push('## Endpointi');
+          for (const e of report.endpoints) md.push(`- ${e.status || 'ERR'} ${e.route}: valid=${e.valid} type=${e.type}`);
+          fs.writeFileSync('audit/report.md', md.join('\n'));
+
+          console.log(JSON.stringify(report.summary, null, 2));
+          console.log('\nBROKEN_INTERNAL_LINKS');
+          console.log(JSON.stringify(brokenInternalLinks, null, 2));
+          console.log('\nPAGE_FAILURES');
+          console.log(JSON.stringify(pageFailures, null, 2));
+          console.log('\nENDPOINTS');
+          console.log(JSON.stringify(report.endpoints, null, 2));
+          JS
+          node audit.mjs
+
+      - name: Upload audit package
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-full-production-design-audit
+          path: audit
+          retention-days: 7
+
+      - name: Fail only on critical production defects
+        shell: bash
+        run: |
+          node - <<'JS'
+          const report=require('./audit/audit.json');
+          const critical=report.pages.filter(p => !p.status || p.status >= 500 || p.navigationError);
+          const broken=report.links.filter(l => {
+            try { const u=new URL(l.url); return u.hostname.endsWith('gnk-asg.hr') && (!l.status || l.status >= 500); }
+            catch { return false; }
+          });
+          if (critical.length || broken.length) process.exit(1);
+          JS
