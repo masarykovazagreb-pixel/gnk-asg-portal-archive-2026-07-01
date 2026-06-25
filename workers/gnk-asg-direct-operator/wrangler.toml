@@ -7,6 +7,8 @@ preview_urls = true
 routes = [
   { pattern = "gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/operator-dashboard*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/operator-dashboard*", zone_name = "gnk-asg.hr" },
   { pattern = "gnk-asg.hr/status-automatizacije*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/status-automatizacije*", zone_name = "gnk-asg.hr" },
   { pattern = "gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" },
