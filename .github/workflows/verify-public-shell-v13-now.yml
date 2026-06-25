@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - ".github/verify-public-shell-v13-now.trigger"
+      - ".github/v13-route-check.trigger"
   workflow_dispatch:
 
 permissions:
