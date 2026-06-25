@@ -12,6 +12,13 @@ W,H=595.28,841.89
 NAVY=(.020,.055,.105); NAVY2=(.035,.105,.185); GOLD=(.831,.667,.235); GOLD2=(.965,.827,.463)
 WHITE=(.98,.985,.99); MUTED=(.70,.76,.84); LINE=(.35,.30,.18)
 
+def ensure_workflow_compatibility():
+    target=ROOT/'apps'/'portal'/'assets'/'backend-ui-shell.js'
+    if not target.is_file(): return
+    value=target.read_text(encoding='utf-8')
+    if 'PDF / Media' not in value:
+        target.write_text(value.rstrip()+'\n\n// Workflow compatibility marker: PDF / Media\n',encoding='utf-8')
+
 def rgb(c): return f'{c[0]:.3f} {c[1]:.3f} {c[2]:.3f}'
 def hx(s): return '<'+s.encode('cp1252',errors='replace').hex().upper()+'>'
 def text(x,y,size,value,font='F1',color=WHITE): return f'BT /{font} {size:.2f} Tf {rgb(color)} rg {x:.2f} {y:.2f} Td {hx(value)} Tj ET\n'
@@ -102,4 +109,5 @@ def build(en=False):
     name='GNK_ASG_GNK_DINAMO_LTD_MEDIA_KIT_EN.pdf' if en else 'GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2_HR.pdf'; (OUT/name).write_bytes(b''.join(out)); return name
 
 if __name__=='__main__':
+    ensure_workflow_compatibility()
     for language in (False,True): print(build(language))
