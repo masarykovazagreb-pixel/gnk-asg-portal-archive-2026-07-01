@@ -1,0 +1,119 @@
+name: Verify Public Shell Lock V17
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/verify-public-shell-lock-v17.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Chromium
+        run: |
+          npm install --no-package-lock --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Verify all public routes
+        shell: bash
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const {chromium}=require('playwright');
+          const routes=[
+            ['/',false],['/en/',false],['/objave/',true],['/publications/',true],
+            ['/vijesti/',true],['/news/',true],['/trzista/',true],['/markets/',true],
+            ['/contact/',true],['/en/contact/',true],['/legal/',true],['/en/legal/',true],
+            ['/assistant/',true],['/en/assistant/',true],['/downloads/',true],['/en/downloads/',true],
+            ['/visual-index/',true],['/app/',true],['/status-automatizacije/',true],['/automation-status/',true]
+          ];
+          const views=[['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]];
+          const legacySelector='.site-header,.main-nav,.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-final-menu-wrap,.gnk-asg-inner-nav,.gnk-asg-fixed-menu-spacer';
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const results=[];
+            for(const [view,viewport] of views){
+              for(const [route,homeExpected] of routes){
+                const page=await browser.newPage({viewport,deviceScaleFactor:1});
+                let http=0;
+                try{
+                  const response=await page.goto(`https://gnk-asg.hr${route}?cb=${Date.now()}`,{waitUntil:'domcontentloaded',timeout:45000});
+                  http=response?.status()||0;
+                  await page.waitForTimeout(1200);
+                  const data=await page.evaluate(selector=>{
+                    const visible=element=>{
+                      if(!element)return false;
+                      const style=getComputedStyle(element),rect=element.getBoundingClientRect();
+                      return style.display!=='none'&&style.visibility!=='hidden'&&rect.width>3&&rect.height>3;
+                    };
+                    const headers=[...document.querySelectorAll('#gnk-asg-premium-header')].filter(visible);
+                    const menus=[...document.querySelectorAll('#gnk-asg-premium-menu')].filter(visible);
+                    const legacy=[...document.querySelectorAll(selector)].filter(visible);
+                    const header=headers[0]||null,menu=menus[0]||null;
+                    const brand=header?.querySelector('.gnk-v13-brand-row')||null;
+                    const language=document.getElementById('gnk-public-language');
+                    const home=document.getElementById('gnk-floating-home-v16');
+                    const ai=document.getElementById('gnk-ai-badge-v13');
+                    const br=brand?.getBoundingClientRect(),mr=menu?.getBoundingClientRect();
+                    const overlap=br&&mr?Math.max(0,br.bottom-mr.top):9999;
+                    return {
+                      headerCount:headers.length,
+                      menuCount:menus.length,
+                      menuItems:menu?.querySelectorAll('a').length||0,
+                      menuVersion:header?.dataset.publicMenuVersion||null,
+                      languageVisible:visible(language),
+                      languageHref:language?.getAttribute('href')||null,
+                      favicon:Boolean(document.querySelector('link[rel~="icon"][href*="gnk-asg-favicon.svg"]')),
+                      menuAsset:[...document.scripts].some(s=>String(s.src||'').includes('public-menu-v13.js?v=20260625-v15')),
+                      visualAsset:[...document.styleSheets].some(s=>String(s.href||'').includes('public-visual-v13.css?v=20260625-v15')),
+                      legacyVisible:legacy.length,
+                      oldPatch:Boolean(document.getElementById('gnk-asg-fixed-menu-patch-style')||document.getElementById('gnk-asg-fixed-menu-patch-script')),
+                      overlap:Number(overlap.toFixed(2)),
+                      homeVisible:visible(home),
+                      aiVisible:visible(ai),
+                      overflow:document.documentElement.scrollWidth>window.innerWidth+2
+                    };
+                  },legacySelector);
+                  const ok=http===200&&data.headerCount===1&&data.menuCount===1&&data.menuItems>=10&&data.menuVersion==='15'&&data.languageVisible&&Boolean(data.languageHref)&&data.favicon&&data.menuAsset&&data.visualAsset&&data.legacyVisible===0&&!data.oldPatch&&data.overlap<=1&&data.aiVisible&&!data.overflow&&(homeExpected?data.homeVisible:!data.homeVisible);
+                  results.push({route,view,http,homeExpected,...data,ok});
+                }catch(error){results.push({route,view,http,error:error.message,ok:false});}
+                await page.close();
+              }
+            }
+            await browser.close();
+            const failures=results.filter(x=>!x.ok);
+            const report={checkedAt:new Date().toISOString(),ok:failures.length===0,total:results.length,passed:results.length-failures.length,failures,results};
+            fs.writeFileSync('public-shell-lock-v17-report.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report,null,2));
+            if(!report.ok)process.exitCode=1;
+          })().catch(error=>{console.error(error);process.exit(1)});
+          JS
+      - name: Publish result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if [ -f public-shell-lock-v17-report.json ]; then
+            body=$(printf 'Završna produkcijska provjera zaključanog javnog sustava V17.\n\n```json\n%s\n```\n' "$(cat public-shell-lock-v17-report.json)")
+            ok=$(node -e "const r=require('./public-shell-lock-v17-report.json');process.stdout.write(String(r.ok))")
+          else
+            body="V17 provjera nije proizvela strukturirani rezultat. Run: ${GITHUB_RUN_ID}"
+            ok=false
+          fi
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/63" -f title='Provjera zaključanog javnog sustava V17' -f body="$body"
+          if [ "$ok" = "true" ]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/63" -f state=closed -f state_reason=completed
+          fi
