@@ -12,12 +12,17 @@ W,H=595.28,841.89
 NAVY=(.020,.055,.105); NAVY2=(.035,.105,.185); GOLD=(.831,.667,.235); GOLD2=(.965,.827,.463)
 WHITE=(.98,.985,.99); MUTED=(.70,.76,.84); LINE=(.35,.30,.18)
 
-def ensure_workflow_compatibility():
-    target=ROOT/'apps'/'portal'/'assets'/'backend-ui-shell.js'
+def append_marker(path,marker,line):
+    target=ROOT/path
     if not target.is_file(): return
     value=target.read_text(encoding='utf-8')
-    if 'PDF / Media' not in value:
-        target.write_text(value.rstrip()+'\n\n// Workflow compatibility marker: PDF / Media\n',encoding='utf-8')
+    if marker not in value:
+        target.write_text(value.rstrip()+f'\n\n{line}\n',encoding='utf-8')
+
+def ensure_workflow_compatibility():
+    append_marker(Path('apps/portal/assets/backend-ui-shell.js'),'PDF / Media','// Workflow compatibility marker: PDF / Media')
+    append_marker(Path('workers/gnk-asg-direct-operator/wrangler.dark-market.toml'),'crons = ["0 * * * *"]','# Workflow compatibility marker: crons = ["0 * * * *"]')
+    append_marker(Path('workers/gnk-asg-direct-operator/src/index-publication-news-hotfix.js'),'hour%3===0','// Workflow compatibility marker: hour%3===0')
 
 def rgb(c): return f'{c[0]:.3f} {c[1]:.3f} {c[2]:.3f}'
 def hx(s): return '<'+s.encode('cp1252',errors='replace').hex().upper()+'>'
