@@ -6,10 +6,11 @@ const base = process.env.VISUAL_BASE || 'http://127.0.0.1:8787';
 const routes = [
   ['/', 'hr-home', 'hr'], ['/trzista/', 'hr-trzista', 'hr'], ['/objave/', 'hr-objave', 'hr'], ['/vijesti/', 'hr-vijesti', 'hr'],
   ['/assistant/', 'hr-assistant', 'hr'], ['/contact/', 'hr-contact', 'hr'], ['/downloads/', 'hr-downloads', 'hr'],
-  ['/visual-index/', 'visual-index', 'hr'], ['/legal/', 'hr-legal', 'hr'], ['/status-automatizacije/', 'hr-status', 'hr'], ['/app/', 'app', 'hr'],
+  ['/visual-index/', 'visual-index-hr', 'hr'], ['/legal/', 'hr-legal', 'hr'], ['/status-automatizacije/', 'hr-status', 'hr'], ['/app/', 'app-hr', 'hr'],
   ['/en/', 'en-home', 'en'], ['/markets/', 'en-markets', 'en'], ['/publications/', 'en-publications', 'en'], ['/news/', 'en-news', 'en'],
   ['/en/assistant/', 'en-assistant', 'en'], ['/en/contact/', 'en-contact', 'en'], ['/en/downloads/', 'en-downloads', 'en'],
-  ['/en/legal/', 'en-legal', 'en'], ['/automation-status/', 'en-status', 'en']
+  ['/en/legal/', 'en-legal', 'en'], ['/automation-status/', 'en-status', 'en'],
+  ['/visual-index/?lang=en', 'visual-index-en', 'en'], ['/app/?lang=en', 'app-en', 'en']
 ];
 const expected = {
   hr: ['Profil','Financije','Tržišta','Objave','Vijesti','Auto Editor','Visual Index','PDF centar','AI pomoć','Kontakt','Legal','Admin','App'],
@@ -88,4 +89,4 @@ if (failures.length) {
   console.error(JSON.stringify(failures, null, 2));
   process.exit(1);
 }
-console.log(`PUBLIC_VISUAL_V13_OK routes=${audit.length}`);
+console.log(`PUBLIC_VISUAL_V13_OK views=${audit.length}`);
