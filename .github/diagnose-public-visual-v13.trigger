@@ -1,2 +1,2 @@
 diagnosis=GNK_ASG_PUBLIC_VISUAL_V13_20260625
-trigger_revision=1
+trigger_revision=2
