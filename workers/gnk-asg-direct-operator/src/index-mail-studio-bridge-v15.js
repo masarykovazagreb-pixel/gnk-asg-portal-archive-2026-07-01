@@ -1,10 +1,11 @@
 import app from './index-unified-auth-v14.js';
 
 const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260626';
-const REVISION='5';
-const MAIL_SCRIPT='<script defer src="/assets/mail-studio-auth-bridge-v15.js?v=20260626-5"></script>';
-const CONTROLS_SCRIPT='<script defer src="/assets/mail-studio-controls-v18.js?v=20260626-2"></script>';
-const CLICK_SCRIPT='<script defer src="/assets/mail-studio-click-feedback-v19.js?v=20260626-1"></script>';
+const REVISION='6';
+const MAIL_SCRIPT='<script defer src="/assets/mail-studio-auth-bridge-v15.js?v=20260626-6"></script>';
+const CONTROLS_SCRIPT='<script defer src="/assets/mail-studio-controls-v18.js?v=20260626-3"></script>';
+const CLICK_SCRIPT='<script defer src="/assets/mail-studio-click-feedback-v19.js?v=20260626-2"></script>';
+const MASS_SCRIPT='<script defer src="/assets/mail-studio-mass-mail-v20.js?v=20260626-1"></script>';
 const ADMIN_SCRIPT='<script defer src="/assets/admin-session-fallback-v17.js?v=20260626-1"></script>';
 
 const cleanPath=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
@@ -23,11 +24,13 @@ async function inject(response,path){
   headers.set('x-gnk-asg-admin-session-fallback','V17');
   headers.set('x-gnk-asg-mail-studio-controls','V18');
   headers.set('x-gnk-asg-mail-studio-click-feedback','V19');
+  headers.set('x-gnk-asg-mail-studio-mass-mail','V20');
   let html=await response.text();
   let scripts='';
   if(isMailStudio(path)&&!html.includes('mail-studio-auth-bridge-v15.js'))scripts+=MAIL_SCRIPT;
   if(isMailStudio(path)&&!html.includes('mail-studio-controls-v18.js'))scripts+=CONTROLS_SCRIPT;
   if(isMailStudio(path)&&!html.includes('mail-studio-click-feedback-v19.js'))scripts+=CLICK_SCRIPT;
+  if(isMailStudio(path)&&!html.includes('mail-studio-mass-mail-v20.js'))scripts+=MASS_SCRIPT;
   if(isPrivate(path)&&!html.includes('admin-session-fallback-v17.js'))scripts+=ADMIN_SCRIPT;
   if(scripts)html=html.includes('</head>')?html.replace('</head>',`${scripts}</head>`):scripts+html;
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
@@ -37,9 +40,9 @@ async function version(request,env,ctx){
   const response=await app.fetch(request,env,ctx);
   try{
     const payload=await response.clone().json();
-    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,mailStudioControls:'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626',mailStudioClickFeedback:'GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626',adminSessionFallback:'GNK_ASG_ADMIN_SESSION_FALLBACK_V17_20260626',deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
+    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,mailStudioControls:'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626',mailStudioClickFeedback:'GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626',mailStudioMassMail:'GNK_ASG_MAIL_STUDIO_MASS_MAIL_V20_20260626',adminSessionFallback:'GNK_ASG_ADMIN_SESSION_FALLBACK_V17_20260626',deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
       status:response.status,
-      headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION,'x-gnk-asg-admin-session-fallback':'V17','x-gnk-asg-mail-studio-controls':'V18','x-gnk-asg-mail-studio-click-feedback':'V19'}
+      headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION,'x-gnk-asg-admin-session-fallback':'V17','x-gnk-asg-mail-studio-controls':'V18','x-gnk-asg-mail-studio-click-feedback':'V19','x-gnk-asg-mail-studio-mass-mail':'V20'}
     });
   }catch{return response;}
 }
