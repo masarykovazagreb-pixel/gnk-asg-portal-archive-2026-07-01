@@ -1,0 +1,67 @@
+name: Diagnose Public Visual V13 Production
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/diagnose-public-visual-v13.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Diagnose production routes
+        id: diagnose
+        continue-on-error: true
+        shell: bash
+        run: |
+          base="https://gnk-asg.hr"
+          stamp=$(date +%s%N)
+          curl -sSL -D version.headers -o version.json "$base/data/portal-version.json?cb=$stamp"
+          curl -sSL -D root.headers -o root.html "$base/?cb=$stamp"
+          printf 'VERSION_MARKER=%s\n' "$(grep -c 'GNK_ASG_PUBLIC_VISUAL_V13_20260625' version.json || true)" > diagnosis.txt
+          printf 'ROOT_HEADER=%s\n' "$(grep -ci '^x-gnk-asg-public-visual: GNK_ASG_PUBLIC_VISUAL_V13_20260625' root.headers || true)" >> diagnosis.txt
+          printf 'ROOT_CSS=%s\n' "$(grep -c 'public-visual-v13.css' root.html || true)" >> diagnosis.txt
+          printf 'ROOT_JS=%s\n' "$(grep -c 'public-menu-v13.js' root.html || true)" >> diagnosis.txt
+          printf '\nROUTES\n' >> diagnosis.txt
+          routes=(
+            / /trzista/ /objave/ /vijesti/ /assistant/ /contact/ /downloads/ /visual-index/ /legal/ /status-automatizacije/ /app/
+            /en/ /markets/ /publications/ /news/ /en/assistant/ /en/contact/ /en/downloads/ /en/legal/ /automation-status/
+          )
+          failed=0
+          for route in "${routes[@]}"; do
+            code=$(curl -sSL -D route.headers -o route.html -w '%{http_code}' "$base$route?cb=$(date +%s%N)" || true)
+            css=$(grep -c 'public-visual-v13.css' route.html || true)
+            js=$(grep -c 'public-menu-v13.js' route.html || true)
+            header=$(grep -ci '^x-gnk-asg-public-visual: GNK_ASG_PUBLIC_VISUAL_V13_20260625' route.headers || true)
+            printf '%-28s code=%s css=%s js=%s header=%s\n' "$route" "$code" "$css" "$js" "$header" >> diagnosis.txt
+            if [ "$code" != "200" ] || [ "$css" = "0" ] || [ "$js" = "0" ]; then failed=1; fi
+          done
+          cat diagnosis.txt
+          exit "$failed"
+
+      - name: Post diagnosis
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OUTCOME: ${{ steps.diagnose.outcome }}
+        shell: bash
+        run: |
+          body=$(printf '## V13 dijagnostika javnih ruta\n\nOutcome: `%s`\n\n```text\n%s\n```\n\n```json\n%s\n```\n' "$OUTCOME" "$(cat diagnosis.txt 2>/dev/null || true)" "$(cat version.json 2>/dev/null || true)")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
+
+      - name: Enforce diagnosis
+        if: always()
+        env:
+          OUTCOME: ${{ steps.diagnose.outcome }}
+        run: test "$OUTCOME" = "success"
