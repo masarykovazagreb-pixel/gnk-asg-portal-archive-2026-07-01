@@ -1,0 +1,26 @@
+name = "gnk-asg-news-pages-live"
+main = "src/index.js"
+compatibility_date = "2026-06-21"
+workers_dev = true
+preview_urls = true
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+
+[[routes]]
+pattern = "gnk-asg.hr/vijesti/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/news/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/vijesti/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/news/*"
+zone_name = "gnk-asg.hr"
