@@ -12,7 +12,7 @@ export function patchPublicHtml(html,path){
   html=removeLegacyPublicShell(html);
   const legacyCss='<link rel="preload" as="style" href="/assets/public-ux-v11.css?v=20260625-v11">';
   const visualCss='<link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260625-v13">';
-  const reset='<style id="gnk-public-v13-reset">body.gnk-public-v13{padding-top:0!important}</style>';
+  const reset='<style id="gnk-public-v13-reset">body{padding-top:0!important}body>header:not(#gnk-asg-premium-header),body>.site-header,.shell>.brand-head,.shell>.top-nav,.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-final-menu-wrap{display:none!important}</style>';
   const menu='<script src="/assets/public-menu-v13.js?v=20260625-v13" defer></script>';
   if(!html.includes('/assets/public-ux-v11.css'))html=html.replace('</head>',`${legacyCss}</head>`);
   html=html.replace('</head>',`${visualCss}${reset}</head>`);
