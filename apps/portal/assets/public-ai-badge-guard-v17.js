@@ -1,10 +1,11 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_AI_BADGE_GUARD_V18__) return;
+  if (window.__GNK_ASG_AI_BADGE_GUARD_V19__) return;
+  window.__GNK_ASG_AI_BADGE_GUARD_V19__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V18__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V17__ = true;
 
-  const path = location.pathname.toLowerCase().replace(/\/+/, '/').replace(/\/+$/, '') || '/';
+  const path = location.pathname.toLowerCase().replace(/\/+/g, '/').replace(/\/+$/, '') || '/';
   const privatePage = ['/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/admin-center','/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/auto-editor','/operator','/api'].some(prefix => path === prefix || path.startsWith(prefix + '/'));
   if (privatePage) return;
 
@@ -13,11 +14,13 @@
   const indexPage = path === '/' || path === '/en';
 
   function ensureMarketChart() {
-    if (!indexPage || document.querySelector('script[data-gnk-live-market-chart]')) return;
+    if (!indexPage || window.__GNK_ASG_LIVE_MARKET_CHART_V2__ || document.querySelector('script[data-gnk-market-v2]')) return;
+    document.getElementById('gnk-live-market-chart')?.remove();
+    document.querySelector('.feature-grid')?.classList.remove('gnk-market-chart-layout');
     const script = document.createElement('script');
-    script.src = '/assets/index-live-market-chart-v1.js?v=20260625-v1';
+    script.src = '/assets/index-live-market-chart-v2.js?v=20260625-v2';
     script.defer = true;
-    script.dataset.gnkLiveMarketChart = '1';
+    script.dataset.gnkMarketV2 = '1';
     document.head.appendChild(script);
   }
 
@@ -56,7 +59,8 @@
   new MutationObserver(() => {
     if (queued || running) return;
     const badge = document.getElementById('gnk-ai-badge-v13');
-    const needsRepair = !badge || badge.classList.contains('gnk-asg-ai-hidden-duplicate') || badge.classList.contains('gnk-v13-legacy-hidden') || (badge && (getComputedStyle(badge).display === 'none' || getComputedStyle(badge).visibility === 'hidden'));
+    const chartMissing = indexPage && !document.getElementById('gnk-live-market-chart-v2');
+    const needsRepair = chartMissing || !badge || badge.classList.contains('gnk-asg-ai-hidden-duplicate') || badge.classList.contains('gnk-v13-legacy-hidden') || (badge && (getComputedStyle(badge).display === 'none' || getComputedStyle(badge).visibility === 'hidden'));
     if (!needsRepair) return;
     queued = true;
     requestAnimationFrame(() => {
