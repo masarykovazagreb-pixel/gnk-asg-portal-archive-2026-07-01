@@ -1,11 +1,12 @@
 import core from './index-portal-final-v12.js';
 import {getLiveMarket,refreshLiveMarket,VERSION as MARKET_VERSION} from './market-live-v1.js';
 
-const VERSION='GNK_ASG_PORTAL_FINAL_V13_MARKET_20260625';
+const VERSION='GNK_ASG_PORTAL_FINAL_V13_NETWORK_20260625';
 const NEWS_ROTATION='GNK_ASG_INDEX_NEWS_ROTATION_V1';
 const NEWS_SCHEDULE=['09:00','15:00','21:00'];
 const FAVICON_VERSION='GNK_ASG_GOOGLE_FAVICON_V1';
 const MARKET_CHART='GNK_ASG_LIVE_MARKET_CHART_V3';
+const GROUP_NETWORK='GNK_ASG_GROUP_NETWORK_V2';
 
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{
   status,
@@ -15,7 +16,8 @@ const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{
     'x-gnk-asg-portal-final':VERSION,
     'x-gnk-asg-news-rotation':NEWS_ROTATION,
     'x-gnk-asg-favicon':FAVICON_VERSION,
-    'x-gnk-asg-market-live':MARKET_VERSION
+    'x-gnk-asg-market-live':MARKET_VERSION,
+    'x-gnk-asg-group-network':GROUP_NETWORK
   }
 });
 
@@ -35,6 +37,7 @@ function withHeaders(response){
   headers.set('x-gnk-asg-news-rotation',NEWS_ROTATION);
   headers.set('x-gnk-asg-favicon',FAVICON_VERSION);
   headers.set('x-gnk-asg-market-live',MARKET_VERSION);
+  headers.set('x-gnk-asg-group-network',GROUP_NETWORK);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -70,9 +73,12 @@ async function injectIndexModules(response){
   headers.set('x-gnk-asg-news-rotation',NEWS_ROTATION);
   headers.set('x-gnk-asg-favicon',FAVICON_VERSION);
   headers.set('x-gnk-asg-market-live',MARKET_VERSION);
+  headers.set('x-gnk-asg-group-network',GROUP_NETWORK);
   let body=await response.text();
+  if(!body.includes('/assets/index-group-network-v2.css'))body=body.replace('</head>','<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260625-v2"></head>');
   if(!body.includes('/assets/index-news-rotation-v1.js'))body=body.replace('</body>','<script src="/assets/index-news-rotation-v1.js?v=20260625-v1" defer></script></body>');
   if(!body.includes('/assets/index-live-market-chart-v3.js'))body=body.replace('</body>','<script src="/assets/index-live-market-chart-v3.js?v=20260625-v3" defer></script></body>');
+  if(!body.includes('/assets/index-group-network-v2.js'))body=body.replace('</body>','<script src="/assets/index-group-network-v2.js?v=20260625-v2" defer></script></body>');
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -105,6 +111,7 @@ async function fetchHandler(request,env,ctx){
       marketEndpoint:'/api/market-live',
       marketVersion:MARKET_VERSION,
       marketChart:MARKET_CHART,
+      groupNetwork:GROUP_NETWORK,
       lastMarketLive:await readJson(env,'data:market:live:v1',null),
       favicon:{version:FAVICON_VERSION,url:'https://gnk-asg.hr/favicon.svg',icoRedirect:'https://gnk-asg.hr/favicon.ico'},
       lastNewsRefresh:await readJson(env,'automation:news-refresh:last',null),
