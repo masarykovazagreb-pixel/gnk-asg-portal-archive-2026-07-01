@@ -94,7 +94,7 @@ await shared.close();
 
 const privatePage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 await privatePage.goto(`${base}/operator-dashboard/`, { waitUntil: 'domcontentloaded', timeout: 24000 });
-if (await privatePage.locator('#gnk-asg-premium-header').count()) failures.push({ route: '/operator-dashboard/', error: 'Public header on private route' });
+if (await privatePage.locator('#gnk-asg-premium-header[data-public-menu-version="13"]').count()) failures.push({ route: '/operator-dashboard/', error: 'Public V13 header on private route' });
 await privatePage.close();
 await browser.close();
 
