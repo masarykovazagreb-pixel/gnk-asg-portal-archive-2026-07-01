@@ -16,23 +16,51 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
-      - name: Verify public package
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify final public package
         shell: bash
         run: |
+          set -euo pipefail
           test -s apps/portal/assets/public-menu-centered-v7.css
+          test -s apps/portal/assets/public-ux-v11.css
+          test -s apps/portal/assets/index-clock-v2.js
+          test -s workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
           test -s apps/portal/documents/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf
           test -s apps/portal/documents/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf
           test -s apps/portal/documents/GNK_DINAMO_Ltd_Certificate_of_Good_Standing_2026.pdf
           test -s apps/portal/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2026_HR.pdf
           test -s apps/portal/downloads/GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2026_EN.pdf
+          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
+          grep -q 'main = "src/index-portal-final-v12.js"' workers/gnk-asg-direct-operator/wrangler.toml
 
-      - name: Deploy with Wrangler
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: workers/gnk-asg-direct-operator
-          command: deploy src/index-operator-core-routes-v1.js --config wrangler.dark-market.toml --name gnk-asg-direct-operator
+      - name: Deploy final V12 with Wrangler
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify V12 version endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 12); do
+            code=$(curl -sS -o version.json -w '%{http_code}' "https://gnk-asg.hr/data/portal-version.json?cb=$(date +%s)" || true)
+            if [ "$code" = "200" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V12_20260625' version.json; then
+              break
+            fi
+            if [ "$attempt" = "12" ]; then
+              echo "VERSION_HTTP=$code"
+              cat version.json || true
+              exit 1
+            fi
+            sleep 10
+          done
+          node -e "const v=require('./version.json'); if(!v.ok||v.deployedEntryPoint!=='src/index-portal-final-v12.js') process.exit(1); console.log('GNK_ASG_V12_DEPLOY_OK=true')"
