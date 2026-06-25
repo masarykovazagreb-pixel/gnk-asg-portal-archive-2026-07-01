@@ -1,6 +1,7 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_PUBLIC_MENU_V15__) return;
+  if (window.__GNK_ASG_PUBLIC_MENU_V16__) return;
+  window.__GNK_ASG_PUBLIC_MENU_V16__ = true;
   window.__GNK_ASG_PUBLIC_MENU_V15__ = true;
   window.__GNK_ASG_PUBLIC_MENU_V13__ = true;
 
@@ -35,10 +36,13 @@
   const pairedLanguageUrl = () => {
     if (sharedLanguagePage) {
       const target = new URL(location.href);
+      target.searchParams.delete('cb');
       if (english) target.searchParams.delete('lang'); else target.searchParams.set('lang','en');
       return `${target.pathname}${target.search}${target.hash}`;
     }
-    const rawQuery = location.search || '';
+    const cleanQuery = new URLSearchParams(location.search);
+    cleanQuery.delete('cb');
+    const suffix = cleanQuery.toString() ? `?${cleanQuery}` : '';
     const hash = location.hash || '';
     const pairs = [
       [/^\/publications(\/.*)?$/i,m=>`/objave${m[1]||'/'}`],[/^\/objave(\/.*)?$/i,m=>`/publications${m[1]||'/'}`],
@@ -53,7 +57,7 @@
     ];
     for (const [pattern,build] of pairs) {
       const match = pathname.match(pattern);
-      if (match) return `${build(match)}${rawQuery}${hash}`;
+      if (match) return `${build(match)}${suffix}${hash}`;
     }
     return english ? '/' : '/en/';
   };
@@ -71,10 +75,12 @@
 
   const active = href => {
     try {
-      const url = new URL(href,location.origin);
+      const url = new URL(href, location.origin);
       if (url.hash) return location.pathname === url.pathname && location.hash === url.hash;
       if (url.pathname === '/' || url.pathname === '/en/') return location.pathname === url.pathname;
-      if (url.pathname === '/visual-index/' || url.pathname === '/app/') return location.pathname === url.pathname && (url.searchParams.get('lang') === 'en') === english;
+      if (url.pathname === '/visual-index/' || url.pathname === '/app/') {
+        return location.pathname === url.pathname && (url.searchParams.get('lang') === 'en') === english;
+      }
       return location.pathname === url.pathname || location.pathname.startsWith(url.pathname);
     } catch { return false; }
   };
@@ -183,6 +189,7 @@
     badge.href = english ? '/en/assistant/' : '/assistant/';
     badge.innerHTML = `<i aria-hidden="true"></i><span>${english?'AI Help':'AI pomoć'}</span>`;
     badge.setAttribute('aria-label',english?'Open GNK ASG AI Help':'Otvori GNK ASG AI pomoć');
+    badge.classList.remove('gnk-v13-legacy-hidden');
   };
 
   let running = false;
@@ -195,16 +202,19 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
   window.addEventListener('load',run,{once:true});
-  [80,250,650,1400,3000,6000].forEach(delay=>setTimeout(run,delay));
+  [80,250,650,1400,3000,6000,10000].forEach(delay=>setTimeout(run,delay));
+
   let queued = false;
   new MutationObserver(() => {
     if (queued || running) return;
+    const header = document.getElementById('gnk-asg-premium-header');
+    const badge = document.getElementById('gnk-ai-badge-v13');
+    const needsRepair = !header || header.dataset.publicMenuVersion !== '15' || !badge || badge.classList.contains('gnk-v13-legacy-hidden');
+    if (!needsRepair) return;
     queued = true;
     requestAnimationFrame(() => {
       queued = false;
-      const header = document.getElementById('gnk-asg-premium-header');
-      if (!header || header.dataset.publicMenuVersion !== '15') run();
-      else { removeOldPatches(); installForceStyle(); suppressLegacyNavigation(); }
+      run();
     });
-  }).observe(document.documentElement,{childList:true,subtree:true});
+  }).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
 })();
