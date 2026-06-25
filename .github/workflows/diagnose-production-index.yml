@@ -70,25 +70,32 @@ jobs:
           grep -q 'GNK_ASG_GNK_DINAMO_LTD_MEDIA_KIT_EN.pdf' apps/portal/downloads/index.html
           grep -q 'GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2_HR.pdf' apps/portal/en/downloads/index.html
           grep -q 'Contact and secure communication' apps/portal/en/contact/index.html
-      - name: Frontend integration markers
+      - name: Index API markers
         run: |
           grep -q '/api/market' apps/portal/assets/index-redesign-production.js
           grep -q '/data/news.json' apps/portal/assets/index-redesign-production.js
           grep -q '/data/group_network.json' apps/portal/assets/index-redesign-production.js
           grep -q '/data/auto-editor.json' apps/portal/assets/index-redesign-production.js
+      - name: Harmonizer asset markers
+        run: |
           grep -q 'visual-quality-v2.js' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
           grep -q 'contact-quality-v2.js' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
+          grep -q 'BACKEND_ASSETS' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
+          grep -q 'CONTACT_ASSETS' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
+      - name: Visual module markers
+        run: |
           grep -q '__GNK_ASG_VISUAL_QUALITY_V2__' apps/portal/assets/visual-quality-v2.js
+          grep -q 'iq-globe-canvas' apps/portal/assets/visual-quality-v2.js
+          grep -q 'hero-network-canvas' apps/portal/assets/index-iq200.js
+      - name: Document contact and backend markers
+        run: |
           grep -q '__GNK_ASG_DOCUMENT_CENTER_V2__' apps/portal/assets/document-center-v2.js
           grep -q '__GNK_ASG_CONTACT_V2__' apps/portal/assets/contact-quality-v2.js
-          grep -q 'hero-network-canvas' apps/portal/assets/index-iq200.js
-          grep -q 'iq-globe-canvas' apps/portal/assets/visual-quality-v2.js
           grep -q 'PDF / Media' apps/portal/assets/backend-ui-shell.js
           grep -q 'gnk-backend-shell' apps/portal/assets/backend-ui-shell.js
           grep -q 'backend-ui-shell.css' apps/portal/assets/gnk-asg-ai-layer.css
-          grep -q '__GNK_ASG_PREMIUM_V3__' apps/portal/assets/brand/gnk-asg-global-layer.js
-          grep -q 'BACKEND_ASSETS' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
-          grep -q 'CONTACT_ASSETS' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
+      - name: Brand marker
+        run: grep -q '__GNK_ASG_PREMIUM_V3__' apps/portal/assets/brand/gnk-asg-global-layer.js
       - name: Negative index markers
         run: |
           ! grep -q 'noindex,nofollow' apps/portal/index.html
