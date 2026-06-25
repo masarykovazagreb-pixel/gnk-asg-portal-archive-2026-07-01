@@ -23,6 +23,17 @@ function withVersionHeader(response) {
   });
 }
 
+async function assetResponse(request, env, assetPath, contentType) {
+  if (!env.ASSETS?.fetch) return null;
+  const response = await env.ASSETS.fetch(new Request(new URL(assetPath, request.url), request));
+  if (response.status === 404) return null;
+  const headers = new Headers(response.headers);
+  headers.set('content-type', contentType);
+  headers.set('cache-control', 'public, max-age=86400, stale-while-revalidate=604800');
+  headers.set('x-gnk-asg-portal-final', VERSION);
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
+
 async function statusAsset(request, env, english) {
   if (!env.ASSETS?.fetch) return null;
   const target = new URL(english ? '/automation-status/index.html' : '/status-automatizacije/index.html', request.url);
@@ -42,12 +53,19 @@ async function fetchHandler(request, env, ctx) {
     return json({
       ok: true,
       version: VERSION,
-      publicUx: 'GNK_ASG_PUBLIC_UX_V11',
+      publicUx: 'GNK_ASG_PUBLIC_UX_V12',
+      publicMenu: 'GNK_ASG_PUBLIC_MENU_FINAL_V12',
+      favicon: 'GNK_ASG_FAVICON_V1',
       indexClock: 'GNK_ASG_INDEX_CLOCK_V2',
       automation: 'GNK_ASG_PORTAL_EXPERIENCE_V10_20260625',
       timeZone: 'Europe/Zagreb',
       deployedEntryPoint: 'src/index-portal-final-v12.js'
     });
+  }
+
+  if (request.method === 'GET' && (path === '/favicon.ico' || path === '/favicon.svg')) {
+    const response = await assetResponse(request, env, '/assets/gnk-asg-favicon.svg', 'image/svg+xml; charset=utf-8');
+    if (response) return response;
   }
 
   if (request.method === 'GET' && path === '/status-automatizacije') {
