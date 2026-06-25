@@ -6,6 +6,7 @@
 
   const pathname = location.pathname.replace(/\/+/g, '/');
   const path = pathname.toLowerCase();
+  const query = new URLSearchParams(location.search);
   const privatePrefixes = [
     '/operator-dashboard', '/operator-mobile', '/mail-studio', '/mail-studio-pro', '/admin-center',
     '/news-admin', '/pdf-publisher', '/social-share', '/wa-center', '/review', '/auto-editor',
@@ -13,8 +14,10 @@
   ];
   if (privatePrefixes.some(prefix => path === prefix || path.startsWith(`${prefix}/`))) return;
 
-  const english = path === '/en' || path.startsWith('/en/') || path.startsWith('/markets') ||
-    path.startsWith('/news') || path.startsWith('/publications') || path.startsWith('/automation-status');
+  const sharedLanguagePage = path.startsWith('/visual-index') || path === '/app' || path.startsWith('/app/');
+  const english = (sharedLanguagePage && query.get('lang') === 'en') || path === '/en' || path.startsWith('/en/') ||
+    path.startsWith('/markets') || path.startsWith('/news') || path.startsWith('/publications') ||
+    path.startsWith('/automation-status');
 
   const routeClass = (() => {
     if (path === '/' || path === '/en' || path === '/en/') return 'gnk-route-home';
@@ -32,7 +35,14 @@
   })();
 
   const pairedLanguageUrl = () => {
-    const query = location.search || '';
+    if (sharedLanguagePage) {
+      const target = new URL(location.href);
+      if (english) target.searchParams.delete('lang');
+      else target.searchParams.set('lang', 'en');
+      return `${target.pathname}${target.search}${target.hash}`;
+    }
+
+    const rawQuery = location.search || '';
     const hash = location.hash || '';
     const pairs = [
       [/^\/publications(\/.*)?$/i, m => `/objave${m[1] || '/'}`],
@@ -56,7 +66,7 @@
     ];
     for (const [pattern, build] of pairs) {
       const match = pathname.match(pattern);
-      if (match) return `${build(match)}${query}${hash}`;
+      if (match) return `${build(match)}${rawQuery}${hash}`;
     }
     return english ? '/' : '/en/';
   };
@@ -69,9 +79,9 @@
   ];
   const enItems = [
     ['Profile', '/en/#profile'], ['Financials', '/en/#financials'], ['Markets', '/markets/'], ['Publications', '/publications/'],
-    ['News', '/news/'], ['Auto Editor', '/automation-status/'], ['Visual Index', '/visual-index/'],
+    ['News', '/news/'], ['Auto Editor', '/automation-status/'], ['Visual Index', '/visual-index/?lang=en'],
     ['PDF Centre', '/en/downloads/'], ['AI Help', '/en/assistant/'], ['Contact', '/en/contact/'], ['Legal', '/en/legal/'],
-    ['Admin', '/operator-dashboard/', 'nofollow'], ['App', '/app/']
+    ['Admin', '/operator-dashboard/', 'nofollow'], ['App', '/app/?lang=en']
   ];
 
   const active = href => {
@@ -79,6 +89,10 @@
       const url = new URL(href, location.origin);
       if (url.hash) return location.pathname === url.pathname && location.hash === url.hash;
       if (url.pathname === '/' || url.pathname === '/en/') return location.pathname === url.pathname;
+      if (url.pathname === '/visual-index/' || url.pathname === '/app/') {
+        const hrefEnglish = url.searchParams.get('lang') === 'en';
+        return location.pathname === url.pathname && hrefEnglish === english;
+      }
       return location.pathname === url.pathname || location.pathname.startsWith(url.pathname);
     } catch {
       return false;
@@ -97,6 +111,7 @@
     if (!document.body) return false;
     document.body.classList.add('gnk-public-v13', routeClass);
     document.documentElement.classList.add('gnk-public-v13-root');
+    document.documentElement.lang = english ? 'en' : 'hr';
 
     let header = document.getElementById('gnk-asg-premium-header');
     if (!header) {
@@ -107,6 +122,7 @@
 
     header.className = 'gnk-v13-header';
     header.dataset.publicMenuVersion = '13';
+    header.dataset.language = english ? 'en' : 'hr';
     header.innerHTML = `
       <div class="gnk-v13-brand-row">
         <a class="gnk-v13-brand gnk-v13-brand-left" href="${english ? '/en/' : '/'}" aria-label="GNK ASG">
@@ -116,7 +132,7 @@
         <div class="gnk-v13-system"><span><i></i>${english ? 'System active' : 'Sustav aktivan'}</span><b>V3.1</b></div>
         <a class="gnk-v13-brand gnk-v13-brand-right" href="${english ? '/en/' : '/'}" aria-label="GNK DINAMO Ltd.">
           ${brandMark('dinamo')}
-          <span><strong>GNK DINAMO Ltd.</strong><small>${english ? 'Parent company · Boulder, Colorado' : 'Parent Company · Boulder, Colorado'}</small></span>
+          <span><strong>GNK DINAMO Ltd.</strong><small>Parent Company · Boulder, Colorado</small></span>
         </a>
         <a id="gnk-public-language" class="gnk-v13-language" href="${pairedLanguageUrl()}" hreflang="${english ? 'hr' : 'en'}" aria-label="${english ? 'Prikaži hrvatsku verziju' : 'Open English version'}">${english ? 'HR' : 'EN'}</a>
       </div>
