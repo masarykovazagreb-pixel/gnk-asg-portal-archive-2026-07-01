@@ -1,0 +1,153 @@
+name: Deploy Public Visual V13
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/deploy-public-visual-v13.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: deploy-public-visual-v13
+  cancel-in-progress: true
+
+jobs:
+  deploy-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate V13 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/public-menu-v13.js
+          node --check apps/portal/tests/public-visual-v13-final.mjs
+          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
+          grep -q 'GNK_ASG_PUBLIC_VISUAL_V13_20260625' workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
+          grep -q 'public-visual-v13.css' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q 'public-menu-v13.js' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+
+      - name: Deploy Cloudflare Worker
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify production marker and routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg.hr"
+          ready=false
+          for attempt in $(seq 1 24); do
+            stamp=$(date +%s%N)
+            version_code=$(curl -sSL -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
+            root_code=$(curl -sSL -D root.headers -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
+            if [ "$version_code" = "200" ] && [ "$root_code" = "200" ] && grep -q 'GNK_ASG_PUBLIC_VISUAL_V13_20260625' version.json && grep -q 'public-visual-v13.css' root.html && grep -q 'public-menu-v13.js' root.html; then
+              ready=true
+              break
+            fi
+            sleep 10
+          done
+          if [ "$ready" != "true" ]; then
+            echo "VERSION_HTTP=$version_code ROOT_HTTP=$root_code"
+            cat version.json || true
+            exit 1
+          fi
+          grep -qi '^x-gnk-asg-public-visual: GNK_ASG_PUBLIC_VISUAL_V13_20260625' root.headers
+          routes=(
+            / /trzista/ /objave/ /vijesti/ /assistant/ /contact/ /downloads/ /visual-index/ /legal/ /status-automatizacije/ /app/
+            /en/ /markets/ /publications/ /news/ /en/assistant/ /en/contact/ /en/downloads/ /en/legal/ /automation-status/
+          )
+          : > route-status.txt
+          for route in "${routes[@]}"; do
+            code=$(curl -sSL -o route.html -w '%{http_code}' "$base$route?cb=$(date +%s%N)" || true)
+            printf '%s %s\n' "$code" "$route" | tee -a route-status.txt
+            test "$code" = "200"
+            grep -q 'public-visual-v13.css' route.html
+            grep -q 'public-menu-v13.js' route.html
+          done
+
+      - name: Install Chromium
+        working-directory: apps/portal
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install --with-deps chromium
+
+      - name: Verify 40 production views
+        working-directory: apps/portal
+        env:
+          VISUAL_BASE: https://gnk-asg.hr
+        run: node tests/public-visual-v13-final.mjs
+
+      - name: Build concise result
+        shell: bash
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const version=JSON.parse(fs.readFileSync('version.json','utf8'));
+          const audit=JSON.parse(fs.readFileSync('apps/portal/visual-v13-test-output/audit.json','utf8'));
+          const report={
+            checkedAt:new Date().toISOString(),
+            ok:audit.length===40&&audit.every(x=>x.ok===true),
+            version:version.version,
+            publicVisual:version.publicVisual,
+            publicMenu:version.publicMenu,
+            routes:20,
+            views:audit.length,
+            desktop:audit.filter(x=>x.view==='desktop').length,
+            mobile:audit.filter(x=>x.view==='mobile').length,
+            identicalMenus:audit.every(x=>x.checks?.exactMenu===true),
+            legacyNavigationVisible:audit.some(x=>Number(x.visibleLegacy||0)>0),
+            horizontalOverflow:audit.some(x=>x.horizontalOverflow===true)
+          };
+          fs.writeFileSync('v13-production-result.json',JSON.stringify(report,null,2));
+          if(!report.ok||!report.identicalMenus||report.legacyNavigationVisible||report.horizontalOverflow)process.exit(1);
+          JS
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-public-visual-v13-production
+          path: |
+            apps/portal/visual-v13-test-output
+            version.json
+            route-status.txt
+            v13-production-result.json
+          retention-days: 14
+
+      - name: Record success
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          body=$(printf '## Produkcijski deploy V13 — USPJEŠNO\n\n```json\n%s\n```\n' "$(cat v13-production-result.json)")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
+          gh api -X PATCH "repos/${GITHUB_REPOSITORY}/issues/65" -f state=closed -f state_reason=completed
+
+      - name: Record failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body='## Produkcijski deploy V13 — NEUSPJEŠNO\n\nProvjera nije prošla. Produkcija nije proglašena završenom; pregledajte Actions zapis i artefakt.'
