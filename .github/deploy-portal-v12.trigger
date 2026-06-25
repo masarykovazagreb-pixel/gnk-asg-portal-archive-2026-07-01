@@ -1,7 +1,4 @@
-deployment=GNK_ASG_PUBLIC_VISUAL_V13_20260625
+deployment=GNK_ASG_PORTAL_FINAL_V12_20260625
 approved=true
-base=main-current
-scope=unified-public-visual-and-navigation
-routes=20
-views=40
+merge_commit=2ec19eaa67b437228feaa9e0b2b9af8508a9d7eb
 trigger_revision=7
