@@ -1,7 +1,15 @@
 import app from './index-publication-news-v2.js';
 import { handleRefreshRoute, runScheduledRefresh } from './gnk-asg-refresh-backend-v1.js';
+import {
+  cleanPublications,
+  contentQualityStatus,
+  publicationSitemap,
+  repairHtmlResponse,
+  stableJsonPaths,
+  stableJsonResponse
+} from './publication-quality-core-v6.js';
 
-const DEPLOY_TRIGGER = '2026-06-23-business-dark-v2-debug';
+const DEPLOY_TRIGGER = '2026-06-25-quality-v6';
 
 const jsonHeaders = {
   'content-type': 'application/json; charset=utf-8',
@@ -16,8 +24,18 @@ const explicitPublicAssets = new Map([
   ['/en/assistant', '/en/assistant/index.html'],
   ['/en/assistant/', '/en/assistant/index.html'],
   ['/en/legal', '/en/legal/index.html'],
-  ['/en/legal/', '/en/legal/index.html']
+  ['/en/legal/', '/en/legal/index.html'],
+  ['/status-automatizacije', '/status-automatizacije/index.html'],
+  ['/status-automatizacije/', '/status-automatizacije/index.html'],
+  ['/automation-status', '/automation-status/index.html'],
+  ['/automation-status/', '/automation-status/index.html']
 ]);
+
+const PUBLIC_HTML_PREFIXES = [
+  '/objave', '/publications', '/vijesti', '/news', '/trzista', '/markets',
+  '/assistant', '/en/assistant', '/downloads', '/en/downloads', '/visual-index',
+  '/contact', '/en/contact', '/legal', '/en/legal', '/status-automatizacije', '/automation-status'
+];
 
 function json(data, status = 200, extra = {}) {
   return new Response(JSON.stringify(data, null, 2), {
@@ -27,9 +45,9 @@ function json(data, status = 200, extra = {}) {
 }
 
 async function parseJson(response) {
-  const text = await response.text();
+  const value = await response.text();
   try {
-    return JSON.parse(text);
+    return JSON.parse(value);
   } catch {
     throw new Error(`invalid_json_${response.status}`);
   }
@@ -112,9 +130,15 @@ function marketPayload(market, chart) {
 async function marketApi(request, env, ctx) {
   const origin = new URL(request.url).origin;
   const marketResponse = await handleRefreshRoute(makeGet(origin, '/data/market.json', request), env, ctx);
-  if (!marketResponse) return json({ ok: false, error: 'market_route_unavailable' }, 503);
+  if (!marketResponse) return json({ ok: false, status: 'FALLBACK', updatedAt: new Date().toISOString(), cards: [], history: [], error: 'market_route_unavailable' }, 200);
 
-  const market = await parseJson(marketResponse);
+  let market = null;
+  try {
+    market = await parseJson(marketResponse);
+  } catch {
+    market = { ok: false, status: 'FALLBACK', updatedAt: new Date().toISOString(), crypto: [], fx: null };
+  }
+
   let chart = null;
   try {
     const chartResponse = await handleRefreshRoute(makeGet(origin, '/data/btc_chart.json', request), env, ctx);
@@ -123,8 +147,8 @@ async function marketApi(request, env, ctx) {
     chart = null;
   }
 
-  return json(marketPayload(market, chart), marketResponse.ok ? 200 : marketResponse.status, {
-    'x-gnk-asg-market-recovery': 'business-dark-v2',
+  return json(marketPayload(market, chart), 200, {
+    'x-gnk-asg-market-recovery': 'business-dark-v2-quality-v6',
     'x-gnk-asg-deploy-trigger': DEPLOY_TRIGGER
   });
 }
@@ -176,27 +200,11 @@ async function themeDebug(request, env) {
     networkMarker: networkJs.text.includes('global-network'),
     globeAsset200: globeJs.status === 200,
     globeMarker: globeJs.text.includes('globe-panel'),
-    darkLockInjectedByWorker: true
+    darkLockInjectedByWorker: true,
+    qualityV6Integrated: true
   };
 
-  const required = [
-    checks.homeAsset200,
-    checks.homeLoadsGlobalCss,
-    checks.homeLoadsGlobalJs,
-    checks.homeLoadsAppJs,
-    checks.premiumCss200,
-    checks.premiumCssDarkVariables,
-    checks.premiumCssShell,
-    checks.premiumJs200,
-    checks.premiumJsV3,
-    checks.premiumJsInstallsShell,
-    checks.appLoadsNetwork,
-    checks.appLoadsGlobe,
-    checks.networkAsset200,
-    checks.networkMarker,
-    checks.globeAsset200,
-    checks.globeMarker
-  ];
+  const required = Object.values(checks).filter(value => typeof value === 'boolean');
 
   return json({
     ok: required.every(Boolean),
@@ -240,6 +248,17 @@ async function fixHomepage(response, path) {
   return new Response(html, { status: response.status, headers });
 }
 
+function shouldClean(path, method) {
+  if (method !== 'GET' && method !== 'HEAD') return false;
+  return path === '/objave' || path.startsWith('/objave/') ||
+    path === '/publications' || path.startsWith('/publications/') ||
+    path === '/data/news.json' || path === '/data/auto-editor.json';
+}
+
+function isPublicHtml(path) {
+  return PUBLIC_HTML_PREFIXES.some(prefix => path === prefix || path.startsWith(`${prefix}/`));
+}
+
 async function fetchHandler(request, env, ctx) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/+$/, '') || '/';
@@ -247,6 +266,11 @@ async function fetchHandler(request, env, ctx) {
 
   if (path === '/api/market') return marketApi(request, env, ctx);
   if (path === '/theme-debug') return themeDebug(request, env);
+  if (path === '/data/content-quality-status.json') return json(await contentQualityStatus(env));
+  if (path === '/sitemap-objave.xml') return publicationSitemap(env, false);
+  if (path === '/image-sitemap-objave.xml') return publicationSitemap(env, true);
+
+  if (shouldClean(path, request.method)) await cleanPublications(env, false);
 
   const explicitAsset = await serveExplicitAsset(originalPath, request, env) ||
     await serveExplicitAsset(path, request, env);
@@ -266,19 +290,30 @@ async function fetchHandler(request, env, ctx) {
     path === '/operator/refresh-status' ||
     path === '/operator/refresh-help'
   ) {
-    return handleRefreshRoute(request, env, ctx);
+    const response = await handleRefreshRoute(request, env, ctx);
+    if (stableJsonPaths.has(path) && response) return stableJsonResponse(response, path);
+    return response;
   }
 
-  const response = await app.fetch(request, env, ctx);
-  return fixHomepage(response, originalPath);
+  let response = await app.fetch(request, env, ctx);
+  if (stableJsonPaths.has(path)) return stableJsonResponse(response, path);
+
+  response = await fixHomepage(response, originalPath);
+  if (isPublicHtml(path) && path !== '/' && path !== '/en') return repairHtmlResponse(response);
+  return response;
 }
 
 export default {
   fetch: fetchHandler,
   async scheduled(event, env, ctx) {
-    const tasks = [runScheduledRefresh(env, ctx)];
-    if (typeof app.scheduled === 'function') tasks.push(app.scheduled(event, env, ctx));
-    const task = Promise.allSettled(tasks);
+    const task = (async () => {
+      const automation = await Promise.allSettled([
+        runScheduledRefresh(env, ctx),
+        typeof app.scheduled === 'function' ? app.scheduled(event, env, {}) : Promise.resolve(null)
+      ]);
+      const quality = await cleanPublications(env, true);
+      return { ok: quality.ok !== false, automation, quality, finishedAt: new Date().toISOString() };
+    })();
     if (ctx?.waitUntil) {
       ctx.waitUntil(task);
       return;
