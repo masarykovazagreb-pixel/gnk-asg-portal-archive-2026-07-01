@@ -1,4 +1,5 @@
 import core from './index-portal-experience-v10.js';
+import { patchPublicHtml } from './public-shell-v11.js';
 
 const VERSION = 'GNK_ASG_PORTAL_FINAL_V12_20260625';
 
@@ -36,13 +37,20 @@ async function assetResponse(request, env, assetPath, contentType) {
 
 async function statusAsset(request, env, english) {
   if (!env.ASSETS?.fetch) return null;
+  const publicPath = english ? '/automation-status/' : '/status-automatizacije/';
   const target = new URL(english ? '/automation-status/index.html' : '/status-automatizacije/index.html', request.url);
   const assetRequest = new Request(target, {
     method: 'GET',
     headers: request.headers
   });
   const response = await env.ASSETS.fetch(assetRequest);
-  return response.status === 404 ? null : withVersionHeader(response);
+  if (response.status === 404) return null;
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  headers.set('cache-control', 'no-store');
+  headers.set('x-gnk-asg-portal-final', VERSION);
+  const html = patchPublicHtml(await response.text(), publicPath);
+  return new Response(html, { status: response.status, statusText: response.statusText, headers });
 }
 
 async function fetchHandler(request, env, ctx) {
