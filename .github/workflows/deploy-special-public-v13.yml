@@ -1,0 +1,148 @@
+name: Deploy Special Public V13 Routes
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/deploy-special-public-v13.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: deploy-special-public-v13
+  cancel-in-progress: true
+
+jobs:
+  deploy-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate special Workers
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-news-pages-live/src/index.js
+          node --check workers/gnk-asg-emergency-entry-redirect/src/index.js
+          node --check apps/portal/tests/public-visual-v13-final.mjs
+          grep -q 'GNK_ASG_PUBLIC_VISUAL_V13_20260625' workers/gnk-asg-news-pages-live/src/index.js
+          grep -q 'GNK_ASG_PUBLIC_VISUAL_V13_20260625' workers/gnk-asg-emergency-entry-redirect/src/index.js
+
+      - name: Deploy News Pages Worker
+        working-directory: workers/gnk-asg-news-pages-live
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-news-pages-live
+
+      - name: Deploy App Entry Worker
+        working-directory: workers/gnk-asg-emergency-entry-redirect
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-emergency-entry-redirect
+
+      - name: Verify special route activation
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg.hr"
+          ready=false
+          for attempt in $(seq 1 24); do
+            failed=0
+            : > special-status.txt
+            for route in /vijesti/ /news/ /app/; do
+              safe=$(echo "$route" | tr '/-' '__')
+              code=$(curl -sSL -D "$safe.headers" -o "$safe.html" -w '%{http_code}' "$base$route?cb=$(date +%s%N)" || true)
+              css=$(grep -c 'public-visual-v13.css' "$safe.html" || true)
+              js=$(grep -c 'public-menu-v13.js' "$safe.html" || true)
+              header=$(grep -ci '^x-gnk-asg-public-visual: GNK_ASG_PUBLIC_VISUAL_V13_20260625' "$safe.headers" || true)
+              printf '%s code=%s css=%s js=%s header=%s\n' "$route" "$code" "$css" "$js" "$header" | tee -a special-status.txt
+              if [ "$code" != "200" ] || [ "$css" = "0" ] || [ "$js" = "0" ] || [ "$header" = "0" ]; then failed=1; fi
+            done
+            if [ "$failed" = "0" ]; then ready=true; break; fi
+            sleep 10
+          done
+          test "$ready" = "true"
+
+      - name: Verify all 20 route sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg.hr"
+          routes=(
+            / /trzista/ /objave/ /vijesti/ /assistant/ /contact/ /downloads/ /visual-index/ /legal/ /status-automatizacije/ /app/
+            /en/ /markets/ /publications/ /news/ /en/assistant/ /en/contact/ /en/downloads/ /en/legal/ /automation-status/
+          )
+          : > route-status.txt
+          for route in "${routes[@]}"; do
+            code=$(curl -sSL -o route.html -w '%{http_code}' "$base$route?cb=$(date +%s%N)" || true)
+            css=$(grep -c 'public-visual-v13.css' route.html || true)
+            js=$(grep -c 'public-menu-v13.js' route.html || true)
+            printf '%-28s code=%s css=%s js=%s\n' "$route" "$code" "$css" "$js" | tee -a route-status.txt
+            test "$code" = "200"
+            test "$css" != "0"
+            test "$js" != "0"
+          done
+
+      - name: Install Chromium
+        working-directory: apps/portal
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install --with-deps chromium
+
+      - name: Verify all 40 production views
+        working-directory: apps/portal
+        env:
+          VISUAL_BASE: https://gnk-asg.hr
+        run: node tests/public-visual-v13-final.mjs
+
+      - name: Build final result
+        shell: bash
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const audit=JSON.parse(fs.readFileSync('apps/portal/visual-v13-test-output/audit.json','utf8'));
+          const report={checkedAt:new Date().toISOString(),ok:audit.length===40&&audit.every(x=>x.ok===true),publicVisual:'GNK_ASG_PUBLIC_VISUAL_V13_20260625',publicMenu:'GNK_ASG_PUBLIC_MENU_V13',routes:20,views:audit.length,desktop:audit.filter(x=>x.view==='desktop').length,mobile:audit.filter(x=>x.view==='mobile').length,identicalMenus:audit.every(x=>x.checks?.exactMenu===true),legacyNavigationVisible:audit.some(x=>Number(x.visibleLegacy||0)>0),horizontalOverflow:audit.some(x=>x.horizontalOverflow===true)};
+          fs.writeFileSync('special-v13-final-result.json',JSON.stringify(report,null,2));
+          if(!report.ok||!report.identicalMenus||report.legacyNavigationVisible||report.horizontalOverflow)process.exit(1);
+          JS
+
+      - name: Upload final evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-public-visual-v13-final-evidence
+          path: |
+            apps/portal/visual-v13-test-output
+            special-status.txt
+            route-status.txt
+            special-v13-final-result.json
+          retention-days: 14
+
+      - name: Record final success
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          body=$(printf '## V13 javni vizual — PRODUKCIJA POTVRĐENA\n\n```json\n%s\n```\n\n```text\n%s\n```\n' "$(cat special-v13-final-result.json)" "$(cat special-status.txt)")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
+          gh api -X PATCH "repos/${GITHUB_REPOSITORY}/issues/65" -f state=closed -f state_reason=completed
+
+      - name: Record final failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          body=$(printf '## V13 posebne rute — provjera nije prošla\n\n```text\n%s\n```\n\n```text\n%s\n```\n' "$(cat special-status.txt 2>/dev/null || true)" "$(cat route-status.txt 2>/dev/null || true)")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
