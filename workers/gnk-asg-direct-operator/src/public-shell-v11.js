@@ -5,6 +5,11 @@ export function isPrivatePath(path){
 
 function removeLegacyPublicShell(html){
   return html
+    .replace(/<!--\s*GNK_ASG_FIXED_MENU_PATCH_START\s*-->/gi,'')
+    .replace(/<!--\s*GNK_ASG_FIXED_MENU_PATCH_END\s*-->/gi,'')
+    .replace(/<style[^>]+id=["']gnk-asg-fixed-menu-patch-style["'][^>]*>[\s\S]*?<\/style>/gi,'')
+    .replace(/<script[^>]+id=["']gnk-asg-fixed-menu-patch-script["'][^>]*>[\s\S]*?<\/script>/gi,'')
+    .replace(/<[^>]+class=["'][^"']*gnk-asg-fixed-menu-spacer[^"']*["'][^>]*>[\s\S]*?<\/[^>]+>/gi,'')
     .replace(/<script[^>]+src=["'][^"']*\/assets\/public-menu-final-v9\.js[^"']*["'][^>]*><\/script>/gi,'')
     .replace(/<script[^>]+src=["'][^"']*\/assets\/public-menu-v13\.js[^"']*["'][^>]*><\/script>/gi,'')
     .replace(/<script[^>]+src=["'][^"']*\/assets\/brand\/gnk-asg-global-layer\.js[^"']*["'][^>]*><\/script>/gi,'')
@@ -18,9 +23,9 @@ export function patchPublicHtml(html,path){
   html=removeLegacyPublicShell(html);
   const favicon='\n<link rel="icon" type="image/svg+xml" href="/assets/gnk-asg-favicon.svg?v=20260625-v1">\n<link rel="shortcut icon" href="/favicon.ico?v=20260625-v1">\n<meta name="theme-color" content="#020812">';
   const ux='<link rel="stylesheet" href="/assets/public-ux-v11.css?v=20260625-v12">';
-  const visual='<link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260625-v13">';
-  const reset='<style id="gnk-public-v13-reset">html,body{max-width:100%!important;overflow-x:hidden!important}body{padding-top:0!important}#gnk-asg-premium-header,#gnk-asg-premium-header *{box-sizing:border-box!important}body>header:not(#gnk-asg-premium-header),body>.site-header,.shell>.brand-head,.shell>.top-nav,.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-final-menu-wrap,.gnk-asg-inner-nav,.gnk-asg-floating-actions,.floating-home,.floating-ai,.gnk-global-float-home,.gnk-global-float-ai,main>nav:first-child,.news-actions,#gnk-asg-global-layer-root,#gnk-asg-single-ai-button-anchor,#gnk-asg-float-home,#gnk-asg-float-ai,#gnk-asg-ai-panel,#gnk-asg-review-modal{display:none!important}body.gnk-route-contact main .card>a[href="/"],body.gnk-route-contact main .card>a[href="/en/"]{display:none!important}body.gnk-route-contact main,body.gnk-route-contact main *,body.gnk-route-publications main,body.gnk-route-publications main *{min-width:0!important;max-width:100%!important;box-sizing:border-box!important;overflow-wrap:anywhere!important}body.gnk-route-contact pre,body.gnk-route-publications pre{overflow:auto!important}body.gnk-route-contact input[type="file"]{width:100%!important}</style>';
-  const menu='<script src="/assets/public-menu-v13.js?v=20260625-v13" defer></script>';
+  const visual='<link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260625-v14">';
+  const reset='<style id="gnk-public-v13-reset">html,body{max-width:100%!important;overflow-x:hidden!important}body{padding-top:0!important}#gnk-asg-premium-header,#gnk-asg-premium-header *{box-sizing:border-box!important}#gnk-asg-premium-header.gnk-v13-header{left:auto!important;right:auto!important;transform:none!important;margin-left:auto!important;margin-right:auto!important}#gnk-asg-premium-menu.gnk-v13-menu{position:relative!important;top:auto!important;left:auto!important;right:auto!important;transform:none!important;width:100%!important;max-width:none!important;max-height:none!important;margin-left:auto!important;margin-right:auto!important}body>header:not(#gnk-asg-premium-header),body>.site-header,.shell>.brand-head,.shell>.top-nav,.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-final-menu-wrap,.gnk-asg-inner-nav,.gnk-asg-floating-actions,.floating-home,.floating-ai,.gnk-global-float-home,.gnk-global-float-ai,main>nav:first-child,.news-actions,#gnk-asg-global-layer-root,#gnk-asg-single-ai-button-anchor,#gnk-asg-float-home,#gnk-asg-float-ai,#gnk-asg-ai-panel,#gnk-asg-review-modal,.gnk-asg-fixed-menu-spacer{display:none!important}body.gnk-route-contact main .card>a[href="/"],body.gnk-route-contact main .card>a[href="/en/"]{display:none!important}body.gnk-route-contact main,body.gnk-route-contact main *,body.gnk-route-publications main,body.gnk-route-publications main *{min-width:0!important;max-width:100%!important;box-sizing:border-box!important;overflow-wrap:anywhere!important}body.gnk-route-contact pre,body.gnk-route-publications pre{overflow:auto!important}body.gnk-route-contact input[type="file"]{width:100%!important}</style>';
+  const menu='<script src="/assets/public-menu-v13.js?v=20260625-v14" defer></script>';
   if(!html.includes('/assets/gnk-asg-favicon.svg'))html=html.replace('</head>',`${favicon}\n</head>`);
   if(!html.includes('/assets/public-ux-v11.css'))html=html.replace('</head>',`${ux}</head>`);
   html=html.replace('</head>',`${visual}${reset}</head>`);
@@ -37,6 +42,6 @@ export async function transformHtml(response,fn){
   headers.delete('content-length');
   headers.delete('content-encoding');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-  headers.set('x-gnk-asg-public-visual','GNK_ASG_PUBLIC_VISUAL_V13_20260625');
+  headers.set('x-gnk-asg-public-visual','GNK_ASG_PUBLIC_VISUAL_V14_20260625');
   return new Response(fn(await response.text()),{status:response.status,statusText:response.statusText,headers});
 }
