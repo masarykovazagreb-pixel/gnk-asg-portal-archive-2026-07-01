@@ -1,4 +1,4 @@
 deployment=GNK_ASG_PUBLIC_VISUAL_V14_20260625
 approved=true
-merge_commit=1a04c9074925fbb535de5a2efe790d8eaae6a175
-trigger_revision=10
+merge_commit=c2990991fc00bfddfe27a2a31f5ee29b0a3ed698
+trigger_revision=11
