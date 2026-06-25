@@ -1,0 +1,12 @@
+:root{--gnk-bg:#030814;--gnk-panel:#08182c;--gnk-panel-2:#0d2340;--gnk-gold:#d4af37;--gnk-gold-soft:#ffe08a;--gnk-text:#f7f9fc;--gnk-muted:#b7c3d4;--gnk-border:rgba(212,175,55,.32)}
+*{box-sizing:border-box}
+body.gnk-content-page{background:radial-gradient(circle at 85% 0,rgba(25,72,126,.35),transparent 32%),linear-gradient(160deg,#02060d,#07162a 55%,#030814)!important;color:var(--gnk-text)!important;font-family:Inter,Arial,Helvetica,sans-serif!important;min-height:100vh}
+body.gnk-content-page main{width:min(1180px,calc(100% - 30px))!important;margin-left:auto!important;margin-right:auto!important;padding-top:42px!important;padding-bottom:64px!important}
+body.gnk-content-page article,body.gnk-content-page .card,body.gnk-content-page .panel{border-color:var(--gnk-border)!important;box-shadow:0 20px 58px rgba(0,0,0,.24)}
+body.gnk-content-page h1,body.gnk-content-page h2,body.gnk-content-page h3{color:#fff}
+body.gnk-content-page p,body.gnk-content-page li{color:var(--gnk-muted)}
+body.gnk-content-page a{color:var(--gnk-gold-soft)}
+.gnk-content-footer{display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap;padding:24px;border-top:1px solid var(--gnk-border);background:rgba(2,6,13,.82);color:var(--gnk-muted);font-size:13px;text-align:center}
+.gnk-content-footer strong{color:var(--gnk-gold-soft);letter-spacing:.08em}.gnk-content-footer a{color:var(--gnk-gold-soft);font-weight:800;text-decoration:none}
+.gnk-status-main{max-width:980px!important}.gnk-status-main .eyebrow{color:var(--gnk-gold);font-size:12px;font-weight:900;letter-spacing:.15em;text-transform:uppercase}.gnk-status-main h1{font:800 clamp(2.3rem,6vw,4.8rem)/1.02 Georgia,serif;margin:.15em 0}.gnk-status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px}.gnk-status-grid>div{display:flex;justify-content:space-between;gap:18px;padding:17px;border:1px solid var(--gnk-border);border-radius:15px;background:linear-gradient(145deg,rgba(13,35,64,.95),rgba(5,16,31,.95))}.gnk-status-grid span{color:var(--gnk-muted)}.gnk-status-grid strong{color:var(--gnk-gold-soft);text-align:right;word-break:break-word}
+@media(max-width:980px){.gnk-status-grid{grid-template-columns:1fr}}@media(max-width:560px){body.gnk-content-page main{width:min(100% - 22px,1180px)!important;padding-top:28px!important}.gnk-content-footer{align-items:flex-start;flex-direction:column;text-align:left}}
