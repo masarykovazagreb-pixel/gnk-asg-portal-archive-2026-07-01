@@ -9,7 +9,7 @@ function removeLegacyPublicShell(html){
 
 export function patchPublicHtml(html,path){
   html=removeLegacyPublicShell(html);
-  const legacyCss='<link rel="stylesheet" href="/assets/public-ux-v11.css?v=20260625-v11">';
+  const legacyCss='<link rel="preload" as="style" href="/assets/public-ux-v11.css?v=20260625-v11">';
   const visualCss='<link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260625-v13">';
   const menu='<script src="/assets/public-menu-v13.js?v=20260625-v13" defer></script>';
   if(!html.includes('/assets/public-ux-v11.css'))html=html.replace('</head>',`${legacyCss}</head>`);
