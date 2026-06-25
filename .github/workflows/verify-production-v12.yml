@@ -1,0 +1,146 @@
+name: Verify Production Portal V12
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/verify-production-v12.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: verify-production-portal-v12
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Probe production without exposing private data
+        shell: bash
+        run: |
+          set -u
+          mkdir -p reports
+          base="https://gnk-asg.hr"
+
+          for attempt in $(seq 1 12); do
+            stamp=$(date +%s)
+            version_code=$(curl -sSL -o version.json -D version.headers -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
+            if [ "$version_code" = "200" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V12_20260625' version.json; then
+              break
+            fi
+            sleep 10
+          done
+
+          stamp=$(date +%s)
+          root_code=$(curl -sSL -o root.html -D root.headers -w '%{http_code}' "$base/?cb=$stamp" || true)
+          en_code=$(curl -sSL -o en.html -D en.headers -w '%{http_code}' "$base/en/?cb=$stamp" || true)
+          admin_code=$(curl -sSL -o admin.html -D admin.headers -w '%{http_code}' "$base/operator-dashboard/?cb=$stamp" || true)
+          config_code=$(curl -sSL -o media.json -D media.headers -w '%{http_code}' "$base/data/index-media-config.json?cb=$stamp" || true)
+          automation_code=$(curl -sSL -o automation.json -D automation.headers -w '%{http_code}' "$base/data/news-automation-status.json?cb=$stamp" || true)
+          status_code=$(curl -sSL -o status.html -D status.headers -w '%{http_code}' "$base/status-automatizacije/?cb=$stamp" || true)
+
+          export VERSION_CODE="$version_code" ROOT_CODE="$root_code" EN_CODE="$en_code" ADMIN_CODE="$admin_code" CONFIG_CODE="$config_code" AUTOMATION_CODE="$automation_code" STATUS_CODE="$status_code"
+
+          node - <<'JS'
+          const fs = require('fs');
+          const read = p => { try { return fs.readFileSync(p, 'utf8'); } catch { return ''; } };
+          const parse = p => { try { return JSON.parse(read(p)); } catch { return null; } };
+          const hasHeader = (p, value) => read(p).toLowerCase().includes(value.toLowerCase());
+          const version = parse('version.json');
+          const media = parse('media.json');
+          const automation = parse('automation.json');
+          const root = read('root.html');
+          const en = read('en.html');
+          const admin = read('admin.html');
+
+          const checks = {
+            versionEndpoint: process.env.VERSION_CODE === '200' && version?.version === 'GNK_ASG_PORTAL_FINAL_V12_20260625',
+            finalEntrypoint: version?.deployedEntryPoint === 'src/index-portal-final-v12.js',
+            root200: process.env.ROOT_CODE === '200',
+            en200: process.env.EN_CODE === '200',
+            status200: process.env.STATUS_CODE === '200',
+            rootPublicUx: root.includes('public-ux-v11.css'),
+            rootClockAsset: root.includes('index-clock-v2.js'),
+            enPublicUx: en.includes('public-ux-v11.css'),
+            languageControlAsset: root.includes('public-menu-final-v9.js'),
+            adminAvailable: process.env.ADMIN_CODE !== '404' && Number(process.env.ADMIN_CODE || 0) > 0,
+            adminV12Header: hasHeader('admin.headers', 'x-gnk-asg-portal-final: GNK_ASG_PORTAL_FINAL_V12_20260625'),
+            noEmbeddedOperatorToken: !admin.includes('window.GNK_ASG_FORCE_OPERATOR_TOKEN = "'),
+            configEndpoint: process.env.CONFIG_CODE === '200' && !!media,
+            clockDisabledByDefault: media?.clock?.enabled === false,
+            countdownDisabledByDefault: media?.countdown?.enabled === false,
+            mediaDisabledByDefault: media?.media?.enabled === false,
+            mediaNoAutoplay: media?.media?.autoplay === false,
+            mediaNoPreload: media?.media?.preload === 'none',
+            automationEndpoint: process.env.AUTOMATION_CODE === '200' && !!automation,
+            sourceCount: Number(automation?.configuredNewsSources || 0) >= 24,
+            minimumLinks: Number(automation?.minimumNewsLinks || 0) >= 20,
+            newsSchedule: Array.isArray(automation?.newsSchedule) && automation.newsSchedule.includes('09:00') && automation.newsSchedule.includes('16:00'),
+            autoEditorSchedule: String(automation?.autoEditorSchedule || '').includes('2 hours')
+          };
+
+          const essential = [
+            'versionEndpoint','finalEntrypoint','root200','en200','status200','rootPublicUx','rootClockAsset','enPublicUx',
+            'languageControlAsset','adminAvailable','adminV12Header','noEmbeddedOperatorToken','configEndpoint',
+            'automationEndpoint','sourceCount','minimumLinks','newsSchedule','autoEditorSchedule'
+          ];
+          const ok = essential.every(key => checks[key] === true);
+          const report = {
+            checkedAt: new Date().toISOString(),
+            production: 'https://gnk-asg.hr',
+            version: version?.version || null,
+            ok,
+            http: {
+              version: Number(process.env.VERSION_CODE || 0),
+              root: Number(process.env.ROOT_CODE || 0),
+              en: Number(process.env.EN_CODE || 0),
+              admin: Number(process.env.ADMIN_CODE || 0),
+              config: Number(process.env.CONFIG_CODE || 0),
+              automation: Number(process.env.AUTOMATION_CODE || 0),
+              status: Number(process.env.STATUS_CODE || 0)
+            },
+            checks,
+            publicConfig: media ? {
+              clockEnabled: media.clock?.enabled ?? null,
+              countdownEnabled: media.countdown?.enabled ?? null,
+              mediaEnabled: media.media?.enabled ?? null,
+              autoplay: media.media?.autoplay ?? null,
+              preload: media.media?.preload ?? null
+            } : null,
+            automation: automation ? {
+              configuredNewsSources: automation.configuredNewsSources ?? null,
+              minimumNewsLinks: automation.minimumNewsLinks ?? null,
+              newsSchedule: automation.newsSchedule ?? null,
+              autoEditorSchedule: automation.autoEditorSchedule ?? null,
+              timeZone: automation.timeZone ?? null
+            } : null
+          };
+          fs.writeFileSync('reports/production-v12-latest.json', JSON.stringify(report, null, 2) + '\n');
+          console.log(JSON.stringify(report, null, 2));
+          JS
+
+      - name: Commit verification report
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "GNK ASG Portal Verifier"
+          git config user.email "actions@users.noreply.github.com"
+          git add reports/production-v12-latest.json
+          if git diff --cached --quiet; then
+            echo "Report unchanged"
+          else
+            git commit -m "Record V12 production verification [skip ci]"
+            git push origin HEAD:main
+          fi
+
+      - name: Enforce verification result
+        shell: bash
+        run: node -e "const r=require('./reports/production-v12-latest.json'); if(!r.ok){console.error(r.checks);process.exit(1)}; console.log('GNK_ASG_PRODUCTION_V12_VERIFIED=true')"
