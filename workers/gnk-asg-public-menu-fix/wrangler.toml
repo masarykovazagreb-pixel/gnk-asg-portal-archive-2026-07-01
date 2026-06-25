@@ -9,6 +9,9 @@ routes = [
   { pattern = "www.gnk-asg.hr/assets/public-menu-final-v9.js*", zone_name = "gnk-asg.hr" }
 ]
 
+[build]
+command = "python ../../scripts/build_public_menu_quality.py"
+
 [assets]
 directory = "../../apps/portal"
 binding = "ASSETS"
