@@ -6,33 +6,8 @@ preview_urls = true
 
 routes = [
   { pattern = "gnk-asg.hr/assets/public-menu-final-v9.js*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/assets/public-menu-final-v9.js*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/objave*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/publications*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/vijesti*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/news*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/trzista*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/markets*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/assistant*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/en/assistant*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/status-automatizacije*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/api/market*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/data/news.json*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/data/auto-editor.json*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/data/content-quality-status.json*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/data/news-automation-status.json*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/sitemap-objave.xml*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/image-sitemap-objave.xml*", zone_name = "gnk-asg.hr" }
+  { pattern = "www.gnk-asg.hr/assets/public-menu-final-v9.js*", zone_name = "gnk-asg.hr" }
 ]
-
-[[kv_namespaces]]
-binding = "GNK_ASG_CONFIG_KV"
-id = "d6f5dac9fa034d8d813db0de44eb7b1b"
-
-[[kv_namespaces]]
-binding = "GNK_ASG_KV"
-id = "a3e9e78c7d554d7fa10996da9a89e7bc"
 
 [build]
 command = "python ../../scripts/build_public_menu_quality.py"
