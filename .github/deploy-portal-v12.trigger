@@ -1,4 +1,4 @@
 deployment=GNK_ASG_PORTAL_FINAL_V12_20260625
 approved=true
 merge_commit=2ec19eaa67b437228feaa9e0b2b9af8508a9d7eb
-trigger_revision=2
+trigger_revision=3
