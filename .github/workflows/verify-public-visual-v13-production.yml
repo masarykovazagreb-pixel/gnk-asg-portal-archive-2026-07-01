@@ -1,0 +1,69 @@
+name: Verify Public Visual V13 Production
+
+on:
+  workflow_run:
+    workflows: ["Deploy Portal Final V12"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-public-visual-v13-production
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate production marker
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 18); do
+            code=$(curl -sSL -D headers.txt -o version.json -w '%{http_code}' "https://gnk-asg.hr/data/portal-version.json?cb=$(date +%s)" || true)
+            if [ "$code" = "200" ] && grep -q 'GNK_ASG_PUBLIC_VISUAL_V13_20260625' version.json; then exit 0; fi
+            sleep 10
+          done
+          cat version.json || true
+          exit 1
+      - name: Install browser
+        working-directory: apps/portal
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Verify all public desktop and mobile views
+        working-directory: apps/portal
+        env:
+          VISUAL_BASE: https://gnk-asg.hr
+        run: node tests/public-visual-v13-final.mjs
+      - name: Build verification report
+        shell: bash
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const audit=JSON.parse(fs.readFileSync('apps/portal/visual-v13-test-output/audit.json','utf8'));
+          const report={checkedAt:new Date().toISOString(),ok:audit.length===40&&audit.every(item=>item.ok),routes:20,views:audit.length,desktop:audit.filter(item=>item.view==='desktop').length,mobile:audit.filter(item=>item.view==='mobile').length,identicalMenus:audit.every(item=>item.checks?.exactMenu),legacyVisible:audit.some(item=>Number(item.visibleLegacy||0)>0),overflow:audit.some(item=>item.horizontalOverflow)};
+          fs.writeFileSync('production-visual-v13-report.json',JSON.stringify(report,null,2));
+          if(!report.ok||!report.identicalMenus||report.legacyVisible||report.overflow)process.exit(1);
+          console.log(JSON.stringify(report));
+          JS
+      - name: Upload production evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-visual-v13-production-evidence
+          path: |
+            apps/portal/visual-v13-test-output
+            version.json
+            production-visual-v13-report.json
+          retention-days: 14
