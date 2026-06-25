@@ -4,16 +4,18 @@ function removeLegacyPublicShell(html){
   return html
     .replace(/<script[^>]+src=["'][^"']*\/assets\/public-menu-final-v9\.js[^"']*["'][^>]*><\/script>/gi,'')
     .replace(/<script[^>]+src=["'][^"']*\/assets\/public-menu-v13\.js[^"']*["'][^>]*><\/script>/gi,'')
-    .replace(/<link[^>]+href=["'][^"']*\/assets\/public-visual-v13\.css[^"']*["'][^>]*>/gi,'');
+    .replace(/<link[^>]+href=["'][^"']*\/assets\/public-visual-v13\.css[^"']*["'][^>]*>/gi,'')
+    .replace(/<style[^>]+id=["']gnk-public-v13-reset["'][^>]*>[\s\S]*?<\/style>/gi,'');
 }
 
 export function patchPublicHtml(html,path){
   html=removeLegacyPublicShell(html);
   const legacyCss='<link rel="preload" as="style" href="/assets/public-ux-v11.css?v=20260625-v11">';
   const visualCss='<link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260625-v13">';
+  const reset='<style id="gnk-public-v13-reset">body.gnk-public-v13{padding-top:0!important}</style>';
   const menu='<script src="/assets/public-menu-v13.js?v=20260625-v13" defer></script>';
   if(!html.includes('/assets/public-ux-v11.css'))html=html.replace('</head>',`${legacyCss}</head>`);
-  html=html.replace('</head>',`${visualCss}</head>`);
+  html=html.replace('</head>',`${visualCss}${reset}</head>`);
   if(['/','/en','/en/'].includes(path)&&!html.includes('/assets/index-clock-v2.js'))html=html.replace('</body>','<script src="/assets/index-clock-v2.js?v=20260625-v2" defer></script></body>');
   return html.replace('</body>',`${menu}</body>`);
 }
