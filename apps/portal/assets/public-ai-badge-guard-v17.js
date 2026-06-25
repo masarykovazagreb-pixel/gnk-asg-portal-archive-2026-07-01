@@ -1,6 +1,7 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_AI_BADGE_GUARD_V23__) return;
+  if (window.__GNK_ASG_AI_BADGE_GUARD_V24__) return;
+  window.__GNK_ASG_AI_BADGE_GUARD_V24__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V23__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V22__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V21__ = true;
@@ -16,7 +17,7 @@
   const english = path === '/en' || path.startsWith('/en/') || path.startsWith('/markets') || path.startsWith('/news') || path.startsWith('/publications') || path.startsWith('/automation-status') || ((path.startsWith('/visual-index') || path.startsWith('/app')) && params.get('lang') === 'en');
   const indexPage = path === '/' || path === '/en';
   const visualIndexPage = path === '/visual-index';
-  const VERSION = '20260625-v23';
+  const VERSION = '20260625-v24';
 
   function ensureStyle(href, marker) {
     if (document.querySelector(`link[data-${marker}]`) || [...document.styleSheets].some(sheet => String(sheet.href || '').includes(href.split('?')[0]))) return;
@@ -61,7 +62,7 @@
     await Promise.all([
       ensureScript(`/assets/index-group-network-v2.js?v=${VERSION}`, 'gnkNetworkV2'),
       ensureScript(`/assets/index-news-rotation-v1.js?v=${VERSION}`, 'gnkNewsRotation'),
-      ensureScript(`/assets/index-live-market-chart-v3.js?v=${VERSION}`, 'gnkMarketV3'),
+      ensureScript(`/assets/index-live-market-chart-v3.js?v=${VERSION}`, 'gnkMarketV4'),
       ensureScript(`/assets/index-group-brand-rotator-v1.js?v=${VERSION}`, 'gnkBrandRotator')
     ]);
   }
