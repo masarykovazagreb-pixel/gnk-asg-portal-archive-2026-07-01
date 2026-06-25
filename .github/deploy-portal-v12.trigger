@@ -1,2 +1,2 @@
-deployment=GNK_ASG_PUBLIC_VISUAL_V15_20260625
-trigger_revision=12
+deployment=GNK_ASG_ADMIN_UNIFIED_V7_20260625
+trigger_revision=13
