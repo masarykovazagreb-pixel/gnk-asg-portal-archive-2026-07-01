@@ -1,7 +1,8 @@
 import core from './index-portal-final-v12.js';
 import {getLiveMarket,refreshLiveMarket,VERSION as MARKET_VERSION} from './market-live-v1.js';
+import {verifiedGallery,rotateLatestArticleImage,VERSION as GALLERY_VERSION,RECENT_WINDOW as GALLERY_RECENT_WINDOW} from './gallery-rotation-v1.js';
 
-const VERSION='GNK_ASG_PORTAL_FINAL_V13_NETWORK_20260625';
+const VERSION='GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625';
 const NEWS_ROTATION='GNK_ASG_INDEX_NEWS_ROTATION_V1';
 const NEWS_SCHEDULE=['09:00','15:00','21:00'];
 const FAVICON_VERSION='GNK_ASG_GOOGLE_FAVICON_V1';
@@ -17,7 +18,8 @@ const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{
     'x-gnk-asg-news-rotation':NEWS_ROTATION,
     'x-gnk-asg-favicon':FAVICON_VERSION,
     'x-gnk-asg-market-live':MARKET_VERSION,
-    'x-gnk-asg-group-network':GROUP_NETWORK
+    'x-gnk-asg-group-network':GROUP_NETWORK,
+    'x-gnk-asg-gallery':GALLERY_VERSION
   }
 });
 
@@ -38,6 +40,7 @@ function withHeaders(response){
   headers.set('x-gnk-asg-favicon',FAVICON_VERSION);
   headers.set('x-gnk-asg-market-live',MARKET_VERSION);
   headers.set('x-gnk-asg-group-network',GROUP_NETWORK);
+  headers.set('x-gnk-asg-gallery',GALLERY_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -74,6 +77,7 @@ async function injectIndexModules(response){
   headers.set('x-gnk-asg-favicon',FAVICON_VERSION);
   headers.set('x-gnk-asg-market-live',MARKET_VERSION);
   headers.set('x-gnk-asg-group-network',GROUP_NETWORK);
+  headers.set('x-gnk-asg-gallery',GALLERY_VERSION);
   let body=await response.text();
   if(!body.includes('/assets/index-group-network-v2.css'))body=body.replace('</head>','<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260625-v2"></head>');
   if(!body.includes('/assets/index-news-rotation-v1.js'))body=body.replace('</body>','<script src="/assets/index-news-rotation-v1.js?v=20260625-v1" defer></script></body>');
@@ -97,7 +101,18 @@ async function fetchHandler(request,env,ctx){
     return json(market,market.ok?200:503);
   }
 
+  if(request.method==='GET'&&path==='/data/visual_gallery.json'){
+    const gallery=await verifiedGallery(env);
+    return json({album:gallery.album,items:gallery.items,audit:{version:gallery.audit.version,checkedAt:gallery.audit.checkedAt,sourceCount:gallery.audit.sourceCount,verifiedCount:gallery.audit.verifiedCount,removedCount:gallery.audit.removedCount}});
+  }
+
+  if(request.method==='GET'&&path==='/data/visual_gallery-audit.json'){
+    const gallery=await verifiedGallery(env);
+    return json(gallery.audit);
+  }
+
   if(request.method==='GET'&&path==='/data/news-automation-status.json'){
+    const gallery=await verifiedGallery(env);
     return json({
       ok:true,
       version:VERSION,
@@ -113,6 +128,11 @@ async function fetchHandler(request,env,ctx){
       marketVersion:MARKET_VERSION,
       marketChart:MARKET_CHART,
       groupNetwork:GROUP_NETWORK,
+      galleryVersion:GALLERY_VERSION,
+      galleryRecentWindow:GALLERY_RECENT_WINDOW,
+      galleryVerifiedCount:gallery.audit.verifiedCount,
+      galleryRemovedCount:gallery.audit.removedCount,
+      lastImageUsage:(await readJson(env,'auto-editor:image-usage',[]))[0]||null,
       lastMarketLive:await readJson(env,'data:market:live:v1',null),
       favicon:{version:FAVICON_VERSION,url:'https://gnk-asg.hr/favicon.svg',icoRedirect:'https://gnk-asg.hr/favicon.ico'},
       lastNewsRefresh:await readJson(env,'automation:news-refresh:last',null),
@@ -122,6 +142,17 @@ async function fetchHandler(request,env,ctx){
   }
 
   const response=await core.fetch(request,env,ctx);
+
+  if(request.method==='POST'&&path==='/operator/auto-editor/run'&&response.ok){
+    const assignment=await rotateLatestArticleImage(env,{force:true});
+    try{
+      const payload=await response.clone().json();
+      return json({...payload,imageAssignment:assignment},response.status);
+    }catch{
+      return withHeaders(response);
+    }
+  }
+
   const type=String(response.headers.get('content-type')||'').toLowerCase();
   if(request.method==='GET'&&type.includes('text/html')&&['/','/en'].includes(path))return injectIndexModules(response);
   return withHeaders(response);
@@ -131,9 +162,13 @@ export default{
   fetch:fetchHandler,
   async scheduled(event,env,ctx){
     const marketTask=refreshLiveMarket(env).catch(error=>({ok:false,error:String(error?.message||error)}));
-    if(ctx?.waitUntil)ctx.waitUntil(marketTask);
+    const galleryTask=rotateLatestArticleImage(env).catch(error=>({ok:false,error:String(error?.message||error)}));
+    if(ctx?.waitUntil){
+      ctx.waitUntil(marketTask);
+      ctx.waitUntil(galleryTask);
+    }
     if(typeof core.scheduled==='function')return core.scheduled(event,env,ctx);
-    return marketTask;
+    return Promise.all([marketTask,galleryTask]);
   },
   async email(message,env,ctx){
     if(typeof core.email==='function')return core.email(message,env,ctx);
