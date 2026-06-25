@@ -1,5 +1,5 @@
 deployment=GNK_ASG_PUBLIC_VISUAL_V13_20260625
 approved=true
-trigger_revision=6
-requested_for=IQ200_INDEX_PRODUCTION
-requested_at=2026-06-25T22:17:00Z
+trigger_revision=7
+requested_for=PORTAL_THEN_UNIFIED_AUTH_V14
+requested_at=2026-06-26T00:35:00+02:00
