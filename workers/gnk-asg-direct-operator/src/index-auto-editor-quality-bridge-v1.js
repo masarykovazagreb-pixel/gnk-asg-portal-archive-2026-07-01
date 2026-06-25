@@ -1,44 +1,24 @@
 import app from './index-auto-editor-localization-v1.js';
+import {
+  cleanPublications,
+  contentQualityStatus,
+  publicationSitemap,
+  repairHtmlResponse,
+  stableJsonPaths,
+  stableJsonResponse
+} from './publication-quality-core-v6.js';
 
-const VERSION = 'GNK_ASG_AUTO_EDITOR_QUALITY_BRIDGE_V2';
-const AUTHOR = 'Nermin Sefi\u0107';
+const VERSION = 'GNK_ASG_AUTO_EDITOR_QUALITY_BRIDGE_V3_20260625';
+const AUTHOR = 'Nermin Sefić';
+const PUBLIC_HTML_PREFIXES = [
+  '/objave', '/publications', '/vijesti', '/news', '/trzista', '/markets',
+  '/assistant', '/en/assistant', '/downloads', '/en/downloads', '/visual-index',
+  '/contact', '/en/contact', '/legal', '/en/legal', '/status-automatizacije', '/automation-status'
+];
 
 const text = value => String(value || '').trim();
 const store = env => env.GNK_ASG_KV || env.GNK_ASG_CONFIG_KV || null;
 const nowIso = () => new Date().toISOString();
-const CYRILLIC_LOOKALIKES = {
-  '\u0410': 'A',
-  '\u0412': 'B',
-  '\u0415': 'E',
-  '\u041A': 'K',
-  '\u041C': 'M',
-  '\u041D': 'H',
-  '\u041E': 'O',
-  '\u0420': 'P',
-  '\u0421': 'C',
-  '\u0422': 'T',
-  '\u0425': 'X',
-  '\u0430': 'a',
-  '\u0432': 'b',
-  '\u0435': 'e',
-  '\u043A': 'k',
-  '\u043C': 'm',
-  '\u043D': 'h',
-  '\u043E': 'o',
-  '\u0440': 'p',
-  '\u0441': 'c',
-  '\u0442': 't',
-  '\u0445': 'x',
-  '\u0456': 'i',
-  '\u0458': 'j'
-};
-
-function latinCroatian(value) {
-  return text(value).replace(
-    /[\u0400-\u04FF]/g,
-    character => CYRILLIC_LOOKALIKES[character] || ''
-  );
-}
 
 const json = (data, status = 200) => new Response(JSON.stringify(data, null, 2), {
   status,
@@ -74,25 +54,22 @@ async function readList(env, key) {
 }
 
 async function writeList(env, key, value, max = 500) {
-  return writeJson(env, key, value.slice(0, max));
+  return writeJson(env, key, (Array.isArray(value) ? value : []).slice(0, max));
 }
 
 function normalizeSources(value) {
   const sourceList = Array.isArray(value) ? value : [];
   const seen = new Set();
-
   return sourceList
     .map(source => {
       if (typeof source === 'string') {
         const url = text(source);
         return /^https?:\/\//i.test(url) ? { url } : null;
       }
-
       if (source && typeof source === 'object') {
         const url = text(source.url || source.sourceUrl || source.href);
         return /^https?:\/\//i.test(url) ? { ...source, url } : null;
       }
-
       return null;
     })
     .filter(Boolean)
@@ -106,20 +83,31 @@ function normalizeSources(value) {
 
 function repairArticle(article) {
   if (!article || typeof article !== 'object') return null;
+  const slug = text(article.slug);
+  const canonical = text(article.canonical) || (slug ? `https://gnk-asg.hr/objave/${slug}/` : '');
+  const titleHr = text(article.titleHr || article.title);
+  const titleEn = text(article.titleEn);
+  const summaryHr = text(article.summaryHr || article.summary);
+  const summaryEn = text(article.summaryEn);
+  const currentSeo = article.seo && typeof article.seo === 'object' ? article.seo : {};
 
-  const sources = normalizeSources(article.sources);
-  const repaired = {
+  return {
     ...article,
     author: AUTHOR,
-    sources,
+    canonical,
+    status: 'published',
+    approvedForPublic: true,
+    sources: normalizeSources(article.sources),
     updatedAt: nowIso(),
     seo: {
-      ...(article.seo || {}),
-      author: AUTHOR
+      ...currentSeo,
+      author: AUTHOR,
+      titleHr: text(currentSeo.titleHr || currentSeo.title || titleHr),
+      titleEn: text(currentSeo.titleEn || titleEn),
+      descriptionHr: text(currentSeo.descriptionHr || currentSeo.description || summaryHr),
+      descriptionEn: text(currentSeo.descriptionEn || summaryEn)
     }
   };
-
-  return repaired;
 }
 
 async function persistArticle(env, article) {
@@ -127,7 +115,7 @@ async function persistArticle(env, article) {
   if (!repaired) throw new Error('article_missing');
   if (!text(repaired.id)) throw new Error('article_id_missing');
   if (!text(repaired.slug)) throw new Error('article_slug_missing');
-  if (repaired.sources.length < 1) throw new Error('valid_sources_missing');
+  if (!repaired.sources.length) throw new Error('valid_sources_missing');
 
   const [approved, articles, news, history, last] = await Promise.all([
     readList(env, 'publish:approved'),
@@ -140,8 +128,6 @@ async function persistArticle(env, article) {
   const sameArticle = item =>
     text(item?.id) === text(repaired.id) ||
     text(item?.slug) === text(repaired.slug);
-
-  const canonical = text(repaired.canonical) || `https://gnk-asg.hr/objave/${repaired.slug}/`;
   const publishedAt = repaired.publishedAt || repaired.published_at || nowIso();
 
   const teaser = {
@@ -149,8 +135,8 @@ async function persistArticle(env, article) {
     kind: 'news',
     title: repaired.titleHr || repaired.title,
     summary: repaired.summaryHr || repaired.summary,
-    url: canonical,
-    sourceUrl: canonical,
+    url: repaired.canonical,
+    sourceUrl: repaired.canonical,
     source: 'GNK ASG Intelligence Desk',
     category: repaired.category || 'business',
     group: repaired.category || 'business',
@@ -176,10 +162,7 @@ async function persistArticle(env, article) {
     writeList(env, 'data:articles:items', [repaired, ...articles.filter(item => !sameArticle(item))]),
     writeList(env, 'data:news:items', [
       teaser,
-      ...news.filter(item =>
-        text(item?.id) !== teaser.id &&
-        text(item?.url) !== canonical
-      )
+      ...news.filter(item => text(item?.id) !== teaser.id && text(item?.url) !== repaired.canonical)
     ]),
     writeList(env, 'auto-editor:history', [
       historyEntry,
@@ -205,7 +188,6 @@ async function intercept(request, env, ctx) {
   const response = await app.fetch(request, env, ctx);
   const raw = await response.text();
   let data;
-
   try {
     data = raw ? JSON.parse(raw) : {};
   } catch {
@@ -224,11 +206,13 @@ async function intercept(request, env, ctx) {
     if (data.article) data.article = repaired;
     if (data.editor?.article) data.editor.article = repaired;
     if (data.localization?.article) data.localization.article = repaired;
+    const quality = await cleanPublications(env, true);
     data.qualityBridge = {
       ok: true,
       version: VERSION,
       sourceCount: repaired.sources.length,
-      author: repaired.author
+      author: repaired.author,
+      quality
     };
     data.ok = true;
     return json(data, response.ok ? response.status : 200);
@@ -242,8 +226,25 @@ async function intercept(request, env, ctx) {
   }
 }
 
+function shouldClean(path, method) {
+  if (method !== 'GET' && method !== 'HEAD') return false;
+  return path === '/objave' || path.startsWith('/objave/') ||
+    path === '/publications' || path.startsWith('/publications/') ||
+    path === '/data/auto-editor.json' || path === '/data/news.json';
+}
+
+function isPublicHtml(path) {
+  return PUBLIC_HTML_PREFIXES.some(prefix => path === prefix || path.startsWith(`${prefix}/`));
+}
+
 async function handle(request, env, ctx) {
   const path = new URL(request.url).pathname.replace(/\/+$/, '') || '/';
+
+  if (path === '/data/content-quality-status.json') {
+    return json(await contentQualityStatus(env));
+  }
+  if (path === '/sitemap-objave.xml') return publicationSitemap(env, false);
+  if (path === '/image-sitemap-objave.xml') return publicationSitemap(env, true);
 
   if (
     request.method === 'POST' &&
@@ -252,7 +253,14 @@ async function handle(request, env, ctx) {
     return intercept(request, env, ctx);
   }
 
-  return app.fetch(request, env, ctx);
+  if (shouldClean(path, request.method)) await cleanPublications(env, false);
+
+  const response = await app.fetch(request, env, ctx);
+  if (stableJsonPaths.has(path)) return stableJsonResponse(response, path);
+  if ((request.method === 'GET' || request.method === 'HEAD') && isPublicHtml(path) && path !== '/' && path !== '/en') {
+    return repairHtmlResponse(response);
+  }
+  return response;
 }
 
 export default {
@@ -266,16 +274,15 @@ export default {
 
       const last = await readJson(env, 'auto-editor:last', null);
       let repaired = null;
-
-      if (last?.ok && last?.article) {
-        repaired = await persistArticle(env, last.article);
-      }
+      if (last?.ok && last?.article) repaired = await persistArticle(env, last.article);
+      const quality = await cleanPublications(env, true);
 
       const result = {
-        ok: upstream?.ok !== false && (!last?.article || Boolean(repaired)),
+        ok: upstream?.ok !== false && (!last?.article || Boolean(repaired)) && quality.ok !== false,
         version: VERSION,
         cron: event?.cron || '',
         upstream,
+        quality,
         repairedArticleId: repaired?.id || null,
         sourceCount: repaired?.sources?.length || 0,
         finishedAt: nowIso()
@@ -289,7 +296,6 @@ export default {
       ctx.waitUntil(task);
       return;
     }
-
     return task;
   },
 
