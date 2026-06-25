@@ -1,20 +1,32 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_AI_BADGE_GUARD_V17__) return;
+  if (window.__GNK_ASG_AI_BADGE_GUARD_V18__) return;
+  window.__GNK_ASG_AI_BADGE_GUARD_V18__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V17__ = true;
 
-  const path = location.pathname.toLowerCase().replace(/\/+/g, '/');
+  const path = location.pathname.toLowerCase().replace(/\/+/, '/').replace(/\/+$/, '') || '/';
   const privatePage = ['/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/admin-center','/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/auto-editor','/operator','/api'].some(prefix => path === prefix || path.startsWith(prefix + '/'));
   if (privatePage) return;
 
   const params = new URLSearchParams(location.search);
   const english = path === '/en' || path.startsWith('/en/') || path.startsWith('/markets') || path.startsWith('/news') || path.startsWith('/publications') || path.startsWith('/automation-status') || ((path.startsWith('/visual-index') || path.startsWith('/app')) && params.get('lang') === 'en');
+  const indexPage = path === '/' || path === '/en';
+
+  function ensureMarketChart() {
+    if (!indexPage || document.querySelector('script[data-gnk-live-market-chart]')) return;
+    const script = document.createElement('script');
+    script.src = '/assets/index-live-market-chart-v1.js?v=20260625-v1';
+    script.defer = true;
+    script.dataset.gnkLiveMarketChart = '1';
+    document.head.appendChild(script);
+  }
 
   let running = false;
   function ensure() {
     if (running || !document.body) return;
     running = true;
     try {
+      ensureMarketChart();
       let badge = document.getElementById('gnk-ai-badge-v13');
       if (!badge) {
         badge = document.createElement('a');
