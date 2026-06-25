@@ -1,9 +1,11 @@
 import core from './index-portal-final-v12.js';
+import {getLiveMarket,refreshLiveMarket,VERSION as MARKET_VERSION} from './market-live-v1.js';
 
-const VERSION='GNK_ASG_PORTAL_FINAL_V13_FAVICON_20260625';
+const VERSION='GNK_ASG_PORTAL_FINAL_V13_MARKET_20260625';
 const NEWS_ROTATION='GNK_ASG_INDEX_NEWS_ROTATION_V1';
 const NEWS_SCHEDULE=['09:00','15:00','21:00'];
 const FAVICON_VERSION='GNK_ASG_GOOGLE_FAVICON_V1';
+const MARKET_CHART='GNK_ASG_LIVE_MARKET_CHART_V3';
 
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{
   status,
@@ -12,7 +14,8 @@ const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{
     'cache-control':'no-store, no-cache, must-revalidate, max-age=0',
     'x-gnk-asg-portal-final':VERSION,
     'x-gnk-asg-news-rotation':NEWS_ROTATION,
-    'x-gnk-asg-favicon':FAVICON_VERSION
+    'x-gnk-asg-favicon':FAVICON_VERSION,
+    'x-gnk-asg-market-live':MARKET_VERSION
   }
 });
 
@@ -23,9 +26,7 @@ async function readJson(env,key,fallback=null){
   try{
     const raw=await kv.get(key);
     return raw?JSON.parse(raw):fallback;
-  }catch{
-    return fallback;
-  }
+  }catch{return fallback}
 }
 
 function withHeaders(response){
@@ -33,6 +34,7 @@ function withHeaders(response){
   headers.set('x-gnk-asg-portal-final',VERSION);
   headers.set('x-gnk-asg-news-rotation',NEWS_ROTATION);
   headers.set('x-gnk-asg-favicon',FAVICON_VERSION);
+  headers.set('x-gnk-asg-market-live',MARKET_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -51,19 +53,14 @@ async function staticAsset(request,env,assetPath,contentType){
 
 async function faviconResponse(request,env,path){
   if(path==='/favicon.ico'){
-    return new Response(null,{status:301,headers:{
-      location:new URL('/favicon.svg',request.url).toString(),
-      'cache-control':'public, max-age=604800',
-      'x-robots-tag':'all',
-      'x-gnk-asg-favicon':FAVICON_VERSION
-    }});
+    return new Response(null,{status:301,headers:{location:new URL('/favicon.svg',request.url).toString(),'cache-control':'public, max-age=604800','x-robots-tag':'all','x-gnk-asg-favicon':FAVICON_VERSION}});
   }
   if(path==='/favicon.svg')return staticAsset(request,env,'/favicon.svg','image/svg+xml; charset=utf-8');
   if(path==='/site.webmanifest')return staticAsset(request,env,'/site.webmanifest','application/manifest+json; charset=utf-8');
   return null;
 }
 
-async function injectIndexRotation(response){
+async function injectIndexModules(response){
   const headers=new Headers(response.headers);
   headers.delete('content-length');
   headers.delete('content-encoding');
@@ -72,10 +69,10 @@ async function injectIndexRotation(response){
   headers.set('x-gnk-asg-portal-final',VERSION);
   headers.set('x-gnk-asg-news-rotation',NEWS_ROTATION);
   headers.set('x-gnk-asg-favicon',FAVICON_VERSION);
+  headers.set('x-gnk-asg-market-live',MARKET_VERSION);
   let body=await response.text();
-  if(!body.includes('/assets/index-news-rotation-v1.js')){
-    body=body.replace('</body>','<script src="/assets/index-news-rotation-v1.js?v=20260625-v1" defer></script></body>');
-  }
+  if(!body.includes('/assets/index-news-rotation-v1.js'))body=body.replace('</body>','<script src="/assets/index-news-rotation-v1.js?v=20260625-v1" defer></script></body>');
+  if(!body.includes('/assets/index-live-market-chart-v3.js'))body=body.replace('</body>','<script src="/assets/index-live-market-chart-v3.js?v=20260625-v3" defer></script></body>');
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -86,6 +83,11 @@ async function fetchHandler(request,env,ctx){
   if((request.method==='GET'||request.method==='HEAD')&&['/favicon.ico','/favicon.svg','/site.webmanifest'].includes(path)){
     const response=await faviconResponse(request,env,path);
     if(response)return response;
+  }
+
+  if(request.method==='GET'&&['/api/market','/api/market-live','/data/market-live.json'].includes(path)){
+    const market=await getLiveMarket(env);
+    return json(market,market.ok?200:503);
   }
 
   if(request.method==='GET'&&path==='/data/news-automation-status.json'){
@@ -99,6 +101,11 @@ async function fetchHandler(request,env,ctx){
       indexRotationSeconds:10,
       indexDataRefreshMinutes:15,
       autoEditorSchedule:'every 2 hours',
+      marketSchedule:'every 5 minutes',
+      marketEndpoint:'/api/market-live',
+      marketVersion:MARKET_VERSION,
+      marketChart:MARKET_CHART,
+      lastMarketLive:await readJson(env,'data:market:live:v1',null),
       favicon:{version:FAVICON_VERSION,url:'https://gnk-asg.hr/favicon.svg',icoRedirect:'https://gnk-asg.hr/favicon.ico'},
       lastNewsRefresh:await readJson(env,'automation:news-refresh:last',null),
       lastAutoEditor:await readJson(env,'auto-editor:last',null),
@@ -108,16 +115,17 @@ async function fetchHandler(request,env,ctx){
 
   const response=await core.fetch(request,env,ctx);
   const type=String(response.headers.get('content-type')||'').toLowerCase();
-  if(request.method==='GET'&&type.includes('text/html')&&['/','/en'].includes(path)){
-    return injectIndexRotation(response);
-  }
+  if(request.method==='GET'&&type.includes('text/html')&&['/','/en'].includes(path))return injectIndexModules(response);
   return withHeaders(response);
 }
 
 export default{
   fetch:fetchHandler,
   async scheduled(event,env,ctx){
+    const marketTask=refreshLiveMarket(env).catch(error=>({ok:false,error:String(error?.message||error)}));
+    if(ctx?.waitUntil)ctx.waitUntil(marketTask);
     if(typeof core.scheduled==='function')return core.scheduled(event,env,ctx);
+    return marketTask;
   },
   async email(message,env,ctx){
     if(typeof core.email==='function')return core.email(message,env,ctx);
