@@ -1,2 +1,2 @@
 deployment=GNK_ASG_FLOATING_HOME_V16
-trigger_revision=17
+trigger_revision=18
