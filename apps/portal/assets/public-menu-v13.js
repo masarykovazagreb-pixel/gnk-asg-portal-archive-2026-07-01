@@ -1,6 +1,7 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_PUBLIC_MENU_V13__) return;
+  if (window.__GNK_ASG_PUBLIC_MENU_V15__) return;
+  window.__GNK_ASG_PUBLIC_MENU_V15__ = true;
   window.__GNK_ASG_PUBLIC_MENU_V13__ = true;
 
   const pathname = location.pathname.replace(/\/+/g, '/');
@@ -81,19 +82,47 @@
   const renderLinks = items => items.map(([label,href,mode]) => `<a href="${href}"${active(href)?' aria-current="page"':''}${mode==='nofollow'?' rel="nofollow"':''}>${label}</a>`).join('');
   const brandMark = type => `<span class="gnk-v13-brand-mark gnk-v13-brand-mark-${type}" aria-hidden="true"><i></i><i></i><i></i></span>`;
 
+  const removeOldPatches = () => {
+    [
+      'gnk-asg-fixed-menu-patch-style','gnk-asg-fixed-menu-patch-script','gnk-public-v13-reset',
+      'gnk-asg-global-layer-root','gnk-asg-drawer','gnk-asg-overlay','gnk-asg-menu-toggle','gnk-asg-theme-toggle'
+    ].forEach(id => document.getElementById(id)?.remove());
+    document.querySelectorAll('.gnk-asg-fixed-menu-spacer').forEach(element => element.remove());
+  };
+
+  const installForceStyle = () => {
+    let style = document.getElementById('gnk-public-v15-force-layout');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'gnk-public-v15-force-layout';
+      document.head.appendChild(style);
+    }
+    style.textContent = `
+      #gnk-asg-premium-header.gnk-v13-header{display:block!important;position:sticky!important;top:6px!important;left:auto!important;right:auto!important;bottom:auto!important;transform:none!important;height:auto!important;min-height:0!important;max-height:none!important;margin:8px auto 14px!important;overflow:visible!important}
+      #gnk-asg-premium-header .gnk-v13-brand-row{display:grid!important;position:relative!important;inset:auto!important;transform:none!important;width:100%!important;margin:0!important}
+      #gnk-asg-premium-header #gnk-asg-premium-menu.gnk-v13-menu{display:flex!important;position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;inset:auto!important;transform:none!important;clear:both!important;float:none!important;width:100%!important;max-width:none!important;height:auto!important;min-height:31px!important;max-height:none!important;margin:6px auto 0!important;padding:6px 0 0!important}
+      body>.site-header,body>header.site-header,body>.header-inner,body>.main-nav,.site-header,.header-inner>.main-nav,.menu-toggle,.gnk-asg-fixed-menu-spacer{display:none!important}
+    `;
+  };
+
   const installHeader = () => {
     if (!document.body) return false;
+    removeOldPatches();
+    installForceStyle();
     document.body.classList.add('gnk-public-v13',routeClass);
     document.documentElement.classList.add('gnk-public-v13-root');
     document.documentElement.lang = english ? 'en' : 'hr';
-    let header = document.getElementById('gnk-asg-premium-header');
+
+    const headers = Array.from(document.querySelectorAll('#gnk-asg-premium-header'));
+    let header = headers.shift() || null;
+    headers.forEach(element => element.remove());
     if (!header) {
       header = document.createElement('header');
       header.id = 'gnk-asg-premium-header';
       document.body.prepend(header);
     }
     header.className = 'gnk-v13-header';
-    header.dataset.publicMenuVersion = '13';
+    header.dataset.publicMenuVersion = '15';
     header.dataset.language = english ? 'en' : 'hr';
     header.innerHTML = `
       <div class="gnk-v13-brand-row">
@@ -107,18 +136,40 @@
         <a id="gnk-public-language" class="gnk-v13-language" href="${pairedLanguageUrl()}" hreflang="${english?'hr':'en'}" aria-label="${english?'Prikaži hrvatsku verziju':'Open English version'}">${english?'HR':'EN'}</a>
       </div>
       <nav id="gnk-asg-premium-menu" class="gnk-v13-menu" aria-label="${english?'Main navigation':'Glavna navigacija'}">${renderLinks(english?enItems:hrItems)}</nav>`;
+
+    header.style.setProperty('display','block','important');
+    header.style.setProperty('position','sticky','important');
+    header.style.setProperty('left','auto','important');
+    header.style.setProperty('right','auto','important');
+    header.style.setProperty('transform','none','important');
+    header.style.setProperty('height','auto','important');
+    header.style.setProperty('max-height','none','important');
+
+    const menu = header.querySelector('#gnk-asg-premium-menu');
+    if (menu) {
+      ['top','left','right','bottom'].forEach(property => menu.style.setProperty(property,'auto','important'));
+      menu.style.setProperty('position','relative','important');
+      menu.style.setProperty('transform','none','important');
+      menu.style.setProperty('width','100%','important');
+      menu.style.setProperty('max-width','none','important');
+      menu.style.setProperty('height','auto','important');
+      menu.style.setProperty('max-height','none','important');
+      menu.style.setProperty('margin','6px auto 0','important');
+    }
     return true;
   };
 
   const suppressLegacyNavigation = () => {
     const selectors = [
-      'body > header:not(#gnk-asg-premium-header)','body > .site-header','.shell > .brand-head','.shell > .top-nav',
-      '.gnk-asg-full-menu-v2','.gnk-asg-rescue-menu','.gnk-asg-final-menu-wrap','.gnk-asg-inner-nav','.gnk-asg-floating-actions',
-      '.floating-home','.floating-ai','.gnk-global-float-home','.gnk-global-float-ai','main > nav:first-child','.news-actions',
-      '#gnk-asg-global-layer-root','#gnk-asg-drawer','#gnk-asg-overlay','#gnk-asg-menu-toggle','#gnk-asg-theme-toggle',
-      '#gnk-asg-float-home','#gnk-asg-float-ai','#gnk-asg-ai-panel','#gnk-asg-review-modal','#gnk-asg-single-ai-button-anchor'
+      'body > header:not(#gnk-asg-premium-header)','body > .site-header','.site-header','.shell > .brand-head','.shell > .top-nav',
+      '.header-inner > .main-nav','.menu-toggle','.gnk-asg-full-menu-v2','.gnk-asg-rescue-menu','.gnk-asg-final-menu-wrap',
+      '.gnk-asg-inner-nav','.gnk-asg-floating-actions','.floating-home','.floating-ai','.gnk-global-float-home','.gnk-global-float-ai',
+      'main > nav:first-child','.news-actions','#gnk-asg-global-layer-root','#gnk-asg-drawer','#gnk-asg-overlay',
+      '#gnk-asg-menu-toggle','#gnk-asg-theme-toggle','#gnk-asg-float-home','#gnk-asg-float-ai','#gnk-asg-ai-panel',
+      '#gnk-asg-review-modal','#gnk-asg-single-ai-button-anchor'
     ];
     document.querySelectorAll(selectors.join(',')).forEach(element => element.classList.add('gnk-v13-legacy-hidden'));
+    document.querySelectorAll('#gnk-asg-premium-menu').forEach((menu,index) => { if (index > 0) menu.remove(); });
   };
 
   const installAiBadge = () => {
@@ -144,7 +195,7 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
   window.addEventListener('load',run,{once:true});
-  [120,500,1400,3000].forEach(delay=>setTimeout(run,delay));
+  [80,250,650,1400,3000,6000].forEach(delay=>setTimeout(run,delay));
   let queued = false;
   new MutationObserver(() => {
     if (queued || running) return;
@@ -152,7 +203,8 @@
     requestAnimationFrame(() => {
       queued = false;
       const header = document.getElementById('gnk-asg-premium-header');
-      if (!header || header.dataset.publicMenuVersion !== '13') run(); else suppressLegacyNavigation();
+      if (!header || header.dataset.publicMenuVersion !== '15') run();
+      else { removeOldPatches(); installForceStyle(); suppressLegacyNavigation(); }
     });
   }).observe(document.documentElement,{childList:true,subtree:true});
 })();
