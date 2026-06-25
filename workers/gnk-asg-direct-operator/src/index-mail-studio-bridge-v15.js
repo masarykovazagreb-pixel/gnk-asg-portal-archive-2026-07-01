@@ -1,7 +1,8 @@
 import app from './index-unified-auth-v14.js';
 
 const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260626';
-const SCRIPT='<script defer src="/assets/mail-studio-auth-bridge-v15.js?v=20260626-1"></script>';
+const REVISION='2';
+const SCRIPT='<script defer src="/assets/mail-studio-auth-bridge-v15.js?v=20260626-2"></script>';
 
 const cleanPath=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const isMailStudio=path=>path==='/mail-studio'||path.startsWith('/mail-studio/')||path==='/mail-studio-pro'||path.startsWith('/mail-studio-pro/');
@@ -23,7 +24,7 @@ async function version(request,env,ctx){
   const response=await app.fetch(request,env,ctx);
   try{
     const payload=await response.clone().json();
-    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
+    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
       status:response.status,
       headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION}
     });
