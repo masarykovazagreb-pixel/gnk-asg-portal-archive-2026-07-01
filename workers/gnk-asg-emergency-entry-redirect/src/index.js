@@ -1,0 +1,62 @@
+const APP_HTML = `<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#020812">
+<meta name="robots" content="index,follow">
+<title>GNK ASG aplikacija</title>
+<meta name="description" content="Instalacija GNK ASG korporativnog portala kao aplikacije na mobilnom uređaju ili računalu.">
+<link rel="canonical" href="https://gnk-asg.hr/app/">
+<link rel="icon" type="image/svg+xml" href="/assets/gnk-asg-favicon.svg?v=20260625-v1">
+<link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260625-v13">
+<style>
+*{box-sizing:border-box}.app-shell{width:min(980px,calc(100% - 28px));margin:0 auto;padding:36px 0 80px}.app-card{position:relative;overflow:hidden;padding:clamp(30px,6vw,68px);border:1px solid rgba(215,170,60,.42);border-radius:28px;background:linear-gradient(145deg,rgba(10,34,61,.94),rgba(3,13,26,.97));box-shadow:0 30px 90px rgba(0,0,0,.42)}.app-card:before{content:"";position:absolute;width:420px;height:420px;right:-210px;top:-230px;border-radius:50%;background:radial-gradient(circle,rgba(55,164,255,.23),transparent 68%)}.eyebrow{position:relative;margin:0 0 14px;color:#ffe08a;font-size:12px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}.app-card h1{position:relative;margin:0;font-size:clamp(38px,7vw,72px);line-height:.96;letter-spacing:-.05em}.app-card p{position:relative;max-width:700px;color:#bdc9d9;font-size:17px;line-height:1.7}.app-actions{position:relative;display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.app-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border:1px solid #d7aa3c;border-radius:13px;background:linear-gradient(135deg,#b98220,#f1ca65);color:#06101d;text-decoration:none;font-size:12px;font-weight:950;text-transform:uppercase}.app-features{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:34px}.app-feature{padding:18px;border:1px solid rgba(215,170,60,.22);border-radius:16px;background:rgba(255,255,255,.025)}.app-feature strong{display:block;color:#ffe08a}.app-feature span{display:block;margin-top:7px;color:#aebccd;font-size:13px;line-height:1.5}@media(max-width:700px){.app-shell{padding-top:18px}.app-features{grid-template-columns:1fr}.app-actions{display:grid}.app-actions a{width:100%}}
+</style>
+<script defer src="/assets/public-menu-v13.js?v=20260625-v13"></script>
+</head>
+<body class="gnk-public-v13 gnk-route-app">
+<main class="app-shell">
+<section class="app-card">
+<p class="eyebrow">GNK ASG · PWA</p>
+<h1>Korporativni portal kao aplikacija</h1>
+<p>GNK ASG portal možete instalirati na mobilni uređaj ili računalo radi bržeg pristupa objavama, vijestima, tržištima, dokumentima i javnim alatima.</p>
+<div class="app-actions"><a href="/instalacija/">Otvori instalaciju</a></div>
+<div class="app-features"><div class="app-feature"><strong>Brzi pristup</strong><span>Portal se pokreće izravno s početnog zaslona.</span></div><div class="app-feature"><strong>Responzivno</strong><span>Prilagođeno mobilnom uređaju, tabletu i računalu.</span></div><div class="app-feature"><strong>Sigurno</strong><span>Javni i administratorski slojevi ostaju odvojeni.</span></div></div>
+</section>
+</main>
+</body>
+</html>`;
+
+export default {
+  async fetch(request) {
+    const incoming = new URL(request.url);
+    const isAppEntry = (incoming.hostname === 'gnk-asg.hr' || incoming.hostname === 'www.gnk-asg.hr') &&
+      (incoming.pathname === '/app' || incoming.pathname.startsWith('/app/'));
+
+    if (!isAppEntry) {
+      return new Response('Not Found', { status: 404, headers: securityHeaders('route-miss') });
+    }
+
+    const headers = {
+      ...securityHeaders('standalone-mobile-entry-v13'),
+      'content-type': 'text/html; charset=utf-8',
+      'cache-control': 'no-store, no-cache, must-revalidate, max-age=0',
+      'x-gnk-asg-public-visual': 'GNK_ASG_PUBLIC_VISUAL_V13_20260625'
+    };
+    if (request.method === 'HEAD') return new Response(null, { status: 200, headers });
+    if (request.method !== 'GET') return new Response('Method Not Allowed', { status: 405, headers: { ...headers, allow: 'GET, HEAD' } });
+    return new Response(APP_HTML, { status: 200, headers });
+  }
+};
+
+function securityHeaders(mode) {
+  return {
+    'x-content-type-options': 'nosniff',
+    'referrer-policy': 'strict-origin-when-cross-origin',
+    'x-frame-options': 'SAMEORIGIN',
+    'content-security-policy': "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
+    'permissions-policy': 'camera=(), microphone=(), geolocation=()',
+    'x-gnk-asg-emergency-entry-fix': mode
+  };
+}
