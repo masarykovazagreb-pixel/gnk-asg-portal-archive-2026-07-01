@@ -4,6 +4,15 @@ compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
 
+routes = [
+  { pattern = "gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/status-automatizacije*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/status-automatizacije*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" }
+]
+
 [[kv_namespaces]]
 binding = "GNK_ASG_CONFIG_KV"
 id = "d6f5dac9fa034d8d813db0de44eb7b1b"
