@@ -93,21 +93,26 @@ jobs:
             return {path,http:Number(http),menu:menu==='true',visual:visual==='true',ux:ux==='true',favicon:favicon==='true'};
           });
           const version=JSON.parse(fs.readFileSync('version.json','utf8'));
-          const report={checkedAt:new Date().toISOString(),ok:process.env.SUCCESS==='true',version:version.version||null,publicVisual:version.publicVisual||null,publicMenu:version.publicMenu||null,faviconVersion:version.favicon||null,faviconHttp:Number(process.env.FAVICON_CODE||0),pages:rows,failures:rows.filter(x=>x.http!==200||!x.menu||!x.visual||!x.ux||!x.favicon)};
+          const report={checkedAt:new Date().toISOString(),ok:process.env.SUCCESS==='true',version:version.version||null,publicVisual:version.publicVisual||null,publicMenu:version.publicMenu||null,faviconVersion:version.favicon||null,faviconHttp:Number(process.env.FAVICON_CODE||0),routes:rows.length,passed:rows.filter(x=>x.http===200&&x.menu&&x.visual&&x.ux&&x.favicon).length,failures:rows.filter(x=>x.http!==200||!x.menu||!x.visual||!x.ux||!x.favicon)};
           fs.writeFileSync('public-shell-result.json',JSON.stringify(report,null,2));
           console.log(JSON.stringify(report,null,2));
           if(!report.ok)process.exit(1);
           JS
 
-      - name: Post V13 verification result
+      - name: Publish clear V13 result
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           if [ -f public-shell-result.json ]; then
-            body=$(printf '## Brza produkcijska provjera V13\n\n```json\n%s\n```\n' "$(cat public-shell-result.json)")
+            ok=$(node -e "const r=require('./public-shell-result.json');process.stdout.write(String(r.ok))")
+            body=$(printf 'Završna produkcijska provjera zajedničkog V13 menija i favicona.\n\n```json\n%s\n```\n' "$(cat public-shell-result.json)")
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/63" -f body="$body"
+            if [ "$ok" = "true" ]; then
+              gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/63" -f state=closed -f state_reason=completed
+            fi
           else
-            body="## Brza produkcijska provjera V13\n\nProvjera nije proizvela strukturirani rezultat. Run: ${GITHUB_RUN_ID}"
+            body="Završna produkcijska provjera V13 nije proizvela strukturirani rezultat. Run: ${GITHUB_RUN_ID}"
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/63" -f body="$body"
           fi
-          gh api "repos/${GITHUB_REPOSITORY}/issues/63/comments" -f body="$body"
