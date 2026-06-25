@@ -24,7 +24,7 @@ jobs:
       - name: Validate source
         run: |
           node --check apps/portal/assets/public-menu-v13.js
-          node --check apps/portal/tests/public-visual-v13.mjs
+          node --check apps/portal/tests/public-visual-v13-final.mjs
           node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
           node --check workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
           grep -q "GNK_ASG_PUBLIC_VISUAL_V13_20260625" workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
@@ -71,7 +71,7 @@ jobs:
         working-directory: apps/portal
         env:
           VISUAL_BASE: http://127.0.0.1:8787
-        run: node tests/public-visual-v13.mjs
+        run: node tests/public-visual-v13-final.mjs
       - name: Upload visual evidence
         if: always()
         uses: actions/upload-artifact@v4
