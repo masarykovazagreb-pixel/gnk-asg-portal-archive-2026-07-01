@@ -1,0 +1,65 @@
+name = "gnk-asg-portal-stability"
+main = "src/index-portal-stability-v6.js"
+compatibility_date = "2026-06-13"
+workers_dev = true
+preview_urls = true
+
+routes = [
+  { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/objave*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/publications*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/vijesti*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/news*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/trzista*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/markets*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/assistant*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/en/assistant*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/downloads*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/en/downloads*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/visual-index*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/contact*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/en/contact*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/legal*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/en/legal*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/status-automatizacije*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/sitemap.xml*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/sitemap-objave.xml*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/image-sitemap-objave.xml*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/data/news.json*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/data/market.json*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/data/digital-assets.json*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/data/market-indices.json*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/data/exchanges.json*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/data/stablecoins.json*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/data/daily-market-brief.json*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/data/status.json*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/assets/public-content-shell-v1.css*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/assets/public-content-shell-v1.js*", zone_name = "gnk-asg.hr" }
+]
+
+[[kv_namespaces]]
+binding = "GNK_ASG_CONFIG_KV"
+id = "d6f5dac9fa034d8d813db0de44eb7b1b"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[[r2_buckets]]
+binding = "GNK_ASG_MEDIA_ASSETS"
+bucket_name = "gnk-asg-media-assets"
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "portal-stability"
+SAFE_GET_DIRECT_MODE = "true"
+AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+
+[ai]
+binding = "AI"
