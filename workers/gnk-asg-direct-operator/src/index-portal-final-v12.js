@@ -92,5 +92,3 @@ export default {
     if (typeof core.email === 'function') return core.email(message, env, ctx);
   }
 };
-
-export { VERSION, PUBLIC_VISUAL };
