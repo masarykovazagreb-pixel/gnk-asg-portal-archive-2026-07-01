@@ -1,0 +1,137 @@
+name: Fast Production Visual Audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/fast-production-visual-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Chromium
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install playwright@1.52.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Render and audit production
+        shell: bash
+        run: |
+          cat > fast-audit.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+
+          const base='https://gnk-asg.hr';
+          const routes=['/','/en/','/trzista/','/markets/','/objave/','/publications/','/vijesti/','/news/','/assistant/','/en/assistant/','/contact/','/en/contact/','/legal/','/en/legal/','/downloads/','/en/downloads/','/visual-index/','/app/','/operator-dashboard/'];
+          const views=[['desktop',1440,1000],['mobile',390,844]];
+          fs.mkdirSync('fast-audit/screenshots',{recursive:true});
+          const browser=await chromium.launch({headless:true});
+          const pages=[];
+          const links=new Map();
+
+          for(const [view,width,height] of views){
+            const context=await browser.newContext({viewport:{width,height},locale:'hr-HR',timezoneId:'Europe/Zagreb'});
+            for(const route of routes){
+              const page=await context.newPage();
+              const consoleErrors=[]; const pageErrors=[]; const failed=[];
+              page.on('console',m=>{if(m.type()==='error') consoleErrors.push(m.text())});
+              page.on('pageerror',e=>pageErrors.push(String(e)));
+              page.on('requestfailed',r=>failed.push({url:r.url(),reason:r.failure()?.errorText||''}));
+              let response=null,error=null;
+              const started=Date.now();
+              try{
+                response=await page.goto(`${base}${route}?audit=${Date.now()}`,{waitUntil:'domcontentloaded',timeout:30000});
+                await page.waitForTimeout(3500);
+              }catch(e){error=String(e)}
+              const data=await page.evaluate(()=>{
+                const root=document.documentElement, body=document.body;
+                const allLinks=[...document.querySelectorAll('a[href]')].map(a=>({href:a.href,text:(a.textContent||'').trim().replace(/\s+/g,' ').slice(0,120)}));
+                const imgs=[...document.images];
+                const loading=[...document.querySelectorAll('body *')].filter(el=>el.children.length===0&&/Učitavanje|Loading|undefined|NaN/i.test(el.textContent||'')).map(el=>(el.textContent||'').trim().replace(/\s+/g,' ').slice(0,150)).filter(Boolean);
+                const nav=document.getElementById('gnk-asg-premium-menu')||document.querySelector('nav');
+                const admin=[...document.querySelectorAll('a,button,form')].some(el=>/admin/i.test(el.textContent||'')||el.getAttribute('action')==='/operator-dashboard/');
+                return {
+                  title:document.title,lang:root.lang,
+                  h1Count:document.querySelectorAll('h1').length,
+                  canonical:document.querySelector('link[rel="canonical"]')?.href||'',
+                  description:document.querySelector('meta[name="description"]')?.content||'',
+                  links:allLinks,
+                  imageCount:imgs.length,
+                  brokenImages:imgs.filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.src),
+                  imagesWithoutAlt:imgs.filter(i=>!i.hasAttribute('alt')||!i.alt.trim()).length,
+                  overflow:Math.max(root.scrollWidth,body?.scrollWidth||0)-root.clientWidth,
+                  bodyText:(body?.innerText||'').length,
+                  loading:[...new Set(loading)].slice(0,20),
+                  navVisible:Boolean(nav&&(nav.offsetWidth||nav.offsetHeight||nav.getClientRects().length)),
+                  adminVisible:admin,
+                  duplicateIds:[...new Set([...document.querySelectorAll('[id]')].map(x=>x.id).filter((id,i,a)=>a.indexOf(id)!==i))]
+                };
+              });
+              data.links.forEach(l=>{try{const u=new URL(l.href);u.hash='';if(['http:','https:'].includes(u.protocol))links.set(u.toString(),l.text)}catch{}});
+              const slug=route==='/'?'home':route.replace(/^\/+|\/+$/g,'').replaceAll('/','--');
+              const screenshot=`fast-audit/screenshots/${slug}-${view}.png`;
+              await page.screenshot({path:screenshot,fullPage:true});
+              pages.push({route,view,status:response?.status()??null,finalUrl:page.url(),durationMs:Date.now()-started,error,consoleErrors:[...new Set(consoleErrors)].slice(0,20),pageErrors:[...new Set(pageErrors)].slice(0,20),failedRequests:failed.slice(0,30),screenshot,...data});
+              await page.close();
+            }
+            await context.close();
+          }
+
+          const api=await browser.newContext({ignoreHTTPSErrors:true});
+          const p=await api.newPage();
+          const linkResults=[];
+          for(const [url,text] of [...links.entries()].filter(([url])=>{const h=new URL(url).hostname;return h==='gnk-asg.hr'||h==='www.gnk-asg.hr'||h==='gnkdinamo.eu'}).slice(0,350)){
+            let status=null,error=null,finalUrl=null;
+            try{const r=await p.request.get(url,{timeout:20000,maxRedirects:10});status=r.status();finalUrl=r.url()}catch(e){error=String(e)}
+            linkResults.push({url,text,status,finalUrl,error});
+          }
+          const endpoints=[];
+          for(const route of ['/api/market','/data/news.json','/data/auto-editor.json','/data/group_network.json','/data/content-quality-status.json','/sitemap.xml','/robots.txt']){
+            let status=null,valid=false,type='',error=null;
+            try{const r=await p.request.get(`${base}${route}?audit=${Date.now()}`,{timeout:20000});status=r.status();type=r.headers()['content-type']||'';const t=await r.text();if(route.endsWith('.json')||route.startsWith('/api/')){try{JSON.parse(t);valid=true}catch{}}else valid=t.length>0}catch(e){error=String(e)}
+            endpoints.push({route,status,valid,type,error});
+          }
+          await p.close();await api.close();await browser.close();
+
+          const internalBroken=linkResults.filter(x=>{try{return new URL(x.url).hostname.endsWith('gnk-asg.hr')&&(!x.status||x.status>=400)}catch{return false}});
+          const summary={
+            renderedPages:pages.length,
+            failedPages:pages.filter(x=>!x.status||x.status>=400||x.error).length,
+            linksChecked:linkResults.length,
+            brokenInternalLinks:internalBroken.length,
+            pagesWithConsoleErrors:pages.filter(x=>x.consoleErrors.length||x.pageErrors.length).length,
+            pagesWithOverflow:pages.filter(x=>x.overflow>4).length,
+            pagesWithLoadingText:pages.filter(x=>x.loading.length).length,
+            pagesWithBrokenImages:pages.filter(x=>x.brokenImages.length).length,
+            pagesWithoutVisibleNav:pages.filter(x=>!x.navVisible&&!x.route.startsWith('/operator-dashboard')).length,
+            endpointsInvalid:endpoints.filter(x=>!x.valid||!x.status||x.status>=400).length
+          };
+          const report={generatedAt:new Date().toISOString(),summary,pages,links:linkResults,internalBroken,endpoints};
+          fs.writeFileSync('fast-audit/audit.json',JSON.stringify(report,null,2));
+          const lines=['# GNK ASG fast production audit','',...Object.entries(summary).map(([k,v])=>`- ${k}: ${v}`),'','## Broken internal links',...internalBroken.map(x=>`- ${x.status||'ERR'} ${x.url}`),'','## Invalid endpoints',...endpoints.filter(x=>!x.valid||!x.status||x.status>=400).map(x=>`- ${x.status||'ERR'} ${x.route} valid=${x.valid}`),'','## Overflow',...pages.filter(x=>x.overflow>4).map(x=>`- ${x.view} ${x.route}: ${x.overflow}px`),'','## Console errors',...pages.filter(x=>x.consoleErrors.length||x.pageErrors.length).map(x=>`- ${x.view} ${x.route}: ${[...x.consoleErrors,...x.pageErrors].join(' | ')}`),'','## Loading text',...pages.filter(x=>x.loading.length).map(x=>`- ${x.view} ${x.route}: ${x.loading.join(' | ')}`)];
+          fs.writeFileSync('fast-audit/report.md',lines.join('\n'));
+          console.log(JSON.stringify(summary,null,2));
+          console.log('BROKEN_INTERNAL');console.log(JSON.stringify(internalBroken,null,2));
+          console.log('INVALID_ENDPOINTS');console.log(JSON.stringify(endpoints.filter(x=>!x.valid||!x.status||x.status>=400),null,2));
+          console.log('OVERFLOW');console.log(JSON.stringify(pages.filter(x=>x.overflow>4).map(x=>({view:x.view,route:x.route,overflow:x.overflow})),null,2));
+          console.log('CONSOLE_ERRORS');console.log(JSON.stringify(pages.filter(x=>x.consoleErrors.length||x.pageErrors.length).map(x=>({view:x.view,route:x.route,consoleErrors:x.consoleErrors,pageErrors:x.pageErrors})),null,2));
+          console.log('LOADING');console.log(JSON.stringify(pages.filter(x=>x.loading.length).map(x=>({view:x.view,route:x.route,loading:x.loading})),null,2));
+          JS
+          node fast-audit.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-fast-production-visual-audit
+          path: fast-audit
+          retention-days: 7
