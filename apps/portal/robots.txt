@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
+Allow: /favicon.svg
+Allow: /favicon.ico
+Allow: /site.webmanifest
 Allow: /visual-index/
 Allow: /visual-sitemap.xml
 Allow: /data/visual_gallery.json
@@ -10,6 +13,5 @@ Disallow: /podijeli/
 
 Sitemap: https://gnk-asg.hr/sitemap.xml
 Sitemap: https://gnk-asg.hr/visual-sitemap.xml
-
 Sitemap: https://gnk-asg.hr/sitemap-objave.xml
 Sitemap: https://gnk-asg.hr/image-sitemap-objave.xml
