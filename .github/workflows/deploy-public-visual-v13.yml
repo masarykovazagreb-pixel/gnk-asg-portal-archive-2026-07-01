@@ -29,6 +29,8 @@ jobs:
           node-version: "22"
 
       - name: Validate V13 source
+        id: validate
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
@@ -41,16 +43,22 @@ jobs:
           grep -q 'public-menu-v13.js' workers/gnk-asg-direct-operator/src/public-shell-v11.js
 
       - name: Deploy Cloudflare Worker
+        id: deploy
+        if: steps.validate.outcome == 'success'
+        continue-on-error: true
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         shell: bash
         run: |
-          set -euo pipefail
-          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+          set -o pipefail
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee ../../deploy-v13.log
 
       - name: Verify production marker and routes
+        id: marker
+        if: steps.deploy.outcome == 'success'
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
@@ -66,11 +74,9 @@ jobs:
             fi
             sleep 10
           done
-          if [ "$ready" != "true" ]; then
-            echo "VERSION_HTTP=$version_code ROOT_HTTP=$root_code"
-            cat version.json || true
-            exit 1
-          fi
+          printf 'VERSION_HTTP=%s ROOT_HTTP=%s READY=%s\n' "$version_code" "$root_code" "$ready" > marker-v13.txt
+          cat version.json >> marker-v13.txt 2>/dev/null || true
+          test "$ready" = "true"
           grep -qi '^x-gnk-asg-public-visual: GNK_ASG_PUBLIC_VISUAL_V13_20260625' root.headers
           routes=(
             / /trzista/ /objave/ /vijesti/ /assistant/ /contact/ /downloads/ /visual-index/ /legal/ /status-automatizacije/ /app/
@@ -86,38 +92,34 @@ jobs:
           done
 
       - name: Install Chromium
+        id: browser
+        if: steps.marker.outcome == 'success'
+        continue-on-error: true
         working-directory: apps/portal
         run: |
           npm install --no-package-lock --no-save @playwright/test@1.52.0
           npx playwright install --with-deps chromium
 
       - name: Verify 40 production views
+        id: visual
+        if: steps.browser.outcome == 'success'
+        continue-on-error: true
         working-directory: apps/portal
         env:
           VISUAL_BASE: https://gnk-asg.hr
         run: node tests/public-visual-v13-final.mjs
 
       - name: Build concise result
+        id: report
+        if: steps.visual.outcome == 'success'
+        continue-on-error: true
         shell: bash
         run: |
           node - <<'JS'
           const fs=require('fs');
           const version=JSON.parse(fs.readFileSync('version.json','utf8'));
           const audit=JSON.parse(fs.readFileSync('apps/portal/visual-v13-test-output/audit.json','utf8'));
-          const report={
-            checkedAt:new Date().toISOString(),
-            ok:audit.length===40&&audit.every(x=>x.ok===true),
-            version:version.version,
-            publicVisual:version.publicVisual,
-            publicMenu:version.publicMenu,
-            routes:20,
-            views:audit.length,
-            desktop:audit.filter(x=>x.view==='desktop').length,
-            mobile:audit.filter(x=>x.view==='mobile').length,
-            identicalMenus:audit.every(x=>x.checks?.exactMenu===true),
-            legacyNavigationVisible:audit.some(x=>Number(x.visibleLegacy||0)>0),
-            horizontalOverflow:audit.some(x=>x.horizontalOverflow===true)
-          };
+          const report={checkedAt:new Date().toISOString(),ok:audit.length===40&&audit.every(x=>x.ok===true),version:version.version,publicVisual:version.publicVisual,publicMenu:version.publicMenu,routes:20,views:audit.length,desktop:audit.filter(x=>x.view==='desktop').length,mobile:audit.filter(x=>x.view==='mobile').length,identicalMenus:audit.every(x=>x.checks?.exactMenu===true),legacyNavigationVisible:audit.some(x=>Number(x.visibleLegacy||0)>0),horizontalOverflow:audit.some(x=>x.horizontalOverflow===true)};
           fs.writeFileSync('v13-production-result.json',JSON.stringify(report,null,2));
           if(!report.ok||!report.identicalMenus||report.legacyNavigationVisible||report.horizontalOverflow)process.exit(1);
           JS
@@ -130,24 +132,36 @@ jobs:
           path: |
             apps/portal/visual-v13-test-output
             version.json
+            root.headers
+            root.html
             route-status.txt
+            marker-v13.txt
+            deploy-v13.log
             v13-production-result.json
           retention-days: 14
 
-      - name: Record success
-        if: success()
+      - name: Record diagnostic result
+        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          VALIDATE: ${{ steps.validate.outcome }}
+          DEPLOY: ${{ steps.deploy.outcome }}
+          MARKER: ${{ steps.marker.outcome }}
+          BROWSER: ${{ steps.browser.outcome }}
+          VISUAL: ${{ steps.visual.outcome }}
+          REPORT: ${{ steps.report.outcome }}
         shell: bash
         run: |
-          body=$(printf '## Produkcijski deploy V13 — USPJEŠNO\n\n```json\n%s\n```\n' "$(cat v13-production-result.json)")
+          deploy_tail=$(tail -n 18 deploy-v13.log 2>/dev/null || true)
+          marker_tail=$(tail -n 12 marker-v13.txt 2>/dev/null || true)
+          result=$(cat v13-production-result.json 2>/dev/null || true)
+          body=$(printf '## Produkcijski deploy V13 — rezultat\n\n- validate: `%s`\n- deploy: `%s`\n- marker/routes: `%s`\n- browser: `%s`\n- visual 40: `%s`\n- report: `%s`\n\n### Deploy zapis\n```text\n%s\n```\n\n### Marker\n```text\n%s\n```\n\n### Rezultat\n```json\n%s\n```\n' "$VALIDATE" "$DEPLOY" "$MARKER" "$BROWSER" "$VISUAL" "$REPORT" "$deploy_tail" "$marker_tail" "$result")
           gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
-          gh api -X PATCH "repos/${GITHUB_REPOSITORY}/issues/65" -f state=closed -f state_reason=completed
+          if [ "$REPORT" = "success" ]; then gh api -X PATCH "repos/${GITHUB_REPOSITORY}/issues/65" -f state=closed -f state_reason=completed; fi
 
-      - name: Record failure
-        if: failure()
+      - name: Enforce success
+        if: always()
         env:
-          GH_TOKEN: ${{ github.token }}
+          REPORT: ${{ steps.report.outcome }}
         shell: bash
-        run: |
-          gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body='## Produkcijski deploy V13 — NEUSPJEŠNO\n\nProvjera nije prošla. Produkcija nije proglašena završenom; pregledajte Actions zapis i artefakt.'
+        run: test "$REPORT" = "success"
