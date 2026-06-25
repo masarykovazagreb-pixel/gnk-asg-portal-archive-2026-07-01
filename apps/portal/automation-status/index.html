@@ -1,3 +1,33 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow"><title>Automation status | GNK ASG</title><meta name="description" content="Public status of GNK ASG news, automated publications and content quality checks."><link rel="canonical" href="https://gnk-asg.hr/automation-status/"><link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/status-automatizacije/"><link rel="alternate" hreflang="en" href="https://gnk-asg.hr/automation-status/"><link rel="stylesheet" href="/assets/public-content-shell-v1.css?v=20260625-v1"></head><body class="gnk-content-page"><main class="gnk-status-main"><p class="eyebrow">GNK ASG Intelligence Desk</p><h1>Automation status</h1><p>Public technical status without tokens, secrets or private operational data.</p><section id="status" class="gnk-status-grid"><div><span>Status</span><strong>Loading…</strong></div></section></main><footer class="gnk-content-footer"><strong>GNK ASG</strong><a href="/en/">Home</a><a href="/publications/">Publications</a><a href="/news/">News</a><a href="/status-automatizacije/">HR</a></footer><script defer src="/assets/public-data-stability-v1.js?v=20260625-v1"></script><script>
-const el=document.getElementById('status');const row=(a,b)=>`<div><span>${a}</span><strong>${b||'—'}</strong></div>`;async function load(){try{const [q,n]=await Promise.all([fetch('/data/content-quality-status.json?cb='+Date.now()).then(r=>r.json()),fetch('/data/news-automation-status.json?cb='+Date.now()).then(r=>r.json()).catch(()=>null)]);const quality=q.lastCleanup||{};const auto=q.lastAutoEditor||n?.lastAutoEditor||{};const news=q.lastNewsRefresh||n?.lastNewsRefresh||{};el.innerHTML=[row('Schedule','Every two hours'),row('Quality',quality.ok===false?'ERROR':'OK'),row('Last quality check',quality.finishedAt),row('Last news refresh',news.updatedAt),row('Last publication',auto.finishedAt||auto.publishedAt),row('Quarantine count',quality.quarantineCount??0),row('Removed in last check',quality.removedCount??0)].join('')}catch(e){el.innerHTML=row('Status','FALLBACK')+row('Note','Data is temporarily unavailable.')}}load();
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <title>Automation status | GNK ASG</title>
+  <meta name="description" content="Public status of business news, automatic publications and GNK ASG portal schedules.">
+  <link rel="canonical" href="https://gnk-asg.hr/automation-status/">
+  <link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/status-automatizacije/">
+  <link rel="alternate" hreflang="en" href="https://gnk-asg.hr/automation-status/">
+  <link rel="stylesheet" href="/assets/public-content-shell-v1.css?v=20260625-v2">
+</head>
+<body class="gnk-content-page">
+  <main class="gnk-status-main">
+    <p class="eyebrow">GNK ASG Intelligence Desk</p>
+    <h1>Automation status</h1>
+    <p>Public overview of business-news schedules, automatic publications and latest executions. Private operational data, tokens and secrets are never displayed.</p>
+    <section id="status" class="gnk-status-grid" aria-live="polite">
+      <div><span>Status</span><strong>Loading…</strong></div>
+    </section>
+  </main>
+  <footer class="gnk-content-footer">
+    <strong>GNK ASG</strong>
+    <a href="/en/">Home</a>
+    <a href="/publications/">Publications</a>
+    <a href="/news/">News</a>
+    <a href="/status-automatizacije/" hreflang="hr">HR</a>
+  </footer>
+  <script src="/assets/status-automatizacije-v1.js?v=20260625-v2" defer></script>
+  <script src="/assets/public-menu-final-v9.js?v=20260625-v11" defer></script>
+</body>
+</html>
