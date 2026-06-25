@@ -1,7 +1,8 @@
 (() => {
   'use strict';
 
-  if (window.__GNK_ASG_PUBLIC_MENU_FINAL_V11__) return;
+  if (window.__GNK_ASG_PUBLIC_MENU_FINAL_V12__) return;
+  window.__GNK_ASG_PUBLIC_MENU_FINAL_V12__ = true;
   window.__GNK_ASG_PUBLIC_MENU_FINAL_V11__ = true;
 
   const path = location.pathname.replace(/\/+/g, '/').toLowerCase();
@@ -82,6 +83,52 @@
     return `<a href="${href}"${current}${rel}>${label}</a>`;
   };
 
+  function ensureFavicon() {
+    const head = document.head;
+    if (!head) return;
+    document.querySelectorAll('link[rel~="icon"],link[rel="shortcut icon"]').forEach(link => {
+      if (!String(link.href || '').includes('gnk-asg-favicon.svg') && !String(link.href || '').includes('/favicon.ico')) link.remove();
+    });
+    if (!head.querySelector('link[href*="gnk-asg-favicon.svg"]')) {
+      const icon = document.createElement('link');
+      icon.rel = 'icon';
+      icon.type = 'image/svg+xml';
+      icon.href = '/assets/gnk-asg-favicon.svg?v=20260625-v1';
+      head.appendChild(icon);
+    }
+    if (!head.querySelector('link[rel="shortcut icon"]')) {
+      const shortcut = document.createElement('link');
+      shortcut.rel = 'shortcut icon';
+      shortcut.href = '/favicon.ico?v=20260625-v1';
+      head.appendChild(shortcut);
+    }
+  }
+
+  function hideLegacyNavigation() {
+    if (!document.body) return;
+    document.body.classList.remove('gnk-public-v11');
+    document.body.classList.add('gnk-public-v12');
+
+    const candidates = document.querySelectorAll([
+      'body > header', 'body > nav', '.brand-head', '.top-nav',
+      'header.site-header', 'header.main-header', 'header.portal-header', 'header.public-header',
+      'nav.site-nav', 'nav.main-nav', 'nav.navbar', '.legacy-navigation', '.legacy-public-menu'
+    ].join(','));
+
+    candidates.forEach(element => {
+      if (element.id === 'gnk-asg-premium-header' || element.closest('#gnk-asg-premium-header')) return;
+      const isHeader = element.tagName === 'HEADER';
+      const isKnown = element.matches('.brand-head,.top-nav,.site-header,.main-header,.portal-header,.public-header,.site-nav,.main-nav,.navbar,.legacy-navigation,.legacy-public-menu');
+      if (isHeader && !isKnown && !element.querySelector('nav')) return;
+      element.dataset.gnkLegacyNavigation = 'true';
+      element.setAttribute('aria-hidden', 'true');
+    });
+
+    document.querySelectorAll('#gnk-asg-premium-header').forEach((header, index) => {
+      if (index > 0) header.remove();
+    });
+  }
+
   const ensureHeader = () => {
     let header = document.getElementById('gnk-asg-premium-header');
     if (header) return header;
@@ -91,7 +138,7 @@
     header.className = 'gnk-asg-premium-header gnk-public-injected-header';
     header.innerHTML = `
       <a class="gnk-asg-brand" href="${isEn ? '/en/' : '/'}" aria-label="GNK ASG">
-        <span class="gnk-asg-brand-mark" aria-hidden="true">G</span>
+        <img src="/assets/gnk-asg-favicon.svg?v=20260625-v1" alt="" width="38" height="38">
         <span class="gnk-asg-brand-copy"><strong>GNK ASG</strong><small>${isEn ? 'Corporate Portal' : 'Korporativni portal'}</small></span>
       </a>
       <nav id="gnk-asg-premium-menu" aria-label="${isEn ? 'Main navigation' : 'Glavna navigacija'}"></nav>
@@ -101,6 +148,8 @@
   };
 
   const install = () => {
+    ensureFavicon();
+    hideLegacyNavigation();
     const header = ensureHeader();
     if (!header) return false;
     let menu = document.getElementById('gnk-asg-premium-menu');
@@ -124,7 +173,6 @@
     document.getElementById('gnk-asg-drawer')?.remove();
     document.getElementById('gnk-asg-overlay')?.remove();
     document.body.classList.remove('gnk-asg-menu-open');
-    document.body.classList.add('gnk-public-v11');
 
     let actions = header.querySelector('.gnk-asg-shell-actions');
     if (!actions) {
@@ -142,7 +190,7 @@
     language.setAttribute('aria-label', isEn ? 'Prikaži hrvatsku verziju' : 'Open English version');
     actions.appendChild(language);
 
-    header.dataset.publicMenuVersion = '11';
+    header.dataset.publicMenuVersion = '12';
     header.dataset.fullMenuVisible = 'true';
     return true;
   };
@@ -169,11 +217,12 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
   else run();
   window.addEventListener('load', run, { once: true });
-  [120, 450, 1100, 2400].forEach(delay => setTimeout(run, delay));
+  [80, 250, 650, 1400, 2800].forEach(delay => setTimeout(run, delay));
 
   const observer = new MutationObserver(() => {
     const header = document.getElementById('gnk-asg-premium-header');
-    if (!header || header.dataset.publicMenuVersion !== '11' || !document.getElementById('gnk-public-language')) run();
+    if (!header || header.dataset.publicMenuVersion !== '12' || !document.getElementById('gnk-public-language')) run();
+    else hideLegacyNavigation();
   });
   observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
