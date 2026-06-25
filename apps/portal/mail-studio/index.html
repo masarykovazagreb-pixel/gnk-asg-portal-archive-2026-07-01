@@ -2,597 +2,75 @@
 <html lang="hr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
 <title>GNK ASG Mail Studio</title>
 <style>
-body{margin:0;background:#07101f;color:#f8fafc;font-family:Inter,Arial,sans-serif}
-.wrap{max-width:1320px;margin:0 auto;padding:18px}
-.studio{border:1px solid rgba(214,173,79,.35);border-radius:26px;background:linear-gradient(135deg,rgba(7,16,31,.98),rgba(13,24,45,.97));box-shadow:0 24px 70px rgba(0,0,0,.42);overflow:hidden}
-.head{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:18px 20px;border-bottom:1px solid rgba(214,173,79,.22)}
-.head h1{margin:0;color:#f4d37a;font-family:Georgia,serif;font-size:28px}
-.head p{margin:4px 0 0;color:#d1d5db;font-size:13px}
-.status{border:1px solid rgba(214,173,79,.28);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.07);font-size:12px;color:#e5e7eb}
-.body{display:grid;grid-template-columns:1.35fr .65fr}
-.compose{padding:20px}
-.side{padding:20px;border-left:1px solid rgba(214,173,79,.18);background:rgba(255,255,255,.035)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field{margin-bottom:12px}
-label{display:block;margin:0 0 6px;color:#f4d37a;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.09em}
-input,select,textarea{width:100%;box-sizing:border-box;border:1px solid rgba(214,173,79,.30);border-radius:14px;background:#f8fafc;color:#07101f;padding:12px;font:inherit;outline:none}
-textarea{min-height:430px;resize:vertical;line-height:1.6;font-size:15px}
-.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
-button{border:1px solid rgba(214,173,79,.42);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:10px 13px;cursor:pointer;font-size:11px}
-button.gold{background:linear-gradient(135deg,#b98b2d,#f4d37a);color:#07101f}
-button.red{border-color:rgba(239,68,68,.45);background:rgba(127,29,29,.32)}
-.panel{border:1px solid rgba(214,173,79,.20);border-radius:18px;background:rgba(255,255,255,.055);padding:12px;margin-bottom:12px}
-.panel h3{margin:0 0 9px;color:#f4d37a;font-size:13px;text-transform:uppercase;letter-spacing:.08em}
-.small{font-size:12px;color:#d1d5db;line-height:1.45}
-.list{max-height:280px;overflow:auto;border-radius:14px;background:rgba(0,0,0,.18);padding:9px;white-space:pre-wrap;font-size:12px;line-height:1.45;color:#e5e7eb}
-.tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:9px}
-.tab{border:1px solid rgba(214,173,79,.28);border-radius:999px;background:rgba(255,255,255,.06);color:#e5e7eb;padding:8px 10px;cursor:pointer;font-size:11px;font-weight:900}
-.preview{margin-top:14px;border:1px solid rgba(214,173,79,.20);border-radius:18px;background:#fff;color:#111827;padding:18px;min-height:150px}
-.signature{border-top:1px solid #e5e7eb;margin-top:18px;padding-top:12px;color:#374151;font-size:13px}
-.signature strong{color:#111827}
-.signature img{display:block;width:132px;height:auto;margin:0 0 12px 0}
-@media(max-width:1050px){.body{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid rgba(214,173,79,.18)}.grid{grid-template-columns:1fr}}
+:root{--bg:#06101f;--panel:#0b1b30;--gold:#d5aa3d;--gold2:#f4d37a;--text:#f8fafc;--muted:#cbd5e1;--line:rgba(213,170,61,.30);--ok:#46d58b;--bad:#ff8d96}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#16345d 0,#06101f 42%,#020812 100%);color:var(--text);font-family:Arial,Helvetica,sans-serif}.wrap{max-width:1380px;margin:auto;padding:18px}.studio{border:1px solid var(--line);border-radius:24px;overflow:hidden;background:rgba(6,16,31,.96);box-shadow:0 28px 90px rgba(0,0,0,.48)}.head{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:20px;border-bottom:1px solid var(--line)}h1{margin:0;color:var(--gold2);font-family:Georgia,serif}.head p{margin:6px 0 0;color:var(--muted)}.status{max-width:520px;border:1px solid var(--line);border-radius:15px;padding:11px 14px;color:var(--muted);white-space:pre-wrap}.status.ok{color:#bff5d7;border-color:rgba(70,213,139,.55)}.status.bad{color:#ffc5ca;border-color:rgba(255,141,150,.60)}.body{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(330px,.65fr)}.compose,.side{padding:20px}.side{border-left:1px solid var(--line);background:rgba(255,255,255,.025)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:13px}.field.full{grid-column:1/-1}label{display:block;margin:0 0 7px;color:var(--gold2);font-size:11px;font-weight:900;letter-spacing:.09em;text-transform:uppercase}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:13px;background:#f8fafc;color:#081426;padding:12px;font:inherit}textarea{min-height:330px;resize:vertical;line-height:1.55}.panel{border:1px solid var(--line);border-radius:17px;background:rgba(255,255,255,.045);padding:14px;margin-bottom:13px}.panel h2,.panel h3{margin:0 0 10px;color:var(--gold2)}.small{font-size:12px;line-height:1.5;color:var(--muted)}.actions,.tabs{display:flex;flex-wrap:wrap;gap:8px}.actions{margin-top:13px}button{border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;padding:10px 14px;font-weight:900;cursor:pointer}button.gold{background:linear-gradient(135deg,#b98b2d,#f4d37a);color:#07101f}button:disabled{opacity:.5;cursor:not-allowed}.preview{margin-top:15px;min-height:180px;border:1px solid var(--line);border-radius:17px;background:#fff;color:#111827;padding:18px}.list{max-height:330px;overflow:auto;border-radius:13px;background:rgba(0,0,0,.22);padding:10px;color:#e5e7eb;white-space:pre-wrap;font-size:12px;line-height:1.5}.pdf-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(213,170,61,.18)}.signature-preview img{display:block;max-width:150px;height:auto}.auth{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}.auth .field{margin:0}.pill{display:inline-flex;padding:5px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:11px}@media(max-width:980px){.body{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--line)}}@media(max-width:680px){.grid,.auth{grid-template-columns:1fr}.wrap{padding:8px}.head{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
-<div class="wrap">
-<section class="studio">
-<div class="head">
-  <div>
-    <h1>GNK ASG Mail Studio</h1>
-    <p>Potpisi s logom, To / CC / BCC, više primatelja, veliko polje za tekst, Inbox / Sent / Outbox.</p>
-  </div>
-  <div class="status" id="status">Spremno.</div>
-</div>
-
+<div class="wrap"><section class="studio">
+<header class="head"><div><h1>GNK ASG Mail Studio</h1><p>Zaštićeno slanje s potpisom i logom odabranog profila. PDF prilog je obvezan.</p></div><div class="status" id="status">Unesite operatorski token.</div></header>
 <div class="body">
-<div class="compose">
-  <div class="grid">
-    <div class="field">
-      <label>Profil pošiljatelja</label>
-      <select id="profile">
-        <option value="office">GNK ASG Office</option>
-        <option value="legal">Legal & Compliance</option>
-        <option value="media">Media Desk</option>
-        <option value="it">IT – Osobni digitalni asistent</option>
-        <option value="director">Nermin Sefić / Direktor</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Predložak pomoći</label>
-      <select id="mode">
-        <option value="reply">Formalni odgovor</option>
-        <option value="short">Kratka potvrda</option>
-        <option value="legal">Pravno oprezno</option>
-        <option value="media">Medijski odgovor</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="grid">
-    <div class="field"><label>From e-mail</label><input id="from"></div>
-    <div class="field"><label>From naziv</label><input id="fromName"></div>
-  </div>
-
-  <div class="field">
-    <label>To — više primatelja odvoji zarezom ili točkom-zarezom</label>
-    <input id="to" placeholder="primjer@domena.com, drugi@domena.com">
-  </div>
-
-  <div class="grid">
-    <div class="field"><label>CC</label><input id="cc" placeholder="cc@domena.com"></div>
-    <div class="field"><label>BCC</label><input id="bcc" placeholder="bcc@domena.com"></div>
-  </div>
-
-  <div class="field"><label>Predmet</label><input id="subject" placeholder="Predmet poruke"></div>
-
-  <div class="field">
-    <label>Veliko polje za tekst poruke</label>
-    <textarea id="bodyText" placeholder="Upiši tekst poruke..."></textarea>
-  </div>
-
-  <div class="actions">
-    <button class="gold" id="send" type="button">Pošalji</button>
-    <button id="save" type="button">Spremi draft</button>
-    <button id="load" type="button">Učitaj draft</button>
-    <button id="helper" type="button">Predložak</button>
-    <button id="autoReply" type="button">Auto odgovor</button>
-    <button class="red" id="clear" type="button">Očisti</button>
-  </div>
-
-  <div class="preview" id="preview"></div>
-</div>
-
-<div class="side">
-  <div class="panel">
-    <h3>Pretinci</h3>
-    <div class="tabs">
-      <button class="tab" data-box="inbox" type="button">Inbox</button>
-      <button class="tab" data-box="sent" type="button">Sent</button>
-      <button class="tab" data-box="outbox" type="button">Outbox</button>
-      <button class="tab" data-box="status" type="button">Status</button>
-    </div>
-    <div class="list" id="list">Klikni Inbox, Sent, Outbox ili Status.</div>
-  </div>
-
-  <div class="panel">
-    <h3>Potpisi</h3>
-    <div class="small">
-      Svaki profil ima profesionalni potpis s logom GNK ASG. Preview ispod poruke prikazuje konačan izgled potpisa.
-    </div>
-  </div>
-</div>
-</div>
+<main class="compose">
+<section class="panel">
+<h2>Sigurni pristup</h2>
+<div class="auth"><div class="field"><label for="token">Operatorski token</label><input id="token" type="password" autocomplete="current-password" placeholder="Operatorski token"></div><button id="login" class="gold" type="button">Provjeri</button><button id="logout" type="button">Odjava</button></div>
 </section>
+<div class="grid">
+<div class="field"><label for="profile">Profil pošiljatelja</label><select id="profile"><option value="info" selected>GNK ASG Info Desk</option><option value="contact">GNK ASG Contact Desk</option><option value="office">GNK ASG Office</option><option value="media">GNK ASG Media Desk</option><option value="press">GNK ASG Press Desk</option><option value="legal">GNK ASG Legal & Compliance</option><option value="privacy">GNK ASG Privacy Desk</option><option value="it">IT – Osobni digitalni asistent</option><option value="assistant">AI asistent</option><option value="ubo">GNK ASG UBO Desk</option><option value="sefic">Office of Nermin Sefić</option><option value="director">Nermin Sefić / Direktor</option></select></div>
+<div class="field"><label>Adresa pošiljatelja</label><input id="from" value="info@gnk-asg.hr" readonly></div>
 </div>
-
+<div class="field"><label for="to">To — više adresa odvojite zarezom ili točkom-zarezom</label><input id="to" placeholder="primatelj@domena.com"></div>
+<div class="grid"><div class="field"><label for="cc">CC</label><input id="cc"></div><div class="field"><label for="bcc">BCC</label><input id="bcc"></div></div>
+<div class="field"><label for="subject">Predmet</label><input id="subject" placeholder="Predmet poruke"></div>
+<div class="field"><label for="bodyText">Tekst poruke</label><textarea id="bodyText" placeholder="Upišite tekst poruke. Potpis s logom dodaje se automatski iz Mail Studio profila."></textarea></div>
+<div class="field"><label for="pdfFiles">PDF prilozi — obvezno</label><input id="pdfFiles" type="file" accept="application/pdf,.pdf" multiple required><div class="small">Najmanje jedan PDF mora biti priložen. Ukupna dopuštena veličina: 4 MB.</div><div id="pdfList" class="list" style="margin-top:9px">Nema odabranih PDF priloga.</div></div>
+<div class="actions"><button id="send" class="gold" type="button">Pošalji s PDF-om</button><button id="save" type="button">Spremi nacrt</button><button id="load" type="button">Učitaj nacrt</button><button id="clear" type="button">Očisti</button></div>
+<div id="preview" class="preview"></div>
+</main>
+<aside class="side">
+<section class="panel"><h3>Personalizirani AI nacrt</h3><div class="small">AI samo priprema tekst. Ne šalje poruku bez klika na „Pošalji s PDF-om”.</div><div class="field"><label for="aiRecipient">Ime / naziv primatelja</label><input id="aiRecipient"></div><div class="field"><label for="aiContext">Kontekst</label><textarea id="aiContext" style="min-height:120px"></textarea></div><div class="field"><label for="aiGoal">Cilj</label><input id="aiGoal"></div><div class="field"><label for="aiTone">Ton</label><select id="aiTone"><option>profesionalno i prijateljski</option><option>kratko i jasno</option><option>pravno oprezno</option><option>direktorski i ozbiljno</option><option>medijski i neutralno</option></select></div><div class="actions"><button id="aiDraft" type="button">AI pripremi nacrt</button><button id="aiImprove" type="button">AI doradi tekst</button></div></section>
+<section class="panel"><h3>Potpis odgovora</h3><div class="small">Učitava se iz odabranog Mail Studio profila. Kontakt forma za automatski odgovor koristi profil <b>Info</b>.</div><div id="signaturePreview" class="preview signature-preview" style="min-height:120px"></div></section>
+<section class="panel"><h3>Pretinci</h3><div class="tabs"><button data-box="inbox" type="button">Inbox</button><button data-box="sent" type="button">Sent</button><button data-box="outbox" type="button">Outbox</button><button data-box="status" type="button">Status</button></div><div id="list" class="list" style="margin-top:10px">Prijavite se i odaberite pretinac.</div></section>
+</aside>
+</div></section></div>
 <script>
-(function(){
-const LS="gnk_asg_mail_studio_draft";
-const logo='<img src="/assets/gnk-asg-email-logo-final.png" alt="GNK ASG">';
-const sig={
-office:{from:"office@gnk-asg.hr",name:"GNK ASG Office",html:'<div class="signature">'+logo+'<strong>GNK ASG Office</strong><br>GNK ASG d.o.o.<br>Zagrebačka cesta 130, 10090 Zagreb<br>OIB: 75227917632 · MBS: 081512375<br>Web: https://gnk-asg.hr<br>Telefon: 091 535 8365</div>'},
-legal:{from:"legal@gnk-asg.hr",name:"GNK ASG Legal & Compliance",html:'<div class="signature">'+logo+'<strong>GNK ASG Legal & Compliance</strong><br>GNK ASG d.o.o.<br>Zagrebačka cesta 130, 10090 Zagreb<br>OIB: 75227917632 · MBS: 081512375<br><br>Ova poruka može sadržavati povjerljive i pravno relevantne informacije. Ako niste namijenjeni primatelj, molimo da poruku ne koristite i obavijestite pošiljatelja.</div>'},
-media:{from:"media@gnk-asg.hr",name:"GNK ASG Media Desk",html:'<div class="signature">'+logo+'<strong>GNK ASG Media Desk</strong><br>GNK ASG d.o.o.<br>Korporativne informacije, objave i medijski upiti<br>Web: https://gnk-asg.hr<br>Kontakt: 091 535 8365</div>'},
-it:{from:"it@gnk-asg.hr",name:"IT – Osobni digitalni asistent",html:'<div class="signature">'+logo+'<strong>IT – Osobni digitalni asistent</strong><br>GNK ASG d.o.o.<br>Automatizirana komunikacijska podrška<br>Web: https://gnk-asg.hr<br><br>Ova tehnička poruka ne predstavlja pravni, financijski ili ugovorni savjet, niti prihvat obveza.</div>'},
-director:{from:"nermin.sefic@gnk-asg.hr",name:"Nermin Sefić / Direktor",html:'<div class="signature">'+logo+'<strong>Nermin Sefić</strong><br>Direktor<br>GNK ASG d.o.o.<br>Zagrebačka cesta 130, 10090 Zagreb<br>OIB: 75227917632 · MBS: 081512375<br>Web: https://gnk-asg.hr</div>'}
-};
-function q(id){return document.getElementById(id)}
-function s(t){q("status").textContent=t}
-function v(id){return q(id).value||""}
-function set(id,x){q(id).value=x||""}
-function esc(x){return String(x||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function current(){return sig[v("profile")]||sig.office}
-function textHtml(){return esc(v("bodyText")).replace(/\n/g,"<br>")}
-function profile(){const c=current();set("from",c.from);set("fromName",c.name);preview()}
-function preview(){q("preview").innerHTML="<b>Predmet:</b> "+esc(v("subject")||"(bez predmeta)")+"<br><br>"+textHtml()+current().html}
-function draft(){return{from:v("from"),fromName:v("fromName"),to:v("to"),cc:v("cc"),bcc:v("bcc"),subject:v("subject"),body:v("bodyText"),html:textHtml()+current().html,profile:v("profile")}}
-function save(){localStorage.setItem(LS,JSON.stringify(draft(),null,2));s("Draft spremljen.")}
-function load(){try{const d=JSON.parse(localStorage.getItem(LS)||"{}");if(!d.body&&!d.subject&&!d.to){s("Nema spremljenog drafta.");return}set("profile",d.profile||"office");set("from",d.from);set("fromName",d.fromName);set("to",d.to);set("cc",d.cc);set("bcc",d.bcc);set("subject",d.subject);set("bodyText",d.body);preview();s("Draft učitan.")}catch(e){s("Greška drafta: "+e.message)}}
-async function send(){const d=draft();if(!d.to.trim()){s("Nedostaje To.");return}if(!d.subject.trim()){s("Nedostaje predmet.");return}s("Slanje...");try{const r=await fetch("/api/admin-mail-send",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(d)});const t=await r.text();if(!r.ok){s("Greška: "+r.status+" "+t.slice(0,300));return}s("Poslano/evidentirano.");box("sent")}catch(e){s("Greška slanja: "+e.message)}}
-function helper(){let m=v("mode"),base=v("bodyText").trim(),txt="";if(m==="legal")txt="Poštovani,\n\nvezano uz Vašu poruku, potvrđujemo primitak te ćemo navode razmotriti u okviru dostupne dokumentacije i nadležnosti GNK ASG d.o.o.\n\n"+base+"\n\nSva prava i pravni interesi GNK ASG d.o.o. ostaju pridržani.\n\nSrdačan pozdrav,";else if(m==="short")txt="Poštovani,\n\nhvala na poruci. Zaprimili smo Vaš upit i javit ćemo se s odgovorom u najkraćem razumnom roku.\n\nSrdačan pozdrav,";else if(m==="media")txt="Poštovani,\n\nhvala na medijskom upitu. Molimo da sva dodatna pitanja i rokove dostavite pisanim putem kako bismo mogli pripremiti cjelovit odgovor.\n\nSrdačan pozdrav,";else txt="Poštovani,\n\nzahvaljujemo na Vašoj poruci te potvrđujemo da smo je uredno zaprimili.\n\n"+base+"\n\nSrdačan pozdrav,";set("bodyText",txt);preview();s("Predložak pripremljen.")}
-function autoReply(){set("bodyText","Poštovani,\n\novim putem potvrđujemo da je Vaša poruka uredno zaprimljena u sustavu GNK ASG. Nakon interne obrade, odgovor ćemo Vam dostaviti pisanim putem u najkraćem mogućem roku.\n\nHvala na razumijevanju.\n\nSrdačan pozdrav,");preview();s("Auto odgovor pripremljen.")}
-function clearAll(){["to","cc","bcc","subject","bodyText"].forEach(id=>set(id,""));preview();s("Očišćeno.")}
-async function box(type){const map={inbox:"/api/mail-center/inbox",sent:"/api/mail-center/sent",outbox:"/api/mail-center/outbox",status:"/api/mail-center/status"};q("list").textContent="Učitavanje "+type+"...";try{const r=await fetch(map[type]+"?cb="+Date.now(),{headers:{"cache-control":"no-cache"}});const t=await r.text();q("list").textContent=t.slice(0,6500);s(type+" učitan.")}catch(e){q("list").textContent=e.message;s("Greška učitavanja.")}}
-q("profile").addEventListener("change",profile);q("subject").addEventListener("input",preview);q("bodyText").addEventListener("input",preview);q("send").addEventListener("click",send);q("save").addEventListener("click",save);q("load").addEventListener("click",load);q("helper").addEventListener("click",helper);q("autoReply").addEventListener("click",autoReply);q("clear").addEventListener("click",clearAll);document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>box(b.dataset.box)));profile();box("status");
+(()=>{
+'use strict';
+const TOKEN_KEY='gnk_asg_operator_token_session';
+const DRAFT_KEY='gnk_asg_mail_studio_v3_draft';
+const MAX_TOTAL=4*1024*1024;
+const state={attachments:[],signatures:{},mailboxes:{}};
+const q=id=>document.getElementById(id);
+const val=id=>String(q(id)?.value||'');
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const token=()=>{try{return sessionStorage.getItem(TOKEN_KEY)||sessionStorage.getItem('gnk_asg_mail_studio_token')||''}catch{return''}};
+const saveToken=v=>{try{if(v){sessionStorage.setItem(TOKEN_KEY,v);sessionStorage.setItem('gnk_asg_mail_studio_token',v)}else{sessionStorage.removeItem(TOKEN_KEY);sessionStorage.removeItem('gnk_asg_mail_studio_token')}}catch{}};
+const headers=()=>token()?{authorization:'Bearer '+token(),'x-operator-token':token()}:{};
+function status(text,kind=''){q('status').textContent=text;q('status').className='status'+(kind?' '+kind:'')}
+function human(n){return n<1024?n+' B':n<1048576?(n/1024).toFixed(1)+' KB':(n/1048576).toFixed(2)+' MB'}
+function mailbox(){return state.mailboxes[val('profile')]||{key:val('profile'),address:q('from').value,label:q('profile').selectedOptions[0]?.textContent||'GNK ASG'} }
+function fallbackSignature(box){return `<table role="presentation" style="font-family:Arial;border-top:1px solid #ddd;margin-top:22px;width:100%"><tr><td style="padding:16px 20px 8px 0;width:170px"><img src="https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png" width="150" alt="GNK ASG"></td><td style="padding-top:16px"><b>${esc(box.label||'GNK ASG Info Desk')}</b><br>GNK ASG d.o.o.<br>Zagrebačka cesta 130, 10090 Zagreb<br>Web: https://gnk-asg.hr<br>E-mail: ${esc(box.address||'info@gnk-asg.hr')}</td></tr></table>`}
+function renderPreview(){const sig=state.signatures[val('profile')]||fallbackSignature(mailbox());q('signaturePreview').innerHTML=sig;q('preview').innerHTML='<b>Predmet:</b> '+esc(val('subject')||'(bez predmeta)')+'<br><br><div style="white-space:pre-wrap;line-height:1.55">'+esc(val('bodyText'))+'</div>'+sig}
+async function api(url,init={}){const h=new Headers(init.headers||{});Object.entries(headers()).forEach(([k,v])=>h.set(k,v));h.set('cache-control','no-cache');return fetch(url,{...init,headers:h,cache:'no-store'})}
+async function verify(){const entered=val('token').trim();if(entered)saveToken(entered);if(!token()){status('Token nije unesen.','bad');return false}status('Provjera tokena…');const r=await api('/api/operator-auth-check?cb='+Date.now());if(!r.ok){saveToken('');status('Token nije prihvaćen.','bad');return false}status('Prijava je potvrđena.','ok');await loadProfiles();return true}
+async function loadProfiles(){const r=await api('/api/operator-mailbox-config?cb='+Date.now());if(!r.ok)return;const j=await r.json();for(const item of j.mailboxes||[]){state.mailboxes[item.key]=item;state.signatures[item.key]=item.signatureHtml||'';let option=[...q('profile').options].find(x=>x.value===item.key);if(!option){option=document.createElement('option');option.value=item.key;q('profile').appendChild(option)}option.textContent=item.title||item.label||item.address}await loadSignature()}
+async function loadSignature(){const key=val('profile');const box=state.mailboxes[key]||{};q('from').value=box.address||([...q('profile').options].find(o=>o.value===key)?.textContent.includes('@')?'':'')||({info:'info@gnk-asg.hr',contact:'contact@gnk-asg.hr',office:'office@gnk-asg.hr',media:'media@gnk-asg.hr',press:'press@gnk-asg.hr',legal:'legal@gnk-asg.hr',privacy:'privacy@gnk-asg.hr',it:'it@gnk-asg.hr',assistant:'assistant@gnk-asg.hr',ubo:'ubo@gnk-asg.hr',sefic:'sefic@gnk-asg.hr',director:'nermin.sefic@gnk-asg.hr'}[key]||'info@gnk-asg.hr');if(token()){try{const r=await api('/api/operator-signature-load?mailbox='+encodeURIComponent(key)+'&cb='+Date.now());if(r.ok){const j=await r.json();state.signatures[key]=j.signatureHtml||fallbackSignature({address:j.address,label:j.label})}}catch{}}renderPreview()}
+function readBase64(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||'').split(',').pop());reader.onerror=()=>reject(reader.error);reader.readAsDataURL(file)})}
+async function addFiles(files){let total=state.attachments.reduce((s,x)=>s+x.size,0);for(const file of [...files]){if(file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){status('Preskočen prilog koji nije PDF: '+file.name,'bad');continue}if(total+file.size>MAX_TOTAL){status('Ukupni PDF prilozi prelaze 4 MB.','bad');continue}state.attachments.push({filename:file.name,type:'application/pdf',contentType:'application/pdf',size:file.size,base64:await readBase64(file)});total+=file.size}renderFiles();status('PDF prilozi spremni: '+state.attachments.length,state.attachments.length?'ok':'')}
+function renderFiles(){if(!state.attachments.length){q('pdfList').textContent='Nema odabranih PDF priloga.';return}q('pdfList').innerHTML=state.attachments.map((x,i)=>`<div class="pdf-row"><span><b>${esc(x.filename)}</b><br>${human(x.size)}</span><button type="button" data-remove="${i}">Ukloni</button></div>`).join('')+`<div style="padding-top:9px;color:#f4d37a"><b>Ukupno:</b> ${human(state.attachments.reduce((s,x)=>s+x.size,0))}</div>`}
+async function send(){if(!token()&&!await verify())return;if(!val('to').trim()){status('Nedostaje To primatelj.','bad');return}if(!val('subject').trim()){status('Nedostaje predmet.','bad');return}if(!val('bodyText').trim()){status('Nedostaje tekst poruke.','bad');return}if(!state.attachments.length){status('Slanje je blokirano: priložite najmanje jedan PDF.','bad');return}q('send').disabled=true;status('Slanje poruke s PDF prilogom…');const payload={mailbox:val('profile'),profile:val('profile'),signatureProfile:val('profile'),to:val('to'),cc:val('cc'),bcc:val('bcc'),subject:val('subject'),body:val('bodyText'),text:val('bodyText'),addSignature:'yes',attachments:state.attachments};try{const r=await api('/api/operator-send-mail',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});const raw=await r.text();if(!r.ok){status('Slanje nije uspjelo: HTTP '+r.status+' · '+raw.slice(0,280),'bad');return}const j=JSON.parse(raw);status('Poruka je poslana. PDF priloga: '+j.attachmentCount+'.','ok');await box('sent')}catch(error){status('Greška slanja: '+error.message,'bad')}finally{q('send').disabled=false}}
+function saveDraft(){localStorage.setItem(DRAFT_KEY,JSON.stringify({profile:val('profile'),to:val('to'),cc:val('cc'),bcc:val('bcc'),subject:val('subject'),body:val('bodyText')}));status('Nacrt teksta je spremljen. PDF datoteke se zbog sigurnosti ne spremaju.','ok')}
+function loadDraft(){try{const d=JSON.parse(localStorage.getItem(DRAFT_KEY)||'{}');['to','cc','bcc','subject'].forEach(id=>q(id).value=d[id]||'');q('bodyText').value=d.body||'';q('profile').value=d.profile||'info';loadSignature();status('Nacrt je učitan. Ponovno odaberite PDF.','ok')}catch(error){status('Nacrt nije moguće učitati: '+error.message,'bad')}}
+function clearAll(){['to','cc','bcc','subject','bodyText','aiRecipient','aiContext','aiGoal'].forEach(id=>q(id).value='');state.attachments=[];renderFiles();renderPreview();status('Polja su očišćena.')}
+async function box(type){if(!token()){q('list').textContent='Najprije se prijavite.';return}q('list').textContent='Učitavanje…';try{const r=await api('/api/mail-center/'+type+'?cb='+Date.now());q('list').textContent=(await r.text()).slice(0,12000)}catch(error){q('list').textContent=error.message}}
+async function ai(task){if(!token()&&!await verify())return;status('AI priprema nacrt…');const payload={task,style:val('aiTone'),lang:'hr',subject:val('subject'),text:val('bodyText'),recipientName:val('aiRecipient'),goal:val('aiGoal'),context:['Primatelj: '+val('aiRecipient'),'Cilj: '+val('aiGoal'),'Ton: '+val('aiTone'),'Kontekst: '+val('aiContext'),'Ne izmišljaj činjenice. Pripremi samo nacrt, bez potpisa.'].join('\n')};try{const r=await api('/api/ai-assist',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});const raw=await r.text();let j;try{j=JSON.parse(raw)}catch{j={text:raw}}if(!r.ok||!j.text){status('AI nacrt nije pripremljen: '+raw.slice(0,200),'bad');return}q('bodyText').value=j.text;renderPreview();status('AI nacrt je pripremljen. Poruka nije poslana.','ok')}catch(error){status('AI greška: '+error.message,'bad')}}
+q('login').addEventListener('click',verify);q('logout').addEventListener('click',()=>{saveToken('');q('token').value='';status('Odjavljeni ste.')});q('profile').addEventListener('change',loadSignature);q('subject').addEventListener('input',renderPreview);q('bodyText').addEventListener('input',renderPreview);q('pdfFiles').addEventListener('change',async e=>{await addFiles(e.target.files);e.target.value=''});q('pdfList').addEventListener('click',e=>{const b=e.target.closest('[data-remove]');if(!b)return;state.attachments.splice(Number(b.dataset.remove),1);renderFiles();status(state.attachments.length?'PDF prilog je uklonjen.':'Ponovno priložite najmanje jedan PDF.')});q('send').addEventListener('click',send);q('save').addEventListener('click',saveDraft);q('load').addEventListener('click',loadDraft);q('clear').addEventListener('click',clearAll);q('aiDraft').addEventListener('click',()=>ai('personalized_reply'));q('aiImprove').addEventListener('click',()=>ai('improve_existing_email'));document.querySelectorAll('[data-box]').forEach(b=>b.addEventListener('click',()=>box(b.dataset.box)));
+const stored=token();if(stored){q('token').value=stored;verify()}else{loadSignature();renderFiles()}
 })();
 </script>
-<!-- GNK_ASG_FINAL_SIGNATURE_ALL_PROFILES_START -->
-<script>
-(function(){
-  const LOGO_URL="https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png";
-
-  const PROFILE_DATA={
-    office:{from:"office@gnk-asg.hr",name:"GNK ASG Office",title:"GNK ASG Office",line:"GNK ASG d.o.o."},
-    legal:{from:"legal@gnk-asg.hr",name:"GNK ASG Legal & Compliance",title:"GNK ASG Legal & Compliance",line:"GNK ASG d.o.o. · Legal & Compliance"},
-    media:{from:"media@gnk-asg.hr",name:"GNK ASG Media Desk",title:"GNK ASG Media Desk",line:"GNK ASG d.o.o. · Media Desk"},
-    it:{from:"it@gnk-asg.hr",name:"IT – Osobni digitalni asistent",title:"IT – Osobni digitalni asistent",line:"GNK ASG d.o.o. · Automatizirana komunikacijska podrška"},
-    director:{from:"nermin.sefic@gnk-asg.hr",name:"Nermin Sefić / Direktor",title:"Nermin Sefić",line:"Direktor · GNK ASG d.o.o."}
-  };
-
-  function q(id){return document.getElementById(id)}
-  function val(id){const x=q(id);return x?x.value:""}
-  function setVal(id,v){const x=q(id);if(x)x.value=v||""}
-  function esc(s){return String(s||"").replace(/[&<>"']/g,function(m){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]})}
-  function toHtml(s){return esc(s).replace(/\n/g,"<br>")}
-  function profile(){return PROFILE_DATA[val("profile")]||PROFILE_DATA.office}
-
-  function signatureHtml(){
-    const p=profile();
-    return ''
-    + '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:18px;max-width:720px;width:100%;border-top:1px solid #d9d9d9">'
-    + '<tr>'
-    + '<td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0">'
-    + '<img src="'+LOGO_URL+'" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0;outline:none;text-decoration:none">'
-    + '</td>'
-    + '<td valign="top" style="padding:18px 0 8px 0;color:#111827;font-size:15px;line-height:1.42">'
-    + '<div style="font-size:22px;line-height:1.2;font-weight:700;color:#111827;margin-bottom:6px">'+esc(p.title)+'</div>'
-    + '<div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:4px">'+esc(p.line)+'</div>'
-    + '<div>Zagrebačka cesta 130, 10090 Zagreb</div>'
-    + '<div><strong>OIB:</strong> 75227917632&nbsp;&nbsp;·&nbsp;&nbsp;<strong>MBS:</strong> 081512375</div>'
-    + '<div><strong>Web:</strong> <a href="https://gnk-asg.hr" style="color:#0b57d0;text-decoration:none">https://gnk-asg.hr</a></div>'
-    + '<div><strong>Telefon:</strong> 091 535 8365</div>'
-    + '</td>'
-    + '</tr>'
-    + '</table>';
-  }
-
-  function plainSignature(){
-    const p=profile();
-    return "\n\n"+p.title+"\n"+p.line+"\nZagrebačka cesta 130, 10090 Zagreb\nOIB: 75227917632 · MBS: 081512375\nWeb: https://gnk-asg.hr\nTelefon: 091 535 8365";
-  }
-
-  function finalHtml(){
-    return '<div style="font-family:Arial,Helvetica,sans-serif;color:#111827;font-size:15px;line-height:1.5">'+toHtml(val("bodyText"))+'</div>'+signatureHtml();
-  }
-
-  function finalText(){
-    return val("bodyText")+plainSignature();
-  }
-
-  function refresh(){
-    const p=profile();
-    setVal("from",p.from);
-    setVal("fromName",p.name);
-    const prev=q("preview");
-    if(prev){
-      prev.innerHTML='<div style="font-family:Arial,Helvetica,sans-serif;color:#111827"><strong>Predmet:</strong> '+esc(val("subject")||"(bez predmeta)")+'<br><br>'+toHtml(val("bodyText"))+signatureHtml()+'</div>';
-    }
-  }
-
-  function applyProfileOptions(){
-    const select=q("profile");
-    if(!select)return;
-    Array.from(select.options).forEach(opt=>{
-      if(PROFILE_DATA[opt.value]){
-        opt.textContent=PROFILE_DATA[opt.value].name;
-      }
-    });
-  }
-
-  function enhanceHelpers(){
-    const auto=q("autoReply");
-    if(auto && !auto.dataset.finalSignatureBound){
-      auto.dataset.finalSignatureBound="1";
-      auto.addEventListener("click",function(){
-        setTimeout(refresh,50);
-      },true);
-    }
-    const helper=q("helper");
-    if(helper && !helper.dataset.finalSignatureBound){
-      helper.dataset.finalSignatureBound="1";
-      helper.addEventListener("click",function(){
-        setTimeout(refresh,50);
-      },true);
-    }
-  }
-
-  const oldFetch=window.fetch;
-  window.fetch=function(input,init){
-    try{
-      const url=typeof input==="string"?input:(input&&input.url?input.url:"");
-      if(url.indexOf("/api/admin-mail-send")>=0 && init && init.body){
-        const data=JSON.parse(init.body);
-        const p=profile();
-        data.from=val("from")||p.from;
-        data.fromName=val("fromName")||p.name;
-        data.to=val("to");
-        data.cc=val("cc");
-        data.bcc=val("bcc");
-        data.subject=val("subject");
-        data.body=finalHtml();
-        data.html=finalHtml();
-        data.bodyHtml=finalHtml();
-        data.htmlBody=finalHtml();
-        data.messageHtml=finalHtml();
-        data.contentHtml=finalHtml();
-        data.text=finalText();
-        data.plainText=finalText();
-        data.signatureProfile=val("profile");
-        data.signatureMode="gnk_asg_final_all_profiles_table_png_v2";
-        data.logoUrl=LOGO_URL;
-        init.body=JSON.stringify(data);
-      }
-    }catch(e){}
-    return oldFetch.apply(this,arguments);
-  };
-
-  function bind(){
-    applyProfileOptions();
-    ["profile","subject","bodyText"].forEach(id=>{
-      const el=q(id);
-      if(el && !el.dataset.finalSignatureAllBound){
-        el.dataset.finalSignatureAllBound="1";
-        el.addEventListener(id==="profile"?"change":"input",refresh,true);
-      }
-    });
-    enhanceHelpers();
-    refresh();
-  }
-
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",bind)}else{bind()}
-})();
-</script>
-<!-- GNK_ASG_FINAL_SIGNATURE_ALL_PROFILES_END -->
-<!-- GNK_ASG_PDF_UPLOAD_SEND_FINAL_START -->
-<script>
-(function(){
-  const MAX_TOTAL=3400000;
-  const MAX_ONE=3200000;
-  window.GNK_ASG_PDF_ATTACHMENTS_FINAL=[];
-
-  function q(id){return document.getElementById(id)}
-  function status(t){const x=q("status");if(x)x.textContent=t}
-  function esc(s){return String(s||"").replace(/[&<>"']/g,function(m){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]})}
-  function human(n){if(!n)return"0 B";if(n<1024)return n+" B";if(n<1048576)return(n/1024).toFixed(1)+" KB";return(n/1048576).toFixed(2)+" MB"}
-  function val(id){const x=q(id);return x?x.value:""}
-
-  function ensureUi(){
-    if(q("pdfAttachField"))return;
-    const target=q("bodyText");
-    const holder=target&&target.closest?target.closest(".field"):null;
-    const div=document.createElement("div");
-    div.className="field";
-    div.id="pdfAttachField";
-    div.innerHTML='<label>PDF prilozi — više komada odjednom</label><input id="pdfFiles" type="file" accept="application/pdf,.pdf" multiple><div class="small" style="margin-top:7px">Odaberi jedan ili više PDF-ova. Sigurni limit je oko 3 MB ukupno.</div><div class="list" id="pdfList" style="margin-top:9px;max-height:190px">Nema odabranih PDF priloga.</div>';
-    if(holder&&holder.parentNode)holder.parentNode.insertBefore(div,holder);
-    else document.body.appendChild(div);
-  }
-
-  function render(){
-    const box=q("pdfList");
-    if(!box)return;
-    const a=window.GNK_ASG_PDF_ATTACHMENTS_FINAL||[];
-    if(!a.length){box.textContent="Nema odabranih PDF priloga.";return}
-    const total=a.reduce(function(s,x){return s+(x.size||0)},0);
-    box.innerHTML=a.map(function(f,i){
-      return '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid rgba(214,173,79,.18);padding:7px 0"><div><b>'+esc(f.filename)+'</b><br><span style="color:#d1d5db">'+human(f.size)+' · PDF</span></div><button type="button" data-remove-pdf-final="'+i+'" style="padding:7px 10px">Ukloni</button></div>';
-    }).join("")+'<div style="padding-top:8px;color:#f4d37a;font-weight:900">Ukupno: '+human(total)+' · PDF priloga: '+a.length+'</div>';
-  }
-
-  function readFile(file){
-    return new Promise(function(resolve,reject){
-      const r=new FileReader();
-      r.onload=function(){
-        const s=String(r.result||"");
-        resolve(s.indexOf(",")>=0?s.split(",").pop():s);
-      };
-      r.onerror=function(){reject(r.error||new Error("Greška čitanja PDF-a"))};
-      r.readAsDataURL(file);
-    });
-  }
-
-  async function addFiles(files){
-    const list=Array.from(files||[]);
-    let total=(window.GNK_ASG_PDF_ATTACHMENTS_FINAL||[]).reduce(function(s,x){return s+(x.size||0)},0);
-
-    for(const file of list){
-      const name=String(file.name||"document.pdf");
-      if(file.type!=="application/pdf"&&!name.toLowerCase().endsWith(".pdf")){status("Preskočeno jer nije PDF: "+name);continue}
-      if(file.size>MAX_ONE){status("PDF je prevelik: "+name+" ("+human(file.size)+")");continue}
-      if(total+file.size>MAX_TOTAL){status("Ukupni PDF prilozi prelaze limit: "+human(MAX_TOTAL));continue}
-      const base64=await readFile(file);
-      window.GNK_ASG_PDF_ATTACHMENTS_FINAL.push({filename:name,type:"application/pdf",contentType:"application/pdf",mimeType:"application/pdf",size:file.size,base64:base64,content:base64});
-      total+=file.size;
-    }
-
-    render();
-    status("PDF prilozi spremni: "+window.GNK_ASG_PDF_ATTACHMENTS_FINAL.length);
-  }
-
-  async function sendWithPdf(){
-    const preview=q("preview");
-    const html=preview?preview.innerHTML:String(val("bodyText")).replace(/\n/g,"<br>");
-    const payload={
-      from:val("from"),
-      fromName:val("fromName"),
-      to:val("to"),
-      cc:val("cc"),
-      bcc:val("bcc"),
-      subject:val("subject"),
-      body:html,
-      html:html,
-      bodyHtml:html,
-      text:val("bodyText"),
-      attachments:(window.GNK_ASG_PDF_ATTACHMENTS_FINAL||[]).slice(),
-      attachmentCount:(window.GNK_ASG_PDF_ATTACHMENTS_FINAL||[]).length
-    };
-
-    if(!String(payload.to||"").trim()){status("Nedostaje To primatelj.");return}
-    if(!String(payload.subject||"").trim()){status("Nedostaje predmet.");return}
-
-    status("Slanje s PDF prilozima...");
-    try{
-      const r=await fetch("/api/admin-mail-send",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)});
-      const t=await r.text();
-      if(!r.ok){status("Greška slanja: "+r.status+" · "+t.slice(0,250));return}
-      status("Poslano/evidentirano. PDF priloga: "+payload.attachmentCount);
-      const list=q("list");
-      if(list)list.textContent=t.slice(0,5000);
-    }catch(e){
-      status("Greška slanja: "+e.message);
-    }
-  }
-
-  function bind(){
-    ensureUi();
-    const input=q("pdfFiles");
-    if(input&&!input.dataset.boundPdfFinal){
-      input.dataset.boundPdfFinal="1";
-      input.addEventListener("change",async function(){await addFiles(this.files);this.value=""});
-    }
-
-    document.addEventListener("click",function(e){
-      const rm=e.target&&e.target.closest?e.target.closest("[data-remove-pdf-final]"):null;
-      if(rm){
-        const i=parseInt(rm.getAttribute("data-remove-pdf-final"),10);
-        if(!isNaN(i)){window.GNK_ASG_PDF_ATTACHMENTS_FINAL.splice(i,1);render();status("PDF prilog uklonjen.")}
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        return false;
-      }
-
-      if(e.target&&e.target.id==="send"){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        sendWithPdf();
-        return false;
-      }
-    },true);
-
-    render();
-  }
-
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind);else bind();
-})();
-</script>
-<!-- GNK_ASG_PDF_UPLOAD_SEND_FINAL_END -->
-<!-- GNK_ASG_PERSONALIZED_AI_MAIL_START -->
-<script>
-(function(){
-  function q(id){return document.getElementById(id)}
-  function val(id){const x=q(id);return x?x.value:""}
-  function setVal(id,v){const x=q(id);if(x)x.value=v||""}
-  function status(t){const x=q("status");if(x)x.textContent=t}
-  function triggerPreview(){
-    const area=q("bodyText");
-    if(area)area.dispatchEvent(new Event("input",{bubbles:true}));
-  }
-
-  function addPersonalFields(){
-    if(q("gnkPersonalAiPanel"))return;
-
-    const side=document.querySelector(".side") || document.body;
-    const panel=document.createElement("div");
-    panel.className="panel";
-    panel.id="gnkPersonalAiPanel";
-    panel.innerHTML=
-      '<h3>Personalizirani AI odgovor</h3>'+
-      '<div class="small">AI koristi ime primatelja, odnos, kontekst, cilj i ton odgovora. Potpis GNK ASG ostaje fiksan.</div>'+
-      '<div class="field" style="margin-top:10px"><label>Ime / naziv primatelja</label><input id="aiRecipientName" placeholder="npr. gđa. Ivana Horvat, Namecheap Legal, odvjetnički ured..."></div>'+
-      '<div class="field"><label>Odnos / predmet komunikacije</label><input id="aiRelation" placeholder="npr. poslovni partner, odvjetnik, tehnička podrška, novinar, kupac..."></div>'+
-      '<div class="field"><label>Važan kontekst za odgovor</label><textarea id="aiContext" style="min-height:120px" placeholder="Ukratko zalijepi što je važno: prethodna poruka, dogovor, sporni račun, tehnički problem, rok, stav GNK ASG-a..."></textarea></div>'+
-      '<div class="field"><label>Cilj odgovora</label><input id="aiGoal" placeholder="npr. potvrditi primitak, zatražiti dokument, odbiti bez konflikta, dogovoriti nastavak..."></div>'+
-      '<div class="field"><label>Ton odgovora</label><select id="aiTone"><option value="profesionalno i prijateljski">Profesionalno i prijateljski</option><option value="kratko i jasno">Kratko i jasno</option><option value="pravno oprezno">Pravno oprezno</option><option value="direktorski i ozbiljno">Direktorski i ozbiljno</option><option value="medijski i neutralno">Medijski i neutralno</option></select></div>'+
-      '<div class="actions" style="margin-top:10px">'+
-      '<button type="button" id="aiPersonalReply" class="gold">AI personalizirani odgovor</button>'+
-      '<button type="button" id="aiPersonalImprove">AI doradi postojeći tekst</button>'+
-      '<button type="button" id="aiPersonalLegal">AI pravno oprezno</button>'+
-      '<button type="button" id="aiPersonalShort">AI kratko</button>'+
-      '</div>';
-
-    side.insertBefore(panel,side.firstChild);
-  }
-
-  function buildContext(style){
-    const profile=val("profile");
-    const recipient=val("aiRecipientName");
-    const relation=val("aiRelation");
-    const context=val("aiContext");
-    const goal=val("aiGoal");
-    const tone=val("aiTone");
-
-    return [
-      "GNK ASG Mail Studio",
-      "Profil pošiljatelja: "+profile,
-      "Ime/naziv primatelja: "+recipient,
-      "Odnos/predmet komunikacije: "+relation,
-      "Cilj odgovora: "+goal,
-      "Željeni ton: "+tone,
-      "AI stil: "+style,
-      "Važan kontekst: "+context,
-      "Uputa: odgovor mora biti personaliziran prema primatelju i kontekstu, ne generički. Ne izmišljaj činjenice. Ako nešto nije jasno, formuliraj oprezno. Zadrži hrvatski standardni jezik, latinicu i dijakritičke znakove."
-    ].join("\\n");
-  }
-
-  async function askPersonalAi(task,style){
-    const subject=val("subject");
-    const text=val("bodyText");
-    const recipient=val("aiRecipientName");
-
-    status("AI priprema personalizirani odgovor...");
-
-    try{
-      const r=await fetch("/api/ai-assist",{
-        method:"POST",
-        headers:{"content-type":"application/json"},
-        body:JSON.stringify({
-          task:task,
-          style:style,
-          lang:"hr",
-          subject:subject,
-          text:text,
-          context:buildContext(style),
-          recipientName:recipient,
-          relation:val("aiRelation"),
-          goal:val("aiGoal"),
-          tone:val("aiTone")
-        })
-      });
-
-      const raw=await r.text();
-      let j=null;
-      try{j=JSON.parse(raw)}catch(e){j={text:raw}}
-
-      if(!r.ok){
-        status("AI greška: "+r.status+" · "+raw.slice(0,180));
-        return;
-      }
-
-      if(j && j.text){
-        setVal("bodyText",j.text);
-        triggerPreview();
-        if(j.ai){
-          status("Personalizirani AI odgovor pripremljen · "+(j.model||"Cloudflare Workers AI"));
-        }else{
-          status("Personalizirani fallback odgovor pripremljen.");
-        }
-      }else{
-        status("AI nije vratio tekst.");
-      }
-    }catch(e){
-      status("AI greška: "+e.message);
-    }
-  }
-
-  function bind(){
-    addPersonalFields();
-
-    document.addEventListener("click",function(e){
-      if(e.target && e.target.id==="aiPersonalReply"){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        askPersonalAi("personalized_reply","corporate");
-        return false;
-      }
-
-      if(e.target && e.target.id==="aiPersonalImprove"){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        askPersonalAi("improve_existing_email","corporate");
-        return false;
-      }
-
-      if(e.target && e.target.id==="aiPersonalLegal"){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        askPersonalAi("personalized_legal_reply","legal");
-        return false;
-      }
-
-      if(e.target && e.target.id==="aiPersonalShort"){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        askPersonalAi("personalized_short_reply","short");
-        return false;
-      }
-
-      if(e.target && e.target.id==="helper"){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        askPersonalAi("improve_existing_email","corporate");
-        return false;
-      }
-
-      if(e.target && e.target.id==="autoReply"){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        askPersonalAi("personalized_reply","corporate");
-        return false;
-      }
-    },true);
-  }
-
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",bind);
-  }else{
-    bind();
-  }
-})();
-</script>
-<!-- GNK_ASG_PERSONALIZED_AI_MAIL_END -->
 </body>
 </html>
