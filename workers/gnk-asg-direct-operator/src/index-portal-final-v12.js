@@ -23,6 +23,17 @@ function withVersionHeader(response) {
   });
 }
 
+async function statusAsset(request, env, english) {
+  if (!env.ASSETS?.fetch) return null;
+  const target = new URL(english ? '/automation-status/index.html' : '/status-automatizacije/index.html', request.url);
+  const assetRequest = new Request(target, {
+    method: 'GET',
+    headers: request.headers
+  });
+  const response = await env.ASSETS.fetch(assetRequest);
+  return response.status === 404 ? null : withVersionHeader(response);
+}
+
 async function fetchHandler(request, env, ctx) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/+$/, '') || '/';
@@ -37,6 +48,16 @@ async function fetchHandler(request, env, ctx) {
       timeZone: 'Europe/Zagreb',
       deployedEntryPoint: 'src/index-portal-final-v12.js'
     });
+  }
+
+  if (request.method === 'GET' && path === '/status-automatizacije') {
+    const response = await statusAsset(request, env, false);
+    if (response) return response;
+  }
+
+  if (request.method === 'GET' && path === '/automation-status') {
+    const response = await statusAsset(request, env, true);
+    if (response) return response;
   }
 
   const response = await core.fetch(request, env, ctx);
