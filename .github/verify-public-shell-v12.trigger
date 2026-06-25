@@ -1,0 +1,2 @@
+verification=GNK_ASG_PUBLIC_SHELL_V12
+revision=1
