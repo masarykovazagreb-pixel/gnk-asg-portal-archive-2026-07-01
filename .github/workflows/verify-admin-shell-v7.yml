@@ -1,0 +1,104 @@
+name: Verify Admin Shell V7
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/verify-admin-shell-v7.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate Admin Shell source
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/admin-unified-shell-v7.js
+          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
+          test -s apps/portal/assets/admin-unified-shell-v7.css
+          grep -q 'GNK_ASG_ADMIN_UNIFIED_V7_20260625' workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
+          grep -q 'GNK_ASG_MAIL_STUDIO_EMBED_DASHBOARD_START' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+      - name: Install Chromium
+        run: |
+          npm install --no-package-lock --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Verify private production pages
+        shell: bash
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const {chromium}=require('playwright');
+          const routes=['/operator-dashboard/','/admin-center/','/mail-studio/','/auto-editor/','/operator-mobile/','/news-admin/','/pdf-publisher/','/social-share/','/wa-center/'];
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const results=[];
+            for(const route of routes){
+              const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
+              let http=0;
+              try{
+                const response=await page.goto(`https://gnk-asg.hr${route}?cb=${Date.now()}`,{waitUntil:'networkidle',timeout:90000});
+                http=response?.status()||0;
+                await page.waitForTimeout(1500);
+                const data=await page.evaluate(()=>{
+                  const shell=document.getElementById('gnk-backend-shell');
+                  const launcher=document.getElementById('gnk-admin-module-launcher-v7');
+                  const iframe=[...document.querySelectorAll('iframe[src^="/mail-studio/"]')].filter(el=>getComputedStyle(el).display!=='none');
+                  const navLinks=shell?[...shell.querySelectorAll('.gnk-shell-nav a')].map(a=>a.textContent.trim()):[];
+                  const hasAssets=[...document.styleSheets].some(s=>String(s.href||'').includes('admin-unified-shell-v7.css'))&&[...document.scripts].some(s=>String(s.src||'').includes('admin-unified-shell-v7.js'));
+                  const rect=shell?.getBoundingClientRect();
+                  const bodyHeight=document.body.scrollHeight;
+                  return {
+                    shell:Boolean(shell),
+                    launcher:Boolean(launcher),
+                    iframeVisible:iframe.length,
+                    navLinks,
+                    hasAssets,
+                    shellHeight:rect?Number(rect.height.toFixed(2)):null,
+                    horizontalOverflow:document.documentElement.scrollWidth>window.innerWidth+2,
+                    bodyHeight,
+                    embeddedBlock:Boolean(document.getElementById('gnkMailStudioEmbedDashboard'))
+                  };
+                });
+                const routeKey=route.replace(/^\/|\/$/g,'');
+                const shouldLauncher=['operator-dashboard','admin-center'].includes(routeKey);
+                const expectedLinks=['Admin','Operator','Mail Studio','Auto Editor','Mobilni Admin','Portal'];
+                data.http=http;
+                data.route=route;
+                data.ok=http===200&&data.shell&&data.hasAssets&&data.iframeVisible===0&&!data.embeddedBlock&&!data.horizontalOverflow&&data.shellHeight<190&&expectedLinks.every(label=>data.navLinks.some(item=>item.includes(label)))&&(!shouldLauncher||data.launcher);
+                results.push(data);
+                await page.screenshot({path:`admin-v7-${routeKey||'root'}.png`,fullPage:true});
+              }catch(error){
+                results.push({route,http,error:error.message,ok:false});
+              }
+              await page.close();
+            }
+            await browser.close();
+            const report={checkedAt:new Date().toISOString(),ok:results.every(item=>item.ok),results};
+            fs.writeFileSync('admin-shell-v7-report.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report,null,2));
+            if(!report.ok)process.exitCode=1;
+          })().catch(error=>{console.error(error);process.exit(1)});
+          JS
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-shell-v7-evidence
+          path: |
+            admin-shell-v7-report.json
+            admin-v7-*.png
+          retention-days: 7
