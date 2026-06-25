@@ -6,11 +6,10 @@ const base = process.env.VISUAL_BASE || 'http://127.0.0.1:8787';
 const routes = [
   ['/', 'hr-home', 'hr'], ['/trzista/', 'hr-trzista', 'hr'], ['/objave/', 'hr-objave', 'hr'], ['/vijesti/', 'hr-vijesti', 'hr'],
   ['/assistant/', 'hr-assistant', 'hr'], ['/contact/', 'hr-contact', 'hr'], ['/downloads/', 'hr-downloads', 'hr'],
-  ['/visual-index/', 'visual-index-hr', 'hr'], ['/legal/', 'hr-legal', 'hr'], ['/status-automatizacije/', 'hr-status', 'hr'], ['/app/', 'app-hr', 'hr'],
+  ['/visual-index/', 'visual-index', 'hr'], ['/legal/', 'hr-legal', 'hr'], ['/status-automatizacije/', 'hr-status', 'hr'], ['/app/', 'app', 'hr'],
   ['/en/', 'en-home', 'en'], ['/markets/', 'en-markets', 'en'], ['/publications/', 'en-publications', 'en'], ['/news/', 'en-news', 'en'],
   ['/en/assistant/', 'en-assistant', 'en'], ['/en/contact/', 'en-contact', 'en'], ['/en/downloads/', 'en-downloads', 'en'],
-  ['/en/legal/', 'en-legal', 'en'], ['/automation-status/', 'en-status', 'en'],
-  ['/visual-index/?lang=en', 'visual-index-en', 'en'], ['/app/?lang=en', 'app-en', 'en']
+  ['/en/legal/', 'en-legal', 'en'], ['/automation-status/', 'en-status', 'en']
 ];
 const expected = {
   hr: ['Profil','Financije','Tržišta','Objave','Vijesti','Auto Editor','Visual Index','PDF centar','AI pomoć','Kontakt','Legal','Admin','App'],
@@ -75,6 +74,19 @@ for (const [view, viewport] of views) {
   }
   await context.close();
 }
+
+const sharedContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+const sharedPage = await sharedContext.newPage();
+for (const route of ['/visual-index/?lang=en', '/app/?lang=en']) {
+  await sharedPage.goto(`${base}${route}`, { waitUntil: 'domcontentloaded', timeout: 22000 });
+  await sharedPage.waitForSelector('#gnk-asg-premium-header[data-language="en"]');
+  const links = await sharedPage.locator('#gnk-asg-premium-menu a').allInnerTexts();
+  const languageTarget = await sharedPage.locator('#gnk-public-language').getAttribute('href');
+  if (JSON.stringify(links) !== JSON.stringify(expected.en) || String(languageTarget || '').includes('lang=en')) {
+    failures.push({ route, error: 'shared page did not preserve English navigation context' });
+  }
+}
+await sharedContext.close();
 
 const privatePage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 await privatePage.goto(`${base}/operator-dashboard/`, { waitUntil: 'domcontentloaded', timeout: 22000 });
