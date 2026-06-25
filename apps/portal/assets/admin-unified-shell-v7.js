@@ -1,6 +1,7 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V7__) return;
+  if (window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V8__) return;
+  window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V8__ = true;
   window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V7__ = true;
 
   const path = location.pathname.replace(/\/+$/, '') || '/';
@@ -35,6 +36,23 @@
     `<a href="${href}" class="${active(href)?'active':''}" title="${description}"><i aria-hidden="true">${icon}</i>${label}</a>`
   ).join('');
 
+  const launcherMarkup = () => `
+    <div class="gnk-admin-launcher-head">
+      <div><strong>Administrativni moduli</strong><span>Jedinstveni pristup svim privatnim alatima</span></div>
+      <span class="gnk-admin-launcher-state"><i></i> Privatni sloj</span>
+    </div>
+    <div class="gnk-admin-launcher-grid">
+      ${items.filter(([,href]) => !['/','/admin-center/','/operator-dashboard/'].includes(href)).map(([label,href,icon,description]) =>
+        `<a href="${href}"><i aria-hidden="true">${icon}</i><span><strong>${label}</strong><small>${description}</small></span></a>`
+      ).join('')}
+    </div>`;
+
+  const setMarkupIfChanged = (element, markup) => {
+    if (!element || element.innerHTML === markup) return false;
+    element.innerHTML = markup;
+    return true;
+  };
+
   const removeLegacyEmbed = () => {
     document.getElementById('gnkMailStudioEmbedDashboard')?.remove();
     document.querySelectorAll('iframe[src^="/mail-studio/"]').forEach(frame => {
@@ -64,8 +82,8 @@
     let shell = document.getElementById('gnk-backend-shell');
     if (!shell) shell = createShell();
     const nav = shell.querySelector('.gnk-shell-nav');
-    if (nav) nav.innerHTML = links();
-    shell.dataset.adminShellVersion = '7';
+    setMarkupIfChanged(nav,links());
+    shell.dataset.adminShellVersion = '8';
     document.body.classList.add('gnk-backend-ui','gnk-admin-unified-v7',`gnk-admin-route-${path.replace(/^\//,'').replace(/\//g,'-')||'admin'}`);
     if (shell.querySelector('.gnk-shell-auth')) document.body.classList.add('gnk-admin-shared-auth');
     return shell;
@@ -79,16 +97,7 @@
       launcher.id = 'gnk-admin-module-launcher-v7';
       shell.insertAdjacentElement('afterend',launcher);
     }
-    launcher.innerHTML = `
-      <div class="gnk-admin-launcher-head">
-        <div><strong>Administrativni moduli</strong><span>Jedinstveni pristup svim privatnim alatima</span></div>
-        <span class="gnk-admin-launcher-state"><i></i> Privatni sloj</span>
-      </div>
-      <div class="gnk-admin-launcher-grid">
-        ${items.filter(([,href]) => !['/','/admin-center/','/operator-dashboard/'].includes(href)).map(([label,href,icon,description]) =>
-          `<a href="${href}"><i aria-hidden="true">${icon}</i><span><strong>${label}</strong><small>${description}</small></span></a>`
-        ).join('')}
-      </div>`;
+    setMarkupIfChanged(launcher,launcherMarkup());
   };
 
   const ensureLockNotice = shell => {
@@ -103,22 +112,71 @@
     }
   };
 
+  const activateDashboardTab = (id,button) => {
+    const app = document.getElementById('app');
+    const target = document.getElementById(id);
+    if (!app || !target || !app.contains(target)) return false;
+    app.querySelectorAll('section').forEach(section => section.classList.remove('active'));
+    const sideNav = app.querySelector(':scope > nav');
+    sideNav?.querySelectorAll('button').forEach(item => item.classList.remove('active'));
+    target.classList.add('active');
+    button?.classList.add('active');
+    target.scrollIntoView({block:'nearest'});
+    return true;
+  };
+
+  const bindDashboardTabs = () => {
+    const app = document.getElementById('app');
+    const sideNav = app?.querySelector(':scope > nav');
+    if (!sideNav || sideNav.dataset.gnkStableTabs === '1') return;
+    sideNav.dataset.gnkStableTabs = '1';
+    sideNav.addEventListener('click',event => {
+      const button = event.target.closest('button');
+      if (!button || !sideNav.contains(button)) return;
+      const handler = button.getAttribute('onclick') || '';
+      const match = handler.match(/tab\(['"]([^'"]+)['"]/i);
+      if (!match) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      activateDashboardTab(match[1],button);
+    },true);
+    window.gnkActivateAdminTab = activateDashboardTab;
+  };
+
+  let applying = false;
   const apply = () => {
-    removeLegacyEmbed();
-    const shell = ensureShell();
-    ensureLauncher(shell);
-    ensureLockNotice(shell);
-    const authenticated = document.body.classList.contains('gnk-admin-authenticated') || !document.getElementById('app')?.classList.contains('hidden');
-    document.getElementById('gnk-admin-lock-notice-v7')?.classList.toggle('hidden',authenticated);
+    if (applying) return;
+    applying = true;
+    try {
+      removeLegacyEmbed();
+      const shell = ensureShell();
+      ensureLauncher(shell);
+      ensureLockNotice(shell);
+      bindDashboardTabs();
+      const authenticated = document.body.classList.contains('gnk-admin-authenticated') || !document.getElementById('app')?.classList.contains('hidden');
+      document.getElementById('gnk-admin-lock-notice-v7')?.classList.toggle('hidden',authenticated);
+    } finally {
+      applying = false;
+    }
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',apply,{once:true}); else apply();
   window.addEventListener('load',apply,{once:true});
-  [100,350,900,1800,3500].forEach(delay => setTimeout(apply,delay));
+  [100,350,900,1800].forEach(delay => setTimeout(apply,delay));
+
   let queued = false;
-  new MutationObserver(() => {
-    if (queued) return;
+  new MutationObserver(records => {
+    if (applying || queued) return;
+    const relevant = records.some(record => {
+      const target = record.target instanceof Element ? record.target : record.target?.parentElement;
+      if (!target) return true;
+      return !target.closest('#gnk-backend-shell,#gnk-admin-module-launcher-v7,#gnk-admin-lock-notice-v7');
+    });
+    if (!relevant) return;
     queued = true;
-    requestAnimationFrame(() => { queued = false; apply(); });
+    requestAnimationFrame(() => {
+      queued = false;
+      apply();
+    });
   }).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
 })();
