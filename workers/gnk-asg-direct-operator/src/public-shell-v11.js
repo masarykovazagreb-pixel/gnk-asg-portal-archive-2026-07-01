@@ -3,6 +3,19 @@ export function isPrivatePath(path){
   return ['/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/admin-center','/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/auto-editor','/operator','/api'].some(p=>path===p||path.startsWith(`${p}/`));
 }
 
+const MOJIBAKE_REPLACEMENTS=[
+  ['Ã„ÂŒ','Č'],['Ã„Â†','Ć'],['Ã…Â ','Š'],['Ã…Â½','Ž'],['Ã„Â','Đ'],
+  ['Ã„Â','č'],['Ã„Â‡','ć'],['Ã…Â¡','š'],['Ã…Â¾','ž'],['Ã„Â‘','đ'],
+  ['ÄŒ','Č'],['Ä†','Ć'],['Å ','Š'],['Å½','Ž'],['Ä','Đ'],
+  ['Ä','č'],['Ä‡','ć'],['Å¡','š'],['Å¾','ž'],['Ä‘','đ']
+];
+
+export function repairCommonMojibake(value){
+  let output=String(value||'');
+  for(const [broken,fixed] of MOJIBAKE_REPLACEMENTS)output=output.split(broken).join(fixed);
+  return output;
+}
+
 function removeLegacyPublicShell(html){
   return html
     .replace(/<!--\s*GNK_ASG_FIXED_MENU_PATCH_START\s*-->/gi,'')
@@ -21,7 +34,7 @@ function removeLegacyPublicShell(html){
 }
 
 export function patchPublicHtml(html,path){
-  html=removeLegacyPublicShell(html);
+  html=repairCommonMojibake(removeLegacyPublicShell(html));
   const favicon='\n<link rel="icon" type="image/svg+xml" href="/assets/gnk-asg-favicon.svg?v=20260625-v1">\n<link rel="shortcut icon" href="/favicon.ico?v=20260625-v1">\n<meta name="theme-color" content="#020812">';
   const ux='<link rel="stylesheet" href="/assets/public-ux-v11.css?v=20260625-v12">';
   const visual='<link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260625-v15">';
@@ -36,15 +49,21 @@ export function patchPublicHtml(html,path){
 }
 
 export function patchAdminHtml(html,path=''){
-  html=html
+  html=repairCommonMojibake(html)
     .replace(/<!--\s*GNK_ASG_MAIL_STUDIO_EMBED_DASHBOARD_START\s*-->[\s\S]*?<!--\s*GNK_ASG_MAIL_STUDIO_EMBED_DASHBOARD_END\s*-->/gi,'')
+    .replace(/<script[^>]+id=["']gnk-asg-force-token-sync["'][^>]*>[\s\S]*?<\/script>/gi,'')
+    .replace(/<script[^>]+id=["']gnk-asg-admin-auth-bridge["'][^>]*>[\s\S]*?<\/script>/gi,'')
+    .replace(/window\.GNK_ASG_FORCE_OPERATOR_TOKEN\s*=\s*["'][^"']*["'];?/gi,'')
     .replace(/<script[^>]+src=["'][^"']*\/assets\/brand\/gnk-asg-global-layer\.js[^"']*["'][^>]*><\/script>/gi,'')
     .replace(/<link[^>]+href=["'][^"']*\/assets\/brand\/gnk-asg-global-layer\.css[^"']*["'][^>]*>/gi,'');
-  const favicon='<link rel="icon" type="image/svg+xml" href="/assets/gnk-asg-favicon.svg?v=20260625-v1"><meta name="theme-color" content="#020812">';
+  const favicon='<link rel="icon" type="image/svg+xml" href="/assets/gnk-asg-favicon.svg?v=20260625-v1"><meta name="theme-color" content="#020812"><meta name="referrer" content="no-referrer">';
   const css='<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260625-admin-v7"><link rel="stylesheet" href="/assets/admin-unified-shell-v7.css?v=20260625-admin-v7">';
+  const safeHelper='<script id="gnk-asg-force-token-sync">function gnkAsgForceToken(){try{return localStorage.getItem("GNK_ASG_OPERATOR_TOKEN")||""}catch(e){return ""}}function gnkAsgWithTokenUrl(url){return url}try{const u=new URL(location.href);if(u.searchParams.has("token")){u.searchParams.delete("token");history.replaceState(null,"",u.pathname+(u.search?u.search:"")+(u.hash||""))}}catch(e){}</script>';
+  const authBridge='<script id="gnk-asg-admin-auth-bridge">(function(){if(window.__GNK_ASG_ADMIN_AUTH_BRIDGE__)return;window.__GNK_ASG_ADMIN_AUTH_BRIDGE__=true;const original=window.fetch.bind(window);window.fetch=function(input,init){try{const raw=typeof input==="string"?input:input.url;const url=new URL(raw,location.origin);if(url.origin===location.origin&&(url.pathname.startsWith("/api/")||url.pathname.startsWith("/operator/"))){const token=typeof gnkAsgForceToken==="function"?gnkAsgForceToken():"";if(token){const next={...(init||{})};const headers=new Headers(next.headers||(input instanceof Request?input.headers:undefined));if(!headers.has("authorization"))headers.set("authorization","Bearer "+token);next.headers=headers;return original(input,next)}}}catch(e){}return original(input,init)}})();</script>';
   const shell='<script src="/assets/backend-ui-shell.js?v=20260625-admin-v7" defer></script><script src="/assets/admin-unified-shell-v7.js?v=20260625-admin-v7" defer></script>';
   if(!html.includes('/assets/gnk-asg-favicon.svg'))html=html.replace('</head>',`${favicon}</head>`);
   if(!html.includes('/assets/admin-unified-shell-v7.css'))html=html.replace('</head>',`${css}</head>`);
+  if(!html.includes('id="gnk-asg-force-token-sync"'))html=html.replace('</head>',`${safeHelper}${authBridge}</head>`);
   if(path==='/operator-dashboard'&&!html.includes('/assets/admin-portal-experience-v10.js'))html=html.replace('</head>','<script src="/assets/admin-portal-experience-v10.js?v=20260625-v10" defer></script></head>');
   if(!html.includes('/assets/admin-unified-shell-v7.js'))html=html.replace('</body>',`${shell}</body>`);
   return html;
@@ -54,7 +73,11 @@ export async function transformHtml(response,fn){
   const headers=new Headers(response.headers);
   headers.delete('content-length');
   headers.delete('content-encoding');
+  headers.set('content-type','text/html; charset=utf-8');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('x-content-type-options','nosniff');
+  headers.set('referrer-policy','no-referrer');
+  headers.set('permissions-policy','camera=(self), microphone=(), geolocation=()');
   headers.set('x-gnk-asg-public-visual','GNK_ASG_PUBLIC_VISUAL_V16_20260625');
   return new Response(fn(await response.text()),{status:response.status,statusText:response.statusText,headers});
 }
