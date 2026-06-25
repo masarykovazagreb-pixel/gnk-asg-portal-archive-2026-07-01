@@ -91,6 +91,29 @@ async function fetchHandler(request,env,ctx){
   const url=new URL(request.url);
   const path=url.pathname.replace(/\/+$/,'')||'/';
 
+  if(request.method==='GET'&&path==='/data/portal-version.json'){
+    return json({
+      ok:true,
+      version:VERSION,
+      publicUx:'GNK_ASG_PUBLIC_UX_V12',
+      publicVisual:'GNK_ASG_PUBLIC_VISUAL_V16_20260625',
+      publicMenu:'GNK_ASG_PUBLIC_MENU_V15',
+      floatingHome:'GNK_ASG_FLOATING_HOME_V16',
+      adminVisual:'GNK_ASG_ADMIN_UNIFIED_V7_20260625',
+      favicon:FAVICON_VERSION,
+      indexClock:'GNK_ASG_INDEX_CLOCK_V2',
+      automation:'GNK_ASG_PORTAL_EXPERIENCE_V10_20260625',
+      newsRotation:NEWS_ROTATION,
+      marketVersion:MARKET_VERSION,
+      marketChart:MARKET_CHART,
+      groupNetwork:GROUP_NETWORK,
+      galleryVersion:GALLERY_VERSION,
+      indexDesign:'IQ200',
+      timeZone:'Europe/Zagreb',
+      deployedEntryPoint:'src/index-portal-final-v13.js'
+    });
+  }
+
   if((request.method==='GET'||request.method==='HEAD')&&['/favicon.ico','/favicon.svg','/site.webmanifest'].includes(path)){
     const response=await faviconResponse(request,env,path);
     if(response)return response;
