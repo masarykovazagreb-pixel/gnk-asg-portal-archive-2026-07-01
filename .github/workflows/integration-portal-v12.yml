@@ -40,10 +40,11 @@ jobs:
           binding = "ASSETS"
           run_worker_first = true
           TOML
-          npx --yes wrangler@4 dev --config wrangler.integration.toml --local --ip 127.0.0.1 --port 8787 > wrangler-v12.log 2>&1 &
+          npx --yes wrangler@4 dev --config wrangler.integration.toml --ip 127.0.0.1 --port 8787 > wrangler-v12.log 2>&1 &
           echo $! > wrangler-v12.pid
           for i in $(seq 1 45); do
             if curl -fsS http://127.0.0.1:8787/data/index-media-config.json >/dev/null; then exit 0; fi
+            if ! kill -0 "$(cat wrangler-v12.pid)" 2>/dev/null; then break; fi
             sleep 1
           done
           cat wrangler-v12.log
@@ -77,6 +78,13 @@ jobs:
           grep -q "document.createElement('video')" apps/portal/assets/index-redesign-production.js
           grep -q "video.src = source" apps/portal/assets/index-redesign-production.js
           echo "PORTAL_V12_INTEGRATION_OK=true"
+      - name: Upload local startup log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portal-v12-local-log
+          path: workers/gnk-asg-direct-operator/wrangler-v12.log
+          retention-days: 3
       - name: Show Worker log on failure
         if: failure()
         working-directory: workers/gnk-asg-direct-operator
