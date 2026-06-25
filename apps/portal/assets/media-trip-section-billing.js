@@ -1,0 +1,4 @@
+(()=>{
+const f=(id,l,t='text')=>`<div class="trip-field"><label for="${id}">${l}</label><input id="${id}" type="${t}"></div>`;
+window.GNKTripBilling={render:()=>`<section class="trip-card"><p class="trip-eyebrow">6. Plaćanje</p><h2>Redakcija ili dobavljač kojem se plaća</h2><p>Podaci se koriste samo kada GNK ASG treba platiti odobreni predračun ili drugi odobreni putni trošak.</p><div class="trip-grid">${f('billingLegalName','Naziv primatelja plaćanja')}${f('billingTaxId','Porezni / VAT broj')}${f('billingAddress','Adresa')}${f('billingCountry','Država')}${f('billingContact','Kontakt osoba')}${f('billingEmail','E-mail za račun','email')}${f('billingIban','IBAN / račun')}${f('billingSwift','SWIFT / BIC')}<div class="trip-field full"><label>Napomena za plaćanje</label><textarea id="billingNotes"></textarea></div></div></section>`};
+})();
