@@ -40,7 +40,14 @@ for (const [view, viewport] of views) {
       item.bodyClass = await page.locator('body').getAttribute('class');
       item.horizontalOverflow = await page.evaluate(() => document.body.scrollWidth > innerWidth + 2);
       item.visibleLegacy = await page.evaluate(() => {
-        const selectors = ['body > header:not(#gnk-asg-premium-header)', '.site-header', '.shell > .brand-head', '.shell > .top-nav', '.gnk-asg-full-menu-v2', '.gnk-asg-rescue-menu', '.gnk-asg-final-menu-wrap'];
+        const selectors = [
+          'body > header:not(#gnk-asg-premium-header)', '.site-header', '.shell > .brand-head', '.shell > .top-nav',
+          '.gnk-asg-full-menu-v2', '.gnk-asg-rescue-menu', '.gnk-asg-final-menu-wrap', '.gnk-asg-inner-nav',
+          '.gnk-asg-floating-actions', '.floating-home', '.floating-ai', '.gnk-global-float-home', '.gnk-global-float-ai',
+          'main > nav:first-child', '.news-actions', '#gnk-asg-global-layer-root', '#gnk-asg-float-home',
+          '#gnk-asg-float-ai', '#gnk-asg-ai-panel', '#gnk-asg-review-modal',
+          'body.gnk-route-contact main .card > a[href="/"]', 'body.gnk-route-contact main .card > a[href="/en/"]'
+        ];
         return [...document.querySelectorAll(selectors.join(','))].filter(element => {
           const style = getComputedStyle(element);
           const rect = element.getBoundingClientRect();
@@ -78,21 +85,29 @@ for (const [view, viewport] of views) {
 const sharedContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 const sharedPage = await sharedContext.newPage();
 for (const route of ['/visual-index/?lang=en', '/app/?lang=en']) {
-  await sharedPage.goto(`${base}${route}`, { waitUntil: 'domcontentloaded', timeout: 22000 });
-  await sharedPage.waitForSelector('#gnk-asg-premium-header[data-language="en"]');
-  const links = await sharedPage.locator('#gnk-asg-premium-menu a').allInnerTexts();
-  const languageTarget = await sharedPage.locator('#gnk-public-language').getAttribute('href');
-  if (JSON.stringify(links) !== JSON.stringify(expected.en) || String(languageTarget || '').includes('lang=en')) {
-    failures.push({ route, error: 'shared page did not preserve English navigation context' });
+  try {
+    await sharedPage.goto(`${base}${route}`, { waitUntil: 'domcontentloaded', timeout: 22000 });
+    await sharedPage.waitForSelector('#gnk-asg-premium-header[data-language="en"]');
+    const links = await sharedPage.locator('#gnk-asg-premium-menu a').allInnerTexts();
+    const languageTarget = await sharedPage.locator('#gnk-public-language').getAttribute('href');
+    if (JSON.stringify(links) !== JSON.stringify(expected.en) || String(languageTarget || '').includes('lang=en')) {
+      failures.push({ route, error: 'shared page did not preserve English navigation context' });
+    }
+  } catch (error) {
+    failures.push({ route, error: String(error?.stack || error) });
   }
 }
 await sharedContext.close();
 
-const privatePage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-await privatePage.goto(`${base}/operator-dashboard/`, { waitUntil: 'domcontentloaded', timeout: 22000 });
-const privateHeader = await privatePage.locator('#gnk-asg-premium-header').count();
-if (privateHeader !== 0) failures.push({ route: '/operator-dashboard/', error: 'public header present on private route' });
-await privatePage.close();
+try {
+  const privatePage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await privatePage.goto(`${base}/operator-dashboard/`, { waitUntil: 'domcontentloaded', timeout: 22000 });
+  const privateHeader = await privatePage.locator('#gnk-asg-premium-header').count();
+  if (privateHeader !== 0) failures.push({ route: '/operator-dashboard/', error: 'public header present on private route' });
+  await privatePage.close();
+} catch (error) {
+  failures.push({ route: '/operator-dashboard/', error: String(error?.stack || error) });
+}
 await browser.close();
 
 fs.writeFileSync(path.join(output, 'audit.json'), JSON.stringify(audit, null, 2));
