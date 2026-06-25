@@ -78,6 +78,7 @@ async function injectIndexModules(response){
   if(!body.includes('/assets/index-group-network-v2.css'))body=body.replace('</head>','<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260625-v2"></head>');
   if(!body.includes('/assets/index-news-rotation-v1.js'))body=body.replace('</body>','<script src="/assets/index-news-rotation-v1.js?v=20260625-v1" defer></script></body>');
   if(!body.includes('/assets/index-live-market-chart-v3.js'))body=body.replace('</body>','<script src="/assets/index-live-market-chart-v3.js?v=20260625-v3" defer></script></body>');
+  if(!body.includes('/assets/index-group-network-en-bridge-v1.js'))body=body.replace('</body>','<script src="/assets/index-group-network-en-bridge-v1.js?v=20260625-v1" defer></script></body>');
   if(!body.includes('/assets/index-group-network-v2.js'))body=body.replace('</body>','<script src="/assets/index-group-network-v2.js?v=20260625-v2" defer></script></body>');
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
