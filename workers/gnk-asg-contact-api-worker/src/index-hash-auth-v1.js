@@ -1,9 +1,12 @@
-import core from './index.js';
+import core from './index-v3.js';
 
 const PROTECTED = new Set([
   '/api/operator-send-mail',
+  '/api/admin-mail-send',
+  '/api/operator-mailbox-config',
   '/api/operator-signature-load',
-  '/api/operator-signature-save'
+  '/api/operator-signature-save',
+  '/api/operator-mail-log'
 ]);
 
 function suppliedToken(request) {
@@ -65,6 +68,10 @@ function patchedEnvironment(env, supplied) {
   });
 }
 
+function isProtected(path) {
+  return PROTECTED.has(path) || path.startsWith('/api/mail-center/');
+}
+
 export default {
   async fetch(request, env, ctx) {
     const path = new URL(request.url).pathname.replace(/\/+$/, '') || '/';
@@ -72,15 +79,19 @@ export default {
     if (path === '/api/operator-auth-check') {
       if (request.method === 'OPTIONS') return new Response(null, { status:204, headers:json({}).headers });
       const ok = await hashAuthorized(request, env);
-      return json({ ok, authenticated:ok, worker:'gnk-asg-contact-api' }, ok ? 200 : 401);
+      return json({ ok, authenticated:ok, worker:'gnk-asg-contact-api', version:'gnk-asg-mail-unified-v3-20260626' }, ok ? 200 : 401);
     }
 
-    if (PROTECTED.has(path)) {
+    if (isProtected(path)) {
       if (!(await hashAuthorized(request, env))) return core.fetch(request, env, ctx);
       const supplied = suppliedToken(request);
       return core.fetch(request, patchedEnvironment(env, supplied), ctx);
     }
 
     return core.fetch(request, env, ctx);
+  },
+
+  async email(message, env, ctx) {
+    if (typeof core.email === 'function') return core.email(message, env, ctx);
   }
 };
