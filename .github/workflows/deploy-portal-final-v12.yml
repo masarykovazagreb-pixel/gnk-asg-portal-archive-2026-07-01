@@ -1,14 +1,12 @@
 name: Deploy Portal Final V12
 
 on:
-  workflow_run:
-    workflows: ["Production Index and Content Automation"]
-    types: [completed]
-  workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
       - ".github/deploy-portal-v12.trigger"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,19 +18,20 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
 
       - name: Validate final wrapper
         working-directory: workers/gnk-asg-direct-operator
+        shell: bash
         run: |
           set -euo pipefail
           node --check src/index-portal-final-v12.js
@@ -46,14 +45,17 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify final production routes and automation
-        id: verify
+      - name: Verify final production routes
         shell: bash
         run: |
           set -euo pipefail
           base="https://gnk-asg.hr"
+          success=false
 
           for attempt in $(seq 1 12); do
             stamp=$(date +%s)
@@ -67,15 +69,16 @@ jobs:
             status_en_code=$(curl -sSL -o status-en.html -w '%{http_code}' "$base/automation-status/?cb=$stamp" || true)
 
             if [ "$version_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$admin_code" = "200" ] && [ "$config_code" = "200" ] && [ "$automation_code" = "200" ] && [ "$status_hr_code" = "200" ] && [ "$status_en_code" = "200" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V12_20260625' version.json && grep -q 'public-ux-v11.css' root.html && grep -q 'index-clock-v2.js' root.html; then
+              success=true
               break
-            fi
-
-            if [ "$attempt" = "12" ]; then
-              echo "VERSION_HTTP=$version_code ROOT_HTTP=$root_code EN_HTTP=$en_code ADMIN_HTTP=$admin_code CONFIG_HTTP=$config_code AUTOMATION_HTTP=$automation_code STATUS_HR_HTTP=$status_hr_code STATUS_EN_HTTP=$status_en_code"
-              exit 1
             fi
             sleep 10
           done
+
+          if [ "$success" != "true" ]; then
+            echo "VERSION_HTTP=$version_code ROOT_HTTP=$root_code EN_HTTP=$en_code ADMIN_HTTP=$admin_code CONFIG_HTTP=$config_code AUTOMATION_HTTP=$automation_code STATUS_HR_HTTP=$status_hr_code STATUS_EN_HTTP=$status_en_code"
+            exit 1
+          fi
 
           grep -q 'public-ux-v11.css' en.html
           grep -q 'Status automatizacije' status-hr.html
@@ -109,15 +112,19 @@ jobs:
             autoEditor: String(automation.autoEditorSchedule || '').includes('2 hours'),
             timeZone: automation.timeZone === 'Europe/Zagreb'
           };
-          const ok = Object.values(checks).every(Boolean);
           const report = {
             checkedAt: new Date().toISOString(),
-            ok,
+            ok: Object.values(checks).every(Boolean),
             version: version.version,
             http: {
-              version: Number(process.env.VERSION_CODE), root: Number(process.env.ROOT_CODE), en: Number(process.env.EN_CODE),
-              admin: Number(process.env.ADMIN_CODE), config: Number(process.env.CONFIG_CODE), automation: Number(process.env.AUTOMATION_CODE),
-              statusHr: Number(process.env.STATUS_HR_CODE), statusEn: Number(process.env.STATUS_EN_CODE)
+              version: Number(process.env.VERSION_CODE),
+              root: Number(process.env.ROOT_CODE),
+              en: Number(process.env.EN_CODE),
+              admin: Number(process.env.ADMIN_CODE),
+              config: Number(process.env.CONFIG_CODE),
+              automation: Number(process.env.AUTOMATION_CODE),
+              statusHr: Number(process.env.STATUS_HR_CODE),
+              statusEn: Number(process.env.STATUS_EN_CODE)
             },
             checks,
             automation: {
@@ -129,25 +136,15 @@ jobs:
             }
           };
           fs.writeFileSync('deploy-result.json', JSON.stringify(report, null, 2));
-          if (!ok) process.exit(1);
+          if (!report.ok) process.exit(1);
           console.log(JSON.stringify(report));
           JS
 
-      - name: Post deployment result
-        if: always()
+      - name: Post successful deployment result
+        if: success()
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          if [ -f deploy-result.json ]; then
-            body="## V12 deploy confirmation
-
-\`\`\`json
-$(cat deploy-result.json)
-\`\`\`"
-          else
-            body="## V12 deploy confirmation
-
-Deployment or verification failed before a structured result was produced. Run: ${GITHUB_RUN_ID}"
-          fi
+          body=$(printf '## V12 deploy confirmation\n\n```json\n%s\n```\n' "$(cat deploy-result.json)")
           gh api "repos/${GITHUB_REPOSITORY}/issues/60/comments" -f body="$body"
