@@ -51,12 +51,12 @@ jobs:
                 try{
                   const response=await page.goto(`https://gnk-asg.hr${route}?cb=${Date.now()}`,{waitUntil:'domcontentloaded',timeout:45000});
                   http=response?.status()||0;
-                  await page.waitForTimeout(1200);
+                  await page.waitForTimeout(2200);
                   const data=await page.evaluate(selector=>{
                     const visible=element=>{
                       if(!element)return false;
                       const style=getComputedStyle(element),rect=element.getBoundingClientRect();
-                      return style.display!=='none'&&style.visibility!=='hidden'&&rect.width>3&&rect.height>3;
+                      return style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>0&&rect.width>3&&rect.height>3;
                     };
                     const headers=[...document.querySelectorAll('#gnk-asg-premium-header')].filter(visible);
                     const menus=[...document.querySelectorAll('#gnk-asg-premium-menu')].filter(visible);
@@ -76,7 +76,8 @@ jobs:
                       languageVisible:visible(language),
                       languageHref:language?.getAttribute('href')||null,
                       favicon:Boolean(document.querySelector('link[rel~="icon"][href*="gnk-asg-favicon.svg"]')),
-                      menuAsset:[...document.scripts].some(s=>String(s.src||'').includes('public-menu-v13.js?v=20260625-v15')),
+                      menuAsset:[...document.scripts].some(s=>String(s.src||'').includes('public-menu-v13.js?v=20260625-v16')),
+                      homeAsset:[...document.scripts].some(s=>String(s.src||'').includes('public-floating-home-v16.js?v=20260625-v17')),
                       visualAsset:[...document.styleSheets].some(s=>String(s.href||'').includes('public-visual-v13.css?v=20260625-v15')),
                       legacyVisible:legacy.length,
                       oldPatch:Boolean(document.getElementById('gnk-asg-fixed-menu-patch-style')||document.getElementById('gnk-asg-fixed-menu-patch-script')),
@@ -86,7 +87,7 @@ jobs:
                       overflow:document.documentElement.scrollWidth>window.innerWidth+2
                     };
                   },legacySelector);
-                  const ok=http===200&&data.headerCount===1&&data.menuCount===1&&data.menuItems>=10&&data.menuVersion==='15'&&data.languageVisible&&Boolean(data.languageHref)&&data.favicon&&data.menuAsset&&data.visualAsset&&data.legacyVisible===0&&!data.oldPatch&&data.overlap<=1&&data.aiVisible&&!data.overflow&&(homeExpected?data.homeVisible:!data.homeVisible);
+                  const ok=http===200&&data.headerCount===1&&data.menuCount===1&&data.menuItems>=10&&data.menuVersion==='15'&&data.languageVisible&&Boolean(data.languageHref)&&data.favicon&&data.menuAsset&&data.homeAsset&&data.visualAsset&&data.legacyVisible===0&&!data.oldPatch&&data.overlap<=1&&data.aiVisible&&!data.overflow&&(homeExpected?data.homeVisible:!data.homeVisible);
                   results.push({route,view,http,homeExpected,...data,ok});
                 }catch(error){results.push({route,view,http,error:error.message,ok:false});}
                 await page.close();
