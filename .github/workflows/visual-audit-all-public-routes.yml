@@ -1,0 +1,105 @@
+name: Visual Audit All Public Routes
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/visual-audit-all-public-routes.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Playwright
+        working-directory: apps/portal
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install --with-deps chromium
+
+      - name: Capture desktop and mobile routes
+        working-directory: apps/portal
+        shell: bash
+        run: |
+          cat > visual-audit.mjs <<'JS'
+          import { chromium } from '@playwright/test';
+          import fs from 'node:fs';
+          import path from 'node:path';
+
+          const base = 'https://gnk-asg.hr';
+          const routes = [
+            ['/', 'hr-home'], ['/trzista/', 'hr-trzista'], ['/objave/', 'hr-objave'], ['/vijesti/', 'hr-vijesti'],
+            ['/assistant/', 'hr-assistant'], ['/contact/', 'hr-contact'], ['/downloads/', 'hr-downloads'],
+            ['/visual-index/', 'visual-index'], ['/legal/', 'hr-legal'], ['/status-automatizacije/', 'hr-status'], ['/app/', 'app'],
+            ['/en/', 'en-home'], ['/markets/', 'en-markets'], ['/publications/', 'en-publications'], ['/news/', 'en-news'],
+            ['/en/assistant/', 'en-assistant'], ['/en/contact/', 'en-contact'], ['/en/downloads/', 'en-downloads'],
+            ['/en/legal/', 'en-legal'], ['/automation-status/', 'en-status']
+          ];
+          const views = [
+            ['desktop', { width: 1440, height: 1000 }],
+            ['mobile', { width: 390, height: 844 }]
+          ];
+          const out = path.resolve('visual-audit-output');
+          fs.mkdirSync(out, { recursive: true });
+          const results = [];
+          const browser = await chromium.launch({ headless: true });
+
+          for (const [view, viewport] of views) {
+            const context = await browser.newContext({ viewport, deviceScaleFactor: 1 });
+            const page = await context.newPage();
+            for (const [route, name] of routes) {
+              const item = { view, route, name, url: `${base}${route}` };
+              try {
+                const response = await page.goto(item.url, { waitUntil: 'domcontentloaded', timeout: 90000 });
+                await page.waitForTimeout(5000);
+                item.http = response?.status() ?? null;
+                item.title = await page.title();
+                item.finalUrl = page.url();
+                item.bodyScrollWidth = await page.evaluate(() => document.body.scrollWidth);
+                item.viewportWidth = await page.evaluate(() => window.innerWidth);
+                item.horizontalOverflow = item.bodyScrollWidth > item.viewportWidth + 2;
+                item.headerCount = await page.locator('#gnk-asg-premium-header').count();
+                item.menuCount = await page.locator('#gnk-asg-premium-menu').count();
+                item.languageCount = await page.locator('#gnk-public-language').count();
+                item.menuVersion = await page.locator('#gnk-asg-premium-header').getAttribute('data-public-menu-version').catch(() => null);
+                item.menuLinks = item.menuCount ? await page.locator('#gnk-asg-premium-menu a').allInnerTexts() : [];
+                item.h1Count = await page.locator('main h1').count();
+                item.imagesWithoutAlt = await page.locator('img:not([alt]), img[alt=""]').count();
+                item.bodyClass = await page.locator('body').getAttribute('class');
+                item.headerBox = item.headerCount ? await page.locator('#gnk-asg-premium-header').boundingBox() : null;
+                item.fixedControls = await page.evaluate(() => [...document.querySelectorAll('a,button,div')]
+                  .filter(el => getComputedStyle(el).position === 'fixed' && el.getBoundingClientRect().width > 25 && el.getBoundingClientRect().height > 25)
+                  .map(el => ({ tag: el.tagName, id: el.id, className: String(el.className).slice(0, 120), text: (el.textContent || '').trim().slice(0, 100) }))
+                  .slice(0, 30));
+                await page.screenshot({ path: path.join(out, `${name}-${view}.png`), fullPage: true });
+                if (item.headerCount) await page.locator('#gnk-asg-premium-header').screenshot({ path: path.join(out, `${name}-${view}-header.png`) }).catch(() => {});
+              } catch (error) {
+                item.error = String(error?.stack || error);
+                await page.screenshot({ path: path.join(out, `${name}-${view}-ERROR.png`), fullPage: true }).catch(() => {});
+              }
+              results.push(item);
+              console.log(JSON.stringify(item));
+            }
+            await context.close();
+          }
+          await browser.close();
+          fs.writeFileSync(path.join(out, 'audit.json'), JSON.stringify(results, null, 2));
+          JS
+          node visual-audit.mjs
+
+      - name: Upload visual audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-public-visual-audit-20260625
+          path: apps/portal/visual-audit-output
+          retention-days: 7
