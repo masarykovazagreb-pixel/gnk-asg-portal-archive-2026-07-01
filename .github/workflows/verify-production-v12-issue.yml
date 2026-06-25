@@ -1,0 +1,67 @@
+name: Verify Production V12 to Issue
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/verify-production-v12-issue.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Probe production and post compact result
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: "60"
+        shell: bash
+        run: |
+          set -u
+          base="https://gnk-asg.hr"
+          for attempt in $(seq 1 8); do
+            stamp=$(date +%s)
+            version_code=$(curl -sSL -o version.json -D version.headers -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
+            if [ "$version_code" = "200" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V12_20260625' version.json; then break; fi
+            sleep 8
+          done
+          stamp=$(date +%s)
+          root_code=$(curl -sSL -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
+          en_code=$(curl -sSL -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
+          admin_code=$(curl -sSL -o admin.html -D admin.headers -w '%{http_code}' "$base/operator-dashboard/?cb=$stamp" || true)
+          config_code=$(curl -sSL -o media.json -w '%{http_code}' "$base/data/index-media-config.json?cb=$stamp" || true)
+          automation_code=$(curl -sSL -o automation.json -w '%{http_code}' "$base/data/news-automation-status.json?cb=$stamp" || true)
+          status_code=$(curl -sSL -o status.html -w '%{http_code}' "$base/status-automatizacije/?cb=$stamp" || true)
+          export VERSION_CODE="$version_code" ROOT_CODE="$root_code" EN_CODE="$en_code" ADMIN_CODE="$admin_code" CONFIG_CODE="$config_code" AUTOMATION_CODE="$automation_code" STATUS_CODE="$status_code"
+          node - <<'JS'
+          const fs=require('fs');
+          const read=p=>{try{return fs.readFileSync(p,'utf8')}catch{return ''}};
+          const parse=p=>{try{return JSON.parse(read(p))}catch{return null}};
+          const version=parse('version.json'),media=parse('media.json'),automation=parse('automation.json');
+          const root=read('root.html'),en=read('en.html'),admin=read('admin.html'),headers=read('admin.headers').toLowerCase();
+          const checks={
+            version:process.env.VERSION_CODE==='200'&&version?.version==='GNK_ASG_PORTAL_FINAL_V12_20260625',
+            entrypoint:version?.deployedEntryPoint==='src/index-portal-final-v12.js',
+            root:process.env.ROOT_CODE==='200',en:process.env.EN_CODE==='200',status:process.env.STATUS_CODE==='200',
+            rootUx:root.includes('public-ux-v11.css'),rootClock:root.includes('index-clock-v2.js'),enUx:en.includes('public-ux-v11.css'),
+            languageMenu:root.includes('public-menu-final-v9.js'),admin:process.env.ADMIN_CODE!=='404'&&Number(process.env.ADMIN_CODE||0)>0,
+            adminHeader:headers.includes('x-gnk-asg-portal-final: gnk_asg_portal_final_v12_20260625'),
+            noEmbeddedToken:!admin.includes('window.GNK_ASG_FORCE_OPERATOR_TOKEN = "'),
+            config:process.env.CONFIG_CODE==='200'&&!!media,automation:process.env.AUTOMATION_CODE==='200'&&!!automation,
+            sources:Number(automation?.configuredNewsSources||0)>=24,minimumLinks:Number(automation?.minimumNewsLinks||0)>=20,
+            newsSchedule:Array.isArray(automation?.newsSchedule)&&automation.newsSchedule.includes('09:00')&&automation.newsSchedule.includes('16:00'),
+            autoEditor:String(automation?.autoEditorSchedule||'').includes('2 hours')
+          };
+          const ok=Object.values(checks).every(Boolean);
+          const result={checkedAt:new Date().toISOString(),ok,version:version?.version||null,http:{version:+process.env.VERSION_CODE||0,root:+process.env.ROOT_CODE||0,en:+process.env.EN_CODE||0,admin:+process.env.ADMIN_CODE||0,config:+process.env.CONFIG_CODE||0,automation:+process.env.AUTOMATION_CODE||0,status:+process.env.STATUS_CODE||0},checks,config:media?{clock:media.clock?.enabled??null,countdown:media.countdown?.enabled??null,media:media.media?.enabled??null,autoplay:media.media?.autoplay??null,preload:media.media?.preload??null}:null,automation:automation?{sources:automation.configuredNewsSources??null,minimumLinks:automation.minimumNewsLinks??null,newsSchedule:automation.newsSchedule??null,autoEditor:automation.autoEditorSchedule??null,timeZone:automation.timeZone??null}:null};
+          fs.writeFileSync('result.json',JSON.stringify(result,null,2));
+          fs.writeFileSync('comment.md',`## V12 production verification\n\n\`\`\`json\n${JSON.stringify(result,null,2)}\n\`\`\`\n`);
+          console.log(JSON.stringify(result));
+          JS
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" -f body="$(cat comment.md)"
+          node -e "const r=require('./result.json'); if(!r.ok) process.exit(1)"
