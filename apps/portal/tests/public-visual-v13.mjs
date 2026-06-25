@@ -25,14 +25,14 @@ const browser = await chromium.launch({ headless: true });
 for (const [view, viewport] of views) {
   const context = await browser.newContext({ viewport });
   const page = await context.newPage();
-  page.setDefaultTimeout(15000);
+  page.setDefaultTimeout(10000);
   for (const [route, name, locale] of routes) {
     const item = { view, route, name, locale };
     try {
-      const response = await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      const response = await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded', timeout: 22000 });
       item.http = response?.status() ?? null;
       await page.waitForSelector('#gnk-asg-premium-header[data-public-menu-version="13"]');
-      await page.waitForTimeout(700);
+      await page.waitForTimeout(300);
       item.headerCount = await page.locator('#gnk-asg-premium-header').count();
       item.menuCount = await page.locator('#gnk-asg-premium-menu').count();
       item.languageCount = await page.locator('#gnk-public-language').count();
@@ -62,12 +62,12 @@ for (const [view, viewport] of views) {
       item.checks = checks;
       item.ok = Object.values(checks).every(Boolean);
       if (!item.ok) failures.push(item);
-      await page.screenshot({ path: path.join(output, `${name}-${view}.png`), fullPage: true });
+      await page.screenshot({ path: path.join(output, `${name}-${view}.png`), fullPage: false });
     } catch (error) {
       item.error = String(error?.stack || error);
       item.ok = false;
       failures.push(item);
-      await page.screenshot({ path: path.join(output, `${name}-${view}-ERROR.png`), fullPage: true }).catch(() => {});
+      await page.screenshot({ path: path.join(output, `${name}-${view}-ERROR.png`), fullPage: false }).catch(() => {});
     }
     audit.push(item);
     console.log(JSON.stringify(item));
@@ -76,7 +76,7 @@ for (const [view, viewport] of views) {
 }
 
 const privatePage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-await privatePage.goto(`${base}/operator-dashboard/`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+await privatePage.goto(`${base}/operator-dashboard/`, { waitUntil: 'domcontentloaded', timeout: 22000 });
 const privateHeader = await privatePage.locator('#gnk-asg-premium-header').count();
 if (privateHeader !== 0) failures.push({ route: '/operator-dashboard/', error: 'public header present on private route' });
 await privatePage.close();
