@@ -1,2 +1,2 @@
-deployment=GNK_ASG_CONTACT_V3_20260625
-trigger_revision=15
+deployment=GNK_ASG_FLOATING_HOME_V16
+trigger_revision=16
