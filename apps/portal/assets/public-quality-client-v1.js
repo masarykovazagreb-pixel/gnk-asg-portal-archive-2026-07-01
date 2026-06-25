@@ -1,7 +1,8 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_PUBLIC_QUALITY_CLIENT_V1__) return;
+  if (window.__GNK_ASG_PUBLIC_QUALITY_CLIENT_V2__) return;
   window.__GNK_ASG_PUBLIC_QUALITY_CLIENT_V1__ = true;
+  window.__GNK_ASG_PUBLIC_QUALITY_CLIENT_V2__ = true;
 
   const path = location.pathname.toLowerCase();
   const excluded = ['/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/admin-center','/auto-editor'];
@@ -36,7 +37,8 @@
       ['â€™','’'],['â€˜','‘'],['â€œ','“'],['â€','”'],['â€“','–'],['â€”','—'],['â€¦','…'],
       ['Â ',' '],['Â',''],['Ä','č'],['Ä‡','ć'],['Å¡','š'],['Å¾','ž'],['Ä‘','đ'],
       ['PoÄetna','Početna'],['TrÅ¾iÅ¡ta','Tržišta'],['RuÄno','Ručno'],['osvjeÅ¾i','osvježi'],
-      ['UÄitavanje','Učitavanje'],['tehniÄki','tehnički'],['toÄke','točke'],['sljedeÄ‡a','sljedeća']
+      ['UÄitavanje','Učitavanje'],['tehniÄki','tehnički'],['toÄke','točke'],['sljedeÄ‡a','sljedeća'],
+      ['pomoÄ‡','pomoć'],['sadrÅ¾aj','sadržaj'],['izvjeÅ¡taj','izvještaj'],['aÅ¾urirano','ažurirano']
     ];
     for (const [bad, good] of replacements) output = output.split(bad).join(good);
     return output.normalize('NFC');
@@ -61,9 +63,23 @@
 
   function englishHeading(value) {
     const content = String(value || '').toLowerCase();
-    const en = (content.match(/\b(the|and|as|over|ahead|government|global|business|power|project|status|says|seeks|hits|breaks|ground)\b/g) || []).length;
-    const hr = (content.match(/\b(i|je|su|za|na|od|koji|kako|tržište|poslovanje|projekt|vlada|razvoj)\b/g) || []).length;
+    const en = (content.match(/\b(the|and|as|over|ahead|government|global|business|power|project|status|says|seeks|hits|breaks|ground|loses|renewable|energy|technology)/g) || []).length;
+    const hr = (content.match(/\b(i|je|su|za|na|od|koji|kako|tržište|poslovanje|projekt|vlada|razvoj|energija|tehnologija)/g) || []).length;
     return en >= 2 && hr === 0;
+  }
+
+  function invalidCroatian(content, title) {
+    return hardBroken.test(content) || englishHeading(title) ||
+      /\b(ko će|zvanično|akcioni plan|u oblasti|kompanije su|investirali su|trenutno realiziraju|komesar)/i.test(content);
+  }
+
+  function qualityMessage(croatian) {
+    const section = document.createElement('section');
+    section.className = 'gnk-quality-empty';
+    section.innerHTML = croatian
+      ? '<h2>Objava prolazi kontrolu kvalitete</h2><p>Ovaj tekst nije javno prikazan jer nije zadovoljio jezična, tehnička ili urednička pravila portala.</p><a href="/objave/">Povratak na provjerene objave</a>'
+      : '<h2>Publication under quality review</h2><p>This article is not publicly displayed because it did not pass the language, technical or editorial rules.</p><a href="/publications/">Return to verified publications</a>';
+    return section;
   }
 
   function filterArticles() {
@@ -71,21 +87,26 @@
     const listEn = path === '/publications' || path === '/publications/' || path.startsWith('/publications/');
     if (!listHr && !listEn) return;
 
+    let removed = false;
     document.querySelectorAll('article').forEach(article => {
       const heading = article.querySelector('h1,h2,h3')?.textContent || '';
       const content = article.textContent || '';
-      const wrongLanguage = listHr && (englishHeading(heading) || /\b(ko će|zvanično|akcioni plan|u oblasti)\b/i.test(content));
-      if (hardBroken.test(content) || wrongLanguage) article.remove();
+      const invalid = hardBroken.test(content) || (listHr && invalidCroatian(content, heading));
+      if (invalid) {
+        article.remove();
+        removed = true;
+      }
     });
 
-    const grid = document.querySelector('.grid');
+    const grid = document.querySelector('.grid,.publication-grid');
     if (grid && !grid.querySelector('article') && !grid.querySelector('.gnk-quality-empty')) {
-      const message = document.createElement('p');
-      message.className = 'gnk-quality-empty';
-      message.textContent = listHr
-        ? 'Objave trenutačno prolaze kontrolu kvalitete. Novi provjereni tekstovi bit će prikazani automatski.'
-        : 'Publications are currently passing quality control. New verified articles will appear automatically.';
-      grid.appendChild(message);
+      grid.appendChild(qualityMessage(listHr));
+      return;
+    }
+
+    if (removed && !grid && !document.querySelector('.gnk-quality-empty')) {
+      const main = document.querySelector('main') || document.body;
+      main.replaceChildren(qualityMessage(listHr));
     }
   }
 
@@ -101,7 +122,9 @@
     }
 
     const statusUrl = english ? '/automation-status/' : '/status-automatizacije/';
-    if (![...menu.querySelectorAll('a')].some(link => new URL(link.href, location.origin).pathname === statusUrl)) {
+    if (![...menu.querySelectorAll('a')].some(link => {
+      try { return new URL(link.href, location.origin).pathname === statusUrl; } catch { return false; }
+    })) {
       const link = document.createElement('a');
       link.href = statusUrl;
       link.textContent = 'Status';
@@ -113,7 +136,7 @@
     if (path === '/' || path === '/en/' || document.getElementById('gnk-quality-client-style')) return;
     const style = document.createElement('style');
     style.id = 'gnk-quality-client-style';
-    style.textContent = '.gnk-quality-empty{padding:18px;border:1px solid rgba(212,175,55,.35);border-radius:14px;background:#0d2340;color:#dce5f1;line-height:1.6}.gnk-asg-premium-menu a[href*="status"]{border-color:rgba(212,175,55,.42)!important}';
+    style.textContent = '.gnk-quality-empty{padding:22px;border:1px solid rgba(212,175,55,.35);border-radius:16px;background:#0d2340;color:#dce5f1;line-height:1.65}.gnk-quality-empty h2{color:#fff}.gnk-quality-empty a{color:#ffe08a;font-weight:900;text-decoration:none}.gnk-asg-premium-menu a[href*="status"]{border-color:rgba(212,175,55,.42)!important}';
     document.head.appendChild(style);
   }
 

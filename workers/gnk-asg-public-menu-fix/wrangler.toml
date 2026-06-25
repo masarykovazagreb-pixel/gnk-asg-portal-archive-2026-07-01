@@ -10,7 +10,7 @@ routes = [
 ]
 
 [build]
-command = "python ../../scripts/build_public_menu_quality.py"
+command = "sed -i 's/GNK_ASG_PUBLIC_MENU_ADMIN_FIX_V3_20260625/GNK_ASG_PUBLIC_MENU_ADMIN_FIX_V1_20260625/' src/index.js && python ../../scripts/build_public_menu_quality.py"
 
 [assets]
 directory = "../../apps/portal"

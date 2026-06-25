@@ -1,4 +1,4 @@
-const VERSION = 'GNK_ASG_PUBLIC_MENU_ADMIN_FIX_V1_20260625';
+const VERSION = 'GNK_ASG_PUBLIC_MENU_ADMIN_FIX_V3_20260625';
 const TARGET = '/assets/public-menu-final-v9.js';
 
 function patchAdminControl(source) {
