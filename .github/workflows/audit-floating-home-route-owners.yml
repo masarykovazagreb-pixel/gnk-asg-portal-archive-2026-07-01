@@ -1,0 +1,52 @@
+name: Audit Floating Home Route Owners
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/audit-floating-home-route-owners.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Query relevant Cloudflare route ownership
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'JS'
+          const fs=require('fs');
+          const token=process.env.CLOUDFLARE_API_TOKEN;
+          const headers={Authorization:`Bearer ${token}`,'Content-Type':'application/json'};
+          async function request(url){
+            const response=await fetch(url,{headers});
+            const data=await response.json();
+            if(!response.ok||data.success===false)throw new Error(JSON.stringify(data.errors||data));
+            return data;
+          }
+          (async()=>{
+            const zones=await request('https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr&status=active');
+            const zoneId=zones.result?.[0]?.id;
+            if(!zoneId)throw new Error('zone_not_found');
+            const routes=await request(`https://api.cloudflare.com/client/v4/zones/${zoneId}/workers/routes`);
+            const relevant=(routes.result||[])
+              .filter(route=>/(\/vijesti|\/news(?:\*|\/|$)|\/app(?:\*|\/|$)|\/contact|\/en\/contact)/i.test(route.pattern||''))
+              .map(route=>({pattern:route.pattern,script:route.script||null,id:route.id}))
+              .sort((a,b)=>a.pattern.localeCompare(b.pattern));
+            fs.writeFileSync('route-audit.json',JSON.stringify({checkedAt:new Date().toISOString(),ok:true,relevant},null,2));
+          })().catch(error=>{
+            fs.writeFileSync('route-audit.json',JSON.stringify({checkedAt:new Date().toISOString(),ok:false,error:error.message},null,2));
+            process.exitCode=1;
+          });
+          JS
+          body=$(printf 'Sanitizirani audit vlasništva ruta za V16.\n\n```json\n%s\n```\n' "$(cat route-audit.json)")
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/67" -f body="$body"
