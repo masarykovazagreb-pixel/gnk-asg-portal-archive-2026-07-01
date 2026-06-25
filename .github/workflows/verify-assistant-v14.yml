@@ -1,0 +1,92 @@
+name: Verify Assistant V14 Alignment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/verify-assistant-v14.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Chromium
+        run: |
+          npm install --no-package-lock --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Verify HR and EN assistant alignment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const pages=[];
+            for(const path of ['/assistant/','/en/assistant/']){
+              const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
+              await page.goto(`https://gnk-asg.hr${path}?cb=${Date.now()}`,{waitUntil:'networkidle',timeout:90000});
+              await page.waitForTimeout(1500);
+              const result=await page.evaluate(()=>{
+                const header=document.querySelector('#gnk-asg-premium-header.gnk-v13-header');
+                const menu=document.querySelector('#gnk-asg-premium-menu.gnk-v13-menu');
+                const main=document.querySelector('main');
+                const hr=header?.getBoundingClientRect();
+                const mr=menu?.getBoundingClientRect();
+                const mainr=main?.getBoundingClientRect();
+                const center=rect=>rect?Math.abs((rect.left+rect.width/2)-window.innerWidth/2):9999;
+                return {
+                  url:location.pathname,
+                  header:Boolean(header),
+                  menu:Boolean(menu),
+                  headerCenterDelta:hr?Number(center(hr).toFixed(2)):null,
+                  menuCenterDelta:mr?Number(center(mr).toFixed(2)):null,
+                  headerLeft:hr?Number(hr.left.toFixed(2)):null,
+                  headerRight:hr?Number((window.innerWidth-hr.right).toFixed(2)):null,
+                  gapToMain:hr&&mainr?Number((mainr.top-hr.bottom).toFixed(2)):null,
+                  bodyPaddingTop:getComputedStyle(document.body).paddingTop,
+                  menuPosition:menu?getComputedStyle(menu).position:null,
+                  menuTransform:menu?getComputedStyle(menu).transform:null,
+                  oldPatch:Boolean(document.getElementById('gnk-asg-fixed-menu-patch-style')||document.getElementById('gnk-asg-fixed-menu-patch-script')),
+                  horizontalOverflow:document.documentElement.scrollWidth>window.innerWidth+2,
+                  visualAsset:Array.from(document.styleSheets).some(sheet=>String(sheet.href||'').includes('public-visual-v13.css?v=20260625-v14')),
+                  menuAsset:Array.from(document.scripts).some(script=>String(script.src||'').includes('public-menu-v13.js?v=20260625-v14'))
+                };
+              });
+              result.ok=result.header&&result.menu&&result.headerCenterDelta<=3&&result.menuCenterDelta<=3&&Math.abs(result.headerLeft-result.headerRight)<=4&&result.gapToMain>=0&&result.gapToMain<=40&&result.bodyPaddingTop==='0px'&&result.menuPosition!=='fixed'&&result.menuTransform==='none'&&!result.oldPatch&&!result.horizontalOverflow&&result.visualAsset&&result.menuAsset;
+              pages.push(result);
+              await page.close();
+            }
+            await browser.close();
+            const report={checkedAt:new Date().toISOString(),ok:pages.every(page=>page.ok),pages};
+            fs.writeFileSync('assistant-v14-report.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report,null,2));
+            if(!report.ok)process.exitCode=1;
+          })().catch(error=>{console.error(error);process.exit(1)});
+          JS
+      - name: Post result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if [ -f assistant-v14-report.json ]; then
+            body=$(printf '## V14 provjera centriranja AI stranica\n\n```json\n%s\n```\n' "$(cat assistant-v14-report.json)")
+          else
+            body="## V14 provjera centriranja AI stranica\n\nProvjera nije proizvela rezultat. Run: ${GITHUB_RUN_ID}"
+          fi
+          gh api "repos/${GITHUB_REPOSITORY}/issues/63/comments" -f body="$body"
