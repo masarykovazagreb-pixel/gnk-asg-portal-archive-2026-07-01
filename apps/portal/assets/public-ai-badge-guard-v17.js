@@ -1,6 +1,7 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_AI_BADGE_GUARD_V19__) return;
+  if (window.__GNK_ASG_AI_BADGE_GUARD_V20__) return;
+  window.__GNK_ASG_AI_BADGE_GUARD_V20__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V19__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V18__ = true;
   window.__GNK_ASG_AI_BADGE_GUARD_V17__ = true;
@@ -24,12 +25,22 @@
     document.head.appendChild(script);
   }
 
+  function ensureNewsRotation() {
+    if (!indexPage || window.__GNK_ASG_INDEX_NEWS_ROTATION_V1__ || document.querySelector('script[data-gnk-news-rotation]')) return;
+    const script = document.createElement('script');
+    script.src = '/assets/index-news-rotation-v1.js?v=20260625-v1';
+    script.defer = true;
+    script.dataset.gnkNewsRotation = '1';
+    document.head.appendChild(script);
+  }
+
   let running = false;
   function ensure() {
     if (running || !document.body) return;
     running = true;
     try {
       ensureMarketChart();
+      ensureNewsRotation();
       let badge = document.getElementById('gnk-ai-badge-v13');
       if (!badge) {
         badge = document.createElement('a');
@@ -60,7 +71,8 @@
     if (queued || running) return;
     const badge = document.getElementById('gnk-ai-badge-v13');
     const chartMissing = indexPage && !document.getElementById('gnk-live-market-chart-v2');
-    const needsRepair = chartMissing || !badge || badge.classList.contains('gnk-asg-ai-hidden-duplicate') || badge.classList.contains('gnk-v13-legacy-hidden') || (badge && (getComputedStyle(badge).display === 'none' || getComputedStyle(badge).visibility === 'hidden'));
+    const newsMissing = indexPage && !window.__GNK_ASG_INDEX_NEWS_ROTATION_V1__ && !document.querySelector('script[data-gnk-news-rotation]');
+    const needsRepair = chartMissing || newsMissing || !badge || badge.classList.contains('gnk-asg-ai-hidden-duplicate') || badge.classList.contains('gnk-v13-legacy-hidden') || (badge && (getComputedStyle(badge).display === 'none' || getComputedStyle(badge).visibility === 'hidden'));
     if (!needsRepair) return;
     queued = true;
     requestAnimationFrame(() => {
