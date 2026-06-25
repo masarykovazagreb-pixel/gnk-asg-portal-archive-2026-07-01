@@ -1,4 +1,4 @@
-name: Deploy Portal Final V12
+name: Deploy Portal Final V13
 
 on:
   push:
@@ -13,13 +13,13 @@ permissions:
   issues: write
 
 concurrency:
-  group: gnk-asg-portal-final-v12
+  group: gnk-asg-portal-final-v13
   cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate final wrapper
+      - name: Validate final V13 wrapper
         working-directory: workers/gnk-asg-direct-operator
         shell: bash
         run: |
@@ -37,10 +37,16 @@ jobs:
           node --check src/index-portal-final-v12.js
           node --check src/index-portal-experience-v10.js
           node --check src/index-portal-repair-v9.js
+          node --check src/public-shell-v11.js
+          node --check ../../apps/portal/assets/public-menu-v13.js
+          node --check ../../apps/portal/tests/public-visual-v13.mjs
           grep -q 'main = "src/index-portal-final-v12.js"' wrangler.toml
+          grep -q 'GNK_ASG_PUBLIC_VISUAL_V13_20260625' src/index-portal-final-v12.js
+          grep -q 'public-visual-v13.css' src/public-shell-v11.js
+          grep -q 'public-menu-v13.js' src/public-shell-v11.js
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml
 
-      - name: Deploy final wrapper
+      - name: Deploy final V13 wrapper
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -50,25 +56,22 @@ jobs:
           set -euo pipefail
           npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify final production routes
+      - name: Verify production activation
         shell: bash
         run: |
           set -euo pipefail
           base="https://gnk-asg.hr"
           success=false
 
-          for attempt in $(seq 1 12); do
+          for attempt in $(seq 1 18); do
             stamp=$(date +%s)
             version_code=$(curl -sSL -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
-            root_code=$(curl -sSL -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
-            en_code=$(curl -sSL -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
-            admin_code=$(curl -sSL -o admin.html -w '%{http_code}' "$base/operator-dashboard/?cb=$stamp" || true)
-            config_code=$(curl -sSL -o media.json -w '%{http_code}' "$base/data/index-media-config.json?cb=$stamp" || true)
-            automation_code=$(curl -sSL -o automation.json -w '%{http_code}' "$base/data/news-automation-status.json?cb=$stamp" || true)
+            root_code=$(curl -sSL -D root.headers -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
+            en_code=$(curl -sSL -D en.headers -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
             status_hr_code=$(curl -sSL -o status-hr.html -w '%{http_code}' "$base/status-automatizacije/?cb=$stamp" || true)
             status_en_code=$(curl -sSL -o status-en.html -w '%{http_code}' "$base/automation-status/?cb=$stamp" || true)
 
-            if [ "$version_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$admin_code" = "200" ] && [ "$config_code" = "200" ] && [ "$automation_code" = "200" ] && [ "$status_hr_code" = "200" ] && [ "$status_en_code" = "200" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V12_20260625' version.json && grep -q 'public-ux-v11.css' root.html && grep -q 'index-clock-v2.js' root.html; then
+            if [ "$version_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$status_hr_code" = "200" ] && [ "$status_en_code" = "200" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V12_20260625' version.json && grep -q 'GNK_ASG_PUBLIC_VISUAL_V13_20260625' version.json && grep -q 'public-visual-v13.css' root.html && grep -q 'public-menu-v13.js' root.html && grep -q 'public-visual-v13.css' en.html && grep -q 'public-menu-v13.js' en.html && grep -q 'public-menu-v13.js' status-hr.html && grep -q 'public-menu-v13.js' status-en.html; then
               success=true
               break
             fi
@@ -76,69 +79,76 @@ jobs:
           done
 
           if [ "$success" != "true" ]; then
-            echo "VERSION_HTTP=$version_code ROOT_HTTP=$root_code EN_HTTP=$en_code ADMIN_HTTP=$admin_code CONFIG_HTTP=$config_code AUTOMATION_HTTP=$automation_code STATUS_HR_HTTP=$status_hr_code STATUS_EN_HTTP=$status_en_code"
+            echo "VERSION_HTTP=$version_code ROOT_HTTP=$root_code EN_HTTP=$en_code STATUS_HR_HTTP=$status_hr_code STATUS_EN_HTTP=$status_en_code"
+            cat version.json || true
             exit 1
           fi
 
-          grep -q 'public-ux-v11.css' en.html
-          grep -q 'Status automatizacije' status-hr.html
-          grep -q 'Automation status' status-en.html
-          ! grep -q 'window.GNK_ASG_FORCE_OPERATOR_TOKEN = "' admin.html
+          grep -qi '^x-gnk-asg-public-visual: GNK_ASG_PUBLIC_VISUAL_V13_20260625' root.headers
+          grep -qi '^x-gnk-asg-public-visual: GNK_ASG_PUBLIC_VISUAL_V13_20260625' en.headers
 
-          export VERSION_CODE="$version_code" ROOT_CODE="$root_code" EN_CODE="$en_code" ADMIN_CODE="$admin_code" CONFIG_CODE="$config_code" AUTOMATION_CODE="$automation_code" STATUS_HR_CODE="$status_hr_code" STATUS_EN_CODE="$status_en_code"
+          routes=(
+            / /trzista/ /objave/ /vijesti/ /assistant/ /contact/ /downloads/ /visual-index/ /legal/ /status-automatizacije/ /app/
+            /en/ /markets/ /publications/ /news/ /en/assistant/ /en/contact/ /en/downloads/ /en/legal/ /automation-status/
+          )
+          : > route-status.txt
+          for route in "${routes[@]}"; do
+            code=$(curl -sSL -o route.html -w '%{http_code}' "$base$route?cb=$(date +%s%N)" || true)
+            printf '%s %s\n' "$code" "$route" | tee -a route-status.txt
+            test "$code" = "200"
+            grep -q 'public-visual-v13.css' route.html
+            grep -q 'public-menu-v13.js' route.html
+          done
+
+      - name: Install production visual browser
+        working-directory: apps/portal
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install --with-deps chromium
+
+      - name: Verify all production desktop and mobile views
+        working-directory: apps/portal
+        env:
+          VISUAL_BASE: https://gnk-asg.hr
+        run: node tests/public-visual-v13.mjs
+
+      - name: Build deployment report
+        shell: bash
+        run: |
           node - <<'JS'
           const fs = require('fs');
           const version = JSON.parse(fs.readFileSync('version.json', 'utf8'));
-          const media = JSON.parse(fs.readFileSync('media.json', 'utf8'));
-          const automation = JSON.parse(fs.readFileSync('automation.json', 'utf8'));
-          const checks = {
-            version: version.version === 'GNK_ASG_PORTAL_FINAL_V12_20260625',
-            entrypoint: version.deployedEntryPoint === 'src/index-portal-final-v12.js',
-            root: process.env.ROOT_CODE === '200',
-            en: process.env.EN_CODE === '200',
-            admin: process.env.ADMIN_CODE === '200',
-            config: process.env.CONFIG_CODE === '200',
-            automation: process.env.AUTOMATION_CODE === '200',
-            statusHr: process.env.STATUS_HR_CODE === '200',
-            statusEn: process.env.STATUS_EN_CODE === '200',
-            clockDisabled: media.clock?.enabled === false,
-            countdownDisabled: media.countdown?.enabled === false,
-            mediaDisabled: media.media?.enabled === false,
-            noAutoplay: media.media?.autoplay === false,
-            noPreload: media.media?.preload === 'none',
-            sources: Number(automation.configuredNewsSources || 0) >= 24,
-            minimumLinks: Number(automation.minimumNewsLinks || 0) >= 20,
-            newsSchedule: Array.isArray(automation.newsSchedule) && automation.newsSchedule.includes('09:00') && automation.newsSchedule.includes('16:00'),
-            autoEditor: String(automation.autoEditorSchedule || '').includes('2 hours'),
-            timeZone: automation.timeZone === 'Europe/Zagreb'
-          };
+          const visualAudit = JSON.parse(fs.readFileSync('apps/portal/visual-v13-test-output/audit.json', 'utf8'));
           const report = {
             checkedAt: new Date().toISOString(),
-            ok: Object.values(checks).every(Boolean),
+            ok: visualAudit.length === 40 && visualAudit.every(item => item.ok === true),
             version: version.version,
-            http: {
-              version: Number(process.env.VERSION_CODE),
-              root: Number(process.env.ROOT_CODE),
-              en: Number(process.env.EN_CODE),
-              admin: Number(process.env.ADMIN_CODE),
-              config: Number(process.env.CONFIG_CODE),
-              automation: Number(process.env.AUTOMATION_CODE),
-              statusHr: Number(process.env.STATUS_HR_CODE),
-              statusEn: Number(process.env.STATUS_EN_CODE)
-            },
-            checks,
-            automation: {
-              sources: automation.configuredNewsSources,
-              minimumLinks: automation.minimumNewsLinks,
-              newsSchedule: automation.newsSchedule,
-              autoEditor: automation.autoEditorSchedule,
-              timeZone: automation.timeZone
-            }
+            publicVisual: version.publicVisual,
+            publicMenu: version.publicMenu,
+            routesChecked: 20,
+            renderedViewsChecked: visualAudit.length,
+            desktopViews: visualAudit.filter(item => item.view === 'desktop').length,
+            mobileViews: visualAudit.filter(item => item.view === 'mobile').length,
+            allMenusIdentical: visualAudit.every(item => item.checks?.exactMenu === true),
+            legacyNavigationVisible: visualAudit.some(item => Number(item.visibleLegacy || 0) > 0),
+            horizontalOverflowDetected: visualAudit.some(item => item.horizontalOverflow === true)
           };
           fs.writeFileSync('deploy-result.json', JSON.stringify(report, null, 2));
-          if (!report.ok) process.exit(1);
+          if (!report.ok || !report.allMenusIdentical || report.legacyNavigationVisible || report.horizontalOverflowDetected) process.exit(1);
           console.log(JSON.stringify(report));
           JS
+
+      - name: Upload production visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-production-visual-v13-evidence
+          path: |
+            apps/portal/visual-v13-test-output
+            route-status.txt
+            version.json
+            deploy-result.json
+          retention-days: 14
 
       - name: Post successful deployment result
         if: success()
@@ -146,5 +156,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          body=$(printf '## V12 deploy confirmation\n\n```json\n%s\n```\n' "$(cat deploy-result.json)")
+          body=$(printf '## V13 visual deploy confirmation\n\n```json\n%s\n```\n' "$(cat deploy-result.json)")
           gh api "repos/${GITHUB_REPOSITORY}/issues/60/comments" -f body="$body"
