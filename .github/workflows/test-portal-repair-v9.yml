@@ -1,0 +1,40 @@
+name: Test Portal Repair V9
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate JavaScript and JSON
+        shell: bash
+        run: |
+          node --check apps/portal/assets/index-redesign-production.js
+          node --check apps/portal/assets/public-quality-client-v1.js
+          node --check apps/portal/assets/public-menu-final-v9.js
+          node --check apps/portal/assets/admin-index-media-v1.js
+          node --check apps/portal/assets/status-automatizacije-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-repair-v9.js
+          node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/index-media-config.json','utf8')); console.log('CONFIG_JSON_OK')"
+      - name: Verify required markers
+        shell: bash
+        run: |
+          grep -q "GNK_ASG_INDEX_MEDIA_V1_20260625" apps/portal/data/index-media-config.json
+          grep -q "index-media-config" workers/gnk-asg-direct-operator/src/index-portal-repair-v9.js
+          grep -q "admin-index-media-v1.js" workers/gnk-asg-direct-operator/src/index-portal-repair-v9.js
+          grep -q "index-media-countdown-v1.css" apps/portal/assets/index-redesign-production.css
+          grep -q "src/index-portal-repair-v9.js" workers/gnk-asg-direct-operator/wrangler.toml
+      - name: Wrangler dry run
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml
