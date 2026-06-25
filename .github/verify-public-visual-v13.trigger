@@ -1,0 +1,2 @@
+verification=GNK_ASG_PUBLIC_VISUAL_V13_20260625
+revision=1
