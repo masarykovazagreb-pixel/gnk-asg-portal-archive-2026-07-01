@@ -1,0 +1,57 @@
+name: Deploy Admin Menu Route PR
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/portal/assets/public-menu-final-v9.js"
+      - "workers/gnk-asg-public-menu-fix/src/index.js"
+      - "workers/gnk-asg-public-menu-fix/wrangler.toml"
+      - ".github/workflows/deploy-admin-menu-route-pr.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate corrected menu asset
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-public-menu-fix/src/index.js
+          node --check apps/portal/assets/public-menu-final-v9.js
+          grep -Fq "['Admin','/operator-dashboard/','nofollow']" apps/portal/assets/public-menu-final-v9.js
+          ! grep -Fq "/operator/session/login?next=/operator-dashboard" apps/portal/assets/public-menu-final-v9.js
+      - name: Deploy isolated menu asset worker
+        working-directory: workers/gnk-asg-public-menu-fix
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-public-menu-fix
+      - name: Verify production Admin link
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 15
+          asset_code=$(curl --silent --show-error --dump-header asset.headers --output menu.js --write-out '%{http_code}' "https://gnk-asg.hr/assets/public-menu-final-v9.js?cb=$(date +%s)")
+          echo "ASSET_HTTP=$asset_code"
+          cat asset.headers
+          test "$asset_code" = "200"
+          grep -qi '^x-gnk-asg-menu-fix: GNK_ASG_PUBLIC_MENU_ADMIN_FIX_V1_20260625' asset.headers
+          grep -Fq "['Admin','/operator-dashboard/','nofollow']" menu.js
+          ! grep -Fq "/operator/session/login?next=/operator-dashboard" menu.js
+          admin_code=$(curl --silent --show-error --output admin.html --write-out '%{http_code}' "https://gnk-asg.hr/operator-dashboard/?cb=$(date +%s)")
+          echo "ADMIN_HTTP=$admin_code"
+          test "$admin_code" != "404"
+          ! grep -q 'not_found' admin.html
+          grep -Eq 'Sigurna administratorska prijava|Zaštićeni administratorski pristup|GNK ASG' admin.html
+          echo "ADMIN_MENU_ROUTE_OK=true"
