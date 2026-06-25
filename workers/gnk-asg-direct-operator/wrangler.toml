@@ -7,26 +7,9 @@ preview_urls = true
 routes = [
   { pattern = "gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/objave*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/publications*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/vijesti*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/news", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/news/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/trzista*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/markets*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/contact*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/en/contact*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/legal*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/en/legal*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/assistant*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/en/assistant*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/downloads*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/en/downloads*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/visual-index*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/app*", zone_name = "gnk-asg.hr" },
   { pattern = "gnk-asg.hr/status-automatizacije*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/status-automatizacije*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" }
 ]
 
