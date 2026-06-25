@@ -56,6 +56,7 @@
     const grid = document.getElementById('visualGrid');
     if (!grid || grid.dataset.verifiedV2 === '1') return;
     grid.dataset.verifiedV2 = '1';
+    grid.dataset.fullGalleryMounted = '1';
     grid.dataset.verifying = '1';
     grid.replaceChildren();
     document.querySelectorAll('script[data-gnk-visual-jsonld="1"]').forEach(node => node.remove());
