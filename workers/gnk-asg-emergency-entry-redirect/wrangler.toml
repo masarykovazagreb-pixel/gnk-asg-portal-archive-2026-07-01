@@ -1,0 +1,21 @@
+name = "gnk-asg-emergency-entry-redirect"
+main = "src/index.js"
+compatibility_date = "2026-06-21"
+workers_dev = false
+preview_urls = false
+
+[[routes]]
+pattern = "gnk-asg.hr/app"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/app/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/app"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/app/*"
+zone_name = "gnk-asg.hr"
