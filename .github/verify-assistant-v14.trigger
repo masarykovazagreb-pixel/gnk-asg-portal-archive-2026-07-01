@@ -1,0 +1,2 @@
+verification=GNK_ASG_ASSISTANT_V14_ALIGNMENT
+revision=1
