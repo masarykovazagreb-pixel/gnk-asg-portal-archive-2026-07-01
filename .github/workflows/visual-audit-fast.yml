@@ -1,0 +1,36 @@
+name: Visual Audit Fast
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/visual-audit-fast.yml"
+      - "apps/portal/visual-audit-fast.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install browser
+        working-directory: apps/portal
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Capture routes
+        working-directory: apps/portal
+        run: node visual-audit-fast.mjs
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-visual-audit-fast-20260625
+          path: apps/portal/visual-audit-fast-output
+          retention-days: 7
