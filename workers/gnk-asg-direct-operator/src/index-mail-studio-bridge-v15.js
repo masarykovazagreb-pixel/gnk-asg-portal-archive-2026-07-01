@@ -1,13 +1,16 @@
 import app from './index-unified-auth-v14.js';
 
 const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260626';
-const REVISION='2';
-const SCRIPT='<script defer src="/assets/mail-studio-auth-bridge-v15.js?v=20260626-2"></script>';
+const REVISION='3';
+const MAIL_SCRIPT='<script defer src="/assets/mail-studio-auth-bridge-v15.js?v=20260626-3"></script>';
+const ADMIN_SCRIPT='<script defer src="/assets/admin-session-fallback-v17.js?v=20260626-1"></script>';
 
 const cleanPath=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+const privatePaths=['/admin-center','/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/auto-editor','/news-admin','/pdf-publisher','/social-share','/wa-center','/review'];
+const isPrivate=path=>privatePaths.some(prefix=>path===prefix||path.startsWith(prefix+'/'));
 const isMailStudio=path=>path==='/mail-studio'||path.startsWith('/mail-studio/')||path==='/mail-studio-pro'||path.startsWith('/mail-studio-pro/');
 
-async function inject(response){
+async function inject(response,path){
   const type=String(response.headers.get('content-type')||'');
   if(!type.includes('text/html'))return response;
   const headers=new Headers(response.headers);
@@ -15,8 +18,12 @@ async function inject(response){
   headers.delete('content-encoding');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-mail-studio-bridge',VERSION);
+  headers.set('x-gnk-asg-admin-session-fallback','V17');
   let html=await response.text();
-  if(!html.includes('mail-studio-auth-bridge-v15.js'))html=html.includes('</head>')?html.replace('</head>',`${SCRIPT}</head>`):SCRIPT+html;
+  let scripts='';
+  if(isMailStudio(path)&&!html.includes('mail-studio-auth-bridge-v15.js'))scripts+=MAIL_SCRIPT;
+  if(isPrivate(path)&&!html.includes('admin-session-fallback-v17.js'))scripts+=ADMIN_SCRIPT;
+  if(scripts)html=html.includes('</head>')?html.replace('</head>',`${scripts}</head>`):scripts+html;
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -24,9 +31,9 @@ async function version(request,env,ctx){
   const response=await app.fetch(request,env,ctx);
   try{
     const payload=await response.clone().json();
-    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
+    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,adminSessionFallback:'GNK_ASG_ADMIN_SESSION_FALLBACK_V17_20260626',deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
       status:response.status,
-      headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION}
+      headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION,'x-gnk-asg-admin-session-fallback':'V17'}
     });
   }catch{return response;}
 }
@@ -36,7 +43,7 @@ export default{
     const path=cleanPath(request);
     if(request.method==='GET'&&path==='/data/portal-version.json')return version(request,env,ctx);
     const response=await app.fetch(request,env,ctx);
-    if(isMailStudio(path)&&['GET','HEAD'].includes(request.method))return inject(response);
+    if(isPrivate(path)&&['GET','HEAD'].includes(request.method))return inject(response,path);
     return response;
   },
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
