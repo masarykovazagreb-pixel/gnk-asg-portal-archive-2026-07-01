@@ -1,0 +1,47 @@
+name: Diagnose Special Public Routes
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/diagnose-special-public-routes.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect special route responses
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg.hr"
+          : > special-routes.txt
+          for route in /vijesti/ /news/ /app/; do
+            safe=$(echo "$route" | tr '/-' '__')
+            curl -sSL -D "$safe.headers" -o "$safe.html" "$base$route?cb=$(date +%s%N)"
+            echo "=== $route ===" >> special-routes.txt
+            grep -Ei '^(HTTP/|server:|cf-ray:|cf-cache-status:|cache-control:|etag:|last-modified:|x-[a-z0-9-]+:)' "$safe.headers" >> special-routes.txt || true
+            echo "old_menu=$(grep -c 'public-menu-final-v9.js' "$safe.html" || true)" >> special-routes.txt
+            echo "v13_menu=$(grep -c 'public-menu-v13.js' "$safe.html" || true)" >> special-routes.txt
+            echo "old_css=$(grep -c 'public-menu-unified-v12.css' "$safe.html" || true)" >> special-routes.txt
+            echo "v13_css=$(grep -c 'public-visual-v13.css' "$safe.html" || true)" >> special-routes.txt
+            echo "body_class=$(grep -o '<body[^>]*>' "$safe.html" | head -1)" >> special-routes.txt
+            echo "sha256=$(sha256sum "$safe.html" | cut -d' ' -f1)" >> special-routes.txt
+            echo >> special-routes.txt
+          done
+          cat special-routes.txt
+      - name: Post special-route diagnosis
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          body=$(printf '## Posebne javne rute — zaglavlja i sadržaj\n\n```text\n%s\n```\n' "$(cat special-routes.txt 2>/dev/null || true)")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
