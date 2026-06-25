@@ -132,7 +132,8 @@ function patchIndexHtml(html, english) {
 
 function patchAdminHtml(html) {
   const safeHelper = `<script id="gnk-asg-force-token-sync">function gnkAsgForceToken(){try{return localStorage.getItem("GNK_ASG_OPERATOR_TOKEN")||""}catch(e){return ""}}function gnkAsgWithTokenUrl(url){const t=gnkAsgForceToken();return t?url+(url.includes("?")?"&":"?")+"token="+encodeURIComponent(t):url}</script>`;
-  let value = html.replace(/<script id="gnk-asg-force-token-sync">[\s\S]*?<\/script>/, safeHelper);
+  const authBridge = `<script id="gnk-asg-admin-auth-bridge">(function(){if(window.__GNK_ASG_ADMIN_AUTH_BRIDGE__)return;window.__GNK_ASG_ADMIN_AUTH_BRIDGE__=true;const original=window.fetch.bind(window);const protectedPaths=new Set(["/api/media-upload","/api/admin-asset-list","/operator/media-upload","/operator/media-list","/api/index-media-config"]);window.fetch=function(input,init){try{const raw=typeof input==="string"?input:input.url;const url=new URL(raw,location.origin);if(url.origin===location.origin&&protectedPaths.has(url.pathname)){const token=typeof gnkAsgForceToken==="function"?gnkAsgForceToken():"";if(token){const next={...(init||{})};const headers=new Headers(next.headers||(input instanceof Request?input.headers:undefined));if(!headers.has("authorization"))headers.set("authorization","Bearer "+token);next.headers=headers;return original(input,next)}}}catch(e){}return original(input,init)}})();</script>`;
+  let value = html.replace(/<script id="gnk-asg-force-token-sync">[\s\S]*?<\/script>/, `${safeHelper}${authBridge}`);
   value = value
     .replace('<h2>Fotografije</h2>', '<h2>Medijske datoteke</h2>')
     .replace('<label>Naziv slike</label>', '<label>Naziv datoteke</label>')
