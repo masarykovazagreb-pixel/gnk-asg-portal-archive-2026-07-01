@@ -1,0 +1,48 @@
+name: Audit Three Public Routes
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/audit-three-public-routes.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Query only relevant Cloudflare route ownership
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'JS'
+          const fs=require('fs');
+          const token=process.env.CLOUDFLARE_API_TOKEN;
+          const headers={Authorization:`Bearer ${token}`,'Content-Type':'application/json'};
+          async function main(){
+            const zoneResponse=await fetch('https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr&status=active',{headers});
+            const zoneData=await zoneResponse.json();
+            if(!zoneData.success||!zoneData.result?.[0]?.id)throw new Error('Zone lookup failed');
+            const zoneId=zoneData.result[0].id;
+            const routesResponse=await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/workers/routes`,{headers});
+            const routesData=await routesResponse.json();
+            if(!routesData.success)throw new Error('Route lookup failed');
+            const relevant=(routesData.result||[])
+              .filter(route=>/(\/vijesti|\/news(?:\*|\/|$)|\/app(?:\*|\/|$))/i.test(route.pattern||''))
+              .map(route=>({pattern:route.pattern,script:route.script||null}))
+              .sort((a,b)=>a.pattern.localeCompare(b.pattern));
+            const report={checkedAt:new Date().toISOString(),zone:'gnk-asg.hr',relevantRoutes:relevant};
+            fs.writeFileSync('route-audit.json',JSON.stringify(report,null,2));
+          }
+          main().catch(error=>{console.error(error.message);process.exit(1)});
+          JS
+          body=$(printf '## Sanitizirani audit preostalih javnih ruta\n\n```json\n%s\n```\n' "$(cat route-audit.json)")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/63/comments" -f body="$body"
