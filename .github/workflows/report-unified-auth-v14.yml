@@ -1,0 +1,31 @@
+name: Report Unified Auth V14
+
+on:
+  workflow_run:
+    workflows: ["Deploy Unified Auth V14"]
+    types: [completed]
+
+permissions:
+  actions: read
+  issues: write
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record Auth V14 result
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          failed=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/jobs" --jq '[.jobs[] | .name as $job | .steps[] | select(.conclusion == "failure") | ($job + " — " + .name)] | join("; ")')
+          if [ -z "$failed" ]; then failed="nema neuspjelog koraka"; fi
+          body=$(printf '## Unified Auth V14 #%s — %s\n\n- Commit: `%s`\n- Neuspjeli korak: **%s**\n- Run: %s\n' "$RUN_NUMBER" "$CONCLUSION" "$HEAD_SHA" "$failed" "$RUN_URL")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/83/comments" -f body="$body"
