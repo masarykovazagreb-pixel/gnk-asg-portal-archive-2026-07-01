@@ -131,8 +131,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          cp reports/production-v12-latest.json /tmp/production-v12-latest.json
           git config user.name "GNK ASG Portal Verifier"
           git config user.email "actions@users.noreply.github.com"
+          git fetch origin main
+          git reset --hard origin/main
+          mkdir -p reports
+          cp /tmp/production-v12-latest.json reports/production-v12-latest.json
           git add reports/production-v12-latest.json
           if git diff --cached --quiet; then
             echo "Report unchanged"
