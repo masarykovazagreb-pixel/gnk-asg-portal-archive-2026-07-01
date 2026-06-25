@@ -27,8 +27,6 @@ jobs:
           npm install --no-package-lock --no-save playwright@1.52.0
           npx playwright install --with-deps chromium
       - name: Verify single header and no overlap
-        env:
-          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           node - <<'JS'
@@ -83,18 +81,18 @@ jobs:
             if(!report.ok)process.exitCode=1;
           })().catch(error=>{console.error(error);process.exit(1)});
           JS
-      - name: Post report
+      - name: Publish report
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           if [ -f single-menu-v15-report.json ]; then
-            body=$(printf '## V15 provjera jednog menija bez preklapanja\n\n```json\n%s\n```\n' "$(cat single-menu-v15-report.json)")
+            body=$(printf 'Završna V15 provjera jednog menija bez preklapanja.\n\n```json\n%s\n```\n' "$(cat single-menu-v15-report.json)")
           else
-            body="## V15 provjera jednog menija bez preklapanja\n\nProvjera nije proizvela rezultat. Run: ${GITHUB_RUN_ID}"
+            body="Završna V15 provjera nije proizvela rezultat. Run: ${GITHUB_RUN_ID}"
           fi
-          gh api "repos/${GITHUB_REPOSITORY}/issues/63/comments" -f body="$body"
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/63" -f body="$body"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
