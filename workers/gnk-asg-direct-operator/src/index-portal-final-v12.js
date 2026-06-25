@@ -1,6 +1,8 @@
 import core from './index-portal-experience-v10.js';
+import {patchPublicHtml,transformHtml} from './public-shell-v11.js';
 
 const VERSION = 'GNK_ASG_PORTAL_FINAL_V12_20260625';
+const PUBLIC_VISUAL = 'GNK_ASG_PUBLIC_VISUAL_V13_20260625';
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data, null, 2), {
@@ -8,7 +10,8 @@ function json(data, status = 200) {
     headers: {
       'content-type': 'application/json; charset=utf-8',
       'cache-control': 'no-store',
-      'x-gnk-asg-portal-final': VERSION
+      'x-gnk-asg-portal-final': VERSION,
+      'x-gnk-asg-public-visual': PUBLIC_VISUAL
     }
   });
 }
@@ -16,6 +19,7 @@ function json(data, status = 200) {
 function withVersionHeader(response) {
   const headers = new Headers(response.headers);
   headers.set('x-gnk-asg-portal-final', VERSION);
+  headers.set('x-gnk-asg-public-visual', PUBLIC_VISUAL);
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -25,13 +29,16 @@ function withVersionHeader(response) {
 
 async function statusAsset(request, env, english) {
   if (!env.ASSETS?.fetch) return null;
+  const route = english ? '/automation-status/' : '/status-automatizacije/';
   const target = new URL(english ? '/automation-status/index.html' : '/status-automatizacije/index.html', request.url);
   const assetRequest = new Request(target, {
     method: 'GET',
     headers: request.headers
   });
   const response = await env.ASSETS.fetch(assetRequest);
-  return response.status === 404 ? null : withVersionHeader(response);
+  if (response.status === 404) return null;
+  if (!response.headers.get('content-type')?.includes('text/html')) return withVersionHeader(response);
+  return transformHtml(response, html => patchPublicHtml(html, route));
 }
 
 async function fetchHandler(request, env, ctx) {
@@ -43,6 +50,8 @@ async function fetchHandler(request, env, ctx) {
       ok: true,
       version: VERSION,
       publicUx: 'GNK_ASG_PUBLIC_UX_V11',
+      publicVisual: PUBLIC_VISUAL,
+      publicMenu: 'GNK_ASG_PUBLIC_MENU_V13',
       indexClock: 'GNK_ASG_INDEX_CLOCK_V2',
       automation: 'GNK_ASG_PORTAL_EXPERIENCE_V10_20260625',
       timeZone: 'Europe/Zagreb',
@@ -70,6 +79,7 @@ async function fetchHandler(request, env, ctx) {
   headers.delete('content-length');
   headers.set('cache-control', 'no-store');
   headers.set('x-gnk-asg-portal-final', VERSION);
+  headers.set('x-gnk-asg-public-visual', PUBLIC_VISUAL);
   return new Response(html, { status: response.status, statusText: response.statusText, headers });
 }
 
@@ -83,4 +93,4 @@ export default {
   }
 };
 
-export { VERSION };
+export { VERSION, PUBLIC_VISUAL };
