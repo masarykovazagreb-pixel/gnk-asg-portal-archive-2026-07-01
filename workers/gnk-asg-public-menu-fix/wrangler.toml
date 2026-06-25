@@ -1,0 +1,15 @@
+name = "gnk-asg-public-menu-fix"
+main = "src/index.js"
+compatibility_date = "2026-06-13"
+workers_dev = true
+preview_urls = true
+
+routes = [
+  { pattern = "gnk-asg.hr/assets/public-menu-final-v9.js*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/assets/public-menu-final-v9.js*", zone_name = "gnk-asg.hr" }
+]
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
