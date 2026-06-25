@@ -1,0 +1,54 @@
+name: Verify Admin Shell V7 Quick
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/verify-admin-shell-v7-quick.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check private HTML shell markers
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -u
+          base="https://gnk-asg.hr"
+          paths=("/operator-dashboard/" "/admin-center/" "/mail-studio/" "/auto-editor/" "/operator-mobile/")
+          : > results.tsv
+          for path in "${paths[@]}"; do
+            safe=$(printf '%s' "$path" | tr '/-' '__' | tr -cd '[:alnum:]_')
+            file="${safe}.html"
+            code=$(curl -sSL -o "$file" -w '%{http_code}' "$base${path}?cb=$(date +%s%N)" || true)
+            css=false; js=false; backend=false; iframe=false
+            grep -q 'admin-unified-shell-v7.css?v=20260625-admin-v7' "$file" && css=true || true
+            grep -q 'admin-unified-shell-v7.js?v=20260625-admin-v7' "$file" && js=true || true
+            grep -q 'backend-ui-shell.js?v=20260625-admin-v7' "$file" && backend=true || true
+            grep -q 'gnkMailStudioEmbedDashboard' "$file" && iframe=true || true
+            printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$path" "$code" "$css" "$js" "$backend" "$iframe" >> results.tsv
+          done
+          node - <<'JS'
+          const fs=require('fs');
+          const rows=fs.readFileSync('results.tsv','utf8').trim().split('\n').filter(Boolean).map(line=>{
+            const [path,http,css,js,backend,iframe]=line.split('\t');
+            return {path,http:Number(http),css:css==='true',js:js==='true',backend:backend==='true',iframePresent:iframe==='true'};
+          });
+          const failures=rows.filter(x=>x.http!==200||!x.css||!x.js||!x.backend||x.iframePresent);
+          const report={checkedAt:new Date().toISOString(),ok:failures.length===0,routes:rows.length,passed:rows.length-failures.length,failures,pages:rows};
+          fs.writeFileSync('admin-v7-quick.json',JSON.stringify(report,null,2));
+          JS
+          body=$(printf 'Završna produkcijska provjera Admin Shell V7.\n\n```json\n%s\n```\n' "$(cat admin-v7-quick.json)")
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/66" -f body="$body"
+          ok=$(node -e "const r=require('./admin-v7-quick.json');process.stdout.write(String(r.ok))")
+          if [ "$ok" = true ]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/66" -f state=closed -f state_reason=completed
+          fi
