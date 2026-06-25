@@ -43,7 +43,7 @@
     ['Kontakt','/contact/'],
     ['Legal','/legal/'],
     ['App','/app/'],
-    ['Admin','/operator/session/login?next=/operator-dashboard/','nofollow']
+    ['Admin','/operator-dashboard/','nofollow']
   ];
 
   const enLinks = [
@@ -60,7 +60,7 @@
     ['Contact','/en/contact/'],
     ['Legal','/en/legal/'],
     ['App','/app/'],
-    ['Admin','/operator/session/login?next=/operator-dashboard/','nofollow']
+    ['Admin','/operator-dashboard/','nofollow']
   ];
 
   const isActive = href => {
