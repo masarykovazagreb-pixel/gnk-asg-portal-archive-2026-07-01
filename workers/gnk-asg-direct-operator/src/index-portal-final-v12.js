@@ -2,11 +2,46 @@ import core from './index-portal-experience-v10.js';
 
 const VERSION = 'GNK_ASG_PORTAL_FINAL_V12_20260625';
 
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data, null, 2), {
+    status,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
+      'x-gnk-asg-portal-final': VERSION
+    }
+  });
+}
+
+function withVersionHeader(response) {
+  const headers = new Headers(response.headers);
+  headers.set('x-gnk-asg-portal-final', VERSION);
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
+
 async function fetchHandler(request, env, ctx) {
+  const url = new URL(request.url);
+  const path = url.pathname.replace(/\/+$/, '') || '/';
+
+  if (request.method === 'GET' && path === '/data/portal-version.json') {
+    return json({
+      ok: true,
+      version: VERSION,
+      publicUx: 'GNK_ASG_PUBLIC_UX_V11',
+      indexClock: 'GNK_ASG_INDEX_CLOCK_V2',
+      automation: 'GNK_ASG_PORTAL_EXPERIENCE_V10_20260625',
+      timeZone: 'Europe/Zagreb',
+      deployedEntryPoint: 'src/index-portal-final-v12.js'
+    });
+  }
+
   const response = await core.fetch(request, env, ctx);
-  const path = new URL(request.url).pathname;
-  if (request.method !== 'GET' || !['/operator-dashboard','/operator-dashboard/'].includes(path)) return response;
-  if (!response.headers.get('content-type')?.includes('text/html')) return response;
+  if (request.method !== 'GET' || path !== '/operator-dashboard') return withVersionHeader(response);
+  if (!response.headers.get('content-type')?.includes('text/html')) return withVersionHeader(response);
 
   const pattern = /if\([a-zA-Z_$][\w$]*\(\)\)\{\s*document\.getElementById\("login"\)/;
   const html = (await response.text()).replace(pattern, 'if(false){document.getElementById("login")');
@@ -26,3 +61,5 @@ export default {
     if (typeof core.email === 'function') return core.email(message, env, ctx);
   }
 };
+
+export { VERSION };
