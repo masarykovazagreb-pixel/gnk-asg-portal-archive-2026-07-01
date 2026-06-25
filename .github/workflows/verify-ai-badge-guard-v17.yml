@@ -1,0 +1,98 @@
+name: Verify AI Badge Guard V17
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/verify-ai-badge-guard-v17.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Chromium
+        run: |
+          npm install --no-package-lock --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Verify persistent floating badges
+        shell: bash
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const {chromium}=require('playwright');
+          const routes=['/markets/','/legal/','/en/legal/','/en/assistant/','/visual-index/'];
+          const views=[['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]];
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const results=[];
+            for(const [view,viewport] of views){
+              for(const route of routes){
+                const page=await browser.newPage({viewport,deviceScaleFactor:1});
+                let http=0;
+                try{
+                  const response=await page.goto(`https://gnk-asg.hr${route}?cb=${Date.now()}`,{waitUntil:'domcontentloaded',timeout:45000});
+                  http=response?.status()||0;
+                  await page.waitForTimeout(3600);
+                  const data=await page.evaluate(()=>{
+                    const visible=element=>{
+                      if(!element)return false;
+                      const style=getComputedStyle(element),rect=element.getBoundingClientRect();
+                      return style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>0&&rect.width>3&&rect.height>3;
+                    };
+                    const ai=document.getElementById('gnk-ai-badge-v13');
+                    const home=document.getElementById('gnk-floating-home-v16');
+                    return {
+                      aiVisible:visible(ai),
+                      homeVisible:visible(home),
+                      aiDuplicateClass:Boolean(ai?.classList.contains('gnk-asg-ai-hidden-duplicate')),
+                      legacyClass:Boolean(ai?.classList.contains('gnk-v13-legacy-hidden')),
+                      guardAsset:[...document.scripts].some(s=>String(s.src||'').includes('public-ai-badge-guard-v17.js?v=20260625-v17')),
+                      menuAsset:[...document.scripts].some(s=>String(s.src||'').includes('public-menu-v13.js?v=20260625-v16')),
+                      homeAsset:[...document.scripts].some(s=>String(s.src||'').includes('public-floating-home-v16.js?v=20260625-v17')),
+                      oldDuplicateScript:Boolean(document.getElementById('gnk-asg-single-ai-button-script')),
+                      overflow:document.documentElement.scrollWidth>window.innerWidth+2
+                    };
+                  });
+                  const ok=http===200&&data.aiVisible&&data.homeVisible&&!data.aiDuplicateClass&&!data.legacyClass&&data.guardAsset&&data.menuAsset&&data.homeAsset&&!data.oldDuplicateScript&&!data.overflow;
+                  results.push({route,view,http,...data,ok});
+                }catch(error){results.push({route,view,http,error:error.message,ok:false});}
+                await page.close();
+              }
+            }
+            await browser.close();
+            const failures=results.filter(x=>!x.ok);
+            const report={checkedAt:new Date().toISOString(),ok:failures.length===0,total:results.length,passed:results.length-failures.length,failures,results};
+            fs.writeFileSync('ai-badge-guard-v17-report.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report,null,2));
+            if(!report.ok)process.exitCode=1;
+          })().catch(error=>{console.error(error);process.exit(1)});
+          JS
+      - name: Publish final V17 result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if [ -f ai-badge-guard-v17-report.json ]; then
+            body=$(printf 'Završna ciljana provjera trajnosti plutajućih gumba V17.\n\n```json\n%s\n```\n' "$(cat ai-badge-guard-v17-report.json)")
+            ok=$(node -e "const r=require('./ai-badge-guard-v17-report.json');process.stdout.write(String(r.ok))")
+          else
+            body="Ciljana V17 provjera nije proizvela rezultat. Run: ${GITHUB_RUN_ID}"
+            ok=false
+          fi
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/63" -f body="$body"
+          if [ "$ok" = "true" ]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/63" -f state=closed -f state_reason=completed
+          fi
