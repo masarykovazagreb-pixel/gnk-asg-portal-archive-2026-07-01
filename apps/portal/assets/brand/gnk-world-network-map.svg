@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-labelledby="t d">
+<title id="t">GNK ASG global network</title><desc id="d">Stylised world map with active and planned international network links.</desc>
+<defs>
+  <linearGradient id="ocean" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07192d"/><stop offset=".55" stop-color="#04101f"/><stop offset="1" stop-color="#020812"/></linearGradient>
+  <linearGradient id="land" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#173a5f"/><stop offset="1" stop-color="#0a2039"/></linearGradient>
+  <linearGradient id="arc" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d7aa3c"/><stop offset=".48" stop-color="#ffe08a"/><stop offset="1" stop-color="#a66f16"/></linearGradient>
+  <linearGradient id="arc2" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#dce6f2"/><stop offset=".55" stop-color="#8fa8c6"/><stop offset="1" stop-color="#f7fbff"/></linearGradient>
+  <radialGradient id="glow"><stop stop-color="#fff7c2"/><stop offset=".25" stop-color="#ffe08a"/><stop offset=".55" stop-color="#d7aa3c"/><stop offset="1" stop-color="#d7aa3c" stop-opacity="0"/></radialGradient>
+  <filter id="goldGlow" x="-200%" y="-200%" width="400%" height="400%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="8"/></filter>
+  <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#d7aa3c" stroke-opacity=".035"/></pattern>
+</defs>
+<rect width="1200" height="620" rx="30" fill="url(#ocean)"/>
+<rect width="1200" height="620" rx="30" fill="url(#grid)"/>
+<ellipse cx="600" cy="314" rx="520" ry="235" fill="none" stroke="#d7aa3c" stroke-opacity=".18"/>
+<ellipse cx="600" cy="314" rx="435" ry="188" fill="none" stroke="#d7aa3c" stroke-opacity=".1"/>
+<g fill="url(#land)" stroke="#3f668e" stroke-opacity=".55" stroke-width="2">
+  <path d="M79 207l44-49 87-37 85 10 56 42-12 49-55 11-31 49-83 25-55-29-41-26z"/>
+  <path d="M323 315l48 15 37 55-12 104-45 76-29-45-13-89z"/>
+  <path d="M467 164l71-38 112 3 58 33 29 53-54 27-48-13-39 34-25 73-46-17-11-60-52-27z"/>
+  <path d="M560 322l60-18 46 38 25 89-41 107-51-29-34-88z"/>
+  <path d="M706 180l78-47 166 7 92 42 34 65-62 34-66-11-39 49-79-17-51-57-68-14z"/>
+  <path d="M976 406l64-27 77 37-10 58-72 27-55-41z"/>
+</g>
+<g fill="none" stroke-linecap="round" stroke-width="2.25" opacity=".92">
+  <path d="M183 205Q420 40 564 205" stroke="url(#arc)"/><path d="M183 205Q500 82 831 237" stroke="url(#arc)"/><path d="M183 205Q480 222 1036 433" stroke="url(#arc2)"/><path d="M241 262Q450 118 564 205" stroke="url(#arc)"/><path d="M241 262Q612 118 831 237" stroke="url(#arc)"/><path d="M330 366Q460 194 564 205" stroke="url(#arc2)"/><path d="M330 366Q630 150 831 237" stroke="url(#arc)"/><path d="M374 439Q565 290 635 392" stroke="url(#arc)"/><path d="M564 205Q680 98 831 237" stroke="url(#arc)"/><path d="M564 205Q710 118 1012 219" stroke="url(#arc)"/><path d="M564 205Q720 235 906 287" stroke="url(#arc2)"/><path d="M564 205Q680 310 635 392" stroke="url(#arc)"/><path d="M564 205Q720 360 1036 433" stroke="url(#arc2)"/><path d="M631 263Q740 160 831 237" stroke="url(#arc)"/><path d="M631 263Q770 258 906 287" stroke="url(#arc)"/><path d="M631 263Q760 380 1036 433" stroke="url(#arc2)"/><path d="M831 237Q930 142 1012 219" stroke="url(#arc)"/><path d="M831 237Q960 240 1044 304" stroke="url(#arc)"/><path d="M831 237Q930 355 1036 433" stroke="url(#arc2)"/><path d="M906 287Q965 316 1044 304" stroke="url(#arc)"/><path d="M906 287Q930 395 1036 433" stroke="url(#arc2)"/><path d="M564 205Q412 348 330 366" stroke="url(#arc)"/><path d="M564 205Q410 420 374 439" stroke="url(#arc)"/>
+</g>
+<g fill="#ffe08a" filter="url(#goldGlow)">
+  <circle cx="183" cy="205" r="5"/><circle cx="241" cy="262" r="5"/><circle cx="330" cy="366" r="5"/><circle cx="374" cy="439" r="5"/><circle cx="564" cy="205" r="7"/><circle cx="631" cy="263" r="5"/><circle cx="635" cy="392" r="5"/><circle cx="831" cy="237" r="5"/><circle cx="906" cy="287" r="5"/><circle cx="1012" cy="219" r="5"/><circle cx="1044" cy="304" r="5"/><circle cx="1036" cy="433" r="5"/>
+</g>
+<g fill="#fff" filter="url(#goldGlow)"><circle cx="287" cy="285" r="4"/><circle cx="492" cy="315" r="4"/><circle cx="737" cy="300" r="4"/><circle cx="972" cy="386" r="4"/><circle cx="1100" cy="488" r="4"/></g>
+<g opacity=".38" fill="#d7aa3c" filter="url(#softGlow)"><circle cx="564" cy="205" r="25"/><circle cx="831" cy="237" r="18"/><circle cx="183" cy="205" r="16"/><circle cx="1036" cy="433" r="16"/></g>
+<g fill="#e6b94e" opacity=".45"><circle cx="148" cy="186" r="1.4"/><circle cx="213" cy="232" r="1.2"/><circle cx="259" cy="176" r="1.5"/><circle cx="311" cy="220" r="1.2"/><circle cx="351" cy="273" r="1.4"/><circle cx="411" cy="198" r="1.2"/><circle cx="472" cy="220" r="1.4"/><circle cx="523" cy="178" r="1.3"/><circle cx="608" cy="228" r="1.2"/><circle cx="676" cy="187" r="1.4"/><circle cx="741" cy="237" r="1.2"/><circle cx="785" cy="188" r="1.5"/><circle cx="866" cy="213" r="1.3"/><circle cx="934" cy="249" r="1.2"/><circle cx="998" cy="274" r="1.5"/><circle cx="1061" cy="333" r="1.2"/></g>
+</svg>
