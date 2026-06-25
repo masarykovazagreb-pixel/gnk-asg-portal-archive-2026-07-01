@@ -1,0 +1,105 @@
+name: Verify Single Menu V15
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/verify-single-menu-v15.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Chromium
+        run: |
+          npm install --no-package-lock --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Verify single header and no overlap
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const results=[];
+            for(const path of ['/trzista/','/markets/','/assistant/','/en/assistant/']){
+              const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
+              await page.goto(`https://gnk-asg.hr${path}?cb=${Date.now()}`,{waitUntil:'networkidle',timeout:90000});
+              await page.waitForTimeout(1800);
+              const row=await page.evaluate(()=>{
+                const headers=[...document.querySelectorAll('#gnk-asg-premium-header')].filter(el=>getComputedStyle(el).display!=='none');
+                const menus=[...document.querySelectorAll('#gnk-asg-premium-menu')].filter(el=>getComputedStyle(el).display!=='none');
+                const legacy=[...document.querySelectorAll('.site-header,.main-nav,.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-final-menu-wrap')].filter(el=>{const cs=getComputedStyle(el);const r=el.getBoundingClientRect();return cs.display!=='none'&&cs.visibility!=='hidden'&&r.width>2&&r.height>2});
+                const header=headers[0]||null;
+                const menu=menus[0]||null;
+                const brand=header?.querySelector('.gnk-v13-brand-row')||null;
+                const hr=header?.getBoundingClientRect();
+                const mr=menu?.getBoundingClientRect();
+                const br=brand?.getBoundingClientRect();
+                const centerDelta=hr?Math.abs((hr.left+hr.width/2)-window.innerWidth/2):9999;
+                const overlap=br&&mr?Math.max(0,br.bottom-mr.top):9999;
+                const menuStyle=menu?getComputedStyle(menu):null;
+                return {
+                  path:location.pathname,
+                  headerCount:headers.length,
+                  menuCount:menus.length,
+                  legacyVisible:legacy.length,
+                  centerDelta:Number(centerDelta.toFixed(2)),
+                  overlap:Number(overlap.toFixed(2)),
+                  brandBottom:br?Number(br.bottom.toFixed(2)):null,
+                  menuTop:mr?Number(mr.top.toFixed(2)):null,
+                  menuPosition:menuStyle?.position||null,
+                  menuTransform:menuStyle?.transform||null,
+                  menuAsset:[...document.scripts].some(s=>String(s.src||'').includes('public-menu-v13.js?v=20260625-v15')),
+                  visualAsset:[...document.styleSheets].some(s=>String(s.href||'').includes('public-visual-v13.css?v=20260625-v15')),
+                  oldPatch:Boolean(document.getElementById('gnk-asg-fixed-menu-patch-style')||document.getElementById('gnk-asg-fixed-menu-patch-script')),
+                  overflow:document.documentElement.scrollWidth>window.innerWidth+2
+                };
+              });
+              row.ok=row.headerCount===1&&row.menuCount===1&&row.legacyVisible===0&&row.centerDelta<=3&&row.overlap<=1&&row.menuPosition==='relative'&&row.menuTransform==='none'&&row.menuAsset&&row.visualAsset&&!row.oldPatch&&!row.overflow;
+              results.push(row);
+              await page.screenshot({path:`single-menu-${path.replace(/\//g,'_')||'root'}.png`,fullPage:true});
+              await page.close();
+            }
+            await browser.close();
+            const report={checkedAt:new Date().toISOString(),ok:results.every(r=>r.ok),results};
+            fs.writeFileSync('single-menu-v15-report.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report,null,2));
+            if(!report.ok)process.exitCode=1;
+          })().catch(error=>{console.error(error);process.exit(1)});
+          JS
+      - name: Post report
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if [ -f single-menu-v15-report.json ]; then
+            body=$(printf '## V15 provjera jednog menija bez preklapanja\n\n```json\n%s\n```\n' "$(cat single-menu-v15-report.json)")
+          else
+            body="## V15 provjera jednog menija bez preklapanja\n\nProvjera nije proizvela rezultat. Run: ${GITHUB_RUN_ID}"
+          fi
+          gh api "repos/${GITHUB_REPOSITORY}/issues/63/comments" -f body="$body"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: single-menu-v15-evidence
+          path: |
+            single-menu-v15-report.json
+            single-menu-*.png
+          retention-days: 7
