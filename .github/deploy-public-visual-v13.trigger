@@ -1,4 +1,3 @@
 deployment=GNK_ASG_PUBLIC_VISUAL_V13_20260625
 approved=true
-source_commit=bf70a61085c1414b8f196ad912abd993b307faf4
-trigger_revision=2
+trigger_revision=3
