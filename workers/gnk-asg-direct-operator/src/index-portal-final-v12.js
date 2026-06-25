@@ -2,14 +2,15 @@ import core from './index-portal-experience-v10.js';
 import { patchPublicHtml, patchAdminHtml, isPrivatePath, transformHtml } from './public-shell-v11.js';
 
 const VERSION = 'GNK_ASG_PORTAL_FINAL_V12_20260625';
-const PUBLIC_VISUAL = 'GNK_ASG_PUBLIC_VISUAL_V15_20260625';
+const PUBLIC_VISUAL = 'GNK_ASG_PUBLIC_VISUAL_V16_20260625';
 const ADMIN_VISUAL = 'GNK_ASG_ADMIN_UNIFIED_V7_20260625';
+const FLOATING_HOME = 'GNK_ASG_FLOATING_HOME_V16';
 
 function json(data,status=200){
   return new Response(JSON.stringify(data,null,2),{status,headers:{
     'content-type':'application/json; charset=utf-8','cache-control':'no-store',
     'x-gnk-asg-portal-final':VERSION,'x-gnk-asg-public-visual':PUBLIC_VISUAL,
-    'x-gnk-asg-admin-visual':ADMIN_VISUAL
+    'x-gnk-asg-admin-visual':ADMIN_VISUAL,'x-gnk-asg-floating-home':FLOATING_HOME
   }});
 }
 
@@ -18,6 +19,7 @@ function withVersionHeader(response){
   headers.set('x-gnk-asg-portal-final',VERSION);
   headers.set('x-gnk-asg-public-visual',PUBLIC_VISUAL);
   headers.set('x-gnk-asg-admin-visual',ADMIN_VISUAL);
+  headers.set('x-gnk-asg-floating-home',FLOATING_HOME);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -31,6 +33,7 @@ async function assetResponse(request,env,assetPath,contentType){
   headers.set('x-gnk-asg-portal-final',VERSION);
   headers.set('x-gnk-asg-public-visual',PUBLIC_VISUAL);
   headers.set('x-gnk-asg-admin-visual',ADMIN_VISUAL);
+  headers.set('x-gnk-asg-floating-home',FLOATING_HOME);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -51,7 +54,8 @@ async function fetchHandler(request,env,ctx){
   if(request.method==='GET'&&path==='/data/portal-version.json'){
     return json({
       ok:true,version:VERSION,publicUx:'GNK_ASG_PUBLIC_UX_V12',publicVisual:PUBLIC_VISUAL,
-      publicMenu:'GNK_ASG_PUBLIC_MENU_V15',adminVisual:ADMIN_VISUAL,favicon:'GNK_ASG_FAVICON_V1',indexClock:'GNK_ASG_INDEX_CLOCK_V2',
+      publicMenu:'GNK_ASG_PUBLIC_MENU_V15',floatingHome:FLOATING_HOME,adminVisual:ADMIN_VISUAL,
+      favicon:'GNK_ASG_FAVICON_V1',indexClock:'GNK_ASG_INDEX_CLOCK_V2',
       automation:'GNK_ASG_PORTAL_EXPERIENCE_V10_20260625',timeZone:'Europe/Zagreb',deployedEntryPoint:'src/index-portal-final-v12.js'
     });
   }
