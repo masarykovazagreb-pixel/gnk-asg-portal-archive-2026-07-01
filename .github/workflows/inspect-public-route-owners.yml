@@ -1,0 +1,40 @@
+name: Inspect Public Route Owners
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/inspect-public-route-owners.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect public response headers
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg.hr"
+          : > report.txt
+          for path in /vijesti/ /news/ /app/ /data/portal-version.json; do
+            file=$(printf '%s' "$path" | tr '/-' '__' | tr -cd '[:alnum:]_')
+            [ -n "$file" ] || file=root
+            code=$(curl -sSL -D "${file}.headers" -o "${file}.body" -w '%{http_code}' "$base${path}?cb=$(date +%s%N)" || true)
+            echo "PATH=$path HTTP=$code" >> report.txt
+            grep -Ei '^(content-type|cache-control|server|cf-ray|x-gnk-asg[^:]*|location):' "${file}.headers" | sed 's/[[:space:]]*$//' >> report.txt || true
+            printf 'BODY_MARKERS=' >> report.txt
+            for marker in GNK_ASG_PORTAL_FINAL_V12_20260625 public-menu-final-v9.js public-menu-unified-v12.css gnk-asg-favicon.svg gnk-public-v12; do
+              if grep -q "$marker" "${file}.body"; then printf '%s ' "$marker" >> report.txt; fi
+            done
+            printf '\n\n' >> report.txt
+          done
+          body=$(printf '## Public route ownership inspection\n\n```text\n%s\n```\n' "$(cat report.txt)")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/63/comments" -f body="$body"
