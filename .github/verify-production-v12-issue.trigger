@@ -1,2 +1,2 @@
 verification=GNK_ASG_PORTAL_FINAL_V12_20260625
-revision=1
+revision=2
