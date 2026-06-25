@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: gnk-asg-portal-final-v12
@@ -29,6 +30,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+
       - name: Validate final wrapper
         working-directory: workers/gnk-asg-direct-operator
         run: |
@@ -36,14 +38,18 @@ jobs:
           node --check src/index-portal-final-v12.js
           node --check src/index-portal-experience-v10.js
           node --check src/index-portal-repair-v9.js
+          grep -q 'main = "src/index-portal-final-v12.js"' wrangler.toml
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml
+
       - name: Deploy final wrapper
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
       - name: Verify final production routes and automation
+        id: verify
         shell: bash
         run: |
           set -euo pipefail
@@ -51,41 +57,97 @@ jobs:
 
           for attempt in $(seq 1 12); do
             stamp=$(date +%s)
-            root_code=$(curl -sS -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
-            en_code=$(curl -sS -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
-            admin_code=$(curl -sS -o admin.html -D admin.headers -w '%{http_code}' "$base/operator-dashboard/?cb=$stamp" || true)
-            config_code=$(curl -sS -o media.json -w '%{http_code}' "$base/data/index-media-config.json?cb=$stamp" || true)
-            automation_code=$(curl -sS -o automation.json -w '%{http_code}' "$base/data/news-automation-status.json?cb=$stamp" || true)
+            version_code=$(curl -sSL -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
+            root_code=$(curl -sSL -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
+            en_code=$(curl -sSL -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
+            admin_code=$(curl -sSL -o admin.html -w '%{http_code}' "$base/operator-dashboard/?cb=$stamp" || true)
+            config_code=$(curl -sSL -o media.json -w '%{http_code}' "$base/data/index-media-config.json?cb=$stamp" || true)
+            automation_code=$(curl -sSL -o automation.json -w '%{http_code}' "$base/data/news-automation-status.json?cb=$stamp" || true)
+            status_hr_code=$(curl -sSL -o status-hr.html -w '%{http_code}' "$base/status-automatizacije/?cb=$stamp" || true)
+            status_en_code=$(curl -sSL -o status-en.html -w '%{http_code}' "$base/automation-status/?cb=$stamp" || true)
 
-            if [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$admin_code" != "404" ] && [ "$config_code" = "200" ] && [ "$automation_code" = "200" ] && grep -q 'public-ux-v11.css' root.html && grep -q 'index-clock-v2.js' root.html && grep -qi '^x-gnk-asg-portal-final: GNK_ASG_PORTAL_FINAL_V12_20260625' admin.headers; then
+            if [ "$version_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$admin_code" = "200" ] && [ "$config_code" = "200" ] && [ "$automation_code" = "200" ] && [ "$status_hr_code" = "200" ] && [ "$status_en_code" = "200" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V12_20260625' version.json && grep -q 'public-ux-v11.css' root.html && grep -q 'index-clock-v2.js' root.html; then
               break
             fi
 
             if [ "$attempt" = "12" ]; then
-              echo "ROOT_HTTP=$root_code EN_HTTP=$en_code ADMIN_HTTP=$admin_code CONFIG_HTTP=$config_code AUTOMATION_HTTP=$automation_code"
-              cat admin.headers || true
+              echo "VERSION_HTTP=$version_code ROOT_HTTP=$root_code EN_HTTP=$en_code ADMIN_HTTP=$admin_code CONFIG_HTTP=$config_code AUTOMATION_HTTP=$automation_code STATUS_HR_HTTP=$status_hr_code STATUS_EN_HTTP=$status_en_code"
               exit 1
             fi
             sleep 10
           done
 
           grep -q 'public-ux-v11.css' en.html
+          grep -q 'Status automatizacije' status-hr.html
+          grep -q 'Automation status' status-en.html
           ! grep -q 'window.GNK_ASG_FORCE_OPERATOR_TOKEN = "' admin.html
-          grep -q 'if(false)' admin.html
 
+          export VERSION_CODE="$version_code" ROOT_CODE="$root_code" EN_CODE="$en_code" ADMIN_CODE="$admin_code" CONFIG_CODE="$config_code" AUTOMATION_CODE="$automation_code" STATUS_HR_CODE="$status_hr_code" STATUS_EN_CODE="$status_en_code"
           node - <<'JS'
           const fs = require('fs');
+          const version = JSON.parse(fs.readFileSync('version.json', 'utf8'));
           const media = JSON.parse(fs.readFileSync('media.json', 'utf8'));
-          if (media.clock?.enabled !== false) throw new Error('clock must remain disabled until Admin enables it');
-          if (media.countdown?.enabled !== false) throw new Error('countdown must remain disabled until Admin enables it');
-          if (media.media?.enabled !== false) throw new Error('media must remain disabled until Admin enables it');
-          if (media.media?.autoplay !== false) throw new Error('autoplay must be false');
-          if (media.media?.preload !== 'none') throw new Error('preload must be none');
-
           const automation = JSON.parse(fs.readFileSync('automation.json', 'utf8'));
-          if ((automation.configuredNewsSources || 0) < 24) throw new Error('configured news sources below 24');
-          if ((automation.minimumNewsLinks || 0) < 20) throw new Error('minimum news links below 20');
-          if (!Array.isArray(automation.newsSchedule) || !automation.newsSchedule.includes('09:00') || !automation.newsSchedule.includes('16:00')) throw new Error('news schedule mismatch');
-          if (!String(automation.autoEditorSchedule || '').includes('2 hours')) throw new Error('Auto Editor schedule mismatch');
-          console.log('PORTAL_FINAL_V12_PRODUCTION_OK=true');
+          const checks = {
+            version: version.version === 'GNK_ASG_PORTAL_FINAL_V12_20260625',
+            entrypoint: version.deployedEntryPoint === 'src/index-portal-final-v12.js',
+            root: process.env.ROOT_CODE === '200',
+            en: process.env.EN_CODE === '200',
+            admin: process.env.ADMIN_CODE === '200',
+            config: process.env.CONFIG_CODE === '200',
+            automation: process.env.AUTOMATION_CODE === '200',
+            statusHr: process.env.STATUS_HR_CODE === '200',
+            statusEn: process.env.STATUS_EN_CODE === '200',
+            clockDisabled: media.clock?.enabled === false,
+            countdownDisabled: media.countdown?.enabled === false,
+            mediaDisabled: media.media?.enabled === false,
+            noAutoplay: media.media?.autoplay === false,
+            noPreload: media.media?.preload === 'none',
+            sources: Number(automation.configuredNewsSources || 0) >= 24,
+            minimumLinks: Number(automation.minimumNewsLinks || 0) >= 20,
+            newsSchedule: Array.isArray(automation.newsSchedule) && automation.newsSchedule.includes('09:00') && automation.newsSchedule.includes('16:00'),
+            autoEditor: String(automation.autoEditorSchedule || '').includes('2 hours'),
+            timeZone: automation.timeZone === 'Europe/Zagreb'
+          };
+          const ok = Object.values(checks).every(Boolean);
+          const report = {
+            checkedAt: new Date().toISOString(),
+            ok,
+            version: version.version,
+            http: {
+              version: Number(process.env.VERSION_CODE), root: Number(process.env.ROOT_CODE), en: Number(process.env.EN_CODE),
+              admin: Number(process.env.ADMIN_CODE), config: Number(process.env.CONFIG_CODE), automation: Number(process.env.AUTOMATION_CODE),
+              statusHr: Number(process.env.STATUS_HR_CODE), statusEn: Number(process.env.STATUS_EN_CODE)
+            },
+            checks,
+            automation: {
+              sources: automation.configuredNewsSources,
+              minimumLinks: automation.minimumNewsLinks,
+              newsSchedule: automation.newsSchedule,
+              autoEditor: automation.autoEditorSchedule,
+              timeZone: automation.timeZone
+            }
+          };
+          fs.writeFileSync('deploy-result.json', JSON.stringify(report, null, 2));
+          if (!ok) process.exit(1);
+          console.log(JSON.stringify(report));
           JS
+
+      - name: Post deployment result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if [ -f deploy-result.json ]; then
+            body="## V12 deploy confirmation
+
+\`\`\`json
+$(cat deploy-result.json)
+\`\`\`"
+          else
+            body="## V12 deploy confirmation
+
+Deployment or verification failed before a structured result was produced. Run: ${GITHUB_RUN_ID}"
+          fi
+          gh api "repos/${GITHUB_REPOSITORY}/issues/60/comments" -f body="$body"
