@@ -9,19 +9,70 @@
   const copy = {
     hr: {
       loading: 'Učitavanje…', noItems: 'Trenutačno nema dostupnih zapisa.',
-      autoTitle: 'Auto Editor', mediaTitle: 'Media Kit', docsTitle: 'Dokumenti i PDF centar',
-      openPublications: 'Otvori Objave', openNews: 'Otvori Vijesti', openVisual: 'Otvori Visual Index',
-      contact: 'Kontakt za medije', statusUnavailable: 'Javni feed trenutačno nije dostupan. Dostupne su povezane javne sekcije portala.',
-      groupAll: 'Sve', existing: 'Postojeće', planned: 'Planirano 2026.'
+      openPublications: 'Otvori Objave', statusUnavailable: 'Javni feed trenutačno nije dostupan. Dostupne su povezane javne sekcije portala.',
+      groupAll: 'Sve', countdownDefault: 'Važna objava za', countdownDone: 'Objava je dostupna',
+      mediaPlay: 'Pokreni sadržaj', videoPlay: 'Pokreni video', presentationPlay: 'Pokreni prezentaciju',
+      mediaUnavailable: 'Medijski sadržaj još nije objavljen.', days: 'dana', hours: 'sati', minutes: 'minuta', seconds: 'sekundi'
     },
     en: {
       loading: 'Loading…', noItems: 'No entries are currently available.',
-      autoTitle: 'Auto Editor', mediaTitle: 'Media Kit', docsTitle: 'Documents and PDF Centre',
-      openPublications: 'Open Publications', openNews: 'Open News', openVisual: 'Open Visual Index',
-      contact: 'Media contact', statusUnavailable: 'The public feed is temporarily unavailable. Related public portal sections remain available.',
-      groupAll: 'All', existing: 'Existing', planned: 'Planned 2026'
+      openPublications: 'Open Publications', statusUnavailable: 'The public feed is temporarily unavailable. Related public portal sections remain available.',
+      groupAll: 'All', countdownDefault: 'Important announcement in', countdownDone: 'The announcement is available',
+      mediaPlay: 'Open content', videoPlay: 'Play video', presentationPlay: 'Open presentation',
+      mediaUnavailable: 'Media content has not been published yet.', days: 'days', hours: 'hours', minutes: 'minutes', seconds: 'seconds'
     }
   }[lang];
+
+  const getJson = async url => {
+    const response = await fetch(`${url}${url.includes('?') ? '&' : '?'}cb=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  };
+
+  const safeOwnUrl = value => {
+    if (!value) return '';
+    try {
+      const url = new URL(String(value), location.origin);
+      const allowed = url.origin === location.origin || url.hostname === 'news.gnk-asg.hr' || url.hostname === 'gnk-asg.hr';
+      return allowed && /^https?:$/.test(url.protocol) ? url.href : '';
+    } catch {
+      return '';
+    }
+  };
+
+  function repairIndexLayout() {
+    const main = document.querySelector('main');
+    if (!main) return;
+
+    if (document.getElementById('gnk-asg-premium-header')) {
+      document.querySelectorAll('.brand-head,.top-nav').forEach(element => {
+        element.setAttribute('aria-hidden', 'true');
+        element.style.display = 'none';
+      });
+    }
+
+    main.querySelectorAll(':scope > .hero,:scope > .trust-strip,:scope > .section').forEach(element => {
+      element.hidden = false;
+      element.style.setProperty('display', element.classList.contains('hero') ? 'grid' : '', 'important');
+      element.style.setProperty('visibility', 'visible', 'important');
+      element.style.setProperty('opacity', '1', 'important');
+      element.style.setProperty('transform', 'none', 'important');
+    });
+
+    main.querySelectorAll(':scope > div,:scope > section').forEach(element => {
+      const rect = element.getBoundingClientRect();
+      const text = (element.textContent || '').trim();
+      const meaningful = element.querySelector('img,video,canvas,iframe,form,article,a,button');
+      if (rect.height > 900 && text.length < 20 && !meaningful) element.style.display = 'none';
+    });
+
+    const heroCopy = document.querySelector('.hero-copy');
+    if (heroCopy && !heroCopy.querySelector('h1')) {
+      const h1 = document.createElement('h1');
+      h1.innerHTML = lang === 'en' ? 'GNK ASG <span>Corporate Portal</span>' : 'GNK ASG <span>Korporativni portal</span>';
+      heroCopy.querySelector('.eyebrow')?.after(h1);
+    }
+  }
 
   const modals = Object.fromEntries([...document.querySelectorAll('.modal')].map(modal => [modal.id, modal]));
   function openModal(id) {
@@ -29,10 +80,10 @@
     if (!modal) return;
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
-    const close = modal.querySelector('[data-close]');
-    if (close) close.focus();
+    modal.querySelector('[data-close]')?.focus();
   }
   function closeModal(modal) {
+    if (!modal) return;
     modal.classList.remove('open');
     document.body.style.overflow = '';
   }
@@ -40,9 +91,8 @@
     const opener = event.target.closest('[data-open]');
     if (opener) {
       event.preventDefault();
-      const id = opener.dataset.open;
-      openModal(id);
-      if (id === 'auto-editor-modal') loadAutoEditor();
+      openModal(opener.dataset.open);
+      if (opener.dataset.open === 'auto-editor-modal') loadAutoEditor();
     }
     const close = event.target.closest('[data-close]');
     if (close) closeModal(close.closest('.modal'));
@@ -51,12 +101,6 @@
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') document.querySelectorAll('.modal.open').forEach(closeModal);
   });
-
-  async function getJson(url) {
-    const response = await fetch(`${url}${url.includes('?') ? '&' : '?'}cb=${Date.now()}`, { cache: 'no-store' });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return response.json();
-  }
 
   async function loadAutoEditor() {
     const box = document.querySelector('#auto-editor-modal .modal-grid');
@@ -81,19 +125,19 @@
       const items = Array.isArray(payload) ? payload : (payload.items || []);
       if (!items.length) return;
       const top = items[0];
-      const title = top.title || top.titleHr || top.titleEn || (lang === 'en' ? 'Featured information' : 'Ključna informacija');
-      const summary = top.summary || top.description || top.excerpt || '';
+      const title = lang === 'en' ? (top.titleEn || top.title || top.titleHr) : (top.titleHr || top.title || top.titleEn);
+      const summary = lang === 'en' ? (top.summaryEn || top.summary || top.description || top.excerpt) : (top.summaryHr || top.summary || top.description || top.excerpt);
       const link = top.url || top.sourceUrl || (lang === 'en' ? '/news/' : '/vijesti/');
       const titleEl = document.getElementById('featuredTitle');
       const summaryEl = document.getElementById('featuredSummary');
       const linkEl = document.getElementById('featuredLink');
-      if (titleEl) titleEl.textContent = title;
-      if (summaryEl) summaryEl.textContent = summary;
+      if (titleEl) titleEl.textContent = title || (lang === 'en' ? 'Featured information' : 'Ključna informacija');
+      if (summaryEl) summaryEl.textContent = summary || '';
       if (linkEl) linkEl.href = link;
       const list = document.getElementById('latestNews');
       if (list) list.innerHTML = items.slice(0, 5).map(item => `
         <a class="news-item" href="${esc(item.url || item.sourceUrl || (lang === 'en' ? '/news/' : '/vijesti/'))}">
-          <strong>${esc(item.title || item.titleHr || item.titleEn || 'News')}</strong>
+          <strong>${esc(lang === 'en' ? (item.titleEn || item.title || item.titleHr || 'News') : (item.titleHr || item.title || item.titleEn || 'Vijest'))}</strong>
           <small>${esc(item.source || item.category || 'GNK ASG')}</small>
         </a>`).join('');
     } catch (_) {}
@@ -124,10 +168,14 @@
     try {
       const payload = await getJson('/data/auto-editor.json');
       const items = Array.isArray(payload) ? payload : (payload.items || payload.articles || []);
+      const format = value => {
+        const date = new Date(value || '');
+        return Number.isNaN(date.getTime()) ? '' : new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'hr-HR', { dateStyle: 'medium', timeZone: 'Europe/Zagreb' }).format(date);
+      };
       target.innerHTML = items.length ? items.slice(0, 5).map(item => `
         <a class="publication-row" href="${lang === 'en' ? '/publications/' : '/objave/'}">
           <span>${esc(lang === 'en' ? (item.titleEn || item.title) : (item.titleHr || item.title))}</span>
-          <small>${esc(String(item.publishedAt || item.date || '').slice(0, 10))}</small>
+          <small>${esc(format(item.publishedAt || item.date))}</small>
         </a>`).join('') : `<a class="publication-row" href="${lang === 'en' ? '/publications/' : '/objave/'}"><span>${copy.openPublications}</span></a>`;
     } catch (_) {
       target.innerHTML = `<a class="publication-row" href="${lang === 'en' ? '/publications/' : '/objave/'}"><span>${copy.openPublications}</span></a>`;
@@ -153,30 +201,128 @@
           <span>${esc(node.id === 'boulder' ? node.place : (lang === 'en' ? (node.place_en || node.place_hr) : (node.place_hr || node.place_en)))} · ${esc(node.region || '')}</span></div>`).join('');
       };
       render('all');
-      tabs.querySelectorAll('button').forEach(button => {
-        button.addEventListener('click', () => {
-          tabs.querySelectorAll('button').forEach(item => item.classList.remove('active'));
-          button.classList.add('active');
-          render(button.dataset.region);
-        });
-      });
+      tabs.querySelectorAll('button').forEach(button => button.addEventListener('click', () => {
+        tabs.querySelectorAll('button').forEach(item => item.classList.remove('active'));
+        button.classList.add('active');
+        render(button.dataset.region);
+      }));
       if (plannedList) plannedList.innerHTML = planned.map(node => `<li>${esc(lang === 'en' ? (node.name_en || node.name_hr) : (node.name_hr || node.name_en))} · ${esc(lang === 'en' ? (node.place_en || node.place_hr) : (node.place_hr || node.place_en))}</li>`).join('');
     } catch (_) {
       list.innerHTML = `<div class="location"><b>${copy.statusUnavailable}</b></div>`;
     }
   }
 
-  const play = document.querySelector('.play');
-  if (play) play.addEventListener('click', () => {
-    const active = play.dataset.playing === '1';
-    play.dataset.playing = active ? '0' : '1';
-    play.textContent = active ? '▶' : 'Ⅱ';
-    const featured = play.closest('.featured');
-    if (featured) featured.style.filter = active ? '' : 'saturate(1.35) brightness(1.08)';
-  });
+  function installCountdown(config) {
+    const old = document.getElementById('gnk-index-countdown');
+    old?.remove();
+    const countdown = config?.countdown || {};
+    if (!countdown.enabled || !countdown.target) return;
+    const target = new Date(countdown.target);
+    if (Number.isNaN(target.getTime())) return;
 
+    const featuredSection = document.querySelector('.feature-grid')?.closest('.section');
+    if (!featuredSection) return;
+    const bar = document.createElement('section');
+    bar.id = 'gnk-index-countdown';
+    bar.className = 'gnk-index-countdown';
+    bar.style.setProperty('--countdown-accent', countdown.color || '#ef6670');
+    bar.innerHTML = `<div class="countdown-label">${esc(lang === 'en' ? (countdown.labelEn || copy.countdownDefault) : (countdown.labelHr || copy.countdownDefault))}</div><div class="countdown-values" aria-live="polite"></div>`;
+    featuredSection.before(bar);
+    const values = bar.querySelector('.countdown-values');
+
+    const render = () => {
+      const remaining = target.getTime() - Date.now();
+      if (remaining <= 0) {
+        values.innerHTML = `<strong>${esc(lang === 'en' ? (countdown.doneLabelEn || copy.countdownDone) : (countdown.doneLabelHr || copy.countdownDone))}</strong>`;
+        bar.classList.add('is-complete');
+        return false;
+      }
+      const seconds = Math.floor(remaining / 1000);
+      const parts = [
+        [Math.floor(seconds / 86400), copy.days],
+        [Math.floor((seconds % 86400) / 3600), copy.hours],
+        [Math.floor((seconds % 3600) / 60), copy.minutes],
+        [seconds % 60, copy.seconds]
+      ];
+      values.innerHTML = parts.map(([value, label]) => `<span><b>${String(value).padStart(2, '0')}</b><small>${esc(label)}</small></span>`).join('');
+      return true;
+    };
+    render();
+    const timer = setInterval(() => { if (!render()) clearInterval(timer); }, 1000);
+  }
+
+  function installLazyMedia(config) {
+    const media = config?.media || {};
+    if (!media.enabled) return;
+    const source = safeOwnUrl(media.sourceUrl || media.source || '');
+    const preview = safeOwnUrl(media.previewUrl || '');
+    if (!source && !preview) return;
+    const featured = document.querySelector('.featured');
+    if (!featured) return;
+
+    const poster = safeOwnUrl(media.posterUrl || media.poster || '') || '/assets/index-media-poster.svg';
+    const type = media.type === 'pptx' ? 'pptx' : 'video';
+    const title = lang === 'en' ? (media.titleEn || media.title || 'GNK ASG media message') : (media.titleHr || media.title || 'GNK ASG medijska poruka');
+    const summary = lang === 'en' ? (media.summaryEn || media.summary || '') : (media.summaryHr || media.summary || '');
+    const buttonLabel = type === 'pptx' ? copy.presentationPlay : copy.videoPlay;
+
+    featured.classList.add('gnk-media-ready');
+    featured.style.backgroundImage = `linear-gradient(90deg,rgba(2,9,19,.22),rgba(2,9,19,.96) 74%),url("${poster.replace(/"/g, '%22')}")`;
+    featured.innerHTML = `
+      <button class="play gnk-media-play" type="button" aria-label="${esc(buttonLabel)}">▶</button>
+      <div class="featured-content"><p class="eyebrow">${type === 'pptx' ? 'PPTX / PDF' : 'Video'}</p><h3>${esc(title)}</h3><p>${esc(summary)}</p><button class="btn gnk-media-open" type="button">${esc(buttonLabel)}</button></div>
+      <div class="gnk-media-stage" hidden></div>`;
+
+    const launch = () => {
+      const stage = featured.querySelector('.gnk-media-stage');
+      if (!stage || stage.dataset.loaded === '1') return;
+      stage.dataset.loaded = '1';
+      stage.hidden = false;
+      featured.querySelector('.featured-content')?.setAttribute('hidden', '');
+      featured.querySelector('.gnk-media-play')?.setAttribute('hidden', '');
+
+      if (type === 'video' && source) {
+        const video = document.createElement('video');
+        video.controls = true;
+        video.playsInline = true;
+        video.preload = 'metadata';
+        video.poster = poster;
+        video.src = source;
+        video.setAttribute('aria-label', title);
+        stage.appendChild(video);
+        video.play().catch(() => {});
+        return;
+      }
+
+      const target = preview || source;
+      if (target) {
+        const iframe = document.createElement('iframe');
+        iframe.title = title;
+        iframe.loading = 'eager';
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        iframe.src = target;
+        stage.appendChild(iframe);
+      } else {
+        stage.innerHTML = `<p>${esc(copy.mediaUnavailable)}</p>`;
+      }
+    };
+    featured.querySelectorAll('.gnk-media-play,.gnk-media-open').forEach(button => button.addEventListener('click', launch, { once: true }));
+  }
+
+  async function loadIndexExperience() {
+    try {
+      const config = await getJson('/data/index-media-config.json');
+      installCountdown(config);
+      installLazyMedia(config);
+    } catch (_) {}
+  }
+
+  repairIndexLayout();
   loadNews();
   loadMarket();
   loadPublications();
   loadNetwork();
+  loadIndexExperience();
+  window.addEventListener('load', repairIndexLayout, { once: true });
+  [250, 900, 2200].forEach(delay => setTimeout(repairIndexLayout, delay));
 })();

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">GNK ASG medijski sadržaj</title>
+  <desc id="desc">Tamna korporativna pozadina sa zlatnim mrežnim elementima.</desc>
+  <defs>
+    <radialGradient id="bg" cx="68%" cy="32%" r="80%">
+      <stop offset="0" stop-color="#164b80"/>
+      <stop offset=".42" stop-color="#071b31"/>
+      <stop offset="1" stop-color="#020812"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" x2="1">
+      <stop stop-color="#a87516"/>
+      <stop offset=".5" stop-color="#ffe092"/>
+      <stop offset="1" stop-color="#b77d13"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <g opacity=".22" stroke="#d7aa3c" fill="none">
+    <circle cx="1130" cy="430" r="315"/>
+    <ellipse cx="1130" cy="430" rx="315" ry="135" transform="rotate(25 1130 430)"/>
+    <ellipse cx="1130" cy="430" rx="315" ry="135" transform="rotate(-25 1130 430)"/>
+    <path d="M0 725C370 510 610 760 950 545s455-80 650-240"/>
+  </g>
+  <g fill="url(#gold)" filter="url(#glow)">
+    <circle cx="930" cy="342" r="7"/><circle cx="1110" cy="210" r="7"/><circle cx="1320" cy="335" r="7"/><circle cx="1050" cy="585" r="7"/><circle cx="1370" cy="585" r="7"/>
+  </g>
+  <g transform="translate(155 205)">
+    <circle cx="150" cy="150" r="108" fill="none" stroke="url(#gold)" stroke-width="10"/>
+    <path d="M70 125Q150 35 235 105M62 165Q145 85 243 155M88 215Q155 145 230 210" fill="none" stroke="url(#gold)" stroke-width="5"/>
+    <rect x="92" y="177" width="24" height="58" fill="url(#gold)"/>
+    <rect x="139" y="146" width="24" height="89" fill="url(#gold)"/>
+    <rect x="186" y="105" width="24" height="130" fill="url(#gold)"/>
+  </g>
+  <text x="155" y="610" fill="#ffe092" font-family="Arial,Helvetica,sans-serif" font-size="62" font-weight="800">GNK ASG</text>
+  <text x="155" y="672" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="34" font-weight="700">VIDEO · PRESENTATION · CORPORATE MESSAGE</text>
+  <text x="155" y="724" fill="#b8c6d8" font-family="Arial,Helvetica,sans-serif" font-size="25">Sadržaj se učitava tek nakon pokretanja.</text>
+</svg>

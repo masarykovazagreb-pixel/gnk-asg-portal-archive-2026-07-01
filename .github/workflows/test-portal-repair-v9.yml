@@ -1,0 +1,56 @@
+name: Test Portal Experience V12
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate JavaScript and JSON
+        shell: bash
+        run: |
+          node --check apps/portal/assets/index-redesign-production.js
+          node --check apps/portal/assets/public-quality-client-v1.js
+          node --check apps/portal/assets/public-menu-final-v9.js
+          node --check apps/portal/assets/admin-index-media-v1.js
+          node --check apps/portal/assets/admin-portal-experience-v10.js
+          node --check apps/portal/assets/index-clock-v2.js
+          node --check apps/portal/assets/status-automatizacije-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-repair-v9.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-experience-v10.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
+          node --check workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          node --check workers/gnk-asg-direct-operator/src/index-config-v10.js
+          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node -e "JSON.parse(require('fs').readFileSync('apps/portal/data/index-media-config.json','utf8')); console.log('CONFIG_JSON_OK')"
+      - name: Verify schedules, public UX, lazy media and Admin auth
+        shell: bash
+        run: |
+          grep -q "GNK_ASG_INDEX_MEDIA_V2_20260625" apps/portal/data/index-media-config.json
+          grep -q "GNK_ASG_PORTAL_EXPERIENCE_V10_20260625" workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q "GNK_ASG_PORTAL_FINAL_V12_20260625" workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
+          grep -q "NEWS_MINIMUM=20" workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          test "$(grep -c "^\['" workers/gnk-asg-direct-operator/src/news-curation-v10.js)" -ge 24
+          grep -q "NEWS_HOURS_ZAGREB=new Set(\[9,16\])" workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q "local.hour%2===0" workers/gnk-asg-direct-operator/src/index-portal-experience-v10.js
+          grep -q "public-ux-v11.css" workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q "index-clock-v2.js" workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q "preload = 'metadata'" apps/portal/assets/index-redesign-production.js
+          grep -q "gnk-asg-admin-auth-bridge" workers/gnk-asg-direct-operator/src/index-portal-repair-v9.js
+          grep -q '"/api/media-upload"' workers/gnk-asg-direct-operator/src/index-portal-repair-v9.js
+          grep -q '"/api/admin-asset-list"' workers/gnk-asg-direct-operator/src/index-portal-repair-v9.js
+          grep -q 'main = "src/index-portal-final-v12.js"' workers/gnk-asg-direct-operator/wrangler.toml
+      - name: Wrangler dry run
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml
