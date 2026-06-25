@@ -1,2 +1,2 @@
 verification=GNK_ASG_PUBLIC_SHELL_V12
-revision=2
+revision=3
