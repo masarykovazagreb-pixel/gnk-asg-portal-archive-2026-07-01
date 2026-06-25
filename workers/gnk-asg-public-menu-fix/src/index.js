@@ -1,5 +1,3 @@
-import publicApp from '../../gnk-asg-direct-operator/src/index-auto-editor-quality-bridge-v1.js';
-
 const VERSION = 'GNK_ASG_PUBLIC_MENU_ADMIN_FIX_V1_20260625';
 const TARGET = '/assets/public-menu-final-v9.js';
 
@@ -22,11 +20,14 @@ function patchAdminControl(source) {
 }
 
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     const url = new URL(request.url);
 
     if (url.pathname !== TARGET) {
-      return publicApp.fetch(request, env, ctx);
+      return new Response('Not found', {
+        status: 404,
+        headers: { 'content-type': 'text/plain; charset=utf-8' }
+      });
     }
 
     if (!env.ASSETS?.fetch) {
