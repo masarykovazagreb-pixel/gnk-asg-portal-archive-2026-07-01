@@ -1,0 +1,65 @@
+name: Verify Public Shell V13 Now
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/verify-public-shell-v13-now.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe all public routes and publish exact matrix
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -u
+          base="https://gnk-asg.hr"
+          paths=(
+            "/" "/en/" "/objave/" "/publications/" "/vijesti/" "/news/"
+            "/trzista/" "/markets/" "/contact/" "/en/contact/" "/legal/" "/en/legal/"
+            "/assistant/" "/en/assistant/" "/downloads/" "/en/downloads/" "/visual-index/"
+            "/app/" "/status-automatizacije/" "/automation-status/"
+          )
+          : > matrix.tsv
+          stamp=$(date +%s)
+          version_code=$(curl -sSL -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
+          favicon_code=$(curl -sSL -D favicon.headers -o favicon.svg -w '%{http_code}' "$base/favicon.ico?cb=$stamp" || true)
+          for path in "${paths[@]}"; do
+            safe=$(printf '%s' "$path" | tr '/-' '__' | tr -cd '[:alnum:]_')
+            [ -n "$safe" ] || safe=root
+            file="${safe}.html"
+            code=$(curl -sSL -o "$file" -w '%{http_code}' "$base${path}?cb=$stamp" || true)
+            menu=false; visual=false; ux=false; icon=false
+            grep -q 'public-menu-v13.js?v=20260625-v13' "$file" && menu=true || true
+            grep -q 'public-visual-v13.css?v=20260625-v13' "$file" && visual=true || true
+            grep -q 'public-ux-v11.css?v=20260625-v12' "$file" && ux=true || true
+            grep -q 'gnk-asg-favicon.svg?v=20260625-v1' "$file" && icon=true || true
+            printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$path" "$code" "$menu" "$visual" "$ux" "$icon" >> matrix.tsv
+          done
+          export VERSION_CODE="$version_code" FAVICON_CODE="$favicon_code"
+          node - <<'JS'
+          const fs=require('fs');
+          const rows=fs.readFileSync('matrix.tsv','utf8').trim().split('\n').filter(Boolean).map(line=>{
+            const [path,http,menu,visual,ux,favicon]=line.split('\t');
+            return {path,http:Number(http),menu:menu==='true',visual:visual==='true',ux:ux==='true',favicon:favicon==='true'};
+          });
+          let version={};try{version=JSON.parse(fs.readFileSync('version.json','utf8'))}catch{}
+          const failures=rows.filter(x=>x.http!==200||!x.menu||!x.visual||!x.ux||!x.favicon);
+          const report={checkedAt:new Date().toISOString(),ok:failures.length===0&&Number(process.env.VERSION_CODE)===200&&Number(process.env.FAVICON_CODE)===200,version:version.version||null,publicVisual:version.publicVisual||null,publicMenu:version.publicMenu||null,faviconVersion:version.favicon||null,versionHttp:Number(process.env.VERSION_CODE||0),faviconHttp:Number(process.env.FAVICON_CODE||0),routes:rows.length,passed:rows.length-failures.length,failures,pages:rows};
+          fs.writeFileSync('report.json',JSON.stringify(report,null,2));
+          JS
+          body=$(printf 'Završna neposredna produkcijska provjera V13 menija i favicona.\n\n```json\n%s\n```\n' "$(cat report.json)")
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/63" -f body="$body"
+          ok=$(node -e "const r=require('./report.json');process.stdout.write(String(r.ok))")
+          if [ "$ok" = true ]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/63" -f state=closed -f state_reason=completed
+          fi
