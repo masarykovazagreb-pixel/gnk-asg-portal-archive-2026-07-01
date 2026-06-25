@@ -1,13 +1,15 @@
 import core from './index-portal-experience-v10.js';
-import { patchPublicHtml, transformHtml } from './public-shell-v11.js';
+import { patchPublicHtml, patchAdminHtml, isPrivatePath, transformHtml } from './public-shell-v11.js';
 
 const VERSION = 'GNK_ASG_PORTAL_FINAL_V12_20260625';
-const PUBLIC_VISUAL = 'GNK_ASG_PUBLIC_VISUAL_V13_20260625';
+const PUBLIC_VISUAL = 'GNK_ASG_PUBLIC_VISUAL_V15_20260625';
+const ADMIN_VISUAL = 'GNK_ASG_ADMIN_UNIFIED_V7_20260625';
 
 function json(data,status=200){
   return new Response(JSON.stringify(data,null,2),{status,headers:{
     'content-type':'application/json; charset=utf-8','cache-control':'no-store',
-    'x-gnk-asg-portal-final':VERSION,'x-gnk-asg-public-visual':PUBLIC_VISUAL
+    'x-gnk-asg-portal-final':VERSION,'x-gnk-asg-public-visual':PUBLIC_VISUAL,
+    'x-gnk-asg-admin-visual':ADMIN_VISUAL
   }});
 }
 
@@ -15,6 +17,7 @@ function withVersionHeader(response){
   const headers=new Headers(response.headers);
   headers.set('x-gnk-asg-portal-final',VERSION);
   headers.set('x-gnk-asg-public-visual',PUBLIC_VISUAL);
+  headers.set('x-gnk-asg-admin-visual',ADMIN_VISUAL);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -27,6 +30,7 @@ async function assetResponse(request,env,assetPath,contentType){
   headers.set('cache-control','public, max-age=86400, stale-while-revalidate=604800');
   headers.set('x-gnk-asg-portal-final',VERSION);
   headers.set('x-gnk-asg-public-visual',PUBLIC_VISUAL);
+  headers.set('x-gnk-asg-admin-visual',ADMIN_VISUAL);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -47,7 +51,7 @@ async function fetchHandler(request,env,ctx){
   if(request.method==='GET'&&path==='/data/portal-version.json'){
     return json({
       ok:true,version:VERSION,publicUx:'GNK_ASG_PUBLIC_UX_V12',publicVisual:PUBLIC_VISUAL,
-      publicMenu:'GNK_ASG_PUBLIC_MENU_V13',favicon:'GNK_ASG_FAVICON_V1',indexClock:'GNK_ASG_INDEX_CLOCK_V2',
+      publicMenu:'GNK_ASG_PUBLIC_MENU_V15',adminVisual:ADMIN_VISUAL,favicon:'GNK_ASG_FAVICON_V1',indexClock:'GNK_ASG_INDEX_CLOCK_V2',
       automation:'GNK_ASG_PORTAL_EXPERIENCE_V10_20260625',timeZone:'Europe/Zagreb',deployedEntryPoint:'src/index-portal-final-v12.js'
     });
   }
@@ -67,17 +71,20 @@ async function fetchHandler(request,env,ctx){
   }
 
   const response=await core.fetch(request,env,ctx);
-  if(request.method!=='GET'||path!=='/operator-dashboard')return withVersionHeader(response);
-  if(!response.headers.get('content-type')?.includes('text/html'))return withVersionHeader(response);
+  if(request.method!=='GET'||!response.headers.get('content-type')?.includes('text/html'))return withVersionHeader(response);
 
-  const pattern=/if\([a-zA-Z_$][\w$]*\(\)\)\{\s*document\.getElementById\("login"\)/;
-  const html=(await response.text()).replace(pattern,'if(false){document.getElementById("login")');
-  const headers=new Headers(response.headers);
-  headers.delete('content-length');
-  headers.set('cache-control','no-store');
-  headers.set('x-gnk-asg-portal-final',VERSION);
-  headers.set('x-gnk-asg-public-visual',PUBLIC_VISUAL);
-  return new Response(html,{status:response.status,statusText:response.statusText,headers});
+  if(isPrivatePath(path)){
+    return transformHtml(response,html=>{
+      let value=patchAdminHtml(html,path);
+      if(path==='/operator-dashboard'){
+        const pattern=/if\([a-zA-Z_$][\w$]*\(\)\)\{\s*document\.getElementById\("login"\)/;
+        value=value.replace(pattern,'if(false){document.getElementById("login")');
+      }
+      return value;
+    });
+  }
+
+  return withVersionHeader(response);
 }
 
 export default {
