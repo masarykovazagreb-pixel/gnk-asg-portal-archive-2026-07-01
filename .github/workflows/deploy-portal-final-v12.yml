@@ -5,6 +5,10 @@ on:
     workflows: ["Production Index and Content Automation"]
     types: [completed]
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/deploy-portal-v12.trigger"
 
 permissions:
   contents: read
@@ -15,7 +19,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -28,26 +32,60 @@ jobs:
       - name: Validate final wrapper
         working-directory: workers/gnk-asg-direct-operator
         run: |
+          set -euo pipefail
           node --check src/index-portal-final-v12.js
-          npx --yes wrangler@4 deploy src/index-portal-final-v12.js --dry-run --config wrangler.toml
+          node --check src/index-portal-experience-v10.js
+          node --check src/index-portal-repair-v9.js
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml
       - name: Deploy final wrapper
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy src/index-portal-final-v12.js --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify final production routes
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify final production routes and automation
         shell: bash
         run: |
-          sleep 15
+          set -euo pipefail
           base="https://gnk-asg.hr"
-          test "$(curl -sS -o /dev/null -w '%{http_code}' "$base/?cb=$(date +%s)")" = "200"
-          test "$(curl -sS -o /dev/null -w '%{http_code}' "$base/en/?cb=$(date +%s)")" = "200"
-          test "$(curl -sS -o /dev/null -w '%{http_code}' "$base/status-automatizacije/?cb=$(date +%s)")" = "200"
-          test "$(curl -sS -o /dev/null -w '%{http_code}' "$base/data/index-media-config.json?cb=$(date +%s)")" = "200"
-          admin_code="$(curl -sS -o admin.html -D admin.headers -w '%{http_code}' "$base/operator-dashboard/?cb=$(date +%s)")"
-          test "$admin_code" != "404"
-          grep -qi '^x-gnk-asg-portal-final: GNK_ASG_PORTAL_FINAL_V12_20260625' admin.headers
+
+          for attempt in $(seq 1 12); do
+            stamp=$(date +%s)
+            root_code=$(curl -sS -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
+            en_code=$(curl -sS -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
+            admin_code=$(curl -sS -o admin.html -D admin.headers -w '%{http_code}' "$base/operator-dashboard/?cb=$stamp" || true)
+            config_code=$(curl -sS -o media.json -w '%{http_code}' "$base/data/index-media-config.json?cb=$stamp" || true)
+            automation_code=$(curl -sS -o automation.json -w '%{http_code}' "$base/data/news-automation-status.json?cb=$stamp" || true)
+
+            if [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$admin_code" != "404" ] && [ "$config_code" = "200" ] && [ "$automation_code" = "200" ] && grep -q 'public-ux-v11.css' root.html && grep -q 'index-clock-v2.js' root.html && grep -qi '^x-gnk-asg-portal-final: GNK_ASG_PORTAL_FINAL_V12_20260625' admin.headers; then
+              break
+            fi
+
+            if [ "$attempt" = "12" ]; then
+              echo "ROOT_HTTP=$root_code EN_HTTP=$en_code ADMIN_HTTP=$admin_code CONFIG_HTTP=$config_code AUTOMATION_HTTP=$automation_code"
+              cat admin.headers || true
+              exit 1
+            fi
+            sleep 10
+          done
+
+          grep -q 'public-ux-v11.css' en.html
           ! grep -q 'window.GNK_ASG_FORCE_OPERATOR_TOKEN = "' admin.html
           grep -q 'if(false)' admin.html
-          echo "PORTAL_FINAL_V12_OK=true"
+
+          node - <<'JS'
+          const fs = require('fs');
+          const media = JSON.parse(fs.readFileSync('media.json', 'utf8'));
+          if (media.clock?.enabled !== false) throw new Error('clock must remain disabled until Admin enables it');
+          if (media.countdown?.enabled !== false) throw new Error('countdown must remain disabled until Admin enables it');
+          if (media.media?.enabled !== false) throw new Error('media must remain disabled until Admin enables it');
+          if (media.media?.autoplay !== false) throw new Error('autoplay must be false');
+          if (media.media?.preload !== 'none') throw new Error('preload must be none');
+
+          const automation = JSON.parse(fs.readFileSync('automation.json', 'utf8'));
+          if ((automation.configuredNewsSources || 0) < 24) throw new Error('configured news sources below 24');
+          if ((automation.minimumNewsLinks || 0) < 20) throw new Error('minimum news links below 20');
+          if (!Array.isArray(automation.newsSchedule) || !automation.newsSchedule.includes('09:00') || !automation.newsSchedule.includes('16:00')) throw new Error('news schedule mismatch');
+          if (!String(automation.autoEditorSchedule || '').includes('2 hours')) throw new Error('Auto Editor schedule mismatch');
+          console.log('PORTAL_FINAL_V12_PRODUCTION_OK=true');
+          JS
