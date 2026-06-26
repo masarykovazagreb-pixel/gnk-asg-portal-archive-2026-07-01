@@ -1,0 +1,80 @@
+name: Audit all public portal routes
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/audit-public-portal-v1.yml'
+      - '.github/audit-public-portal-v1.trigger'
+      - 'scripts/audit_public_http.py'
+      - 'scripts/audit_public_browser.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: gnk-asg-public-route-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Audit all sitemap and critical HTTP routes
+        id: http
+        continue-on-error: true
+        run: python3 scripts/audit_public_http.py
+      - name: Audit critical routes in desktop and mobile browsers
+        id: browser
+        continue-on-error: true
+        run: node scripts/audit_public_browser.mjs
+      - name: Upload audit reports and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-portal-route-audit
+          path: artifacts
+          if-no-files-found: error
+      - name: Report audit summary
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HTTP_OUTCOME: ${{ steps.http.outcome }}
+          BROWSER_OUTCOME: ${{ steps.browser.outcome }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        run: |
+          summary=$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          http=json.loads(Path('artifacts/public-http-audit.json').read_text()) if Path('artifacts/public-http-audit.json').exists() else {'error':'missing'}
+          browser=json.loads(Path('artifacts/public-browser-audit.json').read_text()) if Path('artifacts/public-browser-audit.json').exists() else {'error':'missing'}
+          print(json.dumps({
+            'http':{'ok':http.get('ok'),'discovered':http.get('discovered'),'failed':http.get('failed'),'failures':[row for row in http.get('rows',[]) if row.get('failures')][:30]},
+            'browser':{'ok':browser.get('ok'),'cases':browser.get('cases'),'failed':browser.get('failed'),'failures':[row for row in browser.get('rows',[]) if row.get('failures')]}
+          },ensure_ascii=False,indent=2))
+          PY
+          )
+          gh issue comment 101 --body "Public portal audit · HTTP **${HTTP_OUTCOME}** · browser **${BROWSER_OUTCOME}** · commit \`${RUN_SHA}\` · ${RUN_URL}\n\n\`\`\`json\n${summary}\n\`\`\`"
+      - name: Enforce clean audit
+        if: always()
+        env:
+          HTTP_OUTCOME: ${{ steps.http.outcome }}
+          BROWSER_OUTCOME: ${{ steps.browser.outcome }}
+        run: |
+          test "$HTTP_OUTCOME" = success
+          test "$BROWSER_OUTCOME" = success
