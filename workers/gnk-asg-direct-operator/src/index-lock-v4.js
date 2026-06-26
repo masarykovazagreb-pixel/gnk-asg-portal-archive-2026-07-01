@@ -1,4 +1,4 @@
-import app from './index-article-automation-v2.js';
+import app from './index-public-r2-v1.js';
 import { patchPublicHtml } from './public-shell-v11.js';
 import { hydrateIndexHtml, VERSION as HYDRATION_VERSION } from './index-server-hydration-v1.js';
 
