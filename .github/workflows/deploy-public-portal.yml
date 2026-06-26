@@ -2,34 +2,12 @@ name: Deploy public portal
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
-      - ".github/deploy-public-visual-v13.trigger"
       - ".github/workflows/deploy-public-portal.yml"
-      - "apps/portal/index.html"
-      - "apps/portal/en/index.html"
-      - "apps/portal/admin-center/**"
-      - "apps/portal/favicon.svg"
-      - "apps/portal/site.webmanifest"
-      - "apps/portal/assets/admin-hub-v21.css"
-      - "apps/portal/assets/admin-hub-v21.js"
-      - "apps/portal/assets/public-menu-v13.js"
-      - "apps/portal/assets/index-redesign-production.css"
-      - "apps/portal/assets/index-redesign-production-base.css"
-      - "apps/portal/assets/index-redesign-production.js"
-      - "apps/portal/assets/iq200/**"
-      - "apps/portal/assets/brand/**"
-      - "apps/portal/media-command-center/**"
-      - "apps/portal/assets/media-command-center-v1.css"
-      - "apps/portal/assets/media-command-center-v1.js"
-      - "apps/portal/assets/admin-media-command-center-nav-v20.js"
-      - "apps/portal/data/media-outreach-contacts-v1.json"
-      - "workers/gnk-asg-direct-operator/src/index-portal-final-v13.js"
-      - "workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js"
-      - "workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js"
-      - "workers/gnk-asg-direct-operator/src/favicon-contract-v2.js"
-      - "workers/gnk-asg-direct-operator/src/media-command-center-v1.js"
+      - "apps/portal/**"
+      - "workers/gnk-asg-direct-operator/src/**"
+      - "workers/gnk-asg-direct-operator/migrations/**"
       - "workers/gnk-asg-direct-operator/wrangler.toml"
   workflow_dispatch:
 
@@ -37,7 +15,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: iq200-index-production
+  group: gnk-asg-canonical-production
   cancel-in-progress: true
 
 jobs:
@@ -45,82 +23,87 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: "22"
+          node-version: "24"
 
-      - name: Verify IQ200 index, favicon, Admin Hub and Media Command package
+      - name: Verify canonical Admin, Index, Media and automation package
         shell: bash
         run: |
-          set -euo pipefail
+          set -euxo pipefail
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
           test -s apps/portal/admin-center/index.html
           test -s apps/portal/favicon.svg
           test -s apps/portal/site.webmanifest
-          test -s apps/portal/assets/admin-hub-v21.css
-          test -s apps/portal/assets/admin-hub-v21.js
-          test -s apps/portal/assets/public-menu-v13.js
-          test -s apps/portal/assets/index-redesign-production.css
-          test -s apps/portal/assets/index-redesign-production-base.css
-          test -s apps/portal/assets/index-redesign-production.js
-          test -s apps/portal/assets/iq200/01.css
-          test -s apps/portal/assets/iq200/responsive.css
-          test -s apps/portal/assets/iq200/final-fixes.css
           test -s apps/portal/media-command-center/index.html
-          test -s apps/portal/assets/media-command-center-v1.css
-          test -s apps/portal/assets/media-command-center-v1.js
-          test -s apps/portal/assets/admin-media-command-center-nav-v20.js
-          test -s apps/portal/data/media-outreach-contacts-v1.json
-          test -s workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          test -s apps/portal/assets/media-command-center-v2.css
+          test -s apps/portal/assets/media-command-center-v2.js
+          test -s apps/portal/assets/index-content-resilience-v1.js
+          test -s apps/portal/assets/index-live-market-chart-v4.js
           test -s workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          test -s workers/gnk-asg-direct-operator/src/index-lock-v4.js
+          test -s workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
+          test -s workers/gnk-asg-direct-operator/src/article-visual-v2.js
+          test -s workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
+          test -s workers/gnk-asg-direct-operator/src/media-command-center-v2.js
+          test -s workers/gnk-asg-direct-operator/src/media-command-readiness-v2.js
           test -s workers/gnk-asg-direct-operator/src/favicon-contract-v2.js
-          test -s workers/gnk-asg-direct-operator/src/media-command-center-v1.js
-          grep -q 'index-redesign-production.css' apps/portal/index.html
-          grep -q 'index-redesign-production.css' apps/portal/en/index.html
-          grep -q 'GNK ASG d.o.o.' apps/portal/index.html
-          grep -q 'GNK DINAMO Ltd.' apps/portal/en/index.html
-          grep -q '/admin-center/' apps/portal/assets/public-menu-v13.js
-          grep -q 'Mediji · Komandni centar' apps/portal/assets/admin-hub-v21.js
-          grep -q '20. 7. 2026.' apps/portal/media-command-center/index.html
-          grep -q 'rezerviran i plaćen' apps/portal/media-command-center/index.html
-          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'applyFaviconContract' workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
-          grep -q 'GNK_ASG_FAVICON_CONTRACT_V2_20260626' workers/gnk-asg-direct-operator/src/favicon-contract-v2.js
-          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
-          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
-          node --check workers/gnk-asg-direct-operator/src/favicon-contract-v2.js
-          node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
-          node --check apps/portal/assets/admin-hub-v21.js
-          node --check apps/portal/assets/public-menu-v13.js
-          node --check apps/portal/assets/media-command-center-v1.js
-          node --check apps/portal/assets/admin-media-command-center-nav-v20.js
+          test -s workers/gnk-asg-direct-operator/migrations/0001_media_command_controls.sql
           grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q "from './index-lock-v4.js'" workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          grep -q "from './index-article-automation-v2.js'" workers/gnk-asg-direct-operator/src/index-lock-v4.js
+          grep -q "from './index-media-command-center-v21.js'" workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
+          grep -q 'GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION' workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          grep -q 'GNK_ASG_INDEX_LOCK_V4_20260626' workers/gnk-asg-direct-operator/src/index-lock-v4.js
+          grep -q 'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R2' workers/gnk-asg-direct-operator/src/media-command-center-v2.js
+          grep -q 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2' workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
+          grep -q 'GNK_ASG_ARTICLE_VISUAL_V2_20260626' workers/gnk-asg-direct-operator/src/article-visual-v2.js
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'Uvoz i kvaliteta' apps/portal/media-command-center/index.html
+          grep -q 'decisionDialog' apps/portal/media-command-center/index.html
+          grep -q 'index-content-resilience-v1.js' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q 'index-live-market-chart-v4.js' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          node --check workers/gnk-asg-direct-operator/src/index-lock-v4.js
+          node --check workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
+          node --check workers/gnk-asg-direct-operator/src/article-visual-v2.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          node --check workers/gnk-asg-direct-operator/src/media-command-center-v2.js
+          node --check workers/gnk-asg-direct-operator/src/media-command-readiness-v2.js
+          node --check workers/gnk-asg-direct-operator/src/favicon-contract-v2.js
+          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check apps/portal/assets/media-command-center-v2.js
+          node --check apps/portal/assets/index-content-resilience-v1.js
+          node --check apps/portal/assets/index-live-market-chart-v4.js
           node - <<'JS'
           const fs=require('fs');
           const data=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
           const codes=new Set(data.map(item=>item.mailCode));
-          const ready=data.filter(item=>item.automationAllowed&&item.email).length;
-          if(data.length!==112||codes.size!==112||ready!==22) throw new Error(`media seed mismatch total=${data.length} unique=${codes.size} ready=${ready}`);
+          const candidates=data.filter(item=>item.automationAllowed&&item.email).length;
+          const approved=data.filter(item=>item.approved).length;
+          if(data.length!==112||codes.size!==112||candidates!==22||approved!==0){
+            throw new Error(`media seed mismatch total=${data.length} unique=${codes.size} candidates=${candidates} approved=${approved}`);
+          }
           console.log('MEDIA_COMMAND_SEED_OK=true');
           JS
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Deploy IQ200 index, favicon, Admin Hub and Media Command Center to Cloudflare
+      - name: Deploy canonical Worker to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         shell: bash
         run: |
-          set -euo pipefail
+          set -euxo pipefail
           npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify IQ200, favicon, Admin Hub and Media Command production
+      - name: Verify canonical production markers and routes
         shell: bash
         run: |
           set -euo pipefail
@@ -128,30 +111,34 @@ jobs:
           success=false
           for attempt in $(seq 1 18); do
             stamp=$(date +%s)
-            version_code=$(curl -sSL -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
+            status_code=$(curl -sSL -o deployment.json -w '%{http_code}' "$base/data/deployment-status.json?cb=$stamp" || true)
             root_code=$(curl -sSL -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
             en_code=$(curl -sSL -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
-            css_code=$(curl -sSL -o index.css -w '%{http_code}' "$base/assets/index-redesign-production.css?cb=$stamp" || true)
-            iq_code=$(curl -sSL -o iq.css -w '%{http_code}' "$base/assets/iq200/final-fixes.css?cb=$stamp" || true)
-            menu_code=$(curl -sSL -o menu.js -w '%{http_code}' "$base/assets/public-menu-v13.js?cb=$stamp" || true)
             admin_code=$(curl -sS -o admin-login.html -w '%{http_code}' "$base/admin-center/?cb=$stamp" || true)
             legacy_code=$(curl -sS -o legacy.html -w '%{http_code}' "$base/operator/session/login?cb=$stamp" || true)
             media_code=$(curl -sS -o media-redirect.html -w '%{http_code}' "$base/media-command-center/?cb=$stamp" || true)
-            media_follow_code=$(curl -sSL -o media-login.html -w '%{http_code}' "$base/media-command-center/?cb=$stamp" || true)
             api_code=$(curl -sS -o media-api.json -w '%{http_code}' "$base/api/media-command-center/status?cb=$stamp" || true)
             favicon_svg_code=$(curl -sSL -o favicon.svg -w '%{http_code}' "$base/favicon.svg?cb=$stamp" || true)
-            favicon_ico_code=$(curl -sSL -o favicon-ico-final.svg -w '%{http_code}' "$base/favicon.ico?cb=$stamp" || true)
-            manifest_code=$(curl -sSL -o site.webmanifest -w '%{http_code}' "$base/site.webmanifest?cb=$stamp" || true)
-            if [ "$version_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$css_code" = "200" ] && [ "$iq_code" = "200" ] && [ "$menu_code" = "200" ] && [ "$admin_code" = "401" ] && [ "$legacy_code" = "303" ] && [ "$media_code" = "303" ] && [ "$media_follow_code" = "401" ] && [ "$api_code" = "401" ] && [ "$favicon_svg_code" = "200" ] && [ "$favicon_ico_code" = "200" ] && [ "$manifest_code" = "200" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625' version.json && grep -q 'src/index-portal-final-v13.js' version.json && grep -q 'GNK_ASG_MEDIA_COMMAND_CENTER_V1_20260626' version.json && grep -q 'src/index-media-command-center-v20.js' version.json && grep -q '/admin-center/' menu.js && grep -q 'index-redesign-production.css' root.html && grep -q 'index-redesign-production.css' en.html && grep -q 'GNK ASG d.o.o.' root.html && grep -q 'GNK DINAMO Ltd.' en.html && grep -q '/favicon.svg' root.html && grep -q '/favicon.svg' en.html && grep -q '/favicon.svg' admin-login.html && grep -q '/favicon.svg' media-login.html && grep -q '<svg' favicon.svg && grep -q '<svg' favicon-ico-final.svg && grep -q 'GNK ASG' site.webmanifest; then
+            favicon_ico_code=$(curl -sSL -o favicon-ico.svg -w '%{http_code}' "$base/favicon.ico?cb=$stamp" || true)
+            manifest_code=$(curl -sSL -o manifest.json -w '%{http_code}' "$base/site.webmanifest?cb=$stamp" || true)
+            content_code=$(curl -sSL -o content.js -w '%{http_code}' "$base/assets/index-content-resilience-v1.js?cb=$stamp" || true)
+            market_code=$(curl -sSL -o market.js -w '%{http_code}' "$base/assets/index-live-market-chart-v4.js?cb=$stamp" || true)
+            if [ "$status_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$admin_code" = "401" ] && [ "$legacy_code" = "303" ] && [ "$media_code" = "303" ] && [ "$api_code" = "401" ] && [ "$favicon_svg_code" = "200" ] && [ "$favicon_ico_code" = "200" ] && [ "$manifest_code" = "200" ] && [ "$content_code" = "200" ] && [ "$market_code" = "200" ] && grep -q 'GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION' deployment.json && grep -q 'GNK_ASG_INDEX_LOCK_V4_20260626' deployment.json && grep -q 'src/index-media-command-center-v21.js' deployment.json && grep -q 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2' deployment.json && grep -q '"productionSending": "LOCKED"' deployment.json && grep -q 'index-content-resilience-v1.js' root.html && grep -q 'index-live-market-chart-v4.js' root.html && grep -q 'index-content-resilience-v1.js' en.html && grep -q '/favicon.svg' root.html && grep -q '/favicon.svg' en.html && grep -q '<svg' favicon.svg && grep -q '<svg' favicon-ico.svg && grep -q 'GNK ASG' manifest.json; then
               success=true
               break
             fi
             sleep 10
           done
           if [ "$success" != "true" ]; then
-            echo "VERSION=$version_code ROOT=$root_code EN=$en_code CSS=$css_code IQ=$iq_code MENU=$menu_code ADMIN=$admin_code LEGACY=$legacy_code MEDIA=$media_code MEDIA_FOLLOW=$media_follow_code API=$api_code FAVICON_SVG=$favicon_svg_code FAVICON_ICO=$favicon_ico_code MANIFEST=$manifest_code"
-            cat version.json || true
+            echo "STATUS=$status_code ROOT=$root_code EN=$en_code ADMIN=$admin_code LEGACY=$legacy_code MEDIA=$media_code API=$api_code FAVICON_SVG=$favicon_svg_code FAVICON_ICO=$favicon_ico_code MANIFEST=$manifest_code CONTENT=$content_code MARKET=$market_code"
+            cat deployment.json || true
             cat media-api.json || true
             exit 1
           fi
-          node -e "const v=require('./version.json');if(!v.ok||v.version!=='GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625'||v.deployedEntryPoint!=='src/index-portal-final-v13.js'||v.mediaCommandEntryPoint!=='src/index-media-command-center-v20.js'||v.mediaCommandCenter!=='GNK_ASG_MEDIA_COMMAND_CENTER_V1_20260626'||v.indexDesign!=='IQ200')process.exit(1);console.log('GNK_ASG_FAVICON_ALL_ROUTES_PRODUCTION_OK=true')"
+          node - <<'JS'
+          const status=require('./deployment.json');
+          if(!status.ok) throw new Error('deployment status not ok');
+          if(status.entryPoint!=='src/index-admin-hub-v21.js') throw new Error(`wrong entry ${status.entryPoint}`);
+          if(status.productionSending!=='LOCKED') throw new Error('media sending unexpectedly unlocked');
+          console.log('GNK_ASG_CANONICAL_PRODUCTION_OK=true');
+          JS
