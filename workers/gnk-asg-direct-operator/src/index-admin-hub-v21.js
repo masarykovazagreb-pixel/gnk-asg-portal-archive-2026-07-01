@@ -23,7 +23,7 @@ export default{
   async fetch(request,env,ctx){
     const url=new URL(request.url);
     const path=url.pathname.replace(/\/+$/,'')||'/';
-    if(path==='/admin'&&['GET','HEAD'].includes(request.method))return redirect('/admin-center/');
+    if((path==='/admin'||path==='/operator/session/login')&&['GET','HEAD','POST'].includes(request.method))return redirect('/admin-center/');
     const response=await app.fetch(request,env,ctx);
     const embedded=url.searchParams.get('embedded')==='1'||url.searchParams.get('standalone')==='1';
     if(MODULES.has(path)&&['GET','HEAD'].includes(request.method)&&!embedded&&response.status<300){
