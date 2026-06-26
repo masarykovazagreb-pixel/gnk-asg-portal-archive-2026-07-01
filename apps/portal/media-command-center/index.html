@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>GNK ASG Media Command Center</title>
+<link rel="stylesheet" href="/assets/admin-unified-shell-v7.css?v=20260626-admin-v7">
+<link rel="stylesheet" href="/assets/media-command-center-v1.css?v=20260626-1">
+</head>
+<body class="gnk-backend-ui">
+<main class="mcc-shell">
+  <section class="mcc-hero">
+    <div>
+      <span class="mcc-kicker">GNK ASG · PRIVATE ADMIN MODULE</span>
+      <h1>Media Command Center</h1>
+      <p>Globalni mediji, personalizirano slanje, prijave redakcija, putna dokumentacija i ljudska selekcija.</p>
+    </div>
+    <div class="mcc-deadline"><strong>20. 7. 2026.</strong><span>23:59 CEST · media@gnk-asg.hr</span></div>
+  </section>
+  <section id="systemNotice" class="mcc-notice">Učitavanje statusa sustava…</section>
+  <section id="kpis" class="mcc-kpis"></section>
+  <nav class="mcc-tabs" aria-label="Media Command Center moduli">
+    <button class="active" data-tab="contacts">Globalni mediji</button>
+    <button data-tab="campaign">Kampanja i slanje</button>
+    <button data-tab="applications">Prijave redakcija</button>
+    <button data-tab="system">Sustav i pravila</button>
+  </nav>
+  <section id="contacts" class="mcc-panel active">
+    <div class="mcc-panel-head">
+      <div><h2>Globalna baza medija</h2><p>Slanje je moguće samo kada su javni urednički kanal, automatizacija i ručno odobrenje istodobno potvrđeni.</p></div>
+      <div class="mcc-actions"><input id="contactSearch" placeholder="Medij, država, urednik…"><select id="contactReady"><option value="">Svi</option><option value="1">Spremni kanali</option><option value="0">Ručna obrada</option></select><button id="reloadContacts">Osvježi</button></div>
+    </div>
+    <div class="mcc-table-wrap"><table><thead><tr><th>Šifra</th><th>Medij</th><th>Na ruke</th><th>Kanal</th><th>Status</th><th>Odobreno</th><th>Radnje</th></tr></thead><tbody id="contactsBody"></tbody></table></div>
+  </section>
+  <section id="campaign" class="mcc-panel">
+    <div class="mcc-panel-head"><div><h2>Kampanja i pregled poruka</h2><p>Početno je aktivan DRY-RUN. U ovoj fazi sučelje omogućuje pripremu, pregled i odobravanje; produkcijsko slanje ostaje zaključano.</p></div><button id="saveCampaign">Spremi kampanju</button></div>
+    <div class="mcc-form-grid">
+      <label>Naslov HR<input id="titleHr"></label>
+      <label>Naslov EN<input id="titleEn"></label>
+      <label class="span-2">Tekst HR<textarea id="bodyHr"></textarea></label>
+      <label class="span-2">Tekst EN<textarea id="bodyEn"></textarea></label>
+      <label>Rok<input id="deadlineText"></label>
+      <label>R2 ključ PDF-a<input id="pdfR2Key" placeholder="media-outreach/...pdf"></label>
+    </div>
+    <div class="mcc-preview-grid"><div><label>Šifra odabranog medija<input id="previewCode" placeholder="GNK-MEDIA-..."></label><div class="mcc-actions"><button id="previewMessage">Pregled personalizirane poruke</button></div></div><pre id="messagePreview">Odaberite medij i kliknite Pregled.</pre></div>
+  </section>
+  <section id="applications" class="mcc-panel">
+    <div class="mcc-panel-head">
+      <div><h2>Prijave redakcija</h2><p>Smještaj u New Yorku već je rezerviran i plaćen. Put, smještaj i ostale opravdane, dokumentirane i unaprijed odobrene troškove snosi organizator – medijska agencija u sklopu grupacije GNK ASG.</p></div>
+      <div class="mcc-actions"><select id="applicationStatus"><option value="">Svi statusi</option><option>READY_FOR_HUMAN_REVIEW</option><option>INCOMPLETE</option><option>MANUAL_DOMAIN_VERIFICATION</option><option>UNMATCHED_INVITATION_CODE</option><option>LATE</option></select><button id="reloadApplications">Osvježi</button></div>
+    </div>
+    <div class="mcc-table-wrap"><table><thead><tr><th>Prijava</th><th>Redakcija / osoba</th><th>Kontakti</th><th>Put i dokumenti</th><th>Trijaža</th><th>Ljudska odluka</th><th>Radnje</th></tr></thead><tbody id="applicationsBody"></tbody></table></div>
+    <pre id="applicationDetail">Kliknite Detalji za puni zapis prijave.</pre>
+  </section>
+  <section id="system" class="mcc-panel">
+    <h2>Sustav, zaštite i operativna pravila</h2><div id="systemCards" class="mcc-system-grid"></div>
+    <div class="mcc-rules">
+      <article><strong>Troškovi</strong><p>Organizator snosi put, smještaj i ostale razumne, dokumentirane i unaprijed odobrene troškove neposredno povezane sa sudjelovanjem i izvještavanjem.</p></article>
+      <article><strong>Smještaj</strong><p>Smještaj u New Yorku već je rezerviran i plaćen. Redakcije ne trebaju dostavljati predračun smještaja.</p></article>
+      <article><strong>Dokumenti</strong><p>Obvezni su pismo redakcijskog angažmana, dokaz profesionalnog rada te karta, rezervacija/itinerar ili predračun leta.</p></article>
+      <article><strong>Privatnost</strong><p>Preslika putovnice ne prihvaća se običnim e-mailom u početnoj fazi. Sustav je automatski označava i ne sprema kao valjani prijavni dokument.</p></article>
+      <article><strong>Odluka</strong><p>Automatizacija samo provjerava potpunost, rok, domene i dokumente. Konačna odluka uvijek ostaje ovlaštenoj osobi.</p></article>
+      <article><strong>Slanje</strong><p>Poruke se šalju samo odobrenim kontaktima, uz šifru u predmetu, tijelu i X-GNK-Media-Code zaglavlju te uz aktivna ograničenja brzine.</p></article>
+    </div>
+  </section>
+</main>
+<script src="/assets/admin-unified-shell-v7.js?v=20260626-admin-v9" defer></script>
+<script src="/assets/admin-media-command-center-nav-v20.js?v=20260626-1" defer></script>
+<script src="/assets/media-command-center-v1.js?v=20260626-1" defer></script>
+</body>
+</html>
