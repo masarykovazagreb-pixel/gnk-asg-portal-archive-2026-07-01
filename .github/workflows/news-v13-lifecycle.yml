@@ -1,12 +1,12 @@
-name: GNK ASG News V13 Lifecycle
+name: GNK ASG News V14 Lifecycle
 
 on:
   workflow_dispatch:
   schedule:
-    # Europe/Zagreb summer-time cadence: 09:00, 16:00, 21:00 local.
-    # The script/status layer records the canonical local cadence.
-    - cron: '0 7,14,19 * * *'
+    # UTC windows covering CET and CEST; the Zagreb gate permits only 09:00, 16:00 and 21:00 local.
+    - cron: '0 7,8,14,15,19,20 * * *'
   push:
+    branches: [main]
     paths:
       - '.github/workflows/news-v13-lifecycle.yml'
       - 'apps/portal/scripts/news_publication.py'
@@ -20,13 +20,14 @@ env:
   PYTHONUNBUFFERED: '1'
 
 concurrency:
-  group: gnk-asg-news-v13-lifecycle
+  group: gnk-asg-news-v14-lifecycle
   cancel-in-progress: false
 
 jobs:
   refresh-news:
-    name: Refresh public news feed
+    name: Refresh verified public news feed
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: apps/portal
@@ -41,37 +42,64 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Zagreb schedule gate
+        id: gate
+        shell: bash
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import os
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          event = os.environ.get('GITHUB_EVENT_NAME', '')
+          hour = datetime.now(ZoneInfo('Europe/Zagreb')).hour
+          allowed = event != 'schedule' or hour in {9, 16, 21}
+          print(f'run={str(allowed).lower()}')
+          print(f'zagreb_hour={hour}')
+          PY
+
       - name: Refresh GNK ASG news data
+        if: steps.gate.outputs.run == 'true'
         run: python3 scripts/news_publication.py
 
-      - name: Validate generated news files
+      - name: Validate V14 news contract
+        if: steps.gate.outputs.run == 'true'
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
           data = Path('data')
           news = json.loads((data / 'news.json').read_text(encoding='utf-8'))
+          archive = json.loads((data / 'news_archive.json').read_text(encoding='utf-8'))
           status = json.loads((data / 'news-automation-status.json').read_text(encoding='utf-8'))
-          archive = json.loads((data / 'news_archive.json').read_text(encoding='utf-8')) if (data / 'news_archive.json').exists() else []
-          assert isinstance(news, list) and news, 'news.json must contain at least one item'
-          assert len(news) <= 100, 'public feed must expose at most 100 items'
-          assert isinstance(archive, list) and len(archive) <= 1000, 'archive must stay within 1000 items'
-          assert status.get('scheduled_hours_local') == [9, 16, 21], 'scheduled local hours must stay 09/16/21'
-          assert status.get('max_public_items') == 100, 'public limit must stay 100'
-          assert status.get('archive_prune_to') == 500, 'archive prune target must stay 500'
-          assert status.get('rss_images_enabled') is True, 'RSS images must remain enabled'
-          assert status.get('fallback_image') == '/assets/news-fallback.svg', 'fallback image must remain configured'
-          print({'public_items': len(news), 'archive_items': len(archive), 'ok': status.get('ok'), 'updated_at': status.get('updated_at')})
+          health = json.loads((data / 'news_sources_health.json').read_text(encoding='utf-8'))
+          assert status.get('version') == 'GNK_ASG_NEWS_V14_20260626'
+          assert status.get('scheduled_hours_local') == [9, 16, 21]
+          assert status.get('configured_sources', 0) >= 15
+          assert status.get('healthy_sources', 0) >= 15
+          assert isinstance(news, list) and 1 <= len(news) <= 100
+          assert all(item.get('title') and item.get('summary') and item.get('source') and item.get('url') and item.get('image') and item.get('imageVerified') is True for item in news)
+          assert all(not str(item.get('image')).endswith('news-fallback.svg') for item in news)
+          assert isinstance(archive, list) and len(archive) <= 1000
+          assert status.get('archive_prune_trigger') == 900
+          assert status.get('archive_prune_to') == 450
+          if status.get('archive_prune_triggered'):
+              assert len(archive) <= 450
+          else:
+              assert len(archive) < 900
+          assert isinstance(health.get('sources'), list) and len(health['sources']) == status.get('configured_sources')
+          print({'public': len(news), 'archive': len(archive), 'healthy_sources': status.get('healthy_sources'), 'updated_at': status.get('updated_at')})
           PY
 
       - name: Commit refreshed public news data
+        if: steps.gate.outputs.run == 'true'
         run: |
           git config user.name "GNK ASG News Automation"
           git config user.email "actions@users.noreply.github.com"
-          git add data/news.json data/news_archive.json data/news-automation-status.json data/update_status.json
+          git add data/news.json data/news_archive.json data/news_sources_health.json data/news-automation-status.json data/update_status.json
           if git diff --cached --quiet; then
             echo "No news data changes to commit."
             exit 0
           fi
-          git commit -m "chore(news): refresh GNK ASG public news feed"
+          git commit -m "chore(news): refresh verified V14 public feed"
+          git pull --rebase origin main
           git push
