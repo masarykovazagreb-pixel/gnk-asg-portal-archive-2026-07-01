@@ -1,8 +1,9 @@
 import {withRequiredEmailSignature,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_PROFILE_DELIVERY_TEST_V1_20260626_R2_AUDIT_SAFE';
+export const VERSION='GNK_ASG_MAIL_PROFILE_DELIVERY_TEST_V1_20260626_R3_EPHEMERAL_GATE';
 export const STATUS_PATH='/api/mail-center/profile-test-status';
 export const SEND_PATH='/api/mail-center/profile-test';
+export const INTERNAL_TEST_PATH='/api/mail-center/internal-profile-test';
 
 const PROFILES=[
   {id:'office',label:'GNK ASG Office',email:'office@gnk-asg.hr'},
@@ -25,6 +26,16 @@ function allowlist(env){
 function testLive(env){
   const explicit=clean(env.MAIL_PROFILE_TEST_LIVE);
   return explicit?boolEnv(explicit):boolEnv(env.MEDIA_OUTREACH_TEST_LIVE);
+}
+function secureEqual(a,b){
+  const left=new TextEncoder().encode(String(a||'')),right=new TextEncoder().encode(String(b||''));
+  let mismatch=left.length^right.length;
+  const length=Math.max(left.length,right.length);
+  for(let index=0;index<length;index++)mismatch|=(left[index%Math.max(left.length,1)]||0)^(right[index%Math.max(right.length,1)]||0);
+  return mismatch===0&&left.length>31;
+}
+function internalTestEnv(env){
+  return new Proxy(env,{get(target,property,receiver){if(String(property)==='MAIL_PROFILE_TEST_LIVE')return'true';return Reflect.get(target,property,receiver);}});
 }
 async function ensureSchema(env){
   const db=dbOf(env);if(!db)throw new Error('GNK_ASG_D1 binding is not configured');
@@ -71,12 +82,8 @@ function message(profile,recipient,batchId){
   };
 }
 async function safeRecord(env,batchId,profile,recipient,status,detail){
-  try{
-    await record(env,batchId,profile,recipient,status,detail);
-    return{logged:true};
-  }catch(error){
-    return{logged:false,logError:String(error?.message||error).slice(0,300)};
-  }
+  try{await record(env,batchId,profile,recipient,status,detail);return{logged:true};}
+  catch(error){return{logged:false,logError:String(error?.message||error).slice(0,300)};}
 }
 async function sendBatch(request,env){
   let body={};try{body=await request.json();}catch{return json({ok:false,error:'invalid_json'},400);}
@@ -92,15 +99,13 @@ async function sendBatch(request,env){
   const results=[];
   for(const profile of PROFILES){
     let sent;
-    try{
-      sent=await signedEnv.EMAIL.send(message(profile,recipient,batchId));
-    }catch(error){
+    try{sent=await signedEnv.EMAIL.send(message(profile,recipient,batchId));}
+    catch(error){
       const detail={errorCode:clean(error?.code)||'EMAIL_SEND_FAILED',message:String(error?.message||error).slice(0,500)};
       const audit=await safeRecord(env,batchId,profile,recipient,'FAILED',detail);
       results.push({profile:profile.id,from:profile.email,status:'FAILED',...detail,audit});
       continue;
     }
-
     const detail={messageId:clean(sent?.messageId),signatureVersion:SIGNATURE_VERSION};
     const audit=await safeRecord(env,batchId,profile,recipient,'SENT',detail);
     results.push({profile:profile.id,from:profile.email,status:'SENT',messageId:detail.messageId,audit});
@@ -109,9 +114,17 @@ async function sendBatch(request,env){
   const auditWarnings=results.filter(item=>item.audit?.logged===false).length;
   return json({ok:sentCount===PROFILES.length,batchId,recipient,sent:sentCount,failed:PROFILES.length-sentCount,auditWarnings,results,signatureVersion:SIGNATURE_VERSION},sentCount===PROFILES.length?200:207);
 }
+async function handleInternalTest(request,env){
+  if(request.method!=='POST')return new Response('Not found',{status:404});
+  const supplied=request.headers.get('x-gnk-mail-test-nonce')||'';
+  const configured=env.MAIL_PROFILE_TEST_NONCE||'';
+  if(!secureEqual(supplied,configured))return new Response('Not found',{status:404,headers:{'cache-control':'no-store'}});
+  return sendBatch(request,internalTestEnv(env));
+}
 
 export async function handleMailProfileDeliveryTest(request,env){
   const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+  if(path===INTERNAL_TEST_PATH)return handleInternalTest(request,env);
   if(path===STATUS_PATH&&request.method==='GET')return json({...status(env),recent:await recent(env)});
   if(path===SEND_PATH&&request.method==='POST')return sendBatch(request,env);
   return null;
