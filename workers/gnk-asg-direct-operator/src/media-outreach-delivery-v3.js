@@ -71,11 +71,15 @@ async function pdfState(env){
   if(!bucket?.get)return{ok:false,error:'r2_binding_missing',key};
   const object=await bucket.get(key);
   if(!object)return{ok:false,error:'campaign_pdf_not_found',key};
-  const size=Number(object.size||0),sha=clean(object.customMetadata?.sha256||cfg.pdfSha256||env.MEDIA_OUTREACH_PDF_SHA256);
+  const size=Number(object.size||0);
   const filename=clean(object.customMetadata?.filename||cfg.pdfFilename||env.MEDIA_OUTREACH_PDF_FILENAME)||'GNK-ASG-media-information.pdf';
   if(size>MAX_PDF_BYTES)return{ok:false,error:'campaign_pdf_too_large',key,sizeBytes:size,maxBytes:MAX_PDF_BYTES};
-  if(!sha)return{ok:false,error:'campaign_pdf_sha256_missing',key,sizeBytes:size};
-  return{ok:true,key,sha256:sha,sizeBytes:size,filename,contentType:object.httpMetadata?.contentType||'application/pdf',uploadedAt:object.customMetadata?.uploadedAt||cfg.pdfUploadedAt||''};
+  const bytes=new Uint8Array(await object.arrayBuffer());
+  if(new TextDecoder().decode(bytes.slice(0,5))!=='%PDF-')return{ok:false,error:'campaign_pdf_invalid_signature',key,sizeBytes:size};
+  const actualSha=await sha256(bytes);
+  const configuredSha=clean(object.customMetadata?.sha256||cfg.pdfSha256||env.MEDIA_OUTREACH_PDF_SHA256);
+  if(configuredSha&&configuredSha!==actualSha)return{ok:false,error:'campaign_pdf_sha256_mismatch',key,sizeBytes:size,configuredSha256:configuredSha,actualSha256:actualSha};
+  return{ok:true,key,sha256:actualSha,sizeBytes:size,filename,contentType:object.httpMetadata?.contentType||'application/pdf',uploadedAt:object.customMetadata?.uploadedAt||cfg.pdfUploadedAt||''};
 }
 async function uploadPdf(request,env){
   const bytes=new Uint8Array(await request.arrayBuffer());
@@ -97,6 +101,8 @@ async function send(env,to,subject,text,pdf){
   if(!object)throw Object.assign(new Error('Campaign PDF not found in R2'),{code:'CAMPAIGN_PDF_NOT_FOUND'});
   const bytes=new Uint8Array(await object.arrayBuffer());
   if(bytes.length>MAX_PDF_BYTES)throw Object.assign(new Error('Campaign PDF exceeds safe email attachment limit'),{code:'CAMPAIGN_PDF_TOO_LARGE'});
+  const actualSha=await sha256(bytes);
+  if(actualSha!==pdf.sha256)throw Object.assign(new Error('Campaign PDF changed after verification'),{code:'CAMPAIGN_PDF_SHA256_CHANGED'});
   const from=clean(env.MEDIA_OUTREACH_FROM)||'media@gnk-asg.hr';
   const result=await env.EMAIL.send({
     to,
