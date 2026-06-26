@@ -1,14 +1,40 @@
 import core from './index.js';
 
-const VERSION = 'GNK_ASG_PUBLICATION_NEWS_2H_V5';
+const VERSION = 'GNK_ASG_PUBLICATION_NEWS_V6_20260626';
 const MODEL = '@cf/meta/llama-3.1-8b-instruct-fast';
+const NEWS_SCHEDULE = ['09:00','16:00','21:00'];
+const NEWS_HOURS_ZAGREB = new Set([9,16,21]);
+const PUBLIC_NEWS_LIMIT = 100;
+const ARCHIVE_PRUNE_AT = 1000;
+const ARCHIVE_RETAIN_AFTER_PRUNE = 500;
+const FALLBACK_IMAGE = '/assets/news-fallback.svg';
 const FEEDS = [
   ['BBC Business','business','world','https://feeds.bbci.co.uk/news/business/rss.xml'],
-  ['BBC Technology','technology','world','https://feeds.bbci.co.uk/news/technology/rss.xml'],
-  ['The Guardian Business','business','world','https://www.theguardian.com/uk/business/rss'],
-  ['The Guardian Technology','technology','world','https://www.theguardian.com/uk/technology/rss'],
-  ['EURACTIV','region','Europe','https://www.euractiv.com/feed/'],
-  ['Balkan Green Energy News','industry','region','https://balkangreenenergynews.com/feed/']
+  ['The Guardian Business','business','world','https://www.theguardian.com/business/rss'],
+  ['The New York Times Business','business','world','https://rss.nytimes.com/services/xml/rss/nyt/Business.xml'],
+  ['CNBC World','markets','world','https://www.cnbc.com/id/100727362/device/rss/rss.html'],
+  ['TechCrunch','technology','world','https://techcrunch.com/feed/'],
+  ['MIT Technology Review','technology','world','https://www.technologyreview.com/feed/'],
+  ['Wired','technology','world','https://www.wired.com/feed/rss'],
+  ['CoinDesk','digital-assets','world','https://www.coindesk.com/arc/outboundfeeds/rss/'],
+  ['World Economic Forum','business','world','https://www.weforum.org/agenda/rss.xml'],
+  ['IMF Blog','economy','world','https://www.imf.org/en/Blogs/rss'],
+  ['Ars Technica','technology','world','https://feeds.arstechnica.com/arstechnica/index'],
+  ['The Verge','technology','world','https://www.theverge.com/rss/index.xml'],
+  ['VentureBeat','technology','world','https://venturebeat.com/feed/'],
+  ['European Central Bank','economy','Europe','https://www.ecb.europa.eu/rss/press.html'],
+  ['European Commission Press Corner','economy','Europe','https://ec.europa.eu/commission/presscorner/api/rss?language=en'],
+  ['Balkan Green Energy News','energy','Southeast Europe','https://balkangreenenergynews.com/feed/'],
+  ['The Slovenia Times','business','Slovenia','https://sloveniatimes.com/feed/'],
+  ['Sarajevo Times','business','Bosnia and Herzegovina','https://sarajevotimes.com/feed/'],
+  ['Capital.ba','business','Bosnia and Herzegovina','https://capital.ba/feed/'],
+  ['BiznisInfo.ba','business','Bosnia and Herzegovina','https://www.biznisinfo.ba/feed/'],
+  ['Biznis.rs','business','Serbia','https://biznis.rs/feed/'],
+  ['SEEbiz','business','Southeast Europe','https://www.seebiz.eu/rss/'],
+  ['Poslovni dnevnik','business','Croatia','https://www.poslovni.hr/feed'],
+  ['Lider Media','business','Croatia','https://lidermedia.hr/feed/'],
+  ['Tportal Hrvatska','domestic','Croatia','https://www.tportal.hr/rss'],
+  ['Netokracija','technology','Croatia','https://www.netokracija.com/feed']
 ];
 const IMAGE_POOL = [
   {src:'https://gnk-asg.hr/assets/seo-gallery/gnk-asg-ai-asistent.jpg',alt:'GNK ASG AI asistent i digitalne operacije',categories:['technology','ai']},
@@ -75,6 +101,8 @@ const slugify = value => String(value || 'objava')
 const words = value => String(value || '').trim().split(/\s+/).filter(Boolean).length;
 const nowIso = () => new Date().toISOString();
 const kv = env => env.GNK_ASG_KV || env.GNK_ASG_CONFIG_KV || null;
+function zagrebSlot(date=new Date()){const parts=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',hourCycle:'h23'}).formatToParts(date).filter(part=>part.type!=='literal').map(part=>[part.type,part.value]));return{hour:Number(parts.hour),key:`${parts.year}-${parts.month}-${parts.day}-${parts.hour}`};}
+async function claimNewsSlot(env,slot){const store=kv(env);if(!store)return true;const key=`automation:news-v6:slot:${slot}`;if(await store.get(key))return false;await store.put(key,nowIso(),{expirationTtl:172800});return true;}
 
 async function readJson(env,key,fallback){
   const store = kv(env);
@@ -142,89 +170,107 @@ function decodeXml(value){
     .trim();
 }
 
+function rawTag(block,name){
+  const match=String(block||'').match(new RegExp(`<${name}[^>]*>([\s\S]*?)<\/${name}>`,'i'));
+  return match?String(match[1]||''):'';
+}
+
 function tag(block,name){
-  const match = String(block || '').match(new RegExp(`<${name}[^>]*>([\\s\\S]*?)<\\/${name}>`,'i'));
-  return match ? decodeXml(match[1]) : '';
+  return decodeXml(rawTag(block,name));
+}
+
+function attr(block,name,attribute){
+  const match=String(block||'').match(new RegExp(`<${name}\b[^>]*\b${attribute}=["']([^"']+)["'][^>]*>`,'i'));
+  return match?decodeXml(match[1]):'';
 }
 
 function link(block){
-  return tag(block,'link') || decodeXml((String(block || '').match(/<link[^>]+href=["']([^"']+)["']/i) || [,''])[1]);
+  const direct=tag(block,'link');
+  if(/^https?:\/\//i.test(direct))return direct;
+  return decodeXml((String(block||'').match(/<link[^>]+href=["']([^"']+)["']/i)||[,''])[1]);
+}
+
+function validHttp(value,base=''){
+  try{
+    const url=new URL(String(value||'').trim(),base||undefined);
+    return /^https?:$/.test(url.protocol)?url.href:'';
+  }catch{return'';}
+}
+
+function imageFromFeed(block,itemUrl){
+  const enclosure=(String(block||'').match(/<enclosure\b[^>]*\burl=["']([^"']+)["'][^>]*>/i)||[,''])[1];
+  const html=[rawTag(block,'description'),rawTag(block,'content:encoded'),rawTag(block,'content'),rawTag(block,'summary')].join(' ');
+  const embedded=(html.match(/<img\b[^>]*\bsrc=["']([^"']+)["']/i)||[,''])[1];
+  const candidates=[attr(block,'media:content','url'),attr(block,'media:thumbnail','url'),attr(block,'image','href'),decodeXml(enclosure),decodeXml(embedded)];
+  for(const candidate of candidates){const image=validHttp(candidate,itemUrl);if(image)return image;}
+  return '';
+}
+
+function isFallbackImage(value){
+  const image=String(value||'').toLowerCase();
+  return !image||image.includes('/assets/news-fallback.svg')||image.startsWith('data:image/svg+xml');
+}
+
+function normalizeNewsItem(item){
+  const url=validHttp(item?.url||item?.link||item?.articleUrl||item?.sourceUrl||'');
+  const sourceImage=[item?.image,item?.imageUrl,item?.image_url].map(value=>validHttp(value,url)).find(value=>value&&!isFallbackImage(value))||'';
+  const image=sourceImage||FALLBACK_IMAGE;
+  const publishedAt=item?.publishedAt||item?.published_at||item?.pubDate||nowIso();
+  return{...item,url,sourceUrl:item?.sourceUrl||url,summary:clean(item?.summary||item?.description||item?.text||item?.excerpt||''),source:item?.source||item?.sourceTitle||item?.region||item?.category||'GNK ASG',publishedAt,published_at:item?.published_at||publishedAt,image,imageUrl:image,imageFallback:!sourceImage,imageAlt:item?.imageAlt||item?.title||'GNK ASG Business News',imageCredit:item?.imageCredit||item?.source||item?.sourceTitle||'Izvor'};
+}
+
+function itemTime(item){const value=Date.parse(item?.publishedAt||item?.published_at||'');return Number.isFinite(value)?value:0;}
+function itemKey(item){return String(item?.url||item?.sourceUrl||item?.id||item?.title||'').trim().toLowerCase();}
+function uniqueSorted(items,limit=3000){
+  const seen=new Set();
+  return (Array.isArray(items)?items:[]).map(normalizeNewsItem).filter(item=>item.title&&item.url).sort((a,b)=>itemTime(b)-itemTime(a)).filter(item=>{const key=itemKey(item);if(!key||seen.has(key))return false;seen.add(key);return true;}).slice(0,limit);
 }
 
 function parseFeed(xml,feed){
-  const blocks = String(xml || '').match(/<item[\s\S]*?<\/item>/gi) || String(xml || '').match(/<entry[\s\S]*?<\/entry>/gi) || [];
-  return blocks.slice(0,12).map((block,index) => {
-    const title = clean(tag(block,'title'));
-    const url = link(block);
-    const publishedAt = tag(block,'pubDate') || tag(block,'published') || tag(block,'updated') || nowIso();
-    return {
-      id:slugify(`${feed[0]}-${index}-${title}`),
-      title,
-      summary:clean(tag(block,'description') || tag(block,'summary') || tag(block,'content')).slice(0,700),
-      url,
-      sourceUrl:url,
-      source:feed[0],
-      category:feed[1],
-      group:feed[1],
-      region:feed[2],
-      publishedAt,
-      published_at:publishedAt
-    };
-  }).filter(item => item.title && /^https?:\/\//i.test(item.url));
+  const blocks=String(xml||'').match(/<item[\s\S]*?<\/item>/gi)||String(xml||'').match(/<entry[\s\S]*?<\/entry>/gi)||[];
+  return blocks.slice(0,30).map((block,index)=>{
+    const title=clean(tag(block,'title'));
+    const url=link(block);
+    const publishedAt=tag(block,'pubDate')||tag(block,'published')||tag(block,'updated')||tag(block,'dc:date')||nowIso();
+    const sourceImage=imageFromFeed(block,url);
+    return{id:slugify(`${feed[0]}-${index}-${title}-${url}`),title,summary:clean(tag(block,'description')||tag(block,'summary')||tag(block,'content:encoded')||tag(block,'content')).slice(0,900),url,sourceUrl:url,source:feed[0],category:feed[1],group:feed[1],region:feed[2],publishedAt,published_at:publishedAt,image:sourceImage||FALLBACK_IMAGE,imageUrl:sourceImage||FALLBACK_IMAGE,imageFallback:!sourceImage,imageAlt:title,imageCredit:feed[0]};
+  }).filter(item=>item.title&&/^https?:\/\//i.test(item.url));
+}
+
+async function fetchFeed(feed){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),12000);
+  try{
+    const response=await fetch(feed[3],{headers:{'user-agent':'GNK-ASG-News-V6/1.0',accept:'application/rss+xml,application/atom+xml,application/xml,text/xml,*/*'},signal:controller.signal});
+    const body=await response.text();
+    if(!response.ok)throw new Error(`HTTP_${response.status}`);
+    return parseFeed(body,feed);
+  }finally{clearTimeout(timer);}
 }
 
 async function fetchNews(){
-  const items = [];
-  const errors = [];
-  for(const feed of FEEDS){
-    try{
-      const response = await fetch(feed[3],{
-        headers:{
-          'user-agent':'GNK-ASG-News-Hotfix/3.0',
-          accept:'application/rss+xml,application/atom+xml,application/xml,text/xml,*/*'
-        }
-      });
-      const body = await response.text();
-      if(!response.ok){
-        errors.push({source:feed[0],status:response.status});
-        continue;
-      }
-      items.push(...parseFeed(body,feed));
-    }catch(error){
-      errors.push({source:feed[0],error:String(error?.message || error)});
-    }
-  }
-  const seen = new Set();
-  return {
-    items:items.filter(item => {
-      const key = String(item.url).toLowerCase();
-      if(!key || seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    }).sort((a,b) => Date.parse(b.publishedAt || 0) - Date.parse(a.publishedAt || 0)).slice(0,100),
-    errors
-  };
+  const settled=await Promise.allSettled(FEEDS.map(fetchFeed));
+  const items=[];
+  const errors=[];
+  settled.forEach((result,index)=>{if(result.status==='fulfilled')items.push(...result.value);else errors.push({source:FEEDS[index][0],error:String(result.reason?.message||result.reason)});});
+  return{items:uniqueSorted(items,PUBLIC_NEWS_LIMIT),errors};
 }
 
 async function refreshNews(env){
-  const result = await fetchNews();
-  const payload = {
-    ok:true,
-    status:result.items.length ? 'LIVE' : 'FALLBACK',
-    updatedAt:nowIso(),
-    count:result.items.length,
-    sources:FEEDS.map(feed => feed[0]),
-    errors:result.errors,
-    items:result.items
-  };
+  const result=await fetchNews();
+  const previous=await readJson(env,'data:news:external',{items:[]});
+  const previousItems=Array.isArray(previous?.items)?previous.items:[];
+  const combined=uniqueSorted([...result.items,...previousItems]);
+  const active=combined.slice(0,PUBLIC_NEWS_LIMIT);
+  const overflow=combined.slice(PUBLIC_NEWS_LIMIT);
+  const previousArchive=await readJson(env,'data:news:archive',{items:[]});
+  let archive=uniqueSorted([...overflow,...(Array.isArray(previousArchive?.items)?previousArchive.items:[])]);
+  let deletedFromArchive=0;
+  if(archive.length>=ARCHIVE_PRUNE_AT){deletedFromArchive=archive.length-ARCHIVE_RETAIN_AFTER_PRUNE;archive=archive.slice(0,ARCHIVE_RETAIN_AFTER_PRUNE);}
+  const payload={ok:active.length>0,version:VERSION,status:result.items.length?'LIVE':active.length?'FALLBACK':'UNAVAILABLE',updatedAt:nowIso(),timeZone:'Europe/Zagreb',newsSchedule:NEWS_SCHEDULE,activeLimit:PUBLIC_NEWS_LIMIT,count:active.length,configuredNewsSources:FEEDS.length,sourceMix:{global:13,regional:9,croatian:4},withSourceImageCount:active.filter(item=>!item.imageFallback).length,archiveCount:archive.length,archivePruneAt:ARCHIVE_PRUNE_AT,archiveRetainAfterPrune:ARCHIVE_RETAIN_AFTER_PRUNE,deletedFromArchive,sources:FEEDS.map(feed=>feed[0]),errors:result.errors,items:active};
   await writeJson(env,'data:news:external',payload);
-  await writeJson(env,'automation:news-refresh:last',{
-    ok:true,
-    status:payload.status,
-    updatedAt:payload.updatedAt,
-    count:payload.count,
-    errors:payload.errors
-  });
+  await writeJson(env,'data:news:archive',{ok:true,version:VERSION,updatedAt:payload.updatedAt,count:archive.length,pruneAt:ARCHIVE_PRUNE_AT,retainAfterPrune:ARCHIVE_RETAIN_AFTER_PRUNE,lastDeletedCount:deletedFromArchive,items:archive});
+  await writeJson(env,'automation:news-refresh:last',{ok:payload.ok,version:VERSION,status:payload.status,updatedAt:payload.updatedAt,count:payload.count,withSourceImageCount:payload.withSourceImageCount,archiveCount:payload.archiveCount,errors:payload.errors});
   return payload;
 }
 
@@ -243,30 +289,12 @@ async function staticNews(request,env){
 }
 
 async function mergedNews(request,env){
-  const manual = await readList(env,'data:news:items');
-  const externalData = await readJson(env,'data:news:external',{items:[]});
-  const external = Array.isArray(externalData?.items) ? externalData.items : [];
-  const fallback = await staticNews(request,env);
-  const seen = new Set();
-  const items = [...manual,...external,...fallback]
-    .filter(item => item && item.title && (item.url || item.sourceUrl))
-    .filter(item => {
-      const key = String(item.id || item.url || item.sourceUrl || item.title).toLowerCase();
-      if(seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    })
-    .sort((a,b) => Date.parse(b.publishedAt || b.published_at || 0) - Date.parse(a.publishedAt || a.published_at || 0))
-    .slice(0,500);
-
-  return {
-    ok:true,
-    status:externalData?.status || (external.length ? 'LIVE' : 'SNAPSHOT'),
-    updatedAt:externalData?.updatedAt || items[0]?.publishedAt || items[0]?.published_at || nowIso(),
-    source:VERSION,
-    counts:{manual:manual.length,external:external.length,static:fallback.length,total:items.length},
-    items
-  };
+  const manual=await readList(env,'data:news:items');
+  const externalData=await readJson(env,'data:news:external',{items:[]});
+  const external=Array.isArray(externalData?.items)?externalData.items:[];
+  const fallback=await staticNews(request,env);
+  const items=uniqueSorted([...manual,...external,...fallback],PUBLIC_NEWS_LIMIT);
+  return{ok:true,version:VERSION,status:externalData?.status||(external.length?'LIVE':'SNAPSHOT'),updatedAt:externalData?.updatedAt||items[0]?.publishedAt||items[0]?.published_at||nowIso(),timeZone:'Europe/Zagreb',newsSchedule:NEWS_SCHEDULE,activeLimit:PUBLIC_NEWS_LIMIT,archivePruneAt:ARCHIVE_PRUNE_AT,archiveRetainAfterPrune:ARCHIVE_RETAIN_AFTER_PRUNE,source:VERSION,counts:{manual:manual.length,external:external.length,static:fallback.length,total:items.length},items};
 }
 
 async function runAi(env,system,prompt,maxTokens=4096,temperature=0.2){
@@ -556,21 +584,32 @@ async function handle(request,env,ctx){
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/+$/,'') || '/';
 
-  if(path === '/data/news.json') return json(await mergedNews(request,env),200,{'x-gnk-asg-news-automation':'longform-v3'});
+  if(path === '/data/news.json') return json(await mergedNews(request,env),200,{'x-gnk-asg-news-automation':'legacy-v6','x-gnk-asg-news-lifecycle':VERSION});
+  if(path === '/data/news-archive.json') return json(await readJson(env,'data:news:archive',{ok:true,version:VERSION,count:0,items:[]}));
   if(path === '/data/auto-editor.json') return json({ok:true,updatedAt:nowIso(),items:await readList(env,'publish:approved')});
   if(path === '/data/news-automation-status.json' || path === '/operator/news-automation/status'){
-    return json({
-      ok:true,
-      version:VERSION,
-      cron:'every 2 hours',
-      autoEditor:'every 2 hours',
-      lastNewsRefresh:await readJson(env,'automation:news-refresh:last',null),
-      lastAutoEditor:await readJson(env,'auto-editor:last',null),
-      lastScheduledRun:await readJson(env,'automation:scheduled:last',null)
-    });
-  }
+  const archive=await readJson(env,'data:news:archive',{items:[]});
+  return json({
+    ok:true,
+    version:VERSION,
+    timeZone:'Europe/Zagreb',
+    newsSchedule:NEWS_SCHEDULE,
+    newsRefreshesPerDay:3,
+    configuredNewsSources:FEEDS.length,
+    sourceMix:{global:13,regional:9,croatian:4},
+    activeNewsLimit:PUBLIC_NEWS_LIMIT,
+    archiveCount:Array.isArray(archive?.items)?archive.items.length:0,
+    archivePruneAt:ARCHIVE_PRUNE_AT,
+    archiveDeleteCount:500,
+    archiveRetainAfterPrune:ARCHIVE_RETAIN_AFTER_PRUNE,
+    autoEditor:'every 2 hours',
+    lastNewsRefresh:await readJson(env,'automation:news-refresh:last',null),
+    lastAutoEditor:await readJson(env,'auto-editor:last',null),
+    lastScheduledRun:await readJson(env,'automation:scheduled:last',null)
+  });
+}
 
-  if(path === '/api/news-refresh'){
+if(path === '/api/news-refresh'){
     if(request.method === 'GET') return json({ok:true,method:'POST',endpoint:'/api/news-refresh'});
     if(request.method !== 'POST') return json({ok:false,error:'method_not_allowed'},405);
     const last = await readJson(env,'automation:public-refresh:last',null);
@@ -615,33 +654,23 @@ async function handle(request,env,ctx){
 export default {
   fetch:handle,
   async scheduled(event,env,ctx){
-    const task = (async() => {
-      const now = new Date();
-      const hour = now.getUTCHours();
-      const result = {
-        ok:true,
-        version:VERSION,
-        cron:event?.cron || '',
-        startedAt:nowIso(),
-        newsRefresh:null,
-        autoEditor:null
-      };
-
-      result.newsRefresh = await refreshNews(env);
-      if(hour % 2 === 0) result.autoEditor = await autoEditor(env);
-      result.finishedAt = nowIso();
-      result.ok = result.newsRefresh?.ok !== false && (!result.autoEditor || result.autoEditor.ok !== false);
-      await writeJson(env,'automation:scheduled:last',result);
-      return result;
-    })();
-
-    if(ctx?.waitUntil){
-      ctx.waitUntil(task);
-      return;
-    }
-    return task;
-  },
-  async email(message,env,ctx){
+  const task=(async()=>{
+    const now=new Date();
+    const local=zagrebSlot(now);
+    const result={ok:true,version:VERSION,cron:event?.cron||'',timeZone:'Europe/Zagreb',local,startedAt:nowIso(),newsRefresh:null,autoEditor:null,skipped:[]};
+    if(NEWS_HOURS_ZAGREB.has(local.hour)){
+      if(await claimNewsSlot(env,local.key))result.newsRefresh=await refreshNews(env);else result.skipped.push(`news:${local.key}`);
+    }else result.skipped.push(`news:outside-schedule:${local.hour}`);
+    if(now.getUTCHours()%2===0)result.autoEditor=await autoEditor(env);
+    result.finishedAt=nowIso();
+    result.ok=result.newsRefresh?.ok!==false&&(!result.autoEditor||result.autoEditor.ok!==false);
+    await writeJson(env,'automation:scheduled:last',result);
+    return result;
+  })();
+  if(ctx?.waitUntil){ctx.waitUntil(task);return;}
+  return task;
+},
+async email(message,env,ctx){
     if(typeof core.email === 'function') return core.email(message,env,ctx);
   }
 };
