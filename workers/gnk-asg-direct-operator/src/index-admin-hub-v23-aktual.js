@@ -1,8 +1,9 @@
 import app from './index-admin-hub-v22-news.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V23_AKTUAL_V1_20260626';
+const VERSION='GNK_ASG_ADMIN_HUB_V23_AKTUAL_V2_20260626';
 const MODIFIED='2026-06-26';
 const FIRST_SLUG='kljucni-faktori-motivacije-za-pokretanje-vlastitog-posla';
+const AKTUAL_IMAGE=/^\/assets\/objave\/aktual\/[^/]+\.png$/i;
 const HR_SLUGS=new Set([
   'kljucne-vjestine-za-uspjeh-u-poduzetnistvu',
   'unapredenje-prodaje-i-marketinga-za-uspjesno-poduzetnistvo',
@@ -122,6 +123,13 @@ export default{
     const path=normalizedPath(new URL(request.url).pathname);
     const match=path.match(/^\/objave\/aktual\/([^/]+)$/i);
     const response=await app.fetch(request,env,ctx);
+    if(request.method==='GET'&&response.ok&&AKTUAL_IMAGE.test(path)){
+      const headers=new Headers(response.headers);
+      headers.set('content-type','image/webp');
+      headers.set('cache-control','public, max-age=31536000, immutable');
+      headers.set('x-gnk-asg-aktual-image',VERSION);
+      return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+    }
     if(request.method==='GET'&&match)return patchArticle(response,request,match[1]);
     const headers=new Headers(response.headers);
     headers.set('x-gnk-asg-admin-hub-v23',VERSION);
