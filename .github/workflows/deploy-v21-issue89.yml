@@ -1,4 +1,4 @@
-name: Deploy structured delivery via issue 91
+name: Deploy final V21 via issue 91
 
 on:
   issue_comment:
@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event.issue.number == 91 && github.event.comment.body == '/deploy-structured-delivery-r6'
+    if: github.event.issue.number == 91 && github.event.comment.body == '/deploy-final-v7'
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
@@ -27,11 +27,17 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/media-command-control-sync-v3.js
           node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
+          node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-v4.js
           node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
           node --check apps/portal/assets/media-outreach-delivery-ui-v3.js
+          test -s apps/portal/assets/index-polish-v1.css
           grep -q 'CLOUDFLARE_STRUCTURED_SEND_V1' workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
+          grep -q 'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V4_20260626_CONTROL_SYNC' workers/gnk-asg-direct-operator/src/media-outreach-delivery-v4.js
+          grep -q 'GNK_ASG_PUBLIC_VISUAL_V25_INDEX_POLISH_20260626' workers/gnk-asg-direct-operator/src/public-shell-v11.js
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           cd workers/gnk-asg-direct-operator
@@ -53,24 +59,37 @@ jobs:
           cb=$(date +%s)
           curl -sS "$base/data/deployment-status.json?cb=$cb" -o /tmp/status.json
           curl -sS -D /tmp/delivery.headers "$base/api/media-command-center/delivery-status?cb=$cb" -o /tmp/delivery.json
+          curl -sS -D /tmp/private.headers "$base/data/media-outreach-contacts-v1.json?cb=$cb" -o /tmp/private.out
           curl -sS "$base/assets/media-outreach-delivery-ui-v3.js?cb=$cb" -o /tmp/ui.js
+          curl -sS "$base/?cb=$cb" -o /tmp/root.html
+          curl -sS "$base/en/?cb=$cb" -o /tmp/en.html
           node <<'JS'
           const fs=require('node:fs');
           const status=JSON.parse(fs.readFileSync('/tmp/status.json','utf8'));
-          const headers=fs.readFileSync('/tmp/delivery.headers','utf8').split(/\r?\n/)[0];
+          const deliveryHeaders=fs.readFileSync('/tmp/delivery.headers','utf8').split(/\r?\n/)[0];
+          const privateHeaders=fs.readFileSync('/tmp/private.headers','utf8').split(/\r?\n/)[0];
           const ui=fs.readFileSync('/tmp/ui.js','utf8');
+          const root=fs.readFileSync('/tmp/root.html','utf8');
+          const en=fs.readFileSync('/tmp/en.html','utf8');
           const expected={
-            mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R4_DELIVERY',
-            mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
+            publicVisual:'GNK_ASG_PUBLIC_VISUAL_V25_INDEX_POLISH_20260626',
+            mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R6_DELIVERY_SYNC',
+            mediaControlSync:'GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626',
+            mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V4_20260626_CONTROL_SYNC',
+            mediaDeliveryCore:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
             emailSendApi:'CLOUDFLARE_STRUCTURED_SEND_V1',
+            contactDataExposure:'BLOCKED',
             testSending:'LOCKED',
             productionSending:'LOCKED'
           };
           const failures=[];
           for(const [key,value] of Object.entries(expected))if(status?.[key]!==value)failures.push(`${key}=${JSON.stringify(status?.[key])}`);
-          if(!/\s(401|403)\s/.test(headers))failures.push(`delivery_auth=${headers}`);
+          if(!/\s(401|403)\s/.test(deliveryHeaders))failures.push(`delivery_auth=${deliveryHeaders}`);
+          if(!/\s404\s/.test(privateHeaders))failures.push(`private_contacts=${privateHeaders}`);
           if(!ui.includes('__GNK_ASG_MEDIA_DELIVERY_UI_V3__'))failures.push('delivery_ui_missing');
-          const result={checkedAt:new Date().toISOString(),failures,status,deliveryRoute:headers,uiBytes:ui.length};
+          if(!root.includes('class="gnk-index-title"')||!root.includes('/assets/index-polish-v1.css'))failures.push('hr_index_polish_missing');
+          if(!en.includes('class="gnk-index-title"')||!en.includes('/assets/index-polish-v1.css'))failures.push('en_index_polish_missing');
+          const result={checkedAt:new Date().toISOString(),failures,status,deliveryRoute:deliveryHeaders,privateContactsRoute:privateHeaders,uiBytes:ui.length,hrTitle:root.includes('Korporativni centar inteligencije'),enTitle:en.includes('Corporate intelligence centre')};
           fs.writeFileSync('/tmp/result.json',JSON.stringify(result,null,2));
           if(failures.length)process.exit(1);
           JS
@@ -84,4 +103,4 @@ jobs:
         shell: bash
         run: |
           result=$(cat /tmp/result.json 2>/dev/null || printf '{"error":"verification_not_reached"}')
-          gh issue comment 91 --body "Structured delivery deploy **${JOB_STATUS}** · ${RUN_URL}\n\n\`\`\`json\n${result}\n\`\`\`"
+          gh issue comment 91 --body "Final V21 deploy **${JOB_STATUS}** · ${RUN_URL}\n\n\`\`\`json\n${result}\n\`\`\`"
