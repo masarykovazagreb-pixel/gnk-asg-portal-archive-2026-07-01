@@ -2,6 +2,8 @@
   'use strict';
   if (window.__GNK_ASG_GALLERY_BOOTSTRAP__) return;
   window.__GNK_ASG_GALLERY_BOOTSTRAP__ = true;
+  const route = location.pathname.replace(/\/+$/, '') || '/';
+  if (route === '/' || route === '/en') return;
   const run = async () => {
     if (!window.GNK_ASG_GALLERY) {
       await new Promise((resolve,reject) => {
