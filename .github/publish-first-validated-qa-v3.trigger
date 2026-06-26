@@ -1,0 +1,10 @@
+GNK_ASG_FIRST_VALIDATED_PUBLICATION_QA_V3_20260626
+attempts_max=5
+business_topics_only=true
+minimum_words_hr=500
+minimum_words_en=500
+r2_cover=2400x1350
+r2_social=1200x630
+r2_portrait=1600x2000
+visual_index=v8
+nonce=1
