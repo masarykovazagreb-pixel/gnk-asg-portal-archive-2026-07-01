@@ -1,7 +1,7 @@
-export const VERSION='GNK_ASG_NEWS_LIFECYCLE_V14_20260626';
+export const VERSION='GNK_ASG_NEWS_LIFECYCLE_V15_20260626';
 export const NEWS_MINIMUM=25;
-export const NEWS_HOURS_ZAGREB=new Set([8,16,20]);
-export const NEWS_SCHEDULE=['08:00','16:00','20:00'];
+export const NEWS_HOURS_ZAGREB=new Set([9,16,21]);
+export const NEWS_SCHEDULE=['09:00','16:00','21:00'];
 export const ACTIVE_NEWS_LIMIT=100;
 export const ARCHIVE_PRUNE_AT=1000;
 export const ARCHIVE_DELETE_COUNT=500;
@@ -103,7 +103,7 @@ function parse(xml,feed){
 async function fetchFeed(feed){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
   try{
-    const response=await fetch(feed[4],{headers:{'user-agent':'GNK-ASG-Intelligence-Desk/14.0',accept:'application/rss+xml,application/atom+xml,application/xml,text/xml,*/*'},signal:controller.signal});
+    const response=await fetch(feed[4],{headers:{'user-agent':'GNK-ASG-Intelligence-Desk/15.0',accept:'application/rss+xml,application/atom+xml,application/xml,text/xml,*/*'},signal:controller.signal});
     const body=await response.text();
     if(!response.ok)throw new Error(`HTTP_${response.status}`);
     return parse(body,feed);
@@ -127,7 +127,7 @@ export async function refreshCuratedNews({read,write}){
   if(archive.length>=ARCHIVE_PRUNE_AT){deletedFromArchive=archive.length-ARCHIVE_RETAIN_AFTER_PRUNE;archive=archive.slice(0,ARCHIVE_RETAIN_AFTER_PRUNE)}
 
   const status=fresh.length>=NEWS_MINIMUM?'LIVE':fresh.length?'DELAYED':active.length?'FALLBACK':'UNAVAILABLE',updatedAt=now();
-  const payload={ok:active.length>0,version:VERSION,status,updatedAt,startedAt,schedule:'08:00, 16:00 and 20:00 Europe/Zagreb',scheduleSlots:NEWS_SCHEDULE,minimumLinks:NEWS_MINIMUM,activeLimit:ACTIVE_NEWS_LIMIT,count:active.length,freshCount:fresh.length,croatianCount:active.filter(item=>item.region==='Croatia').length,regionalCount:active.filter(item=>['Europe','Serbia','Slovenia','Bosnia and Herzegovina','Southeast Europe'].includes(item.region)).length,globalCount:active.filter(item=>item.region==='world').length,withSourceImageCount:active.filter(item=>item.hasSourceImage).length,archiveCount:archive.length,archivePruneAt:ARCHIVE_PRUNE_AT,archiveDeleteCount:ARCHIVE_DELETE_COUNT,archiveRetainAfterPrune:ARCHIVE_RETAIN_AFTER_PRUNE,deletedFromArchive,configuredSourceCount:FEEDS.length,sourceMix:{global:13,regional:9,croatian:4},successfulSourceCount:successful.length,sources:FEEDS.map(feed=>({name:feed[0],category:feed[1],region:feed[2],url:feed[4],language:feed[5]})),successfulSources:successful,errors,items:active};
+  const payload={ok:active.length>0,version:VERSION,status,updatedAt,startedAt,schedule:'09:00, 16:00 and 21:00 Europe/Zagreb',scheduleSlots:NEWS_SCHEDULE,minimumLinks:NEWS_MINIMUM,activeLimit:ACTIVE_NEWS_LIMIT,count:active.length,freshCount:fresh.length,croatianCount:active.filter(item=>item.region==='Croatia').length,regionalCount:active.filter(item=>['Europe','Serbia','Slovenia','Bosnia and Herzegovina','Southeast Europe'].includes(item.region)).length,globalCount:active.filter(item=>item.region==='world').length,withSourceImageCount:active.filter(item=>item.hasSourceImage).length,archiveCount:archive.length,archivePruneAt:ARCHIVE_PRUNE_AT,archiveDeleteCount:ARCHIVE_DELETE_COUNT,archiveRetainAfterPrune:ARCHIVE_RETAIN_AFTER_PRUNE,deletedFromArchive,configuredSourceCount:FEEDS.length,sourceMix:{global:13,regional:9,croatian:4},successfulSourceCount:successful.length,sources:FEEDS.map(feed=>({name:feed[0],category:feed[1],region:feed[2],url:feed[4],language:feed[5]})),successfulSources:successful,errors,items:active};
   await write('data:news:external',payload);
   await write('data:news:archive',{ok:true,version:VERSION,updatedAt,count:archive.length,pruneAt:ARCHIVE_PRUNE_AT,deleteCount:ARCHIVE_DELETE_COUNT,retainAfterPrune:ARCHIVE_RETAIN_AFTER_PRUNE,lastDeletedCount:deletedFromArchive,items:archive});
   await write('automation:news-refresh:last',{ok:payload.ok,status,updatedAt,count:payload.count,freshCount:payload.freshCount,croatianCount:payload.croatianCount,regionalCount:payload.regionalCount,globalCount:payload.globalCount,withSourceImageCount:payload.withSourceImageCount,archiveCount:payload.archiveCount,deletedFromArchive,successfulSourceCount:successful.length,configuredSourceCount:FEEDS.length,errorCount:errors.length,schedule:payload.schedule});
