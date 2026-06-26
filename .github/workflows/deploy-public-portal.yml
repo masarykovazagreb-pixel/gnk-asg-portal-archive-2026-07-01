@@ -49,6 +49,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v2.js
           node --check workers/gnk-asg-direct-operator/src/media-command-readiness-v2.js
+          test -s workers/gnk-asg-direct-operator/migrations/0001_media_command_controls.sql
           grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626' workers/gnk-asg-direct-operator/src/index-server-hydration-v1.js
@@ -59,6 +60,14 @@ jobs:
           grep -q 'COOKIE_ONLY' apps/portal/assets/mail-studio-auth-bridge-v16.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Apply D1 migrations
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: npx --yes wrangler@4 d1 migrations apply gnk_asg_operator_logs --remote --config wrangler.toml
 
       - name: Deploy to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
