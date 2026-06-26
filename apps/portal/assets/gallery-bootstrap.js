@@ -56,7 +56,7 @@
     const visuals=[
       {
         source:'/assets/the-code-visual-01.b64',
-        mime:'image/jpeg',
+        mime:'image/webp',
         alt:english?'GNK ASG global network and advanced sports and governance':'GNK ASG globalna mreža, napredni sport i upravljanje'
       },
       {
@@ -77,7 +77,6 @@
       image.loading=index?'lazy':'eager';
       image.decoding='async';
       figure.appendChild(image);
-      figure.appendChild(node('div','gnk-code-slot__shade'));
       slides.appendChild(figure);
       loadEncodedImage(image,placeholder,item.source,item.mime);
     });
