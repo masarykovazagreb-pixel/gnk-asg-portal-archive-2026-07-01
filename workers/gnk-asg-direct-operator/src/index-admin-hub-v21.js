@@ -1,7 +1,7 @@
 import app from './index-media-command-center-v20.js';
-import {applyFaviconContract,FAVICON_VERSION} from './favicon-contract-v2.js';
+import {handleFaviconAsset,applyFaviconContract,FAVICON_VERSION} from './favicon-contract-v2.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R3_FAVICON';
+const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R4_FAVICON';
 const MODULES=new Map([
   ['/operator-dashboard','operator'],
   ['/operator-mobile','mobile'],
@@ -24,6 +24,8 @@ export default{
   async fetch(request,env,ctx){
     const url=new URL(request.url);
     const path=url.pathname.replace(/\/+$/,'')||'/';
+    const faviconResponse=await handleFaviconAsset(request,env,path);
+    if(faviconResponse)return faviconResponse;
     const embedded=url.searchParams.get('embedded')==='1'||url.searchParams.get('standalone')==='1';
     if((path==='/admin'||path==='/operator/session/login')&&['GET','HEAD','POST'].includes(request.method))return redirect('/admin-center/');
     if(MODULES.has(path)&&['GET','HEAD'].includes(request.method)&&!embedded){
