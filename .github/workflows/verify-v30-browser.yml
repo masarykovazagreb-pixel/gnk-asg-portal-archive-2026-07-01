@@ -124,4 +124,4 @@ jobs:
         shell: bash
         run: |
           summary=$(node -e "const fs=require('fs');try{const r=JSON.parse(fs.readFileSync('artifacts/report.json','utf8'));console.log(JSON.stringify({ok:r.ok,checkedAt:r.checkedAt,results:r.results.map(x=>({name:x.name,http:x.http,failures:x.failures,audit:x.audit}))},null,2))}catch(e){console.log(JSON.stringify({error:'report unavailable'},null,2))}")
-          gh issue comment 100 --body "V30 browser audit **${JOB_STATUS}** · commit \`${RUN_SHA}\` · ${RUN_URL}\n\n\`\`\`json\n${summary}\n\`\`\`"
+          gh issue comment 101 --body "V30 browser audit **${JOB_STATUS}** · commit \`${RUN_SHA}\` · ${RUN_URL}\n\n\`\`\`json\n${summary}\n\`\`\`"
