@@ -1,7 +1,7 @@
 import app,{INDEX_LOCK_VERSION} from './index-lock-v4.js';
 import {handleFaviconAsset,applyFaviconContract,FAVICON_VERSION} from './favicon-contract-v2.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION';
+const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R10_SERVER_HYDRATION';
 const MODULES=new Map([
   ['/operator-dashboard','operator'],
   ['/operator-mobile','mobile'],
@@ -36,6 +36,7 @@ function deploymentStatus(){
     entryPoint:'src/index-admin-hub-v21.js',
     adminHub:VERSION,
     indexLock:INDEX_LOCK_VERSION,
+    indexHydration:'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626',
     publicVisual:'GNK_ASG_PUBLIC_VISUAL_V24_RESILIENT_INDEX_20260626',
     contentResilience:'index-content-resilience-v1.js',
     marketChart:'index-live-market-chart-v4.js',
