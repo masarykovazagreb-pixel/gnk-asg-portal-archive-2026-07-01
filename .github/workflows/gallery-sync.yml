@@ -6,6 +6,7 @@ on:
     paths:
       - "apps/portal/**"
       - "scripts/gallery-sync.mjs"
+      - "scripts/gallery-editorial-filter.mjs"
       - ".github/workflows/gallery-sync.yml"
   workflow_dispatch:
 
@@ -32,6 +33,9 @@ jobs:
 
       - name: Generate and index Gallery
         run: node scripts/gallery-sync.mjs
+
+      - name: Remove non-editorial assets from publication pool
+        run: node scripts/gallery-editorial-filter.mjs
 
       - name: Apply approved visual identity guard
         run: |
@@ -77,8 +81,11 @@ jobs:
             const emblem=/\b(logo|logotip|grb|crest|badge|emblem|shield|club mark|club logo|klupski znak)\b/.test(text);
             return club||(emblem&&!company);
           };
+          const nonEditorial=item=>/\b(favicon|app icon|touch icon|mask icon|sprite|loader|loading|placeholder|tracking pixel|qr code|qrcode|flag icon|avatar default|logo|logotip|wordmark|brand mark|crest|badge|emblem|shield|social card)\b/.test(normalize(`${item.src} ${item.title}`))&&!normalize(item.src).includes('/assets/gallery/generated/');
           const blocked=catalog.items.filter(prohibited);
+          const utility=catalog.items.filter(nonEditorial);
           if(blocked.length)throw new Error(`Prohibited football-club visual records remain in public catalog: ${blocked.map(item=>item.src).join(', ')}`);
+          if(utility.length)throw new Error(`Non-editorial assets remain in publication pool: ${utility.slice(0,20).map(item=>item.src).join(', ')}`);
           console.log(JSON.stringify({approved:catalog.count,quarantined:quarantine.count,policy:'passed'}));
           NODE
 
@@ -90,6 +97,6 @@ jobs:
           fi
           git config user.name "GNK ASG Gallery Bot"
           git config user.email "beckuphome@gmail.com"
-          git add apps/portal scripts/gallery-sync.mjs
+          git add apps/portal scripts/gallery-sync.mjs scripts/gallery-editorial-filter.mjs
           git commit -m "chore(gallery): auto-sync images, SEO catalog and consumers [skip ci]"
           git push
