@@ -3,7 +3,7 @@ import { generateArticleVisual, removeArticleFromNews, VERSION as VISUAL_VERSION
 import { enforceEditorialQuality, editorialIssues, VERSION as EDITORIAL_QA_VERSION } from './article-editorial-qa-v1.js';
 import { repairArticle, VERSION as EDITORIAL_REPAIR_VERSION } from './article-editorial-repair-v1.js';
 
-export const VERSION = 'GNK_ASG_ARTICLE_AUTOMATION_V4_R2_FIRST_RUN_20260626';
+export const VERSION = 'GNK_ASG_ARTICLE_AUTOMATION_V5_AWAIT_SCHEDULED_20260626';
 const store = env => env.GNK_ASG_KV || env.GNK_ASG_CONFIG_KV || null;
 
 async function read(env, key, fallback) {
@@ -135,6 +135,24 @@ async function fetchHandler(request, env, ctx) {
   }
 }
 
+async function awaitNestedScheduled(app,event,env,ctx){
+  const nested=[];
+  const nestedCtx={
+    waitUntil(promise){nested.push(Promise.resolve(promise));},
+    passThroughOnException(){if(typeof ctx?.passThroughOnException==='function')ctx.passThroughOnException();},
+    props:ctx?.props
+  };
+  const direct=typeof app.scheduled==='function'?await app.scheduled(event,env,nestedCtx):null;
+  let cursor=0;
+  const settlements=[];
+  while(cursor<nested.length){
+    const batch=nested.slice(cursor);
+    cursor=nested.length;
+    settlements.push(...await Promise.allSettled(batch));
+  }
+  return{direct,nestedTaskCount:nested.length,nestedRejected:settlements.filter(item=>item.status==='rejected').map(item=>String(item.reason?.message||item.reason))};
+}
+
 export default {
   fetch:fetchHandler,
   async scheduled(event, env, ctx) {
@@ -145,7 +163,7 @@ export default {
       if(!completedBefore&&before?.article?.imageGenerated?.version!==VISUAL_VERSION){
         await write(env,'auto-editor:last',{...(before||{}),ok:false,visualUpgradeRequestedAt:new Date().toISOString(),requiredVisualVersion:VISUAL_VERSION});
       }
-      const result = typeof app.scheduled === 'function' ? await app.scheduled(event, env, ctx) : null;
+      const result=await awaitNestedScheduled(app,event,env,ctx);
       let firstRun=completedBefore?{ok:true,skipped:true,reason:'already_completed',...completedBefore}:null;
       if(!completedBefore){
         const generated=await read(env,'auto-editor:last',null);
