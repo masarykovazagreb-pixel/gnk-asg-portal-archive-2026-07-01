@@ -26,49 +26,62 @@ jobs:
           node-version: '24'
 
       - name: Verify clean V30 package
+        id: package
+        continue-on-error: true
         shell: bash
         run: |
-          set -euxo pipefail
-          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
-          node --check workers/gnk-asg-direct-operator/src/index-lock-v4.js
-          node --check workers/gnk-asg-direct-operator/src/index-server-hydration-v1.js
-          node --check apps/portal/assets/index-content-resilience-v1.js
-          node --check apps/portal/assets/index-live-market-chart-v4.js
-          test -s apps/portal/assets/index-stable-polish-v30.css
-          grep -q 'GNK_ASG_PUBLIC_VISUAL_V30_CLEAN_POLISH_20260626' workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          grep -q 'INDEX_STABLE_POLISH_V30' workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          grep -q 'index-stable-polish-v30.css' apps/portal/assets/index-redesign-production.css
-          if grep -q '/assets/iq200/' apps/portal/assets/index-redesign-production.css; then
-            echo 'Conflicting IQ200 layers are still enabled' >&2
-            exit 1
-          fi
-          if grep -q 'function patchIndexHero' workers/gnk-asg-direct-operator/src/public-shell-v11.js; then
-            echo 'Legacy hero injector is still enabled' >&2
-            exit 1
-          fi
-          if grep -E -q 'const indexHead=.*index-polish-v1\.css' workers/gnk-asg-direct-operator/src/public-shell-v11.js; then
-            echo 'Legacy index polish injection is still enabled' >&2
-            exit 1
-          fi
-          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
-          cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          set -o pipefail
+          {
+            set -eux
+            node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
+            node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+            node --check workers/gnk-asg-direct-operator/src/index-lock-v4.js
+            node --check workers/gnk-asg-direct-operator/src/index-server-hydration-v1.js
+            node --check apps/portal/assets/index-content-resilience-v1.js
+            node --check apps/portal/assets/index-live-market-chart-v4.js
+            test -s apps/portal/assets/index-stable-polish-v30.css
+            grep -q 'GNK_ASG_PUBLIC_VISUAL_V30_CLEAN_POLISH_20260626' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+            grep -q 'INDEX_STABLE_POLISH_V30' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+            grep -q 'index-stable-polish-v30.css' apps/portal/assets/index-redesign-production.css
+            if grep -q '/assets/iq200/' apps/portal/assets/index-redesign-production.css; then
+              echo 'Conflicting IQ200 layers are still enabled' >&2
+              exit 1
+            fi
+            if grep -q 'function patchIndexHero' workers/gnk-asg-direct-operator/src/public-shell-v11.js; then
+              echo 'Legacy hero injector is still enabled' >&2
+              exit 1
+            fi
+            if grep -E -q 'const indexHead=.*index-polish-v1\.css' workers/gnk-asg-direct-operator/src/public-shell-v11.js; then
+              echo 'Legacy index polish injection is still enabled' >&2
+              exit 1
+            fi
+            grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+            grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+            cd workers/gnk-asg-direct-operator
+            npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          } 2>&1 | tee /tmp/v30-package.log
 
       - name: Deploy V30 to Cloudflare
+        id: cloudflare
+        if: steps.package.outcome == 'success'
+        continue-on-error: true
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         shell: bash
-        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee /tmp/v30-cloudflare.log
 
       - name: Verify V30 production
+        id: production
+        if: steps.cloudflare.outcome == 'success'
+        continue-on-error: true
         shell: bash
         run: |
-          set -euo pipefail
-          node <<'JS'
+          set -o pipefail
+          node <<'JS' 2>&1 | tee /tmp/v30-production.log
           const fs=require('node:fs');
           const base='https://gnk-asg.hr';
           const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -80,7 +93,7 @@ jobs:
           }
           (async()=>{
             let last;
-            for(let attempt=1;attempt<=18;attempt++){
+            for(let attempt=1;attempt<=8;attempt++){
               const [root,en,polish,health]=await Promise.all([
                 get('/'),get('/en/'),get('/assets/index-stable-polish-v30.css'),get('/data/platform-health.json')
               ]);
@@ -99,7 +112,6 @@ jobs:
               if(!failures.length)process.exit(0);
               await sleep(10000);
             }
-            console.error(JSON.stringify(last,null,2));
             process.exit(1);
           })().catch(error=>{console.error(error);process.exit(1)});
           JS
@@ -108,10 +120,28 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
-          JOB_STATUS: ${{ job.status }}
+          PACKAGE_OUTCOME: ${{ steps.package.outcome }}
+          CLOUDFLARE_OUTCOME: ${{ steps.cloudflare.outcome }}
+          PRODUCTION_OUTCOME: ${{ steps.production.outcome }}
           RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           RUN_SHA: ${{ github.sha }}
         shell: bash
         run: |
           diagnostic=$(cat /tmp/v30-diagnostic.json 2>/dev/null || printf '{"error":"production_verification_not_reached"}')
-          gh issue comment 100 --body "Emergency V30 index deploy **${JOB_STATUS}** · commit \`${RUN_SHA}\` · ${RUN_URL}\n\n\`\`\`json\n${diagnostic}\n\`\`\`"
+          package_tail=$(tail -n 35 /tmp/v30-package.log 2>/dev/null || true)
+          cloudflare_tail=$(tail -n 35 /tmp/v30-cloudflare.log 2>/dev/null || true)
+          production_tail=$(tail -n 25 /tmp/v30-production.log 2>/dev/null || true)
+          body=$(printf 'Emergency V30 deploy · package **%s** · Cloudflare **%s** · production **%s** · commit `%s` · %s\n\n### Diagnostic\n```json\n%s\n```\n\n### Package log\n```text\n%s\n```\n\n### Cloudflare log\n```text\n%s\n```\n\n### Production log\n```text\n%s\n```' "$PACKAGE_OUTCOME" "$CLOUDFLARE_OUTCOME" "$PRODUCTION_OUTCOME" "$RUN_SHA" "$RUN_URL" "$diagnostic" "$package_tail" "$cloudflare_tail" "$production_tail")
+          gh issue comment 100 --body "$body"
+
+      - name: Enforce successful deployment
+        if: always()
+        env:
+          PACKAGE_OUTCOME: ${{ steps.package.outcome }}
+          CLOUDFLARE_OUTCOME: ${{ steps.cloudflare.outcome }}
+          PRODUCTION_OUTCOME: ${{ steps.production.outcome }}
+        shell: bash
+        run: |
+          test "$PACKAGE_OUTCOME" = success
+          test "$CLOUDFLARE_OUTCOME" = success
+          test "$PRODUCTION_OUTCOME" = success
