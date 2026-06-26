@@ -1,11 +1,11 @@
 import app from './index-unified-auth-v14.js';
 
-const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260626';
-const REVISION='5';
-const MAIL_SCRIPT='<script defer src="/assets/mail-studio-auth-bridge-v15.js?v=20260626-5"></script>';
+const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260626_R6_COOKIE_ONLY';
+const REVISION='6';
+const MAIL_SCRIPT='<script defer src="/assets/mail-studio-auth-bridge-v16.js?v=20260626-1"></script>';
 const CONTROLS_SCRIPT='<script defer src="/assets/mail-studio-controls-v18.js?v=20260626-2"></script>';
 const CLICK_SCRIPT='<script defer src="/assets/mail-studio-click-feedback-v19.js?v=20260626-1"></script>';
-const ADMIN_SCRIPT='<script defer src="/assets/admin-session-fallback-v17.js?v=20260626-1"></script>';
+const ADMIN_SCRIPT='<script defer src="/assets/admin-session-fallback-v17.js?v=20260626-2"></script>';
 
 const cleanPath=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const privatePaths=['/admin-center','/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/auto-editor','/news-admin','/pdf-publisher','/social-share','/wa-center','/review'];
@@ -20,12 +20,14 @@ async function inject(response,path){
   headers.delete('content-encoding');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-mail-studio-bridge',VERSION);
-  headers.set('x-gnk-asg-admin-session-fallback','V17');
+  headers.set('x-gnk-asg-admin-session-fallback','V18_COOKIE_ONLY');
+  headers.set('x-gnk-asg-mail-studio-auth','V16_COOKIE_ONLY');
   headers.set('x-gnk-asg-mail-studio-controls','V18');
   headers.set('x-gnk-asg-mail-studio-click-feedback','V19');
   let html=await response.text();
+  html=html.replace(/<script[^>]+src=["'][^"']*mail-studio-auth-bridge-v15\.js[^"']*["'][^>]*><\/script>/gi,'');
   let scripts='';
-  if(isMailStudio(path)&&!html.includes('mail-studio-auth-bridge-v15.js'))scripts+=MAIL_SCRIPT;
+  if(isMailStudio(path)&&!html.includes('mail-studio-auth-bridge-v16.js'))scripts+=MAIL_SCRIPT;
   if(isMailStudio(path)&&!html.includes('mail-studio-controls-v18.js'))scripts+=CONTROLS_SCRIPT;
   if(isMailStudio(path)&&!html.includes('mail-studio-click-feedback-v19.js'))scripts+=CLICK_SCRIPT;
   if(isPrivate(path)&&!html.includes('admin-session-fallback-v17.js'))scripts+=ADMIN_SCRIPT;
@@ -37,9 +39,9 @@ async function version(request,env,ctx){
   const response=await app.fetch(request,env,ctx);
   try{
     const payload=await response.clone().json();
-    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,mailStudioControls:'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626',mailStudioClickFeedback:'GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626',adminSessionFallback:'GNK_ASG_ADMIN_SESSION_FALLBACK_V17_20260626',deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
+    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',mailStudioControls:'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626',mailStudioClickFeedback:'GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626',adminSessionFallback:'GNK_ASG_ADMIN_SESSION_FALLBACK_V18_20260626_COOKIE_ONLY',deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
       status:response.status,
-      headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION,'x-gnk-asg-admin-session-fallback':'V17','x-gnk-asg-mail-studio-controls':'V18','x-gnk-asg-mail-studio-click-feedback':'V19'}
+      headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION,'x-gnk-asg-admin-session-fallback':'V18_COOKIE_ONLY','x-gnk-asg-mail-studio-auth':'V16_COOKIE_ONLY','x-gnk-asg-mail-studio-controls':'V18','x-gnk-asg-mail-studio-click-feedback':'V19'}
     });
   }catch{return response;}
 }
