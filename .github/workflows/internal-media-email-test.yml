@@ -1,0 +1,135 @@
+name: Internal media email test
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: gnk-asg-internal-media-email-test
+  cancel-in-progress: false
+
+jobs:
+  test:
+    if: github.event.issue.number == 94 && github.event.comment.body == '/run-internal-media-email-test-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Verify and deploy current Worker
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check src/media-outreach-delivery-v3.js
+          node --check src/media-outreach-delivery-v5.js
+          node --check src/index-media-command-center-v21.js
+          grep -q "MEDIA_OUTREACH_LIVE = \"false\"" wrangler.toml
+          grep -q "MEDIA_OUTREACH_TEST_LIVE = \"false\"" wrangler.toml
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Install ephemeral internal test gate
+        id: gate
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          nonce=$(openssl rand -hex 32)
+          echo "::add-mask::$nonce"
+          printf '%s' "$nonce" | npx --yes wrangler@4 secret put MEDIA_OUTREACH_TEST_NONCE --config wrangler.toml --name gnk-asg-direct-operator
+          printf '%s' 'beckuphome@gmail.com' | npx --yes wrangler@4 secret put MEDIA_OUTREACH_TEST_RECIPIENTS --config wrangler.toml --name gnk-asg-direct-operator
+          echo "nonce=$nonce" >> "$GITHUB_OUTPUT"
+
+      - name: Send exactly one internal test email
+        id: send
+        env:
+          TEST_NONCE: ${{ steps.gate.outputs.nonce }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 30
+          code=$(curl -sS -o /tmp/test-result.json -w '%{http_code}' \
+            -X POST 'https://gnk-asg.hr/api/media-command-center/internal-test-email' \
+            -H 'content-type: application/json' \
+            -H 'cache-control: no-cache' \
+            -H "x-gnk-test-nonce: $TEST_NONCE" \
+            --data '{"recipient":"beckuphome@gmail.com","confirm":"SEND_TEST_EMAIL"}')
+          echo "http_code=$code" >> "$GITHUB_OUTPUT"
+          cat /tmp/test-result.json
+          node <<'JS'
+          const fs=require('node:fs');
+          const payload=JSON.parse(fs.readFileSync('/tmp/test-result.json','utf8'));
+          const failures=[];
+          if(payload?.ok!==true)failures.push(`ok=${JSON.stringify(payload?.ok)}`);
+          if(!payload?.delivery?.messageId)failures.push('messageId_missing');
+          if(payload?.testGate?.recipient!=='beckuphome@gmail.com')failures.push(`recipient=${payload?.testGate?.recipient}`);
+          if(payload?.testGate?.pdfSha256!=='849ec16c52db9f369f823891e831d81f7925e1ff8ab36f4d497193f6c7809de4')failures.push(`pdfSha256=${payload?.testGate?.pdfSha256}`);
+          const result={
+            ok:failures.length===0,
+            failures,
+            recipient:payload?.testGate?.recipient||'',
+            messageId:payload?.delivery?.messageId||'',
+            pdfSha256:payload?.testGate?.pdfSha256||'',
+            pdfKey:payload?.testGate?.pdfKey||'',
+            sendApi:payload?.delivery?.sendApi||payload?.testGate?.sendApi||'',
+            passedAt:payload?.testGate?.passedAt||''
+          };
+          fs.writeFileSync('/tmp/test-summary.json',JSON.stringify(result,null,2));
+          console.log(JSON.stringify(result,null,2));
+          if(failures.length)process.exit(1);
+          JS
+
+      - name: Re-lock internal test gate
+        if: always()
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          locked_nonce=$(openssl rand -hex 32)
+          echo "::add-mask::$locked_nonce"
+          printf '%s' "$locked_nonce" | npx --yes wrangler@4 secret put MEDIA_OUTREACH_TEST_NONCE --config wrangler.toml --name gnk-asg-direct-operator
+          printf '%s' 'disabled@invalid.example' | npx --yes wrangler@4 secret put MEDIA_OUTREACH_TEST_RECIPIENTS --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Confirm old nonce is unusable
+        if: always() && steps.gate.outcome == 'success'
+        env:
+          OLD_NONCE: ${{ steps.gate.outputs.nonce }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 20
+          code=$(curl -sS -o /tmp/relock-result.txt -w '%{http_code}' \
+            -X POST 'https://gnk-asg.hr/api/media-command-center/internal-test-email' \
+            -H 'content-type: application/json' \
+            -H "x-gnk-test-nonce: $OLD_NONCE" \
+            --data '{"recipient":"beckuphome@gmail.com","confirm":"SEND_TEST_EMAIL"}')
+          test "$code" = '404'
+
+      - name: Report internal test result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          summary=$(cat /tmp/test-summary.json 2>/dev/null || cat /tmp/test-result.json 2>/dev/null || printf '{"error":"test_not_reached"}')
+          body=$(printf 'Internal media email test **%s** · %s\n\n- Recipient: `beckuphome@gmail.com`\n- Global test mode: **LOCKED**\n- Production sending: **LOCKED**\n- Ephemeral gate after run: **ROTATED AND DISABLED**\n\n```json\n%s\n```' "$JOB_STATUS" "$RUN_URL" "$summary")
+          gh issue comment 94 --body "$body"
