@@ -1,0 +1,9 @@
+GNK_ASG_V30_CLEAN_INDEX_DEPLOY_20260626
+commit_target=main
+public_visual=GNK_ASG_PUBLIC_VISUAL_V30_CLEAN_POLISH_20260626
+index_style=INDEX_STABLE_POLISH_V30
+legacy_iq200=DISABLED
+legacy_index_polish=DISABLED
+legacy_v27=BLOCKED
+mail_sending=LOCKED
+nonce=1
