@@ -1,8 +1,8 @@
 import app from './index-unified-auth-v15.js';
-import {handleMailProfileDeliveryTest,STATUS_PATH as PROFILE_STATUS_PATH,SEND_PATH as PROFILE_SEND_PATH,VERSION as PROFILE_DELIVERY_VERSION} from './mail-profile-delivery-test-v1.js';
+import {handleMailProfileDeliveryTest,STATUS_PATH as PROFILE_STATUS_PATH,SEND_PATH as PROFILE_SEND_PATH,INTERNAL_TEST_PATH as PROFILE_INTERNAL_PATH,VERSION as PROFILE_DELIVERY_VERSION} from './mail-profile-delivery-test-v1.js';
 
-const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260626_R10_PROFILE_DELIVERY_TEST';
-const REVISION='10';
+const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260626_R11_EPHEMERAL_PROFILE_GATE';
+const REVISION='11';
 const MAIL_SCRIPT='<script defer src="/assets/mail-studio-auth-bridge-v16.js?v=20260626-1"></script>';
 const CONTROLS_SCRIPT='<script defer src="/assets/mail-studio-controls-v18.js?v=20260626-2"></script>';
 const CLICK_SCRIPT='<script defer src="/assets/mail-studio-click-feedback-v19.js?v=20260626-1"></script>';
@@ -69,7 +69,7 @@ async function version(request,env,ctx){
   const response=await app.fetch(request,env,ctx);
   try{
     const payload=await response.clone().json();
-    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,mailProfileTest:'GNK_ASG_MAIL_PROFILE_TEST_V2_20260626_DELIVERY',mailProfileDeliveryTest:PROFILE_DELIVERY_VERSION,mailSignatureContact:'PHONE_ICON_NEW_NUMBER_WHATSAPP_ICON',unifiedAuth:'GNK_ASG_UNIFIED_AUTH_V15_20260626_LOGIN_ISOLATION',mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',mailStudioControls:'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626',mailStudioClickFeedback:'GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626',adminSessionFallback:'GNK_ASG_ADMIN_SESSION_FALLBACK_V19_20260626_COOKIE_ONLY_HEALTH',authPageIsolation:'ENABLED',deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
+    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,mailProfileTest:'GNK_ASG_MAIL_PROFILE_TEST_V2_20260626_DELIVERY',mailProfileDeliveryTest:PROFILE_DELIVERY_VERSION,mailProfileInternalGate:'EPHEMERAL_NONCE_ROTATED_AFTER_RUN',mailSignatureContact:'PHONE_ICON_NEW_NUMBER_WHATSAPP_ICON',unifiedAuth:'GNK_ASG_UNIFIED_AUTH_V15_20260626_LOGIN_ISOLATION',mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',mailStudioControls:'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626',mailStudioClickFeedback:'GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626',adminSessionFallback:'GNK_ASG_ADMIN_SESSION_FALLBACK_V19_20260626_COOKIE_ONLY_HEALTH',authPageIsolation:'ENABLED',deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
       status:response.status,
       headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION,'x-gnk-asg-admin-session-fallback':'V19_COOKIE_ONLY','x-gnk-asg-mail-studio-auth':'V16_COOKIE_ONLY','x-gnk-asg-mail-studio-controls':'V18','x-gnk-asg-mail-studio-click-feedback':'V19','x-gnk-asg-mail-profile-test':'V2_DELIVERY','x-gnk-asg-mail-profile-delivery-test':PROFILE_DELIVERY_VERSION,'x-gnk-asg-auth-page-isolation':'ENABLED'}
     });
@@ -80,6 +80,10 @@ export default{
   async fetch(request,env,ctx){
     const path=cleanPath(request);
     if(request.method==='GET'&&path==='/data/portal-version.json')return version(request,env,ctx);
+    if(path===PROFILE_INTERNAL_PATH){
+      const response=await handleMailProfileDeliveryTest(request,env);
+      return response?stampWithoutInjection(response):new Response('Not found',{status:404});
+    }
     if(PROFILE_ENDPOINTS.has(path)){
       const denied=await profileAuth(request,env,ctx);
       if(denied)return stampWithoutInjection(denied);
