@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event.issue.number == 89 && github.event.comment.body == '/deploy-v21 20260626-89-r3'
+    if: github.event.issue.number == 89 && github.event.comment.body == '/deploy-v21 20260626-89-r4'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -40,6 +40,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v2.js
           grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'GNK_ASG_PLATFORM_HEALTH_V1_20260626' workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
@@ -70,22 +71,28 @@ jobs:
           cb=$(date +%s)
           base='https://gnk-asg.hr'
           curl -sS -D /tmp/status.headers -H 'Cache-Control: no-cache' "$base/data/deployment-status.json?cb=$cb" -o /tmp/status.json
+          curl -sS -D /tmp/health.headers -H 'Cache-Control: no-cache' "$base/data/platform-health.json?cb=$cb" -o /tmp/health.json
           curl -sS -D /tmp/root.headers -H 'Cache-Control: no-cache' "$base/?cb=$cb" -o /tmp/root.html
           curl -sS -D /tmp/admin.headers -H 'Cache-Control: no-cache' "$base/operator-dashboard/?cb=$cb" -o /tmp/admin.html
           node <<'JS'
           const fs=require('node:fs');
-          const statusText=fs.readFileSync('/tmp/status.json','utf8');
-          const root=fs.readFileSync('/tmp/root.html','utf8');
-          const rootHeaders=fs.readFileSync('/tmp/root.headers','utf8');
-          const adminHeaders=fs.readFileSync('/tmp/admin.headers','utf8');
-          const admin=fs.readFileSync('/tmp/admin.html','utf8');
-          let status=null;try{status=JSON.parse(statusText);}catch{}
+          const read=path=>fs.readFileSync(path,'utf8');
+          const parse=path=>{try{return JSON.parse(read(path));}catch{return null;}};
+          const status=parse('/tmp/status.json');
+          const health=parse('/tmp/health.json');
+          const root=read('/tmp/root.html');
+          const rootHeaders=read('/tmp/root.headers');
+          const healthHeaders=read('/tmp/health.headers');
+          const adminHeaders=read('/tmp/admin.headers');
+          const admin=read('/tmp/admin.html');
           const expected={
             entryPoint:'src/index-admin-hub-v21.js',
             indexHydration:'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626',
             publicR2:'GNK_ASG_PUBLIC_R2_V1_20260626',
             browserTokenStorage:'DISABLED',
             contactImport:'HASH_LOCKED_V3',
+            platformHealth:'/data/platform-health.json',
+            d1MigrationMode:'RUNTIME_SCHEMA_FALLBACK',
             productionSending:'LOCKED'
           };
           const firstLine=value=>String(value).split(/\r?\n/)[0]||'';
@@ -93,6 +100,9 @@ jobs:
           const failures=[];
           if(!status?.ok)failures.push('deployment_status_not_ok');
           for(const [key,value] of Object.entries(expected))if(status?.[key]!==value)failures.push(`${key}=${JSON.stringify(status?.[key])}`);
+          if(!health?.ok)failures.push(`platform_health=${JSON.stringify(health)}`);
+          if(health?.checks?.kv?.ok!==true)failures.push('kv_runtime_check_failed');
+          if(health?.checks?.d1?.ok!==true)failures.push('d1_runtime_check_failed');
           const placeholders={
             loadingNews:root.includes('Učitavanje najnovijih vijesti'),
             loadingNetwork:root.includes('Učitavanje mreže'),
@@ -108,6 +118,7 @@ jobs:
             checkedAt:new Date().toISOString(),
             failures,
             deployment:status,
+            health:{status:firstLine(healthHeaders),payload:health},
             root:{status:firstLine(rootHeaders),hydration:header(rootHeaders,'x-gnk-asg-index-hydration'),adminHub:header(rootHeaders,'x-gnk-asg-admin-hub'),placeholders},
             admin:{status:adminStatus,location:adminLocation,oldOperatorCenter:admin.includes('Operator Center')}
           };
@@ -130,5 +141,5 @@ jobs:
           live=''
           if [ -s /tmp/gnk-d1-migration.log ]; then d1_tail=$(tail -n 12 /tmp/gnk-d1-migration.log); fi
           if [ -s /tmp/live-diagnostic.json ]; then live=$(cat /tmp/live-diagnostic.json); fi
-          body=$(printf 'Deploy V21 R3 **%s** · D1 **%s** · commit `%s` · %s\n\n### Live diagnostic\n```json\n%s\n```\n\n### D1\n```text\n%s\n```' "$JOB_STATUS" "$D1_OUTCOME" "$RUN_SHA" "$RUN_URL" "$live" "$d1_tail")
+          body=$(printf 'Deploy V21 R4 **%s** · D1 migration **%s** · commit `%s` · %s\n\n### Live diagnostic\n```json\n%s\n```\n\n### D1 migration API\n```text\n%s\n```' "$JOB_STATUS" "$D1_OUTCOME" "$RUN_SHA" "$RUN_URL" "$live" "$d1_tail")
           gh issue comment 89 --body "$body"
