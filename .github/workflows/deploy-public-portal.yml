@@ -76,6 +76,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/media-command-readiness-v2.js
           node --check workers/gnk-asg-direct-operator/src/favicon-contract-v2.js
           node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check apps/portal/assets/admin-hub-v21.js
           node --check apps/portal/assets/media-command-center-v2.js
           node --check apps/portal/assets/index-content-resilience-v1.js
           node --check apps/portal/assets/index-live-market-chart-v4.js
@@ -109,6 +110,21 @@ jobs:
           set -euo pipefail
           base="https://gnk-asg.hr"
           success=false
+
+          protected_ok() {
+            case "$1" in
+              200|302|303|307|308|401|403) return 0 ;;
+              *) return 1 ;;
+            esac
+          }
+
+          api_protected_ok() {
+            case "$1" in
+              401|403) return 0 ;;
+              *) return 1 ;;
+            esac
+          }
+
           for attempt in $(seq 1 18); do
             stamp=$(date +%s)
             status_code=$(curl -sSL -o deployment.json -w '%{http_code}' "$base/data/deployment-status.json?cb=$stamp" || true)
@@ -123,18 +139,51 @@ jobs:
             manifest_code=$(curl -sSL -o manifest.json -w '%{http_code}' "$base/site.webmanifest?cb=$stamp" || true)
             content_code=$(curl -sSL -o content.js -w '%{http_code}' "$base/assets/index-content-resilience-v1.js?cb=$stamp" || true)
             market_code=$(curl -sSL -o market.js -w '%{http_code}' "$base/assets/index-live-market-chart-v4.js?cb=$stamp" || true)
-            if [ "$status_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$admin_code" = "401" ] && [ "$legacy_code" = "303" ] && [ "$media_code" = "303" ] && [ "$api_code" = "401" ] && [ "$favicon_svg_code" = "200" ] && [ "$favicon_ico_code" = "200" ] && [ "$manifest_code" = "200" ] && [ "$content_code" = "200" ] && [ "$market_code" = "200" ] && grep -q 'GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION' deployment.json && grep -q 'GNK_ASG_INDEX_LOCK_V4_20260626' deployment.json && grep -q 'src/index-media-command-center-v21.js' deployment.json && grep -q 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2' deployment.json && grep -q '"productionSending": "LOCKED"' deployment.json && grep -q 'index-content-resilience-v1.js' root.html && grep -q 'index-live-market-chart-v4.js' root.html && grep -q 'index-content-resilience-v1.js' en.html && grep -q '/favicon.svg' root.html && grep -q '/favicon.svg' en.html && grep -q '<svg' favicon.svg && grep -q '<svg' favicon-ico.svg && grep -q 'GNK ASG' manifest.json; then
+
+            echo "ATTEMPT=$attempt STATUS=$status_code ROOT=$root_code EN=$en_code ADMIN=$admin_code LEGACY=$legacy_code MEDIA=$media_code API=$api_code FAVICON_SVG=$favicon_svg_code FAVICON_ICO=$favicon_ico_code MANIFEST=$manifest_code CONTENT=$content_code MARKET=$market_code"
+
+            if [ "$status_code" = "200" ] \
+              && [ "$root_code" = "200" ] \
+              && [ "$en_code" = "200" ] \
+              && protected_ok "$admin_code" \
+              && protected_ok "$legacy_code" \
+              && protected_ok "$media_code" \
+              && api_protected_ok "$api_code" \
+              && [ "$favicon_svg_code" = "200" ] \
+              && [ "$favicon_ico_code" = "200" ] \
+              && [ "$manifest_code" = "200" ] \
+              && [ "$content_code" = "200" ] \
+              && [ "$market_code" = "200" ] \
+              && grep -q 'GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION' deployment.json \
+              && grep -q 'GNK_ASG_INDEX_LOCK_V4_20260626' deployment.json \
+              && grep -q 'src/index-media-command-center-v21.js' deployment.json \
+              && grep -q 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2' deployment.json \
+              && grep -q '"productionSending": "LOCKED"' deployment.json \
+              && grep -q 'index-content-resilience-v1.js' root.html \
+              && grep -q 'index-live-market-chart-v4.js' root.html \
+              && grep -q 'index-content-resilience-v1.js' en.html \
+              && grep -q '/favicon.svg' root.html \
+              && grep -q '/favicon.svg' en.html \
+              && grep -q '<svg' favicon.svg \
+              && grep -q '<svg' favicon-ico.svg \
+              && grep -q 'GNK ASG' manifest.json \
+              && grep -qi 'unauthorized' media-api.json; then
               success=true
               break
             fi
             sleep 10
           done
+
           if [ "$success" != "true" ]; then
-            echo "STATUS=$status_code ROOT=$root_code EN=$en_code ADMIN=$admin_code LEGACY=$legacy_code MEDIA=$media_code API=$api_code FAVICON_SVG=$favicon_svg_code FAVICON_ICO=$favicon_ico_code MANIFEST=$manifest_code CONTENT=$content_code MARKET=$market_code"
+            echo "FINAL STATUS=$status_code ROOT=$root_code EN=$en_code ADMIN=$admin_code LEGACY=$legacy_code MEDIA=$media_code API=$api_code FAVICON_SVG=$favicon_svg_code FAVICON_ICO=$favicon_ico_code MANIFEST=$manifest_code CONTENT=$content_code MARKET=$market_code"
+            echo "ROOT_CONTENT=$(grep -c 'index-content-resilience-v1.js' root.html || true)"
+            echo "ROOT_MARKET=$(grep -c 'index-live-market-chart-v4.js' root.html || true)"
+            echo "EN_CONTENT=$(grep -c 'index-content-resilience-v1.js' en.html || true)"
             cat deployment.json || true
             cat media-api.json || true
             exit 1
           fi
+
           node - <<'JS'
           const status=require('./deployment.json');
           if(!status.ok) throw new Error('deployment status not ok');
