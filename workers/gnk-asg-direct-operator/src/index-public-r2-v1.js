@@ -1,4 +1,4 @@
-import app from './index-article-automation-v2.js';
+import app from './index-publication-seo-v3.js';
 
 export const VERSION='GNK_ASG_PUBLIC_R2_V1_20260626';
 const PUBLIC_PREFIXES=['generated-articles/'];
