@@ -55,15 +55,18 @@ function deploymentStatus(){
     browserTokenStorage:'DISABLED',
     mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',
     mediaCommand:'src/index-media-command-center-v21.js',
-    mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R3_HANDOFF_UI',
+    mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R4_DELIVERY',
     mediaCommandCore:'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R3_HANDOFF_LOCK',
     mediaReadiness:'GNK_ASG_MEDIA_READINESS_V2_20260626',
+    mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
     contactImport:'HASH_LOCKED_V3',
     handoffManifest:'GNK_ASG_MEDIA_HANDOFF_2026-06-26',
     handoffSha256:'f34dda0a2aa7dfd88128c91a0e359b14ce20ced9bb74e02bcfaad62dfa81012f',
     platformHealth:'/data/platform-health.json',
     d1MigrationMode:'RUNTIME_SCHEMA_FALLBACK',
+    testSending:'LOCKED',
     productionSending:'LOCKED',
+    deliveryPolicy:{testRequiresAllowlist:true,pdfRequired:true,testGateRequired:true,maxPerHour:10,maxPerDay:50,dispatchPerCron:1},
     checkedAt:new Date().toISOString()
   });
 }
