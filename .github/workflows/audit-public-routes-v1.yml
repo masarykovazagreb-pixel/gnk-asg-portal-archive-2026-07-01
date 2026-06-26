@@ -1,26 +1,29 @@
-name: Audit public routes and verified news
+name: Audit all public routes publications and Visual Index V2
 
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/audit-public-routes-v1.yml'
-      - '.github/audit-public-routes-v1.trigger'
-      - 'scripts/audit-public-routes-v1.mjs'
+      - '.github/audit-public-routes-v2.trigger'
+      - 'scripts/audit-public-routes-v2.mjs'
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
-  group: gnk-asg-public-route-audit-v1
+  group: gnk-asg-public-route-audit-v2
   cancel-in-progress: true
 
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: main
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
@@ -28,14 +31,64 @@ jobs:
         run: |
           npm install --no-save playwright
           npx playwright install --with-deps chromium
-      - name: Run public route audit
+      - name: Run complete public audit
+        id: audit
+        continue-on-error: true
+        shell: bash
         run: |
           mkdir -p artifacts
-          node scripts/audit-public-routes-v1.mjs
+          node scripts/audit-public-routes-v2.mjs 2>&1 | tee public-audit.log
       - name: Upload route and screenshot evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: public-route-audit-v1
-          path: artifacts
+          name: public-route-publication-visual-audit-v2
+          path: |
+            artifacts
+            public-audit.log
           if-no-files-found: error
+          retention-days: 14
+      - name: Report audit result to canonical issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          summary=$(node - <<'NODE'
+          const fs=require('fs');
+          try{
+            const report=JSON.parse(fs.readFileSync('artifacts/public-route-audit-v2.json','utf8'));
+            console.log(JSON.stringify({
+              ok:report.ok,
+              checkedAt:report.checkedAt,
+              firstRun:{status:report.firstRun?.status,failures:report.firstRun?.failures},
+              publication:report.publication,
+              routeCount:report.routeCount,
+              routeFailures:report.routeFailures,
+              browserResults:(report.browserResults||[]).map(item=>({name:item.name,status:item.status,failures:item.failures,audit:item.audit})),
+              allFailures:report.allFailures
+            },null,2));
+          }catch(error){console.log(JSON.stringify({error:'audit report unavailable',message:String(error)},null,2));}
+          NODE
+          )
+          {
+            echo "Complete public route / publication / Visual Index audit **${AUDIT_OUTCOME}** · commit \`${RUN_SHA}\` · ${RUN_URL}"
+            echo
+            echo '```json'
+            echo "$summary"
+            echo '```'
+            echo
+            echo '### Log tail'
+            echo '```text'
+            tail -n 45 public-audit.log 2>/dev/null || true
+            echo '```'
+          } > audit-comment.md
+          gh issue comment 120 --body-file audit-comment.md
+      - name: Enforce audit success
+        if: always()
+        env:
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+        run: test "$AUDIT_OUTCOME" = success
