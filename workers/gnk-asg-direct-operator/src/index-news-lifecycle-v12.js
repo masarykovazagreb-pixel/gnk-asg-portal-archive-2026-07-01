@@ -4,7 +4,7 @@ import {VERSION,NEWS_MINIMUM,ACTIVE_NEWS_LIMIT,ARCHIVE_PRUNE_AT,ARCHIVE_DELETE_C
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-news-lifecycle':VERSION}});
 const store=env=>env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV||null;
 async function read(env,key,fallback){const kv=store(env);if(!kv)return fallback;try{const raw=await kv.get(key);return raw?JSON.parse(raw):fallback}catch{return fallback}}
-async function write(env,key,value,options){const kv=store(env);if(!kv)return false;await kv.put(key,JSON.stringify(value,null,2),options);return true}
+async function write(env,key,value,options){const kv=store(env);if(!kv)return false;if(options)await kv.put(key,JSON.stringify(value,null,2),options);else await kv.put(key,JSON.stringify(value,null,2));return true}
 function withHeader(response){const headers=new Headers(response.headers);headers.set('x-gnk-asg-news-lifecycle',VERSION);return new Response(response.body,{status:response.status,statusText:response.statusText,headers})}
 function validHttp(value){try{const url=new URL(String(value||''));return /^https?:$/.test(url.protocol)?url.href:''}catch{return''}}
 function isFallbackImage(value){const image=String(value||'').trim().toLowerCase();return !image||image.includes('/assets/news-fallback.svg')||image.startsWith('data:image/')}
