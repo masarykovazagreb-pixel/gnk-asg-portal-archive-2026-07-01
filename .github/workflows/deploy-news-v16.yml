@@ -1,0 +1,139 @@
+name: Deploy verified news V16
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-news-v16.yml'
+      - '.github/deploy-news-v16.trigger'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: gnk-asg-news-v16-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Verify news V16 package
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          node --check workers/gnk-asg-direct-operator/src/index-news-lifecycle-v12.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-experience-v10.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          node --check apps/portal/assets/business-news-v16.js
+          grep -q 'main = "src/index-admin-hub-v23-aktual.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'export const NEWS_MINIMUM=15' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'export const ACTIVE_NEWS_LIMIT=100' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'export const ARCHIVE_PRUNE_AT=900' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'export const ARCHIVE_RETAIN_AFTER_PRUNE=450' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'fallbackImagesAllowed:false' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'business-news-v16.js?v=20260626-news-v16' apps/portal/vijesti/index.html
+          grep -q 'business-news-v16.js?v=20260626-news-v16' apps/portal/news/index.html
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Deploy to Cloudflare
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Warm and verify news feed
+        id: verify
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          node <<'JS' 2>&1 | tee /tmp/news-v16-verify.log
+          const fs=require('node:fs');
+          const base='https://gnk-asg.hr';
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          async function get(path,timeout=240000){
+            try{
+              const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{'cache-control':'no-cache',accept:'application/json,text/html;q=0.9'},signal:AbortSignal.timeout(timeout)});
+              return {status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)};
+            }catch(error){return {status:0,text:'',headers:{},error:String(error)};}
+          }
+          function validateItem(item,index){
+            const failures=[];
+            const url=value=>{try{const u=new URL(String(value||''));return /^https?:$/.test(u.protocol)}catch{return false}};
+            if(!item?.verified)failures.push(`item_${index}_not_verified`);
+            if(item?.verification?.article?.ok!==true)failures.push(`item_${index}_article_unverified`);
+            if(item?.verification?.image?.ok!==true)failures.push(`item_${index}_image_unverified`);
+            if(!url(item?.url))failures.push(`item_${index}_url_invalid`);
+            if(!url(item?.image))failures.push(`item_${index}_image_invalid`);
+            if(String(item?.image||'').includes('/assets/news-fallback.svg'))failures.push(`item_${index}_fallback_image`);
+            if(String(item?.summary||'').trim().length<60)failures.push(`item_${index}_summary_short`);
+            if(!String(item?.source||'').trim())failures.push(`item_${index}_source_missing`);
+            return failures;
+          }
+          (async()=>{
+            let warm=await get('/data/news.json?warm=1');
+            let last=null;
+            for(let attempt=1;attempt<=12;attempt++){
+              const [feedResponse,statusResponse,archiveResponse,hr,en]=await Promise.all([
+                get('/data/news.json',60000),get('/data/news-automation-status.json',60000),get('/data/news-archive.json',60000),get('/vijesti/',60000),get('/news/',60000)
+              ]);
+              let feed=null,status=null,archive=null;
+              try{feed=JSON.parse(feedResponse.text)}catch{}
+              try{status=JSON.parse(statusResponse.text)}catch{}
+              try{archive=JSON.parse(archiveResponse.text)}catch{}
+              const failures=[];
+              if(feedResponse.status!==200)failures.push(`feed_http=${feedResponse.status}`);
+              if(statusResponse.status!==200)failures.push(`status_http=${statusResponse.status}`);
+              if(archiveResponse.status!==200)failures.push(`archive_http=${archiveResponse.status}`);
+              if(hr.status!==200||!hr.text.includes('business-news-v16.js?v=20260626-news-v16'))failures.push(`hr_page=${hr.status}`);
+              if(en.status!==200||!en.text.includes('business-news-v16.js?v=20260626-news-v16'))failures.push(`en_page=${en.status}`);
+              if(feed?.version!=='GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626')failures.push(`version=${JSON.stringify(feed?.version)}`);
+              if(!Array.isArray(feed?.items))failures.push('items_missing');
+              else{
+                if(feed.items.length<15)failures.push(`items=${feed.items.length}`);
+                if(feed.items.length>100)failures.push(`items_over_limit=${feed.items.length}`);
+                feed.items.forEach((item,index)=>failures.push(...validateItem(item,index)));
+              }
+              if(feed?.contentContract?.fallbackImagesAllowed!==false)failures.push('fallback_contract_invalid');
+              if(status?.newsRefreshesPerDay!==3)failures.push(`refreshes=${status?.newsRefreshesPerDay}`);
+              if(status?.minimumVerifiedLinks!==15)failures.push(`minimum=${status?.minimumVerifiedLinks}`);
+              if(status?.archivePruneAt!==900||status?.archiveRetainAfterPrune!==450||status?.archiveHardLimit!==1000)failures.push('archive_contract_invalid');
+              if(Number(archive?.count||0)>1000)failures.push(`archive_over_hard_limit=${archive?.count}`);
+              last={checkedAt:new Date().toISOString(),attempt,warmStatus:warm.status,failures,feed:{status:feed?.status,count:feed?.count,freshCount:feed?.freshCount,verifiedCount:feed?.verifiedCount,withSourceImageCount:feed?.withSourceImageCount,updatedAt:feed?.updatedAt,successfulSourceCount:feed?.successfulSourceCount,archiveCount:feed?.archiveCount},automation:{version:status?.version,schedule:status?.newsSchedule,lastNewsRefresh:status?.lastNewsRefresh},archive:{count:archive?.count,pruneAt:archive?.pruneAt,retainAfterPrune:archive?.retainAfterPrune,hardLimit:archive?.hardLimit},codes:{feed:feedResponse.status,status:statusResponse.status,archive:archiveResponse.status,hr:hr.status,en:en.status}};
+              fs.writeFileSync('/tmp/news-v16-diagnostic.json',JSON.stringify(last,null,2));
+              console.log(JSON.stringify(last));
+              if(!failures.length)process.exit(0);
+              await sleep(15000);
+            }
+            process.exit(1);
+          })().catch(error=>{console.error(error);process.exit(1)});
+          JS
+
+      - name: Report news V16 result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        run: |
+          diagnostic=$(cat /tmp/news-v16-diagnostic.json 2>/dev/null || printf '{"error":"verification_not_reached"}')
+          log_tail=$(tail -n 30 /tmp/news-v16-verify.log 2>/dev/null || true)
+          gh issue comment 120 --body "Verified News V16 deploy · verification **${VERIFY_OUTCOME}** · commit \`${RUN_SHA}\` · ${RUN_URL}\n\n### Diagnostic\n\`\`\`json\n${diagnostic}\n\`\`\`\n\n### Log tail\n\`\`\`text\n${log_tail}\n\`\`\`"
+
+      - name: Enforce verified news contract
+        if: always()
+        env:
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+        run: test "$VERIFY_OUTCOME" = success
