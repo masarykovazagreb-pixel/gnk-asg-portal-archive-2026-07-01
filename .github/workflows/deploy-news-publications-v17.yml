@@ -1,0 +1,157 @@
+name: Deploy verified news and publications V17
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-news-publications-v17.yml'
+      - '.github/deploy-news-publications-v17.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: gnk-asg-news-publications-v17
+  cancel-in-progress: true
+
+jobs:
+  deploy-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Verify production package
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/visual-index-central-v7.js
+          node --check apps/portal/assets/visual-index-full-gallery.js
+          node --check workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js
+          node --check workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
+          node --check workers/gnk-asg-direct-operator/src/article-visual-v2.js
+          node --check workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v23-aktual.js
+          grep -q 'main = "src/index-admin-hub-v23-aktual.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'ARCHIVE_PRUNE_AT=900' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'ARCHIVE_RETAIN_AFTER_PRUNE=450' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'NEWS_MINIMUM=15' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'GNK_ASG_PUBLICATION_SEO_V3_20260626' workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js
+          grep -q 'visual-index-central-v7.js' apps/portal/assets/visual-index-full-gallery.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Deploy canonical Worker
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Refresh news and publish first validated article
+        id: publication
+        env:
+          GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$GNK_ASG_OPERATOR_TOKEN"
+          curl -fsS --max-time 600 \
+            -H "authorization: Bearer $GNK_ASG_OPERATOR_TOKEN" \
+            -H 'content-type: application/json' \
+            -d '{}' \
+            'https://gnk-asg.hr/operator/news-automation/run' \
+            -o /tmp/news-publication-result.json
+          node <<'JS'
+          const fs=require('node:fs');
+          const payload=JSON.parse(fs.readFileSync('/tmp/news-publication-result.json','utf8'));
+          const editor=payload.editor||payload.autoEditor||payload.articlePostProcess||null;
+          const article=payload.article||editor?.article||editor?.articlePostProcess?.visual?.article||editor?.articlePostProcess?.editorialQa?.article||null;
+          if(payload.ok===false)throw new Error(`automation_failed:${JSON.stringify(payload).slice(0,2000)}`);
+          if(!payload.news?.ok)throw new Error(`news_refresh_failed:${JSON.stringify(payload.news).slice(0,1600)}`);
+          if(Number(payload.news.count||payload.news.verifiedCount||0)<15)throw new Error('verified_news_below_15');
+          if(!article?.slug)throw new Error(`published_article_missing:${JSON.stringify(payload).slice(0,2200)}`);
+          if(!article?.image)throw new Error('published_article_image_missing');
+          if(Number(article.wordCountHr||0)<500||Number(article.wordCountEn||0)<500)throw new Error('article_word_count_below_500');
+          fs.writeFileSync('/tmp/article.json',JSON.stringify(article,null,2));
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`slug=${article.slug}\narticle_id=${article.id}\nimage=${article.image}\n`);
+          console.log(JSON.stringify({ok:true,slug:article.slug,id:article.id,image:article.image,newsCount:payload.news.count||payload.news.verifiedCount},null,2));
+          JS
+
+      - name: Verify news, publication SEO and Visual Index
+        env:
+          SLUG: ${{ steps.publication.outputs.slug }}
+          ARTICLE_ID: ${{ steps.publication.outputs.article_id }}
+          IMAGE: ${{ steps.publication.outputs.image }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'JS'
+          const fs=require('node:fs');
+          const base='https://gnk-asg.hr';
+          const slug=process.env.SLUG;
+          const articleId=process.env.ARTICLE_ID;
+          const image=process.env.IMAGE;
+          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+          async function get(path,redirect='follow'){
+            const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{redirect,headers:{'cache-control':'no-cache'}});
+            return{status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)};
+          }
+          let report;
+          for(let attempt=1;attempt<=12;attempt++){
+            const [news,status,hrList,enList,hrArticle,enArticle,gallery,visual,imageResponse]=await Promise.all([
+              get('/data/news.json'),get('/data/news-automation-status.json'),get('/objave/'),get('/publications/'),
+              get(`/objave/${slug}/`),get(`/publications/${slug}/`),get('/data/visual_gallery.json'),
+              get('/visual-index/?lang=en'),get(image.startsWith('http')?image.replace(base,''):image)
+            ]);
+            const failures=[];
+            let newsData=null;try{newsData=JSON.parse(news.text)}catch{}
+            let statusData=null;try{statusData=JSON.parse(status.text)}catch{}
+            let galleryData=null;try{galleryData=JSON.parse(gallery.text)}catch{}
+            const items=Array.isArray(newsData)?newsData:(newsData?.items||[]);
+            if(news.status!==200||items.length<15)failures.push(`news=${news.status}:${items.length}`);
+            for(const item of items.slice(0,100))if(!item.title||!item.summary||!item.source||!item.url||!item.image||item.imageFallback===true||item.verified!==true)failures.push(`invalid_news_item=${item.id||item.title}`);
+            if(status.status!==200||Number(statusData?.minimumVerifiedLinks||15)!==15)failures.push(`status=${status.status}`);
+            if(statusData?.archivePruneAt!==900||statusData?.archiveRetainAfterPrune!==450)failures.push('archive_contract_invalid');
+            for(const [name,response] of Object.entries({hrList,enList,hrArticle,enArticle,visual,imageResponse}))if(response.status!==200)failures.push(`${name}=${response.status}`);
+            if(!hrList.text.includes(`/objave/${slug}/`))failures.push('hr_list_missing_article');
+            if(!enList.text.includes(`/publications/${slug}/`))failures.push('en_list_missing_article');
+            for(const [name,response] of Object.entries({hrArticle,enArticle})){
+              if(!response.text.includes('application/ld+json'))failures.push(`${name}_schema_missing`);
+              if(!response.text.includes('twitter:card'))failures.push(`${name}_twitter_missing`);
+              if(!response.text.includes('og:image'))failures.push(`${name}_og_image_missing`);
+              if(!response.text.includes('Visual Index'))failures.push(`${name}_visual_index_link_missing`);
+              if(response.headers['x-gnk-asg-publication-seo']!=='GNK_ASG_PUBLICATION_SEO_V3_20260626')failures.push(`${name}_seo_header_missing`);
+            }
+            const galleryItems=galleryData?.items||[];
+            if(!galleryItems.some(item=>String(item.article_id||item.articleId||item.id).includes(articleId)))failures.push('generated_visual_missing_from_runtime_gallery');
+            if(!visual.text.includes('visual-index-full-gallery.js'))failures.push('visual_index_loader_missing');
+            report={attempt,failures,codes:{news:news.status,status:status.status,hrList:hrList.status,enList:enList.status,hrArticle:hrArticle.status,enArticle:enArticle.status,gallery:gallery.status,visual:visual.status,image:imageResponse.status},article:{slug,articleId,image},newsCount:items.length,galleryCount:galleryItems.length};
+            fs.writeFileSync('/tmp/verification.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report));
+            if(!failures.length)process.exit(0);
+            await sleep(10000);
+          }
+          throw new Error(JSON.stringify(report));
+          JS
+
+      - name: Report result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          publication=$(cat /tmp/news-publication-result.json 2>/dev/null || printf '{"error":"publication_not_reached"}')
+          verification=$(cat /tmp/verification.json 2>/dev/null || printf '{"error":"verification_not_reached"}')
+          body=$(printf 'News + Publications V17 **%s** · commit `%s` · %s\n\n### Verification\n```json\n%s\n```\n\n### Automation result\n```json\n%s\n```' "$JOB_STATUS" "$RUN_SHA" "$RUN_URL" "$verification" "$publication")
+          gh issue comment 101 --body "$body"
