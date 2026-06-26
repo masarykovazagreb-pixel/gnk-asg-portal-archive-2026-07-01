@@ -1,0 +1,6 @@
+GNK_ASG_V27_DEPLOY_20260626_1805
+commit_target=e0c12b18637605b7c18d4798f40a00894d22c7e4
+public_visual=GNK_ASG_PUBLIC_VISUAL_V27_SINGLE_MARKET_20260626
+market=index-live-market-chart-v4.js
+editorial_qa=GNK_ASG_ARTICLE_EDITORIAL_QA_V1_20260626
+mail_sending=LOCKED
