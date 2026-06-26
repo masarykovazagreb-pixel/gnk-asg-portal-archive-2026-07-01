@@ -1,7 +1,8 @@
 import app from './index-article-automation-v2.js';
-import { patchPublicHtml, transformHtml } from './public-shell-v11.js';
+import { patchPublicHtml } from './public-shell-v11.js';
+import { hydrateIndexHtml, VERSION as HYDRATION_VERSION } from './index-server-hydration-v1.js';
 
-export const INDEX_LOCK_VERSION = 'GNK_ASG_INDEX_LOCK_V4_20260626';
+export const INDEX_LOCK_VERSION = 'GNK_ASG_INDEX_LOCK_V4_20260626_R2_HYDRATED';
 const INDEX_PATHS = new Map([
   ['/', '/index.html'],
   ['/en', '/en/index.html']
@@ -21,13 +22,23 @@ async function lockedIndex(request, env, path) {
     headers:request.headers
   }));
   if (!source.ok) return null;
-  const response = await transformHtml(source, html => patchPublicHtml(html, path === '/' ? '/' : '/en/'));
-  const headers = new Headers(response.headers);
+
+  const english = path === '/en';
+  let body = await source.text();
+  body = patchPublicHtml(body, english ? '/en/' : '/');
+  body = await hydrateIndexHtml(body, request, env, english);
+
+  const headers = new Headers(source.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.set('content-type', 'text/html; charset=utf-8');
   headers.set('cache-control', 'no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-index-lock', INDEX_LOCK_VERSION);
+  headers.set('x-gnk-asg-index-hydration', HYDRATION_VERSION);
   headers.set('x-gnk-asg-index-source', assetPath);
   headers.set('vary', 'accept-encoding');
-  return new Response(request.method === 'HEAD' ? null : response.body, {
+
+  return new Response(request.method === 'HEAD' ? null : body, {
     status:200,
     headers
   });
@@ -43,6 +54,7 @@ export default {
     const response = await app.fetch(request, env, ctx);
     const headers = new Headers(response.headers);
     headers.set('x-gnk-asg-index-lock', INDEX_LOCK_VERSION);
+    headers.set('x-gnk-asg-index-hydration', HYDRATION_VERSION);
     return new Response(response.body, {
       status:response.status,
       statusText:response.statusText,
