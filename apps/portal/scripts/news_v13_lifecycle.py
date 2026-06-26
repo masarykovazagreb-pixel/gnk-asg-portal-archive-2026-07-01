@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""GNK ASG news lifecycle V14: 100 public, archive 900 -> 450, real images only."""
+"""GNK ASG news lifecycle V14: 100 public, archive 1000 -> 500, real images only."""
 from __future__ import annotations
 
 import concurrent.futures
@@ -234,8 +234,8 @@ def main():
     config = read_json('news_config_v2.json', {})
     public_limit = int(config.get('max_public_items', 100))
     archive_capacity = int(config.get('archive_capacity', 1000))
-    archive_trigger = int(config.get('archive_prune_trigger', 900))
-    archive_prune_to = int(config.get('archive_prune_to', 450))
+    archive_trigger = int(config.get('archive_prune_trigger', 1000))
+    archive_prune_to = int(config.get('archive_prune_to', 500))
     minimum_healthy = int(config.get('minimum_healthy_sources', 15))
     max_per_source = int(config.get('max_per_source', 30))
     cutoff = NOW - dt.timedelta(days=max(1, int(config.get('retention_days', 30))))
