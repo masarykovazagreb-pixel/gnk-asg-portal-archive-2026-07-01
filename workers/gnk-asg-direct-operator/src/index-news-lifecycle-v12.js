@@ -5,11 +5,16 @@ const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,h
 const store=env=>env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV||null;
 async function read(env,key,fallback){const kv=store(env);if(!kv)return fallback;try{const raw=await kv.get(key);return raw?JSON.parse(raw):fallback}catch{return fallback}}
 function withHeader(response){const headers=new Headers(response.headers);headers.set('x-gnk-asg-news-lifecycle',VERSION);return new Response(response.body,{status:response.status,statusText:response.statusText,headers})}
+function isFallbackImage(value){
+  const image=String(value||'').trim().toLowerCase();
+  return !image||image.includes('/assets/news-fallback.svg')||image.startsWith('data:image/svg+xml');
+}
 function normalizePublicItem(item){
   const articleUrl=item?.url||item?.link||item?.articleUrl||item?.sourceUrl||'';
-  const upstreamImage=item?.image||item?.imageUrl||item?.image_url||'';
-  const imageFallback=item?.imageFallback===true||!upstreamImage;
-  const image=imageFallback?FALLBACK_IMAGE:upstreamImage;
+  const imageCandidates=[item?.image,item?.imageUrl,item?.image_url].filter(Boolean);
+  const sourceImage=imageCandidates.find(value=>!isFallbackImage(value))||imageCandidates[0]||'';
+  const imageFallback=isFallbackImage(sourceImage);
+  const image=imageFallback?FALLBACK_IMAGE:sourceImage;
   const publishedAt=item?.publishedAt||item?.published_at||item?.pubDate||'';
   const source=item?.source||item?.sourceTitle||item?.region||item?.category||'GNK ASG';
   return{
