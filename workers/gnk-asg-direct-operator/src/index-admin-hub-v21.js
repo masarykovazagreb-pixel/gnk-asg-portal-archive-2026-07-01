@@ -2,6 +2,7 @@ import app,{INDEX_LOCK_VERSION} from './index-lock-v4.js';
 import {handleFaviconAsset,applyFaviconContract,FAVICON_VERSION} from './favicon-contract-v2.js';
 
 const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION';
+const HEALTH_VERSION='GNK_ASG_PLATFORM_HEALTH_V1_20260626';
 const MODULES=new Map([
   ['/operator-dashboard','operator'],
   ['/operator-mobile','mobile'],
@@ -27,10 +28,13 @@ function baseHeaders(extra={}){
   };
 }
 
+function jsonResponse(payload,status=200,extra={}){
+  return new Response(JSON.stringify(payload,null,2),{status,headers:baseHeaders({'content-type':'application/json; charset=utf-8',...extra})});
+}
 function redirect(location){return new Response(null,{status:303,headers:baseHeaders({location})});}
 
 function deploymentStatus(){
-  return new Response(JSON.stringify({
+  return jsonResponse({
     ok:true,
     service:'gnk-asg-direct-operator',
     entryPoint:'src/index-admin-hub-v21.js',
@@ -57,9 +61,37 @@ function deploymentStatus(){
     contactImport:'HASH_LOCKED_V3',
     handoffManifest:'GNK_ASG_MEDIA_HANDOFF_2026-06-26',
     handoffSha256:'f34dda0a2aa7dfd88128c91a0e359b14ce20ced9bb74e02bcfaad62dfa81012f',
+    platformHealth:'/data/platform-health.json',
+    d1MigrationMode:'RUNTIME_SCHEMA_FALLBACK',
     productionSending:'LOCKED',
     checkedAt:new Date().toISOString()
-  },null,2),{status:200,headers:baseHeaders({'content-type':'application/json; charset=utf-8'})});
+  });
+}
+
+async function platformHealth(env){
+  const kv=env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV||null;
+  const bindings={
+    assets:Boolean(env.ASSETS?.fetch),
+    kv:Boolean(kv?.get),
+    d1:Boolean(env.GNK_ASG_D1?.prepare),
+    r2:Boolean(env.GNK_ASG_MEDIA_ASSETS),
+    email:Boolean(env.EMAIL),
+    ai:Boolean(env.AI)
+  };
+  const checks={assets:{ok:bindings.assets},kv:{ok:false},d1:{ok:false}};
+  if(bindings.kv){
+    try{await kv.get('__gnk_asg_health_probe__');checks.kv.ok=true;}
+    catch{checks.kv={ok:false,error:'KV_READ_FAILED'};}
+  }else checks.kv={ok:false,error:'KV_BINDING_MISSING'};
+  if(bindings.d1){
+    try{
+      const row=await env.GNK_ASG_D1.prepare('SELECT 1 AS ok').first();
+      checks.d1={ok:Number(row?.ok)===1};
+      if(!checks.d1.ok)checks.d1.error='D1_UNEXPECTED_RESULT';
+    }catch{checks.d1={ok:false,error:'D1_QUERY_FAILED'};}
+  }else checks.d1={ok:false,error:'D1_BINDING_MISSING'};
+  const ok=checks.assets.ok&&checks.kv.ok&&checks.d1.ok;
+  return jsonResponse({ok,version:HEALTH_VERSION,bindings,checks,checkedAt:new Date().toISOString()},ok?200:503,{'x-gnk-asg-platform-health':HEALTH_VERSION});
 }
 
 export default{
@@ -70,6 +102,10 @@ export default{
     if(faviconResponse)return faviconResponse;
     if(path==='/data/deployment-status.json'&&['GET','HEAD'].includes(request.method)){
       const response=deploymentStatus();
+      return request.method==='HEAD'?new Response(null,{status:response.status,headers:response.headers}):response;
+    }
+    if(path==='/data/platform-health.json'&&['GET','HEAD'].includes(request.method)){
+      const response=await platformHealth(env);
       return request.method==='HEAD'?new Response(null,{status:response.status,headers:response.headers}):response;
     }
     const embedded=url.searchParams.get('embedded')==='1'||url.searchParams.get('standalone')==='1';
