@@ -18,23 +18,16 @@
 
     const css=node('link');
     css.rel='stylesheet';
-    css.href='/assets/the-code-index-slot.css?v=20260627-v2';
+    css.href='/assets/the-code-index-slot.css?v=20260627-v3';
     document.head.appendChild(css);
 
     const section=node('section','section gnk-code-slot');
     section.id='the-code-index';
-    section.setAttribute('aria-label','GNK DINAMO Ltd. — The Code');
-
-    const head=node('div','gnk-code-slot__head');
-    const title=node('div');
-    title.appendChild(node('span','gnk-code-slot__eyebrow','GNK DINAMO Ltd. · THE CODE'));
-    title.appendChild(node('h2','',english?'A signal built for Earth.':'Signal izgrađen za Zemlju.'));
-    head.appendChild(title);
-    head.appendChild(node('p','',english?'Two campaign visuals rotate every 10 seconds. The interactive code remains isolated from the portal.':'Dva kampanjska vizuala izmjenjuju se svakih 10 sekundi. Interaktivni kod ostaje izoliran od portala.'));
-    section.appendChild(head);
+    section.setAttribute('aria-label','GNK DINAMO Ltd. — The Code and campaign visuals');
 
     const grid=node('div','gnk-code-slot__grid');
     const visual=node('article','gnk-code-slot__visual');
+    visual.setAttribute('aria-label',english?'Rotating campaign visuals':'Izmjena kampanjskih vizuala');
     const slides=node('div','gnk-code-slot__slides');
     const visuals=[
       {src:'/assets/the-code-visual-01.jpg',label:'GNK ASG · VISUAL 01',text:english?'First campaign visual.':'Prvi kampanjski vizual.'},
@@ -63,12 +56,14 @@
     grid.appendChild(visual);
 
     const code=node('aside','gnk-code-slot__code');
+    code.setAttribute('aria-label','THE CODE interactive presentation');
     const frame=node('iframe');
     frame.title='THE CODE — GNK DINAMO Ltd.';
     frame.src='/the-code/';
-    frame.loading='lazy';
+    frame.loading='eager';
     frame.setAttribute('sandbox','allow-scripts');
     frame.setAttribute('allow','autoplay');
+    frame.setAttribute('scrolling','no');
     code.appendChild(frame);
     code.appendChild(node('span','gnk-code-slot__badge','Interactive · isolated'));
     grid.appendChild(code);
