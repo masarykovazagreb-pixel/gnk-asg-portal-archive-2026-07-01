@@ -1,13 +1,20 @@
 import app from './index.js';
 import {enforceRequiredSignature,VERSION as EMAIL_SIGNATURE_VERSION} from '../../gnk-asg-direct-operator/src/email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_CONTACT_AI_MAIL_WRAPPER_V4_20260627';
+export const VERSION='GNK_ASG_CONTACT_AI_MAIL_WRAPPER_V5_20260627';
 const ARCHIVE_ADDRESS='rht@gmx.com';
 const DEFAULT_MODEL='@cf/meta/llama-3.1-8b-instruct-fast';
 const CENTERS=[
   'Budapest','New York','London','Dubai','Singapore',
   'Tokyo','Zurich','Berlin','Paris','São Paulo'
 ];
+const SIGNATURE_PATHS=new Set([
+  '/api/operator-signature-load',
+  '/api/operator-signature-save',
+  '/api/operator-mailbox-config'
+]);
+const phonePattern=/(?:\+?385\s*\(?0?\)?\s*91\s*610\s*4398|\+?385\s*91\s*535\s*8365|0?91\s*535\s*8365)/gi;
+const whatsAppPattern=/(?:https?:\/\/)?(?:www\.)?wa\.me\/\d+\/?/gi;
 
 const clean=value=>String(value??'').trim();
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({
@@ -31,7 +38,7 @@ function paragraphs(value){
 }
 function field(text,label,nextLabels=[]){
   const escaped=label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  const tail=nextLabels.length?`(?=\\n(?:${nextLabels.map(item=>item.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')}):|$)`:'(?=\\n|$)';
+  const tail=nextLabels.length?`(?=\\n(?:${nextLabels.map(item=>item.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')}):|$)`:'$';
   const match=String(text||'').match(new RegExp(`(?:^|\\n)${escaped}:\\s*([\\s\\S]*?)${tail}`,'i'));
   return clean(match?.[1]);
 }
@@ -66,8 +73,13 @@ function extractJson(raw){
 function looksCroatian(value){
   return /\b(poštovani|poruka|upit|zaprim|prilog|molim|hvala|lijep|srdačan|odgovor|predmet)\b|[čćžšđ]/i.test(String(value||''));
 }
+function hasAttachment(context){
+  if(Number(context?.attachmentCount||0)>0)return true;
+  const name=clean(context?.attachmentName).toLowerCase();
+  return Boolean(name&&!['-','none','nije priložen','nije prilozen'].includes(name));
+}
 function fallbackAcknowledgement(context,center){
-  const attachmentText=context.attachmentCount||(!/^(?:nije priložen|-|none)$/i.test(context.attachmentName||''))
+  const attachmentText=hasAttachment(context)
     ?'Sadržaj poruke i svi dostavljeni prilozi evidentirani su u cijelosti.'
     :'Sadržaj poruke evidentiran je u cijelosti.';
   if(looksCroatian(`${context.subject} ${context.message}`)){
@@ -97,6 +109,42 @@ async function aiAcknowledgement(env,context,center){
   }catch{
     return fallbackAcknowledgement(context,center);
   }
+}
+function stripContactDetails(value){
+  const original=String(value??'');
+  if(!original)return original;
+  if(/<[^>]+>/.test(original)){
+    return original
+      .replace(/<div\b[^>]*data-gnk-asg-contact=["'][^"']*["'][^>]*>[\s\S]*?<\/div>/gi,'')
+      .replace(/<div\b[^>]*>\s*(?:Telefon|Kontakt|Phone|Tel\.?|Mobile|Mobitel|WhatsApp)\s*:?\s*(?:<[^>]+>\s*)*(?:(?:https?:\/\/)?(?:www\.)?wa\.me\/\d+\/?|(?:\+?385\s*\(?0?\)?\s*91\s*610\s*4398|\+?385\s*91\s*535\s*8365|0?91\s*535\s*8365))[\s\S]*?<\/div>/gi,'')
+      .replace(/<a\b[^>]*href=["'][^"']*wa\.me[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,'')
+      .replace(phonePattern,'')
+      .replace(whatsAppPattern,'');
+  }
+  return original.split(/\r?\n/).filter(line=>{
+    if(phonePattern.test(line)){phonePattern.lastIndex=0;return false;}
+    phonePattern.lastIndex=0;
+    if(whatsAppPattern.test(line)){whatsAppPattern.lastIndex=0;return false;}
+    whatsAppPattern.lastIndex=0;
+    return !/^\s*(?:telefon|kontakt|phone|tel\.?|mobile|mobitel|whatsapp)\s*:/i.test(line);
+  }).join('\n').replace(/\n{3,}/g,'\n\n').trim();
+}
+function sanitizeSignatureData(value,key=''){
+  if(Array.isArray(value))return value.map(item=>sanitizeSignatureData(item,key));
+  if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([childKey,child])=>[childKey,sanitizeSignatureData(child,childKey)]));
+  if(typeof value==='string'&&/signature/i.test(key))return stripContactDetails(value);
+  return value;
+}
+async function sanitizeSignatureResponse(response,path){
+  if(!SIGNATURE_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').toLowerCase().includes('application/json'))return response;
+  try{
+    const data=sanitizeSignatureData(await response.json());
+    const headers=new Headers(response.headers);
+    headers.delete('content-length');
+    headers.delete('content-encoding');
+    headers.set('content-type','application/json; charset=utf-8');
+    return new Response(JSON.stringify(data,null,2),{status:response.status,statusText:response.statusText,headers});
+  }catch{return response;}
 }
 
 function wrappedEnv(env){
@@ -133,7 +181,12 @@ function stamp(response){
 }
 
 export default{
-  async fetch(request,env,ctx){return stamp(await app.fetch(request,wrappedEnv(env),ctx));},
+  async fetch(request,env,ctx){
+    const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+    let response=await app.fetch(request,wrappedEnv(env),ctx);
+    response=await sanitizeSignatureResponse(response,path);
+    return stamp(response);
+  },
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,wrappedEnv(env),ctx);},
   async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,wrappedEnv(env),ctx);}
 };
