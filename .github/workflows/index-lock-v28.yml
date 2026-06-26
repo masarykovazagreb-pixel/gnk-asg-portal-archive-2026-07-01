@@ -1,0 +1,140 @@
+name: Index V28 lock and self-heal
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/index.html'
+      - 'apps/portal/en/index.html'
+      - 'apps/portal/assets/index-redesign-production.css'
+      - 'apps/portal/assets/index-redesign-production-base.css'
+      - 'apps/portal/assets/brand/gnk-asg-centered-public-menu.css'
+      - 'apps/portal/assets/public-visual-v13.css'
+      - 'apps/portal/assets/public-menu-v13.js'
+      - 'apps/portal/assets/index-media-countdown-v1.css'
+      - 'apps/portal/assets/index-clock-v2.js'
+      - 'apps/portal/assets/index-group-network-v2.css'
+      - 'apps/portal/assets/index-group-network-v2.js'
+      - 'apps/portal/assets/index-group-network-en-bridge-v1.js'
+      - 'apps/portal/assets/index-news-rotation-v1.js'
+      - 'apps/portal/assets/index-content-resilience-v1.js'
+      - 'apps/portal/assets/index-live-market-chart-v4.js'
+      - 'apps/portal/assets/iq200/**'
+      - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/index.html'
+      - 'apps/portal/en/index.html'
+      - 'apps/portal/assets/index-redesign-production.css'
+      - 'apps/portal/assets/index-redesign-production-base.css'
+      - 'apps/portal/assets/brand/gnk-asg-centered-public-menu.css'
+      - 'apps/portal/assets/public-visual-v13.css'
+      - 'apps/portal/assets/public-menu-v13.js'
+      - 'apps/portal/assets/index-media-countdown-v1.css'
+      - 'apps/portal/assets/index-clock-v2.js'
+      - 'apps/portal/assets/index-group-network-v2.css'
+      - 'apps/portal/assets/index-group-network-v2.js'
+      - 'apps/portal/assets/index-group-network-en-bridge-v1.js'
+      - 'apps/portal/assets/index-news-rotation-v1.js'
+      - 'apps/portal/assets/index-content-resilience-v1.js'
+      - 'apps/portal/assets/index-live-market-chart-v4.js'
+      - 'apps/portal/assets/iq200/**'
+      - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-index-v28-lock
+  cancel-in-progress: false
+
+env:
+  BASELINE_BRANCH: restore-point/index-v28-locked-20260626
+
+jobs:
+  protect-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Compare protected index with restore point
+        id: lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "refs/heads/${BASELINE_BRANCH}:refs/remotes/origin/${BASELINE_BRANCH}" --force
+
+          locked_paths=(
+            'apps/portal/index.html'
+            'apps/portal/en/index.html'
+            'apps/portal/assets/index-redesign-production.css'
+            'apps/portal/assets/index-redesign-production-base.css'
+            'apps/portal/assets/brand/gnk-asg-centered-public-menu.css'
+            'apps/portal/assets/public-visual-v13.css'
+            'apps/portal/assets/public-menu-v13.js'
+            'apps/portal/assets/index-media-countdown-v1.css'
+            'apps/portal/assets/index-clock-v2.js'
+            'apps/portal/assets/index-group-network-v2.css'
+            'apps/portal/assets/index-group-network-v2.js'
+            'apps/portal/assets/index-group-network-en-bridge-v1.js'
+            'apps/portal/assets/index-news-rotation-v1.js'
+            'apps/portal/assets/index-content-resilience-v1.js'
+            'apps/portal/assets/index-live-market-chart-v4.js'
+            'apps/portal/assets/iq200/01.css'
+            'apps/portal/assets/iq200/02.css'
+            'apps/portal/assets/iq200/03.css'
+            'apps/portal/assets/iq200/04.css'
+            'apps/portal/assets/iq200/05.css'
+            'apps/portal/assets/iq200/06.css'
+            'apps/portal/assets/iq200/07-temp.css'
+            'apps/portal/assets/iq200/08.css'
+            'apps/portal/assets/iq200/09a.css'
+            'apps/portal/assets/iq200/responsive.css'
+            'apps/portal/assets/iq200/final-fixes.css'
+            'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
+          )
+
+          changed=()
+          for path in "${locked_paths[@]}"; do
+            if ! git diff --quiet "origin/${BASELINE_BRANCH}" -- "$path"; then
+              changed+=("$path")
+            fi
+          done
+
+          if [ "${#changed[@]}" -eq 0 ]; then
+            echo 'drift=false' >> "$GITHUB_OUTPUT"
+            echo 'INDEX_LOCK_OK=true'
+            exit 0
+          fi
+
+          echo 'drift=true' >> "$GITHUB_OUTPUT"
+          printf 'Locked index drift detected:\n'
+          printf ' - %s\n' "${changed[@]}"
+
+          if [ "${GITHUB_EVENT_NAME}" = 'pull_request' ]; then
+            echo 'Index V28 is locked. Create a new approved restore point before modifying these files.' >&2
+            exit 1
+          fi
+
+          git config user.name 'gnk-asg-index-lock[bot]'
+          git config user.email 'beckuphome@gmail.com'
+          git checkout "origin/${BASELINE_BRANCH}" -- "${changed[@]}"
+          git add -- "${changed[@]}"
+          git commit -m 'chore(index-lock): automatically restore locked V28 index'
+          git push origin HEAD:main
+          echo 'INDEX_AUTO_RESTORED=true'
+
+      - name: Lock summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '## GNK ASG Index V28 lock'
+            echo '- Restore branch: `restore-point/index-v28-locked-20260626`'
+            echo '- Restore commit: `cd1e54bbc2f097157bb38c59e8522a491e8bf9d5`'
+            echo "- Drift detected: `${{ steps.lock.outputs.drift || 'unknown' }}`"
+          } >> "$GITHUB_STEP_SUMMARY"
