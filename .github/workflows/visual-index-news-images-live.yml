@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/assets/visual-index-full-gallery.js'
+      - 'apps/portal/assets/visual-index-central-v7.js'
       - 'apps/portal/visual-index/**'
       - '.github/workflows/visual-index-news-images-live.yml'
   workflow_dispatch:
@@ -35,11 +36,14 @@ jobs:
         run: |
           set -euo pipefail
           node --check apps/portal/assets/visual-index-full-gallery.js
-          grep -q 'loadNewsItems' apps/portal/assets/visual-index-full-gallery.js
-          grep -q 'data/news.json' apps/portal/assets/visual-index-full-gallery.js
-          grep -q 'imageFallback' apps/portal/assets/visual-index-full-gallery.js
-          grep -q 'discardItem' apps/portal/assets/visual-index-full-gallery.js
-          grep -q 'gnk-news-gallery-item' apps/portal/assets/visual-index-full-gallery.js
+          node --check apps/portal/assets/visual-index-central-v7.js
+          grep -q 'visual-index-central-v7.js' apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'cleanVisualCards' apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'invalidSrc' apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'mapNews' apps/portal/assets/visual-index-central-v7.js
+          grep -q "getJson('/data/news.json')" apps/portal/assets/visual-index-central-v7.js
+          grep -q 'gnk-news-gallery-item' apps/portal/assets/visual-index-central-v7.js
+          grep -q "addEventListener('error'" apps/portal/assets/visual-index-central-v7.js
       - name: Deploy current Worker and assets
         id: deploy
         shell: bash
@@ -63,35 +67,41 @@ jobs:
           failed=0
 
           visual_code=$(curl --silent --show-error --location --output visual.html --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/visual-index/?cb=visual-news')
-          asset_code=$(curl --silent --show-error --location --output visual.js --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/assets/visual-index-full-gallery.js?cb=visual-news')
+          loader_code=$(curl --silent --show-error --location --output loader.js --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/assets/visual-index-full-gallery.js?cb=visual-news')
+          central_code=$(curl --silent --show-error --location --output central.js --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/assets/visual-index-central-v7.js?cb=visual-news')
           news_code=$(curl --silent --show-error --location --output news.json --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/data/news.json?cb=visual-news')
           echo "VISUAL_HTTP=$visual_code" >> verify.log
-          echo "ASSET_HTTP=$asset_code" >> verify.log
+          echo "LOADER_HTTP=$loader_code" >> verify.log
+          echo "CENTRAL_HTTP=$central_code" >> verify.log
           echo "NEWS_HTTP=$news_code" >> verify.log
           [ "$visual_code" = '200' ] || failed=1
-          [ "$asset_code" = '200' ] || failed=1
+          [ "$loader_code" = '200' ] || failed=1
+          [ "$central_code" = '200' ] || failed=1
           [ "$news_code" = '200' ] || failed=1
-          grep -q 'loadNewsItems' visual.js || { echo 'LIVE_NEWS_LOADER_MISSING' >> verify.log; failed=1; }
-          grep -q 'discardItem' visual.js || { echo 'LIVE_IMAGE_CLEANUP_MISSING' >> verify.log; failed=1; }
-          grep -q 'gnk-news-gallery-item' visual.js || { echo 'LIVE_NEWS_CARD_MARKER_MISSING' >> verify.log; failed=1; }
+          grep -q 'cleanVisualCards' loader.js || { echo 'LIVE_CLEANUP_MISSING' >> verify.log; failed=1; }
+          grep -q 'invalidSrc' loader.js || { echo 'LIVE_INVALID_FILTER_MISSING' >> verify.log; failed=1; }
+          grep -q 'mapNews' central.js || { echo 'LIVE_NEWS_MAPPER_MISSING' >> verify.log; failed=1; }
+          grep -q "getJson('/data/news.json')" central.js || { echo 'LIVE_NEWS_SOURCE_MISSING' >> verify.log; failed=1; }
+          grep -q 'gnk-news-gallery-item' central.js || { echo 'LIVE_NEWS_CARD_MISSING' >> verify.log; failed=1; }
 
           node - <<'NODE' > image-urls.txt 2>> verify.log
           const fs=require('fs');
           const payload=JSON.parse(fs.readFileSync('news.json','utf8'));
           const items=Array.isArray(payload)?payload:(Array.isArray(payload?.items)?payload.items:[]);
-          const fallback=value=>!value||String(value).includes('/assets/news-fallback.svg')||String(value).startsWith('data:image/svg+xml');
+          const fallback=value=>!value||/news-fallback\.svg|placeholder|favicon|logo|crest|badge|emblem/i.test(String(value));
+          const imageOf=item=>String(item?.image||item?.imageUrl||'').trim();
+          const articleOf=item=>String(item?.url||item?.link||item?.sourceUrl||'').trim();
           const eligible=items.filter(item=>{
-            const image=String(item?.image||item?.imageUrl||'').trim();
-            const article=String(item?.url||item?.link||item?.sourceUrl||'').trim();
-            return !item?.imageFallback&&!fallback(image)&&/^https?:\/\//i.test(image)&&/^https?:\/\//i.test(article)&&image!==article;
+            const image=imageOf(item),article=articleOf(item);
+            return !item?.imageFallback&&!fallback(image)&&/^https?:\/\//i.test(image)&&/^https?:\/\//i.test(article)&&image!==article&&/\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#]|$)/i.test(image);
           });
           console.error(`NEWS_ITEMS=${items.length}`);
           console.error(`VISUAL_ELIGIBLE=${eligible.length}`);
           console.error(`FILTERED_OUT=${items.length-eligible.length}`);
-          console.error(`FALLBACK_ELIGIBLE=${eligible.filter(item=>fallback(item?.image||item?.imageUrl)).length}`);
-          console.error(`ARTICLE_AS_IMAGE=${eligible.filter(item=>String(item?.image||item?.imageUrl)===String(item?.url||item?.link||item?.sourceUrl)).length}`);
+          console.error(`FALLBACK_ELIGIBLE=${eligible.filter(item=>fallback(imageOf(item))).length}`);
+          console.error(`ARTICLE_AS_IMAGE=${eligible.filter(item=>imageOf(item)===articleOf(item)).length}`);
           if(eligible.length<20)process.exitCode=1;
-          eligible.slice(0,20).forEach(item=>console.log(String(item?.image||item?.imageUrl).trim()));
+          eligible.slice(0,20).forEach(item=>console.log(imageOf(item)));
           NODE
           if [ $? -ne 0 ]; then failed=1; fi
 
