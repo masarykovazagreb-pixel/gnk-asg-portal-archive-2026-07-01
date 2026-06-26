@@ -33,7 +33,7 @@
     if (!window.GNK_ASG_GALLERY) {
       await new Promise((resolve,reject)=>{
         const script=document.createElement('script');
-        script.src='/assets/gallery-engine.js?v=20260626-v2';
+        script.src='/assets/gallery-engine.js?v=20260626-v3';
         script.onload=resolve;
         script.onerror=reject;
         document.head.appendChild(script);
