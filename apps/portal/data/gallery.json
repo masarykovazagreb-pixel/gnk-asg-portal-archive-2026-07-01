@@ -1,5 +1,5 @@
 {
-  "version": "2026-06-26-gallery-v4",
+  "version": "2026-06-26-gallery-v5",
   "name": "GNK ASG Galerija",
   "canonical": "https://gnk-asg.hr/visual-index/",
   "minimum_verified_images": 100,
@@ -136,15 +136,31 @@
     "never_show_missing": true,
     "store_new_images_under": "/assets/gallery/"
   },
-  "physical_image_count": 1046,
+  "physical_image_count": 1025,
   "catalog_url": "/data/gallery.catalog.json",
-  "updated_at": "2026-06-26T18:48:00.682Z",
-  "quarantined_image_count": 0,
+  "updated_at": "2026-06-26T18:50:01.051Z",
+  "quarantined_image_count": 21,
   "quarantine_url": "/data/gallery.quarantine.json",
   "visual_identity_policy": {
     "football_club_logo_allowed": false,
     "football_club_crest_allowed": false,
     "football_club_badge_allowed": false,
     "company_text_allowed": "GNK DINAMO Ltd."
+  },
+  "editorial_policy": {
+    "publication_pool_only": true,
+    "excludes": [
+      "logos",
+      "wordmarks",
+      "favicons",
+      "icons",
+      "badges",
+      "emblems",
+      "crests",
+      "shields",
+      "social cards",
+      "UI placeholders"
+    ],
+    "generated_business_visuals_allowed": true
   }
 }
