@@ -1,7 +1,7 @@
 import app,{INDEX_LOCK_VERSION} from './index-lock-v1.js';
 import {handleFaviconAsset,applyFaviconContract,FAVICON_VERSION} from './favicon-contract-v2.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R6_INDEX_LOCKED';
+const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R7_MEDIA_V21';
 const MODULES=new Map([
   ['/operator-dashboard','operator'],
   ['/operator-mobile','mobile'],
@@ -27,9 +27,7 @@ function baseHeaders(extra={}){
   };
 }
 
-function redirect(location){
-  return new Response(null,{status:303,headers:baseHeaders({location})});
-}
+function redirect(location){return new Response(null,{status:303,headers:baseHeaders({location})});}
 
 function deploymentStatus(){
   return new Response(JSON.stringify({
@@ -40,7 +38,11 @@ function deploymentStatus(){
     indexLock:INDEX_LOCK_VERSION,
     favicon:FAVICON_VERSION,
     publicPortal:'src/index-portal-final-v13.js',
-    mediaCommand:'src/index-media-command-center-v20.js',
+    mediaCommand:'src/index-media-command-center-v21.js',
+    mediaCommandCore:'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R2',
+    mediaReadiness:'GNK_ASG_MEDIA_READINESS_V2_20260626',
+    contactImport:'CONTROLLED_V2',
+    productionSending:'LOCKED',
     checkedAt:new Date().toISOString()
   },null,2),{status:200,headers:baseHeaders({'content-type':'application/json; charset=utf-8'})});
 }
@@ -57,9 +59,7 @@ export default{
     }
     const embedded=url.searchParams.get('embedded')==='1'||url.searchParams.get('standalone')==='1';
     if((path==='/admin'||path==='/operator/session/login')&&['GET','HEAD','POST'].includes(request.method))return redirect('/admin-center/');
-    if(MODULES.has(path)&&['GET','HEAD'].includes(request.method)&&!embedded){
-      return redirect(`/admin-center/?module=${encodeURIComponent(MODULES.get(path))}`);
-    }
+    if(MODULES.has(path)&&['GET','HEAD'].includes(request.method)&&!embedded)return redirect(`/admin-center/?module=${encodeURIComponent(MODULES.get(path))}`);
     const response=await applyFaviconContract(request,await app.fetch(request,env,ctx));
     const headers=new Headers(response.headers);
     for(const [name,value] of Object.entries(baseHeaders()))headers.set(name,value);
