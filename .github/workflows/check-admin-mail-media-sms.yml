@@ -1,0 +1,76 @@
+name: Check Admin Mail Media SMS
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/assets/admin-center-health-v1.js'
+      - 'apps/portal/assets/admin-session-fallback-v17.js'
+      - 'apps/portal/assets/mail-studio-profile-test-v1.js'
+      - 'apps/portal/assets/media-sms-ui-v1.js'
+      - 'apps/portal/assets/media-sms-ui-v1.css'
+      - 'workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js'
+      - 'workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js'
+      - 'workers/gnk-asg-direct-operator/src/media-sms-v1.js'
+      - '.github/workflows/check-admin-mail-media-sms.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/admin-center-health-v1.js
+          node --check apps/portal/assets/admin-session-fallback-v17.js
+          node --check apps/portal/assets/mail-studio-profile-test-v1.js
+          node --check apps/portal/assets/media-sms-ui-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
+          node --check workers/gnk-asg-direct-operator/src/media-sms-v1.js
+      - name: Enforce locked delivery configuration
+        shell: bash
+        run: |
+          set -euxo pipefail
+          grep -q 'main = "src/index-admin-hub-v23-aktual.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          ! grep -q 'MEDIA_SMS_API_TOKEN' workers/gnk-asg-direct-operator/wrangler.toml
+          ! grep -q 'MEDIA_SMS_PROVIDER_URL' workers/gnk-asg-direct-operator/wrangler.toml
+          ! grep -q 'MEDIA_SMS_TEST_RECIPIENTS' workers/gnk-asg-direct-operator/wrangler.toml
+      - name: Verify SMS safety gates
+        shell: bash
+        run: |
+          set -euxo pipefail
+          grep -q "SEND_TEST_SMS" workers/gnk-asg-direct-operator/src/media-sms-v1.js
+          grep -q "SEND_APPLICATION_SMS" workers/gnk-asg-direct-operator/src/media-sms-v1.js
+          grep -q "human_decision_required" workers/gnk-asg-direct-operator/src/media-sms-v1.js
+          grep -q "recipient_not_allowlisted" workers/gnk-asg-direct-operator/src/media-sms-v1.js
+          grep -q "test_sms_locked" workers/gnk-asg-direct-operator/src/media-sms-v1.js
+          grep -q "production_sms_locked" workers/gnk-asg-direct-operator/src/media-sms-v1.js
+          grep -q "MEDIA_SMS_TEST_LIVE" workers/gnk-asg-direct-operator/src/media-sms-v1.js
+          grep -q "MEDIA_SMS_LIVE" workers/gnk-asg-direct-operator/src/media-sms-v1.js
+      - name: Verify index remains untouched
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euxo pipefail
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|apps/portal/assets/index-redesign-production.*|apps/portal/assets/public-.*|apps/portal/assets/iq200/.*|workers/gnk-asg-direct-operator/src/public-shell-v11\.js)$'; then
+            echo 'Locked V28 index file changed.' >&2
+            exit 1
+          fi
