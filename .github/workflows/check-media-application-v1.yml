@@ -1,0 +1,62 @@
+name: Check Media Application V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/media-application/**'
+      - 'apps/portal/assets/media-application-v1.css'
+      - 'apps/portal/assets/media-application-v1.js'
+      - 'apps/portal/assets/media-notifications-v1.css'
+      - 'apps/portal/assets/media-notifications-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-application-portal-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js'
+      - '.github/workflows/check-media-application-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate JavaScript syntax
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/media-application-portal-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          node --check apps/portal/assets/media-application-v1.js
+          node --check apps/portal/assets/media-notifications-v1.js
+      - name: Verify application and notification contract
+        run: |
+          set -euxo pipefail
+          test -s apps/portal/media-application/index.html
+          test -s apps/portal/assets/media-application-v1.css
+          test -s apps/portal/assets/media-notifications-v1.css
+          grep -q "path===\`\${API_PREFIX}/submit\`" workers/gnk-asg-direct-operator/src/media-application-portal-v1.js
+          grep -q 'minimumVisible:10' workers/gnk-asg-direct-operator/src/media-application-portal-v1.js
+          grep -q 'refreshIntervalSeconds:1800' workers/gnk-asg-direct-operator/src/media-application-portal-v1.js
+          grep -q '30\*60\*1000' apps/portal/assets/media-notifications-v1.js
+          grep -q 'Ne kupujte kartu' apps/portal/media-application/index.html
+          grep -q 'Human verification required' apps/portal/media-application/index.html
+          grep -q 'media-notifications-v1.js' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+      - name: Protect locked public index files
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euxo pipefail
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/src/public-shell-v11\.js|workers/gnk-asg-direct-operator/src/index-lock-v4\.js)$'; then
+            echo 'Locked public index file changed.' >&2
+            exit 1
+          fi
