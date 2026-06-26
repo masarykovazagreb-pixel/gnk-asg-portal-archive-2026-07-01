@@ -1,0 +1,59 @@
+name: Verify clean index V31 in browser
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-v31-browser.yml'
+      - '.github/verify-v31-browser.trigger'
+      - 'scripts/verify-v31-browser.mjs'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: gnk-asg-v31-browser-verification
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Run V31 browser audit
+        continue-on-error: true
+        id: audit
+        run: |
+          mkdir -p artifacts
+          node scripts/verify-v31-browser.mjs
+      - name: Upload audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clean-index-v31-browser-audit
+          path: artifacts
+          if-no-files-found: error
+      - name: Report result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        run: |
+          summary=$(node -e "const fs=require('fs');const r=JSON.parse(fs.readFileSync('artifacts/report.json','utf8'));console.log(JSON.stringify({ok:r.ok,checkedAt:r.checkedAt,results:r.results.map(x=>({name:x.name,http:x.http,failures:x.failures,audit:x.audit}))},null,2))")
+          gh issue comment 101 --body "V31 browser audit **${AUDIT_OUTCOME}** · commit \`${RUN_SHA}\` · ${RUN_URL}\n\n\`\`\`json\n${summary}\n\`\`\`"
+      - name: Enforce audit
+        if: always()
+        env:
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+        run: test "$AUDIT_OUTCOME" = success
