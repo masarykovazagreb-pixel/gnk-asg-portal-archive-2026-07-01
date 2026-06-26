@@ -2,7 +2,7 @@ GNK_ASG_V31_NEWS_PUBLICATIONS_20260626
 runtime_position=head
 legacy_v7_rewrite=blocked
 news_refresh=run_now
-first_publication=run_now
+first_publication=workflow_file_update
 visual_index=central_v7
 editorial_qa=v2_strict
 nonce=3
