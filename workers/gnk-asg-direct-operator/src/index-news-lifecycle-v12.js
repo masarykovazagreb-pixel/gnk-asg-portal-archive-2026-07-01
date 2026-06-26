@@ -5,7 +5,28 @@ const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,h
 const store=env=>env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV||null;
 async function read(env,key,fallback){const kv=store(env);if(!kv)return fallback;try{const raw=await kv.get(key);return raw?JSON.parse(raw):fallback}catch{return fallback}}
 function withHeader(response){const headers=new Headers(response.headers);headers.set('x-gnk-asg-news-lifecycle',VERSION);return new Response(response.body,{status:response.status,statusText:response.statusText,headers})}
-function normalizePublicItem(item){return{...item,image:item?.image||FALLBACK_IMAGE,imageAlt:item?.imageAlt||item?.title||'GNK ASG Business News',imageCredit:item?.imageCredit||item?.source||'Izvor'}}
+function normalizePublicItem(item){
+  const articleUrl=item?.url||item?.link||item?.articleUrl||item?.sourceUrl||'';
+  const upstreamImage=item?.image||item?.imageUrl||item?.image_url||'';
+  const imageFallback=item?.imageFallback===true||!upstreamImage;
+  const image=imageFallback?FALLBACK_IMAGE:upstreamImage;
+  const publishedAt=item?.publishedAt||item?.published_at||item?.pubDate||'';
+  const source=item?.source||item?.sourceTitle||item?.region||item?.category||'GNK ASG';
+  return{
+    ...item,
+    url:articleUrl,
+    link:item?.link||articleUrl,
+    summary:item?.summary||item?.description||item?.text||item?.excerpt||'',
+    source,
+    publishedAt,
+    published_at:item?.published_at||publishedAt,
+    image,
+    imageUrl:image,
+    imageFallback,
+    imageAlt:item?.imageAlt||item?.title||'GNK ASG Business News',
+    imageCredit:item?.imageCredit||source||'Izvor'
+  };
+}
 
 async function fetchHandler(request,env,ctx){
   const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
@@ -29,7 +50,7 @@ async function fetchHandler(request,env,ctx){
       newsSchedule:NEWS_SCHEDULE,
       newsRefreshesPerDay:3,
       configuredNewsSources:FEEDS.length,
-      sourceMix:{global:10,regional:5,croatian:3},
+      sourceMix:{global:13,regional:9,croatian:4},
       activeNewsLimit:ACTIVE_NEWS_LIMIT,
       archiveCount:Array.isArray(archive?.items)?archive.items.length:0,
       archivePruneAt:ARCHIVE_PRUNE_AT,
