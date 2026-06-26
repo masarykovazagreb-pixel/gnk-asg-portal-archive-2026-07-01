@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R4_NO_PHONE_NO_WHATSAPP';
+export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R5_CLEAN_SIGNATURE_ONLY';
 
 const COMPANY={
   name:'GNK ASG d.o.o.',
@@ -52,7 +52,7 @@ function normalizeHtmlContact(value){
   let html=String(value||'');
   html=html
     .replace(/<div\b[^>]*data-gnk-asg-contact=["'][^"']*["'][^>]*>[\s\S]*?<\/div>/gi,'')
-    .replace(/<div\b[^>]*>[\s\S]*?(?:Telefon|Kontakt|Phone|Tel\.?|Mobile|Mobitel|WhatsApp)[\s\S]*?(?:wa\.me|\+?385|091)[\s\S]*?<\/div>/gi,'')
+    .replace(/<div\b[^>]*>\s*(?:Telefon|Kontakt|Phone|Tel\.?|Mobile|Mobitel|WhatsApp)\s*:?\s*(?:<[^>]+>\s*)*(?:(?:https?:\/\/)?(?:www\.)?wa\.me\/\d+\/?|(?:\+?385\s*\(?0?\)?\s*91\s*610\s*4398|\+?385\s*91\s*535\s*8365|0?91\s*535\s*8365))[\s\S]*?<\/div>/gi,'')
     .replace(/<a\b[^>]*href=["'][^"']*wa\.me[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,'')
     .replace(phonePattern,'')
     .replace(whatsAppPattern,'')
