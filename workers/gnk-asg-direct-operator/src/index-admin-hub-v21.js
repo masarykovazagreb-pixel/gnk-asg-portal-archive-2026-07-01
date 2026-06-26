@@ -1,7 +1,7 @@
 import app from './index-media-command-center-v20.js';
 import {handleFaviconAsset,applyFaviconContract,FAVICON_VERSION} from './favicon-contract-v2.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R4_FAVICON';
+const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R5_CANONICAL';
 const MODULES=new Map([
   ['/operator-dashboard','operator'],
   ['/operator-mobile','mobile'],
@@ -16,8 +16,31 @@ const MODULES=new Map([
   ['/media-command-center','media']
 ]);
 
+function baseHeaders(extra={}){
+  return{
+    'cache-control':'no-store, no-cache, must-revalidate, max-age=0',
+    'x-content-type-options':'nosniff',
+    'x-gnk-asg-admin-hub':VERSION,
+    'x-gnk-asg-favicon-contract':FAVICON_VERSION,
+    ...extra
+  };
+}
+
 function redirect(location){
-  return new Response(null,{status:303,headers:{location,'cache-control':'no-store','x-gnk-asg-admin-hub':VERSION,'x-gnk-asg-favicon-contract':FAVICON_VERSION}});
+  return new Response(null,{status:303,headers:baseHeaders({location})});
+}
+
+function deploymentStatus(){
+  return new Response(JSON.stringify({
+    ok:true,
+    service:'gnk-asg-direct-operator',
+    entryPoint:'src/index-admin-hub-v21.js',
+    adminHub:VERSION,
+    favicon:FAVICON_VERSION,
+    publicPortal:'src/index-portal-final-v13.js',
+    mediaCommand:'src/index-media-command-center-v20.js',
+    checkedAt:new Date().toISOString()
+  },null,2),{status:200,headers:baseHeaders({'content-type':'application/json; charset=utf-8'})});
 }
 
 export default{
@@ -26,6 +49,10 @@ export default{
     const path=url.pathname.replace(/\/+$/,'')||'/';
     const faviconResponse=await handleFaviconAsset(request,env,path);
     if(faviconResponse)return faviconResponse;
+    if(path==='/data/deployment-status.json'&&['GET','HEAD'].includes(request.method)){
+      const response=deploymentStatus();
+      return request.method==='HEAD'?new Response(null,{status:response.status,headers:response.headers}):response;
+    }
     const embedded=url.searchParams.get('embedded')==='1'||url.searchParams.get('standalone')==='1';
     if((path==='/admin'||path==='/operator/session/login')&&['GET','HEAD','POST'].includes(request.method))return redirect('/admin-center/');
     if(MODULES.has(path)&&['GET','HEAD'].includes(request.method)&&!embedded){
@@ -33,8 +60,7 @@ export default{
     }
     const response=await applyFaviconContract(request,await app.fetch(request,env,ctx));
     const headers=new Headers(response.headers);
-    headers.set('x-gnk-asg-admin-hub',VERSION);
-    headers.set('x-gnk-asg-favicon-contract',FAVICON_VERSION);
+    for(const [name,value] of Object.entries(baseHeaders()))headers.set(name,value);
     return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
   },
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
