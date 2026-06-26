@@ -1,0 +1,65 @@
+name: GNK ASG News Image Integrity Readonly Probe
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  probe:
+    if: contains(github.event.issue.title, 'RUN GNK ASG NEWS IMAGE INTEGRITY PROBE')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Fetch and inspect public news images
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --silent --show-error --location --retry 4 --retry-all-errors --retry-delay 2 -o news.json 'https://gnk-asg.hr/data/news.json?cb=image-integrity'
+          node - <<'NODE' > probe.log
+          const fs=require('fs');
+          const payload=JSON.parse(fs.readFileSync('news.json','utf8'));
+          const items=Array.isArray(payload)?payload:(Array.isArray(payload?.items)?payload.items:[]);
+          const imageOf=item=>String(item?.image||item?.imageUrl||'').trim();
+          const articleOf=item=>String(item?.url||item?.link||item?.sourceUrl||'').trim();
+          const fallback=value=>!value||value.includes('/assets/news-fallback.svg')||value.startsWith('data:image/svg+xml');
+          const real=items.filter(item=>!fallback(imageOf(item)));
+          const equalsArticle=items.filter(item=>imageOf(item)&&imageOf(item)===articleOf(item));
+          const fallbackItems=items.filter(item=>fallback(imageOf(item)));
+          console.log(`ITEMS=${items.length}`);
+          console.log(`REAL_IMAGE_URLS=${real.length}`);
+          console.log(`FALLBACK_IMAGES=${fallbackItems.length}`);
+          console.log(`IMAGE_EQUALS_ARTICLE=${equalsArticle.length}`);
+          console.log(`DISTINCT_REAL_IMAGES=${new Set(real.map(imageOf)).size}`);
+          real.slice(0,12).forEach((item,index)=>console.log(`IMAGE_URL_${index+1}=${imageOf(item)}`));
+          items.slice(0,6).forEach((item,index)=>console.log(`SAMPLE_${index+1}=${JSON.stringify({title:item?.title||'',article:articleOf(item),image:imageOf(item),fallback:item?.imageFallback})}`));
+          fs.writeFileSync('image-urls.txt',real.slice(0,12).map(imageOf).join('\n'));
+          NODE
+          : > mime.log
+          while IFS= read -r url; do
+            [ -n "$url" ] || continue
+            code=$(curl --silent --show-error --location --range 0-1023 --output /dev/null --dump-header headers.tmp --write-out '%{http_code}' --max-time 20 "$url" || true)
+            type=$(awk -F': ' 'tolower($1)=="content-type"{gsub("\r","");v=$2} END{print v}' headers.tmp)
+            echo "$code | $type | $url" >> mime.log
+          done < image-urls.txt
+          cat probe.log
+          echo 'MIME_CHECKS:'
+          cat mime.log
+      - name: Report
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          {
+            echo '```text'
+            cat probe.log 2>/dev/null || true
+            echo 'MIME_CHECKS:'
+            cat mime.log 2>/dev/null || true
+            echo '```'
+            echo "workflow=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          } > report.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --body-file report.md
