@@ -45,65 +45,80 @@ jobs:
             {name:'en-mobile',path:'/en/',viewport:{width:390,height:844}}
           ];
           (async()=>{
-            const browser=await chromium.launch({headless:true});
             const results=[];
-            for(const item of cases){
-              const page=await browser.newPage({viewport:item.viewport});
-              const errors=[];
-              page.on('pageerror',error=>errors.push(`pageerror:${error.message}`));
-              page.on('console',message=>{if(message.type()==='error')errors.push(`console:${message.text()}`)});
-              const response=await page.goto(`${base}${item.path}?v30browser=${Date.now()}`,{waitUntil:'networkidle',timeout:60000});
-              await page.waitForTimeout(4500);
-              const audit=await page.evaluate(()=>{
-                const visible=element=>{
-                  const style=getComputedStyle(element),rect=element.getBoundingClientRect();
-                  return style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)!==0&&rect.width>0&&rect.height>0;
-                };
-                const visibleCount=selector=>[...document.querySelectorAll(selector)].filter(visible).length;
-                const text=id=>(document.getElementById(id)?.innerText||'').replace(/\s+/g,' ').trim();
-                const styles=[...document.querySelectorAll('link[rel="stylesheet"]')].map(link=>link.href);
-                return {
-                  title:document.title,
-                  lang:document.documentElement.lang,
-                  viewportWidth:innerWidth,
-                  documentWidth:document.documentElement.scrollWidth,
-                  horizontalOverflow:Math.max(0,document.documentElement.scrollWidth-innerWidth),
-                  visiblePremiumHeaders:visibleCount('#gnk-asg-premium-header'),
-                  visibleLegacyHeaders:visibleCount('.brand-head,.top-nav'),
-                  visibleMain:visibleCount('main'),
-                  visibleHero:visibleCount('main .hero'),
-                  stableIndexCss:styles.filter(url=>url.includes('index-redesign-production.css')&&url.includes('stable-v30')),
-                  stablePolishLoaded:styles.some(url=>url.includes('index-redesign-production.css')&&url.includes('stable-v30')),
-                  legacyPolishLoaded:styles.some(url=>url.includes('index-polish-v1.css')),
-                  latestNews:text('latestNews'),
-                  locationList:text('locationList'),
-                  marketRows:text('marketRows'),
-                  publicationRows:text('publicationRows'),
-                  bodyClass:document.body.className
-                };
-              });
-              const failures=[];
-              if(!response||response.status()!==200)failures.push(`http=${response?.status()||0}`);
-              if(audit.horizontalOverflow>2)failures.push(`horizontalOverflow=${audit.horizontalOverflow}`);
-              if(audit.visiblePremiumHeaders!==1)failures.push(`visiblePremiumHeaders=${audit.visiblePremiumHeaders}`);
-              if(audit.visibleLegacyHeaders!==0)failures.push(`visibleLegacyHeaders=${audit.visibleLegacyHeaders}`);
-              if(audit.visibleMain!==1||audit.visibleHero!==1)failures.push('main_or_hero_not_visible');
-              if(!audit.stablePolishLoaded)failures.push('stable_v30_css_missing');
-              if(audit.legacyPolishLoaded)failures.push('legacy_polish_loaded');
-              for(const [key,value] of Object.entries({latestNews:audit.latestNews,locationList:audit.locationList,marketRows:audit.marketRows,publicationRows:audit.publicationRows})){
-                if(!value||/Učitavanje|Loading/i.test(value))failures.push(`${key}=placeholder_or_empty`);
+            let browser=null;
+            try{
+              browser=await chromium.launch({headless:true});
+              for(const item of cases){
+                const page=await browser.newPage({viewport:item.viewport});
+                page.setDefaultTimeout(30000);
+                const pageErrors=[];
+                const consoleErrors=[];
+                page.on('pageerror',error=>pageErrors.push(error.message));
+                page.on('console',message=>{if(message.type()==='error')consoleErrors.push(message.text())});
+                let response=null;
+                let audit=null;
+                const failures=[];
+                try{
+                  response=await page.goto(`${base}${item.path}?v30browser=${Date.now()}`,{waitUntil:'domcontentloaded',timeout:60000});
+                  await page.waitForTimeout(5500);
+                  audit=await page.evaluate(()=>{
+                    const visible=element=>{
+                      const style=getComputedStyle(element),rect=element.getBoundingClientRect();
+                      return style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)!==0&&rect.width>0&&rect.height>0;
+                    };
+                    const visibleCount=selector=>[...document.querySelectorAll(selector)].filter(visible).length;
+                    const text=id=>(document.getElementById(id)?.innerText||'').replace(/\s+/g,' ').trim();
+                    const styles=[...document.querySelectorAll('link[rel="stylesheet"]')].map(link=>link.href);
+                    return {
+                      title:document.title,
+                      lang:document.documentElement.lang,
+                      viewportWidth:innerWidth,
+                      documentWidth:document.documentElement.scrollWidth,
+                      horizontalOverflow:Math.max(0,document.documentElement.scrollWidth-innerWidth),
+                      visiblePremiumHeaders:visibleCount('#gnk-asg-premium-header'),
+                      visibleLegacyHeaders:visibleCount('.brand-head,.top-nav'),
+                      visibleMain:visibleCount('main'),
+                      visibleHero:visibleCount('main .hero'),
+                      stableIndexCss:styles.filter(url=>url.includes('index-redesign-production.css')&&url.includes('stable-v30')),
+                      stablePolishLoaded:styles.some(url=>url.includes('index-redesign-production.css')&&url.includes('stable-v30')),
+                      legacyPolishLoaded:styles.some(url=>url.includes('index-polish-v1.css')),
+                      latestNews:text('latestNews'),
+                      locationList:text('locationList'),
+                      marketRows:text('marketRows'),
+                      publicationRows:text('publicationRows'),
+                      bodyClass:document.body.className
+                    };
+                  });
+                  if(!response||response.status()!==200)failures.push(`http=${response?.status()||0}`);
+                  if(audit.horizontalOverflow>2)failures.push(`horizontalOverflow=${audit.horizontalOverflow}`);
+                  if(audit.visiblePremiumHeaders!==1)failures.push(`visiblePremiumHeaders=${audit.visiblePremiumHeaders}`);
+                  if(audit.visibleLegacyHeaders!==0)failures.push(`visibleLegacyHeaders=${audit.visibleLegacyHeaders}`);
+                  if(audit.visibleMain!==1||audit.visibleHero!==1)failures.push('main_or_hero_not_visible');
+                  if(!audit.stablePolishLoaded)failures.push('stable_v30_css_missing');
+                  if(audit.legacyPolishLoaded)failures.push('legacy_polish_loaded');
+                  for(const [key,value] of Object.entries({latestNews:audit.latestNews,locationList:audit.locationList,marketRows:audit.marketRows,publicationRows:audit.publicationRows})){
+                    if(!value||/Učitavanje|Loading/i.test(value))failures.push(`${key}=placeholder_or_empty`);
+                  }
+                  if(pageErrors.length)failures.push(...pageErrors.slice(0,5).map(error=>`pageerror:${error}`));
+                }catch(error){
+                  failures.push(`audit_exception:${error.message}`);
+                }
+                try{await page.screenshot({path:`artifacts/${item.name}.png`,fullPage:true,timeout:30000});}
+                catch(error){failures.push(`screenshot_exception:${error.message}`);}
+                results.push({...item,http:response?.status()||0,audit,pageErrors,consoleErrors:consoleErrors.slice(0,8),failures});
+                await page.close().catch(()=>{});
               }
-              if(errors.length)failures.push(...errors.slice(0,8));
-              await page.screenshot({path:`artifacts/${item.name}.png`,fullPage:true});
-              results.push({...item,http:response?.status()||0,audit,errors,failures});
-              await page.close();
+            }catch(error){
+              results.push({name:'fatal',failures:[`browser_exception:${error.message}`]});
+            }finally{
+              if(browser)await browser.close().catch(()=>{});
+              const report={checkedAt:new Date().toISOString(),commit:process.env.GITHUB_SHA,ok:results.length===cases.length&&results.every(result=>result.failures.length===0),results};
+              fs.writeFileSync('artifacts/report.json',JSON.stringify(report,null,2));
+              console.log(JSON.stringify(report,null,2));
+              if(!report.ok)process.exitCode=1;
             }
-            await browser.close();
-            const report={checkedAt:new Date().toISOString(),commit:process.env.GITHUB_SHA,ok:results.every(result=>result.failures.length===0),results};
-            fs.writeFileSync('artifacts/report.json',JSON.stringify(report,null,2));
-            console.log(JSON.stringify(report,null,2));
-            if(!report.ok)process.exit(1);
-          })().catch(error=>{console.error(error);process.exit(1)});
+          })();
           JS
 
       - name: Upload screenshots and report
