@@ -56,6 +56,7 @@
     grid.appendChild(visual);
 
     const code=node('aside','gnk-code-slot__code');
+    code.style.aspectRatio='9 / 16';
     code.setAttribute('aria-label','THE CODE interactive presentation');
     const frame=node('iframe');
     frame.title='THE CODE — GNK DINAMO Ltd.';
