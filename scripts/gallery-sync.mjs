@@ -26,7 +26,6 @@ const palettes=[
   ['#0a1525','#2d4a68','#f0cf76','#ecf3fa']
 ];
 
-const slug=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const titleFromFile=file=>path.basename(file,path.extname(file)).replace(/[-_]+/g,' ').replace(/\b\w/g,ch=>ch.toUpperCase());
 const relativeUrl=file=>'/'+path.relative(portal,file).split(path.sep).join('/');
 const digest=value=>crypto.createHash('sha1').update(String(value)).digest('hex').slice(0,12);
@@ -65,6 +64,10 @@ async function walk(dir,result=[]) {
   return result;
 }
 
+function uniqueWords(value) {
+  return [...new Set(String(value).toLowerCase().split(/[^a-z0-9čćžšđ]+/i).filter(word=>word.length>2))].slice(0,12);
+}
+
 async function buildCatalog() {
   const files=await walk(portal);
   const images=files.filter(file=>imageExtensions.has(path.extname(file).toLowerCase()));
@@ -90,10 +93,6 @@ async function buildCatalog() {
   return items.length;
 }
 
-function uniqueWords(value) {
-  return [...new Set(String(value).toLowerCase().split(/[^a-z0-9čćžšđ]+/i).filter(word=>word.length>2))].slice(0,12);
-}
-
 async function updateConfig(physicalCount) {
   let config={};
   try { config=JSON.parse(await fs.readFile(configPath,'utf8')); } catch {}
@@ -110,16 +109,19 @@ async function updateConfig(physicalCount) {
 
 const targetHtml=[
   'index.html','en/index.html','objave/index.html','publications/index.html','en/insights/index.html',
-  'vijesti/index.html','news/index.html','insights-hr/index.html'
+  'vijesti/index.html','news/index.html','insights-hr/index.html','visual-index/index.html'
 ];
 
 async function injectBootstrap() {
-  const tag='<script src="/assets/gallery-bootstrap.js?v=20260626-v2"></script>';
+  const tag='<script src="/assets/gallery-bootstrap.js?v=20260626-v3"></script>';
   for (const rel of targetHtml) {
     const file=path.join(portal,rel);
     try {
       let html=await fs.readFile(file,'utf8');
       html=html.replace(/\s*<script[^>]+gallery-bootstrap\.js[^>]*><\/script>/gi,'');
+      if (rel==='visual-index/index.html') {
+        html=html.replace(/visual-index-full-gallery\.js\?v=[^"']+/g,'visual-index-full-gallery.js?v=20260626-gallery-v3');
+      }
       if (!/<\/body>/i.test(html)) continue;
       html=html.replace(/<\/body>/i,`${tag}\n</body>`);
       await fs.writeFile(file,html,'utf8');
