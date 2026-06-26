@@ -33,3 +33,9 @@ bucket_name = "gnk-asg-media-assets"
 [[send_email]]
 name = "EMAIL"
 destination_address = "rht@gmx.com"
+
+[vars]
+AUTO_REPLY_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+
+[ai]
+binding = "AI"
