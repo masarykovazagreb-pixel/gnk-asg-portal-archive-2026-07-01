@@ -1,0 +1,60 @@
+name: GNK News V14 Refresh
+
+on:
+  schedule:
+    # Europe/Zagreb summer time: 09:00, 16:00, 21:00 local.
+    - cron: '0 7,14,19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-news-v14-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh-news:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/portal
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run GNK ASG news lifecycle
+        run: python scripts/news_publication.py
+
+      - name: Validate generated files
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = Path('data')
+          news = json.loads((data / 'news.json').read_text(encoding='utf-8'))
+          status = json.loads((data / 'news-automation-status.json').read_text(encoding='utf-8'))
+          archive = json.loads((data / 'news_archive.json').read_text(encoding='utf-8')) if (data / 'news_archive.json').exists() else []
+
+          assert isinstance(news, list) and 1 <= len(news) <= 100, f'public news count invalid: {len(news)}'
+          assert status.get('scheduled_hours_local') == [9, 16, 21], status.get('scheduled_hours_local')
+          assert status.get('max_public_items') == 100, status.get('max_public_items')
+          assert status.get('archive_capacity') == 1000, status.get('archive_capacity')
+          assert status.get('archive_prune_trigger') == 1000, status.get('archive_prune_trigger')
+          assert status.get('archive_prune_to') == 500, status.get('archive_prune_to')
+          assert len(archive) <= 1000, f'archive too large: {len(archive)}'
+          assert all(item.get('image') and not str(item.get('image')).endswith('news-fallback.svg') for item in news), 'missing verified RSS images'
+          print('GNK news validation OK:', len(news), 'public items,', len(archive), 'archive items')
+          PY
+
+      - name: Commit refreshed news data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Refresh GNK ASG news feed
+          file_pattern: apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/news_sources_health.json apps/portal/data/news-automation-status.json apps/portal/data/update_status.json
