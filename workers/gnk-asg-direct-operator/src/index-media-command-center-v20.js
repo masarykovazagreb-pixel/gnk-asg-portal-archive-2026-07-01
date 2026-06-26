@@ -36,7 +36,7 @@ function internalToken(auth){return`gnk-auth-v14-${auth.hash}`;}
 function patchedEnv(env,token){return new Proxy(env,{get(target,property,receiver){if(TOKEN_NAMES.has(String(property)))return token;return Reflect.get(target,property,receiver);}});}
 function patchedRequest(request,token){const headers=new Headers(request.headers);headers.set('authorization',`Bearer ${token}`);headers.set('x-operator-token',token);headers.set('x-admin-token',token);headers.set('x-gnk-asg-token',token);return new Request(request,{headers});}
 async function injectNavigation(response){const type=String(response.headers.get('content-type')||'');if(!type.includes('text/html'))return response;const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-gnk-asg-media-command-wrapper',VERSION);let html=await response.text();if(!html.includes('admin-media-command-center-nav-v20.js'))html=html.includes('</body>')?html.replace('</body>',`${NAV_SCRIPT}</body>`):html+NAV_SCRIPT;return new Response(html,{status:response.status,statusText:response.statusText,headers});}
-async function versionResponse(request,env,ctx){const response=await app.fetch(request,env,ctx);try{const payload=await response.clone().json();return json({...payload,mediaCommandCenter:MEDIA_VERSION,mediaCommandWrapper:VERSION,mediaCommandRoute:'/media-command-center/',mediaCommandDeadline:'2026-07-20T23:59:59+02:00',mediaCommandEntryPoint:'src/index-media-command-center-v20.js'});}catch{return response;}}
+async function versionResponse(request,env,ctx){const response=await app.fetch(request,env,ctx);try{const payload=await response.clone().json();return json({...payload,mediaCommandCenter:MEDIA_VERSION,mediaCommandWrapper:VERSION,mediaCommandRoute:'/media-command-center/',mediaCommandDeadline:'2026-07-20T23:59:59+02:00',mediaCommandEntryPoint:'src/index-media-command-center-v20.js',mediaCommandSending:'LOCKED'});}catch{return response;}}
 
 export default{
   async fetch(request,env,ctx){
@@ -46,6 +46,7 @@ export default{
       if(path===MEDIA_UI&&request.method==='POST'&&(request.headers.get('content-type')||'').includes('application/x-www-form-urlencoded'))return login(request,env);
       const state=await access(request,env);
       if(!state.ok)return path.startsWith(MEDIA_API)?json({ok:false,error:'unauthorized',configured:state.auth.configured},401):loginPage();
+      if(path===`${MEDIA_API}/send-one`||path===`${MEDIA_API}/send-batch`)return json({ok:false,error:'production_sending_locked',message:'Slanje je zaključano do završne validacije kvota i izričitog produkcijskog odobrenja.'},423);
       const token=internalToken(state.auth),response=await handleMediaCommandCenter(patchedRequest(request,token),patchedEnv(env,token),ctx);
       return injectNavigation(response||json({ok:false,error:'media_route_not_handled'},500));
     }
