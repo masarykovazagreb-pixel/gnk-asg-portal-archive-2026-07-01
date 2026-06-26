@@ -4,4 +4,4 @@ crawl_public_routes=true
 news_browser=true
 visual_index_browser=true
 publication_seo=true
-nonce=1
+nonce=2
