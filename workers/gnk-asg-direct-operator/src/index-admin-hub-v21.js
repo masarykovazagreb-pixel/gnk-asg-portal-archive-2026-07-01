@@ -45,9 +45,12 @@ function deploymentStatus(){
     favicon:FAVICON_VERSION,
     publicPortal:'src/index-portal-final-v13.js',
     mediaCommand:'src/index-media-command-center-v21.js',
-    mediaCommandCore:'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R2',
+    mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R3_HANDOFF_UI',
+    mediaCommandCore:'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R3_HANDOFF_LOCK',
     mediaReadiness:'GNK_ASG_MEDIA_READINESS_V2_20260626',
-    contactImport:'CONTROLLED_V2',
+    contactImport:'HASH_LOCKED_V3',
+    handoffManifest:'GNK_ASG_MEDIA_HANDOFF_2026-06-26',
+    handoffSha256:'f34dda0a2aa7dfd88128c91a0e359b14ce20ced9bb74e02bcfaad62dfa81012f',
     productionSending:'LOCKED',
     checkedAt:new Date().toISOString()
   },null,2),{status:200,headers:baseHeaders({'content-type':'application/json; charset=utf-8'})});
