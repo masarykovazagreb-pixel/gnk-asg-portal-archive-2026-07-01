@@ -50,9 +50,37 @@ jobs:
           }
           NODE
 
-      - name: Verify minimum image count
+      - name: Verify approved catalog and quarantine
         run: |
-          node -e "const c=require('./apps/portal/data/gallery.catalog.json'); if(c.count<100) { console.error('Gallery contains only '+c.count+' images'); process.exit(1) } console.log('Verified Gallery images:',c.count)"
+          node <<'NODE'
+          const fs=require('fs');
+          const catalogPath='./apps/portal/data/gallery.catalog.json';
+          const quarantinePath='./apps/portal/data/gallery.quarantine.json';
+          const configPath='./apps/portal/data/gallery.json';
+          for(const file of [catalogPath,quarantinePath,configPath]){
+            if(!fs.existsSync(file))throw new Error(`Missing required Gallery file: ${file}`);
+          }
+          const catalog=JSON.parse(fs.readFileSync(catalogPath,'utf8'));
+          const quarantine=JSON.parse(fs.readFileSync(quarantinePath,'utf8'));
+          const config=JSON.parse(fs.readFileSync(configPath,'utf8'));
+          if(!Array.isArray(catalog.items)||catalog.count!==catalog.items.length)throw new Error('Gallery catalog count mismatch');
+          if(catalog.count<100)throw new Error(`Gallery contains only ${catalog.count} approved images`);
+          if(!Array.isArray(quarantine.items)||quarantine.count!==quarantine.items.length)throw new Error('Gallery quarantine count mismatch');
+          if(config.physical_image_count!==catalog.count)throw new Error('Gallery config approved count mismatch');
+          if(config.quarantined_image_count!==quarantine.count)throw new Error('Gallery config quarantine count mismatch');
+          const normalize=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[_-]+/g,' ').replace(/\s+/g,' ');
+          const prohibited=item=>{
+            const text=normalize([item.src,item.title,item.alt,item.description,item.source,...(item.topic||[])].filter(Boolean).join(' '));
+            if(!text.includes('dinamo'))return false;
+            const company=/\b(gnk dinamo ltd|dinamo ltd|colorado|boulder|corporate|company|business|poslovn)\b/.test(text);
+            const club=/\b(dinamo zagreb|gnk dinamo zagreb|nk dinamo|football club|nogometni klub|stadion maksimir)\b/.test(text);
+            const emblem=/\b(logo|logotip|grb|crest|badge|emblem|shield|club mark|club logo|klupski znak)\b/.test(text);
+            return club||(emblem&&!company);
+          };
+          const blocked=catalog.items.filter(prohibited);
+          if(blocked.length)throw new Error(`Prohibited football-club visual records remain in public catalog: ${blocked.map(item=>item.src).join(', ')}`);
+          console.log(JSON.stringify({approved:catalog.count,quarantined:quarantine.count,policy:'passed'}));
+          NODE
 
       - name: Commit synchronized Gallery
         run: |
