@@ -1,0 +1,81 @@
+name: Warm and verify News V16
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/warm-news-v16.yml'
+      - '.github/warm-news-v16.trigger'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: gnk-asg-news-v16-warm
+  cancel-in-progress: true
+
+jobs:
+  warm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Announce warm start
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        run: gh issue comment 120 --body "News V16 production warm **STARTED** · commit \`${RUN_SHA}\` · ${RUN_URL}"
+      - name: Warm verified news feed
+        id: verify
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          node <<'JS' 2>&1 | tee /tmp/warm-news-v16.log
+          const fs=require('node:fs');
+          const base='https://gnk-asg.hr';
+          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+          async function get(path,timeout=240000){
+            try{const r=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{accept:'application/json,text/html;q=0.9','cache-control':'no-cache'},signal:AbortSignal.timeout(timeout)});return{status:r.status,text:await r.text(),headers:Object.fromEntries(r.headers)}}catch(error){return{status:0,text:'',headers:{},error:String(error)}}
+          }
+          const validate=item=>Boolean(item?.verified&&item?.verification?.article?.ok&&item?.verification?.image?.ok&&/^https?:\/\//i.test(item?.url||'')&&/^https?:\/\//i.test(item?.image||'')&&!String(item?.image||'').includes('news-fallback.svg')&&String(item?.summary||'').trim().length>=60&&String(item?.source||'').trim());
+          (async()=>{
+            const warm=await get('/data/news.json?warm=1',420000);
+            let last=null;
+            for(let attempt=1;attempt<=10;attempt++){
+              const [feedResponse,statusResponse,archiveResponse,hr,en]=await Promise.all([get('/data/news.json'),get('/data/news-automation-status.json'),get('/data/news-archive.json'),get('/vijesti/'),get('/news/')]);
+              let feed={},status={},archive={};try{feed=JSON.parse(feedResponse.text)}catch{}try{status=JSON.parse(statusResponse.text)}catch{}try{archive=JSON.parse(archiveResponse.text)}catch{}
+              const items=Array.isArray(feed.items)?feed.items:[],invalid=items.filter(item=>!validate(item)),failures=[];
+              if(feedResponse.status!==200)failures.push(`feed_http=${feedResponse.status}`);
+              if(feed.version!=='GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626')failures.push(`version=${feed.version||'missing'}`);
+              if(items.length<15||items.length>100)failures.push(`items=${items.length}`);
+              if(invalid.length)failures.push(`invalid=${invalid.length}`);
+              if(status.newsRefreshesPerDay!==3||status.minimumVerifiedLinks!==15)failures.push('schedule_contract');
+              if(status.archivePruneAt!==900||status.archiveRetainAfterPrune!==450||status.archiveHardLimit!==1000)failures.push('archive_contract');
+              if(Number(archive.count||0)>1000)failures.push(`archive=${archive.count}`);
+              if(hr.status!==200||!hr.text.includes('business-news-v16.js'))failures.push(`hr=${hr.status}`);
+              if(en.status!==200||!en.text.includes('business-news-v16.js'))failures.push(`en=${en.status}`);
+              last={checkedAt:new Date().toISOString(),attempt,warmStatus:warm.status,failures,feed:{status:feed.status,count:items.length,freshCount:feed.freshCount,verifiedCount:feed.verifiedCount,updatedAt:feed.updatedAt,successfulSourceCount:feed.successfulSourceCount,rejected:feed.verificationRejectedCount},automation:{schedule:status.newsSchedule,lastNewsRefresh:status.lastNewsRefresh},archive:{count:archive.count,pruneAt:archive.pruneAt,retainAfterPrune:archive.retainAfterPrune,hardLimit:archive.hardLimit},codes:{feed:feedResponse.status,status:statusResponse.status,archive:archiveResponse.status,hr:hr.status,en:en.status}};
+              fs.writeFileSync('/tmp/warm-news-v16.json',JSON.stringify(last,null,2));
+              console.log(JSON.stringify(last));
+              if(!failures.length)process.exit(0);
+              await sleep(15000);
+            }
+            process.exit(1);
+          })().catch(error=>{console.error(error);process.exit(1)});
+          JS
+      - name: Report warm result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          report=$(cat /tmp/warm-news-v16.json 2>/dev/null || printf '{"error":"warm report unavailable"}')
+          gh issue comment 120 --body "News V16 production warm **${VERIFY_OUTCOME}** · ${RUN_URL}\n\n\`\`\`json\n${report}\n\`\`\`"
+      - name: Enforce result
+        if: always()
+        env:
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+        run: test "$VERIFY_OUTCOME" = success
