@@ -40,6 +40,8 @@ jobs:
         run: |
           set -euo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-publication-news-hotfix.js
+          node --check workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
           node --check apps/portal/assets/business-news.js
           ! grep -qi 'http-equiv="refresh"' apps/portal/vijesti/index.html
           ! grep -qi 'http-equiv="refresh"' apps/portal/news/index.html
@@ -66,31 +68,83 @@ jobs:
           failed=0
 
           refresh_code=$(curl --silent --show-error --location --output refresh.json --write-out '%{http_code}' --request POST https://gnk-asg.hr/api/news-refresh)
-          {
-            echo "REFRESH_HTTP=$refresh_code"
-            cat refresh.json 2>/dev/null || true
-          } >> verify.log
+          echo "REFRESH_HTTP=$refresh_code" >> verify.log
+          node - <<'NODE' >> verify.log 2>&1
+          const fs=require('fs');
+          try{
+            const p=JSON.parse(fs.readFileSync('refresh.json','utf8'));
+            console.log(`REFRESH_OK=${p.ok}`);
+            console.log(`REFRESH_STATUS=${p.status||''}`);
+            console.log(`REFRESH_ERROR=${p.error||''}`);
+            console.log(`REFRESH_COUNT=${p.count ?? p.items?.length ?? ''}`);
+            console.log(`REFRESH_VERSION=${p.version||''}`);
+          }catch(error){console.log(`REFRESH_PARSE_ERROR=${error.message}`)}
+          NODE
           if [ "$refresh_code" != '200' ] && [ "$refresh_code" != '429' ]; then
             echo "REFRESH_UNEXPECTED_HTTP=$refresh_code" >> verify.log
             failed=1
           fi
 
-          for url in https://gnk-asg.hr/data/news.json https://gnk-asg.hr/data/news-automation-status.json https://gnk-asg.hr/vijesti/ https://gnk-asg.hr/news/ https://gnk-asg.hr/objave/ https://gnk-asg.hr/publications/; do
+          for url in \
+            https://gnk-asg.hr/data/news.json \
+            https://gnk-asg.hr/data/news-automation-status.json \
+            https://gnk-asg.hr/data/news-archive.json \
+            https://gnk-asg.hr/data/visual_gallery.json \
+            https://gnk-asg.hr/vijesti/ \
+            https://gnk-asg.hr/news/ \
+            https://gnk-asg.hr/visual-index/ \
+            https://gnk-asg.hr/objave/ \
+            https://gnk-asg.hr/publications/; do
             route_code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 5 --retry-all-errors --retry-delay 3 "$url")
             echo "$route_code $url" >> verify.log
             if [ "$route_code" != '200' ]; then failed=1; fi
           done
 
           curl --silent --show-error --location --dump-header headers.txt --output news.json 'https://gnk-asg.hr/data/news.json?cb=hotfix'
-          {
-            echo 'NEWS_HEADERS:'
-            cat headers.txt 2>/dev/null || true
-            echo 'NEWS_BODY_PREFIX:'
-            head -c 1200 news.json 2>/dev/null || true
-            echo
-          } >> verify.log
-          grep -qi 'x-gnk-asg-news-automation: hotfix-v1' headers.txt || { echo 'MISSING_EXPECTED_NEWS_AUTOMATION_HEADER' >> verify.log; failed=1; }
-          grep -q '"items"' news.json || { echo 'MISSING_ITEMS_ARRAY' >> verify.log; failed=1; }
+          curl --silent --show-error --location --output status.json 'https://gnk-asg.hr/data/news-automation-status.json?cb=hotfix'
+          curl --silent --show-error --location --output archive.json 'https://gnk-asg.hr/data/news-archive.json?cb=hotfix'
+
+          echo 'NEWS_RUNTIME_HEADERS:' >> verify.log
+          grep -i '^x-gnk-asg-' headers.txt >> verify.log || true
+          grep -qi '^x-gnk-asg-news-lifecycle:' headers.txt || { echo 'MISSING_NEWS_LIFECYCLE_HEADER' >> verify.log; failed=1; }
+          grep -qi '^x-gnk-asg-admin-hub-v22:' headers.txt || { echo 'MISSING_ADMIN_HUB_V22_HEADER' >> verify.log; failed=1; }
+
+          node - <<'NODE' >> verify.log 2>&1
+          const fs=require('fs');
+          let failed=false;
+          function read(name){try{return JSON.parse(fs.readFileSync(name,'utf8'))}catch(error){console.log(`${name.toUpperCase()}_PARSE_ERROR=${error.message}`);failed=true;return null}}
+          const news=read('news.json');
+          const items=Array.isArray(news)?news:(Array.isArray(news?.items)?news.items:[]);
+          const images=items.filter(x=>x?.image||x?.imageUrl);
+          const fallbacks=items.filter(x=>x?.imageFallback===true||String(x?.image||x?.imageUrl||'').includes('fallback'));
+          console.log(`NEWS_ITEMS=${items.length}`);
+          console.log(`NEWS_WITH_IMAGES=${images.length}`);
+          console.log(`NEWS_FALLBACK_IMAGES=${fallbacks.length}`);
+          console.log(`NEWS_NEWEST=${items[0]?.publishedAt||items[0]?.published_at||''}`);
+          console.log(`NEWS_OLDEST=${items.at(-1)?.publishedAt||items.at(-1)?.published_at||''}`);
+          if(items.length!==100){console.log('NEWS_ITEMS_EXPECTED_100');failed=true}
+          if(images.length!==items.length){console.log('NEWS_IMAGE_METADATA_INCOMPLETE');failed=true}
+
+          const status=read('status.json');
+          const schedule=status?.newsSchedule||status?.scheduleSlots||status?.scheduled_hours_local||[];
+          const normalized=Array.isArray(schedule)?schedule.map(v=>String(v).padStart(2,'0').includes(':')?String(v):`${String(v).padStart(2,'0')}:00`):[];
+          console.log(`STATUS_VERSION=${status?.newsRuntime||status?.version||status?.engine||''}`);
+          console.log(`STATUS_SCHEDULE=${normalized.join(',')}`);
+          console.log(`STATUS_ACTIVE_LIMIT=${status?.activeNewsLimit??status?.max_public_items??status?.public_items_target??''}`);
+          console.log(`STATUS_ARCHIVE_PRUNE_AT=${status?.archivePruneAt??status?.max_archive_items??''}`);
+          console.log(`STATUS_ARCHIVE_RETAIN=${status?.archiveRetainAfterPrune??status?.archive_prune_to??''}`);
+          if(normalized.join(',')!=='09:00,16:00,21:00'){console.log('STATUS_SCHEDULE_MISMATCH');failed=true}
+          if(Number(status?.activeNewsLimit??status?.max_public_items??status?.public_items_target)!==100){console.log('STATUS_ACTIVE_LIMIT_MISMATCH');failed=true}
+          if(Number(status?.archivePruneAt??status?.max_archive_items)!==1000){console.log('STATUS_ARCHIVE_PRUNE_MISMATCH');failed=true}
+          if(Number(status?.archiveRetainAfterPrune??status?.archive_prune_to)!==500){console.log('STATUS_ARCHIVE_RETAIN_MISMATCH');failed=true}
+
+          const archive=read('archive.json');
+          const archiveItems=Array.isArray(archive)?archive:(Array.isArray(archive?.items)?archive.items:[]);
+          console.log(`ARCHIVE_ITEMS=${archiveItems.length}`);
+          if(archiveItems.length>500){console.log('ARCHIVE_EXCEEDS_500_AFTER_PRUNE');failed=true}
+          process.exitCode=failed?1:0;
+          NODE
+          if [ $? -ne 0 ]; then failed=1; fi
 
           cat verify.log
           echo "code=$failed" >> "$GITHUB_OUTPUT"
@@ -109,12 +163,12 @@ jobs:
             echo
             echo 'VERIFY_LOG:'
             echo '```text'
-            tail -c 12000 verify.log 2>/dev/null || true
+            cat verify.log 2>/dev/null || true
             echo '```'
             echo
             echo 'DEPLOY_LOG:'
             echo '```text'
-            tail -c 5000 deploy.log 2>/dev/null || true
+            tail -c 3000 deploy.log 2>/dev/null || true
             echo '```'
           } > issue-report.md
           gh issue comment "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --body-file issue-report.md
