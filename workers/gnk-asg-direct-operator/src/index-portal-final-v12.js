@@ -1,4 +1,4 @@
-import core from './index-portal-experience-v10.js';
+import core from './index-news-lifecycle-v12.js';
 import { patchPublicHtml, patchAdminHtml, isPrivatePath, transformHtml } from './public-shell-v11.js';
 
 const VERSION = 'GNK_ASG_PORTAL_FINAL_V12_20260625';
@@ -56,7 +56,7 @@ async function fetchHandler(request,env,ctx){
       ok:true,version:VERSION,publicUx:'GNK_ASG_PUBLIC_UX_V12',publicVisual:PUBLIC_VISUAL,
       publicMenu:'GNK_ASG_PUBLIC_MENU_V15',floatingHome:FLOATING_HOME,adminVisual:ADMIN_VISUAL,
       favicon:'GNK_ASG_FAVICON_V1',indexClock:'GNK_ASG_INDEX_CLOCK_V2',
-      automation:'GNK_ASG_PORTAL_EXPERIENCE_V10_20260625',timeZone:'Europe/Zagreb',deployedEntryPoint:'src/index-portal-final-v12.js'
+      automation:'GNK_ASG_NEWS_LIFECYCLE_V12_20260626',timeZone:'Europe/Zagreb',deployedEntryPoint:'src/index-portal-final-v12.js'
     });
   }
 
