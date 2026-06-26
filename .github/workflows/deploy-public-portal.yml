@@ -10,6 +10,8 @@ on:
       - "apps/portal/index.html"
       - "apps/portal/en/index.html"
       - "apps/portal/admin-center/**"
+      - "apps/portal/favicon.svg"
+      - "apps/portal/site.webmanifest"
       - "apps/portal/assets/admin-hub-v21.css"
       - "apps/portal/assets/admin-hub-v21.js"
       - "apps/portal/assets/public-menu-v13.js"
@@ -26,6 +28,7 @@ on:
       - "workers/gnk-asg-direct-operator/src/index-portal-final-v13.js"
       - "workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js"
       - "workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js"
+      - "workers/gnk-asg-direct-operator/src/favicon-contract-v2.js"
       - "workers/gnk-asg-direct-operator/src/media-command-center-v1.js"
       - "workers/gnk-asg-direct-operator/wrangler.toml"
   workflow_dispatch:
@@ -48,13 +51,15 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Verify IQ200 index, Admin Hub and Media Command package
+      - name: Verify IQ200 index, favicon, Admin Hub and Media Command package
         shell: bash
         run: |
           set -euo pipefail
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
           test -s apps/portal/admin-center/index.html
+          test -s apps/portal/favicon.svg
+          test -s apps/portal/site.webmanifest
           test -s apps/portal/assets/admin-hub-v21.css
           test -s apps/portal/assets/admin-hub-v21.js
           test -s apps/portal/assets/public-menu-v13.js
@@ -71,6 +76,7 @@ jobs:
           test -s apps/portal/data/media-outreach-contacts-v1.json
           test -s workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           test -s workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          test -s workers/gnk-asg-direct-operator/src/favicon-contract-v2.js
           test -s workers/gnk-asg-direct-operator/src/media-command-center-v1.js
           grep -q 'index-redesign-production.css' apps/portal/index.html
           grep -q 'index-redesign-production.css' apps/portal/en/index.html
@@ -81,9 +87,12 @@ jobs:
           grep -q '20. 7. 2026.' apps/portal/media-command-center/index.html
           grep -q 'rezerviran i plaćen' apps/portal/media-command-center/index.html
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'applyFaviconContract' workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          grep -q 'GNK_ASG_FAVICON_CONTRACT_V2_20260626' workers/gnk-asg-direct-operator/src/favicon-contract-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
           node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          node --check workers/gnk-asg-direct-operator/src/favicon-contract-v2.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
           node --check apps/portal/assets/admin-hub-v21.js
           node --check apps/portal/assets/public-menu-v13.js
@@ -101,7 +110,7 @@ jobs:
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy src/index-admin-hub-v21.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Deploy IQ200 index, Admin Hub and Media Command Center to Cloudflare
+      - name: Deploy IQ200 index, favicon, Admin Hub and Media Command Center to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -111,7 +120,7 @@ jobs:
           set -euo pipefail
           npx --yes wrangler@4 deploy src/index-admin-hub-v21.js --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify IQ200, Admin Hub and Media Command production
+      - name: Verify IQ200, favicon, Admin Hub and Media Command production
         shell: bash
         run: |
           set -euo pipefail
@@ -127,18 +136,22 @@ jobs:
             menu_code=$(curl -sSL -o menu.js -w '%{http_code}' "$base/assets/public-menu-v13.js?cb=$stamp" || true)
             admin_code=$(curl -sS -o admin-login.html -w '%{http_code}' "$base/admin-center/?cb=$stamp" || true)
             legacy_code=$(curl -sS -o legacy.html -w '%{http_code}' "$base/operator/session/login?cb=$stamp" || true)
-            media_code=$(curl -sS -o media-login.html -w '%{http_code}' "$base/media-command-center/?cb=$stamp" || true)
+            media_code=$(curl -sS -o media-redirect.html -w '%{http_code}' "$base/media-command-center/?cb=$stamp" || true)
+            media_follow_code=$(curl -sSL -o media-login.html -w '%{http_code}' "$base/media-command-center/?cb=$stamp" || true)
             api_code=$(curl -sS -o media-api.json -w '%{http_code}' "$base/api/media-command-center/status?cb=$stamp" || true)
-            if [ "$version_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$css_code" = "200" ] && [ "$iq_code" = "200" ] && [ "$menu_code" = "200" ] && [ "$admin_code" = "401" ] && [ "$legacy_code" = "303" ] && [ "$media_code" = "303" ] && [ "$api_code" = "401" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625' version.json && grep -q 'src/index-portal-final-v13.js' version.json && grep -q 'GNK_ASG_MEDIA_COMMAND_CENTER_V1_20260626' version.json && grep -q 'src/index-media-command-center-v20.js' version.json && grep -q '/admin-center/' menu.js && grep -q 'index-redesign-production.css' root.html && grep -q 'index-redesign-production.css' en.html && grep -q 'GNK ASG d.o.o.' root.html && grep -q 'GNK DINAMO Ltd.' en.html; then
+            favicon_svg_code=$(curl -sSL -o favicon.svg -w '%{http_code}' "$base/favicon.svg?cb=$stamp" || true)
+            favicon_ico_code=$(curl -sSL -o favicon-ico-final.svg -w '%{http_code}' "$base/favicon.ico?cb=$stamp" || true)
+            manifest_code=$(curl -sSL -o site.webmanifest -w '%{http_code}' "$base/site.webmanifest?cb=$stamp" || true)
+            if [ "$version_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$css_code" = "200" ] && [ "$iq_code" = "200" ] && [ "$menu_code" = "200" ] && [ "$admin_code" = "401" ] && [ "$legacy_code" = "303" ] && [ "$media_code" = "303" ] && [ "$media_follow_code" = "401" ] && [ "$api_code" = "401" ] && [ "$favicon_svg_code" = "200" ] && [ "$favicon_ico_code" = "200" ] && [ "$manifest_code" = "200" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625' version.json && grep -q 'src/index-portal-final-v13.js' version.json && grep -q 'GNK_ASG_MEDIA_COMMAND_CENTER_V1_20260626' version.json && grep -q 'src/index-media-command-center-v20.js' version.json && grep -q '/admin-center/' menu.js && grep -q 'index-redesign-production.css' root.html && grep -q 'index-redesign-production.css' en.html && grep -q 'GNK ASG d.o.o.' root.html && grep -q 'GNK DINAMO Ltd.' en.html && grep -q '/favicon.svg' root.html && grep -q '/favicon.svg' en.html && grep -q '/favicon.svg' admin-login.html && grep -q '/favicon.svg' media-login.html && grep -q '<svg' favicon.svg && grep -q '<svg' favicon-ico-final.svg && grep -q 'GNK ASG' site.webmanifest; then
               success=true
               break
             fi
             sleep 10
           done
           if [ "$success" != "true" ]; then
-            echo "VERSION=$version_code ROOT=$root_code EN=$en_code CSS=$css_code IQ=$iq_code MENU=$menu_code ADMIN=$admin_code LEGACY=$legacy_code MEDIA=$media_code API=$api_code"
+            echo "VERSION=$version_code ROOT=$root_code EN=$en_code CSS=$css_code IQ=$iq_code MENU=$menu_code ADMIN=$admin_code LEGACY=$legacy_code MEDIA=$media_code MEDIA_FOLLOW=$media_follow_code API=$api_code FAVICON_SVG=$favicon_svg_code FAVICON_ICO=$favicon_ico_code MANIFEST=$manifest_code"
             cat version.json || true
             cat media-api.json || true
             exit 1
           fi
-          node -e "const v=require('./version.json');if(!v.ok||v.version!=='GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625'||v.deployedEntryPoint!=='src/index-portal-final-v13.js'||v.mediaCommandEntryPoint!=='src/index-media-command-center-v20.js'||v.mediaCommandCenter!=='GNK_ASG_MEDIA_COMMAND_CENTER_V1_20260626'||v.indexDesign!=='IQ200')process.exit(1);console.log('GNK_ASG_ADMIN_HUB_V21_PRODUCTION_OK=true')"
+          node -e "const v=require('./version.json');if(!v.ok||v.version!=='GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625'||v.deployedEntryPoint!=='src/index-portal-final-v13.js'||v.mediaCommandEntryPoint!=='src/index-media-command-center-v20.js'||v.mediaCommandCenter!=='GNK_ASG_MEDIA_COMMAND_CENTER_V1_20260626'||v.indexDesign!=='IQ200')process.exit(1);console.log('GNK_ASG_FAVICON_ALL_ROUTES_PRODUCTION_OK=true')"
