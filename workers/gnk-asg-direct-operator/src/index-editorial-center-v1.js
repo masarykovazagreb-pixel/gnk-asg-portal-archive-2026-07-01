@@ -15,6 +15,7 @@ import {
   scheduleLock,
   writeScheduleResult
 } from './editorial-core-v1.js';
+import {runAutomatedPublication,AUTO_PUBLISH_VERSION} from './editorial-auto-publish-v2.js';
 
 const ROOT='/auto-editor/editorial';
 const API='/auto-editor/editorial/api/';
@@ -43,7 +44,10 @@ async function servePage(request,env){
 }
 
 async function api(request,env,path){
-  if(path===`${API}status`&&request.method==='GET')return json(await editorialStatus(env));
+  if(path===`${API}status`&&request.method==='GET'){
+    const status=await editorialStatus(env);
+    return json({...status,autoPublishVersion:AUTO_PUBLISH_VERSION,publicationMode:'validated automatic publication every 2 hours'});
+  }
   if(path===`${API}drafts`&&request.method==='GET')return json({ok:true,items:await listDrafts(env)});
   if(path===`${API}draft/save`&&request.method==='POST')return json(await saveDraft(env,await body(request)));
   if(path===`${API}draft/delete`&&request.method==='POST'){const data=await body(request);return json(await deleteDraft(env,clean(data.id)));}
@@ -55,6 +59,13 @@ async function api(request,env,path){
     const data=await body(request);
     const result=await publishDraft(env,clean(data.id));
     return json(result,result.ok?200:400);
+  }
+  if(path===`${API}auto-publish/run`&&request.method==='POST'){
+    try{
+      const data=await body(request);
+      const result=await runAutomatedPublication(env,{forceSourceRefresh:data.forceSourceRefresh!==false});
+      return json(result,result.ok?200:500);
+    }catch(error){return json({ok:false,error:clean(error?.message||error)},500);}
   }
   if(path===`${API}sources/refresh`&&request.method==='POST')return json(await refreshBusinessSources(env));
   if(path===`${API}draft/from-news`&&request.method==='POST'){
@@ -74,17 +85,17 @@ function localTime(){
 async function scheduledRun(event,env,ctx){
   const local=localTime();
   const monitorSlot=Math.floor(Date.now()/(2*60*60*1000));
-  const result={ok:true,version:EDITORIAL_VERSION,cron:event?.cron||'',local,startedAt:new Date().toISOString(),market:null,monitor:null,sourceRefresh:null,draft:null};
-  if(await scheduleLock(env,`editorial:lock:monitor:${monitorSlot}`,7100)){
-    try{result.market=await runScheduledRefresh(env,ctx);}catch(error){result.market={ok:false,error:clean(error?.message||error)};}
-    result.monitor=await monitorPublications(env);
-  }
+  const result={ok:true,version:EDITORIAL_VERSION,autoPublishVersion:AUTO_PUBLISH_VERSION,cron:event?.cron||'',local,startedAt:new Date().toISOString(),market:null,monitor:null,sourceRefresh:null,publication:null};
   if((local.hour===9||local.hour===16)&&await scheduleLock(env,`editorial:lock:source:${local.date}:${local.hour}`,21600)){
     result.sourceRefresh=await refreshBusinessSources(env);
-    try{result.draft=await generateScheduledDraft(env);}catch(error){result.draft={ok:false,error:clean(error?.message||error)};}
+  }
+  if(await scheduleLock(env,`editorial:lock:auto-publish:${monitorSlot}`,7100)){
+    try{result.market=await runScheduledRefresh(env,ctx);}catch(error){result.market={ok:false,error:clean(error?.message||error)};}
+    result.publication=await runAutomatedPublication(env,{forceSourceRefresh:false});
+    result.monitor=result.publication?.monitor||await monitorPublications(env);
   }
   result.finishedAt=new Date().toISOString();
-  result.ok=[result.market,result.sourceRefresh,result.draft].filter(Boolean).every(item=>item.ok!==false);
+  result.ok=[result.market,result.sourceRefresh,result.publication].filter(Boolean).every(item=>item.ok!==false);
   await writeScheduleResult(env,result);
   return result;
 }
