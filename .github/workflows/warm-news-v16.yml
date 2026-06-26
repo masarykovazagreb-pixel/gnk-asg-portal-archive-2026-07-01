@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/warm-news-v16.yml'
       - '.github/warm-news-v16.trigger'
+  issues:
+    types: [opened, reopened]
 
 permissions:
   contents: read
@@ -17,6 +19,7 @@ concurrency:
 
 jobs:
   warm:
+    if: github.event_name != 'issues' || contains(github.event.issue.title, 'RUN GNK ASG NEWS V16 WARM')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
