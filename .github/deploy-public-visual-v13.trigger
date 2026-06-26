@@ -1,5 +1,5 @@
-deployment=GNK_ASG_ADMIN_HUB_V21_20260626
+deployment=GNK_ASG_PUBLIC_INDEX_SINGLE_MENU_ALIGNMENT_20260626
 approved=true
-trigger_revision=9
-requested_for=MERGED_PORTAL_ADMIN_HUB_MEDIA_COMMAND_AND_MAIL
-requested_at=2026-06-26T10:40:00+02:00
+trigger_revision=10
+requested_for=FIX_DUPLICATE_MENU_AND_ALIGN_PUBLIC_INDEX
+requested_at=2026-06-26T11:05:00+02:00
