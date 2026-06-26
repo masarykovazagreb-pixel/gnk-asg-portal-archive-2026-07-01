@@ -1,6 +1,6 @@
 import app from './index-admin-hub-v21.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V22_NEWS_V15_20260626';
+const VERSION='GNK_ASG_ADMIN_HUB_V22_NEWS_V16_VERIFIED_MEDIA_20260626';
 const NEWS_SCHEDULE=['09:00','16:00','21:00'];
 const SOURCE_MIX={global:13,regional:9,croatian:4};
 
@@ -10,7 +10,7 @@ async function correctJson(response){
   if(!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   try{
     const payload=await response.json();
-    const corrected={...payload,timeZone:'Europe/Zagreb',newsSchedule:NEWS_SCHEDULE,newsRefreshesPerDay:3,configuredNewsSources:26,sourceMix:SOURCE_MIX,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,newsRuntime:'GNK_ASG_NEWS_LIFECYCLE_V15_20260626'};
+    const corrected={...payload,timeZone:'Europe/Zagreb',newsSchedule:NEWS_SCHEDULE,newsRefreshesPerDay:3,configuredNewsSources:26,sourceMix:SOURCE_MIX,minimumVerifiedLinks:15,activeNewsLimit:100,archivePruneAt:900,archiveDeleteCount:450,archiveRetainAfterPrune:450,archiveHardLimit:1000,newsRuntime:'GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626',contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false}};
     const headers=new Headers(response.headers);
     headers.delete('content-length');
     headers.delete('content-encoding');
@@ -28,7 +28,8 @@ async function patchNewsHtml(response){
   headers.delete('content-encoding');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-admin-hub-v22',VERSION);
-  const body=(await response.text()).replace(/business-news\.js\?v=[^"']+/g,'business-news.js?v=20260626-news-v15');
+  let body=await response.text();
+  body=body.replace(/business-news(?:-v\d+)?\.js\?v=[^"']+/g,'business-news-v16.js?v=20260626-news-v16');
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
 
