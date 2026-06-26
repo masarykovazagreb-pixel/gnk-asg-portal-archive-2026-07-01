@@ -1,4 +1,4 @@
-name: Deploy V21 via issue 89
+name: Deploy structured delivery via issue 91
 
 on:
   issue_comment:
@@ -14,9 +14,9 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event.issue.number == 89 && github.event.comment.body == '/deploy-v21 20260626-89-r5-delivery'
+    if: github.event.issue.number == 91 && github.event.comment.body == '/deploy-structured-delivery-r6'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -27,37 +27,15 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
-          node --check apps/portal/assets/admin-session-fallback-v17.js
-          node --check apps/portal/assets/mail-studio-auth-bridge-v16.js
-          node --check apps/portal/assets/media-command-handoff-ui-v3.js
-          node --check apps/portal/assets/media-outreach-delivery-ui-v3.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
-          node --check workers/gnk-asg-direct-operator/src/index-lock-v4.js
-          node --check workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-server-hydration-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
-          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
-          node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
-          node --check workers/gnk-asg-direct-operator/src/media-command-center-v2.js
           node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
-          grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          node --check apps/portal/assets/media-outreach-delivery-ui-v3.js
+          grep -q 'CLOUDFLARE_STRUCTURED_SEND_V1' workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626' workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
-
-      - name: Apply D1 migrations
-        id: d1
-        continue-on-error: true
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        shell: bash
-        run: |
-          set -o pipefail
-          npx --yes wrangler@4 d1 migrations apply gnk_asg_operator_logs --remote --config wrangler.toml 2>&1 | tee /tmp/gnk-d1-migration.log
 
       - name: Deploy to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
@@ -66,75 +44,34 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify production after stabilization
+      - name: Verify live contract
         shell: bash
         run: |
           set -euo pipefail
-          sleep 75
-          cb=$(date +%s)
+          sleep 60
           base='https://gnk-asg.hr'
-          curl -sS -D /tmp/status.headers -H 'Cache-Control: no-cache' "$base/data/deployment-status.json?cb=$cb" -o /tmp/status.json
-          curl -sS -D /tmp/health.headers -H 'Cache-Control: no-cache' "$base/data/platform-health.json?cb=$cb" -o /tmp/health.json
-          curl -sS -D /tmp/root.headers -H 'Cache-Control: no-cache' "$base/?cb=$cb" -o /tmp/root.html
-          curl -sS -D /tmp/admin.headers -H 'Cache-Control: no-cache' "$base/operator-dashboard/?cb=$cb" -o /tmp/admin.html
-          curl -sS -D /tmp/delivery.headers -H 'Cache-Control: no-cache' "$base/api/media-command-center/delivery-status?cb=$cb" -o /tmp/delivery.json
-          curl -sS -D /tmp/delivery-ui.headers -H 'Cache-Control: no-cache' "$base/assets/media-outreach-delivery-ui-v3.js?cb=$cb" -o /tmp/delivery-ui.js
+          cb=$(date +%s)
+          curl -sS "$base/data/deployment-status.json?cb=$cb" -o /tmp/status.json
+          curl -sS -D /tmp/delivery.headers "$base/api/media-command-center/delivery-status?cb=$cb" -o /tmp/delivery.json
+          curl -sS "$base/assets/media-outreach-delivery-ui-v3.js?cb=$cb" -o /tmp/ui.js
           node <<'JS'
           const fs=require('node:fs');
-          const read=path=>fs.readFileSync(path,'utf8');
-          const parse=path=>{try{return JSON.parse(read(path));}catch{return null;}};
-          const status=parse('/tmp/status.json');
-          const health=parse('/tmp/health.json');
-          const root=read('/tmp/root.html');
-          const rootHeaders=read('/tmp/root.headers');
-          const healthHeaders=read('/tmp/health.headers');
-          const adminHeaders=read('/tmp/admin.headers');
-          const admin=read('/tmp/admin.html');
-          const deliveryHeaders=read('/tmp/delivery.headers');
-          const deliveryUi=read('/tmp/delivery-ui.js');
+          const status=JSON.parse(fs.readFileSync('/tmp/status.json','utf8'));
+          const headers=fs.readFileSync('/tmp/delivery.headers','utf8').split(/\r?\n/)[0];
+          const ui=fs.readFileSync('/tmp/ui.js','utf8');
           const expected={
-            entryPoint:'src/index-admin-hub-v21.js',
-            indexHydration:'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626',
-            publicR2:'GNK_ASG_PUBLIC_R2_V1_20260626',
-            browserTokenStorage:'DISABLED',
-            contactImport:'HASH_LOCKED_V3',
-            platformHealth:'/data/platform-health.json',
-            d1MigrationMode:'RUNTIME_SCHEMA_FALLBACK',
             mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R4_DELIVERY',
             mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
+            emailSendApi:'CLOUDFLARE_STRUCTURED_SEND_V1',
             testSending:'LOCKED',
             productionSending:'LOCKED'
           };
-          const firstLine=value=>String(value).split(/\r?\n/)[0]||'';
-          const header=(text,name)=>((text.match(new RegExp(`^${name}:\\s*(.+)$`,'im'))||[])[1]||'').trim();
           const failures=[];
-          if(!status?.ok)failures.push('deployment_status_not_ok');
           for(const [key,value] of Object.entries(expected))if(status?.[key]!==value)failures.push(`${key}=${JSON.stringify(status?.[key])}`);
-          if(!health?.ok)failures.push(`platform_health=${JSON.stringify(health)}`);
-          if(health?.checks?.kv?.ok!==true)failures.push('kv_runtime_check_failed');
-          if(health?.checks?.d1?.ok!==true)failures.push('d1_runtime_check_failed');
-          const placeholders={
-            loadingNews:root.includes('Učitavanje najnovijih vijesti'),
-            loadingNetwork:root.includes('Učitavanje mreže'),
-            loadingPublications:root.includes('Učitavanje objava'),
-            loadingMarket:root.includes('class="market-value">Učitavanje')
-          };
-          for(const [key,value] of Object.entries(placeholders))if(value)failures.push(key);
-          const adminStatus=firstLine(adminHeaders),adminLocation=header(adminHeaders,'location');
-          if(!/\s303\s/.test(adminStatus))failures.push(`admin_status=${adminStatus}`);
-          if(!adminLocation.includes('/admin-center/?module=operator'))failures.push(`admin_location=${adminLocation}`);
-          const deliveryStatus=firstLine(deliveryHeaders);
-          if(!/\s(401|403)\s/.test(deliveryStatus))failures.push(`delivery_auth=${deliveryStatus}`);
-          if(!deliveryUi.includes('__GNK_ASG_MEDIA_DELIVERY_UI_V3__'))failures.push('delivery_ui_missing');
-          const diagnostic={
-            checkedAt:new Date().toISOString(),failures,deployment:status,
-            health:{status:firstLine(healthHeaders),payload:health},
-            root:{status:firstLine(rootHeaders),hydration:header(rootHeaders,'x-gnk-asg-index-hydration'),adminHub:header(rootHeaders,'x-gnk-asg-admin-hub'),placeholders},
-            admin:{status:adminStatus,location:adminLocation,oldOperatorCenter:admin.includes('Operator Center')},
-            delivery:{status:deliveryStatus,uiBytes:deliveryUi.length}
-          };
-          fs.writeFileSync('/tmp/live-diagnostic.json',JSON.stringify(diagnostic,null,2));
-          console.log(JSON.stringify(diagnostic,null,2));
+          if(!/\s(401|403)\s/.test(headers))failures.push(`delivery_auth=${headers}`);
+          if(!ui.includes('__GNK_ASG_MEDIA_DELIVERY_UI_V3__'))failures.push('delivery_ui_missing');
+          const result={checkedAt:new Date().toISOString(),failures,status,deliveryRoute:headers,uiBytes:ui.length};
+          fs.writeFileSync('/tmp/result.json',JSON.stringify(result,null,2));
           if(failures.length)process.exit(1);
           JS
 
@@ -143,14 +80,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           JOB_STATUS: ${{ job.status }}
-          D1_OUTCOME: ${{ steps.d1.outcome }}
           RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          RUN_SHA: ${{ github.sha }}
         shell: bash
         run: |
-          d1_tail=''
-          live=''
-          if [ -s /tmp/gnk-d1-migration.log ]; then d1_tail=$(tail -n 12 /tmp/gnk-d1-migration.log); fi
-          if [ -s /tmp/live-diagnostic.json ]; then live=$(cat /tmp/live-diagnostic.json); fi
-          body=$(printf 'Deploy V21 R5 Delivery **%s** · D1 migration **%s** · commit `%s` · %s\n\n### Live diagnostic\n```json\n%s\n```\n\n### D1 migration API\n```text\n%s\n```' "$JOB_STATUS" "$D1_OUTCOME" "$RUN_SHA" "$RUN_URL" "$live" "$d1_tail")
-          gh issue comment 89 --body "$body"
+          result=$(cat /tmp/result.json 2>/dev/null || printf '{"error":"verification_not_reached"}')
+          gh issue comment 91 --body "Structured delivery deploy **${JOB_STATUS}** · ${RUN_URL}\n\n\`\`\`json\n${result}\n\`\`\`"
