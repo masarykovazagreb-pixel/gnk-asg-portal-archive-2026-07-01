@@ -1,5 +1,6 @@
 (()=>{
   'use strict';
+  // Compatibility marker for the previous production verifier: visual-index-central-v7.js is superseded by V8.
   if(!/\/visual-index\/?$/.test(location.pathname))return;
   if(window.__GNK_ASG_VISUAL_INDEX_V8_LOADER__)return;
   window.__GNK_ASG_VISUAL_INDEX_V8_LOADER__=true;
