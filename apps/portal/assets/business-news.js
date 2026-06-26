@@ -46,6 +46,13 @@
     }
   }
 
+  function imageFor(item) {
+    const candidates = [item?.image, item?.imageUrl, item?.image_url]
+      .map(valid)
+      .filter(Boolean);
+    return candidates.find(url => !url.includes('/assets/news-fallback.svg')) || candidates[0] || FALLBACK_IMAGE;
+  }
+
   function normalize(payload) {
     const raw = Array.isArray(payload) ? payload : (Array.isArray(payload?.items) ? payload.items : []);
     const seen = new Set();
@@ -64,7 +71,7 @@
         summary:String(item?.summary || item?.description || item?.text || item?.excerpt || '').trim(),
         source:String(item?.source || item?.sourceTitle || item?.region || item?.category || 'GNK ASG'),
         publishedAt:item?.publishedAt || item?.published_at || item?.pubDate || '',
-        image:valid(item?.image || item?.imageUrl || item?.image_url) || FALLBACK_IMAGE,
+        image:imageFor(item),
         imageAlt:String(item?.imageAlt || title),
         imageCredit:String(item?.imageCredit || item?.source || item?.sourceTitle || '')
       });
