@@ -1,2 +1,45 @@
-﻿.footer-trust>div{display:block!important;min-height:92px!important;padding:15px!important}.footer-trust>div>span{display:block!important;width:auto!important;height:auto!important;margin-top:7px!important;border:0!important;border-radius:0!important;color:var(--muted)!important;font-size:9px!important;line-height:1.35!important}.footer-trust>div>b{display:block!important;color:#fff!important;font-size:13px!important}.hero-visual .globe{background-image:url('/assets/brand/gnk-world-network-map.svg')!important;background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important}.profile-grid .profile-card h3:before,.finance-grid .company-title:before{filter:drop-shadow(0 8px 16px rgba(215,170,60,.18))}
+﻿<<<<<<< HEAD
+ï»¿.footer-trust>div{display:block!important;min-height:92px!important;padding:15px!important}.footer-trust>div>span{display:block!important;width:auto!important;height:auto!important;margin-top:7px!important;border:0!important;border-radius:0!important;color:var(--muted)!important;font-size:9px!important;line-height:1.35!important}.footer-trust>div>b{display:block!important;color:#fff!important;font-size:13px!important}.hero-visual .globe{background-image:url('/assets/brand/gnk-world-network-map.svg')!important;background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important}.profile-grid .profile-card h3:before,.finance-grid .company-title:before{filter:drop-shadow(0 8px 16px rgba(215,170,60,.18))}
+
+=======
+.footer-trust>div{display:block!important;min-height:92px!important;padding:15px!important}.footer-trust>div>span{display:block!important;width:auto!important;height:auto!important;margin-top:7px!important;border:0!important;border-radius:0!important;color:var(--muted)!important;font-size:9px!important;line-height:1.35!important}.footer-trust>div>b{display:block!important;color:#fff!important;font-size:13px!important}.hero-visual .globe{background-image:url('/assets/brand/gnk-world-network-map.svg')!important;background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important}.profile-grid .profile-card h3:before,.finance-grid .company-title:before{filter:drop-shadow(0 8px 16px rgba(215,170,60,.18))}
+>>>>>>> parent of db7c10e (Dodaj index slideshow dvije slike svakih 10 sekundi)
+
+/* GNK_LOCATION_SLIDESHOW_START */
+#mreza-grupe .group-layout > .locations{
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+}
+
+#gnk-location-slideshow{
+  position:relative;
+  flex:1 1 auto;
+  min-height:220px;
+  width:100%;
+  overflow:hidden;
+  background:#020812;
+}
+
+#gnk-location-slideshow img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  opacity:0;
+  transition:opacity .25s linear;
+}
+
+#gnk-location-slideshow img.is-active{
+  opacity:1;
+}
+
+@media(max-width:700px){
+  #gnk-location-slideshow{
+    min-height:170px;
+  }
+}
+/* GNK_LOCATION_SLIDESHOW_END */
 
