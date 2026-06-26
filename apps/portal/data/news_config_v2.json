@@ -1,10 +1,10 @@
 {
   "retention_days": 30,
   "archive_days": 90,
-  "max_items": 500,
+  "max_items": 100,
   "max_per_source": 80,
-  "rotation_policy": "Nove vijesti ulaze prve; duplikati i blokirane objave se uklanjaju; javno se prikazuje najnovijih 500 stavki; aktivna javna arhiva zadržava sljedećih najnovijih 400 stavki; stariji višak izvan aktivnog skupa uklanja se radi stabilnog rada objave.",
-  "automation_verification": "Jedinstveni proces scripts/news_publication.py. BiH i Slovenija pojačani su dodatnim provjerljivim javnim izvorima kroz Google News upite 31.05.2026.",
+  "rotation_policy": "Nove vijesti ulaze prve; duplikati i blokirane objave se uklanjaju; javno se prikazuje najnovijih 100 stavki; arhiva se puni do 1000 stavki i kada dosegne granicu reže se na 500 najnovijih arhivskih stavki radi stabilnog rada objave.",
+  "automation_verification": "Jedinstveni proces apps/portal/scripts/news_publication.py. Planirani ciklusi su 09:00, 16:00 i 21:00 Europe/Zagreb. RSS slike se koriste kada postoje; inače se koristi GNK ASG fallback/Visual Index sloj.",
   "sources": [
     {"name":"Poslovni dnevnik","group":"hrvatska","category":"economy","url":"https://www.poslovni.hr/feed"},
     {"name":"Biznis.rs","group":"srbija","category":"economy","url":"https://biznis.rs/feed/"},
