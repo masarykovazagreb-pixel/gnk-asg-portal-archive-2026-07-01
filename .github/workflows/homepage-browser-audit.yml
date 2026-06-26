@@ -33,7 +33,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/gnk-homepage-audit
-          cat > /tmp/gnk-homepage-audit/audit.mjs <<'JS'
+          cat > homepage-audit.mjs <<'JS'
           import fs from 'node:fs';
           import {chromium,firefox} from 'playwright';
 
@@ -151,7 +151,7 @@ jobs:
           console.log(JSON.stringify(report,null,2));
           if(failures.length)process.exitCode=1;
           JS
-          node /tmp/gnk-homepage-audit/audit.mjs
+          node homepage-audit.mjs
 
       - name: Upload screenshots and report
         if: always()
