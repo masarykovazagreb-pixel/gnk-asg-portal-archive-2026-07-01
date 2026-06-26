@@ -18,17 +18,59 @@ concurrency:
   group: gnk-asg-canonical-production
   cancel-in-progress: true
 
+env:
+  INDEX_BASELINE_BRANCH: restore-point/index-v28-locked-20260626
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
 
-      - name: Verify package and locked index layout
+      - name: Enforce immutable V28 index before deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "refs/heads/${INDEX_BASELINE_BRANCH}:refs/remotes/origin/${INDEX_BASELINE_BRANCH}" --force
+          locked_paths=(
+            'apps/portal/index.html'
+            'apps/portal/en/index.html'
+            'apps/portal/assets/index-redesign-production.css'
+            'apps/portal/assets/index-redesign-production-base.css'
+            'apps/portal/assets/brand/gnk-asg-centered-public-menu.css'
+            'apps/portal/assets/public-visual-v13.css'
+            'apps/portal/assets/public-menu-v13.js'
+            'apps/portal/assets/index-media-countdown-v1.css'
+            'apps/portal/assets/index-clock-v2.js'
+            'apps/portal/assets/index-group-network-v2.css'
+            'apps/portal/assets/index-group-network-v2.js'
+            'apps/portal/assets/index-group-network-en-bridge-v1.js'
+            'apps/portal/assets/index-news-rotation-v1.js'
+            'apps/portal/assets/index-content-resilience-v1.js'
+            'apps/portal/assets/index-live-market-chart-v4.js'
+            'apps/portal/assets/iq200/01.css'
+            'apps/portal/assets/iq200/02.css'
+            'apps/portal/assets/iq200/03.css'
+            'apps/portal/assets/iq200/04.css'
+            'apps/portal/assets/iq200/05.css'
+            'apps/portal/assets/iq200/06.css'
+            'apps/portal/assets/iq200/07-temp.css'
+            'apps/portal/assets/iq200/08.css'
+            'apps/portal/assets/iq200/09a.css'
+            'apps/portal/assets/iq200/responsive.css'
+            'apps/portal/assets/iq200/final-fixes.css'
+            'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
+          )
+          git diff --exit-code "origin/${INDEX_BASELINE_BRANCH}" -- "${locked_paths[@]}"
+          echo 'GNK_ASG_INDEX_V28_DEPLOY_LOCK_OK=true'
+
+      - name: Verify package and locked V28 layout
         shell: bash
         run: |
           set -euxo pipefail
@@ -41,7 +83,7 @@ jobs:
           node --check apps/portal/assets/index-content-resilience-v1.js
           node --check apps/portal/assets/index-live-market-chart-v4.js
           node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v23-aktual.js
           node --check workers/gnk-asg-direct-operator/src/index-lock-v4.js
           node --check workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-server-hydration-v1.js
@@ -52,25 +94,30 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v2.js
           node --check workers/gnk-asg-direct-operator/src/media-command-readiness-v2.js
           node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
-          test -s apps/portal/assets/index-stable-polish-v30.css
+          test -s apps/portal/assets/index-redesign-production.css
           test -s workers/gnk-asg-direct-operator/migrations/0001_media_command_controls.sql
-          grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-admin-hub-v23-aktual.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'GNK_ASG_PUBLIC_VISUAL_V30_CLEAN_POLISH_20260626' workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          grep -q 'INDEX_STABLE_POLISH_V30' workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          grep -q 'index-stable-polish-v30.css' apps/portal/assets/index-redesign-production.css
-          if grep -q '/assets/iq200/' apps/portal/assets/index-redesign-production.css; then
-            echo 'Conflicting IQ200 index layers detected' >&2
+          grep -q 'GNK_ASG_PUBLIC_VISUAL_V28_STABLE_LAYOUT_RESILIENT_DATA_20260626' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q 'STABLE_SINGLE_MENU_NO_POLISH' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q 'public-menu-v13.js?v=20260626-stable-v28' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q 'index-content-resilience-v1.js?v=20260626-data-v28' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q '/assets/iq200/' apps/portal/assets/index-redesign-production.css
+          if grep -q 'const headRuntime=' workers/gnk-asg-direct-operator/src/public-shell-v11.js; then
+            echo 'Forbidden V31 runtime injection detected' >&2
             exit 1
           fi
-          grep -q 'STABLE_SINGLE_MENU_NO_POLISH' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          if grep -E -q 'const indexCore=.*index-critical-v31\.css' workers/gnk-asg-direct-operator/src/public-shell-v11.js; then
+            echo 'Forbidden V31 critical CSS injection detected' >&2
+            exit 1
+          fi
+          if grep -q 'index-stable-polish-v30.css' apps/portal/assets/index-redesign-production.css; then
+            echo 'Forbidden V30 polish layer detected' >&2
+            exit 1
+          fi
           if grep -q 'function patchIndexHero' workers/gnk-asg-direct-operator/src/public-shell-v11.js; then
             echo 'Forbidden index hero injector detected' >&2
-            exit 1
-          fi
-          if grep -E -q 'const indexHead=.*index-polish-v1\.css' workers/gnk-asg-direct-operator/src/public-shell-v11.js; then
-            echo 'Forbidden legacy index polish stylesheet injection detected' >&2
             exit 1
           fi
           grep -q 'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626' workers/gnk-asg-direct-operator/src/index-server-hydration-v1.js
@@ -116,38 +163,39 @@ jobs:
           }
           let last;
           for(let attempt=1;attempt<=18;attempt++){
-            const [deployment,health,root,en,content,market,polish,favicon,manifest,mediaApi,deliveryApi,admin]=await Promise.all([
+            const [deployment,health,root,en,core,content,market,favicon,manifest,mediaApi,deliveryApi,admin]=await Promise.all([
               get('/data/deployment-status.json'),get('/data/platform-health.json'),get('/'),get('/en/'),
-              get('/assets/index-content-resilience-v1.js'),get('/assets/index-live-market-chart-v4.js'),
-              get('/assets/index-stable-polish-v30.css'),get('/favicon.svg'),get('/site.webmanifest'),
-              get('/api/media-command-center/status','manual'),get('/api/media-command-center/delivery-status','manual'),get('/operator-dashboard/','manual')
+              get('/assets/index-redesign-production.css'),get('/assets/index-content-resilience-v1.js'),get('/assets/index-live-market-chart-v4.js'),
+              get('/favicon.svg'),get('/site.webmanifest'),get('/api/media-command-center/status','manual'),
+              get('/api/media-command-center/delivery-status','manual'),get('/operator-dashboard/','manual')
             ]);
             let status=null;try{status=JSON.parse(deployment.text);}catch{}
             let healthData=null;try{healthData=JSON.parse(health.text);}catch{}
             const failures=[];
             if(deployment.status!==200||!status?.ok)failures.push(`deployment=${deployment.status}`);
-            if(status?.entryPoint!=='src/index-admin-hub-v21.js')failures.push(`entryPoint=${JSON.stringify(status?.entryPoint)}`);
+            if(status?.entryPoint!=='src/index-admin-hub-v23-aktual.js')failures.push(`entryPoint=${JSON.stringify(status?.entryPoint)}`);
             if(status?.indexLock!=='GNK_ASG_INDEX_LOCK_V4_20260626')failures.push(`indexLock=${JSON.stringify(status?.indexLock)}`);
             if(status?.indexHydration!=='GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626')failures.push(`indexHydration=${JSON.stringify(status?.indexHydration)}`);
             if(status?.browserTokenStorage!=='DISABLED')failures.push(`browserTokenStorage=${JSON.stringify(status?.browserTokenStorage)}`);
             if(status?.testSending!=='LOCKED'||status?.productionSending!=='LOCKED')failures.push('sending_lock_invalid');
             if(health.status!==200||!healthData?.ok)failures.push(`health=${health.status}:${JSON.stringify(healthData)}`);
-            for(const [name,response] of Object.entries({root,en,content,market,polish,favicon,manifest}))if(response.status!==200)failures.push(`${name}=${response.status}`);
-            if(polish.status===200&&!polish.text.includes('stable polish V30'))failures.push('polish_marker_missing');
+            for(const [name,response] of Object.entries({root,en,core,content,market,favicon,manifest}))if(response.status!==200)failures.push(`${name}=${response.status}`);
             if(![401,403].includes(mediaApi.status))failures.push(`mediaApi=${mediaApi.status}`);
             if(![401,403].includes(deliveryApi.status))failures.push(`deliveryApi=${deliveryApi.status}`);
             if(admin.status!==303||!String(admin.headers.location||'').includes('/admin-center/?module=operator'))failures.push(`admin=${admin.status}:${admin.headers.location||''}`);
+            if(core.text.includes('index-stable-polish-v30.css'))failures.push('core_v30_polish_present');
             for(const [name,response] of Object.entries({root,en})){
-              if(response.text.includes('/assets/index-polish-v1.css'))failures.push(`${name}_legacy_polish_present`);
+              if(!response.text.includes('public-visual-v13.css?v=20260626-stable-v28'))failures.push(`${name}_visual_v28_missing`);
+              if(!response.text.includes('public-menu-v13.js?v=20260626-stable-v28'))failures.push(`${name}_menu_v28_missing`);
+              if(!response.text.includes('index-content-resilience-v1.js?v=20260626-data-v28'))failures.push(`${name}_resilience_v28_missing`);
+              if(response.text.includes('index-runtime-lock-v31.js'))failures.push(`${name}_runtime_v31_present`);
+              if(response.text.includes('index-critical-v31.css'))failures.push(`${name}_critical_v31_present`);
+              if(response.text.includes('gallery-bootstrap.js')||response.text.includes('gallery-brand-safety.js'))failures.push(`${name}_gallery_mutator_present`);
               if(response.text.includes('class="gnk-index-title"'))failures.push(`${name}_hero_injector_present`);
-              if(!response.text.includes('20260626-stable-v30'))failures.push(`${name}_stable_visual_missing`);
-              if(!response.text.includes('index-redesign-production.css?v=20260626-stable-v30'))failures.push(`${name}_stable_index_css_missing`);
-              const placeholders=name==='root'
-                ? ['Učitavanje najnovijih vijesti','Učitavanje mreže','Učitavanje objava','class="market-value">Učitavanje']
-                : ['Loading latest news','Loading network','Loading publications','class="market-value">Loading'];
-              for(const marker of placeholders)if(response.text.includes(marker))failures.push(`${name}_placeholder=${marker}`);
+              if(response.headers['x-gnk-asg-public-visual']!=='GNK_ASG_PUBLIC_VISUAL_V28_STABLE_LAYOUT_RESILIENT_DATA_20260626')failures.push(`${name}_visual_header=${response.headers['x-gnk-asg-public-visual']||''}`);
+              if(response.headers['x-gnk-asg-index-layout-lock']!=='STABLE_SINGLE_MENU_NO_POLISH')failures.push(`${name}_layout_header=${response.headers['x-gnk-asg-index-layout-lock']||''}`);
             }
-            last={attempt,failures,codes:{deployment:deployment.status,health:health.status,root:root.status,en:en.status,content:content.status,market:market.status,polish:polish.status,favicon:favicon.status,manifest:manifest.status,mediaApi:mediaApi.status,deliveryApi:deliveryApi.status,admin:admin.status},status,healthData,headers:{root:root.headers,en:en.headers}};
+            last={attempt,failures,codes:{deployment:deployment.status,health:health.status,root:root.status,en:en.status,core:core.status,content:content.status,market:market.status,favicon:favicon.status,manifest:manifest.status,mediaApi:mediaApi.status,deliveryApi:deliveryApi.status,admin:admin.status},status,healthData,headers:{root:root.headers,en:en.headers}};
             console.log(JSON.stringify(last));
             if(!failures.length){console.log('GNK_ASG_CANONICAL_PRODUCTION_OK=true');process.exit(0);}
             await sleep(10000);
@@ -163,7 +211,7 @@ jobs:
           set -u
           base="https://gnk-asg.hr"
           echo "D1 migration outcome: ${{ steps.d1.outcome }}"
-          for path in / /en/ /assets/index-stable-polish-v30.css /data/deployment-status.json /data/platform-health.json /admin-center/ /operator-dashboard/ /media-command-center/ /api/media-command-center/status /api/media-command-center/delivery-status; do
+          for path in / /en/ /assets/index-redesign-production.css /data/deployment-status.json /data/platform-health.json /admin-center/ /operator-dashboard/ /media-command-center/ /api/media-command-center/status /api/media-command-center/delivery-status; do
             code=$(curl -sS -o /tmp/route.out -w '%{http_code}' "$base$path?cb=$(date +%s)" || true)
             echo "$path HTTP=$code"
           done
