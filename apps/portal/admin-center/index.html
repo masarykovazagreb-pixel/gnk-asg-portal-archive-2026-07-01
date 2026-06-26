@@ -4,50 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<title>GNK ASG Admin Center</title>
-<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260623-backend-3">
-<style>
-html,body{margin:0;min-height:100%;background:#020812;color:#f7f9fc;font-family:Inter,Arial,sans-serif}
-body{padding-top:112px!important}
-.admin-stage{width:min(1560px,calc(100% - 18px));margin:0 auto;padding:10px 0 18px}
-.admin-intro{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 17px;margin-bottom:10px;border:1px solid rgba(215,170,60,.42);border-radius:16px;background:linear-gradient(135deg,rgba(7,23,42,.98),rgba(10,33,59,.94));box-shadow:0 18px 55px rgba(0,0,0,.32)}
-.admin-intro h1{margin:0;font-size:20px;background:linear-gradient(90deg,#fff,#ffe08a);-webkit-background-clip:text;background-clip:text;color:transparent}
-.admin-intro p{margin:5px 0 0;color:#a9b7c9;font-size:12px}
-.admin-status{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid rgba(215,170,60,.42);border-radius:999px;font-size:10px;font-weight:900;text-transform:uppercase;white-space:nowrap}
-.admin-status i{width:8px;height:8px;border-radius:50%;background:#31d47c;box-shadow:0 0 12px #31d47c}
-.frame-wrap{position:relative;border:1px solid rgba(215,170,60,.46);border-radius:18px;overflow:hidden;background:#061426;box-shadow:0 28px 78px rgba(0,0,0,.46)}
-.admin-frame{display:block;width:100%;height:calc(100vh - 230px);min-height:720px;border:0;background:#061426}
-.frame-fallback{position:absolute;inset:auto 14px 14px;z-index:2;display:flex;justify-content:flex-end;pointer-events:none}.frame-fallback a{pointer-events:auto;padding:9px 12px;border:1px solid rgba(215,170,60,.48);border-radius:10px;background:rgba(2,8,18,.88);color:#fff;text-decoration:none;font-size:10px;font-weight:900;text-transform:uppercase}
-@media(max-width:900px){body{padding-top:154px!important}.admin-stage{width:calc(100% - 10px);padding-top:5px}.admin-intro{align-items:flex-start;flex-direction:column}.admin-frame{height:calc(100vh - 270px);min-height:650px}}
-</style>
+<title>GNK ASG Admin Dashboard</title>
+<link rel="stylesheet" href="/assets/admin-hub-v21.css?v=20260626-1">
 </head>
-<body class="gnk-backend-ui">
-<main class="admin-stage">
-  <section class="admin-intro">
-    <div><h1>GNK ASG Admin Center</h1><p>Jedinstveni sigurni ulaz u postojeći Operator Center. Autentifikacija, tokeni i funkcionalna logika ostaju nepromijenjeni.</p></div>
-    <span class="admin-status"><i></i> Zaštićeni operatorski sloj</span>
-  </section>
-  <div class="frame-wrap">
-    <iframe id="operatorFrame" class="admin-frame" src="/operator-dashboard/?embedded=1" title="GNK ASG Operator Center" allow="clipboard-read; clipboard-write"></iframe>
-    <div class="frame-fallback"><a href="/operator-dashboard/" target="_blank" rel="noopener">Otvori izvorni Operator Center</a></div>
-  </div>
-</main>
-<script src="/assets/backend-ui-shell.js?v=20260623-backend-3"></script>
-<script>
-(() => {
-  const frame = document.getElementById('operatorFrame');
-  frame?.addEventListener('load', () => {
-    try {
-      const doc = frame.contentDocument;
-      if (!doc?.body) return;
-      doc.body.classList.add('gnk-backend-embedded');
-      const link = doc.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = '/assets/backend-ui-shell.css?v=20260623-backend-3';
-      doc.head?.appendChild(link);
-    } catch (_) {}
-  });
-})();
-</script>
+<body>
+<div class="gnk-hub">
+  <aside class="gnk-hub-side">
+    <div class="gnk-hub-brand"><span>G</span><div><strong>GNK ASG Admin</strong><small>Operativni dashboard</small></div></div>
+    <nav id="gnkHubNav" aria-label="Administratorski moduli"></nav>
+    <p class="gnk-hub-note"><b>Jedinstveni sigurni ulaz.</b><br>Svi moduli koriste istu zaštićenu sesiju.</p>
+  </aside>
+  <main class="gnk-hub-main">
+    <header class="gnk-hub-top"><div><h1 id="gnkHubTitle">Admin pregled</h1><p id="gnkHubDescription">Status sustava i pristup privatnim modulima.</p></div><div><a id="gnkHubStandalone" href="/admin-center/" target="_blank" rel="noopener">Otvori zasebno</a><a class="primary" href="/">Javni portal</a></div></header>
+    <section id="gnkHubOverview" class="gnk-hub-panel active">
+      <article class="gnk-hub-hero"><small>GNK ASG Secure Operations Layer</small><h2>Jedan dashboard za cijeli privatni sustav</h2><p>Medijski komandni centar, Operator, Mail Studio, Auto Editor i ostali administrativni alati objedinjeni su u jednoj radnoj površini.</p><div id="gnkHubStatus" class="gnk-hub-status"><span>Provjera sustava…</span></div></article>
+      <div id="gnkHubCards" class="gnk-hub-cards"></div>
+    </section>
+    <section id="gnkHubModule" class="gnk-hub-panel">
+      <div class="gnk-hub-stage"><header><div><strong id="gnkHubModuleTitle"></strong><small id="gnkHubModuleHint"></small></div><button id="gnkHubReload" type="button">Osvježi</button></header><div id="gnkHubLoading" class="gnk-hub-loading">Učitavanje modula…</div><iframe id="gnkHubFrame" title="GNK ASG administratorski modul" allow="clipboard-read; clipboard-write" hidden></iframe></div>
+    </section>
+  </main>
+</div>
+<script src="/assets/admin-hub-v21.js?v=20260626-1" defer></script>
 </body>
 </html>
