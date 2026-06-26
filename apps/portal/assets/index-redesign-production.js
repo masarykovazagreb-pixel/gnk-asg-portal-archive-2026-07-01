@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
   'use strict';
 
   const lang = document.documentElement.lang === 'en' ? 'en' : 'hr';
@@ -8,14 +8,14 @@
 
   const copy = {
     hr: {
-      loading: 'UÄitavanjeâ€¦', noItems: 'TrenutaÄno nema dostupnih zapisa.',
-      openPublications: 'Otvori Objave', statusUnavailable: 'Javni feed trenutaÄno nije dostupan. Dostupne su povezane javne sekcije portala.',
-      groupAll: 'Sve', countdownDefault: 'VaÅ¾na objava za', countdownDone: 'Objava je dostupna',
-      mediaPlay: 'Pokreni sadrÅ¾aj', videoPlay: 'Pokreni video', presentationPlay: 'Pokreni prezentaciju',
-      mediaUnavailable: 'Medijski sadrÅ¾aj joÅ¡ nije objavljen.', days: 'dana', hours: 'sati', minutes: 'minuta', seconds: 'sekundi'
+      loading: 'Učitavanje…', noItems: 'Trenutačno nema dostupnih zapisa.',
+      openPublications: 'Otvori Objave', statusUnavailable: 'Javni feed trenutačno nije dostupan. Dostupne su povezane javne sekcije portala.',
+      groupAll: 'Sve', countdownDefault: 'Važna objava za', countdownDone: 'Objava je dostupna',
+      mediaPlay: 'Pokreni sadržaj', videoPlay: 'Pokreni video', presentationPlay: 'Pokreni prezentaciju',
+      mediaUnavailable: 'Medijski sadržaj još nije objavljen.', days: 'dana', hours: 'sati', minutes: 'minuta', seconds: 'sekundi'
     },
     en: {
-      loading: 'Loadingâ€¦', noItems: 'No entries are currently available.',
+      loading: 'Loading…', noItems: 'No entries are currently available.',
       openPublications: 'Open Publications', statusUnavailable: 'The public feed is temporarily unavailable. Related public portal sections remain available.',
       groupAll: 'All', countdownDefault: 'Important announcement in', countdownDone: 'The announcement is available',
       mediaPlay: 'Open content', videoPlay: 'Play video', presentationPlay: 'Open presentation',
@@ -131,7 +131,7 @@
       const titleEl = document.getElementById('featuredTitle');
       const summaryEl = document.getElementById('featuredSummary');
       const linkEl = document.getElementById('featuredLink');
-      if (titleEl) titleEl.textContent = title || (lang === 'en' ? 'Featured information' : 'KljuÄna informacija');
+      if (titleEl) titleEl.textContent = title || (lang === 'en' ? 'Featured information' : 'Ključna informacija');
       if (summaryEl) summaryEl.textContent = summary || '';
       if (linkEl) linkEl.href = link;
       const list = document.getElementById('latestNews');
@@ -156,9 +156,9 @@
         ['Brent', assets.brent?.price_usd ?? assets.brent?.price, ' USD']
       ];
       target.innerHTML = rows.map(([name, value, suffix]) => `
-        <div class="market-row"><span>${name}</span><b class="market-value">${value == null ? 'â€”' : Number(value).toLocaleString(lang === 'en' ? 'en-US' : 'hr-HR', { maximumFractionDigits: 2 }) + suffix}</b></div>`).join('');
+        <div class="market-row"><span>${name}</span><b class="market-value">${value == null ? '—' : Number(value).toLocaleString(lang === 'en' ? 'en-US' : 'hr-HR', { maximumFractionDigits: 2 }) + suffix}</b></div>`).join('');
     } catch (_) {
-      target.querySelectorAll('.market-value').forEach(el => { el.textContent = 'â€”'; });
+      target.querySelectorAll('.market-value').forEach(el => { el.textContent = '—'; });
     }
   }
 
@@ -198,7 +198,7 @@
         const center = data.center ? [data.center] : [];
         list.innerHTML = [...center, ...nodes].map(node => `
           <div class="location"><b>${esc(node.id === 'boulder' ? node.name : (lang === 'en' ? (node.name_en || node.name_hr) : (node.name_hr || node.name_en)))}</b>
-          <span>${esc(node.id === 'boulder' ? node.place : (lang === 'en' ? (node.place_en || node.place_hr) : (node.place_hr || node.place_en)))} Â· ${esc(node.region || '')}</span></div>`).join('');
+          <span>${esc(node.id === 'boulder' ? node.place : (lang === 'en' ? (node.place_en || node.place_hr) : (node.place_hr || node.place_en)))} · ${esc(node.region || '')}</span></div>`).join('');
       };
       render('all');
       tabs.querySelectorAll('button').forEach(button => button.addEventListener('click', () => {
@@ -206,7 +206,7 @@
         button.classList.add('active');
         render(button.dataset.region);
       }));
-      if (plannedList) plannedList.innerHTML = planned.map(node => `<li>${esc(lang === 'en' ? (node.name_en || node.name_hr) : (node.name_hr || node.name_en))} Â· ${esc(lang === 'en' ? (node.place_en || node.place_hr) : (node.place_hr || node.place_en))}</li>`).join('');
+      if (plannedList) plannedList.innerHTML = planned.map(node => `<li>${esc(lang === 'en' ? (node.name_en || node.name_hr) : (node.name_hr || node.name_en))} · ${esc(lang === 'en' ? (node.place_en || node.place_hr) : (node.place_hr || node.place_en))}</li>`).join('');
     } catch (_) {
       list.innerHTML = `<div class="location"><b>${copy.statusUnavailable}</b></div>`;
     }
@@ -269,7 +269,7 @@
     featured.classList.add('gnk-media-ready');
     featured.style.backgroundImage = `linear-gradient(90deg,rgba(2,9,19,.22),rgba(2,9,19,.96) 74%),url("${poster.replace(/"/g, '%22')}")`;
     featured.innerHTML = `
-      <button class="play gnk-media-play" type="button" aria-label="${esc(buttonLabel)}">â–¶</button>
+      <button class="play gnk-media-play" type="button" aria-label="${esc(buttonLabel)}">▶</button>
       <div class="featured-content"><p class="eyebrow">${type === 'pptx' ? 'PPTX / PDF' : 'Video'}</p><h3>${esc(title)}</h3><p>${esc(summary)}</p><button class="btn gnk-media-open" type="button">${esc(buttonLabel)}</button></div>
       <div class="gnk-media-stage" hidden></div>`;
 
@@ -325,49 +325,4 @@
   loadIndexExperience();
   window.addEventListener('load', repairIndexLayout, { once: true });
   [250, 900, 2200].forEach(delay => setTimeout(repairIndexLayout, delay));
-
-  
-
-  /* GNK_CODE_EMBED_JS_START */
-  function installCodeEmbed() {
-    const list = document.getElementById('locationList');
-    const host = list?.closest('.locations');
-    if (!list || !host) return;
-
-    let stage = document.getElementById('gnk-code-stage');
-    if (!stage) {
-      stage = document.createElement('div');
-      stage.id = 'gnk-code-stage';
-
-      const frame = document.createElement('iframe');
-      frame.src = '/assets/the-code-english.html';
-      frame.title = 'THE CODE — GNK DINAMO Ltd.';
-      frame.loading = 'lazy';
-      frame.setAttribute('allow', 'autoplay');
-      frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-      stage.appendChild(frame);
-      host.appendChild(stage);
-    }
-
-    const position = () => {
-      const hostRect = host.getBoundingClientRect();
-      const listRect = list.getBoundingClientRect();
-      const top = Math.max(0, Math.ceil(listRect.bottom - hostRect.top + 8));
-      host.style.setProperty('--gnk-code-top', `${top}px`);
-    };
-
-    position();
-    [250,900,1800].forEach(delay => window.setTimeout(position, delay));
-    if (!window.__gnkCodeEmbedResize) {
-      window.__gnkCodeEmbedResize = true;
-      window.addEventListener('resize', position);
-    }
-  }
-
-  installCodeEmbed();
-  window.addEventListener('load', installCodeEmbed, { once:true });
-  window.setTimeout(installCodeEmbed, 600);
-  window.setTimeout(installCodeEmbed, 1800);
-  /* GNK_CODE_EMBED_JS_END */
 })();
-
