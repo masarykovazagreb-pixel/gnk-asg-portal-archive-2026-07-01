@@ -102,4 +102,4 @@ jobs:
             cat /tmp/admin-mail-media-sms-live.json 2>/dev/null || echo '{"error":"verification_not_reached"}'
             echo '```'
           } > /tmp/admin-mail-media-sms-report.md
-          gh issue comment 131 --body-file /tmp/admin-mail-media-sms-report.md
+          gh issue comment 131 --repo "$GITHUB_REPOSITORY" --body-file /tmp/admin-mail-media-sms-report.md
