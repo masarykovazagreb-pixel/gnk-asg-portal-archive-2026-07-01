@@ -2,7 +2,7 @@ import app from './index-article-automation-v2.js';
 import { patchPublicHtml } from './public-shell-v11.js';
 import { hydrateIndexHtml, VERSION as HYDRATION_VERSION } from './index-server-hydration-v1.js';
 
-export const INDEX_LOCK_VERSION = 'GNK_ASG_INDEX_LOCK_V4_20260626_R2_HYDRATED';
+export const INDEX_LOCK_VERSION = 'GNK_ASG_INDEX_LOCK_V4_20260626';
 const INDEX_PATHS = new Map([
   ['/', '/index.html'],
   ['/en', '/en/index.html']
