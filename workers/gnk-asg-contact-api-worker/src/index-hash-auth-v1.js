@@ -1,4 +1,4 @@
-import core from './index.js';
+import core from './index-signature-v3.js';
 
 const PROTECTED = new Set([
   '/api/operator-send-mail',
