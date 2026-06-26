@@ -1,0 +1,65 @@
+name: GNK ASG Legacy News V6 Regex Fix
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  fix:
+    if: contains(github.event.issue.title, 'RUN GNK ASG LEGACY NEWS V6 REGEX FIX')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Correct dynamic RegExp escaping
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+          python - <<'PY'
+          from pathlib import Path
+          path=Path('workers/gnk-asg-direct-operator/src/index-publication-news-hotfix.js')
+          text=path.read_text(encoding='utf-8')
+          replacements=[
+            (r"new RegExp(`<${name}[^>]*>([\s\S]*?)<\/${name}>`,'i')",r"new RegExp(`<${name}[^>]*>([\\s\\S]*?)<\\/${name}>`,'i')"),
+            (r"new RegExp(`<${name}\b[^>]*\b${attribute}=[\"']([^\"']+)[\"'][^>]*>`,'i')",r"new RegExp(`<${name}\\b[^>]*\\b${attribute}=[\"']([^\"']+)[\"'][^>]*>`,'i')")
+          ]
+          for old,new in replacements:
+              count=text.count(old)
+              if count!=1: raise SystemExit(f'expected one match for {old!r}, found {count}')
+              text=text.replace(old,new,1)
+          path.write_text(text,encoding='utf-8')
+          PY
+          node --check workers/gnk-asg-direct-operator/src/index-publication-news-hotfix.js
+          grep -Fq '([\\s\\S]*?)' workers/gnk-asg-direct-operator/src/index-publication-news-hotfix.js
+          grep -Fq '${name}\\b' workers/gnk-asg-direct-operator/src/index-publication-news-hotfix.js
+      - name: Commit
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add workers/gnk-asg-direct-operator/src/index-publication-news-hotfix.js
+          git commit -m 'Fix RSS parser RegExp escaping in legacy news V6'
+          git pull --rebase origin main
+          node --check workers/gnk-asg-direct-operator/src/index-publication-news-hotfix.js
+          git push origin HEAD:main
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Report
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --body "legacy_news_v6_regex_commit=${{ steps.commit.outputs.sha }} workflow=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
