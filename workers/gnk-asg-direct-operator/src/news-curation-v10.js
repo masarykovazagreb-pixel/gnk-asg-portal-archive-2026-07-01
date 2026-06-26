@@ -41,8 +41,10 @@ function tag(block,name){return decode(rawTag(block,name))}
 function attr(block,name,attribute){const match=String(block||'').match(new RegExp(`<${name}\\b[^>]*\\b${attribute}=["']([^"']+)["'][^>]*>`,'i'));return match?decode(match[1]):''}
 function itemLink(block){const direct=tag(block,'link');if(/^https?:\/\//i.test(direct))return direct;const match=String(block||'').match(/<link[^>]+href=["']([^"']+)["']/i);return match?decode(match[1]):''}
 function validHttpUrl(value,base=''){
+  const raw=String(value||'').trim();
+  if(!raw)return '';
   try{
-    const url=new URL(String(value||''),base||undefined);
+    const url=new URL(raw,base||undefined);
     return /^https?:$/.test(url.protocol)?url.href:'';
   }catch{return''}
 }
