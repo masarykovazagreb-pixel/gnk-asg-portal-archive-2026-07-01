@@ -1,0 +1,63 @@
+name: Deploy V31 head runtime fix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-v31-head-fix.yml'
+      - '.github/deploy-v31-head-fix.trigger'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: gnk-asg-v31-head-fix
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Verify head runtime package
+        run: |
+          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check apps/portal/assets/index-runtime-lock-v31.js
+          grep -q 'GNK_ASG_PUBLIC_VISUAL_V31_INDEX_RUNTIME_LOCK_HEAD_20260626' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q 'const headRuntime=' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q 'index-runtime-lock-v31.js?v=20260626-v31"></script>' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Deploy to Cloudflare
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify production head lock
+        run: |
+          node <<'JS'
+          const base='https://gnk-asg.hr';
+          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+          async function get(path){const r=await fetch(`${base}${path}?cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});return{status:r.status,text:await r.text()}}
+          for(let i=0;i<8;i++){
+            const [hr,en]=await Promise.all([get('/'),get('/en/')]);
+            const ok=[hr,en].every(r=>r.status===200&&r.text.includes('index-runtime-lock-v31.js?v=20260626-v31')&&r.text.indexOf('index-runtime-lock-v31.js')<r.text.indexOf('</head>'));
+            if(ok)process.exit(0);
+            await sleep(10000);
+          }
+          process.exit(1);
+          JS
+      - name: Report result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+          JOB_STATUS: ${{ job.status }}
+        run: gh issue comment 101 --body "V31 head runtime deploy **${JOB_STATUS}** · commit \`${RUN_SHA}\` · ${RUN_URL}"
