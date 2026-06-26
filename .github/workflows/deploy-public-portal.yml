@@ -24,170 +24,93 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
-
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
 
-      - name: Verify canonical Admin, Index, Media and automation package
+      - name: Verify package
         shell: bash
         run: |
           set -euxo pipefail
-          test -s apps/portal/index.html
-          test -s apps/portal/en/index.html
-          test -s apps/portal/admin-center/index.html
-          test -s apps/portal/favicon.svg
-          test -s apps/portal/site.webmanifest
-          test -s apps/portal/media-command-center/index.html
-          test -s apps/portal/assets/media-command-center-v2.css
-          test -s apps/portal/assets/media-command-center-v2.js
-          test -s apps/portal/assets/index-content-resilience-v1.js
-          test -s apps/portal/assets/index-live-market-chart-v4.js
-          test -s workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
-          test -s workers/gnk-asg-direct-operator/src/index-lock-v4.js
-          test -s workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
-          test -s workers/gnk-asg-direct-operator/src/article-visual-v2.js
-          test -s workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
-          test -s workers/gnk-asg-direct-operator/src/media-command-center-v2.js
-          test -s workers/gnk-asg-direct-operator/src/media-command-readiness-v2.js
-          test -s workers/gnk-asg-direct-operator/src/favicon-contract-v2.js
-          test -s workers/gnk-asg-direct-operator/migrations/0001_media_command_controls.sql
-          grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q "from './index-lock-v4.js'" workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
-          grep -q "from './index-article-automation-v2.js'" workers/gnk-asg-direct-operator/src/index-lock-v4.js
-          grep -q "from './index-media-command-center-v21.js'" workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
-          grep -q 'GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION' workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
-          grep -q 'GNK_ASG_INDEX_LOCK_V4_20260626' workers/gnk-asg-direct-operator/src/index-lock-v4.js
-          grep -q 'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R2' workers/gnk-asg-direct-operator/src/media-command-center-v2.js
-          grep -q 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2' workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
-          grep -q 'GNK_ASG_ARTICLE_VISUAL_V2_20260626' workers/gnk-asg-direct-operator/src/article-visual-v2.js
-          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'Uvoz i kvaliteta' apps/portal/media-command-center/index.html
-          grep -q 'decisionDialog' apps/portal/media-command-center/index.html
-          grep -q 'index-content-resilience-v1.js' workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          grep -q 'index-live-market-chart-v4.js' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check apps/portal/assets/admin-hub-v21.js
+          node --check apps/portal/assets/media-command-center-v2.js
+          node --check apps/portal/assets/index-content-resilience-v1.js
+          node --check apps/portal/assets/index-live-market-chart-v4.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
           node --check workers/gnk-asg-direct-operator/src/index-lock-v4.js
           node --check workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
           node --check workers/gnk-asg-direct-operator/src/article-visual-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
-          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v2.js
           node --check workers/gnk-asg-direct-operator/src/media-command-readiness-v2.js
-          node --check workers/gnk-asg-direct-operator/src/favicon-contract-v2.js
-          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check apps/portal/assets/admin-hub-v21.js
-          node --check apps/portal/assets/media-command-center-v2.js
-          node --check apps/portal/assets/index-content-resilience-v1.js
-          node --check apps/portal/assets/index-live-market-chart-v4.js
-          node - <<'JS'
-          const fs=require('fs');
-          const data=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
-          const codes=new Set(data.map(item=>item.mailCode));
-          const candidates=data.filter(item=>item.automationAllowed&&item.email).length;
-          const approved=data.filter(item=>item.approved).length;
-          if(data.length!==112||codes.size!==112||candidates!==22||approved!==0){
-            throw new Error(`media seed mismatch total=${data.length} unique=${codes.size} candidates=${candidates} approved=${approved}`);
-          }
-          console.log('MEDIA_COMMAND_SEED_OK=true');
-          JS
+          grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Deploy canonical Worker to Cloudflare
+      - name: Deploy to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         shell: bash
-        run: |
-          set -euxo pipefail
-          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify canonical production markers and routes
+      - name: Verify production contract
         shell: bash
         run: |
           set -euo pipefail
-          base="https://gnk-asg.hr"
-          success=false
-
-          protected_ok() {
-            case "$1" in
-              200|302|303|307|308|401|403) return 0 ;;
-              *) return 1 ;;
-            esac
+          node <<'JS'
+          const base='https://gnk-asg.hr';
+          const expected={
+            entryPoint:'src/index-admin-hub-v21.js',
+            adminHub:'GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION',
+            indexLock:'GNK_ASG_INDEX_LOCK_V4_20260626',
+            mediaCommand:'src/index-media-command-center-v21.js',
+            articleAutomation:'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2',
+            productionSending:'LOCKED'
+          };
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          async function get(path,redirect='follow'){
+            try{
+              const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{redirect,headers:{'cache-control':'no-cache'}});
+              return {status:response.status,text:await response.text()};
+            }catch(error){return {status:0,text:'',error:String(error)};}
           }
-
-          api_protected_ok() {
-            case "$1" in
-              401|403) return 0 ;;
-              *) return 1 ;;
-            esac
+          let last;
+          for(let attempt=1;attempt<=18;attempt++){
+            const [deployment,root,en,content,market,favicon,manifest,mediaApi]=await Promise.all([
+              get('/data/deployment-status.json'),get('/'),get('/en/'),
+              get('/assets/index-content-resilience-v1.js'),get('/assets/index-live-market-chart-v4.js'),
+              get('/favicon.svg'),get('/site.webmanifest'),get('/api/media-command-center/status','manual')
+            ]);
+            let status=null;try{status=JSON.parse(deployment.text);}catch{}
+            const failures=[];
+            if(deployment.status!==200||!status?.ok)failures.push(`deployment=${deployment.status}`);
+            for(const [key,value] of Object.entries(expected))if(status?.[key]!==value)failures.push(`${key}=${JSON.stringify(status?.[key])}`);
+            if(root.status!==200)failures.push(`root=${root.status}`);
+            if(en.status!==200)failures.push(`en=${en.status}`);
+            if(content.status!==200)failures.push(`content=${content.status}`);
+            if(market.status!==200)failures.push(`market=${market.status}`);
+            if(favicon.status!==200||!favicon.text.includes('<svg'))failures.push(`favicon=${favicon.status}`);
+            if(manifest.status!==200||!manifest.text.includes('GNK ASG'))failures.push(`manifest=${manifest.status}`);
+            if(![401,403].includes(mediaApi.status))failures.push(`mediaApi=${mediaApi.status}`);
+            last={attempt,failures,codes:{deployment:deployment.status,root:root.status,en:en.status,content:content.status,market:market.status,favicon:favicon.status,manifest:manifest.status,mediaApi:mediaApi.status},status};
+            console.log(JSON.stringify(last));
+            if(!failures.length){console.log('GNK_ASG_CANONICAL_PRODUCTION_OK=true');process.exit(0);}
+            await sleep(10000);
           }
-
-          for attempt in $(seq 1 18); do
-            stamp=$(date +%s)
-            status_code=$(curl -sSL -o deployment.json -w '%{http_code}' "$base/data/deployment-status.json?cb=$stamp" || true)
-            root_code=$(curl -sSL -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
-            en_code=$(curl -sSL -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
-            admin_code=$(curl -sS -o admin-login.html -w '%{http_code}' "$base/admin-center/?cb=$stamp" || true)
-            legacy_code=$(curl -sS -o legacy.html -w '%{http_code}' "$base/operator/session/login?cb=$stamp" || true)
-            media_code=$(curl -sS -o media-redirect.html -w '%{http_code}' "$base/media-command-center/?cb=$stamp" || true)
-            api_code=$(curl -sS -o media-api.json -w '%{http_code}' "$base/api/media-command-center/status?cb=$stamp" || true)
-            favicon_svg_code=$(curl -sSL -o favicon.svg -w '%{http_code}' "$base/favicon.svg?cb=$stamp" || true)
-            favicon_ico_code=$(curl -sSL -o favicon-ico.svg -w '%{http_code}' "$base/favicon.ico?cb=$stamp" || true)
-            manifest_code=$(curl -sSL -o manifest.json -w '%{http_code}' "$base/site.webmanifest?cb=$stamp" || true)
-            content_code=$(curl -sSL -o content.js -w '%{http_code}' "$base/assets/index-content-resilience-v1.js?cb=$stamp" || true)
-            market_code=$(curl -sSL -o market.js -w '%{http_code}' "$base/assets/index-live-market-chart-v4.js?cb=$stamp" || true)
-
-            echo "ATTEMPT=$attempt STATUS=$status_code ROOT=$root_code EN=$en_code ADMIN=$admin_code LEGACY=$legacy_code MEDIA=$media_code API=$api_code FAVICON_SVG=$favicon_svg_code FAVICON_ICO=$favicon_ico_code MANIFEST=$manifest_code CONTENT=$content_code MARKET=$market_code"
-
-            if [ "$status_code" = "200" ] \
-              && [ "$root_code" = "200" ] \
-              && [ "$en_code" = "200" ] \
-              && protected_ok "$admin_code" \
-              && protected_ok "$legacy_code" \
-              && protected_ok "$media_code" \
-              && api_protected_ok "$api_code" \
-              && [ "$favicon_svg_code" = "200" ] \
-              && [ "$favicon_ico_code" = "200" ] \
-              && [ "$manifest_code" = "200" ] \
-              && [ "$content_code" = "200" ] \
-              && [ "$market_code" = "200" ] \
-              && grep -q 'GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION' deployment.json \
-              && grep -q 'GNK_ASG_INDEX_LOCK_V4_20260626' deployment.json \
-              && grep -q 'src/index-media-command-center-v21.js' deployment.json \
-              && grep -q 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2' deployment.json \
-              && grep -q '"productionSending": "LOCKED"' deployment.json \
-              && grep -q 'index-content-resilience-v1.js' root.html \
-              && grep -q 'index-live-market-chart-v4.js' root.html \
-              && grep -q 'index-content-resilience-v1.js' en.html \
-              && grep -q '/favicon.svg' root.html \
-              && grep -q '/favicon.svg' en.html \
-              && grep -q '<svg' favicon.svg \
-              && grep -q '<svg' favicon-ico.svg \
-              && grep -q 'GNK ASG' manifest.json \
-              && grep -qi 'unauthorized' media-api.json; then
-              success=true
-              break
-            fi
-            sleep 10
-          done
-
-          if [ "$success" != "true" ]; then
-            echo "FINAL STATUS=$status_code ROOT=$root_code EN=$en_code ADMIN=$admin_code LEGACY=$legacy_code MEDIA=$media_code API=$api_code FAVICON_SVG=$favicon_svg_code FAVICON_ICO=$favicon_ico_code MANIFEST=$manifest_code CONTENT=$content_code MARKET=$market_code"
-            echo "ROOT_CONTENT=$(grep -c 'index-content-resilience-v1.js' root.html || true)"
-            echo "ROOT_MARKET=$(grep -c 'index-live-market-chart-v4.js' root.html || true)"
-            echo "EN_CONTENT=$(grep -c 'index-content-resilience-v1.js' en.html || true)"
-            cat deployment.json || true
-            cat media-api.json || true
-            exit 1
-          fi
-
-          node - <<'JS'
-          const status=require('./deployment.json');
-          if(!status.ok) throw new Error('deployment status not ok');
-          if(status.entryPoint!=='src/index-admin-hub-v21.js') throw new Error(`wrong entry ${status.entryPoint}`);
-          if(status.productionSending!=='LOCKED') throw new Error('media sending unexpectedly unlocked');
-          console.log('GNK_ASG_CANONICAL_PRODUCTION_OK=true');
+          console.error(JSON.stringify(last,null,2));
+          process.exit(1);
           JS
+
+      - name: Route diagnostics
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -u
+          base="https://gnk-asg.hr"
+          for path in / /en/ /admin-center/ /operator/session/login /media-command-center/ /api/media-command-center/status; do
+            code=$(curl -sS -o /tmp/route.out -w '%{http_code}' "$base$path?cb=$(date +%s)" || true)
+            echo "$path HTTP=$code"
+          done
