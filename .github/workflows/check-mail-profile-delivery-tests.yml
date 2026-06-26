@@ -1,0 +1,93 @@
+name: Check Mail Profile Delivery Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/check-mail-profile-delivery-tests.yml'
+      - 'apps/portal/assets/mail-studio-profile-test-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-profile-delivery-test-v1.js'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/mail-studio-profile-test-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
+          node --check workers/gnk-asg-direct-operator/src/mail-profile-delivery-test-v1.js
+
+      - name: Verify generated server signatures
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {enforceRequiredSignature,VERSION} from './workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js';
+
+          const newMessage=enforceRequiredSignature({
+            from:{name:'GNK ASG Office',email:'office@gnk-asg.hr'},
+            text:'Interna testna poruka.',
+            html:'<p>Interna testna poruka.</p>'
+          });
+          const legacyMessage=enforceRequiredSignature({
+            from:{name:'GNK ASG Legal',email:'legal@gnk-asg.hr'},
+            text:'GNK ASG d.o.o.\nOIB: 75227917632\nTelefon: +385 91 535 8365\nWeb: https://gnk-asg.hr',
+            html:'<table data-gnk-asg-signature="legacy"><tr><td>GNK ASG d.o.o.<div>OIB: 75227917632</div><div>Telefon: 091 535 8365</div><div>Web: https://gnk-asg.hr</div></td></tr></table>'
+          });
+          for(const [name,payload] of Object.entries({newMessage,legacyMessage})){
+            assert.match(payload.text,/\+385 \(0\) 916104398/,`${name} text new number`);
+            assert.match(payload.text,/https:\/\/wa\.me\/385916104398/,`${name} text WhatsApp`);
+            assert.match(payload.html,/\+385 \(0\) 916104398/,`${name} html new number`);
+            assert.match(payload.html,/https:\/\/wa\.me\/385916104398/,`${name} html WhatsApp`);
+            assert.doesNotMatch(payload.text,/(?:\+385\s*91\s*535\s*8365|091\s*535\s*8365)/,`${name} text old number`);
+            assert.doesNotMatch(payload.html,/(?:\+385\s*91\s*535\s*8365|091\s*535\s*8365)/,`${name} html old number`);
+            assert.equal(payload.headers['X-GNK-ASG-Signature-Contract'],VERSION);
+          }
+          console.log(JSON.stringify({ok:true,version:VERSION,phone:'+385 (0) 916104398',whatsApp:'https://wa.me/385916104398'}));
+          JS
+
+      - name: Verify delivery safety gates
+        shell: bash
+        run: |
+          set -euxo pipefail
+          grep -q "SEND_PROFILE_TESTS" workers/gnk-asg-direct-operator/src/mail-profile-delivery-test-v1.js
+          grep -q "profile_test_sending_locked" workers/gnk-asg-direct-operator/src/mail-profile-delivery-test-v1.js
+          grep -q "recipient_not_allowlisted" workers/gnk-asg-direct-operator/src/mail-profile-delivery-test-v1.js
+          grep -q "MAIL_PROFILE_TEST_RECIPIENTS" workers/gnk-asg-direct-operator/src/mail-profile-delivery-test-v1.js
+          grep -q "profileAuth" workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
+          grep -q "/api/operator-auth-check" workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
+          grep -q "Potvrđujem slanje pet zasebnih internih testnih poruka" apps/portal/assets/mail-studio-profile-test-v1.js
+
+      - name: Verify canonical config and locked index are untouched
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euxo pipefail
+          grep -q 'main = "src/index-admin-hub-v23-aktual.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|apps/portal/assets/index-redesign-production.*|apps/portal/assets/public-.*|apps/portal/assets/iq200/.*|workers/gnk-asg-direct-operator/src/public-shell-v11\.js|workers/gnk-asg-direct-operator/wrangler\.toml)$'; then
+            echo 'Locked index or canonical deployment configuration changed.' >&2
+            exit 1
+          fi
