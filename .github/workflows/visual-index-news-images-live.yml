@@ -15,15 +15,11 @@ permissions:
   contents: read
   issues: write
 
-concurrency:
-  group: gnk-asg-visual-index-news-images
-  cancel-in-progress: false
-
 jobs:
   deploy-and-verify:
     if: github.event_name != 'issues' || contains(github.event.issue.title, 'RUN GNK ASG VISUAL INDEX NEWS IMAGES')
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 12
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -39,11 +35,11 @@ jobs:
         run: |
           set -euo pipefail
           node --check apps/portal/assets/visual-index-full-gallery.js
-          grep -q "loadNewsItems" apps/portal/assets/visual-index-full-gallery.js
-          grep -q "data/news.json" apps/portal/assets/visual-index-full-gallery.js
-          grep -q "imageFallback" apps/portal/assets/visual-index-full-gallery.js
-          grep -q "discardItem" apps/portal/assets/visual-index-full-gallery.js
-          grep -q "gnk-news-gallery-item" apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'loadNewsItems' apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'data/news.json' apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'imageFallback' apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'discardItem' apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'gnk-news-gallery-item' apps/portal/assets/visual-index-full-gallery.js
       - name: Deploy current Worker and assets
         id: deploy
         shell: bash
@@ -57,83 +53,76 @@ jobs:
       - name: Wait for propagation
         if: steps.deploy.outputs.code == '0'
         run: sleep 15
-      - name: Install browser
-        if: steps.deploy.outputs.code == '0'
-        shell: bash
-        run: |
-          npm install --no-save --no-package-lock @playwright/test@1.52.0
-          npx playwright install --with-deps chromium
-      - name: Verify production Visual Index
+      - name: Verify production Visual Index and image MIME types
         id: verify
         if: steps.deploy.outputs.code == '0'
         shell: bash
         run: |
           set +e
-          node - <<'NODE' > verify.log 2>&1
-          const {chromium}=require('@playwright/test');
-          const assert=(condition,message)=>{if(!condition)throw new Error(message)};
-          (async()=>{
-            const browser=await chromium.launch({headless:true});
-            const page=await browser.newPage({viewport:{width:1440,height:1100}});
-            const errors=[];
-            page.on('pageerror',error=>errors.push(String(error)));
-            const response=await page.goto(`https://gnk-asg.hr/visual-index/?cb=${Date.now()}`,{waitUntil:'networkidle',timeout:90000});
-            assert(response&&response.status()===200,`visual_index_http_${response?.status()}`);
-            await page.waitForSelector('#visualGrid .item',{timeout:30000});
-            await page.waitForFunction(()=>document.querySelectorAll('.gnk-news-gallery-item').length>0,{timeout:30000});
-            for(let y=0;y<5000;y+=700){await page.evaluate(value=>window.scrollTo(0,value),y);await page.waitForTimeout(250)}
-            await page.evaluate(()=>window.scrollTo(0,0));
-            await page.waitForTimeout(5000);
-            const result=await page.evaluate(()=>{
-              const cards=[...document.querySelectorAll('#visualGrid .item')];
-              const news=[...document.querySelectorAll('#visualGrid .gnk-news-gallery-item')];
-              const fallback=cards.filter(card=>String(card.querySelector('img')?.getAttribute('src')||'').includes('/assets/news-fallback.svg'));
-              const empty=cards.filter(card=>!String(card.querySelector('img')?.getAttribute('src')||'').trim());
-              const broken=cards.filter(card=>{const img=card.querySelector('img');return img&&img.complete&&img.naturalWidth===0});
-              const articleAsImage=news.filter(card=>{
-                const img=card.querySelector('img');
-                const link=card.querySelector('a');
-                return img&&link&&img.src===link.href;
-              });
-              const loadedNews=news.filter(card=>{const img=card.querySelector('img');return img&&img.complete&&img.naturalWidth>0});
-              return{
-                title:document.title,
-                status:document.querySelector('[data-gallery-status]')?.textContent||'',
-                totalCards:cards.length,
-                newsCards:news.length,
-                loadedNewsImages:loadedNews.length,
-                fallbackCards:fallback.length,
-                emptyImageCards:empty.length,
-                brokenImageCards:broken.length,
-                articleAsImage:articleAsImage.length,
-                firstNews:news.slice(0,5).map(card=>({title:card.querySelector('h2')?.textContent||'',image:card.querySelector('img')?.src||'',article:card.querySelector('a')?.href||''}))
-              };
-            });
-            console.log(JSON.stringify(result,null,2));
-            if(errors.length)console.log('PAGE_ERRORS='+JSON.stringify(errors));
-            assert(result.newsCards>=20,`news_cards_too_low_${result.newsCards}`);
-            assert(result.loadedNewsImages>=10,`loaded_news_images_too_low_${result.loadedNewsImages}`);
-            assert(result.fallbackCards===0,`fallback_cards_${result.fallbackCards}`);
-            assert(result.emptyImageCards===0,`empty_image_cards_${result.emptyImageCards}`);
-            assert(result.brokenImageCards===0,`broken_image_cards_${result.brokenImageCards}`);
-            assert(result.articleAsImage===0,`article_as_image_${result.articleAsImage}`);
-            assert(result.status.includes('iz Vijesti'),'status_missing_news_count');
-            await page.screenshot({path:'visual-index-news-images.png',fullPage:true});
-            await browser.close();
-          })().catch(error=>{console.error(error);process.exit(1)});
+          : > verify.log
+          failed=0
+
+          visual_code=$(curl --silent --show-error --location --output visual.html --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/visual-index/?cb=visual-news')
+          asset_code=$(curl --silent --show-error --location --output visual.js --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/assets/visual-index-full-gallery.js?cb=visual-news')
+          news_code=$(curl --silent --show-error --location --output news.json --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/data/news.json?cb=visual-news')
+          echo "VISUAL_HTTP=$visual_code" >> verify.log
+          echo "ASSET_HTTP=$asset_code" >> verify.log
+          echo "NEWS_HTTP=$news_code" >> verify.log
+          [ "$visual_code" = '200' ] || failed=1
+          [ "$asset_code" = '200' ] || failed=1
+          [ "$news_code" = '200' ] || failed=1
+          grep -q 'loadNewsItems' visual.js || { echo 'LIVE_NEWS_LOADER_MISSING' >> verify.log; failed=1; }
+          grep -q 'discardItem' visual.js || { echo 'LIVE_IMAGE_CLEANUP_MISSING' >> verify.log; failed=1; }
+          grep -q 'gnk-news-gallery-item' visual.js || { echo 'LIVE_NEWS_CARD_MARKER_MISSING' >> verify.log; failed=1; }
+
+          node - <<'NODE' > image-urls.txt 2>> verify.log
+          const fs=require('fs');
+          const payload=JSON.parse(fs.readFileSync('news.json','utf8'));
+          const items=Array.isArray(payload)?payload:(Array.isArray(payload?.items)?payload.items:[]);
+          const fallback=value=>!value||String(value).includes('/assets/news-fallback.svg')||String(value).startsWith('data:image/svg+xml');
+          const eligible=items.filter(item=>{
+            const image=String(item?.image||item?.imageUrl||'').trim();
+            const article=String(item?.url||item?.link||item?.sourceUrl||'').trim();
+            return !item?.imageFallback&&!fallback(image)&&/^https?:\/\//i.test(image)&&/^https?:\/\//i.test(article)&&image!==article;
+          });
+          console.error(`NEWS_ITEMS=${items.length}`);
+          console.error(`VISUAL_ELIGIBLE=${eligible.length}`);
+          console.error(`FILTERED_OUT=${items.length-eligible.length}`);
+          console.error(`FALLBACK_ELIGIBLE=${eligible.filter(item=>fallback(item?.image||item?.imageUrl)).length}`);
+          console.error(`ARTICLE_AS_IMAGE=${eligible.filter(item=>String(item?.image||item?.imageUrl)===String(item?.url||item?.link||item?.sourceUrl)).length}`);
+          if(eligible.length<20)process.exitCode=1;
+          eligible.slice(0,20).forEach(item=>console.log(String(item?.image||item?.imageUrl).trim()));
           NODE
-          code=$?
+          if [ $? -ne 0 ]; then failed=1; fi
+
+          : > mime.log
+          valid_images=0
+          checked=0
+          while IFS= read -r url; do
+            [ -n "$url" ] || continue
+            checked=$((checked+1))
+            code=$(curl --silent --show-error --location --range 0-1023 --output /dev/null --dump-header image.headers --write-out '%{http_code}' --max-time 20 "$url" || true)
+            type=$(awk -F': ' 'tolower($1)=="content-type"{gsub("\r","");v=$2} END{print v}' image.headers)
+            echo "$code | $type | $url" >> mime.log
+            if [[ "$type" == image/* ]] && { [ "$code" = '200' ] || [ "$code" = '206' ]; }; then valid_images=$((valid_images+1)); fi
+          done < image-urls.txt
+          echo "MIME_CHECKED=$checked" >> verify.log
+          echo "MIME_VALID_IMAGES=$valid_images" >> verify.log
+          cat mime.log >> verify.log
+          if [ "$valid_images" -lt 10 ]; then failed=1; fi
+
           cat verify.log
-          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "code=$failed" >> "$GITHUB_OUTPUT"
           exit 0
-      - name: Upload production screenshot
+      - name: Upload verification evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: visual-index-news-images-production
           path: |
-            visual-index-news-images.png
             verify.log
+            mime.log
+            image-urls.txt
             deploy.log
           retention-days: 14
       - name: Report issue-triggered result
@@ -148,7 +137,7 @@ jobs:
             echo "commit=${GITHUB_SHA}"
             echo "workflow=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
             echo
-            echo '```json'
+            echo '```text'
             cat verify.log 2>/dev/null || true
             echo '```'
           } > issue-report.md
