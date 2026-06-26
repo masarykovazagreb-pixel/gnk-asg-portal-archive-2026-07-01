@@ -1,9 +1,9 @@
 import app from './index-media-command-center-v20.js';
 import {handleMediaCommandCenter as handleV2,VERSION as CONTROL_SYNC_VERSION} from './media-command-control-sync-v3.js';
-import {handleMediaDelivery,processDeliveryQueue,VERSION as DELIVERY_VERSION} from './media-outreach-delivery-v4.js';
+import {handleMediaDelivery,processDeliveryQueue,VERSION as DELIVERY_VERSION,INTERNAL_TEST_PATH} from './media-outreach-delivery-v5.js';
 import {enrichContactItems,getReadinessSummary,VERSION as READINESS_VERSION} from './media-command-readiness-v2.js';
 
-export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R6_DELIVERY_SYNC';
+export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R7_INTERNAL_TEST';
 const CONTROL_ENDPOINTS=new Set([
   '/api/media-command-center/handoff-manifest',
   '/api/media-command-center/import-preview',
@@ -63,6 +63,7 @@ async function protectedEndpoint(request,env,ctx,handler){
 export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
+    if(path===INTERNAL_TEST_PATH)return stamp(await handleMediaDelivery(request,env));
     if(CONTROL_ENDPOINTS.has(path))return protectedEndpoint(request,env,ctx,handleV2);
     if(DELIVERY_ENDPOINTS.has(path))return protectedEndpoint(request,env,ctx,handleMediaDelivery);
     let response=await app.fetch(request,env,ctx);
