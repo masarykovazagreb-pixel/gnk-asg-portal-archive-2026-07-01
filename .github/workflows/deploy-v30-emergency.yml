@@ -114,4 +114,4 @@ jobs:
         shell: bash
         run: |
           diagnostic=$(cat /tmp/v30-diagnostic.json 2>/dev/null || printf '{"error":"production_verification_not_reached"}')
-          gh issue comment 91 --body "Emergency V30 index deploy **${JOB_STATUS}** · commit \`${RUN_SHA}\` · ${RUN_URL}\n\n\`\`\`json\n${diagnostic}\n\`\`\`"
+          gh issue comment 100 --body "Emergency V30 index deploy **${JOB_STATUS}** · commit \`${RUN_SHA}\` · ${RUN_URL}\n\n\`\`\`json\n${diagnostic}\n\`\`\`"
