@@ -1,0 +1,6 @@
+GNK_ASG_PUBLIC_PORTAL_AUDIT_V1_20260626
+source=sitemaps_and_critical_routes
+http=all_discovered_routes
+browser=desktop_and_mobile
+screenshots=failures_and_key_pages
+nonce=1
