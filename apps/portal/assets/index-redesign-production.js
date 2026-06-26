@@ -326,59 +326,48 @@
   window.addEventListener('load', repairIndexLayout, { once: true });
   [250, 900, 2200].forEach(delay => setTimeout(repairIndexLayout, delay));
 
-  /* GNK_LOCATION_SLIDESHOW_JS_START */
-  function installLocationSlideshow() {
+  
+
+  /* GNK_CODE_EMBED_JS_START */
+  function installCodeEmbed() {
     const list = document.getElementById('locationList');
     const host = list?.closest('.locations');
-
     if (!list || !host) return;
 
-    let box = document.getElementById('gnk-location-slideshow');
+    let stage = document.getElementById('gnk-code-stage');
+    if (!stage) {
+      stage = document.createElement('div');
+      stage.id = 'gnk-code-stage';
 
-    if (!box) {
-      box = document.createElement('div');
-      box.id = 'gnk-location-slideshow';
-      box.innerHTML =
-        '<img class="is-active" src="/assets/brand/index-slide-1.webp" alt="GNK ASG Global Network">' +
-        '<img src="/assets/brand/index-slide-2.webp" alt="GNK DINAMO Ltd. Group New York">';
-
-      host.appendChild(box);
-
-      const slides = [...box.querySelectorAll('img')];
-      let active = 0;
-
-      window.__gnkLocationSlideshowTimer = window.setInterval(() => {
-        slides[active].classList.remove('is-active');
-        active = (active + 1) % slides.length;
-        slides[active].classList.add('is-active');
-      }, 10000);
+      const frame = document.createElement('iframe');
+      frame.src = '/assets/the-code-english.html';
+      frame.title = 'THE CODE — GNK DINAMO Ltd.';
+      frame.loading = 'lazy';
+      frame.setAttribute('allow', 'autoplay');
+      frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+      stage.appendChild(frame);
+      host.appendChild(stage);
     }
 
-    const positionSlideshow = () => {
+    const position = () => {
       const hostRect = host.getBoundingClientRect();
       const listRect = list.getBoundingClientRect();
-      const availableTop = Math.ceil(listRect.bottom - hostRect.top + 8);
-      const maximumTop = Math.max(0, host.clientHeight - 120);
-      const top = Math.min(Math.max(availableTop, 0), maximumTop);
-
-      host.style.setProperty('--gnk-slide-top', `${top}px`);
+      const top = Math.max(0, Math.ceil(listRect.bottom - hostRect.top + 8));
+      host.style.setProperty('--gnk-code-top', `${top}px`);
     };
 
-    positionSlideshow();
-
-    window.setTimeout(positionSlideshow, 300);
-    window.setTimeout(positionSlideshow, 1000);
-    window.setTimeout(positionSlideshow, 2500);
-
-    if (!window.__gnkLocationSlideshowResize) {
-      window.__gnkLocationSlideshowResize = true;
-      window.addEventListener('resize', positionSlideshow);
+    position();
+    [250,900,1800].forEach(delay => window.setTimeout(position, delay));
+    if (!window.__gnkCodeEmbedResize) {
+      window.__gnkCodeEmbedResize = true;
+      window.addEventListener('resize', position);
     }
   }
 
-  installLocationSlideshow();
-  window.addEventListener('load', installLocationSlideshow, { once:true });
-  window.setTimeout(installLocationSlideshow, 500);
-  window.setTimeout(installLocationSlideshow, 1800);
-  /* GNK_LOCATION_SLIDESHOW_JS_END */
+  installCodeEmbed();
+  window.addEventListener('load', installCodeEmbed, { once:true });
+  window.setTimeout(installCodeEmbed, 600);
+  window.setTimeout(installCodeEmbed, 1800);
+  /* GNK_CODE_EMBED_JS_END */
 })();
+
