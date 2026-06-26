@@ -1,0 +1,92 @@
+name: Deploy media delivery via issue 91
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: gnk-asg-canonical-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: github.event.issue.number == 91 && github.event.comment.body == '/deploy-media-delivery 20260626-91'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Verify delivery package
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          node --check apps/portal/assets/media-outreach-delivery-ui-v3.js
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626' workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Deploy delivery package
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify live delivery contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 60
+          cb=$(date +%s)
+          base='https://gnk-asg.hr'
+          curl -sS -D /tmp/deployment.headers -H 'Cache-Control: no-cache' "$base/data/deployment-status.json?cb=$cb" -o /tmp/deployment.json
+          curl -sS -D /tmp/delivery.headers -H 'Cache-Control: no-cache' "$base/api/media-command-center/delivery-status?cb=$cb" -o /tmp/delivery.json
+          curl -sS -D /tmp/ui.headers -H 'Cache-Control: no-cache' "$base/assets/media-outreach-delivery-ui-v3.js?cb=$cb" -o /tmp/ui.js
+          node <<'JS'
+          const fs=require('node:fs');
+          const parse=path=>{try{return JSON.parse(fs.readFileSync(path,'utf8'));}catch{return null;}};
+          const headers=fs.readFileSync('/tmp/delivery.headers','utf8');
+          const ui=fs.readFileSync('/tmp/ui.js','utf8');
+          const deployment=parse('/tmp/deployment.json');
+          const first=text=>String(text).split(/\r?\n/)[0]||'';
+          const failures=[];
+          const expected={
+            mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R4_DELIVERY',
+            mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
+            testSending:'LOCKED',
+            productionSending:'LOCKED'
+          };
+          if(!deployment?.ok)failures.push('deployment_not_ok');
+          for(const [key,value] of Object.entries(expected))if(deployment?.[key]!==value)failures.push(`${key}=${JSON.stringify(deployment?.[key])}`);
+          if(!/^HTTP\/\S+ (401|403)/.test(first(headers)))failures.push(`delivery_auth=${first(headers)}`);
+          if(!ui.includes('__GNK_ASG_MEDIA_DELIVERY_UI_V3__'))failures.push('delivery_ui_missing');
+          const result={checkedAt:new Date().toISOString(),failures,deployment,deliveryRoute:first(headers),uiBytes:ui.length};
+          fs.writeFileSync('/tmp/delivery-result.json',JSON.stringify(result,null,2));
+          console.log(JSON.stringify(result,null,2));
+          if(failures.length)process.exit(1);
+          JS
+
+      - name: Report delivery deployment
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          payload=$(cat /tmp/delivery-result.json 2>/dev/null || printf '{"error":"verification_not_reached"}')
+          body=$(printf 'Media delivery deploy **%s** · commit `%s` · %s\n\n```json\n%s\n```' "$JOB_STATUS" "$RUN_SHA" "$RUN_URL" "$payload")
+          gh issue comment 91 --body "$body"
