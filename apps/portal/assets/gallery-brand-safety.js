@@ -3,6 +3,29 @@
   if (window.__GNK_ASG_GALLERY_BRAND_SAFETY__) return;
   window.__GNK_ASG_GALLERY_BRAND_SAFETY__ = true;
 
+  const route = location.pathname.replace(/\/+$/, '') || '/';
+
+  function installIndexLogoGuard() {
+    document.addEventListener('click', event => {
+      const brand = event.target.closest?.('.brand-unit.right,.brand-unit.right *');
+      if (!brand) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const top = document.getElementById('top');
+      if (top) top.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }, true);
+  }
+
+  if (route === '/' || route === '/en') {
+    installIndexLogoGuard();
+    window.GNK_ASG_BRAND_SAFETY = {
+      version: '2026-06-26-index-isolated',
+      prohibited: () => false,
+      check: () => {}
+    };
+    return;
+  }
+
   const norm = value => String(value || '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -49,7 +72,7 @@
     });
   }
 
-  window.GNK_ASG_BRAND_SAFETY = { version:'2026-06-26-v1', prohibited, check };
+  window.GNK_ASG_BRAND_SAFETY = { version:'2026-06-26-v2', prohibited, check };
 
   const observer = new MutationObserver(records => {
     records.forEach(record => record.addedNodes.forEach(node => {
