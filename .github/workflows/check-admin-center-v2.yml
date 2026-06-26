@@ -1,0 +1,86 @@
+name: Check Admin Center V2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/admin-center/index.html'
+      - 'apps/portal/assets/admin-center-v2.css'
+      - 'apps/portal/assets/admin-center-v2.js'
+      - 'apps/portal/assets/admin-center-health-v1.js'
+      - '.github/workflows/check-admin-center-v2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Check JavaScript syntax
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/admin-center-v2.js
+          node --check apps/portal/assets/admin-center-health-v1.js
+
+      - name: Verify dashboard contract
+        run: |
+          set -euxo pipefail
+          html=apps/portal/admin-center/index.html
+          js=apps/portal/assets/admin-center-v2.js
+          css=apps/portal/assets/admin-center-v2.css
+          test -s "$html"
+          test -s "$js"
+          test -s "$css"
+          grep -q '/assets/admin-center-v2.css' "$html"
+          grep -q '/assets/admin-center-v2.js' "$html"
+          grep -q '/assets/admin-center-health-v1.js' "$html"
+          grep -q 'id="overview"' "$html"
+          grep -q 'id="moduleFrame"' "$html"
+          grep -q 'id="commandDialog"' "$html"
+          grep -q "Ctrl" "$html"
+          grep -q "embedded" "$js"
+          grep -q "hubmodule" "$js"
+          grep -q "AbortController" "$js"
+          grep -q "MutationObserver" "$js"
+          grep -q "setInterval" "$js"
+          grep -q "prefers-reduced-motion" "$css"
+
+      - name: Verify single-shell and safe routes
+        run: |
+          set -euxo pipefail
+          html=apps/portal/admin-center/index.html
+          js=apps/portal/assets/admin-center-v2.js
+          test "$(grep -c 'class="sidebar"' "$html")" -eq 1
+          test "$(grep -c 'id="moduleNav"' "$html")" -eq 1
+          grep -q "'/mail-studio/'" "$js"
+          grep -q "'/operator-dashboard/'" "$js"
+          grep -q "'/media-command-center/'" "$js"
+          grep -q "'/auto-editor/'" "$js"
+          grep -q "'/news-admin/'" "$js"
+          grep -q "'/pdf-publisher/'" "$js"
+          if grep -E "https?://" apps/portal/assets/admin-center-v2.js apps/portal/assets/admin-center-v2.css; then
+            echo 'Admin Center V2 must not depend on external runtime assets.' >&2
+            exit 1
+          fi
+
+      - name: Verify locked production surfaces are untouched
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euxo pipefail
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/wrangler\.toml|workers/gnk-asg-direct-operator/src/public-shell-v11\.js)$'; then
+            echo 'Locked public index or production configuration changed.' >&2
+            exit 1
+          fi

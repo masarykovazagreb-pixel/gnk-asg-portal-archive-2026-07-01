@@ -1,52 +1,118 @@
 <!doctype html>
 <html lang="hr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow,noarchive">
-<title>GNK ASG Admin Center</title>
-<script>window.__GNK_ASG_BACKEND_SHELL_V6__=true;window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V9__=true;window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V8__=true;window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V7__=true;</script>
-<style>
-:root{--n:#061426;--n2:#0c2947;--g:#d8ae48;--bg:#eef2f7;--p:#fff;--i:#122033;--m:#65758b;--l:#d7dfeb;--ok:#14875a;--bad:#b42318;--warn:#a96b08}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--i);font-family:Inter,Segoe UI,Arial,sans-serif}button,a{font:inherit}.app{min-height:100vh;display:grid;grid-template-columns:250px minmax(0,1fr)}aside{height:100vh;position:sticky;top:0;overflow:auto;padding:16px 12px;background:linear-gradient(180deg,#04101e,#0a2139);color:#fff}.brand{display:flex;align-items:center;gap:10px;padding:0 6px 14px;border-bottom:1px solid rgba(216,174,72,.25)}.logo{width:42px;height:42px;display:grid;place-items:center;border:2px solid var(--g);border-radius:50%;color:var(--g);font-weight:1000}.brand strong,.brand small{display:block}.brand small{margin-top:3px;color:#aebbd0;font-size:8px;text-transform:uppercase;letter-spacing:.1em}.session{display:flex;align-items:center;gap:9px;margin:12px 0;padding:10px;border:1px solid rgba(216,174,72,.25);border-radius:12px;background:rgba(255,255,255,.04)}.dot{width:9px;height:9px;border-radius:50%;background:var(--warn)}.session.ok .dot{background:#2bd67b}.session.bad .dot{background:#ff596a}.session strong,.session small{display:block;font-size:9px}.session small{margin-top:2px;color:#aebbd0}nav{display:grid;gap:6px}nav button{display:flex;align-items:center;gap:9px;width:100%;padding:10px;border:1px solid transparent;border-radius:10px;background:transparent;color:#dce5f2;text-align:left;font-weight:800;cursor:pointer}nav button i{display:grid;place-items:center;width:27px;height:27px;border-radius:8px;background:rgba(255,255,255,.07);font-style:normal;color:#f5d681}nav button:hover,nav button.active{border-color:rgba(216,174,72,.45);background:rgba(216,174,72,.13);color:#fff}.sidefoot{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(216,174,72,.2)}.sidefoot a,.sidefoot button{display:flex;align-items:center;justify-content:center;min-height:34px;border:1px solid rgba(216,174,72,.25);border-radius:9px;background:rgba(255,255,255,.04);color:#fff;text-decoration:none;font-size:8px;font-weight:900;cursor:pointer}.main{min-width:0;padding:12px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;padding:13px 15px;border:1px solid var(--l);border-radius:15px;background:#fff;box-shadow:0 10px 28px rgba(6,20,38,.07)}.top h1{margin:0;font-size:20px}.top p{margin:4px 0 0;color:var(--m);font-size:10px}.actions{display:flex;gap:7px;flex-wrap:wrap}.actions a,.actions button{min-height:34px;padding:7px 10px;border:1px solid var(--l);border-radius:9px;background:#fff;color:var(--i);text-decoration:none;font-size:8px;font-weight:900;cursor:pointer}.actions .primary{background:var(--n);color:#fff}.actions .danger{color:var(--bad)}.panel{display:none}.panel.active{display:block}.hero{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:20px;border-radius:17px;background:linear-gradient(135deg,#07182b,#103455);color:#fff}.hero h2{margin:7px 0 6px;font-size:25px}.hero p{max-width:820px;margin:0;color:#cbd6e5;font-size:11px;line-height:1.5}.hero small{color:#f3d37c;font-size:8px;font-weight:900;text-transform:uppercase}.badge{white-space:nowrap;padding:8px 11px;border:1px solid rgba(216,174,72,.35);border-radius:999px;font-size:8px;font-weight:900}.status{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:10px}.card{padding:13px;border:1px solid var(--l);border-radius:13px;background:#fff}.card small,.card strong{display:block}.card small{color:var(--m);font-size:8px;text-transform:uppercase}.card strong{margin-top:5px;font-size:15px}.card p{margin:4px 0 0;color:var(--m);font-size:9px}.quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}.quick button{padding:15px;border:1px solid var(--l);border-radius:13px;background:#fff;text-align:left;cursor:pointer}.quick button:hover{border-color:var(--g);box-shadow:0 7px 20px rgba(6,20,38,.08)}.quick strong,.quick small{display:block}.quick small{margin-top:5px;color:var(--m)}.stage{position:relative;height:calc(100vh - 84px);min-height:620px;border:1px solid var(--l);border-radius:15px;overflow:hidden;background:#fff}.stage iframe{display:block;width:100%;height:100%;border:0}.loading{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:9px;background:#fff;color:var(--m);z-index:2}.loading span{width:28px;height:28px;border:3px solid #dce3ec;border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.menu,.close,.backdrop{display:none}@media(max-width:1050px){.app{grid-template-columns:210px minmax(0,1fr)}.status{grid-template-columns:repeat(3,minmax(0,1fr))}.quick{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:760px){body.open{overflow:hidden}.app{display:block}aside{position:fixed;left:0;top:0;width:min(310px,88vw);z-index:40;transform:translateX(-103%);transition:.2s}body.open aside{transform:none}.backdrop{position:fixed;inset:0;display:block;border:0;background:rgba(0,0,0,.48);opacity:0;pointer-events:none;z-index:35}body.open .backdrop{opacity:1;pointer-events:auto}.menu,.close{display:inline-grid;place-items:center}.close{margin-left:auto;border:0;background:none;color:#fff;font-size:25px}.menu{width:36px;height:36px;border:1px solid var(--l);border-radius:9px;background:#fff}.main{padding:7px}.top{align-items:flex-start}.top p{display:none}.hero{align-items:flex-start;flex-direction:column}.status,.quick{grid-template-columns:1fr}.stage{height:calc(100vh - 75px);min-height:580px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#06182b">
+  <title>GNK ASG Admin Center</title>
+  <script>window.__GNK_ASG_BACKEND_SHELL_V6__=true;window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V9__=true;window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V8__=true;window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V7__=true;</script>
+  <link rel="stylesheet" href="/assets/admin-center-v2.css?v=20260627">
+  <script defer src="/assets/admin-center-v2.js?v=20260627"></script>
+  <script defer src="/assets/admin-center-health-v1.js?v=20260627"></script>
 </head>
 <body>
-<div class="app">
-<aside>
-  <div class="brand"><span class="logo">G</span><div><strong>GNK ASG Admin</strong><small>Secure Operations Center</small></div><button id="close" class="close" type="button">×</button></div>
-  <div id="session" class="session"><span class="dot"></span><div><strong id="sessionText">Provjera sesije…</strong><small id="sessionHint">Privatni administrativni sloj</small></div></div>
-  <nav id="nav"></nav>
-  <div class="sidefoot"><a href="/" target="_top">Javni portal</a><button id="logoutSide" type="button">Odjava</button></div>
-</aside>
-<button id="backdrop" class="backdrop" type="button"></button>
-<main class="main">
-<header class="top"><div style="display:flex;align-items:center;gap:10px"><button id="menu" class="menu" type="button">☰</button><div><h1 id="title">Admin pregled</h1><p id="description">Status sustava i jedinstveni pristup administrativnim alatima.</p></div></div><div class="actions"><button id="reload" type="button">Provjeri status</button><a id="standalone" href="/admin-center/" target="_blank" hidden>Otvori zasebno</a><a class="primary" href="/">Javni portal</a><button id="logout" class="danger" type="button">Odjava</button></div></header>
-<section id="overview" class="panel active"><article class="hero"><div><small>Jedna radna površina</small><h2>Svi ključni alati bez duplih izbornika</h2><p>Mail Studio, Operator, Medijski centar i ostali moduli otvaraju se u istom radnom prostoru. Svaki modul moguće je otvoriti i zasebno.</p></div><span class="badge">Zaštićeni pristup</span></article><div id="status" class="status"><article class="card"><small>Sustav</small><strong>Provjera…</strong><p>Učitavanje statusa</p></article></div><div id="quick" class="quick"></div></section>
-<section id="workspace" class="panel"><div class="stage"><div id="loading" class="loading"><span></span><strong>Učitavanje modula…</strong></div><iframe id="frame" title="GNK ASG administratorski modul" allow="clipboard-read; clipboard-write" hidden></iframe></div></section>
-</main>
-</div>
-<script>
-(()=>{'use strict';
-const mods=[
-{id:'overview',icon:'⌂',label:'Admin pregled',desc:'Status sustava i pristup alatima.',route:'/admin-center/'},
-{id:'mail',icon:'✉',label:'Mail Studio',desc:'Pošiljatelji, pretinci, potpisi i PDF prilozi.',route:'/mail-studio/'},
-{id:'operator',icon:'▣',label:'Operator',desc:'Status, evidencije i operativne postavke.',route:'/operator-dashboard/'},
-{id:'media',icon:'◎',label:'Medijski centar',desc:'Medijska baza, kampanje i odobrenja.',route:'/media-command-center/'},
-{id:'editor',icon:'✎',label:'Auto Editor',desc:'Objave i urednički procesi.',route:'/auto-editor/'},
-{id:'news',icon:'◫',label:'News Admin',desc:'Izvori, vijesti i urednička kontrola.',route:'/news-admin/'},
-{id:'pdf',icon:'▤',label:'PDF Publisher',desc:'Dokumenti, PDF objava i evidencija.',route:'/pdf-publisher/'}];
-const $=id=>document.getElementById(id),nav=$('nav'),frame=$('frame'),loading=$('loading');let current='overview';
-nav.innerHTML=mods.map(m=>`<button type="button" data-id="${m.id}"><i>${m.icon}</i><span>${m.label}</span></button>`).join('');
-$('quick').innerHTML=mods.filter(m=>m.id!=='overview').map(m=>`<button type="button" data-open="${m.id}"><strong>${m.icon} ${m.label}</strong><small>${m.desc}</small></button>`).join('');
-const mod=id=>mods.find(m=>m.id===id)||mods[0],close=()=>document.body.classList.remove('open');
-function clean(){try{const d=frame.contentDocument;if(!d)return;let s=d.getElementById('adminCenterClean');if(!s){s=d.createElement('style');s.id='adminCenterClean';s.textContent='#gnk-backend-shell,#gnk-admin-module-launcher-v7,#gnk-admin-lock-notice-v7{display:none!important}body{padding-top:0!important}';d.head.appendChild(s)}}catch(_){}}
-function open(id,push=true){const m=mod(id);current=m.id;nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.id===id));$('title').textContent=m.label;$('description').textContent=m.desc;$('standalone').href=m.route;$('standalone').hidden=id==='overview';if(id==='overview'){$('overview').classList.add('active');$('workspace').classList.remove('active');frame.hidden=true;$('reload').textContent='Provjeri status';loadStatus()}else{$('overview').classList.remove('active');$('workspace').classList.add('active');$('reload').textContent='Osvježi modul';loading.hidden=false;frame.hidden=true;const u=new URL(m.route,location.origin);u.searchParams.set('embedded','1');u.searchParams.set('hubmodule',id);const target=u.pathname+u.search;if(frame.dataset.route!==target){frame.dataset.route=target;frame.src=target}else{loading.hidden=true;frame.hidden=false;clean()}}close();if(push){const u=new URL(location.href);id==='overview'?u.searchParams.delete('module'):u.searchParams.set('module',id);history.pushState({},'',u)}}
-async function check(path){try{const u=new URL(path,location.origin);u.searchParams.set('cb',Date.now());const r=await fetch(u,{credentials:'same-origin',cache:'no-store'});return{ok:r.ok,status:r.status}}catch(_){return{ok:false,status:0}}}
-function card(label,r,detail){const auth=[401,403].includes(r.status);return`<article class="card"><small>${label}</small><strong>${r.ok?'Spremno':auth?'Prijava potrebna':'Nedostupno'}</strong><p>${detail}</p></article>`}
-async function loadStatus(){const [a,b,c,d,e]=await Promise.all([check('/api/operator-auth-check'),check('/api/operator-backend-status'),check('/api/mail-center/status'),check('/api/media-command-center/status'),check('/data/platform-health.json')]);$('status').innerHTML=card('Sesija',a,'Sigurni pristup')+card('Backend',b,'Operatorske funkcije')+card('Mail',c,'Inbox, Sent i Outbox')+card('Mediji',d,'Komandni centar')+card('Platforma',e,'KV, D1 i assets');$('session').classList.toggle('ok',a.ok);$('session').classList.toggle('bad',!a.ok&&![401,403].includes(a.status));$('sessionText').textContent=a.ok?'Sigurna sesija aktivna':'Prijava nije potvrđena';$('sessionHint').textContent=a.ok?'Privatni moduli su dostupni':'Otvorite modul i prijavite se'}
-async function logout(){try{await fetch('/operator/session/logout',{method:'POST',credentials:'same-origin'})}catch(_){}location.href='/admin-center/'}
-nav.addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b)open(b.dataset.id)});$('quick').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b)open(b.dataset.open)});frame.addEventListener('load',()=>{clean();setTimeout(clean,250);loading.hidden=true;frame.hidden=false});$('reload').addEventListener('click',()=>{if(current==='overview'){loadStatus();return}loading.hidden=false;frame.hidden=true;const u=new URL(frame.dataset.route,location.origin);u.searchParams.set('cb',Date.now());frame.src=u.pathname+u.search});$('menu').onclick=()=>document.body.classList.add('open');$('close').onclick=close;$('backdrop').onclick=close;$('logout').onclick=logout;$('logoutSide').onclick=logout;addEventListener('popstate',()=>open(new URL(location.href).searchParams.get('module')||'overview',false));open(new URL(location.href).searchParams.get('module')||'overview',false);
-})();
-</script>
+  <a class="skip-link" href="#mainContent">Preskoči na glavni sadržaj</a>
+  <div class="admin-shell">
+    <aside class="sidebar" aria-label="Glavna administratorska navigacija">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">G</span>
+        <div class="brand-copy"><strong>GNK ASG Admin</strong><small>Secure Operations Center</small></div>
+        <button id="sidebarClose" class="sidebar-close" type="button" aria-label="Zatvori izbornik">×</button>
+      </div>
+
+      <div id="sessionCard" class="session-card" aria-live="polite">
+        <span class="session-dot" aria-hidden="true"></span>
+        <div><strong id="sessionText">Provjera sesije…</strong><small id="sessionHint">Privatni administrativni sloj</small></div>
+      </div>
+
+      <p class="sidebar-label">Radni moduli</p>
+      <nav id="moduleNav" class="module-nav"></nav>
+
+      <div class="sidebar-footer">
+        <a href="/" target="_top">Javni portal</a>
+        <button id="logoutSide" type="button">Odjava</button>
+      </div>
+    </aside>
+
+    <button id="backdrop" class="backdrop" type="button" aria-label="Zatvori izbornik"></button>
+
+    <main id="mainContent" class="admin-main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="menuButton" class="menu-button" type="button" aria-label="Otvori izbornik">☰</button>
+          <div class="page-heading">
+            <h1 id="pageTitle">Admin pregled</h1>
+            <p id="pageDescription">Status sustava, prioriteti i jedinstveni pristup alatima.</p>
+          </div>
+        </div>
+        <div class="topbar-right actions">
+          <span id="connectionChip" class="connection-chip">Provjera mreže</span>
+          <button id="commandButton" class="action-button" type="button" title="Ctrl ili Command + K">Pretraži module</button>
+          <button id="refreshButton" class="action-button" type="button">Provjeri status</button>
+          <a id="openStandalone" class="action-link" href="/admin-center/" target="_blank" rel="noopener" hidden>Otvori zasebno</a>
+          <a class="action-link primary" href="/">Javni portal</a>
+          <button id="logoutButton" class="action-button danger" type="button">Odjava</button>
+        </div>
+      </header>
+
+      <section id="overviewPanel" class="panel active" aria-labelledby="dashboardTitle">
+        <div id="overview">
+          <article class="dashboard-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Jedinstvena operativna površina</p>
+              <h2 id="dashboardTitle">Kontrola portala bez duplih izbornika i suvišnih koraka</h2>
+              <p>Dashboard objedinjuje Mail Studio, Operator, Medijski centar i uredničke alate u jednom sigurnom radnom prostoru. Moduli se učitavaju izravno, a javni portal ostaje potpuno odvojen.</p>
+              <div class="hero-actions">
+                <button id="heroMail" type="button">Otvori Mail Studio</button>
+                <button id="heroAudit" type="button">Pokreni sigurni audit</button>
+              </div>
+            </div>
+            <div class="hero-meta">
+              <div class="secure-badge">Zaštićeni pristup</div>
+              <div><small>Zadnja provjera</small><strong id="lastCheck">Nije pokrenuta</strong></div>
+              <div><small>Operativni status</small><strong id="systemSummary">Provjera u tijeku</strong></div>
+            </div>
+          </article>
+
+          <div id="statusGrid" class="status-grid" aria-live="polite" aria-busy="true">
+            <article class="status-card"><small>Sustav</small><strong>Provjera…</strong><span>Učitavanje statusa</span></article>
+          </div>
+
+          <section class="dashboard-section" aria-labelledby="priorityTitle">
+            <div class="section-head">
+              <div><p class="eyebrow">Operativni fokus</p><h3 id="priorityTitle">Najčešće korišteni moduli</h3><p>Tri ključna radna toka dostupna su jednim klikom; svi ostali ostaju u lijevom izborniku.</p></div>
+              <button id="showAllModules" type="button">Prikaži sve module</button>
+            </div>
+            <div id="priorityGrid" class="priority-grid"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="workspacePanel" class="panel" aria-label="Radni prostor modula">
+        <div class="workspace-stage">
+          <div id="workspaceLoading" class="workspace-state">
+            <span class="spinner" aria-hidden="true"></span>
+            <h3>Učitavanje modula…</h3>
+            <p>Priprema sigurnog radnog prostora bez dodatnog globalnog izbornika.</p>
+          </div>
+          <div id="workspaceError" class="workspace-state" hidden>
+            <h3>Modul nije dostupan</h3>
+            <p id="workspaceErrorText">Provjerite sesiju ili pokušajte ponovno.</p>
+            <button id="retryModule" type="button">Pokušaj ponovno</button>
+          </div>
+          <iframe id="moduleFrame" title="GNK ASG administratorski modul" allow="clipboard-read; clipboard-write" hidden></iframe>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="commandDialog" class="command-dialog" aria-label="Pretraživanje administratorskih modula">
+    <div class="command-head"><input id="commandSearch" type="search" autocomplete="off" placeholder="Upišite naziv modula ili funkcije…" aria-label="Pretraži module"></div>
+    <div id="commandList" class="command-list"></div>
+    <div class="command-foot">Enter ili klik za otvaranje · Esc za zatvaranje · Alt + 1–7 za brzi pristup</div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 </body>
 </html>
