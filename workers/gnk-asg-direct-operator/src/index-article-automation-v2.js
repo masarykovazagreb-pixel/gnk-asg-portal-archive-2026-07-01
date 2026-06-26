@@ -1,32 +1,63 @@
-import app from './index-portal-final-v13.js';
+import app from './index-media-command-center-v21.js';
 import { generateArticleVisual, removeArticleFromNews, VERSION as VISUAL_VERSION } from './article-visual-v2.js';
 
-export const VERSION = 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626';
+export const VERSION = 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2';
 const store = env => env.GNK_ASG_KV || env.GNK_ASG_CONFIG_KV || null;
 
-async function latestArticle(env) {
+async function read(env, key, fallback) {
   const kv = store(env);
-  if (!kv) return null;
+  if (!kv) return fallback;
   try {
-    const raw = await kv.get('publish:approved');
-    const list = raw ? JSON.parse(raw) : [];
-    return Array.isArray(list) ? list[0] : null;
+    const raw = await kv.get(key);
+    return raw ? JSON.parse(raw) : fallback;
   } catch {
-    return null;
+    return fallback;
   }
+}
+
+async function latestArticle(env) {
+  const list = await read(env, 'publish:approved', []);
+  return Array.isArray(list) ? list[0] : null;
 }
 
 async function processArticle(env, preferred) {
   const article = preferred?.id ? preferred : await latestArticle(env);
   if (!article?.id) return { ok:false, error:'article_missing' };
-  const visual = await generateArticleVisual(env, article);
+  const visual = article.imageGenerated?.version === VISUAL_VERSION
+    ? { ok:true, skipped:true, article }
+    : await generateArticleVisual(env, article);
   const cleanedNews = await removeArticleFromNews(env, visual.article || article);
   return { ok:visual.ok, version:VERSION, visualVersion:VISUAL_VERSION, visual, cleanedNews };
+}
+
+async function mergeGallery(response, env) {
+  try {
+    const payload = await response.clone().json();
+    const generated = await read(env, 'visual-gallery:generated', []);
+    const base = Array.isArray(payload?.items) ? payload.items : [];
+    const seen = new Set();
+    const items = [...generated, ...base].filter(item => {
+      const key = String(item?.id || item?.src || '').toLowerCase();
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    const headers = new Headers(response.headers);
+    headers.set('x-gnk-asg-gallery-generated', String(generated.length));
+    return new Response(JSON.stringify({
+      ...payload,
+      items,
+      audit:{ ...(payload.audit || {}), generatedCount:generated.length, visibleCount:items.length }
+    }, null, 2), { status:response.status, headers });
+  } catch {
+    return response;
+  }
 }
 
 async function fetchHandler(request, env, ctx) {
   const path = new URL(request.url).pathname.replace(/\/+$/, '') || '/';
   const response = await app.fetch(request, env, ctx);
+  if (request.method === 'GET' && path === '/data/visual_gallery.json' && response.ok) return mergeGallery(response, env);
   if (request.method !== 'POST' || path !== '/operator/auto-editor/run' || !response.ok) return response;
   try {
     const payload = await response.clone().json();
