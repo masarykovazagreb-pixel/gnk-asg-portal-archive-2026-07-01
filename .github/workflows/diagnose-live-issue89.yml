@@ -1,0 +1,54 @@
+name: Diagnose live via issue 89
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  diagnose:
+    if: github.event.issue.number == 89 && github.event.comment.body == '/diagnose-live 20260626-89'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe production
+        shell: bash
+        run: |
+          set -euo pipefail
+          cb=$(date +%s)
+          base='https://gnk-asg.hr'
+          curl -sS -D /tmp/status.headers -H 'Cache-Control: no-cache' "$base/data/deployment-status.json?cb=$cb" -o /tmp/status.json
+          curl -sS -D /tmp/root.headers -H 'Cache-Control: no-cache' "$base/?cb=$cb" -o /tmp/root.html
+          curl -sS -D /tmp/admin.headers -H 'Cache-Control: no-cache' "$base/operator-dashboard/?cb=$cb" -o /tmp/admin.html
+          {
+            echo '=== DEPLOYMENT STATUS ==='
+            cat /tmp/status.json
+            echo
+            echo '=== ROOT MARKERS ==='
+            printf 'hydration_header='; grep -i '^x-gnk-asg-index-hydration:' /tmp/root.headers | tr -d '\r' || true
+            printf 'admin_hub_header='; grep -i '^x-gnk-asg-admin-hub:' /tmp/root.headers | tr -d '\r' || true
+            printf 'loading_news='; grep -c 'Učitavanje najnovijih vijesti' /tmp/root.html || true
+            printf 'loading_network='; grep -c 'Učitavanje mreže' /tmp/root.html || true
+            printf 'loading_publications='; grep -c 'Učitavanje objava' /tmp/root.html || true
+            printf 'loading_market='; grep -c 'class="market-value">Učitavanje' /tmp/root.html || true
+            echo
+            echo '=== ADMIN ROUTE ==='
+            head -n 1 /tmp/admin.headers | tr -d '\r'
+            grep -iE '^(location|x-gnk-asg-admin-hub|x-gnk-asg-index-lock|cache-control):' /tmp/admin.headers | tr -d '\r' || true
+            printf 'old_operator_center='; grep -c 'Operator Center' /tmp/admin.html || true
+            printf 'secure_login='; grep -c 'GNK ASG sigurna prijava' /tmp/admin.html || true
+          } > /tmp/diagnostic.txt
+          cat /tmp/diagnostic.txt
+
+      - name: Report diagnostic
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          body=$(printf 'Live diagnostic · %s\n\n```text\n%s\n```' "$RUN_URL" "$(cat /tmp/diagnostic.txt 2>/dev/null || echo 'diagnostic unavailable')")
+          gh issue comment 89 --body "$body"
