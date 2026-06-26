@@ -1,4 +1,4 @@
-name: Deploy V31 head runtime fix
+name: Deploy V31 portal, verified news and first publication
 
 on:
   push:
@@ -18,41 +18,123 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Verify head runtime package
+
+      - name: Verify current production package
         run: |
+          set -euxo pipefail
           node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
           node --check apps/portal/assets/index-runtime-lock-v31.js
+          node --check apps/portal/assets/visual-index-central-v7.js
+          node --check workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js
+          node --check workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
+          node --check workers/gnk-asg-direct-operator/src/article-visual-v2.js
+          node --check workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'main = "src/index-admin-hub-v23-aktual.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'GNK_ASG_PUBLIC_VISUAL_V31_INDEX_RUNTIME_LOCK_HEAD_20260626' workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          grep -q 'const headRuntime=' workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          grep -q 'index-runtime-lock-v31.js?v=20260626-v31"></script>' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q 'GNK_ASG_PUBLICATION_SEO_V3_20260626' workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js
+          grep -q 'ARCHIVE_PRUNE_AT=900' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'ARCHIVE_RETAIN_AFTER_PRUNE=450' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'NEWS_MINIMUM=15' workers/gnk-asg-direct-operator/src/news-curation-v10.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
       - name: Deploy to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify production head lock
+
+      - name: Verify V31 and refresh news plus first publication
+        id: publish
+        env:
+          GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+        shell: bash
         run: |
+          set -euo pipefail
+          test -n "$GNK_ASG_OPERATOR_TOKEN"
           node <<'JS'
+          const fs=require('node:fs');
           const base='https://gnk-asg.hr';
-          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-          async function get(path){const r=await fetch(`${base}${path}?cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});return{status:r.status,text:await r.text()}}
-          for(let i=0;i<8;i++){
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          async function get(path){const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});return{status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)}}
+          for(let attempt=1;attempt<=10;attempt++){
             const [hr,en]=await Promise.all([get('/'),get('/en/')]);
-            const ok=[hr,en].every(r=>r.status===200&&r.text.includes('index-runtime-lock-v31.js?v=20260626-v31')&&r.text.indexOf('index-runtime-lock-v31.js')<r.text.indexOf('</head>'));
-            if(ok)process.exit(0);
+            if([hr,en].every(item=>item.status===200&&item.text.includes('index-runtime-lock-v31.js?v=20260626-v31')))break;
+            if(attempt===10)throw new Error('V31 production lock missing');
             await sleep(10000);
           }
-          process.exit(1);
           JS
+          curl -fsS --max-time 720 \
+            -H "authorization: Bearer $GNK_ASG_OPERATOR_TOKEN" \
+            -H 'content-type: application/json' \
+            -d '{}' \
+            'https://gnk-asg.hr/operator/news-automation/run' \
+            -o /tmp/news-publication-result.json
+          node <<'JS'
+          const fs=require('node:fs');
+          const payload=JSON.parse(fs.readFileSync('/tmp/news-publication-result.json','utf8'));
+          const editor=payload.editor||payload.autoEditor||null;
+          const processed=editor?.articlePostProcess||payload.articlePostProcess||null;
+          const article=payload.article||processed?.visual?.article||processed?.editorialQa?.article||editor?.article||null;
+          if(payload.ok===false)throw new Error(`automation_failed:${JSON.stringify(payload).slice(0,2400)}`);
+          const count=Number(payload.news?.count||payload.news?.verifiedCount||0);
+          if(!payload.news?.ok||count<15)throw new Error(`news_refresh_failed:${count}`);
+          if(!article?.slug||!article?.image)throw new Error(`article_missing:${JSON.stringify(payload).slice(0,2400)}`);
+          if(Number(article.wordCountHr||0)<500||Number(article.wordCountEn||0)<500)throw new Error('article_word_count_below_500');
+          fs.writeFileSync('/tmp/article.json',JSON.stringify(article,null,2));
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`slug=${article.slug}\narticle_id=${article.id}\nimage=${article.image}\nnews_count=${count}\n`);
+          console.log(JSON.stringify({slug:article.slug,articleId:article.id,image:article.image,newsCount:count},null,2));
+          JS
+
+      - name: Verify publication and central Visual Index
+        env:
+          SLUG: ${{ steps.publish.outputs.slug }}
+          ARTICLE_ID: ${{ steps.publish.outputs.article_id }}
+          IMAGE: ${{ steps.publish.outputs.image }}
+        run: |
+          set -euo pipefail
+          node <<'JS'
+          const fs=require('node:fs');
+          const base='https://gnk-asg.hr',slug=process.env.SLUG,articleId=process.env.ARTICLE_ID,image=process.env.IMAGE;
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          async function get(path){const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});return{status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)}}
+          let report;
+          for(let attempt=1;attempt<=12;attempt++){
+            const [news,status,hrList,enList,hr,en,gallery,visual,img]=await Promise.all([
+              get('/data/news.json'),get('/data/news-automation-status.json'),get('/objave/'),get('/publications/'),get(`/objave/${slug}/`),get(`/publications/${slug}/`),get('/data/visual_gallery.json'),get('/visual-index/?lang=en'),get(image.startsWith('http')?image.replace(base,''):image)
+            ]);
+            const failures=[];
+            let newsData={},statusData={},galleryData={};try{newsData=JSON.parse(news.text)}catch{}try{statusData=JSON.parse(status.text)}catch{}try{galleryData=JSON.parse(gallery.text)}catch{}
+            const newsItems=Array.isArray(newsData)?newsData:(newsData.items||[]),galleryItems=galleryData.items||[];
+            if(news.status!==200||newsItems.length<15)failures.push(`news=${news.status}:${newsItems.length}`);
+            if(newsItems.slice(0,100).some(item=>!item.title||!item.summary||!item.source||!item.url||!item.image||item.imageFallback===true||item.verified!==true))failures.push('news_contract_invalid');
+            if(statusData.archivePruneAt!==900||statusData.archiveRetainAfterPrune!==450)failures.push('archive_contract_invalid');
+            for(const [name,response] of Object.entries({hrList,enList,hr,en,visual,img}))if(response.status!==200)failures.push(`${name}=${response.status}`);
+            if(!hrList.text.includes(`/objave/${slug}/`))failures.push('hr_list_missing');
+            if(!enList.text.includes(`/publications/${slug}/`))failures.push('en_list_missing');
+            for(const [name,response] of Object.entries({hr,en})){
+              if(response.headers['x-gnk-asg-publication-seo']!=='GNK_ASG_PUBLICATION_SEO_V3_20260626')failures.push(`${name}_seo_header_missing`);
+              for(const marker of ['application/ld+json','twitter:card','og:image','Visual Index'])if(!response.text.includes(marker))failures.push(`${name}_${marker}_missing`);
+            }
+            if(!galleryItems.some(item=>String(item.article_id||item.articleId||item.id).includes(articleId)))failures.push('runtime_gallery_missing_article');
+            if(!visual.text.includes('visual-index-full-gallery.js'))failures.push('visual_index_loader_missing');
+            report={attempt,failures,article:{slug,articleId,image},newsCount:newsItems.length,galleryCount:galleryItems.length,codes:{news:news.status,status:status.status,hrList:hrList.status,enList:enList.status,hr:hr.status,en:en.status,gallery:gallery.status,visual:visual.status,image:img.status}};
+            fs.writeFileSync('/tmp/verification.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report));
+            if(!failures.length)process.exit(0);
+            await sleep(10000);
+          }
+          throw new Error(JSON.stringify(report));
+          JS
+
       - name: Report result
         if: always()
         env:
@@ -60,4 +142,8 @@ jobs:
           RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           RUN_SHA: ${{ github.sha }}
           JOB_STATUS: ${{ job.status }}
-        run: gh issue comment 101 --body "V31 head runtime deploy **${JOB_STATUS}** · commit \`${RUN_SHA}\` · ${RUN_URL}"
+        run: |
+          verification=$(cat /tmp/verification.json 2>/dev/null || printf '{"error":"verification_not_reached"}')
+          publication=$(cat /tmp/news-publication-result.json 2>/dev/null || printf '{"error":"publication_not_reached"}')
+          body=$(printf 'V31 + News + first publication **%s** · commit `%s` · %s\n\n### Verification\n```json\n%s\n```\n\n### Automation\n```json\n%s\n```' "$JOB_STATUS" "$RUN_SHA" "$RUN_URL" "$verification" "$publication")
+          gh issue comment 101 --body "$body"
