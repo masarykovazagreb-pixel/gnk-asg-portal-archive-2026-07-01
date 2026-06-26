@@ -1,4 +1,7 @@
-GNK_ASG_V31_HEAD_RUNTIME_FIX_20260626
+GNK_ASG_V31_NEWS_PUBLICATIONS_20260626
 runtime_position=head
 legacy_v7_rewrite=blocked
-nonce=1
+news_refresh=run_now
+first_publication=run_now
+visual_index=central_v7
+nonce=2
