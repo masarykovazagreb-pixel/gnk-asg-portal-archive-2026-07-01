@@ -1,18 +1,19 @@
-export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260626';
+export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260626_R2_PHONE_WHATSAPP';
 
 const COMPANY={
   name:'GNK ASG d.o.o.',
   address:'Zagrebačka cesta 130, 10090 Zagreb',
   oib:'75227917632',
   mbs:'081512375',
-  phone:'+385 91 535 8365',
+  phone:'+385 (0) 916104398',
+  whatsAppUrl:'https://wa.me/385916104398',
   web:'https://gnk-asg.hr',
   logo:'https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png'
 };
 
 const clean=value=>String(value??'').trim();
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({
-  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'
 })[char]);
 
 function sender(payload={}){
@@ -35,7 +36,7 @@ function signatureText(identity){
     COMPANY.name,
     COMPANY.address,
     `OIB: ${COMPANY.oib} · MBS: ${COMPANY.mbs}`,
-    `Telefon: ${COMPANY.phone}`,
+    `☎ ${COMPANY.phone} 💬 ${COMPANY.whatsAppUrl}`,
     `Web: ${COMPANY.web}`,
     `E-mail: ${identity.email}`
   ].join('\n');
@@ -66,7 +67,7 @@ function paragraphs(value){
 }
 
 function signatureHtml(identity){
-  return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="${COMPANY.web}" style="text-decoration:none"><img src="${COMPANY.logo}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${escapeHtml(identity.name)}</div><div>${escapeHtml(COMPANY.name)}</div><div>${escapeHtml(COMPANY.address)}</div><div>OIB: ${COMPANY.oib} · MBS: ${COMPANY.mbs}</div><div>Telefon: ${escapeHtml(COMPANY.phone)}</div><div>Web: <a href="${COMPANY.web}" style="color:#111827">${COMPANY.web}</a></div><div>E-mail: <a href="mailto:${escapeHtml(identity.email)}" style="color:#111827">${escapeHtml(identity.email)}</a></div></td></tr></table>`;
+  return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="${COMPANY.web}" style="text-decoration:none"><img src="${COMPANY.logo}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${escapeHtml(identity.name)}</div><div>${escapeHtml(COMPANY.name)}</div><div>${escapeHtml(COMPANY.address)}</div><div>OIB: ${COMPANY.oib} · MBS: ${COMPANY.mbs}</div><div style="font-size:14px;line-height:1.48">☎ ${escapeHtml(COMPANY.phone)} <a href="${COMPANY.whatsAppUrl}" target="_blank" rel="noopener" aria-label="WhatsApp" style="display:inline;text-decoration:none;color:#111827;font-size:14px;line-height:1">💬</a></div><div>Web: <a href="${COMPANY.web}" style="color:#111827">${COMPANY.web}</a></div><div>E-mail: <a href="mailto:${escapeHtml(identity.email)}" style="color:#111827">${escapeHtml(identity.email)}</a></div></td></tr></table>`;
 }
 
 function appendHtml(value,text,identity){
