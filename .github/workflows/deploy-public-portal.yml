@@ -33,23 +33,30 @@ jobs:
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/admin-hub-v21.js
+          node --check apps/portal/assets/admin-session-fallback-v17.js
+          node --check apps/portal/assets/mail-studio-auth-bridge-v16.js
           node --check apps/portal/assets/media-command-center-v2.js
           node --check apps/portal/assets/media-command-handoff-ui-v3.js
           node --check apps/portal/assets/index-content-resilience-v1.js
           node --check apps/portal/assets/index-live-market-chart-v4.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
           node --check workers/gnk-asg-direct-operator/src/index-lock-v4.js
+          node --check workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-server-hydration-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
           node --check workers/gnk-asg-direct-operator/src/article-visual-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
+          node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v2.js
           node --check workers/gnk-asg-direct-operator/src/media-command-readiness-v2.js
           grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626' workers/gnk-asg-direct-operator/src/index-server-hydration-v1.js
+          grep -q 'GNK_ASG_PUBLIC_R2_V1_20260626' workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
           grep -q 'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R3_HANDOFF_LOCK' workers/gnk-asg-direct-operator/src/media-command-center-v2.js
           grep -q 'f34dda0a2aa7dfd88128c91a0e359b14ce20ced9bb74e02bcfaad62dfa81012f' workers/gnk-asg-direct-operator/src/media-command-center-v2.js
+          grep -q 'COOKIE_ONLY' apps/portal/assets/admin-session-fallback-v17.js
+          grep -q 'COOKIE_ONLY' apps/portal/assets/mail-studio-auth-bridge-v16.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
@@ -71,7 +78,12 @@ jobs:
             entryPoint:'src/index-admin-hub-v21.js',
             adminHub:'GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION',
             indexLock:'GNK_ASG_INDEX_LOCK_V4_20260626',
+            indexHydration:'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626',
+            publicR2:'GNK_ASG_PUBLIC_R2_V1_20260626',
+            browserTokenStorage:'DISABLED',
+            mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',
             mediaCommand:'src/index-media-command-center-v21.js',
+            contactImport:'HASH_LOCKED_V3',
             articleAutomation:'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2',
             productionSending:'LOCKED'
           };
@@ -84,10 +96,11 @@ jobs:
           }
           let last;
           for(let attempt=1;attempt<=18;attempt++){
-            const [deployment,root,en,content,market,favicon,manifest,mediaApi]=await Promise.all([
+            const [deployment,root,en,content,market,favicon,manifest,mediaApi,handoffUi]=await Promise.all([
               get('/data/deployment-status.json'),get('/'),get('/en/'),
               get('/assets/index-content-resilience-v1.js'),get('/assets/index-live-market-chart-v4.js'),
-              get('/favicon.svg'),get('/site.webmanifest'),get('/api/media-command-center/status','manual')
+              get('/favicon.svg'),get('/site.webmanifest'),get('/api/media-command-center/status','manual'),
+              get('/assets/media-command-handoff-ui-v3.js')
             ]);
             let status=null;try{status=JSON.parse(deployment.text);}catch{}
             const failures=[];
@@ -97,10 +110,11 @@ jobs:
             if(en.status!==200)failures.push(`en=${en.status}`);
             if(content.status!==200)failures.push(`content=${content.status}`);
             if(market.status!==200)failures.push(`market=${market.status}`);
+            if(handoffUi.status!==200)failures.push(`handoffUi=${handoffUi.status}`);
             if(favicon.status!==200||!favicon.text.includes('<svg'))failures.push(`favicon=${favicon.status}`);
             if(manifest.status!==200||!manifest.text.includes('GNK ASG'))failures.push(`manifest=${manifest.status}`);
             if(![401,403].includes(mediaApi.status))failures.push(`mediaApi=${mediaApi.status}`);
-            last={attempt,failures,codes:{deployment:deployment.status,root:root.status,en:en.status,content:content.status,market:market.status,favicon:favicon.status,manifest:manifest.status,mediaApi:mediaApi.status},status};
+            last={attempt,failures,codes:{deployment:deployment.status,root:root.status,en:en.status,content:content.status,market:market.status,handoffUi:handoffUi.status,favicon:favicon.status,manifest:manifest.status,mediaApi:mediaApi.status},status};
             console.log(JSON.stringify(last));
             if(!failures.length){console.log('GNK_ASG_CANONICAL_PRODUCTION_OK=true');process.exit(0);}
             await sleep(10000);
