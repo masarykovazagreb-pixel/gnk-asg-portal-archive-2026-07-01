@@ -6,6 +6,10 @@ on:
     paths:
       - '.github/workflows/verify-admin-center-live.yml'
       - '.github/verify-admin-center-live.trigger'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/verify-admin-center-live.trigger'
   workflow_dispatch:
 
 permissions:
@@ -40,7 +44,7 @@ jobs:
           echo "ADMIN_CENTER_LIVE_OK=true" | tee /tmp/result.txt
 
       - name: Report result
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
           RESULT: ${{ job.status }}
