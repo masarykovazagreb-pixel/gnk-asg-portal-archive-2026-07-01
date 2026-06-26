@@ -1,9 +1,9 @@
 import app from './index-media-command-center-v20.js';
 import {handleMediaCommandCenter as handleV2,VERSION as CONTROL_SYNC_VERSION} from './media-command-control-sync-v3.js';
-import {handleMediaDelivery,processDeliveryQueue,VERSION as DELIVERY_VERSION} from './media-outreach-delivery-v3.js';
+import {handleMediaDelivery,processDeliveryQueue,VERSION as DELIVERY_VERSION} from './media-outreach-delivery-v4.js';
 import {enrichContactItems,getReadinessSummary,VERSION as READINESS_VERSION} from './media-command-readiness-v2.js';
 
-export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R5_CONTROL_SYNC';
+export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R6_DELIVERY_SYNC';
 const CONTROL_ENDPOINTS=new Set([
   '/api/media-command-center/handoff-manifest',
   '/api/media-command-center/import-preview',
