@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "version": "GNK_ASG_MEDIA_HANDOFF_2026-06-26",
+  "expectedFileNames": [
+    "media_contacts_112_full.json",
+    "GNK_ASG_media_contacts_112_full_2026-06-26.json"
+  ],
+  "sha256": "f34dda0a2aa7dfd88128c91a0e359b14ce20ced9bb74e02bcfaad62dfa81012f",
+  "sizeBytes": 110429,
+  "contactCount": 112,
+  "uniqueCodes": 112,
+  "withEmail": 42,
+  "automationCandidates": 22,
+  "initialApprovals": 0,
+  "priorities": {
+    "A": 89,
+    "B": 23
+  },
+  "requiredFields": [
+    "mailCode",
+    "priority",
+    "country",
+    "outlet",
+    "recipientTitle",
+    "recipientName",
+    "role",
+    "secondaryDesk",
+    "attentionLine",
+    "email",
+    "channel",
+    "language",
+    "salutation",
+    "personStatus",
+    "channelStatus",
+    "automationAllowed",
+    "approved",
+    "sentStatus",
+    "responseStatus",
+    "source",
+    "note"
+  ],
+  "knownControls": [
+    {
+      "mailCode": "GNK-MEDIA-20260626-US-MARKE-011",
+      "outlet": "MarketWatch",
+      "requiredStatus": "BLOCKED",
+      "reason": "Ne slati dok osoba i urednički kanal ne budu potvrđeni."
+    },
+    {
+      "mailCode": "GNK-MEDIA-20260626-ES-CDA-042",
+      "outlet": "Cinco Días",
+      "requiredStatus": "BLOCKED",
+      "reason": "Ne slati dok osoba i urednički kanal ne budu potvrđeni."
+    },
+    {
+      "mailCode": "GNK-MEDIA-20260626-DE-WIRTS-037",
+      "outlet": "WirtschaftsWoche",
+      "requiredStatus": "AWAITING_APPROVAL",
+      "requiresPersonalization": true
+    },
+    {
+      "mailCode": "GNK-MEDIA-20260626-XX-TWP-096",
+      "outlet": "The Washington Post",
+      "requiredStatus": "AWAITING_APPROVAL",
+      "requiresPersonalization": true,
+      "routingRule": "TO Zachary Goldfarb for business/technology/AI; CC Matt Murray only for strategically important stories."
+    }
+  ],
+  "privacy": {
+    "publicDatasetIncluded": false,
+    "reason": "Puni dataset s kontaktnim podacima ne objavljuje se kao javni portal asset. Učitava se lokalno kroz zaštićeni Admin i provjerava SHA-256 hashom prije D1 previewa."
+  }
+}
