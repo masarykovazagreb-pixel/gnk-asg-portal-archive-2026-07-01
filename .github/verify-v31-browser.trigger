@@ -5,4 +5,4 @@ legacy_v7=forbidden
 legacy_header=forbidden
 blank_sections=forbidden
 gallery_index_injection=forbidden
-nonce=1
+nonce=2
