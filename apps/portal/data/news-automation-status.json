@@ -1,0 +1,15 @@
+{
+  "ok": false,
+  "status": "awaiting_next_scheduled_refresh",
+  "updated_at": "2026-06-26T20:36:00+02:00",
+  "engine": "single_publication_engine_v13",
+  "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
+  "timezone": "Europe/Zagreb",
+  "scheduled_hours_local": [9, 16, 21],
+  "public_items_target": 100,
+  "archive_policy": "archive_latest_1000_prune_to_500_when_full",
+  "rss_images_enabled": true,
+  "fallback_image": "/assets/news-fallback.svg",
+  "visual_index_fallback": "/visual-index/",
+  "last_checked_issue": "apps/portal/data/news.json is stale and will be refreshed by the next scheduled news workflow run"
+}
