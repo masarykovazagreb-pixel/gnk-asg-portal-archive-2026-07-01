@@ -1,11 +1,11 @@
 export const FAVICON_VERSION='GNK_ASG_FAVICON_CONTRACT_V2_20260626';
-const REVISION='20260626-2';
+const REVISION='20260626-3';
 const ICON_PATHS=new Set(['/favicon.ico','/favicon.svg','/apple-touch-icon.png','/site.webmanifest']);
 const ICON_HEAD=`
 <link rel="icon" href="/favicon.ico?v=${REVISION}" sizes="any">
 <link rel="icon" href="/favicon.svg?v=${REVISION}" type="image/svg+xml" sizes="any">
 <link rel="shortcut icon" href="/favicon.ico?v=${REVISION}">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=${REVISION}">
+<link rel="apple-touch-icon" href="/favicon.svg?v=${REVISION}">
 <link rel="manifest" href="/site.webmanifest?v=${REVISION}">
 <meta name="theme-color" content="#020812">
 `;
