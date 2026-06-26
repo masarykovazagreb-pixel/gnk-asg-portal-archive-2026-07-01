@@ -155,8 +155,8 @@ async function importPreview(request,env){
   const db=await ensureSchema(env),existing=(await db.prepare(`SELECT mail_code,outlet,email FROM media_outreach_contacts`).all()).results||[],controls=await controlMap(db);
   const byCode=new Map(existing.map(row=>[row.mail_code,row]));let creates=0,updates=0,unchanged=0;
   for(const item of checked.items){const current=byCode.get(item.mailCode),control=controls.get(item.mailCode);if(!current)creates++;else if(clean(current.outlet)!==item.outlet||clean(current.email)!==item.email||clean(control?.source_version)!==item.sourceVersion)updates++;else unchanged++;}
-  const controls=checked.items.filter(item=>['BLOCKED','NEEDS_VERIFICATION'].includes(item.operationalStatus)||item.requiresPersonalization||item.routingRule).map(item=>({mailCode:item.mailCode,outlet:item.outlet,operationalStatus:item.operationalStatus,requiresPersonalization:item.requiresPersonalization,routingRule:item.routingRule,reason:item.blockedReason}));
-  return json({ok:true,dryRun:true,handoff:{version:HANDOFF.version,sha256:HANDOFF.sha256,verified:true},summary:checked.summary,diff:{creates,updates,unchanged,existing:existing.length},controls,warnings:['Odobrenja, sentStatus i responseStatus neće se prepisivati.','Slanje ostaje zaključano dok se svaki kontakt zasebno ne odobri.']});
+  const controlSummary=checked.items.filter(item=>['BLOCKED','NEEDS_VERIFICATION'].includes(item.operationalStatus)||item.requiresPersonalization||item.routingRule).map(item=>({mailCode:item.mailCode,outlet:item.outlet,operationalStatus:item.operationalStatus,requiresPersonalization:item.requiresPersonalization,routingRule:item.routingRule,reason:item.blockedReason}));
+  return json({ok:true,dryRun:true,handoff:{version:HANDOFF.version,sha256:HANDOFF.sha256,verified:true},summary:checked.summary,diff:{creates,updates,unchanged,existing:existing.length},controls:controlSummary,warnings:['Odobrenja, sentStatus i responseStatus neće se prepisivati.','Slanje ostaje zaključano dok se svaki kontakt zasebno ne odobri.']});
 }
 
 async function importApply(request,env){
