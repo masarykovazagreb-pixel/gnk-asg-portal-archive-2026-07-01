@@ -61,18 +61,40 @@ jobs:
         if: steps.deploy.outputs.code == '0'
         shell: bash
         run: |
-          set -euo pipefail
-          code=$(curl --silent --show-error --location --output refresh.json --write-out '%{http_code}' --request POST https://gnk-asg.hr/api/news-refresh)
-          cat refresh.json
-          test "$code" = '200' -o "$code" = '429'
+          set +e
+          : > verify.log
+          failed=0
+
+          refresh_code=$(curl --silent --show-error --location --output refresh.json --write-out '%{http_code}' --request POST https://gnk-asg.hr/api/news-refresh)
+          {
+            echo "REFRESH_HTTP=$refresh_code"
+            cat refresh.json 2>/dev/null || true
+          } >> verify.log
+          if [ "$refresh_code" != '200' ] && [ "$refresh_code" != '429' ]; then
+            echo "REFRESH_UNEXPECTED_HTTP=$refresh_code" >> verify.log
+            failed=1
+          fi
+
           for url in https://gnk-asg.hr/data/news.json https://gnk-asg.hr/data/news-automation-status.json https://gnk-asg.hr/vijesti/ https://gnk-asg.hr/news/ https://gnk-asg.hr/objave/ https://gnk-asg.hr/publications/; do
-            code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 5 --retry-all-errors --retry-delay 3 "$url")
-            echo "$code $url"
-            test "$code" = '200'
+            route_code=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' --retry 5 --retry-all-errors --retry-delay 3 "$url")
+            echo "$route_code $url" >> verify.log
+            if [ "$route_code" != '200' ]; then failed=1; fi
           done
+
           curl --silent --show-error --location --dump-header headers.txt --output news.json 'https://gnk-asg.hr/data/news.json?cb=hotfix'
-          grep -qi 'x-gnk-asg-news-automation: hotfix-v1' headers.txt
-          grep -q '"items"' news.json
+          {
+            echo 'NEWS_HEADERS:'
+            cat headers.txt 2>/dev/null || true
+            echo 'NEWS_BODY_PREFIX:'
+            head -c 1200 news.json 2>/dev/null || true
+            echo
+          } >> verify.log
+          grep -qi 'x-gnk-asg-news-automation: hotfix-v1' headers.txt || { echo 'MISSING_EXPECTED_NEWS_AUTOMATION_HEADER' >> verify.log; failed=1; }
+          grep -q '"items"' news.json || { echo 'MISSING_ITEMS_ARRAY' >> verify.log; failed=1; }
+
+          cat verify.log
+          echo "code=$failed" >> "$GITHUB_OUTPUT"
+          exit 0
       - name: Report issue-triggered result
         if: always() && github.event_name == 'issues'
         env:
@@ -81,8 +103,14 @@ jobs:
         run: |
           {
             echo "GNK_ASG_HOTFIX_DEPLOY_CODE=${{ steps.deploy.outputs.code }}"
+            echo "GNK_ASG_HOTFIX_VERIFY_CODE=${{ steps.verify.outputs.code }}"
             echo "commit=${GITHUB_SHA}"
             echo "workflow=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo
+            echo 'VERIFY_LOG:'
+            echo '```text'
+            tail -c 12000 verify.log 2>/dev/null || true
+            echo '```'
             echo
             echo 'DEPLOY_LOG:'
             echo '```text'
@@ -90,6 +118,9 @@ jobs:
             echo '```'
           } > issue-report.md
           gh issue comment "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --body-file issue-report.md
-      - name: Fail when deployment failed
-        if: steps.deploy.outputs.code != '0'
-        run: exit 1
+      - name: Fail on deployment or verification error
+        if: always()
+        shell: bash
+        run: |
+          test "${{ steps.deploy.outputs.code }}" = '0'
+          test "${{ steps.verify.outputs.code }}" = '0'
