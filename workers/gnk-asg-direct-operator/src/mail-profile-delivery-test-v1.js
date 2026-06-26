@@ -1,6 +1,6 @@
 import {withRequiredEmailSignature,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_PROFILE_DELIVERY_TEST_V1_20260626_R3_EPHEMERAL_GATE';
+export const VERSION='GNK_ASG_MAIL_PROFILE_DELIVERY_TEST_V1_20260626_R4_SHARED_EPHEMERAL_GATE';
 export const STATUS_PATH='/api/mail-center/profile-test-status';
 export const SEND_PATH='/api/mail-center/profile-test';
 export const INTERNAL_TEST_PATH='/api/mail-center/internal-profile-test';
@@ -117,7 +117,7 @@ async function sendBatch(request,env){
 async function handleInternalTest(request,env){
   if(request.method!=='POST')return new Response('Not found',{status:404});
   const supplied=request.headers.get('x-gnk-mail-test-nonce')||'';
-  const configured=env.MAIL_PROFILE_TEST_NONCE||'';
+  const configured=env.MAIL_PROFILE_TEST_NONCE||env.MEDIA_OUTREACH_TEST_NONCE||'';
   if(!secureEqual(supplied,configured))return new Response('Not found',{status:404,headers:{'cache-control':'no-store'}});
   return sendBatch(request,internalTestEnv(env));
 }
