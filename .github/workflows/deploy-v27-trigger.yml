@@ -1,0 +1,81 @@
+name: Deploy V27 canonical portal
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/deploy-v27.trigger'
+      - '.github/workflows/deploy-v27-trigger.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-canonical-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Verify V27 package
+        working-directory: workers/gnk-asg-direct-operator
+        run: |
+          set -euxo pipefail
+          node --check src/index-admin-hub-v21.js
+          node --check src/public-shell-v11.js
+          node --check src/index-article-automation-v2.js
+          node --check src/article-editorial-qa-v1.js
+          node --check src/index-unified-auth-v15.js
+          grep -q 'GNK_ASG_PUBLIC_VISUAL_V27_SINGLE_MARKET_20260626' src/public-shell-v11.js
+          grep -q 'index-live-market-chart-v4.js' src/public-shell-v11.js
+          if grep -q 'index-live-market-chart-v3.js?v=' src/public-shell-v11.js; then exit 1; fi
+          grep -q 'function patchIndexHero' src/public-shell-v11.js
+          grep -q 'index-polish-v1.css' src/public-shell-v11.js
+          grep -q 'GNK_ASG_ARTICLE_EDITORIAL_QA_V1_20260626' src/article-editorial-qa-v1.js
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' wrangler.toml
+          grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' wrangler.toml
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Deploy V27
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify live V27
+        run: |
+          set -euo pipefail
+          sleep 55
+          base='https://gnk-asg.hr'; cb=$(date +%s)
+          curl -sS -D /tmp/root.h "$base/?cb=$cb" -o /tmp/root.html
+          curl -sS -D /tmp/en.h "$base/en/?cb=$cb" -o /tmp/en.html
+          curl -sS "$base/data/deployment-status.json?cb=$cb" -o /tmp/status.json
+          curl -sS -D /tmp/admin.h --max-redirs 0 "$base/operator-dashboard/?cb=$cb" -o /tmp/admin.out || true
+          node <<'JS'
+          const fs=require('node:fs');
+          const root=fs.readFileSync('/tmp/root.html','utf8');
+          const en=fs.readFileSync('/tmp/en.html','utf8');
+          const rootH=fs.readFileSync('/tmp/root.h','utf8');
+          const adminH=fs.readFileSync('/tmp/admin.h','utf8');
+          const status=JSON.parse(fs.readFileSync('/tmp/status.json','utf8'));
+          const failures=[];
+          for(const [name,html] of Object.entries({root,en})){
+            if(!html.includes('class="gnk-index-title"'))failures.push(`${name}_h1_missing`);
+            if(!html.includes('/assets/index-polish-v1.css'))failures.push(`${name}_polish_missing`);
+            if(!html.includes('/assets/index-content-resilience-v1.js'))failures.push(`${name}_resilience_missing`);
+            if(!html.includes('/assets/index-live-market-chart-v4.js'))failures.push(`${name}_v4_missing`);
+            if(/index-live-market-chart-v3\.js/i.test(html))failures.push(`${name}_v3_present`);
+            if(!html.includes('gnk-market-v3-final-guard'))failures.push(`${name}_guard_missing`);
+          }
+          if(!/x-gnk-asg-index-hydration:\s*GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626/i.test(rootH))failures.push('hydration_header_missing');
+          if(status.adminHub!=='GNK_ASG_ADMIN_HUB_V21_20260626_R11_RUNTIME_CONTRACTS')failures.push(`adminHub=${status.adminHub}`);
+          if(status.testSending!=='LOCKED'||status.productionSending!=='LOCKED')failures.push('mail_not_locked');
+          if(!/^HTTP\/\S+ 303/m.test(adminH)||!/^location:\s*\/admin-center\/\?module=operator/im.test(adminH))failures.push('admin_redirect_invalid');
+          console.log(JSON.stringify({ok:!failures.length,failures,status},null,2));
+          if(failures.length)process.exit(1);
+          JS
