@@ -3,8 +3,9 @@ import {handleMediaCommandCenter as handleV2,VERSION as CONTROL_SYNC_VERSION} fr
 import {handleMediaDelivery,processDeliveryQueue,VERSION as DELIVERY_VERSION,INTERNAL_TEST_PATH} from './media-outreach-delivery-v5.js';
 import {enrichContactItems,getReadinessSummary,VERSION as READINESS_VERSION} from './media-command-readiness-v2.js';
 import {withRequiredEmailSignature,VERSION as EMAIL_SIGNATURE_VERSION} from './email-signature-contract-v1.js';
+import {handleMediaSms,getMediaSmsStatus,VERSION as SMS_VERSION} from './media-sms-v1.js';
 
-export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R8_REQUIRED_SIGNATURE';
+export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R9_SMS';
 const CONTROL_ENDPOINTS=new Set([
   '/api/media-command-center/handoff-manifest',
   '/api/media-command-center/import-preview',
@@ -20,6 +21,12 @@ const DELIVERY_ENDPOINTS=new Set([
   '/api/media-command-center/queue-approved',
   '/api/media-command-center/dispatch-queue'
 ]);
+const SMS_ENDPOINTS=new Set([
+  '/api/media-command-center/sms-status',
+  '/api/media-command-center/sms-preview',
+  '/api/media-command-center/sms-test',
+  '/api/media-command-center/sms-send-application'
+]);
 const CONTACTS='/api/media-command-center/contacts';
 const STATUS='/api/media-command-center/status';
 const MEDIA_UI='/media-command-center';
@@ -27,6 +34,8 @@ const HANDOFF_CSS='<link rel="stylesheet" href="/assets/media-command-handoff-ui
 const HANDOFF_JS='<script src="/assets/media-command-handoff-ui-v3.js?v=20260626-1" defer></script>';
 const DELIVERY_CSS='<link rel="stylesheet" href="/assets/media-outreach-delivery-ui-v3.css?v=20260626-1">';
 const DELIVERY_JS='<script src="/assets/media-outreach-delivery-ui-v3.js?v=20260626-1" defer></script>';
+const SMS_CSS='<link rel="stylesheet" href="/assets/media-sms-ui-v1.css?v=20260626-1">';
+const SMS_JS='<script src="/assets/media-sms-ui-v1.js?v=20260626-1" defer></script>';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const jsonResponse=(payload,response)=>new Response(JSON.stringify(payload,null,2),{status:response.status,headers:response.headers});
 
@@ -36,6 +45,7 @@ function stamp(response){
   headers.set('x-gnk-asg-media-control-sync',CONTROL_SYNC_VERSION);
   headers.set('x-gnk-asg-media-readiness',READINESS_VERSION);
   headers.set('x-gnk-asg-media-delivery',DELIVERY_VERSION);
+  headers.set('x-gnk-asg-media-sms',SMS_VERSION);
   headers.set('x-gnk-asg-email-signature-contract',EMAIL_SIGNATURE_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
@@ -49,8 +59,10 @@ async function injectAdminModules(response,path){
   let html=await response.text();
   if(!html.includes('media-command-handoff-ui-v3.css'))html=html.replace('</head>',`${HANDOFF_CSS}</head>`);
   if(!html.includes('media-outreach-delivery-ui-v3.css'))html=html.replace('</head>',`${DELIVERY_CSS}</head>`);
+  if(!html.includes('media-sms-ui-v1.css'))html=html.replace('</head>',`${SMS_CSS}</head>`);
   if(!html.includes('media-command-handoff-ui-v3.js'))html=html.replace('</body>',`${HANDOFF_JS}</body>`);
   if(!html.includes('media-outreach-delivery-ui-v3.js'))html=html.replace('</body>',`${DELIVERY_JS}</body>`);
+  if(!html.includes('media-sms-ui-v1.js'))html=html.replace('</body>',`${SMS_JS}</body>`);
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -69,6 +81,7 @@ export default{
     if(path===INTERNAL_TEST_PATH)return stamp(await handleMediaDelivery(request,signedEnv));
     if(CONTROL_ENDPOINTS.has(path))return protectedEndpoint(request,signedEnv,ctx,handleV2);
     if(DELIVERY_ENDPOINTS.has(path))return protectedEndpoint(request,signedEnv,ctx,handleMediaDelivery);
+    if(SMS_ENDPOINTS.has(path))return protectedEndpoint(request,signedEnv,ctx,handleMediaSms);
     let response=await app.fetch(request,signedEnv,ctx);
     response=await injectAdminModules(response,path);
     const isJson=response.headers.get('content-type')?.includes('application/json');
@@ -79,6 +92,7 @@ export default{
         payload.controlSyncVersion=CONTROL_SYNC_VERSION;
         payload.readinessVersion=READINESS_VERSION;
         payload.deliveryVersion=DELIVERY_VERSION;
+        payload.smsVersion=SMS_VERSION;
         payload.emailSignatureContract=EMAIL_SIGNATURE_VERSION;
         return stamp(jsonResponse(payload,response));
       }catch{}
@@ -90,6 +104,7 @@ export default{
         payload.controlSync=CONTROL_SYNC_VERSION;
         payload.contactImport='HASH_LOCKED_V3';
         payload.delivery=DELIVERY_VERSION;
+        payload.sms=await getMediaSmsStatus(signedEnv);
         payload.emailSignatureContract=EMAIL_SIGNATURE_VERSION;
         payload.readiness=await getReadinessSummary(signedEnv);
         return stamp(jsonResponse(payload,response));
@@ -98,7 +113,7 @@ export default{
     if(path==='/data/portal-version.json'&&isJson){
       try{
         const payload=await response.clone().json();
-        return stamp(jsonResponse({...payload,mediaCommandWrapperV21:VERSION,mediaControlSync:CONTROL_SYNC_VERSION,mediaReadiness:READINESS_VERSION,contactImport:'HASH_LOCKED_V3',mediaDelivery:DELIVERY_VERSION,emailSignatureContract:EMAIL_SIGNATURE_VERSION},response));
+        return stamp(jsonResponse({...payload,mediaCommandWrapperV21:VERSION,mediaControlSync:CONTROL_SYNC_VERSION,mediaReadiness:READINESS_VERSION,contactImport:'HASH_LOCKED_V3',mediaDelivery:DELIVERY_VERSION,mediaSms:SMS_VERSION,emailSignatureContract:EMAIL_SIGNATURE_VERSION},response));
       }catch{}
     }
     return stamp(response);
