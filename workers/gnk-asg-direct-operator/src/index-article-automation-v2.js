@@ -74,6 +74,13 @@ async function processSweep(env, preferred=null, limit=6) {
   return {...(lastResult||{}),ok:successful>0||candidates.length===0,version:VERSION,visualVersion:VISUAL_VERSION,sweep:{ok:successful>0||candidates.length===0,attempts,processed:attempts.length,successful,migrated,remainingEstimate:Math.max(0,(await articleCandidates(env,500)).filter(article=>article?.imageGenerated?.version!==VISUAL_VERSION).length),limit}};
 }
 
+async function persistProcessedAutoEditor(env,payload,articlePostProcess){
+  const article=articlePostProcess?.visual?.article||articlePostProcess?.editorialQa?.article||payload?.article;
+  const output={...payload,ok:payload?.ok!==false&&articlePostProcess?.ok!==false,article,articlePostProcess,articleAutomationVersion:VERSION,visualVersion:VISUAL_VERSION,finishedAt:payload?.finishedAt||new Date().toISOString()};
+  if(output.ok&&article?.id)await write(env,'auto-editor:last',output);
+  return output;
+}
+
 async function mergeGallery(response, env) {
   try {
     const payload = await response.clone().json();
@@ -105,16 +112,14 @@ async function fetchHandler(request, env, ctx) {
   if (request.method === 'GET' && path === '/data/visual_gallery.json' && response.ok) return mergeGallery(response, env);
   if (request.method === 'GET' && path === '/data/article-visual-status.json') {
     const candidates=await articleCandidates(env,500),pending=candidates.filter(article=>article?.imageGenerated?.version!==VISUAL_VERSION);
-    const lastAutoEditor=await read(env,'auto-editor:last',null);
-    return new Response(JSON.stringify({ok:true,version:VERSION,visualVersion:VISUAL_VERSION,total:candidates.length,pending:pending.length,migrated:candidates.length-pending.length,storage:'R2 GNK_ASG_MEDIA_ASSETS',prefix:'generated-articles/YYYY/MM/article-id',lastAutoEditorVisualVersion:lastAutoEditor?.article?.imageGenerated?.version||null,lastAutoEditorArticleId:lastAutoEditor?.article?.id||null},null,2),{headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
+    const lastAutoEditor=await read(env,'auto-editor:last',null),firstRun=await read(env,`automation:article:first-run:${VISUAL_VERSION}`,null);
+    return new Response(JSON.stringify({ok:true,version:VERSION,visualVersion:VISUAL_VERSION,total:candidates.length,pending:pending.length,migrated:candidates.length-pending.length,storage:'R2 GNK_ASG_MEDIA_ASSETS',prefix:'generated-articles/YYYY/MM/article-id',lastAutoEditorVisualVersion:lastAutoEditor?.article?.imageGenerated?.version||null,lastAutoEditorArticleId:lastAutoEditor?.article?.id||null,firstRun},null,2),{headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
   }
   if (request.method !== 'POST' || path !== '/operator/auto-editor/run' || !response.ok) return response;
   try {
     const payload = await response.clone().json();
     const articlePostProcess = await processSweep(env, payload.article,1);
-    const article=articlePostProcess.visual?.article||articlePostProcess.editorialQa?.article||payload.article;
-    const output={...payload,ok:payload.ok!==false&&articlePostProcess.ok,version:payload.version||VERSION,article,articlePostProcess,articleAutomationVersion:VERSION,visualVersion:VISUAL_VERSION,finishedAt:payload.finishedAt||new Date().toISOString()};
-    if(output.ok&&article?.id)await write(env,'auto-editor:last',output);
+    const output=await persistProcessedAutoEditor(env,payload,articlePostProcess);
     const headers = new Headers(response.headers);
     headers.delete('content-length');
     headers.set('content-type', 'application/json; charset=utf-8');
@@ -134,9 +139,25 @@ export default {
   fetch:fetchHandler,
   async scheduled(event, env, ctx) {
     const task = (async () => {
+      const firstRunKey=`automation:article:first-run:${VISUAL_VERSION}`;
+      const completedBefore=await read(env,firstRunKey,null);
+      const before=await read(env,'auto-editor:last',null);
+      if(!completedBefore&&before?.article?.imageGenerated?.version!==VISUAL_VERSION){
+        await write(env,'auto-editor:last',{...(before||{}),ok:false,visualUpgradeRequestedAt:new Date().toISOString(),requiredVisualVersion:VISUAL_VERSION});
+      }
       const result = typeof app.scheduled === 'function' ? await app.scheduled(event, env, ctx) : null;
+      let firstRun=completedBefore?{ok:true,skipped:true,reason:'already_completed',...completedBefore}:null;
+      if(!completedBefore){
+        const generated=await read(env,'auto-editor:last',null);
+        if(generated?.article?.id){
+          const firstPostProcess=await processSweep(env,generated.article,1).catch(error=>({ok:false,error:String(error?.message||error),visualVersion:VISUAL_VERSION}));
+          const processed=await persistProcessedAutoEditor(env,generated,firstPostProcess);
+          firstRun={ok:Boolean(processed?.ok&&processed?.article?.imageGenerated?.version===VISUAL_VERSION),articleId:processed?.article?.id||null,slug:processed?.article?.slug||null,visualVersion:processed?.article?.imageGenerated?.version||null,postProcess:firstPostProcess};
+          if(firstRun.ok)await write(env,firstRunKey,{ok:true,completedAt:new Date().toISOString(),articleId:firstRun.articleId,slug:firstRun.slug,visualVersion:VISUAL_VERSION});
+        }else firstRun={ok:false,error:'auto_editor_article_missing_after_bootstrap',visualVersion:VISUAL_VERSION};
+      }
       const articlePostProcess = await processSweep(env,null,6).catch(error=>({ok:false,error:String(error?.message||error),editorialQaVersion:EDITORIAL_QA_VERSION,editorialRepairVersion:EDITORIAL_REPAIR_VERSION,visualVersion:VISUAL_VERSION}));
-      return { result, articlePostProcess };
+      return { result, firstRun, articlePostProcess };
     })();
     if (ctx?.waitUntil) { ctx.waitUntil(task); return; }
     return task;
