@@ -1,33 +1,47 @@
 (() => {
   'use strict';
-  if(window.__GNK_ASG_MAIL_PROFILE_TEST_V2__)return;
+  if(window.__GNK_ASG_MAIL_PROFILE_TEST_V3__)return;
+  window.__GNK_ASG_MAIL_PROFILE_TEST_V3__=true;
   window.__GNK_ASG_MAIL_PROFILE_TEST_V2__=true;
   window.__GNK_ASG_MAIL_PROFILE_TEST_V1__=true;
 
   const expected={office:'office@gnk-asg.hr',legal:'legal@gnk-asg.hr',media:'media@gnk-asg.hr',it:'it@gnk-asg.hr',director:'nermin.sefic@gnk-asg.hr'};
-  const phone='+385 (0) 916104398';
-  const waUrl='https://wa.me/385916104398';
-  const waIcon='<svg aria-label="WhatsApp" viewBox="0 0 24 24" width="1em" height="1em" style="display:inline-block;vertical-align:-0.15em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M9.1 8.2c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.8 1.8c.1.3.1.5-.1.7l-.6.8c-.1.2-.1.4 0 .6.5.9 1.2 1.6 2.1 2.1.2.1.4.1.6 0l.8-.6c.2-.2.5-.2.7-.1l1.8.8c.3.1.4.3.4.5v.5c0 .3 0 .5-.4.7-.5.3-1.2.6-2 .5-1.3-.1-3.3-.8-5.2-2.7-1.9-1.9-2.6-3.9-2.7-5.2 0-.8.2-1.5.5-2Z"/></svg>';
-  const contactHtml=`<span class="gnk-signature-contact" style="display:inline-flex;align-items:center;gap:.28em;font-size:1em;line-height:1.35">☎ ${phone} <a href="${waUrl}" target="_blank" rel="noopener" aria-label="WhatsApp" style="display:inline-flex;align-items:center;color:inherit;text-decoration:none;font-size:1em">${waIcon}</a></span>`;
+  const phonePattern=/(?:\+?385\s*\(?0?\)?\s*91\s*610\s*4398|\+?385\s*91\s*535\s*8365|0?91\s*535\s*8365)/gi;
+  const whatsAppPattern=/(?:https?:\/\/)?(?:www\.)?wa\.me\/\d+\/?/gi;
   const $=id=>document.getElementById(id);
   const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const nativeFetch=window.fetch.bind(window);
   let deliveryStatus=null;
 
+  function normalizeSignatureText(value){
+    return String(value||'').split(/\r?\n/).filter(line=>{
+      if(phonePattern.test(line)){phonePattern.lastIndex=0;return false;}
+      phonePattern.lastIndex=0;
+      if(whatsAppPattern.test(line)){whatsAppPattern.lastIndex=0;return false;}
+      whatsAppPattern.lastIndex=0;
+      return !/^\s*(?:telefon|kontakt|phone|tel\.?|mobile|mobitel|whatsapp)\s*:/i.test(line);
+    }).join('\n').replace(/\n{3,}/g,'\n\n').trim();
+  }
   function normalizeSignatureHtml(value){
-    let html=String(value||'')
-      .replace(/(?:Telefon|Kontakt):\s*(?:\+385\s*91\s*535\s*8365|091\s*535\s*8365)/gi,contactHtml)
-      .replace(/\+385\s*91\s*535\s*8365|091\s*535\s*8365/g,phone);
-    if(/class=["'][^"']*signature/i.test(html)&&!html.includes(phone))html=html.replace(/<\/div>\s*$/i,`<br>${contactHtml}</div>`);
-    return html;
+    return String(value||'')
+      .replace(/<span\b[^>]*class=["'][^"']*gnk-signature-contact[^"']*["'][^>]*>[\s\S]*?<\/span>/gi,'')
+      .replace(/<div\b[^>]*data-gnk-asg-contact=["'][^"']*["'][^>]*>[\s\S]*?<\/div>/gi,'')
+      .replace(/<div\b[^>]*>\s*(?:<strong[^>]*>\s*)?(?:Telefon|Kontakt|Phone|Tel\.?|Mobile|Mobitel|WhatsApp)\s*:?\s*(?:<\/strong>\s*)?(?:<[^>]+>\s*)*(?:(?:https?:\/\/)?(?:www\.)?wa\.me\/\d+\/?|(?:\+?385\s*\(?0?\)?\s*91\s*610\s*4398|\+?385\s*91\s*535\s*8365|0?91\s*535\s*8365))[\s\S]*?<\/div>/gi,'')
+      .replace(/<a\b[^>]*href=["'][^"']*wa\.me[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,'')
+      .replace(/<br\s*\/?>\s*(?:Telefon|Kontakt|Phone|Tel\.?|Mobile|Mobitel|WhatsApp)\s*:?\s*(?:(?:https?:\/\/)?(?:www\.)?wa\.me\/\d+\/?|(?:\+?385\s*\(?0?\)?\s*91\s*610\s*4398|\+?385\s*91\s*535\s*8365|0?91\s*535\s*8365))/gi,'')
+      .replace(phonePattern,'')
+      .replace(whatsAppPattern,'')
+      .replace(/<div\b[^>]*>\s*(?:<strong[^>]*>\s*)?(?:Telefon|Kontakt|Phone|Tel\.?|Mobile|Mobitel|WhatsApp)\s*:?\s*(?:<\/strong>\s*)?<\/div>/gi,'');
   }
   function patchSignatures(){
-    document.querySelectorAll('.signature').forEach(node=>{
-      let html=normalizeSignatureHtml(node.outerHTML);
-      if(!html.includes(phone))html=html.replace(/<\/div>\s*$/i,`<br>${contactHtml}</div>`);
-      if(html===node.outerHTML)return;
+    document.querySelectorAll('.signature,table').forEach(node=>{
+      const original=node.outerHTML;
+      if(!/GNK ASG|gnk-asg-email-logo-final|75227917632/i.test(original))return;
+      const html=normalizeSignatureHtml(original);
+      if(html===original)return;
       const holder=document.createElement('div');holder.innerHTML=html;
-      const replacement=holder.firstElementChild;if(replacement)node.replaceWith(replacement);
+      const replacement=holder.firstElementChild;
+      if(replacement)node.replaceWith(replacement);else node.remove();
     });
   }
 
@@ -38,6 +52,9 @@
         const payload=JSON.parse(init.body);
         for(const key of ['html','bodyHtml','htmlBody','messageHtml','contentHtml','body']){
           if(typeof payload[key]==='string')payload[key]=normalizeSignatureHtml(payload[key]);
+        }
+        for(const key of ['text','plainText']){
+          if(typeof payload[key]==='string')payload[key]=normalizeSignatureText(payload[key]);
         }
         init={...init,body:JSON.stringify(payload)};
       }
@@ -109,9 +126,12 @@
       $('profile').value=profile;$('profile').dispatchEvent(new Event('change',{bubbles:true}));
       await new Promise(resolve=>setTimeout(resolve,60));patchSignatures();
       const from=String($('from')?.value||'').toLowerCase();const signature=String($('preview')?.innerHTML||'');
-      const fromOk=from===address;const signatureOk=/GNK ASG|Nermin Sefić|Osobni digitalni asistent/i.test(signature)&&signature.includes(phone)&&signature.includes('wa.me/385916104398');
+      phonePattern.lastIndex=0;whatsAppPattern.lastIndex=0;
+      const fromOk=from===address;
+      const signatureOk=/GNK ASG|Nermin Sefić|Osobni digitalni asistent/i.test(signature)&&!phonePattern.test(signature)&&!whatsAppPattern.test(signature);
+      phonePattern.lastIndex=0;whatsAppPattern.lastIndex=0;
       const ok=fromOk&&signatureOk;if(ok)passed+=1;
-      rows.push(item(option.textContent.trim(),ok,`From: ${from||'nedostaje'} · potpis ${signatureOk?'ispravan':'nije potpun'}`));
+      rows.push(item(option.textContent.trim(),ok,`From: ${from||'nedostaje'} · potpis ${signatureOk?'ispravan, bez telefona i WhatsAppa':'nije usklađen'}`));
     }
     $('profile').value=original.profile||'office';$('profile').dispatchEvent(new Event('change',{bubbles:true}));
     if($('from'))$('from').value=original.from||$('from').value;if($('fromName'))$('fromName').value=original.fromName||$('fromName').value;
