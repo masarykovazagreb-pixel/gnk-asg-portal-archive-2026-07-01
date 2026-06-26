@@ -2,8 +2,9 @@ import app from './index-media-command-center-v20.js';
 import {handleMediaCommandCenter as handleV2,VERSION as CONTROL_SYNC_VERSION} from './media-command-control-sync-v3.js';
 import {handleMediaDelivery,processDeliveryQueue,VERSION as DELIVERY_VERSION,INTERNAL_TEST_PATH} from './media-outreach-delivery-v5.js';
 import {enrichContactItems,getReadinessSummary,VERSION as READINESS_VERSION} from './media-command-readiness-v2.js';
+import {withRequiredEmailSignature,VERSION as EMAIL_SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R7_INTERNAL_TEST';
+export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R8_REQUIRED_SIGNATURE';
 const CONTROL_ENDPOINTS=new Set([
   '/api/media-command-center/handoff-manifest',
   '/api/media-command-center/import-preview',
@@ -35,6 +36,7 @@ function stamp(response){
   headers.set('x-gnk-asg-media-control-sync',CONTROL_SYNC_VERSION);
   headers.set('x-gnk-asg-media-readiness',READINESS_VERSION);
   headers.set('x-gnk-asg-media-delivery',DELIVERY_VERSION);
+  headers.set('x-gnk-asg-email-signature-contract',EMAIL_SIGNATURE_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -62,20 +64,22 @@ async function protectedEndpoint(request,env,ctx,handler){
 
 export default{
   async fetch(request,env,ctx){
+    const signedEnv=withRequiredEmailSignature(env);
     const path=pathOf(request);
-    if(path===INTERNAL_TEST_PATH)return stamp(await handleMediaDelivery(request,env));
-    if(CONTROL_ENDPOINTS.has(path))return protectedEndpoint(request,env,ctx,handleV2);
-    if(DELIVERY_ENDPOINTS.has(path))return protectedEndpoint(request,env,ctx,handleMediaDelivery);
-    let response=await app.fetch(request,env,ctx);
+    if(path===INTERNAL_TEST_PATH)return stamp(await handleMediaDelivery(request,signedEnv));
+    if(CONTROL_ENDPOINTS.has(path))return protectedEndpoint(request,signedEnv,ctx,handleV2);
+    if(DELIVERY_ENDPOINTS.has(path))return protectedEndpoint(request,signedEnv,ctx,handleMediaDelivery);
+    let response=await app.fetch(request,signedEnv,ctx);
     response=await injectAdminModules(response,path);
     const isJson=response.headers.get('content-type')?.includes('application/json');
     if(request.method==='GET'&&isJson&&response.ok&&path===CONTACTS){
       try{
         const payload=await response.clone().json();
-        if(Array.isArray(payload.items))payload.items=await enrichContactItems(env,payload.items);
+        if(Array.isArray(payload.items))payload.items=await enrichContactItems(signedEnv,payload.items);
         payload.controlSyncVersion=CONTROL_SYNC_VERSION;
         payload.readinessVersion=READINESS_VERSION;
         payload.deliveryVersion=DELIVERY_VERSION;
+        payload.emailSignatureContract=EMAIL_SIGNATURE_VERSION;
         return stamp(jsonResponse(payload,response));
       }catch{}
     }
@@ -86,22 +90,24 @@ export default{
         payload.controlSync=CONTROL_SYNC_VERSION;
         payload.contactImport='HASH_LOCKED_V3';
         payload.delivery=DELIVERY_VERSION;
-        payload.readiness=await getReadinessSummary(env);
+        payload.emailSignatureContract=EMAIL_SIGNATURE_VERSION;
+        payload.readiness=await getReadinessSummary(signedEnv);
         return stamp(jsonResponse(payload,response));
       }catch{}
     }
     if(path==='/data/portal-version.json'&&isJson){
       try{
         const payload=await response.clone().json();
-        return stamp(jsonResponse({...payload,mediaCommandWrapperV21:VERSION,mediaControlSync:CONTROL_SYNC_VERSION,mediaReadiness:READINESS_VERSION,contactImport:'HASH_LOCKED_V3',mediaDelivery:DELIVERY_VERSION},response));
+        return stamp(jsonResponse({...payload,mediaCommandWrapperV21:VERSION,mediaControlSync:CONTROL_SYNC_VERSION,mediaReadiness:READINESS_VERSION,contactImport:'HASH_LOCKED_V3',mediaDelivery:DELIVERY_VERSION,emailSignatureContract:EMAIL_SIGNATURE_VERSION},response));
       }catch{}
     }
     return stamp(response);
   },
   async scheduled(event,env,ctx){
+    const signedEnv=withRequiredEmailSignature(env);
     const task=(async()=>{
-      const upstream=typeof app.scheduled==='function'?await app.scheduled(event,env,ctx):null;
-      const delivery=await processDeliveryQueue(env).catch(error=>({ok:false,error:String(error?.message||error)}));
+      const upstream=typeof app.scheduled==='function'?await app.scheduled(event,signedEnv,ctx):null;
+      const delivery=await processDeliveryQueue(signedEnv).catch(error=>({ok:false,error:String(error?.message||error)}));
       return{upstream,delivery};
     })();
     if(ctx?.waitUntil){ctx.waitUntil(task);return;}
