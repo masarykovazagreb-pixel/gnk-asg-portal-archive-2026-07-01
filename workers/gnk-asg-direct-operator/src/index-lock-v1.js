@@ -1,7 +1,7 @@
-import app from './index-media-command-center-v20.js';
+import app from './index-media-command-center-v21.js';
 import {patchPublicHtml,transformHtml} from './public-shell-v11.js';
 
-export const INDEX_LOCK_VERSION='GNK_ASG_INDEX_LOCK_V1_20260626_0922';
+export const INDEX_LOCK_VERSION='GNK_ASG_INDEX_LOCK_V2_20260626_MEDIA_V21';
 const INDEX_PATHS=new Map([
   ['/','/index.html'],
   ['/en','/en/index.html']
