@@ -1,0 +1,41 @@
+name: Audit public routes and verified news
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/audit-public-routes-v1.yml'
+      - '.github/audit-public-routes-v1.trigger'
+      - 'scripts/audit-public-routes-v1.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-public-route-audit-v1
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Run public route audit
+        run: |
+          mkdir -p artifacts
+          node scripts/audit-public-routes-v1.mjs
+      - name: Upload route and screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-route-audit-v1
+          path: artifacts
+          if-no-files-found: error
