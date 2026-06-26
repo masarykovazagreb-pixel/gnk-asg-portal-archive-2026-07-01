@@ -1,5 +1,5 @@
 {
-  "version": "2026-06-26-gallery-v2",
+  "version": "2026-06-26-gallery-v3",
   "name": "GNK ASG Galerija",
   "canonical": "https://gnk-asg.hr/visual-index/",
   "minimum_verified_images": 100,
@@ -7,39 +7,136 @@
   "auto_index": true,
   "single_source_of_truth": true,
   "entities": [
-    {"type":"Organization","name":"GNK ASG d.o.o."},
-    {"type":"Organization","name":"GNK DINAMO Ltd."},
-    {"type":"Person","name":"Nermin Sefić","alternateName":"Nermin Sefic"}
+    {
+      "type": "Organization",
+      "name": "GNK ASG d.o.o."
+    },
+    {
+      "type": "Organization",
+      "name": "GNK DINAMO Ltd."
+    },
+    {
+      "type": "Person",
+      "name": "Nermin Sefić",
+      "alternateName": "Nermin Sefic"
+    }
   ],
   "crawl_sources": [
-    {"url":"/objave/","category":"Objave","language":"hr"},
-    {"url":"/en/insights/","category":"Publications","language":"en"},
-    {"url":"/vijesti/","category":"Vijesti","language":"hr"},
-    {"url":"/news/","category":"News","language":"en"},
-    {"url":"/","category":"Početna","language":"hr"},
-    {"url":"/en/","category":"Home","language":"en"}
+    {
+      "url": "/objave/",
+      "category": "Objave",
+      "language": "hr"
+    },
+    {
+      "url": "/en/insights/",
+      "category": "Publications",
+      "language": "en"
+    },
+    {
+      "url": "/vijesti/",
+      "category": "Vijesti",
+      "language": "hr"
+    },
+    {
+      "url": "/news/",
+      "category": "News",
+      "language": "en"
+    },
+    {
+      "url": "/",
+      "category": "Početna",
+      "language": "hr"
+    },
+    {
+      "url": "/en/",
+      "category": "Home",
+      "language": "en"
+    }
   ],
   "json_sources": [
-    {"url":"/data/insights.json","items":"items","image_fields":["image","og_image"]},
-    {"url":"/data/news.json","items":"items","image_fields":["image","imageUrl","thumbnail","og_image"]},
-    {"url":"/data/publications.json","items":"items","image_fields":["image","imageUrl","thumbnail","og_image"]},
-    {"url":"/data/auto-editor.json","items":"items","image_fields":["image","imageUrl","thumbnail","og_image"]}
+    {
+      "url": "/data/insights.json",
+      "items": "items",
+      "image_fields": [
+        "image",
+        "og_image"
+      ]
+    },
+    {
+      "url": "/data/news.json",
+      "items": "items",
+      "image_fields": [
+        "image",
+        "imageUrl",
+        "thumbnail",
+        "og_image"
+      ]
+    },
+    {
+      "url": "/data/publications.json",
+      "items": "items",
+      "image_fields": [
+        "image",
+        "imageUrl",
+        "thumbnail",
+        "og_image"
+      ]
+    },
+    {
+      "url": "/data/auto-editor.json",
+      "items": "items",
+      "image_fields": [
+        "image",
+        "imageUrl",
+        "thumbnail",
+        "og_image"
+      ]
+    }
   ],
   "generated_topics": [
-    "Executive Strategy","Global Finance","Artificial Intelligence","Data Infrastructure","International Partnerships",
-    "Market Intelligence","Sustainable Infrastructure","Corporate Governance","Innovation","Board Decisions",
-    "Digital Payments","Global Logistics","Urban Development","Sports Business","Media Intelligence",
-    "Cyber Security","Document Intelligence","Business Analytics","Growth Capital","International Network"
+    "Executive Strategy",
+    "Global Finance",
+    "Artificial Intelligence",
+    "Data Infrastructure",
+    "International Partnerships",
+    "Market Intelligence",
+    "Sustainable Infrastructure",
+    "Corporate Governance",
+    "Innovation",
+    "Board Decisions",
+    "Digital Payments",
+    "Global Logistics",
+    "Urban Development",
+    "Sports Business",
+    "Media Intelligence",
+    "Cyber Security",
+    "Document Intelligence",
+    "Business Analytics",
+    "Growth Capital",
+    "International Network"
   ],
   "generated_scenes": [
-    "leadership and long-term planning","international investment and capital","technology and operational excellence",
-    "global cooperation and market expansion","sustainable growth and corporate resilience"
+    "leadership and long-term planning",
+    "international investment and capital",
+    "technology and operational excellence",
+    "global cooperation and market expansion",
+    "sustainable growth and corporate resilience"
   ],
   "selection_policy": {
-    "usage": ["Početna","Objave","Publications","Vijesti","News","Objave i analize"],
+    "usage": [
+      "Početna",
+      "Objave",
+      "Publications",
+      "Vijesti",
+      "News",
+      "Objave i analize"
+    ],
     "prefer_exact_keywords": true,
     "fallback": "deterministic-category-match",
     "never_show_missing": true,
     "store_new_images_under": "/assets/gallery/"
-  }
+  },
+  "physical_image_count": 1045,
+  "catalog_url": "/data/gallery.catalog.json",
+  "updated_at": "2026-06-26T18:13:14.429Z"
 }
