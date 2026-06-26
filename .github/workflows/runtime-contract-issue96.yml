@@ -1,0 +1,42 @@
+name: Runtime contract check via issue 96
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    if: github.event.issue.number == 96 && github.event.comment.body == '/check-runtime-contract-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check production runtime contract
+        run: |
+          set -euo pipefail
+          sleep 30
+          node scripts/check-runtime-contract.mjs /tmp/gnk-runtime-contract/report.json
+      - name: Upload runtime report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-runtime-contract
+          path: /tmp/gnk-runtime-contract
+          if-no-files-found: error
+          retention-days: 7
+      - name: Report result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          report=$(cat /tmp/gnk-runtime-contract/report.json 2>/dev/null || printf '{"error":"report_not_created"}')
+          gh issue comment 96 --body "Runtime contract **${JOB_STATUS}** · ${RUN_URL}\n\n\`\`\`json\n${report}\n\`\`\`"
