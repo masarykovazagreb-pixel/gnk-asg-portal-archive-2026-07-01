@@ -98,7 +98,7 @@ jobs:
           node --check apps/portal/assets/public-menu-v13.js
           node --check apps/portal/assets/media-command-center-v1.js
           node --check apps/portal/assets/admin-media-command-center-nav-v20.js
-          grep -q 'main = "src/index-portal-final-v13.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
           node - <<'JS'
           const fs=require('fs');
           const data=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
@@ -108,7 +108,7 @@ jobs:
           console.log('MEDIA_COMMAND_SEED_OK=true');
           JS
           cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy src/index-admin-hub-v21.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
       - name: Deploy IQ200 index, favicon, Admin Hub and Media Command Center to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
@@ -118,7 +118,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler@4 deploy src/index-admin-hub-v21.js --config wrangler.toml --name gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
       - name: Verify IQ200, favicon, Admin Hub and Media Command production
         shell: bash
