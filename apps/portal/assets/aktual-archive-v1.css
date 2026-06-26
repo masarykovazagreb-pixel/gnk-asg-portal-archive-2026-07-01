@@ -1,0 +1,22 @@
+:root{color-scheme:dark;--aktual-bg:#050c17;--aktual-panel:#0b1729;--aktual-gold:#f4d37a;--aktual-text:#edf2f7;--aktual-muted:#aebdd0;--aktual-line:rgba(244,211,122,.24)}
+html{scroll-behavior:smooth}
+body.gnk-aktual-archive{margin:0;background:radial-gradient(circle at 50% -10%,#17385d 0,#07111f 42%,#030812 100%);color:var(--aktual-text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body.gnk-aktual-archive main{width:min(980px,calc(100% - 32px));margin:0 auto;padding:34px 0 72px}
+body.gnk-aktual-archive main>p:first-child{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 26px}
+body.gnk-aktual-archive a{color:var(--aktual-gold);text-decoration-thickness:1px;text-underline-offset:3px}
+body.gnk-aktual-archive .badge{letter-spacing:.08em}
+body.gnk-aktual-archive h1{max-width:900px;margin:18px 0 12px;font-size:clamp(2.1rem,5.7vw,4.7rem);line-height:1.03;text-wrap:balance}
+body.gnk-aktual-archive .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 24px;color:var(--aktual-muted);font-size:.95rem}
+body.gnk-aktual-archive .meta time{color:#fff;font-weight:800}
+body.gnk-aktual-archive .gnk-aktual-figure{margin:0 0 22px}
+body.gnk-aktual-archive .hero{display:block;width:100%;max-height:590px;object-fit:cover;border-radius:24px;border:1px solid var(--aktual-line);box-shadow:0 28px 70px rgba(0,0,0,.32)}
+body.gnk-aktual-archive figcaption{margin:9px 6px 0;color:var(--aktual-muted);font-size:.82rem;line-height:1.45}
+body.gnk-aktual-archive .box{margin:24px 0 34px;padding:16px 18px;border:1px solid var(--aktual-line);border-radius:18px;background:linear-gradient(145deg,rgba(244,211,122,.08),rgba(255,255,255,.035));color:#dce6f2;line-height:1.55}
+body.gnk-aktual-archive article{font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.08rem,2vw,1.22rem);line-height:1.78;color:var(--aktual-text)}
+body.gnk-aktual-archive article>p:first-child{padding:18px 20px;border-left:3px solid var(--aktual-gold);background:rgba(255,255,255,.035);border-radius:0 16px 16px 0;color:#dce6f2}
+body.gnk-aktual-archive article p{margin:1.15em 0;white-space:pre-line}
+body.gnk-aktual-archive article h2{margin:1.8em 0 .55em;color:var(--aktual-gold);font-family:Inter,system-ui,sans-serif;font-size:clamp(1.45rem,3vw,2.15rem);line-height:1.18;text-wrap:balance}
+body.gnk-aktual-archive article ul,body.gnk-aktual-archive article ol{margin:1em 0 1.35em;padding-left:1.5em}
+body.gnk-aktual-archive article li{margin:.45em 0}
+body.gnk-aktual-archive .gnk-aktual-rights{margin-top:38px;padding:16px 18px;border-top:1px solid var(--aktual-line);color:var(--aktual-muted);font:500 .86rem/1.55 Inter,system-ui,sans-serif}
+@media(max-width:680px){body.gnk-aktual-archive main{width:min(100% - 22px,980px);padding-top:22px}body.gnk-aktual-archive h1{font-size:clamp(2rem,11vw,3.25rem)}body.gnk-aktual-archive .hero{border-radius:17px}body.gnk-aktual-archive article{font-size:1.05rem;line-height:1.7}}
