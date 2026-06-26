@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260626_R2_PHONE_WHATSAPP';
+export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260626_R3_NORMALIZED_CONTACT';
 
 const COMPANY={
   name:'GNK ASG d.o.o.',
@@ -13,8 +13,11 @@ const COMPANY={
 
 const clean=value=>String(value??'').trim();
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({
-  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
 })[char]);
+const legacyPhone=/(?:\+385\s*91\s*535\s*8365|091\s*535\s*8365)/gi;
+const textContact=`☎ ${COMPANY.phone} 💬 ${COMPANY.whatsAppUrl}`;
+const htmlContact=`<div data-gnk-asg-contact="phone-whatsapp" style="font-size:14px;line-height:1.48">☎ ${escapeHtml(COMPANY.phone)} <a href="${COMPANY.whatsAppUrl}" target="_blank" rel="noopener" aria-label="WhatsApp" style="display:inline;text-decoration:none;color:#111827;font-size:14px;line-height:1">💬</a></div>`;
 
 function sender(payload={}){
   const from=payload.from;
@@ -30,13 +33,28 @@ function sender(payload={}){
   return{name:'GNK ASG Info Desk',email:raw||'info@gnk-asg.hr'};
 }
 
+function normalizeTextContact(value){
+  return String(value||'')
+    .replace(/(?:Telefon|Kontakt):\s*(?:\+385\s*91\s*535\s*8365|091\s*535\s*8365)/gi,textContact)
+    .replace(legacyPhone,COMPANY.phone);
+}
+function normalizeHtmlContact(value){
+  let html=String(value||'')
+    .replace(/(?:<strong[^>]*>\s*)?(?:Telefon|Kontakt):?\s*(?:<\/strong>\s*)?(?:\+385\s*91\s*535\s*8365|091\s*535\s*8365)/gi,htmlContact)
+    .replace(legacyPhone,COMPANY.phone);
+  if(hasHtmlSignature(html)&&!html.includes(COMPANY.phone)){
+    const closing=/<\/td>\s*<\/tr>\s*<\/table>\s*$/i;
+    html=closing.test(html)?html.replace(closing,`${htmlContact}</td></tr></table>`):`${html}${htmlContact}`;
+  }
+  return html;
+}
 function signatureText(identity){
   return[
     identity.name,
     COMPANY.name,
     COMPANY.address,
     `OIB: ${COMPANY.oib} · MBS: ${COMPANY.mbs}`,
-    `☎ ${COMPANY.phone} 💬 ${COMPANY.whatsAppUrl}`,
+    textContact,
     `Web: ${COMPANY.web}`,
     `E-mail: ${identity.email}`
   ].join('\n');
@@ -46,40 +64,34 @@ function hasTextSignature(value){
   const text=clean(value).toLowerCase();
   return text.includes('gnk asg d.o.o.')&&text.includes(COMPANY.oib)&&text.includes('gnk-asg.hr');
 }
-
 function hasHtmlSignature(value){
   const html=clean(value).toLowerCase();
   return html.includes('data-gnk-asg-signature=')||html.includes('gnk-asg-email-logo-final.png')||(html.includes('gnk asg d.o.o.')&&html.includes(COMPANY.oib));
 }
-
 function closing(text){
   return /(srdačan pozdrav|s poštovanjem|kind regards|best regards)[,!]?\s*$/i.test(clean(text))?'':'Srdačan pozdrav,\n\n';
 }
-
 function appendText(value,identity){
-  const text=clean(value);
-  if(hasTextSignature(text))return text;
+  const text=normalizeTextContact(clean(value));
+  if(hasTextSignature(text))return text.includes(COMPANY.phone)?text:`${text}\n${textContact}`;
   return `${text}${text?'\n\n':''}${closing(text)}${signatureText(identity)}`;
 }
-
 function paragraphs(value){
   return clean(value).split(/\n{2,}/).filter(Boolean).map(part=>`<p style="margin:0 0 14px;line-height:1.6">${escapeHtml(part).replace(/\n/g,'<br>')}</p>`).join('');
 }
-
 function signatureHtml(identity){
-  return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="${COMPANY.web}" style="text-decoration:none"><img src="${COMPANY.logo}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${escapeHtml(identity.name)}</div><div>${escapeHtml(COMPANY.name)}</div><div>${escapeHtml(COMPANY.address)}</div><div>OIB: ${COMPANY.oib} · MBS: ${COMPANY.mbs}</div><div style="font-size:14px;line-height:1.48">☎ ${escapeHtml(COMPANY.phone)} <a href="${COMPANY.whatsAppUrl}" target="_blank" rel="noopener" aria-label="WhatsApp" style="display:inline;text-decoration:none;color:#111827;font-size:14px;line-height:1">💬</a></div><div>Web: <a href="${COMPANY.web}" style="color:#111827">${COMPANY.web}</a></div><div>E-mail: <a href="mailto:${escapeHtml(identity.email)}" style="color:#111827">${escapeHtml(identity.email)}</a></div></td></tr></table>`;
+  return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="${COMPANY.web}" style="text-decoration:none"><img src="${COMPANY.logo}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${escapeHtml(identity.name)}</div><div>${escapeHtml(COMPANY.name)}</div><div>${escapeHtml(COMPANY.address)}</div><div>OIB: ${COMPANY.oib} · MBS: ${COMPANY.mbs}</div>${htmlContact}<div>Web: <a href="${COMPANY.web}" style="color:#111827">${COMPANY.web}</a></div><div>E-mail: <a href="mailto:${escapeHtml(identity.email)}" style="color:#111827">${escapeHtml(identity.email)}</a></div></td></tr></table>`;
 }
-
 function appendHtml(value,text,identity){
-  const html=clean(value)||paragraphs(text);
-  if(hasHtmlSignature(html))return html;
+  const html=normalizeHtmlContact(clean(value)||paragraphs(text));
+  if(hasHtmlSignature(html))return normalizeHtmlContact(html);
   return `${html}${signatureHtml(identity)}`;
 }
 
 export function enforceRequiredSignature(payload={}){
   const identity=sender(payload);
-  const originalText=clean(payload.text||payload.body||payload.plainText);
-  const originalHtml=clean(payload.html||payload.bodyHtml||payload.htmlBody);
+  const originalText=normalizeTextContact(clean(payload.text||payload.body||payload.plainText));
+  const originalHtml=normalizeHtmlContact(clean(payload.html||payload.bodyHtml||payload.htmlBody));
   return{
     ...payload,
     text:appendText(originalText,identity),
@@ -95,9 +107,7 @@ export function withRequiredEmailSignature(env){
   Object.defineProperty(wrapped,'EMAIL',{
     enumerable:true,
     configurable:true,
-    value:{
-      send(payload){return binding.send.call(binding,enforceRequiredSignature(payload));}
-    }
+    value:{send(payload){return binding.send.call(binding,enforceRequiredSignature(payload));}}
   });
   return wrapped;
 }
