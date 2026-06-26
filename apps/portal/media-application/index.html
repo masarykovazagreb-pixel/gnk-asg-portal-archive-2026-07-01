@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#050b14">
+  <title>GNK ASG Media Application · New York 2026</title>
+  <meta name="description" content="Secure newsroom application portal for the GNK ASG New York 2026 media programme.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/media-application-v1.css?v=20260627">
+  <script defer src="/assets/media-application-v1.js?v=20260627"></script>
+</head>
+<body>
+  <a class="skip-link" href="#applicationForm">Preskoči na prijavu / Skip to application</a>
+  <header class="masthead">
+    <a class="brand" href="/" aria-label="GNK ASG portal">
+      <span class="brand-mark" aria-hidden="true">G</span>
+      <span><strong>GNK ASG</strong><small>Media Relations · New York 2026</small></span>
+    </a>
+    <div class="masthead-meta">
+      <span class="secure-chip">Secure newsroom portal</span>
+      <a href="mailto:media@gnk-asg.hr">media@gnk-asg.hr</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Invitation-only application</p>
+        <h1>Prijava predstavnika redakcije<br><span>Newsroom representative application</span></h1>
+        <p class="lead">GNK ASG poziva odabrane redakcije na program u New Yorku. Jedna prijava predstavlja jednu redakciju i jednog nominiranog predstavnika.</p>
+        <p class="lead en">GNK ASG invites selected newsrooms to the New York programme. One application represents one newsroom and one nominated representative.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#applicationForm">Započni prijavu / Apply</a>
+          <a class="button" href="#travelPolicy">Troškovi i put / Travel policy</a>
+        </div>
+      </div>
+      <aside class="deadline-card" aria-live="polite">
+        <small>Application deadline / Rok prijave</small>
+        <strong id="deadlineText">20. srpnja 2026. · 23:59 CEST</strong>
+        <div id="countdown" class="countdown">Učitavanje roka…</div>
+        <p>Zaprimanje prijave nije automatsko odobrenje. Konačnu odluku donosi ovlaštena osoba nakon ljudske provjere.</p>
+      </aside>
+    </section>
+
+    <section id="travelPolicy" class="policy-grid" aria-label="Travel and application policy">
+      <article>
+        <span>01</span><h2>Put i avion / Travel</h2>
+        <p>GNK ASG snosi odobreni trošak puta. Redakcija navodi polazište i predlaže do dvije opcije leta.</p>
+        <p class="en">GNK ASG covers approved travel. The newsroom states the departure point and proposes up to two flight options.</p>
+      </article>
+      <article class="accent">
+        <span>02</span><h2>Ne kupujte kartu / Do not buy</h2>
+        <p>Avionska karta ne smije se kupiti prije pisanog odobrenja. Nakon odobrenja organizator ili ovlaštena agencija organizira i plaća kartu.</p>
+        <p class="en">Do not purchase a ticket before written approval. After approval, the organizer or authorized agency arranges and pays for it.</p>
+      </article>
+      <article>
+        <span>03</span><h2>Smještaj / Accommodation</h2>
+        <p>Smještaj u New Yorku rezerviran je i plaćen za odobrene predstavnike redakcija.</p>
+        <p class="en">Accommodation in New York is reserved and paid for approved newsroom representatives.</p>
+      </article>
+      <article>
+        <span>04</span><h2>Privatnost / Privacy</h2>
+        <p>U početnoj fazi ne šaljite presliku putovnice. Ako bude potrebna, zatražit će se naknadno sigurnim kanalom.</p>
+        <p class="en">Do not submit a passport copy at this stage. If needed, it will be requested later through a secure channel.</p>
+      </article>
+    </section>
+
+    <section class="application-shell">
+      <div class="application-intro">
+        <p class="eyebrow">Official application</p>
+        <h2>Podaci redakcije i predstavnika</h2>
+        <p>Polja označena zvjezdicom obvezna su. Upotrebljavajte službene kontakte redakcije i međunarodni format telefonskog broja, primjerice <code>+385...</code>.</p>
+        <div class="document-note">
+          <strong>Obvezni prilozi / Required attachments</strong>
+          <ul>
+            <li>potpisano pismo redakcijskog angažmana / signed newsroom assignment letter</li>
+            <li>novinarska iskaznica ili dokaz objavljenih radova / press credential or proof of published work</li>
+          </ul>
+          <small>PDF, JPG, PNG, DOC ili DOCX · najviše 10 MB po datoteci.</small>
+        </div>
+      </div>
+
+      <form id="applicationForm" class="application-form" enctype="multipart/form-data" novalidate>
+        <div id="formNotice" class="form-notice" role="status" aria-live="polite">Nacrt se privremeno čuva samo u ovoj kartici preglednika.</div>
+        <input class="honeypot" name="companyFax" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <fieldset>
+          <legend><span>1</span> Poziv i redakcija / Invitation &amp; newsroom</legend>
+          <div class="field-grid">
+            <label class="span-2">Šifra poziva / Invitation reference code *
+              <input name="invitationCode" required autocomplete="off" placeholder="GNK-MEDIA-2026…" spellcheck="false">
+              <small>Šifra se nalazi u naslovu i tekstu službenog poziva.</small>
+            </label>
+            <label>Naziv redakcije / Media outlet *<input name="outletName" required autocomplete="organization"></label>
+            <label>Država / Country *<input name="outletCountry" required autocomplete="country-name"></label>
+            <label class="span-2">Službena web-stranica / Official website *<input name="outletWebsite" required inputmode="url" placeholder="https://..."></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span>2</span> Nominirani predstavnik / Nominated representative</legend>
+          <div class="field-grid">
+            <label>Ime i prezime / Full name *<input name="applicantName" required autocomplete="name"></label>
+            <label>Funkcija i odjel / Role and department *<input name="applicantRole" required autocomplete="organization-title"></label>
+            <label>Službeni e-mail / Official email *<input name="applicantEmail" type="email" required autocomplete="email"></label>
+            <label>Mobitel / WhatsApp *<input name="applicantMobile" type="tel" required autocomplete="tel" placeholder="+385..."></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span>3</span> Odgovorni urednik / Responsible editor</legend>
+          <div class="field-grid">
+            <label>Ime i prezime / Full name *<input name="editorName" required></label>
+            <label>Funkcija / Role *<input name="editorRole" required></label>
+            <label>Službeni e-mail / Official email *<input name="editorEmail" type="email" required></label>
+            <label>Mobitel / Phone *<input name="editorMobile" type="tel" required placeholder="+385..."></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span>4</span> Putni podaci / Travel information</legend>
+          <div class="field-grid">
+            <label>Grad polaska / Departure city *<input name="departureCity" required></label>
+            <label>Željena zračna luka / Preferred airport *<input name="preferredAirport" required></label>
+            <label class="span-2">Očekivani datumi putovanja / Expected travel dates *<input name="travelDates" required placeholder="Primjer: 6.–9. listopada 2026."></label>
+            <label class="span-2">Prijedlog leta / Proposed flight options
+              <textarea name="flightProposal" rows="4" placeholder="Navedite do dvije prihvatljive opcije leta. Nemojte kupovati kartu."></textarea>
+            </label>
+            <label class="span-2">Ostali očekivani troškovi / Other expected costs
+              <textarea name="otherCosts" rows="3" placeholder="Samo troškovi koji zahtijevaju prethodno pisano odobrenje."></textarea>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span>5</span> Dokumenti / Documents</legend>
+          <div class="upload-grid">
+            <label class="upload-card"><strong>Pismo redakcije *</strong><span>Newsroom assignment letter</span><input name="assignmentLetter" type="file" required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"></label>
+            <label class="upload-card"><strong>Dokaz profesionalnog rada *</strong><span>Press credential or published work</span><input name="pressCredential" type="file" required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"></label>
+            <label class="upload-card"><strong>Prijedlog leta</strong><span>Optional itinerary or non-binding quotation</span><input name="flightProposalDocument" type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"></label>
+            <label class="upload-card"><strong>Procjena drugih troškova</strong><span>Optional cost estimate</span><input name="otherCostDocument" type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"></label>
+          </div>
+          <div class="danger-note"><strong>Ne prilažite putovnicu / Do not upload a passport copy.</strong></div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span>6</span> Izjave i slanje / Declarations &amp; submission</legend>
+          <div class="check-list">
+            <label><input type="checkbox" name="newsroomDeclaration" value="yes" required><span>Potvrđujemo da se navedena osoba prijavljuje i nastupa u ime navedene redakcije. / We confirm that the applicant is nominated by and acts on behalf of the stated newsroom.</span></label>
+            <label><input type="checkbox" name="costPolicy" value="yes" required><span>Razumijemo da se karta ne kupuje prije pisanog odobrenja te da se priznaju samo unaprijed odobreni troškovi. / We understand that no ticket may be purchased before written approval and only pre-approved costs are covered.</span></label>
+            <label><input type="checkbox" name="privacyConsent" value="yes" required><span>Suglasni smo s obradom podataka isključivo radi prijave, putne organizacije i medijskog programa. / We consent to processing solely for the application, travel arrangements and media programme.</span></label>
+          </div>
+          <div class="submit-row">
+            <div><strong>Ljudska provjera je obvezna.</strong><small>Predaja obrasca ne predstavlja odobrenje.</small></div>
+            <button id="submitButton" class="button primary" type="submit">Pošalji prijavu / Submit application</button>
+          </div>
+        </fieldset>
+      </form>
+
+      <section id="resultPanel" class="result-panel" hidden aria-live="polite">
+        <div class="result-icon">✓</div>
+        <p class="eyebrow">Application received</p>
+        <h2>Prijava je sigurno zaprimljena</h2>
+        <p id="resultMessage"></p>
+        <dl>
+          <div><dt>Šifra prijave</dt><dd id="resultApplicationId"></dd></div>
+          <div><dt>Status</dt><dd id="resultStatus"></dd></div>
+          <div><dt>Vrijeme zaprimanja</dt><dd id="resultReceivedAt"></dd></div>
+        </dl>
+        <p>Sačuvajte šifru prijave i navedite je u svakoj daljnjoj komunikaciji s <a href="mailto:media@gnk-asg.hr">media@gnk-asg.hr</a>.</p>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 GNK ASG Media Relations</span>
+    <span>New York 2026 · Human verification required</span>
+  </footer>
+</body>
+</html>
