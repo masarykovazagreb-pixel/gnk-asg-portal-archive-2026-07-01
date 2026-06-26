@@ -1,0 +1,23 @@
+name: News V16 workflow heartbeat
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/news-v16-heartbeat.yml'
+      - '.github/news-v16-heartbeat.trigger'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report workflow heartbeat
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        run: gh issue comment 120 --body "News V16 workflow heartbeat **ACTIVE** · commit \`${RUN_SHA}\` · ${RUN_URL}"
