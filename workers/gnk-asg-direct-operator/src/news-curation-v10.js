@@ -108,10 +108,7 @@ function uniqueSorted(items,limit=3000){
 }
 
 function selectActive(items){
-  const all=uniqueSorted(items),croatian=all.filter(item=>item.region==='Croatia'),regional=all.filter(item=>['Slovenia','Bosnia and Herzegovina','Southeast Europe'].includes(item.region)),global=all.filter(item=>!croatian.includes(item)&&!regional.includes(item));
-  const selected=[...croatian.slice(0,25),...regional.slice(0,25),...global.slice(0,50)],used=new Set(selected.map(itemKey));
-  for(const item of all){if(selected.length>=ACTIVE_NEWS_LIMIT)break;if(!used.has(itemKey(item))){selected.push(item);used.add(itemKey(item))}}
-  return uniqueSorted(selected,ACTIVE_NEWS_LIMIT);
+  return uniqueSorted(items,ACTIVE_NEWS_LIMIT);
 }
 
 export async function refreshCuratedNews({read,write}){
