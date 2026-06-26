@@ -5,7 +5,7 @@
   window.__GNK_ASG_ADMIN_SESSION_FALLBACK_V18__ = true;
   window.__GNK_ASG_ADMIN_SESSION_FALLBACK_V17__ = true;
 
-  const VERSION = 'GNK_ASG_ADMIN_SESSION_FALLBACK_V19_20260626_HEALTH';
+  const VERSION = 'GNK_ASG_ADMIN_SESSION_FALLBACK_V19_20260626_COOKIE_ONLY_HEALTH';
   const STORAGE_KEYS = [
     'gnk_asg_operator_token_session',
     'gnk_asg_mail_studio_token',
