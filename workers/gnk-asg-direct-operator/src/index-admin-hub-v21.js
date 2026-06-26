@@ -1,7 +1,7 @@
-import app from './index-media-command-center-v20.js';
+import app,{INDEX_LOCK_VERSION} from './index-lock-v1.js';
 import {handleFaviconAsset,applyFaviconContract,FAVICON_VERSION} from './favicon-contract-v2.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R5_CANONICAL';
+const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R6_INDEX_LOCKED';
 const MODULES=new Map([
   ['/operator-dashboard','operator'],
   ['/operator-mobile','mobile'],
@@ -22,6 +22,7 @@ function baseHeaders(extra={}){
     'x-content-type-options':'nosniff',
     'x-gnk-asg-admin-hub':VERSION,
     'x-gnk-asg-favicon-contract':FAVICON_VERSION,
+    'x-gnk-asg-index-lock':INDEX_LOCK_VERSION,
     ...extra
   };
 }
@@ -36,6 +37,7 @@ function deploymentStatus(){
     service:'gnk-asg-direct-operator',
     entryPoint:'src/index-admin-hub-v21.js',
     adminHub:VERSION,
+    indexLock:INDEX_LOCK_VERSION,
     favicon:FAVICON_VERSION,
     publicPortal:'src/index-portal-final-v13.js',
     mediaCommand:'src/index-media-command-center-v20.js',
