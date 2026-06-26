@@ -18,7 +18,7 @@ let wordCountEn=0;
 fs.mkdirSync(path.dirname(output),{recursive:true});
 
 const get=async endpoint=>{
-  const response=await fetch(`${base}${endpoint}${endpoint.includes('?')?'&':'?'}cb=${cb}`,{headers:{'cache-control':'no-cache','user-agent':'GNK-ASG-Runtime-Contract/1.1'}});
+  const response=await fetch(`${base}${endpoint}${endpoint.includes('?')?'&':'?'}cb=${cb}`,{headers:{'cache-control':'no-cache','user-agent':'GNK-ASG-Runtime-Contract/1.2'}});
   const text=await response.text();
   responses[endpoint]={status:response.status,contentType:response.headers.get('content-type')||'',bytes:text.length};
   return{response,text};
@@ -71,6 +71,8 @@ try{
   if(news.runtimeContract!=='GNK_ASG_NEWS_RUNTIME_CONTRACT_V1_20260626')failures.push(`runtimeContract=${news.runtimeContract}`);
 
   const items=Array.isArray(auto.items)?auto.items:[];
+  const publiclyInvalid=items.filter(item=>item?.kind==='article'&&(item?.status==='review_required'||item?.approvedForPublic===false));
+  if(publiclyInvalid.length)failures.push(`review_required_public=${publiclyInvalid.length}`);
   article=items.find(item=>item?.kind==='article'&&item?.source==='GNK ASG Intelligence Desk')||items.find(item=>item?.kind==='article')||null;
   if(!article)failures.push('automated_article_missing');
   wordCountHr=Number(article?.wordCountHr||words(article?.bodyHr||article?.body));
@@ -83,10 +85,16 @@ try{
   if(!article?.image)failures.push('article_image_missing');
   if(!article?.imageGenerated?.version)failures.push('generated_image_metadata_missing');
   if(article?.imageGenerated?.version&&article.imageGenerated.version!=='GNK_ASG_ARTICLE_VISUAL_V2_20260626')failures.push(`imageVersion=${article.imageGenerated.version}`);
+  if(article?.editorialQa?.version!=='GNK_ASG_ARTICLE_EDITORIAL_QA_V1_20260626')failures.push(`editorialQaVersion=${article?.editorialQa?.version}`);
+  if(article?.editorialQa?.ok!==true)failures.push(`editorialQaOk=${article?.editorialQa?.ok}`);
+  if(article?.status!=='published'||article?.approvedForPublic!==true)failures.push(`articlePublicState=${article?.status}:${article?.approvedForPublic}`);
 
   if(/<script\b[^>]*index-live-market-chart-v3\.js/i.test(raw))failures.push('raw_v3_script_present');
   if(!raw.includes('gnk-market-v3-final-guard'))failures.push('market_guard_missing');
   if(!raw.includes('index-live-market-chart-v4.js'))failures.push('raw_v4_script_missing');
+  if(!raw.includes('class="gnk-index-title"'))failures.push('semantic_h1_missing');
+  if(!raw.includes('/assets/index-polish-v1.css'))failures.push('index_polish_missing');
+  if(!raw.includes('/assets/index-content-resilience-v1.js'))failures.push('content_resilience_missing');
   for(const marker of ['Učitavanje najnovijih vijesti','Učitavanje mreže','Učitavanje objava','class="market-value">Učitavanje']){
     if(raw.includes(marker))failures.push(`raw_placeholder=${marker}`);
   }
@@ -101,7 +109,7 @@ const report={
   responses,
   deployment:{adminHub:deployment.adminHub,marketChart:deployment.marketChart,marketChartCompatibility:deployment.marketChartCompatibility,newsRuntime:deployment.newsRuntime,newsSchedule:deployment.newsSchedule,newsActiveLimit:deployment.newsActiveLimit,newsArchivePruneAt:deployment.newsArchivePruneAt,newsArchiveDeleteCount:deployment.newsArchiveDeleteCount,articleSchedule:deployment.articleSchedule,testSending:deployment.testSending,productionSending:deployment.productionSending},
   newsStatus:{newsSchedule:news.newsSchedule,newsRefreshesPerDay:news.newsRefreshesPerDay,configuredNewsSources:news.configuredNewsSources,activeNewsLimit:news.activeNewsLimit,archiveCount:news.archiveCount,archivePruneAt:news.archivePruneAt,archiveDeleteCount:news.archiveDeleteCount,autoEditorSchedule:news.autoEditorSchedule,lastNewsRefresh:news.lastNewsRefresh,lastAutoEditor:news.lastAutoEditor},
-  article:article?{id:article.id,titleHr:article.titleHr,titleEn:article.titleEn,wordCountHr,wordCountEn,image:article.image,imageGenerated:article.imageGenerated,seo:article.seo,publishedAt:article.publishedAt}:null,
+  article:article?{id:article.id,titleHr:article.titleHr,titleEn:article.titleEn,status:article.status,approvedForPublic:article.approvedForPublic,wordCountHr,wordCountEn,image:article.image,imageGenerated:article.imageGenerated,editorialQa:article.editorialQa,seo:article.seo,publishedAt:article.publishedAt}:null,
   root:{bytes:raw.length}
 };
 fs.writeFileSync(output,JSON.stringify(report,null,2));
