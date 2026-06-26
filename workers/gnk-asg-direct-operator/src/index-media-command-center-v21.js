@@ -1,14 +1,15 @@
 import app from './index-media-command-center-v20.js';
-import {handleMediaCommandCenter as handleV2,VERSION as MEDIA_V2_VERSION} from './media-command-center-v2.js';
+import {handleMediaCommandCenter as handleV2,VERSION as CONTROL_SYNC_VERSION} from './media-command-control-sync-v3.js';
 import {handleMediaDelivery,processDeliveryQueue,VERSION as DELIVERY_VERSION} from './media-outreach-delivery-v3.js';
 import {enrichContactItems,getReadinessSummary,VERSION as READINESS_VERSION} from './media-command-readiness-v2.js';
 
-export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R4_DELIVERY';
-const IMPORT_ENDPOINTS=new Set([
+export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R5_CONTROL_SYNC';
+const CONTROL_ENDPOINTS=new Set([
   '/api/media-command-center/handoff-manifest',
   '/api/media-command-center/import-preview',
   '/api/media-command-center/import-contacts',
-  '/api/media-command-center/readiness-summary'
+  '/api/media-command-center/readiness-summary',
+  '/api/media-command-center/contact-approval'
 ]);
 const DELIVERY_ENDPOINTS=new Set([
   '/api/media-command-center/campaign-pdf',
@@ -31,7 +32,7 @@ const jsonResponse=(payload,response)=>new Response(JSON.stringify(payload,null,
 function stamp(response){
   const headers=new Headers(response.headers);
   headers.set('x-gnk-asg-media-command-wrapper-v21',VERSION);
-  headers.set('x-gnk-asg-media-command-v2',MEDIA_V2_VERSION);
+  headers.set('x-gnk-asg-media-control-sync',CONTROL_SYNC_VERSION);
   headers.set('x-gnk-asg-media-readiness',READINESS_VERSION);
   headers.set('x-gnk-asg-media-delivery',DELIVERY_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
@@ -62,7 +63,7 @@ async function protectedEndpoint(request,env,ctx,handler){
 export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
-    if(IMPORT_ENDPOINTS.has(path))return protectedEndpoint(request,env,ctx,handleV2);
+    if(CONTROL_ENDPOINTS.has(path))return protectedEndpoint(request,env,ctx,handleV2);
     if(DELIVERY_ENDPOINTS.has(path))return protectedEndpoint(request,env,ctx,handleMediaDelivery);
     let response=await app.fetch(request,env,ctx);
     response=await injectAdminModules(response,path);
@@ -71,7 +72,7 @@ export default{
       try{
         const payload=await response.clone().json();
         if(Array.isArray(payload.items))payload.items=await enrichContactItems(env,payload.items);
-        payload.mediaCommandV2=MEDIA_V2_VERSION;
+        payload.controlSyncVersion=CONTROL_SYNC_VERSION;
         payload.readinessVersion=READINESS_VERSION;
         payload.deliveryVersion=DELIVERY_VERSION;
         return stamp(jsonResponse(payload,response));
@@ -80,8 +81,8 @@ export default{
     if(request.method==='GET'&&isJson&&response.ok&&path===STATUS){
       try{
         const payload=await response.clone().json();
-        payload.mediaCommandV2=MEDIA_V2_VERSION;
         payload.mediaCommandWrapperV21=VERSION;
+        payload.controlSync=CONTROL_SYNC_VERSION;
         payload.contactImport='HASH_LOCKED_V3';
         payload.delivery=DELIVERY_VERSION;
         payload.readiness=await getReadinessSummary(env);
@@ -91,7 +92,7 @@ export default{
     if(path==='/data/portal-version.json'&&isJson){
       try{
         const payload=await response.clone().json();
-        return stamp(jsonResponse({...payload,mediaCommandV2:MEDIA_V2_VERSION,mediaCommandWrapperV21:VERSION,mediaReadiness:READINESS_VERSION,contactImport:'HASH_LOCKED_V3',mediaDelivery:DELIVERY_VERSION},response));
+        return stamp(jsonResponse({...payload,mediaCommandWrapperV21:VERSION,mediaControlSync:CONTROL_SYNC_VERSION,mediaReadiness:READINESS_VERSION,contactImport:'HASH_LOCKED_V3',mediaDelivery:DELIVERY_VERSION},response));
       }catch{}
     }
     return stamp(response);
