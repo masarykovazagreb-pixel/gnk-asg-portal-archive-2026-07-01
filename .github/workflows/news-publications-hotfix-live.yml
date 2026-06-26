@@ -7,8 +7,10 @@ on:
       - 'workers/gnk-asg-direct-operator/**'
       - 'apps/portal/vijesti/**'
       - 'apps/portal/news/**'
+      - 'apps/portal/visual-index/**'
       - 'apps/portal/assets/business-news.css'
       - 'apps/portal/assets/business-news.js'
+      - 'apps/portal/assets/visual-index-full-gallery.js'
       - '.github/workflows/news-publications-hotfix-live.yml'
   workflow_dispatch:
   issues:
@@ -43,6 +45,9 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/news-curation-v10.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
           node --check apps/portal/assets/business-news.js
+          node --check apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'loadNewsItems' apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'discardItem' apps/portal/assets/visual-index-full-gallery.js
           ! grep -qi 'http-equiv="refresh"' apps/portal/vijesti/index.html
           ! grep -qi 'http-equiv="refresh"' apps/portal/news/index.html
       - name: Deploy isolated Worker
@@ -100,6 +105,13 @@ jobs:
             if [ "$route_code" != '200' ]; then failed=1; fi
           done
 
+          visual_asset_code=$(curl --silent --show-error --location --output visual-index.js --write-out '%{http_code}' 'https://gnk-asg.hr/assets/visual-index-full-gallery.js?cb=hotfix')
+          echo "$visual_asset_code https://gnk-asg.hr/assets/visual-index-full-gallery.js" >> verify.log
+          if [ "$visual_asset_code" != '200' ]; then failed=1; fi
+          grep -q 'loadNewsItems' visual-index.js || { echo 'VISUAL_INDEX_NEWS_LOADER_MISSING' >> verify.log; failed=1; }
+          grep -q 'discardItem' visual-index.js || { echo 'VISUAL_INDEX_IMAGE_CLEANUP_MISSING' >> verify.log; failed=1; }
+          grep -q 'gnk-news-gallery-item' visual-index.js || { echo 'VISUAL_INDEX_NEWS_CARD_MISSING' >> verify.log; failed=1; }
+
           curl --silent --show-error --location --dump-header headers.txt --output news.json 'https://gnk-asg.hr/data/news.json?cb=hotfix'
           curl --silent --show-error --location --output status.json 'https://gnk-asg.hr/data/news-automation-status.json?cb=hotfix'
           curl --silent --show-error --location --output archive.json 'https://gnk-asg.hr/data/news-archive.json?cb=hotfix'
@@ -117,13 +129,16 @@ jobs:
           const items=Array.isArray(news)?news:(Array.isArray(news?.items)?news.items:[]);
           const images=items.filter(x=>x?.image||x?.imageUrl);
           const fallbacks=items.filter(x=>x?.imageFallback===true||String(x?.image||x?.imageUrl||'').includes('fallback'));
+          const visualEligible=items.filter(x=>!x?.imageFallback&&!String(x?.image||x?.imageUrl||'').includes('fallback')&&/^https?:\/\//i.test(String(x?.image||x?.imageUrl||'')));
           console.log(`NEWS_ITEMS=${items.length}`);
           console.log(`NEWS_WITH_IMAGES=${images.length}`);
           console.log(`NEWS_FALLBACK_IMAGES=${fallbacks.length}`);
+          console.log(`NEWS_VISUAL_ELIGIBLE=${visualEligible.length}`);
           console.log(`NEWS_NEWEST=${items[0]?.publishedAt||items[0]?.published_at||''}`);
           console.log(`NEWS_OLDEST=${items.at(-1)?.publishedAt||items.at(-1)?.published_at||''}`);
           if(items.length!==100){console.log('NEWS_ITEMS_EXPECTED_100');failed=true}
           if(images.length!==items.length){console.log('NEWS_IMAGE_METADATA_INCOMPLETE');failed=true}
+          if(visualEligible.length<20){console.log('NEWS_VISUAL_ELIGIBLE_TOO_LOW');failed=true}
 
           const status=read('status.json');
           const schedule=status?.newsSchedule||status?.scheduleSlots||status?.scheduled_hours_local||[];
