@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event.issue.number == 96 && github.event.comment.body == '/deploy-runtime-r11-v1'
+    if: github.event.issue.number == 96 && github.event.comment.body == '/deploy-runtime-r11-v2'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
