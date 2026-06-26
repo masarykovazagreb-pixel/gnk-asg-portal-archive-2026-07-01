@@ -3,7 +3,84 @@
   if (window.__GNK_ASG_GALLERY_BOOTSTRAP__) return;
   window.__GNK_ASG_GALLERY_BOOTSTRAP__ = true;
   const route = location.pathname.replace(/\/+$/, '') || '/';
-  if (route === '/' || route === '/en') return;
+
+  const node = (tag,className,text) => {
+    const item=document.createElement(tag);
+    if(className)item.className=className;
+    if(text)item.textContent=text;
+    return item;
+  };
+
+  const mountCodeShowcase = () => {
+    const main=document.querySelector('main#main,main');
+    if(!main || document.querySelector('.gnk-code-slot'))return;
+    const english=route==='/en';
+
+    const css=node('link');
+    css.rel='stylesheet';
+    css.href='/assets/the-code-index-slot.css?v=20260627-v2';
+    document.head.appendChild(css);
+
+    const section=node('section','section gnk-code-slot');
+    section.id='the-code-index';
+    section.setAttribute('aria-label','GNK DINAMO Ltd. — The Code');
+
+    const head=node('div','gnk-code-slot__head');
+    const title=node('div');
+    title.appendChild(node('span','gnk-code-slot__eyebrow','GNK DINAMO Ltd. · THE CODE'));
+    title.appendChild(node('h2','',english?'A signal built for Earth.':'Signal izgrađen za Zemlju.'));
+    head.appendChild(title);
+    head.appendChild(node('p','',english?'Two campaign visuals rotate every 10 seconds. The interactive code remains isolated from the portal.':'Dva kampanjska vizuala izmjenjuju se svakih 10 sekundi. Interaktivni kod ostaje izoliran od portala.'));
+    section.appendChild(head);
+
+    const grid=node('div','gnk-code-slot__grid');
+    const visual=node('article','gnk-code-slot__visual');
+    const slides=node('div','gnk-code-slot__slides');
+    const visuals=[
+      {src:'/assets/the-code-visual-01.jpg',label:'GNK ASG · VISUAL 01',text:english?'First campaign visual.':'Prvi kampanjski vizual.'},
+      {src:'/assets/the-code-visual-02.jpg',label:'GNK ASG · VISUAL 02',text:english?'Second campaign visual.':'Drugi kampanjski vizual.'}
+    ];
+    visuals.forEach((item,index)=>{
+      const figure=node('figure','gnk-code-slot__slide');
+      const placeholder=node('div','gnk-code-slot__placeholder');
+      placeholder.appendChild(node('span','',english?'Visual reserved — upload pending.':'Mjesto za vizual je rezervirano — čeka se učitavanje.'));
+      figure.appendChild(placeholder);
+      const image=node('img');
+      image.src=item.src;
+      image.alt=item.text;
+      image.loading=index?'lazy':'eager';
+      image.decoding='async';
+      image.addEventListener('error',()=>image.remove(),{once:true});
+      figure.appendChild(image);
+      figure.appendChild(node('div','gnk-code-slot__shade'));
+      const caption=node('figcaption','gnk-code-slot__caption');
+      caption.appendChild(node('small','',item.label));
+      caption.appendChild(node('strong','',item.text));
+      figure.appendChild(caption);
+      slides.appendChild(figure);
+    });
+    visual.appendChild(slides);
+    grid.appendChild(visual);
+
+    const code=node('aside','gnk-code-slot__code');
+    const frame=node('iframe');
+    frame.title='THE CODE — GNK DINAMO Ltd.';
+    frame.src='/the-code/';
+    frame.loading='lazy';
+    frame.setAttribute('sandbox','allow-scripts');
+    frame.setAttribute('allow','autoplay');
+    code.appendChild(frame);
+    code.appendChild(node('span','gnk-code-slot__badge','Interactive · isolated'));
+    grid.appendChild(code);
+    section.appendChild(grid);
+    main.appendChild(section);
+  };
+
+  if(route==='/' || route==='/en'){
+    document.readyState==='loading'?document.addEventListener('DOMContentLoaded',mountCodeShowcase,{once:true}):mountCodeShowcase();
+    return;
+  }
+
   const run = async () => {
     if (!window.GNK_ASG_GALLERY) {
       await new Promise((resolve,reject) => {
