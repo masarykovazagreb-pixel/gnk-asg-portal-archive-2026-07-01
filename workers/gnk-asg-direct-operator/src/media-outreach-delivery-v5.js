@@ -29,6 +29,15 @@ function secureEqual(a,b){
   return mismatch===0&&left.length>31;
 }
 
+function internalTestEnv(env){
+  return new Proxy(env,{
+    get(target,property,receiver){
+      if(String(property)==='MEDIA_OUTREACH_TEST_LIVE')return'true';
+      return Reflect.get(target,property,receiver);
+    }
+  });
+}
+
 async function handleInternalTest(request,env){
   if(request.method!=='POST')return new Response('Not found',{status:404});
   const supplied=request.headers.get('x-gnk-test-nonce')||'';
@@ -37,7 +46,7 @@ async function handleInternalTest(request,env){
   const url=new URL(request.url);
   url.pathname=`${API}/test-email`;
   const forwarded=new Request(url.toString(),request);
-  const response=await handleV3(forwarded,env);
+  const response=await handleV3(forwarded,internalTestEnv(env));
   return response?stamp(response):new Response('Not found',{status:404});
 }
 
