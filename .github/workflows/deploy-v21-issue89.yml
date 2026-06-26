@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event.issue.number == 89 && github.event.comment.body == '/deploy-v21 20260626-89-r4'
+    if: github.event.issue.number == 89 && github.event.comment.body == '/deploy-v21 20260626-89-r5-delivery'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -30,6 +30,7 @@ jobs:
           node --check apps/portal/assets/admin-session-fallback-v17.js
           node --check apps/portal/assets/mail-studio-auth-bridge-v16.js
           node --check apps/portal/assets/media-command-handoff-ui-v3.js
+          node --check apps/portal/assets/media-outreach-delivery-ui-v3.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
           node --check workers/gnk-asg-direct-operator/src/index-lock-v4.js
           node --check workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
@@ -38,9 +39,11 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
           node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v2.js
+          node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
           grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'GNK_ASG_PLATFORM_HEALTH_V1_20260626' workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626' workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
@@ -74,6 +77,8 @@ jobs:
           curl -sS -D /tmp/health.headers -H 'Cache-Control: no-cache' "$base/data/platform-health.json?cb=$cb" -o /tmp/health.json
           curl -sS -D /tmp/root.headers -H 'Cache-Control: no-cache' "$base/?cb=$cb" -o /tmp/root.html
           curl -sS -D /tmp/admin.headers -H 'Cache-Control: no-cache' "$base/operator-dashboard/?cb=$cb" -o /tmp/admin.html
+          curl -sS -D /tmp/delivery.headers -H 'Cache-Control: no-cache' "$base/api/media-command-center/delivery-status?cb=$cb" -o /tmp/delivery.json
+          curl -sS -D /tmp/delivery-ui.headers -H 'Cache-Control: no-cache' "$base/assets/media-outreach-delivery-ui-v3.js?cb=$cb" -o /tmp/delivery-ui.js
           node <<'JS'
           const fs=require('node:fs');
           const read=path=>fs.readFileSync(path,'utf8');
@@ -85,6 +90,8 @@ jobs:
           const healthHeaders=read('/tmp/health.headers');
           const adminHeaders=read('/tmp/admin.headers');
           const admin=read('/tmp/admin.html');
+          const deliveryHeaders=read('/tmp/delivery.headers');
+          const deliveryUi=read('/tmp/delivery-ui.js');
           const expected={
             entryPoint:'src/index-admin-hub-v21.js',
             indexHydration:'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626',
@@ -93,6 +100,9 @@ jobs:
             contactImport:'HASH_LOCKED_V3',
             platformHealth:'/data/platform-health.json',
             d1MigrationMode:'RUNTIME_SCHEMA_FALLBACK',
+            mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R4_DELIVERY',
+            mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
+            testSending:'LOCKED',
             productionSending:'LOCKED'
           };
           const firstLine=value=>String(value).split(/\r?\n/)[0]||'';
@@ -110,17 +120,18 @@ jobs:
             loadingMarket:root.includes('class="market-value">Učitavanje')
           };
           for(const [key,value] of Object.entries(placeholders))if(value)failures.push(key);
-          const adminStatus=firstLine(adminHeaders);
-          const adminLocation=header(adminHeaders,'location');
+          const adminStatus=firstLine(adminHeaders),adminLocation=header(adminHeaders,'location');
           if(!/\s303\s/.test(adminStatus))failures.push(`admin_status=${adminStatus}`);
           if(!adminLocation.includes('/admin-center/?module=operator'))failures.push(`admin_location=${adminLocation}`);
+          const deliveryStatus=firstLine(deliveryHeaders);
+          if(!/\s(401|403)\s/.test(deliveryStatus))failures.push(`delivery_auth=${deliveryStatus}`);
+          if(!deliveryUi.includes('__GNK_ASG_MEDIA_DELIVERY_UI_V3__'))failures.push('delivery_ui_missing');
           const diagnostic={
-            checkedAt:new Date().toISOString(),
-            failures,
-            deployment:status,
+            checkedAt:new Date().toISOString(),failures,deployment:status,
             health:{status:firstLine(healthHeaders),payload:health},
             root:{status:firstLine(rootHeaders),hydration:header(rootHeaders,'x-gnk-asg-index-hydration'),adminHub:header(rootHeaders,'x-gnk-asg-admin-hub'),placeholders},
-            admin:{status:adminStatus,location:adminLocation,oldOperatorCenter:admin.includes('Operator Center')}
+            admin:{status:adminStatus,location:adminLocation,oldOperatorCenter:admin.includes('Operator Center')},
+            delivery:{status:deliveryStatus,uiBytes:deliveryUi.length}
           };
           fs.writeFileSync('/tmp/live-diagnostic.json',JSON.stringify(diagnostic,null,2));
           console.log(JSON.stringify(diagnostic,null,2));
@@ -141,5 +152,5 @@ jobs:
           live=''
           if [ -s /tmp/gnk-d1-migration.log ]; then d1_tail=$(tail -n 12 /tmp/gnk-d1-migration.log); fi
           if [ -s /tmp/live-diagnostic.json ]; then live=$(cat /tmp/live-diagnostic.json); fi
-          body=$(printf 'Deploy V21 R4 **%s** · D1 migration **%s** · commit `%s` · %s\n\n### Live diagnostic\n```json\n%s\n```\n\n### D1 migration API\n```text\n%s\n```' "$JOB_STATUS" "$D1_OUTCOME" "$RUN_SHA" "$RUN_URL" "$live" "$d1_tail")
+          body=$(printf 'Deploy V21 R5 Delivery **%s** · D1 migration **%s** · commit `%s` · %s\n\n### Live diagnostic\n```json\n%s\n```\n\n### D1 migration API\n```text\n%s\n```' "$JOB_STATUS" "$D1_OUTCOME" "$RUN_SHA" "$RUN_URL" "$live" "$d1_tail")
           gh issue comment 89 --body "$body"
