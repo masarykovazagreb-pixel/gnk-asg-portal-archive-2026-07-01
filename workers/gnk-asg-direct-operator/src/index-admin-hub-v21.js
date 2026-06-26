@@ -3,6 +3,11 @@ import {handleFaviconAsset,applyFaviconContract,FAVICON_VERSION} from './favicon
 
 const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION';
 const HEALTH_VERSION='GNK_ASG_PLATFORM_HEALTH_V1_20260626';
+const PRIVATE_DATA_PATHS=new Set([
+  '/data/media-outreach-contacts-v1.json',
+  '/data/media-outreach-contacts.json',
+  '/data/media-contacts.json'
+]);
 const MODULES=new Map([
   ['/operator-dashboard','operator'],
   ['/operator-mobile','mobile'],
@@ -32,6 +37,7 @@ function jsonResponse(payload,status=200,extra={}){
   return new Response(JSON.stringify(payload,null,2),{status,headers:baseHeaders({'content-type':'application/json; charset=utf-8',...extra})});
 }
 function redirect(location){return new Response(null,{status:303,headers:baseHeaders({location})});}
+function privateNotFound(){return new Response('Not found',{status:404,headers:baseHeaders({'content-type':'text/plain; charset=utf-8','x-robots-tag':'noindex, nofollow, noarchive','x-gnk-asg-private-data':'BLOCKED'})});}
 
 function deploymentStatus(){
   return jsonResponse({
@@ -41,7 +47,7 @@ function deploymentStatus(){
     adminHub:VERSION,
     indexLock:INDEX_LOCK_VERSION,
     indexHydration:'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626',
-    publicVisual:'GNK_ASG_PUBLIC_VISUAL_V24_RESILIENT_INDEX_20260626',
+    publicVisual:'GNK_ASG_PUBLIC_VISUAL_V25_INDEX_POLISH_20260626',
     contentResilience:'index-content-resilience-v1.js',
     marketChart:'index-live-market-chart-v4.js',
     articleAutomation:'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2',
@@ -55,12 +61,15 @@ function deploymentStatus(){
     browserTokenStorage:'DISABLED',
     mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',
     mediaCommand:'src/index-media-command-center-v21.js',
-    mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R4_DELIVERY',
+    mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R6_DELIVERY_SYNC',
     mediaCommandCore:'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R3_HANDOFF_LOCK',
+    mediaControlSync:'GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626',
     mediaReadiness:'GNK_ASG_MEDIA_READINESS_V2_20260626',
-    mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
+    mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V4_20260626_CONTROL_SYNC',
+    mediaDeliveryCore:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
     emailSendApi:'CLOUDFLARE_STRUCTURED_SEND_V1',
     contactImport:'HASH_LOCKED_V3',
+    contactDataExposure:'BLOCKED',
     handoffManifest:'GNK_ASG_MEDIA_HANDOFF_2026-06-26',
     handoffSha256:'f34dda0a2aa7dfd88128c91a0e359b14ce20ced9bb74e02bcfaad62dfa81012f',
     platformHealth:'/data/platform-health.json',
@@ -102,6 +111,7 @@ export default{
   async fetch(request,env,ctx){
     const url=new URL(request.url);
     const path=url.pathname.replace(/\/+$/,'')||'/';
+    if(PRIVATE_DATA_PATHS.has(path)&&['GET','HEAD'].includes(request.method))return privateNotFound();
     const faviconResponse=await handleFaviconAsset(request,env,path);
     if(faviconResponse)return faviconResponse;
     if(path==='/data/deployment-status.json'&&['GET','HEAD'].includes(request.method)){
