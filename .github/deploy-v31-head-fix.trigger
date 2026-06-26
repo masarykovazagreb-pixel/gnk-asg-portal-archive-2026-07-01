@@ -4,4 +4,5 @@ legacy_v7_rewrite=blocked
 news_refresh=run_now
 first_publication=run_now
 visual_index=central_v7
-nonce=2
+editorial_qa=v2_strict
+nonce=3
