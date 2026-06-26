@@ -1,0 +1,10 @@
+GNK_ASG_V30_BROWSER_AUDIT_20260626
+commit_target=main
+routes=/,/en/
+viewports=1440x1100,390x844
+required_header_count=1
+legacy_header_count=0
+horizontal_overflow_max=2
+placeholders=forbidden
+screenshots=required
+nonce=1
