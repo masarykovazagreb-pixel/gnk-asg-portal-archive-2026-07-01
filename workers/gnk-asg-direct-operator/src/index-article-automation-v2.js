@@ -1,7 +1,7 @@
 import app from './index-media-command-center-v21.js';
 import { generateArticleVisual, removeArticleFromNews, VERSION as VISUAL_VERSION } from './article-visual-v2.js';
 
-export const VERSION = 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2';
+export const VERSION = 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R3_SCHEDULED_CTX';
 const store = env => env.GNK_ASG_KV || env.GNK_ASG_CONFIG_KV || null;
 
 async function read(env, key, fallback) {
@@ -43,6 +43,8 @@ async function mergeGallery(response, env) {
       return true;
     });
     const headers = new Headers(response.headers);
+    headers.delete('content-length');
+    headers.set('content-type', 'application/json; charset=utf-8');
     headers.set('x-gnk-asg-gallery-generated', String(generated.length));
     return new Response(JSON.stringify({
       ...payload,
@@ -63,6 +65,8 @@ async function fetchHandler(request, env, ctx) {
     const payload = await response.clone().json();
     const articlePostProcess = await processArticle(env, payload.article);
     const headers = new Headers(response.headers);
+    headers.delete('content-length');
+    headers.set('content-type', 'application/json; charset=utf-8');
     headers.set('x-gnk-asg-article-automation', VERSION);
     return new Response(JSON.stringify({
       ...payload,
@@ -80,7 +84,7 @@ export default {
   fetch:fetchHandler,
   async scheduled(event, env, ctx) {
     const task = (async () => {
-      const result = typeof app.scheduled === 'function' ? await app.scheduled(event, env, {}) : null;
+      const result = typeof app.scheduled === 'function' ? await app.scheduled(event, env, ctx) : null;
       const articlePostProcess = await processArticle(env, null).catch(error => ({ ok:false, error:String(error?.message || error) }));
       return { result, articlePostProcess };
     })();
