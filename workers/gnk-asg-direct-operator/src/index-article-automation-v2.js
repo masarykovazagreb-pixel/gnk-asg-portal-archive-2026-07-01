@@ -3,7 +3,7 @@ import { generateArticleVisual, removeArticleFromNews, VERSION as VISUAL_VERSION
 import { enforceEditorialQuality, editorialIssues, VERSION as EDITORIAL_QA_VERSION } from './article-editorial-qa-v1.js';
 import { repairArticle, VERSION as EDITORIAL_REPAIR_VERSION } from './article-editorial-repair-v1.js';
 
-export const VERSION = 'GNK_ASG_ARTICLE_AUTOMATION_V3_R2_BACKFILL_20260626';
+export const VERSION = 'GNK_ASG_ARTICLE_AUTOMATION_V4_R2_FIRST_RUN_20260626';
 const store = env => env.GNK_ASG_KV || env.GNK_ASG_CONFIG_KV || null;
 
 async function read(env, key, fallback) {
@@ -15,6 +15,13 @@ async function read(env, key, fallback) {
   } catch {
     return fallback;
   }
+}
+
+async function write(env,key,value){
+  const kv=store(env);
+  if(!kv)return false;
+  await kv.put(key,JSON.stringify(value,null,2));
+  return true;
 }
 
 async function articleCandidates(env, limit=6) {
@@ -98,12 +105,16 @@ async function fetchHandler(request, env, ctx) {
   if (request.method === 'GET' && path === '/data/visual_gallery.json' && response.ok) return mergeGallery(response, env);
   if (request.method === 'GET' && path === '/data/article-visual-status.json') {
     const candidates=await articleCandidates(env,500),pending=candidates.filter(article=>article?.imageGenerated?.version!==VISUAL_VERSION);
-    return new Response(JSON.stringify({ok:true,version:VERSION,visualVersion:VISUAL_VERSION,total:candidates.length,pending:pending.length,migrated:candidates.length-pending.length,storage:'R2 GNK_ASG_MEDIA_ASSETS',prefix:'generated-articles/YYYY/MM/article-id'},null,2),{headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
+    const lastAutoEditor=await read(env,'auto-editor:last',null);
+    return new Response(JSON.stringify({ok:true,version:VERSION,visualVersion:VISUAL_VERSION,total:candidates.length,pending:pending.length,migrated:candidates.length-pending.length,storage:'R2 GNK_ASG_MEDIA_ASSETS',prefix:'generated-articles/YYYY/MM/article-id',lastAutoEditorVisualVersion:lastAutoEditor?.article?.imageGenerated?.version||null,lastAutoEditorArticleId:lastAutoEditor?.article?.id||null},null,2),{headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
   }
   if (request.method !== 'POST' || path !== '/operator/auto-editor/run' || !response.ok) return response;
   try {
     const payload = await response.clone().json();
     const articlePostProcess = await processSweep(env, payload.article,1);
+    const article=articlePostProcess.visual?.article||articlePostProcess.editorialQa?.article||payload.article;
+    const output={...payload,ok:payload.ok!==false&&articlePostProcess.ok,version:payload.version||VERSION,article,articlePostProcess,articleAutomationVersion:VERSION,visualVersion:VISUAL_VERSION,finishedAt:payload.finishedAt||new Date().toISOString()};
+    if(output.ok&&article?.id)await write(env,'auto-editor:last',output);
     const headers = new Headers(response.headers);
     headers.delete('content-length');
     headers.set('content-type', 'application/json; charset=utf-8');
@@ -111,7 +122,7 @@ async function fetchHandler(request, env, ctx) {
     headers.set('x-gnk-asg-article-visual', VISUAL_VERSION);
     headers.set('x-gnk-asg-editorial-qa', EDITORIAL_QA_VERSION);
     headers.set('x-gnk-asg-editorial-repair', EDITORIAL_REPAIR_VERSION);
-    return new Response(JSON.stringify({...payload,ok:payload.ok!==false&&articlePostProcess.ok,article:articlePostProcess.visual?.article||articlePostProcess.editorialQa?.article||payload.article,articlePostProcess},null,2),{status:articlePostProcess.ok?response.status:422,headers});
+    return new Response(JSON.stringify(output,null,2),{status:articlePostProcess.ok?response.status:422,headers});
   } catch (error) {
     const headers = new Headers(response.headers);
     headers.set('x-gnk-asg-article-postprocess-error', String(error?.message || error).slice(0, 160));
