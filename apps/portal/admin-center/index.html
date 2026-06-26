@@ -4,27 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<title>GNK ASG Admin Dashboard</title>
-<link rel="stylesheet" href="/assets/admin-hub-v21.css?v=20260626-1">
+<title>GNK ASG Admin Center</title>
+<script>window.__GNK_ASG_BACKEND_SHELL_V6__=true;window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V9__=true;window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V8__=true;window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V7__=true;</script>
+<link rel="stylesheet" href="/assets/admin-center-v1.css?v=20260626-1">
 </head>
 <body>
-<div class="gnk-hub">
-  <aside class="gnk-hub-side">
-    <div class="gnk-hub-brand"><span>G</span><div><strong>GNK ASG Admin</strong><small>Operativni dashboard</small></div></div>
-    <nav id="gnkHubNav" aria-label="Administratorski moduli"></nav>
-    <p class="gnk-hub-note"><b>Jedinstveni sigurni ulaz.</b><br>Svi moduli koriste istu zaštićenu sesiju.</p>
+<div class="ac-app">
+  <aside class="ac-side">
+    <div class="ac-brand"><span class="ac-logo">G</span><div><strong>GNK ASG Admin</strong><small>Secure Operations Center</small></div><button id="acClose" class="ac-close" type="button" aria-label="Zatvori izbornik">×</button></div>
+    <div id="acSession" class="ac-session"><span class="ac-dot"></span><div><strong id="acSessionText">Provjera sesije…</strong><small id="acSessionHint">Privatni administrativni sloj</small></div></div>
+    <nav id="acNav" class="ac-nav" aria-label="Administratorski moduli"></nav>
+    <div class="ac-side-foot"><a href="/" target="_top">Javni portal</a><button id="acLogoutSide" type="button">Odjava</button></div>
   </aside>
-  <main class="gnk-hub-main">
-    <header class="gnk-hub-top"><div><h1 id="gnkHubTitle">Admin pregled</h1><p id="gnkHubDescription">Status sustava i pristup privatnim modulima.</p></div><div><a id="gnkHubStandalone" href="/admin-center/" target="_blank" rel="noopener">Otvori zasebno</a><a class="primary" href="/">Javni portal</a></div></header>
-    <section id="gnkHubOverview" class="gnk-hub-panel active">
-      <article class="gnk-hub-hero"><small>GNK ASG Secure Operations Layer</small><h2>Jedan dashboard za cijeli privatni sustav</h2><p>Medijski komandni centar, Operator, Mail Studio, Auto Editor i ostali administrativni alati objedinjeni su u jednoj radnoj površini.</p><div id="gnkHubStatus" class="gnk-hub-status"><span>Provjera sustava…</span></div></article>
-      <div id="gnkHubCards" class="gnk-hub-cards"></div>
+
+  <button id="acBackdrop" class="ac-backdrop" type="button" aria-label="Zatvori izbornik"></button>
+
+  <main class="ac-main">
+    <header class="ac-top">
+      <div class="ac-heading"><button id="acMenu" class="ac-menu" type="button" aria-label="Otvori izbornik">☰</button><div><h1 id="acTitle">Admin pregled</h1><p id="acDescription">Status sustava i jedinstveni pristup administrativnim alatima.</p></div></div>
+      <div class="ac-actions"><button id="acReload" type="button">Provjeri status</button><a id="acStandalone" href="/admin-center/" target="_blank" rel="noopener" hidden>Otvori zasebno</a><a class="primary" href="/" target="_top">Javni portal</a><button id="acLogout" class="danger" type="button">Odjava</button></div>
+    </header>
+
+    <section id="acOverview" class="ac-panel active">
+      <article class="ac-hero"><div><small>Jedna radna površina</small><h2>Svi ključni alati bez duplih izbornika</h2><p>Svaki modul otvara se u istom radnom prostoru. Mail Studio koristi izravni modul s vlastitim profilima, pretincima, potpisima i PDF prilozima.</p></div><span class="ac-badge">Zaštićeni pristup</span></article>
+      <div id="acStatus" class="ac-status"><article class="ac-card warn"><small>Sustav</small><strong>Provjera…</strong><p>Učitavanje statusa</p></article></div>
+      <section class="ac-info"><div><small>Aktivni modul</small><strong id="acCurrent">Admin pregled</strong></div><div><small>Način rada</small><strong>Jedan dashboard · jedan izbornik</strong></div><div><small>Mail profili</small><strong>Office · Legal · Media · IT · Direktor</strong></div></section>
     </section>
-    <section id="gnkHubModule" class="gnk-hub-panel">
-      <div class="gnk-hub-stage"><header><div><strong id="gnkHubModuleTitle"></strong><small id="gnkHubModuleHint"></small></div><button id="gnkHubReload" type="button">Osvježi</button></header><div id="gnkHubLoading" class="gnk-hub-loading">Učitavanje modula…</div><iframe id="gnkHubFrame" title="GNK ASG administratorski modul" allow="clipboard-read; clipboard-write" hidden></iframe></div>
-    </section>
+
+    <section id="acWorkspace" class="ac-panel" aria-label="Radni modul"><div class="ac-stage"><div id="acLoading" class="ac-loading"><span></span><strong>Učitavanje modula…</strong></div><iframe id="acFrame" title="GNK ASG administratorski modul" allow="clipboard-read; clipboard-write" hidden></iframe></div></section>
   </main>
 </div>
-<script src="/assets/admin-hub-v21.js?v=20260626-1" defer></script>
+<script src="/assets/admin-center-v1.js?v=20260626-1" defer></script>
 </body>
 </html>
