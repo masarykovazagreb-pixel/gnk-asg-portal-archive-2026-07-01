@@ -7,6 +7,14 @@
   const PAGE_SIZE=120;
   const state={items:[],filtered:[],visible:PAGE_SIZE};
   const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+  const normalizeSearch=value=>String(value??'')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase()
+    .replace(/đ/g,'d')
+    .replace(/[_-]+/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
 
   function setMeta(selector,attributes) {
     let node=document.head.querySelector(selector);
@@ -15,17 +23,15 @@
   }
 
   function itemSignature(item) {
-    return [item?.src,item?.title,item?.alt,item?.description,item?.source,...(item?.topic||[])].filter(Boolean).join(' ').toLowerCase();
+    return normalizeSearch([item?.src,item?.title,item?.alt,item?.description,item?.source,...(item?.topic||[])].filter(Boolean).join(' '));
   }
 
   function isBlocked(item) {
-    const value=itemSignature(item)
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-      .replace(/[_-]+/g,' ');
+    const value=itemSignature(item);
     if (!value.includes('dinamo')) return false;
     const company=/\b(gnk dinamo ltd|dinamo ltd|colorado|boulder|corporate|company|business|poslovn)\b/.test(value);
     const club=/\b(dinamo zagreb|gnk dinamo zagreb|nk dinamo)\b/.test(value);
-    const emblem=/\b(logo|grb|crest|badge|emblem|shield|club mark|club logo|klupski znak)\b/.test(value);
+    const emblem=/\b(logo|logotip|grb|crest|badge|emblem|shield|club mark|club logo|klupski znak)\b/.test(value);
     return club||(emblem&&!company);
   }
 
@@ -84,7 +90,7 @@
     controls.innerHTML='<input type="search" data-gallery-search placeholder="Pretraži Galeriju" aria-label="Pretraži Galeriju"><button type="button" data-gallery-more>Učitaj još</button>';
     grid.before(controls);
     controls.querySelector('[data-gallery-search]')?.addEventListener('input',event=>{
-      const query=event.target.value.trim().toLowerCase();
+      const query=normalizeSearch(event.target.value);
       state.filtered=query?state.items.filter(item=>itemSignature(item).includes(query)):state.items.slice();
       state.visible=PAGE_SIZE;
       render();
