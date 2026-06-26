@@ -1,0 +1,70 @@
+name: Upload verified media PDF via issue 92
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  upload:
+    if: github.event.issue.number == 92 && github.event.comment.body == '/upload-media-pdf 20260626-92'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Generate deterministic PDF
+        id: pdf
+        run: |
+          set -euxo pipefail
+          python -m pip install --disable-pip-version-check --no-cache-dir reportlab==4.4.9
+          pdf=/tmp/GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf
+          python scripts/generate-media-invitation-pdf-deterministic.py "$pdf"
+          expected=32d6c73bb03c7418ab3d494826d4a04b21f2decfad5c784c77985668a88be1a9
+          actual=$(sha256sum "$pdf" | awk '{print $1}')
+          size=$(stat -c '%s' "$pdf")
+          test "$actual" = "$expected"
+          test "$size" -lt 4194304
+          head -c 5 "$pdf" | grep -q '%PDF-'
+          echo "sha=$actual" >> "$GITHUB_OUTPUT"
+          echo "size=$size" >> "$GITHUB_OUTPUT"
+
+      - name: Upload and verify R2 object
+        id: r2
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          cfg=workers/gnk-asg-direct-operator/wrangler.toml
+          pdf=/tmp/GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf
+          key='gnk-asg-media-assets/media-outreach/campaigns/new-york-2026/GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf'
+          npx --yes wrangler@4 r2 object put "$key" --file "$pdf" --content-type application/pdf --content-disposition 'attachment; filename="GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf"' --cache-control 'private, no-store' --remote --config "$cfg" --force 2>&1 | tee /tmp/r2.log
+          npx --yes wrangler@4 r2 object get "$key" --file /tmp/r2-verify.pdf --remote --config "$cfg" 2>&1 | tee -a /tmp/r2.log
+          test "$(sha256sum /tmp/r2-verify.pdf | awk '{print $1}')" = '${{ steps.pdf.outputs.sha }}'
+
+      - name: Report R2 result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          R2_OUTCOME: ${{ steps.r2.outcome }}
+          PDF_SHA: ${{ steps.pdf.outputs.sha }}
+          PDF_SIZE: ${{ steps.pdf.outputs.size }}
+        run: |
+          tail=$(tail -n 18 /tmp/r2.log 2>/dev/null || true)
+          body=$(printf 'Verified PDF R2 upload **%s** · %s\n\n- Key: `media-outreach/campaigns/new-york-2026/GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf`\n- SHA-256: `%s`\n- Size: `%s` bytes\n- Mail sending: **LOCKED**\n\n```text\n%s\n```' "$R2_OUTCOME" "$RUN_URL" "$PDF_SHA" "$PDF_SIZE" "$tail")
+          gh issue comment 92 --body "$body"
+
+      - name: Enforce successful R2 upload
+        if: always()
+        env:
+          R2_OUTCOME: ${{ steps.r2.outcome }}
+        run: test "$R2_OUTCOME" = success
