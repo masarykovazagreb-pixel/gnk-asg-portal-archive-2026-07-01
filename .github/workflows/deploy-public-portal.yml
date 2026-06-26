@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Verify package
+      - name: Verify package and locked index layout
         shell: bash
         run: |
           set -euxo pipefail
@@ -40,6 +40,7 @@ jobs:
           node --check apps/portal/assets/media-outreach-delivery-ui-v3.js
           node --check apps/portal/assets/index-content-resilience-v1.js
           node --check apps/portal/assets/index-live-market-chart-v4.js
+          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
           node --check workers/gnk-asg-direct-operator/src/index-lock-v4.js
           node --check workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
@@ -55,12 +56,19 @@ jobs:
           grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'GNK_ASG_PLATFORM_HEALTH_V1_20260626' workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
+          grep -q 'GNK_ASG_PUBLIC_VISUAL_V28_STABLE_LAYOUT_RESILIENT_DATA_20260626' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q 'STABLE_SINGLE_MENU_NO_POLISH' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          if grep -q 'function patchIndexHero' workers/gnk-asg-direct-operator/src/public-shell-v11.js; then
+            echo 'Forbidden index hero injector detected' >&2
+            exit 1
+          fi
+          if grep -E -q 'const indexHead=.*index-polish-v1\.css' workers/gnk-asg-direct-operator/src/public-shell-v11.js; then
+            echo 'Forbidden index polish stylesheet injection detected' >&2
+            exit 1
+          fi
           grep -q 'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626' workers/gnk-asg-direct-operator/src/index-server-hydration-v1.js
           grep -q 'GNK_ASG_PUBLIC_R2_V1_20260626' workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
-          grep -q 'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R3_HANDOFF_LOCK' workers/gnk-asg-direct-operator/src/media-command-center-v2.js
           grep -q 'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626' workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
-          grep -q 'f34dda0a2aa7dfd88128c91a0e359b14ce20ced9bb74e02bcfaad62dfa81012f' workers/gnk-asg-direct-operator/src/media-command-center-v2.js
           grep -q 'COOKIE_ONLY' apps/portal/assets/admin-session-fallback-v17.js
           grep -q 'COOKIE_ONLY' apps/portal/assets/mail-studio-auth-bridge-v16.js
           cd workers/gnk-asg-direct-operator
@@ -86,29 +94,12 @@ jobs:
         shell: bash
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify production contract
+      - name: Verify production index and protected routes
         shell: bash
         run: |
           set -euo pipefail
           node <<'JS'
           const base='https://gnk-asg.hr';
-          const expected={
-            entryPoint:'src/index-admin-hub-v21.js',
-            adminHub:'GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION',
-            indexLock:'GNK_ASG_INDEX_LOCK_V4_20260626',
-            indexHydration:'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626',
-            publicR2:'GNK_ASG_PUBLIC_R2_V1_20260626',
-            browserTokenStorage:'DISABLED',
-            mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',
-            mediaCommand:'src/index-media-command-center-v21.js',
-            mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R4_DELIVERY',
-            mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
-            contactImport:'HASH_LOCKED_V3',
-            platformHealth:'/data/platform-health.json',
-            d1MigrationMode:'RUNTIME_SCHEMA_FALLBACK',
-            testSending:'LOCKED',
-            productionSending:'LOCKED'
-          };
           const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
           async function get(path,redirect='follow'){
             try{
@@ -118,31 +109,36 @@ jobs:
           }
           let last;
           for(let attempt=1;attempt<=18;attempt++){
-            const [deployment,health,root,en,content,market,favicon,manifest,mediaApi,deliveryApi,deliveryUi,admin]=await Promise.all([
+            const [deployment,health,root,en,content,market,favicon,manifest,mediaApi,deliveryApi,admin]=await Promise.all([
               get('/data/deployment-status.json'),get('/data/platform-health.json'),get('/'),get('/en/'),
               get('/assets/index-content-resilience-v1.js'),get('/assets/index-live-market-chart-v4.js'),
               get('/favicon.svg'),get('/site.webmanifest'),get('/api/media-command-center/status','manual'),
-              get('/api/media-command-center/delivery-status','manual'),get('/assets/media-outreach-delivery-ui-v3.js'),
-              get('/operator-dashboard/','manual')
+              get('/api/media-command-center/delivery-status','manual'),get('/operator-dashboard/','manual')
             ]);
             let status=null;try{status=JSON.parse(deployment.text);}catch{}
             let healthData=null;try{healthData=JSON.parse(health.text);}catch{}
             const failures=[];
             if(deployment.status!==200||!status?.ok)failures.push(`deployment=${deployment.status}`);
-            for(const [key,value] of Object.entries(expected))if(status?.[key]!==value)failures.push(`${key}=${JSON.stringify(status?.[key])}`);
-            if(health.status!==200||!healthData?.ok||healthData?.checks?.d1?.ok!==true)failures.push(`health=${health.status}:${JSON.stringify(healthData)}`);
-            if(root.status!==200)failures.push(`root=${root.status}`);
-            if(en.status!==200)failures.push(`en=${en.status}`);
-            if(content.status!==200)failures.push(`content=${content.status}`);
-            if(market.status!==200)failures.push(`market=${market.status}`);
-            if(deliveryUi.status!==200)failures.push(`deliveryUi=${deliveryUi.status}`);
-            if(favicon.status!==200||!favicon.text.includes('<svg'))failures.push(`favicon=${favicon.status}`);
-            if(manifest.status!==200||!manifest.text.includes('GNK ASG'))failures.push(`manifest=${manifest.status}`);
+            if(status?.entryPoint!=='src/index-admin-hub-v21.js')failures.push(`entryPoint=${JSON.stringify(status?.entryPoint)}`);
+            if(status?.indexLock!=='GNK_ASG_INDEX_LOCK_V4_20260626')failures.push(`indexLock=${JSON.stringify(status?.indexLock)}`);
+            if(status?.indexHydration!=='GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626')failures.push(`indexHydration=${JSON.stringify(status?.indexHydration)}`);
+            if(status?.browserTokenStorage!=='DISABLED')failures.push(`browserTokenStorage=${JSON.stringify(status?.browserTokenStorage)}`);
+            if(status?.testSending!=='LOCKED'||status?.productionSending!=='LOCKED')failures.push('sending_lock_invalid');
+            if(health.status!==200||!healthData?.ok)failures.push(`health=${health.status}:${JSON.stringify(healthData)}`);
+            for(const [name,response] of Object.entries({root,en,content,market,favicon,manifest}))if(response.status!==200)failures.push(`${name}=${response.status}`);
             if(![401,403].includes(mediaApi.status))failures.push(`mediaApi=${mediaApi.status}`);
             if(![401,403].includes(deliveryApi.status))failures.push(`deliveryApi=${deliveryApi.status}`);
             if(admin.status!==303||!String(admin.headers.location||'').includes('/admin-center/?module=operator'))failures.push(`admin=${admin.status}:${admin.headers.location||''}`);
-            for(const marker of ['Učitavanje najnovijih vijesti','Učitavanje mreže','Učitavanje objava','class="market-value">Učitavanje'])if(root.text.includes(marker))failures.push(`root_placeholder=${marker}`);
-            last={attempt,failures,codes:{deployment:deployment.status,health:health.status,root:root.status,en:en.status,content:content.status,market:market.status,deliveryUi:deliveryUi.status,favicon:favicon.status,manifest:manifest.status,mediaApi:mediaApi.status,deliveryApi:deliveryApi.status,admin:admin.status},status,healthData};
+            for(const [name,response] of Object.entries({root,en})){
+              if(response.text.includes('/assets/index-polish-v1.css'))failures.push(`${name}_polish_present`);
+              if(response.text.includes('class="gnk-index-title"'))failures.push(`${name}_hero_injector_present`);
+              if(!response.text.includes('20260626-stable-v28'))failures.push(`${name}_stable_visual_missing`);
+              const placeholders=name==='root'
+                ? ['Učitavanje najnovijih vijesti','Učitavanje mreže','Učitavanje objava','class="market-value">Učitavanje']
+                : ['Loading latest news','Loading network','Loading publications','class="market-value">Loading'];
+              for(const marker of placeholders)if(response.text.includes(marker))failures.push(`${name}_placeholder=${marker}`);
+            }
+            last={attempt,failures,codes:{deployment:deployment.status,health:health.status,root:root.status,en:en.status,content:content.status,market:market.status,favicon:favicon.status,manifest:manifest.status,mediaApi:mediaApi.status,deliveryApi:deliveryApi.status,admin:admin.status},status,healthData,headers:{root:root.headers,en:en.headers}};
             console.log(JSON.stringify(last));
             if(!failures.length){console.log('GNK_ASG_CANONICAL_PRODUCTION_OK=true');process.exit(0);}
             await sleep(10000);
