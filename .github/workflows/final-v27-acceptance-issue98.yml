@@ -1,6 +1,11 @@
 name: Final V27 production acceptance
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/final-v27-acceptance.trigger'
+      - '.github/workflows/final-v27-acceptance-issue98.yml'
   issue_comment:
     types: [created]
 
@@ -10,7 +15,7 @@ permissions:
 
 jobs:
   accept:
-    if: github.event.issue.number == 98 && github.event.comment.body == '/run-final-v27-acceptance-v1'
+    if: github.event_name == 'push' || (github.event.issue.number == 98 && github.event.comment.body == '/run-final-v27-acceptance-v1')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
