@@ -1,7 +1,7 @@
 import app from './index.js';
 import {enforceRequiredSignature,VERSION as EMAIL_SIGNATURE_VERSION} from '../../gnk-asg-direct-operator/src/email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_CONTACT_AI_MAIL_WRAPPER_V5_20260627';
+export const VERSION='GNK_ASG_CONTACT_AI_MAIL_WRAPPER_V6_20260627';
 const ARCHIVE_ADDRESS='rht@gmx.com';
 const DEFAULT_MODEL='@cf/meta/llama-3.1-8b-instruct-fast';
 const CENTERS=[
@@ -116,10 +116,12 @@ function stripContactDetails(value){
   if(/<[^>]+>/.test(original)){
     return original
       .replace(/<div\b[^>]*data-gnk-asg-contact=["'][^"']*["'][^>]*>[\s\S]*?<\/div>/gi,'')
-      .replace(/<div\b[^>]*>\s*(?:Telefon|Kontakt|Phone|Tel\.?|Mobile|Mobitel|WhatsApp)\s*:?\s*(?:<[^>]+>\s*)*(?:(?:https?:\/\/)?(?:www\.)?wa\.me\/\d+\/?|(?:\+?385\s*\(?0?\)?\s*91\s*610\s*4398|\+?385\s*91\s*535\s*8365|0?91\s*535\s*8365))[\s\S]*?<\/div>/gi,'')
+      .replace(/<div\b[^>]*>\s*(?:<strong[^>]*>\s*)?(?:Telefon|Kontakt|Phone|Tel\.?|Mobile|Mobitel|WhatsApp)\s*:?\s*(?:<\/strong>\s*)?(?:<[^>]+>\s*)*(?:(?:https?:\/\/)?(?:www\.)?wa\.me\/\d+\/?|(?:\+?385\s*\(?0?\)?\s*91\s*610\s*4398|\+?385\s*91\s*535\s*8365|0?91\s*535\s*8365))[\s\S]*?<\/div>/gi,'')
       .replace(/<a\b[^>]*href=["'][^"']*wa\.me[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,'')
       .replace(phonePattern,'')
-      .replace(whatsAppPattern,'');
+      .replace(whatsAppPattern,'')
+      .replace(/<div\b[^>]*>\s*(?:<strong[^>]*>\s*)?(?:Telefon|Kontakt|Phone|Tel\.?|Mobile|Mobitel|WhatsApp)\s*:?\s*(?:<\/strong>\s*)?<\/div>/gi,'')
+      .replace(/<div\b[^>]*>\s*<\/div>/gi,'');
   }
   return original.split(/\r?\n/).filter(line=>{
     if(phonePattern.test(line)){phonePattern.lastIndex=0;return false;}
@@ -172,11 +174,12 @@ function wrappedEnv(env){
   });
   return wrapped;
 }
-function stamp(response){
+function stamp(response,env){
   const headers=new Headers(response.headers);
   headers.set('x-gnk-asg-contact-ai-mail-wrapper',VERSION);
   headers.set('x-gnk-asg-email-signature-contract',EMAIL_SIGNATURE_VERSION);
   headers.set('x-gnk-asg-archive-bcc','enabled');
+  headers.set('x-gnk-asg-ai-mail-binding',env?.AI?.run?'enabled':'fallback');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -185,7 +188,7 @@ export default{
     const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
     let response=await app.fetch(request,wrappedEnv(env),ctx);
     response=await sanitizeSignatureResponse(response,path);
-    return stamp(response);
+    return stamp(response,env);
   },
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,wrappedEnv(env),ctx);},
   async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,wrappedEnv(env),ctx);}
