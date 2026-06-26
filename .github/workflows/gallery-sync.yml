@@ -33,6 +33,23 @@ jobs:
       - name: Generate and index Gallery
         run: node scripts/gallery-sync.mjs
 
+      - name: Apply approved visual identity guard
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const path=require('path');
+          const portal=path.join(process.cwd(),'apps','portal');
+          const pages=['index.html','en/index.html','objave/index.html','publications/index.html','en/insights/index.html','vijesti/index.html','news/index.html','insights-hr/index.html','visual-index/index.html'];
+          const tag='<script src="/assets/gallery-brand-safety.js?v=20260626-v1"></script>';
+          for(const rel of pages){
+            const file=path.join(portal,rel);
+            if(!fs.existsSync(file))continue;
+            let html=fs.readFileSync(file,'utf8').replace(/\s*<script[^>]+gallery-brand-safety\.js[^>]*><\/script>/gi,'');
+            html=html.replace(/<\/body>/i,tag+'\n</body>');
+            fs.writeFileSync(file,html);
+          }
+          NODE
+
       - name: Verify minimum image count
         run: |
           node -e "const c=require('./apps/portal/data/gallery.catalog.json'); if(c.count<100) { console.error('Gallery contains only '+c.count+' images'); process.exit(1) } console.log('Verified Gallery images:',c.count)"
