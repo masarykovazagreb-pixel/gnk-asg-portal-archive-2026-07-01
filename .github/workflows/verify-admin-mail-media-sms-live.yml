@@ -40,12 +40,13 @@ jobs:
             }catch(error){return{status:0,text:'',headers:{},error:String(error)}}
           }
           async function attempt(number){
-            const [admin,mail,media,adminHealth,mailTest,smsUi,smsCss,smsStatus,mailStatus,deliveryStatus,version,root]=await Promise.all([
+            const [admin,mail,media,adminHealth,mailTest,smsUi,smsCss,smsStatus,mailStatus,profileStatus,deliveryStatus,version,root]=await Promise.all([
               get('/admin-center/'),get('/mail-studio/'),get('/media-command-center/'),
               get('/assets/admin-center-health-v1.js'),get('/assets/mail-studio-profile-test-v1.js'),
               get('/assets/media-sms-ui-v1.js'),get('/assets/media-sms-ui-v1.css'),
               get('/api/media-command-center/sms-status'),get('/api/mail-center/status'),
-              get('/api/media-command-center/delivery-status'),get('/data/portal-version.json'),get('/')
+              get('/api/mail-center/profile-test-status'),get('/api/media-command-center/delivery-status'),
+              get('/data/portal-version.json'),get('/')
             ]);
             const failures=[];
             const privateOk=response=>[200,303,401,403].includes(response.status);
@@ -55,24 +56,27 @@ jobs:
             if(!privateOk(media))failures.push(`media_http_${media.status}`);
             for(const [name,response,marker] of [
               ['adminHealth',adminHealth,'GNK_ASG_ADMIN_HEALTH_V1'],
-              ['mailTest',mailTest,'GNK_ASG_MAIL_PROFILE_TEST_V1'],
+              ['mailTest',mailTest,'GNK_ASG_MAIL_PROFILE_TEST_V2'],
               ['smsUi',smsUi,'GNK_ASG_MEDIA_SMS_UI_V1']
             ]){
               if(response.status!==200)failures.push(`${name}_http_${response.status}`);
               else if(!response.text.includes(marker))failures.push(`${name}_marker_missing`);
             }
+            if(mailTest.status===200&&!mailTest.text.includes('Pošalji 5 internih testova'))failures.push('mail_delivery_ui_missing');
             if(smsCss.status!==200)failures.push(`smsCss_http_${smsCss.status}`);
-            for(const [name,response] of [['smsStatus',smsStatus],['mailStatus',mailStatus],['deliveryStatus',deliveryStatus]]){
+            for(const [name,response] of [['smsStatus',smsStatus],['mailStatus',mailStatus],['profileStatus',profileStatus],['deliveryStatus',deliveryStatus]]){
               if(![200,401,403].includes(response.status))failures.push(`${name}_http_${response.status}`);
             }
+            if(profileStatus.status===404)failures.push('profile_test_route_missing');
             if(version.status!==200)failures.push(`version_http_${version.status}`);
             else{
               if(!version.text.includes('mediaSms'))failures.push('version_mediaSms_missing');
               if(!version.text.includes('mailProfileTest'))failures.push('version_mailProfileTest_missing');
+              if(!version.text.includes('mailProfileDeliveryTest'))failures.push('version_mailProfileDeliveryTest_missing');
             }
             if(root.status!==200)failures.push(`root_http_${root.status}`);
             if(!root.text.includes('public-menu-v13.js?v=20260626-stable-v28'))failures.push('root_v28_menu_missing');
-            const result={checkedAt:new Date().toISOString(),attempt:number,failures,codes:{admin:admin.status,mail:mail.status,media:media.status,adminHealth:adminHealth.status,mailTest:mailTest.status,smsUi:smsUi.status,smsCss:smsCss.status,smsStatus:smsStatus.status,mailStatus:mailStatus.status,deliveryStatus:deliveryStatus.status,version:version.status,root:root.status}};
+            const result={checkedAt:new Date().toISOString(),attempt:number,failures,codes:{admin:admin.status,mail:mail.status,media:media.status,adminHealth:adminHealth.status,mailTest:mailTest.status,smsUi:smsUi.status,smsCss:smsCss.status,smsStatus:smsStatus.status,mailStatus:mailStatus.status,profileStatus:profileStatus.status,deliveryStatus:deliveryStatus.status,version:version.status,root:root.status}};
             fs.writeFileSync('/tmp/admin-mail-media-sms-live.json',JSON.stringify(result,null,2));
             console.log(JSON.stringify(result));
             return failures.length===0;
