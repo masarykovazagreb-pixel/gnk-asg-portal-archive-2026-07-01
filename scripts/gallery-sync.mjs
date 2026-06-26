@@ -6,6 +6,7 @@ const repo=process.cwd();
 const portal=path.join(repo,'apps','portal');
 const generatedDir=path.join(portal,'assets','gallery','generated');
 const catalogPath=path.join(portal,'data','gallery.catalog.json');
+const quarantinePath=path.join(portal,'data','gallery.quarantine.json');
 const configPath=path.join(portal,'data','gallery.json');
 const imageExtensions=new Set(['.svg','.png','.jpg','.jpeg','.webp','.avif']);
 const today=new Date().toISOString();
@@ -29,6 +30,18 @@ const palettes=[
 const titleFromFile=file=>path.basename(file,path.extname(file)).replace(/[-_]+/g,' ').replace(/\b\w/g,ch=>ch.toUpperCase());
 const relativeUrl=file=>'/'+path.relative(portal,file).split(path.sep).join('/');
 const digest=value=>crypto.createHash('sha1').update(String(value)).digest('hex').slice(0,12);
+const normalize=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();
+
+function visualPolicyReason(value) {
+  const text=normalize(value);
+  if (!text.includes('dinamo')) return '';
+  const company=/\b(gnk dinamo ltd|dinamo ltd|colorado|boulder|corporate|company|business|poslovn)\b/.test(text);
+  const club=/\b(dinamo zagreb|gnk dinamo zagreb|nk dinamo|football club|nogometni klub|stadion maksimir)\b/.test(text);
+  const emblem=/\b(logo|logotip|grb|crest|badge|emblem|shield|club mark|club logo|klupski znak)\b/.test(text);
+  if (club) return 'explicit-football-club-reference';
+  if (emblem&&!company) return 'possible-football-club-insignia';
+  return '';
+}
 
 function svg(index,title,scene) {
   const [a,b,g,l]=palettes[index%palettes.length];
@@ -68,13 +81,30 @@ function uniqueWords(value) {
   return [...new Set(String(value).toLowerCase().split(/[^a-z0-9čćžšđ]+/i).filter(word=>word.length>2))].slice(0,12);
 }
 
+async function filePolicyReason(file,url,title) {
+  let evidence=`${url} ${title}`;
+  if (path.extname(file).toLowerCase()==='.svg') {
+    try {
+      const svgText=await fs.readFile(file,'utf8');
+      evidence+=` ${svgText.slice(0,12000)}`;
+    } catch {}
+  }
+  return visualPolicyReason(evidence);
+}
+
 async function buildCatalog() {
   const files=await walk(portal);
   const images=files.filter(file=>imageExtensions.has(path.extname(file).toLowerCase()));
   const items=[];
+  const quarantined=[];
   for (const file of images) {
     const url=relativeUrl(file);
     const title=titleFromFile(file);
+    const reason=await filePolicyReason(file,url,title);
+    if (reason) {
+      quarantined.push({src:url,title,reason,status:'quarantined'});
+      continue;
+    }
     const generated=url.startsWith('/assets/gallery/generated/');
     items.push({
       id:`gallery-${digest(url)}`,src:url,title,
@@ -86,21 +116,33 @@ async function buildCatalog() {
     });
   }
   items.sort((a,b)=>Number(b.generated)-Number(a.generated)||a.src.localeCompare(b.src));
-  const catalog={version:'2026-06-26-gallery-catalog-v1',updated_at:today,count:items.length,minimum:100,items};
-  if (items.length<100) throw new Error(`Gallery requires at least 100 physical images; found ${items.length}.`);
+  quarantined.sort((a,b)=>a.src.localeCompare(b.src));
+  const policy={football_club_logo_allowed:false,football_club_crest_allowed:false,football_club_badge_allowed:false,company_text_allowed:'GNK DINAMO Ltd.'};
+  const catalog={version:'2026-06-26-gallery-catalog-v2',updated_at:today,count:items.length,minimum:100,quarantined_count:quarantined.length,visual_identity_policy:policy,items};
+  const quarantine={version:'2026-06-26-gallery-quarantine-v1',updated_at:today,count:quarantined.length,visual_identity_policy:policy,items:quarantined};
+  if (items.length<100) throw new Error(`Gallery requires at least 100 approved physical images; found ${items.length}.`);
   await fs.mkdir(path.dirname(catalogPath),{recursive:true});
   await fs.writeFile(catalogPath,JSON.stringify(catalog,null,2)+'\n','utf8');
-  return items.length;
+  await fs.writeFile(quarantinePath,JSON.stringify(quarantine,null,2)+'\n','utf8');
+  return {approved:items.length,quarantined:quarantined.length};
 }
 
-async function updateConfig(physicalCount) {
+async function updateConfig(counts) {
   let config={};
   try { config=JSON.parse(await fs.readFile(configPath,'utf8')); } catch {}
-  config.version='2026-06-26-gallery-v3';
+  config.version='2026-06-26-gallery-v4';
   config.minimum_verified_images=100;
   config.generated_count=100;
-  config.physical_image_count=physicalCount;
+  config.physical_image_count=counts.approved;
+  config.quarantined_image_count=counts.quarantined;
   config.catalog_url='/data/gallery.catalog.json';
+  config.quarantine_url='/data/gallery.quarantine.json';
+  config.visual_identity_policy={
+    football_club_logo_allowed:false,
+    football_club_crest_allowed:false,
+    football_club_badge_allowed:false,
+    company_text_allowed:'GNK DINAMO Ltd.'
+  };
   config.auto_index=true;
   config.single_source_of_truth=true;
   config.updated_at=today;
@@ -133,7 +175,7 @@ async function injectBootstrap() {
 
 const generatedCount=await ensureGenerated();
 if (generatedCount!==100) throw new Error(`Expected 100 generated images, created ${generatedCount}.`);
-const physicalCount=await buildCatalog();
-await updateConfig(physicalCount);
+const counts=await buildCatalog();
+await updateConfig(counts);
 await injectBootstrap();
-console.log(`GNK ASG Gallery synchronized: ${generatedCount} generated, ${physicalCount} physical images catalogued.`);
+console.log(`GNK ASG Gallery synchronized: ${generatedCount} generated, ${counts.approved} approved, ${counts.quarantined} quarantined.`);
