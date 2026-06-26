@@ -1,0 +1,50 @@
+name: Verify Admin Center live
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-admin-center-live.yml'
+      - '.github/verify-admin-center-live.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Wait for deployment and verify assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=0
+          for attempt in $(seq 1 24); do
+            js=$(curl -fsSL -H 'Cache-Control: no-cache' "https://gnk-asg.hr/assets/admin-center-v1.js?cb=${GITHUB_RUN_ID}-${attempt}" || true)
+            css=$(curl -fsSL -H 'Cache-Control: no-cache' "https://gnk-asg.hr/assets/admin-center-v1.css?cb=${GITHUB_RUN_ID}-${attempt}" || true)
+            if printf '%s' "$js" | grep -q "route:'/mail-studio/'" && printf '%s' "$css" | grep -q '.ac-app'; then
+              ok=1
+              break
+            fi
+            sleep 10
+          done
+          if [ "$ok" -ne 1 ]; then
+            echo 'Admin Center assets are not live.' >&2
+            exit 1
+          fi
+          code=$(curl -sS -o /tmp/admin.html -w '%{http_code}' -H 'Cache-Control: no-cache' "https://gnk-asg.hr/admin-center/?cb=${GITHUB_RUN_ID}")
+          test "$code" = '200'
+          echo "ADMIN_CENTER_LIVE_OK=true" | tee /tmp/result.txt
+
+      - name: Report result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULT: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          gh issue comment 128 --body "Admin Center production verification **${RESULT}** · ${RUN_URL}"
