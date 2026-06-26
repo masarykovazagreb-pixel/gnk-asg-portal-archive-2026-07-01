@@ -1,8 +1,9 @@
 import app from './index-media-command-center-v21.js';
 import { generateArticleVisual, removeArticleFromNews, VERSION as VISUAL_VERSION } from './article-visual-v2.js';
-import { enforceEditorialQuality, VERSION as EDITORIAL_QA_VERSION } from './article-editorial-qa-v1.js';
+import { enforceEditorialQuality, editorialIssues, VERSION as EDITORIAL_QA_VERSION } from './article-editorial-qa-v1.js';
+import { repairArticle, VERSION as EDITORIAL_REPAIR_VERSION } from './article-editorial-repair-v1.js';
 
-export const VERSION = 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R4_EDITORIAL_QA';
+export const VERSION = 'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R5_EDITORIAL_REPAIR';
 const store = env => env.GNK_ASG_KV || env.GNK_ASG_CONFIG_KV || null;
 
 async function read(env, key, fallback) {
@@ -23,20 +24,30 @@ async function latestArticle(env) {
 
 async function processArticle(env, preferred) {
   const article = preferred?.id ? preferred : await latestArticle(env);
-  if (!article?.id) return { ok:false, error:'article_missing', editorialQaVersion:EDITORIAL_QA_VERSION };
-  const editorialQa = await enforceEditorialQuality(env, article);
+  if (!article?.id) return { ok:false, error:'article_missing', editorialQaVersion:EDITORIAL_QA_VERSION, editorialRepairVersion:EDITORIAL_REPAIR_VERSION };
+  const initialIssues = editorialIssues(article);
+  let repair = { ok:true, skipped:true, article };
+  let candidate = article;
+  if (initialIssues.length) {
+    repair = await repairArticle(env, article).catch(error => ({ ok:false, error:String(error?.message || error), version:EDITORIAL_REPAIR_VERSION }));
+    if (repair.ok && repair.article?.id) candidate = repair.article;
+  }
+  const editorialQa = await enforceEditorialQuality(env, candidate);
   if (!editorialQa.ok) {
-    const cleanedNews = await removeArticleFromNews(env, editorialQa.article || article);
+    const cleanedNews = await removeArticleFromNews(env, editorialQa.article || candidate);
     return {
       ok:false,
       quarantined:Boolean(editorialQa.quarantined),
       version:VERSION,
       editorialQaVersion:EDITORIAL_QA_VERSION,
+      editorialRepairVersion:EDITORIAL_REPAIR_VERSION,
+      initialIssues,
+      repair,
       editorialQa,
       cleanedNews
     };
   }
-  const approvedArticle = editorialQa.article || article;
+  const approvedArticle = editorialQa.article || candidate;
   const visual = approvedArticle.imageGenerated?.version === VISUAL_VERSION
     ? { ok:true, skipped:true, article:approvedArticle }
     : await generateArticleVisual(env, approvedArticle);
@@ -46,10 +57,27 @@ async function processArticle(env, preferred) {
     version:VERSION,
     visualVersion:VISUAL_VERSION,
     editorialQaVersion:EDITORIAL_QA_VERSION,
+    editorialRepairVersion:EDITORIAL_REPAIR_VERSION,
+    initialIssues,
+    repair,
     editorialQa,
     visual,
     cleanedNews
   };
+}
+
+async function processSweep(env, preferred=null, limit=6) {
+  if (preferred?.id) return processArticle(env, preferred);
+  const attempts=[];
+  for (let index=0; index<limit; index++) {
+    const article=await latestArticle(env);
+    if (!article?.id) break;
+    const result=await processArticle(env, article).catch(error => ({ ok:false, error:String(error?.message || error), articleId:article.id }));
+    attempts.push({articleId:article.id,title:article.titleHr||article.title||'',ok:Boolean(result.ok),quarantined:Boolean(result.quarantined),error:result.error||result.repair?.error||''});
+    if (result.ok) return {...result,sweep:{ok:true,attempts,processed:attempts.length,limit}};
+    if (!result.quarantined) return {...result,sweep:{ok:false,attempts,processed:attempts.length,limit}};
+  }
+  return {ok:false,error:'no_article_passed_editorial_sweep',version:VERSION,editorialQaVersion:EDITORIAL_QA_VERSION,editorialRepairVersion:EDITORIAL_REPAIR_VERSION,sweep:{ok:false,attempts,processed:attempts.length,limit}};
 }
 
 async function mergeGallery(response, env) {
@@ -69,10 +97,11 @@ async function mergeGallery(response, env) {
     headers.set('content-type', 'application/json; charset=utf-8');
     headers.set('x-gnk-asg-gallery-generated', String(generated.length));
     headers.set('x-gnk-asg-editorial-qa', EDITORIAL_QA_VERSION);
+    headers.set('x-gnk-asg-editorial-repair', EDITORIAL_REPAIR_VERSION);
     return new Response(JSON.stringify({
       ...payload,
       items,
-      audit:{ ...(payload.audit || {}), generatedCount:generated.length, visibleCount:items.length, editorialQaVersion:EDITORIAL_QA_VERSION }
+      audit:{ ...(payload.audit || {}), generatedCount:generated.length, visibleCount:items.length, editorialQaVersion:EDITORIAL_QA_VERSION, editorialRepairVersion:EDITORIAL_REPAIR_VERSION }
     }, null, 2), { status:response.status, headers });
   } catch {
     return response;
@@ -86,12 +115,13 @@ async function fetchHandler(request, env, ctx) {
   if (request.method !== 'POST' || path !== '/operator/auto-editor/run' || !response.ok) return response;
   try {
     const payload = await response.clone().json();
-    const articlePostProcess = await processArticle(env, payload.article);
+    const articlePostProcess = await processSweep(env, payload.article);
     const headers = new Headers(response.headers);
     headers.delete('content-length');
     headers.set('content-type', 'application/json; charset=utf-8');
     headers.set('x-gnk-asg-article-automation', VERSION);
     headers.set('x-gnk-asg-editorial-qa', EDITORIAL_QA_VERSION);
+    headers.set('x-gnk-asg-editorial-repair', EDITORIAL_REPAIR_VERSION);
     return new Response(JSON.stringify({
       ...payload,
       ok:payload.ok!==false && articlePostProcess.ok,
@@ -110,7 +140,7 @@ export default {
   async scheduled(event, env, ctx) {
     const task = (async () => {
       const result = typeof app.scheduled === 'function' ? await app.scheduled(event, env, ctx) : null;
-      const articlePostProcess = await processArticle(env, null).catch(error => ({ ok:false, error:String(error?.message || error), editorialQaVersion:EDITORIAL_QA_VERSION }));
+      const articlePostProcess = await processSweep(env, null, 6).catch(error => ({ ok:false, error:String(error?.message || error), editorialQaVersion:EDITORIAL_QA_VERSION, editorialRepairVersion:EDITORIAL_REPAIR_VERSION }));
       return { result, articlePostProcess };
     })();
     if (ctx?.waitUntil) {
