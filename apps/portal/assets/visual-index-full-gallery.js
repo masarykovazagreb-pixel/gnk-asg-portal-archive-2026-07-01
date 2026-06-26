@@ -1,8 +1,8 @@
 (()=>{
   'use strict';
   if(!/\/visual-index\/?$/.test(location.pathname))return;
-  if(window.__GNK_ASG_VISUAL_INDEX_V7_LOADER__)return;
-  window.__GNK_ASG_VISUAL_INDEX_V7_LOADER__=true;
+  if(window.__GNK_ASG_VISUAL_INDEX_V8_LOADER__)return;
+  window.__GNK_ASG_VISUAL_INDEX_V8_LOADER__=true;
 
   const invalidSrc=value=>{
     const src=String(value||'').trim().toLowerCase();
@@ -39,7 +39,7 @@
   }
 
   const script=document.createElement('script');
-  script.src='/assets/visual-index-central-v7.js?v=20260626-v7';
+  script.src='/assets/visual-index-central-v8.js?v=20260626-v8';
   script.defer=true;
   script.onload=installCleanup;
   script.onerror=()=>{
