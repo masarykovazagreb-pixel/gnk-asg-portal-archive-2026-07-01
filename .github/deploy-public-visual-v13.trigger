@@ -1,5 +1,5 @@
-deployment=GNK_ASG_PUBLIC_VISUAL_V13_20260625
+deployment=GNK_ASG_ADMIN_HUB_V21_20260626
 approved=true
-trigger_revision=7
-requested_for=PORTAL_THEN_UNIFIED_AUTH_V14
-requested_at=2026-06-26T00:35:00+02:00
+trigger_revision=8
+requested_for=PORTAL_ADMIN_HUB_MEDIA_COMMAND_AND_MAIL
+requested_at=2026-06-26T10:30:00+02:00
