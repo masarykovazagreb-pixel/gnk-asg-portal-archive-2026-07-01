@@ -1,9 +1,10 @@
 import app,{INDEX_LOCK_VERSION} from './index-lock-v4.js';
 import {handleFaviconAsset,applyFaviconContract,FAVICON_VERSION} from './favicon-contract-v2.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R10_MARKET_DEDUP';
+const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R11_RUNTIME_CONTRACTS';
 const HEALTH_VERSION='GNK_ASG_PLATFORM_HEALTH_V1_20260626';
 const MARKET_COMPAT_VERSION='GNK_ASG_MARKET_CHART_V3_BLOCK_V1_20260626';
+const NEWS_RUNTIME_VERSION='GNK_ASG_NEWS_RUNTIME_CONTRACT_V1_20260626';
 const PRIVATE_DATA_PATHS=new Set([
   '/data/media-outreach-contacts-v1.json',
   '/data/media-outreach-contacts.json',
@@ -59,6 +60,32 @@ async function applyFinalHtmlGuards(response,path){
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 
+async function applyNewsStatusContract(response,path){
+  const type=String(response.headers.get('content-type')||'').toLowerCase();
+  if(path!=='/data/news-automation-status.json'||!type.includes('application/json')||!response.ok)return response;
+  try{
+    const payload=await response.json();
+    const corrected={
+      ...payload,
+      timeZone:'Europe/Zagreb',
+      newsSchedule:['08:00','16:00','20:00'],
+      newsRefreshesPerDay:3,
+      activeNewsLimit:100,
+      archivePruneAt:1000,
+      archiveDeleteCount:500,
+      autoEditorSchedule:'every 2 hours',
+      runtimeContract:NEWS_RUNTIME_VERSION
+    };
+    const headers=new Headers(response.headers);
+    headers.delete('content-length');
+    headers.delete('content-encoding');
+    headers.set('content-type','application/json; charset=utf-8');
+    headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+    headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME_VERSION);
+    return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
+  }catch{return response;}
+}
+
 function deploymentStatus(){
   return jsonResponse({
     ok:true,
@@ -71,6 +98,12 @@ function deploymentStatus(){
     contentResilience:'index-content-resilience-v1.js',
     marketChart:'index-live-market-chart-v4.js',
     marketChartCompatibility:MARKET_COMPAT_VERSION,
+    newsRuntime:NEWS_RUNTIME_VERSION,
+    newsSchedule:['08:00','16:00','20:00'],
+    newsActiveLimit:100,
+    newsArchivePruneAt:1000,
+    newsArchiveDeleteCount:500,
+    articleSchedule:'every 2 hours',
     articleAutomation:'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2',
     articleAutomationRuntime:'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R3_SCHEDULED_CTX',
     articleVisual:'GNK_ASG_ARTICLE_VISUAL_V2_20260626',
@@ -150,6 +183,7 @@ export default{
     if(MODULES.has(path)&&['GET','HEAD'].includes(request.method)&&!embedded)return redirect(`/admin-center/?module=${encodeURIComponent(MODULES.get(path))}`);
     let response=await applyFaviconContract(request,await app.fetch(request,env,ctx));
     response=await applyFinalHtmlGuards(response,path);
+    response=await applyNewsStatusContract(response,path);
     const headers=new Headers(response.headers);
     for(const [name,value] of Object.entries(baseHeaders()))headers.set(name,value);
     return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
