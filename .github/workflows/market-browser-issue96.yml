@@ -1,0 +1,44 @@
+name: Market browser check via issue 96
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    if: github.event.issue.number == 96 && github.event.comment.body == '/check-market-browser-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Install Chromium
+        run: |
+          npm init -y >/dev/null
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Check rendered market block
+        run: node scripts/check-market-browser.mjs /tmp/gnk-market-browser/report.json /tmp/gnk-market-browser/network-market.png
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-market-browser
+          path: /tmp/gnk-market-browser
+          if-no-files-found: error
+          retention-days: 7
+      - name: Report result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          report=$(cat /tmp/gnk-market-browser/report.json 2>/dev/null || printf '{"error":"report_not_created"}')
+          gh issue comment 96 --body "Market browser check **${JOB_STATUS}** · ${RUN_URL}\n\nEvidence: \`gnk-market-browser\` artifact.\n\n\`\`\`json\n${report}\n\`\`\`"
