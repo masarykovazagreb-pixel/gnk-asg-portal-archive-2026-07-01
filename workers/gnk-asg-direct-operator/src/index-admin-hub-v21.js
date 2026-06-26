@@ -59,6 +59,7 @@ function deploymentStatus(){
     mediaCommandCore:'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R3_HANDOFF_LOCK',
     mediaReadiness:'GNK_ASG_MEDIA_READINESS_V2_20260626',
     mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
+    emailSendApi:'CLOUDFLARE_STRUCTURED_SEND_V1',
     contactImport:'HASH_LOCKED_V3',
     handoffManifest:'GNK_ASG_MEDIA_HANDOFF_2026-06-26',
     handoffSha256:'f34dda0a2aa7dfd88128c91a0e359b14ce20ced9bb74e02bcfaad62dfa81012f',
@@ -66,7 +67,7 @@ function deploymentStatus(){
     d1MigrationMode:'RUNTIME_SCHEMA_FALLBACK',
     testSending:'LOCKED',
     productionSending:'LOCKED',
-    deliveryPolicy:{testRequiresAllowlist:true,pdfRequired:true,testGateRequired:true,maxPerHour:10,maxPerDay:50,dispatchPerCron:1},
+    deliveryPolicy:{testRequiresAllowlist:true,pdfRequired:true,testGateRequired:true,maxPdfBytes:4194304,maxPerHour:10,maxPerDay:50,dispatchPerCron:1,messageIdRequired:true},
     checkedAt:new Date().toISOString()
   });
 }
