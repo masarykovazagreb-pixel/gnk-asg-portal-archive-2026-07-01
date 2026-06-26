@@ -41,7 +41,7 @@ jobs:
           test -s apps/portal/media-application/index.html
           test -s apps/portal/assets/media-application-v1.css
           test -s apps/portal/assets/media-notifications-v1.css
-          grep -q '/api/media-application/submit' apps/portal/assets/media-application-v1.js
+          grep -q "path===\`\${API_PREFIX}/submit\`" workers/gnk-asg-direct-operator/src/media-application-portal-v1.js
           grep -q 'minimumVisible:10' workers/gnk-asg-direct-operator/src/media-application-portal-v1.js
           grep -q 'refreshIntervalSeconds:1800' workers/gnk-asg-direct-operator/src/media-application-portal-v1.js
           grep -q '30\*60\*1000' apps/portal/assets/media-notifications-v1.js
