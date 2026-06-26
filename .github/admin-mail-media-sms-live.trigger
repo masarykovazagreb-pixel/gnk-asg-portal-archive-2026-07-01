@@ -1,0 +1,6 @@
+GNK_ASG_MAIL_PROFILE_DELIVERY_LIVE_VERIFY
+application_commit=3c112376816158657237ef04936b170ac92be3b0
+workflow_commit=fa968e2a275420f55b856becdf092d2372cd45e5
+checked_modules=admin-center,mail-studio,mail-profile-delivery,media-command-center,sms-status
+sending=LOCKED
+nonce=1
