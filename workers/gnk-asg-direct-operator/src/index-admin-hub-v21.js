@@ -61,11 +61,11 @@ function deploymentStatus(){
     browserTokenStorage:'DISABLED',
     mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',
     mediaCommand:'src/index-media-command-center-v21.js',
-    mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R6_DELIVERY_SYNC',
+    mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R7_INTERNAL_TEST',
     mediaCommandCore:'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R3_HANDOFF_LOCK',
     mediaControlSync:'GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626',
     mediaReadiness:'GNK_ASG_MEDIA_READINESS_V2_20260626',
-    mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V4_20260626_CONTROL_SYNC',
+    mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V5_20260626_INTERNAL_TEST_GATE',
     mediaDeliveryCore:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626',
     emailSendApi:'CLOUDFLARE_STRUCTURED_SEND_V1',
     contactImport:'HASH_LOCKED_V3',
@@ -74,9 +74,10 @@ function deploymentStatus(){
     handoffSha256:'f34dda0a2aa7dfd88128c91a0e359b14ce20ced9bb74e02bcfaad62dfa81012f',
     platformHealth:'/data/platform-health.json',
     d1MigrationMode:'RUNTIME_SCHEMA_FALLBACK',
+    internalTestGate:'EPHEMERAL_SECRET_404_BY_DEFAULT',
     testSending:'LOCKED',
     productionSending:'LOCKED',
-    deliveryPolicy:{testRequiresAllowlist:true,pdfRequired:true,testGateRequired:true,maxPdfBytes:4194304,maxPerHour:10,maxPerDay:50,dispatchPerCron:1,messageIdRequired:true},
+    deliveryPolicy:{testRequiresAllowlist:true,pdfRequired:true,testGateRequired:true,maxPdfBytes:4194304,maxPerHour:10,maxPerDay:50,dispatchPerCron:1,messageIdRequired:true,actualR2DigestRequired:true},
     checkedAt:new Date().toISOString()
   });
 }
