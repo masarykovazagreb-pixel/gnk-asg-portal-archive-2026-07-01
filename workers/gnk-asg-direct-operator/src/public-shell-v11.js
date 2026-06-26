@@ -17,10 +17,19 @@ function removeLegacyPublicShell(html){
     .replace(/<link[^>]+href=["'][^"']*\/assets\/brand\/gnk-asg-global-layer\.css[^"']*["'][^>]*>/gi,'')
     .replace(/<link[^>]+href=["'][^"']*\/assets\/public-menu-unified-v12\.css[^"']*["'][^>]*>/gi,'')
     .replace(/<link[^>]+href=["'][^"']*\/assets\/public-visual-v13\.css[^"']*["'][^>]*>/gi,'')
+    .replace(/<link[^>]+href=["'][^"']*\/assets\/index-polish-v1\.css[^"']*["'][^>]*>/gi,'')
     .replace(/<link[^>]+rel=["'](?:icon|shortcut icon|apple-touch-icon|apple-touch-icon-precomposed)["'][^>]*>/gi,'')
     .replace(/<link[^>]+rel=["']manifest["'][^>]*>/gi,'')
     .replace(/<style[^>]+id=["']gnk-public-v13-reset["'][^>]*>[\s\S]*?<\/style>/gi,'')
     .replace(/<script[^>]+id=["']gnk-public-single-menu["'][^>]*>[\s\S]*?<\/script>/gi,'');
+}
+
+function patchIndexHero(html,english=false){
+  if(/<h1[^>]+class=["'][^"']*gnk-index-title/i.test(html))return html;
+  const title=english
+    ? 'Corporate intelligence centre<span>for data, markets and technology</span>'
+    : 'Korporativni centar inteligencije<span>za podatke, tržišta i tehnologiju</span>';
+  return html.replace(/(<div class=["']hero-copy["'][^>]*>\s*<p class=["']eyebrow["'][^>]*>[\s\S]*?<\/p>)/i,`$1<h1 class="gnk-index-title">${title}</h1>`);
 }
 
 const stableFavicon='\n<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">\n<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="/favicon.svg">\n<link rel="manifest" href="/site.webmanifest">\n<meta name="theme-color" content="#020812">';
@@ -35,12 +44,14 @@ export function patchPublicHtml(html,path){
   const floatingHome='<script src="/assets/public-floating-home-v16.js?v=20260625-v17" defer></script>';
   const aiGuard='<script src="/assets/public-ai-badge-guard-v17.js?v=20260625-v22" defer></script>';
   const indexPath=['/','/en','/en/'].includes(path);
-  const indexHead='<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260625-v22">';
+  const english=path==='/en'||path==='/en/';
+  const indexHead='<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260625-v22"><link rel="stylesheet" href="/assets/index-polish-v1.css?v=20260626-v1">';
   const indexScripts='<script src="/assets/index-group-network-en-bridge-v1.js?v=20260625-v22" defer></script><script src="/assets/index-group-network-v2.js?v=20260625-v22" defer></script><script src="/assets/index-news-rotation-v1.js?v=20260626-v23" defer></script><script src="/assets/index-content-resilience-v1.js?v=20260626-v1" defer></script><script src="/assets/index-live-market-chart-v4.js?v=20260626-v4" defer></script>';
+  if(indexPath)html=patchIndexHero(html,english);
   html=html.replace('</head>',`${stableFavicon}\n</head>`);
   if(!html.includes('/assets/public-ux-v11.css'))html=html.replace('</head>',`${ux}</head>`);
   html=html.replace('</head>',`${visual}${reset}</head>`);
-  if(indexPath&&!html.includes('/assets/index-group-network-v2.css'))html=html.replace('</head>',`${indexHead}</head>`);
+  if(indexPath&&!html.includes('/assets/index-polish-v1.css'))html=html.replace('</head>',`${indexHead}</head>`);
   if(indexPath&&!html.includes('/assets/index-clock-v2.js'))html=html.replace('</body>','<script src="/assets/index-clock-v2.js?v=20260625-v2" defer></script></body>');
   if(indexPath)html=html.replace('</body>',`${indexScripts}</body>`);
   return html.replace('</body>',`${singleMenu}${menu}${floatingHome}${aiGuard}</body>`);
@@ -67,6 +78,6 @@ export async function transformHtml(response,fn){
   headers.delete('content-length');
   headers.delete('content-encoding');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-  headers.set('x-gnk-asg-public-visual','GNK_ASG_PUBLIC_VISUAL_V24_RESILIENT_INDEX_20260626');
+  headers.set('x-gnk-asg-public-visual','GNK_ASG_PUBLIC_VISUAL_V25_INDEX_POLISH_20260626');
   return new Response(fn(await response.text()),{status:response.status,statusText:response.statusText,headers});
 }
