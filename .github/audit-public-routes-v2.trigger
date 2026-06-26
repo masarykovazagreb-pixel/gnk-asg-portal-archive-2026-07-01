@@ -1,0 +1,7 @@
+GNK_ASG_COMPLETE_PUBLIC_AUDIT_V2_20260626
+wait_for_first_v3_publication=true
+crawl_public_routes=true
+news_browser=true
+visual_index_browser=true
+publication_seo=true
+nonce=1
