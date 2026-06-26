@@ -1,0 +1,52 @@
+name: GNK ASG News Public Readonly Probe
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  probe:
+    if: contains(github.event.issue.title, 'RUN GNK ASG NEWS READONLY PROBE')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fetch public news data
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --silent --show-error --location --retry 4 --retry-all-errors --retry-delay 2 -o news.json 'https://gnk-asg.hr/data/news.json?cb=readonly-probe'
+          curl --silent --show-error --location --retry 4 --retry-all-errors --retry-delay 2 -o status.json 'https://gnk-asg.hr/data/news-automation-status.json?cb=readonly-probe'
+          node - <<'NODE' > probe.log
+          const fs=require('fs');
+          const news=JSON.parse(fs.readFileSync('news.json','utf8'));
+          const status=JSON.parse(fs.readFileSync('status.json','utf8'));
+          const items=Array.isArray(news)?news:(Array.isArray(news?.items)?news.items:[]);
+          const fallback=value=>!value||String(value).includes('/assets/news-fallback.svg')||String(value).startsWith('data:image/svg+xml');
+          const realImage=value=>Boolean(value)&&!fallback(value);
+          console.log(`ITEMS=${items.length}`);
+          console.log(`IMAGE_REAL=${items.filter(x=>realImage(x?.image)).length}`);
+          console.log(`IMAGEURL_REAL=${items.filter(x=>realImage(x?.imageUrl)).length}`);
+          console.log(`FALLBACK_FLAG_TRUE=${items.filter(x=>x?.imageFallback===true).length}`);
+          console.log(`ARTICLE_URLS=${items.filter(x=>/^https?:\/\//i.test(String(x?.url||x?.link||''))).length}`);
+          console.log(`SCHEDULE=${(status.newsSchedule||status.scheduleSlots||[]).join(',')}`);
+          console.log(`VERSION=${status.newsRuntime||status.version||''}`);
+          items.slice(0,8).forEach((item,index)=>console.log(`SAMPLE_${index+1}=${JSON.stringify({title:item?.title||'',url:item?.url||'',link:item?.link||'',sourceUrl:item?.sourceUrl||'',image:item?.image||'',imageUrl:item?.imageUrl||'',imageFallback:item?.imageFallback,source:item?.source||'',sourceTitle:item?.sourceTitle||''})}`));
+          NODE
+          cat probe.log
+      - name: Report
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          {
+            echo '```text'
+            cat probe.log 2>/dev/null || true
+            echo '```'
+            echo "workflow=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          } > report.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --body-file report.md
