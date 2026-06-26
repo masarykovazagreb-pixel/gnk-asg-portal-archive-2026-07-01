@@ -51,7 +51,7 @@
     const seen = new Set();
     const items = [];
     for (const item of raw) {
-      const url = valid(item?.url || item?.sourceUrl);
+      const url = valid(item?.url || item?.link || item?.articleUrl || item?.sourceUrl);
       const title = String(item?.title || '').trim();
       if (!url || !title) continue;
       const key = String(item?.id || url).toLowerCase();
@@ -61,12 +61,12 @@
         ...item,
         url,
         title,
-        summary:String(item?.summary || item?.description || '').trim(),
-        source:String(item?.source || item?.region || item?.category || 'GNK ASG'),
-        publishedAt:item?.publishedAt || item?.published_at || '',
-        image:valid(item?.image) || FALLBACK_IMAGE,
+        summary:String(item?.summary || item?.description || item?.text || item?.excerpt || '').trim(),
+        source:String(item?.source || item?.sourceTitle || item?.region || item?.category || 'GNK ASG'),
+        publishedAt:item?.publishedAt || item?.published_at || item?.pubDate || '',
+        image:valid(item?.image || item?.imageUrl || item?.image_url) || FALLBACK_IMAGE,
         imageAlt:String(item?.imageAlt || title),
-        imageCredit:String(item?.imageCredit || item?.source || '')
+        imageCredit:String(item?.imageCredit || item?.source || item?.sourceTitle || '')
       });
     }
     items.sort((a,b) => ts(b.publishedAt) - ts(a.publishedAt));
