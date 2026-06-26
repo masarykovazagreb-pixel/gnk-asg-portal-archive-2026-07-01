@@ -1,9 +1,9 @@
-import { EmailMessage } from 'cloudflare:email';
-
 export const VERSION='GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626';
+export const SEND_API='CLOUDFLARE_STRUCTURED_SEND_V1';
 const API='/api/media-command-center';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
 const TEST_GATE_KEY='media-command-center:delivery-test:v1';
+const MAX_PDF_BYTES=4*1024*1024;
 const clean=value=>String(value??'').trim();
 const now=()=>new Date().toISOString();
 const dbOf=env=>env.GNK_ASG_D1||null;
@@ -12,16 +12,15 @@ const bucketOf=env=>env.GNK_ASG_MEDIA_ASSETS||null;
 const boolEnv=value=>/^(1|true|yes|on)$/i.test(clean(value));
 const intEnv=(value,fallback)=>Number.isFinite(Number(value))?Number(value):fallback;
 const validEmail=value=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(clean(value));
-const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store, no-cache, must-revalidate, max-age=0','x-gnk-asg-media-delivery':VERSION}});
+const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store, no-cache, must-revalidate, max-age=0','x-gnk-asg-media-delivery':VERSION,'x-gnk-asg-email-send-api':SEND_API}});
 
 async function sha256(bytes){
   const value=bytes instanceof ArrayBuffer?bytes:bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength);
   const digest=await crypto.subtle.digest('SHA-256',value);
   return [...new Uint8Array(digest)].map(v=>v.toString(16).padStart(2,'0')).join('');
 }
-function bytesToBase64(bytes){let out='';const view=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);for(let i=0;i<view.length;i+=0x8000)out+=String.fromCharCode(...view.subarray(i,i+0x8000));return btoa(out);}
-function foldBase64(value){return value.replace(/.{1,76}/g,'$&\r\n').trimEnd();}
 function escapeHeader(value){return clean(value).replace(/[\r\n]+/g,' ');}
+function emailError(error){return{code:clean(error?.code)||'EMAIL_SEND_FAILED',message:String(error?.message||error||'Email send failed').slice(0,500)};}
 
 async function ensureSchema(env){
   const db=dbOf(env);if(!db)throw new Error('GNK_ASG_D1 binding is not configured');
@@ -29,12 +28,17 @@ async function ensureSchema(env){
     db.prepare(`CREATE TABLE IF NOT EXISTS media_delivery_queue(
       id TEXT PRIMARY KEY,idempotency_key TEXT UNIQUE NOT NULL,mail_code TEXT NOT NULL,email TEXT NOT NULL,outlet TEXT,
       subject TEXT NOT NULL,body_text TEXT NOT NULL,pdf_key TEXT,pdf_sha256 TEXT,status TEXT NOT NULL DEFAULT 'QUEUED',
-      attempts INTEGER NOT NULL DEFAULT 0,last_error TEXT,queued_at TEXT NOT NULL,updated_at TEXT NOT NULL,sent_at TEXT)`),
+      attempts INTEGER NOT NULL DEFAULT 0,last_error TEXT,queued_at TEXT NOT NULL,updated_at TEXT NOT NULL,sent_at TEXT,
+      provider_message_id TEXT,last_error_code TEXT)`),
     db.prepare(`CREATE INDEX IF NOT EXISTS idx_media_delivery_queue_status ON media_delivery_queue(status,queued_at)`),
     db.prepare(`CREATE TABLE IF NOT EXISTS media_delivery_tests(
       id TEXT PRIMARY KEY,recipient TEXT NOT NULL,subject TEXT,pdf_key TEXT,pdf_sha256 TEXT,status TEXT NOT NULL,
       detail_json TEXT,created_at TEXT NOT NULL)`)
   ]);
+  const columns=(await db.prepare(`PRAGMA table_info(media_delivery_queue)`).all()).results||[];
+  const names=new Set(columns.map(row=>clean(row.name)));
+  if(!names.has('provider_message_id'))await db.prepare(`ALTER TABLE media_delivery_queue ADD COLUMN provider_message_id TEXT`).run();
+  if(!names.has('last_error_code'))await db.prepare(`ALTER TABLE media_delivery_queue ADD COLUMN last_error_code TEXT`).run();
   return db;
 }
 async function readKv(env,key,fallback={}){const kv=kvOf(env);if(!kv)return fallback;try{const raw=await kv.get(key);return raw?JSON.parse(raw):fallback}catch{return fallback}}
@@ -62,17 +66,20 @@ function compose(row,cfg){
 }
 
 async function pdfState(env){
-  const cfg=await campaign(env),key=clean(cfg.pdfR2Key),bucket=bucketOf(env);
+  const cfg=await campaign(env),key=clean(cfg.pdfR2Key||env.MEDIA_OUTREACH_PDF_KEY),bucket=bucketOf(env);
   if(!key)return{ok:false,error:'campaign_pdf_missing'};
   if(!bucket?.get)return{ok:false,error:'r2_binding_missing',key};
   const object=await bucket.get(key);
   if(!object)return{ok:false,error:'campaign_pdf_not_found',key};
-  const size=Number(object.size||0),sha=clean(object.customMetadata?.sha256||cfg.pdfSha256);
-  return{ok:true,key,sha256:sha,sizeBytes:size,filename:clean(object.customMetadata?.filename||cfg.pdfFilename)||'GNK-ASG-media-information.pdf',contentType:object.httpMetadata?.contentType||'application/pdf',uploadedAt:object.customMetadata?.uploadedAt||cfg.pdfUploadedAt||''};
+  const size=Number(object.size||0),sha=clean(object.customMetadata?.sha256||cfg.pdfSha256||env.MEDIA_OUTREACH_PDF_SHA256);
+  const filename=clean(object.customMetadata?.filename||cfg.pdfFilename||env.MEDIA_OUTREACH_PDF_FILENAME)||'GNK-ASG-media-information.pdf';
+  if(size>MAX_PDF_BYTES)return{ok:false,error:'campaign_pdf_too_large',key,sizeBytes:size,maxBytes:MAX_PDF_BYTES};
+  if(!sha)return{ok:false,error:'campaign_pdf_sha256_missing',key,sizeBytes:size};
+  return{ok:true,key,sha256:sha,sizeBytes:size,filename,contentType:object.httpMetadata?.contentType||'application/pdf',uploadedAt:object.customMetadata?.uploadedAt||cfg.pdfUploadedAt||''};
 }
 async function uploadPdf(request,env){
   const bytes=new Uint8Array(await request.arrayBuffer());
-  if(bytes.length<100||bytes.length>12*1024*1024)return json({ok:false,error:'invalid_pdf_size',sizeBytes:bytes.length},400);
+  if(bytes.length<100||bytes.length>MAX_PDF_BYTES)return json({ok:false,error:'invalid_pdf_size',sizeBytes:bytes.length,maxBytes:MAX_PDF_BYTES},400);
   if(new TextDecoder().decode(bytes.slice(0,5))!=='%PDF-')return json({ok:false,error:'invalid_pdf_signature'},400);
   const bucket=bucketOf(env);if(!bucket?.put)return json({ok:false,error:'r2_binding_missing'},503);
   const hash=await sha256(bytes),filename=escapeHeader(request.headers.get('x-file-name')||'GNK-ASG-media-information.pdf');
@@ -84,25 +91,23 @@ async function uploadPdf(request,env){
 }
 
 function allowlist(env){return new Set(clean(env.MEDIA_OUTREACH_TEST_RECIPIENTS).split(/[;,\s]+/).map(v=>v.toLowerCase()).filter(validEmail));}
-async function buildRaw(env,to,subject,text,pdf){
-  const from=clean(env.MEDIA_OUTREACH_FROM)||'media@gnk-asg.hr',bucket=bucketOf(env),object=await bucket.get(pdf.key);
-  if(!object)throw new Error('campaign_pdf_not_found');
-  const bytes=new Uint8Array(await object.arrayBuffer()),boundary=`gnk_${crypto.randomUUID().replace(/-/g,'')}`;
-  const text64=foldBase64(bytesToBase64(new TextEncoder().encode(text)));
-  const pdf64=foldBase64(bytesToBase64(bytes));
-  return[
-    `From: GNK ASG Media Relations <${from}>`,`To: ${escapeHeader(to)}`,`Reply-To: ${from}`,
-    `Subject: ${escapeHeader(subject)}`,`Date: ${new Date().toUTCString()}`,`Message-ID: <${crypto.randomUUID()}@gnk-asg.hr>`,
-    'MIME-Version: 1.0',`X-GNK-PDF-SHA256: ${pdf.sha256}`,`Content-Type: multipart/mixed; boundary="${boundary}"`,'',
-    `--${boundary}`,'Content-Type: text/plain; charset=UTF-8','Content-Transfer-Encoding: base64','',text64,
-    `--${boundary}`,`Content-Type: application/pdf; name="${escapeHeader(pdf.filename)}"`,`Content-Disposition: attachment; filename="${escapeHeader(pdf.filename)}"`,'Content-Transfer-Encoding: base64','',pdf64,
-    `--${boundary}--`,''
-  ].join('\r\n');
-}
 async function send(env,to,subject,text,pdf){
-  if(!env.EMAIL?.send)throw new Error('EMAIL binding is not configured');
+  if(!env.EMAIL?.send)throw Object.assign(new Error('EMAIL binding is not configured'),{code:'EMAIL_BINDING_MISSING'});
+  const bucket=bucketOf(env),object=await bucket?.get(pdf.key);
+  if(!object)throw Object.assign(new Error('Campaign PDF not found in R2'),{code:'CAMPAIGN_PDF_NOT_FOUND'});
+  const bytes=new Uint8Array(await object.arrayBuffer());
+  if(bytes.length>MAX_PDF_BYTES)throw Object.assign(new Error('Campaign PDF exceeds safe email attachment limit'),{code:'CAMPAIGN_PDF_TOO_LARGE'});
   const from=clean(env.MEDIA_OUTREACH_FROM)||'media@gnk-asg.hr';
-  await env.EMAIL.send(new EmailMessage(from,to,await buildRaw(env,to,subject,text,pdf)));
+  const result=await env.EMAIL.send({
+    to,
+    from:{email:from,name:'GNK ASG Media Relations'},
+    replyTo:from,
+    subject:escapeHeader(subject),
+    text,
+    attachments:[{content:bytes,filename:escapeHeader(pdf.filename),type:'application/pdf',disposition:'attachment'}],
+    headers:{'X-GNK-PDF-SHA256':pdf.sha256,'X-GNK-Delivery-Version':VERSION}
+  });
+  return{messageId:clean(result?.messageId),sendApi:SEND_API};
 }
 
 async function rate(env){
@@ -128,7 +133,7 @@ async function deliveryPlan(env){
     return{mailCode:row.mail_code,outlet:row.outlet,email:row.email,priority:row.priority,country:row.country,ready:reasons.length===0,reasons};
   });
   const gateOk=Boolean(testGate?.passed&&pdf.ok&&testGate.pdfSha256===pdf.sha256);
-  return{ok:true,version:VERSION,live:boolEnv(env.MEDIA_OUTREACH_LIVE),testLive:boolEnv(env.MEDIA_OUTREACH_TEST_LIVE),pdf,testGate:{...testGate,valid:gateOk},rate:await rate(env),campaign:{deadline:cfg.deadline,applicationEmail:cfg.applicationEmail},summary:{total:items.length,ready:items.filter(i=>i.ready).length,blocked:items.filter(i=>!i.ready).length},items};
+  return{ok:true,version:VERSION,sendApi:SEND_API,live:boolEnv(env.MEDIA_OUTREACH_LIVE),testLive:boolEnv(env.MEDIA_OUTREACH_TEST_LIVE),pdf,testGate:{...testGate,valid:gateOk},rate:await rate(env),campaign:{deadline:cfg.deadline,applicationEmail:cfg.applicationEmail},summary:{total:items.length,ready:items.filter(i=>i.ready).length,blocked:items.filter(i=>!i.ready).length},items};
 }
 
 async function testEmail(request,env){
@@ -142,14 +147,15 @@ async function testEmail(request,env){
   const text=['TEST DELIVERY - NOT FOR EXTERNAL DISTRIBUTION','',`Recipient: ${recipient}`,`PDF SHA-256: ${pdf.sha256}`,'',cfg.bodyEn||'GNK ASG media invitation delivery test.','',`Application mailbox: ${cfg.applicationEmail}`].join('\n');
   const id=crypto.randomUUID();
   try{
-    await send(env,recipient,subject,text,pdf);
-    const gate={passed:true,recipient,pdfSha256:pdf.sha256,pdfKey:pdf.key,passedAt:now(),version:VERSION};
+    const delivery=await send(env,recipient,subject,text,pdf);
+    const gate={passed:true,recipient,pdfSha256:pdf.sha256,pdfKey:pdf.key,messageId:delivery.messageId,passedAt:now(),version:VERSION,sendApi:SEND_API};
     await writeKv(env,TEST_GATE_KEY,gate);
-    await db.prepare(`INSERT INTO media_delivery_tests(id,recipient,subject,pdf_key,pdf_sha256,status,detail_json,created_at) VALUES(?,?,?,?,?,?,?,?)`).bind(id,recipient,subject,pdf.key,pdf.sha256,'SENT',JSON.stringify({version:VERSION}),now()).run();
-    return json({ok:true,live:true,testGate:gate});
+    await db.prepare(`INSERT INTO media_delivery_tests(id,recipient,subject,pdf_key,pdf_sha256,status,detail_json,created_at) VALUES(?,?,?,?,?,?,?,?)`).bind(id,recipient,subject,pdf.key,pdf.sha256,'SENT',JSON.stringify({version:VERSION,...delivery}),now()).run();
+    return json({ok:true,live:true,testGate:gate,delivery});
   }catch(error){
-    await db.prepare(`INSERT INTO media_delivery_tests(id,recipient,subject,pdf_key,pdf_sha256,status,detail_json,created_at) VALUES(?,?,?,?,?,?,?,?)`).bind(id,recipient,subject,pdf.key,pdf.sha256,'FAILED',JSON.stringify({error:String(error?.message||error)}),now()).run();
-    return json({ok:false,error:'test_send_failed',detail:String(error?.message||error)},502);
+    const detail=emailError(error);
+    await db.prepare(`INSERT INTO media_delivery_tests(id,recipient,subject,pdf_key,pdf_sha256,status,detail_json,created_at) VALUES(?,?,?,?,?,?,?,?)`).bind(id,recipient,subject,pdf.key,pdf.sha256,'FAILED',JSON.stringify(detail),now()).run();
+    return json({ok:false,error:'test_send_failed',...detail},502);
   }
 }
 
@@ -179,20 +185,21 @@ export async function processDeliveryQueue(env){
   const pdf=await pdfState(env);if(!pdf.ok||pdf.sha256!==row.pdf_sha256)return{ok:false,skipped:'pdf_mismatch'};
   await db.prepare(`UPDATE media_delivery_queue SET status='SENDING',attempts=attempts+1,updated_at=? WHERE id=?`).bind(now(),row.id).run();
   try{
-    await send(env,row.email,row.subject,row.body_text,pdf);
-    await db.prepare(`UPDATE media_delivery_queue SET status='SENT',sent_at=?,updated_at=?,last_error=NULL WHERE id=?`).bind(now(),now(),row.id).run();
+    const delivery=await send(env,row.email,row.subject,row.body_text,pdf);
+    await db.prepare(`UPDATE media_delivery_queue SET status='SENT',sent_at=?,updated_at=?,last_error=NULL,last_error_code=NULL,provider_message_id=? WHERE id=?`).bind(now(),now(),delivery.messageId,row.id).run();
     await db.prepare(`UPDATE media_outreach_contacts SET sent_status='POSLANO',updated_at=? WHERE mail_code=?`).bind(now(),row.mail_code).run();
-    return{ok:true,sent:{mailCode:row.mail_code,outlet:row.outlet,email:row.email},rate:await rate(env)};
+    return{ok:true,sent:{mailCode:row.mail_code,outlet:row.outlet,email:row.email,messageId:delivery.messageId},sendApi:SEND_API,rate:await rate(env)};
   }catch(error){
-    const message=String(error?.message||error).slice(0,500);
-    await db.prepare(`UPDATE media_delivery_queue SET status=CASE WHEN attempts>=3 THEN 'FAILED' ELSE 'RETRY' END,last_error=?,updated_at=? WHERE id=?`).bind(message,now(),row.id).run();
-    return{ok:false,error:message,mailCode:row.mail_code};
+    const detail=emailError(error);
+    await db.prepare(`UPDATE media_delivery_queue SET status=CASE WHEN attempts>=3 THEN 'FAILED' ELSE 'RETRY' END,last_error=?,last_error_code=?,updated_at=? WHERE id=?`).bind(detail.message,detail.code,now(),row.id).run();
+    return{ok:false,error:detail.message,errorCode:detail.code,mailCode:row.mail_code};
   }
 }
 
 async function queueStatus(env){
   const db=await ensureSchema(env),rows=(await db.prepare(`SELECT status,COUNT(*) AS count FROM media_delivery_queue GROUP BY status`).all()).results||[];
-  return{ok:true,version:VERSION,pdf:await pdfState(env),testGate:await readKv(env,TEST_GATE_KEY,null),live:boolEnv(env.MEDIA_OUTREACH_LIVE),testLive:boolEnv(env.MEDIA_OUTREACH_TEST_LIVE),rate:await rate(env),queue:Object.fromEntries(rows.map(row=>[row.status,Number(row.count)]))};
+  const recent=(await db.prepare(`SELECT mail_code,outlet,email,status,provider_message_id,last_error_code,updated_at,sent_at FROM media_delivery_queue ORDER BY updated_at DESC LIMIT 20`).all()).results||[];
+  return{ok:true,version:VERSION,sendApi:SEND_API,pdf:await pdfState(env),testGate:await readKv(env,TEST_GATE_KEY,null),live:boolEnv(env.MEDIA_OUTREACH_LIVE),testLive:boolEnv(env.MEDIA_OUTREACH_TEST_LIVE),rate:await rate(env),queue:Object.fromEntries(rows.map(row=>[row.status,Number(row.count)])),recent};
 }
 
 export async function handleMediaDelivery(request,env){
