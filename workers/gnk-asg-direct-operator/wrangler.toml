@@ -62,6 +62,10 @@ MEDIA_OUTREACH_MAX_PER_HOUR = "10"
 MEDIA_OUTREACH_MAX_PER_DAY = "50"
 MEDIA_OUTREACH_PDF_KEY = "media-outreach/campaigns/new-york-2026/GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf"
 MEDIA_OUTREACH_PDF_FILENAME = "GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf"
+MEDIA_SMS_PROVIDER = "generic-webhook"
+MEDIA_SMS_FROM = "GNKASG"
+MEDIA_SMS_TEST_LIVE = "false"
+MEDIA_SMS_LIVE = "false"
 
 [assets]
 directory = "../../apps/portal"
