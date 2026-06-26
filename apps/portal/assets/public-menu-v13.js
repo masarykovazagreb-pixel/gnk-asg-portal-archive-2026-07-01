@@ -65,12 +65,12 @@
   const hrItems = [
     ['Profil','/#profil'],['Financije','/#financije'],['Tržišta','/trzista/'],['Objave','/objave/'],['Vijesti','/vijesti/'],
     ['Auto Editor','/status-automatizacije/'],['Visual Index','/visual-index/'],['PDF centar','/downloads/'],['AI pomoć','/assistant/'],
-    ['Kontakt','/contact/'],['Legal','/legal/'],['Admin','/operator-dashboard/','nofollow'],['App','/app/']
+    ['Kontakt','/contact/'],['Legal','/legal/'],['Admin','/admin-center/','nofollow'],['App','/app/']
   ];
   const enItems = [
     ['Profile','/en/#profile'],['Financials','/en/#financials'],['Markets','/markets/'],['Publications','/publications/'],['News','/news/'],
     ['Auto Editor','/automation-status/'],['Visual Index','/visual-index/?lang=en'],['PDF Centre','/en/downloads/'],['AI Help','/en/assistant/'],
-    ['Contact','/en/contact/'],['Legal','/en/legal/'],['Admin','/operator-dashboard/','nofollow'],['App','/app/?lang=en']
+    ['Contact','/en/contact/'],['Legal','/en/legal/'],['Admin','/admin-center/','nofollow'],['App','/app/?lang=en']
   ];
 
   const active = href => {
