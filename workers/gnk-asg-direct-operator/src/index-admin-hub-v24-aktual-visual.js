@@ -1,6 +1,4 @@
-import app from './index-admin-hub-v23-aktual.js';
-
-const VERSION='GNK_ASG_ADMIN_HUB_V24_AKTUAL_VISUAL_V1_20260626';
+const VERSION='GNK_ASG_AKTUAL_VISUAL_HELPER_V1_20260626';
 const ARTICLES=Object.freeze([
   ['kljucni-faktori-motivacije-za-pokretanje-vlastitog-posla','Ključni faktori motivacije za pokretanje vlastitog posla','2024-10-02'],
   ['biti-svoj-gazda-kljucni-motivator-za-preduzetnike','Biti svoj gazda: Ključni motivator za preduzetnike','2024-10-03'],
@@ -21,58 +19,48 @@ const ARTICLES=Object.freeze([
   ['efikasne-metode-istrazivanja-trzista-fokus-grupe-i-ankete','Efikasne metode istraživanja tržišta: Fokus grupe i ankete','2024-10-03']
 ]);
 
-function normalize(value){return String(value||'/').replace(/\/+$/,'')||'/';}
-function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));}
-function safeJson(value){return JSON.stringify(value).replace(/</g,'\\u003c');}
+const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+const safeJson=value=>JSON.stringify(value).replace(/</g,'\\u003c');
 
-function collection(origin){
-  const items=ARTICLES.map(([slug,title,published],index)=>{
-    const page=`${origin}/objave/aktual/${slug}/`;
-    const image=`${origin}/assets/objave/aktual/${slug}.png`;
-    return{
-      slug,title,published,page,image,index:index+1,
-      description:`Fotografija uz autorsku kolumnu „${title}” autora Nermina Sefića, u GNK ASG arhivi objava povezanoj s GNK DINAMO Ltd.`
-    };
-  });
-  const graph={
-    '@context':'https://schema.org',
-    '@graph':[
-      {
-        '@type':'CollectionPage','@id':`${origin}/visual-index/#nermin-sefic-aktual`,
-        name:'Fotografije autorskih kolumni Nermina Sefića',url:`${origin}/visual-index/`,
-        description:'Indeksirana galerijska zbirka fotografija uz 17 autorskih kolumni Nermina Sefića.',
-        about:[
-          {'@type':'Person',name:'Nermin Sefić',alternateName:'Nermin Sefic'},
-          {'@type':'Organization',name:'GNK ASG d.o.o.'},
-          {'@type':'Organization',name:'GNK DINAMO Ltd.'}
-        ],
-        mainEntity:{'@type':'ItemList',numberOfItems:items.length,itemListElement:items.map(item=>({'@type':'ListItem',position:item.index,item:{'@id':`${item.image}#image`}}))}
-      },
-      ...items.map(item=>({
-        '@type':'ImageObject','@id':`${item.image}#image`,name:item.title,description:item.description,
-        contentUrl:item.image,thumbnailUrl:item.image,mainEntityOfPage:item.page,
-        isBasedOn:`https://aktual.rs/clanak/${item.slug}/`,datePublished:item.published,
-        creditText:'Foto: Shutterstock, prema izvornoj objavi Aktual.rs',
-        copyrightNotice:'Fotografija korištena prema licenci uz izvornu objavu.',
-        representativeOfPage:true,
-        about:[
-          {'@type':'Person',name:'Nermin Sefić',alternateName:'Nermin Sefic'},
-          {'@type':'Organization',name:'GNK ASG d.o.o.'},
-          {'@type':'Organization',name:'GNK DINAMO Ltd.'}
-        ],
-        keywords:'Nermin Sefić, Nermin Sefic, GNK ASG, GNK DINAMO Ltd., Aktual kolumne, poduzetništvo, preduzetništvo, istraživanje tržišta'
-      }))
-    ]
+function buildCollection(origin){
+  const items=ARTICLES.map(([slug,title,published],index)=>({
+    slug,title,published,index:index+1,
+    page:`${origin}/objave/aktual/${slug}/`,
+    image:`${origin}/assets/objave/aktual/${slug}.png`,
+    description:`Fotografija uz autorsku kolumnu „${title}” autora Nermina Sefića, u GNK ASG arhivi objava povezanoj s GNK DINAMO Ltd.`
+  }));
+  return{
+    items,
+    graph:{
+      '@context':'https://schema.org',
+      '@graph':[
+        {
+          '@type':'CollectionPage','@id':`${origin}/visual-index/#nermin-sefic-aktual`,
+          name:'Fotografije autorskih kolumni Nermina Sefića',url:`${origin}/visual-index/`,
+          description:'Indeksirana galerijska zbirka fotografija uz 17 autorskih kolumni Nermina Sefića.',
+          about:[{'@type':'Person',name:'Nermin Sefić',alternateName:'Nermin Sefic'},{'@type':'Organization',name:'GNK ASG d.o.o.'},{'@type':'Organization',name:'GNK DINAMO Ltd.'}],
+          mainEntity:{'@type':'ItemList',numberOfItems:items.length,itemListElement:items.map(item=>({'@type':'ListItem',position:item.index,item:{'@id':`${item.image}#image`}}))}
+        },
+        ...items.map(item=>({
+          '@type':'ImageObject','@id':`${item.image}#image`,name:item.title,description:item.description,
+          contentUrl:item.image,thumbnailUrl:item.image,mainEntityOfPage:item.page,
+          isBasedOn:`https://aktual.rs/clanak/${item.slug}/`,datePublished:item.published,
+          creditText:'Foto: Shutterstock, prema izvornoj objavi Aktual.rs',
+          copyrightNotice:'Fotografija korištena prema licenci uz izvornu objavu.',
+          representativeOfPage:true,
+          about:[{'@type':'Person',name:'Nermin Sefić',alternateName:'Nermin Sefic'},{'@type':'Organization',name:'GNK ASG d.o.o.'},{'@type':'Organization',name:'GNK DINAMO Ltd.'}],
+          keywords:'Nermin Sefić, Nermin Sefic, GNK ASG, GNK DINAMO Ltd., Aktual kolumne, poduzetništvo, preduzetništvo, istraživanje tržišta'
+        }))
+      ]
+    }
   };
-  return{items,graph};
 }
 
-async function patchVisualIndex(response,request){
+export async function patchAktualVisualIndex(response,request){
   if(!response.ok||!String(response.headers.get('content-type')||'').toLowerCase().includes('text/html'))return response;
-  const url=new URL(request.url);
-  const origin=url.origin.replace(/^https:\/\/www\./,'https://');
-  const {items,graph}=collection(origin);
-  const cards=items.map(item=>`<article class="item gnk-aktual-visual-card"><a href="${item.page}"><img src="${item.image}" alt="${escapeHtml(item.title)} — Nermin Sefić, GNK ASG i GNK DINAMO Ltd." loading="lazy" decoding="async"></a><div class="body"><h2><a href="${item.page}">${escapeHtml(item.title)}</a></h2><p>${escapeHtml(item.description)}</p><small>Objavljeno ${item.published} · Foto: Shutterstock, prema izvornoj objavi Aktual.rs</small><div class="tags"><span>Nermin Sefić</span><span>GNK ASG</span><span>GNK DINAMO Ltd.</span><span>Aktual kolumne</span></div></div></article>`).join('');
+  const origin=new URL(request.url).origin.replace(/^https:\/\/www\./,'https://');
+  const {items,graph}=buildCollection(origin);
+  const cards=items.map(item=>`<article class="item gnk-aktual-visual-card"><a href="${item.page}"><img src="${item.image}" alt="${esc(item.title)} — Nermin Sefić, GNK ASG i GNK DINAMO Ltd." loading="lazy" decoding="async"></a><div class="body"><h2><a href="${item.page}">${esc(item.title)}</a></h2><p>${esc(item.description)}</p><small>Objavljeno ${item.published} · Foto: Shutterstock, prema izvornoj objavi Aktual.rs</small><div class="tags"><span>Nermin Sefić</span><span>GNK ASG</span><span>GNK DINAMO Ltd.</span><span>Aktual kolumne</span></div></div></article>`).join('');
   const block=`<section class="gnk-aktual-visual" aria-labelledby="gnkAktualVisualTitle"><small>Autorska arhiva · 17 objava</small><h2 id="gnkAktualVisualTitle">Kolumne Nermina Sefića</h2><p>Fotografije i poveznice uz autorske tekstove Nermina Sefića, SEO povezane s GNK ASG i GNK DINAMO Ltd.</p><div class="grid gnk-aktual-visual-grid">${cards}</div></section>`;
   const style=`<style id="gnk-aktual-visual-style-v1">.gnk-aktual-visual{margin:0 0 28px;padding:22px;border:1px solid rgba(212,175,55,.28);border-radius:24px;background:rgba(255,255,255,.72)}.gnk-aktual-visual>small{color:#9b7620;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.gnk-aktual-visual>h2{margin:8px 0;font-size:clamp(1.7rem,4vw,3rem)}.gnk-aktual-visual>p{color:#526174;line-height:1.55}.gnk-aktual-visual-card h2 a{color:inherit;text-decoration:none}.gnk-aktual-visual-card .body small{display:block;margin-top:8px;color:#64748b;line-height:1.45}</style>`;
   const schema=`<script id="gnk-aktual-visual-schema-v1" type="application/ld+json">${safeJson(graph)}</script>`;
@@ -87,16 +75,3 @@ async function patchVisualIndex(response,request){
   headers.set('x-gnk-asg-aktual-visual',VERSION);
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
-
-export default{
-  async fetch(request,env,ctx){
-    const path=normalize(new URL(request.url).pathname);
-    const response=await app.fetch(request,env,ctx);
-    if(request.method==='GET'&&path==='/visual-index')return patchVisualIndex(response,request);
-    const headers=new Headers(response.headers);
-    headers.set('x-gnk-asg-admin-hub-v24',VERSION);
-    return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
-  },
-  async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
-  async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx);}
-};
