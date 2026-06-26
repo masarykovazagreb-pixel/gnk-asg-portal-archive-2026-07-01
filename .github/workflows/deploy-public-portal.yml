@@ -10,6 +10,8 @@ on:
       - "workers/gnk-asg-direct-operator/migrations/**"
       - "workers/gnk-asg-direct-operator/wrangler.toml"
   workflow_dispatch:
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: read
@@ -20,6 +22,13 @@ concurrency:
 
 jobs:
   deploy:
+    if: >-
+      github.event_name != 'issue_comment' ||
+      (github.event.issue.number == 65 &&
+       github.event.comment.body == '/deploy-public-portal' &&
+       (github.event.comment.author_association == 'OWNER' ||
+        github.event.comment.author_association == 'MEMBER' ||
+        github.event.comment.author_association == 'COLLABORATOR'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
