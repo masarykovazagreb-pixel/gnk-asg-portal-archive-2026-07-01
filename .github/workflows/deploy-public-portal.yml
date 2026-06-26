@@ -14,7 +14,14 @@ on:
       - "apps/portal/assets/index-redesign-production.js"
       - "apps/portal/assets/iq200/**"
       - "apps/portal/assets/brand/**"
+      - "apps/portal/media-command-center/**"
+      - "apps/portal/assets/media-command-center-v1.css"
+      - "apps/portal/assets/media-command-center-v1.js"
+      - "apps/portal/assets/admin-media-command-center-nav-v20.js"
+      - "apps/portal/data/media-outreach-contacts-v1.json"
       - "workers/gnk-asg-direct-operator/src/index-portal-final-v13.js"
+      - "workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js"
+      - "workers/gnk-asg-direct-operator/src/media-command-center-v1.js"
       - "workers/gnk-asg-direct-operator/wrangler.toml"
   workflow_dispatch:
 
@@ -36,7 +43,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Verify IQ200 index package
+      - name: Verify IQ200 index and Media Command package
         shell: bash
         run: |
           set -euo pipefail
@@ -48,16 +55,38 @@ jobs:
           test -s apps/portal/assets/iq200/01.css
           test -s apps/portal/assets/iq200/responsive.css
           test -s apps/portal/assets/iq200/final-fixes.css
+          test -s apps/portal/media-command-center/index.html
+          test -s apps/portal/assets/media-command-center-v1.css
+          test -s apps/portal/assets/media-command-center-v1.js
+          test -s apps/portal/assets/admin-media-command-center-nav-v20.js
+          test -s apps/portal/data/media-outreach-contacts-v1.json
+          test -s workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          test -s workers/gnk-asg-direct-operator/src/media-command-center-v1.js
           grep -q 'index-redesign-production.css' apps/portal/index.html
           grep -q 'index-redesign-production.css' apps/portal/en/index.html
           grep -q 'GNK ASG d.o.o.' apps/portal/index.html
           grep -q 'GNK DINAMO Ltd.' apps/portal/en/index.html
+          grep -q '20. 7. 2026.' apps/portal/media-command-center/index.html
+          grep -q 'rezerviran i plaćen' apps/portal/media-command-center/index.html
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           node --check workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
+          node --check apps/portal/assets/media-command-center-v1.js
+          node --check apps/portal/assets/admin-media-command-center-nav-v20.js
           grep -q 'main = "src/index-portal-final-v13.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          node - <<'JS'
+          const fs=require('fs');
+          const data=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
+          const codes=new Set(data.map(item=>item.mailCode));
+          const ready=data.filter(item=>item.automationAllowed&&item.email).length;
+          if(data.length!==112||codes.size!==112||ready!==22) throw new Error(`media seed mismatch total=${data.length} unique=${codes.size} ready=${ready}`);
+          console.log('MEDIA_COMMAND_SEED_OK=true');
+          JS
           cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml
+          npx --yes wrangler@4 deploy src/index-media-command-center-v20.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Deploy IQ200 index to Cloudflare
+      - name: Deploy IQ200 index and Media Command Center to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -65,9 +94,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy src/index-media-command-center-v20.js --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify IQ200 production
+      - name: Verify IQ200 and Media Command production
         shell: bash
         run: |
           set -euo pipefail
@@ -80,15 +109,18 @@ jobs:
             en_code=$(curl -sSL -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
             css_code=$(curl -sSL -o index.css -w '%{http_code}' "$base/assets/index-redesign-production.css?cb=$stamp" || true)
             iq_code=$(curl -sSL -o iq.css -w '%{http_code}' "$base/assets/iq200/final-fixes.css?cb=$stamp" || true)
-            if [ "$version_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$css_code" = "200" ] && [ "$iq_code" = "200" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625' version.json && grep -q 'src/index-portal-final-v13.js' version.json && grep -q 'index-redesign-production.css' root.html && grep -q 'index-redesign-production.css' en.html && grep -q 'GNK ASG d.o.o.' root.html && grep -q 'GNK DINAMO Ltd.' en.html; then
+            media_code=$(curl -sS -o media-login.html -w '%{http_code}' "$base/media-command-center/?cb=$stamp" || true)
+            api_code=$(curl -sS -o media-api.json -w '%{http_code}' "$base/api/media-command-center/status?cb=$stamp" || true)
+            if [ "$version_code" = "200" ] && [ "$root_code" = "200" ] && [ "$en_code" = "200" ] && [ "$css_code" = "200" ] && [ "$iq_code" = "200" ] && [ "$media_code" = "401" ] && [ "$api_code" = "401" ] && grep -q 'GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625' version.json && grep -q 'src/index-portal-final-v13.js' version.json && grep -q 'GNK_ASG_MEDIA_COMMAND_CENTER_V1_20260626' version.json && grep -q 'src/index-media-command-center-v20.js' version.json && grep -q 'Media Command Center' media-login.html && grep -q 'index-redesign-production.css' root.html && grep -q 'index-redesign-production.css' en.html && grep -q 'GNK ASG d.o.o.' root.html && grep -q 'GNK DINAMO Ltd.' en.html; then
               success=true
               break
             fi
             sleep 10
           done
           if [ "$success" != "true" ]; then
-            echo "VERSION_HTTP=$version_code ROOT_HTTP=$root_code EN_HTTP=$en_code CSS_HTTP=$css_code IQ_HTTP=$iq_code"
+            echo "VERSION_HTTP=$version_code ROOT_HTTP=$root_code EN_HTTP=$en_code CSS_HTTP=$css_code IQ_HTTP=$iq_code MEDIA_HTTP=$media_code API_HTTP=$api_code"
             cat version.json || true
+            cat media-api.json || true
             exit 1
           fi
-          node -e "const v=require('./version.json');if(!v.ok||v.version!=='GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625'||v.deployedEntryPoint!=='src/index-portal-final-v13.js'||v.indexDesign!=='IQ200')process.exit(1);console.log('GNK_ASG_IQ200_INDEX_PRODUCTION_OK=true')"
+          node -e "const v=require('./version.json');if(!v.ok||v.version!=='GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625'||v.deployedEntryPoint!=='src/index-portal-final-v13.js'||v.mediaCommandEntryPoint!=='src/index-media-command-center-v20.js'||v.mediaCommandCenter!=='GNK_ASG_MEDIA_COMMAND_CENTER_V1_20260626'||v.indexDesign!=='IQ200')process.exit(1);console.log('GNK_ASG_MEDIA_COMMAND_PRODUCTION_OK=true')"
