@@ -1,0 +1,120 @@
+name: Verify stable public index V26
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: verify-stable-index-v26
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    if: github.event.issue.number == 91 && github.event.comment.body == '/verify-index-v26'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Verify HR and EN index visually and technically
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          node <<'JS'
+          const fs=require('node:fs');
+          const {chromium}=require('playwright');
+          const base='https://gnk-asg.hr';
+          const cases=[
+            {name:'hr-desktop',path:'/',viewport:{width:1440,height:1100}},
+            {name:'hr-mobile',path:'/',viewport:{width:390,height:844}},
+            {name:'en-desktop',path:'/en/',viewport:{width:1440,height:1100}},
+            {name:'en-mobile',path:'/en/',viewport:{width:390,height:844}}
+          ];
+          const visible=el=>{
+            const s=getComputedStyle(el),r=el.getBoundingClientRect();
+            return s.display!=='none'&&s.visibility!=='hidden'&&Number(s.opacity)!==0&&r.width>0&&r.height>0;
+          };
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const results=[];
+            for(const item of cases){
+              const page=await browser.newPage({viewport:item.viewport});
+              const errors=[];
+              page.on('pageerror',error=>errors.push(`pageerror:${error.message}`));
+              page.on('console',message=>{if(message.type()==='error')errors.push(`console:${message.text()}`)});
+              const response=await page.goto(`${base}${item.path}?verify=${Date.now()}`,{waitUntil:'networkidle',timeout:60000});
+              await page.waitForTimeout(3500);
+              const audit=await page.evaluate(visible=>{
+                const isVisible=eval(`(${visible})`);
+                const shown=selector=>[...document.querySelectorAll(selector)].filter(isVisible);
+                const text=id=>(document.getElementById(id)?.innerText||'').trim();
+                const styles=[...document.querySelectorAll('link[rel="stylesheet"]')].map(link=>link.getAttribute('href')||'');
+                return {
+                  title:document.title,
+                  visiblePremiumHeaders:shown('#gnk-asg-premium-header').length,
+                  visibleLegacyHeaders:shown('.brand-head,.top-nav').length,
+                  injectedHeroTitles:document.querySelectorAll('.gnk-index-title').length,
+                  polishStyles:styles.filter(href=>href.includes('index-polish-v1.css')),
+                  stableVisualStyles:styles.filter(href=>href.includes('public-visual-v13.css')&&href.includes('stable-v3')),
+                  viewportWidth:innerWidth,
+                  documentWidth:document.documentElement.scrollWidth,
+                  horizontalOverflow:Math.max(0,document.documentElement.scrollWidth-innerWidth),
+                  latestNews:text('latestNews'),
+                  locationList:text('locationList'),
+                  marketRows:text('marketRows'),
+                  publicationRows:text('publicationRows'),
+                  mainVisible:shown('main').length===1,
+                  heroVisible:shown('.hero').length===1,
+                  bodyClass:document.body.className
+                };
+              },visible.toString());
+              const failures=[];
+              if(!response||response.status()!==200)failures.push(`http=${response?.status()||0}`);
+              if(audit.visiblePremiumHeaders!==1)failures.push(`visiblePremiumHeaders=${audit.visiblePremiumHeaders}`);
+              if(audit.visibleLegacyHeaders!==0)failures.push(`visibleLegacyHeaders=${audit.visibleLegacyHeaders}`);
+              if(audit.injectedHeroTitles!==0)failures.push(`injectedHeroTitles=${audit.injectedHeroTitles}`);
+              if(audit.polishStyles.length)failures.push(`polishStyles=${audit.polishStyles.join(',')}`);
+              if(audit.stableVisualStyles.length!==1)failures.push(`stableVisualStyles=${audit.stableVisualStyles.length}`);
+              if(audit.horizontalOverflow>2)failures.push(`horizontalOverflow=${audit.horizontalOverflow}`);
+              if(!audit.mainVisible||!audit.heroVisible)failures.push('main_or_hero_not_visible');
+              for(const [key,value] of Object.entries({latestNews:audit.latestNews,locationList:audit.locationList,marketRows:audit.marketRows,publicationRows:audit.publicationRows})){
+                if(!value||/Učitavanje|Loading/i.test(value))failures.push(`${key}=placeholder_or_empty`);
+              }
+              if(errors.length)failures.push(...errors.slice(0,10));
+              await page.screenshot({path:`artifacts/${item.name}.png`,fullPage:true});
+              results.push({...item,http:response?.status()||0,audit,errors,failures});
+              await page.close();
+            }
+            await browser.close();
+            const report={checkedAt:new Date().toISOString(),commit:process.env.GITHUB_SHA,results,ok:results.every(result=>result.failures.length===0)};
+            fs.writeFileSync('artifacts/report.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report,null,2));
+            if(!report.ok)process.exit(1);
+          })().catch(error=>{console.error(error);process.exit(1)});
+          JS
+      - name: Upload screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stable-index-v26-verification
+          path: artifacts
+          if-no-files-found: error
+      - name: Publish result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          summary=$(node -e "const fs=require('fs');try{const r=JSON.parse(fs.readFileSync('artifacts/report.json','utf8'));console.log(JSON.stringify({ok:r.ok,checkedAt:r.checkedAt,results:r.results.map(x=>({name:x.name,http:x.http,failures:x.failures,audit:x.audit}))},null,2))}catch(e){console.log(JSON.stringify({error:'report unavailable'},null,2))}")
+          gh issue comment 91 --body "Stable index V26 verification **${JOB_STATUS}** · ${RUN_URL}\n\n\`\`\`json\n${summary}\n\`\`\`"
