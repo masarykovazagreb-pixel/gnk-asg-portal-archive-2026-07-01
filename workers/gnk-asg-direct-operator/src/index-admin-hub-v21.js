@@ -1,8 +1,9 @@
 import app,{INDEX_LOCK_VERSION} from './index-lock-v4.js';
 import {handleFaviconAsset,applyFaviconContract,FAVICON_VERSION} from './favicon-contract-v2.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R9_ARTICLE_AUTOMATION';
+const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R10_MARKET_DEDUP';
 const HEALTH_VERSION='GNK_ASG_PLATFORM_HEALTH_V1_20260626';
+const MARKET_COMPAT_VERSION='GNK_ASG_MARKET_CHART_V3_BLOCK_V1_20260626';
 const PRIVATE_DATA_PATHS=new Set([
   '/data/media-outreach-contacts-v1.json',
   '/data/media-outreach-contacts.json',
@@ -38,6 +39,25 @@ function jsonResponse(payload,status=200,extra={}){
 }
 function redirect(location){return new Response(null,{status:303,headers:baseHeaders({location})});}
 function privateNotFound(){return new Response('Not found',{status:404,headers:baseHeaders({'content-type':'text/plain; charset=utf-8','x-robots-tag':'noindex, nofollow, noarchive','x-gnk-asg-private-data':'BLOCKED'})});}
+function marketV3Shim(request){
+  const body='(()=>{window.__GNK_ASG_LIVE_MARKET_CHART_V3__=true;document.getElementById("gnk-live-market-chart-v3")?.remove();document.getElementById("gnk-market-v3-style")?.remove();})();';
+  return new Response(request.method==='HEAD'?null:body,{status:200,headers:baseHeaders({'content-type':'application/javascript; charset=utf-8','x-gnk-asg-market-chart-compat':MARKET_COMPAT_VERSION})});
+}
+
+async function applyFinalHtmlGuards(response,path){
+  const type=String(response.headers.get('content-type')||'').toLowerCase();
+  if(!['/','/en'].includes(path)||!type.includes('text/html')||!response.ok)return response;
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('x-gnk-asg-market-chart-compat',MARKET_COMPAT_VERSION);
+  let html=await response.text();
+  html=html.replace(/<script\b[^>]*\bsrc=["'][^"']*\/assets\/index-live-market-chart-v3\.js[^"']*["'][^>]*>\s*<\/script>/gi,'');
+  const guard='<script id="gnk-market-v3-final-guard">(()=>{window.__GNK_ASG_LIVE_MARKET_CHART_V3__=true;const clean=()=>{document.getElementById("gnk-live-market-chart-v3")?.remove();document.getElementById("gnk-market-v3-style")?.remove()};clean();if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",clean,{once:true})})();</script>';
+  if(!html.includes('gnk-market-v3-final-guard'))html=html.includes('</body>')?html.replace('</body>',`${guard}</body>`):html+guard;
+  return new Response(html,{status:response.status,statusText:response.statusText,headers});
+}
 
 function deploymentStatus(){
   return jsonResponse({
@@ -50,13 +70,14 @@ function deploymentStatus(){
     publicVisual:'GNK_ASG_PUBLIC_VISUAL_V25_INDEX_POLISH_20260626',
     contentResilience:'index-content-resilience-v1.js',
     marketChart:'index-live-market-chart-v4.js',
+    marketChartCompatibility:MARKET_COMPAT_VERSION,
     articleAutomation:'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2',
     articleAutomationRuntime:'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R3_SCHEDULED_CTX',
     articleVisual:'GNK_ASG_ARTICLE_VISUAL_V2_20260626',
     publicR2:'GNK_ASG_PUBLIC_R2_V1_20260626',
     favicon:FAVICON_VERSION,
     publicPortal:'src/index-portal-final-v13.js',
-    authLayer:'GNK_ASG_UNIFIED_AUTH_V14_20260626',
+    authLayer:'GNK_ASG_UNIFIED_AUTH_V15_20260626_LOGIN_ISOLATION',
     adminSession:'HTTPONLY_COOKIE_ONLY',
     browserTokenStorage:'DISABLED',
     mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',
@@ -113,6 +134,7 @@ export default{
     const url=new URL(request.url);
     const path=url.pathname.replace(/\/+$/,'')||'/';
     if(PRIVATE_DATA_PATHS.has(path)&&['GET','HEAD'].includes(request.method))return privateNotFound();
+    if(path==='/assets/index-live-market-chart-v3.js'&&['GET','HEAD'].includes(request.method))return marketV3Shim(request);
     const faviconResponse=await handleFaviconAsset(request,env,path);
     if(faviconResponse)return faviconResponse;
     if(path==='/data/deployment-status.json'&&['GET','HEAD'].includes(request.method)){
@@ -126,7 +148,8 @@ export default{
     const embedded=url.searchParams.get('embedded')==='1'||url.searchParams.get('standalone')==='1';
     if((path==='/admin'||path==='/operator/session/login')&&['GET','HEAD','POST'].includes(request.method))return redirect('/admin-center/');
     if(MODULES.has(path)&&['GET','HEAD'].includes(request.method)&&!embedded)return redirect(`/admin-center/?module=${encodeURIComponent(MODULES.get(path))}`);
-    const response=await applyFaviconContract(request,await app.fetch(request,env,ctx));
+    let response=await applyFaviconContract(request,await app.fetch(request,env,ctx));
+    response=await applyFinalHtmlGuards(response,path);
     const headers=new Headers(response.headers);
     for(const [name,value] of Object.entries(baseHeaders()))headers.set(name,value);
     return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
