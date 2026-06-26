@@ -1,0 +1,194 @@
+name: Production homepage browser audit
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    if: github.event.issue.number == 95 && github.event.comment.body == '/run-homepage-browser-audit-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Install Playwright browsers
+        shell: bash
+        run: |
+          set -euxo pipefail
+          npm init -y >/dev/null
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium firefox
+
+      - name: Audit production in real browsers
+        id: audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/gnk-homepage-audit
+          cat > /tmp/gnk-homepage-audit/audit.mjs <<'JS'
+          import fs from 'node:fs';
+          import {chromium,firefox} from 'playwright';
+
+          const base='https://gnk-asg.hr';
+          const cases=[
+            {id:'chromium-desktop-hr',engine:'chromium',path:'/',viewport:{width:1440,height:1100},locale:'hr-HR'},
+            {id:'chromium-desktop-en',engine:'chromium',path:'/en/',viewport:{width:1440,height:1100},locale:'en-GB'},
+            {id:'chromium-mobile-hr',engine:'chromium',path:'/',viewport:{width:412,height:915},locale:'hr-HR',mobile:true},
+            {id:'firefox-desktop-hr',engine:'firefox',path:'/',viewport:{width:1440,height:1100},locale:'hr-HR'}
+          ];
+          const browserTypes={chromium,firefox};
+          const results=[];
+
+          for(const item of cases){
+            const browser=await browserTypes[item.engine].launch({headless:true});
+            const context=await browser.newContext({
+              viewport:item.viewport,
+              locale:item.locale,
+              isMobile:Boolean(item.mobile),
+              hasTouch:Boolean(item.mobile),
+              deviceScaleFactor:item.mobile?2:1
+            });
+            const page=await context.newPage();
+            const consoleErrors=[];
+            const pageErrors=[];
+            const requestFailures=[];
+            page.on('console',message=>{if(message.type()==='error')consoleErrors.push(message.text().slice(0,500));});
+            page.on('pageerror',error=>pageErrors.push(String(error.message||error).slice(0,500)));
+            page.on('requestfailed',request=>{
+              const url=request.url();
+              if(url.startsWith(base))requestFailures.push({url,error:request.failure()?.errorText||'failed'});
+            });
+            const url=`${base}${item.path}${item.path.includes('?')?'&':'?'}cb=${Date.now()}`;
+            const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForTimeout(12000);
+            const data=await page.evaluate(()=>{
+              const text=selector=>String(document.querySelector(selector)?.textContent||'').replace(/\s+/g,' ').trim();
+              const html=selector=>String(document.querySelector(selector)?.innerHTML||'');
+              const values=[...document.querySelectorAll('#marketRows .market-value')].map(node=>String(node.textContent||'').trim());
+              return{
+                title:document.title,
+                h1:text('h1.gnk-index-title'),
+                latestNews:text('#latestNews'),
+                latestNewsHtml:html('#latestNews'),
+                network:text('#locationList'),
+                market:text('#marketRows'),
+                marketValues:values,
+                publications:text('#publicationRows'),
+                featuredTitle:text('#featuredTitle'),
+                premiumHeaders:document.querySelectorAll('#gnk-asg-premium-header').length,
+                adminShells:document.querySelectorAll('#gnk-backend-shell').length,
+                horizontalOverflow:Math.max(0,document.documentElement.scrollWidth-window.innerWidth),
+                scripts:[...document.scripts].map(script=>script.src).filter(Boolean).filter(src=>/index-(?:content-resilience|live-market-chart|group-network|news-rotation)/.test(src)),
+                bodyLoading:/Učitavanje|Loading…|Loading\.\.\./i.test(document.body.innerText)
+              };
+            });
+            const screenshot=`/tmp/gnk-homepage-audit/${item.id}.png`;
+            await page.screenshot({path:screenshot,fullPage:true});
+            const placeholders={
+              news:/Učitavanje|Loading/i.test(data.latestNews),
+              network:/Učitavanje|Loading/i.test(data.network),
+              market:/Učitavanje|Loading/i.test(data.market),
+              publications:/Učitavanje|Loading/i.test(data.publications)
+            };
+            const unavailable={
+              market:data.marketValues.filter(value=>/Nedostupno|Unavailable/i.test(value)).length,
+              publications:/Još nema|No published/i.test(data.publications),
+              news:/privremeno nedostupne|temporarily unavailable/i.test(data.latestNews),
+              network:/nisu dostupni|unavailable/i.test(data.network)
+            };
+            const failures=[];
+            if(response?.status()!==200)failures.push(`http=${response?.status()}`);
+            if(!data.h1)failures.push('h1_missing');
+            for(const [key,value] of Object.entries(placeholders))if(value)failures.push(`${key}_placeholder`);
+            if(!data.latestNews)failures.push('news_empty');
+            if(!data.network)failures.push('network_empty');
+            if(data.marketValues.length<4)failures.push(`market_value_count=${data.marketValues.length}`);
+            if(!data.publications)failures.push('publications_empty');
+            if(data.premiumHeaders>1)failures.push(`duplicate_headers=${data.premiumHeaders}`);
+            if(data.horizontalOverflow>4)failures.push(`horizontal_overflow=${data.horizontalOverflow}`);
+            if(pageErrors.length)failures.push(`page_errors=${pageErrors.length}`);
+            if(requestFailures.length)failures.push(`same_origin_request_failures=${requestFailures.length}`);
+            results.push({...item,url,httpStatus:response?.status()||0,data,placeholders,unavailable,consoleErrors,pageErrors,requestFailures,failures,screenshot:screenshot.split('/').pop()});
+            await browser.close();
+          }
+
+          const raw={};
+          for(const path of ['/','/en/']){
+            const response=await fetch(`${base}${path}?raw=${Date.now()}`,{headers:{'cache-control':'no-cache'}});
+            const body=await response.text();
+            raw[path]={
+              status:response.status,
+              hydration:response.headers.get('x-gnk-asg-index-hydration'),
+              indexLock:response.headers.get('x-gnk-asg-index-lock'),
+              publicVisual:response.headers.get('x-gnk-asg-public-visual'),
+              hasH1:body.includes('class="gnk-index-title"'),
+              placeholders:{
+                news:body.includes('Učitavanje najnovijih vijesti')||body.includes('Loading latest news'),
+                network:body.includes('Učitavanje mreže')||body.includes('Loading network'),
+                market:body.includes('class="market-value">Učitavanje')||body.includes('class="market-value">Loading'),
+                publications:body.includes('Učitavanje objava')||body.includes('Loading publications')
+              },
+              bytes:body.length
+            };
+          }
+          const failures=results.flatMap(result=>result.failures.map(failure=>`${result.id}:${failure}`));
+          for(const [path,value] of Object.entries(raw)){
+            if(value.status!==200)failures.push(`raw${path}:http=${value.status}`);
+            if(value.hydration!=='GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626')failures.push(`raw${path}:hydration=${value.hydration}`);
+            if(!value.hasH1)failures.push(`raw${path}:h1_missing`);
+            for(const [key,present] of Object.entries(value.placeholders))if(present)failures.push(`raw${path}:${key}_placeholder`);
+          }
+          const report={ok:failures.length===0,checkedAt:new Date().toISOString(),failures,raw,browsers:results};
+          fs.writeFileSync('/tmp/gnk-homepage-audit/report.json',JSON.stringify(report,null,2));
+          console.log(JSON.stringify(report,null,2));
+          if(failures.length)process.exitCode=1;
+          JS
+          node /tmp/gnk-homepage-audit/audit.mjs
+
+      - name: Upload screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-homepage-browser-audit
+          path: /tmp/gnk-homepage-audit
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Report audit result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          summary=$(node - <<'JS'
+          const fs=require('node:fs');
+          try{
+            const report=JSON.parse(fs.readFileSync('/tmp/gnk-homepage-audit/report.json','utf8'));
+            const compact={
+              ok:report.ok,
+              checkedAt:report.checkedAt,
+              failures:report.failures,
+              raw:report.raw,
+              browsers:report.browsers.map(item=>({
+                id:item.id,httpStatus:item.httpStatus,h1:item.data.h1,placeholders:item.placeholders,
+                unavailable:item.unavailable,marketValues:item.data.marketValues,
+                horizontalOverflow:item.data.horizontalOverflow,pageErrors:item.pageErrors,
+                requestFailures:item.requestFailures,screenshot:item.screenshot
+              }))
+            };
+            process.stdout.write(JSON.stringify(compact,null,2));
+          }catch(error){process.stdout.write(JSON.stringify({error:String(error)},null,2));}
+          JS
+          )
+          body=$(printf 'Homepage browser audit **%s** · %s\n\nScreenshots and the complete JSON report are available in the `gnk-homepage-browser-audit` artifact.\n\n```json\n%s\n```' "$JOB_STATUS" "$RUN_URL" "$summary")
+          gh issue comment 95 --body "$body"
