@@ -191,8 +191,10 @@ function link(block){
 }
 
 function validHttp(value,base=''){
+  const raw=String(value||'').trim();
+  if(!raw)return '';
   try{
-    const url=new URL(String(value||'').trim(),base||undefined);
+    const url=new URL(raw,base||undefined);
     return /^https?:$/.test(url.protocol)?url.href:'';
   }catch{return'';}
 }
