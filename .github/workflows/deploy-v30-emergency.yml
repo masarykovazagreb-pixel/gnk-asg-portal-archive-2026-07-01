@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: gnk-asg-v30-emergency-production
@@ -68,6 +69,7 @@ jobs:
         run: |
           set -euo pipefail
           node <<'JS'
+          const fs=require('node:fs');
           const base='https://gnk-asg.hr';
           const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
           async function get(path){
@@ -91,7 +93,8 @@ jobs:
                 if(response.text.includes('class="gnk-index-title"'))failures.push(`${name}_legacy_title_present`);
               }
               if(polish.status===200&&!polish.text.includes('stable polish V30'))failures.push('polish_marker_missing');
-              last={attempt,failures,codes:{root:root.status,en:en.status,polish:polish.status,health:health.status},headers:{root:root.headers,en:en.headers}};
+              last={checkedAt:new Date().toISOString(),attempt,failures,codes:{root:root.status,en:en.status,polish:polish.status,health:health.status},headers:{root:root.headers,en:en.headers}};
+              fs.writeFileSync('/tmp/v30-diagnostic.json',JSON.stringify(last,null,2));
               console.log(JSON.stringify(last));
               if(!failures.length)process.exit(0);
               await sleep(10000);
@@ -100,3 +103,15 @@ jobs:
             process.exit(1);
           })().catch(error=>{console.error(error);process.exit(1)});
           JS
+
+      - name: Report V30 result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          diagnostic=$(cat /tmp/v30-diagnostic.json 2>/dev/null || printf '{"error":"production_verification_not_reached"}')
+          gh issue comment 91 --body "Emergency V30 index deploy **${JOB_STATUS}** · commit \`${RUN_SHA}\` · ${RUN_URL}\n\n\`\`\`json\n${diagnostic}\n\`\`\`"
