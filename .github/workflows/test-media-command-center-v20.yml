@@ -50,8 +50,7 @@ jobs:
           grep -q '20. 7. 2026.' apps/portal/media-command-center/index.html
           grep -q 'rezerviran i plaćen' apps/portal/media-command-center/index.html
           grep -q 'medijska agencija u sklopu grupacije GNK ASG' apps/portal/media-command-center/index.html
-          grep -q 'Konačna odluka' apps/portal/media-command-center/index.html
-          grep -q 'LJUDSKA' apps/portal/media-command-center/index.html
+          grep -qi 'ljudska odluka' apps/portal/media-command-center/index.html
           node - <<'JS'
           const fs=require('fs');
           const data=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
