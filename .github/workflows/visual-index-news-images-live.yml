@@ -1,4 +1,4 @@
-name: GNK ASG Visual Index News Images
+name: GNK ASG Visual Index and Verified News
 
 on:
   push:
@@ -7,6 +7,13 @@ on:
       - 'apps/portal/assets/visual-index-full-gallery.js'
       - 'apps/portal/assets/visual-index-central-v7.js'
       - 'apps/portal/visual-index/**'
+      - 'apps/portal/assets/business-news-v16.js'
+      - 'apps/portal/vijesti/**'
+      - 'apps/portal/news/**'
+      - 'workers/gnk-asg-direct-operator/src/news-curation-v10.js'
+      - 'workers/gnk-asg-direct-operator/src/index-news-lifecycle-v12.js'
+      - 'workers/gnk-asg-direct-operator/src/index-portal-experience-v10.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js'
       - '.github/workflows/visual-index-news-images-live.yml'
   workflow_dispatch:
   issues:
@@ -20,7 +27,7 @@ jobs:
   deploy-and-verify:
     if: github.event_name != 'issues' || contains(github.event.issue.title, 'RUN GNK ASG VISUAL INDEX NEWS IMAGES')
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -31,12 +38,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Validate Visual Index integration
+      - name: Validate Visual Index and News V16 package
         shell: bash
         run: |
           set -euo pipefail
           node --check apps/portal/assets/visual-index-full-gallery.js
           node --check apps/portal/assets/visual-index-central-v7.js
+          node --check apps/portal/assets/business-news-v16.js
+          node --check workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          node --check workers/gnk-asg-direct-operator/src/index-news-lifecycle-v12.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-experience-v10.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
           grep -q 'visual-index-central-v7.js' apps/portal/assets/visual-index-full-gallery.js
           grep -q 'cleanVisualCards' apps/portal/assets/visual-index-full-gallery.js
           grep -q 'invalidSrc' apps/portal/assets/visual-index-full-gallery.js
@@ -44,6 +56,14 @@ jobs:
           grep -q "getJson('/data/news.json')" apps/portal/assets/visual-index-central-v7.js
           grep -q 'gnk-news-gallery-item' apps/portal/assets/visual-index-central-v7.js
           grep -q "addEventListener('error'" apps/portal/assets/visual-index-central-v7.js
+          grep -q 'GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'export const NEWS_MINIMUM=15' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'export const ACTIVE_NEWS_LIMIT=100' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'export const ARCHIVE_PRUNE_AT=900' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'export const ARCHIVE_RETAIN_AFTER_PRUNE=450' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'fallbackImagesAllowed:false' workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          grep -q 'business-news-v16.js?v=20260626-news-v16' apps/portal/vijesti/index.html
+          grep -q 'business-news-v16.js?v=20260626-news-v16' apps/portal/news/index.html
       - name: Deploy current Worker and assets
         id: deploy
         shell: bash
@@ -57,7 +77,7 @@ jobs:
       - name: Wait for propagation
         if: steps.deploy.outputs.code == '0'
         run: sleep 15
-      - name: Verify production Visual Index and image MIME types
+      - name: Warm and verify production News V16 and Visual Index
         id: verify
         if: steps.deploy.outputs.code == '0'
         shell: bash
@@ -66,42 +86,57 @@ jobs:
           : > verify.log
           failed=0
 
-          visual_code=$(curl --silent --show-error --location --output visual.html --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/visual-index/?cb=visual-news')
-          loader_code=$(curl --silent --show-error --location --output loader.js --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/assets/visual-index-full-gallery.js?cb=visual-news')
-          central_code=$(curl --silent --show-error --location --output central.js --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/assets/visual-index-central-v7.js?cb=visual-news')
-          news_code=$(curl --silent --show-error --location --output news.json --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/data/news.json?cb=visual-news')
+          warm_code=$(curl --silent --show-error --location --output news.json --write-out '%{http_code}' --max-time 420 --retry 2 --retry-all-errors --retry-delay 4 'https://gnk-asg.hr/data/news.json?warm=1&cb=verified-news-v16')
+          visual_code=$(curl --silent --show-error --location --output visual.html --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/visual-index/?cb=verified-news-v16')
+          loader_code=$(curl --silent --show-error --location --output loader.js --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/assets/visual-index-full-gallery.js?cb=verified-news-v16')
+          central_code=$(curl --silent --show-error --location --output central.js --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/assets/visual-index-central-v7.js?cb=verified-news-v16')
+          hr_code=$(curl --silent --show-error --location --output hr-news.html --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/vijesti/?cb=verified-news-v16')
+          en_code=$(curl --silent --show-error --location --output en-news.html --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/news/?cb=verified-news-v16')
+          status_code=$(curl --silent --show-error --location --output status.json --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/data/news-automation-status.json?cb=verified-news-v16')
+          archive_code=$(curl --silent --show-error --location --output archive.json --write-out '%{http_code}' --retry 4 --retry-all-errors --retry-delay 2 'https://gnk-asg.hr/data/news-archive.json?cb=verified-news-v16')
+
+          echo "WARM_HTTP=$warm_code" >> verify.log
           echo "VISUAL_HTTP=$visual_code" >> verify.log
           echo "LOADER_HTTP=$loader_code" >> verify.log
           echo "CENTRAL_HTTP=$central_code" >> verify.log
-          echo "NEWS_HTTP=$news_code" >> verify.log
-          [ "$visual_code" = '200' ] || failed=1
-          [ "$loader_code" = '200' ] || failed=1
-          [ "$central_code" = '200' ] || failed=1
-          [ "$news_code" = '200' ] || failed=1
+          echo "HR_NEWS_HTTP=$hr_code" >> verify.log
+          echo "EN_NEWS_HTTP=$en_code" >> verify.log
+          echo "STATUS_HTTP=$status_code" >> verify.log
+          echo "ARCHIVE_HTTP=$archive_code" >> verify.log
+          for code in "$warm_code" "$visual_code" "$loader_code" "$central_code" "$hr_code" "$en_code" "$status_code" "$archive_code"; do [ "$code" = '200' ] || failed=1; done
+
           grep -q 'cleanVisualCards' loader.js || { echo 'LIVE_CLEANUP_MISSING' >> verify.log; failed=1; }
           grep -q 'invalidSrc' loader.js || { echo 'LIVE_INVALID_FILTER_MISSING' >> verify.log; failed=1; }
           grep -q 'mapNews' central.js || { echo 'LIVE_NEWS_MAPPER_MISSING' >> verify.log; failed=1; }
           grep -q "getJson('/data/news.json')" central.js || { echo 'LIVE_NEWS_SOURCE_MISSING' >> verify.log; failed=1; }
-          grep -q 'gnk-news-gallery-item' central.js || { echo 'LIVE_NEWS_CARD_MISSING' >> verify.log; failed=1; }
+          grep -q 'business-news-v16.js?v=20260626-news-v16' hr-news.html || { echo 'HR_RENDERER_V16_MISSING' >> verify.log; failed=1; }
+          grep -q 'business-news-v16.js?v=20260626-news-v16' en-news.html || { echo 'EN_RENDERER_V16_MISSING' >> verify.log; failed=1; }
 
           node - <<'NODE' > image-urls.txt 2>> verify.log
           const fs=require('fs');
-          const payload=JSON.parse(fs.readFileSync('news.json','utf8'));
-          const items=Array.isArray(payload)?payload:(Array.isArray(payload?.items)?payload.items:[]);
+          const feed=JSON.parse(fs.readFileSync('news.json','utf8'));
+          const status=JSON.parse(fs.readFileSync('status.json','utf8'));
+          const archive=JSON.parse(fs.readFileSync('archive.json','utf8'));
+          const items=Array.isArray(feed?.items)?feed.items:[];
+          const validUrl=value=>{try{const url=new URL(String(value||''));return /^https?:$/.test(url.protocol)}catch{return false}};
           const fallback=value=>!value||/news-fallback\.svg|placeholder|favicon|logo|crest|badge|emblem/i.test(String(value));
-          const imageOf=item=>String(item?.image||item?.imageUrl||'').trim();
-          const articleOf=item=>String(item?.url||item?.link||item?.sourceUrl||'').trim();
-          const eligible=items.filter(item=>{
-            const image=imageOf(item),article=articleOf(item);
-            return !item?.imageFallback&&!fallback(image)&&/^https?:\/\//i.test(image)&&/^https?:\/\//i.test(article)&&image!==article&&/\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#]|$)/i.test(image);
-          });
+          const invalid=items.filter(item=>!(item?.verified===true&&item?.verification?.article?.ok===true&&item?.verification?.image?.ok===true&&validUrl(item?.url)&&validUrl(item?.image)&&!fallback(item?.image)&&String(item?.summary||'').trim().length>=60&&String(item?.source||'').trim()));
+          console.error(`NEWS_VERSION=${feed?.version}`);
+          console.error(`NEWS_STATUS=${feed?.status}`);
           console.error(`NEWS_ITEMS=${items.length}`);
-          console.error(`VISUAL_ELIGIBLE=${eligible.length}`);
-          console.error(`FILTERED_OUT=${items.length-eligible.length}`);
-          console.error(`FALLBACK_ELIGIBLE=${eligible.filter(item=>fallback(imageOf(item))).length}`);
-          console.error(`ARTICLE_AS_IMAGE=${eligible.filter(item=>imageOf(item)===articleOf(item)).length}`);
-          if(eligible.length<20)process.exitCode=1;
-          eligible.slice(0,20).forEach(item=>console.log(imageOf(item)));
+          console.error(`NEWS_INVALID=${invalid.length}`);
+          console.error(`NEWS_FRESH=${feed?.freshCount}`);
+          console.error(`NEWS_SOURCES_OK=${feed?.successfulSourceCount}`);
+          console.error(`ARCHIVE_COUNT=${archive?.count}`);
+          console.error(`ARCHIVE_PRUNE_AT=${status?.archivePruneAt}`);
+          console.error(`ARCHIVE_RETAIN=${status?.archiveRetainAfterPrune}`);
+          console.error(`ARCHIVE_HARD_LIMIT=${status?.archiveHardLimit}`);
+          if(feed?.version!=='GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626')process.exitCode=1;
+          if(items.length<15||items.length>100||invalid.length)process.exitCode=1;
+          if(status?.newsRefreshesPerDay!==3||status?.minimumVerifiedLinks!==15)process.exitCode=1;
+          if(status?.archivePruneAt!==900||status?.archiveRetainAfterPrune!==450||status?.archiveHardLimit!==1000)process.exitCode=1;
+          if(Number(archive?.count||0)>1000)process.exitCode=1;
+          items.slice(0,15).forEach(item=>console.log(String(item.image).trim()));
           NODE
           if [ $? -ne 0 ]; then failed=1; fi
 
@@ -128,22 +163,27 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: visual-index-news-images-production
+          name: verified-news-v16-visual-index-production
           path: |
             verify.log
             mime.log
             image-urls.txt
             deploy.log
+            news.json
+            status.json
+            archive.json
           retention-days: 14
-      - name: Report issue-triggered result
-        if: always() && github.event_name == 'issues'
+      - name: Report canonical result to Issue 120
+        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           {
-            echo "VISUAL_INDEX_DEPLOY_CODE=${{ steps.deploy.outputs.code }}"
-            echo "VISUAL_INDEX_VERIFY_CODE=${{ steps.verify.outputs.code }}"
+            echo "Verified News V16 + Visual Index production result"
+            echo
+            echo "DEPLOY_CODE=${{ steps.deploy.outputs.code }}"
+            echo "VERIFY_CODE=${{ steps.verify.outputs.code }}"
             echo "commit=${GITHUB_SHA}"
             echo "workflow=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
             echo
@@ -151,7 +191,7 @@ jobs:
             cat verify.log 2>/dev/null || true
             echo '```'
           } > issue-report.md
-          gh issue comment "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --body-file issue-report.md
+          gh issue comment 120 --repo "$GITHUB_REPOSITORY" --body-file issue-report.md
       - name: Enforce success
         if: always()
         shell: bash
