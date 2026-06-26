@@ -1,6 +1,6 @@
 import {withRequiredEmailSignature,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_PROFILE_DELIVERY_TEST_V1_20260626';
+export const VERSION='GNK_ASG_MAIL_PROFILE_DELIVERY_TEST_V1_20260626_R2_AUDIT_SAFE';
 export const STATUS_PATH='/api/mail-center/profile-test-status';
 export const SEND_PATH='/api/mail-center/profile-test';
 
@@ -70,6 +70,14 @@ function message(profile,recipient,batchId){
     headers:{'X-GNK-ASG-Profile-Test':VERSION,'X-GNK-ASG-Profile-Id':profile.id,'X-GNK-ASG-Test-Batch':batchId}
   };
 }
+async function safeRecord(env,batchId,profile,recipient,status,detail){
+  try{
+    await record(env,batchId,profile,recipient,status,detail);
+    return{logged:true};
+  }catch(error){
+    return{logged:false,logError:String(error?.message||error).slice(0,300)};
+  }
+}
 async function sendBatch(request,env){
   let body={};try{body=await request.json();}catch{return json({ok:false,error:'invalid_json'},400);}
   const recipient=clean(body.recipient).toLowerCase();
@@ -78,23 +86,28 @@ async function sendBatch(request,env){
   const allowed=allowlist(env);
   if(!validEmail(recipient)||!allowed.has(recipient))return json({ok:false,error:'recipient_not_allowlisted',configuredCount:allowed.size},403);
   if(!env.EMAIL?.send)return json({ok:false,error:'email_binding_missing'},503);
+
   const signedEnv=withRequiredEmailSignature(env);
   const batchId=crypto.randomUUID();
   const results=[];
   for(const profile of PROFILES){
+    let sent;
     try{
-      const sent=await signedEnv.EMAIL.send(message(profile,recipient,batchId));
-      const detail={messageId:clean(sent?.messageId),signatureVersion:SIGNATURE_VERSION};
-      await record(env,batchId,profile,recipient,'SENT',detail);
-      results.push({profile:profile.id,from:profile.email,status:'SENT',messageId:detail.messageId});
+      sent=await signedEnv.EMAIL.send(message(profile,recipient,batchId));
     }catch(error){
       const detail={errorCode:clean(error?.code)||'EMAIL_SEND_FAILED',message:String(error?.message||error).slice(0,500)};
-      await record(env,batchId,profile,recipient,'FAILED',detail).catch(()=>{});
-      results.push({profile:profile.id,from:profile.email,status:'FAILED',...detail});
+      const audit=await safeRecord(env,batchId,profile,recipient,'FAILED',detail);
+      results.push({profile:profile.id,from:profile.email,status:'FAILED',...detail,audit});
+      continue;
     }
+
+    const detail={messageId:clean(sent?.messageId),signatureVersion:SIGNATURE_VERSION};
+    const audit=await safeRecord(env,batchId,profile,recipient,'SENT',detail);
+    results.push({profile:profile.id,from:profile.email,status:'SENT',messageId:detail.messageId,audit});
   }
   const sentCount=results.filter(item=>item.status==='SENT').length;
-  return json({ok:sentCount===PROFILES.length,batchId,recipient,sent:sentCount,failed:PROFILES.length-sentCount,results,signatureVersion:SIGNATURE_VERSION},sentCount===PROFILES.length?200:207);
+  const auditWarnings=results.filter(item=>item.audit?.logged===false).length;
+  return json({ok:sentCount===PROFILES.length,batchId,recipient,sent:sentCount,failed:PROFILES.length-sentCount,auditWarnings,results,signatureVersion:SIGNATURE_VERSION},sentCount===PROFILES.length?200:207);
 }
 
 export async function handleMailProfileDeliveryTest(request,env){
