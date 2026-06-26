@@ -1,0 +1,9 @@
+GNK_ASG_NEWS_PUBLICATIONS_V17_20260626
+news_sources=26
+minimum_verified=15
+public_items=100
+archive_prune=900_to_450
+publication_cadence=every_2_hours
+first_publication=run_now
+visual_index=central_v7
+nonce=1
