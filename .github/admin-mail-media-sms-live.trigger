@@ -1,0 +1,5 @@
+GNK_ASG_ADMIN_MAIL_MEDIA_SMS_LIVE_VERIFY
+commit=71fa0735a9c2b4761b94d0b8ca366d56512aebef
+checked_modules=admin-center,mail-studio,media-command-center,sms-status
+sending=LOCKED
+nonce=1
