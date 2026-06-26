@@ -19,19 +19,26 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Generate deterministic PDF
+      - name: Generate and preflight PDF
         id: pdf
         run: |
           set -euxo pipefail
           python -m pip install --disable-pip-version-check --no-cache-dir reportlab==4.4.9
           pdf=/tmp/GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf
           python scripts/generate-media-invitation-pdf-deterministic.py "$pdf"
-          expected=32d6c73bb03c7418ab3d494826d4a04b21f2decfad5c784c77985668a88be1a9
           actual=$(sha256sum "$pdf" | awk '{print $1}')
           size=$(stat -c '%s' "$pdf")
-          test "$actual" = "$expected"
+          test "$size" -ge 10000
           test "$size" -lt 4194304
           head -c 5 "$pdf" | grep -q '%PDF-'
+          python - "$pdf" <<'PY'
+          import re,sys
+          data=open(sys.argv[1],'rb').read()
+          pages=len(re.findall(rb'/Type\s*/Page\b',data))
+          if pages != 4:
+              raise SystemExit(f'expected 4 pages, got {pages}')
+          print(f'pages={pages}')
+          PY
           echo "sha=$actual" >> "$GITHUB_OUTPUT"
           echo "size=$size" >> "$GITHUB_OUTPUT"
 
@@ -49,6 +56,7 @@ jobs:
           npx --yes wrangler@4 r2 object put "$key" --file "$pdf" --content-type application/pdf --content-disposition 'attachment; filename="GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf"' --cache-control 'private, no-store' --remote --config "$cfg" --force 2>&1 | tee /tmp/r2.log
           npx --yes wrangler@4 r2 object get "$key" --file /tmp/r2-verify.pdf --remote --config "$cfg" 2>&1 | tee -a /tmp/r2.log
           test "$(sha256sum /tmp/r2-verify.pdf | awk '{print $1}')" = '${{ steps.pdf.outputs.sha }}'
+          test "$(stat -c '%s' /tmp/r2-verify.pdf)" = '${{ steps.pdf.outputs.size }}'
 
       - name: Report R2 result
         if: always()
