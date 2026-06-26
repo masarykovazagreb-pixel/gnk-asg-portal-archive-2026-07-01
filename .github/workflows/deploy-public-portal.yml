@@ -10,12 +10,9 @@ on:
       - "workers/gnk-asg-direct-operator/migrations/**"
       - "workers/gnk-asg-direct-operator/wrangler.toml"
   workflow_dispatch:
-  issue_comment:
-    types: [created]
 
 permissions:
   contents: read
-  issues: write
 
 concurrency:
   group: gnk-asg-canonical-production
@@ -23,10 +20,6 @@ concurrency:
 
 jobs:
   deploy:
-    if: >-
-      github.event_name != 'issue_comment' ||
-      (github.event.issue.number == 65 &&
-       github.event.comment.body == '/deploy-public-portal 20260626-73e3ca6')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -59,6 +52,7 @@ jobs:
           test -s workers/gnk-asg-direct-operator/migrations/0001_media_command_controls.sql
           grep -q 'main = "src/index-admin-hub-v21.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'GNK_ASG_PLATFORM_HEALTH_V1_20260626' workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
           grep -q 'GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626' workers/gnk-asg-direct-operator/src/index-server-hydration-v1.js
           grep -q 'GNK_ASG_PUBLIC_R2_V1_20260626' workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
           grep -q 'GNK_ASG_MEDIA_COMMAND_CENTER_V2_20260626_R3_HANDOFF_LOCK' workers/gnk-asg-direct-operator/src/media-command-center-v2.js
@@ -69,12 +63,16 @@ jobs:
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
       - name: Apply D1 migrations
+        id: d1
+        continue-on-error: true
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         shell: bash
-        run: npx --yes wrangler@4 d1 migrations apply gnk_asg_operator_logs --remote --config wrangler.toml
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4 d1 migrations apply gnk_asg_operator_logs --remote --config wrangler.toml 2>&1 | tee /tmp/gnk-d1-migration.log
 
       - name: Deploy to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
@@ -100,37 +98,41 @@ jobs:
             mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',
             mediaCommand:'src/index-media-command-center-v21.js',
             contactImport:'HASH_LOCKED_V3',
-            articleAutomation:'GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R2',
+            platformHealth:'/data/platform-health.json',
+            d1MigrationMode:'RUNTIME_SCHEMA_FALLBACK',
             productionSending:'LOCKED'
           };
           const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
           async function get(path,redirect='follow'){
             try{
               const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{redirect,headers:{'cache-control':'no-cache'}});
-              return {status:response.status,text:await response.text()};
-            }catch(error){return {status:0,text:'',error:String(error)};}
+              return {status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)};
+            }catch(error){return {status:0,text:'',headers:{},error:String(error)};}
           }
           let last;
           for(let attempt=1;attempt<=18;attempt++){
-            const [deployment,root,en,content,market,favicon,manifest,mediaApi,handoffUi]=await Promise.all([
-              get('/data/deployment-status.json'),get('/'),get('/en/'),
+            const [deployment,health,root,en,content,market,favicon,manifest,mediaApi,admin]=await Promise.all([
+              get('/data/deployment-status.json'),get('/data/platform-health.json'),get('/'),get('/en/'),
               get('/assets/index-content-resilience-v1.js'),get('/assets/index-live-market-chart-v4.js'),
               get('/favicon.svg'),get('/site.webmanifest'),get('/api/media-command-center/status','manual'),
-              get('/assets/media-command-handoff-ui-v3.js')
+              get('/operator-dashboard/','manual')
             ]);
             let status=null;try{status=JSON.parse(deployment.text);}catch{}
+            let healthData=null;try{healthData=JSON.parse(health.text);}catch{}
             const failures=[];
             if(deployment.status!==200||!status?.ok)failures.push(`deployment=${deployment.status}`);
             for(const [key,value] of Object.entries(expected))if(status?.[key]!==value)failures.push(`${key}=${JSON.stringify(status?.[key])}`);
+            if(health.status!==200||!healthData?.ok||healthData?.checks?.d1?.ok!==true)failures.push(`health=${health.status}:${JSON.stringify(healthData)}`);
             if(root.status!==200)failures.push(`root=${root.status}`);
             if(en.status!==200)failures.push(`en=${en.status}`);
             if(content.status!==200)failures.push(`content=${content.status}`);
             if(market.status!==200)failures.push(`market=${market.status}`);
-            if(handoffUi.status!==200)failures.push(`handoffUi=${handoffUi.status}`);
             if(favicon.status!==200||!favicon.text.includes('<svg'))failures.push(`favicon=${favicon.status}`);
             if(manifest.status!==200||!manifest.text.includes('GNK ASG'))failures.push(`manifest=${manifest.status}`);
             if(![401,403].includes(mediaApi.status))failures.push(`mediaApi=${mediaApi.status}`);
-            last={attempt,failures,codes:{deployment:deployment.status,root:root.status,en:en.status,content:content.status,market:market.status,handoffUi:handoffUi.status,favicon:favicon.status,manifest:manifest.status,mediaApi:mediaApi.status},status};
+            if(admin.status!==303||!String(admin.headers.location||'').includes('/admin-center/?module=operator'))failures.push(`admin=${admin.status}:${admin.headers.location||''}`);
+            for(const marker of ['Učitavanje najnovijih vijesti','Učitavanje mreže','Učitavanje objava','class="market-value">Učitavanje'])if(root.text.includes(marker))failures.push(`root_placeholder=${marker}`);
+            last={attempt,failures,codes:{deployment:deployment.status,health:health.status,root:root.status,en:en.status,content:content.status,market:market.status,favicon:favicon.status,manifest:manifest.status,mediaApi:mediaApi.status,admin:admin.status},status,healthData};
             console.log(JSON.stringify(last));
             if(!failures.length){console.log('GNK_ASG_CANONICAL_PRODUCTION_OK=true');process.exit(0);}
             await sleep(10000);
@@ -140,22 +142,13 @@ jobs:
           JS
 
       - name: Route diagnostics
-        continue-on-error: true
+        if: always()
         shell: bash
         run: |
           set -u
           base="https://gnk-asg.hr"
-          for path in / /en/ /admin-center/ /operator/session/login /media-command-center/ /api/media-command-center/status; do
+          echo "D1 migration outcome: ${{ steps.d1.outcome }}"
+          for path in / /en/ /data/deployment-status.json /data/platform-health.json /admin-center/ /operator-dashboard/ /media-command-center/ /api/media-command-center/status; do
             code=$(curl -sS -o /tmp/route.out -w '%{http_code}' "$base$path?cb=$(date +%s)" || true)
             echo "$path HTTP=$code"
           done
-
-      - name: Report deployment result
-        if: always() && github.event_name == 'issue_comment'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          JOB_STATUS: ${{ job.status }}
-          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          RUN_SHA: ${{ github.sha }}
-        shell: bash
-        run: gh issue comment 65 --body "Canonical deploy **${JOB_STATUS}** · commit ${RUN_SHA} · ${RUN_URL}"
