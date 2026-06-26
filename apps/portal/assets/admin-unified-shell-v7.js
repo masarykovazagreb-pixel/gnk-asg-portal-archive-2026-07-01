@@ -1,6 +1,7 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V8__) return;
+  if (window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V9__) return;
+  window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V9__ = true;
   window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V8__ = true;
   window.__GNK_ASG_ADMIN_UNIFIED_SHELL_V7__ = true;
 
@@ -10,6 +11,26 @@
     '/auto-editor','/news-admin','/pdf-publisher','/social-share','/wa-center','/review'
   ];
   if (!privateRoutes.some(route => path === route || path.startsWith(`${route}/`))) return;
+
+  const isLoginDocument = () => {
+    const title = String(document.title || '').toLocaleLowerCase('hr');
+    const tokenForm = document.querySelector('main.card form input[name="token"], form[action*="admin-center"] input[name="token"]');
+    const explicitLogin = document.body?.classList.contains('gnk-auth-login-page') || document.documentElement.dataset.gnkAuthLogin === '1';
+    return explicitLogin || title.includes('sigurna prijava') || Boolean(tokenForm && !document.getElementById('app'));
+  };
+
+  const removeShellFromLogin = () => {
+    document.getElementById('gnk-backend-shell')?.remove();
+    document.getElementById('gnk-admin-module-launcher-v7')?.remove();
+    document.getElementById('gnk-admin-lock-notice-v7')?.remove();
+    document.body?.classList.remove('gnk-backend-ui','gnk-admin-unified-v7','gnk-admin-shared-auth');
+  };
+
+  if (isLoginDocument()) {
+    removeShellFromLogin();
+    document.documentElement.dataset.gnkAdminShellSuppressed = 'LOGIN_DOCUMENT';
+    return;
+  }
 
   const items = [
     ['Admin','/admin-center/','⚙','Glavni sigurni ulaz'],
@@ -79,18 +100,22 @@
   };
 
   const ensureShell = () => {
+    if (isLoginDocument()) {
+      removeShellFromLogin();
+      return null;
+    }
     let shell = document.getElementById('gnk-backend-shell');
     if (!shell) shell = createShell();
     const nav = shell.querySelector('.gnk-shell-nav');
     setMarkupIfChanged(nav,links());
-    shell.dataset.adminShellVersion = '8';
+    shell.dataset.adminShellVersion = '9';
     document.body.classList.add('gnk-backend-ui','gnk-admin-unified-v7',`gnk-admin-route-${path.replace(/^\//,'').replace(/\//g,'-')||'admin'}`);
     if (shell.querySelector('.gnk-shell-auth')) document.body.classList.add('gnk-admin-shared-auth');
     return shell;
   };
 
   const ensureLauncher = shell => {
-    if (!['/operator-dashboard','/admin-center'].includes(path)) return;
+    if (!shell || !['/operator-dashboard','/admin-center'].includes(path)) return;
     let launcher = document.getElementById('gnk-admin-module-launcher-v7');
     if (!launcher) {
       launcher = document.createElement('section');
@@ -101,7 +126,7 @@
   };
 
   const ensureLockNotice = shell => {
-    if (path !== '/operator-dashboard') return;
+    if (!shell || path !== '/operator-dashboard') return;
     let notice = document.getElementById('gnk-admin-lock-notice-v7');
     if (!notice) {
       notice = document.createElement('div');
@@ -148,8 +173,13 @@
     if (applying) return;
     applying = true;
     try {
+      if (isLoginDocument()) {
+        removeShellFromLogin();
+        return;
+      }
       removeLegacyEmbed();
       const shell = ensureShell();
+      if (!shell) return;
       ensureLauncher(shell);
       ensureLockNotice(shell);
       bindDashboardTabs();
