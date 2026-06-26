@@ -171,7 +171,7 @@ function decodeXml(value){
 }
 
 function rawTag(block,name){
-  const match=String(block||'').match(new RegExp(`<${name}[^>]*>([\s\S]*?)<\/${name}>`,'i'));
+  const match=String(block||'').match(new RegExp(`<${name}[^>]*>([\\s\\S]*?)</${name}>`,'i'));
   return match?String(match[1]||''):'';
 }
 
@@ -180,7 +180,7 @@ function tag(block,name){
 }
 
 function attr(block,name,attribute){
-  const match=String(block||'').match(new RegExp(`<${name}\b[^>]*\b${attribute}=["']([^"']+)["'][^>]*>`,'i'));
+  const match=String(block||'').match(new RegExp(`<${name}\\b[^>]*\\b${attribute}=["']([^"']+)["'][^>]*>`,'i'));
   return match?decodeXml(match[1]):'';
 }
 
