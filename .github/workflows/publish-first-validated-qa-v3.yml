@@ -1,0 +1,169 @@
+name: Publish first validated QA V3 article
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-first-validated-qa-v3.yml'
+      - '.github/publish-first-validated-qa-v3.trigger'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: gnk-asg-first-validated-publication
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Validate QA V3 publication package
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/article-editorial-qa-v1.js
+          node --check workers/gnk-asg-direct-operator/src/article-editorial-repair-v1.js
+          node --check workers/gnk-asg-direct-operator/src/article-visual-v2.js
+          node --check workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
+          node --check workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js
+          node --check apps/portal/assets/visual-index-central-v8.js
+          grep -q 'GNK_ASG_ARTICLE_EDITORIAL_QA_V3_BUSINESS_BILINGUAL_20260626' workers/gnk-asg-direct-operator/src/article-editorial-qa-v1.js
+          grep -q 'GNK_ASG_ARTICLE_VISUAL_V3_R2_CANONICAL_20260626' workers/gnk-asg-direct-operator/src/article-visual-v2.js
+          grep -q 'GNK_ASG_PUBLICATION_SEO_V4_R2_VISUALS_20260626' workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js
+          grep -q 'visual-index-central-v8.js' apps/portal/assets/visual-index-full-gallery.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Deploy QA V3 package
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Generate first validated publication
+        id: generate
+        env:
+          GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$GNK_ASG_OPERATOR_TOKEN"
+          node <<'JS'
+          const fs=require('node:fs');
+          const token=process.env.GNK_ASG_OPERATOR_TOKEN;
+          const endpoint='https://gnk-asg.hr/operator/auto-editor/run';
+          const QA='GNK_ASG_ARTICLE_EDITORIAL_QA_V3_BUSINESS_BILINGUAL_20260626';
+          const VISUAL='GNK_ASG_ARTICLE_VISUAL_V3_R2_CANONICAL_20260626';
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          const attempts=[];
+          const articleFrom=payload=>payload?.article||payload?.articlePostProcess?.visual?.article||payload?.articlePostProcess?.editorialQa?.article||null;
+          for(let attempt=1;attempt<=5;attempt++){
+            let response,text,payload={};
+            try{
+              response=await fetch(endpoint,{method:'POST',headers:{authorization:`Bearer ${token}`,'content-type':'application/json','cache-control':'no-cache'},body:'{}',signal:AbortSignal.timeout(720000)});
+              text=await response.text();
+              try{payload=JSON.parse(text)}catch{}
+            }catch(error){
+              attempts.push({attempt,http:0,error:String(error)});
+              await sleep(4000);
+              continue;
+            }
+            const article=articleFrom(payload);
+            const qa=article?.editorialQa||payload?.articlePostProcess?.editorialQa?.article?.editorialQa||{};
+            const generated=article?.imageGenerated||{};
+            const valid=Boolean(
+              response.ok&&payload?.ok!==false&&article?.id&&article?.slug&&
+              qa.ok===true&&qa.version===QA&&
+              generated.version===VISUAL&&
+              Number(article.wordCountHr||0)>=500&&Number(article.wordCountEn||0)>=500&&
+              String(article.titleHr||'').trim()&&String(article.titleEn||'').trim()&&
+              String(article.titleHr||'').trim().toLowerCase()!==String(article.titleEn||'').trim().toLowerCase()&&
+              generated.cover?.url&&generated.social?.url&&generated.portrait?.url&&
+              Array.isArray(article.sources)&&article.sources.some(source=>/^https?:\/\//.test(String(source?.url||'')))
+            );
+            attempts.push({attempt,http:response.status,ok:payload?.ok,valid,articleId:article?.id||null,slug:article?.slug||null,titleHr:article?.titleHr||null,titleEn:article?.titleEn||null,qa:qa?.version||null,qaOk:qa?.ok,qaIssues:qa?.issues||payload?.articlePostProcess?.editorialQa?.issues||[],visual:generated?.version||null,error:payload?.error||payload?.articlePostProcess?.error||null});
+            fs.writeFileSync('/tmp/publication-attempts.json',JSON.stringify(attempts,null,2));
+            if(valid){
+              fs.writeFileSync('/tmp/published-article.json',JSON.stringify(article,null,2));
+              fs.appendFileSync(process.env.GITHUB_OUTPUT,`slug=${article.slug}\narticle_id=${article.id}\ncover=${generated.cover.url}\nsocial=${generated.social.url}\nportrait=${generated.portrait.url}\n`);
+              process.exit(0);
+            }
+            await sleep(5000);
+          }
+          console.error(JSON.stringify(attempts,null,2));
+          process.exit(1);
+          JS
+
+      - name: Verify public HR EN article and central Visual Index
+        env:
+          SLUG: ${{ steps.generate.outputs.slug }}
+          ARTICLE_ID: ${{ steps.generate.outputs.article_id }}
+          COVER: ${{ steps.generate.outputs.cover }}
+          SOCIAL: ${{ steps.generate.outputs.social }}
+          PORTRAIT: ${{ steps.generate.outputs.portrait }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'JS'
+          const fs=require('node:fs');
+          const base='https://gnk-asg.hr';
+          const slug=process.env.SLUG,id=process.env.ARTICLE_ID;
+          const assets=[process.env.COVER,process.env.SOCIAL,process.env.PORTRAIT];
+          const oldSlug='dan-uoci-odlucujuce-utakmice-otpao-jedan-hrvatski-reprezentativac';
+          const QA='GNK_ASG_ARTICLE_EDITORIAL_QA_V3_BUSINESS_BILINGUAL_20260626';
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          async function get(path){const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{'cache-control':'no-cache'},signal:AbortSignal.timeout(60000)});return{status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)}}
+          let report;
+          for(let attempt=1;attempt<=18;attempt++){
+            const [publications,hrList,enList,hr,en,gallery,visual,...assetResponses]=await Promise.all([
+              get('/data/publications.json'),get('/objave/'),get('/publications/'),get(`/objave/${slug}/`),get(`/publications/${slug}/`),get('/data/visual_gallery.json'),get('/visual-index/?lang=en'),...assets.map(asset=>get(asset))
+            ]);
+            let publicationData={},galleryData={};try{publicationData=JSON.parse(publications.text)}catch{}try{galleryData=JSON.parse(gallery.text)}catch{}
+            const items=publicationData.items||[],current=items.find(item=>item.id===id||item.slug===slug),failures=[];
+            if(publications.status!==200||publicationData.version!=='GNK_ASG_PUBLICATION_SEO_V4_R2_VISUALS_20260626')failures.push(`publications=${publications.status}:${publicationData.version||'missing'}`);
+            if(!current)failures.push('new_article_missing_from_publications');
+            if(current&&current.editorialQa?.version!==QA)failures.push(`qa=${current.editorialQa?.version||'missing'}`);
+            if(items.some(item=>item.slug===oldSlug))failures.push('old_non_business_article_still_public');
+            for(const [name,response] of Object.entries({hrList,enList,hr,en,gallery,visual}))if(response.status!==200)failures.push(`${name}=${response.status}`);
+            if(!hrList.text.includes(`/objave/${slug}/`))failures.push('hr_list_missing_article');
+            if(!enList.text.includes(`/publications/${slug}/`))failures.push('en_list_missing_article');
+            for(const [name,response] of Object.entries({hr,en})){
+              if(response.headers['x-gnk-asg-publication-seo']!=='GNK_ASG_PUBLICATION_SEO_V4_R2_VISUALS_20260626')failures.push(`${name}_seo_header`);
+              for(const marker of ['application/ld+json','twitter:card','og:image','hreflang','Visual Index'])if(!response.text.includes(marker))failures.push(`${name}_${marker}`);
+            }
+            assetResponses.forEach((response,index)=>{if(response.status!==200)failures.push(`asset_${index}=${response.status}`)});
+            const galleryItems=galleryData.items||[];
+            if(!galleryItems.some(item=>String(item.article_id||item.articleId||item.id).includes(id)))failures.push('visual_gallery_missing_article');
+            if(!visual.text.includes('visual-index-full-gallery.js'))failures.push('visual_index_loader_missing');
+            report={checkedAt:new Date().toISOString(),attempt,failures,article:{id,slug,cover:assets[0],social:assets[1],portrait:assets[2]},publicationsCount:items.length,galleryCount:galleryItems.length,codes:{publications:publications.status,hrList:hrList.status,enList:enList.status,hr:hr.status,en:en.status,gallery:gallery.status,visual:visual.status,assets:assetResponses.map(response=>response.status)}};
+            fs.writeFileSync('/tmp/publication-verification.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report));
+            if(!failures.length)process.exit(0);
+            await sleep(30000);
+          }
+          throw new Error(JSON.stringify(report));
+          JS
+
+      - name: Report Phase 2 result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          attempts=$(cat /tmp/publication-attempts.json 2>/dev/null || printf '[]')
+          article=$(cat /tmp/published-article.json 2>/dev/null || printf '{"error":"no_valid_article"}')
+          verification=$(cat /tmp/publication-verification.json 2>/dev/null || printf '{"error":"verification_not_reached"}')
+          body=$(printf 'First QA V3 publication **%s** · commit `%s` · %s\n\n### Verification\n```json\n%s\n```\n\n### Attempts\n```json\n%s\n```\n\n### Article\n```json\n%s\n```' "$JOB_STATUS" "$RUN_SHA" "$RUN_URL" "$verification" "$attempts" "$article")
+          gh issue comment 125 --body "$body"
