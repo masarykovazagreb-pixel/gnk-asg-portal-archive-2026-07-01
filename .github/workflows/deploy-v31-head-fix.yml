@@ -24,31 +24,49 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Verify current package
+
+      - name: Check V31 public shell
         run: |
-          set -euxo pipefail
           node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q 'main = "src/index-admin-hub-v23-aktual.js"' workers/gnk-asg-direct-operator/wrangler.toml
+
+      - name: Check central Visual Index
+        run: |
           node --check apps/portal/assets/visual-index-central-v7.js
+          node --check apps/portal/assets/visual-index-full-gallery.js
+          grep -q 'visual-index-central-v7.js' apps/portal/assets/visual-index-full-gallery.js
+
+      - name: Check publication SEO and R2
+        run: |
           node --check workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js
           node --check workers/gnk-asg-direct-operator/src/index-public-r2-v1.js
+          grep -q 'GNK_ASG_PUBLICATION_SEO_V3_20260626' workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js
+
+      - name: Check editorial automation
+        run: |
           node --check workers/gnk-asg-direct-operator/src/index-article-automation-v2.js
           node --check workers/gnk-asg-direct-operator/src/article-visual-v2.js
           node --check workers/gnk-asg-direct-operator/src/article-editorial-qa-v1.js
-          node --check workers/gnk-asg-direct-operator/src/news-curation-v10.js
-          grep -q 'main = "src/index-admin-hub-v23-aktual.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'GNK_ASG_ARTICLE_EDITORIAL_QA_V2_20260626' workers/gnk-asg-direct-operator/src/article-editorial-qa-v1.js
-          grep -q 'GNK_ASG_PUBLICATION_SEO_V3_20260626' workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js
+
+      - name: Check verified news lifecycle
+        run: |
+          node --check workers/gnk-asg-direct-operator/src/news-curation-v10.js
           grep -q 'ARCHIVE_PRUNE_AT=900' workers/gnk-asg-direct-operator/src/news-curation-v10.js
           grep -q 'ARCHIVE_RETAIN_AFTER_PRUNE=450' workers/gnk-asg-direct-operator/src/news-curation-v10.js
           grep -q 'NEWS_MINIMUM=15' workers/gnk-asg-direct-operator/src/news-curation-v10.js
-          cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Wrangler package dry run
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
       - name: Deploy current canonical Worker
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
       - name: Run news refresh and first publication
         id: publish
         env:
@@ -56,7 +74,12 @@ jobs:
         run: |
           set -euo pipefail
           test -n "$GNK_ASG_OPERATOR_TOKEN"
-          curl -fsS --max-time 720 -H "authorization: Bearer $GNK_ASG_OPERATOR_TOKEN" -H 'content-type: application/json' -d '{}' https://gnk-asg.hr/operator/news-automation/run -o /tmp/result.json
+          curl -fsS --max-time 720 \
+            -H "authorization: Bearer $GNK_ASG_OPERATOR_TOKEN" \
+            -H 'content-type: application/json' \
+            -d '{}' \
+            https://gnk-asg.hr/operator/news-automation/run \
+            -o /tmp/result.json
           node <<'JS'
           const fs=require('node:fs');
           const p=JSON.parse(fs.readFileSync('/tmp/result.json','utf8'));
@@ -64,13 +87,14 @@ jobs:
           const post=e.articlePostProcess||p.articlePostProcess||{};
           const a=p.article||post.visual?.article||post.editorialQa?.article||e.article;
           const count=Number(p.news?.count||p.news?.verifiedCount||0);
-          if(p.ok===false||!p.news?.ok||count<15)throw new Error('news_or_automation_failed');
-          if(!a?.slug||!a?.image)throw new Error('article_missing');
+          if(p.ok===false||!p.news?.ok||count<15)throw new Error(`news_or_automation_failed:${JSON.stringify(p).slice(0,1800)}`);
+          if(!a?.slug||!a?.image)throw new Error(`article_missing:${JSON.stringify(p).slice(0,1800)}`);
           if(Number(a.wordCountHr||0)<500||Number(a.wordCountEn||0)<500)throw new Error('word_count_invalid');
-          if(a.editorialQa?.ok!==true||a.editorialQa?.version!=='GNK_ASG_ARTICLE_EDITORIAL_QA_V2_20260626')throw new Error('editorial_qa_v2_missing');
+          if(a.editorialQa?.ok!==true||a.editorialQa?.version!=='GNK_ASG_ARTICLE_EDITORIAL_QA_V2_20260626')throw new Error(`editorial_qa_v2_missing:${JSON.stringify(a.editorialQa)}`);
           fs.writeFileSync('/tmp/article.json',JSON.stringify(a,null,2));
           fs.appendFileSync(process.env.GITHUB_OUTPUT,`slug=${a.slug}\narticle_id=${a.id}\nimage=${a.image}\n`);
           JS
+
       - name: Verify public result
         env:
           SLUG: ${{ steps.publish.outputs.slug }}
@@ -85,7 +109,9 @@ jobs:
           async function get(path){const r=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});return{status:r.status,text:await r.text(),headers:Object.fromEntries(r.headers)}}
           let report;
           for(let attempt=1;attempt<=12;attempt++){
-            const [news,status,hrList,enList,hr,en,gallery,visual,img]=await Promise.all([get('/data/news.json'),get('/data/news-automation-status.json'),get('/objave/'),get('/publications/'),get(`/objave/${slug}/`),get(`/publications/${slug}/`),get('/data/visual_gallery.json'),get('/visual-index/?lang=en'),get(image.startsWith('http')?image.replace(base,''):image)]);
+            const [news,status,hrList,enList,hr,en,gallery,visual,img]=await Promise.all([
+              get('/data/news.json'),get('/data/news-automation-status.json'),get('/objave/'),get('/publications/'),get(`/objave/${slug}/`),get(`/publications/${slug}/`),get('/data/visual_gallery.json'),get('/visual-index/?lang=en'),get(image.startsWith('http')?image.replace(base,''):image)
+            ]);
             let n={},s={},g={};try{n=JSON.parse(news.text)}catch{}try{s=JSON.parse(status.text)}catch{}try{g=JSON.parse(gallery.text)}catch{}
             const items=Array.isArray(n)?n:(n.items||[]),galleryItems=g.items||[],failures=[];
             if(news.status!==200||items.length<15)failures.push(`news=${news.status}:${items.length}`);
@@ -107,6 +133,7 @@ jobs:
           }
           throw new Error(JSON.stringify(report));
           JS
+
       - name: Report result
         if: always()
         env:
