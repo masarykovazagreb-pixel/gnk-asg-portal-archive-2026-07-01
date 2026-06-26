@@ -1,0 +1,128 @@
+name: Final V27 production acceptance
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  accept:
+    if: github.event.issue.number == 98 && github.event.comment.body == '/run-final-v27-acceptance-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Wait for V27 deployment and editorial scheduler
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/gnk-final-v27
+          success=0
+          for attempt in $(seq 1 12); do
+            echo "Acceptance runtime attempt $attempt"
+            if node scripts/check-runtime-contract.mjs /tmp/gnk-final-v27/runtime.json; then
+              success=1
+              break
+            fi
+            sleep 45
+          done
+          test "$success" = 1
+
+      - name: Verify unauthenticated Admin contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://gnk-asg.hr'; cb=$(date +%s)
+          curl -sS -D /tmp/gnk-final-v27/admin.headers -H 'Cache-Control: no-cache' "$base/admin-center/?cb=$cb" -o /tmp/gnk-final-v27/admin.html
+          curl -sS -D /tmp/gnk-final-v27/legacy.headers --max-redirs 0 "$base/operator-dashboard/?cb=$cb" -o /tmp/gnk-final-v27/legacy.out || true
+          curl -sS -D /tmp/gnk-final-v27/private.headers "$base/data/media-outreach-contacts-v1.json?cb=$cb" -o /tmp/gnk-final-v27/private.out
+          curl -sS -D /tmp/gnk-final-v27/delivery.headers "$base/api/media-command-center/delivery-status?cb=$cb" -o /tmp/gnk-final-v27/delivery.out
+          node <<'JS'
+          const fs=require('node:fs');
+          const read=path=>fs.readFileSync(path,'utf8');
+          const first=text=>String(text).split(/\r?\n/)[0]||'';
+          const header=(text,name)=>((text.match(new RegExp(`^${name}:\\s*(.+)$`,'im'))||[])[1]||'').trim();
+          const adminH=read('/tmp/gnk-final-v27/admin.headers');
+          const admin=read('/tmp/gnk-final-v27/admin.html');
+          const legacyH=read('/tmp/gnk-final-v27/legacy.headers');
+          const privateH=read('/tmp/gnk-final-v27/private.headers');
+          const deliveryH=read('/tmp/gnk-final-v27/delivery.headers');
+          const failures=[];
+          if(!/\s401\s/.test(first(adminH)))failures.push(`admin=${first(adminH)}`);
+          if(!admin.includes('data-gnk-auth-login="1"'))failures.push('login_marker_missing');
+          if(!/<input[^>]+name=["']token["']/i.test(admin))failures.push('token_form_missing');
+          if(/<header[^>]+id=["']gnk-backend-shell["']/i.test(admin))failures.push('admin_shell_visible_without_session');
+          if(!/\s303\s/.test(first(legacyH)))failures.push(`legacy=${first(legacyH)}`);
+          if(!header(legacyH,'location').includes('/admin-center/?module=operator'))failures.push(`legacyLocation=${header(legacyH,'location')}`);
+          if(!/\s404\s/.test(first(privateH)))failures.push(`privateContacts=${first(privateH)}`);
+          if(!/\s(401|403)\s/.test(first(deliveryH)))failures.push(`deliveryApi=${first(deliveryH)}`);
+          const report={ok:!failures.length,failures,adminStatus:first(adminH),authIsolation:header(adminH,'x-gnk-asg-auth-isolation'),legacyStatus:first(legacyH),legacyLocation:header(legacyH,'location'),privateContacts:first(privateH),deliveryApi:first(deliveryH)};
+          fs.writeFileSync('/tmp/gnk-final-v27/security.json',JSON.stringify(report,null,2));
+          if(failures.length)process.exit(1);
+          JS
+
+      - name: Install Chromium
+        shell: bash
+        run: |
+          npm init -y >/dev/null
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Verify rendered homepage
+        shell: bash
+        run: node scripts/check-market-browser.mjs /tmp/gnk-final-v27/browser.json /tmp/gnk-final-v27/network-market.png
+
+      - name: Build acceptance summary
+        if: always()
+        shell: bash
+        run: |
+          node <<'JS'
+          const fs=require('node:fs');
+          const read=path=>{try{return JSON.parse(fs.readFileSync(path,'utf8'))}catch{return null}};
+          const runtime=read('/tmp/gnk-final-v27/runtime.json');
+          const security=read('/tmp/gnk-final-v27/security.json');
+          const browser=read('/tmp/gnk-final-v27/browser.json');
+          const failures=[...(runtime?.failures||[]),...(security?.failures||[]),...(browser?.failures||[])];
+          const report={ok:runtime?.ok===true&&security?.ok===true&&browser?.ok===true&&failures.length===0,checkedAt:new Date().toISOString(),failures,runtime,security,browser};
+          fs.writeFileSync('/tmp/gnk-final-v27/acceptance.json',JSON.stringify(report,null,2));
+          console.log(JSON.stringify(report,null,2));
+          JS
+
+      - name: Upload acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-final-v27-acceptance
+          path: /tmp/gnk-final-v27
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Report acceptance
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          compact=$(node - <<'JS'
+          const fs=require('node:fs');
+          try{
+            const report=JSON.parse(fs.readFileSync('/tmp/gnk-final-v27/acceptance.json','utf8'));
+            process.stdout.write(JSON.stringify({
+              ok:report.ok,checkedAt:report.checkedAt,failures:report.failures,
+              deployment:report.runtime?.deployment,newsStatus:report.runtime?.newsStatus,
+              article:report.runtime?.article,security:report.security,
+              rendered:report.browser?.rendered,pageErrors:report.browser?.pageErrors,requestFailures:report.browser?.requestFailures
+            },null,2));
+          }catch(error){process.stdout.write(JSON.stringify({error:String(error)},null,2));}
+          JS
+          )
+          gh issue comment 98 --body "Final V27 acceptance **${JOB_STATUS}** · ${RUN_URL}\n\nEvidence: \`gnk-final-v27-acceptance\` artifact.\n\n\`\`\`json\n${compact}\n\`\`\`"
