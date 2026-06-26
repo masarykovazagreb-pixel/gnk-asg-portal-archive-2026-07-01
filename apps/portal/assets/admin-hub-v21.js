@@ -22,13 +22,20 @@
 
   function embedded(item){const url=new URL(item.route,location.origin);url.searchParams.set('embedded','1');url.searchParams.set('hubmodule',item.id);return url.pathname+url.search;}
   function activateFrameTab(){
-    const item=byId(current);if(!item.tab)return;
+    const item=byId(current);
+    if(!item.tab)return;
     try{
-      const doc=frame.contentDocument;if(!doc)return;
+      const doc=frame.contentDocument;
+      if(!doc)return;
       const buttons=[...doc.querySelectorAll('button')];
-      const target=buttons.find(button=>(button.getAttribute('onclick')||'').includes(`tab('${item.tab}'`))||((button.textContent||'').toLowerCase().includes(item.tab==='mail'?'mail centar':'status')));
+      const expectedLabel=item.tab==='mail'?'mail centar':'status';
+      const target=buttons.find(button=>{
+        const onclick=button.getAttribute('onclick')||'';
+        const label=(button.textContent||'').toLowerCase();
+        return onclick.includes(`tab('${item.tab}'`)||label.includes(expectedLabel);
+      });
       target?.click();
-    }catch(_){}
+    }catch(_){ }
   }
   function select(id,push=true){
     const item=byId(id);current=item.id;
