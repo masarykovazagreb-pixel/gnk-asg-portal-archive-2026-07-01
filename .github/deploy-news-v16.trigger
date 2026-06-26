@@ -7,4 +7,4 @@ archive_retain=450
 archive_hard_limit=1000
 fallback_images=forbidden
 schedule=09:00,16:00,21:00 Europe/Zagreb
-nonce=2
+nonce=3
