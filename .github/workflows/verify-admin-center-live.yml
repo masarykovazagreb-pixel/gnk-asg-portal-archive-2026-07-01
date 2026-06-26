@@ -29,7 +29,7 @@ jobs:
           for attempt in $(seq 1 24); do
             js=$(curl -fsSL -H 'Cache-Control: no-cache' "https://gnk-asg.hr/assets/admin-center-v1.js?cb=${GITHUB_RUN_ID}-${attempt}" || true)
             css=$(curl -fsSL -H 'Cache-Control: no-cache' "https://gnk-asg.hr/assets/admin-center-v1.css?cb=${GITHUB_RUN_ID}-${attempt}" || true)
-            if printf '%s' "$js" | grep -q "route:'/mail-studio/'" && printf '%s' "$css" | grep -q '.ac-app'; then
+            if [[ "$js" == *"route:'/mail-studio/'"* && "$css" == *'.ac-app'* ]]; then
               ok=1
               break
             fi
