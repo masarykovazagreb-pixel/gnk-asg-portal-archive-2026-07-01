@@ -11,6 +11,30 @@
     return item;
   };
 
+  const loadEncodedImage = async (image,placeholder,source,mime) => {
+    try {
+      const response=await fetch(source,{cache:'force-cache'});
+      if(!response.ok)throw new Error(`HTTP_${response.status}`);
+      const encoded=(await response.text()).replace(/\s+/g,'');
+      if(!encoded || !/^[A-Za-z0-9+/=]+$/.test(encoded))throw new Error('INVALID_BASE64');
+      const binary=atob(encoded);
+      const bytes=new Uint8Array(binary.length);
+      for(let index=0;index<binary.length;index+=1)bytes[index]=binary.charCodeAt(index);
+      const objectUrl=URL.createObjectURL(new Blob([bytes],{type:mime}));
+      image.addEventListener('load',()=>{
+        placeholder.remove();
+        URL.revokeObjectURL(objectUrl);
+      },{once:true});
+      image.addEventListener('error',()=>{
+        image.remove();
+        URL.revokeObjectURL(objectUrl);
+      },{once:true});
+      image.src=objectUrl;
+    } catch (_) {
+      image.remove();
+    }
+  };
+
   const mountCodeShowcase = () => {
     const main=document.querySelector('main#main,main');
     if(!main || document.querySelector('.gnk-code-slot'))return;
@@ -18,7 +42,7 @@
 
     const css=node('link');
     css.rel='stylesheet';
-    css.href='/assets/the-code-index-slot.css?v=20260627-v3';
+    css.href='/assets/the-code-index-slot.css?v=20260627-v4';
     document.head.appendChild(css);
 
     const section=node('section','section gnk-code-slot');
@@ -30,28 +54,34 @@
     visual.setAttribute('aria-label',english?'Rotating campaign visuals':'Izmjena kampanjskih vizuala');
     const slides=node('div','gnk-code-slot__slides');
     const visuals=[
-      {src:'/assets/the-code-visual-01.jpg',label:'GNK ASG · VISUAL 01',text:english?'First campaign visual.':'Prvi kampanjski vizual.'},
-      {src:'/assets/the-code-visual-02.jpg',label:'GNK ASG · VISUAL 02',text:english?'Second campaign visual.':'Drugi kampanjski vizual.'}
+      {
+        source:'/assets/the-code-visual-01.b64',
+        mime:'image/jpeg',
+        alt:english?'GNK ASG global network and advanced sports and governance':'GNK ASG globalna mreža, napredni sport i upravljanje'
+      },
+      {
+        source:'/assets/the-code-visual-02.b64',
+        mime:'image/webp',
+        alt:english?'GNK DINAMO Ltd. Group New York activation on October 7, 2026':'GNK DINAMO Ltd. Group aktivacija u New Yorku 7. listopada 2026.'
+      }
     ];
+
     visuals.forEach((item,index)=>{
       const figure=node('figure','gnk-code-slot__slide');
       const placeholder=node('div','gnk-code-slot__placeholder');
-      placeholder.appendChild(node('span','',english?'Visual reserved — upload pending.':'Mjesto za vizual je rezervirano — čeka se učitavanje.'));
+      placeholder.appendChild(node('span','',english?'Loading campaign visual…':'Učitavanje kampanjskog vizuala…'));
       figure.appendChild(placeholder);
+
       const image=node('img');
-      image.src=item.src;
-      image.alt=item.text;
+      image.alt=item.alt;
       image.loading=index?'lazy':'eager';
       image.decoding='async';
-      image.addEventListener('error',()=>image.remove(),{once:true});
       figure.appendChild(image);
       figure.appendChild(node('div','gnk-code-slot__shade'));
-      const caption=node('figcaption','gnk-code-slot__caption');
-      caption.appendChild(node('small','',item.label));
-      caption.appendChild(node('strong','',item.text));
-      figure.appendChild(caption);
       slides.appendChild(figure);
+      loadEncodedImage(image,placeholder,item.source,item.mime);
     });
+
     visual.appendChild(slides);
     grid.appendChild(visual);
 
