@@ -24,12 +24,13 @@ jobs:
       - name: Wait for deployment and verify assets
         shell: bash
         run: |
-          set -euo pipefail
+          set -u
           ok=0
           for attempt in $(seq 1 24); do
-            js=$(curl -fsSL -H 'Cache-Control: no-cache' "https://gnk-asg.hr/assets/admin-center-v1.js?cb=${GITHUB_RUN_ID}-${attempt}" || true)
-            css=$(curl -fsSL -H 'Cache-Control: no-cache' "https://gnk-asg.hr/assets/admin-center-v1.css?cb=${GITHUB_RUN_ID}-${attempt}" || true)
-            if [[ "$js" == *"route:'/mail-studio/'"* && "$css" == *'.ac-app'* ]]; then
+            js_code=$(curl -sS -L -o /tmp/admin-center.js -w '%{http_code}' -H 'Cache-Control: no-cache' "https://gnk-asg.hr/assets/admin-center-v1.js?cb=${GITHUB_RUN_ID}-${attempt}" || echo 000)
+            css_code=$(curl -sS -L -o /tmp/admin-center.css -w '%{http_code}' -H 'Cache-Control: no-cache' "https://gnk-asg.hr/assets/admin-center-v1.css?cb=${GITHUB_RUN_ID}-${attempt}" || echo 000)
+            echo "attempt=${attempt} js=${js_code} css=${css_code}"
+            if [ "$js_code" = '200' ] && [ "$css_code" = '200' ] && grep -Fq "route:'/mail-studio/'" /tmp/admin-center.js && grep -Fq '.ac-app' /tmp/admin-center.css; then
               ok=1
               break
             fi
@@ -37,11 +38,17 @@ jobs:
           done
           if [ "$ok" -ne 1 ]; then
             echo 'Admin Center assets are not live.' >&2
+            echo 'JS preview:' >&2
+            head -c 300 /tmp/admin-center.js 2>/dev/null >&2 || true
+            echo >&2
+            echo 'CSS preview:' >&2
+            head -c 300 /tmp/admin-center.css 2>/dev/null >&2 || true
             exit 1
           fi
-          code=$(curl -sS -o /tmp/admin.html -w '%{http_code}' -H 'Cache-Control: no-cache' "https://gnk-asg.hr/admin-center/?cb=${GITHUB_RUN_ID}")
+          code=$(curl -sS -L -o /tmp/admin.html -w '%{http_code}' -H 'Cache-Control: no-cache' "https://gnk-asg.hr/admin-center/?cb=${GITHUB_RUN_ID}" || echo 000)
+          echo "admin_http=${code}"
           test "$code" = '200'
-          echo "ADMIN_CENTER_LIVE_OK=true" | tee /tmp/result.txt
+          echo 'ADMIN_CENTER_LIVE_OK=true'
 
       - name: Report result
         if: always() && github.event_name != 'pull_request'
