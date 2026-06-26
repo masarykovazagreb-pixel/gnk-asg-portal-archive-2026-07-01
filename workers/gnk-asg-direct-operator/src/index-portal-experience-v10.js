@@ -1,5 +1,5 @@
 import core from './index-portal-repair-v9.js';
-import {VERSION,NEWS_MINIMUM,NEWS_HOURS_ZAGREB,FEEDS,refreshCuratedNews} from './news-curation-v10.js';
+import {VERSION,NEWS_MINIMUM,NEWS_HOURS_ZAGREB,NEWS_SCHEDULE,FEEDS,refreshCuratedNews} from './news-curation-v10.js';
 import {getIndexConfig,saveIndexConfig} from './index-config-v10.js';
 import {isPrivatePath,patchPublicHtml,patchAdminHtml,transformHtml} from './public-shell-v11.js';
 
@@ -12,10 +12,11 @@ function tokens(env){return [env.OPERATOR_TOKEN,env.GNK_ASG_OPERATOR_TOKEN,env.A
 function authorized(request,env){const bearer=request.headers.get('authorization')||'',token=request.headers.get('x-operator-token')||request.headers.get('x-admin-token')||request.headers.get('x-gnk-asg-token')||bearer.replace(/^Bearer\s+/i,'');return Boolean(token&&tokens(env).includes(String(token).trim()))}
 function context(env){return{read:(key,fallback)=>read(env,key,fallback),write:(key,value,options)=>write(env,key,value,options),authorized:request=>authorized(request,env)}}
 function zagreb(date=new Date()){const p=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));return{year:+p.year,month:+p.month,day:+p.day,hour:+p.hour,minute:+p.minute,slotKey:`${p.year}-${p.month}-${p.day}-${p.hour}`}}
-async function claim(env,type,slot){const s=store(env);if(!s)return true;const key=`automation:v11:slot:${type}:${slot}`;if(await s.get(key))return false;await s.put(key,now(),{expirationTtl:172800});return true}
+async function claim(env,type,slot){const s=store(env);if(!s)return true;const key=`automation:v16:slot:${type}:${slot}`;if(await s.get(key))return false;await s.put(key,now(),{expirationTtl:172800});return true}
 async function runEditor(env,ctx){const token=tokens(env)[0]||'';if(!token)return{ok:false,error:'operator_token_missing',finishedAt:now()};const response=await core.fetch(new Request('https://gnk-asg.hr/operator/auto-editor/run',{method:'POST',headers:{authorization:`Bearer ${token}`,'content-type':'application/json'},body:'{}'}),env,ctx);try{return{...(await response.json()),httpStatus:response.status}}catch{return{ok:false,error:`HTTP_${response.status}`,httpStatus:response.status}}}
-async function automationStatus(env){return{ok:true,version:VERSION,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00'],autoEditorSchedule:'every 2 hours',minimumNewsLinks:NEWS_MINIMUM,configuredNewsSources:FEEDS.length,lastNewsRefresh:await read(env,'automation:news-refresh:last',null),lastAutoEditor:await read(env,'auto-editor:last',null),lastScheduledRun:await read(env,'automation:v11:last',null)}}
+async function automationStatus(env){return{ok:true,version:VERSION,timeZone:'Europe/Zagreb',newsSchedule:NEWS_SCHEDULE,newsRefreshesPerDay:3,autoEditorSchedule:'every 2 hours',minimumNewsLinks:NEWS_MINIMUM,configuredNewsSources:FEEDS.length,lastNewsRefresh:await read(env,'automation:news-refresh:last',null),lastAutoEditor:await read(env,'auto-editor:last',null),lastScheduledRun:await read(env,'automation:v11:last',null)}}
 async function refresh(env){return refreshCuratedNews(context(env))}
+function refreshBootstrapNeeded(last){const stamp=Date.parse(last?.updatedAt||'');return last?.version!==VERSION||last?.ok!==true||!Number.isFinite(stamp)||Date.now()-stamp>9*60*60*1000}
 
 async function handle(request,env,ctx){
   const url=new URL(request.url),path=url.pathname.replace(/\/+$/,'')||'/';
@@ -51,9 +52,10 @@ async function handle(request,env,ctx){
 }
 
 async function scheduledRun(event,env,ctx){
-  const local=zagreb(),result={ok:true,version:VERSION,cron:event?.cron||'',timeZone:'Europe/Zagreb',local,startedAt:now(),newsRefresh:null,autoEditor:null,skipped:[]};
-  if(NEWS_HOURS_ZAGREB.has(local.hour)){
-    if(await claim(env,'news',local.slotKey))result.newsRefresh=await refresh(env);else result.skipped.push(`news:${local.slotKey}`);
+  const local=zagreb(),lastNewsRefresh=await read(env,'automation:news-refresh:last',null),bootstrap=refreshBootstrapNeeded(lastNewsRefresh),result={ok:true,version:VERSION,cron:event?.cron||'',timeZone:'Europe/Zagreb',local,startedAt:now(),newsRefresh:null,newsReason:null,autoEditor:null,skipped:[]};
+  if(NEWS_HOURS_ZAGREB.has(local.hour)||bootstrap){
+    const reason=bootstrap?'bootstrap-or-stale':'scheduled';
+    if(await claim(env,`news-${reason}`,local.slotKey)){result.newsReason=reason;result.newsRefresh=await refresh(env)}else result.skipped.push(`news:${reason}:${local.slotKey}`);
   }
   if(local.hour%2===0){
     if(await claim(env,'editor',local.slotKey))result.autoEditor=await runEditor(env,ctx);else result.skipped.push(`editor:${local.slotKey}`);
