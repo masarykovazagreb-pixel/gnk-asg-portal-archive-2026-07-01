@@ -18,9 +18,9 @@ let wordCountEn=0;
 fs.mkdirSync(path.dirname(output),{recursive:true});
 
 const get=async endpoint=>{
-  const response=await fetch(`${base}${endpoint}${endpoint.includes('?')?'&':'?'}cb=${cb}`,{headers:{'cache-control':'no-cache','user-agent':'GNK-ASG-Runtime-Contract/1.2'}});
+  const response=await fetch(`${base}${endpoint}${endpoint.includes('?')?'&':'?'}cb=${cb}`,{headers:{'cache-control':'no-cache','user-agent':'GNK-ASG-Runtime-Contract/1.3'}});
   const text=await response.text();
-  responses[endpoint]={status:response.status,contentType:response.headers.get('content-type')||'',bytes:text.length};
+  responses[endpoint]={status:response.status,contentType:response.headers.get('content-type')||'',bytes:text.length,headers:Object.fromEntries(response.headers)};
   return{response,text};
 };
 const parseJson=(name,result)=>{
@@ -52,6 +52,8 @@ try{
   raw=rootResult.text;
 
   if(deployment.adminHub!=='GNK_ASG_ADMIN_HUB_V21_20260626_R11_RUNTIME_CONTRACTS')failures.push(`adminHub=${deployment.adminHub}`);
+  if(deployment.publicVisual!=='GNK_ASG_PUBLIC_VISUAL_V30_CLEAN_POLISH_20260626')failures.push(`publicVisual=${deployment.publicVisual}`);
+  if(deployment.indexStyle!=='INDEX_STABLE_POLISH_V30')failures.push(`indexStyle=${deployment.indexStyle}`);
   if(deployment.marketChart!=='index-live-market-chart-v4.js')failures.push(`marketChart=${deployment.marketChart}`);
   if(deployment.marketChartCompatibility!=='GNK_ASG_MARKET_CHART_V3_BLOCK_V1_20260626')failures.push(`marketCompat=${deployment.marketChartCompatibility}`);
   if(deployment.newsRuntime!=='GNK_ASG_NEWS_RUNTIME_CONTRACT_V1_20260626')failures.push(`newsRuntime=${deployment.newsRuntime}`);
@@ -60,6 +62,8 @@ try{
   if(deployment.newsArchivePruneAt!==1000)failures.push(`deploymentArchivePruneAt=${deployment.newsArchivePruneAt}`);
   if(deployment.newsArchiveDeleteCount!==500)failures.push(`deploymentArchiveDeleteCount=${deployment.newsArchiveDeleteCount}`);
   if(deployment.articleSchedule!=='every 2 hours')failures.push(`articleSchedule=${deployment.articleSchedule}`);
+  if(deployment.articleAutomationRuntime!=='GNK_ASG_ARTICLE_AUTOMATION_V2_20260626_R4_EDITORIAL_QA')failures.push(`articleRuntime=${deployment.articleAutomationRuntime}`);
+  if(deployment.editorialQa!=='GNK_ASG_ARTICLE_EDITORIAL_QA_V1_20260626')failures.push(`editorialQa=${deployment.editorialQa}`);
   if(deployment.testSending!=='LOCKED'||deployment.productionSending!=='LOCKED')failures.push('mail_sending_not_locked');
 
   if(JSON.stringify(news.newsSchedule)!==JSON.stringify(expectedSchedule))failures.push(`newsSchedule=${JSON.stringify(news.newsSchedule)}`);
@@ -92,9 +96,12 @@ try{
   if(/<script\b[^>]*index-live-market-chart-v3\.js/i.test(raw))failures.push('raw_v3_script_present');
   if(!raw.includes('gnk-market-v3-final-guard'))failures.push('market_guard_missing');
   if(!raw.includes('index-live-market-chart-v4.js'))failures.push('raw_v4_script_missing');
-  if(!raw.includes('class="gnk-index-title"'))failures.push('semantic_h1_missing');
-  if(!raw.includes('/assets/index-polish-v1.css'))failures.push('index_polish_missing');
+  if(!raw.includes('index-redesign-production.css?v=20260626-stable-v30'))failures.push('stable_v30_css_missing');
+  if(raw.includes('/assets/index-polish-v1.css'))failures.push('legacy_index_polish_present');
+  if(raw.includes('class="gnk-index-title"'))failures.push('legacy_hero_injector_present');
   if(!raw.includes('/assets/index-content-resilience-v1.js'))failures.push('content_resilience_missing');
+  if(responses['/']?.headers?.['x-gnk-asg-public-visual']!=='GNK_ASG_PUBLIC_VISUAL_V30_CLEAN_POLISH_20260626')failures.push(`publicVisualHeader=${responses['/']?.headers?.['x-gnk-asg-public-visual']}`);
+  if(responses['/']?.headers?.['x-gnk-asg-index-style']!=='INDEX_STABLE_POLISH_V30')failures.push(`indexStyleHeader=${responses['/']?.headers?.['x-gnk-asg-index-style']}`);
   for(const marker of ['Učitavanje najnovijih vijesti','Učitavanje mreže','Učitavanje objava','class="market-value">Učitavanje']){
     if(raw.includes(marker))failures.push(`raw_placeholder=${marker}`);
   }
@@ -107,7 +114,7 @@ const report={
   checkedAt:new Date().toISOString(),
   failures,
   responses,
-  deployment:{adminHub:deployment.adminHub,marketChart:deployment.marketChart,marketChartCompatibility:deployment.marketChartCompatibility,newsRuntime:deployment.newsRuntime,newsSchedule:deployment.newsSchedule,newsActiveLimit:deployment.newsActiveLimit,newsArchivePruneAt:deployment.newsArchivePruneAt,newsArchiveDeleteCount:deployment.newsArchiveDeleteCount,articleSchedule:deployment.articleSchedule,testSending:deployment.testSending,productionSending:deployment.productionSending},
+  deployment:{adminHub:deployment.adminHub,publicVisual:deployment.publicVisual,indexStyle:deployment.indexStyle,marketChart:deployment.marketChart,marketChartCompatibility:deployment.marketChartCompatibility,newsRuntime:deployment.newsRuntime,newsSchedule:deployment.newsSchedule,newsActiveLimit:deployment.newsActiveLimit,newsArchivePruneAt:deployment.newsArchivePruneAt,newsArchiveDeleteCount:deployment.newsArchiveDeleteCount,articleSchedule:deployment.articleSchedule,articleAutomationRuntime:deployment.articleAutomationRuntime,editorialQa:deployment.editorialQa,testSending:deployment.testSending,productionSending:deployment.productionSending},
   newsStatus:{newsSchedule:news.newsSchedule,newsRefreshesPerDay:news.newsRefreshesPerDay,configuredNewsSources:news.configuredNewsSources,activeNewsLimit:news.activeNewsLimit,archiveCount:news.archiveCount,archivePruneAt:news.archivePruneAt,archiveDeleteCount:news.archiveDeleteCount,autoEditorSchedule:news.autoEditorSchedule,lastNewsRefresh:news.lastNewsRefresh,lastAutoEditor:news.lastAutoEditor},
   article:article?{id:article.id,titleHr:article.titleHr,titleEn:article.titleEn,status:article.status,approvedForPublic:article.approvedForPublic,wordCountHr,wordCountEn,image:article.image,imageGenerated:article.imageGenerated,editorialQa:article.editorialQa,seo:article.seo,publishedAt:article.publishedAt}:null,
   root:{bytes:raw.length}
