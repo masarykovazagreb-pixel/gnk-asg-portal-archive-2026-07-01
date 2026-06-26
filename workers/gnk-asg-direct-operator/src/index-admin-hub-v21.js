@@ -1,6 +1,7 @@
 import app from './index-media-command-center-v20.js';
+import {applyFaviconContract,FAVICON_VERSION} from './favicon-contract-v2.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R2';
+const VERSION='GNK_ASG_ADMIN_HUB_V21_20260626_R3_FAVICON';
 const MODULES=new Map([
   ['/operator-dashboard','operator'],
   ['/operator-mobile','mobile'],
@@ -16,7 +17,7 @@ const MODULES=new Map([
 ]);
 
 function redirect(location){
-  return new Response(null,{status:303,headers:{location,'cache-control':'no-store','x-gnk-asg-admin-hub':VERSION}});
+  return new Response(null,{status:303,headers:{location,'cache-control':'no-store','x-gnk-asg-admin-hub':VERSION,'x-gnk-asg-favicon-contract':FAVICON_VERSION}});
 }
 
 export default{
@@ -28,9 +29,10 @@ export default{
     if(MODULES.has(path)&&['GET','HEAD'].includes(request.method)&&!embedded){
       return redirect(`/admin-center/?module=${encodeURIComponent(MODULES.get(path))}`);
     }
-    const response=await app.fetch(request,env,ctx);
+    const response=await applyFaviconContract(request,await app.fetch(request,env,ctx));
     const headers=new Headers(response.headers);
     headers.set('x-gnk-asg-admin-hub',VERSION);
+    headers.set('x-gnk-asg-favicon-contract',FAVICON_VERSION);
     return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
   },
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
