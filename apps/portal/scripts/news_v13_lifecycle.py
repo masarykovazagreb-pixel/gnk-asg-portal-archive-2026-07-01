@@ -98,6 +98,11 @@ def first_image(item):
     return valid_url(match.group(1)) if match else ''
 
 
+def share_url_for(row_id):
+    safe_id = re.sub(r'[^a-zA-Z0-9_-]+', '', str(row_id or ''))
+    return f'/podijeli/vijest/{safe_id}/' if safe_id else ''
+
+
 def source_items(source, cutoff, limit):
     url = source.get('url') or google_news_url(source['q'])
     xml = fetch_bytes(url)
@@ -110,8 +115,9 @@ def source_items(source, cutoff, limit):
             continue
         headline, publisher = title.rsplit(' - ', 1) if ' - ' in title else (title, source.get('name', 'Javni izvor'))
         image = first_image(item) or FALLBACK_IMAGE
+        row_id = hashlib.sha256((headline + link).encode()).hexdigest()[:18]
         rows.append({
-            'id': hashlib.sha256((headline + link).encode()).hexdigest()[:18],
+            'id': row_id,
             'title': headline,
             'url': link,
             'summary': clean(item.findtext('description'))[:280],
@@ -123,6 +129,7 @@ def source_items(source, cutoff, limit):
             'image': image,
             'imageAlt': headline,
             'imageCredit': publisher if image != FALLBACK_IMAGE else 'GNK ASG Visual Index fallback',
+            'share_url': share_url_for(row_id),
         })
     return rows
 
@@ -135,6 +142,7 @@ def normalized_saved(rows):
         row.setdefault('image', FALLBACK_IMAGE)
         row.setdefault('imageAlt', row.get('title'))
         row.setdefault('imageCredit', row.get('source') or 'GNK ASG')
+        row.setdefault('share_url', share_url_for(row.get('id')))
         output.append(row)
     return output
 
@@ -185,11 +193,17 @@ def main():
     status_ok = bool(public) and len(errors) <= max(1, int(len(sources) * 0.30))
     by_group = {}
     for row in public:
+        row.setdefault('share_url', share_url_for(row.get('id')))
         by_group[row.get('group', 'other')] = by_group.get(row.get('group', 'other'), 0) + 1
+    for row in archive:
+        row.setdefault('share_url', share_url_for(row.get('id')))
     status = {
         'ok': status_ok,
         'status': 'ok' if status_ok else 'degraded',
         'updated_at': NOW.isoformat(),
+        'checked_at': NOW.isoformat(),
+        'last_attempt_at': NOW.isoformat(),
+        'last_successful_refresh_at': NOW.isoformat() if status_ok else None,
         'engine': 'news_v13_lifecycle',
         'cadence': 'scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb',
         'timezone': 'Europe/Zagreb',
@@ -207,10 +221,15 @@ def main():
         'rss_images_enabled': True,
         'fallback_image': FALLBACK_IMAGE,
         'visual_index_fallback': '/visual-index/',
+        'heartbeat_policy': 'news_status_updates_on_every_automation_run_even_when_content_is_unchanged',
+        'source_success_threshold': 0.70,
         'by_group': by_group,
         'errors': errors,
     }
     update_status = read_json('update_status.json', {})
+    previous_news_status = update_status.get('news') if isinstance(update_status.get('news'), dict) else {}
+    if not status_ok and previous_news_status.get('last_successful_refresh_at'):
+        status['last_successful_refresh_at'] = previous_news_status.get('last_successful_refresh_at')
     update_status['updated_at'] = NOW.isoformat()
     update_status['news'] = status
     save_json('news.json', public)
