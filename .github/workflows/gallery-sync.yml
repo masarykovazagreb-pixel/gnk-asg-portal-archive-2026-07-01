@@ -1,0 +1,50 @@
+name: GNK ASG Gallery Sync
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/portal/**"
+      - "scripts/gallery-sync.mjs"
+      - ".github/workflows/gallery-sync.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-gallery-sync
+  cancel-in-progress: true
+
+jobs:
+  sync-gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate and index Gallery
+        run: node scripts/gallery-sync.mjs
+
+      - name: Verify minimum image count
+        run: |
+          node -e "const c=require('./apps/portal/data/gallery.catalog.json'); if(c.count<100) { console.error('Gallery contains only '+c.count+' images'); process.exit(1) } console.log('Verified Gallery images:',c.count)"
+
+      - name: Commit synchronized Gallery
+        run: |
+          if git diff --quiet; then
+            echo "Gallery is already synchronized."
+            exit 0
+          fi
+          git config user.name "GNK ASG Gallery Bot"
+          git config user.email "beckuphome@gmail.com"
+          git add apps/portal scripts/gallery-sync.mjs
+          git commit -m "chore(gallery): auto-sync images, SEO catalog and consumers [skip ci]"
+          git push
