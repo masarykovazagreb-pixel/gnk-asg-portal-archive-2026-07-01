@@ -1,0 +1,66 @@
+name: Runtime health via issue 90
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  health:
+    if: github.event.issue.number == 90 && github.event.comment.body == '/runtime-health 20260626-90'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read production health
+        shell: bash
+        run: |
+          set -euo pipefail
+          cb=$(date +%s)
+          base='https://gnk-asg.hr'
+          curl -sS -D /tmp/deployment.headers -H 'Cache-Control: no-cache' "$base/data/deployment-status.json?cb=$cb" -o /tmp/deployment.json
+          curl -sS -D /tmp/health.headers -H 'Cache-Control: no-cache' "$base/data/platform-health.json?cb=$cb" -o /tmp/health.json
+          curl -sS -D /tmp/root.headers -H 'Cache-Control: no-cache' "$base/?cb=$cb" -o /tmp/root.html
+          curl -sS -D /tmp/admin.headers -H 'Cache-Control: no-cache' "$base/operator-dashboard/?cb=$cb" -o /tmp/admin.html
+          node <<'JS'
+          const fs=require('node:fs');
+          const read=path=>fs.readFileSync(path,'utf8');
+          const parse=path=>{try{return JSON.parse(read(path));}catch{return null;}};
+          const header=(text,name)=>((text.match(new RegExp(`^${name}:\\s*(.+)$`,'im'))||[])[1]||'').trim();
+          const first=text=>String(text).split(/\r?\n/)[0]||'';
+          const deployment=parse('/tmp/deployment.json');
+          const health=parse('/tmp/health.json');
+          const root=read('/tmp/root.html');
+          const rootHeaders=read('/tmp/root.headers');
+          const adminHeaders=read('/tmp/admin.headers');
+          const admin=read('/tmp/admin.html');
+          const result={
+            checkedAt:new Date().toISOString(),
+            deployment,
+            health,
+            root:{
+              status:first(rootHeaders),
+              hydration:header(rootHeaders,'x-gnk-asg-index-hydration'),
+              adminHub:header(rootHeaders,'x-gnk-asg-admin-hub'),
+              loadingNews:root.includes('Učitavanje najnovijih vijesti'),
+              loadingNetwork:root.includes('Učitavanje mreže'),
+              loadingPublications:root.includes('Učitavanje objava'),
+              loadingMarket:root.includes('class="market-value">Učitavanje')
+            },
+            admin:{status:first(adminHeaders),location:header(adminHeaders,'location'),oldOperatorCenter:admin.includes('Operator Center')}
+          };
+          fs.writeFileSync('/tmp/runtime-health.json',JSON.stringify(result,null,2));
+          JS
+
+      - name: Report health
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          payload=$(cat /tmp/runtime-health.json 2>/dev/null || printf '{"error":"health_probe_failed"}')
+          body=$(printf 'Runtime health · %s\n\n```json\n%s\n```' "$RUN_URL" "$payload")
+          gh issue comment 90 --body "$body"
