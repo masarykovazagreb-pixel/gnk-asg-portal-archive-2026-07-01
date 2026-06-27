@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
 
-  const state={lang:'hr',data:null,playerReady:false,pendingPlay:false,audio:null,musicOn:false};
+  const state={lang:'hr',data:null,playerReady:false,pendingPlay:false,playerMode:'ready',audio:null,musicOn:false};
   const $=(selector,root=document)=>root.querySelector(selector);
   const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
 
@@ -114,7 +114,8 @@
     $('#codeStatus').textContent=dictionary[state.lang][key]||key;
   }
 
-  function updatePlayerLabels(mode='ready'){
+  function updatePlayerLabels(mode=state.playerMode){
+    state.playerMode=mode;
     const lang=dictionary[state.lang];
     const play=$('#playCode');
     if(mode==='playing')play.textContent=lang.playRunning;
@@ -198,7 +199,7 @@
       const oscB=ctx.createOscillator();
       const gainA=ctx.createGain();
       const gainB=ctx.createGain();
-      master.gain.value=.055;
+      master.gain.value=.0001;
       oscA.type='sine';
       oscB.type='triangle';
       oscA.frequency.value=55;
@@ -214,7 +215,7 @@
     }
     if(state.audio.ctx.state==='suspended')await state.audio.ctx.resume();
     state.musicOn=!state.musicOn;
-    state.audio.master.gain.setTargetAtTime(state.musicOn?.055:.0001,state.audio.ctx.currentTime,.08);
+    state.audio.master.gain.setTargetAtTime(state.musicOn ? .055 : .0001,state.audio.ctx.currentTime,.08);
     $('#soundCode').setAttribute('aria-pressed',String(state.musicOn));
     updatePlayerLabels();
   }
