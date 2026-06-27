@@ -9,6 +9,8 @@
 .finance-card .card-actions{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:10px!important;margin-top:auto!important;padding-top:20px!important}
 .finance-card .card-actions .lux-button{width:100%!important;min-width:0!important;box-sizing:border-box!important;white-space:normal!important;text-align:center!important}
 .finance-downloads{display:none!important}
+.hero-copy{display:none!important}
+.hero{grid-template-columns:1fr!important}
 @media(max-width:1180px){.finance-card{padding:22px!important}.finance-card .metric strong{font-size:17px!important}}
 @media(max-width:900px){.finance-grid{grid-template-columns:1fr!important}.finance-card .metric strong{font-size:clamp(16px,2.7vw,20px)!important}}
 @media(max-width:760px){.finance-card .metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}.finance-card .metric strong{font-size:clamp(15px,4.2vw,19px)!important}.finance-card .card-actions{grid-template-columns:1fr!important}}
