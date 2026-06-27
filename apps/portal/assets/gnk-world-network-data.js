@@ -1,0 +1,1 @@
+// GNK world network data
