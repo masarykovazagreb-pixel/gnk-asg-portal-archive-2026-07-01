@@ -10,6 +10,8 @@ on:
       - 'workers/gnk-asg-direct-operator/migrations/**'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
   workflow_dispatch:
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: read
@@ -20,6 +22,13 @@ concurrency:
 
 jobs:
   deploy:
+    if: >-
+      github.event_name != 'issue_comment' ||
+      (github.event.issue.number == 65 &&
+       github.event.comment.body == '/deploy-public-portal' &&
+       (github.event.comment.author_association == 'OWNER' ||
+        github.event.comment.author_association == 'MEMBER' ||
+        github.event.comment.author_association == 'COLLABORATOR'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -30,30 +39,37 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate portal and luxury index package
+      - name: Validate V21 index and THE CODE V22 package
         shell: bash
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/index-white-static-v2.js
           node --check apps/portal/assets/index-white-static-enhance-v2.js
+          node --check apps/portal/assets/index-wow-v4.js
+          node --check apps/portal/assets/index-code-cleanup-v8.js
+          node --check apps/portal/assets/the-code-stable-v22.js
           node --check workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v24-activation.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v25-mail-smoke.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          node --check workers/gnk-asg-direct-operator/src/news-curation-v10.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
           test -s apps/portal/index-white-static-preview-v2.html
           test -s apps/portal/en/index-white-static-preview-v2.html
-          test -s apps/portal/assets/index-white-static-v2.css
+          test -s apps/portal/assets/public-unified-v21.css
+          test -s apps/portal/assets/public-index-v21.css
+          test -s apps/portal/assets/public-index-v21-controls.css
+          test -s apps/portal/assets/public-shell-v21.js
+          test -s apps/portal/assets/the-code-stable-v22.js
           test -s apps/portal/the-code/index.html
-          grep -q 'main = "src/index-admin-hub-v26-clean-index.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'GNK_ASG_WHITE_STATIC_INDEX_V2_20260627' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'main = "src/index-admin-hub-v26-clean-index-v21-preview.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'GNK_ASG_PUBLIC_V21_INDEX_THE_CODE_V22_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
+          grep -q 'the-code-stable-v22.js?v=20260627-v22' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
+          grep -q 'GNK_ASG_THE_CODE_STABLE_V22_20260627' apps/portal/assets/the-code-stable-v22.js
           grep -q 'data-index-template="white-static-v2"' apps/portal/index-white-static-preview-v2.html
           grep -q 'data-index-template="white-static-v2"' apps/portal/en/index-white-static-preview-v2.html
           grep -q 'id="codePreview"' apps/portal/index-white-static-preview-v2.html
-          grep -q 'min-height:820px' apps/portal/assets/index-white-static-v2.css
-          grep -q 'location-dot' apps/portal/assets/index-white-static-v2.css
-          grep -q "\['Perth','Perth'" apps/portal/assets/index-white-static-v2.js
-          grep -q 'operator-dashboard' apps/portal/index-white-static-preview-v2.html
+          grep -q 'id="codePreview"' apps/portal/en/index-white-static-preview-v2.html
+          grep -q "2026-10-07T11:30:00-04:00" apps/portal/the-code/index.html
+          grep -q 'THE_CODE_english_corrected_2026-10-07.html' apps/portal/assets/the-code-stable-v22.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
@@ -66,14 +82,14 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 d1 migrations apply gnk_asg_operator_logs --remote --config wrangler.toml
 
-      - name: Deploy to Cloudflare
+      - name: Deploy V21 and THE CODE V22 to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify index and existing services
+      - name: Verify HR EN and THE CODE production
         shell: bash
         run: |
           set -euo pipefail
@@ -88,25 +104,27 @@ jobs:
           }
           let last;
           for(let attempt=1;attempt<=24;attempt++){
-            const [root,en,css,js,code,news,pubs,market,health,admin]=await Promise.all([
-              get('/'),get('/en/'),get('/assets/index-white-static-v2.css'),get('/assets/index-white-static-v2.js'),
-              get('/the-code/'),get('/vijesti/'),get('/objave/'),get('/trzista/'),get('/data/platform-health.json'),
-              get('/operator-dashboard/','manual')
+            const [root,en,player,playerAsset,news,pubs,market,health,admin]=await Promise.all([
+              get('/'),get('/en/'),get('/the-code/?embed=1&v=22'),get('/assets/the-code-stable-v22.js?v=20260627-v22'),
+              get('/vijesti/'),get('/objave/'),get('/trzista/'),get('/data/platform-health.json'),get('/operator-dashboard/','manual')
             ]);
             const failures=[];
-            for(const [name,response] of Object.entries({root,en,css,js,code,news,pubs,market}))if(response.status!==200)failures.push(`${name}=${response.status}`);
-            if(!root.text.includes('data-index-template="white-static-v2"'))failures.push('root_template_missing');
-            if(!en.text.includes('data-index-template="white-static-v2"'))failures.push('en_template_missing');
-            if(!root.text.includes('Interaktivna prezentacija · puna veličina'))failures.push('root_code_full_size_missing');
-            if(!en.text.includes('Interactive presentation · full size'))failures.push('en_code_full_size_missing');
-            if(!root.text.includes('Globalna mreža')||!en.text.includes('Global network'))failures.push('network_missing');
-            if(root.headers['x-gnk-asg-index-template']!=='GNK_ASG_WHITE_STATIC_INDEX_V2_20260627')failures.push(`root_header=${root.headers['x-gnk-asg-index-template']||''}`);
-            if(en.headers['x-gnk-asg-index-template']!=='GNK_ASG_WHITE_STATIC_INDEX_V2_20260627')failures.push(`en_header=${en.headers['x-gnk-asg-index-template']||''}`);
+            for(const [name,response] of Object.entries({root,en,player,playerAsset,news,pubs,market}))if(response.status!==200)failures.push(`${name}=${response.status}`);
+            if(!root.text.includes('Poslovna grupa.'))failures.push('root_v21_content_missing');
+            if(!en.text.includes('A business group.'))failures.push('en_v21_content_missing');
+            if(!root.text.includes('the-code-stable-v22.js?v=20260627-v22'))failures.push('root_v22_script_missing');
+            if(!en.text.includes('the-code-stable-v22.js?v=20260627-v22'))failures.push('en_v22_script_missing');
+            if(root.headers['x-gnk-asg-the-code-player']!=='STABLE_IFRAME_V22')failures.push(`root_player_header=${root.headers['x-gnk-asg-the-code-player']||''}`);
+            if(en.headers['x-gnk-asg-the-code-player']!=='STABLE_IFRAME_V22')failures.push(`en_player_header=${en.headers['x-gnk-asg-the-code-player']||''}`);
+            if(root.headers['x-gnk-asg-index-design']!=='EXECUTIVE_EDITORIAL_V21')failures.push(`root_design=${root.headers['x-gnk-asg-index-design']||''}`);
+            if(en.headers['x-gnk-asg-index-design']!=='EXECUTIVE_EDITORIAL_V21')failures.push(`en_design=${en.headers['x-gnk-asg-index-design']||''}`);
+            if(!player.text.includes('2026-10-07T11:30:00-04:00'))failures.push('activation_date_missing');
+            if(!playerAsset.text.includes('GNK_ASG_THE_CODE_STABLE_V22_20260627'))failures.push('player_asset_marker_missing');
             if(![200,303,401,403].includes(admin.status))failures.push(`admin=${admin.status}`);
             if(![200,503].includes(health.status))failures.push(`health=${health.status}`);
-            last={attempt,failures,codes:{root:root.status,en:en.status,css:css.status,js:js.status,code:code.status,news:news.status,pubs:pubs.status,market:market.status,health:health.status,admin:admin.status}};
+            last={attempt,failures,codes:{root:root.status,en:en.status,player:player.status,playerAsset:playerAsset.status,news:news.status,pubs:pubs.status,market:market.status,health:health.status,admin:admin.status}};
             console.log(JSON.stringify(last));
-            if(!failures.length){console.log('GNK_ASG_LUXURY_INDEX_PRODUCTION_OK=true');process.exit(0);}
+            if(!failures.length){console.log('GNK_ASG_V21_THE_CODE_V22_PRODUCTION_OK=true');process.exit(0);}
             await sleep(10000);
           }
           console.error(JSON.stringify(last,null,2));
@@ -117,7 +135,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          for path in / /en/ /the-code/ /vijesti/ /objave/ /trzista/ /operator-dashboard/ /data/platform-health.json; do
+          for path in / /en/ /the-code/ /assets/the-code-stable-v22.js /vijesti/ /objave/ /trzista/ /operator-dashboard/ /data/platform-health.json; do
             code=$(curl -sS -o /tmp/route.out -w '%{http_code}' "https://gnk-asg.hr$path?cb=$(date +%s)" || true)
             echo "$path -> $code"
           done
