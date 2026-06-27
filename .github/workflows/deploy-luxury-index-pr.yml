@@ -1,24 +1,36 @@
-name: Deploy Public Index V8
+name: Deploy Public Index V9
 
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/deploy-luxury-index-pr.yml'
+      - 'apps/portal/assets/index-finance-v9.css'
       - 'apps/portal/assets/index-public-v7.css'
       - 'apps/portal/assets/index-public-v7.js'
       - 'apps/portal/assets/index-code-cleanup-v8.js'
+      - 'apps/portal/assets/brand/gnk-asg-favicon.svg'
+      - 'apps/portal/favicon.svg'
+      - 'apps/portal/favicon-48.svg'
+      - 'apps/portal/site.webmanifest'
       - 'apps/portal/the-code/index.html'
+      - 'workers/gnk-asg-direct-operator/src/index-seo-v9.js'
       - 'workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   pull_request:
     branches: [main]
     paths:
       - '.github/workflows/deploy-luxury-index-pr.yml'
+      - 'apps/portal/assets/index-finance-v9.css'
       - 'apps/portal/assets/index-public-v7.css'
       - 'apps/portal/assets/index-public-v7.js'
       - 'apps/portal/assets/index-code-cleanup-v8.js'
+      - 'apps/portal/assets/brand/gnk-asg-favicon.svg'
+      - 'apps/portal/favicon.svg'
+      - 'apps/portal/favicon-48.svg'
+      - 'apps/portal/site.webmanifest'
       - 'apps/portal/the-code/index.html'
+      - 'workers/gnk-asg-direct-operator/src/index-seo-v9.js'
       - 'workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   workflow_dispatch:
@@ -27,7 +39,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-public-index-v8
+  group: gnk-asg-public-index-v9
   cancel-in-progress: true
 
 jobs:
@@ -39,26 +51,26 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate clean public index V8
+      - name: Validate public index V9
         shell: bash
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/index-public-v7.js
           node --check apps/portal/assets/index-code-cleanup-v8.js
+          node --check workers/gnk-asg-direct-operator/src/index-seo-v9.js
           node --check workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          grep -q 'GNK_ASG_PUBLIC_INDEX_V8_HR_EN_20260627' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          grep -q 'CLEAN_STANDALONE_HTML_V8' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          grep -q 'index-public-v7.css' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          grep -q 'index-public-v7.js' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          grep -q 'index-code-cleanup-v8.js' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          grep -q 'id="s6" class="scene active"' apps/portal/the-code/index.html
-          grep -q 'gnk-code-start' apps/portal/the-code/index.html
-          grep -q 'gnk-code-ready' apps/portal/the-code/index.html
-          grep -q 'gnk-code-playback' apps/portal/the-code/index.html
-          ! grep -q 'music-bar' apps/portal/the-code/index.html
-          ! grep -q 'music-btn' apps/portal/the-code/index.html
-          ! grep -q 'Play Again' apps/portal/the-code/index.html
+          test -s apps/portal/assets/index-finance-v9.css
+          test -s apps/portal/favicon.svg
+          test -s apps/portal/favicon-48.svg
+          test -s apps/portal/site.webmanifest
+          grep -q 'GNK_ASG_PUBLIC_INDEX_V9_HR_EN_20260627' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'index-finance-v9.css' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'applyIndexSeo' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'data-gnk-seo-v9' workers/gnk-asg-direct-operator/src/index-seo-v9.js
+          grep -q 'grid-template-columns:repeat(3' apps/portal/assets/index-finance-v9.css
+          grep -q 'font-size:clamp(15px' apps/portal/assets/index-finance-v9.css
+          grep -q 'GNK ASG' apps/portal/favicon.svg
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
       - name: Deploy current Worker to Cloudflare
@@ -67,30 +79,27 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify public index V8
+      - name: Verify public index V9
         shell: bash
         run: |
           set -euo pipefail
           for n in $(seq 1 18); do
             HR_HEADERS=$(mktemp)
             EN_HEADERS=$(mktemp)
-            CODE_HEADERS=$(mktemp)
             HR=$(curl -fsS -D "$HR_HEADERS" "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}-hr" || true)
             EN=$(curl -fsS -D "$EN_HEADERS" "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}-en" || true)
-            CODE=$(curl -fsS -D "$CODE_HEADERS" "https://gnk-asg.hr/the-code/?embed=1&cb=${GITHUB_RUN_ID}-${n}" || true)
-            if printf '%s' "$HR" | grep -q 'index-public-v7.css' \
-              && printf '%s' "$HR" | grep -q 'index-public-v7.js' \
-              && printf '%s' "$HR" | grep -q 'index-code-cleanup-v8.js' \
-              && printf '%s' "$EN" | grep -q 'index-public-v7.css' \
-              && printf '%s' "$EN" | grep -q 'index-public-v7.js' \
-              && printf '%s' "$CODE" | grep -q 'id="s6" class="scene active"' \
-              && printf '%s' "$CODE" | grep -q 'gnk-code-start' \
-              && ! printf '%s' "$CODE" | grep -q 'music-bar' \
-              && ! printf '%s' "$CODE" | grep -q 'Play Again' \
-              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_PUBLIC_INDEX_V8_HR_EN_20260627' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-the-code-mode: CLEAN_HTML_EXTERNAL_BUTTON_ONLY_V8' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_PUBLIC_INDEX_V8_HR_EN_20260627' "$EN_HEADERS" \
-              && grep -qi 'x-gnk-asg-the-code: CLEAN_STANDALONE_HTML_V8' "$CODE_HEADERS"; then
+            FINANCE=$(curl -fsS "https://gnk-asg.hr/assets/index-finance-v9.css?cb=${GITHUB_RUN_ID}-${n}" || true)
+            FAVICON=$(curl -fsS "https://gnk-asg.hr/favicon.svg?cb=${GITHUB_RUN_ID}-${n}" || true)
+            if printf '%s' "$HR" | grep -q 'index-finance-v9.css' \
+              && printf '%s' "$HR" | grep -q 'data-gnk-seo-v9' \
+              && printf '%s' "$HR" | grep -q '/favicon.svg' \
+              && printf '%s' "$EN" | grep -q 'index-finance-v9.css' \
+              && printf '%s' "$EN" | grep -q 'data-gnk-seo-v9' \
+              && printf '%s' "$FINANCE" | grep -q 'grid-template-columns:repeat(3' \
+              && printf '%s' "$FAVICON" | grep -q 'GNK ASG' \
+              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_PUBLIC_INDEX_V9_HR_EN_20260627' "$HR_HEADERS" \
+              && grep -qi 'x-gnk-asg-seo: BILINGUAL_META_FAVICON_V9' "$HR_HEADERS" \
+              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_PUBLIC_INDEX_V9_HR_EN_20260627' "$EN_HEADERS"; then
                 exit 0
             fi
             sleep 10
