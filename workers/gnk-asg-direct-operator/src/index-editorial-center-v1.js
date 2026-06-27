@@ -16,7 +16,7 @@ import {
   writeScheduleResult
 } from './editorial-core-v1.js';
 import {runAutomatedPublication,AUTO_PUBLISH_VERSION} from './editorial-auto-publish-v2.js';
-import {ensureEditorialBootstrap,EDITORIAL_BOOTSTRAP_VERSION} from './editorial-bootstrap-v1.js';
+import {ensureEditorialBootstrap,EDITORIAL_BOOTSTRAP_VERSION} from './editorial-bootstrap-v2.js';
 
 const ROOT='/auto-editor/editorial';
 const API='/auto-editor/editorial/api/';
