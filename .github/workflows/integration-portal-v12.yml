@@ -1,91 +1,14 @@
-name: Integration Portal V12
+name: Integration Portal V12 (legacy)
 
 on:
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  integration:
+  archived:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Start isolated local V12 Worker
-        working-directory: workers/gnk-asg-direct-operator
-        shell: bash
-        run: |
-          cat > wrangler.integration.toml <<'TOML'
-          name = "gnk-asg-integration-v12"
-          main = "src/index-portal-final-v12.js"
-          compatibility_date = "2026-06-13"
-          workers_dev = false
-
-          [[kv_namespaces]]
-          binding = "GNK_ASG_KV"
-          id = "00000000000000000000000000000001"
-
-          [[kv_namespaces]]
-          binding = "GNK_ASG_CONFIG_KV"
-          id = "00000000000000000000000000000002"
-
-          [assets]
-          directory = "../../apps/portal"
-          binding = "ASSETS"
-          run_worker_first = true
-          TOML
-          npx --yes wrangler@4 dev --config wrangler.integration.toml --ip 127.0.0.1 --port 8787 > wrangler-v12.log 2>&1 &
-          echo $! > wrangler-v12.pid
-          for i in $(seq 1 45); do
-            if curl -fsS http://127.0.0.1:8787/data/index-media-config.json >/dev/null; then exit 0; fi
-            if ! kill -0 "$(cat wrangler-v12.pid)" 2>/dev/null; then break; fi
-            sleep 1
-          done
-          cat wrangler-v12.log
-          exit 1
-      - name: Verify local portal behavior
-        shell: bash
-        run: |
-          base="http://127.0.0.1:8787"
-          curl -fsS -D root.headers "$base/" -o root.html
-          curl -fsS -D en.headers "$base/en/" -o en.html
-          curl -fsS -D status.headers "$base/status-automatizacije/" -o status.html
-          curl -fsS -D admin.headers "$base/operator-dashboard/" -o admin.html
-          curl -fsS "$base/data/index-media-config.json" -o media.json
-          grep -q 'GNK ASG' root.html
-          grep -q 'public-ux-v11.css' root.html
-          grep -q 'index-clock-v2.js' root.html
-          grep -q 'Status automatizacije' status.html
-          grep -qi '^x-gnk-asg-portal-final: GNK_ASG_PORTAL_FINAL_V12_20260625' admin.headers
-          grep -q 'if(false)' admin.html
-          ! grep -q 'window.GNK_ASG_FORCE_OPERATOR_TOKEN = "' admin.html
-          node - <<'JS'
-          const fs=require('fs');
-          const c=JSON.parse(fs.readFileSync('media.json','utf8'));
-          if(c.media?.enabled!==false) throw new Error('media must start disabled');
-          if(c.countdown?.enabled!==false) throw new Error('countdown must start disabled');
-          if(c.clock?.enabled!==false) throw new Error('clock must start disabled');
-          if(c.media?.autoplay!==false) throw new Error('autoplay must be false');
-          if(c.media?.preload!=='none') throw new Error('preload must be none');
-          console.log('INDEX_MEDIA_DEFAULTS_OK');
-          JS
-          grep -q "document.createElement('video')" apps/portal/assets/index-redesign-production.js
-          grep -q "video.src = source" apps/portal/assets/index-redesign-production.js
-          echo "PORTAL_V12_INTEGRATION_OK=true"
-      - name: Upload local startup log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: portal-v12-local-log
-          path: workers/gnk-asg-direct-operator/wrangler-v12.log
-          retention-days: 3
-      - name: Show Worker log on failure
-        if: failure()
-        working-directory: workers/gnk-asg-direct-operator
-        run: cat wrangler-v12.log || true
+      - name: Legacy integration test notice
+        run: echo "V12 integration checks are archived; current portal validation runs in Deploy GNK ASG Portal."

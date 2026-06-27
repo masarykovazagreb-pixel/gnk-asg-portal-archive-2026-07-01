@@ -1,29 +1,14 @@
-name: Check live V28
+name: Check live V28 (legacy)
 
 on:
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  check:
+  archived:
     runs-on: ubuntu-latest
     steps:
-      - name: Check HR index
-        run: |
-          curl -fsSL -H 'Cache-Control: no-cache' 'https://gnk-asg.hr/?cb=live-v28' > /tmp/hr.html
-          grep -q 'public-menu-v13.js?v=20260626-stable-v28' /tmp/hr.html
-          grep -q 'public-visual-v13.css?v=20260626-stable-v28' /tmp/hr.html
-          grep -q 'index-content-resilience-v1.js?v=20260626-data-v28' /tmp/hr.html
-          ! grep -q 'index-runtime-lock-v31.js' /tmp/hr.html
-          ! grep -q 'index-critical-v31.css' /tmp/hr.html
-      - name: Check EN index
-        run: |
-          curl -fsSL -H 'Cache-Control: no-cache' 'https://gnk-asg.hr/en/?cb=live-v28' > /tmp/en.html
-          grep -q 'public-menu-v13.js?v=20260626-stable-v28' /tmp/en.html
-          grep -q 'public-visual-v13.css?v=20260626-stable-v28' /tmp/en.html
-          grep -q 'index-content-resilience-v1.js?v=20260626-data-v28' /tmp/en.html
-          ! grep -q 'index-runtime-lock-v31.js' /tmp/en.html
-          ! grep -q 'index-critical-v31.css' /tmp/en.html
+      - name: Legacy check notice
+        run: echo "V28 live checks are archived; current production checks run in Deploy GNK ASG Portal."

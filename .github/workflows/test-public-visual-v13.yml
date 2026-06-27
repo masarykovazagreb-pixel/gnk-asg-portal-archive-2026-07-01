@@ -1,84 +1,14 @@
-name: Test Public Visual V13
+name: Test Public Visual V13 (legacy)
 
 on:
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
-concurrency:
-  group: public-visual-v13-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  visual:
+  archived:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Validate source
-        run: |
-          node --check apps/portal/assets/public-menu-v13.js
-          node --check apps/portal/tests/public-visual-v13-final.mjs
-          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
-          grep -q "GNK_ASG_PUBLIC_VISUAL_V13_20260625" workers/gnk-asg-direct-operator/src/index-portal-final-v12.js
-          grep -q "public-visual-v13.css" workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          grep -q "public-menu-v13.js" workers/gnk-asg-direct-operator/src/public-shell-v11.js
-      - name: Start isolated Worker
-        working-directory: workers/gnk-asg-direct-operator
-        shell: bash
-        run: |
-          cat > wrangler.visual-v13.toml <<'TOML'
-          name = "gnk-asg-visual-v13-test"
-          main = "src/index-portal-final-v12.js"
-          compatibility_date = "2026-06-13"
-          workers_dev = false
-
-          [[kv_namespaces]]
-          binding = "GNK_ASG_KV"
-          id = "00000000000000000000000000000001"
-
-          [[kv_namespaces]]
-          binding = "GNK_ASG_CONFIG_KV"
-          id = "00000000000000000000000000000002"
-
-          [assets]
-          directory = "../../apps/portal"
-          binding = "ASSETS"
-          run_worker_first = true
-          TOML
-          npx --yes wrangler@4 dev --config wrangler.visual-v13.toml --ip 127.0.0.1 --port 8787 > wrangler-visual-v13.log 2>&1 &
-          echo $! > wrangler-visual-v13.pid
-          for i in $(seq 1 50); do
-            if curl -fsS http://127.0.0.1:8787/data/portal-version.json > portal-version.json; then exit 0; fi
-            if ! kill -0 "$(cat wrangler-visual-v13.pid)" 2>/dev/null; then break; fi
-            sleep 1
-          done
-          cat wrangler-visual-v13.log
-          exit 1
-      - name: Install browser
-        working-directory: apps/portal
-        run: |
-          npm install --no-package-lock --no-save @playwright/test@1.52.0
-          npx playwright install --with-deps chromium
-      - name: Test all public routes
-        working-directory: apps/portal
-        env:
-          VISUAL_BASE: http://127.0.0.1:8787
-        run: node tests/public-visual-v13-final.mjs
-      - name: Upload visual evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: public-visual-v13-evidence
-          path: |
-            apps/portal/visual-v13-test-output
-            workers/gnk-asg-direct-operator/wrangler-visual-v13.log
-            workers/gnk-asg-direct-operator/portal-version.json
-          retention-days: 7
+      - name: Legacy visual test notice
+        run: echo "V13 visual checks are archived; current portal validation runs in Deploy GNK ASG Portal."
