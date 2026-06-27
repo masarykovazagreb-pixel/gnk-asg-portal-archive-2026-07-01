@@ -1,31 +1,21 @@
-name: Deploy Canonical Public Navigation V20
+name: Deploy V21 Index Preview
 
 on:
   pull_request:
     branches: [main]
     paths:
       - '.github/workflows/deploy-public-shell-v15.yml'
-      - 'apps/portal/assets/public-menu-v10.css'
-      - 'apps/portal/assets/public-menu-v10.js'
-      - 'apps/portal/assets/public-shell-v15.js'
-      - 'apps/portal/assets/public-docs-v20.css'
-      - 'apps/portal/assets/markets-v11.css'
-      - 'apps/portal/assets/markets-v11.js'
-      - 'workers/gnk-asg-direct-operator/wrangler.toml'
-      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js'
+      - 'apps/portal/assets/public-unified-v21.css'
+      - 'apps/portal/assets/public-index-v21.css'
+      - 'apps/portal/assets/public-shell-v21.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   push:
     branches: [main]
     paths:
       - '.github/workflows/deploy-public-shell-v15.yml'
-      - 'apps/portal/assets/public-menu-v10.css'
-      - 'apps/portal/assets/public-menu-v10.js'
-      - 'apps/portal/assets/public-shell-v15.js'
-      - 'apps/portal/assets/public-docs-v20.css'
-      - 'apps/portal/assets/markets-v11.css'
-      - 'apps/portal/assets/markets-v11.js'
-      - 'workers/gnk-asg-direct-operator/wrangler.toml'
-      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js'
+      - 'apps/portal/assets/public-unified-v21.css'
+      - 'apps/portal/assets/public-index-v21.css'
+      - 'apps/portal/assets/public-shell-v21.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   workflow_dispatch:
 
@@ -33,7 +23,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-canonical-navigation-v20
+  group: gnk-asg-v21-index-preview
   cancel-in-progress: true
 
 jobs:
@@ -44,30 +34,28 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate canonical navigation and public layouts
+      - name: Validate isolated desktop and mobile index preview
         shell: bash
         run: |
           set -euxo pipefail
-          node --check apps/portal/assets/public-shell-v15.js
-          node --check apps/portal/assets/public-menu-v10.js
-          node --check apps/portal/assets/markets-v11.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
+          node --check apps/portal/assets/public-shell-v21.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          test -s apps/portal/assets/public-menu-v10.css
-          test -s apps/portal/assets/public-docs-v20.css
-          test -s apps/portal/assets/markets-v11.css
-          grep -q 'GNK_ASG_PUBLIC_SHELL_V20_20260627' apps/portal/assets/public-shell-v15.js
-          grep -q 'PDF centar' apps/portal/assets/public-shell-v15.js
-          grep -q 'Auto Editor' apps/portal/assets/public-shell-v15.js
-          grep -q "'/legal/'" apps/portal/assets/public-shell-v15.js
-          ! grep -q "t.gallery" apps/portal/assets/public-shell-v15.js
-          ! grep -q "labels.gallery" apps/portal/assets/public-menu-v10.js
-          grep -q 'GNK_ASG_ADMIN_HUB_V26_PUBLIC_SHELL_V20_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
-          grep -q 'GNK_ASG_PUBLIC_V20_CANONICAL_NAVIGATION_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          grep -q 'CANONICAL_NAVIGATION_V20' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          grep -q 'x-gnk-asg-gallery-primary-menu' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          grep -q 'public-docs-v20.css' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          grep -q "'/legal','/legal/index.html'" workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
+          test -s apps/portal/assets/public-unified-v21.css
+          test -s apps/portal/assets/public-index-v21.css
+          grep -q 'GNK_ASG_PUBLIC_SHELL_V21_20260627' apps/portal/assets/public-shell-v21.js
+          grep -q "editor:'Auto Editor'" apps/portal/assets/public-shell-v21.js
+          grep -q "pdf:'PDF centar'" apps/portal/assets/public-shell-v21.js
+          grep -q "'/admin-center/'" apps/portal/assets/public-shell-v21.js
+          ! grep -q "gallery:'Galerija'" apps/portal/assets/public-shell-v21.js
+          grep -q 'GNK_ASG_PUBLIC_V21_INDEX_PREVIEW_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q 'public-unified-v21.css' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q 'public-index-v21.css' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q 'public-shell-v21.js' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q 'EXECUTIVE_EDITORIAL_V21' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q '@media(max-width:760px)' apps/portal/assets/public-index-v21.css
+          grep -q 'grid-template-columns:1fr' apps/portal/assets/public-index-v21.css
+          grep -q 'overflow-x:hidden' apps/portal/assets/public-unified-v21.css
+          grep -q 'max-width:100%' apps/portal/assets/public-index-v21.css
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
@@ -80,13 +68,13 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Deploy current Worker and canonical V20 navigation
+      - name: Deploy V21 index preview
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify canonical menu, Markets, PDF Centre and Legal
+      - name: Verify live HR and EN index preview
         shell: bash
         run: |
           set -euo pipefail
@@ -95,26 +83,21 @@ jobs:
           const base='https://gnk-asg.hr';
           for(let attempt=1;attempt<=30;attempt++){
             const nonce=`${Date.now()}-${attempt}`;
+            const read=async path=>{try{const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${nonce}`,{headers:{'cache-control':'no-cache','pragma':'no-cache'}});return{response,text:await response.text()}}catch{return{response:{status:0,headers:new Headers()},text:''}}};
+            const [hr,en,shell,unified,indexCss]=await Promise.all([read('/'),read('/en/'),read('/assets/public-shell-v21.js'),read('/assets/public-unified-v21.css'),read('/assets/public-index-v21.css')]);
             const failures=[];
-            const read=async path=>{
-              try{
-                const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${nonce}`,{headers:{'cache-control':'no-cache','pragma':'no-cache'}});
-                return {response,text:await response.text()};
-              }catch(error){return {response:{status:0,headers:new Headers()},text:''}}
-            };
-            const [hr,en,publications,markets,downloads,legal,shell]=await Promise.all([
-              read('/'),read('/en/'),read('/publications/'),read('/trzista/'),read('/downloads/'),read('/legal/'),read('/assets/public-shell-v15.js')
-            ]);
-            const requiredHr=['Auto Editor','PDF centar','Legal','Admin','Kontakt'];
-            const requiredEn=['Auto Editor','PDF Centre','Legal','Admin','Contact'];
-            if(hr.response.status!==200||requiredHr.some(value=>!hr.text.includes(value))||hr.text.includes('/visual-index/'))failures.push(`hr-index:${hr.response.status}`);
-            if(en.response.status!==200||requiredEn.some(value=>!en.text.includes(value))||en.text.includes('/visual-index/'))failures.push(`en-index:${en.response.status}`);
-            if(publications.response.status!==200||!publications.text.includes('public-shell-v15.js?v=20260627-v20'))failures.push(`publications:${publications.response.status}`);
-            if(markets.response.status!==200||!markets.text.includes('markets-v11.css'))failures.push(`markets:${markets.response.status}`);
-            if(downloads.response.status!==200||!downloads.text.includes('public-docs-v20.css'))failures.push(`downloads:${downloads.response.status}`);
-            if(legal.response.status!==200||!legal.text.includes('public-docs-v20.css'))failures.push(`legal:${legal.response.status}`);
-            if(!shell.text.includes('GNK_ASG_PUBLIC_SHELL_V20_20260627')||shell.text.includes("gallery:'Gallery'"))failures.push('shell-asset');
-            console.log(JSON.stringify({attempt,failures,hrMenu:hr.response.headers.get('x-gnk-asg-index-menu'),docs:downloads.response.headers.get('x-gnk-asg-docs-layout')}));
+            for(const [name,page,anchors,copy] of [['hr',hr,['id="the-code"','id="financije"','id="mreza"'],['Poslovna grupa.','Financijski pokazatelji','Globalna mreža']],['en',en,['id="the-code"','id="financials"','id="network"'],['A business group.','Financial indicators','Global network']]]){
+              if(page.response.status!==200)failures.push(`${name}-status:${page.response.status}`);
+              if(!page.text.includes('public-unified-v21.css')||!page.text.includes('public-index-v21.css')||!page.text.includes('public-shell-v21.js'))failures.push(`${name}-assets`);
+              if(page.text.includes('<nav class="menu">'))failures.push(`${name}-legacy-menu`);
+              if(anchors.some(value=>!page.text.includes(value)))failures.push(`${name}-anchors`);
+              if(copy.some(value=>!page.text.includes(value)))failures.push(`${name}-content`);
+              if(page.response.headers.get('x-gnk-asg-index-design')!=='EXECUTIVE_EDITORIAL_V21')failures.push(`${name}-design-header`);
+            }
+            if(!shell.text.includes('GNK_ASG_PUBLIC_SHELL_V21_20260627'))failures.push('shell');
+            if(!unified.text.includes('overflow-x:hidden'))failures.push('unified-css');
+            if(!indexCss.text.includes('@media(max-width:760px)')||!indexCss.text.includes('grid-template-columns:1fr'))failures.push('mobile-css');
+            console.log(JSON.stringify({attempt,failures,hrDesign:hr.response.headers.get('x-gnk-asg-index-design')}));
             if(!failures.length)process.exit(0);
             await sleep(10000);
           }
