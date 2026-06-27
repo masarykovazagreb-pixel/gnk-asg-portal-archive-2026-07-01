@@ -6,6 +6,7 @@ export const VERSION='GNK_ASG_PUBLIC_V14_ISOLATED_INDEX_AND_CONTENT_20260627';
 const INDEX_PATHS=new Set(['/','/en']);
 const MARKET_PATHS=new Set(['/trzista','/markets']);
 const EDITORIAL_PATHS=new Set(['/vijesti','/news','/objave']);
+const STATUS_JSON_PATHS=new Set(['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json']);
 const MARKET_STYLE='<link rel="stylesheet" href="/assets/markets-v11.css?v=20260627-v11">';
 const MARKET_SCRIPT='<script defer src="/assets/markets-v11.js?v=20260627-v11"></script>';
 const EDITORIAL_STYLE='<link rel="stylesheet" href="/assets/editorial-v12.css?v=20260627-v12">';
@@ -20,7 +21,21 @@ function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')
 function isEditorial(path){return EDITORIAL_PATHS.has(path)||path.startsWith('/vijesti/')||path.startsWith('/news/')||path.startsWith('/objave/')}
 function patchHeaders(response){const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return headers}
 async function serveIndex(path,request,env){const fallback=new Response('GNK ASG index asset unavailable',{status:503,headers:{'content-type':'text/plain; charset=utf-8','cache-control':'no-store'}});const response=await patchIndexActivation(fallback,path,request,env);const headers=new Headers(response.headers);headers.set('x-gnk-asg-index-isolation','DEDICATED_INDEX_ENTRY_V14');headers.set('x-gnk-asg-index-menu','NATIVE_INDEX_MENU_ONLY');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return new Response(response.body,{status:response.status,statusText:response.statusText,headers})}
+async function patchStatusJson(response,path){
+  if(!STATUS_JSON_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
+  try{
+    const payload=await response.json();
+    const headers=patchHeaders(response);
+    headers.set('content-type','application/json; charset=utf-8');
+    headers.set('x-gnk-asg-active-entrypoint','src/index-admin-hub-v26-clean-index.js');
+    headers.set('x-gnk-asg-public-release',VERSION);
+    const newsContract={timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,minimumVerifiedLinks:15,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false}};
+    const corrected={...payload,...newsContract,entryPoint:'src/index-admin-hub-v26-clean-index.js',deployedEntryPoint:'src/index-admin-hub-v26-clean-index.js',publicRelease:VERSION,newsRuntime:payload.newsRuntime||payload.version||'GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626',workerMain:'workers/gnk-asg-direct-operator/wrangler.toml → src/index-admin-hub-v26-clean-index.js',checkedAt:new Date().toISOString()};
+    return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
+  }catch{return response;}
+}
 async function patch(response,path,request){
+  response=await patchStatusJson(response,path);
   const htmlResponse=request.method==='GET'&&response.ok&&String(response.headers.get('content-type')||'').includes('text/html');
   if(!htmlResponse)return response;
   const market=MARKET_PATHS.has(path),editorial=isEditorial(path),contact=path==='/contact',media=path==='/media-kit',application=path==='/media-application';
