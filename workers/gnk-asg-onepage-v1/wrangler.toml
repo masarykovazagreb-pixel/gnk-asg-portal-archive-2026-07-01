@@ -1,0 +1,10 @@
+name = "gnk-asg-onepage-v1-preview"
+main = "src/index.js"
+compatibility_date = "2026-06-27"
+workers_dev = true
+preview_urls = true
+
+[assets]
+directory = "../../apps/onepage-v1"
+binding = "ASSETS"
+run_worker_first = true
