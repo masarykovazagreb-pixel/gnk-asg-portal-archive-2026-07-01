@@ -1,28 +1,28 @@
-name: Deploy Admin Dashboard V3
+name: Deploy Admin Dashboard V4
 
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/deploy-admin-dashboard-v3.yml'
+      - 'apps/portal/admin-center/index.html'
       - 'apps/portal/assets/admin-dashboard-v3.css'
       - 'apps/portal/assets/admin-dashboard-v3.js'
       - 'apps/portal/assets/admin-center-health-v1.js'
       - 'apps/portal/assets/admin-module-loader-v3.js'
-      - 'apps/portal/assets/index-hero-scale-v13.css'
-      - 'apps/portal/assets/index-code-cleanup-v8.js'
+      - 'apps/portal/assets/admin-navigation-v4.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js'
   pull_request:
     branches: [main]
     paths:
       - '.github/workflows/deploy-admin-dashboard-v3.yml'
+      - 'apps/portal/admin-center/index.html'
       - 'apps/portal/assets/admin-dashboard-v3.css'
       - 'apps/portal/assets/admin-dashboard-v3.js'
       - 'apps/portal/assets/admin-center-health-v1.js'
       - 'apps/portal/assets/admin-module-loader-v3.js'
-      - 'apps/portal/assets/index-hero-scale-v13.css'
-      - 'apps/portal/assets/index-code-cleanup-v8.js'
+      - 'apps/portal/assets/admin-navigation-v4.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js'
   workflow_dispatch:
@@ -31,7 +31,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-admin-dashboard-v3
+  group: gnk-asg-admin-dashboard-v4
   cancel-in-progress: true
 
 jobs:
@@ -43,55 +43,68 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate Admin Dashboard and Index refinements
+      - name: Validate Admin Dashboard V4
         shell: bash
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/admin-dashboard-v3.js
           node --check apps/portal/assets/admin-center-health-v1.js
           node --check apps/portal/assets/admin-module-loader-v3.js
-          node --check apps/portal/assets/index-code-cleanup-v8.js
+          node --check apps/portal/assets/admin-navigation-v4.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           test -s apps/portal/assets/admin-dashboard-v3.css
-          test -s apps/portal/assets/index-hero-scale-v13.css
           grep -q 'GNK ASG Admin Dashboard V3' apps/portal/assets/admin-dashboard-v3.css
+          grep -q 'admin-navigation-v4.js' apps/portal/admin-center/index.html
+          grep -q '__GNK_ASG_ADMIN_NAVIGATION_V4__' apps/portal/assets/admin-navigation-v4.js
+          grep -q "label:'Memorandum Studio'" apps/portal/assets/admin-navigation-v4.js
+          grep -q "label:'Mail Studio Pro'" apps/portal/assets/admin-navigation-v4.js
+          grep -q "label:'Mobile Admin'" apps/portal/assets/admin-navigation-v4.js
+          grep -q "label:'Social Share'" apps/portal/assets/admin-navigation-v4.js
+          grep -q "label:'WhatsApp Center'" apps/portal/assets/admin-navigation-v4.js
+          grep -q "label:'Review'" apps/portal/assets/admin-navigation-v4.js
+          grep -q '__GNK_ASG_ADMIN_MODULE_LOADER_V4__' apps/portal/assets/admin-module-loader-v3.js
+          grep -q 'se nije učitao u 10 sekundi' apps/portal/assets/admin-module-loader-v3.js
           grep -q 'admin-module-loader-v3.js' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           grep -q "frame-ancestors 'self'" workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           grep -q 'ALL_MODULES_WITH_10_SECOND_TIMEOUT' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          grep -q '50_PERCENT_V13' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          grep -q 'width:50%' apps/portal/assets/index-hero-scale-v13.css
           grep -q 'Mail Studio modul' apps/portal/assets/admin-center-health-v1.js
-          grep -q 'Istek vremena nakon 10 sekundi' apps/portal/assets/admin-center-health-v1.js
           grep -q '/data/deployment-status.json' apps/portal/assets/admin-dashboard-v3.js
           grep -q '/api/mail-center/send-readiness' apps/portal/assets/admin-dashboard-v3.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
       - name: Deploy Cloudflare Worker
+        if: github.event_name != 'pull_request'
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify Admin loader, audit and index scale
+      - name: Verify Admin V4 assets and protected routes
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
           set -euo pipefail
-          for n in $(seq 1 18); do
+          for n in $(seq 1 24); do
+            ADMIN=$(curl -fsS "https://gnk-asg.hr/admin-center/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            NAV=$(curl -fsS "https://gnk-asg.hr/assets/admin-navigation-v4.js?cb=${GITHUB_RUN_ID}-${n}" || true)
             LOADER=$(curl -fsS "https://gnk-asg.hr/assets/admin-module-loader-v3.js?cb=${GITHUB_RUN_ID}-${n}" || true)
             AUDIT=$(curl -fsS "https://gnk-asg.hr/assets/admin-center-health-v1.js?cb=${GITHUB_RUN_ID}-${n}" || true)
-            SCALE=$(curl -fsS "https://gnk-asg.hr/assets/index-hero-scale-v13.css?cb=${GITHUB_RUN_ID}-${n}" || true)
             STATUS=$(curl -fsS "https://gnk-asg.hr/data/deployment-status.json?cb=${GITHUB_RUN_ID}-${n}" || true)
-            INDEX_HR=$(curl -fsS "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            INDEX_EN=$(curl -fsS "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            if printf '%s' "$LOADER" | grep -q 'ADMIN_MODULE_LOADER_V3' \
+            routes_ok=true
+            for path in memorandum-studio mail-studio-pro app social-share wa-center review; do
+              code=$(curl -sS -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/${path}/?embedded=1&cb=${GITHUB_RUN_ID}-${n}" || true)
+              case "$code" in 200|303|401|403) ;; *) routes_ok=false ;; esac
+            done
+            if printf '%s' "$ADMIN" | grep -q 'admin-navigation-v4.js' \
+              && printf '%s' "$NAV" | grep -q '__GNK_ASG_ADMIN_NAVIGATION_V4__' \
+              && printf '%s' "$NAV" | grep -q "label:'Memorandum Studio'" \
+              && printf '%s' "$NAV" | grep -q "label:'WhatsApp Center'" \
+              && printf '%s' "$LOADER" | grep -q '__GNK_ASG_ADMIN_MODULE_LOADER_V4__' \
+              && printf '%s' "$LOADER" | grep -q '10 sekundi' \
               && printf '%s' "$AUDIT" | grep -q 'Mail Studio modul' \
-              && printf '%s' "$SCALE" | grep -q 'width:50%' \
               && printf '%s' "$STATUS" | grep -q 'index-admin-hub-v27-news-status.js' \
-              && printf '%s' "$STATUS" | grep -q 'ALL_MODULES_WITH_10_SECOND_TIMEOUT' \
-              && printf '%s' "$STATUS" | grep -q '50_PERCENT_V13' \
-              && printf '%s' "$INDEX_HR" | grep -q 'index-hero-scale-v13.css' \
-              && printf '%s' "$INDEX_EN" | grep -q 'index-hero-scale-v13.css'; then
+              && [ "$routes_ok" = true ]; then
                 exit 0
             fi
             sleep 10
