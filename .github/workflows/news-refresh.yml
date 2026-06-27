@@ -2,6 +2,11 @@ name: GNK ASG News Refresh
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/news-refresh.yml'
+      - 'apps/portal/scripts/refresh-news.mjs'
+      - 'apps/portal/data/news-automation-status.json'
   schedule:
     # Europe/Zagreb local schedule approximation.
     # UTC times cover 09:00, 16:00 and 21:00 during summer time.
