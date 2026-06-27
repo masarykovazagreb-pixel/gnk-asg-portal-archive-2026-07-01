@@ -1,9 +1,9 @@
 import app from './index-admin-hub-v27-news-status.js';
 
-export const VERSION='GNK_ASG_PUBLIC_INDEX_INLINE_WHITE_CODE_V23_20260627';
+export const VERSION='GNK_ASG_PUBLIC_INDEX_INLINE_WHITE_CODE_V24_20260627';
 const INDEX_PATHS=new Set(['/','/en']);
-const CODE_STYLE='<link rel="stylesheet" href="/assets/index-code-inline-v10.css?v=20260627-v23">';
-const CODE_SCRIPT='<script defer src="/assets/index-code-inline-v10.js?v=20260627-v23"></script>';
+const CODE_STYLE='<link rel="stylesheet" href="/assets/index-code-inline-v10.css?v=20260627-v24">';
+const CODE_SCRIPT='<script defer src="/assets/index-code-inline-v10.js?v=20260627-v24"></script>';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/'}
 function headersOf(response){
@@ -19,9 +19,10 @@ function headersOf(response){
 }
 
 function patchIndexHtml(html){
-  html=html.replace(/<link[^>]+(?:public-unified-v21|public-index-v21|public-index-v21-controls)\.css[^>]*>/gi,'');
-  html=html.replace(/<script[^>]+(?:public-shell-v21|the-code-stable-v22)\.js[^>]*><\/script>/gi,'');
+  html=html.replace(/<link[^>]+(?:public-unified-v21|public-index-v21|public-index-v21-controls|index-wow-v4|index-hero-scale-v13)\.css[^>]*>/gi,'');
+  html=html.replace(/<script[^>]+(?:public-shell-v21|the-code-stable-v22|index-wow-v4)\.js[^>]*><\/script>/gi,'');
   html=html.replace(/<script[^>]+index-code-cleanup-v8\.js[^>]*><\/script>/gi,'');
+  html=html.replace(/<section class=["']code-stage["']/i,'<section class="code-stage code-stage--inline"');
   html=html.replace(
     /<div class=["']code-frame["'] id=["']codeFrame["']>\s*<iframe[\s\S]*?<\/iframe>\s*<\/div>/i,
     '<div class="code-inline-host" id="codeFrame"><div id="codeInlineMount" class="code-inline-mount"></div></div>'
@@ -37,8 +38,9 @@ export default{
     const path=pathOf(request);
     if(request.method!=='GET'||!INDEX_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
     const headers=headersOf(response);
-    headers.set('x-gnk-asg-index-design','LOCKED_FULL_INDEX');
+    headers.set('x-gnk-asg-index-design','LOCKED_CLEAN_WHITE_INDEX');
     headers.set('x-gnk-asg-index-menu','PRESERVED');
+    headers.set('x-gnk-asg-index-hero','BASE_CLEAN_NO_WOW_NO_SCALE');
     headers.set('x-gnk-asg-the-code-player','INLINE_WHITE_GOLD_V10');
     headers.set('x-gnk-asg-index-preview',VERSION);
     return new Response(patchIndexHtml(await response.text()),{status:response.status,statusText:response.statusText,headers});
