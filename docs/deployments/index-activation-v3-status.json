@@ -1,9 +1,12 @@
 {
-  "commit": "25dfc734c26804d687505396d7fbcc2c2627ce2a",
-  "runId": "28290446082",
+  "commit": "7448362a2d5da2bad81d61c5813be463aaa82bc6",
+  "runId": "28290684448",
   "deployOutcome": "success",
-  "hrActivationInBody": true,
-  "enActivationInBody": true,
+  "purgeOutcome": "failure",
+  "canonicalHrActivation": true,
+  "canonicalEnActivation": true,
+  "cacheBustedHrActivation": true,
+  "cacheBustedEnActivation": true,
   "theCodeInBody": true,
   "mapInBody": true,
   "filmInBody": true,
@@ -15,7 +18,9 @@
   "fullEnMenu": true,
   "indexActivationHeader": "GNK_ASG_INDEX_ACTIVATION_WRAPPER_V3_20260627",
   "indexMapFilmHeader": "GNK_ASG_INDEX_MAP_FILM_V4_20260627",
-  "indexSourceHeader": "/index.html",
+  "indexCleanHeader": "GNK_ASG_ADMIN_HUB_V26_CLEAN_INDEX_20260627_R2",
+  "indexReleaseHeader": "20260627-live-r2",
+  "cacheControl": "no-store, no-cache, must-revalidate, max-age=0",
   "cfCacheStatus": "HIT",
   "ok": true
 }
