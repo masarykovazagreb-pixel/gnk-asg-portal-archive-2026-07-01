@@ -35,3 +35,38 @@
 #network .location-item b{
   font-weight:900!important;
 }
+
+/* Map fills the current network frame as much as possible. */
+#mreza .map-wrap,
+#network .map-wrap{
+  width:100%!important;
+  max-width:none!important;
+  min-height:860px!important;
+  height:860px!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+
+#mreza .luxury-map,
+#network .luxury-map{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  min-height:100%!important;
+  margin:0!important;
+  transform:scale(1.08)!important;
+  transform-origin:center center!important;
+}
+
+@media(max-width:1100px){
+  #mreza .map-wrap,#network .map-wrap{height:720px!important;min-height:720px!important}
+  #mreza .luxury-map,#network .luxury-map{transform:scale(1.05)!important}
+}
+
+@media(max-width:760px){
+  #mreza .map-wrap,#network .map-wrap{height:580px!important;min-height:580px!important}
+  #mreza .luxury-map,#network .luxury-map{transform:scale(1.03)!important}
+}
