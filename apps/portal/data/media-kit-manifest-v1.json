@@ -1,0 +1,133 @@
+{
+  "version": "GNK_ASG_MEDIA_KIT_V1_20260627",
+  "updatedAt": "2026-06-27T10:30:00Z",
+  "languages": ["hr", "en"],
+  "contact": {
+    "team": "GNK ASG Media Relations",
+    "email": "media@gnk-asg.hr",
+    "applicationPath": "/media-application/",
+    "mediaCenterPath": "/media-kit-2026/"
+  },
+  "event": {
+    "nameHr": "GNK DINAMO Ltd. Group - New York 2026",
+    "nameEn": "GNK DINAMO Ltd. Group - New York 2026",
+    "date": "2026-10-07",
+    "timeLocal": "11:30",
+    "city": "New York",
+    "country": "United States",
+    "access": "INVITATION_ONLY"
+  },
+  "travelPolicy": {
+    "organizerPaysApprovedTravel": true,
+    "organizerPaysAccommodation": true,
+    "ticketPurchaseBeforeWrittenApproval": false,
+    "humanApprovalRequired": true,
+    "passportCopyAcceptedInInitialApplication": false
+  },
+  "kits": [
+    {
+      "id": "corporate",
+      "order": 1,
+      "titleHr": "Korporativni Media Kit 2026",
+      "titleEn": "Corporate Media Kit 2026",
+      "subtitleHr": "Službeni profil grupe, upravljanje, tržišta i ključne poruke.",
+      "subtitleEn": "Official group profile, governance, markets and approved key messages.",
+      "audienceHr": "Poslovni, financijski i međunarodni mediji",
+      "audienceEn": "Business, financial and international media",
+      "accent": "gold",
+      "sections": ["profile", "governance", "markets", "boilerplate", "contacts"]
+    },
+    {
+      "id": "technology",
+      "order": 2,
+      "titleHr": "Technology & Product Media Kit",
+      "titleEn": "Technology & Product Media Kit",
+      "subtitleHr": "Softver, digitalna infrastruktura, sportska tehnologija i sigurni operativni sustavi.",
+      "subtitleEn": "Software, digital infrastructure, sports technology and secure operational systems.",
+      "audienceHr": "Tehnološki, sports-tech i inovacijski mediji",
+      "audienceEn": "Technology, sports-tech and innovation media",
+      "accent": "blue",
+      "sections": ["platform", "products", "security", "roadmap", "contacts"]
+    },
+    {
+      "id": "new-york",
+      "order": 3,
+      "titleHr": "New York 2026 Press Kit",
+      "titleEn": "New York 2026 Press Kit",
+      "subtitleHr": "Poziv, program, putna pravila, akreditacija i službene vizualne smjernice.",
+      "subtitleEn": "Invitation, programme, travel rules, accreditation and official visual guidance.",
+      "audienceHr": "Pozvane redakcije i akreditirani predstavnici",
+      "audienceEn": "Invited newsrooms and accredited representatives",
+      "accent": "green",
+      "sections": ["event", "application", "travel", "accreditation", "assets", "contacts"]
+    }
+  ],
+  "approvedMessages": {
+    "hr": [
+      "GNK ASG razvija povezane poslovne i tehnološke sustave za sport, medije, turizam i digitalne usluge.",
+      "New York aktivacija održava se 7. listopada 2026. u 11:30 po lokalnom vremenu.",
+      "Sudjelovanje medija je isključivo po pozivu i nakon ljudske provjere prijave.",
+      "Za odobrene predstavnike organizator snosi unaprijed odobrene troškove puta i smještaja.",
+      "Avionska karta ne smije se kupiti prije pisanog odobrenja GNK ASG-a."
+    ],
+    "en": [
+      "GNK ASG develops connected business and technology systems for sport, media, tourism and digital services.",
+      "The New York activation takes place on 7 October 2026 at 11:30 local time.",
+      "Media participation is invitation-only and subject to human application verification.",
+      "For approved representatives, the organizer covers pre-approved travel and accommodation costs.",
+      "Airline tickets must not be purchased before written GNK ASG approval."
+    ]
+  },
+  "boilerplate": {
+    "hr": "GNK ASG je međunarodno usmjerena poslovna i tehnološka grupa koja razvija softverske, sportske, medijske, turističke i digitalne operativne sustave. Grupa povezuje razvoj proizvoda, sigurnu infrastrukturu, upravljanje sadržajem i međunarodnu tržišnu aktivaciju.",
+    "en": "GNK ASG is an internationally oriented business and technology group developing software, sports, media, tourism and digital operating systems. The group connects product development, secure infrastructure, content operations and international market activation."
+  },
+  "assets": [
+    {
+      "id": "brand-mark",
+      "labelHr": "Službeni znak GNK ASG",
+      "labelEn": "Official GNK ASG mark",
+      "path": "/favicon.svg",
+      "format": "SVG",
+      "usage": "EDITORIAL_AND_IDENTIFICATION"
+    },
+    {
+      "id": "network-visual",
+      "labelHr": "Globalna mreža - službeni vizual",
+      "labelEn": "Global network - official visual",
+      "path": "/assets/the-code-visual-01.b64",
+      "format": "WEBP_BASE64",
+      "usage": "EDITORIAL"
+    },
+    {
+      "id": "new-york-visual",
+      "labelHr": "New York 2026 - službeni vizual",
+      "labelEn": "New York 2026 - official visual",
+      "path": "/assets/the-code-visual-02.b64",
+      "format": "WEBP_BASE64",
+      "usage": "EDITORIAL"
+    },
+    {
+      "id": "the-code",
+      "labelHr": "THE CODE interaktivna prezentacija",
+      "labelEn": "THE CODE interactive presentation",
+      "path": "/the-code/",
+      "format": "HTML",
+      "usage": "EMBED_AND_REFERENCE"
+    }
+  ],
+  "usageRules": {
+    "hr": [
+      "Vizuali se smiju koristiti u uredničkom kontekstu uz navođenje izvora GNK ASG.",
+      "Nije dopušteno mijenjati logotip, proporcije, boje ili službene poruke.",
+      "Komercijalna uporaba i partnersko označavanje zahtijevaju prethodno pisano odobrenje.",
+      "Financijski, pravni i vlasnički navodi moraju se potvrditi kod Media Relations tima prije objave."
+    ],
+    "en": [
+      "Visuals may be used in an editorial context with GNK ASG credited as the source.",
+      "The logo, proportions, colours and approved messages must not be altered.",
+      "Commercial use and partner designation require prior written approval.",
+      "Financial, legal and ownership statements must be verified with Media Relations before publication."
+    ]
+  }
+}

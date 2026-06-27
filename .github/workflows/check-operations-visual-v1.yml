@@ -1,0 +1,60 @@
+name: Check Operations Visual V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/media-kit-2026/**'
+      - 'apps/portal/assets/media-kit-v1.css'
+      - 'apps/portal/assets/media-kit-v1.js'
+      - 'apps/portal/assets/admin-operations-v1.css'
+      - 'apps/portal/assets/admin-operations-v1.js'
+      - 'apps/portal/tests/operations-suite-visual-v1.mjs'
+      - '.github/workflows/check-operations-visual-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Start static portal
+        shell: bash
+        run: |
+          python3 -m http.server 8787 --directory apps/portal > /tmp/operations-static.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8787/media-kit-2026/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/operations-static.log
+          exit 1
+      - name: Prepare system Chrome
+        working-directory: apps/portal
+        shell: bash
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          test -n "$CHROME"
+          echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
+          "$CHROME" --version
+      - name: Validate Media Kit and Operations Cockpit
+        working-directory: apps/portal
+        env:
+          VISUAL_BASE: http://127.0.0.1:8787
+        run: node tests/operations-suite-visual-v1.mjs
+      - name: Upload visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: operations-suite-visual-v1
+          path: |
+            apps/portal/operations-suite-visual-output
+            /tmp/operations-static.log
+          retention-days: 14
