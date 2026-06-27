@@ -6,7 +6,7 @@ import {
   API_PREFIX as MEDIA_APPLICATION_API
 } from './media-application-portal-v1.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V22_NEWS_V17_MEDIA_APPLICATION_20260627';
+const VERSION='GNK_ASG_ADMIN_HUB_V22_NEWS_V18_ARCHIVE_1000_500_20260627';
 const NEWS_SCHEDULE=['09:00','16:00','21:00'];
 const SOURCE_MIX={global:13,regional:9,croatian:4};
 const MEDIA_UI='/media-command-center';
@@ -20,7 +20,7 @@ async function correctJson(response){
   if(!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   try{
     const payload=await response.json();
-    const corrected={...payload,timeZone:'Europe/Zagreb',newsSchedule:NEWS_SCHEDULE,newsRefreshesPerDay:3,configuredNewsSources:26,sourceMix:SOURCE_MIX,minimumVerifiedLinks:15,activeNewsLimit:100,archivePruneAt:900,archiveDeleteCount:450,archiveRetainAfterPrune:450,archiveHardLimit:1000,newsRuntime:'GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626',contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},mediaApplicationPortal:MEDIA_APPLICATION_VERSION,mediaApplicationRoute:'/media-application/',mediaNotificationMinimum:10,mediaNotificationRefreshSeconds:1800};
+    const corrected={...payload,timeZone:'Europe/Zagreb',newsSchedule:NEWS_SCHEDULE,newsRefreshesPerDay:3,configuredNewsSources:26,sourceMix:SOURCE_MIX,minimumVerifiedLinks:15,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,newsRuntime:'GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627',contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},mediaApplicationPortal:MEDIA_APPLICATION_VERSION,mediaApplicationRoute:'/media-application/',mediaNotificationMinimum:10,mediaNotificationRefreshSeconds:1800};
     const headers=new Headers(response.headers);
     headers.delete('content-length');
     headers.delete('content-encoding');
