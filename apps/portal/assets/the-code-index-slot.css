@@ -1,6 +1,7 @@
 /* GNK ASG — isolated index slot for THE CODE and two-image rotation */
 .gnk-code-slot{
   --code-slot-gold:#d6ad4f;
+  --code-slot-gold-soft:rgba(214,173,79,.14);
   --code-slot-ink:#05080f;
   --code-slot-line:rgba(214,173,79,.24);
   margin:clamp(28px,5vw,72px) 0 0;
@@ -20,8 +21,8 @@
 @keyframes gnkCodeVisualOne{0%,45%{opacity:1;transform:scale(1)}50%,95%{opacity:0;transform:scale(1.012)}100%{opacity:1;transform:scale(1)}}
 @keyframes gnkCodeVisualTwo{0%,45%{opacity:0;transform:scale(1.012)}50%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.012)}}
 .gnk-code-slot__slide img{position:relative;z-index:2;width:100%;height:100%;display:block;object-fit:contain;object-position:center;border-radius:17px;filter:drop-shadow(0 18px 40px rgba(0,0,0,.34))}
-.gnk-code-slot__shade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 32%,rgba(0,0,0,.18) 58%,rgba(0,0,0,.88));pointer-events:none}
-.gnk-code-slot__caption{position:absolute;z-index:3;left:clamp(18px,3vw,34px);right:clamp(18px,3vw,34px);bottom:clamp(18px,3vw,34px)}
+.gnk-code-slot__shade{position:absolute;z-index:3;inset:0;background:linear-gradient(180deg,transparent 32%,rgba(0,0,0,.18) 58%,rgba(0,0,0,.88));pointer-events:none}
+.gnk-code-slot__caption{position:absolute;z-index:4;left:clamp(18px,3vw,34px);right:clamp(18px,3vw,34px);bottom:clamp(18px,3vw,34px)}
 .gnk-code-slot__caption small{display:block;color:var(--code-slot-gold);font:700 10px/1.3 "Courier New",monospace;letter-spacing:.22em;text-transform:uppercase}
 .gnk-code-slot__caption strong{display:block;max-width:720px;margin-top:8px;color:#fff;font:500 clamp(22px,3.2vw,44px)/1.08 Georgia,serif}
 .gnk-code-slot__placeholder{position:absolute;inset:0;z-index:1;display:grid;place-items:center;padding:30px;text-align:center;color:#d9c98e;background:linear-gradient(rgba(214,173,79,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(214,173,79,.04) 1px,transparent 1px),radial-gradient(circle at center,rgba(214,173,79,.12),transparent 55%);background-size:34px 34px,34px 34px,auto}
@@ -29,5 +30,14 @@
 .gnk-code-slot__code{display:grid;place-items:center;padding:0;aspect-ratio:9/16}
 .gnk-code-slot__code iframe,.gnk-code-slot__code object{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
 .gnk-code-slot__badge{position:absolute;z-index:5;right:12px;bottom:12px;border:1px solid rgba(214,173,79,.32);border-radius:999px;background:rgba(0,0,0,.72);color:#e2c56e;padding:7px 10px;font:700 9px/1 "Courier New",monospace;letter-spacing:.16em;text-transform:uppercase;pointer-events:none}
+.gnk-code-slot__media{display:grid;grid-template-columns:1.15fr .9fr .9fr;gap:clamp(14px,2vw,22px);margin-top:clamp(16px,2.4vw,28px)}
+.gnk-code-slot__panel{min-width:0;border:1px solid var(--code-slot-line);border-radius:22px;padding:clamp(18px,2.4vw,28px);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018)),radial-gradient(circle at 16% 0,rgba(214,173,79,.12),transparent 42%);box-shadow:0 18px 50px rgba(0,0,0,.22)}
+.gnk-code-slot__panel--lead{background:linear-gradient(145deg,rgba(214,173,79,.11),rgba(255,255,255,.02)),#050a13}
+.gnk-code-slot__panel h3{margin:0 0 12px;color:#fff;font-size:clamp(20px,2.1vw,30px);line-height:1.12}
+.gnk-code-slot__panel p{margin:10px 0 0;color:var(--muted,#9aa6ba);line-height:1.58}
+.gnk-code-slot__timeline{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.gnk-code-slot__timeline li{position:relative;padding:12px 12px 12px 38px;border:1px solid rgba(214,173,79,.17);border-radius:16px;color:#dfe6f3;background:rgba(0,0,0,.18);line-height:1.45}
+.gnk-code-slot__timeline li::before{content:"";position:absolute;left:14px;top:18px;width:9px;height:9px;border-radius:50%;background:var(--code-slot-gold);box-shadow:0 0 0 5px var(--code-slot-gold-soft)}
+@media(max-width:1060px){.gnk-code-slot__media{grid-template-columns:1fr}.gnk-code-slot__panel--lead{grid-column:auto}}
 @media(max-width:860px){.gnk-code-slot__head{display:block}.gnk-code-slot__head p{margin-top:10px}.gnk-code-slot__grid{grid-template-columns:1fr}.gnk-code-slot__visual{min-height:clamp(320px,65vw,560px)}.gnk-code-slot__code{width:min(100%,390px);justify-self:center}}
 @media(prefers-reduced-motion:reduce){.gnk-code-slot__slide{animation:none;opacity:0;transform:none}.gnk-code-slot__slide:first-child{opacity:1}}
