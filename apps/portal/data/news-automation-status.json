@@ -1,15 +1,58 @@
 {
-  "ok": false,
-  "status": "manual_refresh_retriggered_after_stale_feed_check",
-  "updated_at": "2026-06-27T04:36:02+02:00",
+  "ok": true,
+  "status": "refreshed",
+  "updated_at": "2026-06-27T03:21:43.573Z",
   "engine": "single_publication_engine_v14_isolated_github_action",
   "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
   "timezone": "Europe/Zagreb",
-  "scheduled_hours_local": [9, 16, 21],
+  "scheduled_hours_local": [
+    9,
+    16,
+    21
+  ],
   "public_items_target": 100,
+  "public_items_written": 100,
   "archive_policy": "archive_latest_1000_prune_to_500_when_full",
+  "archive_items_written": 901,
   "rss_images_enabled": true,
   "fallback_image": "/assets/news-fallback.svg",
   "visual_index_fallback": "/visual-index/",
-  "last_checked_issue": "apps/portal/data/news.json is stale; isolated news refresh retriggered by status-only commit without touching public index, DNS, secrets or unrelated modules"
+  "feeds_checked": [
+    {
+      "feed": "https://www.theverge.com/rss/index.xml",
+      "ok": true,
+      "count": 10
+    },
+    {
+      "feed": "https://techcrunch.com/feed/",
+      "ok": true,
+      "count": 20
+    },
+    {
+      "feed": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "ok": true,
+      "count": 41
+    },
+    {
+      "feed": "https://www.reutersagency.com/feed/?best-topics=technology&post_type=best",
+      "ok": false,
+      "count": 0,
+      "error": "404 Not Found"
+    },
+    {
+      "feed": "https://www.nasa.gov/news-release/feed/",
+      "ok": true,
+      "count": 10
+    },
+    {
+      "feed": "https://hnrss.org/frontpage",
+      "ok": true,
+      "count": 20
+    },
+    {
+      "feed": "https://www.espn.com/espn/rss/news",
+      "ok": true,
+      "count": 0
+    }
+  ]
 }
