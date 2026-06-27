@@ -1,0 +1,62 @@
+name: Verify Operations Suite Live V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-operations-suite-live-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Verify live media kits, dashboard assets and index integrity
+        shell: bash
+        run: |
+          node <<'JS'
+          const base='https://gnk-asg.hr';
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          async function get(path){
+            try{
+              const url=`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`;
+              const response=await fetch(url,{redirect:'manual',headers:{'cache-control':'no-cache'}});
+              return{status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)};
+            }catch(error){return{status:0,text:'',headers:{},error:String(error)}}
+          }
+          (async()=>{
+            let last={};
+            for(let attempt=1;attempt<=30;attempt++){
+              const [kit,manifest,kitJs,kitCss,opsJs,opsCss,adminHealth,index,application]=await Promise.all([
+                get('/media-kit-2026/'),get('/data/media-kit-manifest-v1.json'),get('/assets/media-kit-v1.js'),get('/assets/media-kit-v1.css'),get('/assets/admin-operations-v1.js'),get('/assets/admin-operations-v1.css'),get('/assets/admin-center-health-v1.js'),get('/'),get('/api/media-application/config')
+              ]);
+              const failures=[];
+              let data=null;try{data=JSON.parse(manifest.text)}catch{}
+              let applicationData=null;try{applicationData=JSON.parse(application.text)}catch{}
+              if(kit.status!==200||!kit.text.includes('data-media-kit-app="v1"'))failures.push(`kit=${kit.status}`);
+              if(manifest.status!==200||data?.kits?.length!==3)failures.push(`manifest=${manifest.status}`);
+              if(!data?.boilerplate?.hr||!data?.boilerplate?.en)failures.push('manifest_bilingual');
+              if(data?.travelPolicy?.ticketPurchaseBeforeWrittenApproval!==false)failures.push('ticket_policy');
+              if(kitJs.status!==200||!kitJs.text.includes('GNK_ASG_MEDIA_KIT_V1'))failures.push(`kit_js=${kitJs.status}`);
+              if(kitCss.status!==200||!kitCss.text.includes('@media print'))failures.push(`kit_css=${kitCss.status}`);
+              if(opsJs.status!==200||!opsJs.text.includes('EXECUTIVE OPERATIONS COCKPIT'))failures.push(`ops_js=${opsJs.status}`);
+              if(opsCss.status!==200||!opsCss.text.includes('.ops-cockpit'))failures.push(`ops_css=${opsCss.status}`);
+              if(adminHealth.status!==200||!adminHealth.text.includes('admin-operations-v1.js'))failures.push(`admin_loader=${adminHealth.status}`);
+              if(index.status!==200||!index.text.includes('gnk-activation__map')||!index.text.includes('gnk-activation__film'))failures.push(`index=${index.status}`);
+              if(application.status!==200||applicationData?.decision!=='HUMAN_ONLY')failures.push(`application=${application.status}`);
+              last={attempt,failures,codes:{kit:kit.status,manifest:manifest.status,kitJs:kitJs.status,kitCss:kitCss.status,opsJs:opsJs.status,opsCss:opsCss.status,adminHealth:adminHealth.status,index:index.status,application:application.status},mediaKitVersion:data?.version||''};
+              console.log(JSON.stringify(last));
+              if(!failures.length){console.log('GNK_ASG_OPERATIONS_SUITE_LIVE=true');return;}
+              await sleep(10000);
+            }
+            throw new Error(JSON.stringify(last));
+          })().catch(error=>{console.error(error);process.exitCode=1});
+          JS
