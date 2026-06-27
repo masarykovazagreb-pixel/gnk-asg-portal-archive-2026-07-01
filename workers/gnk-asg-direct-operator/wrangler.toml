@@ -1,5 +1,5 @@
 name = "gnk-asg-direct-operator"
-main = "src/index-admin-hub-v24-activation.js"
+main = "src/index-admin-hub-v25-mail-smoke.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
@@ -57,6 +57,7 @@ MAIL_MANUAL_LIVE = "true"
 MAIL_MANDATORY_BCC = "rht@gmx.com"
 MAIL_PROFILE_TEST_LIVE = "true"
 MAIL_PROFILE_TEST_RECIPIENTS = "rht@gmx.com"
+MAIL_BOOTSTRAP_SMOKE_TEST = "true"
 MEDIA_OUTREACH_LIVE = "false"
 MEDIA_OUTREACH_TEST_LIVE = "false"
 MEDIA_APPLICATION_AUTO_ACK = "true"
