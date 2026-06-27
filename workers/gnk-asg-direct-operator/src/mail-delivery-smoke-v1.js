@@ -1,8 +1,8 @@
 import {enforceRequiredSignature,MANDATORY_BCC,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R2';
+export const VERSION='GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3';
 export const PUBLIC_PATH='/data/mail-delivery-health.json';
-const KEY='mail:delivery:smoke:v1';
+const KEY='mail:delivery:smoke:v2';
 const MAX_ATTEMPTS=3;
 const LOCK_STALE_MS=120000;
 const clean=value=>String(value??'').trim();
