@@ -1,16 +1,8 @@
 (() => {
   'use strict';
-  const DEPLOY_FORCE='20260627-1501';
   if (window.__GNK_ASG_GALLERY_BOOTSTRAP__) return;
   window.__GNK_ASG_GALLERY_BOOTSTRAP__ = true;
   const route = location.pathname.replace(/\/+$/, '') || '/';
-
-  const node = (tag,className,text) => {
-    const item=document.createElement(tag);
-    if(className)item.className=className;
-    if(text)item.textContent=text;
-    return item;
-  };
 
   const loadEncodedImage = async (image,placeholder,source,mime) => {
     try {
@@ -23,90 +15,62 @@
       for(let index=0;index<binary.length;index+=1)bytes[index]=binary.charCodeAt(index);
       const objectUrl=URL.createObjectURL(new Blob([bytes],{type:mime}));
       image.addEventListener('load',()=>{
-        placeholder.remove();
+        placeholder?.remove();
         URL.revokeObjectURL(objectUrl);
       },{once:true});
-      image.addEventListener('error',()=>{
-        image.remove();
-        URL.revokeObjectURL(objectUrl);
-      },{once:true});
+      image.addEventListener('error',()=>URL.revokeObjectURL(objectUrl),{once:true});
       image.src=objectUrl;
     } catch (_) {
-      image.remove();
+      if(placeholder)placeholder.textContent=document.documentElement.lang==='en'?'Visual currently unavailable':'Vizual trenutačno nije dostupan';
     }
   };
 
-  const mountCodeShowcase = () => {
-    const main=document.querySelector('main#main,main');
-    if(!main || document.querySelector('.gnk-code-slot'))return;
-    const english=route==='/en';
-
-    if(!document.querySelector('link[href*="the-code-index-slot.css"]')){
-      const css=node('link');
-      css.rel='stylesheet';
-      css.href='/assets/the-code-index-slot.css?v=20260627-static-v1';
-      document.head.appendChild(css);
-    }
-
-    const section=node('section','section gnk-code-slot');
-    section.id='the-code-index';
-    section.setAttribute('aria-label','GNK DINAMO Ltd. — THE CODE and campaign visuals');
-    section.dataset.gnkCodeShowcase='GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627';
-    section.dataset.deployForce=DEPLOY_FORCE;
-
-    const grid=node('div','gnk-code-slot__grid');
-    const visual=node('article','gnk-code-slot__visual');
-    visual.setAttribute('aria-label',english?'Two campaign visuals rotating every ten seconds':'Dva kampanjska vizuala koji se izmjenjuju svakih deset sekundi');
-    const slides=node('div','gnk-code-slot__slides');
-    const visuals=[
-      {
-        source:'/assets/the-code-visual-01.b64?v=20260627-webp1',
-        mime:'image/webp',
-        alt:english?'GNK ASG global network, technology, data and governance':'GNK ASG globalna mreža, tehnologija, podaci i upravljanje'
-      },
-      {
-        source:'/assets/the-code-visual-02.b64?v=20260627-webp1',
-        mime:'image/webp',
-        alt:english?'GNK DINAMO Ltd. Group New York activation on October 7, 2026':'GNK DINAMO Ltd. Group aktivacija u New Yorku 7. listopada 2026.'
-      }
-    ];
-
-    visuals.forEach((item,index)=>{
-      const figure=node('figure','gnk-code-slot__slide');
-      const placeholder=node('div','gnk-code-slot__placeholder');
-      placeholder.appendChild(node('span','',english?'Loading campaign visual…':'Učitavanje kampanjskog vizuala…'));
-      figure.appendChild(placeholder);
-
-      const image=node('img');
-      image.alt=item.alt;
-      image.loading=index?'lazy':'eager';
-      image.decoding='async';
-      figure.appendChild(image);
-      slides.appendChild(figure);
-      loadEncodedImage(image,placeholder,item.source,item.mime);
+  const initActivation = root => {
+    if(!root || root.dataset.runtimeReady==='1')return;
+    root.dataset.runtimeReady='1';
+    root.querySelectorAll('img[data-encoded-source]').forEach(image=>{
+      const slide=image.closest('.gnk-activation__slide');
+      loadEncodedImage(image,slide?.querySelector('.gnk-activation__placeholder'),image.dataset.encodedSource,'image/webp');
     });
 
-    visual.appendChild(slides);
-    grid.appendChild(visual);
+    const target=new Date('2026-10-07T11:30:00-04:00').getTime();
+    const english=document.documentElement.lang==='en';
+    const field=name=>root.querySelector(`[data-countdown="${name}"]`);
+    const daysField=field('days');
+    const hoursField=field('hours');
+    const minutesField=field('minutes');
+    const secondsField=field('seconds');
+    const nyClock=root.querySelector('[data-ny-clock]');
+    const nyDate=root.querySelector('[data-ny-date]');
+    const status=root.querySelector('[data-activation-status]');
+    const pad=value=>String(Math.max(0,Math.floor(value))).padStart(2,'0');
 
-    const code=node('aside','gnk-code-slot__code');
-    code.setAttribute('aria-label','THE CODE interactive presentation');
-    const frame=node('iframe');
-    frame.title='THE CODE — GNK DINAMO Ltd.';
-    frame.src='/the-code/?v=20260627-static-v1';
-    frame.loading='eager';
-    frame.setAttribute('sandbox','allow-scripts');
-    frame.setAttribute('allow','autoplay');
-    frame.setAttribute('scrolling','no');
-    code.appendChild(frame);
-    code.appendChild(node('span','gnk-code-slot__badge','THE CODE · HTML'));
-    grid.appendChild(code);
-    section.appendChild(grid);
-    main.appendChild(section);
+    const update=()=>{
+      const remaining=Math.max(0,target-Date.now());
+      const days=Math.floor(remaining/86400000);
+      const hours=Math.floor((remaining%86400000)/3600000);
+      const minutes=Math.floor((remaining%3600000)/60000);
+      const seconds=Math.floor((remaining%60000)/1000);
+      if(daysField)daysField.textContent=String(days).padStart(2,'0');
+      if(hoursField)hoursField.textContent=pad(hours);
+      if(minutesField)minutesField.textContent=pad(minutes);
+      if(secondsField)secondsField.textContent=pad(seconds);
+      try{
+        const now=new Date();
+        if(nyClock)nyClock.textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);
+        if(nyDate)nyDate.textContent=new Intl.DateTimeFormat(english?'en-US':'hr-HR',{timeZone:'America/New_York',weekday:'short',day:'2-digit',month:'short',year:'numeric'}).format(now);
+      }catch(_){ }
+      if(remaining===0&&status)status.textContent=english?'THE CODE IS ACTIVE · NEW YORK':'THE CODE JE AKTIVIRAN · NEW YORK';
+    };
+
+    update();
+    const timer=setInterval(update,1000);
+    window.addEventListener('pagehide',()=>clearInterval(timer),{once:true});
   };
 
   if(route==='/' || route==='/en'){
-    document.readyState==='loading'?document.addEventListener('DOMContentLoaded',mountCodeShowcase,{once:true}):mountCodeShowcase();
+    const start=()=>initActivation(document.querySelector('[data-gnk-activation]'));
+    document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
     return;
   }
 
