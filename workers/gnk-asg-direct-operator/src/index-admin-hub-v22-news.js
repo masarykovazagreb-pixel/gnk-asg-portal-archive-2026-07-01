@@ -6,7 +6,7 @@ import {
   API_PREFIX as MEDIA_APPLICATION_API
 } from './media-application-portal-v1.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V22_NEWS_V20_EXISTING_FIELDS_20260627';
+const VERSION='GNK_ASG_ADMIN_HUB_V22_NEWS_V21_PUBLIC_CODE_LABEL_20260627';
 const NEWS_SCHEDULE=['09:00','16:00','21:00'];
 const SOURCE_MIX={global:13,regional:9,croatian:4};
 const MEDIA_UI='/media-command-center';
@@ -38,7 +38,7 @@ function existingFieldMarkup(images,english){
   const first=english?'GNK ASG global network, technology, data and governance':'GNK ASG globalna mreža, tehnologija, podaci i upravljanje';
   const second=english?'GNK DINAMO Ltd. Group New York activation':'GNK DINAMO Ltd. Group aktivacija u New Yorku';
   const visuals=`<div id="gnk-existing-visual-stage" data-gnk-existing-field="visuals" aria-label="${english?'Two campaign visuals rotating every ten seconds':'Dva kampanjska vizuala koji se izmjenjuju svakih deset sekundi'}"><div class="gnk-existing-slides"><figure class="gnk-existing-slide"><img src="data:image/webp;base64,${images[0]}" alt="${first}" width="1080" height="1080" loading="eager" decoding="async"></figure><figure class="gnk-existing-slide"><img src="data:image/webp;base64,${images[1]}" alt="${second}" width="1080" height="1080" loading="eager" decoding="async"></figure></div></div>`;
-  const code='<div id="gnk-existing-code-stage" data-gnk-existing-field="the-code" aria-label="THE CODE interactive presentation"><div class="gnk-existing-code-shell"><iframe title="THE CODE — GNK DINAMO Ltd." src="/the-code/?v=20260627-existing-v2" loading="eager" sandbox="allow-scripts" allow="autoplay" scrolling="no"></iframe><span class="gnk-existing-code-badge">THE CODE · HTML</span></div></div>';
+  const code='<div id="gnk-existing-code-stage" data-gnk-existing-field="the-code" aria-label="THE CODE"><div class="gnk-existing-code-shell"><iframe title="THE CODE — GNK DINAMO Ltd." src="/the-code/?v=20260627-existing-v2" loading="eager" sandbox="allow-scripts" allow="autoplay" scrolling="no"></iframe><span class="gnk-existing-code-badge">THE CODE</span></div></div>';
   return{visuals,code};
 }
 
