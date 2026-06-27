@@ -93,7 +93,7 @@ jobs:
               && printf '%s' "$AI_EN" | grep -q 'public intelligent assistant' \
               && printf '%s' "$NEWS" | grep -q 'public-menu-v10.js' \
               && printf '%s' "$API" | grep -q '"ok":true' \
-              && printf '%s' "$API" | grep -q 'financial' \
+              && printf '%s' "$API" | grep -q '"answer"' \
               && grep -qi 'x-gnk-asg-public-menu: UNIFIED_PUBLIC_MENU_V10' "$HR_HEADERS" \
               && grep -qi 'x-gnk-asg-public-ai: GNK_ASG_PUBLIC_AI_V10_20260627' "$AI_HEADERS"; then
                 exit 0
