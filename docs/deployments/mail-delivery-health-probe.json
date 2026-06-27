@@ -1,37 +1,38 @@
 {
   "health": {
-    "httpStatus": 503,
+    "httpStatus": 200,
     "headers": {
       "alt-svc": "h3=\":443\"; ma=86400",
       "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
-      "cf-ray": "a12491ae7afcd164-DFW",
+      "cf-ray": "a1249cfd0e3f6d8d-ORD",
       "connection": "keep-alive",
-      "content-length": "547",
+      "content-encoding": "br",
       "content-type": "application/json; charset=utf-8",
-      "date": "Sat, 27 Jun 2026 12:48:58 GMT",
+      "date": "Sat, 27 Jun 2026 12:56:41 GMT",
       "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-      "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=c9c7vFEHkGrBX6%2BXszJOUGDjMiY1WwkCNW9YYwVUjmNKGcO1b8HF%2FNnnkBPT%2FAIgDPglMUb8EfPKrEYa%2FZEW6HEGdY0RuXlXaY6COsvXFxE9cl494xa72VI%2FaaP%2F\"}]}",
+      "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=XuATYb5%2Bamlcv8L%2FpHTSrXaIos%2BqYWj6EO0DC3I1ID89CnbVJOBFaetqokQi%2BbGTHuzGtEjwGppxy95tn0UllXw1OmDBBjBN9vNRat3WtGxakrmi5mdqqz%2Boj3V5\"}]}",
       "server": "cloudflare",
+      "transfer-encoding": "chunked",
       "x-gnk-asg-admin-hub-v25": "GNK_ASG_ADMIN_HUB_V25_MAIL_SMOKE_20260627_R3",
-      "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R2",
-      "x-gnk-asg-mail-delivery-status": "FAILED"
+      "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
+      "x-gnk-asg-mail-delivery-status": "SENT"
     },
     "data": {
-      "ok": false,
-      "version": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R2",
+      "ok": true,
+      "version": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
       "enabled": true,
       "manualLive": true,
       "emailBindingConfigured": true,
       "mandatoryCopyEnforced": true,
-      "signatureVersion": "GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R7_MANDATORY_BCC",
-      "status": "FAILED",
-      "attempts": 3,
-      "startedAt": "2026-06-27T12:40:17.637Z",
-      "sentAt": null,
-      "checkedAt": "2026-06-27T12:48:58.661Z",
-      "messageIdPresent": false,
-      "errorCode": "E_VALIDATION_ERROR",
-      "errorMessage": "Invalid email address: Missing domain or user"
+      "signatureVersion": "GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R8_SAFE_BCC",
+      "status": "SENT",
+      "attempts": 1,
+      "startedAt": "2026-06-27T12:52:04.426Z",
+      "sentAt": "2026-06-27T12:52:05.937Z",
+      "checkedAt": "2026-06-27T12:56:41.906Z",
+      "messageIdPresent": true,
+      "errorCode": null,
+      "errorMessage": null
     }
   },
   "deployment": {
@@ -39,13 +40,13 @@
     "headers": {
       "alt-svc": "h3=\":443\"; ma=86400",
       "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
-      "cf-ray": "a12491ae6b3f5074-ORD",
+      "cf-ray": "a1249cfd0d1d6780-DFW",
       "connection": "keep-alive",
       "content-encoding": "br",
       "content-type": "application/json; charset=utf-8",
-      "date": "Sat, 27 Jun 2026 12:48:58 GMT",
+      "date": "Sat, 27 Jun 2026 12:56:41 GMT",
       "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-      "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=dqbeX8iGfcHjkMaenPmif2oIdLtYa1w%2B3asKbVr97Y%2BgKUVf8q5DnJahc89ezZ2scCRAQ6GLmuF8uUIJpolyUGSJA12FRUMMjtIY24KEXG5HSAYm3rHYprOL8EVv\"}]}",
+      "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=hRWp9U2Mr0nO18Ln9eO37jrV5c5oaasw3zU5EYPw4rj01UVI8LHBpixdIpbom0ubP5KDBduuL79lP0OvhOjh8QaV2LtEO6UzgCzVGTW%2FHAYqy%2FANY2Qog1nYM4CO\"}]}",
       "server": "cloudflare",
       "transfer-encoding": "chunked",
       "x-content-type-options": "nosniff",
@@ -55,7 +56,7 @@
       "x-gnk-asg-admin-hub-v25": "GNK_ASG_ADMIN_HUB_V25_MAIL_SMOKE_20260627_R3",
       "x-gnk-asg-favicon-contract": "GNK_ASG_FAVICON_CONTRACT_V2_20260626",
       "x-gnk-asg-index-lock": "GNK_ASG_INDEX_LOCK_V4_20260626",
-      "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R2",
+      "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
       "x-gnk-asg-media-application": "GNK_ASG_MEDIA_APPLICATION_PORTAL_V1_20260627"
     },
     "data": {
@@ -119,7 +120,7 @@
         "messageIdRequired": true,
         "actualR2DigestRequired": true
       },
-      "checkedAt": "2026-06-27T12:48:58.637Z",
+      "checkedAt": "2026-06-27T12:56:41.796Z",
       "timeZone": "Europe/Zagreb",
       "newsRefreshesPerDay": 3,
       "configuredNewsSources": 26,
@@ -152,7 +153,7 @@
       "manualMailSending": "LIVE_AUTHENTICATED",
       "manualMailService": "GNK_ASG_MANUAL_MAIL_SERVICE_V1_20260627",
       "manualMailDeliveryHealth": "/data/mail-delivery-health.json",
-      "manualMailSmoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R2",
+      "manualMailSmoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
       "mandatoryInternalCopy": "ENFORCED",
       "signatureContactPolicy": "NO_PHONE_NO_WHATSAPP",
       "mediaBulkSending": "LOCKED"
@@ -163,13 +164,13 @@
     "headers": {
       "alt-svc": "h3=\":443\"; ma=86400",
       "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
-      "cf-ray": "a12491ae6a155843-DFW",
+      "cf-ray": "a1249cfd0e8adc06-ORD",
       "connection": "keep-alive",
       "content-encoding": "br",
       "content-type": "application/json; charset=utf-8",
-      "date": "Sat, 27 Jun 2026 12:48:58 GMT",
+      "date": "Sat, 27 Jun 2026 12:56:41 GMT",
       "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-      "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=THE3ZNXk%2F7bVMrElnADy0nIXY%2F8XqxNoNRF0PA99At0kmUeFh%2BG9geuGKyAGXUrBBS43%2FUdHbv3i%2FBcjM%2Bdy83okjYPe3tNBC7fPY2vlLufHfeOee0PGIup7Bq7X\"}]}",
+      "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=dFs1KKa2WN9BDDQnUw6%2FSWip3lBZMiG476kdqmXMsgaZkzt%2BYLIoYySvOl%2BAoerM%2FSwg9bZnj2cCq9FsuDK61w6ygO18bsHMWwggcPP8nSODkEVPOYV%2F7mtW4vk9\"}]}",
       "server": "cloudflare",
       "transfer-encoding": "chunked",
       "x-content-type-options": "nosniff",
@@ -177,11 +178,11 @@
       "x-gnk-asg-admin-hub-v22": "GNK_ASG_ADMIN_HUB_V22_NEWS_V21_PUBLIC_CODE_LABEL_20260627",
       "x-gnk-asg-admin-hub-v23": "GNK_ASG_ADMIN_HUB_V23_AKTUAL_V2_20260626",
       "x-gnk-asg-admin-hub-v25": "GNK_ASG_ADMIN_HUB_V25_MAIL_SMOKE_20260627_R3",
-      "x-gnk-asg-email-signature-contract": "GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R7_MANDATORY_BCC",
+      "x-gnk-asg-email-signature-contract": "GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R8_SAFE_BCC",
       "x-gnk-asg-favicon-contract": "GNK_ASG_FAVICON_CONTRACT_V2_20260626",
       "x-gnk-asg-index-hydration": "GNK_ASG_INDEX_SERVER_HYDRATION_V1_20260626",
       "x-gnk-asg-index-lock": "GNK_ASG_INDEX_LOCK_V4_20260626",
-      "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R2",
+      "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
       "x-gnk-asg-media-application": "GNK_ASG_MEDIA_APPLICATION_PORTAL_V1_20260627",
       "x-gnk-asg-media-command-wrapper": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V20_20260626",
       "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R9_SMS",
@@ -241,7 +242,7 @@
       "contactImport": "HASH_LOCKED_V3",
       "mediaDelivery": "GNK_ASG_MEDIA_OUTREACH_DELIVERY_V5_20260626_INTERNAL_TEST_GATE",
       "mediaSms": "GNK_ASG_MEDIA_SMS_V1_20260626_DRY_RUN",
-      "emailSignatureContract": "GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R7_MANDATORY_BCC",
+      "emailSignatureContract": "GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R8_SAFE_BCC",
       "newsSchedule": [
         "09:00",
         "16:00",
@@ -278,7 +279,7 @@
       "indexCodeRoute": "/the-code/"
     }
   },
-  "probedAt": "2026-06-27T12:48:58.677Z",
-  "runId": "28289638263",
-  "commit": "b1a45dee67ea94a4846d0d980f89be425b7176db"
+  "probedAt": "2026-06-27T12:56:41.920Z",
+  "runId": "28289820515",
+  "commit": "9534e4535382e92c726e00530f5fc880e0c375fb"
 }
