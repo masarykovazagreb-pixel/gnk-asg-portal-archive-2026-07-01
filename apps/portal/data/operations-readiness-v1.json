@@ -1,0 +1,113 @@
+{
+  "version": "GNK_ASG_OPERATIONS_READINESS_V1_20260627",
+  "updatedAt": "2026-06-27T10:30:00Z",
+  "objective": "Operational readiness for media outreach, newsroom applications, travel approval and New York 2026 activation.",
+  "milestones": [
+    {
+      "id": "technical-readiness",
+      "date": "2026-06-27",
+      "titleHr": "Tehnička i sadržajna spremnost",
+      "titleEn": "Technical and content readiness",
+      "required": true
+    },
+    {
+      "id": "application-deadline",
+      "date": "2026-07-20T21:59:59Z",
+      "titleHr": "Zaključenje prijava redakcija",
+      "titleEn": "Newsroom application deadline",
+      "required": true
+    },
+    {
+      "id": "new-york-activation",
+      "date": "2026-10-07T15:30:00Z",
+      "titleHr": "New York aktivacija",
+      "titleEn": "New York activation",
+      "required": true
+    }
+  ],
+  "workstreams": [
+    {
+      "id": "media-kits",
+      "owner": "Media Relations",
+      "titleHr": "Media kitovi i službene poruke",
+      "titleEn": "Media kits and approved messaging",
+      "status": "READY_FOR_REVIEW",
+      "gates": [
+        "Corporate kit published",
+        "Technology kit published",
+        "New York 2026 press kit published",
+        "HR and EN copy verified",
+        "Visual usage rules published",
+        "Official contact and source attribution visible"
+      ]
+    },
+    {
+      "id": "newsroom-applications",
+      "owner": "Media Command",
+      "titleHr": "Prijave i ljudske odluke",
+      "titleEn": "Applications and human decisions",
+      "status": "ACTIVE",
+      "gates": [
+        "Invitation code validated",
+        "Assignment letter received",
+        "Professional credential received",
+        "Travel preferences recorded",
+        "Human decision recorded",
+        "Acknowledgement sent"
+      ]
+    },
+    {
+      "id": "travel",
+      "owner": "Operations",
+      "titleHr": "Put i smještaj",
+      "titleEn": "Travel and accommodation",
+      "status": "CONTROLLED",
+      "gates": [
+        "No ticket purchased before written approval",
+        "Approved airport and dates recorded",
+        "Flight option or quotation reviewed",
+        "Accommodation assigned",
+        "Final itinerary delivered",
+        "Cancellation responsibility documented"
+      ]
+    },
+    {
+      "id": "outreach",
+      "owner": "Media Relations",
+      "titleHr": "Pozivi i slanje",
+      "titleEn": "Invitations and delivery",
+      "status": "LOCKED_PENDING_FINAL_APPROVAL",
+      "gates": [
+        "Recipient verified",
+        "Official newsroom channel verified",
+        "Contact manually approved",
+        "Suppression check passed",
+        "Message preview approved",
+        "Rate limit confirmed"
+      ]
+    },
+    {
+      "id": "governance",
+      "owner": "Admin",
+      "titleHr": "Upravljanje i dokazni trag",
+      "titleEn": "Governance and audit trail",
+      "status": "ACTIVE",
+      "gates": [
+        "Checkpoint branch exists",
+        "Production changes pass CI",
+        "Human decisions are immutable events",
+        "Sensitive documents use secure storage",
+        "Public and admin surfaces remain separated",
+        "Rollback reference documented"
+      ]
+    }
+  ],
+  "nonNegotiableRules": [
+    "Human approval is required for newsroom participation.",
+    "Airline tickets must not be purchased before written approval.",
+    "Passport copies are not accepted through ordinary email or the initial form.",
+    "Production outreach remains locked until explicit final approval.",
+    "Financial, legal and ownership statements require source-document verification.",
+    "All operational changes require a rollback checkpoint and validation evidence."
+  ]
+}

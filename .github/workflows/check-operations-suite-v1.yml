@@ -1,0 +1,78 @@
+name: Check Operations Suite V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/media-kit-2026/**'
+      - 'apps/portal/assets/media-kit-v1.css'
+      - 'apps/portal/assets/media-kit-v1.js'
+      - 'apps/portal/assets/admin-operations-v1.css'
+      - 'apps/portal/assets/admin-operations-v1.js'
+      - 'apps/portal/assets/admin-center-health-v1.js'
+      - 'apps/portal/data/media-kit-manifest-v1.json'
+      - 'apps/portal/data/operations-readiness-v1.json'
+      - '.github/workflows/check-operations-suite-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate JavaScript and JSON
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/media-kit-v1.js
+          node --check apps/portal/assets/admin-operations-v1.js
+          node --check apps/portal/assets/admin-center-health-v1.js
+          node -e "const fs=require('fs');const kit=JSON.parse(fs.readFileSync('apps/portal/data/media-kit-manifest-v1.json'));if(kit.kits.length!==3)throw new Error('Expected three media kits');if(!kit.boilerplate.hr||!kit.boilerplate.en)throw new Error('Missing bilingual boilerplate');const ops=JSON.parse(fs.readFileSync('apps/portal/data/operations-readiness-v1.json'));if(ops.workstreams.length<5)throw new Error('Readiness model incomplete');"
+      - name: Verify business and design contract
+        shell: bash
+        run: |
+          set -euxo pipefail
+          test -s apps/portal/media-kit-2026/index.html
+          test -s apps/portal/assets/media-kit-v1.css
+          test -s apps/portal/assets/admin-operations-v1.css
+          grep -q 'data-media-kit-app="v1"' apps/portal/media-kit-2026/index.html
+          grep -q 'media-kit-manifest-v1.json' apps/portal/assets/media-kit-v1.js
+          grep -q 'Corporate Media Kit 2026' apps/portal/data/media-kit-manifest-v1.json
+          grep -q 'Technology & Product Media Kit' apps/portal/data/media-kit-manifest-v1.json
+          grep -q 'New York 2026 Press Kit' apps/portal/data/media-kit-manifest-v1.json
+          grep -q 'ticketPurchaseBeforeWrittenApproval' apps/portal/data/media-kit-manifest-v1.json
+          grep -q 'humanApprovalRequired' apps/portal/data/media-kit-manifest-v1.json
+          grep -q 'EXECUTIVE OPERATIONS COCKPIT' apps/portal/assets/admin-operations-v1.js
+          grep -q '30 \* 60 \* 1000' apps/portal/assets/admin-operations-v1.js
+          grep -q '@media print' apps/portal/assets/media-kit-v1.css
+          grep -q 'admin-operations-v1.js' apps/portal/assets/admin-center-health-v1.js
+      - name: Protect public index and delivery lock
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euxo pipefail
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/src/public-shell-v11\.js|workers/gnk-asg-direct-operator/src/index-lock-v4\.js)$'; then
+            echo 'Protected public index surface changed.' >&2
+            exit 1
+          fi
+          if git diff "$BASE_SHA" "$HEAD_SHA" -- workers/gnk-asg-direct-operator/wrangler.toml | grep -E '^\+MEDIA_OUTREACH_LIVE = "true"'; then
+            echo 'Production outreach must remain locked.' >&2
+            exit 1
+          fi
+      - name: Worker dry run
+        working-directory: workers/gnk-asg-direct-operator
+        shell: bash
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
