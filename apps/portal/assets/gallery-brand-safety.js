@@ -16,10 +16,50 @@
     }, true);
   }
 
+  function installFinancialDownloads() {
+    const english = document.documentElement.lang === 'en';
+    const cards = [...document.querySelectorAll('.finance-card')];
+    if (cards.length < 2) return;
+
+    const documents = [
+      {
+        href: 'https://slack-files.com/T09TWLX939S-F0BDRGDEMM2-14452d88c0',
+        label: english ? 'Download audited PDF' : 'Preuzmi revidirani PDF',
+        title: english ? 'GNK ASG d.o.o. audited financial statements 2025' : 'GNK ASG d.o.o. — revidirani financijski izvještaji 2025.'
+      },
+      {
+        href: 'https://slack-files.com/T09TWLX939S-F0BDKQN24S2-89cea5c4d1',
+        label: english ? 'Download consolidated PDF' : 'Preuzmi konsolidirani PDF',
+        title: english ? 'GNK DINAMO Ltd. consolidated financial report 2025' : 'GNK DINAMO Ltd. — konsolidirani financijski izvještaj 2025.'
+      }
+    ];
+
+    cards.slice(0, 2).forEach((card, index) => {
+      if (card.querySelector('[data-finance-pdf]')) return;
+      const actions = document.createElement('div');
+      actions.className = 'card-actions';
+      const link = document.createElement('a');
+      link.className = 'lux-button primary';
+      link.dataset.financePdf = String(index + 1);
+      link.href = documents[index].href;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.download = '';
+      link.title = documents[index].title;
+      link.textContent = documents[index].label;
+      actions.appendChild(link);
+      card.appendChild(actions);
+    });
+  }
+
   if (route === '/' || route === '/en') {
     installIndexLogoGuard();
+    const start = () => installFinancialDownloads();
+    document.readyState === 'loading'
+      ? document.addEventListener('DOMContentLoaded',start,{once:true})
+      : start();
     window.GNK_ASG_BRAND_SAFETY = {
-      version: '2026-06-26-index-isolated',
+      version: '2026-06-27-index-finance-pdf',
       prohibited: () => false,
       check: () => {}
     };
