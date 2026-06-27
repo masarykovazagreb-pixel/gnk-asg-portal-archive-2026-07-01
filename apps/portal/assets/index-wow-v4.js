@@ -194,3 +194,72 @@
     });
   }
 })();
+
+(()=>{
+  'use strict';
+  const style=document.createElement('link');
+  style.rel='stylesheet';
+  style.href='/assets/index-readability-v6.css?v=20260627-v6';
+  style.dataset.indexReadability='v6';
+  if(!document.querySelector('[data-index-readability="v6"]'))document.head.appendChild(style);
+
+  const iframe=document.getElementById('codePreview');
+  const button=document.querySelector('.code-launch-button');
+  if(!iframe||!button)return;
+
+  const en=document.documentElement.lang==='en';
+  let pending=false;
+  let playing=false;
+  let retries=0;
+  let timer=0;
+
+  const setButton=state=>{
+    if(state==='playing'){
+      playing=true;
+      pending=false;
+      clearTimeout(timer);
+      button.disabled=true;
+      button.classList.remove('is-complete');
+      button.textContent=en?'Presentation running':'Prezentacija traje';
+      return;
+    }
+    playing=false;
+    button.disabled=false;
+    button.classList.toggle('is-complete',state==='complete');
+    button.textContent=state==='complete'?(en?'Replay presentation':'Ponovno pokreni'):(en?'Start presentation':'Pokreni prezentaciju');
+  };
+
+  const sendStart=()=>{
+    if(!pending||playing)return;
+    iframe.contentWindow?.postMessage({type:'gnk-code-start',source:'index-v6'},'*');
+    retries+=1;
+    if(retries<20)timer=window.setTimeout(sendStart,250);
+    else{
+      pending=false;
+      button.disabled=false;
+      button.textContent=en?'Try again':'Pokušaj ponovno';
+    }
+  };
+
+  button.addEventListener('click',event=>{
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    pending=true;
+    playing=false;
+    retries=0;
+    clearTimeout(timer);
+    button.disabled=true;
+    button.classList.remove('is-complete');
+    button.textContent=en?'Starting presentation':'Pokretanje prezentacije';
+    sendStart();
+  },true);
+
+  iframe.addEventListener('load',()=>{
+    if(pending){retries=0;sendStart();}
+  });
+
+  window.addEventListener('message',event=>{
+    if(event.source!==iframe.contentWindow||event.data?.type!=='gnk-code-playback')return;
+    setButton(event.data.state);
+  });
+})();
