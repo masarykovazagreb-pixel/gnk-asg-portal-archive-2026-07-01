@@ -1,5 +1,5 @@
 name = "gnk-asg-direct-operator"
-main = "src/index-admin-hub-v26-clean-index-v21-preview.js"
+main = "src/index-admin-hub-v27-news-status.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
@@ -113,6 +113,9 @@ bucket_name = "gnk-asg-media-assets"
 name = "EMAIL"
 remote = true
 
+[triggers]
+crons = ["*/5 * * * *"]
+
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
@@ -122,4 +125,4 @@ MAIL_MANUAL_LIVE = "true"
 MAIL_MANDATORY_BCC = "rht@gmx.com"
 MAIL_PROFILE_TEST_LIVE = "true"
 MAIL_PROFILE_TEST_RECIPIENTS = "rht@gmx.com"
-MAIL_BOOTSTRAP_SMOKE_TEST = "true"
+MAIL_BOOTSTRAP_SMOKE_TEST = "true"}
