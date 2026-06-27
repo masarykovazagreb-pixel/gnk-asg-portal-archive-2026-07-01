@@ -1,0 +1,108 @@
+name: Verify production mail delivery V1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-mail-delivery-v1.yml'
+      - 'workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-delivery-smoke-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v25-mail-smoke.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
+      - 'apps/portal/assets/mail-studio-delivery-policy-v1.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-mail-delivery-verification
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Validate mail package
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-delivery-smoke-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v25-mail-smoke.js
+          node --check apps/portal/assets/mail-studio-delivery-policy-v1.js
+          grep -q 'main = "src/index-admin-hub-v25-mail-smoke.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MAIL_MANUAL_LIVE = "true"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MAIL_BOOTSTRAP_SMOKE_TEST = "true"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MANDATORY_BCC' workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+
+      - name: Wait for real production delivery proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'JS'
+          const fs=require('node:fs');
+          const endpoint='https://gnk-asg.hr/data/mail-delivery-health.json';
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          (async()=>{
+            let last={ok:false,status:'UNREACHABLE'};
+            for(let attempt=1;attempt<=90;attempt++){
+              try{
+                const response=await fetch(`${endpoint}?cb=${process.env.GITHUB_RUN_ID}-${Date.now()}`,{headers:{'cache-control':'no-cache'}});
+                const text=await response.text();
+                let data={};
+                try{data=JSON.parse(text)}catch{data={ok:false,status:'INVALID_JSON',body:text.slice(0,500)}}
+                last={...data,httpStatus:response.status,attempt,verifiedAt:new Date().toISOString(),commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID};
+                console.log(JSON.stringify(last));
+                if(response.status===200&&data.ok===true&&data.status==='SENT'&&data.emailBindingConfigured===true&&data.mandatoryCopyEnforced===true){
+                  fs.mkdirSync('/tmp/gnk-mail',{recursive:true});
+                  fs.writeFileSync('/tmp/gnk-mail/health.json',JSON.stringify(last,null,2));
+                  process.exit(0);
+                }
+              }catch(error){
+                last={ok:false,status:'FETCH_FAILED',error:String(error),attempt,verifiedAt:new Date().toISOString(),commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID};
+                console.log(JSON.stringify(last));
+              }
+              await sleep(10000);
+            }
+            fs.mkdirSync('/tmp/gnk-mail',{recursive:true});
+            fs.writeFileSync('/tmp/gnk-mail/health.json',JSON.stringify(last,null,2));
+            process.exit(1);
+          })().catch(error=>{console.error(error);process.exit(1)});
+          JS
+
+      - name: Record delivery evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -s /tmp/gnk-mail/health.json ]; then
+            mkdir -p /tmp/gnk-mail
+            printf '{"ok":false,"status":"REPORT_MISSING","commit":"%s","runId":"%s"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > /tmp/gnk-mail/health.json
+          fi
+          CONTENT=$(base64 -w0 /tmp/gnk-mail/health.json)
+          CURRENT_SHA=$(gh api "repos/${GITHUB_REPOSITORY}/contents/docs/deployments/mail-delivery-health-v1.json?ref=main" --jq '.sha' 2>/dev/null || true)
+          if [ -n "$CURRENT_SHA" ]; then
+            gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/docs/deployments/mail-delivery-health-v1.json" \
+              -f message='chore(mail): record production delivery proof [skip ci]' \
+              -f content="$CONTENT" -f sha="$CURRENT_SHA" -f branch='main'
+          else
+            gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/docs/deployments/mail-delivery-health-v1.json" \
+              -f message='chore(mail): record production delivery proof [skip ci]' \
+              -f content="$CONTENT" -f branch='main'
+          fi
