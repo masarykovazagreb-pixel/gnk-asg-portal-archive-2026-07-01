@@ -43,8 +43,8 @@ async function loadShowcaseAssets(request,env){
 
 function showcaseMarkup(images,english){
   const altOne=english
-    ?'GNK ASG global network, advanced sport, technology and governance'
-    :'GNK ASG globalna mreža, napredni sport, tehnologija i upravljanje';
+    ?'GNK ASG global network, technology, data and governance'
+    :'GNK ASG globalna mreža, tehnologija, podaci i upravljanje';
   const altTwo=english
     ?'GNK DINAMO Ltd. Group New York activation on October 7, 2026'
     :'GNK DINAMO Ltd. Group aktivacija u New Yorku 7. listopada 2026.';
