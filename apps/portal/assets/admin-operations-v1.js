@@ -5,7 +5,6 @@
 
   const endpoints = {
     media: '/api/media-command-center/status',
-    applications: '/api/media-command-center/applications?limit=25',
     kit: '/data/media-kit-manifest-v1.json',
     application: '/api/media-application/config',
     portal: '/data/portal-version.json'
@@ -32,6 +31,11 @@
 
   function daysUntil(value) {
     return Math.max(0, Math.ceil((Date.parse(value) - Date.now()) / 86400000));
+  }
+
+  function count(value) {
+    const number = Number(value);
+    return Number.isFinite(number) && number > 0 ? Math.floor(number) : 0;
   }
 
   function card(label, value, detail, primary = false) {
@@ -64,13 +68,17 @@
   }
 
   function render() {
-    const media = state.data.media?.data || {};
+    const mediaResponse = state.data.media || {};
+    const media = mediaResponse.data || {};
     const kit = state.data.kit?.data || null;
-    const applications = state.data.applications?.data?.applications || [];
     const readiness = media.readiness || {};
     const bindings = media.bindings || {};
-    const pending = applications.filter(item => !item.humanDecision || item.humanDecision === 'PENDING').length;
-    const approved = applications.filter(item => item.humanDecision === 'APPROVED').length;
+    const applications = media.applications || {};
+    const totalApplications = count(applications.total);
+    const approvedApplications = count(applications.approved);
+    const readyApplications = count(applications.ready);
+    const incompleteApplications = count(applications.incomplete);
+    const lateApplications = count(applications.late);
     const checks = [
       state.data.portal?.ok,
       Boolean(kit?.version),
@@ -81,13 +89,14 @@
     ];
     const score = Math.round(checks.filter(Boolean).length / checks.length * 100);
     const content = document.getElementById('opsContent');
+    if (!content) return;
     content.className = '';
 
     const scores = make('div', 'ops-score-grid');
     scores.append(
       card('Operativna spremnost', `${score}%`, score >= 90 ? 'Sustav je spreman za završnu operativnu fazu.' : 'Potrebne su ciljane završne provjere.', true),
-      card('Media kontakti', `${readiness.ready || 0}/${media.contacts?.total || 0}`, 'Operativno spremni / ukupno'),
-      card('Prijave', String(pending), `${approved} odobreno`),
+      card('Media kontakti', `${count(readiness.ready)}/${count(media.contacts?.total)}`, 'Operativno spremni / ukupno'),
+      card('Prijave', String(totalApplications), `${approvedApplications} odobreno · ${readyApplications} spremno za provjeru`),
       card('Rok prijave', `${daysUntil('2026-07-20T21:59:59Z')} d`, '20. srpnja 2026.'),
       card('New York', `${daysUntil('2026-10-07T15:30:00Z')} d`, '7. listopada 2026. · 11:30')
     );
@@ -103,6 +112,7 @@
       gate('Javni portal', state.data.portal?.ok ? 'Verzijski endpoint odgovara.' : 'Endpoint nije dostupan.', state.data.portal?.ok ? 'ok' : 'bad', state.data.portal?.ok ? 'SPREMNO' : 'GREŠKA'),
       gate('Media Kit Center', kit?.version ? `${kit.kits?.length || 0} profesionalna paketa.` : 'Manifest nije dostupan.', kit?.version ? 'ok' : 'bad', kit?.version ? 'OBJAVLJENO' : 'NEDOSTAJE'),
       gate('Prijavno sučelje', state.data.application?.ok ? 'Human-only odluka i putna pravila aktivni.' : 'Konfiguracija nije dostupna.', state.data.application?.ok ? 'ok' : 'bad', state.data.application?.ok ? 'AKTIVNO' : 'GREŠKA'),
+      gate('Prijavni red', mediaResponse.ok ? `${readyApplications} spremno · ${incompleteApplications} nepotpuno · ${lateApplications} zakašnjelo.` : 'Status prijava nije dostupan.', mediaResponse.ok ? 'ok' : 'bad', mediaResponse.ok ? `${totalApplications} UKUPNO` : 'GREŠKA'),
       gate('Podaci i dokumenti', bindings.d1 && bindings.r2 ? 'D1 i R2 su povezani.' : 'Provjerite D1/R2.', bindings.d1 && bindings.r2 ? 'ok' : 'bad', bindings.d1 && bindings.r2 ? 'SPREMNO' : 'PROVJERA'),
       gate('Produkcijsko slanje', media.live ? 'LIVE način je uključen.' : 'Sigurno zaključano do odobrenja.', media.live ? 'warn' : 'ok', media.live ? 'LIVE' : 'ZAKLJUČANO')
     );
@@ -127,6 +137,7 @@
     foot.append(
       make('span', '', `Zadnje osvježavanje: ${state.refreshed?.toLocaleTimeString('hr-HR') || '—'}`),
       make('span', '', 'Automatska provjera: svakih 30 min'),
+      make('span', '', `Prijave: ${totalApplications} ukupno · ${approvedApplications} odobreno`),
       make('span', '', `Media Kit: ${kit?.version || 'NEDOSTUPAN'}`)
     );
     content.replaceChildren(scores, layout, foot);
