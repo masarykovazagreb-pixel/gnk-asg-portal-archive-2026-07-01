@@ -52,6 +52,8 @@ jobs:
           grep -q 'ticketPurchaseBeforeWrittenApproval' apps/portal/data/media-kit-manifest-v1.json
           grep -q 'humanApprovalRequired' apps/portal/data/media-kit-manifest-v1.json
           grep -q 'EXECUTIVE OPERATIONS COCKPIT' apps/portal/assets/admin-operations-v1.js
+          grep -q 'media.applications' apps/portal/assets/admin-operations-v1.js
+          ! grep -q 'applications?limit=25' apps/portal/assets/admin-operations-v1.js
           grep -q '30 \* 60 \* 1000' apps/portal/assets/admin-operations-v1.js
           grep -q '@media print' apps/portal/assets/media-kit-v1.css
           grep -q 'admin-operations-v1.js' apps/portal/assets/admin-center-health-v1.js
