@@ -6,13 +6,13 @@
   <title>Project 50 | GNK ASG & GNK DINAMO Ltd. Group</title>
   <meta name="description" content="Kontrolna HTML verzija nove poslovne stranice GNK ASG d.o.o. i GNK DINAMO Ltd. Group.">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta name="theme-color" content="#05070f">
-  <link rel="stylesheet" href="./styles.css?v=20260628-v2">
-  <script defer src="./app.js?v=20260628-v2"></script>
+  <meta name="theme-color" content="#fffdf8">
+  <link rel="stylesheet" href="./styles.css?v=20260628-v3">
+  <script defer src="./app.js?v=20260628-v3"></script>
 </head>
 <body>
   <div class="page-shell">
-    <header class="site-header surface" id="top">
+    <header class="site-header" id="top">
       <div class="brand-pair" aria-label="GNK ASG i GNK DINAMO Ltd. Group">
         <a class="brand-lockup" href="#profile" aria-label="GNK ASG d.o.o.">
           <span class="brand-lockup__seal" aria-hidden="true">A</span>
@@ -43,7 +43,7 @@
     </header>
 
     <main>
-      <section class="hero surface" id="profile">
+      <section class="hero" id="profile">
         <div class="hero__route"><span></span>BUDAPEST · ZAGREB · BOULDER · NEW YORK<span></span></div>
         <p class="eyebrow" data-i18n="heroEyebrow">GNK ASG d.o.o. & GNK DINAMO Ltd. Group</p>
         <h1 data-i18n="heroTitle">Jedna grupa.<br>Jedna jasna slika.</h1>
@@ -55,11 +55,12 @@
         </div>
       </section>
 
-      <section class="code-section surface section" id="code">
+      <section class="code-section section" id="code">
         <div class="code-intro">
           <div>
             <span class="eyebrow" data-i18n="codeEyebrow">Središnji interaktivni modul</span>
             <h2>THE CODE</h2>
+            <p class="code-live"><i></i><span data-i18n="livePresentation">HTML prezentacija uživo · šest scena</span></p>
           </div>
           <div class="code-intro__meta"><b data-i18n="activationLabel">Aktivacija</b><span id="activationLine">7. listopada 2026. · 11:30 AM · New York ET</span></div>
         </div>
@@ -79,12 +80,94 @@
 
           <div class="code-centre">
             <div class="code-player-shell" id="codePlayerShell">
-              <iframe class="code-player" id="codePlayer" src="/the-code/?embed=1&amp;v=22" title="THE CODE presentation" loading="eager" allow="autoplay; fullscreen" referrerpolicy="same-origin" scrolling="no"></iframe>
-            </div>
-            <div class="code-controls" aria-label="Kontrole prezentacije">
-              <button class="code-control code-control--primary" id="playCode" type="button" data-i18n="playCode">▶ Pokreni</button>
-              <button class="code-control" id="soundCode" type="button" aria-pressed="false" data-i18n="soundOff">♫ Zvuk: isključen</button>
-              <button class="code-control" id="fullscreenCode" type="button" data-i18n="fullscreen">Cijeli zaslon</button>
+              <div class="code-controls" aria-label="Kontrole prezentacije">
+                <button class="code-control code-control--primary" id="playCode" type="button" data-i18n="playCode">▶ Pokreni</button>
+                <button class="code-control" id="soundCode" type="button" aria-pressed="false" data-i18n="soundOff">♫ Zvuk: isključen</button>
+                <button class="code-control" id="countdownCode" type="button" data-i18n="countdown">◷ Odbrojavanje</button>
+                <button class="code-control" id="fullscreenCode" type="button" data-i18n="fullscreen">Cijeli zaslon</button>
+              </div>
+
+              <div class="code-player" id="codePlayer">
+                <section class="code-scene is-active" data-scene="0">
+                  <span class="scene-kicker">Boulder · Colorado · USA</span>
+                  <span class="scene-coordinates">40°0'56"N · 105°16'30"W</span>
+                  <blockquote>“From a single room<br>in Colorado —<br><em>we moved<br>every continent.</em>”</blockquote>
+                  <span class="scene-line"></span>
+                  <small>GNK DINAMO Ltd. · Boulder CO 80302<br>EIN: 36-5127187 · Entity: 20238180649</small>
+                  <div class="scene-progress"><i></i></div>
+                </section>
+
+                <section class="code-scene" data-scene="1">
+                  <span class="scene-kicker">Activation · Initialization</span>
+                  <div class="terminal-box">
+                    <p class="done">SYSTEM ONLINE ✓</p>
+                    <p class="done">AUTHORIZATION: N. SEFIĆ ✓</p>
+                    <p class="done">ACQUISITION: APPROVED ✓</p>
+                    <p class="active">UNLOCKING THE CODE...</p>
+                    <p>ACTIVATION: 45 ENTITIES</p>
+                    <p>DEPLOY → ALL CONTINENTS</p>
+                    <p>NEW YORK · 7 OCTOBER 2026 · 11:30</p>
+                    <p>STATUS: ██████████ 100%</p>
+                  </div>
+                  <blockquote>“One keystroke.<br><em>The entire world<br>lights up.</em>”</blockquote>
+                  <div class="scene-progress"><i></i></div>
+                </section>
+
+                <section class="code-scene" data-scene="2">
+                  <span class="scene-kicker">Financial Strength · GNK DINAMO Ltd. Group</span>
+                  <div class="scene-financials">
+                    <article><small>Group Revenue</small><strong>€4.70B</strong><span>2025 · consolidated</span></article>
+                    <article><small>Net Profit</small><strong>€982.48M</strong><span>FY 2025</span></article>
+                    <article><small>Equity Ratio</small><strong>98.02%</strong><span>Own capital</span></article>
+                    <article><small>Long-term Debt</small><strong>€0.00</strong><span>Zero leverage</span></article>
+                    <article><small>HR Revenue 2025</small><strong>€504M</strong><span>GNK ASG d.o.o.</span></article>
+                    <article><small>Group Entities</small><strong>45</strong><span>5 continents</span></article>
+                  </div>
+                  <blockquote class="scene-quote-small">“Acquisition led through <em>GNK DINAMO Ltd. Group</em> — clean, precise, zero external debt.”</blockquote>
+                  <div class="scene-progress"><i></i></div>
+                </section>
+
+                <section class="code-scene" data-scene="3">
+                  <span class="scene-kicker">Signal Spreading · 45 Entities · 5 Continents</span>
+                  <div class="continent-dots"><span>Europe</span><span>N. America</span><span>Asia</span><span>M. East</span><span>S. America</span><span>Africa</span></div>
+                  <blockquote>“We don't fly to space.<br>We don't chase stars.<br><em>We are in your car.<br>In your home.<br>On your road.<br>On Earth — with you.</em>”</blockquote>
+                  <small>CAR · HOME · PHONE · TV · ROAD · OFFICE</small>
+                  <div class="scene-progress"><i></i></div>
+                </section>
+
+                <section class="code-scene" data-scene="4">
+                  <span class="scene-kicker">New York · October 7, 2026</span>
+                  <span class="scene-activation">Code Activation</span>
+                  <h4>NOTHING<br>WILL EVER<br>BE THE SAME.</h4>
+                  <blockquote class="scene-quote-small">“October 7, 2026. 11:30 AM — New York. <em>The code activates. The entire world becomes our home.</em>”</blockquote>
+                  <small>Boulder → Zagreb → New York → Earth</small>
+                  <div class="scene-progress"><i></i></div>
+                </section>
+
+                <section class="code-scene code-scene--countdown" data-scene="5">
+                  <span class="scene-kicker">Press Conference · Code Activation</span>
+                  <span class="scene-activation">New York · October 7, 2026 · 11:30 AM ET</span>
+                  <div class="new-york-clock"><small>New York · Live</small><strong id="nyTime">--:--:--</strong><span id="nyDate">--</span></div>
+                  <div class="world-clocks">
+                    <article><small>Zagreb</small><strong id="zgTime">--:--</strong></article>
+                    <article><small>London</small><strong id="lonTime">--:--</strong></article>
+                    <article><small>Dubai</small><strong id="dxbTime">--:--</strong></article>
+                    <article><small>Tokyo</small><strong id="tokTime">--:--</strong></article>
+                  </div>
+                  <div class="countdown-box">
+                    <small>Countdown · Code Activation · NY ET</small>
+                    <div class="countdown-row">
+                      <span><b id="cdDays">--</b><i>days</i></span><em>:</em>
+                      <span><b id="cdHours">--</b><i>hours</i></span><em>:</em>
+                      <span><b id="cdMinutes">--</b><i>min</i></span><em>:</em>
+                      <span><b id="cdSeconds">--</b><i>sec</i></span>
+                    </div>
+                  </div>
+                  <h5>THE CODE IS UNLOCKED.</h5>
+                  <button class="replay-button" id="replayCode" type="button">↺ Play Again</button>
+                  <div class="scene-progress"><i></i></div>
+                </section>
+              </div>
             </div>
             <p class="code-status" id="codeStatus" aria-live="polite" data-i18n="playerReady">Prezentacija je spremna.</p>
           </div>
@@ -99,7 +182,7 @@
             <div class="metric-list" id="dinamoMetrics"></div>
             <div class="activation-card">
               <small data-i18n="activationLabel">Aktivacija</small>
-              <strong>07 OCT 2026</strong>
+              <strong>7. LISTOPADA<br>2026.</strong>
               <span>11:30 AM · NEW YORK ET</span>
             </div>
             <div class="company-panel__footer" id="dinamoEntity">Colorado Entity ID 20238180649</div>
@@ -107,7 +190,7 @@
         </div>
       </section>
 
-      <section class="section surface" id="financials">
+      <section class="section" id="financials">
         <header class="section-heading">
           <div class="section-heading__copy">
             <span class="eyebrow" data-i18n="financialEyebrow">Financijska transparentnost</span>
@@ -131,7 +214,7 @@
         </div>
       </section>
 
-      <section class="section surface" id="timeline">
+      <section class="section" id="timeline">
         <header class="section-heading">
           <div class="section-heading__copy">
             <span class="eyebrow" data-i18n="timelineEyebrow">Od ideje do aktivacije</span>
@@ -142,7 +225,7 @@
         <div class="timeline" id="timelineGrid"></div>
       </section>
 
-      <section class="section surface" id="network">
+      <section class="section" id="network">
         <header class="section-heading">
           <div class="section-heading__copy">
             <span class="eyebrow" data-i18n="networkEyebrow">Globalna prisutnost</span>
@@ -154,17 +237,9 @@
 
         <div class="network-map" role="img" aria-label="Stilizirana karta globalne mreže">
           <svg viewBox="0 0 1200 500" aria-hidden="true">
-            <defs>
-              <linearGradient id="mapFill" x1="0" x2="1"><stop offset="0" stop-color="#18213a"/><stop offset="1" stop-color="#0b1020"/></linearGradient>
-              <filter id="mapShadow"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000000" flood-opacity=".35"/></filter>
-            </defs>
-            <g class="continents" filter="url(#mapShadow)" fill="url(#mapFill)">
-              <path d="M70 145l82-58 112-9 79 36 43 57-43 42-76 4-26 44-62 11-42-33-50-8z"/>
-              <path d="M317 290l44 17 31 54-18 75-34 51-31-49 11-61-30-46z"/>
-              <path d="M493 116l75-37 88 7 55 45-31 47-79 8-45-20-68 1-25-21z"/>
-              <path d="M558 206l80 7 57 72-28 119-70 18-50-52-2-91-35-55z"/>
-              <path d="M696 113l135-37 158 20 122 61-34 55-99 12-60 47-81-12-33-50-104-17z"/>
-              <path d="M957 327l60-4 49 35-12 50-56 18-47-42z"/>
+            <defs><linearGradient id="mapFill" x1="0" x2="1"><stop offset="0" stop-color="#fffef9"/><stop offset="1" stop-color="#f1e4c4"/></linearGradient></defs>
+            <g class="continents" fill="url(#mapFill)">
+              <path d="M70 145l82-58 112-9 79 36 43 57-43 42-76 4-26 44-62 11-42-33-50-8z"/><path d="M317 290l44 17 31 54-18 75-34 51-31-49 11-61-30-46z"/><path d="M493 116l75-37 88 7 55 45-31 47-79 8-45-20-68 1-25-21z"/><path d="M558 206l80 7 57 72-28 119-70 18-50-52-2-91-35-55z"/><path d="M696 113l135-37 158 20 122 61-34 55-99 12-60 47-81-12-33-50-104-17z"/><path d="M957 327l60-4 49 35-12 50-56 18-47-42z"/>
             </g>
             <g class="routes"><path d="M585 151Q415 25 195 168"/><path d="M585 151Q770 13 967 173"/><path d="M585 151Q635 281 619 344"/><path d="M585 151Q847 261 1008 367"/><path d="M585 151Q350 259 337 366"/></g>
             <g class="nodes"><circle cx="585" cy="151" r="8"/><circle cx="195" cy="168" r="6"/><circle cx="337" cy="366" r="6"/><circle cx="619" cy="344" r="6"/><circle cx="967" cy="173" r="6"/><circle cx="1008" cy="367" r="6"/></g>
@@ -176,7 +251,7 @@
       </section>
     </main>
 
-    <footer class="site-footer surface">
+    <footer class="site-footer">
       <div><strong>GNK ASG d.o.o. & GNK DINAMO Ltd. Group</strong><span data-i18n="footerLine">Poslovna grupa · tehnologija · globalna mreža</span></div>
       <nav aria-label="Podnožje"><a href="/privacy/" data-i18n="privacy">Privatnost</a><a href="/terms/" data-i18n="terms">Uvjeti</a><a href="/contact/" data-i18n="navContact">Kontakt</a></nav>
       <small>© 2026 · PROJECT 50 · CONTROLLED HTML BUILD</small>
