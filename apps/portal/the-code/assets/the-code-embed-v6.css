@@ -1,0 +1,20 @@
+/* THE CODE embedded presentation V6 */
+html.is-embedded .gnk-code__topbar,
+html.is-embedded .gnk-code__enter,
+html.is-embedded .gnk-code__sound{
+  display:none!important;
+}
+html.is-embedded .gnk-code__scene{
+  padding-top:42px!important;
+}
+html.is-embedded .gnk-code__scene--countdown{
+  padding-top:38px!important;
+  padding-bottom:34px!important;
+}
+html.is-embedded .gnk-code__stage{
+  width:min(100vw,calc(100vh * 390 / 844))!important;
+  height:min(100vh,calc(100vw * 844 / 390))!important;
+  max-width:390px!important;
+  max-height:844px!important;
+  aspect-ratio:390/844!important;
+}
