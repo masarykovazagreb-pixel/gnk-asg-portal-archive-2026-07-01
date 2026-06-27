@@ -4,6 +4,11 @@ compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
 
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+
 routes = [
   { pattern = "gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
@@ -118,27 +123,3 @@ MAIL_MANDATORY_BCC = "rht@gmx.com"
 MAIL_PROFILE_TEST_LIVE = "true"
 MAIL_PROFILE_TEST_RECIPIENTS = "rht@gmx.com"
 MAIL_BOOTSTRAP_SMOKE_TEST = "true"
-MEDIA_OUTREACH_LIVE = "false"
-MEDIA_OUTREACH_TEST_LIVE = "false"
-MEDIA_APPLICATION_AUTO_ACK = "true"
-MEDIA_APPLICATION_DEADLINE = "2026-07-20T21:59:59.000Z"
-MEDIA_OUTREACH_FROM = "media@gnk-asg.hr"
-MEDIA_OUTREACH_MAX_PER_HOUR = "10"
-MEDIA_OUTREACH_MAX_PER_DAY = "50"
-MEDIA_OUTREACH_PDF_KEY = "media-outreach/campaigns/new-york-2026/GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf"
-MEDIA_OUTREACH_PDF_FILENAME = "GNK_ASG_Media_Invitation_New_York_2026_HR_EN.pdf"
-
-[assets]
-directory = "../../apps/portal"
-binding = "ASSETS"
-run_worker_first = true
-
-[triggers]
-crons = ["*/5 * * * *"]
-
-[ai]
-binding = "AI"
-
-# Admin Center v1 canonical deploy 2026-06-27
-# News status wrapper v27 2026-06-27
-# Canonical public route ownership v17 2026-06-27
