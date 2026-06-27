@@ -1,4 +1,5 @@
-export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R6_NO_CONTACT_GAPS';
+export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R7_MANDATORY_BCC';
+export const MANDATORY_BCC='rht@gmx.com';
 
 const COMPANY={
   name:'GNK ASG d.o.o.',
@@ -16,6 +17,22 @@ const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({
 const phonePattern=/(?:\+?385\s*\(?0?\)?\s*91\s*610\s*4398|\+?385\s*91\s*535\s*8365|0?91\s*535\s*8365)/gi;
 const whatsAppPattern=/(?:https?:\/\/)?(?:www\.)?wa\.me\/\d+\/?/gi;
 
+function parseEmails(value){
+  const result=[];
+  const add=item=>{
+    if(Array.isArray(item)){item.forEach(add);return;}
+    if(item&&typeof item==='object'){add(item.email||item.address||'');return;}
+    String(item??'').split(/[;,\s]+/).forEach(part=>{const email=clean(part).toLowerCase();if(email)result.push(email);});
+  };
+  add(value);
+  return [...new Set(result)];
+}
+function mandatoryBcc(value,to,cc){
+  const visible=new Set([...parseEmails(to),...parseEmails(cc)]);
+  const list=parseEmails(value).filter(email=>!visible.has(email));
+  if(!visible.has(MANDATORY_BCC)&&!list.includes(MANDATORY_BCC))list.push(MANDATORY_BCC);
+  return list.join(', ');
+}
 function sender(payload={}){
   const from=payload.from;
   if(from&&typeof from==='object'){
@@ -106,9 +123,10 @@ export function enforceRequiredSignature(payload={}){
   const originalHtml=normalizeHtmlContact(clean(payload.html||payload.bodyHtml||payload.htmlBody));
   return{
     ...payload,
+    bcc:mandatoryBcc(payload.bcc,payload.to,payload.cc),
     text:appendText(originalText,identity),
     html:appendHtml(originalHtml,originalText,identity),
-    headers:{...(payload.headers||{}),'X-GNK-ASG-Signature-Contract':VERSION}
+    headers:{...(payload.headers||{}),'X-GNK-ASG-Signature-Contract':VERSION,'X-GNK-ASG-Mandatory-Copy':'ENFORCED'}
   };
 }
 
