@@ -14,13 +14,10 @@ body.wow-index:before,body.wow-index:after{display:none!important}
   margin:0 auto!important;
   padding:0 14px 26px!important;
   box-sizing:border-box!important;
-  background:
-    radial-gradient(circle at 84% 5%,rgba(210,178,103,.13),transparent 24%),
-    radial-gradient(circle at 8% 28%,rgba(255,255,255,.94),transparent 25%),
-    linear-gradient(180deg,#fffdf9 0%,#f5f1e8 50%,#eee8dc 100%)!important;
-  box-shadow:0 0 70px rgba(58,43,13,.10);
+  background:#fff!important;
+  box-shadow:none!important;
 }
-.page>main{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important}
+.page>main{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;background:#fff!important}
 .index-nav,.hero,.code-stage,.panel,.network,.footer{
   width:100%!important;
   max-width:none!important;
@@ -29,11 +26,70 @@ body.wow-index:before,body.wow-index:after{display:none!important}
   box-sizing:border-box!important;
   min-width:0!important;
 }
-.index-nav{left:auto!important;right:auto!important}
+
+/* Everything outside THE CODE remains white. */
+.index-nav{
+  left:auto!important;
+  right:auto!important;
+  background:rgba(255,255,255,.96)!important;
+  border-color:rgba(181,138,50,.22)!important;
+  box-shadow:0 12px 34px rgba(43,34,16,.06),inset 0 1px 0 #fff!important;
+}
+.hero{
+  background:#fff!important;
+  border-bottom:1px solid rgba(181,138,50,.12)!important;
+}
+.hero:before{
+  background:#fff!important;
+  border-top-color:rgba(181,138,50,.11)!important;
+  border-bottom-color:rgba(181,138,50,.11)!important;
+}
 .hero>*{min-width:0!important}
+.code-stage{
+  background:#fff!important;
+  box-shadow:none!important;
+  border:1px solid rgba(181,138,50,.16)!important;
+}
+.code-toolbar{background:#fff!important}
+.panel,.network{
+  background:#fff!important;
+  box-shadow:none!important;
+  border:1px solid rgba(181,138,50,.14)!important;
+}
+.finance-card,
+.finance-card:nth-child(2){
+  background:#fff!important;
+  color:#17140f!important;
+  border-color:rgba(181,138,50,.18)!important;
+  box-shadow:0 18px 48px rgba(61,44,10,.055)!important;
+}
+.finance-card:nth-child(2) .company-title h3,
+.finance-card:nth-child(2) .metric strong{color:#17140f!important}
+.finance-card:nth-child(2) .metric{
+  background:#fff!important;
+  border-top-color:rgba(181,138,50,.17)!important;
+}
+.finance-card:nth-child(2) .metric small{color:#746c60!important}
+.finance-card:nth-child(2) .lux-button:not(.primary){color:#5f4a20!important;background:#fff!important}
+.metric{background:#fff!important}
+.network{padding-bottom:38px!important}
+.map-wrap{
+  background:#fff!important;
+  box-shadow:0 18px 52px rgba(61,44,10,.06),inset 0 0 0 1px rgba(181,138,50,.12)!important;
+}
+.country{fill:#fff!important}
+.location-item{background:#fff!important}
+.footer{background:#fff!important}
+
 .code-toolbar,.code-launch-bar,.code-frame,.panel-head,.finance-grid,.network-head,.map-wrap,.location-directory{
   max-width:100%!important;
   box-sizing:border-box!important;
+}
+
+/* THE CODE frame is the only strong coloured composition. */
+.code-launch-bar,
+.code-frame.code-frame--editorial{
+  isolation:isolate!important;
 }
 
 /* No map, labels or directory item may cross the common page edge. */
