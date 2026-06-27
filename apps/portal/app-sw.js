@@ -1,10 +1,11 @@
-const VERSION='gnk-asg-mobile-v2-20260627';
+const VERSION='gnk-asg-mobile-v20-20260627';
 const CACHE=`${VERSION}-shell`;
 const SHELL=[
   '/app/',
   '/app.webmanifest?v=20260627-v2',
   '/assets/mobile-app-v2.css?v=20260627-v2',
   '/assets/mobile-app-v2.js?v=20260627-v2',
+  '/assets/mobile-navigation-v20.js?v=20260627-v20',
   '/assets/brand/media-kit/GNK_ASG_logo_gold_transparent.png',
   '/assets/app-icon-192.svg',
   '/assets/app-icon-512.svg',
