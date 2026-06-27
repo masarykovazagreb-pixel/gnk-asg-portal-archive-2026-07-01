@@ -1,4 +1,4 @@
-name: Deploy Public Editorial V12
+name: Deploy Public Content V13
 
 on:
   push:
@@ -14,13 +14,10 @@ on:
       - 'apps/portal/assets/markets-v11.js'
       - 'apps/portal/assets/editorial-v12.css'
       - 'apps/portal/assets/editorial-v12.js'
-      - 'apps/portal/assistant/index.html'
-      - 'apps/portal/en/assistant/index.html'
-      - 'apps/portal/data/assistant-knowledge.json'
-      - 'apps/portal/vijesti/index.html'
-      - 'apps/portal/objave/index.html'
-      - 'workers/gnk-asg-direct-operator/src/public-ai-v10.js'
-      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js'
+      - 'apps/portal/assets/contact-v13.css'
+      - 'apps/portal/assets/contact-v13.js'
+      - 'apps/portal/assets/media-kit-v13.css'
+      - 'apps/portal/assets/media-kit-v13.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   pull_request:
     branches: [main]
@@ -28,6 +25,10 @@ on:
       - '.github/workflows/deploy-luxury-index-pr.yml'
       - 'apps/portal/assets/editorial-v12.css'
       - 'apps/portal/assets/editorial-v12.js'
+      - 'apps/portal/assets/contact-v13.css'
+      - 'apps/portal/assets/contact-v13.js'
+      - 'apps/portal/assets/media-kit-v13.css'
+      - 'apps/portal/assets/media-kit-v13.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   workflow_dispatch:
 
@@ -35,7 +36,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-public-v12
+  group: gnk-asg-public-v13
   cancel-in-progress: true
 
 jobs:
@@ -47,7 +48,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate public V12
+      - name: Validate public V13
         shell: bash
         run: |
           set -euxo pipefail
@@ -55,16 +56,18 @@ jobs:
           node --check apps/portal/assets/assistant-v10.js
           node --check apps/portal/assets/markets-v11.js
           node --check apps/portal/assets/editorial-v12.js
-          node --check workers/gnk-asg-direct-operator/src/public-ai-v10.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
+          node --check apps/portal/assets/contact-v13.js
+          node --check apps/portal/assets/media-kit-v13.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          test -s apps/portal/assets/public-menu-v10.css
-          test -s apps/portal/assets/assistant-v10.css
-          test -s apps/portal/assets/markets-v11.css
           test -s apps/portal/assets/editorial-v12.css
-          grep -q 'GNK_ASG_PUBLIC_V12_MENU_AI_MARKETS_EDITORIAL_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          test -s apps/portal/assets/contact-v13.css
+          test -s apps/portal/assets/media-kit-v13.css
+          grep -q 'GNK_ASG_PUBLIC_V13_EDITORIAL_CONTACT_MEDIA_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           grep -q 'gnk-editorial-v12' apps/portal/assets/editorial-v12.js
-          grep -q 'news-grid' apps/portal/assets/editorial-v12.css
+          grep -q 'gnk-contact-v13' apps/portal/assets/contact-v13.js
+          grep -q 'gnk-media-kit-v13' apps/portal/assets/media-kit-v13.js
+          grep -q 'GNK_ASG_logo_gold_transparent.png' apps/portal/media-kit/index.html
+          grep -q 'GNK_DINAMO_Ltd_logo_gold_transparent.png' apps/portal/media-kit/index.html
           grep -q 'grid-template-columns:repeat(3' apps/portal/assets/index-finance-v9.css
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
@@ -74,29 +77,33 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify public V12
+      - name: Verify public V13
         shell: bash
         run: |
           set -euo pipefail
           for n in $(seq 1 18); do
             NEWS_HEADERS=$(mktemp)
             PUB_HEADERS=$(mktemp)
-            AI_HEADERS=$(mktemp)
+            CONTACT_HEADERS=$(mktemp)
+            MEDIA_HEADERS=$(mktemp)
             NEWS=$(curl -fsS -D "$NEWS_HEADERS" "https://gnk-asg.hr/vijesti/?cb=${GITHUB_RUN_ID}-${n}" || true)
             PUB=$(curl -fsS -D "$PUB_HEADERS" "https://gnk-asg.hr/objave/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            CONTACT=$(curl -fsS -D "$CONTACT_HEADERS" "https://gnk-asg.hr/contact/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            MEDIA=$(curl -fsS -D "$MEDIA_HEADERS" "https://gnk-asg.hr/media-kit/?cb=${GITHUB_RUN_ID}-${n}" || true)
             AI=$(curl -fsS "https://gnk-asg.hr/assistant/?cb=${GITHUB_RUN_ID}-${n}" || true)
             MARKETS=$(curl -fsS "https://gnk-asg.hr/trzista/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            API=$(curl -fsS -D "$AI_HEADERS" -H 'content-type: application/json' -X POST --data '{"message":"Gdje su objave i vijesti?","language":"hr"}' "https://gnk-asg.hr/api/public-ai" || true)
             if printf '%s' "$NEWS" | grep -q 'editorial-v12.css' \
-              && printf '%s' "$NEWS" | grep -q 'editorial-v12.js' \
-              && printf '%s' "$PUB" | grep -q 'editorial-v12.css' \
               && printf '%s' "$PUB" | grep -q 'editorial-v12.js' \
+              && printf '%s' "$CONTACT" | grep -q 'contact-v13.css' \
+              && printf '%s' "$CONTACT" | grep -q 'contact-v13.js' \
+              && printf '%s' "$MEDIA" | grep -q 'media-kit-v13.css' \
+              && printf '%s' "$MEDIA" | grep -q 'media-kit-v13.js' \
               && printf '%s' "$AI" | grep -q 'assistant-v10.css' \
               && printf '%s' "$MARKETS" | grep -q 'markets-v11.css' \
-              && printf '%s' "$API" | grep -q '"ok":true' \
               && grep -qi 'x-gnk-asg-editorial-layout: UNIFIED_EDITORIAL_V12' "$NEWS_HEADERS" \
               && grep -qi 'x-gnk-asg-editorial-layout: UNIFIED_EDITORIAL_V12' "$PUB_HEADERS" \
-              && grep -qi 'x-gnk-asg-public-ai: GNK_ASG_PUBLIC_AI_V10_20260627' "$AI_HEADERS"; then
+              && grep -qi 'x-gnk-asg-contact-layout: UNIFIED_CONTACT_V13' "$CONTACT_HEADERS" \
+              && grep -qi 'x-gnk-asg-media-kit-layout: UNIFIED_MEDIA_KIT_V13' "$MEDIA_HEADERS"; then
                 exit 0
             fi
             sleep 10
