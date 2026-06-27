@@ -3,3 +3,8 @@
 .gnk-activation__slide:first-child>img{opacity:0!important;visibility:hidden!important}
 .gnk-activation__film-screen{isolation:isolate;background-image:linear-gradient(180deg,rgba(0,6,14,.08),rgba(0,6,14,.62)),url('/assets/index-global-command-square.svg?v=20260627-v1')!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
 .gnk-activation__film-screen:before,.gnk-activation__film-screen span{z-index:2;position:relative}
+#mreza-grupe .expansion{display:flex;flex-direction:column;overflow:hidden}
+#mreza-grupe .expansion:after{content:"DIGITALNE OPERACIJE · MEDIA · DATA · AUTOMATION";display:flex;align-items:flex-end;min-height:360px;margin:16px -4px -4px;padding:14px;overflow:hidden;border:1px solid rgba(215,170,60,.24);border-radius:14px;background-image:linear-gradient(180deg,rgba(0,6,14,.03),rgba(0,6,14,.72)),url('/assets/index-operations-portrait.svg?v=20260627-v1');background-size:cover;background-position:center;background-repeat:no-repeat;box-shadow:0 18px 38px rgba(0,0,0,.28);color:#e5c86e;font:800 8px/1.45 "Courier New",monospace;letter-spacing:.12em;text-transform:uppercase}
+html[lang="en"] #mreza-grupe .expansion:after{content:"DIGITAL OPERATIONS · MEDIA · DATA · AUTOMATION"}
+@media(max-width:980px){#mreza-grupe .expansion:after{min-height:300px}}
+@media(max-width:620px){#mreza-grupe .expansion:after{min-height:260px}}
