@@ -1,4 +1,4 @@
-name: Deploy Index Activation V6
+name: Deploy Index Activation V7
 
 on:
   push:
@@ -24,24 +24,41 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Probe live index
+      - name: Purge Cloudflare edge cache
+        id: purge
+        if: always()
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZONE_ID=$(curl -fsS -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" -H 'Content-Type: application/json' 'https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr&status=active' | python -c "import json,sys; d=json.load(sys.stdin); print((d.get('result') or [{}])[0].get('id',''))")
+          test -n "$ZONE_ID"
+          curl -fsS -X POST -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" -H 'Content-Type: application/json' "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/purge_cache" --data '{"purge_everything":true}' | tee /tmp/purge.json
+          python -c "import json; d=json.load(open('/tmp/purge.json')); assert d.get('success') is True, d"
+      - name: Probe canonical and cache-busted live index
         id: probe
         if: always()
         continue-on-error: true
         env:
           DEPLOY_OUTCOME: ${{ steps.deploy.outcome }}
+          PURGE_OUTCOME: ${{ steps.purge.outcome }}
         run: |
-          for n in $(seq 1 24); do
-            curl -sS -D /tmp/hr.headers -o /tmp/hr.body "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}" || true
-            curl -sS -o /tmp/en.body "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}" || true
-            if grep -q 'AKTIVACIJA KODA' /tmp/hr.body && grep -q 'CODE ACTIVATION' /tmp/en.body; then break; fi
+          for n in $(seq 1 30); do
+            curl -sS -D /tmp/hr.headers -o /tmp/hr.body "https://gnk-asg.hr/" || true
+            curl -sS -D /tmp/en.headers -o /tmp/en.body "https://gnk-asg.hr/en/" || true
+            curl -sS -o /tmp/hr_cb.body "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}" || true
+            curl -sS -o /tmp/en_cb.body "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}" || true
+            if grep -q 'AKTIVACIJA KODA' /tmp/hr.body && grep -q 'CODE ACTIVATION' /tmp/en.body && grep -q 'AKTIVACIJA KODA' /tmp/hr_cb.body && grep -q 'CODE ACTIVATION' /tmp/en_cb.body; then break; fi
             sleep 5
           done
           python - <<'PY'
           import json, os, pathlib, re
-          hr=pathlib.Path('/tmp/hr.body').read_text(errors='ignore') if pathlib.Path('/tmp/hr.body').exists() else ''
-          en=pathlib.Path('/tmp/en.body').read_text(errors='ignore') if pathlib.Path('/tmp/en.body').exists() else ''
-          headers=pathlib.Path('/tmp/hr.headers').read_text(errors='ignore') if pathlib.Path('/tmp/hr.headers').exists() else ''
+          def text(path):
+              p=pathlib.Path(path)
+              return p.read_text(errors='ignore') if p.exists() else ''
+          hr=text('/tmp/hr.body'); en=text('/tmp/en.body'); hr_cb=text('/tmp/hr_cb.body'); en_cb=text('/tmp/en_cb.body'); headers=text('/tmp/hr.headers')
           def h(name):
               m=re.search(rf'(?im)^{re.escape(name)}:\s*(.+)$',headers)
               return m.group(1).strip() if m else ''
@@ -49,8 +66,11 @@ jobs:
             'commit':os.environ.get('GITHUB_SHA',''),
             'runId':os.environ.get('GITHUB_RUN_ID',''),
             'deployOutcome':os.environ.get('DEPLOY_OUTCOME',''),
-            'hrActivationInBody':'AKTIVACIJA KODA' in hr,
-            'enActivationInBody':'CODE ACTIVATION' in en,
+            'purgeOutcome':os.environ.get('PURGE_OUTCOME',''),
+            'canonicalHrActivation':'AKTIVACIJA KODA' in hr,
+            'canonicalEnActivation':'CODE ACTIVATION' in en,
+            'cacheBustedHrActivation':'AKTIVACIJA KODA' in hr_cb,
+            'cacheBustedEnActivation':'CODE ACTIVATION' in en_cb,
             'theCodeInBody':'THE CODE' in hr and 'THE CODE' in en,
             'mapInBody':'gnk-activation__map' in hr and 'gnk-activation__map' in en,
             'filmInBody':'gnk-activation__film' in hr and 'gnk-activation__film' in en,
@@ -62,14 +82,16 @@ jobs:
             'fullEnMenu':'PDF centre' in en and 'AI help' in en and 'Admin' in en,
             'indexActivationHeader':h('x-gnk-asg-index-activation'),
             'indexMapFilmHeader':h('x-gnk-asg-index-map-film'),
-            'indexSourceHeader':h('x-gnk-asg-index-source'),
+            'indexCleanHeader':h('x-gnk-asg-index-clean-layout'),
+            'indexReleaseHeader':h('x-gnk-asg-index-release'),
+            'cacheControl':h('cache-control'),
             'cfCacheStatus':h('cf-cache-status')
           }
           data['ok']=all([
-            data['deployOutcome']=='success',data['hrActivationInBody'],data['enActivationInBody'],
-            data['theCodeInBody'],data['mapInBody'],data['filmInBody'],
-            data['endStateHrInBody'],data['endStateEnInBody'],data['hrLanguageSwitch'],
-            data['enLanguageSwitch'],data['fullHrMenu'],data['fullEnMenu']
+            data['deployOutcome']=='success',data['canonicalHrActivation'],data['canonicalEnActivation'],
+            data['cacheBustedHrActivation'],data['cacheBustedEnActivation'],data['theCodeInBody'],
+            data['mapInBody'],data['filmInBody'],data['endStateHrInBody'],data['endStateEnInBody'],
+            data['hrLanguageSwitch'],data['enLanguageSwitch'],data['fullHrMenu'],data['fullEnMenu']
           ])
           pathlib.Path('/tmp/probe.json').write_text(json.dumps(data,ensure_ascii=False,indent=2))
           print(json.dumps(data,ensure_ascii=False))
@@ -84,13 +106,15 @@ jobs:
           CURRENT_SHA=$(gh api "repos/${GITHUB_REPOSITORY}/contents/docs/deployments/index-activation-v3-status.json?ref=main" --jq '.sha' 2>/dev/null || true)
           if [ -n "$CURRENT_SHA" ]; then
             gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/docs/deployments/index-activation-v3-status.json" \
-              -f message='chore(index): record activation probe [skip ci]' \
+              -f message='chore(index): record canonical activation probe [skip ci]' \
               -f content="$CONTENT" -f sha="$CURRENT_SHA" -f branch='main'
           else
             gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/docs/deployments/index-activation-v3-status.json" \
-              -f message='chore(index): record activation probe [skip ci]' \
+              -f message='chore(index): record canonical activation probe [skip ci]' \
               -f content="$CONTENT" -f branch='main'
           fi
-      - name: Enforce deploy
+      - name: Enforce deploy and canonical index
         if: always()
-        run: test '${{ steps.deploy.outcome }}' = 'success'
+        run: |
+          test '${{ steps.deploy.outcome }}' = 'success'
+          python -c "import json; d=json.load(open('/tmp/probe.json')); assert d.get('ok') is True, d"
