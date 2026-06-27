@@ -4,7 +4,9 @@ const BASE_STYLE='<link rel="stylesheet" href="/assets/index-white-static-v3.css
 const WOW_STYLE='<link rel="stylesheet" href="/assets/index-wow-v4.css?v=20260627-v4">';
 const CODE_EDITORIAL_STYLE='<link rel="stylesheet" href="/assets/index-code-editorial-v5.css?v=20260627-v5">';
 const PAGE_FRAME_STYLE='<link rel="stylesheet" href="/assets/index-unified-1180-v5.css?v=20260627-v5">';
+const HOTFIX_STYLE='<link rel="stylesheet" href="/assets/index-hotfix-v6.css?v=20260627-v6">';
 const WOW_RUNTIME='<script src="/assets/index-wow-v4.js?v=20260627-v5" defer></script>';
+const CODE_BRIDGE_RUNTIME='<script src="/assets/index-code-bridge-v6.js?v=20260627-v6" defer></script>';
 
 function normalize(path){return String(path||'/').replace(/\/+$/,'')||'/';}
 
@@ -20,8 +22,10 @@ async function loadStaticIndex(request,env,english){
   if(!body.includes('index-wow-v4.css'))body=body.replace('</head>',`${WOW_STYLE}</head>`);
   if(!body.includes('index-code-editorial-v5.css'))body=body.replace('</head>',`${CODE_EDITORIAL_STYLE}</head>`);
   if(!body.includes('index-unified-1180-v5.css'))body=body.replace('</head>',`${PAGE_FRAME_STYLE}</head>`);
+  if(!body.includes('index-hotfix-v6.css'))body=body.replace('</head>',`${HOTFIX_STYLE}</head>`);
   if(!body.includes('index-white-static-pdf-state-v2.js'))body=body.replace('</body>',`${PDF_STATE}</body>`);
   if(!body.includes('index-wow-v4.js'))body=body.replace('</body>',`${WOW_RUNTIME}</body>`);
+  if(!body.includes('index-code-bridge-v6.js'))body=body.replace('</body>',`${CODE_BRIDGE_RUNTIME}</body>`);
   const headers=new Headers(assetResponse.headers);
   headers.delete('content-length');
   headers.delete('content-encoding');
@@ -31,6 +35,7 @@ async function loadStaticIndex(request,env,english){
   headers.set('x-gnk-asg-index-style','GNK_ASG_INDEX_WOW_V5_1180_20260627');
   headers.set('x-gnk-asg-page-width','1180');
   headers.set('x-gnk-asg-the-code-mode','LIVE_DEFAULT_MANUAL_PLAY_390X844_EDITORIAL_V5');
+  headers.set('x-gnk-asg-index-hotfix','V6_CONTRAST_EMBED_PLAYER');
   return new Response(body,{status:200,headers});
 }
 
