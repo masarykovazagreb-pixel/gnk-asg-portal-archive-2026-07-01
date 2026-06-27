@@ -35,11 +35,16 @@ PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "editorial-center"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+EDITORIAL_BURST_TARGET = "10"
+EDITORIAL_BURST_END = "2026-06-29T21:59:59.000Z"
 
 [assets]
 directory = "../../apps/portal"
 binding = "ASSETS"
 run_worker_first = true
+
+[triggers]
+crons = ["*/5 * * * *"]
 
 [ai]
 binding = "AI"
