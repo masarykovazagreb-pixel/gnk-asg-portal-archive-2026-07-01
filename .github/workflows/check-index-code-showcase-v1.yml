@@ -1,0 +1,76 @@
+name: Check Index Code Showcase V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js'
+      - 'apps/portal/assets/the-code-index-slot.css'
+      - 'apps/portal/assets/the-code-visual-01.b64'
+      - 'apps/portal/assets/the-code-visual-02.b64'
+      - 'apps/portal/the-code/**'
+      - '.github/workflows/check-index-code-showcase-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate isolated showcase package
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          node --check apps/portal/the-code/assets/the-code.js
+          test -s apps/portal/assets/the-code-index-slot.css
+          test -s apps/portal/assets/the-code-visual-01.b64
+          test -s apps/portal/assets/the-code-visual-02.b64
+          test -s apps/portal/the-code/index.html
+          grep -q 'gnkCodeVisualOne 20s' apps/portal/assets/the-code-index-slot.css
+          grep -q 'gnkCodeVisualTwo 20s' apps/portal/assets/the-code-index-slot.css
+          grep -q 'grid-template-columns:minmax(0,1fr)' apps/portal/assets/the-code-index-slot.css
+          grep -q 'aspect-ratio:9/16' apps/portal/assets/the-code-index-slot.css
+          grep -q 'data-gnk-code-showcase' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          grep -q 'data:image/webp;base64' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          grep -q "body.replace('</main>'" workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          grep -q 'sandbox="allow-scripts"' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+      - name: Confirm both encoded files are WebP
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          for name in ('the-code-visual-01.b64','the-code-visual-02.b64'):
+              raw=base64.b64decode(Path('apps/portal/assets',name).read_text().strip(),validate=True)
+              assert raw[:4]==b'RIFF' and raw[8:12]==b'WEBP', (name,raw[:12])
+              assert len(raw)>1000, (name,len(raw))
+              print(name,len(raw),'WEBP_OK')
+          PY
+      - name: Protect unrelated public index surfaces
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          set -euxo pipefail
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/src/public-shell-v11\.js|workers/gnk-asg-direct-operator/src/index-lock-v4\.js)$'; then
+            echo 'Protected index surface changed.' >&2
+            exit 1
+          fi
+      - name: Worker dry run
+        working-directory: workers/gnk-asg-direct-operator
+        shell: bash
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
