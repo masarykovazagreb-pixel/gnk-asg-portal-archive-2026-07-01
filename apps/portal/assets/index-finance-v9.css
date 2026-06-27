@@ -1,0 +1,13 @@
+/* Index finance cards V9 — current design, corrected number scale */
+.finance-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important}
+.finance-card{min-width:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
+.finance-card .metrics{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;min-width:0!important}
+.finance-card .metric{min-width:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:flex-start!important}
+.finance-card .metric small{display:block!important;min-height:2.35em!important;line-height:1.2!important;overflow-wrap:anywhere!important}
+.finance-card .metric strong{display:block!important;width:100%!important;max-width:100%!important;font-size:clamp(15px,1.12vw,20px)!important;line-height:1.12!important;letter-spacing:-.025em!important;font-variant-numeric:tabular-nums!important;white-space:normal!important;overflow-wrap:anywhere!important;word-break:normal!important;visibility:visible!important;filter:none!important}
+.finance-card .card-actions{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:10px!important;margin-top:auto!important;padding-top:20px!important}
+.finance-card .card-actions .lux-button{width:100%!important;min-width:0!important;box-sizing:border-box!important;white-space:normal!important;text-align:center!important}
+.finance-downloads{display:none!important}
+@media(max-width:1180px){.finance-card{padding:22px!important}.finance-card .metric strong{font-size:17px!important}}
+@media(max-width:900px){.finance-grid{grid-template-columns:1fr!important}.finance-card .metric strong{font-size:clamp(16px,2.7vw,20px)!important}}
+@media(max-width:760px){.finance-card .metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}.finance-card .metric strong{font-size:clamp(15px,4.2vw,19px)!important}.finance-card .card-actions{grid-template-columns:1fr!important}}
