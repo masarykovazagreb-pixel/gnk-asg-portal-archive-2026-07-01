@@ -1,0 +1,136 @@
+/* GNK ASG Index Readability V6 — visible numbers, one menu, one presentation control */
+
+/* Stronger first screen without the oversized empty field. */
+.hero{
+  min-height:620px!important;
+  padding:72px 34px 64px!important;
+  align-items:center!important;
+  gap:48px!important;
+  background:#fff!important;
+}
+.hero-content{max-width:760px!important;align-self:center!important}
+.hero h1{
+  font-size:clamp(68px,7.1vw,104px)!important;
+  line-height:.86!important;
+  letter-spacing:-.065em!important;
+}
+.hero-copy{font-size:17px!important;line-height:1.72!important;max-width:610px!important}
+.hero-meta{max-width:720px!important}
+.hero-meta__item strong{font-size:36px!important}
+.hero-meta__item span{font-size:9px!important;line-height:1.45!important}
+.hero-sculpture{max-width:520px!important}
+
+/* One external presentation control only. */
+.code-toolbar{padding:24px 26px 26px!important}
+.code-toolbar h2{font-size:56px!important}
+.code-status{font-size:9px!important}
+.code-tools{gap:10px!important}
+.code-tool{font-size:9px!important;min-height:44px!important;padding:11px 15px!important}
+.code-launch-bar{margin:0 12px 22px!important;padding:22px 24px!important}
+.code-launch-copy small{font-size:9px!important}
+.code-launch-copy strong{font-size:29px!important}
+.code-launch-copy span{font-size:13px!important}
+.code-launch-button{min-width:290px!important;min-height:62px!important;font-size:11px!important}
+
+/* Company side panels become readable information, not decoration. */
+.code-company{padding:38px 30px!important}
+.code-company__eyebrow{font-size:10px!important}
+.code-company h3{font-size:38px!important;line-height:.96!important}
+.code-company__intro{font-size:13px!important;line-height:1.55!important;color:#d4c9b1!important}
+.code-company__metric{min-height:118px!important;padding:20px 18px!important}
+.code-company__metric small{font-size:9px!important;color:#c5b99f!important}
+.code-company__metric strong{font-size:34px!important;color:#ffe8a5!important}
+.code-company__metric span{font-size:8px!important;color:#a99d85!important}
+.code-company__event{padding:24px 19px!important}
+.code-company__event small{font-size:8px!important}
+.code-company__event strong{font-size:32px!important}
+.code-company__event span{font-size:10px!important}
+.code-company__footer{font-size:8px!important;color:#aca087!important}
+
+/* Financial figures must be immediately legible. */
+.panel{padding:46px!important}
+.panel-head{grid-template-columns:minmax(0,1fr) minmax(300px,420px)!important;gap:44px!important}
+.panel-head h2{font-size:clamp(58px,5.8vw,82px)!important;line-height:.92!important}
+.panel-head>p{font-size:16px!important;line-height:1.65!important}
+.finance-grid{gap:24px!important;padding-top:30px!important}
+.finance-card{padding:36px!important;min-height:610px!important}
+.company-title{padding-right:70px!important}
+.company-title h3{font-size:34px!important}
+.company-title:after{font-size:9px!important}
+.metrics{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:1px!important;
+  margin-top:32px!important;
+}
+.metric{
+  min-height:142px!important;
+  padding:22px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+}
+.metric small{font-size:10px!important;line-height:1.35!important;letter-spacing:.09em!important}
+.metric strong{
+  margin-top:18px!important;
+  font-size:clamp(29px,2.4vw,38px)!important;
+  line-height:1.02!important;
+  letter-spacing:-.025em!important;
+  color:#17140f!important;
+}
+.finance-card__index{font-size:58px!important;opacity:.55!important}
+.card-actions .lux-button{font-size:9px!important;min-height:46px!important}
+
+/* Global network: larger hierarchy and readable statistics. */
+.network{padding:46px!important}
+.network-head h2{font-size:clamp(58px,5.8vw,82px)!important}
+.network-stat strong{font-size:44px!important}
+.network-stat small{font-size:9px!important}
+.map-wrap,.luxury-map{min-height:650px!important;height:650px!important}
+.continent-label{font-size:22px!important}
+.location-label{font-size:9px!important;stroke-width:3.2px!important}
+.location-directory{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.location-item{min-height:98px!important;padding:18px!important}
+.location-item strong{font-size:18px!important}
+.location-item span{font-size:9px!important;line-height:1.4!important}
+.location-item b{font-size:8px!important}
+
+/* Embedded THE CODE: remove its duplicate top menu and duplicate start button. */
+html.is-embedded .gnk-code__topbar,
+html.is-embedded .gnk-code__enter{display:none!important}
+html.is-embedded .gnk-code__scene{padding-top:36px!important;padding-bottom:34px!important}
+html.is-embedded .gnk-code__scene--countdown{padding-top:34px!important;padding-bottom:34px!important}
+
+@media(max-width:1050px){
+  .hero{min-height:560px!important;padding:58px 24px!important}
+  .hero h1{font-size:72px!important}
+  .code-company h3{font-size:32px!important}
+  .code-company__metric strong{font-size:29px!important}
+  .finance-card{min-height:0!important}
+}
+@media(max-width:860px){
+  .hero{min-height:auto!important;padding:48px 16px 42px!important}
+  .hero h1{font-size:clamp(52px,13vw,76px)!important}
+  .code-launch-bar{grid-template-columns:1fr!important}
+  .code-launch-button{width:100%!important;min-width:0!important}
+  .panel,.network{padding:26px!important}
+  .panel-head{grid-template-columns:1fr!important}
+  .finance-grid{grid-template-columns:1fr!important}
+  .finance-card{padding:26px!important}
+  .metric{min-height:126px!important}
+  .metric strong{font-size:30px!important}
+  .location-directory{grid-template-columns:repeat(2,1fr)!important}
+}
+@media(max-width:520px){
+  .hero{padding:36px 10px 30px!important}
+  .hero h1{font-size:48px!important}
+  .hero-copy{font-size:15px!important}
+  .code-toolbar h2{font-size:42px!important}
+  .code-tools{display:none!important}
+  .code-launch-copy strong{font-size:24px!important}
+  .metrics{grid-template-columns:1fr!important}
+  .metric{min-height:112px!important}
+  .metric strong{font-size:29px!important}
+  .network-stat strong{font-size:36px!important}
+  .map-wrap,.luxury-map{min-height:470px!important;height:470px!important}
+  .location-directory{grid-template-columns:1fr!important}
+}
