@@ -17,7 +17,6 @@ const FEEDS = [
   { url: 'https://www.theverge.com/rss/index.xml', source: 'The Verge', group: 'technology', region: 'World' },
   { url: 'https://techcrunch.com/feed/', source: 'TechCrunch', group: 'technology', region: 'World' },
   { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', source: 'BBC', group: 'world', region: 'World' },
-  { url: 'https://www.reutersagency.com/feed/?best-topics=technology&post_type=best', source: 'Reuters', group: 'technology', region: 'World' },
   { url: 'https://www.nasa.gov/news-release/feed/', source: 'NASA', group: 'science', region: 'World' },
   { url: 'https://hnrss.org/frontpage', source: 'Hacker News', group: 'technology', region: 'World' },
   { url: 'https://www.espn.com/espn/rss/news', source: 'ESPN', group: 'sports', region: 'World' }
