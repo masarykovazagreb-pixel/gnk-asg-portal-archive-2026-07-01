@@ -24,8 +24,8 @@ async function serveIndex(path,request,env){const fallback=new Response('GNK ASG
 async function patch(response,path,request){
   const htmlResponse=request.method==='GET'&&response.ok&&String(response.headers.get('content-type')||'').includes('text/html');
   if(!htmlResponse)return response;
-  const market=MARKET_PATHS.has(path),editorial=isEditorial(path),contact=path==='/contact',media=path==='/media-kit',application=path==='/media-application',admin=path==='/admin-center';
-  if(!market&&!editorial&&!contact&&!media&&!application&&!admin)return response;
+  const market=MARKET_PATHS.has(path),editorial=isEditorial(path),contact=path==='/contact',media=path==='/media-kit',application=path==='/media-application',admin=path==='/admin-center',studio=path==='/memorandum-studio';
+  if(!market&&!editorial&&!contact&&!media&&!application&&!admin&&!studio)return response;
   let html=await response.text();const headers=patchHeaders(response);
   if(market){if(!html.includes('markets-v11.css'))html=html.replace('</head>',MARKET_STYLE+'</head>');if(!html.includes('markets-v11.js'))html=html.replace('</body>',MARKET_SCRIPT+'</body>');headers.set('x-gnk-asg-markets-layout','UNIFIED_MARKETS_V11')}
   if(editorial){if(!html.includes('editorial-v12.css'))html=html.replace('</head>',EDITORIAL_STYLE+'</head>');if(!html.includes('editorial-v12.js'))html=html.replace('</body>',EDITORIAL_SCRIPT+'</body>');headers.set('x-gnk-asg-editorial-layout','UNIFIED_EDITORIAL_V12')}
@@ -33,6 +33,7 @@ async function patch(response,path,request){
   if(media){if(!html.includes('media-kit-v13.css'))html=html.replace('</head>',MEDIA_STYLE+'</head>');if(!html.includes('media-kit-v13.js'))html=html.replace('</body>',MEDIA_SCRIPT+'</body>');headers.set('x-gnk-asg-media-kit-layout','UNIFIED_MEDIA_KIT_V13')}
   if(application){if(!html.includes('media-application-v14.css'))html=html.replace('</head>',APPLICATION_STYLE+'</head>');if(!html.includes('media-application-v14.js'))html=html.replace('</body>',APPLICATION_SCRIPT+'</body>');headers.set('x-gnk-asg-media-application-layout','UNIFIED_MEDIA_APPLICATION_V14')}
   if(admin){if(!html.includes('admin-center-memorandum-v1.js')){const marker=/<script\s+defer\s+src=["']\/assets\/admin-center-v2\.js[^"']*["']><\/script>/i;html=marker.test(html)?html.replace(marker,match=>ADMIN_SCRIPT+match):html.replace('</head>',ADMIN_SCRIPT+'</head>')}headers.set('x-gnk-asg-memorandum-studio','GNK_ASG_MEMORANDUM_STUDIO_V1_20260627')}
+  if(studio){headers.set('x-gnk-asg-memorandum-studio-page','GNK_ASG_MEMORANDUM_STUDIO_V1_20260627')}
   headers.set('x-gnk-asg-public-release',VERSION);
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
