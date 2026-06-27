@@ -1,10 +1,12 @@
 import app from './index-admin-hub-v27-news-status.js';
 
-export const VERSION='GNK_ASG_PUBLIC_INDEX_INLINE_WHITE_CODE_V24_20260627';
+export const VERSION='GNK_ASG_PUBLIC_INDEX_INLINE_WHITE_CODE_V25_20260628';
 const INDEX_PATHS=new Set(['/','/en']);
 const PROJECT_50_PATHS=new Set(['/project-50','/project-50/index.html']);
 const CODE_STYLE='<link rel="stylesheet" href="/assets/index-code-inline-v10.css?v=20260627-v24">';
+const DOWNLOAD_STYLE='<link rel="stylesheet" href="/assets/index-company-downloads-v11.css?v=20260628-v11">';
 const CODE_SCRIPT='<script defer src="/assets/index-code-inline-v10.js?v=20260627-v24"></script>';
+const DOWNLOAD_SCRIPT='<script defer src="/assets/index-company-downloads-v11.js?v=20260628-v11"></script>';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/'}
 function headersOf(response){
@@ -39,7 +41,9 @@ function patchIndexHtml(html){
     '<div class="code-inline-host" id="codeFrame"><div id="codeInlineMount" class="code-inline-mount"></div></div>'
   );
   if(!html.includes('index-code-inline-v10.css'))html=html.replace('</head>',CODE_STYLE+'</head>');
-  if(!html.includes('index-code-inline-v10.js'))html=html.replace('</body>',CODE_SCRIPT+'</body>');
+  if(!html.includes('index-company-downloads-v11.css'))html=html.replace('</head>',DOWNLOAD_STYLE+'</head>');
+  if(!html.includes('index-code-inline-v10.js'))html=html.replace('</body>',CODE_SCRIPT+DOWNLOAD_SCRIPT+'</body>');
+  else if(!html.includes('index-company-downloads-v11.js'))html=html.replace('</body>',DOWNLOAD_SCRIPT+'</body>');
   return html;
 }
 
@@ -53,8 +57,9 @@ export default{
     const headers=headersOf(response);
     headers.set('x-gnk-asg-index-design','LOCKED_CLEAN_WHITE_INDEX');
     headers.set('x-gnk-asg-index-menu','PRESERVED');
-    headers.set('x-gnk-asg-index-hero','BASE_CLEAN_NO_WOW_NO_SCALE');
+    headers.set('x-gnk-asg-index-hero','REMOVED');
     headers.set('x-gnk-asg-the-code-player','INLINE_WHITE_GOLD_V10');
+    headers.set('x-gnk-asg-company-downloads','PDF_V11');
     headers.set('x-gnk-asg-index-preview',VERSION);
     return new Response(patchIndexHtml(await response.text()),{status:response.status,statusText:response.statusText,headers});
   },
