@@ -53,6 +53,10 @@ PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+MAIL_MANUAL_LIVE = "true"
+MAIL_MANDATORY_BCC = "rht@gmx.com"
+MAIL_PROFILE_TEST_LIVE = "true"
+MAIL_PROFILE_TEST_RECIPIENTS = "rht@gmx.com"
 MEDIA_OUTREACH_LIVE = "false"
 MEDIA_OUTREACH_TEST_LIVE = "false"
 MEDIA_APPLICATION_AUTO_ACK = "true"
@@ -74,4 +78,4 @@ crons = ["*/5 * * * *"]
 [ai]
 binding = "AI"
 
-# Admin Center v1 canonical deploy 2026-06-26
+# Admin Center v1 canonical deploy 2026-06-27
