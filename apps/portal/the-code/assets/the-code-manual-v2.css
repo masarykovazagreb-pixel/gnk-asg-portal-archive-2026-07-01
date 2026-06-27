@@ -29,10 +29,10 @@ html.is-embedded .gnk-code__stage{
   box-shadow:0 0 90px rgba(201,168,76,.08)
 }
 html.is-embedded .gnk-code__ambient{display:block}
-html.is-embedded .gnk-code__topbar{display:flex}
-html.is-embedded .gnk-code__enter{display:block}
-html.is-embedded .gnk-code__scene{padding:68px 30px 54px}
-html.is-embedded .gnk-code__scene--countdown{padding-top:58px;padding-bottom:72px!important}
+html.is-embedded .gnk-code__topbar,
+html.is-embedded .gnk-code__enter{display:none!important}
+html.is-embedded .gnk-code__scene{padding:36px 30px 34px!important}
+html.is-embedded .gnk-code__scene--countdown{padding-top:34px!important;padding-bottom:34px!important}
 
 @media(max-width:520px){
   .gnk-code__enter{bottom:9px;min-width:188px;padding:10px 13px;font-size:9px}
