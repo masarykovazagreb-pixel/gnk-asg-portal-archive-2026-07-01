@@ -1,17 +1,24 @@
-name: Deploy Cinematic WOW Index V5
+name: Deploy Public Index V8
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-luxury-index-pr.yml'
+      - 'apps/portal/assets/index-public-v7.css'
+      - 'apps/portal/assets/index-public-v7.js'
+      - 'apps/portal/assets/index-code-cleanup-v8.js'
+      - 'apps/portal/the-code/index.html'
+      - 'workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   pull_request:
     branches: [main]
     paths:
       - '.github/workflows/deploy-luxury-index-pr.yml'
-      - 'apps/portal/assets/index-wow-v4.css'
-      - 'apps/portal/assets/index-wow-v4.js'
-      - 'apps/portal/assets/index-code-editorial-v5.css'
-      - 'apps/portal/assets/index-unified-1180-v5.css'
-      - 'apps/portal/assets/media-application-code-v2.css'
-      - 'apps/portal/assets/media-application-code-v2.js'
-      - 'apps/portal/the-code/**'
+      - 'apps/portal/assets/index-public-v7.css'
+      - 'apps/portal/assets/index-public-v7.js'
+      - 'apps/portal/assets/index-code-cleanup-v8.js'
+      - 'apps/portal/the-code/index.html'
       - 'workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   workflow_dispatch:
@@ -20,7 +27,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-index-wow-v5
+  group: gnk-asg-public-index-v8
   cancel-in-progress: true
 
 jobs:
@@ -32,39 +39,26 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate unified 1180 layout and THE CODE V5
+      - name: Validate clean public index V8
         shell: bash
         run: |
           set -euxo pipefail
-          node --check apps/portal/assets/index-white-static-v2.js
-          node --check apps/portal/assets/index-white-static-enhance-v2.js
-          node --check apps/portal/assets/index-white-static-pdf-state-v2.js
-          node --check apps/portal/assets/index-wow-v4.js
-          node --check apps/portal/assets/media-application-code-v2.js
-          node --check apps/portal/the-code/assets/the-code-manual-v2.js
+          node --check apps/portal/assets/index-public-v7.js
+          node --check apps/portal/assets/index-code-cleanup-v8.js
           node --check workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          test -s apps/portal/assets/index-wow-v4.css
-          test -s apps/portal/assets/index-code-editorial-v5.css
-          test -s apps/portal/assets/index-unified-1180-v5.css
-          test -s apps/portal/the-code/assets/the-code-manual-v2.css
-          grep -q 'GNK_ASG_WHITE_STATIC_INDEX_WOW_V5_20260627' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          grep -q 'index-code-editorial-v5.css' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          grep -q 'index-unified-1180-v5.css' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          grep -q '/the-code/?embed=1' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          grep -q 'code-launch-button' apps/portal/assets/index-wow-v4.js
-          grep -q 'code-company--asg' apps/portal/assets/index-wow-v4.js
-          grep -q 'code-company--dinamo' apps/portal/assets/index-wow-v4.js
-          grep -q '390px' apps/portal/assets/index-code-editorial-v5.css
-          grep -q 'aspect-ratio:390/844' apps/portal/the-code/assets/the-code-manual-v2.css
-          grep -q 'width:min(1180px' apps/portal/assets/index-unified-1180-v5.css
-          grep -q 'overflow:hidden!important' apps/portal/assets/index-unified-1180-v5.css
-          grep -q 'data-playback-state="ready-live"' apps/portal/the-code/index.html
-          grep -q 'data-scene="5"' apps/portal/the-code/index.html
-          grep -q 'START THE CODE' apps/portal/the-code/index.html
-          grep -q 'showFilmScene(0)' apps/portal/the-code/assets/the-code-manual-v2.js
-          grep -q 'window.setTimeout(showLiveState' apps/portal/the-code/assets/the-code-manual-v2.js
-          grep -q 'showLiveState();' apps/portal/the-code/assets/the-code-manual-v2.js
+          grep -q 'GNK_ASG_PUBLIC_INDEX_V8_HR_EN_20260627' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'CLEAN_STANDALONE_HTML_V8' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q 'index-public-v7.css' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'index-public-v7.js' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'index-code-cleanup-v8.js' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'id="s6" class="scene active"' apps/portal/the-code/index.html
+          grep -q 'gnk-code-start' apps/portal/the-code/index.html
+          grep -q 'gnk-code-ready' apps/portal/the-code/index.html
+          grep -q 'gnk-code-playback' apps/portal/the-code/index.html
+          ! grep -q 'music-bar' apps/portal/the-code/index.html
+          ! grep -q 'music-btn' apps/portal/the-code/index.html
+          ! grep -q 'Play Again' apps/portal/the-code/index.html
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
       - name: Deploy current Worker to Cloudflare
@@ -73,42 +67,30 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify unified V5 is public
+      - name: Verify public index V8
         shell: bash
         run: |
           set -euo pipefail
           for n in $(seq 1 18); do
             HR_HEADERS=$(mktemp)
             EN_HEADERS=$(mktemp)
-            MEDIA_HEADERS=$(mktemp)
+            CODE_HEADERS=$(mktemp)
             HR=$(curl -fsS -D "$HR_HEADERS" "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}-hr" || true)
             EN=$(curl -fsS -D "$EN_HEADERS" "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}-en" || true)
-            EDITORIAL=$(curl -fsS "https://gnk-asg.hr/assets/index-code-editorial-v5.css?cb=${GITHUB_RUN_ID}-${n}" || true)
-            FRAME=$(curl -fsS "https://gnk-asg.hr/assets/index-unified-1180-v5.css?cb=${GITHUB_RUN_ID}-${n}" || true)
-            FILM_CSS=$(curl -fsS "https://gnk-asg.hr/the-code/assets/the-code-manual-v2.css?cb=${GITHUB_RUN_ID}-${n}" || true)
-            JS=$(curl -fsS "https://gnk-asg.hr/assets/index-wow-v4.js?cb=${GITHUB_RUN_ID}-${n}" || true)
-            CODE=$(curl -fsS "https://gnk-asg.hr/the-code/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            PLAYER=$(curl -fsS "https://gnk-asg.hr/the-code/assets/the-code-manual-v2.js?cb=${GITHUB_RUN_ID}-${n}" || true)
-            MEDIA=$(curl -fsS -D "$MEDIA_HEADERS" "https://gnk-asg.hr/media-application/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            if printf '%s' "$HR" | grep -q 'index-code-editorial-v5.css' \
-              && printf '%s' "$HR" | grep -q 'index-unified-1180-v5.css' \
-              && printf '%s' "$HR" | grep -q '/the-code/?embed=1' \
-              && printf '%s' "$EN" | grep -q 'index-unified-1180-v5.css' \
-              && printf '%s' "$EDITORIAL" | grep -q 'code-company--asg' \
-              && printf '%s' "$EDITORIAL" | grep -q '390px' \
-              && printf '%s' "$FRAME" | grep -q 'width:min(1180px' \
-              && printf '%s' "$FRAME" | grep -q 'contain:layout paint' \
-              && printf '%s' "$FILM_CSS" | grep -q 'aspect-ratio:390/844' \
-              && printf '%s' "$JS" | grep -q 'Pokreni prezentaciju' \
-              && printf '%s' "$CODE" | grep -q 'data-playback-state="ready-live"' \
-              && printf '%s' "$PLAYER" | grep -q 'showFilmScene(0)' \
-              && printf '%s' "$MEDIA" | grep -q 'media-application-code-v2.css' \
-              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_WHITE_STATIC_INDEX_WOW_V5_20260627' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-index-style: GNK_ASG_INDEX_WOW_V5_1180_20260627' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-page-width: 1180' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-the-code-mode: LIVE_DEFAULT_MANUAL_PLAY_390X844_EDITORIAL_V5' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_WHITE_STATIC_INDEX_WOW_V5_20260627' "$EN_HEADERS" \
-              && grep -qi 'x-gnk-asg-media-layout: THE_CODE_NARROW_V2' "$MEDIA_HEADERS"; then
+            CODE=$(curl -fsS -D "$CODE_HEADERS" "https://gnk-asg.hr/the-code/?embed=1&cb=${GITHUB_RUN_ID}-${n}" || true)
+            if printf '%s' "$HR" | grep -q 'index-public-v7.css' \
+              && printf '%s' "$HR" | grep -q 'index-public-v7.js' \
+              && printf '%s' "$HR" | grep -q 'index-code-cleanup-v8.js' \
+              && printf '%s' "$EN" | grep -q 'index-public-v7.css' \
+              && printf '%s' "$EN" | grep -q 'index-public-v7.js' \
+              && printf '%s' "$CODE" | grep -q 'id="s6" class="scene active"' \
+              && printf '%s' "$CODE" | grep -q 'gnk-code-start' \
+              && ! printf '%s' "$CODE" | grep -q 'music-bar' \
+              && ! printf '%s' "$CODE" | grep -q 'Play Again' \
+              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_PUBLIC_INDEX_V8_HR_EN_20260627' "$HR_HEADERS" \
+              && grep -qi 'x-gnk-asg-the-code-mode: CLEAN_HTML_EXTERNAL_BUTTON_ONLY_V8' "$HR_HEADERS" \
+              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_PUBLIC_INDEX_V8_HR_EN_20260627' "$EN_HEADERS" \
+              && grep -qi 'x-gnk-asg-the-code: CLEAN_STANDALONE_HTML_V8' "$CODE_HEADERS"; then
                 exit 0
             fi
             sleep 10

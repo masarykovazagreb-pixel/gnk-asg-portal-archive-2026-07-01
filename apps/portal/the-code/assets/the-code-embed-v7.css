@@ -1,0 +1,19 @@
+/* THE CODE embedded-only cleanup V7 */
+html.is-embedded body > :not(main):not(script),
+html.is-embedded main > :not(.gnk-code),
+html.is-embedded header,
+html.is-embedded nav,
+html.is-embedded footer,
+html.is-embedded .gnk-code__topbar,
+html.is-embedded .gnk-code__enter,
+html.is-embedded .gnk-code__sound,
+html.is-embedded [href="/assistant/"],
+html.is-embedded [href="/"],
+html.is-embedded [data-ai-help],
+html.is-embedded [data-public-shell]{display:none!important}
+html.is-embedded,html.is-embedded body,html.is-embedded main{margin:0!important;padding:0!important;width:100%!important;height:100%!important;overflow:hidden!important;background:#000!important}
+html.is-embedded .gnk-code{width:100%!important;height:100%!important;min-height:100%!important;display:grid!important;place-items:center!important;overflow:hidden!important}
+html.is-embedded .gnk-code__shell{width:100%!important;height:100%!important;min-height:0!important;padding:0!important;display:grid!important;place-items:center!important;overflow:hidden!important}
+html.is-embedded .gnk-code__scene{padding-top:42px!important}
+html.is-embedded .gnk-code__scene--countdown{padding-top:38px!important;padding-bottom:34px!important}
+html.is-embedded .gnk-code__stage{width:min(100vw,calc(100vh * 390 / 844))!important;height:min(100vh,calc(100vw * 844 / 390))!important;max-width:390px!important;max-height:844px!important;aspect-ratio:390/844!important}
