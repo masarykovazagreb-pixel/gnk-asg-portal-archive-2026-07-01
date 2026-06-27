@@ -55,12 +55,12 @@
     const slides=node('div','gnk-code-slot__slides');
     const visuals=[
       {
-        source:'/assets/the-code-visual-01.b64',
+        source:'/assets/the-code-visual-01.b64?v=20260627-webp1',
         mime:'image/webp',
         alt:english?'GNK ASG global network and advanced sports and governance':'GNK ASG globalna mreža, napredni sport i upravljanje'
       },
       {
-        source:'/assets/the-code-visual-02.b64',
+        source:'/assets/the-code-visual-02.b64?v=20260627-webp1',
         mime:'image/webp',
         alt:english?'GNK DINAMO Ltd. Group New York activation on October 7, 2026':'GNK DINAMO Ltd. Group aktivacija u New Yorku 7. listopada 2026.'
       }
@@ -89,7 +89,7 @@
     code.setAttribute('aria-label','THE CODE interactive presentation');
     const frame=node('iframe');
     frame.title='THE CODE — GNK DINAMO Ltd.';
-    frame.src='/the-code/';
+    frame.src='/the-code/?v=20260627-v1';
     frame.loading='eager';
     frame.setAttribute('sandbox','allow-scripts');
     frame.setAttribute('allow','autoplay');
