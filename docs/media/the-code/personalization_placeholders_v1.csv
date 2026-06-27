@@ -1,0 +1,10 @@
+Placeholder,Purpose,Required in email,Required in PDF,Stored in audit
+{{INVITATION_CODE}},Unique newsroom invitation code,YES,YES,YES
+{{NEWSROOM_NAME}},Official media outlet name,YES,YES,YES
+{{NEWSROOM_COUNTRY}},Country,OPTIONAL,YES,YES
+{{SECURE_APPLICATION_URL}},Unique activation/application link,YES,QR + text,YES
+{{APPLICATION_DEADLINE}},20 July 2026 23:59 CEST,YES,YES,YES
+{{LANGUAGE}},Template language,NO,NO,YES
+{{MAX_PARTICIPANTS}},Maximum 3,YES,YES,YES
+{{ASSIGNED_MEDIA_DESK}},Processing desk or centre,OPTIONAL,OPTIONAL,YES
+{{TEMPLATE_VERSION}},Document and email version,NO,FOOTER,YES
