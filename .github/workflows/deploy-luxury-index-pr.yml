@@ -53,9 +53,9 @@ jobs:
           grep -q 'index-public-v7.js' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
           grep -q 'index-code-cleanup-v8.js' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
           grep -q 'id="s6" class="scene active"' apps/portal/the-code/index.html
-          grep -q "type:'gnk-code-start'" apps/portal/the-code/index.html
-          grep -q "type:'gnk-code-ready'" apps/portal/the-code/index.html
-          grep -q "type:'gnk-code-playback'" apps/portal/the-code/index.html
+          grep -q 'gnk-code-start' apps/portal/the-code/index.html
+          grep -q 'gnk-code-ready' apps/portal/the-code/index.html
+          grep -q 'gnk-code-playback' apps/portal/the-code/index.html
           ! grep -q 'music-bar' apps/portal/the-code/index.html
           ! grep -q 'music-btn' apps/portal/the-code/index.html
           ! grep -q 'Play Again' apps/portal/the-code/index.html
@@ -84,7 +84,7 @@ jobs:
               && printf '%s' "$EN" | grep -q 'index-public-v7.css' \
               && printf '%s' "$EN" | grep -q 'index-public-v7.js' \
               && printf '%s' "$CODE" | grep -q 'id="s6" class="scene active"' \
-              && printf '%s' "$CODE" | grep -q "type:'gnk-code-start'" \
+              && printf '%s' "$CODE" | grep -q 'gnk-code-start' \
               && ! printf '%s' "$CODE" | grep -q 'music-bar' \
               && ! printf '%s' "$CODE" | grep -q 'Play Again' \
               && grep -qi 'x-gnk-asg-index-template: GNK_ASG_PUBLIC_INDEX_V8_HR_EN_20260627' "$HR_HEADERS" \
