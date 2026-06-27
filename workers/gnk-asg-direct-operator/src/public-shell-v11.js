@@ -25,7 +25,7 @@ function removeLegacyPublicShell(html){
     .replace(/<script[^>]+id=["']gnk-public-single-menu["'][^>]*>[\s\S]*?<\/script>/gi,'');
 }
 
-const stableFavicon='\n<link rel="icon" href="/favicon-48.svg" type="image/svg+xml" sizes="48x48">\n<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">\n<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="/favicon.svg">\n<link rel="manifest" href="/site.webmanifest">\n<meta name="theme-color" content="#020812">';
+const stableFavicon='\n<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">\n<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="/favicon.svg">\n<link rel="manifest" href="/site.webmanifest">\n<meta name="theme-color" content="#020812">';
 
 export function patchPublicHtml(html,path){
   html=removeLegacyPublicShell(html);
