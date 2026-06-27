@@ -1,4 +1,4 @@
-name: Deploy Index Activation V5
+name: Deploy Index Activation V6
 
 on:
   push:
@@ -28,15 +28,19 @@ jobs:
         id: probe
         if: always()
         continue-on-error: true
+        env:
+          DEPLOY_OUTCOME: ${{ steps.deploy.outcome }}
         run: |
-          for n in $(seq 1 18); do
+          for n in $(seq 1 24); do
             curl -sS -D /tmp/hr.headers -o /tmp/hr.body "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}" || true
-            if grep -q 'AKTIVACIJA KODA' /tmp/hr.body; then break; fi
+            curl -sS -o /tmp/en.body "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}" || true
+            if grep -q 'AKTIVACIJA KODA' /tmp/hr.body && grep -q 'CODE ACTIVATION' /tmp/en.body; then break; fi
             sleep 5
           done
           python - <<'PY'
           import json, os, pathlib, re
-          body=pathlib.Path('/tmp/hr.body').read_text(errors='ignore') if pathlib.Path('/tmp/hr.body').exists() else ''
+          hr=pathlib.Path('/tmp/hr.body').read_text(errors='ignore') if pathlib.Path('/tmp/hr.body').exists() else ''
+          en=pathlib.Path('/tmp/en.body').read_text(errors='ignore') if pathlib.Path('/tmp/en.body').exists() else ''
           headers=pathlib.Path('/tmp/hr.headers').read_text(errors='ignore') if pathlib.Path('/tmp/hr.headers').exists() else ''
           def h(name):
               m=re.search(rf'(?im)^{re.escape(name)}:\s*(.+)$',headers)
@@ -44,28 +48,49 @@ jobs:
           data={
             'commit':os.environ.get('GITHUB_SHA',''),
             'runId':os.environ.get('GITHUB_RUN_ID',''),
-            'activationInBody':'AKTIVACIJA KODA' in body,
-            'theCodeInBody':'THE CODE' in body,
-            'mapInBody':'gnk-activation__map' in body,
-            'filmInBody':'gnk-activation__film' in body,
-            'endStateInBody':'KOD AKTIVIRAN · NEW YORK · 7.10.2026. · 11:30 ET' in body,
+            'deployOutcome':os.environ.get('DEPLOY_OUTCOME',''),
+            'hrActivationInBody':'AKTIVACIJA KODA' in hr,
+            'enActivationInBody':'CODE ACTIVATION' in en,
+            'theCodeInBody':'THE CODE' in hr and 'THE CODE' in en,
+            'mapInBody':'gnk-activation__map' in hr and 'gnk-activation__map' in en,
+            'filmInBody':'gnk-activation__film' in hr and 'gnk-activation__film' in en,
+            'endStateHrInBody':'KOD AKTIVIRAN · NEW YORK · 7.10.2026. · 11:30 ET' in hr,
+            'endStateEnInBody':'CODE ACTIVATED · NEW YORK · OCTOBER 7, 2026 · 11:30 AM ET' in en,
+            'hrLanguageSwitch':'href="/en/"' in hr,
+            'enLanguageSwitch':'href="/"' in en,
+            'fullHrMenu':'PDF centar' in hr and 'AI pomoć' in hr and 'Admin' in hr,
+            'fullEnMenu':'PDF centre' in en and 'AI help' in en and 'Admin' in en,
             'indexActivationHeader':h('x-gnk-asg-index-activation'),
             'indexMapFilmHeader':h('x-gnk-asg-index-map-film'),
             'indexSourceHeader':h('x-gnk-asg-index-source'),
             'cfCacheStatus':h('cf-cache-status')
           }
+          data['ok']=all([
+            data['deployOutcome']=='success',data['hrActivationInBody'],data['enActivationInBody'],
+            data['theCodeInBody'],data['mapInBody'],data['filmInBody'],
+            data['endStateHrInBody'],data['endStateEnInBody'],data['hrLanguageSwitch'],
+            data['enLanguageSwitch'],data['fullHrMenu'],data['fullEnMenu']
+          ])
           pathlib.Path('/tmp/probe.json').write_text(json.dumps(data,ensure_ascii=False,indent=2))
+          print(json.dumps(data,ensure_ascii=False))
           PY
-      - name: Record result
+      - name: Record result without branch conflict
         if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p docs/deployments
-          cp /tmp/probe.json docs/deployments/index-activation-v3-status.json || printf '{"probe":"missing"}\n' > docs/deployments/index-activation-v3-status.json
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/deployments/index-activation-v3-status.json
-          git commit -m 'chore(index): record activation probe [skip ci]' || true
-          git push origin HEAD:main
+          set -euo pipefail
+          CONTENT=$(base64 -w0 /tmp/probe.json)
+          CURRENT_SHA=$(gh api "repos/${GITHUB_REPOSITORY}/contents/docs/deployments/index-activation-v3-status.json?ref=main" --jq '.sha' 2>/dev/null || true)
+          if [ -n "$CURRENT_SHA" ]; then
+            gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/docs/deployments/index-activation-v3-status.json" \
+              -f message='chore(index): record activation probe [skip ci]' \
+              -f content="$CONTENT" -f sha="$CURRENT_SHA" -f branch='main'
+          else
+            gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/docs/deployments/index-activation-v3-status.json" \
+              -f message='chore(index): record activation probe [skip ci]' \
+              -f content="$CONTENT" -f branch='main'
+          fi
       - name: Enforce deploy
         if: always()
         run: test '${{ steps.deploy.outcome }}' = 'success'
