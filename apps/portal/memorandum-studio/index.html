@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#15120d">
+  <title>Memorandum Studio | GNK ASG Admin</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/memorandum-studio-v1.css?v=20260627-v1">
+  <script defer src="/assets/memorandum-studio-v1.js?v=20260627-v1"></script>
+</head>
+<body>
+  <main class="studio-shell">
+    <header class="studio-topbar">
+      <div>
+        <p class="eyebrow">GNK ASG Admin · Dokumenti</p>
+        <h1>Memorandum Studio</h1>
+        <p>Izrada službenog memoranduma, trenutni pregled, PDF izvoz i slanje kao privitka.</p>
+      </div>
+      <div class="top-actions">
+        <span id="authState" class="state-chip">Provjera sesije…</span>
+        <button id="newDocument" type="button">Novi dokument</button>
+        <button id="saveDraft" type="button">Spremi nacrt</button>
+        <button id="downloadPdf" class="primary" type="button">Preuzmi PDF</button>
+      </div>
+    </header>
+
+    <section id="lockPanel" class="lock-panel" hidden>
+      <strong>Potrebna je sigurna administratorska prijava.</strong>
+      <p>Otvorite Admin Center i ponovno pokrenite Memorandum Studio.</p>
+      <a href="/admin-center/" target="_top">Otvori Admin Center</a>
+    </section>
+
+    <div id="studioWorkspace" class="studio-grid">
+      <aside class="control-panel" aria-label="Postavke dokumenta">
+        <section class="control-section">
+          <div class="section-heading"><span>01</span><div><h2>Memorandum</h2><p>Odaberite pravnu osobu i vizualni identitet.</p></div></div>
+          <div class="brand-choice" role="radiogroup" aria-label="Odabir memoranduma">
+            <label class="brand-option active">
+              <input type="radio" name="brand" value="asg" checked>
+              <img src="/assets/brand/media-kit/GNK_ASG_logo_gold_transparent.png" alt="GNK ASG d.o.o. logo">
+              <span><strong>GNK ASG d.o.o.</strong><small>Zagreb · Hrvatska</small></span>
+            </label>
+            <label class="brand-option">
+              <input type="radio" name="brand" value="dinamo">
+              <img src="/assets/brand/media-kit/GNK_DINAMO_Ltd_logo_gold_transparent.png" alt="GNK DINAMO Ltd. Group logo">
+              <span><strong>GNK DINAMO Ltd.</strong><small>Colorado · United States</small></span>
+            </label>
+          </div>
+        </section>
+
+        <section class="control-section">
+          <div class="section-heading"><span>02</span><div><h2>Podaci dokumenta</h2><p>Svi podaci odmah se prikazuju u pregledu.</p></div></div>
+          <div class="field-grid">
+            <label>Jezik
+              <select id="language"><option value="hr">Hrvatski</option><option value="en">English</option></select>
+            </label>
+            <label>Datum
+              <input id="documentDate" type="date">
+            </label>
+            <label>Mjesto
+              <input id="documentPlace" value="Zagreb">
+            </label>
+            <label>Broj / referenca
+              <input id="documentReference" placeholder="GNK-ASG/2026/001">
+            </label>
+            <label class="span-2">Primatelj
+              <input id="recipientName" placeholder="Ime i prezime / naziv društva">
+            </label>
+            <label class="span-2">Adresa primatelja
+              <input id="recipientAddress" placeholder="Ulica, grad, država">
+            </label>
+            <label class="span-2">Predmet
+              <input id="documentSubject" value="Službena obavijest">
+            </label>
+            <label class="span-2">Tekst dokumenta
+              <textarea id="documentBody" rows="14" placeholder="Upišite tekst. Prazan red stvara novi odlomak."></textarea>
+            </label>
+          </div>
+        </section>
+
+        <section class="control-section">
+          <div class="section-heading"><span>03</span><div><h2>Potpis</h2><p>Potpisnik i funkcija u završnom bloku dokumenta.</p></div></div>
+          <div class="field-grid">
+            <label>Ime potpisnika
+              <input id="signatoryName" value="Nermin Sefić">
+            </label>
+            <label>Funkcija
+              <input id="signatoryTitle" value="Direktor / Authorized Representative">
+            </label>
+          </div>
+        </section>
+
+        <section class="control-section send-section">
+          <div class="section-heading"><span>04</span><div><h2>Slanje kao PDF privitak</h2><p>Slanje koristi postojeći sigurni Mail Studio servis i evidentira isporuku.</p></div></div>
+          <div class="field-grid">
+            <label>Pošiljatelj
+              <select id="mailProfile">
+                <option value="office">GNK ASG Office</option>
+                <option value="legal">GNK ASG Legal &amp; Compliance</option>
+                <option value="media">GNK ASG Media Desk</option>
+                <option value="director">Nermin Sefić / Direktor</option>
+                <option value="it">IT – Osobni digitalni asistent</option>
+              </select>
+            </label>
+            <label>E-mail primatelja
+              <input id="mailTo" type="email" autocomplete="email" placeholder="primatelj@example.com">
+            </label>
+            <label class="span-2">CC
+              <input id="mailCc" placeholder="Opcionalno; više adresa odvojite zarezom">
+            </label>
+            <label class="span-2">Predmet e-maila
+              <input id="mailSubject" value="Službeni dokument GNK ASG">
+            </label>
+            <label class="span-2">Poruka e-maila
+              <textarea id="mailMessage" rows="5">Poštovani,
+
+u privitku dostavljamo službeni dokument.
+
+Srdačan pozdrav</textarea>
+            </label>
+          </div>
+          <div class="send-actions">
+            <button id="sharePdf" type="button">Podijeli PDF</button>
+            <button id="sendPdf" class="primary" type="button">Pošalji kao privitak</button>
+          </div>
+          <div id="sendResult" class="send-result" role="status" aria-live="polite">Dokument još nije poslan.</div>
+        </section>
+      </aside>
+
+      <section class="preview-panel" aria-label="Pregled memoranduma">
+        <div class="preview-toolbar">
+          <div><span class="live-dot"></span><strong>Pregled uživo</strong><small id="pageCount">1 stranica</small></div>
+          <div><button id="zoomOut" type="button" aria-label="Smanji pregled">−</button><span id="zoomLabel">82%</span><button id="zoomIn" type="button" aria-label="Povećaj pregled">+</button></div>
+        </div>
+        <div class="preview-stage">
+          <article id="documentPreview" class="document-page brand-asg" aria-label="A4 pregled dokumenta">
+            <header class="paper-header">
+              <img id="previewLogo" src="/assets/brand/media-kit/GNK_ASG_logo_gold_transparent.png" alt="GNK ASG d.o.o. logo">
+              <div class="paper-company">
+                <strong id="previewCompany">GNK ASG d.o.o.</strong>
+                <span id="previewCompanyLine1">Zagrebačka cesta 130 · 10000 Zagreb · Hrvatska</span>
+                <span id="previewCompanyLine2">OIB 75227917632 · MBS 081512375</span>
+              </div>
+            </header>
+            <div class="paper-gold-line"></div>
+            <section class="paper-meta">
+              <div class="recipient-block"><small id="labelRecipient">Primatelj</small><strong id="previewRecipient">—</strong><span id="previewRecipientAddress">—</span></div>
+              <div class="document-meta"><span><small id="labelPlaceDate">Mjesto i datum</small><strong id="previewPlaceDate">Zagreb</strong></span><span><small id="labelReference">Broj / referenca</small><strong id="previewReference">—</strong></span></div>
+            </section>
+            <section class="paper-content">
+              <div class="subject-line"><small id="labelSubject">Predmet</small><h2 id="previewSubject">Službena obavijest</h2></div>
+              <div id="previewBody" class="body-copy"><p>Tekst dokumenta pojavit će se ovdje.</p></div>
+              <div class="signature-block"><p id="closingText">S poštovanjem,</p><strong id="previewSignatory">Nermin Sefić</strong><span id="previewSignatoryTitle">Direktor / Authorized Representative</span></div>
+            </section>
+            <footer class="paper-footer">
+              <span id="previewFooterLeft">GNK ASG d.o.o. · Zagrebačka cesta 130 · Zagreb</span>
+              <span>+385 0916104398 · office@gnk-asg.hr · gnk-asg.hr</span>
+            </footer>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

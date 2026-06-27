@@ -1,0 +1,70 @@
+name: Deploy Memorandum Studio V2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-memorandum-studio-v2.yml'
+      - 'apps/portal/memorandum-studio/**'
+      - 'apps/portal/assets/memorandum-studio-v1.css'
+      - 'apps/portal/assets/memorandum-studio-v1.js'
+      - 'apps/portal/assets/admin-center-memorandum-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-memorandum-studio-v2.yml'
+      - 'apps/portal/memorandum-studio/**'
+      - 'apps/portal/assets/memorandum-studio-v1.css'
+      - 'apps/portal/assets/memorandum-studio-v1.js'
+      - 'apps/portal/assets/admin-center-memorandum-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-memorandum-studio-v2
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/memorandum-studio-v1.js
+          node --check apps/portal/assets/admin-center-memorandum-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          test -s apps/portal/assets/memorandum-studio-v1.css
+          grep -q 'Memorandum Studio' apps/portal/memorandum-studio/index.html
+          grep -q '/api/admin-mail-send' apps/portal/assets/memorandum-studio-v1.js
+          grep -q '%PDF-1.4' apps/portal/assets/memorandum-studio-v1.js
+          grep -q 'admin-center-memorandum-v1.js' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Deploy
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify
+        run: |
+          set -euo pipefail
+          for n in $(seq 1 18); do
+            H=$(mktemp)
+            PAGE=$(curl -fsS -D "$H" "https://gnk-asg.hr/memorandum-studio/?embedded=1&cb=${GITHUB_RUN_ID}-${n}" || true)
+            JS=$(curl -fsS "https://gnk-asg.hr/assets/memorandum-studio-v1.js?cb=${GITHUB_RUN_ID}-${n}" || true)
+            ADMIN_JS=$(curl -fsS "https://gnk-asg.hr/assets/admin-center-memorandum-v1.js?cb=${GITHUB_RUN_ID}-${n}" || true)
+            if printf '%s' "$PAGE" | grep -q 'Memorandum Studio' && printf '%s' "$JS" | grep -q '/api/admin-mail-send' && printf '%s' "$ADMIN_JS" | grep -q 'data-custom-module' && grep -qi 'x-gnk-asg-memorandum-studio-page: GNK_ASG_MEMORANDUM_STUDIO_V1_20260627' "$H"; then exit 0; fi
+            sleep 10
+          done
+          exit 1
