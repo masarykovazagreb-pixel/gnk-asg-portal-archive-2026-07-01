@@ -1,0 +1,39 @@
+name: Check Live Index Visual Fill V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/tests/live-index-visual-fill-v1.mjs'
+      - '.github/workflows/check-live-index-visual-fill-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Install browser
+        working-directory: apps/portal
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Verify live HR EN index and THE CODE
+        working-directory: apps/portal
+        env:
+          LIVE_BASE: https://gnk-asg.hr
+        run: node tests/live-index-visual-fill-v1.mjs
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-index-visual-fill-v1
+          path: apps/portal/live-index-visual-fill-output
+          retention-days: 7
