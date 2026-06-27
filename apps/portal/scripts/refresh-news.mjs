@@ -30,20 +30,32 @@ const FEEDS = [
   { url: 'https://www.espn.com/espn/rss/news', source: 'ESPN', group: 'sports', region: 'World' }
 ];
 
-function stripHtml(value = '') {
+function decodeHtmlEntities(value = '') {
   return String(value)
-    .replace(/<!\[CDATA\[|\]\]>/g, '')
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[\s\S]*?<\/style>/gi, '')
-    .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
     .replace(/&#39;|&apos;/g, "'")
     .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
+    .replace(/&gt;/g, '>');
+}
+
+function stripHtml(value = '') {
+  return decodeHtmlEntities(value)
+    .replace(/<!\[CDATA\[|\]\]>/g, '')
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function cleanText(value = '', max = 520) {
+  return stripHtml(value).slice(0, max).trim();
+}
+
+function cleanUrl(value = '') {
+  return decodeHtmlEntities(value).trim();
 }
 
 function tag(block, name) {
@@ -53,7 +65,7 @@ function tag(block, name) {
 
 function attr(block, tagName, attrName) {
   const match = block.match(new RegExp(`<${tagName}[^>]*${attrName}=["']([^"']+)["'][^>]*>`, 'i'));
-  return match ? match[1] : '';
+  return match ? cleanUrl(match[1]) : '';
 }
 
 function normalizeDate(value) {
@@ -66,7 +78,7 @@ function itemId(url, title) {
 }
 
 function isRealImage(value) {
-  const raw = String(value || '').trim();
+  const raw = cleanUrl(value);
   if (!raw || raw.includes('/assets/news-fallback.svg') || raw.startsWith('data:image/')) return false;
   try {
     const url = new URL(raw);
@@ -76,19 +88,21 @@ function isRealImage(value) {
   }
 }
 
-function normalizeManualItem(item) {
-  if (!item || !item.title || !item.url || !isRealImage(item.image)) return null;
-  const id = item.id || itemId(item.url, item.title);
+function normalizeNewsItem(item, defaults = {}) {
+  if (!item?.title || !item?.url || !isRealImage(item.image)) return null;
+  const title = cleanText(item.title, 220);
+  const url = cleanUrl(item.url);
+  const id = String(item.id || itemId(url, title)).trim();
   return {
     id,
-    title: String(item.title).trim(),
-    url: String(item.url).trim(),
-    summary: String(item.summary || '').slice(0, 520),
-    source: item.source || 'GNK ASG',
-    region: item.region || 'Europe',
-    group: item.group || item.category || 'corporate',
-    category: item.category || item.group || 'corporate',
-    image: String(item.image).trim(),
+    title,
+    url,
+    summary: cleanText(item.summary || '', 520),
+    source: cleanText(item.source || defaults.source || 'GNK ASG', 120),
+    region: cleanText(item.region || defaults.region || 'Europe', 80),
+    group: cleanText(item.group || item.category || defaults.group || 'corporate', 80),
+    category: cleanText(item.category || item.group || defaults.group || 'corporate', 80),
+    image: cleanUrl(item.image),
     published_at: normalizeDate(item.published_at),
     share_url: item.share_url || `/podijeli/vijest/${id}/`
   };
@@ -102,20 +116,19 @@ function parseFeed(xml, feed) {
     const summary = tag(block, 'description') || tag(block, 'summary') || tag(block, 'content:encoded');
     const published = tag(block, 'pubDate') || tag(block, 'published') || tag(block, 'updated') || tag(block, 'dc:date');
     const image = attr(block, 'media:content', 'url') || attr(block, 'media:thumbnail', 'url') || attr(block, 'enclosure', 'url');
-    if (!title || !link || !isRealImage(image)) return null;
-    return {
+    return normalizeNewsItem({
       id: itemId(link, title),
       title,
       url: link,
-      summary: summary.slice(0, 520),
+      summary,
       source: feed.source,
       region: feed.region,
       group: feed.group,
       category: feed.group,
       image,
-      published_at: normalizeDate(published),
+      published_at: published,
       share_url: `/podijeli/vijest/${itemId(link, title)}/`
-    };
+    }, feed);
   }).filter(Boolean);
 }
 
@@ -143,13 +156,14 @@ async function fetchFeed(feed) {
   }
 }
 
-const manualItems = (await readJson(MANUAL_SEED_PATH, [])).map(normalizeManualItem).filter(Boolean);
+const manualItems = (await readJson(MANUAL_SEED_PATH, [])).map((item) => normalizeNewsItem(item, { source: 'GNK ASG', region: 'Europe', group: 'corporate' })).filter(Boolean);
 const results = await Promise.all(FEEDS.map(fetchFeed));
 const fetchedItems = results.flatMap((r) => r.items);
 const existingPublic = await readJson(PUBLIC_PATH, []);
 const existingArchive = await readJson(ARCHIVE_PATH, []);
 const byId = new Map();
-for (const item of [...manualItems, ...fetchedItems, ...existingPublic, ...existingArchive]) {
+for (const rawItem of [...manualItems, ...fetchedItems, ...existingPublic, ...existingArchive]) {
+  const item = normalizeNewsItem(rawItem);
   if (item?.id && isRealImage(item.image) && !byId.has(item.id)) byId.set(item.id, item);
 }
 
