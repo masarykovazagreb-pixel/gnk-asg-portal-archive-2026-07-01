@@ -6,7 +6,8 @@ import {
   VERSION as MAIL_SMOKE_VERSION
 } from './mail-delivery-smoke-v1.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V25_MAIL_SMOKE_20260627';
+export const VERSION='GNK_ASG_ADMIN_HUB_V25_MAIL_SMOKE_20260627_R2';
+const DEPLOYMENT_STATUS='/data/deployment-status.json';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 function stamp(response){
@@ -15,14 +16,39 @@ function stamp(response){
   headers.set('x-gnk-asg-mail-delivery-smoke',MAIL_SMOKE_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
+async function patchDeploymentStatus(response){
+  if(!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
+  try{
+    const payload=await response.json();
+    const headers=new Headers(response.headers);
+    headers.delete('content-length');
+    headers.delete('content-encoding');
+    headers.set('content-type','application/json; charset=utf-8');
+    headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+    return new Response(JSON.stringify({
+      ...payload,
+      entryPoint:'src/index-admin-hub-v25-mail-smoke.js',
+      manualMailSending:'LIVE_AUTHENTICATED',
+      manualMailService:'GNK_ASG_MANUAL_MAIL_SERVICE_V1_20260627',
+      manualMailDeliveryHealth:MAIL_SMOKE_PATH,
+      manualMailSmoke:MAIL_SMOKE_VERSION,
+      mandatoryInternalCopy:'ENFORCED',
+      signatureContactPolicy:'NO_PHONE_NO_WHATSAPP',
+      mediaBulkSending:'LOCKED'
+    },null,2),{status:response.status,statusText:response.statusText,headers});
+  }catch{return response;}
+}
 
 export default{
   async fetch(request,env,ctx){
-    if(pathOf(request)===MAIL_SMOKE_PATH){
+    const path=pathOf(request);
+    if(path===MAIL_SMOKE_PATH){
       const response=await handleMailDeliverySmoke(request,env);
       if(response)return stamp(response);
     }
-    return stamp(await app.fetch(request,env,ctx));
+    let response=await app.fetch(request,env,ctx);
+    if(path===DEPLOYMENT_STATUS&&request.method==='GET')response=await patchDeploymentStatus(response);
+    return stamp(response);
   },
   async scheduled(event,env,ctx){
     const smoke=runMailDeliverySmoke(env).catch(error=>({ok:false,error:String(error?.message||error)}));
