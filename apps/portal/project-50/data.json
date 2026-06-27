@@ -1,0 +1,63 @@
+{
+  "version": "PROJECT_50_V2_20260628",
+  "activation": {
+    "iso": "2026-10-07T11:30:00-04:00",
+    "dateHr": "7. listopada 2026.",
+    "dateEn": "7 October 2026",
+    "time": "11:30 AM",
+    "zone": "New York ET"
+  },
+  "documents": {
+    "asgReport": "/documents/GNK_ASG_Izvjesce_neovisnog_revizora_i_financijski_izvjestaji_2025.pdf",
+    "downloads": "/downloads/"
+  },
+  "companies": {
+    "asg": {
+      "name": "GNK ASG d.o.o.",
+      "locationHr": "Zagreb · Hrvatska",
+      "locationEn": "Zagreb · Croatia",
+      "eyebrow": "01 · OPERATIVNI CENTAR / OPERATING CENTRE",
+      "descriptionHr": "Samostalni revidirani financijski pokazatelji za poslovnu 2025. godinu.",
+      "descriptionEn": "Standalone audited financial indicators for fiscal year 2025.",
+      "metrics": [
+        {"labelHr":"Ukupni prihodi","labelEn":"Total revenue","value":"€504.00M","note":"FY 2025"},
+        {"labelHr":"Ukupna aktiva","labelEn":"Total assets","value":"€46.40M","noteHr":"Revidirano","noteEn":"Audited"},
+        {"labelHr":"Kapital i rezerve","labelEn":"Equity and reserves","value":"€46.21M","noteHr":"Samostalno","noteEn":"Standalone"},
+        {"labelHr":"Kratkoročne obveze","labelEn":"Current liabilities","value":"€184.50K","note":"FY 2025"},
+        {"labelHr":"Dobit godine","labelEn":"Profit for the year","value":"€16,076.47","note":"FY 2025"},
+        {"labelHr":"Dugoročne obveze","labelEn":"Long-term liabilities","value":"€0.00","noteHr":"Bez dugoročnog duga","noteEn":"Zero long-term debt"}
+      ]
+    },
+    "dinamo": {
+      "name": "GNK DINAMO Ltd. Group",
+      "locationHr": "Boulder · Colorado · SAD",
+      "locationEn": "Boulder · Colorado · USA",
+      "eyebrow": "02 · GLOBALNA GRUPA / GLOBAL GROUP",
+      "descriptionHr": "Konsolidirana snaga grupe, globalna mreža i aktivacija u New Yorku.",
+      "descriptionEn": "Consolidated group strength, global network and New York activation.",
+      "entityId": "Colorado Entity ID 20238180649",
+      "metrics": [
+        {"labelHr":"Prihodi grupe","labelEn":"Group revenue","value":"€4.7046B","note":"FY 2025"},
+        {"labelHr":"Neto dobit","labelEn":"Net income","value":"€982.48M","noteHr":"Konsolidirano","noteEn":"Consolidated"},
+        {"labelHr":"Ukupna aktiva","labelEn":"Total assets","value":"€3.4830B","note":"FY 2025"},
+        {"labelHr":"Kapital i rezerve","labelEn":"Equity and reserves","value":"€3.4140B","note":"FY 2025"},
+        {"labelHr":"Ukupne obveze","labelEn":"Total liabilities","value":"€69.04M","note":"FY 2025"},
+        {"labelHr":"Udio kapitala","labelEn":"Equity ratio","value":"98.02%","noteHr":"45 lokacija","noteEn":"45 locations"}
+      ]
+    }
+  },
+  "timeline": [
+    {"year":"1990","place":"Budapest","titleHr":"Ideja je rođena.","titleEn":"The idea was born.","textHr":"Koncept je čekao da tehnologija postane spremna.","textEn":"The concept waited for technology to become ready."},
+    {"year":"2026","place":"Zagreb","titleHr":"Operativni centar.","titleEn":"Operating centre.","textHr":"Strategija, razvoj i izvedba povezuju grupu.","textEn":"Strategy, development and execution connect the group."},
+    {"year":"2026","place":"Boulder","titleHr":"Globalna koordinacija.","titleEn":"Global coordination.","textHr":"GNK DINAMO Ltd. povezuje strukturu grupe.","textEn":"GNK DINAMO Ltd. connects the group structure."},
+    {"year":"07 OCT","place":"New York","titleHr":"Aktivacija koda.","titleEn":"Code activation.","textHr":"11:30 AM ET · cijeli svijet postaje jedna mreža.","textEn":"11:30 AM ET · the world becomes one network."}
+  ],
+  "locations": {
+    "existing": [
+      ["Boulder","USA"],["Zagreb","Croatia"],["Ljubljana","Slovenia"],["Budapest","Hungary"],["Belgrade","Serbia"],["Novi Sad","Serbia"],["Niš","Serbia"],["Kragujevac","Serbia"],["Vancouver","Canada"],["Toronto","Canada"],["Mexico City","Mexico"],["Panama City","Panama"],["Bogotá","Colombia"],["Lima","Peru"],["Santiago","Chile"],["São Paulo","Brazil"],["Buenos Aires","Argentina"],["Dubai","UAE"],["Mumbai","India"],["Singapore","Singapore"],["Jakarta","Indonesia"],["Beijing","China"],["Seoul","South Korea"],["Tokyo","Japan"],["Kuala Lumpur","Malaysia"],["Hong Kong","Hong Kong"],["Casablanca","Morocco"],["Lagos","Nigeria"],["Nairobi","Kenya"],["Johannesburg","South Africa"],["Cape Town","South Africa"],["Sydney","Australia"],["Auckland","New Zealand"]
+    ],
+    "planned": [
+      ["San José","Costa Rica"],["Quito","Ecuador"],["Montevideo","Uruguay"],["Doha","Qatar"],["Bangkok","Thailand"],["Manila","Philippines"],["Ho Chi Minh City","Vietnam"],["Accra","Ghana"],["Kigali","Rwanda"],["Port Louis","Mauritius"],["Dar es Salaam","Tanzania"],["Perth","Australia"]
+    ]
+  }
+}
