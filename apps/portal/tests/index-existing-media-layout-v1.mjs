@@ -2,7 +2,7 @@ import { chromium } from '@playwright/test';
 import fs from 'node:fs/promises';
 
 const base = process.env.VISUAL_BASE || 'http://127.0.0.1:8787';
-const outputDir = new URL('../existing-media-layout-output/', import.meta.url);
+const outputDir = 'existing-media-layout-output';
 await fs.mkdir(outputDir, { recursive: true });
 
 const launchOptions = { headless: true };
@@ -36,8 +36,8 @@ const result = await page.evaluate(() => {
   };
 });
 
-await page.locator('#mreza-grupe').screenshot({ path: new URL('group-network.png', outputDir) });
-await fs.writeFile(new URL('result.json', outputDir), JSON.stringify(result, null, 2));
+await page.locator('#mreza-grupe').screenshot({ path: `${outputDir}/group-network.png` });
+await fs.writeFile(`${outputDir}/result.json`, JSON.stringify(result, null, 2));
 
 const failures = [];
 if (result.bottomShowcase) failures.push('additional bottom showcase exists');
