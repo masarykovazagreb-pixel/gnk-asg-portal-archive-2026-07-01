@@ -1,0 +1,56 @@
+name: Restore Production Snapshot 2059
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/restore-production-2059.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-production-restore-2059
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact snapshot
+        uses: actions/checkout@v5
+        with:
+          ref: 9b733f5f35987a8927b037ee80cf0e838de4eeb5
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Deploy 20:59 snapshot to Cloudflare
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify restored production
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in $(seq 1 24); do
+            HEADERS=$(mktemp)
+            BODY=$(curl -fsS -D "$HEADERS" "https://gnk-asg.hr/?restore=2059-${GITHUB_RUN_ID}-${n}" || true)
+            if printf '%s' "$BODY" | grep -q 'index-finance-v9.css' \
+              && printf '%s' "$BODY" | grep -q 'THE CODE' \
+              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_PUBLIC_INDEX_V9_HR_EN_20260627' "$HEADERS"; then
+              echo 'Production restored to 2026-06-27 20:59 snapshot.'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Restored deployment did not pass verification in time.'
+          exit 1
