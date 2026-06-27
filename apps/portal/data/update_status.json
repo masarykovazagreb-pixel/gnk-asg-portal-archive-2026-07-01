@@ -1,49 +1,61 @@
 {
-  "updated_at": "2026-06-01T08:51:39+00:00",
+  "updated_at": "2026-06-27T17:45:25+00:00",
   "news": {
-    "updated_at": "2026-06-01T08:51:39+00:00",
+    "ok": true,
     "status": "ok",
-    "engine": "github_actions_rss_refresh_v2",
-    "cadence": "scheduled every 30 minutes plus manual workflow_dispatch",
-    "source_success_policy": "temporary source failures are skipped silently when a valid public package exists",
-    "source_success_threshold": 0.5,
-    "source_success_ratio": 1.0,
-    "source_sync_status": "complete_public_package",
-    "configured_sources": 32,
-    "successful_sources": 32,
-    "failed_sources": 0,
-    "storage_policy": "public_latest_500_archive_latest_400_older_overflow_removed",
-    "public_items": 500,
-    "max_public_items": 500,
-    "archive_items": 400,
-    "max_archive_items": 400,
-    "discarded_archive_overflow_items": 1592,
-    "fetched_candidates": 1888,
-    "duplicates_or_blocked_removed": 296,
-    "request_timeout_seconds": 10,
-    "network_workers": 1,
-    "share_previews_ready": 0,
+    "version": "GNK_ASG_NEWS_V14_20260626",
+    "engine": "news_v14_lifecycle",
+    "updated_at": "2026-06-27T17:45:25+00:00",
+    "checked_at": "2026-06-27T17:45:25+00:00",
+    "last_attempt_at": "2026-06-27T17:45:25+00:00",
+    "last_successful_refresh_at": "2026-06-27T17:45:25+00:00",
+    "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
+    "timezone": "Europe/Zagreb",
+    "scheduled_hours_local": [
+      9,
+      16,
+      21
+    ],
+    "configured_sources": 22,
+    "minimum_healthy_sources": 15,
+    "healthy_sources": 19,
+    "failed_sources": 3,
+    "fetched_candidates": 404,
+    "verified_new_candidates": 234,
+    "public_items": 100,
+    "max_public_items": 100,
+    "public_contract": "title+summary+source+article_url+verified_real_image",
+    "archive_items": 146,
+    "archive_capacity": 1000,
+    "archive_prune_trigger": 1000,
+    "archive_prune_to": 500,
+    "archive_prune_triggered": false,
+    "discarded_archive_items": 0,
+    "fallback_images_allowed": false,
+    "rss_images_enabled": true,
+    "open_graph_fallback_enabled": false,
     "by_group": {
-      "technology": 139,
-      "digital-assets": 129,
-      "hrvatska": 81,
-      "international": 79,
-      "slovenija": 12,
-      "srbija": 42,
-      "mobilnost": 12,
-      "bih": 4,
-      "sport": 1,
-      "economy": 1
+      "international": 23,
+      "markets": 6,
+      "hrvatska": 19,
+      "digital-assets": 11,
+      "technology": 19,
+      "srbija": 19,
+      "business": 3
     },
-    "errors": [],
-    "preview_errors": [],
-    "checked_at": "2026-06-01T08:51:39+00:00",
-    "last_attempt_at": "2026-06-01T08:51:39+00:00",
-    "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
-    "stale_safe": true,
-    "last_successful_refresh_at": "2026-06-01T08:51:39+00:00",
-    "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 20.41,
-    "public_message_policy": "show public package as ok; do not expose temporary source skips"
+    "errors": [
+      {
+        "source": "EURACTIV",
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "source": "International Monetary Fund",
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "source": "European Central Bank",
+        "error": "http_200"
+      }
+    ]
   }
 }
