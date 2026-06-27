@@ -1,7 +1,20 @@
-name: Deploy Editorial Center
+name: Deploy Editorial Center Burst V1
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/portal/auto-editor/index.html"
+      - "workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-editorial-loop-fix-v1.js"
+      - "workers/gnk-asg-direct-operator/src/editorial-core-v1.js"
+      - "workers/gnk-asg-direct-operator/src/editorial-bootstrap-v1.js"
+      - "workers/gnk-asg-direct-operator/src/editorial-auto-publish-v2.js"
+      - "workers/gnk-asg-direct-operator/src/editorial-sources-v1.js"
+      - "workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml"
+      - ".github/workflows/deploy-editorial-center.yml"
   push:
     branches: [main]
     paths:
@@ -10,6 +23,8 @@ on:
       - "workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-editorial-loop-fix-v1.js"
       - "workers/gnk-asg-direct-operator/src/editorial-core-v1.js"
+      - "workers/gnk-asg-direct-operator/src/editorial-bootstrap-v1.js"
+      - "workers/gnk-asg-direct-operator/src/editorial-auto-publish-v2.js"
       - "workers/gnk-asg-direct-operator/src/editorial-sources-v1.js"
       - "workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml"
       - ".github/workflows/deploy-editorial-center.yml"
@@ -17,54 +32,70 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: gnk-asg-editorial-center-burst-v1
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: "22"
-      - name: Validate
+          node-version: "24"
+      - name: Validate editorial bootstrap and temporary cadence
         run: |
           set -euo pipefail
-          test -n "$GNK_ASG_OPERATOR_TOKEN"
           node --check workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-editorial-loop-fix-v1.js
           node --check workers/gnk-asg-direct-operator/src/editorial-core-v1.js
+          node --check workers/gnk-asg-direct-operator/src/editorial-bootstrap-v1.js
+          node --check workers/gnk-asg-direct-operator/src/editorial-auto-publish-v2.js
           node --check workers/gnk-asg-direct-operator/src/editorial-sources-v1.js
           grep -q 'name = "gnk-asg-auto-editor"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
           grep -q 'main = "src/index-editorial-loop-fix-v1.js"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
-          grep -q 'type = "Text"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
+          grep -q 'crons = \["\*/5 \* \* \* \*"\]' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
+          grep -q 'EDITORIAL_BURST_TARGET = "10"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
+          grep -q 'GNK_ASG_EDITORIAL_BOOTSTRAP_10_V1_20260627' workers/gnk-asg-direct-operator/src/editorial-bootstrap-v1.js
+          grep -q 'approved brand asset' workers/gnk-asg-direct-operator/src/editorial-bootstrap-v1.js
+          grep -q '2026-06-29T23:59:59+02:00' workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
+          grep -q 'bootstrap/run' workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
           grep -q 'Urednički centar' apps/portal/auto-editor/index.html
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.editorial-existing.toml --name gnk-asg-auto-editor
       - name: Deploy existing Auto Editor route worker
+        if: github.event_name != 'pull_request'
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
         run: |
           set -euo pipefail
+          test -n "$GNK_ASG_OPERATOR_TOKEN"
           token_hash=$(printf '%s' "$GNK_ASG_OPERATOR_TOKEN" | sha256sum | awk '{print $1}')
           test ${#token_hash} -eq 64
           npx --yes wrangler@4 deploy --config wrangler.editorial-existing.toml --name gnk-asg-auto-editor --var "OPERATOR_TOKEN_SHA256:$token_hash" --keep-vars
-      - name: Verify protected Editorial Center
+      - name: Bootstrap and verify ten public publications
+        if: github.event_name != 'pull_request'
+        env:
+          GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
         run: |
           set -euo pipefail
-          sleep 18
+          sleep 12
           code=$(curl --silent --show-error --output login.html --write-out '%{http_code}' --cookie-jar cookies.txt --request POST --data-urlencode "token=$GNK_ASG_OPERATOR_TOKEN" --data-urlencode 'next=/auto-editor/' 'https://gnk-asg.hr/auto-editor/')
-          echo "LOGIN_HTTP=$code"
           test "$code" = "303"
-          code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie cookies.txt 'https://gnk-asg.hr/auto-editor/')
-          echo "EDITOR_HTTP=$code"
+          code=$(curl --silent --show-error --output bootstrap.json --write-out '%{http_code}' --cookie cookies.txt -H 'content-type: application/json' -X POST --data '{"minimum":10}' 'https://gnk-asg.hr/auto-editor/editorial/api/bootstrap/run')
+          echo "BOOTSTRAP_HTTP=$code"
+          cat bootstrap.json
           test "$code" = "200"
-          grep -q 'Urednički centar' editor.html
+          node -e "const p=require('./bootstrap.json'); if(!p.ok||Number(p.total)<10) process.exit(1);"
           code=$(curl --silent --show-error --output status.json --write-out '%{http_code}' --cookie cookies.txt 'https://gnk-asg.hr/auto-editor/editorial/api/status')
           echo "STATUS_HTTP=$code"
-          cat status.json
           test "$code" = "200"
-          grep -q 'GNK_ASG_EDITORIAL_CENTER_V1_20260624' status.json
+          node -e "const p=require('./status.json'); if(!p.ok||!p.burst||Number(p.burst.target)!==10||(p.recentPublications||[]).length<10) process.exit(1);"
+          grep -q 'validated automatic publication every 2 hours during temporary fill' status.json
           rm -f cookies.txt
