@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-06-27T09:11:02.181Z",
+  "updated_at": "2026-06-27T09:37:41.644Z",
   "engine": "single_publication_engine_v14_isolated_github_action",
   "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
   "timezone": "Europe/Zagreb",
@@ -11,9 +11,10 @@
     21
   ],
   "public_items_target": 100,
-  "public_items_written": 46,
+  "public_items_written": 100,
+  "manual_items_loaded": 10,
   "archive_policy": "archive_latest_1000_prune_to_500_when_full",
-  "archive_items_written": 0,
+  "archive_items_written": 246,
   "rss_images_enabled": true,
   "fallback_image": null,
   "fallback_image_allowed": false,
@@ -31,6 +32,46 @@
     },
     {
       "feed": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "ok": true,
+      "count": 27
+    },
+    {
+      "feed": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+      "ok": true,
+      "count": 21
+    },
+    {
+      "feed": "https://feeds.bbci.co.uk/sport/rss.xml",
+      "ok": true,
+      "count": 74
+    },
+    {
+      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+      "ok": true,
+      "count": 46
+    },
+    {
+      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
+      "ok": true,
+      "count": 20
+    },
+    {
+      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Science.xml",
+      "ok": true,
+      "count": 31
+    },
+    {
+      "feed": "https://www.theguardian.com/world/rss",
+      "ok": true,
+      "count": 45
+    },
+    {
+      "feed": "https://www.theguardian.com/technology/rss",
+      "ok": true,
+      "count": 36
+    },
+    {
+      "feed": "https://www.theguardian.com/science/rss",
       "ok": true,
       "count": 27
     },
