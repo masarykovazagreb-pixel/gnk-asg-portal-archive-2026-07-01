@@ -13,6 +13,7 @@ async function loadStaticIndex(request,env,english){
   const assetResponse=await env.ASSETS.fetch(new Request(assetUrl));
   if(!assetResponse.ok)throw new Error(`STATIC_INDEX_${assetResponse.status}`);
   let body=await assetResponse.text();
+  body=body.replace(/src=["']\/the-code\/?["']/gi,'src="/the-code/?embed=1"');
   if(!body.includes('index-white-static-v3.css'))body=body.replace('</head>',`${UNIFIED_STYLE}</head>`);
   if(!body.includes('index-wow-v4.css'))body=body.replace('</head>',`${WOW_STYLE}</head>`);
   if(!body.includes('index-white-static-pdf-state-v2.js'))body=body.replace('</body>',`${PDF_STATE}</body>`);
@@ -24,6 +25,7 @@ async function loadStaticIndex(request,env,english){
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-index-template',VERSION);
   headers.set('x-gnk-asg-index-style','GNK_ASG_INDEX_WOW_V4_20260627');
+  headers.set('x-gnk-asg-the-code-mode','LIVE_DEFAULT_MANUAL_PLAY_FULL_FRAME_V2');
   return new Response(body,{status:200,headers});
 }
 

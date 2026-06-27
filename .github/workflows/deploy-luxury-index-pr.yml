@@ -7,7 +7,11 @@ on:
       - '.github/workflows/deploy-luxury-index-pr.yml'
       - 'apps/portal/assets/index-wow-v4.css'
       - 'apps/portal/assets/index-wow-v4.js'
+      - 'apps/portal/assets/media-application-code-v2.css'
+      - 'apps/portal/assets/media-application-code-v2.js'
+      - 'apps/portal/the-code/**'
       - 'workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   workflow_dispatch:
 
 permissions:
@@ -26,7 +30,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate WOW index V4
+      - name: Validate WOW index V4 and THE CODE manual V2
         shell: bash
         run: |
           set -euxo pipefail
@@ -34,14 +38,29 @@ jobs:
           node --check apps/portal/assets/index-white-static-enhance-v2.js
           node --check apps/portal/assets/index-white-static-pdf-state-v2.js
           node --check apps/portal/assets/index-wow-v4.js
+          node --check apps/portal/assets/media-application-code-v2.js
+          node --check apps/portal/the-code/assets/the-code-manual-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           test -s apps/portal/assets/index-wow-v4.css
+          test -s apps/portal/assets/media-application-code-v2.css
+          test -s apps/portal/the-code/assets/the-code-manual-v2.css
           grep -q 'GNK_ASG_WHITE_STATIC_INDEX_WOW_V4_20260627' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
           grep -q 'index-wow-v4.css' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
           grep -q 'index-wow-v4.js' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q '/the-code/?embed=1' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
           grep -q 'GNK ASG Index WOW V4' apps/portal/assets/index-wow-v4.css
           grep -q 'hero-sculpture' apps/portal/assets/index-wow-v4.js
           grep -q 'min-height:860px' apps/portal/assets/index-wow-v4.css
+          grep -q 'data-playback-state="ready-live"' apps/portal/the-code/index.html
+          grep -q 'data-scene="5"' apps/portal/the-code/index.html
+          grep -q 'START THE CODE' apps/portal/the-code/index.html
+          grep -q 'const finalIndex = scenes.length - 1' apps/portal/the-code/assets/the-code-manual-v2.js
+          grep -q 'showFilmScene(0)' apps/portal/the-code/assets/the-code-manual-v2.js
+          grep -q 'window.setTimeout(showLiveState' apps/portal/the-code/assets/the-code-manual-v2.js
+          grep -q 'showLiveState();' apps/portal/the-code/assets/the-code-manual-v2.js
+          grep -q -- '--code-width:480px' apps/portal/assets/media-application-code-v2.css
+          grep -q 'media-nav' apps/portal/assets/media-application-code-v2.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
       - name: Deploy current Worker to Cloudflare
@@ -50,25 +69,38 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify WOW V4 is public
+      - name: Verify WOW V4, THE CODE and Media Application are public
         shell: bash
         run: |
           set -euo pipefail
           for n in $(seq 1 18); do
             HR_HEADERS=$(mktemp)
             EN_HEADERS=$(mktemp)
+            MEDIA_HEADERS=$(mktemp)
             HR=$(curl -fsS -D "$HR_HEADERS" "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}-hr" || true)
             EN=$(curl -fsS -D "$EN_HEADERS" "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}-en" || true)
             CSS=$(curl -fsS "https://gnk-asg.hr/assets/index-wow-v4.css?cb=${GITHUB_RUN_ID}-${n}" || true)
             JS=$(curl -fsS "https://gnk-asg.hr/assets/index-wow-v4.js?cb=${GITHUB_RUN_ID}-${n}" || true)
+            CODE=$(curl -fsS "https://gnk-asg.hr/the-code/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            PLAYER=$(curl -fsS "https://gnk-asg.hr/the-code/assets/the-code-manual-v2.js?cb=${GITHUB_RUN_ID}-${n}" || true)
+            MEDIA=$(curl -fsS -D "$MEDIA_HEADERS" "https://gnk-asg.hr/media-application/?cb=${GITHUB_RUN_ID}-${n}" || true)
             if printf '%s' "$HR" | grep -q 'index-wow-v4.css' \
               && printf '%s' "$HR" | grep -q 'index-wow-v4.js' \
+              && printf '%s' "$HR" | grep -q '/the-code/?embed=1' \
               && printf '%s' "$EN" | grep -q 'index-wow-v4.css' \
               && printf '%s' "$CSS" | grep -q 'GNK ASG Index WOW V4' \
               && printf '%s' "$JS" | grep -q 'hero-sculpture' \
+              && printf '%s' "$CODE" | grep -q 'data-playback-state="ready-live"' \
+              && printf '%s' "$CODE" | grep -q 'START THE CODE' \
+              && printf '%s' "$PLAYER" | grep -q 'showFilmScene(0)' \
+              && printf '%s' "$PLAYER" | grep -q 'showLiveState();' \
+              && printf '%s' "$MEDIA" | grep -q 'media-application-code-v2.css' \
+              && printf '%s' "$MEDIA" | grep -q 'media-application-code-v2.js' \
               && grep -qi 'x-gnk-asg-index-template: GNK_ASG_WHITE_STATIC_INDEX_WOW_V4_20260627' "$HR_HEADERS" \
               && grep -qi 'x-gnk-asg-index-style: GNK_ASG_INDEX_WOW_V4_20260627' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_WHITE_STATIC_INDEX_WOW_V4_20260627' "$EN_HEADERS"; then
+              && grep -qi 'x-gnk-asg-the-code-mode: LIVE_DEFAULT_MANUAL_PLAY_FULL_FRAME_V2' "$HR_HEADERS" \
+              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_WHITE_STATIC_INDEX_WOW_V4_20260627' "$EN_HEADERS" \
+              && grep -qi 'x-gnk-asg-media-layout: THE_CODE_NARROW_V2' "$MEDIA_HEADERS"; then
                 exit 0
             fi
             sleep 10
