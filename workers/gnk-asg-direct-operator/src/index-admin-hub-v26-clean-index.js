@@ -23,17 +23,17 @@ const ADMIN_SCRIPT='<script defer src="/assets/admin-center-memorandum-v1.js?v=2
 const DASHBOARD_STYLE='<link rel="stylesheet" href="/assets/admin-dashboard-v3.css?v=20260627-v3">';
 const DASHBOARD_SCRIPT='<script defer src="/assets/admin-dashboard-v3.js?v=20260627-v3"></script>';
 const V21_STYLE='<link rel="stylesheet" href="/assets/public-unified-v21.css?v=20260627-index-preview-1">';
-const V21_SCRIPT='<script defer src="/assets/public-shell-v15.js?v=20260627-index-preview-1"></script>';
+const V21_SCRIPT='<script defer src="/assets/public-shell-v21.js?v=20260627-index-preview-1"></script>';
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/'}
 function isEditorial(path){return EDITORIAL_PATHS.has(path)||path.startsWith('/vijesti/')||path.startsWith('/news/')||path.startsWith('/objave/')||path.startsWith('/publications/')}
 function patchHeaders(response){const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return headers}
 function addBodyClasses(html,...classes){return html.replace(/<body([^>]*)>/i,(match,attrs)=>{const classMatch=String(attrs).match(/\sclass=(["'])([^"']*)\1/i);if(classMatch){const merged=[...new Set([...classMatch[2].split(/\s+/),...classes].filter(Boolean))].join(' ');return `<body${attrs.replace(classMatch[0],` class=${classMatch[1]}${merged}${classMatch[1]}`)}>`}return `<body${attrs} class="${classes.join(' ')}">`})}
 function mobileAdminRedirect(){return new Response(null,{status:303,headers:{location:'/app/?mode=admin','cache-control':'no-store','x-gnk-asg-mobile-app':'STANDARD_ADMIN_V2'}})}
 function injectIndexV21(html){
-  html=html.replace(/<link[^>]+(?:public-menu-v10|public-unified-v21)\.css[^>]*>/gi,'').replace(/<script[^>]+(?:public-menu-v10|public-shell-v15)\.js[^>]*><\/script>/gi,'');
+  html=html.replace(/<link[^>]+(?:public-menu-v10|public-unified-v21)\.css[^>]*>/gi,'').replace(/<script[^>]+(?:public-menu-v10|public-shell-v15|public-shell-v21)\.js[^>]*><\/script>/gi,'');
   html=html.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,'');
   if(!html.includes('public-unified-v21.css'))html=html.replace('</head>',V21_STYLE+'</head>');
-  if(!html.includes('public-shell-v15.js'))html=html.replace('</body>',V21_SCRIPT+'</body>');
+  if(!html.includes('public-shell-v21.js'))html=html.replace('</body>',V21_SCRIPT+'</body>');
   return addBodyClasses(html,'gnk-public-design-v21','gnk-public-route-home');
 }
 async function serveIndex(path,request,env){
