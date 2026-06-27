@@ -1,7 +1,7 @@
 import app from './index-admin-hub-v26-public-v10-base.js';
 import {patchIndexActivation} from './index-activation-wrapper-v1.js';
 
-export const VERSION='GNK_ASG_PUBLIC_V18_PUBLIC_CONTENT_V16_20260627';
+export const VERSION='GNK_ASG_PUBLIC_V19_CANONICAL_PUBLIC_ROUTES_V17_20260627';
 // Deployment compatibility marker: GNK_ASG_PUBLIC_V11_MENU_AI_MARKETS_20260627
 const INDEX_PATHS=new Set(['/','/en']);
 const MARKET_PATHS=new Set(['/trzista','/markets']);
@@ -25,7 +25,23 @@ function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')
 function isEditorial(path){return EDITORIAL_PATHS.has(path)||path.startsWith('/vijesti/')||path.startsWith('/news/')||path.startsWith('/objave/')||path.startsWith('/publications/')}
 function patchHeaders(response){const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return headers}
 function mobileAdminRedirect(){return new Response(null,{status:303,headers:{location:'/app/?mode=admin','cache-control':'no-store','x-gnk-asg-mobile-app':'STANDARD_ADMIN_V2'}})}
-async function serveIndex(path,request,env){const fallback=new Response('GNK ASG index asset unavailable',{status:503,headers:{'content-type':'text/plain; charset=utf-8','cache-control':'no-store'}});const response=await patchIndexActivation(fallback,path,request,env);const headers=new Headers(response.headers);headers.set('x-gnk-asg-index-isolation','DEDICATED_INDEX_ENTRY_V14');headers.set('x-gnk-asg-index-menu','NATIVE_INDEX_MENU_ONLY');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return new Response(response.body,{status:response.status,statusText:response.statusText,headers})}
+async function serveIndex(path,request,env){
+  const fallback=new Response('GNK ASG index asset unavailable',{status:503,headers:{'content-type':'text/plain; charset=utf-8','cache-control':'no-store'}});
+  const response=await patchIndexActivation(fallback,path,request,env);
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');headers.delete('content-encoding');
+  headers.set('x-gnk-asg-index-isolation','DEDICATED_INDEX_ENTRY_V14');
+  headers.set('x-gnk-asg-index-menu','NATIVE_INDEX_MENU_ONLY');
+  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  let body=response.body;
+  if(path==='/en'&&response.ok&&String(response.headers.get('content-type')||'').includes('text/html')){
+    let html=await response.text();
+    html=html.replace(/href=["']\/contact\/["']/g,'href="/en/contact/"');
+    headers.set('x-gnk-asg-index-language-links','EN_CONTACT_CANONICAL_V1');
+    body=html;
+  }
+  return new Response(body,{status:response.status,statusText:response.statusText,headers});
+}
 async function patchStatusJson(response,path){
   if(!STATUS_JSON_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   try{
