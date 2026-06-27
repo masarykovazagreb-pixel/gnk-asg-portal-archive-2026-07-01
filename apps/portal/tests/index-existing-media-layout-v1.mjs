@@ -9,8 +9,8 @@ const launchOptions = { headless: true };
 if (process.env.CHROME_PATH) launchOptions.executablePath = process.env.CHROME_PATH;
 const browser = await chromium.launch(launchOptions);
 const page = await browser.newPage({ viewport: { width: 1440, height: 1400 } });
-await page.goto(`${base}/`, { waitUntil: 'networkidle' });
-await page.waitForTimeout(3500);
+await page.goto(`${base}/`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+await page.waitForTimeout(6000);
 
 const result = await page.evaluate(() => {
   const section = document.getElementById('mreza-grupe');
