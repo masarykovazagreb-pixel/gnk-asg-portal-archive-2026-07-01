@@ -1,6 +1,6 @@
 import app from './index-admin-hub-v23-aktual.js';
 import {patchIndexActivation} from './index-activation-wrapper-v1.js';
-import {patchOperations,VERSION as OPERATIONS_VERSION} from './operations-wrapper-v1.js';
+import {patchOperations,VERSION as OPERATIONS_VERSION} from './operations-wrapper-v2.js';
 
 export default {
   async fetch(request,env,ctx){
