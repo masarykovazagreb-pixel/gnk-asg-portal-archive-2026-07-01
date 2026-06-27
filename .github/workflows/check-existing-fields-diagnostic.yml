@@ -1,0 +1,60 @@
+name: Check Existing Fields Diagnostic
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Start worker
+        working-directory: workers/gnk-asg-direct-operator
+        run: |
+          npx --yes wrangler@4 dev --config wrangler.existing-media-test.toml --ip 127.0.0.1 --port 8787 > existing-fields-diagnostic-worker.log 2>&1 &
+          for i in $(seq 1 50); do
+            curl -fsS http://127.0.0.1:8787/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat existing-fields-diagnostic-worker.log
+          exit 1
+      - name: Prepare Chrome
+        working-directory: apps/portal
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          test -n "$CHROME"
+          echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
+      - name: Run browser diagnostic
+        id: browser
+        continue-on-error: true
+        working-directory: apps/portal
+        env:
+          VISUAL_BASE: http://127.0.0.1:8787
+        run: node tests/index-existing-media-layout-v1.mjs > existing-media-browser.log 2>&1
+      - name: Print browser diagnostic
+        if: always()
+        working-directory: apps/portal
+        run: cat existing-media-browser.log || true
+      - name: Upload diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: existing-fields-diagnostic
+          path: |
+            apps/portal/existing-media-layout-output
+            apps/portal/existing-media-browser.log
+            workers/gnk-asg-direct-operator/existing-fields-diagnostic-worker.log
+          retention-days: 7
+      - name: Enforce browser result
+        if: always()
+        run: test '${{ steps.browser.outcome }}' = 'success'
