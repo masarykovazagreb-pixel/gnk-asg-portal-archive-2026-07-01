@@ -1,4 +1,4 @@
-name: Deploy Mobile App V2
+name: Deploy Mobile App V20
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
       - 'apps/portal/operator-mobile/**'
       - 'apps/portal/assets/mobile-app-v2.css'
       - 'apps/portal/assets/mobile-app-v2.js'
+      - 'apps/portal/assets/mobile-navigation-v20.js'
       - 'apps/portal/app.webmanifest'
       - 'apps/portal/app-sw.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
@@ -20,6 +21,7 @@ on:
       - 'apps/portal/operator-mobile/**'
       - 'apps/portal/assets/mobile-app-v2.css'
       - 'apps/portal/assets/mobile-app-v2.js'
+      - 'apps/portal/assets/mobile-navigation-v20.js'
       - 'apps/portal/app.webmanifest'
       - 'apps/portal/app-sw.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
@@ -29,7 +31,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-mobile-app-v2
+  group: gnk-asg-mobile-app-v20
   cancel-in-progress: true
 
 jobs:
@@ -41,11 +43,12 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate mobile app V2
+      - name: Validate mobile app V20
         shell: bash
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/mobile-app-v2.js
+          node --check apps/portal/assets/mobile-navigation-v20.js
           node --check apps/portal/app-sw.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/app.webmanifest','utf8'))"
@@ -53,20 +56,29 @@ jobs:
           grep -q 'Jedna aplikacija' apps/portal/app/index.html
           grep -q 'data-mode="standard"' apps/portal/app/index.html
           grep -q 'data-mode="admin"' apps/portal/app/index.html
+          grep -q 'mobile-navigation-v20.js' apps/portal/app/index.html
+          grep -q "title:'Auto Editor'" apps/portal/assets/mobile-navigation-v20.js
+          grep -q "title:'PDF centar'" apps/portal/assets/mobile-navigation-v20.js
+          grep -q "title:'Legal'" apps/portal/assets/mobile-navigation-v20.js
+          ! grep -q "title:'Galerija'" apps/portal/assets/mobile-navigation-v20.js
           grep -q '/api/operator-auth-check' apps/portal/assets/mobile-app-v2.js
           grep -q '/admin-center/?module=memorandum' apps/portal/assets/mobile-app-v2.js
           grep -q '/app/?mode=admin' apps/portal/operator-mobile/index.html
           grep -q "'/api/'" apps/portal/app-sw.js
-          grep -q 'GNK_ASG_PUBLIC_V16_MOBILE_STANDARD_ADMIN_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q 'gnk-asg-mobile-v20-20260627' apps/portal/app-sw.js
+          grep -q 'mobile-navigation-v20.js' apps/portal/app-sw.js
+          grep -q 'STANDARD_ADMIN_V2' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
       - name: Deploy Cloudflare Worker
+        if: github.event_name != 'pull_request'
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify mobile app V2
+      - name: Verify mobile app V20
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
           set -euo pipefail
@@ -76,16 +88,20 @@ jobs:
             APP=$(curl -fsS -D "$APP_HEADERS" "https://gnk-asg.hr/app/?cb=${GITHUB_RUN_ID}-${n}" || true)
             CSS=$(curl -fsS "https://gnk-asg.hr/assets/mobile-app-v2.css?cb=${GITHUB_RUN_ID}-${n}" || true)
             JS=$(curl -fsS "https://gnk-asg.hr/assets/mobile-app-v2.js?cb=${GITHUB_RUN_ID}-${n}" || true)
+            NAV=$(curl -fsS "https://gnk-asg.hr/assets/mobile-navigation-v20.js?cb=${GITHUB_RUN_ID}-${n}" || true)
             MANIFEST=$(curl -fsS "https://gnk-asg.hr/app.webmanifest?cb=${GITHUB_RUN_ID}-${n}" || true)
             SW=$(curl -fsS "https://gnk-asg.hr/app-sw.js?cb=${GITHUB_RUN_ID}-${n}" || true)
             curl -sS -D "$MOBILE_HEADERS" -o /dev/null "https://gnk-asg.hr/operator-mobile/?cb=${GITHUB_RUN_ID}-${n}" || true
-            if printf '%s' "$APP" | grep -q 'mobile-app-v2.css' \
+            if printf '%s' "$APP" | grep -q 'mobile-navigation-v20.js' \
               && printf '%s' "$APP" | grep -q 'Standard' \
               && printf '%s' "$APP" | grep -q 'Admin' \
               && printf '%s' "$CSS" | grep -q 'GNK ASG Mobile App V2' \
               && printf '%s' "$JS" | grep -q '/api/operator-auth-check' \
+              && printf '%s' "$NAV" | grep -q "title:'Auto Editor'" \
+              && printf '%s' "$NAV" | grep -q "title:'PDF centar'" \
+              && printf '%s' "$NAV" | grep -q "title:'Legal'" \
               && printf '%s' "$MANIFEST" | grep -q 'Standard & Admin' \
-              && printf '%s' "$SW" | grep -q 'gnk-asg-mobile-v2-20260627' \
+              && printf '%s' "$SW" | grep -q 'gnk-asg-mobile-v20-20260627' \
               && grep -qi 'x-gnk-asg-mobile-app: STANDARD_ADMIN_V2' "$APP_HEADERS" \
               && grep -qi 'location: /app/?mode=admin' "$MOBILE_HEADERS"; then
                 exit 0
