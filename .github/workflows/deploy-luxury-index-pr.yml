@@ -1,12 +1,12 @@
-name: Deploy Unified Luxury Index V3
+name: Deploy Cinematic WOW Index V4
 
 on:
   pull_request:
     branches: [main]
     paths:
       - '.github/workflows/deploy-luxury-index-pr.yml'
-      - 'apps/portal/assets/index-white-static-v3.css'
-      - 'apps/portal/data/index-unified-style-v3.json'
+      - 'apps/portal/assets/index-wow-v4.css'
+      - 'apps/portal/assets/index-wow-v4.js'
       - 'workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js'
   workflow_dispatch:
 
@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-luxury-index-v3
+  group: gnk-asg-index-wow-v4
   cancel-in-progress: true
 
 jobs:
@@ -26,20 +26,22 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate unified luxury index
+      - name: Validate WOW index V4
         shell: bash
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/index-white-static-v2.js
           node --check apps/portal/assets/index-white-static-enhance-v2.js
           node --check apps/portal/assets/index-white-static-pdf-state-v2.js
+          node --check apps/portal/assets/index-wow-v4.js
           node --check workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          test -s apps/portal/assets/index-white-static-v3.css
-          grep -q 'GNK_ASG_WHITE_STATIC_INDEX_V3_20260627' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          grep -q 'index-white-static-v3.css' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          grep -q 'Unified luxury index system v3' apps/portal/assets/index-white-static-v3.css
-          grep -q 'min-height:820px' apps/portal/assets/index-white-static-v3.css
-          grep -q 'grid-template-columns:repeat(5' apps/portal/assets/index-white-static-v3.css
+          test -s apps/portal/assets/index-wow-v4.css
+          grep -q 'GNK_ASG_WHITE_STATIC_INDEX_WOW_V4_20260627' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'index-wow-v4.css' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'index-wow-v4.js' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'GNK ASG Index WOW V4' apps/portal/assets/index-wow-v4.css
+          grep -q 'hero-sculpture' apps/portal/assets/index-wow-v4.js
+          grep -q 'min-height:860px' apps/portal/assets/index-wow-v4.css
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
       - name: Deploy current Worker to Cloudflare
@@ -48,7 +50,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify unified style is public
+      - name: Verify WOW V4 is public
         shell: bash
         run: |
           set -euo pipefail
@@ -57,13 +59,16 @@ jobs:
             EN_HEADERS=$(mktemp)
             HR=$(curl -fsS -D "$HR_HEADERS" "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}-hr" || true)
             EN=$(curl -fsS -D "$EN_HEADERS" "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}-en" || true)
-            CSS=$(curl -fsS "https://gnk-asg.hr/assets/index-white-static-v3.css?cb=${GITHUB_RUN_ID}-${n}" || true)
-            if printf '%s' "$HR" | grep -q 'index-white-static-v3.css' \
-              && printf '%s' "$EN" | grep -q 'index-white-static-v3.css' \
-              && printf '%s' "$CSS" | grep -q 'Unified luxury index system v3' \
-              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_WHITE_STATIC_INDEX_V3_20260627' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-index-style: GNK_ASG_INDEX_UNIFIED_STYLE_V3_20260627' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_WHITE_STATIC_INDEX_V3_20260627' "$EN_HEADERS"; then
+            CSS=$(curl -fsS "https://gnk-asg.hr/assets/index-wow-v4.css?cb=${GITHUB_RUN_ID}-${n}" || true)
+            JS=$(curl -fsS "https://gnk-asg.hr/assets/index-wow-v4.js?cb=${GITHUB_RUN_ID}-${n}" || true)
+            if printf '%s' "$HR" | grep -q 'index-wow-v4.css' \
+              && printf '%s' "$HR" | grep -q 'index-wow-v4.js' \
+              && printf '%s' "$EN" | grep -q 'index-wow-v4.css' \
+              && printf '%s' "$CSS" | grep -q 'GNK ASG Index WOW V4' \
+              && printf '%s' "$JS" | grep -q 'hero-sculpture' \
+              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_WHITE_STATIC_INDEX_WOW_V4_20260627' "$HR_HEADERS" \
+              && grep -qi 'x-gnk-asg-index-style: GNK_ASG_INDEX_WOW_V4_20260627' "$HR_HEADERS" \
+              && grep -qi 'x-gnk-asg-index-template: GNK_ASG_WHITE_STATIC_INDEX_WOW_V4_20260627' "$EN_HEADERS"; then
                 exit 0
             fi
             sleep 10
