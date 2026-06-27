@@ -1,8 +1,26 @@
 /* THE CODE embedded presentation V6 */
+html.is-embedded body > :not(main):not(script),
+html.is-embedded main > :not(.gnk-code),
+html.is-embedded header,
+html.is-embedded nav,
+html.is-embedded footer,
 html.is-embedded .gnk-code__topbar,
 html.is-embedded .gnk-code__enter,
-html.is-embedded .gnk-code__sound{
+html.is-embedded .gnk-code__sound,
+html.is-embedded [href="/assistant/"],
+html.is-embedded [href="/"],
+html.is-embedded [data-ai-help],
+html.is-embedded [data-public-shell]{
   display:none!important;
+}
+html.is-embedded body,
+html.is-embedded main{
+  margin:0!important;
+  padding:0!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  background:#000!important;
 }
 html.is-embedded .gnk-code__scene{
   padding-top:42px!important;
