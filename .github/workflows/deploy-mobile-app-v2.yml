@@ -11,6 +11,7 @@ on:
       - 'apps/portal/assets/mobile-app-v2.js'
       - 'apps/portal/app.webmanifest'
       - 'apps/portal/app-sw.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   pull_request:
     branches: [main]
     paths:
@@ -21,6 +22,7 @@ on:
       - 'apps/portal/assets/mobile-app-v2.js'
       - 'apps/portal/app.webmanifest'
       - 'apps/portal/app-sw.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   workflow_dispatch:
 
 permissions:
@@ -45,6 +47,7 @@ jobs:
           set -euxo pipefail
           node --check apps/portal/assets/mobile-app-v2.js
           node --check apps/portal/app-sw.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/app.webmanifest','utf8'))"
           test -s apps/portal/assets/mobile-app-v2.css
           grep -q 'Jedna aplikacija' apps/portal/app/index.html
@@ -54,6 +57,7 @@ jobs:
           grep -q '/admin-center/?module=memorandum' apps/portal/assets/mobile-app-v2.js
           grep -q '/app/?mode=admin' apps/portal/operator-mobile/index.html
           grep -q "'/api/'" apps/portal/app-sw.js
+          grep -q 'GNK_ASG_PUBLIC_V16_MOBILE_STANDARD_ADMIN_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
       - name: Deploy Cloudflare Worker
@@ -67,12 +71,14 @@ jobs:
         run: |
           set -euo pipefail
           for n in $(seq 1 18); do
-            APP=$(curl -fsS "https://gnk-asg.hr/app/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            APP_HEADERS=$(mktemp)
+            MOBILE_HEADERS=$(mktemp)
+            APP=$(curl -fsS -D "$APP_HEADERS" "https://gnk-asg.hr/app/?cb=${GITHUB_RUN_ID}-${n}" || true)
             CSS=$(curl -fsS "https://gnk-asg.hr/assets/mobile-app-v2.css?cb=${GITHUB_RUN_ID}-${n}" || true)
             JS=$(curl -fsS "https://gnk-asg.hr/assets/mobile-app-v2.js?cb=${GITHUB_RUN_ID}-${n}" || true)
             MANIFEST=$(curl -fsS "https://gnk-asg.hr/app.webmanifest?cb=${GITHUB_RUN_ID}-${n}" || true)
             SW=$(curl -fsS "https://gnk-asg.hr/app-sw.js?cb=${GITHUB_RUN_ID}-${n}" || true)
-            MOBILE=$(curl -fsS "https://gnk-asg.hr/operator-mobile/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            curl -sS -D "$MOBILE_HEADERS" -o /dev/null "https://gnk-asg.hr/operator-mobile/?cb=${GITHUB_RUN_ID}-${n}" || true
             if printf '%s' "$APP" | grep -q 'mobile-app-v2.css' \
               && printf '%s' "$APP" | grep -q 'Standard' \
               && printf '%s' "$APP" | grep -q 'Admin' \
@@ -80,7 +86,8 @@ jobs:
               && printf '%s' "$JS" | grep -q '/api/operator-auth-check' \
               && printf '%s' "$MANIFEST" | grep -q 'Standard & Admin' \
               && printf '%s' "$SW" | grep -q 'gnk-asg-mobile-v2-20260627' \
-              && printf '%s' "$MOBILE" | grep -q '/app/?mode=admin'; then
+              && grep -qi 'x-gnk-asg-mobile-app: STANDARD_ADMIN_V2' "$APP_HEADERS" \
+              && grep -qi 'location: /app/?mode=admin' "$MOBILE_HEADERS"; then
                 exit 0
             fi
             sleep 10
