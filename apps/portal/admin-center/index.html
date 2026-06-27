@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/assets/admin-center-v2.css?v=20260627">
   <script defer src="/assets/admin-center-v2.js?v=20260627"></script>
   <script defer src="/assets/admin-center-health-v1.js?v=20260627"></script>
+  <script defer src="/assets/admin-navigation-v4.js?v=20260627-v4"></script>
 </head>
 <body>
   <a class="skip-link" href="#mainContent">Preskoči na glavni sadržaj</a>
@@ -62,7 +63,7 @@
             <div class="hero-copy">
               <p class="eyebrow">Jedinstvena operativna površina</p>
               <h2 id="dashboardTitle">Kontrola portala bez duplih izbornika i suvišnih koraka</h2>
-              <p>Dashboard objedinjuje Mail Studio, Operator, Medijski centar i uredničke alate u jednom sigurnom radnom prostoru. Moduli se učitavaju izravno, a javni portal ostaje potpuno odvojen.</p>
+              <p>Dashboard objedinjuje Mail Studio, Operator, Medijski centar, Memorandum Studio i uredničke alate u jednom sigurnom radnom prostoru. Moduli se učitavaju izravno, a javni portal ostaje potpuno odvojen.</p>
               <div class="hero-actions">
                 <button id="heroMail" type="button">Otvori Mail Studio</button>
                 <button id="heroAudit" type="button">Pokreni sigurni audit</button>
@@ -81,7 +82,7 @@
 
           <section class="dashboard-section" aria-labelledby="priorityTitle">
             <div class="section-head">
-              <div><p class="eyebrow">Operativni fokus</p><h3 id="priorityTitle">Najčešće korišteni moduli</h3><p>Tri ključna radna toka dostupna su jednim klikom; svi ostali ostaju u lijevom izborniku.</p></div>
+              <div><p class="eyebrow">Operativni fokus</p><h3 id="priorityTitle">Najčešće korišteni moduli</h3><p>Ključni radni tokovi dostupni su jednim klikom; svi ostali ostaju u lijevom izborniku i pretrazi.</p></div>
               <button id="showAllModules" type="button">Prikaži sve module</button>
             </div>
             <div id="priorityGrid" class="priority-grid"></div>
@@ -110,7 +111,7 @@
   <dialog id="commandDialog" class="command-dialog" aria-label="Pretraživanje administratorskih modula">
     <div class="command-head"><input id="commandSearch" type="search" autocomplete="off" placeholder="Upišite naziv modula ili funkcije…" aria-label="Pretraži module"></div>
     <div id="commandList" class="command-list"></div>
-    <div class="command-foot">Enter ili klik za otvaranje · Esc za zatvaranje · Alt + 1–7 za brzi pristup</div>
+    <div class="command-foot">Enter ili klik za otvaranje · Esc za zatvaranje · Alt + 1–7 za osnovne module</div>
   </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
