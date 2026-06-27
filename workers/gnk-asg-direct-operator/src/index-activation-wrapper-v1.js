@@ -1,6 +1,8 @@
-export const VERSION='GNK_ASG_WHITE_STATIC_INDEX_V3_20260627';
+export const VERSION='GNK_ASG_WHITE_STATIC_INDEX_WOW_V4_20260627';
 const PDF_STATE='<script src="/assets/index-white-static-pdf-state-v2.js?v=20260627-v2" defer></script>';
 const UNIFIED_STYLE='<link rel="stylesheet" href="/assets/index-white-static-v3.css?v=20260627-v3">';
+const WOW_STYLE='<link rel="stylesheet" href="/assets/index-wow-v4.css?v=20260627-v4">';
+const WOW_RUNTIME='<script src="/assets/index-wow-v4.js?v=20260627-v4" defer></script>';
 
 function normalize(path){return String(path||'/').replace(/\/+$/,'')||'/';}
 
@@ -12,14 +14,16 @@ async function loadStaticIndex(request,env,english){
   if(!assetResponse.ok)throw new Error(`STATIC_INDEX_${assetResponse.status}`);
   let body=await assetResponse.text();
   if(!body.includes('index-white-static-v3.css'))body=body.replace('</head>',`${UNIFIED_STYLE}</head>`);
+  if(!body.includes('index-wow-v4.css'))body=body.replace('</head>',`${WOW_STYLE}</head>`);
   if(!body.includes('index-white-static-pdf-state-v2.js'))body=body.replace('</body>',`${PDF_STATE}</body>`);
+  if(!body.includes('index-wow-v4.js'))body=body.replace('</body>',`${WOW_RUNTIME}</body>`);
   const headers=new Headers(assetResponse.headers);
   headers.delete('content-length');
   headers.delete('content-encoding');
   headers.set('content-type','text/html; charset=utf-8');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-index-template',VERSION);
-  headers.set('x-gnk-asg-index-style','GNK_ASG_INDEX_UNIFIED_STYLE_V3_20260627');
+  headers.set('x-gnk-asg-index-style','GNK_ASG_INDEX_WOW_V4_20260627');
   return new Response(body,{status:200,headers});
 }
 
