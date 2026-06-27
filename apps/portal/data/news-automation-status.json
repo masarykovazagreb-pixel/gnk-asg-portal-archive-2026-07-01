@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-06-27T03:21:43.573Z",
+  "updated_at": "2026-06-27T09:11:02.181Z",
   "engine": "single_publication_engine_v14_isolated_github_action",
   "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
   "timezone": "Europe/Zagreb",
@@ -11,43 +11,38 @@
     21
   ],
   "public_items_target": 100,
-  "public_items_written": 100,
+  "public_items_written": 46,
   "archive_policy": "archive_latest_1000_prune_to_500_when_full",
-  "archive_items_written": 901,
+  "archive_items_written": 0,
   "rss_images_enabled": true,
-  "fallback_image": "/assets/news-fallback.svg",
+  "fallback_image": null,
+  "fallback_image_allowed": false,
   "visual_index_fallback": "/visual-index/",
   "feeds_checked": [
     {
       "feed": "https://www.theverge.com/rss/index.xml",
       "ok": true,
-      "count": 10
+      "count": 0
     },
     {
       "feed": "https://techcrunch.com/feed/",
       "ok": true,
-      "count": 20
+      "count": 0
     },
     {
       "feed": "https://feeds.bbci.co.uk/news/world/rss.xml",
       "ok": true,
-      "count": 41
-    },
-    {
-      "feed": "https://www.reutersagency.com/feed/?best-topics=technology&post_type=best",
-      "ok": false,
-      "count": 0,
-      "error": "404 Not Found"
+      "count": 27
     },
     {
       "feed": "https://www.nasa.gov/news-release/feed/",
       "ok": true,
-      "count": 10
+      "count": 2
     },
     {
       "feed": "https://hnrss.org/frontpage",
       "ok": true,
-      "count": 20
+      "count": 0
     },
     {
       "feed": "https://www.espn.com/espn/rss/news",
