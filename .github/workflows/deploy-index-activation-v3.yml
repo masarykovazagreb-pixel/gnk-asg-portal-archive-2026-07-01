@@ -1,4 +1,4 @@
-name: Deploy Index Activation V3
+name: Deploy Index Activation V4
 
 on:
   push:
@@ -46,8 +46,10 @@ jobs:
             'runId':os.environ.get('GITHUB_RUN_ID',''),
             'activationInBody':'AKTIVACIJA KODA' in body,
             'theCodeInBody':'THE CODE' in body,
+            'mapInBody':'gnk-activation__map' in body,
+            'filmInBody':'gnk-activation__film' in body,
             'indexActivationHeader':h('x-gnk-asg-index-activation'),
-            'adminHubV24Header':h('x-gnk-asg-admin-hub-v24'),
+            'indexMapFilmHeader':h('x-gnk-asg-index-map-film'),
             'indexSourceHeader':h('x-gnk-asg-index-source'),
             'cfCacheStatus':h('cf-cache-status')
           }
