@@ -12,6 +12,7 @@ on:
       - 'apps/portal/assets/editorial-v12.js'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   push:
     branches: [main]
     paths:
@@ -23,6 +24,7 @@ on:
       - 'apps/portal/assets/editorial-v12.js'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   workflow_dispatch:
 
 permissions:
@@ -47,11 +49,14 @@ jobs:
           node --check apps/portal/assets/public-shell-v15.js
           node --check apps/portal/assets/editorial-v12.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           test -s apps/portal/assets/public-menu-v10.css
           test -s apps/portal/assets/editorial-v12.css
           test -s apps/portal/publications/index.html
           grep -q 'GNK_ASG_PUBLIC_SHELL_V15_20260627' apps/portal/assets/public-shell-v15.js
           grep -q 'GNK_ASG_ADMIN_HUB_V26_PUBLIC_SHELL_V17_CANONICAL_ROUTES_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
+          grep -q 'GNK_ASG_PUBLIC_V19_CANONICAL_PUBLIC_ROUTES_V17_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q 'EN_CONTACT_CANONICAL_V1' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           grep -q "'/publications','/publications/index.html'" workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
           grep -q '<html lang="en">' apps/portal/publications/index.html
           grep -q 'Publications and analysis.' apps/portal/publications/index.html
@@ -99,11 +104,12 @@ jobs:
             const contact=await read('/en/contact/');
             const shell=await read('/assets/public-shell-v15.js');
             if(en.response.status!==200||!en.text.includes('A business group.')||en.text.includes('System active Version 3.0'))failures.push(`en-index:${en.response.status}`);
+            if(!en.text.includes('href="/en/contact/"'))failures.push('en-contact-link');
             if(publications.response.status!==200||!publications.text.includes('Publications and analysis.')||!publications.text.includes('Open publication'))failures.push(`publications:${publications.response.status}`);
             if(!publications.text.includes('public-shell-v15.js?v=20260627-v15'))failures.push('publications-shell');
             if(contact.response.status!==200||!contact.text.includes('Contact and secure communication')||!contact.text.includes('public-shell-v15.js?v=20260627-v15'))failures.push(`en-contact:${contact.response.status}`);
             if(!shell.text.includes('GNK_ASG_PUBLIC_SHELL_V15_20260627'))failures.push('shell-asset');
-            console.log(JSON.stringify({attempt,failures,enRelease:en.response.headers.get('x-gnk-asg-index-template'),publicOwner:publications.response.headers.get('x-gnk-asg-public-route-owner')}));
+            console.log(JSON.stringify({attempt,failures,enRelease:en.response.headers.get('x-gnk-asg-index-template'),languageLinks:en.response.headers.get('x-gnk-asg-index-language-links'),publicOwner:publications.response.headers.get('x-gnk-asg-public-route-owner')}));
             if(!failures.length)process.exit(0);
             await sleep(10000);
           }
