@@ -79,6 +79,7 @@ jobs:
         run: |
           set -euo pipefail
           node <<'JS'
+          const fs=require('fs');
           const base='https://gnk-asg.hr';
           const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
           async function get(path){
@@ -87,30 +88,36 @@ jobs:
               return {status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)};
             }catch(error){return {status:0,text:'',headers:{},error:String(error)}}
           }
-          let last={};
-          for(let attempt=1;attempt<=24;attempt++){
-            const [hr,en,code]=await Promise.all([get('/'),get('/en/'),get('/the-code/')]);
-            const failures=[];
-            for(const [name,response] of Object.entries({hr,en})){
-              if(response.status!==200)failures.push(`${name}_status=${response.status}`);
-              if(!response.text.includes('data-gnk-code-showcase="GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627"'))failures.push(`${name}_marker_missing`);
-              if(!response.text.includes('the-code-index-slot.css?v=20260627-static-v1'))failures.push(`${name}_css_missing`);
-              if((response.text.match(/data:image\/webp;base64,/g)||[]).length!==2)failures.push(`${name}_visual_count_invalid`);
-              if(!response.text.includes('/the-code/?v=20260627-static-v1'))failures.push(`${name}_iframe_missing`);
-              if(response.text.includes('gallery-bootstrap.js')||response.text.includes('gallery-brand-safety.js'))failures.push(`${name}_legacy_gallery_present`);
-              if(response.headers['x-gnk-asg-index-code-showcase']!=='GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627')failures.push(`${name}_header_missing`);
+          (async()=>{
+            let last={};
+            for(let attempt=1;attempt<=24;attempt++){
+              const [hr,en,code]=await Promise.all([get('/'),get('/en/'),get('/the-code/')]);
+              const failures=[];
+              for(const [name,response] of Object.entries({hr,en})){
+                if(response.status!==200)failures.push(`${name}_status=${response.status}`);
+                if(!response.text.includes('data-gnk-code-showcase="GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627"'))failures.push(`${name}_marker_missing`);
+                if(!response.text.includes('the-code-index-slot.css?v=20260627-static-v1'))failures.push(`${name}_css_missing`);
+                if((response.text.match(/data:image\/webp;base64,/g)||[]).length!==2)failures.push(`${name}_visual_count_invalid`);
+                if(!response.text.includes('/the-code/?v=20260627-static-v1'))failures.push(`${name}_iframe_missing`);
+                if(response.text.includes('gallery-bootstrap.js')||response.text.includes('gallery-brand-safety.js'))failures.push(`${name}_legacy_gallery_present`);
+                if(response.headers['x-gnk-asg-index-code-showcase']!=='GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627')failures.push(`${name}_header_missing`);
+              }
+              if(code.status!==200||!code.text.includes('data-gnk-code-enter'))failures.push(`code=${code.status}`);
+              last={attempt,failures,codes:{hr:hr.status,en:en.status,code:code.status},headers:{hr:hr.headers['x-gnk-asg-index-code-showcase']||'',en:en.headers['x-gnk-asg-index-code-showcase']||''}};
+              console.log(JSON.stringify(last));
+              if(!failures.length){
+                fs.writeFileSync('/tmp/index-code-showcase-verification.json',JSON.stringify({ok:true,version:'GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627',commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,verifiedAt:new Date().toISOString(),...last},null,2));
+                return;
+              }
+              await sleep(10000);
             }
-            if(code.status!==200||!code.text.includes('data-gnk-code-enter'))failures.push(`code=${code.status}`);
-            last={attempt,failures,codes:{hr:hr.status,en:en.status,code:code.status},headers:{hr:hr.headers['x-gnk-asg-index-code-showcase']||'',en:en.headers['x-gnk-asg-index-code-showcase']||''}};
-            console.log(JSON.stringify(last));
-            if(!failures.length){
-              require('fs').writeFileSync('/tmp/index-code-showcase-verification.json',JSON.stringify({ok:true,version:'GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627',commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,verifiedAt:new Date().toISOString(),...last},null,2));
-              process.exit(0);
-            }
-            await sleep(10000);
-          }
-          require('fs').writeFileSync('/tmp/index-code-showcase-verification.json',JSON.stringify({ok:false,version:'GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627',commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,verifiedAt:new Date().toISOString(),...last},null,2));
-          process.exit(1);
+            fs.writeFileSync('/tmp/index-code-showcase-verification.json',JSON.stringify({ok:false,version:'GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627',commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,verifiedAt:new Date().toISOString(),...last},null,2));
+            process.exitCode=1;
+          })().catch(error=>{
+            fs.writeFileSync('/tmp/index-code-showcase-verification.json',JSON.stringify({ok:false,version:'GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627',commit:process.env.GITHUB_SHA,runId:process.env.GITHUB_RUN_ID,verifiedAt:new Date().toISOString(),error:String(error?.stack||error)},null,2));
+            console.error(error);
+            process.exitCode=1;
+          });
           JS
 
       - name: Record deployment evidence
