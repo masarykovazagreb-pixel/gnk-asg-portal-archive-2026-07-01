@@ -1,0 +1,7 @@
+/* V21 THE CODE controls: compact, readable and clear of the animation */
+body.gnk-public-route-home .code-toolbar{align-items:center!important;margin-bottom:14px!important}
+body.gnk-public-route-home .code-tools{gap:6px!important;max-width:100%!important}
+body.gnk-public-route-home .code-tool{min-height:34px!important;padding:7px 11px!important;border-radius:999px!important;font-size:8px!important;line-height:1.1!important;letter-spacing:.08em!important;white-space:nowrap!important;box-shadow:0 6px 14px rgba(103,72,10,.11)!important}
+body.gnk-public-route-home .code-tool :where(span,strong){font-size:inherit!important;line-height:inherit!important;letter-spacing:inherit!important}
+body.gnk-public-route-home .code-frame{margin-top:0!important}
+@media(max-width:760px){body.gnk-public-route-home .code-tools{grid-template-columns:repeat(2,minmax(0,1fr))!important}body.gnk-public-route-home .code-tool{width:100%!important;min-height:36px!important;padding:7px 8px!important;font-size:7.5px!important;white-space:normal!important}body.gnk-public-route-home .code-tool:last-child:nth-child(odd){grid-column:1/-1!important}}
