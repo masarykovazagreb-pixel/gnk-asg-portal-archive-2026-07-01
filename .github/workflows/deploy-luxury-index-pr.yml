@@ -7,6 +7,7 @@ on:
       - '.github/workflows/deploy-luxury-index-pr.yml'
       - 'apps/portal/data/luxury-index-pr-deploy.json'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
+      - 'workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js'
   workflow_dispatch:
 
 permissions:
@@ -36,6 +37,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           grep -q 'main = "src/index-admin-hub-v26-clean-index.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'GNK_ASG_WHITE_STATIC_INDEX_V2_20260627' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'new Request(assetUrl)' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
           grep -q 'data-index-template="white-static-v2"' apps/portal/index-white-static-preview-v2.html
           grep -q 'min-height:820px' apps/portal/assets/index-white-static-v2.css
           cd workers/gnk-asg-direct-operator
@@ -60,9 +62,20 @@ jobs:
             curl -sS -D - "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-en" || true
           } > luxury-index-diagnostics.txt 2>&1
           cat luxury-index-diagnostics.txt
+      - name: Verify luxury index is public
+        shell: bash
+        run: |
+          set -euo pipefail
+          HR=$(curl -fsS "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-verify-hr")
+          EN=$(curl -fsS "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-verify-en")
+          printf '%s' "$HR" | grep -q 'data-index-template="white-static-v2"'
+          printf '%s' "$EN" | grep -q 'data-index-template="white-static-v2"'
+          printf '%s' "$HR" | grep -q 'Interaktivna prezentacija · puna veličina'
+          printf '%s' "$EN" | grep -q 'Interactive presentation · full size'
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: luxury-index-diagnostics
           path: luxury-index-diagnostics.txt
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 1
