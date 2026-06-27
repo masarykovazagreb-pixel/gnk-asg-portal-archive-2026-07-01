@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="GNK ASG">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#090b0f"/><stop offset="1" stop-color="#20180b"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8b5a08"/><stop offset=".32" stop-color="#ffd96d"/><stop offset=".62" stop-color="#d99d25"/><stop offset="1" stop-color="#fff0a8"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".45"/></filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g fill="none" stroke="url(#gold)" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)">
+    <path d="M401 133A190 190 0 1 0 421 334" stroke-width="25"/>
+    <path d="M112 355Q254 435 404 291" stroke-width="20"/>
+    <path d="M130 214Q250 91 382 196M122 292Q250 161 390 260M174 355Q270 261 370 328" stroke-width="7" opacity=".84"/>
+    <path d="M152 184L224 246L282 157L355 220M152 184L130 292L224 246L174 355L286 303L355 220" stroke-width="6" opacity=".78"/>
+  </g>
+  <g fill="url(#gold)" stroke="#6f4303" stroke-width="4">
+    <circle cx="152" cy="184" r="12"/><circle cx="130" cy="292" r="12"/><circle cx="174" cy="355" r="12"/><circle cx="224" cy="246" r="12"/><circle cx="282" cy="157" r="12"/><circle cx="286" cy="303" r="12"/><circle cx="355" cy="220" r="12"/>
+    <path d="M221 354V290h43v64zM283 354V242h43v112zM345 354V190h43v164z"/>
+  </g>
+</svg>
