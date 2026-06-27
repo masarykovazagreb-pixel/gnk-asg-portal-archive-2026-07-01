@@ -1,0 +1,61 @@
+name: Check Index Existing Media Fast V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/assets/index-existing-media-slots-v1.css'
+      - 'apps/portal/assets/index-existing-media-slots-v1.js'
+      - 'apps/portal/assets/public-floating-home-v16.js'
+      - 'apps/portal/tests/index-existing-media-layout-v1.mjs'
+      - 'workers/gnk-asg-direct-operator/wrangler.existing-media-test.toml'
+      - '.github/workflows/check-index-existing-media-fast-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate
+        run: |
+          node --check apps/portal/assets/index-existing-media-slots-v1.js
+          node --check apps/portal/assets/public-floating-home-v16.js
+          node --check apps/portal/tests/index-existing-media-layout-v1.mjs
+      - name: Start worker
+        working-directory: workers/gnk-asg-direct-operator
+        run: |
+          npx --yes wrangler@4 dev --config wrangler.existing-media-test.toml --ip 127.0.0.1 --port 8787 > existing-media-fast.log 2>&1 &
+          echo $! > existing-media-fast.pid
+          for i in $(seq 1 50); do
+            curl -fsS http://127.0.0.1:8787/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat existing-media-fast.log
+          exit 1
+      - name: Install Chromium
+        working-directory: apps/portal
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install chromium
+      - name: Browser validation
+        working-directory: apps/portal
+        env:
+          VISUAL_BASE: http://127.0.0.1:8787
+        run: node tests/index-existing-media-layout-v1.mjs
+      - name: Evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: index-existing-media-fast-v1
+          path: |
+            apps/portal/existing-media-layout-output
+            workers/gnk-asg-direct-operator/existing-media-fast.log
+          retention-days: 7
