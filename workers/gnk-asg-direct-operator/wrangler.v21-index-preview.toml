@@ -1,0 +1,18 @@
+name = "gnk-asg-direct-operator"
+main = "src/index-admin-hub-v26-clean-index-v21-preview.js"
+compatibility_date = "2025-09-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+
+[[routes]]
+pattern = "gnk-asg.hr/*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "www.gnk-asg.hr/*"
+zone_name = "gnk-asg.hr"
