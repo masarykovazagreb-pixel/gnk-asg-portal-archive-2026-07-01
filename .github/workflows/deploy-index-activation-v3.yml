@@ -1,4 +1,4 @@
-name: Deploy Index Activation V4
+name: Deploy Index Activation V5
 
 on:
   push:
@@ -48,6 +48,7 @@ jobs:
             'theCodeInBody':'THE CODE' in body,
             'mapInBody':'gnk-activation__map' in body,
             'filmInBody':'gnk-activation__film' in body,
+            'endStateInBody':'KOD AKTIVIRAN · NEW YORK · 7.10.2026. · 11:30 ET' in body,
             'indexActivationHeader':h('x-gnk-asg-index-activation'),
             'indexMapFilmHeader':h('x-gnk-asg-index-map-film'),
             'indexSourceHeader':h('x-gnk-asg-index-source'),
