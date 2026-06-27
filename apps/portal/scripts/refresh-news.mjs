@@ -4,7 +4,6 @@ import crypto from 'node:crypto';
 const PUBLIC_LIMIT = 100;
 const ARCHIVE_KEEP_WHEN_FULL = 500;
 const ARCHIVE_MAX_BEFORE_PRUNE = 1000;
-const FALLBACK_IMAGE = '/assets/news-fallback.svg';
 const TZ = 'Europe/Zagreb';
 
 const ROOT = process.cwd();
@@ -57,6 +56,17 @@ function itemId(url, title) {
   return crypto.createHash('sha1').update(`${url}|${title}`).digest('hex').slice(0, 18);
 }
 
+function isRealImage(value) {
+  const raw = String(value || '').trim();
+  if (!raw || raw.includes('/assets/news-fallback.svg') || raw.startsWith('data:image/')) return false;
+  try {
+    const url = new URL(raw);
+    return ['http:', 'https:'].includes(url.protocol);
+  } catch {
+    return false;
+  }
+}
+
 function parseFeed(xml, feed) {
   const blocks = xml.match(/<item[\s\S]*?<\/item>/gi) || xml.match(/<entry[\s\S]*?<\/entry>/gi) || [];
   return blocks.map((block) => {
@@ -64,8 +74,8 @@ function parseFeed(xml, feed) {
     const link = tag(block, 'link') || attr(block, 'link', 'href') || tag(block, 'guid');
     const summary = tag(block, 'description') || tag(block, 'summary') || tag(block, 'content:encoded');
     const published = tag(block, 'pubDate') || tag(block, 'published') || tag(block, 'updated') || tag(block, 'dc:date');
-    const image = attr(block, 'media:content', 'url') || attr(block, 'media:thumbnail', 'url') || attr(block, 'enclosure', 'url') || FALLBACK_IMAGE;
-    if (!title || !link) return null;
+    const image = attr(block, 'media:content', 'url') || attr(block, 'media:thumbnail', 'url') || attr(block, 'enclosure', 'url');
+    if (!title || !link || !isRealImage(image)) return null;
     return {
       id: itemId(link, title),
       title,
@@ -97,7 +107,8 @@ async function fetchFeed(feed) {
     const res = await fetch(feed.url, { signal: controller.signal, headers: { 'user-agent': 'GNK-ASG-NewsBot/1.0' } });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const xml = await res.text();
-    return { ok: true, feed: feed.url, count: parseFeed(xml, feed).length, items: parseFeed(xml, feed) };
+    const items = parseFeed(xml, feed);
+    return { ok: true, feed: feed.url, count: items.length, items };
   } catch (error) {
     return { ok: false, feed: feed.url, error: String(error?.message || error), items: [] };
   } finally {
@@ -111,7 +122,7 @@ const existingPublic = await readJson(PUBLIC_PATH, []);
 const existingArchive = await readJson(ARCHIVE_PATH, []);
 const byId = new Map();
 for (const item of [...fetchedItems, ...existingPublic, ...existingArchive]) {
-  if (item?.id && !byId.has(item.id)) byId.set(item.id, item);
+  if (item?.id && isRealImage(item.image) && !byId.has(item.id)) byId.set(item.id, item);
 }
 
 const all = [...byId.values()].sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
@@ -124,8 +135,8 @@ await fs.writeFile(PUBLIC_PATH, `${JSON.stringify(publicItems, null, 2)}\n`);
 await fs.writeFile(ARCHIVE_PATH, `${JSON.stringify(archiveItems, null, 2)}\n`);
 
 const status = {
-  ok: fetchedItems.length > 0,
-  status: fetchedItems.length > 0 ? 'refreshed' : 'refresh_failed_no_items',
+  ok: fetchedItems.length > 0 && publicItems.length > 0,
+  status: fetchedItems.length > 0 && publicItems.length > 0 ? 'refreshed' : 'refresh_failed_no_real_images',
   updated_at: new Date().toISOString(),
   engine: 'single_publication_engine_v14_isolated_github_action',
   cadence: 'scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb',
@@ -136,7 +147,8 @@ const status = {
   archive_policy: 'archive_latest_1000_prune_to_500_when_full',
   archive_items_written: archiveItems.length,
   rss_images_enabled: true,
-  fallback_image: FALLBACK_IMAGE,
+  fallback_image: null,
+  fallback_image_allowed: false,
   visual_index_fallback: '/visual-index/',
   feeds_checked: results.map(({ feed, ok, count, error }) => ({ feed, ok, count: count || 0, error }))
 };
@@ -147,4 +159,4 @@ if (!status.ok) {
   process.exit(1);
 }
 
-console.log(`Wrote ${publicItems.length} public news items and ${archiveItems.length} archived items.`);
+console.log(`Wrote ${publicItems.length} public news items and ${archiveItems.length} archived items without fallback images.`);
