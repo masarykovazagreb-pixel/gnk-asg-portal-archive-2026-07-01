@@ -22,7 +22,7 @@
     }
   };
 
-  let mounted = false;
+  let activeStage = null;
   let playing = false;
   let soundOn = true;
 
@@ -30,10 +30,20 @@
     return document.documentElement.lang === 'en' ? 'en' : 'hr';
   }
 
+  function currentFrame() {
+    return document.querySelector('.code-stage iframe');
+  }
+
   function postToFilm(type) {
-    const frame = document.querySelector('.code-stage iframe');
-    if (!frame?.contentWindow) return;
-    frame.contentWindow.postMessage({type}, '*');
+    const frame = currentFrame();
+    if (frame?.contentWindow) frame.contentWindow.postMessage({type}, '*');
+  }
+
+  function updateControls() {
+    const l = labels[language()];
+    document.querySelectorAll('[data-film-replay]').forEach(button => { button.textContent = l.replay; });
+    document.querySelectorAll('[data-film-sound]').forEach(button => { button.textContent = soundOn ? l.soundOn : l.soundOff; });
+    document.querySelectorAll('[data-film-state]').forEach(node => { node.textContent = playing ? l.playing : ''; });
   }
 
   function startFilm() {
@@ -68,28 +78,20 @@
     updateControls();
   }
 
-  function updateControls() {
-    const l = labels[language()];
-    const replay = document.querySelector('[data-film-replay]');
-    const sound = document.querySelector('[data-film-sound]');
-    const state = document.querySelector('[data-film-state]');
-    if (replay) replay.textContent = l.replay;
-    if (sound) sound.textContent = soundOn ? l.soundOn : l.soundOff;
-    if (state) state.textContent = playing ? l.playing : '';
-  }
-
   function removeUnapprovedLogos() {
     document.querySelectorAll('.identity img,.company-mark img').forEach(image => image.remove());
   }
 
   function mount() {
+    removeUnapprovedLogos();
     const stage = document.querySelector('.code-stage');
     const frame = stage?.querySelector('iframe');
     const lock = stage?.querySelector('.code-lock');
-    if (!stage || !frame || !lock || mounted) return false;
-    mounted = true;
+    if (!stage || !frame || !lock || stage === activeStage) return;
 
-    removeUnapprovedLogos();
+    activeStage = stage;
+    playing = false;
+    soundOn = true;
     frame.src = '/film/the-code/?embed=1';
     frame.setAttribute('allow', 'autoplay; fullscreen');
     frame.setAttribute('scrolling', 'no');
@@ -117,27 +119,24 @@
     lock.querySelector('[data-film-play]')?.addEventListener('click', startFilm);
     controls.querySelector('[data-film-replay]')?.addEventListener('click', startFilm);
     controls.querySelector('[data-film-sound]')?.addEventListener('click', toggleSound);
-
-    window.addEventListener('message', event => {
-      if (!event.data || typeof event.data !== 'object') return;
-      if (event.data.type === 'GNK_CODE_STARTED') {
-        playing = true;
-        soundOn = true;
-        stage.classList.add('is-playing');
-        updateControls();
-      }
-      if (event.data.type === 'GNK_CODE_ENDED') {
-        playing = false;
-        updateControls();
-      }
-    });
-    return true;
+    updateControls();
   }
 
-  const observer = new MutationObserver(() => {
-    removeUnapprovedLogos();
-    if (mount()) observer.disconnect();
+  window.addEventListener('message', event => {
+    if (!event.data || typeof event.data !== 'object') return;
+    if (event.data.type === 'GNK_CODE_STARTED') {
+      playing = true;
+      soundOn = true;
+      document.querySelector('.code-stage')?.classList.add('is-playing');
+      updateControls();
+    }
+    if (event.data.type === 'GNK_CODE_ENDED') {
+      playing = false;
+      updateControls();
+    }
   });
+
+  const observer = new MutationObserver(mount);
   observer.observe(document.documentElement, {childList: true, subtree: true});
   mount();
 })();
