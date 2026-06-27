@@ -27,12 +27,32 @@ function removeLegacyPublicShell(html){
 
 const stableFavicon='\n<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">\n<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="/favicon.svg">\n<link rel="manifest" href="/site.webmanifest">\n<meta name="theme-color" content="#020812">';
 
+function patchIq200Index(html){
+  const indexHead='<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260626-data-v28">';
+  const indexScripts='<script src="/assets/index-group-network-en-bridge-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-group-network-v2.js?v=20260626-data-v28" defer></script><script src="/assets/index-news-rotation-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-content-resilience-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-live-market-chart-v4.js?v=20260626-data-v28" defer></script>';
+  const approvalScripts='<script src="/assets/gallery-bootstrap.js?v=20260627-iq200-v2"></script><script src="/assets/gallery-brand-safety.js?v=20260626-v1"></script>';
+
+  html=html
+    .replace(/<link[^>]+href=["'][^"']*\/assets\/public-ux-v11\.css[^"']*["'][^>]*>/gi,'')
+    .replace(/<link[^>]+href=["'][^"']*\/assets\/public-visual-v13\.css[^"']*["'][^>]*>/gi,'')
+    .replace(/<style[^>]+id=["']gnk-public-v13-reset["'][^>]*>[\s\S]*?<\/style>/gi,'')
+    .replace(/<script[^>]+id=["']gnk-public-single-menu["'][^>]*>[\s\S]*?<\/script>/gi,'')
+    .replace(/<script[^>]+src=["'][^"']*\/assets\/(?:public-menu-v13|public-floating-home-v16|public-ai-badge-guard-v17)\.js[^"']*["'][^>]*><\/script>/gi,'');
+
+  html=html.replace('</head>',`${stableFavicon}\n</head>`);
+  if(!html.includes('/assets/index-group-network-v2.css'))html=html.replace('</head>',`${indexHead}</head>`);
+  if(!html.includes('/assets/index-clock-v2.js'))html=html.replace('</body>','<script src="/assets/index-clock-v2.js?v=20260625-v2" defer></script></body>');
+  if(!html.includes('/assets/index-content-resilience-v1.js'))html=html.replace('</body>',`${indexScripts}</body>`);
+  if(!html.includes('/assets/gallery-bootstrap.js'))html=html.replace('</body>',`${approvalScripts}</body>`);
+  else if(!html.includes('/assets/gallery-brand-safety.js'))html=html.replace('</body>','<script src="/assets/gallery-brand-safety.js?v=20260626-v1"></script></body>');
+  return html;
+}
+
 export function patchPublicHtml(html,path){
   html=removeLegacyPublicShell(html);
   const indexPath=['/','/en','/en/'].includes(path);
-  if(indexPath){
-    html=html.replace(/<script[^>]+src=["'][^"']*\/assets\/(?:gallery-bootstrap|gallery-brand-safety)\.js[^"']*["'][^>]*><\/script>/gi,'');
-  }
+  if(indexPath)return patchIq200Index(html);
+
   const ux='<link rel="stylesheet" href="/assets/public-ux-v11.css?v=20260625-v12">';
   const visual='<link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260626-stable-v28">';
   const reset='<style id="gnk-public-v13-reset">html,body{max-width:100%!important;overflow-x:hidden!important}body{padding-top:0!important}#gnk-asg-premium-header,#gnk-asg-premium-header *{box-sizing:border-box!important}#gnk-asg-premium-header.gnk-v13-header{display:block!important;position:sticky!important;top:6px!important;left:auto!important;right:auto!important;bottom:auto!important;transform:none!important;width:min(1320px,calc(100% - 24px))!important;max-width:1320px!important;height:auto!important;min-height:0!important;max-height:none!important;margin:8px auto 14px!important}#gnk-asg-premium-header .gnk-v13-brand-row{display:grid!important;position:relative!important;inset:auto!important;transform:none!important;width:100%!important;margin:0!important}#gnk-asg-premium-header #gnk-asg-premium-menu.gnk-v13-menu{display:flex!important;position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;inset:auto!important;transform:none!important;clear:both!important;float:none!important;width:100%!important;max-width:none!important;height:auto!important;min-height:31px!important;max-height:none!important;margin:6px auto 0!important;padding:6px 0 0!important}body.gnk-public-v13 .shell,body.gnk-public-v13 main{width:min(1320px,calc(100% - 24px))!important;max-width:1320px!important;margin-left:auto!important;margin-right:auto!important}.brand-head,.top-nav,body>header:not(#gnk-asg-premium-header),body>.site-header,.site-header,.header-inner>.main-nav,.menu-toggle,.shell>.brand-head,.shell>.top-nav,.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-final-menu-wrap,.gnk-asg-inner-nav,.gnk-asg-floating-actions,.floating-home,.floating-ai,.gnk-global-float-home,.gnk-global-float-ai,main>nav:first-child,.news-actions,#gnk-asg-global-layer-root,#gnk-asg-single-ai-button-anchor,#gnk-asg-float-home,#gnk-asg-float-ai,#gnk-asg-ai-panel,#gnk-asg-review-modal,.gnk-asg-fixed-menu-spacer{display:none!important}body.gnk-route-contact main .card>a[href="/"],body.gnk-route-contact main .card>a[href="/en/"]{display:none!important}body.gnk-route-contact main,body.gnk-route-contact main *,body.gnk-route-publications main,body.gnk-route-publications main *{min-width:0!important;max-width:100%!important;box-sizing:border-box!important;overflow-wrap:anywhere!important}body.gnk-route-contact pre,body.gnk-route-publications pre{overflow:auto!important}body.gnk-route-contact input[type="file"]{width:100%!important}@media(max-width:620px){#gnk-asg-premium-header.gnk-v13-header,body.gnk-public-v13 .shell,body.gnk-public-v13 main{width:calc(100% - 12px)!important}}</style>';
@@ -40,14 +60,9 @@ export function patchPublicHtml(html,path){
   const menu='<script src="/assets/public-menu-v13.js?v=20260626-stable-v28" defer></script>';
   const floatingHome='<script src="/assets/public-floating-home-v16.js?v=20260625-v17" defer></script>';
   const aiGuard='<script src="/assets/public-ai-badge-guard-v17.js?v=20260625-v22" defer></script>';
-  const indexHead='<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260626-data-v28">';
-  const indexScripts='<script src="/assets/index-group-network-en-bridge-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-group-network-v2.js?v=20260626-data-v28" defer></script><script src="/assets/index-news-rotation-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-content-resilience-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-live-market-chart-v4.js?v=20260626-data-v28" defer></script>';
   html=html.replace('</head>',`${stableFavicon}\n</head>`);
   if(!html.includes('/assets/public-ux-v11.css'))html=html.replace('</head>',`${ux}</head>`);
   html=html.replace('</head>',`${visual}${reset}</head>`);
-  if(indexPath&&!html.includes('/assets/index-group-network-v2.css'))html=html.replace('</head>',`${indexHead}</head>`);
-  if(indexPath&&!html.includes('/assets/index-clock-v2.js'))html=html.replace('</body>','<script src="/assets/index-clock-v2.js?v=20260625-v2" defer></script></body>');
-  if(indexPath&&!html.includes('/assets/index-content-resilience-v1.js'))html=html.replace('</body>',`${indexScripts}</body>`);
   return html.replace('</body>',`${singleMenu}${menu}${floatingHome}${aiGuard}</body>`);
 }
 
@@ -72,7 +87,7 @@ export async function transformHtml(response,fn){
   headers.delete('content-length');
   headers.delete('content-encoding');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-  headers.set('x-gnk-asg-public-visual','GNK_ASG_PUBLIC_VISUAL_V28_STABLE_LAYOUT_RESILIENT_DATA_20260626');
-  headers.set('x-gnk-asg-index-layout-lock','STABLE_SINGLE_MENU_NO_POLISH');
+  headers.set('x-gnk-asg-public-visual','GNK_ASG_PUBLIC_VISUAL_V29_IQ200_INDEX_PRESERVED_20260627');
+  headers.set('x-gnk-asg-index-layout-lock','IQ200_NATIVE_SHELL_VISUAL_APPROVAL_REQUIRED');
   return new Response(fn(await response.text()),{status:response.status,statusText:response.statusText,headers});
 }
