@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "apps/portal/auto-editor/index.html"
+      - "apps/portal/assets/editorial-burst-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-editorial-loop-fix-v1.js"
@@ -19,6 +20,7 @@ on:
     branches: [main]
     paths:
       - "apps/portal/auto-editor/index.html"
+      - "apps/portal/assets/editorial-burst-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-editorial-loop-fix-v1.js"
@@ -48,6 +50,7 @@ jobs:
       - name: Validate editorial bootstrap and temporary cadence
         run: |
           set -euo pipefail
+          node --check apps/portal/assets/editorial-burst-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-editorial-final-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-editorial-loop-fix-v1.js
@@ -59,10 +62,16 @@ jobs:
           grep -q 'main = "src/index-editorial-loop-fix-v1.js"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
           grep -q 'crons = \["\*/5 \* \* \* \*"\]' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
           grep -q 'EDITORIAL_BURST_TARGET = "10"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
+          grep -q 'EDITORIAL_BURST_END = "2026-06-29T21:59:59.000Z"' workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml
           grep -q 'GNK_ASG_EDITORIAL_BOOTSTRAP_10_V1_20260627' workers/gnk-asg-direct-operator/src/editorial-bootstrap-v1.js
           grep -q 'approved brand asset' workers/gnk-asg-direct-operator/src/editorial-bootstrap-v1.js
+          grep -q 'GNK_ASG_EDITORIAL_AUTO_PUBLISH_V3_APPROVED_BURST_IMAGE_20260627' workers/gnk-asg-direct-operator/src/editorial-auto-publish-v2.js
+          grep -q "APPROVED_BURST_IMAGE='/assets/gnk-asg-social-card.png'" workers/gnk-asg-direct-operator/src/editorial-auto-publish-v2.js
+          grep -q "mode:'approved-brand-asset-only'" workers/gnk-asg-direct-operator/src/editorial-auto-publish-v2.js
           grep -q '2026-06-29T23:59:59+02:00' workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
           grep -q 'bootstrap/run' workers/gnk-asg-direct-operator/src/index-editorial-center-v1.js
+          grep -q 'editorial-burst-v1.js' workers/gnk-asg-direct-operator/src/index-editorial-loop-fix-v1.js
+          grep -q 'Privremeno popunjavanje je aktivno' apps/portal/assets/editorial-burst-v1.js
           grep -q 'Urednički centar' apps/portal/auto-editor/index.html
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.editorial-existing.toml --name gnk-asg-auto-editor
@@ -98,4 +107,7 @@ jobs:
           test "$code" = "200"
           node -e "const p=require('./status.json'); if(!p.ok||!p.burst||Number(p.burst.target)!==10||(p.recentPublications||[]).length<10) process.exit(1);"
           grep -q 'validated automatic publication every 2 hours during temporary fill' status.json
+          code=$(curl --silent --show-error --output editor.html --write-out '%{http_code}' --cookie cookies.txt 'https://gnk-asg.hr/auto-editor/')
+          test "$code" = "200"
+          grep -q 'editorial-burst-v1.js' editor.html
           rm -f cookies.txt
