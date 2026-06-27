@@ -1,8 +1,8 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-06-27T09:37:41.644Z",
-  "engine": "single_publication_engine_v14_isolated_github_action",
+  "updated_at": "2026-06-27T19:44:18+02:00",
+  "engine": "single_publication_engine_v14_github_actions",
   "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
   "timezone": "Europe/Zagreb",
   "scheduled_hours_local": [
@@ -12,83 +12,72 @@
   ],
   "public_items_target": 100,
   "public_items_written": 100,
-  "manual_items_loaded": 10,
   "archive_policy": "archive_latest_1000_prune_to_500_when_full",
-  "archive_items_written": 246,
+  "archive_items_written": 526,
   "rss_images_enabled": true,
-  "fallback_image": null,
-  "fallback_image_allowed": false,
+  "fallback_image": "/assets/news-fallback.svg",
   "visual_index_fallback": "/visual-index/",
-  "feeds_checked": [
+  "feed_results": [
     {
-      "feed": "https://www.theverge.com/rss/index.xml",
+      "source": "The Verge",
       "ok": true,
-      "count": 0
+      "items": 10,
+      "error": null
     },
     {
-      "feed": "https://techcrunch.com/feed/",
+      "source": "TechCrunch",
       "ok": true,
-      "count": 0
+      "items": 19,
+      "error": null
     },
     {
-      "feed": "https://feeds.bbci.co.uk/news/world/rss.xml",
-      "ok": true,
-      "count": 27
+      "source": "Reuters Business",
+      "ok": false,
+      "items": 0,
+      "error": "fetch failed"
     },
     {
-      "feed": "https://feeds.bbci.co.uk/news/technology/rss.xml",
-      "ok": true,
-      "count": 21
+      "source": "Reuters Technology",
+      "ok": false,
+      "items": 0,
+      "error": "fetch failed"
     },
     {
-      "feed": "https://feeds.bbci.co.uk/sport/rss.xml",
+      "source": "MarketWatch",
       "ok": true,
-      "count": 74
+      "items": 9,
+      "error": null
     },
     {
-      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+      "source": "CNBC Business",
       "ok": true,
-      "count": 46
+      "items": 30,
+      "error": null
     },
     {
-      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
+      "source": "CNBC Technology",
       "ok": true,
-      "count": 20
+      "items": 30,
+      "error": null
     },
     {
-      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Science.xml",
+      "source": "BBC Business",
       "ok": true,
-      "count": 31
+      "items": 50,
+      "error": null
     },
     {
-      "feed": "https://www.theguardian.com/world/rss",
+      "source": "BBC Technology",
       "ok": true,
-      "count": 45
+      "items": 21,
+      "error": null
     },
     {
-      "feed": "https://www.theguardian.com/technology/rss",
+      "source": "WIRED Business",
       "ok": true,
-      "count": 36
-    },
-    {
-      "feed": "https://www.theguardian.com/science/rss",
-      "ok": true,
-      "count": 27
-    },
-    {
-      "feed": "https://www.nasa.gov/news-release/feed/",
-      "ok": true,
-      "count": 2
-    },
-    {
-      "feed": "https://hnrss.org/frontpage",
-      "ok": true,
-      "count": 0
-    },
-    {
-      "feed": "https://www.espn.com/espn/rss/news",
-      "ok": true,
-      "count": 0
+      "items": 20,
+      "error": null
     }
-  ]
+  ],
+  "last_checked_issue": null
 }
