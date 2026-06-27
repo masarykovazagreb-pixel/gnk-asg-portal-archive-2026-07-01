@@ -1,19 +1,34 @@
 import app from './index-admin-hub-v27-news-status.js';
 
-export const VERSION='GNK_ASG_PUBLIC_V21_INDEX_THE_CODE_V22_20260627';
+export const VERSION='GNK_ASG_PUBLIC_INDEX_INLINE_WHITE_CODE_V23_20260627';
 const INDEX_PATHS=new Set(['/','/en']);
-const STYLE='<link rel="stylesheet" href="/assets/public-unified-v21.css?v=20260627-v21"><link rel="stylesheet" href="/assets/public-index-v21.css?v=20260627-v21"><link rel="stylesheet" href="/assets/public-index-v21-controls.css?v=20260627-v21">';
-const SCRIPT='<script defer src="/assets/public-shell-v21.js?v=20260627-v21"></script><script defer src="/assets/the-code-stable-v22.js?v=20260627-v22"></script>';
+const CODE_STYLE='<link rel="stylesheet" href="/assets/index-code-inline-v10.css?v=20260627-v23">';
+const CODE_SCRIPT='<script defer src="/assets/index-code-inline-v10.js?v=20260627-v23"></script>';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/'}
-function headersOf(response){const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');headers.delete('last-modified');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('cdn-cache-control','no-store');headers.set('cloudflare-cdn-cache-control','no-store');return headers}
-function addBodyClass(html){return html.replace(/<body([^>]*)>/i,(match,attrs)=>{const classMatch=String(attrs).match(/\sclass=(["'])([^"']*)\1/i);if(classMatch){const classes=[...new Set([...classMatch[2].split(/\s+/),'gnk-public-design-v21','gnk-public-route-home'].filter(Boolean))].join(' ');return `<body${attrs.replace(classMatch[0],` class=${classMatch[1]}${classes}${classMatch[1]}`)}>`}return `<body${attrs} class="gnk-public-design-v21 gnk-public-route-home">`})}
+function headersOf(response){
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.delete('etag');
+  headers.delete('last-modified');
+  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('cdn-cache-control','no-store');
+  headers.set('cloudflare-cdn-cache-control','no-store');
+  return headers;
+}
+
 function patchIndexHtml(html){
-  html=html.replace(/<link[^>]+(?:public-menu-v10|public-unified-v21|public-index-v21|public-index-v21-controls)\.css[^>]*>/gi,'');
-  html=html.replace(/<script[^>]+(?:public-menu-v10|public-shell-v15|public-shell-v21|the-code-stable-v22)\.js[^>]*><\/script>/gi,'');
-  html=html.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,'');
-  html=html.replace('</head>',STYLE+'</head>').replace('</body>',SCRIPT+'</body>');
-  return addBodyClass(html);
+  html=html.replace(/<link[^>]+(?:public-unified-v21|public-index-v21|public-index-v21-controls)\.css[^>]*>/gi,'');
+  html=html.replace(/<script[^>]+(?:public-shell-v21|the-code-stable-v22)\.js[^>]*><\/script>/gi,'');
+  html=html.replace(/<script[^>]+index-code-cleanup-v8\.js[^>]*><\/script>/gi,'');
+  html=html.replace(
+    /<div class=["']code-frame["'] id=["']codeFrame["']>\s*<iframe[\s\S]*?<\/iframe>\s*<\/div>/i,
+    '<div class="code-inline-host" id="codeFrame"><div id="codeInlineMount" class="code-inline-mount"></div></div>'
+  );
+  if(!html.includes('index-code-inline-v10.css'))html=html.replace('</head>',CODE_STYLE+'</head>');
+  if(!html.includes('index-code-inline-v10.js'))html=html.replace('</body>',CODE_SCRIPT+'</body>');
+  return html;
 }
 
 export default{
@@ -22,9 +37,9 @@ export default{
     const path=pathOf(request);
     if(request.method!=='GET'||!INDEX_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
     const headers=headersOf(response);
-    headers.set('x-gnk-asg-index-design','EXECUTIVE_EDITORIAL_V21');
-    headers.set('x-gnk-asg-index-menu','UNIFIED_PUBLIC_SHELL_V21');
-    headers.set('x-gnk-asg-the-code-player','STABLE_IFRAME_V22');
+    headers.set('x-gnk-asg-index-design','LOCKED_FULL_INDEX');
+    headers.set('x-gnk-asg-index-menu','PRESERVED');
+    headers.set('x-gnk-asg-the-code-player','INLINE_WHITE_GOLD_V10');
     headers.set('x-gnk-asg-index-preview',VERSION);
     return new Response(patchIndexHtml(await response.text()),{status:response.status,statusText:response.statusText,headers});
   },
