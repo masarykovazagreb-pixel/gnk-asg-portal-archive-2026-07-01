@@ -1,9 +1,22 @@
 {
   "ok": false,
   "version": "GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627",
-  "commit": "e58b5753ff10b2c940b5bb8da25b8fdcf9fb0e48",
-  "runId": "28284298314",
-  "deployOutcome": "skipped",
-  "verifyOutcome": "skipped",
-  "verifiedAt": "2026-06-27T08:47:44Z"
+  "commit": "2dd38d8ef790dfd3488b7c59dd86d0fd1417d9b7",
+  "runId": "28284358266",
+  "verifiedAt": "2026-06-27T08:54:59.000Z",
+  "attempt": 24,
+  "failures": [
+    "hr_bootstrap_missing",
+    "en_bootstrap_missing",
+    "en_index_content_missing"
+  ],
+  "codes": {
+    "hr": 200,
+    "en": 200,
+    "bootstrap": 200,
+    "css": 200,
+    "visualOne": 200,
+    "visualTwo": 200,
+    "code": 200
+  }
 }
