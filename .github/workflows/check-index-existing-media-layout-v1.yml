@@ -1,0 +1,84 @@
+name: Check Index Existing Media Layout V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/assets/index-existing-media-slots-v1.css'
+      - 'apps/portal/assets/index-existing-media-slots-v1.js'
+      - 'apps/portal/assets/public-floating-home-v16.js'
+      - 'apps/portal/tests/index-existing-media-layout-v1.mjs'
+      - '.github/workflows/check-index-existing-media-layout-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate source
+        run: |
+          node --check apps/portal/assets/index-existing-media-slots-v1.js
+          node --check apps/portal/assets/public-floating-home-v16.js
+          node --check apps/portal/tests/index-existing-media-layout-v1.mjs
+          test -s apps/portal/assets/index-existing-media-slots-v1.css
+          grep -q 'gnk-existing-visual-stage' apps/portal/assets/index-existing-media-slots-v1.js
+          grep -q 'gnk-existing-code-stage' apps/portal/assets/index-existing-media-slots-v1.js
+      - name: Start isolated worker
+        working-directory: workers/gnk-asg-direct-operator
+        shell: bash
+        run: |
+          cat > wrangler.existing-media.toml <<'TOML'
+          name = "gnk-existing-media-test"
+          main = "src/index-portal-final-v12.js"
+          compatibility_date = "2026-06-13"
+          workers_dev = false
+
+          [[kv_namespaces]]
+          binding = "GNK_ASG_KV"
+          id = "00000000000000000000000000000001"
+
+          [[kv_namespaces]]
+          binding = "GNK_ASG_CONFIG_KV"
+          id = "00000000000000000000000000000002"
+
+          [assets]
+          directory = "../../apps/portal"
+          binding = "ASSETS"
+          run_worker_first = true
+          TOML
+          npx --yes wrangler@4 dev --config wrangler.existing-media.toml --ip 127.0.0.1 --port 8787 > wrangler-existing-media.log 2>&1 &
+          echo $! > wrangler-existing-media.pid
+          for i in $(seq 1 50); do
+            if curl -fsS http://127.0.0.1:8787/ > /dev/null; then exit 0; fi
+            if ! kill -0 "$(cat wrangler-existing-media.pid)" 2>/dev/null; then break; fi
+            sleep 1
+          done
+          cat wrangler-existing-media.log
+          exit 1
+      - name: Install browser
+        working-directory: apps/portal
+        run: |
+          npm install --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Verify placement and dimensions
+        working-directory: apps/portal
+        env:
+          VISUAL_BASE: http://127.0.0.1:8787
+        run: node tests/index-existing-media-layout-v1.mjs
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: index-existing-media-layout-v1
+          path: |
+            apps/portal/existing-media-layout-output
+            workers/gnk-asg-direct-operator/wrangler-existing-media.log
+          retention-days: 7
