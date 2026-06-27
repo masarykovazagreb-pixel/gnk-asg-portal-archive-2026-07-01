@@ -1,4 +1,4 @@
-import app from './index-admin-hub-v26-clean-index.js';
+import app from './index-admin-hub-v27-news-status.js';
 
 export const VERSION='GNK_ASG_PUBLIC_V21_INDEX_PREVIEW_20260627';
 const INDEX_PATHS=new Set(['/','/en']);
