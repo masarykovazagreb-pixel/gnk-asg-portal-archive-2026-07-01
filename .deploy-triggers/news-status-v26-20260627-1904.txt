@@ -1,0 +1,15 @@
+Trigger deployment after v26 status/deployment JSON contract correction.
+
+Commit scope:
+- news automation status JSON
+- deployment status JSON
+- portal version JSON
+
+Expected public status contract:
+- active entrypoint: src/index-admin-hub-v26-clean-index.js
+- schedule: 09:00/16:00/21:00 Europe/Zagreb
+- active news limit: 100
+- archive: prune at 1000, delete 500, retain 500
+- fallback images not allowed in public feed
+
+No public index, DNS, secrets, or unrelated modules changed.
