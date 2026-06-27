@@ -61,8 +61,81 @@
     const heading=toolbar.firstElementChild;
     const status=document.createElement('div');
     status.className='code-status';
-    status.innerHTML=`<i></i>${en?'Live HTML presentation · full size':'HTML prezentacija uživo · puna veličina'}`;
+    status.innerHTML=`<i></i>${en?'Live HTML presentation · six scenes':'HTML prezentacija uživo · šest scena'}`;
     heading?.appendChild(status);
+  }
+
+  const frame=document.querySelector('.code-frame');
+  const iframe=document.getElementById('codePreview');
+  const codeStage=document.querySelector('.code-stage');
+  if(codeStage&&frame&&iframe&&!codeStage.querySelector('.code-launch-bar')){
+    const launch=document.createElement('div');
+    launch.className='code-launch-bar';
+    launch.innerHTML=`
+      <div class="code-launch-copy">
+        <small>${en?'THE CODE · 390 × 844 · six scenes':'THE CODE · 390 × 844 · šest scena'}</small>
+        <strong>${en?'Start the presentation from scene one':'Pokreni prezentaciju od prve scene'}</strong>
+        <span>${en?'The live countdown remains the permanent default and final screen.':'LIVE odbrojavanje ostaje stalni početni i završni prikaz.'}</span>
+      </div>
+      <button class="code-launch-button" type="button">${en?'Start presentation':'Pokreni prezentaciju'}</button>`;
+    frame.before(launch);
+
+    frame.classList.add('code-frame--editorial');
+    const left=document.createElement('aside');
+    left.className='code-company code-company--asg';
+    left.setAttribute('aria-label','GNK ASG d.o.o.');
+    left.innerHTML=`
+      <div>
+        <span class="code-company__eyebrow">01 · Zagreb · ${en?'Croatia':'Hrvatska'}</span>
+        <h3>GNK ASG<br>d.o.o.</h3>
+        <p class="code-company__intro">${en?'Standalone audited financial indicators for fiscal year 2025.':'Samostalni revidirani financijski pokazatelji za poslovnu 2025. godinu.'}</p>
+        <div class="code-company__metrics">
+          <div class="code-company__metric"><small>${en?'Total revenue':'Ukupni prihodi'}</small><strong>€504.00M</strong><span>FY 2025</span></div>
+          <div class="code-company__metric"><small>${en?'Total assets':'Ukupna aktiva'}</small><strong>€46.40M</strong><span>${en?'Audited':'Revidirano'}</span></div>
+          <div class="code-company__metric"><small>${en?'Equity and reserves':'Kapital i rezerve'}</small><strong>€46.21M</strong><span>${en?'Standalone':'Samostalno'}</span></div>
+        </div>
+      </div>
+      <div class="code-company__footer">GNK ASG d.o.o. · Zagreb · FY 2025</div>`;
+
+    const right=document.createElement('aside');
+    right.className='code-company code-company--dinamo';
+    right.setAttribute('aria-label','GNK DINAMO Ltd.');
+    right.innerHTML=`
+      <div>
+        <span class="code-company__eyebrow">02 · Boulder · Colorado</span>
+        <h3>GNK DINAMO<br>Ltd. Group</h3>
+        <p class="code-company__intro">${en?'Consolidated group strength, global network and New York activation.':'Konsolidirana snaga grupe, globalna mreža i aktivacija u New Yorku.'}</p>
+        <div class="code-company__metrics">
+          <div class="code-company__metric"><small>${en?'Group revenue':'Prihod grupe'}</small><strong>€4.7046B</strong><span>FY 2025</span></div>
+          <div class="code-company__metric"><small>${en?'Net income':'Neto dobit'}</small><strong>€982.48M</strong><span>${en?'Consolidated':'Konsolidirano'}</span></div>
+          <div class="code-company__metric"><small>${en?'Equity ratio':'Udio kapitala'}</small><strong>98.02%</strong><span>45 ${en?'locations':'lokacija'}</span></div>
+        </div>
+        <div class="code-company__event"><small>${en?'Code activation':'Aktivacija koda'}</small><strong>07 OCT 2026</strong><span>11:30 AM · New York ET</span></div>
+      </div>
+      <div class="code-company__footer">GNK DINAMO Ltd. · Entity ID 20238180649</div>`;
+
+    frame.insertBefore(left,iframe);
+    frame.appendChild(right);
+
+    const button=launch.querySelector('.code-launch-button');
+    button?.addEventListener('click',()=>{
+      iframe.contentWindow?.postMessage({type:'gnk-code-start'},'*');
+      button.disabled=true;
+      button.classList.remove('is-complete');
+      button.textContent=en?'Presentation running':'Prezentacija traje';
+    });
+    window.addEventListener('message',event=>{
+      if(event.source!==iframe.contentWindow||event.data?.type!=='gnk-code-playback')return;
+      if(event.data.state==='playing'){
+        button.disabled=true;
+        button.classList.remove('is-complete');
+        button.textContent=en?'Presentation running':'Prezentacija traje';
+      }else{
+        button.disabled=false;
+        button.classList.toggle('is-complete',event.data.state==='complete');
+        button.textContent=event.data.state==='complete'?(en?'Replay presentation':'Ponovno pokreni'):(en?'Start presentation':'Pokreni prezentaciju');
+      }
+    });
   }
 
   document.querySelectorAll('.finance-card').forEach((card,index)=>{
@@ -74,9 +147,7 @@
     }
   });
 
-  const revealTargets=[
-    ...document.querySelectorAll('.code-stage,.panel,.network,.finance-card,.location-item')
-  ];
+  const revealTargets=[...document.querySelectorAll('.code-stage,.panel,.network,.finance-card,.location-item')];
   revealTargets.forEach(node=>node.classList.add('wow-reveal'));
   if('IntersectionObserver'in window){
     const observer=new IntersectionObserver(entries=>{
@@ -98,9 +169,7 @@
     const max=Math.max(1,doc.scrollHeight-innerHeight);
     nav?.style.setProperty('--scroll-progress',`${Math.min(100,(scrollY/max)*100)}%`);
     let active=null;
-    sections.forEach(section=>{
-      if(section.getBoundingClientRect().top<=innerHeight*.34)active=section.id;
-    });
+    sections.forEach(section=>{if(section.getBoundingClientRect().top<=innerHeight*.34)active=section.id;});
     navLinks.forEach(link=>link.classList.toggle('is-active',link.getAttribute('href')===`#${active}`));
   };
   addEventListener('scroll',updateProgress,{passive:true});
