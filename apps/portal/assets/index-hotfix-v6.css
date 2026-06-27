@@ -1,0 +1,40 @@
+/* GNK ASG index production hotfix V6 */
+.finance-card:nth-child(2){
+  background:linear-gradient(145deg,#181612 0%,#242019 58%,#322817 100%)!important;
+  color:#f7efd9!important;
+  border-color:rgba(213,179,92,.42)!important;
+  box-shadow:16px 20px 44px rgba(22,17,8,.24),-7px -7px 20px rgba(255,255,255,.88),inset 1px 1px 0 rgba(255,255,255,.08)!important;
+}
+.finance-card:nth-child(2) .company-title h3{
+  color:#fff8e8!important;
+  text-shadow:0 2px 8px rgba(0,0,0,.38)!important;
+}
+.finance-card:nth-child(2) .company-title small{
+  color:#d9b861!important;
+}
+.finance-card:nth-child(2) .metrics{
+  background:rgba(6,5,4,.30)!important;
+  box-shadow:inset 3px 3px 9px rgba(0,0,0,.34),inset -1px -1px 0 rgba(255,255,255,.05)!important;
+}
+.finance-card:nth-child(2) .metric{
+  background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025))!important;
+  border-top-color:rgba(213,179,92,.42)!important;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.06)!important;
+}
+.finance-card:nth-child(2) .metric small{
+  color:#cbbf9f!important;
+  opacity:1!important;
+}
+.finance-card:nth-child(2) .metric strong{
+  color:#fff4cf!important;
+  opacity:1!important;
+  text-shadow:0 2px 10px rgba(0,0,0,.48)!important;
+}
+.finance-card:first-child .metric strong{
+  color:#191711!important;
+  opacity:1!important;
+}
+.metric strong{visibility:visible!important;filter:none!important}
+@media(max-width:720px){
+  .finance-card:nth-child(2) .metric strong{font-size:clamp(18px,6vw,25px)!important}
+}
