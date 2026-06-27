@@ -68,7 +68,112 @@
     window.addEventListener('pagehide',()=>clearInterval(timer),{once:true});
   };
 
+  const installIndexPolicy = () => {
+    const english=document.documentElement.lang==='en';
+    const blockedNews=/\b(prime day|deal|discount|ninja|slushi|creami|crispi|cafe luxe|football|soccer|nogomet|utakmic|reprezentacij|ghana|hrvatima|transfer|stadion|maksimir)\b/i;
+    const allowedCategory=/\b(corporate|business|finance|financial|economy|economic|markets?|technology|tech|artificial intelligence|\bai\b|innovation|automation|governance|industry|industrijska|digitalizacija|investicij)\b/i;
+
+    window.GNK_ASG_VISUAL_APPROVAL={
+      version:'2026-06-27-v1',
+      required:true,
+      productionRule:'No image or URL background may render on the homepage without data-visual-approved="true".',
+      slots:[
+        {id:'HOME-HERO-01',selector:'.hero-visual',position:'Hero, right side on desktop; below copy on mobile',desktop:'3200x2200',mobile:'2160x2700',status:'pending'},
+        {id:'HOME-FEATURED-02',selector:'.featured',position:'Featured Intelligence, large left card background',desktop:'3000x1800',mobile:'2160x1800',status:'pending'},
+        {id:'HOME-NETWORK-03',selector:'.world-map',position:'Group Network, map card visual',desktop:'2400x1600',mobile:'1800x1600',status:'pending'},
+        {id:'HOME-INNOVATION-04',selector:'.live-card:first-child',position:'Portal Live, AI/innovation card',desktop:'2200x1800',mobile:'1800x1800',status:'pending'}
+      ]
+    };
+
+    const isApproved=node=>node?.dataset?.visualApproved==='true'||Boolean(node?.closest?.('[data-visual-approved="true"]'));
+
+    const guardVisuals=root=>{
+      root.querySelectorAll?.('img').forEach(image=>{
+        if(isApproved(image))return;
+        image.hidden=true;
+        image.removeAttribute('srcset');
+        image.removeAttribute('sizes');
+      });
+      root.querySelectorAll?.('[style*="background"]').forEach(node=>{
+        const inline=node.style?.backgroundImage||'';
+        if(!/url\s*\(/i.test(inline)||isApproved(node))return;
+        node.style.removeProperty('background-image');
+      });
+    };
+
+    const cleanDuplicateChrome=()=>{
+      document.body?.classList.add('gnk-iq200-home');
+      document.querySelectorAll('#gnk-asg-premium-header,.gnk-v13-header').forEach(node=>node.remove());
+      document.querySelectorAll('.brand-head,.top-nav').forEach(node=>{
+        node.removeAttribute('aria-hidden');
+        node.style.removeProperty('display');
+        node.hidden=false;
+      });
+    };
+
+    const curateRenderedNews=()=>{
+      const list=document.getElementById('latestNews');
+      if(!list)return;
+      const links=[...list.querySelectorAll('.news-item')];
+      links.forEach(link=>{
+        const signature=`${link.querySelector('strong')?.textContent||''} ${link.querySelector('small')?.textContent||''}`;
+        link.hidden=blockedNews.test(signature);
+      });
+      const visible=links.filter(link=>!link.hidden).slice(0,5);
+      links.forEach(link=>{if(!visible.includes(link))link.hidden=true;});
+    };
+
+    const chooseCuratedItem=items=>items.find(item=>{
+      const signature=`${item.title||item.titleHr||item.titleEn||''} ${item.summary||item.description||''} ${item.category||''} ${item.group||''}`;
+      return !blockedNews.test(signature)&&((item.source||'').toUpperCase()==='GNK ASG'||allowedCategory.test(signature));
+    });
+
+    const refreshCuratedFeatured=async()=>{
+      try{
+        const response=await fetch(`/data/news.json?approval=${Date.now()}`,{cache:'no-store'});
+        if(!response.ok)return;
+        const payload=await response.json();
+        const items=Array.isArray(payload)?payload:(payload.items||[]);
+        const item=chooseCuratedItem(items);
+        if(!item)return;
+        const title=english?(item.titleEn||item.title||item.titleHr):(item.titleHr||item.title||item.titleEn);
+        const summary=english?(item.summaryEn||item.summary||item.description||item.excerpt):(item.summaryHr||item.summary||item.description||item.excerpt);
+        const titleNode=document.getElementById('featuredTitle');
+        const summaryNode=document.getElementById('featuredSummary');
+        const linkNode=document.getElementById('featuredLink');
+        if(titleNode&&title)titleNode.textContent=title;
+        if(summaryNode)summaryNode.textContent=summary||'';
+        if(linkNode&&item.url)linkNode.href=item.url;
+      }catch(_){ }
+    };
+
+    const enforce=()=>{
+      cleanDuplicateChrome();
+      guardVisuals(document);
+      curateRenderedNews();
+    };
+
+    const start=()=>{
+      enforce();
+      refreshCuratedFeatured();
+      const observer=new MutationObserver(records=>{
+        records.forEach(record=>{
+          if(record.type==='attributes'&&record.target?.nodeType===1)guardVisuals(record.target.parentElement||document);
+          record.addedNodes.forEach(node=>{if(node.nodeType===1)guardVisuals(node);});
+        });
+        cleanDuplicateChrome();
+        curateRenderedNews();
+      });
+      observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['style','src','srcset']});
+      [250,900,1800].forEach(delay=>setTimeout(()=>{enforce();refreshCuratedFeatured();},delay));
+      window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+    };
+
+    document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
+  };
+
   if(route==='/' || route==='/en'){
+    installIndexPolicy();
     const start=()=>initActivation(document.querySelector('[data-gnk-activation]'));
     document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
     return;
