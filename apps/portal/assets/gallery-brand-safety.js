@@ -16,10 +16,20 @@
     }, true);
   }
 
+  function installCodePlayFix() {
+    if (document.querySelector('script[data-code-play-fix-v12]')) return;
+    const script = document.createElement('script');
+    script.src = '/assets/index-code-play-fix-v12.js?v=20260627-v12';
+    script.defer = true;
+    script.dataset.codePlayFixV12 = '';
+    document.head.appendChild(script);
+  }
+
   if (route === '/' || route === '/en') {
     installIndexLogoGuard();
+    installCodePlayFix();
     window.GNK_ASG_BRAND_SAFETY = {
-      version: '2026-06-26-index-isolated',
+      version: '2026-06-27-index-code-play-fix',
       prohibited: () => false,
       check: () => {}
     };
