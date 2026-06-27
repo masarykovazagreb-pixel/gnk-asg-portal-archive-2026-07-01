@@ -1,0 +1,17 @@
+name = "gnk-existing-media-test"
+main = "src/index-portal-final-v12.js"
+compatibility_date = "2026-06-13"
+workers_dev = false
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "00000000000000000000000000000001"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_CONFIG_KV"
+id = "00000000000000000000000000000002"
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
