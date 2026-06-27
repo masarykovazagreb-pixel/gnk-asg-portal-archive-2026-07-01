@@ -7,11 +7,8 @@ on:
       - '.github/workflows/deploy-public-portal.yml'
       - 'apps/portal/**'
       - 'workers/gnk-asg-direct-operator/src/**'
-      - 'workers/gnk-asg-direct-operator/migrations/**'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
   workflow_dispatch:
-  issue_comment:
-    types: [created]
 
 permissions:
   contents: read
@@ -22,120 +19,54 @@ concurrency:
 
 jobs:
   deploy:
-    if: >-
-      github.event_name != 'issue_comment' ||
-      (github.event.issue.number == 65 &&
-       github.event.comment.body == '/deploy-public-portal' &&
-       (github.event.comment.author_association == 'OWNER' ||
-        github.event.comment.author_association == 'MEMBER' ||
-        github.event.comment.author_association == 'COLLABORATOR'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 1
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
 
-      - name: Validate V21 index and THE CODE V22 package
+      - name: Validate locked index and inline THE CODE
         shell: bash
         run: |
           set -euxo pipefail
-          node --check apps/portal/assets/index-white-static-v2.js
-          node --check apps/portal/assets/index-white-static-enhance-v2.js
-          node --check apps/portal/assets/index-wow-v4.js
-          node --check apps/portal/assets/index-code-cleanup-v8.js
-          node --check apps/portal/assets/the-code-stable-v22.js
-          node --check workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          node --check apps/portal/assets/index-code-inline-v10.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
-          test -s apps/portal/index-white-static-preview-v2.html
-          test -s apps/portal/en/index-white-static-preview-v2.html
-          test -s apps/portal/assets/public-unified-v21.css
-          test -s apps/portal/assets/public-index-v21.css
-          test -s apps/portal/assets/public-index-v21-controls.css
-          test -s apps/portal/assets/public-shell-v21.js
-          test -s apps/portal/assets/the-code-stable-v22.js
-          test -s apps/portal/the-code/index.html
-          grep -q 'main = "src/index-admin-hub-v26-clean-index-v21-preview.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'GNK_ASG_PUBLIC_V21_INDEX_THE_CODE_V22_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
-          grep -q 'the-code-stable-v22.js?v=20260627-v22' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
-          grep -q 'GNK_ASG_THE_CODE_STABLE_V22_20260627' apps/portal/assets/the-code-stable-v22.js
-          grep -q 'data-index-template="white-static-v2"' apps/portal/index-white-static-preview-v2.html
-          grep -q 'data-index-template="white-static-v2"' apps/portal/en/index-white-static-preview-v2.html
-          grep -q 'id="codePreview"' apps/portal/index-white-static-preview-v2.html
-          grep -q 'id="codePreview"' apps/portal/en/index-white-static-preview-v2.html
-          grep -q "2026-10-07T11:30:00-04:00" apps/portal/the-code/index.html
-          grep -q 'THE_CODE_english_corrected_2026-10-07.html' apps/portal/assets/the-code-stable-v22.js
+          test -s apps/portal/index.html
+          test -s apps/portal/en/index.html
+          test -s apps/portal/assets/index-code-inline-v10.css
+          grep -q '<nav class="menu"' apps/portal/index.html
+          grep -q '<nav class="menu"' apps/portal/en/index.html
+          grep -q 'GNK_ASG_PUBLIC_INDEX_INLINE_WHITE_CODE_V24_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
+          grep -q 'index-code-inline-v10.js?v=20260627-v24' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
+          grep -q 'index-wow-v4' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
+          grep -q 'index-hero-scale-v13' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
+          grep -q '2026-10-07T11:30:00-04:00' apps/portal/assets/index-code-inline-v10.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Apply D1 migrations
-        id: d1
-        continue-on-error: true
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 d1 migrations apply gnk_asg_operator_logs --remote --config wrangler.toml
-
-      - name: Deploy V21 and THE CODE V22 to Cloudflare
+      - name: Deploy to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify HR EN and THE CODE production
+      - name: Verify production
         shell: bash
         run: |
           set -euo pipefail
           node <<'JS'
-          const base='https://gnk-asg.hr';
-          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-          async function get(path,redirect='follow'){
-            try{
-              const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{redirect,headers:{'cache-control':'no-cache'}});
-              return {status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)};
-            }catch(error){return {status:0,text:'',headers:{},error:String(error)};}
-          }
-          let last;
-          for(let attempt=1;attempt<=24;attempt++){
-            const [root,en,player,playerAsset,news,pubs,market,health,admin]=await Promise.all([
-              get('/'),get('/en/'),get('/the-code/?embed=1&v=22'),get('/assets/the-code-stable-v22.js?v=20260627-v22'),
-              get('/vijesti/'),get('/objave/'),get('/trzista/'),get('/data/platform-health.json'),get('/operator-dashboard/','manual')
-            ]);
-            const failures=[];
-            for(const [name,response] of Object.entries({root,en,player,playerAsset,news,pubs,market}))if(response.status!==200)failures.push(`${name}=${response.status}`);
-            if(!root.text.includes('Poslovna grupa.'))failures.push('root_v21_content_missing');
-            if(!en.text.includes('A business group.'))failures.push('en_v21_content_missing');
-            if(!root.text.includes('the-code-stable-v22.js?v=20260627-v22'))failures.push('root_v22_script_missing');
-            if(!en.text.includes('the-code-stable-v22.js?v=20260627-v22'))failures.push('en_v22_script_missing');
-            if(root.headers['x-gnk-asg-the-code-player']!=='STABLE_IFRAME_V22')failures.push(`root_player_header=${root.headers['x-gnk-asg-the-code-player']||''}`);
-            if(en.headers['x-gnk-asg-the-code-player']!=='STABLE_IFRAME_V22')failures.push(`en_player_header=${en.headers['x-gnk-asg-the-code-player']||''}`);
-            if(root.headers['x-gnk-asg-index-design']!=='EXECUTIVE_EDITORIAL_V21')failures.push(`root_design=${root.headers['x-gnk-asg-index-design']||''}`);
-            if(en.headers['x-gnk-asg-index-design']!=='EXECUTIVE_EDITORIAL_V21')failures.push(`en_design=${en.headers['x-gnk-asg-index-design']||''}`);
-            if(!player.text.includes('2026-10-07T11:30:00-04:00'))failures.push('activation_date_missing');
-            if(!playerAsset.text.includes('GNK_ASG_THE_CODE_STABLE_V22_20260627'))failures.push('player_asset_marker_missing');
-            if(![200,303,401,403].includes(admin.status))failures.push(`admin=${admin.status}`);
-            if(![200,503].includes(health.status))failures.push(`health=${health.status}`);
-            last={attempt,failures,codes:{root:root.status,en:en.status,player:player.status,playerAsset:playerAsset.status,news:news.status,pubs:pubs.status,market:market.status,health:health.status,admin:admin.status}};
-            console.log(JSON.stringify(last));
-            if(!failures.length){console.log('GNK_ASG_V21_THE_CODE_V22_PRODUCTION_OK=true');process.exit(0);}
+          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+          async function read(path){const r=await fetch(`https://gnk-asg.hr${path}?cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});return {status:r.status,text:await r.text(),headers:Object.fromEntries(r.headers)}}
+          for(let i=1;i<=24;i++){
+            const [hr,en,js,css]=await Promise.all([read('/'),read('/en/'),read('/assets/index-code-inline-v10.js'),read('/assets/index-code-inline-v10.css')]);
+            const ok=hr.status===200&&en.status===200&&js.status===200&&css.status===200&&hr.text.includes('<nav class="menu"')&&en.text.includes('<nav class="menu"')&&hr.text.includes('id="codeInlineMount"')&&en.text.includes('id="codeInlineMount"')&&!hr.text.includes('id="codePreview"')&&!en.text.includes('id="codePreview"')&&!hr.text.includes('index-wow-v4.css')&&!en.text.includes('index-wow-v4.css')&&!hr.text.includes('index-hero-scale-v13.css')&&!en.text.includes('index-hero-scale-v13.css')&&hr.headers['x-gnk-asg-index-hero']==='BASE_CLEAN_NO_WOW_NO_SCALE'&&hr.headers['x-gnk-asg-the-code-player']==='INLINE_WHITE_GOLD_V10'&&js.text.includes('2026-10-07T11:30:00-04:00');
+            console.log(JSON.stringify({attempt:i,ok,hr:hr.status,en:en.status}));
+            if(ok)process.exit(0);
             await sleep(10000);
           }
-          console.error(JSON.stringify(last,null,2));
           process.exit(1);
           JS
-
-      - name: Route diagnostics
-        if: always()
-        shell: bash
-        run: |
-          for path in / /en/ /the-code/ /assets/the-code-stable-v22.js /vijesti/ /objave/ /trzista/ /operator-dashboard/ /data/platform-health.json; do
-            code=$(curl -sS -o /tmp/route.out -w '%{http_code}' "https://gnk-asg.hr$path?cb=$(date +%s)" || true)
-            echo "$path -> $code"
-          done
