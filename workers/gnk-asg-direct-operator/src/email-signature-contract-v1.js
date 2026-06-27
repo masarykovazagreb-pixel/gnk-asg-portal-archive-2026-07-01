@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R7_MANDATORY_BCC';
+export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R8_SAFE_BCC';
 export const MANDATORY_BCC='rht@gmx.com';
 
 const COMPANY={
@@ -121,13 +121,16 @@ export function enforceRequiredSignature(payload={}){
   const identity=sender(payload);
   const originalText=normalizeTextContact(clean(payload.text||payload.body||payload.plainText));
   const originalHtml=normalizeHtmlContact(clean(payload.html||payload.bodyHtml||payload.htmlBody));
-  return{
+  const next={
     ...payload,
-    bcc:mandatoryBcc(payload.bcc,payload.to,payload.cc),
     text:appendText(originalText,identity),
     html:appendHtml(originalHtml,originalText,identity),
     headers:{...(payload.headers||{}),'X-GNK-ASG-Signature-Contract':VERSION,'X-GNK-ASG-Mandatory-Copy':'ENFORCED'}
   };
+  const bcc=mandatoryBcc(payload.bcc,payload.to,payload.cc);
+  if(bcc)next.bcc=bcc;
+  else delete next.bcc;
+  return next;
 }
 
 export function withRequiredEmailSignature(env){
