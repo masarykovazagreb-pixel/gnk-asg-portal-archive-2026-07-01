@@ -20,9 +20,33 @@
       [text('Kapital i rezerve','Equity and reserves'),'€3.4140B','98.02%']
     ]
   };
-  function metricMarkup(items){
-    return items.map(([label,value,note])=>`<div class="code-company__metric"><small>${label}</small><strong>${value}</strong><span>${note}</span></div>`).join('');
+  const metricMarkup=items=>items.map(([label,value,note])=>`<div class="code-company__metric"><small>${label}</small><strong>${value}</strong><span>${note}</span></div>`).join('');
+
+  const frame=document.querySelector('.code-frame');
+  const iframe=document.getElementById('codePreview');
+  const codeStage=document.querySelector('.code-stage');
+  if(frame&&iframe){
+    frame.classList.add('code-frame--editorial');
+    if(!document.querySelector('.code-launch-bar')&&codeStage){
+      const launch=document.createElement('div');
+      launch.className='code-launch-bar';
+      launch.innerHTML=`<div class="code-launch-copy"><small>THE CODE · 390 × 844 · ${text('šest scena','six scenes')}</small><strong>${text('Pokreni prezentaciju od prve scene','Start the presentation from scene one')}</strong><span>${text('LIVE odbrojavanje ostaje stalni početni i završni prikaz.','The live countdown remains the permanent default and final screen.')}</span></div><button class="code-launch-button" type="button">${text('Pokreni prezentaciju','Start presentation')}</button>`;
+      frame.before(launch);
+    }
+    if(!frame.querySelector('.code-company--asg')){
+      const left=document.createElement('aside');
+      left.className='code-company code-company--asg';
+      left.innerHTML=`<div><span class="code-company__eyebrow">01 · Zagreb · ${text('Hrvatska','Croatia')}</span><h3>GNK ASG<br>d.o.o.</h3><p class="code-company__intro">${text('Samostalni revidirani financijski pokazatelji za poslovnu 2025. godinu.','Standalone audited financial indicators for fiscal year 2025.')}</p><div class="code-company__metrics"></div></div><div class="code-company__footer">GNK ASG d.o.o. · Zagreb · FY 2025</div>`;
+      frame.insertBefore(left,iframe);
+    }
+    if(!frame.querySelector('.code-company--dinamo')){
+      const right=document.createElement('aside');
+      right.className='code-company code-company--dinamo';
+      right.innerHTML=`<div><span class="code-company__eyebrow">02 · Boulder · Colorado</span><h3>GNK DINAMO<br>Ltd. Group</h3><p class="code-company__intro">${text('Konsolidirana snaga grupe, globalna mreža i aktivacija u New Yorku.','Consolidated group strength, global network and New York activation.')}</p><div class="code-company__metrics"></div><div class="code-company__event"><small>${text('Aktivacija koda','Code activation')}</small><strong>07 OCT 2026</strong><span>11:30 AM · New York ET</span></div></div><div class="code-company__footer">GNK DINAMO Ltd. · Entity ID 20238180649</div>`;
+      frame.appendChild(right);
+    }
   }
+
   function patchCompany(selector,items,pdf){
     const panel=document.querySelector(selector);
     if(!panel)return;
@@ -34,8 +58,7 @@
       link.href=pdf;
       link.download='';
       link.textContent=text('Preuzmi financijsko izvješće PDF','Download financial report PDF');
-      const footer=panel.querySelector('.code-company__footer');
-      footer?.before(link);
+      panel.querySelector('.code-company__footer')?.before(link);
     }
   }
   patchCompany('.code-company--asg',panelData.asg,reports.asg);
@@ -54,7 +77,23 @@
     card.appendChild(actions);
   });
 
-  const iframe=document.getElementById('codePreview');
+  if(!document.querySelector('.public-float--home')){
+    const home=document.createElement('a');
+    home.className='public-float public-float--home';
+    home.href='#top';
+    home.setAttribute('aria-label',text('Početna','Home'));
+    home.innerHTML=`<span>${text('Početna','Home')}</span>`;
+    document.body.appendChild(home);
+  }
+  if(!document.querySelector('.public-float--ai')){
+    const ai=document.createElement('a');
+    ai.className='public-float public-float--ai';
+    ai.href=en?'/en/assistant/':'/assistant/';
+    ai.setAttribute('aria-label',text('AI pomoć','AI Help'));
+    ai.innerHTML=`<span>${text('AI pomoć','AI Help')}</span>`;
+    document.body.appendChild(ai);
+  }
+
   const button=document.querySelector('.code-launch-button');
   if(!iframe||!button)return;
   let ready=false;
@@ -81,15 +120,12 @@
     }
   });
   button.addEventListener('click',event=>{
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
+    event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
     if(!ready){ping();return;}
     button.disabled=true;
     button.classList.remove('is-complete');
     button.textContent=text('Prezentacija traje','Presentation running');
     iframe.contentWindow?.postMessage({type:'gnk-code-start'},'*');
   },true);
-  setTimeout(ping,350);
-  setTimeout(ping,1000);
+  setTimeout(ping,350);setTimeout(ping,1000);
 })();
