@@ -1,6 +1,6 @@
 import app from './index-admin-hub-v26-clean-index.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260627_R6_LOCKED_INDEX_MENU';
+export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260627_R7_LOCKED_INDEX_MENU';
 const ENTRYPOINT='src/index-admin-hub-v27-news-status.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v26-clean-index.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626';
@@ -22,6 +22,12 @@ function lockedIndexMenu(english){
     ? '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financials">Financials</a><a href="#network">Network</a><a href="/news/">News</a><a href="/publications/">Publications</a><a href="/markets/">Markets</a><a href="/visual-index/">Gallery</a><a href="/en/assistant/">AI</a><a href="/operator-dashboard/">Admin</a><a href="/contact/">Contact</a><a class="lang" href="/">HR</a></nav>'
     : '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/vijesti/">Vijesti</a><a href="/objave/">Objave</a><a href="/trzista/">Tržišta</a><a href="/visual-index/">Galerija</a><a href="/assistant/">AI</a><a href="/operator-dashboard/">Admin</a><a href="/contact/">Kontakt</a><a class="lang" href="/en/">EN</a></nav>';
 }
+function operatorRedirect(request,path){
+  if(path!=='/operator-dashboard')return null;
+  const url=new URL(request.url);
+  if(url.searchParams.get('embedded')==='1')return null;
+  return new Response(null,{status:303,headers:{location:'/admin-center/?module=operator','cache-control':'no-store','x-gnk-asg-admin-entry':'ADMIN_CENTER'}});
+}
 async function patchStatus(response,path){
   if(!STATUS_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   try{
@@ -29,7 +35,7 @@ async function patchStatus(response,path){
     const headers=noStore(new Headers(response.headers));
     headers.set('x-gnk-asg-active-entrypoint',ENTRYPOINT);
     headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);
-    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,newsRuntime:NEWS_RUNTIME,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},indexHeroScale:'50_PERCENT_V13',indexMenu:'LOCKED_INDEX_MENU',adminEmbed:'SAME_ORIGIN_ALLOWED',adminLoader:'RESILIENT_ROUTE_VALIDATION_V4',adminAudit:'ALL_MODULES_WITH_10_SECOND_TIMEOUT',statusWrapper:VERSION,checkedAt:new Date().toISOString()};
+    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,newsRuntime:NEWS_RUNTIME,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},indexHeroScale:'50_PERCENT_V13',indexMenu:'LOCKED_INDEX_MENU',adminEntry:'ADMIN_CENTER',adminEmbed:'SAME_ORIGIN_ALLOWED',adminLoader:'RESILIENT_ROUTE_VALIDATION_V4',adminAudit:'ALL_MODULES_WITH_10_SECOND_TIMEOUT',statusWrapper:VERSION,checkedAt:new Date().toISOString()};
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response}
 }
@@ -70,7 +76,7 @@ async function patchAdminHtml(response,path,request){
 }
 
 export default{
-  async fetch(request,env,ctx){const path=pathOf(request);let response=await app.fetch(request,env,ctx);response=await patchStatus(response,path);response=await patchIndexHtml(response,path,request);return patchAdminHtml(response,path,request)},
+  async fetch(request,env,ctx){const path=pathOf(request);const redirect=operatorRedirect(request,path);if(redirect)return redirect;let response=await app.fetch(request,env,ctx);response=await patchStatus(response,path);response=await patchIndexHtml(response,path,request);return patchAdminHtml(response,path,request)},
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
   async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}
 };
