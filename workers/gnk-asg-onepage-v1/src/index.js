@@ -74,7 +74,10 @@ export default {
     const url = new URL(request.url);const path = url.pathname.replace(/\/+$/, '') || '/';
     if (request.method === 'OPTIONS' && path === '/api/contact') return new Response(null,{status:204,headers:{'access-control-allow-origin':'*','access-control-allow-methods':'POST,OPTIONS','access-control-allow-headers':'content-type','access-control-max-age':'86400'}});
     if (path === '/api/contact') return proxyContact(request);
-    if (path === PDF_PATH && request.method === 'GET') return new Response(buildFinancialPdf(),{status:200,headers:securityHeaders(new Headers({'content-type':'application/pdf','content-disposition':'attachment; filename="GNK_ASG_Financijski_pregled_FY2025.pdf"','cache-control':'public, max-age=3600'}))});
+    if (path === PDF_PATH && (request.method === 'GET' || request.method === 'HEAD')) {
+      const headers=securityHeaders(new Headers({'content-type':'application/pdf','content-disposition':'attachment; filename="GNK_ASG_Financijski_pregled_FY2025.pdf"','cache-control':'public, max-age=3600'}));
+      return new Response(request.method==='HEAD'?null:buildFinancialPdf(),{status:200,headers});
+    }
     if (path === '/health') return json({ok:true,version:VERSION,project:'onepage-v1',financialPdf:PDF_PATH});
     if (request.method !== 'GET' && request.method !== 'HEAD') return json({ok:false,error:'method_not_allowed'},405);
     const direct=await serveAsset(request,env,url.pathname);if(direct.status!==404)return direct;return serveAsset(request,env,'/index.html');
