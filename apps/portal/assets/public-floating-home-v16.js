@@ -11,6 +11,26 @@
   const params = new URLSearchParams(location.search);
   const english = path === '/en' || path.startsWith('/en/') || path.startsWith('/markets') || path.startsWith('/news') || path.startsWith('/publications') || path.startsWith('/automation-status') || ((path.startsWith('/visual-index') || path.startsWith('/app')) && params.get('lang') === 'en');
 
+  const ensureIndexMediaAssets = () => {
+    if (!isIndex) return;
+    let stylesheet = document.querySelector('link[data-gnk-existing-media="v1"]');
+    if (!stylesheet) {
+      stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = '/assets/index-existing-media-slots-v1.css?v=20260627-existing-v1';
+      stylesheet.dataset.gnkExistingMedia = 'v1';
+      document.head.appendChild(stylesheet);
+    }
+    let script = document.querySelector('script[data-gnk-existing-media="v1"]');
+    if (!script) {
+      script = document.createElement('script');
+      script.src = '/assets/index-existing-media-slots-v1.js?v=20260627-existing-v1';
+      script.defer = true;
+      script.dataset.gnkExistingMedia = 'v1';
+      document.head.appendChild(script);
+    }
+  };
+
   const ensureStyle = () => {
     let style = document.getElementById('gnk-floating-home-v16-style');
     if (style) return style;
@@ -29,6 +49,7 @@
       let button = document.getElementById('gnk-floating-home-v16');
       if (isIndex) {
         button?.remove();
+        ensureIndexMediaAssets();
         return;
       }
       ensureStyle();
@@ -56,7 +77,8 @@
     if (queued || running) return;
     const button = document.getElementById('gnk-floating-home-v16');
     const style = document.getElementById('gnk-floating-home-v16-style');
-    const needsRepair = isIndex ? Boolean(button) : (!button || !style || button.classList.contains('gnk-v13-legacy-hidden'));
+    const indexAssetsMissing = isIndex && (!document.querySelector('link[data-gnk-existing-media="v1"]') || !document.querySelector('script[data-gnk-existing-media="v1"]'));
+    const needsRepair = isIndex ? Boolean(button) || indexAssetsMissing : (!button || !style || button.classList.contains('gnk-v13-legacy-hidden'));
     if (!needsRepair) return;
     queued = true;
     requestAnimationFrame(() => {
