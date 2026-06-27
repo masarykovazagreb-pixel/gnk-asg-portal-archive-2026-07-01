@@ -1,5 +1,6 @@
 (() => {
   'use strict';
+  const DEPLOY_FORCE='20260627-1501';
   if (window.__GNK_ASG_GALLERY_BOOTSTRAP__) return;
   window.__GNK_ASG_GALLERY_BOOTSTRAP__ = true;
   const route = location.pathname.replace(/\/+$/, '') || '/';
@@ -51,6 +52,7 @@
     section.id='the-code-index';
     section.setAttribute('aria-label','GNK DINAMO Ltd. — THE CODE and campaign visuals');
     section.dataset.gnkCodeShowcase='GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627';
+    section.dataset.deployForce=DEPLOY_FORCE;
 
     const grid=node('div','gnk-code-slot__grid');
     const visual=node('article','gnk-code-slot__visual');
