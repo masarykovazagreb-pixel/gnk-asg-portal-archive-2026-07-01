@@ -10,13 +10,20 @@ import {
 } from './editorial-core-v1.js';
 import {rotateLatestArticleImage} from './gallery-rotation-v1.js';
 
-export const AUTO_PUBLISH_VERSION='GNK_ASG_EDITORIAL_AUTO_PUBLISH_V2_20260626';
+export const AUTO_PUBLISH_VERSION='GNK_ASG_EDITORIAL_AUTO_PUBLISH_V3_APPROVED_BURST_IMAGE_20260627';
 const AUTHOR='Nermin Sefić';
 const SITE='https://gnk-asg.hr';
 const MAX_SOURCE_AGE_MS=8*60*60*1000;
+const APPROVED_BURST_IMAGE='/assets/gnk-asg-social-card.png';
+const DEFAULT_BURST_END='2026-06-29T21:59:59.000Z';
 
 const now=()=>new Date().toISOString();
 const clean=value=>String(value??'').replace(/\s+/g,' ').trim();
+
+function burstActive(env){
+  const end=Date.parse(env?.EDITORIAL_BURST_END||DEFAULT_BURST_END);
+  return Number.isFinite(end)&&Date.now()<=end;
+}
 
 function sourceIsStale(payload){
   const stamp=Date.parse(payload?.updatedAt||payload?.updated_at||'');
@@ -50,17 +57,18 @@ function decorate(article){
   const descriptionHr=clean(article.summaryHr||article.summary).slice(0,170);
   const descriptionEn=clean(article.summaryEn||descriptionHr).slice(0,170);
   const image=clean(article.image);
+  const approvedBrandAsset=image===APPROVED_BURST_IMAGE;
   const keywords=Array.isArray(article?.seo?.keywords)?article.seo.keywords:[];
-  const updated={
+  return{
     ...article,
     canonical,
     author:AUTHOR,
     image,
-    imageAlt:clean(article.imageAlt)||`${titleHr} — GNK ASG Visual Index`,
-    imageCredit:clean(article.imageCredit)||'GNK ASG Visual Index',
-    imageRepository:'/visual-index/',
-    imageCatalog:'/data/gallery.catalog.json',
-    imageStorage:'/assets/gallery/',
+    imageAlt:clean(article.imageAlt)||(approvedBrandAsset?`${titleHr} — GNK ASG`:`${titleHr} — GNK ASG Visual Index`),
+    imageCredit:clean(article.imageCredit)||(approvedBrandAsset?'GNK ASG approved brand asset':'GNK ASG Visual Index'),
+    imageRepository:approvedBrandAsset?'/assets/':'/visual-index/',
+    imageCatalog:approvedBrandAsset?null:'/data/gallery.catalog.json',
+    imageStorage:approvedBrandAsset?'/assets/':'/assets/gallery/',
     seo:{
       ...article.seo,
       titleHr:(article?.seo?.titleHr||titleHr).slice(0,75),
@@ -77,14 +85,14 @@ function decorate(article){
     },
     publicationPolicy:{
       version:AUTO_PUBLISH_VERSION,
-      cadence:'every 2 hours',
+      cadence:'every 2 hours during temporary fill',
       requiresBilingualText:true,
       requiresSources:true,
-      requiresVerifiedVisualIndexImage:true,
+      requiresApprovedImage:true,
+      usesApprovedBrandAssetOnly:approvedBrandAsset,
       firstPublishedAfterValidation:true
     }
   };
-  return updated;
 }
 
 async function replacePublished(env,article){
@@ -101,7 +109,8 @@ async function replacePublished(env,article){
 
 export async function runAutomatedPublication(env,{forceSourceRefresh=false}={}){
   const startedAt=now();
-  const result={ok:false,version:AUTO_PUBLISH_VERSION,startedAt,sourceRefresh:null,draft:null,publish:null,image:null,monitor:null};
+  const temporaryBurst=burstActive(env);
+  const result={ok:false,version:AUTO_PUBLISH_VERSION,temporaryBurst,startedAt,sourceRefresh:null,draft:null,publish:null,image:null,monitor:null};
   let sourceState=await readJson(env,'editorial:sources:last',null);
   if(forceSourceRefresh||sourceIsStale(sourceState)){
     result.sourceRefresh=await refreshBusinessSources(env);
@@ -122,10 +131,21 @@ export async function runAutomatedPublication(env,{forceSourceRefresh=false}={})
     if(!result.draft?.ok||!result.draft?.draft?.id)throw new Error(result.draft?.error||'draft_generation_failed');
     result.publish=await publishDraft(env,result.draft.draft.id);
     if(!result.publish?.ok)throw new Error(result.publish?.error||'publication_failed');
-    result.image=await rotateLatestArticleImage(env,{force:true});
-    if(!result.image?.ok)throw new Error(result.image?.error||'image_assignment_failed');
-    const approved=await readList(env,'publish:approved');
-    const latest=approved.find(item=>item?.slug===result.publish.article.slug)||approved[0];
+
+    let approved=await readList(env,'publish:approved');
+    let latest=approved.find(item=>item?.slug===result.publish.article.slug)||approved[0];
+    if(!latest)throw new Error('published_article_missing');
+
+    if(temporaryBurst){
+      latest={...latest,image:APPROVED_BURST_IMAGE,imageAlt:`${clean(latest.titleHr||latest.title)} — GNK ASG`,imageCredit:'GNK ASG approved brand asset'};
+      result.image={ok:true,mode:'approved-brand-asset-only',image:APPROVED_BURST_IMAGE};
+    }else{
+      result.image=await rotateLatestArticleImage(env,{force:true});
+      if(!result.image?.ok)throw new Error(result.image?.error||'image_assignment_failed');
+      approved=await readList(env,'publish:approved');
+      latest=approved.find(item=>item?.slug===result.publish.article.slug)||approved[0];
+    }
+
     if(!latest?.image)throw new Error('published_image_missing');
     const article=decorate(latest);
     await replacePublished(env,article);

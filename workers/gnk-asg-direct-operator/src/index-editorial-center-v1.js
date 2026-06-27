@@ -16,11 +16,16 @@ import {
   writeScheduleResult
 } from './editorial-core-v1.js';
 import {runAutomatedPublication,AUTO_PUBLISH_VERSION} from './editorial-auto-publish-v2.js';
+import {ensureEditorialBootstrap,EDITORIAL_BOOTSTRAP_VERSION} from './editorial-bootstrap-v2.js';
 
 const ROOT='/auto-editor/editorial';
 const API='/auto-editor/editorial/api/';
+const BURST_START=Date.parse('2026-06-27T20:00:00+02:00');
+const BURST_END=Date.parse('2026-06-29T23:59:59+02:00');
+const BURST_TARGET=10;
 const clean=value=>String(value??'').trim();
 async function body(request){try{return await request.json();}catch{return{};}}
+function burstState(){const current=Date.now();return{active:current>=BURST_START&&current<=BURST_END,start:new Date(BURST_START).toISOString(),end:new Date(BURST_END).toISOString(),target:BURST_TARGET,cadence:'every 2 hours',afterBurst:'monitor and manual approval'}}
 
 async function isNotFound(response){
   if(response.status===404)return true;
@@ -46,7 +51,7 @@ async function servePage(request,env){
 async function api(request,env,path){
   if(path===`${API}status`&&request.method==='GET'){
     const status=await editorialStatus(env);
-    return json({...status,autoPublishVersion:AUTO_PUBLISH_VERSION,publicationMode:'validated automatic publication every 2 hours'});
+    return json({...status,autoPublishVersion:AUTO_PUBLISH_VERSION,bootstrapVersion:EDITORIAL_BOOTSTRAP_VERSION,burst:burstState(),publicationMode:burstState().active?'validated automatic publication every 2 hours during temporary fill':'draft, monitor and manual approval'});
   }
   if(path===`${API}drafts`&&request.method==='GET')return json({ok:true,items:await listDrafts(env)});
   if(path===`${API}draft/save`&&request.method==='POST')return json(await saveDraft(env,await body(request)));
@@ -59,6 +64,10 @@ async function api(request,env,path){
     const data=await body(request);
     const result=await publishDraft(env,clean(data.id));
     return json(result,result.ok?200:400);
+  }
+  if(path===`${API}bootstrap/run`&&request.method==='POST'){
+    try{const data=await body(request);const result=await ensureEditorialBootstrap(env,{minimum:Number(data.minimum||BURST_TARGET)});return json(result,result.ok?200:500)}
+    catch(error){return json({ok:false,error:clean(error?.message||error)},500)}
   }
   if(path===`${API}auto-publish/run`&&request.method==='POST'){
     try{
@@ -84,18 +93,25 @@ function localTime(){
 
 async function scheduledRun(event,env,ctx){
   const local=localTime();
+  const burst=burstState();
   const monitorSlot=Math.floor(Date.now()/(2*60*60*1000));
-  const result={ok:true,version:EDITORIAL_VERSION,autoPublishVersion:AUTO_PUBLISH_VERSION,cron:event?.cron||'',local,startedAt:new Date().toISOString(),market:null,monitor:null,sourceRefresh:null,publication:null};
+  const result={ok:true,version:EDITORIAL_VERSION,autoPublishVersion:AUTO_PUBLISH_VERSION,bootstrapVersion:EDITORIAL_BOOTSTRAP_VERSION,cron:event?.cron||'',local,burst,startedAt:new Date().toISOString(),bootstrap:null,market:null,monitor:null,sourceRefresh:null,publication:null};
+  result.bootstrap=await ensureEditorialBootstrap(env,{minimum:BURST_TARGET});
   if((local.hour===9||local.hour===16)&&await scheduleLock(env,`editorial:lock:source:${local.date}:${local.hour}`,21600)){
     result.sourceRefresh=await refreshBusinessSources(env);
   }
   if(await scheduleLock(env,`editorial:lock:auto-publish:${monitorSlot}`,7100)){
     try{result.market=await runScheduledRefresh(env,ctx);}catch(error){result.market={ok:false,error:clean(error?.message||error)};}
-    result.publication=await runAutomatedPublication(env,{forceSourceRefresh:false});
-    result.monitor=result.publication?.monitor||await monitorPublications(env);
+    if(burst.active){
+      result.publication=await runAutomatedPublication(env,{forceSourceRefresh:false});
+      result.monitor=result.publication?.monitor||await monitorPublications(env);
+    }else{
+      result.publication={ok:true,status:'TEMPORARY_BURST_COMPLETE',automaticPublication:false,mode:'monitor_and_manual_approval',checkedAt:new Date().toISOString()};
+      result.monitor=await monitorPublications(env);
+    }
   }
   result.finishedAt=new Date().toISOString();
-  result.ok=[result.market,result.sourceRefresh,result.publication].filter(Boolean).every(item=>item.ok!==false);
+  result.ok=[result.bootstrap,result.market,result.sourceRefresh,result.publication].filter(Boolean).every(item=>item.ok!==false);
   await writeScheduleResult(env,result);
   return result;
 }

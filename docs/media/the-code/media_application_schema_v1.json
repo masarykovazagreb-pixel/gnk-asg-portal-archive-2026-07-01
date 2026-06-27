@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GNK ASG THE CODE Media Application V1",
+  "type": "object",
+  "required": ["invitation", "media_outlet", "application", "participants", "audit"],
+  "properties": {
+    "invitation": {
+      "type": "object",
+      "required": ["invitation_id", "code_hash", "status", "issued_at", "template_version"],
+      "properties": {
+        "invitation_id": {"type": "string", "format": "uuid"},
+        "code_hash": {"type": "string"},
+        "status": {"enum": ["draft", "issued", "sent", "delivered", "opened", "activated", "expired", "revoked"]},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": ["string", "null"], "format": "date-time"},
+        "template_version": {"type": "string"},
+        "language": {"type": "string"},
+        "assigned_media_desk": {"type": ["string", "null"]}
+      }
+    },
+    "media_outlet": {
+      "type": "object",
+      "required": ["media_outlet_id", "name", "country", "official_domain", "official_email"],
+      "properties": {
+        "media_outlet_id": {"type": "string", "format": "uuid"},
+        "name": {"type": "string"},
+        "country": {"type": "string"},
+        "official_domain": {"type": "string"},
+        "official_email": {"type": "string", "format": "email"},
+        "website": {"type": "string"},
+        "responsible_editor": {"type": "object"}
+      }
+    },
+    "application": {
+      "type": "object",
+      "required": ["application_id", "status", "max_participants"],
+      "properties": {
+        "application_id": {"type": "string", "format": "uuid"},
+        "status": {"enum": ["not_started", "in_progress", "submitted", "needs_information", "under_review", "approved", "waitlisted", "rejected", "withdrawn"]},
+        "max_participants": {"const": 3},
+        "travel_option": {"enum": ["A", "B", null]},
+        "interview_interests": {"type": "array", "items": {"type": "string"}},
+        "submitted_at": {"type": ["string", "null"], "format": "date-time"},
+        "decision_by": {"type": ["string", "null"]},
+        "decision_at": {"type": ["string", "null"], "format": "date-time"},
+        "decision_reason": {"type": ["string", "null"]}
+      }
+    },
+    "participants": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["participant_id", "full_name", "role", "official_email", "status"],
+        "properties": {
+          "participant_id": {"type": "string", "format": "uuid"},
+          "full_name": {"type": "string"},
+          "role": {"type": "string"},
+          "official_email": {"type": "string", "format": "email"},
+          "mobile": {"type": "string"},
+          "status": {"enum": ["proposed", "identity_pending", "verified", "approved", "rejected"]}
+        }
+      }
+    },
+    "travel": {
+      "type": "object",
+      "properties": {
+        "status": {"enum": ["not_submitted", "pending_approval", "approved", "booked", "changed", "cancelled"]},
+        "arrival_preference": {"type": ["string", "null"]},
+        "departure_preference": {"type": ["string", "null"]},
+        "quote_document_id": {"type": ["string", "null"]},
+        "special_needs": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "audit": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["event_id", "occurred_at", "actor_type", "action", "record_hash"],
+        "properties": {
+          "event_id": {"type": "string", "format": "uuid"},
+          "occurred_at": {"type": "string", "format": "date-time"},
+          "actor_type": {"enum": ["system", "admin", "newsroom_user"]},
+          "actor_id": {"type": ["string", "null"]},
+          "action": {"type": "string"},
+          "ip": {"type": ["string", "null"]},
+          "user_agent": {"type": ["string", "null"]},
+          "session_id": {"type": ["string", "null"]},
+          "record_hash": {"type": "string"}
+        }
+      }
+    }
+  }
+}

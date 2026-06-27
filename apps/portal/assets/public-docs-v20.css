@@ -1,0 +1,33 @@
+/* GNK ASG Public Documents V20 — PDF Centre and Legal */
+:root{--doc-paper:#fffdf8;--doc-paper-2:#f2ead9;--doc-ink:#17130c;--doc-muted:#6f685c;--doc-gold:#b8892f;--doc-gold-hi:#edd58f;--doc-line:rgba(184,137,47,.30);--doc-shadow:0 22px 64px rgba(50,35,8,.12)}
+body.gnk-docs-v20{margin:0!important;background:radial-gradient(circle at 82% 0,rgba(218,181,91,.14),transparent 34%),linear-gradient(180deg,var(--doc-paper),var(--doc-paper-2))!important;color:var(--doc-ink)!important;font-family:Inter,"Segoe UI",Arial,sans-serif!important}
+body.gnk-docs-v20 main{width:min(1180px,calc(100% - 28px))!important;max-width:none!important;margin:0 auto!important;padding:28px 0 92px!important}
+body.gnk-docs-v20 main>nav{display:none!important}
+body.gnk-docs-v20 :where(h1,h2,h3,strong){color:var(--doc-ink)!important}
+body.gnk-docs-v20 :where(p,li,.notice){color:var(--doc-muted)!important}
+body.gnk-docs-v20 a{color:inherit}
+body.gnk-docs-downloads .wrap{width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+body.gnk-docs-downloads .hero,body.gnk-docs-downloads .section{border:1px solid var(--doc-line)!important;border-radius:24px!important;background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(246,239,223,.96))!important;box-shadow:var(--doc-shadow)!important;color:var(--doc-ink)!important}
+body.gnk-docs-downloads .hero{padding:clamp(28px,5vw,54px)!important;overflow:hidden!important}
+body.gnk-docs-downloads .hero h1{color:var(--doc-ink)!important;font:500 clamp(44px,6vw,76px)/.95 Georgia,"Times New Roman",serif!important;letter-spacing:-.055em!important}
+body.gnk-docs-downloads h1 span,body.gnk-docs-downloads h2 span{color:#8e6724!important}
+body.gnk-docs-downloads .eyebrow,body.gnk-docs-downloads .tag{color:#8e6724!important}
+body.gnk-docs-downloads .brand img{max-height:190px!important;filter:drop-shadow(0 14px 24px rgba(70,48,8,.16))!important}
+body.gnk-docs-downloads .btn{border-color:var(--doc-line)!important;background:rgba(255,253,248,.82)!important;color:var(--doc-ink)!important}
+body.gnk-docs-downloads .btn.gold{background:linear-gradient(135deg,#c79534,#efd78a)!important;color:#171108!important;border-color:#bd8d34!important}
+body.gnk-docs-downloads .section{margin-top:18px!important;padding:26px!important}
+body.gnk-docs-downloads .head h2{font:600 clamp(28px,4vw,43px)/1 Georgia,"Times New Roman",serif!important;color:var(--doc-ink)!important}
+body.gnk-docs-downloads .card{border:1px solid var(--doc-line)!important;border-radius:18px!important;background:linear-gradient(145deg,#fff,#f4ead2)!important;color:var(--doc-ink)!important;box-shadow:0 16px 40px rgba(50,35,8,.09)!important}
+body.gnk-docs-downloads .card:hover{border-color:rgba(184,137,47,.58)!important;box-shadow:0 22px 48px rgba(50,35,8,.15)!important}
+body.gnk-docs-downloads .card:after{color:rgba(184,137,47,.08)!important}
+body.gnk-docs-downloads .action{color:#7f5a17!important}
+body.gnk-docs-downloads .notice{border-left-color:var(--doc-gold)!important;background:rgba(184,137,47,.07)!important}
+body.gnk-docs-legal .card{border:1px solid var(--doc-line)!important;border-radius:20px!important;background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(246,239,223,.96))!important;box-shadow:var(--doc-shadow)!important;padding:24px!important;margin-bottom:16px!important;color:var(--doc-ink)!important}
+body.gnk-docs-legal .card:first-of-type{position:relative;overflow:hidden;padding:clamp(30px,5vw,54px)!important}
+body.gnk-docs-legal .card:first-of-type:after{content:"LEGAL";position:absolute;right:20px;bottom:-18px;font:900 clamp(58px,10vw,124px)/1 Inter,Arial,sans-serif;color:rgba(184,137,47,.055);letter-spacing:-.07em;pointer-events:none}
+body.gnk-docs-legal h1{margin:0 0 16px!important;font:500 clamp(43px,6vw,74px)/.95 Georgia,"Times New Roman",serif!important;letter-spacing:-.055em!important}
+body.gnk-docs-legal h2{margin:0 0 14px!important;font:600 clamp(24px,3vw,34px)/1.05 Georgia,"Times New Roman",serif!important}
+body.gnk-docs-legal p,body.gnk-docs-legal li{font-size:14px!important;line-height:1.75!important}
+body.gnk-docs-legal ul{padding-left:22px!important}
+body.gnk-docs-legal .gnk-asg-ai-hidden-duplicate{display:none!important}
+@media(max-width:760px){body.gnk-docs-v20 main{width:calc(100% - 14px)!important;padding-top:16px!important}body.gnk-docs-downloads .hero,body.gnk-docs-downloads .section,body.gnk-docs-legal .card{border-radius:17px!important}body.gnk-docs-downloads .section{padding:18px!important}}
