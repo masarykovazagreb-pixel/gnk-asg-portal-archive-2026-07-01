@@ -1,0 +1,84 @@
+name: Deploy V21 Index Preview
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-v21-index-preview.yml'
+      - 'apps/portal/assets/public-shell-v21.js'
+      - 'apps/portal/assets/public-unified-v21.css'
+      - 'apps/portal/assets/public-index-v21.css'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.v21-index-preview.toml'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-v21-index-preview.yml'
+      - 'apps/portal/assets/public-shell-v21.js'
+      - 'apps/portal/assets/public-unified-v21.css'
+      - 'apps/portal/assets/public-index-v21.css'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.v21-index-preview.toml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-v21-index-preview
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate isolated V21 index
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/public-shell-v21.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
+          test -s apps/portal/assets/public-unified-v21.css
+          test -s apps/portal/assets/public-index-v21.css
+          grep -q 'GNK_ASG_PUBLIC_SHELL_V21_20260627' apps/portal/assets/public-shell-v21.js
+          grep -q 'EXECUTIVE_EDITORIAL_V21' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
+          grep -q 'public-index-v21.css' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
+          grep -q 'index-admin-hub-v26-clean-index-v21-preview.js' workers/gnk-asg-direct-operator/wrangler.v21-index-preview.toml
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.v21-index-preview.toml --name gnk-asg-direct-operator
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Deploy isolated V21 index
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.v21-index-preview.toml --name gnk-asg-direct-operator
+      - name: Verify HR and EN index
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'JS'
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          for(let attempt=1;attempt<=30;attempt++){
+            const read=async path=>{const r=await fetch(`https://gnk-asg.hr${path}?cb=${Date.now()}-${attempt}`,{headers:{'cache-control':'no-cache'}});return{r,t:await r.text()}};
+            const [hr,en]=await Promise.all([read('/'),read('/en/')]);
+            const ok=[hr,en].every(x=>x.r.status===200&&x.t.includes('public-shell-v21.js')&&x.t.includes('public-index-v21.css')&&!x.t.includes('<nav class="menu">'))&&hr.r.headers.get('x-gnk-asg-index-design')==='EXECUTIVE_EDITORIAL_V21'&&en.r.headers.get('x-gnk-asg-index-design')==='EXECUTIVE_EDITORIAL_V21';
+            console.log(JSON.stringify({attempt,ok,hr:hr.r.status,en:en.r.status,hrDesign:hr.r.headers.get('x-gnk-asg-index-design')}));
+            if(ok)process.exit(0);
+            await sleep(10000);
+          }
+          process.exit(1);
+          JS
