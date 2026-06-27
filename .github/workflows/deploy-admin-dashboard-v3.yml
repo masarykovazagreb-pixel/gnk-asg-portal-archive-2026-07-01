@@ -59,6 +59,7 @@ jobs:
           grep -q 'admin-module-loader-v3.js' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           grep -q "frame-ancestors 'self'" workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           grep -q 'ALL_MODULES_WITH_10_SECOND_TIMEOUT' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
+          grep -q '50_PERCENT_V13' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           grep -q 'width:50%' apps/portal/assets/index-hero-scale-v13.css
           grep -q 'Mail Studio modul' apps/portal/assets/admin-center-health-v1.js
           grep -q 'Istek vremena nakon 10 sekundi' apps/portal/assets/admin-center-health-v1.js
@@ -81,11 +82,16 @@ jobs:
             AUDIT=$(curl -fsS "https://gnk-asg.hr/assets/admin-center-health-v1.js?cb=${GITHUB_RUN_ID}-${n}" || true)
             SCALE=$(curl -fsS "https://gnk-asg.hr/assets/index-hero-scale-v13.css?cb=${GITHUB_RUN_ID}-${n}" || true)
             STATUS=$(curl -fsS "https://gnk-asg.hr/data/deployment-status.json?cb=${GITHUB_RUN_ID}-${n}" || true)
+            INDEX_HR=$(curl -fsS "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            INDEX_EN=$(curl -fsS "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}" || true)
             if printf '%s' "$LOADER" | grep -q 'ADMIN_MODULE_LOADER_V3' \
               && printf '%s' "$AUDIT" | grep -q 'Mail Studio modul' \
               && printf '%s' "$SCALE" | grep -q 'width:50%' \
               && printf '%s' "$STATUS" | grep -q 'index-admin-hub-v27-news-status.js' \
-              && printf '%s' "$STATUS" | grep -q 'ALL_MODULES_WITH_10_SECOND_TIMEOUT'; then
+              && printf '%s' "$STATUS" | grep -q 'ALL_MODULES_WITH_10_SECOND_TIMEOUT' \
+              && printf '%s' "$STATUS" | grep -q '50_PERCENT_V13' \
+              && printf '%s' "$INDEX_HR" | grep -q 'index-hero-scale-v13.css' \
+              && printf '%s' "$INDEX_EN" | grep -q 'index-hero-scale-v13.css'; then
                 exit 0
             fi
             sleep 10
