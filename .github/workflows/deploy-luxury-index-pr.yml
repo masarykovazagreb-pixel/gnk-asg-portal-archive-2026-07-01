@@ -1,4 +1,4 @@
-name: Deploy Public Menu AI V10
+name: Deploy Public Menu AI Markets V11
 
 on:
   push:
@@ -10,10 +10,13 @@ on:
       - 'apps/portal/assets/public-menu-v10.js'
       - 'apps/portal/assets/assistant-v10.css'
       - 'apps/portal/assets/assistant-v10.js'
+      - 'apps/portal/assets/markets-v11.css'
+      - 'apps/portal/assets/markets-v11.js'
       - 'apps/portal/assistant/index.html'
       - 'apps/portal/en/assistant/index.html'
       - 'apps/portal/data/assistant-knowledge.json'
       - 'workers/gnk-asg-direct-operator/src/public-ai-v10.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   pull_request:
     branches: [main]
@@ -24,10 +27,13 @@ on:
       - 'apps/portal/assets/public-menu-v10.js'
       - 'apps/portal/assets/assistant-v10.css'
       - 'apps/portal/assets/assistant-v10.js'
+      - 'apps/portal/assets/markets-v11.css'
+      - 'apps/portal/assets/markets-v11.js'
       - 'apps/portal/assistant/index.html'
       - 'apps/portal/en/assistant/index.html'
       - 'apps/portal/data/assistant-knowledge.json'
       - 'workers/gnk-asg-direct-operator/src/public-ai-v10.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   workflow_dispatch:
 
@@ -35,7 +41,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-public-menu-ai-v10
+  group: gnk-asg-public-v11
   cancel-in-progress: true
 
 jobs:
@@ -47,24 +53,27 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate public menu and AI V10
+      - name: Validate public V11
         shell: bash
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/public-menu-v10.js
           node --check apps/portal/assets/assistant-v10.js
+          node --check apps/portal/assets/markets-v11.js
           node --check workers/gnk-asg-direct-operator/src/public-ai-v10.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           test -s apps/portal/assets/public-menu-v10.css
           test -s apps/portal/assets/assistant-v10.css
+          test -s apps/portal/assets/markets-v11.css
           grep -q 'GNK ASG AI' apps/portal/assistant/index.html
           grep -q 'GNK ASG AI' apps/portal/en/assistant/index.html
           grep -q 'Cloudflare Workers AI' apps/portal/assistant/index.html
-          grep -q 'public-menu-v10.js' apps/portal/assistant/index.html
-          grep -q 'assistant-v10.js' apps/portal/en/assistant/index.html
           grep -q 'GNK_ASG_PUBLIC_AI_V10_20260627' workers/gnk-asg-direct-operator/src/public-ai-v10.js
-          grep -q "PUBLIC_AI_PATH" workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q 'PUBLIC_AI_PATH' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
+          grep -q 'GNK_ASG_PUBLIC_V11_MENU_AI_MARKETS_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           grep -q "'/vijesti/'" apps/portal/assets/public-menu-v10.js
+          grep -q 'gnk-markets-v11' apps/portal/assets/markets-v11.js
           grep -q 'grid-template-columns:repeat(3' apps/portal/assets/index-finance-v9.css
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
@@ -74,17 +83,19 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify public menu and AI V10
+      - name: Verify public V11
         shell: bash
         run: |
           set -euo pipefail
           for n in $(seq 1 18); do
             HR_HEADERS=$(mktemp)
             AI_HEADERS=$(mktemp)
+            MK_HEADERS=$(mktemp)
             HR=$(curl -fsS -D "$HR_HEADERS" "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}" || true)
             AI_HR=$(curl -fsS "https://gnk-asg.hr/assistant/?cb=${GITHUB_RUN_ID}-${n}" || true)
             AI_EN=$(curl -fsS "https://gnk-asg.hr/en/assistant/?cb=${GITHUB_RUN_ID}-${n}" || true)
             NEWS=$(curl -fsS "https://gnk-asg.hr/vijesti/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            MARKETS=$(curl -fsS -D "$MK_HEADERS" "https://gnk-asg.hr/trzista/?cb=${GITHUB_RUN_ID}-${n}" || true)
             API=$(curl -fsS -D "$AI_HEADERS" -H 'content-type: application/json' -X POST --data '{"message":"Gdje su financijski pokazatelji?","language":"hr"}' "https://gnk-asg.hr/api/public-ai" || true)
             if printf '%s' "$HR" | grep -q 'public-menu-v10.css' \
               && printf '%s' "$HR" | grep -q 'index-finance-v9.css' \
@@ -92,10 +103,13 @@ jobs:
               && printf '%s' "$AI_HR" | grep -q 'Cloudflare Workers AI' \
               && printf '%s' "$AI_EN" | grep -q 'public intelligent assistant' \
               && printf '%s' "$NEWS" | grep -q 'public-menu-v10.js' \
+              && printf '%s' "$MARKETS" | grep -q 'markets-v11.css' \
+              && printf '%s' "$MARKETS" | grep -q 'markets-v11.js' \
               && printf '%s' "$API" | grep -q '"ok":true' \
               && printf '%s' "$API" | grep -q '"answer"' \
               && grep -qi 'x-gnk-asg-public-menu: UNIFIED_PUBLIC_MENU_V10' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-public-ai: GNK_ASG_PUBLIC_AI_V10_20260627' "$AI_HEADERS"; then
+              && grep -qi 'x-gnk-asg-public-ai: GNK_ASG_PUBLIC_AI_V10_20260627' "$AI_HEADERS" \
+              && grep -qi 'x-gnk-asg-markets-layout: UNIFIED_MARKETS_V11' "$MK_HEADERS"; then
                 exit 0
             fi
             sleep 10
