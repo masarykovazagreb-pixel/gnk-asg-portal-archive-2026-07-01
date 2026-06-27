@@ -12,8 +12,8 @@ const SOURCE_MIX={global:13,regional:9,croatian:4};
 const MEDIA_UI='/media-command-center';
 const NOTIFICATION_STYLE='<link rel="stylesheet" href="/assets/media-notifications-v1.css?v=20260627">';
 const NOTIFICATION_SCRIPT='<script defer src="/assets/media-notifications-v1.js?v=20260627"></script>';
-const CODE_SHOWCASE_STYLE='<link rel="stylesheet" href="/assets/the-code-index-slot.css?v=20260627-static-v2">';
-const CODE_SHOWCASE_VERSION='GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V2_20260627';
+const CODE_SHOWCASE_STYLE='<link rel="stylesheet" href="/assets/the-code-index-slot.css?v=20260627-static-v1">';
+const CODE_SHOWCASE_VERSION='GNK_ASG_INDEX_CODE_SHOWCASE_STATIC_V1_20260627';
 let showcaseAssetsPromise=null;
 
 function normalize(path){return path.replace(/\/+$/,'')||'/';}
@@ -49,7 +49,7 @@ function showcaseMarkup(images,english){
     ?'GNK DINAMO Ltd. Group New York activation on October 7, 2026'
     :'GNK DINAMO Ltd. Group aktivacija u New Yorku 7. listopada 2026.';
   const visualLabel=english?'Two campaign visuals rotating every ten seconds':'Dva kampanjska vizuala koji se izmjenjuju svakih deset sekundi';
-  return `<section class="section gnk-code-slot" id="the-code-index" aria-label="GNK DINAMO Ltd. — THE CODE and campaign visuals" data-gnk-code-showcase="${CODE_SHOWCASE_VERSION}"><div class="gnk-code-slot__grid"><article class="gnk-code-slot__visual" aria-label="${visualLabel}"><div class="gnk-code-slot__slides"><figure class="gnk-code-slot__slide"><img src="data:image/webp;base64,${images[0]}" alt="${altOne}" width="1080" height="1080" loading="eager" decoding="async"></figure><figure class="gnk-code-slot__slide"><img src="data:image/webp;base64,${images[1]}" alt="${altTwo}" width="1080" height="1080" loading="eager" decoding="async"></figure></div></article><aside class="gnk-code-slot__code" aria-label="THE CODE interactive presentation"><iframe title="THE CODE — GNK DINAMO Ltd." src="/the-code/?v=20260627-static-v2" loading="eager" sandbox="allow-scripts" allow="autoplay" scrolling="no"></iframe><span class="gnk-code-slot__badge">THE CODE · HTML</span></aside></div></section>`;
+  return `<section class="section gnk-code-slot" id="the-code-index" aria-label="GNK DINAMO Ltd. — THE CODE and campaign visuals" data-gnk-code-showcase="${CODE_SHOWCASE_VERSION}"><div class="gnk-code-slot__grid"><article class="gnk-code-slot__visual" aria-label="${visualLabel}"><div class="gnk-code-slot__slides"><figure class="gnk-code-slot__slide"><img src="data:image/webp;base64,${images[0]}" alt="${altOne}" width="1080" height="1080" loading="eager" decoding="async"></figure><figure class="gnk-code-slot__slide"><img src="data:image/webp;base64,${images[1]}" alt="${altTwo}" width="1080" height="1080" loading="eager" decoding="async"></figure></div></article><aside class="gnk-code-slot__code" aria-label="THE CODE interactive presentation"><iframe title="THE CODE — GNK DINAMO Ltd." src="/the-code/?v=20260627-static-v1" loading="eager" sandbox="allow-scripts" allow="autoplay" scrolling="no"></iframe><span class="gnk-code-slot__badge">THE CODE · HTML</span></aside></div></section>`;
 }
 
 async function correctJson(response){
