@@ -1,0 +1,36 @@
+{
+  "version": "GNK_ASG_OPERATIONS_SUITE_V1_20260627",
+  "status": "LIVE_VERIFIED",
+  "verifiedAt": "2026-06-27T10:24:00Z",
+  "mergeCommit": "d1cd92d331bf4ef2a4b97d7179cc8614ec9b7932",
+  "deploymentWorkflowCommit": "e393d997b165a8fd2fafc142681cec87f9967e0c",
+  "liveVerification": {
+    "pullRequest": 154,
+    "workflowRunId": 28286373674,
+    "jobId": 83810919752,
+    "conclusion": "success"
+  },
+  "verifiedSurfaces": [
+    "/media-kit-2026/",
+    "/data/media-kit-manifest-v1.json",
+    "/assets/media-kit-v1.js",
+    "/assets/media-kit-v1.css",
+    "/assets/admin-operations-v1.js",
+    "/assets/admin-operations-v1.css",
+    "/assets/admin-center-health-v1.js",
+    "/api/media-application/config",
+    "/"
+  ],
+  "verifiedContracts": {
+    "mediaKits": 3,
+    "languages": ["hr", "en"],
+    "humanApprovalRequired": true,
+    "ticketPurchaseBeforeWrittenApproval": false,
+    "executiveOperationsCockpit": true,
+    "adminLoader": true,
+    "indexMapPreserved": true,
+    "indexFilmPreserved": true,
+    "productionOutreachLocked": true
+  },
+  "rollbackCheckpoint": "checkpoint-ops-20260627"
+}
