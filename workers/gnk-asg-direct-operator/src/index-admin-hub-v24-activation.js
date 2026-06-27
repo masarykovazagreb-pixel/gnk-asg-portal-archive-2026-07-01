@@ -5,6 +5,7 @@ import {patchOperations,VERSION as OPERATIONS_VERSION} from './operations-wrappe
 export default {
   async fetch(request,env,ctx){
     const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+    if(path==='/media-kit')return Response.redirect(new URL('/media-kit-2026/',request.url),308);
     let response=await app.fetch(request,env,ctx);
     response=await patchIndexActivation(response,path,request,env);
     response=patchOperations(response,path);
