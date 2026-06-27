@@ -1,6 +1,14 @@
 {
-  "version": "GNK_ASG_INDEX_MEDIA_V2_20260625",
-  "updatedAt": "2026-06-25T00:00:00+02:00",
+  "version": "GNK_ASG_INDEX_MEDIA_V3_20260627_APPROVAL_REQUIRED",
+  "updatedAt": "2026-06-27T15:00:00+02:00",
+  "visualApproval": {
+    "required": true,
+    "approved": false,
+    "approvedBy": "",
+    "approvedAt": "",
+    "assetId": "",
+    "rule": "Homepage media may be enabled only after explicit approval of the exact asset and placement."
+  },
   "clock": {
     "enabled": false,
     "timeZone": "Europe/Zagreb",
@@ -20,12 +28,15 @@
   },
   "media": {
     "enabled": false,
+    "approved": false,
+    "assetId": "",
+    "placementId": "HOME-FEATURED-02",
     "type": "video",
     "titleHr": "GNK ASG video poruka",
     "titleEn": "GNK ASG video message",
     "summaryHr": "Sadržaj se učitava tek nakon što ga posjetitelj pokrene.",
     "summaryEn": "The content is loaded only after the visitor starts it.",
-    "posterUrl": "/assets/index-media-poster.svg",
+    "posterUrl": "",
     "sourceUrl": "",
     "previewUrl": "",
     "downloadUrl": "",
