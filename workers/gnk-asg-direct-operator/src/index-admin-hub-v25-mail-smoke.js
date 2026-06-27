@@ -6,7 +6,7 @@ import {
   VERSION as MAIL_SMOKE_VERSION
 } from './mail-delivery-smoke-v1.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V25_MAIL_SMOKE_20260627_R2';
+export const VERSION='GNK_ASG_ADMIN_HUB_V25_MAIL_SMOKE_20260627_R3';
 const DEPLOYMENT_STATUS='/data/deployment-status.json';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
@@ -43,6 +43,7 @@ export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
     if(path===MAIL_SMOKE_PATH){
+      if(request.method==='GET')await runMailDeliverySmoke(env).catch(()=>null);
       const response=await handleMailDeliverySmoke(request,env);
       if(response)return stamp(response);
     }
