@@ -7,6 +7,66 @@ preview_urls = true
 routes = [
   { pattern = "gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
+
+  { pattern = "gnk-asg.hr/en", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/en/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/en", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/en/*", zone_name = "gnk-asg.hr" },
+
+  { pattern = "gnk-asg.hr/publications", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/publications/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/publications", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/publications/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/objave", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/objave/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/objave", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/objave/*", zone_name = "gnk-asg.hr" },
+
+  { pattern = "gnk-asg.hr/contact", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/contact/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/contact", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/contact/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/assistant", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/assistant/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/assistant", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/assistant/*", zone_name = "gnk-asg.hr" },
+
+  { pattern = "gnk-asg.hr/trzista", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/trzista/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/trzista", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/trzista/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/markets", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/markets/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/markets", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/markets/*", zone_name = "gnk-asg.hr" },
+
+  { pattern = "gnk-asg.hr/visual-index", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/visual-index/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/visual-index", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/visual-index/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/downloads", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/downloads/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/downloads", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/downloads/*", zone_name = "gnk-asg.hr" },
+
+  { pattern = "gnk-asg.hr/media-kit", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/media-kit/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/media-kit", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/media-kit/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/media-application", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/media-application/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/media-application", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/media-application/*", zone_name = "gnk-asg.hr" },
+
+  { pattern = "gnk-asg.hr/legal", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/legal/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/legal", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/legal/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/the-code", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/the-code/*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/the-code", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/the-code/*", zone_name = "gnk-asg.hr" },
+
   { pattern = "gnk-asg.hr/news", zone_name = "gnk-asg.hr" },
   { pattern = "gnk-asg.hr/news/*", zone_name = "gnk-asg.hr" },
   { pattern = "gnk-asg.hr/vijesti", zone_name = "gnk-asg.hr" },
@@ -81,3 +141,4 @@ binding = "AI"
 
 # Admin Center v1 canonical deploy 2026-06-27
 # News status wrapper v27 2026-06-27
+# Canonical public route ownership v17 2026-06-27
