@@ -56,6 +56,7 @@ jobs:
           grep -q '@media print' apps/portal/assets/media-kit-v1.css
           grep -q 'admin-operations-v1.js' apps/portal/assets/admin-center-health-v1.js
       - name: Protect public index and delivery lock
+        if: github.event_name == 'pull_request'
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
