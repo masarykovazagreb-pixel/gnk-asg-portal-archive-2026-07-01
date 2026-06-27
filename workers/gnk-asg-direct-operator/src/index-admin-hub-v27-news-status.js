@@ -1,6 +1,6 @@
 import app from './index-admin-hub-v26-clean-index.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260627_R5_RESILIENT_LOADER';
+export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260627_R6_LOCKED_INDEX_MENU';
 const ENTRYPOINT='src/index-admin-hub-v27-news-status.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v26-clean-index.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626';
@@ -17,6 +17,11 @@ function sameOriginCsp(value){
   directives.push("frame-ancestors 'self'");
   return directives.join('; ');
 }
+function lockedIndexMenu(english){
+  return english
+    ? '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financials">Financials</a><a href="#network">Network</a><a href="/news/">News</a><a href="/publications/">Publications</a><a href="/markets/">Markets</a><a href="/visual-index/">Gallery</a><a href="/en/assistant/">AI</a><a href="/operator-dashboard/">Admin</a><a href="/contact/">Contact</a><a class="lang" href="/">HR</a></nav>'
+    : '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/vijesti/">Vijesti</a><a href="/objave/">Objave</a><a href="/trzista/">Tržišta</a><a href="/visual-index/">Galerija</a><a href="/assistant/">AI</a><a href="/operator-dashboard/">Admin</a><a href="/contact/">Kontakt</a><a class="lang" href="/en/">EN</a></nav>';
+}
 async function patchStatus(response,path){
   if(!STATUS_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   try{
@@ -24,7 +29,7 @@ async function patchStatus(response,path){
     const headers=noStore(new Headers(response.headers));
     headers.set('x-gnk-asg-active-entrypoint',ENTRYPOINT);
     headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);
-    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,newsRuntime:NEWS_RUNTIME,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},indexHeroScale:'50_PERCENT_V13',adminEmbed:'SAME_ORIGIN_ALLOWED',adminLoader:'RESILIENT_ROUTE_VALIDATION_V4',adminAudit:'ALL_MODULES_WITH_10_SECOND_TIMEOUT',statusWrapper:VERSION,checkedAt:new Date().toISOString()};
+    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,newsRuntime:NEWS_RUNTIME,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},indexHeroScale:'50_PERCENT_V13',indexMenu:'LOCKED_INDEX_MENU',adminEmbed:'SAME_ORIGIN_ALLOWED',adminLoader:'RESILIENT_ROUTE_VALIDATION_V4',adminAudit:'ALL_MODULES_WITH_10_SECOND_TIMEOUT',statusWrapper:VERSION,checkedAt:new Date().toISOString()};
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response}
 }
@@ -35,7 +40,10 @@ async function patchIndexHtml(response,path,request){
   headers.delete('content-encoding');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-index-hero-scale','50_PERCENT_V13');
+  headers.set('x-gnk-asg-index-menu','LOCKED_INDEX_MENU');
+  headers.set('x-gnk-asg-gallery-primary-menu','INCLUDED');
   let html=await response.text();
+  html=html.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,lockedIndexMenu(path==='/en'));
   if(!html.includes('index-hero-scale-v13.css'))html=html.replace('</head>',`${HERO_SCALE_STYLE}</head>`);
   html=html.replace(/index-code-cleanup-v8\.js\?v=[^"']+/i,'index-code-cleanup-v8.js?v=20260627-v13');
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
