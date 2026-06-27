@@ -1,0 +1,8 @@
+Deploy and verify commit 6002d9361fc55a8437ce1129ce7371abd1403bfd.
+Scope: GNK ASG public news feed compatibility aliases only.
+Verify:
+- GET /data/news-feed.json returns the same live payload as /data/news.json with x-gnk-asg-news-alias=news-feed-to-news-json.
+- GET /data/news_archive.json returns the same archive payload as /data/news-archive.json with x-gnk-asg-news-alias=news-archive-underscore-to-hyphen.
+- /vijesti and /news still load business-news-v16.js.
+- /data/news-automation-status.json still reports 09:00/16:00/21:00 Europe/Zagreb, active limit 100, archive prune 1000 retain/delete 500, fallback images disabled.
+Do not change public index, DNS, secrets, mail settings, or unrelated modules.
