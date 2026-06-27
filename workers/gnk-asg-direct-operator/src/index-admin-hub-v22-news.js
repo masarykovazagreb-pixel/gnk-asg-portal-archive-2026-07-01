@@ -6,7 +6,7 @@ import {
   API_PREFIX as MEDIA_APPLICATION_API
 } from './media-application-portal-v1.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V22_NEWS_V21_PUBLIC_CODE_LABEL_20260627';
+const VERSION='GNK_ASG_ADMIN_HUB_V22_NEWS_V22_PUBLIC_NEWS_RUNTIME_20260627';
 const NEWS_SCHEDULE=['09:00','16:00','21:00'];
 const SOURCE_MIX={global:13,regional:9,croatian:4};
 const MEDIA_UI='/media-command-center';
@@ -57,14 +57,30 @@ async function correctJson(response){
   }catch{return response;}
 }
 
-async function patchNewsHtml(response){
+function ensureTag(body,tag,closeTag){return body.includes(tag)?body:body.replace(closeTag,`${tag}${closeTag}`);}
+
+async function patchNewsHtml(response,path){
   if(!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
   const headers=new Headers(response.headers);
   headers.delete('content-length');headers.delete('content-encoding');
+  headers.set('content-type','text/html; charset=utf-8');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-admin-hub-v22',VERSION);
+  headers.set('x-gnk-asg-news-runtime','PUBLIC_NEWS_V22_VERIFIED_100_ARCHIVE_500');
   let body=await response.text();
-  body=body.replace(/business-news(?:-v\d+)?\.js\?v=[^"']+/g,'business-news-v16.js?v=20260626-news-v16');
+  const english=path==='/news';
+  const title=english?'Verified business news | GNK ASG':'Provjerene poslovne vijesti | GNK ASG';
+  const heading=english?'Verified business news':'Provjerene poslovne vijesti';
+  const lead=english?'Up to 100 verified business, technology, market and economic news items with source link, image and summary. The system refreshes at 09:00, 16:00 and 21:00 Europe/Zagreb.':'Do 100 provjerenih poslovnih, tehnoloških, tržišnih i gospodarskih vijesti sa slikom, sažetkom, izvorom i provjerenom poveznicom. Sustav se osvježava u 09:00, 16:00 i 21:00 po vremenu Europe/Zagreb.';
+  const loading=english?'Loading verified news…':'Učitavanje provjerenih vijesti…';
+  body=body.replace(/<title>[\s\S]*?<\/title>/i,`<title>${title}</title>`);
+  body=body.replace(/<meta name="description" content="[^"]*">/i,`<meta name="description" content="${lead}">`);
+  body=body.replace(/<h1[^>]*>[\s\S]*?<\/h1>/i,`<h1>${heading}</h1>`);
+  body=body.replace(/<p>Aktualni vanjski poslovni[\s\S]*?<\/p>/i,`<p>${lead}</p>`);
+  body=body.replace(/Učitavanje(?: poslovnih vijesti| provjerenih vijesti|…|\.\.\.)?/g,loading);
+  body=body.replace(/business-news(?:-v\d+)?\.js\?v=[^"']+/g,'business-news-v16.js?v=20260627-news-v22');
+  if(!/business-news-v16\.js/i.test(body))body=body.replace('</body>','<script defer src="/assets/business-news-v16.js?v=20260627-news-v22"></script></body>');
+  body=ensureTag(body,'<link rel="stylesheet" href="/assets/business-news.css?v=20260627-news-v22">','</head>');
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -108,7 +124,7 @@ export default{
     }
     let response=await app.fetch(request,env,ctx);
     if(request.method==='GET'&&['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json'].includes(path))response=await correctJson(response);
-    if(request.method==='GET'&&['/vijesti','/news'].includes(path))response=await patchNewsHtml(response);
+    if(request.method==='GET'&&['/vijesti','/news'].includes(path))response=await patchNewsHtml(response,path);
     response=await patchIndexExistingFields(response,path,request,env);
     response=await patchMediaHtml(response,path);
     const headers=new Headers(response.headers);
