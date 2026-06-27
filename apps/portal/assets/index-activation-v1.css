@@ -1,0 +1,283 @@
+/* GNK ASG — New York 2026 activation hero. Isolated from the legacy index layout. */
+.gnk-activation{
+  --ga-gold:#d6ad4f;
+  --ga-gold-bright:#f0d37b;
+  --ga-ink:#030711;
+  --ga-panel:#07101d;
+  --ga-line:rgba(214,173,79,.26);
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  margin:14px 0 clamp(26px,4vw,52px);
+  border:1px solid var(--ga-line);
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 12% 10%,rgba(38,91,158,.28),transparent 33%),
+    radial-gradient(circle at 86% 16%,rgba(214,173,79,.17),transparent 28%),
+    linear-gradient(145deg,#07101d 0%,#02050b 55%,#050912 100%);
+  box-shadow:0 34px 90px rgba(0,0,0,.46),inset 0 0 0 1px rgba(255,255,255,.018);
+}
+.gnk-activation,.gnk-activation *{box-sizing:border-box}
+.gnk-activation::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  opacity:.38;
+  background-image:
+    linear-gradient(rgba(214,173,79,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(214,173,79,.055) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:linear-gradient(180deg,#000,transparent 72%);
+}
+.gnk-activation::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:560px;
+  height:560px;
+  right:-250px;
+  top:-300px;
+  border:1px solid rgba(214,173,79,.18);
+  border-radius:50%;
+  box-shadow:0 0 0 70px rgba(214,173,79,.025),0 0 0 140px rgba(214,173,79,.018);
+}
+.gnk-activation__intro{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:24px;
+  align-items:end;
+  padding:clamp(24px,4vw,48px) clamp(20px,4vw,52px) 24px;
+}
+.gnk-activation__eyebrow{
+  margin:0 0 10px;
+  color:var(--ga-gold);
+  font:800 11px/1.4 "Courier New",monospace;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.gnk-activation__intro h1{
+  max-width:900px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(34px,5.3vw,78px);
+  line-height:.98;
+  letter-spacing:-.045em;
+}
+.gnk-activation__intro h1 span{
+  display:block;
+  margin-top:9px;
+  color:var(--ga-gold-bright);
+  font-family:Georgia,serif;
+  font-weight:400;
+  font-style:italic;
+  letter-spacing:-.025em;
+}
+.gnk-activation__lead{
+  max-width:760px;
+  margin:18px 0 0;
+  color:#aeb9cb;
+  font-size:clamp(14px,1.35vw,18px);
+  line-height:1.68;
+}
+.gnk-activation__live{
+  min-width:220px;
+  padding:15px 18px;
+  border:1px solid rgba(214,173,79,.2);
+  border-radius:18px;
+  background:rgba(0,0,0,.28);
+  backdrop-filter:blur(16px);
+  text-align:right;
+}
+.gnk-activation__live small,
+.gnk-activation__live em{
+  display:block;
+  color:#667286;
+  font:700 9px/1.5 "Courier New",monospace;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-style:normal;
+}
+.gnk-activation__live strong{
+  display:block;
+  margin:4px 0;
+  color:#fff;
+  font:400 clamp(24px,2.8vw,38px)/1 "Courier New",monospace;
+  letter-spacing:.08em;
+}
+.gnk-activation__countdown{
+  display:grid;
+  grid-template-columns:auto repeat(4,minmax(86px,1fr));
+  gap:10px;
+  align-items:stretch;
+  margin:0 clamp(20px,4vw,52px) 24px;
+}
+.gnk-activation__countdown-title{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-width:250px;
+  padding:14px 18px;
+  border:1px solid rgba(214,173,79,.2);
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(214,173,79,.12),rgba(255,255,255,.025));
+}
+.gnk-activation__countdown-title small{
+  color:var(--ga-gold);
+  font:800 9px/1.5 "Courier New",monospace;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+.gnk-activation__countdown-title strong{
+  margin-top:5px;
+  color:#fff;
+  font-size:16px;
+  line-height:1.3;
+}
+.gnk-activation__unit{
+  display:grid;
+  place-items:center;
+  min-height:86px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  background:rgba(0,0,0,.34);
+  text-align:center;
+}
+.gnk-activation__unit strong{
+  display:block;
+  color:#fff;
+  font:400 clamp(25px,3vw,43px)/1 "Courier New",monospace;
+  letter-spacing:.02em;
+}
+.gnk-activation__unit small{
+  display:block;
+  margin-top:6px;
+  color:#657188;
+  font:800 8px/1 "Courier New",monospace;
+  letter-spacing:.19em;
+  text-transform:uppercase;
+}
+.gnk-activation__stage{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) clamp(300px,31vw,405px);
+  gap:clamp(14px,2vw,26px);
+  align-items:stretch;
+  padding:0 clamp(14px,2.5vw,30px) clamp(14px,2.5vw,30px);
+}
+.gnk-activation__visual,
+.gnk-activation__code{
+  position:relative;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid rgba(214,173,79,.23);
+  border-radius:24px;
+  background:#020711;
+  box-shadow:0 22px 60px rgba(0,0,0,.38);
+}
+.gnk-activation__visual{min-height:clamp(490px,52vw,710px)}
+.gnk-activation__slides{position:absolute;inset:0}
+.gnk-activation__slide{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  margin:0;
+  padding:clamp(10px,1.4vw,18px);
+  opacity:0;
+  transform:scale(1.012);
+  background:radial-gradient(circle at center,rgba(17,55,100,.8),#020711 70%);
+  pointer-events:none;
+}
+.gnk-activation__slide:nth-child(1){animation:gnkActivationSlideOne 20s ease-in-out infinite}
+.gnk-activation__slide:nth-child(2){animation:gnkActivationSlideTwo 20s ease-in-out infinite}
+@keyframes gnkActivationSlideOne{0%,45%{opacity:1;transform:scale(1)}50%,95%{opacity:0;transform:scale(1.012)}100%{opacity:1;transform:scale(1)}}
+@keyframes gnkActivationSlideTwo{0%,45%{opacity:0;transform:scale(1.012)}50%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.012)}}
+.gnk-activation__slide img{
+  position:relative;
+  z-index:2;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  border-radius:17px;
+  filter:drop-shadow(0 18px 48px rgba(0,0,0,.45));
+}
+.gnk-activation__placeholder{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  padding:28px;
+  color:#d9c98e;
+  font:800 11px/1.7 "Courier New",monospace;
+  letter-spacing:.16em;
+  text-align:center;
+  text-transform:uppercase;
+}
+.gnk-activation__label{
+  position:absolute;
+  z-index:4;
+  left:16px;
+  bottom:16px;
+  padding:8px 11px;
+  border:1px solid rgba(214,173,79,.28);
+  border-radius:999px;
+  background:rgba(0,0,0,.72);
+  color:#e6ca78;
+  font:800 9px/1 "Courier New",monospace;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  pointer-events:none;
+}
+.gnk-activation__code{aspect-ratio:9/16;align-self:start}
+.gnk-activation__code iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+  background:#000;
+}
+.gnk-activation__code .gnk-activation__label{left:auto;right:12px;bottom:12px}
+.gnk-activation__status{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 16px;
+  align-items:center;
+  justify-content:space-between;
+  margin:0 clamp(20px,4vw,52px) clamp(22px,3vw,38px);
+  padding-top:18px;
+  border-top:1px solid rgba(214,173,79,.13);
+  color:#69758a;
+  font:700 9px/1.6 "Courier New",monospace;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.gnk-activation__status b{color:var(--ga-gold);font-weight:800}
+@media(max-width:980px){
+  .gnk-activation__intro{grid-template-columns:1fr}
+  .gnk-activation__live{width:100%;text-align:left}
+  .gnk-activation__countdown{grid-template-columns:repeat(4,1fr)}
+  .gnk-activation__countdown-title{grid-column:1/-1;min-width:0}
+  .gnk-activation__stage{grid-template-columns:1fr}
+  .gnk-activation__visual{min-height:clamp(330px,68vw,620px)}
+  .gnk-activation__code{width:min(100%,405px);justify-self:center}
+}
+@media(max-width:620px){
+  .gnk-activation{border-radius:20px;margin-top:8px}
+  .gnk-activation__intro{padding:24px 16px 18px}
+  .gnk-activation__intro h1{font-size:clamp(34px,13vw,54px)}
+  .gnk-activation__countdown{margin:0 12px 16px;gap:7px}
+  .gnk-activation__unit{min-height:70px;border-radius:13px;padding:7px 3px}
+  .gnk-activation__unit strong{font-size:clamp(21px,8vw,34px)}
+  .gnk-activation__countdown-title{border-radius:13px}
+  .gnk-activation__stage{padding:0 8px 8px;gap:10px}
+  .gnk-activation__visual,.gnk-activation__code{border-radius:16px}
+  .gnk-activation__status{margin:14px 16px 22px}
+}
+@media(prefers-reduced-motion:reduce){
+  .gnk-activation__slide{animation:none;opacity:0;transform:none}
+  .gnk-activation__slide:first-child{opacity:1}
+}
