@@ -15,6 +15,7 @@
   let probeController=null;
   let currentSrc='';
   let loaded=false;
+  let failed=false;
 
   const setState=(mode,message='')=>{
     loading.hidden=mode!=='loading';
@@ -23,6 +24,7 @@
   };
 
   const moduleLabel=()=>document.getElementById('pageTitle')?.textContent?.trim()||'Modul';
+  const cleanPath=value=>new URL(value,location.origin).pathname.replace(/\/+$/,'')||'/';
 
   const ensureStandaloneAction=()=>{
     if(error.querySelector('[data-admin-open-standalone]'))return;
@@ -45,6 +47,7 @@
   };
 
   const showReady=()=>{
+    if(failed)return;
     loaded=true;
     stopWatchdog();
     frame.hidden=false;
@@ -52,7 +55,9 @@
   };
 
   const showFailure=message=>{
+    failed=true;
     loaded=false;
+    stopWatchdog();
     frame.hidden=false;
     setState('error',message||'Modul nije završio učitavanje. Pokušajte ponovno ili ga otvorite zasebno.');
     ensureStandaloneAction();
@@ -74,6 +79,10 @@
         showFailure(`${moduleLabel()} nije dostupan: HTTP ${response.status}.`);
         return;
       }
+      if(cleanPath(response.url)!==cleanPath(src)){
+        showFailure(`${moduleLabel()} je preusmjeren na drugu stranicu (${cleanPath(response.url)}).`);
+        return;
+      }
       if(!type.includes('text/html')){
         showFailure(`${moduleLabel()} nije vratio HTML sadržaj.`);
       }
@@ -89,11 +98,12 @@
     if(!src||src==='about:blank')return;
     currentSrc=new URL(src,location.origin).toString();
     loaded=false;
+    failed=false;
     stopWatchdog();
     frame.hidden=false;
     setState('loading');
     watchdog=setTimeout(()=>{
-      if(!loaded)showFailure(`${moduleLabel()} se nije učitao u 12 sekundi. Provjerite sesiju ili otvorite modul zasebno.`);
+      if(!loaded&&!failed)showFailure(`${moduleLabel()} se nije učitao u 12 sekundi. Provjerite sesiju ili otvorite modul zasebno.`);
     },12000);
     probe(currentSrc);
   };
