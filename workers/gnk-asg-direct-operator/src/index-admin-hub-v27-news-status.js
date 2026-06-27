@@ -1,6 +1,6 @@
 import app from './index-admin-hub-v26-clean-index.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260627_R7_LOCKED_INDEX_MENU';
+export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260627_R8_DIRECT_LOCKED_INDEX';
 const ENTRYPOINT='src/index-admin-hub-v27-news-status.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v26-clean-index.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626';
@@ -28,6 +28,22 @@ function operatorRedirect(request,path){
   if(url.searchParams.get('embedded')==='1')return null;
   return new Response(null,{status:303,headers:{location:'/admin-center/?module=operator','cache-control':'no-store','x-gnk-asg-admin-entry':'ADMIN_CENTER'}});
 }
+async function directIndex(request,env,path){
+  if(request.method!=='GET'||!INDEX_PATHS.has(path)||!env.ASSETS?.fetch)return null;
+  const assetPath=path==='/en'?'/en/index.html':'/index.html';
+  const assetUrl=new URL(assetPath,request.url);
+  const response=await env.ASSETS.fetch(new Request(assetUrl.toString(),{method:'GET',headers:{accept:'text/html'}}));
+  if(!response.ok)return null;
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.delete('etag');
+  headers.delete('last-modified');
+  headers.set('content-type','text/html; charset=utf-8');
+  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('x-gnk-asg-index-source',assetPath);
+  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+}
 async function patchStatus(response,path){
   if(!STATUS_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   try{
@@ -35,7 +51,7 @@ async function patchStatus(response,path){
     const headers=noStore(new Headers(response.headers));
     headers.set('x-gnk-asg-active-entrypoint',ENTRYPOINT);
     headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);
-    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,newsRuntime:NEWS_RUNTIME,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},indexHeroScale:'50_PERCENT_V13',indexMenu:'LOCKED_INDEX_MENU',adminEntry:'ADMIN_CENTER',adminEmbed:'SAME_ORIGIN_ALLOWED',adminLoader:'RESILIENT_ROUTE_VALIDATION_V4',adminAudit:'ALL_MODULES_WITH_10_SECOND_TIMEOUT',statusWrapper:VERSION,checkedAt:new Date().toISOString()};
+    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,newsRuntime:NEWS_RUNTIME,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},indexHeroScale:'50_PERCENT_V13',indexMenu:'LOCKED_INDEX_MENU',indexSource:'DIRECT_STATIC_ASSET',adminEntry:'ADMIN_CENTER',adminEmbed:'SAME_ORIGIN_ALLOWED',adminLoader:'RESILIENT_ROUTE_VALIDATION_V4',adminAudit:'ALL_MODULES_WITH_10_SECOND_TIMEOUT',statusWrapper:VERSION,checkedAt:new Date().toISOString()};
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response}
 }
@@ -49,9 +65,9 @@ async function patchIndexHtml(response,path,request){
   headers.set('x-gnk-asg-index-menu','LOCKED_INDEX_MENU');
   headers.set('x-gnk-asg-gallery-primary-menu','INCLUDED');
   let html=await response.text();
-  html=html.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,lockedIndexMenu(path==='/en'));
+  html=html.replace(/<nav class=["']menu[#']>[\s\S]*?<\/nav>/i,lockedIndexMenu(path==='/en'));
   if(!html.includes('index-hero-scale-v13.css'))html=html.replace('</head>',`${HERO_SCALE_STYLE}</head>`);
-  html=html.replace(/index-code-cleanup-v8\.js\?v=[^"']+/i,'index-code-cleanup-v8.js?v=20260627-v13');
+  html=html.replace(/index-code-cleanup-v8\.js\?v=[^#']+/i,'index-code-cleanup-v8.js?v=20260627-v13');
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 async function patchAdminHtml(response,path,request){
@@ -76,7 +92,16 @@ async function patchAdminHtml(response,path,request){
 }
 
 export default{
-  async fetch(request,env,ctx){const path=pathOf(request);const redirect=operatorRedirect(request,path);if(redirect)return redirect;let response=await app.fetch(request,env,ctx);response=await patchStatus(response,path);response=await patchIndexHtml(response,path,request);return patchAdminHtml(response,path,request)},
+  async fetch(request,env,ctx){
+    const path=pathOf(request);
+    const redirect=operatorRedirect(request,path);
+    if(redirect)return redirect;
+    let response=await directIndex(request,env,path);
+    if(!response)response=await app.fetch(request,env,ctx);
+    response=await patchStatus(response,path);
+    response=await patchIndexHtml(response,path,request);
+    return patchAdminHtml(response,path,request);
+  },
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
   async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}
 };
