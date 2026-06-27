@@ -1,9 +1,10 @@
 import {enforceRequiredSignature,MANDATORY_BCC,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627';
+export const VERSION='GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R2';
 export const PUBLIC_PATH='/data/mail-delivery-health.json';
 const KEY='mail:delivery:smoke:v1';
 const MAX_ATTEMPTS=3;
+const LOCK_STALE_MS=120000;
 const clean=value=>String(value??'').trim();
 const boolEnv=value=>/^(1|true|yes|on)$/i.test(clean(value));
 const now=()=>new Date().toISOString();
@@ -37,12 +38,17 @@ function publicState(env,state){
     errorMessage:state?.errorMessage||null
   };
 }
+function activeLock(state){
+  if(state?.status!=='SENDING')return false;
+  const updated=Date.parse(state.updatedAt||state.startedAt||'');
+  return Number.isFinite(updated)&&Date.now()-updated<LOCK_STALE_MS;
+}
 
 export async function runMailDeliverySmoke(env){
   const enabled=boolEnv(env.MAIL_BOOTSTRAP_SMOKE_TEST);
   const existing=await read(env);
   if(!enabled)return publicState(env,existing||{status:'DISABLED'});
-  if(existing?.status==='SENT')return publicState(env,existing);
+  if(existing?.status==='SENT'||activeLock(existing))return publicState(env,existing);
   const attempts=Number(existing?.attempts||0);
   if(attempts>=MAX_ATTEMPTS)return publicState(env,existing);
   if(!env.EMAIL?.send){
