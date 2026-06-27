@@ -11,6 +11,7 @@ const DATA_DIR = `${ROOT}/apps/portal/data`;
 const PUBLIC_PATH = `${DATA_DIR}/news.json`;
 const ARCHIVE_PATH = `${DATA_DIR}/news_archive.json`;
 const STATUS_PATH = `${DATA_DIR}/news-automation-status.json`;
+const MANUAL_SEED_PATH = `${DATA_DIR}/news_manual_seed.json`;
 
 const FEEDS = [
   { url: 'https://www.theverge.com/rss/index.xml', source: 'The Verge', group: 'technology', region: 'World' },
@@ -75,6 +76,24 @@ function isRealImage(value) {
   }
 }
 
+function normalizeManualItem(item) {
+  if (!item || !item.title || !item.url || !isRealImage(item.image)) return null;
+  const id = item.id || itemId(item.url, item.title);
+  return {
+    id,
+    title: String(item.title).trim(),
+    url: String(item.url).trim(),
+    summary: String(item.summary || '').slice(0, 520),
+    source: item.source || 'GNK ASG',
+    region: item.region || 'Europe',
+    group: item.group || item.category || 'corporate',
+    category: item.category || item.group || 'corporate',
+    image: String(item.image).trim(),
+    published_at: normalizeDate(item.published_at),
+    share_url: item.share_url || `/podijeli/vijest/${id}/`
+  };
+}
+
 function parseFeed(xml, feed) {
   const blocks = xml.match(/<item[\s\S]*?<\/item>/gi) || xml.match(/<entry[\s\S]*?<\/entry>/gi) || [];
   return blocks.map((block) => {
@@ -124,12 +143,13 @@ async function fetchFeed(feed) {
   }
 }
 
+const manualItems = (await readJson(MANUAL_SEED_PATH, [])).map(normalizeManualItem).filter(Boolean);
 const results = await Promise.all(FEEDS.map(fetchFeed));
 const fetchedItems = results.flatMap((r) => r.items);
 const existingPublic = await readJson(PUBLIC_PATH, []);
 const existingArchive = await readJson(ARCHIVE_PATH, []);
 const byId = new Map();
-for (const item of [...fetchedItems, ...existingPublic, ...existingArchive]) {
+for (const item of [...manualItems, ...fetchedItems, ...existingPublic, ...existingArchive]) {
   if (item?.id && isRealImage(item.image) && !byId.has(item.id)) byId.set(item.id, item);
 }
 
@@ -143,8 +163,8 @@ await fs.writeFile(PUBLIC_PATH, `${JSON.stringify(publicItems, null, 2)}\n`);
 await fs.writeFile(ARCHIVE_PATH, `${JSON.stringify(archiveItems, null, 2)}\n`);
 
 const status = {
-  ok: fetchedItems.length > 0 && publicItems.length > 0,
-  status: fetchedItems.length > 0 && publicItems.length > 0 ? 'refreshed' : 'refresh_failed_no_real_images',
+  ok: (fetchedItems.length > 0 || manualItems.length > 0) && publicItems.length > 0,
+  status: (fetchedItems.length > 0 || manualItems.length > 0) && publicItems.length > 0 ? 'refreshed' : 'refresh_failed_no_real_images',
   updated_at: new Date().toISOString(),
   engine: 'single_publication_engine_v14_isolated_github_action',
   cadence: 'scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb',
@@ -152,6 +172,7 @@ const status = {
   scheduled_hours_local: [9, 16, 21],
   public_items_target: PUBLIC_LIMIT,
   public_items_written: publicItems.length,
+  manual_items_loaded: manualItems.length,
   archive_policy: 'archive_latest_1000_prune_to_500_when_full',
   archive_items_written: archiveItems.length,
   rss_images_enabled: true,
@@ -167,4 +188,4 @@ if (!status.ok) {
   process.exit(1);
 }
 
-console.log(`Wrote ${publicItems.length} public news items and ${archiveItems.length} archived items without fallback images.`);
+console.log(`Wrote ${publicItems.length} public news items and ${archiveItems.length} archived items without fallback images. Manual items loaded: ${manualItems.length}.`);
