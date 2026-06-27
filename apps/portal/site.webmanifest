@@ -1,14 +1,27 @@
 {
-  "name": "GNK ASG d.o.o. | GNK DINAMO Ltd.",
+  "name": "GNK ASG",
   "short_name": "GNK ASG",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#020812",
   "theme_color": "#020812",
   "icons": [
     {
+      "src": "/favicon-48.svg",
+      "sizes": "48x48",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
       "src": "/favicon.svg",
-      "sizes": "any",
+      "sizes": "64x64",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
