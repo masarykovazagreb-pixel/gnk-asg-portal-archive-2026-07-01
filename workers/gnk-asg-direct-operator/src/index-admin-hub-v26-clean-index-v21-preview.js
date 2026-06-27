@@ -2,6 +2,7 @@ import app from './index-admin-hub-v27-news-status.js';
 
 export const VERSION='GNK_ASG_PUBLIC_INDEX_INLINE_WHITE_CODE_V24_20260627';
 const INDEX_PATHS=new Set(['/','/en']);
+const PROJECT_50_PATHS=new Set(['/project-50','/project-50/index.html']);
 const CODE_STYLE='<link rel="stylesheet" href="/assets/index-code-inline-v10.css?v=20260627-v24">';
 const CODE_SCRIPT='<script defer src="/assets/index-code-inline-v10.js?v=20260627-v24"></script>';
 
@@ -16,6 +17,16 @@ function headersOf(response){
   headers.set('cdn-cache-control','no-store');
   headers.set('cloudflare-cdn-cache-control','no-store');
   return headers;
+}
+
+async function serveProject50(request,env,path){
+  if(request.method!=='GET'||!PROJECT_50_PATHS.has(path)||!env.ASSETS?.fetch)return null;
+  const response=await env.ASSETS.fetch(new Request(new URL('/project-50/index.html',request.url),{method:'GET',headers:{accept:'text/html'}}));
+  if(!response.ok)return null;
+  const headers=headersOf(response);
+  headers.set('content-type','text/html; charset=utf-8');
+  headers.set('x-gnk-asg-project','PROJECT_50_CHECKPOINT_1');
+  return new Response(response.body,{status:200,headers});
 }
 
 function patchIndexHtml(html){
@@ -34,8 +45,10 @@ function patchIndexHtml(html){
 
 export default{
   async fetch(request,env,ctx){
-    const response=await app.fetch(request,env,ctx);
     const path=pathOf(request);
+    const project50=await serveProject50(request,env,path);
+    if(project50)return project50;
+    const response=await app.fetch(request,env,ctx);
     if(request.method!=='GET'||!INDEX_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
     const headers=headersOf(response);
     headers.set('x-gnk-asg-index-design','LOCKED_CLEAN_WHITE_INDEX');
