@@ -1,1 +1,71 @@
 name: Deploy Bilingual Index Activation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-bilingual-index-activation.yml'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v24-activation.js'
+      - 'workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js'
+      - 'apps/portal/index-activation-fragment-hr.html'
+      - 'apps/portal/index-activation-en.html'
+      - 'apps/portal/assets/index-activation-v1.css'
+      - 'apps/portal/assets/gallery-bootstrap.js'
+      - 'apps/portal/the-code/**'
+  workflow_dispatch:
+
+concurrency:
+  group: gnk-asg-canonical-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v24-activation.js
+          node --check workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          node --check apps/portal/assets/gallery-bootstrap.js
+          grep -q 'index-admin-hub-v24-activation.js' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'AKTIVACIJA KODA' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q 'CODE ACTIVATION' workers/gnk-asg-direct-operator/src/index-activation-wrapper-v1.js
+          grep -q '2026-10-07T11:30:00-04:00' apps/portal/assets/gallery-bootstrap.js
+          grep -q 'THE CODE' apps/portal/index-activation-fragment-hr.html
+          grep -q 'THE CODE' apps/portal/index-activation-en.html
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Deploy
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in $(seq 1 24); do
+            HR=$(curl -fsS "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            EN=$(curl -fsS "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            if printf '%s' "$HR" | grep -q 'AKTIVACIJA KODA' \
+              && printf '%s' "$EN" | grep -q 'CODE ACTIVATION' \
+              && printf '%s' "$HR" | grep -q 'THE CODE' \
+              && printf '%s' "$EN" | grep -q 'THE CODE' \
+              && printf '%s' "$HR" | grep -q 'PDF centar' \
+              && printf '%s' "$EN" | grep -q 'PDF centre' \
+              && printf '%s' "$HR" | grep -q 'href="/en/"' \
+              && printf '%s' "$EN" | grep -q 'href="/"'; then
+                exit 0
+            fi
+            sleep 10
+          done
+          exit 1
