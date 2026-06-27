@@ -4,13 +4,13 @@ import {handlePublicAi,API_PATH as PUBLIC_AI_PATH,VERSION as PUBLIC_AI_VERSION} 
 export const VERSION='GNK_ASG_ADMIN_HUB_V26_PUBLIC_V10_INDEX_V9_NATIVE_MENU_LOCK_20260627';
 const MEDIA_STYLE='<link rel="stylesheet" href="/assets/media-application-code-v2.css?v=20260627-v2">';
 const MEDIA_SCRIPT='<script defer src="/assets/media-application-code-v2.js?v=20260627-v2"></script>';
-const MENU_STYLE='<link rel="stylesheet" href="/assets/public-menu-v10.css?v=20260627-v10">';
-const MENU_SCRIPT='<script defer src="/assets/public-menu-v10.js?v=20260627-v10"></script>';
+const MENU_STYLE='<link rel="stylesheet" href="/assets/public-menu-v10.css?v=20260627-v11">';
+const MENU_SCRIPT='<script defer src="/assets/public-menu-v10.js?v=20260627-v11"></script>';
 const DEBUG_PATH='/data/luxury-index-debug.json',MEDIA_PATH='/media-application';
 const CODE_PATHS=new Set(['/the-code','/the-code/index.html']);
 const INDEX_PATHS=new Set(['/','/en']);
-const PUBLIC_EXACT=new Set(['/assistant','/en/assistant','/trzista','/markets','/vijesti','/news','/objave','/contact','/media-kit','/media-application','/legal','/en/legal','/visual-index']);
-const PUBLIC_PREFIXES=['/objave/','/vijesti/','/news/','/media-kit/'];
+const PUBLIC_EXACT=new Set(['/assistant','/en/assistant','/trzista','/markets','/vijesti','/news','/objave','/publications','/contact','/en/contact','/media-kit','/media-application','/legal','/en/legal','/visual-index']);
+const PUBLIC_PREFIXES=['/objave/','/publications/','/vijesti/','/news/','/media-kit/'];
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/'}
 function aliasRequest(request,path){const url=new URL(request.url);url.pathname=path;return new Request(url.toString(),request)}
 function isPublicPath(path){return PUBLIC_EXACT.has(path)||PUBLIC_PREFIXES.some(prefix=>path.startsWith(prefix))}
