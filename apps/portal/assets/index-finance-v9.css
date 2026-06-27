@@ -1,5 +1,5 @@
 /* Index finance cards V9 — current design, corrected number scale */
-/* Production release marker: 2026-06-27 V9 */
+/* Production release marker: 2026-06-27 V9 · validated deploy */
 .finance-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important}
 .finance-card{min-width:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
 .finance-card .metrics{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;min-width:0!important}
