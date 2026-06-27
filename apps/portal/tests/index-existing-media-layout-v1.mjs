@@ -5,7 +5,9 @@ const base = process.env.VISUAL_BASE || 'http://127.0.0.1:8787';
 const outputDir = new URL('../existing-media-layout-output/', import.meta.url);
 await fs.mkdir(outputDir, { recursive: true });
 
-const browser = await chromium.launch({ headless: true });
+const launchOptions = { headless: true };
+if (process.env.CHROME_PATH) launchOptions.executablePath = process.env.CHROME_PATH;
+const browser = await chromium.launch(launchOptions);
 const page = await browser.newPage({ viewport: { width: 1440, height: 1400 } });
 await page.goto(`${base}/`, { waitUntil: 'networkidle' });
 await page.waitForTimeout(3500);
