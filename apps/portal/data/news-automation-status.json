@@ -1,7 +1,7 @@
 {
   "ok": false,
-  "status": "manual_refresh_requested_after_stale_feed_check",
-  "updated_at": "2026-06-27T03:28:00+02:00",
+  "status": "manual_refresh_retriggered_after_stale_feed_check",
+  "updated_at": "2026-06-27T04:36:02+02:00",
   "engine": "single_publication_engine_v14_isolated_github_action",
   "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
   "timezone": "Europe/Zagreb",
@@ -11,5 +11,5 @@
   "rss_images_enabled": true,
   "fallback_image": "/assets/news-fallback.svg",
   "visual_index_fallback": "/visual-index/",
-  "last_checked_issue": "apps/portal/data/news.json is stale; push-triggered isolated refresh requested without touching public index, DNS, secrets or unrelated modules"
+  "last_checked_issue": "apps/portal/data/news.json is stale; isolated news refresh retriggered by status-only commit without touching public index, DNS, secrets or unrelated modules"
 }
