@@ -56,6 +56,7 @@ jobs:
           grep -q 'code-company--asg' apps/portal/assets/index-wow-v4.js
           grep -q 'code-company--dinamo' apps/portal/assets/index-wow-v4.js
           grep -q '390px' apps/portal/assets/index-code-editorial-v5.css
+          grep -q 'aspect-ratio:390/844' apps/portal/the-code/assets/the-code-manual-v2.css
           grep -q 'width:min(1180px' apps/portal/assets/index-unified-1180-v5.css
           grep -q 'overflow:hidden!important' apps/portal/assets/index-unified-1180-v5.css
           grep -q 'data-playback-state="ready-live"' apps/portal/the-code/index.html
@@ -84,6 +85,7 @@ jobs:
             EN=$(curl -fsS -D "$EN_HEADERS" "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}-en" || true)
             EDITORIAL=$(curl -fsS "https://gnk-asg.hr/assets/index-code-editorial-v5.css?cb=${GITHUB_RUN_ID}-${n}" || true)
             FRAME=$(curl -fsS "https://gnk-asg.hr/assets/index-unified-1180-v5.css?cb=${GITHUB_RUN_ID}-${n}" || true)
+            FILM_CSS=$(curl -fsS "https://gnk-asg.hr/the-code/assets/the-code-manual-v2.css?cb=${GITHUB_RUN_ID}-${n}" || true)
             JS=$(curl -fsS "https://gnk-asg.hr/assets/index-wow-v4.js?cb=${GITHUB_RUN_ID}-${n}" || true)
             CODE=$(curl -fsS "https://gnk-asg.hr/the-code/?cb=${GITHUB_RUN_ID}-${n}" || true)
             PLAYER=$(curl -fsS "https://gnk-asg.hr/the-code/assets/the-code-manual-v2.js?cb=${GITHUB_RUN_ID}-${n}" || true)
@@ -96,6 +98,7 @@ jobs:
               && printf '%s' "$EDITORIAL" | grep -q '390px' \
               && printf '%s' "$FRAME" | grep -q 'width:min(1180px' \
               && printf '%s' "$FRAME" | grep -q 'contain:layout paint' \
+              && printf '%s' "$FILM_CSS" | grep -q 'aspect-ratio:390/844' \
               && printf '%s' "$JS" | grep -q 'Pokreni prezentaciju' \
               && printf '%s' "$CODE" | grep -q 'data-playback-state="ready-live"' \
               && printf '%s' "$PLAYER" | grep -q 'showFilmScene(0)' \
