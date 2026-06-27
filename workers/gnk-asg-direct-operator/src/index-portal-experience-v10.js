@@ -1,5 +1,5 @@
 import core from './index-portal-repair-v9.js';
-import {VERSION,NEWS_MINIMUM,NEWS_HOURS_ZAGREB,NEWS_SCHEDULE,FEEDS,refreshCuratedNews} from './news-curation-v10.js';
+import {VERSION,NEWS_MINIMUM,NEWS_HOURS_ZAGREB,NEWS_SCHEDULE,FEEDS,ACTIVE_NEWS_LIMIT,ARCHIVE_PRUNE_AT,ARCHIVE_DELETE_COUNT,ARCHIVE_RETAIN_AFTER_PRUNE,ARCHIVE_HARD_LIMIT,refreshCuratedNews} from './news-curation-v10.js';
 import {getIndexConfig,saveIndexConfig} from './index-config-v10.js';
 import {isPrivatePath,patchPublicHtml,patchAdminHtml,transformHtml} from './public-shell-v11.js';
 
@@ -16,10 +16,11 @@ function context(env){return{read:(key,fallback)=>read(env,key,fallback),write:(
 function zagreb(date=new Date()){const p=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));return{year:+p.year,month:+p.month,day:+p.day,hour:+p.hour,minute:+p.minute,slotKey:`${p.year}-${p.month}-${p.day}-${p.hour}`}}
 async function claim(env,type,slot){const s=store(env);if(!s)return true;const key=`automation:v16:slot:${type}:${slot}`;if(await s.get(key))return false;await s.put(key,now(),{expirationTtl:172800});return true}
 async function runEditor(env,ctx){const token=tokens(env)[0]||'';if(!token)return{ok:false,error:'operator_token_missing',finishedAt:now()};const response=await core.fetch(new Request('https://gnk-asg.hr/operator/auto-editor/run',{method:'POST',headers:{authorization:`Bearer ${token}`,'content-type':'application/json'},body:'{}'}),env,ctx);try{return{...(await response.json()),httpStatus:response.status}}catch{return{ok:false,error:`HTTP_${response.status}`,httpStatus:response.status}}}
-async function automationStatus(env){return{ok:true,version:VERSION,timeZone:'Europe/Zagreb',newsSchedule:NEWS_SCHEDULE,newsRefreshesPerDay:3,autoEditorSchedule:'every 2 hours with immediate stale bootstrap',autoEditorStaleAfterMinutes:135,minimumNewsLinks:NEWS_MINIMUM,configuredNewsSources:FEEDS.length,lastNewsRefresh:await read(env,'automation:news-refresh:last',null),lastAutoEditor:await read(env,'auto-editor:last',null),lastScheduledRun:await read(env,'automation:v11:last',null)}}
+async function automationStatus(env){const archive=await read(env,'data:news:archive',{items:[]}),lastNewsRefresh=await read(env,'automation:news-refresh:last',null),lastAutoEditor=await read(env,'auto-editor:last',null),lastScheduledRun=await read(env,'automation:v11:last',null);return{ok:true,version:VERSION,timeZone:'Europe/Zagreb',newsSchedule:NEWS_SCHEDULE,newsRefreshesPerDay:3,autoEditorSchedule:'every 2 hours with immediate stale bootstrap',autoEditorStaleAfterMinutes:135,minimumNewsLinks:NEWS_MINIMUM,configuredNewsSources:FEEDS.length,sourceMix:{global:13,regional:9,croatian:4},activeNewsLimit:ACTIVE_NEWS_LIMIT,archiveCount:Array.isArray(archive?.items)?archive.items.length:0,archivePruneAt:ARCHIVE_PRUNE_AT,archiveDeleteCount:ARCHIVE_DELETE_COUNT,archiveRetainAfterPrune:ARCHIVE_RETAIN_AFTER_PRUNE,archiveHardLimit:ARCHIVE_HARD_LIMIT,lastNewsRefresh,lastAutoEditor,lastScheduledRun}}
 async function refresh(env){return refreshCuratedNews(context(env))}
 function refreshBootstrapNeeded(last){const stamp=Date.parse(last?.updatedAt||'');return last?.version!==VERSION||last?.ok!==true||!Number.isFinite(stamp)||Date.now()-stamp>9*60*60*1000}
 function editorBootstrapNeeded(last){const stamp=Date.parse(last?.finishedAt||last?.article?.publishedAt||last?.updatedAt||'');return last?.ok!==true||!Number.isFinite(stamp)||Date.now()-stamp>135*60*1000}
+function retarget(request,path){const url=new URL(request.url);url.pathname=path;return new Request(url.toString(),request)}
 
 async function readBody(request){try{return await request.json()}catch{return{}}}
 function id(prefix){return `${prefix}-${now().replace(/[-:.TZ]/g,'').slice(0,14)}-${Math.random().toString(16).slice(2,8)}`}
@@ -52,6 +53,8 @@ async function handleContactSubmit(request,env){if(request.method!=='POST')retur
 async function handle(request,env,ctx){
   const url=new URL(request.url),path=url.pathname.replace(/\/+$/,'')||'/';
   if(request.method==='OPTIONS'&&path.startsWith('/api/'))return new Response(null,{status:204,headers:{'access-control-allow-origin':'https://gnk-asg.hr','access-control-allow-methods':'GET,POST,OPTIONS','access-control-allow-headers':'content-type,authorization,x-operator-token,x-admin-token,x-gnk-asg-token'}});
+  if(request.method==='GET'&&path==='/data/news-feed.json')return core.fetch(retarget(request,'/data/news.json'),env,ctx);
+  if(request.method==='GET'&&path==='/data/news_archive.json')return core.fetch(retarget(request,'/data/news-archive.json'),env,ctx);
   if(path==='/api/admin-mail-send')return handleMailSend(request,env);
   if(path.startsWith('/api/mail-center/'))return handleMailCenter(path,env);
   if(path==='/api/ai-assist')return handleAiAssist(request,env);
