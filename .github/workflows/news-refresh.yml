@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/news-refresh.yml'
       - 'apps/portal/scripts/refresh-news.mjs'
+      - 'apps/portal/data/news_manual_seed.json'
       - 'apps/portal/data/news.json'
       - 'apps/portal/data/news_archive.json'
       - 'apps/portal/data/news-automation-status.json'
