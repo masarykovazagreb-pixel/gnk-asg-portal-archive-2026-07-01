@@ -1,0 +1,74 @@
+name: Deploy Admin Dashboard V3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-admin-dashboard-v3.yml'
+      - 'apps/portal/assets/admin-dashboard-v3.css'
+      - 'apps/portal/assets/admin-dashboard-v3.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-admin-dashboard-v3.yml'
+      - 'apps/portal/assets/admin-dashboard-v3.css'
+      - 'apps/portal/assets/admin-dashboard-v3.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-admin-dashboard-v3
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate Admin Dashboard V3
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/admin-dashboard-v3.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          test -s apps/portal/assets/admin-dashboard-v3.css
+          grep -q 'GNK ASG Admin Dashboard V3' apps/portal/assets/admin-dashboard-v3.css
+          grep -q '/data/deployment-status.json' apps/portal/assets/admin-dashboard-v3.js
+          grep -q '/api/mail-center/send-readiness' apps/portal/assets/admin-dashboard-v3.js
+          grep -q 'GNK_ASG_PUBLIC_V17_ADMIN_DASHBOARD_V3_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q 'admin-dashboard-v3.css' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          grep -q 'admin-dashboard-v3.js' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Deploy Cloudflare Worker
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify Admin Dashboard V3
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in $(seq 1 18); do
+            CSS=$(curl -fsS "https://gnk-asg.hr/assets/admin-dashboard-v3.css?cb=${GITHUB_RUN_ID}-${n}" || true)
+            JS=$(curl -fsS "https://gnk-asg.hr/assets/admin-dashboard-v3.js?cb=${GITHUB_RUN_ID}-${n}" || true)
+            STATUS=$(curl -fsS "https://gnk-asg.hr/data/deployment-status.json?cb=${GITHUB_RUN_ID}-${n}" || true)
+            INDEX=$(curl -fsS "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            if printf '%s' "$CSS" | grep -q 'GNK ASG Admin Dashboard V3' \
+              && printf '%s' "$JS" | grep -q 'gnk-v3-release-strip' \
+              && printf '%s' "$STATUS" | grep -q 'GNK_ASG_ADMIN_DASHBOARD_V3_20260627' \
+              && printf '%s' "$INDEX" | grep -q 'index-finance-v9.css'; then
+                exit 0
+            fi
+            sleep 10
+          done
+          exit 1
