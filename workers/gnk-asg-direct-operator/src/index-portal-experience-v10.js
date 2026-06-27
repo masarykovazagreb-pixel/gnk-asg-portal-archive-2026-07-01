@@ -8,6 +8,8 @@ const now=()=>new Date().toISOString();
 const store=env=>env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV||null;
 async function read(env,key,fallback){const s=store(env);if(!s)return fallback;try{const raw=await s.get(key);return raw?JSON.parse(raw):fallback}catch{return fallback}}
 async function write(env,key,value,options){const s=store(env);if(!s)return false;if(options)await s.put(key,JSON.stringify(value,null,2),options);else await s.put(key,JSON.stringify(value,null,2));return true}
+async function list(env,key){const value=await read(env,key,[]);return Array.isArray(value)?value:[]}
+async function push(env,key,item,max=500){const items=[item,...(await list(env,key)).filter(x=>x&&x.id!==item.id)].slice(0,max);await write(env,key,items);return items}
 function tokens(env){return [env.OPERATOR_TOKEN,env.GNK_ASG_OPERATOR_TOKEN,env.ADMIN_TOKEN,env.GNK_ASG_ADMIN_TOKEN,env.NEWS_PUBLISH_TOKEN].map(v=>String(v||'').trim()).filter(Boolean)}
 function authorized(request,env){const bearer=request.headers.get('authorization')||'',token=request.headers.get('x-operator-token')||request.headers.get('x-admin-token')||request.headers.get('x-gnk-asg-token')||bearer.replace(/^Bearer\s+/i,'');return Boolean(token&&tokens(env).includes(String(token).trim()))}
 function context(env){return{read:(key,fallback)=>read(env,key,fallback),write:(key,value,options)=>write(env,key,value,options),authorized:request=>authorized(request,env)}}
@@ -19,15 +21,47 @@ async function refresh(env){return refreshCuratedNews(context(env))}
 function refreshBootstrapNeeded(last){const stamp=Date.parse(last?.updatedAt||'');return last?.version!==VERSION||last?.ok!==true||!Number.isFinite(stamp)||Date.now()-stamp>9*60*60*1000}
 function editorBootstrapNeeded(last){const stamp=Date.parse(last?.finishedAt||last?.article?.publishedAt||last?.updatedAt||'');return last?.ok!==true||!Number.isFinite(stamp)||Date.now()-stamp>135*60*1000}
 
+async function readBody(request){try{return await request.json()}catch{return{}}}
+function id(prefix){return `${prefix}-${now().replace(/[-:.TZ]/g,'').slice(0,14)}-${Math.random().toString(16).slice(2,8)}`}
+function clean(value,max=2000){return String(value||'').replace(/\u0000/g,'').trim().slice(0,max)}
+function emailList(value){return clean(value,2000).split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean).slice(0,100)}
+function safeAttachment(a){return{filename:clean(a?.filename||a?.name||'attachment.pdf',180),type:clean(a?.type||a?.contentType||a?.mimeType||'application/pdf',80),size:Number(a?.size||0)||0,hasBase64:Boolean(a?.base64||a?.content)}}
+async function mailStatus(env){return{ok:true,service:'GNK ASG Mail Center',mode:String(env.MAIL_STUDIO_LIVE||'test_record_only'),kvBinding:!!store(env),emailBinding:!!(env.EMAIL&&typeof env.EMAIL.send==='function'),liveSendEnabled:String(env.MAIL_STUDIO_LIVE||'').toLowerCase()==='true',sentCount:(await list(env,'mail:center:sent')).length,outboxCount:(await list(env,'mail:center:outbox')).length,inboxCount:(await list(env,'mail:center:inbox')).length,updatedAt:now()}}
+async function handleMailSend(request,env){
+  if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);
+  const m=await readBody(request),to=emailList(m.to),cc=emailList(m.cc),bcc=emailList(m.bcc),subject=clean(m.subject,300),html=clean(m.html||m.bodyHtml||m.body||'',120000),text=clean(m.text||m.plainText||'',120000),attachments=Array.isArray(m.attachments)?m.attachments.map(safeAttachment).slice(0,20):[];
+  if(!to.length)return json({ok:false,error:'missing_to'},400);
+  if(!subject)return json({ok:false,error:'missing_subject'},400);
+  if(!html&&!text)return json({ok:false,error:'missing_body'},400);
+  const live=String(env.MAIL_STUDIO_LIVE||'').toLowerCase()==='true'&&authorized(request,env)&&env.EMAIL&&typeof env.EMAIL.send==='function';
+  const item={id:id('mail'),createdAt:now(),status:live?'live_send_not_executed_by_safe_patch':'test_recorded',from:clean(m.from,180),fromName:clean(m.fromName,180),to,cc,bcc,subject,html,text,signatureProfile:clean(m.signatureProfile,80),signatureMode:clean(m.signatureMode,120),logoUrl:clean(m.logoUrl,400),attachments,attachmentCount:attachments.length,source:'mail-studio-safe-backend-v1'};
+  await push(env,'mail:center:sent',item,500);
+  await push(env,'mail:center:outbox',item,500);
+  await write(env,'mail:center:last',item);
+  return json({ok:true,delivered:false,recorded:true,mode:item.status,item});
+}
+async function handleMailCenter(path,env){
+  if(path==='/api/mail-center/status')return json(await mailStatus(env));
+  const key=path.endsWith('/sent')?'mail:center:sent':path.endsWith('/outbox')?'mail:center:outbox':'mail:center:inbox';
+  return json({ok:true,box:key.split(':').pop(),items:await list(env,key),updatedAt:now()});
+}
+function aiFallback(m){const tone=clean(m.tone||m.style||'profesionalno',120),recipient=clean(m.recipientName||'primatelju',160),goal=clean(m.goal||'odgovoriti jasno i profesionalno',260),contextText=clean(m.context||m.text||'',1200);return `Poštovani ${recipient},\n\nvezano uz Vašu poruku, potvrđujemo primitak i zahvaljujemo na dostavljenim informacijama. Cilj ovog odgovora je ${goal}.\n\n${contextText?`Uzimajući u obzir dostavljeni kontekst, postupit ćemo pažljivo i pisanim putem potvrditi sve relevantne daljnje korake.\n\n`:''}Molimo da nam, ako je potrebno, dostavite dodatnu dokumentaciju ili rokove kako bismo mogli pripremiti cjelovit odgovor.\n\nSrdačan pozdrav,`;}
+async function handleAiAssist(request){if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);const m=await readBody(request);return json({ok:true,ai:false,model:'safe-fallback',text:aiFallback(m)});}
+async function handleContactSubmit(request,env){if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);const m=await readBody(request),item={id:id('contact'),createdAt:now(),name:clean(m.name||m.fullName,180),email:clean(m.email,220),phone:clean(m.phone,120),subject:clean(m.subject,260),message:clean(m.message||m.body,6000),source:'contact-form-safe-backend-v1'};if(!item.email&&!item.phone)return json({ok:false,error:'missing_contact'},400);if(!item.message)return json({ok:false,error:'missing_message'},400);await push(env,'contact:submissions',item,500);await write(env,'contact:last',item);return json({ok:true,recorded:true,item});}
+
 async function handle(request,env,ctx){
   const url=new URL(request.url),path=url.pathname.replace(/\/+$/,'')||'/';
+  if(request.method==='OPTIONS'&&path.startsWith('/api/'))return new Response(null,{status:204,headers:{'access-control-allow-origin':'https://gnk-asg.hr','access-control-allow-methods':'GET,POST,OPTIONS','access-control-allow-headers':'content-type,authorization,x-operator-token,x-admin-token,x-gnk-asg-token'}});
+  if(path==='/api/admin-mail-send')return handleMailSend(request,env);
+  if(path.startsWith('/api/mail-center/'))return handleMailCenter(path,env);
+  if(path==='/api/ai-assist')return handleAiAssist(request,env);
+  if(path==='/api/contact-submit'||path==='/api/contact')return handleContactSubmit(request,env);
   if(request.method==='GET'&&(path==='/data/index-media-config.json'||path==='/api/index-media-config')){
     if(path==='/api/index-media-config'&&!authorized(request,env))return json({ok:false,error:'unauthorized'},401);
     const config=await getIndexConfig(context(env).read);
     return json(path==='/api/index-media-config'?{ok:true,config}:config);
   }
   if(path==='/api/index-media-config'&&request.method==='POST')return saveIndexConfig(request,context(env));
-  if(request.method==='OPTIONS'&&path==='/api/index-media-config')return new Response(null,{status:204});
   if(request.method==='GET'&&path==='/data/news-sources.json')return json({ok:true,version:VERSION,minimumLinks:NEWS_MINIMUM,count:FEEDS.length,sources:FEEDS.map(f=>({name:f[0],category:f[1],region:f[2],url:f[4]}))});
   if(request.method==='GET'&&path==='/data/news-automation-status.json')return json(await automationStatus(env));
   if(path==='/api/news-refresh'&&request.method==='POST'){
