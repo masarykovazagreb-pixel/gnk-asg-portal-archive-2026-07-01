@@ -1,7 +1,7 @@
-export const VERSION='GNK_ASG_INDEX_ACTIVATION_WRAPPER_V2_20260627';
+export const VERSION='GNK_ASG_INDEX_ACTIVATION_WRAPPER_V3_20260627';
 
-const STYLE='<link rel="stylesheet" href="/assets/index-activation-v1.css?v=20260627-v2">';
-const SCRIPT='<script src="/assets/gallery-bootstrap.js?v=20260627-activation-v4" defer></script>';
+const STYLE='<link rel="stylesheet" href="/assets/index-activation-v1.css?v=20260627-v3">';
+const SCRIPT='<script src="/assets/gallery-bootstrap.js?v=20260627-activation-v5" defer></script>';
 
 function normalize(path){return path.replace(/\/+$/,'')||'/';}
 
