@@ -11,7 +11,6 @@
   const PUBLIC_LIMIT = 100;
   const ARCHIVE_LIMIT = 500;
   const MINIMUM_VISIBLE = 15;
-  const FALLBACK_IMAGE = '/assets/news-fallback.svg';
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
   const labels = {
     loading: en ? 'Loading verified business news…' : 'Učitavanje provjerenih poslovnih vijesti…',
@@ -19,8 +18,7 @@
     none: en ? 'Verified news is temporarily unavailable.' : 'Provjerene vijesti trenutačno nisu dostupne.',
     updated: en ? 'Last verification' : 'Zadnja provjera',
     items: en ? 'news items' : 'vijesti',
-    source: en ? 'Source' : 'Izvor',
-    fallback: en ? 'GNK ASG fallback image' : 'GNK ASG zamjenska slika'
+    source: en ? 'Source' : 'Izvor'
   };
 
   function ts(value) { const parsed = Date.parse(value || ''); return Number.isFinite(parsed) ? parsed : 0; }
@@ -31,12 +29,11 @@
     try { const url = new URL(String(value || ''), location.origin); return ['http:','https:'].includes(url.protocol) ? url.href : ''; }
     catch { return ''; }
   }
-  function ownPath(value) {
+  function realImage(value) {
     const raw = String(value || '').trim();
-    if (raw.startsWith('/') && !raw.startsWith('//')) return raw;
+    if (!raw || raw.includes('/assets/news-fallback.svg') || raw.startsWith('data:image/')) return '';
     return valid(raw);
   }
-  function isFallback(value) { const image = String(value || '').toLowerCase(); return !image || image.includes('/assets/news-fallback.svg') || image.startsWith('data:image/'); }
   function listFrom(payload) { return Array.isArray(payload) ? payload : (Array.isArray(payload?.items) ? payload.items : []); }
 
   async function getJson(path) {
@@ -51,15 +48,14 @@
     for (const payload of feeds) {
       for (const item of listFrom(payload).slice(0, ARCHIVE_LIMIT)) {
         const url = valid(item?.url || item?.link || item?.articleUrl || item?.sourceUrl);
-        const rawImage = ownPath(item?.image || item?.imageUrl || item?.image_url || item?.thumbnail || item?.thumbnailUrl);
-        const image = rawImage || FALLBACK_IMAGE;
+        const image = realImage(item?.image || item?.imageUrl || item?.image_url || item?.thumbnail || item?.thumbnailUrl);
         const title = String(item?.title || item?.titleHr || item?.titleEn || '').replace(/\s+/g,' ').trim();
         const summary = String(item?.summary || item?.summaryHr || item?.summaryEn || item?.description || item?.text || item?.excerpt || '').replace(/\s+/g,' ').trim();
         const source = String(item?.source || item?.sourceTitle || item?.region || item?.category || 'GNK ASG').replace(/\s+/g,' ').trim();
         const hasStrictVerification = item?.verified === true || item?.verification;
-        const strictOk = item?.verified === true && item?.verification?.article?.ok === true && (item?.verification?.image?.ok === true || isFallback(image));
+        const strictOk = item?.verified === true && item?.verification?.article?.ok === true && item?.verification?.image?.ok === true;
         if (hasStrictVerification && !strictOk) continue;
-        if (!url || !title || summary.length < 40 || !source) continue;
+        if (!url || !image || !title || summary.length < 40 || !source) continue;
         const key = String(item?.id || url).toLowerCase();
         if (seen.has(key)) continue;
         seen.add(key);
@@ -71,8 +67,8 @@
           summary,
           source,
           publishedAt: item?.publishedAt || item?.published_at || item?.date || '',
-          imageAlt: String(item?.imageAlt || (isFallback(image) ? labels.fallback : title)),
-          imageCredit: String(item?.imageCredit || (isFallback(image) ? 'GNK ASG' : source))
+          imageAlt: String(item?.imageAlt || title),
+          imageCredit: String(item?.imageCredit || source)
         });
       }
     }
@@ -95,10 +91,9 @@
 
   function bindImages(feed) {
     root.querySelectorAll('[data-news-image]').forEach(image => {
-      if (isFallback(image.getAttribute('src'))) return;
-      image.addEventListener('error', () => { image.src = FALLBACK_IMAGE; image.alt = labels.fallback; updateVisibleStatus(feed); }, {once:true});
+      image.addEventListener('error', () => { image.closest('.news-card')?.remove(); updateVisibleStatus(feed); }, {once:true});
       image.addEventListener('load', () => {
-        if (image.naturalWidth < 120 || image.naturalHeight < 80) { image.src = FALLBACK_IMAGE; image.alt = labels.fallback; updateVisibleStatus(feed); }
+        if (image.naturalWidth < 120 || image.naturalHeight < 80) { image.closest('.news-card')?.remove(); updateVisibleStatus(feed); }
       }, {once:true});
     });
   }
