@@ -1,7 +1,7 @@
 import app from './index-admin-hub-v26-public-v10-base.js';
 import {patchIndexActivation} from './index-activation-wrapper-v1.js';
 
-export const VERSION='GNK_ASG_PUBLIC_V13_INDEX_NATIVE_MENU_20260627';
+export const VERSION='GNK_ASG_PUBLIC_V14_INDEX_NATIVE_MENU_HR_EN_20260627';
 // Deployment compatibility marker: GNK_ASG_PUBLIC_V11_MENU_AI_MARKETS_20260627
 const INDEX_PATHS=new Set(['/','/en']);
 const MARKET_PATHS=new Set(['/trzista','/markets']);
@@ -12,7 +12,7 @@ async function serveIndex(path,request,env){
   const fallback=new Response('GNK ASG index asset unavailable',{status:503,headers:{'content-type':'text/plain; charset=utf-8','cache-control':'no-store'}});
   const response=await patchIndexActivation(fallback,path,request,env);
   const headers=new Headers(response.headers);
-  headers.set('x-gnk-asg-index-isolation','DEDICATED_INDEX_ENTRY_V13');
+  headers.set('x-gnk-asg-index-isolation','DEDICATED_INDEX_ENTRY_V14');
   headers.set('x-gnk-asg-index-menu','NATIVE_INDEX_MENU_ONLY');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
