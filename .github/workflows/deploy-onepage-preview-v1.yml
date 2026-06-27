@@ -1,0 +1,81 @@
+name: Deploy One Page V1 Preview
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/onepage-v1/**'
+      - 'workers/gnk-asg-onepage-v1/**'
+      - '.github/workflows/deploy-onepage-preview-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-onepage-v1-preview
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate isolated one-page package
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check apps/onepage-v1/app.js
+          node --check workers/gnk-asg-onepage-v1/src/index.js
+          python -m json.tool apps/onepage-v1/site.config.json >/dev/null
+          grep -q 'scrolling="no"' apps/onepage-v1/app.js
+          grep -q 'pointer-events:none' apps/onepage-v1/styles.css
+          grep -q 'aspect-ratio:var(--code-ratio' apps/onepage-v1/styles.css
+          grep -q 'GNK ASG d.o.o.' apps/onepage-v1/site.config.json
+          grep -q 'GNK DINAMO Ltd.' apps/onepage-v1/site.config.json
+          grep -q '504,00 mil. EUR' apps/onepage-v1/site.config.json
+          grep -q '4,7046 mlrd. EUR' apps/onepage-v1/site.config.json
+          cd workers/gnk-asg-onepage-v1
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml
+      - name: Deploy isolated preview Worker
+        working-directory: workers/gnk-asg-onepage-v1
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config wrangler.toml 2>&1 | tee /tmp/onepage-deploy.log
+          URL=$(grep -Eo 'https://[^ ]+\.workers\.dev' /tmp/onepage-deploy.log | tail -1)
+          test -n "$URL"
+          echo "PREVIEW_URL=$URL" >> "$GITHUB_ENV"
+      - name: Verify preview page and PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in $(seq 1 18); do
+            HTML=$(curl -fsS "${PREVIEW_URL}/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            HEALTH=$(curl -fsS "${PREVIEW_URL}/health?cb=${GITHUB_RUN_ID}-${n}" || true)
+            PDF_TYPE=$(curl -fsSI "${PREVIEW_URL}/documents/GNK_ASG_Financijski_pregled_FY2025.pdf" | tr -d '\r' | grep -i '^content-type:' || true)
+            if printf '%s' "$HTML" | grep -q 'GNK ASG · GNK DINAMO Ltd.' \
+              && printf '%s' "$HEALTH" | grep -q 'GNK_ASG_ONEPAGE_WORKER_V1_20260627_R2' \
+              && printf '%s' "$PDF_TYPE" | grep -qi 'application/pdf'; then
+              echo "Verified: ${PREVIEW_URL}"
+              exit 0
+            fi
+            sleep 6
+          done
+          exit 1
+      - name: Preview summary
+        if: always()
+        run: |
+          {
+            echo '## GNK ASG One Page V1'
+            echo "- Preview: ${PREVIEW_URL:-deployment did not return a URL}"
+            echo '- Production domain unchanged.'
+            echo '- Legacy Workers and routes unchanged.'
+          } >> "$GITHUB_STEP_SUMMARY"
