@@ -2,6 +2,7 @@ import app from './index-admin-hub-v23-aktual.js';
 import {patchIndexActivation} from './index-activation-wrapper-v1.js';
 
 const MAP_FILM_STYLE='<link rel="stylesheet" href="/assets/index-map-film-v1.css?v=20260627-v1">';
+const END_STATE_SCRIPT='<script id="gnk-activation-end-state">(()=>{const target=Date.parse("2026-10-07T15:30:00Z");const run=()=>{if(Date.now()<target)return;const status=document.querySelector("[data-activation-status]");if(status)status.textContent=document.documentElement.lang==="en"?"CODE ACTIVATED · NEW YORK · OCTOBER 7, 2026 · 11:30 AM ET":"KOD AKTIVIRAN · NEW YORK · 7.10.2026. · 11:30 ET"};run();setInterval(run,1000)})();</script>';
 
 function normalize(path){return path.replace(/\/+$/,'')||'/';}
 function mapBlock(english){return english
@@ -13,11 +14,12 @@ function filmBlock(english){return english
 
 async function patchMapFilm(response,path,request){
   if(request.method!=='GET'||!['/','/en'].includes(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
-  const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('x-gnk-asg-index-map-film','GNK_ASG_INDEX_MAP_FILM_V1_20260627');
+  const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('x-gnk-asg-index-map-film','GNK_ASG_INDEX_MAP_FILM_V2_20260627');
   let body=await response.text();
   if(!body.includes('index-map-film-v1.css'))body=body.replace('</head>',`${MAP_FILM_STYLE}</head>`);
   if(!body.includes('gnk-activation__map'))body=body.replace('<div class="gnk-activation__stage">',`${mapBlock(path==='/en')}<div class="gnk-activation__stage">`);
   if(!body.includes('gnk-activation__film'))body=body.replace('<div class="gnk-activation__status">',`${filmBlock(path==='/en')}<div class="gnk-activation__status">`);
+  if(!body.includes('gnk-activation-end-state'))body=body.replace('</body>',`${END_STATE_SCRIPT}</body>`);
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
 
