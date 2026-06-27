@@ -7,6 +7,7 @@ on:
       - '.github/workflows/deploy-admin-dashboard-v3.yml'
       - 'apps/portal/assets/admin-dashboard-v3.css'
       - 'apps/portal/assets/admin-dashboard-v3.js'
+      - 'apps/portal/assets/admin-center-health-v1.js'
       - 'apps/portal/assets/admin-module-loader-v3.js'
       - 'apps/portal/assets/index-hero-scale-v13.css'
       - 'apps/portal/assets/index-code-cleanup-v8.js'
@@ -18,6 +19,7 @@ on:
       - '.github/workflows/deploy-admin-dashboard-v3.yml'
       - 'apps/portal/assets/admin-dashboard-v3.css'
       - 'apps/portal/assets/admin-dashboard-v3.js'
+      - 'apps/portal/assets/admin-center-health-v1.js'
       - 'apps/portal/assets/admin-module-loader-v3.js'
       - 'apps/portal/assets/index-hero-scale-v13.css'
       - 'apps/portal/assets/index-code-cleanup-v8.js'
@@ -46,6 +48,7 @@ jobs:
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/admin-dashboard-v3.js
+          node --check apps/portal/assets/admin-center-health-v1.js
           node --check apps/portal/assets/admin-module-loader-v3.js
           node --check apps/portal/assets/index-code-cleanup-v8.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
@@ -56,6 +59,8 @@ jobs:
           grep -q 'admin-module-loader-v3.js' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           grep -q "frame-ancestors 'self'" workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           grep -q 'width:50%' apps/portal/assets/index-hero-scale-v13.css
+          grep -q 'Mail Studio modul' apps/portal/assets/admin-center-health-v1.js
+          grep -q 'Istek vremena nakon 10 sekundi' apps/portal/assets/admin-center-health-v1.js
           grep -q '/data/deployment-status.json' apps/portal/assets/admin-dashboard-v3.js
           grep -q '/api/mail-center/send-readiness' apps/portal/assets/admin-dashboard-v3.js
           cd workers/gnk-asg-direct-operator
@@ -66,16 +71,18 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify Admin loader and index scale
+      - name: Verify Admin loader, audit and index scale
         shell: bash
         run: |
           set -euo pipefail
           for n in $(seq 1 18); do
             LOADER=$(curl -fsS "https://gnk-asg.hr/assets/admin-module-loader-v3.js?cb=${GITHUB_RUN_ID}-${n}" || true)
+            AUDIT=$(curl -fsS "https://gnk-asg.hr/assets/admin-center-health-v1.js?cb=${GITHUB_RUN_ID}-${n}" || true)
             SCALE=$(curl -fsS "https://gnk-asg.hr/assets/index-hero-scale-v13.css?cb=${GITHUB_RUN_ID}-${n}" || true)
             STATUS=$(curl -fsS "https://gnk-asg.hr/data/deployment-status.json?cb=${GITHUB_RUN_ID}-${n}" || true)
             ADMIN=$(curl -fsS "https://gnk-asg.hr/admin-center/?cb=${GITHUB_RUN_ID}-${n}" || true)
             if printf '%s' "$LOADER" | grep -q 'ADMIN_MODULE_LOADER_V3' \
+              && printf '%s' "$AUDIT" | grep -q 'Mail Studio modul' \
               && printf '%s' "$SCALE" | grep -q 'width:50%' \
               && printf '%s' "$STATUS" | grep -q 'index-admin-hub-v27-news-status.js' \
               && printf '%s' "$ADMIN" | grep -q 'admin-module-loader-v3.js'; then
