@@ -30,7 +30,7 @@
     if(!document.querySelector('.code-launch-bar')&&codeStage){
       const launch=document.createElement('div');
       launch.className='code-launch-bar';
-      launch.innerHTML=`<div class="code-launch-copy"><small>THE CODE · 390 × 844 · ${text('šest scena','six scenes')}</small><strong>${text('Pokreni prezentaciju od prve scene','Start the presentation from scene one')}</strong><span>${text('LIVE odbrojavanje ostaje stalni početni i završni prikaz.','The live countdown remains the permanent default and final screen.')}</span></div><button class="code-launch-button" type="button">${text('Pokreni prezentaciju','Start presentation')}</button>`;
+      launch.innerHTML=`<div class="code-launch-copy"><small>THE CODE · 390 × 844 · ${text('šest scena','six scenes')}</small><strong>${text('Pokreni prezentaciju od prve scene','Start the presentation from scene one')}</strong></div><button class="code-launch-button" type="button">${text('Pokreni prezentaciju','Start presentation')}</button>`;
       frame.before(launch);
     }
     if(!frame.querySelector('.code-company--asg')){
