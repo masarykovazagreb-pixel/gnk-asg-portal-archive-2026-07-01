@@ -1,170 +1,118 @@
 {
-  "version": "GNK_ASG_ONEPAGE_V1_20260627",
-  "updatedAt": "2026-06-27T16:00:00+02:00",
+  "version": "GNK_ASG_ONEPAGE_V1_20260627_LOCKED_FIRST_SCREEN",
+  "updatedAt": "2026-06-27T16:45:00+02:00",
   "theme": {
-    "gold": "#d5aa4b",
-    "goldHighlight": "#f2d27c",
-    "blue": "#3a8fd8"
+    "navy": "#07111d",
+    "navyDeep": "#03070d",
+    "gold": "#cba24a",
+    "goldHighlight": "#f0d38a",
+    "stone": "#81786d",
+    "stoneLight": "#c8c0b5",
+    "blue": "#2e79b4"
   },
   "settings": {
     "defaultLanguage": "hr",
-    "contactEndpoint": "/api/contact",
     "codeUrl": "https://gnk-asg.hr/the-code/?embed=1",
-    "visualApprovalRequired": true
+    "codeAspectRatio": "16 / 9",
+    "financialPdf": "./documents/GNK_ASG_Financijski_pregled_FY2025.pdf"
   },
   "brand": {
-    "primary": "GNK ASG d.o.o.",
-    "secondary": "GNK DINAMO Ltd.",
-    "short": "GNK ASG"
+    "asg": {
+      "name": "GNK ASG d.o.o.",
+      "logo": "./brand-gnk-asg.svg",
+      "meta": {
+        "hr": "Zagreb · OIB 75227917632 · MBS 081512375",
+        "en": "Zagreb · Tax ID 75227917632 · Reg. no. 081512375"
+      }
+    },
+    "dinamo": {
+      "name": "GNK DINAMO Ltd.",
+      "logo": "./brand-gnk-dinamo.svg",
+      "meta": {
+        "hr": "Boulder, Colorado · Entity ID 20238180649",
+        "en": "Boulder, Colorado · Entity ID 20238180649"
+      }
+    }
   },
   "navigation": [
-    {"id":"home","hr":"Početna","en":"Home"},
-    {"id":"profile","hr":"Profil","en":"Profile"},
-    {"id":"finance","hr":"Financije","en":"Finance"},
-    {"id":"network","hr":"Mreža","en":"Network"},
     {"id":"code","hr":"THE CODE","en":"THE CODE"},
-    {"id":"news","hr":"Vijesti","en":"News"},
-    {"id":"publications","hr":"Objave","en":"Publications"},
-    {"id":"tools","hr":"Alati","en":"Tools"},
-    {"id":"contact","hr":"Kontakt","en":"Contact"}
+    {"id":"asg","hr":"GNK ASG","en":"GNK ASG"},
+    {"id":"dinamo","hr":"GNK DINAMO Ltd.","en":"GNK DINAMO Ltd."},
+    {"id":"network","hr":"Mreža","en":"Network"}
   ],
-  "hero": {
-    "eyebrow": {"hr":"GNK ASG · GNK DINAMO Ltd.","en":"GNK ASG · GNK DINAMO Ltd."},
-    "title": {"hr":"Jedna stranica.","en":"One page."},
-    "titleAccent": {"hr":"Cijeli sustav.","en":"The entire system."},
-    "lead": {
-      "hr":"Korporativni profil, financije, globalna mreža, THE CODE, vijesti, objave, dokumenti, alati i kontakt objedinjeni su u jednom čistom i lako izmjenjivom sučelju.",
-      "en":"Corporate profile, financials, global network, THE CODE, news, publications, documents, tools and contact are unified in one clean and easily editable interface."
+  "code": {
+    "label": {"hr":"Integrirana prezentacija · fiksni prikaz","en":"Integrated presentation · fixed view"},
+    "title": "THE CODE",
+    "note": {
+      "hr":"Bez unutarnjeg skrolanja. Prikaz je zaključan u punoj širini i skalira se kao jedna cjelina.",
+      "en":"No internal scrolling. The view is locked to full width and scales as one unit."
     },
-    "primaryAction": {"hr":"Otvori pregled","en":"Open overview","target":"profile"},
-    "secondaryAction": {"hr":"Kontakt","en":"Contact","target":"contact"},
-    "visualSlot": "HOME-HERO-01"
+    "fullscreen": {"hr":"Cijeli zaslon","en":"Full screen"}
   },
-  "stats": [
-    {"value":"33","hr":"postojeće lokacije","en":"existing locations"},
-    {"value":"12","hr":"planiranih lokacija","en":"planned locations"},
-    {"value":"45","hr":"ukupna globalna mreža","en":"total global network"},
-    {"value":"2026","hr":"godina aktivacije","en":"activation year"}
-  ],
-  "profile": {
-    "heading": {"hr":"Korporativni profil","en":"Corporate profile"},
-    "intro": {"hr":"Ključni pravni, upravljački i organizacijski podaci bez skrivanja iza dodatnih podstranica.","en":"Key legal, governance and organizational data without hiding it behind additional subpages."},
-    "companies": [
-      {
-        "name":"GNK ASG d.o.o.",
-        "items":[
-          {"label":{"hr":"Sjedište","en":"Registered office"},"value":"Zagrebačka cesta 130, Zagreb"},
-          {"label":{"hr":"OIB","en":"Tax ID"},"value":"75227917632"},
-          {"label":{"hr":"MBS","en":"Registration no."},"value":"081512375"},
-          {"label":{"hr":"Osnovano","en":"Established"},"value":{"hr":"12. svibnja 2023.","en":"12 May 2023"}},
-          {"label":{"hr":"Direktor / UBO","en":"Director / UBO"},"value":"Nermin Sefić"},
-          {"label":{"hr":"Djelatnost","en":"Activity"},"value":{"hr":"Sportske djelatnosti, NKD 93.19.0","en":"Sports activities, NKD 93.19.0"}}
-        ]
-      },
-      {
-        "name":"GNK DINAMO Ltd.",
-        "items":[
-          {"label":{"hr":"Sjedište","en":"Registered office"},"value":"Boulder, Colorado, USA"},
-          {"label":{"hr":"Entity ID","en":"Entity ID"},"value":"20238180649"},
-          {"label":{"hr":"Ovlašteni predstavnik","en":"Authorized representative"},"value":"Nermin Sefić"},
-          {"label":{"hr":"Povezana društva","en":"Affiliated companies"},"value":"33"},
-          {"label":{"hr":"Širenje 2026.","en":"2026 expansion"},"value":{"hr":"12 pozicija","en":"12 positions"}},
-          {"label":{"hr":"Grupni okvir","en":"Group framework"},"value":{"hr":"Sport · tehnologija · financije · governance","en":"Sport · technology · finance · governance"}}
-        ]
-      }
-    ]
+  "asg": {
+    "heading": "GNK ASG d.o.o.",
+    "eyebrow": {"hr":"Samostalni financijski pregled · FY 2025","en":"Standalone financial overview · FY 2025"},
+    "description": {
+      "hr":"Ključni korporativni i financijski podaci društva prikazani su neposredno ispod THE CODE-a.",
+      "en":"Key corporate and financial data are presented immediately below THE CODE."
+    },
+    "facts": [
+      {"label":{"hr":"Sjedište","en":"Registered office"},"value":"Zagrebačka cesta 130, Zagreb"},
+      {"label":{"hr":"OIB","en":"Tax ID"},"value":"75227917632"},
+      {"label":{"hr":"MBS","en":"Registration no."},"value":"081512375"},
+      {"label":{"hr":"Osnovano","en":"Established"},"value":{"hr":"12. svibnja 2023.","en":"12 May 2023"}},
+      {"label":{"hr":"Direktor / UBO","en":"Director / UBO"},"value":"Nermin Sefić"},
+      {"label":{"hr":"Djelatnost","en":"Activity"},"value":{"hr":"Sportske djelatnosti · NKD 93.19.0","en":"Sports activities · NKD 93.19.0"}}
+    ],
+    "metrics": [
+      {"label":{"hr":"Ukupni prihodi","en":"Total revenue"},"value":"504,00 mil. EUR"},
+      {"label":{"hr":"Ukupna aktiva","en":"Total assets"},"value":"46,40 mil. EUR"},
+      {"label":{"hr":"Kapital i rezerve","en":"Equity and reserves"},"value":"46,21 mil. EUR"},
+      {"label":{"hr":"Kratkoročne obveze","en":"Current liabilities"},"value":"184,50 tis. EUR"},
+      {"label":{"hr":"Dobit godine","en":"Profit for the year"},"value":"16.076,47 EUR"},
+      {"label":{"hr":"Dugoročne obveze","en":"Long-term liabilities"},"value":"0,00 EUR"}
+    ],
+    "pdfLabel": {"hr":"Preuzmi financijski pregled PDF","en":"Download financial overview PDF"}
   },
-  "finance": {
-    "heading":{"hr":"Financijski pokazatelji","en":"Financial indicators"},
-    "intro":{"hr":"Pokazatelji su izdvojeni u konfiguraciji kako bi se mogli promijeniti bez preuređenja stranice.","en":"Indicators are stored in configuration so they can be changed without rebuilding the page."},
-    "companies":[
-      {
-        "name":"GNK ASG d.o.o. · FY 2024",
-        "metrics":[
-          {"label":{"hr":"Promet","en":"Revenue"},"value":"€169.46M"},
-          {"label":{"hr":"EBITDA","en":"EBITDA"},"value":"€3.77M"},
-          {"label":{"hr":"Neto dobit","en":"Net profit"},"value":"€12,887"},
-          {"label":{"hr":"Status","en":"Status"},"value":{"hr":"Mikro poduzetnik","en":"Micro enterprise"}}
-        ]
-      },
-      {
-        "name":"GNK DINAMO Ltd. · FY 2024",
-        "metrics":[
-          {"label":{"hr":"Prihod","en":"Revenue"},"value":"€1.192B"},
-          {"label":{"hr":"Dobit","en":"Profit"},"value":"€431.49M"},
-          {"label":{"hr":"Kapital","en":"Capital"},"value":"€431.49M"},
-          {"label":{"hr":"Softver","en":"Software"},"value":"€80M"}
-        ]
-      }
+  "dinamo": {
+    "heading": "GNK DINAMO Ltd.",
+    "eyebrow": {"hr":"Konsolidirani upravljački pregled · FY 2025","en":"Consolidated management overview · FY 2025"},
+    "description": {
+      "hr":"Pravni identitet, grupna struktura i konsolidirani financijski pokazatelji međunarodne grupe.",
+      "en":"Legal identity, group structure and consolidated financial indicators of the international group."
+    },
+    "facts": [
+      {"label":{"hr":"Sjedište","en":"Registered office"},"value":"Boulder, Colorado, USA"},
+      {"label":{"hr":"Entity ID","en":"Entity ID"},"value":"20238180649"},
+      {"label":{"hr":"Status","en":"Status"},"value":"Good Standing"},
+      {"label":{"hr":"Ovlašteni predstavnik","en":"Authorized representative"},"value":"Nermin Sefić"},
+      {"label":{"hr":"Povezana društva","en":"Affiliated companies"},"value":"33"},
+      {"label":{"hr":"Planirano širenje 2026.","en":"Planned expansion 2026"},"value":{"hr":"12 dodatnih lokacija","en":"12 additional locations"}}
+    ],
+    "metrics": [
+      {"label":{"hr":"Prihodi grupe","en":"Group revenue"},"value":"4,7046 mlrd. EUR"},
+      {"label":{"hr":"Neto dobit","en":"Net profit"},"value":"982,48 mil. EUR"},
+      {"label":{"hr":"Ukupna aktiva","en":"Total assets"},"value":"3,4830 mlrd. EUR"},
+      {"label":{"hr":"Kapital i rezerve","en":"Equity and reserves"},"value":"3,4140 mlrd. EUR"},
+      {"label":{"hr":"Ukupne obveze","en":"Total liabilities"},"value":"69,04 mil. EUR"},
+      {"label":{"hr":"Udio kapitala","en":"Equity ratio"},"value":"98,02 %"}
     ]
   },
   "network": {
-    "heading":{"hr":"Globalna mreža","en":"Global network"},
-    "intro":{"hr":"Postojeće i planirane lokacije prikazane su u istoj sekciji, bez dodatnih mapa i preklapajućih slojeva.","en":"Existing and planned locations are shown in one section, without additional maps or overlapping layers."},
-    "visualSlot":"HOME-NETWORK-03",
-    "locations":[
-      {"city":"Zagreb","status":{"hr":"aktivno","en":"active"}},
-      {"city":"Boulder","status":{"hr":"aktivno","en":"active"}},
-      {"city":"New York","status":{"hr":"aktivacija 2026.","en":"activation 2026"}},
-      {"city":"Budimpešta","status":{"hr":"izvor ideje","en":"origin of the idea"}},
-      {"city":"Beograd","status":{"hr":"regionalna mreža","en":"regional network"}},
-      {"city":"London","status":{"hr":"planirano","en":"planned"}},
-      {"city":"Dubai","status":{"hr":"planirano","en":"planned"}},
-      {"city":"Singapore","status":{"hr":"planirano","en":"planned"}},
-      {"city":"Sydney","status":{"hr":"planirano","en":"planned"}},
-      {"city":"Perth","status":{"hr":"planirano","en":"planned"}}
+    "heading": {"hr":"Globalna mreža","en":"Global network"},
+    "eyebrow": "GNK DINAMO Ltd. Group Network",
+    "description": {
+      "hr":"Bijela vektorska karta u punoj širini: 33 postojeće i 12 planiranih lokacija.",
+      "en":"Full-width white vector map: 33 existing and 12 planned locations."
+    },
+    "stats": [
+      {"value":"33","hr":"postojeće","en":"existing"},
+      {"value":"12","hr":"planirano","en":"planned"},
+      {"value":"45","hr":"ukupno","en":"total"}
     ]
-  },
-  "code": {
-    "heading":{"hr":"THE CODE","en":"THE CODE"},
-    "intro":{"hr":"Integrirana prezentacija prikazuje se unutar stranice. Izvor se mijenja jednom vrijednošću u konfiguraciji.","en":"The integrated presentation is displayed inside the page. Its source is changed through a single configuration value."}
-  },
-  "news": {
-    "heading":{"hr":"Vijesti i inteligencija","en":"News and intelligence"},
-    "intro":{"hr":"Samo poslovne, financijske, tehnološke i korporativne teme.","en":"Business, financial, technology and corporate topics only."},
-    "items":[
-      {"category":{"hr":"Korporativno","en":"Corporate"},"title":{"hr":"Globalna mreža i strateško širenje 2026.","en":"Global network and strategic expansion in 2026"},"summary":{"hr":"Jedinstven pregled postojećih i planiranih međunarodnih pozicija grupe.","en":"A unified overview of the group’s existing and planned international positions."},"url":"#network"},
-      {"category":{"hr":"Tehnologija","en":"Technology"},"title":{"hr":"THE CODE: aktivacija u New Yorku","en":"THE CODE: activation in New York"},"summary":{"hr":"Kod razvijen iz ideje rođene u Budimpešti 1990. aktivira se 7. listopada 2026. u 11:30 ET.","en":"The code developed from an idea born in Budapest in 1990 activates on 7 October 2026 at 11:30 ET."},"url":"#code"},
-      {"category":{"hr":"Financije","en":"Finance"},"title":{"hr":"Konsolidirani pregled grupe","en":"Consolidated group overview"},"summary":{"hr":"Ključni financijski pokazatelji dostupni su izravno na početnoj stranici.","en":"Key financial indicators are available directly on the homepage."},"url":"#finance"}
-    ]
-  },
-  "publications": {
-    "heading":{"hr":"Objave i dokumenti","en":"Publications and documents"},
-    "intro":{"hr":"Dokumenti se dodaju kao stavke u konfiguraciji; nema potrebe za izradom nove podstranice.","en":"Documents are added as configuration items; no new subpage is required."},
-    "items":[
-      {"type":"PDF","title":{"hr":"Korporativni profil","en":"Corporate profile"},"summary":{"hr":"Sažeti pregled društava, upravljanja i međunarodne mreže.","en":"A concise overview of the companies, governance and international network."},"url":"#profile"},
-      {"type":"FY 2025","title":{"hr":"Financijski centar","en":"Financial centre"},"summary":{"hr":"Mjesto za završna financijska izvješća i revizorske dokumente.","en":"Location for final financial statements and auditor documents."},"url":"#finance"},
-      {"type":"LEGAL","title":{"hr":"Pravni dokumenti","en":"Legal documents"},"summary":{"hr":"Uvjeti korištenja, privatnost, GDPR i korporativne obavijesti.","en":"Terms of use, privacy, GDPR and corporate notices."},"url":"https://gnk-asg.hr/legal/"}
-    ]
-  },
-  "tools": {
-    "heading":{"hr":"Funkcije i alati","en":"Functions and tools"},
-    "intro":{"hr":"Postojeći funkcionalni moduli ostaju dostupni kao kontrolirane poveznice dok ih postupno ne prenesemo u novi projekt.","en":"Existing functional modules remain available through controlled links until they are progressively moved into the new project."},
-    "items":[
-      {"name":{"hr":"AI pomoć","en":"AI help"},"description":{"hr":"Javni pomoćnik za podatke, dokumente i navigaciju.","en":"Public assistant for data, documents and navigation."},"url":"https://gnk-asg.hr/assistant/"},
-      {"name":{"hr":"Admin centar","en":"Admin centre"},"description":{"hr":"Zaštićeno upravljanje sadržajem i operacijama.","en":"Protected content and operations management."},"url":"https://gnk-asg.hr/operator-dashboard/"},
-      {"name":{"hr":"Mail centar","en":"Mail centre"},"description":{"hr":"Priprema i kontrolirano slanje poslovne komunikacije.","en":"Preparation and controlled sending of business communications."},"url":"https://gnk-asg.hr/mail-studio/"},
-      {"name":{"hr":"Vizualni indeks","en":"Visual index"},"description":{"hr":"Odobreni vizuali i medijski materijali.","en":"Approved visuals and media materials."},"url":"https://gnk-asg.hr/visual-index/"}
-    ]
-  },
-  "contact": {
-    "heading":{"hr":"Kontakt","en":"Contact"},
-    "intro":{"hr":"Poruka se šalje postojećem sigurnom kontaktnom endpointu. Kontaktni podaci i tekst mogu se mijenjati u konfiguraciji.","en":"The message is sent to the existing secure contact endpoint. Contact details and text can be changed in configuration."},
-    "email":"office@gnk-asg.hr",
-    "address":"Zagrebačka cesta 130, Zagreb",
-    "fields": {
-      "name":{"hr":"Ime i prezime","en":"Full name"},
-      "email":{"hr":"E-mail","en":"Email"},
-      "subject":{"hr":"Predmet","en":"Subject"},
-      "message":{"hr":"Poruka","en":"Message"},
-      "send":{"hr":"Pošalji poruku","en":"Send message"},
-      "sending":{"hr":"Slanje…","en":"Sending…"},
-      "success":{"hr":"Poruka je zaprimljena.","en":"Your message has been received."},
-      "error":{"hr":"Slanje nije uspjelo. Pokušajte ponovno ili koristite e-mail.","en":"Sending failed. Please try again or use email."}
-    }
   },
   "footer": {
-    "copyright":"© 2026 GNK ASG d.o.o. & GNK DINAMO Ltd.",
-    "note":{"hr":"Jedinstveni one-page portal · verzija 1","en":"Unified one-page portal · version 1"}
+    "copyright": "© 2026 GNK ASG d.o.o. & GNK DINAMO Ltd.",
+    "note": {"hr":"Radna verzija novog izoliranog portala","en":"Working version of the new isolated portal"}
   }
 }
