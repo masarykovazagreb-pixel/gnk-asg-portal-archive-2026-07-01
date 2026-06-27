@@ -1,7 +1,7 @@
 import app from './index-admin-hub-v25-mail-smoke.js';
+import {patchIndexActivation,VERSION as INDEX_VERSION} from './index-activation-wrapper-v1.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V26_CLEAN_INDEX_20260627_R4';
-const STYLE='<link rel="stylesheet" href="/assets/index-activation-clean-v2.css?v=20260627-v2">';
+export const VERSION='GNK_ASG_ADMIN_HUB_V26_V5_INDEX_20260627_R5';
 const MEDIA_STYLE='<link rel="stylesheet" href="/assets/media-application-code-v2.css?v=20260627-v2">';
 const MEDIA_SCRIPT='<script defer src="/assets/media-application-code-v2.js?v=20260627-v2"></script>';
 const DEBUG_PATH='/data/luxury-index-debug.json';
@@ -35,12 +35,16 @@ async function diagnostic(request,env){
   const payload={
     ok:true,
     version:VERSION,
+    publicIndex:INDEX_VERSION,
     entryPoint:'src/index-admin-hub-v26-clean-index.js',
     assets:[
       await check('/index-white-static-preview-v2.html'),
       await check('/en/index-white-static-preview-v2.html'),
-      await check('/assets/index-white-static-v2.css'),
-      await check('/assets/index-white-static-v2.js'),
+      await check('/assets/index-white-static-v3.css'),
+      await check('/assets/index-wow-v4.css'),
+      await check('/assets/index-code-editorial-v5.css'),
+      await check('/assets/index-unified-1180-v5.css'),
+      await check('/assets/index-wow-v4.js'),
       await check('/the-code/index.html'),
       await check('/the-code/assets/the-code-manual-v2.js'),
       await check('/the-code/assets/the-code-manual-v2.css'),
@@ -49,15 +53,6 @@ async function diagnostic(request,env){
     ]
   };
   return new Response(JSON.stringify(payload,null,2),{headers:noStore(new Headers({'content-type':'application/json; charset=utf-8'}))});
-}
-async function patchIndex(response,path,request){
-  if(request.method!=='GET'||!['/','/en'].includes(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
-  const headers=noStore(new Headers(response.headers));
-  headers.set('x-gnk-asg-index-clean-layout',VERSION);
-  headers.set('x-gnk-asg-index-release','20260627-live-r4');
-  let html=await response.text();
-  if(!html.includes('index-activation-clean-v2.css'))html=html.replace('</head>',`${STYLE}</head>`);
-  return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 async function patchMediaApplication(response,path,request){
   if(request.method!=='GET'||path!==MEDIA_PATH||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
@@ -76,7 +71,7 @@ export default{
     if(request.method==='GET'&&path==='/data/news-feed.json')return aliasResponse(await app.fetch(aliasRequest(request,'/data/news.json'),env,ctx),'news-feed-to-news-json');
     if(request.method==='GET'&&path==='/data/news_archive.json')return aliasResponse(await app.fetch(aliasRequest(request,'/data/news-archive.json'),env,ctx),'news-archive-underscore-to-hyphen');
     let response=await app.fetch(request,env,ctx);
-    response=await patchIndex(response,path,request);
+    response=await patchIndexActivation(response,path,request,env);
     response=await patchMediaApplication(response,path,request);
     return response;
   },
