@@ -1,0 +1,110 @@
+name: Deploy Operations Suite V1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-operations-suite-v1.yml'
+      - 'apps/portal/media-kit-2026/**'
+      - 'apps/portal/assets/media-kit-v1.css'
+      - 'apps/portal/assets/media-kit-v1.js'
+      - 'apps/portal/assets/admin-operations-v1.css'
+      - 'apps/portal/assets/admin-operations-v1.js'
+      - 'apps/portal/assets/admin-center-health-v1.js'
+      - 'apps/portal/data/media-kit-manifest-v1.json'
+      - 'apps/portal/data/operations-readiness-v1.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-canonical-production
+  cancel-in-progress: false
+
+jobs:
+  deploy-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Validate operations package
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/media-kit-v1.js
+          node --check apps/portal/assets/admin-operations-v1.js
+          node --check apps/portal/assets/admin-center-health-v1.js
+          node -e "const fs=require('fs');const kit=JSON.parse(fs.readFileSync('apps/portal/data/media-kit-manifest-v1.json'));if(kit.kits.length!==3)throw new Error('Expected three kits');if(!kit.travelPolicy.humanApprovalRequired)throw new Error('Human approval missing');if(kit.travelPolicy.ticketPurchaseBeforeWrittenApproval!==false)throw new Error('Ticket rule invalid');"
+          test -s apps/portal/media-kit-2026/index.html
+          test -s apps/portal/assets/media-kit-v1.css
+          test -s apps/portal/assets/admin-operations-v1.css
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'gnk-activation__map' workers/gnk-asg-direct-operator/src/index-admin-hub-v24-activation.js
+          grep -q 'gnk-activation__film' workers/gnk-asg-direct-operator/src/index-admin-hub-v24-activation.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Deploy canonical Worker and assets
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify live Operations Suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'JS'
+          const base='https://gnk-asg.hr';
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          async function get(path){
+            try{
+              const url=`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`;
+              const response=await fetch(url,{redirect:'manual',headers:{'cache-control':'no-cache'}});
+              return{status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)};
+            }catch(error){return{status:0,text:'',headers:{},error:String(error)}}
+          }
+          (async()=>{
+            let last={};
+            for(let attempt=1;attempt<=24;attempt++){
+              const [kit,manifest,kitJs,kitCss,opsJs,opsCss,adminHealth,index,application]=await Promise.all([
+                get('/media-kit-2026/'),
+                get('/data/media-kit-manifest-v1.json'),
+                get('/assets/media-kit-v1.js'),
+                get('/assets/media-kit-v1.css'),
+                get('/assets/admin-operations-v1.js'),
+                get('/assets/admin-operations-v1.css'),
+                get('/assets/admin-center-health-v1.js'),
+                get('/'),
+                get('/api/media-application/config')
+              ]);
+              const failures=[];
+              let data=null;try{data=JSON.parse(manifest.text)}catch{}
+              let applicationData=null;try{applicationData=JSON.parse(application.text)}catch{}
+              if(kit.status!==200||!kit.text.includes('data-media-kit-app="v1"'))failures.push(`kit=${kit.status}`);
+              if(manifest.status!==200||data?.kits?.length!==3)failures.push(`manifest=${manifest.status}`);
+              if(!data?.boilerplate?.hr||!data?.boilerplate?.en)failures.push('manifest_bilingual');
+              if(data?.travelPolicy?.ticketPurchaseBeforeWrittenApproval!==false)failures.push('ticket_policy');
+              if(kitJs.status!==200||!kitJs.text.includes('GNK_ASG_MEDIA_KIT_V1'))failures.push(`kit_js=${kitJs.status}`);
+              if(kitCss.status!==200||!kitCss.text.includes('@media print'))failures.push(`kit_css=${kitCss.status}`);
+              if(opsJs.status!==200||!opsJs.text.includes('EXECUTIVE OPERATIONS COCKPIT'))failures.push(`ops_js=${opsJs.status}`);
+              if(opsCss.status!==200||!opsCss.text.includes('.ops-cockpit'))failures.push(`ops_css=${opsCss.status}`);
+              if(adminHealth.status!==200||!adminHealth.text.includes('admin-operations-v1.js'))failures.push(`admin_loader=${adminHealth.status}`);
+              if(index.status!==200||!index.text.includes('gnk-activation__map')||!index.text.includes('gnk-activation__film'))failures.push(`index=${index.status}`);
+              if(application.status!==200||applicationData?.decision!=='HUMAN_ONLY')failures.push(`application=${application.status}`);
+              last={attempt,failures,codes:{kit:kit.status,manifest:manifest.status,kitJs:kitJs.status,kitCss:kitCss.status,opsJs:opsJs.status,opsCss:opsCss.status,adminHealth:adminHealth.status,index:index.status,application:application.status},mediaKitVersion:data?.version||''};
+              console.log(JSON.stringify(last));
+              if(!failures.length){console.log('GNK_ASG_OPERATIONS_SUITE_LIVE=true');return;}
+              await sleep(10000);
+            }
+            throw new Error(JSON.stringify(last));
+          })().catch(error=>{console.error(error);process.exitCode=1});
+          JS
