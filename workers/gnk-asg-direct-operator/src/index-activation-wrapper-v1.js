@@ -6,7 +6,8 @@ function normalize(path){return String(path||'/').replace(/\/+$/,'')||'/';}
 async function loadStaticIndex(request,env,english){
   if(!env.ASSETS?.fetch)throw new Error('ASSETS_BINDING_MISSING');
   const assetPath=english?'/en/index-white-static-preview-v2.html':'/index-white-static-preview-v2.html';
-  const assetResponse=await env.ASSETS.fetch(new Request(new URL(assetPath,request.url),request));
+  const assetUrl=new URL(assetPath,request.url);
+  const assetResponse=await env.ASSETS.fetch(new Request(assetUrl));
   if(!assetResponse.ok)throw new Error(`STATIC_INDEX_${assetResponse.status}`);
   let body=await assetResponse.text();
   if(!body.includes('index-white-static-pdf-state-v2.js'))body=body.replace('</body>',`${PDF_STATE}</body>`);
