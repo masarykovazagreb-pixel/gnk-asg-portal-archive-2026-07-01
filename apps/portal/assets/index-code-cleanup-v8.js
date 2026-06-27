@@ -1,1 +1,45 @@
-(()=>{'use strict';if(!document.querySelector('link[data-index-hero-scale-v13]')){const heroCss=document.createElement('link');heroCss.rel='stylesheet';heroCss.href='/assets/index-hero-scale-v13.css?v=20260627-v13';heroCss.dataset.indexHeroScaleV13='';document.head.appendChild(heroCss)}const stage=document.querySelector('.code-stage');const frame=document.querySelector('.code-frame');if(!stage||!frame)return;const en=document.documentElement.lang==='en';document.querySelector('.code-launch-bar')?.remove();stage.classList.add('code-stage--inline');const tools=stage.querySelector('.code-tools');if(tools)tools.innerHTML=`<button class="code-tool" id="codeInlineFullscreen">${en?'Full screen':'Cijeli zaslon'}</button>`;frame.className='code-inline-host';frame.id='codeInlineHost';frame.innerHTML='<div class="code-inline-mount" id="codeInlineMount"></div>';if(!document.querySelector('link[data-code-inline-v10]')){const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/index-code-inline-v10.css?v=20260627-v11';css.dataset.codeInlineV10='';document.head.appendChild(css)}if(!document.querySelector('style[data-code-inline-align-v11]')){const style=document.createElement('style');style.dataset.codeInlineAlignV11='';style.textContent=`.code-inline-host{border-radius:22px!important;overflow:hidden!important;background:linear-gradient(135deg,#fffdf8 0%,#f8f2e7 44%,#efe2c4 50%,#f8f2e7 56%,#fffdf8 100%)!important}.code-inline-host .ci-shell{grid-template-columns:minmax(250px,1fr) minmax(390px,430px) minmax(250px,1fr)!important;align-items:stretch!important;min-height:844px!important;height:844px!important;padding:0!important;background:linear-gradient(90deg,#fffdf8 0%,#f8f2e7 32%,#efe1bd 50%,#f8f2e7 68%,#fffdf8 100%)!important}.code-inline-host .ci-company{height:844px!important;min-height:844px!important;padding-top:38px!important;padding-bottom:34px!important}.code-inline-host .ci-company--left{border-right:0!important;box-shadow:inset -30px 0 34px -34px rgba(141,101,25,.34)!important}.code-inline-host .ci-company--right{border-left:0!important;box-shadow:inset 30px 0 34px -34px rgba(141,101,25,.34)!important}.code-inline-host .ci-app{align-self:stretch!important;justify-self:stretch!important;width:100%!important;max-width:430px!important;height:844px!important;border-top:0!important;border-bottom:0!important;border-color:rgba(168,133,55,.22)!important;box-shadow:-16px 0 32px -28px rgba(90,62,10,.35),16px 0 32px -28px rgba(90,62,10,.35)!important}.code-inline-host .ci-shell:after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(90deg,transparent calc(50% - 222px),rgba(255,255,255,.42) calc(50% - 215px),transparent calc(50% - 202px),transparent calc(50% + 202px),rgba(255,255,255,.42) calc(50% + 215px),transparent calc(50% + 222px))}.code-inline-host .ci-controls,.code-inline-host .ci-scene{z-index:6!important}@media(max-width:1100px){.code-inline-host .ci-shell{grid-template-columns:minmax(240px,1fr) minmax(390px,430px)!important}.code-inline-host .ci-company--right{grid-column:1!important}.code-inline-host .ci-app{grid-column:2!important}}@media(max-width:760px){.code-inline-host .ci-shell{display:flex!important;height:auto!important;min-height:0!important;padding:8px!important}.code-inline-host .ci-app{width:min(390px,100%)!important;height:auto!important;aspect-ratio:390/844!important;border:1px solid rgba(168,133,55,.22)!important;border-radius:14px!important}.code-inline-host .ci-shell:after{display:none!important}}`;document.head.appendChild(style)}if(!document.querySelector('script[data-code-inline-v10]')){const script=document.createElement('script');script.src='/assets/index-code-inline-v10.js?v=20260627-v11';script.defer=true;script.dataset.codeInlineV10='';document.head.appendChild(script)}})();
+(()=>{'use strict';
+const stage=document.querySelector('.code-stage');
+const frame=document.querySelector('.code-frame');
+const iframe=document.getElementById('codePreview');
+if(!stage||!frame||!iframe)return;
+
+// Keep the stable, isolated THE CODE iframe created by the index markup and
+// enhanced by index-wow-v4.js. Do not replace it with a second inline copy.
+stage.classList.remove('code-stage--inline');
+frame.classList.remove('code-inline-host');
+frame.removeAttribute('id');
+frame.id='codeFrame';
+
+// Force the corrected 7 October 2026 player revision without changing the
+// surrounding public index.
+try{
+  const url=new URL(iframe.getAttribute('src')||'/the-code/',window.location.href);
+  url.searchParams.set('embed','1');
+  url.searchParams.set('v','9');
+  const next=url.pathname+url.search+url.hash;
+  if(iframe.getAttribute('src')!==next)iframe.setAttribute('src',next);
+}catch(_){/* The original iframe URL remains usable. */}
+
+// Defensive controls: retain the existing toolbar even if an older cached
+// enhancement script did not attach its handlers.
+const fullscreen=document.getElementById('codeFullscreen');
+if(fullscreen&&!fullscreen.dataset.codeBound){
+  fullscreen.dataset.codeBound='1';
+  fullscreen.addEventListener('click',()=>{
+    const target=document.getElementById('codeFrame')||iframe;
+    target.requestFullscreen?.();
+  });
+}
+const reload=document.getElementById('codeReload');
+if(reload&&!reload.dataset.codeBound){
+  reload.dataset.codeBound='1';
+  reload.addEventListener('click',()=>{
+    try{
+      const url=new URL(iframe.src,window.location.href);
+      url.searchParams.set('reload',Date.now().toString());
+      iframe.src=url.href;
+    }catch(_){iframe.src=iframe.src;}
+  });
+}
+})();
