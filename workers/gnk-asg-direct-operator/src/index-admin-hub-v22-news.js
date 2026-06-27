@@ -6,12 +6,13 @@ import {
   API_PREFIX as MEDIA_APPLICATION_API
 } from './media-application-portal-v1.js';
 
-const VERSION='GNK_ASG_ADMIN_HUB_V22_NEWS_V18_ARCHIVE_1000_500_20260627';
+const VERSION='GNK_ASG_ADMIN_HUB_V22_NEWS_V19_INDEX_BOOTSTRAP_20260627';
 const NEWS_SCHEDULE=['09:00','16:00','21:00'];
 const SOURCE_MIX={global:13,regional:9,croatian:4};
 const MEDIA_UI='/media-command-center';
 const NOTIFICATION_STYLE='<link rel="stylesheet" href="/assets/media-notifications-v1.css?v=20260627">';
 const NOTIFICATION_SCRIPT='<script defer src="/assets/media-notifications-v1.js?v=20260627"></script>';
+const INDEX_BOOTSTRAP_SCRIPT='<script src="/assets/gallery-bootstrap.js?v=20260627-index-repair-v1" defer></script>';
 
 function normalize(path){return path.replace(/\/+$/,'')||'/';}
 function isApplication(path){return path===MEDIA_APPLICATION_UI||path.startsWith(`${MEDIA_APPLICATION_UI}/`)||path===MEDIA_APPLICATION_API||path.startsWith(`${MEDIA_APPLICATION_API}/`);}
@@ -44,6 +45,20 @@ async function patchNewsHtml(response){
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
 
+async function patchIndexBootstrap(response,path,method){
+  if(method!=='GET'||!['/','/en'].includes(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('x-gnk-asg-index-bootstrap','GNK_ASG_INDEX_BOOTSTRAP_REPAIR_V1_20260627');
+  let body=await response.text();
+  if(!body.includes('/assets/gallery-bootstrap.js')){
+    body=body.includes('</body>')?body.replace('</body>',`${INDEX_BOOTSTRAP_SCRIPT}</body>`):`${body}${INDEX_BOOTSTRAP_SCRIPT}`;
+  }
+  return new Response(body,{status:response.status,statusText:response.statusText,headers});
+}
+
 async function patchMediaHtml(response,path){
   if(path!==MEDIA_UI||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
   const headers=new Headers(response.headers);
@@ -67,6 +82,7 @@ export default{
     let response=await app.fetch(request,env,ctx);
     if(request.method==='GET'&&['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json'].includes(path))response=await correctJson(response);
     if(request.method==='GET'&&['/vijesti','/news'].includes(path))response=await patchNewsHtml(response);
+    response=await patchIndexBootstrap(response,path,request.method);
     response=await patchMediaHtml(response,path);
     const headers=new Headers(response.headers);
     headers.set('x-gnk-asg-admin-hub-v22',VERSION);
