@@ -1,0 +1,49 @@
+name: Check Index Existing Fields V2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js'
+      - 'apps/portal/assets/index-existing-media-slots-v2.css'
+      - '.github/workflows/check-index-existing-fields-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate source
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          test -s apps/portal/assets/index-existing-media-slots-v2.css
+          grep -q 'gnkExistingVisualOne 20s' apps/portal/assets/index-existing-media-slots-v2.css
+          grep -q 'height:740px' apps/portal/assets/index-existing-media-slots-v2.css
+          grep -q 'data-gnk-existing-field' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          grep -q 'data:image/webp;base64' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          grep -q 'gallery-bootstrap|index-activation-v1' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+      - name: Worker dry run
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Protect locked index files
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euxo pipefail
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/src/public-shell-v11\.js|workers/gnk-asg-direct-operator/src/index-lock-v4\.js)$'; then
+            exit 1
+          fi
