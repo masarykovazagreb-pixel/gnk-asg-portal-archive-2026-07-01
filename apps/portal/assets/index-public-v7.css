@@ -93,3 +93,29 @@ body{color:#111!important}
 .finance-card:nth-child(2) .metric strong{color:#fff4cf!important;opacity:1!important;text-shadow:0 2px 10px rgba(0,0,0,.48)!important}
 .finance-card:first-child .metric strong{color:#191711!important;opacity:1!important}
 .metric strong{visibility:visible!important;filter:none!important}
+
+/* Number contrast rule: dark numbers on light surfaces. */
+.ci-company .ci-metric strong,
+.code-company__metric strong,
+.finance-card:first-child .metric strong,
+.ci-app .ci-card strong,
+.ci-app .ci-live-time,
+.ci-app .ci-time,
+.ci-app .ci-countdown-number,
+.ci-app .ci-event strong,
+.network-stat strong,
+.location-item b{
+  color:#17130c!important;
+  -webkit-text-fill-color:#17130c!important;
+  text-shadow:none!important
+}
+
+/* Number contrast rule: light numbers on dark surfaces. */
+.finance-card:nth-child(2) .metric strong,
+.finance-card.is-dark .metric strong,
+.dark-panel .metric strong,
+[data-theme="dark"] .metric strong{
+  color:#fff7df!important;
+  -webkit-text-fill-color:#fff7df!important;
+  text-shadow:0 2px 10px rgba(0,0,0,.48)!important
+}
