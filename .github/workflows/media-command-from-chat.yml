@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: gnk-asg-media-command
@@ -87,6 +87,7 @@ jobs:
           echo "execution_key=$execution_key" >> "$GITHUB_OUTPUT"
 
       - name: Execute through Media Center bridge
+        id: execute_command
         shell: bash
         env:
           COMMAND_ID: ${{ steps.queue.outputs.command_id }}
@@ -124,3 +125,19 @@ jobs:
             echo '- Status: SENT'
             echo "- PDF bytes: $PDF_BYTES"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Persist command result
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -s /tmp/media-result.json ]; then
+            printf '{"ok":false,"status":"WORKFLOW_FAILED_BEFORE_BRIDGE","commandId":"%s","recordedAt":"%s"}\n' \
+              "$(jq -r '.commandId' ops/media-command.json)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/media-result.json
+          fi
+          cp /tmp/media-result.json ops/media-command-result.json
+          git config user.name 'GNK ASG Media Command'
+          git config user.email 'media@gnk-asg.hr'
+          git add ops/media-command-result.json
+          git commit -m 'Record Media Center command result [skip ci]' || exit 0
+          git push
