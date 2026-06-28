@@ -4,7 +4,7 @@ export const VERSION='GNK_ASG_PROJECT50_V31_PUBLIC_CORE_MENU_20260628';
 const INDEX_PATHS=new Set(['/','/en']);
 const STATUS_PATHS=new Set(['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json']);
 const MENU_STYLE='<link rel="stylesheet" href="/assets/public-menu-v10.css?v=20260628-v16">';
-const INDEX_MENU_SCRIPT='<script defer src="/assets/index-menu-unified-v16.js?v=20260628-v16"></script>';
+const INDEX_MENU_SCRIPT='<script defer src="/assets/index-menu-unified-v16.js?v=20260628-v17"></script>';
 const ADMIN_EXTENSION_SCRIPT='<script defer src="/assets/admin-center-extensions-v2.js?v=20260628-v2"></script>';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
@@ -34,8 +34,10 @@ async function patchHtml(response,path,request){
     html=html.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,canonicalMenu(path==='/en'));
     html=injectOnce(html,'public-menu-v10.css',MENU_STYLE,'head');
     html=injectOnce(html,'index-menu-unified-v16.js',INDEX_MENU_SCRIPT,'body');
+    html=html.replace(/index-menu-unified-v16\.js\?v=[^"']+/gi,'index-menu-unified-v16.js?v=20260628-v17');
     headers.set('x-gnk-asg-index-menu','PUBLIC_CORE_MENU_V31');
     headers.set('x-gnk-asg-index-menu-items','7');
+    headers.set('x-gnk-asg-design-parity','HR_EN_IDENTICAL');
   }
   if(path==='/admin-center'){
     html=html.replace(/<script[^>]+admin-center-memorandum-v1\.js[^>]*><\/script>/gi,'');
@@ -45,8 +47,11 @@ async function patchHtml(response,path,request){
   }
   if(!INDEX_PATHS.has(path)&&html.includes('public-shell-v15.js')){
     html=html.replace(/public-menu-v10\.css\?v=[^"']+/gi,'public-menu-v10.css?v=20260628-v16');
-    html=html.replace(/public-shell-v15\.js\?v=[^"']+/gi,'public-shell-v15.js?v=20260628-v16');
+    html=html.replace(/public-shell-v15\.js\?v=[^"']+/gi,'public-shell-v15.js?v=20260628-v17');
+    html=html.replace(/public-menu-v10\.js\?v=[^"']+/gi,'public-menu-v10.js?v=20260628-v17');
     headers.set('x-gnk-asg-public-menu','PUBLIC_CORE_MENU_V31');
+    headers.set('x-gnk-asg-public-menu-items','7');
+    headers.set('x-gnk-asg-design-parity','HR_EN_IDENTICAL');
   }
   headers.set('x-gnk-asg-menu-release',VERSION);
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
@@ -56,7 +61,7 @@ async function patchStatus(response,path){
   try{
     const payload=await response.json();
     const headers=mutableHeaders(response);headers.set('content-type','application/json; charset=utf-8');headers.set('x-gnk-asg-menu-release',VERSION);
-    return new Response(JSON.stringify({...payload,entryPoint:'src/index-project50-v30-unified-menu.js',deployedEntryPoint:'src/index-project50-v30-unified-menu.js',menuRelease:VERSION,publicMenu:'PUBLIC_CORE_MENU_V31',publicMenuItems:7,adminMenu:'UNIFIED_ADMIN_EXTENSIONS_V2',adminMenuModules:11,checkedAt:new Date().toISOString()},null,2),{status:response.status,statusText:response.statusText,headers});
+    return new Response(JSON.stringify({...payload,entryPoint:'src/index-project50-v30-unified-menu.js',deployedEntryPoint:'src/index-project50-v30-unified-menu.js',menuRelease:VERSION,publicMenu:'PUBLIC_CORE_MENU_V31',publicMenuItems:7,designParity:'HR_EN_IDENTICAL',adminMenu:'UNIFIED_ADMIN_EXTENSIONS_V2',adminMenuModules:11,checkedAt:new Date().toISOString()},null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
 
