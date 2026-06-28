@@ -24,7 +24,7 @@
     document.head.appendChild(script);
   };
   loadStyle('link[data-code-layout-fix-v1]','/assets/index-code-layout-fix-v1.css?v=20260628-v2','codeLayoutFixV1');
-  loadStyle('link[data-index-city-white-v1]','/assets/index-city-white-v1.css?v=20260628-v4','indexCityWhiteV1');
+  loadStyle('link[data-index-city-white-v1]','/assets/index-city-white-v1.css?v=20260628-v5','indexCityWhiteV1');
   loadScript('script[data-index-city-directory-v2]','/assets/index-city-directory-v2.js?v=20260628-v2','indexCityDirectoryV2');
 
   const inlineHost=stage.querySelector('.code-inline-host');
