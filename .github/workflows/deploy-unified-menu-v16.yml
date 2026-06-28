@@ -1,4 +1,4 @@
-name: Deploy Public Core and Mail Inbox V18
+name: Deploy Public Core and Mail Inbox V19
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: gnk-asg-public-mail-v18-production
+  group: gnk-asg-public-mail-v19-production
   cancel-in-progress: false
 
 jobs:
@@ -36,6 +36,7 @@ jobs:
           node --check apps/portal/assets/admin-center-mail-only-v1.js
           node --check apps/portal/assets/mail-studio-inbox-ui-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-project50-v30-unified-menu.js
+          node --check workers/gnk-asg-direct-operator/src/mail-receiving-centers-v1.js
           node --check workers/gnk-asg-direct-operator/src/mail-inbox-contact-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-project50-v31-mail-inbox.js
           node --test workers/gnk-asg-direct-operator/tests/public-menu-parity.test.mjs
@@ -45,7 +46,8 @@ jobs:
           grep -q 'GNK_ASG_PUBLIC_MENU_V17_CORE_20260628' apps/portal/assets/public-menu-v10.js
           grep -q 'GNK_ASG_INDEX_MENU_V17_CORE_PARITY_20260628' apps/portal/assets/index-menu-unified-v16.js
           grep -q 'GNK_ASG_ADMIN_MAIL_ONLY_V2_20260628' apps/portal/assets/admin-center-mail-only-v1.js
-          grep -q 'GNK_ASG_MAIL_STUDIO_INBOX_UI_V1_20260628' apps/portal/assets/mail-studio-inbox-ui-v1.js
+          grep -q 'GNK_ASG_MAIL_STUDIO_INBOX_UI_V2_CENTERS_20260628' apps/portal/assets/mail-studio-inbox-ui-v1.js
+          grep -q 'GNK_ASG_MAIL_RECEIVING_CENTERS_V1_20260628' workers/gnk-asg-direct-operator/src/mail-receiving-centers-v1.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
       - name: Deploy current branch Worker and assets
@@ -85,8 +87,8 @@ jobs:
             if(!results['/assets/public-menu-v10.js'].text.includes('GNK_ASG_PUBLIC_MENU_V17_CORE_20260628'))failures.push('menu-asset');
             if(!results['/assets/index-menu-unified-v16.js'].text.includes('GNK_ASG_INDEX_MENU_V17_CORE_PARITY_20260628'))failures.push('index-menu-asset');
             if(!results['/assets/admin-center-mail-only-v1.js'].text.includes('GNK_ASG_ADMIN_MAIL_ONLY_V2_20260628'))failures.push('admin-lock-asset');
-            if(!results['/assets/mail-studio-inbox-ui-v1.js'].text.includes('GNK_ASG_MAIL_STUDIO_INBOX_UI_V1_20260628'))failures.push('inbox-ui-asset');
-            if(!status.text.includes('src/index-project50-v31-mail-inbox.js')||!status.text.includes('GNK_ASG_MAIL_INBOX_CONTACT_V1_20260628')||!status.text.includes('GNK_ASG_MAIL_STUDIO_INBOX_UI_V1_20260628')||!status.text.includes('"mailInboxConnected": true'))failures.push('mail-inbox-status');
+            if(!results['/assets/mail-studio-inbox-ui-v1.js'].text.includes('GNK_ASG_MAIL_STUDIO_INBOX_UI_V2_CENTERS_20260628'))failures.push('inbox-ui-asset');
+            if(!status.text.includes('src/index-project50-v31-mail-inbox.js')||!status.text.includes('GNK_ASG_MAIL_INBOX_CONTACT_V2_CENTERS_20260628')||!status.text.includes('GNK_ASG_MAIL_STUDIO_INBOX_UI_V2_CENTERS_20260628')||!status.text.includes('GNK_ASG_MAIL_RECEIVING_CENTERS_V1_20260628')||!status.text.includes('"receivingCenterCount": 10')||!status.text.includes('"mailInboxConnected": true'))failures.push('mail-inbox-status');
             console.log(JSON.stringify({attempt,failures,entry:status.headers['x-gnk-asg-entry-wrapper']||'',menu:hr.headers['x-gnk-asg-menu-release']||'',parity:hr.headers['x-gnk-asg-design-parity']||''}));
             if(!failures.length)process.exit(0);
             await sleep(10000);
@@ -104,5 +106,5 @@ jobs:
               const current=await github.rest.repos.getContent({owner:context.repo.owner,repo:context.repo.repo,path,ref:branch});
               if(!Array.isArray(current.data))sha=current.data.sha;
             } catch(error) { if(error.status!==404)throw error; }
-            const payload={ok:true,release:'GNK_ASG_PROJECT50_V31_CONNECTED_MAIL_INBOX_UI_20260628',navigation:'seven-items',designParity:'HR_EN_IDENTICAL',adminMode:'MAIL_ONLY_V2',mailInbox:'CONTACT_FORM_KV',mailInboxUi:'CARDS_REPLY_PREP_ONLY',workflowRunId:context.runId,sourceCommit:context.sha,branch,deployedAt:new Date().toISOString(),mailSent:false,mediaInvitationsSent:false};
-            await github.rest.repos.createOrUpdateFileContents({owner:context.repo.owner,repo:context.repo.repo,path,branch,sha,message:'Record successful V18 public and Inbox deployment [skip ci]',content:Buffer.from(JSON.stringify(payload,null,2)+'\n').toString('base64')});
+            const payload={ok:true,release:'GNK_ASG_PROJECT50_V31_CONNECTED_MAIL_INBOX_CENTERS_20260628',navigation:'seven-items',designParity:'HR_EN_IDENTICAL',adminMode:'MAIL_ONLY_V2',mailInbox:'CONTACT_FORM_KV',mailInboxUi:'CARDS_REPLY_PREP_ONLY',receivingCenters:10,workflowRunId:context.runId,sourceCommit:context.sha,branch,deployedAt:new Date().toISOString(),mailSent:false,mediaInvitationsSent:false};
+            await github.rest.repos.createOrUpdateFileContents({owner:context.repo.owner,repo:context.repo.repo,path,branch,sha,message:'Record successful V19 public and Inbox centers deployment [skip ci]',content:Buffer.from(JSON.stringify(payload,null,2)+'\n').toString('base64')});
