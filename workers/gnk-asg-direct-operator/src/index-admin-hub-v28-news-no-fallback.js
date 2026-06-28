@@ -11,23 +11,9 @@ const PUBLIC_ARCHIVE_PATHS=new Set(['/data/news-archive.json','/data/news_archiv
 const MEDIA_COMMAND_STATUS='/api/media-command-center/status';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/'}
-function noStore(headers){
-  headers.delete('content-length');
-  headers.delete('content-encoding');
-  headers.delete('etag');
-  headers.delete('last-modified');
-  headers.set('content-type','application/json; charset=utf-8');
-  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-  return headers;
-}
-function hasPublicFallbackImage(item){
-  const image=String(item?.image||'');
-  const verification=item?.verification?.image||{};
-  return !image||image.includes('/assets/news-fallback')||verification.fallback===true||verification.ok===false;
-}
-function normalizedNewsItem(item){
-  return {...item,verification:{...(item.verification||{}),image:{...(item.verification?.image||{}),ok:true,fallback:false}}};
-}
+function noStore(headers){headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');headers.delete('last-modified');headers.set('content-type','application/json; charset=utf-8');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return headers}
+function hasPublicFallbackImage(item){const image=String(item?.image||'');const verification=item?.verification?.image||{};return !image||image.includes('/assets/news-fallback')||verification.fallback===true||verification.ok===false}
+function normalizedNewsItem(item){return {...item,verification:{...(item.verification||{}),image:{...(item.verification?.image||{}),ok:true,fallback:false}}}}
 async function patchStatus(response,path){
   if(!STATUS_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   try{
@@ -37,7 +23,7 @@ async function patchStatus(response,path){
     headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);
     headers.set('x-gnk-asg-news-no-public-fallback','ENFORCED');
     headers.set('x-gnk-asg-media-access',MEDIA_ACCESS_VERSION);
-    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,newsRuntime:NEWS_RUNTIME,noPublicFallbackWrapper:VERSION,mediaApplicationAccess:MEDIA_ACCESS_VERSION,mediaApprovalLoginCode:'AUTO_ISSUE_AND_EMAIL_ON_APPROVAL',mediaCommandSending:'LOCKED',mediaCommandMailbox:'media@gnk-asg.hr',mediaCommandDeadline:'2026-07-20T23:59:59+02:00',emailRoutingVerification:'UNVERIFIED_EXTERNAL_CONFIGURATION',activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{...(payload.contentContract||{}),title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},checkedAt:new Date().toISOString()};
+    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,newsRuntime:NEWS_RUNTIME,noPublicFallbackWrapper:VERSION,mediaApplicationAccess:MEDIA_ACCESS_VERSION,mediaApprovalLoginCode:'AUTO_ISSUE_AND_EMAIL_ON_APPROVAL',mediaCommandSending:'LOCKED',mediaCommandMailbox:'media@gnk-asg.hr',mediaCommandDeadline:'2026-07-20T23:59:59+02:00',emailRoutingVerification:'UNVERIFIED_EXTERNAL_CONFIGURATION',mediaContactSeed:{total:112,recordedEmailAddresses:22,controlledAutomationContacts:22,handoffExpectedEmailAddresses:42,missingManualEmailAddresses:20,status:'INCOMPLETE_22_OF_42'},activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{...(payload.contentContract||{}),title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},checkedAt:new Date().toISOString()};
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response}
 }
@@ -64,28 +50,14 @@ async function patchMediaCommandStatus(response,path){
     const headers=noStore(new Headers(response.headers));
     headers.set('x-gnk-asg-media-command-sending','LOCKED');
     headers.set('x-gnk-asg-email-routing-verification','UNVERIFIED_EXTERNAL_CONFIGURATION');
-    const corrected={
-      ...payload,
-      outboundSending:{locked:true,httpStatus:423,error:'production_sending_locked',routes:['/api/media-command-center/send-one','/api/media-command-center/send-batch'],unlockPolicy:'EXPLICIT_TESTED_PRODUCTION_APPROVAL_ONLY'},
-      inboundMailbox:{address:'media@gnk-asg.hr',workerHandler:'IMPLEMENTED',cloudflareEmailRouting:'UNVERIFIED_EXTERNAL_CONFIGURATION'},
-      applicationPolicy:{deadline:'2026-07-20T23:59:59+02:00',finalDecision:'HUMAN_ONLY',passportInitialEmailCopy:'PROHIBITED',documents:'R2_WITH_SHA256'},
-      contactDatasetContract:{total:112,recordedEmailAddresses:42,controlledAutomationContacts:22},
-      mediaApplicationAccess:MEDIA_ACCESS_VERSION
-    };
+    headers.set('x-gnk-asg-contact-seed','INCOMPLETE_22_OF_42');
+    const corrected={...payload,outboundSending:{locked:true,httpStatus:423,error:'production_sending_locked',routes:['/api/media-command-center/send-one','/api/media-command-center/send-batch'],unlockPolicy:'EXPLICIT_TESTED_PRODUCTION_APPROVAL_ONLY'},inboundMailbox:{address:'media@gnk-asg.hr',workerHandler:'IMPLEMENTED',cloudflareEmailRouting:'UNVERIFIED_EXTERNAL_CONFIGURATION'},applicationPolicy:{deadline:'2026-07-20T23:59:59+02:00',finalDecision:'HUMAN_ONLY',passportInitialEmailCopy:'PROHIBITED',documents:'R2_WITH_SHA256'},contactDatasetContract:{total:112,seedRecordedEmailAddresses:22,handoffExpectedEmailAddresses:42,missingManualEmailAddresses:20,controlledAutomationContacts:22,status:'INCOMPLETE_22_OF_42'},mediaApplicationAccess:MEDIA_ACCESS_VERSION};
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response}
 }
 
 export default{
-  async fetch(request,env,ctx){
-    const path=pathOf(request);
-    const accessRequest=request.clone();
-    let response=await app.fetch(request,env,ctx);
-    response=await patchStatus(response,path);
-    response=await patchPublicNewsData(response,path);
-    response=await applyMediaApplicationAccess(accessRequest,env,response);
-    return patchMediaCommandStatus(response,path);
-  },
+  async fetch(request,env,ctx){const path=pathOf(request);const accessRequest=request.clone();let response=await app.fetch(request,env,ctx);response=await patchStatus(response,path);response=await patchPublicNewsData(response,path);response=await applyMediaApplicationAccess(accessRequest,env,response);return patchMediaCommandStatus(response,path)},
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
   async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}
 };
