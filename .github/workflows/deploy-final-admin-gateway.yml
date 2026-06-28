@@ -1,4 +1,4 @@
-name: Deploy Final IQ200 Admin Gateway
+name: Deploy Final IQ200 PDF Admin Gateway R4
 
 on:
   push:
@@ -7,19 +7,17 @@ on:
       - '.github/workflows/deploy-final-admin-gateway.yml'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js'
-      - 'apps/portal/index.html'
-      - 'apps/portal/en/index.html'
   workflow_dispatch:
   issue_comment:
     types: [created]
 
 permissions:
-  contents: write
+  contents: read
   issues: write
 
 concurrency:
-  group: deploy-final-iq200-admin-gateway
-  cancel-in-progress: true
+  group: deploy-final-iq200-pdf-admin-gateway-r4
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -34,7 +32,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          body=$(printf '## Final IQ200 gateway — started\n\n- Commit: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          body=$(printf '## Final IQ200 PDF/Admin gateway R4 — started\n\n- Commit: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
           gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
 
       - uses: actions/checkout@v5
@@ -45,16 +43,21 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate complete Worker bundle
+      - name: Validate complete R4 Worker bundle
         id: validate
         working-directory: workers/gnk-asg-direct-operator
         shell: bash
         run: |
           set -euo pipefail
           node --check src/index-final-admin-gateway-v1.js
+          node --check src/index-unified-auth-v15-final.js
+          grep -q 'GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_AUTH_V15_20260628_R4_PDF_ADMIN' src/index-final-admin-gateway-v1.js
+          grep -q 'PDF CENTRE' src/index-final-admin-gateway-v1.js
+          grep -q 'PDF CENTAR' src/index-final-admin-gateway-v1.js
+          grep -q '/admin-center/' src/index-final-admin-gateway-v1.js
           npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Deploy gateway
+      - name: Deploy R4 gateway
         id: deploy
         working-directory: workers/gnk-asg-direct-operator
         env:
@@ -65,7 +68,7 @@ jobs:
           set -euo pipefail
           npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify IQ200 public flow
+      - name: Verify R4 INDEX PDF ADMIN flow
         id: verify
         shell: bash
         run: |
@@ -76,19 +79,28 @@ jobs:
             hr_code=$(curl -sS -D /tmp/hr.headers -o /tmp/hr.html -w '%{http_code}' "https://gnk-asg.hr/?cb=$cb" || true)
             en_code=$(curl -sS -D /tmp/en.headers -o /tmp/en.html -w '%{http_code}' "https://gnk-asg.hr/en/?cb=$cb" || true)
             admin_code=$(curl -sS -D /tmp/admin.headers -o /tmp/admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=$cb" || true)
+            old_admin_code=$(curl -sS -D /tmp/old-admin.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/operator-dashboard/?cb=$cb" || true)
             media_code=$(curl -sS -D /tmp/media.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/media-command-center/?cb=$cb" || true)
+            pdf_code=$(curl -sS -D /tmp/pdf.headers -o /tmp/pdf.html -w '%{http_code}' "https://gnk-asg.hr/downloads/?cb=$cb" || true)
             if [ "$hr_code" = '200' ] \
               && [ "$en_code" = '200' ] \
               && [ "$admin_code" = '401' ] \
+              && [ "$old_admin_code" = '303' ] \
               && [ "$media_code" = '303' ] \
-              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' /tmp/hr.headers \
-              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' /tmp/en.headers \
+              && [ "$pdf_code" = '200' ] \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_PDF_ADMIN_AUTH_V15' /tmp/hr.headers \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_PDF_ADMIN_AUTH_V15' /tmp/en.headers \
               && grep -q 'Korporativni portal' /tmp/hr.html \
-              && grep -q 'Sve funkcije na jednom mjestu' /tmp/hr.html \
+              && grep -q 'PDF CENTAR' /tmp/hr.html \
+              && grep -q 'href="/admin-center/"' /tmp/hr.html \
               && grep -q 'Corporate portal' /tmp/en.html \
-              && grep -q 'All key functions in one place' /tmp/en.html \
+              && grep -q 'PDF CENTRE' /tmp/en.html \
+              && grep -q 'href="/admin-center/"' /tmp/en.html \
+              && ! grep -q '>Markets<' /tmp/en.html \
               && grep -q 'GNK ASG sigurna prijava' /tmp/admin.html \
-              && grep -qi '^location: /admin-center/' /tmp/media.headers; then
+              && grep -qi '^location: /admin-center/' /tmp/old-admin.headers \
+              && grep -qi '^location: /admin-center/' /tmp/media.headers \
+              && grep -q 'PDF i Download centar' /tmp/pdf.html; then
               ok=true
               break
             fi
@@ -97,10 +109,12 @@ jobs:
           echo "hr_code=$hr_code" >> "$GITHUB_OUTPUT"
           echo "en_code=$en_code" >> "$GITHUB_OUTPUT"
           echo "admin_code=$admin_code" >> "$GITHUB_OUTPUT"
+          echo "old_admin_code=$old_admin_code" >> "$GITHUB_OUTPUT"
           echo "media_code=$media_code" >> "$GITHUB_OUTPUT"
+          echo "pdf_code=$pdf_code" >> "$GITHUB_OUTPUT"
           [ "$ok" = 'true' ]
 
-      - name: Report gateway deploy result
+      - name: Report R4 gateway result
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
@@ -111,33 +125,10 @@ jobs:
           HR_CODE: ${{ steps.verify.outputs.hr_code }}
           EN_CODE: ${{ steps.verify.outputs.en_code }}
           ADMIN_CODE: ${{ steps.verify.outputs.admin_code }}
+          OLD_ADMIN_CODE: ${{ steps.verify.outputs.old_admin_code }}
           MEDIA_CODE: ${{ steps.verify.outputs.media_code }}
+          PDF_CODE: ${{ steps.verify.outputs.pdf_code }}
         shell: bash
         run: |
-          body=$(printf '## Final IQ200 gateway — %s\n\n- Commit: `%s`\n- Bundle validation: **%s**\n- Cloudflare deploy: **%s**\n- Live verification: **%s**\n- HR: `%s`\n- EN: `%s`\n- Admin: `%s`\n- Media: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$JOB_STATUS" "$GITHUB_SHA" "$VALIDATE_STATUS" "$DEPLOY_STATUS" "$VERIFY_STATUS" "$HR_CODE" "$EN_CODE" "$ADMIN_CODE" "$MEDIA_CODE" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          body=$(printf '## Final IQ200 PDF/Admin gateway R4 — %s\n\n- Commit: `%s`\n- Validation: **%s**\n- Cloudflare deploy: **%s**\n- Live verification: **%s**\n- HR: `%s`\n- EN: `%s`\n- Admin: `%s`\n- Old Admin: `%s`\n- Media: `%s`\n- PDF: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$JOB_STATUS" "$GITHUB_SHA" "$VALIDATE_STATUS" "$DEPLOY_STATUS" "$VERIFY_STATUS" "$HR_CODE" "$EN_CODE" "$ADMIN_CODE" "$OLD_ADMIN_CODE" "$MEDIA_CODE" "$PDF_CODE" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
           gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
-          if [ "$JOB_STATUS" != 'cancelled' ]; then
-            git fetch origin main
-            git reset --hard origin/main
-            mkdir -p deploy
-            cat > deploy/iq200-restore-status.txt <<EOF
-          status=$JOB_STATUS
-          commit=$GITHUB_SHA
-          validation=$VALIDATE_STATUS
-          cloudflare_deploy=$DEPLOY_STATUS
-          live_verification=$VERIFY_STATUS
-          hr=$HR_CODE
-          en=$EN_CODE
-          admin=$ADMIN_CODE
-          media=$MEDIA_CODE
-          run=https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
-          EOF
-            sed -i 's/^          //' deploy/iq200-restore-status.txt
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add deploy/iq200-restore-status.txt
-            if ! git diff --cached --quiet; then
-              git commit -m 'Record IQ200 production restore status [skip ci]'
-              git push origin HEAD:main
-            fi
-          fi
