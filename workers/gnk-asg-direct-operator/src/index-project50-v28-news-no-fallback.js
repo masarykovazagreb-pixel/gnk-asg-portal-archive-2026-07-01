@@ -6,11 +6,12 @@ import {ensureMediaControlRows,VERSION as CONTROL_SYNC_VERSION} from './media-co
 import {adminAccess} from './admin-session-auth-v1.js';
 import {withRequiredEmailSignature,VERSION as EMAIL_SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_PROJECT50_V28_TWO_PHASE_MEDIA_ACCESS_SIGNATURE_20260628';
+export const VERSION='GNK_ASG_PROJECT50_V28_TWO_PHASE_MEDIA_ACCESS_STATUS_20260628';
 const ENTRYPOINT='src/index-project50-v28-news-no-fallback.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v26-clean-index-v21-preview.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627';
 const STATUS_PATHS=new Set(['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json']);
+const MEDIA_STATUS_PATHS=new Set(['/api/media-command-center/delivery-status','/api/media-command-center/delivery-plan']);
 const PUBLIC_NEWS_PATHS=new Set(['/data/news.json','/data/news-feed.json']);
 const PUBLIC_ARCHIVE_PATHS=new Set(['/data/news-archive.json','/data/news_archive.json']);
 const DISPATCH_PATH='/api/media-command-center/dispatch-queue';
@@ -79,6 +80,16 @@ async function patchStatus(response,path){
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response}
 }
+async function patchMediaStatus(response,path,request,env){
+  if(request.method!=='GET'||!MEDIA_STATUS_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
+  try{
+    const payload=await response.json();
+    const headers=noStore(new Headers(response.headers));
+    headers.set('x-gnk-asg-media-access-dispatch',ACCESS_DISPATCH_VERSION);
+    headers.set('x-gnk-asg-media-release-approved',boolEnv(env.MEDIA_OUTREACH_RELEASE_APPROVED)?'true':'false');
+    return new Response(JSON.stringify({...payload,releaseApproved:boolEnv(env.MEDIA_OUTREACH_RELEASE_APPROVED),releaseGate:'MEDIA_OUTREACH_RELEASE_APPROVED',accessDispatch:ACCESS_DISPATCH_VERSION,emailSignatureContract:EMAIL_SIGNATURE_VERSION},null,2),{status:response.status,statusText:response.statusText,headers});
+  }catch{return response}
+}
 async function patchPublicNewsData(response,path){
   if(!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   if(!PUBLIC_NEWS_PATHS.has(path)&&!PUBLIC_ARCHIVE_PATHS.has(path))return response;
@@ -106,6 +117,7 @@ export default{
     if(mediaAccess)return mediaAccess;
     let response=await app.fetch(request,env,ctx);
     response=await patchStatus(response,path);
+    response=await patchMediaStatus(response,path,request,env);
     return patchPublicNewsData(response,path);
   },
   async scheduled(event,env,ctx){
