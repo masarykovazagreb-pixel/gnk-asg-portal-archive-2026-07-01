@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-06-27T17:45:25+00:00",
+  "checkedAt": "2026-06-28T17:53:49+00:00",
   "minimumHealthySources": 15,
   "sources": [
     {
@@ -89,7 +89,7 @@
       "finalUrl": "https://www.coindesk.com/arc/outboundfeeds/rss",
       "httpStatus": 200,
       "contentType": "application/xml",
-      "itemCount": 22,
+      "itemCount": 23,
       "ok": true
     },
     {
@@ -118,7 +118,7 @@
       "finalUrl": "https://www.engadget.com/rss.xml",
       "httpStatus": 200,
       "contentType": "text/xml; charset=UTF-8",
-      "itemCount": 9,
+      "itemCount": 11,
       "ok": true
     },
     {
@@ -135,10 +135,11 @@
       "source": "International Monetary Fund",
       "sourceId": "imf-news",
       "configuredUrl": "https://www.imf.org/en/News/RSS",
-      "httpStatus": 0,
+      "finalUrl": "https://www.imf.org/en/news/rss",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
       "itemCount": 0,
-      "ok": false,
-      "error": "HTTP Error 403: Forbidden"
+      "ok": false
     },
     {
       "source": "MIT Technology Review",
@@ -167,7 +168,7 @@
       "finalUrl": "https://techcrunch.com/feed/",
       "httpStatus": 200,
       "contentType": "application/rss+xml; charset=UTF-8",
-      "itemCount": 18,
+      "itemCount": 16,
       "ok": true
     },
     {
@@ -217,7 +218,7 @@
       "finalUrl": "https://www.wired.com/feed/rss",
       "httpStatus": 200,
       "contentType": "application/xml",
-      "itemCount": 30,
+      "itemCount": 29,
       "ok": true
     }
   ]
