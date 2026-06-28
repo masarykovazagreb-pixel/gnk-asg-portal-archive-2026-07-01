@@ -13,16 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Check live protected endpoints
+      - name: Check actual protected endpoints
         shell: bash
         run: |
           set -u
           CB="${GITHUB_RUN_ID}"
-          MAIL_CODE=$(curl -sS -D /tmp/mail.h -o /tmp/mail.b -w '%{http_code}' "https://gnk-asg.hr/api/mail-center/send-readiness?cb=${CB}" || true)
+          STUDIO_CODE=$(curl -sS -D /tmp/studio.h -o /tmp/studio.b -w '%{http_code}' "https://gnk-asg.hr/mail-studio/?cb=${CB}" || true)
+          MAIL_CODE=$(curl -sS -D /tmp/mail.h -o /tmp/mail.b -w '%{http_code}' "https://gnk-asg.hr/api/admin-mail-send?cb=${CB}" || true)
           MEDIA_CODE=$(curl -sS -D /tmp/media.h -o /tmp/media.b -w '%{http_code}' "https://gnk-asg.hr/api/media-command-center/delivery-status?cb=${CB}" || true)
-          echo "MAIL_HTTP=${MAIL_CODE}"
+          echo "STUDIO_HTTP=${STUDIO_CODE}"
+          grep -iE '^(content-type|location|x-gnk-asg-[^:]+):' /tmp/studio.h || true
+          echo "MAIL_API_HTTP=${MAIL_CODE}"
           grep -iE '^(content-type|location|x-gnk-asg-[^:]+):' /tmp/mail.h || true
           echo "MEDIA_HTTP=${MEDIA_CODE}"
           grep -iE '^(content-type|location|x-gnk-asg-[^:]+):' /tmp/media.h || true
-          case "$MAIL_CODE" in 200|401|403) ;; *) exit 1 ;; esac
+          case "$STUDIO_CODE" in 200|401|403) ;; *) exit 1 ;; esac
+          case "$MAIL_CODE" in 401|403|405) ;; *) exit 1 ;; esac
           case "$MEDIA_CODE" in 200|401|403) ;; *) exit 1 ;; esac
