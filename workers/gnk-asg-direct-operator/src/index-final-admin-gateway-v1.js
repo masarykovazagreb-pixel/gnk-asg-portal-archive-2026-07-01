@@ -30,14 +30,14 @@ function patchIq200Navigation(html,english){
   if(english){
     html=html
       .replace(/href=["']\/markets\/?["']/gi,'href="/en/downloads/"')
-      .replace(/>Markets</g,'>PDF Centre<');
+      .replace(/>Markets</g,'>PDF CENTRE<');
   }else{
     html=html
       .replace(/href=["']\/trzista\/?["']/gi,'href="/downloads/"')
-      .replace(/>Tržišta</g,'>PDF Centar<');
+      .replace(/>Tržišta</g,'>PDF CENTAR<');
   }
 
-  const lock=`<script id="gnk-iq200-pdf-admin-lock-r4b">(()=>{'use strict';const english=location.pathname.startsWith('/en');const fix=()=>{document.querySelectorAll('a').forEach(a=>{const href=(a.getAttribute('href')||'').toLowerCase();const text=(a.textContent||'').trim();if(href.startsWith('/operator-dashboard')||href.startsWith('/operator-mobile')){a.href='/admin-center/';a.rel='nofollow'}if(english&&href.startsWith('/markets')){a.href='/en/downloads/';if(text==='Markets')a.textContent='PDF Centre'}if(!english&&href.startsWith('/trzista')){a.href='/downloads/';if(text==='Tržišta'||text==='Trzista')a.textContent='PDF Centar'}})};fix();document.addEventListener('DOMContentLoaded',fix,{once:true});new MutationObserver(fix).observe(document.documentElement,{childList:true,subtree:true});[50,150,400,900,1800,3500,7000].forEach(ms=>setTimeout(fix,ms))})();<\/script>`;
+  const lock=`<script id="gnk-iq200-pdf-admin-lock-r4b">(()=>{'use strict';const english=location.pathname.startsWith('/en');const fix=()=>{document.querySelectorAll('a').forEach(a=>{const href=(a.getAttribute('href')||'').toLowerCase();const text=(a.textContent||'').trim();if(href.startsWith('/operator-dashboard')||href.startsWith('/operator-mobile')){a.href='/admin-center/';a.rel='nofollow'}if(english&&href.startsWith('/markets')){a.href='/en/downloads/';if(text==='Markets')a.textContent='PDF CENTRE'}if(!english&&href.startsWith('/trzista')){a.href='/downloads/';if(text==='Tržišta'||text==='Trzista')a.textContent='PDF CENTAR'}})};fix();document.addEventListener('DOMContentLoaded',fix,{once:true});new MutationObserver(fix).observe(document.documentElement,{childList:true,subtree:true});[50,150,400,900,1800,3500,7000].forEach(ms=>setTimeout(fix,ms))})();<\/script>`;
   if(!html.includes('gnk-iq200-pdf-admin-lock-r4b'))html=html.replace('</body>',lock+'</body>');
   return html;
 }
