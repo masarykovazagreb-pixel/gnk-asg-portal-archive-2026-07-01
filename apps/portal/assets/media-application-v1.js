@@ -93,6 +93,19 @@
     } catch (_) {}
   }
 
+  function prefillInvitationCode() {
+    try {
+      const params = new URLSearchParams(location.search);
+      const value = String(params.get('code') || params.get('ref') || '').trim().toUpperCase();
+      if (!/^GNK-MEDIA-\d{8}-[A-Z]{2}-[A-Z0-9]{1,8}-\d{3}$/.test(value)) return;
+      const input = form?.elements.namedItem('invitationCode');
+      if (!input) return;
+      input.value = value;
+      input.dataset.prefilled = '1';
+      setNotice(`Šifra poziva ${value} automatski je preuzeta iz službene poveznice.`, 'success');
+    } catch (_) {}
+  }
+
   function normalizePhone(value) {
     return String(value || '').replace(/[\s().-]/g, '');
   }
@@ -172,5 +185,6 @@
   form?.addEventListener('change', scheduleSave);
   form?.addEventListener('submit', submit);
   restoreDraft();
+  prefillInvitationCode();
   loadConfig();
 })();
