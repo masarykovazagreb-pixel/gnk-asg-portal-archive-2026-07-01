@@ -1,0 +1,25 @@
+{
+  "version": "GNK_ASG_EMAIL_ROUTING_RULES_V1_20260628",
+  "zone": "gnk-asg.hr",
+  "worker": "gnk-asg-direct-operator",
+  "enabledOnApply": true,
+  "mode": "explicit-addresses-only",
+  "addresses": [
+    "info@gnk-asg.hr",
+    "contact@gnk-asg.hr",
+    "media@gnk-asg.hr",
+    "press@gnk-asg.hr",
+    "legal@gnk-asg.hr",
+    "privacy@gnk-asg.hr",
+    "it@gnk-asg.hr",
+    "ubo@gnk-asg.hr",
+    "sefic@gnk-asg.hr",
+    "assistant@gnk-asg.hr"
+  ],
+  "notes": [
+    "No catch-all rule is created.",
+    "Rules send matching messages to the existing gnk-asg-direct-operator Email Worker.",
+    "The current Worker phase stores metadata only and does not send automatic replies.",
+    "Activation requires a separate controlled workflow trigger."
+  ]
+}
