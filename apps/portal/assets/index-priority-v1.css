@@ -1,0 +1,21 @@
+/* GNK ASG index priority — full cycle, identity and network retained */
+body[data-gnk-index-priority="v3"] main{display:flex!important;flex-direction:column!important}
+body[data-gnk-index-priority="v3"] .code-stage{order:-2!important;margin-top:18px!important;padding-top:0!important}
+body[data-gnk-index-priority="v3"] .hero{order:-1!important;display:grid!important;margin-top:18px!important;padding-top:22px!important;padding-bottom:22px!important}
+body[data-gnk-index-priority="v3"] #financije{order:1!important}
+body[data-gnk-index-priority="v3"] #mreza{order:2!important}
+body[data-gnk-index-priority="v3"] .index-nav,body[data-gnk-index-priority="v3"] .brands,body[data-gnk-index-priority="v3"] .brands .brand,body[data-gnk-index-priority="v3"] .brand-divider{display:flex!important;visibility:visible!important;opacity:1!important}
+body[data-gnk-index-priority="v3"] .network,body[data-gnk-index-priority="v3"] .network-head,body[data-gnk-index-priority="v3"] .network-stats,body[data-gnk-index-priority="v3"] .map-wrap,body[data-gnk-index-priority="v3"] #luxuryWorldMap,body[data-gnk-index-priority="v3"] .location-directory{display:block!important;visibility:visible!important;opacity:1!important}
+body[data-gnk-index-priority="v3"] .network-head,body[data-gnk-index-priority="v3"] .network-stats{display:flex!important}
+body[data-gnk-index-priority="v3"] .code-toolbar{display:flex!important;align-items:flex-end!important;justify-content:center!important;gap:18px!important;text-align:center!important}
+body[data-gnk-index-priority="v3"] .code-toolbar>div:first-child{margin:0 auto!important}
+body[data-gnk-index-priority="v3"] .code-tools{display:none!important}
+body[data-gnk-index-priority="v3"] .code-frame,body[data-gnk-index-priority="v3"] .code-inline-host{width:min(1180px,100%)!important;margin:0 auto!important;display:flex!important;justify-content:center!important;overflow:hidden!important}
+body[data-gnk-index-priority="v3"] .code-frame iframe{display:block!important;visibility:visible!important;opacity:1!important}
+.gnk-code-priority-controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px auto 18px;padding:12px;border:1px solid rgba(184,137,47,.34);border-radius:18px;background:linear-gradient(145deg,#fffdf8,#f1e6cc);box-shadow:0 18px 44px rgba(52,38,10,.12)}
+.gnk-code-priority-controls button{min-height:44px;padding:11px 18px;border:1px solid #b8892f;border-radius:999px;background:#17130c;color:#f2d98f;font:900 10px/1 Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.gnk-code-priority-controls button:first-child{background:linear-gradient(135deg,#c69840,#efd58b);color:#17130c}
+.gnk-code-priority-controls button:disabled{opacity:.45;cursor:wait}
+.gnk-code-priority-status{width:100%;text-align:center;color:#6f685c;font:800 9px/1.4 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+body[data-gnk-index-priority="v3"] .finance-grid .metric strong,body[data-gnk-index-priority="v3"] .network-stat strong{color:#17130c!important}
+@media(max-width:760px){.gnk-code-priority-controls{margin:12px 0 15px;border-radius:14px}.gnk-code-priority-controls button{flex:1 1 42%;padding:10px 12px}body[data-gnk-index-priority="v3"] .code-toolbar{align-items:center!important}body[data-gnk-index-priority="v3"] .network-head,body[data-gnk-index-priority="v3"] .network-stats{display:flex!important}}
