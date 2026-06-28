@@ -38,9 +38,10 @@ jobs:
         run: |
           set -euo pipefail
           test -s src/index-unified-auth-v14.js
-          test -s src/index-portal-final-v13.js
+          test -s src/index-final-admin-gateway-v1.js
           node --check src/index-unified-auth-v14.js
-          npx --yes wrangler@4 deploy src/index-unified-auth-v14.js --dry-run --config wrangler.toml
+          node --check src/index-final-admin-gateway-v1.js
+          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --dry-run --config wrangler.toml
 
       - name: Deploy unified authentication
         working-directory: workers/gnk-asg-direct-operator
@@ -50,7 +51,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler@4 deploy src/index-unified-auth-v14.js --config wrangler.toml --name gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
 
       - name: Verify authentication and backend bindings
         shell: bash
@@ -64,7 +65,7 @@ jobs:
             auth_code=$(curl -sSL -o auth.json -w '%{http_code}' "$base/api/operator-auth-check?cb=$stamp" || true)
             admin_code=$(curl -sSL -o admin.html -w '%{http_code}' "$base/operator-dashboard/?cb=$stamp" || true)
             root_code=$(curl -sSL -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
-            if [ "$version_code" = "200" ] && [ "$auth_code" = "401" ] && [ "$admin_code" = "401" ] && [ "$root_code" = "200" ] && grep -q 'GNK_ASG_UNIFIED_AUTH_V14_20260626' version.json && grep -q 'src/index-unified-auth-v14.js' version.json && grep -q '"configured": true' auth.json && grep -q 'GNK ASG sigurna prijava' admin.html; then
+            if [ "$version_code" = "200" ] && [ "$auth_code" = "401" ] && [ "$admin_code" = "401" ] && [ "$root_code" = "200" ] && grep -q 'GNK_ASG_UNIFIED_AUTH_V14_20260626' version.json && grep -q 'src/index-unified-auth-v14.js' version.json && grep -q '"configured": true' auth.json && grep -q 'GNK ASG sigurna prijava' admin.html && grep -q 'PDF CENTAR' root.html && ! grep -q '>Tržišta<' root.html; then
               success=true
               break
             fi
@@ -76,4 +77,4 @@ jobs:
             cat auth.json || true
             exit 1
           fi
-          echo "GNK_ASG_UNIFIED_AUTH_V14_OK=true"
+          echo "GNK_ASG_UNIFIED_AUTH_V14_INDEX_GATEWAY_OK=true"
