@@ -64,7 +64,7 @@ async function patchPublicNewsData(response,path){
     if(Array.isArray(payload)){
       const result=filteredNewsItems(payload,path);output=result.limited;removed=result.removed;count=output.length;
     }else if(payload&&Array.isArray(payload.items)){
-      const result=filteredNewsItems(payload.items,path);output={...payload,items:result.limited,count:result.limited.length,publicCount:result.limited.length,fallbackFilteredCount:result.removed,noPublicFallback:true,policy:payload.policy||'archive_latest_1000_prune_to_500_when_full'};removed=result.removed;count=output.length;
+      const result=filteredNewsItems(payload.items,path);output={...payload,items:result.limited,count:result.limited.length,publicCount:result.limited.length,fallbackFilteredCount:result.removed,noPublicFallback:true,policy:payload.policy||'archive_latest_1000_prune_to_500_when_full'};removed=result.removed;count=result.limited.length;
     }else{return response}
     headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);headers.set('x-gnk-asg-news-no-public-fallback','ENFORCED');headers.set('x-gnk-asg-news-active-limit',PUBLIC_NEWS_PATHS.has(path)?'100':'1000_500');headers.set('x-gnk-asg-news-public-count',String(count));headers.set('x-gnk-asg-news-filtered-fallback-count',String(removed));
     return new Response(JSON.stringify(output,null,2),{status:response.status,statusText:response.statusText,headers});
