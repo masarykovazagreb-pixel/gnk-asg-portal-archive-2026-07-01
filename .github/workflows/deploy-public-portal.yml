@@ -27,23 +27,20 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate locked index and inline THE CODE
+      - name: Validate locked index and stable THE CODE iframe
         shell: bash
         run: |
           set -euxo pipefail
-          node --check apps/portal/assets/index-code-inline-v10.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
-          test -s apps/portal/assets/index-code-inline-v10.css
           grep -q '<nav class="menu"' apps/portal/index.html
           grep -q '<nav class="menu"' apps/portal/en/index.html
-          grep -q 'GNK_ASG_PUBLIC_INDEX_INLINE_WHITE_CODE_V24_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
-          grep -q 'index-code-inline-v10.js?v=20260627-v24' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
-          grep -q 'index-wow-v4' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
-          grep -q 'index-hero-scale-v13' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index-v21-preview.js
-          grep -q '2026-10-07T11:30:00-04:00' apps/portal/assets/index-code-inline-v10.js
+          grep -q 'id="codePreview"' apps/portal/index.html
+          grep -q 'id="codePreview"' apps/portal/en/index.html
+          grep -q 'STABLE_IFRAME' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
+          grep -q 'index-code-cleanup-v8' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
@@ -60,11 +57,11 @@ jobs:
           set -euo pipefail
           node <<'JS'
           const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-          async function read(path){const r=await fetch(`https://gnk-asg.hr${path}?cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});return {status:r.status,text:await r.text(),headers:Object.fromEntries(r.headers)}}
+          async function read(path){const r=await fetch(`https://gnk-asg.hr${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});return {status:r.status,text:await r.text(),headers:Object.fromEntries(r.headers)}}
           for(let i=1;i<=24;i++){
-            const [hr,en,js,css]=await Promise.all([read('/'),read('/en/'),read('/assets/index-code-inline-v10.js'),read('/assets/index-code-inline-v10.css')]);
-            const ok=hr.status===200&&en.status===200&&js.status===200&&css.status===200&&hr.text.includes('<nav class="menu"')&&en.text.includes('<nav class="menu"')&&hr.text.includes('id="codeInlineMount"')&&en.text.includes('id="codeInlineMount"')&&!hr.text.includes('id="codePreview"')&&!en.text.includes('id="codePreview"')&&!hr.text.includes('index-wow-v4.css')&&!en.text.includes('index-wow-v4.css')&&!hr.text.includes('index-hero-scale-v13.css')&&!en.text.includes('index-hero-scale-v13.css')&&hr.headers['x-gnk-asg-index-hero']==='BASE_CLEAN_NO_WOW_NO_SCALE'&&hr.headers['x-gnk-asg-the-code-player']==='INLINE_WHITE_GOLD_V10'&&js.text.includes('2026-10-07T11:30:00-04:00');
-            console.log(JSON.stringify({attempt:i,ok,hr:hr.status,en:en.status}));
+            const [hr,en,code]=await Promise.all([read('/'),read('/en/'),read('/the-code/?embed=1')]);
+            const ok=hr.status===200&&en.status===200&&code.status===200&&hr.text.includes('<nav class="menu"')&&en.text.includes('<nav class="menu"')&&hr.text.includes('id="codePreview"')&&en.text.includes('id="codePreview"')&&!hr.text.includes('index-code-cleanup-v8.js')&&!en.text.includes('index-code-cleanup-v8.js')&&hr.headers['x-gnk-asg-the-code-player']==='STABLE_IFRAME'&&en.headers['x-gnk-asg-the-code-player']==='STABLE_IFRAME';
+            console.log(JSON.stringify({attempt:i,ok,hr:hr.status,en:en.status,code:code.status,player:hr.headers['x-gnk-asg-the-code-player']}));
             if(ok)process.exit(0);
             await sleep(10000);
           }
