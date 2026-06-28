@@ -1,0 +1,27 @@
+(()=>{
+  'use strict';
+  const RELEASE='GNK_ASG_INDEX_MENU_V16_UNIFIED_20260628';
+  if(document.documentElement.dataset.gnkIndexMenu===RELEASE)return;
+  document.documentElement.dataset.gnkIndexMenu=RELEASE;
+  const header=document.querySelector('.index-nav');
+  const row=header?.querySelector('.index-nav__row');
+  const nav=header?.querySelector('.menu');
+  if(!header||!row||!nav)return;
+  nav.id=nav.id||'gnkIndexNav';
+  const english=document.documentElement.lang==='en';
+  const toggle=document.createElement('button');
+  toggle.className='index-menu-toggle';
+  toggle.type='button';
+  toggle.setAttribute('aria-controls',nav.id);
+  toggle.setAttribute('aria-expanded','false');
+  toggle.setAttribute('aria-label',english?'Open menu':'Otvori izbornik');
+  toggle.textContent='☰';
+  row.insertBefore(toggle,nav);
+  const open=value=>{header.classList.toggle('is-open',value);toggle.setAttribute('aria-expanded',String(value));toggle.setAttribute('aria-label',value?(english?'Close menu':'Zatvori izbornik'):(english?'Open menu':'Otvori izbornik'));toggle.textContent=value?'×':'☰';};
+  toggle.addEventListener('click',()=>open(!header.classList.contains('is-open')));
+  nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>open(false)));
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')open(false);});
+  const markActive=()=>{const hash=location.hash.toLowerCase();nav.querySelectorAll('a').forEach(link=>{const href=link.getAttribute('href')||'';const active=href.startsWith('#')&&href.toLowerCase()===hash;link.classList.toggle('is-active',active);if(active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});};
+  markActive();
+  addEventListener('hashchange',markActive);
+})();
