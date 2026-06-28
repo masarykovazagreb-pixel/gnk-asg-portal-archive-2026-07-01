@@ -1,24 +1,26 @@
-name: Deploy Unified Auth V15 Final
+name: Deploy IQ200 Index with Unified Auth V15
 
 on:
   push:
     branches: [main]
     paths:
       - ".github/workflows/deploy-unified-auth-v14.yml"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-portal-final-v13.js"
       - "workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js"
       - "workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js"
+      - "apps/portal/index.html"
+      - "apps/portal/en/index.html"
   workflow_run:
     workflows: ["Deploy public portal"]
     types: [completed]
-  issue_comment:
-    types: [created]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: unified-auth-v15-final-production
+  group: iq200-index-auth-v15-production
   cancel-in-progress: true
 
 jobs:
@@ -26,8 +28,7 @@ jobs:
     if: >-
       github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
-      (github.event_name == 'issue_comment' && github.event.issue.number == 83 && github.event.comment.body == 'deploy unified auth v15 final')
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -39,22 +40,30 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Verify V15 final production entry
+      - name: Verify IQ200 index and Auth V15 gateway
         working-directory: workers/gnk-asg-direct-operator
         shell: bash
         run: |
           set -euo pipefail
+          test -s src/index-final-admin-gateway-v1.js
+          test -s src/index-portal-final-v13.js
           test -s src/index-unified-auth-v14.js
           test -s src/index-unified-auth-v15-final.js
+          node --check src/index-final-admin-gateway-v1.js
+          node --check src/index-portal-final-v13.js
           node --check src/index-unified-auth-v14.js
           node --check src/index-unified-auth-v15-final.js
-          grep -q 'MAIL STUDIO' src/index-unified-auth-v15-final.js
-          grep -q 'MEDIA CENTAR' src/index-unified-auth-v15-final.js
-          grep -q '/admin-center/' src/index-unified-auth-v15-final.js
-          grep -q 'MEDIA_SESSION_PROTECTED' src/index-unified-auth-v15-final.js
-          npx --yes wrangler@4 deploy src/index-unified-auth-v15-final.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          grep -q 'GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625' src/index-portal-final-v13.js
+          grep -q 'GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_AUTH_V15_20260628' src/index-final-admin-gateway-v1.js
+          grep -q 'Korporativni portal' ../../apps/portal/index.html
+          grep -q 'Sve funkcije na jednom mjestu' ../../apps/portal/index.html
+          grep -q 'Corporate portal' ../../apps/portal/en/index.html
+          grep -q 'All key functions in one place' ../../apps/portal/en/index.html
+          grep -q 'index-redesign-production.css' ../../apps/portal/index.html
+          grep -q 'index-redesign-production.css' ../../apps/portal/en/index.html
+          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Deploy V15 final production entry
+      - name: Deploy IQ200 and Auth V15 gateway
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -62,45 +71,46 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler@4 deploy src/index-unified-auth-v15-final.js --config wrangler.toml --name gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify public INDEX and protected ADMIN flow
+      - name: Verify public IQ200 and protected Admin flow
         shell: bash
         run: |
           set -euo pipefail
           base="https://gnk-asg.hr"
           success=false
           for attempt in $(seq 1 18); do
-            stamp=$(date +%s)
+            stamp="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
             auth_code=$(curl -sS -o auth.json -w '%{http_code}' "$base/api/operator-auth-check?cb=$stamp" || true)
             admin_code=$(curl -sS -o admin.html -w '%{http_code}' "$base/admin-center/?cb=$stamp" || true)
             old_admin_code=$(curl -sS -D old-admin.headers -o /dev/null -w '%{http_code}' "$base/operator-dashboard/?cb=$stamp" || true)
             media_code=$(curl -sS -D media.headers -o /dev/null -w '%{http_code}' "$base/media-command-center/?cb=$stamp" || true)
             root_code=$(curl -sS -D root.headers -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
-            en_code=$(curl -sS -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
-            pdf_code=$(curl -sS -o pdf.html -w '%{http_code}' "$base/downloads/?cb=$stamp" || true)
+            en_code=$(curl -sS -D en.headers -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
             if [ "$auth_code" = "401" ] \
               && [ "$admin_code" = "401" ] \
               && [ "$old_admin_code" = "303" ] \
               && [ "$media_code" = "303" ] \
               && [ "$root_code" = "200" ] \
               && [ "$en_code" = "200" ] \
-              && [ "$pdf_code" = "200" ] \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' root.headers \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' en.headers \
+              && grep -q 'Korporativni portal' root.html \
+              && grep -q 'Sve funkcije na jednom mjestu' root.html \
+              && grep -q 'Corporate portal' en.html \
+              && grep -q 'All key functions in one place' en.html \
+              && grep -q 'index-redesign-production.css' root.html \
+              && grep -q 'index-redesign-production.css' en.html \
               && grep -q 'GNK ASG sigurna prijava' admin.html \
               && grep -qi '^location: /admin-center/' old-admin.headers \
-              && grep -qi '^location: /admin-center/' media.headers \
-              && grep -q 'href="/admin-center/"' root.html \
-              && grep -q 'PDF CENTAR' root.html \
-              && grep -q 'PDF CENTRE' en.html \
-              && ! grep -q '>Markets<' en.html \
-              && grep -qi '^x-gnk-asg-production-entry:' root.headers; then
+              && grep -qi '^location: /admin-center/' media.headers; then
               success=true
               break
             fi
             sleep 10
           done
           if [ "$success" != "true" ]; then
-            echo "AUTH=$auth_code ADMIN=$admin_code OLD_ADMIN=$old_admin_code MEDIA=$media_code ROOT=$root_code EN=$en_code PDF=$pdf_code"
+            echo "AUTH=$auth_code ADMIN=$admin_code OLD_ADMIN=$old_admin_code MEDIA=$media_code ROOT=$root_code EN=$en_code"
             exit 1
           fi
-          echo "GNK_ASG_UNIFIED_AUTH_V15_FINAL_OK=true"
+          echo "GNK_ASG_IQ200_INDEX_AUTH_V15_OK=true"
