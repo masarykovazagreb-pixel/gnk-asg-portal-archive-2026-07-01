@@ -111,6 +111,16 @@
       });
     };
 
+    const ensureCodeNavLink=()=>{
+      const nav=document.querySelector('.top-nav');
+      if(!nav||nav.querySelector('a[href="/the-code/"]'))return;
+      const link=document.createElement('a');
+      link.href='/the-code/';
+      link.textContent='◈ THE CODE';
+      const contact=[...nav.querySelectorAll('a')].find(item=>item.getAttribute('href')==='/contact/');
+      contact?nav.insertBefore(link,contact):nav.appendChild(link);
+    };
+
     const curateRenderedNews=()=>{
       const list=document.getElementById('latestNews');
       if(!list)return;
@@ -149,6 +159,7 @@
 
     const enforce=()=>{
       cleanDuplicateChrome();
+      ensureCodeNavLink();
       guardVisuals(document);
       curateRenderedNews();
     };
@@ -162,6 +173,7 @@
           record.addedNodes.forEach(node=>{if(node.nodeType===1)guardVisuals(node);});
         });
         cleanDuplicateChrome();
+        ensureCodeNavLink();
         curateRenderedNews();
       });
       observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['style','src','srcset']});
