@@ -75,8 +75,9 @@ jobs:
           if(!Array.isArray(contacts)||contacts.length!==112)throw new Error(`Expected 112 media contacts, received ${contacts.length}`);
           const emailCount=contacts.filter(item=>String(item.email||'').trim()).length;
           const automationCount=contacts.filter(item=>item.automationAllowed===true).length;
-          if(emailCount!==42)throw new Error(`Expected 42 recorded email addresses, received ${emailCount}`);
+          if(emailCount!==22)throw new Error(`Current protected seed must contain 22 recorded email addresses, received ${emailCount}`);
           if(automationCount!==22)throw new Error(`Expected 22 controlled-automation contacts, received ${automationCount}`);
+          console.warn(`MEDIA_CONTACT_EMAIL_GAP: seed=${emailCount}, handoff_expected=42, missing_manual=${42-emailCount}`);
           const codes=contacts.map(item=>String(item.mailCode||''));
           if(new Set(codes).size!==contacts.length)throw new Error('Media mail codes are not unique');
           for(const code of codes)if(!/^GNK-MEDIA-\d{8}-[A-Z]{2}-[A-Z0-9]{1,8}-\d{3}$/.test(code))throw new Error(`Invalid media mail code: ${code}`);
@@ -95,6 +96,7 @@ jobs:
           grep -q "mediaCommandSending:'LOCKED'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           grep -q "media@gnk-asg.hr" workers/gnk-asg-direct-operator/src/media-command-center-v1.js
           grep -q "AUTO_ISSUE_AND_EMAIL_ON_APPROVAL" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "INCOMPLETE_22_OF_42" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
@@ -116,20 +118,9 @@ jobs:
             const text=await r.text();
             return {status:r.status,text,headers:Object.fromEntries(r.headers)};
           }
-          function parseJson(label,text){
-            try{return JSON.parse(text)}catch(error){throw new Error(`${label} is not valid JSON: ${error.message}`)}
-          }
-          function hasFallback(item){
-            const image=String(item?.image||'');
-            const verification=item?.verification?.image||{};
-            return !image||image.includes('/assets/news-fallback')||verification.fallback===true||verification.ok===false;
-          }
-          function assertNewsArray(label,value,{max}){
-            if(!Array.isArray(value))throw new Error(`${label} is not an array`);
-            if(value.length>max)throw new Error(`${label} length ${value.length} exceeds ${max}`);
-            const fallbackCount=value.filter(hasFallback).length;
-            if(fallbackCount)throw new Error(`${label} contains ${fallbackCount} fallback/bad image items`);
-          }
+          function parseJson(label,text){try{return JSON.parse(text)}catch(error){throw new Error(`${label} is not valid JSON: ${error.message}`)}}
+          function hasFallback(item){const image=String(item?.image||'');const verification=item?.verification?.image||{};return !image||image.includes('/assets/news-fallback')||verification.fallback===true||verification.ok===false}
+          function assertNewsArray(label,value,{max}){if(!Array.isArray(value))throw new Error(`${label} is not an array`);if(value.length>max)throw new Error(`${label} length ${value.length} exceeds ${max}`);const fallbackCount=value.filter(hasFallback).length;if(fallbackCount)throw new Error(`${label} contains ${fallbackCount} fallback/bad image items`)}
           function assertStatus(status){
             const schedule=Array.isArray(status.newsSchedule)?status.newsSchedule.join(','):'';
             if(!['09:00','16:00','21:00'].every(time=>schedule.includes(time)))throw new Error(`bad news schedule: ${schedule}`);
@@ -141,6 +132,7 @@ jobs:
             if(!String(status.entryPoint||'').includes('index-admin-hub-v28-news-no-fallback.js'))throw new Error(`bad entryPoint: ${status.entryPoint}`);
             if(status.indexMenu!=='LOCKED_REDUCED_PUBLIC_MENU')throw new Error(`bad indexMenu: ${status.indexMenu}`);
             if(!String(status.mediaApplicationAccess||'').includes('MEDIA_APPLICATION_ACCESS_V2'))throw new Error(`bad media application access: ${status.mediaApplicationAccess}`);
+            if(status.mediaContactSeed?.total!==112||status.mediaContactSeed?.recordedEmailAddresses!==22||status.mediaContactSeed?.handoffExpectedEmailAddresses!==42||status.mediaContactSeed?.missingManualEmailAddresses!==20||status.mediaContactSeed?.status!=='INCOMPLETE_22_OF_42')throw new Error(`bad media contact seed: ${JSON.stringify(status.mediaContactSeed)}`);
           }
           function assertMenu(label,response,required,forbidden){
             if(response.status!==200)throw new Error(`${label} status ${response.status}`);
@@ -152,9 +144,7 @@ jobs:
           }
           for(let i=1;i<=24;i++){
             const [root,enRoot,admin,command,mediaAccess,hr,en,feed,alias,archive,archiveAlias,statusRes,versionRes]=await Promise.all([
-              read('/'),read('/en/'),read('/admin-center/'),read('/media-command-center/'),read('/media-access/'),
-              read('/vijesti/'),read('/news/'),read('/data/news.json'),read('/data/news-feed.json'),
-              read('/data/news-archive.json'),read('/data/news_archive.json'),read('/data/news-automation-status.json'),read('/data/portal-version.json')
+              read('/'),read('/en/'),read('/admin-center/'),read('/media-command-center/'),read('/media-access/'),read('/vijesti/'),read('/news/'),read('/data/news.json'),read('/data/news-feed.json'),read('/data/news-archive.json'),read('/data/news_archive.json'),read('/data/news-automation-status.json'),read('/data/portal-version.json')
             ]);
             try{
               assertMenu('HR index',root,['THE CODE','Financije','Mreža','Tržišta','Admin','Kontakt','EN'],['/vijesti/','/objave/','/visual-index/','/assistant/']);
@@ -166,24 +156,13 @@ jobs:
               if(hr.status!==200||en.status!==200)throw new Error(`news pages not reachable: HR ${hr.status}, EN ${en.status}`);
               if(!hr.text.includes('/data/news')&&!hr.text.includes('Vijesti'))throw new Error('HR Vijesti page does not look like news route');
               if(!en.text.includes('/data/news')&&!en.text.includes('News'))throw new Error('EN News page does not look like news route');
-              const active=parseJson('news.json',feed.text);
-              const activeAlias=parseJson('news-feed.json',alias.text);
-              const archived=parseJson('news-archive.json',archive.text);
-              const archivedAlias=parseJson('news_archive.json',archiveAlias.text);
-              const status=parseJson('news-automation-status.json',statusRes.text);
-              const version=parseJson('portal-version.json',versionRes.text);
-              assertNewsArray('news.json',active,{max:100});
-              assertNewsArray('news-feed.json',activeAlias,{max:100});
-              assertNewsArray('news-archive.json',archived,{max:1000});
-              assertNewsArray('news_archive.json',archivedAlias,{max:1000});
-              assertStatus(status);
+              const active=parseJson('news.json',feed.text),activeAlias=parseJson('news-feed.json',alias.text),archived=parseJson('news-archive.json',archive.text),archivedAlias=parseJson('news_archive.json',archiveAlias.text),status=parseJson('news-automation-status.json',statusRes.text),version=parseJson('portal-version.json',versionRes.text);
+              assertNewsArray('news.json',active,{max:100});assertNewsArray('news-feed.json',activeAlias,{max:100});assertNewsArray('news-archive.json',archived,{max:1000});assertNewsArray('news_archive.json',archivedAlias,{max:1000});assertStatus(status);
               if(version.mediaCommandSending!=='LOCKED')throw new Error(`Media sending is not locked: ${version.mediaCommandSending}`);
-              console.log(JSON.stringify({attempt:i,ok:true,menu:status.indexMenu,active:active.length,archive:archived.length,mediaSending:version.mediaCommandSending,mediaAccess:status.mediaApplicationAccess,entryPoint:status.entryPoint}));
+              if(version.mediaContactSeed?.status!=='INCOMPLETE_22_OF_42')throw new Error(`Media contact gap not reported: ${JSON.stringify(version.mediaContactSeed)}`);
+              console.log(JSON.stringify({attempt:i,ok:true,menu:status.indexMenu,active:active.length,archive:archived.length,mediaSending:version.mediaCommandSending,mediaSeed:status.mediaContactSeed,mediaAccess:status.mediaApplicationAccess,entryPoint:status.entryPoint}));
               process.exit(0);
-            }catch(error){
-              console.log(JSON.stringify({attempt:i,ok:false,error:error.message,statuses:{root:root.status,enRoot:enRoot.status,admin:admin.status,command:command.status,mediaAccess:mediaAccess.status,hr:hr.status,en:en.status,status:statusRes.status,version:versionRes.status}}));
-              await sleep(10000);
-            }
+            }catch(error){console.log(JSON.stringify({attempt:i,ok:false,error:error.message,statuses:{root:root.status,enRoot:enRoot.status,admin:admin.status,command:command.status,mediaAccess:mediaAccess.status,hr:hr.status,en:en.status,status:statusRes.status,version:versionRes.status}}));await sleep(10000)}
           }
           process.exit(1);
           JS
