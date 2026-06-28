@@ -1,0 +1,115 @@
+name: Validate V21 Release Candidate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - project-50-white-integrated-menu
+    paths:
+      - '.github/workflows/validate-v21-release-candidate.yml'
+      - 'apps/portal/index.html'
+      - 'apps/portal/en/index.html'
+      - 'apps/portal/contact/index.html'
+      - 'apps/portal/en/contact/index.html'
+      - 'apps/portal/admin-center/index.html'
+      - 'apps/portal/assets/public-shell-v15.js'
+      - 'apps/portal/assets/public-menu-v10.js'
+      - 'apps/portal/assets/index-menu-unified-v16.js'
+      - 'apps/portal/assets/contact-v13.js'
+      - 'apps/portal/assets/contact-parity-v1.js'
+      - 'apps/portal/assets/admin-center-mail-only-v1.js'
+      - 'apps/portal/assets/mail-studio-inbox-ui-v1.js'
+      - 'apps/portal/assets/mail-studio-ai-media-v1.js'
+      - 'apps/portal/assets/mail-studio-media-panel-v1.js'
+      - 'workers/gnk-asg-direct-operator/**'
+      - 'workers/gnk-asg-contact-api-worker/**'
+      - 'config/email-routing-worker-rules-v1.json'
+      - 'scripts/sync-email-routing-rules.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-validate-v21-release-candidate
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Install pinned Direct Operator dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --no-audit --no-fund
+
+      - name: Validate JavaScript syntax
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/public-shell-v15.js
+          node --check apps/portal/assets/public-menu-v10.js
+          node --check apps/portal/assets/index-menu-unified-v16.js
+          node --check apps/portal/assets/contact-v13.js
+          node --check apps/portal/assets/contact-parity-v1.js
+          node --check apps/portal/assets/admin-center-mail-only-v1.js
+          node --check apps/portal/assets/mail-studio-inbox-ui-v1.js
+          node --check apps/portal/assets/mail-studio-ai-media-v1.js
+          node --check apps/portal/assets/mail-studio-media-panel-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-project50-v30-unified-menu.js
+          node --check workers/gnk-asg-direct-operator/src/index-project50-v31-mail-inbox.js
+          node --check workers/gnk-asg-direct-operator/src/mail-receiving-centers-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-inbound-service-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-inbound-reply-policy-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-inbound-auto-reply-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-inbound-parser-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-inbox-contact-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-ai-assist-v2.js
+          node --check workers/gnk-asg-contact-api-worker/src/index-centers-v4.js
+          node --check scripts/sync-email-routing-rules.mjs
+
+      - name: Validate locked configuration
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node -e "const p=require('./workers/gnk-asg-direct-operator/package.json'); if(p.dependencies['postal-mime']!=='2.7.5') process.exit(1);"
+          node -e "const c=require('./config/email-routing-worker-rules-v1.json'); if(c.addresses.length!==10||new Set(c.addresses).size!==10||c.worker!=='gnk-asg-direct-operator') process.exit(1);"
+          grep -q 'main = "src/index-project50-v31-mail-inbox.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-centers-v4.js"' workers/gnk-asg-contact-api-worker/wrangler.toml
+          grep -q 'MAIL_INBOUND_AUTO_REPLY_MODE = "media-only"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'case_id TEXT PRIMARY KEY' workers/gnk-asg-direct-operator/migrations/0025_mail_inbound_auto_reply_claims.sql
+
+      - name: Run public, Mail Studio and Contact tests
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --test workers/gnk-asg-direct-operator/tests/public-menu-parity.test.mjs
+          node --test workers/gnk-asg-direct-operator/tests/mail-inbox-contact.test.mjs
+          node --test workers/gnk-asg-direct-operator/tests/mail-inbound-service.test.mjs
+          node --test workers/gnk-asg-direct-operator/tests/mail-inbound-reply-policy.test.mjs
+          node --test workers/gnk-asg-direct-operator/tests/mail-inbound-parser.test.mjs
+          node --test workers/gnk-asg-direct-operator/tests/mail-ai-assist.test.mjs
+          node --test workers/gnk-asg-direct-operator/tests/mail-studio-media-panel.test.mjs
+          node --test workers/gnk-asg-direct-operator/tests/media-command-center-active.test.mjs
+          node --test workers/gnk-asg-contact-api-worker/tests/contact-centers.test.mjs
+
+      - name: Direct Operator Wrangler dry run
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx wrangler deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Contact API Wrangler dry run
+        working-directory: workers/gnk-asg-contact-api-worker
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-contact-api
+
+      - name: Confirm validation-only execution
+        run: |
+          echo "V21 release candidate validation completed."
+          echo "No D1 migration was applied."
+          echo "No Worker was deployed."
+          echo "No Email Routing rule was changed."
+          echo "No form was submitted."
+          echo "No email, automatic reply, media invitation, or campaign was sent."
