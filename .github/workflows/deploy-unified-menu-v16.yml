@@ -6,6 +6,11 @@ on:
       - project-50-white-integrated-menu
     paths:
       - '.github/deploy-unified-menu-v16.trigger'
+  pull_request:
+    branches:
+      - deploy-control-menu-v16-20260628
+    paths:
+      - '.github/deploy-unified-menu-v16.trigger'
   workflow_dispatch:
 
 permissions:
