@@ -1,6 +1,6 @@
 import app from './index-admin-hub-v28-news-no-fallback.js';
 
-export const VERSION='GNK_ASG_INDEX_PDF_ADMIN_GATEWAY_V1_20260628';
+export const VERSION='GNK_ASG_INDEX_PDF_ADMIN_GATEWAY_V2_20260628';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 
 function headersOf(response,marker){
