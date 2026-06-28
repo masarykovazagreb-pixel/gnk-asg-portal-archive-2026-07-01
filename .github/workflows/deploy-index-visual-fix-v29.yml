@@ -55,7 +55,7 @@ jobs:
           curl -fsS "https://gnk-asg.hr/assets/index-priority-v1.js?cb=${CB}" -o /tmp/priority.js
           curl -fsS "https://gnk-asg.hr/assets/index-code-layout-fix-v1.css?cb=${CB}" -o /tmp/layout.css
           curl -fsS "https://gnk-asg.hr/assets/index-city-white-v1.css?cb=${CB}" -o /tmp/cities.css
-          grep -qi '^x-gnk-asg-index-visual-fix: GNK_ASG_ADMIN_HUB_V29_INDEX_CITY_CODE_LAYOUT_20260628' /tmp/index.headers
+          grep -qi '^x-gnk-asg-index-visual-fix: GNK_ASG_ADMIN_HUB_V29_INDEX_CITY_CODE_LAYOUT_R2_20260628' /tmp/index.headers
           grep -q 'GNK_INDEX_PRIORITY_V4' /tmp/priority.js
           grep -q 'ci-control--play' /tmp/layout.css
           grep -q 'height:844px' /tmp/layout.css
