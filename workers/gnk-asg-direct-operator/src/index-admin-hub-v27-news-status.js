@@ -1,4 +1,5 @@
 import app from './index-admin-hub-v26-clean-index.js';
+import { handleMediaAccess } from './media-access-service-v1.js';
 
 export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260627_R8_DIRECT_LOCKED_INDEX';
 const ENTRYPOINT='src/index-admin-hub-v27-news-status.js';
@@ -94,6 +95,8 @@ async function patchAdminHtml(response,path,request){
 export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
+    const mediaAccess=await handleMediaAccess(request,env);
+    if(mediaAccess)return mediaAccess;
     const redirect=operatorRedirect(request,path);
     if(redirect)return redirect;
     let response=await directIndex(request,env,path);
