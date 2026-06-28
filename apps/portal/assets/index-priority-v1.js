@@ -3,6 +3,29 @@
   if(window.__GNK_INDEX_PRIORITY_V4__)return;
   window.__GNK_INDEX_PRIORITY_V4__=true;
   const en=document.documentElement.lang==='en';
+
+  const enforceMenu=()=>{
+    const menu=document.querySelector('.index-nav .menu, nav.menu');
+    if(!menu)return;
+    menu.querySelectorAll('a').forEach(link=>{
+      const href=(link.getAttribute('href')||'').trim().toLowerCase();
+      const label=(link.textContent||'').trim().toLowerCase();
+      if(href==='/trzista/'||href==='/trzista'||href==='/markets/'||href==='/markets'||label==='tržišta'||label==='trzista'||label==='markets'){
+        link.remove();
+        return;
+      }
+      if(label==='admin'){
+        link.setAttribute('href','/mail-studio/');
+        link.setAttribute('rel','nofollow');
+      }
+    });
+    document.body.dataset.gnkIndexMenu='mail-studio-no-markets';
+  };
+  enforceMenu();
+  const menuObserver=new MutationObserver(enforceMenu);
+  menuObserver.observe(document.documentElement,{childList:true,subtree:true});
+  setTimeout(()=>menuObserver.disconnect(),15000);
+
   const stage=document.querySelector('.code-stage');
   if(!stage)return;
   document.body.dataset.gnkIndexPriority='v4';
@@ -16,7 +39,7 @@
     document.head.appendChild(link);
   };
   loadStyle('link[data-code-layout-fix-v1]','/assets/index-code-layout-fix-v1.css?v=20260628-v2','codeLayoutFixV1');
-  loadStyle('link[data-index-city-white-v1]','/assets/index-city-white-v1.css?v=20260628-v2','indexCityWhiteV1');
+  loadStyle('link[data-index-city-white-v1]','/assets/index-city-white-v1.css?v=20260628-v3','indexCityWhiteV1');
 
   const inlineHost=stage.querySelector('.code-inline-host');
   if(inlineHost){
