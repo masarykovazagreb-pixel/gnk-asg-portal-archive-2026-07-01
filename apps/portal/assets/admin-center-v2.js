@@ -5,9 +5,9 @@
 
   const MODULES = [
     {id:'overview', icon:'⌂', label:'Admin pregled', short:'Kontrolna ploča', desc:'Status sustava, prioriteti i jedinstveni pristup alatima.', route:'/admin-center/'},
-    {id:'mail', icon:'✉', label:'Mail Studio', short:'Pošta i potpisi', desc:'Pošiljatelji, pretinci, potpisi, privici i sigurne provjere.', route:'/mail-studio/'},
+    {id:'media', icon:'◎', label:'Komandni centar', short:'Mediji i prijave', desc:'Globalna baza medija, kampanje, prijave, dokumenti, odobrenja i zaključani kanali.', route:'/media-command-center/'},
     {id:'operator', icon:'▣', label:'Operator', short:'Operativni nadzor', desc:'Status, evidencije i operatorske postavke.', route:'/operator-dashboard/'},
-    {id:'media', icon:'◎', label:'Medijski centar', short:'Kampanje i mediji', desc:'Medijska baza, kampanje, odobrenja i zaključani kanali.', route:'/media-command-center/'},
+    {id:'mail', icon:'✉', label:'Mail Studio', short:'Pošta i potpisi', desc:'Pošiljatelji, pretinci, potpisi, privici i sigurne provjere.', route:'/mail-studio/'},
     {id:'editor', icon:'✎', label:'Auto Editor', short:'Urednički procesi', desc:'Objave, priprema sadržaja i uredničke kontrole.', route:'/auto-editor/'},
     {id:'news', icon:'◫', label:'News Admin', short:'Vijesti i izvori', desc:'Izvori, vijesti, raspored i urednička kontrola.', route:'/news-admin/'},
     {id:'pdf', icon:'▤', label:'PDF Publisher', short:'Dokumenti', desc:'Službeni dokumenti, PDF objava i evidencija.', route:'/pdf-publisher/'}
@@ -16,10 +16,10 @@
     {id:'session', label:'Sigurna sesija', detail:'Administratorski pristup', path:'/api/operator-auth-check'},
     {id:'backend', label:'Operator backend', detail:'Operativne funkcije', path:'/api/operator-backend-status'},
     {id:'mail', label:'Mail sustav', detail:'Inbox, Sent i Outbox', path:'/api/mail-center/status'},
-    {id:'media', label:'Medijski sustav', detail:'Komandni centar', path:'/api/media-command-center/status'},
+    {id:'media', label:'Komandni centar', detail:'Mediji, prijave i odobrenja', path:'/api/media-command-center/status'},
     {id:'platform', label:'Platforma', detail:'KV, D1 i javni asseti', path:'/data/platform-health.json'}
   ];
-  const PRIORITIES = ['mail','operator','media'];
+  const PRIORITIES = ['media','operator','mail'];
   const $ = id => document.getElementById(id);
   const state = {current:'overview', frameTimer:null, cleanObserver:null, statusTimer:null, toastTimer:null};
 
