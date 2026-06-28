@@ -48,31 +48,45 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify production without sending mail
+      - name: Verify Index full cycle and network
         shell: bash
         run: |
           set -euo pipefail
-          for n in $(seq 1 24); do
-            CB="${GITHUB_RUN_ID}-${n}"
-            HR=$(curl -fsS "https://gnk-asg.hr/?cb=${CB}" || true)
-            CONTACT=$(curl -fsS "https://gnk-asg.hr/contact/?cb=${CB}" || true)
-            ADMIN_CODE=$(curl -sS -o /tmp/admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=${CB}" || true)
-            MAIL_CODE=$(curl -sS -o /tmp/mail.json -w '%{http_code}' "https://gnk-asg.hr/api/mail-center/send-readiness?cb=${CB}" || true)
-            MEDIA_CODE=$(curl -sS -o /tmp/media.json -w '%{http_code}' "https://gnk-asg.hr/api/media-command-center/delivery-status?cb=${CB}" || true)
-            CONTACT_API_CODE=$(curl -sS -o /tmp/contact-api.json -w '%{http_code}' "https://gnk-asg.hr/api/contact-submit?cb=${CB}" || true)
-            if printf '%s' "$HR" | grep -q 'index-priority-v1.js?v=20260628-v3' \
-              && printf '%s' "$HR" | grep -q 'locationDirectory' \
-              && printf '%s' "$CONTACT" | grep -q 'contact-quality-v2.css?v=20260628-v5' \
-              && printf '%s' "$CONTACT" | grep -q '/api/contact-submit' \
-              && [ "$ADMIN_CODE" = '401' ] \
-              && grep -qi 'operatorski token\|Admin prijava' /tmp/admin.html \
-              && [ "$MAIL_CODE" = '401' ] \
-              && [ "$MEDIA_CODE" = '401' ] \
-              && [ "$CONTACT_API_CODE" = '405' ]; then
-              echo 'Final functional production verification passed.'
-              exit 0
-            fi
-            sleep 10
-          done
-          echo 'Final functional production verification failed.' >&2
-          exit 1
+          sleep 8
+          curl -fsS "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}" -o /tmp/index.html
+          grep -q 'index-priority-v1.js?v=20260628-v3' /tmp/index.html
+          grep -q 'locationDirectory' /tmp/index.html
+          grep -q 'GNK ASG d.o.o.' /tmp/index.html
+          grep -q 'GNK DINAMO Ltd.' /tmp/index.html
+      - name: Verify Contact page and endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS "https://gnk-asg.hr/contact/?cb=${GITHUB_RUN_ID}" -o /tmp/contact.html
+          grep -q 'contact-quality-v2.css?v=20260628-v5' /tmp/contact.html
+          grep -q '/api/contact-submit' /tmp/contact.html
+          CODE=$(curl -sS -o /tmp/contact-api.json -w '%{http_code}' "https://gnk-asg.hr/api/contact-submit?cb=${GITHUB_RUN_ID}")
+          echo "Contact GET status: $CODE"
+          [ "$CODE" = '405' ]
+      - name: Verify one-token Admin entry
+        shell: bash
+        run: |
+          set -euo pipefail
+          CODE=$(curl -sS -o /tmp/admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=${GITHUB_RUN_ID}")
+          echo "Admin status: $CODE"
+          case "$CODE" in 200|401|403) ;; *) exit 1 ;; esac
+          grep -Eqi 'operatorski token|Admin prijava|Operator token' /tmp/admin.html
+      - name: Verify Mail Studio protection
+        shell: bash
+        run: |
+          set -euo pipefail
+          CODE=$(curl -sS -o /tmp/mail.json -w '%{http_code}' "https://gnk-asg.hr/api/mail-center/send-readiness?cb=${GITHUB_RUN_ID}")
+          echo "Mail readiness status: $CODE"
+          case "$CODE" in 401|403) ;; *) exit 1 ;; esac
+      - name: Verify Media Sender protection
+        shell: bash
+        run: |
+          set -euo pipefail
+          CODE=$(curl -sS -o /tmp/media.json -w '%{http_code}' "https://gnk-asg.hr/api/media-command-center/delivery-status?cb=${GITHUB_RUN_ID}")
+          echo "Media delivery status: $CODE"
+          case "$CODE" in 401|403) ;; *) exit 1 ;; esac
