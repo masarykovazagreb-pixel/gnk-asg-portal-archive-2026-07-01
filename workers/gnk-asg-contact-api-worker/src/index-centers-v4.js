@@ -63,7 +63,7 @@ function centeredEnv(env){
 async function patchResponse(response){
   if(!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   try{
-    const payload=await response.json();
+    const payload=await response.clone().json();
     if(!payload?.caseId)return response;
     const center=assignReceivingCenter(payload.caseId);
     const headers=new Headers(response.headers);
