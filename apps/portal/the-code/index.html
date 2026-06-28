@@ -3,205 +3,346 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
 <title>THE CODE — GNK DINAMO Ltd. · Activation 7 October 2026</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;overflow:hidden;background:#000;}
-body{display:flex;align-items:center;justify-content:center;min-height:100%;font-family:'Courier New',monospace;}
-#app{width:min(390px,100vw);height:min(844px,100vh);aspect-ratio:390/844;background:#000;color:#fff;overflow:hidden;position:relative;}
-.scene{display:none;width:100%;height:844px;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2.5rem 1.5rem;animation:fi 1.2s ease;position:absolute;top:0;left:0;}
-.scene.active{display:flex;}
-@keyframes fi{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-@keyframes fo{from{opacity:1;}to{opacity:0;}}
-.scene.out{animation:fo 0.7s ease forwards;}
-.pb{height:1px;background:#111;width:100%;position:absolute;bottom:0;left:0;}
-.pbf{height:1px;background:#c9a84c;width:0%;transition:width 0.1s linear;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.3;transform:scale(0.8);}}
-@keyframes glow{0%,100%{text-shadow:0 0 10px #c9a84c33;}50%{text-shadow:0 0 40px #c9a84ccc,0 0 80px #c9a84c44;}}
-@keyframes scanline{0%{transform:translateY(-2px);}100%{transform:translateY(846px);}}
-@keyframes cdflash{0%,100%{color:#fff;}50%{color:#c9a84c;}}
-@keyframes lineIn{from{width:0;}to{width:100%;}}
-@keyframes bigIn{from{opacity:0;transform:scale(1.15);}to{opacity:1;transform:scale(1);}}
-@keyframes goldpulse{0%,100%{background:#c9a84c08;}50%{background:#c9a84c18;}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-
-.scan{position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#c9a84c14,transparent);animation:scanline 5s linear infinite;pointer-events:none;z-index:100;}
-
-.narr{font-size:17px;line-height:2;color:#bbb;font-style:italic;font-family:Georgia,serif;letter-spacing:0.5px;max-width:300px;}
-.narr .g{color:#c9a84c;font-style:normal;}
-.dim{color:#2a2a2a;font-size:10px;letter-spacing:4px;text-transform:uppercase;}
-.t-box{background:#050505;border:0.5px solid #1a1a1a;border-radius:6px;padding:1rem;width:100%;text-align:left;margin:0.8rem 0;}
-.tl{font-size:12px;color:#2a2a2a;letter-spacing:1px;margin:5px 0;transition:color 0.4s;}
-.tl::before{content:'> ';color:#1a1a1a;}
-.tl.active{color:#c9a84c;}.tl.active::before{color:#c9a84c;}
-.tl.done{color:#1e4a1e;}.tl.done::before{color:#1a3a1a;}
-.gdots{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:1.2rem 0;}
-.gd{display:flex;flex-direction:column;align-items:center;gap:5px;}
-.gd-dot{width:9px;height:9px;border-radius:50%;background:#c9a84c;animation:pulse 2s infinite;}
-.gd-lbl{font-size:8px;color:#333;letter-spacing:2px;text-transform:uppercase;}
-.clocks{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;margin:0.5rem 0;}
-.cc{background:#080808;border:0.5px solid #151515;border-radius:6px;padding:8px 6px;text-align:center;}
-.cc-city{font-size:9px;color:#333;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px;}
-.cc-time{font-size:19px;color:#ccc;letter-spacing:2px;}
-.cc-conf{font-size:9px;color:#c9a84c33;margin-top:2px;}
-.cd-row{display:flex;gap:6px;justify-content:center;align-items:flex-end;}
-.cd-b{text-align:center;}
-.cd-n{font-size:40px;color:#fff;line-height:1;font-family:'Courier New',monospace;}
-.cd-l{font-size:8px;color:#333;letter-spacing:3px;text-transform:uppercase;margin-top:3px;}
-.cd-sep{font-size:30px;color:#1a1a1a;padding-bottom:8px;}
-.cd-n.flash{animation:cdflash 0.4s ease;}
-.big-gold{font-size:46px;font-weight:300;letter-spacing:5px;color:#c9a84c;line-height:1.3;}
-.fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;margin:0.8rem 0;}
-.fin-card{background:#080808;border:0.5px solid #1a1a1a;border-radius:6px;padding:10px 8px;text-align:left;animation:goldpulse 3s infinite;}
-.fc-lbl{font-size:8px;color:#333;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
-.fc-val{font-size:14px;color:#c9a84c;letter-spacing:1px;font-weight:300;}
-.fc-note{font-size:8px;color:#222;margin-top:2px;letter-spacing:1px;}
+:root{--gold:#c9a84c;--gold2:#f0d88a;--black:#000;--panel:#070707}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100%;background:#000;color:#fff}
+body{font-family:'Courier New',monospace;overflow-x:hidden}
+a,button{font:inherit}
+.site-shell{min-height:100vh;background:#000;padding:18px 20px 34px}
+.topbar{width:min(980px,100%);min-height:58px;margin:0 auto 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,168,76,.38)}
+.brand{color:var(--gold2);font-size:13px;font-weight:700;letter-spacing:.28em;text-transform:uppercase}
+.menu{display:flex;align-items:center;gap:10px}
+.menu a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:9px 16px;border:1px solid rgba(201,168,76,.58);border-radius:999px;color:#fff;text-decoration:none;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:#080808}
+.menu a:hover,.menu a:focus{color:#111;background:linear-gradient(135deg,#b98b2f,#f4dc91);outline:none}
+.presentation-shell{width:min(980px,100%);margin:0 auto;display:flex;flex-direction:column;align-items:center}
+.presentation-heading{text-align:center;margin:2px 0 14px}
+.presentation-heading small{display:block;color:#6f6f6f;font-size:9px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:7px}
+.presentation-heading h1{font-size:clamp(25px,4vw,44px);font-weight:400;letter-spacing:.18em;color:var(--gold2)}
+.controls{width:min(520px,100%);display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;position:relative;z-index:500}
+.control{min-height:44px;padding:10px 17px;border:1px solid var(--gold);border-radius:999px;background:#080808;color:#fff;cursor:pointer;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;box-shadow:0 0 0 1px rgba(255,255,255,.02) inset}
+.control:hover,.control:focus{background:linear-gradient(135deg,#a87925,#f0d88a);color:#111;outline:none}
+.control[aria-pressed="true"]{background:linear-gradient(135deg,#a87925,#f0d88a);color:#111}
+.gold-frame{position:relative;padding:9px;border:1px solid var(--gold);border-radius:22px;background:linear-gradient(145deg,rgba(201,168,76,.18),rgba(201,168,76,.03));box-shadow:0 0 0 1px rgba(240,216,138,.18) inset,0 0 44px rgba(201,168,76,.22),0 28px 80px rgba(0,0,0,.72)}
+.gold-frame::before{content:"";position:absolute;inset:4px;border:1px solid rgba(240,216,138,.24);border-radius:17px;pointer-events:none}
+#app{width:390px;height:844px;max-width:calc(100vw - 58px);background:#000;color:#fff;overflow:hidden;position:relative;border-radius:13px}
+.scene{display:none;width:100%;height:844px;max-height:100%;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2.5rem 1.5rem;animation:fi 1.2s ease;position:absolute;top:0;left:0}
+.scene.active{display:flex}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fo{from{opacity:1}to{opacity:0}}
+.scene.out{animation:fo .7s ease forwards}
+.pb{height:1px;background:#111;width:100%;position:absolute;bottom:0;left:0}
+.pbf{height:1px;background:var(--gold);width:0%;transition:width .1s linear}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}
+@keyframes glow{0%,100%{text-shadow:0 0 10px #c9a84c33}50%{text-shadow:0 0 40px #c9a84ccc,0 0 80px #c9a84c44}}
+@keyframes scanline{0%{transform:translateY(-2px)}100%{transform:translateY(846px)}}
+@keyframes cdflash{0%,100%{color:#fff}50%{color:var(--gold)}}
+@keyframes lineIn{from{width:0}to{width:100%}}
+@keyframes bigIn{from{opacity:0;transform:scale(1.15)}to{opacity:1;transform:scale(1)}}
+@keyframes goldpulse{0%,100%{background:#c9a84c08}50%{background:#c9a84c18}}
+.scan{position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#c9a84c14,transparent);animation:scanline 5s linear infinite;pointer-events:none;z-index:100}
+.narr{font-size:17px;line-height:2;color:#bbb;font-style:italic;font-family:Georgia,serif;letter-spacing:.5px;max-width:300px}
+.narr .g{color:var(--gold);font-style:normal}
+.dim{color:#666;font-size:10px;letter-spacing:4px;text-transform:uppercase}
+.t-box{background:#050505;border:.5px solid #252525;border-radius:6px;padding:1rem;width:100%;text-align:left;margin:.8rem 0}
+.tl{font-size:12px;color:#454545;letter-spacing:1px;margin:5px 0;transition:color .4s}
+.tl::before{content:'> ';color:#292929}
+.tl.active{color:var(--gold)}.tl.active::before{color:var(--gold)}
+.tl.done{color:#3f8a3f}.tl.done::before{color:#2d632d}
+.gdots{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:1.2rem 0}
+.gd{display:flex;flex-direction:column;align-items:center;gap:5px}
+.gd-dot{width:9px;height:9px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.gd-lbl{font-size:8px;color:#555;letter-spacing:2px;text-transform:uppercase}
+.clocks{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;margin:.5rem 0}
+.cc{background:#080808;border:.5px solid #202020;border-radius:6px;padding:8px 6px;text-align:center}
+.cc-city{font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
+.cc-time{font-size:19px;color:#ddd;letter-spacing:2px}
+.cc-conf{font-size:9px;color:#7d6b3f;margin-top:2px}
+.cd-row{display:flex;gap:6px;justify-content:center;align-items:flex-end}
+.cd-b{text-align:center}
+.cd-n{font-size:40px;color:#fff;line-height:1}
+.cd-l{font-size:8px;color:#666;letter-spacing:3px;text-transform:uppercase;margin-top:3px}
+.cd-sep{font-size:30px;color:#333;padding-bottom:8px}
+.cd-n.flash{animation:cdflash .4s ease}
+.big-gold{font-size:46px;font-weight:300;letter-spacing:5px;color:var(--gold);line-height:1.3}
+.fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;margin:.8rem 0}
+.fin-card{background:#080808;border:.5px solid #222;border-radius:6px;padding:10px 8px;text-align:left;animation:goldpulse 3s infinite}
+.fc-lbl{font-size:8px;color:#666;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.fc-val{font-size:14px;color:var(--gold);letter-spacing:1px;font-weight:300}
+.fc-note{font-size:8px;color:#555;margin-top:2px;letter-spacing:1px}
+.statusline{margin-top:12px;color:#666;font-size:9px;letter-spacing:.14em;text-align:center;text-transform:uppercase}
+body.embed-mode{overflow:hidden}
+body.embed-mode .site-shell{min-height:100vh;padding:0;display:grid;place-items:center}
+body.embed-mode .topbar,body.embed-mode .presentation-heading,body.embed-mode .controls,body.embed-mode .statusline{display:none!important}
+body.embed-mode .presentation-shell{width:auto;margin:0}
+body.embed-mode .gold-frame{padding:0;border:0;border-radius:0;background:#000;box-shadow:none}
+body.embed-mode .gold-frame::before{display:none}
+body.embed-mode #app{width:min(390px,100vw);height:min(844px,100vh);border-radius:0}
+@media(max-width:520px){
+  .site-shell{padding:12px 10px 24px}
+  .topbar{min-height:52px;margin-bottom:12px}
+  .brand{font-size:10px;letter-spacing:.18em}
+  .menu{gap:6px}.menu a{min-height:35px;padding:8px 11px;font-size:9px}
+  .presentation-heading h1{font-size:24px}
+  .controls{gap:7px}.control{flex:1 1 130px;padding:9px 10px;font-size:9px}
+  .gold-frame{padding:6px;border-radius:17px}
+  #app{width:min(390px,calc(100vw - 34px))}
+}
 </style>
 </head>
 <body>
-<div id="app">
-<div class="scan"></div>
+<div class="site-shell">
+  <header class="topbar">
+    <div class="brand">GNK DINAMO Ltd. · THE CODE</div>
+    <nav class="menu" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/admin-center/" rel="nofollow">Admin</a>
+    </nav>
+  </header>
 
-<!-- S1: BOULDER, COLORADO -->
-<div id="s1" class="scene">
-  <div class="dim" style="margin-bottom:1.5rem;margin-top:2rem;">Boulder · Colorado · USA</div>
-  <div style="font-size:10px;color:#1a1a1a;letter-spacing:3px;margin-bottom:3rem;">40°0'56"N &nbsp; 105°16'30"W</div>
-  <div class="narr">
-    "From a single room<br>
-    in Colorado —<br>
-    <span class="g">we moved<br>
-    every continent.</span>"
-  </div>
-  <div style="margin:2rem auto;width:40px;height:1px;background:#c9a84c22;"></div>
-  <div style="font-size:9px;color:#1a1a1a;letter-spacing:3px;line-height:2.2;">
-    GNK DINAMO Ltd. · Boulder CO 80302<br>
-    EIN: 36-5127187 · Entity: 20238180649
-  </div>
-  <div class="pb"><div class="pbf" id="pb1"></div></div>
-</div>
-
-<!-- S2: TERMINAL ACTIVATION -->
-<div id="s2" class="scene">
-  <div class="dim" style="margin-bottom:1.5rem;">Activation · Initialization</div>
-  <div class="t-box">
-    <div class="tl done" id="tl1">SYSTEM ONLINE ✓</div>
-    <div class="tl done" id="tl2">AUTHORIZATION: N.SEFIĆ ✓</div>
-    <div class="tl done" id="tl3">ACQUISITION: APPROVED ✓</div>
-    <div class="tl active" id="tl4">UNLOCKING THE CODE...</div>
-    <div class="tl" id="tl5">ACTIVATION: 45 ENTITIES</div>
-    <div class="tl" id="tl6">DEPLOY → ALL CONTINENTS</div>
-    <div class="tl" id="tl7">NEW YORK · 7 OCTOBER 2026 · 11:30</div>
-    <div class="tl" id="tl8">STATUS: ██████████ 100%</div>
-  </div>
-  <div class="narr" style="margin-top:1.2rem;font-size:14px;">
-    "One keystroke.<br><span class="g">The entire world<br>lights up.</span>"
-  </div>
-  <div class="pb"><div class="pbf" id="pb2"></div></div>
-</div>
-
-<!-- S3: FINANCIAL POWER -->
-<div id="s3" class="scene">
-  <div class="dim" style="margin-bottom:1rem;">Financial Strength · GNK DINAMO Ltd. Group</div>
-  <div class="fin-grid">
-    <div class="fin-card"><div class="fc-lbl">Group Revenue</div><div class="fc-val">€4.70B</div><div class="fc-note">2025 · consolidated</div></div>
-    <div class="fin-card"><div class="fc-lbl">Net Profit</div><div class="fc-val">€982.48M</div><div class="fc-note">GNK ASG 2025</div></div>
-    <div class="fin-card"><div class="fc-lbl">Equity Ratio</div><div class="fc-val">98.02%</div><div class="fc-note">Own capital</div></div>
-    <div class="fin-card"><div class="fc-lbl">Long-term Debt</div><div class="fc-val">€ 0.00</div><div class="fc-note">Zero leverage</div></div>
-    <div class="fin-card"><div class="fc-lbl">HR Revenue 2025</div><div class="fc-val">€504M</div><div class="fc-note">GNK ASG d.o.o.</div></div>
-    <div class="fin-card"><div class="fc-lbl">Group Entities</div><div class="fc-val">45</div><div class="fc-note">5 continents</div></div>
-  </div>
-  <div class="narr" style="font-size:13px;margin-top:0.5rem;">
-    "Acquisition led through<br><span class="g">GNK DINAMO Ltd. Group</span><br>— clean, precise,<br>zero external debt."
-  </div>
-  <div class="pb"><div class="pbf" id="pb3"></div></div>
-</div>
-
-<!-- S4: GLOBAL NETWORK -->
-<div id="s4" class="scene">
-  <div class="dim" style="margin-bottom:0.8rem;">Signal Spreading · 45 Entities · 5 Continents</div>
-  <div class="gdots">
-    <div class="gd"><div class="gd-dot" style="animation-delay:0s"></div><div class="gd-lbl">Europe</div></div>
-    <div class="gd"><div class="gd-dot" style="animation-delay:0.3s"></div><div class="gd-lbl">N. America</div></div>
-    <div class="gd"><div class="gd-dot" style="animation-delay:0.6s"></div><div class="gd-lbl">Asia</div></div>
-    <div class="gd"><div class="gd-dot" style="animation-delay:0.9s"></div><div class="gd-lbl">M. East</div></div>
-    <div class="gd"><div class="gd-dot" style="animation-delay:1.2s"></div><div class="gd-lbl">S. America</div></div>
-    <div class="gd"><div class="gd-dot" style="animation-delay:1.5s"></div><div class="gd-lbl">Africa</div></div>
-  </div>
-  <div class="narr" style="font-size:15px;">
-    "We don't fly to space.<br>
-    We don't chase stars.<br>
-    <span class="g">We are in your car.<br>
-    In your home.<br>
-    On your road.<br>
-    On Earth — with you.</span>"
-  </div>
-  <div style="margin-top:1.5rem;font-size:9px;color:#151515;letter-spacing:3px;line-height:2;">CAR · HOME · PHONE · TV · ROAD · OFFICE</div>
-  <div class="pb"><div class="pbf" id="pb4"></div></div>
-</div>
-
-<!-- S5: NOTHING WILL EVER BE THE SAME -->
-<div id="s5" class="scene">
-  <div class="dim" style="margin-bottom:1.5rem;">New York · October 7, 2026</div>
-  <div style="font-size:12px;color:#c9a84c;letter-spacing:4px;margin-bottom:2rem;text-transform:uppercase;">Code Activation</div>
-  <div class="big-gold" style="animation:bigIn 1s ease forwards,glow 2s 1s infinite;">NOTHING<br>WILL EVER<br>BE THE SAME.</div>
-  <div style="margin:2rem auto;width:0;height:1px;background:#c9a84c;animation:lineIn 1.5s 0.5s ease forwards;"></div>
-  <div class="narr" style="font-size:14px;">
-    "October 7, 2026.<br>
-    11:30 AM — New York.<br>
-    <span class="g">The code activates.<br>
-    The entire world<br>becomes our home.</span>"
-  </div>
-  <div style="margin-top:1.5rem;font-size:9px;color:#1a1a1a;letter-spacing:3px;">Boulder → Zagreb → New York → Earth</div>
-  <div class="pb"><div class="pbf" id="pb5"></div></div>
-</div>
-
-<!-- S6: COUNTDOWN + WORLD CLOCKS -->
-<div id="s6" class="scene active">
-  <div class="dim" style="margin-bottom:0.4rem;">Press Conference · Code Activation</div>
-  <div style="font-size:10px;color:#c9a84c;letter-spacing:3px;margin-bottom:0.8rem;">New York · October 7, 2026 · 11:30 AM ET</div>
-  <div style="background:#060606;border:0.5px solid #c9a84c22;border-radius:8px;padding:0.7rem 1rem;width:100%;margin-bottom:0.5rem;">
-    <div style="font-size:8px;color:#333;letter-spacing:3px;text-transform:uppercase;margin-bottom:3px;">New York · Live</div>
-    <div style="font-size:34px;color:#fff;letter-spacing:4px;font-family:'Courier New',monospace;line-height:1;" id="ny-time">--:--:--</div>
-    <div style="font-size:10px;color:#222;margin-top:3px;letter-spacing:2px;" id="ny-date">--</div>
-  </div>
-  <div class="clocks">
-    <div class="cc"><div class="cc-city">Zagreb</div><div class="cc-time" id="zg-t">--:--</div><div class="cc-conf">17:30 CEST</div></div>
-    <div class="cc"><div class="cc-city">London</div><div class="cc-time" id="lon-t">--:--</div><div class="cc-conf">16:30 BST</div></div>
-    <div class="cc"><div class="cc-city">Dubai</div><div class="cc-time" id="dxb-t">--:--</div><div class="cc-conf">19:30 GST</div></div>
-    <div class="cc"><div class="cc-city">Tokyo</div><div class="cc-time" id="tok-t">--:--</div><div class="cc-conf">00:30 JST+1</div></div>
-  </div>
-  <div style="background:#050505;border:0.5px solid #c9a84c18;border-radius:8px;padding:0.8rem;width:100%;">
-    <div style="font-size:8px;color:#c9a84c;letter-spacing:4px;text-transform:uppercase;margin-bottom:0.5rem;">Countdown · Code Activation · NY ET</div>
-    <div class="cd-row">
-      <div class="cd-b"><div class="cd-n" id="cd-d">--</div><div class="cd-l">days</div></div><div class="cd-sep">:</div>
-      <div class="cd-b"><div class="cd-n" id="cd-h">--</div><div class="cd-l">hours</div></div><div class="cd-sep">:</div>
-      <div class="cd-b"><div class="cd-n" id="cd-m">--</div><div class="cd-l">min</div></div><div class="cd-sep">:</div>
-      <div class="cd-b"><div class="cd-n" id="cd-s">--</div><div class="cd-l">sec</div></div>
+  <main class="presentation-shell">
+    <div class="presentation-heading">
+      <small>Code activation · New York · 7 October 2026</small>
+      <h1>THE CODE</h1>
     </div>
-  </div>
-  <div style="margin-top:0.8rem;font-size:15px;color:#c9a84c;letter-spacing:4px;font-weight:300;animation:glow 2s infinite;">THE CODE IS UNLOCKED.</div>
-  <div style="font-size:8px;color:#1a1a1a;letter-spacing:2px;margin-top:4px;">GNK DINAMO Ltd. · 45 entities · 5 continents · Earth</div>
-  <div class="pb"><div class="pbf" id="pb6"></div></div>
-</div>
+
+    <div class="controls" aria-label="Presentation controls">
+      <button class="control" id="playBtn" type="button">▶ Play · 6 slides</button>
+      <button class="control" id="musicBtn" type="button" aria-pressed="false">♫ Uključi glazbu</button>
+      <button class="control" id="fullscreenBtn" type="button">⛶ Cijeli zaslon</button>
+    </div>
+
+    <div class="gold-frame" id="goldFrame">
+      <div id="app">
+        <div class="scan"></div>
+
+        <div id="s1" class="scene">
+          <div class="dim" style="margin-bottom:1.5rem;margin-top:2rem;">Boulder · Colorado · USA</div>
+          <div style="font-size:10px;color:#555;letter-spacing:3px;margin-bottom:3rem;">40°0'56"N &nbsp; 105°16'30"W</div>
+          <div class="narr">"From a single room<br>in Colorado —<br><span class="g">we moved<br>every continent.</span>"</div>
+          <div style="margin:2rem auto;width:40px;height:1px;background:#c9a84c55;"></div>
+          <div style="font-size:9px;color:#555;letter-spacing:3px;line-height:2.2;">GNK DINAMO Ltd. · Boulder CO 80302<br>EIN: 36-5127187 · Entity: 20238180649</div>
+          <div class="pb"><div class="pbf" id="pb1"></div></div>
+        </div>
+
+        <div id="s2" class="scene">
+          <div class="dim" style="margin-bottom:1.5rem;">Activation · Initialization</div>
+          <div class="t-box">
+            <div class="tl done" id="tl1">SYSTEM ONLINE ✓</div>
+            <div class="tl done" id="tl2">AUTHORIZATION: N.SEFIĆ ✓</div>
+            <div class="tl done" id="tl3">ACQUISITION: APPROVED ✓</div>
+            <div class="tl active" id="tl4">UNLOCKING THE CODE...</div>
+            <div class="tl" id="tl5">ACTIVATION: 45 ENTITIES</div>
+            <div class="tl" id="tl6">DEPLOY → ALL CONTINENTS</div>
+            <div class="tl" id="tl7">NEW YORK · 7 OCTOBER 2026 · 11:30</div>
+            <div class="tl" id="tl8">STATUS: ██████████ 100%</div>
+          </div>
+          <div class="narr" style="margin-top:1.2rem;font-size:14px;">"One keystroke.<br><span class="g">The entire world<br>lights up.</span>"</div>
+          <div class="pb"><div class="pbf" id="pb2"></div></div>
+        </div>
+
+        <div id="s3" class="scene">
+          <div class="dim" style="margin-bottom:1rem;">Financial Strength · GNK DINAMO Ltd. Group</div>
+          <div class="fin-grid">
+            <div class="fin-card"><div class="fc-lbl">Group Revenue</div><div class="fc-val">€4.70B</div><div class="fc-note">2025 · consolidated</div></div>
+            <div class="fin-card"><div class="fc-lbl">Net Profit</div><div class="fc-val">€982.48M</div><div class="fc-note">GNK ASG 2025</div></div>
+            <div class="fin-card"><div class="fc-lbl">Equity Ratio</div><div class="fc-val">98.02%</div><div class="fc-note">Own capital</div></div>
+            <div class="fin-card"><div class="fc-lbl">Long-term Debt</div><div class="fc-val">€ 0.00</div><div class="fc-note">Zero leverage</div></div>
+            <div class="fin-card"><div class="fc-lbl">HR Revenue 2025</div><div class="fc-val">€504M</div><div class="fc-note">GNK ASG d.o.o.</div></div>
+            <div class="fin-card"><div class="fc-lbl">Group Entities</div><div class="fc-val">45</div><div class="fc-note">5 continents</div></div>
+          </div>
+          <div class="narr" style="font-size:13px;margin-top:.5rem;">"Acquisition led through<br><span class="g">GNK DINAMO Ltd. Group</span><br>— clean, precise,<br>zero external debt."</div>
+          <div class="pb"><div class="pbf" id="pb3"></div></div>
+        </div>
+
+        <div id="s4" class="scene">
+          <div class="dim" style="margin-bottom:.8rem;">Signal Spreading · 45 Entities · 5 Continents</div>
+          <div class="gdots">
+            <div class="gd"><div class="gd-dot" style="animation-delay:0s"></div><div class="gd-lbl">Europe</div></div>
+            <div class="gd"><div class="gd-dot" style="animation-delay:.3s"></div><div class="gd-lbl">N. America</div></div>
+            <div class="gd"><div class="gd-dot" style="animation-delay:.6s"></div><div class="gd-lbl">Asia</div></div>
+            <div class="gd"><div class="gd-dot" style="animation-delay:.9s"></div><div class="gd-lbl">M. East</div></div>
+            <div class="gd"><div class="gd-dot" style="animation-delay:1.2s"></div><div class="gd-lbl">S. America</div></div>
+            <div class="gd"><div class="gd-dot" style="animation-delay:1.5s"></div><div class="gd-lbl">Africa</div></div>
+          </div>
+          <div class="narr" style="font-size:15px;">"We don't fly to space.<br>We don't chase stars.<br><span class="g">We are in your car.<br>In your home.<br>On your road.<br>On Earth — with you.</span>"</div>
+          <div style="margin-top:1.5rem;font-size:9px;color:#555;letter-spacing:3px;line-height:2;">CAR · HOME · PHONE · TV · ROAD · OFFICE</div>
+          <div class="pb"><div class="pbf" id="pb4"></div></div>
+        </div>
+
+        <div id="s5" class="scene">
+          <div class="dim" style="margin-bottom:1.5rem;">New York · October 7, 2026</div>
+          <div style="font-size:12px;color:#c9a84c;letter-spacing:4px;margin-bottom:2rem;text-transform:uppercase;">Code Activation</div>
+          <div class="big-gold" style="animation:bigIn 1s ease forwards,glow 2s 1s infinite;">NOTHING<br>WILL EVER<br>BE THE SAME.</div>
+          <div style="margin:2rem auto;width:0;height:1px;background:#c9a84c;animation:lineIn 1.5s .5s ease forwards;"></div>
+          <div class="narr" style="font-size:14px;">"October 7, 2026.<br>11:30 AM — New York.<br><span class="g">The code activates.<br>The entire world<br>becomes our home.</span>"</div>
+          <div style="margin-top:1.5rem;font-size:9px;color:#555;letter-spacing:3px;">Boulder → Zagreb → New York → Earth</div>
+          <div class="pb"><div class="pbf" id="pb5"></div></div>
+        </div>
+
+        <div id="s6" class="scene active">
+          <div class="dim" style="margin-bottom:.4rem;">Press Conference · Code Activation</div>
+          <div style="font-size:10px;color:#c9a84c;letter-spacing:3px;margin-bottom:.8rem;">New York · October 7, 2026 · 11:30 AM ET</div>
+          <div style="background:#060606;border:.5px solid #c9a84c55;border-radius:8px;padding:.7rem 1rem;width:100%;margin-bottom:.5rem;">
+            <div style="font-size:8px;color:#666;letter-spacing:3px;text-transform:uppercase;margin-bottom:3px;">New York · Live</div>
+            <div style="font-size:34px;color:#fff;letter-spacing:4px;line-height:1;" id="ny-time">--:--:--</div>
+            <div style="font-size:10px;color:#555;margin-top:3px;letter-spacing:2px;" id="ny-date">--</div>
+          </div>
+          <div class="clocks">
+            <div class="cc"><div class="cc-city">Zagreb</div><div class="cc-time" id="zg-t">--:--</div><div class="cc-conf">17:30 CEST</div></div>
+            <div class="cc"><div class="cc-city">London</div><div class="cc-time" id="lon-t">--:--</div><div class="cc-conf">16:30 BST</div></div>
+            <div class="cc"><div class="cc-city">Dubai</div><div class="cc-time" id="dxb-t">--:--</div><div class="cc-conf">19:30 GST</div></div>
+            <div class="cc"><div class="cc-city">Tokyo</div><div class="cc-time" id="tok-t">--:--</div><div class="cc-conf">00:30 JST+1</div></div>
+          </div>
+          <div style="background:#050505;border:.5px solid #c9a84c44;border-radius:8px;padding:.8rem;width:100%;">
+            <div style="font-size:8px;color:#c9a84c;letter-spacing:4px;text-transform:uppercase;margin-bottom:.5rem;">Countdown · Code Activation · NY ET</div>
+            <div class="cd-row">
+              <div class="cd-b"><div class="cd-n" id="cd-d">--</div><div class="cd-l">days</div></div><div class="cd-sep">:</div>
+              <div class="cd-b"><div class="cd-n" id="cd-h">--</div><div class="cd-l">hours</div></div><div class="cd-sep">:</div>
+              <div class="cd-b"><div class="cd-n" id="cd-m">--</div><div class="cd-l">min</div></div><div class="cd-sep">:</div>
+              <div class="cd-b"><div class="cd-n" id="cd-s">--</div><div class="cd-l">sec</div></div>
+            </div>
+          </div>
+          <div style="margin-top:.8rem;font-size:15px;color:#c9a84c;letter-spacing:4px;font-weight:300;animation:glow 2s infinite;">THE CODE IS UNLOCKED.</div>
+          <div style="font-size:8px;color:#555;letter-spacing:2px;margin-top:4px;">GNK DINAMO Ltd. · 45 entities · 5 continents · Earth</div>
+          <div class="pb"><div class="pbf" id="pb6"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="statusline" id="statusLine">Ready · six-slide presentation · music optional</div>
+  </main>
 </div>
 
 <script>
+const isEmbed=new URLSearchParams(location.search).get('embed')==='1';
+if(isEmbed)document.body.classList.add('embed-mode');
+
 const scenes=['s1','s2','s3','s4','s5','s6'];
 const dur=[5500,7500,7000,6500,6500,99999];
 let cur=0,tm=null,ptm=null;
-function pad(n){return String(Math.floor(n)).padStart(2,'0');}
-function fmtT(tz,sec){const o=sec?{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}:{timeZone:tz,hour:'2-digit',minute:'2-digit',hour12:false};return new Date().toLocaleTimeString('en-GB',o);}
-function fmtD(tz){return new Date().toLocaleDateString('en-US',{timeZone:tz,weekday:'short',day:'numeric',month:'long'});}
-function updateClocks(){try{document.getElementById('ny-time').textContent=fmtT('America/New_York',true);document.getElementById('ny-date').textContent=fmtD('America/New_York');document.getElementById('zg-t').textContent=fmtT('Europe/Zagreb',false);document.getElementById('lon-t').textContent=fmtT('Europe/London',false);document.getElementById('dxb-t').textContent=fmtT('Asia/Dubai',false);document.getElementById('tok-t').textContent=fmtT('Asia/Tokyo',false);}catch(e){}}
+const playBtn=document.getElementById('playBtn');
+const musicBtn=document.getElementById('musicBtn');
+const fullscreenBtn=document.getElementById('fullscreenBtn');
+const statusLine=document.getElementById('statusLine');
+
+function pad(n){return String(Math.floor(n)).padStart(2,'0')}
+function fmtT(tz,sec){const o=sec?{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}:{timeZone:tz,hour:'2-digit',minute:'2-digit',hour12:false};return new Date().toLocaleTimeString('en-GB',o)}
+function fmtD(tz){return new Date().toLocaleDateString('en-US',{timeZone:tz,weekday:'short',day:'numeric',month:'long'})}
+function updateClocks(){try{
+  document.getElementById('ny-time').textContent=fmtT('America/New_York',true);
+  document.getElementById('ny-date').textContent=fmtD('America/New_York');
+  document.getElementById('zg-t').textContent=fmtT('Europe/Zagreb',false);
+  document.getElementById('lon-t').textContent=fmtT('Europe/London',false);
+  document.getElementById('dxb-t').textContent=fmtT('Asia/Dubai',false);
+  document.getElementById('tok-t').textContent=fmtT('Asia/Tokyo',false);
+}catch(e){}}
 let prevS='--';
-function updateCd(){const diff=new Date('2026-10-07T11:30:00-04:00')-new Date();if(diff<=0){['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='00');return;}const s=pad(diff%60000/1000);const el=document.getElementById('cd-s');if(s!==prevS){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');prevS=s;}document.getElementById('cd-d').textContent=pad(diff/86400000);document.getElementById('cd-h').textContent=pad((diff%86400000)/3600000);document.getElementById('cd-m').textContent=pad((diff%3600000)/60000);el.textContent=s;}
-function animTerminal(){const seq=['tl5','tl6','tl7','tl8'];seq.forEach((id,i)=>{setTimeout(()=>{const prevId=i===0?'tl4':seq[i-1];const prev=document.getElementById(prevId);if(prev){prev.classList.remove('active');prev.classList.add('done');}const el=document.getElementById(id);if(el)el.classList.add('active');},(i+1)*900);});setTimeout(()=>{const last=document.getElementById('tl8');if(last){last.classList.remove('active');last.classList.add('done');}},seq.length*900+900);}
-function animPb(id,duration){const el=document.getElementById(id);if(!el)return;el.style.width='0%';let e=0;ptm=setInterval(()=>{e+=50;el.style.width=Math.min(100,(e/duration)*100)+'%';if(e>=duration)clearInterval(ptm);},50);}
-function showScene(i){scenes.forEach((id,j)=>{const el=document.getElementById(id);el.classList.remove('active','out');if(j===i)el.classList.add('active');});animPb('pb'+(i+1),dur[i]);if(i===1)animTerminal();if(i===5){updateClocks();updateCd();clearInterval(window._ct);window._ct=setInterval(()=>{updateClocks();updateCd();},1000);}}
-function nextScene(){if(cur>=scenes.length-1)return;document.getElementById(scenes[cur]).classList.add('out');setTimeout(()=>{cur++;showScene(cur);if(cur<scenes.length-1)tm=setTimeout(nextScene,dur[cur]);else window.parent?.postMessage({type:'gnk-code-playback',state:'complete'},'*');},700);}
-function startFilm(){window.parent?.postMessage({type:'gnk-code-playback',state:'playing'},'*');cur=0;clearTimeout(tm);clearInterval(ptm);clearInterval(window._ct);scenes.forEach(id=>{document.getElementById(id).classList.remove('active','out');});document.getElementById('tl4').className='tl active';['tl1','tl2','tl3'].forEach(id=>document.getElementById(id).className='tl done');['tl5','tl6','tl7','tl8'].forEach(id=>document.getElementById(id).className='tl');showScene(0);tm=setTimeout(nextScene,dur[0]);}
-function showLiveState(){cur=scenes.length-1;clearTimeout(tm);clearInterval(ptm);scenes.forEach((id,j)=>{const el=document.getElementById(id);el.classList.remove('active','out');if(j===cur)el.classList.add('active');});updateClocks();updateCd();clearInterval(window._ct);window._ct=setInterval(()=>{updateClocks();updateCd();},1000);}
-window.addEventListener('message',event=>{if(event.data?.type==='gnk-code-start')startFilm();if(event.data?.type==='gnk-code-ping')window.parent?.postMessage({type:'gnk-code-ready',state:'ready'},'*');});
+function updateCd(){
+  const diff=new Date('2026-10-07T11:30:00-04:00')-new Date();
+  if(diff<=0){['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='00');return}
+  const s=pad(diff%60000/1000),el=document.getElementById('cd-s');
+  if(s!==prevS){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');prevS=s}
+  document.getElementById('cd-d').textContent=pad(diff/86400000);
+  document.getElementById('cd-h').textContent=pad((diff%86400000)/3600000);
+  document.getElementById('cd-m').textContent=pad((diff%3600000)/60000);
+  el.textContent=s;
+}
+function animTerminal(){
+  const seq=['tl5','tl6','tl7','tl8'];
+  seq.forEach((id,i)=>setTimeout(()=>{
+    const prev=document.getElementById(i===0?'tl4':seq[i-1]);
+    if(prev){prev.classList.remove('active');prev.classList.add('done')}
+    document.getElementById(id)?.classList.add('active');
+  },(i+1)*900));
+  setTimeout(()=>{const last=document.getElementById('tl8');if(last){last.classList.remove('active');last.classList.add('done')}},seq.length*900+900);
+}
+function animPb(id,duration){
+  const el=document.getElementById(id);if(!el)return;
+  el.style.width='0%';let e=0;clearInterval(ptm);
+  ptm=setInterval(()=>{e+=50;el.style.width=Math.min(100,(e/duration)*100)+'%';if(e>=duration)clearInterval(ptm)},50);
+}
+function showScene(i){
+  scenes.forEach((id,j)=>{const el=document.getElementById(id);el.classList.remove('active','out');if(j===i)el.classList.add('active')});
+  animPb('pb'+(i+1),dur[i]);
+  if(i===1)animTerminal();
+  if(i===5){updateClocks();updateCd();clearInterval(window._ct);window._ct=setInterval(()=>{updateClocks();updateCd()},1000)}
+}
+function nextScene(){
+  if(cur>=scenes.length-1)return;
+  document.getElementById(scenes[cur]).classList.add('out');
+  setTimeout(()=>{
+    cur++;showScene(cur);
+    if(cur<scenes.length-1)tm=setTimeout(nextScene,dur[cur]);
+    else{
+      playBtn.textContent='↺ Replay · 6 slides';
+      playBtn.disabled=false;
+      statusLine.textContent='Presentation complete · ready to replay';
+      window.parent?.postMessage({type:'gnk-code-playback',state:'complete'},'*');
+    }
+  },700);
+}
+function resetTerminal(){
+  document.getElementById('tl4').className='tl active';
+  ['tl1','tl2','tl3'].forEach(id=>document.getElementById(id).className='tl done');
+  ['tl5','tl6','tl7','tl8'].forEach(id=>document.getElementById(id).className='tl');
+}
+function startFilm(){
+  window.parent?.postMessage({type:'gnk-code-playback',state:'playing'},'*');
+  cur=0;clearTimeout(tm);clearInterval(ptm);clearInterval(window._ct);resetTerminal();showScene(0);
+  playBtn.textContent='▶ Presentation running';
+  playBtn.disabled=true;
+  statusLine.textContent='Playing all six slides';
+  tm=setTimeout(nextScene,dur[0]);
+}
+function showLiveState(){
+  cur=scenes.length-1;clearTimeout(tm);clearInterval(ptm);
+  scenes.forEach((id,j)=>{const el=document.getElementById(id);el.classList.remove('active','out');if(j===cur)el.classList.add('active')});
+  updateClocks();updateCd();clearInterval(window._ct);window._ct=setInterval(()=>{updateClocks();updateCd()},1000);
+}
+playBtn.addEventListener('click',startFilm);
+fullscreenBtn.addEventListener('click',async()=>{
+  const target=document.getElementById('goldFrame');
+  try{if(!document.fullscreenElement)await target.requestFullscreen();else await document.exitFullscreen()}catch(e){}
+});
+
+let audioContext=null,master=null,droneA=null,droneB=null,pulseTimer=null,musicOn=false;
+function pulse(){
+  if(!musicOn||!audioContext||!master)return;
+  const hit=(offset,freq,volume,duration)=>{
+    const now=audioContext.currentTime+offset;
+    const osc=audioContext.createOscillator(),gain=audioContext.createGain();
+    osc.type='sine';osc.frequency.setValueAtTime(freq,now);osc.frequency.exponentialRampToValueAtTime(Math.max(28,freq*.55),now+duration);
+    gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(volume,now+.012);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
+    osc.connect(gain).connect(master);osc.start(now);osc.stop(now+duration+.03);
+  };
+  hit(0,58,.19,.18);hit(.17,43,.12,.22);
+}
+async function startMusic(){
+  const AudioCtor=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtor){musicBtn.disabled=true;musicBtn.textContent='Glazba nije podržana';return}
+  if(!audioContext){
+    audioContext=new AudioCtor();master=audioContext.createGain();master.gain.value=.07;master.connect(audioContext.destination);
+    droneA=audioContext.createOscillator();droneB=audioContext.createOscillator();
+    const gainA=audioContext.createGain(),gainB=audioContext.createGain();
+    droneA.type='sine';droneB.type='triangle';droneA.frequency.value=55;droneB.frequency.value=82.41;
+    gainA.gain.value=.42;gainB.gain.value=.09;
+    droneA.connect(gainA).connect(master);droneB.connect(gainB).connect(master);droneA.start();droneB.start();
+  }
+  await audioContext.resume();musicOn=true;pulse();clearInterval(pulseTimer);pulseTimer=setInterval(pulse,1900);
+  musicBtn.setAttribute('aria-pressed','true');musicBtn.textContent='♫ Glazba uključena';statusLine.textContent='Music on · press Play for six slides';
+}
+function stopMusic(){
+  musicOn=false;clearInterval(pulseTimer);if(audioContext)audioContext.suspend();
+  musicBtn.setAttribute('aria-pressed','false');musicBtn.textContent='♫ Uključi glazbu';statusLine.textContent='Music off · presentation ready';
+}
+musicBtn.addEventListener('click',()=>musicOn?stopMusic():startMusic());
+
+window.addEventListener('message',event=>{
+  if(event.data?.type==='gnk-code-start')startFilm();
+  if(event.data?.type==='gnk-code-ping')window.parent?.postMessage({type:'gnk-code-ready',state:'ready'},'*');
+});
 showLiveState();
 window.parent?.postMessage({type:'gnk-code-ready',state:'ready'},'*');
 </script>
