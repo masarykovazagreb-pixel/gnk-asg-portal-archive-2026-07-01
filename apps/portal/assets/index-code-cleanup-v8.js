@@ -17,13 +17,17 @@
   frame.id='codeInlineHost';
   frame.innerHTML='<div class="code-inline-mount" id="codeInlineMount"></div>';
 
-  if(!document.querySelector('link[data-code-inline-v10]')){
+  function addStyle(href,marker){
+    if(document.querySelector(`link[${marker}]`))return;
     const css=document.createElement('link');
     css.rel='stylesheet';
-    css.href='/assets/index-code-inline-v10.css?v=20260627-v11';
-    css.dataset.codeInlineV10='';
+    css.href=href;
+    css.setAttribute(marker,'');
     document.head.appendChild(css);
   }
+
+  addStyle('/assets/index-code-inline-v10.css?v=20260627-v11','data-code-inline-v10');
+  addStyle('/assets/index-code-play-v12.css?v=20260628-v12','data-code-play-v12');
 
   if(!document.querySelector('script[data-code-inline-v10]')){
     const script=document.createElement('script');
