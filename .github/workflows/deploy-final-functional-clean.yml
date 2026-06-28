@@ -15,8 +15,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-final-functional-production
-  cancel-in-progress: false
+  group: gnk-asg-final-functional-production-${{ github.event_name }}
+  cancel-in-progress: true
 
 jobs:
   validate-deploy-verify:
