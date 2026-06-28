@@ -3,6 +3,8 @@ name: Validate Final Clean
 on:
   push:
     branches: [final-functional-clean-20260628-v2]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
