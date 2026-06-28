@@ -1,0 +1,10 @@
+/* GNK ASG contact navigation aligned with the public index. */
+body.gnk-contact-v2 .gnk-contact-menu{position:sticky;top:8px;z-index:1000;display:flex;align-items:center;gap:14px;width:min(1180px,calc(100% - 32px));min-height:70px;margin:10px auto 0;padding:9px 12px;border:1px solid rgba(184,137,47,.32);border-radius:20px;background:rgba(255,253,248,.95);box-shadow:0 12px 36px rgba(63,48,18,.09);backdrop-filter:blur(18px)}
+body.gnk-contact-v2 .gnk-contact-menu__brand{flex:none;color:#17130c;text-decoration:none;font:700 15px/1 Georgia,"Times New Roman",serif;white-space:nowrap}
+body.gnk-contact-v2 .gnk-contact-menu nav{display:flex;align-items:center;justify-content:flex-end;gap:3px;min-width:0;margin-left:auto;overflow:auto;scrollbar-width:none}
+body.gnk-contact-v2 .gnk-contact-menu nav::-webkit-scrollbar{display:none}
+body.gnk-contact-v2 .gnk-contact-menu nav a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 10px;border-radius:10px;color:#292720;text-decoration:none;white-space:nowrap;font-size:9px;font-weight:900;letter-spacing:.065em;text-transform:uppercase}
+body.gnk-contact-v2 .gnk-contact-menu nav a:hover,body.gnk-contact-v2 .gnk-contact-menu nav a[aria-current="page"]{color:#76530e;background:#f5edda}
+body.gnk-contact-v2 .gnk-contact-menu nav a.pdf-centre{border:1px solid rgba(184,137,47,.46);background:#fff8e7;color:#76530e}
+body.gnk-contact-v2 .gnk-contact-menu nav a.lang{border:1px solid #ead8b6}
+@media(max-width:760px){body.gnk-contact-v2 .gnk-contact-menu{top:5px;width:calc(100% - 18px);min-height:62px;margin-top:6px;padding:7px 8px;border-radius:15px}body.gnk-contact-v2 .gnk-contact-menu__brand{font-size:12px}body.gnk-contact-v2 .gnk-contact-menu nav a{min-height:36px;padding:7px 8px;font-size:7.5px}}
