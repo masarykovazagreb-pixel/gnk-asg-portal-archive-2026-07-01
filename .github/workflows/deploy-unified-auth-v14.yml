@@ -1,4 +1,4 @@
-name: Deploy Unified Auth V14
+name: Deploy Unified Auth V15 Final
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
     paths:
       - ".github/workflows/deploy-unified-auth-v14.yml"
       - "workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js"
-      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js"
   workflow_run:
     workflows: ["Deploy public portal"]
     types: [completed]
@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: unified-auth-v14-production
+  group: unified-auth-v15-final-production
   cancel-in-progress: true
 
 jobs:
@@ -33,21 +33,23 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Verify unified authentication gateway
+      - name: Verify Unified Auth V15 final entry
         working-directory: workers/gnk-asg-direct-operator
         shell: bash
         run: |
           set -euo pipefail
           test -s src/index-unified-auth-v14.js
-          test -s src/index-final-admin-gateway-v1.js
+          test -s src/index-unified-auth-v15-final.js
           node --check src/index-unified-auth-v14.js
-          node --check src/index-final-admin-gateway-v1.js
-          grep -q 'MAIL STUDIO' src/index-final-admin-gateway-v1.js
-          grep -q 'MEDIA CENTAR' src/index-final-admin-gateway-v1.js
-          grep -q '/admin-center/' src/index-final-admin-gateway-v1.js
-          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          node --check src/index-unified-auth-v15-final.js
+          grep -q 'PDF CENTAR' src/index-unified-auth-v15-final.js
+          grep -q 'PDF CENTRE' src/index-unified-auth-v15-final.js
+          grep -q 'MAIL STUDIO' src/index-unified-auth-v15-final.js
+          grep -q 'MEDIA CENTAR' src/index-unified-auth-v15-final.js
+          grep -q '/admin-center/' src/index-unified-auth-v15-final.js
+          npx --yes wrangler@4 deploy src/index-unified-auth-v15-final.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Deploy unified authentication gateway
+      - name: Deploy Unified Auth V15 final entry
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -55,9 +57,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy src/index-unified-auth-v15-final.js --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify authentication and final ADMIN flow
+      - name: Verify authentication and final production flow
         shell: bash
         run: |
           set -euo pipefail
@@ -68,7 +70,7 @@ jobs:
             auth_code=$(curl -sS -o auth.json -w '%{http_code}' "$base/api/operator-auth-check?cb=$stamp" || true)
             admin_code=$(curl -sS -o admin.html -w '%{http_code}' "$base/admin-center/?cb=$stamp" || true)
             root_code=$(curl -sS -D root.headers -o root.html -w '%{http_code}' "$base/?cb=$stamp" || true)
-            en_code=$(curl -sS -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
+            en_code=$(curl -sS -D en.headers -o en.html -w '%{http_code}' "$base/en/?cb=$stamp" || true)
             pdf_code=$(curl -sS -o pdf.html -w '%{http_code}' "$base/downloads/?cb=$stamp" || true)
             if [ "$auth_code" = "401" ] \
               && [ "$admin_code" = "401" ] \
@@ -80,7 +82,8 @@ jobs:
               && grep -q 'PDF CENTAR' root.html \
               && grep -q 'PDF CENTRE' en.html \
               && ! grep -q '>Markets<' en.html \
-              && grep -qi '^x-gnk-asg-final-admin-gateway:' root.headers; then
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260628' root.headers \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260628' en.headers; then
               success=true
               break
             fi
@@ -90,4 +93,4 @@ jobs:
             echo "AUTH_HTTP=$auth_code ADMIN_HTTP=$admin_code ROOT_HTTP=$root_code EN_HTTP=$en_code PDF_HTTP=$pdf_code"
             exit 1
           fi
-          echo "GNK_ASG_FINAL_AUTH_GATEWAY_OK=true"
+          echo "GNK_ASG_UNIFIED_AUTH_V15_FINAL_OK=true"
