@@ -41,12 +41,16 @@ jobs:
           node --check apps/portal/assets/markets-v11.js
           node --check apps/portal/assets/editorial-v12.js
           node --check apps/portal/assets/visual-index-full-gallery.js
+          node --check apps/portal/assets/index-code-cleanup-v8.js
+          node --check apps/portal/assets/index-code-inline-v10.js
           node --check workers/gnk-asg-direct-operator/src/public-ai-v10.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           test -s apps/portal/assets/public-menu-v10.css
           test -s apps/portal/assets/index-finance-v9.css
+          test -s apps/portal/assets/index-code-play-v12.css
           test -s apps/portal/assets/assistant-v10.css
           test -s apps/portal/assets/markets-v11.css
           test -s apps/portal/assets/editorial-v12.css
@@ -55,8 +59,11 @@ jobs:
           grep -q 'GNK ASG d.o.o.' apps/portal/assets/public-shell-v15.js
           grep -q 'GNK DINAMO Ltd.' apps/portal/assets/public-shell-v15.js
           grep -q "t.gallery,'/visual-index/'" apps/portal/assets/public-shell-v15.js
-          grep -q 'LOCKED_INDEX_MENU' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
+          grep -q 'LOCKED_REDUCED_PUBLIC_MENU' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           grep -q 'x-gnk-asg-gallery-primary-menu' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
+          grep -q 'index-code-play-v12.css' apps/portal/assets/index-code-cleanup-v8.js
+          grep -q 'ci-control--play' apps/portal/assets/index-code-play-v12.css
+          grep -q 'grid-template-rows:minmax(var(--ci-index-height),auto)' apps/portal/assets/index-code-play-v12.css
           grep -q 'visual-index-v9.css' apps/portal/visual-index/index.html
           grep -q 'business-news.css?v=20260627-v18' apps/portal/vijesti/index.html
           grep -q 'business-news.css?v=20260627-v18' apps/portal/news/index.html
@@ -82,6 +89,8 @@ jobs:
             EN_HEADERS=$(mktemp)
             HR=$(curl -fsS -D "$HR_HEADERS" "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}" || true)
             EN=$(curl -fsS -D "$EN_HEADERS" "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}" || true)
+            PLAY_CSS=$(curl -fsS "https://gnk-asg.hr/assets/index-code-play-v12.css?cb=${GITHUB_RUN_ID}-${n}" || true)
+            CLEANUP_JS=$(curl -fsS "https://gnk-asg.hr/assets/index-code-cleanup-v8.js?cb=${GITHUB_RUN_ID}-${n}" || true)
             SHELL=$(curl -fsS "https://gnk-asg.hr/assets/public-shell-v15.js?cb=${GITHUB_RUN_ID}-${n}" || true)
             GALLERY=$(curl -fsS "https://gnk-asg.hr/visual-index/?cb=${GITHUB_RUN_ID}-${n}" || true)
             NEWS_HR=$(curl -fsS "https://gnk-asg.hr/vijesti/?cb=${GITHUB_RUN_ID}-${n}" || true)
@@ -90,8 +99,13 @@ jobs:
             MARKETS=$(curl -fsS "https://gnk-asg.hr/trzista/?cb=${GITHUB_RUN_ID}-${n}" || true)
             AI=$(curl -fsS "https://gnk-asg.hr/assistant/?cb=${GITHUB_RUN_ID}-${n}" || true)
             if printf '%s' "$HR" | grep -q 'index-finance-v9.css' \
-              && printf '%s' "$HR" | grep -q '/visual-index/' \
-              && printf '%s' "$EN" | grep -q '/visual-index/' \
+              && printf '%s' "$HR" | grep -q '/trzista/' \
+              && printf '%s' "$HR" | grep -q '/operator-dashboard/' \
+              && printf '%s' "$EN" | grep -q '/markets/' \
+              && printf '%s' "$EN" | grep -q '/operator-dashboard/' \
+              && printf '%s' "$PLAY_CSS" | grep -q 'ci-control--play' \
+              && printf '%s' "$PLAY_CSS" | grep -q 'grid-template-rows:minmax(var(--ci-index-height),auto)' \
+              && printf '%s' "$CLEANUP_JS" | grep -q 'index-code-play-v12.css' \
               && printf '%s' "$SHELL" | grep -q 'GNK_ASG_PUBLIC_SHELL_V15_1_LOCKED_INDEX_MENU_20260627' \
               && printf '%s' "$SHELL" | grep -q 'GNK DINAMO Ltd.' \
               && printf '%s' "$GALLERY" | grep -q 'visual-index-v9.css' \
@@ -100,8 +114,8 @@ jobs:
               && printf '%s' "$PUBLICATIONS" | grep -q 'editorial-v12.js' \
               && printf '%s' "$MARKETS" | grep -q 'markets-v11.css' \
               && printf '%s' "$AI" | grep -q 'assistant-v10.css' \
-              && grep -qi 'x-gnk-asg-index-menu: LOCKED_INDEX_MENU' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-index-menu: LOCKED_INDEX_MENU' "$EN_HEADERS"; then
+              && grep -qi 'x-gnk-asg-index-menu: LOCKED_REDUCED_PUBLIC_MENU' "$HR_HEADERS" \
+              && grep -qi 'x-gnk-asg-index-menu: LOCKED_REDUCED_PUBLIC_MENU' "$EN_HEADERS"; then
                 echo 'Production portal verification passed.'
                 exit 0
             fi
