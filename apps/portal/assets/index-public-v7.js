@@ -2,6 +2,12 @@
   'use strict';
   const en=document.documentElement.lang==='en';
   const text=(hr,enText)=>en?enText:hr;
+  const coreMenu=en
+    ? '<a href="#the-code">THE CODE</a><a href="#financials">Financials</a><a href="#network">Network</a><a href="/markets/">Markets</a><a href="/en/contact/">Contact</a><a href="/admin-center/" rel="nofollow">Admin</a><a class="lang" href="/">HR</a>'
+    : '<a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/trzista/">Tržišta</a><a href="/contact/">Kontakt</a><a href="/admin-center/" rel="nofollow">Admin</a><a class="lang" href="/en/">EN</a>';
+  const indexMenu=document.querySelector('.menu');
+  if(indexMenu){indexMenu.innerHTML=coreMenu;indexMenu.dataset.gnkCoreMenu='7';}
+  document.querySelectorAll('.public-float--ai').forEach(node=>node.remove());
   const reports={
     asg:'/documents/GNK_ASG_Financijski_izvjestaj_FY2025.pdf',
     dinamo:'/documents/GNK_DINAMO_Ltd_Konsolidirani_financijski_izvjestaj_FY2025.pdf'
@@ -84,14 +90,6 @@
     home.setAttribute('aria-label',text('Početna','Home'));
     home.innerHTML=`<span>${text('Početna','Home')}</span>`;
     document.body.appendChild(home);
-  }
-  if(!document.querySelector('.public-float--ai')){
-    const ai=document.createElement('a');
-    ai.className='public-float public-float--ai';
-    ai.href=en?'/en/assistant/':'/assistant/';
-    ai.setAttribute('aria-label',text('AI pomoć','AI Help'));
-    ai.innerHTML=`<span>${text('AI pomoć','AI Help')}</span>`;
-    document.body.appendChild(ai);
   }
 
   const button=document.querySelector('.code-launch-button');
