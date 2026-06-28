@@ -1,7 +1,7 @@
 import app from './index-admin-hub-v26-public-v10-base.js';
 import {patchIndexActivation} from './index-activation-wrapper-v1.js';
 
-export const VERSION='GNK_ASG_PUBLIC_V20_CANONICAL_NAVIGATION_20260627';
+export const VERSION='GNK_ASG_PUBLIC_V21_REDUCED_CANONICAL_NAVIGATION_20260628';
 // Deployment compatibility marker: GNK_ASG_PUBLIC_V11_MENU_AI_MARKETS_20260627
 const INDEX_PATHS=new Set(['/','/en']);
 const MARKET_PATHS=new Set(['/trzista','/markets']);
@@ -29,7 +29,7 @@ function patchHeaders(response){const headers=new Headers(response.headers);head
 function addBodyClasses(html,...classes){return html.replace(/<body([^>]*)>/i,(match,attrs)=>{const classMatch=String(attrs).match(/\sclass=(["'])([^"']*)\1/i);if(classMatch){const merged=[...new Set([...classMatch[2].split(/\s+/),...classes].filter(Boolean))].join(' ');return `<body${attrs.replace(classMatch[0],` class=${classMatch[1]}${merged}${classMatch[1]}`)}>`}return `<body${attrs} class="${classes.join(' ')}">`})}
 function mobileAdminRedirect(){return new Response(null,{status:303,headers:{location:'/app/?mode=admin','cache-control':'no-store','x-gnk-asg-mobile-app':'STANDARD_ADMIN_V2'}})}
 function canonicalIndexMenu(english){
-  return english?'<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financials">Financials</a><a href="#network">Network</a><a href="/news/">News</a><a href="/publications/">Publications</a><a href="/markets/">Markets</a><a href="/auto-editor/" rel="nofollow">Auto Editor</a><a href="/en/downloads/">PDF Centre</a><a href="/en/legal/">Legal</a><a href="/en/assistant/">AI</a><a href="/admin-center/" rel="nofollow">Admin</a><a href="/en/contact/">Contact</a><a class="lang" href="/">HR</a></nav>':'<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/vijesti/">Vijesti</a><a href="/objave/">Objave</a><a href="/trzista/">Tržišta</a><a href="/auto-editor/" rel="nofollow">Auto Editor</a><a href="/downloads/">PDF centar</a><a href="/legal/">Legal</a><a href="/assistant/">AI</a><a href="/admin-center/" rel="nofollow">Admin</a><a href="/contact/">Kontakt</a><a class="lang" href="/en/">EN</a></nav>';
+  return english?'<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financials">Financials</a><a href="#network">Network</a><a href="/markets/">Markets</a><a href="/operator-dashboard/" rel="nofollow">Admin</a><a href="/en/contact/">Contact</a><a class="lang" href="/">HR</a></nav>':'<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/trzista/">Tržišta</a><a href="/operator-dashboard/" rel="nofollow">Admin</a><a href="/contact/">Kontakt</a><a class="lang" href="/en/">EN</a></nav>';
 }
 async function serveIndex(path,request,env){
   const fallback=new Response('GNK ASG index asset unavailable',{status:503,headers:{'content-type':'text/plain; charset=utf-8','cache-control':'no-store'}});
@@ -37,15 +37,15 @@ async function serveIndex(path,request,env){
   const headers=new Headers(response.headers);
   headers.delete('content-length');headers.delete('content-encoding');
   headers.set('x-gnk-asg-index-isolation','DEDICATED_INDEX_ENTRY_V14');
-  headers.set('x-gnk-asg-index-menu','CANONICAL_NAVIGATION_V20');
-  headers.set('x-gnk-asg-gallery-primary-menu','REMOVED');
+  headers.set('x-gnk-asg-index-menu','LOCKED_REDUCED_PUBLIC_MENU');
+  headers.set('x-gnk-asg-gallery-primary-menu','HIDDEN');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   let body=response.body;
   if(response.ok&&String(response.headers.get('content-type')||'').includes('text/html')){
     let html=await response.text();
     html=html.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,canonicalIndexMenu(path==='/en'));
     html=html.replace(/index-code-cleanup-v8\.js\?v=[^"']+/i,'index-code-cleanup-v8.js?v=20260627-v20');
-    headers.set('x-gnk-asg-index-language-links',path==='/en'?'EN_CANONICAL_V20':'HR_CANONICAL_V20');
+    headers.set('x-gnk-asg-index-language-links',path==='/en'?'EN_REDUCED_V21':'HR_REDUCED_V21');
     body=html;
   }
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
@@ -59,7 +59,7 @@ async function patchStatusJson(response,path){
     headers.set('x-gnk-asg-active-entrypoint','src/index-admin-hub-v26-clean-index.js');
     headers.set('x-gnk-asg-public-release',VERSION);
     const newsContract={timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,minimumVerifiedLinks:15,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false}};
-    const corrected={...payload,...newsContract,entryPoint:'src/index-admin-hub-v26-clean-index.js',deployedEntryPoint:'src/index-admin-hub-v26-clean-index.js',publicRelease:VERSION,canonicalNavigation:'V20',primaryMenu:['THE CODE','Financije / Financials','Mreža / Network','Vijesti / News','Objave / Publications','Tržišta / Markets','Auto Editor','PDF centar / PDF Centre','Legal','AI','Admin','Kontakt / Contact','HR / EN'],galleryInPrimaryNavigation:false,newsRuntime:payload.newsRuntime||payload.version||'GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626',workerMain:'workers/gnk-asg-direct-operator/wrangler.toml → src/index-admin-hub-v26-clean-index.js',mobileApp:'GNK_ASG_MOBILE_STANDARD_ADMIN_V2_20260627',adminDashboard:'GNK_ASG_ADMIN_DASHBOARD_V3_20260627',checkedAt:new Date().toISOString()};
+    const corrected={...payload,...newsContract,entryPoint:'src/index-admin-hub-v26-clean-index.js',deployedEntryPoint:'src/index-admin-hub-v26-clean-index.js',publicRelease:VERSION,canonicalNavigation:'REDUCED_V21',indexMenu:'LOCKED_REDUCED_PUBLIC_MENU',primaryMenu:['THE CODE','Financije / Financials','Mreža / Network','Tržišta / Markets','Admin','Kontakt / Contact','HR / EN'],hiddenPrimaryMenuRoutes:['Vijesti / News','Objave / Publications','Galerija / Gallery','AI'],galleryInPrimaryNavigation:false,newsRuntime:payload.newsRuntime||payload.version||'GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626',workerMain:'workers/gnk-asg-direct-operator/wrangler.toml → src/index-admin-hub-v26-clean-index.js',mobileApp:'GNK_ASG_MOBILE_STANDARD_ADMIN_V2_20260627',adminDashboard:'GNK_ASG_ADMIN_DASHBOARD_V3_20260627',checkedAt:new Date().toISOString()};
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
