@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#07101f">
+  <title>GNK ASG Media Access</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/media-access-v1.css?v=20260628">
+  <script defer src="/assets/media-access-v1.js?v=20260628"></script>
+</head>
+<body>
+  <main class="access-shell">
+    <section class="access-card">
+      <a class="brand" href="/" aria-label="GNK ASG portal"><span>G</span><strong>GNK ASG</strong></a>
+      <p class="eyebrow">Media Relations · Secure Access</p>
+      <h1>Pristup odobrenoj prijavi<br><em>Approved application access</em></h1>
+      <p class="lead">Unesite šifru prijave i osobni pristupni kod iz poruke GNK ASG Media Relations.</p>
+      <p class="lead en">Enter the application ID and personal access code from the GNK ASG Media Relations message.</p>
+
+      <form id="accessForm" novalidate>
+        <label>Šifra prijave / Application ID
+          <input id="applicationId" name="applicationId" required autocomplete="off" placeholder="GNK-APP-2026-XXXXXXXX" spellcheck="false">
+        </label>
+        <label>Pristupni kod / Login code
+          <input id="accessCode" name="code" required autocomplete="one-time-code" inputmode="text" maxlength="12" placeholder="XXXXXXXX" spellcheck="false">
+        </label>
+        <button id="submitButton" type="submit">Prijava / Sign in</button>
+      </form>
+
+      <div id="notice" class="notice" role="status" aria-live="polite">Kod je osoban i vrijedi do datuma navedenog u poruci.</div>
+
+      <section id="result" class="result" hidden>
+        <span class="result-mark">✓</span>
+        <p class="eyebrow">Access confirmed</p>
+        <h2>Pristup je potvrđen</h2>
+        <dl>
+          <div><dt>Redakcija</dt><dd id="outletName">—</dd></div>
+          <div><dt>Predstavnik</dt><dd id="applicantName">—</dd></div>
+          <div><dt>Prijava</dt><dd id="confirmedApplicationId">—</dd></div>
+          <div><dt>Status</dt><dd id="applicationStatus">—</dd></div>
+        </dl>
+        <p>Ovaj sigurni prostor potvrđuje odobrenje prijave. Daljnje putne i programske upute dostavit će GNK ASG Media Relations.</p>
+      </section>
+
+      <footer><span>media@gnk-asg.hr</span><span>Human approval required</span></footer>
+    </section>
+  </main>
+</body>
+</html>
