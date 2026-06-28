@@ -119,6 +119,15 @@ Updated dynamic publication layer:
 - `2e78c6d` — Review Center route.
 - `09ab9af` — Mail Studio Pro compatibility route.
 
+## 09:58 continuation pass
+
+- Rechecked branch relationship: `project-50-white-integrated-menu` is 261 commits ahead and 0 behind `saved-2059`; merge base remains `saved-2059`.
+- Rechecked test mail evidence: `GNK ASG test poruka 1` is present in Sent and Inbox for `beckuphome@gmail.com`; `GNK ASG test poruka 2` is present in Sent for `sefic20@gmx.com`.
+- Follow-up Gmail search found no delivery-failure or bounce message matching the two test subjects.
+- Reviewed `admin-frame-bridge-v1.js`: it accepts only same-origin module-ready messages from the controlled iframe, validates the expected `hubmodule`, detects redirected routes and clears the loading state when the iframe document is reachable.
+- Reviewed `admin-media-security.test.mjs`: it covers admin token and signed session cookie auth, rejected expired/modified cookies, Media Access lock/use constraints, Admin module asset presence, News/Objave/Publications canonical and hreflang metadata, dynamic publication sitemaps and market sitemap/menu consistency.
+- No deployment, D1 migration, SMS action, media queue approval or media dispatch was performed in this continuation pass.
+
 ## Not performed
 
 - No production deployment.
