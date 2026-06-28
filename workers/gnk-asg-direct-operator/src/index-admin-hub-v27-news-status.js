@@ -1,14 +1,14 @@
 import app from './index-admin-hub-v26-clean-index.js';
 import { handleMediaAccess } from './media-access-service-v1.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260627_R8_DIRECT_LOCKED_INDEX';
+export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260628_R9_MAIL_STUDIO_FRAME_FIX';
 const ENTRYPOINT='src/index-admin-hub-v27-news-status.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v26-clean-index.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626';
 const STATUS_PATHS=new Set(['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json']);
 const INDEX_PATHS=new Set(['/','/en']);
 const ADMIN_MODULES=new Set(['/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/auto-editor','/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/media-command-center','/memorandum-studio']);
-const MODULE_LOADER_SCRIPT='<script defer src="/assets/admin-module-loader-v3.js?v=20260627-v4"></script>';
+const MODULE_LOADER_SCRIPT='<script defer src="/assets/admin-module-loader-v3.js?v=20260628-v5"></script>';
 const HERO_SCALE_STYLE='<link rel="stylesheet" href="/assets/index-hero-scale-v13.css?v=20260627-v13">';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/'}
@@ -52,7 +52,7 @@ async function patchStatus(response,path){
     const headers=noStore(new Headers(response.headers));
     headers.set('x-gnk-asg-active-entrypoint',ENTRYPOINT);
     headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);
-    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,newsRuntime:NEWS_RUNTIME,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},indexHeroScale:'50_PERCENT_V13',indexMenu:'LOCKED_INDEX_MENU',indexSource:'DIRECT_STATIC_ASSET',adminEntry:'ADMIN_CENTER',adminEmbed:'SAME_ORIGIN_ALLOWED',adminLoader:'RESILIENT_ROUTE_VALIDATION_V4',adminAudit:'ALL_MODULES_WITH_10_SECOND_TIMEOUT',statusWrapper:VERSION,checkedAt:new Date().toISOString()};
+    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,newsRuntime:NEWS_RUNTIME,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},indexHeroScale:'50_PERCENT_V13',indexMenu:'LOCKED_INDEX_MENU',indexSource:'DIRECT_STATIC_ASSET',adminEntry:'ADMIN_CENTER',adminEmbed:'SAME_ORIGIN_ALLOWED',adminLoader:'ADMIN_CENTER_V2_NATIVE_WITH_LEGACY_FALLBACK',adminAudit:'ALL_MODULES_WITH_10_SECOND_TIMEOUT',statusWrapper:VERSION,checkedAt:new Date().toISOString()};
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response}
 }
@@ -66,9 +66,9 @@ async function patchIndexHtml(response,path,request){
   headers.set('x-gnk-asg-index-menu','LOCKED_INDEX_MENU');
   headers.set('x-gnk-asg-gallery-primary-menu','INCLUDED');
   let html=await response.text();
-  html=html.replace(/<nav class=["']menu[#']>[\s\S]*?<\/nav>/i,lockedIndexMenu(path==='/en'));
+  html=html.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,lockedIndexMenu(path==='/en'));
   if(!html.includes('index-hero-scale-v13.css'))html=html.replace('</head>',`${HERO_SCALE_STYLE}</head>`);
-  html=html.replace(/index-code-cleanup-v8\.js\?v=[^#']+/i,'index-code-cleanup-v8.js?v=20260627-v13');
+  html=html.replace(/index-code-cleanup-v8\.js\?v=[^"']+/i,'index-code-cleanup-v8.js?v=20260627-v13');
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 async function patchAdminHtml(response,path,request){
@@ -86,8 +86,10 @@ async function patchAdminHtml(response,path,request){
   headers.set('x-gnk-asg-admin-embed',embedded?'SAME_ORIGIN_ALLOWED':'ADMIN_CENTER');
   let html=await response.text();
   if(adminCenter){
-    html=html.replace(/admin-center-health-v1\.js\?v=[^"']+/i,'admin-center-health-v1.js?v=20260627-v2');
-    if(!html.includes('admin-module-loader-v3.js'))html=html.replace('</body>',`${MODULE_LOADER_SCRIPT}</body>`);
+    html=html.replace(/admin-center-health-v1\.js\?v=[^"']+/i,'admin-center-health-v1.js?v=20260628-v3');
+    const hasNativeLoader=/\/assets\/admin-center-v2\.js(?:\?|["'])/i.test(html);
+    if(!hasNativeLoader&&!html.includes('admin-module-loader-v3.js'))html=html.replace('</body>',`${MODULE_LOADER_SCRIPT}</body>`);
+    headers.set('x-gnk-asg-admin-frame-loader',hasNativeLoader?'ADMIN_CENTER_V2_NATIVE':'LEGACY_FALLBACK_V3');
   }
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
