@@ -1,6 +1,6 @@
 import authApp from './index-unified-auth-v14.js';
 
-export const VERSION='GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260628';
+export const VERSION='GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260628_R2';
 const INDEX_PATHS=new Set(['/','/en']);
 const ADMIN_PATH='/admin-center';
 const OLD_ADMIN_PATHS=new Set(['/operator-dashboard','/operator-mobile']);
