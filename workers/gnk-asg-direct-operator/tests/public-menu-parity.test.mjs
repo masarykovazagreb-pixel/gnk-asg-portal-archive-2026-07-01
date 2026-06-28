@@ -25,14 +25,17 @@ for(const file of ['apps/portal/assets/public-shell-v15.js','apps/portal/assets/
   });
 }
 
-test('worker wrapper applies the same native index menu and assets',()=>{
+test('worker wrapper applies the reduced seven-item index menu and assets',()=>{
   const source=read('workers/gnk-asg-direct-operator/src/index-project50-v30-unified-menu.js');
-  assert.match(source,/UNIFIED_PUBLIC_MENU_V16/);
+  assert.match(source,/PUBLIC_CORE_MENU_V31/);
   assert.match(source,/public-menu-v10\.css\?v=20260628-v16/);
   assert.match(source,/index-menu-unified-v16\.js/);
   assert.match(source,/href="\/admin-center\/"/);
   assert.match(source,/href="\/en\/contact\/"/);
-  assert.match(source,/publicMenuItems:11/);
+  assert.match(source,/href="\/trzista\/"/);
+  assert.match(source,/href="\/markets\/"/);
+  assert.match(source,/publicMenuItems:7/);
+  assert.doesNotMatch(source,/href="\/vijesti\/"|href="\/news\/"|href="\/objave\/"|href="\/publications\/"|href="\/visual-index\/"|href="\/assistant\/"|href="\/en\/assistant\/"/);
   assert.match(source,/admin-center-memorandum-v1/);
 });
 
