@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const RELEASE='GNK_ASG_PUBLIC_SHELL_V17_CORE_NAVIGATION_20260628';
+  const RELEASE='GNK_ASG_PUBLIC_SHELL_V18_INDEX_PARITY_20260628';
   const query=new URLSearchParams(location.search);
   if(query.get('embedded')==='1'||query.get('mode')==='admin'||document.documentElement.dataset.gnkPublicShell===RELEASE)return;
   document.documentElement.dataset.gnkPublicShell=RELEASE;
@@ -8,9 +8,9 @@
   const path=location.pathname.replace(/\/+$/,'')||'/';
   const english=document.documentElement.lang==='en'||path==='/en'||path.startsWith('/en/')||path.startsWith('/markets')||path.startsWith('/news')||path.startsWith('/publications');
   const labels=english?{
-    finance:'Financials',network:'Network',markets:'Markets',contact:'Contact',language:'HR',open:'Open menu',close:'Close menu'
+    finance:'Financials',network:'Network',news:'News',posts:'Publications',markets:'Markets',gallery:'Gallery',contact:'Contact',language:'HR',open:'Open menu',close:'Close menu'
   }:{
-    finance:'Financije',network:'Mreža',markets:'Tržišta',contact:'Kontakt',language:'EN',open:'Otvori izbornik',close:'Zatvori izbornik'
+    finance:'Financije',network:'Mreža',news:'Vijesti',posts:'Objave',markets:'Tržišta',gallery:'Galerija',contact:'Kontakt',language:'EN',open:'Otvori izbornik',close:'Zatvori izbornik'
   };
 
   const swap=(from,to)=>path===from?to:(path.startsWith(from+'/')?to+path.slice(from.length):'');
@@ -25,6 +25,10 @@
   }
 
   const active=path.startsWith('/trzista')||path.startsWith('/markets')?'markets':
+    path.startsWith('/vijesti')||path.startsWith('/news')?'news':
+    path.startsWith('/objave')||path.startsWith('/publications')?'posts':
+    path.startsWith('/visual-index')?'gallery':
+    path.startsWith('/assistant')||path.startsWith('/en/assistant')?'ai':
     path.startsWith('/admin-center')||path.startsWith('/operator-dashboard')?'admin':
     path.startsWith('/contact')||path.startsWith('/en/contact')?'contact':'';
 
@@ -32,9 +36,13 @@
     ['THE CODE',english?'/en/#the-code':'/#the-code','code'],
     [labels.finance,english?'/en/#financials':'/#financije','finance'],
     [labels.network,english?'/en/#network':'/#mreza','network'],
+    [labels.news,english?'/news/':'/vijesti/','news'],
+    [labels.posts,english?'/publications/':'/objave/','posts'],
     [labels.markets,english?'/markets/':'/trzista/','markets'],
-    [labels.contact,english?'/en/contact/':'/contact/','contact'],
+    [labels.gallery,'/visual-index/','gallery'],
+    ['AI',english?'/en/assistant/':'/assistant/','ai'],
     ['Admin','/admin-center/','admin'],
+    [labels.contact,english?'/en/contact/':'/contact/','contact'],
     [labels.language,languagePath(),'language']
   ];
 
@@ -46,7 +54,7 @@
   const header=document.createElement('header');
   header.className='gnk-public-menu-v10 gnk-public-menu-v15';
   header.dataset.release=RELEASE;
-  header.dataset.menuItems='7';
+  header.dataset.menuItems='11';
   header.setAttribute('aria-label',english?'GNK ASG public navigation':'GNK ASG javna navigacija');
   header.innerHTML=`<div class="gnk-public-menu-v10__inner"><a class="gnk-public-menu-v10__brand" href="${english?'/en/':'/'}" aria-label="GNK ASG"><span class="gnk-index-brand-name"><strong>GNK ASG d.o.o.</strong></span><i class="gnk-index-brand-divider" aria-hidden="true"></i><span class="gnk-index-brand-name"><strong>GNK DINAMO Ltd.</strong></span></a><button class="gnk-public-menu-v10__toggle" type="button" aria-expanded="false" aria-controls="gnkPublicNav" aria-label="${labels.open}">☰</button><nav id="gnkPublicNav" class="gnk-public-menu-v10__nav">${links.map(([label,url,key])=>`<a href="${url}" data-key="${key}"${key==='language'?' data-lang':''}${key==='admin'?' rel="nofollow"':''}${key===active?' class="is-active" aria-current="page"':''}>${label}</a>`).join('')}</nav></div>`;
   document.body.prepend(header);
