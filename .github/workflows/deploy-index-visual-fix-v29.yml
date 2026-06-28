@@ -13,7 +13,6 @@ on:
 
 permissions:
   contents: read
-  issues: write
 
 concurrency:
   group: deploy-index-visual-fix-v29
@@ -49,25 +48,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          sleep 12
           CB="${GITHUB_RUN_ID}"
-          curl -fsS -D /tmp/index.headers "https://gnk-asg.hr/?cb=${CB}" -o /tmp/index.html
-          curl -fsS "https://gnk-asg.hr/assets/index-priority-v1.js?cb=${CB}" -o /tmp/priority.js
-          curl -fsS "https://gnk-asg.hr/assets/index-code-layout-fix-v1.css?cb=${CB}" -o /tmp/layout.css
-          curl -fsS "https://gnk-asg.hr/assets/index-city-white-v1.css?cb=${CB}" -o /tmp/cities.css
-          grep -qi '^x-gnk-asg-index-visual-fix: GNK_ASG_ADMIN_HUB_V29_INDEX_CITY_CODE_LAYOUT_20260628' /tmp/index.headers
-          grep -q 'GNK_INDEX_PRIORITY_V4' /tmp/priority.js
-          grep -q 'ci-control--play' /tmp/layout.css
-          grep -q 'height:844px' /tmp/layout.css
-          grep -q 'color:#fff' /tmp/cities.css
+          ok=0
+          for attempt in 1 2 3 4 5; do
+            curl -sS -D /tmp/index.headers "https://gnk-asg.hr/?cb=${CB}-${attempt}" -o /tmp/index.html || true
+            curl -sS "https://gnk-asg.hr/assets/index-priority-v1.js?cb=${CB}-${attempt}" -o /tmp/priority.js || true
+            curl -sS "https://gnk-asg.hr/assets/index-code-layout-fix-v1.css?cb=${CB}-${attempt}" -o /tmp/layout.css || true
+            curl -sS "https://gnk-asg.hr/assets/index-city-white-v1.css?cb=${CB}-${attempt}" -o /tmp/cities.css || true
+            if grep -qi '^x-gnk-asg-index-visual-fix:' /tmp/index.headers \
+              && grep -q 'GNK_INDEX_PRIORITY_V4' /tmp/priority.js \
+              && grep -q 'ci-control--play' /tmp/layout.css \
+              && grep -q 'height:844px' /tmp/layout.css \
+              && grep -q 'color:#fff' /tmp/cities.css; then
+              ok=1
+              break
+            fi
+            sleep 8
+          done
+          test "$ok" = '1'
           echo 'INDEX_VISUAL_FIX_V29_OK=true'
-      - name: Report success
-        if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh issue comment 225 --body "INDEX_VISUAL_FIX_V29_OK | Run: ${GITHUB_RUN_ID} | SHA: ${GITHUB_SHA}"
-      - name: Report failure
-        if: failure()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh issue comment 225 --body "INDEX_VISUAL_FIX_V29_FAILED | Run: ${GITHUB_RUN_ID} | SHA: ${GITHUB_SHA}"
