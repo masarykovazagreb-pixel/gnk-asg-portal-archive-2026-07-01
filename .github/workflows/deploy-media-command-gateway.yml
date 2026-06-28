@@ -1,6 +1,13 @@
 name: Deploy Media Command Gateway
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-media-command-gateway.yml'
+      - 'workers/gnk-asg-direct-operator/src/index-media-command-gateway-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-command-bridge-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-command-center-v1.js'
   workflow_run:
     workflows: ["Deploy public portal"]
     types: [completed]
@@ -15,7 +22,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
