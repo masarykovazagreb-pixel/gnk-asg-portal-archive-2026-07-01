@@ -27,6 +27,14 @@ jobs:
         with:
           ref: main
 
+      - name: Report restore start
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          body=$(printf '## IQ200 index restore — started\n\n- Commit: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/83/comments" -f body="$body"
+
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
