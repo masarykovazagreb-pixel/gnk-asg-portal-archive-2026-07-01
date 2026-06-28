@@ -1,0 +1,63 @@
+name: Diagnose Project 50 Unified Menu V16
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/diagnose-project50-unified-menu-v16.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: project-50-white-integrated-menu
+          fetch-depth: 1
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Read deployment and production state
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -u
+          npx --yes wrangler@4 deployments list --config wrangler.toml > /tmp/wrangler-deployments.txt 2>&1 || true
+          cd ../..
+          node <<'JS'
+          const fs=require('node:fs');
+          const base='https://gnk-asg.hr';
+          const paths=['/','/en/','/vijesti/','/publications/','/admin-center/','/assets/public-shell-v15.js','/assets/public-menu-v10.css','/assets/admin-center-extensions-v2.js','/data/portal-version.json'];
+          const markers=['GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628','GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628','GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628','index-menu-unified-v16.js','public-shell-v15.js?v=20260628-v16','/admin-center/','/en/contact/','admin-center-memorandum-v1.js'];
+          (async()=>{
+            const report={checkedAt:new Date().toISOString(),sourceBranch:'project-50-white-integrated-menu',sourceCommit:require('node:child_process').execSync('git rev-parse HEAD').toString().trim(),requests:{},wranglerDeployments:fs.readFileSync('/tmp/wrangler-deployments.txt','utf8')};
+            for(const path of paths){
+              try{
+                const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${Date.now()}-${Math.random()}`,{redirect:'follow',headers:{'cache-control':'no-cache','pragma':'no-cache'}});
+                const text=await response.text();
+                report.requests[path]={status:response.status,url:response.url,contentType:response.headers.get('content-type')||'',headers:Object.fromEntries([...response.headers].filter(([key])=>key.startsWith('x-gnk')||['cache-control','cf-cache-status','server'].includes(key))),markers:Object.fromEntries(markers.map(marker=>[marker,text.includes(marker)])),length:text.length,snippet:text.slice(0,500)};
+              }catch(error){report.requests[path]={error:String(error)}}
+            }
+            fs.writeFileSync('/tmp/unified-menu-v16-diagnostic.json',JSON.stringify(report,null,2)+'\n');
+            console.log(JSON.stringify(report,null,2));
+          })().catch(error=>{console.error(error);process.exit(1)});
+          JS
+      - name: Store diagnostic on project branch
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs=require('node:fs');
+            const path='docs/deployments/unified-menu-v16-diagnostic.json';
+            const branch='project-50-white-integrated-menu';
+            const content=fs.existsSync('/tmp/unified-menu-v16-diagnostic.json')?fs.readFileSync('/tmp/unified-menu-v16-diagnostic.json'):Buffer.from(JSON.stringify({ok:false,error:'diagnostic file missing',checkedAt:new Date().toISOString()},null,2)+'\n');
+            let sha;
+            try{const current=await github.rest.repos.getContent({owner:context.repo.owner,repo:context.repo.repo,path,ref:branch});if(!Array.isArray(current.data))sha=current.data.sha;}catch(error){if(error.status!==404)throw error;}
+            await github.rest.repos.createOrUpdateFileContents({owner:context.repo.owner,repo:context.repo.repo,path,branch,sha,message:'Record V16 production diagnostic [skip ci]',content:content.toString('base64')});
