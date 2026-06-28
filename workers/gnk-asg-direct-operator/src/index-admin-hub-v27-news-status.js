@@ -1,107 +1,34 @@
 import app from './index-admin-hub-v26-clean-index.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260628_R11_REDUCED_PUBLIC_MENU';
+export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260628_R12_UNIFIED_REDUCED_PUBLIC_MENU';
 const ENTRYPOINT='src/index-admin-hub-v27-news-status.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v26-clean-index.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627';
 const STATUS_PATHS=new Set(['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json']);
 const INDEX_PATHS=new Set(['/','/en']);
 const ADMIN_MODULES=new Set(['/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/auto-editor','/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/media-command-center','/memorandum-studio']);
+const PUBLIC_MENU_PATHS=new Set(['/trzista','/markets','/contact','/en/contact','/downloads','/en/downloads','/legal','/en/legal','/vijesti','/news','/objave','/publications','/visual-index','/assistant','/en/assistant','/media-kit','/media-application']);
 const MODULE_LOADER_SCRIPT='<script defer src="/assets/admin-module-loader-v3.js?v=20260627-v4"></script>';
 const HERO_SCALE_STYLE='<link rel="stylesheet" href="/assets/index-hero-scale-v13.css?v=20260627-v13">';
+const REDUCED_PUBLIC_MENU_STYLE=`<style id="gnk-reduced-public-menu-v1-style">
+body.gnk-reduced-public-menu-page{padding-top:88px!important}
+body.gnk-reduced-public-menu-page>header.site-header,[data-gnk-public-menu],.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-inner-nav,nav[aria-label="GNK ASG glavni izbornik"],nav[aria-label="GNK ASG main menu"],.gnk-asg-floating-actions,.gnk-global-float-ai,.floating-ai{display:none!important;visibility:hidden!important;pointer-events:none!important}
+.gnk-reduced-public-nav{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:2147483600;width:min(1180px,calc(100vw - 24px));min-height:62px;padding:9px 12px;display:flex;align-items:center;gap:12px;border:1px solid rgba(184,142,48,.42);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,253,.97),rgba(238,226,194,.97));box-shadow:0 16px 46px rgba(29,22,8,.20);backdrop-filter:blur(18px);font-family:Inter,"Segoe UI",Arial,sans-serif}
+.gnk-reduced-public-nav *{box-sizing:border-box}.gnk-reduced-public-nav__brand{flex:0 0 auto;padding:10px 12px;color:#17130c!important;text-decoration:none!important;font-size:13px;font-weight:950;letter-spacing:.08em;white-space:nowrap}.gnk-reduced-public-nav__toggle{display:none;margin-left:auto;min-width:44px;min-height:42px;border:1px solid rgba(184,142,48,.48);border-radius:12px;background:#17130c;color:#f5df9e;font-weight:900;cursor:pointer}.gnk-reduced-public-nav__links{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap}.gnk-reduced-public-nav__links a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 10px;border:1px solid transparent;border-radius:10px;color:#201a0f!important;text-decoration:none!important;font-size:11px;font-weight:900;letter-spacing:.035em;white-space:nowrap}.gnk-reduced-public-nav__links a:hover,.gnk-reduced-public-nav__links a:focus-visible,.gnk-reduced-public-nav__links a[aria-current="page"]{outline:none;border-color:rgba(184,142,48,.44);background:rgba(184,142,48,.14)}.gnk-reduced-public-nav__links a.gnk-admin-link{background:#17130c;color:#f5df9e!important;border-color:rgba(184,142,48,.55)}
+@media(max-width:900px){body.gnk-reduced-public-menu-page{padding-top:78px!important}.gnk-reduced-public-nav{top:8px;min-height:58px}.gnk-reduced-public-nav__toggle{display:inline-flex;align-items:center;justify-content:center}.gnk-reduced-public-nav__links{display:none;position:absolute;top:66px;left:0;right:0;margin:0;padding:10px;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;border:1px solid rgba(184,142,48,.42);border-radius:18px;background:rgba(255,253,247,.98);box-shadow:0 18px 42px rgba(29,22,8,.22)}.gnk-reduced-public-nav.is-open .gnk-reduced-public-nav__links{display:grid}.gnk-reduced-public-nav__links a{white-space:normal;text-align:center}}
+@media(max-width:520px){.gnk-reduced-public-nav{width:calc(100vw - 14px);padding:7px 9px;border-radius:17px}.gnk-reduced-public-nav__brand{font-size:11px;padding:9px 7px}.gnk-reduced-public-nav__links{grid-template-columns:1fr}}
+</style>`;
+const REDUCED_PUBLIC_MENU_SCRIPT=`<script id="gnk-reduced-public-menu-v1-script">(()=>{const old='[data-gnk-public-menu],.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-inner-nav,nav[aria-label="GNK ASG glavni izbornik"],nav[aria-label="GNK ASG main menu"],.gnk-asg-floating-actions,.gnk-global-float-ai,.floating-ai';const en=(document.documentElement.lang||'').toLowerCase().startsWith('en')||location.pathname==='/markets/'||location.pathname.startsWith('/en/');const links=en?[['THE CODE','/en/#the-code'],['Financials','/en/#financials'],['Network','/en/#network'],['Markets','/markets/'],['Admin','/operator-dashboard/','admin'],['Contact','/en/contact/'],['HR','/']]:[['THE CODE','/#the-code'],['Financije','/#financije'],['Mreža','/#mreza'],['Tržišta','/trzista/'],['Admin','/operator-dashboard/','admin'],['Kontakt','/contact/'],['EN','/en/']];function normalize(v){let p=String(v||'/').split('?')[0].split('#')[0].replace(/\/+$/,'')||'/';return p.toLowerCase()}function install(){if(!document.body)return;document.body.classList.add('gnk-reduced-public-menu-page');document.querySelectorAll(old).forEach(el=>el.remove());document.querySelectorAll('body>header.site-header').forEach(el=>el.remove());document.querySelectorAll('main>nav').forEach(nav=>{const hrefs=[...nav.querySelectorAll('a')].map(a=>a.getAttribute('href')||'').join(' ');if(/vijesti|news|objave|publications|assistant|legal|operator-dashboard/.test(hrefs))nav.remove()});let nav=document.getElementById('gnkReducedPublicNav');if(!nav){nav=document.createElement('nav');nav.id='gnkReducedPublicNav';nav.className='gnk-reduced-public-nav';nav.setAttribute('aria-label',en?'GNK ASG main menu':'GNK ASG glavni izbornik');const brand=document.createElement('a');brand.className='gnk-reduced-public-nav__brand';brand.href=en?'/en/':'/';brand.textContent='GNK ASG';const toggle=document.createElement('button');toggle.type='button';toggle.className='gnk-reduced-public-nav__toggle';toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label',en?'Open menu':'Otvori izbornik');toggle.textContent='☰';const wrap=document.createElement('div');wrap.className='gnk-reduced-public-nav__links';links.forEach(item=>{const a=document.createElement('a');a.href=item[1];a.textContent=item[0];if(item[2]==='admin')a.classList.add('gnk-admin-link');if(normalize(location.pathname)===normalize(item[1]))a.setAttribute('aria-current','page');wrap.appendChild(a)});toggle.addEventListener('click',()=>{const open=nav.classList.toggle('is-open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'×':'☰'});nav.append(brand,toggle,wrap);document.body.prepend(nav)}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();window.addEventListener('load',install);[100,500,1600,3200].forEach(ms=>setTimeout(install,ms));let timer;new MutationObserver(mutations=>{if(mutations.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(n.matches?.(old)||n.querySelector?.(old))))){clearTimeout(timer);timer=setTimeout(install,0)}}).observe(document.documentElement,{childList:true,subtree:true})})();</script>`;
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/'}
 function noStore(headers){headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');headers.delete('last-modified');headers.set('content-type','application/json; charset=utf-8');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return headers}
-function sameOriginCsp(value){
-  const directives=String(value||'').split(';').map(item=>item.trim()).filter(Boolean).filter(item=>!/^frame-ancestors\b/i.test(item));
-  directives.push("frame-ancestors 'self'");
-  return directives.join('; ');
-}
-function lockedIndexMenu(english){
-  return english
-    ? '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financials">Financials</a><a href="#network">Network</a><a href="/markets/">Markets</a><a href="/operator-dashboard/">Admin</a><a href="/en/contact/">Contact</a><a class="lang" href="/">HR</a></nav>'
-    : '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/trzista/">Tržišta</a><a href="/operator-dashboard/">Admin</a><a href="/contact/">Kontakt</a><a class="lang" href="/en/">EN</a></nav>';
-}
-function operatorRedirect(request,path){
-  if(path!=='/operator-dashboard')return null;
-  const url=new URL(request.url);
-  if(url.searchParams.get('embedded')==='1')return null;
-  return new Response(null,{status:303,headers:{location:'/admin-center/?module=operator','cache-control':'no-store','x-gnk-asg-admin-entry':'ADMIN_CENTER'}});
-}
-async function directIndex(request,env,path){
-  if(request.method!=='GET'||!INDEX_PATHS.has(path)||!env.ASSETS?.fetch)return null;
-  const assetPath=path==='/en'?'/en/index.html':'/index.html';
-  const assetUrl=new URL(assetPath,request.url);
-  const response=await env.ASSETS.fetch(new Request(assetUrl.toString(),{method:'GET',headers:{accept:'text/html'}}));
-  if(!response.ok)return null;
-  const headers=new Headers(response.headers);
-  headers.delete('content-length');
-  headers.delete('content-encoding');
-  headers.delete('etag');
-  headers.delete('last-modified');
-  headers.set('content-type','text/html; charset=utf-8');
-  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-  headers.set('x-gnk-asg-index-source',assetPath);
-  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
-}
-async function patchStatus(response,path){
-  if(!STATUS_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
-  try{
-    const payload=await response.json();
-    const headers=noStore(new Headers(response.headers));
-    headers.set('x-gnk-asg-active-entrypoint',ENTRYPOINT);
-    headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);
-    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,newsRuntime:NEWS_RUNTIME,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},indexHeroScale:'50_PERCENT_V13',indexMenu:'LOCKED_REDUCED_PUBLIC_MENU',primaryMenu:['THE CODE','Financije / Financials','Mreža / Network','Tržišta / Markets','Admin','Kontakt / Contact','HR / EN'],hiddenPrimaryMenuRoutes:['Vijesti / News','Objave / Publications','Galerija / Gallery','AI'],galleryInPrimaryNavigation:false,indexSource:'DIRECT_STATIC_ASSET',adminEntry:'ADMIN_CENTER',adminEmbed:'SAME_ORIGIN_ALLOWED',adminLoader:'RESILIENT_ROUTE_VALIDATION_V4',adminAudit:'ALL_MODULES_WITH_10_SECOND_TIMEOUT',statusWrapper:VERSION,checkedAt:new Date().toISOString()};
-    return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
-  }catch{return response}
-}
-async function patchIndexHtml(response,path,request){
-  if(request.method!=='GET'||!INDEX_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
-  const headers=new Headers(response.headers);
-  headers.delete('content-length');
-  headers.delete('content-encoding');
-  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-  headers.set('x-gnk-asg-index-hero-scale','50_PERCENT_V13');
-  headers.set('x-gnk-asg-index-menu','LOCKED_REDUCED_PUBLIC_MENU');
-  headers.set('x-gnk-asg-gallery-primary-menu','HIDDEN');
-  let html=await response.text();
-  html=html.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,lockedIndexMenu(path==='/en'));
-  if(!html.includes('index-hero-scale-v13.css'))html=html.replace('</head>',`${HERO_SCALE_STYLE}</head>`);
-  html=html.replace(/index-code-cleanup-v8\.js\?v=[^"']+/i,'index-code-cleanup-v8.js?v=20260627-v13');
-  return new Response(html,{status:response.status,statusText:response.statusText,headers});
-}
-async function patchAdminHtml(response,path,request){
-  if(request.method!=='GET'||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
-  const url=new URL(request.url);
-  const embedded=url.searchParams.get('embedded')==='1';
-  const adminCenter=path==='/admin-center';
-  if(!adminCenter&&!(embedded&&ADMIN_MODULES.has(path)))return response;
-  const headers=new Headers(response.headers);
-  headers.delete('content-length');
-  headers.delete('content-encoding');
-  headers.delete('x-frame-options');
-  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-  headers.set('content-security-policy',sameOriginCsp(headers.get('content-security-policy')));
-  headers.set('x-gnk-asg-admin-embed',embedded?'SAME_ORIGIN_ALLOWED':'ADMIN_CENTER');
-  let html=await response.text();
-  if(adminCenter){
-    html=html.replace(/admin-center-health-v1\.js\?v=[^"']+/i,'admin-center-health-v1.js?v=20260627-v2');
-    if(!html.includes('admin-module-loader-v3.js'))html=html.replace('</body>',`${MODULE_LOADER_SCRIPT}</body>`);
-  }
-  return new Response(html,{status:response.status,statusText:response.statusText,headers});
-}
+function sameOriginCsp(value){const directives=String(value||'').split(';').map(item=>item.trim()).filter(Boolean).filter(item=>!/^frame-ancestors\b/i.test(item));directives.push("frame-ancestors 'self'");return directives.join('; ')}
+function lockedIndexMenu(english){return english?'<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financials">Financials</a><a href="#network">Network</a><a href="/markets/">Markets</a><a href="/operator-dashboard/">Admin</a><a href="/en/contact/">Contact</a><a class="lang" href="/">HR</a></nav>':'<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/trzista/">Tržišta</a><a href="/operator-dashboard/">Admin</a><a href="/contact/">Kontakt</a><a class="lang" href="/en/">EN</a></nav>'}
+function operatorRedirect(request,path){if(path!=='/operator-dashboard')return null;const url=new URL(request.url);if(url.searchParams.get('embedded')==='1')return null;return new Response(null,{status:303,headers:{location:'/admin-center/?module=operator','cache-control':'no-store','x-gnk-asg-admin-entry':'ADMIN_CENTER'}})}
+async function directIndex(request,env,path){if(request.method!=='GET'||!INDEX_PATHS.has(path)||!env.ASSETS?.fetch)return null;const assetPath=path==='/en'?'/en/index.html':'/index.html';const assetUrl=new URL(assetPath,request.url);const response=await env.ASSETS.fetch(new Request(assetUrl.toString(),{method:'GET',headers:{accept:'text/html'}}));if(!response.ok)return null;const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');headers.delete('last-modified');headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-gnk-asg-index-source',assetPath);return new Response(response.body,{status:response.status,statusText:response.statusText,headers})}
+async function patchStatus(response,path){if(!STATUS_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;try{const payload=await response.json();const headers=noStore(new Headers(response.headers));headers.set('x-gnk-asg-active-entrypoint',ENTRYPOINT);headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,newsRuntime:NEWS_RUNTIME,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},indexHeroScale:'50_PERCENT_V13',indexMenu:'LOCKED_REDUCED_PUBLIC_MENU',publicSubpageMenu:'UNIFIED_REDUCED_PUBLIC_MENU_V1',primaryMenu:['THE CODE','Financije / Financials','Mreža / Network','Tržišta / Markets','Admin','Kontakt / Contact','HR / EN'],hiddenPrimaryMenuRoutes:['Vijesti / News','Objave / Publications','Galerija / Gallery','AI'],galleryInPrimaryNavigation:false,indexSource:'DIRECT_STATIC_ASSET',adminEntry:'ADMIN_CENTER',adminEmbed:'SAME_ORIGIN_ALLOWED',adminLoader:'RESILIENT_ROUTE_VALIDATION_V4',adminAudit:'ALL_MODULES_WITH_10_SECOND_TIMEOUT',statusWrapper:VERSION,checkedAt:new Date().toISOString()};return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers})}catch{return response}}
+async function patchIndexHtml(response,path,request){if(request.method!=='GET'||!INDEX_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-gnk-asg-index-hero-scale','50_PERCENT_V13');headers.set('x-gnk-asg-index-menu','LOCKED_REDUCED_PUBLIC_MENU');headers.set('x-gnk-asg-gallery-primary-menu','HIDDEN');let html=await response.text();html=html.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,lockedIndexMenu(path==='/en'));if(!html.includes('index-hero-scale-v13.css'))html=html.replace('</head>',`${HERO_SCALE_STYLE}</head>`);html=html.replace(/index-code-cleanup-v8\.js\?v=[^"']+/i,'index-code-cleanup-v8.js?v=20260627-v13');return new Response(html,{status:response.status,statusText:response.statusText,headers})}
+async function patchUnifiedPublicMenu(response,path,request){if(request.method!=='GET'||!PUBLIC_MENU_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-gnk-asg-public-menu','UNIFIED_REDUCED_PUBLIC_MENU_V1');let html=await response.text();if(!html.includes('gnk-reduced-public-menu-v1-style'))html=html.replace('</head>',`${REDUCED_PUBLIC_MENU_STYLE}</head>`);if(!html.includes('gnk-reduced-public-menu-v1-script'))html=html.replace('</body>',`${REDUCED_PUBLIC_MENU_SCRIPT}</body>`);return new Response(html,{status:response.status,statusText:response.statusText,headers})}
+async function patchAdminHtml(response,path,request){if(request.method!=='GET'||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;const url=new URL(request.url);const embedded=url.searchParams.get('embedded')==='1';const adminCenter=path==='/admin-center';if(!adminCenter&&!(embedded&&ADMIN_MODULES.has(path)))return response;const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.delete('x-frame-options');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('content-security-policy',sameOriginCsp(headers.get('content-security-policy')));headers.set('x-gnk-asg-admin-embed',embedded?'SAME_ORIGIN_ALLOWED':'ADMIN_CENTER');let html=await response.text();if(adminCenter){html=html.replace(/admin-center-health-v1\.js\?v=[^"']+/i,'admin-center-health-v1.js?v=20260627-v2');if(!html.includes('admin-module-loader-v3.js'))html=html.replace('</body>',`${MODULE_LOADER_SCRIPT}</body>`)}return new Response(html,{status:response.status,statusText:response.statusText,headers})}
 
-export default{
-  async fetch(request,env,ctx){
-    const path=pathOf(request);
-    const redirect=operatorRedirect(request,path);
-    if(redirect)return redirect;
-    let response=await directIndex(request,env,path);
-    if(!response)response=await app.fetch(request,env,ctx);
-    response=await patchStatus(response,path);
-    response=await patchIndexHtml(response,path,request);
-    return patchAdminHtml(response,path,request);
-  },
-  async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
-  async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}
-};
+export default{async fetch(request,env,ctx){const path=pathOf(request);const redirect=operatorRedirect(request,path);if(redirect)return redirect;let response=await directIndex(request,env,path);if(!response)response=await app.fetch(request,env,ctx);response=await patchStatus(response,path);response=await patchIndexHtml(response,path,request);response=await patchUnifiedPublicMenu(response,path,request);return patchAdminHtml(response,path,request)},async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}};
