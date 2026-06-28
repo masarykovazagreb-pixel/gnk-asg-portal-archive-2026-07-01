@@ -1,4 +1,4 @@
-// GNK ASG Command Center primary action · validated release 2026-06-28
+// GNK ASG Command Center primary action · validated release 2026-06-28 · diagnostic run 2
 (() => {
   'use strict';
   function bind(){
