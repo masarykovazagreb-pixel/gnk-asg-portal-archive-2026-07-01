@@ -4,11 +4,6 @@ compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
 
-[assets]
-directory = "../../apps/portal"
-binding = "ASSETS"
-run_worker_first = true
-
 routes = [
   { pattern = "gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
@@ -92,6 +87,11 @@ routes = [
   { pattern = "www.gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" }
 ]
 
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+
 [[kv_namespaces]]
 binding = "GNK_ASG_CONFIG_KV"
 id = "d6f5dac9fa034d8d813db0de44eb7b1b"
@@ -126,3 +126,6 @@ MAIL_MANDATORY_BCC = "rht@gmx.com"
 MAIL_PROFILE_TEST_LIVE = "true"
 MAIL_PROFILE_TEST_RECIPIENTS = "rht@gmx.com"
 MAIL_BOOTSTRAP_SMOKE_TEST = "true"
+MEDIA_OUTREACH_LIVE = "false"
+MEDIA_OUTREACH_TEST_LIVE = "false"
+MEDIA_OUTREACH_TEST_RECIPIENTS = "rht@gmx.com"
