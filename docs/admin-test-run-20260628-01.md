@@ -17,13 +17,30 @@ Initial code-level verification of Admin Center module loading, Mail Studio embe
 4. Mail Studio exists as a static module at `apps/portal/mail-studio/index.html`.
 5. Mail Studio currently contains several independent inline layers in one HTML document: base compose/send, signatures, PDF attachments and personalized AI. This is fragile under strict CSP and makes failure isolation difficult.
 6. Operator Dashboard, Media Command Center and Auto Editor static module assets are present.
-7. Static assets were not found at `apps/portal/news-admin/index.html` and `apps/portal/pdf-publisher/index.html`. Their routes are declared in the Worker module map, so the next test must verify whether they are dynamically served or currently resolve to missing assets.
+7. Static assets were missing at `apps/portal/news-admin/index.html` and `apps/portal/pdf-publisher/index.html`; isolated read-only module pages and diagnostics have now been added for both routes.
 8. The Worker redirects non-embedded module routes to Admin Center and allows `embedded=1` module requests to continue to the underlying module implementation.
+9. The user confirmed that the public contact form works. `/contact/` is recorded as PASS and is excluded from corrective changes.
 
 ## Commits in this run
 
 - `fd6db91` — prevent duplicate Admin Center iframe controllers.
 - `ad95f3b` — load Admin Center extensions after the core controller.
+- `57dabaf` — add shared styling for isolated admin modules.
+- `0c2a45b` — add isolated News Admin page.
+- `9cee9f2` — add read-only News Admin diagnostics.
+- `4346ea3` — add isolated PDF Publisher page.
+- `83c9177` — add read-only PDF Publisher diagnostics.
+
+## Current route status
+
+- `/contact/`: PASS by user confirmation; no change planned.
+- `/admin-center/`: core route exists; iframe controller race fixed on branch.
+- `/mail-studio/?embedded=1&hubmodule=mail`: static module exists; modularization and runtime verification remain.
+- `/operator-dashboard/?embedded=1&hubmodule=operator`: static module exists.
+- `/media-command-center/?embedded=1&hubmodule=media`: static module exists.
+- `/auto-editor/?embedded=1&hubmodule=editor`: static module exists.
+- `/news-admin/?embedded=1&hubmodule=news`: missing static asset resolved with a read-only module.
+- `/pdf-publisher/?embedded=1&hubmodule=pdf`: missing static asset resolved with a read-only module.
 
 ## Next test sequence
 
@@ -31,10 +48,9 @@ Initial code-level verification of Admin Center module loading, Mail Studio embe
 2. Add a module-ready/error bridge between embedded admin modules and Admin Center.
 3. Make Admin Center validate the iframe's final route, document availability and module identity before showing READY.
 4. Verify every module route in both standalone and embedded form.
-5. Resolve News Admin and PDF Publisher route implementation if their dynamic handlers do not return valid HTML.
-6. Verify API authentication and cookie behavior for Admin Center, Mail Studio, media applications and media access.
-7. Run non-destructive API checks only. Do not call real send endpoints with approved/live payloads.
-8. Record HTTP status, content type, redirect target, frame policy and UI boot result for every route.
+5. Verify API authentication and cookie behavior for Admin Center, Mail Studio, media applications and media access.
+6. Run non-destructive API checks only. Do not call real send endpoints with approved/live payloads.
+7. Record HTTP status, content type, redirect target, frame policy and UI boot result for every route.
 
 ## Safety
 
