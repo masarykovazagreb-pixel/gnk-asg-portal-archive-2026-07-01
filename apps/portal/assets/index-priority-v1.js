@@ -1,11 +1,38 @@
 (()=>{
   'use strict';
-  if(window.__GNK_INDEX_PRIORITY_V3__)return;
-  window.__GNK_INDEX_PRIORITY_V3__=true;
+  if(window.__GNK_INDEX_PRIORITY_V4__)return;
+  window.__GNK_INDEX_PRIORITY_V4__=true;
   const en=document.documentElement.lang==='en';
   const stage=document.querySelector('.code-stage');
   if(!stage)return;
-  document.body.dataset.gnkIndexPriority='v3';
+  document.body.dataset.gnkIndexPriority='v4';
+
+  if(!document.querySelector('link[data-code-layout-fix-v1]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href='/assets/index-code-layout-fix-v1.css?v=20260628-v1';
+    link.dataset.codeLayoutFixV1='';
+    document.head.appendChild(link);
+  }
+
+  const inlineHost=stage.querySelector('.code-inline-host');
+  if(inlineHost){
+    stage.querySelector('.gnk-code-priority-controls')?.remove();
+    const exposeNativeControls=()=>{
+      const play=stage.querySelector('.ci-control--play');
+      const controls=stage.querySelector('.ci-controls');
+      if(controls){controls.style.display='flex';controls.style.visibility='visible';controls.style.opacity='1';}
+      if(play){play.style.display='inline-flex';play.style.visibility='visible';play.style.opacity='1';return true;}
+      return false;
+    };
+    if(!exposeNativeControls()){
+      const observer=new MutationObserver(()=>{if(exposeNativeControls())observer.disconnect();});
+      observer.observe(inlineHost,{childList:true,subtree:true});
+      setTimeout(()=>observer.disconnect(),10000);
+    }
+    return;
+  }
+
   const frame=stage.querySelector('iframe');
   const AUTO_CYCLE_MS=50000;
   let cycleTimer=null,readyState=false;
