@@ -1,7 +1,7 @@
 import {prepareAccessCode,activateAccessCode,failAccessCode,VERSION as CODE_STORE_VERSION} from './media-access-code-store-v1.js';
 import {mediaAccessDeliveryText,VERSION as ACCESS_TEXT_VERSION} from './media-access-delivery-text-v1.js';
 
-export const VERSION='GNK_ASG_MEDIA_OUTREACH_ACCESS_DISPATCH_V1_1_ATOMIC_CLAIM_20260628';
+export const VERSION='GNK_ASG_MEDIA_OUTREACH_ACCESS_DISPATCH_V1_2_STALE_PDF_RATE_20260628';
 const TEST_GATE_KEY='media-command-center:delivery-test:v1';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
 const MAX_PDF_BYTES=4*1024*1024;
@@ -51,8 +51,9 @@ async function pdfState(env){
 
 async function rate(env){
   const db=await ensureQueueSchema(env),hourLimit=intEnv(env.MEDIA_OUTREACH_MAX_PER_HOUR,10),dayLimit=intEnv(env.MEDIA_OUTREACH_MAX_PER_DAY,50);
-  const hour=Number((await db.prepare(`SELECT COUNT(*) AS count FROM media_delivery_queue WHERE status='SENT' AND sent_at>=datetime('now','-1 hour')`).first())?.count||0);
-  const day=Number((await db.prepare(`SELECT COUNT(*) AS count FROM media_delivery_queue WHERE status='SENT' AND sent_at>=datetime('now','-1 day')`).first())?.count||0);
+  const delivered="status IN ('SENT','SENT_ACCESS_FAILED')";
+  const hour=Number((await db.prepare(`SELECT COUNT(*) AS count FROM media_delivery_queue WHERE ${delivered} AND sent_at>=datetime('now','-1 hour')`).first())?.count||0);
+  const day=Number((await db.prepare(`SELECT COUNT(*) AS count FROM media_delivery_queue WHERE ${delivered} AND sent_at>=datetime('now','-1 day')`).first())?.count||0);
   return{ok:hour<hourLimit&&day<dayLimit,hour:{used:hour,limit:hourLimit},day:{used:day,limit:dayLimit}};
 }
 
@@ -84,7 +85,10 @@ export async function processAccessDeliveryQueue(env){
   const rateState=await rate(env);if(!rateState.ok)return{ok:true,skipped:'rate_limit',rate:rateState};
   const db=await ensureQueueSchema(env),row=await db.prepare(`SELECT * FROM media_delivery_queue WHERE status IN ('QUEUED','RETRY') AND attempts<3 ORDER BY queued_at LIMIT 1`).first();
   if(!row)return{ok:true,skipped:'queue_empty',version:VERSION};
-  if(row.pdf_sha256!==pdf.sha256)return{ok:false,skipped:'pdf_mismatch',mailCode:row.mail_code};
+  if(row.pdf_sha256!==pdf.sha256){
+    await db.prepare(`UPDATE media_delivery_queue SET status='STALE_PDF',last_error='Queued PDF no longer matches the verified campaign PDF',last_error_code='PDF_MISMATCH',updated_at=? WHERE id=? AND status IN ('QUEUED','RETRY')`).bind(now(),row.id).run();
+    return{ok:false,skipped:'pdf_mismatch',mailCode:row.mail_code,status:'STALE_PDF'};
+  }
   const claim=await db.prepare(`UPDATE media_delivery_queue SET status='SENDING',attempts=attempts+1,updated_at=? WHERE id=? AND status IN ('QUEUED','RETRY') AND attempts<3`).bind(now(),row.id).run();
   if(Number(claim.meta?.changes||0)!==1)return{ok:true,skipped:'queue_claim_lost',mailCode:row.mail_code,version:VERSION};
   let prepared=null,delivery=null;
