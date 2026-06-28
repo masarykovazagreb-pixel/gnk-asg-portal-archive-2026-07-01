@@ -49,7 +49,7 @@ jobs:
           set -euo pipefail
           printf '{"ok":false,"status":"BUILDING_PDF","commandId":"%s"}\n' "$(jq -r '.commandId' ops/media-command.json)" > /tmp/media-result.json
           python -m pip install --disable-pip-version-check reportlab
-          python ops/scripts/build_the_code_media_pdf_v2.py
+          python ops/scripts/run_the_code_media_pdf.py
           test "$(head -c 5 /tmp/the-code.pdf)" = '%PDF-'
           size=$(stat -c %s /tmp/the-code.pdf)
           test "$size" -le 3200000
