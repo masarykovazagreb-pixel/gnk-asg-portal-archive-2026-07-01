@@ -1,6 +1,6 @@
 import app from './index-admin-hub-v28-news-no-fallback.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V29_INDEX_CITY_CODE_LAYOUT_20260628';
+export const VERSION='GNK_ASG_ADMIN_HUB_V29_INDEX_CITY_CODE_LAYOUT_R2_20260628';
 
 function stamp(response){
   const headers=new Headers(response.headers);
