@@ -1,6 +1,6 @@
 import {assignReceivingCenter,centerLabel,VERSION as CENTERS_VERSION} from './mail-receiving-centers-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_INBOUND_SERVICE_V2_STABLE_ID_20260628';
+export const VERSION='GNK_ASG_MAIL_INBOUND_SERVICE_V3_STABLE_MESSAGE_DATE_20260628';
 export const INDEX_KEY='mail:inbound:index';
 
 const clean=(value,max=4000)=>String(value??'').replace(/\u0000/g,'').trim().slice(0,max);
@@ -31,12 +31,23 @@ function mailboxKey(address){
   return known.has(local)?local:'contact';
 }
 
+function stableMessageDate(message,receivedAt){
+  const headerDate=header(message,'date');
+  if(headerDate){
+    const parsed=new Date(headerDate);
+    if(!Number.isNaN(parsed.getTime()))return parsed;
+  }
+  const fallback=new Date(receivedAt);
+  return Number.isNaN(fallback.getTime())?new Date():fallback;
+}
+
 function caseIdentifier(message,receivedAt){
   const messageId=header(message,'message-id').toLowerCase();
   const stableSeed=messageId
     ? [messageId,clean(message?.to,320).toLowerCase()].join('|')
     : [clean(message?.from,320).toLowerCase(),clean(message?.to,320).toLowerCase(),header(message,'subject'),receivedAt.slice(0,16)].join('|');
-  return`GNK-ASG-${datePart(new Date(receivedAt))}-${hash(stableSeed)}`;
+  const identifierDate=messageId?stableMessageDate(message,receivedAt):stableMessageDate(null,receivedAt);
+  return`GNK-ASG-${datePart(identifierDate)}-${hash(stableSeed)}`;
 }
 
 async function readJson(kv,key,fallback){
