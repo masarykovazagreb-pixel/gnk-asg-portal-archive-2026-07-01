@@ -1,7 +1,7 @@
 import {prepareAccessCode,activateAccessCode,failAccessCode,VERSION as CODE_STORE_VERSION} from './media-access-code-store-v1.js';
 import {mediaAccessDeliveryText,VERSION as ACCESS_TEXT_VERSION} from './media-access-delivery-text-v1.js';
 
-export const VERSION='GNK_ASG_MEDIA_OUTREACH_ACCESS_DISPATCH_V1_20260628';
+export const VERSION='GNK_ASG_MEDIA_OUTREACH_ACCESS_DISPATCH_V1_1_ATOMIC_CLAIM_20260628';
 const TEST_GATE_KEY='media-command-center:delivery-test:v1';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
 const MAX_PDF_BYTES=4*1024*1024;
@@ -85,7 +85,8 @@ export async function processAccessDeliveryQueue(env){
   const db=await ensureQueueSchema(env),row=await db.prepare(`SELECT * FROM media_delivery_queue WHERE status IN ('QUEUED','RETRY') AND attempts<3 ORDER BY queued_at LIMIT 1`).first();
   if(!row)return{ok:true,skipped:'queue_empty',version:VERSION};
   if(row.pdf_sha256!==pdf.sha256)return{ok:false,skipped:'pdf_mismatch',mailCode:row.mail_code};
-  await db.prepare(`UPDATE media_delivery_queue SET status='SENDING',attempts=attempts+1,updated_at=? WHERE id=?`).bind(now(),row.id).run();
+  const claim=await db.prepare(`UPDATE media_delivery_queue SET status='SENDING',attempts=attempts+1,updated_at=? WHERE id=? AND status IN ('QUEUED','RETRY') AND attempts<3`).bind(now(),row.id).run();
+  if(Number(claim.meta?.changes||0)!==1)return{ok:true,skipped:'queue_claim_lost',mailCode:row.mail_code,version:VERSION};
   let prepared=null,delivery=null;
   try{
     prepared=await prepareAccessCode(env,{mailCode:row.mail_code,email:row.email,queueId:row.id,pdfSha256:row.pdf_sha256});
