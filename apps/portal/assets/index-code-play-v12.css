@@ -68,6 +68,22 @@ html body .code-stage--inline .ci-controls .ci-control--play:focus-visible{
   outline:none!important;
 }
 
+/* Light GNK DINAMO finance card: all figures must be clearly dark and readable. */
+html body .finance-grid .finance-card:nth-child(2) .metric strong,
+html body .finance-grid .finance-card:nth-child(2) .metric b,
+html body .finance-grid .finance-card:nth-child(2) [data-value]{
+  color:#15120e!important;
+  -webkit-text-fill-color:#15120e!important;
+  opacity:1!important;
+  text-shadow:none!important;
+  filter:none!important;
+}
+html body .finance-grid .finance-card:nth-child(2) .metric small{
+  color:#5f574d!important;
+  -webkit-text-fill-color:#5f574d!important;
+  opacity:1!important;
+}
+
 @media(max-width:980px){
   .code-stage--inline .ci-app{
     min-height:760px!important;
