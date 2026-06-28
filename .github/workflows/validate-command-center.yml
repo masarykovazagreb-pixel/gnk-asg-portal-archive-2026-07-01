@@ -33,7 +33,8 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate protected media workflow
+
+      - name: JavaScript and required assets
         shell: bash
         run: |
           set -euxo pipefail
@@ -50,28 +51,49 @@ jobs:
           test -s apps/portal/media-command-center/index.html
           test -s apps/portal/media-application/index.html
           test -s apps/portal/media-access/index.html
+
+      - name: Media dataset 112 42 22
+        shell: bash
+        run: |
+          set -euxo pipefail
           node <<'JS'
           const fs=require('node:fs');
           const contacts=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
           const emailCount=contacts.filter(item=>String(item.email||'').trim()).length;
           const automationCount=contacts.filter(item=>item.automationAllowed===true).length;
+          console.log(JSON.stringify({contacts:contacts.length,emailCount,automationCount}));
           if(contacts.length!==112)throw new Error(`contacts=${contacts.length}, expected=112`);
           if(emailCount!==42)throw new Error(`emails=${emailCount}, expected=42`);
           if(automationCount!==22)throw new Error(`automation=${automationCount}, expected=22`);
           const codes=contacts.map(item=>String(item.mailCode||''));
           if(new Set(codes).size!==112)throw new Error('mail codes are not unique');
           for(const code of codes)if(!/^GNK-MEDIA-\d{8}-[A-Z]{2}-[A-Z0-9]{1,8}-\d{3}$/.test(code))throw new Error(`invalid code: ${code}`);
+          JS
+
+      - name: Admin order and primary card
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node <<'JS'
+          const fs=require('node:fs');
           const admin=fs.readFileSync('apps/portal/assets/admin-center-v2.js','utf8');
           const order=["label:'Komandni centar'","label:'Operator'","label:'Mail Studio'","label:'Auto Editor'"];
           let cursor=-1;
           for(const item of order){const next=admin.indexOf(item);if(next<=cursor)throw new Error(`bad Admin order: ${item}`);cursor=next;}
           if(!admin.includes("const PRIORITIES = ['media','operator','mail']"))throw new Error('bad Admin priorities');
-          console.log(JSON.stringify({contacts:contacts.length,emailCount,automationCount,adminOrder:order}));
+          console.log(JSON.stringify({adminOrder:order,priorities:['media','operator','mail']}));
           JS
+
+      - name: Locked sending and human decision markers
+        shell: bash
+        run: |
+          set -euxo pipefail
           grep -q "production_sending_locked" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           grep -q "mediaCommandSending:'LOCKED'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           grep -q "UNVERIFIED_EXTERNAL_CONFIGURATION" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "AUTO_ISSUE_AND_EMAIL_ON_APPROVAL" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "HUMAN_ONLY" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Wrangler dry run
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
