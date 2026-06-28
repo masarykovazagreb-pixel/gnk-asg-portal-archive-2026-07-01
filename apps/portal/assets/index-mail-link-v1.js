@@ -15,8 +15,8 @@
     document.querySelectorAll(MARKET_SELECTOR).forEach(link=>link.remove());
     if(!menu)return;
 
-    const downloadHref='/downloads/';
-    const downloadLabel=en?'Download Centre':'Download centar';
+    const downloadHref=en?'/en/downloads/':'/downloads/';
+    const downloadLabel=en?'PDF CENTRE':'PDF CENTAR';
     let download=[...menu.querySelectorAll('a')].find(link=>
       link.getAttribute('href')==='/downloads/' ||
       link.getAttribute('href')==='/en/downloads/' ||
@@ -37,7 +37,7 @@
       /^(admin|mail studio)$/i.test(link.textContent.trim())
     );
     if(admin){
-      admin.href='/mail-studio/';
+      admin.href='/admin-center/';
       admin.rel='nofollow';
       admin.textContent='ADMIN';
     }
