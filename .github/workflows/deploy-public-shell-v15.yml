@@ -1,40 +1,21 @@
-name: Deploy Canonical Public Navigation V20
-# Emergency production redeploy after stable INDEX rollback — 2026-06-28.
+name: Deploy Stable INDEX Rollback 20260628
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-public-shell-v15.yml'
-      - 'apps/portal/assets/public-menu-v10.css'
-      - 'apps/portal/assets/public-menu-v10.js'
-      - 'apps/portal/assets/public-shell-v15.js'
-      - 'apps/portal/assets/public-docs-v20.css'
-      - 'apps/portal/assets/markets-v11.css'
-      - 'apps/portal/assets/markets-v11.js'
-      - 'workers/gnk-asg-direct-operator/wrangler.toml'
-      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js'
-      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
   push:
     branches: [main]
     paths:
       - '.github/workflows/deploy-public-shell-v15.yml'
-      - 'apps/portal/assets/public-menu-v10.css'
-      - 'apps/portal/assets/public-menu-v10.js'
-      - 'apps/portal/assets/public-shell-v15.js'
-      - 'apps/portal/assets/public-docs-v20.css'
-      - 'apps/portal/assets/markets-v11.css'
-      - 'apps/portal/assets/markets-v11.js'
-      - 'workers/gnk-asg-direct-operator/wrangler.toml'
-      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js'
-      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js'
+      - 'apps/portal/assets/index-priority-v1.js'
+      - 'apps/portal/assets/index-city-white-v1.css'
+      - 'apps/portal/downloads/index.html'
+      - 'workers/gnk-asg-direct-operator/**'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-canonical-navigation-v20
+  group: gnk-asg-index-emergency-rollback-20260628
   cancel-in-progress: true
 
 jobs:
@@ -45,35 +26,22 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate canonical navigation and public layouts
+      - name: Validate stable INDEX rollback
         shell: bash
         run: |
           set -euxo pipefail
-          node --check apps/portal/assets/public-shell-v15.js
-          node --check apps/portal/assets/public-menu-v10.js
-          node --check apps/portal/assets/markets-v11.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          test -s apps/portal/assets/public-menu-v10.css
-          test -s apps/portal/assets/public-docs-v20.css
-          test -s apps/portal/assets/markets-v11.css
-          grep -q 'GNK_ASG_PUBLIC_SHELL_V20_20260627' apps/portal/assets/public-shell-v15.js
-          grep -q 'PDF centar' apps/portal/assets/public-shell-v15.js
-          grep -q 'Auto Editor' apps/portal/assets/public-shell-v15.js
-          grep -q "'/legal/'" apps/portal/assets/public-shell-v15.js
-          ! grep -q "t.gallery" apps/portal/assets/public-shell-v15.js
-          ! grep -q "labels.gallery" apps/portal/assets/public-menu-v10.js
-          grep -q 'GNK_ASG_ADMIN_HUB_V26_PUBLIC_SHELL_V20_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
-          grep -q 'GNK_ASG_PUBLIC_V20_CANONICAL_NAVIGATION_20260627' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          grep -q 'CANONICAL_NAVIGATION_V20' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          grep -q 'x-gnk-asg-gallery-primary-menu' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          grep -q 'public-docs-v20.css' workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          grep -q "'/legal','/legal/index.html'" workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
+          node --check apps/portal/assets/index-priority-v1.js
+          test -s apps/portal/assets/index-city-white-v1.css
+          test -s apps/portal/downloads/index.html
+          grep -q '__GNK_INDEX_PRIORITY_V4__' apps/portal/assets/index-priority-v1.js
+          grep -q 'index-city-white-v1.css?v=20260628-v2' apps/portal/assets/index-priority-v1.js
+          grep -q 'location-directory' apps/portal/assets/index-city-white-v1.css
+          grep -q 'gnk-downloads-clean-page' apps/portal/downloads/index.html
+          test ! -e apps/portal/assets/index-city-directory-v2.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
   deploy:
-    if: github.event_name != 'pull_request'
     needs: validate
     runs-on: ubuntu-latest
     steps:
@@ -81,41 +49,41 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Deploy current Worker and canonical V20 navigation
+      - name: Deploy stable INDEX rollback to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify canonical menu, Markets, PDF Centre and Legal
+      - name: Verify production INDEX and Downloads
         shell: bash
         run: |
           set -euo pipefail
           node <<'JS'
           const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
           const base='https://gnk-asg.hr';
+          const read=async(path,nonce)=>{
+            try{
+              const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${nonce}`,{headers:{'cache-control':'no-cache','pragma':'no-cache'}});
+              return {status:response.status,text:await response.text()};
+            }catch(error){return {status:0,text:''};}
+          };
           for(let attempt=1;attempt<=30;attempt++){
             const nonce=`${Date.now()}-${attempt}`;
-            const failures=[];
-            const read=async path=>{
-              try{
-                const response=await fetch(`${base}${path}${path.includes('?')?'&':'?'}cb=${nonce}`,{headers:{'cache-control':'no-cache','pragma':'no-cache'}});
-                return {response,text:await response.text()};
-              }catch(error){return {response:{status:0,headers:new Headers()},text:''}}
-            };
-            const [hr,en,publications,markets,downloads,legal,shell]=await Promise.all([
-              read('/'),read('/en/'),read('/publications/'),read('/trzista/'),read('/downloads/'),read('/legal/'),read('/assets/public-shell-v15.js')
+            const [home,en,priority,cityCss,downloads]=await Promise.all([
+              read('/',nonce),
+              read('/en/',nonce),
+              read('/assets/index-priority-v1.js',nonce),
+              read('/assets/index-city-white-v1.css',nonce),
+              read('/downloads/',nonce)
             ]);
-            const requiredHr=['Auto Editor','PDF centar','Legal','Admin','Kontakt'];
-            const requiredEn=['Auto Editor','PDF Centre','Legal','Admin','Contact'];
-            if(hr.response.status!==200||requiredHr.some(value=>!hr.text.includes(value))||hr.text.includes('/visual-index/'))failures.push(`hr-index:${hr.response.status}`);
-            if(en.response.status!==200||requiredEn.some(value=>!en.text.includes(value))||en.text.includes('/visual-index/'))failures.push(`en-index:${en.response.status}`);
-            if(publications.response.status!==200||!publications.text.includes('public-shell-v15.js?v=20260627-v20'))failures.push(`publications:${publications.response.status}`);
-            if(markets.response.status!==200||!markets.text.includes('markets-v11.css'))failures.push(`markets:${markets.response.status}`);
-            if(downloads.response.status!==200||!downloads.text.includes('public-docs-v20.css'))failures.push(`downloads:${downloads.response.status}`);
-            if(legal.response.status!==200||!legal.text.includes('public-docs-v20.css'))failures.push(`legal:${legal.response.status}`);
-            if(!shell.text.includes('GNK_ASG_PUBLIC_SHELL_V20_20260627')||shell.text.includes("gallery:'Gallery'"))failures.push('shell-asset');
-            console.log(JSON.stringify({attempt,failures,hrMenu:hr.response.headers.get('x-gnk-asg-index-menu'),docs:downloads.response.headers.get('x-gnk-asg-docs-layout')}));
+            const failures=[];
+            if(home.status!==200)failures.push(`home:${home.status}`);
+            if(en.status!==200)failures.push(`en:${en.status}`);
+            if(priority.status!==200||!priority.text.includes('__GNK_INDEX_PRIORITY_V4__')||priority.text.includes('index-city-directory-v2.js'))failures.push(`priority:${priority.status}`);
+            if(cityCss.status!==200||!cityCss.text.includes('location-directory'))failures.push(`city-css:${cityCss.status}`);
+            if(downloads.status!==200||!downloads.text.includes('gnk-downloads-clean-page'))failures.push(`downloads:${downloads.status}`);
+            console.log(JSON.stringify({attempt,failures}));
             if(!failures.length)process.exit(0);
             await sleep(10000);
           }
