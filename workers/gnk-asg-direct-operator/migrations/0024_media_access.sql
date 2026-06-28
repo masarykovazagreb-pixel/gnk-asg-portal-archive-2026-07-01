@@ -1,3 +1,6 @@
+-- Compatibility copy of media-access-v1.sql.
+-- Defines the same non-destructive tables so repeated migration runners stay idempotent.
+
 CREATE TABLE IF NOT EXISTS media_access_codes (
   id TEXT PRIMARY KEY,
   mail_code TEXT NOT NULL,
@@ -8,28 +11,29 @@ CREATE TABLE IF NOT EXISTS media_access_codes (
   used_at TEXT,
   attempts INTEGER NOT NULL DEFAULT 0,
   sent_at TEXT,
+  revoked_at TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_media_access_codes_lookup
-  ON media_access_codes (mail_code, email, status, expires_at);
+CREATE INDEX IF NOT EXISTS idx_media_access_code_lookup
+  ON media_access_codes(mail_code,email,status,expires_at);
 
 CREATE TABLE IF NOT EXISTS media_access_sessions (
   id TEXT PRIMARY KEY,
   mail_code TEXT NOT NULL,
   email TEXT NOT NULL,
-  session_hash TEXT NOT NULL UNIQUE,
+  session_hash TEXT UNIQUE NOT NULL,
   expires_at TEXT NOT NULL,
   created_at TEXT NOT NULL,
   last_seen_at TEXT NOT NULL,
-  ended_at TEXT
+  revoked_at TEXT
 );
 
-CREATE INDEX IF NOT EXISTS idx_media_access_sessions_lookup
-  ON media_access_sessions (session_hash, expires_at);
+CREATE INDEX IF NOT EXISTS idx_media_access_session_lookup
+  ON media_access_sessions(session_hash,expires_at);
 
-CREATE TABLE IF NOT EXISTS media_access_events (
+CREATE TABLE IF NOT EXISTS media_access_audit (
   id TEXT PRIMARY KEY,
   event_type TEXT NOT NULL,
   mail_code TEXT,
@@ -38,5 +42,5 @@ CREATE TABLE IF NOT EXISTS media_access_events (
   created_at TEXT NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_media_access_events_mail_code
-  ON media_access_events (mail_code, created_at);
+CREATE INDEX IF NOT EXISTS idx_media_access_audit_created
+  ON media_access_audit(created_at,event_type);
