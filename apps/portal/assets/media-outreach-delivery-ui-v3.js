@@ -47,7 +47,7 @@
     updateTestButton();
   }
   function updateTestButton(){const button=$('deliveryTestSend'),recipient=$('deliveryTestRecipient'),confirm=$('deliveryTestConfirm');if(button)button.disabled=!(state.status?.pdf?.ok&&state.status?.testLive&&recipient?.value.trim()&&confirm?.checked);}
-  async function loadStatus(){try{state.status=await api('/delivery-status');render();return state.status;}catch(error){notice(`Delivery status: ${error.message}`,true);throw error;}}
+  async function loadStatus(){try{state.status=await api('/delivery-status');render();notice('Media Sender status je osvježen.');return state.status;}catch(error){notice(`Delivery status: ${error.message}`,true);throw error;}}
   async function uploadPdf(){
     const file=state.pdfFile;if(!file)return;
     try{
@@ -61,7 +61,7 @@
       const recipient=$('deliveryTestRecipient').value.trim();
       notice('Slanje interne testne poruke s PDF-om…');
       const result=await api('/test-email',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({recipient,confirm:'SEND_TEST_EMAIL'})});
-      $('deliveryTestState').textContent=JSON.stringify(result,null,2);notice('Interni test je poslan. Provjeri Inbox, PDF i zaglavlja.');await loadStatus();
+      $('deliveryTestState').textContent=JSON.stringify(result,null,2);notice('Interni test je stvarno poslan. Provjeri Inbox, PDF i zaglavlja.');await loadStatus();
     }catch(error){$('deliveryTestState').textContent=JSON.stringify(error.payload||{ok:false,error:error.message},null,2);notice(error.message,true);}
   }
   async function loadPlan(){
@@ -78,19 +78,44 @@
   async function dispatchOne(){
     try{
       const result=await api('/dispatch-queue',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({confirm:'DISPATCH_ONE_QUEUED_EMAIL'})});
-      $('deliveryQueueState').textContent=JSON.stringify(result,null,2);notice(result.sent?'Jedna poruka je poslana iz reda.':'Red nije poslao poruku; provjeri status.');await loadStatus();
+      $('deliveryQueueState').textContent=JSON.stringify(result,null,2);
+      if(result.sent)notice(`Jedna poruka je stvarno poslana: ${result.sent.email||result.sent.mailCode||''}`);
+      else notice(`Poruka nije poslana: ${result.skipped||result.error||'provjeri status'}`,true);
+      await loadStatus();
     }catch(error){$('deliveryQueueState').textContent=JSON.stringify(error.payload||{ok:false,error:error.message},null,2);notice(error.message,true);}
+  }
+  function actionState(button,state,label){
+    if(!button)return;
+    if(!button.dataset.idleLabel)button.dataset.idleLabel=button.textContent.trim();
+    button.classList.remove('media-is-busy','media-is-ok','media-is-error');
+    if(state)button.classList.add(`media-is-${state}`);
+    button.textContent=label||button.dataset.idleLabel;
+  }
+  function bindAction(id,handler,activeLabel){
+    const button=$(id);if(!button||button.dataset.mediaActionBound==='1')return;
+    button.dataset.mediaActionBound='1';
+    button.addEventListener('pointerdown',()=>button.classList.add('media-is-pressed'));
+    const release=()=>setTimeout(()=>button.classList.remove('media-is-pressed'),120);
+    button.addEventListener('pointerup',release);button.addEventListener('pointercancel',release);button.addEventListener('pointerleave',release);
+    button.addEventListener('click',async event=>{
+      event.preventDefault();
+      if(button.disabled)return;
+      button.disabled=true;actionState(button,'busy',activeLabel);
+      try{await handler();const failed=$('systemNotice')?.classList.contains('error');actionState(button,failed?'error':'ok',failed?'Greška':'✓ Gotovo');}
+      catch{actionState(button,'error','Greška');}
+      finally{setTimeout(()=>{actionState(button,'');if(id==='deliveryTestSend')updateTestButton();else if(id==='deliveryPdfUpload')button.disabled=!state.pdfFile;else button.disabled=false;render();},1100);}
+    });
   }
   function bind(){
     $('deliveryPdfFile')?.addEventListener('change',event=>{state.pdfFile=event.target.files?.[0]||null;$('deliveryPdfUpload').disabled=!state.pdfFile;if(state.pdfFile)$('deliveryPdfState').textContent=`${state.pdfFile.name}\n${state.pdfFile.size} bytes\nČeka upload i serverski SHA-256.`;});
-    $('deliveryPdfUpload')?.addEventListener('click',uploadPdf);
     $('deliveryTestRecipient')?.addEventListener('input',updateTestButton);
     $('deliveryTestConfirm')?.addEventListener('change',updateTestButton);
-    $('deliveryTestSend')?.addEventListener('click',sendTest);
-    $('deliveryPlanLoad')?.addEventListener('click',loadPlan);
-    $('deliveryQueueApproved')?.addEventListener('click',queueApproved);
-    $('deliveryDispatchOne')?.addEventListener('click',dispatchOne);
-    $('deliveryReload')?.addEventListener('click',loadStatus);
+    bindAction('deliveryPdfUpload',uploadPdf,'Učitavanje…');
+    bindAction('deliveryTestSend',sendTest,'Slanje testa…');
+    bindAction('deliveryPlanLoad',loadPlan,'Izračun…');
+    bindAction('deliveryQueueApproved',queueApproved,'Dodavanje…');
+    bindAction('deliveryDispatchOne',dispatchOne,'Slanje…');
+    bindAction('deliveryReload',loadStatus,'Osvježavanje…');
   }
   async function boot(){ensureUi();bind();await loadStatus().catch(()=>{});}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
