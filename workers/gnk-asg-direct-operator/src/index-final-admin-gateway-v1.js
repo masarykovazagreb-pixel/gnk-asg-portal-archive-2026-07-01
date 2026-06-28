@@ -2,7 +2,7 @@
 import app from './index-unified-auth-v15-final.js';
 import indexApp from './index-portal-final-v13.js';
 
-export const VERSION='GNK_ASG_FINAL_GATEWAY_IQ200_PDF_ADMIN_AUTH_V15_20260628_R4';
+export const VERSION='GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_AUTH_V15_20260628_R4_PDF_ADMIN';
 const INDEX_PATHS=new Set(['/','/en']);
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const isHtml=response=>String(response.headers.get('content-type')||'').toLowerCase().includes('text/html');
