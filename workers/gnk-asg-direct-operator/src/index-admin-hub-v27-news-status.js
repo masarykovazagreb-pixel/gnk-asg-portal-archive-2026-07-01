@@ -1,9 +1,9 @@
 import app from './index-admin-hub-v26-clean-index.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260627_R8_DIRECT_LOCKED_INDEX';
+export const VERSION='GNK_ASG_ADMIN_HUB_V27_NEWS_STATUS_20260627_R9_DIRECT_LOCKED_INDEX';
 const ENTRYPOINT='src/index-admin-hub-v27-news-status.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v26-clean-index.js';
-const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626';
+const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627';
 const STATUS_PATHS=new Set(['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json']);
 const INDEX_PATHS=new Set(['/','/en']);
 const ADMIN_MODULES=new Set(['/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/auto-editor','/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/media-command-center','/memorandum-studio']);
