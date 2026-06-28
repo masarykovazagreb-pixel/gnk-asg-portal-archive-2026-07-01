@@ -1,4 +1,4 @@
-name: Deploy Unified Public and Admin Menus V16
+name: Deploy Unified Public and Admin Menus V17
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: gnk-asg-unified-menu-v16-production
+  group: gnk-asg-unified-menu-v17-production
   cancel-in-progress: false
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate unified menu assets and worker
+      - name: Validate identical HR and EN public navigation
         shell: bash
         run: |
           set -euxo pipefail
@@ -35,7 +35,9 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-project50-v30-unified-menu.js
           node --test workers/gnk-asg-direct-operator/tests/public-menu-parity.test.mjs
           grep -q 'main = "src/index-project50-v30-unified-menu.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628' apps/portal/assets/public-shell-v15.js
+          grep -q 'GNK_ASG_PUBLIC_SHELL_V17_CORE_NAVIGATION_20260628' apps/portal/assets/public-shell-v15.js
+          grep -q 'GNK_ASG_PUBLIC_MENU_V17_CORE_20260628' apps/portal/assets/public-menu-v10.js
+          grep -q 'GNK_ASG_INDEX_MENU_V17_CORE_PARITY_20260628' apps/portal/assets/index-menu-unified-v16.js
           grep -q 'GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628' apps/portal/assets/admin-center-extensions-v2.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
@@ -45,14 +47,14 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify production menus without sending mail or media invitations
+      - name: Verify production without sending mail or media invitations
         shell: bash
         run: |
           set -euo pipefail
           node <<'JS'
           const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
           const base='https://gnk-asg.hr';
-          const paths=['/','/en/','/vijesti/','/publications/','/admin-center/','/assets/public-shell-v15.js','/assets/public-menu-v10.css','/assets/admin-center-extensions-v2.js','/data/portal-version.json'];
+          const paths=['/','/en/','/vijesti/','/publications/','/admin-center/','/assets/public-shell-v15.js','/assets/public-menu-v10.js','/assets/index-menu-unified-v16.js','/assets/admin-center-extensions-v2.js','/data/portal-version.json'];
           const requiredHr=['#the-code','#financije','#mreza','/trzista/','/contact/','/admin-center/','/en/'];
           const requiredEn=['#the-code','#financials','#network','/markets/','/en/contact/','/admin-center/','/'];
           const forbiddenIndex=['/vijesti/','/news/','/objave/','/publications/','/visual-index/','/assistant/','/en/assistant/'];
@@ -67,16 +69,18 @@ jobs:
             }
             const failures=[];
             const hr=results['/'],en=results['/en/'],news=results['/vijesti/'],publications=results['/publications/'],admin=results['/admin-center/'];
-            if(hr.status!==200||!hr.text.includes('public-menu-v10.css?v=20260628-v16')||!hr.text.includes('index-menu-unified-v16.js')||requiredHr.some(item=>!hr.text.includes(item))||forbiddenIndex.some(item=>hr.text.includes(`href="${item}`)))failures.push('hr-index');
-            if(en.status!==200||requiredEn.some(item=>!en.text.includes(item))||forbiddenIndex.some(item=>en.text.includes(`href="${item}`)))failures.push('en-index');
-            if(news.status!==200||!news.text.includes('public-shell-v15.js?v=20260628-v16'))failures.push('news');
-            if(publications.status!==200||!publications.text.includes('public-shell-v15.js?v=20260628-v16'))failures.push('publications');
+            if(hr.status!==200||!hr.text.includes('index-menu-unified-v16.js?v=20260628-v17')||requiredHr.some(item=>!hr.text.includes(item))||forbiddenIndex.some(item=>hr.text.includes(`href="${item}`)))failures.push('hr-index');
+            if(en.status!==200||!en.text.includes('index-menu-unified-v16.js?v=20260628-v17')||requiredEn.some(item=>!en.text.includes(item))||forbiddenIndex.some(item=>en.text.includes(`href="${item}`)))failures.push('en-index');
+            if(hr.headers['x-gnk-asg-design-parity']!=='HR_EN_IDENTICAL'||en.headers['x-gnk-asg-design-parity']!=='HR_EN_IDENTICAL')failures.push('design-parity');
+            if(news.status!==200||!news.text.includes('public-shell-v15.js?v=20260628-v17'))failures.push('news');
+            if(publications.status!==200||!publications.text.includes('public-shell-v15.js?v=20260628-v17'))failures.push('publications');
             if(admin.status!==200||!admin.text.includes('admin-center-extensions-v2.js'))failures.push('admin-center');
-            if(!results['/assets/public-shell-v15.js'].text.includes('GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628'))failures.push('shell-asset');
-            if(!results['/assets/public-menu-v10.css'].text.includes('unified public navigation V16'))failures.push('menu-css');
+            if(!results['/assets/public-shell-v15.js'].text.includes('GNK_ASG_PUBLIC_SHELL_V17_CORE_NAVIGATION_20260628'))failures.push('shell-asset');
+            if(!results['/assets/public-menu-v10.js'].text.includes('GNK_ASG_PUBLIC_MENU_V17_CORE_20260628'))failures.push('menu-asset');
+            if(!results['/assets/index-menu-unified-v16.js'].text.includes('GNK_ASG_INDEX_MENU_V17_CORE_PARITY_20260628'))failures.push('index-menu-asset');
             if(!results['/assets/admin-center-extensions-v2.js'].text.includes('GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628'))failures.push('admin-extension');
             if(!results['/data/portal-version.json'].text.includes('GNK_ASG_PROJECT50_V31_PUBLIC_CORE_MENU_20260628'))failures.push('status');
-            console.log(JSON.stringify({attempt,failures,menuHeader:hr.headers['x-gnk-asg-menu-release']||'',adminHeader:admin.headers['x-gnk-asg-admin-menu']||''}));
+            console.log(JSON.stringify({attempt,failures,menuHeader:hr.headers['x-gnk-asg-menu-release']||'',parity:hr.headers['x-gnk-asg-design-parity']||'',adminHeader:admin.headers['x-gnk-asg-admin-menu']||''}));
             if(!failures.length)process.exit(0);
             await sleep(10000);
           }
@@ -93,5 +97,5 @@ jobs:
               const current=await github.rest.repos.getContent({owner:context.repo.owner,repo:context.repo.repo,path,ref:branch});
               if(!Array.isArray(current.data))sha=current.data.sha;
             } catch(error) { if(error.status!==404)throw error; }
-            const payload={ok:true,release:'GNK_ASG_PROJECT50_V31_PUBLIC_CORE_MENU_20260628',workflowRunId:context.runId,sourceCommit:context.sha,branch,deployedAt:new Date().toISOString(),mailSent:false,mediaInvitationsSent:false};
-            await github.rest.repos.createOrUpdateFileContents({owner:context.repo.owner,repo:context.repo.repo,path,branch,sha,message:'Record successful V31 core menu deployment [skip ci]',content:Buffer.from(JSON.stringify(payload,null,2)+'\n').toString('base64')});
+            const payload={ok:true,release:'GNK_ASG_PROJECT50_V31_PUBLIC_CORE_MENU_20260628',navigation:'seven-items',designParity:'HR_EN_IDENTICAL',workflowRunId:context.runId,sourceCommit:context.sha,branch,deployedAt:new Date().toISOString(),mailSent:false,mediaInvitationsSent:false};
+            await github.rest.repos.createOrUpdateFileContents({owner:context.repo.owner,repo:context.repo.repo,path,branch,sha,message:'Record successful V17 parity deployment [skip ci]',content:Buffer.from(JSON.stringify(payload,null,2)+'\n').toString('base64')});
