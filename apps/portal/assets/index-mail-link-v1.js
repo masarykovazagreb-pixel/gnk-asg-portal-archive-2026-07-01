@@ -1,0 +1,1 @@
+(()=>{const apply=()=>{const links=document.querySelectorAll('.index-nav .menu a');const target=links[links.length-2];if(target){target.href='/mail-studio/';target.rel='nofollow';}};apply();document.addEventListener('DOMContentLoaded',apply,{once:true});setTimeout(apply,100);})();
