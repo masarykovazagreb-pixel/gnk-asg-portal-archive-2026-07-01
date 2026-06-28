@@ -1,0 +1,58 @@
+name: Deploy Final INDEX Admin Gateway
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-final-admin-gateway.yml'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
+  workflow_dispatch:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-final-index-admin-gateway
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name != 'issue_comment' ||
+      (github.event.issue.number == 65 && github.event.comment.body == '/deploy-final-admin-gateway')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate gateway
+        run: node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+      - name: Deploy gateway
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify public flow
+        run: |
+          set -euo pipefail
+          CB="${GITHUB_RUN_ID}"
+          for attempt in 1 2 3 4 5 6 7 8; do
+            curl -sS -D /tmp/index.headers "https://gnk-asg.hr/?cb=${CB}-${attempt}" -o /tmp/index.html || true
+            curl -sS -D /tmp/admin.headers "https://gnk-asg.hr/admin-center/?cb=${CB}-${attempt}" -o /tmp/admin.html || true
+            curl -sS -D /tmp/pdf.headers "https://gnk-asg.hr/downloads/?cb=${CB}-${attempt}" -o /tmp/pdf.html || true
+            if grep -qi '^x-gnk-asg-final-admin-gateway:' /tmp/index.headers \
+              && grep -q 'href="/downloads/"[^>]*>PDF CENTAR<' /tmp/index.html \
+              && grep -q 'href="/admin-center/"[^>]*>ADMIN<' /tmp/index.html \
+              && grep -qi 'operatorski token' /tmp/admin.html \
+              && grep -qi 'content-type: text/html' /tmp/pdf.headers; then
+              echo 'FINAL_INDEX_ADMIN_GATEWAY_OK=true'
+              exit 0
+            fi
+            sleep 8
+          done
+          exit 1
