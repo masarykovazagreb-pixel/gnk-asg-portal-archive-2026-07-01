@@ -1,4 +1,4 @@
-name: Deploy Unified Public and Admin Menus V17
+name: Deploy Public Core and Mail Inbox V18
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: gnk-asg-unified-menu-v17-production
+  group: gnk-asg-public-mail-v18-production
   cancel-in-progress: false
 
 jobs:
@@ -24,21 +24,26 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate identical HR and EN public navigation
+      - name: Validate public parity and connected Inbox
         shell: bash
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/public-shell-v15.js
           node --check apps/portal/assets/public-menu-v10.js
           node --check apps/portal/assets/index-menu-unified-v16.js
-          node --check apps/portal/assets/admin-center-extensions-v2.js
+          node --check apps/portal/assets/contact-v13.js
+          node --check apps/portal/assets/contact-parity-v1.js
+          node --check apps/portal/assets/admin-center-mail-only-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-project50-v30-unified-menu.js
+          node --check workers/gnk-asg-direct-operator/src/mail-inbox-contact-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-project50-v31-mail-inbox.js
           node --test workers/gnk-asg-direct-operator/tests/public-menu-parity.test.mjs
-          grep -q 'main = "src/index-project50-v30-unified-menu.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          node --test workers/gnk-asg-direct-operator/tests/mail-inbox-contact.test.mjs
+          grep -q 'main = "src/index-project50-v31-mail-inbox.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'GNK_ASG_PUBLIC_SHELL_V17_CORE_NAVIGATION_20260628' apps/portal/assets/public-shell-v15.js
           grep -q 'GNK_ASG_PUBLIC_MENU_V17_CORE_20260628' apps/portal/assets/public-menu-v10.js
           grep -q 'GNK_ASG_INDEX_MENU_V17_CORE_PARITY_20260628' apps/portal/assets/index-menu-unified-v16.js
-          grep -q 'GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628' apps/portal/assets/admin-center-extensions-v2.js
+          grep -q 'GNK_ASG_ADMIN_MAIL_ONLY_V1_20260628' apps/portal/assets/admin-center-mail-only-v1.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
       - name: Deploy current branch Worker and assets
@@ -54,7 +59,7 @@ jobs:
           node <<'JS'
           const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
           const base='https://gnk-asg.hr';
-          const paths=['/','/en/','/vijesti/','/publications/','/admin-center/','/assets/public-shell-v15.js','/assets/public-menu-v10.js','/assets/index-menu-unified-v16.js','/assets/admin-center-extensions-v2.js','/data/portal-version.json'];
+          const paths=['/','/en/','/contact/','/en/contact/','/admin-center/','/assets/public-shell-v15.js','/assets/public-menu-v10.js','/assets/index-menu-unified-v16.js','/assets/admin-center-mail-only-v1.js','/data/portal-version.json'];
           const requiredHr=['#the-code','#financije','#mreza','/trzista/','/contact/','/admin-center/','/en/'];
           const requiredEn=['#the-code','#financials','#network','/markets/','/en/contact/','/admin-center/','/'];
           const forbiddenIndex=['/vijesti/','/news/','/objave/','/publications/','/visual-index/','/assistant/','/en/assistant/'];
@@ -68,19 +73,18 @@ jobs:
               }catch(error){results[path]={status:0,headers:{},text:'',error:String(error)}}
             }
             const failures=[];
-            const hr=results['/'],en=results['/en/'],news=results['/vijesti/'],publications=results['/publications/'],admin=results['/admin-center/'];
+            const hr=results['/'],en=results['/en/'],hrContact=results['/contact/'],enContact=results['/en/contact/'],admin=results['/admin-center/'],status=results['/data/portal-version.json'];
             if(hr.status!==200||!hr.text.includes('index-menu-unified-v16.js?v=20260628-v17')||requiredHr.some(item=>!hr.text.includes(item))||forbiddenIndex.some(item=>hr.text.includes(`href="${item}`)))failures.push('hr-index');
             if(en.status!==200||!en.text.includes('index-menu-unified-v16.js?v=20260628-v17')||requiredEn.some(item=>!en.text.includes(item))||forbiddenIndex.some(item=>en.text.includes(`href="${item}`)))failures.push('en-index');
             if(hr.headers['x-gnk-asg-design-parity']!=='HR_EN_IDENTICAL'||en.headers['x-gnk-asg-design-parity']!=='HR_EN_IDENTICAL')failures.push('design-parity');
-            if(news.status!==200||!news.text.includes('public-shell-v15.js?v=20260628-v17'))failures.push('news');
-            if(publications.status!==200||!publications.text.includes('public-shell-v15.js?v=20260628-v17'))failures.push('publications');
-            if(admin.status!==200||!admin.text.includes('admin-center-extensions-v2.js'))failures.push('admin-center');
+            if(hrContact.status!==200||enContact.status!==200||!hrContact.text.includes('/api/contact-submit')||!enContact.text.includes('/api/contact-submit'))failures.push('contact');
+            if(admin.status!==200||!admin.text.includes('admin-center-mail-only-v1.js'))failures.push('admin-mail-only');
             if(!results['/assets/public-shell-v15.js'].text.includes('GNK_ASG_PUBLIC_SHELL_V17_CORE_NAVIGATION_20260628'))failures.push('shell-asset');
             if(!results['/assets/public-menu-v10.js'].text.includes('GNK_ASG_PUBLIC_MENU_V17_CORE_20260628'))failures.push('menu-asset');
             if(!results['/assets/index-menu-unified-v16.js'].text.includes('GNK_ASG_INDEX_MENU_V17_CORE_PARITY_20260628'))failures.push('index-menu-asset');
-            if(!results['/assets/admin-center-extensions-v2.js'].text.includes('GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628'))failures.push('admin-extension');
-            if(!results['/data/portal-version.json'].text.includes('GNK_ASG_PROJECT50_V31_PUBLIC_CORE_MENU_20260628'))failures.push('status');
-            console.log(JSON.stringify({attempt,failures,menuHeader:hr.headers['x-gnk-asg-menu-release']||'',parity:hr.headers['x-gnk-asg-design-parity']||'',adminHeader:admin.headers['x-gnk-asg-admin-menu']||''}));
+            if(!results['/assets/admin-center-mail-only-v1.js'].text.includes('GNK_ASG_ADMIN_MAIL_ONLY_V1_20260628'))failures.push('admin-lock-asset');
+            if(!status.text.includes('src/index-project50-v31-mail-inbox.js')||!status.text.includes('GNK_ASG_MAIL_INBOX_CONTACT_V1_20260628')||!status.text.includes('"mailInboxConnected": true'))failures.push('mail-inbox-status');
+            console.log(JSON.stringify({attempt,failures,entry:status.headers['x-gnk-asg-entry-wrapper']||'',menu:hr.headers['x-gnk-asg-menu-release']||'',parity:hr.headers['x-gnk-asg-design-parity']||''}));
             if(!failures.length)process.exit(0);
             await sleep(10000);
           }
@@ -97,5 +101,5 @@ jobs:
               const current=await github.rest.repos.getContent({owner:context.repo.owner,repo:context.repo.repo,path,ref:branch});
               if(!Array.isArray(current.data))sha=current.data.sha;
             } catch(error) { if(error.status!==404)throw error; }
-            const payload={ok:true,release:'GNK_ASG_PROJECT50_V31_PUBLIC_CORE_MENU_20260628',navigation:'seven-items',designParity:'HR_EN_IDENTICAL',workflowRunId:context.runId,sourceCommit:context.sha,branch,deployedAt:new Date().toISOString(),mailSent:false,mediaInvitationsSent:false};
-            await github.rest.repos.createOrUpdateFileContents({owner:context.repo.owner,repo:context.repo.repo,path,branch,sha,message:'Record successful V17 parity deployment [skip ci]',content:Buffer.from(JSON.stringify(payload,null,2)+'\n').toString('base64')});
+            const payload={ok:true,release:'GNK_ASG_PROJECT50_V31_CONNECTED_MAIL_INBOX_20260628',navigation:'seven-items',designParity:'HR_EN_IDENTICAL',adminMode:'MAIL_ONLY',mailInbox:'CONTACT_FORM_KV',workflowRunId:context.runId,sourceCommit:context.sha,branch,deployedAt:new Date().toISOString(),mailSent:false,mediaInvitationsSent:false};
+            await github.rest.repos.createOrUpdateFileContents({owner:context.repo.owner,repo:context.repo.repo,path,branch,sha,message:'Record successful V18 public and Inbox deployment [skip ci]',content:Buffer.from(JSON.stringify(payload,null,2)+'\n').toString('base64')});
