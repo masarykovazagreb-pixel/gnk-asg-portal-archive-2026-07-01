@@ -1,7 +1,7 @@
 import app from './index-admin-hub-v27-news-status.js';
 import {applyMediaApplicationAccess,VERSION as MEDIA_ACCESS_VERSION} from './media-application-access-v1.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V28_PUBLIC_NEWS_NO_FALLBACK_MEDIA_ACCESS_20260628';
+export const VERSION='GNK_ASG_ADMIN_HUB_V28_DIRECT_INDEX_CONTACT_HOTFIX2_20260628';
 const ENTRYPOINT='src/index-admin-hub-v28-news-no-fallback.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v27-news-status.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627';
@@ -30,6 +30,7 @@ async function directHtml(request,env,path){
   const headers=htmlHeaders(new Headers(response.headers));
   headers.set('x-gnk-asg-active-entrypoint',ENTRYPOINT);
   headers.set('x-gnk-asg-static-source',assetPath);
+  headers.set('x-gnk-asg-hotfix-version',VERSION);
   if(path==='/'||path==='/en')headers.set('x-gnk-asg-index-menu','LOCKED_REDUCED_PUBLIC_MENU');
   if(path==='/contact'||path==='/en/contact')headers.set('x-gnk-asg-contact-ui','INDEX_ALIGNED_V5');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
@@ -40,10 +41,11 @@ async function patchStatus(response,path){
     const payload=await response.json();
     const headers=noStore(new Headers(response.headers));
     headers.set('x-gnk-asg-active-entrypoint',ENTRYPOINT);
+    headers.set('x-gnk-asg-hotfix-version',VERSION);
     headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);
     headers.set('x-gnk-asg-news-no-public-fallback','ENFORCED');
     headers.set('x-gnk-asg-media-access',MEDIA_ACCESS_VERSION);
-    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,newsRuntime:NEWS_RUNTIME,noPublicFallbackWrapper:VERSION,fallback_image:null,fallbackImage:null,openGraphFallbackEnabled:false,publicFallbackImage:null,mediaApplicationAccess:MEDIA_ACCESS_VERSION,mediaApprovalLoginCode:'AUTO_ISSUE_AND_EMAIL_ON_APPROVAL',mediaCommandSending:'LOCKED',mediaCommandMailbox:'media@gnk-asg.hr',mediaCommandDeadline:'2026-07-20T23:59:59+02:00',emailRoutingVerification:'UNVERIFIED_EXTERNAL_CONFIGURATION',mediaContactSeed:{total:112,recordedEmailAddresses:22,controlledAutomationContacts:22,handoffExpectedEmailAddresses:42,missingManualEmailAddresses:20,status:'INCOMPLETE_22_OF_42'},activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{...(payload.contentContract||{}),title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},checkedAt:new Date().toISOString()};
+    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,hotfixVersion:VERSION,newsRuntime:NEWS_RUNTIME,noPublicFallbackWrapper:VERSION,fallback_image:null,fallbackImage:null,openGraphFallbackEnabled:false,publicFallbackImage:null,mediaApplicationAccess:MEDIA_ACCESS_VERSION,mediaApprovalLoginCode:'AUTO_ISSUE_AND_EMAIL_ON_APPROVAL',mediaCommandSending:'LOCKED',mediaCommandMailbox:'media@gnk-asg.hr',mediaCommandDeadline:'2026-07-20T23:59:59+02:00',emailRoutingVerification:'UNVERIFIED_EXTERNAL_CONFIGURATION',mediaContactSeed:{total:112,recordedEmailAddresses:22,controlledAutomationContacts:22,handoffExpectedEmailAddresses:42,missingManualEmailAddresses:20,status:'INCOMPLETE_22_OF_42'},activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{...(payload.contentContract||{}),title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},checkedAt:new Date().toISOString()};
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response}
 }
