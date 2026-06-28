@@ -4,9 +4,9 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - ".github/workflows/diagnose-production-index.yml"
       - "apps/portal/**"
-      - "workers/gnk-asg-direct-operator/**"
+      - "scripts/validate-minimum-index-contact-admin.mjs"
+      - ".github/workflows/diagnose-production-index.yml"
 
 permissions:
   contents: read
@@ -14,89 +14,11 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Syntax checks
-        run: |
-          node --check apps/portal/assets/index-redesign-production.js
-          node --check apps/portal/assets/index-iq200.js
-          node --check apps/portal/assets/visual-quality-v2.js
-          node --check apps/portal/assets/document-center-v2.js
-          node --check apps/portal/assets/contact-quality-v2.js
-          node --check apps/portal/assets/backend-ui-shell.js
-          node --check apps/portal/assets/brand/gnk-asg-global-layer.js
-          node --check workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
-          node --check workers/gnk-asg-direct-operator/src/index-dark-market-recovery.js
-          node --check workers/gnk-asg-direct-operator/src/publication-quality-core-v6.js
-          node --check apps/portal/assets/public-site-unified-v6.js
-          node --check apps/portal/assets/public-data-stability-v1.js
-      - name: Required files
-        run: |
-          test -f apps/portal/assets/index-redesign-production.css
-          test -f apps/portal/assets/index-iq200.css
-          test -f apps/portal/assets/visual-quality-v2.css
-          test -f apps/portal/assets/visual-quality-v2.js
-          test -f apps/portal/assets/document-center-v2.js
-          test -f apps/portal/assets/contact-quality-v2.css
-          test -f apps/portal/assets/contact-quality-v2.js
-          test -f apps/portal/assets/backend-ui-shell.css
-          test -f apps/portal/assets/gnk-asg-ai-layer.css
-          test -f apps/portal/assets/brand/gnk-asg-global-layer.css
-          test -f apps/portal/assets/brand/gnk-asg-global-layer.js
-          test -f apps/portal/downloads/index.html
-          test -f apps/portal/en/downloads/index.html
-          test -f apps/portal/contact/index.html
-          test -f apps/portal/en/contact/index.html
-          test -f apps/portal/app/index.html
-          test -f apps/portal/operator-mobile/index.html
-          test -f apps/portal/status-automatizacije/index.html
-          test -f apps/portal/automation-status/index.html
-      - name: Index text markers
-        run: |
-          grep -q 'Korporativni portal GNK ASG' apps/portal/index.html
-          grep -q 'Corporate portal for GNK ASG' apps/portal/en/index.html
-          grep -q '33 postojeće' apps/portal/index.html
-          grep -q '12 pozicija' apps/portal/index.html
-          grep -q 'PDF i Download centar' apps/portal/index.html
-          grep -q 'Media Kit' apps/portal/index.html
-          grep -q '/operator-dashboard/' apps/portal/index.html
-          grep -q '/mail-studio/' apps/portal/index.html
-          grep -q '/contact/' apps/portal/index.html
-      - name: Contact and download markers
-        run: |
-          grep -q 'GNK_ASG_GNK_DINAMO_LTD_MEDIA_KIT_EN.pdf' apps/portal/downloads/index.html
-          grep -q 'GNK_ASG_GNK_DINAMO_Ltd_Media_Kit_2_HR.pdf' apps/portal/en/downloads/index.html
-          grep -q 'Contact and secure communication' apps/portal/en/contact/index.html
-      - name: Index API markers
-        run: |
-          grep -q '/api/market' apps/portal/assets/index-redesign-production.js
-          grep -q '/data/news.json' apps/portal/assets/index-redesign-production.js
-          grep -q '/data/group_network.json' apps/portal/assets/index-redesign-production.js
-          grep -q '/data/auto-editor.json' apps/portal/assets/index-redesign-production.js
-      - name: Harmonizer asset markers
-        run: |
-          grep -q 'visual-quality-v2.js' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
-          grep -q 'contact-quality-v2.js' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
-          grep -q 'BACKEND_ASSETS' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
-          grep -q 'CONTACT_ASSETS' workers/gnk-asg-direct-operator/src/index-ui-harmonizer.js
-      - name: Visual module markers
-        run: |
-          grep -q '__GNK_ASG_VISUAL_QUALITY_V2__' apps/portal/assets/visual-quality-v2.js
-          grep -q 'iq-globe-canvas' apps/portal/assets/visual-quality-v2.js
-          grep -q 'hero-network-canvas' apps/portal/assets/index-iq200.js
-      - name: Document contact and backend markers
-        run: |
-          grep -q '__GNK_ASG_DOCUMENT_CENTER_V2__' apps/portal/assets/document-center-v2.js
-          grep -q '__GNK_ASG_CONTACT_V2__' apps/portal/assets/contact-quality-v2.js
-          grep -q 'PDF / Media' apps/portal/assets/backend-ui-shell.js
-          grep -q 'gnk-backend-shell' apps/portal/assets/backend-ui-shell.js
-          grep -q 'backend-ui-shell.css' apps/portal/assets/gnk-asg-ai-layer.css
-      - name: Brand marker
-        run: grep -q '__GNK_ASG_PREMIUM_V3__' apps/portal/assets/brand/gnk-asg-global-layer.js
-      - name: Negative index markers
-        run: |
-          ! grep -q 'noindex,nofollow' apps/portal/index.html
-          ! grep -q 'Živa probna verzija' apps/portal/index.html
+      - name: Validate current Index Contact and Admin contract
+        run: node scripts/validate-minimum-index-contact-admin.mjs

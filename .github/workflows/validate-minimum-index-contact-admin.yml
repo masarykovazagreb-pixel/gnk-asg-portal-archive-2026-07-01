@@ -1,0 +1,29 @@
+name: Validate Minimum Index Contact Admin
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/assets/index-public-v7.js'
+      - 'apps/portal/contact/**'
+      - 'apps/portal/en/contact/**'
+      - 'apps/portal/assets/contact-quality-v2.css'
+      - 'apps/portal/assets/admin-command-center-primary-v1.js'
+      - 'apps/portal/assets/admin-minimum-priority-v1.js'
+      - 'scripts/validate-minimum-index-contact-admin.mjs'
+      - '.github/workflows/validate-minimum-index-contact-admin.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate minimum release
+        run: node scripts/validate-minimum-index-contact-admin.mjs
