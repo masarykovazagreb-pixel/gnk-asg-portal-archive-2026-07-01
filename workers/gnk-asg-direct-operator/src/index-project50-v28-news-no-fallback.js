@@ -1,8 +1,8 @@
-import app from './index-admin-hub-v26-clean-index-v21-preview.js';
+import app from './index-stable-iframe-v1.js';
 
-export const VERSION='GNK_ASG_PROJECT50_V28_PUBLIC_NEWS_NO_FALLBACK_20260628';
+export const VERSION='GNK_ASG_PROJECT50_V28_STABLE_INDEX_IFRAME_20260628';
 const ENTRYPOINT='src/index-project50-v28-news-no-fallback.js';
-const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v26-clean-index-v21-preview.js';
+const PREVIOUS_ENTRYPOINT='src/index-stable-iframe-v1.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627';
 const STATUS_PATHS=new Set(['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json']);
 const PUBLIC_NEWS_PATHS=new Set(['/data/news.json','/data/news-feed.json']);
@@ -43,6 +43,7 @@ async function patchStatus(response,path){
       newsRuntime:NEWS_RUNTIME,
       project50WhiteIntegratedMenu:true,
       noPublicFallbackWrapper:VERSION,
+      indexTheCodePlayer:'STABLE_IFRAME',
       activeNewsLimit:100,
       archivePruneAt:1000,
       archiveDeleteCount:500,
@@ -78,5 +79,5 @@ export default{
     response=await patchStatus(response,path);
     return patchPublicNewsData(response,path);
   },
-  async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
+  async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)}
 };
