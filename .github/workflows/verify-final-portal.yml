@@ -96,7 +96,11 @@ jobs:
           ADMIN_CODE=$(curl -sS -o /tmp/admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=${CB}")
           MAIL_CODE=$(curl -sS -o /tmp/mail.json -w '%{http_code}' "https://gnk-asg.hr/api/mail-center/send-readiness?cb=${CB}")
 
-          [ "$CONTACT_CODE" = '405' ]
+          case "$CONTACT_CODE" in
+            200) grep -q '"status": "READY"' /tmp/contact-api.json ;;
+            405) ;;
+            *) exit 1 ;;
+          esac
           case "$ADMIN_CODE" in 200|401|403) ;; *) exit 1 ;; esac
           case "$MAIL_CODE" in 200|401|403) ;; *) exit 1 ;; esac
 
