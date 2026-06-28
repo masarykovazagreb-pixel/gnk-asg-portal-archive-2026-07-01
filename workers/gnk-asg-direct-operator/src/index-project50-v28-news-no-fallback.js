@@ -4,8 +4,9 @@ import {mediaAccessPreflight} from './media-access-preflight-v1.js';
 import {processAccessDeliveryQueue,VERSION as ACCESS_DISPATCH_VERSION} from './media-outreach-access-dispatch-v1.js';
 import {ensureMediaControlRows,VERSION as CONTROL_SYNC_VERSION} from './media-command-control-sync-v3.js';
 import {adminAccess} from './admin-session-auth-v1.js';
+import {withRequiredEmailSignature,VERSION as EMAIL_SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_PROJECT50_V28_TWO_PHASE_MEDIA_ACCESS_20260628';
+export const VERSION='GNK_ASG_PROJECT50_V28_TWO_PHASE_MEDIA_ACCESS_SIGNATURE_20260628';
 const ENTRYPOINT='src/index-project50-v28-news-no-fallback.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v26-clean-index-v21-preview.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627';
@@ -25,7 +26,7 @@ function noStore(headers){
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   return headers;
 }
-function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-media-access-dispatch':ACCESS_DISPATCH_VERSION}})}
+function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-media-access-dispatch':ACCESS_DISPATCH_VERSION,'x-gnk-asg-email-signature-contract':EMAIL_SIGNATURE_VERSION}})}
 function lockedDeliveryEnv(env){return new Proxy(env,{get(target,property,receiver){if(String(property)==='MEDIA_OUTREACH_LIVE')return'false';return Reflect.get(target,property,receiver)}})}
 function hasPublicFallbackImage(item){
   const image=String(item?.image||'');
@@ -41,8 +42,9 @@ async function dispatchApprovedMedia(request,env){
   let body={};try{body=await request.clone().json()}catch{return json({ok:false,error:'invalid_json'},400)}
   if(body.confirm!=='DISPATCH_ONE_QUEUED_EMAIL')return json({ok:false,error:'confirmation_required',required:'DISPATCH_ONE_QUEUED_EMAIL'},409);
   if(!boolEnv(env.MEDIA_OUTREACH_RELEASE_APPROVED))return json({ok:false,error:'explicit_release_approval_missing'},423);
-  const sync=await ensureMediaControlRows(env);
-  const result=await processAccessDeliveryQueue(env);
+  const signedEnv=withRequiredEmailSignature(env);
+  const sync=await ensureMediaControlRows(signedEnv);
+  const result=await processAccessDeliveryQueue(signedEnv);
   return json({...result,controlSync:{version:CONTROL_SYNC_VERSION,processed:sync.processed,created:sync.created,updated:sync.updated}});
 }
 async function patchStatus(response,path){
@@ -65,6 +67,7 @@ async function patchStatus(response,path){
       mediaAccessLiveIssue:'AUTHENTICATED_AND_LOCKED_UNTIL_CONFIRMED_DELIVERY',
       mediaAccessDispatch:ACCESS_DISPATCH_VERSION,
       mediaAccessReleaseApproval:'REQUIRED',
+      emailSignatureContract:EMAIL_SIGNATURE_VERSION,
       activeNewsLimit:100,
       archivePruneAt:1000,
       archiveDeleteCount:500,
@@ -109,9 +112,10 @@ export default{
     const task=(async()=>{
       const upstream=typeof app.scheduled==='function'?await app.scheduled(event,lockedDeliveryEnv(env),ctx):null;
       if(!boolEnv(env.MEDIA_OUTREACH_RELEASE_APPROVED))return{upstream,delivery:{ok:true,skipped:'explicit_release_approval_missing'}};
-      const sync=await ensureMediaControlRows(env);
-      const delivery=await processAccessDeliveryQueue(env).catch(error=>({ok:false,error:String(error?.message||error)}));
-      return{upstream,delivery,accessDispatch:ACCESS_DISPATCH_VERSION,controlSync:{version:CONTROL_SYNC_VERSION,processed:sync.processed,created:sync.created,updated:sync.updated}};
+      const signedEnv=withRequiredEmailSignature(env);
+      const sync=await ensureMediaControlRows(signedEnv);
+      const delivery=await processAccessDeliveryQueue(signedEnv).catch(error=>({ok:false,error:String(error?.message||error)}));
+      return{upstream,delivery,accessDispatch:ACCESS_DISPATCH_VERSION,emailSignatureContract:EMAIL_SIGNATURE_VERSION,controlSync:{version:CONTROL_SYNC_VERSION,processed:sync.processed,created:sync.created,updated:sync.updated}};
     })();
     if(ctx?.waitUntil){ctx.waitUntil(task);return;}
     return task;
