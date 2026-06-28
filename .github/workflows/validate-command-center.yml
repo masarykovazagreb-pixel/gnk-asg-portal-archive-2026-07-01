@@ -60,6 +60,10 @@ jobs:
         if: always()
         run: node -e "const x=require('./apps/portal/data/media-outreach-contacts-v1.json'); const n=x.filter(v=>String(v.email||'').trim()).length; console.log('EMAILS='+n); if(n!==42) process.exit(1)"
 
+      - name: Diagnostic current seed has 22 emails
+        if: always()
+        run: node -e "const x=require('./apps/portal/data/media-outreach-contacts-v1.json'); const n=x.filter(v=>String(v.email||'').trim()).length; console.log('SEED_EMAILS='+n); if(n!==22) process.exit(1)"
+
       - name: Dataset has 22 automation contacts
         if: always()
         run: node -e "const x=require('./apps/portal/data/media-outreach-contacts-v1.json'); const n=x.filter(v=>v.automationAllowed===true).length; console.log('AUTOMATION='+n); if(n!==22) process.exit(1)"
