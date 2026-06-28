@@ -1,0 +1,35 @@
+name: Check Admin Media Security
+
+on:
+  push:
+    branches:
+      - project-50-white-integrated-menu
+  pull_request:
+    paths:
+      - 'apps/portal/admin-center/**'
+      - 'apps/portal/assets/admin-*.js'
+      - 'apps/portal/vijesti/**'
+      - 'apps/portal/news/**'
+      - 'apps/portal/objave/**'
+      - 'apps/portal/publications/**'
+      - 'apps/portal/sitemap.xml'
+      - 'workers/gnk-asg-direct-operator/src/admin-session-auth-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-access-service-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js'
+      - 'workers/gnk-asg-direct-operator/tests/admin-media-security.test.mjs'
+      - '.github/workflows/check-admin-media-security.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run non-destructive regression tests
+        run: node --test workers/gnk-asg-direct-operator/tests/admin-media-security.test.mjs
