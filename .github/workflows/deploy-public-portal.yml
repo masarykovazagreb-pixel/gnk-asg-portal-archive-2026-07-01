@@ -91,6 +91,7 @@ jobs:
           grep -q "archivePruneAt:1000" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "archiveDeleteCount:500" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "fallbackImagesAllowed:false" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "fallback_image:null" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "NEWS_LIFECYCLE_V18_ARCHIVE_1000_500" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "production_sending_locked" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           grep -q "mediaCommandSending:'LOCKED'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
@@ -129,6 +130,7 @@ jobs:
             if(status.archiveDeleteCount!==500)throw new Error(`bad archiveDeleteCount: ${status.archiveDeleteCount}`);
             if(status.archiveRetainAfterPrune!==500)throw new Error(`bad archiveRetainAfterPrune: ${status.archiveRetainAfterPrune}`);
             if(status.contentContract?.fallbackImagesAllowed!==false)throw new Error('fallbackImagesAllowed is not false');
+            if(status.fallback_image||status.fallbackImage||status.publicFallbackImage)throw new Error(`fallback image marker leaked into status: ${status.fallback_image||status.fallbackImage||status.publicFallbackImage}`);
             if(!String(status.entryPoint||'').includes('index-admin-hub-v28-news-no-fallback.js'))throw new Error(`bad entryPoint: ${status.entryPoint}`);
             if(status.indexMenu!=='LOCKED_REDUCED_PUBLIC_MENU')throw new Error(`bad indexMenu: ${status.indexMenu}`);
             if(!String(status.mediaApplicationAccess||'').includes('MEDIA_APPLICATION_ACCESS_V2'))throw new Error(`bad media application access: ${status.mediaApplicationAccess}`);
