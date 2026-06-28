@@ -6,6 +6,7 @@
   const MODULES = [
     {id:'overview', icon:'⌂', label:'Admin pregled', short:'Kontrolna ploča', desc:'Status sustava, prioriteti i jedinstveni pristup alatima.', route:'/admin-center/'},
     {id:'media', icon:'◎', label:'Komandni centar', short:'Mediji i prijave', desc:'Globalna baza medija, kampanje, prijave, dokumenti, odobrenja i zaključani kanali.', route:'/media-command-center/'},
+    {id:'mediaApplications', icon:'◇', label:'Media prijave', short:'Javna prijavnica', desc:'Javni portal na kojem pozvani mediji unose i dopunjuju podatke za registraciju.', route:'/media-application/'},
     {id:'mediaPortal', icon:'◉', label:'Media Portal', short:'Pozivi i registracije', desc:'Centralna evidencija medijskih poziva, prijava, statusa, PDF priloga i odobrenja.', route:'/media-registration-admin/'},
     {id:'operator', icon:'▣', label:'Operator', short:'Operativni nadzor', desc:'Status, evidencije i operatorske postavke.', route:'/operator-dashboard/'},
     {id:'mail', icon:'✉', label:'Mail Studio', short:'Pošta i potpisi', desc:'Pošiljatelji, pretinci, potpisi, privici i sigurne provjere.', route:'/mail-studio/'},
@@ -21,7 +22,7 @@
     {id:'mediaPortal', label:'Media Portal', detail:'Pozivi i registracije', path:'/api/media-registration-admin/status'},
     {id:'platform', label:'Platforma', detail:'KV, D1 i javni asseti', path:'/data/platform-health.json'}
   ];
-  const PRIORITIES = ['media','mediaPortal','mail'];
+  const PRIORITIES = ['media','mediaApplications','mediaPortal'];
   const $ = id => document.getElementById(id);
   const state = {current:'overview', frameTimer:null, cleanObserver:null, statusTimer:null, toastTimer:null};
 
@@ -337,7 +338,7 @@
         event.preventDefault();
         openCommandPalette();
       }
-      if(event.altKey && /^[1-8]$/.test(event.key)) {
+      if(event.altKey && /^[1-9]$/.test(event.key)) {
         event.preventDefault();
         openModule(MODULES[Number(event.key)-1]?.id||'overview');
       }
