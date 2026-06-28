@@ -1,7 +1,7 @@
-import {prepareAccessCode,activateAccessCode,failAccessCode,VERSION as CODE_STORE_VERSION} from './media-access-code-store-v1.js';
+import {prepareAccessCode,activateAccessCode,failAccessCode,VERSION as CODE_STORE_VERSION} from './media-access-code-store-v2.js';
 import {mediaAccessDeliveryText,VERSION as ACCESS_TEXT_VERSION} from './media-access-delivery-text-v1.js';
 
-export const VERSION='GNK_ASG_MEDIA_OUTREACH_ACCESS_DISPATCH_V1_2_STALE_PDF_RATE_20260628';
+export const VERSION='GNK_ASG_MEDIA_OUTREACH_ACCESS_DISPATCH_V1_3_ATOMIC_STORE_20260628';
 const TEST_GATE_KEY='media-command-center:delivery-test:v1';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
 const MAX_PDF_BYTES=4*1024*1024;
