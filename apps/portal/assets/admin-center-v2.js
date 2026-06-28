@@ -6,6 +6,7 @@
   const MODULES = [
     {id:'overview', icon:'⌂', label:'Admin pregled', short:'Kontrolna ploča', desc:'Status sustava, prioriteti i jedinstveni pristup alatima.', route:'/admin-center/'},
     {id:'media', icon:'◎', label:'Komandni centar', short:'Mediji i prijave', desc:'Globalna baza medija, kampanje, prijave, dokumenti, odobrenja i zaključani kanali.', route:'/media-command-center/'},
+    {id:'mediaPortal', icon:'◉', label:'Media Portal', short:'Pozivi i registracije', desc:'Centralna evidencija medijskih poziva, prijava, statusa, PDF priloga i odobrenja.', route:'/media-registration-admin/'},
     {id:'operator', icon:'▣', label:'Operator', short:'Operativni nadzor', desc:'Status, evidencije i operatorske postavke.', route:'/operator-dashboard/'},
     {id:'mail', icon:'✉', label:'Mail Studio', short:'Pošta i potpisi', desc:'Pošiljatelji, pretinci, potpisi, privici i sigurne provjere.', route:'/mail-studio/'},
     {id:'editor', icon:'✎', label:'Auto Editor', short:'Urednički procesi', desc:'Objave, priprema sadržaja i uredničke kontrole.', route:'/auto-editor/'},
@@ -17,9 +18,10 @@
     {id:'backend', label:'Operator backend', detail:'Operativne funkcije', path:'/api/operator-backend-status'},
     {id:'mail', label:'Mail sustav', detail:'Inbox, Sent i Outbox', path:'/api/mail-center/status'},
     {id:'media', label:'Komandni centar', detail:'Mediji, prijave i odobrenja', path:'/api/media-command-center/status'},
+    {id:'mediaPortal', label:'Media Portal', detail:'Pozivi i registracije', path:'/api/media-registration-admin/status'},
     {id:'platform', label:'Platforma', detail:'KV, D1 i javni asseti', path:'/data/platform-health.json'}
   ];
-  const PRIORITIES = ['media','operator','mail'];
+  const PRIORITIES = ['media','mediaPortal','mail'];
   const $ = id => document.getElementById(id);
   const state = {current:'overview', frameTimer:null, cleanObserver:null, statusTimer:null, toastTimer:null};
 
@@ -290,77 +292,69 @@
     location.assign('/admin-center/');
   }
 
-  function runFullAudit() {
-    const external=$('adminTestAll');
-    if(external) external.click();
-    else loadStatus({announce:true});
-    requestAnimationFrame(()=>document.getElementById('adminHealthPanel')?.scrollIntoView({behavior:'smooth',block:'start'}));
-  }
-
-  function bindEvents() {
-    $('moduleNav').addEventListener('click',event=>{
+  function bind() {
+    $('moduleNav')?.addEventListener('click',event=>{
       const button=event.target.closest('[data-module]');
       if(button) openModule(button.dataset.module);
     });
-    $('priorityGrid').addEventListener('click',event=>{
+    $('priorityGrid')?.addEventListener('click',event=>{
       const button=event.target.closest('[data-open]');
       if(button) openModule(button.dataset.open);
     });
-    $('menuButton').addEventListener('click',openSidebar);
-    $('sidebarClose').addEventListener('click',closeSidebar);
-    $('backdrop').addEventListener('click',closeSidebar);
-    $('commandButton').addEventListener('click',openCommandPalette);
-    $('commandSearch').addEventListener('input',event=>renderCommandList(event.target.value));
-    $('commandList').addEventListener('click',event=>{
+    $('commandList')?.addEventListener('click',event=>{
       const button=event.target.closest('[data-command]');
       if(button) openModule(button.dataset.command);
     });
-    $('refreshButton').addEventListener('click',()=>{
-      if(state.current==='overview') loadStatus({announce:true});
-      else openModule(state.current,{push:false,force:true});
+    $('commandSearch')?.addEventListener('input',event=>renderCommandList(event.target.value));
+    $('commandSearch')?.addEventListener('keydown',event=>{
+      if(event.key==='Enter') {
+        const first=$('commandList')?.querySelector('[data-command]');
+        if(first) openModule(first.dataset.command);
+      }
     });
-    $('heroMail').addEventListener('click',()=>openModule('mail'));
-    $('heroAudit').addEventListener('click',runFullAudit);
-    $('showAllModules').addEventListener('click',openCommandPalette);
-    $('retryModule').addEventListener('click',()=>openModule(state.current,{push:false,force:true}));
-    $('logoutButton').addEventListener('click',logout);
-    $('logoutSide').addEventListener('click',logout);
-    $('moduleFrame').addEventListener('load',()=>{
+    $('menuButton')?.addEventListener('click',openSidebar);
+    $('sidebarClose')?.addEventListener('click',closeSidebar);
+    $('backdrop')?.addEventListener('click',closeSidebar);
+    $('commandButton')?.addEventListener('click',openCommandPalette);
+    $('refreshButton')?.addEventListener('click',()=>state.current==='overview'?loadStatus({announce:true}):openModule(state.current,{push:false,force:true}));
+    $('retryModule')?.addEventListener('click',()=>openModule(state.current,{push:false,force:true}));
+    $('showAllModules')?.addEventListener('click',openCommandPalette);
+    $('heroMail')?.addEventListener('click',()=>openModule('media'));
+    $('heroAudit')?.addEventListener('click',()=>loadStatus({announce:true}));
+    $('logoutButton')?.addEventListener('click',logout);
+    $('logoutSide')?.addEventListener('click',logout);
+    $('moduleFrame')?.addEventListener('load',()=>{
       clearTimeout(state.frameTimer);
-      cleanEmbeddedModule();
       setWorkspaceState('ready');
       $('moduleFrame').hidden=false;
+      cleanEmbeddedModule();
     });
-    addEventListener('popstate',()=>{
-      const id=new URL(location.href).searchParams.get('module')||'overview';
-      openModule(id,{push:false});
-    });
-    addEventListener('online',()=>{updateConnection();showToast('Mrežna veza je ponovno dostupna.');});
-    addEventListener('offline',()=>{updateConnection();showToast('Mrežna veza je prekinuta.');});
-    document.addEventListener('visibilitychange',()=>{
-      if(document.visibilityState==='visible' && state.current==='overview') loadStatus();
-    });
-    document.addEventListener('keydown',event=>{
-      if((event.ctrlKey||event.metaKey) && event.key.toLowerCase()==='k') { event.preventDefault(); openCommandPalette(); return; }
-      if(event.key==='Escape') { closeSidebar(); closeCommandPalette(); return; }
-      if(event.altKey && /^[1-7]$/.test(event.key)) { event.preventDefault(); openModule(MODULES[Number(event.key)-1].id); }
+    addEventListener('online',updateConnection);
+    addEventListener('offline',updateConnection);
+    addEventListener('popstate',event=>openModule(event.state?.module||new URL(location.href).searchParams.get('module')||'overview',{push:false}));
+    addEventListener('keydown',event=>{
+      if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k') {
+        event.preventDefault();
+        openCommandPalette();
+      }
+      if(event.altKey && /^[1-8]$/.test(event.key)) {
+        event.preventDefault();
+        openModule(MODULES[Number(event.key)-1]?.id||'overview');
+      }
+      if(event.key==='Escape') closeSidebar();
     });
   }
 
-  function boot() {
+  function init() {
     renderNavigation();
     renderPriorities();
-    renderCommandList('');
-    bindEvents();
+    bind();
     updateConnection();
-    const requested=new URL(location.href).searchParams.get('module')||'overview';
-    openModule(requested,{push:false});
-    updateHistory(state.current,true);
-    state.statusTimer=setInterval(()=>{
-      if(document.visibilityState==='visible' && state.current==='overview') loadStatus();
-    },60000);
+    const initial=new URL(location.href).searchParams.get('module')||'overview';
+    openModule(initial,{push:false});
+    state.statusTimer=setInterval(()=>{ if(state.current==='overview' && document.visibilityState==='visible') loadStatus(); },60000);
   }
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true});
-  else boot();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
 })();
