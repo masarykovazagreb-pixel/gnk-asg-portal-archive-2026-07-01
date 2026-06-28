@@ -11,9 +11,9 @@ import {
   VERSION as MANUAL_MAIL_VERSION
 } from './manual-mail-service-v1.js';
 
-const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260629_R14_NEUTRAL_CORE';
-const REVISION='14';
-const CORE_SCRIPT='<script defer src="/assets/studio-core-v21.js?v=20260629-1"></script>';
+const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260629_R15_NEUTRAL_CORE';
+const REVISION='15';
+const CORE_SCRIPT='<script defer src="/assets/studio-core-v21.js?v=20260629-2"></script>';
 const MAIL_SCRIPT='<script defer src="/assets/mail-studio-auth-bridge-v16.js?v=20260626-1"></script>';
 const CONTROLS_SCRIPT='<script defer src="/assets/mail-studio-controls-v18.js?v=20260626-2"></script>';
 const CLICK_SCRIPT='<script defer src="/assets/mail-studio-click-feedback-v19.js?v=20260626-1"></script>';
@@ -43,7 +43,7 @@ function stampWithoutInjection(response){
   headers.set('x-gnk-asg-mail-studio-bridge',VERSION);
   headers.set('x-gnk-asg-mail-profile-delivery-test',PROFILE_DELIVERY_VERSION);
   headers.set('x-gnk-asg-manual-mail-service',MANUAL_MAIL_VERSION);
-  headers.set('x-gnk-asg-studio-core','V21_NEUTRAL');
+  headers.set('x-gnk-asg-studio-core','V21_NEUTRAL_R2');
   headers.set('x-gnk-asg-mail-studio-hotfix','V20');
   headers.set('x-gnk-asg-auth-page-isolation','ENABLED');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
@@ -57,7 +57,7 @@ async function profileAuth(request,env,ctx){
   const response=await app.fetch(new Request(target,{method:'GET',headers,redirect:'manual'}),env,ctx);
   if(response.ok)return null;
   const status=response.status===403?403:401;
-  return new Response(JSON.stringify({ok:false,error:'authentication_required'},null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION,'x-gnk-asg-mail-profile-delivery-test':PROFILE_DELIVERY_VERSION,'x-gnk-asg-manual-mail-service':MANUAL_MAIL_VERSION,'x-gnk-asg-studio-core':'V21_NEUTRAL','x-gnk-asg-mail-studio-hotfix':'V20'}});
+  return new Response(JSON.stringify({ok:false,error:'authentication_required'},null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION,'x-gnk-asg-mail-profile-delivery-test':PROFILE_DELIVERY_VERSION,'x-gnk-asg-manual-mail-service':MANUAL_MAIL_VERSION,'x-gnk-asg-studio-core':'V21_NEUTRAL_R2','x-gnk-asg-mail-studio-hotfix':'V20'}});
 }
 
 function reroute(request,targetPath){
@@ -79,7 +79,7 @@ async function inject(response,path){
   headers.set('x-gnk-asg-mail-studio-auth','V16_COOKIE_ONLY');
   headers.set('x-gnk-asg-mail-studio-controls','V18');
   headers.set('x-gnk-asg-mail-studio-click-feedback','V19');
-  headers.set('x-gnk-asg-studio-core','V21_NEUTRAL');
+  headers.set('x-gnk-asg-studio-core','V21_NEUTRAL_R2');
   headers.set('x-gnk-asg-mail-studio-hotfix','V20');
   headers.set('x-gnk-asg-mail-profile-test','V2_DELIVERY');
   headers.set('x-gnk-asg-mail-profile-delivery-test',PROFILE_DELIVERY_VERSION);
@@ -107,9 +107,9 @@ async function version(request,env,ctx){
   const response=await app.fetch(request,env,ctx);
   try{
     const payload=await response.clone().json();
-    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,studioCore:'GNK_ASG_STUDIO_CORE_V21_20260629_R1',studioNeutralApi:'/api/studio-message/*',mailProfileTest:'GNK_ASG_MAIL_PROFILE_TEST_V2_20260626_DELIVERY',mailProfileDeliveryTest:PROFILE_DELIVERY_VERSION,manualMailService:MANUAL_MAIL_VERSION,manualMailSending:'AUTHENTICATED_LIVE_WHEN_MAIL_MANUAL_LIVE_TRUE',mandatoryBcc:'rht@gmx.com',mailProfileInternalGate:'EPHEMERAL_NONCE_ROTATED_AFTER_RUN',mailSignatureContact:'NO_PHONE_NO_WHATSAPP_MANDATORY_BCC',unifiedAuth:'GNK_ASG_UNIFIED_AUTH_V15_20260626_LOGIN_ISOLATION',mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',mailStudioControls:'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626',mailStudioClickFeedback:'GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626',mailStudioHotfix:'GNK_ASG_MAIL_STUDIO_HOTFIX_V20_20260629',adminSessionFallback:'GNK_ASG_ADMIN_SESSION_FALLBACK_V19_20260626_COOKIE_ONLY_HEALTH',authPageIsolation:'ENABLED',deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
+    return new Response(JSON.stringify({...payload,mailStudioBridge:VERSION,mailStudioBridgeRevision:REVISION,studioCore:'GNK_ASG_STUDIO_CORE_V21_20260629_R2',studioNeutralApi:'/api/studio-message/*',mailProfileTest:'GNK_ASG_MAIL_PROFILE_TEST_V2_20260626_DELIVERY',mailProfileDeliveryTest:PROFILE_DELIVERY_VERSION,manualMailService:MANUAL_MAIL_VERSION,manualMailSending:'AUTHENTICATED_LIVE_WHEN_MAIL_MANUAL_LIVE_TRUE',mandatoryBcc:'rht@gmx.com',mailProfileInternalGate:'EPHEMERAL_NONCE_ROTATED_AFTER_RUN',mailSignatureContact:'NO_PHONE_NO_WHATSAPP_MANDATORY_BCC',unifiedAuth:'GNK_ASG_UNIFIED_AUTH_V15_20260626_LOGIN_ISOLATION',mailStudioAuth:'GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY',mailStudioControls:'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626',mailStudioClickFeedback:'GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626',mailStudioHotfix:'GNK_ASG_MAIL_STUDIO_HOTFIX_V20_20260629',adminSessionFallback:'GNK_ASG_ADMIN_SESSION_FALLBACK_V19_20260626_COOKIE_ONLY_HEALTH',authPageIsolation:'ENABLED',deployedEntryPoint:'src/index-mail-studio-bridge-v15.js'},null,2),{
       status:response.status,
-      headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION,'x-gnk-asg-admin-session-fallback':'V19_COOKIE_ONLY','x-gnk-asg-mail-studio-auth':'V16_COOKIE_ONLY','x-gnk-asg-mail-studio-controls':'V18','x-gnk-asg-mail-studio-click-feedback':'V19','x-gnk-asg-studio-core':'V21_NEUTRAL','x-gnk-asg-mail-studio-hotfix':'V20','x-gnk-asg-mail-profile-test':'V2_DELIVERY','x-gnk-asg-mail-profile-delivery-test':PROFILE_DELIVERY_VERSION,'x-gnk-asg-manual-mail-service':MANUAL_MAIL_VERSION,'x-gnk-asg-auth-page-isolation':'ENABLED'}
+      headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge':VERSION,'x-gnk-asg-admin-session-fallback':'V19_COOKIE_ONLY','x-gnk-asg-mail-studio-auth':'V16_COOKIE_ONLY','x-gnk-asg-mail-studio-controls':'V18','x-gnk-asg-mail-studio-click-feedback':'V19','x-gnk-asg-studio-core':'V21_NEUTRAL_R2','x-gnk-asg-mail-studio-hotfix':'V20','x-gnk-asg-mail-profile-test':'V2_DELIVERY','x-gnk-asg-mail-profile-delivery-test':PROFILE_DELIVERY_VERSION,'x-gnk-asg-manual-mail-service':MANUAL_MAIL_VERSION,'x-gnk-asg-auth-page-isolation':'ENABLED'}
     });
   }catch{return response;}
 }
