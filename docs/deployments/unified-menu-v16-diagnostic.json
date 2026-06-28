@@ -1,11 +1,11 @@
 {
-  "checkedAt": "2026-06-28T09:16:59.248Z",
+  "checkedAt": "2026-06-28T09:18:52.794Z",
   "sourceBranch": "project-50-white-integrated-menu",
-  "sourceCommit": "7af7d56ebb8b6d4788f7d3bbf225d452a2774fde",
+  "sourceCommit": "5c46600fb17a7acdbccead6fd1ae89cbe4ed2e3c",
   "requests": {
     "/": {
       "status": 200,
-      "url": "https://gnk-asg.hr/?cb=1782638219253-0.6483989162593372",
+      "url": "https://gnk-asg.hr/?cb=1782638332800-0.15195634963189986",
       "contentType": "text/html; charset=utf-8",
       "headers": {
         "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
@@ -13,28 +13,25 @@
         "server": "cloudflare",
         "x-gnk-asg-gallery-primary-menu": "INCLUDED",
         "x-gnk-asg-index-hero-scale": "50_PERCENT_V13",
-        "x-gnk-asg-index-menu": "UNIFIED_PUBLIC_MENU_V16",
-        "x-gnk-asg-index-menu-items": "11",
-        "x-gnk-asg-index-source": "/index.html",
-        "x-gnk-asg-menu-release": "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628",
-        "x-gnk-asg-the-code-player": "STABLE_IFRAME"
+        "x-gnk-asg-index-menu": "LOCKED_INDEX_MENU",
+        "x-gnk-asg-index-source": "/index.html"
       },
       "markers": {
         "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628": false,
         "GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628": false,
         "GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628": false,
-        "index-menu-unified-v16.js": true,
+        "index-menu-unified-v16.js": false,
         "public-shell-v15.js?v=20260628-v16": false,
-        "/admin-center/": true,
+        "/admin-center/": false,
         "/en/contact/": false,
         "admin-center-memorandum-v1.js": false
       },
-      "length": 7027,
+      "length": 6775,
       "snippet": "<!doctype html><html lang=\"hr\" data-index-template=\"GNK_ASG_PUBLIC_INDEX_V9_HR_EN_20260627\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>GNK ASG | Poslovna grupa, financije i globalna mreža</title><meta name=\"description\" content=\"Službeni korporativni portal GNK ASG d.o.o. i GNK DINAMO Ltd. Group: profil kompanija, financijski pokazatelji, globalna tržišta, vijesti i THE CODE.\"><link rel=\"canonical\" href=\"https://gnk-asg.hr/\"><meta data-g"
     },
     "/en/": {
       "status": 200,
-      "url": "https://gnk-asg.hr/en/?cb=1782638219504-0.5749844700029074",
+      "url": "https://gnk-asg.hr/en/?cb=1782638332990-0.4540474973773603",
       "contentType": "text/html; charset=utf-8",
       "headers": {
         "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
@@ -42,28 +39,25 @@
         "server": "cloudflare",
         "x-gnk-asg-gallery-primary-menu": "INCLUDED",
         "x-gnk-asg-index-hero-scale": "50_PERCENT_V13",
-        "x-gnk-asg-index-menu": "UNIFIED_PUBLIC_MENU_V16",
-        "x-gnk-asg-index-menu-items": "11",
-        "x-gnk-asg-index-source": "/en/index.html",
-        "x-gnk-asg-menu-release": "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628",
-        "x-gnk-asg-the-code-player": "STABLE_IFRAME"
+        "x-gnk-asg-index-menu": "LOCKED_INDEX_MENU",
+        "x-gnk-asg-index-source": "/en/index.html"
       },
       "markers": {
         "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628": false,
         "GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628": false,
         "GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628": false,
-        "index-menu-unified-v16.js": true,
+        "index-menu-unified-v16.js": false,
         "public-shell-v15.js?v=20260628-v16": false,
-        "/admin-center/": true,
-        "/en/contact/": true,
+        "/admin-center/": false,
+        "/en/contact/": false,
         "admin-center-memorandum-v1.js": false
       },
-      "length": 7296,
+      "length": 7041,
       "snippet": "<!doctype html><html lang=\"en\" data-index-template=\"GNK_ASG_PUBLIC_INDEX_V9_HR_EN_20260627\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>GNK ASG | Nermin Sefić, GNK DINAMO Ltd. and Global Network</title><meta name=\"description\" content=\"Corporate portal by Nermin Sefić for GNK ASG d.o.o. and GNK DINAMO Ltd. Group: company profile, financial indicators, global markets, news and THE CODE.\"><link rel=\"canonical\" href=\"https://gnk-asg.hr/en/\">"
     },
     "/vijesti/": {
       "status": 200,
-      "url": "https://gnk-asg.hr/vijesti/?cb=1782638219536-0.934563499847634",
+      "url": "https://gnk-asg.hr/vijesti/?cb=1782638333015-0.30378498095907414",
       "contentType": "text/html; charset=utf-8",
       "headers": {
         "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
@@ -89,39 +83,38 @@
         "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
         "x-gnk-asg-market-live": "GNK_ASG_MARKET_LIVE_V1_20260625",
         "x-gnk-asg-media-application": "GNK_ASG_MEDIA_APPLICATION_PORTAL_V1_20260627",
-        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_1_RELEASE_GATE_UI_20260628",
-        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_1_SUPPRESSION_SCHEMA_20260628",
+        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R9_SMS",
+        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626",
         "x-gnk-asg-media-delivery": "GNK_ASG_MEDIA_OUTREACH_DELIVERY_V5_20260626_INTERNAL_TEST_GATE",
         "x-gnk-asg-media-readiness": "GNK_ASG_MEDIA_READINESS_V2_20260626",
         "x-gnk-asg-media-sms": "GNK_ASG_MEDIA_SMS_V1_20260626_DRY_RUN",
-        "x-gnk-asg-menu-release": "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628",
         "x-gnk-asg-news-lifecycle": "GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626",
         "x-gnk-asg-news-rotation": "GNK_ASG_INDEX_NEWS_ROTATION_V1",
         "x-gnk-asg-news-runtime": "PUBLIC_NEWS_V22_VERIFIED_100_ARCHIVE_500",
         "x-gnk-asg-portal-final": "GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625",
         "x-gnk-asg-public-ai": "GNK_ASG_PUBLIC_AI_V10_20260627",
-        "x-gnk-asg-public-menu": "UNIFIED_PUBLIC_MENU_V16",
+        "x-gnk-asg-public-menu": "UNIFIED_PUBLIC_SHELL_V15_1",
         "x-gnk-asg-public-r2": "GNK_ASG_PUBLIC_R2_V1_20260626",
-        "x-gnk-asg-public-release": "GNK_ASG_PUBLIC_V21_MARKET_CANONICAL_20260628",
+        "x-gnk-asg-public-release": "GNK_ASG_PUBLIC_V20_CANONICAL_NAVIGATION_20260627",
         "x-gnk-asg-public-visual": "GNK_ASG_PUBLIC_VISUAL_V16_20260625",
-        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V5_DYNAMIC_SITEMAPS_20260628"
+        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V4_R2_VISUALS_20260626"
       },
       "markers": {
         "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628": false,
         "GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628": false,
         "GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628": false,
         "index-menu-unified-v16.js": false,
-        "public-shell-v15.js?v=20260628-v16": true,
+        "public-shell-v15.js?v=20260628-v16": false,
         "/admin-center/": false,
         "/en/contact/": false,
         "admin-center-memorandum-v1.js": false
       },
-      "length": 6037,
-      "snippet": "<!doctype html>\n<html lang=\"hr\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>Provjerene poslovne vijesti | GNK ASG</title>\n<meta name=\"description\" content=\"Do 100 provjerenih poslovnih, tehnoloških, tržišnih i gospodarskih vijesti sa slikom, sažetkom, izvorom i provjerenom poveznicom. Sustav se osvježava u 09:00, 16:00 i 21:00 po vremenu Europe/Zagreb.\">\n<meta name=\"robots\" content=\"index,follow,max-image-preview:large,max-snippet:-1,"
+      "length": 5657,
+      "snippet": "<!doctype html>\n<html lang=\"hr\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>Provjerene poslovne vijesti | GNK ASG</title>\n<meta name=\"description\" content=\"Do 100 provjerenih poslovnih, tehnoloških, tržišnih i gospodarskih vijesti sa slikom, sažetkom, izvorom i provjerenom poveznicom. Sustav se osvježava u 09:00, 16:00 i 21:00 po vremenu Europe/Zagreb.\">\n\n<link rel=\"stylesheet\" href=\"/assets/business-news.css?v=20260627-v18\">\n<script "
     },
     "/publications/": {
       "status": 200,
-      "url": "https://gnk-asg.hr/publications/?cb=1782638219571-0.0382546734882947",
+      "url": "https://gnk-asg.hr/publications/?cb=1782638333056-0.23620569964856597",
       "contentType": "text/html; charset=utf-8",
       "headers": {
         "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
@@ -136,29 +129,28 @@
         "x-gnk-asg-index-lock": "GNK_ASG_INDEX_LOCK_V4_20260626",
         "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
         "x-gnk-asg-media-application": "GNK_ASG_MEDIA_APPLICATION_PORTAL_V1_20260627",
-        "x-gnk-asg-menu-release": "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628",
         "x-gnk-asg-public-ai": "GNK_ASG_PUBLIC_AI_V10_20260627",
-        "x-gnk-asg-public-menu": "UNIFIED_PUBLIC_MENU_V16",
+        "x-gnk-asg-public-menu": "UNIFIED_PUBLIC_SHELL_V15_1",
         "x-gnk-asg-public-r2": "GNK_ASG_PUBLIC_R2_V1_20260626",
-        "x-gnk-asg-public-release": "GNK_ASG_PUBLIC_V21_MARKET_CANONICAL_20260628",
-        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V5_DYNAMIC_SITEMAPS_20260628"
+        "x-gnk-asg-public-release": "GNK_ASG_PUBLIC_V20_CANONICAL_NAVIGATION_20260627",
+        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V4_R2_VISUALS_20260626"
       },
       "markers": {
         "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628": false,
         "GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628": false,
         "GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628": false,
         "index-menu-unified-v16.js": false,
-        "public-shell-v15.js?v=20260628-v16": true,
+        "public-shell-v15.js?v=20260628-v16": false,
         "/admin-center/": false,
         "/en/contact/": false,
         "admin-center-memorandum-v1.js": false
       },
-      "length": 5587,
+      "length": 5588,
       "snippet": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1,viewport-fit=cover\"><title>Publications &amp; Insights | GNK ASG</title><meta name=\"description\" content=\"Verified bilingual publications, analyses and corporate insights from the GNK ASG Intelligence Desk.\"><meta name=\"author\" content=\"Nermin Sefić\"><meta name=\"robots\" content=\"index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1\"><link rel=\"canonical\""
     },
     "/admin-center/": {
       "status": 401,
-      "url": "https://gnk-asg.hr/admin-center/?cb=1782638219626-0.5324484625498015",
+      "url": "https://gnk-asg.hr/admin-center/?cb=1782638333134-0.36171796040904325",
       "contentType": "text/html; charset=utf-8",
       "headers": {
         "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
@@ -180,13 +172,13 @@
         "x-gnk-asg-manual-mail-service": "GNK_ASG_MANUAL_MAIL_SERVICE_V1_20260627",
         "x-gnk-asg-media-application": "GNK_ASG_MEDIA_APPLICATION_PORTAL_V1_20260627",
         "x-gnk-asg-media-command-wrapper": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V20_20260626",
-        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_1_RELEASE_GATE_UI_20260628",
-        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_1_SUPPRESSION_SCHEMA_20260628",
+        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R9_SMS",
+        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626",
         "x-gnk-asg-media-delivery": "GNK_ASG_MEDIA_OUTREACH_DELIVERY_V5_20260626_INTERNAL_TEST_GATE",
         "x-gnk-asg-media-readiness": "GNK_ASG_MEDIA_READINESS_V2_20260626",
         "x-gnk-asg-media-sms": "GNK_ASG_MEDIA_SMS_V1_20260626_DRY_RUN",
         "x-gnk-asg-public-r2": "GNK_ASG_PUBLIC_R2_V1_20260626",
-        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V5_DYNAMIC_SITEMAPS_20260628"
+        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V4_R2_VISUALS_20260626"
       },
       "markers": {
         "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628": false,
@@ -198,12 +190,12 @@
         "/en/contact/": false,
         "admin-center-memorandum-v1.js": false
       },
-      "length": 3182,
+      "length": 3184,
       "snippet": "<!doctype html><html lang=\"hr\" data-gnk-auth-login=\"1\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow\"><title>GNK ASG — Sigurna prijava</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 0%,#173257,#020812 55%);color:#fff;font-family:Arial,sans-serif}.card{width:min(440px,90%);padding:28px;border:1px solid #d7aa3c;border-radius:20px;back"
     },
     "/assets/public-shell-v15.js": {
       "status": 200,
-      "url": "https://gnk-asg.hr/assets/public-shell-v15.js?cb=1782638219648-0.09870965441369528",
+      "url": "https://gnk-asg.hr/assets/public-shell-v15.js?cb=1782638333150-0.8663773225355362",
       "contentType": "text/javascript",
       "headers": {
         "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
@@ -227,8 +219,8 @@
         "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
         "x-gnk-asg-market-live": "GNK_ASG_MARKET_LIVE_V1_20260625",
         "x-gnk-asg-media-application": "GNK_ASG_MEDIA_APPLICATION_PORTAL_V1_20260627",
-        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_1_RELEASE_GATE_UI_20260628",
-        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_1_SUPPRESSION_SCHEMA_20260628",
+        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R9_SMS",
+        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626",
         "x-gnk-asg-media-delivery": "GNK_ASG_MEDIA_OUTREACH_DELIVERY_V5_20260626_INTERNAL_TEST_GATE",
         "x-gnk-asg-media-readiness": "GNK_ASG_MEDIA_READINESS_V2_20260626",
         "x-gnk-asg-media-sms": "GNK_ASG_MEDIA_SMS_V1_20260626_DRY_RUN",
@@ -237,24 +229,24 @@
         "x-gnk-asg-portal-final": "GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625",
         "x-gnk-asg-public-r2": "GNK_ASG_PUBLIC_R2_V1_20260626",
         "x-gnk-asg-public-visual": "GNK_ASG_PUBLIC_VISUAL_V16_20260625",
-        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V5_DYNAMIC_SITEMAPS_20260628"
+        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V4_R2_VISUALS_20260626"
       },
       "markers": {
         "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628": false,
-        "GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628": true,
+        "GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628": false,
         "GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628": false,
         "index-menu-unified-v16.js": false,
         "public-shell-v15.js?v=20260628-v16": false,
-        "/admin-center/": true,
-        "/en/contact/": true,
+        "/admin-center/": false,
+        "/en/contact/": false,
         "admin-center-memorandum-v1.js": false
       },
-      "length": 6344,
-      "snippet": "(()=>{\n  'use strict';\n  const RELEASE='GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628';\n  const query=new URLSearchParams(location.search);\n  if(query.get('embedded')==='1'||query.get('mode')==='admin'||document.documentElement.dataset.gnkPublicShell===RELEASE)return;\n  document.documentElement.dataset.gnkPublicShell=RELEASE;\n\n  const path=location.pathname.replace(/\\/+$/,'')||'/';\n  const english=document.documentElement.lang==='en'||path==='/en'||path.startsWith('/en/')||path.startsWith"
+      "length": 6358,
+      "snippet": "(()=>{\n'use strict';\nconst RELEASE='GNK_ASG_PUBLIC_SHELL_V15_1_LOCKED_INDEX_MENU_20260627';\nconst q=new URLSearchParams(location.search);\nif(q.get('embedded')==='1'||q.get('mode')==='admin'||document.documentElement.dataset.gnkPublicShell===RELEASE)return;\ndocument.documentElement.dataset.gnkPublicShell=RELEASE;\nconst path=location.pathname.replace(/\\/+$/,'')||'/';\nconst en=document.documentElement.lang==='en'||path==='/en'||path.startsWith('/en/')||path.startsWith('/markets')||path.startsWith('"
     },
     "/assets/public-menu-v10.css": {
       "status": 200,
-      "url": "https://gnk-asg.hr/assets/public-menu-v10.css?cb=1782638219742-0.8156398841057205",
+      "url": "https://gnk-asg.hr/assets/public-menu-v10.css?cb=1782638333224-0.06096536609452574",
       "contentType": "text/css",
       "headers": {
         "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
@@ -278,8 +270,8 @@
         "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
         "x-gnk-asg-market-live": "GNK_ASG_MARKET_LIVE_V1_20260625",
         "x-gnk-asg-media-application": "GNK_ASG_MEDIA_APPLICATION_PORTAL_V1_20260627",
-        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_1_RELEASE_GATE_UI_20260628",
-        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_1_SUPPRESSION_SCHEMA_20260628",
+        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R9_SMS",
+        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626",
         "x-gnk-asg-media-delivery": "GNK_ASG_MEDIA_OUTREACH_DELIVERY_V5_20260626_INTERNAL_TEST_GATE",
         "x-gnk-asg-media-readiness": "GNK_ASG_MEDIA_READINESS_V2_20260626",
         "x-gnk-asg-media-sms": "GNK_ASG_MEDIA_SMS_V1_20260626_DRY_RUN",
@@ -288,7 +280,7 @@
         "x-gnk-asg-portal-final": "GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625",
         "x-gnk-asg-public-r2": "GNK_ASG_PUBLIC_R2_V1_20260626",
         "x-gnk-asg-public-visual": "GNK_ASG_PUBLIC_VISUAL_V16_20260625",
-        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V5_DYNAMIC_SITEMAPS_20260628"
+        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V4_R2_VISUALS_20260626"
       },
       "markers": {
         "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628": false,
@@ -300,16 +292,15 @@
         "/en/contact/": false,
         "admin-center-memorandum-v1.js": false
       },
-      "length": 9886,
-      "snippet": "/* GNK ASG unified public navigation V16 — identical content, scale and mobile behaviour */\n:root{--gnk-nav-paper:#fffdf8;--gnk-nav-paper-2:#f2ead9;--gnk-nav-ink:#17130c;--gnk-nav-muted:#6f685c;--gnk-nav-gold:#b8892f;--gnk-nav-gold-hi:#efd37f;--gnk-nav-line:rgba(184,137,47,.30);--gnk-nav-shadow:0 20px 54px rgba(53,38,10,.14);--gnk-nav-width:1240px}\nhtml{scroll-padding-top:112px}\nbody.gnk-public-shell-active{padding-top:104px!important;background:radial-gradient(circle at 82% 0,rgba(218,181,91,.1"
+      "length": 8391,
+      "snippet": "/* GNK ASG unified public shell V15 — canonical HR/EN menu, one Home and one AI control */\n:root{--gnk-ivory:#f7f3e9;--gnk-paper:#fffdf8;--gnk-paper-2:#f2ead9;--gnk-ink:#17130c;--gnk-muted:#6f685c;--gnk-gold:#b8892f;--gnk-gold-hi:#edd58f;--gnk-line:rgba(184,137,47,.30);--gnk-shadow:0 20px 54px rgba(53,38,10,.14)}\nhtml{scroll-padding-top:112px}\nbody.gnk-public-shell-active{padding-top:104px!important;background:radial-gradient(circle at 82% 0,rgba(218,181,91,.14),transparent 35%),linear-gradient("
     },
     "/assets/admin-center-extensions-v2.js": {
-      "status": 200,
-      "url": "https://gnk-asg.hr/assets/admin-center-extensions-v2.js?cb=1782638219772-0.28243655048828664",
-      "contentType": "text/javascript",
+      "status": 404,
+      "url": "https://gnk-asg.hr/assets/admin-center-extensions-v2.js?cb=1782638333262-0.7814937952754908",
+      "contentType": "text/plain; charset=utf-8",
       "headers": {
         "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
-        "cf-cache-status": "HIT",
         "server": "cloudflare",
         "x-gnk-asg-admin-hub": "GNK_ASG_ADMIN_HUB_V21_20260626_R11_RUNTIME_CONTRACTS",
         "x-gnk-asg-admin-hub-v22": "GNK_ASG_ADMIN_HUB_V22_NEWS_V22_PUBLIC_NEWS_RUNTIME_20260627",
@@ -329,8 +320,8 @@
         "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
         "x-gnk-asg-market-live": "GNK_ASG_MARKET_LIVE_V1_20260625",
         "x-gnk-asg-media-application": "GNK_ASG_MEDIA_APPLICATION_PORTAL_V1_20260627",
-        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_1_RELEASE_GATE_UI_20260628",
-        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_1_SUPPRESSION_SCHEMA_20260628",
+        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R9_SMS",
+        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626",
         "x-gnk-asg-media-delivery": "GNK_ASG_MEDIA_OUTREACH_DELIVERY_V5_20260626_INTERNAL_TEST_GATE",
         "x-gnk-asg-media-readiness": "GNK_ASG_MEDIA_READINESS_V2_20260626",
         "x-gnk-asg-media-sms": "GNK_ASG_MEDIA_SMS_V1_20260626_DRY_RUN",
@@ -339,29 +330,30 @@
         "x-gnk-asg-portal-final": "GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625",
         "x-gnk-asg-public-r2": "GNK_ASG_PUBLIC_R2_V1_20260626",
         "x-gnk-asg-public-visual": "GNK_ASG_PUBLIC_VISUAL_V16_20260625",
-        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V5_DYNAMIC_SITEMAPS_20260628"
+        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V4_R2_VISUALS_20260626",
+        "x-gnk-asg-urgent-fix": "fallback-404"
       },
       "markers": {
         "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628": false,
         "GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628": false,
-        "GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628": true,
+        "GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628": false,
         "index-menu-unified-v16.js": false,
         "public-shell-v15.js?v=20260628-v16": false,
         "/admin-center/": false,
         "/en/contact/": false,
         "admin-center-memorandum-v1.js": false
       },
-      "length": 6598,
-      "snippet": "(()=>{\n  'use strict';\n  const RELEASE='GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628';\n  if(window.__GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2__===RELEASE)return;\n  window.__GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2__=RELEASE;\n\n  const MODULES=[\n    {id:'memorandum',icon:'▧',key:'M',label:'Memorandum Studio',short:'PDF i službeni dopisi',desc:'Izrada, pregled i PDF izvoz službenih memoranduma.',route:'/memorandum-studio/'},\n    {id:'social',icon:'↗',key:'S',label:'Social Share',short:'Dijeljenje objava',desc:'"
+      "length": 9,
+      "snippet": "Not found"
     },
     "/data/portal-version.json": {
       "status": 200,
-      "url": "https://gnk-asg.hr/data/portal-version.json?cb=1782638219801-0.816835437720167",
+      "url": "https://gnk-asg.hr/data/portal-version.json?cb=1782638333281-0.794374471895628",
       "contentType": "application/json; charset=utf-8",
       "headers": {
         "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
         "server": "cloudflare",
-        "x-gnk-asg-active-entrypoint": "src/index-project50-v28-news-no-fallback.js",
+        "x-gnk-asg-active-entrypoint": "src/index-admin-hub-v28-news-no-fallback.js",
         "x-gnk-asg-admin-hub": "GNK_ASG_ADMIN_HUB_V21_20260626_R11_RUNTIME_CONTRACTS",
         "x-gnk-asg-admin-hub-v22": "GNK_ASG_ADMIN_HUB_V22_NEWS_V22_PUBLIC_NEWS_RUNTIME_20260627",
         "x-gnk-asg-admin-hub-v23": "GNK_ASG_ADMIN_HUB_V23_AKTUAL_V2_20260626",
@@ -373,20 +365,19 @@
         "x-gnk-asg-mail-delivery-smoke": "GNK_ASG_MAIL_DELIVERY_SMOKE_V1_20260627_R3",
         "x-gnk-asg-media-application": "GNK_ASG_MEDIA_APPLICATION_PORTAL_V1_20260627",
         "x-gnk-asg-media-command-wrapper": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V20_20260626",
-        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_1_RELEASE_GATE_UI_20260628",
-        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_1_SUPPRESSION_SCHEMA_20260628",
+        "x-gnk-asg-media-command-wrapper-v21": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R9_SMS",
+        "x-gnk-asg-media-control-sync": "GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626",
         "x-gnk-asg-media-delivery": "GNK_ASG_MEDIA_OUTREACH_DELIVERY_V5_20260626_INTERNAL_TEST_GATE",
         "x-gnk-asg-media-readiness": "GNK_ASG_MEDIA_READINESS_V2_20260626",
         "x-gnk-asg-media-sms": "GNK_ASG_MEDIA_SMS_V1_20260626_DRY_RUN",
-        "x-gnk-asg-menu-release": "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628",
         "x-gnk-asg-news-no-public-fallback": "ENFORCED",
         "x-gnk-asg-news-runtime": "GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627",
         "x-gnk-asg-public-r2": "GNK_ASG_PUBLIC_R2_V1_20260626",
-        "x-gnk-asg-public-release": "GNK_ASG_PUBLIC_V21_MARKET_CANONICAL_20260628",
-        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V5_DYNAMIC_SITEMAPS_20260628"
+        "x-gnk-asg-public-release": "GNK_ASG_PUBLIC_V20_CANONICAL_NAVIGATION_20260627",
+        "x-gnk-asg-publication-seo": "GNK_ASG_PUBLICATION_SEO_V4_R2_VISUALS_20260626"
       },
       "markers": {
-        "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628": true,
+        "GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628": false,
         "GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628": false,
         "GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628": false,
         "index-menu-unified-v16.js": false,
@@ -395,9 +386,9 @@
         "/en/contact/": false,
         "admin-center-memorandum-v1.js": false
       },
-      "length": 5562,
-      "snippet": "{\n  \"ok\": true,\n  \"version\": \"GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625\",\n  \"publicUx\": \"GNK_ASG_PUBLIC_UX_V12\",\n  \"publicVisual\": \"GNK_ASG_PUBLIC_VISUAL_V16_20260625\",\n  \"publicMenu\": \"UNIFIED_PUBLIC_MENU_V16\",\n  \"floatingHome\": \"GNK_ASG_FLOATING_HOME_V16\",\n  \"adminVisual\": \"GNK_ASG_ADMIN_UNIFIED_V7_20260625\",\n  \"favicon\": \"GNK_ASG_GOOGLE_FAVICON_V1\",\n  \"indexClock\": \"GNK_ASG_INDEX_CLOCK_V2\",\n  \"automation\": \"GNK_ASG_PORTAL_EXPERIENCE_V10_20260625\",\n  \"newsRotation\": \"GNK_ASG_INDEX_NEWS_ROTATIO"
+      "length": 5172,
+      "snippet": "{\n  \"ok\": true,\n  \"version\": \"GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625\",\n  \"publicUx\": \"GNK_ASG_PUBLIC_UX_V12\",\n  \"publicVisual\": \"GNK_ASG_PUBLIC_VISUAL_V16_20260625\",\n  \"publicMenu\": \"GNK_ASG_PUBLIC_MENU_V15\",\n  \"floatingHome\": \"GNK_ASG_FLOATING_HOME_V16\",\n  \"adminVisual\": \"GNK_ASG_ADMIN_UNIFIED_V7_20260625\",\n  \"favicon\": \"GNK_ASG_GOOGLE_FAVICON_V1\",\n  \"indexClock\": \"GNK_ASG_INDEX_CLOCK_V2\",\n  \"automation\": \"GNK_ASG_PORTAL_EXPERIENCE_V10_20260625\",\n  \"newsRotation\": \"GNK_ASG_INDEX_NEWS_ROTATIO"
     }
   },
-  "wranglerDeployments": "\n ⛅️ wrangler 4.105.0\n────────────────────\nCreated:     2026-06-28T09:03:05.909Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) b1e2ec32-8f5e-483e-af84-10cfb8a658c4\n                 Created:  2026-06-28T09:03:05.408Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:03:26.426Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 3900c47f-3458-42f6-adc3-ea50dcf519da\n                 Created:  2026-06-28T09:03:24.953Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:03:31.638Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 22130f03-b2d3-4b19-82de-a766581fdecb\n                 Created:  2026-06-28T09:03:31.050Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:09:13.896Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 89887ef1-684f-4380-aa6c-4f0df9db62e2\n                 Created:  2026-06-28T09:09:13.438Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:10:22.185Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) a667da35-a34e-4468-818f-af4aae2d06e5\n                 Created:  2026-06-28T09:10:21.724Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:10:56.921Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 04cea697-1beb-459f-914d-108466e552f3\n                 Created:  2026-06-28T09:10:56.519Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:13:12.697Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 2879dba9-f55a-4193-811f-40229b78bb8e\n                 Created:  2026-06-28T09:13:09.721Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:13:17.457Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) a0cb3ea0-9c10-4d92-8dce-37e1027a9672\n                 Created:  2026-06-28T09:13:16.905Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:13:46.483Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 90c5edfd-f7c1-469f-803f-3a7f7550ad58\n                 Created:  2026-06-28T09:13:45.102Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:15:04.866Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 7268807f-e1ba-4870-a810-495e29f583d9\n                 Created:  2026-06-28T09:15:04.306Z\n                     Tag:  -\n                 Message:  -\n"
+  "wranglerDeployments": "\n ⛅️ wrangler 4.105.0\n────────────────────\nCreated:     2026-06-28T09:03:26.426Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 3900c47f-3458-42f6-adc3-ea50dcf519da\n                 Created:  2026-06-28T09:03:24.953Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:03:31.638Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 22130f03-b2d3-4b19-82de-a766581fdecb\n                 Created:  2026-06-28T09:03:31.050Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:09:13.896Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 89887ef1-684f-4380-aa6c-4f0df9db62e2\n                 Created:  2026-06-28T09:09:13.438Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:10:22.185Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) a667da35-a34e-4468-818f-af4aae2d06e5\n                 Created:  2026-06-28T09:10:21.724Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:10:56.921Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 04cea697-1beb-459f-914d-108466e552f3\n                 Created:  2026-06-28T09:10:56.519Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:13:12.697Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 2879dba9-f55a-4193-811f-40229b78bb8e\n                 Created:  2026-06-28T09:13:09.721Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:13:17.457Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) a0cb3ea0-9c10-4d92-8dce-37e1027a9672\n                 Created:  2026-06-28T09:13:16.905Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:13:46.483Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 90c5edfd-f7c1-469f-803f-3a7f7550ad58\n                 Created:  2026-06-28T09:13:45.102Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:15:04.866Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 7268807f-e1ba-4870-a810-495e29f583d9\n                 Created:  2026-06-28T09:15:04.306Z\n                     Tag:  -\n                 Message:  -\n\nCreated:     2026-06-28T09:18:29.622Z\nAuthor:      undefined\nSource:      Unknown (deployment)\nMessage:     -\nVersion(s):  (100%) 8c495eae-43fa-46c4-bbfb-5357a4002754\n                 Created:  2026-06-28T09:18:29.222Z\n                     Tag:  -\n                 Message:  -\n"
 }
