@@ -9,6 +9,8 @@ on:
       - 'apps/portal/assets/index-menu-v30.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v30-index-polish.js'
   workflow_dispatch:
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: read
@@ -19,6 +21,13 @@ concurrency:
 
 jobs:
   deploy:
+    if: >-
+      github.event_name != 'issue_comment' ||
+      (github.event.issue.number == 65 &&
+       github.event.comment.body == '/deploy-index-v30' &&
+       (github.event.comment.author_association == 'OWNER' ||
+        github.event.comment.author_association == 'MEMBER' ||
+        github.event.comment.author_association == 'COLLABORATOR'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
