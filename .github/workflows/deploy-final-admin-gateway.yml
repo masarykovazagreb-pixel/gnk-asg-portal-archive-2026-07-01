@@ -116,10 +116,11 @@ jobs:
         run: |
           body=$(printf '## Final IQ200 gateway — %s\n\n- Commit: `%s`\n- Bundle validation: **%s**\n- Cloudflare deploy: **%s**\n- Live verification: **%s**\n- HR: `%s`\n- EN: `%s`\n- Admin: `%s`\n- Media: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$JOB_STATUS" "$GITHUB_SHA" "$VALIDATE_STATUS" "$DEPLOY_STATUS" "$VERIFY_STATUS" "$HR_CODE" "$EN_CODE" "$ADMIN_CODE" "$MEDIA_CODE" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
           gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
-          git fetch origin main
-          git reset --hard origin/main
-          mkdir -p deploy
-          cat > deploy/iq200-restore-status.txt <<EOF
+          if [ "$JOB_STATUS" != 'cancelled' ]; then
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p deploy
+            cat > deploy/iq200-restore-status.txt <<EOF
           status=$JOB_STATUS
           commit=$GITHUB_SHA
           validation=$VALIDATE_STATUS
@@ -131,11 +132,12 @@ jobs:
           media=$MEDIA_CODE
           run=https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           EOF
-          sed -i 's/^          //' deploy/iq200-restore-status.txt
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add deploy/iq200-restore-status.txt
-          if ! git diff --cached --quiet; then
-            git commit -m 'Record IQ200 production restore status [skip ci]'
-            git push origin HEAD:main
+            sed -i 's/^          //' deploy/iq200-restore-status.txt
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add deploy/iq200-restore-status.txt
+            if ! git diff --cached --quiet; then
+              git commit -m 'Record IQ200 production restore status [skip ci]'
+              git push origin HEAD:main
+            fi
           fi
