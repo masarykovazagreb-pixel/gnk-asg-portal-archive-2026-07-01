@@ -34,6 +34,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          printf '{"ok":false,"status":"VALIDATING_COMMAND","commandId":"%s"}\n' "$(jq -r '.commandId' ops/media-command.json)" > /tmp/media-result.json
           jq -e '.action == "SEND_TEST"' ops/media-command.json >/dev/null
           jq -e '.confirm == "SEND_TEST_MEDIA"' ops/media-command.json >/dev/null
           jq -e '.recipient == "beckuphome@gmail.com" or .recipient == "rht@gmx.com"' ops/media-command.json >/dev/null
@@ -46,9 +47,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat ops/assets/dinamo_logo.png.b64.part1 ops/assets/dinamo_logo.png.b64.part2 ops/assets/dinamo_logo.png.b64.part3 ops/assets/dinamo_logo.png.b64.part4 > ops/assets/dinamo_logo.png.b64
+          printf '{"ok":false,"status":"BUILDING_PDF","commandId":"%s"}\n' "$(jq -r '.commandId' ops/media-command.json)" > /tmp/media-result.json
           python -m pip install --disable-pip-version-check reportlab
-          python ops/scripts/build_the_code_media_pdf.py
+          python ops/scripts/build_the_code_media_pdf_v2.py
           test "$(head -c 5 /tmp/the-code.pdf)" = '%PDF-'
           size=$(stat -c %s /tmp/the-code.pdf)
           test "$size" -le 3200000
@@ -59,6 +60,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          printf '{"ok":false,"status":"UPLOADING_PDF_TO_R2","commandId":"%s"}\n' "$(jq -r '.commandId' "$GITHUB_WORKSPACE/ops/media-command.json")" > /tmp/media-result.json
           npx --yes wrangler@4 r2 object put "$R2_BUCKET/$PDF_KEY" \
             --file=/tmp/the-code.pdf \
             --content-type=application/pdf \
@@ -70,6 +72,7 @@ jobs:
         run: |
           set -euo pipefail
           command_id=$(jq -r '.commandId' ops/media-command.json)
+          printf '{"ok":false,"status":"QUEUING_COMMAND_IN_KV","commandId":"%s"}\n' "$command_id" > /tmp/media-result.json
           execution_key=$(openssl rand -hex 32)
           echo "::add-mask::$execution_key"
           created_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
@@ -87,44 +90,28 @@ jobs:
           echo "execution_key=$execution_key" >> "$GITHUB_OUTPUT"
 
       - name: Execute through Media Center bridge
-        id: execute_command
         shell: bash
         env:
           COMMAND_ID: ${{ steps.queue.outputs.command_id }}
           EXECUTION_KEY: ${{ steps.queue.outputs.execution_key }}
         run: |
           set -euo pipefail
+          printf '{"ok":false,"status":"CALLING_MEDIA_CENTER_BRIDGE","commandId":"%s"}\n' "$COMMAND_ID" > /tmp/media-result.json
           success=false
           for attempt in $(seq 1 36); do
-            http=$(curl -sS -o /tmp/media-result.json -w '%{http_code}' -X POST \
+            http=$(curl -sS -o /tmp/bridge-response.json -w '%{http_code}' -X POST \
               'https://gnk-asg.hr/api/media-command-bridge/process' \
               -H "X-GNK-Media-Command-Id: $COMMAND_ID" \
               -H "X-GNK-Media-Command-Key: $EXECUTION_KEY" \
               -H 'Content-Type: application/json' \
               --data '{}') || true
-            if [ "$http" = '200' ] && jq -e '.ok == true and .status == "SENT"' /tmp/media-result.json >/dev/null 2>&1; then
-              success=true
-              break
-            fi
-            if [ "$http" = '409' ] && jq -e '.error == "command_already_processed" and .result.ok == true' /tmp/media-result.json >/dev/null 2>&1; then
-              success=true
-              break
-            fi
+            cp /tmp/bridge-response.json /tmp/media-result.json 2>/dev/null || true
+            if [ "$http" = '200' ] && jq -e '.ok == true and .status == "SENT"' /tmp/media-result.json >/dev/null 2>&1; then success=true; break; fi
+            if [ "$http" = '409' ] && jq -e '.error == "command_already_processed" and .result.ok == true' /tmp/media-result.json >/dev/null 2>&1; then success=true; break; fi
             sleep 10
           done
           cat /tmp/media-result.json
-          if [ "$success" != 'true' ]; then
-            echo 'Media Center command failed.' >&2
-            exit 1
-          fi
-          {
-            echo '## Media Center command'
-            echo
-            echo "- Command: $COMMAND_ID"
-            echo "- Recipient: $(jq -r '.recipient // .result.recipient' /tmp/media-result.json)"
-            echo '- Status: SENT'
-            echo "- PDF bytes: $PDF_BYTES"
-          } >> "$GITHUB_STEP_SUMMARY"
+          [ "$success" = 'true' ]
 
       - name: Persist command result
         if: always()
@@ -132,10 +119,10 @@ jobs:
         run: |
           set -euo pipefail
           if [ ! -s /tmp/media-result.json ]; then
-            printf '{"ok":false,"status":"WORKFLOW_FAILED_BEFORE_BRIDGE","commandId":"%s","recordedAt":"%s"}\n' \
+            printf '{"ok":false,"status":"WORKFLOW_FAILED_WITHOUT_STAGE","commandId":"%s","recordedAt":"%s"}\n' \
               "$(jq -r '.commandId' ops/media-command.json)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/media-result.json
           fi
-          cp /tmp/media-result.json ops/media-command-result.json
+          jq --arg recorded "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '. + {recordedAt:$recorded}' /tmp/media-result.json > ops/media-command-result.json
           git config user.name 'GNK ASG Media Command'
           git config user.email 'media@gnk-asg.hr'
           git add ops/media-command-result.json
