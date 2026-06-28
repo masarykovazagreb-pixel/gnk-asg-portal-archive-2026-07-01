@@ -1,4 +1,5 @@
 /* THE CODE final inline layout fix — visible controls, full frame, aligned side panels */
+/* activation: V29 production verification R3 */
 body[data-gnk-index-priority="v4"] .code-inline-host{display:block!important;width:100%!important;max-width:100%!important;overflow:visible!important}
 body[data-gnk-index-priority="v4"] .code-inline-mount{display:block!important;width:100%!important;max-width:100%!important}
 body[data-gnk-index-priority="v4"] .ci-shell{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(320px,390px) minmax(0,1fr)!important;align-items:stretch!important;width:100%!important;min-height:0!important;height:auto!important;padding:15px!important;overflow:hidden!important}
