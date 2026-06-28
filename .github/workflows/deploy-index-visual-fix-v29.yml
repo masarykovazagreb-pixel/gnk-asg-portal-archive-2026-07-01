@@ -1,4 +1,4 @@
-name: Deploy Index Visual Fix V29
+name: Deploy Stable Public V29
 
 on:
   push:
@@ -8,6 +8,9 @@ on:
       - 'apps/portal/assets/index-priority-v1.js'
       - 'apps/portal/assets/index-code-layout-fix-v1.css'
       - 'apps/portal/assets/index-city-white-v1.css'
+      - 'apps/portal/downloads/index.html'
+      - 'apps/portal/en/downloads/index.html'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v29-pdf-centre.js'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v29-index-visual-fix.js'
   workflow_dispatch:
 
@@ -15,7 +18,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-index-visual-fix-v29
+  group: deploy-stable-public-v29
   cancel-in-progress: true
 
 jobs:
@@ -27,43 +30,37 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate visual fix
+      - name: Validate stable public package
         shell: bash
         run: |
           set -euo pipefail
           node --check apps/portal/assets/index-priority-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v29-pdf-centre.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v29-index-visual-fix.js
           grep -q 'ci-control--play' apps/portal/assets/index-code-layout-fix-v1.css
-          grep -q 'height:844px' apps/portal/assets/index-code-layout-fix-v1.css
-          grep -q 'color:#fff' apps/portal/assets/index-city-white-v1.css
-      - name: Deploy current Worker with V29 wrapper
+          grep -q 'finance-grid>.finance-card:nth-of-type(2)' apps/portal/assets/index-city-white-v1.css
+          grep -q 'gnk-pdf-centre-remove-floating-v30' workers/gnk-asg-direct-operator/src/index-admin-hub-v29-pdf-centre.js
+      - name: Deploy stable V29 Worker
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          set -euo pipefail
-          npx --yes wrangler@4 deploy src/index-admin-hub-v29-index-visual-fix.js --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify production activation
+        run: npx --yes wrangler@4 deploy src/index-admin-hub-v29-index-visual-fix.js --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify Index and Downloads
         shell: bash
         run: |
           set -euo pipefail
           CB="${GITHUB_RUN_ID}"
-          ok=0
-          for attempt in 1 2 3 4 5; do
+          for attempt in 1 2 3 4 5 6; do
             curl -sS -D /tmp/index.headers "https://gnk-asg.hr/?cb=${CB}-${attempt}" -o /tmp/index.html || true
-            curl -sS "https://gnk-asg.hr/assets/index-priority-v1.js?cb=${CB}-${attempt}" -o /tmp/priority.js || true
-            curl -sS "https://gnk-asg.hr/assets/index-code-layout-fix-v1.css?cb=${CB}-${attempt}" -o /tmp/layout.css || true
-            curl -sS "https://gnk-asg.hr/assets/index-city-white-v1.css?cb=${CB}-${attempt}" -o /tmp/cities.css || true
+            curl -sS -D /tmp/downloads.headers "https://gnk-asg.hr/downloads/?cb=${CB}-${attempt}" -o /tmp/downloads.html || true
             if grep -qi '^x-gnk-asg-index-visual-fix:' /tmp/index.headers \
-              && grep -q 'GNK_INDEX_PRIORITY_V4' /tmp/priority.js \
-              && grep -q 'ci-control--play' /tmp/layout.css \
-              && grep -q 'height:844px' /tmp/layout.css \
-              && grep -q 'color:#fff' /tmp/cities.css; then
-              ok=1
-              break
+              && grep -qi '^x-gnk-asg-downloads-ui: CLEAN_NO_MENU_NO_FLOATS_V30' /tmp/downloads.headers \
+              && grep -q 'gnk-pdf-centre-remove-floating-v30' /tmp/downloads.html \
+              && ! grep -q 'Error 1011' /tmp/index.html; then
+              echo 'STABLE_PUBLIC_V29_OK=true'
+              exit 0
             fi
             sleep 8
           done
-          test "$ok" = '1'
-          echo 'INDEX_VISUAL_FIX_V29_OK=true'
+          exit 1
