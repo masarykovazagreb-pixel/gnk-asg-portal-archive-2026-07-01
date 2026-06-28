@@ -1,6 +1,6 @@
 import {assignReceivingCenter,centerLabel,VERSION as CENTERS_VERSION} from './mail-receiving-centers-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_INBOUND_SERVICE_V1_METADATA_20260628';
+export const VERSION='GNK_ASG_MAIL_INBOUND_SERVICE_V2_STABLE_ID_20260628';
 export const INDEX_KEY='mail:inbound:index';
 
 const clean=(value,max=4000)=>String(value??'').replace(/\u0000/g,'').trim().slice(0,max);
@@ -16,7 +16,9 @@ function hash(value){
 }
 
 function datePart(date=new Date()){
-  return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit'}).format(date).replace(/-/g,'');
+  const parts=new Intl.DateTimeFormat('en',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date);
+  const values=Object.fromEntries(parts.map(part=>[part.type,part.value]));
+  return`${values.year}${values.month}${values.day}`;
 }
 
 function header(message,name){
@@ -30,9 +32,11 @@ function mailboxKey(address){
 }
 
 function caseIdentifier(message,receivedAt){
-  const messageId=header(message,'message-id');
-  const seed=[messageId,message?.from,message?.to,header(message,'subject'),receivedAt.slice(0,16)].join('|');
-  return`GNK-ASG-${datePart(new Date(receivedAt))}-${hash(seed)}`;
+  const messageId=header(message,'message-id').toLowerCase();
+  const stableSeed=messageId
+    ? [messageId,clean(message?.to,320).toLowerCase()].join('|')
+    : [clean(message?.from,320).toLowerCase(),clean(message?.to,320).toLowerCase(),header(message,'subject'),receivedAt.slice(0,16)].join('|');
+  return`GNK-ASG-${datePart(new Date(receivedAt))}-${hash(stableSeed)}`;
 }
 
 async function readJson(kv,key,fallback){
