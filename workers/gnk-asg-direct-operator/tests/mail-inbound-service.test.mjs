@@ -42,14 +42,14 @@ test('direct inbound metadata is stored without consuming MIME content',async()=
   assert.equal(result.record.rawSize,4567);
   assert.ok(result.record.receivingCenter.code);
   assert.ok(kv.data.has(INDEX_KEY));
-  assert.equal(VERSION,'GNK_ASG_MAIL_INBOUND_SERVICE_V2_STABLE_ID_20260628');
+  assert.equal(VERSION,'GNK_ASG_MAIL_INBOUND_SERVICE_V3_STABLE_MESSAGE_DATE_20260628');
 });
 
-test('same Message-ID is deduplicated even when redelivery time changes',async()=>{
+test('same Message-ID is deduplicated even when redelivery crosses calendar days',async()=>{
   const kv=memoryKv();
   const env={GNK_ASG_KV:kv};
   const first=await storeInboundMetadata(message(),env,{receivedAt:'2026-06-28T08:00:00.000Z'});
-  const second=await storeInboundMetadata(message(),env,{receivedAt:'2026-06-28T09:35:00.000Z'});
+  const second=await storeInboundMetadata(message(),env,{receivedAt:'2026-06-29T09:35:00.000Z'});
   assert.equal(first.record.caseId,second.record.caseId);
   assert.equal(second.duplicate,true);
   assert.equal(JSON.parse(await kv.get(INDEX_KEY)).length,1);
