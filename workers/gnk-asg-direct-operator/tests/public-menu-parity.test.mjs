@@ -42,3 +42,13 @@ test('Admin Center extension exposes the complete operational menu without live 
   for(const route of ['/memorandum-studio/','/social-share/','/wa-center/','/review/'])assert.ok(source.includes(route),route);
   assert.doesNotMatch(source,/dispatch-queue|queue-approved|send_email|MEDIA_OUTREACH_LIVE/);
 });
+
+test('Wrangler keeps production routes at root level before the assets table',()=>{
+  const source=read('workers/gnk-asg-direct-operator/wrangler.toml');
+  const routes=source.indexOf('\nroutes = [');
+  const assets=source.indexOf('\n[assets]');
+  assert.ok(routes>0,'root routes declaration missing');
+  assert.ok(assets>routes,'[assets] must follow the root routes declaration');
+  const assetsBody=source.slice(assets,source.indexOf('\n[[kv_namespaces]]',assets));
+  assert.doesNotMatch(assetsBody,/\nroutes\s*=/,'routes must not be nested in [assets]');
+});
