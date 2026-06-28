@@ -1,5 +1,5 @@
 name = "gnk-asg-direct-operator"
-main = "src/index-project50-v31-mail-inbox.js"
+main = "src/index-project50-v32-priority.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
@@ -126,10 +126,15 @@ MAIL_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 MAIL_INBOUND_AUTO_REPLY = "true"
 MAIL_INBOUND_AUTO_REPLY_MODE = "media-only"
 MAIL_MANUAL_LIVE = "true"
+MAIL_MANUAL_MAX_PER_HOUR = "10"
+MAIL_MANUAL_MAX_PER_DAY = "50"
 MAIL_MANDATORY_BCC = "rht@gmx.com"
 MAIL_PROFILE_TEST_LIVE = "true"
 MAIL_PROFILE_TEST_RECIPIENTS = "rht@gmx.com"
 MAIL_BOOTSTRAP_SMOKE_TEST = "true"
+MEDIA_OUTREACH_MAX_PER_HOUR = "10"
+MEDIA_OUTREACH_MAX_PER_DAY = "50"
+MEDIA_OUTREACH_LIVE = "false"
 
 [ai]
 binding = "AI"
