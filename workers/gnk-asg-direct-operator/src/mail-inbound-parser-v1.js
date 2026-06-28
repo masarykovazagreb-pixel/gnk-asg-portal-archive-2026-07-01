@@ -1,7 +1,7 @@
 import PostalMime from 'postal-mime';
 import {INDEX_KEY,VERSION as INBOUND_VERSION} from './mail-inbound-service-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_INBOUND_PARSER_V1_POSTAL_MIME_20260628';
+export const VERSION='GNK_ASG_MAIL_INBOUND_PARSER_V2_STATE_SAFE_20260628';
 export const MAX_RAW_SIZE=25*1024*1024;
 export const MAX_TEXT_LENGTH=100000;
 export const MAX_PDF_COUNT=5;
@@ -73,27 +73,44 @@ function addressValue(address){
   return clean(address.address,320);
 }
 
+function parsedStatus(base){
+  const status=clean(base?.status,120);
+  if(base?.autoReply?.sent||status.includes('auto-replied'))return'received-auto-replied-parsed';
+  if(status.includes('auto-reply-failed'))return'received-auto-reply-failed-parsed';
+  if(status.includes('no-auto-reply'))return'received-no-auto-reply-parsed';
+  return'received-parsed';
+}
+
+function failedStatus(base){
+  const status=clean(base?.status,120);
+  if(base?.autoReply?.sent||status.includes('auto-replied'))return'received-auto-replied-parse-failed';
+  if(status.includes('auto-reply-failed'))return'received-auto-reply-failed-parse-failed';
+  if(status.includes('no-auto-reply'))return'received-no-auto-reply-parse-failed';
+  return'received-parse-failed';
+}
+
 async function storePdfAttachments(parsed,record,env){
   const bucket=r2Store(env);
   const attachments=[];
+  let storedCount=0;
   let total=0;
   for(const [index,attachment] of (Array.isArray(parsed.attachments)?parsed.attachments:[]).entries()){
     const filename=clean(attachment?.filename||'',180);
     const mimeType=clean(attachment?.mimeType||'',120).toLowerCase();
     const isPdf=mimeType==='application/pdf'||filename.toLowerCase().endsWith('.pdf');
     if(!isPdf)continue;
-    if(attachments.length>=MAX_PDF_COUNT){
-      attachments.push({filename:filename||`attachment-${index+1}.pdf`,mimeType,size:0,stored:false,reason:'pdf_count_limit'});
-      continue;
-    }
     const bytes=bytesOf(attachment.content);
     const size=bytes.byteLength;
+    if(storedCount>=MAX_PDF_COUNT){
+      attachments.push({filename:filename||`attachment-${index+1}.pdf`,mimeType,size,stored:false,key:'',reason:'pdf_count_limit'});
+      continue;
+    }
     if(size>MAX_PDF_SIZE){
-      attachments.push({filename:filename||`attachment-${index+1}.pdf`,mimeType,size,stored:false,reason:'pdf_too_large'});
+      attachments.push({filename:filename||`attachment-${index+1}.pdf`,mimeType,size,stored:false,key:'',reason:'pdf_too_large'});
       continue;
     }
     if(total+size>MAX_PDF_TOTAL){
-      attachments.push({filename:filename||`attachment-${index+1}.pdf`,mimeType,size,stored:false,reason:'pdf_total_limit'});
+      attachments.push({filename:filename||`attachment-${index+1}.pdf`,mimeType,size,stored:false,key:'',reason:'pdf_total_limit'});
       continue;
     }
     total+=size;
@@ -105,6 +122,7 @@ async function storePdfAttachments(parsed,record,env){
     }
     try{
       await bucket.put(key,bytes,{httpMetadata:{contentType:'application/pdf',contentDisposition:`attachment; filename="${safe}"`},customMetadata:{caseId:record.caseId,source:'direct-email-routing',parserVersion:VERSION}});
+      storedCount+=1;
       attachments.push({filename:safe,mimeType:'application/pdf',size,stored:true,key,reason:''});
     }catch(error){
       attachments.push({filename:safe,mimeType:'application/pdf',size,stored:false,key:'',reason:`r2_error:${clean(error?.message||error,160)}`});
@@ -113,14 +131,16 @@ async function storePdfAttachments(parsed,record,env){
   return attachments;
 }
 
-async function persistParsedRecord(record,parsed,attachments,env,status='received-parsed'){
+async function persistParsedRecord(record,parsed,attachments,env){
   const kv=kvStore(env);
   if(!kv?.put)return record;
+  const latest=await readJson(kv,`mail:inbound:${record.caseId}`,record);
+  const base={...record,...latest};
   const text=clean(parsed.text||stripHtml(parsed.html||''),MAX_TEXT_LENGTH);
   const updated={
-    ...record,
-    status,
-    subject:clean(parsed.subject||record.subject||'(bez predmeta)',1000),
+    ...base,
+    status:parsedStatus(base),
+    subject:clean(parsed.subject||base.subject||'(bez predmeta)',1000),
     fromName:addressName(parsed.from),
     parsedFrom:addressValue(parsed.from),
     replyTo:(Array.isArray(parsed.replyTo)?parsed.replyTo:[]).map(addressValue).filter(Boolean),
@@ -129,6 +149,7 @@ async function persistParsedRecord(record,parsed,attachments,env,status='receive
     contentParsed:true,
     parsedAt:new Date().toISOString(),
     parserVersion:VERSION,
+    inboundVersion:INBOUND_VERSION,
     htmlAvailable:Boolean(parsed.html),
     textAvailable:Boolean(parsed.text),
     attachments,
@@ -155,8 +176,17 @@ async function persistParsedRecord(record,parsed,attachments,env,status='receive
 
 async function persistParseFailure(record,env,error){
   const kv=kvStore(env);
-  const updated={...record,status:'received-parse-failed',contentParsed:false,parseError:clean(error?.message||error,500),parserVersion:VERSION,parsedAt:new Date().toISOString()};
-  if(kv?.put)await writeJson(kv,`mail:inbound:${record.caseId}`,updated,{expirationTtl:60*60*24*365});
+  const latest=kv?.get?await readJson(kv,`mail:inbound:${record.caseId}`,record):record;
+  const base={...record,...latest};
+  const updated={...base,status:failedStatus(base),contentParsed:false,parseError:clean(error?.message||error,500),parserVersion:VERSION,inboundVersion:INBOUND_VERSION,parsedAt:new Date().toISOString()};
+  if(kv?.put){
+    await writeJson(kv,`mail:inbound:${record.caseId}`,updated,{expirationTtl:60*60*24*365});
+    const current=await readJson(kv,INDEX_KEY,[]);
+    if(Array.isArray(current)){
+      const index=current.map(item=>item?.caseId===record.caseId?{...item,status:updated.status,contentParsed:false,parseError:updated.parseError}:item);
+      await writeJson(kv,INDEX_KEY,index);
+    }
+  }
   return updated;
 }
 
