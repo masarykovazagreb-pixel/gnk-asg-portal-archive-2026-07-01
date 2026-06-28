@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 import {handleMailInbox,INBOX_PATH,VERSION} from '../src/mail-inbox-contact-v1.js';
 
 const records={
@@ -28,4 +30,14 @@ test('Mail Studio Inbox reports missing storage binding',async()=>{
   const payload=await response.json();
   assert.equal(payload.inboundConnected,false);
   assert.deepEqual(payload.items,[]);
+});
+
+test('Inbox UI prepares replies but contains no send endpoint',()=>{
+  const root=path.resolve(import.meta.dirname,'../../..');
+  const ui=fs.readFileSync(path.join(root,'apps/portal/assets/mail-studio-inbox-ui-v1.js'),'utf8');
+  const wrapper=fs.readFileSync(path.join(root,'workers/gnk-asg-direct-operator/src/index-project50-v31-mail-inbox.js'),'utf8');
+  assert.match(ui,/GNK_ASG_MAIL_STUDIO_INBOX_UI_V1_20260628/);
+  assert.match(ui,/Pripremi odgovor/);
+  assert.doesNotMatch(ui,/\/api\/admin-mail-send/);
+  assert.match(wrapper,/mail-studio-inbox-ui-v1\.js\?v=20260628-v1/);
 });
