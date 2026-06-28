@@ -27,20 +27,20 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate locked index and stable THE CODE iframe
+      - name: Validate active news runtime and worker config
         shell: bash
         run: |
           set -euxo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          test -s apps/portal/index.html
-          test -s apps/portal/en/index.html
-          grep -q '<nav class="menu"' apps/portal/index.html
-          grep -q '<nav class="menu"' apps/portal/en/index.html
-          grep -q 'id="codePreview"' apps/portal/index.html
-          grep -q 'id="codePreview"' apps/portal/en/index.html
-          grep -q 'STABLE_IFRAME' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          grep -q 'index-code-cleanup-v8' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
+          grep -q 'main = "src/index-admin-hub-v28-news-no-fallback.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q '\[triggers\]' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'crons = \["\*/5 \* \* \* \*"\]' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q "activeNewsLimit:100" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "archivePruneAt:1000" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "archiveDeleteCount:500" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "fallbackImagesAllowed:false" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "NEWS_LIFECYCLE_V18_ARCHIVE_1000_500" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
@@ -51,19 +51,71 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify production
+      - name: Verify production news runtime
         shell: bash
         run: |
           set -euo pipefail
           node <<'JS'
           const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-          async function read(path){const r=await fetch(`https://gnk-asg.hr${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});return {status:r.status,text:await r.text(),headers:Object.fromEntries(r.headers)}}
+          async function read(path){
+            const r=await fetch(`https://gnk-asg.hr${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});
+            const text=await r.text();
+            return {status:r.status,text,headers:Object.fromEntries(r.headers)};
+          }
+          function parseJson(label,text){
+            try{return JSON.parse(text)}catch(error){throw new Error(`${label} is not valid JSON: ${error.message}`)}
+          }
+          function hasFallback(item){
+            const image=String(item?.image||'');
+            const verification=item?.verification?.image||{};
+            return !image||image.includes('/assets/news-fallback')||verification.fallback===true||verification.ok===false;
+          }
+          function assertNewsArray(label,value,{max}){
+            if(!Array.isArray(value))throw new Error(`${label} is not an array`);
+            if(value.length>max)throw new Error(`${label} length ${value.length} exceeds ${max}`);
+            const fallbackCount=value.filter(hasFallback).length;
+            if(fallbackCount)throw new Error(`${label} contains ${fallbackCount} fallback/bad image items`);
+          }
+          function assertStatus(status){
+            const schedule=Array.isArray(status.newsSchedule)?status.newsSchedule.join(','):'';
+            if(!['09:00','16:00','21:00'].every(time=>schedule.includes(time)))throw new Error(`bad news schedule: ${schedule}`);
+            if(status.activeNewsLimit!==100)throw new Error(`bad activeNewsLimit: ${status.activeNewsLimit}`);
+            if(status.archivePruneAt!==1000)throw new Error(`bad archivePruneAt: ${status.archivePruneAt}`);
+            if(status.archiveDeleteCount!==500)throw new Error(`bad archiveDeleteCount: ${status.archiveDeleteCount}`);
+            if(status.archiveRetainAfterPrune!==500)throw new Error(`bad archiveRetainAfterPrune: ${status.archiveRetainAfterPrune}`);
+            if(status.contentContract?.fallbackImagesAllowed!==false)throw new Error('fallbackImagesAllowed is not false');
+            if(!String(status.entryPoint||'').includes('index-admin-hub-v28-news-no-fallback.js'))throw new Error(`bad entryPoint: ${status.entryPoint}`);
+          }
           for(let i=1;i<=24;i++){
-            const [hr,en,code]=await Promise.all([read('/'),read('/en/'),read('/the-code/?embed=1')]);
-            const ok=hr.status===200&&en.status===200&&code.status===200&&hr.text.includes('<nav class="menu"')&&en.text.includes('<nav class="menu"')&&hr.text.includes('id="codePreview"')&&en.text.includes('id="codePreview"')&&!hr.text.includes('index-code-cleanup-v8.js')&&!en.text.includes('index-code-cleanup-v8.js')&&hr.headers['x-gnk-asg-the-code-player']==='STABLE_IFRAME'&&en.headers['x-gnk-asg-the-code-player']==='STABLE_IFRAME';
-            console.log(JSON.stringify({attempt:i,ok,hr:hr.status,en:en.status,code:code.status,player:hr.headers['x-gnk-asg-the-code-player']}));
-            if(ok)process.exit(0);
-            await sleep(10000);
+            const [hr,en,feed,alias,archive,archiveAlias,statusRes]=await Promise.all([
+              read('/vijesti/'),
+              read('/news/'),
+              read('/data/news.json'),
+              read('/data/news-feed.json'),
+              read('/data/news-archive.json'),
+              read('/data/news_archive.json'),
+              read('/data/news-automation-status.json')
+            ]);
+            try{
+              if(hr.status!==200||en.status!==200)throw new Error(`news pages not reachable: HR ${hr.status}, EN ${en.status}`);
+              if(!hr.text.includes('/data/news')&&!hr.text.includes('Vijesti'))throw new Error('HR Vijesti page does not look like news route');
+              if(!en.text.includes('/data/news')&&!en.text.includes('News'))throw new Error('EN News page does not look like news route');
+              const active=parseJson('news.json',feed.text);
+              const activeAlias=parseJson('news-feed.json',alias.text);
+              const archived=parseJson('news-archive.json',archive.text);
+              const archivedAlias=parseJson('news_archive.json',archiveAlias.text);
+              const status=parseJson('news-automation-status.json',statusRes.text);
+              assertNewsArray('news.json',active,{max:100});
+              assertNewsArray('news-feed.json',activeAlias,{max:100});
+              assertNewsArray('news-archive.json',archived,{max:1000});
+              assertNewsArray('news_archive.json',archivedAlias,{max:1000});
+              assertStatus(status);
+              console.log(JSON.stringify({attempt:i,ok:true,active:active.length,archive:archived.length,runtime:status.newsRuntime,entryPoint:status.entryPoint}));
+              process.exit(0);
+            }catch(error){
+              console.log(JSON.stringify({attempt:i,ok:false,error:error.message,statuses:{hr:hr.status,en:en.status,feed:feed.status,alias:alias.status,archive:archive.status,archiveAlias:archiveAlias.status,status:statusRes.status}}));
+              await sleep(10000);
+            }
           }
           process.exit(1);
           JS
