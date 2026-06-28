@@ -2,9 +2,10 @@ import app from './index-project50-v30-unified-menu.js';
 import {handleMailInbox,INBOX_PATH,VERSION as INBOX_VERSION} from './mail-inbox-contact-v1.js';
 import {storeInboundMetadata,VERSION as DIRECT_INBOUND_VERSION} from './mail-inbound-service-v1.js';
 import {maybeSendInboundAutoReply,VERSION as INBOUND_REPLY_VERSION} from './mail-inbound-auto-reply-v1.js';
+import {parseAndStoreInboundContent,VERSION as INBOUND_PARSER_VERSION} from './mail-inbound-parser-v1.js';
 import {handleMailAiAssist,AI_PATH,VERSION as AI_VERSION,DEFAULT_MODEL as AI_DEFAULT_MODEL} from './mail-ai-assist-v2.js';
 
-export const VERSION='GNK_ASG_PROJECT50_V31_UNIFIED_INBOX_AUTO_REPLY_AI_20260628';
+export const VERSION='GNK_ASG_PROJECT50_V31_UNIFIED_INBOX_PARSED_AUTO_REPLY_AI_20260628';
 const STATUS_PATHS=new Set(['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json']);
 const MAIL_STUDIO_PATHS=new Set(['/mail-studio','/mail-studio-pro']);
 const MAIL_STUDIO_UI='<script defer src="/assets/mail-studio-inbox-ui-v1.js?v=20260628-v2"></script><script defer src="/assets/mail-studio-ai-media-v1.js?v=20260628-v1"></script>';
@@ -15,6 +16,7 @@ function stamp(response,extra={}){
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-mail-inbox',INBOX_VERSION);
   headers.set('x-gnk-asg-direct-inbound',DIRECT_INBOUND_VERSION);
+  headers.set('x-gnk-asg-inbound-parser',INBOUND_PARSER_VERSION);
   headers.set('x-gnk-asg-inbound-auto-reply',INBOUND_REPLY_VERSION);
   headers.set('x-gnk-asg-mail-ai',AI_VERSION);
   headers.set('x-gnk-asg-entry-wrapper',VERSION);
@@ -41,10 +43,11 @@ async function patchStatus(response,path,env){
     headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
     headers.set('x-gnk-asg-mail-inbox',INBOX_VERSION);
     headers.set('x-gnk-asg-direct-inbound',DIRECT_INBOUND_VERSION);
+    headers.set('x-gnk-asg-inbound-parser',INBOUND_PARSER_VERSION);
     headers.set('x-gnk-asg-inbound-auto-reply',INBOUND_REPLY_VERSION);
     headers.set('x-gnk-asg-mail-ai',AI_VERSION);
     headers.set('x-gnk-asg-entry-wrapper',VERSION);
-    return new Response(JSON.stringify({...payload,entryPoint:'src/index-project50-v31-mail-inbox.js',deployedEntryPoint:'src/index-project50-v31-mail-inbox.js',entryWrapper:VERSION,mailInbox:INBOX_VERSION,mailInboxConnected:true,mailInboxSources:['CONTACT_FORM_KV','DIRECT_EMAIL_METADATA_KV'],directInbound:DIRECT_INBOUND_VERSION,directInboundContentParsed:false,directInboundAutoReply:INBOUND_REPLY_VERSION,directInboundAutoReplyEnabled:String(env.MAIL_INBOUND_AUTO_REPLY||'false').toLowerCase()==='true',directInboundAutoReplyMode:String(env.MAIL_INBOUND_AUTO_REPLY_MODE||'media-only'),mailInboxUi:'GNK_ASG_MAIL_STUDIO_INBOX_UI_V2_CENTERS_20260628',receivingCenters:'GNK_ASG_MAIL_RECEIVING_CENTERS_V1_20260628',receivingCenterCount:10,mailAi:AI_VERSION,mailAiUi:'GNK_ASG_MAIL_STUDIO_AI_MEDIA_V1_20260628',mailAiModel:String(env.MAIL_AI_MODEL||env.AUTO_EDITOR_MODEL||AI_DEFAULT_MODEL),mailAiBinding:Boolean(env.AI&&typeof env.AI.run==='function'),mailAiProtectedBy:'MAIL_CENTER_SESSION_GATE',checkedAt:new Date().toISOString()},null,2),{status:response.status,statusText:response.statusText,headers});
+    return new Response(JSON.stringify({...payload,entryPoint:'src/index-project50-v31-mail-inbox.js',deployedEntryPoint:'src/index-project50-v31-mail-inbox.js',entryWrapper:VERSION,mailInbox:INBOX_VERSION,mailInboxConnected:true,mailInboxSources:['CONTACT_FORM_KV','DIRECT_EMAIL_KV'],directInbound:DIRECT_INBOUND_VERSION,directInboundParser:INBOUND_PARSER_VERSION,directInboundContentParsed:true,directInboundPdfStorage:'R2_LIMITED_PDF_ONLY',directInboundAutoReply:INBOUND_REPLY_VERSION,directInboundAutoReplyEnabled:String(env.MAIL_INBOUND_AUTO_REPLY||'false').toLowerCase()==='true',directInboundAutoReplyMode:String(env.MAIL_INBOUND_AUTO_REPLY_MODE||'media-only'),mailInboxUi:'GNK_ASG_MAIL_STUDIO_INBOX_UI_V2_CENTERS_20260628',receivingCenters:'GNK_ASG_MAIL_RECEIVING_CENTERS_V1_20260628',receivingCenterCount:10,mailAi:AI_VERSION,mailAiUi:'GNK_ASG_MAIL_STUDIO_AI_MEDIA_V1_20260628',mailAiModel:String(env.MAIL_AI_MODEL||env.AUTO_EDITOR_MODEL||AI_DEFAULT_MODEL),mailAiBinding:Boolean(env.AI&&typeof env.AI.run==='function'),mailAiProtectedBy:'MAIL_CENTER_SESSION_GATE',checkedAt:new Date().toISOString()},null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
 
@@ -67,7 +70,12 @@ async function processInbound(message,env){
   const autoReply=intake?.record
     ? await maybeSendInboundAutoReply(message,env,intake.record).catch(error=>({ok:false,sent:false,reason:'auto_reply_processing_failed',error:String(error?.message||error)}))
     : {ok:false,sent:false,reason:'inbound_record_missing'};
-  return{intake,autoReply};
+  const parsed=intake?.record
+    ? intake.record.contentParsed
+      ? {ok:true,parsed:true,reason:'already_parsed',record:intake.record}
+      : await parseAndStoreInboundContent(message,env,intake.record).catch(error=>({ok:false,parsed:false,reason:'parser_processing_failed',error:String(error?.message||error)}))
+    : {ok:false,parsed:false,reason:'inbound_record_missing'};
+  return{intake,autoReply,parsed};
 }
 
 export default{
