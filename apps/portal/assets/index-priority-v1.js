@@ -7,13 +7,16 @@
   if(!stage)return;
   document.body.dataset.gnkIndexPriority='v4';
 
-  if(!document.querySelector('link[data-code-layout-fix-v1]')){
+  const loadStyle=(selector,href,dataKey)=>{
+    if(document.querySelector(selector))return;
     const link=document.createElement('link');
     link.rel='stylesheet';
-    link.href='/assets/index-code-layout-fix-v1.css?v=20260628-v1';
-    link.dataset.codeLayoutFixV1='';
+    link.href=href;
+    link.dataset[dataKey]='';
     document.head.appendChild(link);
-  }
+  };
+  loadStyle('link[data-code-layout-fix-v1]','/assets/index-code-layout-fix-v1.css?v=20260628-v2','codeLayoutFixV1');
+  loadStyle('link[data-index-city-white-v1]','/assets/index-city-white-v1.css?v=20260628-v2','indexCityWhiteV1');
 
   const inlineHost=stage.querySelector('.code-inline-host');
   if(inlineHost){
