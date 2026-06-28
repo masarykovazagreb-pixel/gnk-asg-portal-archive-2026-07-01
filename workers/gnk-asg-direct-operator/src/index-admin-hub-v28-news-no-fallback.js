@@ -9,11 +9,31 @@ const STATUS_PATHS=new Set(['/data/news-automation-status.json','/data/deploymen
 const PUBLIC_NEWS_PATHS=new Set(['/data/news.json','/data/news-feed.json']);
 const PUBLIC_ARCHIVE_PATHS=new Set(['/data/news-archive.json','/data/news_archive.json']);
 const MEDIA_COMMAND_STATUS='/api/media-command-center/status';
+const DIRECT_HTML=new Map([
+  ['/','/index.html'],
+  ['/en','/en/index.html'],
+  ['/contact','/contact/index.html'],
+  ['/en/contact','/en/contact/index.html']
+]);
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/'}
 function noStore(headers){headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');headers.delete('last-modified');headers.set('content-type','application/json; charset=utf-8');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return headers}
+function htmlHeaders(headers){headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');headers.delete('last-modified');headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return headers}
 function hasPublicFallbackImage(item){const image=String(item?.image||'');const verification=item?.verification?.image||{};return !image||image.includes('/assets/news-fallback')||verification.fallback===true||verification.ok===false}
 function normalizedNewsItem(item){return {...item,verification:{...(item.verification||{}),image:{...(item.verification?.image||{}),ok:true,fallback:false}}}}
+async function directHtml(request,env,path){
+  if(request.method!=='GET'||!DIRECT_HTML.has(path)||!env.ASSETS?.fetch)return null;
+  const assetPath=DIRECT_HTML.get(path);
+  const assetUrl=new URL(assetPath,request.url);
+  const response=await env.ASSETS.fetch(new Request(assetUrl.toString(),{method:'GET',headers:{accept:'text/html'}}));
+  if(!response.ok)return null;
+  const headers=htmlHeaders(new Headers(response.headers));
+  headers.set('x-gnk-asg-active-entrypoint',ENTRYPOINT);
+  headers.set('x-gnk-asg-static-source',assetPath);
+  if(path==='/'||path==='/en')headers.set('x-gnk-asg-index-menu','LOCKED_REDUCED_PUBLIC_MENU');
+  if(path==='/contact'||path==='/en/contact')headers.set('x-gnk-asg-contact-ui','INDEX_ALIGNED_V5');
+  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+}
 async function patchStatus(response,path){
   if(!STATUS_PATHS.has(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   try{
@@ -57,7 +77,7 @@ async function patchMediaCommandStatus(response,path){
 }
 
 export default{
-  async fetch(request,env,ctx){const path=pathOf(request);const accessRequest=request.clone();let response=await app.fetch(request,env,ctx);response=await patchStatus(response,path);response=await patchPublicNewsData(response,path);response=await applyMediaApplicationAccess(accessRequest,env,response);return patchMediaCommandStatus(response,path)},
+  async fetch(request,env,ctx){const path=pathOf(request);const direct=await directHtml(request,env,path);if(direct)return direct;const accessRequest=request.clone();let response=await app.fetch(request,env,ctx);response=await patchStatus(response,path);response=await patchPublicNewsData(response,path);response=await applyMediaApplicationAccess(accessRequest,env,response);return patchMediaCommandStatus(response,path)},
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
   async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}
 };
