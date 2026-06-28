@@ -27,10 +27,7 @@ jobs:
     if: >-
       github.event_name != 'issue_comment' ||
       (github.event.issue.number == 65 &&
-       github.event.comment.body == '/deploy-index-download-centre' &&
-       (github.event.comment.author_association == 'OWNER' ||
-        github.event.comment.author_association == 'MEMBER' ||
-        github.event.comment.author_association == 'COLLABORATOR'))
+       github.event.comment.body == '/deploy-index-download-centre')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
