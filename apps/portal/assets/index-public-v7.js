@@ -2,6 +2,23 @@
   'use strict';
   const en=document.documentElement.lang==='en';
   const text=(hr,enText)=>en?enText:hr;
+
+  const menu=document.querySelector('.index-nav .menu');
+  if(menu){
+    const items=en
+      ? [['#the-code','THE CODE'],['#financials','Financials'],['#network','Network'],['/markets/','Markets'],['/en/contact/','Contact'],['/admin-center/','Admin'],['/','HR','lang']]
+      : [['#the-code','THE CODE'],['#financije','Financije'],['#mreza','Mreža'],['/trzista/','Tržišta'],['/contact/','Kontakt'],['/admin-center/','Admin'],['/en/','EN','lang']];
+    menu.replaceChildren(...items.map(([href,label,className])=>{
+      const link=document.createElement('a');
+      link.href=href;
+      link.textContent=label;
+      if(className)link.className=className;
+      if(href==='/admin-center/')link.rel='nofollow';
+      return link;
+    }));
+    document.body.dataset.gnkIndexMenu='minimum-v1';
+  }
+
   const reports={
     asg:'/documents/GNK_ASG_Financijski_izvjestaj_FY2025.pdf',
     dinamo:'/documents/GNK_DINAMO_Ltd_Konsolidirani_financijski_izvjestaj_FY2025.pdf'
