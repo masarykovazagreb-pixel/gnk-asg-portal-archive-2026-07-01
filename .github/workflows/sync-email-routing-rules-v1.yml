@@ -1,0 +1,53 @@
+name: Sync GNK ASG Email Routing Rules V1
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Use dry-run first. Apply creates or updates the ten explicit mailbox rules."
+        required: true
+        default: "dry-run"
+        type: choice
+        options:
+          - dry-run
+          - apply
+      allow_replace_existing:
+        description: "Permit replacing an existing non-worker rule for the same address"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-email-routing-rules-v1
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate routing configuration
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check scripts/sync-email-routing-rules.mjs
+          node -e "const c=require('./config/email-routing-worker-rules-v1.json'); if(c.addresses.length!==10) process.exit(1); if(new Set(c.addresses).size!==10) process.exit(1); if(c.worker!=='gnk-asg-direct-operator') process.exit(1);"
+          grep -q 'GNK_ASG_EMAIL_ROUTING_RULES_V1_20260628' config/email-routing-worker-rules-v1.json
+      - name: Preview or apply Email Routing rules
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          APPLY_EMAIL_ROUTING: ${{ inputs.mode == 'apply' && 'true' || 'false' }}
+          ALLOW_REPLACE_EXISTING_EMAIL_RULES: ${{ inputs.allow_replace_existing && 'true' || 'false' }}
+        run: node scripts/sync-email-routing-rules.mjs
+      - name: Confirm execution mode
+        run: |
+          echo "Mode: ${{ inputs.mode }}"
+          echo "No message was generated, forwarded, replied to, or sent by this workflow."
