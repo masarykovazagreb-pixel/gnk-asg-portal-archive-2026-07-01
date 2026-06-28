@@ -1,0 +1,50 @@
+import app from './index-admin-hub-v27-news-status.js';
+
+export const VERSION='GNK_ASG_ADMIN_HUB_V28_PUBLIC_NEWS_NO_FALLBACK_20260628';
+const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627';
+const PUBLIC_NEWS_PATHS=new Set(['/data/news.json','/data/news-feed.json']);
+const PUBLIC_ARCHIVE_PATHS=new Set(['/data/news-archive.json','/data/news_archive.json']);
+
+function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/'}
+function noStore(headers){
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.delete('etag');
+  headers.delete('last-modified');
+  headers.set('content-type','application/json; charset=utf-8');
+  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  return headers;
+}
+function hasPublicFallbackImage(item){
+  const image=String(item?.image||'');
+  const verification=item?.verification?.image||{};
+  return !image||image.includes('/assets/news-fallback')||verification.fallback===true||verification.ok===false;
+}
+function normalizedNewsItem(item){
+  return {...item,verification:{...(item.verification||{}),image:{...(item.verification?.image||{}),ok:true,fallback:false}}};
+}
+async function patchPublicNewsData(response,path){
+  if(!response.ok||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
+  if(!PUBLIC_NEWS_PATHS.has(path)&&!PUBLIC_ARCHIVE_PATHS.has(path))return response;
+  try{
+    const payload=await response.json();
+    if(!Array.isArray(payload))return response;
+    const filtered=payload.filter(item=>!hasPublicFallbackImage(item)).map(normalizedNewsItem);
+    const limited=PUBLIC_NEWS_PATHS.has(path)?filtered.slice(0,100):(filtered.length>1000?filtered.slice(0,500):filtered.slice(0,1000));
+    const headers=noStore(new Headers(response.headers));
+    headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);
+    headers.set('x-gnk-asg-news-no-public-fallback','ENFORCED');
+    headers.set('x-gnk-asg-news-active-limit',PUBLIC_NEWS_PATHS.has(path)?'100':'1000_500');
+    headers.set('x-gnk-asg-news-filtered-fallback-count',String(payload.length-filtered.length));
+    return new Response(JSON.stringify(limited,null,2),{status:response.status,statusText:response.statusText,headers});
+  }catch{return response}
+}
+
+export default{
+  async fetch(request,env,ctx){
+    const path=pathOf(request);
+    return patchPublicNewsData(await app.fetch(request,env,ctx),path);
+  },
+  async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
+  async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}
+};
