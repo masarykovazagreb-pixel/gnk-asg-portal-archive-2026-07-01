@@ -1,0 +1,73 @@
+name: Deploy Index Polish V30
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-index-polish-v30.yml'
+      - 'apps/portal/assets/index-polish-v30.css'
+      - 'apps/portal/assets/index-menu-v30.js'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v30-index-polish.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-index-polish-v30
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate V30 package
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/index-menu-v30.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v30-index-polish.js
+          test -s apps/portal/assets/index-polish-v30.css
+          grep -q 'GNK_ASG_ADMIN_HUB_V30_MENU_CITY_FINANCE_POLISH_20260628' workers/gnk-asg-direct-operator/src/index-admin-hub-v30-index-polish.js
+          grep -q 'location-directory' apps/portal/assets/index-polish-v30.css
+          grep -q 'finance-card:nth-of-type(2)' apps/portal/assets/index-polish-v30.css
+          grep -q 'trzista|markets' apps/portal/assets/index-menu-v30.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy src/index-admin-hub-v30-index-polish.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Deploy V30 to Cloudflare
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy src/index-admin-hub-v30-index-polish.js --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify production V30
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 24); do
+            CB="${GITHUB_RUN_ID}-${attempt}"
+            curl -sS -D /tmp/hr.headers "https://gnk-asg.hr/?cb=${CB}" -o /tmp/hr.html || true
+            curl -sS -D /tmp/en.headers "https://gnk-asg.hr/en/?cb=${CB}" -o /tmp/en.html || true
+            curl -sS "https://gnk-asg.hr/assets/index-polish-v30.css?cb=${CB}" -o /tmp/polish.css || true
+            curl -sS "https://gnk-asg.hr/assets/index-menu-v30.js?cb=${CB}" -o /tmp/menu.js || true
+            if grep -qi '^x-gnk-asg-index-polish: GNK_ASG_ADMIN_HUB_V30_MENU_CITY_FINANCE_POLISH_20260628' /tmp/hr.headers \
+              && grep -q 'index-polish-v30.css' /tmp/hr.html \
+              && grep -q 'index-menu-v30.js' /tmp/hr.html \
+              && grep -q '>Admin<' /tmp/hr.html \
+              && ! grep -q '>Tržišta<' /tmp/hr.html \
+              && ! grep -q '>Markets<' /tmp/en.html \
+              && grep -q 'location-directory' /tmp/polish.css \
+              && grep -q 'finance-card:nth-of-type(2)' /tmp/polish.css \
+              && grep -q '__GNK_INDEX_MENU_V30__' /tmp/menu.js; then
+              echo 'INDEX_POLISH_V30_OK=true'
+              exit 0
+            fi
+            sleep 5
+          done
+          echo 'V30 production verification failed' >&2
+          exit 1
