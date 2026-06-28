@@ -27,15 +27,33 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate active news runtime and worker config
+      - name: Validate portal, reduced menu and news runtime
         shell: bash
         run: |
           set -euxo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          test -s apps/portal/index.html
+          test -s apps/portal/en/index.html
+          node <<'JS'
+          const fs=require('node:fs');
+          const checks=[
+            ['apps/portal/index.html',['THE CODE','Financije','Mreža','Tržišta','Admin','Kontakt','EN'],['/vijesti/','/objave/','/visual-index/','/assistant/']],
+            ['apps/portal/en/index.html',['THE CODE','Financials','Network','Markets','Admin','Contact','HR'],['/news/','/publications/','/visual-index/','/en/assistant/']]
+          ];
+          for(const [file,required,forbidden] of checks){
+            const html=fs.readFileSync(file,'utf8');
+            const nav=html.match(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i)?.[0]||'';
+            if(!nav)throw new Error(`${file}: public menu missing`);
+            for(const text of required)if(!nav.includes(text))throw new Error(`${file}: required menu item missing: ${text}`);
+            for(const href of forbidden)if(nav.includes(href))throw new Error(`${file}: hidden menu route returned: ${href}`);
+          }
+          JS
           grep -q 'main = "src/index-admin-hub-v28-news-no-fallback.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q '\[triggers\]' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'crons = \["\*/5 \* \* \* \*"\]' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'LOCKED_REDUCED_PUBLIC_MENU' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
+          grep -q "x-gnk-asg-gallery-primary-menu','HIDDEN'" workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           grep -q "activeNewsLimit:100" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "archivePruneAt:1000" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "archiveDeleteCount:500" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
@@ -51,7 +69,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify production news runtime
+      - name: Verify production portal and news runtime
         shell: bash
         run: |
           set -euo pipefail
@@ -85,9 +103,20 @@ jobs:
             if(status.archiveRetainAfterPrune!==500)throw new Error(`bad archiveRetainAfterPrune: ${status.archiveRetainAfterPrune}`);
             if(status.contentContract?.fallbackImagesAllowed!==false)throw new Error('fallbackImagesAllowed is not false');
             if(!String(status.entryPoint||'').includes('index-admin-hub-v28-news-no-fallback.js'))throw new Error(`bad entryPoint: ${status.entryPoint}`);
+            if(status.indexMenu!=='LOCKED_REDUCED_PUBLIC_MENU')throw new Error(`bad indexMenu: ${status.indexMenu}`);
+          }
+          function assertMenu(label,response,required,forbidden){
+            if(response.status!==200)throw new Error(`${label} status ${response.status}`);
+            const nav=response.text.match(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i)?.[0]||'';
+            if(!nav)throw new Error(`${label} menu missing`);
+            for(const text of required)if(!nav.includes(text))throw new Error(`${label} required menu item missing: ${text}`);
+            for(const href of forbidden)if(nav.includes(href))throw new Error(`${label} hidden menu route returned: ${href}`);
+            if(response.headers['x-gnk-asg-index-menu']!=='LOCKED_REDUCED_PUBLIC_MENU')throw new Error(`${label} worker menu marker missing`);
           }
           for(let i=1;i<=24;i++){
-            const [hr,en,feed,alias,archive,archiveAlias,statusRes]=await Promise.all([
+            const [root,enRoot,hr,en,feed,alias,archive,archiveAlias,statusRes]=await Promise.all([
+              read('/'),
+              read('/en/'),
               read('/vijesti/'),
               read('/news/'),
               read('/data/news.json'),
@@ -97,6 +126,8 @@ jobs:
               read('/data/news-automation-status.json')
             ]);
             try{
+              assertMenu('HR index',root,['THE CODE','Financije','Mreža','Tržišta','Admin','Kontakt','EN'],['/vijesti/','/objave/','/visual-index/','/assistant/']);
+              assertMenu('EN index',enRoot,['THE CODE','Financials','Network','Markets','Admin','Contact','HR'],['/news/','/publications/','/visual-index/','/en/assistant/']);
               if(hr.status!==200||en.status!==200)throw new Error(`news pages not reachable: HR ${hr.status}, EN ${en.status}`);
               if(!hr.text.includes('/data/news')&&!hr.text.includes('Vijesti'))throw new Error('HR Vijesti page does not look like news route');
               if(!en.text.includes('/data/news')&&!en.text.includes('News'))throw new Error('EN News page does not look like news route');
@@ -110,10 +141,10 @@ jobs:
               assertNewsArray('news-archive.json',archived,{max:1000});
               assertNewsArray('news_archive.json',archivedAlias,{max:1000});
               assertStatus(status);
-              console.log(JSON.stringify({attempt:i,ok:true,active:active.length,archive:archived.length,runtime:status.newsRuntime,entryPoint:status.entryPoint}));
+              console.log(JSON.stringify({attempt:i,ok:true,menu:status.indexMenu,active:active.length,archive:archived.length,runtime:status.newsRuntime,entryPoint:status.entryPoint}));
               process.exit(0);
             }catch(error){
-              console.log(JSON.stringify({attempt:i,ok:false,error:error.message,statuses:{hr:hr.status,en:en.status,feed:feed.status,alias:alias.status,archive:archive.status,archiveAlias:archiveAlias.status,status:statusRes.status}}));
+              console.log(JSON.stringify({attempt:i,ok:false,error:error.message,statuses:{root:root.status,enRoot:enRoot.status,hr:hr.status,en:en.status,feed:feed.status,alias:alias.status,archive:archive.status,archiveAlias:archiveAlias.status,status:statusRes.status}}));
               await sleep(10000);
             }
           }
