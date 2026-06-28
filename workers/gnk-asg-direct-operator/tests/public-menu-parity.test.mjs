@@ -7,9 +7,13 @@ const root=path.resolve(import.meta.dirname,'../../..');
 const read=file=>fs.readFileSync(path.join(root,file),'utf8');
 const stylesheets=html=>[...html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["']/gi)].map(match=>match[1]);
 const classSequence=html=>[...html.matchAll(/\bclass=["']([^"']+)["']/gi)].map(match=>match[1].trim().replace(/\s+/g,' '));
-const tagCounts=html=>{
+const tagCounts=(html,ignored=new Set())=>{
   const counts={};
-  for(const match of html.matchAll(/<([a-z][a-z0-9-]*)\b/gi)){const tag=match[1].toLowerCase();counts[tag]=(counts[tag]||0)+1;}
+  for(const match of html.matchAll(/<([a-z][a-z0-9-]*)\b/gi)){
+    const tag=match[1].toLowerCase();
+    if(ignored.has(tag))continue;
+    counts[tag]=(counts[tag]||0)+1;
+  }
   return counts;
 };
 const linksBlock=source=>{
@@ -51,14 +55,22 @@ test('HR and EN index use identical design assets and HTML class structure',()=>
   assert.deepEqual(tagCounts(en),tagCounts(hr));
 });
 
-test('HR and EN contact use identical design assets and HTML class structure',()=>{
+test('HR and EN contact use identical visual structure and submit endpoint',()=>{
   const hr=read('apps/portal/contact/index.html');
   const en=read('apps/portal/en/contact/index.html');
   assert.deepEqual(stylesheets(en),stylesheets(hr));
   assert.deepEqual(classSequence(en),classSequence(hr));
-  assert.deepEqual(tagCounts(en),tagCounts(hr));
+  assert.deepEqual(tagCounts(en,new Set(['option'])),tagCounts(hr,new Set(['option'])));
   assert.ok(hr.includes('/api/contact-submit'));
   assert.ok(en.includes('/api/contact-submit'));
+});
+
+test('shared contact parity module provides identical department values',()=>{
+  const parity=read('apps/portal/assets/contact-parity-v1.js');
+  const menu=read('apps/portal/assets/public-menu-v10.js');
+  for(const value of ['info','contact','media','press','legal','privacy','it','ubo','sefic','assistant'])assert.ok(parity.includes(`'${value}'`),value);
+  assert.match(parity,/hr-en-identical/);
+  assert.match(menu,/contact-parity-v1\.js\?v=20260628-v1/);
 });
 
 test('index runtime removes legacy floating controls in both languages',()=>{
