@@ -17,9 +17,7 @@
   const play=controls.querySelector('[data-code-action="play"]');
   const status=controls.querySelector('.gnk-code-priority-status');
   const setStatus=text=>{status.textContent=text;};
-  const post=type=>{
-    try{frame?.contentWindow?.postMessage({type},location.origin);return true;}catch{return false;}
-  };
+  const post=type=>{try{frame?.contentWindow?.postMessage({type},location.origin);return true;}catch{return false;}};
   const ready=()=>{play.disabled=false;setStatus(en?'Ready. Press Play.':'Spremno. Pritisnite Pokreni.');};
 
   controls.addEventListener('click',event=>{
@@ -31,8 +29,12 @@
       button.textContent=`❚❚ ${en?'Playing':'Pokrenuto'}`;
       setStatus(en?'THE CODE presentation is running.':'THE CODE prezentacija je pokrenuta.');
     }else if(action==='live'){
-      frame?.contentWindow?.postMessage({type:'gnk-code-live'},location.origin);
-      try{frame?.contentWindow?.postMessage({type:'gnk-code-ping'},location.origin);}catch{}
+      try{
+        if(typeof frame?.contentWindow?.showLiveState==='function')frame.contentWindow.showLiveState();
+        else post('gnk-code-ping');
+      }catch{post('gnk-code-ping');}
+      play.disabled=false;
+      play.textContent=`▶ ${en?'Play':'Pokreni'}`;
       setStatus(en?'Final live state displayed.':'Prikazano je završno stanje.');
     }else if(action==='fullscreen'){
       const target=stage.querySelector('.code-frame,.code-inline-host')||frame||stage;
