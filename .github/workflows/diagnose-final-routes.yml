@@ -3,12 +3,10 @@ name: Diagnose Final Routes
 on:
   push:
     branches: [verify-final-portal]
-    paths:
-      - '.github/workflows/diagnose-final-routes.yml'
+    paths: ['.github/workflows/diagnose-final-routes.yml']
   pull_request:
     branches: [main]
-    paths:
-      - '.github/workflows/diagnose-final-routes.yml'
+    paths: ['.github/workflows/diagnose-final-routes.yml']
 
 permissions:
   contents: read
@@ -18,22 +16,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Read live route states without sending mail
+      - name: Read protected route states
         shell: bash
         run: |
           set -u
           CB="${GITHUB_RUN_ID}"
-          check(){
-            NAME="$1"; URL="$2"
-            CODE=$(curl -sS -D "/tmp/${NAME}.headers" -o "/tmp/${NAME}.body" -w '%{http_code}' "$URL" || true)
-            echo "=== ${NAME} HTTP ${CODE} ==="
-            grep -iE '^(location|content-type|x-gnk-asg-[^:]+):' "/tmp/${NAME}.headers" | head -n 20 || true
-            head -c 500 "/tmp/${NAME}.body" | tr '\n' ' ' || true
-            echo
-          }
-          check index "https://gnk-asg.hr/?cb=${CB}"
-          check contact "https://gnk-asg.hr/contact/?cb=${CB}"
-          check contact_api "https://gnk-asg.hr/api/contact-submit?cb=${CB}"
-          check admin "https://gnk-asg.hr/admin-center/?cb=${CB}"
-          check mail "https://gnk-asg.hr/api/mail-center/send-readiness?cb=${CB}"
-          check media "https://gnk-asg.hr/api/media-command-center/delivery-status?cb=${CB}"
+          MAIL_CODE=$(curl -sS -D /tmp/mail.h -o /tmp/mail.b -w '%{http_code}' "https://gnk-asg.hr/api/mail-center/send-readiness?cb=${CB}" || true)
+          echo "MAIL_HTTP=${MAIL_CODE}"
+          grep -iE '^(content-type|location|x-gnk-asg-[^:]+):' /tmp/mail.h || true
+          head -c 1200 /tmp/mail.b | tr '\n' ' ' || true
+          echo
+          MEDIA_CODE=$(curl -sS -D /tmp/media.h -o /tmp/media.b -w '%{http_code}' "https://gnk-asg.hr/api/media-command-center/delivery-status?cb=${CB}" || true)
+          echo "MEDIA_HTTP=${MEDIA_CODE}"
+          grep -iE '^(content-type|location|x-gnk-asg-[^:]+):' /tmp/media.h || true
+          head -c 1200 /tmp/media.b | tr '\n' ' ' || true
+          echo
