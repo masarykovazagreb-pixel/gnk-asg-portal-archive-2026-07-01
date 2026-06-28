@@ -1,4 +1,4 @@
-import app from './index-admin-hub-v28-news-no-fallback.js';
+import app from './index-admin-hub-v28-core.js';
 
 export const VERSION='GNK_ASG_ADMIN_HUB_V29_PDF_CENTRE_20260628';
 const INDEX_PATHS=new Set(['/','/en']);
