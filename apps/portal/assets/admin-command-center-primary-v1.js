@@ -1,3 +1,4 @@
+// GNK ASG Command Center primary action · validated release 2026-06-28 · final validation
 (() => {
   'use strict';
   function bind(){
