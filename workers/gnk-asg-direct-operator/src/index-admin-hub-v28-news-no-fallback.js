@@ -1,8 +1,9 @@
 import app,{VERSION as V15_VERSION} from './index-unified-auth-v15-final.js';
 import {handleMediaRegistrationPublic,handleMediaRegistrationAdmin,processMediaInvitationQueue,PUBLIC_UI,ADMIN_UI,VERSION as REGISTRATION_VERSION} from './media-registration-v1.js';
 import {handleControlledMediaTest,VERSION as CONTROLLED_TEST_VERSION} from './media-registration-controlled-test-v1.js';
+import {handleFinalMediaConfig,VERSION as FINAL_CONFIG_VERSION} from './media-registration-final-config-v1.js';
 
-export const VERSION=`GNK_ASG_ACTIVE_ENTRY_V32_CONTROLLED_MEDIA_TEST_TO_${V15_VERSION}`;
+export const VERSION=`GNK_ASG_ACTIVE_ENTRY_V33_FINAL_MEDIA_CONFIG_TO_${V15_VERSION}`;
 export const ENTRY_POINT='src/index-admin-hub-v28-news-no-fallback.js';
 export const MEDIA_CONTACT_SEED_STATUS='INCOMPLETE_22_OF_42';
 export const FALLBACK_IMAGES_ALLOWED=false;
@@ -22,11 +23,12 @@ function stamp(response,flow=''){
   headers.set('x-gnk-asg-active-entry',VERSION);
   headers.set('x-gnk-asg-media-registration',REGISTRATION_VERSION);
   headers.set('x-gnk-asg-controlled-test',CONTROLLED_TEST_VERSION);
-  headers.set('x-gnk-asg-media-registration-routing','ADMIN_ALIAS_V32');
+  headers.set('x-gnk-asg-final-config',FINAL_CONFIG_VERSION);
+  headers.set('x-gnk-asg-media-registration-routing','ADMIN_ALIAS_V33');
   if(flow)headers.set('x-gnk-asg-active-flow',flow);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
-function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-active-entry':VERSION,'x-gnk-asg-media-registration':REGISTRATION_VERSION,'x-gnk-asg-controlled-test':CONTROLLED_TEST_VERSION}});}
+function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-active-entry':VERSION,'x-gnk-asg-media-registration':REGISTRATION_VERSION,'x-gnk-asg-controlled-test':CONTROLLED_TEST_VERSION,'x-gnk-asg-final-config':FINAL_CONFIG_VERSION}});}
 async function adminAuthorized(request,env,ctx){
   const probeUrl=new URL('/api/operator-auth-check',request.url),probe=new Request(probeUrl,{method:'GET',headers:request.headers});
   try{return (await app.fetch(probe,env,ctx)).ok;}catch{return false;}
@@ -48,11 +50,13 @@ export default{
     if(isAdminAlias(path)){
       if(!(await adminAuthorized(request,env,ctx)))return json({ok:false,error:'unauthorized'},401);
       const rerouted=rerouteAdminAlias(request);
+      const finalConfig=await handleFinalMediaConfig(rerouted,env);if(finalConfig)return stamp(finalConfig,'FINAL_MEDIA_CONFIG_ALIAS');
       const controlled=await handleControlledMediaTest(rerouted,env);if(controlled)return stamp(controlled,'CONTROLLED_MEDIA_TEST_ALIAS');
       const response=await handleMediaRegistrationAdmin(rerouted,env);if(response)return stamp(response,'ADMIN_MEDIA_PORTAL_ALIAS');
     }
     if(isAdminRegistration(path)){
       if(!(await adminAuthorized(request,env,ctx)))return path.startsWith('/api/')?json({ok:false,error:'unauthorized'},401):new Response(null,{status:303,headers:{location:'/admin-center/','cache-control':'no-store'}});
+      const finalConfig=await handleFinalMediaConfig(request,env);if(finalConfig)return stamp(finalConfig,'FINAL_MEDIA_CONFIG');
       const controlled=await handleControlledMediaTest(request,env);if(controlled)return stamp(controlled,'CONTROLLED_MEDIA_TEST');
       const response=await handleMediaRegistrationAdmin(request,env);if(response)return stamp(response,'ADMIN_MEDIA_REGISTRATION');
     }
