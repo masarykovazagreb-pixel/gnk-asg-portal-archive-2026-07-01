@@ -1,0 +1,110 @@
+name: Restore IQ200 Index Now
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/restore-iq200-index-now.yml'
+      - 'apps/portal/index.html'
+      - 'apps/portal/en/index.html'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: restore-iq200-index-now
+  cancel-in-progress: true
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Validate exact June 25 index package
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
+          grep -q 'Korporativni portal' apps/portal/index.html
+          grep -q 'Sve funkcije na jednom mjestu' apps/portal/index.html
+          grep -q 'Corporate portal' apps/portal/en/index.html
+          grep -q 'All key functions in one place' apps/portal/en/index.html
+          grep -q 'GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_AUTH_V15_20260628' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Deploy exact IQ200 hybrid gateway
+        id: deploy
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify live HR EN and Admin
+        id: verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=false
+          for attempt in $(seq 1 24); do
+            cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+            hr_code=$(curl -sS -D hr.headers -o hr.html -w '%{http_code}' "https://gnk-asg.hr/?cb=$cb" || true)
+            en_code=$(curl -sS -D en.headers -o en.html -w '%{http_code}' "https://gnk-asg.hr/en/?cb=$cb" || true)
+            admin_code=$(curl -sS -D admin.headers -o admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=$cb" || true)
+            media_code=$(curl -sS -D media.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/media-command-center/?cb=$cb" || true)
+            if [ "$hr_code" = '200' ] \
+              && [ "$en_code" = '200' ] \
+              && [ "$admin_code" = '401' ] \
+              && [ "$media_code" = '303' ] \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' hr.headers \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' en.headers \
+              && grep -q 'Korporativni portal' hr.html \
+              && grep -q 'Sve funkcije na jednom mjestu' hr.html \
+              && grep -q 'Corporate portal' en.html \
+              && grep -q 'All key functions in one place' en.html \
+              && grep -q 'GNK ASG sigurna prijava' admin.html \
+              && grep -qi '^location: /admin-center/' media.headers; then
+              ok=true
+              break
+            fi
+            sleep 8
+          done
+          echo "hr_code=$hr_code" >> "$GITHUB_OUTPUT"
+          echo "en_code=$en_code" >> "$GITHUB_OUTPUT"
+          echo "admin_code=$admin_code" >> "$GITHUB_OUTPUT"
+          echo "media_code=$media_code" >> "$GITHUB_OUTPUT"
+          if [ "$ok" != 'true' ]; then
+            exit 1
+          fi
+
+      - name: Report restore result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          DEPLOY_STATUS: ${{ steps.deploy.outcome }}
+          VERIFY_STATUS: ${{ steps.verify.outcome }}
+          HR_CODE: ${{ steps.verify.outputs.hr_code }}
+          EN_CODE: ${{ steps.verify.outputs.en_code }}
+          ADMIN_CODE: ${{ steps.verify.outputs.admin_code }}
+          MEDIA_CODE: ${{ steps.verify.outputs.media_code }}
+        shell: bash
+        run: |
+          body=$(printf '## IQ200 index restore — %s\n\n- Commit: `%s`\n- Cloudflare deploy: **%s**\n- Live verification: **%s**\n- HR: `%s`\n- EN: `%s`\n- Admin: `%s`\n- Media: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$JOB_STATUS" "$GITHUB_SHA" "$DEPLOY_STATUS" "$VERIFY_STATUS" "$HR_CODE" "$EN_CODE" "$ADMIN_CODE" "$MEDIA_CODE" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/83/comments" -f body="$body"
