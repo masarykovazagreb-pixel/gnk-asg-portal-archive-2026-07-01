@@ -53,6 +53,9 @@ jobs:
           const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
           const base='https://gnk-asg.hr';
           const paths=['/','/en/','/vijesti/','/publications/','/admin-center/','/assets/public-shell-v15.js','/assets/public-menu-v10.css','/assets/admin-center-extensions-v2.js','/data/portal-version.json'];
+          const requiredHr=['#the-code','#financije','#mreza','/trzista/','/contact/','/admin-center/','/en/'];
+          const requiredEn=['#the-code','#financials','#network','/markets/','/en/contact/','/admin-center/','/'];
+          const forbiddenIndex=['/vijesti/','/news/','/objave/','/publications/','/visual-index/','/assistant/','/en/assistant/'];
           for(let attempt=1;attempt<=24;attempt++){
             const nonce=`${Date.now()}-${attempt}`;
             const results={};
@@ -64,15 +67,15 @@ jobs:
             }
             const failures=[];
             const hr=results['/'],en=results['/en/'],news=results['/vijesti/'],publications=results['/publications/'],admin=results['/admin-center/'];
-            if(hr.status!==200||!hr.text.includes('public-menu-v10.css?v=20260628-v16')||!hr.text.includes('index-menu-unified-v16.js'))failures.push('hr-index');
-            if(en.status!==200||!en.text.includes('/en/contact/')||!en.text.includes('/admin-center/'))failures.push('en-index');
+            if(hr.status!==200||!hr.text.includes('public-menu-v10.css?v=20260628-v16')||!hr.text.includes('index-menu-unified-v16.js')||requiredHr.some(item=>!hr.text.includes(item))||forbiddenIndex.some(item=>hr.text.includes(`href="${item}`)))failures.push('hr-index');
+            if(en.status!==200||requiredEn.some(item=>!en.text.includes(item))||forbiddenIndex.some(item=>en.text.includes(`href="${item}`)))failures.push('en-index');
             if(news.status!==200||!news.text.includes('public-shell-v15.js?v=20260628-v16'))failures.push('news');
             if(publications.status!==200||!publications.text.includes('public-shell-v15.js?v=20260628-v16'))failures.push('publications');
             if(admin.status!==200||!admin.text.includes('admin-center-extensions-v2.js'))failures.push('admin-center');
             if(!results['/assets/public-shell-v15.js'].text.includes('GNK_ASG_PUBLIC_SHELL_V16_UNIFIED_NAVIGATION_20260628'))failures.push('shell-asset');
             if(!results['/assets/public-menu-v10.css'].text.includes('unified public navigation V16'))failures.push('menu-css');
             if(!results['/assets/admin-center-extensions-v2.js'].text.includes('GNK_ASG_ADMIN_CENTER_EXTENSIONS_V2_20260628'))failures.push('admin-extension');
-            if(!results['/data/portal-version.json'].text.includes('GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628'))failures.push('status');
+            if(!results['/data/portal-version.json'].text.includes('GNK_ASG_PROJECT50_V31_PUBLIC_CORE_MENU_20260628'))failures.push('status');
             console.log(JSON.stringify({attempt,failures,menuHeader:hr.headers['x-gnk-asg-menu-release']||'',adminHeader:admin.headers['x-gnk-asg-admin-menu']||''}));
             if(!failures.length)process.exit(0);
             await sleep(10000);
@@ -90,5 +93,5 @@ jobs:
               const current=await github.rest.repos.getContent({owner:context.repo.owner,repo:context.repo.repo,path,ref:branch});
               if(!Array.isArray(current.data))sha=current.data.sha;
             } catch(error) { if(error.status!==404)throw error; }
-            const payload={ok:true,release:'GNK_ASG_PROJECT50_V30_UNIFIED_PUBLIC_ADMIN_MENUS_20260628',workflowRunId:context.runId,sourceCommit:context.sha,branch,deployedAt:new Date().toISOString(),mailSent:false,mediaInvitationsSent:false};
-            await github.rest.repos.createOrUpdateFileContents({owner:context.repo.owner,repo:context.repo.repo,path,branch,sha,message:'Record successful V16 menu deployment [skip ci]',content:Buffer.from(JSON.stringify(payload,null,2)+'\n').toString('base64')});
+            const payload={ok:true,release:'GNK_ASG_PROJECT50_V31_PUBLIC_CORE_MENU_20260628',workflowRunId:context.runId,sourceCommit:context.sha,branch,deployedAt:new Date().toISOString(),mailSent:false,mediaInvitationsSent:false};
+            await github.rest.repos.createOrUpdateFileContents({owner:context.repo.owner,repo:context.repo.repo,path,branch,sha,message:'Record successful V31 core menu deployment [skip ci]',content:Buffer.from(JSON.stringify(payload,null,2)+'\n').toString('base64')});
