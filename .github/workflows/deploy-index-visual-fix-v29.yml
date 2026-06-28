@@ -1,0 +1,62 @@
+name: Deploy Index Visual Fix V29
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-index-visual-fix-v29.yml'
+      - 'apps/portal/assets/index-priority-v1.js'
+      - 'apps/portal/assets/index-code-layout-fix-v1.css'
+      - 'apps/portal/assets/index-city-white-v1.css'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v29-index-visual-fix.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-index-visual-fix-v29
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate visual fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/index-priority-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v29-index-visual-fix.js
+          grep -q 'ci-control--play' apps/portal/assets/index-code-layout-fix-v1.css
+          grep -q 'height:844px' apps/portal/assets/index-code-layout-fix-v1.css
+          grep -q 'color:#fff' apps/portal/assets/index-city-white-v1.css
+      - name: Deploy current Worker with V29 wrapper
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy src/index-admin-hub-v29-index-visual-fix.js --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify production activation
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 12
+          CB="${GITHUB_RUN_ID}"
+          curl -fsS -D /tmp/index.headers "https://gnk-asg.hr/?cb=${CB}" -o /tmp/index.html
+          curl -fsS "https://gnk-asg.hr/assets/index-priority-v1.js?cb=${CB}" -o /tmp/priority.js
+          curl -fsS "https://gnk-asg.hr/assets/index-code-layout-fix-v1.css?cb=${CB}" -o /tmp/layout.css
+          curl -fsS "https://gnk-asg.hr/assets/index-city-white-v1.css?cb=${CB}" -o /tmp/cities.css
+          grep -qi '^x-gnk-asg-index-visual-fix: GNK_ASG_ADMIN_HUB_V29_INDEX_CITY_CODE_LAYOUT_20260628' /tmp/index.headers
+          grep -q 'GNK_INDEX_PRIORITY_V4' /tmp/priority.js
+          grep -q 'ci-control--play' /tmp/layout.css
+          grep -q 'height:844px' /tmp/layout.css
+          grep -q 'color:#fff' /tmp/cities.css
+          echo 'INDEX_VISUAL_FIX_V29_OK=true'
