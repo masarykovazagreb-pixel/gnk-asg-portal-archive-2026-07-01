@@ -1,4 +1,4 @@
-import app from './index-admin-hub-v28-news-no-fallback.js';
+import app from './index-unified-auth-v14.js';
 
 export const VERSION='GNK_ASG_INDEX_PDF_ADMIN_GATEWAY_V4_20260628';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
