@@ -1,0 +1,71 @@
+name: Activate and Verify Final Portal
+
+on:
+  push:
+    branches: [verify-final-portal]
+    paths:
+      - '.github/workflows/verify-final-portal.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-final-portal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-final-activation-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  activate-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate code and Worker bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          node --check workers/gnk-asg-direct-operator/src/contact-submit-v1.js
+          node --check apps/portal/assets/index-priority-v1.js
+          grep -q 'FULL_AUTO_LOOP_WITH_COUNTDOWN' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q 'index-media-command-center-v21.js' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q 'handleContactSubmit' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q 'AUTO_CYCLE_MS' apps/portal/assets/index-priority-v1.js
+          grep -q 'location-directory' apps/portal/assets/index-priority-v1.css
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Activate Worker and assets
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Verify public and protected routes without sending mail
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 8
+          CB="${GITHUB_RUN_ID}"
+          curl -fsS "https://gnk-asg.hr/?cb=${CB}" -o /tmp/index.html
+          curl -fsS "https://gnk-asg.hr/contact/?cb=${CB}" -o /tmp/contact.html
+          grep -q 'index-priority-v1.js?v=20260628-v3' /tmp/index.html
+          grep -q 'locationDirectory' /tmp/index.html
+          grep -q 'GNK ASG d.o.o.' /tmp/index.html
+          grep -q 'GNK DINAMO Ltd.' /tmp/index.html
+          grep -q '/api/contact-submit' /tmp/contact.html
+          CONTACT_CODE=$(curl -sS -o /tmp/contact-api.json -w '%{http_code}' "https://gnk-asg.hr/api/contact-submit?cb=${CB}")
+          ADMIN_CODE=$(curl -sS -o /tmp/admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=${CB}")
+          MAIL_CODE=$(curl -sS -o /tmp/mail.json -w '%{http_code}' "https://gnk-asg.hr/api/mail-center/send-readiness?cb=${CB}")
+          MEDIA_CODE=$(curl -sS -o /tmp/media.json -w '%{http_code}' "https://gnk-asg.hr/api/media-command-center/delivery-status?cb=${CB}")
+          [ "$CONTACT_CODE" = '405' ]
+          case "$ADMIN_CODE" in 200|401|403) ;; *) exit 1 ;; esac
+          case "$MAIL_CODE" in 200|401|403) ;; *) exit 1 ;; esac
+          case "$MEDIA_CODE" in 200|401|403) ;; *) exit 1 ;; esac
+          echo "Index, Contact, Admin, Mail Studio and Media Sender routes verified."
