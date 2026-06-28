@@ -78,7 +78,7 @@ async function patch(response,path,request){
   if(application){if(!html.includes('media-application-v14.css'))html=html.replace('</head>',APPLICATION_STYLE+'</head>');if(!html.includes('media-application-v14.js'))html=html.replace('</body>',APPLICATION_SCRIPT+'</body>');headers.set('x-gnk-asg-media-application-layout','UNIFIED_MEDIA_APPLICATION_V14')}
   if(admin){
     if(!html.includes('admin-dashboard-v3.css'))html=html.replace('</head>',DASHBOARD_STYLE+'</head>');
-    if(!html.includes('admin-center-memorandum-v1.js')){const marker=/<script\s+defer\s+src=["']\/assets\/admin-center-v2\.js[^"']*["']><\/script>/i;html=marker.test(html)?html.replace(marker,match=>ADMIN_SCRIPT+match):html.replace('</head>',ADMIN_SCRIPT+'</head>')}
+    if(!html.includes('admin-center-memorandum-v1.js'))html=html.replace('</body>',ADMIN_SCRIPT+'</body>');
     if(!html.includes('admin-dashboard-v3.js'))html=html.replace('</body>',DASHBOARD_SCRIPT+'</body>');
     headers.set('x-gnk-asg-memorandum-studio','GNK_ASG_MEMORANDUM_STUDIO_V1_20260627');
     headers.set('x-gnk-asg-admin-dashboard','GNK_ASG_ADMIN_DASHBOARD_V3_20260627');
