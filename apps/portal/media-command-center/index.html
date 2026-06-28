@@ -46,7 +46,7 @@
   </section>
 
   <section id="campaign" class="mcc-panel">
-    <div class="mcc-panel-head"><div><h2>Kampanja i pregled poruka</h2><p>Aktivan je DRY-RUN. Produkcijsko slanje ostaje zaključano do završne validacije.</p></div><button id="saveCampaign">Spremi kampanju</button></div>
+    <div class="mcc-panel-head"><div><h2>Kampanja i pregled poruka</h2><p>Aktivan je DRY-RUN. Rute <code>send-one</code> i <code>send-batch</code> vraćaju 423 <code>production_sending_locked</code>.</p></div><button id="saveCampaign">Spremi kampanju</button></div>
     <div class="mcc-form-grid">
       <label>Naslov HR<input id="titleHr"></label>
       <label>Naslov EN<input id="titleEn"></label>
@@ -94,17 +94,18 @@
   <section id="system" class="mcc-panel">
     <h2>Sustav, zaštite i operativna pravila</h2><div id="systemCards" class="mcc-system-grid"></div>
     <div class="mcc-rules">
-      <article><strong>Troškovi</strong><p>Organizator snosi put, smještaj i ostale razumne, dokumentirane i unaprijed odobrene troškove.</p></article>
+      <article><strong>Troškovi</strong><p>Put, smještaj i ostale opravdane, dokumentirane i unaprijed odobrene troškove snosi organizator – medijska agencija u sklopu grupacije GNK ASG.</p></article>
       <article><strong>Smještaj</strong><p>Smještaj u New Yorku već je rezerviran i plaćen.</p></article>
       <article><strong>Dokumenti</strong><p>Obvezni su pismo angažmana, dokaz profesionalnog rada i dokument leta.</p></article>
       <article><strong>Privatnost</strong><p>Preslika putovnice ne prihvaća se običnim e-mailom u početnoj fazi.</p></article>
       <article><strong>Odluka</strong><p>Automatizacija ne može odobriti prijavu. Konačna odluka uvijek je ljudska.</p></article>
-      <article><strong>Slanje</strong><p>Poruke se šalju samo provjerenim i ručno odobrenim kontaktima, uz rate limit i suppression provjeru.</p></article>
+      <article><strong>Izlazno slanje</strong><p>Trenutačno je tehnički zaključano na Worker ruti i ne može se slučajno aktivirati kroz sučelje.</p></article>
+      <article><strong>Ulazni e-mail</strong><p>Worker kod za <code>media@gnk-asg.hr</code> postoji. Aktivna Cloudflare Email Routing veza mora se zasebno potvrditi u Cloudflare sučelju.</p></article>
     </div>
   </section>
 </main>
 <script src="/assets/admin-unified-shell-v7.js?v=20260626-admin-v9" defer></script>
 <script src="/assets/admin-media-command-center-nav-v20.js?v=20260626-2" defer></script>
-<script src="/assets/media-command-center-v2.js?v=20260626-1" defer></script>
+<script src="/assets/media-command-center-v2.js?v=20260628-access" defer></script>
 </body>
 </html>
