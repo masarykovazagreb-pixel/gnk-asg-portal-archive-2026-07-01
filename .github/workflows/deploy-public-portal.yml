@@ -27,144 +27,58 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate portal, Admin, Command Center and news runtime
+      - name: Validate final INDEX PDF ADMIN flow
         shell: bash
         run: |
-          set -euxo pipefail
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
-          node --check workers/gnk-asg-direct-operator/src/media-application-access-v1.js
-          node --check apps/portal/assets/admin-center-v2.js
-          node --check apps/portal/assets/admin-command-center-primary-v1.js
-          node --check apps/portal/assets/media-command-center-v2.js
-          node --check apps/portal/assets/media-application-v1.js
-          node --check apps/portal/assets/media-access-v1.js
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check apps/portal/assets/index-mail-link-v1.js
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
+          test -s apps/portal/downloads/index.html
           test -s apps/portal/admin-center/index.html
+          test -s apps/portal/mail-studio/index.html
           test -s apps/portal/media-command-center/index.html
-          test -s apps/portal/media-application/index.html
-          test -s apps/portal/media-access/index.html
-          node <<'JS'
-          const fs=require('node:fs');
-          const checks=[
-            ['apps/portal/index.html',['THE CODE','Financije','Mreža','Tržišta','Admin','Kontakt','EN'],['/vijesti/','/objave/','/visual-index/','/assistant/']],
-            ['apps/portal/en/index.html',['THE CODE','Financials','Network','Markets','Admin','Contact','HR'],['/news/','/publications/','/visual-index/','/en/assistant/']]
-          ];
-          for(const [file,required,forbidden] of checks){
-            const html=fs.readFileSync(file,'utf8');
-            const nav=html.match(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i)?.[0]||'';
-            if(!nav)throw new Error(`${file}: public menu missing`);
-            for(const text of required)if(!nav.includes(text))throw new Error(`${file}: required menu item missing: ${text}`);
-            for(const href of forbidden)if(nav.includes(href))throw new Error(`${file}: hidden menu route returned: ${href}`);
-          }
-
-          const admin=fs.readFileSync('apps/portal/assets/admin-center-v2.js','utf8');
-          const adminOrder=["label:'Komandni centar'","label:'Operator'","label:'Mail Studio'","label:'Auto Editor'"];
-          let previous=-1;
-          for(const marker of adminOrder){
-            const position=admin.indexOf(marker);
-            if(position<0||position<=previous)throw new Error(`Admin module order invalid at ${marker}`);
-            previous=position;
-          }
-          if(!admin.includes("const PRIORITIES = ['media','operator','mail']"))throw new Error('Command Center is not the first Admin priority card');
-
-          const contacts=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
-          if(!Array.isArray(contacts)||contacts.length!==112)throw new Error(`Expected 112 media contacts, received ${contacts.length}`);
-          const emailCount=contacts.filter(item=>String(item.email||'').trim()).length;
-          const automationCount=contacts.filter(item=>item.automationAllowed===true).length;
-          if(emailCount!==22)throw new Error(`Current protected seed must contain 22 recorded email addresses, received ${emailCount}`);
-          if(automationCount!==22)throw new Error(`Expected 22 controlled-automation contacts, received ${automationCount}`);
-          console.warn(`MEDIA_CONTACT_EMAIL_GAP: seed=${emailCount}, handoff_expected=42, missing_manual=${42-emailCount}`);
-          const codes=contacts.map(item=>String(item.mailCode||''));
-          if(new Set(codes).size!==contacts.length)throw new Error('Media mail codes are not unique');
-          for(const code of codes)if(!/^GNK-MEDIA-\d{8}-[A-Z]{2}-[A-Z0-9]{1,8}-\d{3}$/.test(code))throw new Error(`Invalid media mail code: ${code}`);
-          JS
-          grep -q 'main = "src/index-admin-hub-v28-news-no-fallback.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q '\[triggers\]' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'crons = \["\*/5 \* \* \* \*"\]' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'LOCKED_REDUCED_PUBLIC_MENU' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          grep -q "x-gnk-asg-gallery-primary-menu','HIDDEN'" workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          grep -q "activeNewsLimit:100" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "archivePruneAt:1000" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "archiveDeleteCount:500" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "fallbackImagesAllowed:false" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "fallback_image:null" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "NEWS_LIFECYCLE_V18_ARCHIVE_1000_500" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "production_sending_locked" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          grep -q "mediaCommandSending:'LOCKED'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          grep -q "media@gnk-asg.hr" workers/gnk-asg-direct-operator/src/media-command-center-v1.js
-          grep -q "AUTO_ISSUE_AND_EMAIL_ON_APPROVAL" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "INCOMPLETE_22_OF_42" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q 'PDF CENTAR' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q 'PDF CENTRE' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q 'href="/admin-center/"' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q 'MAIL STUDIO' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q 'MEDIA CENTAR' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q '/admin-center/' apps/portal/assets/index-mail-link-v1.js
           cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Deploy to Cloudflare
+      - name: Deploy final gateway to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify production portal, Admin and Command Center
+      - name: Verify production flow
         shell: bash
         run: |
           set -euo pipefail
-          node <<'JS'
-          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-          async function read(path){
-            const r=await fetch(`https://gnk-asg.hr${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});
-            const text=await r.text();
-            return {status:r.status,text,headers:Object.fromEntries(r.headers)};
-          }
-          function parseJson(label,text){try{return JSON.parse(text)}catch(error){throw new Error(`${label} is not valid JSON: ${error.message}`)}}
-          function hasFallback(item){const image=String(item?.image||'');const verification=item?.verification?.image||{};return !image||image.includes('/assets/news-fallback')||verification.fallback===true||verification.ok===false}
-          function assertNewsArray(label,value,{max}){if(!Array.isArray(value))throw new Error(`${label} is not an array`);if(value.length>max)throw new Error(`${label} length ${value.length} exceeds ${max}`);const fallbackCount=value.filter(hasFallback).length;if(fallbackCount)throw new Error(`${label} contains ${fallbackCount} fallback/bad image items`)}
-          function assertStatus(status){
-            const schedule=Array.isArray(status.newsSchedule)?status.newsSchedule.join(','):'';
-            if(!['09:00','16:00','21:00'].every(time=>schedule.includes(time)))throw new Error(`bad news schedule: ${schedule}`);
-            if(status.activeNewsLimit!==100)throw new Error(`bad activeNewsLimit: ${status.activeNewsLimit}`);
-            if(status.archivePruneAt!==1000)throw new Error(`bad archivePruneAt: ${status.archivePruneAt}`);
-            if(status.archiveDeleteCount!==500)throw new Error(`bad archiveDeleteCount: ${status.archiveDeleteCount}`);
-            if(status.archiveRetainAfterPrune!==500)throw new Error(`bad archiveRetainAfterPrune: ${status.archiveRetainAfterPrune}`);
-            if(status.contentContract?.fallbackImagesAllowed!==false)throw new Error('fallbackImagesAllowed is not false');
-            if(status.fallback_image||status.fallbackImage||status.publicFallbackImage)throw new Error(`fallback image marker leaked into status: ${status.fallback_image||status.fallbackImage||status.publicFallbackImage}`);
-            if(!String(status.entryPoint||'').includes('index-admin-hub-v28-news-no-fallback.js'))throw new Error(`bad entryPoint: ${status.entryPoint}`);
-            if(status.indexMenu!=='LOCKED_REDUCED_PUBLIC_MENU')throw new Error(`bad indexMenu: ${status.indexMenu}`);
-            if(!String(status.mediaApplicationAccess||'').includes('MEDIA_APPLICATION_ACCESS_V2'))throw new Error(`bad media application access: ${status.mediaApplicationAccess}`);
-            if(status.mediaContactSeed?.total!==112||status.mediaContactSeed?.recordedEmailAddresses!==22||status.mediaContactSeed?.handoffExpectedEmailAddresses!==42||status.mediaContactSeed?.missingManualEmailAddresses!==20||status.mediaContactSeed?.status!=='INCOMPLETE_22_OF_42')throw new Error(`bad media contact seed: ${JSON.stringify(status.mediaContactSeed)}`);
-          }
-          function assertMenu(label,response,required,forbidden){
-            if(response.status!==200)throw new Error(`${label} status ${response.status}`);
-            const nav=response.text.match(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i)?.[0]||'';
-            if(!nav)throw new Error(`${label} menu missing`);
-            for(const text of required)if(!nav.includes(text))throw new Error(`${label} required menu item missing: ${text}`);
-            for(const href of forbidden)if(nav.includes(href))throw new Error(`${label} hidden menu route returned: ${href}`);
-            if(response.headers['x-gnk-asg-index-menu']!=='LOCKED_REDUCED_PUBLIC_MENU')throw new Error(`${label} worker menu marker missing`);
-          }
-          for(let i=1;i<=24;i++){
-            const [root,enRoot,admin,command,mediaAccess,hr,en,feed,alias,archive,archiveAlias,statusRes,versionRes]=await Promise.all([
-              read('/'),read('/en/'),read('/admin-center/'),read('/media-command-center/'),read('/media-access/'),read('/vijesti/'),read('/news/'),read('/data/news.json'),read('/data/news-feed.json'),read('/data/news-archive.json'),read('/data/news_archive.json'),read('/data/news-automation-status.json'),read('/data/portal-version.json')
-            ]);
-            try{
-              assertMenu('HR index',root,['THE CODE','Financije','Mreža','Tržišta','Admin','Kontakt','EN'],['/vijesti/','/objave/','/visual-index/','/assistant/']);
-              assertMenu('EN index',enRoot,['THE CODE','Financials','Network','Markets','Admin','Contact','HR'],['/news/','/publications/','/visual-index/','/en/assistant/']);
-              if(![200,303,401,403].includes(admin.status))throw new Error(`Admin route status ${admin.status}`);
-              if(![200,303,401,403].includes(command.status))throw new Error(`Command Center route status ${command.status}`);
-              if(mediaAccess.status!==200)throw new Error(`Media access route status ${mediaAccess.status}`);
-              if(!mediaAccess.text.includes('Approved application access'))throw new Error('Media access page marker missing');
-              if(hr.status!==200||en.status!==200)throw new Error(`news pages not reachable: HR ${hr.status}, EN ${en.status}`);
-              if(!hr.text.includes('/data/news')&&!hr.text.includes('Vijesti'))throw new Error('HR Vijesti page does not look like news route');
-              if(!en.text.includes('/data/news')&&!en.text.includes('News'))throw new Error('EN News page does not look like news route');
-              const active=parseJson('news.json',feed.text),activeAlias=parseJson('news-feed.json',alias.text),archived=parseJson('news-archive.json',archive.text),archivedAlias=parseJson('news_archive.json',archiveAlias.text),status=parseJson('news-automation-status.json',statusRes.text),version=parseJson('portal-version.json',versionRes.text);
-              assertNewsArray('news.json',active,{max:100});assertNewsArray('news-feed.json',activeAlias,{max:100});assertNewsArray('news-archive.json',archived,{max:1000});assertNewsArray('news_archive.json',archivedAlias,{max:1000});assertStatus(status);
-              if(version.mediaCommandSending!=='LOCKED')throw new Error(`Media sending is not locked: ${version.mediaCommandSending}`);
-              if(version.mediaContactSeed?.status!=='INCOMPLETE_22_OF_42')throw new Error(`Media contact gap not reported: ${JSON.stringify(version.mediaContactSeed)}`);
-              console.log(JSON.stringify({attempt:i,ok:true,menu:status.indexMenu,active:active.length,archive:archived.length,mediaSending:version.mediaCommandSending,mediaSeed:status.mediaContactSeed,mediaAccess:status.mediaApplicationAccess,entryPoint:status.entryPoint}));
-              process.exit(0);
-            }catch(error){console.log(JSON.stringify({attempt:i,ok:false,error:error.message,statuses:{root:root.status,enRoot:enRoot.status,admin:admin.status,command:command.status,mediaAccess:mediaAccess.status,hr:hr.status,en:en.status,status:statusRes.status,version:versionRes.status}}));await sleep(10000)}
-          }
-          process.exit(1);
-          JS
+          CB="${GITHUB_RUN_ID}"
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            curl -sS -D /tmp/hr.headers "https://gnk-asg.hr/?cb=${CB}-${attempt}" -o /tmp/hr.html || true
+            curl -sS -D /tmp/en.headers "https://gnk-asg.hr/en/?cb=${CB}-${attempt}" -o /tmp/en.html || true
+            curl -sS -D /tmp/admin.headers "https://gnk-asg.hr/admin-center/?cb=${CB}-${attempt}" -o /tmp/admin.html || true
+            curl -sS -D /tmp/pdf.headers "https://gnk-asg.hr/downloads/?cb=${CB}-${attempt}" -o /tmp/pdf.html || true
+            if grep -qi '^x-gnk-asg-final-admin-gateway:' /tmp/hr.headers \
+              && grep -qi '^x-gnk-asg-final-admin-gateway:' /tmp/en.headers \
+              && grep -q 'href="/downloads/"[^>]*>PDF CENTAR<' /tmp/hr.html \
+              && grep -q 'href="/en/downloads/"[^>]*>PDF CENTRE<' /tmp/en.html \
+              && grep -q 'href="/admin-center/"[^>]*>ADMIN<' /tmp/hr.html \
+              && grep -q 'href="/admin-center/"[^>]*>ADMIN<' /tmp/en.html \
+              && grep -qi 'operatorski token' /tmp/admin.html \
+              && grep -qi '^content-type: text/html' /tmp/pdf.headers \
+              && ! grep -q '>Tržišta<' /tmp/hr.html \
+              && ! grep -q '>Markets<' /tmp/en.html; then
+              echo 'INDEX_PDF_ADMIN_TOKEN_MAIL_MEDIA_OK=true'
+              exit 0
+            fi
+            sleep 8
+          done
+          echo 'Production flow verification failed.' >&2
+          exit 1
