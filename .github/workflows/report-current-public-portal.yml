@@ -1,0 +1,29 @@
+name: Report current public portal deployment
+
+on:
+  workflow_run:
+    workflows: ['Deploy current public portal']
+    types: [completed]
+
+permissions:
+  issues: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write deployment result to control issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            const success = run.conclusion === 'success';
+            const body = success
+              ? `DEPLOY_CURRENT_PUBLIC_PORTAL_OK\nRun: ${run.id}\nSHA: ${run.head_sha}`
+              : `DEPLOY_CURRENT_PUBLIC_PORTAL_FAILED\nRun: ${run.id}\nSHA: ${run.head_sha}\nConclusion: ${run.conclusion}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: 65,
+              body
+            });
