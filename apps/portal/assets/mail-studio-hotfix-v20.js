@@ -125,7 +125,7 @@
     const old=document.querySelector(selector);
     if(!old||old.dataset.gnkHotfixV20==='1')return;
     const next=old.cloneNode(true);
-    next.id=action;
+    next.id=`gnkMailV20_${action}`;
     next.dataset.gnkHotfixV20='1';
     next.dataset.gnkV18Action=action;
     next.disabled=false;
