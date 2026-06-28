@@ -1,0 +1,77 @@
+name: Validate Command Center
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/validate-command-center.yml'
+      - 'apps/portal/admin-center/**'
+      - 'apps/portal/media-command-center/**'
+      - 'apps/portal/media-application/**'
+      - 'apps/portal/media-access/**'
+      - 'apps/portal/assets/admin-center-v2.js'
+      - 'apps/portal/assets/admin-command-center-primary-v1.js'
+      - 'apps/portal/assets/media-command-center-v2.js'
+      - 'apps/portal/assets/media-application-v1.js'
+      - 'apps/portal/assets/media-access-v1.js'
+      - 'apps/portal/data/media-outreach-contacts-v1.json'
+      - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js'
+      - 'workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js'
+      - 'workers/gnk-asg-direct-operator/src/media-command-center-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-application-access-v1.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate protected media workflow
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/admin-center-v2.js
+          node --check apps/portal/assets/admin-command-center-primary-v1.js
+          node --check apps/portal/assets/media-command-center-v2.js
+          node --check apps/portal/assets/media-application-v1.js
+          node --check apps/portal/assets/media-access-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-application-access-v1.js
+          test -s apps/portal/admin-center/index.html
+          test -s apps/portal/media-command-center/index.html
+          test -s apps/portal/media-application/index.html
+          test -s apps/portal/media-access/index.html
+          node <<'JS'
+          const fs=require('node:fs');
+          const contacts=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
+          const emailCount=contacts.filter(item=>String(item.email||'').trim()).length;
+          const automationCount=contacts.filter(item=>item.automationAllowed===true).length;
+          if(contacts.length!==112)throw new Error(`contacts=${contacts.length}, expected=112`);
+          if(emailCount!==42)throw new Error(`emails=${emailCount}, expected=42`);
+          if(automationCount!==22)throw new Error(`automation=${automationCount}, expected=22`);
+          const codes=contacts.map(item=>String(item.mailCode||''));
+          if(new Set(codes).size!==112)throw new Error('mail codes are not unique');
+          for(const code of codes)if(!/^GNK-MEDIA-\d{8}-[A-Z]{2}-[A-Z0-9]{1,8}-\d{3}$/.test(code))throw new Error(`invalid code: ${code}`);
+          const admin=fs.readFileSync('apps/portal/assets/admin-center-v2.js','utf8');
+          const order=["label:'Komandni centar'","label:'Operator'","label:'Mail Studio'","label:'Auto Editor'"];
+          let cursor=-1;
+          for(const item of order){const next=admin.indexOf(item);if(next<=cursor)throw new Error(`bad Admin order: ${item}`);cursor=next;}
+          if(!admin.includes("const PRIORITIES = ['media','operator','mail']"))throw new Error('bad Admin priorities');
+          console.log(JSON.stringify({contacts:contacts.length,emailCount,automationCount,adminOrder:order}));
+          JS
+          grep -q "production_sending_locked" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          grep -q "mediaCommandSending:'LOCKED'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          grep -q "UNVERIFIED_EXTERNAL_CONFIGURATION" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "AUTO_ISSUE_AND_EMAIL_ON_APPROVAL" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "HUMAN_ONLY" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
