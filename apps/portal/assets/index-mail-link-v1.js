@@ -31,16 +31,16 @@
       pdf.textContent=pdfLabel;
     }
 
-    const mailStudio=[...menu.querySelectorAll('a')].find(link=>
+    const admin=[...menu.querySelectorAll('a')].find(link=>
       link.getAttribute('href')==='/mail-studio/' ||
       link.getAttribute('href')==='/admin-center/' ||
       link.getAttribute('href')==='/operator-dashboard/' ||
       /^(admin|mail studio)$/i.test(link.textContent.trim())
     );
-    if(mailStudio){
-      mailStudio.href='/mail-studio/';
-      mailStudio.rel='nofollow';
-      mailStudio.textContent='MAIL STUDIO';
+    if(admin){
+      admin.href='/mail-studio/';
+      admin.rel='nofollow';
+      admin.textContent='ADMIN';
     }
   };
 
