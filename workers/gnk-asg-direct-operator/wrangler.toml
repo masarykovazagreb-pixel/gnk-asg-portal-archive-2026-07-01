@@ -11,6 +11,10 @@ routes = [
   { pattern = "www.gnk-asg.hr/api/mail-center/*", zone_name = "gnk-asg.hr" },
   { pattern = "gnk-asg.hr/api/media-command-center/*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/api/media-command-center/*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/media-registration*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/media-registration*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/media-registration-admin*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/media-registration-admin*", zone_name = "gnk-asg.hr" },
 
   { pattern = "gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
