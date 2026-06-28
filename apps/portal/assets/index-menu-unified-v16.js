@@ -1,13 +1,15 @@
 (()=>{
   'use strict';
-  const RELEASE='GNK_ASG_INDEX_MENU_V16_UNIFIED_20260628';
+  const RELEASE='GNK_ASG_INDEX_MENU_V17_CORE_PARITY_20260628';
   if(document.documentElement.dataset.gnkIndexMenu===RELEASE)return;
   document.documentElement.dataset.gnkIndexMenu=RELEASE;
+  document.querySelectorAll('.public-float--home,.public-float--ai,.gnk-public-float-v10,.gnk-public-float-v15,.floating-home,.floating-ai').forEach(node=>node.remove());
   const header=document.querySelector('.index-nav');
   const row=header?.querySelector('.index-nav__row');
   const nav=header?.querySelector('.menu');
   if(!header||!row||!nav)return;
   nav.id=nav.id||'gnkIndexNav';
+  nav.dataset.menuItems='7';
   const english=document.documentElement.lang==='en';
   const toggle=document.createElement('button');
   toggle.className='index-menu-toggle';
