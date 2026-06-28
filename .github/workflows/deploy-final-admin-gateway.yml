@@ -1,4 +1,4 @@
-name: Deploy Final INDEX Admin Gateway
+name: Deploy Final IQ200 Admin Gateway
 
 on:
   push:
@@ -6,15 +6,19 @@ on:
     paths:
       - '.github/workflows/deploy-final-admin-gateway.yml'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js'
+      - 'apps/portal/index.html'
+      - 'apps/portal/en/index.html'
   workflow_dispatch:
   issue_comment:
     types: [created]
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
-  group: deploy-final-index-admin-gateway
+  group: deploy-final-iq200-admin-gateway
   cancel-in-progress: true
 
 jobs:
@@ -25,34 +29,93 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: Report gateway deploy start
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          body=$(printf '## Final IQ200 gateway — started\n\n- Commit: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
+
       - uses: actions/checkout@v5
+        with:
+          ref: main
+
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate gateway
-        run: node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+
+      - name: Validate IQ200 gateway
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
+          grep -q 'GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_AUTH_V15_20260628' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q 'Korporativni portal' apps/portal/index.html
+          grep -q 'Sve funkcije na jednom mjestu' apps/portal/index.html
+          grep -q 'Corporate portal' apps/portal/en/index.html
+          grep -q 'All key functions in one place' apps/portal/en/index.html
+
       - name: Deploy gateway
+        id: deploy
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify public flow
+        shell: bash
         run: |
           set -euo pipefail
-          CB="${GITHUB_RUN_ID}"
-          for attempt in 1 2 3 4 5 6 7 8; do
-            curl -sS -D /tmp/index.headers "https://gnk-asg.hr/?cb=${CB}-${attempt}" -o /tmp/index.html || true
-            curl -sS -D /tmp/admin.headers "https://gnk-asg.hr/admin-center/?cb=${CB}-${attempt}" -o /tmp/admin.html || true
-            curl -sS -D /tmp/pdf.headers "https://gnk-asg.hr/downloads/?cb=${CB}-${attempt}" -o /tmp/pdf.html || true
-            if grep -qi '^x-gnk-asg-final-admin-gateway:' /tmp/index.headers \
-              && grep -q 'href="/downloads/"[^>]*>PDF CENTAR<' /tmp/index.html \
-              && grep -q 'href="/admin-center/"[^>]*>ADMIN<' /tmp/index.html \
-              && grep -qi 'operatorski token' /tmp/admin.html \
-              && grep -qi 'content-type: text/html' /tmp/pdf.headers; then
-              echo 'FINAL_INDEX_ADMIN_GATEWAY_OK=true'
-              exit 0
+          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify IQ200 public flow
+        id: verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=false
+          for attempt in $(seq 1 24); do
+            cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+            hr_code=$(curl -sS -D /tmp/hr.headers -o /tmp/hr.html -w '%{http_code}' "https://gnk-asg.hr/?cb=$cb" || true)
+            en_code=$(curl -sS -D /tmp/en.headers -o /tmp/en.html -w '%{http_code}' "https://gnk-asg.hr/en/?cb=$cb" || true)
+            admin_code=$(curl -sS -D /tmp/admin.headers -o /tmp/admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=$cb" || true)
+            media_code=$(curl -sS -D /tmp/media.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/media-command-center/?cb=$cb" || true)
+            if [ "$hr_code" = '200' ] \
+              && [ "$en_code" = '200' ] \
+              && [ "$admin_code" = '401' ] \
+              && [ "$media_code" = '303' ] \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' /tmp/hr.headers \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' /tmp/en.headers \
+              && grep -q 'Korporativni portal' /tmp/hr.html \
+              && grep -q 'Sve funkcije na jednom mjestu' /tmp/hr.html \
+              && grep -q 'Corporate portal' /tmp/en.html \
+              && grep -q 'All key functions in one place' /tmp/en.html \
+              && grep -q 'GNK ASG sigurna prijava' /tmp/admin.html \
+              && grep -qi '^location: /admin-center/' /tmp/media.headers; then
+              ok=true
+              break
             fi
             sleep 8
           done
-          exit 1
+          echo "hr_code=$hr_code" >> "$GITHUB_OUTPUT"
+          echo "en_code=$en_code" >> "$GITHUB_OUTPUT"
+          echo "admin_code=$admin_code" >> "$GITHUB_OUTPUT"
+          echo "media_code=$media_code" >> "$GITHUB_OUTPUT"
+          [ "$ok" = 'true' ]
+
+      - name: Report gateway deploy result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          DEPLOY_STATUS: ${{ steps.deploy.outcome }}
+          VERIFY_STATUS: ${{ steps.verify.outcome }}
+          HR_CODE: ${{ steps.verify.outputs.hr_code }}
+          EN_CODE: ${{ steps.verify.outputs.en_code }}
+          ADMIN_CODE: ${{ steps.verify.outputs.admin_code }}
+          MEDIA_CODE: ${{ steps.verify.outputs.media_code }}
+        shell: bash
+        run: |
+          body=$(printf '## Final IQ200 gateway — %s\n\n- Commit: `%s`\n- Cloudflare deploy: **%s**\n- Live verification: **%s**\n- HR: `%s`\n- EN: `%s`\n- Admin: `%s`\n- Media: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$JOB_STATUS" "$GITHUB_SHA" "$DEPLOY_STATUS" "$VERIFY_STATUS" "$HR_CODE" "$EN_CODE" "$ADMIN_CODE" "$MEDIA_CODE" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
