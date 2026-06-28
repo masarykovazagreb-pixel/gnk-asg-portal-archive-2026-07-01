@@ -1,0 +1,84 @@
+/* GNK ASG INDEX POLISH V30 — cities + GNK DINAMO financial readability */
+
+/* Remove Markets/Tržišta links even if a secondary menu layer injects them later. */
+nav.menu a[href="/trzista/"],
+nav.menu a[href="/trzista"],
+nav.menu a[href="/markets/"],
+nav.menu a[href="/markets"],
+.index-nav a[href="/trzista/"],
+.index-nav a[href="/markets/"] {
+  display: none !important;
+}
+
+/* City directory: champagne canvas, gold details, black typography. */
+body[data-gnk-index-polish="v30"] .location-directory {
+  display: grid !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255,255,255,.72), transparent 34%),
+    linear-gradient(135deg, #f8efd9 0%, #ead7a8 48%, #d6b76f 100%) !important;
+  border: 1px solid rgba(124, 83, 18, .34) !important;
+  box-shadow: 0 26px 70px rgba(59, 38, 7, .18) !important;
+}
+
+body[data-gnk-index-polish="v30"] .location-item,
+body[data-gnk-index-polish="v30"] .location-item.planned {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.82), rgba(239,220,174,.94)) !important;
+  color: #11100d !important;
+  border: 1px solid rgba(174, 127, 29, .48) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82), 0 10px 28px rgba(71,45,5,.11) !important;
+}
+
+body[data-gnk-index-polish="v30"] .location-item.planned {
+  background: linear-gradient(145deg, #e8cd8d, #cba24a) !important;
+  border-color: rgba(90, 57, 5, .54) !important;
+}
+
+body[data-gnk-index-polish="v30"] .location-item strong {
+  color: #0d0c0a !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+}
+
+body[data-gnk-index-polish="v30"] .location-item span {
+  color: #292115 !important;
+  opacity: 1 !important;
+}
+
+body[data-gnk-index-polish="v30"] .location-item b {
+  color: #f6dc96 !important;
+  background: #11100d !important;
+  border: 1px solid #b88a2f !important;
+  opacity: 1 !important;
+}
+
+/* GNK DINAMO Ltd. is the second financial card on HR and EN index pages. */
+body[data-gnk-index-polish="v30"] .finance-grid > .finance-card:nth-of-type(2) {
+  background:
+    radial-gradient(circle at 90% 0%, rgba(190,145,52,.22), transparent 38%),
+    linear-gradient(145deg, #21190f 0%, #0d0c0a 62%, #17120c 100%) !important;
+  color: #fffaf0 !important;
+  border: 1px solid rgba(213, 173, 91, .62) !important;
+  box-shadow: 0 24px 64px rgba(0,0,0,.28) !important;
+}
+
+body[data-gnk-index-polish="v30"] .finance-grid > .finance-card:nth-of-type(2) .company-title h3 {
+  color: #f3d98f !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.75) !important;
+}
+
+body[data-gnk-index-polish="v30"] .finance-grid > .finance-card:nth-of-type(2) .metric {
+  background: linear-gradient(145deg, #302619, #15120d) !important;
+  border: 1px solid rgba(215, 177, 95, .40) !important;
+}
+
+body[data-gnk-index-polish="v30"] .finance-grid > .finance-card:nth-of-type(2) .metric small {
+  color: #e1c981 !important;
+  opacity: 1 !important;
+}
+
+body[data-gnk-index-polish="v30"] .finance-grid > .finance-card:nth-of-type(2) .metric strong {
+  color: #fffdf7 !important;
+  opacity: 1 !important;
+  text-shadow: 0 2px 3px rgba(0,0,0,.85) !important;
+}
