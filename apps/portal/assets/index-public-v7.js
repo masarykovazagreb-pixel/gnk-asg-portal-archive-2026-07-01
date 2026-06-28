@@ -6,8 +6,8 @@
   const menu=document.querySelector('.index-nav .menu');
   if(menu){
     const items=en
-      ? [['#the-code','THE CODE'],['#financials','Financials'],['#network','Network'],['/markets/','Markets'],['/en/contact/','Contact'],['/admin-center/','Admin'],['/','HR','lang']]
-      : [['#the-code','THE CODE'],['#financije','Financije'],['#mreza','Mreža'],['/trzista/','Tržišta'],['/contact/','Kontakt'],['/admin-center/','Admin'],['/en/','EN','lang']];
+      ? [['#the-code','THE CODE'],['#financials','Financials'],['#network','Network'],['/en/downloads/','PDF CENTRE'],['/en/contact/','Contact'],['/admin-center/','Admin'],['/','HR','lang']]
+      : [['#the-code','THE CODE'],['#financije','Financije'],['#mreza','Mreža'],['/downloads/','PDF CENTAR'],['/contact/','Kontakt'],['/admin-center/','Admin'],['/en/','EN','lang']];
     menu.replaceChildren(...items.map(([href,label,className])=>{
       const link=document.createElement('a');
       link.href=href;
@@ -16,7 +16,7 @@
       if(href==='/admin-center/')link.rel='nofollow';
       return link;
     }));
-    document.body.dataset.gnkIndexMenu='minimum-v1';
+    document.body.dataset.gnkIndexMenu='minimum-v2-pdf-centre';
   }
 
   const reports={
