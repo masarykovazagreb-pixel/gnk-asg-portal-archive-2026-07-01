@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: gnk-asg-media-command-gateway-production
@@ -37,6 +37,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          printf '{"ok":false,"status":"VALIDATING_GATEWAY","recordedAt":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/gateway-status.json
           node --check workers/gnk-asg-direct-operator/src/index-media-command-gateway-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-command-bridge-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
@@ -54,6 +55,8 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
+          set -euo pipefail
+          printf '{"ok":false,"status":"DEPLOYING_GATEWAY","recordedAt":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/gateway-status.json
           npx --yes wrangler@4 deploy src/index-media-command-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator \
             --var MEDIA_OUTREACH_LIVE:false \
             --var 'MEDIA_OUTREACH_TEST_RECIPIENTS:beckuphome@gmail.com rht@gmx.com' \
@@ -63,6 +66,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          printf '{"ok":false,"status":"VERIFYING_GATEWAY","recordedAt":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/gateway-status.json
           ok=false
           for attempt in $(seq 1 24); do
             code=$(curl -sS -D /tmp/bridge.headers -o /tmp/bridge.json -w '%{http_code}' "https://gnk-asg.hr/api/media-command-bridge/status?cb=${GITHUB_RUN_ID}-${attempt}" || true)
@@ -78,5 +82,23 @@ jobs:
             fi
             sleep 10
           done
-          cat /tmp/bridge.json || true
-          [ "$ok" = 'true' ]
+          if [ "$ok" = 'true' ]; then
+            jq --arg recorded "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '. + {ok:true,status:"DEPLOYED_AND_VERIFIED",recordedAt:$recorded}' /tmp/bridge.json > /tmp/gateway-status.json
+          else
+            jq -n --arg recorded "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --argjson code "${code:-0}" --argjson media "${media:-0}" '{ok:false,status:"GATEWAY_VERIFICATION_FAILED",bridgeHttp:$code,mediaHttp:$media,recordedAt:$recorded}' > /tmp/gateway-status.json
+            cat /tmp/bridge.json || true
+            exit 1
+          fi
+
+      - name: Persist gateway deployment status
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s /tmp/gateway-status.json || printf '{"ok":false,"status":"GATEWAY_WORKFLOW_FAILED_WITHOUT_STAGE","recordedAt":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/gateway-status.json
+          cp /tmp/gateway-status.json ops/media-gateway-status.json
+          git config user.name 'GNK ASG Media Gateway'
+          git config user.email 'media@gnk-asg.hr'
+          git add ops/media-gateway-status.json
+          git commit -m 'Record Media Center gateway status [skip ci]' || exit 0
+          git push
