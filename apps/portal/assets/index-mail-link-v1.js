@@ -15,21 +15,20 @@
     document.querySelectorAll(MARKET_SELECTOR).forEach(link=>link.remove());
     if(!menu)return;
 
-    const pdfHref=en?'/en/downloads/':'/downloads/';
-    const pdfLabel=en?'PDF CENTRE':'PDF CENTAR';
-    let pdf=[...menu.querySelectorAll('a')].find(link=>
-      link.getAttribute('href')===pdfHref || /pdf\s+(centar|centre)/i.test(link.textContent)
+    const downloadHref='/downloads/';
+    const downloadLabel=en?'Download Centre':'Download centar';
+    let download=[...menu.querySelectorAll('a')].find(link=>
+      link.getAttribute('href')==='/downloads/' ||
+      link.getAttribute('href')==='/en/downloads/' ||
+      /^(pdf\s+(centar|centre)|download\s+(centar|centre))$/i.test(link.textContent.trim())
     );
-    if(!pdf){
-      pdf=document.createElement('a');
-      pdf.href=pdfHref;
-      pdf.textContent=pdfLabel;
+    if(!download){
+      download=document.createElement('a');
       const contact=[...menu.querySelectorAll('a')].find(link=>/contact|kontakt/i.test(link.textContent));
-      menu.insertBefore(pdf,contact||null);
-    }else{
-      pdf.href=pdfHref;
-      pdf.textContent=pdfLabel;
+      menu.insertBefore(download,contact||null);
     }
+    download.href=downloadHref;
+    download.textContent=downloadLabel;
 
     const admin=[...menu.querySelectorAll('a')].find(link=>
       link.getAttribute('href')==='/mail-studio/' ||
