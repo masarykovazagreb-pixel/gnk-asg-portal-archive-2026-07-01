@@ -1,0 +1,24 @@
+name: Validate Priority Release
+
+on:
+  push:
+    branches:
+      - project-50-white-integrated-menu
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate index, Contact, Mail Studio, Media Sender and Admin auth
+        run: node scripts/validate-priority-release.mjs
