@@ -11,6 +11,7 @@ on:
       - 'workers/gnk-asg-direct-operator/src/mail-inbound-auto-reply-v1.js'
       - 'workers/gnk-asg-direct-operator/src/mail-inbox-contact-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-project50-v31-mail-inbox.js'
+      - 'workers/gnk-asg-direct-operator/migrations/0025_mail_inbound_auto_reply_claims.sql'
       - 'workers/gnk-asg-direct-operator/tests/mail-inbound-service.test.mjs'
       - 'workers/gnk-asg-direct-operator/tests/mail-inbound-reply-policy.test.mjs'
       - 'workers/gnk-asg-direct-operator/tests/mail-inbox-contact.test.mjs'
@@ -49,7 +50,9 @@ jobs:
           node -e "const c=require('./config/email-routing-worker-rules-v1.json'); if(c.addresses.length!==10||new Set(c.addresses).size!==10||c.worker!=='gnk-asg-direct-operator') process.exit(1);"
           grep -q 'GNK_ASG_MAIL_INBOUND_SERVICE_V3_STABLE_MESSAGE_DATE_20260628' workers/gnk-asg-direct-operator/src/mail-inbound-service-v1.js
           grep -q 'GNK_ASG_MAIL_INBOUND_REPLY_POLICY_V1_20260628' workers/gnk-asg-direct-operator/src/mail-inbound-reply-policy-v1.js
-          grep -q 'GNK_ASG_MAIL_INBOUND_AUTO_REPLY_V1_20260628' workers/gnk-asg-direct-operator/src/mail-inbound-auto-reply-v1.js
+          grep -q 'GNK_ASG_MAIL_INBOUND_AUTO_REPLY_V2_ATOMIC_D1_20260628' workers/gnk-asg-direct-operator/src/mail-inbound-auto-reply-v1.js
+          grep -q 'case_id TEXT PRIMARY KEY' workers/gnk-asg-direct-operator/migrations/0025_mail_inbound_auto_reply_claims.sql
+          grep -q 'INSERT OR IGNORE INTO mail_inbound_auto_reply_claims' workers/gnk-asg-direct-operator/src/mail-inbound-auto-reply-v1.js
           grep -q 'MAIL_INBOUND_AUTO_REPLY = "true"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MAIL_INBOUND_AUTO_REPLY_MODE = "media-only"' workers/gnk-asg-direct-operator/wrangler.toml
       - name: Run direct inbound tests
