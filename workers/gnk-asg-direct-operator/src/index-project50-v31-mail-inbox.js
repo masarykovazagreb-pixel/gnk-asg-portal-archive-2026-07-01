@@ -5,10 +5,10 @@ import {maybeSendInboundAutoReply,VERSION as INBOUND_REPLY_VERSION} from './mail
 import {parseAndStoreInboundContent,VERSION as INBOUND_PARSER_VERSION} from './mail-inbound-parser-v1.js';
 import {handleMailAiAssist,AI_PATH,VERSION as AI_VERSION,DEFAULT_MODEL as AI_DEFAULT_MODEL} from './mail-ai-assist-v2.js';
 
-export const VERSION='GNK_ASG_PROJECT50_V31_UNIFIED_INBOX_PARSED_AUTO_REPLY_AI_20260628';
+export const VERSION='GNK_ASG_PROJECT50_V31_UNIFIED_INBOX_PARSED_AUTO_REPLY_AI_UI_V3_20260628';
 const STATUS_PATHS=new Set(['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json']);
 const MAIL_STUDIO_PATHS=new Set(['/mail-studio','/mail-studio-pro']);
-const MAIL_STUDIO_UI='<script defer src="/assets/mail-studio-inbox-ui-v1.js?v=20260628-v2"></script><script defer src="/assets/mail-studio-ai-media-v1.js?v=20260628-v1"></script>';
+const MAIL_STUDIO_UI='<script defer src="/assets/mail-studio-inbox-ui-v1.js?v=20260628-v3"></script><script defer src="/assets/mail-studio-ai-media-v1.js?v=20260628-v1"></script>';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 
 function stamp(response,extra={}){
@@ -47,7 +47,7 @@ async function patchStatus(response,path,env){
     headers.set('x-gnk-asg-inbound-auto-reply',INBOUND_REPLY_VERSION);
     headers.set('x-gnk-asg-mail-ai',AI_VERSION);
     headers.set('x-gnk-asg-entry-wrapper',VERSION);
-    return new Response(JSON.stringify({...payload,entryPoint:'src/index-project50-v31-mail-inbox.js',deployedEntryPoint:'src/index-project50-v31-mail-inbox.js',entryWrapper:VERSION,mailInbox:INBOX_VERSION,mailInboxConnected:true,mailInboxSources:['CONTACT_FORM_KV','DIRECT_EMAIL_KV'],directInbound:DIRECT_INBOUND_VERSION,directInboundParser:INBOUND_PARSER_VERSION,directInboundContentParsed:true,directInboundPdfStorage:'R2_LIMITED_PDF_ONLY',directInboundAutoReply:INBOUND_REPLY_VERSION,directInboundAutoReplyEnabled:String(env.MAIL_INBOUND_AUTO_REPLY||'false').toLowerCase()==='true',directInboundAutoReplyMode:String(env.MAIL_INBOUND_AUTO_REPLY_MODE||'media-only'),mailInboxUi:'GNK_ASG_MAIL_STUDIO_INBOX_UI_V2_CENTERS_20260628',receivingCenters:'GNK_ASG_MAIL_RECEIVING_CENTERS_V1_20260628',receivingCenterCount:10,mailAi:AI_VERSION,mailAiUi:'GNK_ASG_MAIL_STUDIO_AI_MEDIA_V1_20260628',mailAiModel:String(env.MAIL_AI_MODEL||env.AUTO_EDITOR_MODEL||AI_DEFAULT_MODEL),mailAiBinding:Boolean(env.AI&&typeof env.AI.run==='function'),mailAiProtectedBy:'MAIL_CENTER_SESSION_GATE',checkedAt:new Date().toISOString()},null,2),{status:response.status,statusText:response.statusText,headers});
+    return new Response(JSON.stringify({...payload,entryPoint:'src/index-project50-v31-mail-inbox.js',deployedEntryPoint:'src/index-project50-v31-mail-inbox.js',entryWrapper:VERSION,mailInbox:INBOX_VERSION,mailInboxConnected:true,mailInboxSources:['CONTACT_FORM_KV','DIRECT_EMAIL_KV'],directInbound:DIRECT_INBOUND_VERSION,directInboundParser:INBOUND_PARSER_VERSION,directInboundContentParsed:true,directInboundPdfStorage:'R2_LIMITED_PDF_ONLY',directInboundAutoReply:INBOUND_REPLY_VERSION,directInboundAutoReplyEnabled:String(env.MAIL_INBOUND_AUTO_REPLY||'false').toLowerCase()==='true',directInboundAutoReplyMode:String(env.MAIL_INBOUND_AUTO_REPLY_MODE||'media-only'),mailInboxUi:'GNK_ASG_MAIL_STUDIO_INBOX_UI_V3_PARSED_20260628',receivingCenters:'GNK_ASG_MAIL_RECEIVING_CENTERS_V1_20260628',receivingCenterCount:10,mailAi:AI_VERSION,mailAiUi:'GNK_ASG_MAIL_STUDIO_AI_MEDIA_V1_20260628',mailAiModel:String(env.MAIL_AI_MODEL||env.AUTO_EDITOR_MODEL||AI_DEFAULT_MODEL),mailAiBinding:Boolean(env.AI&&typeof env.AI.run==='function'),mailAiProtectedBy:'MAIL_CENTER_SESSION_GATE',checkedAt:new Date().toISOString()},null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
 
@@ -57,11 +57,14 @@ async function injectMailStudioUi(response,path,request){
   headers.delete('content-length');
   headers.delete('content-encoding');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-  headers.set('x-gnk-asg-mail-inbox-ui','GNK_ASG_MAIL_STUDIO_INBOX_UI_V2_CENTERS_20260628');
+  headers.set('x-gnk-asg-mail-inbox-ui','GNK_ASG_MAIL_STUDIO_INBOX_UI_V3_PARSED_20260628');
   headers.set('x-gnk-asg-mail-ai-ui','GNK_ASG_MAIL_STUDIO_AI_MEDIA_V1_20260628');
   let html=await response.text();
   if(!html.includes('mail-studio-inbox-ui-v1.js'))html=html.replace('</body>',`${MAIL_STUDIO_UI}</body>`);
-  else if(!html.includes('mail-studio-ai-media-v1.js'))html=html.replace('</body>','<script defer src="/assets/mail-studio-ai-media-v1.js?v=20260628-v1"></script></body>');
+  else{
+    html=html.replace(/mail-studio-inbox-ui-v1\.js\?v=[^"']+/gi,'mail-studio-inbox-ui-v1.js?v=20260628-v3');
+    if(!html.includes('mail-studio-ai-media-v1.js'))html=html.replace('</body>','<script defer src="/assets/mail-studio-ai-media-v1.js?v=20260628-v1"></script></body>');
+  }
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 
