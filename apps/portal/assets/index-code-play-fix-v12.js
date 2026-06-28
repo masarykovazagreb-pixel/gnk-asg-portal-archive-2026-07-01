@@ -18,4 +18,5 @@ function bind(){app=document.getElementById('codeInlineApp');if(!app)return fals
 function handler(event){const target=event.target?.closest?.('[data-action="play"],[data-action="live"]');if(!target||!target.closest('#codeInlineApp'))return;event.preventDefault();event.stopImmediatePropagation();if(target.dataset.action==='play')toggle();else live()}
 document.addEventListener('click',handler,true);
 if(!bind()){const observer=new MutationObserver(()=>{if(bind())observer.disconnect()});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),15000)}
+if(!document.querySelector('script[data-premium-runtime-v1]')){const runtime=document.createElement('script');runtime.src='/assets/index-premium-runtime-v1.js?v=20260628-v1';runtime.defer=true;runtime.dataset.premiumRuntimeV1='';document.head.appendChild(runtime)}
 })();
