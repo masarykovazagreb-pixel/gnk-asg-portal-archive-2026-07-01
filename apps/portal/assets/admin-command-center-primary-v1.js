@@ -2,6 +2,23 @@
 (() => {
   'use strict';
 
+  const MARKET_SELECTORS=[
+    'a[href="/trzista/"]',
+    'a[href="/markets/"]',
+    'a[href^="/trzista/?"]',
+    'a[href^="/markets/?"]',
+    '[data-module="trzista"]',
+    '[data-module="markets"]',
+    '[data-open="trzista"]',
+    '[data-open="markets"]',
+    '[data-command="trzista"]',
+    '[data-command="markets"]'
+  ].join(',');
+
+  function removeMarkets(root=document){
+    root.querySelectorAll(MARKET_SELECTORS).forEach(node=>node.remove());
+  }
+
   function loadPriorityLayer(){
     if(document.querySelector('script[data-gnk-admin-priority="v1"]'))return;
     const script=document.createElement('script');
@@ -12,6 +29,7 @@
   }
 
   function bind(){
+    removeMarkets();
     loadPriorityLayer();
     const button=document.getElementById('heroMail');
     if(!button||button.dataset.mailStudioPrimary==='1')return;
@@ -26,6 +44,11 @@
     },true);
   }
 
+  const observer=new MutationObserver(()=>removeMarkets());
+  observer.observe(document.documentElement,{childList:true,subtree:true});
+  setTimeout(()=>observer.disconnect(),5000);
+
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});
   else bind();
+  [100,400,1000].forEach(delay=>setTimeout(removeMarkets,delay));
 })();
