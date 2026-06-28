@@ -1,10 +1,10 @@
 import app from './index-project50-v28-news-no-fallback.js';
 
-export const VERSION='GNK_ASG_PROJECT50_V31_PUBLIC_CORE_MENU_20260628';
+export const VERSION='GNK_ASG_PROJECT50_V32_INDEX_PARITY_MENU_20260628';
 const INDEX_PATHS=new Set(['/','/en']);
 const STATUS_PATHS=new Set(['/data/news-automation-status.json','/data/deployment-status.json','/data/portal-version.json']);
-const MENU_STYLE='<link rel="stylesheet" href="/assets/public-menu-v10.css?v=20260628-v16">';
-const INDEX_MENU_SCRIPT='<script defer src="/assets/index-menu-unified-v16.js?v=20260628-v17"></script>';
+const MENU_STYLE='<link rel="stylesheet" href="/assets/public-menu-v10.css?v=20260628-v18">';
+const INDEX_MENU_SCRIPT='<script defer src="/assets/index-menu-unified-v16.js?v=20260628-v18"></script>';
 const ADMIN_EXTENSION_SCRIPT='<script defer src="/assets/admin-center-extensions-v2.js?v=20260628-v2"></script>';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
@@ -19,8 +19,8 @@ function mutableHeaders(response){
 }
 function canonicalMenu(english){
   return english
-    ? '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financials">Financials</a><a href="#network">Network</a><a href="/markets/">Markets</a><a href="/en/contact/">Contact</a><a href="/admin-center/" rel="nofollow">Admin</a><a class="lang" href="/">HR</a></nav>'
-    : '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/trzista/">Tržišta</a><a href="/contact/">Kontakt</a><a href="/admin-center/" rel="nofollow">Admin</a><a class="lang" href="/en/">EN</a></nav>';
+    ? '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financials">Financials</a><a href="#network">Network</a><a href="/news/">News</a><a href="/publications/">Publications</a><a href="/markets/">Markets</a><a href="/visual-index/">Gallery</a><a href="/en/assistant/">AI</a><a href="/admin-center/" rel="nofollow">Admin</a><a href="/en/contact/">Contact</a><a class="lang" href="/">HR</a></nav>'
+    : '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/vijesti/">Vijesti</a><a href="/objave/">Objave</a><a href="/trzista/">Tržišta</a><a href="/visual-index/">Galerija</a><a href="/assistant/">AI</a><a href="/admin-center/" rel="nofollow">Admin</a><a href="/contact/">Kontakt</a><a class="lang" href="/en/">EN</a></nav>';
 }
 function injectOnce(html,marker,content,position='head'){
   if(html.includes(marker))return html;
@@ -34,23 +34,25 @@ async function patchHtml(response,path,request){
     html=html.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,canonicalMenu(path==='/en'));
     html=injectOnce(html,'public-menu-v10.css',MENU_STYLE,'head');
     html=injectOnce(html,'index-menu-unified-v16.js',INDEX_MENU_SCRIPT,'body');
-    html=html.replace(/index-menu-unified-v16\.js\?v=[^"']+/gi,'index-menu-unified-v16.js?v=20260628-v17');
-    headers.set('x-gnk-asg-index-menu','PUBLIC_CORE_MENU_V31');
-    headers.set('x-gnk-asg-index-menu-items','7');
+    html=html.replace(/index-menu-unified-v16\.js\?v=[^"']+/gi,'index-menu-unified-v16.js?v=20260628-v18');
+    headers.set('x-gnk-asg-index-menu','INDEX_PARITY_MENU_V32');
+    headers.set('x-gnk-asg-index-menu-items','11');
     headers.set('x-gnk-asg-design-parity','HR_EN_IDENTICAL');
+    headers.set('x-gnk-asg-admin-entry','TOKEN_PROTECTED_ADMIN_CENTER');
   }
   if(path==='/admin-center'){
     html=html.replace(/<script[^>]+admin-center-memorandum-v1\.js[^>]*><\/script>/gi,'');
     html=injectOnce(html,'admin-center-extensions-v2.js',ADMIN_EXTENSION_SCRIPT,'body');
     headers.set('x-gnk-asg-admin-menu','UNIFIED_ADMIN_EXTENSIONS_V2');
     headers.set('x-gnk-asg-admin-menu-modules','11');
+    headers.set('x-gnk-asg-admin-auth','TOKEN_OR_HTTPONLY_SESSION_REQUIRED');
   }
   if(!INDEX_PATHS.has(path)&&html.includes('public-shell-v15.js')){
-    html=html.replace(/public-menu-v10\.css\?v=[^"']+/gi,'public-menu-v10.css?v=20260628-v16');
-    html=html.replace(/public-shell-v15\.js\?v=[^"']+/gi,'public-shell-v15.js?v=20260628-v17');
-    html=html.replace(/public-menu-v10\.js\?v=[^"']+/gi,'public-menu-v10.js?v=20260628-v17');
-    headers.set('x-gnk-asg-public-menu','PUBLIC_CORE_MENU_V31');
-    headers.set('x-gnk-asg-public-menu-items','7');
+    html=html.replace(/public-menu-v10\.css\?v=[^"']+/gi,'public-menu-v10.css?v=20260628-v18');
+    html=html.replace(/public-shell-v15\.js\?v=[^"']+/gi,'public-shell-v15.js?v=20260628-v18');
+    html=html.replace(/public-menu-v10\.js\?v=[^"']+/gi,'public-menu-v10.js?v=20260628-v18');
+    headers.set('x-gnk-asg-public-menu','INDEX_PARITY_MENU_V32');
+    headers.set('x-gnk-asg-public-menu-items','11');
     headers.set('x-gnk-asg-design-parity','HR_EN_IDENTICAL');
   }
   headers.set('x-gnk-asg-menu-release',VERSION);
@@ -61,7 +63,7 @@ async function patchStatus(response,path){
   try{
     const payload=await response.json();
     const headers=mutableHeaders(response);headers.set('content-type','application/json; charset=utf-8');headers.set('x-gnk-asg-menu-release',VERSION);
-    return new Response(JSON.stringify({...payload,entryPoint:'src/index-project50-v30-unified-menu.js',deployedEntryPoint:'src/index-project50-v30-unified-menu.js',menuRelease:VERSION,publicMenu:'PUBLIC_CORE_MENU_V31',publicMenuItems:7,designParity:'HR_EN_IDENTICAL',adminMenu:'UNIFIED_ADMIN_EXTENSIONS_V2',adminMenuModules:11,checkedAt:new Date().toISOString()},null,2),{status:response.status,statusText:response.statusText,headers});
+    return new Response(JSON.stringify({...payload,entryPoint:'src/index-project50-v30-unified-menu.js',deployedEntryPoint:'src/index-project50-v30-unified-menu.js',menuRelease:VERSION,publicMenu:'INDEX_PARITY_MENU_V32',publicMenuItems:11,designParity:'HR_EN_IDENTICAL',adminEntry:'/admin-center/',adminAuth:'TOKEN_OR_HTTPONLY_SESSION_REQUIRED',adminMenu:'UNIFIED_ADMIN_EXTENSIONS_V2',adminMenuModules:11,checkedAt:new Date().toISOString()},null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
 
