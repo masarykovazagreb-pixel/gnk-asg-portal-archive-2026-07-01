@@ -16,7 +16,7 @@ jobs:
   deploy:
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      (github.event.issue.number == 65 &&
+      (github.event.issue.number == 225 &&
        github.event.comment.body == '/deploy-current-public-portal' &&
        (github.event.comment.author_association == 'OWNER' ||
         github.event.comment.author_association == 'MEMBER' ||
