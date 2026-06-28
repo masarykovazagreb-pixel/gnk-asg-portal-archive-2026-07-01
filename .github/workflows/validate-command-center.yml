@@ -52,28 +52,34 @@ jobs:
           test -s apps/portal/media-application/index.html
           test -s apps/portal/media-access/index.html
 
-      - name: Media dataset 112 42 22
+      - name: Dataset has 112 contacts
+        if: always()
+        run: node -e "const x=require('./apps/portal/data/media-outreach-contacts-v1.json'); console.log('CONTACTS='+x.length); if(x.length!==112) process.exit(1)"
+
+      - name: Dataset has 42 recorded emails
+        if: always()
+        run: node -e "const x=require('./apps/portal/data/media-outreach-contacts-v1.json'); const n=x.filter(v=>String(v.email||'').trim()).length; console.log('EMAILS='+n); if(n!==42) process.exit(1)"
+
+      - name: Dataset has 22 automation contacts
+        if: always()
+        run: node -e "const x=require('./apps/portal/data/media-outreach-contacts-v1.json'); const n=x.filter(v=>v.automationAllowed===true).length; console.log('AUTOMATION='+n); if(n!==22) process.exit(1)"
+
+      - name: Dataset codes are unique and valid
+        if: always()
         shell: bash
         run: |
-          set -euxo pipefail
           node <<'JS'
-          const fs=require('node:fs');
-          const contacts=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
-          const emailCount=contacts.filter(item=>String(item.email||'').trim()).length;
-          const automationCount=contacts.filter(item=>item.automationAllowed===true).length;
-          console.log(JSON.stringify({contacts:contacts.length,emailCount,automationCount}));
-          if(contacts.length!==112)throw new Error(`contacts=${contacts.length}, expected=112`);
-          if(emailCount!==42)throw new Error(`emails=${emailCount}, expected=42`);
-          if(automationCount!==22)throw new Error(`automation=${automationCount}, expected=22`);
-          const codes=contacts.map(item=>String(item.mailCode||''));
-          if(new Set(codes).size!==112)throw new Error('mail codes are not unique');
+          const x=require('./apps/portal/data/media-outreach-contacts-v1.json');
+          const codes=x.map(v=>String(v.mailCode||''));
+          if(new Set(codes).size!==112)throw new Error(`unique=${new Set(codes).size}, expected=112`);
           for(const code of codes)if(!/^GNK-MEDIA-\d{8}-[A-Z]{2}-[A-Z0-9]{1,8}-\d{3}$/.test(code))throw new Error(`invalid code: ${code}`);
+          console.log('CODES=VALID');
           JS
 
       - name: Admin order and primary card
+        if: always()
         shell: bash
         run: |
-          set -euxo pipefail
           node <<'JS'
           const fs=require('node:fs');
           const admin=fs.readFileSync('apps/portal/assets/admin-center-v2.js','utf8');
@@ -81,10 +87,11 @@ jobs:
           let cursor=-1;
           for(const item of order){const next=admin.indexOf(item);if(next<=cursor)throw new Error(`bad Admin order: ${item}`);cursor=next;}
           if(!admin.includes("const PRIORITIES = ['media','operator','mail']"))throw new Error('bad Admin priorities');
-          console.log(JSON.stringify({adminOrder:order,priorities:['media','operator','mail']}));
+          console.log('ADMIN_ORDER=VALID');
           JS
 
       - name: Locked sending and human decision markers
+        if: always()
         shell: bash
         run: |
           set -euxo pipefail
@@ -95,5 +102,6 @@ jobs:
           grep -q "HUMAN_ONLY" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
 
       - name: Wrangler dry run
+        if: always()
         working-directory: workers/gnk-asg-direct-operator
         run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
