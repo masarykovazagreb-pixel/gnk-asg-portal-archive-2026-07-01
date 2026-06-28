@@ -1,0 +1,85 @@
+/* GNK ASG INDEX · THE CODE play control and three-column alignment V12 */
+
+/* The centre HTML presentation must share the same top and bottom line as both side panels. */
+.code-stage--inline .code-inline-host{
+  padding:0!important;
+  overflow:hidden!important;
+}
+.code-stage--inline .ci-shell{
+  align-items:stretch!important;
+}
+.code-stage--inline .ci-company,
+.code-stage--inline .ci-app{
+  align-self:stretch!important;
+  margin-top:0!important;
+  margin-bottom:0!important;
+}
+.code-stage--inline .ci-app{
+  height:auto!important;
+  min-height:844px!important;
+}
+.code-stage--inline .ci-scene{
+  height:auto!important;
+  min-height:100%!important;
+}
+
+/* Restore only the light PLAY / PAUSE / REPLAY control hidden by the public index layer. */
+html body .code-stage--inline .ci-controls{
+  display:flex!important;
+  top:14px!important;
+  left:50%!important;
+  right:auto!important;
+  width:auto!important;
+  min-width:0!important;
+  padding:4px!important;
+  gap:0!important;
+  transform:translateX(-50%)!important;
+  border:1px solid rgba(154,108,0,.22)!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.88)!important;
+  box-shadow:0 7px 20px rgba(55,41,13,.10)!important;
+  backdrop-filter:blur(10px)!important;
+  -webkit-backdrop-filter:blur(10px)!important;
+}
+html body .code-stage--inline .ci-controls .ci-control{
+  display:none!important;
+}
+html body .code-stage--inline .ci-controls .ci-control--play{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:32px!important;
+  padding:8px 14px!important;
+  border:1px solid rgba(154,108,0,.30)!important;
+  border-radius:999px!important;
+  background:linear-gradient(145deg,#fffdf8,#f2e7c9)!important;
+  color:#5f4515!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 3px 10px rgba(81,58,15,.08)!important;
+  font:800 8px/1 Inter,"Segoe UI",Arial,sans-serif!important;
+  letter-spacing:.09em!important;
+  text-transform:uppercase!important;
+}
+html body .code-stage--inline .ci-controls .ci-control--play:hover,
+html body .code-stage--inline .ci-controls .ci-control--play:focus-visible{
+  border-color:rgba(154,108,0,.52)!important;
+  background:#fff!important;
+  color:#3d2c0d!important;
+  box-shadow:0 0 0 3px rgba(154,108,0,.09),0 6px 16px rgba(81,58,15,.10)!important;
+  outline:none!important;
+}
+
+@media(max-width:980px){
+  .code-stage--inline .ci-app{
+    min-height:760px!important;
+  }
+}
+
+@media(max-width:720px){
+  html body .code-stage--inline .ci-controls{
+    top:9px!important;
+  }
+  html body .code-stage--inline .ci-controls .ci-control--play{
+    min-height:30px!important;
+    padding:7px 12px!important;
+  }
+}
