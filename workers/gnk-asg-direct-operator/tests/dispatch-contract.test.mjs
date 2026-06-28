@@ -13,9 +13,15 @@ test('dispatch contract',()=>{
   assert.ok(entry.includes('withRequiredEmailSignature'));
   assert.ok(dispatch.includes('queue_claim_lost'));
   assert.ok(dispatch.includes('STALE_PDF'));
-  assert.ok(dispatch.includes("SENT_ACCESS_FAILED"));
+  assert.ok(dispatch.includes('SENT_ACCESS_FAILED'));
   assert.ok(store.includes('DELIVERY_PENDING'));
   assert.ok(store.includes("status='ACTIVE'"));
   assert.ok(store.includes('DELIVERY_FAILED'));
   assert.ok(store.includes('code_hash'));
+});
+
+test('production media release gates are not enabled in repository configuration',()=>{
+  const wrangler=read('workers/gnk-asg-direct-operator/wrangler.toml');
+  assert.doesNotMatch(wrangler,/^MEDIA_OUTREACH_LIVE\s*=\s*["']?(?:1|true|yes|on)["']?\s*$/im);
+  assert.doesNotMatch(wrangler,/^MEDIA_OUTREACH_RELEASE_APPROVED\s*=\s*["']?(?:1|true|yes|on)["']?\s*$/im);
 });
