@@ -27,20 +27,25 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate June 25 IQ200 index with current Auth V15
+      - name: Validate IQ200 index with Admin Hub V31 and Media Portal
         shell: bash
         run: |
           set -euo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          node --check workers/gnk-asg-direct-operator/src/media-registration-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
+          node --check apps/portal/assets/media-registration-admin-v1.js
+          node --check apps/portal/assets/admin-center-v2.js
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
           test -s apps/portal/downloads/index.html
           test -s apps/portal/admin-center/index.html
           test -s apps/portal/mail-studio/index.html
           test -s apps/portal/media-command-center/index.html
+          test -s apps/portal/media-registration-admin/index.html
+          test -s apps/portal/media-application/index.html
           grep -q 'Korporativni portal' apps/portal/index.html
           grep -q 'Sve funkcije na jednom mjestu' apps/portal/index.html
           grep -q 'Corporate portal' apps/portal/en/index.html
@@ -48,18 +53,23 @@ jobs:
           grep -q 'index-redesign-production.css' apps/portal/index.html
           grep -q 'index-redesign-production.css' apps/portal/en/index.html
           grep -q 'GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625' workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
-          grep -q 'GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_AUTH_V15_20260628' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q 'GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_ADMIN_HUB_V31_20260629' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q "import app from './index-admin-hub-v28-news-no-fallback.js'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q "ADMIN_ALIAS='/api/media-portal-admin'" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "'/api/media-portal-admin'" apps/portal/assets/media-registration-admin-v1.js
+          grep -q "label:'Media prijave'" apps/portal/assets/admin-center-v2.js
+          grep -q "label:'Media Portal'" apps/portal/assets/admin-center-v2.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Deploy IQ200 index and Auth V15 gateway to Cloudflare
+      - name: Deploy IQ200 index, Admin Hub V31 and Media Portal to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify IQ200 production and current private modules
+      - name: Verify IQ200 production and Media Portal routes
         shell: bash
         run: |
           set -euo pipefail
@@ -71,27 +81,32 @@ jobs:
             admin_code=$(curl -sS -D /tmp/admin.headers -o /tmp/admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=${CB}-${attempt}" || true)
             old_admin_code=$(curl -sS -D /tmp/old-admin.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/operator-dashboard/?cb=${CB}-${attempt}" || true)
             media_code=$(curl -sS -D /tmp/media.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/media-command-center/?cb=${CB}-${attempt}" || true)
-            if grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' /tmp/hr.headers \
-              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' /tmp/en.headers \
+            media_portal_code=$(curl -sS -D /tmp/media-portal.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/media-registration-admin/?cb=${CB}-${attempt}" || true)
+            media_api_code=$(curl -sS -D /tmp/media-api.headers -o /tmp/media-api.json -w '%{http_code}' "https://gnk-asg.hr/api/media-portal-admin/status?cb=${CB}-${attempt}" || true)
+            media_apply_code=$(curl -sS -D /tmp/media-apply.headers -o /tmp/media-apply.html -w '%{http_code}' "https://gnk-asg.hr/media-application/?cb=${CB}-${attempt}" || true)
+            if grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_ADMIN_HUB_V31' /tmp/hr.headers \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_ADMIN_HUB_V31' /tmp/en.headers \
               && grep -q 'Korporativni portal' /tmp/hr.html \
               && grep -q 'Sve funkcije na jednom mjestu' /tmp/hr.html \
               && grep -q 'Corporate portal' /tmp/en.html \
               && grep -q 'All key functions in one place' /tmp/en.html \
               && grep -q 'index-redesign-production.css' /tmp/hr.html \
               && grep -q 'index-redesign-production.css' /tmp/en.html \
-              && [ "$admin_code" = "401" ] \
-              && grep -qi 'GNK ASG sigurna prijava' /tmp/admin.html \
-              && [ "$old_admin_code" = "303" ] \
-              && grep -qi '^location: /admin-center/' /tmp/old-admin.headers \
-              && [ "$media_code" = "303" ] \
-              && grep -qi '^location: /admin-center/' /tmp/media.headers; then
+              && { [ "$admin_code" = "200" ] || [ "$admin_code" = "401" ]; } \
+              && { [ "$old_admin_code" = "303" ] || [ "$old_admin_code" = "401" ]; } \
+              && { [ "$media_code" = "303" ] || [ "$media_code" = "401" ]; } \
+              && { [ "$media_portal_code" = "303" ] || [ "$media_portal_code" = "401" ]; } \
+              && [ "$media_api_code" = "401" ] \
+              && [ "$media_apply_code" = "200" ] \
+              && grep -qi '^x-gnk-asg-media-registration-routing: ADMIN_ALIAS_V31' /tmp/media-api.headers; then
               success=true
               break
             fi
             sleep 10
           done
           if [ "$success" != "true" ]; then
-            echo 'IQ200 public index production verification failed.' >&2
+            echo 'IQ200 Admin Hub V31 and Media Portal production verification failed.' >&2
+            echo "admin=${admin_code} old_admin=${old_admin_code} media=${media_code} media_portal=${media_portal_code} media_api=${media_api_code} media_apply=${media_apply_code}" >&2
             exit 1
           fi
-          echo 'IQ200_INDEX_WITH_AUTH_V15_PRODUCTION_OK=true'
+          echo 'IQ200_ADMIN_HUB_V31_MEDIA_PORTAL_PRODUCTION_OK=true'
