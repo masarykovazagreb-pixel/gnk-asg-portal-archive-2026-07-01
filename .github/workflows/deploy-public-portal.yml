@@ -27,58 +27,71 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate Unified Auth V15 final production flow
+      - name: Validate June 25 IQ200 index with current Auth V15
         shell: bash
         run: |
           set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
-          node --check apps/portal/assets/index-mail-link-v1.js
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
           test -s apps/portal/downloads/index.html
           test -s apps/portal/admin-center/index.html
           test -s apps/portal/mail-studio/index.html
           test -s apps/portal/media-command-center/index.html
-          grep -q 'PDF CENTAR' workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
-          grep -q 'PDF CENTRE' workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
-          grep -q 'href="/admin-center/"' workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
-          grep -q 'MAIL STUDIO' workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
-          grep -q 'MEDIA CENTAR' workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
+          grep -q 'Korporativni portal' apps/portal/index.html
+          grep -q 'Sve funkcije na jednom mjestu' apps/portal/index.html
+          grep -q 'Corporate portal' apps/portal/en/index.html
+          grep -q 'All key functions in one place' apps/portal/en/index.html
+          grep -q 'index-redesign-production.css' apps/portal/index.html
+          grep -q 'index-redesign-production.css' apps/portal/en/index.html
+          grep -q 'GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625' workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
+          grep -q 'GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_AUTH_V15_20260628' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy src/index-unified-auth-v15-final.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Deploy Unified Auth V15 final entry to Cloudflare
+      - name: Deploy IQ200 index and Auth V15 gateway to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy src/index-unified-auth-v15-final.js --config wrangler.toml --name gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify production flow
+      - name: Verify IQ200 production and current private modules
         shell: bash
         run: |
           set -euo pipefail
           CB="${GITHUB_RUN_ID}"
-          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+          success=false
+          for attempt in $(seq 1 18); do
             curl -sS -D /tmp/hr.headers "https://gnk-asg.hr/?cb=${CB}-${attempt}" -o /tmp/hr.html || true
             curl -sS -D /tmp/en.headers "https://gnk-asg.hr/en/?cb=${CB}-${attempt}" -o /tmp/en.html || true
-            curl -sS -D /tmp/admin.headers "https://gnk-asg.hr/admin-center/?cb=${CB}-${attempt}" -o /tmp/admin.html || true
-            curl -sS -D /tmp/pdf.headers "https://gnk-asg.hr/downloads/?cb=${CB}-${attempt}" -o /tmp/pdf.html || true
-            if grep -qi '^x-gnk-asg-production-entry: GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260628' /tmp/hr.headers \
-              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260628' /tmp/en.headers \
-              && grep -q 'href="/downloads/"[^>]*>PDF CENTAR<' /tmp/hr.html \
-              && grep -q 'href="/en/downloads/"[^>]*>PDF CENTRE<' /tmp/en.html \
-              && grep -q 'href="/admin-center/"[^>]*>ADMIN<' /tmp/hr.html \
-              && grep -q 'href="/admin-center/"[^>]*>ADMIN<' /tmp/en.html \
+            admin_code=$(curl -sS -D /tmp/admin.headers -o /tmp/admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=${CB}-${attempt}" || true)
+            old_admin_code=$(curl -sS -D /tmp/old-admin.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/operator-dashboard/?cb=${CB}-${attempt}" || true)
+            media_code=$(curl -sS -D /tmp/media.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/media-command-center/?cb=${CB}-${attempt}" || true)
+            if grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' /tmp/hr.headers \
+              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_20260625_AUTH_V15' /tmp/en.headers \
+              && grep -q 'Korporativni portal' /tmp/hr.html \
+              && grep -q 'Sve funkcije na jednom mjestu' /tmp/hr.html \
+              && grep -q 'Corporate portal' /tmp/en.html \
+              && grep -q 'All key functions in one place' /tmp/en.html \
+              && grep -q 'index-redesign-production.css' /tmp/hr.html \
+              && grep -q 'index-redesign-production.css' /tmp/en.html \
+              && [ "$admin_code" = "401" ] \
               && grep -qi 'GNK ASG sigurna prijava' /tmp/admin.html \
-              && grep -qi '^content-type: text/html' /tmp/pdf.headers \
-              && ! grep -q '>Tržišta<' /tmp/hr.html \
-              && ! grep -q '>Markets<' /tmp/en.html; then
-              echo 'UNIFIED_AUTH_V15_INDEX_PDF_ADMIN_MAIL_MEDIA_OK=true'
-              exit 0
+              && [ "$old_admin_code" = "303" ] \
+              && grep -qi '^location: /admin-center/' /tmp/old-admin.headers \
+              && [ "$media_code" = "303" ] \
+              && grep -qi '^location: /admin-center/' /tmp/media.headers; then
+              success=true
+              break
             fi
-            sleep 8
+            sleep 10
           done
-          echo 'Unified Auth V15 production flow verification failed.' >&2
-          exit 1
+          if [ "$success" != "true" ]; then
+            echo 'IQ200 public index production verification failed.' >&2
+            exit 1
+          fi
+          echo 'IQ200_INDEX_WITH_AUTH_V15_PRODUCTION_OK=true'
