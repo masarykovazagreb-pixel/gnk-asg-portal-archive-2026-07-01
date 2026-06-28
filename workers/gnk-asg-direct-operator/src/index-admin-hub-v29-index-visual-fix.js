@@ -1,3 +1,4 @@
+// Production redeploy trigger: 2026-06-28 INDEX visibility recovery
 import app from './index-admin-hub-v28-news-no-fallback.js';
 
 export const VERSION='GNK_ASG_ADMIN_HUB_V29_INDEX_MENU_DOWNLOAD_CENTRE_20260628';
