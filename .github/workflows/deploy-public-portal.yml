@@ -33,6 +33,7 @@ jobs:
           set -euxo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          node --check workers/gnk-asg-direct-operator/src/index-minimum-live-v29.js
           node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-application-access-v1.js
@@ -43,6 +44,8 @@ jobs:
           node --check apps/portal/assets/media-access-v1.js
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
+          test -s apps/portal/contact/index.html
+          test -s apps/portal/en/contact/index.html
           test -s apps/portal/admin-center/index.html
           test -s apps/portal/media-command-center/index.html
           test -s apps/portal/media-application/index.html
@@ -50,8 +53,8 @@ jobs:
           node <<'JS'
           const fs=require('node:fs');
           const checks=[
-            ['apps/portal/index.html',['THE CODE','Financije','Mreža','Tržišta','Admin','Kontakt','EN'],['/vijesti/','/objave/','/visual-index/','/assistant/']],
-            ['apps/portal/en/index.html',['THE CODE','Financials','Network','Markets','Admin','Contact','HR'],['/news/','/publications/','/visual-index/','/en/assistant/']]
+            ['apps/portal/index.html',['THE CODE','Financije','Mreža','Tržišta','Admin','Kontakt','EN'],['/vijesti/','/objave/','/visual-index/','/assistant/','/operator-dashboard/']],
+            ['apps/portal/en/index.html',['THE CODE','Financials','Network','Markets','Admin','Contact','HR'],['/news/','/publications/','/visual-index/','/en/assistant/','/operator-dashboard/']]
           ];
           for(const [file,required,forbidden] of checks){
             const html=fs.readFileSync(file,'utf8');
@@ -59,6 +62,12 @@ jobs:
             if(!nav)throw new Error(`${file}: public menu missing`);
             for(const text of required)if(!nav.includes(text))throw new Error(`${file}: required menu item missing: ${text}`);
             for(const href of forbidden)if(nav.includes(href))throw new Error(`${file}: hidden menu route returned: ${href}`);
+            if(!nav.includes('/admin-center/'))throw new Error(`${file}: Admin Center route missing`);
+          }
+          for(const file of ['apps/portal/contact/index.html','apps/portal/en/contact/index.html']){
+            const html=fs.readFileSync(file,'utf8');
+            if(!html.includes('/api/contact-submit'))throw new Error(`${file}: contact API missing`);
+            if(!html.includes('contact-quality-v2.css?v=20260628-v5'))throw new Error(`${file}: Contact V5 CSS missing`);
           }
 
           const admin=fs.readFileSync('apps/portal/assets/admin-center-v2.js','utf8');
@@ -82,11 +91,11 @@ jobs:
           if(new Set(codes).size!==contacts.length)throw new Error('Media mail codes are not unique');
           for(const code of codes)if(!/^GNK-MEDIA-\d{8}-[A-Z]{2}-[A-Z0-9]{1,8}-\d{3}$/.test(code))throw new Error(`Invalid media mail code: ${code}`);
           JS
-          grep -q 'main = "src/index-admin-hub-v28-news-no-fallback.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-minimum-live-v29.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q '\[triggers\]' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'crons = \["\*/5 \* \* \* \*"\]' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'LOCKED_REDUCED_PUBLIC_MENU' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          grep -q "x-gnk-asg-gallery-primary-menu','HIDDEN'" workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
+          grep -q 'MINIMUM_INDEX_CONTACT_ADMIN_V1' workers/gnk-asg-direct-operator/src/index-minimum-live-v29.js
+          grep -q "mediaCommandSending:'LOCKED'" workers/gnk-asg-direct-operator/src/index-minimum-live-v29.js
           grep -q "activeNewsLimit:100" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "archivePruneAt:1000" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "archiveDeleteCount:500" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
@@ -131,8 +140,9 @@ jobs:
             if(status.archiveRetainAfterPrune!==500)throw new Error(`bad archiveRetainAfterPrune: ${status.archiveRetainAfterPrune}`);
             if(status.contentContract?.fallbackImagesAllowed!==false)throw new Error('fallbackImagesAllowed is not false');
             if(status.fallback_image||status.fallbackImage||status.publicFallbackImage)throw new Error(`fallback image marker leaked into status: ${status.fallback_image||status.fallbackImage||status.publicFallbackImage}`);
-            if(!String(status.entryPoint||'').includes('index-admin-hub-v28-news-no-fallback.js'))throw new Error(`bad entryPoint: ${status.entryPoint}`);
-            if(status.indexMenu!=='LOCKED_REDUCED_PUBLIC_MENU')throw new Error(`bad indexMenu: ${status.indexMenu}`);
+            if(!String(status.entryPoint||'').includes('index-minimum-live-v29.js'))throw new Error(`bad entryPoint: ${status.entryPoint}`);
+            if(status.indexMenu!=='MINIMUM_INDEX_CONTACT_ADMIN_V1')throw new Error(`bad indexMenu: ${status.indexMenu}`);
+            if(status.mediaCommandSending!=='LOCKED')throw new Error(`Media sending is not locked: ${status.mediaCommandSending}`);
             if(!String(status.mediaApplicationAccess||'').includes('MEDIA_APPLICATION_ACCESS_V2'))throw new Error(`bad media application access: ${status.mediaApplicationAccess}`);
             if(status.mediaContactSeed?.total!==112||status.mediaContactSeed?.recordedEmailAddresses!==22||status.mediaContactSeed?.handoffExpectedEmailAddresses!==42||status.mediaContactSeed?.missingManualEmailAddresses!==20||status.mediaContactSeed?.status!=='INCOMPLETE_22_OF_42')throw new Error(`bad media contact seed: ${JSON.stringify(status.mediaContactSeed)}`);
           }
@@ -142,15 +152,17 @@ jobs:
             if(!nav)throw new Error(`${label} menu missing`);
             for(const text of required)if(!nav.includes(text))throw new Error(`${label} required menu item missing: ${text}`);
             for(const href of forbidden)if(nav.includes(href))throw new Error(`${label} hidden menu route returned: ${href}`);
-            if(response.headers['x-gnk-asg-index-menu']!=='LOCKED_REDUCED_PUBLIC_MENU')throw new Error(`${label} worker menu marker missing`);
+            if(response.headers['x-gnk-asg-index-menu']!=='MINIMUM_INDEX_CONTACT_ADMIN_V1')throw new Error(`${label} V29 menu marker missing`);
           }
           for(let i=1;i<=24;i++){
-            const [root,enRoot,admin,command,mediaAccess,hr,en,feed,alias,archive,archiveAlias,statusRes,versionRes]=await Promise.all([
-              read('/'),read('/en/'),read('/admin-center/'),read('/media-command-center/'),read('/media-access/'),read('/vijesti/'),read('/news/'),read('/data/news.json'),read('/data/news-feed.json'),read('/data/news-archive.json'),read('/data/news_archive.json'),read('/data/news-automation-status.json'),read('/data/portal-version.json')
+            const [root,enRoot,contact,enContact,admin,command,mediaAccess,hr,en,feed,alias,archive,archiveAlias,statusRes,versionRes]=await Promise.all([
+              read('/'),read('/en/'),read('/contact/'),read('/en/contact/'),read('/admin-center/'),read('/media-command-center/'),read('/media-access/'),read('/vijesti/'),read('/news/'),read('/data/news.json'),read('/data/news-feed.json'),read('/data/news-archive.json'),read('/data/news_archive.json'),read('/data/news-automation-status.json'),read('/data/portal-version.json')
             ]);
             try{
-              assertMenu('HR index',root,['THE CODE','Financije','Mreža','Tržišta','Admin','Kontakt','EN'],['/vijesti/','/objave/','/visual-index/','/assistant/']);
-              assertMenu('EN index',enRoot,['THE CODE','Financials','Network','Markets','Admin','Contact','HR'],['/news/','/publications/','/visual-index/','/en/assistant/']);
+              assertMenu('HR index',root,['THE CODE','Financije','Mreža','Tržišta','Admin','Kontakt','EN'],['/vijesti/','/objave/','/visual-index/','/assistant/','/operator-dashboard/']);
+              assertMenu('EN index',enRoot,['THE CODE','Financials','Network','Markets','Admin','Contact','HR'],['/news/','/publications/','/visual-index/','/en/assistant/','/operator-dashboard/']);
+              if(contact.status!==200||contact.headers['x-gnk-asg-contact-ui']!=='INDEX_ALIGNED_V5'||!contact.text.includes('/api/contact-submit'))throw new Error('HR Contact V5 not active');
+              if(enContact.status!==200||enContact.headers['x-gnk-asg-contact-ui']!=='INDEX_ALIGNED_V5'||!enContact.text.includes('/api/contact-submit'))throw new Error('EN Contact V5 not active');
               if(![200,303,401,403].includes(admin.status))throw new Error(`Admin route status ${admin.status}`);
               if(![200,303,401,403].includes(command.status))throw new Error(`Command Center route status ${command.status}`);
               if(mediaAccess.status!==200)throw new Error(`Media access route status ${mediaAccess.status}`);
@@ -162,9 +174,9 @@ jobs:
               assertNewsArray('news.json',active,{max:100});assertNewsArray('news-feed.json',activeAlias,{max:100});assertNewsArray('news-archive.json',archived,{max:1000});assertNewsArray('news_archive.json',archivedAlias,{max:1000});assertStatus(status);
               if(version.mediaCommandSending!=='LOCKED')throw new Error(`Media sending is not locked: ${version.mediaCommandSending}`);
               if(version.mediaContactSeed?.status!=='INCOMPLETE_22_OF_42')throw new Error(`Media contact gap not reported: ${JSON.stringify(version.mediaContactSeed)}`);
-              console.log(JSON.stringify({attempt:i,ok:true,menu:status.indexMenu,active:active.length,archive:archived.length,mediaSending:version.mediaCommandSending,mediaSeed:status.mediaContactSeed,mediaAccess:status.mediaApplicationAccess,entryPoint:status.entryPoint}));
+              console.log(JSON.stringify({attempt:i,ok:true,menu:status.indexMenu,contact:status.contactUi,active:active.length,archive:archived.length,mediaSending:version.mediaCommandSending,mediaSeed:status.mediaContactSeed,mediaAccess:status.mediaApplicationAccess,entryPoint:status.entryPoint}));
               process.exit(0);
-            }catch(error){console.log(JSON.stringify({attempt:i,ok:false,error:error.message,statuses:{root:root.status,enRoot:enRoot.status,admin:admin.status,command:command.status,mediaAccess:mediaAccess.status,hr:hr.status,en:en.status,status:statusRes.status,version:versionRes.status}}));await sleep(10000)}
+            }catch(error){console.log(JSON.stringify({attempt:i,ok:false,error:error.message,statuses:{root:root.status,enRoot:enRoot.status,contact:contact.status,enContact:enContact.status,admin:admin.status,command:command.status,mediaAccess:mediaAccess.status,hr:hr.status,en:en.status,status:statusRes.status,version:versionRes.status}}));await sleep(10000)}
           }
           process.exit(1);
           JS
