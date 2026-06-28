@@ -5,6 +5,11 @@
   document.documentElement.dataset.gnkPublicMenu=RELEASE;
   const path=location.pathname.replace(/\/+$/,'')||'/';
   const en=document.documentElement.lang==='en'||path==='/en'||path.startsWith('/en/')||path.startsWith('/markets');
+  if(path==='/contact'||path==='/en/contact'){
+    const script=document.createElement('script');
+    script.src='/assets/contact-parity-v1.js?v=20260628-v1';
+    document.head.appendChild(script);
+  }
   const labels=en?{finance:'Financials',network:'Network',markets:'Markets',contact:'Contact',language:'HR',open:'Open menu',close:'Close menu'}:{finance:'Financije',network:'Mreža',markets:'Tržišta',contact:'Kontakt',language:'EN',open:'Otvori izbornik',close:'Zatvori izbornik'};
   const links=[
     ['THE CODE',en?'/en/#the-code':'/#the-code'],
