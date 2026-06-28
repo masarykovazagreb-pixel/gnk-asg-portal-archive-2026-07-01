@@ -1,0 +1,40 @@
+name: Validate Active Media Command Center V1
+
+on:
+  push:
+    branches:
+      - project-50-white-integrated-menu
+    paths:
+      - '.github/workflows/validate-media-command-center-active-v1.yml'
+      - 'workers/gnk-asg-direct-operator/src/index-project50-v31-mail-inbox.js'
+      - 'workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js'
+      - 'workers/gnk-asg-direct-operator/src/media-outreach-access-dispatch-v1.js'
+      - 'workers/gnk-asg-direct-operator/tests/media-command-center-active.test.mjs'
+      - 'apps/portal/assets/mail-studio-media-panel-v1.js'
+      - 'apps/portal/assets/admin-center-mail-only-v1.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-validate-media-command-center-active-v1
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate active media backend and Mail Studio panel
+        run: node --test workers/gnk-asg-direct-operator/tests/media-command-center-active.test.mjs
+      - name: Confirm no live action
+        run: |
+          echo "The active import graph and panel were validated."
+          echo "No Worker was deployed."
+          echo "No media dispatch endpoint was called."
+          echo "No email or invitation was sent."
