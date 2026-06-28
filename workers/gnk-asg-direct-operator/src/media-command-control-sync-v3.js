@@ -1,6 +1,6 @@
 import {handleMediaCommandCenter as handleV2,handleMediaCommandCenterEmail,VERSION as BASE_VERSION} from './media-command-center-v2.js';
 
-export const VERSION='GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626';
+export const VERSION='GNK_ASG_MEDIA_CONTROL_SYNC_V3_1_SUPPRESSION_SCHEMA_20260628';
 const API='/api/media-command-center';
 const clean=value=>String(value??'').trim();
 const lower=value=>clean(value).toLocaleLowerCase('hr');
@@ -10,10 +10,14 @@ const dbOf=env=>env.GNK_ASG_D1||null;
 
 async function ensureSchema(env){
   const db=dbOf(env);if(!db)throw new Error('GNK_ASG_D1 binding is not configured');
-  await db.prepare(`CREATE TABLE IF NOT EXISTS media_outreach_contact_controls(
-    mail_code TEXT PRIMARY KEY,source_version TEXT,verification_checked_at TEXT,approval_expires_at TEXT,
-    to_email TEXT,cc_email TEXT,requires_personalization INTEGER NOT NULL DEFAULT 0,
-    blocked_reason TEXT,operational_status TEXT NOT NULL DEFAULT 'UNASSESSED',updated_at TEXT NOT NULL)`).run();
+  await db.batch([
+    db.prepare(`CREATE TABLE IF NOT EXISTS media_outreach_contact_controls(
+      mail_code TEXT PRIMARY KEY,source_version TEXT,verification_checked_at TEXT,approval_expires_at TEXT,
+      to_email TEXT,cc_email TEXT,requires_personalization INTEGER NOT NULL DEFAULT 0,
+      blocked_reason TEXT,operational_status TEXT NOT NULL DEFAULT 'UNASSESSED',updated_at TEXT NOT NULL)`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS media_suppressions(
+      email TEXT PRIMARY KEY,reason TEXT,created_at TEXT NOT NULL)`)
+  ]);
   return db;
 }
 
