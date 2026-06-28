@@ -15,6 +15,8 @@ routes = [
   { pattern = "www.gnk-asg.hr/api/media-registration*", zone_name = "gnk-asg.hr" },
   { pattern = "gnk-asg.hr/api/media-registration-admin*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/api/media-registration-admin*", zone_name = "gnk-asg.hr" },
+  { pattern = "gnk-asg.hr/api/media-portal-admin*", zone_name = "gnk-asg.hr" },
+  { pattern = "www.gnk-asg.hr/api/media-portal-admin*", zone_name = "gnk-asg.hr" },
 
   { pattern = "gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
   { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
@@ -130,7 +132,7 @@ crons = ["*/5 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
-DEPLOY_REVISION = "20260629-media-registration-v30"
+DEPLOY_REVISION = "20260629-media-portal-admin-v31"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 MAIL_MANUAL_LIVE = "true"
