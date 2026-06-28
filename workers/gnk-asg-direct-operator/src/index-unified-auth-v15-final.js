@@ -1,6 +1,6 @@
-import authApp from './index-unified-auth-v14.js';
+import authApp from './index-media-command-center-v21.js';
 
-export const VERSION='GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260628_R2';
+export const VERSION='GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260629_R3_ACTIVE_CHAIN';
 export const INDEX_RESTORE='GNK_ASG_IQ200_INDEX_20260625';
 const INDEX_PATHS=new Set(['/','/en']);
 const ADMIN_PATH='/admin-center';
@@ -21,6 +21,7 @@ function finalHeaders(response,flow){
   headers.set('cloudflare-cdn-cache-control','no-store');
   headers.set('x-gnk-asg-production-entry',VERSION);
   headers.set('x-gnk-asg-index-restore',INDEX_RESTORE);
+  headers.set('x-gnk-asg-mail-media-chain','ACTIVE_V21');
   if(flow)headers.set('x-gnk-asg-production-flow',flow);
   return headers;
 }
@@ -62,7 +63,7 @@ async function sessionAuthorized(request,env,ctx){
 }
 
 function redirect(location){
-  return new Response(null,{status:303,headers:{location,'cache-control':'no-store','x-gnk-asg-production-entry':VERSION,'x-gnk-asg-index-restore':INDEX_RESTORE}});
+  return new Response(null,{status:303,headers:{location,'cache-control':'no-store','x-gnk-asg-production-entry':VERSION,'x-gnk-asg-index-restore':INDEX_RESTORE,'x-gnk-asg-mail-media-chain':'ACTIVE_V21'}});
 }
 
 export default{
