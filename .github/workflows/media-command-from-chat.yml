@@ -46,6 +46,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          cat ops/assets/dinamo_logo.png.b64.part1 ops/assets/dinamo_logo.png.b64.part2 ops/assets/dinamo_logo.png.b64.part3 ops/assets/dinamo_logo.png.b64.part4 > ops/assets/dinamo_logo.png.b64
           python -m pip install --disable-pip-version-check reportlab
           python ops/scripts/build_the_code_media_pdf.py
           test "$(head -c 5 /tmp/the-code.pdf)" = '%PDF-'
