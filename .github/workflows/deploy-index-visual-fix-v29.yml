@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: deploy-index-visual-fix-v29
@@ -60,3 +61,13 @@ jobs:
           grep -q 'height:844px' /tmp/layout.css
           grep -q 'color:#fff' /tmp/cities.css
           echo 'INDEX_VISUAL_FIX_V29_OK=true'
+      - name: Report success
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 225 --body "INDEX_VISUAL_FIX_V29_OK | Run: ${GITHUB_RUN_ID} | SHA: ${GITHUB_SHA}"
+      - name: Report failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 225 --body "INDEX_VISUAL_FIX_V29_FAILED | Run: ${GITHUB_RUN_ID} | SHA: ${GITHUB_SHA}"
