@@ -1,6 +1,7 @@
 import authApp from './index-unified-auth-v14.js';
 
 export const VERSION='GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260628_R2';
+export const INDEX_RESTORE='GNK_ASG_IQ200_INDEX_20260625';
 const INDEX_PATHS=new Set(['/','/en']);
 const ADMIN_PATH='/admin-center';
 const OLD_ADMIN_PATHS=new Set(['/operator-dashboard','/operator-mobile']);
@@ -19,6 +20,7 @@ function finalHeaders(response,flow){
   headers.set('cdn-cache-control','no-store');
   headers.set('cloudflare-cdn-cache-control','no-store');
   headers.set('x-gnk-asg-production-entry',VERSION);
+  headers.set('x-gnk-asg-index-restore',INDEX_RESTORE);
   if(flow)headers.set('x-gnk-asg-production-flow',flow);
   return headers;
 }
@@ -29,7 +31,17 @@ function menu(english){
     : '<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/downloads/">PDF CENTAR</a><a href="/admin-center/" rel="nofollow">ADMIN</a><a href="/contact/">Kontakt</a><a class="lang" href="/en/">EN</a></nav>';
 }
 
+function patchIq200Index(body){
+  body=body
+    .replace(/href=["']\/operator-dashboard\/?["']/gi,'href="/admin-center/"')
+    .replace(/href=["']\/operator-mobile\/?["']/gi,'href="/admin-center/"');
+  const lock=`<script id="gnk-iq200-admin-link-lock">(()=>{'use strict';const fix=()=>document.querySelectorAll('.top-nav a,.mega-grid a').forEach(a=>{const h=(a.getAttribute('href')||'').toLowerCase();if(h.startsWith('/operator-dashboard')||h.startsWith('/operator-mobile')){a.href='/admin-center/';a.rel='nofollow'}});fix();document.addEventListener('DOMContentLoaded',fix,{once:true});[50,150,400,900,1800,3500].forEach(ms=>setTimeout(fix,ms))})();<\/script>`;
+  if(!body.includes('gnk-iq200-admin-link-lock'))body=body.replace('</body>',lock+'</body>');
+  return body;
+}
+
 function patchIndex(body,english){
+  if(body.includes('class="brand-head"')&&body.includes('index-redesign-production.css'))return patchIq200Index(body);
   body=body.replace(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i,menu(english));
   body=body.replace(/<a[^>]+href=["']\/(?:markets|trzista)\/?["'][^>]*>[\s\S]*?<\/a>/gi,'');
   body=body.replace(/href=["']\/(?:mail-studio|operator-dashboard|operator-mobile)\/?["']([^>]*)>\s*(?:Admin|ADMIN|Mail Studio)\s*</gi,'href="/admin-center/" rel="nofollow"$1>ADMIN<');
@@ -50,7 +62,7 @@ async function sessionAuthorized(request,env,ctx){
 }
 
 function redirect(location){
-  return new Response(null,{status:303,headers:{location,'cache-control':'no-store','x-gnk-asg-production-entry':VERSION}});
+  return new Response(null,{status:303,headers:{location,'cache-control':'no-store','x-gnk-asg-production-entry':VERSION,'x-gnk-asg-index-restore':INDEX_RESTORE}});
 }
 
 export default{
@@ -67,7 +79,7 @@ export default{
 
     if(request.method==='GET'&&INDEX_PATHS.has(path)&&response.ok&&isHtml(response)){
       const body=patchIndex(await response.text(),path==='/en');
-      return new Response(body,{status:response.status,statusText:response.statusText,headers:finalHeaders(response,'INDEX_PDF_ADMIN')});
+      return new Response(body,{status:response.status,statusText:response.statusText,headers:finalHeaders(response,'IQ200_INDEX_20260625')});
     }
 
     if(request.method==='GET'&&path===ADMIN_PATH&&response.ok&&isHtml(response)){
