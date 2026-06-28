@@ -1,0 +1,39 @@
+name: Diagnose Final Routes
+
+on:
+  push:
+    branches: [verify-final-portal]
+    paths:
+      - '.github/workflows/diagnose-final-routes.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/diagnose-final-routes.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read live route states without sending mail
+        shell: bash
+        run: |
+          set -u
+          CB="${GITHUB_RUN_ID}"
+          check(){
+            NAME="$1"; URL="$2"
+            CODE=$(curl -sS -D "/tmp/${NAME}.headers" -o "/tmp/${NAME}.body" -w '%{http_code}' "$URL" || true)
+            echo "=== ${NAME} HTTP ${CODE} ==="
+            grep -iE '^(location|content-type|x-gnk-asg-[^:]+):' "/tmp/${NAME}.headers" | head -n 20 || true
+            head -c 500 "/tmp/${NAME}.body" | tr '\n' ' ' || true
+            echo
+          }
+          check index "https://gnk-asg.hr/?cb=${CB}"
+          check contact "https://gnk-asg.hr/contact/?cb=${CB}"
+          check contact_api "https://gnk-asg.hr/api/contact-submit?cb=${CB}"
+          check admin "https://gnk-asg.hr/admin-center/?cb=${CB}"
+          check mail "https://gnk-asg.hr/api/mail-center/send-readiness?cb=${CB}"
+          check media "https://gnk-asg.hr/api/media-command-center/delivery-status?cb=${CB}"
