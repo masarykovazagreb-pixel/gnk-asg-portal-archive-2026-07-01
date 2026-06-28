@@ -5,178 +5,164 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#050b14">
-  <title>GNK ASG Media Application · New York 2026</title>
-  <meta name="description" content="Secure newsroom application portal for the GNK ASG New York 2026 media programme.">
+  <title>THE CODE · Media Registration · New York 2026</title>
+  <meta name="description" content="Secure bilingual newsroom registration and travel portal for THE CODE, New York 2026.">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/media-application-v1.css?v=20260627">
-  <script defer src="/assets/media-application-v1.js?v=20260627"></script>
+  <link rel="stylesheet" href="/assets/media-registration-v1.css?v=20260628-1">
+  <script defer src="/assets/media-registration-v1.js?v=20260628-1"></script>
 </head>
 <body>
-  <a class="skip-link" href="#applicationForm">Preskoči na prijavu / Skip to application</a>
-  <header class="masthead">
-    <a class="brand" href="/" aria-label="GNK ASG portal">
-      <span class="brand-mark" aria-hidden="true">G</span>
-      <span><strong>GNK ASG</strong><small>Media Relations · New York 2026</small></span>
-    </a>
-    <div class="masthead-meta">
-      <span class="secure-chip">Secure newsroom portal</span>
-      <a href="mailto:media@gnk-asg.hr">media@gnk-asg.hr</a>
+<header class="masthead">
+  <a class="brand" href="/"><span class="brand-mark">G</span><span><strong>GNK ASG</strong><small>THE CODE · New York 2026</small></span></a>
+  <div class="top-actions"><span class="secure-chip">Secure newsroom portal</span><button type="button" class="lang-button active" data-lang="hr">HR</button><button type="button" class="lang-button" data-lang="en">EN</button><a href="mailto:media@gnk-asg.hr">media@gnk-asg.hr</a></div>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">THE CODE · Official media registration</p>
+      <h1><span class="hr">Sigurna prijava redakcije</span><span class="en">Secure newsroom registration</span></h1>
+      <p class="lead hr">Unesite šifru poziva i osobni pristupni kod iz službenog e-maila. Podatke možete spremiti, zatvoriti stranicu i naknadno ih dopunjavati istim kodom.</p>
+      <p class="lead en">Enter the invitation reference and personal access code from the official email. You may save your information, close the page and return later using the same code.</p>
+      <div class="event-strip"><strong>6–8 October 2026</strong><span>New York</span><strong>7 October · 11:30 ET</strong></div>
     </div>
-  </header>
+    <aside class="deadline-card"><small><span class="hr">Rok prijave</span><span class="en">Application deadline</span></small><strong id="deadlineText">20. srpnja 2026. · 23:59 CEST</strong><div id="countdown">—</div><p class="hr">Predaja obrasca nije automatsko odobrenje. Konačnu odluku donosi ovlaštena osoba.</p><p class="en">Submission does not constitute automatic approval. The final decision is made by an authorised person.</p></aside>
+  </section>
 
-  <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">Invitation-only application</p>
-        <h1>Prijava predstavnika redakcije<br><span>Newsroom representative application</span></h1>
-        <p class="lead">GNK ASG poziva odabrane redakcije na program u New Yorku. Jedna prijava predstavlja jednu redakciju i jednog nominiranog predstavnika.</p>
-        <p class="lead en">GNK ASG invites selected newsrooms to the New York programme. One application represents one newsroom and one nominated representative.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#applicationForm">Započni prijavu / Apply</a>
-          <a class="button" href="#travelPolicy">Troškovi i put / Travel policy</a>
+  <section id="loginPanel" class="login-panel">
+    <div>
+      <p class="eyebrow">Invitation access</p>
+      <h2><span class="hr">Prijava kodom</span><span class="en">Code sign-in</span></h2>
+      <p class="hr">Svaka redakcija dobiva jedinstvenu šifru poziva i osobni kod. Kod nemojte prosljeđivati.</p>
+      <p class="en">Each newsroom receives a unique invitation reference and personal code. Do not forward the code.</p>
+    </div>
+    <form id="loginForm" class="login-form">
+      <label><span class="hr">Šifra poziva</span><span class="en">Invitation reference</span><input id="mailCode" required autocomplete="off" placeholder="GNK-MEDIA-2026..."></label>
+      <label><span class="hr">Osobni pristupni kod</span><span class="en">Personal access code</span><input id="pin" required autocomplete="one-time-code" maxlength="12" placeholder="XXXXXXXXXX"></label>
+      <button id="loginButton" class="button primary" type="submit"><span class="hr">OTVORI PRIJAVU</span><span class="en">OPEN APPLICATION</span></button>
+      <div id="loginNotice" class="notice" role="status"></div>
+    </form>
+  </section>
+
+  <section id="workspace" hidden>
+    <div class="workspace-head">
+      <div><p class="eyebrow">Secure workspace</p><h2 id="workspaceTitle">—</h2><p id="workspaceMeta" class="muted"></p></div>
+      <div class="workspace-actions"><span id="saveState" class="save-state">—</span><button id="logoutButton" type="button" class="button"><span class="hr">Odjava</span><span class="en">Sign out</span></button></div>
+    </div>
+
+    <section class="policy-grid">
+      <article><span>01</span><h3><span class="hr">Smještaj je osiguran</span><span class="en">Accommodation secured</span></h3><p class="hr">Hoteli kategorije 5 zvjezdica, u okviru organizatorova all-inclusive paketa. Dostupni su zahtjevi za jednokrevetnu, dvokrevetnu sobu ili suite.</p><p class="en">Organizer-designated five-star hotels under the organizer’s all-inclusive package. Requests may be made for a single room, double room or suite.</p></article>
+      <article><span>02</span><h3><span class="hr">GNK ASG rezervira let</span><span class="en">GNK ASG books the flight</span></h3><p class="hr">Unesite grad, zračnu luku, datume i do dvije željene opcije. Mi rezerviramo i plaćamo odobrenu kartu.</p><p class="en">Enter the city, airport, dates and up to two preferred options. We book and pay for the approved flight.</p></article>
+      <article><span>03</span><h3><span class="hr">Redakcija rezervira nakon odobrenja</span><span class="en">Newsroom books after approval</span></h3><p class="hr">Tek nakon pisanog odobrenja možete rezervirati i kroz sustav dostaviti ponudu, itinerar, PNR ili rezervacijski kod.</p><p class="en">Only after written approval may the newsroom reserve and submit a quotation, itinerary, PNR or booking code through the portal.</p></article>
+      <article><span>04</span><h3><span class="hr">Sigurna naknadna dopuna</span><span class="en">Secure later updates</span></h3><p class="hr">Nacrt se čuva u centralnoj bazi. Istim kodom možete se vratiti i dopuniti putne, hotelske, programske i produkcijske podatke.</p><p class="en">The draft is stored in the central database. Use the same code to return and update travel, hotel, programme and production details.</p></article>
+    </section>
+
+    <form id="registrationForm" class="registration-form" novalidate>
+      <div id="formNotice" class="notice">—</div>
+
+      <fieldset>
+        <legend><span>1</span><b class="hr">Redakcija i odgovorni urednik</b><b class="en">Newsroom and responsible editor</b></legend>
+        <div class="field-grid">
+          <label><span class="hr">Puni pravni naziv redakcije *</span><span class="en">Full legal newsroom name *</span><input id="newsroomLegalName" required></label>
+          <label><span class="hr">Naziv brenda / medija</span><span class="en">Media brand name</span><input id="newsroomBrandName"></label>
+          <label><span class="hr">Država *</span><span class="en">Country *</span><input id="newsroomCountry" required></label>
+          <label><span class="hr">Službena web-stranica *</span><span class="en">Official website *</span><input id="newsroomWebsite" type="url" required placeholder="https://..."></label>
+          <label class="span-2"><span class="hr">Adresa redakcije</span><span class="en">Newsroom address</span><input id="newsroomAddress"></label>
+          <label><span class="hr">Registracijski broj</span><span class="en">Registration number</span><input id="registrationNumber"></label>
+          <label><span class="hr">PDV / VAT broj</span><span class="en">VAT number</span><input id="vatNumber"></label>
+          <label><span class="hr">Jezik redakcije</span><span class="en">Newsroom language</span><input id="newsroomLanguage"></label>
+          <label><span class="hr">Vremenska zona</span><span class="en">Time zone</span><input id="newsroomTimeZone" placeholder="Europe/Zagreb"></label>
+          <label><span class="hr">Odgovorni urednik — ime i prezime *</span><span class="en">Responsible editor — full name *</span><input id="editorName" required></label>
+          <label><span class="hr">Funkcija urednika *</span><span class="en">Editor role *</span><input id="editorRole" required></label>
+          <label><span class="hr">Službeni e-mail urednika *</span><span class="en">Editor official email *</span><input id="editorEmail" type="email" required></label>
+          <label><span class="hr">Telefon urednika *</span><span class="en">Editor phone *</span><input id="editorPhone" type="tel" required placeholder="+385..."></label>
         </div>
-      </div>
-      <aside class="deadline-card" aria-live="polite">
-        <small>Application deadline / Rok prijave</small>
-        <strong id="deadlineText">20. srpnja 2026. · 23:59 CEST</strong>
-        <div id="countdown" class="countdown">Učitavanje roka…</div>
-        <p>Zaprimanje prijave nije automatsko odobrenje. Konačnu odluku donosi ovlaštena osoba nakon ljudske provjere.</p>
-      </aside>
-    </section>
+      </fieldset>
 
-    <section id="travelPolicy" class="policy-grid" aria-label="Travel and application policy">
-      <article>
-        <span>01</span><h2>Put i avion / Travel</h2>
-        <p>GNK ASG snosi odobreni trošak puta. Redakcija navodi polazište i predlaže do dvije opcije leta.</p>
-        <p class="en">GNK ASG covers approved travel. The newsroom states the departure point and proposes up to two flight options.</p>
-      </article>
-      <article class="accent">
-        <span>02</span><h2>Ne kupujte kartu / Do not buy</h2>
-        <p>Avionska karta ne smije se kupiti prije pisanog odobrenja. Nakon odobrenja organizator ili ovlaštena agencija organizira i plaća kartu.</p>
-        <p class="en">Do not purchase a ticket before written approval. After approval, the organizer or authorized agency arranges and pays for it.</p>
-      </article>
-      <article>
-        <span>03</span><h2>Smještaj / Accommodation</h2>
-        <p>Smještaj u New Yorku rezerviran je i plaćen za odobrene predstavnike redakcija.</p>
-        <p class="en">Accommodation in New York is reserved and paid for approved newsroom representatives.</p>
-      </article>
-      <article>
-        <span>04</span><h2>Privatnost / Privacy</h2>
-        <p>U početnoj fazi ne šaljite presliku putovnice. Ako bude potrebna, zatražit će se naknadno sigurnim kanalom.</p>
-        <p class="en">Do not submit a passport copy at this stage. If needed, it will be requested later through a secure channel.</p>
-      </article>
-    </section>
+      <fieldset>
+        <legend><span>2</span><b class="hr">Predstavnici redakcije — najviše 3</b><b class="en">Newsroom representatives — maximum 3</b></legend>
+        <div id="participants"></div>
+        <button id="addParticipant" type="button" class="button"><span class="hr">+ Dodaj predstavnika</span><span class="en">+ Add representative</span></button>
+      </fieldset>
 
-    <section class="application-shell">
-      <div class="application-intro">
-        <p class="eyebrow">Official application</p>
-        <h2>Podaci redakcije i predstavnika</h2>
-        <p>Polja označena zvjezdicom obvezna su. Upotrebljavajte službene kontakte redakcije i međunarodni format telefonskog broja, primjerice <code>+385...</code>.</p>
-        <div class="document-note">
-          <strong>Obvezni prilozi / Required attachments</strong>
-          <ul>
-            <li>potpisano pismo redakcijskog angažmana / signed newsroom assignment letter</li>
-            <li>novinarska iskaznica ili dokaz objavljenih radova / press credential or proof of published work</li>
-          </ul>
-          <small>PDF, JPG, PNG, DOC ili DOCX · najviše 10 MB po datoteci.</small>
+      <fieldset>
+        <legend><span>3</span><b class="hr">Avionske karte i transferi</b><b class="en">Flights and transfers</b></legend>
+        <div class="field-grid">
+          <label class="span-2"><span class="hr">Način rezervacije *</span><span class="en">Booking method *</span><select id="bookingMethod" required><option value="">—</option><option value="ORGANIZER_BOOKS">GNK ASG rezervira i plaća / GNK ASG books and pays</option><option value="NEWSROOM_BOOKS_AFTER_APPROVAL">Redakcija rezervira nakon pisanog odobrenja / Newsroom books after written approval</option></select></label>
+          <label><span class="hr">Grad polaska *</span><span class="en">Departure city *</span><input id="departureCity" required></label>
+          <label><span class="hr">Željena zračna luka *</span><span class="en">Preferred airport *</span><input id="preferredAirport" required></label>
+          <label class="span-2"><span class="hr">Alternativne zračne luke</span><span class="en">Alternative airports</span><input id="alternateAirports"></label>
+          <label><span class="hr">Željeni odlazak / vremenski raspon</span><span class="en">Preferred outbound date/time window</span><input id="outboundWindow" placeholder="6 October 2026..."></label>
+          <label><span class="hr">Željeni povratak / vremenski raspon</span><span class="en">Preferred return date/time window</span><input id="returnWindow" placeholder="8 or 9 October 2026..."></label>
+          <label><span class="hr">Preferirana aviokompanija</span><span class="en">Preferred airline</span><input id="airlinePreference"></label>
+          <label><span class="hr">Kabina / tarifa</span><span class="en">Cabin / fare preference</span><input id="cabinPreference"></label>
+          <label><span class="hr">Prtljaga i oprema</span><span class="en">Baggage and equipment</span><input id="baggage"></label>
+          <label><span class="hr">Frequent flyer broj</span><span class="en">Frequent-flyer number</span><input id="frequentFlyer"></label>
+          <label class="span-2"><span class="hr">Prva opcija leta</span><span class="en">Flight option 1</span><textarea id="flightOption1" rows="3" placeholder="Airline, flight numbers, dates, times, price or link"></textarea></label>
+          <label class="span-2"><span class="hr">Druga opcija leta</span><span class="en">Flight option 2</span><textarea id="flightOption2" rows="3"></textarea></label>
+          <label><span class="hr">Ponuda / rezervacijski kod</span><span class="en">Quotation / booking code</span><input id="quoteCode"></label>
+          <label><span class="hr">PNR</span><span class="en">PNR</span><input id="pnr"></label>
+          <label><span class="hr">Potrebna podrška za vizu</span><span class="en">Visa support required</span><select id="visaSupport"><option value="NO">Ne / No</option><option value="YES">Da / Yes</option><option value="UNSURE">Nisam siguran / Unsure</option></select></label>
+          <label><span class="hr">Podaci za transfer po dolasku</span><span class="en">Arrival transfer details</span><input id="arrivalTransfer"></label>
         </div>
-      </div>
+      </fieldset>
 
-      <form id="applicationForm" class="application-form" enctype="multipart/form-data" novalidate>
-        <div id="formNotice" class="form-notice" role="status" aria-live="polite">Nacrt se privremeno čuva samo u ovoj kartici preglednika.</div>
-        <input class="honeypot" name="companyFax" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <fieldset>
+        <legend><span>4</span><b class="hr">Hotel s 5 zvjezdica i all-inclusive paket</b><b class="en">Five-star hotel and all-inclusive package</b></legend>
+        <div class="field-grid">
+          <label><span class="hr">Vrsta sobe *</span><span class="en">Room type *</span><select id="roomType" required><option value="">—</option><option value="SINGLE">Jednokrevetna / Single room</option><option value="DOUBLE">Dvokrevetna / Double room</option><option value="SUITE">Suite</option></select></label>
+          <label><span class="hr">Broj osoba u sobi</span><span class="en">Room occupancy</span><select id="occupancy"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+          <label><span class="hr">Ime osobe s kojom dijelite sobu</span><span class="en">Roommate name</span><input id="roommate"></label>
+          <label><span class="hr">Vrsta kreveta</span><span class="en">Bed preference</span><select id="bedType"><option value="">—</option><option value="KING">King</option><option value="QUEEN">Queen</option><option value="TWIN">Twin beds</option></select></label>
+          <label><span class="hr">Check-in *</span><span class="en">Check-in *</span><input id="checkIn" type="date" required value="2026-10-06"></label>
+          <label><span class="hr">Check-out *</span><span class="en">Check-out *</span><input id="checkOut" type="date" required value="2026-10-08"></label>
+          <label class="span-2"><span class="hr">Pristupačnost i zdravstveni zahtjevi</span><span class="en">Accessibility and health-related requirements</span><textarea id="accessibility" rows="3"></textarea></label>
+          <label><span class="hr">Prehrambene potrebe</span><span class="en">Dietary requirements</span><textarea id="dietary" rows="3"></textarea></label>
+          <label><span class="hr">Alergije</span><span class="en">Allergies</span><textarea id="allergies" rows="3"></textarea></label>
+          <label class="span-2"><span class="hr">Posebni zahtjevi</span><span class="en">Special requests</span><textarea id="specialRequests" rows="3"></textarea></label>
+        </div>
+      </fieldset>
 
-        <fieldset>
-          <legend><span>1</span> Poziv i redakcija / Invitation &amp; newsroom</legend>
-          <div class="field-grid">
-            <label class="span-2">Šifra poziva / Invitation reference code *
-              <input name="invitationCode" required autocomplete="off" placeholder="GNK-MEDIA-2026…" spellcheck="false">
-              <small>Šifra se nalazi u naslovu i tekstu službenog poziva.</small>
-            </label>
-            <label>Naziv redakcije / Media outlet *<input name="outletName" required autocomplete="organization"></label>
-            <label>Država / Country *<input name="outletCountry" required autocomplete="country-name"></label>
-            <label class="span-2">Službena web-stranica / Official website *<input name="outletWebsite" required inputmode="url" placeholder="https://..."></label>
-          </div>
-        </fieldset>
+      <fieldset>
+        <legend><span>5</span><b class="hr">Program, intervjui i produkcija</b><b class="en">Programme, interviews and production</b></legend>
+        <div class="check-grid">
+          <label><input id="welcomeGala" type="checkbox" checked><span>Welcome Gala · 6 October</span></label>
+          <label><input id="mainPresentation" type="checkbox" checked><span>THE CODE · 7 October · 11:30 ET</span></label>
+          <label><input id="workingLunch" type="checkbox" checked><span><span class="hr">Radni ručak</span><span class="en">Working lunch</span></span></label>
+          <label><input id="workingGroups" type="checkbox"><span><span class="hr">Radne skupine</span><span class="en">Working groups</span></span></label>
+          <label><input id="interviewRequested" type="checkbox"><span><span class="hr">Zahtjev za intervju</span><span class="en">Interview request</span></span></label>
+          <label><input id="liveBroadcast" type="checkbox"><span><span class="hr">Live javljanje / prijenos</span><span class="en">Live broadcast</span></span></label>
+        </div>
+        <div class="field-grid top-gap">
+          <label class="span-2"><span class="hr">Teme i pitanja za intervju</span><span class="en">Interview topics and questions</span><textarea id="interviewTopics" rows="4"></textarea></label>
+          <label><span class="hr">Prioritetni sugovornici iz managementa</span><span class="en">Priority management interviewees</span><textarea id="managementPriority" rows="3"></textarea></label>
+          <label><span class="hr">Tehnički i produkcijski zahtjevi</span><span class="en">Technical and production requirements</span><textarea id="technicalNeeds" rows="3"></textarea></label>
+          <label><span class="hr">Kontakt za fact-checking</span><span class="en">Fact-checking contact</span><input id="factCheckContact"></label>
+          <label><span class="hr">Jezik sadržaja</span><span class="en">Content language</span><input id="contentLanguage"></label>
+        </div>
+      </fieldset>
 
-        <fieldset>
-          <legend><span>2</span> Nominirani predstavnik / Nominated representative</legend>
-          <div class="field-grid">
-            <label>Ime i prezime / Full name *<input name="applicantName" required autocomplete="name"></label>
-            <label>Funkcija i odjel / Role and department *<input name="applicantRole" required autocomplete="organization-title"></label>
-            <label>Službeni e-mail / Official email *<input name="applicantEmail" type="email" required autocomplete="email"></label>
-            <label>Mobitel / WhatsApp *<input name="applicantMobile" type="tel" required autocomplete="tel" placeholder="+385..."></label>
-          </div>
-        </fieldset>
+      <fieldset>
+        <legend><span>6</span><b class="hr">Dokumenti</b><b class="en">Documents</b></legend>
+        <p class="muted hr">Dokumenti se spremaju u sigurnu pohranu i mogu se dodavati naknadno. Putovnica je zaključana do odobrenja prijave.</p><p class="muted en">Documents are stored securely and may be added later. Passport upload remains locked until the application is approved.</p>
+        <div class="upload-row"><select id="documentCategory"><option value="assignment_letter">Pismo redakcije / Assignment letter</option><option value="press_credential">Novinarska iskaznica / Press credential</option><option value="published_work">Objavljeni radovi / Published work</option><option value="flight_quote">Ponuda ili itinerar leta / Flight quote or itinerary</option><option value="cost_estimate">Procjena troška / Cost estimate</option><option value="passport">Putovnica — samo nakon odobrenja / Passport — after approval only</option><option value="other">Ostalo / Other</option></select><input id="documentFile" type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"><button id="uploadButton" type="button" class="button"><span class="hr">Dodaj dokument</span><span class="en">Upload document</span></button></div>
+        <div id="documentList" class="document-list"></div>
+      </fieldset>
 
-        <fieldset>
-          <legend><span>3</span> Odgovorni urednik / Responsible editor</legend>
-          <div class="field-grid">
-            <label>Ime i prezime / Full name *<input name="editorName" required></label>
-            <label>Funkcija / Role *<input name="editorRole" required></label>
-            <label>Službeni e-mail / Official email *<input name="editorEmail" type="email" required></label>
-            <label>Mobitel / Phone *<input name="editorMobile" type="tel" required placeholder="+385..."></label>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span>4</span> Putni podaci / Travel information</legend>
-          <div class="field-grid">
-            <label>Grad polaska / Departure city *<input name="departureCity" required></label>
-            <label>Željena zračna luka / Preferred airport *<input name="preferredAirport" required></label>
-            <label class="span-2">Očekivani datumi putovanja / Expected travel dates *<input name="travelDates" required placeholder="Primjer: 6.–9. listopada 2026."></label>
-            <label class="span-2">Prijedlog leta / Proposed flight options
-              <textarea name="flightProposal" rows="4" placeholder="Navedite do dvije prihvatljive opcije leta. Nemojte kupovati kartu."></textarea>
-            </label>
-            <label class="span-2">Ostali očekivani troškovi / Other expected costs
-              <textarea name="otherCosts" rows="3" placeholder="Samo troškovi koji zahtijevaju prethodno pisano odobrenje."></textarea>
-            </label>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span>5</span> Dokumenti / Documents</legend>
-          <div class="upload-grid">
-            <label class="upload-card"><strong>Pismo redakcije *</strong><span>Newsroom assignment letter</span><input name="assignmentLetter" type="file" required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"></label>
-            <label class="upload-card"><strong>Dokaz profesionalnog rada *</strong><span>Press credential or published work</span><input name="pressCredential" type="file" required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"></label>
-            <label class="upload-card"><strong>Prijedlog leta</strong><span>Optional itinerary or non-binding quotation</span><input name="flightProposalDocument" type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"></label>
-            <label class="upload-card"><strong>Procjena drugih troškova</strong><span>Optional cost estimate</span><input name="otherCostDocument" type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"></label>
-          </div>
-          <div class="danger-note"><strong>Ne prilažite putovnicu / Do not upload a passport copy.</strong></div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span>6</span> Izjave i slanje / Declarations &amp; submission</legend>
-          <div class="check-list">
-            <label><input type="checkbox" name="newsroomDeclaration" value="yes" required><span>Potvrđujemo da se navedena osoba prijavljuje i nastupa u ime navedene redakcije. / We confirm that the applicant is nominated by and acts on behalf of the stated newsroom.</span></label>
-            <label><input type="checkbox" name="costPolicy" value="yes" required><span>Razumijemo da se karta ne kupuje prije pisanog odobrenja te da se priznaju samo unaprijed odobreni troškovi. / We understand that no ticket may be purchased before written approval and only pre-approved costs are covered.</span></label>
-            <label><input type="checkbox" name="privacyConsent" value="yes" required><span>Suglasni smo s obradom podataka isključivo radi prijave, putne organizacije i medijskog programa. / We consent to processing solely for the application, travel arrangements and media programme.</span></label>
-          </div>
-          <div class="submit-row">
-            <div><strong>Ljudska provjera je obvezna.</strong><small>Predaja obrasca ne predstavlja odobrenje.</small></div>
-            <button id="submitButton" class="button primary" type="submit">Pošalji prijavu / Submit application</button>
-          </div>
-        </fieldset>
-      </form>
-
-      <section id="resultPanel" class="result-panel" hidden aria-live="polite">
-        <div class="result-icon">✓</div>
-        <p class="eyebrow">Application received</p>
-        <h2>Prijava je sigurno zaprimljena</h2>
-        <p id="resultMessage"></p>
-        <dl>
-          <div><dt>Šifra prijave</dt><dd id="resultApplicationId"></dd></div>
-          <div><dt>Status</dt><dd id="resultStatus"></dd></div>
-          <div><dt>Vrijeme zaprimanja</dt><dd id="resultReceivedAt"></dd></div>
-        </dl>
-        <p>Sačuvajte šifru prijave i navedite je u svakoj daljnjoj komunikaciji s <a href="mailto:media@gnk-asg.hr">media@gnk-asg.hr</a>.</p>
-      </section>
-    </section>
-  </main>
-
-  <footer>
-    <span>© 2026 GNK ASG Media Relations</span>
-    <span>New York 2026 · Human verification required</span>
-  </footer>
+      <fieldset>
+        <legend><span>7</span><b class="hr">Izjave i slanje</b><b class="en">Declarations and submission</b></legend>
+        <div class="check-list">
+          <label><input id="newsroomAuthorization" type="checkbox"><span class="hr">Potvrđujemo da prijavljene osobe nastupaju u ime navedene redakcije.</span><span class="en">We confirm that the listed participants act on behalf of the stated newsroom.</span></label>
+          <label><input id="costPolicy" type="checkbox"><span class="hr">Razumijemo da se avionska karta ne kupuje prije pisanog odobrenja i da se priznaju samo odobreni troškovi.</span><span class="en">We understand that no flight may be purchased before written approval and only approved costs are covered.</span></label>
+          <label><input id="privacyConsent" type="checkbox"><span class="hr">Suglasni smo s obradom podataka radi prijave, putovanja, smještaja, sigurnosti i programa.</span><span class="en">We consent to data processing for registration, travel, accommodation, security and programme administration.</span></label>
+          <label><input id="accuracy" type="checkbox"><span class="hr">Potvrđujemo da su uneseni podaci potpuni i točni.</span><span class="en">We confirm that the submitted information is complete and accurate.</span></label>
+          <label><input id="mediaRights" type="checkbox"><span class="hr">Prihvaćamo službena pravila snimanja, akreditacije i korištenja medijskih materijala.</span><span class="en">We accept the official filming, accreditation and media-material rules.</span></label>
+        </div>
+        <label class="top-gap"><span class="hr">Dodatne napomene</span><span class="en">Additional notes</span><textarea id="notes" rows="4"></textarea></label>
+        <div class="submit-row"><div><strong id="applicationStatus">DRAFT</strong><small class="hr">Nacrt možete spremiti prije konačne predaje.</small><small class="en">You may save the draft before final submission.</small></div><div><button id="saveButton" type="button" class="button"><span class="hr">SPREMI NACRT</span><span class="en">SAVE DRAFT</span></button><button id="submitButton" type="submit" class="button primary"><span class="hr">PREDAJ PRIJAVU</span><span class="en">SUBMIT APPLICATION</span></button></div></div>
+      </fieldset>
+    </form>
+  </section>
+</main>
+<footer><span>© 2026 GNK ASG Media Relations</span><span>media@gnk-asg.hr · www.gnk-asg.hr</span></footer>
 </body>
 </html>
