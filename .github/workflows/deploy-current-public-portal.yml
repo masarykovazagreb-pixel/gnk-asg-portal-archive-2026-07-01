@@ -1,0 +1,120 @@
+name: Deploy current public portal
+
+on:
+  workflow_dispatch:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-current-public-portal-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.issue.number == 65 &&
+       github.event.comment.body == '/deploy-current-public-portal' &&
+       (github.event.comment.author_association == 'OWNER' ||
+        github.event.comment.author_association == 'MEMBER' ||
+        github.event.comment.author_association == 'COLLABORATOR'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Validate current release
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-application-access-v1.js
+          node --check apps/portal/assets/admin-center-v2.js
+          node --check apps/portal/assets/admin-command-center-primary-v1.js
+          node --check apps/portal/assets/media-command-center-v2.js
+          node --check apps/portal/assets/media-application-v1.js
+          node --check apps/portal/assets/media-access-v1.js
+          test -s apps/portal/index.html
+          test -s apps/portal/en/index.html
+          test -s apps/portal/admin-center/index.html
+          test -s apps/portal/media-command-center/index.html
+          test -s apps/portal/media-application/index.html
+          test -s apps/portal/media-access/index.html
+          node <<'JS'
+          const fs=require('node:fs');
+          const contacts=require('./apps/portal/data/media-outreach-contacts-v1.json');
+          const emails=contacts.filter(item=>String(item.email||'').trim()).length;
+          const automation=contacts.filter(item=>item.automationAllowed===true).length;
+          if(contacts.length!==112||emails!==22||automation!==22)throw new Error(JSON.stringify({contacts:contacts.length,emails,automation}));
+          const admin=fs.readFileSync('apps/portal/assets/admin-center-v2.js','utf8');
+          const order=["label:'Komandni centar'","label:'Operator'","label:'Mail Studio'","label:'Auto Editor'"];
+          let cursor=-1;
+          for(const marker of order){const position=admin.indexOf(marker);if(position<=cursor)throw new Error(`bad Admin order: ${marker}`);cursor=position;}
+          if(!admin.includes("const PRIORITIES = ['media','operator','mail']"))throw new Error('bad Admin priorities');
+          for(const file of ['apps/portal/index.html','apps/portal/en/index.html']){
+            const html=fs.readFileSync(file,'utf8');
+            const nav=html.match(/<nav class=["']menu["']>[\s\S]*?<\/nav>/i)?.[0]||'';
+            if(!nav)throw new Error(`${file}: menu missing`);
+          }
+          JS
+          grep -q 'main = "src/index-admin-hub-v28-news-no-fallback.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'production_sending_locked' workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          grep -q 'INCOMPLETE_22_OF_42' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Deploy current main to Cloudflare
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify deployed release
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'JS'
+          const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          async function get(path){
+            const response=await fetch(`https://gnk-asg.hr${path}${path.includes('?')?'&':'?'}cb=${Date.now()}`,{headers:{'cache-control':'no-cache'}});
+            return {status:response.status,text:await response.text(),headers:Object.fromEntries(response.headers)};
+          }
+          for(let attempt=1;attempt<=30;attempt++){
+            const [hr,en,access,status,version,admin,command]=await Promise.all([
+              get('/'),get('/en/'),get('/media-access/'),get('/data/news-automation-status.json'),get('/data/portal-version.json'),get('/admin-center/'),get('/media-command-center/')
+            ]);
+            const errors=[];
+            let statusJson={},versionJson={};
+            try{statusJson=JSON.parse(status.text)}catch{errors.push('status_json_invalid')}
+            try{versionJson=JSON.parse(version.text)}catch{errors.push('version_json_invalid')}
+            if(hr.status!==200||!hr.text.includes('Poslovna grupa.'))errors.push(`hr=${hr.status}`);
+            if(en.status!==200||!en.text.includes('A business group.'))errors.push(`en=${en.status}`);
+            if(!hr.text.includes('Financije')||hr.text.includes('/vijesti/'))errors.push('hr_menu_invalid');
+            if(!en.text.includes('Financials')||en.text.includes('/news/'))errors.push('en_menu_invalid');
+            if(access.status!==200||!access.text.includes('Approved application access'))errors.push(`media_access=${access.status}`);
+            if(![200,303,401,403].includes(admin.status))errors.push(`admin=${admin.status}`);
+            if(![200,303,401,403].includes(command.status))errors.push(`command=${command.status}`);
+            if(statusJson.entryPoint!=='src/index-admin-hub-v28-news-no-fallback.js')errors.push(`entry=${statusJson.entryPoint}`);
+            if(statusJson.mediaContactSeed?.status!=='INCOMPLETE_22_OF_42')errors.push('contact_gap_marker_missing');
+            if(versionJson.mediaCommandSending!=='LOCKED')errors.push(`sending=${versionJson.mediaCommandSending}`);
+            console.log(JSON.stringify({attempt,errors,statuses:{hr:hr.status,en:en.status,access:access.status,admin:admin.status,command:command.status},entryPoint:statusJson.entryPoint}));
+            if(!errors.length)process.exit(0);
+            await sleep(10000);
+          }
+          process.exit(1);
+          JS
