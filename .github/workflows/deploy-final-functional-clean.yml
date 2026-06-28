@@ -5,6 +5,10 @@ on:
     branches: [final-functional-clean-20260628-v2]
     paths:
       - '.github/workflows/deploy-final-functional-clean.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-final-functional-clean.yml'
   workflow_dispatch:
 
 permissions:
@@ -16,6 +20,7 @@ concurrency:
 
 jobs:
   validate-deploy-verify:
+    if: github.event_name != 'pull_request' || github.head_ref == 'final-functional-clean-20260628-v2'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
