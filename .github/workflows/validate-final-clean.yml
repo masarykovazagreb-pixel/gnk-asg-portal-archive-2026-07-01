@@ -1,0 +1,43 @@
+name: Validate Final Clean
+
+on:
+  push:
+    branches: [final-functional-clean-20260628-v2]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check final entrypoint syntax
+        run: node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+      - name: Check Contact service syntax
+        run: node --check workers/gnk-asg-direct-operator/src/contact-submit-v1.js
+      - name: Check index controller syntax
+        run: node --check apps/portal/assets/index-priority-v1.js
+      - name: Verify index contract
+        run: |
+          grep -q 'AUTO_CYCLE_MS' apps/portal/assets/index-priority-v1.js
+          grep -q 'location-directory' apps/portal/assets/index-priority-v1.css
+          grep -q 'FULL_AUTO_LOOP_WITH_COUNTDOWN' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+      - name: Verify Contact contract
+        run: |
+          grep -q '/api/contact-submit' apps/portal/contact/index.html
+          grep -q '/api/contact-submit' apps/portal/en/contact/index.html
+          grep -q 'handleContactSubmit' workers/gnk-asg-direct-operator/src/contact-submit-v1.js
+      - name: Verify Admin Mail and Media routing
+        run: |
+          grep -q 'index-media-command-center-v21.js' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q '/api/admin-mail-send' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q '/api/media-command-center' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+      - name: Wrangler dry run
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
