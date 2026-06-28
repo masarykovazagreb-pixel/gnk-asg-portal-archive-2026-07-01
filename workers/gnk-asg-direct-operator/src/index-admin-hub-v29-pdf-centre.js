@@ -42,8 +42,10 @@ function patchDownloads(html){
   html=html.replace(/<script id=["']gnk-reduced-public-menu-v1-script["']>[\s\S]*?<\/script>/gi,'');
   html=html.replace(/<link[^>]+gnk-asg-global-layer[^>]*>/gi,'');
   html=html.replace(/<script[^>]+gnk-asg-global-layer[^>]*><\/script>/gi,'');
-  const cleanStyle='<style id="gnk-pdf-centre-clean-v29">html,body{padding-top:0!important}body>header,body>nav,#gnkReducedPublicNav,#gnk-asg-premium-header,#gnk-asg-overlay,#gnk-asg-drawer,#gnk-asg-float-home,#gnk-asg-float-ai,#gnk-asg-ai-panel,.gnk-global-float-home,.gnk-global-float-ai,.public-float,.public-float--home,.public-float--ai,.gnk-asg-floating-actions{display:none!important;visibility:hidden!important;pointer-events:none!important}</style>';
+  const cleanStyle='<style id="gnk-pdf-centre-clean-v29">html,body{padding-top:0!important}body>header,body>nav,#gnkReducedPublicNav,#gnk-asg-premium-header,#gnk-asg-overlay,#gnk-asg-drawer,#gnk-asg-float-home,#gnk-asg-float-ai,#gnk-asg-ai-panel,#gnk-asg-global-layer-root,#gnk-asg-ai-help-float,#gnk-asg-single-ai-button-anchor,.gnk-global-float-home,.gnk-global-float-ai,.public-float,.public-float--home,.public-float--ai,.gnk-asg-floating-actions,[class*="float-home"],[class*="float-ai"],[id*="float-home"],[id*="float-ai"],body>a[href="/assistant/"],body>a[href="/en/assistant/"],body>a[href="#top"],body>a[href="/"]{display:none!important;visibility:hidden!important;pointer-events:none!important}</style>';
+  const cleanScript='<script id="gnk-pdf-centre-remove-floating-v30">(()=>{const bad=e=>{if(!(e instanceof HTMLElement))return false;const s=getComputedStyle(e);if(s.position!=="fixed"&&s.position!=="sticky")return false;const t=((e.textContent||"")+" "+(e.getAttribute("aria-label")||"")+" "+(e.id||"")+" "+(e.className||"")+" "+(e.getAttribute("href")||"")).toLowerCase();return /(^|[^a-z])(ai|home|početna|pocetna|pomoć|pomoc)([^a-z]|$)/i.test(t)};const clean=()=>document.querySelectorAll("body *").forEach(e=>{if(bad(e))e.remove()});const o=new MutationObserver(clean);o.observe(document.documentElement,{childList:true,subtree:true});clean();[100,300,700,1500,3000,6000,12000].forEach(x=>setTimeout(clean,x));})();<\/script>';
   if(!html.includes('gnk-pdf-centre-clean-v29'))html=html.replace('</head>',cleanStyle+'</head>');
+  if(!html.includes('gnk-pdf-centre-remove-floating-v30'))html=html.replace('</body>',cleanScript+'</body>');
   return html;
 }
 
@@ -65,7 +67,7 @@ export default{
       extra={'x-gnk-asg-index-menu':'PDF_CENTRE_NO_MARKETS'};
     }else if(DOWNLOAD_PATHS.has(path)){
       html=patchDownloads(html);
-      extra={'x-gnk-asg-downloads-ui':'CLEAN_NO_MENU_NO_FLOATS'};
+      extra={'x-gnk-asg-downloads-ui':'CLEAN_NO_MENU_NO_FLOATS_V30'};
     }else if(CONTACT_PATHS.has(path)){
       html=patchContact(html);
       extra={'x-gnk-asg-contact-menu':'PDF_CENTRE'};
