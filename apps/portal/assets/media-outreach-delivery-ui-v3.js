@@ -5,7 +5,7 @@
   const API='/api/media-command-center';
   const state={status:null,plan:null,pdfFile:null};
   const $=id=>document.getElementById(id);
-  const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
   async function api(path,options={}){
     const response=await fetch(`${API}${path}`,{credentials:'same-origin',cache:'no-store',...options,headers:{accept:'application/json',...(options.headers||{})}});
     const data=await response.json().catch(()=>({ok:false,error:`HTTP_${response.status}`}));
@@ -17,7 +17,7 @@
     const panel=$('campaign');if(!panel||$('deliveryControl'))return;
     const box=document.createElement('section');box.id='deliveryControl';box.className='delivery-control';
     box.innerHTML=`
-      <div class="delivery-head"><div><span>GNK ASG DELIVERY GATE</span><h3>PDF, test i kontrolirano slanje</h3><p>Vanjsko slanje je moguće tek nakon valjanog PDF-a i uspješnog testa na dopuštenu internu adresu.</p></div><button id="deliveryReload" type="button">Osvježi status</button></div>
+      <div class="delivery-head"><div><span>GNK ASG DELIVERY GATE</span><h3>PDF, test i kontrolirano slanje</h3><p>Vanjsko slanje traži valjan PDF, uspješan interni test i zasebno eksplicitno release odobrenje.</p></div><button id="deliveryReload" type="button">Osvježi status</button></div>
       <div id="deliveryKpis" class="delivery-kpis"></div>
       <div class="delivery-grid">
         <article><h4>1. Službeni PDF</h4><input id="deliveryPdfFile" type="file" accept="application/pdf,.pdf"><button id="deliveryPdfUpload" type="button" disabled>Učitaj i potvrdi PDF</button><pre id="deliveryPdfState">PDF nije provjeren.</pre></article>
@@ -35,15 +35,16 @@
       ['Interni test',gate?.passed?'PROŠAO':'NIJE POTVRĐEN',gate?.passed?'ok':'warn'],
       ['Test mode',data.testLive?'OTKLJUČAN':'ZAKLJUČAN',data.testLive?'ok':'warn'],
       ['Produkcija',data.live?'OTKLJUČANA':'ZAKLJUČANA',data.live?'warn':'ok'],
+      ['Release',data.releaseApproved?'ODOBREN':'NIJE ODOBREN',data.releaseApproved?'warn':'ok'],
       ['Kvote',`${rate.hour?.used||0}/${rate.hour?.limit||10} h · ${rate.day?.used||0}/${rate.day?.limit||50} dan`,'neutral'],
       ['Red',Object.entries(queue).map(([key,value])=>`${key}:${value}`).join(' · ')||'prazan','neutral']
     ].map(([a,b,c])=>`<div class="${c}"><small>${esc(a)}</small><strong>${esc(b)}</strong></div>`).join('');
     if($('deliveryPdfState'))$('deliveryPdfState').textContent=formatPdf(pdf);
     if($('deliveryTestState'))$('deliveryTestState').textContent=JSON.stringify(gate||{},null,2);
-    if($('deliveryQueueState'))$('deliveryQueueState').textContent=JSON.stringify({live:data.live,rate,queue},null,2);
+    if($('deliveryQueueState'))$('deliveryQueueState').textContent=JSON.stringify({live:data.live,releaseApproved:data.releaseApproved,releaseGate:data.releaseGate,accessDispatch:data.accessDispatch,rate,queue},null,2);
     const validGate=Boolean(gate?.passed&&pdf?.ok&&gate.pdfSha256===pdf.sha256);
     if($('deliveryQueueApproved'))$('deliveryQueueApproved').disabled=!validGate||!(state.plan?.summary?.ready>0);
-    if($('deliveryDispatchOne'))$('deliveryDispatchOne').disabled=!data.live||!validGate||!((queue.QUEUED||0)+(queue.RETRY||0));
+    if($('deliveryDispatchOne'))$('deliveryDispatchOne').disabled=!data.live||!data.releaseApproved||!validGate||!((queue.QUEUED||0)+(queue.RETRY||0));
     updateTestButton();
   }
   function updateTestButton(){const button=$('deliveryTestSend'),recipient=$('deliveryTestRecipient'),confirm=$('deliveryTestConfirm');if(button)button.disabled=!(state.status?.pdf?.ok&&state.status?.testLive&&recipient?.value.trim()&&confirm?.checked);}
@@ -65,7 +66,7 @@
     }catch(error){$('deliveryTestState').textContent=JSON.stringify(error.payload||{ok:false,error:error.message},null,2);notice(error.message,true);}
   }
   async function loadPlan(){
-    try{state.plan=await api('/delivery-plan');$('deliveryPlanState').textContent=JSON.stringify({summary:state.plan.summary,pdf:state.plan.pdf,testGate:state.plan.testGate,rate:state.plan.rate,ready:state.plan.items.filter(item=>item.ready)},null,2);render();notice('Delivery plan je izračunat bez slanja.');}
+    try{state.plan=await api('/delivery-plan');$('deliveryPlanState').textContent=JSON.stringify({summary:state.plan.summary,pdf:state.plan.pdf,testGate:state.plan.testGate,rate:state.plan.rate,releaseApproved:state.plan.releaseApproved,accessDispatch:state.plan.accessDispatch,ready:state.plan.items.filter(item=>item.ready)},null,2);render();notice('Delivery plan je izračunat bez slanja.');}
     catch(error){$('deliveryPlanState').textContent=JSON.stringify(error.payload||{ok:false,error:error.message},null,2);notice(error.message,true);}
   }
   async function queueApproved(){
