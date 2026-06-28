@@ -1,6 +1,7 @@
 import app from './index-admin-hub-v27-news-status.js';
+import {applyMediaApplicationAccess,VERSION as MEDIA_ACCESS_VERSION} from './media-application-access-v1.js';
 
-export const VERSION='GNK_ASG_ADMIN_HUB_V28_PUBLIC_NEWS_NO_FALLBACK_20260628';
+export const VERSION='GNK_ASG_ADMIN_HUB_V28_PUBLIC_NEWS_NO_FALLBACK_MEDIA_ACCESS_20260628';
 const ENTRYPOINT='src/index-admin-hub-v28-news-no-fallback.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v27-news-status.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627';
@@ -34,22 +35,8 @@ async function patchStatus(response,path){
     headers.set('x-gnk-asg-active-entrypoint',ENTRYPOINT);
     headers.set('x-gnk-asg-news-runtime',NEWS_RUNTIME);
     headers.set('x-gnk-asg-news-no-public-fallback','ENFORCED');
-    const corrected={
-      ...payload,
-      entryPoint:ENTRYPOINT,
-      deployedEntryPoint:ENTRYPOINT,
-      previousEntryPoint:PREVIOUS_ENTRYPOINT,
-      workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,
-      newsRuntime:NEWS_RUNTIME,
-      noPublicFallbackWrapper:VERSION,
-      activeNewsLimit:100,
-      archivePruneAt:1000,
-      archiveDeleteCount:500,
-      archiveRetainAfterPrune:500,
-      archiveHardLimit:1000,
-      contentContract:{...(payload.contentContract||{}),title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},
-      checkedAt:new Date().toISOString()
-    };
+    headers.set('x-gnk-asg-media-access',MEDIA_ACCESS_VERSION);
+    const corrected={...payload,entryPoint:ENTRYPOINT,deployedEntryPoint:ENTRYPOINT,previousEntryPoint:PREVIOUS_ENTRYPOINT,workerMain:`workers/gnk-asg-direct-operator/wrangler.toml → ${ENTRYPOINT}`,newsRuntime:NEWS_RUNTIME,noPublicFallbackWrapper:VERSION,mediaApplicationAccess:MEDIA_ACCESS_VERSION,mediaApprovalLoginCode:'AUTO_ISSUE_AND_EMAIL_ON_APPROVAL',activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{...(payload.contentContract||{}),title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false},checkedAt:new Date().toISOString()};
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response}
 }
@@ -73,9 +60,11 @@ async function patchPublicNewsData(response,path){
 export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
+    const accessRequest=request.clone();
     let response=await app.fetch(request,env,ctx);
     response=await patchStatus(response,path);
-    return patchPublicNewsData(response,path);
+    response=await patchPublicNewsData(response,path);
+    return applyMediaApplicationAccess(accessRequest,env,response);
   },
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
   async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}
