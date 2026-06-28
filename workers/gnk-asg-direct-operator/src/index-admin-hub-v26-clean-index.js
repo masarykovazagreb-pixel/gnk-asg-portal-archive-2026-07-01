@@ -1,10 +1,10 @@
 import app from './index-admin-hub-v26-public-v10-base.js';
 import {patchIndexActivation} from './index-activation-wrapper-v1.js';
 
-export const VERSION='GNK_ASG_PUBLIC_V20_CANONICAL_NAVIGATION_20260627';
+export const VERSION='GNK_ASG_PUBLIC_V21_MARKET_CANONICAL_20260628';
 // Deployment compatibility marker: GNK_ASG_PUBLIC_V11_MENU_AI_MARKETS_20260627
 const INDEX_PATHS=new Set(['/','/en']);
-const MARKET_PATHS=new Set(['/trzista','/markets']);
+const MARKET_PATHS=new Set(['/trzista','/markets','/en/markets']);
 const EDITORIAL_PATHS=new Set(['/vijesti','/news','/objave','/publications']);
 const CONTACT_PATHS=new Set(['/contact','/en/contact']);
 const DOC_PATHS=new Set(['/downloads','/en/downloads','/legal','/en/legal']);
@@ -30,6 +30,18 @@ function addBodyClasses(html,...classes){return html.replace(/<body([^>]*)>/i,(m
 function mobileAdminRedirect(){return new Response(null,{status:303,headers:{location:'/app/?mode=admin','cache-control':'no-store','x-gnk-asg-mobile-app':'STANDARD_ADMIN_V2'}})}
 function canonicalIndexMenu(english){
   return english?'<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financials">Financials</a><a href="#network">Network</a><a href="/news/">News</a><a href="/publications/">Publications</a><a href="/markets/">Markets</a><a href="/visual-index/">Gallery</a><a href="/en/assistant/">AI</a><a href="/operator-dashboard/" rel="nofollow">Admin</a><a href="/contact/">Contact</a><a class="lang" href="/">HR</a></nav>':'<nav class="menu"><a href="#the-code">THE CODE</a><a href="#financije">Financije</a><a href="#mreza">Mreža</a><a href="/vijesti/">Vijesti</a><a href="/objave/">Objave</a><a href="/trzista/">Tržišta</a><a href="/visual-index/">Galerija</a><a href="/assistant/">AI</a><a href="/operator-dashboard/" rel="nofollow">Admin</a><a href="/contact/">Kontakt</a><a class="lang" href="/en/">EN</a></nav>';
+}
+function marketSeo(path){
+  const legacy=path==='/en/markets',english=path!=='/trzista';
+  const canonical=english?'https://gnk-asg.hr/markets/':'https://gnk-asg.hr/trzista/';
+  const robots=legacy?'noindex,follow,max-image-preview:large':'index,follow,max-image-preview:large,max-snippet:-1';
+  return `<meta name="robots" content="${robots}"><link rel="canonical" href="${canonical}"><link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/trzista/"><link rel="alternate" hreflang="en" href="https://gnk-asg.hr/markets/"><link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/trzista/">`;
+}
+function patchMarketSeo(html,path){
+  html=html.replace(/<meta\s+name=["']robots["'][^>]*>/gi,'');
+  html=html.replace(/<link\s+rel=["']canonical["'][^>]*>/gi,'');
+  html=html.replace(/<link\s+rel=["']alternate["'][^>]+hreflang=["'][^"']+["'][^>]*>/gi,'');
+  return html.replace('</head>',`${marketSeo(path)}</head>`);
 }
 async function serveIndex(path,request,env){
   const fallback=new Response('GNK ASG index asset unavailable',{status:503,headers:{'content-type':'text/plain; charset=utf-8','cache-control':'no-store'}});
@@ -59,7 +71,7 @@ async function patchStatusJson(response,path){
     headers.set('x-gnk-asg-active-entrypoint','src/index-admin-hub-v26-clean-index.js');
     headers.set('x-gnk-asg-public-release',VERSION);
     const newsContract={timeZone:'Europe/Zagreb',newsSchedule:['09:00','16:00','21:00'],newsRefreshesPerDay:3,minimumVerifiedLinks:15,activeNewsLimit:100,archivePruneAt:1000,archiveDeleteCount:500,archiveRetainAfterPrune:500,archiveHardLimit:1000,contentContract:{title:true,summaryMinCharacters:60,source:true,articleVerified:true,sourceImageVerified:true,fallbackImagesAllowed:false}};
-    const corrected={...payload,...newsContract,entryPoint:'src/index-admin-hub-v26-clean-index.js',deployedEntryPoint:'src/index-admin-hub-v26-clean-index.js',publicRelease:VERSION,canonicalNavigation:'V20_INDEX_PARITY',primaryMenu:['THE CODE','Financije / Financials','Mreža / Network','Vijesti / News','Objave / Publications','Tržišta / Markets','Galerija / Gallery','AI','Admin','Kontakt / Contact','HR / EN'],galleryInPrimaryNavigation:true,removedPrimaryLinks:['Auto Editor','PDF centar / PDF Centre','Legal'],adminRoute:'/operator-dashboard/',newsRuntime:payload.newsRuntime||payload.version||'GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626',workerMain:'workers/gnk-asg-direct-operator/wrangler.toml → src/index-admin-hub-v26-clean-index.js',mobileApp:'GNK_ASG_MOBILE_STANDARD_ADMIN_V2_20260627',adminDashboard:'GNK_ASG_ADMIN_DASHBOARD_V3_20260627',checkedAt:new Date().toISOString()};
+    const corrected={...payload,...newsContract,entryPoint:'src/index-admin-hub-v26-clean-index.js',deployedEntryPoint:'src/index-admin-hub-v26-clean-index.js',publicRelease:VERSION,canonicalNavigation:'V21_MARKETS_PARITY',primaryMenu:['THE CODE','Financije / Financials','Mreža / Network','Vijesti / News','Objave / Publications','Tržišta / Markets','Galerija / Gallery','AI','Admin','Kontakt / Contact','HR / EN'],galleryInPrimaryNavigation:true,removedPrimaryLinks:['Auto Editor','PDF centar / PDF Centre','Legal'],adminRoute:'/operator-dashboard/',newsRuntime:payload.newsRuntime||payload.version||'GNK_ASG_NEWS_LIFECYCLE_V16_VERIFIED_MEDIA_20260626',workerMain:'workers/gnk-asg-direct-operator/wrangler.toml → src/index-admin-hub-v26-clean-index.js',mobileApp:'GNK_ASG_MOBILE_STANDARD_ADMIN_V2_20260627',adminDashboard:'GNK_ASG_ADMIN_DASHBOARD_V3_20260627',checkedAt:new Date().toISOString()};
     return new Response(JSON.stringify(corrected,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
@@ -70,7 +82,7 @@ async function patch(response,path,request){
   const market=MARKET_PATHS.has(path),editorial=isEditorial(path),contact=CONTACT_PATHS.has(path),docs=DOC_PATHS.has(path),media=path==='/media-kit',application=path==='/media-application',admin=path==='/admin-center',studio=path==='/memorandum-studio',mobile=path==='/app';
   if(!market&&!editorial&&!contact&&!docs&&!media&&!application&&!admin&&!studio&&!mobile)return response;
   let html=await response.text();const headers=patchHeaders(response);
-  if(market){if(!html.includes('markets-v11.css'))html=html.replace('</head>',MARKET_STYLE+'</head>');if(!html.includes('markets-v11.js'))html=html.replace('</body>',MARKET_SCRIPT+'</body>');headers.set('x-gnk-asg-markets-layout','UNIFIED_MARKETS_V11')}
+  if(market){html=patchMarketSeo(html,path);if(!html.includes('markets-v11.css'))html=html.replace('</head>',MARKET_STYLE+'</head>');if(!html.includes('markets-v11.js'))html=html.replace('</body>',MARKET_SCRIPT+'</body>');headers.set('x-gnk-asg-markets-layout','UNIFIED_MARKETS_V11');headers.set('x-gnk-asg-market-canonical',path==='/trzista'?'/trzista/':'/markets/')}
   if(editorial){if(!html.includes('editorial-v12.css'))html=html.replace('</head>',EDITORIAL_STYLE+'</head>');if(!html.includes('editorial-v12.js'))html=html.replace('</body>',EDITORIAL_SCRIPT+'</body>');headers.set('x-gnk-asg-editorial-layout','UNIFIED_EDITORIAL_V12')}
   if(contact){if(!html.includes('contact-v13.css'))html=html.replace('</head>',CONTACT_STYLE+'</head>');if(!html.includes('contact-v13.js'))html=html.replace('</body>',CONTACT_SCRIPT+'</body>');headers.set('x-gnk-asg-contact-layout','UNIFIED_CONTACT_V13')}
   if(docs){if(!html.includes('public-docs-v20.css'))html=html.replace('</head>',DOC_STYLE+'</head>');const kind=path.includes('downloads')?'downloads':'legal';html=addBodyClasses(html,'gnk-docs-v20',`gnk-docs-${kind}`);headers.set('x-gnk-asg-docs-layout',`UNIFIED_${kind.toUpperCase()}_V20`)}
