@@ -1,6 +1,10 @@
 (()=>{
   'use strict';
   if(window.__GNK_ASG_ADMIN_MODULE_LOADER_V3__)return;
+  if(window.__GNK_ASG_ADMIN_CENTER_V2__){
+    window.__GNK_ASG_ADMIN_MODULE_LOADER_V3__='native-admin-center-controller';
+    return;
+  }
   window.__GNK_ASG_ADMIN_MODULE_LOADER_V3__=true;
 
   const frame=document.getElementById('moduleFrame');
@@ -55,6 +59,7 @@
   };
 
   const showFailure=message=>{
+    if(loaded)return;
     failed=true;
     loaded=false;
     stopWatchdog();
