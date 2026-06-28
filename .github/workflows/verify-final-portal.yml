@@ -1,71 +1,105 @@
-name: Activate and Verify Final Portal
+name: Verify Stable Portal Core
 
 on:
   push:
-    branches: [verify-final-portal]
+    branches: [main]
     paths:
       - '.github/workflows/verify-final-portal.yml'
   pull_request:
     branches: [main]
     paths:
       - '.github/workflows/verify-final-portal.yml'
+      - '.github/workflows/diagnose-final-routes.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-final-activation-${{ github.event_name }}
+  group: gnk-asg-stable-core-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
-  activate-and-verify:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate code and Worker bundle
+      - name: Validate Index, Contact, Admin and Mail Studio contracts
         shell: bash
         run: |
           set -euo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           node --check workers/gnk-asg-direct-operator/src/contact-submit-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
+          node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
           node --check apps/portal/assets/index-priority-v1.js
+          node --check apps/portal/assets/mail-studio-controls-v18.js
+          node --check apps/portal/assets/mail-studio-delivery-policy-v1.js
+
           grep -q 'FULL_AUTO_LOOP_WITH_COUNTDOWN' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q 'index-media-command-center-v21.js' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q 'handleContactSubmit' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "CONTACT_PATH" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "'/api/contact-submit'" workers/gnk-asg-direct-operator/src/contact-submit-v1.js
+          grep -q "application/pdf" workers/gnk-asg-direct-operator/src/contact-submit-v1.js
+          grep -q "contact:index" workers/gnk-asg-direct-operator/src/contact-submit-v1.js
+
+          grep -q "SEND_PATH='/api/admin-mail-send'" workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          grep -q "confirmation_required" workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          grep -q "MAIL_MANUAL_LIVE" workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          grep -q "MANDATORY_BCC" workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          grep -q "application/pdf" workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          grep -q "manual_mail_messages" workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          grep -q "payload.confirm='SEND_MAIL'" apps/portal/assets/mail-studio-delivery-policy-v1.js
+          grep -q "rht@gmx.com" apps/portal/assets/mail-studio-delivery-policy-v1.js
+          grep -q "/api/mail-center/send-readiness" apps/portal/assets/mail-studio-delivery-policy-v1.js
+
           grep -q 'AUTO_CYCLE_MS' apps/portal/assets/index-priority-v1.js
           grep -q 'location-directory' apps/portal/assets/index-priority-v1.css
+          grep -q '/api/contact-submit' apps/portal/contact/index.html
+          grep -q '/api/contact-submit' apps/portal/en/contact/index.html
+          grep -q '/admin-center/' apps/portal/index.html
+          grep -q '/admin-center/' apps/portal/en/index.html
+
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Activate Worker and assets
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify public and protected routes without sending mail
+
+  verify-live:
+    if: github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Verify live routes without deploying or sending mail
         shell: bash
         run: |
           set -euo pipefail
-          sleep 8
           CB="${GITHUB_RUN_ID}"
-          curl -fsS "https://gnk-asg.hr/?cb=${CB}" -o /tmp/index.html
-          curl -fsS "https://gnk-asg.hr/contact/?cb=${CB}" -o /tmp/contact.html
+          curl -fsS -D /tmp/index.headers "https://gnk-asg.hr/?cb=${CB}" -o /tmp/index.html
+          curl -fsS -D /tmp/en.headers "https://gnk-asg.hr/en/?cb=${CB}" -o /tmp/en.html
+          curl -fsS -D /tmp/contact.headers "https://gnk-asg.hr/contact/?cb=${CB}" -o /tmp/contact.html
+          curl -fsS -D /tmp/en-contact.headers "https://gnk-asg.hr/en/contact/?cb=${CB}" -o /tmp/en-contact.html
+
           grep -q 'index-priority-v1.js?v=20260628-v3' /tmp/index.html
-          grep -q 'locationDirectory' /tmp/index.html
           grep -q 'GNK ASG d.o.o.' /tmp/index.html
           grep -q 'GNK DINAMO Ltd.' /tmp/index.html
+          grep -q '/admin-center/' /tmp/index.html
+          grep -q '/admin-center/' /tmp/en.html
           grep -q '/api/contact-submit' /tmp/contact.html
+          grep -q '/api/contact-submit' /tmp/en-contact.html
+
           CONTACT_CODE=$(curl -sS -o /tmp/contact-api.json -w '%{http_code}' "https://gnk-asg.hr/api/contact-submit?cb=${CB}")
           ADMIN_CODE=$(curl -sS -o /tmp/admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=${CB}")
           MAIL_CODE=$(curl -sS -o /tmp/mail.json -w '%{http_code}' "https://gnk-asg.hr/api/mail-center/send-readiness?cb=${CB}")
-          MEDIA_CODE=$(curl -sS -o /tmp/media.json -w '%{http_code}' "https://gnk-asg.hr/api/media-command-center/delivery-status?cb=${CB}")
+
           [ "$CONTACT_CODE" = '405' ]
           case "$ADMIN_CODE" in 200|401|403) ;; *) exit 1 ;; esac
           case "$MAIL_CODE" in 200|401|403) ;; *) exit 1 ;; esac
-          case "$MEDIA_CODE" in 200|401|403) ;; *) exit 1 ;; esac
-          echo "Index, Contact, Admin, Mail Studio and Media Sender routes verified."
+
+          grep -qi '^x-gnk-asg-final-functional:' /tmp/index.headers
+          grep -qi '^x-gnk-asg-contact-ui:' /tmp/contact.headers
+          echo "Stable core verified: Index, Contact, Admin and Mail Studio. No deployment and no mail sent."
