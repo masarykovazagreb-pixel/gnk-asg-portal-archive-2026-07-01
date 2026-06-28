@@ -5,7 +5,7 @@ import {enrichContactItems,getReadinessSummary,VERSION as READINESS_VERSION} fro
 import {withRequiredEmailSignature,VERSION as EMAIL_SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 import {handleMediaSms,getMediaSmsStatus,VERSION as SMS_VERSION} from './media-sms-v1.js';
 
-export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R9_SMS';
+export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_1_RELEASE_GATE_UI_20260628';
 const CONTROL_ENDPOINTS=new Set([
   '/api/media-command-center/handoff-manifest',
   '/api/media-command-center/import-preview',
@@ -32,8 +32,8 @@ const STATUS='/api/media-command-center/status';
 const MEDIA_UI='/media-command-center';
 const HANDOFF_CSS='<link rel="stylesheet" href="/assets/media-command-handoff-ui-v3.css?v=20260626-1">';
 const HANDOFF_JS='<script src="/assets/media-command-handoff-ui-v3.js?v=20260626-1" defer></script>';
-const DELIVERY_CSS='<link rel="stylesheet" href="/assets/media-outreach-delivery-ui-v3.css?v=20260626-1">';
-const DELIVERY_JS='<script src="/assets/media-outreach-delivery-ui-v3.js?v=20260626-1" defer></script>';
+const DELIVERY_CSS='<link rel="stylesheet" href="/assets/media-outreach-delivery-ui-v3.css?v=20260628-v4">';
+const DELIVERY_JS='<script src="/assets/media-outreach-delivery-ui-v3.js?v=20260628-v4" defer></script>';
 const SMS_CSS='<link rel="stylesheet" href="/assets/media-sms-ui-v1.css?v=20260626-1">';
 const SMS_JS='<script src="/assets/media-sms-ui-v1.js?v=20260626-1" defer></script>';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
@@ -57,6 +57,8 @@ async function injectAdminModules(response,path){
   headers.delete('content-encoding');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   let html=await response.text();
+  html=html.replace(/media-outreach-delivery-ui-v3\.css\?v=[^"']+/gi,'media-outreach-delivery-ui-v3.css?v=20260628-v4');
+  html=html.replace(/media-outreach-delivery-ui-v3\.js\?v=[^"']+/gi,'media-outreach-delivery-ui-v3.js?v=20260628-v4');
   if(!html.includes('media-command-handoff-ui-v3.css'))html=html.replace('</head>',`${HANDOFF_CSS}</head>`);
   if(!html.includes('media-outreach-delivery-ui-v3.css'))html=html.replace('</head>',`${DELIVERY_CSS}</head>`);
   if(!html.includes('media-sms-ui-v1.css'))html=html.replace('</head>',`${SMS_CSS}</head>`);
