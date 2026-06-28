@@ -1,0 +1,65 @@
+name: Validate Direct Inbound Mail V1
+
+on:
+  push:
+    branches:
+      - project-50-white-integrated-menu
+    paths:
+      - '.github/workflows/validate-direct-inbound-v1.yml'
+      - 'workers/gnk-asg-direct-operator/src/mail-inbound-service-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-inbound-reply-policy-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-inbound-auto-reply-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-inbox-contact-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-project50-v31-mail-inbox.js'
+      - 'workers/gnk-asg-direct-operator/tests/mail-inbound-service.test.mjs'
+      - 'workers/gnk-asg-direct-operator/tests/mail-inbound-reply-policy.test.mjs'
+      - 'workers/gnk-asg-direct-operator/tests/mail-inbox-contact.test.mjs'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
+      - 'config/email-routing-worker-rules-v1.json'
+      - 'scripts/sync-email-routing-rules.mjs'
+      - '.github/workflows/sync-email-routing-rules-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-validate-direct-inbound-v1
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate syntax and routing configuration
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/mail-inbound-service-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-inbound-reply-policy-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-inbound-auto-reply-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-inbox-contact-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-project50-v31-mail-inbox.js
+          node --check scripts/sync-email-routing-rules.mjs
+          node -e "const c=require('./config/email-routing-worker-rules-v1.json'); if(c.addresses.length!==10||new Set(c.addresses).size!==10||c.worker!=='gnk-asg-direct-operator') process.exit(1);"
+          grep -q 'MAIL_INBOUND_AUTO_REPLY = "true"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MAIL_INBOUND_AUTO_REPLY_MODE = "media-only"' workers/gnk-asg-direct-operator/wrangler.toml
+      - name: Run direct inbound tests
+        run: |
+          node --test workers/gnk-asg-direct-operator/tests/mail-inbound-service.test.mjs
+          node --test workers/gnk-asg-direct-operator/tests/mail-inbound-reply-policy.test.mjs
+          node --test workers/gnk-asg-direct-operator/tests/mail-inbox-contact.test.mjs
+      - name: Wrangler dry run only
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Confirm no live actions
+        run: |
+          echo "Validation completed."
+          echo "No Worker was deployed."
+          echo "No Email Routing rule was changed."
+          echo "No email was forwarded, replied to, or sent."
