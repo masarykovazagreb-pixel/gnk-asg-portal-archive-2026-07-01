@@ -27,14 +27,26 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate portal, reduced menu and news runtime
+      - name: Validate portal, Admin, Command Center and news runtime
         shell: bash
         run: |
           set -euxo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-application-access-v1.js
+          node --check apps/portal/assets/admin-center-v2.js
+          node --check apps/portal/assets/admin-command-center-primary-v1.js
+          node --check apps/portal/assets/media-command-center-v2.js
+          node --check apps/portal/assets/media-application-v1.js
+          node --check apps/portal/assets/media-access-v1.js
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
+          test -s apps/portal/admin-center/index.html
+          test -s apps/portal/media-command-center/index.html
+          test -s apps/portal/media-application/index.html
+          test -s apps/portal/media-access/index.html
           node <<'JS'
           const fs=require('node:fs');
           const checks=[
@@ -48,6 +60,26 @@ jobs:
             for(const text of required)if(!nav.includes(text))throw new Error(`${file}: required menu item missing: ${text}`);
             for(const href of forbidden)if(nav.includes(href))throw new Error(`${file}: hidden menu route returned: ${href}`);
           }
+
+          const admin=fs.readFileSync('apps/portal/assets/admin-center-v2.js','utf8');
+          const adminOrder=["label:'Komandni centar'","label:'Operator'","label:'Mail Studio'","label:'Auto Editor'"];
+          let previous=-1;
+          for(const marker of adminOrder){
+            const position=admin.indexOf(marker);
+            if(position<0||position<=previous)throw new Error(`Admin module order invalid at ${marker}`);
+            previous=position;
+          }
+          if(!admin.includes("const PRIORITIES = ['media','operator','mail']"))throw new Error('Command Center is not the first Admin priority card');
+
+          const contacts=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
+          if(!Array.isArray(contacts)||contacts.length!==112)throw new Error(`Expected 112 media contacts, received ${contacts.length}`);
+          const emailCount=contacts.filter(item=>String(item.email||'').trim()).length;
+          const automationCount=contacts.filter(item=>item.automationAllowed===true).length;
+          if(emailCount!==42)throw new Error(`Expected 42 recorded email addresses, received ${emailCount}`);
+          if(automationCount!==22)throw new Error(`Expected 22 controlled-automation contacts, received ${automationCount}`);
+          const codes=contacts.map(item=>String(item.mailCode||''));
+          if(new Set(codes).size!==contacts.length)throw new Error('Media mail codes are not unique');
+          for(const code of codes)if(!/^GNK-MEDIA-\d{8}-[A-Z]{2}-[A-Z0-9]{1,8}-\d{3}$/.test(code))throw new Error(`Invalid media mail code: ${code}`);
           JS
           grep -q 'main = "src/index-admin-hub-v28-news-no-fallback.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q '\[triggers\]' workers/gnk-asg-direct-operator/wrangler.toml
@@ -59,6 +91,10 @@ jobs:
           grep -q "archiveDeleteCount:500" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "fallbackImagesAllowed:false" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "NEWS_LIFECYCLE_V18_ARCHIVE_1000_500" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "production_sending_locked" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          grep -q "mediaCommandSending:'LOCKED'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          grep -q "media@gnk-asg.hr" workers/gnk-asg-direct-operator/src/media-command-center-v1.js
+          grep -q "AUTO_ISSUE_AND_EMAIL_ON_APPROVAL" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
@@ -69,7 +105,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify production portal and news runtime
+      - name: Verify production portal, Admin and Command Center
         shell: bash
         run: |
           set -euo pipefail
@@ -104,6 +140,7 @@ jobs:
             if(status.contentContract?.fallbackImagesAllowed!==false)throw new Error('fallbackImagesAllowed is not false');
             if(!String(status.entryPoint||'').includes('index-admin-hub-v28-news-no-fallback.js'))throw new Error(`bad entryPoint: ${status.entryPoint}`);
             if(status.indexMenu!=='LOCKED_REDUCED_PUBLIC_MENU')throw new Error(`bad indexMenu: ${status.indexMenu}`);
+            if(!String(status.mediaApplicationAccess||'').includes('MEDIA_APPLICATION_ACCESS_V2'))throw new Error(`bad media application access: ${status.mediaApplicationAccess}`);
           }
           function assertMenu(label,response,required,forbidden){
             if(response.status!==200)throw new Error(`${label} status ${response.status}`);
@@ -114,20 +151,18 @@ jobs:
             if(response.headers['x-gnk-asg-index-menu']!=='LOCKED_REDUCED_PUBLIC_MENU')throw new Error(`${label} worker menu marker missing`);
           }
           for(let i=1;i<=24;i++){
-            const [root,enRoot,hr,en,feed,alias,archive,archiveAlias,statusRes]=await Promise.all([
-              read('/'),
-              read('/en/'),
-              read('/vijesti/'),
-              read('/news/'),
-              read('/data/news.json'),
-              read('/data/news-feed.json'),
-              read('/data/news-archive.json'),
-              read('/data/news_archive.json'),
-              read('/data/news-automation-status.json')
+            const [root,enRoot,admin,command,mediaAccess,hr,en,feed,alias,archive,archiveAlias,statusRes,versionRes]=await Promise.all([
+              read('/'),read('/en/'),read('/admin-center/'),read('/media-command-center/'),read('/media-access/'),
+              read('/vijesti/'),read('/news/'),read('/data/news.json'),read('/data/news-feed.json'),
+              read('/data/news-archive.json'),read('/data/news_archive.json'),read('/data/news-automation-status.json'),read('/data/portal-version.json')
             ]);
             try{
               assertMenu('HR index',root,['THE CODE','Financije','Mreža','Tržišta','Admin','Kontakt','EN'],['/vijesti/','/objave/','/visual-index/','/assistant/']);
               assertMenu('EN index',enRoot,['THE CODE','Financials','Network','Markets','Admin','Contact','HR'],['/news/','/publications/','/visual-index/','/en/assistant/']);
+              if(![200,303,401,403].includes(admin.status))throw new Error(`Admin route status ${admin.status}`);
+              if(![200,303,401,403].includes(command.status))throw new Error(`Command Center route status ${command.status}`);
+              if(mediaAccess.status!==200)throw new Error(`Media access route status ${mediaAccess.status}`);
+              if(!mediaAccess.text.includes('Approved application access'))throw new Error('Media access page marker missing');
               if(hr.status!==200||en.status!==200)throw new Error(`news pages not reachable: HR ${hr.status}, EN ${en.status}`);
               if(!hr.text.includes('/data/news')&&!hr.text.includes('Vijesti'))throw new Error('HR Vijesti page does not look like news route');
               if(!en.text.includes('/data/news')&&!en.text.includes('News'))throw new Error('EN News page does not look like news route');
@@ -136,15 +171,17 @@ jobs:
               const archived=parseJson('news-archive.json',archive.text);
               const archivedAlias=parseJson('news_archive.json',archiveAlias.text);
               const status=parseJson('news-automation-status.json',statusRes.text);
+              const version=parseJson('portal-version.json',versionRes.text);
               assertNewsArray('news.json',active,{max:100});
               assertNewsArray('news-feed.json',activeAlias,{max:100});
               assertNewsArray('news-archive.json',archived,{max:1000});
               assertNewsArray('news_archive.json',archivedAlias,{max:1000});
               assertStatus(status);
-              console.log(JSON.stringify({attempt:i,ok:true,menu:status.indexMenu,active:active.length,archive:archived.length,runtime:status.newsRuntime,entryPoint:status.entryPoint}));
+              if(version.mediaCommandSending!=='LOCKED')throw new Error(`Media sending is not locked: ${version.mediaCommandSending}`);
+              console.log(JSON.stringify({attempt:i,ok:true,menu:status.indexMenu,active:active.length,archive:archived.length,mediaSending:version.mediaCommandSending,mediaAccess:status.mediaApplicationAccess,entryPoint:status.entryPoint}));
               process.exit(0);
             }catch(error){
-              console.log(JSON.stringify({attempt:i,ok:false,error:error.message,statuses:{root:root.status,enRoot:enRoot.status,hr:hr.status,en:en.status,feed:feed.status,alias:alias.status,archive:archive.status,archiveAlias:archiveAlias.status,status:statusRes.status}}));
+              console.log(JSON.stringify({attempt:i,ok:false,error:error.message,statuses:{root:root.status,enRoot:enRoot.status,admin:admin.status,command:command.status,mediaAccess:mediaAccess.status,hr:hr.status,en:en.status,status:statusRes.status,version:versionRes.status}}));
               await sleep(10000);
             }
           }
