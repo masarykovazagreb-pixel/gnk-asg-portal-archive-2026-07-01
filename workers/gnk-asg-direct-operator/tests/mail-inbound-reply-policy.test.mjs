@@ -54,14 +54,20 @@ test('automatic confirmation contains case ID, center, threading and suppression
   assert.equal(VERSION,'GNK_ASG_MAIL_INBOUND_REPLY_POLICY_V1_20260628');
 });
 
-test('active service deduplicates replies and final wrapper invokes inbound processing',()=>{
+test('active service uses atomic D1 claims before replying',()=>{
   const root=path.resolve(import.meta.dirname,'..');
   const service=fs.readFileSync(path.join(root,'src/mail-inbound-auto-reply-v1.js'),'utf8');
   const wrapper=fs.readFileSync(path.join(root,'src/index-project50-v31-mail-inbox.js'),'utf8');
-  assert.match(service,/mail:inbound:reply:/);
+  const migration=fs.readFileSync(path.join(root,'migrations/0025_mail_inbound_auto_reply_claims.sql'),'utf8');
+  assert.match(service,/GNK_ASG_MAIL_INBOUND_AUTO_REPLY_V2_ATOMIC_D1_20260628/);
+  assert.match(service,/INSERT OR IGNORE INTO mail_inbound_auto_reply_claims/);
+  assert.match(service,/changes===1/);
+  assert.match(service,/claimStore:'D1'/);
   assert.match(service,/message\.reply\(new EmailMessage/);
   assert.match(service,/already_processed/);
   assert.match(service,/reply_failed/);
+  assert.match(migration,/case_id TEXT PRIMARY KEY/);
+  assert.ok(service.indexOf('atomicClaim(env,record,message)')<service.indexOf('message.reply(new EmailMessage'));
   assert.match(wrapper,/storeInboundMetadata/);
   assert.match(wrapper,/maybeSendInboundAutoReply/);
   assert.match(wrapper,/processInbound/);
