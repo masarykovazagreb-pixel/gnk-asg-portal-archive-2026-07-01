@@ -1,0 +1,18 @@
+/* THE CODE final inline layout fix — visible controls, full frame, aligned side panels */
+body[data-gnk-index-priority="v4"] .code-inline-host{display:block!important;width:100%!important;max-width:100%!important;overflow:visible!important}
+body[data-gnk-index-priority="v4"] .code-inline-mount{display:block!important;width:100%!important;max-width:100%!important}
+body[data-gnk-index-priority="v4"] .ci-shell{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(320px,390px) minmax(0,1fr)!important;align-items:stretch!important;width:100%!important;min-height:0!important;height:auto!important;padding:15px!important;overflow:hidden!important}
+body[data-gnk-index-priority="v4"] .ci-company,body[data-gnk-index-priority="v4"] .ci-app{box-sizing:border-box!important;align-self:stretch!important;height:844px!important;min-height:844px!important;max-height:844px!important}
+body[data-gnk-index-priority="v4"] .ci-company{padding:24px clamp(16px,2vw,28px)!important;overflow:hidden!important}
+body[data-gnk-index-priority="v4"] .ci-company-intro{margin-top:12px!important;line-height:1.45!important}
+body[data-gnk-index-priority="v4"] .ci-metrics{margin-top:18px!important}
+body[data-gnk-index-priority="v4"] .ci-metric{min-height:82px!important;padding:12px!important}
+body[data-gnk-index-priority="v4"] .ci-metric strong{margin-top:8px!important}
+body[data-gnk-index-priority="v4"] .ci-metric span{margin-top:5px!important}
+body[data-gnk-index-priority="v4"] .ci-event{margin-top:18px!important;padding:14px!important}
+body[data-gnk-index-priority="v4"] .ci-event strong{margin-top:9px!important;font-size:25px!important}
+body[data-gnk-index-priority="v4"] .ci-footer{padding-top:12px!important}
+body[data-gnk-index-priority="v4"] .ci-controls{display:flex!important;visibility:visible!important;opacity:1!important;z-index:100!important}
+body[data-gnk-index-priority="v4"] .ci-control--play{display:inline-flex!important;visibility:visible!important;opacity:1!important}
+body[data-gnk-index-priority="v4"] .gnk-code-priority-controls{display:none!important}
+@media(max-width:900px){body[data-gnk-index-priority="v4"] .ci-shell{display:flex!important;justify-content:center!important;padding:8px!important}body[data-gnk-index-priority="v4"] .ci-company{display:none!important}body[data-gnk-index-priority="v4"] .ci-app{width:min(390px,100%)!important;height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:390/844!important}}
