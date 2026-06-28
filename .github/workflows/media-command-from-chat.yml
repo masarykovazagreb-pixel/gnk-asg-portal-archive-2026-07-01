@@ -1,0 +1,125 @@
+name: Execute Media Center Command
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/media-command.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-media-command
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      KV_NAMESPACE_ID: a3e9e78c7d554d7fa10996da9a89e7bc
+      R2_BUCKET: gnk-asg-media-assets
+      PDF_KEY: media-outreach/the-code-2026/GNK_DINAMO_THE_CODE_MEDIJSKI_MEMORANDUM_FINAL.pdf
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Validate command
+        shell: bash
+        run: |
+          set -euo pipefail
+          jq -e '.action == "SEND_TEST"' ops/media-command.json >/dev/null
+          jq -e '.confirm == "SEND_TEST_MEDIA"' ops/media-command.json >/dev/null
+          jq -e '.recipient == "beckuphome@gmail.com" or .recipient == "rht@gmx.com"' ops/media-command.json >/dev/null
+          jq -e '.commandId | type == "string" and length >= 12' ops/media-command.json >/dev/null
+          jq -e '.subject | type == "string" and length >= 10' ops/media-command.json >/dev/null
+          jq -e '.text | type == "string" and length >= 100' ops/media-command.json >/dev/null
+          jq -e '.html | type == "string" and length >= 100' ops/media-command.json >/dev/null
+
+      - name: Build and validate current PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check reportlab
+          python ops/scripts/build_the_code_media_pdf.py
+          test "$(head -c 5 /tmp/the-code.pdf)" = '%PDF-'
+          size=$(stat -c %s /tmp/the-code.pdf)
+          test "$size" -le 3200000
+          echo "PDF_BYTES=$size" >> "$GITHUB_ENV"
+
+      - name: Upload current memorandum to R2
+        working-directory: workers/gnk-asg-direct-operator
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 r2 object put "$R2_BUCKET/$PDF_KEY" \
+            --file=/tmp/the-code.pdf \
+            --content-type=application/pdf \
+            --remote
+
+      - name: Queue one-time command in KV
+        id: queue
+        shell: bash
+        run: |
+          set -euo pipefail
+          command_id=$(jq -r '.commandId' ops/media-command.json)
+          execution_key=$(openssl rand -hex 32)
+          echo "::add-mask::$execution_key"
+          created_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          jq --arg key "$execution_key" --arg created "$created_at" --arg pdf "$PDF_KEY" \
+            '. + {executionKey:$key,createdAt:$created,pdfR2Key:$pdf,pdfFilename:"GNK_DINAMO_THE_CODE_MEDIJSKI_MEMORANDUM_FINAL.pdf"}' \
+            ops/media-command.json > /tmp/pending.json
+          encoded_key=$(jq -rn --arg value "media-command:pending:$command_id" '$value|@uri')
+          curl -fsS -X PUT \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces/$KV_NAMESPACE_ID/values/$encoded_key" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data-binary @/tmp/pending.json >/tmp/kv-result.json
+          jq -e '.success == true' /tmp/kv-result.json >/dev/null
+          echo "command_id=$command_id" >> "$GITHUB_OUTPUT"
+          echo "execution_key=$execution_key" >> "$GITHUB_OUTPUT"
+
+      - name: Execute through Media Center bridge
+        shell: bash
+        env:
+          COMMAND_ID: ${{ steps.queue.outputs.command_id }}
+          EXECUTION_KEY: ${{ steps.queue.outputs.execution_key }}
+        run: |
+          set -euo pipefail
+          success=false
+          for attempt in $(seq 1 36); do
+            http=$(curl -sS -o /tmp/media-result.json -w '%{http_code}' -X POST \
+              'https://gnk-asg.hr/api/media-command-bridge/process' \
+              -H "X-GNK-Media-Command-Id: $COMMAND_ID" \
+              -H "X-GNK-Media-Command-Key: $EXECUTION_KEY" \
+              -H 'Content-Type: application/json' \
+              --data '{}') || true
+            if [ "$http" = '200' ] && jq -e '.ok == true and .status == "SENT"' /tmp/media-result.json >/dev/null 2>&1; then
+              success=true
+              break
+            fi
+            if [ "$http" = '409' ] && jq -e '.error == "command_already_processed" and .result.ok == true' /tmp/media-result.json >/dev/null 2>&1; then
+              success=true
+              break
+            fi
+            sleep 10
+          done
+          cat /tmp/media-result.json
+          if [ "$success" != 'true' ]; then
+            echo 'Media Center command failed.' >&2
+            exit 1
+          fi
+          {
+            echo '## Media Center command'
+            echo
+            echo "- Command: $COMMAND_ID"
+            echo "- Recipient: $(jq -r '.recipient // .result.recipient' /tmp/media-result.json)"
+            echo '- Status: SENT'
+            echo "- PDF bytes: $PDF_BYTES"
+          } >> "$GITHUB_STEP_SUMMARY"
