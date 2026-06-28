@@ -130,6 +130,7 @@ crons = ["*/5 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
+DEPLOY_REVISION = "20260629-media-registration-v30"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 MAIL_MANUAL_LIVE = "true"
