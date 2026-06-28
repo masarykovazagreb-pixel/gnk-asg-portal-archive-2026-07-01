@@ -1,11 +1,14 @@
-export const VERSION='GNK_ASG_MAIL_INBOX_CONTACT_V1_20260628';
+import {assignReceivingCenter,centerLabel,VERSION as CENTERS_VERSION} from './mail-receiving-centers-v1.js';
+
+export const VERSION='GNK_ASG_MAIL_INBOX_CONTACT_V2_CENTERS_20260628';
 export const INBOX_PATH='/api/mail-center/inbox';
 
 const clean=value=>String(value??'').trim();
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store, no-cache, must-revalidate, max-age=0',
-  'x-gnk-asg-mail-inbox':VERSION
+  'x-gnk-asg-mail-inbox':VERSION,
+  'x-gnk-asg-receiving-centers':CENTERS_VERSION
 }});
 const store=env=>env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV||null;
 
@@ -20,6 +23,7 @@ function normalize(record,index){
   const source=record&&typeof record==='object'?record:{};
   const summary=index&&typeof index==='object'?index:{};
   const caseId=clean(source.caseId||summary.caseId);
+  const receivingCenter=source.receivingCenter||assignReceivingCenter(caseId||source.email||summary.email);
   return{
     id:caseId,
     caseId,
@@ -27,6 +31,7 @@ function normalize(record,index){
     mailboxKey:clean(source.mailboxKey),
     mailboxAddress:clean(source.mailboxAddress),
     mailboxLabel:clean(source.mailboxLabel),
+    receivingCenter:{...receivingCenter,labelHr:centerLabel(receivingCenter,'hr'),labelEn:centerLabel(receivingCenter,'en')},
     from:{name:clean(source.name||summary.name),email:clean(source.email||summary.email)},
     phone:clean(source.phone),
     subject:clean(source.subject||summary.subject),
@@ -63,10 +68,11 @@ export async function handleMailInbox(request,env){
   return json({
     ok:true,
     version:VERSION,
+    receivingCentersVersion:CENTERS_VERSION,
     inboundConnected:true,
     source:'contact-form',
     count:items.length,
     items,
-    note:'Inbox currently includes contact-form submissions. Direct mailbox ingestion will be added as a separate verified step.'
+    note:'Inbox currently includes contact-form submissions with stable digital receiving-center assignment. Direct mailbox ingestion remains a separate verified step.'
   });
 }
