@@ -15,8 +15,10 @@ on:
       - 'apps/portal/sitemap.xml'
       - 'workers/gnk-asg-direct-operator/src/admin-session-auth-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-access-service-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-access-service-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/index-project50-v28-news-no-fallback.js'
       - 'workers/gnk-asg-direct-operator/src/index-publication-seo-v3.js'
-      - 'workers/gnk-asg-direct-operator/tests/admin-media-security.test.mjs'
+      - 'workers/gnk-asg-direct-operator/tests/*.test.mjs'
       - '.github/workflows/check-admin-media-security.yml'
 
 permissions:
@@ -32,4 +34,4 @@ jobs:
         with:
           node-version: '20'
       - name: Run non-destructive regression tests
-        run: node --test workers/gnk-asg-direct-operator/tests/admin-media-security.test.mjs
+        run: node --test workers/gnk-asg-direct-operator/tests/*.test.mjs
