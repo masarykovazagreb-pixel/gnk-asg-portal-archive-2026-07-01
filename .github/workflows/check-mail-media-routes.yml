@@ -1,0 +1,28 @@
+name: Check Mail Media Routes
+
+on:
+  pull_request:
+    branches: [main]
+    paths: ['.github/workflows/check-mail-media-routes.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check live protected endpoints
+        shell: bash
+        run: |
+          set -u
+          CB="${GITHUB_RUN_ID}"
+          MAIL_CODE=$(curl -sS -D /tmp/mail.h -o /tmp/mail.b -w '%{http_code}' "https://gnk-asg.hr/api/mail-center/send-readiness?cb=${CB}" || true)
+          MEDIA_CODE=$(curl -sS -D /tmp/media.h -o /tmp/media.b -w '%{http_code}' "https://gnk-asg.hr/api/media-command-center/delivery-status?cb=${CB}" || true)
+          echo "MAIL_HTTP=${MAIL_CODE}"
+          grep -iE '^(content-type|location|x-gnk-asg-[^:]+):' /tmp/mail.h || true
+          echo "MEDIA_HTTP=${MEDIA_CODE}"
+          grep -iE '^(content-type|location|x-gnk-asg-[^:]+):' /tmp/media.h || true
+          case "$MAIL_CODE" in 200|401|403) ;; *) exit 1 ;; esac
+          case "$MEDIA_CODE" in 200|401|403) ;; *) exit 1 ;; esac
