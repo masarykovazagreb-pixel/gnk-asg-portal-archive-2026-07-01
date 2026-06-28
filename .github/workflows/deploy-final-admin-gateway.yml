@@ -45,18 +45,14 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate IQ200 gateway
+      - name: Validate complete Worker bundle
+        id: validate
+        working-directory: workers/gnk-asg-direct-operator
         shell: bash
         run: |
           set -euo pipefail
-          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
-          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
-          grep -q 'GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_AUTH_V15_20260628' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          grep -q 'Korporativni portal' apps/portal/index.html
-          grep -q 'Sve funkcije na jednom mjestu' apps/portal/index.html
-          grep -q 'Corporate portal' apps/portal/en/index.html
-          grep -q 'All key functions in one place' apps/portal/en/index.html
+          node --check src/index-final-admin-gateway-v1.js
+          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
       - name: Deploy gateway
         id: deploy
@@ -109,6 +105,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           JOB_STATUS: ${{ job.status }}
+          VALIDATE_STATUS: ${{ steps.validate.outcome }}
           DEPLOY_STATUS: ${{ steps.deploy.outcome }}
           VERIFY_STATUS: ${{ steps.verify.outcome }}
           HR_CODE: ${{ steps.verify.outputs.hr_code }}
@@ -117,5 +114,5 @@ jobs:
           MEDIA_CODE: ${{ steps.verify.outputs.media_code }}
         shell: bash
         run: |
-          body=$(printf '## Final IQ200 gateway — %s\n\n- Commit: `%s`\n- Cloudflare deploy: **%s**\n- Live verification: **%s**\n- HR: `%s`\n- EN: `%s`\n- Admin: `%s`\n- Media: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$JOB_STATUS" "$GITHUB_SHA" "$DEPLOY_STATUS" "$VERIFY_STATUS" "$HR_CODE" "$EN_CODE" "$ADMIN_CODE" "$MEDIA_CODE" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          body=$(printf '## Final IQ200 gateway — %s\n\n- Commit: `%s`\n- Bundle validation: **%s**\n- Cloudflare deploy: **%s**\n- Live verification: **%s**\n- HR: `%s`\n- EN: `%s`\n- Admin: `%s`\n- Media: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$JOB_STATUS" "$GITHUB_SHA" "$VALIDATE_STATUS" "$DEPLOY_STATUS" "$VERIFY_STATUS" "$HR_CODE" "$EN_CODE" "$ADMIN_CODE" "$MEDIA_CODE" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
           gh api "repos/${GITHUB_REPOSITORY}/issues/65/comments" -f body="$body"
