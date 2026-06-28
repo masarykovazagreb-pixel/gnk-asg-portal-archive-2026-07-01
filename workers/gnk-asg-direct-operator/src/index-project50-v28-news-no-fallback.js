@@ -1,7 +1,8 @@
 import app from './index-admin-hub-v26-clean-index-v21-preview.js';
 import {handleMediaAccess} from './media-access-service-v2.js';
+import {mediaAccessPreflight} from './media-access-preflight-v1.js';
 
-export const VERSION='GNK_ASG_PROJECT50_V28_PUBLIC_NEWS_NO_FALLBACK_MEDIA_ACCESS_LOCK_20260628';
+export const VERSION='GNK_ASG_PROJECT50_V28_PUBLIC_NEWS_NO_FALLBACK_MEDIA_ACCESS_AUTH_LOCK_20260628';
 const ENTRYPOINT='src/index-project50-v28-news-no-fallback.js';
 const PREVIOUS_ENTRYPOINT='src/index-admin-hub-v26-clean-index-v21-preview.js';
 const NEWS_RUNTIME='GNK_ASG_NEWS_LIFECYCLE_V18_ARCHIVE_1000_500_20260627';
@@ -44,7 +45,7 @@ async function patchStatus(response,path){
       newsRuntime:NEWS_RUNTIME,
       project50WhiteIntegratedMenu:true,
       noPublicFallbackWrapper:VERSION,
-      mediaAccessLiveIssue:'LOCKED_UNTIL_CONFIRMED_DELIVERY',
+      mediaAccessLiveIssue:'AUTHENTICATED_AND_LOCKED_UNTIL_CONFIRMED_DELIVERY',
       activeNewsLimit:100,
       archivePruneAt:1000,
       archiveDeleteCount:500,
@@ -76,6 +77,8 @@ async function patchPublicNewsData(response,path){
 export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
+    const preflight=await mediaAccessPreflight(request,env);
+    if(preflight)return preflight;
     const mediaAccess=await handleMediaAccess(request,env);
     if(mediaAccess)return mediaAccess;
     let response=await app.fetch(request,env,ctx);
