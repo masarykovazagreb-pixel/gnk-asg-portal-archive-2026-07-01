@@ -1,4 +1,4 @@
-// Production activation R4: preserve the verified IQ200 index while fixing PDF and Admin navigation.
+// Production activation R4B: preserve the verified IQ200 index while fixing the complete PDF/Admin navigation.
 import app from './index-unified-auth-v15-final.js';
 import indexApp from './index-portal-final-v13.js';
 
@@ -28,13 +28,17 @@ function patchIq200Navigation(html,english){
     .replace(/href=["']\/operator-mobile\/?["']/gi,'href="/admin-center/"');
 
   if(english){
-    html=html.replace(/<a\s+href=["']\/markets\/?["'][^>]*>[^<]*Markets<\/a>/i,'<a href="/en/downloads/">▣ PDF CENTRE</a>');
+    html=html
+      .replace(/href=["']\/markets\/?["']/gi,'href="/en/downloads/"')
+      .replace(/>Markets</g,'>PDF Centre<');
   }else{
-    html=html.replace(/<a\s+href=["']\/trzista\/?["'][^>]*>[^<]*Tržišta<\/a>/i,'<a href="/downloads/">▣ PDF CENTAR</a>');
+    html=html
+      .replace(/href=["']\/trzista\/?["']/gi,'href="/downloads/"')
+      .replace(/>Tržišta</g,'>PDF Centar<');
   }
 
-  const lock=`<script id="gnk-iq200-pdf-admin-lock-r4">(()=>{'use strict';const english=location.pathname.startsWith('/en');const fix=()=>{const nav=document.querySelector('.top-nav');if(nav){nav.querySelectorAll('a').forEach(a=>{const href=(a.getAttribute('href')||'').toLowerCase();const text=(a.textContent||'').trim().toLowerCase();if(href.startsWith('/operator-dashboard')||href.startsWith('/operator-mobile')){a.href='/admin-center/';a.rel='nofollow'}if((english&&(href.startsWith('/markets')||text.includes('markets')))||(!english&&(href.startsWith('/trzista')||text.includes('tržišta')||text.includes('trzista')))){a.href=english?'/en/downloads/':'/downloads/';a.textContent=english?'▣ PDF CENTRE':'▣ PDF CENTAR'}}}document.querySelectorAll('.mega-grid a').forEach(a=>{const href=(a.getAttribute('href')||'').toLowerCase();if(href.startsWith('/operator-dashboard')||href.startsWith('/operator-mobile')){a.href='/admin-center/';a.rel='nofollow'}})};fix();document.addEventListener('DOMContentLoaded',fix,{once:true});new MutationObserver(fix).observe(document.documentElement,{childList:true,subtree:true});[50,150,400,900,1800,3500,7000].forEach(ms=>setTimeout(fix,ms))})();<\/script>`;
-  if(!html.includes('gnk-iq200-pdf-admin-lock-r4'))html=html.replace('</body>',lock+'</body>');
+  const lock=`<script id="gnk-iq200-pdf-admin-lock-r4b">(()=>{'use strict';const english=location.pathname.startsWith('/en');const fix=()=>{document.querySelectorAll('a').forEach(a=>{const href=(a.getAttribute('href')||'').toLowerCase();const text=(a.textContent||'').trim();if(href.startsWith('/operator-dashboard')||href.startsWith('/operator-mobile')){a.href='/admin-center/';a.rel='nofollow'}if(english&&href.startsWith('/markets')){a.href='/en/downloads/';if(text==='Markets')a.textContent='PDF Centre'}if(!english&&href.startsWith('/trzista')){a.href='/downloads/';if(text==='Tržišta'||text==='Trzista')a.textContent='PDF Centar'}})};fix();document.addEventListener('DOMContentLoaded',fix,{once:true});new MutationObserver(fix).observe(document.documentElement,{childList:true,subtree:true});[50,150,400,900,1800,3500,7000].forEach(ms=>setTimeout(fix,ms))})();<\/script>`;
+  if(!html.includes('gnk-iq200-pdf-admin-lock-r4b'))html=html.replace('</body>',lock+'</body>');
   return html;
 }
 
