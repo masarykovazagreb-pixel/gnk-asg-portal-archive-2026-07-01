@@ -1,6 +1,6 @@
 // Production activation R4B: preserve the verified IQ200 index while fixing the complete PDF/Admin navigation.
 import app from './index-unified-auth-v15-final.js';
-import indexApp from './index-portal-final-v13.js';
+import indexApp from './index-portal-final-v14.js';
 
 export const VERSION='GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_AUTH_V15_20260628_R4_PDF_ADMIN';
 const INDEX_PATHS=new Set(['/','/en']);
