@@ -1,27 +1,39 @@
 import app,{VERSION as V15_VERSION} from './index-unified-auth-v15-final.js';
 import {handleMediaRegistrationPublic,handleMediaRegistrationAdmin,processMediaInvitationQueue,PUBLIC_UI,ADMIN_UI,VERSION as REGISTRATION_VERSION} from './media-registration-v1.js';
 
-export const VERSION=`GNK_ASG_ACTIVE_ENTRY_V30_MEDIA_REGISTRATION_ROUTE_FIX_TO_${V15_VERSION}`;
+export const VERSION=`GNK_ASG_ACTIVE_ENTRY_V31_MEDIA_PORTAL_ALIAS_TO_${V15_VERSION}`;
 export const ENTRY_POINT='src/index-admin-hub-v28-news-no-fallback.js';
 export const MEDIA_CONTACT_SEED_STATUS='INCOMPLETE_22_OF_42';
 export const FALLBACK_IMAGES_ALLOWED=false;
 
 const PUBLIC_API='/api/media-registration';
 const ADMIN_API='/api/media-registration-admin';
+const ADMIN_ALIAS='/api/media-portal-admin';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const matches=(path,base)=>path===base||path.startsWith(`${base}/`);
 const isPublicRegistration=path=>matches(path,PUBLIC_UI)||matches(path,PUBLIC_API);
 const isAdminRegistration=path=>matches(path,ADMIN_UI)||matches(path,ADMIN_API);
+const isAdminAlias=path=>matches(path,ADMIN_ALIAS);
 const isHtml=response=>String(response.headers.get('content-type')||'').toLowerCase().includes('text/html');
 
 function stamp(response,flow=''){
-  const headers=new Headers(response.headers);headers.set('x-gnk-asg-active-entry',VERSION);headers.set('x-gnk-asg-media-registration',REGISTRATION_VERSION);headers.set('x-gnk-asg-media-registration-routing','ADMIN_FIRST_EXACT_PREFIX_V30');if(flow)headers.set('x-gnk-asg-active-flow',flow);
+  const headers=new Headers(response.headers);
+  headers.set('x-gnk-asg-active-entry',VERSION);
+  headers.set('x-gnk-asg-media-registration',REGISTRATION_VERSION);
+  headers.set('x-gnk-asg-media-registration-routing','ADMIN_ALIAS_V31');
+  if(flow)headers.set('x-gnk-asg-active-flow',flow);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
-function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-active-entry':VERSION,'x-gnk-asg-media-registration':REGISTRATION_VERSION,'x-gnk-asg-media-registration-routing':'ADMIN_FIRST_EXACT_PREFIX_V30'}});}
+function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-active-entry':VERSION,'x-gnk-asg-media-registration':REGISTRATION_VERSION,'x-gnk-asg-media-registration-routing':'ADMIN_ALIAS_V31'}});}
 async function adminAuthorized(request,env,ctx){
   const probeUrl=new URL('/api/operator-auth-check',request.url),probe=new Request(probeUrl,{method:'GET',headers:request.headers});
   try{return (await app.fetch(probe,env,ctx)).ok;}catch{return false;}
+}
+function rerouteAdminAlias(request){
+  const url=new URL(request.url);
+  const path=pathOf(request);
+  url.pathname=ADMIN_API+path.slice(ADMIN_ALIAS.length);
+  return new Request(url.toString(),request);
 }
 async function patchAdminChooser(response){
   if(!response.ok||!isHtml(response))return response;let body=await response.text();
@@ -32,6 +44,11 @@ async function patchAdminChooser(response){
 export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
+    if(isAdminAlias(path)){
+      if(!(await adminAuthorized(request,env,ctx)))return json({ok:false,error:'unauthorized'},401);
+      const response=await handleMediaRegistrationAdmin(rerouteAdminAlias(request),env);
+      if(response)return stamp(response,'ADMIN_MEDIA_PORTAL_ALIAS');
+    }
     if(isAdminRegistration(path)){
       if(!(await adminAuthorized(request,env,ctx)))return path.startsWith('/api/')?json({ok:false,error:'unauthorized'},401):new Response(null,{status:303,headers:{location:'/admin-center/','cache-control':'no-store'}});
       const response=await handleMediaRegistrationAdmin(request,env);if(response)return stamp(response,'ADMIN_MEDIA_REGISTRATION');
