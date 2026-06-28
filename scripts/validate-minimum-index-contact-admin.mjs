@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
 const read=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
-const [indexJs,contactHr,contactEn,contactCss,adminPrimary,adminPriority]=await Promise.all([
+const [indexHr,indexEn,indexJs,contactHr,contactEn,contactCss,adminPrimary,adminPriority]=await Promise.all([
+  read('apps/portal/index.html'),
+  read('apps/portal/en/index.html'),
   read('apps/portal/assets/index-public-v7.js'),
   read('apps/portal/contact/index.html'),
   read('apps/portal/en/contact/index.html'),
@@ -11,13 +13,22 @@ const [indexJs,contactHr,contactEn,contactCss,adminPrimary,adminPriority]=await 
   read('apps/portal/assets/admin-minimum-priority-v1.js')
 ]);
 
+for(const marker of ['#the-code','#financije','#mreza','/trzista/','/contact/','/admin-center/','/en/']){
+  assert.ok(indexHr.includes(marker),`Nedostaje HR statični index marker: ${marker}`);
+}
+for(const marker of ['#the-code','#financials','#network','/markets/','/en/contact/','/admin-center/','href="/"']){
+  assert.ok(indexEn.includes(marker),`Nedostaje EN statični index marker: ${marker}`);
+}
+assert.ok(!indexHr.includes('/operator-dashboard/'),'HR index ne smije koristiti stari Admin ulaz.');
+assert.ok(!indexEn.includes('/operator-dashboard/'),'EN index ne smije koristiti stari Admin ulaz.');
+
 for(const marker of ["['#the-code','THE CODE']","['#financije','Financije']","['#mreza','Mreža']","['/trzista/','Tržišta']","['/contact/','Kontakt']","['/admin-center/','Admin']","['/en/','EN','lang']"]){
-  assert.ok(indexJs.includes(marker),`Nedostaje HR index marker: ${marker}`);
+  assert.ok(indexJs.includes(marker),`Nedostaje HR runtime marker: ${marker}`);
 }
 for(const marker of ["['#financials','Financials']","['#network','Network']","['/markets/','Markets']","['/en/contact/','Contact']","['/','HR','lang']"]){
-  assert.ok(indexJs.includes(marker),`Nedostaje EN index marker: ${marker}`);
+  assert.ok(indexJs.includes(marker),`Nedostaje EN runtime marker: ${marker}`);
 }
-assert.ok(!indexJs.includes("['/operator-dashboard/','Admin']"),'Index ne smije koristiti stari Admin ulaz.');
+assert.ok(!indexJs.includes("['/operator-dashboard/','Admin']"),'Runtime index ne smije koristiti stari Admin ulaz.');
 
 for(const html of [contactHr,contactEn]){
   assert.ok(html.includes('/api/contact-submit'),'Kontakt mora koristiti jedinstveni kontakt API.');
@@ -25,6 +36,8 @@ for(const html of [contactHr,contactEn]){
   assert.ok(html.includes('type="file" accept="application/pdf"'),'Kontakt mora zadržati PDF prilog.');
   assert.ok(html.includes('name="consent"'),'Kontakt mora zadržati privolu.');
 }
+assert.ok(contactHr.includes('href="/downloads/"'),'HR kontakt mora zadržati PDF centar.');
+assert.ok(contactEn.includes('href="/en/downloads/"'),'EN kontakt mora zadržati PDF centre.');
 assert.ok(contactHr.includes('href="/en/contact/"'),'HR kontakt mora voditi na EN kontakt.');
 assert.ok(contactEn.includes('href="/contact/"'),'EN kontakt mora voditi na HR kontakt.');
 assert.ok(contactCss.includes('#fffdf8')&&contactCss.includes('--contact-champagne'),'Kontakt mora biti bijelo-champagne.');
