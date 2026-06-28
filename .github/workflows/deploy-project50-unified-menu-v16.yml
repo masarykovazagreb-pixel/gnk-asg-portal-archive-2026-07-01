@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - '.github/deploy-project50-unified-menu-v16.trigger'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/deploy-project50-unified-menu-v16.trigger'
   workflow_dispatch:
 
 permissions:
