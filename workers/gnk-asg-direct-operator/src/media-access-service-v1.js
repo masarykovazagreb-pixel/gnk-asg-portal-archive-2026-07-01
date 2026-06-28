@@ -1,4 +1,4 @@
-export const MEDIA_ACCESS_VERSION='GNK_ASG_MEDIA_ACCESS_SERVICE_V1_20260628';
+export const MEDIA_ACCESS_VERSION='GNK_ASG_MEDIA_ACCESS_SERVICE_V2_20260628';
 const API_PREFIX='/api/media-access';
 const CODE_TTL_MINUTES=20;
 const SESSION_TTL_HOURS=12;
@@ -10,7 +10,7 @@ const validEmail=value=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(clean(value));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 
 function json(data,status=200,extra={}){
-  return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store, no-cache, must-revalidate, max-age=0','x-gnk-asg-media-access':MEDIA_ACCESS_VERSION,...extra}});
+  return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store, no-cache, must-revalidate, max-age=0','x-content-type-options':'nosniff','x-gnk-asg-media-access':MEDIA_ACCESS_VERSION,...extra}});
 }
 function tokens(env){return [env.OPERATOR_TOKEN,env.GNK_ASG_OPERATOR_TOKEN,env.ADMIN_TOKEN,env.GNK_ASG_ADMIN_TOKEN,env.NEWS_PUBLISH_TOKEN,env.SECRET_TOKEN].map(clean).filter(Boolean);}
 function authorized(request,env){
@@ -18,20 +18,14 @@ function authorized(request,env){
   const token=clean(authorization.replace(/^Bearer\s+/i,'')||request.headers.get('x-operator-token')||request.headers.get('x-admin-token')||request.headers.get('x-gnk-asg-token'));
   return Boolean(token&&tokens(env).includes(token));
 }
-async function hexHash(value){
-  const digest=await crypto.subtle.digest('SHA-256',enc.encode(value));
-  return [...new Uint8Array(digest)].map(x=>x.toString(16).padStart(2,'0')).join('');
-}
+async function hexHash(value){const digest=await crypto.subtle.digest('SHA-256',enc.encode(value));return [...new Uint8Array(digest)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function secretOf(env){return clean(env.MEDIA_ACCESS_SECRET||env.OPERATOR_TOKEN||env.GNK_ASG_OPERATOR_TOKEN||env.ADMIN_TOKEN||env.SECRET_TOKEN);}
 async function hashCode(env,mailCode,email,code){const secret=secretOf(env);if(!secret)throw new Error('MEDIA_ACCESS_SECRET missing');return hexHash(`${secret}|media-code|${mailCode}|${email.toLowerCase()}|${code}`);}
 async function hashSession(env,token){const secret=secretOf(env);if(!secret)throw new Error('MEDIA_ACCESS_SECRET missing');return hexHash(`${secret}|media-session|${token}`);}
 function randomDigits(){const bytes=new Uint8Array(6);crypto.getRandomValues(bytes);return [...bytes].map(x=>String(x%10)).join('');}
 function randomToken(){const bytes=new Uint8Array(32);crypto.getRandomValues(bytes);return [...bytes].map(x=>x.toString(16).padStart(2,'0')).join('');}
-function cookieValue(request,name){
-  const raw=request.headers.get('cookie')||'';
-  for(const part of raw.split(';')){const index=part.indexOf('=');if(index<0)continue;if(part.slice(0,index).trim()===name)return decodeURIComponent(part.slice(index+1).trim());}
-  return '';
-}
+function cookieValue(request,name){const raw=request.headers.get('cookie')||'';for(const part of raw.split(';')){const index=part.indexOf('=');if(index<0)continue;if(part.slice(0,index).trim()===name)return decodeURIComponent(part.slice(index+1).trim());}return '';}
+
 async function ensureAccessSchema(env){
   const db=dbOf(env);if(!db)throw new Error('GNK_ASG_D1 binding is not configured');
   await db.batch([
@@ -44,15 +38,24 @@ async function ensureAccessSchema(env){
   ]);
   return db;
 }
-async function accessEvent(env,eventType,data={}){
-  const db=await ensureAccessSchema(env);
-  await db.prepare(`INSERT INTO media_access_audit(id,event_type,mail_code,email,detail_json,created_at) VALUES(?,?,?,?,?,?)`).bind(crypto.randomUUID(),eventType,clean(data.mailCode),clean(data.email).toLowerCase(),JSON.stringify(data.detail||{}),now()).run();
+async function accessEvent(env,eventType,data={}){const db=await ensureAccessSchema(env);await db.prepare(`INSERT INTO media_access_audit(id,event_type,mail_code,email,detail_json,created_at) VALUES(?,?,?,?,?,?)`).bind(crypto.randomUUID(),eventType,clean(data.mailCode),clean(data.email).toLowerCase(),JSON.stringify(data.detail||{}),now()).run();}
+async function latestApplicationBundle(db,mailCode){
+  const application=await db.prepare(`SELECT application_id,invitation_code,received_at,outlet_name,outlet_country,outlet_website,applicant_name,applicant_role,applicant_email,applicant_mobile,editor_name,editor_role,editor_email,editor_mobile,departure_city,preferred_airport,travel_dates,other_costs,status,score,human_decision,decision_reason,decided_by,decided_at,updated_at FROM media_applications WHERE invitation_code=? ORDER BY received_at DESC LIMIT 1`).bind(mailCode).first();
+  if(!application)return {application:null,documents:[]};
+  const documents=(await db.prepare(`SELECT id,category,filename,mime_type,size_bytes,rejected,rejection_reason,created_at FROM media_application_documents WHERE application_id=? ORDER BY created_at ASC`).bind(application.application_id).all()).results||[];
+  return {application,documents};
 }
 async function adminList(request,env){
   if(!authorized(request,env))return json({ok:false,error:'unauthorized'},401);
   const db=await ensureAccessSchema(env),url=new URL(request.url),q=`%${clean(url.searchParams.get('q')).toLowerCase()}%`;
   const rows=(await db.prepare(`SELECT c.mail_code,c.priority,c.country,c.outlet,c.recipient_title,c.recipient_name,c.role,c.email,c.language,c.approved,c.automation_allowed,c.sent_status,c.response_status,a.status AS access_status,a.expires_at AS access_expires_at,a.sent_at AS access_sent_at,a.used_at AS access_used_at,a.revoked_at AS access_revoked_at,a.attempts AS access_attempts,p.application_id,p.received_at,p.outlet_name,p.applicant_name,p.applicant_email,p.editor_name,p.editor_email,p.status AS application_status,p.human_decision FROM media_outreach_contacts c LEFT JOIN media_access_codes a ON a.id=(SELECT id FROM media_access_codes x WHERE x.mail_code=c.mail_code ORDER BY x.created_at DESC LIMIT 1) LEFT JOIN media_applications p ON p.application_id=(SELECT application_id FROM media_applications y WHERE y.invitation_code=c.mail_code ORDER BY y.received_at DESC LIMIT 1) WHERE (?='%%' OR LOWER(c.mail_code) LIKE ? OR LOWER(c.outlet) LIKE ? OR LOWER(c.recipient_name) LIKE ? OR LOWER(c.email) LIKE ?) ORDER BY CASE c.priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END,c.country,c.outlet LIMIT 250`).bind(q,q,q,q,q).all()).results||[];
   return json({ok:true,version:MEDIA_ACCESS_VERSION,count:rows.length,items:rows});
+}
+async function auditList(request,env){
+  if(!authorized(request,env))return json({ok:false,error:'unauthorized'},401);
+  const db=await ensureAccessSchema(env),url=new URL(request.url),mailCode=clean(url.searchParams.get('mailCode')).toUpperCase();
+  const rows=(await db.prepare(`SELECT event_type,mail_code,email,detail_json,created_at FROM media_access_audit WHERE (?='' OR mail_code=?) ORDER BY created_at DESC LIMIT 100`).bind(mailCode,mailCode).all()).results||[];
+  return json({ok:true,count:rows.length,items:rows});
 }
 async function issueCode(request,env){
   if(!authorized(request,env))return json({ok:false,error:'unauthorized'},401);
@@ -70,6 +73,16 @@ async function issueCode(request,env){
   await accessEvent(env,live?'access_code_issued':'access_code_dry_run',{mailCode,email,detail:{expiresAt,live}});
   return json({ok:true,live,mailCode,email,outlet:contact.outlet,expiresAt,delivery:live?'READY_FOR_DELIVERY':'DRY_RUN_ONLY',codePreview:live?undefined:code},201);
 }
+async function revoke(request,env){
+  if(!authorized(request,env))return json({ok:false,error:'unauthorized'},401);
+  let body={};try{body=await request.json();}catch{return json({ok:false,error:'invalid_json'},400);}
+  const db=await ensureAccessSchema(env),mailCode=clean(body.mailCode).toUpperCase(),stamp=now();
+  if(!mailCode)return json({ok:false,error:'mail_code_required'},400);
+  const codes=await db.prepare(`UPDATE media_access_codes SET status='REVOKED',revoked_at=?,updated_at=? WHERE mail_code=? AND status IN ('ACTIVE','DRY_RUN_READY')`).bind(stamp,stamp,mailCode).run();
+  const sessions=await db.prepare(`UPDATE media_access_sessions SET revoked_at=? WHERE mail_code=? AND revoked_at IS NULL`).bind(stamp,mailCode).run();
+  await accessEvent(env,'access_revoked',{mailCode,detail:{reason:clean(body.reason)||'admin',codes:codes.meta?.changes||0,sessions:sessions.meta?.changes||0}});
+  return json({ok:true,mailCode,codes:codes.meta?.changes||0,sessions:sessions.meta?.changes||0});
+}
 async function verifyCode(request,env){
   let body={};try{body=await request.json();}catch{return json({ok:false,error:'invalid_json'},400);}
   const mailCode=clean(body.mailCode).toUpperCase(),email=clean(body.email).toLowerCase(),code=clean(body.code).replace(/\D/g,'');
@@ -77,8 +90,8 @@ async function verifyCode(request,env){
   const db=await ensureAccessSchema(env);
   const row=await db.prepare(`SELECT * FROM media_access_codes WHERE mail_code=? AND LOWER(email)=LOWER(?) AND status='ACTIVE' ORDER BY created_at DESC LIMIT 1`).bind(mailCode,email).first();
   if(!row)return json({ok:false,error:'code_not_found'},404);
-  if(Date.parse(row.expires_at)<=Date.now())return json({ok:false,error:'code_expired'},410);
-  if(Number(row.attempts||0)>=5)return json({ok:false,error:'code_locked'},429);
+  if(Date.parse(row.expires_at)<=Date.now()){await db.prepare(`UPDATE media_access_codes SET status='EXPIRED',updated_at=? WHERE id=?`).bind(now(),row.id).run();return json({ok:false,error:'code_expired'},410);}
+  if(Number(row.attempts||0)>=5){await db.prepare(`UPDATE media_access_codes SET status='LOCKED',updated_at=? WHERE id=?`).bind(now(),row.id).run();return json({ok:false,error:'code_locked'},429);}
   if(await hashCode(env,mailCode,email,code)!==row.code_hash){await db.prepare(`UPDATE media_access_codes SET attempts=attempts+1,updated_at=? WHERE id=?`).bind(now(),row.id).run();await accessEvent(env,'access_code_rejected',{mailCode,email});return json({ok:false,error:'invalid_code'},401);}
   const token=randomToken(),stamp=now(),expiresAt=new Date(Date.now()+SESSION_TTL_HOURS*3600000).toISOString();
   await db.prepare(`UPDATE media_access_codes SET status='USED',used_at=?,updated_at=? WHERE id=?`).bind(stamp,stamp,row.id).run();
@@ -92,7 +105,9 @@ async function sessionInfo(request,env){
   const session=await db.prepare(`SELECT * FROM media_access_sessions WHERE session_hash=? AND revoked_at IS NULL ORDER BY created_at DESC LIMIT 1`).bind(digest).first();
   if(!session||Date.parse(session.expires_at)<=Date.now())return json({ok:false,authenticated:false,error:'session_expired'},401);
   await db.prepare(`UPDATE media_access_sessions SET last_seen_at=? WHERE id=?`).bind(now(),session.id).run();
-  return json({ok:true,authenticated:true,mailCode:session.mail_code,email:session.email,expiresAt:session.expires_at,applicationUrl:`/media-application/?invitationCode=${encodeURIComponent(session.mail_code)}`});
+  const contact=await db.prepare(`SELECT mail_code,outlet,country,recipient_title,recipient_name,role,email,language,sent_status,response_status FROM media_outreach_contacts WHERE mail_code=?`).bind(session.mail_code).first();
+  const bundle=await latestApplicationBundle(db,session.mail_code);
+  return json({ok:true,authenticated:true,session:{mailCode:session.mail_code,email:session.email,expiresAt:session.expires_at},contact,application:bundle.application,documents:bundle.documents,applicationUrl:`/media-application/?invitationCode=${encodeURIComponent(session.mail_code)}`});
 }
 async function logout(request,env){
   const token=cookieValue(request,'gnk_media_access');
@@ -103,7 +118,9 @@ async function logout(request,env){
 export async function handleMediaAccess(request,env){
   const path=pathOf(request);
   if(path===`${API_PREFIX}/admin/list`&&request.method==='GET')return adminList(request,env);
+  if(path===`${API_PREFIX}/admin/audit`&&request.method==='GET')return auditList(request,env);
   if(path===`${API_PREFIX}/admin/issue`&&request.method==='POST')return issueCode(request,env);
+  if(path===`${API_PREFIX}/admin/revoke`&&request.method==='POST')return revoke(request,env);
   if(path===`${API_PREFIX}/verify`&&request.method==='POST')return verifyCode(request,env);
   if(path===`${API_PREFIX}/session`&&request.method==='GET')return sessionInfo(request,env);
   if(path===`${API_PREFIX}/logout`&&request.method==='POST')return logout(request,env);
