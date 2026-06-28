@@ -5,27 +5,40 @@ import path from 'node:path';
 
 const root=path.resolve(import.meta.dirname,'../../..');
 const read=file=>fs.readFileSync(path.join(root,file),'utf8');
+const expectInOrder=(source,values,label)=>{
+  let cursor=-1;
+  for(const value of values){const next=source.indexOf(value,cursor+1);assert.ok(next>cursor,`${label}: missing or out of order ${value}`);cursor=next;}
+};
 
-const hrIndex=['href="#the-code"','href="#financije"','href="#mreza"','href="/vijesti/"','href="/objave/"','href="/trzista/"','href="/visual-index/"','href="/assistant/"','href="/operator-dashboard/"','href="/contact/"','href="/en/"'];
-const enIndex=['href="#the-code"','href="#financials"','href="#network"','href="/news/"','href="/publications/"','href="/markets/"','href="/visual-index/"','href="/en/assistant/"','href="/operator-dashboard/"','href="/contact/"','href="/"'];
-const hrShell=['/#the-code','/#financije','/#mreza','/vijesti/','/objave/','/trzista/','/visual-index/','/assistant/','/operator-dashboard/','/contact/','/en/'];
-const enShell=['/en/#the-code','/en/#financials','/en/#network','/news/','/publications/','/markets/','/visual-index/','/en/assistant/','/operator-dashboard/','/contact/','/'];
+const orderTokens=["['THE CODE'",'[labels.finance','[labels.network','[labels.news','[labels.publications','[labels.markets','[labels.gallery',"['AI'","['Admin'",'[labels.contact','[labels.language'];
+const labels=['Financije','Mreža','Vijesti','Objave','Tržišta','Galerija','Kontakt','Financials','Network','News','Publications','Markets','Gallery','Contact'];
 
-function expectAll(source,links,label){for(const link of links)assert.ok(source.includes(link),`${label}: ${link}`)}
+for(const file of ['apps/portal/assets/public-shell-v15.js','apps/portal/assets/public-menu-v10.js']){
+  test(`${file} uses canonical V16 destinations and order`,()=>{
+    const source=read(file);
+    assert.match(source,/UNIFIED_NAVIGATION_20260628/);
+    expectInOrder(source,orderTokens,`${file} canonical item order`);
+    for(const label of labels)assert.ok(source.includes(label),`${file}: ${label}`);
+    for(const route of ['/vijesti/','/objave/','/trzista/','/visual-index/','/assistant/','/admin-center/','/contact/','/news/','/publications/','/markets/','/en/assistant/','/en/contact/'])assert.ok(source.includes(route),`${file}: ${route}`);
+    assert.doesNotMatch(source,/\/operator-dashboard\//);
+    assert.doesNotMatch(source,/auto-editor|pdf-publisher/i);
+  });
+}
 
-test('Croatian and English index menus use confirmed destinations',()=>{
-  expectAll(read('apps/portal/index.html'),hrIndex,'HR index');
-  expectAll(read('apps/portal/en/index.html'),enIndex,'EN index');
+test('worker wrapper applies the same native index menu and assets',()=>{
+  const source=read('workers/gnk-asg-direct-operator/src/index-project50-v30-unified-menu.js');
+  assert.match(source,/UNIFIED_PUBLIC_MENU_V16/);
+  assert.match(source,/public-menu-v10\.css\?v=20260628-v16/);
+  assert.match(source,/index-menu-unified-v16\.js/);
+  assert.match(source,/href="\/admin-center\/"/);
+  assert.match(source,/href="\/en\/contact\/"/);
+  assert.match(source,/publicMenuItems:11/);
+  assert.match(source,/admin-center-memorandum-v1/);
 });
 
-test('shared public menu uses the same destinations',()=>{
-  const menu=read('apps/portal/assets/public-menu-v10.js');
-  expectAll(menu,hrShell,'public menu HR');
-  expectAll(menu,enShell,'public menu EN');
-  assert.doesNotMatch(menu,/auto-editor|pdf-publisher|memorandum-studio/i);
-});
-
-test('public shell route inventory covers primary public sections',()=>{
-  const shell=read('workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js');
-  for(const route of ['/assistant','/en/assistant','/trzista','/markets','/vijesti','/news','/objave','/publications','/contact','/visual-index'])assert.ok(shell.includes(`'${route}'`),route);
+test('Admin Center extension exposes the complete operational menu without live sending',()=>{
+  const source=read('apps/portal/assets/admin-center-extensions-v2.js');
+  for(const id of ['memorandum','social','whatsapp','review'])assert.ok(source.includes(`id:'${id}'`),id);
+  for(const route of ['/memorandum-studio/','/social-share/','/wa-center/','/review/'])assert.ok(source.includes(route),route);
+  assert.doesNotMatch(source,/dispatch-queue|queue-approved|send_email|MEDIA_OUTREACH_LIVE/);
 });
