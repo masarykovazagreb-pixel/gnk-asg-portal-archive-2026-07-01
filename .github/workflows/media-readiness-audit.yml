@@ -1,6 +1,10 @@
 name: Media Center readiness audit
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/media-readiness-audit.trigger'
   issue_comment:
     types: [created]
 
@@ -14,7 +18,7 @@ concurrency:
 
 jobs:
   audit:
-    if: github.event.issue.number == 94 && github.event.comment.body == '/audit-media-readiness-v1'
+    if: github.event_name == 'push' || (github.event.issue.number == 94 && github.event.comment.body == '/audit-media-readiness-v1')
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:
