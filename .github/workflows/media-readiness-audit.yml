@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/media-readiness-audit.trigger'
+      - '.github/workflows/media-readiness-audit.yml'
   issue_comment:
     types: [created]
 
