@@ -52,7 +52,6 @@ jobs:
           fi
 
       - name: Audit live Media Center
-        if: ${{ fromJSON(hashFiles('ops/media-command.json') != '') }}
         shell: bash
         run: |
           set -euo pipefail
@@ -61,19 +60,24 @@ jobs:
           test -n "$GNK_ASG_OPERATOR_TOKEN"
           base='https://gnk-asg.hr/api/media-command-center'
           get(){
-            local path="$1" out="$2"
-            http=$(curl -sS -o "$out" -w '%{http_code}' "$base/$path?cb=$(date +%s%N)" \
+            local endpoint="$1" out="$2" separator='?'
+            case "$endpoint" in *\?*) separator='&' ;; esac
+            http=$(curl -sS -o "$out" -w '%{http_code}' "$base/$endpoint${separator}cb=$(date +%s%N)" \
               -H "Authorization: Bearer $GNK_ASG_OPERATOR_TOKEN" \
               -H 'Accept: application/json' \
               -H 'Cache-Control: no-cache')
-            [ "$http" = '200' ]
+            if [ "$http" != '200' ]; then
+              echo "Audit endpoint $endpoint returned HTTP $http" >&2
+              cat "$out" >&2 || true
+              return 1
+            fi
             jq -e '.ok == true' "$out" >/dev/null
           }
           get status /tmp/status.json
           get readiness-summary /tmp/readiness.json
           get delivery-plan /tmp/plan.json
           get delivery-status /tmp/delivery.json
-          get 'contacts&limit=250' /tmp/contacts.json || get 'contacts?limit=250' /tmp/contacts.json
+          get 'contacts?limit=250' /tmp/contacts.json
           jq -n \
             --arg commandId "$(jq -r '.commandId' ops/media-command.json)" \
             --slurpfile status /tmp/status.json \
@@ -81,8 +85,19 @@ jobs:
             --slurpfile plan /tmp/plan.json \
             --slurpfile delivery /tmp/delivery.json \
             --slurpfile contacts /tmp/contacts.json \
-            '{ok:true,status:"AUDIT_COMPLETE",commandId:$commandId,mediaStatus:$status[0],readiness:$readiness[0],deliveryPlan:$plan[0],deliveryStatus:$delivery[0],contacts:$contacts[0]}' \
-            > /tmp/media-result.json
+            '{
+              ok:true,
+              status:"AUDIT_COMPLETE",
+              commandId:$commandId,
+              mediaStatus:$status[0],
+              readiness:$readiness[0],
+              deliveryPlan:$plan[0],
+              deliveryStatus:$delivery[0],
+              contacts:{
+                total:($contacts[0].total // 0),
+                items:(($contacts[0].items // []) | map({mailCode,outlet,email,country,priority,language,automationAllowed,approved,operationalStatus,blockedReason,requiresPersonalization,toEmail,ccEmail,personStatus,channelStatus,note}))
+              }
+            }' > /tmp/media-result.json
 
       - name: Build and validate current PDF
         shell: bash
@@ -176,4 +191,5 @@ jobs:
           git config user.email 'media@gnk-asg.hr'
           git add ops/media-command-result.json
           git commit -m 'Record Media Center command result [skip ci]' || exit 0
+          git pull --rebase origin main
           git push
