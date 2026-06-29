@@ -1,0 +1,77 @@
+name: Deploy Mail Center Worker V2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-mail-center-worker-v2.yml"
+      - "workers/gnk-asg-mail-center-worker/src/index.js"
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate Mail Center source
+        run: node --check workers/gnk-asg-mail-center-worker/src/index.js
+
+      - name: Build temporary Wrangler configuration
+        working-directory: workers/gnk-asg-mail-center-worker
+        run: |
+          cat > wrangler.runtime.toml <<'EOF'
+          name = "gnk-asg-mail-center-worker"
+          main = "src/index.js"
+          compatibility_date = "2026-06-18"
+          workers_dev = true
+          preview_urls = true
+
+          [[kv_namespaces]]
+          binding = "GNK_ASG_KV"
+          id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+          [[send_email]]
+          name = "EMAIL"
+          remote = true
+          EOF
+
+      - name: Validate Worker bundle
+        working-directory: workers/gnk-asg-mail-center-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-mail-center-worker --keep-vars
+
+      - name: Deploy existing Email Routing Worker
+        working-directory: workers/gnk-asg-mail-center-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-mail-center-worker --keep-vars
+
+      - name: Verify deployed media profile marker
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          curl --silent --show-error -H "Authorization: Bearer ${CF_API_TOKEN}" "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/workers/scripts/gnk-asg-mail-center-worker" > deployed.bundle
+          grep -aFq "GNK_ASG_MAIL_CENTER_WORKER_V2_20260629_MEDIA_ROUTING" deployed.bundle
+          grep -aFq "Media Relations & Accreditation Center" deployed.bundle
+          grep -aFq "media-relations" deployed.bundle
+
+      - name: Upload deployment evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: mail-center-worker-v2-deployment
+          path: |
+            workers/gnk-asg-mail-center-worker/wrangler.runtime.toml
+            deployed.bundle
+          retention-days: 3
