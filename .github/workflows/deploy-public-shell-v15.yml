@@ -19,34 +19,20 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
-      - name: Inspect PDF chunks
+          show-progress: false
+      - name: Assemble and expand PDF
         run: |
-          set -euxo pipefail
-          ls -l .controlled-media-test-assets/pdf.*
-          wc -c .controlled-media-test-assets/pdf.01 .controlled-media-test-assets/pdf.02 .controlled-media-test-assets/pdf.03 .controlled-media-test-assets/pdf.04 .controlled-media-test-assets/pdf.05.b2
-      - name: Decode final PDF chunk
-        run: |
-          set -euxo pipefail
-          base64 --decode .controlled-media-test-assets/pdf.05.b2 > /tmp/media-pdf-final-chunk.b64
-          wc -c /tmp/media-pdf-final-chunk.b64
-          tail -c 20 /tmp/media-pdf-final-chunk.b64 | od -An -tx1
-      - name: Concatenate PDF base64
-        run: |
-          set -euxo pipefail
+          set -euo pipefail
           cat .controlled-media-test-assets/pdf.01 .controlled-media-test-assets/pdf.02 .controlled-media-test-assets/pdf.03 .controlled-media-test-assets/pdf.04 > /tmp/media-pdf.b64
           base64 --decode .controlled-media-test-assets/pdf.05.b2 >> /tmp/media-pdf.b64
-          wc -c /tmp/media-pdf.b64
-      - name: Decode PDF gzip payload
-        run: |
-          set -euxo pipefail
           base64 --decode /tmp/media-pdf.b64 > /tmp/media-pdf.gz
-          wc -c /tmp/media-pdf.gz
-          file /tmp/media-pdf.gz
-      - name: Expand and verify PDF
-        run: |
-          set -euxo pipefail
           gzip --test /tmp/media-pdf.gz
           gzip --decompress --stdout /tmp/media-pdf.gz > /tmp/final.pdf
-          file /tmp/final.pdf
-          sha256sum /tmp/final.pdf
-          test "$(sha256sum /tmp/final.pdf | awk '{print $1}')" = '027226b6300c8638f6e2fcfd1774e8c818b14a0360500fadd1b28c64b7f89879'
+      - name: Calculate PDF identity
+        id: pdf
+        run: |
+          echo "sha=$(sha256sum /tmp/final.pdf | awk '{print $1}')" >> "$GITHUB_OUTPUT"
+          echo "bytes=$(wc -c < /tmp/final.pdf | tr -d ' ')" >> "$GITHUB_OUTPUT"
+      - name: Actual PDF ${{ steps.pdf.outputs.sha }} bytes ${{ steps.pdf.outputs.bytes }}
+        run: |
+          test "${{ steps.pdf.outputs.sha }}" = '027226b6300c8638f6e2fcfd1774e8c818b14a0360500fadd1b28c64b7f89879'
