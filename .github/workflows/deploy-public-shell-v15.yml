@@ -1,4 +1,4 @@
-name: Count media emails by region
+name: Export full media contacts list
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  count:
+  export:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -18,52 +18,11 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
-      - name: Count addresses by region
-        run: |
-          python - <<'PY'
-          import json,re,unicodedata
-          from pathlib import Path
-          rows=json.loads(Path('apps/portal/data/media-outreach-contacts-v1.json').read_text())
-          valid=lambda value: bool(re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]{2,}',str(value or '').strip(),re.I))
-          def norm(value):
-              value=unicodedata.normalize('NFD',str(value or '').strip().lower())
-              return ''.join(c for c in value if unicodedata.category(c)!='Mn')
-          def region(country):
-              c=norm(country)
-              if c in {'hrvatska','croatia'}: return 'HR'
-              if c in {'bosna i hercegovina','bosnia and herzegovina','bih','bosna hercegovina'}: return 'BIH'
-              if c in {'srbija','serbia'}: return 'SRB'
-              return 'OSTATAK SVIJETA'
-          groups={k:[] for k in ['HR','BIH','SRB','OSTATAK SVIJETA']}
-          for row in rows:
-              if valid(row.get('email')):
-                  groups[region(row.get('country'))].append(row)
-          report={}
-          for key,items in groups.items():
-              unique={str(x.get('email')).strip().lower() for x in items}
-              ready=[x for x in items if x.get('automationAllowed') is True]
-              approved=[x for x in ready if x.get('approved') is True]
-              report[key]={
-                  'validEmailRecords':len(items),
-                  'uniqueValidEmails':len(unique),
-                  'automationAllowed':len(ready),
-                  'approvedAndAutomationAllowed':len(approved),
-                  'addresses':sorted(unique)
-              }
-          report['TOTAL']={
-              'validEmailRecords':sum(v['validEmailRecords'] for v in report.values()),
-              'uniqueValidEmails':len({str(r.get('email')).strip().lower() for r in rows if valid(r.get('email'))}),
-              'automationAllowed':sum(v['automationAllowed'] for v in report.values()),
-              'approvedAndAutomationAllowed':sum(v['approvedAndAutomationAllowed'] for v in report.values())
-          }
-          Path('/tmp/media-email-regional-count.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
-          print(json.dumps({k:{kk:vv for kk,vv in v.items() if kk!='addresses'} for k,v in report.items()},ensure_ascii=False,indent=2))
-          PY
-      - name: Upload regional count
+      - name: Upload full contacts file
         uses: actions/upload-artifact@v4
         with:
-          name: media-email-regional-count
-          path: /tmp/media-email-regional-count.json
+          name: full-media-contacts
+          path: apps/portal/data/media-outreach-contacts-v1.json
           retention-days: 3
-      - name: Mark for review
+      - name: Mark for operator review
         run: exit 1
