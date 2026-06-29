@@ -1,4 +1,4 @@
-name: Upload verified final English PDF
+name: Audit verified media recipient count
 
 on:
   push:
@@ -11,9 +11,9 @@ permissions:
   contents: read
 
 jobs:
-  upload-pdf:
+  audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - name: Checkout current main
         uses: actions/checkout@v5
@@ -21,34 +21,32 @@ jobs:
           ref: main
           fetch-depth: 1
 
-      - name: Reconstruct and verify PDF
+      - name: Count verified recipients
         shell: bash
         run: |
-          set -euo pipefail
-          cat .controlled-media-test-assets/pdf.01 .controlled-media-test-assets/pdf.02 .controlled-media-test-assets/pdf.03 .controlled-media-test-assets/pdf.04 > /tmp/media-pdf.b64
-          base64 --decode .controlled-media-test-assets/pdf.05.b2 >> /tmp/media-pdf.b64
-          base64 --decode /tmp/media-pdf.b64 > /tmp/media-pdf.gz
-          gzip --test /tmp/media-pdf.gz
-          gzip --decompress --stdout /tmp/media-pdf.gz > /tmp/final.pdf
-          sha="$(sha256sum /tmp/final.pdf | awk '{print $1}')"
-          pages="$(pdfinfo /tmp/final.pdf | awk '/^Pages:/ {print $2}')"
-          test "$sha" = '027226b6300c8638f6e2fcfd1774e8c818b14a0360500fadd1b28c64b7f89879'
-          test "$pages" = '12'
-          test "$(head -c 5 /tmp/final.pdf)" = '%PDF-'
-          printf '{"sha256":"%s","pages":%s,"bytes":%s}\n' "$sha" "$pages" "$(wc -c < /tmp/final.pdf)" > /tmp/pdf-verification.json
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          rows=json.loads(Path('apps/portal/data/media-outreach-contacts-v1.json').read_text())
+          valid=lambda value: bool(re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]{2,}',str(value or '').strip(),re.I))
+          ready=[r for r in rows if valid(r.get('email')) and r.get('automationAllowed') is True]
+          approved=[r for r in ready if r.get('approved') is True]
+          awaiting=[r for r in ready if r.get('approved') is not True]
+          report={
+            'totalContacts':len(rows),
+            'contactsWithValidEmail':sum(valid(r.get('email')) for r in rows),
+            'automationAllowedAndValidEmail':len(ready),
+            'approvedAndReady':len(approved),
+            'awaitingExplicitApproval':len(awaiting),
+            'readyRecipients':[{'mailCode':r.get('mailCode'),'outlet':r.get('outlet'),'country':r.get('country'),'email':r.get('email')} for r in ready]
+          }
+          Path('/tmp/media-recipient-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+          print(json.dumps({k:v for k,v in report.items() if k!='readyRecipients'},ensure_ascii=False,indent=2))
+          PY
 
-      - name: Upload PDF to R2
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        shell: bash
-        run: |
-          npx --yes wrangler@4 r2 object put 'gnk-asg-media-assets/media-registration/final/GNK_DINAMO_THE_CODE_MEDIA_INVITATION_AND_ACCREDITATION_EN_FINAL.pdf' --file=/tmp/final.pdf --content-type='application/pdf' --remote
-
-      - name: Upload verification result
+      - name: Upload recipient audit
         uses: actions/upload-artifact@v4
         with:
-          name: final-english-pdf-verification
-          path: /tmp/pdf-verification.json
+          name: media-recipient-audit
+          path: /tmp/media-recipient-audit.json
           retention-days: 3
