@@ -5,7 +5,7 @@ on:
     types: [created]
 
 permissions:
-  contents: read
+  contents: write
   issues: write
 
 concurrency:
@@ -133,6 +133,18 @@ jobs:
 """
           pathlib.Path('/tmp/audit.md').write_text(summary_text)
           PY
+
+      - name: Persist private audit result
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp /tmp/audit.json ops/media-readiness-audit.json
+          git config user.name 'GNK ASG Media Audit'
+          git config user.email 'media@gnk-asg.hr'
+          git add ops/media-readiness-audit.json
+          git commit -m 'Record Media Center readiness audit [skip ci]' || exit 0
+          git pull --rebase origin main
+          git push
 
       - name: Publish audit
         env:
