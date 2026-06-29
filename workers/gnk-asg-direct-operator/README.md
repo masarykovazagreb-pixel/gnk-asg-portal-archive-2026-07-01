@@ -56,3 +56,7 @@ Da bih ja mogao kasnije stvarno proslijediti naredbu Cloudflareu iz chata, mora 
 `https://operator.gnk-asg.hr/operator/direct?key=...&action=...`
 
 Token ne treba javno dijeliti. Najsigurniji režim je da ga pohraniš samo kod sebe i koristiš ga za ručne ili odobrene naredbe.
+
+## Dijagnostika 2026-06-29
+
+Privatni workflow artefakt `worker-source-snapshot` koristi se samo za pronalaženje aktivnog mail respondera. Ne mijenja produkcijsku logiku ni Email Routing pravila.
