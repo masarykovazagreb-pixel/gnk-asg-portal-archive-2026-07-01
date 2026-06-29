@@ -21,6 +21,7 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
       KV_NAMESPACE_ID: a3e9e78c7d554d7fa10996da9a89e7bc
       R2_BUCKET: gnk-asg-media-assets
       PDF_KEY: media-outreach/the-code-2026/GNK_DINAMO_THE_CODE_MEDIJSKI_MEMORANDUM_FINAL.pdf
@@ -34,19 +35,61 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          printf '{"ok":false,"status":"VALIDATING_COMMAND","commandId":"%s"}\n' "$(jq -r '.commandId' ops/media-command.json)" > /tmp/media-result.json
-          jq -e '.action == "SEND_TEST"' ops/media-command.json >/dev/null
-          jq -e '.confirm == "SEND_TEST_MEDIA"' ops/media-command.json >/dev/null
-          jq -e '.recipient == "beckuphome@gmail.com" or .recipient == "rht@gmx.com"' ops/media-command.json >/dev/null
+          action=$(jq -r '.action' ops/media-command.json)
+          printf '{"ok":false,"status":"VALIDATING_COMMAND","commandId":"%s","action":"%s"}\n' "$(jq -r '.commandId' ops/media-command.json)" "$action" > /tmp/media-result.json
           jq -e '.commandId | type == "string" and length >= 12' ops/media-command.json >/dev/null
-          jq -e '.subject | type == "string" and length >= 10' ops/media-command.json >/dev/null
-          jq -e '.text | type == "string" and length >= 100' ops/media-command.json >/dev/null
-          jq -e '.html | type == "string" and length >= 100' ops/media-command.json >/dev/null
+          if [ "$action" = 'AUDIT_MEDIA' ]; then
+            jq -e '.confirm == "AUDIT_MEDIA_READ_ONLY"' ops/media-command.json >/dev/null
+          elif [ "$action" = 'SEND_TEST' ]; then
+            jq -e '.confirm == "SEND_TEST_MEDIA"' ops/media-command.json >/dev/null
+            jq -e '.recipient == "beckuphome@gmail.com" or .recipient == "rht@gmx.com"' ops/media-command.json >/dev/null
+            jq -e '.subject | type == "string" and length >= 10' ops/media-command.json >/dev/null
+            jq -e '.text | type == "string" and length >= 100' ops/media-command.json >/dev/null
+            jq -e '.html | type == "string" and length >= 100' ops/media-command.json >/dev/null
+          else
+            echo "Unsupported action: $action" >&2
+            exit 1
+          fi
+
+      - name: Audit live Media Center
+        if: ${{ fromJSON(hashFiles('ops/media-command.json') != '') }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          action=$(jq -r '.action' ops/media-command.json)
+          [ "$action" = 'AUDIT_MEDIA' ] || exit 0
+          test -n "$GNK_ASG_OPERATOR_TOKEN"
+          base='https://gnk-asg.hr/api/media-command-center'
+          get(){
+            local path="$1" out="$2"
+            http=$(curl -sS -o "$out" -w '%{http_code}' "$base/$path?cb=$(date +%s%N)" \
+              -H "Authorization: Bearer $GNK_ASG_OPERATOR_TOKEN" \
+              -H 'Accept: application/json' \
+              -H 'Cache-Control: no-cache')
+            [ "$http" = '200' ]
+            jq -e '.ok == true' "$out" >/dev/null
+          }
+          get status /tmp/status.json
+          get readiness-summary /tmp/readiness.json
+          get delivery-plan /tmp/plan.json
+          get delivery-status /tmp/delivery.json
+          get 'contacts&limit=250' /tmp/contacts.json || get 'contacts?limit=250' /tmp/contacts.json
+          jq -n \
+            --arg commandId "$(jq -r '.commandId' ops/media-command.json)" \
+            --slurpfile status /tmp/status.json \
+            --slurpfile readiness /tmp/readiness.json \
+            --slurpfile plan /tmp/plan.json \
+            --slurpfile delivery /tmp/delivery.json \
+            --slurpfile contacts /tmp/contacts.json \
+            '{ok:true,status:"AUDIT_COMPLETE",commandId:$commandId,mediaStatus:$status[0],readiness:$readiness[0],deliveryPlan:$plan[0],deliveryStatus:$delivery[0],contacts:$contacts[0]}' \
+            > /tmp/media-result.json
 
       - name: Build and validate current PDF
         shell: bash
         run: |
           set -euo pipefail
+          action=$(jq -r '.action' ops/media-command.json)
+          [ "$action" = 'SEND_TEST' ] || exit 0
           printf '{"ok":false,"status":"BUILDING_PDF","commandId":"%s"}\n' "$(jq -r '.commandId' ops/media-command.json)" > /tmp/media-result.json
           python -m pip install --disable-pip-version-check reportlab
           python ops/scripts/run_the_code_media_pdf.py
@@ -60,17 +103,21 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          action=$(jq -r '.action' "$GITHUB_WORKSPACE/ops/media-command.json")
+          [ "$action" = 'SEND_TEST' ] || exit 0
           printf '{"ok":false,"status":"UPLOADING_PDF_TO_R2","commandId":"%s"}\n' "$(jq -r '.commandId' "$GITHUB_WORKSPACE/ops/media-command.json")" > /tmp/media-result.json
           npx --yes wrangler@4 r2 object put "$R2_BUCKET/$PDF_KEY" \
             --file=/tmp/the-code.pdf \
             --content-type=application/pdf \
             --remote
 
-      - name: Queue one-time command in KV
+      - name: Queue one-time test command in KV
         id: queue
         shell: bash
         run: |
           set -euo pipefail
+          action=$(jq -r '.action' ops/media-command.json)
+          [ "$action" = 'SEND_TEST' ] || exit 0
           command_id=$(jq -r '.commandId' ops/media-command.json)
           printf '{"ok":false,"status":"QUEUING_COMMAND_IN_KV","commandId":"%s"}\n' "$command_id" > /tmp/media-result.json
           execution_key=$(openssl rand -hex 32)
@@ -96,6 +143,8 @@ jobs:
           EXECUTION_KEY: ${{ steps.queue.outputs.execution_key }}
         run: |
           set -euo pipefail
+          action=$(jq -r '.action' ops/media-command.json)
+          [ "$action" = 'SEND_TEST' ] || exit 0
           printf '{"ok":false,"status":"CALLING_MEDIA_CENTER_BRIDGE","commandId":"%s"}\n' "$COMMAND_ID" > /tmp/media-result.json
           success=false
           for attempt in $(seq 1 36); do
