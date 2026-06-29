@@ -69,6 +69,80 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-operator-center
+      - name: Scan deployed Workers for auto-reply code
+        continue-on-error: true
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -u
+          mkdir -p worker-scan-content
+          auth=(-H "Authorization: Bearer ${CF_API_TOKEN}")
+          list=$(curl --silent --show-error "${auth[@]}" "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/workers/scripts")
+          printf '%s' "$list" > worker-scripts-list.json
+          if [ "$(printf '%s' "$list" | jq -r '.success // false')" != "true" ]; then
+            printf '%s' "$list" | jq '{checkedAt:(now|todate),success,errors,status:"SCRIPT_LIST_UNAVAILABLE",scripts:[]}' > deployed-worker-autoreply-scan.json
+            cat deployed-worker-autoreply-scan.json
+            exit 0
+          fi
+          : > worker-scan.tsv
+          printf '%s' "$list" | jq -r '.result[]?.id' | while IFS= read -r script; do
+            [ -n "$script" ] || continue
+            file="worker-scan-content/${script}.bin"
+            code=$(curl --silent --show-error -o "$file" -w '%{http_code}' "${auth[@]}" "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/workers/scripts/${script}")
+            email_handler=false
+            wrong_phrase=false
+            it_identity=false
+            auto_reply=false
+            media_address=false
+            if [ "$code" = "200" ]; then
+              grep -aEqi 'async[[:space:]]+email[[:space:]]*\(|email[[:space:]]*\([^)]*message|message\.reply[[:space:]]*\(' "$file" && email_handler=true || true
+              grep -aFqi 'najkraćem razumnom roku' "$file" && wrong_phrase=true || true
+              grep -aFqi 'Osobni digitalni asistent' "$file" && it_identity=true || true
+              grep -aFqi 'auto_reply' "$file" && auto_reply=true || true
+              grep -aFqi 'media@gnk-asg.hr' "$file" && media_address=true || true
+            fi
+            printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$script" "$code" "$email_handler" "$wrong_phrase" "$it_identity" "$auto_reply" "$media_address" >> worker-scan.tsv
+          done
+          python - <<'PY'
+          import csv, json, datetime
+          rows=[]
+          try:
+              with open('worker-scan.tsv', encoding='utf-8') as f:
+                  for r in csv.reader(f, delimiter='\t'):
+                      if len(r) != 7:
+                          continue
+                      rows.append({
+                          'script': r[0],
+                          'contentHttpStatus': int(r[1]) if r[1].isdigit() else r[1],
+                          'containsEmailHandler': r[2] == 'true',
+                          'containsWrongPhrase': r[3] == 'true',
+                          'containsItIdentity': r[4] == 'true',
+                          'containsAutoReplyMarker': r[5] == 'true',
+                          'containsMediaAddress': r[6] == 'true',
+                      })
+          except FileNotFoundError:
+              pass
+          payload={
+              'checkedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'success': True,
+              'status': 'DEPLOYED_SCRIPTS_SCANNED',
+              'scriptCount': len(rows),
+              'matches': [x for x in rows if x['containsEmailHandler'] or x['containsWrongPhrase'] or x['containsItIdentity'] or x['containsAutoReplyMarker']],
+              'scripts': rows,
+          }
+          with open('deployed-worker-autoreply-scan.json','w',encoding='utf-8') as f:
+              json.dump(payload,f,ensure_ascii=False,indent=2)
+          print(json.dumps({k:payload[k] for k in ('checkedAt','success','status','scriptCount','matches')},ensure_ascii=False,indent=2))
+          PY
+      - name: Upload deployed Worker auto-reply scan
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployed-worker-autoreply-scan
+          path: deployed-worker-autoreply-scan.json
+          if-no-files-found: warn
+          retention-days: 3
       - name: Diagnose Email Routing worker assignment
         id: email_routing
         continue-on-error: true
