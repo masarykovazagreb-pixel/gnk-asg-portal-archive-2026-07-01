@@ -1,7 +1,7 @@
-import {handleMediaDelivery as handleV3,processDeliveryQueue as processV3,VERSION as CORE_VERSION,SEND_API} from './media-outreach-delivery-v3.js';
+import {handleMediaDelivery as handleV3,processDeliveryQueue as processV3,VERSION as CORE_VERSION,SEND_API} from './media-outreach-delivery-html-v1.js';
 import {ensureMediaControlRows,VERSION as CONTROL_SYNC_VERSION} from './media-command-control-sync-v3.js';
 
-export const VERSION='GNK_ASG_MEDIA_OUTREACH_DELIVERY_V5_20260626_INTERNAL_TEST_GATE';
+export const VERSION='GNK_ASG_MEDIA_OUTREACH_DELIVERY_V6_20260630_HTML_UPLOAD_PREVIEW';
 export{SEND_API};
 const API='/api/media-command-center';
 export const INTERNAL_TEST_PATH=`${API}/internal-test-email`;
