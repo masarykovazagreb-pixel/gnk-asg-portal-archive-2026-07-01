@@ -1,4 +1,4 @@
-name: Deploy corrected controlled media test package
+name: Deploy Mail Studio and Media Center routes
 
 on:
   push:
@@ -10,29 +10,69 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: gnk-asg-mail-media-routes-production
+  cancel-in-progress: true
+
 jobs:
-  diagnose:
+  deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout current main
+        uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 1
-          show-progress: false
-      - name: Assemble and expand PDF
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Validate active Mail Studio and Media Center chain
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
+          node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-registration-v1.js
+          grep -q '/api/admin-mail-send' workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          grep -q '/api/mail-center/send-readiness' workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          grep -q '/api/media-command-center/test-email' workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
+          grep -q '/api/media-registration-admin' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+
+      - name: Dry-run deployment
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Deploy active Worker
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify routes no longer return 404
+        shell: bash
         run: |
           set -euo pipefail
-          cat .controlled-media-test-assets/pdf.01 .controlled-media-test-assets/pdf.02 .controlled-media-test-assets/pdf.03 .controlled-media-test-assets/pdf.04 > /tmp/media-pdf.b64
-          base64 --decode .controlled-media-test-assets/pdf.05.b2 >> /tmp/media-pdf.b64
-          base64 --decode /tmp/media-pdf.b64 > /tmp/media-pdf.gz
-          gzip --test /tmp/media-pdf.gz
-          gzip --decompress --stdout /tmp/media-pdf.gz > /tmp/final.pdf
-      - name: Calculate PDF identity
-        id: pdf
-        run: |
-          echo "sha=$(sha256sum /tmp/final.pdf | awk '{print $1}')" >> "$GITHUB_OUTPUT"
-          echo "bytes=$(wc -c < /tmp/final.pdf | tr -d ' ')" >> "$GITHUB_OUTPUT"
-      - name: Actual PDF ${{ steps.pdf.outputs.sha }} bytes ${{ steps.pdf.outputs.bytes }}
-        run: |
-          test "${{ steps.pdf.outputs.sha }}" = '027226b6300c8638f6e2fcfd1774e8c818b14a0360500fadd1b28c64b7f89879'
+          for attempt in $(seq 1 24); do
+            mail_status="$(curl --silent --output /tmp/mail.json --write-out '%{http_code}' 'https://gnk-asg.hr/api/mail-center/send-readiness')"
+            media_status="$(curl --silent --output /tmp/media.json --write-out '%{http_code}' --request POST 'https://gnk-asg.hr/api/media-registration-admin/send-test' --header 'content-type: application/json' --data '{"confirm":"CHECK_ONLY","email":"beckuphome@gmail.com"}')"
+            echo "attempt=${attempt} mail=${mail_status} media=${media_status}"
+            if [ "$mail_status" != '404' ] && [ "$media_status" != '404' ]; then
+              cat /tmp/mail.json
+              echo
+              cat /tmp/media.json
+              echo
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
