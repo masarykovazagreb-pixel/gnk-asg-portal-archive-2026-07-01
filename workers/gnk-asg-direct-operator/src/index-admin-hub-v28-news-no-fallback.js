@@ -24,7 +24,7 @@ function stamp(response,flow=''){
   headers.set('x-gnk-asg-media-registration',REGISTRATION_VERSION);
   headers.set('x-gnk-asg-controlled-test',CONTROLLED_TEST_VERSION);
   headers.set('x-gnk-asg-final-config',FINAL_CONFIG_VERSION);
-  headers.set('x-gnk-asg-media-registration-routing','ADMIN_ALIAS_V33');
+  headers.set('x-gnk-asg-media-registration-routing','ADMIN_ALIAS_V31_V33');
   if(flow)headers.set('x-gnk-asg-active-flow',flow);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
