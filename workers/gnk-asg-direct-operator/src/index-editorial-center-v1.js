@@ -1,4 +1,5 @@
 import app from './index-auto-editor-fallback-v1.js';
+import { EmailMessage } from 'cloudflare:email';
 import { runScheduledRefresh } from './gnk-asg-refresh-backend-v1.js';
 import {
   EDITORIAL_VERSION,
@@ -23,6 +24,10 @@ const API='/auto-editor/editorial/api/';
 const BURST_START=Date.parse('2026-06-27T20:00:00+02:00');
 const BURST_END=Date.parse('2026-06-29T23:59:59+02:00');
 const BURST_TARGET=10;
+const MEDIA_EMAIL='media@gnk-asg.hr';
+const MEDIA_NAME='GNK DINAMO Ltd. Group | Media Relations & Accreditation Center';
+const INTERNAL_COPY='rht@gmx.com';
+const INBOUND_VERSION='GNK_ASG_MEDIA_INBOUND_ACTIVE_ENTRY_V1_20260629';
 const clean=value=>String(value??'').trim();
 async function body(request){try{return await request.json();}catch{return{};}}
 function burstState(){const current=Date.now();return{active:current>=BURST_START&&current<=BURST_END,start:new Date(BURST_START).toISOString(),end:new Date(BURST_END).toISOString(),target:BURST_TARGET,cadence:'every 2 hours',afterBurst:'monitor and manual approval'}}
@@ -51,7 +56,7 @@ async function servePage(request,env){
 async function api(request,env,path){
   if(path===`${API}status`&&request.method==='GET'){
     const status=await editorialStatus(env);
-    return json({...status,autoPublishVersion:AUTO_PUBLISH_VERSION,bootstrapVersion:EDITORIAL_BOOTSTRAP_VERSION,burst:burstState(),publicationMode:burstState().active?'validated automatic publication every 2 hours during temporary fill':'draft, monitor and manual approval'});
+    return json({...status,autoPublishVersion:AUTO_PUBLISH_VERSION,bootstrapVersion:EDITORIAL_BOOTSTRAP_VERSION,burst:burstState(),publicationMode:burstState().active?'validated automatic publication every 2 hours during temporary fill':'draft, monitor and manual approval',mediaInbound:INBOUND_VERSION});
   }
   if(path===`${API}drafts`&&request.method==='GET')return json({ok:true,items:await listDrafts(env)});
   if(path===`${API}draft/save`&&request.method==='POST')return json(await saveDraft(env,await body(request)));
@@ -116,6 +121,115 @@ async function scheduledRun(event,env,ctx){
   return result;
 }
 
+function header(message,name){try{return clean(message?.headers?.get?.(name));}catch{return'';}}
+function emailAddress(value){const text=clean(value);const match=text.match(/<([^>]+)>/);return clean(match?.[1]||text).toLowerCase();}
+function isMediaTarget(message){return emailAddress(message?.to||header(message,'to'))===MEDIA_EMAIL;}
+function safeHeader(value){return clean(value).replace(/[\r\n]+/g,' ').slice(0,240);}
+function automatedInbound(message,from){
+  const auto=header(message,'auto-submitted').toLowerCase();
+  const precedence=header(message,'precedence').toLowerCase();
+  const suppress=header(message,'x-auto-response-suppress').toLowerCase();
+  const subject=header(message,'subject').toLowerCase();
+  return Boolean((auto&&auto!=='no')||/bulk|list|junk/.test(precedence)||suppress||/mailer-daemon|postmaster|no-?reply|donotreply/.test(from)||/automatic reply|auto reply|out of office|izvan ureda|undeliverable|delivery status notification/.test(subject));
+}
+function detectLanguage(value){
+  const text=` ${clean(value).toLowerCase().replace(/[^a-zà-žčćžšđ\s]/g,' ')} `;
+  const hr=[' poštovani ',' prijava ',' redakcija ',' akreditacija ',' mediji ',' upit ',' poruka ',' zaprimljena ',' dokument ',' molim ',' hvala '].reduce((n,x)=>n+(text.includes(x)?1:0),0);
+  const de=[' guten tag ',' anfrage ',' presse ',' nachricht ',' dokument ',' danke '].reduce((n,x)=>n+(text.includes(x)?1:0),0);
+  const it=[' buongiorno ',' richiesta ',' stampa ',' messaggio ',' documento ',' grazie '].reduce((n,x)=>n+(text.includes(x)?1:0),0);
+  if(hr>Math.max(de,it,0))return'hr';
+  if(de>Math.max(hr,it,0))return'de';
+  if(it>Math.max(hr,de,0))return'it';
+  return'en';
+}
+function reference(){return`GNK-MEDIA-IN-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${crypto.randomUUID().slice(0,8).toUpperCase()}`;}
+function acknowledgement(language,ref,subject){
+  const texts={
+    en:`Dear Sir or Madam,\n\nThis confirms that your message has been received by the GNK DINAMO Ltd. Group Media Relations & Accreditation Center under reference ${ref}.\n\nOriginal subject: ${subject}\n\nYour message has been placed in the human-review queue. This automatic acknowledgement is not an accreditation approval, acceptance of an offer, contractual commitment or final decision. Please quote the reference above in further correspondence.\n\nKind regards,\nGNK DINAMO Ltd. Group\nMedia Relations & Accreditation Center\nmedia@gnk-asg.hr`,
+    hr:`Poštovani,\n\npotvrđujemo da je Vaša poruka zaprimljena u GNK DINAMO Ltd. Group Media Relations & Accreditation Center pod evidencijskim brojem ${ref}.\n\nIzvorni predmet: ${subject}\n\nPoruka je upućena u red za ljudski pregled. Ova automatska potvrda nije odobrenje akreditacije, prihvat ponude, ugovorna obveza niti konačna odluka. U daljnjoj komunikaciji navedite gornji evidencijski broj.\n\nSrdačan pozdrav,\nGNK DINAMO Ltd. Group\nMedia Relations & Accreditation Center\nmedia@gnk-asg.hr`,
+    de:`Sehr geehrte Damen und Herren,\n\nwir bestätigen den Eingang Ihrer Nachricht beim Media Relations & Accreditation Center der GNK DINAMO Ltd. Group unter der Referenz ${ref}.\n\nUrsprünglicher Betreff: ${subject}\n\nIhre Nachricht wurde zur menschlichen Prüfung weitergeleitet. Diese automatische Bestätigung stellt keine Akkreditierungszusage, Annahme eines Angebots, vertragliche Verpflichtung oder endgültige Entscheidung dar.\n\nMit freundlichen Grüßen\nGNK DINAMO Ltd. Group\nMedia Relations & Accreditation Center\nmedia@gnk-asg.hr`,
+    it:`Gentili Signori,\n\nconfermiamo che il vostro messaggio è stato ricevuto dal Media Relations & Accreditation Center di GNK DINAMO Ltd. Group con il numero di riferimento ${ref}.\n\nOggetto originale: ${subject}\n\nIl messaggio è stato inoltrato per una verifica umana. Questa conferma automatica non costituisce approvazione dell'accredito, accettazione di un'offerta, impegno contrattuale o decisione finale.\n\nCordiali saluti\nGNK DINAMO Ltd. Group\nMedia Relations & Accreditation Center\nmedia@gnk-asg.hr`
+  };
+  return texts[language]||texts.en;
+}
+function rawEmail(to,subject,text,originalMessageId=''){
+  const id=safeHeader(originalMessageId);
+  return[
+    `From: ${MEDIA_NAME} <${MEDIA_EMAIL}>`,
+    `To: ${to}`,
+    `Reply-To: ${MEDIA_EMAIL}`,
+    `Subject: ${safeHeader(subject)}`,
+    id?`In-Reply-To: ${id}`:'',
+    id?`References: ${id}`:'',
+    'Auto-Submitted: auto-replied',
+    'X-Auto-Response-Suppress: All',
+    `X-GNK-ASG-Media-Inbound: ${INBOUND_VERSION}`,
+    'MIME-Version: 1.0',
+    'Content-Type: text/plain; charset=UTF-8',
+    'Content-Transfer-Encoding: 8bit',
+    '',text
+  ].filter(Boolean).join('\r\n');
+}
+async function saveInbound(env,record,rawBytes){
+  try{
+    if(env.GNK_ASG_D1?.prepare){
+      await env.GNK_ASG_D1.prepare(`CREATE TABLE IF NOT EXISTS media_inbound_messages(id TEXT PRIMARY KEY,received_at TEXT NOT NULL,from_email TEXT,to_email TEXT,subject TEXT,message_id TEXT,language TEXT,status TEXT,auto_reply_status TEXT,raw_r2_key TEXT,error TEXT)`).run();
+      await env.GNK_ASG_D1.prepare(`INSERT OR REPLACE INTO media_inbound_messages(id,received_at,from_email,to_email,subject,message_id,language,status,auto_reply_status,raw_r2_key,error) VALUES(?,?,?,?,?,?,?,?,?,?,?)`).bind(record.id,record.receivedAt,record.from,MEDIA_EMAIL,record.subject,record.messageId,record.language,record.status,record.autoReplyStatus,record.rawR2Key||'',record.error||'').run();
+    }
+  }catch{}
+  try{
+    if(env.GNK_ASG_MEDIA_ASSETS?.put&&rawBytes?.byteLength){
+      const key=`media-inbound/${record.id}/message.eml`;
+      await env.GNK_ASG_MEDIA_ASSETS.put(key,rawBytes,{httpMetadata:{contentType:'message/rfc822'},customMetadata:{reference:record.id,from:record.from,receivedAt:record.receivedAt}});
+      record.rawR2Key=key;
+    }
+  }catch{}
+  try{
+    const kv=env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV;
+    if(kv){
+      const raw=await kv.get('mail:center:inbox');
+      const list=raw?JSON.parse(raw):[];
+      await kv.put('mail:center:inbox',JSON.stringify([{...record,rawBytes:undefined},...(Array.isArray(list)?list:[]).filter(item=>item?.id!==record.id)].slice(0,500)));
+      await kv.put(`media:inbound:${record.id}`,JSON.stringify({...record,rawBytes:undefined}));
+    }
+  }catch{}
+}
+async function handleMediaInbound(message,env){
+  if(!isMediaTarget(message))return false;
+  const from=emailAddress(message?.from||header(message,'from'));
+  const subject=safeHeader(header(message,'subject')||'(no subject)');
+  const messageId=safeHeader(header(message,'message-id'));
+  const id=reference(),receivedAt=new Date().toISOString();
+  let rawBytes=new ArrayBuffer(0),rawText='';
+  try{rawBytes=await new Response(message.raw).arrayBuffer();rawText=new TextDecoder().decode(rawBytes).slice(0,100000);}catch{}
+  const language=detectLanguage(`${subject}\n${rawText}`);
+  const base={id,receivedAt,from,subject,messageId,language,status:'RECEIVED',autoReplyStatus:'SKIPPED',rawR2Key:'',error:''};
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(from)||from===MEDIA_EMAIL||automatedInbound(message,from)){
+    await saveInbound(env,{...base,status:'RECEIVED_NO_AUTO_REPLY'},rawBytes);
+    return true;
+  }
+  const kv=env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV;
+  const dedupeSource=messageId||`${from}|${subject}|${rawText.slice(0,500)}`;
+  const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(dedupeSource));
+  const dedupeKey=`media:inbound:dedupe:${[...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('')}`;
+  try{if(kv&&await kv.get(dedupeKey)){await saveInbound(env,{...base,status:'DUPLICATE'},rawBytes);return true;}if(kv)await kv.put(dedupeKey,id,{expirationTtl:604800});}catch{}
+  const text=acknowledgement(language,id,subject),replySubject=/^re:/i.test(subject)?subject:`Re: ${subject}`;
+  try{
+    const outbound=new EmailMessage(MEDIA_EMAIL,from,rawEmail(from,replySubject,text,messageId));
+    if(typeof message.reply==='function')await message.reply(outbound);else if(env.EMAIL?.send)await env.EMAIL.send(outbound);else throw new Error('email_reply_binding_missing');
+    try{
+      if(env.EMAIL?.send){
+        const copyText=`Automatic media acknowledgement copy\n\nReference: ${id}\nFrom: ${from}\nOriginal subject: ${subject}\nLanguage: ${language}\nReceived: ${receivedAt}\nStatus: SENT`;
+        await env.EMAIL.send(new EmailMessage(MEDIA_EMAIL,INTERNAL_COPY,rawEmail(INTERNAL_COPY,`[${id}] Media acknowledgement copy`,copyText,'')));
+      }
+    }catch{}
+    await saveInbound(env,{...base,autoReplyStatus:'SENT',autoReplyAt:new Date().toISOString()},rawBytes);
+  }catch(error){
+    await saveInbound(env,{...base,autoReplyStatus:'FAILED',error:String(error?.message||error).slice(0,500)},rawBytes);
+  }
+  return true;
+}
+
 export default{
   async fetch(request,env,ctx){
     const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
@@ -131,5 +245,8 @@ export default{
     if(ctx?.waitUntil){ctx.waitUntil(task);return;}
     return task;
   },
-  async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx);}
+  async email(message,env,ctx){
+    if(await handleMediaInbound(message,env))return;
+    if(typeof app.email==='function')return app.email(message,env,ctx);
+  }
 };
