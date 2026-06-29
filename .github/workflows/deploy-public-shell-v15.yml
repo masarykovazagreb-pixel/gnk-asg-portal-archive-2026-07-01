@@ -10,104 +10,43 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: gnk-asg-controlled-media-package-deploy
-  cancel-in-progress: true
-
 jobs:
-  deploy:
+  diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
-      - name: Checkout current main
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 1
-
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-
-      - name: Reconstruct English PDF payload
-        shell: bash
+      - name: Inspect PDF chunks
         run: |
           set -euxo pipefail
-          mkdir -p apps/portal/data apps/portal/assets
-          cat .controlled-media-test-assets/pdf.01 .controlled-media-test-assets/pdf.02 .controlled-media-test-assets/pdf.03 .controlled-media-test-assets/pdf.04 > /tmp/media-pdf.b64
+          ls -l .controlled-media-test-assets/pdf.*
+          wc -c .controlled-media-test-assets/pdf.01 .controlled-media-test-assets/pdf.02 .controlled-media-test-assets/pdf.03 .controlled-media-test-assets/pdf.04 .controlled-media-test-assets/pdf.05.b2
+      - name: Decode final PDF chunk
+        run: |
+          set -euxo pipefail
           base64 --decode .controlled-media-test-assets/pdf.05.b2 > /tmp/media-pdf-final-chunk.b64
-          cat /tmp/media-pdf-final-chunk.b64 >> /tmp/media-pdf.b64
-          wc -c /tmp/media-pdf.b64 /tmp/media-pdf-final-chunk.b64
+          wc -c /tmp/media-pdf-final-chunk.b64
+          tail -c 20 /tmp/media-pdf-final-chunk.b64 | od -An -tx1
+      - name: Concatenate PDF base64
+        run: |
+          set -euxo pipefail
+          cat .controlled-media-test-assets/pdf.01 .controlled-media-test-assets/pdf.02 .controlled-media-test-assets/pdf.03 .controlled-media-test-assets/pdf.04 > /tmp/media-pdf.b64
+          base64 --decode .controlled-media-test-assets/pdf.05.b2 >> /tmp/media-pdf.b64
+          wc -c /tmp/media-pdf.b64
+      - name: Decode PDF gzip payload
+        run: |
+          set -euxo pipefail
           base64 --decode /tmp/media-pdf.b64 > /tmp/media-pdf.gz
+          wc -c /tmp/media-pdf.gz
           file /tmp/media-pdf.gz
+      - name: Expand and verify PDF
+        run: |
+          set -euxo pipefail
           gzip --test /tmp/media-pdf.gz
-          gzip --decompress --stdout /tmp/media-pdf.gz > apps/portal/data/GNK_DINAMO_THE_CODE_MEDIA_INVITATION_AND_ACCREDITATION_EN_FINAL.pdf
-          file apps/portal/data/GNK_DINAMO_THE_CODE_MEDIA_INVITATION_AND_ACCREDITATION_EN_FINAL.pdf
-
-      - name: Verify English PDF identity
-        shell: bash
-        run: |
-          set -euxo pipefail
-          printf '%s  %s\n' '027226b6300c8638f6e2fcfd1774e8c818b14a0360500fadd1b28c64b7f89879' 'apps/portal/data/GNK_DINAMO_THE_CODE_MEDIA_INVITATION_AND_ACCREDITATION_EN_FINAL.pdf' | sha256sum --check --strict
-          pdfinfo apps/portal/data/GNK_DINAMO_THE_CODE_MEDIA_INVITATION_AND_ACCREDITATION_EN_FINAL.pdf | tee /tmp/pdfinfo.txt
-          grep -Eq '^Pages:[[:space:]]+12$' /tmp/pdfinfo.txt
-
-      - name: Reconstruct GNK ASG logo
-        shell: bash
-        run: |
-          set -euxo pipefail
-          base64 --decode .controlled-media-test-assets/logo-asg.b64 > apps/portal/assets/gnk-asg-email-logo-final-v2.png
-          printf '%s  %s\n' '72789420e777888198bb8143a07dfbb392ec3b3cb3515bed259060da829a1648' 'apps/portal/assets/gnk-asg-email-logo-final-v2.png' | sha256sum --check --strict
-
-      - name: Reconstruct GNK DINAMO Ltd Group logo
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euxo pipefail
-          curl --fail --silent --show-error --location --header "Authorization: Bearer ${GH_TOKEN}" --header 'Accept: application/vnd.github+json' 'https://api.github.com/repos/beckuphome-gnk/gnk-asg-portal/git/blobs/fd2121e1bc1da00cb690b8b480f4c778eb56fc50' --output /tmp/group-logo-blob.json
-          python - <<'PY'
-          import base64, json, pathlib
-          data=json.loads(pathlib.Path('/tmp/group-logo-blob.json').read_text())
-          pathlib.Path('apps/portal/assets/gnk-group-email-logo-final.png').write_bytes(base64.b64decode(data['content']))
-          PY
-          printf '%s  %s\n' '338d9acd9c1c961862f90d6730ce8fc5962b68e551892852043b93174e2a911e' 'apps/portal/assets/gnk-group-email-logo-final.png' | sha256sum --check --strict
-
-      - name: Validate corrected release
-        shell: bash
-        run: |
-          set -euxo pipefail
-          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          node --check workers/gnk-asg-direct-operator/src/media-registration-controlled-test-v1.js
-          node --check workers/gnk-asg-direct-operator/src/media-registration-controlled-test-once-v1.js
-          grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'GNK_ASG_MEDIA_REGISTRATION_CONTROLLED_TEST_V2_20260629' workers/gnk-asg-direct-operator/src/media-registration-controlled-test-v1.js
-          cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
-
-      - name: Deploy current main to Cloudflare
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-
-      - name: Verify deployed assets
-        shell: bash
-        run: |
-          set -euo pipefail
-          for attempt in $(seq 1 30); do
-            pdf_status="$(curl --silent --output /tmp/media.pdf --write-out '%{http_code}' "https://gnk-asg.hr/data/GNK_DINAMO_THE_CODE_MEDIA_INVITATION_AND_ACCREDITATION_EN_FINAL.pdf?cb=${RANDOM}${RANDOM}")"
-            asg_status="$(curl --silent --output /tmp/asg.png --write-out '%{http_code}' "https://gnk-asg.hr/assets/gnk-asg-email-logo-final-v2.png?cb=${RANDOM}${RANDOM}")"
-            group_status="$(curl --silent --output /tmp/group.png --write-out '%{http_code}' "https://gnk-asg.hr/assets/gnk-group-email-logo-final.png?cb=${RANDOM}${RANDOM}")"
-            if [ "$pdf_status" = 200 ] && [ "$asg_status" = 200 ] && [ "$group_status" = 200 ]; then
-              printf '%s  %s\n' '027226b6300c8638f6e2fcfd1774e8c818b14a0360500fadd1b28c64b7f89879' '/tmp/media.pdf' | sha256sum --check --strict
-              printf '%s  %s\n' '72789420e777888198bb8143a07dfbb392ec3b3cb3515bed259060da829a1648' '/tmp/asg.png' | sha256sum --check --strict
-              printf '%s  %s\n' '338d9acd9c1c961862f90d6730ce8fc5962b68e551892852043b93174e2a911e' '/tmp/group.png' | sha256sum --check --strict
-              exit 0
-            fi
-            echo "attempt=${attempt} pdf=${pdf_status} asg=${asg_status} group=${group_status}"
-            sleep 10
-          done
-          exit 1
+          gzip --decompress --stdout /tmp/media-pdf.gz > /tmp/final.pdf
+          file /tmp/final.pdf
+          sha256sum /tmp/final.pdf
+          test "$(sha256sum /tmp/final.pdf | awk '{print $1}')" = '027226b6300c8638f6e2fcfd1774e8c818b14a0360500fadd1b28c64b7f89879'
