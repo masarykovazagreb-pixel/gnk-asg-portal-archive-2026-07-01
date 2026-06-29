@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: deploy-media-html-v22
@@ -69,6 +69,24 @@ jobs:
           done
           printf 'VERSION_HTTP=%s UI_HTTP=%s API_HTTP=%s READY=%s\n' "$version_code" "$ui_code" "$api_code" "$ready"
           test "$ready" = "true"
+          mkdir -p ops/media-html-v22
+          node - <<'JS'
+          const fs=require('fs');
+          const version=JSON.parse(fs.readFileSync('version.json','utf8'));
+          const status={ok:true,deployedAt:new Date().toISOString(),workflowRun:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,mediaCommandWrapperV22:version.mediaCommandWrapperV22||'',mediaDelivery:version.mediaDelivery||'',htmlUi:'GNK_ASG_MEDIA_DELIVERY_UI_V4',campaignHtmlApi:'AUTH_PROTECTED'};
+          fs.writeFileSync('ops/media-html-v22/deploy-status.json',JSON.stringify(status,null,2)+'\n');
+          JS
+
+      - name: Commit deployment status
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "GNK ASG Deploy Bot"
+          git config user.email "it@gnk-asg.hr"
+          git add ops/media-html-v22/deploy-status.json
+          git commit -m "Record successful Media HTML v22 deployment [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
 
       - name: Upload deployment evidence
         if: always()
@@ -80,4 +98,5 @@ jobs:
             version.json
             delivery-ui.js
             campaign-html.json
+            ops/media-html-v22/deploy-status.json
           retention-days: 14
