@@ -1,0 +1,4 @@
+deployment=GNK_ASG_MEDIA_HTML_V22_20260630
+approved=true
+requested_for=HTML_UPLOAD_PREVIEW_AND_VERIFIED_DELIVERY
+requested_at=2026-06-30T02:10:00+02:00
