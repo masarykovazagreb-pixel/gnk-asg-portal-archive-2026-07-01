@@ -1,4 +1,4 @@
-name: Deploy Mail Studio and Media Center routes
+name: Send controlled final English media test
 
 on:
   push:
@@ -11,9 +11,9 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  send-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - name: Checkout current main
         uses: actions/checkout@v5
@@ -21,56 +21,47 @@ jobs:
           ref: main
           fetch-depth: 1
 
-      - name: Setup Node
-        uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-
-      - name: Validate active chain
+      - name: Trigger locked controlled test
         shell: bash
         run: |
-          set -euxo pipefail
-          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
-          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
-          node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
-          node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
-          node --check workers/gnk-asg-direct-operator/src/media-registration-v1.js
+          set -euo pipefail
+          key="$(python - <<'PY'
+          import re
+          from pathlib import Path
+          source=Path('workers/gnk-asg-direct-operator/src/media-registration-controlled-test-once-v1.js').read_text()
+          match=re.search(r"const KEY='([^']+)'",source)
+          if not match:
+              raise SystemExit('controlled test key unavailable')
+          print(match.group(1))
+          PY
+          )"
+          status="$(curl --silent --show-error --output /tmp/result.json --write-out '%{http_code}' \
+            "https://gnk-asg-direct-operator.beckuphome.workers.dev/api/media-registration-controlled-test-once?key=${key}")"
+          cat /tmp/result.json
+          echo
+          echo "HTTP_STATUS=${status}"
+          test "$status" -ge 200
+          test "$status" -lt 300
+          python - <<'PY'
+          import json
+          data=json.load(open('/tmp/result.json'))
+          if not data.get('ok'):
+              raise SystemExit(f'controlled test failed: {data}')
+          result=data.get('result') or {}
+          if not result.get('pdfAttached'):
+              raise SystemExit(f'verified PDF not attached: {data}')
+          print('CONTROLLED_FINAL_TEST_SENT')
+          print('messageId=',result.get('messageId',''))
+          print('pdfAttached=',result.get('pdfAttached'))
+          print('pdfFilename=',result.get('pdfFilename',''))
+          print('pdfSha256=',result.get('pdfSha256',''))
+          PY
 
-      - name: Deploy and capture complete Wrangler diagnostics
-        id: deploy_worker
-        continue-on-error: true
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        shell: bash
-        run: |
-          set -o pipefail
-          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee /tmp/cloudflare-deploy.log
-          mkdir -p /tmp/wrangler-logs
-          cp -R "$HOME/.config/.wrangler/logs/." /tmp/wrangler-logs/ 2>/dev/null || true
-
-      - name: Collect Wrangler logs after failure
-        if: always()
-        shell: bash
-        run: |
-          mkdir -p /tmp/wrangler-logs
-          cp -R "$HOME/.config/.wrangler/logs/." /tmp/wrangler-logs/ 2>/dev/null || true
-          find /tmp/wrangler-logs -type f -maxdepth 2 -print || true
-
-      - name: Upload full deployment diagnostics
+      - name: Upload controlled test result
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cloudflare-mail-media-full-diagnostics
-          path: |
-            /tmp/cloudflare-deploy.log
-            /tmp/wrangler-logs
+          name: controlled-final-media-test-result
+          path: /tmp/result.json
           if-no-files-found: warn
           retention-days: 3
-
-      - name: Fail when deployment failed
-        if: steps.deploy_worker.outcome != 'success'
-        run: exit 1
