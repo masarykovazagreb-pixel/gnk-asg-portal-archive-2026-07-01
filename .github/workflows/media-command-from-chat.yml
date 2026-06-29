@@ -22,6 +22,7 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       GNK_ASG_OPERATOR_TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+      D1_DATABASE_ID: 2116c4e5-1850-4888-91e7-c47deead3ced
       KV_NAMESPACE_ID: a3e9e78c7d554d7fa10996da9a89e7bc
       R2_BUCKET: gnk-asg-media-assets
       PDF_KEY: media-outreach/the-code-2026/GNK_DINAMO_THE_CODE_MEDIJSKI_MEMORANDUM_FINAL.pdf
@@ -51,53 +52,110 @@ jobs:
             exit 1
           fi
 
-      - name: Audit live Media Center
+      - name: Audit Media Center Cloudflare state
         shell: bash
         run: |
           set -euo pipefail
           action=$(jq -r '.action' ops/media-command.json)
           [ "$action" = 'AUDIT_MEDIA' ] || exit 0
-          test -n "$GNK_ASG_OPERATOR_TOKEN"
-          base='https://gnk-asg.hr/api/media-command-center'
-          get(){
-            local endpoint="$1" out="$2" separator='?'
-            case "$endpoint" in *\?*) separator='&' ;; esac
-            http=$(curl -sS -o "$out" -w '%{http_code}' "$base/$endpoint${separator}cb=$(date +%s%N)" \
-              -H "Authorization: Bearer $GNK_ASG_OPERATOR_TOKEN" \
-              -H 'Accept: application/json' \
-              -H 'Cache-Control: no-cache')
-            if [ "$http" != '200' ]; then
-              echo "Audit endpoint $endpoint returned HTTP $http" >&2
-              cat "$out" >&2 || true
-              return 1
-            fi
-            jq -e '.ok == true' "$out" >/dev/null
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          api="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/d1/database/$D1_DATABASE_ID/query"
+          query(){
+            local sql="$1" out="$2"
+            jq -n --arg sql "$sql" '{sql:$sql}' | curl -fsS -X POST "$api" \
+              -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+              -H 'Content-Type: application/json' \
+              --data-binary @- > "$out"
+            jq -e '.success == true' "$out" >/dev/null
           }
-          get status /tmp/status.json
-          get readiness-summary /tmp/readiness.json
-          get delivery-plan /tmp/plan.json
-          get delivery-status /tmp/delivery.json
-          get 'contacts?limit=250' /tmp/contacts.json
-          jq -n \
-            --arg commandId "$(jq -r '.commandId' ops/media-command.json)" \
-            --slurpfile status /tmp/status.json \
-            --slurpfile readiness /tmp/readiness.json \
-            --slurpfile plan /tmp/plan.json \
-            --slurpfile delivery /tmp/delivery.json \
-            --slurpfile contacts /tmp/contacts.json \
-            '{
-              ok:true,
-              status:"AUDIT_COMPLETE",
-              commandId:$commandId,
-              mediaStatus:$status[0],
-              readiness:$readiness[0],
-              deliveryPlan:$plan[0],
-              deliveryStatus:$delivery[0],
-              contacts:{
-                total:($contacts[0].total // 0),
-                items:(($contacts[0].items // []) | map({mailCode,outlet,email,country,priority,language,automationAllowed,approved,operationalStatus,blockedReason,requiresPersonalization,toEmail,ccEmail,personStatus,channelStatus,note}))
-              }
-            }' > /tmp/media-result.json
+          query "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('media_outreach_contacts','media_outreach_contact_controls','media_suppressions','media_delivery_queue','media_delivery_tests') ORDER BY name" /tmp/tables.json
+          query "SELECT COUNT(*) AS total, SUM(CASE WHEN email IS NOT NULL AND TRIM(email)<>'' THEN 1 ELSE 0 END) AS with_email, SUM(CASE WHEN automation_allowed=1 THEN 1 ELSE 0 END) AS automation_allowed, SUM(CASE WHEN approved=1 THEN 1 ELSE 0 END) AS approved, SUM(CASE WHEN sent_status='POSLANO' THEN 1 ELSE 0 END) AS sent FROM media_outreach_contacts" /tmp/contact-summary.json
+          query "SELECT COUNT(*) AS ready FROM media_outreach_contacts c LEFT JOIN media_outreach_contact_controls ctrl ON ctrl.mail_code=c.mail_code LEFT JOIN media_suppressions s ON LOWER(s.email)=LOWER(c.email) WHERE c.approved=1 AND c.automation_allowed=1 AND c.email<>'' AND s.email IS NULL AND ctrl.operational_status='READY'" /tmp/ready-summary.json
+          query "SELECT c.mail_code,c.outlet,c.email,c.country,c.language,c.priority,c.recipient_name,c.recipient_title,c.person_status,c.channel_status,c.note,c.approved,c.automation_allowed,ctrl.operational_status,ctrl.blocked_reason,ctrl.requires_personalization,ctrl.to_email,ctrl.cc_email FROM media_outreach_contacts c LEFT JOIN media_outreach_contact_controls ctrl ON ctrl.mail_code=c.mail_code LEFT JOIN media_suppressions s ON LOWER(s.email)=LOWER(c.email) WHERE c.email<>'' AND c.automation_allowed=1 AND s.email IS NULL ORDER BY CASE c.priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END,c.country,c.outlet" /tmp/candidates.json
+          query "SELECT LOWER(email) AS email,COUNT(*) AS count,GROUP_CONCAT(outlet,' | ') AS outlets FROM media_outreach_contacts WHERE email IS NOT NULL AND TRIM(email)<>'' GROUP BY LOWER(email) HAVING COUNT(*)>1 ORDER BY count DESC,email" /tmp/duplicates.json
+          query "SELECT status,COUNT(*) AS count FROM media_delivery_queue GROUP BY status ORDER BY status" /tmp/queue.json
+          query "SELECT mail_code,outlet,email,status,provider_message_id,last_error_code,updated_at,sent_at FROM media_delivery_queue ORDER BY updated_at DESC LIMIT 30" /tmp/recent.json
+          query "SELECT recipient,subject,pdf_key,pdf_sha256,status,created_at FROM media_delivery_tests ORDER BY created_at DESC LIMIT 10" /tmp/tests.json
+
+          kv_get(){
+            local plain="$1" out="$2" encoded
+            encoded=$(jq -rn --arg value "$plain" '$value|@uri')
+            code=$(curl -sS -o "$out" -w '%{http_code}' \
+              "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces/$KV_NAMESPACE_ID/values/$encoded" \
+              -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN")
+            if [ "$code" != '200' ]; then printf '{}' > "$out"; fi
+            jq empty "$out" 2>/dev/null || printf '{}' > "$out"
+          }
+          kv_get 'media-command-center:campaign:v1' /tmp/campaign.json
+          kv_get 'media-command-center:delivery-test:v1' /tmp/test-gate.json
+
+          cd workers/gnk-asg-direct-operator
+          if npx --yes wrangler@4 r2 object get "$R2_BUCKET/$PDF_KEY" --file=/tmp/media-campaign.pdf --remote; then
+            test "$(head -c 5 /tmp/media-campaign.pdf)" = '%PDF-'
+            stat -c %s /tmp/media-campaign.pdf > /tmp/pdf-size.txt
+            sha256sum /tmp/media-campaign.pdf | awk '{print $1}' > /tmp/pdf-sha.txt
+          else
+            printf '0' > /tmp/pdf-size.txt
+            printf '' > /tmp/pdf-sha.txt
+          fi
+          cd "$GITHUB_WORKSPACE"
+
+          python - <<'PY'
+          import json, pathlib, datetime
+          def cf_rows(path):
+              raw=json.loads(pathlib.Path(path).read_text())
+              result=(raw.get('result') or [{}])[0]
+              return result.get('results') or []
+          def obj(path):
+              try:return json.loads(pathlib.Path(path).read_text())
+              except:return {}
+          summary=cf_rows('/tmp/contact-summary.json')
+          ready=cf_rows('/tmp/ready-summary.json')
+          candidates=cf_rows('/tmp/candidates.json')
+          duplicates=cf_rows('/tmp/duplicates.json')
+          queue=cf_rows('/tmp/queue.json')
+          recent=cf_rows('/tmp/recent.json')
+          tests=cf_rows('/tmp/tests.json')
+          campaign=obj('/tmp/campaign.json')
+          gate=obj('/tmp/test-gate.json')
+          pdf_sha=pathlib.Path('/tmp/pdf-sha.txt').read_text().strip()
+          pdf_size=int(pathlib.Path('/tmp/pdf-size.txt').read_text().strip() or 0)
+          result={
+            'ok':True,
+            'status':'AUDIT_COMPLETE',
+            'commandId':obj('ops/media-command.json').get('commandId'),
+            'auditedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'contactsSummary':summary[0] if summary else {},
+            'readySummary':ready[0] if ready else {},
+            'automationCandidates':candidates,
+            'duplicateEmails':duplicates,
+            'queueSummary':queue,
+            'recentQueue':recent,
+            'deliveryTests':tests,
+            'campaign':campaign,
+            'testGate':gate,
+            'pdf':{
+              'key':'media-outreach/the-code-2026/GNK_DINAMO_THE_CODE_MEDIJSKI_MEMORANDUM_FINAL.pdf',
+              'sizeBytes':pdf_size,
+              'sha256':pdf_sha,
+              'valid':bool(pdf_size and pdf_sha),
+              'campaignHashMatches':not campaign.get('pdfSha256') or campaign.get('pdfSha256')==pdf_sha,
+              'testGateHashMatches':not gate.get('pdfSha256') or gate.get('pdfSha256')==pdf_sha
+            }
+          }
+          result['recommendation']={
+            'productionReady':bool((result['readySummary'].get('ready') or 0)>0 and gate.get('passed') is True and result['pdf']['valid'] and result['pdf']['campaignHashMatches'] and result['pdf']['testGateHashMatches'] and not duplicates),
+            'reasons':[]
+          }
+          if not result['readySummary'].get('ready'): result['recommendation']['reasons'].append('no_approved_ready_contacts')
+          if gate.get('passed') is not True: result['recommendation']['reasons'].append('valid_test_gate_missing')
+          if not result['pdf']['valid']: result['recommendation']['reasons'].append('campaign_pdf_missing_or_invalid')
+          if not result['pdf']['campaignHashMatches']: result['recommendation']['reasons'].append('campaign_pdf_hash_mismatch')
+          if not result['pdf']['testGateHashMatches']: result['recommendation']['reasons'].append('test_gate_pdf_hash_mismatch')
+          if duplicates: result['recommendation']['reasons'].append('duplicate_recipient_addresses')
+          pathlib.Path('/tmp/media-result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+          PY
 
       - name: Build and validate current PDF
         shell: bash
@@ -121,10 +179,7 @@ jobs:
           action=$(jq -r '.action' "$GITHUB_WORKSPACE/ops/media-command.json")
           [ "$action" = 'SEND_TEST' ] || exit 0
           printf '{"ok":false,"status":"UPLOADING_PDF_TO_R2","commandId":"%s"}\n' "$(jq -r '.commandId' "$GITHUB_WORKSPACE/ops/media-command.json")" > /tmp/media-result.json
-          npx --yes wrangler@4 r2 object put "$R2_BUCKET/$PDF_KEY" \
-            --file=/tmp/the-code.pdf \
-            --content-type=application/pdf \
-            --remote
+          npx --yes wrangler@4 r2 object put "$R2_BUCKET/$PDF_KEY" --file=/tmp/the-code.pdf --content-type=application/pdf --remote
 
       - name: Queue one-time test command in KV
         id: queue
@@ -138,15 +193,9 @@ jobs:
           execution_key=$(openssl rand -hex 32)
           echo "::add-mask::$execution_key"
           created_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          jq --arg key "$execution_key" --arg created "$created_at" --arg pdf "$PDF_KEY" \
-            '. + {executionKey:$key,createdAt:$created,pdfR2Key:$pdf,pdfFilename:"GNK_DINAMO_THE_CODE_MEDIJSKI_MEMORANDUM_FINAL.pdf"}' \
-            ops/media-command.json > /tmp/pending.json
+          jq --arg key "$execution_key" --arg created "$created_at" --arg pdf "$PDF_KEY" '. + {executionKey:$key,createdAt:$created,pdfR2Key:$pdf,pdfFilename:"GNK_DINAMO_THE_CODE_MEDIJSKI_MEMORANDUM_FINAL.pdf"}' ops/media-command.json > /tmp/pending.json
           encoded_key=$(jq -rn --arg value "media-command:pending:$command_id" '$value|@uri')
-          curl -fsS -X PUT \
-            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces/$KV_NAMESPACE_ID/values/$encoded_key" \
-            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-            -H 'Content-Type: application/json' \
-            --data-binary @/tmp/pending.json >/tmp/kv-result.json
+          curl -fsS -X PUT "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces/$KV_NAMESPACE_ID/values/$encoded_key" -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H 'Content-Type: application/json' --data-binary @/tmp/pending.json >/tmp/kv-result.json
           jq -e '.success == true' /tmp/kv-result.json >/dev/null
           echo "command_id=$command_id" >> "$GITHUB_OUTPUT"
           echo "execution_key=$execution_key" >> "$GITHUB_OUTPUT"
@@ -163,12 +212,7 @@ jobs:
           printf '{"ok":false,"status":"CALLING_MEDIA_CENTER_BRIDGE","commandId":"%s"}\n' "$COMMAND_ID" > /tmp/media-result.json
           success=false
           for attempt in $(seq 1 36); do
-            http=$(curl -sS -o /tmp/bridge-response.json -w '%{http_code}' -X POST \
-              'https://gnk-asg.hr/api/media-command-bridge/process' \
-              -H "X-GNK-Media-Command-Id: $COMMAND_ID" \
-              -H "X-GNK-Media-Command-Key: $EXECUTION_KEY" \
-              -H 'Content-Type: application/json' \
-              --data '{}') || true
+            http=$(curl -sS -o /tmp/bridge-response.json -w '%{http_code}' -X POST 'https://gnk-asg.hr/api/media-command-bridge/process' -H "X-GNK-Media-Command-Id: $COMMAND_ID" -H "X-GNK-Media-Command-Key: $EXECUTION_KEY" -H 'Content-Type: application/json' --data '{}') || true
             cp /tmp/bridge-response.json /tmp/media-result.json 2>/dev/null || true
             if [ "$http" = '200' ] && jq -e '.ok == true and .status == "SENT"' /tmp/media-result.json >/dev/null 2>&1; then success=true; break; fi
             if [ "$http" = '409' ] && jq -e '.error == "command_already_processed" and .result.ok == true' /tmp/media-result.json >/dev/null 2>&1; then success=true; break; fi
@@ -183,8 +227,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ ! -s /tmp/media-result.json ]; then
-            printf '{"ok":false,"status":"WORKFLOW_FAILED_WITHOUT_STAGE","commandId":"%s","recordedAt":"%s"}\n' \
-              "$(jq -r '.commandId' ops/media-command.json)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/media-result.json
+            printf '{"ok":false,"status":"WORKFLOW_FAILED_WITHOUT_STAGE","commandId":"%s","recordedAt":"%s"}\n' "$(jq -r '.commandId' ops/media-command.json)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/media-result.json
           fi
           jq --arg recorded "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '. + {recordedAt:$recorded}' /tmp/media-result.json > ops/media-command-result.json
           git config user.name 'GNK ASG Media Command'
