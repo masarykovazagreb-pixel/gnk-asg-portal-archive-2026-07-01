@@ -1,9 +1,9 @@
-import app from './index-final-admin-gateway-v1.js';
+import app from './index-final-admin-gateway-core-v2.js';
 import {withRequiredEmailSignature,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v2.js';
 import {brandSimpleRawEmail,wrapInboundReply,VERSION as RAW_LOGO_VERSION} from './email-raw-logo-v1.js';
 import {EMAIL_LOGO_PATH,VERSION as MIME_VERSION} from './email-brand-mime-v1.js';
 
-export const VERSION='GNK_ASG_FINAL_GATEWAY_LOGO_V2_20260629_R3_STATUS';
+export const VERSION='GNK_ASG_FINAL_GATEWAY_LOGO_V2_20260629_R4_CANONICAL';
 const STATUS_PATH='/api/email-logo-status';
 
 function envWithLogo(env){
