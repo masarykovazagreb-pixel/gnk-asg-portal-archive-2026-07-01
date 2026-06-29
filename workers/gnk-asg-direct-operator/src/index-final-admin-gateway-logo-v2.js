@@ -2,19 +2,22 @@ import app from './index-final-admin-gateway-v1.js';
 import {withRequiredEmailSignature,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v2.js';
 import {brandSimpleRawEmail,wrapInboundReply,VERSION as RAW_LOGO_VERSION} from './email-raw-logo-v1.js';
 
-export const VERSION='GNK_ASG_FINAL_GATEWAY_LOGO_V2_20260629_ALL_SEND_REPLY';
+export const VERSION='GNK_ASG_FINAL_GATEWAY_LOGO_V2_20260629_R2_RAW_BYPASS';
 
 function envWithLogo(env){
   const signed=withRequiredEmailSignature(env);
-  const binding=signed?.EMAIL;
-  if(!binding||typeof binding.send!=='function')return signed;
+  const structuredBinding=signed?.EMAIL;
+  const rawBinding=env?.EMAIL;
+  if(!structuredBinding||typeof structuredBinding.send!=='function')return signed;
   const wrapped=Object.create(signed||null);
   Object.defineProperty(wrapped,'EMAIL',{
     enumerable:true,
     configurable:true,
     value:{async send(payload){
-      const branded=payload?.raw?await brandSimpleRawEmail(payload,env):payload;
-      return binding.send(branded);
+      if(payload?.raw&&rawBinding&&typeof rawBinding.send==='function'){
+        return rawBinding.send(await brandSimpleRawEmail(payload,env));
+      }
+      return structuredBinding.send(payload);
     }}
   });
   return wrapped;
