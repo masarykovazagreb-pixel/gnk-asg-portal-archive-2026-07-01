@@ -6,8 +6,6 @@ on:
     paths:
       - '.github/media-readiness-audit.trigger'
       - '.github/workflows/media-readiness-audit.yml'
-  issue_comment:
-    types: [created]
 
 permissions:
   contents: write
@@ -15,11 +13,10 @@ permissions:
 
 concurrency:
   group: gnk-asg-media-readiness-audit
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   audit:
-    if: github.event_name == 'push' || (github.event.issue.number == 94 && github.event.comment.body == '/audit-media-readiness-v1')
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:
