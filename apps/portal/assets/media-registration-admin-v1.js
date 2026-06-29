@@ -8,7 +8,12 @@ async function call(path,opt={}){
   for(const base of APIS){
     let response;
     try{
-      response=await fetch(base+path,{credentials:'same-origin',cache:'no-store',headers:{accept:'application/json','content-type':'application/json','cache-control':'no-cache'},...opt});
+      const isForm=typeof FormData!=='undefined'&&opt.body instanceof FormData;
+      const headers=new Headers(opt.headers||{});
+      headers.set('accept','application/json');
+      headers.set('cache-control','no-cache');
+      if(!isForm&&!headers.has('content-type'))headers.set('content-type','application/json');
+      response=await fetch(base+path,{credentials:'same-origin',cache:'no-store',...opt,headers});
     }catch(error){
       last={status:0,data:{ok:false,error:String(error?.message||error)}};
       continue;
@@ -26,6 +31,7 @@ async function call(path,opt={}){
 
 function localValue(iso){if(!iso)return'';const d=new Date(iso),p=n=>String(n).padStart(2,'0');return`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function setBusy(button,busy,label='RADIM…'){if(!button)return;button.disabled=busy;if(busy){button.dataset.oldText=button.textContent;button.textContent=label}else if(button.dataset.oldText){button.textContent=button.dataset.oldText;delete button.dataset.oldText}}
 function render(d){
   const c=d.config||{},q=d.queue||{},r=d.registrationsSummary||{};
   $('paused').checked=Boolean(c.paused);
@@ -39,6 +45,7 @@ function render(d){
   $('kSubmitted').textContent=r.SUBMITTED||0;
   $('kApproved').textContent=(r.APPROVED||0)+(r.TRAVEL_CONFIRMED||0);
   $('kPdf').textContent=d.pdfAvailable?'READY':'MISSING';
+  $('pdfInfo').textContent=d.pdfAvailable?'PDF je učitan i spreman za kontrolirani test.':'PDF još nije učitan.';
   const st=$('liveState');
   st.textContent=c.paused?'PAUSED':c.startAt?`ACTIVE FROM ${new Date(c.startAt).toLocaleString()}`:'ACTIVE · START NOT SET';
   st.className='state '+(c.paused?'paused':'live');
@@ -53,14 +60,19 @@ function render(d){
 }
 async function refresh(){try{render(await call('/status'))}catch(e){$('liveState').textContent=e.message;$('liveState').className='state'}}
 async function save(){const start=$('startAt').value;await call('/config',{method:'POST',body:JSON.stringify({paused:$('paused').checked,startAt:start?new Date(start).toISOString():'',requirePdf:$('requirePdf').checked,applicationUrl:$('applicationUrl').value,applicationEmail:$('applicationEmail').value,hotelStandard:'5-star',hotelPackage:'all-inclusive'})});await refresh()}
+async function applyFinal(){const button=$('applyFinal');setBusy(button,true,'PRIMJENJUJEM…');try{await call('/final-config',{method:'POST',body:JSON.stringify({confirm:'APPLY_FINAL_MEDIA_CONFIG'})});await refresh();alert('Konačne postavke su primijenjene.')}finally{setBusy(button,false)}}
+async function uploadPdf(){const button=$('uploadPdf'),file=$('pdfFile').files?.[0];if(!file){alert('Prvo odaberite PDF datoteku.');return}if(file.type&&file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){alert('Odabrana datoteka nije PDF.');return}const form=new FormData();form.append('file',file,file.name);setBusy(button,true,'UČITAVAM PDF…');$('pdfInfo').textContent='Učitavanje PDF-a je u tijeku…';try{const result=await call('/upload-pdf',{method:'POST',body:form});$('pdfInfo').textContent=`PDF READY: ${result.pdf?.filename||file.name} (${result.pdf?.sizeBytes||file.size} bytes)`;await refresh();alert('Konačni PDF je uspješno učitan.')}catch(error){$('pdfInfo').textContent=`PDF upload nije uspio: ${error.message}`;throw error}finally{setBusy(button,false)}}
 async function prepare(){const mailCodes=$('mailCodes').value.split(/\s+/).map(x=>x.trim()).filter(Boolean);if(!confirm(mailCodes.length?`Pripremiti ${mailCodes.length} zapisa?`:'Pripremiti sve odobrene kontakte?'))return;await call('/queue',{method:'POST',body:JSON.stringify({confirm:'QUEUE_PERSONALIZED_INVITATIONS',mailCodes,startAt:$('startAt').value?new Date($('startAt').value).toISOString():'',force:$('forceQueue').checked})});await refresh()}
-async function verify(){await call('/send-test',{method:'POST',body:JSON.stringify({confirm:'SEND_PERSONALIZED_TEST',email:$('testEmail').value,language:$('testLanguage').value})});alert('Interna provjera je završena.')}
+async function verify(){const button=$('sendTest');setBusy(button,true,'ŠALJEM TEST…');try{await call('/send-test',{method:'POST',body:JSON.stringify({confirm:'SEND_PERSONALIZED_TEST',email:$('testEmail').value,outlet:$('testOutlet').value,recipientName:$('testRecipient').value,language:$('testLanguage').value})});await refresh();alert('Kontrolirani test je poslan.')}finally{setBusy(button,false)}}
 async function next(){if(!confirm('Obraditi samo sljedeći zapis?'))return;await call('/dispatch-one',{method:'POST',body:JSON.stringify({confirm:'DISPATCH_ONE_PERSONALIZED_INVITATION'})});await refresh()}
-$('refresh').onclick=refresh;
-$('saveConfig').onclick=save;
-$('queueAll').onclick=prepare;
-$('sendTest').onclick=verify;
-$('dispatchOne').onclick=next;
+
+$('refresh').onclick=()=>refresh().catch(e=>alert(e.message));
+$('saveConfig').onclick=()=>save().catch(e=>alert(e.message));
+$('applyFinal').onclick=()=>applyFinal().catch(e=>alert(e.message));
+$('uploadPdf').onclick=()=>uploadPdf().catch(e=>alert(e.message));
+$('queueAll').onclick=()=>prepare().catch(e=>alert(e.message));
+$('sendTest').onclick=()=>verify().catch(e=>alert(e.message));
+$('dispatchOne').onclick=()=>next().catch(e=>alert(e.message));
 refresh();
 setInterval(refresh,60000);
 })();
