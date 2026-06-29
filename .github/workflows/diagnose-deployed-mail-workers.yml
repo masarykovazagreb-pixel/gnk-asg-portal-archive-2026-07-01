@@ -1,0 +1,62 @@
+name: Diagnose deployed mail Workers
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/diagnose-deployed-mail-workers.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download selected deployed Worker bundles
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p deployed-mail-workers
+          auth=(-H "Authorization: Bearer ${CF_API_TOKEN}")
+          scripts=(
+            gnk-asg-mail-center-worker
+            gnk-asg-auto-editor
+            gnk-asg-contact-api
+            gnk-asg-direct-operator
+            gnk-asg-editorial-center
+            gnk-asg-mail-agent-preview
+            gnk-asg-mail-studio
+          )
+          printf '[]' > deployed-mail-workers/manifest.json
+          for script in "${scripts[@]}"; do
+            code=$(curl --silent --show-error -o "deployed-mail-workers/${script}.bundle" -w '%{http_code}' "${auth[@]}" "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/workers/scripts/${script}")
+            settings_code=$(curl --silent --show-error -o "deployed-mail-workers/${script}.settings.raw.json" -w '%{http_code}' "${auth[@]}" "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/workers/scripts/${script}/settings")
+            if [ "$settings_code" = "200" ]; then
+              jq '{success,errors,settings:{compatibility_date:.result.compatibility_date,compatibility_flags:.result.compatibility_flags,usage_model:.result.usage_model,bindings:[.result.bindings[]? | {name,type,namespace_id,bucket_name,database_name,service,environment}]}}' "deployed-mail-workers/${script}.settings.raw.json" > "deployed-mail-workers/${script}.settings.json" || true
+            else
+              printf '{"success":false,"httpStatus":"%s"}\n' "$settings_code" > "deployed-mail-workers/${script}.settings.json"
+            fi
+            rm -f "deployed-mail-workers/${script}.settings.raw.json"
+            python - "$script" "$code" "$settings_code" <<'PY'
+          import json, sys
+          path='deployed-mail-workers/manifest.json'
+          with open(path,encoding='utf-8') as f: data=json.load(f)
+          data.append({'script':sys.argv[1],'bundleHttpStatus':int(sys.argv[2]),'settingsHttpStatus':int(sys.argv[3])})
+          with open(path,'w',encoding='utf-8') as f: json.dump(data,f,ensure_ascii=False,indent=2)
+          PY
+          done
+          cat deployed-mail-workers/manifest.json
+
+      - name: Upload private candidate bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployed-mail-worker-candidates
+          path: deployed-mail-workers
+          if-no-files-found: error
+          retention-days: 3
