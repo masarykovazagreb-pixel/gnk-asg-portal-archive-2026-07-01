@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-store">
+<title>GNK ASG Mail Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#06101e;--panel:#0b1a2d;--gold:#f0c75e;--line:rgba(240,199,94,.28);--muted:#cbd5e1;--ok:#78e6a6;--bad:#ff8f8f}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#17345b,var(--bg) 48%);font-family:Arial,sans-serif;color:#fff}.wrap{max-width:1320px;margin:auto;padding:20px}.studio{border:1px solid var(--line);border-radius:24px;background:rgba(6,16,30,.96);box-shadow:0 28px 80px rgba(0,0,0,.45);overflow:hidden}.head{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:20px 22px;border-bottom:1px solid var(--line)}h1{margin:0;color:var(--gold);font-family:Georgia,serif;font-size:30px}.sub{margin-top:5px;color:var(--muted);font-size:13px}.badge{padding:9px 13px;border:1px solid var(--line);border-radius:999px;font-size:12px}.body{display:grid;grid-template-columns:1.45fr .55fr}.compose,.side{padding:20px}.side{border-left:1px solid var(--line);background:rgba(255,255,255,.025)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:13px}label{display:block;margin:0 0 6px;color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:13px;background:#fff;color:#07101f;padding:12px;font:inherit;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,199,94,.2)}textarea{min-height:360px;resize:vertical;line-height:1.55}.actions,.tabs{display:flex;flex-wrap:wrap;gap:9px}.btn{border:1px solid var(--line);border-radius:999px;background:#15263d;color:#fff;font-weight:900;padding:11px 15px;cursor:pointer}.btn:hover{filter:brightness(1.15)}.btn.gold{background:linear-gradient(135deg,#b98b2d,#f4d37a);color:#07101f}.btn.red{background:#542329}.panel{border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:13px;background:rgba(255,255,255,.04)}.panel h3{margin:0 0 9px;color:var(--gold);font-size:13px}.status{margin-top:14px;padding:12px;border-radius:12px;background:#0f2239;color:var(--muted);white-space:pre-wrap}.status.ok{border:1px solid rgba(120,230,166,.5);color:var(--ok)}.status.bad{border:1px solid rgba(255,143,143,.5);color:var(--bad)}.list{max-height:360px;overflow:auto;white-space:pre-wrap;font-size:12px;line-height:1.45;color:#dbeafe}.preview{margin-top:15px;background:#fff;border-radius:16px;padding:0;overflow:hidden}.preview iframe{width:100%;min-height:560px;border:0;background:#fff}.fileline{font-size:12px;color:var(--muted);margin-top:7px}.hidden{display:none}@media(max-width:980px){.body{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--line)}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap"><section class="studio">
+<header class="head"><div><h1>GNK ASG Mail Studio</h1><div class="sub">Čista stabilna verzija · službeno slanje s gnk-asg.hr</div></div><div class="badge" id="topStatus">SPREMNO</div></header>
+<div class="body">
+<main class="compose">
+<div class="grid">
+<div class="field"><label>Profil pošiljatelja</label><select id="profile"><option value="media" selected>GNK ASG Media Relations</option><option value="office">GNK ASG Office</option><option value="legal">Legal &amp; Compliance</option><option value="director">Nermin Sefić / Direktor</option><option value="it">IT – Digital Assistant</option></select></div>
+<div class="field"><label>From</label><input id="from" readonly></div>
+</div>
+<div class="grid"><div class="field"><label>To</label><input id="to" autocomplete="off" placeholder="primatelj@domena.com"></div><div class="field"><label>CC</label><input id="cc" autocomplete="off"></div></div>
+<div class="field"><label>BCC — obvezna interna kopija</label><input id="bcc" value="rht@gmx.com"></div>
+<div class="field"><label>Predmet</label><input id="subject" placeholder="Predmet poruke"></div>
+<div class="field"><label>Tekst ili cijeli HTML poruke</label><textarea id="body" placeholder="Upišite tekst ili zalijepite HTML..."></textarea></div>
+<div class="actions">
+<button class="btn" id="htmlChoose" type="button">UČITAJ HTML</button><input class="hidden" id="htmlFile" type="file" accept=".html,.htm,.xhtml,text/html,application/xhtml+xml">
+<button class="btn" id="pdfChoose" type="button">DODAJ PDF</button><input class="hidden" id="pdfFiles" type="file" accept="application/pdf,.pdf" multiple>
+<button class="btn" id="previewBtn" type="button">PREGLED</button>
+<button class="btn" id="saveBtn" type="button">SPREMI DRAFT</button>
+<button class="btn" id="loadBtn" type="button">UČITAJ DRAFT</button>
+<button class="btn red" id="clearBtn" type="button">OČISTI</button>
+<button class="btn gold" id="sendBtn" type="button">POŠALJI</button>
+</div>
+<div class="fileline" id="fileStatus">HTML nije učitan · PDF priloga: 0</div>
+<div class="status" id="status">Mail Studio je otključan i spreman za unos.</div>
+<div class="preview" id="preview"><iframe id="previewFrame" title="Pregled e-maila"></iframe></div>
+</main>
+<aside class="side">
+<div class="panel"><h3>Pretinci</h3><div class="tabs"><button class="btn" data-box="inbox">Inbox</button><button class="btn" data-box="sent">Sent</button><button class="btn" data-box="outbox">Outbox</button><button class="btn" data-box="status">Status</button></div><pre class="list" id="list">Kliknite pretinac za učitavanje.</pre></div>
+<div class="panel"><h3>Važno</h3><div class="list">Pošiljatelj određuje se prema profilu na serveru. BCC kopija na rht@gmx.com dodaje se automatski. Slanje zahtijeva aktivnu administratorsku sesiju.</div></div>
+</aside>
+</div></section></div>
+<script>
+(()=>{'use strict';
+const VERSION='GNK_ASG_MAIL_STUDIO_STABLE_V1_20260629';
+const profiles={media:{email:'media@gnk-asg.hr',name:'GNK ASG Media Relations'},office:{email:'office@gnk-asg.hr',name:'GNK ASG Office'},legal:{email:'legal@gnk-asg.hr',name:'GNK ASG Legal & Compliance'},director:{email:'nermin.sefic@gnk-asg.hr',name:'Nermin Sefić / Direktor'},it:{email:'it@gnk-asg.hr',name:'IT – Digital Assistant'}};
+const $=id=>document.getElementById(id);let importedHtml='',htmlName='',attachments=[];
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const b64=bytes=>{let s='';const a=new Uint8Array(bytes);for(let i=0;i<a.length;i+=0x8000)s+=String.fromCharCode(...a.subarray(i,i+0x8000));return btoa(s)};
+function setStatus(text,type=''){const n=$('status');n.textContent=text;n.className='status'+(type?' '+type:'');$('topStatus').textContent=type==='bad'?'GREŠKA':type==='ok'?'SPREMNO':'RAD';}
+function profile(){const p=profiles[$('profile').value]||profiles.media;$('from').value=`${p.name} <${p.email}>`;}
+function ensureBcc(){const list=String($('bcc').value||'').split(/[;,\s]+/).filter(Boolean).map(x=>x.toLowerCase());if(!list.includes('rht@gmx.com'))list.push('rht@gmx.com');$('bcc').value=[...new Set(list)].join(', ');}
+function html(){const body=String($('body').value||'');if(importedHtml)return importedHtml;if(/^\s*(?:<!doctype|<html|<table|<div|<body)/i.test(body))return body;return `<div style="font-family:Arial,Helvetica,sans-serif;color:#111827;font-size:15px;line-height:1.6">${esc(body).replace(/\r?\n/g,'<br>')}</div>`;}
+function preview(){const title=esc($('subject').value||'(bez predmeta)');$('previewFrame').srcdoc=`<!doctype html><html><body style="margin:0;padding:22px;background:#f3f4f6"><div style="max-width:760px;margin:auto;background:#fff;padding:20px"><div style="font-family:Arial;color:#111827;margin-bottom:18px"><strong>Predmet:</strong> ${title}</div>${html()}</div></body></html>`;}
+function fileStatus(){$('fileStatus').textContent=`${htmlName?`HTML: ${htmlName}`:'HTML nije učitan'} · PDF priloga: ${attachments.length}`;}
+$('profile').addEventListener('change',profile);$('subject').addEventListener('input',preview);$('body').addEventListener('input',()=>{if(importedHtml&&$('body').value!==importedHtml){importedHtml='';htmlName='';fileStatus();}preview();});$('bcc').addEventListener('blur',ensureBcc);
+$('htmlChoose').onclick=()=>$('htmlFile').click();$('htmlFile').onchange=async()=>{const f=$('htmlFile').files[0];if(!f)return;if(f.size>5*1024*1024){setStatus('HTML je veći od 5 MB.','bad');return;}importedHtml=await f.text();htmlName=f.name;$('body').value=importedHtml;fileStatus();preview();setStatus('HTML je učitan.','ok');$('htmlFile').value='';};
+$('pdfChoose').onclick=()=>$('pdfFiles').click();$('pdfFiles').onchange=async()=>{const files=[...$('pdfFiles').files];for(const f of files){if(f.size>3200000){setStatus(`PDF ${f.name} je prevelik. Maksimalno 3,2 MB.`,`bad`);continue;}const bytes=await f.arrayBuffer();const sig=new TextDecoder().decode(bytes.slice(0,5));if(sig!=='%PDF-'){setStatus(`${f.name} nije valjan PDF.`,`bad`);continue;}attachments.push({filename:f.name,type:'application/pdf',base64:b64(bytes)});}fileStatus();$('pdfFiles').value='';};
+$('previewBtn').onclick=preview;
+$('saveBtn').onclick=()=>{localStorage.setItem('gnk_asg_mail_studio_stable_draft',JSON.stringify({profile:$('profile').value,to:$('to').value,cc:$('cc').value,bcc:$('bcc').value,subject:$('subject').value,body:$('body').value,importedHtml,htmlName,attachments}));setStatus('Draft je spremljen.','ok');};
+$('loadBtn').onclick=()=>{try{const d=JSON.parse(localStorage.getItem('gnk_asg_mail_studio_stable_draft')||'null');if(!d){setStatus('Nema spremljenog drafta.','bad');return;}$('profile').value=d.profile||'media';$('to').value=d.to||'';$('cc').value=d.cc||'';$('bcc').value=d.bcc||'rht@gmx.com';$('subject').value=d.subject||'';$('body').value=d.body||'';importedHtml=d.importedHtml||'';htmlName=d.htmlName||'';attachments=Array.isArray(d.attachments)?d.attachments:[];profile();fileStatus();preview();setStatus('Draft je učitan.','ok');}catch(e){setStatus(`Greška drafta: ${e.message}`,'bad');}};
+$('clearBtn').onclick=()=>{$('to').value='';$('cc').value='';$('bcc').value='rht@gmx.com';$('subject').value='';$('body').value='';importedHtml='';htmlName='';attachments=[];fileStatus();preview();setStatus('Polja su očišćena.','ok');};
+$('sendBtn').onclick=async()=>{ensureBcc();const p=profiles[$('profile').value]||profiles.media;const data={confirm:'SEND_MAIL',profile:$('profile').value,signatureProfile:$('profile').value,from:p.email,fromName:p.name,to:$('to').value,cc:$('cc').value,bcc:$('bcc').value,subject:$('subject').value,text:$('body').value,plainText:$('body').value,html:html(),bodyHtml:html(),body:html(),attachments};if(!data.to.trim()){setStatus('Nedostaje To primatelj.','bad');$('to').focus();return;}if(!data.subject.trim()){setStatus('Nedostaje predmet.','bad');$('subject').focus();return;}if(!data.text.trim()&&!data.html.trim()){setStatus('Nedostaje sadržaj poruke.','bad');$('body').focus();return;}const btn=$('sendBtn');btn.disabled=true;btn.textContent='SLANJE…';setStatus('Slanje poruke…');try{const r=await fetch('/api/admin-mail-send',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'content-type':'application/json','accept':'application/json'},body:JSON.stringify(data)});const raw=await r.text();let j;try{j=JSON.parse(raw)}catch{j={raw}};$('list').textContent=JSON.stringify({httpStatus:r.status,...j},null,2);const delivered=j.status==='SENT'||j.delivered===true||(Number(j.sent)>0&&Number(j.failed)===0);if(!r.ok||!delivered){setStatus(`Poruka nije poslana: ${j.error||r.status}.`,'bad');return;}setStatus(`Poruka je poslana. PDF priloga: ${attachments.length}.`,'ok');}catch(e){setStatus(`Greška slanja: ${e.message}`,'bad');}finally{btn.disabled=false;btn.textContent='POŠALJI';}};
+document.querySelectorAll('[data-box]').forEach(btn=>btn.onclick=async()=>{const type=btn.dataset.box;$('list').textContent=`Učitavanje ${type}…`;try{const r=await fetch(`/api/mail-center/${type}?cb=${Date.now()}`,{credentials:'same-origin',cache:'no-store',headers:{accept:'application/json'}});$('list').textContent=await r.text();}catch(e){$('list').textContent=e.message;}});
+profile();ensureBcc();fileStatus();preview();document.documentElement.dataset.gnkMailStudio=VERSION;
+})();
+</script>
+</body></html>
