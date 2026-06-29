@@ -1,9 +1,10 @@
-export const VERSION='GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260626';
+export const VERSION='GNK_ASG_MEDIA_OUTREACH_DELIVERY_V3_20260629_ATOMIC_QUEUE_R1';
 export const SEND_API='CLOUDFLARE_STRUCTURED_SEND_V1';
 const API='/api/media-command-center';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
 const TEST_GATE_KEY='media-command-center:delivery-test:v1';
 const MAX_PDF_BYTES=4*1024*1024;
+const STALE_SENDING_MINUTES=15;
 const clean=value=>String(value??'').trim();
 const now=()=>new Date().toISOString();
 const dbOf=env=>env.GNK_ASG_D1||null;
@@ -61,7 +62,7 @@ function compose(row,cfg){
     `Detailed requirements and the application template are provided in the attached PDF. Please quote reference code ${row.mail_code} in the subject and body. Do not send a passport copy by ordinary email at the initial stage.`;
   const decision=hr?'Zaprimanje potpune prijave ne znači automatsko odobrenje. Konačnu odluku donosi ovlaštena osoba nakon ljudske provjere.':'Receipt of a complete application does not constitute automatic approval. The final decision is made by an authorized person after human verification.';
   const sign=hr?'S poštovanjem,':'Kind regards,';
-  const text=[salutation,'',attention,'',intro,'',costs,'',application,'',decision,'',sign,'GNK ASG Media Relations',cfg.applicationEmail].join('\n');
+  const text=[salutation,'',attention,'',intro,'',costs,'',application,'',decision,'',sign].join('\n');
   return{subject:`[${row.mail_code}] ${title} - ${row.outlet}`,text};
 }
 
@@ -95,7 +96,7 @@ async function uploadPdf(request,env){
 }
 
 function allowlist(env){return new Set(clean(env.MEDIA_OUTREACH_TEST_RECIPIENTS).split(/[;,\s]+/).map(v=>v.toLowerCase()).filter(validEmail));}
-async function send(env,to,subject,text,pdf){
+async function send(env,to,subject,text,pdf,deliveryKey=''){
   if(!env.EMAIL?.send)throw Object.assign(new Error('EMAIL binding is not configured'),{code:'EMAIL_BINDING_MISSING'});
   const bucket=bucketOf(env),object=await bucket?.get(pdf.key);
   if(!object)throw Object.assign(new Error('Campaign PDF not found in R2'),{code:'CAMPAIGN_PDF_NOT_FOUND'});
@@ -104,14 +105,16 @@ async function send(env,to,subject,text,pdf){
   const actualSha=await sha256(bytes);
   if(actualSha!==pdf.sha256)throw Object.assign(new Error('Campaign PDF changed after verification'),{code:'CAMPAIGN_PDF_SHA256_CHANGED'});
   const from=clean(env.MEDIA_OUTREACH_FROM)||'media@gnk-asg.hr';
+  const headers={'X-GNK-PDF-SHA256':pdf.sha256,'X-GNK-Delivery-Version':VERSION};
+  if(deliveryKey)headers['X-GNK-ASG-Idempotency-Key']=escapeHeader(deliveryKey);
   const result=await env.EMAIL.send({
     to,
-    from:{email:from,name:'GNK ASG Media Relations'},
+    from:{email:from,name:'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center'},
     replyTo:from,
     subject:escapeHeader(subject),
     text,
     attachments:[{content:bytes,filename:escapeHeader(pdf.filename),type:'application/pdf',disposition:'attachment'}],
-    headers:{'X-GNK-PDF-SHA256':pdf.sha256,'X-GNK-Delivery-Version':VERSION}
+    headers
   });
   return{messageId:clean(result?.messageId),sendApi:SEND_API};
 }
@@ -153,7 +156,7 @@ async function testEmail(request,env){
   const text=['TEST DELIVERY - NOT FOR EXTERNAL DISTRIBUTION','',`Recipient: ${recipient}`,`PDF SHA-256: ${pdf.sha256}`,'',cfg.bodyEn||'GNK ASG media invitation delivery test.','',`Application mailbox: ${cfg.applicationEmail}`].join('\n');
   const id=crypto.randomUUID();
   try{
-    const delivery=await send(env,recipient,subject,text,pdf);
+    const delivery=await send(env,recipient,subject,text,pdf,`test:${id}`);
     const gate={passed:true,recipient,pdfSha256:pdf.sha256,pdfKey:pdf.key,messageId:delivery.messageId,passedAt:now(),version:VERSION,sendApi:SEND_API};
     await writeKv(env,TEST_GATE_KEY,gate);
     await db.prepare(`INSERT INTO media_delivery_tests(id,recipient,subject,pdf_key,pdf_sha256,status,detail_json,created_at) VALUES(?,?,?,?,?,?,?,?)`).bind(id,recipient,subject,pdf.key,pdf.sha256,'SENT',JSON.stringify({version:VERSION,...delivery}),now()).run();
@@ -182,30 +185,57 @@ async function queueApproved(request,env){
   return json({ok:true,queued,existing,selected:selected.length,live:plan.live,productionSending:plan.live?'ENABLED_BY_ENV':'LOCKED'});
 }
 
+async function quarantineStaleSending(db){
+  const result=await db.prepare(`UPDATE media_delivery_queue
+    SET status='REVIEW',last_error=COALESCE(last_error,'Previous dispatch ended without a final delivery state'),last_error_code=COALESCE(last_error_code,'AMBIGUOUS_DELIVERY_STATE'),updated_at=?
+    WHERE status='SENDING' AND datetime(updated_at)<datetime('now',?)`)
+    .bind(now(),`-${STALE_SENDING_MINUTES} minutes`).run();
+  return Number(result.meta?.changes||0);
+}
+async function claimNext(db){
+  await quarantineStaleSending(db);
+  for(let attempt=0;attempt<3;attempt++){
+    const row=await db.prepare(`SELECT * FROM media_delivery_queue WHERE status IN ('QUEUED','RETRY') AND attempts<3 ORDER BY queued_at LIMIT 1`).first();
+    if(!row)return null;
+    const claimedAt=now();
+    const claimed=await db.prepare(`UPDATE media_delivery_queue SET status='SENDING',attempts=attempts+1,updated_at=? WHERE id=? AND status IN ('QUEUED','RETRY') AND attempts<3`).bind(claimedAt,row.id).run();
+    if(Number(claimed.meta?.changes||0)===1)return{...row,status:'SENDING',attempts:Number(row.attempts||0)+1,updated_at:claimedAt};
+  }
+  return null;
+}
+
 export async function processDeliveryQueue(env){
   if(!boolEnv(env.MEDIA_OUTREACH_LIVE))return{ok:true,skipped:'production_sending_locked'};
   const plan=await deliveryPlan(env);if(!plan.testGate.valid)return{ok:false,skipped:'valid_test_gate_required'};
   if(!plan.rate.ok)return{ok:true,skipped:'rate_limit',rate:plan.rate};
-  const db=await ensureSchema(env),row=await db.prepare(`SELECT * FROM media_delivery_queue WHERE status IN ('QUEUED','RETRY') AND attempts<3 ORDER BY queued_at LIMIT 1`).first();
-  if(!row)return{ok:true,skipped:'queue_empty'};
-  const pdf=await pdfState(env);if(!pdf.ok||pdf.sha256!==row.pdf_sha256)return{ok:false,skipped:'pdf_mismatch'};
-  await db.prepare(`UPDATE media_delivery_queue SET status='SENDING',attempts=attempts+1,updated_at=? WHERE id=?`).bind(now(),row.id).run();
+  const db=await ensureSchema(env),row=await claimNext(db);
+  if(!row)return{ok:true,skipped:'queue_empty_or_claimed_elsewhere'};
+  const pdf=await pdfState(env);
+  if(!pdf.ok||pdf.sha256!==row.pdf_sha256){
+    await db.prepare(`UPDATE media_delivery_queue SET status='REVIEW',last_error=?,last_error_code='PDF_MISMATCH',updated_at=? WHERE id=? AND status='SENDING'`).bind('Verified campaign PDF no longer matches the queued message',now(),row.id).run();
+    return{ok:false,skipped:'pdf_mismatch',mailCode:row.mail_code};
+  }
+  let delivery;
   try{
-    const delivery=await send(env,row.email,row.subject,row.body_text,pdf);
-    await db.prepare(`UPDATE media_delivery_queue SET status='SENT',sent_at=?,updated_at=?,last_error=NULL,last_error_code=NULL,provider_message_id=? WHERE id=?`).bind(now(),now(),delivery.messageId,row.id).run();
-    await db.prepare(`UPDATE media_outreach_contacts SET sent_status='POSLANO',updated_at=? WHERE mail_code=?`).bind(now(),row.mail_code).run();
-    return{ok:true,sent:{mailCode:row.mail_code,outlet:row.outlet,email:row.email,messageId:delivery.messageId},sendApi:SEND_API,rate:await rate(env)};
+    delivery=await send(env,row.email,row.subject,row.body_text,pdf,row.idempotency_key);
   }catch(error){
     const detail=emailError(error);
-    await db.prepare(`UPDATE media_delivery_queue SET status=CASE WHEN attempts>=3 THEN 'FAILED' ELSE 'RETRY' END,last_error=?,last_error_code=?,updated_at=? WHERE id=?`).bind(detail.message,detail.code,now(),row.id).run();
+    await db.prepare(`UPDATE media_delivery_queue SET status=CASE WHEN attempts>=3 THEN 'FAILED' ELSE 'RETRY' END,last_error=?,last_error_code=?,updated_at=? WHERE id=? AND status='SENDING'`).bind(detail.message,detail.code,now(),row.id).run();
     return{ok:false,error:detail.message,errorCode:detail.code,mailCode:row.mail_code};
   }
+  try{
+    await db.prepare(`UPDATE media_delivery_queue SET status='SENT',sent_at=?,updated_at=?,last_error=NULL,last_error_code=NULL,provider_message_id=? WHERE id=? AND status='SENDING'`).bind(now(),now(),delivery.messageId,row.id).run();
+    await db.prepare(`UPDATE media_outreach_contacts SET sent_status='POSLANO',updated_at=? WHERE mail_code=?`).bind(now(),row.mail_code).run();
+  }catch(error){
+    return{ok:false,error:'delivery_sent_but_state_persist_failed',errorCode:'DELIVERY_STATE_PERSIST_FAILED',mailCode:row.mail_code,messageId:delivery.messageId,detail:String(error?.message||error).slice(0,500)};
+  }
+  return{ok:true,sent:{mailCode:row.mail_code,outlet:row.outlet,email:row.email,messageId:delivery.messageId},sendApi:SEND_API,rate:await rate(env)};
 }
 
 async function queueStatus(env){
-  const db=await ensureSchema(env),rows=(await db.prepare(`SELECT status,COUNT(*) AS count FROM media_delivery_queue GROUP BY status`).all()).results||[];
+  const db=await ensureSchema(env),quarantined=await quarantineStaleSending(db),rows=(await db.prepare(`SELECT status,COUNT(*) AS count FROM media_delivery_queue GROUP BY status`).all()).results||[];
   const recent=(await db.prepare(`SELECT mail_code,outlet,email,status,provider_message_id,last_error_code,updated_at,sent_at FROM media_delivery_queue ORDER BY updated_at DESC LIMIT 20`).all()).results||[];
-  return{ok:true,version:VERSION,sendApi:SEND_API,pdf:await pdfState(env),testGate:await readKv(env,TEST_GATE_KEY,null),live:boolEnv(env.MEDIA_OUTREACH_LIVE),testLive:boolEnv(env.MEDIA_OUTREACH_TEST_LIVE),rate:await rate(env),queue:Object.fromEntries(rows.map(row=>[row.status,Number(row.count)])),recent};
+  return{ok:true,version:VERSION,sendApi:SEND_API,pdf:await pdfState(env),testGate:await readKv(env,TEST_GATE_KEY,null),live:boolEnv(env.MEDIA_OUTREACH_LIVE),testLive:boolEnv(env.MEDIA_OUTREACH_TEST_LIVE),rate:await rate(env),staleSendingQuarantined:quarantined,queue:Object.fromEntries(rows.map(row=>[row.status,Number(row.count)])),recent};
 }
 
 export async function handleMediaDelivery(request,env){
