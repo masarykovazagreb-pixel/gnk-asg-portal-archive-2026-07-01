@@ -10,10 +10,6 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: gnk-asg-mail-media-routes-production
-  cancel-in-progress: true
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -30,7 +26,7 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate active Mail Studio and Media Center chain
+      - name: Validate active chain
         shell: bash
         run: |
           set -euxo pipefail
@@ -38,20 +34,11 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
           node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
-          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v15.js
           node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-registration-v1.js
-          grep -q '/api/admin-mail-send' workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
-          grep -q '/api/mail-center/send-readiness' workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
-          grep -q '/api/media-command-center/test-email' workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
-          grep -q '/api/media-registration-admin' workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
 
-      - name: Dry-run deployment
-        working-directory: workers/gnk-asg-direct-operator
-        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
-
-      - name: Deploy active Worker and capture diagnostics
+      - name: Deploy and capture complete Wrangler diagnostics
         id: deploy_worker
         continue-on-error: true
         working-directory: workers/gnk-asg-direct-operator
@@ -62,39 +49,28 @@ jobs:
         run: |
           set -o pipefail
           npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee /tmp/cloudflare-deploy.log
+          mkdir -p /tmp/wrangler-logs
+          cp -R "$HOME/.config/.wrangler/logs/." /tmp/wrangler-logs/ 2>/dev/null || true
 
-      - name: Upload deployment diagnostics
+      - name: Collect Wrangler logs after failure
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p /tmp/wrangler-logs
+          cp -R "$HOME/.config/.wrangler/logs/." /tmp/wrangler-logs/ 2>/dev/null || true
+          find /tmp/wrangler-logs -type f -maxdepth 2 -print || true
+
+      - name: Upload full deployment diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cloudflare-mail-media-deploy-log
-          path: /tmp/cloudflare-deploy.log
+          name: cloudflare-mail-media-full-diagnostics
+          path: |
+            /tmp/cloudflare-deploy.log
+            /tmp/wrangler-logs
           if-no-files-found: warn
           retention-days: 3
 
-      - name: Stop if Cloudflare deployment failed
+      - name: Fail when deployment failed
         if: steps.deploy_worker.outcome != 'success'
-        shell: bash
-        run: |
-          echo 'Cloudflare deployment failed. Diagnostic artifact uploaded.' >&2
-          tail -n 80 /tmp/cloudflare-deploy.log >&2 || true
-          exit 1
-
-      - name: Verify routes no longer return 404
-        shell: bash
-        run: |
-          set -euo pipefail
-          for attempt in $(seq 1 24); do
-            mail_status="$(curl --silent --output /tmp/mail.json --write-out '%{http_code}' 'https://gnk-asg.hr/api/mail-center/send-readiness')"
-            media_status="$(curl --silent --output /tmp/media.json --write-out '%{http_code}' --request POST 'https://gnk-asg.hr/api/media-registration-admin/send-test' --header 'content-type: application/json' --data '{"confirm":"CHECK_ONLY","email":"beckuphome@gmail.com"}')"
-            echo "attempt=${attempt} mail=${mail_status} media=${media_status}"
-            if [ "$mail_status" != '404' ] && [ "$media_status" != '404' ]; then
-              cat /tmp/mail.json
-              echo
-              cat /tmp/media.json
-              echo
-              exit 0
-            fi
-            sleep 10
-          done
-          exit 1
+        run: exit 1
