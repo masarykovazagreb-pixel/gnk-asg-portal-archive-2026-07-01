@@ -1,0 +1,48 @@
+name: Check media campaign readiness
+
+on:
+  push:
+    branches:
+      - media-campaign-final-en-20260629
+    paths:
+      - .github/workflows/check-media-campaign-readiness.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Calculate non-sensitive readiness totals
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contacts = json.loads(Path('apps/portal/data/media-outreach-contacts-v1.json').read_text(encoding='utf-8-sig'))
+          with_email = [r for r in contacts if str(r.get('email','')).strip()]
+          automation = [r for r in with_email if bool(r.get('automationAllowed'))]
+          approved = [r for r in automation if bool(r.get('approved'))]
+          codes = [str(r.get('mailCode','')).strip() for r in contacts if str(r.get('mailCode','')).strip()]
+          summary = {
+            'totalContacts': len(contacts),
+            'withEmail': len(with_email),
+            'automationAllowedWithEmail': len(automation),
+            'approvedAndAutomationAllowed': len(approved),
+            'missingEmail': len(contacts) - len(with_email),
+            'uniqueMailCodes': len(set(codes)),
+            'duplicateMailCodes': len(codes) - len(set(codes)),
+            'deadline': '2026-07-20T21:59:59Z',
+            'maxParticipantsPerNewsroom': 3
+          }
+          Path('media-campaign-readiness-summary.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
+          print(json.dumps(summary, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: media-campaign-readiness-summary
+          path: media-campaign-readiness-summary.json
+          retention-days: 7
