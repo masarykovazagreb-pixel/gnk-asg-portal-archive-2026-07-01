@@ -1,5 +1,5 @@
 name = "gnk-asg-direct-operator"
-main = "src/index-editorial-center-v1.js"
+main = "src/index-final-admin-gateway-v1.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
@@ -28,8 +28,21 @@ remote = true
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
+DEPLOY_REVISION = "20260629-final-gateway-mail-r6"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+MAIL_MANUAL_LIVE = "true"
+MAIL_MANDATORY_BCC = "rht@gmx.com"
+MAIL_PROFILE_TEST_LIVE = "true"
+MAIL_PROFILE_TEST_RECIPIENTS = "rht@gmx.com,beckuphome@gmail.com"
+MAIL_BOOTSTRAP_SMOKE_TEST = "true"
+MEDIA_OUTREACH_FROM = "media@gnk-asg.hr"
+MEDIA_OUTREACH_LIVE = "false"
+MEDIA_OUTREACH_TEST_LIVE = "true"
+MEDIA_OUTREACH_TEST_RECIPIENTS = "rht@gmx.com,beckuphome@gmail.com"
+MEDIA_OUTREACH_MAX_PER_HOUR = "12"
+MEDIA_OUTREACH_MAX_PER_DAY = "100"
+MEDIA_APPLICATION_AUTO_ACK = "true"
 
 [assets]
 directory = "../../apps/portal"
@@ -37,7 +50,7 @@ binding = "ASSETS"
 run_worker_first = true
 
 [triggers]
-crons = ["0 */2 * * *", "0 7,8,14,15 * * *"]
+crons = ["*/5 * * * *"]
 
 [ai]
 binding = "AI"
