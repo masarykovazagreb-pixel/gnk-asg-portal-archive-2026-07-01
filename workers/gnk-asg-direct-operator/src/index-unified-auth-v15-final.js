@@ -1,6 +1,6 @@
-import authApp from './index-media-command-center-v21.js';
+import authApp from './index-media-command-center-v22.js';
 
-export const VERSION='GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260629_R6_STABLE_MAIL_UI';
+export const VERSION='GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260630_R7_HTML_PREVIEW';
 export const INDEX_RESTORE='GNK_ASG_IQ200_INDEX_20260625';
 const INDEX_PATHS=new Set(['/','/en']);
 const ADMIN_PATH='/admin-center';
@@ -30,7 +30,7 @@ function finalHeaders(response,flow){
   headers.set('cloudflare-cdn-cache-control','no-store');
   headers.set('x-gnk-asg-production-entry',VERSION);
   headers.set('x-gnk-asg-index-restore',INDEX_RESTORE);
-  headers.set('x-gnk-asg-mail-media-chain','ACTIVE_V21');
+  headers.set('x-gnk-asg-mail-media-chain','ACTIVE_V22');
   if(flow)headers.set('x-gnk-asg-production-flow',flow);
   return headers;
 }
@@ -72,7 +72,7 @@ async function sessionAuthorized(request,env,ctx){
 }
 
 function redirect(location){
-  return new Response(null,{status:303,headers:{location,'cache-control':'no-store','x-gnk-asg-production-entry':VERSION,'x-gnk-asg-index-restore':INDEX_RESTORE,'x-gnk-asg-mail-media-chain':'ACTIVE_V21'}});
+  return new Response(null,{status:303,headers:{location,'cache-control':'no-store','x-gnk-asg-production-entry':VERSION,'x-gnk-asg-index-restore':INDEX_RESTORE,'x-gnk-asg-mail-media-chain':'ACTIVE_V22'}});
 }
 
 async function serveMailStudio(request,env){
@@ -90,29 +90,22 @@ async function serveMailStudio(request,env){
 export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
-
     if(request.method==='GET'&&OLD_ADMIN_PATHS.has(path))return redirect('/admin-center/');
-
     if((path===MEDIA_PATH||path.startsWith(MEDIA_PATH+'/')||path===MAIL_PATH||path.startsWith(MAIL_PATH+'/'))&&['GET','HEAD'].includes(request.method)){
       if(!(await sessionAuthorized(request,env,ctx)))return redirect(`/admin-center/?next=${encodeURIComponent(path==='/'?ADMIN_PATH:path+'/')}`);
     }
-
     if((path===MAIL_PATH||path.startsWith(MAIL_PATH+'/'))&&['GET','HEAD'].includes(request.method)){
       const studio=await serveMailStudio(request,env);
       if(studio)return studio;
     }
-
     const response=await authApp.fetch(request,env,ctx);
-
     if(request.method==='GET'&&INDEX_PATHS.has(path)&&response.ok&&isHtml(response)){
       const body=patchIndex(await response.text(),path==='/en');
       return new Response(body,{status:response.status,statusText:response.statusText,headers:finalHeaders(response,'IQ200_INDEX_20260625')});
     }
-
     if(request.method==='GET'&&path===ADMIN_PATH&&response.ok&&isHtml(response)){
       return new Response(chooser(),{status:200,headers:finalHeaders(response,'TOKEN_TO_MAIL_OR_MEDIA')});
     }
-
     const flow=path===MEDIA_PATH?'MEDIA_SESSION_PROTECTED':path===MAIL_PATH?'MAIL_STUDIO_UI_V23_STABLE':'AUTH_V15';
     const headers=finalHeaders(response,flow);
     return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
