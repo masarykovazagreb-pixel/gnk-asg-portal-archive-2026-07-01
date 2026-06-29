@@ -1,0 +1,202 @@
+name: Send THE CODE regional via Mail Studio
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/the-code-mailstudio/start.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-the-code-regional-mailstudio
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      EXPECTED_PDF_SHA256: 5c33f1dea158ff8938122c024e857997eb2f156a039c4b76c0cca133f1e0aa95
+      RESULTS_FILE: ops/the-code-mailstudio/results.jsonl
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Validate official HTML, PDF and recipients
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s ops/the-code-mailstudio/invitation.html
+          test -s ops/the-code-mailstudio/recipients.json
+          curl -fsSL --retry 5 --retry-delay 3 \
+            'https://www.gnk-asg.hr/api/media-registration/memorandum.pdf' \
+            -o /tmp/the-code-correct.pdf
+          test "$(head -c 5 /tmp/the-code-correct.pdf)" = '%PDF-'
+          actual=$(sha256sum /tmp/the-code-correct.pdf | awk '{print $1}')
+          test "$actual" = "$EXPECTED_PDF_SHA256"
+          node -e "const r=require('./ops/the-code-mailstudio/recipients.json'); if(r.length!==16) process.exit(1); if(new Set(r.map(x=>x.email.toLowerCase())).size!==16) process.exit(1)"
+          grep -q 'THE CODE' ops/the-code-mailstudio/invitation.html
+          grep -q 'REGISTER NEWSROOM' ops/the-code-mailstudio/invitation.html
+
+      - name: Deploy isolated Mail Studio sender
+        id: deploy
+        working-directory: ops/the-code-mailstudio
+        shell: bash
+        run: |
+          set -euo pipefail
+          worker_name="gnk-asg-code-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          nonce=$(openssl rand -hex 32)
+          echo "::add-mask::$nonce"
+          cp wrangler.toml wrangler.runtime.toml
+          cat >> wrangler.runtime.toml <<EOF
+          SEND_NONCE = "$nonce"
+          EOF
+          npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name "$worker_name" 2>&1 | tee /tmp/deploy.log
+          worker_url=$(grep -Eo 'https://[A-Za-z0-9.-]+\.workers\.dev' /tmp/deploy.log | tail -n 1 || true)
+          if [ -z "$worker_url" ]; then
+            worker_url="https://${worker_name}.beckuphome.workers.dev"
+          fi
+          echo "worker_name=$worker_name" >> "$GITHUB_OUTPUT"
+          echo "worker_url=$worker_url" >> "$GITHUB_OUTPUT"
+          echo "nonce=$nonce" >> "$GITHUB_OUTPUT"
+
+      - name: Send one message every five minutes
+        env:
+          WORKER_URL: ${{ steps.deploy.outputs.worker_url }}
+          SEND_NONCE: ${{ steps.deploy.outputs.nonce }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "GNK ASG Mail Studio"
+          git config user.email "media@gnk-asg.hr"
+          node <<'JS'
+          const fs = require('node:fs');
+          const {execFileSync} = require('node:child_process');
+          const recipients = JSON.parse(fs.readFileSync('ops/the-code-mailstudio/recipients.json', 'utf8'));
+          const html = fs.readFileSync('ops/the-code-mailstudio/invitation.html', 'utf8');
+          const pdfBase64 = fs.readFileSync('/tmp/the-code-correct.pdf').toString('base64');
+          const resultsFile = process.env.RESULTS_FILE;
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+          async function record(entry) {
+            fs.appendFileSync(resultsFile, JSON.stringify(entry) + '\n');
+            execFileSync('git', ['add', resultsFile], {stdio: 'inherit'});
+            try {
+              execFileSync('git', ['commit', '-m', `Record THE CODE mail ${entry.sequence}: ${entry.outlet} [skip ci]`], {stdio: 'inherit'});
+              execFileSync('git', ['push', 'origin', 'HEAD:main'], {stdio: 'inherit'});
+            } catch (error) {
+              console.error('Result commit warning:', error.message);
+            }
+          }
+
+          for (let index = 0; index < recipients.length; index += 1) {
+            const item = recipients[index];
+            if (index > 0) await sleep(300000);
+            const startedAt = new Date().toISOString();
+            let responseText = '';
+            let statusCode = 0;
+            try {
+              const response = await fetch(`${process.env.WORKER_URL}/send`, {
+                method: 'POST',
+                headers: {
+                  'content-type': 'application/json; charset=utf-8',
+                  'x-gnk-mail-once-nonce': process.env.SEND_NONCE
+                },
+                body: JSON.stringify({
+                  to: item.email,
+                  subject: 'CODE',
+                  html,
+                  attachments: [{
+                    filename: 'GNK_DINAMO_Ltd_Group_THE_CODE_EN_MEMORANDUM_CORRECT.pdf',
+                    type: 'application/pdf',
+                    base64: pdfBase64
+                  }]
+                })
+              });
+              statusCode = response.status;
+              responseText = await response.text();
+              let payload = {};
+              try { payload = JSON.parse(responseText); } catch {}
+              const result = payload?.results?.[0] || {};
+              const ok = response.ok &&
+                payload?.ok === true &&
+                payload?.status === 'SENT' &&
+                payload?.sent === 1 &&
+                payload?.failed === 0 &&
+                payload?.profile?.email === 'media@gnk-asg.hr' &&
+                payload?.attachments?.count === 1 &&
+                result?.status === 'SENT';
+              const entry = {
+                runId: process.env.GITHUB_RUN_ID,
+                sequence: item.seq,
+                outlet: item.outlet,
+                country: item.country,
+                email: item.email,
+                from: payload?.profile?.email || 'media@gnk-asg.hr',
+                subject: 'CODE',
+                htmlBody: 'GNK_DINAMO_THE_CODE_OFFICIAL_MEDIA_INVITATION_EN_UPLOAD_FINAL_V2 (1).html',
+                pdfAttachment: 'GNK_DINAMO_Ltd_Group_THE_CODE_EN_MEMORANDUM_CORRECT.pdf',
+                mandatoryBcc: payload?.mandatoryCopy || 'rht@gmx.com',
+                status: ok ? 'SENT' : 'FAILED',
+                providerMessageId: result?.messageId || '',
+                mailStudioId: payload?.id || '',
+                httpStatus: statusCode,
+                startedAt,
+                completedAt: new Date().toISOString(),
+                attachmentCount: payload?.attachments?.count ?? null,
+                attachmentBytes: payload?.attachments?.totalBytes ?? null,
+                error: ok ? '' : (payload?.error || result?.errorCode || responseText.slice(0, 500))
+              };
+              await record(entry);
+              console.log(JSON.stringify(entry));
+              if (!ok) process.exit(1);
+            } catch (error) {
+              const entry = {
+                runId: process.env.GITHUB_RUN_ID,
+                sequence: item.seq,
+                outlet: item.outlet,
+                country: item.country,
+                email: item.email,
+                from: 'media@gnk-asg.hr',
+                subject: 'CODE',
+                htmlBody: 'GNK_DINAMO_THE_CODE_OFFICIAL_MEDIA_INVITATION_EN_UPLOAD_FINAL_V2 (1).html',
+                pdfAttachment: 'GNK_DINAMO_Ltd_Group_THE_CODE_EN_MEMORANDUM_CORRECT.pdf',
+                mandatoryBcc: 'rht@gmx.com',
+                status: 'FAILED',
+                providerMessageId: '',
+                mailStudioId: '',
+                httpStatus: statusCode,
+                startedAt,
+                completedAt: new Date().toISOString(),
+                attachmentCount: null,
+                attachmentBytes: null,
+                error: String(error?.message || error).slice(0, 500),
+                response: responseText.slice(0, 500)
+              };
+              await record(entry);
+              console.error(JSON.stringify(entry));
+              process.exit(1);
+            }
+          }
+          JS
+
+      - name: Remove isolated sender
+        if: always() && steps.deploy.outputs.worker_name != ''
+        working-directory: ops/the-code-mailstudio
+        env:
+          WORKER_NAME: ${{ steps.deploy.outputs.worker_name }}
+        shell: bash
+        run: |
+          set +e
+          npx --yes wrangler@4 delete --config wrangler.runtime.toml --name "$WORKER_NAME" --force
