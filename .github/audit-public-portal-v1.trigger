@@ -1,6 +1,8 @@
-GNK_ASG_PUBLIC_PORTAL_AUDIT_V1_20260626
+GNK_ASG_PUBLIC_PORTAL_AUDIT_V1_20260629
 source=sitemaps_and_critical_routes
 http=all_discovered_routes
 browser=desktop_and_mobile
 screenshots=failures_and_key_pages
-nonce=1
+purpose=verify_hr_en_index_and_mail_gateway_after_final_entrypoint_fix
+commit=9bb0e44b6e2b18fd03fd79ccf81ff38fdbeda752
+nonce=2
