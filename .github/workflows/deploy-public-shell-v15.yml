@@ -5,7 +5,6 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/deploy-public-shell-v15.yml'
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,14 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout current main
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 1
-
       - name: Count verified recipients
-        shell: bash
         run: |
           python - <<'PY'
           import json,re
@@ -32,21 +28,15 @@ jobs:
           ready=[r for r in rows if valid(r.get('email')) and r.get('automationAllowed') is True]
           approved=[r for r in ready if r.get('approved') is True]
           awaiting=[r for r in ready if r.get('approved') is not True]
-          report={
-            'totalContacts':len(rows),
-            'contactsWithValidEmail':sum(valid(r.get('email')) for r in rows),
-            'automationAllowedAndValidEmail':len(ready),
-            'approvedAndReady':len(approved),
-            'awaitingExplicitApproval':len(awaiting),
-            'readyRecipients':[{'mailCode':r.get('mailCode'),'outlet':r.get('outlet'),'country':r.get('country'),'email':r.get('email')} for r in ready]
-          }
+          report={'totalContacts':len(rows),'contactsWithValidEmail':sum(valid(r.get('email')) for r in rows),'automationAllowedAndValidEmail':len(ready),'approvedAndReady':len(approved),'awaitingExplicitApproval':len(awaiting),'readyRecipients':[{'mailCode':r.get('mailCode'),'outlet':r.get('outlet'),'country':r.get('country'),'email':r.get('email')} for r in ready]}
           Path('/tmp/media-recipient-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
           print(json.dumps({k:v for k,v in report.items() if k!='readyRecipients'},ensure_ascii=False,indent=2))
           PY
-
       - name: Upload recipient audit
         uses: actions/upload-artifact@v4
         with:
           name: media-recipient-audit
           path: /tmp/media-recipient-audit.json
           retention-days: 3
+      - name: Mark audit for operator review
+        run: exit 1
