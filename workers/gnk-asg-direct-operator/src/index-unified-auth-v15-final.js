@@ -1,11 +1,23 @@
 import authApp from './index-media-command-center-v21.js';
 
-export const VERSION='GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260629_R3_ACTIVE_CHAIN';
+export const VERSION='GNK_ASG_UNIFIED_AUTH_V15_FINAL_INDEX_PDF_MAIL_MEDIA_20260629_R4_MAIL_UI_FORCE';
 export const INDEX_RESTORE='GNK_ASG_IQ200_INDEX_20260625';
 const INDEX_PATHS=new Set(['/','/en']);
 const ADMIN_PATH='/admin-center';
 const OLD_ADMIN_PATHS=new Set(['/operator-dashboard','/operator-mobile']);
 const MEDIA_PATH='/media-command-center';
+const MAIL_PATH='/mail-studio';
+
+const MAIL_STUDIO_SCRIPTS=[
+  '<script defer src="/assets/mail-studio-auth-bridge-v16.js?v=20260629-r4"></script>',
+  '<script defer src="/assets/mail-studio-controls-v18.js?v=20260629-r4"></script>',
+  '<script defer src="/assets/mail-studio-click-feedback-v19.js?v=20260629-r4"></script>',
+  '<script defer src="/assets/mail-studio-profile-test-v1.js?v=20260629-r4"></script>',
+  '<script defer src="/assets/mail-studio-delivery-policy-v1.js?v=20260629-r4"></script>',
+  '<script defer src="/assets/mail-studio-hotfix-v20.js?v=20260629-r4"></script>',
+  '<script defer src="/assets/studio-core-v21.js?v=20260629-r4-v22-html"></script>',
+  '<script defer src="/assets/admin-session-fallback-v17.js?v=20260629-r4"></script>'
+].join('');
 
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const isHtml=response=>String(response.headers.get('content-type')||'').toLowerCase().includes('text/html');
@@ -66,14 +78,30 @@ function redirect(location){
   return new Response(null,{status:303,headers:{location,'cache-control':'no-store','x-gnk-asg-production-entry':VERSION,'x-gnk-asg-index-restore':INDEX_RESTORE,'x-gnk-asg-mail-media-chain':'ACTIVE_V21'}});
 }
 
+async function serveMailStudio(request,env){
+  if(!env.ASSETS?.fetch)return null;
+  const target=new URL('/mail-studio/index.html',request.url);
+  const asset=await env.ASSETS.fetch(new Request(target,{method:request.method,headers:request.headers}));
+  if(!asset.ok||!isHtml(asset))return null;
+  if(request.method==='HEAD')return new Response(null,{status:asset.status,statusText:asset.statusText,headers:finalHeaders(asset,'MAIL_STUDIO_UI_V22')});
+  let html=await asset.text();
+  if(!html.includes('studio-core-v21.js?v=20260629-r4-v22-html'))html=html.includes('</body>')?html.replace('</body>',MAIL_STUDIO_SCRIPTS+'</body>'):html+MAIL_STUDIO_SCRIPTS;
+  return new Response(html,{status:200,headers:finalHeaders(asset,'MAIL_STUDIO_UI_V22')});
+}
+
 export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
 
     if(request.method==='GET'&&OLD_ADMIN_PATHS.has(path))return redirect('/admin-center/');
 
-    if(path===MEDIA_PATH||path.startsWith(MEDIA_PATH+'/')){
-      if(!(await sessionAuthorized(request,env,ctx)))return redirect('/admin-center/?next=/media-command-center/');
+    if((path===MEDIA_PATH||path.startsWith(MEDIA_PATH+'/')||path===MAIL_PATH||path.startsWith(MAIL_PATH+'/'))&&['GET','HEAD'].includes(request.method)){
+      if(!(await sessionAuthorized(request,env,ctx)))return redirect(`/admin-center/?next=${encodeURIComponent(path==='/'?ADMIN_PATH:path+'/')}`);
+    }
+
+    if((path===MAIL_PATH||path.startsWith(MAIL_PATH+'/'))&&['GET','HEAD'].includes(request.method)){
+      const studio=await serveMailStudio(request,env);
+      if(studio)return studio;
     }
 
     const response=await authApp.fetch(request,env,ctx);
@@ -87,7 +115,8 @@ export default{
       return new Response(chooser(),{status:200,headers:finalHeaders(response,'TOKEN_TO_MAIL_OR_MEDIA')});
     }
 
-    const headers=finalHeaders(response,path===MEDIA_PATH?'MEDIA_SESSION_PROTECTED':'AUTH_V15');
+    const flow=path===MEDIA_PATH?'MEDIA_SESSION_PROTECTED':path===MAIL_PATH?'MAIL_STUDIO_UI_V22':'AUTH_V15';
+    const headers=finalHeaders(response,flow);
     return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
   },
   async scheduled(event,env,ctx){if(typeof authApp.scheduled==='function')return authApp.scheduled(event,env,ctx)},
