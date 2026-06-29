@@ -1,0 +1,13 @@
+name = "gnk-asg-the-code-mail-once"
+main = "send-worker.js"
+compatibility_date = "2026-06-13"
+workers_dev = true
+preview_urls = false
+
+[[send_email]]
+name = "EMAIL"
+remote = true
+
+[vars]
+MAIL_MANUAL_LIVE = "true"
+MAIL_MANDATORY_BCC = "rht@gmx.com"
