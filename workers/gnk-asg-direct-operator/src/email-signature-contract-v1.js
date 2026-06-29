@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260627_R8_SAFE_BCC';
+export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260629_R9_INSTITUTIONAL_MEDIA';
 export const MANDATORY_BCC='rht@gmx.com';
 
 const COMPANY={
@@ -8,6 +8,14 @@ const COMPANY={
   mbs:'081512375',
   web:'https://gnk-asg.hr',
   logo:'https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png'
+};
+const MEDIA_EMAIL='media@gnk-asg.hr';
+const MEDIA_SIGNATURE={
+  group:'GNK DINAMO Ltd. Group',
+  centre:'Media Relations & Accreditation Center',
+  organiser:'Organised by GNK ASG Media Center',
+  email:MEDIA_EMAIL,
+  web:'https://gnk-asg.hr'
 };
 
 const clean=value=>String(value??'').trim();
@@ -46,6 +54,7 @@ function sender(payload={}){
   if(match)return{name:clean(match[1])||'GNK ASG Info Desk',email:clean(match[2])||'info@gnk-asg.hr'};
   return{name:'GNK ASG Info Desk',email:raw||'info@gnk-asg.hr'};
 }
+function isMedia(identity){return clean(identity?.email).toLowerCase()===MEDIA_EMAIL;}
 
 function normalizeTextContact(value){
   return String(value||'')
@@ -78,6 +87,15 @@ function normalizeHtmlContact(value){
   return html;
 }
 function signatureText(identity){
+  if(isMedia(identity)){
+    return[
+      MEDIA_SIGNATURE.group,
+      MEDIA_SIGNATURE.centre,
+      MEDIA_SIGNATURE.organiser,
+      MEDIA_SIGNATURE.email,
+      MEDIA_SIGNATURE.web
+    ].join('\n');
+  }
   return[
     identity.name,
     COMPANY.name,
@@ -87,14 +105,16 @@ function signatureText(identity){
     `E-mail: ${identity.email}`
   ].join('\n');
 }
-
-function hasTextSignature(value){
+function hasTextSignature(value,identity){
   const text=clean(value).toLowerCase();
+  if(isMedia(identity))return text.includes('gnk dinamo ltd. group')&&text.includes('media relations & accreditation center')&&text.includes(MEDIA_EMAIL);
   return text.includes('gnk asg d.o.o.')&&text.includes(COMPANY.oib)&&text.includes('gnk-asg.hr');
 }
-function hasHtmlSignature(value){
+function hasHtmlSignature(value,identity){
   const html=clean(value).toLowerCase();
-  return html.includes('data-gnk-asg-signature=')||html.includes('gnk-asg-email-logo-final.png')||(html.includes('gnk asg d.o.o.')&&html.includes(COMPANY.oib));
+  if(html.includes('data-gnk-asg-signature='))return true;
+  if(isMedia(identity))return html.includes('gnk dinamo ltd. group')&&html.includes('media relations &amp; accreditation center')&&html.includes(MEDIA_EMAIL);
+  return html.includes('gnk-asg-email-logo-final.png')||(html.includes('gnk asg d.o.o.')&&html.includes(COMPANY.oib));
 }
 function closing(text){
   const closings=/(srdačan pozdrav|s poštovanjem|lijep pozdrav|lep pozdrav|kind regards|best regards|regards|mit freundlichen grüßen|freundliche grüße|cordialement|bien cordialement|cordiali saluti|saluti cordiali|saludos cordiales|atentamente|cumprimentos|med vänliga hälsningar|venlig hilsen|pozdrawiam|s úctou|с уважением)[,!]?\s*$/iu;
@@ -102,18 +122,21 @@ function closing(text){
 }
 function appendText(value,identity){
   const text=normalizeTextContact(clean(value));
-  if(hasTextSignature(text))return text;
+  if(hasTextSignature(text,identity))return text;
   return `${text}${text?'\n\n':''}${closing(text)}${signatureText(identity)}`;
 }
 function paragraphs(value){
   return clean(value).split(/\n{2,}/).filter(Boolean).map(part=>`<p style="margin:0 0 14px;line-height:1.6">${escapeHtml(part).replace(/\n/g,'<br>')}</p>`).join('');
 }
 function signatureHtml(identity){
+  if(isMedia(identity)){
+    return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="${MEDIA_SIGNATURE.web}" style="text-decoration:none"><img src="${COMPANY.logo}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${escapeHtml(MEDIA_SIGNATURE.group)}</div><div style="font-weight:700">${escapeHtml(MEDIA_SIGNATURE.centre)}</div><div>${escapeHtml(MEDIA_SIGNATURE.organiser)}</div><div><a href="mailto:${MEDIA_SIGNATURE.email}" style="color:#111827">${MEDIA_SIGNATURE.email}</a></div><div><a href="${MEDIA_SIGNATURE.web}" style="color:#111827">${MEDIA_SIGNATURE.web}</a></div></td></tr></table>`;
+  }
   return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="${COMPANY.web}" style="text-decoration:none"><img src="${COMPANY.logo}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${escapeHtml(identity.name)}</div><div>${escapeHtml(COMPANY.name)}</div><div>${escapeHtml(COMPANY.address)}</div><div>OIB: ${COMPANY.oib} · MBS: ${COMPANY.mbs}</div><div>Web: <a href="${COMPANY.web}" style="color:#111827">${COMPANY.web}</a></div><div>E-mail: <a href="mailto:${escapeHtml(identity.email)}" style="color:#111827">${escapeHtml(identity.email)}</a></div></td></tr></table>`;
 }
 function appendHtml(value,text,identity){
   const html=normalizeHtmlContact(clean(value)||paragraphs(text));
-  if(hasHtmlSignature(html))return html;
+  if(hasHtmlSignature(html,identity))return html;
   return `${html}${signatureHtml(identity)}`;
 }
 
