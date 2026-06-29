@@ -1,0 +1,140 @@
+name: Media Center readiness audit
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: gnk-asg-media-readiness-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    if: github.event.issue.number == 94 && github.event.comment.body == '/audit-media-readiness-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      D1_DATABASE_ID: 2116c4e5-1850-4888-91e7-c47deead3ced
+      KV_NAMESPACE_ID: a3e9e78c7d554d7fa10996da9a89e7bc
+      R2_BUCKET: gnk-asg-media-assets
+      PDF_KEY: media-outreach/the-code-2026/GNK_DINAMO_THE_CODE_MEDIJSKI_MEMORANDUM_FINAL.pdf
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Read D1, KV and R2 state
+        shell: bash
+        run: |
+          set -euo pipefail
+          api="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/d1/database/$D1_DATABASE_ID/query"
+          query(){
+            local sql="$1" out="$2"
+            jq -n --arg sql "$sql" '{sql:$sql}' | curl -fsS -X POST "$api" \
+              -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+              -H 'Content-Type: application/json' --data-binary @- > "$out"
+            jq -e '.success == true' "$out" >/dev/null
+          }
+          query "SELECT COUNT(*) AS total, SUM(CASE WHEN email IS NOT NULL AND TRIM(email)<>'' THEN 1 ELSE 0 END) AS with_email, SUM(CASE WHEN automation_allowed=1 THEN 1 ELSE 0 END) AS automation_allowed, SUM(CASE WHEN approved=1 THEN 1 ELSE 0 END) AS approved, SUM(CASE WHEN sent_status='POSLANO' THEN 1 ELSE 0 END) AS sent FROM media_outreach_contacts" /tmp/contact-summary.json
+          query "SELECT COUNT(*) AS ready FROM media_outreach_contacts c LEFT JOIN media_outreach_contact_controls ctrl ON ctrl.mail_code=c.mail_code LEFT JOIN media_suppressions s ON LOWER(s.email)=LOWER(c.email) WHERE c.approved=1 AND c.automation_allowed=1 AND c.email<>'' AND s.email IS NULL AND ctrl.operational_status='READY'" /tmp/ready-summary.json
+          query "SELECT c.mail_code,c.outlet,c.email,c.country,c.language,c.priority,c.recipient_name,c.recipient_title,c.person_status,c.channel_status,c.note,c.approved,c.automation_allowed,ctrl.operational_status,ctrl.blocked_reason,ctrl.requires_personalization,ctrl.to_email,ctrl.cc_email FROM media_outreach_contacts c LEFT JOIN media_outreach_contact_controls ctrl ON ctrl.mail_code=c.mail_code LEFT JOIN media_suppressions s ON LOWER(s.email)=LOWER(c.email) WHERE c.email<>'' AND c.automation_allowed=1 AND s.email IS NULL ORDER BY CASE c.priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END,c.country,c.outlet" /tmp/candidates.json
+          query "SELECT LOWER(email) AS email,COUNT(*) AS count,GROUP_CONCAT(outlet,' | ') AS outlets FROM media_outreach_contacts WHERE email IS NOT NULL AND TRIM(email)<>'' GROUP BY LOWER(email) HAVING COUNT(*)>1 ORDER BY count DESC,email" /tmp/duplicates.json
+          query "SELECT status,COUNT(*) AS count FROM media_delivery_queue GROUP BY status ORDER BY status" /tmp/queue.json
+          query "SELECT recipient,subject,pdf_key,pdf_sha256,status,created_at FROM media_delivery_tests ORDER BY created_at DESC LIMIT 10" /tmp/tests.json
+
+          kv_get(){
+            local plain="$1" out="$2" encoded code
+            encoded=$(jq -rn --arg value "$plain" '$value|@uri')
+            code=$(curl -sS -o "$out" -w '%{http_code}' "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces/$KV_NAMESPACE_ID/values/$encoded" -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN")
+            if [ "$code" != '200' ]; then printf '{}' > "$out"; fi
+            jq empty "$out" 2>/dev/null || printf '{}' > "$out"
+          }
+          kv_get 'media-command-center:campaign:v1' /tmp/campaign.json
+          kv_get 'media-command-center:delivery-test:v1' /tmp/test-gate.json
+
+          cd workers/gnk-asg-direct-operator
+          if npx --yes wrangler@4 r2 object get "$R2_BUCKET/$PDF_KEY" --file=/tmp/media-campaign.pdf --remote; then
+            test "$(head -c 5 /tmp/media-campaign.pdf)" = '%PDF-'
+            stat -c %s /tmp/media-campaign.pdf > /tmp/pdf-size.txt
+            sha256sum /tmp/media-campaign.pdf | awk '{print $1}' > /tmp/pdf-sha.txt
+          else
+            printf '0' > /tmp/pdf-size.txt
+            printf '' > /tmp/pdf-sha.txt
+          fi
+
+      - name: Build audit report
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib, datetime
+          def rows(path):
+              raw=json.loads(pathlib.Path(path).read_text())
+              return ((raw.get('result') or [{}])[0].get('results') or [])
+          def obj(path):
+              try:return json.loads(pathlib.Path(path).read_text())
+              except:return {}
+          summary=(rows('/tmp/contact-summary.json') or [{}])[0]
+          ready=(rows('/tmp/ready-summary.json') or [{}])[0]
+          candidates=rows('/tmp/candidates.json')
+          duplicates=rows('/tmp/duplicates.json')
+          queue=rows('/tmp/queue.json')
+          tests=rows('/tmp/tests.json')
+          campaign=obj('/tmp/campaign.json')
+          gate=obj('/tmp/test-gate.json')
+          pdf_sha=pathlib.Path('/tmp/pdf-sha.txt').read_text().strip()
+          pdf_size=int(pathlib.Path('/tmp/pdf-size.txt').read_text().strip() or 0)
+          result={
+            'auditedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'contactsSummary':summary,
+            'readySummary':ready,
+            'automationCandidates':candidates,
+            'duplicateEmails':duplicates,
+            'queueSummary':queue,
+            'deliveryTests':tests,
+            'campaign':campaign,
+            'testGate':gate,
+            'pdf':{'key':'media-outreach/the-code-2026/GNK_DINAMO_THE_CODE_MEDIJSKI_MEMORANDUM_FINAL.pdf','sizeBytes':pdf_size,'sha256':pdf_sha,'valid':bool(pdf_size and pdf_sha),'campaignHashMatches':not campaign.get('pdfSha256') or campaign.get('pdfSha256')==pdf_sha,'testGateHashMatches':not gate.get('pdfSha256') or gate.get('pdfSha256')==pdf_sha}
+          }
+          reasons=[]
+          if not ready.get('ready'): reasons.append('no_approved_ready_contacts')
+          if gate.get('passed') is not True: reasons.append('valid_test_gate_missing')
+          if not result['pdf']['valid']: reasons.append('campaign_pdf_missing_or_invalid')
+          if not result['pdf']['campaignHashMatches']: reasons.append('campaign_pdf_hash_mismatch')
+          if not result['pdf']['testGateHashMatches']: reasons.append('test_gate_pdf_hash_mismatch')
+          if duplicates: reasons.append('duplicate_recipient_addresses')
+          result['productionReady']=not reasons
+          result['blockingReasons']=reasons
+          pathlib.Path('/tmp/audit.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+          summary_text=f"""Media Center readiness audit
+
+- Total contacts: **{summary.get('total',0)}**
+- With e-mail: **{summary.get('with_email',0)}**
+- Automation candidates: **{summary.get('automation_allowed',0)}**
+- Approved: **{summary.get('approved',0)}**
+- Operationally READY: **{ready.get('ready',0)}**
+- Previously sent: **{summary.get('sent',0)}**
+- PDF valid: **{result['pdf']['valid']}**
+- Test gate passed: **{gate.get('passed') is True}**
+- Duplicate addresses: **{len(duplicates)}**
+- Production ready: **{result['productionReady']}**
+- Blocking reasons: `{', '.join(reasons) or 'none'}`
+
+```json
+{json.dumps(result,ensure_ascii=False,indent=2)}
+```
+"""
+          pathlib.Path('/tmp/audit.md').write_text(summary_text)
+          PY
+
+      - name: Publish audit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 94 --repo "$GITHUB_REPOSITORY" --body-file /tmp/audit.md
