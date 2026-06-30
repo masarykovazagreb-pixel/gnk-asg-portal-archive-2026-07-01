@@ -47,7 +47,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         shell: bash
         run: |
-          set -euo pipefail
+          set -o pipefail
           npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee ../../deploy-media-html-v22-command.log
 
       - name: Verify production
@@ -100,11 +100,18 @@ jobs:
         run: |
           verify=$(cat verify-media-html-v22.txt 2>/dev/null || printf 'verification_not_reached')
           status=$(cat ops/media-html-v22/deploy-status.json 2>/dev/null || printf '{"ok":false}')
+          deploy_tail=$(tail -n 100 deploy-media-html-v22-command.log 2>/dev/null || printf 'deploy_log_not_available')
           {
             echo "## Media HTML V22 deploy — ${RESULT}"
             echo
             echo "Run: ${RUN_URL}"
             echo
+            echo '### Wrangler deploy'
+            echo '```text'
+            printf '%s\n' "$deploy_tail"
+            echo '```'
+            echo
+            echo '### Production verification'
             echo '```text'
             printf '%s\n' "$verify"
             echo '```'
