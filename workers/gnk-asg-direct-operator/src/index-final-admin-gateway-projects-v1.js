@@ -3,10 +3,11 @@ import {handleMediaProjects,VERSION as PROJECTS_VERSION} from './media-projects-
 import {handleMediaDelivery,processDeliveryQueue,VERSION as DELIVERY_VERSION,INTERNAL_TEST_PATH} from './media-outreach-delivery-v5.js';
 import {maybeSendOutreachReport,VERSION as REPORTING_VERSION} from './media-outreach-reporting-v1.js';
 import {withRequiredEmailSignature,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
+import {withFinalMediaMessage,VERSION as FINAL_MESSAGE_VERSION} from './media-outreach-final-message-v1.js';
 import {handleFreshMediaAdmin,withFreshMediaPersonalization,VERSION as FRESH_VERSION} from './media-fresh-admin-v1.js';
 import {handleMediaBootstrapEmail,withBootstrapPersonalization,VERSION as BOOTSTRAP_VERSION} from './media-bootstrap-email-v1.js';
 import {handleMediaBootstrapHtmlForwardEmail,VERSION as BOOTSTRAP_HTML_VERSION} from './media-bootstrap-html-forward-v1.js';
-export const VERSION=`GNK_ASG_FINAL_MEDIA_REPORTING_V1_TO_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_FINAL_MEDIA_ENGLISH_ONLY_V2_TO_${BASE_VERSION}`;
 const API='/api/media-command-center';
 const PUBLIC_MEMORANDUM='/api/media-registration/memorandum.pdf';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
@@ -15,7 +16,7 @@ const PROJECT_ENDPOINTS=new Set([`${API}/projects`,`${API}/project`,`${API}/proj
 const DELIVERY_ENDPOINTS=new Set([`${API}/campaign-html`,`${API}/campaign-html/preview`,`${API}/campaign-pdf`,`${API}/delivery-plan`,`${API}/delivery-status`,`${API}/test-email`,`${API}/queue-approved`,`${API}/dispatch-queue`]);
 const FRESH_ENDPOINTS=new Set([`${API}/fresh-status`,`${API}/fresh-reset`,`${API}/fresh-import`,`${API}/fresh-pdf-preview`,`${API}/fresh-message-preview`]);
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
-function activeEnv(env){return withBootstrapPersonalization(withRequiredEmailSignature(withFreshMediaPersonalization(env)));}
+function activeEnv(env){const safe=Object.create(env||null);Object.defineProperty(safe,'MEDIA_OUTREACH_LIVE',{value:'false',enumerable:true,configurable:true});return withFinalMediaMessage(withBootstrapPersonalization(withRequiredEmailSignature(withFreshMediaPersonalization(safe))));}
 async function publicMemorandum(request,env){
   if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{allow:'GET, HEAD','cache-control':'no-store'}});
   const kv=env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV;
@@ -47,6 +48,9 @@ function stamp(response){
   headers.set('x-gnk-asg-media-bootstrap',BOOTSTRAP_VERSION);
   headers.set('x-gnk-asg-media-bootstrap-html',BOOTSTRAP_HTML_VERSION);
   headers.set('x-gnk-asg-email-signature-contract',SIGNATURE_VERSION);
+  headers.set('x-gnk-asg-final-message',FINAL_MESSAGE_VERSION);
+  headers.set('x-gnk-asg-media-language','en');
+  headers.set('x-gnk-asg-media-outreach-build-lock','true');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
@@ -68,7 +72,7 @@ export default{
     if(path==='/data/portal-version.json'&&response.ok&&String(response.headers.get('content-type')||'').includes('application/json')){
       try{
         const payload=await response.clone().json(),headers=new Headers(response.headers);
-        response=new Response(JSON.stringify({...payload,finalMediaFresh:VERSION,mediaFresh:FRESH_VERSION,mediaDelivery:DELIVERY_VERSION,mediaReporting:REPORTING_VERSION,mediaProjects:PROJECTS_VERSION,mediaBootstrap:BOOTSTRAP_VERSION,mediaBootstrapHtml:BOOTSTRAP_HTML_VERSION,mediaOutreachBuildLock:false},null,2),{status:response.status,headers});
+        response=new Response(JSON.stringify({...payload,finalMediaFresh:VERSION,mediaFresh:FRESH_VERSION,mediaDelivery:DELIVERY_VERSION,mediaReporting:REPORTING_VERSION,mediaProjects:PROJECTS_VERSION,mediaBootstrap:BOOTSTRAP_VERSION,mediaBootstrapHtml:BOOTSTRAP_HTML_VERSION,finalMessageContract:FINAL_MESSAGE_VERSION,mediaLanguage:'en',mediaOutreachBuildLock:true},null,2),{status:response.status,headers});
       }catch{}
     }
     return stamp(response);
