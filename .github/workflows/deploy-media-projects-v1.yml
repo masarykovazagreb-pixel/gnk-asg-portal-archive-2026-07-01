@@ -9,6 +9,7 @@ on:
       - "apps/portal/assets/media-center-fresh-v1.css"
       - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-email-v1.js"
+      - "workers/gnk-asg-direct-operator/src/media-bootstrap-html-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
       - ".github/workflows/deploy-media-projects-v1.yml"
   push:
@@ -20,6 +21,7 @@ on:
       - "apps/portal/assets/media-center-fresh-v1.css"
       - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-email-v1.js"
+      - "workers/gnk-asg-direct-operator/src/media-bootstrap-html-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
       - ".github/workflows/deploy-media-projects-v1.yml"
   workflow_dispatch:
@@ -45,6 +47,7 @@ jobs:
           set -euo pipefail
           node --check workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-bootstrap-email-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-bootstrap-html-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check apps/portal/assets/media-center-fresh-v1.js
@@ -52,6 +55,7 @@ jobs:
           grep -q "fresh-reset" workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
           grep -q "campaign-html" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           grep -q "handleMediaBootstrapEmail" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          grep -q "handleMediaBootstrapHtmlEmail" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           grep -q "index-media-command-center-v20.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
   deploy:
     if: github.event_name != 'pull_request'
@@ -84,7 +88,7 @@ jobs:
             js_code=$(curl -sSL -o fresh.js -w '%{http_code}' "$base/assets/media-center-fresh-v1.js?cb=$stamp" || true)
             css_code=$(curl -sSL -o fresh.css -w '%{http_code}' "$base/assets/media-center-fresh-v1.css?cb=$stamp" || true)
             api_code=$(curl -sS -o api.json -w '%{http_code}' "$base/api/media-command-center/fresh-status?cb=$stamp" || true)
-            if [ "$version_code" = "200" ] && [ "$js_code" = "200" ] && [ "$css_code" = "200" ] && grep -q 'mediaBootstrap' version.json && grep -q 'fresh-message-preview' fresh.js && { [ "$api_code" = "401" ] || [ "$api_code" = "403" ]; }; then ready=true; break; fi
+            if [ "$version_code" = "200" ] && [ "$js_code" = "200" ] && [ "$css_code" = "200" ] && grep -q 'mediaBootstrapHtml' version.json && grep -q 'fresh-message-preview' fresh.js && { [ "$api_code" = "401" ] || [ "$api_code" = "403" ]; }; then ready=true; break; fi
             sleep 8
           done
           printf 'VERSION=%s JS=%s CSS=%s API=%s READY=%s\n' "$version_code" "$js_code" "$css_code" "$api_code" "$ready"
