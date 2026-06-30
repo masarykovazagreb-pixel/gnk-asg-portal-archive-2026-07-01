@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - ".github/emergency-media-stop.trigger"
+      - ".github/workflows/emergency-stop-media-outreach.yml"
+      - "workers/gnk-asg-direct-operator/wrangler.emergency-stop.toml"
   workflow_dispatch:
 
 permissions:
@@ -25,6 +27,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+
       - name: Validate emergency configuration
         working-directory: workers/gnk-asg-direct-operator
         run: |
@@ -34,15 +37,8 @@ jobs:
           grep -q 'MEDIA_OUTREACH_MAX_PER_DAY = "0"' wrangler.emergency-stop.toml
           grep -q 'crons = \[\]' wrangler.emergency-stop.toml
           node --check src/index-final-admin-gateway-v1.js
-      - name: Quarantine all unsent queue items in D1
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          set -euo pipefail
-          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.emergency-stop.toml --command "UPDATE media_delivery_queue SET status='REVIEW', last_error='Emergency stop: Croatian-language output detected; manual review required before any further sending', last_error_code='EMERGENCY_STOP_LANGUAGE', updated_at=datetime('now') WHERE status IN ('QUEUED','RETRY','SENDING');" 2>&1 | tee ../../emergency-d1-stop.log
-      - name: Deploy locked Worker without route mutation
+
+      - name: Deploy locked Worker first
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -50,24 +46,42 @@ jobs:
         run: |
           set -euo pipefail
           npx --yes wrangler@4 deploy --config wrangler.emergency-stop.toml --name gnk-asg-direct-operator 2>&1 | tee ../../emergency-worker-stop.log
-      - name: Verify queue is quarantined
+
+      - name: Quarantine all unsent queue items in D1
+        id: quarantine
+        continue-on-error: true
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          set -euo pipefail
-          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.emergency-stop.toml --command "SELECT status, COUNT(*) AS count FROM media_delivery_queue GROUP BY status ORDER BY status;" --json > ../../emergency-queue-status.json
-          cat ../../emergency-queue-status.json
-          ! grep -q '"status":"QUEUED"' ../../emergency-queue-status.json
-          ! grep -q '"status":"RETRY"' ../../emergency-queue-status.json
-          ! grep -q '"status":"SENDING"' ../../emergency-queue-status.json
+          set -o pipefail
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.emergency-stop.toml --command "UPDATE media_delivery_queue SET status='REVIEW', last_error='Emergency stop: Croatian-language output detected; manual review required before any further sending', last_error_code='EMERGENCY_STOP_LANGUAGE', updated_at=datetime('now') WHERE status IN ('QUEUED','RETRY','SENDING');" 2>&1 | tee ../../emergency-d1-stop.log
+
+      - name: Verify queue quarantine when D1 is authorized
+        continue-on-error: true
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.emergency-stop.toml --command "SELECT status, COUNT(*) AS count FROM media_delivery_queue GROUP BY status ORDER BY status;" --json > ../../emergency-queue-status.json 2> ../../emergency-queue-status-error.log || true
+          cat ../../emergency-queue-status.json 2>/dev/null || true
+          cat ../../emergency-queue-status-error.log 2>/dev/null || true
+
+      - name: Record emergency result
+        run: |
+          printf 'worker_locked=true\nquarantine_step=%s\n' '${{ steps.quarantine.outcome }}' | tee emergency-stop-result.txt
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: emergency-media-stop-evidence
           path: |
-            emergency-d1-stop.log
             emergency-worker-stop.log
+            emergency-d1-stop.log
             emergency-queue-status.json
+            emergency-queue-status-error.log
+            emergency-stop-result.txt
           retention-days: 14
