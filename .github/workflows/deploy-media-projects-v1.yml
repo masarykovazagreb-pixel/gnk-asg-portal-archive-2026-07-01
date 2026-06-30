@@ -45,7 +45,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check apps/portal/assets/media-center-fresh-v1.js
-          grep -q "fresh-message-preview" apps/portal/media-command-center/index.html
+          grep -q 'id="messagePreview"' apps/portal/media-command-center/index.html
           grep -q "fresh-reset" workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
           grep -q "campaign-html" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           grep -q "index-media-command-center-v20.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
