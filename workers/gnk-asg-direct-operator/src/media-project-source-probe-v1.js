@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_MEDIA_PROJECT_SOURCE_PROBE_V1_20260630_R3';
+export const VERSION='GNK_ASG_MEDIA_PROJECT_SOURCE_PROBE_V1_20260630_R4';
 export const PROBE_PATH='/api/internal/media-project-source-c2321439a66f014391497b41ee7f054b';
 const PROBE_KEY='FG9tj5MOJRicXrcfrUE6_-JHV9El9GFE';
 const clean=value=>String(value??'').trim();
