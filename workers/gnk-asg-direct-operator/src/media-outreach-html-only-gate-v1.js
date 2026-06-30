@@ -29,8 +29,11 @@ function wrapKv(binding){
   if(!binding||typeof binding.get!=='function')return binding;
   return new Proxy(binding,{
     get(target,property,receiver){
-      if(property==='get')return async(key,...args)=>normalizeRead(await target.get(key,...args));
-      if(property==='put')return async(key,value,...args)=>target.put(key===TEST_GATE_KEY?key:key,key===TEST_GATE_KEY?normalizeWrite(value):value,...args);
+      if(property==='get')return async(key,...args)=>{
+        const value=await target.get(key,...args);
+        return key===TEST_GATE_KEY?normalizeRead(value):value;
+      };
+      if(property==='put')return async(key,value,...args)=>target.put(key,key===TEST_GATE_KEY?normalizeWrite(value):value,...args);
       const member=Reflect.get(target,property,receiver);
       return typeof member==='function'?member.bind(target):member;
     }
