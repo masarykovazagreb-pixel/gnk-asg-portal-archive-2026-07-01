@@ -43,24 +43,38 @@ const replacements=[
   [/provjereno/gi,'checked'],
   [/nije učitan/gi,'has not been loaded'],
   [/nije pronađen/gi,'was not found'],
-  [/PREVIEW PRIJE SLANJA/gi,'PRE-SEND PREVIEW']
+  [/PREVIEW PRIJE SLANJA/gi,'FINAL PRE-SEND PREVIEW']
 ];
-function translate(value){
-  let text=String(value??'');
-  for(const [pattern,replacement] of replacements)text=text.replace(pattern,replacement);
-  return text;
-}
+function translate(value){let text=String(value??'');for(const [pattern,replacement] of replacements)text=text.replace(pattern,replacement);return text;}
 function translateNode(node){
   if(node.nodeType===Node.TEXT_NODE){const next=translate(node.nodeValue);if(next!==node.nodeValue)node.nodeValue=next;return;}
   if(node.nodeType!==Node.ELEMENT_NODE)return;
   if(node.matches('input[placeholder]'))node.placeholder=translate(node.placeholder);
   if(node.matches('input[value]')&&node.type!=='email'&&node.type!=='file')node.value=translate(node.value);
-  if(node.matches('pre,.fresh-notice,.delivery-status,.fresh-state')){
-    const next=translate(node.textContent);if(next!==node.textContent)node.textContent=next;
-  }
+  if(node.matches('pre,.fresh-notice,.delivery-status,.fresh-state')){const next=translate(node.textContent);if(next!==node.textContent)node.textContent=next;}
   node.childNodes.forEach(translateNode);
 }
-function run(){translateNode(document.body);document.documentElement.lang='en';}
-const observer=new MutationObserver(records=>{for(const record of records){record.addedNodes.forEach(translateNode);if(record.type==='characterData')translateNode(record.target);}});
+function applyHtmlOnlyMode(){
+  document.documentElement.lang='en';
+  const sendTest=document.getElementById('sendTest');if(sendTest)sendTest.textContent='SEND HTML-ONLY CONTROL TEST';
+  const openPdf=document.getElementById('openPdf');if(openPdf)openPdf.hidden=true;
+  document.querySelectorAll('article.fresh-card').forEach(card=>{
+    const heading=card.querySelector('h2');
+    const title=String(heading?.textContent||'').trim();
+    if(/PDF attachment/i.test(title)){card.hidden=true;return;}
+    if(/^4\.\s*Recipient preview/i.test(title))heading.textContent='3. Recipient preview';
+    if(/^5\.\s*Test and controlled delivery/i.test(title))heading.textContent='4. Test and controlled delivery';
+  });
+  document.querySelectorAll('#freshKpis > div').forEach(item=>{if(/^PDF$/i.test(String(item.querySelector('small')?.textContent||'').trim()))item.hidden=true;});
+  const hero=document.querySelector('.fresh-hero p');if(hero)hero.textContent='Strict English-only HTML delivery with one greeting, no PDF and no other attachments.';
+  if(!document.getElementById('htmlOnlyModeNotice')){
+    const notice=document.createElement('section');
+    notice.id='htmlOnlyModeNotice';notice.className='fresh-notice';
+    notice.textContent='HTML-ONLY MODE — Production delivery is paused until the final preview and control test are approved. Subject: CODE. Attachments: NONE.';
+    const anchor=document.getElementById('freshNotice');anchor?.parentNode?.insertBefore(notice,anchor?.nextSibling||null);
+  }
+}
+function run(){translateNode(document.body);applyHtmlOnlyMode();}
+const observer=new MutationObserver(records=>{for(const record of records){record.addedNodes.forEach(translateNode);if(record.type==='characterData')translateNode(record.target);}applyHtmlOnlyMode();});
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',()=>{run();observer.observe(document.body,{subtree:true,childList:true,characterData:true});},{once:true}):(()=>{run();observer.observe(document.body,{subtree:true,childList:true,characterData:true});})();
 })();
