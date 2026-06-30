@@ -1,0 +1,116 @@
+name: Deploy Media HTML V22 by command
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: deploy-media-html-v22-command
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event.issue.number == 131 && github.event.comment.body == '/deploy-media-html-v22'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate Media HTML chain
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-v5.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v22.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
+          node --check apps/portal/assets/media-outreach-delivery-ui-v4.js
+          grep -q "index-media-command-center-v22.js" workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
+          grep -q "campaign-html/preview" workers/gnk-asg-direct-operator/src/index-media-command-center-v22.js
+          grep -q "html:htmlBody" workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
+
+      - name: Deploy Cloudflare Worker
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee ../../deploy-media-html-v22-command.log
+
+      - name: Verify production
+        id: verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg.hr"
+          ready=false
+          for attempt in $(seq 1 24); do
+            stamp=$(date +%s%N)
+            version_code=$(curl -sSL -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
+            ui_code=$(curl -sSL -o delivery-ui.js -w '%{http_code}' "$base/assets/media-outreach-delivery-ui-v4.js?cb=$stamp" || true)
+            api_code=$(curl -sS -o campaign-html.json -w '%{http_code}' "$base/api/media-command-center/campaign-html?cb=$stamp" || true)
+            if [ "$version_code" = "200" ] && [ "$ui_code" = "200" ] && grep -q 'mediaCommandWrapperV22' version.json && grep -q '__GNK_ASG_MEDIA_DELIVERY_UI_V4__' delivery-ui.js && { [ "$api_code" = "401" ] || [ "$api_code" = "403" ]; }; then
+              ready=true
+              break
+            fi
+            sleep 10
+          done
+          printf 'VERSION_HTTP=%s UI_HTTP=%s API_HTTP=%s READY=%s\n' "$version_code" "$ui_code" "$api_code" "$ready" | tee verify-media-html-v22.txt
+          test "$ready" = "true"
+          mkdir -p ops/media-html-v22
+          node - <<'JS'
+          const fs=require('fs');
+          const version=JSON.parse(fs.readFileSync('version.json','utf8'));
+          const status={ok:true,deployedAt:new Date().toISOString(),workflowRun:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,mediaCommandWrapperV22:version.mediaCommandWrapperV22||'',mediaDelivery:version.mediaDelivery||'',htmlUi:'GNK_ASG_MEDIA_DELIVERY_UI_V4',campaignHtmlApi:'AUTH_PROTECTED'};
+          fs.writeFileSync('ops/media-html-v22/deploy-status.json',JSON.stringify(status,null,2)+'\n');
+          JS
+
+      - name: Commit successful status
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "GNK ASG Deploy Bot"
+          git config user.email "it@gnk-asg.hr"
+          git add ops/media-html-v22/deploy-status.json
+          git commit -m "Record successful Media HTML v22 deployment [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Report result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULT: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          verify=$(cat verify-media-html-v22.txt 2>/dev/null || printf 'verification_not_reached')
+          status=$(cat ops/media-html-v22/deploy-status.json 2>/dev/null || printf '{"ok":false}')
+          {
+            echo "## Media HTML V22 deploy — ${RESULT}"
+            echo
+            echo "Run: ${RUN_URL}"
+            echo
+            echo '```text'
+            printf '%s\n' "$verify"
+            echo '```'
+            echo
+            echo '```json'
+            printf '%s\n' "$status"
+            echo '```'
+          } > /tmp/media-html-v22-report.md
+          gh issue comment 131 --repo "$GITHUB_REPOSITORY" --body-file /tmp/media-html-v22-report.md
