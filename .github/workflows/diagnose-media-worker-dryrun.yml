@@ -31,14 +31,24 @@ jobs:
           echo "WRANGLER_EXIT_CODE=$code"
           tail -n 100 /tmp/wrangler-dry-run.log
           exit $code
-      - name: Capture latest push deploy runs
+      - name: Capture failed push deploy details
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/deploy-media-source-push-v2.yml/runs?per_page=10" > push-deploy-runs.json
-          jq -r '.workflow_runs[] | [.id,.status,.conclusion,.head_sha,.created_at] | @tsv' push-deploy-runs.json
+          run_id=$(jq -r '.workflow_runs[] | select(.conclusion=="failure") | .id' push-deploy-runs.json | head -n 1)
+          test -n "$run_id"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/jobs?per_page=100" > push-deploy-jobs.json
+          job_id=$(jq -r '.jobs[] | select(.name=="deploy") | .id' push-deploy-jobs.json | head -n 1)
+          test -n "$job_id"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/jobs/${job_id}/logs" > push-deploy-job.log
+          tail -n 140 push-deploy-job.log
       - uses: actions/upload-artifact@v4
         with:
-          name: media-push-deploy-runs
-          path: push-deploy-runs.json
+          name: media-push-deploy-diagnostics
+          path: |
+            push-deploy-runs.json
+            push-deploy-jobs.json
+            push-deploy-job.log
           retention-days: 3
