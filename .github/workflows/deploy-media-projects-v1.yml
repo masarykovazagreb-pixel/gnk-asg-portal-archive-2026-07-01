@@ -5,6 +5,11 @@ on:
     branches: [main]
     paths:
       - ".github/media-projects-v1.trigger"
+      - "apps/portal/media-command-center/index.html"
+      - "apps/portal/assets/media-center-fresh-v1.js"
+      - "apps/portal/assets/media-center-fresh-v1.css"
+      - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
   workflow_dispatch:
 
 permissions:
