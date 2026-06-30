@@ -1,0 +1,10 @@
+export const VERSION='GNK_ASG_MEDIA_OUTREACH_FINAL_MESSAGE_V1_20260630';
+const clean=value=>String(value??'').trim();
+function senderEmail(payload={}){const from=payload.from;if(from&&typeof from==='object')return clean(from.email).toLowerCase();const raw=clean(from);const match=raw.match(/<([^>]+)>/);return clean(match?.[1]||raw).toLowerCase();}
+function isMedia(payload={}){const headers=payload.headers||{};return senderEmail(payload)==='media@gnk-asg.hr'||Boolean(headers['X-GNK-Delivery-Version']||headers['x-gnk-delivery-version']);}
+function outletFromText(text=''){const source=String(text||'');const match=source.match(/For the attention of[^,\n]*,\s*([^\n]+)/i);const outlet=clean(match?.[1]).replace(/[.\s]+$/,'');if(!outlet||outlet.length>100||/editorial desk|editor-in-chief/i.test(outlet))return'';return outlet;}
+function greeting(text=''){const outlet=outletFromText(text);return outlet?`Dear ${outlet} Editorial Team,`:'Dear Editorial Team,';}
+function replaceHtmlGreeting(html,text){const nextGreeting=greeting(text);let value=String(html||'');const paragraph=/<p\b([^>]*)>\s*Dear[\s\S]{0,120}?,\s*<\/p>/i;if(paragraph.test(value))return value.replace(paragraph,`<p$1>${nextGreeting}</p>`);return value.replace(/Dear\s+Redakcija\s*\/\s*news\s*desk,/i,nextGreeting).replace(/Dear\s+Editor,/i,nextGreeting);}
+function replaceTextGreeting(text){const source=String(text||'');const nextGreeting=greeting(source);return source.replace(/^\s*Dear[^\n]{0,120},/i,nextGreeting);}
+export function finalizeMediaPayload(payload={}){if(!isMedia(payload))return payload;return{...payload,subject:'CODE',text:replaceTextGreeting(payload.text),html:replaceHtmlGreeting(payload.html,payload.text),headers:{...(payload.headers||{}),'X-GNK-ASG-Final-Message':VERSION}};}
+export function withFinalMediaMessage(env){const binding=env?.EMAIL;if(!binding||typeof binding.send!=='function')return env;const wrapped=Object.create(env||null);Object.defineProperty(wrapped,'EMAIL',{enumerable:true,configurable:true,value:{send(payload){return binding.send.call(binding,finalizeMediaPayload(payload));}}});return wrapped;}
