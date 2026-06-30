@@ -1,0 +1,53 @@
+name: Diagnose Fresh Media Validation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/diagnose-fresh-media-validation.yml"
+      - "apps/portal/media-command-center/index.html"
+      - "apps/portal/assets/media-center-fresh-v1.js"
+      - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run each validation separately
+        run: |
+          set +e
+          : > validation-results.txt
+          run_check() {
+            name="$1"
+            shift
+            "$@" > output.txt 2>&1
+            code=$?
+            printf '%s=%s\n' "$name" "$code" >> validation-results.txt
+            if [ -s output.txt ]; then
+              printf '%s_OUTPUT_BEGIN\n' "$name" >> validation-results.txt
+              cat output.txt >> validation-results.txt
+              printf '\n%s_OUTPUT_END\n' "$name" >> validation-results.txt
+            fi
+          }
+          run_check media_fresh_js node --check workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
+          run_check gateway_projects_js node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          run_check final_gateway_js node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          run_check fresh_ui_js node --check apps/portal/assets/media-center-fresh-v1.js
+          run_check html_preview_marker grep -q "fresh-message-preview" apps/portal/media-command-center/index.html
+          run_check backend_reset_marker grep -q "fresh-reset" workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
+          run_check delivery_upload_marker grep -q "campaign-html" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          run_check active_base_marker grep -q "index-media-command-center-v20.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          cat validation-results.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fresh-media-validation-results
+          path: validation-results.txt
+          retention-days: 14
