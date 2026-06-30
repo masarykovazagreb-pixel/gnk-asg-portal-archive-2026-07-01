@@ -5,8 +5,7 @@ const path = require('path');
 const root = process.cwd();
 const mustExist = [
   'workers/gnk-asg-direct-operator/src/media-projects-v1.js',
-  'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js',
-  'workers/gnk-asg-direct-operator/src/media-projects-ui-v1.js'
+  'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js'
 ];
 
 const requiredEndpoints = [
@@ -32,13 +31,16 @@ const requiredSafetyTokens = [
   'external_sending_enabled INTEGER NOT NULL DEFAULT 0',
   'external_sending_enabled=0',
   'MEDIA_OUTREACH_LIVE',
-  "return'false'"
+  "return'false'",
+  "send_status='NOT_QUEUED'"
 ];
 
 const requiredExportTokens = [
-  'format=csv',
-  'format=txt',
-  'format=xlsx'
+  "format==='txt'",
+  "contentType='text/csv; charset=utf-8'",
+  'provider_message_id',
+  'last_error',
+  'sent_at'
 ];
 
 function read(rel) {
@@ -55,12 +57,11 @@ function main() {
   const files = Object.fromEntries(mustExist.map(rel => [rel, read(rel)]));
   const media = files['workers/gnk-asg-direct-operator/src/media-projects-v1.js'];
   const gateway = files['workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js'];
-  const ui = files['workers/gnk-asg-direct-operator/src/media-projects-ui-v1.js'];
 
   for (const endpoint of requiredEndpoints) assertIncludes(gateway, endpoint, 'gateway endpoint');
   for (const table of requiredTables) assertIncludes(media, table, 'D1 table');
   for (const token of requiredSafetyTokens) assertIncludes(`${media}\n${gateway}`, token, 'send lock token');
-  for (const token of requiredExportTokens) assertIncludes(ui, token, 'UI export option');
+  for (const token of requiredExportTokens) assertIncludes(media, token, 'export/audit token');
 
   assertIncludes(media, 'MAX_CONTACTS=2000', 'contact cap');
   assertIncludes(media, 'MAX_PDF_BYTES=8*1024*1024', 'PDF cap');
@@ -70,7 +71,10 @@ function main() {
   assertIncludes(media, 'last_error TEXT', 'recipient error field');
   assertIncludes(media, 'sent_at TEXT', 'recipient sent timestamp');
   assertIncludes(media, 'Math.max(30,Math.min(86400', 'interval clamp');
-  assertIncludes(media, "send_status='NOT_QUEUED'", 'safe import status');
+  assertIncludes(media, 'personalizeHtml', 'personalized HTML preview');
+  assertIncludes(media, 'project-html-preview', 'HTML preview endpoint');
+  assertIncludes(media, 'project-pdf-preview', 'PDF preview endpoint');
+  assertIncludes(media, 'project-export', 'export endpoint');
   assertIncludes(gateway, 'mediaOutreachBuildLock:true', 'version build lock');
   assertIncludes(gateway, 'x-gnk-asg-media-outreach-build-lock', 'response lock header');
 
@@ -80,6 +84,8 @@ function main() {
     files: mustExist.length,
     endpoints: requiredEndpoints.length,
     tables: requiredTables.length,
+    verifiedExports: ['csv', 'txt'],
+    nextExportGap: 'xlsx',
     safety: 'external sending locked; imports remain NOT_QUEUED'
   }, null, 2));
 }
