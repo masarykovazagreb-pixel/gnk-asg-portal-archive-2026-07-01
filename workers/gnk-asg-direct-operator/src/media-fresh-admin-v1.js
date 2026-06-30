@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_MEDIA_FRESH_ADMIN_V1_20260630_STRICT_ENGLISH_GREETING_HOTFIX';
+export const VERSION='GNK_ASG_MEDIA_FRESH_ADMIN_V1_20260630_STRICT_ENGLISH_GREETING_DEDUP';
 const API='/api/media-command-center';
 const clean=value=>String(value??'').trim();
 const now=()=>new Date().toISOString();
@@ -22,13 +22,20 @@ async function importContacts(request,env){let body={};try{body=await request.js
 async function campaign(env){const kv=kvOf(env);if(!kv)return{};try{const raw=await kv.get('media-command-center:campaign:v1');return raw?JSON.parse(raw):{};}catch{return{};}}
 async function status(env){const db=await ensureCore(env),count=Number((await db.prepare(`SELECT COUNT(*) AS count FROM media_outreach_contacts`).first())?.count||0),ready=Number((await db.prepare(`SELECT COUNT(*) AS count FROM media_outreach_contact_controls WHERE operational_status='READY'`).first())?.count||0),contacts=(await db.prepare(`SELECT mail_code,priority,country,outlet,recipient_name,email,sent_status,note FROM media_outreach_contacts ORDER BY CASE priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END,id LIMIT 500`).all()).results||[],queueRows=(await db.prepare(`SELECT status,COUNT(*) AS count FROM media_delivery_queue GROUP BY status`).all()).results||[],cfg=await campaign(env);return json({ok:true,version:VERSION,contacts:{total:count,ready,items:contacts.map(row=>({mailCode:row.mail_code,priority:row.priority,country:row.country,outlet:row.outlet,recipient:row.recipient_name,email:row.email,sentStatus:row.sent_status,note:row.note}))},assets:{html:Boolean(cfg.htmlR2Key),htmlFilename:cfg.htmlFilename||'',htmlSha256:cfg.htmlSha256||'',pdf:Boolean(cfg.pdfR2Key),pdfFilename:cfg.pdfFilename||'',pdfSha256:cfg.pdfSha256||''},queue:Object.fromEntries(queueRows.map(row=>[row.status,Number(row.count)]))});}
 async function pdfPreview(env){const cfg=await campaign(env),key=clean(cfg.pdfR2Key),bucket=bucketOf(env);if(!key||!bucket?.get)return new Response('PDF nije učitan',{status:404});const object=await bucket.get(key);if(!object)return new Response('PDF nije pronađen',{status:404});return new Response(object.body,{status:200,headers:{'content-type':'application/pdf','content-disposition':`inline; filename="${clean(cfg.pdfFilename)||'memorandum.pdf'}"`,'cache-control':'no-store','x-content-type-options':'nosniff'}});}
-function personalizedGreeting(row){const person=clean(row?.recipient_name);if(person&&!/editor|desk|redakc|newsroom|kontakt/i.test(person))return`Dear ${escapeHtml(person)},`;return`Dear ${escapeHtml(row?.outlet||'Editorial')} Editorial Team,`;}
+function personalizedGreeting(row){
+ const person=clean(row?.recipient_name);
+ if(person&&!/editor|desk|redakc|newsroom|kontakt/i.test(person))return`Dear ${escapeHtml(person)},`;
+ const outlet=clean(row?.outlet);
+ if(!outlet||/^editorial(?:\s+(?:team|desk))?$/i.test(outlet))return'Dear Editorial Team,';
+ return`Dear ${escapeHtml(outlet)} Editorial Team,`;
+}
 function forceEnglishGreeting(html,row){
  const greeting=personalizedGreeting(row).replace(/<[^>]+>/g,'');
- let output=String(html||'');
+ let output=String(html||'').replace(/Dear\s+Editorial\s+Editorial\s+Team\s*,?/gi,'Dear Editorial Team,');
  const patterns=[
   /Dear\s+Uredni(?:č|&#269;|&ccaron;)ki\s+ili\s+organizacijski\s+kontakt\s*,?/i,
   /Dear\s+Urednicki\s+ili\s+organizacijski\s+kontakt\s*,?/i,
+  /Dear\s+Editorial\s+Editorial\s+Team\s*,?/i,
   /Dear\s+Editor\s*,?/i,
   /Poštovani\s+urednički\s+ili\s+organizacijski\s+kontakt\s*,?/i,
   /Postovani\s+urednicki\s+ili\s+organizacijski\s+kontakt\s*,?/i
