@@ -7,11 +7,16 @@ on:
       - "apps/portal/media-command-center/index.html"
       - "apps/portal/assets/media-center-fresh-v1.js"
       - "apps/portal/assets/media-center-fresh-v1.css"
+      - "apps/portal/assets/media-center-delivery-history-v2.js"
+      - "apps/portal/assets/media-center-delivery-history-v2.css"
       - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
+      - "workers/gnk-asg-direct-operator/src/media-outreach-delivery-v5.js"
+      - "workers/gnk-asg-direct-operator/src/media-outreach-english-guard-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-email-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-html-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-html-forward-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
       - ".github/workflows/deploy-media-projects-v1.yml"
   push:
     branches: [main]
@@ -20,11 +25,16 @@ on:
       - "apps/portal/media-command-center/index.html"
       - "apps/portal/assets/media-center-fresh-v1.js"
       - "apps/portal/assets/media-center-fresh-v1.css"
+      - "apps/portal/assets/media-center-delivery-history-v2.js"
+      - "apps/portal/assets/media-center-delivery-history-v2.css"
       - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
+      - "workers/gnk-asg-direct-operator/src/media-outreach-delivery-v5.js"
+      - "workers/gnk-asg-direct-operator/src/media-outreach-english-guard-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-email-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-html-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-html-forward-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
       - ".github/workflows/deploy-media-projects-v1.yml"
   workflow_dispatch:
 
@@ -48,14 +58,20 @@ jobs:
         run: |
           set -euo pipefail
           node --check workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-v5.js
+          node --check workers/gnk-asg-direct-operator/src/media-outreach-english-guard-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-bootstrap-email-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-bootstrap-html-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-bootstrap-html-forward-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check apps/portal/assets/media-center-fresh-v1.js
+          node --check apps/portal/assets/media-center-delivery-history-v2.js
           grep -q 'id="messagePreview"' apps/portal/media-command-center/index.html
+          grep -q 'id="deliveryHistoryBody"' apps/portal/media-command-center/index.html
           grep -q "fresh-reset" workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
+          grep -q "delivery-history" workers/gnk-asg-direct-operator/src/media-outreach-delivery-v5.js
+          grep -q "withEnglishGreetingGuard" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           grep -q "campaign-html" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           grep -q "handleMediaBootstrapEmail" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           grep -q "handleMediaBootstrapHtmlForwardEmail" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
@@ -90,11 +106,14 @@ jobs:
             version_code=$(curl -sSL -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
             js_code=$(curl -sSL -o fresh.js -w '%{http_code}' "$base/assets/media-center-fresh-v1.js?cb=$stamp" || true)
             css_code=$(curl -sSL -o fresh.css -w '%{http_code}' "$base/assets/media-center-fresh-v1.css?cb=$stamp" || true)
+            history_js_code=$(curl -sSL -o history.js -w '%{http_code}' "$base/assets/media-center-delivery-history-v2.js?cb=$stamp" || true)
+            history_css_code=$(curl -sSL -o history.css -w '%{http_code}' "$base/assets/media-center-delivery-history-v2.css?cb=$stamp" || true)
             api_code=$(curl -sS -o api.json -w '%{http_code}' "$base/api/media-command-center/fresh-status?cb=$stamp" || true)
-            if [ "$version_code" = "200" ] && [ "$js_code" = "200" ] && [ "$css_code" = "200" ] && grep -q 'mediaBootstrapHtml' version.json && grep -q 'fresh-message-preview' fresh.js && { [ "$api_code" = "401" ] || [ "$api_code" = "403" ]; }; then ready=true; break; fi
+            history_api_code=$(curl -sS -o history-api.json -w '%{http_code}' "$base/api/media-command-center/delivery-history?cb=$stamp" || true)
+            if [ "$version_code" = "200" ] && [ "$js_code" = "200" ] && [ "$css_code" = "200" ] && [ "$history_js_code" = "200" ] && [ "$history_css_code" = "200" ] && grep -q 'mediaBootstrapHtml' version.json && grep -q 'fresh-message-preview' fresh.js && grep -q 'delivery-history' history.js && { [ "$api_code" = "401" ] || [ "$api_code" = "403" ]; } && { [ "$history_api_code" = "401" ] || [ "$history_api_code" = "403" ]; }; then ready=true; break; fi
             sleep 8
           done
-          printf 'VERSION=%s JS=%s CSS=%s API=%s READY=%s\n' "$version_code" "$js_code" "$css_code" "$api_code" "$ready"
+          printf 'VERSION=%s JS=%s CSS=%s HISTORY_JS=%s HISTORY_CSS=%s API=%s HISTORY_API=%s READY=%s\n' "$version_code" "$js_code" "$css_code" "$history_js_code" "$history_css_code" "$api_code" "$history_api_code" "$ready"
           cat version.json
           test "$ready" = "true"
       - uses: actions/upload-artifact@v4
@@ -106,5 +125,8 @@ jobs:
             version.json
             fresh.js
             fresh.css
+            history.js
+            history.css
             api.json
+            history-api.json
           retention-days: 14
