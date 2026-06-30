@@ -1,11 +1,12 @@
 import app from './index-mail-studio-bridge-v15.js';
 
-export const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V17_20260630_ENGLISH_V24';
-const CORE='/assets/mail-studio-english-v23.js?v=20260630-5';
-const HISTORY='/assets/delivery-history-dashboard-v3.js?v=20260630-5';
+export const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V17_20260630_ENGLISH_V25_INBOX';
+const CORE='/assets/mail-studio-english-v23.js?v=20260630-6';
+const HISTORY='/assets/delivery-history-dashboard-v3.js?v=20260630-6';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const isMail=path=>path==='/mail-studio'||path.startsWith('/mail-studio/')||path==='/mail-studio-pro'||path.startsWith('/mail-studio-pro/');
 const isMailApi=path=>path==='/api/admin-mail-send'||path.startsWith('/api/studio-message/')||path.startsWith('/api/mail-center/');
+const isInboxApi=path=>path==='/api/studio-message/inbox'||path==='/api/mail-center/inbox';
 const CROATIAN=/\b(poštovani|postovani|poštovana|postovana|predmet|prijava|redakcija|mediji|akreditacija|poziv|odgovor|potvrda|upit|poruka|poruke|slanje|vijesti|direktor|osobni|urednički|urednicki|hvala|molimo|zaprimili|zaprimljena|primitak|vezano|vašu|vasu|najkraćem|najkracem|srdačan|srdacan|pozdrav|poštovanjem|postovanjem|obavijestite|pošiljatelja|posiljatelja)\b/i;
 const SENDER_NAMES=new Map([
   ['office@gnk-asg.hr','GNK ASG Office'],
@@ -24,6 +25,8 @@ const RESPONSE_REPLACEMENTS=[
 ];
 
 function clean(value){return String(value??'').trim();}
+function dbOf(env){return env?.GNK_ASG_D1||null;}
+function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-bridge-v17':VERSION}});}
 function senderIdentity(from){
   if(from&&typeof from==='object')return{email:clean(from.email).toLowerCase(),name:clean(from.name)};
   const raw=clean(from),match=raw.match(/^(.*?)\s*<([^>]+)>$/);
@@ -51,16 +54,7 @@ function normalizeOutbound(payload={}){
   if(!visibleText){const error=new Error('Email body is required');error.code='EMAIL_BODY_REQUIRED';throw error;}
   if(CROATIAN.test(visibleText)){const error=new Error('Email body must be written in English');error.code='EMAIL_BODY_NOT_ENGLISH';throw error;}
   const email=identity.email||'info@gnk-asg.hr';
-  return{
-    ...payload,
-    from:{email,name:SENDER_NAMES.get(email)||'GNK ASG'},
-    subject,
-    text,
-    plainText:text,
-    html,
-    bodyHtml:html,
-    headers:{...(payload.headers||{}),'X-GNK-ASG-Mail-Language':'ENGLISH_ONLY','X-GNK-ASG-Mail-Studio-Bridge':VERSION}
-  };
+  return{...payload,from:{email,name:SENDER_NAMES.get(email)||'GNK ASG'},subject,text,plainText:text,html,bodyHtml:html,headers:{...(payload.headers||{}),'X-GNK-ASG-Mail-Language':'ENGLISH_ONLY','X-GNK-ASG-Mail-Studio-Bridge':VERSION}};
 }
 function withEnglishMailHeaders(env){
   const binding=env?.EMAIL;
@@ -69,18 +63,59 @@ function withEnglishMailHeaders(env){
   Object.defineProperty(wrapped,'EMAIL',{enumerable:true,configurable:true,value:{send(payload){return binding.send.call(binding,normalizeOutbound(payload));}}});
   return wrapped;
 }
+async function ensureInbox(env){
+  const db=dbOf(env);if(!db?.prepare)return null;
+  await db.prepare(`CREATE TABLE IF NOT EXISTS manual_mail_inbox(
+    id TEXT PRIMARY KEY,message_id TEXT,from_email TEXT,to_email TEXT,subject TEXT,received_at TEXT,status TEXT NOT NULL DEFAULT 'RECEIVED'
+  )`).run();
+  await db.prepare(`CREATE INDEX IF NOT EXISTS idx_manual_mail_inbox_received ON manual_mail_inbox(received_at DESC)`).run();
+  return db;
+}
+function header(message,name){try{return clean(message?.headers?.get?.(name));}catch{return'';}}
+async function storeInbound(message,env){
+  try{
+    const db=await ensureInbox(env);if(!db)return;
+    const messageId=header(message,'message-id')||crypto.randomUUID();
+    const id=messageId.replace(/[<>]/g,'').slice(0,240)||crypto.randomUUID();
+    const from=clean(message?.from||header(message,'from')).slice(0,500);
+    const to=clean(message?.to||header(message,'to')).slice(0,500);
+    const subject=(header(message,'subject')||'(no subject)').replace(/[\r\n]+/g,' ').slice(0,240);
+    const receivedAt=new Date().toISOString();
+    await db.prepare(`INSERT OR IGNORE INTO manual_mail_inbox(id,message_id,from_email,to_email,subject,received_at,status) VALUES(?,?,?,?,?,?,?)`).bind(id,messageId,from,to,subject,receivedAt,'RECEIVED').run();
+  }catch(error){console.error('manual-mail-inbox-store',error);}
+}
+async function inboxResponse(env){
+  try{
+    const db=await ensureInbox(env);if(!db)return json({ok:true,version:VERSION,items:[],inboundConnected:false,message:'The inbound database binding is not configured.'});
+    const result=await db.prepare(`SELECT id,message_id,from_email,to_email,subject,received_at,status FROM manual_mail_inbox ORDER BY received_at DESC LIMIT 100`).all();
+    return json({ok:true,version:VERSION,inboundConnected:true,items:(result.results||[]).map(row=>({id:row.id,messageId:row.message_id,from:row.from_email,to:row.to_email,subject:row.subject,receivedAt:row.received_at,status:row.status}))});
+  }catch(error){return json({ok:false,error:'inbox_query_failed',message:String(error?.message||error).slice(0,300)},503);}
+}
+function translateLogin(html){
+  return String(html||'')
+    .replace(/<html\s+lang=["']hr["']/i,'<html lang="en"')
+    .replace(/GNK ASG\s*[—-]\s*Sigurna prijava/gi,'GNK ASG — Secure sign in')
+    .replace(/GNK ASG sigurna prijava/gi,'GNK ASG secure sign in')
+    .replace(/Unesite postojeći operatorski token\. Nakon provjere otvara se sigurna HttpOnly sesija koja traje 12 sati\./gi,'Enter the existing operator token. A secure HttpOnly session will remain active for 12 hours after validation.')
+    .replace(/Operatorski token/gi,'Operator token')
+    .replace(/PRIJAVA/g,'SIGN IN')
+    .replace(/Povratak na portal/gi,'Return to portal')
+    .replace(/Operatorski secret nije konfiguriran\./gi,'The operator secret is not configured.')
+    .replace(/Token nije valjan\./gi,'The token is not valid.');
+}
 async function patchMailPage(response,path){
-  if(!isMail(path)||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
+  if(!isMail(path)||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
   const headers=new Headers(response.headers);
   headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');headers.delete('last-modified');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('cdn-cache-control','no-store');headers.set('cloudflare-cdn-cache-control','no-store');
   headers.set('x-gnk-asg-mail-studio-language','ENGLISH_ONLY');headers.set('x-gnk-asg-mail-studio-bridge-v17',VERSION);
   let html=await response.text();
-  for(const name of ['studio-core-v21','mail-studio-controls-v18','mail-studio-click-feedback-v19','mail-studio-hotfix-v20','mail-studio-profile-test-v1','mail-studio-delivery-policy-v1','mail-studio-delivery-history-v2','delivery-history-dashboard-v3','mail-studio-english-v23']){
-    html=html.replace(new RegExp(`<script[^>]+src=["'][^"']*${name}\\.js[^"']*["'][^>]*><\\/script>`,'gi'),'');
+  if([401,403,503].includes(response.status))html=translateLogin(html);
+  else{
+    for(const name of ['studio-core-v21','mail-studio-controls-v18','mail-studio-click-feedback-v19','mail-studio-hotfix-v20','mail-studio-profile-test-v1','mail-studio-delivery-policy-v1','mail-studio-delivery-history-v2','delivery-history-dashboard-v3','mail-studio-english-v23'])html=html.replace(new RegExp(`<script[^>]+src=["'][^"']*${name}\\.js[^"']*["'][^>]*><\\/script>`,'gi'),'');
+    const scripts=`<script defer src="${CORE}"></script><script defer src="${HISTORY}"></script>`;
+    html=html.includes('</body>')?html.replace('</body>',scripts+'</body>'):html+scripts;
   }
-  const scripts=`<script defer src="${CORE}"></script><script defer src="${HISTORY}"></script>`;
-  html=html.includes('</body>')?html.replace('</body>',scripts+'</body>'):html+scripts;
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 async function patchMailJson(response,path){
@@ -94,8 +129,12 @@ export default{
   async fetch(request,env,ctx){
     const path=pathOf(request),active=isMailApi(path)?withEnglishMailHeaders(env):env;
     const response=await app.fetch(request,active,ctx);
+    if(isInboxApi(path)&&response.ok)return inboxResponse(env);
     return patchMailJson(await patchMailPage(response,path),path);
   },
   scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
-  email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx);}
+  async email(message,env,ctx){
+    await storeInbound(message,env);
+    if(typeof app.email==='function')return app.email(message,env,ctx);
+  }
 };
