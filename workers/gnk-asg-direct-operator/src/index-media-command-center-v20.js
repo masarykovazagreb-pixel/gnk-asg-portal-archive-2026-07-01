@@ -1,7 +1,7 @@
 import app from './index-mail-studio-bridge-v16.js';
 import {handleMediaCommandCenter,handleMediaCommandCenterEmail,VERSION as MEDIA_VERSION} from './media-command-center-v1.js';
 
-const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V20_20260629_MEDIA_INBOUND_FALLBACK';
+export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V20_20260629_MEDIA_INBOUND_FALLBACK';
 const COOKIE='gnk_asg_admin_session';
 const MAX_AGE=43200;
 const enc=new TextEncoder();
