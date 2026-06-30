@@ -1,0 +1,73 @@
+name: Emergency Stop Media Outreach
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/emergency-media-stop.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: emergency-stop-media-outreach
+  cancel-in-progress: false
+
+jobs:
+  stop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate emergency configuration
+        working-directory: workers/gnk-asg-direct-operator
+        run: |
+          set -euo pipefail
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' wrangler.emergency-stop.toml
+          grep -q 'MEDIA_OUTREACH_MAX_PER_HOUR = "0"' wrangler.emergency-stop.toml
+          grep -q 'MEDIA_OUTREACH_MAX_PER_DAY = "0"' wrangler.emergency-stop.toml
+          grep -q 'crons = \[\]' wrangler.emergency-stop.toml
+          node --check src/index-final-admin-gateway-v1.js
+      - name: Quarantine all unsent queue items in D1
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.emergency-stop.toml --command "UPDATE media_delivery_queue SET status='REVIEW', last_error='Emergency stop: Croatian-language output detected; manual review required before any further sending', last_error_code='EMERGENCY_STOP_LANGUAGE', updated_at=datetime('now') WHERE status IN ('QUEUED','RETRY','SENDING');" 2>&1 | tee ../../emergency-d1-stop.log
+      - name: Deploy locked Worker without route mutation
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config wrangler.emergency-stop.toml --name gnk-asg-direct-operator 2>&1 | tee ../../emergency-worker-stop.log
+      - name: Verify queue is quarantined
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.emergency-stop.toml --command "SELECT status, COUNT(*) AS count FROM media_delivery_queue GROUP BY status ORDER BY status;" --json > ../../emergency-queue-status.json
+          cat ../../emergency-queue-status.json
+          ! grep -q '"status":"QUEUED"' ../../emergency-queue-status.json
+          ! grep -q '"status":"RETRY"' ../../emergency-queue-status.json
+          ! grep -q '"status":"SENDING"' ../../emergency-queue-status.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: emergency-media-stop-evidence
+          path: |
+            emergency-d1-stop.log
+            emergency-worker-stop.log
+            emergency-queue-status.json
+          retention-days: 14
