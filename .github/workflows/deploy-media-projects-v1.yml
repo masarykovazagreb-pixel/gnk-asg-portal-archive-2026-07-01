@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: deploy-media-projects-v1
@@ -50,6 +50,7 @@ jobs:
           set -euo pipefail
           npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee ../../deploy-media-projects-v1.log
       - name: Verify production lock and assets
+        id: verify
         run: |
           set -euo pipefail
           base="https://gnk-asg.hr"
@@ -67,7 +68,50 @@ jobs:
             sleep 10
           done
           printf 'VERSION=%s LOADER=%s PANEL=%s API=%s READY=%s\n' "$version_code" "$loader_code" "$panel_code" "$api_code" "$ready"
+          echo "version_code=$version_code" >> "$GITHUB_OUTPUT"
+          echo "loader_code=$loader_code" >> "$GITHUB_OUTPUT"
+          echo "panel_code=$panel_code" >> "$GITHUB_OUTPUT"
+          echo "api_code=$api_code" >> "$GITHUB_OUTPUT"
+          echo "ready=$ready" >> "$GITHUB_OUTPUT"
           test "$ready" = "true"
+      - name: Record verified deployment
+        if: success()
+        env:
+          VERSION_CODE: ${{ steps.verify.outputs.version_code }}
+          LOADER_CODE: ${{ steps.verify.outputs.loader_code }}
+          PANEL_CODE: ${{ steps.verify.outputs.panel_code }}
+          API_CODE: ${{ steps.verify.outputs.api_code }}
+          READY: ${{ steps.verify.outputs.ready }}
+        run: |
+          set -euo pipefail
+          mkdir -p apps/portal/data
+          python - <<'PY'
+          import json, os, datetime
+          payload = {
+            "ok": True,
+            "module": "Media Projects V1",
+            "deployed_commit": os.environ.get("GITHUB_SHA", ""),
+            "workflow_run_id": os.environ.get("GITHUB_RUN_ID", ""),
+            "verified_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "external_sending": False,
+            "media_outreach_build_lock": True,
+            "checks": {
+              "portal_version_http": int(os.environ["VERSION_CODE"]),
+              "loader_http": int(os.environ["LOADER_CODE"]),
+              "panel_http": int(os.environ["PANEL_CODE"]),
+              "unauthenticated_projects_api_http": int(os.environ["API_CODE"]),
+              "ready": os.environ["READY"].lower() == "true"
+            }
+          }
+          with open("apps/portal/data/media-projects-deployment-status.json", "w", encoding="utf-8") as fh:
+            json.dump(payload, fh, ensure_ascii=False, indent=2)
+            fh.write("\n")
+          PY
+          git config user.name "GNK ASG Deploy Bot"
+          git config user.email "deploy-bot@gnk-asg.hr"
+          git add apps/portal/data/media-projects-deployment-status.json
+          git commit -m "Record verified Media Projects V1 deployment [skip ci]" || exit 0
+          git push origin HEAD:main
       - name: Upload deployment evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -79,4 +123,5 @@ jobs:
             loader.js
             panel.html
             api.json
+            apps/portal/data/media-projects-deployment-status.json
           retention-days: 14
