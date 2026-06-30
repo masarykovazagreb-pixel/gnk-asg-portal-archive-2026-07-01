@@ -8,13 +8,13 @@ import {withRequiredEmailSignature,VERSION as SIGNATURE_VERSION} from './email-s
 import {handleFreshMediaAdmin,withFreshMediaPersonalization,VERSION as FRESH_VERSION} from './media-fresh-admin-v1.js';
 import {handleMediaBootstrapEmail,withBootstrapPersonalization,VERSION as BOOTSTRAP_VERSION} from './media-bootstrap-email-v1.js';
 import {handleMediaBootstrapHtmlForwardEmail,VERSION as BOOTSTRAP_HTML_VERSION} from './media-bootstrap-html-forward-v1.js';
-export const VERSION=`GNK_ASG_FINAL_MEDIA_STRICT_ENGLISH_LAUNCH_V1_TO_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_FINAL_MEDIA_STRICT_ENGLISH_HISTORY_V2_TO_${BASE_VERSION}`;
 const API='/api/media-command-center';
 const PUBLIC_MEMORANDUM='/api/media-registration/memorandum.pdf';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
 const memoClean=value=>String(value??'').trim();
 const PROJECT_ENDPOINTS=new Set([`${API}/projects`,`${API}/project`,`${API}/project-contacts`,`${API}/project-html`,`${API}/project-pdf`,`${API}/project-html-preview`,`${API}/project-pdf-preview`,`${API}/project-settings`,`${API}/project-preview`,`${API}/project-export`]);
-const DELIVERY_ENDPOINTS=new Set([`${API}/campaign-html`,`${API}/campaign-html/preview`,`${API}/campaign-pdf`,`${API}/delivery-plan`,`${API}/delivery-status`,`${API}/test-email`,`${API}/queue-approved`,`${API}/dispatch-queue`]);
+const DELIVERY_ENDPOINTS=new Set([`${API}/campaign-html`,`${API}/campaign-html/preview`,`${API}/campaign-pdf`,`${API}/delivery-plan`,`${API}/delivery-status`,`${API}/delivery-history`,`${API}/delivery-history.csv`,`${API}/test-email`,`${API}/queue-approved`,`${API}/dispatch-queue`]);
 const FRESH_ENDPOINTS=new Set([`${API}/fresh-status`,`${API}/fresh-reset`,`${API}/fresh-import`,`${API}/fresh-pdf-preview`,`${API}/fresh-message-preview`]);
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 function activeEnv(env){return withBootstrapPersonalization(withRequiredEmailSignature(withFreshMediaPersonalization(withFinalMediaMessage(env))));}
