@@ -11,6 +11,7 @@ on:
       - "apps/portal/assets/media-center-fresh-v1.js"
       - "apps/portal/assets/media-center-english-ui-v2.js"
       - "workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js"
+      - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
@@ -55,6 +56,7 @@ jobs:
           node --check apps/portal/assets/media-center-fresh-v1.js
           node --check apps/portal/assets/media-center-english-ui-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js
+          node --check workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
@@ -62,7 +64,10 @@ jobs:
           grep -q 'const scripts=`<script defer src="${CORE}"></script>`' workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js
           ! grep -q 'src="${HISTORY}"' workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js
           grep -q 'Message records are available only in the controlled spreadsheet audit export.' workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js
-          grep -q 'GNK_ASG_MEDIA_OUTREACH_FINAL_MESSAGE_V4_STRICT_COMPLETE_ENGLISH_20260630' workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js
+          grep -q 'GNK_ASG_MEDIA_FRESH_ADMIN_V1_20260630_STRICT_ENGLISH_GREETING_DEDUP' workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
+          grep -q "replace(/Dear\\s+Editorial\\s+Editorial\\s+Team" workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
+          grep -q 'GNK_ASG_MEDIA_OUTREACH_FINAL_MESSAGE_V5_STRICT_ENGLISH_GREETING_DEDUP_20260630' workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js
+          grep -q "replace(/\\bEditorial\\s+Editorial\\s+Team\\b/gi,'Editorial Team')" workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js
           grep -q "subject='CODE'" workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js
           grep -q 'X-GNK-ASG-Content-Policy' workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js
           grep -q 'media-center-english-ui-v2.js' apps/portal/media-command-center/index.html
@@ -103,6 +108,8 @@ jobs:
               && [ "$version_code" = "200" ] \
               && grep -q 'GNK_ASG_MAIL_STUDIO_ENGLISH_V24' /tmp/core.js \
               && grep -q 'GNK_ASG_MEDIA_CENTER_ENGLISH_UI_V2' /tmp/english-ui.js \
+              && grep -q 'GNK_ASG_MEDIA_FRESH_ADMIN_V1_20260630_STRICT_ENGLISH_GREETING_DEDUP' /tmp/version.json \
+              && grep -q 'GNK_ASG_MEDIA_OUTREACH_FINAL_MESSAGE_V5_STRICT_ENGLISH_GREETING_DEDUP_20260630' /tmp/version.json \
               && grep -qi '^x-gnk-asg-mail-studio-bridge-v17: GNK_ASG_MAIL_STUDIO_BRIDGE_V17_20260630_ENGLISH_V26_NO_HISTORY' /tmp/mail.headers; then
               ok=true
               break
