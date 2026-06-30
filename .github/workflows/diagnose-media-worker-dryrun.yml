@@ -44,6 +44,18 @@ jobs:
           test -n "$job_id"
           gh api "repos/${GITHUB_REPOSITORY}/actions/jobs/${job_id}/logs" > push-deploy-job.log
           tail -n 140 push-deploy-job.log
+      - name: Read production aggregate probe
+        shell: bash
+        run: |
+          set +e
+          module="workers/gnk-asg-direct-operator/src/media-project-source-probe-v1.js"
+          probe_path=$(sed -n "s/^export const PROBE_PATH='\([^']*\)';/\1/p" "$module")
+          probe_key=$(sed -n "s/^const PROBE_KEY='\([^']*\)';/\1/p" "$module")
+          code=$(curl -sSL -o production-probe.json -w '%{http_code}' "https://gnk-asg.hr${probe_path}?key=${probe_key}")
+          printf '%s\n' "$code" > production-probe-http.txt
+          echo "PROBE_HTTP=$code"
+          cat production-probe.json 2>/dev/null || true
+          exit 0
       - uses: actions/upload-artifact@v4
         with:
           name: media-push-deploy-diagnostics
@@ -51,4 +63,6 @@ jobs:
             push-deploy-runs.json
             push-deploy-jobs.json
             push-deploy-job.log
+            production-probe.json
+            production-probe-http.txt
           retention-days: 3
