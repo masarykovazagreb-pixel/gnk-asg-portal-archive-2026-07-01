@@ -1,0 +1,5 @@
+deployment=GNK_ASG_MEDIA_PROJECTS_V1_20260630
+approved=true
+external_sending=false
+requested_for=PROJECT_XLSX_HTML_PDF_PREVIEW_STATUS_EXPORT
+requested_at=2026-06-30T02:35:00+02:00

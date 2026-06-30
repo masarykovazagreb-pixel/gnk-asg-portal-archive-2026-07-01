@@ -3,5 +3,6 @@
 // Compatibility dependency marker: import app from './index-admin-hub-v28-news-no-fallback.js'
 // The implementation is permanently wrapped by the mandatory email-logo gateway.
 // Media registration access codes are issued only after initial newsroom registration.
-// Mail Studio is routed through the clean stable V5 interface.
-export {default,VERSION} from './index-final-admin-gateway-mail-stable-v5.js';
+// Mail Studio remains routed through the clean stable V5 interface.
+// Media projects, XLSX import, HTML/PDF preview and status export are added above that stable chain.
+export {default,VERSION} from './index-final-admin-gateway-projects-v1.js';

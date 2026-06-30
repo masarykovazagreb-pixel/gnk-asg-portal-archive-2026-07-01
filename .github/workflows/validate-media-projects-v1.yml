@@ -1,0 +1,51 @@
+name: Validate Media Projects V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "workers/gnk-asg-direct-operator/src/media-projects-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
+      - "apps/portal/assets/media-projects-*"
+      - ".github/workflows/validate-media-projects-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/media-projects-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check apps/portal/assets/media-projects-ui-v1.js
+          node --check apps/portal/assets/media-projects-ui-core-v1.js
+          node --check apps/portal/assets/media-projects-ui-projects-v1.js
+          node --check apps/portal/assets/media-projects-ui-contacts-v1.js
+          node --check apps/portal/assets/media-projects-ui-xlsx-v1.js
+          node --check apps/portal/assets/media-projects-ui-files-v1.js
+      - name: Entry-chain and safety checks
+        run: |
+          set -euo pipefail
+          grep -q "index-final-admin-gateway-projects-v1.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q "index-final-admin-gateway-mail-stable-v5.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          grep -q "external_sending_enabled=0" workers/gnk-asg-direct-operator/src/media-projects-v1.js
+          grep -q "SLANJE ZAKLJUČANO" apps/portal/assets/media-projects-ui-v1.js
+          grep -q "mpHtmlPreview" apps/portal/assets/media-projects-panel-v1.html
+          grep -q "mpExportCsv" apps/portal/assets/media-projects-panel-v1.html
+      - name: No send implementation in project layer
+        run: |
+          set -euo pipefail
+          ! grep -q "EMAIL.send" workers/gnk-asg-direct-operator/src/media-projects-v1.js
+          ! grep -q "dispatch" workers/gnk-asg-direct-operator/src/media-projects-v1.js
