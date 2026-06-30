@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   dry-run:
@@ -30,3 +31,8 @@ jobs:
           echo "WRANGLER_EXIT_CODE=$code"
           tail -n 100 /tmp/wrangler-dry-run.log
           exit $code
+      - name: Inspect latest push deploy runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/deploy-media-source-push-v2.yml/runs?per_page=5" --jq '.workflow_runs[] | [.id,.status,.conclusion,.head_sha,.created_at] | @tsv'
