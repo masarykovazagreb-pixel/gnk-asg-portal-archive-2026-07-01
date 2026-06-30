@@ -7,7 +7,7 @@
 <title>GNK ASG Mail Studio</title>
 <style>
 :root{color-scheme:dark;--bg:#06101e;--panel:#0b1729;--line:rgba(214,173,79,.28);--gold:#f0cc6a;--text:#f8fafc;--muted:#b8c2cf}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#173257 0,#06101e 42%,#020711 100%);color:var(--text);font-family:Inter,Arial,sans-serif}.wrap{max-width:1480px;margin:0 auto;padding:18px}.studio{border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,rgba(7,16,31,.98),rgba(13,24,45,.97));box-shadow:0 24px 70px rgba(0,0,0,.42);overflow:hidden}.head{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}.head h1{margin:0;color:var(--gold);font:700 28px/1.1 Georgia,serif}.head p{margin:6px 0 0;color:var(--muted);font-size:13px}.status{max-width:520px;border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:rgba(255,255,255,.06);font-size:12px}.body{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.55fr)}.compose,.side{padding:20px}.side{border-left:1px solid var(--line);background:rgba(255,255,255,.025)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:12px}label{display:block;margin:0 0 6px;color:var(--gold);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:#f8fafc;color:#07101f;padding:11px;font:inherit;outline:none}input[readonly]{background:#e5e7eb;color:#334155}textarea{min-height:360px;resize:vertical;line-height:1.55}.actions,.tabs,.attachment-actions{display:flex;flex-wrap:wrap;gap:8px}.actions{margin-top:12px}button,.button-link{border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;font-weight:900;letter-spacing:.04em;text-transform:uppercase;padding:10px 13px;cursor:pointer;font-size:11px;text-decoration:none}button.gold,.button-link.gold{background:linear-gradient(135deg,#b98b2d,#f4d37a);color:#07101f}button.red{border-color:rgba(239,68,68,.45);background:rgba(127,29,29,.35)}button:disabled{opacity:.55;cursor:not-allowed}.panel{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.045);padding:13px;margin-bottom:12px}.panel h3{margin:0 0 10px;color:var(--gold);font-size:13px;text-transform:uppercase;letter-spacing:.07em}.small{font-size:12px;color:var(--muted);line-height:1.45}.list{max-height:320px;overflow:auto;border-radius:12px;background:#020711;padding:10px;white-space:pre-wrap;font:12px/1.45 ui-monospace,Consolas,monospace;color:#dbeafe}.preview-shell{margin-top:14px;border:1px solid var(--line);border-radius:16px;background:#fff;color:#111827;overflow:hidden}.preview-head{padding:10px 12px;border-bottom:1px solid #d1d5db;background:#f8fafc;font:13px Arial,sans-serif}.preview-frame{display:block;width:100%;min-height:560px;border:0;background:#fff}.dropzone{border:1px dashed rgba(214,173,79,.55);border-radius:12px;padding:12px;background:rgba(255,255,255,.03)}.attachments{margin-top:8px;font-size:12px;color:#dbeafe}.attachments div{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.05);margin-top:5px}.note{margin-top:8px;color:#94a3b8;font-size:11px;line-height:1.4}.warning{color:#fecaca}.ok{color:#bbf7d0}@media(max-width:1050px){.body{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--line)}}@media(max-width:700px){.grid{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#173257 0,#06101e 42%,#020711 100%);color:var(--text);font-family:Inter,Arial,sans-serif}.wrap{max-width:1480px;margin:0 auto;padding:18px}.studio{border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,rgba(7,16,31,.98),rgba(13,24,45,.97));box-shadow:0 24px 70px rgba(0,0,0,.42);overflow:hidden}.head{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}.head h1{margin:0;color:var(--gold);font:700 28px/1.1 Georgia,serif}.head p{margin:6px 0 0;color:var(--muted);font-size:13px}.status{max-width:520px;border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:rgba(255,255,255,.06);font-size:12px}.body{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.55fr)}.compose,.side{padding:20px}.side{border-left:1px solid var(--line);background:rgba(255,255,255,.025)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:12px}label{display:block;margin:0 0 6px;color:var(--gold);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:#f8fafc;color:#07101f;padding:11px;font:inherit;outline:none}input[readonly]{background:#e5e7eb;color:#334155}textarea{min-height:360px;resize:vertical;line-height:1.55}.actions,.attachment-actions{display:flex;flex-wrap:wrap;gap:8px}.actions{margin-top:12px}button,.button-link{border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;font-weight:900;letter-spacing:.04em;text-transform:uppercase;padding:10px 13px;cursor:pointer;font-size:11px;text-decoration:none}button.gold,.button-link.gold{background:linear-gradient(135deg,#b98b2d,#f4d37a);color:#07101f}button.red{border-color:rgba(239,68,68,.45);background:rgba(127,29,29,.35)}button:disabled{opacity:.55;cursor:not-allowed}.panel{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.045);padding:13px;margin-bottom:12px}.panel h3{margin:0 0 10px;color:var(--gold);font-size:13px;text-transform:uppercase;letter-spacing:.07em}.small{font-size:12px;color:var(--muted);line-height:1.45}.preview-shell{margin-top:14px;border:1px solid var(--line);border-radius:16px;background:#fff;color:#111827;overflow:hidden}.preview-head{padding:10px 12px;border-bottom:1px solid #d1d5db;background:#f8fafc;font:13px Arial,sans-serif}.preview-frame{display:block;width:100%;min-height:560px;border:0;background:#fff}.dropzone{border:1px dashed rgba(214,173,79,.55);border-radius:12px;padding:12px;background:rgba(255,255,255,.03)}.attachments{margin-top:8px;font-size:12px;color:#dbeafe}.attachments div{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.05);margin-top:5px}.note{margin-top:8px;color:#94a3b8;font-size:11px;line-height:1.4}.warning{color:#fecaca}.ok{color:#bbf7d0}@media(max-width:1050px){.body{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--line)}}@media(max-width:700px){.grid{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
@@ -16,7 +16,7 @@
   <header class="head">
     <div>
       <h1>GNK ASG Mail Studio</h1>
-      <p>English-only sender identities, subjects, templates, headers, preview, attachments, Inbox, Sent and Outbox.</p>
+      <p>English-only composing, preview, attachments and controlled individual delivery.</p>
     </div>
     <div class="status" id="status">Loading…</div>
   </header>
@@ -88,30 +88,21 @@
 
     <aside class="side">
       <section class="panel">
-        <h3>Mailboxes</h3>
-        <div class="tabs">
-          <button class="tab" data-box="inbox" type="button">INBOX</button>
-          <button class="tab" data-box="sent" type="button">SENT</button>
-          <button class="tab" data-box="outbox" type="button">OUTBOX</button>
-          <button class="tab" data-box="status" type="button">STATUS</button>
-        </div>
-        <div class="list" id="list">Select Inbox, Sent, Outbox or Status.</div>
-      </section>
-      <section class="panel">
         <h3>Delivery rules</h3>
-        <div class="small">
-          Sender identities are server-controlled. The subject, sender name and technical email metadata must be in English. The mandatory BCC copy is always <strong>rht@gmx.com</strong>.
-        </div>
+        <div class="small">Sender identities are server-controlled. The subject, sender name, body, HTML and technical metadata must be in English. The mandatory BCC copy is always <strong>rht@gmx.com</strong>.</div>
       </section>
       <section class="panel">
         <h3>Validation</h3>
         <div id="validationSummary" class="small">Waiting for message input.</div>
       </section>
+      <section class="panel">
+        <h3>Records</h3>
+        <div class="small">Sent-message and queue records are not rendered in Mail Studio. Campaign records remain available only through the controlled spreadsheet export in Media Command Center.</div>
+      </section>
     </aside>
   </div>
 </section>
 </div>
-<script defer src="/assets/mail-studio-english-v23.js?v=20260630-3"></script>
-<script defer src="/assets/delivery-history-dashboard-v3.js?v=20260630-4"></script>
+<script defer src="/assets/mail-studio-english-v23.js?v=20260630-7"></script>
 </body>
 </html>
