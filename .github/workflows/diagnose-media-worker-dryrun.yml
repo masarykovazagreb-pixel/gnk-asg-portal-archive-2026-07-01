@@ -31,8 +31,14 @@ jobs:
           echo "WRANGLER_EXIT_CODE=$code"
           tail -n 100 /tmp/wrangler-dry-run.log
           exit $code
-      - name: Inspect latest push deploy runs
+      - name: Capture latest push deploy runs
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/deploy-media-source-push-v2.yml/runs?per_page=5" --jq '.workflow_runs[] | [.id,.status,.conclusion,.head_sha,.created_at] | @tsv'
+          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/deploy-media-source-push-v2.yml/runs?per_page=10" > push-deploy-runs.json
+          jq -r '.workflow_runs[] | [.id,.status,.conclusion,.head_sha,.created_at] | @tsv' push-deploy-runs.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: media-push-deploy-runs
+          path: push-deploy-runs.json
+          retention-days: 3
