@@ -1,0 +1,32 @@
+name: Diagnose Media Worker Dry Run
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/probe-dryrun.trigger"
+
+permissions:
+  contents: read
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Wrangler dry run with concise error tail
+        working-directory: workers/gnk-asg-direct-operator
+        shell: bash
+        run: |
+          set +e
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator --dry-run > /tmp/wrangler-dry-run.log 2>&1
+          code=$?
+          echo "WRANGLER_EXIT_CODE=$code"
+          tail -n 100 /tmp/wrangler-dry-run.log
+          exit $code
