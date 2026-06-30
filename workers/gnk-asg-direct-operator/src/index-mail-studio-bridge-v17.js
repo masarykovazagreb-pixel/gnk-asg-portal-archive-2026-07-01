@@ -1,12 +1,11 @@
 import app from './index-mail-studio-bridge-v15.js';
 
-export const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V17_20260630_ENGLISH_V25_INBOX';
-const CORE='/assets/mail-studio-english-v23.js?v=20260630-6';
-const HISTORY='/assets/delivery-history-dashboard-v3.js?v=20260630-6';
+export const VERSION='GNK_ASG_MAIL_STUDIO_BRIDGE_V17_20260630_ENGLISH_V26_NO_HISTORY';
+const CORE='/assets/mail-studio-english-v23.js?v=20260630-7';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const isMail=path=>path==='/mail-studio'||path.startsWith('/mail-studio/')||path==='/mail-studio-pro'||path.startsWith('/mail-studio-pro/');
 const isMailApi=path=>path==='/api/admin-mail-send'||path.startsWith('/api/studio-message/')||path.startsWith('/api/mail-center/');
-const isInboxApi=path=>path==='/api/studio-message/inbox'||path==='/api/mail-center/inbox';
+const isMailboxApi=path=>path==='/api/studio-message/inbox'||path==='/api/mail-center/inbox'||path==='/api/studio-message/sent'||path==='/api/mail-center/sent'||path==='/api/studio-message/outbox'||path==='/api/mail-center/outbox';
 const CROATIAN=/\b(poštovani|postovani|poštovana|postovana|predmet|prijava|redakcija|mediji|akreditacija|poziv|odgovor|potvrda|upit|poruka|poruke|slanje|vijesti|direktor|osobni|urednički|urednicki|hvala|molimo|zaprimili|zaprimljena|primitak|vezano|vašu|vasu|najkraćem|najkracem|srdačan|srdacan|pozdrav|poštovanjem|postovanjem|obavijestite|pošiljatelja|posiljatelja)\b/i;
 const SENDER_NAMES=new Map([
   ['office@gnk-asg.hr','GNK ASG Office'],
@@ -84,13 +83,7 @@ async function storeInbound(message,env){
     await db.prepare(`INSERT OR IGNORE INTO manual_mail_inbox(id,message_id,from_email,to_email,subject,received_at,status) VALUES(?,?,?,?,?,?,?)`).bind(id,messageId,from,to,subject,receivedAt,'RECEIVED').run();
   }catch(error){console.error('manual-mail-inbox-store',error);}
 }
-async function inboxResponse(env){
-  try{
-    const db=await ensureInbox(env);if(!db)return json({ok:true,version:VERSION,items:[],inboundConnected:false,message:'The inbound database binding is not configured.'});
-    const result=await db.prepare(`SELECT id,message_id,from_email,to_email,subject,received_at,status FROM manual_mail_inbox ORDER BY received_at DESC LIMIT 100`).all();
-    return json({ok:true,version:VERSION,inboundConnected:true,items:(result.results||[]).map(row=>({id:row.id,messageId:row.message_id,from:row.from_email,to:row.to_email,subject:row.subject,receivedAt:row.received_at,status:row.status}))});
-  }catch(error){return json({ok:false,error:'inbox_query_failed',message:String(error?.message||error).slice(0,300)},503);}
-}
+function mailboxResponse(){return json({ok:true,version:VERSION,items:[],message:'Message records are available only in the controlled spreadsheet audit export.'});}
 function translateLogin(html){
   return String(html||'')
     .replace(/<html\s+lang=["']hr["']/i,'<html lang="en"')
@@ -113,7 +106,7 @@ async function patchMailPage(response,path){
   if([401,403,503].includes(response.status))html=translateLogin(html);
   else{
     for(const name of ['studio-core-v21','mail-studio-controls-v18','mail-studio-click-feedback-v19','mail-studio-hotfix-v20','mail-studio-profile-test-v1','mail-studio-delivery-policy-v1','mail-studio-delivery-history-v2','delivery-history-dashboard-v3','mail-studio-english-v23'])html=html.replace(new RegExp(`<script[^>]+src=["'][^"']*${name}\\.js[^"']*["'][^>]*><\\/script>`,'gi'),'');
-    const scripts=`<script defer src="${CORE}"></script><script defer src="${HISTORY}"></script>`;
+    const scripts=`<script defer src="${CORE}"></script>`;
     html=html.includes('</body>')?html.replace('</body>',scripts+'</body>'):html+scripts;
   }
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
@@ -129,7 +122,7 @@ export default{
   async fetch(request,env,ctx){
     const path=pathOf(request),active=isMailApi(path)?withEnglishMailHeaders(env):env;
     const response=await app.fetch(request,active,ctx);
-    if(isInboxApi(path)&&response.ok)return inboxResponse(env);
+    if(isMailboxApi(path)&&response.ok)return mailboxResponse();
     return patchMailJson(await patchMailPage(response,path),path);
   },
   scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
