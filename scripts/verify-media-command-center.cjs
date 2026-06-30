@@ -8,17 +8,17 @@ const mustExist = [
   'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js'
 ];
 
-const requiredEndpoints = [
-  '/api/media-command-center/projects',
-  '/api/media-command-center/project',
-  '/api/media-command-center/project-contacts',
-  '/api/media-command-center/project-html',
-  '/api/media-command-center/project-pdf',
-  '/api/media-command-center/project-html-preview',
-  '/api/media-command-center/project-pdf-preview',
-  '/api/media-command-center/project-settings',
-  '/api/media-command-center/project-preview',
-  '/api/media-command-center/project-export'
+const requiredEndpointSuffixes = [
+  '/projects',
+  '/project',
+  '/project-contacts',
+  '/project-html',
+  '/project-pdf',
+  '/project-html-preview',
+  '/project-pdf-preview',
+  '/project-settings',
+  '/project-preview',
+  '/project-export'
 ];
 
 const checks = [
@@ -63,20 +63,28 @@ function assertMatches(source, pattern, label) {
   if (!pattern.test(source)) throw new Error(`missing ${label}: ${pattern}`);
 }
 
+function assertGatewayEndpoint(gateway, suffix) {
+  const literal = `/api/media-command-center${suffix}`;
+  const templated = ['`${API}' + suffix + '`', '`' + '${API}' + suffix + '`'];
+  if (gateway.includes(literal) || templated.some(value => gateway.includes(value))) return;
+  throw new Error(`missing gateway endpoint: ${literal} or templated API${suffix}`);
+}
+
 function main() {
   const files = Object.fromEntries(mustExist.map(rel => [rel, read(rel)]));
   const media = files['workers/gnk-asg-direct-operator/src/media-projects-v1.js'];
   const gateway = files['workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js'];
   const combined = `${media}\n${gateway}`;
 
-  for (const endpoint of requiredEndpoints) assertIncludes(gateway, endpoint, 'gateway endpoint');
+  assertIncludes(gateway, "const API='/api/media-command-center'", 'gateway API constant');
+  for (const suffix of requiredEndpointSuffixes) assertGatewayEndpoint(gateway, suffix);
   for (const [label, pattern] of checks) assertMatches(combined, pattern, label);
 
   console.log(JSON.stringify({
     ok: true,
     checkedAt: new Date().toISOString(),
     files: mustExist.length,
-    endpoints: requiredEndpoints.length,
+    endpoints: requiredEndpointSuffixes.length,
     checks: checks.length,
     verifiedExports: ['csv', 'txt'],
     nextExportGap: 'xlsx',
