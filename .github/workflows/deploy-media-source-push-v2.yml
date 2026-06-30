@@ -1,0 +1,55 @@
+name: Deploy Media Source Push V2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/probe-dryrun.trigger"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-media-source-push-v2
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate locked main
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/media-project-source-probe-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          grep -q "MEDIA_OUTREACH_LIVE.*false" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          ! grep -q "EMAIL.send" workers/gnk-asg-direct-operator/src/media-project-source-probe-v1.js
+      - name: Deploy locked Worker
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Capture aggregate result
+        run: |
+          set -euo pipefail
+          mkdir -p apps/portal/data
+          url="https://gnk-asg.hr/api/internal/media-project-source-c2321439a66f014391497b41ee7f054b?key=FG9tj5MOJRicXrcfrUE6_-JHV9El9GFE"
+          for attempt in $(seq 1 24); do
+            code=$(curl -sSL -o apps/portal/data/media-project-source-status.json -w '%{http_code}' "$url" || true)
+            if [ "$code" = "200" ] && grep -q 'GNK_ASG_MEDIA_PROJECT_SOURCE_PROBE_V1_20260630' apps/portal/data/media-project-source-status.json; then break; fi
+            sleep 6
+          done
+          grep -q 'GNK_ASG_MEDIA_PROJECT_SOURCE_PROBE_V1_20260630' apps/portal/data/media-project-source-status.json
+          git config user.name "GNK ASG Deploy Bot"
+          git config user.email "deploy-bot@gnk-asg.hr"
+          git add apps/portal/data/media-project-source-status.json
+          git commit -m "Record aggregate Media source probe [skip ci]" || exit 0
+          git push origin HEAD:main
