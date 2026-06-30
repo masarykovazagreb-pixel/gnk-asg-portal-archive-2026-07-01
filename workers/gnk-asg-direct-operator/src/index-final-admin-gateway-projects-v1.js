@@ -11,17 +11,23 @@ import {handleMediaBootstrapHtmlForwardEmail,VERSION as BOOTSTRAP_HTML_VERSION} 
 import {lockPreviouslyDeliveredRecipients,VERSION as DEDUP_VERSION} from './media-delivery-dedup-v1.js';
 import {repairPendingMediaQueue,VERSION as QUEUE_REPAIR_VERSION} from './media-outreach-queue-repair-v1.js';
 import {withHtmlOnlyMediaDelivery,VERSION as HTML_ONLY_VERSION} from './media-outreach-html-only-v1.js';
-export const VERSION=`GNK_ASG_FINAL_MEDIA_HTML_ONLY_STRICT_ENGLISH_V5_TO_${BASE_VERSION}`;
+import {withSingleEnglishGreeting,VERSION as SINGLE_GREETING_VERSION} from './media-outreach-single-greeting-v1.js';
+import {withHtmlOnlyTestGate,VERSION as HTML_ONLY_GATE_VERSION} from './media-outreach-html-only-gate-v1.js';
+export const VERSION=`GNK_ASG_FINAL_MEDIA_HTML_ONLY_ONE_GREETING_STRICT_ENGLISH_V6_TO_${BASE_VERSION}`;
 const API='/api/media-command-center';
 const PUBLIC_MEMORANDUM='/api/media-registration/memorandum.pdf';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
 const memoClean=value=>String(value??'').trim();
+const boolEnv=value=>/^(1|true|yes|on)$/i.test(memoClean(value));
 const PROJECT_ENDPOINTS=new Set([`${API}/projects`,`${API}/project`,`${API}/project-contacts`,`${API}/project-html`,`${API}/project-pdf`,`${API}/project-html-preview`,`${API}/project-pdf-preview`,`${API}/project-settings`,`${API}/project-preview`,`${API}/project-export`]);
 const DELIVERY_ENDPOINTS=new Set([`${API}/campaign-html`,`${API}/campaign-html/preview`,`${API}/campaign-pdf`,`${API}/delivery-plan`,`${API}/delivery-status`,`${API}/delivery-history`,`${API}/delivery-history.csv`,`${API}/test-email`,`${API}/queue-approved`,`${API}/dispatch-queue`]);
 const FRESH_ENDPOINTS=new Set([`${API}/fresh-status`,`${API}/fresh-reset`,`${API}/fresh-import`,`${API}/fresh-pdf-preview`,`${API}/fresh-message-preview`]);
 const DEDUP_ENDPOINTS=new Set([`${API}/delivery-plan`,`${API}/delivery-status`,`${API}/delivery-history`,`${API}/delivery-history.csv`,`${API}/queue-approved`,`${API}/dispatch-queue`]);
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
-function activeEnv(env){return withBootstrapPersonalization(withRequiredEmailSignature(withFreshMediaPersonalization(withFinalMediaMessage(withHtmlOnlyMediaDelivery(env)))));}
+function activeEnv(env){
+  const gated=withHtmlOnlyTestGate(env);
+  return withBootstrapPersonalization(withRequiredEmailSignature(withFreshMediaPersonalization(withFinalMediaMessage(withSingleEnglishGreeting(withHtmlOnlyMediaDelivery(gated))))));
+}
 async function publicMemorandum(request,env){
   if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{allow:'GET, HEAD','cache-control':'no-store'}});
   const kv=env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV;
@@ -58,6 +64,8 @@ function stamp(response){
   headers.set('x-gnk-asg-media-dedup',DEDUP_VERSION);
   headers.set('x-gnk-asg-media-queue-repair',QUEUE_REPAIR_VERSION);
   headers.set('x-gnk-asg-media-html-only',HTML_ONLY_VERSION);
+  headers.set('x-gnk-asg-media-single-greeting',SINGLE_GREETING_VERSION);
+  headers.set('x-gnk-asg-media-html-only-gate',HTML_ONLY_GATE_VERSION);
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
@@ -85,7 +93,7 @@ export default{
     if(path==='/data/portal-version.json'&&response.ok&&String(response.headers.get('content-type')||'').includes('application/json')){
       try{
         const payload=await response.clone().json(),headers=new Headers(response.headers);
-        response=new Response(JSON.stringify({...payload,finalMediaFresh:VERSION,mediaFresh:FRESH_VERSION,mediaDelivery:DELIVERY_VERSION,mediaReporting:REPORTING_VERSION,mediaLaunch:LAUNCH_VERSION,mediaFinalMessage:FINAL_MESSAGE_VERSION,mediaProjects:PROJECTS_VERSION,mediaBootstrap:BOOTSTRAP_VERSION,mediaBootstrapHtml:BOOTSTRAP_HTML_VERSION,mediaDedup:DEDUP_VERSION,mediaQueueRepair:QUEUE_REPAIR_VERSION,mediaHtmlOnly:HTML_ONLY_VERSION,mediaDeliveryMode:'HTML_ONLY',mediaOutreachBuildLock:false},null,2),{status:response.status,headers});
+        response=new Response(JSON.stringify({...payload,finalMediaFresh:VERSION,mediaFresh:FRESH_VERSION,mediaDelivery:DELIVERY_VERSION,mediaReporting:REPORTING_VERSION,mediaLaunch:LAUNCH_VERSION,mediaFinalMessage:FINAL_MESSAGE_VERSION,mediaProjects:PROJECTS_VERSION,mediaBootstrap:BOOTSTRAP_VERSION,mediaBootstrapHtml:BOOTSTRAP_HTML_VERSION,mediaDedup:DEDUP_VERSION,mediaQueueRepair:QUEUE_REPAIR_VERSION,mediaHtmlOnly:HTML_ONLY_VERSION,mediaSingleGreeting:SINGLE_GREETING_VERSION,mediaHtmlOnlyGate:HTML_ONLY_GATE_VERSION,mediaDeliveryMode:'HTML_ONLY',mediaOutreachBuildLock:false},null,2),{status:response.status,headers});
       }catch{}
     }
     return stamp(response);
@@ -97,7 +105,7 @@ export default{
       const repair=await repairPendingMediaQueue(signed).catch(error=>({ok:false,error:String(error?.message||error),code:String(error?.code||'')}));
       const upstream=typeof app.scheduled==='function'?await app.scheduled(event,signed,ctx):null;
       const launch=await runScheduledOutreachLaunch(signed).catch(error=>({ok:false,error:String(error?.message||error),code:String(error?.code||'')}));
-      const reporting=await maybeSendOutreachReport(signed).catch(error=>({ok:false,error:String(error?.message||error),code:String(error?.code||'')}));
+      const reporting=boolEnv(signed.MEDIA_OUTREACH_LIVE)?await maybeSendOutreachReport(signed).catch(error=>({ok:false,error:String(error?.message||error),code:String(error?.code||'')})):{ok:true,skipped:'production_paused'};
       return{dedup,repair,upstream,launch,reporting};
     })();
     if(ctx?.waitUntil){ctx.waitUntil(task);return;}
