@@ -1,0 +1,52 @@
+name = "gnk-asg-direct-operator"
+main = "src/index-final-admin-gateway-v1.js"
+compatibility_date = "2026-06-13"
+workers_dev = true
+preview_urls = false
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+
+[[kv_namespaces]]
+binding = "GNK_ASG_CONFIG_KV"
+id = "d6f5dac9fa034d8d813db0de44eb7b1b"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[[d1_databases]]
+binding = "GNK_ASG_D1"
+database_name = "gnk_asg_operator_logs"
+database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
+
+[[r2_buckets]]
+binding = "GNK_ASG_MEDIA_ASSETS"
+bucket_name = "gnk-asg-media-assets"
+
+[[send_email]]
+name = "EMAIL"
+remote = true
+
+[triggers]
+crons = []
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "direct-operator"
+DEPLOY_REVISION = "20260630-emergency-media-stop-r2"
+SAFE_GET_DIRECT_MODE = "true"
+AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+MAIL_MANUAL_LIVE = "true"
+MAIL_MANDATORY_BCC = "rht@gmx.com"
+MAIL_PROFILE_TEST_LIVE = "true"
+MAIL_PROFILE_TEST_RECIPIENTS = "rht@gmx.com,beckuphome@gmail.com"
+MAIL_BOOTSTRAP_SMOKE_TEST = "true"
+MEDIA_OUTREACH_LIVE = "false"
+MEDIA_OUTREACH_TEST_LIVE = "true"
+MEDIA_OUTREACH_TEST_RECIPIENTS = "rht@gmx.com,beckuphome@gmail.com"
+MEDIA_OUTREACH_MAX_PER_HOUR = "0"
+MEDIA_OUTREACH_MAX_PER_DAY = "0"
+MEDIA_APPLICATION_AUTO_ACK = "true"
