@@ -35,6 +35,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-outreach-reporting-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check apps/portal/assets/media-center-fresh-v1.js
