@@ -1,4 +1,4 @@
-name: Deploy Media Projects V1
+name: Deploy Fresh Media Center
 
 on:
   push:
@@ -8,16 +8,16 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: deploy-media-projects-v1
+  group: deploy-fresh-media-center
   cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,103 +25,50 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Validate locked project chain
+      - name: Validate fresh Media Center
         run: |
           set -euo pipefail
-          node --check workers/gnk-asg-direct-operator/src/media-projects-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          node --check apps/portal/assets/media-projects-ui-v1.js
-          node --check apps/portal/assets/media-projects-ui-core-v1.js
-          node --check apps/portal/assets/media-projects-ui-projects-v1.js
-          node --check apps/portal/assets/media-projects-ui-contacts-v1.js
-          node --check apps/portal/assets/media-projects-ui-xlsx-v1.js
-          node --check apps/portal/assets/media-projects-ui-files-v1.js
-          grep -q "index-final-admin-gateway-projects-v1.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          grep -q "MEDIA_OUTREACH_LIVE.*false" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
-          grep -q "media-outreach-build-lock" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
-          ! grep -q "EMAIL.send" workers/gnk-asg-direct-operator/src/media-projects-v1.js
-      - name: Deploy Cloudflare Worker
+          node --check apps/portal/assets/media-center-fresh-v1.js
+          grep -q "fresh-message-preview" apps/portal/media-command-center/index.html
+          grep -q "fresh-reset" workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
+          grep -q "campaign-html" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          grep -q "index-media-command-center-v20.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+      - name: Deploy Cloudflare Worker and assets
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -euo pipefail
-          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee ../../deploy-media-projects-v1.log
-      - name: Verify production lock and assets
-        id: verify
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee ../../deploy-media-center-fresh-v1.log
+      - name: Verify fresh Media Center deployment
         run: |
           set -euo pipefail
           base="https://gnk-asg.hr"
           ready=false
-          for attempt in $(seq 1 24); do
+          for attempt in $(seq 1 30); do
             stamp=$(date +%s%N)
             version_code=$(curl -sSL -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
-            loader_code=$(curl -sSL -o loader.js -w '%{http_code}' "$base/assets/media-projects-ui-v1.js?cb=$stamp" || true)
-            panel_code=$(curl -sSL -o panel.html -w '%{http_code}' "$base/assets/media-projects-panel-v1.html?cb=$stamp" || true)
-            api_code=$(curl -sS -o api.json -w '%{http_code}' "$base/api/media-command-center/projects?cb=$stamp" || true)
-            if [ "$version_code" = "200" ] && [ "$loader_code" = "200" ] && [ "$panel_code" = "200" ] && grep -q 'finalProjectsGateway' version.json && grep -q 'mediaOutreachBuildLock' version.json && grep -q '__GNK_ASG_MEDIA_PROJECTS_UI_V1__' loader.js && grep -q 'mpHtmlPreview' panel.html && { [ "$api_code" = "401" ] || [ "$api_code" = "403" ]; }; then
-              ready=true
-              break
-            fi
-            sleep 10
+            js_code=$(curl -sSL -o fresh.js -w '%{http_code}' "$base/assets/media-center-fresh-v1.js?cb=$stamp" || true)
+            css_code=$(curl -sSL -o fresh.css -w '%{http_code}' "$base/assets/media-center-fresh-v1.css?cb=$stamp" || true)
+            api_code=$(curl -sS -o api.json -w '%{http_code}' "$base/api/media-command-center/fresh-status?cb=$stamp" || true)
+            if [ "$version_code" = "200" ] && [ "$js_code" = "200" ] && [ "$css_code" = "200" ] && grep -q 'finalMediaFresh' version.json && grep -q 'fresh-message-preview' fresh.js && { [ "$api_code" = "401" ] || [ "$api_code" = "403" ]; }; then ready=true; break; fi
+            sleep 8
           done
-          printf 'VERSION=%s LOADER=%s PANEL=%s API=%s READY=%s\n' "$version_code" "$loader_code" "$panel_code" "$api_code" "$ready"
-          echo "version_code=$version_code" >> "$GITHUB_OUTPUT"
-          echo "loader_code=$loader_code" >> "$GITHUB_OUTPUT"
-          echo "panel_code=$panel_code" >> "$GITHUB_OUTPUT"
-          echo "api_code=$api_code" >> "$GITHUB_OUTPUT"
-          echo "ready=$ready" >> "$GITHUB_OUTPUT"
+          printf 'VERSION=%s JS=%s CSS=%s API=%s READY=%s\n' "$version_code" "$js_code" "$css_code" "$api_code" "$ready"
+          cat version.json
           test "$ready" = "true"
-      - name: Record verified deployment
-        if: success()
-        env:
-          VERSION_CODE: ${{ steps.verify.outputs.version_code }}
-          LOADER_CODE: ${{ steps.verify.outputs.loader_code }}
-          PANEL_CODE: ${{ steps.verify.outputs.panel_code }}
-          API_CODE: ${{ steps.verify.outputs.api_code }}
-          READY: ${{ steps.verify.outputs.ready }}
-        run: |
-          set -euo pipefail
-          mkdir -p apps/portal/data
-          python - <<'PY'
-          import json, os, datetime
-          payload = {
-            "ok": True,
-            "module": "Media Projects V1",
-            "deployed_commit": os.environ.get("GITHUB_SHA", ""),
-            "workflow_run_id": os.environ.get("GITHUB_RUN_ID", ""),
-            "verified_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            "external_sending": False,
-            "media_outreach_build_lock": True,
-            "checks": {
-              "portal_version_http": int(os.environ["VERSION_CODE"]),
-              "loader_http": int(os.environ["LOADER_CODE"]),
-              "panel_http": int(os.environ["PANEL_CODE"]),
-              "unauthenticated_projects_api_http": int(os.environ["API_CODE"]),
-              "ready": os.environ["READY"].lower() == "true"
-            }
-          }
-          with open("apps/portal/data/media-projects-deployment-status.json", "w", encoding="utf-8") as fh:
-            json.dump(payload, fh, ensure_ascii=False, indent=2)
-            fh.write("\n")
-          PY
-          git config user.name "GNK ASG Deploy Bot"
-          git config user.email "deploy-bot@gnk-asg.hr"
-          git add apps/portal/data/media-projects-deployment-status.json
-          git commit -m "Record verified Media Projects V1 deployment [skip ci]" || exit 0
-          git push origin HEAD:main
-      - name: Upload deployment evidence
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
-          name: media-projects-v1-deployment
+          name: media-center-fresh-deployment
           path: |
-            deploy-media-projects-v1.log
+            deploy-media-center-fresh-v1.log
             version.json
-            loader.js
-            panel.html
+            fresh.js
+            fresh.css
             api.json
-            apps/portal/data/media-projects-deployment-status.json
           retention-days: 14
