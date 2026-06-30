@@ -68,7 +68,7 @@ export function validateEnglishOnlyContent({html='',text='',subject='',headers={
 }
 
 function normalizeGreeting(value=''){
-  return clean(value).replace(/\bEditorial\s+Editorial\s+Team\b/gi,'Editorial Team');
+  return clean(value).replace(/Editorial +Editorial +Team/gi,'Editorial Team');
 }
 
 function attentionParts(text=''){
