@@ -1,0 +1,81 @@
+name: Diagnose Media Projects V1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/media-projects-v1.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: diagnose-media-projects-v1
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Check public production and record result
+        shell: bash
+        run: |
+          set -u
+          base="https://gnk-asg.hr"
+          ready=false
+          version_code=000
+          loader_code=000
+          panel_code=000
+          api_code=000
+          for attempt in $(seq 1 30); do
+            stamp=$(date +%s%N)
+            version_code=$(curl -sSL -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
+            loader_code=$(curl -sSL -o loader.js -w '%{http_code}' "$base/assets/media-projects-ui-v1.js?cb=$stamp" || true)
+            panel_code=$(curl -sSL -o panel.html -w '%{http_code}' "$base/assets/media-projects-panel-v1.html?cb=$stamp" || true)
+            api_code=$(curl -sS -o api.json -w '%{http_code}' "$base/api/media-command-center/projects?cb=$stamp" || true)
+            version_marker=false
+            loader_marker=false
+            panel_marker=false
+            grep -q 'finalProjectsGateway' version.json 2>/dev/null && grep -q 'mediaOutreachBuildLock' version.json 2>/dev/null && version_marker=true
+            grep -q '__GNK_ASG_MEDIA_PROJECTS_UI_V1__' loader.js 2>/dev/null && loader_marker=true
+            grep -q 'mpHtmlPreview' panel.html 2>/dev/null && panel_marker=true
+            if [ "$version_code" = "200" ] && [ "$loader_code" = "200" ] && [ "$panel_code" = "200" ] && [ "$version_marker" = "true" ] && [ "$loader_marker" = "true" ] && [ "$panel_marker" = "true" ] && { [ "$api_code" = "401" ] || [ "$api_code" = "403" ]; }; then ready=true; break; fi
+            sleep 8
+          done
+          export VERSION_CODE="$version_code" LOADER_CODE="$loader_code" PANEL_CODE="$panel_code" API_CODE="$api_code" READY="$ready"
+          python - <<'PY'
+          import json, os, datetime, pathlib
+          def as_int(name):
+              try: return int(os.environ.get(name, "0"))
+              except: return 0
+          ready=os.environ.get("READY", "false").lower()=="true"
+          payload={
+            "ok": ready,
+            "module": "Media Projects V1",
+            "checked_commit": os.environ.get("GITHUB_SHA", ""),
+            "workflow_run_id": os.environ.get("GITHUB_RUN_ID", ""),
+            "checked_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "external_sending": False,
+            "media_outreach_build_lock_expected": True,
+            "checks": {
+              "portal_version_http": as_int("VERSION_CODE"),
+              "loader_http": as_int("LOADER_CODE"),
+              "panel_http": as_int("PANEL_CODE"),
+              "unauthenticated_projects_api_http": as_int("API_CODE"),
+              "ready": ready
+            }
+          }
+          path=pathlib.Path("apps/portal/data/media-projects-deployment-status.json")
+          path.parent.mkdir(parents=True,exist_ok=True)
+          path.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          PY
+          git config user.name "GNK ASG Deploy Bot"
+          git config user.email "deploy-bot@gnk-asg.hr"
+          git add apps/portal/data/media-projects-deployment-status.json
+          git commit -m "Record Media Projects V1 deployment diagnosis [skip ci]" || exit 0
+          git push origin HEAD:main
