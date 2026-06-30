@@ -1,0 +1,53 @@
+name: Deploy Media Source Probe PR
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/probe-deploy.trigger"
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate locked main
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/media-project-source-probe-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          grep -q "MEDIA_OUTREACH_LIVE.*false" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          ! grep -q "EMAIL.send" workers/gnk-asg-direct-operator/src/media-project-source-probe-v1.js
+      - name: Deploy locked main Worker
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Read aggregate probe
+        run: |
+          set -euo pipefail
+          url="https://gnk-asg.hr/api/internal/media-project-source-c2321439a66f014391497b41ee7f054b?key=FG9tj5MOJRicXrcfrUE6_-JHV9El9GFE"
+          for attempt in $(seq 1 18); do
+            code=$(curl -sSL -o source.json -w '%{http_code}' "$url" || true)
+            if [ "$code" = "200" ] && grep -q 'GNK_ASG_MEDIA_PROJECT_SOURCE_PROBE_V1_20260630' source.json; then cat source.json; exit 0; fi
+            sleep 6
+          done
+          cat source.json 2>/dev/null || true
+          exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: media-source-probe-result
+          path: source.json
+          retention-days: 3
