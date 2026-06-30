@@ -1,0 +1,73 @@
+name: Deploy Media Email Import V1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "workers/gnk-asg-direct-operator/src/media-project-email-import-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
+      - ".github/media-email-import-v1.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-media-email-import-v1
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate locked import chain
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/media-project-email-import-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q "MEDIA_OUTREACH_LIVE.*false" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          grep -q "handleMediaProjectImportEmail" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          grep -q "external_sending_enabled.*DEFAULT 0" workers/gnk-asg-direct-operator/src/media-project-email-import-v1.js
+          ! grep -q "EMAIL.send" workers/gnk-asg-direct-operator/src/media-project-email-import-v1.js
+      - name: Deploy Worker and tolerate existing-route permission warning
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set +e
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee ../../deploy-media-email-import-v1.log
+          code=${PIPESTATUS[0]}
+          echo "WRANGLER_EXIT=$code"
+          grep -q "Uploaded gnk-asg-direct-operator" ../../deploy-media-email-import-v1.log
+          grep -q "Deployed gnk-asg-direct-operator triggers" ../../deploy-media-email-import-v1.log
+      - name: Verify active locked importer
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=false
+          for attempt in $(seq 1 30); do
+            stamp=$(date +%s%N)
+            code=$(curl -sSL -o version.json -w '%{http_code}' "https://gnk-asg.hr/data/portal-version.json?cb=$stamp" || true)
+            if [ "$code" = "200" ] && grep -q 'GNK_ASG_MEDIA_PROJECT_EMAIL_IMPORT_V1_20260630' version.json && grep -q 'mediaOutreachBuildLock' version.json; then ready=true; break; fi
+            sleep 8
+          done
+          cat version.json
+          test "$ready" = "true"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: media-email-import-v1-deployment
+          path: |
+            deploy-media-email-import-v1.log
+            version.json
+          retention-days: 7
