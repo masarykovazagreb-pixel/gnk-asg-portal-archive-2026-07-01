@@ -1,0 +1,135 @@
+name: Deploy Mail and Media Strict English
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-mail-media-strict-english.yml"
+      - "apps/portal/mail-studio/index.html"
+      - "apps/portal/media-command-center/index.html"
+      - "apps/portal/assets/mail-studio-english-v23.js"
+      - "apps/portal/assets/media-center-fresh-v1.js"
+      - "apps/portal/assets/media-center-english-ui-v2.js"
+      - "workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js"
+      - "workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
+      - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: deploy-mail-media-strict-english
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Report deploy start
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          body=$(printf '## Mail and Media strict-English deploy — started\n\n- Commit: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/83/comments" -f body="$body"
+
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Validate Mail Studio and Media Center
+        id: validate
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/mail-studio-english-v23.js
+          node --check apps/portal/assets/media-center-fresh-v1.js
+          node --check apps/portal/assets/media-center-english-ui-v2.js
+          node --check workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js
+          node --check workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          grep -q 'GNK_ASG_MAIL_STUDIO_BRIDGE_V17_20260630_ENGLISH_V26_NO_HISTORY' workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js
+          grep -q 'const scripts=`<script defer src="${CORE}"></script>`' workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js
+          ! grep -q 'src="${HISTORY}"' workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js
+          grep -q 'Message records are available only in the controlled spreadsheet audit export.' workers/gnk-asg-direct-operator/src/index-mail-studio-bridge-v17.js
+          grep -q 'GNK_ASG_MEDIA_OUTREACH_FINAL_MESSAGE_V4_STRICT_COMPLETE_ENGLISH_20260630' workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js
+          grep -q "subject='CODE'" workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js
+          grep -q 'X-GNK-ASG-Content-Policy' workers/gnk-asg-direct-operator/src/media-outreach-final-message-v1.js
+          grep -q 'media-center-english-ui-v2.js' apps/portal/media-command-center/index.html
+          grep -q 'EXPORT DELIVERY SPREADSHEET' apps/portal/media-command-center/index.html
+          grep -q 'id="previewFrame"' apps/portal/mail-studio/index.html
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
+
+      - name: Deploy Worker and assets to Cloudflare
+        id: cloudflare
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator
+
+      - name: Verify deployed Worker and assets
+        id: verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          ok=false
+          for attempt in $(seq 1 30); do
+            cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+            mail_code=$(curl -sS -D /tmp/mail.headers -o /tmp/mail.html -w '%{http_code}' "$base/mail-studio/?cb=$cb" || true)
+            media_code=$(curl -sS -D /tmp/media.headers -o /tmp/media.html -w '%{http_code}' "$base/media-command-center/?cb=$cb" || true)
+            core_code=$(curl -sS -o /tmp/core.js -w '%{http_code}' "$base/assets/mail-studio-english-v23.js?cb=$cb" || true)
+            english_ui_code=$(curl -sS -o /tmp/english-ui.js -w '%{http_code}' "$base/assets/media-center-english-ui-v2.js?cb=$cb" || true)
+            version_code=$(curl -sS -o /tmp/version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$cb" || true)
+            if { [ "$mail_code" = "200" ] || [ "$mail_code" = "401" ] || [ "$mail_code" = "403" ]; } \
+              && { [ "$media_code" = "200" ] || [ "$media_code" = "401" ] || [ "$media_code" = "403" ]; } \
+              && [ "$core_code" = "200" ] \
+              && [ "$english_ui_code" = "200" ] \
+              && [ "$version_code" = "200" ] \
+              && grep -q 'GNK_ASG_MAIL_STUDIO_ENGLISH_V24' /tmp/core.js \
+              && grep -q 'GNK_ASG_MEDIA_CENTER_ENGLISH_UI_V2' /tmp/english-ui.js \
+              && grep -qi '^x-gnk-asg-mail-studio-bridge-v17: GNK_ASG_MAIL_STUDIO_BRIDGE_V17_20260630_ENGLISH_V26_NO_HISTORY' /tmp/mail.headers; then
+              ok=true
+              break
+            fi
+            sleep 6
+          done
+          echo "mail_code=$mail_code" >> "$GITHUB_OUTPUT"
+          echo "media_code=$media_code" >> "$GITHUB_OUTPUT"
+          echo "core_code=$core_code" >> "$GITHUB_OUTPUT"
+          echo "english_ui_code=$english_ui_code" >> "$GITHUB_OUTPUT"
+          echo "version_code=$version_code" >> "$GITHUB_OUTPUT"
+          [ "$ok" = "true" ]
+
+      - name: Report deploy result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          VALIDATE_STATUS: ${{ steps.validate.outcome }}
+          CLOUDFLARE_STATUS: ${{ steps.cloudflare.outcome }}
+          VERIFY_STATUS: ${{ steps.verify.outcome }}
+          MAIL_CODE: ${{ steps.verify.outputs.mail_code }}
+          MEDIA_CODE: ${{ steps.verify.outputs.media_code }}
+          CORE_CODE: ${{ steps.verify.outputs.core_code }}
+          ENGLISH_UI_CODE: ${{ steps.verify.outputs.english_ui_code }}
+          VERSION_CODE: ${{ steps.verify.outputs.version_code }}
+        shell: bash
+        run: |
+          body=$(printf '## Mail and Media strict-English deploy — %s\n\n- Commit: `%s`\n- Validation: **%s**\n- Cloudflare deploy: **%s**\n- Live verification: **%s**\n- Mail Studio HTTP: `%s`\n- Media Center HTTP: `%s`\n- Mail core asset: `%s`\n- English UI asset: `%s`\n- Version endpoint: `%s`\n- Run: https://github.com/%s/actions/runs/%s\n' "$JOB_STATUS" "$GITHUB_SHA" "$VALIDATE_STATUS" "$CLOUDFLARE_STATUS" "$VERIFY_STATUS" "$MAIL_CODE" "$MEDIA_CODE" "$CORE_CODE" "$ENGLISH_UI_CODE" "$VERSION_CODE" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          gh api "repos/${GITHUB_REPOSITORY}/issues/83/comments" -f body="$body"
