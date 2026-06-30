@@ -132,7 +132,7 @@ crons = ["*/3 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
-DEPLOY_REVISION = "20260630-media-outreach-paused-for-strict-english-repair-v2"
+DEPLOY_REVISION = "20260630-strict-english-history-mail-studio-paused-v3"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 MAIL_MANUAL_LIVE = "true"
@@ -149,4 +149,5 @@ MEDIA_OUTREACH_REPORT_RECIPIENTS = "rht@gmx.com"
 MEDIA_OUTREACH_MAX_PER_HOUR = "20"
 MEDIA_OUTREACH_MAX_PER_DAY = "400"
 MEDIA_APPLICATION_AUTO_ACK = "true"
+
 
