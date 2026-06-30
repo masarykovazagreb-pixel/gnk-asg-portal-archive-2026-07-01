@@ -48,7 +48,7 @@ jobs:
           ready=false
           for attempt in $(seq 1 24); do
             code=$(curl -sSL -o apps/portal/data/media-project-source-status.json -w '%{http_code}' "$url" || true)
-            if [ "$code" = "200" ] && grep -q 'GNK_ASG_MEDIA_PROJECT_SOURCE_PROBE_V1_20260630_R2' apps/portal/data/media-project-source-status.json; then ready=true; break; fi
+            if [ "$code" = "200" ] && grep -q 'GNK_ASG_MEDIA_PROJECT_SOURCE_PROBE_V1_20260630' apps/portal/data/media-project-source-status.json; then ready=true; break; fi
             sleep 8
           done
           test "$ready" = "true"
