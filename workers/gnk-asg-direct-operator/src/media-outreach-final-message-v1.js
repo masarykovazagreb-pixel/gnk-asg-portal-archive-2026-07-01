@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_MEDIA_OUTREACH_FINAL_MESSAGE_V4_STRICT_COMPLETE_ENGLISH_20260630';
+export const VERSION='GNK_ASG_MEDIA_OUTREACH_FINAL_MESSAGE_V5_STRICT_ENGLISH_GREETING_DEDUP_20260630';
 
 const clean=value=>String(value??'').trim();
 const MEDIA_EMAIL='media@gnk-asg.hr';
@@ -67,6 +67,10 @@ export function validateEnglishOnlyContent({html='',text='',subject='',headers={
   return{ok:markers.length===0,markers:[...new Set(markers)]};
 }
 
+function normalizeGreeting(value=''){
+  return clean(value).replace(/\bEditorial\s+Editorial\s+Team\b/gi,'Editorial Team');
+}
+
 function attentionParts(text=''){
   const source=String(text||'');
   const match=source.match(/For the attention of\s+([^,\n]+),\s*([^\n]+)/i);
@@ -74,7 +78,7 @@ function attentionParts(text=''){
   const outlet=clean(match?.[2]).replace(/[.\s]+$/,'');
   return{
     person:/editor|desk|newsroom|contact/i.test(person)?'':person,
-    outlet:/editorial desk|editor-in-chief/i.test(outlet)?'':outlet
+    outlet:/^(?:editorial(?:\s+(?:team|desk))?|editor-in-chief)$/i.test(outlet)?'':outlet
   };
 }
 
@@ -87,7 +91,9 @@ function referenceCode(text=''){
 }
 
 function preferredGreeting(text=''){
-  const english=String(text||'').split(/\r?\n/).map(clean).find(line=>/^Dear\s+.{1,120},$/i.test(line));
+  const raw=String(text||'').split(/\r?\n/).map(clean).find(line=>/^Dear\s+.{1,120},$/i.test(line));
+  const english=normalizeGreeting(raw);
+  if(english&&/^Dear\s+Editorial\s+Team,$/i.test(english))return english;
   if(english&&!/Dear\s+(?:Editor|Editorial Team),/i.test(english))return english;
   const{person,outlet}=attentionParts(text);
   if(person)return`Dear ${person},`;
@@ -98,12 +104,13 @@ function preferredGreeting(text=''){
 function replaceHtmlGreeting(html,text){
   const greeting=preferredGreeting(text);
   let value=String(html||'')
+    .replace(/Dear\s+Editorial\s+Editorial\s+Team\s*,?/gi,'Dear Editorial Team,')
     .replace(/<html\b([^>]*?)\blang\s*=\s*["'][^"']*["']([^>]*)>/i,'<html$1lang="en"$2>')
     .replace(/<html(?![^>]*\blang=)/i,'<html lang="en"')
     .replace(/\{\{GREETING\}\}/g,greeting)
     .replace(/Dear\s+Redakcija\s*\/\s*news\s*desk,/gi,greeting)
     .replace(/Dear\s+Uredni(?:č|c)ki\s+ili\s+organizacijski\s+kontakt\s*,?/gi,greeting)
-    .replace(/Dear\s+(?:Editor|Editorial Team),/gi,greeting)
+    .replace(/Dear\s+(?:Editor|Editorial(?:\s+Editorial)?\s+Team),/gi,greeting)
     .replace(/Poštovan(?:i|a|e)[^,<]{0,120},/gi,greeting)
     .replace(/Postovan(?:i|a|e)[^,<]{0,120},/gi,greeting);
   return value;
