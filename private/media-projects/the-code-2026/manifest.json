@@ -1,0 +1,32 @@
+{
+  "projectId": "the-code-2026",
+  "name": "THE CODE - Official Media Invitation",
+  "createdAt": "2026-06-30T00:14:57.548738+00:00",
+  "sourceWorkbook": {
+    "filename": "371_medija_svijet_i_regija_email_kontakti_2026.xlsx",
+    "sha256": "b70506c25650afbae6efe1fe8ed6e7edfea9a05f22ca6dc8fa89ee5747bcf104",
+    "rows": 371
+  },
+  "normalizedContacts": {
+    "count": 361,
+    "sha256": "e9fe710e20dcd025d6af68c5ab812523a6126c4bc535d8ab0be6ab4dcd983e52",
+    "rules": [
+      "Serbia: keep only Tanjug and Nedeljnik",
+      "Croatia: exclude Nacional",
+      "Add four explicitly requested addresses",
+      "Repeat four messages previously sent from the wrong sender and without PDF",
+      "Deduplicate by normalized email address"
+    ]
+  },
+  "html": {
+    "filename": "GNK_DINAMO_THE_CODE_OFFICIAL_MEDIA_INVITATION_EN_UPLOAD_FINAL_V2 (1).html",
+    "sha256": "d39d39186ad9dcd182291196b632e5adc6a0d4d73a7656480eab57aa20ab8c74",
+    "r2Key": "media-projects/the-code-2026/current/invitation.html"
+  },
+  "pdf": {
+    "filename": "GNK_DINAMO_Ltd_Group_THE_CODE_EN_MEMORANDUM_CORRECT.pdf",
+    "sha256": "5c33f1dea158ff8938122c024e857997eb2f156a039c4b76c0cca133f1e0aa95",
+    "r2Key": "media-projects/the-code-2026/current/memorandum.pdf"
+  },
+  "productionSendingLocked": true
+}
