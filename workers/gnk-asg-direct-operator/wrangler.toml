@@ -1,103 +1,15 @@
-﻿name = "gnk-asg-direct-operator"
+name = "gnk-asg-direct-operator"
 main = "src/index-final-admin-gateway-v1.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
 
+# One canonical route per hostname. The previous configuration mixed a catch-all
+# route with many overlapping path routes, causing Cloudflare route deployment
+# to fail after the Worker itself had already uploaded.
 routes = [
-  { pattern = "gnk-asg.hr/api/admin-mail-send*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/api/admin-mail-send*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/api/mail-center/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/api/mail-center/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/api/media-command-center/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/api/media-command-center/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/api/media-registration*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/api/media-registration*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/api/media-registration-admin*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/api/media-registration-admin*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/api/media-portal-admin*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/api/media-portal-admin*", zone_name = "gnk-asg.hr" },
-
   { pattern = "gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
-
-  { pattern = "gnk-asg.hr/en", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/en/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/en", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/en/*", zone_name = "gnk-asg.hr" },
-
-  { pattern = "gnk-asg.hr/publications", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/publications/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/publications", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/publications/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/objave", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/objave/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/objave", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/objave/*", zone_name = "gnk-asg.hr" },
-
-  { pattern = "gnk-asg.hr/contact", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/contact/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/contact", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/contact/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/assistant", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/assistant/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/assistant", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/assistant/*", zone_name = "gnk-asg.hr" },
-
-  { pattern = "gnk-asg.hr/trzista", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/trzista/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/trzista", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/trzista/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/markets", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/markets/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/markets", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/markets/*", zone_name = "gnk-asg.hr" },
-
-  { pattern = "gnk-asg.hr/visual-index", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/visual-index/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/visual-index", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/visual-index/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/downloads", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/downloads/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/downloads", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/downloads/*", zone_name = "gnk-asg.hr" },
-
-  { pattern = "gnk-asg.hr/media-kit", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/media-kit/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/media-kit", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/media-kit/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/media-application", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/media-application/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/media-application", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/media-application/*", zone_name = "gnk-asg.hr" },
-
-  { pattern = "gnk-asg.hr/legal", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/legal/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/legal", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/legal/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/the-code", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/the-code/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/the-code", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/the-code/*", zone_name = "gnk-asg.hr" },
-
-  { pattern = "gnk-asg.hr/news", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/news/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/vijesti", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/vijesti/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/app", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/app/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/news", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/news/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/vijesti", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/vijesti/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/app", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/app/*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/operator-dashboard*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/operator-dashboard*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/status-automatizacije*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/status-automatizacije*", zone_name = "gnk-asg.hr" },
-  { pattern = "gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/automation-status*", zone_name = "gnk-asg.hr" }
+  { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" }
 ]
 
 [assets]
@@ -132,7 +44,7 @@ crons = ["*/3 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
-DEPLOY_REVISION = "20260630-strict-english-history-mail-studio-live-v3"
+DEPLOY_REVISION = "20260630-mail-studio-media-center-route-repair-v4"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 MAIL_MANUAL_LIVE = "true"
