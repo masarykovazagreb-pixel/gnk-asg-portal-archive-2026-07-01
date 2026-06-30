@@ -1,0 +1,28 @@
+name: Media Command Center Verify
+
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/media-projects-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js'
+      - 'scripts/verify-media-command-center.cjs'
+      - '.github/workflows/media-command-center-verify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-verify:
+    name: Static verifier
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run Media Command Center verifier
+        run: node scripts/verify-media-command-center.cjs
