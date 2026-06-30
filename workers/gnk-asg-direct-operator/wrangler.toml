@@ -127,7 +127,7 @@ name = "EMAIL"
 remote = true
 
 [triggers]
-crons = ["*/5 * * * *"]
+crons = ["*/3 * * * *"]
 
 [vars]
 PUBLIC_BRAND = "GNK ASG"
@@ -143,6 +143,6 @@ MAIL_BOOTSTRAP_SMOKE_TEST = "true"
 MEDIA_OUTREACH_LIVE = "true"
 MEDIA_OUTREACH_TEST_LIVE = "true"
 MEDIA_OUTREACH_TEST_RECIPIENTS = "rht@gmx.com,beckuphome@gmail.com"
-MEDIA_OUTREACH_MAX_PER_HOUR = "12"
-MEDIA_OUTREACH_MAX_PER_DAY = "100"
+MEDIA_OUTREACH_MAX_PER_HOUR = "20"
+MEDIA_OUTREACH_MAX_PER_DAY = "480"
 MEDIA_APPLICATION_AUTO_ACK = "true"
