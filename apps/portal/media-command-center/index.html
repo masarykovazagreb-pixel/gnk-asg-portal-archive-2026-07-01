@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="hr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <meta name="gnk-media-preview-endpoint" content="fresh-message-preview">
-  <title>GNK ASG — Media Center</title>
-  <link rel="stylesheet" href="/assets/media-center-fresh-v1.css?v=20260630-2">
-  <link rel="stylesheet" href="/assets/media-center-delivery-history-v2.css?v=20260630-1">
+  <title>GNK ASG Media Command Center</title>
+  <link rel="stylesheet" href="/assets/media-center-fresh-v1.css?v=20260630-4">
+  <link rel="stylesheet" href="/assets/media-center-delivery-history-v2.css?v=20260630-3">
 </head>
 <body>
 <main class="fresh-shell">
   <header class="fresh-hero">
     <div>
-      <span class="fresh-kicker">GNK DINAMO LTD. GROUP · PRIVATE ADMIN</span>
-      <h1>Novi Media Center</h1>
-      <p>Ručni Excel, HTML i PDF, pregled poruke, kontrolirano slanje i potpuna povijest dostave.</p>
+      <span class="fresh-kicker">GNK DINAMO LTD. GROUP · PRIVATE ADMINISTRATION</span>
+      <h1>Media Command Center</h1>
+      <p>English-only media outreach, controlled testing, queue management, delivery history and audit evidence.</p>
     </div>
     <div class="fresh-actions">
       <span class="fresh-badge">MEDIA@GNK-ASG.HR</span>
@@ -24,134 +24,129 @@
     </div>
   </header>
 
-  <section id="freshNotice" class="fresh-notice">Učitavanje stanja…</section>
+  <section id="freshNotice" class="fresh-notice">Loading campaign state…</section>
   <section id="freshKpis" class="fresh-kpis"></section>
 
   <section class="fresh-grid">
-    <article class="fresh-card alert">
-      <h2>0. Novo stanje</h2>
-      <p>Uklanja prethodni popis medija i prethodni red slanja. Prijave redakcija i njihovi dokumenti ostaju sačuvani.</p>
-      <label>Potvrda <code>RESET_MEDIA_OUTREACH</code><input id="resetConfirm" autocomplete="off"></label>
-      <button id="resetMedia" class="red">RESETIRAJ PRETHODNO STANJE</button>
-      <pre id="resetState" class="fresh-state">Reset još nije pokrenut.</pre>
+    <article class="fresh-card wide">
+      <h2>Campaign safety and readiness</h2>
+      <p>This panel is read-only. It verifies live status, test gate, rate limits, mandatory copy, campaign assets and approved hashes before any queue action.</p>
+      <div id="readinessSummary" class="fresh-state">Readiness has not been loaded.</div>
     </article>
 
     <article class="fresh-card">
-      <h2>1. Excel</h2>
-      <p>Odaberite XLSX, XLS ili CSV. Prije uvoza provjeravaju se medij, e-mail i duplikati.</p>
+      <h2>1. Contact file</h2>
+      <p>Select XLSX, XLS or CSV. The browser validates the outlet, email address and duplicates before import.</p>
       <input id="xlsxFile" type="file" accept=".xlsx,.xls,.csv">
       <div class="fresh-actions">
-        <button id="inspectXlsx">PROVJERI EXCEL</button>
-        <button id="importXlsx" class="gold" disabled>UVEZI NOVI POPIS</button>
+        <button id="inspectXlsx">VALIDATE FILE</button>
+        <button id="importXlsx" class="gold" disabled>IMPORT CONTACTS</button>
       </div>
-      <pre id="xlsxState" class="fresh-state">Excel nije odabran.</pre>
+      <label><input id="replaceContacts" type="checkbox"> Replace the current contact list</label>
+      <label>Required confirmation when replacing contacts
+        <input id="replaceConfirm" autocomplete="off" placeholder="REPLACE_MEDIA_CONTACTS" disabled>
+      </label>
+      <pre id="xlsxState" class="fresh-state">No contact file selected.</pre>
     </article>
 
     <article class="fresh-card">
-      <h2>2. HTML</h2>
-      <p>HTML je sadržaj unutar e-maila. Nakon učitavanja odmah je dostupan pregled.</p>
-      <input id="htmlFile" type="file" accept=".html,.htm,text/html">
-      <button id="uploadHtml" class="gold">UČITAJ HTML</button>
-      <pre id="htmlState" class="fresh-state">HTML nije učitan.</pre>
+      <h2>2. Campaign HTML</h2>
+      <p>The HTML file is rendered inside the email body. Uploading does not send any message.</p>
+      <input id="htmlFile" type="file" accept=".html,.htm,.xhtml,text/html,application/xhtml+xml">
+      <button id="uploadHtml" class="gold">UPLOAD HTML</button>
+      <pre id="htmlState" class="fresh-state">HTML has not been uploaded.</pre>
     </article>
 
     <article class="fresh-card">
-      <h2>3. PDF</h2>
-      <p>PDF se šalje kao privitak i provjerava prije spremanja.</p>
+      <h2>3. PDF attachment</h2>
+      <p>The PDF is validated and stored as the campaign attachment. Uploading does not send any message.</p>
       <input id="pdfFile" type="file" accept=".pdf,application/pdf">
-      <button id="uploadPdf" class="gold">UČITAJ PDF</button>
-      <pre id="pdfState" class="fresh-state">PDF nije učitan.</pre>
+      <button id="uploadPdf" class="gold">UPLOAD PDF</button>
+      <pre id="pdfState" class="fresh-state">PDF has not been uploaded.</pre>
     </article>
 
     <article class="fresh-card half">
-      <h2>4. Pregled poruke</h2>
-      <p>Odaberite primatelja i provjerite To, Subject, pozdrav, HTML i PDF prije slanja.</p>
+      <h2>4. Recipient preview</h2>
+      <p>Verify the recipient, English subject, greeting, HTML body and PDF before testing or queueing.</p>
       <select id="freshPreviewContact"></select>
       <div class="fresh-actions">
-        <button id="showPreview">PRIKAŽI PORUKU</button>
-        <a id="openHtml" class="button" target="_blank">OTVORI HTML</a>
-        <a id="openPdf" class="button gold" target="_blank">OTVORI PDF</a>
+        <button id="showPreview">SHOW PREVIEW</button>
+        <a id="openHtml" class="button" target="_blank" rel="noopener">OPEN HTML</a>
+        <a id="openPdf" class="button gold" target="_blank" rel="noopener">OPEN PDF</a>
       </div>
     </article>
 
     <article class="fresh-card half">
-      <h2>5. Test i slanje</h2>
-      <p>Pošaljite kontrolni test, zatim pripremite red slanja.</p>
-      <label>Testni primatelj<input id="testRecipient" type="email" value="rht@gmx.com"></label>
+      <h2>5. Test and controlled delivery</h2>
+      <p>A valid test gate is required before queueing or dispatching. The mandatory BCC copy is always rht@gmx.com.</p>
+      <label>Approved test recipient
+        <input id="testRecipient" type="email" value="rht@gmx.com" readonly>
+      </label>
+      <button id="sendTest">SEND CONTROL TEST</button>
+
+      <label>Queue confirmation
+        <input id="queueConfirm" autocomplete="off" placeholder="QUEUE_APPROVED_MEDIA">
+      </label>
+      <button id="queueAll" class="gold">QUEUE APPROVED CONTACTS</button>
+
+      <label>Single-dispatch confirmation
+        <input id="dispatchConfirm" autocomplete="off" placeholder="DISPATCH_ONE_QUEUED_EMAIL">
+      </label>
       <div class="fresh-actions">
-        <button id="sendTest">POŠALJI TEST</button>
-        <button id="queueAll" class="gold">STAVI SVE U RED</button>
-        <button id="dispatchOne">POŠALJI SLJEDEĆI</button>
-        <button id="refreshAll">OSVJEŽI</button>
+        <button id="dispatchOne">DISPATCH NEXT MESSAGE</button>
+        <button id="refreshAll">REFRESH STATUS</button>
       </div>
-      <pre id="deliveryState" class="fresh-state">Status slanja još nije učitan.</pre>
+      <pre id="deliveryState" class="fresh-state">Delivery status has not been loaded.</pre>
     </article>
 
     <article class="fresh-card wide">
-      <h2>Pregled HTML poruke</h2>
-      <iframe id="messagePreview" class="fresh-preview" title="Pregled poruke"></iframe>
+      <h2>Email preview</h2>
+      <iframe id="messagePreview" class="fresh-preview" title="Email preview" sandbox="allow-popups allow-popups-to-escape-sandbox"></iframe>
     </article>
 
     <article class="fresh-card wide">
-      <h2>Povijest slanja</h2>
-      <p>Read-only evidencija cijelog reda: kome je poslano, kada, predmet, broj pokušaja, provider Message ID i razlog greške. Ovaj prikaz ne pokreće niti zaustavlja slanje.</p>
+      <h2>Delivery history</h2>
+      <p>Read-only audit trail: recipient, delivery time, subject, attempts, provider Message ID and error details.</p>
       <div class="history-toolbar">
         <label>Status
           <select id="historyStatusFilter">
-            <option value="ALL">Svi statusi</option>
-            <option value="SENT">Poslano</option>
-            <option value="QUEUED">U redu</option>
-            <option value="SENDING">Šalje se</option>
-            <option value="RETRY">Ponovni pokušaj</option>
-            <option value="FAILED">Neuspjelo</option>
-            <option value="REVIEW">Provjera</option>
+            <option value="ALL">All statuses</option>
+            <option value="SENT">Sent</option>
+            <option value="QUEUED">Queued</option>
+            <option value="SENDING">Sending</option>
+            <option value="RETRY">Retry</option>
+            <option value="FAILED">Failed</option>
+            <option value="REVIEW">Review</option>
           </select>
         </label>
-        <label>Pretraži
-          <input id="historySearch" type="search" placeholder="Medij, e-mail, predmet, šifra ili Message ID">
+        <label>Search
+          <input id="historySearch" type="search" placeholder="Outlet, email, subject, mail code or Message ID">
         </label>
-        <button id="refreshHistory" class="history-button" type="button">OSVJEŽI POVIJEST</button>
-        <a id="exportHistory" class="history-button gold" href="/api/media-command-center/delivery-history.csv" download>IZVEZI CSV</a>
+        <button id="refreshHistory" class="history-button" type="button">REFRESH HISTORY</button>
+        <a id="exportHistory" class="history-button gold" href="/api/media-command-center/delivery-history.csv" download>EXPORT CSV</a>
       </div>
       <div id="historySummary" class="history-summary"></div>
       <div class="history-table-wrap">
         <table class="history-table">
           <thead>
             <tr>
-              <th>Status</th>
-              <th>Vrijeme</th>
-              <th>Medij</th>
-              <th>Primatelj</th>
-              <th>E-mail</th>
-              <th>Predmet</th>
-              <th>Pokušaji</th>
-              <th>Provider Message ID</th>
-              <th>Greška</th>
-              <th>Šifra</th>
+              <th>Status</th><th>Time</th><th>Outlet</th><th>Recipient</th><th>Email</th><th>Subject</th><th>Attempts</th><th>Provider Message ID</th><th>Error</th><th>Mail code</th>
             </tr>
           </thead>
           <tbody id="deliveryHistoryBody">
-            <tr><td colspan="10" class="history-empty">Učitavanje povijesti slanja…</td></tr>
+            <tr><td colspan="10" class="history-empty">Loading delivery history…</td></tr>
           </tbody>
         </table>
       </div>
-      <p id="historyMeta" class="history-meta">Povijest slanja još nije učitana.</p>
+      <p id="historyMeta" class="history-meta">Delivery history has not been loaded.</p>
     </article>
 
     <article class="fresh-card wide">
-      <h2>Kontakti i statusi</h2>
+      <h2>Contacts and delivery status</h2>
       <div class="fresh-table-wrap">
         <table class="fresh-table">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>Prioritet</th>
-              <th>Medij</th>
-              <th>Primatelj</th>
-              <th>E-mail</th>
-              <th>Status</th>
-              <th>Pregled</th>
-            </tr>
+            <tr><th>#</th><th>Priority</th><th>Outlet</th><th>Recipient</th><th>Email</th><th>Status</th><th>Preview</th></tr>
           </thead>
           <tbody id="freshContactsBody"></tbody>
         </table>
@@ -159,7 +154,7 @@
     </article>
   </section>
 </main>
-<script src="/assets/media-center-fresh-v1.js?v=20260630-2" defer></script>
-<script src="/assets/media-center-delivery-history-v2.js?v=20260630-1" defer></script>
+<script src="/assets/media-center-fresh-v1.js?v=20260630-5" defer></script>
+<script src="/assets/media-center-delivery-history-v2.js?v=20260630-4" defer></script>
 </body>
 </html>
