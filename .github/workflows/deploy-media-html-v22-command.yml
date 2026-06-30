@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event.issue.number == 131 && github.event.comment.body == '/deploy-media-html-v22'
+    if: github.event.issue.number == 254 && github.event.comment.body == '/deploy-media-html-v22'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -113,4 +113,4 @@ jobs:
             printf '%s\n' "$status"
             echo '```'
           } > /tmp/media-html-v22-report.md
-          gh issue comment 131 --repo "$GITHUB_REPOSITORY" --body-file /tmp/media-html-v22-report.md
+          gh issue comment 254 --repo "$GITHUB_REPOSITORY" --body-file /tmp/media-html-v22-report.md
