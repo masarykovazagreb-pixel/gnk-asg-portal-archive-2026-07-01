@@ -9,7 +9,8 @@ import {handleFreshMediaAdmin,withFreshMediaPersonalization,VERSION as FRESH_VER
 import {handleMediaBootstrapEmail,withBootstrapPersonalization,VERSION as BOOTSTRAP_VERSION} from './media-bootstrap-email-v1.js';
 import {handleMediaBootstrapHtmlForwardEmail,VERSION as BOOTSTRAP_HTML_VERSION} from './media-bootstrap-html-forward-v1.js';
 import {lockPreviouslyDeliveredRecipients,VERSION as DEDUP_VERSION} from './media-delivery-dedup-v1.js';
-export const VERSION=`GNK_ASG_FINAL_MEDIA_STRICT_ENGLISH_HISTORY_NO_REPEAT_V3_TO_${BASE_VERSION}`;
+import {repairPendingMediaQueue,VERSION as QUEUE_REPAIR_VERSION} from './media-outreach-queue-repair-v1.js';
+export const VERSION=`GNK_ASG_FINAL_MEDIA_STRICT_ENGLISH_HISTORY_NO_REPEAT_QUEUE_REPAIR_V4_TO_${BASE_VERSION}`;
 const API='/api/media-command-center';
 const PUBLIC_MEMORANDUM='/api/media-registration/memorandum.pdf';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
@@ -54,6 +55,7 @@ function stamp(response){
   headers.set('x-gnk-asg-media-bootstrap-html',BOOTSTRAP_HTML_VERSION);
   headers.set('x-gnk-asg-email-signature-contract',SIGNATURE_VERSION);
   headers.set('x-gnk-asg-media-dedup',DEDUP_VERSION);
+  headers.set('x-gnk-asg-media-queue-repair',QUEUE_REPAIR_VERSION);
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
@@ -77,7 +79,7 @@ export default{
     if(path==='/data/portal-version.json'&&response.ok&&String(response.headers.get('content-type')||'').includes('application/json')){
       try{
         const payload=await response.clone().json(),headers=new Headers(response.headers);
-        response=new Response(JSON.stringify({...payload,finalMediaFresh:VERSION,mediaFresh:FRESH_VERSION,mediaDelivery:DELIVERY_VERSION,mediaReporting:REPORTING_VERSION,mediaLaunch:LAUNCH_VERSION,mediaFinalMessage:FINAL_MESSAGE_VERSION,mediaProjects:PROJECTS_VERSION,mediaBootstrap:BOOTSTRAP_VERSION,mediaBootstrapHtml:BOOTSTRAP_HTML_VERSION,mediaDedup:DEDUP_VERSION,mediaOutreachBuildLock:false},null,2),{status:response.status,headers});
+        response=new Response(JSON.stringify({...payload,finalMediaFresh:VERSION,mediaFresh:FRESH_VERSION,mediaDelivery:DELIVERY_VERSION,mediaReporting:REPORTING_VERSION,mediaLaunch:LAUNCH_VERSION,mediaFinalMessage:FINAL_MESSAGE_VERSION,mediaProjects:PROJECTS_VERSION,mediaBootstrap:BOOTSTRAP_VERSION,mediaBootstrapHtml:BOOTSTRAP_HTML_VERSION,mediaDedup:DEDUP_VERSION,mediaQueueRepair:QUEUE_REPAIR_VERSION,mediaOutreachBuildLock:false},null,2),{status:response.status,headers});
       }catch{}
     }
     return stamp(response);
@@ -85,11 +87,12 @@ export default{
   async scheduled(event,env,ctx){
     const signed=activeEnv(env);
     const task=(async()=>{
-      const upstream=typeof app.scheduled==='function'?await app.scheduled(event,signed,ctx):null;
       const dedup=await lockPreviouslyDeliveredRecipients(signed).catch(error=>({ok:false,error:String(error?.message||error),code:String(error?.code||'')}));
+      const repair=await repairPendingMediaQueue(signed).catch(error=>({ok:false,error:String(error?.message||error),code:String(error?.code||'')}));
+      const upstream=typeof app.scheduled==='function'?await app.scheduled(event,signed,ctx):null;
       const launch=await runScheduledOutreachLaunch(signed).catch(error=>({ok:false,error:String(error?.message||error),code:String(error?.code||'')}));
       const reporting=await maybeSendOutreachReport(signed).catch(error=>({ok:false,error:String(error?.message||error),code:String(error?.code||'')}));
-      return{upstream,dedup,launch,reporting};
+      return{dedup,repair,upstream,launch,reporting};
     })();
     if(ctx?.waitUntil){ctx.waitUntil(task);return;}
     return task;
