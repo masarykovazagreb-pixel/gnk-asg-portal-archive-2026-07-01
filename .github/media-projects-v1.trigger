@@ -1,6 +1,6 @@
-deployment=GNK_ASG_MEDIA_FRESH_V1_20260630_R5
+deployment=GNK_ASG_MEDIA_FRESH_V1_20260630_R6
 approved=true
 external_sending=true
-requested_for=CONTROLLED_DELIVERY_DEPLOY
-requested_at=2026-06-30T15:45:00+02:00
-validation_marker=history_v3_validated
+requested_for=MAIL_STUDIO_ENGLISH_REPAIR
+requested_at=2026-06-30T16:05:00+02:00
+validation_marker=mail_studio_v17_english_headers
