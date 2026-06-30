@@ -10,6 +10,7 @@ on:
       - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-email-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-html-v1.js"
+      - "workers/gnk-asg-direct-operator/src/media-bootstrap-html-forward-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
       - ".github/workflows/deploy-media-projects-v1.yml"
   push:
@@ -22,6 +23,7 @@ on:
       - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-email-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-bootstrap-html-v1.js"
+      - "workers/gnk-asg-direct-operator/src/media-bootstrap-html-forward-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
       - ".github/workflows/deploy-media-projects-v1.yml"
   workflow_dispatch:
@@ -48,6 +50,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-bootstrap-email-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-bootstrap-html-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-bootstrap-html-forward-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check apps/portal/assets/media-center-fresh-v1.js
@@ -55,7 +58,7 @@ jobs:
           grep -q "fresh-reset" workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
           grep -q "campaign-html" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           grep -q "handleMediaBootstrapEmail" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
-          grep -q "handleMediaBootstrapHtmlEmail" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          grep -q "handleMediaBootstrapHtmlForwardEmail" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           grep -q "index-media-command-center-v20.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
   deploy:
     if: github.event_name != 'pull_request'
