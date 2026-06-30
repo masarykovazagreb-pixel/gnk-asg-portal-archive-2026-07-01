@@ -1,12 +1,8 @@
 {
   "ok": true,
-  "status": "ok",
-  "version": "GNK_ASG_NEWS_V14_20260626",
-  "engine": "news_v14_lifecycle",
-  "updated_at": "2026-06-29T22:40:08+00:00",
-  "checked_at": "2026-06-29T22:40:08+00:00",
-  "last_attempt_at": "2026-06-29T22:40:08+00:00",
-  "last_successful_refresh_at": "2026-06-29T22:40:08+00:00",
+  "status": "refreshed",
+  "updated_at": "2026-06-30T15:30:06+02:00",
+  "engine": "single_publication_engine_v14_github_actions",
   "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
   "timezone": "Europe/Zagreb",
   "scheduled_hours_local": [
@@ -14,45 +10,74 @@
     16,
     21
   ],
-  "configured_sources": 22,
-  "minimum_healthy_sources": 15,
-  "healthy_sources": 19,
-  "failed_sources": 3,
-  "fetched_candidates": 405,
-  "verified_new_candidates": 237,
-  "public_items": 100,
-  "max_public_items": 100,
-  "public_contract": "title+summary+source+article_url+verified_real_image",
-  "archive_items": 150,
-  "archive_capacity": 1000,
-  "archive_prune_trigger": 1000,
-  "archive_prune_to": 500,
-  "archive_prune_triggered": false,
-  "discarded_archive_items": 0,
-  "fallback_images_allowed": false,
+  "public_items_target": 100,
+  "public_items_written": 100,
+  "archive_policy": "archive_latest_1000_prune_to_500_when_full",
+  "archive_items_written": 415,
   "rss_images_enabled": true,
-  "open_graph_fallback_enabled": false,
-  "by_group": {
-    "markets": 7,
-    "international": 24,
-    "technology": 22,
-    "hrvatska": 18,
-    "business": 5,
-    "digital-assets": 17,
-    "srbija": 7
-  },
-  "errors": [
+  "fallback_image": "/assets/news-fallback.svg",
+  "visual_index_fallback": "/visual-index/",
+  "feed_results": [
     {
-      "source": "EURACTIV",
-      "error": "HTTP Error 403: Forbidden"
+      "source": "The Verge",
+      "ok": true,
+      "items": 10,
+      "error": null
     },
     {
-      "source": "International Monetary Fund",
-      "error": "http_200"
+      "source": "TechCrunch",
+      "ok": true,
+      "items": 20,
+      "error": null
     },
     {
-      "source": "European Central Bank",
-      "error": "http_200"
+      "source": "Reuters Business",
+      "ok": false,
+      "items": 0,
+      "error": "fetch failed"
+    },
+    {
+      "source": "Reuters Technology",
+      "ok": false,
+      "items": 0,
+      "error": "fetch failed"
+    },
+    {
+      "source": "MarketWatch",
+      "ok": true,
+      "items": 10,
+      "error": null
+    },
+    {
+      "source": "CNBC Business",
+      "ok": true,
+      "items": 30,
+      "error": null
+    },
+    {
+      "source": "CNBC Technology",
+      "ok": true,
+      "items": 30,
+      "error": null
+    },
+    {
+      "source": "BBC Business",
+      "ok": true,
+      "items": 51,
+      "error": null
+    },
+    {
+      "source": "BBC Technology",
+      "ok": true,
+      "items": 21,
+      "error": null
+    },
+    {
+      "source": "WIRED Business",
+      "ok": true,
+      "items": 20,
+      "error": null
     }
-  ]
+  ],
+  "last_checked_issue": null
 }
