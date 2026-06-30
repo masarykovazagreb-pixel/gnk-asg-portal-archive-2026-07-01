@@ -1,13 +1,20 @@
-export const VERSION='GNK_ASG_MEDIA_OUTREACH_FINAL_MESSAGE_V3_STRICT_ENGLISH_20260630';
+export const VERSION='GNK_ASG_MEDIA_OUTREACH_FINAL_MESSAGE_V4_STRICT_COMPLETE_ENGLISH_20260630';
 
 const clean=value=>String(value??'').trim();
 const MEDIA_EMAIL='media@gnk-asg.hr';
+const MEDIA_NAME='GNK DINAMO Ltd. Group | Media Relations & Accreditation Center';
 const BLOCKED_PHRASES=[
-  'poštovani','poštovana','poštovane','poštovani gospodine','poštovana gospođo',
-  'na ruke','s poštovanjem','rok za prijavu','troškove putovanja','troškovi putovanja',
-  'smještaj','smeštaj','pozivamo redakciju','prijavu svojeg predstavnika','prijavu svog predstavnika',
-  'obvezno navedite','obavezno navedite','konačnu odluku','glavni urednik','redakcija / news desk',
-  'nije poslano','nema odgovora'
+  'poštovani','poštovana','poštovane','postovani','postovana','postovane',
+  'na ruke','s poštovanjem','s postovanjem','srdačan pozdrav','srdacan pozdrav','lijep pozdrav','lep pozdrav',
+  'rok za prijavu','troškove putovanja','troškovi putovanja','troskove putovanja','troskovi putovanja',
+  'smještaj','smeštaj','smjestaj','pozivamo redakciju','prijavu svojeg predstavnika','prijavu svog predstavnika',
+  'obvezno navedite','obavezno navedite','konačnu odluku','konacnu odluku','glavni urednik','glavna urednica',
+  'urednik','urednica','urednički','urednicki','redakcija','redakcije','organizacijski kontakt',
+  'prijava','prijave','poziv','potvrda','upit','poruka','poruke','slanje','poslano','šalje se','salje se',
+  'vijesti','direktor','osobni','hvala','molimo','zaprimili','zaprimljena','primitak','vezano',
+  'vašu','vasu','najkraćem','najkracem','obavijestite','pošiljatelj','posiljatelj','primatelj',
+  'šifra','sifra','nije poslano','nema odgovora','ponovni pokušaj','ponovni pokusaj',
+  'redakcija / news desk','medijsko praćenje','medijsko pracenje','troškove','troskove'
 ];
 
 function header(payload,name){
@@ -26,7 +33,11 @@ function decodeEntities(value){
     .replace(/&quot;/gi,'"')
     .replace(/&#39;|&apos;/gi,"'")
     .replace(/&lt;/gi,'<')
-    .replace(/&gt;/gi,'>');
+    .replace(/&gt;/gi,'>')
+    .replace(/&#269;|&ccaron;/gi,'č')
+    .replace(/&#263;|&cacute;/gi,'ć')
+    .replace(/&#353;|&scaron;/gi,'š')
+    .replace(/&#382;|&zcaron;/gi,'ž');
 }
 
 function visibleText(value){
@@ -43,10 +54,17 @@ function visibleText(value){
     .trim();
 }
 
-export function validateEnglishOnlyContent({html='',text=''}={}){
-  const source=`${visibleText(html)}\n${clean(text)}`.toLocaleLowerCase('hr');
-  const markers=BLOCKED_PHRASES.filter(phrase=>source.includes(phrase));
-  return{ok:markers.length===0,markers};
+function markersIn(value){
+  const source=decodeEntities(String(value||'')).toLocaleLowerCase('hr');
+  return BLOCKED_PHRASES.filter(phrase=>source.includes(phrase));
+}
+
+export function validateEnglishOnlyContent({html='',text='',subject='',headers={},attachments=[]}={}){
+  const values=[visibleText(html),html,clean(text),clean(subject),...Object.values(headers||{}).map(clean),...attachments.map(item=>clean(item?.filename))];
+  const markers=[...new Set(values.flatMap(markersIn))];
+  const languageValues=[...String(html||'').matchAll(/\blang\s*=\s*["']([^"']+)["']/gi)].map(match=>String(match[1]||'').toLowerCase());
+  if(languageValues.some(value=>!/^en(?:-|$)/.test(value)))markers.push('non-English HTML language metadata');
+  return{ok:markers.length===0,markers:[...new Set(markers)]};
 }
 
 function attentionParts(text=''){
@@ -55,7 +73,7 @@ function attentionParts(text=''){
   const person=clean(match?.[1]).replace(/[.\s]+$/,'');
   const outlet=clean(match?.[2]).replace(/[.\s]+$/,'');
   return{
-    person:/editor|desk|newsroom|redakc|kontakt/i.test(person)?'':person,
+    person:/editor|desk|newsroom|contact/i.test(person)?'':person,
     outlet:/editorial desk|editor-in-chief/i.test(outlet)?'':outlet
   };
 }
@@ -80,11 +98,14 @@ function preferredGreeting(text=''){
 function replaceHtmlGreeting(html,text){
   const greeting=preferredGreeting(text);
   let value=String(html||'')
+    .replace(/<html\b([^>]*?)\blang\s*=\s*["'][^"']*["']([^>]*)>/i,'<html$1lang="en"$2>')
     .replace(/<html(?![^>]*\blang=)/i,'<html lang="en"')
     .replace(/\{\{GREETING\}\}/g,greeting)
     .replace(/Dear\s+Redakcija\s*\/\s*news\s*desk,/gi,greeting)
+    .replace(/Dear\s+Uredni(?:č|c)ki\s+ili\s+organizacijski\s+kontakt\s*,?/gi,greeting)
     .replace(/Dear\s+(?:Editor|Editorial Team),/gi,greeting)
-    .replace(/Poštovan(?:i|a|e)[^,<]{0,120},/gi,greeting);
+    .replace(/Poštovan(?:i|a|e)[^,<]{0,120},/gi,greeting)
+    .replace(/Postovan(?:i|a|e)[^,<]{0,120},/gi,greeting);
   return value;
 }
 
@@ -112,7 +133,13 @@ function englishText(payload={}){
     '',
     'Receipt of a complete application does not constitute automatic approval. The final decision is made by an authorized person after human verification.',
     '',
-    'Kind regards,'
+    'Kind regards,',
+    '',
+    'GNK DINAMO Ltd. Group',
+    'Media Relations & Accreditation Center',
+    'Organised by GNK ASG Media Center',
+    MEDIA_EMAIL,
+    'https://gnk-asg.hr'
   ].join('\n');
 }
 
@@ -126,20 +153,30 @@ function contractError(markers){
 export function finalizeMediaPayload(payload={}){
   if(!isOutreachDelivery(payload))return payload;
   const text=englishText(payload);
-  const html=replaceHtmlGreeting(payload.html,text);
-  const validation=validateEnglishOnlyContent({html,text});
+  const html=replaceHtmlGreeting(payload.html||payload.bodyHtml||payload.htmlBody,text);
+  const subject='CODE';
+  const from={email:MEDIA_EMAIL,name:MEDIA_NAME};
+  const headers={
+    ...(payload.headers||{}),
+    'X-GNK-ASG-Final-Message':VERSION,
+    'X-GNK-ASG-Language':'en',
+    'X-GNK-ASG-Outreach-Delivery':'strict-english',
+    'X-GNK-ASG-Content-Policy':'ENGLISH_ONLY'
+  };
+  const validation=validateEnglishOnlyContent({html,text,subject,headers,attachments:payload.attachments||[]});
   if(!validation.ok)throw contractError(validation.markers);
   return{
     ...payload,
-    subject:'CODE',
+    from,
+    replyTo:MEDIA_EMAIL,
+    subject,
     text,
+    plainText:text,
+    body:text,
     html,
-    headers:{
-      ...(payload.headers||{}),
-      'X-GNK-ASG-Final-Message':VERSION,
-      'X-GNK-ASG-Language':'en',
-      'X-GNK-ASG-Outreach-Delivery':'strict-english'
-    }
+    bodyHtml:html,
+    htmlBody:html,
+    headers
   };
 }
 
