@@ -1,5 +1,6 @@
-deployment=GNK_ASG_MEDIA_PROJECTS_V1_20260630_R3
+deployment=GNK_ASG_MEDIA_FRESH_V1_20260630_R4
 approved=true
-external_sending=false
-requested_for=PROJECT_XLSX_HTML_PDF_PREVIEW_STATUS_EXPORT_WITH_DIAGNOSIS
-requested_at=2026-06-30T02:48:00+02:00
+external_sending=true
+requested_for=RESET_IMPORT_HTML_PDF_TEST_AND_CONTROLLED_DELIVERY
+requested_at=2026-06-30T10:42:40+02:00
+validation_marker=id_messagePreview
