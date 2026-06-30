@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_MEDIA_OUTREACH_QUEUE_REPAIR_V1_20260630';
+export const VERSION='GNK_ASG_MEDIA_OUTREACH_QUEUE_REPAIR_V2_HTML_ONLY_20260630';
 
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
 const dbOf=env=>env.GNK_ASG_D1||null;
@@ -26,13 +26,6 @@ export async function repairPendingMediaQueue(env){
   if(!htmlKey||!htmlSha256||!pdfKey||!pdfSha256)return{ok:false,skipped:'campaign_assets_incomplete',version:VERSION};
 
   const stamp=now();
-  const queued=await db.prepare(`UPDATE media_delivery_queue
-    SET html_key=?,html_sha256=?,pdf_key=?,pdf_sha256=?,updated_at=?
-    WHERE status IN ('QUEUED','RETRY')
-      AND (COALESCE(html_sha256,'')<>? OR COALESCE(pdf_sha256,'')<>?)`).bind(
-      htmlKey,htmlSha256,pdfKey,pdfSha256,stamp,htmlSha256,pdfSha256
-    ).run();
-
   const recovered=await db.prepare(`UPDATE media_delivery_queue
     SET html_key=?,html_sha256=?,pdf_key=?,pdf_sha256=?,status='QUEUED',attempts=0,last_error=NULL,last_error_code=NULL,queued_at=?,updated_at=?
     WHERE status IN ('REVIEW','FAILED')
@@ -40,13 +33,32 @@ export async function repairPendingMediaQueue(env){
       htmlKey,htmlSha256,pdfKey,pdfSha256,stamp,stamp
     ).run();
 
+  const rebound=await db.prepare(`UPDATE media_delivery_queue
+    SET html_key=?,html_sha256=?,pdf_key=?,pdf_sha256=?,updated_at=?
+    WHERE status IN ('QUEUED','RETRY')
+      AND (COALESCE(html_sha256,'')<>? OR COALESCE(pdf_sha256,'')<>?)`).bind(
+      htmlKey,htmlSha256,pdfKey,pdfSha256,stamp,htmlSha256,pdfSha256
+    ).run();
+
+  const duplicates=await db.prepare(`UPDATE media_delivery_queue AS q
+    SET status='REVIEW',last_error='Duplicate pending recipient suppressed; the earliest eligible row remains active',last_error_code='DUPLICATE_PENDING',updated_at=?
+    WHERE q.status IN ('QUEUED','RETRY')
+      AND EXISTS (
+        SELECT 1 FROM media_delivery_queue AS q2
+        WHERE q2.status IN ('QUEUED','RETRY')
+          AND LOWER(q2.email)=LOWER(q.email)
+          AND (q2.queued_at<q.queued_at OR (q2.queued_at=q.queued_at AND q2.id<q.id))
+      )`).bind(stamp).run();
+
   return{
     ok:true,
     version:VERSION,
-    reboundPending:Number(queued.meta?.changes||0),
     recoveredMismatches:Number(recovered.meta?.changes||0),
+    reboundPending:Number(rebound.meta?.changes||0),
+    suppressedPendingDuplicates:Number(duplicates.meta?.changes||0),
     htmlSha256,
-    pdfSha256,
+    internalPdfSha256:pdfSha256,
+    deliveryMode:'HTML_ONLY',
     repairedAt:stamp
   };
 }
