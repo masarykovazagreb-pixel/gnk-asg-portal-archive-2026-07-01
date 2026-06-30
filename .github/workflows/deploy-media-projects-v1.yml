@@ -10,6 +10,7 @@ on:
       - "apps/portal/assets/media-center-delivery-history-v2.js"
       - "apps/portal/assets/media-center-delivery-history-v2.css"
       - "apps/portal/assets/delivery-history-dashboard-v3.js"
+      - "workers/gnk-asg-direct-operator/wrangler.toml"
       - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-outreach-delivery-v5.js"
       - "workers/gnk-asg-direct-operator/src/media-outreach-english-guard-v1.js"
@@ -30,6 +31,7 @@ on:
       - "apps/portal/assets/media-center-delivery-history-v2.js"
       - "apps/portal/assets/media-center-delivery-history-v2.css"
       - "apps/portal/assets/delivery-history-dashboard-v3.js"
+      - "workers/gnk-asg-direct-operator/wrangler.toml"
       - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
       - "workers/gnk-asg-direct-operator/src/media-outreach-delivery-v5.js"
       - "workers/gnk-asg-direct-operator/src/media-outreach-english-guard-v1.js"
@@ -136,4 +138,3 @@ jobs:
             api.json
             history-api.json
           retention-days: 14
-
