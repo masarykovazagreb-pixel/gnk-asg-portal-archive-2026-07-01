@@ -10,7 +10,8 @@ import {handleMediaBootstrapEmail,withBootstrapPersonalization,VERSION as BOOTST
 import {handleMediaBootstrapHtmlForwardEmail,VERSION as BOOTSTRAP_HTML_VERSION} from './media-bootstrap-html-forward-v1.js';
 import {lockPreviouslyDeliveredRecipients,VERSION as DEDUP_VERSION} from './media-delivery-dedup-v1.js';
 import {repairPendingMediaQueue,VERSION as QUEUE_REPAIR_VERSION} from './media-outreach-queue-repair-v1.js';
-export const VERSION=`GNK_ASG_FINAL_MEDIA_STRICT_ENGLISH_HISTORY_NO_REPEAT_QUEUE_REPAIR_V4_TO_${BASE_VERSION}`;
+import {withHtmlOnlyMediaDelivery,VERSION as HTML_ONLY_VERSION} from './media-outreach-html-only-v1.js';
+export const VERSION=`GNK_ASG_FINAL_MEDIA_HTML_ONLY_STRICT_ENGLISH_V5_TO_${BASE_VERSION}`;
 const API='/api/media-command-center';
 const PUBLIC_MEMORANDUM='/api/media-registration/memorandum.pdf';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
@@ -20,7 +21,7 @@ const DELIVERY_ENDPOINTS=new Set([`${API}/campaign-html`,`${API}/campaign-html/p
 const FRESH_ENDPOINTS=new Set([`${API}/fresh-status`,`${API}/fresh-reset`,`${API}/fresh-import`,`${API}/fresh-pdf-preview`,`${API}/fresh-message-preview`]);
 const DEDUP_ENDPOINTS=new Set([`${API}/delivery-plan`,`${API}/delivery-status`,`${API}/delivery-history`,`${API}/delivery-history.csv`,`${API}/queue-approved`,`${API}/dispatch-queue`]);
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
-function activeEnv(env){return withBootstrapPersonalization(withRequiredEmailSignature(withFreshMediaPersonalization(withFinalMediaMessage(env))));}
+function activeEnv(env){return withBootstrapPersonalization(withRequiredEmailSignature(withFreshMediaPersonalization(withFinalMediaMessage(withHtmlOnlyMediaDelivery(env)))));}
 async function publicMemorandum(request,env){
   if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{allow:'GET, HEAD','cache-control':'no-store'}});
   const kv=env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV;
@@ -56,6 +57,7 @@ function stamp(response){
   headers.set('x-gnk-asg-email-signature-contract',SIGNATURE_VERSION);
   headers.set('x-gnk-asg-media-dedup',DEDUP_VERSION);
   headers.set('x-gnk-asg-media-queue-repair',QUEUE_REPAIR_VERSION);
+  headers.set('x-gnk-asg-media-html-only',HTML_ONLY_VERSION);
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
@@ -63,8 +65,12 @@ async function protectedEndpoint(request,env,ctx,handler){
   const probe=await app.fetch(request.clone(),env,ctx);
   if(probe.status===401||probe.status===403)return stamp(probe);
   const path=pathOf(request);
-  if(DEDUP_ENDPOINTS.has(path))await lockPreviouslyDeliveredRecipients(env);
+  if(DEDUP_ENDPOINTS.has(path)){
+    await lockPreviouslyDeliveredRecipients(env);
+    await repairPendingMediaQueue(env);
+  }
   const response=await handler(request,env,ctx);
+  if(path===`${API}/queue-approved`)await repairPendingMediaQueue(env);
   return stamp(response||probe);
 }
 export default{
@@ -79,7 +85,7 @@ export default{
     if(path==='/data/portal-version.json'&&response.ok&&String(response.headers.get('content-type')||'').includes('application/json')){
       try{
         const payload=await response.clone().json(),headers=new Headers(response.headers);
-        response=new Response(JSON.stringify({...payload,finalMediaFresh:VERSION,mediaFresh:FRESH_VERSION,mediaDelivery:DELIVERY_VERSION,mediaReporting:REPORTING_VERSION,mediaLaunch:LAUNCH_VERSION,mediaFinalMessage:FINAL_MESSAGE_VERSION,mediaProjects:PROJECTS_VERSION,mediaBootstrap:BOOTSTRAP_VERSION,mediaBootstrapHtml:BOOTSTRAP_HTML_VERSION,mediaDedup:DEDUP_VERSION,mediaQueueRepair:QUEUE_REPAIR_VERSION,mediaOutreachBuildLock:false},null,2),{status:response.status,headers});
+        response=new Response(JSON.stringify({...payload,finalMediaFresh:VERSION,mediaFresh:FRESH_VERSION,mediaDelivery:DELIVERY_VERSION,mediaReporting:REPORTING_VERSION,mediaLaunch:LAUNCH_VERSION,mediaFinalMessage:FINAL_MESSAGE_VERSION,mediaProjects:PROJECTS_VERSION,mediaBootstrap:BOOTSTRAP_VERSION,mediaBootstrapHtml:BOOTSTRAP_HTML_VERSION,mediaDedup:DEDUP_VERSION,mediaQueueRepair:QUEUE_REPAIR_VERSION,mediaHtmlOnly:HTML_ONLY_VERSION,mediaDeliveryMode:'HTML_ONLY',mediaOutreachBuildLock:false},null,2),{status:response.status,headers});
       }catch{}
     }
     return stamp(response);
