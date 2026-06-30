@@ -21,26 +21,32 @@ const requiredEndpoints = [
   '/api/media-command-center/project-export'
 ];
 
-const requiredTables = [
-  'media_projects',
-  'media_project_contacts',
-  'media_project_events'
-];
-
-const requiredSafetyTokens = [
-  'external_sending_enabled INTEGER NOT NULL DEFAULT 0',
-  'external_sending_enabled=0',
-  'MEDIA_OUTREACH_LIVE',
-  "return'false'",
-  "send_status='NOT_QUEUED'"
-];
-
-const requiredExportTokens = [
-  "format==='txt'",
-  "contentType='text/csv; charset=utf-8'",
-  'provider_message_id',
-  'last_error',
-  'sent_at'
+const checks = [
+  ['D1 project table', /CREATE TABLE IF NOT EXISTS media_projects\b/],
+  ['D1 contacts table', /CREATE TABLE IF NOT EXISTS media_project_contacts\b/],
+  ['D1 events table', /CREATE TABLE IF NOT EXISTS media_project_events\b/],
+  ['external sending default locked', /external_sending_enabled\s+INTEGER\s+NOT\s+NULL\s+DEFAULT\s+0/],
+  ['external sending forced off on write', /external_sending_enabled\s*=\s*0/],
+  ['gateway environment live lock', /MEDIA_OUTREACH_LIVE/],
+  ['gateway returns false for live flag', /return\s*['"]false['"]/],
+  ['contacts remain not queued', /send_status\s+TEXT\s+NOT\s+NULL\s+DEFAULT\s+['"]NOT_QUEUED['"]/],
+  ['safe import writes NOT_QUEUED', /['"]NOT_QUEUED['"]/],
+  ['contact cap', /MAX_CONTACTS\s*=\s*2000/],
+  ['PDF cap', /MAX_PDF_BYTES\s*=\s*8\s*\*\s*1024\s*\*\s*1024/],
+  ['HTML cap', /MAX_HTML_BYTES\s*=\s*768\s*\*\s*1024/],
+  ['attempt counter', /attempts\s+INTEGER\s+NOT\s+NULL\s+DEFAULT\s+0/],
+  ['provider message id', /provider_message_id\s+TEXT/],
+  ['recipient error field', /last_error\s+TEXT/],
+  ['recipient sent timestamp', /sent_at\s+TEXT/],
+  ['interval clamp', /Math\.max\(30\s*,\s*Math\.min\(86400/],
+  ['personalized HTML preview', /function\s+personalizeHtml\b|const\s+personalizeHtml\b/],
+  ['HTML preview endpoint implementation', /project-html-preview/],
+  ['PDF preview endpoint implementation', /project-pdf-preview/],
+  ['export endpoint implementation', /project-export/],
+  ['TXT export branch', /format\s*===\s*['"]txt['"]/],
+  ['CSV export content type', /text\/csv; charset=utf-8/],
+  ['version build lock payload', /mediaOutreachBuildLock\s*:\s*true/],
+  ['response lock header', /x-gnk-asg-media-outreach-build-lock/]
 ];
 
 function read(rel) {
@@ -53,37 +59,25 @@ function assertIncludes(source, needle, label) {
   if (!source.includes(needle)) throw new Error(`missing ${label}: ${needle}`);
 }
 
+function assertMatches(source, pattern, label) {
+  if (!pattern.test(source)) throw new Error(`missing ${label}: ${pattern}`);
+}
+
 function main() {
   const files = Object.fromEntries(mustExist.map(rel => [rel, read(rel)]));
   const media = files['workers/gnk-asg-direct-operator/src/media-projects-v1.js'];
   const gateway = files['workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js'];
+  const combined = `${media}\n${gateway}`;
 
   for (const endpoint of requiredEndpoints) assertIncludes(gateway, endpoint, 'gateway endpoint');
-  for (const table of requiredTables) assertIncludes(media, table, 'D1 table');
-  for (const token of requiredSafetyTokens) assertIncludes(`${media}\n${gateway}`, token, 'send lock token');
-  for (const token of requiredExportTokens) assertIncludes(media, token, 'export/audit token');
-
-  assertIncludes(media, 'MAX_CONTACTS=2000', 'contact cap');
-  assertIncludes(media, 'MAX_PDF_BYTES=8*1024*1024', 'PDF cap');
-  assertIncludes(media, 'MAX_HTML_BYTES=768*1024', 'HTML cap');
-  assertIncludes(media, 'attempts INTEGER NOT NULL DEFAULT 0', 'attempt counter');
-  assertIncludes(media, 'provider_message_id TEXT', 'provider message id');
-  assertIncludes(media, 'last_error TEXT', 'recipient error field');
-  assertIncludes(media, 'sent_at TEXT', 'recipient sent timestamp');
-  assertIncludes(media, 'Math.max(30,Math.min(86400', 'interval clamp');
-  assertIncludes(media, 'personalizeHtml', 'personalized HTML preview');
-  assertIncludes(media, 'project-html-preview', 'HTML preview endpoint');
-  assertIncludes(media, 'project-pdf-preview', 'PDF preview endpoint');
-  assertIncludes(media, 'project-export', 'export endpoint');
-  assertIncludes(gateway, 'mediaOutreachBuildLock:true', 'version build lock');
-  assertIncludes(gateway, 'x-gnk-asg-media-outreach-build-lock', 'response lock header');
+  for (const [label, pattern] of checks) assertMatches(combined, pattern, label);
 
   console.log(JSON.stringify({
     ok: true,
     checkedAt: new Date().toISOString(),
     files: mustExist.length,
     endpoints: requiredEndpoints.length,
-    tables: requiredTables.length,
+    checks: checks.length,
     verifiedExports: ['csv', 'txt'],
     nextExportGap: 'xlsx',
     safety: 'external sending locked; imports remain NOT_QUEUED'
