@@ -1,0 +1,134 @@
+name: Force Deploy Fresh Media Center
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/force-deploy-fresh-media-center.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: force-deploy-fresh-media-center
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate active Fresh Media Center
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check apps/portal/assets/media-center-fresh-v1.js
+          grep -q "RESET_MEDIA_OUTREACH" apps/portal/media-command-center/index.html
+          grep -q "fresh-message-preview" apps/portal/media-command-center/index.html
+          grep -q "fresh-reset" workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
+
+      - name: Deploy Worker and portal assets
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee ../../force-media-center-deploy.log
+
+      - name: Verify public deployment
+        id: verify
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg.hr"
+          ready=false
+          page_code=0
+          js_code=0
+          css_code=0
+          api_code=0
+          for attempt in $(seq 1 30); do
+            stamp=$(date +%s%N)
+            page_code=$(curl -sSL -o media-center.html -w '%{http_code}' "$base/media-command-center/?cb=$stamp" || true)
+            js_code=$(curl -sSL -o media-center.js -w '%{http_code}' "$base/assets/media-center-fresh-v1.js?cb=$stamp" || true)
+            css_code=$(curl -sSL -o media-center.css -w '%{http_code}' "$base/assets/media-center-fresh-v1.css?cb=$stamp" || true)
+            api_code=$(curl -sS -o media-api.json -w '%{http_code}' "$base/api/media-command-center/fresh-status?cb=$stamp" || true)
+            if [ "$page_code" = "401" ] && [ "$js_code" = "200" ] && [ "$css_code" = "200" ] && grep -q "fresh-message-preview" media-center.js && { [ "$api_code" = "401" ] || [ "$api_code" = "403" ]; }; then
+              ready=true
+              break
+            fi
+            sleep 8
+          done
+          echo "ready=$ready" >> "$GITHUB_OUTPUT"
+          echo "page_code=$page_code" >> "$GITHUB_OUTPUT"
+          echo "js_code=$js_code" >> "$GITHUB_OUTPUT"
+          echo "css_code=$css_code" >> "$GITHUB_OUTPUT"
+          echo "api_code=$api_code" >> "$GITHUB_OUTPUT"
+          test "$ready" = "true"
+
+      - name: Record verified production status
+        if: success()
+        env:
+          READY: ${{ steps.verify.outputs.ready }}
+          PAGE_CODE: ${{ steps.verify.outputs.page_code }}
+          JS_CODE: ${{ steps.verify.outputs.js_code }}
+          CSS_CODE: ${{ steps.verify.outputs.css_code }}
+          API_CODE: ${{ steps.verify.outputs.api_code }}
+        run: |
+          set -euo pipefail
+          mkdir -p apps/portal/data
+          python - <<'PY'
+          import datetime, json, os
+          data = {
+            "ok": True,
+            "module": "Fresh Media Center V1",
+            "deployed_commit": os.environ.get("GITHUB_SHA", ""),
+            "workflow_run_id": os.environ.get("GITHUB_RUN_ID", ""),
+            "verified_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "checks": {
+              "ready": os.environ.get("READY", "").lower() == "true",
+              "media_center_http": int(os.environ.get("PAGE_CODE", "0")),
+              "javascript_http": int(os.environ.get("JS_CODE", "0")),
+              "stylesheet_http": int(os.environ.get("CSS_CODE", "0")),
+              "unauthenticated_api_http": int(os.environ.get("API_CODE", "0"))
+            }
+          }
+          with open("apps/portal/data/media-center-fresh-deployment-status.json", "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+          PY
+          git config user.name "GNK ASG Deploy Bot"
+          git config user.email "deploy-bot@gnk-asg.hr"
+          git add apps/portal/data/media-center-fresh-deployment-status.json
+          git commit -m "Record verified Fresh Media Center production deploy [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Upload deployment diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fresh-media-center-force-deploy
+          path: |
+            force-media-center-deploy.log
+            media-center.html
+            media-center.js
+            media-center.css
+            media-api.json
+            apps/portal/data/media-center-fresh-deployment-status.json
+          if-no-files-found: ignore
+          retention-days: 14
