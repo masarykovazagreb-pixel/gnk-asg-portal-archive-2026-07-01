@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   dry-run:
@@ -20,13 +21,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Wrangler dry run with concise error tail
+      - name: Wrangler dry run
         working-directory: workers/gnk-asg-direct-operator
         shell: bash
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator --dry-run
+      - name: Capture importer deploy runs and public version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
         run: |
-          set +e
-          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator --dry-run > /tmp/wrangler-dry-run.log 2>&1
-          code=$?
-          echo "WRANGLER_EXIT_CODE=$code"
-          tail -n 100 /tmp/wrangler-dry-run.log
-          exit $code
+          set -euo pipefail
+          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/deploy-media-email-import-v1.yml/runs?per_page=10" > importer-runs.json
+          jq -r '.workflow_runs[] | [.id,.status,.conclusion,.head_sha,.created_at] | @tsv' importer-runs.json
+          curl -sSL "https://gnk-asg.hr/data/portal-version.json?cb=$(date +%s%N)" -o public-version.json
+          cat public-version.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: email-import-deploy-diagnosis
+          path: |
+            importer-runs.json
+            public-version.json
+          retention-days: 3
