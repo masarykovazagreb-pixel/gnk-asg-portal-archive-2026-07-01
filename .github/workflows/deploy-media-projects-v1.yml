@@ -1,6 +1,15 @@
 name: Deploy Fresh Media Center
 
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/portal/media-command-center/index.html"
+      - "apps/portal/assets/media-center-fresh-v1.js"
+      - "apps/portal/assets/media-center-fresh-v1.css"
+      - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
+      - ".github/workflows/deploy-media-projects-v1.yml"
   push:
     branches: [main]
     paths:
@@ -10,23 +19,22 @@ on:
       - "apps/portal/assets/media-center-fresh-v1.css"
       - "workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js"
+      - ".github/workflows/deploy-media-projects-v1.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: deploy-fresh-media-center
+  group: deploy-fresh-media-center-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
@@ -41,6 +49,18 @@ jobs:
           grep -q "fresh-reset" workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
           grep -q "campaign-html" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           grep -q "index-media-command-center-v20.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - name: Deploy Cloudflare Worker and assets
         working-directory: workers/gnk-asg-direct-operator
         env:
