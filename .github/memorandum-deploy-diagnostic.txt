@@ -1,0 +1,158 @@
+DEPLOY_OUTCOME=failure
+VERIFY_OUTCOME=success
+COMMIT=7a2363b6a1fdc51a0c677afc36d4fe4efb00200a
+RUN_ID=28546564839
+RECORDED_AT=2026-07-01T20:44:36Z
+--- DEPLOY LOG ---
+
+ ⛅️ wrangler 4.106.0
+────────────────────
+
+Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mBuild failed with 1 error:[0m
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "xlsx"[0m
+  
+      src/campaign-mailer-v1.js:1:22:
+  [37m      1 │ import * as XLSX from [32m'xlsx'[37m;
+          ╵                       [32m~~~~~~[0m
+  
+    To fix this, you can add an entry to "alias" in your Wrangler configuration.
+    For more guidance see: [4m[4mhttps://developers.cloudflare.com/workers/wrangler/configuration/#bundling-issues[0m[0m
+    
+  
+  
+
+
+🪵  Logs were written to "/home/runner/.config/.wrangler/logs/wrangler-2026-07-01_20-44-34_557.log"
+--- MEMORANDUM TYPE ---
+text/html
+--- MEMORANDUM SIZE ---
+912901
+--- MEMORANDUM SHA256 ---
+d846fee9e6bc8628a999c653b3c3a1b7437c57e613b1d18e13a1bb808c7d9051
+--- MEMORANDUM HEADERS ---
+HTTP/2 302 
+date: Wed, 01 Jul 2026 20:44:36 GMT
+content-length: 0
+location: https://drive.google.com/uc?export=download&id=1SJum3eJYCYfJvfheH0UQjVDHMa381raQ
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+x-gnk-asg-media-registration: GNK_ASG_MEDIA_REGISTRATION_POST_CODE_V5_20260701_TWO_LEFT_PANELS
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=xX%2FPzl5xvyR5gvu31dN20pLOLRVboa69d0DRpdlnjRSgvB1pG8v1K1X9kNkU%2B%2FdlY9myapxdn0%2B4dysjuWGiKioQkngPI58u%2BlQbk8XPTDkhOyqJFtvBO2o%2BoSjrB05jDQ%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a1483fe1df6c446c-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 303 
+content-type: application/binary
+vary: Origin
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+pragma: no-cache
+expires: Mon, 01 Jan 1990 00:00:00 GMT
+date: Wed, 01 Jul 2026 20:44:36 GMT
+location: https://drive.usercontent.google.com/download?id=1SJum3eJYCYfJvfheH0UQjVDHMa381raQ&export=download
+strict-transport-security: max-age=31536000
+permissions-policy: ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*
+content-security-policy: require-trusted-types-for 'script';report-uri /_/DriveUntrustedContentHttp/cspreport
+content-security-policy: script-src 'nonce-VYpxGe5HVXpYW6F3T3dhjQ' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/DriveUntrustedContentHttp/cspreport;worker-src 'self'
+accept-ch: Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version
+cross-origin-opener-policy: same-origin
+server: ESF
+content-length: 0
+x-xss-protection: 0
+x-frame-options: SAMEORIGIN
+x-content-type-options: nosniff
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+
+HTTP/2 302 
+content-type: application/binary
+x-guploader-uploadid: AJ5rDhHZFSuynSC8C69KWE3n7Jq9IAdq2ma4GOKzekT0Rt_OYnJGuWRG0RmaVxF0pHPhzlorP3NZ9ms
+vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+pragma: no-cache
+expires: Mon, 01 Jan 1990 00:00:00 GMT
+date: Wed, 01 Jul 2026 20:44:36 GMT
+location: https://accounts.google.com/ServiceLogin?service=wise&passive=1209600&continue=https://drive.usercontent.google.com/download?id%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&followup=https://drive.usercontent.google.com/download?id%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload
+p3p: CP="This is not a P3P policy! See g.co/p3phelp for more info."
+content-security-policy: require-trusted-types-for 'script';report-uri /_/DriveUntrustedContentHttp/cspreport
+content-security-policy: script-src 'nonce-EsfCjEKVyMO9c4-wZtoxjQ' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/DriveUntrustedContentHttp/cspreport;worker-src 'self'
+content-security-policy: sandbox allow-scripts
+accept-ch: Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-site
+permissions-policy: ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*
+content-length: 0
+server: UploadServer
+set-cookie: NID=532=gwZhlUoJqJHN8BfiezfUZKHitHKaYjWSs-Ihw_4rzv5EhSZiPrG5vLvo24EVm0l9Ry3oEliGb6484Eo3GiEUZod6CHZkrnq9W63htV4U1Y8E1dpzwDzpSO1ZyunnAuSYGnF2-baWpiyCppCSIs0LTopchB4yj99cCl5xlH4yHL4sIodSYMunWA_IHCIgak4kiKnPf2ckOrI; expires=Thu, 31-Dec-2026 20:44:36 GMT; path=/; domain=.google.com; HttpOnly
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+
+HTTP/2 302 
+content-type: application/binary
+set-cookie: __Host-GAPS=1:39WRlJ2se8Dh1kIXKVwoj3KMSyVKQg:RlNplgMaX1GFlsDU; Expires=Fri, 30-Jun-2028 20:44:36 GMT; Path=/; Secure; HttpOnly; Priority=HIGH
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+pragma: no-cache
+expires: Mon, 01 Jan 1990 00:00:00 GMT
+date: Wed, 01 Jul 2026 20:44:36 GMT
+location: https://accounts.google.com/InteractiveLogin?continue=https://drive.usercontent.google.com/download?id%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&followup=https://drive.usercontent.google.com/download?id%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&passive=1209600&service=wise&dsh=S1695284942:1782938676514362
+strict-transport-security: max-age=31536000; includeSubDomains
+content-security-policy: require-trusted-types-for 'script';report-uri /_/AccountsSigninPassiveLoginHttp/cspreport
+content-security-policy: script-src 'nonce-CTrKb8Zz2XMIBwwleYg-fQ' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/AccountsSigninPassiveLoginHttp/cspreport;worker-src 'self'
+permissions-policy: ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*
+accept-ch: Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version
+cross-origin-resource-policy: cross-origin
+cross-origin-opener-policy: unsafe-none
+server: ESF
+content-length: 0
+x-xss-protection: 0
+x-content-type-options: nosniff
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+
+HTTP/2 302 
+content-type: text/html; charset=UTF-8
+set-cookie: __Host-GAPS=1:UT2uNp4Yi0QHLzV6RbVFud4lkkTKvw:c_96R1xwQX2HbNEK;Path=/;Expires=Fri, 30-Jun-2028 20:44:36 GMT;Secure;HttpOnly;Priority=HIGH
+x-frame-options: DENY
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+pragma: no-cache
+expires: Mon, 01 Jan 1990 00:00:00 GMT
+date: Wed, 01 Jul 2026 20:44:36 GMT
+location: https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fdrive.usercontent.google.com%2Fdownload%3Fid%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&dsh=S1695284942%3A1782938676514362&followup=https%3A%2F%2Fdrive.usercontent.google.com%2Fdownload%3Fid%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&passive=1209600&service=wise&flowName=WebLiteSignIn&flowEntry=ServiceLogin&ifkv=AcDsRvwrY8yxIq6ahujW-Nex-IxUdnR6blYGgjudIxvkyNnSAIlaToIT6DVZgOtkZPfhHbvOkt8_QQ
+strict-transport-security: max-age=31536000; includeSubDomains
+content-security-policy: script-src 'nonce-7ZP5ggaPBMtPVDYoYW7rRw' 'unsafe-inline' 'unsafe-eval';object-src 'none';base-uri 'self';report-uri /cspreport
+content-security-policy: require-trusted-types-for 'script';report-uri /cspreport
+cross-origin-opener-policy-report-only: same-origin; report-to="coop_gse_qebhlk"
+report-to: {"group":"coop_gse_qebhlk","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gse_qebhlk"}]}
+content-length: 727
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+server: GSE
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+
+HTTP/2 200 
+content-type: text/html; charset=utf-8
+x-frame-options: DENY
+set-cookie: __Host-GAPS=1:Tz5BskBXJmSNxwhl0iFA2CMdV5QzMg:aPSoNiu7GO9lq5MW; Expires=Fri, 30-Jun-2028 20:44:36 GMT; Path=/; Secure; HttpOnly; Priority=HIGH
+x-auto-login: realm=com.google&args=service%3Dwise%26continue%3Dhttps://drive.usercontent.google.com/download?id%253D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%2526export%253Ddownload
+link: <https://www.google.com/intl/en-US/drive/>; rel="canonical"
+x-ua-compatible: IE=edge
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+pragma: no-cache
+expires: Mon, 01 Jan 1990 00:00:00 GMT
+date: Wed, 01 Jul 2026 20:44:36 GMT
+strict-transport-security: max-age=31536000; includeSubDomains
+report-to: {"group":"AccountsSignInUi","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/AccountsSignInUi"}]}
+cross-origin-resource-policy: same-site
+content-security-policy: require-trusted-types-for 'script';report-uri /v3/signin/_/AccountsSignInUi/cspreport
+content-security-policy: script-src 'nonce-5xD2AD1mr3LUnPIYJJo1Dg' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /v3/signin/_/AccountsSignInUi/cspreport;worker-src 'self'
+accept-ch: Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version
+permissions-policy: ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*
+cross-origin-opener-policy-report-only: same-origin; report-to="AccountsSignInUi"
+reporting-endpoints: default="/v3/signin/_/AccountsSignInUi/web-reports?context=eJwNyVtIk2EABuAx9r2EeLHMShZEDIIWzNagObAIk5DlTj_f_q2imA4nDmrT7Z-kRpmRFwaR1Uy8KaKojApCTLwJIqkFdpiL_kyii06ywooSL-zwXjxXT9mwaXOZxbBrk8Xw0DpprDv4wbibhsrnjSN06s0zcZ60K89FHw3QMO0YfSHqqK3ppThEWzcUxE5KjRREhryRGRGkwcqiyFG6qih6yeYuCjvFLr8SrfTIposn9LNbF-YeXdQv6qKB1sy-FRbKF-fENC33emA44cGXhkZ8pTG7FxN0fcaLc5-8GCJbtQ92Wsz4YNJ8KPX7sUC3cn7cpZrBAGrpzngA98j0LQCLEsR62kg2cpKLbp4M4jbN0jtK3g8iTVOvg8jTtpCCerp6RsENSj1QkKG_eQXGpwr6Sgr66ftqiV9krpKopBqrRC39cEn8pj3bJfw0qkp8bJaYpyVaplUxibW095rEAfr8R6JEnf8k2qMhaNRDxyl1NATvxRC6V6o4RnqFijnKJlR4jqhopEtdKkqnVSxQx2MeDUyrOBsJ4wIl9oVxmMLrIthPFeUrxpZyBZj19xPjRuuWWKojmmiJJ7WE1tWaTiW1eLKlOau1ZROZeLozno46HU6Xw-V0Vzvc0XbHf-7k2Xk"
+server: ESF
+x-xss-protection: 0
+x-content-type-options: nosniff
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+accept-ranges: none
+vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding
+
