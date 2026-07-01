@@ -8,7 +8,7 @@ const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(env));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const denied=()=>new Response(JSON.stringify({ok:false,error:'unauthorized'}),{status:401,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
 export default{
- async fetch(request,env,ctx){const active=protectedEnv(env),path=pathOf(request);if(isCampaignMailerApi(path)){if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();return handleCampaignMailer(request,active,ctx)}if(isCampaignMailer(path))return serveCampaignMailer(request,active,ctx,app);return addCampaignMailerLink(request,await app.fetch(request,active,ctx))},
- scheduled(event,env,ctx){const active=protectedEnv(env),task=Promise.allSettled([runQueue(active),typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)]);if(ctx?.waitUntil){ctx.waitUntil(task);return}return task},
- async email(message,env,ctx){const active=protectedEnv(env);await recordInbound(message,active);if(typeof app.email==='function')return app.email(message,active,ctx)}
+ async fetch(request,env,ctx){const active=protectedEnv(env),path=pathOf(request);if(isCampaignMailerApi(path)){if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();return handleCampaignMailer(request,env,ctx)}if(isCampaignMailer(path))return serveCampaignMailer(request,active,ctx,app);return addCampaignMailerLink(request,await app.fetch(request,active,ctx))},
+ scheduled(event,env,ctx){const active=protectedEnv(env),task=Promise.allSettled([runQueue(env),typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)]);if(ctx?.waitUntil){ctx.waitUntil(task);return}return task},
+ async email(message,env,ctx){const active=protectedEnv(env);await recordInbound(message,env);if(typeof app.email==='function')return app.email(message,active,ctx)}
 };
