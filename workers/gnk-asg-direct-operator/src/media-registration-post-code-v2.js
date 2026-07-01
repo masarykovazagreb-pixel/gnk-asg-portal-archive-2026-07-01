@@ -3,7 +3,7 @@ import {
   handleMediaRegistrationAdmin as legacyAdmin
 } from './media-registration-v1.js';
 
-export const VERSION='GNK_ASG_MEDIA_REGISTRATION_POST_CODE_V5_20260701_TWO_LEFT_PANELS';
+export const VERSION='GNK_ASG_MEDIA_REGISTRATION_POST_CODE_V6_20260701_VERIFIED_MEMORANDUM';
 export const PUBLIC_UI='/media-application';
 export const ADMIN_UI='/media-registration-admin';
 
@@ -14,7 +14,9 @@ const ACCESS_EXPIRES='2026-10-10T23:59:59.000Z';
 const REGISTRATION_URL='https://www.gnk-asg.hr/media-application/?lang=en';
 const THE_CODE_URL='https://www.gnk-asg.hr/the-code/';
 const PDF_DOWNLOAD_URL='https://www.gnk-asg.hr/api/media-registration/memorandum.pdf';
-const DRIVE_PDF_FALLBACK='https://drive.google.com/uc?export=download&id=1SJum3eJYCYfJvfheH0UQjVDHMa381raQ';
+const VERIFIED_MEMORANDUM_KEY='media-outreach/campaigns/new-york-2026/5c33f1dea158ff8938122c024e857997eb2f156a039c4b76c0cca133f1e0aa95.pdf';
+const VERIFIED_MEMORANDUM_SHA256='5c33f1dea158ff8938122c024e857997eb2f156a039c4b76c0cca133f1e0aa95';
+const VERIFIED_MEMORANDUM_SIZE=208207;
 const FREE_DOMAINS=new Set(['gmail.com','googlemail.com','yahoo.com','outlook.com','hotmail.com','icloud.com','aol.com','proton.me','protonmail.com','gmx.com','mail.com','yandex.com','yandex.ru']);
 const enc=new TextEncoder();
 const clean=v=>String(v??'').trim();
@@ -55,9 +57,14 @@ async function startRegistration(r,env){
 }
 
 async function campaign(env){const kv=kvOf(env);if(!kv)return{};try{const raw=await kv.get('media-command-center:campaign:v1');return raw?JSON.parse(raw):{}}catch{return{}}}
-async function memorandum(r,env){const c=await campaign(env),key=clean(c.pdfR2Key||env.MEDIA_OUTREACH_PDF_KEY),bucket=bucketOf(env);if(key&&bucket?.get){const object=await bucket.get(key);if(object){const h=new Headers({'content-type':'application/pdf','content-disposition':'attachment; filename="GNK-DINAMO-THE-CODE-Media-Memorandum.pdf"','cache-control':'private, max-age=0, no-store','x-content-type-options':'nosniff','x-gnk-asg-media-registration-post-code':VERSION});return new Response(r.method==='HEAD'?null:object.body,{status:200,headers:h});}}return Response.redirect(DRIVE_PDF_FALLBACK,302);}
+async function memorandum(r,env){
+ const c=await campaign(env),bucket=bucketOf(env);
+ const keys=[c.pdfR2Key,env.MEDIA_OUTREACH_PDF_KEY,VERIFIED_MEMORANDUM_KEY].map(clean).filter(Boolean);
+ if(bucket?.get){for(const key of [...new Set(keys)]){const object=await bucket.get(key);if(!object)continue;const size=Number(object.size||0);if(key===VERIFIED_MEMORANDUM_KEY&&size&&size!==VERIFIED_MEMORANDUM_SIZE)continue;const h=new Headers({'content-type':'application/pdf','content-disposition':'attachment; filename="GNK_DINAMO_Ltd_Group_THE_CODE_EN_MEMORANDUM_CORRECT.pdf"','content-length':String(size||VERIFIED_MEMORANDUM_SIZE),'cache-control':'public, max-age=300, must-revalidate','etag':`"sha256-${VERIFIED_MEMORANDUM_SHA256}"`,'x-content-type-options':'nosniff','x-gnk-asg-media-registration-post-code':VERSION,'x-gnk-asg-memorandum-sha256':VERIFIED_MEMORANDUM_SHA256});return new Response(r.method==='HEAD'?null:object.body,{status:200,headers:h});}}
+ return json({ok:false,error:'memorandum_not_published',expectedSha256:VERIFIED_MEMORANDUM_SHA256,expectedSize:VERIFIED_MEMORANDUM_SIZE},404);
+}
 
-async function patchPage(r,env){const response=await legacyPublic(r,env);if(!response||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;const html=await response.text(),tag='<script defer src="/assets/media-registration-post-code-v2.js?v=20260701-4"></script>',body=html.includes(tag)?html:html.replace('</body>',`${tag}</body>`),h=new Headers(response.headers);h.delete('content-length');h.delete('content-encoding');h.delete('etag');h.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');h.set('x-gnk-asg-media-registration-post-code',VERSION);return new Response(r.method==='HEAD'?null:body,{status:response.status,statusText:response.statusText,headers:h});}
+async function patchPage(r,env){const response=await legacyPublic(r,env);if(!response||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;const html=await response.text(),tag='<script defer src="/assets/media-registration-post-code-v2.js?v=20260701-5"></script>',body=html.includes(tag)?html:html.replace('</body>',`${tag}</body>`),h=new Headers(response.headers);h.delete('content-length');h.delete('content-encoding');h.delete('etag');h.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');h.set('x-gnk-asg-media-registration-post-code',VERSION);return new Response(r.method==='HEAD'?null:body,{status:response.status,statusText:response.statusText,headers:h});}
 
 export async function handleMediaRegistrationPublic(r,env){const p=pathOf(r);if(['GET','HEAD'].includes(r.method)&&(p===PUBLIC_UI||p===`${PUBLIC_UI}/`))return patchPage(r,env);if(r.method==='POST'&&p===`${PUBLIC_API}/start`)return startRegistration(r,env);if(['GET','HEAD'].includes(r.method)&&p===`${PUBLIC_API}/memorandum.pdf`)return memorandum(r,env);if(r.method==='GET'&&p===`${PUBLIC_API}/config`){const x=await legacyPublic(r,env);if(!x?.ok)return x;const d=await x.json();return json({...d,ok:true,links:{registration:REGISTRATION_URL,theCode:THE_CODE_URL,pdfDownload:PDF_DOWNLOAD_URL},codePolicy:'ISSUED_AFTER_INITIAL_REGISTRATION'});}return legacyPublic(r,env);}
 export async function handleMediaRegistrationAdmin(r,env){const p=pathOf(r);if(r.method==='POST'&&[`${ADMIN_API}/queue`,`${ADMIN_API}/send-test`,`${ADMIN_API}/dispatch-one`].includes(p))return json({ok:false,error:'legacy_code_before_registration_blocked',message:'Initial invitations may not contain access codes. Codes are issued only after initial registration.'},409);return legacyAdmin(r,env);}
