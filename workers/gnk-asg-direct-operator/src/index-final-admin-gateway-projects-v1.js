@@ -6,6 +6,7 @@ import {runScheduledOutreachLaunch,VERSION as LAUNCH_VERSION} from './media-outr
 import {withFinalMediaMessage,VERSION as FINAL_MESSAGE_VERSION} from './media-outreach-final-message-v1.js';
 import {withRequiredEmailSignature,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 import {withMediaGoldSignature,VERSION as MEDIA_GOLD_SIGNATURE_VERSION} from './media-email-gold-signature-v1.js';
+import {withEmbeddedMediaAutoReplyLogo,VERSION as INLINE_LOGO_VERSION} from './media-auto-reply-inline-logo-v1.js';
 import {isMediaInboxMessage,withoutLegacyMediaAcknowledgement,sendGlobalMediaAutoReply,VERSION as GLOBAL_REPLY_VERSION} from './media-global-auto-reply-v1.js';
 import {handleFreshMediaAdmin,withFreshMediaPersonalization,VERSION as FRESH_VERSION} from './media-fresh-admin-v1.js';
 import {handleMediaBootstrapEmail,withBootstrapPersonalization,VERSION as BOOTSTRAP_VERSION} from './media-bootstrap-email-v1.js';
@@ -15,7 +16,7 @@ import {repairPendingMediaQueue,VERSION as QUEUE_REPAIR_VERSION} from './media-o
 import {withHtmlOnlyMediaDelivery,VERSION as HTML_ONLY_VERSION} from './media-outreach-html-only-v1.js';
 import {withSingleEnglishGreeting,VERSION as SINGLE_GREETING_VERSION} from './media-outreach-single-greeting-v1.js';
 import {withHtmlOnlyTestGate,VERSION as HTML_ONLY_GATE_VERSION} from './media-outreach-html-only-gate-v1.js';
-export const VERSION=`GNK_ASG_FINAL_MEDIA_GLOBAL_REPLY_V8_TO_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_FINAL_MEDIA_INLINE_LOGO_V9_TO_${BASE_VERSION}`;
 const API='/api/media-command-center';
 const PUBLIC_MEMORANDUM='/api/media-registration/memorandum.pdf';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
@@ -28,7 +29,7 @@ const DEDUP_ENDPOINTS=new Set([`${API}/delivery-plan`,`${API}/delivery-status`,`
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 function activeEnv(env){
   const gated=withHtmlOnlyTestGate(env);
-  return withBootstrapPersonalization(withRequiredEmailSignature(withMediaGoldSignature(withFreshMediaPersonalization(withFinalMediaMessage(withSingleEnglishGreeting(withHtmlOnlyMediaDelivery(gated)))))));
+  return withBootstrapPersonalization(withRequiredEmailSignature(withMediaGoldSignature(withEmbeddedMediaAutoReplyLogo(withFreshMediaPersonalization(withFinalMediaMessage(withSingleEnglishGreeting(withHtmlOnlyMediaDelivery(gated))))))));
 }
 async function publicMemorandum(request,env){
   if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{allow:'GET, HEAD','cache-control':'no-store'}});
@@ -64,6 +65,7 @@ function stamp(response){
   headers.set('x-gnk-asg-media-bootstrap-html',BOOTSTRAP_HTML_VERSION);
   headers.set('x-gnk-asg-email-signature-contract',SIGNATURE_VERSION);
   headers.set('x-gnk-asg-media-gold-signature',MEDIA_GOLD_SIGNATURE_VERSION);
+  headers.set('x-gnk-asg-media-inline-logo',INLINE_LOGO_VERSION);
   headers.set('x-gnk-asg-media-global-reply',GLOBAL_REPLY_VERSION);
   headers.set('x-gnk-asg-media-dedup',DEDUP_VERSION);
   headers.set('x-gnk-asg-media-queue-repair',QUEUE_REPAIR_VERSION);
@@ -97,7 +99,7 @@ export default{
     if(path==='/data/portal-version.json'&&response.ok&&String(response.headers.get('content-type')||'').includes('application/json')){
       try{
         const payload=await response.clone().json(),headers=new Headers(response.headers);
-        response=new Response(JSON.stringify({...payload,finalMediaFresh:VERSION,mediaFresh:FRESH_VERSION,mediaDelivery:DELIVERY_VERSION,mediaReporting:REPORTING_VERSION,mediaLaunch:LAUNCH_VERSION,mediaFinalMessage:FINAL_MESSAGE_VERSION,mediaProjects:PROJECTS_VERSION,mediaBootstrap:BOOTSTRAP_VERSION,mediaBootstrapHtml:BOOTSTRAP_HTML_VERSION,emailSignature:SIGNATURE_VERSION,mediaGoldSignature:MEDIA_GOLD_SIGNATURE_VERSION,mediaGlobalAutoReply:GLOBAL_REPLY_VERSION,mediaDedup:DEDUP_VERSION,mediaQueueRepair:QUEUE_REPAIR_VERSION,mediaHtmlOnly:HTML_ONLY_VERSION,mediaSingleGreeting:SINGLE_GREETING_VERSION,mediaHtmlOnlyGate:HTML_ONLY_GATE_VERSION,mediaDeliveryMode:'HTML_ONLY',mediaOutreachBuildLock:false},null,2),{status:response.status,headers});
+        response=new Response(JSON.stringify({...payload,finalMediaFresh:VERSION,mediaFresh:FRESH_VERSION,mediaDelivery:DELIVERY_VERSION,mediaReporting:REPORTING_VERSION,mediaLaunch:LAUNCH_VERSION,mediaFinalMessage:FINAL_MESSAGE_VERSION,mediaProjects:PROJECTS_VERSION,mediaBootstrap:BOOTSTRAP_VERSION,mediaBootstrapHtml:BOOTSTRAP_HTML_VERSION,emailSignature:SIGNATURE_VERSION,mediaGoldSignature:MEDIA_GOLD_SIGNATURE_VERSION,mediaInlineLogo:INLINE_LOGO_VERSION,mediaGlobalAutoReply:GLOBAL_REPLY_VERSION,mediaDedup:DEDUP_VERSION,mediaQueueRepair:QUEUE_REPAIR_VERSION,mediaHtmlOnly:HTML_ONLY_VERSION,mediaSingleGreeting:SINGLE_GREETING_VERSION,mediaHtmlOnlyGate:HTML_ONLY_GATE_VERSION,mediaDeliveryMode:'HTML_ONLY',mediaOutreachBuildLock:false},null,2),{status:response.status,headers});
       }catch{}
     }
     return stamp(response);
