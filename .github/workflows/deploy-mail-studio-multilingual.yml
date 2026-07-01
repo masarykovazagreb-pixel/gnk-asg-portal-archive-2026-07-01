@@ -1,0 +1,68 @@
+name: Deploy Mail Studio Multilingual
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-mail-studio-multilingual.yml"
+      - "apps/portal/assets/mail-studio-multilingual-v25.js"
+      - "workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
+      - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-mail-studio-multilingual
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Validate source
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/mail-studio-multilingual-v25.js
+          node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q "sefic@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
+          grep -q "ubo@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
+          grep -q "press@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
+          grep -q "assistant@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
+          grep -q "name:'Sydney'" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
+      - name: Deploy to Cloudflare
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator
+      - name: Verify production
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          for attempt in $(seq 1 30); do
+            cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+            mail_code=$(curl -sS -D /tmp/mail.headers -o /tmp/mail.html -w '%{http_code}' "$base/mail-studio/?cb=$cb" || true)
+            asset_code=$(curl -sS -o /tmp/mail-multi.js -w '%{http_code}' "$base/assets/mail-studio-multilingual-v25.js?cb=$cb" || true)
+            if { [ "$mail_code" = "200" ] || [ "$mail_code" = "401" ] || [ "$mail_code" = "403" ]; } \
+              && [ "$asset_code" = "200" ] \
+              && grep -q 'GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V25_20260702' /tmp/mail-multi.js \
+              && grep -q 'press@gnk-asg.hr' /tmp/mail-multi.js \
+              && grep -qi '^x-gnk-asg-mail-studio-extension: GNK_ASG_MAIL_STUDIO_EXTENSION_V1_20260702_MULTILINGUAL_ROUTING' /tmp/mail.headers; then
+              exit 0
+            fi
+            sleep 6
+          done
+          exit 1
