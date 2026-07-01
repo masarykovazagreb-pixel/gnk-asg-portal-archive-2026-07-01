@@ -1,0 +1,85 @@
+name: Deploy Campaign Mailer by command
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: deploy-campaign-mailer-command
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event.issue.number == 276 && github.event.comment.body == '/deploy-campaign-mailer'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Worker dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --no-audit --no-fund --ignore-scripts
+
+      - name: Validate Campaign Mailer
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-db-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check apps/portal/campaign-mailer/app.js
+          test -f apps/portal/campaign-mailer/index.html
+          grep -q '/api/campaign-mailer' workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
+          grep -q 'campaign-mailer-shell-v2' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+
+      - name: Deploy Cloudflare Worker
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify production
+        run: |
+          set -euo pipefail
+          base='https://gnk-asg.hr'
+          ready=false
+          for attempt in $(seq 1 24); do
+            stamp=$(date +%s%N)
+            home_code=$(curl -sSL -o home.html -w '%{http_code}' "$base/?cb=$stamp" || true)
+            api_code=$(curl -sS -o api.json -w '%{http_code}' "$base/api/campaign-mailer/health?cb=$stamp" || true)
+            route_code=$(curl -sS -o route.html -w '%{http_code}' "$base/campaign-mailer/?cb=$stamp" || true)
+            if [ "$home_code" = '200' ] && grep -q '/campaign-mailer/' home.html && [ "$api_code" = '401' ] && { [ "$route_code" = '303' ] || [ "$route_code" = '401' ]; }; then
+              ready=true
+              break
+            fi
+            sleep 10
+          done
+          printf 'HOME_HTTP=%s API_HTTP=%s ROUTE_HTTP=%s READY=%s\n' "$home_code" "$api_code" "$route_code" "$ready"
+          test "$ready" = 'true'
+
+      - name: Comment result
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const ok = '${{ job.status }}' === 'success';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: 276,
+              body: ok ? 'Campaign Mailer deployment completed and production verification passed.' : 'Campaign Mailer deployment failed. Review the workflow logs.'
+            });
