@@ -56,8 +56,6 @@ jobs:
           test -s apps/portal/media-registration-admin/index.html
           test -s apps/portal/campaign-mailer/index.html
 
-      - name: Build Worker bundle without deploying
+      - name: Bundle Worker locally without deploying
         working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_ACCOUNT_ID: '00000000000000000000000000000000'
-        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+        run: npx --yes esbuild@0.25.5 src/index-final-admin-gateway-v1.js --bundle --format=esm --platform=browser --target=es2022 --outfile=/tmp/gnk-asg-worker.mjs
