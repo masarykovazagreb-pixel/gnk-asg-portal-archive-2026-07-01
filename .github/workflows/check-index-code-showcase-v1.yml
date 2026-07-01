@@ -83,7 +83,5 @@ jobs:
             echo 'Protected index surface changed.' >&2
             exit 1
           fi
-      - name: Worker dry run
-        working-directory: workers/gnk-asg-direct-operator
-        shell: bash
-        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Confirm canonical Worker validation ownership
+        run: echo 'Worker syntax, import graph and dry run are validated by Validate GNK ASG Portal Release.'
