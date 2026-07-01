@@ -15,6 +15,7 @@ on:
       - 'workers/gnk-asg-direct-operator/src/media-command-center-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
+      - 'scripts/validate-worker-import-graph.mjs'
   workflow_dispatch:
 
 permissions:
@@ -81,9 +82,8 @@ jobs:
           console.log(JSON.stringify({total:data.length,uniqueCodes:new Set(codes).size,emails:emails.length,approved,automationAllowed}));
           JS
 
-      - name: Bundle canonical Worker without deploying
-        working-directory: workers/gnk-asg-direct-operator
-        run: npx --yes esbuild@0.25.5 src/index-final-admin-gateway-v1.js --bundle --format=esm --platform=browser --target=es2022 --outfile=/tmp/gnk-asg-worker.mjs
+      - name: Validate active Worker import graph
+        run: node scripts/validate-worker-import-graph.mjs
 
       - name: Confirm no delivery action was executed
         run: echo 'Media Command Center validated without sending, queueing, approving or deploying.'
