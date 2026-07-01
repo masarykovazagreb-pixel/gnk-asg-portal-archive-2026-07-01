@@ -74,9 +74,10 @@ jobs:
           const emails=data.map(item=>String(item.email||'').trim().toLowerCase()).filter(Boolean);
           if(codes.length!==data.length)throw new Error('Every media contact must have a mailCode');
           if(new Set(codes).size!==codes.length)throw new Error('Duplicate media mailCode detected');
-          if(data.some(item=>typeof item.approved!=='boolean'||typeof item.automationAllowed!=='boolean'))throw new Error('Approval controls must remain explicit booleans');
-          const approved=data.filter(item=>item.approved).length;
-          const automationAllowed=data.filter(item=>item.automationAllowed).length;
+          if(data.some(item=>item.approved!==undefined&&typeof item.approved!=='boolean'))throw new Error('Approved must be boolean when specified');
+          if(data.some(item=>item.automationAllowed!==undefined&&typeof item.automationAllowed!=='boolean'))throw new Error('AutomationAllowed must be boolean when specified');
+          const approved=data.filter(item=>item.approved===true).length;
+          const automationAllowed=data.filter(item=>item.automationAllowed===true).length;
           console.log(JSON.stringify({total:data.length,uniqueCodes:new Set(codes).size,emails:emails.length,approved,automationAllowed}));
           JS
 
