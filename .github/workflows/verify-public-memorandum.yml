@@ -20,6 +20,10 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Install Worker dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --no-audit --no-fund
+
       - name: Deploy current canonical Worker
         id: deploy
         continue-on-error: true
@@ -30,7 +34,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee /tmp/deploy.log
+          npx wrangler deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee /tmp/deploy.log
 
       - name: Probe production memorandum
         id: verify
