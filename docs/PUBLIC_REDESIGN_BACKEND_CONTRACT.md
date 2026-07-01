@@ -23,12 +23,21 @@ The following capabilities are release blockers and must continue to work exactl
 13. Personalised invitation generation and invitation queue.
 14. Media Registration administration at `/media-registration-admin/`.
 15. Existing Admin Center, Mail Studio and Media Command Center access.
+16. Protected Campaign Mailer at `/campaign-mailer/`, including contact approvals, safety controller, queue lock, rate limits, PDF attachment handling, inbound metadata and delivery history.
 
 ## Isolation rule
 
-`/media-application/` and `/media-registration-admin/` retain their dedicated HTML, CSS and JavaScript. The general public redesign shell must return those documents unchanged.
+All functional and protected applications retain their dedicated HTML, CSS and JavaScript. The public redesign shell must return them unchanged. This includes:
 
-The redesign may later provide a separate visual revision for the newsroom portal, but only as an isolated change with regression tests for every field, button, API request and session state.
+- `/media-application/`
+- `/media-registration-admin/`
+- `/campaign-mailer/`
+- `/mail-studio/` and `/mail-studio-pro/`
+- `/media-command-center/`
+- `/admin-center/`, `/operator-dashboard/` and `/operator-mobile/`
+- other protected operator, publishing, review and API routes
+
+The redesign may later provide a separate visual revision for one of these applications, but only as an isolated change with regression tests for every field, button, API request and session state.
 
 ## Protected infrastructure
 
@@ -58,9 +67,9 @@ Before production deployment, perform browser tests for:
 - HR and EN homepage/navigation
 - Contact form without and with PDF
 - Admin login and logout
-- One manual email test to an approved internal recipient
-- One mass-mail dry run and one allowlisted test
+- Mail Studio and Media Command Center protected access
 - Journalist login, draft save, reload, document upload, submission and logout
 - Media Registration admin status and decision controls
+- Campaign Mailer protected route, dashboard loading and read-only status checks
 
-No production mass dispatch is part of the redesign release.
+No manual email, mass dispatch or Campaign Mailer delivery is part of the redesign release verification.
