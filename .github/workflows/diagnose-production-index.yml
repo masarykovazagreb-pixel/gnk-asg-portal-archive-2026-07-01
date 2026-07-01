@@ -1,12 +1,15 @@
-name: Diagnose Production Index Validation
+name: Diagnose Current Portal Contract
 
 on:
   pull_request:
     branches: [main]
     paths:
-      - "apps/portal/**"
-      - "scripts/validate-minimum-index-contact-admin.mjs"
-      - ".github/workflows/diagnose-production-index.yml"
+      - 'apps/portal/**'
+      - 'workers/gnk-asg-direct-operator/**'
+      - 'scripts/validate-minimum-index-contact-admin.mjs'
+      - 'scripts/verify-public-redesign-contract.mjs'
+      - '.github/workflows/diagnose-production-index.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,11 +17,14 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: "22"
-      - name: Validate current Index Contact and Admin contract
-        run: node scripts/validate-minimum-index-contact-admin.mjs
+          node-version: '24'
+      - name: Validate current Index Contact Admin and Campaign Mailer contract
+        run: |
+          set -euo pipefail
+          node scripts/validate-minimum-index-contact-admin.mjs
+          node scripts/verify-public-redesign-contract.mjs
