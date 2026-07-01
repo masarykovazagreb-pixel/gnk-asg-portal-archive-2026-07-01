@@ -16,7 +16,7 @@ import {repairPendingMediaQueue,VERSION as QUEUE_REPAIR_VERSION} from './media-o
 import {withHtmlOnlyMediaDelivery,VERSION as HTML_ONLY_VERSION} from './media-outreach-html-only-v1.js';
 import {withSingleEnglishGreeting,VERSION as SINGLE_GREETING_VERSION} from './media-outreach-single-greeting-v1.js';
 import {withHtmlOnlyTestGate,VERSION as HTML_ONLY_GATE_VERSION} from './media-outreach-html-only-gate-v1.js';
-export const VERSION=`GNK_ASG_FINAL_MEDIA_INLINE_LOGO_V9_TO_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_FINAL_MEDIA_INLINE_LOGO_V10_TO_${BASE_VERSION}`;
 const API='/api/media-command-center';
 const PUBLIC_MEMORANDUM='/api/media-registration/memorandum.pdf';
 const CAMPAIGN_KEY='media-command-center:campaign:v1';
@@ -29,7 +29,7 @@ const DEDUP_ENDPOINTS=new Set([`${API}/delivery-plan`,`${API}/delivery-status`,`
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 function activeEnv(env){
   const gated=withHtmlOnlyTestGate(env);
-  return withBootstrapPersonalization(withRequiredEmailSignature(withMediaGoldSignature(withEmbeddedMediaAutoReplyLogo(withFreshMediaPersonalization(withFinalMediaMessage(withSingleEnglishGreeting(withHtmlOnlyMediaDelivery(gated))))))));
+  return withBootstrapPersonalization(withRequiredEmailSignature(withMediaGoldSignature(withFreshMediaPersonalization(withFinalMediaMessage(withSingleEnglishGreeting(withHtmlOnlyMediaDelivery(withEmbeddedMediaAutoReplyLogo(gated))))))));
 }
 async function publicMemorandum(request,env){
   if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{allow:'GET, HEAD','cache-control':'no-store'}});
