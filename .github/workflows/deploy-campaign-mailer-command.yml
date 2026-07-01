@@ -12,6 +12,7 @@ on:
       - 'workers/gnk-asg-direct-operator/src/media-email-logo-transparent-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-auto-reply-inline-logo-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js'
       - 'workers/gnk-asg-direct-operator/package.json'
@@ -62,6 +63,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/media-email-logo-transparent-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-auto-reply-inline-logo-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check apps/portal/campaign-mailer/runtime-v1.js
@@ -87,6 +89,8 @@ jobs:
           grep -q 'Content-ID' workers/gnk-asg-direct-operator/src/media-auto-reply-inline-logo-v1.js
           grep -q 'HRVATSKI PRIJEVOD' workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js
           grep -q 'LAST_CITY_KEY' workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js
+          grep -q 'sendGlobalMediaAutoReply' workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          ! grep -q 'mediaFallbackReply' workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node -e "import('./workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js').then(m=>{if(m.GLOBAL_DESKS.length!==10)throw new Error('Expected exactly 10 global media desks')})"
           grep -q 'campaign-mailer-v2' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
 
@@ -108,20 +112,25 @@ jobs:
             api_code=$(curl -sS -o api.json -w '%{http_code}' "$base/api/campaign-mailer/health?cb=$stamp" || true)
             route_code=$(curl -sS -o route.html -w '%{http_code}' "$base/campaign-mailer/?cb=$stamp" || true)
             pdf_code=$(curl -sS -o pdf.txt -w '%{http_code}' "$base/api/campaign-mailer/campaign/attachment?cb=$stamp" || true)
+            version_code=$(curl -sS -o version.json -w '%{http_code}' "$base/data/portal-version.json?cb=$stamp" || true)
             logo_code=$(curl -sS -D logo.headers -o logo.png -w '%{http_code}' "$base/assets/gnk-asg-email-logo-transparent.png?cb=$stamp" || true)
             logo_ok=false
+            version_ok=false
             if [ "$logo_code" = '200' ] && grep -qi '^content-type: image/png' logo.headers; then
               if node -e "const b=require('fs').readFileSync('logo.png');const sig=Buffer.from([137,80,78,71,13,10,26,10]);if(!b.subarray(0,8).equals(sig)||!b.includes(Buffer.from('tRNS')))process.exit(1)"; then
                 logo_ok=true
               fi
             fi
-            if [ "$home_code" = '200' ] && grep -q '/campaign-mailer/' home.html && [ "$api_code" = '401' ] && [ "$pdf_code" = '401' ] && [ "$logo_ok" = 'true' ] && { [ "$route_code" = '303' ] || [ "$route_code" = '401' ]; }; then
+            if [ "$version_code" = '200' ] && grep -q 'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21' version.json && grep -q 'GNK_ASG_MEDIA_AUTO_REPLY_INLINE_LOGO_V1' version.json; then
+              version_ok=true
+            fi
+            if [ "$home_code" = '200' ] && grep -q '/campaign-mailer/' home.html && [ "$api_code" = '401' ] && [ "$pdf_code" = '401' ] && [ "$logo_ok" = 'true' ] && [ "$version_ok" = 'true' ] && { [ "$route_code" = '303' ] || [ "$route_code" = '401' ]; }; then
               ready=true
               break
             fi
             sleep 10
           done
-          printf 'HOME_HTTP=%s API_HTTP=%s ROUTE_HTTP=%s PDF_HTTP=%s LOGO_HTTP=%s LOGO_TRANSPARENT=%s READY=%s\n' "$home_code" "$api_code" "$route_code" "$pdf_code" "$logo_code" "$logo_ok" "$ready"
+          printf 'HOME_HTTP=%s API_HTTP=%s ROUTE_HTTP=%s PDF_HTTP=%s VERSION_HTTP=%s LOGO_HTTP=%s LOGO_TRANSPARENT=%s MEDIA_VERSION_OK=%s READY=%s\n' "$home_code" "$api_code" "$route_code" "$pdf_code" "$version_code" "$logo_code" "$logo_ok" "$version_ok" "$ready"
           test "$ready" = 'true'
 
       - name: Comment result
