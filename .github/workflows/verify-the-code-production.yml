@@ -1,0 +1,68 @@
+name: Verify THE CODE production
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-the-code-production.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Verify public invitation and all three actions
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://www.gnk-asg.hr'
+          ready=false
+          for attempt in $(seq 1 18); do
+            cb="${GITHUB_RUN_ID}-${attempt}"
+            wrapper_code=$(curl -L -sS -o /tmp/wrapper.html -w '%{http_code}' "$base/the-code/media-invitation/?cb=$cb" || true)
+            part1_code=$(curl -L -sS -o /tmp/part1 -w '%{http_code}' "$base/the-code/media-invitation/content-01.part?cb=$cb" || true)
+            part2_code=$(curl -L -sS -o /tmp/part2 -w '%{http_code}' "$base/the-code/media-invitation/content-02.part?cb=$cb" || true)
+            part3_code=$(curl -L -sS -o /tmp/part3 -w '%{http_code}' "$base/the-code/media-invitation/content-03.part?cb=$cb" || true)
+            shell_code=$(curl -L -sS -o /tmp/shell.js -w '%{http_code}' "$base/assets/gallery-brand-safety.js?cb=$cb" || true)
+            preview_code=$(curl -L -sS -o /tmp/preview.svg -w '%{http_code}' "$base/assets/the-code-linkedin-preview.svg?cb=$cb" || true)
+            registration_code=$(curl -L -sS -o /tmp/registration.html -w '%{http_code}' "$base/media-application/?lang=en&cb=$cb" || true)
+            presentation_code=$(curl -L -sS -o /tmp/presentation.html -w '%{http_code}' "$base/the-code/?cb=$cb" || true)
+            memorandum_code=$(curl -L -sS -D /tmp/memorandum.headers -o /tmp/memorandum.pdf -w '%{http_code}' "$base/api/media-registration/memorandum.pdf?cb=$cb" || true)
+            cat /tmp/part1 /tmp/part2 /tmp/part3 > /tmp/invitation.html 2>/dev/null || true
+
+            if [ "$wrapper_code" = '200' ] \
+              && [ "$part1_code" = '200' ] \
+              && [ "$part2_code" = '200' ] \
+              && [ "$part3_code" = '200' ] \
+              && [ "$shell_code" = '200' ] \
+              && [ "$preview_code" = '200' ] \
+              && [ "$registration_code" = '200' ] \
+              && [ "$presentation_code" = '200' ] \
+              && [ "$memorandum_code" = '200' ] \
+              && grep -q 'THE CODE — Complete Interactive Media Invitation' /tmp/wrapper.html \
+              && grep -q 'og:title' /tmp/wrapper.html \
+              && grep -q 'og:description' /tmp/wrapper.html \
+              && grep -q 'og:image' /tmp/wrapper.html \
+              && grep -q 'NOT AN EVENT. NOT A PRESENTATION. NOT ONE ACQUISITION.' /tmp/invitation.html \
+              && grep -q 'href="/media-application/?lang=en"' /tmp/invitation.html \
+              && grep -q 'href="/the-code/"' /tmp/invitation.html \
+              && grep -q 'href="/api/media-registration/memorandum.pdf"' /tmp/invitation.html \
+              && grep -q 'GNK_THE_CODE_HOME_FEATURE_20260702' /tmp/shell.js \
+              && grep -q '/the-code/media-invitation/' /tmp/shell.js \
+              && grep -q '<svg' /tmp/preview.svg \
+              && grep -qi '^content-type: application/pdf' /tmp/memorandum.headers \
+              && [ "$(wc -c < /tmp/memorandum.pdf)" -gt 10000 ]; then
+              ready=true
+              break
+            fi
+            sleep 10
+          done
+
+          printf 'WRAPPER=%s PARTS=%s/%s/%s SHELL=%s PREVIEW=%s REGISTRATION=%s PRESENTATION=%s MEMORANDUM=%s READY=%s\n' \
+            "$wrapper_code" "$part1_code" "$part2_code" "$part3_code" "$shell_code" "$preview_code" "$registration_code" "$presentation_code" "$memorandum_code" "$ready"
+          test "$ready" = 'true'
+          echo 'THE CODE production page, homepage feature, social metadata and all three official actions verified.'
