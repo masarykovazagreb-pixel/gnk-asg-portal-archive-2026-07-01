@@ -31,6 +31,8 @@ jobs:
 
       - name: Validate canonical gateway and protected applications
         shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: 00000000000000000000000000000000
         run: |
           set -euo pipefail
           node --check apps/portal/assets/public-menu-v18.js
