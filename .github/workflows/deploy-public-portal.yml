@@ -31,8 +31,6 @@ jobs:
 
       - name: Validate canonical gateway and protected applications
         shell: bash
-        env:
-          CLOUDFLARE_ACCOUNT_ID: 00000000000000000000000000000000
         run: |
           set -euo pipefail
           node --check apps/portal/assets/public-menu-v18.js
@@ -44,7 +42,7 @@ jobs:
           node scripts/verify-public-redesign-contract.mjs
           grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
           cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          npx --yes esbuild@0.25.5 src/index-final-admin-gateway-v1.js --bundle --format=esm --platform=browser --target=es2022 --outfile=/tmp/gnk-asg-worker.mjs
 
       - name: Deploy canonical Worker to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
