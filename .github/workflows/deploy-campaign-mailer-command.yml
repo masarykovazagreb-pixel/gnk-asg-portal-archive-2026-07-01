@@ -5,8 +5,11 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/campaign-mailer/**'
+      - 'apps/portal/assets/gnk-asg-email-logo-final.png'
       - 'workers/gnk-asg-direct-operator/src/campaign-mailer-*.js'
+      - 'workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js'
       - 'workers/gnk-asg-direct-operator/package.json'
       - '.github/workflows/deploy-campaign-mailer-command.yml'
   workflow_dispatch:
@@ -50,6 +53,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
+          node --check workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check apps/portal/campaign-mailer/runtime-v1.js
           node --check apps/portal/campaign-mailer/dashboard-render-v1.js
@@ -64,10 +69,12 @@ jobs:
           test -f apps/portal/campaign-mailer/index.html
           test -f apps/portal/campaign-mailer/document-preview-v1.css
           test -f apps/portal/campaign-mailer/global-controls-v1.css
+          test -f apps/portal/assets/gnk-asg-email-logo-final.png
           grep -q 'html-file' apps/portal/campaign-mailer/index.html
           grep -q 'pdf-preview-frame' apps/portal/campaign-mailer/index.html
           grep -q '/purge-all' apps/portal/campaign-mailer/global-controls-v1.js
           grep -q 'campaign/attachment' workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
+          grep -q 'media@gnk-asg.hr' workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js
           grep -q 'campaign-mailer-v2' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
 
       - name: Deploy Cloudflare Worker
@@ -88,13 +95,14 @@ jobs:
             api_code=$(curl -sS -o api.json -w '%{http_code}' "$base/api/campaign-mailer/health?cb=$stamp" || true)
             route_code=$(curl -sS -o route.html -w '%{http_code}' "$base/campaign-mailer/?cb=$stamp" || true)
             pdf_code=$(curl -sS -o pdf.txt -w '%{http_code}' "$base/api/campaign-mailer/campaign/attachment?cb=$stamp" || true)
-            if [ "$home_code" = '200' ] && grep -q '/campaign-mailer/' home.html && [ "$api_code" = '401' ] && [ "$pdf_code" = '401' ] && { [ "$route_code" = '303' ] || [ "$route_code" = '401' ]; }; then
+            logo_code=$(curl -sS -o logo.png -w '%{http_code}' "$base/assets/gnk-asg-email-logo-final.png?cb=$stamp" || true)
+            if [ "$home_code" = '200' ] && grep -q '/campaign-mailer/' home.html && [ "$api_code" = '401' ] && [ "$pdf_code" = '401' ] && [ "$logo_code" = '200' ] && { [ "$route_code" = '303' ] || [ "$route_code" = '401' ]; }; then
               ready=true
               break
             fi
             sleep 10
           done
-          printf 'HOME_HTTP=%s API_HTTP=%s ROUTE_HTTP=%s PDF_HTTP=%s READY=%s\n' "$home_code" "$api_code" "$route_code" "$pdf_code" "$ready"
+          printf 'HOME_HTTP=%s API_HTTP=%s ROUTE_HTTP=%s PDF_HTTP=%s LOGO_HTTP=%s READY=%s\n' "$home_code" "$api_code" "$route_code" "$pdf_code" "$logo_code" "$ready"
           test "$ready" = 'true'
 
       - name: Comment result
