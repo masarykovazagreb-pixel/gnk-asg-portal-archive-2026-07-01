@@ -8,7 +8,10 @@ on:
       - 'apps/portal/assets/the-code-index-slot.css'
       - 'apps/portal/assets/the-code-visual-01.b64'
       - 'apps/portal/assets/the-code-visual-02.b64'
+      - 'apps/portal/assets/gallery-brand-safety.js'
+      - 'apps/portal/assets/the-code-linkedin-preview.svg'
       - 'apps/portal/the-code/**'
+      - 'scripts/verify-the-code-public-launch.mjs'
       - '.github/workflows/check-index-code-showcase-v1.yml'
   workflow_dispatch:
 
@@ -26,24 +29,34 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate isolated showcase package
+      - name: Validate current THE CODE package
         shell: bash
         run: |
           set -euxo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
           node --check apps/portal/the-code/assets/the-code.js
+          node --check apps/portal/assets/gallery-brand-safety.js
           test -s apps/portal/assets/the-code-index-slot.css
           test -s apps/portal/assets/the-code-visual-01.b64
           test -s apps/portal/assets/the-code-visual-02.b64
+          test -s apps/portal/assets/the-code-linkedin-preview.svg
           test -s apps/portal/the-code/index.html
+          test -s apps/portal/the-code/media-invitation/index.html
+          test -s apps/portal/the-code/media-invitation/content-01.part
+          test -s apps/portal/the-code/media-invitation/content-02.part
+          test -s apps/portal/the-code/media-invitation/content-03.part
           grep -q 'gnkCodeVisualOne 20s' apps/portal/assets/the-code-index-slot.css
           grep -q 'gnkCodeVisualTwo 20s' apps/portal/assets/the-code-index-slot.css
           grep -q 'grid-template-columns:minmax(0,1fr)' apps/portal/assets/the-code-index-slot.css
           grep -q 'aspect-ratio:9/16' apps/portal/assets/the-code-index-slot.css
-          grep -q 'data-gnk-code-showcase' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          grep -q 'data-gnk-existing-field="visuals"' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          grep -q 'data-gnk-existing-field="the-code"' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
           grep -q 'data:image/webp;base64' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
-          grep -q "body.replace('</main>'" workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          grep -q 'index-existing-media-slots-v2.css' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
           grep -q 'sandbox="allow-scripts"' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          grep -q 'GNK_THE_CODE_HOME_FEATURE_20260702' apps/portal/assets/gallery-brand-safety.js
+          grep -q '/the-code/media-invitation/' apps/portal/assets/gallery-brand-safety.js
+          node scripts/verify-the-code-public-launch.mjs
       - name: Confirm both encoded files are WebP
         shell: bash
         run: |
@@ -70,7 +83,5 @@ jobs:
             echo 'Protected index surface changed.' >&2
             exit 1
           fi
-      - name: Worker dry run
-        working-directory: workers/gnk-asg-direct-operator
-        shell: bash
-        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Confirm canonical Worker validation ownership
+        run: echo 'Worker syntax, import graph and dry run are validated by Validate GNK ASG Portal Release.'
