@@ -7,6 +7,7 @@ on:
       - 'apps/portal/**'
       - 'workers/gnk-asg-direct-operator/**'
       - 'scripts/verify-public-redesign-contract.mjs'
+      - 'scripts/validate-worker-import-graph.mjs'
       - 'docs/PUBLIC_REDESIGN_BACKEND_CONTRACT.md'
       - '.github/workflows/test-portal-repair-v9.yml'
   workflow_dispatch:
@@ -56,6 +57,5 @@ jobs:
           test -s apps/portal/media-registration-admin/index.html
           test -s apps/portal/campaign-mailer/index.html
 
-      - name: Bundle Worker locally without deploying
-        working-directory: workers/gnk-asg-direct-operator
-        run: npx --yes esbuild@0.25.5 src/index-final-admin-gateway-v1.js --bundle --format=esm --platform=browser --target=es2022 --outfile=/tmp/gnk-asg-worker.mjs
+      - name: Validate active Worker import graph
+        run: node scripts/validate-worker-import-graph.mjs
