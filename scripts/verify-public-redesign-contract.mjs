@@ -21,7 +21,8 @@ const requireText=(file,needles)=>{
 requireText('apps/portal/contact/index.html',[
   'id="contactForm"',
   '/api/contact-submit',
-  'type="file" accept="application/pdf"'
+  'type="file"',
+  'accept="application/pdf"'
 ]);
 
 requireText('workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js',[
