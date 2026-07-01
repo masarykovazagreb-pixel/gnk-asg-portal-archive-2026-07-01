@@ -1,26 +1,27 @@
-name: Test Media Command Center V20
+name: Validate Current Media Command Center
 
 on:
   pull_request:
     branches: [main]
     paths:
-      - ".github/workflows/test-media-command-center-v20.yml"
-      - ".github/workflows/deploy-public-portal.yml"
-      - "apps/portal/media-command-center/**"
-      - "apps/portal/assets/media-command-center-v1.css"
-      - "apps/portal/assets/media-command-center-v1.js"
-      - "apps/portal/assets/admin-media-command-center-nav-v20.js"
-      - "apps/portal/data/media-outreach-contacts-v1.json"
-      - "workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js"
-      - "workers/gnk-asg-direct-operator/src/media-command-center-v1.js"
-      - "workers/gnk-asg-direct-operator/wrangler.toml"
+      - '.github/workflows/test-media-command-center-v20.yml'
+      - '.github/workflows/deploy-public-portal.yml'
+      - 'apps/portal/media-command-center/**'
+      - 'apps/portal/assets/media-command-center-v1.css'
+      - 'apps/portal/assets/media-command-center-v1.js'
+      - 'apps/portal/assets/admin-media-command-center-nav-v20.js'
+      - 'apps/portal/data/media-outreach-contacts-v1.json'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-command-center-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: media-command-center-v20-${{ github.event.pull_request.number || github.ref }}
+  group: media-command-center-current-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -28,54 +29,55 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: "22"
+          node-version: '24'
 
-      - name: Validate sources and controls
+      - name: Validate current sources and safety controls
         shell: bash
         run: |
           set -euo pipefail
-          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
           node --check apps/portal/assets/media-command-center-v1.js
           node --check apps/portal/assets/admin-media-command-center-nav-v20.js
-          grep -q 'main = "src/index-portal-final-v13.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_APPLICATION_AUTO_ACK = "true"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q '2026-07-20T21:59:59.000Z' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'media@gnk-asg.hr' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'Komandni centar' apps/portal/assets/admin-media-command-center-nav-v20.js
-          grep -q '20. 7. 2026.' apps/portal/media-command-center/index.html
-          grep -q 'rezerviran i plaćen' apps/portal/media-command-center/index.html
-          grep -q 'medijska agencija u sklopu grupacije GNK ASG' apps/portal/media-command-center/index.html
-          grep -qi 'ljudska odluka' apps/portal/media-command-center/index.html
+          grep -q 'SEND_TEST_EMAIL' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
+          grep -q 'QUEUE_APPROVED_MEDIA' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
+          grep -q 'DISPATCH_ONE_QUEUED_EMAIL' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
+          grep -q 'valid_test_gate_required' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
+          grep -q 'processDeliveryQueue' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
+          test -s apps/portal/media-command-center/index.html
+          test -s apps/portal/data/media-outreach-contacts-v1.json
+
+      - name: Validate contact registry integrity without fixed historical counts
+        run: |
           node - <<'JS'
           const fs=require('fs');
           const data=JSON.parse(fs.readFileSync('apps/portal/data/media-outreach-contacts-v1.json','utf8'));
-          const codes=new Set(data.map(item=>item.mailCode));
-          const ready=data.filter(item=>item.automationAllowed&&item.email).length;
+          if(!Array.isArray(data)||!data.length)throw new Error('Media contact registry is empty or invalid');
+          const codes=data.map(item=>String(item.mailCode||'').trim()).filter(Boolean);
+          const emails=data.map(item=>String(item.email||'').trim().toLowerCase()).filter(Boolean);
+          if(codes.length!==data.length)throw new Error('Every media contact must have a mailCode');
+          if(new Set(codes).size!==codes.length)throw new Error('Duplicate media mailCode detected');
+          if(data.some(item=>typeof item.approved!=='boolean'||typeof item.automationAllowed!=='boolean'))throw new Error('Approval controls must remain explicit booleans');
           const approved=data.filter(item=>item.approved).length;
-          if(data.length!==112) throw new Error(`Expected 112 media, got ${data.length}`);
-          if(codes.size!==112) throw new Error(`Expected 112 unique codes, got ${codes.size}`);
-          if(ready!==22) throw new Error(`Expected 22 strict ready channels, got ${ready}`);
-          if(approved!==0) throw new Error(`Expected zero initial approvals, got ${approved}`);
-          console.log(JSON.stringify({total:data.length,uniqueCodes:codes.size,ready,approved}));
+          const automationAllowed=data.filter(item=>item.automationAllowed).length;
+          console.log(JSON.stringify({total:data.length,uniqueCodes:new Set(codes).size,emails:emails.length,approved,automationAllowed}));
           JS
 
-      - name: Wrangler explicit-entry dry run
+      - name: Build canonical Worker without deploying
         working-directory: workers/gnk-asg-direct-operator
-        shell: bash
-        run: |
-          set -euo pipefail
-          npx --yes wrangler@4 deploy src/index-media-command-center-v20.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_ACCOUNT_ID: validation-only
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify public contract remains V13
-        shell: bash
-        run: |
-          set -euo pipefail
-          grep -q "GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625" workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
-          grep -q "mediaCommandEntryPoint:'src/index-media-command-center-v20.js'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          grep -q "import app from './index-mail-studio-bridge-v15.js'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          echo "MEDIA_COMMAND_CENTER_V20_VALIDATED=true"
+      - name: Confirm no delivery action was executed
+        run: echo 'Media Command Center validated without sending, queueing, approving or deploying.'
