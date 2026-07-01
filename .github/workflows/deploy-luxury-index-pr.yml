@@ -41,11 +41,9 @@ jobs:
           node scripts/verify-public-redesign-contract.mjs
           grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
 
-      - name: Build canonical Worker without deploying
+      - name: Bundle canonical Worker without deploying
         working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_ACCOUNT_ID: 00000000000000000000000000000000
-        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+        run: npx --yes esbuild@0.25.5 src/index-final-admin-gateway-v1.js --bundle --format=esm --platform=browser --target=es2022 --outfile=/tmp/gnk-asg-worker.mjs
 
       - name: Confirm deployment ownership
         run: |
