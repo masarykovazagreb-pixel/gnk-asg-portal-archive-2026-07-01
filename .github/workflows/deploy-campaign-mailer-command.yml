@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'issue_comment' && github.event.issue.number == 276 && github.event.comment.body == '/deploy-campaign-mailer')
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'issue_comment' && github.actor == 'beckuphome-gnk' && github.event.issue.number == 276 && github.event.comment.body == '/deploy-campaign-mailer')
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
