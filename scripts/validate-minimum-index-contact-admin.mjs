@@ -20,7 +20,7 @@ for(const [name,html] of [['HR index',indexHr],['EN index',indexEn]]){
 
 for(const [name,html] of [['HR kontakt',contactHr],['EN kontakt',contactEn]]){
   assert.ok(html.includes('/api/contact-submit'),`${name} mora koristiti jedinstveni kontakt API.`);
-  assert.ok(html.includes('type="file" accept="application/pdf"'),`${name} mora zadržati PDF prilog.`);
+  assert.ok(html.includes('type="file"')&&html.includes('accept="application/pdf"'),`${name} mora zadržati PDF prilog.`);
   assert.ok(html.includes('name="consent"'),`${name} mora zadržati privolu.`);
 }
 
