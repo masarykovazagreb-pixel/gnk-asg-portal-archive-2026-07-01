@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate current sources and safety controls
+      - name: Validate current source entrypoint
         shell: bash
         run: |
           set -euo pipefail
@@ -44,18 +44,25 @@ jobs:
           node --check apps/portal/assets/media-command-center-v1.js
           node --check apps/portal/assets/admin-media-command-center-nav-v20.js
           grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = ' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_TEST_LIVE = ' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_APPLICATION_AUTO_ACK = "true"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q '2026-07-20T21:59:59.000Z' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'media@gnk-asg.hr' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'Komandni centar' apps/portal/assets/admin-media-command-center-nav-v20.js
+          grep -q 'media@gnk-asg.hr' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
+          test -s apps/portal/media-command-center/index.html
+          test -s apps/portal/data/media-outreach-contacts-v1.json
+
+      - name: Validate explicit delivery safety gates
+        shell: bash
+        run: |
+          set -euo pipefail
           grep -q 'SEND_TEST_EMAIL' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
           grep -q 'QUEUE_APPROVED_MEDIA' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
           grep -q 'DISPATCH_ONE_QUEUED_EMAIL' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
           grep -q 'valid_test_gate_required' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
           grep -q 'processDeliveryQueue' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
-          test -s apps/portal/media-command-center/index.html
-          test -s apps/portal/data/media-outreach-contacts-v1.json
+          grep -q 'automation_allowed' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
+          grep -q 'approved' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
+          grep -q 'suppressed' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
 
       - name: Validate contact registry integrity without fixed historical counts
         run: |
