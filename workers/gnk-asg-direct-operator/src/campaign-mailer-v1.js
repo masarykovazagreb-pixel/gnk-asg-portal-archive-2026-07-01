@@ -1,0 +1,1 @@
+export const VERSION='GNK_ASG_CAMPAIGN_MAILER_V1';
