@@ -27,8 +27,15 @@ function removeLegacyPublicShell(html){
 }
 
 const stableFavicon='\n<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">\n<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="/favicon.svg">\n<link rel="manifest" href="/site.webmanifest">\n<meta name="theme-color" content="#05080f">';
+const isolatedFunctionalPaths=['/media-application','/media-registration-admin'];
 
 export function patchPublicHtml(html,path){
+  const normalized=String(path||'').toLowerCase().replace(/\/+$/,'')||'/';
+  // Journalist login, application workspace and its administrative control retain
+  // their dedicated HTML/CSS/JS. The public redesign must never alter IDs, forms,
+  // cookies, API calls or controls on these functional routes.
+  if(isolatedFunctionalPaths.some(prefix=>normalized===prefix||normalized.startsWith(`${prefix}/`)))return html;
+
   html=removeLegacyPublicShell(html);
   const indexPath=['/','/en','/en/'].includes(path);
   if(indexPath){
