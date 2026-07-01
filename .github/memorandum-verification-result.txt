@@ -1,22 +1,115 @@
+DEPLOY_READY=true
 STATUS=FAIL
 HTTP=200
 TYPE=text/html
-SIZE=913497
-SHA256=fa348bfceb9de7ea95502b62c7136d7026428b4e950473127e69671abd7234a2
-URL=https://www.gnk-asg.hr/api/media-registration/memorandum.pdf?cb=28543585643
-RUN_ID=28543585643
-VERIFIED_AT=2026-07-01T19:49:30Z
+SIZE=912921
+SHA256=97b1f7050684e2857a5ea094432d493186d13a9a930c3202364a946a76bb688e
+URL=https://www.gnk-asg.hr/api/media-registration/memorandum.pdf?cb=28544495198
+RUN_ID=28544495198
+VERIFIED_AT=2026-07-01T20:06:19Z
 
+--- PORTAL VERSION ---
+{
+  "ok": true,
+  "version": "GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625",
+  "publicUx": "GNK_ASG_PUBLIC_UX_V12",
+  "publicVisual": "GNK_ASG_PUBLIC_VISUAL_V16_20260625",
+  "publicMenu": "GNK_ASG_PUBLIC_MENU_V15",
+  "floatingHome": "GNK_ASG_FLOATING_HOME_V16",
+  "adminVisual": "GNK_ASG_ADMIN_UNIFIED_V7_20260625",
+  "favicon": "GNK_ASG_GOOGLE_FAVICON_V1",
+  "indexClock": "GNK_ASG_INDEX_CLOCK_V2",
+  "automation": "GNK_ASG_PORTAL_EXPERIENCE_V10_20260625",
+  "newsRotation": "GNK_ASG_INDEX_NEWS_ROTATION_V1",
+  "marketVersion": "GNK_ASG_MARKET_LIVE_V1_20260625",
+  "marketChart": "GNK_ASG_LIVE_MARKET_CHART_V3",
+  "groupNetwork": "GNK_ASG_GROUP_NETWORK_V2",
+  "galleryVersion": "GNK_ASG_GALLERY_ROTATION_V1_20260625",
+  "indexDesign": "IQ200",
+  "timeZone": "Europe/Zagreb",
+  "deployedEntryPoint": "src/index-portal-final-v13.js",
+  "authLayer": "GNK_ASG_UNIFIED_AUTH_V16_20260701_ADMIN_SCOPE",
+  "backendStatusEndpoint": "/api/operator-backend-status",
+  "adminLogin": "/admin-login",
+  "adminSessionSeconds": 43200,
+  "publicUi": [
+    "/the-code",
+    "/media-application"
+  ],
+  "protectedUi": [
+    "/admin-center",
+    "/operator-dashboard",
+    "/operator-mobile",
+    "/mail-studio",
+    "/mail-studio-pro",
+    "/auto-editor",
+    "/news-admin",
+    "/pdf-publisher",
+    "/social-share",
+    "/wa-center",
+    "/review",
+    "/media-command-center",
+    "/media-registration-admin",
+    "/campaign-mailer"
+  ],
+  "mailStudioBridge": "GNK_ASG_MAIL_STUDIO_BRIDGE_V15_20260629_R16_SERVER_CONFIRM",
+  "mailStudioBridgeRevision": "16",
+  "studioCore": "GNK_ASG_STUDIO_CORE_V21_20260629_R2",
+  "studioNeutralApi": "/api/studio-message/*",
+  "mailServerConfirm": "ENFORCED_AFTER_AUTH",
+  "mailProfileTest": "GNK_ASG_MAIL_PROFILE_TEST_V2_20260626_DELIVERY",
+  "mailProfileDeliveryTest": "GNK_ASG_MAIL_PROFILE_DELIVERY_TEST_V1_20260626_R4_SHARED_EPHEMERAL_GATE",
+  "manualMailService": "GNK_ASG_MANUAL_MAIL_SERVICE_V1_20260627",
+  "manualMailSending": "AUTHENTICATED_LIVE_WHEN_MAIL_MANUAL_LIVE_TRUE",
+  "mandatoryBcc": "rht@gmx.com",
+  "mailProfileInternalGate": "EPHEMERAL_NONCE_ROTATED_AFTER_RUN",
+  "mailSignatureContact": "NO_PHONE_NO_WHATSAPP_MANDATORY_BCC",
+  "unifiedAuth": "GNK_ASG_UNIFIED_AUTH_V15_20260626_LOGIN_ISOLATION",
+  "mailStudioAuth": "GNK_ASG_MAIL_STUDIO_AUTH_BRIDGE_V16_20260626_COOKIE_ONLY",
+  "mailStudioControls": "GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626",
+  "mailStudioClickFeedback": "GNK_ASG_MAIL_STUDIO_CLICK_FEEDBACK_V19_20260626",
+  "mailStudioHotfix": "GNK_ASG_MAIL_STUDIO_HOTFIX_V20_20260629",
+  "adminSessionFallback": "GNK_ASG_ADMIN_SESSION_FALLBACK_V19_20260626_COOKIE_ONLY_HEALTH",
+  "authPageIsolation": "ENABLED",
+  "mediaCommandIntegrationEntryPoint": "src/index-mail-studio-bridge-v17.js",
+  "mediaCommandCenter": "GNK_ASG_MEDIA_COMMAND_CENTER_V1_20260626",
+  "mediaCommandWrapper": "GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260701_GNK_ASG_MEDIA_GLOBAL_AUTO_REPLY_V3_20260701",
+  "mediaGlobalAutoReply": "GNK_ASG_MEDIA_GLOBAL_AUTO_REPLY_V3_20260701",
+  "mediaCommandRoute": "/media-command-center/",
+  "mediaCommandDeadline": "2026-07-20T23:59:59+02:00",
+  "mediaCommandEntryPoint": "src/index-media-command-center-v20.js",
+  "mediaCommandSending": "LOCKED",
+  "finalMediaFresh": "GNK_ASG_FINAL_MEDIA_INLINE_LOGO_V10_TO_GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260701_GNK_ASG_MEDIA_GLOBAL_AUTO_REPLY_V3_20260701",
+  "mediaFresh": "GNK_ASG_MEDIA_FRESH_ADMIN_V1_20260630_STRICT_ENGLISH_GREETING_DEDUP",
+  "mediaDelivery": "GNK_ASG_MEDIA_OUTREACH_DELIVERY_V7_20260630_FULL_HISTORY",
+  "mediaReporting": "GNK_ASG_MEDIA_OUTREACH_REPORTING_V1_20260630",
+  "mediaLaunch": "GNK_ASG_MEDIA_OUTREACH_LAUNCH_V1_20260630",
+  "mediaFinalMessage": "GNK_ASG_MEDIA_OUTREACH_FINAL_MESSAGE_V5_STRICT_ENGLISH_GREETING_DEDUP_20260630",
+  "mediaProjects": "GNK_ASG_MEDIA_PROJECTS_V1_20260630",
+  "mediaBootstrap": "GNK_ASG_MEDIA_BOOTSTRAP_EMAIL_V1_20260630",
+  "mediaBootstrapHtml": "GNK_ASG_MEDIA_BOOTSTRAP_HTML_FORWARD_V2_TO_GNK_ASG_MEDIA_BOOTSTRAP_HTML_V1_20260630",
+  "emailSignature": "GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260629_R9_INSTITUTIONAL_MEDIA",
+  "mediaGoldSignature": "GNK_ASG_MEDIA_EMAIL_GOLD_SIGNATURE_V5_STACKED",
+  "mediaInlineLogo": "GNK_ASG_MEDIA_AUTO_REPLY_INLINE_LOGO_V1_20260701",
+  "mediaDedup": "GNK_ASG_MEDIA_DELIVERY_DEDUP_V2_20260630",
+  "mediaQueueRepair": "GNK_ASG_MEDIA_OUTREACH_QUEUE_REPAIR_V2_HTML_ONLY_20260630",
+  "mediaHtmlOnly": "GNK_ASG_MEDIA_OUTREACH_HTML_ONLY_V1_20260630",
+  "mediaSingleGreeting": "GNK_ASG_MEDIA_OUTREACH_SINGLE_GREETING_V1_20260630",
+  "mediaHtmlOnlyGate": "GNK_ASG_MEDIA_OUTREACH_HTML_ONLY_GATE_V1_20260630",
+  "mediaDeliveryMode": "HTML_ONLY",
+  "mediaOutreachBuildLock": false
+}
+--- MEMORANDUM HEADERS ---
 HTTP/2 302 
-date: Wed, 01 Jul 2026 19:49:29 GMT
+date: Wed, 01 Jul 2026 20:06:16 GMT
 content-length: 0
 location: https://drive.google.com/uc?export=download&id=1SJum3eJYCYfJvfheH0UQjVDHMa381raQ
 cache-control: no-store, no-cache, must-revalidate, max-age=0
 x-gnk-asg-media-registration: GNK_ASG_MEDIA_REGISTRATION_POST_CODE_SAFE_V2_20260629
-report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=PvpEOwsT%2Fo6JKXWQUXUJINPlf0ZU%2FZWShqfCUtiz02P3nF0C0mkngSQAkQGlOsFNBK3MUe9f8wvA774qjT%2FyQON665MFu0TyKO%2BVLp1G1inhpk66lKhj3QBluQJhlrGTkw%3D%3D"}]}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=5qcwK%2B5EOOzMf6tDEkVYu33Y%2FYUYTIjxCF0B%2BOBahMiMAWIEtRXMhROLiZ2HaD2sE497EDTDRGeF1YQt9oEBiZ%2FFBJnAr%2FKzqjvj9yLVJdAV9u0rFzVL7C73gez0mxuENA%3D%3D"}]}
 nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
 server: cloudflare
-cf-ray: a147ef292e01cf2b-SJC
+cf-ray: a14807bb0cd3e6ec-IAD
 alt-svc: h3=":443"; ma=86400
 
 HTTP/2 303 
@@ -25,14 +118,14 @@ vary: Origin
 cache-control: no-cache, no-store, max-age=0, must-revalidate
 pragma: no-cache
 expires: Mon, 01 Jan 1990 00:00:00 GMT
-date: Wed, 01 Jul 2026 19:49:29 GMT
+date: Wed, 01 Jul 2026 20:06:16 GMT
 location: https://drive.usercontent.google.com/download?id=1SJum3eJYCYfJvfheH0UQjVDHMa381raQ&export=download
 strict-transport-security: max-age=31536000
-accept-ch: Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version
 cross-origin-opener-policy: same-origin
-content-security-policy: script-src 'nonce--TuoyJXmuHJNG3XiU7Kg1w' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/DriveUntrustedContentHttp/cspreport;worker-src 'self'
 content-security-policy: require-trusted-types-for 'script';report-uri /_/DriveUntrustedContentHttp/cspreport
+content-security-policy: script-src 'nonce-eJ2TvNQfDgCZ8RkkeYEkLQ' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/DriveUntrustedContentHttp/cspreport;worker-src 'self'
 permissions-policy: ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*
+accept-ch: Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version
 server: ESF
 content-length: 0
 x-xss-protection: 0
@@ -42,41 +135,41 @@ alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
 
 HTTP/2 302 
 content-type: application/binary
-x-guploader-uploadid: AJ5rDhFplRH56yGKcTUsTR19YBByEHYlQ3DqlU0qyn1g5qTb4emrB1S7igqETmCusYiNkmt1yYsvhPc
+x-guploader-uploadid: AJ5rDhFJhGprX2cv1Kpd2mZK56KEV7tovxCrsY_rp4l1-oqgWCJAQzr1MkspUJPFL8ogueCQ-LgVKXs
 vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
 cache-control: no-cache, no-store, max-age=0, must-revalidate
 pragma: no-cache
 expires: Mon, 01 Jan 1990 00:00:00 GMT
-date: Wed, 01 Jul 2026 19:49:29 GMT
+date: Wed, 01 Jul 2026 20:06:16 GMT
 location: https://accounts.google.com/ServiceLogin?service=wise&passive=1209600&continue=https://drive.usercontent.google.com/download?id%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&followup=https://drive.usercontent.google.com/download?id%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload
 p3p: CP="This is not a P3P policy! See g.co/p3phelp for more info."
-permissions-policy: ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*
 accept-ch: Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version
-content-security-policy: require-trusted-types-for 'script';report-uri /_/DriveUntrustedContentHttp/cspreport
-content-security-policy: script-src 'nonce-c1zYQf1HC78wdGygz6o0tg' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/DriveUntrustedContentHttp/cspreport;worker-src 'self'
-content-security-policy: sandbox allow-scripts
+permissions-policy: ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*
 cross-origin-opener-policy: same-origin
+content-security-policy: require-trusted-types-for 'script';report-uri /_/DriveUntrustedContentHttp/cspreport
+content-security-policy: script-src 'nonce-m1fmjFDBHvrkxkG4tTbXcw' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/DriveUntrustedContentHttp/cspreport;worker-src 'self'
+content-security-policy: sandbox allow-scripts
 cross-origin-resource-policy: same-site
 content-length: 0
 server: UploadServer
-set-cookie: NID=532=uQsfR6FrmWh-92qRn9gCi9GEh1Nc-u12KRi3spAUb0GQxSUeG88gXwWLhkuegAAAjprh5Lu-6giJ5OzcDhSnP-2T5b2pC4EI4A4AvbLO_ydZtwFGfiK-eTs0L_NUGPVsllYmUIEtQz6un3TgVnrrtoMHLTa-047P0_raN3zPu1xx-Cf18Sji7hkOH5HwRuQAtOjzaU-TWZk; expires=Thu, 31-Dec-2026 19:49:29 GMT; path=/; domain=.google.com; HttpOnly
+set-cookie: NID=532=Khji15P5kxiyDQf6Wt6fcVZL9T3ZHGEzDpOIb3glkznjaKEaZnYcsbGgEeW1W3i02yQW0-A2zySX6bqISSVG_piuXmB92gNtS9oihCPiw-T2CdwJMoY9ISo2_0RDl-sFZYeXZlhkGXEAyS8IENvrHniyunaILi1VrV4Ey2BtJCtxzVP_heJK_Xxec2rt8P4vJgiq8IqMAw; expires=Thu, 31-Dec-2026 20:06:16 GMT; path=/; domain=.google.com; HttpOnly
 alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
 
 HTTP/2 302 
 content-type: application/binary
-set-cookie: __Host-GAPS=1:6Sv5AMyDmwXggbDBzEyAwCHjXBK7mA:Ue_WOfDL6CfPEX6u; Expires=Fri, 30-Jun-2028 19:49:30 GMT; Path=/; Secure; HttpOnly; Priority=HIGH
+set-cookie: __Host-GAPS=1:ysRduygfBOBGM1EuCl7T_Q024Lv_ZQ:6lDDRHoFEcmNJ2RS; Expires=Fri, 30-Jun-2028 20:06:18 GMT; Path=/; Secure; HttpOnly; Priority=HIGH
 cache-control: no-cache, no-store, max-age=0, must-revalidate
 pragma: no-cache
 expires: Mon, 01 Jan 1990 00:00:00 GMT
-date: Wed, 01 Jul 2026 19:49:30 GMT
-location: https://accounts.google.com/InteractiveLogin?continue=https://drive.usercontent.google.com/download?id%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&followup=https://drive.usercontent.google.com/download?id%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&passive=1209600&service=wise&dsh=S237396530:1782935370021645
+date: Wed, 01 Jul 2026 20:06:19 GMT
+location: https://accounts.google.com/InteractiveLogin?continue=https://drive.usercontent.google.com/download?id%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&followup=https://drive.usercontent.google.com/download?id%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&passive=1209600&service=wise&dsh=S-1694033300:1782936378656513
 strict-transport-security: max-age=31536000; includeSubDomains
-permissions-policy: ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*
-content-security-policy: script-src 'nonce-nnH3fpZItIs8fYnWt1lqDA' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/AccountsSigninPassiveLoginHttp/cspreport;worker-src 'self'
+content-security-policy: script-src 'nonce-eCQWfq0yxQYLuZ6vr1EejQ' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/AccountsSigninPassiveLoginHttp/cspreport;worker-src 'self'
 content-security-policy: require-trusted-types-for 'script';report-uri /_/AccountsSigninPassiveLoginHttp/cspreport
+permissions-policy: ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*
+cross-origin-opener-policy: unsafe-none
 accept-ch: Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version
 cross-origin-resource-policy: cross-origin
-cross-origin-opener-policy: unsafe-none
 server: ESF
 content-length: 0
 x-xss-protection: 0
@@ -85,19 +178,19 @@ alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
 
 HTTP/2 302 
 content-type: text/html; charset=UTF-8
-set-cookie: __Host-GAPS=1:H0XVGClxfF6uOKmN8diEfgXZ12Uu2g:W0Ii61Wx9ZfhrYbM;Path=/;Expires=Fri, 30-Jun-2028 19:49:30 GMT;Secure;HttpOnly;Priority=HIGH
+set-cookie: __Host-GAPS=1:CThV7t_gRVYNV7_YPbtTyA_WFG_qqA:B0Dz4MPFKwBTetnu;Path=/;Expires=Fri, 30-Jun-2028 20:06:19 GMT;Secure;HttpOnly;Priority=HIGH
 x-frame-options: DENY
 cache-control: no-cache, no-store, max-age=0, must-revalidate
 pragma: no-cache
 expires: Mon, 01 Jan 1990 00:00:00 GMT
-date: Wed, 01 Jul 2026 19:49:30 GMT
-location: https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fdrive.usercontent.google.com%2Fdownload%3Fid%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&dsh=S237396530%3A1782935370021645&followup=https%3A%2F%2Fdrive.usercontent.google.com%2Fdownload%3Fid%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&passive=1209600&service=wise&flowName=WebLiteSignIn&flowEntry=ServiceLogin&ifkv=AcDsRvyUCY-FzHmLySHkf_20QUC4iknK45mphBqqd5JlAvgDjOC6Vu1ZiAndMmBkdTCirpYLwFJC
+date: Wed, 01 Jul 2026 20:06:19 GMT
+location: https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fdrive.usercontent.google.com%2Fdownload%3Fid%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&dsh=S-1694033300%3A1782936378656513&followup=https%3A%2F%2Fdrive.usercontent.google.com%2Fdownload%3Fid%3D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%26export%3Ddownload&passive=1209600&service=wise&flowName=WebLiteSignIn&flowEntry=ServiceLogin&ifkv=AcDsRvyv45w1oRf1Mt197TBZacGQyyO8Gmmydc0x7RD4Tflr4b-mzaEtOat268AUEFeHJCx1hPkZ
 strict-transport-security: max-age=31536000; includeSubDomains
-report-to: {"group":"coop_gse_qebhlk","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gse_qebhlk"}]}
-content-security-policy: require-trusted-types-for 'script';report-uri /cspreport
-content-security-policy: script-src 'nonce-SZ7YRwTY5WYlB1j8zqIu8g' 'unsafe-inline' 'unsafe-eval';object-src 'none';base-uri 'self';report-uri /cspreport
 cross-origin-opener-policy-report-only: same-origin; report-to="coop_gse_qebhlk"
-content-length: 724
+content-security-policy: script-src 'nonce-Be6qbXLd278C05goQxWmxA' 'unsafe-inline' 'unsafe-eval';object-src 'none';base-uri 'self';report-uri /cspreport
+content-security-policy: require-trusted-types-for 'script';report-uri /cspreport
+report-to: {"group":"coop_gse_qebhlk","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gse_qebhlk"}]}
+content-length: 726
 x-content-type-options: nosniff
 x-xss-protection: 1; mode=block
 server: GSE
@@ -106,23 +199,23 @@ alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
 HTTP/2 200 
 content-type: text/html; charset=utf-8
 x-frame-options: DENY
-set-cookie: __Host-GAPS=1:T4LaH-5EVf-RoU-s8AbLm84_rZgI5A:8zgu1ukO6scFv9yk; Expires=Fri, 30-Jun-2028 19:49:30 GMT; Path=/; Secure; HttpOnly; Priority=HIGH
+set-cookie: __Host-GAPS=1:kyZMKBpDMoqYcn4-geVwuYjlAh6csA:TOpXtf4r-U42CgtU; Expires=Fri, 30-Jun-2028 20:06:19 GMT; Path=/; Secure; HttpOnly; Priority=HIGH
 x-auto-login: realm=com.google&args=service%3Dwise%26continue%3Dhttps://drive.usercontent.google.com/download?id%253D1SJum3eJYCYfJvfheH0UQjVDHMa381raQ%2526export%253Ddownload
 link: <https://www.google.com/intl/en-US/drive/>; rel="canonical"
 x-ua-compatible: IE=edge
 cache-control: no-cache, no-store, max-age=0, must-revalidate
 pragma: no-cache
 expires: Mon, 01 Jan 1990 00:00:00 GMT
-date: Wed, 01 Jul 2026 19:49:30 GMT
+date: Wed, 01 Jul 2026 20:06:19 GMT
 strict-transport-security: max-age=31536000; includeSubDomains
-content-security-policy: require-trusted-types-for 'script';report-uri /v3/signin/_/AccountsSignInUi/cspreport
-content-security-policy: script-src 'nonce-qLRnVbBdHvF0WYWwUgzv8w' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /v3/signin/_/AccountsSignInUi/cspreport;worker-src 'self'
-report-to: {"group":"AccountsSignInUi","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/AccountsSignInUi"}]}
-cross-origin-resource-policy: same-site
 permissions-policy: ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*
 cross-origin-opener-policy-report-only: same-origin; report-to="AccountsSignInUi"
+cross-origin-resource-policy: same-site
+content-security-policy: require-trusted-types-for 'script';report-uri /v3/signin/_/AccountsSignInUi/cspreport
+content-security-policy: script-src 'nonce-myFDAq6s7aBEpJZB9CBLqQ' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /v3/signin/_/AccountsSignInUi/cspreport;worker-src 'self'
 accept-ch: Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version
-reporting-endpoints: default="/v3/signin/_/AccountsSignInUi/web-reports?context=eJwNyF1IU2EABuAx9r2EdbHMShZFDIIWzNagObAIEZHVfs74draKYjmcOKgd3c4kNWoZeWEQWs3CmyKKyqggoqKbEIwysJ-56GTiVX-ywn7FC6Pei-fmqRiwbKqwmRo32kyj9kfm-v0fzI00tGzWPEwn370QZ0m__FL0Uj9doO0jr0Q9tR14LQ7SlvVFsYO04aLIkj82KRQarCqJAmWqSyJPDm9JOClx6Y1opTGHIZ7Rz25DWHsM0TBviCZaNfVe2Gi8NC0maDHvg-m4D1-aduEr3XP68ZCuTfpx5pMfQ-SoCcBJ89kALHoA5b4g5uhmIYg7VDsYQh3dvh_CXbJ8C8EWVrCONpCD3OShGycU3KIpmqH0AwUZevJWwThtjYTRQFdOh3GdtMdhZKm3HEYffV8p8Zus1RJVVGuXqKMfHok_tHObRJBGVImPzRKztECLtCIhsZp2X5XYR5__SpSp859EezwCnXroGGlHIvCfj6B7uYqjZFSqmCbLWhW5lArfYRUXu1SUT6mYo46nfOqfUDEQi-IcpfZEcYiia2LYS5VLlzyfKRRhXfiVV-ybE1pHPNWSTOspvas1o6X1ZLqlOae35VLZZKYzmYm7XW6Py-P21ri88XbXf2VD1R4"
+report-to: {"group":"AccountsSignInUi","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/AccountsSignInUi"}]}
+reporting-endpoints: default="/v3/signin/_/AccountsSignInUi/web-reports?context=eJwNw11IU2EABuAx_F7CurBlJQsiBkELZmsXc2BdjChZ7pdvZ6so1oYTD9SObmcjtV8rLywioxnsppB-jQoiMgqKoCgv7GcuOpl0VZassKKkC6PeB57akzVra62mLWuspoe2-2bvro_mzTy0aMZc4uPvXogi68MvxTEe4BJvHHklvNyx-7XYw-tXlYWXtVJZ5NgfnxBhHqyviCJnGyqij-2einBw6sIb0c5P7IZ4zj97DGHpNcSmOUO08LLJ98LKY5UpMc7zh30wHfHhS0srvvIdhx_3-MqEH2em_Rhie2MADp7LBQA9gGp_ELN8vRjELW4aDKGZb94N4TbXfAvBGgljJa9mO7vYzdeOhnGDJ_kDZ0bDyPLTt2GM8cVTEVxl7VEEOe6rRtDP35dK_OK6Bol6brJJNPMPt8Rv3rpBIsgjisSnpMQM_-F5XpKSWM7bLkns5M9_Japc-CfRmYhC514-xNr-KPznouhZrOAgGxYFU1xQFfj2KWjl890KqicUzHJyWEHXMwV5HhhXcDoew1lWt8ewl2Mr4tjBloULHkwXy6gzHl8-YFuX0roSals6o6t6d3tWy-jpTFsyr3fk1Vw6W0hnEy6ny-10uzyNTk-i0_kfX73VUw"
 server: ESF
 x-xss-protection: 0
 x-content-type-options: nosniff
