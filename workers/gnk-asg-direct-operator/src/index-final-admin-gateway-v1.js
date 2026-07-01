@@ -5,7 +5,7 @@ import {isCampaignMailer,serveCampaignMailer,authorizeCampaignMailer,addCampaign
 import {handleCampaignMailer,runQueue,recordInbound,VERSION as CAMPAIGN_VERSION} from './campaign-mailer-v2.js';
 import {isCampaignMailerApi} from './campaign-mailer-v1.js';
 import {isTransparentMediaLogo,serveTransparentMediaLogo,VERSION as LOGO_VERSION} from './media-email-logo-transparent-v1.js';
-export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}`;
+export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_MEDIA_SIGNATURE_CID_V2`;
 const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(env));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const denied=()=>new Response(JSON.stringify({ok:false,error:'unauthorized'}),{status:401,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
