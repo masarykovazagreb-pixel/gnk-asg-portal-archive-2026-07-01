@@ -1,7 +1,8 @@
-export const VERSION='GNK_ASG_MEDIA_GLOBAL_AUTO_REPLY_V2_20260701';
+export const VERSION='GNK_ASG_MEDIA_GLOBAL_AUTO_REPLY_V3_20260701';
 export const MEDIA_EMAIL='media@gnk-asg.hr';
+
 const LAST_CITY_KEY='media:auto-reply:last-city:v1';
-const CITIES=[
+export const GLOBAL_DESKS=[
   {id:'new-york',name:'New York',country:'United States'},
   {id:'london',name:'London',country:'United Kingdom'},
   {id:'paris',name:'Paris',country:'France'},
@@ -13,23 +14,163 @@ const CITIES=[
   {id:'toronto',name:'Toronto',country:'Canada'},
   {id:'zurich',name:'Zurich',country:'Switzerland'}
 ];
+
 const clean=value=>String(value??'').trim();
 const validEmail=value=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(clean(value));
-const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
-function header(message,name){try{return clean(message?.headers?.get?.(name));}catch{return'';}}
-function address(value){const text=clean(value),match=text.match(/<([^>]+)>/);return clean(match?.[1]||text).toLowerCase();}
-function automatedInbound(message,from){const auto=header(message,'auto-submitted').toLowerCase(),precedence=header(message,'precedence').toLowerCase(),subject=header(message,'subject').toLowerCase();return Boolean((auto&&auto!=='no')||/bulk|list|junk/.test(precedence)||/mailer-daemon|postmaster|no-?reply|donotreply/.test(from)||/automatic reply|auto reply|out of office|izvan ureda/.test(subject));}
-function randomIndex(length){const bytes=new Uint32Array(1);crypto.getRandomValues(bytes);return bytes[0]%length;}
-async function chooseCity(env){const kv=env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV;let last='';try{last=clean(await kv?.get?.(LAST_CITY_KEY));}catch{}const available=CITIES.filter(item=>item.id!==last),city=available[randomIndex(available.length||CITIES.length)]||CITIES[0];try{await kv?.put?.(LAST_CITY_KEY,city.id);}catch{}return city;}
-export function isMediaInboxMessage(message){return address(message?.to||header(message,'to'))===MEDIA_EMAIL;}
-export function withoutLegacyMediaAcknowledgement(env){return new Proxy(env||{}, {get(target,property,receiver){const name=String(property);if(name==='MEDIA_APPLICATION_AUTO_ACK')return'false';if(name==='EMAIL')return undefined;return Reflect.get(target,property,receiver);}});}
-function fallbackReference(){return`GNK-MEDIA-IN-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${crypto.randomUUID().slice(0,8).toUpperCase()}`;}
-async function applicationRow(message,env){const db=env.GNK_ASG_D1;if(!db?.prepare)return null;const messageId=header(message,'message-id'),from=address(message?.from||header(message,'from')),subject=header(message,'subject');try{if(messageId){const exact=await db.prepare(`SELECT application_id,invitation_code,source_from,source_subject,outlet_name,applicant_name,applicant_email,status,missing_json,received_at FROM media_applications WHERE source_message_id=? ORDER BY received_at DESC LIMIT 1`).bind(messageId).first();if(exact)return exact;}return await db.prepare(`SELECT application_id,invitation_code,source_from,source_subject,outlet_name,applicant_name,applicant_email,status,missing_json,received_at FROM media_applications WHERE LOWER(source_from)=LOWER(?) AND source_subject=? ORDER BY received_at DESC LIMIT 1`).bind(from,subject).first();}catch{return null;}}
-function statusText(status){switch(clean(status).toUpperCase()){case'INCOMPLETE':return{en:'RECEIVED — ADDITIONAL INFORMATION REQUIRED',hr:'ZAPRIMLJENO — POTREBNE SU DODATNE INFORMACIJE'};case'LATE':return{en:'RECEIVED AFTER DEADLINE — HUMAN REVIEW PENDING',hr:'ZAPRIMLJENO NAKON ROKA — ČEKA LJUDSKU PROVJERU'};case'READY_FOR_HUMAN_REVIEW':return{en:'RECEIVED — HUMAN REVIEW PENDING',hr:'ZAPRIMLJENO — ČEKA LJUDSKU PROVJERU'};default:return{en:'RECEIVED — HUMAN REVIEW PENDING',hr:'ZAPRIMLJENO — ČEKA LJUDSKU PROVJERU'};}}
-function missingText(row){try{const data=JSON.parse(clean(row?.missing_json)||'{}'),items=[...(data.missingFields||[]),...(data.invalidFields||[]).map(value=>`invalid: ${value}`),...(data.missingDocuments||[]).map(value=>`document: ${value}`)];return items.join(', ');}catch{return'';}}
-function compose(row,city,error){const reference=clean(row?.application_id)||fallbackReference(),invitation=clean(row?.invitation_code)||'not identified',name=clean(row?.applicant_name)||'Sir or Madam',outlet=clean(row?.outlet_name),status=statusText(row?.status),missing=missingText(row),location=`${city.name}, ${city.country}`,errorNote=error?' Your message has been placed in the human-review queue because automated processing could not be completed.':'',incompleteEn=missing?` Additional information or documents may be required: ${missing}.`:'',incompleteHr=missing?` Moguće je da su potrebne dodatne informacije ili dokumenti: ${missing}.`:'';
-const subject=`Media application received — ${reference}`;
-const text=[`Dear ${name},`,'',`STATUS: ${status.en}`,`GLOBAL MEDIA DESK: ${location}`,`REFERENCE: ${reference}`,`ORIGINAL INVITATION CODE: ${invitation}`,'',`This confirms that your message${outlet?` regarding ${outlet}`:''} has been received by the GNK DINAMO Ltd. Group Media Relations & Accreditation Center.${errorNote}${incompleteEn}`,'The message has entered human review. This automatic acknowledgement is not an accreditation approval, acceptance of an offer, contractual commitment or final decision.','Please quote the reference and original invitation code in all further correspondence.','','--- HRVATSKI PRIJEVOD ---','',`Poštovani${name==='Sir or Madam'?'':` ${name}`},`,'',`STATUS: ${status.hr}`,`GLOBALNI MEDIJSKI URED: ${location}`,`REFERENCA: ${reference}`,`IZVORNA ŠIFRA POZIVA: ${invitation}`,'',`Ovim potvrđujemo da je vaša poruka${outlet?` u vezi s medijem ${outlet}`:''} zaprimljena u Centru za odnose s medijima i akreditacije GNK DINAMO Ltd. Group.${error?' Poruka je stavljena u red za ljudsku provjeru jer automatska obrada nije mogla biti dovršena.':''}${incompleteHr}`,'Poruka je upućena na ljudsku provjeru. Ova automatska potvrda nije odobrenje akreditacije, prihvat ponude, ugovorna obveza niti konačna odluka.','U svoj daljnjoj komunikaciji navedite referencu i izvornu šifru poziva.'].join('\n');
-const html=`<!doctype html><html><body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;color:#111827"><div style="max-width:720px;margin:0 auto;padding:28px 18px"><div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:14px;padding:28px"><div style="border-left:5px solid #b88a2f;padding:14px 18px;background:#fbf8ef;margin-bottom:24px"><div style="font-size:12px;letter-spacing:.08em;color:#7c5d1c;font-weight:700">AUTOMATED MEDIA STATUS</div><div style="font-size:19px;font-weight:800;color:#111827;margin-top:5px">${escapeHtml(status.en)}</div><div style="font-size:13px;color:#6b7280;margin-top:8px">Global Media Desk: <strong>${escapeHtml(location)}</strong></div></div><p>Dear ${escapeHtml(name)},</p><p>This confirms that your message${outlet?` regarding <strong>${escapeHtml(outlet)}</strong>`:''} has been received by the GNK DINAMO Ltd. Group Media Relations &amp; Accreditation Center.${escapeHtml(errorNote)}${missing?` Additional information or documents may be required: <strong>${escapeHtml(missing)}</strong>.`:''}</p><p>The message has entered human review. This automatic acknowledgement is not an accreditation approval, acceptance of an offer, contractual commitment or final decision.</p><table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin:20px 0;font-size:14px"><tr><td style="padding:8px;border-bottom:1px solid #e5e7eb;color:#6b7280">Reference</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;font-weight:700">${escapeHtml(reference)}</td></tr><tr><td style="padding:8px;color:#6b7280">Original invitation code</td><td style="padding:8px;font-weight:700">${escapeHtml(invitation)}</td></tr></table><p>Please quote both codes in all further correspondence.</p><hr style="border:0;border-top:1px solid #d1d5db;margin:30px 0"><div style="border-left:5px solid #b88a2f;padding:14px 18px;background:#fbf8ef;margin-bottom:24px"><div style="font-size:12px;letter-spacing:.08em;color:#7c5d1c;font-weight:700">HRVATSKI PRIJEVOD</div><div style="font-size:19px;font-weight:800;color:#111827;margin-top:5px">${escapeHtml(status.hr)}</div><div style="font-size:13px;color:#6b7280;margin-top:8px">Globalni medijski ured: <strong>${escapeHtml(location)}</strong></div></div><p>Poštovani${name==='Sir or Madam'?'':` ${escapeHtml(name)}`},</p><p>Ovim potvrđujemo da je vaša poruka${outlet?` u vezi s medijem <strong>${escapeHtml(outlet)}</strong>`:''} zaprimljena u Centru za odnose s medijima i akreditacije GNK DINAMO Ltd. Group.${error?' Poruka je stavljena u red za ljudsku provjeru jer automatska obrada nije mogla biti dovršena.':''}${missing?` Moguće je da su potrebne dodatne informacije ili dokumenti: <strong>${escapeHtml(missing)}</strong>.`:''}</p><p>Poruka je upućena na ljudsku provjeru. Ova automatska potvrda nije odobrenje akreditacije, prihvat ponude, ugovorna obveza niti konačna odluka.</p><p>U svoj daljnjoj komunikaciji navedite referencu <strong>${escapeHtml(reference)}</strong> i izvornu šifru poziva <strong>${escapeHtml(invitation)}</strong>.</p></div></div></body></html>`;
-return{subject,text,html,reference,location,status};}
-export async function sendGlobalMediaAutoReply(message,env,{error=null}={}){const from=address(message?.from||header(message,'from'));if(!validEmail(from)||from===MEDIA_EMAIL||automatedInbound(message,from))return{ok:true,skipped:'automated_or_invalid_sender'};if(!env.EMAIL?.send)return{ok:false,skipped:'email_binding_missing'};const [row,city]=await Promise.all([applicationRow(message,env),chooseCity(env)]),processingError=error||(!row?new Error('application_processing_incomplete'):null),reply=compose(row,city,processingError);await env.EMAIL.send({to:from,from:{email:MEDIA_EMAIL,name:'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center'},replyTo:MEDIA_EMAIL,subject:reply.subject,text:reply.text,html:reply.html,headers:{'Auto-Submitted':'auto-replied','X-Auto-Response-Suppress':'All','X-GNK-ASG-Global-Desk':reply.location,'X-GNK-ASG-Media-Auto-Reply':VERSION}});return{ok:true,reference:reply.reference,location:reply.location,status:reply.status.en};}
+const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+})[char]);
+
+function header(message,name){
+  try{return clean(message?.headers?.get?.(name));}catch{return'';}
+}
+
+function address(value){
+  const text=clean(value),match=text.match(/<([^>]+)>/);
+  return clean(match?.[1]||text).toLowerCase();
+}
+
+function automatedInbound(message,from){
+  const auto=header(message,'auto-submitted').toLowerCase();
+  const precedence=header(message,'precedence').toLowerCase();
+  const subject=header(message,'subject').toLowerCase();
+  return Boolean(
+    (auto&&auto!=='no')||
+    /bulk|list|junk/.test(precedence)||
+    /mailer-daemon|postmaster|no-?reply|donotreply/.test(from)||
+    /automatic reply|auto reply|out of office|izvan ureda/.test(subject)
+  );
+}
+
+function randomIndex(length){
+  const bytes=new Uint32Array(1);
+  crypto.getRandomValues(bytes);
+  return bytes[0]%length;
+}
+
+async function chooseCity(env){
+  const kv=env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV;
+  let last='';
+  try{last=clean(await kv?.get?.(LAST_CITY_KEY));}catch{}
+  const available=GLOBAL_DESKS.filter(item=>item.id!==last);
+  const pool=available.length?available:GLOBAL_DESKS;
+  const city=pool[randomIndex(pool.length)]||GLOBAL_DESKS[0];
+  try{await kv?.put?.(LAST_CITY_KEY,city.id);}catch{}
+  return city;
+}
+
+export function isMediaInboxMessage(message){
+  return address(message?.to||header(message,'to'))===MEDIA_EMAIL;
+}
+
+export function withoutLegacyMediaAcknowledgement(env){
+  return new Proxy(env||{}, {
+    get(target,property,receiver){
+      const name=String(property);
+      if(name==='MEDIA_APPLICATION_AUTO_ACK')return'false';
+      if(name==='EMAIL')return undefined;
+      return Reflect.get(target,property,receiver);
+    }
+  });
+}
+
+function fallbackReference(){
+  return`GNK-MEDIA-IN-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${crypto.randomUUID().slice(0,8).toUpperCase()}`;
+}
+
+async function applicationRow(message,env){
+  const db=env.GNK_ASG_D1;
+  if(!db?.prepare)return null;
+  const messageId=header(message,'message-id');
+  const from=address(message?.from||header(message,'from'));
+  const subject=header(message,'subject');
+  try{
+    if(messageId){
+      const exact=await db.prepare(`SELECT application_id,invitation_code,source_from,source_subject,outlet_name,applicant_name,applicant_email,status,missing_json,received_at FROM media_applications WHERE source_message_id=? ORDER BY received_at DESC LIMIT 1`).bind(messageId).first();
+      if(exact)return exact;
+    }
+    return await db.prepare(`SELECT application_id,invitation_code,source_from,source_subject,outlet_name,applicant_name,applicant_email,status,missing_json,received_at FROM media_applications WHERE LOWER(source_from)=LOWER(?) AND source_subject=? ORDER BY received_at DESC LIMIT 1`).bind(from,subject).first();
+  }catch{return null;}
+}
+
+function statusText(status){
+  switch(clean(status).toUpperCase()){
+    case'INCOMPLETE':return{en:'RECEIVED — ADDITIONAL INFORMATION REQUIRED',hr:'ZAPRIMLJENO — POTREBNE SU DODATNE INFORMACIJE'};
+    case'LATE':return{en:'RECEIVED AFTER DEADLINE — HUMAN REVIEW PENDING',hr:'ZAPRIMLJENO NAKON ROKA — ČEKA LJUDSKU PROVJERU'};
+    case'READY_FOR_HUMAN_REVIEW':return{en:'RECEIVED — HUMAN REVIEW PENDING',hr:'ZAPRIMLJENO — ČEKA LJUDSKU PROVJERU'};
+    default:return{en:'RECEIVED — HUMAN REVIEW PENDING',hr:'ZAPRIMLJENO — ČEKA LJUDSKU PROVJERU'};
+  }
+}
+
+function missingText(row){
+  try{
+    const data=JSON.parse(clean(row?.missing_json)||'{}');
+    return [
+      ...(data.missingFields||[]),
+      ...(data.invalidFields||[]).map(value=>`invalid: ${value}`),
+      ...(data.missingDocuments||[]).map(value=>`document: ${value}`)
+    ].join(', ');
+  }catch{return'';}
+}
+
+function compose(row,city,error){
+  const reference=clean(row?.application_id)||fallbackReference();
+  const invitation=clean(row?.invitation_code)||'not identified';
+  const name=clean(row?.applicant_name)||'Sir or Madam';
+  const outlet=clean(row?.outlet_name);
+  const status=statusText(row?.status);
+  const missing=missingText(row);
+  const location=`${city.name}, ${city.country}`;
+  const errorNote=error?' Your message has been placed in the human-review queue because automated processing could not be completed.':'';
+  const incompleteEn=missing?` Additional information or documents may be required: ${missing}.`:'';
+  const incompleteHr=missing?` Moguće je da su potrebne dodatne informacije ili dokumenti: ${missing}.`:'';
+  const subject=`Media application received — ${reference}`;
+
+  const text=[
+    `Dear ${name},`,'',
+    `STATUS: ${status.en}`,
+    `GLOBAL MEDIA DESK: ${location}`,
+    `REFERENCE: ${reference}`,
+    `ORIGINAL INVITATION CODE: ${invitation}`,'',
+    `This confirms that your message${outlet?` regarding ${outlet}`:''} has been received by the GNK DINAMO Ltd. Group Media Relations & Accreditation Center.${errorNote}${incompleteEn}`,
+    'The message has entered human review. This automatic acknowledgement is not an accreditation approval, acceptance of an offer, contractual commitment or final decision.',
+    'Please quote the reference and original invitation code in all further correspondence.','',
+    '--- HRVATSKI PRIJEVOD ---','',
+    `Poštovani${name==='Sir or Madam'?'':` ${name}`},`,'',
+    `STATUS: ${status.hr}`,
+    `GLOBALNI MEDIJSKI URED: ${location}`,
+    `REFERENCA: ${reference}`,
+    `IZVORNA ŠIFRA POZIVA: ${invitation}`,'',
+    `Ovim potvrđujemo da je vaša poruka${outlet?` u vezi s medijem ${outlet}`:''} zaprimljena u Centru za odnose s medijima i akreditacije GNK DINAMO Ltd. Group.${error?' Poruka je stavljena u red za ljudsku provjeru jer automatska obrada nije mogla biti dovršena.':''}${incompleteHr}`,
+    'Poruka je upućena na ljudsku provjeru. Ova automatska potvrda nije odobrenje akreditacije, prihvat ponude, ugovorna obveza niti konačna odluka.',
+    'U svoj daljnjoj komunikaciji navedite referencu i izvornu šifru poziva.'
+  ].join('\n');
+
+  const html=`<!doctype html><html><body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;color:#111827"><div style="max-width:720px;margin:0 auto;padding:28px 18px"><div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:14px;padding:28px"><div style="border-left:5px solid #b88a2f;padding:14px 18px;background:#fbf8ef;margin-bottom:24px"><div style="font-size:12px;letter-spacing:.08em;color:#7c5d1c;font-weight:700">AUTOMATED MEDIA STATUS</div><div style="font-size:19px;font-weight:800;color:#111827;margin-top:5px">${escapeHtml(status.en)}</div><div style="font-size:13px;color:#6b7280;margin-top:8px">Global Media Desk: <strong>${escapeHtml(location)}</strong></div></div><p>Dear ${escapeHtml(name)},</p><p>This confirms that your message${outlet?` regarding <strong>${escapeHtml(outlet)}</strong>`:''} has been received by the GNK DINAMO Ltd. Group Media Relations &amp; Accreditation Center.${escapeHtml(errorNote)}${missing?` Additional information or documents may be required: <strong>${escapeHtml(missing)}</strong>.`:''}</p><p>The message has entered human review. This automatic acknowledgement is not an accreditation approval, acceptance of an offer, contractual commitment or final decision.</p><table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin:20px 0;font-size:14px"><tr><td style="padding:8px;border-bottom:1px solid #e5e7eb;color:#6b7280">Reference</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;font-weight:700">${escapeHtml(reference)}</td></tr><tr><td style="padding:8px;color:#6b7280">Original invitation code</td><td style="padding:8px;font-weight:700">${escapeHtml(invitation)}</td></tr></table><p>Please quote both codes in all further correspondence.</p><hr style="border:0;border-top:1px solid #d1d5db;margin:30px 0"><div style="border-left:5px solid #b88a2f;padding:14px 18px;background:#fbf8ef;margin-bottom:24px"><div style="font-size:12px;letter-spacing:.08em;color:#7c5d1c;font-weight:700">HRVATSKI PRIJEVOD</div><div style="font-size:19px;font-weight:800;color:#111827;margin-top:5px">${escapeHtml(status.hr)}</div><div style="font-size:13px;color:#6b7280;margin-top:8px">Globalni medijski ured: <strong>${escapeHtml(location)}</strong></div></div><p>Poštovani${name==='Sir or Madam'?'':` ${escapeHtml(name)}`},</p><p>Ovim potvrđujemo da je vaša poruka${outlet?` u vezi s medijem <strong>${escapeHtml(outlet)}</strong>`:''} zaprimljena u Centru za odnose s medijima i akreditacije GNK DINAMO Ltd. Group.${error?' Poruka je stavljena u red za ljudsku provjeru jer automatska obrada nije mogla biti dovršena.':''}${missing?` Moguće je da su potrebne dodatne informacije ili dokumenti: <strong>${escapeHtml(missing)}</strong>.`:''}</p><p>Poruka je upućena na ljudsku provjeru. Ova automatska potvrda nije odobrenje akreditacije, prihvat ponude, ugovorna obveza niti konačna odluka.</p><p>U svoj daljnjoj komunikaciji navedite referencu <strong>${escapeHtml(reference)}</strong> i izvornu šifru poziva <strong>${escapeHtml(invitation)}</strong>.</p></div></div></body></html>`;
+
+  return{subject,text,html,reference,location,status};
+}
+
+export async function sendGlobalMediaAutoReply(message,env,{error=null}={}){
+  const from=address(message?.from||header(message,'from'));
+  if(!validEmail(from)||from===MEDIA_EMAIL||automatedInbound(message,from))return{ok:true,skipped:'automated_or_invalid_sender'};
+  if(!env.EMAIL?.send)return{ok:false,skipped:'email_binding_missing'};
+  const [row,city]=await Promise.all([applicationRow(message,env),chooseCity(env)]);
+  const processingError=error||(!row?new Error('application_processing_incomplete'):null);
+  const reply=compose(row,city,processingError);
+  await env.EMAIL.send({
+    to:from,
+    from:{email:MEDIA_EMAIL,name:'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center'},
+    replyTo:MEDIA_EMAIL,
+    subject:reply.subject,
+    text:reply.text,
+    html:reply.html,
+    headers:{
+      'Auto-Submitted':'auto-replied',
+      'X-Auto-Response-Suppress':'All',
+      'X-GNK-ASG-Global-Desk':reply.location,
+      'X-GNK-ASG-Media-Auto-Reply':VERSION
+    }
+  });
+  return{ok:true,reference:reply.reference,location:reply.location,status:reply.status.en};
+}
