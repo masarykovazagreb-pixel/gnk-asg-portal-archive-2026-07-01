@@ -61,6 +61,10 @@ if(groups.has('shell')){
   requireAll('shell','apps/portal/assets/public-menu-v18.js',[
     'window.__GNK_ASG_PUBLIC_MENU_V18__','/admin-center/','/contact/','/media-kit/'
   ]);
+  requireAll('shell','workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js',[
+    "const MAX_AGE=43200","const LOGIN='/admin-login'","'/media-command-center'","'/media-registration-admin'","'/campaign-mailer'",
+    "'/the-code'","'/media-application'",'url.pathname+url.search+url.hash','HttpOnly; Secure; SameSite=Strict'
+  ]);
 }
 
 if(groups.has('campaign')){
@@ -68,7 +72,8 @@ if(groups.has('campaign')){
     'campaign-mailer-shell-v2.js','campaign-mailer-v2.js','isCampaignMailerApi','authorizeCampaignMailer','handleCampaignMailer','runQueue'
   ]);
   requireAll('campaign','workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js',[
-    "path==='/campaign-mailer'",'/campaign-mailer/','authorizeCampaignMailer','x-gnk-asg-campaign-mailer'
+    "path==='/campaign-mailer'",'/campaign-mailer/','authorizeCampaignMailer','x-gnk-asg-campaign-mailer',
+    "DASHBOARD_NEXT='/campaign-mailer/#dashboard'",'/admin-login/?next=','gnk-asg-dashboard-menu-v1'
   ]);
   requireAll('campaign','workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js',[
     'applyApprovalGuard','rateGate','runQueue','campaign_mailer_runner_lock'
