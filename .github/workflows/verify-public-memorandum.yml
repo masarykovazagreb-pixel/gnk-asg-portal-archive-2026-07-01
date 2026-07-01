@@ -1,0 +1,32 @@
+name: Verify public THE CODE memorandum
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-public-memorandum.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify exact public PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://www.gnk-asg.hr/api/media-registration/memorandum.pdf?cb=${GITHUB_RUN_ID}"
+          code=$(curl -L -sS -D /tmp/memo.headers -o /tmp/memo.pdf -w '%{http_code}' "$url" || true)
+          type=$(file -b --mime-type /tmp/memo.pdf 2>/dev/null || true)
+          size=$(wc -c </tmp/memo.pdf 2>/dev/null || echo 0)
+          sha=$(sha256sum /tmp/memo.pdf 2>/dev/null | awk '{print $1}' || true)
+          printf 'HTTP=%s\nTYPE=%s\nSIZE=%s\nSHA256=%s\n' "$code" "$type" "$size" "$sha"
+          cat /tmp/memo.headers
+          test "$code" = '200'
+          test "$type" = 'application/pdf'
+          test "$size" = '208207'
+          test "$sha" = '5c33f1dea158ff8938122c024e857997eb2f156a039c4b76c0cca133f1e0aa95'
