@@ -1,6 +1,15 @@
-name: Deploy Campaign Mailer by command
+name: Deploy Campaign Mailer
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/campaign-mailer/**'
+      - 'workers/gnk-asg-direct-operator/src/campaign-mailer-*.js'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
+      - 'workers/gnk-asg-direct-operator/package.json'
+      - '.github/workflows/deploy-campaign-mailer-command.yml'
+  workflow_dispatch:
   issue_comment:
     types: [created]
 
@@ -10,12 +19,12 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: deploy-campaign-mailer-command
+  group: deploy-campaign-mailer
   cancel-in-progress: false
 
 jobs:
   deploy:
-    if: github.event.issue.number == 276 && github.event.comment.body == '/deploy-campaign-mailer'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'issue_comment' && github.event.issue.number == 276 && github.event.comment.body == '/deploy-campaign-mailer')
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
