@@ -1,0 +1,1 @@
+export const VERSION='CAMPAIGN_MAILER_PART1';

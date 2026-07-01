@@ -1,0 +1,59 @@
+name: Validate Campaign Mailer
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/campaign-mailer/**'
+      - 'workers/gnk-asg-direct-operator/src/campaign-mailer-*.js'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
+      - 'workers/gnk-asg-direct-operator/package.json'
+      - '.github/workflows/deploy-campaign-mailer-command.yml'
+      - '.github/workflows/validate-campaign-mailer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Worker dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --no-audit --no-fund --ignore-scripts
+
+      - name: Check JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-db-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          for file in apps/portal/campaign-mailer/runtime-v1.js apps/portal/campaign-mailer/dashboard-render-v1.js apps/portal/campaign-mailer/dashboard-data-v1.js apps/portal/campaign-mailer/control-v2.js apps/portal/campaign-mailer/contacts-v1.js apps/portal/campaign-mailer/import-v1.js apps/portal/campaign-mailer/editor-v1.js apps/portal/campaign-mailer/mailbox-v2.js apps/portal/campaign-mailer/app.js; do
+            node --check "$file"
+          done
+
+      - name: Validate required integration points
+        run: |
+          set -euo pipefail
+          test -f apps/portal/campaign-mailer/index.html
+          test -f apps/portal/campaign-mailer/styles.css
+          grep -q "campaign-mailer-shell-v2" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q "handleCampaignMailer" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q "runQueue" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q "recordInbound" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q "/api/campaign-mailer" workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
+
+      - name: Build Worker bundle
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_ACCOUNT_ID: validation-only
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --outdir ../../../campaign-mailer-worker-build

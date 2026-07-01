@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#06101e">
+  <title>GNK ASG Campaign Mailer</title>
+  <link rel="stylesheet" href="/campaign-mailer/styles.css?v=20260701-1">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/campaign-mailer/" aria-label="GNK ASG Campaign Mailer">
+        <span class="brand-mark">G</span>
+        <span><strong>GNK ASG</strong><small>Campaign Mailer</small></span>
+      </a>
+      <nav class="nav" aria-label="Campaign Mailer">
+        <button class="nav-item active" data-view="dashboard"><span>◫</span> Nadzorna ploča</button>
+        <button class="nav-item" data-view="compose"><span>✎</span> Nova kampanja</button>
+        <button class="nav-item" data-view="contacts"><span>◎</span> Kontakti</button>
+        <button class="nav-item" data-view="inbox"><span>✉</span> Primljena pošta</button>
+        <button class="nav-item" data-view="settings"><span>⚙</span> Postavke</button>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="/mail-studio/">Postojeći Mail Center</a>
+        <a href="/media-command-center/">Media Command Center</a>
+        <a href="/">Povratak na portal</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">GNK ASG · sigurna administracija</p>
+          <h1 id="view-title">Nadzorna ploča</h1>
+        </div>
+        <div class="top-actions">
+          <span id="connection" class="pill pending"><i></i> Provjera sustava</span>
+          <button id="refresh-all" class="ghost">Osvježi</button>
+        </div>
+      </header>
+
+      <section id="notice" class="notice" hidden></section>
+
+      <section class="view active" data-panel="dashboard">
+        <div class="stats-grid">
+          <article class="stat"><small>Ukupno kontakata</small><strong id="stat-total">0</strong><span>Cloudflare D1</span></article>
+          <article class="stat"><small>Poslano</small><strong id="stat-sent">0</strong><span>evidentirano</span></article>
+          <article class="stat"><small>Na čekanju</small><strong id="stat-pending">0</strong><span>u redu slanja</span></article>
+          <article class="stat"><small>Neuspjelo</small><strong id="stat-failed">0</strong><span>za provjeru</span></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel campaign-card">
+            <div class="panel-head"><div><p class="eyebrow">Aktivna kampanja</p><h2 id="campaign-subject">Nije postavljen naslov</h2></div><span id="campaign-status" class="status draft">DRAFT</span></div>
+            <div class="progress"><span id="progress-bar"></span></div>
+            <div class="progress-meta"><span id="progress-text">0 / 0</span><span id="next-send">Sljedeće slanje nije zakazano</span></div>
+            <div class="button-row">
+              <button class="primary" data-action="start">Pokreni</button>
+              <button data-action="pause">Pauziraj</button>
+              <button data-action="resume">Nastavi</button>
+              <button class="danger" data-action="stop">Zaustavi</button>
+            </div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><p class="eyebrow">Cloudflare</p><h2>Stanje integracija</h2></div></div>
+            <div id="binding-list" class="binding-list"></div>
+          </article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Posljednje aktivnosti</p><h2>Slanje i red</h2></div></div><div id="recent-sent" class="activity-list empty">Nema zapisa.</div></article>
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Brzi pristup</p><h2>Radnje</h2></div></div><div class="quick-actions"><button data-go="compose">Uredi kampanju</button><button data-go="contacts">Upravljaj kontaktima</button><button data-go="inbox">Otvori inbox</button><button data-action="reset">Ponovi kampanju</button></div></article>
+        </div>
+      </section>
+
+      <section class="view" data-panel="compose">
+        <div class="compose-grid">
+          <article class="panel form-panel">
+            <div class="panel-head"><div><p class="eyebrow">Sadržaj poruke</p><h2>Nova kampanja</h2></div><button id="save-campaign" class="primary">Spremi</button></div>
+            <label>Predmet poruke<input id="subject" maxlength="240" placeholder="Predmet e-mail poruke"></label>
+            <div class="merge-tags"><span>Personalizacija:</span><button data-tag="{{ime}}">{{ime}}</button><button data-tag="{{prezime}}">{{prezime}}</button><button data-tag="{{medij}}">{{medij}}</button><button data-tag="{{kome_ide}}">{{kome_ide}}</button><button data-tag="{{personalizacija}}">{{personalizacija}}</button></div>
+            <div class="editor-tabs"><button class="active" data-editor="visual">Vizualno</button><button data-editor="html">HTML</button></div>
+            <div id="body-editor" class="editor" contenteditable="true" data-placeholder="Napišite ili zalijepite sadržaj poruke..."></div>
+            <textarea id="body-html" class="code-editor" hidden spellcheck="false" placeholder="HTML sadržaj"></textarea>
+            <label>Dodatni tekst<textarea id="extra-text" rows="4" placeholder="Opcionalni tekst koji se dodaje na kraj poruke"></textarea></label>
+            <div class="settings-row">
+              <label>Razmak slanja (sek.)<input id="delay" type="number" min="60" value="240"></label>
+              <label>Varijacija (sek.)<input id="jitter" type="number" min="0" value="30"></label>
+              <label>Broj pokušaja<input id="retries" type="number" min="1" max="10" value="3"></label>
+            </div>
+            <div class="attachment-box">
+              <div><strong>PDF privitak</strong><small id="attachment-name">Nema privitka.</small></div>
+              <div class="button-row"><label class="file-button">Dodaj PDF<input id="pdf-file" type="file" accept="application/pdf,.pdf" hidden></label><button id="remove-pdf" class="danger">Ukloni</button></div>
+            </div>
+          </article>
+          <aside class="panel preview-panel">
+            <div class="panel-head"><div><p class="eyebrow">Pregled</p><h2 id="preview-subject">Bez predmeta</h2></div></div>
+            <div class="preview-meta"><span>From: media@gnk-asg.hr</span><span>To: kontakt@example.com</span></div>
+            <iframe id="preview-frame" title="Pregled e-mail poruke" sandbox="allow-popups allow-popups-to-escape-sandbox"></iframe>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" data-panel="contacts">
+        <article class="panel">
+          <div class="panel-head stack-mobile"><div><p class="eyebrow">Baza primatelja</p><h2>Kontakti</h2></div><div class="button-row"><button id="import-open" class="primary">Uvezi Excel / CSV</button><button id="add-contact">Dodaj kontakt</button><button id="reset-status">Resetiraj statuse</button></div></div>
+          <div class="toolbar"><input id="contact-search" type="search" placeholder="Pretraži medij, državu, osobu ili e-mail"><select id="status-filter"><option value="">Svi statusi</option><option value="pending">Na čekanju</option><option value="sent">Poslano</option><option value="failed">Neuspjelo</option></select><span id="contact-count">0 kontakata</span></div>
+          <div class="table-wrap"><table><thead><tr><th>Prioritet</th><th>Medij / osoba</th><th>E-mail</th><th>Država</th><th>Status</th><th></th></tr></thead><tbody id="contacts-body"></tbody></table></div>
+        </article>
+      </section>
+
+      <section class="view" data-panel="inbox">
+        <div class="inbox-grid">
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Email Routing</p><h2>Primljene poruke</h2></div><button id="refresh-inbox">Osvježi</button></div><div id="inbox-list" class="message-list empty">Nema primljenih poruka.</div></article>
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Campaign Mailer</p><h2>Povijest slanja</h2></div></div><div id="sent-list" class="message-list empty">Nema zapisa slanja.</div></article>
+        </div>
+      </section>
+
+      <section class="view" data-panel="settings">
+        <div class="settings-grid">
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Sigurnost</p><h2>Cloudflare konfiguracija</h2></div></div><p class="muted">SMTP, API ključevi i druge tajne nisu pohranjeni u pregledniku ni u GitHub kodu. Slanje koristi postojeći Cloudflare Email binding, a podaci se spremaju u D1, KV i R2.</p><div id="settings-bindings" class="binding-list"></div><button id="test-email-binding">Provjeri Email binding</button></article>
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Odvojeni moduli</p><h2>Ništa nije zamijenjeno</h2></div></div><div class="link-list"><a href="/mail-studio/"><strong>Mail Center</strong><span>Postojeći pojedinačni mail alat</span></a><a href="/media-command-center/"><strong>Media Command Center</strong><span>Postojeći medijski modul</span></a><a href="/"><strong>GNK ASG portal</strong><span>Glavna stranica</span></a></div></article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="contact-dialog"><form method="dialog" id="contact-form"><div class="dialog-head"><h2>Kontakt</h2><button value="cancel" aria-label="Zatvori">×</button></div><input id="contact-id" type="hidden"><div class="dialog-grid"><label>E-mail<input id="contact-email" type="email" required></label><label>Prioritet<input id="contact-priority" type="number" value="100"></label><label>Medij<input id="contact-medij"></label><label>Država<input id="contact-drzava"></label><label>Ime<input id="contact-ime"></label><label>Prezime<input id="contact-prezime"></label><label>Kome ide<input id="contact-kome"></label><label>Jezik<input id="contact-jezik"></label></div><label>Personalizacija<textarea id="contact-personalizacija" rows="3"></textarea></label><div class="button-row end"><button value="cancel">Odustani</button><button id="contact-save" value="default" class="primary">Spremi</button></div></form></dialog>
+
+  <dialog id="import-dialog"><form method="dialog" id="import-form"><div class="dialog-head"><h2>Uvoz kontakata</h2><button value="cancel" aria-label="Zatvori">×</button></div><p class="muted">Podržani su XLSX, XLS i CSV. Sustav prepoznaje stupce poput email, medij, država, ime, prezime, kome_ide i personalizacija.</p><label class="drop-file">Odaberi datoteku<input id="contacts-file" type="file" accept=".xlsx,.xls,.csv,text/csv" required></label><div id="import-preview" class="import-preview">Datoteka nije odabrana.</div><div class="button-row end"><button value="cancel">Odustani</button><button id="import-apply" value="default" class="primary" disabled>Uvezi</button></div></form></dialog>
+
+  <script src="/campaign-mailer/app.js?v=20260701-1" defer></script>
+</body>
+</html>

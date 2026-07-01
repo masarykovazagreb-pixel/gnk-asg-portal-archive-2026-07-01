@@ -1,0 +1,10 @@
+window.CM={API:'/api/campaign-mailer',state:{campaign:{},contacts:[],inbox:[],sent:[],health:{bindings:{}},importRows:[]}};
+const CM=window.CM;
+CM.$=id=>document.getElementById(id);
+CM.$$=q=>[...document.querySelectorAll(q)];
+CM.esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+CM.date=v=>{const d=new Date(v||'');return Number.isNaN(d.getTime())?'—':new Intl.DateTimeFormat('hr-HR',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Zagreb'}).format(d)};
+CM.api=async(path,options={})=>{const init={credentials:'same-origin',cache:'no-store',...options};if(!(options.body instanceof FormData))init.headers={'content-type':'application/json',accept:'application/json',...(options.headers||{})};const response=await fetch(CM.API+path,init),text=await response.text();let data={};try{data=JSON.parse(text)}catch{data={error:text}}if(!response.ok)throw new Error(data.error||data.message||`HTTP ${response.status}`);return data};
+CM.note=(text,type='success')=>{const n=CM.$('notice');n.textContent=text;n.className=`notice ${type}`;n.hidden=false;clearTimeout(CM.note.t);CM.note.t=setTimeout(()=>n.hidden=true,4500)};
+CM.label=v=>({draft:'Nacrt',running:'Aktivna',paused:'Pauzirana',stopped:'Zaustavljena',completed:'Dovršena',pending:'Na čekanju',sending:'Šalje se',sent:'Poslano',failed:'Neuspjelo'})[v]||String(v||'—');
+CM.view=name=>{CM.$$('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.view===name));CM.$$('.view').forEach(x=>x.classList.toggle('active',x.dataset.panel===name));CM.$('view-title').textContent=({dashboard:'Nadzorna ploča',compose:'Nova kampanja',contacts:'Kontakti',inbox:'Primljena pošta',settings:'Postavke'})[name]||'Campaign Mailer';location.hash=name;if(name==='inbox')CM.loadMailbox?.()};

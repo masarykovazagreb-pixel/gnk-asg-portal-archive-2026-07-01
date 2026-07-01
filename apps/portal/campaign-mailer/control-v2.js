@@ -1,0 +1,1 @@
+(()=>{const C=window.GNKCampaignMailer,base='/campaign/';C.control=async key=>{try{await C.request(base+key,{method:'POST',body:'{}'});await C.loadCore(true);C.notice('Status je ažuriran.')}catch(error){C.notice(error.message,'error')}};})();
