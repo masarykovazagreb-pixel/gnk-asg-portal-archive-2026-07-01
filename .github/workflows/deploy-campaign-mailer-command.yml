@@ -8,7 +8,9 @@ on:
       - 'apps/portal/assets/gnk-asg-email-logo-final.png'
       - 'workers/gnk-asg-direct-operator/src/campaign-mailer-*.js'
       - 'workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-email-gold-signature-v2.js'
       - 'workers/gnk-asg-direct-operator/src/media-email-logo-transparent-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-auto-reply-inline-logo-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js'
@@ -56,7 +58,9 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
           node --check workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-email-gold-signature-v2.js
           node --check workers/gnk-asg-direct-operator/src/media-email-logo-transparent-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-auto-reply-inline-logo-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
@@ -77,8 +81,10 @@ jobs:
           grep -q 'pdf-preview-frame' apps/portal/campaign-mailer/index.html
           grep -q '/purge-all' apps/portal/campaign-mailer/global-controls-v1.js
           grep -q 'campaign/attachment' workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
-          grep -q 'gnk-asg-email-logo-transparent.png' workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js
-          grep -q 'Media Relations & Accreditation Center' workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js
+          grep -q 'gnk-asg-email-logo-transparent.png' workers/gnk-asg-direct-operator/src/media-email-gold-signature-v2.js
+          grep -q 'Media Relations & Accreditation Center' workers/gnk-asg-direct-operator/src/media-email-gold-signature-v2.js
+          grep -q 'multipart/related' workers/gnk-asg-direct-operator/src/media-auto-reply-inline-logo-v1.js
+          grep -q 'Content-ID' workers/gnk-asg-direct-operator/src/media-auto-reply-inline-logo-v1.js
           grep -q 'HRVATSKI PRIJEVOD' workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js
           grep -q 'LAST_CITY_KEY' workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js
           node -e "import('./workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js').then(m=>{if(m.GLOBAL_DESKS.length!==10)throw new Error('Expected exactly 10 global media desks')})"
