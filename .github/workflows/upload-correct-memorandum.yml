@@ -1,0 +1,71 @@
+name: Upload exact verified THE CODE memorandum
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/upload-correct-memorandum.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Install Worker dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --no-audit --no-fund
+
+      - name: Download and verify exact attached memorandum
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3 --retry-delay 2 -o /tmp/memorandum.pdf 'https://sdmntpritalynorth.oaiusercontent.com/files/00000000-72f4-7246-b5f1-29a93a8211a7/raw?se=2026-07-01T20:59:48Z&sp=r&sv=2026-02-06&sr=b&scid=3c319ed1-18b7-5d6d-8d8e-af0b29579cc6&skoid=0a4a0f0c-99ac-4752-9d87-cfac036fa93f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-01T06:01:20Z&ske=2026-07-03T06:01:20Z&sks=b&skv=2026-02-06&sig=Ky%2FXW85va%2BmU9u%2FjsHYU371x0lg3rNrBPz005z8QTXE%3D'
+          test "$(wc -c < /tmp/memorandum.pdf)" = '208207'
+          echo '5c33f1dea158ff8938122c024e857997eb2f156a039c4b76c0cca133f1e0aa95  /tmp/memorandum.pdf' | sha256sum -c -
+          test "$(file -b --mime-type /tmp/memorandum.pdf)" = 'application/pdf'
+
+      - name: Upload exact memorandum to production R2
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler r2 object put 'gnk-asg-media-assets/media-outreach/campaigns/new-york-2026/5c33f1dea158ff8938122c024e857997eb2f156a039c4b76c0cca133f1e0aa95.pdf' --file=/tmp/memorandum.pdf --content-type='application/pdf' --remote
+
+      - name: Deploy Worker route
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify exact public download
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=false
+          for attempt in $(seq 1 18); do
+            url="https://www.gnk-asg.hr/api/media-registration/memorandum.pdf?cb=${GITHUB_RUN_ID}-${attempt}"
+            code=$(curl -L -sS -D /tmp/headers -o /tmp/live.pdf -w '%{http_code}' "$url" || true)
+            size=$(wc -c < /tmp/live.pdf 2>/dev/null || echo 0)
+            sha=$(sha256sum /tmp/live.pdf 2>/dev/null | awk '{print $1}' || true)
+            if [ "$code" = '200' ] && [ "$size" = '208207' ] && [ "$sha" = '5c33f1dea158ff8938122c024e857997eb2f156a039c4b76c0cca133f1e0aa95' ] && grep -qi '^content-disposition: attachment' /tmp/headers; then
+              ready=true
+              break
+            fi
+            sleep 10
+          done
+          cat /tmp/headers
+          printf 'HTTP=%s SIZE=%s SHA256=%s READY=%s\n' "$code" "$size" "$sha" "$ready"
+          test "$ready" = 'true'
