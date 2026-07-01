@@ -25,5 +25,11 @@ jobs:
           node-version: '24'
       - name: Validate current Index Contact Admin and Campaign Mailer
         run: node scripts/validate-minimum-index-contact-admin.mjs
-      - name: Validate protected backend preservation contract
-        run: node scripts/verify-public-redesign-contract.mjs
+      - name: Validate contact and mail contracts
+        run: node scripts/verify-public-redesign-contract.mjs mail
+      - name: Validate journalist registration contracts
+        run: node scripts/verify-public-redesign-contract.mjs registration
+      - name: Validate public shell isolation
+        run: node scripts/verify-public-redesign-contract.mjs shell
+      - name: Validate Campaign Mailer contracts
+        run: node scripts/verify-public-redesign-contract.mjs campaign
