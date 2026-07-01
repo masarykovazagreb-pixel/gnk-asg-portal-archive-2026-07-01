@@ -47,12 +47,13 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-db-v1.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check apps/portal/campaign-mailer/app.js
           test -f apps/portal/campaign-mailer/index.html
           grep -q '/api/campaign-mailer' workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
-          grep -q 'campaign-mailer-shell-v2' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          grep -q 'campaign-mailer-v2' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
 
       - name: Deploy Cloudflare Worker
         working-directory: workers/gnk-asg-direct-operator
