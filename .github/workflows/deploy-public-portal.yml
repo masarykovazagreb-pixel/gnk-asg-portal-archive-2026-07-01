@@ -91,3 +91,5 @@ jobs:
             "$hr_code" "$en_code" "$contact_code" "$application_code" "$campaign_code" "$campaign_api_code" "$admin_code" "$media_code" "$ready"
           test "$ready" = 'true'
           echo 'Public redesign and protected applications verified. No email or campaign dispatch was executed.'
+
+# Deployment refresh requested for the public memorandum download endpoint on 2026-07-01.
