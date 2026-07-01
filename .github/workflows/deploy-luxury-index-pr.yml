@@ -9,6 +9,7 @@ on:
       - 'workers/gnk-asg-direct-operator/**'
       - 'scripts/verify-public-redesign-contract.mjs'
       - 'scripts/validate-minimum-index-contact-admin.mjs'
+      - 'scripts/validate-worker-import-graph.mjs'
   workflow_dispatch:
 
 permissions:
@@ -41,9 +42,8 @@ jobs:
           node scripts/verify-public-redesign-contract.mjs
           grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
 
-      - name: Bundle canonical Worker without deploying
-        working-directory: workers/gnk-asg-direct-operator
-        run: npx --yes esbuild@0.25.5 src/index-final-admin-gateway-v1.js --bundle --format=esm --platform=browser --target=es2022 --outfile=/tmp/gnk-asg-worker.mjs
+      - name: Validate active Worker import graph
+        run: node scripts/validate-worker-import-graph.mjs
 
       - name: Confirm deployment ownership
         run: |
