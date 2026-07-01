@@ -1,4 +1,4 @@
-name: Diagnose and deploy public THE CODE memorandum support
+name: Deploy and verify exact public THE CODE memorandum
 
 on:
   push:
@@ -36,16 +36,31 @@ jobs:
           set -o pipefail
           npx wrangler deploy --config wrangler.toml --name gnk-asg-direct-operator 2>&1 | tee /tmp/deploy.log
 
-      - name: Probe production memorandum
+      - name: Probe exact production memorandum
         id: verify
         continue-on-error: true
         shell: bash
         run: |
-          url="https://www.gnk-asg.hr/api/media-registration/memorandum.pdf?cb=${GITHUB_RUN_ID}"
-          curl -L -sS -D /tmp/memo.headers -o /tmp/memo.pdf "$url" || true
-          file -b --mime-type /tmp/memo.pdf > /tmp/memo.type 2>/dev/null || true
-          wc -c < /tmp/memo.pdf > /tmp/memo.size 2>/dev/null || true
-          sha256sum /tmp/memo.pdf 2>/dev/null | awk '{print $1}' > /tmp/memo.sha || true
+          ready=false
+          code=0
+          size=0
+          sha=''
+          for attempt in $(seq 1 24); do
+            url="https://www.gnk-asg.hr/api/media-registration/memorandum.pdf?cb=${GITHUB_RUN_ID}-${attempt}"
+            code=$(curl -L -sS -D /tmp/memo.headers -o /tmp/memo.pdf -w '%{http_code}' "$url" || true)
+            file -b --mime-type /tmp/memo.pdf > /tmp/memo.type 2>/dev/null || true
+            size=$(wc -c < /tmp/memo.pdf 2>/dev/null || echo 0)
+            sha=$(sha256sum /tmp/memo.pdf 2>/dev/null | awk '{print $1}' || true)
+            if [ "$code" = '200' ] && [ "$size" = '208207' ] && [ "$sha" = '5c33f1dea158ff8938122c024e857997eb2f156a039c4b76c0cca133f1e0aa95' ] && grep -qi '^content-disposition: attachment' /tmp/memo.headers; then
+              ready=true
+              break
+            fi
+            sleep 10
+          done
+          printf '%s' "$size" > /tmp/memo.size
+          printf '%s' "$sha" > /tmp/memo.sha
+          printf '%s' "$code" > /tmp/memo.code
+          printf '%s' "$ready" > /tmp/memo.ready
 
       - name: Record deployment diagnostic
         if: always()
@@ -54,6 +69,8 @@ jobs:
           {
             echo "DEPLOY_OUTCOME=${{ steps.deploy.outcome }}"
             echo "VERIFY_OUTCOME=${{ steps.verify.outcome }}"
+            echo "READY=$(cat /tmp/memo.ready 2>/dev/null || echo false)"
+            echo "HTTP=$(cat /tmp/memo.code 2>/dev/null || echo 0)"
             echo "COMMIT=$GITHUB_SHA"
             echo "RUN_ID=$GITHUB_RUN_ID"
             echo "RECORDED_AT=$(date -u +%FT%TZ)"
@@ -63,8 +80,10 @@ jobs:
             cat /tmp/memo.type 2>/dev/null || true
             echo "--- MEMORANDUM SIZE ---"
             cat /tmp/memo.size 2>/dev/null || true
+            echo
             echo "--- MEMORANDUM SHA256 ---"
             cat /tmp/memo.sha 2>/dev/null || true
+            echo
             echo "--- MEMORANDUM HEADERS ---"
             cat /tmp/memo.headers 2>/dev/null || true
           } > .github/memorandum-deploy-diagnostic.txt
@@ -72,6 +91,6 @@ jobs:
           git config user.name 'gnk-asg-verification-bot'
           git config user.email 'actions@users.noreply.github.com'
           git add .github/memorandum-deploy-diagnostic.txt
-          git commit -m "Record memorandum deploy diagnostic" || true
+          git commit -m "Record exact memorandum deployment diagnostic" || true
           git pull --rebase origin main
           git push origin HEAD:main
