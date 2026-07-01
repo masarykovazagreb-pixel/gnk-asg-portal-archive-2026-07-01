@@ -12,11 +12,15 @@ import {handlePublicTheCodePdf,VERSION as PUBLIC_THE_CODE_PDF_VERSION} from './p
 export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}`;
 const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(env));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+const clean=value=>String(value??'').trim();
+const inboundAddress=(message,name)=>{try{return clean(message?.headers?.get?.(name));}catch{return'';}};
+const address=value=>{const raw=clean(value),match=raw.match(/<([^>]+)>/);return clean(match?.[1]||raw).toLowerCase();};
+const isMediaInbound=message=>address(message?.to||inboundAddress(message,'to'))==='media@gnk-asg.hr';
 const isPublicRegistration=path=>path==='/media-application'||path.startsWith('/media-application/')||path==='/api/media-registration'||path.startsWith('/api/media-registration/');
 const denied=()=>new Response(JSON.stringify({ok:false,error:'unauthorized'}),{status:401,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
 const stampRegistration=response=>{const headers=new Headers(response.headers);headers.set('x-gnk-asg-media-registration',REGISTRATION_VERSION);headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return new Response(response.body,{status:response.status,statusText:response.statusText,headers});};
 export default{
  async fetch(request,env,ctx){const active=protectedEnv(env),path=pathOf(request);const publicPdf=await handlePublicTheCodePdf(request,env);if(publicPdf)return publicPdf;if(isPublicRegistration(path)){const registration=await handleMediaRegistrationPublic(request,env);if(registration)return stampRegistration(registration)}if(isTransparentMediaLogo(path))return serveTransparentMediaLogo(request);if(isCampaignMailerApi(path)){if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();return handleCampaignMailer(request,env,ctx)}if(isCampaignMailer(path))return serveCampaignMailer(request,active,ctx,app);const response=await addCampaignMailerLink(request,await app.fetch(request,active,ctx));return addBackendContactMenuLink(request,response)},
  scheduled(event,env,ctx){const active=protectedEnv(env),task=Promise.allSettled([runQueue(env),typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)]);if(ctx?.waitUntil){ctx.waitUntil(task);return}return task},
- async email(message,env,ctx){const active=protectedEnv(env);const fixed=await handleMediaBootstrapPdfForwardFix(message,active,ctx);if(fixed?.handled)return fixed;await recordInbound(message,env);if(typeof app.email==='function')return app.email(message,active,ctx)}
+ async email(message,env,ctx){const active=protectedEnv(env);const fixed=await handleMediaBootstrapPdfForwardFix(message,active,ctx);if(fixed?.handled)return fixed;await recordInbound(message,env);if(typeof app.email==='function')return app.email(message,isMediaInbound(message)?env:active,ctx)}
 };
