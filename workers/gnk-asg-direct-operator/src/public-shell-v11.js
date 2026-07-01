@@ -1,6 +1,14 @@
+const PRIVATE_PATHS=[
+  '/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/admin-center',
+  '/media-command-center','/media-application','/media-registration-admin','/campaign-mailer',
+  '/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/auto-editor','/operator','/api'
+];
+
+const normalizePath=path=>String(path||'').toLowerCase().replace(/\/+$/,'')||'/';
+
 export function isPrivatePath(path){
-  path=path.toLowerCase();
-  return ['/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/admin-center','/media-command-center','/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/auto-editor','/operator','/api'].some(p=>path===p||path.startsWith(`${p}/`));
+  const normalized=normalizePath(path);
+  return PRIVATE_PATHS.some(prefix=>normalized===prefix||normalized.startsWith(`${prefix}/`));
 }
 
 function removeLegacyPublicShell(html){
@@ -27,25 +35,23 @@ function removeLegacyPublicShell(html){
 }
 
 const stableFavicon='\n<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">\n<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="/favicon.svg">\n<link rel="manifest" href="/site.webmanifest">\n<meta name="theme-color" content="#05080f">';
-const isolatedFunctionalPaths=['/media-application','/media-registration-admin'];
 
 export function patchPublicHtml(html,path){
-  const normalized=String(path||'').toLowerCase().replace(/\/+$/,'')||'/';
-  // Journalist login, application workspace and its administrative control retain
-  // their dedicated HTML/CSS/JS. The public redesign must never alter IDs, forms,
-  // cookies, API calls or controls on these functional routes.
-  if(isolatedFunctionalPaths.some(prefix=>normalized===prefix||normalized.startsWith(`${prefix}/`)))return html;
+  const normalized=normalizePath(path);
+  // Functional and protected applications retain their own HTML, CSS, JavaScript,
+  // forms, cookies, API contracts and controls. The public redesign never mutates them.
+  if(isPrivatePath(normalized))return html;
 
   html=removeLegacyPublicShell(html);
-  const indexPath=['/','/en','/en/'].includes(path);
+  const indexPath=['/','/en','/en/'].includes(normalized);
   if(indexPath){
     html=html.replace(/<script[^>]+src=["'][^"']*\/assets\/(?:gallery-bootstrap|gallery-brand-safety)\.js[^"']*["'][^>]*><\/script>/gi,'');
   }
   const ux='<link rel="stylesheet" href="/assets/public-ux-v11.css?v=20260625-v12">';
   const visual='<link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260626-stable-v28">';
-  const redesign='<link rel="stylesheet" href="/assets/public-redesign-v1.css?v=20260701-r1">';
+  const redesign='<link rel="stylesheet" href="/assets/public-redesign-v1.css?v=20260701-r2">';
   const reset='<style id="gnk-public-v13-reset">html,body{max-width:100%!important;overflow-x:hidden!important}body{padding-top:0!important}.brand-head,.top-nav,body>header:not(#gnk-public-header-v18),body>.site-header,.site-header,.header-inner>.main-nav,.menu-toggle,.shell>.brand-head,.shell>.top-nav,.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-final-menu-wrap,.gnk-asg-inner-nav,.gnk-asg-floating-actions,.floating-home,.floating-ai,.gnk-global-float-home,.gnk-global-float-ai,main>nav:first-child,.news-actions,#gnk-asg-global-layer-root,#gnk-asg-single-ai-button-anchor,#gnk-asg-float-home,#gnk-asg-float-ai,#gnk-asg-ai-panel,#gnk-asg-review-modal,.gnk-asg-fixed-menu-spacer{display:none!important}body.gnk-route-contact main .card>a[href="/"],body.gnk-route-contact main .card>a[href="/en/"]{display:none!important}body.gnk-route-contact main,body.gnk-route-contact main *,body.gnk-route-publications main,body.gnk-route-publications main *{min-width:0!important;max-width:100%!important;box-sizing:border-box!important;overflow-wrap:anywhere!important}body.gnk-route-contact pre,body.gnk-route-publications pre{overflow:auto!important}body.gnk-route-contact input[type="file"]{width:100%!important}</style>';
-  const menu='<script src="/assets/public-menu-v18.js?v=20260701-r1" defer></script>';
+  const menu='<script src="/assets/public-menu-v18.js?v=20260701-r2" defer></script>';
   const indexHead='<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260626-data-v28">';
   const indexScripts='<script src="/assets/index-group-network-en-bridge-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-group-network-v2.js?v=20260626-data-v28" defer></script><script src="/assets/index-news-rotation-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-content-resilience-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-live-market-chart-v4.js?v=20260626-data-v28" defer></script>';
   html=html.replace('</head>',`${stableFavicon}\n</head>`);
@@ -78,7 +84,7 @@ export async function transformHtml(response,fn){
   headers.delete('content-length');
   headers.delete('content-encoding');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-  headers.set('x-gnk-asg-public-visual','GNK_ASG_PUBLIC_REDESIGN_V1_20260701');
+  headers.set('x-gnk-asg-public-visual','GNK_ASG_PUBLIC_REDESIGN_V1_20260701_R2');
   headers.set('x-gnk-asg-index-layout-lock','REDESIGN_V1_CANONICAL_MENU');
   return new Response(fn(await response.text()),{status:response.status,statusText:response.statusText,headers});
 }
