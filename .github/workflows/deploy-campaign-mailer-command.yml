@@ -8,6 +8,8 @@ on:
       - 'apps/portal/assets/gnk-asg-email-logo-final.png'
       - 'workers/gnk-asg-direct-operator/src/campaign-mailer-*.js'
       - 'workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-email-logo-transparent-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js'
       - 'workers/gnk-asg-direct-operator/package.json'
@@ -44,7 +46,7 @@ jobs:
         working-directory: workers/gnk-asg-direct-operator
         run: npm install --no-audit --no-fund --ignore-scripts
 
-      - name: Validate Campaign Mailer
+      - name: Validate Campaign Mailer and media email modules
         run: |
           set -euo pipefail
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-db-v1.js
@@ -54,6 +56,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
           node --check workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-email-logo-transparent-v1.js
+          node --check workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check apps/portal/campaign-mailer/runtime-v1.js
@@ -69,12 +73,15 @@ jobs:
           test -f apps/portal/campaign-mailer/index.html
           test -f apps/portal/campaign-mailer/document-preview-v1.css
           test -f apps/portal/campaign-mailer/global-controls-v1.css
-          test -f apps/portal/assets/gnk-asg-email-logo-final.png
           grep -q 'html-file' apps/portal/campaign-mailer/index.html
           grep -q 'pdf-preview-frame' apps/portal/campaign-mailer/index.html
           grep -q '/purge-all' apps/portal/campaign-mailer/global-controls-v1.js
           grep -q 'campaign/attachment' workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
-          grep -q 'media@gnk-asg.hr' workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js
+          grep -q 'gnk-asg-email-logo-transparent.png' workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js
+          grep -q 'Media Relations & Accreditation Center' workers/gnk-asg-direct-operator/src/media-email-gold-signature-v1.js
+          grep -q 'HRVATSKI PRIJEVOD' workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js
+          grep -q 'LAST_CITY_KEY' workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js
+          node -e "import('./workers/gnk-asg-direct-operator/src/media-global-auto-reply-v1.js').then(m=>{if(m.GLOBAL_DESKS.length!==10)throw new Error('Expected exactly 10 global media desks')})"
           grep -q 'campaign-mailer-v2' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
 
       - name: Deploy Cloudflare Worker
@@ -95,14 +102,20 @@ jobs:
             api_code=$(curl -sS -o api.json -w '%{http_code}' "$base/api/campaign-mailer/health?cb=$stamp" || true)
             route_code=$(curl -sS -o route.html -w '%{http_code}' "$base/campaign-mailer/?cb=$stamp" || true)
             pdf_code=$(curl -sS -o pdf.txt -w '%{http_code}' "$base/api/campaign-mailer/campaign/attachment?cb=$stamp" || true)
-            logo_code=$(curl -sS -o logo.png -w '%{http_code}' "$base/assets/gnk-asg-email-logo-final.png?cb=$stamp" || true)
-            if [ "$home_code" = '200' ] && grep -q '/campaign-mailer/' home.html && [ "$api_code" = '401' ] && [ "$pdf_code" = '401' ] && [ "$logo_code" = '200' ] && { [ "$route_code" = '303' ] || [ "$route_code" = '401' ]; }; then
+            logo_code=$(curl -sS -D logo.headers -o logo.png -w '%{http_code}' "$base/assets/gnk-asg-email-logo-transparent.png?cb=$stamp" || true)
+            logo_ok=false
+            if [ "$logo_code" = '200' ] && grep -qi '^content-type: image/png' logo.headers; then
+              if node -e "const b=require('fs').readFileSync('logo.png');const sig=Buffer.from([137,80,78,71,13,10,26,10]);if(!b.subarray(0,8).equals(sig)||!b.includes(Buffer.from('tRNS')))process.exit(1)"; then
+                logo_ok=true
+              fi
+            fi
+            if [ "$home_code" = '200' ] && grep -q '/campaign-mailer/' home.html && [ "$api_code" = '401' ] && [ "$pdf_code" = '401' ] && [ "$logo_ok" = 'true' ] && { [ "$route_code" = '303' ] || [ "$route_code" = '401' ]; }; then
               ready=true
               break
             fi
             sleep 10
           done
-          printf 'HOME_HTTP=%s API_HTTP=%s ROUTE_HTTP=%s PDF_HTTP=%s LOGO_HTTP=%s READY=%s\n' "$home_code" "$api_code" "$route_code" "$pdf_code" "$logo_code" "$ready"
+          printf 'HOME_HTTP=%s API_HTTP=%s ROUTE_HTTP=%s PDF_HTTP=%s LOGO_HTTP=%s LOGO_TRANSPARENT=%s READY=%s\n' "$home_code" "$api_code" "$route_code" "$pdf_code" "$logo_code" "$logo_ok" "$ready"
           test "$ready" = 'true'
 
       - name: Comment result
