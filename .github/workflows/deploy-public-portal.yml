@@ -8,6 +8,9 @@ on:
       - 'apps/portal/**'
       - 'workers/gnk-asg-direct-operator/src/**'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
+      - 'scripts/verify-public-redesign-contract.mjs'
+      - 'scripts/validate-minimum-index-contact-admin.mjs'
+      - 'scripts/validate-worker-import-graph.mjs'
   workflow_dispatch:
 
 permissions:
@@ -20,93 +23,71 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
 
-      - name: Validate IQ200 index with Admin Hub V31 and Media Portal
+      - name: Validate canonical gateway and protected applications
         shell: bash
         run: |
           set -euo pipefail
+          node --check apps/portal/assets/public-menu-v18.js
+          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          node --check workers/gnk-asg-direct-operator/src/media-registration-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15-final.js
-          node --check apps/portal/assets/media-registration-admin-v1.js
-          node --check apps/portal/assets/admin-center-v2.js
-          test -s apps/portal/index.html
-          test -s apps/portal/en/index.html
-          test -s apps/portal/downloads/index.html
-          test -s apps/portal/admin-center/index.html
-          test -s apps/portal/mail-studio/index.html
-          test -s apps/portal/media-command-center/index.html
-          test -s apps/portal/media-registration-admin/index.html
-          test -s apps/portal/media-application/index.html
-          grep -q 'Korporativni portal' apps/portal/index.html
-          grep -q 'Sve funkcije na jednom mjestu' apps/portal/index.html
-          grep -q 'Corporate portal' apps/portal/en/index.html
-          grep -q 'All key functions in one place' apps/portal/en/index.html
-          grep -q 'index-redesign-production.css' apps/portal/index.html
-          grep -q 'index-redesign-production.css' apps/portal/en/index.html
-          grep -q 'GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625' workers/gnk-asg-direct-operator/src/index-portal-final-v13.js
-          grep -q 'GNK_ASG_FINAL_GATEWAY_IQ200_20260625_WITH_ADMIN_HUB_V31_20260629' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          grep -q "import app from './index-admin-hub-v28-news-no-fallback.js'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          grep -q "ADMIN_ALIAS='/api/media-portal-admin'" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "'/api/media-portal-admin'" apps/portal/assets/media-registration-admin-v1.js
-          grep -q "label:'Media prijave'" apps/portal/assets/admin-center-v2.js
-          grep -q "label:'Media Portal'" apps/portal/assets/admin-center-v2.js
-          cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
+          node scripts/validate-minimum-index-contact-admin.mjs
+          node scripts/verify-public-redesign-contract.mjs
+          node scripts/validate-worker-import-graph.mjs
+          grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
 
-      - name: Deploy IQ200 index, Admin Hub V31 and Media Portal to Cloudflare
+      - name: Deploy canonical Worker to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
 
-      - name: Verify IQ200 production and Media Portal routes
+      - name: Verify production without sending mail
         shell: bash
         run: |
           set -euo pipefail
-          CB="${GITHUB_RUN_ID}"
-          success=false
-          for attempt in $(seq 1 18); do
-            curl -sS -D /tmp/hr.headers "https://gnk-asg.hr/?cb=${CB}-${attempt}" -o /tmp/hr.html || true
-            curl -sS -D /tmp/en.headers "https://gnk-asg.hr/en/?cb=${CB}-${attempt}" -o /tmp/en.html || true
-            admin_code=$(curl -sS -D /tmp/admin.headers -o /tmp/admin.html -w '%{http_code}' "https://gnk-asg.hr/admin-center/?cb=${CB}-${attempt}" || true)
-            old_admin_code=$(curl -sS -D /tmp/old-admin.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/operator-dashboard/?cb=${CB}-${attempt}" || true)
-            media_code=$(curl -sS -D /tmp/media.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/media-command-center/?cb=${CB}-${attempt}" || true)
-            media_portal_code=$(curl -sS -D /tmp/media-portal.headers -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/media-registration-admin/?cb=${CB}-${attempt}" || true)
-            media_api_code=$(curl -sS -D /tmp/media-api.headers -o /tmp/media-api.json -w '%{http_code}' "https://gnk-asg.hr/api/media-portal-admin/status?cb=${CB}-${attempt}" || true)
-            media_apply_code=$(curl -sS -D /tmp/media-apply.headers -o /tmp/media-apply.html -w '%{http_code}' "https://gnk-asg.hr/media-application/?cb=${CB}-${attempt}" || true)
-            if grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_ADMIN_HUB_V31' /tmp/hr.headers \
-              && grep -qi '^x-gnk-asg-production-entry: GNK_ASG_IQ200_INDEX_ADMIN_HUB_V31' /tmp/en.headers \
-              && grep -q 'Korporativni portal' /tmp/hr.html \
-              && grep -q 'Sve funkcije na jednom mjestu' /tmp/hr.html \
-              && grep -q 'Corporate portal' /tmp/en.html \
-              && grep -q 'All key functions in one place' /tmp/en.html \
-              && grep -q 'index-redesign-production.css' /tmp/hr.html \
-              && grep -q 'index-redesign-production.css' /tmp/en.html \
-              && { [ "$admin_code" = "200" ] || [ "$admin_code" = "401" ]; } \
-              && { [ "$old_admin_code" = "303" ] || [ "$old_admin_code" = "401" ]; } \
-              && { [ "$media_code" = "303" ] || [ "$media_code" = "401" ]; } \
-              && { [ "$media_portal_code" = "303" ] || [ "$media_portal_code" = "401" ]; } \
-              && [ "$media_api_code" = "401" ] \
-              && [ "$media_apply_code" = "200" ] \
-              && grep -qi '^x-gnk-asg-media-registration-routing: ADMIN_ALIAS_V31' /tmp/media-api.headers; then
-              success=true
+          base='https://gnk-asg.hr'
+          ready=false
+          for attempt in $(seq 1 24); do
+            cb="${GITHUB_RUN_ID}-${attempt}"
+            hr_code=$(curl -sS -D /tmp/hr.headers -o /tmp/hr.html -w '%{http_code}' "$base/?cb=$cb" || true)
+            en_code=$(curl -sS -D /tmp/en.headers -o /tmp/en.html -w '%{http_code}' "$base/en/?cb=$cb" || true)
+            contact_code=$(curl -sS -D /tmp/contact.headers -o /tmp/contact.html -w '%{http_code}' "$base/contact/?cb=$cb" || true)
+            application_code=$(curl -sS -D /tmp/application.headers -o /tmp/application.html -w '%{http_code}' "$base/media-application/?cb=$cb" || true)
+            campaign_code=$(curl -sS -D /tmp/campaign.headers -o /tmp/campaign.html -w '%{http_code}' "$base/campaign-mailer/?cb=$cb" || true)
+            campaign_api_code=$(curl -sS -D /tmp/campaign-api.headers -o /tmp/campaign-api.json -w '%{http_code}' "$base/api/campaign-mailer/health?cb=$cb" || true)
+            admin_code=$(curl -sS -o /dev/null -w '%{http_code}' "$base/admin-center/?cb=$cb" || true)
+            media_code=$(curl -sS -o /dev/null -w '%{http_code}' "$base/media-command-center/?cb=$cb" || true)
+
+            if [ "$hr_code" = '200' ] \
+              && [ "$en_code" = '200' ] \
+              && [ "$contact_code" = '200' ] \
+              && [ "$application_code" = '200' ] \
+              && grep -q '/assets/public-menu-v18.js' /tmp/hr.html \
+              && grep -q '/assets/public-redesign-v1.css' /tmp/hr.html \
+              && grep -q '/assets/public-menu-v18.js' /tmp/en.html \
+              && grep -q '/api/contact-submit' /tmp/contact.html \
+              && ! grep -q '/assets/public-menu-v18.js' /tmp/application.html \
+              && { [ "$campaign_code" = '200' ] || [ "$campaign_code" = '303' ] || [ "$campaign_code" = '401' ]; } \
+              && [ "$campaign_api_code" = '401' ] \
+              && { [ "$admin_code" = '200' ] || [ "$admin_code" = '303' ] || [ "$admin_code" = '401' ] || [ "$admin_code" = '403' ]; } \
+              && { [ "$media_code" = '200' ] || [ "$media_code" = '303' ] || [ "$media_code" = '401' ] || [ "$media_code" = '403' ]; }; then
+              ready=true
               break
             fi
             sleep 10
           done
-          if [ "$success" != "true" ]; then
-            echo 'IQ200 Admin Hub V31 and Media Portal production verification failed.' >&2
-            echo "admin=${admin_code} old_admin=${old_admin_code} media=${media_code} media_portal=${media_portal_code} media_api=${media_api_code} media_apply=${media_apply_code}" >&2
-            exit 1
-          fi
-          echo 'IQ200_ADMIN_HUB_V31_MEDIA_PORTAL_PRODUCTION_OK=true'
+
+          printf 'HR=%s EN=%s CONTACT=%s APPLICATION=%s CAMPAIGN=%s CAMPAIGN_API=%s ADMIN=%s MEDIA=%s READY=%s\n' \
+            "$hr_code" "$en_code" "$contact_code" "$application_code" "$campaign_code" "$campaign_api_code" "$admin_code" "$media_code" "$ready"
+          test "$ready" = 'true'
+          echo 'Public redesign and protected applications verified. No email or campaign dispatch was executed.'

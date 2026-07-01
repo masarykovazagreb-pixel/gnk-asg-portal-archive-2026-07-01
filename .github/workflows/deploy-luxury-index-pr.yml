@@ -1,111 +1,50 @@
-name: Deploy GNK ASG Portal
+name: Validate GNK ASG Portal Release
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-luxury-index-pr.yml'
-      - 'apps/portal/**'
-      - 'workers/gnk-asg-direct-operator/**'
   pull_request:
     branches: [main]
     paths:
       - '.github/workflows/deploy-luxury-index-pr.yml'
       - 'apps/portal/**'
       - 'workers/gnk-asg-direct-operator/**'
+      - 'scripts/verify-public-redesign-contract.mjs'
+      - 'scripts/validate-minimum-index-contact-admin.mjs'
+      - 'scripts/validate-worker-import-graph.mjs'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-production-${{ github.ref }}
+  group: gnk-asg-portal-validation-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  validate-and-deploy:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
 
-      - name: Validate current portal release
+      - name: Validate release source
         shell: bash
         run: |
           set -euo pipefail
-          node --check apps/portal/assets/public-shell-v15.js
-          node --check apps/portal/assets/assistant-v10.js
-          node --check apps/portal/assets/markets-v11.js
-          node --check apps/portal/assets/editorial-v12.js
-          node --check apps/portal/assets/visual-index-full-gallery.js
-          node --check workers/gnk-asg-direct-operator/src/public-ai-v10.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-public-v10-base.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v26-clean-index.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          test -s apps/portal/assets/public-menu-v10.css
-          test -s apps/portal/assets/index-finance-v9.css
-          test -s apps/portal/assets/assistant-v10.css
-          test -s apps/portal/assets/markets-v11.css
-          test -s apps/portal/assets/editorial-v12.css
-          test -s apps/portal/assets/visual-index-v9.css
-          grep -q 'GNK_ASG_PUBLIC_SHELL_V15_1_LOCKED_INDEX_MENU_20260627' apps/portal/assets/public-shell-v15.js
-          grep -q 'GNK ASG d.o.o.' apps/portal/assets/public-shell-v15.js
-          grep -q 'GNK DINAMO Ltd.' apps/portal/assets/public-shell-v15.js
-          grep -q "t.gallery,'/visual-index/'" apps/portal/assets/public-shell-v15.js
-          grep -q 'LOCKED_INDEX_MENU' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          grep -q 'x-gnk-asg-gallery-primary-menu' workers/gnk-asg-direct-operator/src/index-admin-hub-v27-news-status.js
-          grep -q 'visual-index-v9.css' apps/portal/visual-index/index.html
-          grep -q 'business-news.css?v=20260627-v18' apps/portal/vijesti/index.html
-          grep -q 'business-news.css?v=20260627-v18' apps/portal/news/index.html
-          grep -q 'GNK_ASG_PUBLIC_AI_V10_20260627' workers/gnk-asg-direct-operator/src/public-ai-v10.js
-          cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+          node --check apps/portal/assets/public-menu-v18.js
+          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
+          node scripts/validate-minimum-index-contact-admin.mjs
+          node scripts/verify-public-redesign-contract.mjs
+          grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
 
-      - name: Deploy current main to Cloudflare
-        if: github.event_name != 'pull_request'
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+      - name: Validate active Worker import graph
+        run: node scripts/validate-worker-import-graph.mjs
 
-      - name: Verify production portal
-        if: github.event_name != 'pull_request'
-        shell: bash
+      - name: Confirm deployment ownership
         run: |
-          set -euo pipefail
-          for n in $(seq 1 24); do
-            HR_HEADERS=$(mktemp)
-            EN_HEADERS=$(mktemp)
-            HR=$(curl -fsS -D "$HR_HEADERS" "https://gnk-asg.hr/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            EN=$(curl -fsS -D "$EN_HEADERS" "https://gnk-asg.hr/en/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            SHELL=$(curl -fsS "https://gnk-asg.hr/assets/public-shell-v15.js?cb=${GITHUB_RUN_ID}-${n}" || true)
-            GALLERY=$(curl -fsS "https://gnk-asg.hr/visual-index/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            NEWS_HR=$(curl -fsS "https://gnk-asg.hr/vijesti/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            NEWS_EN=$(curl -fsS "https://gnk-asg.hr/news/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            PUBLICATIONS=$(curl -fsS "https://gnk-asg.hr/objave/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            MARKETS=$(curl -fsS "https://gnk-asg.hr/trzista/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            AI=$(curl -fsS "https://gnk-asg.hr/assistant/?cb=${GITHUB_RUN_ID}-${n}" || true)
-            if printf '%s' "$HR" | grep -q 'index-finance-v9.css' \
-              && printf '%s' "$HR" | grep -q '/visual-index/' \
-              && printf '%s' "$EN" | grep -q '/visual-index/' \
-              && printf '%s' "$SHELL" | grep -q 'GNK_ASG_PUBLIC_SHELL_V15_1_LOCKED_INDEX_MENU_20260627' \
-              && printf '%s' "$SHELL" | grep -q 'GNK DINAMO Ltd.' \
-              && printf '%s' "$GALLERY" | grep -q 'visual-index-v9.css' \
-              && printf '%s' "$NEWS_HR" | grep -q 'business-news.css?v=20260627-v18' \
-              && printf '%s' "$NEWS_EN" | grep -q 'business-news.css?v=20260627-v18' \
-              && printf '%s' "$PUBLICATIONS" | grep -q 'editorial-v12.js' \
-              && printf '%s' "$MARKETS" | grep -q 'markets-v11.css' \
-              && printf '%s' "$AI" | grep -q 'assistant-v10.css' \
-              && grep -qi 'x-gnk-asg-index-menu: LOCKED_INDEX_MENU' "$HR_HEADERS" \
-              && grep -qi 'x-gnk-asg-index-menu: LOCKED_INDEX_MENU' "$EN_HEADERS"; then
-                echo 'Production portal verification passed.'
-                exit 0
-            fi
-            sleep 10
-          done
-          echo 'Production portal verification failed.' >&2
-          exit 1
+          echo 'Validation passed. Production deployment is owned only by deploy-public-portal.yml after merge to main.'
