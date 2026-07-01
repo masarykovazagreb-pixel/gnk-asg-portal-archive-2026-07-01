@@ -2,7 +2,8 @@ import app,{VERSION as BASE_VERSION} from './index-final-admin-gateway-projects-
 import {withEnglishGreetingGuard,VERSION as GREETING_VERSION} from './media-outreach-english-guard-v1.js';
 import {withEnglishEmailMetadata,VERSION as METADATA_VERSION} from './email-english-metadata-guard-v1.js';
 import {isCampaignMailer,serveCampaignMailer,authorizeCampaignMailer,addCampaignMailerLink,VERSION as SHELL_VERSION} from './campaign-mailer-shell-v2.js';
-import {isCampaignMailerApi,handleCampaignMailer,runQueue,recordInbound,VERSION as CAMPAIGN_VERSION} from './campaign-mailer-v1.js';
+import {handleCampaignMailer,runQueue,recordInbound,VERSION as CAMPAIGN_VERSION} from './campaign-mailer-v2.js';
+import {isCampaignMailerApi} from './campaign-mailer-v1.js';
 export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}`;
 const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(env));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
