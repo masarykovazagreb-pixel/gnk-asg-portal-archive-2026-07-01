@@ -6,7 +6,9 @@
   <meta name="robots" content="noindex,nofollow">
   <meta name="theme-color" content="#06101e">
   <title>GNK ASG Campaign Mailer</title>
-  <link rel="stylesheet" href="/campaign-mailer/styles.css?v=20260701-1">
+  <link rel="stylesheet" href="/campaign-mailer/styles.css?v=20260701-2">
+  <link rel="stylesheet" href="/campaign-mailer/global-controls-v1.css?v=20260701-2">
+  <link rel="stylesheet" href="/campaign-mailer/document-preview-v1.css?v=20260701-2">
 </head>
 <body>
   <div class="app-shell">
@@ -60,6 +62,7 @@
               <button data-action="pause">Pauziraj</button>
               <button data-action="resume">Nastavi</button>
               <button class="danger" data-action="stop">Zaustavi</button>
+              <button data-action="reset">Reset</button>
             </div>
           </article>
           <article class="panel">
@@ -76,11 +79,18 @@
       <section class="view" data-panel="compose">
         <div class="compose-grid">
           <article class="panel form-panel">
-            <div class="panel-head"><div><p class="eyebrow">Sadržaj poruke</p><h2>Nova kampanja</h2></div><button id="save-campaign" class="primary">Spremi</button></div>
+            <div class="panel-head stack-mobile">
+              <div><p class="eyebrow">Sadržaj poruke</p><h2>Nova kampanja</h2></div>
+              <div class="button-row">
+                <label class="file-button html-upload-button">Učitaj HTML<input id="html-file" type="file" accept=".html,.htm,text/html" hidden></label>
+                <button id="save-campaign" class="primary">Spremi</button>
+              </div>
+            </div>
+            <div class="loaded-document-status"><strong>HTML dokument</strong><small id="html-file-name">Nije učitan zaseban HTML dokument.</small></div>
             <label>Predmet poruke<input id="subject" maxlength="240" placeholder="Predmet e-mail poruke"></label>
             <div class="merge-tags"><span>Personalizacija:</span><button data-tag="{{ime}}">{{ime}}</button><button data-tag="{{prezime}}">{{prezime}}</button><button data-tag="{{medij}}">{{medij}}</button><button data-tag="{{kome_ide}}">{{kome_ide}}</button><button data-tag="{{personalizacija}}">{{personalizacija}}</button></div>
-            <div class="editor-tabs"><button class="active" data-editor="visual">Vizualno</button><button data-editor="html">HTML</button></div>
-            <div id="body-editor" class="editor" contenteditable="true" data-placeholder="Napišite ili zalijepite sadržaj poruke..."></div>
+            <div class="editor-tabs"><button class="active" data-editor="visual">Vizualno</button><button data-editor="html">HTML kod</button></div>
+            <div id="body-editor" class="editor" contenteditable="true" data-placeholder="Napišite ili učitajte HTML sadržaj poruke..."></div>
             <textarea id="body-html" class="code-editor" hidden spellcheck="false" placeholder="HTML sadržaj"></textarea>
             <label>Dodatni tekst<textarea id="extra-text" rows="4" placeholder="Opcionalni tekst koji se dodaje na kraj poruke"></textarea></label>
             <div class="settings-row">
@@ -90,13 +100,28 @@
             </div>
             <div class="attachment-box">
               <div><strong>PDF privitak</strong><small id="attachment-name">Nema privitka.</small></div>
-              <div class="button-row"><label class="file-button">Dodaj PDF<input id="pdf-file" type="file" accept="application/pdf,.pdf" hidden></label><button id="remove-pdf" class="danger">Ukloni</button></div>
+              <div class="button-row"><label class="file-button">Učitaj PDF<input id="pdf-file" type="file" accept="application/pdf,.pdf" hidden></label><button id="remove-pdf" class="danger">Ukloni PDF</button></div>
             </div>
           </article>
+
           <aside class="panel preview-panel">
-            <div class="panel-head"><div><p class="eyebrow">Pregled</p><h2 id="preview-subject">Bez predmeta</h2></div></div>
-            <div class="preview-meta"><span>From: media@gnk-asg.hr</span><span>To: kontakt@example.com</span></div>
-            <iframe id="preview-frame" title="Pregled e-mail poruke" sandbox="allow-popups allow-popups-to-escape-sandbox"></iframe>
+            <div class="panel-head"><div><p class="eyebrow">Online pregled dokumenata</p><h2 id="preview-subject">Bez predmeta</h2></div></div>
+            <div class="document-preview-tabs" role="tablist" aria-label="Pregled učitanih dokumenata">
+              <button class="active" type="button" data-document-preview="html">HTML poruka</button>
+              <button type="button" data-document-preview="pdf">PDF privitak</button>
+            </div>
+            <section id="html-preview-panel" class="document-preview-panel active">
+              <div class="preview-meta"><span>From: media@gnk-asg.hr</span><span>To: kontakt@example.com</span></div>
+              <iframe id="preview-frame" title="Pregled HTML e-mail poruke" sandbox="allow-popups allow-popups-to-escape-sandbox"></iframe>
+            </section>
+            <section id="pdf-preview-panel" class="document-preview-panel" hidden>
+              <div class="pdf-preview-toolbar">
+                <span id="pdf-preview-status">PDF nije učitan.</span>
+                <a id="pdf-open-link" href="#" target="_blank" rel="noopener" hidden>Otvori PDF u novoj kartici</a>
+              </div>
+              <div id="pdf-preview-empty" class="pdf-preview-empty">Nakon učitavanja PDF će se prikazati ovdje.</div>
+              <iframe id="pdf-preview-frame" title="Online pregled PDF privitka" hidden></iframe>
+            </section>
           </aside>
         </div>
       </section>
@@ -104,7 +129,7 @@
       <section class="view" data-panel="contacts">
         <article class="panel">
           <div class="panel-head stack-mobile"><div><p class="eyebrow">Baza primatelja</p><h2>Kontakti</h2></div><div class="button-row"><button id="import-open" class="primary">Uvezi Excel / CSV</button><button id="add-contact">Dodaj kontakt</button><button id="reset-status">Resetiraj statuse</button></div></div>
-          <div class="toolbar"><input id="contact-search" type="search" placeholder="Pretraži medij, državu, osobu ili e-mail"><select id="status-filter"><option value="">Svi statusi</option><option value="pending">Na čekanju</option><option value="sent">Poslano</option><option value="failed">Neuspjelo</option></select><span id="contact-count">0 kontakata</span></div>
+          <div class="toolbar"><input id="contact-search" type="search" placeholder="Pretraži medij, državu, osobu ili e-mail"><select id="status-filter"><option value="">Svi statusi</option><option value="pending">Na čekanju</option><option value="blocked">Blokirano</option><option value="sent">Poslano</option><option value="failed">Neuspjelo</option></select><span id="contact-count">0 kontakata</span></div>
           <div class="table-wrap"><table><thead><tr><th>Prioritet</th><th>Medij / osoba</th><th>E-mail</th><th>Država</th><th>Status</th><th></th></tr></thead><tbody id="contacts-body"></tbody></table></div>
         </article>
       </section>
@@ -129,6 +154,6 @@
 
   <dialog id="import-dialog"><form method="dialog" id="import-form"><div class="dialog-head"><h2>Uvoz kontakata</h2><button value="cancel" aria-label="Zatvori">×</button></div><p class="muted">Podržani su XLSX, XLS i CSV. Sustav prepoznaje stupce poput email, medij, država, ime, prezime, kome_ide i personalizacija.</p><label class="drop-file">Odaberi datoteku<input id="contacts-file" type="file" accept=".xlsx,.xls,.csv,text/csv" required></label><div id="import-preview" class="import-preview">Datoteka nije odabrana.</div><div class="button-row end"><button value="cancel">Odustani</button><button id="import-apply" value="default" class="primary" disabled>Uvezi</button></div></form></dialog>
 
-  <script src="/campaign-mailer/app.js?v=20260701-1" defer></script>
+  <script src="/campaign-mailer/app.js?v=20260701-2" defer></script>
 </body>
 </html>
