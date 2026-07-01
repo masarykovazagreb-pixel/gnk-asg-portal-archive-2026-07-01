@@ -1,7 +1,8 @@
 import app from './index-mail-studio-bridge-v17.js';
 import {handleMediaCommandCenter,handleMediaCommandCenterEmail,VERSION as MEDIA_VERSION} from './media-command-center-v1.js';
+import {withoutLegacyMediaAcknowledgement,sendGlobalMediaAutoReply,VERSION as GLOBAL_REPLY_VERSION} from './media-global-auto-reply-v1.js';
 
-export const VERSION='GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V20_20260630_MAIL_STUDIO_ENGLISH';
+export const VERSION=`GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260701_${GLOBAL_REPLY_VERSION}`;
 const COOKIE='gnk_asg_admin_session';
 const MAX_AGE=43200;
 const enc=new TextEncoder();
@@ -9,7 +10,6 @@ const TOKEN_NAMES=new Set(['OPERATOR_TOKEN','GNK_ASG_OPERATOR_TOKEN','ADMIN_TOKE
 const MEDIA_UI='/media-command-center';
 const MEDIA_API='/api/media-command-center';
 const MEDIA_EMAIL='media@gnk-asg.hr';
-const MANDATORY_BCC='rht@gmx.com';
 const NAV_SCRIPT='<script defer src="/assets/admin-media-command-center-nav-v20.js?v=20260629-2"></script>';
 const PRIVATE_PATHS=['/admin-center','/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/auto-editor','/news-admin','/pdf-publisher','/social-share','/wa-center','/review',MEDIA_UI];
 
@@ -17,7 +17,6 @@ const clean=value=>String(value||'').trim();
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const isMedia=path=>path===MEDIA_UI||path.startsWith(`${MEDIA_UI}/`)||path===MEDIA_API||path.startsWith(`${MEDIA_API}/`);
 const isPrivate=path=>PRIVATE_PATHS.some(prefix=>path===prefix||path.startsWith(`${prefix}/`));
-const validEmail=value=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(clean(value));
 function json(data,status=200,extra={}){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-media-command-wrapper':VERSION,...extra}});}
 function eq(a,b){a=String(a||'');b=String(b||'');let diff=a.length^b.length;for(let i=0;i<Math.max(a.length,b.length);i++)diff|=(a.charCodeAt(i)||0)^(b.charCodeAt(i)||0);return diff===0;}
 async function sha(value){const digest=await crypto.subtle.digest('SHA-256',enc.encode(String(value||'')));return[...new Uint8Array(digest)].map(x=>x.toString(16).padStart(2,'0')).join('');}
@@ -39,13 +38,10 @@ function internalToken(auth){return`gnk-auth-v14-${auth.hash}`;}
 function patchedEnv(env,token){return new Proxy(env,{get(target,property,receiver){if(TOKEN_NAMES.has(String(property)))return token;return Reflect.get(target,property,receiver);}});}
 function patchedRequest(request,token){const headers=new Headers(request.headers);headers.set('authorization',`Bearer ${token}`);headers.set('x-operator-token',token);headers.set('x-admin-token',token);headers.set('x-gnk-asg-token',token);return new Request(request,{headers});}
 async function injectNavigation(response){const type=String(response.headers.get('content-type')||'');if(!type.includes('text/html'))return response;const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-gnk-asg-media-command-wrapper',VERSION);let html=await response.text();if(!html.includes('admin-media-command-center-nav-v20.js'))html=html.includes('</body>')?html.replace('</body>',`${NAV_SCRIPT}</body>`):html+NAV_SCRIPT;return new Response(html,{status:response.status,statusText:response.statusText,headers});}
-async function versionResponse(request,env,ctx){const response=await app.fetch(request,env,ctx);try{const payload=await response.clone().json();return json({...payload,deployedEntryPoint:'src/index-portal-final-v13.js',mediaCommandIntegrationEntryPoint:'src/index-mail-studio-bridge-v17.js',mediaCommandCenter:MEDIA_VERSION,mediaCommandWrapper:VERSION,mediaCommandRoute:'/media-command-center/',mediaCommandDeadline:'2026-07-20T23:59:59+02:00',mediaCommandEntryPoint:'src/index-media-command-center-v20.js',mediaCommandSending:'LOCKED'},200);}catch{return response;}}
+async function versionResponse(request,env,ctx){const response=await app.fetch(request,env,ctx);try{const payload=await response.clone().json();return json({...payload,deployedEntryPoint:'src/index-portal-final-v13.js',mediaCommandIntegrationEntryPoint:'src/index-mail-studio-bridge-v17.js',mediaCommandCenter:MEDIA_VERSION,mediaCommandWrapper:VERSION,mediaGlobalAutoReply:GLOBAL_REPLY_VERSION,mediaCommandRoute:'/media-command-center/',mediaCommandDeadline:'2026-07-20T23:59:59+02:00',mediaCommandEntryPoint:'src/index-media-command-center-v20.js',mediaCommandSending:'LOCKED'},200);}catch{return response;}}
 function header(message,name){try{return clean(message?.headers?.get?.(name));}catch{return'';}}
 function address(value){const text=clean(value);const match=text.match(/<([^>]+)>/);return clean(match?.[1]||text).toLowerCase();}
 function mediaTarget(message){return address(message?.to||header(message,'to'))===MEDIA_EMAIL;}
-function automatedInbound(message,from){const auto=header(message,'auto-submitted').toLowerCase(),precedence=header(message,'precedence').toLowerCase(),subject=header(message,'subject').toLowerCase();return Boolean((auto&&auto!=='no')||/bulk|list|junk/.test(precedence)||/mailer-daemon|postmaster|no-?reply|donotreply/.test(from)||/automatic reply|auto reply|out of office|izvan ureda/.test(subject));}
-function fallbackReference(){return`GNK-MEDIA-IN-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${crypto.randomUUID().slice(0,8).toUpperCase()}`;}
-async function mediaFallbackReply(message,env,error){const from=address(message?.from||header(message,'from'));if(!validEmail(from)||from===MEDIA_EMAIL||automatedInbound(message,from))return;const ref=fallbackReference();const text=`Dear Sir or Madam,\n\nThis confirms that your message has been received by the GNK DINAMO Ltd. Group Media Relations & Accreditation Center under reference ${ref}.\n\nYour message has been placed in the human-review queue. This automatic acknowledgement is not an accreditation approval, acceptance of an offer, contractual commitment or final decision. Please quote the reference above in further correspondence.\n\nKind regards,\n\nGNK DINAMO Ltd. Group\nMedia Relations & Accreditation Center\nmedia@gnk-asg.hr`;if(!env.EMAIL?.send)return;await env.EMAIL.send({to:from,bcc:MANDATORY_BCC,from:{email:MEDIA_EMAIL,name:'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center'},replyTo:MEDIA_EMAIL,subject:`Media inquiry received — ${ref}`,text,headers:{'Auto-Submitted':'auto-replied','X-Auto-Response-Suppress':'All','X-GNK-ASG-Media-Fallback':VERSION,'X-GNK-ASG-Media-Parse-Error':String(error?.message||error||'unknown').slice(0,160)}});}
 
 export default{
   async fetch(request,env,ctx){
@@ -66,8 +62,9 @@ export default{
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
   async email(message,env,ctx){
     if(mediaTarget(message)){
-      try{if(await handleMediaCommandCenterEmail(message,env,ctx))return;}catch(error){console.error('media-command-center-email',error);try{await mediaFallbackReply(message,env,error);}catch(fallbackError){console.error('media-command-center-fallback',fallbackError);}return;}
-      return;
+      let processingError=null;
+      try{await handleMediaCommandCenterEmail(message,withoutLegacyMediaAcknowledgement(env),ctx);}catch(error){processingError=error;console.error('media-command-center-email',error);}
+      return sendGlobalMediaAutoReply(message,env,{error:processingError});
     }
     if(typeof app.email==='function')return app.email(message,env,ctx);
   }
