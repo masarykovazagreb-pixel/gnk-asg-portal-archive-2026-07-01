@@ -23,8 +23,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate current Index Contact Admin and Campaign Mailer contract
-        run: |
-          set -euo pipefail
-          node scripts/validate-minimum-index-contact-admin.mjs
-          node scripts/verify-public-redesign-contract.mjs
+      - name: Validate current Index Contact Admin and Campaign Mailer
+        run: node scripts/validate-minimum-index-contact-admin.mjs
+      - name: Validate protected backend preservation contract
+        run: node scripts/verify-public-redesign-contract.mjs
