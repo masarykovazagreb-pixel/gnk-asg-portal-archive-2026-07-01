@@ -72,10 +72,12 @@ export function patchAdminHtml(html,path=''){
     .replace(/<link[^>]+rel=["']manifest["'][^>]*>/gi,'');
   const css='<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260625-admin-v7"><link rel="stylesheet" href="/assets/admin-unified-shell-v7.css?v=20260626-auth-v9">';
   const shell='<script src="/assets/backend-ui-shell.js?v=20260625-admin-v7" defer></script><script src="/assets/admin-unified-shell-v7.js?v=20260626-auth-v9" defer></script>';
+  const mediaCampaign='<script src="/assets/admin-media-campaign-button-v1.js?v=20260701-v1" defer></script>';
   html=html.replace('</head>',`${stableFavicon}</head>`);
   if(!html.includes('/assets/admin-unified-shell-v7.css'))html=html.replace('</head>',`${css}</head>`);
   if(path==='/operator-dashboard'&&!html.includes('/assets/admin-portal-experience-v10.js'))html=html.replace('</head>','<script src="/assets/admin-portal-experience-v10.js?v=20260625-v10" defer></script></head>');
   if(!html.includes('/assets/admin-unified-shell-v7.js'))html=html.replace('</body>',`${shell}</body>`);
+  if(path==='/admin-center'&&!html.includes('/assets/admin-media-campaign-button-v1.js'))html=html.replace('</body>',`${mediaCampaign}</body>`);
   return html;
 }
 
