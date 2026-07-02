@@ -26,6 +26,7 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
+          persist-credentials: false
 
       - name: Mirror repository to recovery account
         env:
@@ -37,6 +38,8 @@ jobs:
           set -euo pipefail
           test -n "${MIRROR_TOKEN:-}"
 
+          # Ensure the checkout GITHUB_TOKEN cannot override the backup PAT.
+          git config --local --unset-all http.https://github.com/.extraheader || true
           git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
           git fetch origin --prune --tags --quiet
           git update-ref -d refs/remotes/origin/HEAD || true
@@ -57,8 +60,15 @@ jobs:
 
           git remote add recovery "https://github.com/${BACKUP_REPOSITORY}.git"
           git push --force --prune recovery 'refs/remotes/origin/*:refs/heads/*'
-          git push --force --prune recovery 'refs/tags/*:refs/tags/*'
-          git lfs push --all recovery || true
+
+          if git show-ref --tags --quiet; then
+            git push --force --prune recovery 'refs/tags/*:refs/tags/*'
+          fi
+
+          mapfile -t lfs_refs < <(git for-each-ref --format='%(refname)' refs/remotes/origin refs/tags)
+          if ((${#lfs_refs[@]})); then
+            git lfs push --all recovery "${lfs_refs[@]}" || true
+          fi
 
           source_main="$(git rev-parse refs/remotes/origin/main)"
           recovery_main="$(git ls-remote recovery refs/heads/main | awk '{print $1}')"
