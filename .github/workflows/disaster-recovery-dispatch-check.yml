@@ -13,7 +13,29 @@ jobs:
   dispatch:
     runs-on: ubuntu-latest
     steps:
-      - name: Start the approved mirror workflow
+      - name: Start and verify the approved mirror workflow
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run disaster-recovery-mirror.yml --repo beckuphome-gnk/gnk-asg-portal --ref main
+          REPOSITORY: beckuphome-gnk/gnk-asg-portal
+        shell: bash
+        run: |
+          set -euo pipefail
+          started_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          gh workflow run disaster-recovery-mirror.yml --repo "$REPOSITORY" --ref main
+
+          run_id=""
+          for attempt in $(seq 1 30); do
+            run_id="$(gh run list --repo "$REPOSITORY" --workflow disaster-recovery-mirror.yml --event workflow_dispatch --limit 10 --json databaseId,createdAt --jq '.[] | select(.createdAt >= "'"$started_at"'") | .databaseId' | head -n 1)"
+            if [ -n "$run_id" ]; then
+              break
+            fi
+            sleep 2
+          done
+
+          if [ -z "$run_id" ]; then
+            echo "Could not identify the dispatched mirror run." >&2
+            exit 1
+          fi
+
+          echo "Mirror workflow run: $run_id"
+          gh run watch "$run_id" --repo "$REPOSITORY" --exit-status
