@@ -16,4 +16,4 @@ jobs:
       - name: Start the approved mirror workflow
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run disaster-recovery-mirror.yml --ref main
+        run: gh workflow run disaster-recovery-mirror.yml --repo beckuphome-gnk/gnk-asg-portal --ref main
