@@ -1,14 +1,14 @@
 {
-  "updated_at": "2026-07-01T22:57:58+00:00",
+  "updated_at": "2026-07-02T13:21:23+00:00",
   "news": {
     "ok": true,
     "status": "ok",
     "version": "GNK_ASG_NEWS_V14_20260626",
     "engine": "news_v14_lifecycle",
-    "updated_at": "2026-07-01T22:57:58+00:00",
-    "checked_at": "2026-07-01T22:57:58+00:00",
-    "last_attempt_at": "2026-07-01T22:57:58+00:00",
-    "last_successful_refresh_at": "2026-07-01T22:57:58+00:00",
+    "updated_at": "2026-07-02T13:21:23+00:00",
+    "checked_at": "2026-07-02T13:21:23+00:00",
+    "last_attempt_at": "2026-07-02T13:21:23+00:00",
+    "last_successful_refresh_at": "2026-07-02T13:21:23+00:00",
     "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
     "timezone": "Europe/Zagreb",
     "scheduled_hours_local": [
@@ -20,12 +20,12 @@
     "minimum_healthy_sources": 15,
     "healthy_sources": 19,
     "failed_sources": 3,
-    "fetched_candidates": 408,
-    "verified_new_candidates": 234,
+    "fetched_candidates": 411,
+    "verified_new_candidates": 236,
     "public_items": 100,
     "max_public_items": 100,
     "public_contract": "title+summary+source+article_url+verified_real_image",
-    "archive_items": 157,
+    "archive_items": 156,
     "archive_capacity": 1000,
     "archive_prune_trigger": 1000,
     "archive_prune_to": 500,
@@ -35,13 +35,13 @@
     "rss_images_enabled": true,
     "open_graph_fallback_enabled": false,
     "by_group": {
-      "business": 9,
-      "markets": 9,
-      "digital-assets": 19,
-      "international": 21,
-      "technology": 19,
-      "hrvatska": 14,
-      "srbija": 9
+      "markets": 6,
+      "digital-assets": 14,
+      "srbija": 20,
+      "technology": 13,
+      "hrvatska": 18,
+      "international": 20,
+      "business": 9
     },
     "errors": [
       {
@@ -49,11 +49,11 @@
         "error": "HTTP Error 403: Forbidden"
       },
       {
-        "source": "European Central Bank",
+        "source": "International Monetary Fund",
         "error": "http_200"
       },
       {
-        "source": "International Monetary Fund",
+        "source": "European Central Bank",
         "error": "http_200"
       }
     ]
