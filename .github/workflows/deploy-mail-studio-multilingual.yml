@@ -1,11 +1,13 @@
-name: Deploy Mail Studio Multilingual
+name: Deploy Portal, Mail Studio and Sitewide SEO
 
 on:
   push:
     branches: [main]
     paths:
       - ".github/workflows/deploy-mail-studio-multilingual.yml"
-      - "apps/portal/assets/mail-studio-multilingual-v25.js"
+      - "apps/portal/**/*.html"
+      - "apps/portal/assets/**"
+      - "apps/portal/scripts/generate_sitewide_seo.py"
       - "workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
       - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
@@ -15,21 +17,54 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-mail-studio-multilingual
+  group: gnk-asg-direct-operator-production
   cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
         with:
           ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
-      - name: Validate source
+
+      - name: Generate SEO for every public HTML page
+        run: |
+          set -euo pipefail
+          python -m py_compile apps/portal/scripts/generate_sitewide_seo.py
+          python apps/portal/scripts/generate_sitewide_seo.py
+          python - <<'PY'
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          root = Path("apps/portal")
+          report = json.loads((root / "data/seo-report.json").read_text(encoding="utf-8"))
+          routes = {page["route"] for page in report["publicPages"]}
+          assert report["publicPageCount"] >= 10, report["publicPageCount"]
+          assert {"/", "/nermin-sefic/", "/visual-index/"} <= routes
+          ET.parse(root / "sitemap.xml")
+          ET.parse(root / "image-sitemap.xml")
+          home = (root / "index.html").read_text(encoding="utf-8")
+          profile = (root / "nermin-sefic/index.html").read_text(encoding="utf-8")
+          assert "SITEWIDE-SEO:BEGIN" in home
+          assert "GNK DINAMO Ltd." in home and "Nermin Sefić" in home
+          assert 'rel="canonical"' in home
+          assert '"@type":"Organization"' in home
+          assert '"@type":"Person"' in profile
+          print(f"SEO validated for {report['publicPageCount']} public pages; {report['noindexFileCount']} private/test files protected")
+          PY
+
+      - name: Validate portal and Worker source
         run: |
           set -euo pipefail
           node --check apps/portal/assets/mail-studio-multilingual-v25.js
@@ -42,25 +77,40 @@ jobs:
           grep -q "name:'Sydney'" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
+
       - name: Deploy to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator
-      - name: Verify production
+
+      - name: Verify portal, SEO and Mail Studio in production
         run: |
           set -euo pipefail
           base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
           for attempt in $(seq 1 30); do
             cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+            home_code=$(curl -sS -L -o /tmp/home.html -w '%{http_code}' "$base/?cb=$cb" || true)
+            profile_code=$(curl -sS -L -o /tmp/profile.html -w '%{http_code}' "$base/nermin-sefic/?cb=$cb" || true)
+            sitemap_code=$(curl -sS -L -o /tmp/sitemap.xml -w '%{http_code}' "$base/sitemap.xml?cb=$cb" || true)
+            images_code=$(curl -sS -L -o /tmp/image-sitemap.xml -w '%{http_code}' "$base/image-sitemap.xml?cb=$cb" || true)
             mail_code=$(curl -sS -D /tmp/mail.headers -o /tmp/mail.html -w '%{http_code}' "$base/mail-studio/?cb=$cb" || true)
             asset_code=$(curl -sS -o /tmp/mail-multi.js -w '%{http_code}' "$base/assets/mail-studio-multilingual-v25.js?cb=$cb" || true)
-            if { [ "$mail_code" = "200" ] || [ "$mail_code" = "401" ] || [ "$mail_code" = "403" ]; } \
+            if [ "$home_code" = "200" ] \
+              && [ "$profile_code" = "200" ] \
+              && [ "$sitemap_code" = "200" ] \
+              && [ "$images_code" = "200" ] \
+              && { [ "$mail_code" = "200" ] || [ "$mail_code" = "401" ] || [ "$mail_code" = "403" ]; } \
               && [ "$asset_code" = "200" ] \
+              && grep -q 'SITEWIDE-SEO:BEGIN' /tmp/home.html \
+              && grep -q 'Nermin Sefić' /tmp/profile.html \
+              && grep -q '/nermin-sefic/' /tmp/sitemap.xml \
+              && grep -q 'image:image' /tmp/image-sitemap.xml \
               && grep -q 'GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V25_20260702' /tmp/mail-multi.js \
               && grep -q 'press@gnk-asg.hr' /tmp/mail-multi.js \
               && grep -qi '^x-gnk-asg-mail-studio-extension: GNK_ASG_MAIL_STUDIO_EXTENSION_V1_20260702_MULTILINGUAL_ROUTING' /tmp/mail.headers; then
+              echo "Portal, sitewide SEO and Mail Studio deployment verified."
               exit 0
             fi
             sleep 6
