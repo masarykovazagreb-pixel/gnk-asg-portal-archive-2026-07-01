@@ -39,7 +39,9 @@ jobs:
 
           echo "Mirror workflow run: $run_id"
           if ! gh run watch "$run_id" --repo "$REPOSITORY" --exit-status; then
-            echo "----- concise failed-step log -----"
-            gh run view "$run_id" --repo "$REPOSITORY" --log-failed | tail -n 30 || true
+            echo "----- filtered failed-step diagnostics -----"
+            gh run view "$run_id" --repo "$REPOSITORY" --log-failed \
+              | grep -Ei 'fatal:|remote:|error:|denied|forbidden|403|401|refusing|failed to|cannot|could not' \
+              | tail -n 20 || true
             exit 1
           fi
