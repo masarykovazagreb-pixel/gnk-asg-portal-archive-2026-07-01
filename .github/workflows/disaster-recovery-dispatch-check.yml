@@ -1,0 +1,14 @@
+name: Disaster Recovery Diagnostics
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain diagnostic status
+        run: echo "Use Disaster Recovery Mirror V2 for production backup verification."
