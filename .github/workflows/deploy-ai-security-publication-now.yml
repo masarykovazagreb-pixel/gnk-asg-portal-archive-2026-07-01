@@ -30,6 +30,10 @@ jobs:
         with:
           show-progress: false
 
+      - name: Install Worker dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --no-audit --no-fund
+
       - name: Deploy portal assets to Cloudflare
         id: wrangler
         continue-on-error: true
@@ -96,8 +100,13 @@ jobs:
 
       - name: Record verified publication
         if: steps.wrangler.outputs.exit_code == '0'
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
         run: |
           set -euo pipefail
+          branch="${HEAD_BRANCH:-main}"
+          git fetch origin "$branch"
+          git checkout -B "$branch" "origin/$branch"
           mkdir -p apps/portal/data
           cat > apps/portal/data/publication-deployment-status.json <<JSON
           {
@@ -115,7 +124,5 @@ jobs:
           git config user.name "gnk-asg-deploy-bot"
           git config user.email "actions@users.noreply.github.com"
           git add apps/portal/data/publication-deployment-status.json
-          if ! git diff --cached --quiet; then
-            git commit -m "Record verified AI security publication deployment [skip ci]"
-            git push origin HEAD:main
-          fi
+          git commit -m "Record verified AI security publication deployment [skip ci]" || true
+          git push origin HEAD:"$branch"
