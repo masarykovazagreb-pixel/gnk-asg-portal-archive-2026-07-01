@@ -8,6 +8,10 @@ on:
       - "apps/portal/objave/ai-shrinks-security-window-apple-accelerates-patches/**"
       - "apps/portal/publications/ai-shrinks-security-window-apple-accelerates-patches/**"
       - "apps/portal/assets/deploy-publication-20260702.txt"
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/portal/assets/deploy-publication-20260702.txt"
   workflow_dispatch:
 
 permissions:
