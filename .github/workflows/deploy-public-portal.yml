@@ -1,31 +1,22 @@
-name: Deploy public portal
+name: Legacy public portal diagnostics (manual only)
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-public-portal.yml'
-      - 'apps/portal/**'
-      - 'workers/gnk-asg-direct-operator/src/**'
-      - 'workers/gnk-asg-direct-operator/wrangler.toml'
-      - 'scripts/verify-public-redesign-contract.mjs'
-      - 'scripts/validate-minimum-index-contact-admin.mjs'
-      - 'scripts/validate-worker-import-graph.mjs'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-public-portal-production
+  group: gnk-asg-direct-operator-production
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  diagnostics:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
+
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
@@ -34,64 +25,21 @@ jobs:
         working-directory: workers/gnk-asg-direct-operator
         run: npm install --no-audit --no-fund
 
-      - name: Validate canonical gateway and protected applications
+      - name: Validate legacy and canonical gateways
         shell: bash
         run: |
           set -euo pipefail
-          node --check apps/portal/assets/public-menu-v18.js
-          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
-          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
-          node scripts/validate-minimum-index-contact-admin.mjs
-          node scripts/verify-public-redesign-contract.mjs
-          node scripts/validate-worker-import-graph.mjs
-          grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js
+          test "$(grep -c '^main = "src/index-final-admin-gateway-v2.js"$' workers/gnk-asg-direct-operator/wrangler.runtime.toml)" = '1'
 
-      - name: Deploy canonical Worker to Cloudflare
+      - name: Bundle canonical Worker without deployment
         working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx wrangler deploy --config wrangler.toml --name gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
 
-      - name: Verify production without sending mail
-        shell: bash
+      - name: Explain safety state
         run: |
-          set -euo pipefail
-          base='https://gnk-asg.hr'
-          ready=false
-          for attempt in $(seq 1 24); do
-            cb="${GITHUB_RUN_ID}-${attempt}"
-            hr_code=$(curl -sS -D /tmp/hr.headers -o /tmp/hr.html -w '%{http_code}' "$base/?cb=$cb" || true)
-            en_code=$(curl -sS -D /tmp/en.headers -o /tmp/en.html -w '%{http_code}' "$base/en/?cb=$cb" || true)
-            contact_code=$(curl -sS -D /tmp/contact.headers -o /tmp/contact.html -w '%{http_code}' "$base/contact/?cb=$cb" || true)
-            application_code=$(curl -sS -D /tmp/application.headers -o /tmp/application.html -w '%{http_code}' "$base/media-application/?cb=$cb" || true)
-            campaign_code=$(curl -sS -D /tmp/campaign.headers -o /tmp/campaign.html -w '%{http_code}' "$base/campaign-mailer/?cb=$cb" || true)
-            campaign_api_code=$(curl -sS -D /tmp/campaign-api.headers -o /tmp/campaign-api.json -w '%{http_code}' "$base/api/campaign-mailer/health?cb=$cb" || true)
-            admin_code=$(curl -sS -o /dev/null -w '%{http_code}' "$base/admin-center/?cb=$cb" || true)
-            media_code=$(curl -sS -o /dev/null -w '%{http_code}' "$base/media-command-center/?cb=$cb" || true)
-
-            if [ "$hr_code" = '200' ] \
-              && [ "$en_code" = '200' ] \
-              && [ "$contact_code" = '200' ] \
-              && [ "$application_code" = '200' ] \
-              && grep -q '/assets/public-menu-v18.js' /tmp/hr.html \
-              && grep -q '/assets/public-redesign-v1.css' /tmp/hr.html \
-              && grep -q '/assets/public-menu-v18.js' /tmp/en.html \
-              && grep -q '/api/contact-submit' /tmp/contact.html \
-              && ! grep -q '/assets/public-menu-v18.js' /tmp/application.html \
-              && { [ "$campaign_code" = '200' ] || [ "$campaign_code" = '303' ] || [ "$campaign_code" = '401' ]; } \
-              && [ "$campaign_api_code" = '401' ] \
-              && { [ "$admin_code" = '200' ] || [ "$admin_code" = '303' ] || [ "$admin_code" = '401' ] || [ "$admin_code" = '403' ]; } \
-              && { [ "$media_code" = '200' ] || [ "$media_code" = '303' ] || [ "$media_code" = '401' ] || [ "$media_code" = '403' ]; }; then
-              ready=true
-              break
-            fi
-            sleep 10
-          done
-
-          printf 'HR=%s EN=%s CONTACT=%s APPLICATION=%s CAMPAIGN=%s CAMPAIGN_API=%s ADMIN=%s MEDIA=%s READY=%s\n' \
-            "$hr_code" "$en_code" "$contact_code" "$application_code" "$campaign_code" "$campaign_api_code" "$admin_code" "$media_code" "$ready"
-          test "$ready" = 'true'
-          echo 'Public redesign and protected applications verified. No email or campaign dispatch was executed.'
+          echo 'Legacy automatic production deployment is intentionally retired.'
+          echo 'This workflow performs diagnostics only and never deploys or sends email.'
