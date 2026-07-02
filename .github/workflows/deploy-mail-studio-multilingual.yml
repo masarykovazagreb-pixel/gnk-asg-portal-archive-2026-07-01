@@ -8,6 +8,7 @@ on:
       - "apps/portal/**/*.html"
       - "apps/portal/assets/**"
       - "apps/portal/scripts/generate_sitewide_seo.py"
+      - "apps/portal/scripts/finalize_sitewide_seo.py"
       - "workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
       - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
@@ -41,8 +42,9 @@ jobs:
       - name: Generate SEO for every public HTML page
         run: |
           set -euo pipefail
-          python -m py_compile apps/portal/scripts/generate_sitewide_seo.py
+          python -m py_compile apps/portal/scripts/generate_sitewide_seo.py apps/portal/scripts/finalize_sitewide_seo.py
           python apps/portal/scripts/generate_sitewide_seo.py
+          python apps/portal/scripts/finalize_sitewide_seo.py
           python - <<'PY'
           import json
           import xml.etree.ElementTree as ET
@@ -51,8 +53,10 @@ jobs:
           root = Path("apps/portal")
           report = json.loads((root / "data/seo-report.json").read_text(encoding="utf-8"))
           routes = {page["route"] for page in report["publicPages"]}
+          technical = ("/assets/", "/data/", "/scripts/", "/workers/", "/packages/", "/docs/", "/contracts/")
           assert report["publicPageCount"] >= 10, report["publicPageCount"]
           assert {"/", "/nermin-sefic/", "/visual-index/"} <= routes
+          assert not any(route.startswith(technical) for route in routes)
           ET.parse(root / "sitemap.xml")
           ET.parse(root / "image-sitemap.xml")
           home = (root / "index.html").read_text(encoding="utf-8")
@@ -62,7 +66,12 @@ jobs:
           assert 'rel="canonical"' in home
           assert '"@type":"Organization"' in home
           assert '"@type":"Person"' in profile
-          print(f"SEO validated for {report['publicPageCount']} public pages; {report['noindexFileCount']} private/test files protected")
+          assert "https://gnk-asg.hr/" not in home
+          print(
+              f"SEO validated for {report['publicPageCount']} public pages; "
+              f"{report['noindexFileCount']} private/test files protected; "
+              f"{report.get('excludedTechnicalPageCount', 0)} technical routes excluded"
+          )
           PY
 
       - name: Validate portal and Worker source
@@ -107,6 +116,7 @@ jobs:
               && grep -q 'SITEWIDE-SEO:BEGIN' /tmp/home.html \
               && grep -q 'Nermin Sefić' /tmp/profile.html \
               && grep -q '/nermin-sefic/' /tmp/sitemap.xml \
+              && ! grep -q '<loc>https://www.gnk-asg.hr/assets/' /tmp/sitemap.xml \
               && grep -q 'image:image' /tmp/image-sitemap.xml \
               && grep -q 'GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V25_20260702' /tmp/mail-multi.js \
               && grep -q 'press@gnk-asg.hr' /tmp/mail-multi.js \
