@@ -97,8 +97,10 @@ jobs:
           grep -q "press@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
           grep -q "assistant@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
           grep -q "name:'Sydney'" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
-          grep -q "daily_quota_exceeded" workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
-          grep -q "CAMPAIGN_MAILER_MAX_PER_DAY = \"190\"" workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q "automaticRetry:false" workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
+          grep -q "delay_seconds:600" workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
+          grep -q "CAMPAIGN_MAILER_MAX_PER_DAY = \"140\"" workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q "MAIL_MANUAL_MAX_PER_DAY = \"5\"" workers/gnk-asg-direct-operator/wrangler.runtime.toml
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
 
@@ -136,7 +138,7 @@ jobs:
               && grep -q 'image:image' /tmp/image-sitemap.xml \
               && grep -q 'GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V25_20260702_PROVIDER_ERRORS' /tmp/mail-multi.js \
               && grep -q 'press@gnk-asg.hr' /tmp/mail-multi.js \
-              && grep -qi '^x-gnk-asg-mail-studio-extension: GNK_ASG_MAIL_STUDIO_EXTENSION_V3_20260702_PROVIDER_ERRORS' /tmp/mail.headers; then
+              && grep -qi '^x-gnk-asg-mail-studio-extension: GNK_ASG_MAIL_STUDIO_EXTENSION_V4_20260702_MANUAL_SEND_GUARD' /tmp/mail.headers; then
               echo "Portal, Campaign Mailer and Mail Studio deployment verified."
               exit 0
             fi
