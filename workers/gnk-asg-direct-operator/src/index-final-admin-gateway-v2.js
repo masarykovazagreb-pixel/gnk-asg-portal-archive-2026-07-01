@@ -10,8 +10,9 @@ import {handleMediaRegistrationPublic,VERSION as REGISTRATION_VERSION} from './m
 import {handleMediaBootstrapPdfForwardFix,VERSION as PDF_FORWARD_FIX_VERSION} from './media-bootstrap-pdf-forward-fix-v1.js';
 import {handlePublicTheCodePdf,VERSION as PUBLIC_THE_CODE_PDF_VERSION} from './public-the-code-pdf-v1.js';
 import {handleMailStudioExtension,patchMailStudioResponse,handleMailStudioInbound,VERSION as MAIL_STUDIO_VERSION} from './mail-studio-extension-v2.js';
+import {prepareAiAutoReply,VERSION as AI_AUTO_REPLY_VERSION} from './ai-inbound-auto-reply-v1.js';
 const PUBLICATION_ROUTE_VERSION='GNK_ASG_STATIC_PUBLICATION_ROUTE_V1_20260702';
-export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
+export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
 const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(env));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const clean=value=>String(value??'').trim();
@@ -47,10 +48,10 @@ export default{
  },
  scheduled(event,env,ctx){const active=protectedEnv(env),task=Promise.allSettled([runQueue(env),typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)]);if(ctx?.waitUntil){ctx.waitUntil(task);return}return task},
  async email(message,env,ctx){
-  const active=protectedEnv(env);
-  const fixed=await handleMediaBootstrapPdfForwardFix(message,active,ctx);if(fixed?.handled)return fixed;
-  await recordInbound(message,env);
-  const studio=await handleMailStudioInbound(message,env,ctx);if(studio?.handled)return studio;
-  if(typeof app.email==='function')return app.email(message,isMediaInbound(message)?env:active,ctx);
+  const ai=prepareAiAutoReply(message,env),inbound=ai.message,aiEnv=ai.env,active=protectedEnv(aiEnv);
+  const fixed=await handleMediaBootstrapPdfForwardFix(inbound,active,ctx);if(fixed?.handled)return fixed;
+  await recordInbound(inbound,aiEnv);
+  const studio=await handleMailStudioInbound(inbound,aiEnv,ctx);if(studio?.handled)return studio;
+  if(typeof app.email==='function')return app.email(inbound,isMediaInbound(inbound)?aiEnv:active,ctx);
  }
 };
