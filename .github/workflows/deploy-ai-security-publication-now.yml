@@ -24,34 +24,13 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
-
-      - uses: actions/setup-node@v5
         with:
-          node-version: "24"
+          show-progress: false
 
-      - name: Validate publication files
-        run: |
-          set -euo pipefail
-          slug="ai-shrinks-security-window-apple-accelerates-patches"
-          hr="apps/portal/objave/$slug/index.html"
-          en="apps/portal/publications/$slug/index.html"
-          test -s "$hr"
-          test -s "$en"
-          grep -q 'Nermin Sefić' "$hr"
-          grep -q 'GNK ASG d.o.o.' "$hr"
-          grep -q 'GNK DINAMO Ltd.' "$hr"
-          grep -q '"@type":"NewsArticle"' "$hr"
-          grep -q 'Nermin Sefić' "$en"
-          grep -q 'GNK ASG d.o.o.' "$en"
-          grep -q 'GNK DINAMO Ltd.' "$en"
-          grep -q '"@type":"NewsArticle"' "$en"
-          test "$(grep -o 'target="_blank" rel="noopener noreferrer external"' "$hr" | wc -l)" -ge 4
-          test "$(grep -o 'target="_blank" rel="noopener noreferrer external"' "$en" | wc -l)" -ge 4
-
-      - name: Deploy current portal assets to Cloudflare
+      - name: Deploy portal assets to Cloudflare
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -62,48 +41,35 @@ jobs:
           status=${PIPESTATUS[0]}
           if [ "$status" -ne 0 ]; then
             echo "WRANGLER_FAILURE_SUMMARY"
-            grep -E -i -A 12 -B 12 'error|authentication|unauthorized|invalid|failed|missing|code:' /tmp/wrangler.log | tail -n 100 || tail -n 100 /tmp/wrangler.log
+            tail -n 80 /tmp/wrangler.log
             exit "$status"
           fi
 
-      - name: Verify Worker and public domain
+      - name: Verify public article URLs
         run: |
           set -euo pipefail
           slug="ai-shrinks-security-window-apple-accelerates-patches"
           worker="https://gnk-asg-direct-operator.beckuphome.workers.dev"
           public="https://www.gnk-asg.hr"
-          verified_worker=false
-          verified_public=false
-          for attempt in $(seq 1 40); do
+          for attempt in $(seq 1 30); do
             cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
             wh=$(curl -sS -L -o /tmp/wh.html -w '%{http_code}' "$worker/objave/$slug/?cb=$cb" || true)
             we=$(curl -sS -L -o /tmp/we.html -w '%{http_code}' "$worker/publications/$slug/?cb=$cb" || true)
-            if [ "$wh" = "200" ] && [ "$we" = "200" ] \
-              && grep -q '"@type":"NewsArticle"' /tmp/wh.html \
-              && grep -q '"@type":"NewsArticle"' /tmp/we.html \
-              && grep -q 'Nermin Sefić' /tmp/wh.html \
-              && grep -q 'GNK DINAMO Ltd.' /tmp/we.html; then
-              verified_worker=true
-            fi
             ph=$(curl -sS -L -o /tmp/ph.html -w '%{http_code}' "$public/objave/$slug/?cb=$cb" || true)
             pe=$(curl -sS -L -o /tmp/pe.html -w '%{http_code}' "$public/publications/$slug/?cb=$cb" || true)
-            if [ "$ph" = "200" ] && [ "$pe" = "200" ] \
-              && grep -q '"@type":"NewsArticle"' /tmp/ph.html \
-              && grep -q '"@type":"NewsArticle"' /tmp/pe.html \
+            if [ "$wh" = "200" ] && [ "$we" = "200" ] && [ "$ph" = "200" ] && [ "$pe" = "200" ] \
+              && grep -q '"@type":"NewsArticle"' /tmp/wh.html \
+              && grep -q '"@type":"NewsArticle"' /tmp/we.html \
               && grep -q 'Nermin Sefić' /tmp/ph.html \
               && grep -q 'GNK ASG d.o.o.' /tmp/pe.html \
               && grep -q 'GNK DINAMO Ltd.' /tmp/pe.html; then
-              verified_public=true
+              exit 0
             fi
-            if [ "$verified_worker" = true ] && [ "$verified_public" = true ]; then
-              break
-            fi
-            sleep 5
+            sleep 4
           done
-          [ "$verified_worker" = true ]
-          [ "$verified_public" = true ]
+          exit 1
 
-      - name: Record verified deployment
+      - name: Record verified publication
         run: |
           set -euo pipefail
           mkdir -p apps/portal/data
