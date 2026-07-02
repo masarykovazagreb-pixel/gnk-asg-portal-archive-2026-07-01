@@ -7,10 +7,16 @@ on:
       - ".github/workflows/deploy-mail-studio-multilingual.yml"
       - "apps/portal/**/*.html"
       - "apps/portal/assets/**"
+      - "apps/portal/campaign-mailer/**"
       - "apps/portal/scripts/generate_sitewide_seo.py"
       - "apps/portal/scripts/finalize_sitewide_seo.py"
       - "workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js"
+      - "workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js"
+      - "workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js"
+      - "workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js"
+      - "workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js"
       - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js"
       - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
   workflow_dispatch:
 
@@ -78,13 +84,21 @@ jobs:
         run: |
           set -euo pipefail
           node --check apps/portal/assets/mail-studio-multilingual-v25.js
+          node --check apps/portal/campaign-mailer/control-v2.js
           node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q "sefic@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
           grep -q "ubo@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
           grep -q "press@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
           grep -q "assistant@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
           grep -q "name:'Sydney'" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
+          grep -q "daily_quota_exceeded" workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
+          grep -q "CAMPAIGN_MAILER_MAX_PER_DAY = \"190\"" workers/gnk-asg-direct-operator/wrangler.runtime.toml
           cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
 
@@ -107,21 +121,23 @@ jobs:
             images_code=$(curl -sS -L -o /tmp/image-sitemap.xml -w '%{http_code}' "$base/image-sitemap.xml?cb=$cb" || true)
             mail_code=$(curl -sS -D /tmp/mail.headers -o /tmp/mail.html -w '%{http_code}' "$base/mail-studio/?cb=$cb" || true)
             asset_code=$(curl -sS -o /tmp/mail-multi.js -w '%{http_code}' "$base/assets/mail-studio-multilingual-v25.js?cb=$cb" || true)
+            campaign_asset_code=$(curl -sS -o /tmp/campaign-control.js -w '%{http_code}' "$base/campaign-mailer/control-v2.js?cb=$cb" || true)
             if [ "$home_code" = "200" ] \
               && [ "$profile_code" = "200" ] \
               && [ "$sitemap_code" = "200" ] \
               && [ "$images_code" = "200" ] \
               && { [ "$mail_code" = "200" ] || [ "$mail_code" = "401" ] || [ "$mail_code" = "403" ]; } \
               && [ "$asset_code" = "200" ] \
+              && { [ "$campaign_asset_code" = "200" ] || [ "$campaign_asset_code" = "303" ]; } \
               && grep -q 'SITEWIDE-SEO:BEGIN' /tmp/home.html \
               && grep -q 'Nermin Sefić' /tmp/profile.html \
               && grep -q '/nermin-sefic/' /tmp/sitemap.xml \
               && ! grep -q '<loc>https://www.gnk-asg.hr/assets/' /tmp/sitemap.xml \
               && grep -q 'image:image' /tmp/image-sitemap.xml \
-              && grep -q 'GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V25_20260702' /tmp/mail-multi.js \
+              && grep -q 'GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V25_20260702_PROVIDER_ERRORS' /tmp/mail-multi.js \
               && grep -q 'press@gnk-asg.hr' /tmp/mail-multi.js \
-              && grep -qi '^x-gnk-asg-mail-studio-extension: GNK_ASG_MAIL_STUDIO_EXTENSION_V1_20260702_MULTILINGUAL_ROUTING' /tmp/mail.headers; then
-              echo "Portal, sitewide SEO and Mail Studio deployment verified."
+              && grep -qi '^x-gnk-asg-mail-studio-extension: GNK_ASG_MAIL_STUDIO_EXTENSION_V3_20260702_PROVIDER_ERRORS' /tmp/mail.headers; then
+              echo "Portal, Campaign Mailer and Mail Studio deployment verified."
               exit 0
             fi
             sleep 6
