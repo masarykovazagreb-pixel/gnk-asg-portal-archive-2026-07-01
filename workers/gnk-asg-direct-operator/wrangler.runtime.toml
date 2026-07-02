@@ -30,15 +30,21 @@ bucket_name = "gnk-asg-media-assets"
 name = "EMAIL"
 remote = true
 
+[ai]
+binding = "AI"
+
 [triggers]
 crons = ["*/3 * * * *"]
 
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
-DEPLOY_REVISION = "20260702-ten-minute-no-retry-v5"
+DEPLOY_REVISION = "20260702-cloudflare-ai-mail-replies-v1"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+AI_AUTO_REPLY_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+AI_AUTO_REPLY_FALLBACK_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+AI_AUTO_REPLY_DISABLED = "false"
 MAIL_MANUAL_LIVE = "true"
 MAIL_MANDATORY_BCC = "rht@gmx.com"
 MAIL_MANUAL_MAX_PER_DAY = "5"
