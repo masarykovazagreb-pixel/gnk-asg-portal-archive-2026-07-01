@@ -95,6 +95,8 @@ def stripseo(s):
  h=m.group(1);h=re.sub(r'\s*<meta\b[^>]*(?:name=["\'](?:description|keywords|author|robots|googlebot|twitter:[^"\']+)["\']|property=["\']og:[^"\']+["\'])[^>]*>','',h,flags=re.I);h=re.sub(r'\s*<link\b[^>]*rel=["\'](?:canonical|alternate)["\'][^>]*>','',h,flags=re.I);h=re.sub(r'\s*<script\b[^>]*type=["\']application/ld\+json["\'][^>]*>.*?</script>','',h,flags=re.I|re.S);return s[:m.start(1)]+h+s[m.end(1):]
 def imgs(s,t):
  found=[];i=0
+ def attr(tag,value):
+  x=tag.rstrip();close='/>' if x.endswith('/>') else '>';x=x[:-2].rstrip() if close=='/>' else x[:-1].rstrip();return x+' '+value+close
  def f(m):
   nonlocal i
   tag=m.group(0);q=re.search(r'\bsrc=["\']([^"\']+)',tag,re.I)
@@ -102,9 +104,9 @@ def imgs(s,t):
   src=q.group(1).strip()
   if src and not src.startswith('data:'):found.append(urljoin(SITE,src))
   if not re.search(r'\balt=',tag,re.I):
-   stem=Path(src.split('?',1)[0]).stem.replace('-',' ').replace('_',' ').strip();alt=clip((stem.title()+' — '+t.split('|')[0].strip()) if stem else t,125);tag=tag[:-1].rstrip()+f' alt="{html.escape(alt,quote=True)}">'
-  if not re.search(r'\bdecoding=',tag,re.I):tag=tag[:-1].rstrip()+' decoding="async">'
-  if i>0 and not re.search(r'\bloading=',tag,re.I) and not re.search(r'(?:hero|logo|brand|above-fold)',tag,re.I):tag=tag[:-1].rstrip()+' loading="lazy">'
+   stem=Path(src.split('?',1)[0]).stem.replace('-',' ').replace('_',' ').strip();alt=clip((stem.title()+' — '+t.split('|')[0].strip()) if stem else t,125);tag=attr(tag,f'alt="{html.escape(alt,quote=True)}"')
+  if not re.search(r'\bdecoding=',tag,re.I):tag=attr(tag,'decoding="async"')
+  if i>0 and not re.search(r'\bloading=',tag,re.I) and not re.search(r'(?:hero|logo|brand|above-fold)',tag,re.I):tag=attr(tag,'loading="lazy"')
   i+=1;return tag
  return re.sub(r'<img\b[^>]*>',f,s,flags=re.I),sorted(set(found))
 def nav(s,l):
