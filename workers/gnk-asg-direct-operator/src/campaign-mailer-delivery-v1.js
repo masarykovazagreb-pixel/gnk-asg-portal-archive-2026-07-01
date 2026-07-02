@@ -2,7 +2,7 @@ import {EmailMessage} from 'cloudflare:email';
 import {ensureSchema,stateRow,updateState,stats,logEvent,clean,validEmail,int,bucketOf,timestamp} from './campaign-mailer-db-v1.js';
 import {ensureMediaHtmlSignature} from './media-email-gold-signature-v1.js';
 
-export const VERSION='GNK_ASG_CAMPAIGN_MAILER_DELIVERY_V3_20260702_QUOTA_GUARD';
+export const VERSION='GNK_ASG_CAMPAIGN_MAILER_DELIVERY_V4_20260702_REPUTATION_GUARD';
 const enc=new TextEncoder(),FROM_DEFAULT='media@gnk-asg.hr',SENDER_DEFAULT='GNK ASG Media Relations';
 
 function merge(t,c){const v={ime:c.ime||'',prezime:c.prezime||'',email:c.email||'',personalizacija:c.personalizacija||'',medij:c.medij||'',kome_ide:c.kome_ide||'',drzava:c.drzava||'',regija:c.regija||'',jezik:c.jezik||''};return String(t||'').replace(/\{\{\s*([a-z0-9_]+)\s*\}\}/gi,(_,k)=>v[String(k).toLowerCase()]??'')}
@@ -11,15 +11,18 @@ function text(html){return String(html||'').replace(/<style\b[^>]*>[\s\S]*?<\/st
 function b64(bytes){let out='';const v=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);for(let i=0;i<v.length;i+=32768)out+=String.fromCharCode(...v.subarray(i,i+32768));return btoa(out)}
 const fold=v=>String(v).replace(/.{1,76}/g,'$&\r\n').trimEnd(),u64=v=>fold(b64(enc.encode(String(v||'')))),word=v=>`=?UTF-8?B?${b64(enc.encode(String(v||'')))}?=`,header=v=>clean(v).replace(/[\r\n]+/g,' ');
 const errorText=error=>String(error?.message||error||'').slice(0,500);
-const isDailyQuotaError=error=>/E_DAILY_LIMIT_EXCEEDED|daily sending quota exceeded/i.test(`${clean(error?.code)} ${errorText(error)}`);
-const isSuppressionError=error=>/suppressed|repeated bounces|reported your emails as spam/i.test(errorText(error));
+const errorSignal=error=>`${clean(error?.code)} ${errorText(error)}`;
+const isDailyQuotaError=error=>/E_DAILY_LIMIT_EXCEEDED|daily sending quota exceeded/i.test(errorSignal(error));
+const isSafetyLimitError=error=>/CAMPAIGN_SAFETY_LIMIT|sigurnosni limit slanja/i.test(errorSignal(error));
+const isSuppressionError=error=>/suppressed|repeated bounces|reported your emails as spam/i.test(errorSignal(error));
+const isInvalidRecipientError=error=>/E_VALIDATION_ERROR|invalid email address|invalid email user|mailbox (?:does not exist|unavailable)|user unknown|unknown recipient|recipient rejected/i.test(errorSignal(error));
 
 async function raw(env,to,subject,html,row){const from=clean(env.CAMPAIGN_MAILER_FROM||env.MEDIA_OUTREACH_FROM)||FROM_DEFAULT,name=clean(env.CAMPAIGN_MAILER_SENDER_NAME)||SENDER_DEFAULT,bound=`gnk_${crypto.randomUUID().replace(/-/g,'')}`,lines=[`From: ${word(name)} <${from}>`,`To: ${to}`,`Reply-To: ${from}`,`Subject: ${word(subject)}`,`Date: ${new Date().toUTCString()}`,`Message-ID: <${crypto.randomUUID()}@gnk-asg.hr>`,'MIME-Version: 1.0','X-GNK-ASG-Campaign-Mailer: '+VERSION];const key=clean(row.attachment_r2_key),bucket=bucketOf(env);if(key&&bucket){const object=await bucket.get(key);if(object){const bytes=new Uint8Array(await object.arrayBuffer()),filename=header(row.attachment_original_name||'attachment.pdf').replace(/"/g,'');lines.push(`Content-Type: multipart/mixed; boundary="${bound}"`,'',`--${bound}`,'Content-Type: text/html; charset=UTF-8','Content-Transfer-Encoding: base64','',u64(html),`--${bound}`,`Content-Type: ${row.attachment_mime_type||'application/pdf'}; name="${filename}"`,`Content-Disposition: attachment; filename="${filename}"`,'Content-Transfer-Encoding: base64','',fold(b64(bytes)),`--${bound}--`,'');return lines.join('\r\n')}}lines.push('Content-Type: text/html; charset=UTF-8','Content-Transfer-Encoding: base64','',u64(html),'');return lines.join('\r\n')}
-async function rate(env){const db=await ensureSchema(env),hour=int(env.CAMPAIGN_MAILER_MAX_PER_HOUR||env.MEDIA_OUTREACH_MAX_PER_HOUR,12,1,1000),day=int(env.CAMPAIGN_MAILER_MAX_PER_DAY||env.MEDIA_OUTREACH_MAX_PER_DAY,190,1,10000),h=Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_events WHERE event_type='sent' AND strftime('%s',created_at)>=strftime('%s','now','-1 hour')`).first())?.c||0),d=Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_events WHERE event_type='sent' AND strftime('%s',created_at)>=strftime('%s','now','-1 day')`).first())?.c||0);return{ok:h<hour&&d<day,hour:{used:h,limit:hour},day:{used:d,limit:day}}}
+async function rate(env){const db=await ensureSchema(env),hour=int(env.CAMPAIGN_MAILER_MAX_PER_HOUR||env.MEDIA_OUTREACH_MAX_PER_HOUR,10,1,1000),day=int(env.CAMPAIGN_MAILER_MAX_PER_DAY||env.MEDIA_OUTREACH_MAX_PER_DAY,150,1,10000),h=Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_events WHERE event_type='sent' AND strftime('%s',created_at)>=strftime('%s','now','-1 hour')`).first())?.c||0),d=Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_events WHERE event_type='sent' AND strftime('%s',created_at)>=strftime('%s','now','-1 day')`).first())?.c||0);return{ok:h<hour&&d<day,hour:{used:h,limit:hour},day:{used:d,limit:day}}}
 async function blocked(env,email){const db=await ensureSchema(env);try{return Boolean(await db.prepare(`SELECT email FROM media_suppressions WHERE LOWER(email)=LOWER(?)`).bind(email).first())}catch{return false}}
 
-async function deliver(env,c,row){if(!validEmail(c.email))throw new Error('Nevažeći format email adrese');if(await blocked(env,c.email))throw new Error('Adresa je na suppression listi');const limit=await rate(env);if(!limit.ok)throw Object.assign(new Error('Dosegnut je sigurnosni limit slanja'),{code:'CAMPAIGN_SAFETY_LIMIT'});if(!env.EMAIL?.send)throw new Error('Cloudflare EMAIL binding nije konfiguriran');const subject=header(merge(row.subject,c));if(!subject)throw new Error('Predmet poruke je prazan');const from=clean(env.CAMPAIGN_MAILER_FROM||env.MEDIA_OUTREACH_FROM)||FROM_DEFAULT;const body=merge(inject(row.body_html,row.extra_text,c),c);if(!text(body))throw new Error('Tijelo poruke je prazno');const html=ensureMediaHtmlSignature(body,from);await env.EMAIL.send(new EmailMessage(from,c.email,await raw(env,c.email,subject,html,row)));return{subject}}
-const delay=row=>{const base=int(row.delay_seconds,300,60,86400),j=int(row.jitter_seconds,0,0,3600),x=j?Math.floor(Math.random()*(j*2+1))-j:0;return Math.max(60,base+x)};
+async function deliver(env,c,row){if(!validEmail(c.email))throw Object.assign(new Error('Nevažeći format email adrese'),{code:'INVALID_RECIPIENT'});if(await blocked(env,c.email))throw Object.assign(new Error('Adresa je na suppression listi'),{code:'SUPPRESSED_RECIPIENT'});const limit=await rate(env);if(!limit.ok)throw Object.assign(new Error('Dosegnut je sigurnosni limit slanja'),{code:'CAMPAIGN_SAFETY_LIMIT',limit});if(!env.EMAIL?.send)throw new Error('Cloudflare EMAIL binding nije konfiguriran');const subject=header(merge(row.subject,c));if(!subject)throw new Error('Predmet poruke je prazan');const from=clean(env.CAMPAIGN_MAILER_FROM||env.MEDIA_OUTREACH_FROM)||FROM_DEFAULT;const body=merge(inject(row.body_html,row.extra_text,c),c);if(!text(body))throw new Error('Tijelo poruke je prazno');const html=ensureMediaHtmlSignature(body,from);await env.EMAIL.send(new EmailMessage(from,c.email,await raw(env,c.email,subject,html,row)));return{subject}}
+const delay=row=>{const configured=int(row.delay_seconds,360,60,86400),base=Math.max(360,configured),j=Math.min(30,int(row.jitter_seconds,0,0,3600)),x=j?Math.floor(Math.random()*(j*2+1))-j:0;return Math.max(360,base+x)};
 
 export async function runQueue(env,{force=false}={}){
  const db=await ensureSchema(env),row=await stateRow(env);
@@ -34,22 +37,23 @@ export async function runQueue(env,{force=false}={}){
   await db.prepare(`UPDATE campaign_mailer_contacts SET status='sent',error_reason='',attempts=attempts+1,sent_at=?,updated_at=? WHERE id=?`).bind(stamp,stamp,c.id).run();
   await logEvent(env,'sent',{contactId:c.id,email:c.email,subject:r.subject});
  }catch(error){
-  const message=errorText(error);
-  if(isDailyQuotaError(error)){
+  const message=errorText(error),code=clean(error?.code);
+  if(isDailyQuotaError(error)||isSafetyLimitError(error)){
+   const reason=isDailyQuotaError(error)?'daily_quota_exceeded':'campaign_safety_limit';
    await db.prepare(`UPDATE campaign_mailer_contacts SET status='pending',error_reason=?,updated_at=? WHERE id=?`).bind(message,timestamp(),c.id).run();
    await updateState(env,{status:'paused',next_send_at:null});
-   await logEvent(env,'quota_paused',{contactId:c.id,email:c.email,error:message,detail:{code:clean(error?.code)||'E_DAILY_LIMIT_EXCEEDED'}});
+   await logEvent(env,'safety_paused',{contactId:c.id,email:c.email,error:message,detail:{code:code||reason,reason}});
    const remaining=Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_contacts WHERE status='pending'`).first())?.c||0);
-   return{ok:false,status:'paused',paused:true,reason:'daily_quota_exceeded',error:message,contactId:c.id,email:c.email,remaining};
+   return{ok:false,status:'paused',paused:true,reason,error:message,contactId:c.id,email:c.email,remaining};
   }
-  if(isSuppressionError(error)){
-   const attempts=Number(c.attempts||0)+1;
+  if(isSuppressionError(error)||isInvalidRecipientError(error)){
+   const attempts=Number(c.attempts||0)+1,reason=isSuppressionError(error)?'provider_suppression':'invalid_recipient';
    await db.prepare(`UPDATE campaign_mailer_contacts SET status='blocked',error_reason=?,attempts=?,updated_at=? WHERE id=?`).bind(message,attempts,timestamp(),c.id).run();
-   await logEvent(env,'blocked',{contactId:c.id,email:c.email,error:message,detail:{reason:'provider_suppression'}});
+   await logEvent(env,'blocked',{contactId:c.id,email:c.email,error:message,detail:{reason,code}});
   }else{
-   const attempts=Number(c.attempts||0)+1,max=int(row.max_retries,3,1,10),final=attempts>=max;
+   const attempts=Number(c.attempts||0)+1,max=int(row.max_retries,2,1,2),final=attempts>=max;
    await db.prepare(`UPDATE campaign_mailer_contacts SET status=?,error_reason=?,attempts=?,updated_at=? WHERE id=?`).bind(final?'failed':'pending',message,attempts,timestamp(),c.id).run();
-   await logEvent(env,final?'failed':'retry',{contactId:c.id,email:c.email,error:message,detail:{attempts,max,code:clean(error?.code)}});
+   await logEvent(env,final?'failed':'retry',{contactId:c.id,email:c.email,error:message,detail:{attempts,max,code}});
   }
  }
  const remain=Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_contacts WHERE status='pending'`).first())?.c||0);
