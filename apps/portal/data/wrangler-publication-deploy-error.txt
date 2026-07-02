@@ -1,0 +1,26 @@
+Wrangler deployment diagnostic
+Recorded: 2026-07-02T15:04:33Z
+Exit code: 1
+
+
+ ⛅️ wrangler 4.106.0
+────────────────────
+
+Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mBuild failed with 1 error:[0m
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "xlsx"[0m
+  
+      src/campaign-mailer-v1.js:1:22:
+  [37m      1 │ import * as XLSX from [32m'xlsx'[37m;
+          ╵                       [32m~~~~~~[0m
+  
+    To fix this, you can add an entry to "alias" in your Wrangler configuration.
+    For more guidance see: [4m[4mhttps://developers.cloudflare.com/workers/wrangler/configuration/#bundling-issues[0m[0m
+    
+  
+  
+
+
+🪵  Logs were written to "/home/runner/.config/.wrangler/logs/wrangler-2026-07-02_15-04-32_123.log"
