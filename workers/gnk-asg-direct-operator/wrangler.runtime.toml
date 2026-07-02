@@ -1,5 +1,5 @@
 name = "gnk-asg-direct-operator"
-main = "src/index-final-admin-gateway-v1.js"
+main = "src/index-final-admin-gateway-v2.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
@@ -36,7 +36,7 @@ crons = ["*/3 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
-DEPLOY_REVISION = "20260630-media-html-only-preview-v2"
+DEPLOY_REVISION = "20260702-mail-studio-random-city-label-v2"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 MAIL_MANUAL_LIVE = "true"

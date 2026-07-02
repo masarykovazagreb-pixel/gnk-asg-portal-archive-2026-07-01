@@ -1,6 +1,6 @@
 import * as base from './mail-studio-extension-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V2_20260702_RANDOM_CITY_ONLY';
+export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V2_20260702_RANDOM_CITY_LABEL';
 export const UI_VERSION=base.UI_VERSION;
 export const PROFILES=base.PROFILES;
 export const GLOBAL_CENTRES=base.GLOBAL_CENTRES;
@@ -26,33 +26,44 @@ async function chooseRandomCity(env,scope){
   return city;
 }
 
-function replaceText(value,city){
-  return String(value||'')
-    .replace(/^Global Service Centre:\s*[^\r\n]+$/gim,city.name)
-    .replace(/^Globalni operativni centar:\s*[^\r\n]+$/gim,city.name)
-    .replace(/^Globalni medijski ured:\s*[^\r\n]+$/gim,city.name)
-    .replace(/^GLOBAL MEDIA DESK:\s*[^\r\n]+$/gim,city.name)
-    .replace(/^GLOBALNI MEDIJSKI URED:\s*[^\r\n]+$/gim,city.name)
-    .replace(/^Global Service Centre:\s*rotates automatically through 10 cities$/gim,city.name);
+function senderEmail(payload){
+  const from=payload?.from;
+  return clean(from&&typeof from==='object'?from.email:from).toLowerCase();
+}
+
+function insertBeforeLast(source,needle,insertion){
+  const index=source.toLowerCase().lastIndexOf(String(needle||'').toLowerCase());
+  return index<0?`${source.trim()}\n${insertion}`:`${source.slice(0,index)}${insertion}\n${source.slice(index)}`;
+}
+
+function replaceText(value,city,email){
+  let result=String(value||'')
+    .replace(/^\s*(?:Global Service Centre|Globalni operativni centar|Globalni medijski ured|GLOBAL MEDIA DESK|GLOBALNI MEDIJSKI URED):\s*[^\r\n]*\r?\n?/gim,'')
+    .replace(/^\s*rotates automatically through 10 cities\s*\r?\n?/gim,'')
+    .replace(/\n{3,}/g,'\n\n')
+    .trim();
+  const line=`Global Service Centre: ${city.name}`;
+  return email?insertBeforeLast(result,email,line):`${result}\n${line}`;
 }
 
 function replaceHtml(value,city){
   const cityHtml=esc(city.name);
-  return String(value||'')
-    .replace(/Globalni operativni centar\s*\/\s*Global Service Centre:\s*<strong>[^<]*<\/strong>/gi,`<strong>${cityHtml}</strong>`)
-    .replace(/Global Service Centre:\s*<strong>[^<]*<\/strong>/gi,`<strong>${cityHtml}</strong>`)
-    .replace(/Global Media Desk:\s*<strong>[^<]*<\/strong>/gi,`<strong>${cityHtml}</strong>`)
-    .replace(/Globalni medijski ured:\s*<strong>[^<]*<\/strong>/gi,`<strong>${cityHtml}</strong>`)
-    .replace(/Global Service Centre:\s*rotates automatically through 10 cities/gi,cityHtml)
-    .replace(/Global Service Centre:\s*[^<\r\n]+/gi,cityHtml)
-    .replace(/Globalni operativni centar:\s*[^<\r\n]+/gi,cityHtml);
+  let result=String(value||'')
+    .replace(/<div[^>]*>\s*(?:Globalni operativni centar\s*\/\s*)?Global Service Centre:\s*(?:<strong>)?[^<]*(?:<\/strong>)?\s*<\/div>/gi,'')
+    .replace(/<div[^>]*>\s*(?:Global Media Desk|Globalni medijski ured):\s*(?:<strong>)?[^<]*(?:<\/strong>)?\s*<\/div>/gi,'')
+    .replace(/Global Service Centre:\s*rotates automatically through 10 cities/gi,'')
+    .replace(/rotates automatically through 10 cities/gi,'');
+  const line=`<div>Global Service Centre: <strong>${cityHtml}</strong></div>`;
+  if(/<div><a href="mailto:/i.test(result))return result.replace(/<div><a href="mailto:/i,`${line}<div><a href="mailto:`);
+  if(/<a href="mailto:/i.test(result))return result.replace(/<a href="mailto:/i,`${line}<a href="mailto:`);
+  return `${result}${line}`;
 }
 
 function rewritePayload(payload,city){
-  const next={...payload};
-  if('text'in next)next.text=replaceText(next.text,city);
-  if('plainText'in next)next.plainText=replaceText(next.plainText,city);
-  if('body'in next&&typeof next.body==='string'&&!/<[a-z][\s\S]*>/i.test(next.body))next.body=replaceText(next.body,city);
+  const next={...payload},email=senderEmail(payload);
+  if('text'in next)next.text=replaceText(next.text,city,email);
+  if('plainText'in next)next.plainText=replaceText(next.plainText,city,email);
+  if('body'in next&&typeof next.body==='string'&&!/<[a-z][\s\S]*>/i.test(next.body))next.body=replaceText(next.body,city,email);
   for(const key of ['html','bodyHtml','htmlBody','messageHtml','contentHtml'])if(key in next)next[key]=replaceHtml(next[key],city);
   next.headers={...(next.headers||{}),'X-GNK-ASG-City':city.name,'X-GNK-ASG-Global-Centre':city.name,'X-GNK-ASG-Mail-Studio-Extension':VERSION};
   return next;
