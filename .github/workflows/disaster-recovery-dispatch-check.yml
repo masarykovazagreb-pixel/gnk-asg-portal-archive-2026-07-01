@@ -21,11 +21,11 @@ jobs:
         run: |
           set -euo pipefail
           started_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          gh workflow run disaster-recovery-mirror.yml --repo "$REPOSITORY" --ref main
+          gh workflow run disaster-recovery-mirror-v2.yml --repo "$REPOSITORY" --ref main
 
           run_id=""
           for attempt in $(seq 1 30); do
-            run_id="$(gh run list --repo "$REPOSITORY" --workflow disaster-recovery-mirror.yml --event workflow_dispatch --limit 10 --json databaseId,createdAt --jq '.[] | select(.createdAt >= "'"$started_at"'") | .databaseId' | head -n 1)"
+            run_id="$(gh run list --repo "$REPOSITORY" --workflow disaster-recovery-mirror-v2.yml --event workflow_dispatch --limit 10 --json databaseId,createdAt --jq '.[] | select(.createdAt >= "'"$started_at"'") | .databaseId' | head -n 1)"
             if [ -n "$run_id" ]; then
               break
             fi
