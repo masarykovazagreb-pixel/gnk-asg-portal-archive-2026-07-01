@@ -11,7 +11,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "apps/portal/assets/deploy-publication-20260702.txt"
+      - "apps/portal/assets/**"
   workflow_dispatch:
 
 permissions:
