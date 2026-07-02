@@ -10,7 +10,7 @@ import {handleMediaRegistrationPublic,VERSION as REGISTRATION_VERSION} from './m
 import {handleMediaBootstrapPdfForwardFix,VERSION as PDF_FORWARD_FIX_VERSION} from './media-bootstrap-pdf-forward-fix-v1.js';
 import {handlePublicTheCodePdf,VERSION as PUBLIC_THE_CODE_PDF_VERSION} from './public-the-code-pdf-v1.js';
 import {handleMailStudioExtension,patchMailStudioResponse,handleMailStudioInbound,VERSION as MAIL_STUDIO_VERSION} from './mail-studio-extension-v2.js';
-import {prepareAiAutoReply,VERSION as AI_AUTO_REPLY_VERSION} from './ai-inbound-auto-reply-v1.js';
+import {prepareAiAutoReply,VERSION as AI_AUTO_REPLY_VERSION} from './ai-inbound-auto-reply-v2.js';
 const PUBLICATION_ROUTE_VERSION='GNK_ASG_STATIC_PUBLICATION_ROUTE_V1_20260702';
 export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
 const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(env));
