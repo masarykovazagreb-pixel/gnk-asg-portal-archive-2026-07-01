@@ -31,21 +31,46 @@ jobs:
           show-progress: false
 
       - name: Deploy portal assets to Cloudflare
+        id: wrangler
+        continue-on-error: true
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          set -o pipefail
-          npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator 2>&1 | tee /tmp/wrangler.log
-          status=${PIPESTATUS[0]}
-          if [ "$status" -ne 0 ]; then
-            echo "WRANGLER_FAILURE_SUMMARY"
-            tail -n 80 /tmp/wrangler.log
-            exit "$status"
-          fi
+          set +e
+          npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator > /tmp/wrangler.log 2>&1
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          tail -n 120 /tmp/wrangler.log
+          exit 0
+
+      - name: Persist Wrangler failure details
+        if: steps.wrangler.outputs.exit_code != '0'
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          branch="${HEAD_BRANCH:-main}"
+          git fetch origin "$branch"
+          git checkout -B "$branch" "origin/$branch"
+          mkdir -p apps/portal/data
+          {
+            echo "Wrangler deployment diagnostic"
+            echo "Recorded: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "Exit code: ${{ steps.wrangler.outputs.exit_code }}"
+            echo
+            tail -n 120 /tmp/wrangler.log
+          } > apps/portal/data/wrangler-publication-deploy-error.txt
+          git config user.name "gnk-asg-diagnostic-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add apps/portal/data/wrangler-publication-deploy-error.txt
+          git commit -m "Record Wrangler publication deploy diagnostic [skip ci]" || true
+          git push origin HEAD:"$branch"
+          exit 1
 
       - name: Verify public article URLs
+        if: steps.wrangler.outputs.exit_code == '0'
         run: |
           set -euo pipefail
           slug="ai-shrinks-security-window-apple-accelerates-patches"
@@ -70,6 +95,7 @@ jobs:
           exit 1
 
       - name: Record verified publication
+        if: steps.wrangler.outputs.exit_code == '0'
         run: |
           set -euo pipefail
           mkdir -p apps/portal/data
