@@ -1,6 +1,6 @@
 import * as base from './mail-studio-extension-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V2_20260702_RANDOM_CITY_LABEL';
+export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V3_20260702_PROVIDER_ERRORS';
 export const UI_VERSION=base.UI_VERSION;
 export const PROFILES=base.PROFILES;
 export const GLOBAL_CENTRES=base.GLOBAL_CENTRES;
@@ -95,10 +95,21 @@ async function patchJsonResponse(response,city){
   if(!response||!String(response.headers.get('content-type')||'').includes('application/json'))return response;
   try{
     const data=await response.clone().json();
+    const failure=Array.isArray(data?.results)?data.results.find(item=>item?.status==='FAILED'):null;
+    const providerCode=clean(data?.errorCode||failure?.errorCode);
+    const providerMessage=clean(data?.message||data?.errorMessage||failure?.message||data?.error);
+    const enriched={
+      ...data,
+      ...(providerCode?{errorCode:providerCode}:{}),
+      ...(providerMessage?{error:providerMessage,message:providerMessage}:{}),
+      globalCentre:{id:city.id,name:city.name},
+      city:city.name
+    };
     const headers=new Headers(response.headers);
     headers.delete('content-length');
     headers.set('x-gnk-asg-mail-studio-extension',VERSION);
-    return new Response(JSON.stringify({...data,globalCentre:{id:city.id,name:city.name},city:city.name},null,2),{status:response.status,statusText:response.statusText,headers});
+    if(providerCode)headers.set('x-gnk-asg-email-error-code',providerCode);
+    return new Response(JSON.stringify(enriched,null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
 
