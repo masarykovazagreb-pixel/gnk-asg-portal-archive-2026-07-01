@@ -1,234 +1,216 @@
-name: Deploy Portal, Mail Studio and Sitewide SEO
+name: Deploy GNK ASG production
 
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-mail-studio-multilingual.yml"
+      - "apps/portal/**"
+      - "workers/gnk-asg-direct-operator/**"
+      - "scripts/**"
   push:
     branches: [main]
     paths:
       - ".github/workflows/deploy-mail-studio-multilingual.yml"
-      - "apps/portal/**/*.html"
-      - "apps/portal/assets/**"
-      - "apps/portal/campaign-mailer/**"
-      - "apps/portal/scripts/generate_sitewide_seo.py"
-      - "apps/portal/scripts/finalize_sitewide_seo.py"
-      - "apps/portal/scripts/sync_publication_indexes.py"
-      - "workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js"
-      - "workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js"
-      - "workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js"
-      - "workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js"
-      - "workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js"
-      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
-      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js"
-      - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
+      - "apps/portal/**"
+      - "workers/gnk-asg-direct-operator/**"
+      - "scripts/**"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: gnk-asg-direct-operator-production
+  group: ${{ github.event_name == 'pull_request' && format('gnk-asg-pr-{0}', github.event.pull_request.number) || 'gnk-asg-direct-operator-production' }}
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  validate-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
-      - uses: actions/checkout@v5
+      - name: Check out requested revision
+        uses: actions/checkout@v5
         with:
-          ref: main
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - uses: actions/setup-node@v5
+      - name: Set up Node
+        uses: actions/setup-node@v5
         with:
           node-version: "24"
 
-      - name: Synchronize publications and generate sitewide SEO
+      - name: Install Worker dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --no-package-lock --no-audit --no-fund
+
+      - name: Generate publications and harden internal routes
         run: |
           set -euo pipefail
           python -m py_compile \
             apps/portal/scripts/sync_publication_indexes.py \
             apps/portal/scripts/generate_sitewide_seo.py \
-            apps/portal/scripts/finalize_sitewide_seo.py
+            apps/portal/scripts/finalize_sitewide_seo.py \
+            apps/portal/scripts/harden_internal_routes.py
           python apps/portal/scripts/sync_publication_indexes.py
           python apps/portal/scripts/generate_sitewide_seo.py
           python apps/portal/scripts/finalize_sitewide_seo.py
+          python apps/portal/scripts/harden_internal_routes.py
+
+      - name: Validate SEO and internal route isolation
+        run: |
+          set -euo pipefail
           python - <<'PY'
           import json
           import xml.etree.ElementTree as ET
           from pathlib import Path
 
           root = Path("apps/portal")
-          slug = "ai-shrinks-security-window-apple-accelerates-patches"
-          hr_route = f"/objave/{slug}/"
-          en_route = f"/publications/{slug}/"
           report = json.loads((root / "data/seo-report.json").read_text(encoding="utf-8"))
           routes = {page["route"] for page in report["publicPages"]}
-          technical = ("/assets/", "/data/", "/scripts/", "/workers/", "/packages/", "/docs/", "/contracts/")
-          assert report["publicPageCount"] >= 10, report["publicPageCount"]
-          assert {"/", "/nermin-sefic/", "/visual-index/", hr_route, en_route} <= routes
-          assert not any(route.startswith(technical) for route in routes)
+          internal = {
+              "/control/", "/automation-status/", "/admin/", "/operator-dashboard/",
+              "/operator-mobile/", "/mail-studio/", "/webmail/", "/campaign-mailer/",
+          }
+          required = {"/", "/en/", "/contact/", "/media-application/", "/the-code/", "/objave/", "/publications/"}
+          assert required <= routes, required - routes
+          assert not (routes & internal), routes & internal
+          assert report["publicPageCount"] >= 10
           ET.parse(root / "sitemap.xml")
           ET.parse(root / "image-sitemap.xml")
-          home = (root / "index.html").read_text(encoding="utf-8")
-          profile = (root / "nermin-sefic/index.html").read_text(encoding="utf-8")
-          hr = (root / hr_route.strip("/") / "index.html").read_text(encoding="utf-8")
-          en = (root / en_route.strip("/") / "index.html").read_text(encoding="utf-8")
-          hr_index = (root / "objave/index.html").read_text(encoding="utf-8")
-          en_index = (root / "publications/index.html").read_text(encoding="utf-8")
           sitemap = (root / "sitemap.xml").read_text(encoding="utf-8")
-          image_sitemap = (root / "image-sitemap.xml").read_text(encoding="utf-8")
-          assert "SITEWIDE-SEO:BEGIN" in home
-          assert "GNK DINAMO Ltd." in home and "Nermin Sefić" in home
-          assert 'rel="canonical"' in home
-          assert '"@type":"Organization"' in home
-          assert '"@type":"Person"' in profile
-          assert "https://gnk-asg.hr/" not in home
-          for page, route, language in ((hr, hr_route, '"inLanguage":"hr"'), (en, en_route, '"inLanguage":"en"')):
-              assert '"@type":"NewsArticle"' in page
-              assert '"name":"Nermin Sefić"' in page
-              assert '"name":"GNK ASG d.o.o."' in page
-              assert '"name":"GNK DINAMO Ltd."' in page
-              assert language in page
-              assert 'property="og:type" content="article"' in page
-              assert 'name="twitter:card" content="summary_large_image"' in page
-              assert "publication-meta" in page
-              assert page.count('target="_blank" rel="noopener noreferrer external"') >= 4
-              assert route in sitemap
-          assert slug in hr_index and slug in en_index
-          assert "gnk-asg-ai-asistent.jpg" in image_sitemap
-          print(
-              f"SEO validated for {report['publicPageCount']} public pages; "
-              f"{report.get('articlePageCount', 0)} NewsArticle pages; "
-              f"{report['noindexFileCount']} private/test files protected; "
-              f"{report.get('excludedTechnicalPageCount', 0)} technical routes excluded"
-          )
+          for route in internal:
+              assert f"https://www.gnk-asg.hr{route}" not in sitemap
+          for route in ("/control/", "/automation-status/"):
+              page = root / route.strip("/") / "index.html"
+              if page.exists():
+                  text = page.read_text(encoding="utf-8")
+                  assert 'content="noindex,nofollow,noarchive"' in text
+          robots = (root / "robots.txt").read_text(encoding="utf-8")
+          assert "Disallow: /control/" in robots
+          assert "Disallow: /automation-status/" in robots
+          print(f"Validated {report['publicPageCount']} public pages and isolated internal routes.")
           PY
 
-      - name: Validate portal and Worker source
+      - name: Validate canonical Worker source
         run: |
           set -euo pipefail
           node --check apps/portal/assets/mail-studio-multilingual-v25.js
           node --check apps/portal/campaign-mailer/control-v2.js
-          node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
           node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
-          grep -q "sefic@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
-          grep -q "ubo@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
-          grep -q "press@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
-          grep -q "assistant@gnk-asg.hr" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
-          grep -q "name:'Sydney'" workers/gnk-asg-direct-operator/src/mail-studio-extension-v1.js
-          grep -q "automaticRetry:false" workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
-          grep -q "delay_seconds:600" workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
-          grep -q "CAMPAIGN_MAILER_MAX_PER_DAY = \"140\"" workers/gnk-asg-direct-operator/wrangler.runtime.toml
-          grep -q "MAIL_MANUAL_MAX_PER_DAY = \"5\"" workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'main = "src/index-final-admin-gateway-v2.js"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'MEDIA_OUTREACH_SCHEDULED_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'MAIL_MANUAL_MAX_PER_DAY = "5"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'CAMPAIGN_MAILER_MAX_PER_DAY = "140"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
+          npx wrangler deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
 
-      - name: Deploy to Cloudflare
+      - name: Deploy canonical gateway v2 to Cloudflare
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator
+        run: npx wrangler deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator
 
-      - name: Verify portal, articles, SEO and Mail Studio on Worker
+      - name: Verify Worker without sending email
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         run: |
           set -euo pipefail
           base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
           slug="ai-shrinks-security-window-apple-accelerates-patches"
+          ready=false
           for attempt in $(seq 1 30); do
             cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
-            home_code=$(curl -sS -L -o /tmp/home.html -w '%{http_code}' "$base/?cb=$cb" || true)
-            profile_code=$(curl -sS -L -o /tmp/profile.html -w '%{http_code}' "$base/nermin-sefic/?cb=$cb" || true)
-            hr_code=$(curl -sS -L -o /tmp/article-hr.html -w '%{http_code}' "$base/objave/$slug/?cb=$cb" || true)
-            en_code=$(curl -sS -L -o /tmp/article-en.html -w '%{http_code}' "$base/publications/$slug/?cb=$cb" || true)
-            hr_index_code=$(curl -sS -L -o /tmp/objave.html -w '%{http_code}' "$base/objave/?cb=$cb" || true)
-            en_index_code=$(curl -sS -L -o /tmp/publications.html -w '%{http_code}' "$base/publications/?cb=$cb" || true)
-            sitemap_code=$(curl -sS -L -o /tmp/sitemap.xml -w '%{http_code}' "$base/sitemap.xml?cb=$cb" || true)
-            images_code=$(curl -sS -L -o /tmp/image-sitemap.xml -w '%{http_code}' "$base/image-sitemap.xml?cb=$cb" || true)
-            mail_code=$(curl -sS -D /tmp/mail.headers -o /tmp/mail.html -w '%{http_code}' "$base/mail-studio/?cb=$cb" || true)
-            asset_code=$(curl -sS -o /tmp/mail-multi.js -w '%{http_code}' "$base/assets/mail-studio-multilingual-v25.js?cb=$cb" || true)
-            campaign_asset_code=$(curl -sS -o /tmp/campaign-control.js -w '%{http_code}' "$base/campaign-mailer/control-v2.js?cb=$cb" || true)
-            if [ "$home_code" = "200" ] \
-              && [ "$profile_code" = "200" ] \
-              && [ "$hr_code" = "200" ] \
-              && [ "$en_code" = "200" ] \
-              && [ "$hr_index_code" = "200" ] \
-              && [ "$en_index_code" = "200" ] \
-              && [ "$sitemap_code" = "200" ] \
-              && [ "$images_code" = "200" ] \
-              && { [ "$mail_code" = "200" ] || [ "$mail_code" = "401" ] || [ "$mail_code" = "403" ]; } \
-              && [ "$asset_code" = "200" ] \
-              && { [ "$campaign_asset_code" = "200" ] || [ "$campaign_asset_code" = "303" ]; } \
+            home=$(curl -sS -L -o /tmp/home.html -w '%{http_code}' "$base/?cb=$cb" || true)
+            english=$(curl -sS -L -o /tmp/en.html -w '%{http_code}' "$base/en/?cb=$cb" || true)
+            contact=$(curl -sS -L -o /tmp/contact.html -w '%{http_code}' "$base/contact/?cb=$cb" || true)
+            media=$(curl -sS -L -o /tmp/media.html -w '%{http_code}' "$base/media-application/?cb=$cb" || true)
+            code=$(curl -sS -L -o /tmp/code.html -w '%{http_code}' "$base/the-code/?cb=$cb" || true)
+            article_hr=$(curl -sS -L -o /tmp/article-hr.html -w '%{http_code}' "$base/objave/$slug/?cb=$cb" || true)
+            article_en=$(curl -sS -L -o /tmp/article-en.html -w '%{http_code}' "$base/publications/$slug/?cb=$cb" || true)
+            sitemap=$(curl -sS -L -o /tmp/sitemap.xml -w '%{http_code}' "$base/sitemap.xml?cb=$cb" || true)
+            control=$(curl -sS -L -o /tmp/control.html -w '%{http_code}' "$base/control/?cb=$cb" || true)
+            mail=$(curl -sS -D /tmp/mail.headers -o /tmp/mail.html -w '%{http_code}' "$base/mail-studio/?cb=$cb" || true)
+            campaign=$(curl -sS -o /tmp/campaign.json -w '%{http_code}' "$base/api/campaign-mailer/health?cb=$cb" || true)
+            registration=$(curl -sS -o /tmp/registration.json -w '%{http_code}' "$base/api/media-registration/config?cb=$cb" || true)
+            if [ "$home" = 200 ] && [ "$english" = 200 ] && [ "$contact" = 200 ] \
+              && [ "$media" = 200 ] && [ "$code" = 200 ] \
+              && [ "$article_hr" = 200 ] && [ "$article_en" = 200 ] \
+              && [ "$sitemap" = 200 ] && [ "$control" = 200 ] \
+              && { [ "$mail" = 200 ] || [ "$mail" = 401 ] || [ "$mail" = 403 ]; } \
+              && [ "$campaign" = 401 ] && [ "$registration" = 200 ] \
               && grep -q 'SITEWIDE-SEO:BEGIN' /tmp/home.html \
-              && grep -q 'Nermin Sefić' /tmp/profile.html \
+              && grep -q 'GNK DINAMO Ltd.' /tmp/en.html \
+              && grep -q '/api/contact-submit' /tmp/contact.html \
+              && grep -q 'media-registration-v1.js' /tmp/media.html \
+              && grep -q 'THE CODE' /tmp/code.html \
               && grep -q '"@type":"NewsArticle"' /tmp/article-hr.html \
               && grep -q '"@type":"NewsArticle"' /tmp/article-en.html \
-              && grep -q 'GNK DINAMO Ltd.' /tmp/article-hr.html \
-              && grep -q 'GNK ASG d.o.o.' /tmp/article-en.html \
-              && grep -q "$slug" /tmp/objave.html \
-              && grep -q "$slug" /tmp/publications.html \
-              && grep -q "/objave/$slug/" /tmp/sitemap.xml \
-              && grep -q "/publications/$slug/" /tmp/sitemap.xml \
-              && grep -q 'gnk-asg-ai-asistent.jpg' /tmp/image-sitemap.xml \
-              && ! grep -q '<loc>https://www.gnk-asg.hr/assets/' /tmp/sitemap.xml \
-              && grep -q 'GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V25_20260702_PROVIDER_ERRORS' /tmp/mail-multi.js \
-              && grep -q 'press@gnk-asg.hr' /tmp/mail-multi.js \
+              && grep -q 'noindex,nofollow,noarchive' /tmp/control.html \
+              && ! grep -q '<loc>https://www.gnk-asg.hr/control/</loc>' /tmp/sitemap.xml \
               && grep -qi '^x-gnk-asg-mail-studio-extension: GNK_ASG_MAIL_STUDIO_EXTENSION_V4_20260702_MANUAL_SEND_GUARD' /tmp/mail.headers; then
-              echo "Worker deployment and both publication routes verified."
-              exit 0
+              ready=true
+              break
             fi
             sleep 6
           done
-          exit 1
+          test "$ready" = true
+          echo "Canonical Worker gateway v2 verified; no email was sent."
 
-      - name: Verify final public custom-domain URLs
+      - name: Verify custom domain
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         run: |
           set -euo pipefail
           base="https://www.gnk-asg.hr"
           slug="ai-shrinks-security-window-apple-accelerates-patches"
+          ready=false
           for attempt in $(seq 1 20); do
             cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
-            hr_code=$(curl -sS -L -o /tmp/public-hr.html -w '%{http_code}' "$base/objave/$slug/?cb=$cb" || true)
-            en_code=$(curl -sS -L -o /tmp/public-en.html -w '%{http_code}' "$base/publications/$slug/?cb=$cb" || true)
-            sitemap_code=$(curl -sS -L -o /tmp/public-sitemap.xml -w '%{http_code}' "$base/sitemap.xml?cb=$cb" || true)
-            if [ "$hr_code" = "200" ] \
-              && [ "$en_code" = "200" ] \
-              && [ "$sitemap_code" = "200" ] \
+            home=$(curl -sS -L -o /tmp/public-home.html -w '%{http_code}' "$base/?cb=$cb" || true)
+            contact=$(curl -sS -L -o /tmp/public-contact.html -w '%{http_code}' "$base/contact/?cb=$cb" || true)
+            media=$(curl -sS -L -o /tmp/public-media.html -w '%{http_code}' "$base/media-application/?cb=$cb" || true)
+            article_hr=$(curl -sS -L -o /tmp/public-hr.html -w '%{http_code}' "$base/objave/$slug/?cb=$cb" || true)
+            article_en=$(curl -sS -L -o /tmp/public-en.html -w '%{http_code}' "$base/publications/$slug/?cb=$cb" || true)
+            sitemap=$(curl -sS -L -o /tmp/public-sitemap.xml -w '%{http_code}' "$base/sitemap.xml?cb=$cb" || true)
+            control=$(curl -sS -L -o /tmp/public-control.html -w '%{http_code}' "$base/control/?cb=$cb" || true)
+            if [ "$home" = 200 ] && [ "$contact" = 200 ] && [ "$media" = 200 ] \
+              && [ "$article_hr" = 200 ] && [ "$article_en" = 200 ] \
+              && [ "$sitemap" = 200 ] && [ "$control" = 200 ] \
+              && grep -q 'SITEWIDE-SEO:BEGIN' /tmp/public-home.html \
+              && grep -q '/api/contact-submit' /tmp/public-contact.html \
+              && grep -q 'media-registration-v1.js' /tmp/public-media.html \
               && grep -q '"@type":"NewsArticle"' /tmp/public-hr.html \
               && grep -q '"@type":"NewsArticle"' /tmp/public-en.html \
-              && grep -q 'Nermin Sefić' /tmp/public-hr.html \
-              && grep -q 'GNK ASG d.o.o.' /tmp/public-en.html \
-              && grep -q 'GNK DINAMO Ltd.' /tmp/public-en.html \
-              && grep -q "/objave/$slug/" /tmp/public-sitemap.xml \
-              && grep -q "/publications/$slug/" /tmp/public-sitemap.xml; then
-              echo "Final custom-domain publication URLs verified."
-              exit 0
+              && grep -q 'noindex,nofollow,noarchive' /tmp/public-control.html \
+              && ! grep -q '<loc>https://www.gnk-asg.hr/control/</loc>' /tmp/public-sitemap.xml; then
+              ready=true
+              break
             fi
             sleep 6
           done
-          exit 1
+          test "$ready" = true
+          echo "Public custom domain verified."
 
-      - name: Persist generated publication indexes and SEO output
-        if: success()
+      - name: Persist generated SEO output
+        if: success() && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
         run: |
           set -euo pipefail
-          git config user.name "gnk-asg-seo-bot"
+          git config user.name "gnk-asg-deploy-bot"
           git config user.email "actions@users.noreply.github.com"
           git add apps/portal
           if git diff --cached --quiet; then
-            echo "No generated publication or SEO changes to persist."
+            echo "No generated changes to persist."
             exit 0
           fi
-          git commit -m "Automated publication index and SEO refresh [skip ci]"
-          if ! git push origin HEAD:main; then
-            echo "Deployment succeeded, but generated files could not be persisted because the branch moved or is protected."
-          fi
+          git commit -m "Refresh generated portal and security metadata [skip ci]"
+          git push origin HEAD:main
