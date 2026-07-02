@@ -1,13 +1,36 @@
 import * as base from './mail-studio-extension-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V3_20260702_PROVIDER_ERRORS';
+export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V4_20260702_MANUAL_SEND_GUARD';
 export const UI_VERSION=base.UI_VERSION;
 export const PROFILES=base.PROFILES;
 export const GLOBAL_CENTRES=base.GLOBAL_CENTRES;
 
 const clean=value=>String(value??'').trim();
 const kvOf=env=>env?.GNK_ASG_KV||env?.GNK_ASG_CONFIG_KV||null;
+const dbOf=env=>env?.GNK_ASG_D1||null;
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const int=(value,fallback,min=0,max=2147483647)=>Math.min(max,Math.max(min,Number.isFinite(Number(value))?Math.trunc(Number(value)):fallback));
+const SEND_PATHS=new Set(['/api/admin-mail-send','/api/studio-message/send']);
+
+function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-mail-studio-extension':VERSION}});}
+function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
+
+async function manualSendGate(request,env){
+  if(request.method!=='POST'||!SEND_PATHS.has(pathOf(request)))return null;
+  const db=dbOf(env);if(!db?.prepare)return null;
+  const dailyLimit=int(env.MAIL_MANUAL_MAX_PER_DAY,5,1,50);
+  const minInterval=int(env.MAIL_MANUAL_MIN_INTERVAL_SECONDS,600,60,86400);
+  try{
+    const row=await db.prepare(`SELECT COUNT(*) AS used,MAX(sent_at) AS last_sent_at FROM manual_mail_messages WHERE status IN ('SENT','PARTIAL') AND sent_at IS NOT NULL AND strftime('%s',sent_at)>=strftime('%s','now','start of day')`).first();
+    const used=Number(row?.used||0),lastSentAt=clean(row?.last_sent_at);
+    if(used>=dailyLimit)return json({ok:false,error:'manual_daily_limit_reached',message:`Dosegnut je dnevni limit ručnog slanja (${used}/${dailyLimit}).`,used,limit:dailyLimit,resetsAt:'00:00 UTC'},429);
+    if(lastSentAt){
+      const elapsed=Math.floor((Date.now()-Date.parse(lastSentAt))/1000);
+      if(Number.isFinite(elapsed)&&elapsed<minInterval){const retryAfterSeconds=minInterval-elapsed;return json({ok:false,error:'manual_send_interval_active',message:`Pričekajte još ${Math.ceil(retryAfterSeconds/60)} min prije sljedeće ručne poruke.`,retryAfterSeconds,minIntervalSeconds:minInterval,used,limit:dailyLimit},429);}
+    }
+    return null;
+  }catch(error){console.error('mail-studio-manual-gate',error);return null;}
+}
 
 function randomIndex(length){
   const bytes=new Uint32Array(1);
@@ -98,13 +121,7 @@ async function patchJsonResponse(response,city){
     const failure=Array.isArray(data?.results)?data.results.find(item=>item?.status==='FAILED'):null;
     const providerCode=clean(data?.errorCode||failure?.errorCode);
     const providerMessage=clean(data?.message||data?.errorMessage||failure?.message||data?.error);
-    const enriched={
-      ...data,
-      ...(providerCode?{errorCode:providerCode}:{}),
-      ...(providerMessage?{error:providerMessage,message:providerMessage}:{}),
-      globalCentre:{id:city.id,name:city.name},
-      city:city.name
-    };
+    const enriched={...data,...(providerCode?{errorCode:providerCode}:{}),...(providerMessage?{error:providerMessage,message:providerMessage}:{}),globalCentre:{id:city.id,name:city.name},city:city.name};
     const headers=new Headers(response.headers);
     headers.delete('content-length');
     headers.set('x-gnk-asg-mail-studio-extension',VERSION);
@@ -114,6 +131,7 @@ async function patchJsonResponse(response,city){
 }
 
 export async function handleMailStudioExtension(request,env,ctx,app){
+  const blocked=await manualSendGate(request,env);if(blocked)return blocked;
   const city=await chooseRandomCity(env,'outbound');
   const response=await base.handleMailStudioExtension(request,withCityEmail(env,city),ctx,app);
   return response?patchJsonResponse(response,city):null;
