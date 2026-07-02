@@ -1,0 +1,120 @@
+name: Deploy AI Security Publication Now
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-ai-security-publication-now.yml"
+      - "apps/portal/objave/ai-shrinks-security-window-apple-accelerates-patches/**"
+      - "apps/portal/publications/ai-shrinks-security-window-apple-accelerates-patches/**"
+      - "apps/portal/assets/deploy-publication-20260702.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-ai-security-publication-now
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Validate publication files
+        run: |
+          set -euo pipefail
+          slug="ai-shrinks-security-window-apple-accelerates-patches"
+          hr="apps/portal/objave/$slug/index.html"
+          en="apps/portal/publications/$slug/index.html"
+          test -s "$hr"
+          test -s "$en"
+          grep -q 'Nermin Sefić' "$hr"
+          grep -q 'GNK ASG d.o.o.' "$hr"
+          grep -q 'GNK DINAMO Ltd.' "$hr"
+          grep -q '"@type":"NewsArticle"' "$hr"
+          grep -q 'Nermin Sefić' "$en"
+          grep -q 'GNK ASG d.o.o.' "$en"
+          grep -q 'GNK DINAMO Ltd.' "$en"
+          grep -q '"@type":"NewsArticle"' "$en"
+          test "$(grep -o 'target="_blank" rel="noopener noreferrer external"' "$hr" | wc -l)" -ge 4
+          test "$(grep -o 'target="_blank" rel="noopener noreferrer external"' "$en" | wc -l)" -ge 4
+
+      - name: Deploy current portal assets to Cloudflare
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator
+
+      - name: Verify Worker and public domain
+        run: |
+          set -euo pipefail
+          slug="ai-shrinks-security-window-apple-accelerates-patches"
+          worker="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          public="https://www.gnk-asg.hr"
+          verified_worker=false
+          verified_public=false
+          for attempt in $(seq 1 40); do
+            cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+            wh=$(curl -sS -L -o /tmp/wh.html -w '%{http_code}' "$worker/objave/$slug/?cb=$cb" || true)
+            we=$(curl -sS -L -o /tmp/we.html -w '%{http_code}' "$worker/publications/$slug/?cb=$cb" || true)
+            if [ "$wh" = "200" ] && [ "$we" = "200" ] \
+              && grep -q '"@type":"NewsArticle"' /tmp/wh.html \
+              && grep -q '"@type":"NewsArticle"' /tmp/we.html \
+              && grep -q 'Nermin Sefić' /tmp/wh.html \
+              && grep -q 'GNK DINAMO Ltd.' /tmp/we.html; then
+              verified_worker=true
+            fi
+            ph=$(curl -sS -L -o /tmp/ph.html -w '%{http_code}' "$public/objave/$slug/?cb=$cb" || true)
+            pe=$(curl -sS -L -o /tmp/pe.html -w '%{http_code}' "$public/publications/$slug/?cb=$cb" || true)
+            if [ "$ph" = "200" ] && [ "$pe" = "200" ] \
+              && grep -q '"@type":"NewsArticle"' /tmp/ph.html \
+              && grep -q '"@type":"NewsArticle"' /tmp/pe.html \
+              && grep -q 'Nermin Sefić' /tmp/ph.html \
+              && grep -q 'GNK ASG d.o.o.' /tmp/pe.html \
+              && grep -q 'GNK DINAMO Ltd.' /tmp/pe.html; then
+              verified_public=true
+            fi
+            if [ "$verified_worker" = true ] && [ "$verified_public" = true ]; then
+              break
+            fi
+            sleep 5
+          done
+          [ "$verified_worker" = true ]
+          [ "$verified_public" = true ]
+
+      - name: Record verified deployment
+        run: |
+          set -euo pipefail
+          mkdir -p apps/portal/data
+          cat > apps/portal/data/publication-deployment-status.json <<JSON
+          {
+            "ok": true,
+            "slug": "ai-shrinks-security-window-apple-accelerates-patches",
+            "croatianUrl": "https://www.gnk-asg.hr/objave/ai-shrinks-security-window-apple-accelerates-patches/",
+            "englishUrl": "https://www.gnk-asg.hr/publications/ai-shrinks-security-window-apple-accelerates-patches/",
+            "author": "Nermin Sefić",
+            "publisher": "GNK ASG d.o.o.",
+            "rightsHolder": "GNK DINAMO Ltd.",
+            "verifiedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflowRun": "${GITHUB_RUN_ID}"
+          }
+          JSON
+          git config user.name "gnk-asg-deploy-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add apps/portal/data/publication-deployment-status.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Record verified AI security publication deployment [skip ci]"
+            git push origin HEAD:main
+          fi
