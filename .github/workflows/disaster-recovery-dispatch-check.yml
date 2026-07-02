@@ -1,0 +1,19 @@
+name: Trigger Disaster Recovery Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start the approved mirror workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run disaster-recovery-mirror.yml --ref main
