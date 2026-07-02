@@ -65,19 +65,6 @@ jobs:
           print(f"SEO validated for {report['publicPageCount']} public pages; {report['noindexFileCount']} private/test files protected")
           PY
 
-      - name: Persist generated SEO output
-        run: |
-          set -euo pipefail
-          git config user.name "gnk-asg-seo-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add apps/portal
-          if git diff --cached --quiet; then
-            echo "No generated SEO changes to persist."
-          else
-            git commit -m "Automated sitewide SEO refresh [skip ci]"
-            git push origin HEAD:main
-          fi
-
       - name: Validate portal and Worker source
         run: |
           set -euo pipefail
@@ -130,3 +117,19 @@ jobs:
             sleep 6
           done
           exit 1
+
+      - name: Persist generated SEO output
+        if: success()
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-asg-seo-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add apps/portal
+          if git diff --cached --quiet; then
+            echo "No generated SEO changes to persist."
+            exit 0
+          fi
+          git commit -m "Automated sitewide SEO refresh [skip ci]"
+          if ! git push origin HEAD:main; then
+            echo "Deployment succeeded, but generated files could not be persisted because the branch moved or is protected."
+          fi
