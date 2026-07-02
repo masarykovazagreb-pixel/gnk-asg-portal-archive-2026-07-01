@@ -30,34 +30,38 @@ jobs:
 
       - name: Mirror repository to recovery account
         env:
+          SOURCE_TOKEN: ${{ github.token }}
           MIRROR_TOKEN: ${{ secrets.MASARYKOVA_BACKUP_TOKEN }}
-          BACKUP_USER: masarykovazagreb-pixel
           BACKUP_REPOSITORY: masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01
         shell: bash
         run: |
           set -euo pipefail
+          test -n "${SOURCE_TOKEN:-}"
           test -n "${MIRROR_TOKEN:-}"
 
-          # Ensure the checkout GITHUB_TOKEN cannot override the backup PAT.
           git config --local --unset-all http.https://github.com/.extraheader || true
-          git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
-          git fetch origin --prune --tags --quiet
           git update-ref -d refs/remotes/origin/HEAD || true
           git lfs install
-          git lfs fetch --all origin || true
 
-          askpass="$RUNNER_TEMP/gnk-asg-backup-askpass.sh"
+          askpass="$RUNNER_TEMP/gnk-asg-git-askpass.sh"
+          trap 'rm -f "$askpass"' EXIT
           cat > "$askpass" <<'ASKPASS'
           #!/bin/sh
           case "$1" in
-            *Username*) printf '%s\n' "$BACKUP_USER" ;;
-            *Password*) printf '%s\n' "$MIRROR_TOKEN" ;;
+            *Username*) printf '%s\n' 'x-access-token' ;;
+            *Password*) printf '%s\n' "$ACTIVE_TOKEN" ;;
           esac
           ASKPASS
           chmod 700 "$askpass"
           export GIT_ASKPASS="$askpass"
           export GIT_TERMINAL_PROMPT=0
 
+          # Fetch all LFS objects from the private source with the source token.
+          export ACTIVE_TOKEN="$SOURCE_TOKEN"
+          git lfs fetch --all origin || true
+
+          # Use only the recovery PAT for all operations against the backup repository.
+          export ACTIVE_TOKEN="$MIRROR_TOKEN"
           git remote add recovery "https://github.com/${BACKUP_REPOSITORY}.git"
           git push --force --prune recovery 'refs/remotes/origin/*:refs/heads/*'
 
@@ -78,7 +82,6 @@ jobs:
           restore_ref="$(git ls-remote recovery refs/heads/restore-point-2026-07-02-full-system | awk '{print $1}')"
           test -n "$restore_ref"
 
-          rm -f "$askpass"
           {
             echo "## Disaster-recovery mirror verified"
             echo
