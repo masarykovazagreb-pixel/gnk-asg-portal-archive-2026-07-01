@@ -1,0 +1,107 @@
+name: Deploy Sitewide SEO
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-sitewide-seo.yml"
+      - "apps/portal/**/*.html"
+      - "apps/portal/assets/**"
+      - "apps/portal/scripts/generate_sitewide_seo.py"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js"
+      - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-sitewide-seo-production
+  cancel-in-progress: true
+
+jobs:
+  generate-validate-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Generate SEO for every public HTML page
+        run: |
+          set -euo pipefail
+          python -m py_compile apps/portal/scripts/generate_sitewide_seo.py
+          python apps/portal/scripts/generate_sitewide_seo.py
+
+      - name: Validate generated SEO, sitemaps and private noindex rules
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          root = Path("apps/portal")
+          report = json.loads((root / "data/seo-report.json").read_text(encoding="utf-8"))
+          routes = {page["route"] for page in report["publicPages"]}
+          required = {"/", "/nermin-sefic/", "/visual-index/"}
+          missing = required - routes
+          assert report["publicPageCount"] >= 10, report["publicPageCount"]
+          assert not missing, sorted(missing)
+          ET.parse(root / "sitemap.xml")
+          ET.parse(root / "image-sitemap.xml")
+          homepage = (root / "index.html").read_text(encoding="utf-8")
+          profile = (root / "nermin-sefic/index.html").read_text(encoding="utf-8")
+          assert "SITEWIDE-SEO:BEGIN" in homepage
+          assert "Nermin Sefić" in homepage and "GNK DINAMO Ltd." in homepage
+          assert 'rel="canonical"' in homepage
+          assert '"@type":"Organization"' in homepage
+          assert '"@type":"Person"' in profile
+          assert "image-sitemap.xml" in (root / "robots.txt").read_text(encoding="utf-8")
+          print(f"Validated {report['publicPageCount']} public pages and {report['noindexFileCount']} noindex files")
+          PY
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          cd workers/gnk-asg-direct-operator
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
+
+      - name: Deploy optimized portal to Cloudflare
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator
+
+      - name: Verify SEO on the public domain
+        run: |
+          set -euo pipefail
+          base="https://www.gnk-asg.hr"
+          for attempt in $(seq 1 30); do
+            cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+            home_code=$(curl -sS -L -H 'Cache-Control: no-cache' -o /tmp/home.html -w '%{http_code}' "$base/?cb=$cb" || true)
+            profile_code=$(curl -sS -L -H 'Cache-Control: no-cache' -o /tmp/profile.html -w '%{http_code}' "$base/nermin-sefic/?cb=$cb" || true)
+            sitemap_code=$(curl -sS -L -H 'Cache-Control: no-cache' -o /tmp/sitemap.xml -w '%{http_code}' "$base/sitemap.xml?cb=$cb" || true)
+            images_code=$(curl -sS -L -H 'Cache-Control: no-cache' -o /tmp/image-sitemap.xml -w '%{http_code}' "$base/image-sitemap.xml?cb=$cb" || true)
+            if [ "$home_code" = "200" ] \
+              && [ "$profile_code" = "200" ] \
+              && [ "$sitemap_code" = "200" ] \
+              && [ "$images_code" = "200" ] \
+              && grep -q 'SITEWIDE-SEO:BEGIN' /tmp/home.html \
+              && grep -q 'Nermin Sefić' /tmp/profile.html \
+              && grep -q '/nermin-sefic/' /tmp/sitemap.xml \
+              && grep -q 'image:image' /tmp/image-sitemap.xml; then
+              echo "Public sitewide SEO deployment verified."
+              exit 0
+            fi
+            sleep 6
+          done
+          echo "SEO deployment verification failed."
+          exit 1
