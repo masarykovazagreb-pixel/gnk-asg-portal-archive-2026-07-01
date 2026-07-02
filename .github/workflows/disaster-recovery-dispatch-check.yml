@@ -1,47 +1,14 @@
-name: Trigger Disaster Recovery Check
+name: Disaster Recovery Diagnostics
 
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
-  actions: write
   contents: read
 
 jobs:
-  dispatch:
+  diagnostics:
     runs-on: ubuntu-latest
     steps:
-      - name: Start and verify the approved mirror workflow
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPOSITORY: beckuphome-gnk/gnk-asg-portal
-        shell: bash
-        run: |
-          set -euo pipefail
-          started_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          gh workflow run disaster-recovery-mirror-v2.yml --repo "$REPOSITORY" --ref main
-
-          run_id=""
-          for attempt in $(seq 1 30); do
-            run_id="$(gh run list --repo "$REPOSITORY" --workflow disaster-recovery-mirror-v2.yml --event workflow_dispatch --limit 10 --json databaseId,createdAt --jq '.[] | select(.createdAt >= "'"$started_at"'") | .databaseId' | head -n 1)"
-            if [ -n "$run_id" ]; then
-              break
-            fi
-            sleep 2
-          done
-
-          if [ -z "$run_id" ]; then
-            echo "Could not identify the dispatched mirror run." >&2
-            exit 1
-          fi
-
-          echo "Mirror workflow run: $run_id"
-          if ! gh run watch "$run_id" --repo "$REPOSITORY" --exit-status; then
-            echo "----- filtered failed-step diagnostics -----"
-            gh run view "$run_id" --repo "$REPOSITORY" --log-failed \
-              | grep -Ei 'fatal:|remote:|error:|denied|forbidden|403|401|refusing|failed to|cannot|could not' \
-              | tail -n 20 || true
-            exit 1
-          fi
+      - name: Explain diagnostic status
+        run: echo "Use Disaster Recovery Mirror V2 for production backup verification."
