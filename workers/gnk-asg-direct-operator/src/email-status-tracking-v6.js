@@ -1,4 +1,4 @@
-import * as base from './email-status-tracking-v5.js';
+import * as base from './email-status-tracking-v5-core.js';
 import {ensureEmailStatusSchema} from './email-status-tracking-v1.js';
 import {backfillManualMailStatus,VERSION as BACKFILL_VERSION} from './manual-mail-status-backfill-v1.js';
 import {emailStatusDayWindow,DEFAULT_TIME_ZONE,VERSION as DATE_WINDOW_VERSION} from './email-status-date-window-v1.js';
@@ -15,7 +15,6 @@ const clean=value=>String(value??'').trim();
 const clamp=(value,min,max,fallback)=>{const number=Number(value);return Number.isFinite(number)?Math.min(max,Math.max(min,Math.trunc(number))):fallback;};
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-email-status':VERSION}});
-
 async function listRecords(request,env,backfill){
  const db=await ensureEmailStatusSchema(env),url=new URL(request.url),limit=clamp(url.searchParams.get('limit'),1,500,200),offset=clamp(url.searchParams.get('offset'),0,100000,0);
  const status=clean(url.searchParams.get('status')).toUpperCase(),source=clean(url.searchParams.get('source')).toLowerCase(),search=clean(url.searchParams.get('search')).toLowerCase().slice(0,150),date=clean(url.searchParams.get('date')).toLowerCase();
