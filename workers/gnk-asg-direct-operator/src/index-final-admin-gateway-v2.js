@@ -11,9 +11,10 @@ import {handleMediaBootstrapPdfForwardFix,VERSION as PDF_FORWARD_FIX_VERSION} fr
 import {handlePublicTheCodePdf,VERSION as PUBLIC_THE_CODE_PDF_VERSION} from './public-the-code-pdf-v1.js';
 import {handleMailStudioExtension,patchMailStudioResponse,handleMailStudioInbound,VERSION as MAIL_STUDIO_VERSION} from './mail-studio-extension-v2.js';
 import {prepareAiAutoReply,VERSION as AI_AUTO_REPLY_VERSION} from './ai-inbound-auto-reply-v2.js';
-import {withEmailStatusTracking,handleEmailStatusRequest,isEmailStatusPath,syncCloudflareEmailStatuses,API_PREFIX as EMAIL_STATUS_API,VERSION as EMAIL_STATUS_VERSION} from './email-status-tracking-v4.js';
+import {withEmailStatusTracking,handleEmailStatusRequest,isEmailStatusPath,syncCloudflareEmailStatuses,API_PREFIX as EMAIL_STATUS_API,VERSION as EMAIL_STATUS_VERSION} from './email-status-tracking-v5.js';
+import {addEmailStatusButtons,VERSION as EMAIL_STATUS_BUTTONS_VERSION} from './email-status-buttons-v1.js';
 const PUBLICATION_ROUTE_VERSION='GNK_ASG_STATIC_PUBLICATION_ROUTE_V1_20260702';
-export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
+export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${EMAIL_STATUS_BUTTONS_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
 const trackedEnv=env=>withEmailStatusTracking(env);
 const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(trackedEnv(env)));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
@@ -46,12 +47,13 @@ export default{
   if(isPublicRegistration(path)){const registration=await handleMediaRegistrationPublic(request,tracked);if(registration)return stampRegistration(registration)}
   if(isTransparentMediaLogo(path))return serveTransparentMediaLogo(request);
   if(isCampaignMailerApi(path)){if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();return handleCampaignMailer(request,tracked,ctx)}
-  if(isCampaignMailer(path))return serveCampaignMailer(request,active,ctx,app);
-  const mailStudio=await handleMailStudioExtension(request,tracked,ctx,app);if(mailStudio)return mailStudio;
+  if(isCampaignMailer(path)){const campaign=await serveCampaignMailer(request,active,ctx,app);return addEmailStatusButtons(request,campaign)}
+  const mailStudio=await handleMailStudioExtension(request,tracked,ctx,app);if(mailStudio)return addEmailStatusButtons(request,mailStudio);
   const response=await app.fetch(request,active,ctx);
   const linked=await addCampaignMailerLink(request,response);
   const withContact=await addBackendContactMenuLink(request,linked);
-  return patchMailStudioResponse(request,withContact);
+  const patched=await patchMailStudioResponse(request,withContact);
+  return addEmailStatusButtons(request,patched);
  },
  scheduled(event,env,ctx){const tracked=trackedEnv(env),active=protectedEnv(tracked),task=Promise.allSettled([runQueue(tracked),syncCloudflareEmailStatuses(tracked),typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)]);if(ctx?.waitUntil){ctx.waitUntil(task);return}return task},
  async email(message,env,ctx){
