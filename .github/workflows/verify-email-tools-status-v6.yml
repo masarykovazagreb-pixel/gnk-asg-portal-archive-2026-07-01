@@ -1,0 +1,152 @@
+name: Verify visible Email Tools and statuses
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-email-tools-status-v6.yml"
+      - "apps/portal/assets/email-tools-hub-v4.js"
+      - "apps/portal/assets/email-status-dashboard-v2.js"
+      - "workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js"
+      - "workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js"
+      - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
+      - "scripts/test-email-tools-status.mjs"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-email-tools-status-v6.yml"
+      - "apps/portal/assets/email-tools-hub-v4.js"
+      - "apps/portal/assets/email-status-dashboard-v2.js"
+      - "workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js"
+      - "workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js"
+      - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
+      - "scripts/test-email-tools-status.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visible-email-tools-status-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out revision
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Validate JavaScript and integration contracts
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/email-tools-hub-v4.js
+          node --check apps/portal/assets/email-status-dashboard-v2.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node scripts/test-email-tools-status.mjs
+          grep -q "email-status-tracking-v6.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q "email-tools-hub-v4.js" workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js
+          grep -q "email-status-dashboard-v2.js" workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js
+          ! grep -q "prefix:'/automation-status'" workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js
+          grep -q 'DEPLOY_REVISION = "20260703-visible-email-tools-status-v6"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+
+      - name: Validate Worker package
+        working-directory: workers/gnk-asg-direct-operator
+        run: |
+          set -euo pipefail
+          npm install --no-package-lock --no-audit --no-fund
+          npx wrangler deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
+
+  verify-production:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPERATOR_TOKEN: ${{ secrets.GNK_ASG_ADMIN_TOKEN || secrets.OPERATOR_TOKEN || secrets.GNK_ASG_OPERATOR_TOKEN }}
+    steps:
+      - name: Verify deployed assets and access controls without sending email
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          ready=false
+          for attempt in $(seq 1 30); do
+            cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+            tools=$(curl -sS -o /tmp/email-tools.js -w '%{http_code}' "$base/assets/email-tools-hub-v4.js?cb=$cb" || true)
+            dashboard=$(curl -sS -o /tmp/email-dashboard.js -w '%{http_code}' "$base/assets/email-status-dashboard-v2.js?cb=$cb" || true)
+            mail=$(curl -sS -D /tmp/mail.headers -o /tmp/mail.html -w '%{http_code}' "$base/mail-studio/?cb=$cb" || true)
+            status=$(curl -sS -D /tmp/status.headers -o /tmp/status.html -w '%{http_code}' "$base/email-status?source=mail-studio&cb=$cb" || true)
+            ping=$(curl -sS -o /tmp/ping.json -w '%{http_code}' "$base/api/email-ping?cb=$cb" || true)
+            queue=$(curl -sS -o /tmp/queue.json -w '%{http_code}' "$base/api/studio-message/scheduled?cb=$cb" || true)
+            temporary=$(curl -sS -X POST -o /tmp/temporary.json -w '%{http_code}' "$base/api/temporary-message?cb=$cb" || true)
+            expired=$(curl -sS -o /tmp/expired.html -w '%{http_code}' "$base/temporary-message/invalid-token?cb=$cb" || true)
+            if [ "$tools" = 200 ] && [ "$dashboard" = 200 ] \
+              && grep -q '__GNK_ASG_EMAIL_TOOLS_HUB_V4__' /tmp/email-tools.js \
+              && grep -q '__GNK_ASG_EMAIL_STATUS_DASHBOARD_V2__' /tmp/email-dashboard.js \
+              && { [ "$mail" = 200 ] || [ "$mail" = 401 ] || [ "$mail" = 403 ]; } \
+              && { [ "$status" = 200 ] || [ "$status" = 303 ] || [ "$status" = 401 ]; } \
+              && [ "$ping" = 401 ] && [ "$queue" = 401 ] && [ "$temporary" = 401 ] \
+              && [ "$expired" = 410 ]; then
+              ready=true
+              break
+            fi
+            sleep 6
+          done
+          test "$ready" = true
+          echo "Visible Email Tools assets and protected routes verified; no email was sent."
+
+      - name: Verify authenticated UI and manual status backfill when token is available
+        if: env.OPERATOR_TOKEN != ''
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          auth=(-H "authorization: Bearer $OPERATOR_TOKEN")
+          cb="${GITHUB_RUN_ID}-auth-$(date +%s)"
+          mail=$(curl -sS "${auth[@]}" -D /tmp/auth-mail.headers -o /tmp/auth-mail.html -w '%{http_code}' "$base/mail-studio/?cb=$cb")
+          dashboard=$(curl -sS "${auth[@]}" -D /tmp/auth-status.headers -o /tmp/auth-status.html -w '%{http_code}' "$base/email-status?source=mail-studio&cb=$cb")
+          records=$(curl -sS "${auth[@]}" -o /tmp/records.json -w '%{http_code}' "$base/api/email-status/records?source=mail-studio&limit=100&cb=$cb")
+          test "$mail" = 200
+          test "$dashboard" = 200
+          test "$records" = 200
+          grep -q 'gnk-email-tools-hub-v4' /tmp/auth-mail.html
+          grep -q 'gnk-email-status-dashboard-v2' /tmp/auth-status.html
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          data=json.load(open('/tmp/records.json',encoding='utf-8'))
+          assert data.get('manualAuditBackfill',{}).get('ok') is True, data.get('manualAuditBackfill')
+          items=data.get('items') or []
+          today=datetime.now(timezone.utc).date()
+          today_items=[]
+          for item in items:
+              raw=item.get('created_at') or item.get('accepted_at') or item.get('updated_at')
+              if not raw:
+                  continue
+              try:
+                  when=datetime.fromisoformat(raw.replace('Z','+00:00')).date()
+              except ValueError:
+                  continue
+              if when==today and item.get('source_system')=='mail-studio':
+                  today_items.append(item)
+          summary={}
+          for item in today_items:
+              status=item.get('current_status','UNKNOWN')
+              summary[status]=summary.get(status,0)+1
+          print(json.dumps({'manualMailStatusRecordsToday':len(today_items),'statusSummary':summary,'backfill':data.get('manualAuditBackfill')},indent=2))
+          assert len(today_items)>=1, 'No Mail Studio status record was visible for today.'
+          PY
+          echo "Authenticated Email Tools UI and manual status records verified; no email was sent."
+
+      - name: Note missing production test token
+        if: env.OPERATOR_TOKEN == ''
+        run: echo "Operator token is not available to GitHub Actions; authenticated browser content was covered by the integration test, while production assets and access controls were verified live."
