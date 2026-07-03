@@ -12,6 +12,7 @@ import {handlePublicTheCodePdf,VERSION as PUBLIC_THE_CODE_PDF_VERSION} from './p
 import {handleMailStudioExtension,patchMailStudioResponse,handleMailStudioInbound,VERSION as MAIL_STUDIO_VERSION} from './mail-studio-extension-v2.js';
 import {prepareAiAutoReply,VERSION as AI_AUTO_REPLY_VERSION} from './ai-inbound-auto-reply-v2.js';
 import {withEmailStatusTracking,handleEmailStatusRequest,isEmailStatusPath,syncCloudflareEmailStatuses,API_PREFIX as EMAIL_STATUS_API,VERSION as EMAIL_STATUS_VERSION} from './email-status-tracking-v5.js';
+// Compatibility chain: email-status-tracking-v5.js extends email-status-tracking-v4.js.
 import {addEmailStatusButtons,VERSION as EMAIL_STATUS_BUTTONS_VERSION} from './email-status-buttons-v1.js';
 const PUBLICATION_ROUTE_VERSION='GNK_ASG_STATIC_PUBLICATION_ROUTE_V1_20260702';
 export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${EMAIL_STATUS_BUTTONS_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
