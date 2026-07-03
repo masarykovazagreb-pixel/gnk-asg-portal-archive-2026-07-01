@@ -1,6 +1,7 @@
 import { EmailMessage } from 'cloudflare:email';
+import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
 
-const VERSION = 'GNK_ASG_MAIL_CENTER_WORKER_V2_20260629_MEDIA_ROUTING';
+const VERSION = `GNK_ASG_MAIL_CENTER_AI_V3_20260703_${AI_REPLY_VERSION}`;
 const INTERNAL_COPY = 'rht@gmx.com';
 const MEDIA_EMAILS = new Set(['media@gnk-asg.hr', 'press@gnk-asg.hr']);
 const DEFAULT_FROM = 'assistant@gnk-asg.hr';
@@ -317,7 +318,7 @@ export default {
     const path = url.pathname.replace(/\/+$/, '') || '/';
     if (path === '/api/admin-mail-send' && request.method === 'POST') return sendMail(request, env);
     if (path === '/api/admin-mail-send') return json({ ok: true, version: VERSION, endpoint: '/api/admin-mail-send', method: 'POST', pdfAttachments: true, emailBinding: Boolean(env.EMAIL) });
-    if (path === '/api/mail-center/status') return json({ ok: true, version: VERSION, service: 'GNK ASG Mail Center', emailBinding: Boolean(env.EMAIL), autoReply: true, mediaProfile: true, mediaDefaultLanguage: 'en', languages: ['hr', 'en', 'de', 'it'], mandatoryBcc: INTERNAL_COPY, inboxKey: 'mail:inbox', sentKey: 'mail:sent', outboxKey: 'mail:outbox', time: new Date().toISOString() });
+    if (path === '/api/mail-center/status') return json({ ok: true, version: VERSION, service: 'GNK ASG Mail Center', emailBinding: Boolean(env.EMAIL), aiBinding: Boolean(env.AI), autoReply: true, mediaProfile: true, mediaDefaultLanguage: 'en', languages: ['hr', 'en', 'de', 'it'], mandatoryBcc: INTERNAL_COPY, inboxKey: 'mail:inbox', sentKey: 'mail:sent', outboxKey: 'mail:outbox', time: new Date().toISOString() });
     if (path === '/api/mail-center/auto-reply-preview') return preview(url);
     if (path === '/api/mail-center/inbox') return json({ ok: true, key: 'mail:inbox', items: await readList(env, 'mail:inbox') });
     if (path === '/api/mail-center/sent') return json({ ok: true, key: 'mail:sent', items: await readList(env, 'mail:sent') });
@@ -325,7 +326,8 @@ export default {
     return json({ ok: false, error: 'not_found', path }, 404);
   },
   async email(message, env, ctx) {
-    const task = handleInbound(message, env);
+    const prepared = prepareAiAutoReply(message, env);
+    const task = handleInbound(prepared.message, prepared.env);
     if (ctx?.waitUntil) {
       ctx.waitUntil(task);
       return;
