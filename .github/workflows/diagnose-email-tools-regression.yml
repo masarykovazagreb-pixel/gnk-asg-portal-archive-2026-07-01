@@ -1,8 +1,7 @@
 name: Diagnose Email Tools regression
 
 on:
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
