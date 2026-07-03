@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {addEmailStatusButtons,VERSION as BUTTON_VERSION} from '../workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js';
-import {backfillManualMailStatus,VERSION as STATUS_VERSION} from '../workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js';
+import {backfillManualMailStatus,VERSION as STATUS_VERSION} from '../workers/gnk-asg-direct-operator/src/manual-mail-status-backfill-v1.js';
 
 const request=new Request('https://www.gnk-asg.hr/mail-studio/');
 const response=new Response('<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="script-src \'self\'"></head><body><main>Mail Studio</main></body></html>',{headers:{'content-type':'text/html; charset=utf-8'}});
@@ -40,6 +40,6 @@ assert.equal(result.auditedRows,1);
 assert.equal(result.candidateRecipients,1);
 assert.ok(prepared.some(item=>item.sql.includes('INSERT INTO email_status_records')));
 assert.ok(batches.length>=2);
-assert.match(STATUS_VERSION,/AUDIT_BACKFILL/);
+assert.match(STATUS_VERSION,/MANUAL_MAIL_STATUS_BACKFILL/);
 
 console.log(JSON.stringify({ok:true,buttonVersion:BUTTON_VERSION,statusVersion:STATUS_VERSION,manualAuditCandidates:result.candidateRecipients},null,2));
