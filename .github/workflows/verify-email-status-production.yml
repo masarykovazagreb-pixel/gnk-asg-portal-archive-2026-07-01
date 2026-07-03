@@ -1,0 +1,84 @@
+name: Verify unified email status production
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-email-status-production.yml"
+      - "workers/gnk-asg-direct-operator/src/email-status-tracking-v*.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js"
+      - "workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js"
+      - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-email-status-production.yml"
+      - "workers/gnk-asg-direct-operator/src/email-status-tracking-v*.js"
+      - "workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js"
+      - "workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js"
+      - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-email-status-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Validate email-status source
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v2.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v3.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v4.js
+          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
+          grep -q 'EMAIL_STATUS_PUBLIC_ORIGIN = "https://gnk-asg.hr"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'EMAIL_OPEN_TRACKING_ENABLED = "true"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q "email-status-tracking-v4.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q "DASHBOARD_PATH='/email-status'" workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js
+
+      - name: Verify production routes without sending email
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+        run: |
+          set -euo pipefail
+          pixel_id="00000000-0000-4000-8000-000000000000"
+          ready=false
+          for base in "https://gnk-asg-direct-operator.beckuphome.workers.dev" "https://www.gnk-asg.hr"; do
+            base_ready=false
+            for attempt in $(seq 1 40); do
+              cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+              home=$(curl -sS -L -o /tmp/status-home.html -w '%{http_code}' "$base/?cb=$cb" || true)
+              dashboard=$(curl -sS -D /tmp/status-dashboard.headers -o /tmp/status-dashboard.body -w '%{http_code}' "$base/email-status?cb=$cb" || true)
+              health=$(curl -sS -D /tmp/status-health.headers -o /tmp/status-health.body -w '%{http_code}' "$base/api/email-status/health?cb=$cb" || true)
+              pixel=$(curl -sS -D /tmp/status-pixel.headers -o /tmp/status-pixel.gif -w '%{http_code}' "$base/api/email-status/open/$pixel_id.gif?cb=$cb" || true)
+              if [ "$home" = 200 ] \
+                && [ "$dashboard" = 401 ] \
+                && [ "$health" = 401 ] \
+                && [ "$pixel" = 200 ] \
+                && grep -q 'gnk-asg-dashboard-menu-v2' /tmp/status-home.html \
+                && grep -qi '^content-type: image/gif' /tmp/status-pixel.headers \
+                && grep -qi '^x-gnk-asg-email-status: GNK_ASG_EMAIL_STATUS_TRACKING_' /tmp/status-pixel.headers; then
+                base_ready=true
+                break
+              fi
+              sleep 6
+            done
+            echo "$base ready=$base_ready dashboard=$dashboard health=$health pixel=$pixel"
+            test "$base_ready" = true
+          done
+          ready=true
+          test "$ready" = true
+          echo "Unified email status routes verified. No email was sent."
