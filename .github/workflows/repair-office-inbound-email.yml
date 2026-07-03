@@ -1,0 +1,89 @@
+name: Repair Office Inbound Email
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/repair-office-inbound-email.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repair-office-inbound-email
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Ensure office address routes to Email Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          DOMAIN: gnk-asg.hr
+          ADDRESS: office@gnk-asg.hr
+          WORKER_NAME: gnk-asg-direct-operator
+        run: |
+          set -euo pipefail
+
+          api="https://api.cloudflare.com/client/v4"
+          auth=(-H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" -H "Content-Type: application/json")
+
+          zone_response="$(curl --silent --show-error --fail-with-body "${auth[@]}" \
+            "${api}/zones?name=${DOMAIN}&account.id=${CLOUDFLARE_ACCOUNT_ID}&status=active")"
+          zone_id="$(jq -r '.result[0].id // empty' <<<"${zone_response}")"
+          if [[ -z "${zone_id}" ]]; then
+            echo "Active Cloudflare zone not found for ${DOMAIN}."
+            jq . <<<"${zone_response}"
+            exit 1
+          fi
+
+          rules_response="$(curl --silent --show-error --fail-with-body "${auth[@]}" \
+            "${api}/zones/${zone_id}/email/routing/rules?per_page=200")"
+          jq -e '.success == true' <<<"${rules_response}" >/dev/null
+
+          rule_id="$(jq -r --arg address "${ADDRESS}" '
+            .result[]?
+            | select(any(.matchers[]?; .field == "to" and .type == "literal" and (.value | ascii_downcase) == ($address | ascii_downcase)))
+            | .id
+          ' <<<"${rules_response}" | head -n1)"
+
+          payload="$(jq -n \
+            --arg address "${ADDRESS}" \
+            --arg worker "${WORKER_NAME}" \
+            '{
+              name: "GNK ASG Office inbound",
+              enabled: true,
+              matchers: [{type: "literal", field: "to", value: $address}],
+              actions: [{type: "worker", value: [$worker]}]
+            }')"
+
+          if [[ -n "${rule_id}" ]]; then
+            echo "Updating existing Email Routing rule ${rule_id}."
+            result="$(curl --silent --show-error --fail-with-body -X PUT "${auth[@]}" \
+              --data "${payload}" \
+              "${api}/zones/${zone_id}/email/routing/rules/${rule_id}")"
+          else
+            echo "Creating Email Routing rule for ${ADDRESS}."
+            result="$(curl --silent --show-error --fail-with-body -X POST "${auth[@]}" \
+              --data "${payload}" \
+              "${api}/zones/${zone_id}/email/routing/rules")"
+          fi
+
+          jq . <<<"${result}"
+          jq -e '.success == true' <<<"${result}" >/dev/null
+
+          verify="$(curl --silent --show-error --fail-with-body "${auth[@]}" \
+            "${api}/zones/${zone_id}/email/routing/rules?per_page=200")"
+          jq -e --arg address "${ADDRESS}" --arg worker "${WORKER_NAME}" '
+            any(.result[]?;
+              .enabled == true
+              and any(.matchers[]?; .field == "to" and .type == "literal" and (.value | ascii_downcase) == ($address | ascii_downcase))
+              and any(.actions[]?; .type == "worker" and (.value | index($worker)) != null)
+            )
+          ' <<<"${verify}" >/dev/null
+
+          echo "Inbound Email Routing is active: ${ADDRESS} -> Worker ${WORKER_NAME}."
