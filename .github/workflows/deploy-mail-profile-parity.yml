@@ -24,7 +24,7 @@ jobs:
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — started · source office-inbound-routing-verify · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — started · deterministic standard acknowledgements · source office-inbound-routing-verify · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 
       - name: Check out reviewed mail profile revision
         uses: actions/checkout@v5
@@ -51,6 +51,8 @@ jobs:
           grep -q 'GNK_ASG_MAIL_CENTER_PROFILE_PARITY_V4_20260703' workers/gnk-asg-mail-center-worker/src/index.js
           grep -q 'data-gnk-asg-signature' workers/gnk-asg-mail-center-worker/src/index.js
           grep -q 'Auto-Submitted' workers/gnk-asg-mail-center-worker/src/index.js
+          grep -q 'Ova potvrda ne predstavlja' workers/gnk-asg-mail-center-worker/src/index.js
+          grep -q 'This acknowledgement does not constitute' workers/gnk-asg-mail-center-worker/src/index.js
 
       - name: Install direct operator dependencies
         working-directory: workers/gnk-asg-direct-operator
@@ -87,6 +89,9 @@ jobs:
 
           [ai]
           binding = "AI"
+
+          [vars]
+          AI_AUTO_REPLY_DISABLED = "true"
           EOF
 
       - name: Validate Mail Center Worker bundle
@@ -131,12 +136,15 @@ jobs:
           grep -aFq 'contact@gnk-asg.hr' /tmp/mail-center.bundle
           grep -aFq 'data-gnk-asg-signature' /tmp/mail-center.bundle
           grep -aFq 'Auto-Submitted' /tmp/mail-center.bundle
+          grep -aFq 'Ova potvrda ne predstavlja' /tmp/mail-center.bundle
+          grep -aFq 'This acknowledgement does not constitute' /tmp/mail-center.bundle
+          grep -Fq 'AI_AUTO_REPLY_DISABLED = "true"' workers/gnk-asg-mail-center-worker/wrangler.profile-parity.toml
 
       - name: Report success
         if: success()
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — success · all configured addresses can be selected for sending; active Email Routing Worker includes per-profile signatures and automatic acknowledgements · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — success · all configured addresses are selectable; deterministic bilingual acknowledgements, legal notices and per-profile signatures are active · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 
       - name: Report failure
         if: failure()
