@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {backfillManualMailStatus,VERSION} from '../workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js';
+import {backfillManualMailStatus,VERSION} from '../workers/gnk-asg-direct-operator/src/manual-mail-status-backfill-v1.js';
 
 const prepared=[];
 const batches=[];
@@ -20,5 +20,5 @@ assert.equal(result.auditedRows,1);
 assert.equal(result.candidateRecipients,1);
 assert.ok(prepared.some(item=>item.sql.includes('INSERT INTO email_status_records')));
 assert.equal(batches.length,2);
-assert.match(VERSION,/AUDIT_BACKFILL/);
+assert.match(VERSION,/MANUAL_MAIL_STATUS_BACKFILL/);
 console.log(JSON.stringify({ok:true,version:VERSION,manualAuditCandidates:result.candidateRecipients,batches:batches.length},null,2));
