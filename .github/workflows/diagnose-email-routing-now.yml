@@ -1,9 +1,11 @@
-name: Diagnose Email Routing now
+name: Diagnose Email Routing now V2
 
 on:
   push:
     branches: [main]
-    paths: ['.github/workflows/diagnose-email-routing-now.yml']
+    paths:
+      - '.github/workflows/diagnose-email-routing-now.yml'
+      - 'workers/gnk-asg-mail-center-worker/src/index.js'
   workflow_dispatch:
 
 permissions:
