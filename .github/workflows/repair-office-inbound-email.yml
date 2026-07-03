@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/repair-office-inbound-email.yml"
+      - "ops/trigger-office-email-routing.txt"
   workflow_dispatch:
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: repair-office-inbound-email
@@ -19,6 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Report start
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Office inbound routing repair — started · commit ${GITHUB_SHA} · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
       - name: Ensure office address routes to Email Worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -87,3 +95,15 @@ jobs:
           ' <<<"${verify}" >/dev/null
 
           echo "Inbound Email Routing is active: ${ADDRESS} -> Worker ${WORKER_NAME}."
+
+      - name: Report success
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Office inbound routing repair — success · office@gnk-asg.hr routes to Email Worker gnk-asg-direct-operator · commit ${GITHUB_SHA} · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+      - name: Report failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Office inbound routing repair — FAILURE · review run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID} · commit ${GITHUB_SHA}"
