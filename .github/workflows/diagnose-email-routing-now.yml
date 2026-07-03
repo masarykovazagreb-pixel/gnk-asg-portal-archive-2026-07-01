@@ -13,7 +13,7 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Read sanitized routing assignment
         env:
@@ -31,17 +31,48 @@ jobs:
           zid=$(jq -r '.result[0].id // empty' /tmp/zone.json 2>/dev/null || true)
           if [ -z "$zid" ]; then
             jq --arg http "$zone_http" '{status:"ZONE_LOOKUP_FAILED",http:$http,success:(.success // false),errors:(.errors // [])}' /tmp/zone.json > /tmp/routing.json 2>/dev/null || printf '{"status":"ZONE_RESPONSE_INVALID","http":"%s"}\n' "$zone_http" > /tmp/routing.json
+          else
+            rules_http=$(curl -sS -o /tmp/rules.json -w '%{http_code}' "${auth[@]}" "https://api.cloudflare.com/client/v4/zones/${zid}/email/routing/rules" || true)
+            jq --arg http "$rules_http" '{status:"RULES_READ",http:$http,success:(.success // false),errors:(.errors // []),rules:[.result[]?|select(.enabled==true)|{name,priority,matchers:[.matchers[]?|{type,field,value}],actions:[.actions[]?|{type,value}]}]}' /tmp/rules.json > /tmp/routing.json 2>/dev/null || printf '{"status":"RULES_RESPONSE_INVALID","http":"%s"}\n' "$rules_http" > /tmp/routing.json
+          fi
+      - name: Scan deployed Workers for active reply signature
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -u
+          mkdir -p /tmp/workers
+          : > /tmp/scan.ndjson
+          auth=(-H "Authorization: Bearer ${CF_TOKEN}")
+          list_http=$(curl -sS -o /tmp/scripts.json -w '%{http_code}' "${auth[@]}" "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/workers/scripts" || true)
+          if [ "$list_http" != "200" ]; then
+            jq -n --arg http "$list_http" '{status:"SCRIPT_LIST_FAILED",http:$http,matches:[]}' > /tmp/scan.json
             exit 0
           fi
-          rules_http=$(curl -sS -o /tmp/rules.json -w '%{http_code}' "${auth[@]}" "https://api.cloudflare.com/client/v4/zones/${zid}/email/routing/rules" || true)
-          jq --arg http "$rules_http" '{status:"RULES_READ",http:$http,success:(.success // false),errors:(.errors // []),rules:[.result[]?|select(.enabled==true)|{name,priority,matchers:[.matchers[]?|{type,field,value}],actions:[.actions[]?|{type,value}]}]}' /tmp/rules.json > /tmp/routing.json 2>/dev/null || printf '{"status":"RULES_RESPONSE_INVALID","http":"%s"}\n' "$rules_http" > /tmp/routing.json
-          cat /tmp/routing.json
+          jq -r '.result[]?.id' /tmp/scripts.json | while IFS= read -r script; do
+            [ -n "$script" ] || continue
+            file="/tmp/workers/${script}.bin"
+            code=$(curl -sS -o "$file" -w '%{http_code}' "${auth[@]}" "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/workers/scripts/${script}" || true)
+            [ "$code" = "200" ] || continue
+            old=false; inbox=false; identity=false; ai=false; handler=false
+            grep -aFqi 'we confirm that your message has been received by GNK ASG' "$file" && old=true || true
+            grep -aFqi 'GNK-INBOX-' "$file" && inbox=true || true
+            grep -aFqi 'Osobni digitalni asistent' "$file" && identity=true || true
+            grep -aFqi 'GNK_ASG_CLOUDFLARE_AI_AUTO_REPLY_V2_20260703' "$file" && ai=true || true
+            grep -aEqi 'async[[:space:]]+email[[:space:]]*\(|message\.reply[[:space:]]*\(' "$file" && handler=true || true
+            if [ "$old" = true ] || [ "$inbox" = true ] || [ "$identity" = true ] || [ "$ai" = true ]; then
+              jq -n --arg script "$script" --argjson old "$old" --argjson inbox "$inbox" --argjson identity "$identity" --argjson ai "$ai" --argjson handler "$handler" '{script:$script,oldReplyPhrase:$old,inboxReference:$inbox,itIdentity:$identity,aiReplyV2:$ai,emailHandler:$handler}' >> /tmp/scan.ndjson
+            fi
+          done
+          jq -s '{status:"SCRIPTS_SCANNED",matches:.}' /tmp/scan.ndjson > /tmp/scan.json
       - name: Report diagnostic
         if: always()
         uses: actions/github-script@v7
         with:
           script: |
             const fs=require('fs');
-            let data='{"status":"NO_OUTPUT"}';
-            try{data=fs.readFileSync('/tmp/routing.json','utf8')}catch{}
-            await github.rest.issues.createComment({owner:context.repo.owner,repo:context.repo.repo,issue_number:309,body:'## Active Email Routing assignment\n```json\n'+data+'\n```'});
+            const read=(p,f)=>{try{return fs.readFileSync(p,'utf8')}catch{return f}};
+            const routing=read('/tmp/routing.json','{"status":"NO_ROUTING_OUTPUT"}');
+            const scan=read('/tmp/scan.json','{"status":"NO_SCAN_OUTPUT"}');
+            await github.rest.issues.createComment({owner:context.repo.owner,repo:context.repo.repo,issue_number:309,body:'## Email Routing and deployed Worker diagnostic\n### Routing API\n```json\n'+routing+'\n```\n### Worker scan\n```json\n'+scan+'\n```'});
