@@ -12,7 +12,7 @@ const PUBLIC_UI=[
 const UI=[
   '/admin-center','/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro',
   '/auto-editor','/news-admin','/pdf-publisher','/social-share','/wa-center','/review',
-  '/media-command-center','/media-registration-admin','/campaign-mailer'
+  '/media-command-center','/media-registration-admin','/campaign-mailer','/email-status'
 ];
 const TOKEN_NAMES=new Set([
   'OPERATOR_TOKEN','GNK_ASG_OPERATOR_TOKEN','ADMIN_TOKEN','GNK_ASG_ADMIN_TOKEN',
