@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "contract": "gnk-asg-operator-os-routes",
+  "version": "0.1.0-safe-build",
+  "status": "draft",
+  "productionImpact": "none",
+  "releaseRule": "manual-approval-required-before-production-deploy",
+  "globalGuards": {
+    "noDnsChanges": true,
+    "noSecretChanges": true,
+    "noCloudflareProductionRouteChanges": true,
+    "noMassMailSend": true,
+    "requireAuditLog": true,
+    "requireRollbackNote": true,
+    "requireExplicitApprovalForSensitivePublish": true
+  },
+  "roles": [
+    {
+      "id": "owner",
+      "label": "Owner",
+      "capabilities": ["read", "draft", "approve", "publish", "deploy-request", "emergency-lock"]
+    },
+    {
+      "id": "operator",
+      "label": "Operator",
+      "capabilities": ["read", "draft", "prepare-publish-package"]
+    },
+    {
+      "id": "reviewer",
+      "label": "Reviewer",
+      "capabilities": ["read", "review", "approve-draft"]
+    },
+    {
+      "id": "viewer",
+      "label": "Viewer",
+      "capabilities": ["read"]
+    }
+  ],
+  "auth": {
+    "mobileAdminToken": {
+      "required": true,
+      "transport": "authorization-bearer-or-signed-link",
+      "expiryMinutesDefault": 60,
+      "maxExpiryMinutes": 1440,
+      "revocable": true,
+      "auditEvents": ["token.created", "token.used", "token.expired", "token.revoked"]
+    },
+    "session": {
+      "sameSite": "strict",
+      "secure": true,
+      "httpOnly": true,
+      "idleTimeoutMinutes": 30
+    }
+  },
+  "routes": [
+    {
+      "path": "/operator-os",
+      "surface": "web",
+      "module": "mission-control",
+      "method": "GET",
+      "requiredCapability": "read",
+      "writes": false,
+      "sensitive": false,
+      "description": "Central Mission Control shell for portal, mail, newsroom, deploy status and audit overview."
+    },
+    {
+      "path": "/operator-os/mobile",
+      "surface": "mobile",
+      "module": "mobile-admin",
+      "method": "GET",
+      "requiredCapability": "read",
+      "writes": false,
+      "sensitive": false,
+      "description": "Mobile admin shell for approved operator actions."
+    },
+    {
+      "path": "/operator-os/mobile/capture",
+      "surface": "mobile",
+      "module": "capture-to-draft",
+      "method": "POST",
+      "requiredCapability": "draft",
+      "writes": true,
+      "sensitive": true,
+      "approvalRequiredBeforePublish": true,
+      "description": "Photo/text input creates a draft package only; it never publishes directly."
+    },
+    {
+      "path": "/operator-os/inbox",
+      "surface": "web",
+      "module": "mail-inbox",
+      "method": "GET",
+      "requiredCapability": "read",
+      "writes": false,
+      "sensitive": true,
+      "description": "Operational inbox view above Gmail metadata and approved message reads."
+    },
+    {
+      "path": "/operator-os/outbox",
+      "surface": "web",
+      "module": "mail-outbox",
+      "method": "GET",
+      "requiredCapability": "read",
+      "writes": false,
+      "sensitive": true,
+      "description": "Outbox queue for drafts, approvals and send status."
+    },
+    {
+      "path": "/operator-os/outbox/send",
+      "surface": "web",
+      "module": "mail-send-approval",
+      "method": "POST",
+      "requiredCapability": "approve",
+      "writes": true,
+      "sensitive": true,
+      "approvalRequiredBeforeSend": true,
+      "massMailAllowed": false,
+      "description": "Single approved message send action; mass send is disabled in safe build."
+    },
+    {
+      "path": "/operator-os/newsroom",
+      "surface": "web",
+      "module": "ai-newsroom",
+      "method": "GET",
+      "requiredCapability": "read",
+      "writes": false,
+      "sensitive": false,
+      "description": "Newsroom status, draft packages, SEO readiness and source checks."
+    },
+    {
+      "path": "/operator-os/newsroom/publish-package",
+      "surface": "web",
+      "module": "news-publish-package",
+      "method": "POST",
+      "requiredCapability": "prepare-publish-package",
+      "writes": true,
+      "sensitive": true,
+      "approvalRequiredBeforePublish": true,
+      "description": "Creates a verified manual approval package with source, image and SEO metadata."
+    },
+    {
+      "path": "/operator-os/audit",
+      "surface": "web",
+      "module": "audit-log",
+      "method": "GET",
+      "requiredCapability": "read",
+      "writes": false,
+      "sensitive": true,
+      "description": "Audit trail of token, draft, publish, mail, deploy and emergency-lock events."
+    },
+    {
+      "path": "/operator-os/deploy",
+      "surface": "web",
+      "module": "deploy-status",
+      "method": "GET",
+      "requiredCapability": "read",
+      "writes": false,
+      "sensitive": true,
+      "description": "Deployment readiness, rollback point, checks and manual approval status."
+    },
+    {
+      "path": "/operator-os/emergency-lock",
+      "surface": "web",
+      "module": "emergency-lock",
+      "method": "POST",
+      "requiredCapability": "emergency-lock",
+      "writes": true,
+      "sensitive": true,
+      "description": "Stops non-essential operator writes and publish/send queues until owner unlocks."
+    }
+  ],
+  "auditEventTypes": [
+    "route.viewed",
+    "draft.created",
+    "draft.reviewed",
+    "draft.approved",
+    "publish.package.created",
+    "publish.blocked",
+    "mail.draft.created",
+    "mail.send.requested",
+    "mail.send.blocked",
+    "deploy.check.started",
+    "deploy.approval.required",
+    "emergency_lock.enabled",
+    "emergency_lock.disabled"
+  ],
+  "rollback": {
+    "type": "contract-only",
+    "safeToRemove": true,
+    "rollbackAction": "delete contracts/routes.operator-os.json from operator-os-safe-work before any dependent code is added"
+  }
+}
