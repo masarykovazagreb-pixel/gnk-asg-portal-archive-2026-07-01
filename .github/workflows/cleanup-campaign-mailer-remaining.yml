@@ -1,0 +1,97 @@
+name: Cleanup Campaign Mailer Remaining Contacts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/campaign-cleanup-remaining.trigger'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cleanup-campaign-mailer-remaining
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Export, verify stopped state, and retain only pending contacts
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          mkdir -p ../../exports
+          stamp="2026-07-03"
+
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.toml --json --command "SELECT status, next_send_at FROM campaign_mailer_state WHERE id=1;" > ../../exports/state-before.json
+
+          node <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('../../exports/state-before.json','utf8'));
+          const row=raw?.[0]?.results?.[0]||raw?.results?.[0];
+          if(!row) throw new Error('Campaign state was not returned');
+          if(row.status!=='stopped') throw new Error(`Cleanup refused: campaign status is ${row.status}, expected stopped`);
+          NODE
+
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.toml --json --command "SELECT id,email,priority,rang,medij,drzava,regija,jezik,format,kome_ide,koristiti_za,vrsta_kontakta,pouzdanost,ime,prezime,personalizacija,status,error_reason,attempts,sent_at,created_at,updated_at FROM campaign_mailer_contacts ORDER BY priority,id;" > ../../exports/all-before-cleanup.json
+
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.toml --json --command "SELECT id,email,priority,rang,medij,drzava,regija,jezik,format,kome_ide,koristiti_za,vrsta_kontakta,pouzdanost,ime,prezime,personalizacija,status,error_reason,attempts,sent_at,created_at,updated_at FROM campaign_mailer_contacts WHERE status='pending' AND LOWER(email) <> 'online@theaustralian.com.au' ORDER BY priority,id;" > ../../exports/remaining-pending.json
+
+          node <<'NODE'
+          const fs=require('fs');
+          const path=require('path');
+          const outDir='../../exports';
+          const extract=file=>{
+            const raw=JSON.parse(fs.readFileSync(path.join(outDir,file),'utf8'));
+            return raw?.[0]?.results||raw?.results||[];
+          };
+          const csv=(rows)=>{
+            const headers=['id','email','priority','rang','medij','drzava','regija','jezik','format','kome_ide','koristiti_za','vrsta_kontakta','pouzdanost','ime','prezime','personalizacija','status','error_reason','attempts','sent_at','created_at','updated_at'];
+            const esc=v=>`"${String(v??'').replace(/"/g,'""')}"`;
+            return [headers.map(esc).join(','),...rows.map(r=>headers.map(h=>esc(r[h])).join(','))].join('\n')+'\n';
+          };
+          const all=extract('all-before-cleanup.json');
+          const remaining=extract('remaining-pending.json');
+          fs.writeFileSync(path.join(outDir,'campaign-mailer-backup-before-cleanup-2026-07-03.csv'),csv(all));
+          fs.writeFileSync(path.join(outDir,'campaign-mailer-remaining-pending-2026-07-03.csv'),csv(remaining));
+          fs.writeFileSync(path.join(outDir,'campaign-mailer-cleanup-summary-2026-07-03.json'),JSON.stringify({before:all.length,remaining:remaining.length,removed:all.length-remaining.length,blockedAddressRemoved:'online@theaustralian.com.au',createdAt:new Date().toISOString()},null,2)+'\n');
+          NODE
+
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.toml --command "DELETE FROM campaign_mailer_contacts WHERE status <> 'pending' OR LOWER(email)='online@theaustralian.com.au'; UPDATE campaign_mailer_state SET status='stopped', next_send_at=NULL, cursor_contact_id=NULL, updated_at=datetime('now') WHERE id=1; INSERT INTO campaign_mailer_events(id,event_type,contact_id,email,subject,error,detail_json,created_at) VALUES(lower(hex(randomblob(16))),'pending_contacts_cleanup',NULL,'','','',json_object('kept_status','pending','removed_blocked_email','online@theaustralian.com.au','automatic_start',0),datetime('now'));"
+
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.toml --json --command "SELECT status, COUNT(*) AS count FROM campaign_mailer_contacts GROUP BY status ORDER BY status;" > ../../exports/status-after-cleanup.json
+
+          node <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('../../exports/status-after-cleanup.json','utf8'));
+          const rows=raw?.[0]?.results||raw?.results||[];
+          if(rows.some(r=>r.status!=='pending')) throw new Error('Cleanup verification failed: non-pending contacts remain');
+          if(!rows.length || Number(rows[0].count)<1) throw new Error('Cleanup verification failed: no pending contacts remain');
+          NODE
+
+      - name: Commit private backup and remaining-contact export
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add exports/campaign-mailer-backup-before-cleanup-2026-07-03.csv \
+                  exports/campaign-mailer-remaining-pending-2026-07-03.csv \
+                  exports/campaign-mailer-cleanup-summary-2026-07-03.json \
+                  exports/state-before.json \
+                  exports/status-after-cleanup.json
+          git commit -m 'Export remaining Campaign Mailer contacts after safe cleanup'
+          git push origin main
