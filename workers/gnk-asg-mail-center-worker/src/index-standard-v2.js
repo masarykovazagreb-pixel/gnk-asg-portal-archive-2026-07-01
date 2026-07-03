@@ -1,4 +1,4 @@
-import base from './index.js';
+import base from './index-core-v4.js';
 
 export const VERSION='GNK_ASG_MAIL_CENTER_STANDARD_ACK_V2_20260703';
 
