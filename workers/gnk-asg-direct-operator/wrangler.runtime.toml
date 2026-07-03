@@ -39,7 +39,7 @@ crons = ["*/3 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "direct-operator"
-DEPLOY_REVISION = "20260703-manual-mail-50-scheduled-5"
+DEPLOY_REVISION = "20260703-unified-email-status-v1"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 AI_AUTO_REPLY_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"

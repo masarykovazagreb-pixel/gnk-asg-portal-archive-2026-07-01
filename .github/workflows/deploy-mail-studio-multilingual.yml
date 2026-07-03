@@ -109,8 +109,9 @@ jobs:
           grep -q 'main = "src/index-final-admin-gateway-v2.js"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           grep -q 'MEDIA_OUTREACH_SCHEDULED_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
-          grep -q 'MAIL_MANUAL_MAX_PER_DAY = "5"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'MAIL_MANUAL_MAX_PER_DAY = "50"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           grep -q 'CAMPAIGN_MAILER_MAX_PER_DAY = "140"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q "x-gnk-asg-scheduled-mail" workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js
           cd workers/gnk-asg-direct-operator
           npx wrangler deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
 
@@ -158,7 +159,7 @@ jobs:
               && grep -q '"@type":"NewsArticle"' /tmp/article-en.html \
               && grep -q 'noindex,nofollow,noarchive' /tmp/control.html \
               && ! grep -q '<loc>https://www.gnk-asg.hr/control/</loc>' /tmp/sitemap.xml \
-              && grep -qi '^x-gnk-asg-mail-studio-extension: GNK_ASG_MAIL_STUDIO_EXTENSION_V4_20260702_MANUAL_SEND_GUARD' /tmp/mail.headers; then
+              && grep -qi '^x-gnk-asg-mail-studio-extension: GNK_ASG_MAIL_STUDIO_EXTENSION_V5_20260703_MANUAL_NO_INTERVAL' /tmp/mail.headers; then
               ready=true
               break
             fi

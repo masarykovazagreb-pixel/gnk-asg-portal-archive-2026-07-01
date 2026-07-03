@@ -29,7 +29,9 @@ const isMediaInbound=message=>address(message?.to||inboundAddress(message,'to'))
 const isPublicRegistration=path=>path==='/media-application'||path.startsWith('/media-application/')||path==='/api/media-registration'||path.startsWith('/api/media-registration/');
 const isStaticPublication=path=>(path.startsWith('/objave/')&&path!=='/objave')||(path.startsWith('/publications/')&&path!=='/publications');
 const isOpenPixel=path=>path.startsWith(`${EMAIL_STATUS_API}/open/`);
+const isEmailStatusUi=path=>path==='/email-status'||path.startsWith('/email-status/');
 const denied=()=>new Response(JSON.stringify({ok:false,error:'unauthorized'}),{status:401,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
+const loginRedirect=request=>{const url=new URL(request.url),next=url.pathname+url.search;return new Response(null,{status:303,headers:{location:`/admin-login/?next=${encodeURIComponent(next)}`,'cache-control':'no-store'}});};
 const stampRegistration=response=>{const headers=new Headers(response.headers);headers.set('x-gnk-asg-media-registration',REGISTRATION_VERSION);headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return new Response(response.body,{status:response.status,statusText:response.statusText,headers});};
 async function serveStaticPublication(request,env,path){
  if(!['GET','HEAD'].includes(request.method)||!env.ASSETS?.fetch||!isStaticPublication(path))return null;
@@ -44,7 +46,7 @@ export default{
   const tracked=trackedEnv(env),active=protectedEnv(tracked),path=pathOf(request);
   if(isTemporaryMessagePublicPath(path)){const temporary=await handleTemporaryMessage(request,tracked);if(temporary)return temporary;}
   if(isEmailStatusPath(path)){
-   if(!isOpenPixel(path)&&!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
+   if(!isOpenPixel(path)&&!(await authorizeCampaignMailer(request,active,ctx,app)))return isEmailStatusUi(path)&&['GET','HEAD'].includes(request.method)?loginRedirect(request):denied();
    const tracking=await handleEmailStatusRequest(request,tracked);if(tracking)return tracking;
   }
   if(isEmailPingPath(path)){
