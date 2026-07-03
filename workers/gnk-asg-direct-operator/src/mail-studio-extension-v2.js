@@ -1,6 +1,6 @@
 import * as base from './mail-studio-extension-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V4_20260702_MANUAL_SEND_GUARD';
+export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V5_20260703_MANUAL_NO_INTERVAL';
 export const UI_VERSION=base.UI_VERSION;
 export const PROFILES=base.PROFILES;
 export const GLOBAL_CENTRES=base.GLOBAL_CENTRES;
@@ -18,15 +18,16 @@ function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')
 async function manualSendGate(request,env){
   if(request.method!=='POST'||!SEND_PATHS.has(pathOf(request)))return null;
   const db=dbOf(env);if(!db?.prepare)return null;
-  const dailyLimit=int(env.MAIL_MANUAL_MAX_PER_DAY,5,1,50);
+  const dailyLimit=int(env.MAIL_MANUAL_MAX_PER_DAY,50,1,50);
   const minInterval=int(env.MAIL_MANUAL_MIN_INTERVAL_SECONDS,600,60,86400);
+  const scheduledId=clean(request.headers.get('x-gnk-asg-scheduled-mail'));
   try{
     const row=await db.prepare(`SELECT COUNT(*) AS used,MAX(sent_at) AS last_sent_at FROM manual_mail_messages WHERE status IN ('SENT','PARTIAL') AND sent_at IS NOT NULL AND strftime('%s',sent_at)>=strftime('%s','now','start of day')`).first();
     const used=Number(row?.used||0),lastSentAt=clean(row?.last_sent_at);
-    if(used>=dailyLimit)return json({ok:false,error:'manual_daily_limit_reached',message:`Dosegnut je dnevni limit ručnog slanja (${used}/${dailyLimit}).`,used,limit:dailyLimit,resetsAt:'00:00 UTC'},429);
-    if(lastSentAt){
+    if(used>=dailyLimit)return json({ok:false,error:'manual_daily_limit_reached',message:`Dosegnut je dnevni limit slanja (${used}/${dailyLimit}).`,used,limit:dailyLimit,resetsAt:'00:00 UTC'},429);
+    if(scheduledId&&lastSentAt){
       const elapsed=Math.floor((Date.now()-Date.parse(lastSentAt))/1000);
-      if(Number.isFinite(elapsed)&&elapsed<minInterval){const retryAfterSeconds=minInterval-elapsed;return json({ok:false,error:'manual_send_interval_active',message:`Pričekajte još ${Math.ceil(retryAfterSeconds/60)} min prije sljedeće ručne poruke.`,retryAfterSeconds,minIntervalSeconds:minInterval,used,limit:dailyLimit},429);}
+      if(Number.isFinite(elapsed)&&elapsed<minInterval){const retryAfterSeconds=minInterval-elapsed;return json({ok:false,error:'scheduled_send_interval_active',message:`Zakazana poruka čeka još ${Math.ceil(retryAfterSeconds/60)} min radi kontroliranog razmaka.`,retryAfterSeconds,minIntervalSeconds:minInterval,used,limit:dailyLimit,scheduledId},429);}
     }
     return null;
   }catch(error){console.error('mail-studio-manual-gate',error);return null;}
