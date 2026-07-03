@@ -1,0 +1,111 @@
+name: Verify Email Tools and status V6
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-email-tools-status-v6.yml"
+      - "apps/portal/assets/email-tools-hub-v4.js"
+      - "apps/portal/assets/email-status-dashboard-v2.js"
+      - "workers/gnk-asg-direct-operator/src/email-status-*.js"
+      - "workers/gnk-asg-direct-operator/src/manual-mail-status-backfill-v1.js"
+      - "workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js"
+      - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
+      - "scripts/test-email-tools-status-v6.mjs"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-email-tools-status-v6.yml"
+      - "apps/portal/assets/email-tools-hub-v4.js"
+      - "apps/portal/assets/email-status-dashboard-v2.js"
+      - "workers/gnk-asg-direct-operator/src/email-status-*.js"
+      - "workers/gnk-asg-direct-operator/src/manual-mail-status-backfill-v1.js"
+      - "workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js"
+      - "workers/gnk-asg-direct-operator/wrangler.runtime.toml"
+      - "scripts/test-email-tools-status-v6.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: email-tools-status-v6-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Validate JavaScript
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/email-tools-hub-v4.js
+          node --check apps/portal/assets/email-status-dashboard-v2.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v5.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v5-core.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-date-window-v1.js
+          node --check workers/gnk-asg-direct-operator/src/manual-mail-status-backfill-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
+          node scripts/test-email-tools-status-v6.mjs
+      - name: Validate Worker bundle
+        working-directory: workers/gnk-asg-direct-operator
+        run: |
+          set -euo pipefail
+          npm install --no-package-lock --no-audit --no-fund
+          npx wrangler deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
+
+  verify-production:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPERATOR_TOKEN: ${{ secrets.GNK_ASG_ADMIN_TOKEN || secrets.OPERATOR_TOKEN || secrets.GNK_ASG_OPERATOR_TOKEN }}
+    steps:
+      - name: Verify public assets and protected routes without sending email
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          ready=false
+          for attempt in $(seq 1 30); do
+            cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+            tools=$(curl -sS -o /tmp/tools.js -w '%{http_code}' "$base/assets/email-tools-hub-v4.js?cb=$cb" || true)
+            status_asset=$(curl -sS -o /tmp/status.js -w '%{http_code}' "$base/assets/email-status-dashboard-v2.js?cb=$cb" || true)
+            ping=$(curl -sS -o /tmp/ping.json -w '%{http_code}' "$base/api/email-ping?cb=$cb" || true)
+            queue=$(curl -sS -o /tmp/queue.json -w '%{http_code}' "$base/api/studio-message/scheduled?cb=$cb" || true)
+            if [ "$tools" = 200 ] && [ "$status_asset" = 200 ] && [ "$ping" = 401 ] && [ "$queue" = 401 ] && grep -q '__GNK_ASG_EMAIL_TOOLS_HUB_V4__' /tmp/tools.js && grep -q '__GNK_ASG_EMAIL_STATUS_DASHBOARD_V2__' /tmp/status.js; then ready=true; break; fi
+            sleep 6
+          done
+          test "$ready" = true
+          echo "Assets and access controls verified. No email was sent."
+      - name: Verify authenticated UI and today's manual statuses
+        if: env.OPERATOR_TOKEN != ''
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          auth=(-H "authorization: Bearer $OPERATOR_TOKEN")
+          cb="${GITHUB_RUN_ID}-auth-$(date +%s)"
+          test "$(curl -sS "${auth[@]}" -o /tmp/mail.html -w '%{http_code}' "$base/mail-studio/?cb=$cb")" = 200
+          test "$(curl -sS "${auth[@]}" -o /tmp/dashboard.html -w '%{http_code}' "$base/email-status?source=mail-studio&date=today&cb=$cb")" = 200
+          test "$(curl -sS "${auth[@]}" -o /tmp/records.json -w '%{http_code}' "$base/api/email-status/records?source=mail-studio&date=today&limit=100&cb=$cb")" = 200
+          grep -q 'gnk-email-tools-hub-v4' /tmp/mail.html
+          grep -q 'gnk-email-status-dashboard-v2' /tmp/dashboard.html
+          python - <<'PY'
+          import json
+          data=json.load(open('/tmp/records.json',encoding='utf-8'))
+          assert data.get('manualAuditBackfill',{}).get('ok') is True, data
+          assert data.get('dateWindow',{}).get('timeZone')=='Europe/Zagreb', data
+          assert data.get('total',0)>=1, data
+          print(json.dumps({'todayTotal':data['total'],'summary':data.get('summary',{}),'backfill':data['manualAuditBackfill']},indent=2))
+          PY
+          echo "Authenticated UI and today's manual statuses verified. No email was sent."
+      - name: Note unavailable authentication secret
+        if: env.OPERATOR_TOKEN == ''
+        run: echo "Authenticated production verification skipped because no operator token secret is available. No email was sent."
