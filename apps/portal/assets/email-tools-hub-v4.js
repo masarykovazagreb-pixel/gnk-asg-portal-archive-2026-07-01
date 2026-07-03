@@ -56,11 +56,11 @@ addLink('AI pomoćnik','pisanje i uređivanje',`/auto-editor/?from=${enc(current
 addLink('Status svih poruka','svi email sustavi',`/email-status?source=all&from=${enc(current)}`);
 if(source){
  addLink('Status ove aplikacije','isporuka i otvaranja',`/email-status?source=${enc(source)}&from=${enc(current)}`);
- if(source==='mail-studio')addLink('Današnje ručne poruke','Mail Studio evidencija',`/email-status?source=mail-studio&from=${enc(current)}`);
+ if(source==='mail-studio')addLink('Današnje ručne poruke','Mail Studio evidencija',`/email-status?source=mail-studio&date=today&from=${enc(current)}`);
 }
 function closePanel(){panel.hidden=true;launcher.setAttribute('aria-expanded','false');}
 launcher.addEventListener('click',()=>{panel.hidden=!panel.hidden;launcher.setAttribute('aria-expanded',String(!panel.hidden));});
-document.addEventListener('click',event=>{if(!panel.hidden&&!panel.contains(event.target)&&event.target!==launcher)closePanel();});
+document.addEventListener('click',event=>{if(!panel.hidden&&!panel.contains(event.target)&&!launcher.contains(event.target))closePanel();});
 function modal(title,contentBuilder){
  const overlay=el('div',{class:'gnk-et-overlay'}),box=el('section',{class:'gnk-et-modal','aria-modal':'true',role:'dialog'}),body=el('div',{class:'gnk-et-body'});
  const close=()=>overlay.remove();
