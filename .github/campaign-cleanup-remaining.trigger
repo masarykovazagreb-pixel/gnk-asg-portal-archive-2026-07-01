@@ -1,0 +1,1 @@
+Prepare continuation export requested 2026-07-03. Remove every contact through online@theaustralian.com.au and exclude the entire theaustralian.com.au domain. Do not modify the database or start sending.
