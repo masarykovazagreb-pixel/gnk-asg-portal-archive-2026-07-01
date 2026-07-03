@@ -11,9 +11,11 @@ import {handleMediaBootstrapPdfForwardFix,VERSION as PDF_FORWARD_FIX_VERSION} fr
 import {handlePublicTheCodePdf,VERSION as PUBLIC_THE_CODE_PDF_VERSION} from './public-the-code-pdf-v1.js';
 import {handleMailStudioExtension,patchMailStudioResponse,handleMailStudioInbound,VERSION as MAIL_STUDIO_VERSION} from './mail-studio-extension-v2.js';
 import {prepareAiAutoReply,VERSION as AI_AUTO_REPLY_VERSION} from './ai-inbound-auto-reply-v2.js';
+import {withEmailStatusTracking,handleEmailStatusRequest,isEmailStatusPath,syncCloudflareEmailStatuses,API_PREFIX as EMAIL_STATUS_API,VERSION as EMAIL_STATUS_VERSION} from './email-status-tracking-v1.js';
 const PUBLICATION_ROUTE_VERSION='GNK_ASG_STATIC_PUBLICATION_ROUTE_V1_20260702';
-export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
-const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(env));
+export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
+const trackedEnv=env=>withEmailStatusTracking(env);
+const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(trackedEnv(env)));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const clean=value=>String(value??'').trim();
 const inboundAddress=(message,name)=>{try{return clean(message?.headers?.get?.(name));}catch{return'';}};
@@ -21,6 +23,7 @@ const address=value=>{const raw=clean(value),match=raw.match(/<([^>]+)>/);return
 const isMediaInbound=message=>address(message?.to||inboundAddress(message,'to'))==='media@gnk-asg.hr';
 const isPublicRegistration=path=>path==='/media-application'||path.startsWith('/media-application/')||path==='/api/media-registration'||path.startsWith('/api/media-registration/');
 const isStaticPublication=path=>(path.startsWith('/objave/')&&path!=='/objave')||(path.startsWith('/publications/')&&path!=='/publications');
+const isOpenPixel=path=>path.startsWith(`${EMAIL_STATUS_API}/open/`);
 const denied=()=>new Response(JSON.stringify({ok:false,error:'unauthorized'}),{status:401,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
 const stampRegistration=response=>{const headers=new Headers(response.headers);headers.set('x-gnk-asg-media-registration',REGISTRATION_VERSION);headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return new Response(response.body,{status:response.status,statusText:response.statusText,headers});};
 async function serveStaticPublication(request,env,path){
@@ -33,25 +36,29 @@ async function serveStaticPublication(request,env,path){
 }
 export default{
  async fetch(request,env,ctx){
-  const active=protectedEnv(env),path=pathOf(request);
-  const publication=await serveStaticPublication(request,env,path);if(publication)return publication;
-  const publicPdf=await handlePublicTheCodePdf(request,env);if(publicPdf)return publicPdf;
-  if(isPublicRegistration(path)){const registration=await handleMediaRegistrationPublic(request,env);if(registration)return stampRegistration(registration)}
+  const tracked=trackedEnv(env),active=protectedEnv(tracked),path=pathOf(request);
+  if(isEmailStatusPath(path)){
+   if(!isOpenPixel(path)&&!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
+   const tracking=await handleEmailStatusRequest(request,tracked);if(tracking)return tracking;
+  }
+  const publication=await serveStaticPublication(request,tracked,path);if(publication)return publication;
+  const publicPdf=await handlePublicTheCodePdf(request,tracked);if(publicPdf)return publicPdf;
+  if(isPublicRegistration(path)){const registration=await handleMediaRegistrationPublic(request,tracked);if(registration)return stampRegistration(registration)}
   if(isTransparentMediaLogo(path))return serveTransparentMediaLogo(request);
-  if(isCampaignMailerApi(path)){if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();return handleCampaignMailer(request,env,ctx)}
+  if(isCampaignMailerApi(path)){if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();return handleCampaignMailer(request,tracked,ctx)}
   if(isCampaignMailer(path))return serveCampaignMailer(request,active,ctx,app);
-  const mailStudio=await handleMailStudioExtension(request,env,ctx,app);if(mailStudio)return mailStudio;
+  const mailStudio=await handleMailStudioExtension(request,tracked,ctx,app);if(mailStudio)return mailStudio;
   const response=await app.fetch(request,active,ctx);
   const linked=await addCampaignMailerLink(request,response);
   const withContact=await addBackendContactMenuLink(request,linked);
   return patchMailStudioResponse(request,withContact);
  },
- scheduled(event,env,ctx){const active=protectedEnv(env),task=Promise.allSettled([runQueue(env),typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)]);if(ctx?.waitUntil){ctx.waitUntil(task);return}return task},
+ scheduled(event,env,ctx){const tracked=trackedEnv(env),active=protectedEnv(tracked),task=Promise.allSettled([runQueue(tracked),syncCloudflareEmailStatuses(tracked),typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)]);if(ctx?.waitUntil){ctx.waitUntil(task);return}return task},
  async email(message,env,ctx){
-  const ai=prepareAiAutoReply(message,env),inbound=ai.message,aiEnv=ai.env,active=protectedEnv(aiEnv);
+  const ai=prepareAiAutoReply(message,env),inbound=ai.message,tracked=trackedEnv(ai.env),active=protectedEnv(tracked);
   const fixed=await handleMediaBootstrapPdfForwardFix(inbound,active,ctx);if(fixed?.handled)return fixed;
-  await recordInbound(inbound,aiEnv);
-  const studio=await handleMailStudioInbound(inbound,aiEnv,ctx);if(studio?.handled)return studio;
-  if(typeof app.email==='function')return app.email(inbound,isMediaInbound(inbound)?aiEnv:active,ctx);
+  await recordInbound(inbound,tracked);
+  const studio=await handleMailStudioInbound(inbound,tracked,ctx);if(studio?.handled)return studio;
+  if(typeof app.email==='function')return app.email(inbound,isMediaInbound(inbound)?tracked:active,ctx);
  }
 };
