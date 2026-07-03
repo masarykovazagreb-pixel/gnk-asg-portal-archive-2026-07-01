@@ -68,7 +68,7 @@ export async function backfillManualMailStatus(env){
    statements.push(db.prepare(`INSERT INTO email_status_records(tracking_id,source_system,source_id,recipient,sender,subject,current_status,provider_status,error_cause,error_detail,accepted_at,failed_at,created_at,updated_at)
     SELECT ?,'mail-studio',?,?,?,?,?,?,?,?,?,?,?,?
     WHERE NOT EXISTS(SELECT 1 FROM email_status_records WHERE source_system='mail-studio' AND source_id=? AND LOWER(recipient)=LOWER(?))`).bind(
-     trackingId,clean(row.id),recipient,emailOf(row.from_email),clean(row.subject).slice(0,500),status,status.toLowerCase(),errorCause,errorDetail,failed?null:stamp,failed?stamp:null,clean(row.created_at)||stamp,stamp,clean(row.id),recipient
+    trackingId,clean(row.id),recipient,emailOf(row.from_email),clean(row.subject).slice(0,500),status,status.toLowerCase(),errorCause,errorDetail,failed?null:stamp,failed?stamp:null,clean(row.created_at)||stamp,stamp,clean(row.id),recipient
    ));
   }
  }
@@ -84,7 +84,7 @@ async function completeSummary(request,env){
  if(status&&status!=='ALL'){where.push('UPPER(current_status)=?');values.push(status);}
  if(search){where.push(`(LOWER(recipient) LIKE ? OR LOWER(COALESCE(sender,'')) LIKE ? OR LOWER(COALESCE(subject,'')) LIKE ? OR LOWER(COALESCE(source_id,'')) LIKE ? OR LOWER(COALESCE(provider_message_id,'')) LIKE ?)`);const term=`%${search}%`;values.push(term,term,term,term,term);}
  const sql=`SELECT UPPER(COALESCE(current_status,'UNKNOWN')) status,COUNT(*) count FROM email_status_records${where.length?` WHERE ${where.join(' AND ')}`:''} GROUP BY UPPER(COALESCE(current_status,'UNKNOWN'))`;
- const result=await db.prepare(sql).bind(...values).all(),summary={};for(const row of result.results||[])summary[row.status]=Number(row.count||0);return summary;
+ const statement=db.prepare(sql),result=values.length?await statement.bind(...values).all():await statement.all(),summary={};for(const row of result.results||[])summary[row.status]=Number(row.count||0);return summary;
 }
 
 async function enhanceDashboard(response){
@@ -93,10 +93,6 @@ async function enhanceDashboard(response){
  if(!html.includes('gnk-email-status-dashboard-v2'))html=/<\/body>/i.test(html)?html.replace(/<\/body>/i,`${tag}</body>`):`${html}${tag}`;
  const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-gnk-asg-email-status',VERSION);
  return new Response(html,{status:response.status,statusText:response.statusText,headers});
-}
-async function enhanceRecords(request,response,backfill){
- if(!response.ok)return response;const payload=await response.json().catch(()=>null);if(!payload)return response;
- const summary=await completeSummary(request,arguments[3]);return json({...payload,summary,manualAuditBackfill:backfill,version:VERSION},response.status);
 }
 
 export async function handleEmailStatusRequest(request,env){
