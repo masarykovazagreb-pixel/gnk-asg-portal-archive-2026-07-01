@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {addEmailStatusButtons,VERSION as BUTTON_VERSION} from '../workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js';
 import {backfillManualMailStatus,VERSION as STATUS_VERSION} from '../workers/gnk-asg-direct-operator/src/manual-mail-status-backfill-v1.js';
+import {emailStatusDayWindow,VERSION as DATE_VERSION} from '../workers/gnk-asg-direct-operator/src/email-status-date-window-v1.js';
 
 const request=new Request('https://www.gnk-asg.hr/mail-studio/');
 const response=new Response('<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="script-src \'self\'"></head><body><main>Mail Studio</main></body></html>',{headers:{'content-type':'text/html; charset=utf-8'}});
@@ -30,10 +31,7 @@ class Statement{
  async first(){return null;}
  async run(){return{meta:{changes:1}};}
 }
-const db={
- prepare(sql){return new Statement(sql);},
- async batch(statements){batches.push(statements);return statements.map(()=>({success:true}));}
-};
+const db={prepare(sql){return new Statement(sql);},async batch(statements){batches.push(statements);return statements.map(()=>({success:true}));}};
 const result=await backfillManualMailStatus({GNK_ASG_D1:db});
 assert.equal(result.ok,true);
 assert.equal(result.auditedRows,1);
@@ -42,4 +40,14 @@ assert.ok(prepared.some(item=>item.sql.includes('INSERT INTO email_status_record
 assert.ok(batches.length>=2);
 assert.match(STATUS_VERSION,/MANUAL_MAIL_STATUS_BACKFILL/);
 
-console.log(JSON.stringify({ok:true,buttonVersion:BUTTON_VERSION,statusVersion:STATUS_VERSION,manualAuditCandidates:result.candidateRecipients},null,2));
+const summer=emailStatusDayWindow(new Date('2026-07-03T12:00:00Z'));
+const winter=emailStatusDayWindow(new Date('2026-01-03T12:00:00Z'));
+const dst=emailStatusDayWindow(new Date('2026-03-29T12:00:00Z'));
+assert.equal(summer.start,'2026-07-02T22:00:00.000Z');
+assert.equal(summer.end,'2026-07-03T22:00:00.000Z');
+assert.equal(winter.start,'2026-01-02T23:00:00.000Z');
+assert.equal(winter.end,'2026-01-03T23:00:00.000Z');
+assert.equal((Date.parse(dst.end)-Date.parse(dst.start))/3600000,23);
+assert.match(DATE_VERSION,/DATE_WINDOW/);
+
+console.log(JSON.stringify({ok:true,buttonVersion:BUTTON_VERSION,statusVersion:STATUS_VERSION,dateVersion:DATE_VERSION,manualAuditCandidates:result.candidateRecipients,summer,winter,dstHours:23},null,2));
