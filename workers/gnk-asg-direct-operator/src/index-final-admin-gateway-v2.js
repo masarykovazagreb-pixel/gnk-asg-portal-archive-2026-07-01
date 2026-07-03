@@ -11,8 +11,8 @@ import {handleMediaBootstrapPdfForwardFix,VERSION as PDF_FORWARD_FIX_VERSION} fr
 import {handlePublicTheCodePdf,VERSION as PUBLIC_THE_CODE_PDF_VERSION} from './public-the-code-pdf-v1.js';
 import {handleMailStudioExtension,patchMailStudioResponse,handleMailStudioInbound,VERSION as MAIL_STUDIO_VERSION} from './mail-studio-extension-v2.js';
 import {prepareAiAutoReply,VERSION as AI_AUTO_REPLY_VERSION} from './ai-inbound-auto-reply-v2.js';
-import {withEmailStatusTracking,handleEmailStatusRequest,isEmailStatusPath,syncCloudflareEmailStatuses,API_PREFIX as EMAIL_STATUS_API,VERSION as EMAIL_STATUS_VERSION} from './email-status-tracking-v5.js';
-// Compatibility chain: email-status-tracking-v5.js extends email-status-tracking-v4.js.
+import {withEmailStatusTracking,handleEmailStatusRequest,isEmailStatusPath,syncCloudflareEmailStatuses,API_PREFIX as EMAIL_STATUS_API,VERSION as EMAIL_STATUS_VERSION} from './email-status-tracking-v6.js';
+// Compatibility chain: email-status-tracking-v6.js extends email-status-tracking-v5.js.
 import {addEmailStatusButtons,VERSION as EMAIL_STATUS_BUTTONS_VERSION} from './email-status-buttons-v1.js';
 import {handleEmailPingTest,isEmailPingPath,VERSION as EMAIL_PING_VERSION} from './email-ping-test-v1.js';
 import {handleManualMailScheduler,isManualMailSchedulerPath,runScheduledManualMail,VERSION as MAIL_SCHEDULER_VERSION} from './manual-mail-scheduler-v1.js';
