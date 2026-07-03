@@ -40,58 +40,14 @@ export async function runQueue(env,{force=false}={}){
  const db=await ensureSchema(env),row=await stateRow(env);
  if(row.status!=='running')return{ok:true,skipped:'not_running',status:row.status};
  if(!force&&row.next_send_at&&Date.parse(row.next_send_at)>Date.now())return{ok:true,skipped:'not_due',nextSendAt:row.next_send_at};
- await ensureSendOnceSchema(db);
- const key=await campaignKey(row);
- await backfillPreviousAttempts(db,key);
- const reconciled=await reconcileDuplicatePending(db,key);
- if(reconciled)await logEvent(env,'duplicate_prevented',{detail:{campaignKey:key,count:reconciled,reason:'send_once_guard'}});
- const c=await db.prepare(`SELECT * FROM campaign_mailer_contacts WHERE status='pending' ORDER BY priority,id LIMIT 1`).first();
- if(!c){await updateState(env,{status:'completed',next_send_at:null});await logEvent(env,'completed');return{ok:true,completed:true,status:'completed'}}
- await db.prepare(`UPDATE campaign_mailer_contacts SET status='sending',updated_at=? WHERE id=?`).bind(timestamp(),c.id).run();
- await updateState(env,{cursor_contact_id:c.id});
- const subject=header(merge(row.subject,c));
- const reserved=await reserveAttempt(db,key,c,subject);
- if(!reserved){await db.prepare(`UPDATE campaign_mailer_contacts SET status='blocked',error_reason=?,updated_at=? WHERE id=?`).bind(DUPLICATE_REASON,timestamp(),c.id).run();await logEvent(env,'duplicate_prevented',{contactId:c.id,email:c.email,subject,detail:{campaignKey:key,reason:'send_once_guard'}});return finishCycle(env,db)}
- try{
-  const r=await deliver(env,c,row),stamp=timestamp();
-  await db.prepare(`UPDATE campaign_mailer_contacts SET status='sent',error_reason='',attempts=attempts+1,sent_at=?,updated_at=? WHERE id=?`).bind(stamp,stamp,c.id).run();
-  await setAttemptOutcome(db,key,c.email,'sent');
-  await logEvent(env,'sent',{contactId:c.id,email:c.email,subject:r.subject,detail:{campaignKey:key,automaticRetry:false,sendOnce:true}});
- }catch(error){
-  const message=errorText(error),code=clean(error?.code);
-  if(isSafetyLimitError(error)){
-   await releaseSafetyReservation(db,key,c.email);
-   await db.prepare(`UPDATE campaign_mailer_contacts SET status='pending',error_reason=?,updated_at=? WHERE id=?`).bind(message,timestamp(),c.id).run();
-   await updateState(env,{status:'paused',next_send_at:null});
-   await logEvent(env,'safety_paused',{contactId:c.id,email:c.email,error:message,detail:{code:code||'CAMPAIGN_SAFETY_LIMIT',reason:'campaign_safety_limit',providerAttempted:false}});
-   const remaining=Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_contacts WHERE status='pending'`).first())?.c||0);
-   return{ok:false,status:'paused',paused:true,reason:'campaign_safety_limit',error:message,contactId:c.id,email:c.email,remaining};
-  }
-  if(isDailyQuotaError(error)){
-   const attempts=Number(c.attempts||0)+1;
-   await db.prepare(`UPDATE campaign_mailer_contacts SET status='failed',error_reason=?,attempts=?,updated_at=? WHERE id=?`).bind(message,attempts,timestamp(),c.id).run();
-   await setAttemptOutcome(db,key,c.email,'failed',message);
-   await updateState(env,{status:'paused',next_send_at:null});
-   await logEvent(env,'quota_failed_paused',{contactId:c.id,email:c.email,error:message,detail:{campaignKey:key,code:code||'E_DAILY_LIMIT_EXCEEDED',automaticRetry:false,sendOnce:true}});
-   return{ok:false,status:'paused',paused:true,reason:'daily_quota_exceeded',error:message,contactId:c.id,email:c.email,automaticRetry:false};
-  }
-  const attempts=Number(c.attempts||0)+1;
-  if(isSuppressionError(error)||isInvalidRecipientError(error)){
-   const reason=isSuppressionError(error)?'provider_suppression':'invalid_recipient';
-   await db.prepare(`UPDATE campaign_mailer_contacts SET status='blocked',error_reason=?,attempts=?,updated_at=? WHERE id=?`).bind(message,attempts,timestamp(),c.id).run();
-   await setAttemptOutcome(db,key,c.email,'blocked',message);
-   await logEvent(env,'blocked',{contactId:c.id,email:c.email,error:message,detail:{campaignKey:key,reason,code,automaticRetry:false,sendOnce:true}});
-  }else{
-   await db.prepare(`UPDATE campaign_mailer_contacts SET status='failed',error_reason=?,attempts=?,updated_at=? WHERE id=?`).bind(message,attempts,timestamp(),c.id).run();
-   await setAttemptOutcome(db,key,c.email,'failed',message);
-   await logEvent(env,'failed',{contactId:c.id,email:c.email,error:message,detail:{campaignKey:key,attempts,code,automaticRetry:false,sendOnce:true}});
-  }
- }
- return finishCycle(env,db);
+ await ensureSendOnceSchema(db);const key=await campaignKey(row);await backfillPreviousAttempts(db,key);const reconciled=await reconcileDuplicatePending(db,key);if(reconciled)await logEvent(env,'duplicate_prevented',{detail:{campaignKey:key,count:reconciled,reason:'send_once_guard'}});
+ const c=await db.prepare(`SELECT * FROM campaign_mailer_contacts WHERE status='pending' ORDER BY priority,id LIMIT 1`).first();if(!c){await updateState(env,{status:'completed',next_send_at:null});await logEvent(env,'completed');return{ok:true,completed:true,status:'completed'}}
+ await db.prepare(`UPDATE campaign_mailer_contacts SET status='sending',updated_at=? WHERE id=?`).bind(timestamp(),c.id).run();await updateState(env,{cursor_contact_id:c.id});const subject=header(merge(row.subject,c)),reserved=await reserveAttempt(db,key,c,subject);if(!reserved){await db.prepare(`UPDATE campaign_mailer_contacts SET status='blocked',error_reason=?,updated_at=? WHERE id=?`).bind(DUPLICATE_REASON,timestamp(),c.id).run();await logEvent(env,'duplicate_prevented',{contactId:c.id,email:c.email,subject,detail:{campaignKey:key,reason:'send_once_guard'}});return finishCycle(env,db)}
+ try{const r=await deliver(env,c,row),stamp=timestamp();await db.prepare(`UPDATE campaign_mailer_contacts SET status='sent',error_reason='',attempts=attempts+1,sent_at=?,updated_at=? WHERE id=?`).bind(stamp,stamp,c.id).run();await setAttemptOutcome(db,key,c.email,'sent');await logEvent(env,'sent',{contactId:c.id,email:c.email,subject:r.subject,detail:{campaignKey:key,automaticRetry:false,sendOnce:true}})}catch(error){const message=errorText(error),code=clean(error?.code);if(isSafetyLimitError(error)){await releaseSafetyReservation(db,key,c.email);await db.prepare(`UPDATE campaign_mailer_contacts SET status='pending',error_reason=?,updated_at=? WHERE id=?`).bind(message,timestamp(),c.id).run();await updateState(env,{status:'paused',next_send_at:null});await logEvent(env,'safety_paused',{contactId:c.id,email:c.email,error:message,detail:{code:code||'CAMPAIGN_SAFETY_LIMIT',reason:'campaign_safety_limit',providerAttempted:false}});const remaining=Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_contacts WHERE status='pending'`).first())?.c||0);return{ok:false,status:'paused',paused:true,reason:'campaign_safety_limit',error:message,contactId:c.id,email:c.email,remaining}}if(isDailyQuotaError(error)){const attempts=Number(c.attempts||0)+1;await db.prepare(`UPDATE campaign_mailer_contacts SET status='failed',error_reason=?,attempts=?,updated_at=? WHERE id=?`).bind(message,attempts,timestamp(),c.id).run();await setAttemptOutcome(db,key,c.email,'failed',message);await updateState(env,{status:'paused',next_send_at:null});await logEvent(env,'quota_failed_paused',{contactId:c.id,email:c.email,error:message,detail:{campaignKey:key,code:code||'E_DAILY_LIMIT_EXCEEDED',automaticRetry:false,sendOnce:true}});return{ok:false,status:'paused',paused:true,reason:'daily_quota_exceeded',error:message,contactId:c.id,email:c.email,automaticRetry:false}}const attempts=Number(c.attempts||0)+1;if(isSuppressionError(error)||isInvalidRecipientError(error)){const reason=isSuppressionError(error)?'provider_suppression':'invalid_recipient';await db.prepare(`UPDATE campaign_mailer_contacts SET status='blocked',error_reason=?,attempts=?,updated_at=? WHERE id=?`).bind(message,attempts,timestamp(),c.id).run();await setAttemptOutcome(db,key,c.email,'blocked',message);await logEvent(env,'blocked',{contactId:c.id,email:c.email,error:message,detail:{campaignKey:key,reason,code,automaticRetry:false,sendOnce:true}})}else{await db.prepare(`UPDATE campaign_mailer_contacts SET status='failed',error_reason=?,attempts=?,updated_at=? WHERE id=?`).bind(message,attempts,timestamp(),c.id).run();await setAttemptOutcome(db,key,c.email,'failed',message);await logEvent(env,'failed',{contactId:c.id,email:c.email,error:message,detail:{campaignKey:key,attempts,code,automaticRetry:false,sendOnce:true}})}}return finishCycle(env,db)
 }
 
 export async function start(env){const row=await stateRow(env),s=await stats(env);if(!clean(row.subject)||!text(row.body_html))throw new Error('Kampanja nema naslov ili sadržaj');if(!s.pending)throw new Error('Nema kontakata na čekanju');await updateState(env,{status:'running',delay_seconds:600,jitter_seconds:0,max_retries:1,started_at:timestamp(),next_send_at:timestamp()});await logEvent(env,'started');return runQueue(env,{force:true})}
 export async function pause(env){const row=await stateRow(env);if(row.status!=='running')throw new Error('Kampanja nije aktivna');const db=await ensureSchema(env);await updateState(env,{status:'paused',next_send_at:null});await db.prepare(`UPDATE campaign_mailer_contacts SET status='pending',updated_at=? WHERE status='sending'`).bind(timestamp()).run();await logEvent(env,'paused');return{ok:true,status:'paused'}}
 export async function resume(env){const row=await stateRow(env);if(!['paused','stopped'].includes(row.status))throw new Error('Kampanja nije pauzirana ili zaustavljena');await updateState(env,{status:'running',delay_seconds:600,jitter_seconds:0,max_retries:1,next_send_at:timestamp()});await logEvent(env,'resumed');return runQueue(env,{force:true})}
 export async function stop(env){const db=await ensureSchema(env);await updateState(env,{status:'stopped',next_send_at:null});await db.prepare(`UPDATE campaign_mailer_contacts SET status='pending',updated_at=? WHERE status='sending'`).bind(timestamp()).run();await logEvent(env,'stopped');return{ok:true,status:'stopped'}}
-export async function reset(env){const db=await ensureSchema(env);await stop(env);await db.prepare(`UPDATE campaign_mailer_contacts SET status='pending',error_reason='',attempts=0,sent_at=NULL,updated_at=?`).bind(timestamp()).run();await updateState(env,{status:'draft',delay_seconds=600,jitter_seconds=0,max_retries=1,cursor_contact_id:null,started_at:null,next_send_at:null});await logEvent(env,'reset');return{ok:true,status:'draft'}}
+export async function reset(env){const db=await ensureSchema(env);await stop(env);await db.prepare(`UPDATE campaign_mailer_contacts SET status='pending',error_reason='',attempts=0,sent_at=NULL,updated_at=?`).bind(timestamp()).run();await updateState(env,{status:'draft',delay_seconds:600,jitter_seconds:0,max_retries:1,cursor_contact_id:null,started_at:null,next_send_at:null});await logEvent(env,'reset');return{ok:true,status:'draft'}}
