@@ -1,0 +1,61 @@
+name: Export Campaign Continuation Read Only
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/export-campaign-continuation-readonly.trigger'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: export-campaign-continuation-readonly
+  cancel-in-progress: false
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Read D1 contacts and create continuation CSV
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          mkdir -p ../../exports
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote --config wrangler.toml --json --command "SELECT id,email,priority,rang,medij,drzava,regija,jezik,format,kome_ide,koristiti_za,vrsta_kontakta,pouzdanost,ime,prezime,personalizacija,status FROM campaign_mailer_contacts ORDER BY id;" > ../../exports/continuation-source.json
+          node <<'NODE'
+          const fs=require('fs');
+          const raw=JSON.parse(fs.readFileSync('../../exports/continuation-source.json','utf8'));
+          const rows=raw?.[0]?.results||raw?.results||[];
+          const cutoff=rows.find(r=>String(r.email||'').trim().toLowerCase()==='online@theaustralian.com.au');
+          if(!cutoff) throw new Error('Cutoff email not found');
+          const kept=rows.filter(r=>Number(r.id)>Number(cutoff.id) && !String(r.email||'').trim().toLowerCase().endsWith('@theaustralian.com.au'));
+          if(!kept.length) throw new Error('No contacts remain after cutoff');
+          const headers=['Rang','Prioritet','Medij','Država/teritorij','Regija','Jezik','Format','Email','Kome ide','Najbolje koristiti za','Vrsta kontakta','Pouzdanost','Ime','Prezime','Personalizacija'];
+          const data=kept.map((r,i)=>[i+1,r.priority,r.medij,r.drzava,r.regija,r.jezik,r.format,String(r.email||'').trim().toLowerCase(),r.kome_ide,r.koristiti_za,r.vrsta_kontakta,r.pouzdanost,r.ime,r.prezime,r.personalizacija]);
+          const q=v=>`"${String(v??'').replace(/"/g,'""')}"`;
+          fs.writeFileSync('../../exports/campaign-mailer-nastavak-nakon-the-australian-2026-07-03.csv',[headers.map(q).join(','),...data.map(r=>r.map(q).join(','))].join('\n')+'\n');
+          fs.writeFileSync('../../exports/campaign-mailer-nastavak-summary-2026-07-03.json',JSON.stringify({originalCount:rows.length,cutoffId:cutoff.id,cutoffEmail:cutoff.email,excludedDomain:'theaustralian.com.au',remainingCount:kept.length,firstRemaining:kept[0],lastRemaining:kept[kept.length-1],databaseModified:false,campaignStarted:false},null,2)+'\n');
+          NODE
+
+      - name: Commit export files
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add exports/campaign-mailer-nastavak-nakon-the-australian-2026-07-03.csv exports/campaign-mailer-nastavak-summary-2026-07-03.json
+          git commit -m 'Export read-only Campaign Mailer continuation'
+          git push origin main
