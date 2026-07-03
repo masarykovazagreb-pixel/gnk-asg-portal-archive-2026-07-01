@@ -1,337 +1,42 @@
-import { EmailMessage } from 'cloudflare:email';
 import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
 
-const VERSION = `GNK_ASG_MAIL_CENTER_AI_V3_20260703_${AI_REPLY_VERSION}`;
-const INTERNAL_COPY = 'rht@gmx.com';
-const MEDIA_EMAILS = new Set(['media@gnk-asg.hr', 'press@gnk-asg.hr']);
-const DEFAULT_FROM = 'assistant@gnk-asg.hr';
-const MAX_LOG_ITEMS = 250;
-
-const JSON_HEADERS = {
-  'content-type': 'application/json; charset=utf-8',
-  'cache-control': 'no-store',
-  'access-control-allow-origin': 'https://gnk-asg.hr',
-  'access-control-allow-methods': 'GET,POST,OPTIONS',
-  'access-control-allow-headers': 'content-type,authorization,x-gnk-asg-token'
+const VERSION=`GNK_ASG_MAIL_CENTER_PROFILE_PARITY_V4_20260703_${AI_REPLY_VERSION}`;
+const COPY='rht@gmx.com',MAX=250;
+const PROFILES={
+ office:{id:'office',email:'office@gnk-asg.hr',name:'GNK ASG Office',unit:'Office'},
+ info:{id:'info',email:'info@gnk-asg.hr',name:'GNK ASG Information Desk',unit:'General Information'},
+ sefic:{id:'sefic',email:'sefic@gnk-asg.hr',name:'Nermin Sefić | Executive Office',unit:'Executive Office'},
+ ubo:{id:'ubo',email:'ubo@gnk-asg.hr',name:'GNK DINAMO Ltd. Group | UBO Office',unit:'UBO Office',group:true},
+ press:{id:'press',email:'press@gnk-asg.hr',name:'GNK DINAMO Ltd. Group | Press Office',unit:'Press Office',group:true,media:true},
+ assistant:{id:'assistant',email:'assistant@gnk-asg.hr',name:'GNK ASG | Executive Assistant',unit:'Executive Assistant'},
+ media:{id:'media',email:'media@gnk-asg.hr',name:'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center',unit:'Media Relations & Accreditation Center',group:true,media:true},
+ legal:{id:'legal',email:'legal@gnk-asg.hr',name:'GNK ASG Legal & Compliance',unit:'Legal & Compliance',legal:true},
+ privacy:{id:'privacy',email:'privacy@gnk-asg.hr',name:'GNK ASG Privacy Office',unit:'Privacy & Data Protection',privacy:true},
+ it:{id:'it',email:'it@gnk-asg.hr',name:'GNK ASG IT | Digital Assistant',unit:'IT & Digital Support'},
+ contact:{id:'contact',email:'contact@gnk-asg.hr',name:'GNK ASG Contact Centre',unit:'General Contact'},
+ director:{id:'director',email:'nermin.sefic@gnk-asg.hr',name:'Nermin Sefić | Managing Director',unit:'Managing Director'}
 };
-
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data, null, 2), { status, headers: JSON_HEADERS });
-}
-
-function clean(value) {
-  return String(value ?? '').trim();
-}
-
-function splitAddresses(value) {
-  const input = Array.isArray(value) ? value : String(value ?? '').split(/[;,]+/);
-  return [...new Set(input.map(clean).filter(Boolean))];
-}
-
-function stripHtml(value) {
-  return String(value ?? '')
-    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n\n')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/&amp;/gi, '&')
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>')
-    .replace(/&quot;/gi, '"')
-    .replace(/&#0?39;/gi, "'")
-    .replace(/[ \t]+/g, ' ')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-}
-
-function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>"']/g, char => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
-  }[char]));
-}
-
-function header(message, name) {
-  try {
-    return clean(message?.headers?.get?.(name));
-  } catch {
-    return '';
-  }
-}
-
-function emailAddress(value) {
-  const match = String(value ?? '').match(/[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}/i);
-  return match ? match[0].toLowerCase() : '';
-}
-
-function reference(prefix = 'GNK-INBOX') {
-  const now = new Date();
-  const two = number => String(number).padStart(2, '0');
-  return `${prefix}-${now.getUTCFullYear()}${two(now.getUTCMonth() + 1)}${two(now.getUTCDate())}-${two(now.getUTCHours())}${two(now.getUTCMinutes())}${two(now.getUTCSeconds())}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
-}
-
-async function readList(env, key) {
-  try {
-    if (!env.GNK_ASG_KV) return [];
-    const raw = await env.GNK_ASG_KV.get(key);
-    const value = raw ? JSON.parse(raw) : [];
-    return Array.isArray(value) ? value : [];
-  } catch {
-    return [];
-  }
-}
-
-async function prependLog(env, key, item) {
-  if (!env.GNK_ASG_KV) return;
-  const list = await readList(env, key);
-  await env.GNK_ASG_KV.put(key, JSON.stringify([item, ...list.filter(entry => entry?.id !== item?.id)].slice(0, MAX_LOG_ITEMS), null, 2));
-}
-
-async function claimMessage(env, messageId, fallbackIdentity) {
-  if (!env.GNK_ASG_KV) return true;
-  const source = clean(messageId || fallbackIdentity);
-  if (!source) return true;
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(source));
-  const hash = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, '0')).join('');
-  const key = `mail:inbound:dedupe:${hash}`;
-  if (await env.GNK_ASG_KV.get(key)) return false;
-  await env.GNK_ASG_KV.put(key, new Date().toISOString(), { expirationTtl: 7 * 24 * 60 * 60 });
-  return true;
-}
-
-function detectLanguage(subject, toAddress, message) {
-  const explicit = header(message, 'content-language').toLowerCase();
-  if (/^(hr|bs|sr)/.test(explicit)) return 'hr';
-  if (/^de/.test(explicit)) return 'de';
-  if (/^it/.test(explicit)) return 'it';
-  if (/^en/.test(explicit)) return 'en';
-
-  const text = ` ${clean(subject).toLowerCase().replace(/[^a-zà-žčćžšđ\s]/g, ' ')} `;
-  const score = words => words.reduce((total, word) => total + (text.includes(` ${word} `) ? 1 : 0), 0);
-  const hr = score(['poštovani', 'prijava', 'redakcija', 'akreditacija', 'mediji', 'upit', 'poruka', 'dokument', 'molim', 'hvala', 'poziv']);
-  const de = score(['anfrage', 'presse', 'nachricht', 'dokument', 'danke', 'akkreditierung', 'einladung']);
-  const it = score(['richiesta', 'stampa', 'messaggio', 'documento', 'grazie', 'accredito', 'invito']);
-  const en = score(['application', 'media', 'press', 'message', 'document', 'invitation', 'accreditation', 'request', 'test', 'controlled']);
-
-  const best = Math.max(hr, de, it, en);
-  if (best > 0) {
-    if (hr === best) return 'hr';
-    if (de === best) return 'de';
-    if (it === best) return 'it';
-    return 'en';
-  }
-  return MEDIA_EMAILS.has(toAddress) ? 'en' : 'hr';
-}
-
-function isAutomatedInbound(message, sender) {
-  const auto = header(message, 'auto-submitted').toLowerCase();
-  const precedence = header(message, 'precedence').toLowerCase();
-  const suppress = header(message, 'x-auto-response-suppress').toLowerCase();
-  const subject = header(message, 'subject').toLowerCase();
-  return Boolean(
-    (auto && auto !== 'no') ||
-    /bulk|list|junk/.test(precedence) ||
-    suppress ||
-    /mailer-daemon|postmaster|no-?reply|donotreply/.test(sender) ||
-    /automatic reply|auto reply|out of office|izvan ureda|undeliverable|delivery status notification/.test(subject)
-  );
-}
-
-function mediaText(language, receipt, subject) {
-  const safeSubject = clean(subject) || '(no subject)';
-  const messages = {
-    en: `Dear Sir or Madam,\n\nThis confirms that your message has been received by the GNK DINAMO Ltd. Group Media Relations & Accreditation Center under reference ${receipt}.\n\nOriginal subject: ${safeSubject}\n\nYour message has been placed in the human-review queue. This automated acknowledgement does not constitute accreditation approval, acceptance of an offer, a contractual commitment or a final decision. Please quote the reference above in further correspondence.\n\nKind regards,\nGNK DINAMO Ltd. Group\nMedia Relations & Accreditation Center\nMedia organiser and operational coordinator: GNK ASG d.o.o.\nmedia@gnk-asg.hr\nhttps://gnk-asg.hr`,
-    hr: `Poštovani,\n\npotvrđujemo da je Vaša poruka zaprimljena u GNK DINAMO Ltd. Group Media Relations & Accreditation Center pod evidencijskim brojem ${receipt}.\n\nIzvorni predmet: ${safeSubject}\n\nPoruka je upućena u red za ljudski pregled. Ova automatska potvrda nije odobrenje akreditacije, prihvat ponude, ugovorna obveza niti konačna odluka. U daljnjoj komunikaciji navedite gornji evidencijski broj.\n\nSrdačan pozdrav,\nGNK DINAMO Ltd. Group\nMedia Relations & Accreditation Center\nMedijski organizator i operativni koordinator: GNK ASG d.o.o.\nmedia@gnk-asg.hr\nhttps://gnk-asg.hr`,
-    de: `Sehr geehrte Damen und Herren,\n\nwir bestätigen den Eingang Ihrer Nachricht beim Media Relations & Accreditation Center der GNK DINAMO Ltd. Group unter der Referenz ${receipt}.\n\nUrsprünglicher Betreff: ${safeSubject}\n\nIhre Nachricht wurde zur menschlichen Prüfung weitergeleitet. Diese automatische Bestätigung stellt keine Akkreditierungszusage, Annahme eines Angebots, vertragliche Verpflichtung oder endgültige Entscheidung dar.\n\nMit freundlichen Grüßen\nGNK DINAMO Ltd. Group\nMedia Relations & Accreditation Center\nmedia@gnk-asg.hr\nhttps://gnk-asg.hr`,
-    it: `Gentili Signori,\n\nconfermiamo che il vostro messaggio è stato ricevuto dal Media Relations & Accreditation Center di GNK DINAMO Ltd. Group con il numero di riferimento ${receipt}.\n\nOggetto originale: ${safeSubject}\n\nIl messaggio è stato inoltrato per una verifica umana. Questa conferma automatica non costituisce approvazione dell'accredito, accettazione di un'offerta, impegno contrattuale o decisione finale.\n\nCordiali saluti\nGNK DINAMO Ltd. Group\nMedia Relations & Accreditation Center\nmedia@gnk-asg.hr\nhttps://gnk-asg.hr`
-  };
-  return messages[language] || messages.en;
-}
-
-function genericText(language, receipt, subject) {
-  const safeSubject = clean(subject) || 'Vaš upit';
-  if (language === 'en') return `Dear Sir or Madam,\n\nwe confirm that your message has been received by GNK ASG under reference ${receipt}.\n\nSubject: ${safeSubject}\n\nWe will review the matter internally and respond as soon as reasonably possible.\n\nKind regards,\nIT – Personal Digital Assistant\nGNK ASG d.o.o.\nhttps://gnk-asg.hr`;
-  if (language === 'de') return `Sehr geehrte Damen und Herren,\n\nwir bestätigen, dass Ihre Nachricht bei GNK ASG unter dem Zeichen ${receipt} eingegangen ist.\n\nBetreff: ${safeSubject}\n\nWir werden das Anliegen intern prüfen und Ihnen so bald wie angemessen möglich antworten.\n\nMit freundlichen Grüßen\nIT – Persönlicher digitaler Assistent\nGNK ASG d.o.o.\nhttps://gnk-asg.hr`;
-  if (language === 'it') return `Gentili Signori,\n\nconfermiamo che il vostro messaggio è stato ricevuto da GNK ASG con il numero di riferimento ${receipt}.\n\nOggetto: ${safeSubject}\n\nEsamineremo la richiesta internamente e risponderemo appena ragionevolmente possibile.\n\nCordiali saluti\nIT – Assistente digitale personale\nGNK ASG d.o.o.\nhttps://gnk-asg.hr`;
-  return `Poštovani,\n\npotvrđujemo da je Vaša poruka zaprimljena u sustavu GNK ASG pod evidencijskim brojem ${receipt}.\n\nPredmet: ${safeSubject}\n\nNakon interne obrade odgovor ćemo dostaviti pisanim putem u najkraćem razumnom roku.\n\nSrdačan pozdrav,\nIT – Osobni digitalni asistent\nGNK ASG d.o.o.\nhttps://gnk-asg.hr`;
-}
-
-function htmlBody(text, mediaProfile) {
-  const lines = text.split('\n').map(line => line ? escapeHtml(line) : '<br>').join('<br>');
-  const name = mediaProfile ? 'GNK DINAMO Ltd. Group' : 'IT – Osobni digitalni asistent';
-  const role = mediaProfile ? 'Media Relations &amp; Accreditation Center' : 'GNK ASG d.o.o. · Automated Communication Support';
-  const logo = mediaProfile ? 'https://gnk-asg.hr/assets/gnk-group-email-logo-final.png' : 'https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png';
-  return `<div style="font-family:Arial,Helvetica,sans-serif;color:#111827;font-size:15px;line-height:1.55">${lines}<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:20px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:18px 22px 8px 0"><img src="${logo}" width="150" alt="${escapeHtml(name)}" style="display:block;width:150px;max-width:150px;height:auto;border:0"></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.45"><div style="font-size:20px;font-weight:700;color:#0b223d;margin-bottom:5px">${escapeHtml(name)}</div><div style="font-size:15px;font-weight:700;color:#0b223d;margin-bottom:5px">${role}</div><div><strong>E:</strong> <a href="mailto:${mediaProfile ? 'media@gnk-asg.hr' : 'assistant@gnk-asg.hr'}" style="color:#0b57d0;text-decoration:none">${mediaProfile ? 'media@gnk-asg.hr' : 'assistant@gnk-asg.hr'}</a></div><div><strong>W:</strong> <a href="https://gnk-asg.hr" style="color:#0b57d0;text-decoration:none">https://gnk-asg.hr</a></div></td></tr></table></div>`;
-}
-
-function decodeAttachmentBytes(value, filename, type) {
-  let base64 = clean(value).replace(/^data:[^;,]+;base64,/i, '').replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
-  if (!base64) throw new Error(`Prazan privitak: ${filename}`);
-  while (base64.length % 4) base64 += '=';
-  let binary;
-  try { binary = atob(base64); } catch { throw new Error(`Neispravan Base64 privitak: ${filename}`); }
-  const bytes = new Uint8Array(binary.length);
-  for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
-  if (String(type).toLowerCase() === 'application/pdf') {
-    const validPdf = bytes.length >= 5 && bytes[0] === 37 && bytes[1] === 80 && bytes[2] === 68 && bytes[3] === 70 && bytes[4] === 45;
-    if (!validPdf) throw new Error(`PDF nema valjano %PDF- zaglavlje: ${filename}`);
-  }
-  return bytes;
-}
-
-function normalizeAttachments(input) {
-  const output = [];
-  let total = 0;
-  for (const item of Array.isArray(input) ? input : []) {
-    const filename = clean(item?.filename || item?.name || 'document.pdf').replace(/[^\w.\- čćšđžČĆŠĐŽ]/g, '_').slice(0, 140);
-    const type = clean(item?.type || item?.contentType || item?.mimeType || 'application/pdf');
-    const source = item?.content || item?.base64 || item?.data || '';
-    if (!source) continue;
-    const bytes = decodeAttachmentBytes(source, filename, type);
-    if (bytes.byteLength > 3_200_000) throw new Error(`PDF je prevelik: ${filename}`);
-    total += bytes.byteLength;
-    if (total > 3_400_000) throw new Error('PDF prilozi prelaze sigurni limit od oko 3 MB ukupno');
-    output.push({ filename, type, content: bytes.buffer, disposition: 'attachment' });
-  }
-  return output;
-}
-
-async function sendMail(request, env) {
-  let data;
-  try { data = await request.json(); } catch { return json({ ok: false, error: 'invalid_json' }, 400); }
-  const to = splitAddresses(data.to);
-  const cc = splitAddresses(data.cc);
-  const bcc = splitAddresses(data.bcc);
-  const fromEmail = clean(data.from || 'office@gnk-asg.hr');
-  const fromName = clean(data.fromName || 'GNK ASG Office');
-  const subject = clean(data.subject || 'GNK ASG poruka');
-  const html = clean(data.html || data.bodyHtml || data.messageHtml || data.contentHtml || data.body || '');
-  const text = clean(data.text || data.plainText || stripHtml(html) || data.body || '');
-  let attachments;
-  try { attachments = normalizeAttachments(data.attachments || []); } catch (error) { return json({ ok: false, error: String(error?.message || error) }, 400); }
-  const id = reference('GNK-SEND');
-  if (!to.length) return json({ ok: false, error: 'missing_to' }, 400);
-  const record = { id, createdAt: new Date().toISOString(), from: { email: fromEmail, name: fromName }, to, cc, bcc, subject, attachmentCount: attachments.length, attachments: attachments.map(item => ({ filename: item.filename, type: item.type })), dryRun: Boolean(data.dryRun) };
-  await prependLog(env, 'mail:outbox', { ...record, status: data.dryRun ? 'dry_run' : 'sending' });
-  if (data.dryRun) {
-    await prependLog(env, 'mail:sent', { ...record, status: 'dry_run_ok' });
-    return json({ ok: true, dryRun: true, stored: true, record });
-  }
-  if (!env.EMAIL?.send) return json({ ok: false, sent: false, stored: true, error: 'EMAIL binding missing', record }, 501);
-  try {
-    const payload = { to: to.length === 1 ? to[0] : to, from: { email: fromEmail, name: fromName }, subject, html, text, attachments, replyTo: fromEmail };
-    if (cc.length) payload.cc = cc.length === 1 ? cc[0] : cc;
-    if (bcc.length) payload.bcc = bcc.length === 1 ? bcc[0] : bcc;
-    const result = await env.EMAIL.send(payload);
-    const sent = { ...record, status: 'sent', messageId: clean(result?.messageId) || null };
-    await prependLog(env, 'mail:sent', sent);
-    return json({ ok: true, sent: true, stored: true, messageId: sent.messageId, record: sent });
-  } catch (error) {
-    const failed = { ...record, status: 'send_failed', error: String(error?.message || error) };
-    await prependLog(env, 'mail:sent', failed);
-    return json({ ok: false, sent: false, stored: true, error: failed.error, record: failed }, 500);
-  }
-}
-
-async function handleInbound(message, env) {
-  const fromRaw = message?.from || header(message, 'from');
-  const toRaw = message?.to || header(message, 'to') || DEFAULT_FROM;
-  const sender = emailAddress(header(message, 'reply-to') || fromRaw);
-  const toAddress = emailAddress(toRaw) || DEFAULT_FROM;
-  const subject = header(message, 'subject') || '(no subject)';
-  const messageId = header(message, 'message-id');
-  const id = reference(MEDIA_EMAILS.has(toAddress) ? 'GNK-MEDIA-IN' : 'GNK-INBOX');
-  const language = detectLanguage(subject, toAddress, message);
-  const mediaProfile = MEDIA_EMAILS.has(toAddress);
-  const base = { id, createdAt: new Date().toISOString(), version: VERSION, from: fromRaw, to: toRaw, fromEmail: sender, toEmail: toAddress, subject, messageId, language, profile: mediaProfile ? 'media-relations' : 'general', status: 'received' };
-  await prependLog(env, 'mail:inbox', base);
-
-  try {
-    if (typeof message?.forward === 'function') {
-      await message.forward(INTERNAL_COPY);
-      await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_to_gmx_sent', copyTo: INTERNAL_COPY });
-    }
-  } catch (error) {
-    await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_to_gmx_failed', copyTo: INTERNAL_COPY, error: String(error?.message || error) });
-  }
-
-  if (!sender || sender.endsWith('@gnk-asg.hr') || isAutomatedInbound(message, sender)) {
-    await prependLog(env, 'mail:sent', { ...base, status: 'auto_reply_skipped' });
-    return;
-  }
-  if (!(await claimMessage(env, messageId, `${sender}|${toAddress}|${subject}`))) {
-    await prependLog(env, 'mail:sent', { ...base, status: 'auto_reply_skipped_duplicate' });
-    return;
-  }
-  if (!env.EMAIL?.send) {
-    await prependLog(env, 'mail:sent', { ...base, status: 'auto_reply_not_sent_email_binding_missing' });
-    return;
-  }
-
-  const fromAddress = toAddress.endsWith('@gnk-asg.hr') ? toAddress : DEFAULT_FROM;
-  const fromName = mediaProfile ? 'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center' : 'IT – Osobni digitalni asistent';
-  const replySubject = /^re:/i.test(subject) ? subject : `Re: ${subject}`;
-  const text = mediaProfile ? mediaText(language, id, subject) : genericText(language, id, subject);
-  const html = htmlBody(text, mediaProfile);
-  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: INTERNAL_COPY };
-  await prependLog(env, 'mail:outbox', outbox);
-
-  try {
-    const result = await env.EMAIL.send({
-      to: sender,
-      bcc: INTERNAL_COPY,
-      from: { email: fromAddress, name: fromName },
-      replyTo: fromAddress,
-      subject: replySubject,
-      html,
-      text,
-      headers: {
-        'Auto-Submitted': 'auto-replied',
-        'X-Auto-Response-Suppress': 'All',
-        'X-GNK-ASG-Mail-Center': VERSION,
-        'X-GNK-ASG-Receipt': id,
-        'X-GNK-ASG-Profile': mediaProfile ? 'media-relations' : 'general'
-      }
-    });
-    await prependLog(env, 'mail:sent', { ...outbox, status: 'auto_reply_sent', messageId: clean(result?.messageId) || null, sentAt: new Date().toISOString() });
-  } catch (error) {
-    await prependLog(env, 'mail:sent', { ...outbox, status: 'auto_reply_failed', error: String(error?.message || error) });
-  }
-}
-
-function preview(url) {
-  const toAddress = emailAddress(url.searchParams.get('to')) || 'media@gnk-asg.hr';
-  const subject = clean(url.searchParams.get('subject') || 'Controlled media test');
-  const requestedLanguage = clean(url.searchParams.get('lang')).toLowerCase();
-  const mediaProfile = MEDIA_EMAILS.has(toAddress);
-  const language = ['hr', 'en', 'de', 'it'].includes(requestedLanguage) ? requestedLanguage : (mediaProfile ? 'en' : 'hr');
-  const receipt = reference(mediaProfile ? 'GNK-MEDIA-PREVIEW' : 'GNK-PREVIEW');
-  const text = mediaProfile ? mediaText(language, receipt, subject) : genericText(language, receipt, subject);
-  return json({ ok: true, version: VERSION, toAddress, profile: mediaProfile ? 'media-relations' : 'general', language, receipt, subject, text, html: htmlBody(text, mediaProfile) });
-}
-
-export default {
-  async fetch(request, env) {
-    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: JSON_HEADERS });
-    const url = new URL(request.url);
-    const path = url.pathname.replace(/\/+$/, '') || '/';
-    if (path === '/api/admin-mail-send' && request.method === 'POST') return sendMail(request, env);
-    if (path === '/api/admin-mail-send') return json({ ok: true, version: VERSION, endpoint: '/api/admin-mail-send', method: 'POST', pdfAttachments: true, emailBinding: Boolean(env.EMAIL) });
-    if (path === '/api/mail-center/status') return json({ ok: true, version: VERSION, service: 'GNK ASG Mail Center', emailBinding: Boolean(env.EMAIL), aiBinding: Boolean(env.AI), autoReply: true, mediaProfile: true, mediaDefaultLanguage: 'en', languages: ['hr', 'en', 'de', 'it'], mandatoryBcc: INTERNAL_COPY, inboxKey: 'mail:inbox', sentKey: 'mail:sent', outboxKey: 'mail:outbox', time: new Date().toISOString() });
-    if (path === '/api/mail-center/auto-reply-preview') return preview(url);
-    if (path === '/api/mail-center/inbox') return json({ ok: true, key: 'mail:inbox', items: await readList(env, 'mail:inbox') });
-    if (path === '/api/mail-center/sent') return json({ ok: true, key: 'mail:sent', items: await readList(env, 'mail:sent') });
-    if (path === '/api/mail-center/outbox') return json({ ok: true, key: 'mail:outbox', items: await readList(env, 'mail:outbox') });
-    return json({ ok: false, error: 'not_found', path }, 404);
-  },
-  async email(message, env, ctx) {
-    const prepared = prepareAiAutoReply(message, env);
-    const task = handleInbound(prepared.message, prepared.env);
-    if (ctx?.waitUntil) {
-      ctx.waitUntil(task);
-      return;
-    }
-    return task;
-  }
-};
+const BY_EMAIL=new Map(Object.values(PROFILES).map(p=>[p.email,p]));
+const clean=v=>String(v??'').trim();
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const header=(m,n)=>{try{return clean(m?.headers?.get?.(n));}catch{return'';}};
+const email=v=>(String(v??'').match(/[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}/i)?.[0]||'').toLowerCase();
+const profile=v=>BY_EMAIL.get(email(v))||PROFILES.assistant;
+const split=v=>[...new Set((Array.isArray(v)?v:String(v??'').split(/[;,\s]+/)).map(x=>clean(x).toLowerCase()).filter(Boolean))];
+const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','access-control-allow-origin':'https://gnk-asg.hr','access-control-allow-methods':'GET,POST,OPTIONS','access-control-allow-headers':'content-type,authorization,x-gnk-asg-token'}});
+function ref(prefix){const d=new Date(),p=n=>String(n).padStart(2,'0');return`${prefix}-${d.getUTCFullYear()}${p(d.getUTCMonth()+1)}${p(d.getUTCDate())}-${p(d.getUTCHours())}${p(d.getUTCMinutes())}${p(d.getUTCSeconds())}-${crypto.randomUUID().slice(0,8).toUpperCase()}`;}
+async function read(env,key){try{const raw=await env.GNK_ASG_KV?.get(key),value=raw?JSON.parse(raw):[];return Array.isArray(value)?value:[];}catch{return[];}}
+async function log(env,key,item){if(!env.GNK_ASG_KV)return;const items=await read(env,key);await env.GNK_ASG_KV.put(key,JSON.stringify([item,...items.filter(x=>x?.id!==item?.id)].slice(0,MAX),null,2));}
+async function claim(env,id,fallback){if(!env.GNK_ASG_KV)return true;const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(clean(id||fallback))),hash=[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join(''),key=`mail:inbound:dedupe:${hash}`;if(await env.GNK_ASG_KV.get(key))return false;await env.GNK_ASG_KV.put(key,new Date().toISOString(),{expirationTtl:604800});return true;}
+function automated(m,s){const a=header(m,'auto-submitted').toLowerCase(),p=header(m,'precedence').toLowerCase(),x=header(m,'x-auto-response-suppress'),u=header(m,'subject').toLowerCase();return Boolean((a&&a!=='no')||/bulk|list|junk/.test(p)||x||/mailer-daemon|postmaster|no-?reply|donotreply/.test(s)||/automatic reply|auto reply|out of office|izvan ureda|undeliverable|delivery status notification/.test(u));}
+function disclaimer(p){if(p.media)return'Ova potvrda nije odobrenje akreditacije, najava objave, prihvat ponude, ugovorna obveza niti konačna odluka. / This acknowledgement is not an accreditation approval, publication commitment, acceptance of an offer, contractual commitment or final decision.';if(p.privacy)return'Ova potvrda ne predstavlja provjeru identiteta, prihvat zahtjeva ispitanika niti konačnu odluku. / This acknowledgement does not constitute identity verification, acceptance of a data-subject request or a final decision.';if(p.legal)return'Ova potvrda ne predstavlja prihvat ponude, priznanje odgovornosti, odricanje od prava, pravno mišljenje niti konačnu odluku. / This acknowledgement does not constitute acceptance of an offer, admission of liability, waiver of rights, legal advice or a final decision.';return'Ova potvrda ne predstavlja prihvat ponude, ugovornu obvezu, pravno mišljenje niti konačnu odluku. / This acknowledgement does not constitute acceptance of an offer, a contractual commitment, legal advice or a final decision.';}
+function body(p,id,subject){const s=clean(subject)||'(no subject)';return`Poštovani,\n\npotvrđujemo da je Vaša poruka zaprimljena na adresi ${p.email} (${p.unit}) pod evidencijskim brojem ${id}.\n\nIzvorni predmet: ${s}\n\nPoruka je evidentirana i proslijeđena nadležnoj osobi na ljudski pregled. ${disclaimer(p)}\n\nU daljnjoj komunikaciji navedite gornji evidencijski broj.\n\n--- ENGLISH ---\n\nDear Sir or Madam,\n\nThis confirms that your message has been received at ${p.email} (${p.unit}) under reference ${id}.\n\nOriginal subject: ${s}\n\nThe message has been recorded and routed to the responsible person for human review. ${disclaimer(p)}\n\nPlease quote the reference above in further correspondence.`;}
+function signatureText(p){return[p.name,p.unit,p.email,'https://gnk-asg.hr'].join('\n');}
+function signatureHtml(p){const logo=p.group?'https://gnk-asg.hr/assets/gnk-group-email-logo-final.png':'https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png';return`<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:22px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:18px 22px 8px 0"><img src="${logo}" width="150" alt="${esc(p.name)}" style="display:block;width:150px;max-width:150px;height:auto;border:0"></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.45"><div style="font-size:20px;font-weight:700;color:#0b223d;margin-bottom:5px">${esc(p.name)}</div><div style="font-weight:700;color:#0b223d;margin-bottom:5px">${esc(p.unit)}</div><div><strong>E:</strong> <a href="mailto:${esc(p.email)}">${esc(p.email)}</a></div><div><strong>W:</strong> <a href="https://gnk-asg.hr">https://gnk-asg.hr</a></div></td></tr></table>`;}
+function html(text,p){return`<div style="font-family:Arial,Helvetica,sans-serif;color:#111827;font-size:15px;line-height:1.55">${text.split('\n').map(x=>x?esc(x):'<br>').join('<br>')}${signatureHtml(p)}</div>`;}
+function strip(v){return clean(v).replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,' ').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/\s+\n/g,'\n').trim();}
+function attachments(input){let total=0;return(Array.isArray(input)?input:[]).map(item=>{const filename=clean(item?.filename||item?.name||'document.pdf'),type=clean(item?.type||'application/pdf');let b64=clean(item?.base64||item?.content||'').replace(/^data:[^;,]+;base64,/i,'').replace(/\s+/g,'').replace(/-/g,'+').replace(/_/g,'/');while(b64.length%4)b64+='=';const binary=atob(b64),bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);total+=bytes.length;if(bytes.length>3200000||total>3400000)throw new Error('Attachment size limit exceeded');return{filename,type,content:bytes.buffer,disposition:'attachment'};});}
+async function send(request,env){let d;try{d=await request.json();}catch{return json({ok:false,error:'invalid_json'},400);}const p=profile(d.from||d.profile),to=split(d.to),cc=split(d.cc),bcc=[...new Set([...split(d.bcc),COPY])],subject=clean(d.subject),rawHtml=clean(d.html||d.bodyHtml||d.body||''),rawText=clean(d.text||d.plainText||strip(rawHtml)),signedText=`${rawText}\n\n${signatureText(p)}`,signedHtml=`${rawHtml||`<div>${esc(rawText)}</div>`}${signatureHtml(p)}`;if(!to.length||!subject||!rawText)return json({ok:false,error:'missing_required_field'},400);let files;try{files=attachments(d.attachments);}catch(e){return json({ok:false,error:String(e?.message||e)},400);}const id=ref('GNK-SEND'),record={id,createdAt:new Date().toISOString(),profile:p.id,from:{email:p.email,name:p.name},to,cc,bcc,subject,attachmentCount:files.length,status:'sending'};await log(env,'mail:outbox',record);if(!env.EMAIL?.send)return json({ok:false,error:'EMAIL binding missing'},501);try{const r=await env.EMAIL.send({to:to.length===1?to[0]:to,cc:cc.length?(cc.length===1?cc[0]:cc):undefined,bcc:bcc.length===1?bcc[0]:bcc,from:{email:p.email,name:p.name},replyTo:p.email,subject,text:signedText,html:signedHtml,attachments:files});const sent={...record,status:'sent',messageId:clean(r?.messageId)||null};await log(env,'mail:sent',sent);return json({ok:true,sent:true,record:sent});}catch(e){const failed={...record,status:'send_failed',error:String(e?.message||e)};await log(env,'mail:sent',failed);return json({ok:false,error:failed.error,record:failed},500);}}
+async function inbound(message,env){const fromRaw=message?.from||header(message,'from'),sender=email(header(message,'reply-to')||fromRaw),p=profile(message?.to||header(message,'to')),subject=header(message,'subject')||'(no subject)',messageId=header(message,'message-id'),id=ref(`GNK-${p.id.toUpperCase()}-IN`),base={id,createdAt:new Date().toISOString(),version:VERSION,from:fromRaw,to:p.email,fromEmail:sender,toEmail:p.email,subject,messageId,profile:p.id,status:'received'};await log(env,'mail:inbox',base);try{await message.forward?.(COPY,new Headers({'X-GNK-ASG-Original-Recipient':p.email,'X-GNK-ASG-Routing-Profile':p.id}));await log(env,'mail:sent',{...base,status:'incoming_forward_sent'});}catch(e){await log(env,'mail:sent',{...base,status:'incoming_forward_failed',error:String(e?.message||e)});}if(!sender||sender.endsWith('@gnk-asg.hr')||automated(message,sender)||!(await claim(env,messageId,`${sender}|${p.email}|${subject}`)))return;if(!env.EMAIL?.send)return;const content=body(p,id,subject),replySubject=/^re:/i.test(subject)?subject:`Re: ${subject}`,out={...base,status:'auto_reply_sending',autoReplyTo:sender};await log(env,'mail:outbox',out);try{const r=await env.EMAIL.send({to:sender,bcc:COPY,from:{email:p.email,name:p.name},replyTo:p.email,subject:replySubject,text:`${content}\n\n${signatureText(p)}`,html:html(content,p),headers:{'Auto-Submitted':'auto-replied','X-Auto-Response-Suppress':'All','X-GNK-ASG-Mail-Center':VERSION,'X-GNK-ASG-Receipt':id,'X-GNK-ASG-Profile':p.id}});await log(env,'mail:sent',{...out,status:'auto_reply_sent',messageId:clean(r?.messageId)||null});}catch(e){await log(env,'mail:sent',{...out,status:'auto_reply_failed',error:String(e?.message||e)});}}
+function preview(url){const p=profile(url.searchParams.get('to')),id=ref(`GNK-${p.id.toUpperCase()}-PREVIEW`),subject=clean(url.searchParams.get('subject')||'Controlled test'),content=body(p,id,subject);return json({ok:true,version:VERSION,profile:p,receipt:id,subject,text:`${content}\n\n${signatureText(p)}`,html:html(content,p)});}
+export default{async fetch(request,env){if(request.method==='OPTIONS')return new Response(null,{status:204});const url=new URL(request.url),path=url.pathname.replace(/\/+$/,'')||'/';if(path==='/api/admin-mail-send'&&request.method==='POST')return send(request,env);if(path==='/api/mail-center/status')return json({ok:true,version:VERSION,service:'GNK ASG Mail Center',emailBinding:Boolean(env.EMAIL),aiBinding:Boolean(env.AI),autoReply:true,signatures:true,profiles:Object.values(PROFILES),mandatoryBcc:COPY,time:new Date().toISOString()});if(path==='/api/mail-center/auto-reply-preview')return preview(url);if(path==='/api/mail-center/inbox')return json({ok:true,items:await read(env,'mail:inbox')});if(path==='/api/mail-center/sent')return json({ok:true,items:await read(env,'mail:sent')});if(path==='/api/mail-center/outbox')return json({ok:true,items:await read(env,'mail:outbox')});return json({ok:false,error:'not_found',path},404);},async email(message,env,ctx){const prepared=prepareAiAutoReply(message,env),task=inbound(prepared.message,prepared.env);if(ctx?.waitUntil){ctx.waitUntil(task);return;}return task;}};
