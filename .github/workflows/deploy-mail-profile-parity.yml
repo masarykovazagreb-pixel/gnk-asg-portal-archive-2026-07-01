@@ -24,7 +24,7 @@ jobs:
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — started · deterministic standard acknowledgements · source office-inbound-routing-verify · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — started · decoded deterministic standard acknowledgements · source office-inbound-routing-verify · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 
       - name: Check out reviewed mail profile revision
         uses: actions/checkout@v5
@@ -42,17 +42,20 @@ jobs:
           node --check apps/portal/assets/mail-studio-multilingual-v25.js
           node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js
           node --check workers/gnk-asg-mail-center-worker/src/index.js
+          node --check workers/gnk-asg-mail-center-worker/src/index-core-v4.js
+          node --check workers/gnk-asg-mail-center-worker/src/index-standard-v2.js
           for address in office info sefic ubo press assistant media legal privacy it contact; do
             grep -q "${address}@gnk-asg.hr" apps/portal/assets/mail-studio-multilingual-v25.js
-            grep -q "${address}@gnk-asg.hr" workers/gnk-asg-mail-center-worker/src/index.js
+            grep -q "${address}@gnk-asg.hr" workers/gnk-asg-mail-center-worker/src/index-core-v4.js
           done
           grep -q 'nermin.sefic@gnk-asg.hr' apps/portal/assets/mail-studio-multilingual-v25.js
           grep -q 'GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V27_20260703_PROFILE_PARITY' apps/portal/assets/mail-studio-multilingual-v25.js
-          grep -q 'GNK_ASG_MAIL_CENTER_PROFILE_PARITY_V4_20260703' workers/gnk-asg-mail-center-worker/src/index.js
-          grep -q 'data-gnk-asg-signature' workers/gnk-asg-mail-center-worker/src/index.js
-          grep -q 'Auto-Submitted' workers/gnk-asg-mail-center-worker/src/index.js
-          grep -q 'Ova potvrda ne predstavlja' workers/gnk-asg-mail-center-worker/src/index.js
-          grep -q 'This acknowledgement does not constitute' workers/gnk-asg-mail-center-worker/src/index.js
+          grep -q 'GNK_ASG_MAIL_CENTER_PROFILE_PARITY_V4_20260703' workers/gnk-asg-mail-center-worker/src/index-core-v4.js
+          grep -q 'GNK_ASG_MAIL_CENTER_STANDARD_ACK_V2_20260703' workers/gnk-asg-mail-center-worker/src/index-standard-v2.js
+          grep -q 'data-gnk-asg-signature' workers/gnk-asg-mail-center-worker/src/index-core-v4.js
+          grep -q 'Auto-Submitted' workers/gnk-asg-mail-center-worker/src/index-core-v4.js
+          grep -q 'decodeMimeWords' workers/gnk-asg-mail-center-worker/src/index-standard-v2.js
+          grep -q 'normalizeBilingual' workers/gnk-asg-mail-center-worker/src/index-standard-v2.js
 
       - name: Install direct operator dependencies
         working-directory: workers/gnk-asg-direct-operator
@@ -131,20 +134,21 @@ jobs:
             -H "Authorization: Bearer ${CF_API_TOKEN}" \
             "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/workers/scripts/gnk-asg-mail-center-worker" > /tmp/mail-center.bundle
           grep -aFq 'GNK_ASG_MAIL_CENTER_PROFILE_PARITY_V4_20260703' /tmp/mail-center.bundle
+          grep -aFq 'GNK_ASG_MAIL_CENTER_STANDARD_ACK_V2_20260703' /tmp/mail-center.bundle
           grep -aFq 'info@gnk-asg.hr' /tmp/mail-center.bundle
           grep -aFq 'privacy@gnk-asg.hr' /tmp/mail-center.bundle
           grep -aFq 'contact@gnk-asg.hr' /tmp/mail-center.bundle
           grep -aFq 'data-gnk-asg-signature' /tmp/mail-center.bundle
           grep -aFq 'Auto-Submitted' /tmp/mail-center.bundle
-          grep -aFq 'Ova potvrda ne predstavlja' /tmp/mail-center.bundle
-          grep -aFq 'This acknowledgement does not constitute' /tmp/mail-center.bundle
+          grep -aFq 'decodeMimeWords' /tmp/mail-center.bundle
+          grep -aFq 'normalizeBilingual' /tmp/mail-center.bundle
           grep -Fq 'AI_AUTO_REPLY_DISABLED = "true"' workers/gnk-asg-mail-center-worker/wrangler.profile-parity.toml
 
       - name: Report success
         if: success()
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — success · all configured addresses are selectable; deterministic bilingual acknowledgements, legal notices and per-profile signatures are active · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — success · all configured addresses are selectable; decoded deterministic bilingual acknowledgements, language-specific legal notices and per-profile signatures are active · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 
       - name: Report failure
         if: failure()
