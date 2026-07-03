@@ -2,27 +2,56 @@ import {handleCampaignMailer as baseHandle,runQueue as baseRunQueue,recordInboun
 import {ensureSchema,stateRow,stats,updateState,logEvent,timestamp,clean,int,bucketOf} from './campaign-mailer-db-v1.js';
 import {applyApprovalGuard,VERSION as APPROVAL_VERSION} from './campaign-mailer-approval-v1.js';
 
-export const VERSION=`GNK_ASG_CAMPAIGN_MAILER_SAFETY_V8_20260702_TEN_MINUTE_NO_RETRY_${APPROVAL_VERSION}`;
+export const VERSION=`GNK_ASG_CAMPAIGN_MAILER_SAFETY_V9_20260703_AUTO_CONTINUE_${APPROVAL_VERSION}`;
+const RETRY_SECONDS=600;
+const AUTO_PAUSE_EVENTS=new Set(['quota_failed_paused','rate_limited_paused','safety_paused']);
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-campaign-mailer-safety':VERSION}});
 const visible=value=>String(value||'').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,' ').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,' ').replace(/<[^>]+>/g,' ').trim();
+const nextAttemptAt=()=>new Date(Date.now()+RETRY_SECONDS*1000).toISOString();
 
 async function acquire(env){const db=await ensureSchema(env);await db.prepare(`CREATE TABLE IF NOT EXISTS campaign_mailer_runner_lock(id INTEGER PRIMARY KEY CHECK(id=1),lease_until TEXT)`).run();await db.prepare(`INSERT OR IGNORE INTO campaign_mailer_runner_lock(id,lease_until) VALUES(1,NULL)`).run();const stamp=timestamp(),until=new Date(Date.now()+120000).toISOString();const row=await db.prepare(`UPDATE campaign_mailer_runner_lock SET lease_until=? WHERE id=1 AND (lease_until IS NULL OR lease_until<?) RETURNING id`).bind(until,stamp).first();return row?{db,until}:null}
 async function release(lock){if(lock?.db)await lock.db.prepare(`UPDATE campaign_mailer_runner_lock SET lease_until=NULL WHERE id=1 AND lease_until=?`).bind(lock.until).run()}
+
+async function recoverAutomaticPause(env){
+ const db=await ensureSchema(env),state=await stateRow(env);
+ if(state.status!=='paused')return state;
+ const event=await db.prepare(`SELECT event_type,contact_id,email,error,detail_json,created_at FROM campaign_mailer_events ORDER BY created_at DESC LIMIT 1`).first();
+ if(!event||!AUTO_PAUSE_EVENTS.has(clean(event.event_type)))return state;
+ if(event.event_type==='quota_failed_paused'){
+  const stamp=timestamp();
+  if(event.contact_id)await db.prepare(`UPDATE campaign_mailer_contacts SET status='pending',error_reason='',attempts=CASE WHEN attempts>0 THEN attempts-1 ELSE 0 END,updated_at=? WHERE id=? AND status='failed' AND (error_reason LIKE '%E_DAILY_LIMIT_EXCEEDED%' OR error_reason LIKE '%daily sending quota exceeded%')`).bind(stamp,event.contact_id).run();
+  if(clean(event.email))try{await db.prepare(`DELETE FROM campaign_mailer_send_once WHERE LOWER(email)=LOWER(?) AND outcome='failed' AND (error LIKE '%E_DAILY_LIMIT_EXCEEDED%' OR error LIKE '%daily sending quota exceeded%')`).bind(clean(event.email)).run()}catch{}
+ }
+ await updateState(env,{status:'running',delay_seconds:RETRY_SECONDS,jitter_seconds:0,max_retries:1,next_send_at:timestamp()});
+ await logEvent(env,'automatic_pause_recovered',{contactId:event.contact_id||null,email:clean(event.email),error:clean(event.error),detail:{sourceEvent:event.event_type,retryDelaySeconds:RETRY_SECONDS,campaignMailerOnly:true}});
+ return stateRow(env)
+}
 
 async function rateGate(env){
  const db=await ensureSchema(env),hour=int(env.CAMPAIGN_MAILER_MAX_PER_HOUR||env.MEDIA_OUTREACH_MAX_PER_HOUR,6,1,1000),day=int(env.CAMPAIGN_MAILER_MAX_PER_DAY||env.MEDIA_OUTREACH_MAX_PER_DAY,140,1,10000);
  const h=Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_events WHERE event_type='sent' AND strftime('%s',created_at)>=strftime('%s','now','-1 hour')`).first())?.c||0),d=Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_events WHERE event_type='sent' AND strftime('%s',created_at)>=strftime('%s','now','start of day')`).first())?.c||0);
  if(h<hour&&d<day)return null;
- await updateState(env,{status:'paused',next_send_at:null});
- await logEvent(env,'rate_limited_paused',{detail:{hour:{used:h,limit:hour},day:{used:d,limit:day}}});
- return{ok:false,status:'paused',paused:true,rateLimited:true,reason:'campaign_safety_limit',hour:{used:h,limit:hour},day:{used:d,limit:day}};
+ const next=nextAttemptAt();
+ await updateState(env,{status:'running',next_send_at:next});
+ await logEvent(env,'rate_limited_waiting',{detail:{hour:{used:h,limit:hour},day:{used:d,limit:day},automaticRetry:true,retryDelaySeconds:RETRY_SECONDS,campaignMailerOnly:true}});
+ return{ok:true,status:'running',waiting:true,rateLimited:true,reason:'campaign_safety_limit',nextSendAt:next,hour:{used:h,limit:hour},day:{used:d,limit:day}}
 }
 
-export async function runQueue(env,options={}){const lock=await acquire(env);if(!lock)return{ok:true,skipped:'runner_locked'};try{await applyApprovalGuard(env);const limited=await rateGate(env);if(limited)return limited;return await baseRunQueue(env,options)}finally{await release(lock)}}
+export async function runQueue(env,options={}){
+ const lock=await acquire(env);if(!lock)return{ok:true,skipped:'runner_locked'};
+ try{
+  await applyApprovalGuard(env);
+  const state=await recoverAutomaticPause(env);
+  if(state.status!=='running')return baseRunQueue(env,options);
+  if(!options.force&&state.next_send_at&&Date.parse(state.next_send_at)>Date.now())return baseRunQueue(env,options);
+  const limited=await rateGate(env);if(limited)return limited;
+  return await baseRunQueue(env,options)
+ }finally{await release(lock)}
+}
 
-async function startAndDispatch(env){await applyApprovalGuard(env);const state=await stateRow(env),counts=await stats(env);if(!clean(state.subject)||!visible(state.body_html))throw new Error('Kampanja nema naslov ili sadržaj');if(!counts.pending)throw new Error('Nema odobrenih kontakata na čekanju');await updateState(env,{status:'running',delay_seconds:600,jitter_seconds:0,max_retries:1,started_at:timestamp(),next_send_at:timestamp()});await logEvent(env,'started');const delivery=await runQueue(env,{force:true});return{ok:delivery?.ok!==false,status:delivery?.status||'running',started:true,delivery}}
-async function resumeAndDispatch(env){await applyApprovalGuard(env);const state=await stateRow(env);if(!['paused','stopped'].includes(state.status))throw new Error('Kampanja nije pauzirana ili zaustavljena');await updateState(env,{status:'running',delay_seconds:600,jitter_seconds:0,max_retries:1,next_send_at:timestamp()});await logEvent(env,'resumed');const delivery=await runQueue(env,{force:true});return{ok:delivery?.ok!==false,status:delivery?.status||'running',resumed:true,delivery}}
+async function startAndDispatch(env){await applyApprovalGuard(env);const state=await stateRow(env),counts=await stats(env);if(!clean(state.subject)||!visible(state.body_html))throw new Error('Kampanja nema naslov ili sadržaj');if(!counts.pending)throw new Error('Nema odobrenih kontakata na čekanju');await updateState(env,{status:'running',delay_seconds:RETRY_SECONDS,jitter_seconds:0,max_retries:1,started_at:timestamp(),next_send_at:timestamp()});await logEvent(env,'started');const delivery=await runQueue(env,{force:true});return{ok:delivery?.ok!==false,status:delivery?.status||'running',started:true,delivery}}
+async function resumeAndDispatch(env){await applyApprovalGuard(env);const state=await stateRow(env);if(!['paused','stopped'].includes(state.status))throw new Error('Kampanja nije pauzirana ili zaustavljena');await updateState(env,{status:'running',delay_seconds:RETRY_SECONDS,jitter_seconds:0,max_retries:1,next_send_at:timestamp()});await logEvent(env,'resumed');const delivery=await runQueue(env,{force:true});return{ok:delivery?.ok!==false,status:delivery?.status||'running',resumed:true,delivery}}
 
 async function deleteCampaignFiles(env){const bucket=bucketOf(env);if(!bucket?.list||!bucket?.delete)return 0;let cursor,deleted=0;do{const page=await bucket.list({prefix:'campaign-mailer/attachments/',cursor});const keys=(page.objects||[]).map(item=>item.key);if(keys.length){await bucket.delete(keys);deleted+=keys.length}cursor=page.truncated?page.cursor:undefined}while(cursor);return deleted}
 
