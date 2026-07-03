@@ -45,15 +45,25 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Validate JavaScript and integration contracts
+      - name: Check Email Tools JavaScript syntax
         run: |
           set -euo pipefail
           node --check apps/portal/assets/email-tools-hub-v4.js
           node --check apps/portal/assets/email-status-dashboard-v2.js
           node --check workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js
+
+      - name: Check status and gateway JavaScript syntax
+        run: |
+          set -euo pipefail
           node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
-          node scripts/test-email-tools-status.mjs
+
+      - name: Run Email Tools and status regression tests
+        run: node scripts/test-email-tools-status.mjs
+
+      - name: Validate integration contracts
+        run: |
+          set -euo pipefail
           grep -q "email-status-tracking-v6.js" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q "email-tools-hub-v4.js" workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js
           grep -q "email-status-dashboard-v2.js" workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js
