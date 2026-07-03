@@ -1,0 +1,145 @@
+name: Deploy GNK ASG Mail Profile Parity
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-mail-profile-parity.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: deploy-gnk-asg-mail-profile-parity
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Report start
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — started · source office-inbound-routing-verify · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+      - name: Check out reviewed mail profile revision
+        uses: actions/checkout@v5
+        with:
+          ref: office-inbound-routing-verify
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Validate sender profiles, signatures and automatic replies
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/mail-studio-multilingual-v25.js
+          node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js
+          node --check workers/gnk-asg-mail-center-worker/src/index.js
+          for address in office info sefic ubo press assistant media legal privacy it contact; do
+            grep -q "${address}@gnk-asg.hr" apps/portal/assets/mail-studio-multilingual-v25.js
+            grep -q "${address}@gnk-asg.hr" workers/gnk-asg-mail-center-worker/src/index.js
+          done
+          grep -q 'nermin.sefic@gnk-asg.hr' apps/portal/assets/mail-studio-multilingual-v25.js
+          grep -q 'GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V27_20260703_PROFILE_PARITY' apps/portal/assets/mail-studio-multilingual-v25.js
+          grep -q 'GNK_ASG_MAIL_CENTER_PROFILE_PARITY_V4_20260703' workers/gnk-asg-mail-center-worker/src/index.js
+          grep -q 'data-gnk-asg-signature' workers/gnk-asg-mail-center-worker/src/index.js
+          grep -q 'Auto-Submitted' workers/gnk-asg-mail-center-worker/src/index.js
+
+      - name: Install direct operator dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --no-package-lock --no-audit --no-fund
+
+      - name: Validate direct operator bundle
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx wrangler deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
+
+      - name: Deploy direct operator and Mail Studio assets
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator
+
+      - name: Build Mail Center Worker configuration
+        working-directory: workers/gnk-asg-mail-center-worker
+        run: |
+          cat > wrangler.profile-parity.toml <<'EOF'
+          name = "gnk-asg-mail-center-worker"
+          main = "src/index.js"
+          compatibility_date = "2026-07-03"
+          workers_dev = true
+          preview_urls = true
+
+          [[kv_namespaces]]
+          binding = "GNK_ASG_KV"
+          id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+          [[send_email]]
+          name = "EMAIL"
+          remote = true
+
+          [ai]
+          binding = "AI"
+          EOF
+
+      - name: Validate Mail Center Worker bundle
+        working-directory: workers/gnk-asg-mail-center-worker
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.profile-parity.toml --name gnk-asg-mail-center-worker --keep-vars
+
+      - name: Deploy active Email Routing Worker
+        working-directory: workers/gnk-asg-mail-center-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.profile-parity.toml --name gnk-asg-mail-center-worker --keep-vars
+
+      - name: Verify production bundles without sending mail
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          ready=false
+          for attempt in $(seq 1 30); do
+            asset_code=$(curl -sS -o /tmp/mail-ui.js -w '%{http_code}' "$base/assets/mail-studio-multilingual-v25.js?cb=${GITHUB_RUN_ID}-${attempt}" || true)
+            if [ "$asset_code" = "200" ] \
+              && grep -q 'GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V27_20260703_PROFILE_PARITY' /tmp/mail-ui.js \
+              && grep -q 'info@gnk-asg.hr' /tmp/mail-ui.js \
+              && grep -q 'privacy@gnk-asg.hr' /tmp/mail-ui.js \
+              && grep -q 'contact@gnk-asg.hr' /tmp/mail-ui.js; then
+              ready=true
+              break
+            fi
+            sleep 6
+          done
+          test "$ready" = true
+
+          curl --silent --show-error --fail-with-body \
+            -H "Authorization: Bearer ${CF_API_TOKEN}" \
+            "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/workers/scripts/gnk-asg-mail-center-worker" > /tmp/mail-center.bundle
+          grep -aFq 'GNK_ASG_MAIL_CENTER_PROFILE_PARITY_V4_20260703' /tmp/mail-center.bundle
+          grep -aFq 'info@gnk-asg.hr' /tmp/mail-center.bundle
+          grep -aFq 'privacy@gnk-asg.hr' /tmp/mail-center.bundle
+          grep -aFq 'contact@gnk-asg.hr' /tmp/mail-center.bundle
+          grep -aFq 'data-gnk-asg-signature' /tmp/mail-center.bundle
+          grep -aFq 'Auto-Submitted' /tmp/mail-center.bundle
+
+      - name: Report success
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — success · all configured addresses can be selected for sending; active Email Routing Worker includes per-profile signatures and automatic acknowledgements · run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+      - name: Report failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 83 --repo "$GITHUB_REPOSITORY" --body "Mail profile parity deploy — FAILURE · review ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
