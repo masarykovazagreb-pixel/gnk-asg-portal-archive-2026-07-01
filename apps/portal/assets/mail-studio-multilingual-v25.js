@@ -2,20 +2,23 @@
 'use strict';
 if(window.__GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V25__)return;
 window.__GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V25__=true;
-const VERSION='GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V26_20260703_SCHEDULER_API';
+const VERSION='GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V27_20260703_PROFILE_PARITY';
 const BCC='rht@gmx.com';
 const SEND_ENDPOINT='/api/studio-message/send';
 const BOX={inbox:'/api/studio-message/inbox',sent:'/api/studio-message/sent',outbox:'/api/studio-message/outbox',status:'/api/studio-message/status'};
 const PROFILES={
  office:{email:'office@gnk-asg.hr',name:'GNK ASG Office',unit:'Office'},
- legal:{email:'legal@gnk-asg.hr',name:'GNK ASG Legal & Compliance',unit:'Legal & Compliance'},
- media:{email:'media@gnk-asg.hr',name:'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center',unit:'Media Relations & Accreditation Center'},
- press:{email:'press@gnk-asg.hr',name:'GNK DINAMO Ltd. Group | Press Office',unit:'Press Office'},
- it:{email:'it@gnk-asg.hr',name:'GNK ASG IT | Digital Assistant',unit:'IT & Digital Support'},
- assistant:{email:'assistant@gnk-asg.hr',name:'GNK ASG | Executive Assistant',unit:'Executive Assistant'},
- director:{email:'nermin.sefic@gnk-asg.hr',name:'Nermin Sefić | Managing Director',unit:'Managing Director'},
+ info:{email:'info@gnk-asg.hr',name:'GNK ASG Information Desk',unit:'General Information'},
  sefic:{email:'sefic@gnk-asg.hr',name:'Nermin Sefić | Executive Office',unit:'Executive Office'},
- ubo:{email:'ubo@gnk-asg.hr',name:'GNK DINAMO Ltd. Group | UBO Office',unit:'UBO Office'}
+ ubo:{email:'ubo@gnk-asg.hr',name:'GNK DINAMO Ltd. Group | UBO Office',unit:'UBO Office'},
+ press:{email:'press@gnk-asg.hr',name:'GNK DINAMO Ltd. Group | Press Office',unit:'Press Office'},
+ assistant:{email:'assistant@gnk-asg.hr',name:'GNK ASG | Executive Assistant',unit:'Executive Assistant'},
+ media:{email:'media@gnk-asg.hr',name:'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center',unit:'Media Relations & Accreditation Center'},
+ legal:{email:'legal@gnk-asg.hr',name:'GNK ASG Legal & Compliance',unit:'Legal & Compliance'},
+ privacy:{email:'privacy@gnk-asg.hr',name:'GNK ASG Privacy Office',unit:'Privacy & Data Protection'},
+ it:{email:'it@gnk-asg.hr',name:'GNK ASG IT | Digital Assistant',unit:'IT & Digital Support'},
+ contact:{email:'contact@gnk-asg.hr',name:'GNK ASG Contact Centre',unit:'General Contact'},
+ director:{email:'nermin.sefic@gnk-asg.hr',name:'Nermin Sefić | Managing Director',unit:'Managing Director'}
 };
 const MAX_ATTACHMENTS=8,MAX_ATTACHMENT_BYTES=3200000;
 const $=id=>document.getElementById(id),value=id=>String($(id)?.value||''),set=(id,next)=>{const node=$(id);if(node)node.value=next||'';};
@@ -31,7 +34,7 @@ function applyProfile(){const profile=currentProfile();set('from',profile.email)
 function looksLikeHtml(text){return /^\s*(?:<!doctype|<html|<body|<table|<div|<section|<article|<p|<h[1-6])/i.test(String(text||''));}
 function messageHtml(){const body=value('bodyText');if(looksLikeHtml(body))return body;return `<div style="font-family:Arial,Helvetica,sans-serif;color:#111827;font-size:15px;line-height:1.6">${esc(body).replace(/\r?\n/g,'<br>')}</div>`;}
 function messageText(){try{return String(new DOMParser().parseFromString(messageHtml(),'text/html').body?.innerText||'').trim();}catch{return value('bodyText').trim();}}
-function previewSignature(){const p=currentProfile();return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><img src="https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png" width="150" alt="GNK ASG" style="display:block;width:150px;height:auto;border:0"></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;margin-bottom:6px">${esc(p.name)}</div><div>${esc(p.unit)}</div><div>Global Service Centre: <strong>rotates automatically through 10 cities</strong></div><div>${esc(p.email)}</div><div>https://gnk-asg.hr</div></td></tr></table>`;}
+function previewSignature(){const p=currentProfile();return `<table data-gnk-asg-signature="preview" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><img src="https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png" width="150" alt="GNK ASG" style="display:block;width:150px;height:auto;border:0"></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;margin-bottom:6px">${esc(p.name)}</div><div>${esc(p.unit)}</div><div>Global Service Centre: <strong>assigned automatically</strong></div><div>${esc(p.email)}</div><div>https://gnk-asg.hr</div></td></tr></table>`;}
 function validEmailList(text,required=false){const list=parseEmails(text);if(required&&!list.length)return false;return list.every(email=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email));}
 function validation(){const issues=[];if(!validEmailList(value('to'),true))issues.push('Add at least one valid To recipient.');if(!validEmailList(value('cc')))issues.push('CC contains an invalid address.');if(!validEmailList(mandatoryBcc(value('bcc'))))issues.push('BCC contains an invalid address.');if(!value('subject').trim())issues.push('Subject / Predmet is required.');if(!messageText())issues.push('Message body / Tekst poruke is required.');if(attachments.length>MAX_ATTACHMENTS)issues.push(`A maximum of ${MAX_ATTACHMENTS} PDF attachments is allowed.`);const node=$('validationSummary');if(node){node.className=`small ${issues.length?'warning':'ok'}`;node.innerHTML=issues.length?issues.map(item=>`• ${esc(item)}`).join('<br>'):'All required fields passed. Any language is allowed.';}return issues;}
 function preview(){const subject=value('subject').trim()||'No subject / Bez predmeta';const subjectNode=$('previewSubject');if(subjectNode)subjectNode.textContent=subject;const frame=$('previewFrame');if(frame)frame.srcdoc=messageHtml()+previewSignature();validation();}
@@ -50,6 +53,6 @@ function fileToBase64(file){return new Promise((resolve,reject)=>{const reader=n
 async function importHtml(file){if(!file)return;if(file.size>5*1024*1024){status('HTML file exceeds 5 MB.');return;}const text=await file.text();if(!text.trim()){status('HTML file is empty.');return;}set('bodyText',text);importedHtmlName=file.name;const node=$('importStatus');if(node)node.textContent=`Imported: ${file.name}`;preview();status('HTML file imported and previewed.');}
 async function addPdfFiles(files){const selected=[...(files||[])];if(attachments.length+selected.length>MAX_ATTACHMENTS){status(`A maximum of ${MAX_ATTACHMENTS} PDF attachments is allowed.`);return;}for(const file of selected){if(file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){status(`${file.name} is not a PDF file.`);continue;}if(file.size>MAX_ATTACHMENT_BYTES){status(`${file.name} exceeds the 3.2 MB attachment limit.`);continue;}const base64=await fileToBase64(file);attachments.push({filename:file.name,sizeBytes:file.size,base64});}attachmentList();validation();status(`${attachments.length} PDF attachment(s) ready.`);}
 function bind(){$('send')?.addEventListener('click',event=>{event.preventDefault();send(event.currentTarget);});$('save')?.addEventListener('click',save);$('load')?.addEventListener('click',load);$('helper')?.addEventListener('click',helper);$('autoReply')?.addEventListener('click',autoReply);$('clear')?.addEventListener('click',clearAll);document.querySelectorAll('.tab[data-box]').forEach(button=>button.addEventListener('click',()=>loadBox(button.dataset.box)));$('profile')?.addEventListener('change',()=>{applyProfile();preview();});['to','cc','bcc','subject','bodyText'].forEach(id=>$(id)?.addEventListener('input',preview));$('htmlFileButton')?.addEventListener('click',()=>$('htmlFile')?.click());$('pdfFileButton')?.addEventListener('click',()=>$('pdfFiles')?.click());$('clearAttachments')?.addEventListener('click',()=>{attachments=[];attachmentList();validation();status('Attachments removed.');});$('htmlFile')?.addEventListener('change',async event=>{try{await importHtml(event.target.files?.[0]);}catch(error){status(`HTML import error: ${error.message}`);}finally{event.target.value='';}});$('pdfFiles')?.addEventListener('change',async event=>{try{await addPdfFiles(event.target.files);}catch(error){status(`Attachment error: ${error.message}`);}finally{event.target.value='';}});}
-function boot(){document.documentElement.lang='hr';installProfiles();applyProfile();set('bcc',mandatoryBcc(value('bcc')));attachmentList();bind();preview();window.GNK_ASG_MAIL_STUDIO_COMPOSER={version:VERSION,payload,validation,request,status,currentProfile,loadBox};document.documentElement.dataset.gnkMailStudio=VERSION;status(`Ready / Spremno. ${VERSION}`);loadBox('status',false);}
+function boot(){document.documentElement.lang='hr';installProfiles();applyProfile();set('bcc',mandatoryBcc(value('bcc')));attachmentList();bind();preview();window.GNK_ASG_MAIL_STUDIO_COMPOSER={version:VERSION,payload,validation,request,status,currentProfile,loadBox,profiles:PROFILES};document.documentElement.dataset.gnkMailStudio=VERSION;status(`Ready / Spremno. ${VERSION}`);loadBox('status',false);}
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
 })();
