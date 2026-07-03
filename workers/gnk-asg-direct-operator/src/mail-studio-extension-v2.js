@@ -1,5 +1,11 @@
 import * as base from './mail-studio-extension-v1.js';
 
+Object.assign(base.PROFILES,{
+  info:{id:'info',name:'GNK ASG Information Desk',email:'info@gnk-asg.hr',unit:'General Information'},
+  privacy:{id:'privacy',name:'GNK ASG Privacy Office',email:'privacy@gnk-asg.hr',unit:'Privacy & Data Protection'},
+  contact:{id:'contact',name:'GNK ASG Contact Centre',email:'contact@gnk-asg.hr',unit:'General Contact'}
+});
+
 export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V5_20260703_MANUAL_NO_INTERVAL';
 export const UI_VERSION=base.UI_VERSION;
 export const PROFILES=base.PROFILES;
