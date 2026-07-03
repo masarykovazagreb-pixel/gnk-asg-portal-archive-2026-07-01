@@ -21,20 +21,21 @@ function latestEvents(events){const latest=new Map();for(const event of events||
 export async function syncCloudflareEmailStatuses(env){
  const token=clean(env.CLOUDFLARE_ANALYTICS_TOKEN||env.CF_ANALYTICS_TOKEN),zoneTag=clean(env.CLOUDFLARE_ZONE_ID||env.CF_ZONE_ID);
  if(!token||!zoneTag)return{ok:true,skipped:'analytics_credentials_missing',required:['CLOUDFLARE_ZONE_ID','CLOUDFLARE_ANALYTICS_TOKEN']};
+ const db=await ensureEmailStatusSchema(env),previous=await db.prepare(`SELECT last_completed_at FROM email_status_sync_state WHERE id=1`).first();
  await syncState(env,{last_started_at:now(),last_error:''});
- const hours=clamp(env.EMAIL_STATUS_SYNC_LOOKBACK_HOURS,1,744,48),limit=clamp(env.EMAIL_STATUS_SYNC_LIMIT,50,10000,5000),end=now(),start=new Date(Date.now()-hours*3600000).toISOString();
+ const hours=clamp(env.EMAIL_STATUS_SYNC_LOOKBACK_HOURS,1,744,48),overlapMinutes=clamp(env.EMAIL_STATUS_SYNC_OVERLAP_MINUTES,1,120,15),limit=clamp(env.EMAIL_STATUS_SYNC_LIMIT,50,10000,5000),end=now(),floor=Date.now()-hours*3600000,previousTime=Date.parse(clean(previous?.last_completed_at))||0,start=new Date(previousTime?Math.max(floor,previousTime-overlapMinutes*60000):floor).toISOString();
  const query=`query RecentEmailEvents($zoneTag: string!, $start: Time!, $end: Time!, $limit: Int!) { viewer { zones(filter: { zoneTag: $zoneTag }) { emailSendingAdaptive(filter: { datetime_geq: $start, datetime_leq: $end }, limit: $limit, orderBy: [datetime_DESC]) { datetime from to subject status eventType sendingDomain messageId errorCause errorDetail isLastEvent } } } }`;
  try{
   const response=await fetch('https://api.cloudflare.com/client/v4/graphql',{method:'POST',headers:{authorization:`Bearer ${token}`,'content-type':'application/json'},body:JSON.stringify({query,variables:{zoneTag,start,end,limit}})}),payload=await response.json().catch(()=>({}));
   if(!response.ok||payload.errors?.length)throw new Error(payload.errors?.map(item=>item.message).join('; ')||`Cloudflare GraphQL HTTP ${response.status}`);
-  const events=payload?.data?.viewer?.zones?.[0]?.emailSendingAdaptive||[],finalEvents=latestEvents(events),db=await ensureEmailStatusSchema(env);let matched=0,updated=0;
+  const events=payload?.data?.viewer?.zones?.[0]?.emailSendingAdaptive||[],finalEvents=latestEvents(events);let matched=0,updated=0;
   for(const event of finalEvents){
    const messageId=clean(event.messageId),mapped=statusFromProvider(event.status);if(!mapped)continue;
    const stamp=clean(event.datetime)||now(),delivered=mapped==='DELIVERED'?stamp:null,failed=FINAL_FAILURES.has(mapped)?stamp:null;
    const result=await db.prepare(`UPDATE email_status_records SET current_status=CASE WHEN current_status='OPENED' AND ?='DELIVERED' THEN current_status ELSE ? END,provider_status=?,error_cause=?,error_detail=?,delivered_at=COALESCE(delivered_at,?),failed_at=COALESCE(failed_at,?),updated_at=? WHERE provider_message_id=?`).bind(mapped,mapped,clean(event.status),clean(event.errorCause),clean(event.errorDetail),delivered,failed,stamp,messageId).run(),changes=Number(result.meta?.changes||0);if(changes){matched++;updated+=changes;}
   }
   await syncState(env,{last_completed_at:now(),last_error:'',last_event_count:events.length});
-  return{ok:true,queried:events.length,finalEvents:finalEvents.length,matched,updated,window:{start,end,hours},retentionDays:31};
+  return{ok:true,queried:events.length,finalEvents:finalEvents.length,matched,updated,window:{start,end,hours,overlapMinutes,incremental:Boolean(previousTime)},retentionDays:31};
  }catch(error){await syncState(env,{last_completed_at:now(),last_error:errorText(error),last_event_count:0});return{ok:false,error:'cloudflare_analytics_sync_failed',message:errorText(error)};}
 }
 
