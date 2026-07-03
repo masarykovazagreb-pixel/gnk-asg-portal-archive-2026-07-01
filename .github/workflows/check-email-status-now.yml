@@ -1,0 +1,45 @@
+name: Check email status now
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/check-email-status-now.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check deployed email-status routes
+        run: |
+          set -euo pipefail
+          pixel_id="00000000-0000-4000-8000-000000000000"
+          for base in "https://gnk-asg-direct-operator.beckuphome.workers.dev" "https://www.gnk-asg.hr"; do
+            ok=false
+            for attempt in $(seq 1 12); do
+              cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
+              home=$(curl -sS -L -o /tmp/home.html -w '%{http_code}' "$base/?cb=$cb" || true)
+              dashboard=$(curl -sS -D /tmp/dashboard.headers -o /tmp/dashboard.body -w '%{http_code}' "$base/email-status?cb=$cb" || true)
+              health=$(curl -sS -D /tmp/health.headers -o /tmp/health.body -w '%{http_code}' "$base/api/email-status/health?cb=$cb" || true)
+              pixel=$(curl -sS -D /tmp/pixel.headers -o /tmp/pixel.gif -w '%{http_code}' "$base/api/email-status/open/$pixel_id.gif?cb=$cb" || true)
+              version=$(awk 'BEGIN{IGNORECASE=1}/^x-gnk-asg-email-status:/{gsub(/\r/,"");print $2}' /tmp/pixel.headers | tail -n 1)
+              menu=no
+              grep -q 'gnk-asg-dashboard-menu-v2' /tmp/home.html && menu=yes || true
+              echo "base=$base attempt=$attempt home=$home dashboard=$dashboard health=$health pixel=$pixel menu=$menu version=$version"
+              if [ "$home" = 200 ] && [ "$dashboard" = 401 ] && [ "$health" = 401 ] && [ "$pixel" = 200 ] \
+                && [ "$menu" = yes ] && grep -qi '^content-type: image/gif' /tmp/pixel.headers \
+                && [ -n "$version" ]; then
+                ok=true
+                break
+              fi
+              sleep 5
+            done
+            test "$ok" = true
+          done
+          echo "LIVE_EMAIL_STATUS_OK"
