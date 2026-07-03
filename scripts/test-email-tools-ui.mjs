@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
 import {addEmailStatusButtons,VERSION} from '../workers/gnk-asg-direct-operator/src/email-status-buttons-v1.js';
 
 const request=new Request('https://www.gnk-asg.hr/mail-studio/');
@@ -12,8 +13,14 @@ assert.match(html,/src="\/assets\/email-tools-hub-v4\.js\?v=20260703-1"/);
 assert.doesNotMatch(html,/prompt\(/);
 assert.equal(patched.headers.get('x-gnk-asg-email-status-buttons'),VERSION);
 
+const asset=await readFile(new URL('../apps/portal/assets/email-tools-hub-v4.js',import.meta.url),'utf8');
+assert.match(asset,/date=today/);
+assert.match(asset,/!launcher\.contains\(event\.target\)/);
+assert.doesNotMatch(asset,/\bprompt\s*\(/);
+assert.doesNotMatch(asset,/\balert\s*\(/);
+
 const publicResponse=new Response('<html><body>Public status</body></html>',{headers:{'content-type':'text/html'}});
 const untouched=await addEmailStatusButtons(new Request('https://www.gnk-asg.hr/automation-status/'),publicResponse);
 assert.doesNotMatch(await untouched.text(),/gnk-email-tools-hub-v4/);
 
-console.log(JSON.stringify({ok:true,version:VERSION,cspSafeExternalScript:true,publicAutomationStatusUntouched:true},null,2));
+console.log(JSON.stringify({ok:true,version:VERSION,cspSafeExternalScript:true,todayLink:true,launcherClickSafe:true,publicAutomationStatusUntouched:true},null,2));
