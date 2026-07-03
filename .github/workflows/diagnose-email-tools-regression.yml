@@ -1,0 +1,27 @@
+name: Diagnose Email Tools regression
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  email-tools-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          show-progress: false
+      - name: Test Email Tools injection
+        run: node scripts/test-email-tools-ui.mjs
+
+  manual-status-backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          show-progress: false
+      - name: Test manual status backfill
+        run: node scripts/test-manual-status-backfill.mjs
