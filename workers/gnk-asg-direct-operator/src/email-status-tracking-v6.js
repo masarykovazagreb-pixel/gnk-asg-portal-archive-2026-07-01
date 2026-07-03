@@ -1,8 +1,9 @@
 import * as base from './email-status-tracking-v5.js';
 import {ensureEmailStatusSchema} from './email-status-tracking-v1.js';
 import {backfillManualMailStatus,VERSION as BACKFILL_VERSION} from './manual-mail-status-backfill-v1.js';
+import {emailStatusDayWindow,DEFAULT_TIME_ZONE,VERSION as DATE_WINDOW_VERSION} from './email-status-date-window-v1.js';
 
-export const VERSION=`GNK_ASG_EMAIL_STATUS_TRACKING_V6_20260703_AUDIT_BACKFILL_${BACKFILL_VERSION}_${base.VERSION}`;
+export const VERSION=`GNK_ASG_EMAIL_STATUS_TRACKING_V6_20260703_AUDIT_BACKFILL_${BACKFILL_VERSION}_${DATE_WINDOW_VERSION}_${base.VERSION}`;
 export const DASHBOARD_PATH=base.DASHBOARD_PATH;
 export const API_PREFIX=base.API_PREFIX;
 export const isEmailStatusPath=base.isEmailStatusPath;
@@ -10,31 +11,10 @@ export const withEmailStatusTracking=base.withEmailStatusTracking;
 export const syncCloudflareEmailStatuses=base.syncCloudflareEmailStatuses;
 export {backfillManualMailStatus};
 
-const TIME_ZONE='Europe/Zagreb';
 const clean=value=>String(value??'').trim();
 const clamp=(value,min,max,fallback)=>{const number=Number(value);return Number.isFinite(number)?Math.min(max,Math.max(min,Math.trunc(number))):fallback;};
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-email-status':VERSION}});
-
-function zonedParts(date,timeZone=TIME_ZONE){
- const formatter=new Intl.DateTimeFormat('en-CA',{timeZone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
- const parts=Object.fromEntries(formatter.formatToParts(date).filter(item=>item.type!=='literal').map(item=>[item.type,Number(item.value)]));
- return{year:parts.year,month:parts.month,day:parts.day,hour:parts.hour,minute:parts.minute,second:parts.second};
-}
-function zoneOffsetMs(date,timeZone=TIME_ZONE){
- const value=new Date(Math.floor(date.getTime()/1000)*1000),parts=zonedParts(value,timeZone);
- return Date.UTC(parts.year,parts.month-1,parts.day,parts.hour,parts.minute,parts.second)-value.getTime();
-}
-function localMidnightUtc(year,month,day,timeZone=TIME_ZONE){
- const target=Date.UTC(year,month-1,day,0,0,0);let instant=target;
- for(let attempt=0;attempt<3;attempt+=1)instant=target-zoneOffsetMs(new Date(instant),timeZone);
- return new Date(instant);
-}
-function todayWindow(){
- const current=zonedParts(new Date(),TIME_ZONE),nextDate=new Date(Date.UTC(current.year,current.month-1,current.day)+86400000);
- const start=localMidnightUtc(current.year,current.month,current.day),end=localMidnightUtc(nextDate.getUTCFullYear(),nextDate.getUTCMonth()+1,nextDate.getUTCDate());
- return{key:'today',timeZone:TIME_ZONE,localDate:`${current.year}-${String(current.month).padStart(2,'0')}-${String(current.day).padStart(2,'0')}`,start:start.toISOString(),end:end.toISOString()};
-}
 
 async function listRecords(request,env,backfill){
  const db=await ensureEmailStatusSchema(env),url=new URL(request.url),limit=clamp(url.searchParams.get('limit'),1,500,200),offset=clamp(url.searchParams.get('offset'),0,100000,0);
@@ -45,7 +25,7 @@ async function listRecords(request,env,backfill){
  if(search){const term=`%${search}%`;clauses.push(`(LOWER(COALESCE(recipient,'')) LIKE ? OR LOWER(COALESCE(sender,'')) LIKE ? OR LOWER(COALESCE(subject,'')) LIKE ? OR LOWER(COALESCE(provider_message_id,'')) LIKE ? OR LOWER(COALESCE(source_id,'')) LIKE ?)`);binds.push(term,term,term,term,term);}
  let dateWindow=null;
  if(date==='today'){
-  dateWindow=todayWindow();
+  dateWindow=emailStatusDayWindow(new Date(),DEFAULT_TIME_ZONE);
   clauses.push(`datetime(COALESCE(accepted_at,created_at,updated_at))>=datetime(?) AND datetime(COALESCE(accepted_at,created_at,updated_at))<datetime(?)`);
   binds.push(dateWindow.start,dateWindow.end);
  }
