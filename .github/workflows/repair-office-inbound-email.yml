@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/repair-office-inbound-email.yml"
       - "ops/trigger-office-email-routing.txt"
+      - "ops/trigger-office-routing-20260703.txt"
   workflow_dispatch:
 
 permissions:
