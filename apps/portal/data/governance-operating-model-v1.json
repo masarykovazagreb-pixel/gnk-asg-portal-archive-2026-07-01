@@ -1,0 +1,142 @@
+{
+  "version": "1.0",
+  "status": "draft-for-review",
+  "scope": "GNK DINAMO Ltd. Group enterprise operating and governance model",
+  "principles": {
+    "automationTarget": "99% automated operations with 1% reserved for presidential approval or direct decision",
+    "presidentialAuthority": "No digital, operational or AI function may override the President of the Group.",
+    "publicAccuracy": "Public governance pages may show only confirmed events, meetings, decisions and summaries approved for publication.",
+    "internalRecordkeeping": "Detailed agendas, minutes, proposals, votes, attachments, execution notes and audit trails are kept internally in Operator OS.",
+    "entityFlexibility": "Each group company may have its own management structure, committees, calendars and processes while remaining connected to the group-level operating model."
+  },
+  "groupLeadership": {
+    "president": {
+      "name": "Nermin Sefic",
+      "titles": [
+        "President of GNK DINAMO Ltd. Group",
+        "Founder",
+        "100% Ultimate Beneficial Owner (UBO)",
+        "Director of GNK ASG d.o.o.",
+        "Authorized Representative of GNK DINAMO Ltd."
+      ],
+      "decisionScope": [
+        "group strategy",
+        "ownership and corporate structure",
+        "material legal and financial matters",
+        "public reputation and media-sensitive communications",
+        "production deployment approvals",
+        "security, access and infrastructure approvals"
+      ]
+    }
+  },
+  "governanceLayers": [
+    {
+      "id": "group-level",
+      "name": "GNK DINAMO Ltd. Group",
+      "description": "Krovna razina grupe, strategije, nadzora, standarda, prioriteta i odobrenja.",
+      "bodies": [
+        "President",
+        "Supervisory Board",
+        "Executive Board",
+        "Executive Office",
+        "Global Operations Center",
+        "Operator OS"
+      ]
+    },
+    {
+      "id": "company-level",
+      "name": "Individual Group Companies",
+      "description": "Svako drustvo moze imati vlastitu upravu, lokalne odbore, lokalne sastanke, KPI-jeve, dokumente i operativne procese.",
+      "bodies": [
+        "local management",
+        "local operating teams",
+        "local committees",
+        "company registry office",
+        "company document center"
+      ]
+    }
+  ],
+  "meetingCadence": [
+    {
+      "body": "Annual General Review",
+      "cadence": "annual",
+      "publicSummaryAllowed": true,
+      "internalArtifacts": ["annual report", "financial overview", "KPI review", "strategic plan", "minutes", "decisions"]
+    },
+    {
+      "body": "Supervisory Board",
+      "cadence": "monthly",
+      "publicSummaryAllowed": true,
+      "internalArtifacts": ["agenda", "risk review", "financial review", "recommendations", "minutes", "decision register"]
+    },
+    {
+      "body": "Executive Board",
+      "cadence": "weekly",
+      "publicSummaryAllowed": true,
+      "internalArtifacts": ["agenda", "project status", "task list", "owners", "deadlines", "minutes"]
+    },
+    {
+      "body": "Executive Office",
+      "cadence": "business-daily",
+      "publicSummaryAllowed": false,
+      "internalArtifacts": ["daily briefing", "blockers", "approval queue", "execution log"]
+    },
+    {
+      "body": "Departments and Digital Operations Team",
+      "cadence": "weekly or operational as needed",
+      "publicSummaryAllowed": false,
+      "internalArtifacts": ["department plan", "worker output", "quality review", "audit log"]
+    }
+  ],
+  "approvalPolicy": {
+    "autoExecute": [
+      "routine SEO corrections",
+      "non-sensitive metadata improvements",
+      "internal classification and routing",
+      "draft preparation",
+      "status reporting",
+      "low-risk data normalization",
+      "non-production quality checks"
+    ],
+    "requiresPresidentApproval": [
+      "production deployment",
+      "DNS, secrets, Cloudflare production routing or infrastructure changes",
+      "mass email sending",
+      "legal, financial, ownership or contractual commitments",
+      "public statements on sensitive matters",
+      "changes to group ownership, UBO, governance or corporate structure",
+      "new country, company, bank, material investment or strategic partnership"
+    ]
+  },
+  "publicGovernanceTimeline": {
+    "purpose": "Provide a credible public record of selected governance activity without exposing confidential details.",
+    "fields": [
+      "date",
+      "body",
+      "eventType",
+      "publicTitle",
+      "publicStatus",
+      "publicSummary",
+      "internalReferenceId",
+      "publicationApproval"
+    ],
+    "privacyRule": "Detailed minutes, attachments, proposals and voting records remain internal unless separately approved for publication."
+  },
+  "operatorOS": {
+    "modules": [
+      "Mission Control",
+      "Approval Queue",
+      "Meeting Center",
+      "Decision Center",
+      "Registry Center",
+      "Document Center",
+      "Financial Center",
+      "Media Center",
+      "Mail Studio",
+      "Publishing Engine",
+      "SEO Engine",
+      "Audit Log"
+    ],
+    "controlPattern": "AI prepares, routes and executes permitted work; President approves the 1% of matters that carry legal, financial, reputational, strategic, security or production risk."
+  }
+}
