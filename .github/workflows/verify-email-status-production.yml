@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: verify-email-status-${{ github.ref }}
@@ -55,7 +55,6 @@ jobs:
         run: |
           set -euo pipefail
           pixel_id="00000000-0000-4000-8000-000000000000"
-          ready=false
           for base in "https://gnk-asg-direct-operator.beckuphome.workers.dev" "https://www.gnk-asg.hr"; do
             base_ready=false
             for attempt in $(seq 1 40); do
@@ -79,6 +78,30 @@ jobs:
             echo "$base ready=$base_ready dashboard=$dashboard health=$health pixel=$pixel"
             test "$base_ready" = true
           done
-          ready=true
-          test "$ready" = true
           echo "Unified email status routes verified. No email was sent."
+
+      - name: Persist production verification record
+        if: success() && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B email-status-verification-record origin/main
+          mkdir -p docs
+          cat > docs/email-status-production-verification.json <<JSON
+          {
+            "ok": true,
+            "verifiedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflowRun": "${GITHUB_RUN_ID}",
+            "worker": "https://gnk-asg-direct-operator.beckuphome.workers.dev",
+            "customDomain": "https://www.gnk-asg.hr",
+            "dashboard": "/email-status",
+            "health": "/api/email-status/health",
+            "pixel": "/api/email-status/open/:trackingId.gif",
+            "emailSent": false
+          }
+          JSON
+          git config user.name "gnk-asg-verification-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/email-status-production-verification.json
+          git commit -m "Record email status production verification [skip ci]" || exit 0
+          git push origin HEAD:main
