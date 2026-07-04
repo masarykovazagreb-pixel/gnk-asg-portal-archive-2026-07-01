@@ -1,0 +1,115 @@
+{
+  "version": "global-organization-v1",
+  "status": "draft_for_review",
+  "lastUpdated": "2026-07-04",
+  "publicDisclosurePolicy": {
+    "principle": "Public pages show only approved corporate facts, confirmed governance activity and high-level summaries. Detailed minutes, working materials and sensitive documents remain internal.",
+    "noMisleadingStaffRepresentation": true,
+    "digitalOperationsLabel": "Global Operations Center / Digital Operations Team"
+  },
+  "group": {
+    "legalName": "GNK DINAMO Ltd.",
+    "displayName": "GNK DINAMO Ltd. Group",
+    "headquarters": {
+      "city": "Boulder",
+      "state": "Colorado",
+      "country": "United States of America"
+    },
+    "entityId": "20238180649",
+    "strategicProject": "THE CODE",
+    "operatingModel": "International corporate group with a centralized group governance layer and separate local company governance layers.",
+    "ultimateBeneficialOwner": {
+      "name": "Nermin Sefić",
+      "ownershipStatement": "100% Ultimate Beneficial Owner of GNK DINAMO Ltd. Group",
+      "roles": [
+        "President of GNK DINAMO Ltd. Group",
+        "Founder",
+        "100% Ultimate Beneficial Owner (UBO)",
+        "Director of GNK ASG d.o.o.",
+        "Authorized Representative of GNK DINAMO Ltd."
+      ]
+    }
+  },
+  "regionalCompany": {
+    "legalName": "GNK ASG d.o.o.",
+    "role": "Regional connected company and operating platform in Zagreb, Croatia",
+    "registeredOffice": "Zagrebačka cesta 130, 10090 Zagreb, Croatia",
+    "oib": "75227917632",
+    "mbs": "081512375",
+    "director": "Nermin Sefić"
+  },
+  "organizationLayers": [
+    {
+      "level": 1,
+      "name": "Group Level",
+      "scope": "GNK DINAMO Ltd. Group",
+      "bodies": ["President", "Group Supervisory Board", "Group Executive Board", "Executive Office", "Global Operations Center"]
+    },
+    {
+      "level": 2,
+      "name": "Company Level",
+      "scope": "Each connected company may have its own governance structure, directors, departments, calendars, minutes and local operating rules.",
+      "bodies": ["Local management", "Local departments", "Local committees", "Local operational records"]
+    },
+    {
+      "level": 3,
+      "name": "Digital Operations Level",
+      "scope": "Transparent AI-supported operational structure used for monitoring, drafting, routing, reporting and execution under approval rules.",
+      "bodies": ["AI Director", "AI Managers", "Digital Operations Team", "Workers", "Micro Workers"]
+    }
+  ],
+  "locations": {
+    "activeOrReferenced": [
+      "Boulder",
+      "Zagreb",
+      "Belgrade",
+      "Budapest",
+      "New York",
+      "London",
+      "Dubai",
+      "Singapore",
+      "Tokyo",
+      "Zurich",
+      "Berlin",
+      "Paris",
+      "São Paulo"
+    ],
+    "plannedExpansion2026": [
+      "San José",
+      "Quito",
+      "Montevideo",
+      "Doha",
+      "Bangkok",
+      "Manila",
+      "Ho Chi Minh City",
+      "Accra",
+      "Kigali",
+      "Port Louis",
+      "Dar es Salaam",
+      "Perth"
+    ]
+  },
+  "publicModules": [
+    "About the Group",
+    "Corporate Governance",
+    "Leadership",
+    "Global Organization",
+    "Registry Center",
+    "Financial Center",
+    "Document Center",
+    "Media Center",
+    "Publishing Center"
+  ],
+  "internalModules": [
+    "Mission Control",
+    "Approval Queue",
+    "Meeting Center",
+    "Decision Center",
+    "Minutes Archive",
+    "Audit Log",
+    "Workflow Engine",
+    "Registry Watch",
+    "SEO Engine",
+    "Mail Engine"
+  ]
+}
