@@ -15,7 +15,8 @@
 
   const sharedLanguagePage = path.startsWith('/visual-index') || path === '/app' || path.startsWith('/app/');
   const english = (sharedLanguagePage && params.get('lang') === 'en') || path === '/en' || path.startsWith('/en/') ||
-    path.startsWith('/markets') || path.startsWith('/news') || path.startsWith('/publications') || path.startsWith('/automation-status');
+    path.startsWith('/markets') || path.startsWith('/news') || path.startsWith('/publications') || path.startsWith('/automation-status') ||
+    path.startsWith('/the-code/intelligence');
 
   const routeClass = (() => {
     if (path === '/' || path === '/en' || path === '/en/') return 'gnk-route-home';
@@ -48,9 +49,10 @@
       {label:'THE CODE', detail:'Strategic programme and presentation', href:'/the-code/?lang=en'}
     ]},
     {label:'Intelligence', items:[
+      {label:'THE CODE Intelligence', detail:'GNK DINAMO Ltd. news, analysis and commentary', href:'/the-code/intelligence/'},
       {label:'Markets', detail:'Market data and international network', href:'/markets/'},
       {label:'News', detail:'Verified public news sources', href:'/news/'},
-      {label:'Publications', detail:'GNK ASG editorial content', href:'/publications/'},
+      {label:'Publications', detail:'Editorial content published through the connected GNK ASG platform', href:'/publications/'},
       {label:'Visual Index', detail:'Approved visual and media assets', href:'/visual-index/?lang=en'}
     ]},
     {label:'Resources', items:[
@@ -71,9 +73,10 @@
       {label:'THE CODE', detail:'Strateški program i prezentacija', href:'/the-code/'}
     ]},
     {label:'Intelligence', items:[
+      {label:'THE CODE Intelligence', detail:'Vijesti, analize i komentari projekta GNK DINAMO Ltd.', href:'/the-code/intelligence/'},
       {label:'Tržišta', detail:'Tržišni podaci i međunarodna mreža', href:'/trzista/'},
       {label:'Vijesti', detail:'Provjereni javni izvori vijesti', href:'/vijesti/'},
-      {label:'Objave', detail:'Vlastiti urednički sadržaj GNK ASG-a', href:'/objave/'},
+      {label:'Objave', detail:'Urednički sadržaj objavljen kroz povezanu GNK ASG platformu', href:'/objave/'},
       {label:'Visual Index', detail:'Odobreni vizualni i medijski materijali', href:'/visual-index/'}
     ]},
     {label:'Resursi', items:[
