@@ -1,0 +1,36 @@
+{
+  "system": "GNK Mail / Media Template Registry",
+  "version": "2026-07-04.1",
+  "status": "controlled-preview",
+  "productionSendEnabled": false,
+  "requiresUserApprovalBeforeSend": true,
+  "templates": [
+    {
+      "id": "gnk-media-signature",
+      "type": "signature",
+      "title": "GNK Media Signature",
+      "path": "/assets/email/gnk-media-signature.html",
+      "audience": "media relations, accreditation, manual replies",
+      "status": "ready-for-preview"
+    },
+    {
+      "id": "gnk-media-autoresponder",
+      "type": "autoresponder",
+      "title": "GNK Media Relations Auto Response",
+      "path": "/assets/email/gnk-media-autoresponder.html",
+      "audience": "incoming media and accreditation requests",
+      "status": "ready-for-preview"
+    }
+  ],
+  "safetyRules": [
+    "No automatic mass sending from this manifest.",
+    "No mailbox rule activation without explicit user approval.",
+    "No DNS, MX, SPF, DKIM, DMARC or Cloudflare production-route change from this manifest.",
+    "All templates must be previewed before activation."
+  ],
+  "operatorOsIntegration": {
+    "module": "Mail Studio / Media Center",
+    "surface": "Operator OS template status card",
+    "nextTechnicalStep": "Render this manifest in an internal preview/status page and link each template asset."
+  }
+}
