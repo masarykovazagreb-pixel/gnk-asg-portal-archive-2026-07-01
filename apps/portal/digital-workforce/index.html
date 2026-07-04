@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Digital Workforce | GNK DINAMO Ltd. Group / GNK ASG</title>
+<meta name="description" content="Global Operations Center and Digital Operations Team overview for GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform.">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<link rel="canonical" href="https://www.gnk-asg.hr/digital-workforce/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Digital Workforce | GNK DINAMO Ltd. Group / GNK ASG">
+<meta property="og:description" content="Structured operations profiles, departments, countries, languages, workflow hierarchy and scalable Global Operations Center blueprint.">
+<meta property="og:url" content="https://www.gnk-asg.hr/digital-workforce/">
+<meta property="og:image" content="https://www.gnk-asg.hr/assets/gnk-asg-social-card.png">
+<style>
+:root{--bg:#050814;--panel:#0b1324;--gold:#d4af37;--line:rgba(212,175,55,.28);--text:#f8fafc;--muted:#aab4c7;--ok:#22c55e;--warn:#f59e0b}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at top left,#1d2c52 0,#050814 42%,#02040a 100%);color:var(--text)}header,main{max-width:1480px;margin:0 auto;padding:24px}header{padding-top:38px}.eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:.16em;font-size:12px;font-weight:900}h1{font-size:clamp(32px,5vw,64px);margin:8px 0 12px;letter-spacing:-.05em}.sub{color:#d9e2f1;max-width:1040px;line-height:1.55}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{color:#07101f;background:linear-gradient(135deg,#b98b2d,#f3d47a);font-weight:950;border-radius:999px;padding:10px 14px;text-decoration:none}.btn.secondary{color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(212,175,55,.25)}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.card{background:linear-gradient(180deg,rgba(16,26,49,.96),rgba(8,13,28,.96));border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.28)}.metric{font-size:38px;font-weight:950;letter-spacing:-.05em}.label,.hint{color:var(--muted);font-size:14px;line-height:1.5}.pill{display:inline-flex;margin:3px;padding:7px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);font-size:12px;font-weight:800}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px;text-align:left;vertical-align:top}th{color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:.08em}@media(max-width:980px){.grid,.grid2{grid-template-columns:1fr 1fr}}@media(max-width:640px){.grid,.grid2{grid-template-columns:1fr}header,main{padding:16px}.metric{font-size:30px}}@media print{body{background:white;color:#111}.card{background:white;color:#111;border-color:#999;box-shadow:none}.toolbar{display:none}.hint,.label{color:#333}}
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">Global Operations Center</div>
+<h1>Digital Workforce</h1>
+<p class="sub">Strukturirani pregled operativnih profila za GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform. Profili se prikazuju funkcionalno: ime s inicijalom, Worker ID, država, jezici, odjel, status, KPI i workflow — bez tvrdnje da su potvrđeni fizički zaposlenici.</p>
+<div class="toolbar"><a class="btn" href="/mission-control/">Mission Control</a><a class="btn secondary" href="/operator-dashboard/">Operator Dashboard</a><a class="btn secondary" href="/about-the-group/">About the Group</a><a class="btn secondary" href="/o-grupi/">O grupi</a></div>
+</header>
+<main>
+<section class="grid" id="metrics"></section>
+<section class="grid2"><div class="card"><h2>Leadership Layers</h2><div id="layers" class="hint">Učitavam...</div></div><div class="card"><h2>Country Pools</h2><div id="countries" class="hint">Učitavam...</div></div></section>
+<section class="grid2"><div class="card"><h2>Departments</h2><div id="departments" class="hint">Učitavam...</div></div><div class="card"><h2>Worker ID Rules</h2><div id="rules" class="hint">Učitavam...</div></div></section>
+<section class="card" style="margin-top:14px"><h2>Positioning Rule</h2><div id="positioning" class="hint">Učitavam...</div></section>
+</main>
+<script>
+(function(){
+const $=id=>document.getElementById(id);const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function table(rows,cols){if(!rows||!rows.length)return '<p class="hint">Nema podataka.</p>';return '<table><thead><tr>'+cols.map(c=>'<th>'+esc(c.label)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>'<td>'+esc(typeof c.value==='function'?c.value(r):r[c.value])+'</td>').join('')+'</tr>').join('')+'</tbody></table>'}
+function render(cfg){const s=cfg.scale||{};$('metrics').innerHTML=[['Planned entities',s.plannedEntities],['Visible phase',s.phaseOneVisibleProfiles],['Generated target',s.fullGeneratedProfiles],['Architecture capacity',s.architectureCapacity]].map(x=>'<div class="card"><div class="metric">'+esc(x[1]||0)+'</div><div class="label">'+esc(x[0])+'</div></div>').join('');$('layers').innerHTML=table(cfg.leadershipLayers||[],[{label:'Level',value:'level'},{label:'Layer',value:'label'},{label:'Prefix',value:'profilePrefix'},{label:'Authority',value:'approvalAuthority'}]);$('countries').innerHTML=table(cfg.countryPools||[],[{label:'Country',value:'country'},{label:'TZ',value:'timezone'},{label:'Languages',value:r=>(r.languages||[]).join(' · ')},{label:'Weight',value:'weight'}]);$('departments').innerHTML=(cfg.departments||[]).map(d=>'<span class="pill">'+esc(d)+'</span>').join('');$('rules').innerHTML='<p><b>Format:</b> '+esc(cfg.workerIdRules&&cfg.workerIdRules.format)+'</p><p><b>Examples:</b> '+esc((cfg.workerIdRules&&cfg.workerIdRules.examples||[]).join(' · '))+'</p>';$('positioning').innerHTML='<p><b>'+esc(cfg.publicPositioning&&cfg.publicPositioning.label)+'</b></p><p>'+esc(cfg.publicPositioning&&cfg.publicPositioning.disclosureRule)+'</p><p><b>Allocation:</b> '+esc(cfg.entityAllocationRule)+'</p>'}
+fetch('/assets/data/digital-workforce-blueprint.json?cb='+Date.now()).then(r=>r.json()).then(render).catch(e=>{document.querySelector('main').innerHTML='<section class="card"><h2>Blueprint load failed</h2><p class="hint">'+esc(e.message||e)+'</p></section>'});
+})();
+</script>
+</body>
+</html>
