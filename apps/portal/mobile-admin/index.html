@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mobile Admin Approval Queue | GNK DINAMO Ltd. Group / GNK ASG</title>
+<meta name="description" content="Review-only mobile approval queue for publishing, registry, email, SEO and deployment decisions.">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="canonical" href="https://www.gnk-asg.hr/mobile-admin/">
+<style>
+:root{--bg:#050814;--gold:#d4af37;--line:rgba(212,175,55,.3);--text:#f8fafc;--muted:#aab4c7;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 20% -10%,#1d2c52 0,#050814 44%,#02040a 100%);color:var(--text)}header,main{max-width:1180px;margin:auto;padding:20px}header{padding-top:34px}.eyebrow{color:var(--gold);font-size:12px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}h1{font-size:clamp(32px,7vw,58px);margin:8px 0 12px}.sub,.hint{color:var(--muted);line-height:1.55}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.btn{display:inline-block;padding:10px 13px;border-radius:999px;text-decoration:none;font-weight:900;color:#07101f;background:linear-gradient(135deg,#b98b2d,#f3d47a)}.btn.secondary{color:#fff;background:rgba(255,255,255,.06);border:1px solid var(--line)}.notice{margin-top:16px;padding:14px 16px;border:1px solid rgba(245,158,11,.45);border-radius:18px;background:rgba(245,158,11,.08);color:#fde7b0}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}.card{background:linear-gradient(180deg,rgba(16,26,49,.97),rgba(8,13,28,.97));border:1px solid var(--line);border-radius:20px;padding:16px}.metric{font-size:30px;font-weight:950}.label{color:var(--muted);font-size:13px;margin-top:4px}.queue{display:grid;gap:12px}.item{background:linear-gradient(180deg,rgba(16,26,49,.97),rgba(8,13,28,.97));border:1px solid var(--line);border-radius:20px;padding:16px}.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.type{color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.state{display:inline-block;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;text-transform:uppercase}.pending{color:#fde68a;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.4)}.locked{color:#fca5a5;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.4)}.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.meta div{padding:9px;border:1px solid rgba(255,255,255,.08);border-radius:12px;color:var(--muted);font-size:12px}.rules{margin:0;padding:0;list-style:none;display:grid;gap:8px}.rules li{padding:10px 12px;border-left:3px solid var(--gold);background:rgba(255,255,255,.035);line-height:1.45}@media(max-width:700px){.summary,.meta{grid-template-columns:1fr}.top{display:block}.state{margin-top:9px}header,main{padding:15px}}@media print{body{background:white;color:#111}.card,.item{background:white;color:#111;border-color:#999}.toolbar,.notice{display:none}.hint,.label,.meta div{color:#333}}
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">Executive Office · Mobile Review</div>
+<h1>Approval Queue</h1>
+<p class="sub">Mobilni read-only pregled odluka koje zahtijevaju ljudsko odobrenje. Ova verzija nema aktivne Approve, Reject, Publish, Send ili Deploy akcije.</p>
+<div class="toolbar"><a class="btn" href="/mission-control/">Mission Control</a><a class="btn secondary" href="/deployment/">Deployment Center</a><a class="btn secondary" href="/enterprise/">Enterprise Hub</a></div>
+<div class="notice"><strong>Action lock:</strong> prikaz je informativan. Izvršna akcija smije se dodati tek nakon autentikacije, audita, CSRF zaštite i jasnog scopea odluke.</div>
+</header>
+<main>
+<section class="summary"><div class="card"><div class="metric">7</div><div class="label">Vrste odobrenja</div></div><div class="card"><div class="metric">0</div><div class="label">Učitane LIVE odluke</div></div><div class="card"><div class="metric">LOCKED</div><div class="label">Izvršne akcije</div></div></section>
+<section class="queue">
+<article class="item"><div class="top"><div><div class="type">Deployment</div><h2>Enterprise Platform review release</h2></div><span class="state locked">locked</span></div><p class="hint">Čeka browser, mail runtime, recovery i Executive Office pregled.</p><div class="meta"><div>Owner: Executive Office</div><div>Risk: Critical</div><div>Next: Final review</div></div></article>
+<article class="item"><div class="top"><div><div class="type">Mail</div><h2>Internal manual and batch test matrix</h2></div><span class="state pending">pending</span></div><p class="hint">Do sedam internih primatelja, bez vanjskih kontakata i bez Campaign Mailera.</p><div class="meta"><div>Owner: Mail Operations</div><div>Risk: High</div><div>Next: Runtime activation</div></div></article>
+<article class="item"><div class="top"><div><div class="type">Registry</div><h2>Verified matters import</h2></div><span class="state pending">source required</span></div><p class="hint">Nema učitanih predmeta dok se ne potvrde službeni izvori i rokovi.</p><div class="meta"><div>Owner: Registry Review</div><div>Risk: High</div><div>Next: Source approval</div></div></article>
+<article class="item"><div class="top"><div><div class="type">SEO / Publishing</div><h2>Review pages indexing decision</h2></div><span class="state locked">noindex</span></div><p class="hint">Review moduli ostaju izvan indeksiranja do odobrenja sadržaja i javnog statusa.</p><div class="meta"><div>Owner: Publishing</div><div>Risk: Medium</div><div>Next: Content review</div></div></article>
+</section>
+<section class="card" style="margin-top:14px"><h2>Approval types</h2><ul class="rules"><li>Draft content approval</li><li>Publication approval</li><li>Media email approval</li><li>Registry action approval</li><li>SEO metadata approval</li><li>Deployment approval</li><li>Recovery action approval</li></ul></section>
+</main>
+</body>
+</html>
