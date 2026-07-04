@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/assets/js/editorial-launch-library-v1.js'
+      - 'apps/portal/assets/js/editorial-launch-drafts-v1.js'
       - 'apps/portal/editorial-operations/launch-library/**'
       - 'apps/portal/assets/js/editorial-operations-runtime-v1.js'
       - 'apps/portal/editorial-operations/release-queue/index.html'
@@ -27,6 +28,7 @@ jobs:
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/js/editorial-launch-library-v1.js
+          node --check apps/portal/assets/js/editorial-launch-drafts-v1.js
           node --check apps/portal/assets/js/editorial-operations-runtime-v1.js
           node --check scripts/validate-editorial-launch-library.mjs
       - name: Validate 60-item launch contract
