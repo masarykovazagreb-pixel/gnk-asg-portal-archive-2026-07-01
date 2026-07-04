@@ -4,6 +4,7 @@ import {
   PROFILES,
   VERSION as MAIL_STUDIO_SIGNATURE_VERSION,
   normalizeMailStudioSignature,
+  handleMailStudioInbound as handleMailStudioInboundV3,
   __test as mail
 } from '../src/mail-studio-extension-v3.js';
 import {handleMailStudioExtension as handleLegacyMailStudioExtension,handleMailStudioInbound as handleLegacyMailStudioInbound} from '../src/mail-studio-extension-v1.js';
@@ -112,6 +113,17 @@ assert.equal(automatedResult.routedTo,MANDATORY_BCC);
 assert.equal(automatedForwards.length,1,'System mail must still be archived');
 assert.equal(automatedForwards[0].destination,MANDATORY_BCC);
 assert.equal(automatedSends.length,0,'System mail must not receive an automatic reply');
+
+const mediaMime=['From: Media Applicant <media-applicant@example.test>',`To: ${mediaProfile.email}`,'Subject: Media raw stream pass-through','Message-ID: <media-pass-through@example.test>','Content-Type: multipart/mixed; boundary="MEDIA-PASS"','','--MEDIA-PASS','Content-Type: text/plain; charset=utf-8','','Media application body','--MEDIA-PASS','Content-Type: application/pdf; name="application.pdf"','Content-Disposition: attachment; filename="application.pdf"','Content-Transfer-Encoding: base64','','JVBERi0xLjQKYXBwbGljYXRpb24KJSVFT0Y=','--MEDIA-PASS--',''].join('\r\n');
+const originalMediaRaw=new Blob([mediaMime]).stream();
+const mediaPassThrough=await handleMailStudioInboundV3({from:'Media Applicant <media-applicant@example.test>',to:mediaProfile.email,headers:new Headers({from:'Media Applicant <media-applicant@example.test>',to:mediaProfile.email,subject:'Media raw stream pass-through','message-id':'<media-pass-through@example.test>'}),raw:originalMediaRaw},{});
+assert.equal(mediaPassThrough.handled,false);
+assert.ok(mediaPassThrough.message);
+assert.notEqual(mediaPassThrough.message.raw,originalMediaRaw);
+const preservedMediaMime=await new Response(mediaPassThrough.message.raw).text();
+assert.match(preservedMediaMime,/Media application body/);
+assert.match(preservedMediaMime,/application\.pdf/);
+assert.match(preservedMediaMime,/JVBERi0xLjQKYXBwbGljYXRpb24KJSVFT0Y=/);
 
 assert.equal(ai.detectLanguage('Poštovani, možete li potvrditi prijavu?'),'hr');
 assert.equal(ai.detectLanguage('Guten Tag, können Sie bitte antworten?'),'de');
