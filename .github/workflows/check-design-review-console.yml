@@ -7,6 +7,9 @@ on:
       - 'apps/portal/design-review/**'
       - 'apps/portal/enterprise/**'
       - 'apps/portal/assets/data/operator-os-config.json'
+      - 'apps/portal/assets/the-code-new-york-countdown-v1.css'
+      - 'apps/portal/assets/the-code-new-york-countdown-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
       - '.github/workflows/check-design-review-console.yml'
 
 permissions:
@@ -15,14 +18,18 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate Operator OS config
-        run: node -e "JSON.parse(require('fs').readFileSync('apps/portal/assets/data/operator-os-config.json','utf8'))"
+      - name: Validate Operator OS config and component syntax
+        run: |
+          set -euxo pipefail
+          node -e "JSON.parse(require('fs').readFileSync('apps/portal/assets/data/operator-os-config.json','utf8'))"
+          node --check apps/portal/assets/the-code-new-york-countdown-v1.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-shell-v11.js
       - name: Verify review console contract
         run: |
           set -euxo pipefail
@@ -34,12 +41,29 @@ jobs:
           grep -q 'data-width="390"' apps/portal/design-review/index.html
           grep -q '/design-review/' apps/portal/enterprise/index.html
           grep -q '"id":"design-review"' apps/portal/assets/data/operator-os-config.json
-      - name: Verify review-only behavior
+      - name: Verify New York countdown contract
+        run: |
+          set -euxo pipefail
+          test -s apps/portal/assets/the-code-new-york-countdown-v1.css
+          test -s apps/portal/assets/the-code-new-york-countdown-v1.js
+          grep -q "2026-10-07T11:30:00-04:00" apps/portal/assets/the-code-new-york-countdown-v1.js
+          grep -q "2026-10-06T00:00:00-04:00" apps/portal/assets/the-code-new-york-countdown-v1.js
+          grep -q "2026-10-08T23:59:59-04:00" apps/portal/assets/the-code-new-york-countdown-v1.js
+          grep -q 'THE CODE · NEW YORK 2026' apps/portal/assets/the-code-new-york-countdown-v1.js
+          grep -q '7. listopada 2026. · 11:30 ET' apps/portal/assets/the-code-new-york-countdown-v1.js
+          grep -q '7 October 2026 · 11:30 ET' apps/portal/assets/the-code-new-york-countdown-v1.js
+          grep -q '/assets/the-code-new-york-countdown-v1.css' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q '/assets/the-code-new-york-countdown-v1.js' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q "const indexPath=\['/','/en','/en/'\]" workers/gnk-asg-direct-operator/src/public-shell-v11.js
+      - name: Verify admin isolation and review-only behavior
         run: |
           set -euxo pipefail
           node <<'NODE'
           const fs=require('fs');
-          const source=fs.readFileSync('apps/portal/design-review/index.html','utf8');
+          const design=fs.readFileSync('apps/portal/design-review/index.html','utf8');
           const writeFetch=/fetch\s*\([\s\S]{0,400}?method\s*:\s*['"](?:POST|PUT|PATCH|DELETE)['"]/i;
-          if(writeFetch.test(source)) throw new Error('Design Review Console must remain read-only');
+          if(writeFetch.test(design))throw new Error('Design Review Console must remain read-only');
+          const shell=fs.readFileSync('workers/gnk-asg-direct-operator/src/public-shell-v11.js','utf8');
+          const protectedRoutes=['/enterprise','/mission-control','/editorial-operations','/registry-center','/deployment','/mobile-admin','/seo','/design-review','/language-review','/strategy-performance','/entities'];
+          for(const route of protectedRoutes){if(!shell.includes(`'${route}'`))throw new Error(`protected shell route missing ${route}`);}
           NODE
