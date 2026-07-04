@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import app from '../src/index-unified-auth-v14.js';
-import {recordMailSyncOutbound} from '../src/mail-sync-center-v1.js';
+import {recordMailSyncOutbound} from '../src/mail-sync-center-v2.js';
 import {__test as facadeTest} from '../src/mail-studio-extension-v4.js';
 
 const origin='https://gnk-asg.hr';
@@ -44,16 +44,18 @@ const outbound=await recordMailSyncOutbound({GNK_ASG_D1:d1},{
   'References':'<root@example.test> <parent@example.test>'
  })
 });
-assert.equal(outbound.inReplyTo,'root@example.test');
-assert.deepEqual(outbound.references,['root@example.test','parent@example.test']);
+assert.equal(outbound.ok,true);
+assert.equal(outbound.existing,false);
 assert.match(outbound.threadId,/^mid:/);
 const insert=executed.find(item=>item.sql.startsWith('INSERT INTO mail_sync_messages'));
 assert.ok(insert,'outbound INSERT must execute');
 assert.equal((insert.sql.match(/\?/g)||[]).length,insert.binds.length,'mail_sync_messages SQL bind count must match placeholders');
-assert.equal(insert.binds[7],'root@example.test');
-assert.equal(insert.binds[8],JSON.stringify(['root@example.test','parent@example.test']));
-const stateUpdate=executed.find(item=>item.sql.startsWith('UPDATE mail_sync_state SET last_inbound_at'));
-assert.ok(stateUpdate,'mail_sync_state update must execute');
+assert.equal(insert.binds[6],'root@example.test');
+assert.equal(insert.binds[7],JSON.stringify(['root@example.test','parent@example.test']));
+assert.equal(insert.binds[17],'SENT');
+assert.equal(insert.binds[18],'CONTENT_INDEXED');
+const stateUpdate=executed.find(item=>item.sql.startsWith('UPDATE mail_sync_state SET last_outbound_at'));
+assert.ok(stateUpdate,'mail_sync_state outbound counter update must execute');
 assert.equal((stateUpdate.sql.match(/\?/g)||[]).length,stateUpdate.binds.length,'mail_sync_state SQL bind count must match placeholders');
 
 console.log('MAIL_SYNC_CENTER_ROUTE_CONTRACT_OK');
