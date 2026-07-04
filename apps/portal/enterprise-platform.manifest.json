@@ -1,0 +1,198 @@
+{
+  "platform": {
+    "name": "GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform",
+    "buildBranch": "enterprise-os-v2-finalbuild",
+    "mode": "review_only_until_explicit_approval",
+    "deploymentPolicy": {
+      "allowed": false,
+      "requiresExplicitUserApproval": true,
+      "prohibitedActions": [
+        "mass_email_sending",
+        "dns_changes",
+        "production_cloudflare_route_changes",
+        "secret_rotation_or_secret_exposure",
+        "merge_to_main_without_approval",
+        "production_deploy_without_approval"
+      ],
+      "rollbackModel": "main_remains_reference_and_rollback_until_v2_is_approved"
+    }
+  },
+  "publicOrganizationLayer": {
+    "aboutTheGroup": {
+      "purpose": "Public structured explanation of GNK DINAMO Ltd. Group and GNK ASG d.o.o. regional role.",
+      "requiredContent": [
+        "GNK DINAMO Ltd. Group HQ Boulder Colorado",
+        "GNK ASG d.o.o. as regional associated company",
+        "global organization map",
+        "leadership and governance overview",
+        "Global Operations Center / Digital Operations Team explanation",
+        "43 GNK entity slots",
+        "THE CODE strategic project",
+        "print and PDF friendly structure"
+      ],
+      "transparencyGuard": "Digital or AI roles must not be presented as real employees in a misleading way."
+    },
+    "digitalOperationsTeam": {
+      "approvedLanguage": [
+        "Global Operations Center",
+        "Digital Operations Team",
+        "AI-supported operating model",
+        "virtual operational role",
+        "planned international digital operations wave"
+      ],
+      "restrictedLanguage": [
+        "real employee claim for synthetic profile",
+        "undisclosed person-like AI worker",
+        "employment representation without legal basis"
+      ]
+    }
+  },
+  "operatorLayer": {
+    "missionControl": {
+      "role": "Supervisory dashboard over platform operations, publishing, communication and recovery signals.",
+      "monitors": [
+        "Campaign Mailer",
+        "Mail Studio",
+        "Email Status",
+        "Media Center",
+        "News and Publishing workflows",
+        "Deployment status",
+        "Recovery status",
+        "Approval queue",
+        "SEO and publication readiness"
+      ]
+    },
+    "operatorOS": {
+      "role": "Non-destructive coordination layer for admin operations and cross-module review.",
+      "requiredViews": [
+        "module inventory",
+        "workflow status",
+        "pending approvals",
+        "blocked actions",
+        "test checklist",
+        "recovery snapshot"
+      ]
+    },
+    "mobileAdmin": {
+      "role": "Mobile first review and approval surface.",
+      "minimumScope": [
+        "review publishing items",
+        "review mail test items",
+        "approve or hold deployments",
+        "see registry deadlines",
+        "view recovery status"
+      ]
+    }
+  },
+  "registryCenter": {
+    "purpose": "Track legal, brand, corporate and financial registry status without making external filings automatically.",
+    "sourcesToTrack": [
+      "DZIV",
+      "EUIPO",
+      "WIPO",
+      "Colorado Secretary of State",
+      "Sudski registar",
+      "FINA"
+    ],
+    "deadlineModel": {
+      "fields": [
+        "registry",
+        "matter",
+        "entity",
+        "deadlineDate",
+        "status",
+        "owner",
+        "nextAction",
+        "evidenceLink"
+      ],
+      "automationGuard": "No automatic filing or legal submission. Review-only tracking unless separately approved."
+    }
+  },
+  "publishingAndSeoLayer": {
+    "seoEngine": {
+      "requiredCapabilities": [
+        "meta title and description",
+        "schema.org structured data",
+        "sitemap readiness",
+        "Open Graph metadata",
+        "canonical URL handling",
+        "hreflang structure",
+        "image alt and metadata checklist",
+        "internal link recommendations",
+        "publication status audit"
+      ]
+    },
+    "publishingWorkflow": {
+      "states": [
+        "draft",
+        "review",
+        "approved",
+        "scheduled",
+        "published",
+        "held",
+        "archived"
+      ],
+      "guard": "No publication switch or external distribution without user approval."
+    }
+  },
+  "communicationLayer": {
+    "mailSystems": {
+      "modules": [
+        "Campaign Mailer",
+        "Mail Studio",
+        "Email Status",
+        "Media Center"
+      ],
+      "safeTestingPolicy": {
+        "allowed": [
+          "draft generation",
+          "template preview",
+          "single controlled test to approved account",
+          "inbound rendering review"
+        ],
+        "prohibited": [
+          "mass mailing",
+          "unapproved media list sending",
+          "spoofing sender identity",
+          "secret exposure"
+        ]
+      }
+    }
+  },
+  "designSystem": {
+    "target": "high-production premium enterprise portal redesign without breaking existing functions",
+    "principles": [
+      "dark premium executive interface",
+      "clear public versus internal separation",
+      "mobile-first admin actions",
+      "printable corporate pages",
+      "accessible contrast and semantic headings",
+      "component reuse over one-off pages"
+    ],
+    "componentCandidates": [
+      "ExecutiveShell",
+      "MissionControlGrid",
+      "StatusPill",
+      "ApprovalQueueCard",
+      "RegistryDeadlineTable",
+      "SeoReadinessPanel",
+      "GlobalOrgMap",
+      "DigitalOperationsRoster",
+      "PrintPdfActionBar"
+    ]
+  },
+  "testAndReviewChecklist": {
+    "requiredBeforeControlledDeploy": [
+      "module inventory completed",
+      "operator OS visible and non-destructive",
+      "About the Group reviewed for transparency",
+      "digital operations language reviewed",
+      "registry center deadlines reviewed",
+      "SEO metadata reviewed",
+      "mobile admin approval flow reviewed",
+      "mail tests limited and documented",
+      "deployment guard confirmed",
+      "rollback route confirmed"
+    ]
+  }
+}
