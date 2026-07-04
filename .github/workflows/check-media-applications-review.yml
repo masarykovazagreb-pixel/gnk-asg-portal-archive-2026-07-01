@@ -13,9 +13,11 @@ on:
       - 'apps/portal/mobile-admin/**'
       - 'apps/portal/assets/media-applications-review-v1.css'
       - 'apps/portal/assets/media-applications-review-v1.js'
+      - 'apps/portal/assets/media-applications-decision-guard-v1.js'
       - 'apps/portal/assets/admin-media-applications-entry-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
       - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'
       - 'workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs'
@@ -37,8 +39,10 @@ jobs:
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/media-applications-review-v1.js
+          node --check apps/portal/assets/media-applications-decision-guard-v1.js
           node --check apps/portal/assets/admin-media-applications-entry-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
@@ -73,6 +77,19 @@ jobs:
           grep -q 'Ne odobravaju, ne odbijaju i ne mijenjaju status' apps/portal/assets/media-applications-review-v1.js
           grep -q "api('/decision'" apps/portal/assets/media-applications-review-v1.js
           grep -q 'Review Flags' apps/portal/assets/media-applications-review-v1.js
+      - name: Verify revision-safe human decisions
+        run: |
+          set -euxo pipefail
+          grep -q 'expected_revision_required' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q 'decision_reason_required' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q 'stale_review' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q 'human_review_status_changed' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q 'PROTECTED_ADMIN_REVIEW' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q 'noNotification:true' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q 'expectedRevision=currentRevision' apps/portal/assets/media-applications-decision-guard-v1.js
+          grep -q 'Za ovaj status obavezno je kratko obrazloženje' apps/portal/assets/media-applications-decision-guard-v1.js
+          grep -q 'patchMediaRegistrationDecisionGuard' workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
+          grep -q 'handleMediaRegistrationReviewDecision' workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
       - name: Verify navigation and responsive review coverage
         run: |
           set -euxo pipefail
@@ -110,6 +127,6 @@ jobs:
       - name: Preserve review-only execution
         run: |
           set -euxo pipefail
-          ! grep -R 'wrangler deploy' apps/portal/assets/media-applications-review-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js apps/portal/mobile-admin/index.html
-          ! grep -R 'EMAIL.send' apps/portal/assets/media-applications-review-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js apps/portal/mobile-admin/index.html
+          ! grep -R 'wrangler deploy' apps/portal/assets/media-applications-review-v1.js apps/portal/assets/media-applications-decision-guard-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js apps/portal/mobile-admin/index.html
+          ! grep -R 'EMAIL.send' apps/portal/assets/media-applications-review-v1.js apps/portal/assets/media-applications-decision-guard-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js apps/portal/mobile-admin/index.html
           echo 'No deployment or mail send action exists in the review center.'
