@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="googlebot" content="noindex,nofollow,noarchive">
+<title>Mail Identity & Routing Governance — Review</title>
+<style>
+:root{color-scheme:dark;--bg:#030915;--panel:#0b1729;--line:rgba(220,183,87,.32);--gold:#f0cf72;--text:#f8fafc;--muted:#aeb9c8;--good:#9ce8bd}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 16% 0%,#18375f 0,#07111f 42%,var(--bg) 100%);color:var(--text);font-family:Inter,Arial,sans-serif}.wrap{max-width:1180px;margin:auto;padding:24px}.hero,.card{border:1px solid var(--line);background:rgba(8,20,37,.94);border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.34)}.hero{padding:26px;margin-bottom:18px}h1{margin:0;color:var(--gold);font:700 34px/1.1 Georgia,serif}.lead{color:var(--muted);max-width:850px;line-height:1.65}.badge{display:inline-block;margin-top:10px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;color:var(--good);font-size:12px;font-weight:800}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{padding:20px}.card h2{margin:0 0 12px;color:var(--gold);font-size:18px}.card p,.card li{color:var(--muted);line-height:1.6}.identity{font-size:16px;color:#fff;margin:8px 0}.identity strong{color:var(--gold)}.centres{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.centre{padding:9px 11px;border-radius:10px;background:rgba(255,255,255,.05);color:#dbeafe;font-size:13px}.rule{padding:12px;border-left:4px solid var(--gold);background:rgba(220,183,87,.08);margin-top:12px;color:#e2e8f0;line-height:1.55}.footer{margin-top:18px;color:#8fa0b5;font-size:12px}@media(max-width:760px){.grid{grid-template-columns:1fr}.centres{grid-template-columns:1fr}h1{font-size:28px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="hero">
+<h1>Mail Identity & Routing Governance</h1>
+<p class="lead">Review-only contract for sender identity, group-platform context and the ten-centre operational routing model used by GNK ASG Mail Studio, automatic acknowledgements, Media operations and mail evidence records.</p>
+<span class="badge">REVIEW ONLY · NO PRODUCTION ACTIVATION</span>
+</section>
+<section class="grid">
+<article class="card">
+<h2>Identity hierarchy</h2>
+<div class="identity"><strong>Platform context:</strong> GNK DINAMO Ltd. Group Enterprise Digital Platform</div>
+<div class="identity"><strong>Regional operating company:</strong> GNK ASG d.o.o.</div>
+<div class="identity"><strong>Message identity:</strong> the selected Office, Legal, Media, Press, IT, Assistant, Director, Executive or UBO sender profile</div>
+<div class="rule">A message sent from a GNK ASG d.o.o. mailbox must identify the actual sender profile and regional operating company. The GNK DINAMO Ltd. Group reference provides platform context and must not obscure which entity sent or answered the message.</div>
+</article>
+<article class="card">
+<h2>Directional centre labels</h2>
+<p><strong>Outgoing:</strong> Sending Global Service Centre</p>
+<p><strong>Incoming acknowledgement:</strong> Receiving Global Service Centre</p>
+<div class="rule">One message receives one selected centre. The same centre must remain consistent in headers, visible signature or acknowledgement, audit result, forwarding metadata and Mail Sync evidence.</div>
+</article>
+<article class="card">
+<h2>Ten-centre rotation</h2>
+<div class="centres">
+<div class="centre">New York, United States</div><div class="centre">London, United Kingdom</div>
+<div class="centre">Paris, France</div><div class="centre">Frankfurt, Germany</div>
+<div class="centre">Dubai, United Arab Emirates</div><div class="centre">Singapore, Singapore</div>
+<div class="centre">Tokyo, Japan</div><div class="centre">Sydney, Australia</div>
+<div class="centre">Toronto, Canada</div><div class="centre">Zurich, Switzerland</div>
+</div>
+<p>The selection is cryptographically random. The immediately preceding centre is excluded from the next selection within the same inbound or outbound routing scope.</p>
+</article>
+<article class="card">
+<h2>Accuracy boundary</h2>
+<p>The centre label describes the digital operational routing context assigned to a message. It does not, by itself, claim that a registered branch, permanent establishment, staffed physical office or licensed local entity exists in that city.</p>
+<p>Legal notices, invoices, contractual documents and regulated communications must continue to identify the responsible legal entity independently of the routing-centre label.</p>
+</article>
+</section>
+<p class="footer">Contract version: 2026-07-04 · Human approval required before production activation.</p>
+</main>
+</body>
+</html>
