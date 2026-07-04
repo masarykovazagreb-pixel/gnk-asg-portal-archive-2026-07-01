@@ -1,0 +1,43 @@
+name: Check Design Review Console
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/design-review/**'
+      - 'apps/portal/enterprise/**'
+      - 'apps/portal/assets/data/operator-os-config.json'
+      - '.github/workflows/check-design-review-console.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate Operator OS config
+        run: node -e "JSON.parse(require('fs').readFileSync('apps/portal/assets/data/operator-os-config.json','utf8'))"
+      - name: Verify review console contract
+        run: |
+          set -euxo pipefail
+          test -s apps/portal/design-review/index.html
+          grep -qi 'noindex,nofollow,noarchive' apps/portal/design-review/index.html
+          grep -q 'data-width="1440"' apps/portal/design-review/index.html
+          grep -q 'data-width="1024"' apps/portal/design-review/index.html
+          grep -q 'data-width="768"' apps/portal/design-review/index.html
+          grep -q 'data-width="390"' apps/portal/design-review/index.html
+          grep -q '/design-review/' apps/portal/enterprise/index.html
+          grep -q '"id":"design-review"' apps/portal/assets/data/operator-os-config.json
+      - name: Verify review-only behavior
+        run: |
+          set -euxo pipefail
+          if grep -Eqi 'fetch\([^)]*,[^)]*method:[[:space:]]*["'"'](POST|PUT|PATCH|DELETE)' apps/portal/design-review/index.html; then
+            echo 'Design Review Console must remain read-only.' >&2
+            exit 1
+          fi
