@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-04.operator-os.09",
+  "version": "2026-07-04.operator-os.10",
   "status": "controlled-review",
   "safetyGates": {
     "massEmailSending": "disabled-until-explicit-approval",
@@ -37,6 +37,7 @@
     {"id":"digital-workforce","label":"Digital Workforce","route":"/digital-workforce/","risk":"medium","approvalRequired":true},
     {"id":"campaign-mailer","label":"Campaign Mailer","route":"/campaign-mailer/","risk":"high","approvalRequired":true,"sendCap":"manual-only"},
     {"id":"mail-studio","label":"Mail Studio","route":"/mail-studio/","risk":"high","approvalRequired":true,"sendCap":"manual-only"},
+    {"id":"mail-sync-center","label":"Mail Sync Center","route":"/mail-sync-center/","risk":"medium","approvalRequired":false,"access":"protected-existing-admin-session","delivery":"worker-native-authenticated","activation":"review-only"},
     {"id":"email-status","label":"Email Status","route":"/email-status/","risk":"medium","approvalRequired":false,"delivery":"worker-dynamic-authenticated"},
     {"id":"media-command-center","label":"Media Command Center","route":"/media-command-center/","risk":"high","approvalRequired":true},
     {"id":"public-media-application","label":"Public Media Application","route":"/media-application/?lang=en","risk":"medium","approvalRequired":false,"access":"public-self-registration","dataPolicy":"profile-created-by-newsroom"},
@@ -66,6 +67,7 @@
       "module-health",
       "approval-queue",
       "media-applications-review",
+      "mail-sync-health",
       "registry-deadlines",
       "publishing-status",
       "the-code-intelligence",
@@ -76,6 +78,24 @@
       "deployment-locks",
       "worker-load"
     ]
+  },
+  "mailSync": {
+    "mode": "worker-native",
+    "statusSource": "/api/mail-center/sync/health",
+    "access": "protected-existing-admin-session",
+    "futureMailCapture": "automatic-after-controlled-runtime-activation",
+    "historicalMail": "metadata-backfill-plus-optional-external-connector",
+    "attachmentStorage": "metadata-only-until-controlled-r2-activation",
+    "retention": {
+      "policyVersion": "2026-07-04.review.1",
+      "messageContentDays": 365,
+      "attachmentDays": 365,
+      "operationalMetadataDays": 2555,
+      "legalHoldOverridesDeletion": true,
+      "automaticDeletion": "disabled-until-explicit-approval",
+      "reviewOnly": true
+    },
+    "runtimeEvidence": "pending-controlled-activation"
   },
   "digitalOperations": {
     "description": "Global Operations Center / Digital Operations Team profiles are operational identities for workflow coordination and dashboard accountability; they are not presented as confirmed physical employees.",
@@ -114,6 +134,6 @@
   },
   "premiumRedesign": {
     "principle": "high-production enterprise UI without breaking existing routes or current mail/admin functions",
-    "components": ["command-center-header", "glassmorphism-status-cards", "media-applications-review", "registry-deadline-board", "approval-queue-table", "strategy-performance-panel", "the-code-intelligence", "editorial-operations-console", "responsive-design-console", "worker-grid", "global-map-panel", "printable-group-profile", "seo-health-panel"]
+    "components": ["command-center-header", "glassmorphism-status-cards", "media-applications-review", "mail-sync-health", "registry-deadline-board", "approval-queue-table", "strategy-performance-panel", "the-code-intelligence", "editorial-operations-console", "responsive-design-console", "worker-grid", "global-map-panel", "printable-group-profile", "seo-health-panel"]
   }
 }
