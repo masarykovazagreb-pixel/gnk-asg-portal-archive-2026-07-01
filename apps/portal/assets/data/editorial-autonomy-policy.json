@@ -1,0 +1,82 @@
+{
+  "version": "2026-07-04.autonomy.1",
+  "status": "review-only",
+  "timezone": "Europe/Zagreb",
+  "dailyReview": {
+    "packageTime": "08:00",
+    "rejectionDeadline": "09:00",
+    "windowMinutes": 60,
+    "silentAcceptanceEnabled": true,
+    "silentAcceptanceMeaning": "Standing policy acceptance for eligible low-risk organization-authored desk content only",
+    "notificationRequired": true,
+    "missedRunCatchUp": true
+  },
+  "operatingTarget": {
+    "autonomousPercent": 99,
+    "escalationPercent": 1,
+    "note": "The percentage is an operating target, not a reason to suppress mandatory risk escalation."
+  },
+  "autonomousEligibility": {
+    "publicationTypes": ["desk-article"],
+    "authorEntity": "GNK DINAMO Ltd. Group Editorial Desk",
+    "required": [
+      "title",
+      "slug",
+      "summary",
+      "body",
+      "canonical",
+      "image",
+      "imageAlt",
+      "primarySource",
+      "factCheckComplete",
+      "sourceReviewComplete"
+    ],
+    "minimumSupportingSources": 1,
+    "allowedRisk": ["low"],
+    "defaultPublicLabel": "THE CODE Intelligence analysis",
+    "automaticPublication": true
+  },
+  "mandatoryEscalation": {
+    "personalAuthorship": ["Nermin Sefić"],
+    "specificPersonalReviewCredit": true,
+    "categories": [
+      "Financial Results",
+      "Legal and Registry",
+      "Ownership and UBO",
+      "Tax",
+      "Litigation",
+      "Acquisitions",
+      "Regulatory Filings"
+    ],
+    "claims": [
+      "audited",
+      "official financial result",
+      "guaranteed return",
+      "legal conclusion",
+      "criminal allegation",
+      "third-party misconduct"
+    ]
+  },
+  "attribution": {
+    "defaultAuthor": "GNK DINAMO Ltd. Group Editorial Desk",
+    "executiveEditor": "Nermin Sefić",
+    "executiveEditorMeaning": "Standing editorial governance role; it does not claim article-specific review unless explicitly recorded.",
+    "articleSpecificReviewedByRequiresExplicitConfirmation": true,
+    "nerminAsAuthorRequiresExplicitConfirmation": true
+  },
+  "decisionStates": [
+    "awaiting-rejection-window",
+    "rejected",
+    "held-for-review",
+    "accepted-by-standing-policy",
+    "published",
+    "escalated"
+  ],
+  "hardLocks": {
+    "productionDeployWithoutToken": false,
+    "dnsChanges": false,
+    "secretChanges": false,
+    "campaignEmail": false,
+    "massEmail": false
+  }
+}
