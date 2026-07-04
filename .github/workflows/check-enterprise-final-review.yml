@@ -21,6 +21,7 @@ on:
       - 'apps/portal/assets/email/gnk-media-signature.html'
       - 'apps/portal/assets/email/gnk-media-autoresponder.html'
       - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
       - 'workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs'
       - '.github/workflows/check-enterprise-final-review.yml'
@@ -44,6 +45,7 @@ jobs:
         run: |
           set -euxo pipefail
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --check apps/portal/assets/admin-media-applications-entry-v1.js
           node --check workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
@@ -107,7 +109,8 @@ jobs:
           grep -q '{{personalized_greeting}}' apps/portal/assets/email/gnk-media-autoresponder.html
           grep -q '{{personalized_response}}' apps/portal/assets/email/gnk-media-autoresponder.html
           grep -q '{{reference}}' apps/portal/assets/email/gnk-media-autoresponder.html
-          grep -q 'mail-studio-extension-v3.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q 'mail-studio-extension-v4.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q 'mail-studio-extension-v3.js' workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
           grep -q 'normalizeMailStudioSignature' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
           grep -q 'enforceMediaGoldSignature' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
 
