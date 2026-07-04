@@ -1,8 +1,8 @@
 import * as base from './mail-studio-extension-v3.js';
 import {handleMailSyncCenter,VERSION as MAIL_SYNC_VERSION} from './mail-sync-center-v2.js';
-import {withMailIdentityContext,VERSION as IDENTITY_VERSION} from './mail-identity-context-v1.js';
+import {withMailIdentityContext,VERSION as IDENTITY_VERSION} from './mail-identity-context-v2.js';
 
-export const VERSION=`GNK_ASG_MAIL_STUDIO_EXTENSION_V13_20260704_IDENTITY_${IDENTITY_VERSION}_${MAIL_SYNC_VERSION}_${base.VERSION}`;
+export const VERSION=`GNK_ASG_MAIL_STUDIO_EXTENSION_V14_20260704_IDENTITY_${IDENTITY_VERSION}_${MAIL_SYNC_VERSION}_${base.VERSION}`;
 export const UI_VERSION=base.UI_VERSION;
 export const PROFILES=base.PROFILES;
 export const GLOBAL_CENTRES=base.GLOBAL_CENTRES;
