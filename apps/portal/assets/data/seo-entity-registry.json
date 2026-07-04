@@ -1,0 +1,196 @@
+{
+  "version": "2026-07-04.seo-entities.01",
+  "status": "controlled-review",
+  "indexingPolicy": {
+    "defaultBeforeApproval": "noindex,nofollow,noarchive",
+    "sitemapBeforeApproval": "exclude",
+    "approvalRequirement": "Executive Office approval and controlled deploy token",
+    "automaticPublication": false
+  },
+  "images": {
+    "socialCard": {
+      "url": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "alt": "GNK DINAMO Ltd. Group and GNK ASG Enterprise Digital Platform",
+      "width": 1200,
+      "height": 630
+    }
+  },
+  "entities": {
+    "group": {
+      "type": "Organization",
+      "id": "https://www.gnk-asg.hr/#organization-group",
+      "name": "GNK DINAMO Ltd. Group",
+      "url": "https://www.gnk-asg.hr/"
+    },
+    "gnkAsg": {
+      "type": "Organization",
+      "id": "https://www.gnk-asg.hr/#organization-gnk-asg",
+      "name": "GNK ASG d.o.o.",
+      "url": "https://www.gnk-asg.hr/",
+      "parent": "group"
+    },
+    "gnkDinamoLtd": {
+      "type": "Organization",
+      "id": "https://www.gnk-asg.hr/#organization-gnk-dinamo-ltd",
+      "name": "GNK DINAMO Ltd.",
+      "url": "https://www.gnk-asg.hr/about-the-group/",
+      "parent": "group"
+    },
+    "website": {
+      "type": "WebSite",
+      "id": "https://www.gnk-asg.hr/#website",
+      "name": "GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform",
+      "url": "https://www.gnk-asg.hr/",
+      "publisher": "gnkAsg"
+    },
+    "theCodeIntelligence": {
+      "type": "CreativeWork",
+      "id": "https://www.gnk-asg.hr/the-code/intelligence/#entity",
+      "name": "THE CODE Intelligence",
+      "url": "https://www.gnk-asg.hr/the-code/intelligence/",
+      "publisher": "gnkAsg",
+      "about": [
+        "gnkDinamoLtd",
+        "group"
+      ]
+    },
+    "nerminSefic": {
+      "type": "Person",
+      "id": "https://www.gnk-asg.hr/nermin-sefic/#person",
+      "name": "Nermin Sefić",
+      "url": "https://www.gnk-asg.hr/nermin-sefic/",
+      "allowedRoutes": [
+        "/nermin-sefic/",
+        "/the-code/intelligence/"
+      ],
+      "usageRule": "Use only where a real author, editor or responsible-person relationship exists."
+    }
+  },
+  "routes": {
+    "/digital-workforce/": {
+      "language": "hr",
+      "schema": [
+        "WebPage",
+        "BreadcrumbList"
+      ],
+      "entities": [
+        "group",
+        "gnkAsg",
+        "website"
+      ],
+      "sitemap": "exclude-before-approval"
+    },
+    "/digital-workforce/directory/": {
+      "language": "en",
+      "schema": [
+        "WebPage",
+        "BreadcrumbList",
+        "ItemList"
+      ],
+      "entities": [
+        "group",
+        "gnkAsg",
+        "website"
+      ],
+      "sitemap": "exclude-before-approval"
+    },
+    "/digital-workforce/protocols/": {
+      "language": "en",
+      "schema": [
+        "WebPage",
+        "BreadcrumbList"
+      ],
+      "entities": [
+        "group",
+        "gnkAsg",
+        "website"
+      ],
+      "sitemap": "exclude-before-approval"
+    },
+    "/about-the-group/": {
+      "language": "en",
+      "schema": [
+        "WebPage",
+        "BreadcrumbList",
+        "Organization"
+      ],
+      "entities": [
+        "group",
+        "gnkAsg",
+        "gnkDinamoLtd",
+        "website"
+      ],
+      "sitemap": "exclude-before-approval"
+    },
+    "/o-grupi/": {
+      "language": "hr",
+      "schema": [
+        "WebPage",
+        "BreadcrumbList",
+        "Organization"
+      ],
+      "entities": [
+        "group",
+        "gnkAsg",
+        "gnkDinamoLtd",
+        "website"
+      ],
+      "sitemap": "exclude-before-approval"
+    },
+    "/the-code/intelligence/": {
+      "language": "en",
+      "schema": [
+        "WebPage",
+        "BreadcrumbList",
+        "CreativeWork",
+        "Person"
+      ],
+      "entities": [
+        "group",
+        "gnkAsg",
+        "gnkDinamoLtd",
+        "website",
+        "theCodeIntelligence",
+        "nerminSefic"
+      ],
+      "relations": {
+        "author": "nerminSefic",
+        "editor": "nerminSefic",
+        "publisher": "gnkAsg"
+      },
+      "sitemap": "exclude-before-approval"
+    }
+  },
+  "internalLinks": {
+    "/digital-workforce/": [
+      "/digital-workforce/directory/",
+      "/digital-workforce/protocols/",
+      "/about-the-group/"
+    ],
+    "/digital-workforce/directory/": [
+      "/digital-workforce/",
+      "/digital-workforce/protocols/",
+      "/about-the-group/"
+    ],
+    "/digital-workforce/protocols/": [
+      "/digital-workforce/",
+      "/digital-workforce/directory/",
+      "/the-code/intelligence/"
+    ],
+    "/about-the-group/": [
+      "/o-grupi/",
+      "/digital-workforce/",
+      "/the-code/intelligence/"
+    ],
+    "/o-grupi/": [
+      "/about-the-group/",
+      "/digital-workforce/",
+      "/the-code/intelligence/"
+    ],
+    "/the-code/intelligence/": [
+      "/about-the-group/",
+      "/digital-workforce/",
+      "/nermin-sefic/"
+    ]
+  }
+}
