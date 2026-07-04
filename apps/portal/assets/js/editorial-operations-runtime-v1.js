@@ -3,7 +3,7 @@
   if(window.__GNK_EDITORIAL_OPERATIONS_RUNTIME_V1__)return;
   window.__GNK_EDITORIAL_OPERATIONS_RUNTIME_V1__=true;
 
-  const API='/api/editorial-operations';
+  const PLAN_ENDPOINT='/api/editorial-operations/plan';
   const today=()=>new Date().toISOString().slice(0,10);
   const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
@@ -65,7 +65,7 @@
   }
 
   async function getPlan(){
-    const response=await fetch(`${API}/plan?date=${today()}`,{cache:'no-store',credentials:'same-origin'});
+    const response=await fetch(`${PLAN_ENDPOINT}?date=${today()}`,{cache:'no-store',credentials:'same-origin'});
     if(response.status===401||response.status===403)return{mode:'blocked',plan:null};
     if(response.status===404||response.status===503)return{mode:'fallback',plan:null};
     if(!response.ok)throw new Error(`editorial_plan_http_${response.status}`);
@@ -120,7 +120,7 @@
     const button=document.getElementById('generate-editorial-plan');
     if(button){button.disabled=true;button.textContent='Generating…';}
     try{
-      const response=await fetch(`${API}/plan/generate`,{
+      const response=await fetch(`${PLAN_ENDPOINT}/generate`,{
         method:'POST',
         credentials:'same-origin',
         headers:{'content-type':'application/json'},
