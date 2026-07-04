@@ -7,6 +7,7 @@ const read=file=>fs.readFileSync(path.join(root,file),'utf8');
 const exists=file=>fs.existsSync(path.join(root,file));
 const config=JSON.parse(read('apps/portal/assets/data/operator-os-config.json'));
 const modules=config.monitoredModules||[];
+const routeUrl=route=>new URL(route,'https://review.gnk-asg.local');
 
 assert.ok(modules.length>=18,'Operator OS mora pratiti najmanje 18 odobrenih modula.');
 assert.equal(new Set(modules.map(item=>item.id)).size,modules.length,'Module IDs moraju biti jedinstveni.');
@@ -23,16 +24,21 @@ const dynamicContracts={
   ]
 };
 
+let dynamicCount=0;
 for(const module of modules){
   assert.match(module.id,/^[a-z0-9-]+$/u,`Neispravan module ID: ${module.id}`);
-  assert.match(module.route,/^\/(?:[a-z0-9-]+\/)+$/u,`Neispravna module ruta: ${module.route}`);
+  const parsed=routeUrl(module.route),routePath=parsed.pathname;
+  assert.equal(parsed.origin,'https://review.gnk-asg.local',`Module ruta mora biti same-origin: ${module.route}`);
+  assert.match(routePath,/^\/(?:[a-z0-9-]+\/)+$/u,`Neispravan module pathname: ${module.route}`);
+  for(const key of parsed.searchParams.keys())assert.match(key,/^[a-z][a-z0-9-]*$/u,`Neispravan query ključ u ${module.route}`);
   if(module.delivery==='worker-dynamic-authenticated'){
-    const required=dynamicContracts[module.route];
+    const required=dynamicContracts[routePath];
     assert.ok(required,`Nedokumentirana dinamička ruta: ${module.route}`);
     for(const token of required)assert.ok(gateway.includes(token),`${module.route} nema Worker dokaz: ${token}`);
+    dynamicCount++;
     continue;
   }
-  const folder=module.route.replace(/^\//,'').replace(/\/$/,'');
+  const folder=routePath.replace(/^\//,'').replace(/\/$/,'');
   const file=`apps/portal/${folder}/index.html`;
   assert.ok(exists(file),`${module.label} pokazuje na nepostojeću datoteku ${file}`);
   assert.ok(read(file).length>120,`${file} nema dovoljan sadržaj.`);
@@ -54,8 +60,8 @@ const publicMenu=read('apps/portal/assets/public-menu-v18.js');
 assert.ok(publicMenu.includes('/the-code/intelligence/'),'Javni izbornik mora povezivati THE CODE Intelligence.');
 
 const hub=read('apps/portal/enterprise/index.html');
-for(const requiredRoute of ['/mission-control/','/design-review/','/strategy-performance/','/registry-center/','/deployment/','/mail-studio/','/media-center/']){
+for(const requiredRoute of ['/mission-control/','/design-review/','/strategy-performance/','/registry-center/','/deployment/','/mail-studio/','/media-center/','/media-registration-admin/','/media-application/?lang=en']){
   assert.ok(hub.includes(requiredRoute),`Enterprise Hub nema ključnu rutu ${requiredRoute}`);
 }
 
-console.log(`OPERATOR_MODULE_ROUTE_CONTRACT_OK modules=${modules.length} dynamic=1 static=${modules.length-1} the_code=preserved`);
+console.log(`OPERATOR_MODULE_ROUTE_CONTRACT_OK modules=${modules.length} dynamic=${dynamicCount} static=${modules.length-dynamicCount} the_code=preserved`);
