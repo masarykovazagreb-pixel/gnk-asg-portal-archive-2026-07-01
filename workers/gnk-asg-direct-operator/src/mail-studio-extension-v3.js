@@ -3,7 +3,7 @@ import {enforceMediaGoldSignature,isMediaSender,VERSION as MEDIA_SIGNATURE_VERSI
 import {institutionalSignature,LOGO_URL,VERSION as BRAND_SIGNATURE_VERSION} from './email-brand-signature-v1.js';
 import {prepareMailSyncInbound,recordMailSyncOutbound,VERSION as MAIL_SYNC_VERSION} from './mail-sync-center-v2.js';
 
-export const VERSION=`GNK_ASG_MAIL_STUDIO_EXTENSION_V10_20260704_MAIL_SYNC_${MAIL_SYNC_VERSION}`;
+export const VERSION=`GNK_ASG_MAIL_STUDIO_EXTENSION_V11_20260704_MAIL_SYNC_PASS_THROUGH_${MAIL_SYNC_VERSION}`;
 export const UI_VERSION=base.UI_VERSION;
 export const PROFILES=base.PROFILES;
 export const GLOBAL_CENTRES=base.GLOBAL_CENTRES;
@@ -50,12 +50,12 @@ function replaceInstitutionalText(value,profile,signature){
   let text=dedupeInstitutionalText(value);
   const pattern=new RegExp(`\\n{2,}(?:Srdačan pozdrav,\\n{2,})?${escapeRegExp(profile.name)}\\n${escapeRegExp(profile.unit)}\\nGlobal Service Centre:[\\s\\S]*$`,'iu');
   text=text.replace(pattern,'').trim();
-  return `${text}${text?'\n\n':''}${signature.text}`;
+  return`${text}${text?'\n\n':''}${signature.text}`;
 }
 function replaceInstitutionalHtml(value,signature){
   const html=String(value||'').replace(SIGNATURE_TABLE,'').trim();
   if(/<\/body>/i.test(html))return html.replace(/<\/body>/i,`${signature.html}</body>`);
-  return `${html}${signature.html}`;
+  return`${html}${signature.html}`;
 }
 function normalizeInstitutional(payload){
   const profile=profileFor(payload);
@@ -124,6 +124,7 @@ export async function handleMailStudioInbound(message,env,ctx){
   if(ctx?.waitUntil)ctx.waitUntil(Promise.resolve(prepared.capture).catch(error=>console.error('mail-sync-inbound',error)));
   else await prepared.capture.catch?.(error=>console.error('mail-sync-inbound',error));
   const result=await base.handleMailStudioInbound(prepared.message,withNormalizedEmail(env),ctx);
-  return result?{...result,signatureParity:VERSION,centreSelection:'RANDOM_10',mailSync:MAIL_SYNC_VERSION}:result;
+  if(result)return{...result,message:prepared.message,signatureParity:VERSION,centreSelection:'RANDOM_10',mailSync:MAIL_SYNC_VERSION};
+  return{handled:false,message:prepared.message,signatureParity:VERSION,centreSelection:'RANDOM_10',mailSync:MAIL_SYNC_VERSION};
 }
 export const __test={dedupeInstitutionalText,normalizeMailStudioSignature,replaceInstitutionalText,replaceInstitutionalHtml,randomCentreIndex,randomCentreKv,withNormalizedEmail};
