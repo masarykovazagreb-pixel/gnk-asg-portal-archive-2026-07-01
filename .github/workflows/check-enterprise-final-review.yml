@@ -20,11 +20,13 @@ on:
       - 'apps/portal/assets/data/registry-center-review.json'
       - 'apps/portal/assets/email/gnk-media-signature.html'
       - 'apps/portal/assets/email/gnk-media-autoresponder.html'
+      - 'workers/gnk-asg-direct-operator/src/global-service-centres-v1.js'
       - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js'
       - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
       - 'workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js'
       - 'workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs'
+      - 'workers/gnk-asg-direct-operator/test/global-service-centres.test.mjs'
       - '.github/workflows/check-enterprise-final-review.yml'
 
 permissions:
@@ -45,16 +47,19 @@ jobs:
       - name: Check JavaScript module syntax
         run: |
           set -euxo pipefail
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/global-service-centres-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node --check apps/portal/assets/admin-media-applications-entry-v1.js
           node --check workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
+          node --check workers/gnk-asg-direct-operator/test/global-service-centres.test.mjs
 
-      - name: Run signature and auto-reply unit tests
+      - name: Run mail and centre unit tests
         run: |
           set -euxo pipefail
+          node workers/gnk-asg-direct-operator/test/global-service-centres.test.mjs
           node workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
 
       - name: Validate controlled JSON models
@@ -115,6 +120,14 @@ jobs:
           grep -q 'mail-studio-extension-v3.js' workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
           grep -q 'normalizeMailStudioSignature' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
           grep -q 'enforceMediaGoldSignature' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
+
+      - name: Verify ten-centre contract
+        run: |
+          set -euxo pipefail
+          grep -q "Sending Global Service Centre" workers/gnk-asg-direct-operator/src/global-service-centres-v1.js
+          grep -q "Receiving Global Service Centre" workers/gnk-asg-direct-operator/src/global-service-centres-v1.js
+          grep -q "differentRandomCentreIndex" workers/gnk-asg-direct-operator/src/global-service-centres-v1.js
+          grep -q "The same centre must not repeat immediately" workers/gnk-asg-direct-operator/test/global-service-centres.test.mjs
 
       - name: Verify inbound archive and MIME pass-through
         run: |
