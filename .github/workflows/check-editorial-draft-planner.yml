@@ -4,11 +4,15 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - 'apps/portal/editorial-operations/**'
+      - 'apps/portal/assets/js/editorial-operations-runtime-v1.js'
       - 'workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js'
       - 'workers/gnk-asg-direct-operator/src/publication-readiness-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/publication-document-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
       - 'workers/gnk-asg-direct-operator/test/editorial-draft-planner.test.mjs'
       - 'workers/gnk-asg-direct-operator/test/publication-readiness.test.mjs'
+      - 'workers/gnk-asg-direct-operator/test/publication-document.test.mjs'
       - '.github/workflows/check-editorial-draft-planner.yml'
 
 permissions:
@@ -27,19 +31,30 @@ jobs:
         run: |
           set -euxo pipefail
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/publication-readiness-v1.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/publication-document-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node --check apps/portal/assets/js/editorial-operations-runtime-v1.js
           node --check workers/gnk-asg-direct-operator/test/editorial-draft-planner.test.mjs
           node --check workers/gnk-asg-direct-operator/test/publication-readiness.test.mjs
+          node --check workers/gnk-asg-direct-operator/test/publication-document.test.mjs
       - name: Run planner tests
         run: node workers/gnk-asg-direct-operator/test/editorial-draft-planner.test.mjs
       - name: Run publication readiness tests
         run: node workers/gnk-asg-direct-operator/test/publication-readiness.test.mjs
-      - name: Verify gateway integration
+      - name: Run publication document tests
+        run: node workers/gnk-asg-direct-operator/test/publication-document.test.mjs
+      - name: Verify console and API integration
         run: |
           set -euxo pipefail
           grep -q 'publication-readiness-v1.js' workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
+          grep -q 'publication-document-v1.js' workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
           grep -q 'publication/readiness' workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
+          grep -q 'publication/preview' workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
+          grep -q 'x-robots-tag' workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
           grep -q 'editorial-draft-planner-v1.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q 'runEditorialDraftPlanner' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q 'isEditorialOperationsApi' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q 'editorial-operations-runtime-v1.js' apps/portal/editorial-operations/index.html
+          grep -q '/api/editorial-operations/plan' apps/portal/assets/js/editorial-operations-runtime-v1.js
+          grep -qi 'noindex' apps/portal/editorial-operations/index.html
