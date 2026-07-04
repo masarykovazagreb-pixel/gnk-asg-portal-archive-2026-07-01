@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0",
+  "status": "draft-ready",
+  "title": "Operator OS / Mission Control",
+  "description": "Supervisory layer for communications, publishing, registry, SEO, approvals and recovery status.",
+  "lastReviewed": "2026-07-04",
+  "cards": [
+    {"id":"communications","title":"Communications Control","systems":["Campaign Mailer","Mail Studio","Email Status"],"state":"requires-live-api-binding","safeMode":"No batch send, no automated retry escalation without approval"},
+    {"id":"media","title":"Media & Accreditation","systems":["Media Center","Documents","Accreditation forms"],"state":"content-ready","safeMode":"Public documents must be approved before publication"},
+    {"id":"publishing","title":"News / Publications / SEO","systems":["News HR","News EN","Publications","SEO Engine"],"state":"metadata-ready","safeMode":"Draft, preview, validate, then approve"},
+    {"id":"registry","title":"Registry Center","systems":["DZIV","EUIPO","WIPO","Colorado","Sudski registar","FINA"],"state":"deadline-model-ready","safeMode":"Evidence-first records; no legal filing automation without executive approval"},
+    {"id":"deployment","title":"Deployment & Recovery","systems":["GitHub branch","Build checks","Rollback notes","Recovery status"],"state":"manual-control-only","safeMode":"No production deploy or route switch from this branch"},
+    {"id":"governance","title":"Governance & Approval Queue","systems":["Executive Office","Supervisory Board view","AI Manager","AI Director","Managers"],"state":"approval-model-ready","safeMode":"AI/digital roles shown transparently as operational capabilities"}
+  ],
+  "signals": [
+    {"key":"mail_sending","label":"Mail sending","value":"blocked-until-approved"},
+    {"key":"production_deploy","label":"Production deploy","value":"blocked-until-approved"},
+    {"key":"seo_review","label":"SEO review","value":"every-2-hours-during-final-window"},
+    {"key":"mobile_admin","label":"Mobile admin","value":"approval-first"}
+  ],
+  "uiPrinciples": [
+    "Status before action",
+    "Approval before execution",
+    "Audit trail before scale",
+    "Mobile-first executive controls",
+    "Premium enterprise visual layer without breaking existing routes"
+  ]
+}
