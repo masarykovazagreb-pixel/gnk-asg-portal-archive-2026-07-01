@@ -92,6 +92,7 @@ export default{
   const fixed=await handleMediaBootstrapPdfForwardFix(inbound,active,ctx);if(fixed?.handled)return fixed;
   await recordInbound(inbound,tracked);
   const studio=await handleMailStudioInbound(inbound,tracked,ctx);if(studio?.handled)return studio;
-  if(typeof app.email==='function')return app.email(inbound,isMediaInbound(inbound)?tracked:active,ctx);
+  const nextInbound=studio?.message||inbound;
+  if(typeof app.email==='function')return app.email(nextInbound,isMediaInbound(nextInbound)?tracked:active,ctx);
  }
 };
