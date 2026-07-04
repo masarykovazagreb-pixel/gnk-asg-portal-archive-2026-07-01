@@ -1,0 +1,64 @@
+{
+  "version": "2026-07-04.registry-center.01",
+  "mode": "review-only",
+  "productionChange": false,
+  "title": "Registry Center Status",
+  "scope": "Review data for registry, trademark and public-record monitoring. This file is informational and does not submit filings or change any public record.",
+  "guards": {
+    "noAutomaticFiling": true,
+    "noExternalSubmission": true,
+    "noLegalRepresentationClaim": true,
+    "humanReviewRequired": true
+  },
+  "sources": [
+    {
+      "id": "dziv",
+      "label": "DZIV",
+      "category": "Croatia trademark / IP monitoring",
+      "reviewStatus": "planned",
+      "nextAction": "add case references and deadline calendar after document verification"
+    },
+    {
+      "id": "euipo",
+      "label": "EUIPO",
+      "category": "European Union trademark monitoring",
+      "reviewStatus": "planned",
+      "nextAction": "add application/opposition references only after source verification"
+    },
+    {
+      "id": "wipo",
+      "label": "WIPO",
+      "category": "International trademark monitoring",
+      "reviewStatus": "planned",
+      "nextAction": "add Madrid-system or international references if confirmed"
+    },
+    {
+      "id": "colorado",
+      "label": "Colorado Secretary of State",
+      "category": "GNK DINAMO Ltd. corporate standing",
+      "reviewStatus": "planned",
+      "nextAction": "track good-standing and periodic-report dates"
+    },
+    {
+      "id": "court-register",
+      "label": "Sudski registar",
+      "category": "GNK ASG d.o.o. registry and company-name proceedings",
+      "reviewStatus": "planned",
+      "nextAction": "add verified case numbers, decision dates and appeal windows"
+    },
+    {
+      "id": "fina",
+      "label": "FINA",
+      "category": "Public financial publication and filing status",
+      "reviewStatus": "planned",
+      "nextAction": "track publication status and public-report links after verification"
+    }
+  ],
+  "deadlinePolicy": {
+    "dateFormat": "YYYY-MM-DD",
+    "riskLevels": ["low", "medium", "high", "critical"],
+    "requiredFieldsBeforePublicDisplay": ["source", "caseReference", "deadlineDate", "documentEvidence", "reviewOwner"],
+    "publicDisplayRule": "Only verified dates and records may be shown on public pages. Unverified items remain internal review notes."
+  },
+  "nextSmallStep": "Create a compact Registry Center page that reads this model without making any external submissions."
+}
