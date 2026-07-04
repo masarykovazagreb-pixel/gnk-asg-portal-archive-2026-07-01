@@ -1,0 +1,110 @@
+{
+  "version": "1.0.0",
+  "status": "inventory-baseline-ready",
+  "lastReviewed": "2026-07-04",
+  "title": "GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform Inventory",
+  "scope": "Controlled final-build branch inventory for deploy-readiness review. This file is descriptive and does not trigger deploy, DNS, Cloudflare, secrets, merge or outbound email actions.",
+  "readinessSummary": {
+    "overallPercentEstimate": 60,
+    "deployControlledPercentEstimate": 35,
+    "basis": "Data and page foundations exist, but final integration, build verification, navigation binding, registry center write path and approval-gated deployment remain incomplete."
+  },
+  "modules": [
+    {
+      "id": "operator-os",
+      "label": "Operator OS / Mission Control",
+      "category": "control-plane",
+      "knownPath": "apps/portal/operator-os/index.html",
+      "status": "minimal-page-created",
+      "risk": "medium",
+      "nextStep": "Expand componentized cards and bind to module status data."
+    },
+    {
+      "id": "campaign-mailer",
+      "label": "Campaign Mailer",
+      "category": "communications",
+      "status": "requires-inventory-confirmation",
+      "risk": "high",
+      "guardrail": "No mass sending without explicit human approval."
+    },
+    {
+      "id": "mail-studio",
+      "label": "Mail Studio",
+      "category": "communications",
+      "status": "requires-inventory-confirmation",
+      "risk": "high",
+      "guardrail": "Manual send workflow must expose preview, recipients, subject and attachment state."
+    },
+    {
+      "id": "email-status",
+      "label": "Email Status",
+      "category": "communications",
+      "status": "requires-inventory-confirmation",
+      "risk": "medium",
+      "guardrail": "Delivery status must not imply legal service, publication or successful delivery unless confirmed by source logs."
+    },
+    {
+      "id": "media-center",
+      "label": "Media Center",
+      "category": "media",
+      "status": "linked-from-operator-os",
+      "risk": "medium",
+      "nextStep": "Confirm public forms, documents, accreditation routing and anti-spam protections."
+    },
+    {
+      "id": "news-publishing",
+      "label": "News / Publishing",
+      "category": "publishing",
+      "status": "model-started",
+      "risk": "medium",
+      "nextStep": "Bind SEO metadata model to public pages and sitemap generation."
+    },
+    {
+      "id": "about-global-organization",
+      "label": "About the Group / Global Organization",
+      "category": "public-organization",
+      "status": "requires-public-page-expansion",
+      "risk": "high",
+      "guardrail": "Must distinguish existing entities, planned entities, digital roles and strategic projects."
+    },
+    {
+      "id": "digital-operations-workers",
+      "label": "Global Operations Center / Digital Operations Team",
+      "category": "governance",
+      "status": "policy-model-created",
+      "risk": "medium",
+      "guardrail": "Do not present AI roles or worker waves as verified human employees."
+    },
+    {
+      "id": "registry-center",
+      "label": "Registry Center",
+      "category": "legal-registry",
+      "status": "blocked-for-neutral-write-variant",
+      "risk": "critical",
+      "guardrail": "Registry information must be evidence-linked and deadline-aware."
+    },
+    {
+      "id": "mobile-admin-approval",
+      "label": "Mobile Admin / Approval Queue",
+      "category": "approval",
+      "status": "model-created",
+      "risk": "high",
+      "nextStep": "Render mobile cards and require explicit approval state for risky actions."
+    },
+    {
+      "id": "deployment-recovery",
+      "label": "Deployment / Recovery",
+      "category": "operations",
+      "status": "referenced-from-operator-os",
+      "risk": "critical",
+      "guardrail": "No deploy, merge, DNS or Cloudflare production route change without explicit confirmation."
+    }
+  ],
+  "hourlyReviewTemplate": {
+    "done": [],
+    "tested": ["Fetched Operator OS branch file and confirmed presence of safety/no-deploy language."],
+    "blocked": ["Registry Center write remains blocked for previous neutral variant; retry with smaller evidence-neutral file later."],
+    "next": ["Expand Operator OS to consume inventory model or add static inventory panel.", "Add public About the Group structured page expansion.", "Prepare Registry Center as non-assertive evidence index."
+    ]
+  }
+}
