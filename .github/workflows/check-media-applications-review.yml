@@ -9,6 +9,7 @@ on:
       - 'apps/portal/admin-center/**'
       - 'apps/portal/design-review/**'
       - 'apps/portal/enterprise/**'
+      - 'apps/portal/mission-control/**'
       - 'apps/portal/assets/media-applications-review-v1.css'
       - 'apps/portal/assets/media-applications-review-v1.js'
       - 'apps/portal/assets/admin-media-applications-entry-v1.js'
@@ -81,6 +82,18 @@ jobs:
           grep -q 'Public Media Application' apps/portal/enterprise/index.html
           grep -q "\['Media Applications Review','/media-registration-admin/'\]" apps/portal/design-review/index.html
           grep -q "\['Public Media Application','/media-application/?lang=en'\]" apps/portal/design-review/index.html
+      - name: Verify Mission Control privacy summary
+        run: |
+          set -euxo pipefail
+          grep -q '/api/media-registration-admin/applications?page=1&pageSize=10' apps/portal/mission-control/index.html
+          grep -q 'Mission Control prikazuje samo zbirne podatke' apps/portal/mission-control/index.html
+          grep -q 'Osobni podaci i dokumenti nisu prikazani' apps/portal/mission-control/index.html
+          grep -q 'Public Media Application' apps/portal/mission-control/index.html
+          grep -q 'Media Applications Review' apps/portal/mission-control/index.html
+          if grep -q 'data\.items' apps/portal/mission-control/index.html; then
+            echo 'Mission Control must not render individual application records.' >&2
+            exit 1
+          fi
       - name: Preserve review-only execution
         run: |
           set -euxo pipefail
