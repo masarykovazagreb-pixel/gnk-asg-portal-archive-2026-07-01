@@ -7,8 +7,12 @@ import {
   patchMediaRegistrationAdminPage,
   VERSION as REVIEW_VERSION
 } from './media-registration-review-admin-v1.js';
+import {
+  handleMediaRegistrationReviewDecision,
+  VERSION as DECISION_VERSION
+} from './media-registration-review-decision-v1.js';
 
-export const VERSION=`GNK_ASG_MEDIA_REGISTRATION_POST_CODE_V7_20260704_${REVIEW_VERSION}`;
+export const VERSION=`GNK_ASG_MEDIA_REGISTRATION_POST_CODE_V8_20260704_${REVIEW_VERSION}_${DECISION_VERSION}`;
 export const PUBLIC_UI='/media-application';
 export const ADMIN_UI='/media-registration-admin';
 
@@ -75,6 +79,7 @@ export async function handleMediaRegistrationPublic(r,env){const p=pathOf(r);if(
 export async function handleMediaRegistrationAdmin(r,env){
  const p=pathOf(r);
  if(['GET','HEAD'].includes(r.method)&&(p===ADMIN_UI||p===`${ADMIN_UI}/`))return patchMediaRegistrationAdminPage(await legacyAdmin(r,env));
+ const decision=await handleMediaRegistrationReviewDecision(r,env);if(decision)return decision;
  const review=await handleMediaRegistrationReviewAdmin(r,env);if(review)return review;
  if(r.method==='POST'&&[`${ADMIN_API}/queue`,`${ADMIN_API}/send-test`,`${ADMIN_API}/dispatch-one`].includes(p))return json({ok:false,error:'legacy_code_before_registration_blocked',message:'Initial invitations may not contain access codes. Codes are issued only after initial registration.'},409);
  return legacyAdmin(r,env);
