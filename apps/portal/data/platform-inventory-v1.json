@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "status": "control-plane-ready",
+  "scope": "GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform",
+  "lastReviewed": "2026-07-04",
+  "safetyRules": [
+    "No production deploy without explicit user approval",
+    "No DNS, Cloudflare route, secret or mail-sending changes in this branch",
+    "No destructive edits to existing production modules",
+    "All operational modules are represented as monitored systems, not replaced"
+  ],
+  "modules": [
+    {"id":"campaign-mailer","label":"Campaign Mailer","category":"communications","risk":"high","operatorAction":"Monitor queue state, delivery batches, retry status and pause controls","writePolicy":"No mass send from control plane"},
+    {"id":"mail-studio","label":"Mail Studio","category":"communications","risk":"high","operatorAction":"Monitor editor availability, template health and manual-send readiness","writePolicy":"Draft/preview only unless approved"},
+    {"id":"email-status","label":"Email Status","category":"communications","risk":"medium","operatorAction":"Surface delivery status, bounce indicators and failed retries","writePolicy":"Read-only dashboard"},
+    {"id":"media-center","label":"Media Center","category":"media","risk":"medium","operatorAction":"Track accreditation forms, newsroom links, public documents and media assets","writePolicy":"Publishing requires approval"},
+    {"id":"news-publishing","label":"News / Publishing","category":"publishing","risk":"medium","operatorAction":"Track HR/EN publication queues, SEO metadata and sitemap coverage","writePolicy":"Approval queue before publish"},
+    {"id":"deployment-recovery","label":"Deployment / Recovery","category":"operations","risk":"critical","operatorAction":"Show branch, build, rollback and recovery state","writePolicy":"No deploy trigger from public UI"},
+    {"id":"registry-center","label":"Registry Center","category":"legal-registry","risk":"critical","operatorAction":"Track DZIV, EUIPO, WIPO, Colorado, court register and FINA deadlines","writePolicy":"Evidence-first, deadline-aware records"},
+    {"id":"seo-engine","label":"SEO / Publishing Engine","category":"growth","risk":"medium","operatorAction":"Check meta, canonical, hreflang, schema, OG, sitemap and internal links","writePolicy":"Non-destructive metadata layer"},
+    {"id":"mobile-admin","label":"Mobile Admin","category":"governance","risk":"medium","operatorAction":"Provide approval queue, status cards and executive sign-off state","writePolicy":"Approve/reject actions must be auditable"}
+  ],
+  "controlPlane": {
+    "name": "Operator OS / Mission Control",
+    "mode": "supervisory",
+    "principle": "Observe, validate, route, approve and recover; do not silently execute high-risk actions.",
+    "publicDisclosure": "Digital operations workers and AI roles are presented as Global Operations Center capabilities, not as misleading real-person employment claims."
+  }
+}
