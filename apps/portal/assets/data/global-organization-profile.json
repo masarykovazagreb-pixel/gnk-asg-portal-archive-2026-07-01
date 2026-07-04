@@ -1,0 +1,79 @@
+{
+  "status": "review_only",
+  "lastUpdated": "2026-07-04",
+  "purpose": "Structured source for the About the Group / Global Organization public page before controlled deploy.",
+  "primaryEntity": {
+    "name": "GNK DINAMO Ltd. Group",
+    "headquarters": "Boulder, Colorado, United States",
+    "role": "Group-level organization and strategic platform holder"
+  },
+  "regionalEntity": {
+    "name": "GNK ASG d.o.o.",
+    "jurisdiction": "Croatia",
+    "role": "Regional associated operating company"
+  },
+  "strategicProject": {
+    "name": "THE CODE",
+    "classification": "Strategic project and platform narrative",
+    "displayMode": "public_summary_plus_print_friendly_detail"
+  },
+  "organizationBlocks": [
+    {
+      "id": "leadership",
+      "title": "Leadership and Governance",
+      "displayRule": "Use verified legal names and roles only where documented. Avoid implying appointments that are not approved."
+    },
+    {
+      "id": "global_operations_center",
+      "title": "Global Operations Center",
+      "displayRule": "Describe as an operating model and coordination layer, not as a physical office unless verified."
+    },
+    {
+      "id": "digital_operations_team",
+      "title": "Digital Operations Team",
+      "displayRule": "Use transparent language for AI-supported or virtual operational profiles. Do not present synthetic workers as real employees."
+    },
+    {
+      "id": "entity_slots_43",
+      "title": "43 GNK Entity Slots",
+      "displayRule": "Present as planned or structured entity slots unless each entity is legally incorporated and verified."
+    },
+    {
+      "id": "global_map",
+      "title": "Global Map of Locations",
+      "displayRule": "Separate headquarters, associated companies, planned locations, markets and strategic coverage."
+    }
+  ],
+  "digitalRoleTransparency": {
+    "approvedLabels": [
+      "AI-supported role",
+      "Digital operations profile",
+      "Virtual workflow profile",
+      "Planned international operations wave",
+      "Review-only operating model"
+    ],
+    "restrictedClaims": [
+      "real employee where no employment relationship exists",
+      "director or board member without formal appointment",
+      "physical office or branch without verification",
+      "public filing status without registry evidence"
+    ]
+  },
+  "pageRequirements": [
+    "noindex until approval",
+    "canonical prepared but not production-promoted",
+    "Open Graph image and description prepared",
+    "schema.org Organization draft prepared",
+    "print layout for review package",
+    "PDF-ready section hierarchy"
+  ],
+  "guardrails": {
+    "productionDeploy": false,
+    "mergeToMain": false,
+    "dnsChanges": false,
+    "cloudflareRouteChanges": false,
+    "secretChanges": false,
+    "massEmailSending": false,
+    "requiresHumanApprovalBeforePublication": true
+  }
+}
