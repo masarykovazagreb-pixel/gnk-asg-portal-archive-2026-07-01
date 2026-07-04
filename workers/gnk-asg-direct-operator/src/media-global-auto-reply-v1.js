@@ -19,7 +19,7 @@ export const GLOBAL_DESKS=[
 
 const clean=value=>String(value??'').trim();
 const validEmail=value=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(clean(value));
-const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]);
+const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 function header(message,name){try{return clean(message?.headers?.get?.(name));}catch{return'';}}
 function address(value){const text=clean(value),match=text.match(/<([^>]+)>/);return clean(match?.[1]||text).toLowerCase();}
 function automatedInbound(message,from){const auto=header(message,'auto-submitted').toLowerCase(),precedence=header(message,'precedence').toLowerCase(),subject=header(message,'subject').toLowerCase();return Boolean((auto&&auto!=='no')||/bulk|list|junk/.test(precedence)||/mailer-daemon|postmaster|no-?reply|donotreply/.test(from)||/automatic reply|auto reply|out of office|izvan ureda/.test(subject));}
