@@ -1,0 +1,35 @@
+{
+  "version": "2026-07-04.person-governance.1",
+  "status": "controlled-review",
+  "person": {
+    "id": "https://www.gnk-asg.hr/nermin-sefic/#person",
+    "name": "Nermin Sefić",
+    "url": "https://www.gnk-asg.hr/nermin-sefic/",
+    "roles": [
+      {
+        "title": "Ultimate Beneficial Owner",
+        "organization": "GNK DINAMO Ltd. Group"
+      },
+      {
+        "title": "Director",
+        "organization": "GNK ASG d.o.o."
+      },
+      {
+        "title": "President",
+        "organization": "GNK DINAMO Ltd."
+      }
+    ]
+  },
+  "allowedRoutes": [
+    "/nermin-sefic/",
+    "/about-the-group/",
+    "/o-grupi/",
+    "/the-code/intelligence/"
+  ],
+  "excludedRoutes": [
+    "/digital-workforce/",
+    "/digital-workforce/directory/",
+    "/digital-workforce/protocols/"
+  ],
+  "rule": "Use the Person entity only where a real corporate governance, ownership, officer, author, editor or responsible-person relationship is explicitly presented."
+}
