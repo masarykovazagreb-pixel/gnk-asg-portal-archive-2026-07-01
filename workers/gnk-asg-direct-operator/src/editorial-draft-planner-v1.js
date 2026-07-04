@@ -1,4 +1,6 @@
-export const VERSION='GNK_DINAMO_THE_CODE_EDITORIAL_DRAFT_PLANNER_V1_20260704';
+import {validatePublicationReadiness,publicationAttribution,VERSION as PUBLICATION_READINESS_VERSION} from './publication-readiness-v1.js';
+
+export const VERSION=`GNK_DINAMO_THE_CODE_EDITORIAL_DRAFT_PLANNER_V2_20260704_${PUBLICATION_READINESS_VERSION}`;
 export const API_PREFIX='/api/editorial-operations';
 export const PLAN_TIMEZONE='UTC';
 
@@ -41,6 +43,7 @@ function deskSlot(date,desk,index){
     id:`${date}:${desk.workerId}:${number}`,
     date,
     timezone:PLAN_TIMEZONE,
+    publicationType:'desk-article',
     slotType:'desk-article',
     state:'sources-required',
     preparedByProfile:desk.workerId,
@@ -53,12 +56,24 @@ function deskSlot(date,desk,index){
     authorEntity:'GNK DINAMO Ltd. Group Editorial Desk',
     sourceRequired:true,
     automaticPublication:false,
+    finalApproval:false,
+    factCheckComplete:false,
+    sourceReviewComplete:false,
+    automationAssisted:true,
+    processDisclosure:'Draft planning and structural assistance were automated; sourcing, factual review and final editorial approval remain human-controlled.',
     title:'',
     slug:'',
+    language:'en',
+    category:'',
     summary:'',
     body:'',
+    canonical:'',
+    image:'',
+    imageAlt:'',
     primarySource:'',
-    supportingSources:[]
+    supportingSources:[],
+    dateCreated:new Date().toISOString(),
+    dateReviewed:''
   };
 }
 
@@ -68,23 +83,37 @@ function nerminSlot(date,index){
     id:`${date}:NSEFIC:${number}`,
     date,
     timezone:PLAN_TIMEZONE,
+    publicationType:'nermin-original',
     slotType:'nermin-original-or-commentary',
     state:'author-confirmation-required',
     project:'GNK DINAMO Ltd.',
     editorialBrand:'THE CODE Intelligence',
     connectedEntity:'GNK ASG d.o.o.',
     proposedAuthor:'Nermin Sefić',
+    authorEntity:'Nermin Sefić',
     editor:'Nermin Sefić',
     authorshipConfirmed:false,
     commentApprovedByNermin:false,
     sourceRequired:true,
     automaticPublication:false,
+    finalApproval:false,
+    factCheckComplete:false,
+    sourceReviewComplete:false,
+    automationAssisted:true,
+    processDisclosure:'Draft planning and structural assistance were automated; authorship, factual review and final editorial approval remain human-controlled.',
     title:'',
     slug:'',
+    language:'en',
+    category:'',
     summary:'',
     body:'',
+    canonical:'',
+    image:'',
+    imageAlt:'',
     primarySource:'',
-    supportingSources:[]
+    supportingSources:[],
+    dateCreated:new Date().toISOString(),
+    dateReviewed:''
   };
 }
 
@@ -154,7 +183,7 @@ export const isEditorialOperationsApi=path=>path===API_PREFIX||path.startsWith(`
 export async function handleEditorialOperationsApi(request,env){
   const path=pathOf(request),url=new URL(request.url),binding=kvOf(env);
   if(request.method==='GET'&&path===`${API_PREFIX}/config`){
-    return json({ok:true,version:VERSION,project:'GNK DINAMO Ltd.',editorialBrand:'THE CODE Intelligence',connectedEntity:'GNK ASG d.o.o.',profiles:EDITORIAL_DESKS,automaticPublication:false});
+    return json({ok:true,version:VERSION,publicationReadinessVersion:PUBLICATION_READINESS_VERSION,project:'GNK DINAMO Ltd.',editorialBrand:'THE CODE Intelligence',connectedEntity:'GNK ASG d.o.o.',profiles:EDITORIAL_DESKS,automaticPublication:false});
   }
   if(request.method==='GET'&&path===`${API_PREFIX}/plan`){
     const requested=clean(url.searchParams.get('date'))||utcDate();
@@ -173,6 +202,11 @@ export async function handleEditorialOperationsApi(request,env){
     const requested=clean(body.date)||utcDate();
     if(!datePattern.test(requested))return json({ok:false,error:'invalid_date'},400);
     return json(await runEditorialDraftPlanner(env,requested,{force:Boolean(body.force)}));
+  }
+  if(request.method==='POST'&&path===`${API_PREFIX}/publication/readiness`){
+    const body=await request.json().catch(()=>({}));
+    const readiness=validatePublicationReadiness(body);
+    return json({ok:readiness.ok,readiness,attribution:publicationAttribution(body)},readiness.ok?200:422);
   }
   return json({ok:false,error:'not_found'},404);
 }
