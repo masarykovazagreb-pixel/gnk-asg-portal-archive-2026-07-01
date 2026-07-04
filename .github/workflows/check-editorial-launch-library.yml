@@ -1,0 +1,39 @@
+name: Check Editorial Launch Library
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/assets/js/editorial-launch-library-v1.js'
+      - 'apps/portal/editorial-operations/launch-library/**'
+      - 'apps/portal/assets/js/editorial-operations-runtime-v1.js'
+      - 'apps/portal/editorial-operations/release-queue/index.html'
+      - 'scripts/validate-editorial-launch-library.mjs'
+      - '.github/workflows/check-editorial-launch-library.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check JavaScript syntax
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/js/editorial-launch-library-v1.js
+          node --check apps/portal/assets/js/editorial-operations-runtime-v1.js
+          node --check scripts/validate-editorial-launch-library.mjs
+      - name: Validate 60-item launch contract
+        run: node scripts/validate-editorial-launch-library.mjs
+      - name: Confirm review-only workflow
+        run: |
+          set -euxo pipefail
+          grep -q 'contents: read' .github/workflows/check-editorial-launch-library.yml
+          grep -qi 'noindex,nofollow,noarchive' apps/portal/editorial-operations/launch-library/index.html
+          grep -q 'No publish action exists here' apps/portal/editorial-operations/release-queue/index.html
