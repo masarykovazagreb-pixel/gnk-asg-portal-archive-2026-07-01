@@ -77,7 +77,7 @@ if(groups.has('campaign')){
   ]);
   requireAll('campaign','workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js',[
     "path==='/campaign-mailer'",'/campaign-mailer/','authorizeCampaignMailer','x-gnk-asg-campaign-mailer',
-    "DASHBOARD_NEXT='/campaign-mailer/#dashboard'",'/admin-login/?next=','gnk-asg-dashboard-menu-v1'
+    "DASHBOARD_NEXT='/campaign-mailer/#dashboard'",'/admin-login/?next=','gnk-asg-dashboard-menu-v2','EMAIL_STATUS_HREF'
   ]);
   requireAll('campaign','workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js',[
     'applyApprovalGuard','rateGate','runQueue','campaign_mailer_runner_lock'
