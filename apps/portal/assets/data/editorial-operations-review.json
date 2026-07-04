@@ -1,0 +1,118 @@
+{
+  "version": "2026-07-04.editorial-operations.2",
+  "status": "controlled-review",
+  "project": {
+    "name": "GNK DINAMO Ltd. Group Editorial Project",
+    "primaryEntity": "GNK DINAMO Ltd.",
+    "connectedOperatingEntity": "GNK ASG d.o.o.",
+    "relationshipDisclosure": "Editorial project of GNK DINAMO Ltd., operated in close connection with GNK ASG d.o.o. and the gnk-asg.hr publishing platform.",
+    "editorInChief": "Nermin Sefić",
+    "editorProfile": "/nermin-sefic/"
+  },
+  "editorialProfiles": [
+    {
+      "name": "Emma R.",
+      "workerId": "EDT-LON-001",
+      "profileType": "Editorial Operations Profile",
+      "centre": "London",
+      "desk": "International Business and Corporate Affairs",
+      "languages": ["English"],
+      "dailyDraftMinimum": 3,
+      "dailyDraftMaximum": 5
+    },
+    {
+      "name": "Daniel K.",
+      "workerId": "EDT-FRA-002",
+      "profileType": "Editorial Operations Profile",
+      "centre": "Frankfurt",
+      "desk": "Finance, Markets and Compliance",
+      "languages": ["English", "German"],
+      "dailyDraftMinimum": 3,
+      "dailyDraftMaximum": 5
+    },
+    {
+      "name": "Sofia P.",
+      "workerId": "EDT-ZRH-003",
+      "profileType": "Editorial Operations Profile",
+      "centre": "Zurich",
+      "desk": "Strategy, Governance and Registry Affairs",
+      "languages": ["English", "German", "French"],
+      "dailyDraftMinimum": 3,
+      "dailyDraftMaximum": 5
+    },
+    {
+      "name": "Maya S.",
+      "workerId": "EDT-DXB-004",
+      "profileType": "Editorial Operations Profile",
+      "centre": "Dubai",
+      "desk": "Technology, AI and Global Operations",
+      "languages": ["English"],
+      "dailyDraftMinimum": 3,
+      "dailyDraftMaximum": 5
+    },
+    {
+      "name": "Lucas M.",
+      "workerId": "EDT-NYC-005",
+      "profileType": "Editorial Operations Profile",
+      "centre": "New York",
+      "desk": "Media, Communications and Public Affairs",
+      "languages": ["English"],
+      "dailyDraftMinimum": 3,
+      "dailyDraftMaximum": 5
+    }
+  ],
+  "dailyPlan": {
+    "editorialProfileCount": 5,
+    "deskDraftMinimum": 15,
+    "deskDraftMaximum": 25,
+    "nerminOriginalOrCommentaryTarget": 5,
+    "automaticDraftPreparation": true,
+    "automaticPublication": false,
+    "finalApproval": "Nermin Sefić / Executive Office"
+  },
+  "attribution": {
+    "deskArticle": {
+      "visiblePreparedBy": "Editorial profile name and centre",
+      "editor": "Nermin Sefić",
+      "project": "GNK DINAMO Ltd. Group",
+      "connectedEntity": "GNK ASG d.o.o.",
+      "publisherSchemaType": "Organization"
+    },
+    "nerminOriginalArticle": {
+      "visibleAuthor": "Nermin Sefić",
+      "authorProfile": "/nermin-sefic/",
+      "project": "GNK DINAMO Ltd. Group",
+      "connectedEntity": "GNK ASG d.o.o.",
+      "requiresConfirmedAuthorship": true
+    },
+    "nerminCommentary": {
+      "visibleAuthor": "Comment by Nermin Sefić",
+      "authorProfile": "/nermin-sefic/",
+      "project": "GNK DINAMO Ltd. Group",
+      "connectedEntity": "GNK ASG d.o.o.",
+      "requiresApproval": true
+    }
+  },
+  "workflowStates": [
+    "brief-created",
+    "sources-required",
+    "draft-prepared",
+    "fact-check-required",
+    "editor-review",
+    "author-confirmation-required",
+    "ready-for-approval",
+    "approved",
+    "scheduled",
+    "published",
+    "rejected",
+    "archived"
+  ],
+  "controls": [
+    "Every profile must be shown as an Editorial Operations Profile with its centre and Worker ID.",
+    "Every factual article requires attributable sources before approval.",
+    "Nermin Sefić is listed as Author only when authorship or commentary approval is confirmed.",
+    "GNK DINAMO Ltd. remains the primary editorial project identity.",
+    "GNK ASG d.o.o. is disclosed as the connected operating and publishing-platform entity where applicable.",
+    "Prepared drafts remain unpublished until the final approval gate passes."
+  ]
+}
