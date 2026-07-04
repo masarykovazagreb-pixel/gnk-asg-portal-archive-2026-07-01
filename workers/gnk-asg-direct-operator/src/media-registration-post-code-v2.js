@@ -9,10 +9,11 @@ import {
 } from './media-registration-review-admin-v1.js';
 import {
   handleMediaRegistrationReviewDecision,
+  patchMediaRegistrationDecisionGuard,
   VERSION as DECISION_VERSION
 } from './media-registration-review-decision-v1.js';
 
-export const VERSION=`GNK_ASG_MEDIA_REGISTRATION_POST_CODE_V8_20260704_${REVIEW_VERSION}_${DECISION_VERSION}`;
+export const VERSION=`GNK_ASG_MEDIA_REGISTRATION_POST_CODE_V9_20260704_${REVIEW_VERSION}_${DECISION_VERSION}`;
 export const PUBLIC_UI='/media-application';
 export const ADMIN_UI='/media-registration-admin';
 
@@ -78,7 +79,10 @@ async function patchPage(r,env){const response=await legacyPublic(r,env);if(!res
 export async function handleMediaRegistrationPublic(r,env){const p=pathOf(r);if(['GET','HEAD'].includes(r.method)&&(p===PUBLIC_UI||p===`${PUBLIC_UI}/`))return patchPage(r,env);if(r.method==='POST'&&p===`${PUBLIC_API}/start`)return startRegistration(r,env);if(['GET','HEAD'].includes(r.method)&&p===`${PUBLIC_API}/memorandum.pdf`)return memorandum(r,env);if(r.method==='GET'&&p===`${PUBLIC_API}/config`){const x=await legacyPublic(r,env);if(!x?.ok)return x;const d=await x.json();return json({...d,ok:true,links:{registration:REGISTRATION_URL,theCode:THE_CODE_URL,pdfDownload:PDF_DOWNLOAD_URL},codePolicy:'ISSUED_AFTER_INITIAL_REGISTRATION'});}return legacyPublic(r,env);}
 export async function handleMediaRegistrationAdmin(r,env){
  const p=pathOf(r);
- if(['GET','HEAD'].includes(r.method)&&(p===ADMIN_UI||p===`${ADMIN_UI}/`))return patchMediaRegistrationAdminPage(await legacyAdmin(r,env));
+ if(['GET','HEAD'].includes(r.method)&&(p===ADMIN_UI||p===`${ADMIN_UI}/`)){
+  const reviewed=await patchMediaRegistrationAdminPage(await legacyAdmin(r,env));
+  return patchMediaRegistrationDecisionGuard(reviewed);
+ }
  const decision=await handleMediaRegistrationReviewDecision(r,env);if(decision)return decision;
  const review=await handleMediaRegistrationReviewAdmin(r,env);if(review)return review;
  if(r.method==='POST'&&[`${ADMIN_API}/queue`,`${ADMIN_API}/send-test`,`${ADMIN_API}/dispatch-one`].includes(p))return json({ok:false,error:'legacy_code_before_registration_blocked',message:'Initial invitations may not contain access codes. Codes are issued only after initial registration.'},409);
