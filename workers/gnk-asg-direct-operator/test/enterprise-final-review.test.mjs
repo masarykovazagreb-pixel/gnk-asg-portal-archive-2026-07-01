@@ -8,7 +8,7 @@ import {
 } from '../src/mail-studio-extension-v3.js';
 import {handleMailStudioInbound as handleLegacyMailStudioInbound} from '../src/mail-studio-extension-v1.js';
 import {MANDATORY_BCC,enforceRequiredSignature} from '../src/email-signature-contract-v1.js';
-import {__test as ai} from '../src/ai-inbound-auto-reply-v2.js';
+import {prepareAiAutoReply,__test as ai} from '../src/ai-inbound-auto-reply-v2.js';
 
 assert.equal(GLOBAL_CENTRES.length,10);
 assert.deepEqual(GLOBAL_CENTRES.map(item=>item.id),['new-york','london','paris','frankfurt','dubai','singapore','tokyo','sydney','toronto','zurich']);
@@ -42,22 +42,10 @@ assert.ok(Number.isInteger(fallbackSelected)&&fallbackSelected>=0&&fallbackSelec
 
 const institutionalProfile=PROFILES.office;
 const duplicateInstitutional=[
-  'Body',
-  '',
-  institutionalProfile.name,
-  institutionalProfile.unit,
-  'Global Service Centre: London, United Kingdom',
-  institutionalProfile.email,
-  'https://gnk-asg.hr',
-  '',
-  'Srdačan pozdrav,',
-  '',
-  institutionalProfile.name,
-  'GNK ASG d.o.o.',
-  'Zagrebačka cesta 130, 10090 Zagreb',
-  'OIB: 75227917632 · MBS: 081512375',
-  'Web: https://gnk-asg.hr',
-  `E-mail: ${institutionalProfile.email}`
+  'Body','',institutionalProfile.name,institutionalProfile.unit,
+  'Global Service Centre: London, United Kingdom',institutionalProfile.email,'https://gnk-asg.hr','',
+  'Srdačan pozdrav,','',institutionalProfile.name,'GNK ASG d.o.o.','Zagrebačka cesta 130, 10090 Zagreb',
+  'OIB: 75227917632 · MBS: 081512375','Web: https://gnk-asg.hr',`E-mail: ${institutionalProfile.email}`
 ].join('\n');
 const normalizedInstitutional=normalizeMailStudioSignature({
   from:{email:institutionalProfile.email,name:institutionalProfile.name},
@@ -104,9 +92,7 @@ assert.ok(!String(visibleAuditRecipient.bcc||'').split(/[,;\s]+/).includes(MANDA
 const forwarded=[];
 const sent=[];
 const inboundMessage={
-  from:'Example Person <example@invalid.test>',
-  to:institutionalProfile.email,
-  canBeForwarded:true,
+  from:'Example Person <example@invalid.test>',to:institutionalProfile.email,canBeForwarded:true,
   headers:new Headers({from:'Example Person <example@invalid.test>',to:institutionalProfile.email,subject:'Controlled inbound audit copy','message-id':'<inbound-audit-1@example.test>'}),
   async forward(destination,headers){forwarded.push({destination,headers:new Headers(headers)});return{ok:true};}
 };
@@ -123,9 +109,7 @@ assert.equal(sent[0].headers['Auto-Submitted'],'auto-replied');
 const automatedForwards=[];
 const automatedSends=[];
 const automatedMessage={
-  from:'MAILER-DAEMON <mailer-daemon@example.test>',
-  to:PROFILES.legal.email,
-  canBeForwarded:true,
+  from:'MAILER-DAEMON <mailer-daemon@example.test>',to:PROFILES.legal.email,canBeForwarded:true,
   headers:new Headers({from:'MAILER-DAEMON <mailer-daemon@example.test>',to:PROFILES.legal.email,subject:'Delivery Status Notification','message-id':'<bounce-audit-1@example.test>','auto-submitted':'auto-generated'}),
   async forward(destination,headers){automatedForwards.push({destination,headers:new Headers(headers)});return{ok:true};}
 };
@@ -144,5 +128,46 @@ const incoming={from:'Example Person <example@invalid.test>',to:mediaProfile.ema
 const automaticPayload={from:{email:mediaProfile.email},to:'example@invalid.test',subject:'Re: Accreditation request',text:'Your message has been received.',headers:{'Auto-Submitted':'auto-replied'}};
 assert.equal(ai.isAutomaticReply(automaticPayload,incoming),true);
 assert.equal(ai.isAutomaticReply({...automaticPayload,headers:{},subject:'New message',text:'Manual note'},incoming),false);
+
+async function simulatePersonalizedReply({language,body,name,expectedGreeting}){
+  const recipient=`${language}@example.test`;
+  const raw=[
+    `From: ${name} <${recipient}>`,
+    `To: ${institutionalProfile.email}`,
+    `Subject: ${language.toUpperCase()} controlled inquiry`,
+    `Message-ID: <${language}-reply-test@example.test>`,
+    'Content-Type: text/plain; charset=utf-8',
+    '',
+    body
+  ].join('\r\n');
+  const captured=[];
+  const message={
+    from:`${name} <${recipient}>`,
+    to:institutionalProfile.email,
+    headers:new Headers({from:`${name} <${recipient}>`,to:institutionalProfile.email,subject:`${language.toUpperCase()} controlled inquiry`,'message-id':`<${language}-reply-test@example.test>`}),
+    raw:new Blob([raw]).stream()
+  };
+  const prepared=prepareAiAutoReply(message,{EMAIL:{async send(payload){captured.push(payload);return{messageId:`${language}-reply-result`};}}});
+  await prepared.env.EMAIL.send({
+    from:{email:institutionalProfile.email,name:institutionalProfile.name},
+    to:recipient,
+    subject:`Re: ${language.toUpperCase()} controlled inquiry`,
+    text:'Your message has been received. Reference GNK-OFFICE-123456.',
+    html:'<p>Your message has been received. Reference GNK-OFFICE-123456.</p>',
+    headers:{'Auto-Submitted':'auto-replied'}
+  });
+  assert.equal(captured.length,1);
+  const result=captured[0];
+  assert.equal(result.headers['X-GNK-ASG-AI-Language'],language);
+  assert.equal(result.headers['X-GNK-ASG-AI-Model'],'deterministic-fallback');
+  assert.match(result.text,new RegExp(expectedGreeting.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'u'));
+  assert.match(result.text,/GNK-OFFICE-123456/);
+  assert.match(result.html,/GNK-OFFICE-123456/);
+  assert.doesNotMatch(result.text,/Dear Sir or Madam/i);
+}
+
+await simulatePersonalizedReply({language:'hr',name:'Ivan Horvat',body:'Poštovani, možete li potvrditi da je prijava zaprimljena?\n\nSrdačan pozdrav\nIvan Horvat',expectedGreeting:'Poštovani Ivan Horvat'});
+await simulatePersonalizedReply({language:'de',name:'Anna Schmidt',body:'Guten Tag, können Sie bitte den Eingang bestätigen?\n\nMit freundlichen Grüßen\nAnna Schmidt',expectedGreeting:'Guten Tag Anna Schmidt'});
+await simulatePersonalizedReply({language:'en',name:'John Smith',body:'Hello, please confirm that the application was received.\n\nKind regards\nJohn Smith',expectedGreeting:'Dear John Smith'});
 
 console.log('ENTERPRISE_FINAL_REVIEW_UNIT_TESTS_OK');
