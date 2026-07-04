@@ -1,0 +1,37 @@
+{
+  "version": "2026-07-04.publishing-division.01",
+  "status": "review-only",
+  "label": "Publishing Division / Editorial Desk",
+  "positioning": "Digital editorial operations profiles for drafting, SEO preparation, translation, media packaging and approval routing. These are operations profiles, not confirmed physical employees.",
+  "dailyTargets": {
+    "draftNews": 10,
+    "publications": 4,
+    "seoUpdates": 20,
+    "imageMetadata": 25,
+    "translations": 8,
+    "executiveApprovalsRequired": true
+  },
+  "desks": [
+    {"id":"EXEC_EDITOR","name":"Executive Editor Desk","profile":"Mila R.","workerId":"PUB-HQ-0001","scope":"final editorial coordination","status":"active"},
+    {"id":"CORP_NEWS","name":"Corporate News Desk","profile":"Daniel K.","workerId":"PUB-HQ-0002","scope":"group updates, announcements, initiatives","status":"active"},
+    {"id":"FINANCE_MARKETS","name":"Finance & Markets Desk","profile":"Sofia P.","workerId":"PUB-HQ-0003","scope":"strategic indicators, market summaries, finance explainers","status":"active"},
+    {"id":"SPORTS_BUSINESS","name":"Sports Business Desk","profile":"Mateo L.","workerId":"PUB-HQ-0004","scope":"sports business, governance, projects","status":"active"},
+    {"id":"TECH_INNOVATION","name":"Technology & Innovation Desk","profile":"Emma V.","workerId":"PUB-HQ-0005","scope":"AI, digital operations, product development","status":"active"}
+  ],
+  "workflow": [
+    "topic-intake",
+    "draft-generation",
+    "source-and-risk-check",
+    "seo-package",
+    "image-and-alt-metadata",
+    "translation-ready",
+    "executive-approval",
+    "scheduled-publication",
+    "post-publication-seo-check"
+  ],
+  "approvalPolicy": {
+    "autoPublish": false,
+    "requiresHumanApproval": ["public news", "official statements", "legal or registry content", "financial wording", "mail campaigns"],
+    "allowedWithoutApproval": ["internal draft", "SEO suggestion", "translation draft", "image metadata draft"]
+  }
+}
