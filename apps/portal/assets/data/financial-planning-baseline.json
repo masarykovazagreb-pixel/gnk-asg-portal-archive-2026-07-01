@@ -1,8 +1,8 @@
 {
-  "version": "2026-07-04.financial-planning.2",
-  "status": "management-planning-input",
+  "version": "2026-07-04.financial-planning.3",
+  "status": "official-document-backed-baseline-plus-management-interim",
   "currency": "EUR",
-  "disclosure": "This model keeps the standalone GNK ASG d.o.o. financial base separate from the consolidated GNK DINAMO Ltd. Group base. Interim values are management inputs derived from the stated 98% ratio and are not statutory, audited or guaranteed results.",
+  "disclosure": "This model keeps the standalone GNK ASG d.o.o. financial base separate from the consolidated GNK DINAMO Ltd. Group base. FY2025 baselines are tied to official public-registry documents and portal copies. Interim 30 June 2026 values are management inputs derived from the stated 98% ratio and are not audited or guaranteed results.",
   "periods": {
     "baseline": "2025-12-31",
     "interim": "2026-06-30",
@@ -11,9 +11,26 @@
   },
   "sources": [
     {
-      "id": "public-corporate-portal-fy2025",
-      "url": "https://gnk-asg.hr/",
-      "scope": "Public FY2025 standalone GNK ASG d.o.o. and consolidated GNK DINAMO Ltd. Group financial indicators",
+      "id": "fina-rgfi-gnk-asg-fy2025",
+      "authority": "FINA — Registar godišnjih financijskih izvještaja / Javna objava",
+      "url": "https://rgfi.fina.hr/JavnaObjava-web/pSubjektTrazi.do",
+      "searchIdentifier": "OIB 75227917632",
+      "scope": "Official public FY2025 audited standalone GNK ASG d.o.o. financial statements",
+      "status": "official-public-registry-source"
+    },
+    {
+      "id": "colorado-registry-gnk-dinamo-fy2025",
+      "authority": "Colorado Secretary of State — Business Database Search",
+      "url": "https://www.sos.state.co.us/biz/BusinessEntityCriteriaExt.do",
+      "searchIdentifier": "Colorado Entity ID 20238180649",
+      "scope": "Official public business filing record containing the publicly filed GNK DINAMO Ltd. FY2025 consolidated report",
+      "status": "official-public-registry-source"
+    },
+    {
+      "id": "corporate-portal-fy2025-copy",
+      "url": "https://gnk-asg.hr/#dokumenti",
+      "scope": "Public portal presentation and download layer for both FY2025 reports",
+      "status": "secondary-public-source",
       "retrievedOn": "2026-07-04"
     },
     {
@@ -27,8 +44,9 @@
       "id": "gnk-asg-standalone",
       "name": "GNK ASG d.o.o.",
       "scope": "standalone",
-      "baselineStatus": "audited-standalone-fy2025",
-      "sourceId": "public-corporate-portal-fy2025",
+      "baselineStatus": "officially-filed-publicly-available-audited-standalone-fy2025",
+      "sourceIds": ["fina-rgfi-gnk-asg-fy2025", "corporate-portal-fy2025-copy"],
+      "documentRegistryId": "gnk-asg-fy2025-audited",
       "baseline": {
         "revenue": 504000000,
         "assets": 46400000,
@@ -55,8 +73,9 @@
       "id": "gnk-dinamo-group",
       "name": "GNK DINAMO Ltd. Group",
       "scope": "consolidated-group",
-      "baselineStatus": "consolidated-group-fy2025-public-portal",
-      "sourceId": "public-corporate-portal-fy2025",
+      "baselineStatus": "officially-filed-publicly-available-consolidated-group-fy2025",
+      "sourceIds": ["colorado-registry-gnk-dinamo-fy2025", "corporate-portal-fy2025-copy"],
+      "documentRegistryId": "gnk-dinamo-group-fy2025-consolidated",
       "baseline": {
         "revenue": 4704600000,
         "profit": 982480000,
