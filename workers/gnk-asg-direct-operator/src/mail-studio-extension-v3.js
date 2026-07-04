@@ -2,13 +2,14 @@ import * as base from './mail-studio-extension-v2.js';
 import {enforceMediaGoldSignature,isMediaSender,VERSION as MEDIA_SIGNATURE_VERSION} from './media-email-gold-signature-v2.js';
 import {institutionalSignature,LOGO_URL,VERSION as BRAND_SIGNATURE_VERSION} from './email-brand-signature-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V7_20260704_CANONICAL_SIGNATURES';
+export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V8_20260704_RANDOM_GLOBAL_CENTRES';
 export const UI_VERSION=base.UI_VERSION;
 export const PROFILES=base.PROFILES;
 export const GLOBAL_CENTRES=base.GLOBAL_CENTRES;
 
 const DUPLICATE_INSTITUTIONAL_TRAILER=/\n{2,}(?:Srdačan pozdrav,\n{2,})?[^\n]{1,220}\nGNK ASG d\.o\.o\.\nZagrebačka cesta 130, 10090 Zagreb\nOIB: 75227917632 · MBS: 081512375\nWeb: https:\/\/gnk-asg\.hr\nE-mail: [^\n]+\s*$/u;
 const SIGNATURE_TABLE=/<table\b[^>]*data-gnk-asg-signature=["'][^"']*["'][^>]*>[\s\S]*?<\/table>/gi;
+const CENTRE_INDEX_KEY=/^mail-studio:centre-index:(?:global|inbound|outbound):v1$/;
 
 const clean=value=>String(value??'').trim();
 const escapeRegExp=value=>String(value??'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
@@ -96,16 +97,47 @@ export function normalizeMailStudioSignature(payload={}){
     'X-GNK-ASG-Signature-Parity':VERSION,
     'X-GNK-ASG-Brand-Signature-Version':BRAND_SIGNATURE_VERSION,
     'X-GNK-ASG-Media-Signature-Version':MEDIA_SIGNATURE_VERSION,
-    'X-GNK-ASG-Brand-Logo':LOGO_URL
+    'X-GNK-ASG-Brand-Logo':LOGO_URL,
+    'X-GNK-ASG-Centre-Selection':'RANDOM_10'
   };
   return next;
 }
 
+function randomCentreIndex(randomValue){
+  const count=GLOBAL_CENTRES.length;
+  if(!count)throw new Error('global_centres_missing');
+  let value=randomValue;
+  if(!Number.isInteger(value)){
+    const random=new Uint32Array(1);
+    crypto.getRandomValues(random);
+    value=random[0];
+  }
+  return ((value%count)+count)%count;
+}
+
+function randomCentreKv(binding){
+  if(!binding||typeof binding!=='object')return binding;
+  return new Proxy(binding,{get(target,property,receiver){
+    if(property==='get')return async(key,...args)=>{
+      if(CENTRE_INDEX_KEY.test(String(key)))return String(randomCentreIndex());
+      return typeof target.get==='function'?target.get.call(target,key,...args):null;
+    };
+    const value=Reflect.get(target,property,receiver);
+    return typeof value==='function'?value.bind(target):value;
+  }});
+}
+
 function withNormalizedEmail(env){
   const binding=env?.EMAIL;
-  if(!binding||typeof binding.send!=='function')return env;
-  return new Proxy(env,{get(target,property,receiver){
-    if(property==='EMAIL')return{send(payload){return binding.send.call(binding,normalizeMailStudioSignature(payload));}};
+  const kvCache=new Map();
+  return new Proxy(env||{},{get(target,property,receiver){
+    if(property==='EMAIL'&&binding&&typeof binding.send==='function')return{send(payload){return binding.send.call(binding,normalizeMailStudioSignature(payload));}};
+    if(property==='GNK_ASG_KV'||property==='GNK_ASG_CONFIG_KV'){
+      const original=Reflect.get(target,property,receiver);
+      if(!original)return original;
+      if(!kvCache.has(property))kvCache.set(property,randomCentreKv(original));
+      return kvCache.get(property);
+    }
     return Reflect.get(target,property,receiver);
   }});
 }
@@ -115,6 +147,7 @@ function stamp(response){
   const headers=new Headers(response.headers);
   headers.set('x-gnk-asg-mail-studio-extension',VERSION);
   headers.set('x-gnk-asg-signature-parity',VERSION);
+  headers.set('x-gnk-asg-centre-selection','RANDOM_10');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -128,7 +161,7 @@ export async function patchMailStudioResponse(request,response){
 
 export async function handleMailStudioInbound(message,env,ctx){
   const result=await base.handleMailStudioInbound(message,withNormalizedEmail(env),ctx);
-  return result?{...result,signatureParity:VERSION}:result;
+  return result?{...result,signatureParity:VERSION,centreSelection:'RANDOM_10'}:result;
 }
 
-export const __test={dedupeInstitutionalText,normalizeMailStudioSignature,replaceInstitutionalText,replaceInstitutionalHtml};
+export const __test={dedupeInstitutionalText,normalizeMailStudioSignature,replaceInstitutionalText,replaceInstitutionalHtml,randomCentreIndex,randomCentreKv};
