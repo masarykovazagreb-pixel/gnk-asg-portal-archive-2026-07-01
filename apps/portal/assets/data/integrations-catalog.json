@@ -1,0 +1,82 @@
+{
+  "version": "2026-07-04.integrations.01",
+  "status": "controlled-build",
+  "purpose": "Candidate integrations catalog for GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform.",
+  "safetyPolicy": {
+    "productionCriticalDependency": false,
+    "secretsInRepo": false,
+    "dnsOrCloudflareChange": false,
+    "massEmailSending": false,
+    "approvalRequiredForActivation": true,
+    "fallbackRequired": true
+  },
+  "integrations": [
+    {
+      "id": "dub-link-attribution",
+      "name": "Dub",
+      "category": "link-attribution-and-campaign-analytics",
+      "source": "github.com/dubinc/dub",
+      "candidateStatus": "review-required",
+      "recommendedUse": [
+        "short links for media campaigns",
+        "THE CODE press link tracking",
+        "PDF and HTML memorandum attribution",
+        "UTM and click analytics",
+        "campaign source segmentation",
+        "publications and newsroom link performance"
+      ],
+      "notRecommendedFor": [
+        "core platform routing",
+        "production deployment dependency",
+        "registry deadlines",
+        "mail delivery engine",
+        "authentication source of truth"
+      ],
+      "riskNotes": [
+        "Open-core repository: core is AGPLv3 while enterprise areas require separate review.",
+        "Use via official API or isolated adapter only.",
+        "No secrets, API tokens or webhook keys may be committed to the repository.",
+        "If Dub API is unavailable, GNK platform must continue operating with normal links."
+      ],
+      "adapterDesign": {
+        "mode": "optional",
+        "writeAccess": "disabled-until-explicit-approval",
+        "readAccess": "analytics-only-after-token-configuration",
+        "storage": "store only link metadata and public campaign labels; never store secrets in static assets",
+        "failureMode": "graceful-degradation-to-direct-links"
+      },
+      "approvalChecklist": [
+        "confirm API pricing and free-tier limits",
+        "confirm acceptable use for media campaign analytics",
+        "confirm AGPL/commercial license impact if self-hosted or modified",
+        "configure token only through deployment secret store",
+        "test with non-production links first",
+        "document fallback behavior"
+      ]
+    },
+    {
+      "id": "github-repository-control",
+      "name": "GitHub",
+      "category": "source-control-and-review",
+      "candidateStatus": "active-tooling",
+      "recommendedUse": ["branch review", "diff checks", "controlled commits", "deployment readiness notes"],
+      "writeAccess": "controlled-build-only"
+    },
+    {
+      "id": "seo-publishing-engine",
+      "name": "SEO / Publishing Engine",
+      "category": "metadata-and-publication-readiness",
+      "candidateStatus": "internal-model",
+      "recommendedUse": ["meta checks", "schema checks", "sitemap readiness", "canonical and hreflang review"],
+      "writeAccess": "approval-required"
+    },
+    {
+      "id": "media-link-tracking",
+      "name": "Media Link Tracking",
+      "category": "media-operations",
+      "candidateStatus": "planned",
+      "recommendedUse": ["press release links", "accreditation links", "PDF download links", "regional media segmentation"],
+      "writeAccess": "disabled-until-approved"
+    }
+  ]
+}
