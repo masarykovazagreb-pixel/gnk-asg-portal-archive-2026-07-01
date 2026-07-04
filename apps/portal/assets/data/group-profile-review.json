@@ -1,7 +1,17 @@
 {
-  "version": "2026-07-04.group-profile-review.1",
+  "version": "2026-07-04.group-profile-review.2",
   "status": "controlled-review",
   "title": "GNK DINAMO Ltd. Group / GNK ASG Enterprise Platform",
+  "responsiblePerson": {
+    "name": "Nermin Sefić",
+    "profile": "/nermin-sefic/",
+    "roles": [
+      "Ultimate Beneficial Owner (UBO) of GNK DINAMO Ltd. Group",
+      "Director of GNK ASG d.o.o.",
+      "President of GNK DINAMO Ltd."
+    ],
+    "status": "corporate governance relationship recorded for controlled review"
+  },
   "layers": [
     {
       "id": "live",
@@ -21,6 +31,12 @@
           "location": "Zagreb, Croatia",
           "registry": "OIB 75227917632 · MBS 081512375",
           "status": "verified repository record"
+        },
+        {
+          "name": "Nermin Sefić",
+          "role": "Ultimate Beneficial Owner of the Group · Director of GNK ASG d.o.o. · President of GNK DINAMO Ltd.",
+          "location": "Corporate governance and final accountable leadership",
+          "status": "responsible-person relationship"
         }
       ]
     },
@@ -64,6 +80,11 @@
       "description": "Final human authority for publication, legal positions, financial representations, registry actions, mass email, DNS/Cloudflare changes and production deployment.",
       "items": [
         {
+          "name": "Nermin Sefić",
+          "role": "Final accountable corporate authority within the recorded UBO, Director and President roles",
+          "status": "mandatory human approval authority"
+        },
+        {
           "name": "Human approval gate",
           "role": "Final decision and accountability",
           "status": "mandatory"
@@ -75,10 +96,12 @@
     "Every material value must show whether it is LIVE, strategic, simulated or operational.",
     "Public claims require an approved source and review status.",
     "Digital profiles must not be described as confirmed physical employees.",
+    "Corporate ownership and officer roles must be represented separately from digital workforce profiles.",
     "No production deploy, mass email, DNS, Cloudflare route or secret change without explicit Executive Office approval.",
     "A recovery point and rollback reference must exist before controlled deployment."
   ],
   "reviewLinks": [
+    {"label": "Nermin Sefić", "href": "/nermin-sefic/"},
     {"label": "Mission Control", "href": "/mission-control/"},
     {"label": "Enterprise Hub", "href": "/enterprise/"},
     {"label": "Digital Workforce", "href": "/digital-workforce/"},
