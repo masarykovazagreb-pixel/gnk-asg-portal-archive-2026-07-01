@@ -8,6 +8,7 @@ on:
       - 'apps/portal/assets/admin-center-v2.css'
       - 'apps/portal/assets/admin-center-v2.js'
       - 'apps/portal/assets/admin-center-health-v1.js'
+      - 'apps/portal/assets/admin-media-applications-entry-v1.js'
       - '.github/workflows/check-admin-center-v2.yml'
 
 permissions:
@@ -30,6 +31,7 @@ jobs:
           set -euxo pipefail
           node --check apps/portal/assets/admin-center-v2.js
           node --check apps/portal/assets/admin-center-health-v1.js
+          node --check apps/portal/assets/admin-media-applications-entry-v1.js
 
       - name: Verify dashboard contract
         run: |
@@ -43,6 +45,7 @@ jobs:
           grep -q '/assets/admin-center-v2.css' "$html"
           grep -q '/assets/admin-center-v2.js' "$html"
           grep -q '/assets/admin-center-health-v1.js' "$html"
+          grep -q '/assets/admin-media-applications-entry-v1.js' "$html"
           grep -q 'id="overview"' "$html"
           grep -q 'id="moduleFrame"' "$html"
           grep -q 'id="commandDialog"' "$html"
@@ -59,20 +62,25 @@ jobs:
           set -euxo pipefail
           html=apps/portal/admin-center/index.html
           js=apps/portal/assets/admin-center-v2.js
+          media=apps/portal/assets/admin-media-applications-entry-v1.js
           test "$(grep -c 'class="sidebar"' "$html")" -eq 1
           test "$(grep -c 'id="moduleNav"' "$html")" -eq 1
           grep -q "'/mail-studio/'" "$js"
           grep -q "'/operator-dashboard/'" "$js"
           grep -q "'/media-command-center/'" "$js"
+          grep -q "'/media-registration-admin/'" "$js"
+          grep -q "'/media-application/?lang=en'" "$js"
           grep -q "'/auto-editor/'" "$js"
           grep -q "'/news-admin/'" "$js"
           grep -q "'/pdf-publisher/'" "$js"
-          if grep -E "https?://" apps/portal/assets/admin-center-v2.js apps/portal/assets/admin-center-v2.css; then
+          grep -q 'Pregled media prijava' "$media"
+          grep -q 'Javna media prijavnica' "$media"
+          if grep -E "https?://" apps/portal/assets/admin-center-v2.js apps/portal/assets/admin-center-v2.css apps/portal/assets/admin-media-applications-entry-v1.js; then
             echo 'Admin Center V2 must not depend on external runtime assets.' >&2
             exit 1
           fi
 
-      - name: Verify locked production surfaces are untouched
+      - name: Verify locked production entry points are untouched
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
@@ -80,7 +88,12 @@ jobs:
           set -euxo pipefail
           changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           printf '%s\n' "$changed"
-          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/wrangler\.toml|workers/gnk-asg-direct-operator/src/public-shell-v11\.js)$'; then
+          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/wrangler\.toml)$'; then
             echo 'Locked public index or production configuration changed.' >&2
             exit 1
           fi
+          if git diff "$BASE_SHA" "$HEAD_SHA" -- workers/gnk-asg-direct-operator/src/public-shell-v11.js | grep -E '^\+.*(wrangler deploy|cloudflare|apiToken|secret=|DNS)'; then
+            echo 'Unsafe infrastructure action added to public shell.' >&2
+            exit 1
+          fi
+          echo 'Review-layer public shell changes are validated separately; production entry points remain locked.'
