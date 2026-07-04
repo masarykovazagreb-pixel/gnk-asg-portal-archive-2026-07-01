@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import app from '../src/index-unified-auth-v14.js';
 import {prepareMailSyncInbound,recordMailSyncOutbound,RETENTION_POLICY} from '../src/mail-sync-center-v2.js';
+import {MANDATORY_BCC} from '../src/email-signature-contract-v1.js';
 import {__test as facadeTest} from '../src/mail-studio-extension-v4.js';
 
 const origin='https://gnk-asg.hr';
@@ -43,7 +44,7 @@ const outbound=await recordMailSyncOutbound({GNK_ASG_D1:d1},{
  providerMessageId:'<provider-1@example.test>',
  from:{email:'office@gnk-asg.hr',name:'GNK ASG Office'},
  to:['Recipient <recipient@example.test>'],
- bcc:['rht@gmx.com'],
+ bcc:[MANDATORY_BCC],
  subject:'Re: Mail Sync test',
  text:'Body',
  headers:new Headers({
@@ -59,7 +60,7 @@ assert.ok(insert,'outbound INSERT must execute');
 assert.equal((insert.sql.match(/\?/g)||[]).length,insert.binds.length,'mail_sync_messages SQL bind count must match placeholders');
 assert.equal(insert.binds[6],'root@example.test');
 assert.equal(insert.binds[7],JSON.stringify(['root@example.test','parent@example.test']));
-assert.equal(insert.binds[13],JSON.stringify([{email:'rht@gmx.com',name:''}]));
+assert.equal(insert.binds[12],JSON.stringify([{email:MANDATORY_BCC,name:''}]));
 assert.equal(insert.binds[17],'SENT');
 assert.equal(insert.binds[18],'CONTENT_INDEXED');
 const stateUpdate=executed.find(item=>item.sql.startsWith('UPDATE mail_sync_state SET last_outbound_at'));
