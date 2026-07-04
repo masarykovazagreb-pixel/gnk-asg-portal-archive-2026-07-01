@@ -7,15 +7,21 @@ const errors=[];
 const check=(condition,message)=>{if(!condition)errors.push(message);};
 const read=file=>fs.readFileSync(path.join(root,file),'utf8');
 
-const source=read('apps/portal/assets/js/editorial-launch-library-v1.js');
-const sandbox={module:{exports:{}},exports:{}};
-vm.runInNewContext(source,sandbox,{filename:'editorial-launch-library-v1.js'});
-const library=sandbox.module.exports;
-const items=library.items||[];
+function loadCommonJs(file){
+  const sandbox={module:{exports:{}},exports:{}};
+  vm.runInNewContext(read(file),sandbox,{filename:file});
+  return sandbox.module.exports;
+}
+
+const library=loadCommonJs('apps/portal/assets/js/editorial-launch-library-v1.js');
+const drafts=loadCommonJs('apps/portal/assets/js/editorial-launch-drafts-v1.js');
+const expanded=drafts.expandLibrary(library);
+const items=expanded.items||[];
 
 check(library.status==='controlled-review','library must remain controlled-review');
 check(library.count===60,'declared launch count must equal 60');
 check(items.length===60,'launch library must contain exactly 60 items');
+check(expanded.fullDraftCount===60,'all 60 launch items must have first-draft bodies');
 check(new Set(items.map(item=>item.id)).size===60,'launch item IDs must be unique');
 check(new Set(items.map(item=>item.slug)).size===60,'launch slugs must be unique');
 check(new Set(items.map(item=>item.title)).size===60,'launch titles must be unique');
@@ -32,6 +38,10 @@ for(const item of items){
   check(/^LAUNCH-\d{3}$/.test(item.id),`invalid launch ID ${item.id}`);
   check(Array.isArray(item.bodyOutline)&&item.bodyOutline.length>=5,`${item.id} requires a complete body outline`);
   check(Array.isArray(item.requiredSources)&&item.requiredSources.length>=3,`${item.id} requires at least three source requirements`);
+  check(item.draftBodyComplete===true,`${item.id} first draft must be marked complete`);
+  check(typeof item.draftBody==='string'&&item.draftBody.length>=3500,`${item.id} first draft body is too short`);
+  check(item.draftBody.includes('Option one:')&&item.draftBody.includes('Option two:'),`${item.id} must present two editorial options`);
+  check(item.draftBody.includes('Evidence and review standard'),`${item.id} evidence section missing`);
   check(item.factCheckRequired===true,`${item.id} fact-check must be required`);
   check(item.sourceReviewRequired===true,`${item.id} source review must be required`);
   check(item.finalHumanApprovalRequired===true,`${item.id} final human approval must be required`);
@@ -65,4 +75,4 @@ if(errors.length){
   process.exit(1);
 }
 console.log('EDITORIAL_LAUNCH_LIBRARY_OK');
-console.log(JSON.stringify(library.distribution));
+console.log(JSON.stringify({...library.distribution,fullDraftCount:expanded.fullDraftCount}));
