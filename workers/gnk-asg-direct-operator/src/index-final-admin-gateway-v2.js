@@ -18,8 +18,9 @@ import {handleEmailPingTest,isEmailPingPath,VERSION as EMAIL_PING_VERSION} from 
 import {handleManualMailScheduler,isManualMailSchedulerPath,runScheduledManualMail,VERSION as MAIL_SCHEDULER_VERSION} from './manual-mail-scheduler-v1.js';
 import {handleTemporaryMessage,isTemporaryMessageApiPath,isTemporaryMessagePublicPath,VERSION as TEMPORARY_MESSAGE_VERSION} from './temporary-message-v1.js';
 import {handleEditorialOperationsApi,isEditorialOperationsApi,runEditorialDraftPlanner,VERSION as EDITORIAL_PLANNER_VERSION} from './editorial-draft-planner-v1.js';
+import {handleEditorialWorkflowApi,VERSION as EDITORIAL_WORKFLOW_API_VERSION} from './editorial-workflow-api-v1.js';
 const PUBLICATION_ROUTE_VERSION='GNK_ASG_STATIC_PUBLICATION_ROUTE_V1_20260702';
-export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${EMAIL_STATUS_BUTTONS_VERSION}_${EMAIL_PING_VERSION}_${MAIL_SCHEDULER_VERSION}_${TEMPORARY_MESSAGE_VERSION}_${EDITORIAL_PLANNER_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
+export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${EMAIL_STATUS_BUTTONS_VERSION}_${EMAIL_PING_VERSION}_${MAIL_SCHEDULER_VERSION}_${TEMPORARY_MESSAGE_VERSION}_${EDITORIAL_PLANNER_VERSION}_${EDITORIAL_WORKFLOW_API_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
 const trackedEnv=env=>withEmailStatusTracking(env);
 const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(trackedEnv(env)));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
@@ -64,6 +65,7 @@ export default{
   }
   if(isEditorialOperationsApi(path)){
    if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
+   const workflow=await handleEditorialWorkflowApi(request,tracked);if(workflow)return workflow;
    return handleEditorialOperationsApi(request,tracked);
   }
   const publication=await serveStaticPublication(request,tracked,path);if(publication)return publication;
