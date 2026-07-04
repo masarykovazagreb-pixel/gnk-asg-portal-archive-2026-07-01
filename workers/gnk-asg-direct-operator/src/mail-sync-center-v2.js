@@ -1,10 +1,11 @@
 import * as base from './mail-sync-center-v1.js';
 
-export const VERSION=`GNK_ASG_MAIL_SYNC_CENTER_V2_20260704_SQL_BIND_HEADER_FIX_${base.VERSION}`;
+export const VERSION=`GNK_ASG_MAIL_SYNC_CENTER_V2_20260704_SQL_BIND_HEADER_RETENTION_${base.VERSION}`;
 export const UI_PATH=base.UI_PATH;
 export const API_PREFIX=base.API_PREFIX;
 export const ensureMailSyncSchema=base.ensureMailSyncSchema;
 export const prepareMailSyncInbound=base.prepareMailSyncInbound;
+export const RETENTION_POLICY=Object.freeze({policyVersion:'2026-07-04.review.1',messageContentDays:365,attachmentDays:365,operationalMetadataDays:2555,legalHoldOverridesDeletion:true,automaticDeletion:'disabled-until-explicit-approval',reviewOnly:true});
 
 const clean=value=>String(value??'').trim();
 const now=()=>new Date().toISOString();
@@ -38,5 +39,5 @@ export async function backfillMailSync(env){
  const counts=(await db.prepare(`SELECT direction,COUNT(*) count FROM mail_sync_messages GROUP BY direction`).all()).results||[],inCount=Number(counts.find(item=>item.direction==='INBOUND')?.count||0),outCount=Number(counts.find(item=>item.direction==='OUTBOUND')?.count||0);
  await db.prepare(`UPDATE mail_sync_state SET last_backfill_at=?,inbound_count=?,outbound_count=?,last_error='',updated_at=? WHERE id=1`).bind(stamp,inCount,outCount,stamp).run();return{ok:true,scanned:{sent,inbound,status},stored:{inbound:inCount,outbound:outCount},at:stamp,version:VERSION};
 }
-async function health(env){const db=await ensureMailSyncSchema(env),[state,counts]=await Promise.all([db.prepare(`SELECT * FROM mail_sync_state WHERE id=1`).first(),db.prepare(`SELECT direction,processing_status,COUNT(*) count FROM mail_sync_messages GROUP BY direction,processing_status`).all()]);return json({ok:true,version:VERSION,mode:'worker-native',futureMail:'automatic-after-runtime-activation',historicalMail:'metadata-backfill-plus-optional-external-connector',fullMailboxMirror:false,state,counts:counts.results||[],bindings:{d1:Boolean(env?.GNK_ASG_D1),r2:Boolean(env?.GNK_ASG_MEDIA_ASSETS)}});}
+async function health(env){const db=await ensureMailSyncSchema(env),[state,counts]=await Promise.all([db.prepare(`SELECT * FROM mail_sync_state WHERE id=1`).first(),db.prepare(`SELECT direction,processing_status,COUNT(*) count FROM mail_sync_messages GROUP BY direction,processing_status`).all()]);return json({ok:true,version:VERSION,mode:'worker-native',futureMail:'automatic-after-controlled-runtime-activation',historicalMail:'metadata-backfill-plus-optional-external-connector',fullMailboxMirror:false,retention:RETENTION_POLICY,runtimeEvidence:'pending-controlled-activation',state,counts:counts.results||[],bindings:{d1:Boolean(env?.GNK_ASG_D1),r2:Boolean(env?.GNK_ASG_MEDIA_ASSETS)}});}
 export async function handleMailSyncCenter(request,env){const path=pathOf(request);if(path===`${API_PREFIX}/backfill`&&request.method==='POST')return json(await backfillMailSync(env));if(path===`${API_PREFIX}/health`&&request.method==='GET')return health(env);return base.handleMailSyncCenter(request,env);}
