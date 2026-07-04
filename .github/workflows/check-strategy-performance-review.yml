@@ -1,0 +1,50 @@
+name: Check Strategy Performance Review
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/strategy-performance/**'
+      - 'apps/portal/assets/data/strategy-performance-review.json'
+      - 'apps/portal/assets/data/operator-os-config.json'
+      - 'apps/portal/enterprise/**'
+      - 'apps/portal/seo/**'
+      - '.github/workflows/check-strategy-performance-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate models
+        run: |
+          set -euxo pipefail
+          node -e "const fs=require('fs'); for (const f of process.argv.slice(1)) JSON.parse(fs.readFileSync(f,'utf8'));" \
+            apps/portal/assets/data/operator-os-config.json \
+            apps/portal/assets/data/strategy-performance-review.json
+      - name: Verify route and disclosure controls
+        run: |
+          set -euxo pipefail
+          test -s apps/portal/strategy-performance/index.html
+          grep -qi 'noindex,nofollow,noarchive' apps/portal/strategy-performance/index.html
+          grep -q 'INPUT REQUIRED' apps/portal/strategy-performance/index.html
+          grep -q '/strategy-performance/' apps/portal/enterprise/index.html
+          grep -q '/strategy-performance/' apps/portal/seo/index.html
+          grep -q 'strategy-performance' apps/portal/assets/data/operator-os-config.json
+      - name: Reject invented values
+        run: |
+          set -euxo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          const model=JSON.parse(fs.readFileSync('apps/portal/assets/data/strategy-performance-review.json','utf8'));
+          const metrics=(model.layers||[]).flatMap(layer=>layer.metrics||[]);
+          if(metrics.some(metric=>metric.value!==null)) throw new Error('review metrics must remain empty until approved inputs exist');
+          if(!model.disclosure.includes('not statutory')) throw new Error('required disclosure missing');
+          NODE
