@@ -22,6 +22,8 @@ on:
       - 'workers/gnk-asg-direct-operator/src/media-application-access-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js'
+      - 'workers/gnk-asg-direct-operator/package.json'
+      - 'workers/gnk-asg-direct-operator/package-lock.json'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
 
 permissions:
@@ -108,18 +110,22 @@ jobs:
           grep -q "human_review_status_changed" workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
           grep -q "noNotification:true" workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
 
+      - name: Install Worker dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --ignore-scripts --no-audit --no-fund
+
       - name: Wrangler dry run
         working-directory: workers/gnk-asg-direct-operator
         shell: bash
         run: |
           set +e
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator > wrangler-dry-run.log 2>&1
+          npx wrangler deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator > wrangler-dry-run.log 2>&1
           status=$?
           cat wrangler-dry-run.log
           exit "$status"
 
       - name: Upload Wrangler diagnostics
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: wrangler-dry-run-log
