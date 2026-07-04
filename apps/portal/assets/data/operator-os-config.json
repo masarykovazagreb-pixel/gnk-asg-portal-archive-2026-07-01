@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-04.operator-os.04",
+  "version": "2026-07-04.operator-os.05",
   "status": "controlled-review",
   "safetyGates": {
     "massEmailSending": "disabled-until-explicit-approval",
@@ -35,8 +35,8 @@
     {"id":"digital-workforce","label":"Digital Workforce","route":"/digital-workforce/","risk":"medium","approvalRequired":true},
     {"id":"campaign-mailer","label":"Campaign Mailer","route":"/campaign-mailer/","risk":"high","approvalRequired":true,"sendCap":"manual-only"},
     {"id":"mail-studio","label":"Mail Studio","route":"/mail-studio/","risk":"high","approvalRequired":true,"sendCap":"manual-only"},
-    {"id":"email-status","label":"Email Status","route":"/email-status/","risk":"medium","approvalRequired":false},
-    {"id":"media-center","label":"Media Center","route":"/media-center/","risk":"medium","approvalRequired":true},
+    {"id":"email-status","label":"Email Status","route":"/email-status/","risk":"medium","approvalRequired":false,"delivery":"worker-dynamic-authenticated"},
+    {"id":"media-command-center","label":"Media Command Center","route":"/media-command-center/","risk":"high","approvalRequired":true},
     {"id":"news","label":"News Workflow","route":"/vijesti/","risk":"medium","approvalRequired":true},
     {"id":"publishing","label":"Publications Workflow","route":"/objave/","risk":"medium","approvalRequired":true},
     {"id":"operator-dashboard","label":"Operator Dashboard","route":"/operator-dashboard/","risk":"medium","approvalRequired":true},
