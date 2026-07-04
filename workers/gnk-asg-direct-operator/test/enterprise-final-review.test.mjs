@@ -1,6 +1,24 @@
 import assert from 'node:assert/strict';
-import {normalizeMailStudioSignature} from '../src/mail-studio-extension-v3.js';
+import {normalizeMailStudioSignature,GLOBAL_CENTRES,__test as mail} from '../src/mail-studio-extension-v3.js';
 import {__test as ai} from '../src/ai-inbound-auto-reply-v2.js';
+
+assert.equal(GLOBAL_CENTRES.length,10);
+assert.deepEqual(GLOBAL_CENTRES.map(item=>item.id),['new-york','london','paris','frankfurt','dubai','singapore','tokyo','sydney','toronto','zurich']);
+for(let index=0;index<10;index+=1)assert.equal(mail.randomCentreIndex(index),index);
+assert.equal(mail.randomCentreIndex(10),0);
+assert.equal(mail.randomCentreIndex(-1),9);
+let originalKvReads=0;
+const randomKv=mail.randomCentreKv({
+  async get(key){originalKvReads+=1;return key==='unrelated-key'?'42':'0';},
+  async put(){return undefined;}
+});
+for(const key of ['mail-studio:centre-index:outbound:v1','mail-studio:centre-index:inbound:v1']){
+  const selected=Number(await randomKv.get(key));
+  assert.ok(Number.isInteger(selected)&&selected>=0&&selected<10);
+}
+assert.equal(originalKvReads,0);
+assert.equal(await randomKv.get('unrelated-key'),'42');
+assert.equal(originalKvReads,1);
 
 const institutional = [
   'Body',
@@ -34,7 +52,8 @@ assert.equal(normalizedInstitutional.text, normalizedInstitutional.plainText);
 assert.equal((normalizedInstitutional.html.match(/data-gnk-asg-signature=/g) || []).length, 1);
 assert.match(normalizedInstitutional.html, /gnk-asg-email-logo-transparent\.png/);
 assert.doesNotMatch(normalizedInstitutional.html, /gnk-asg-email-logo-final\.png/);
-assert.equal(normalizedInstitutional.headers['X-GNK-ASG-Signature-Parity'], 'GNK_ASG_MAIL_STUDIO_EXTENSION_V7_20260704_CANONICAL_SIGNATURES');
+assert.equal(normalizedInstitutional.headers['X-GNK-ASG-Signature-Parity'], 'GNK_ASG_MAIL_STUDIO_EXTENSION_V8_20260704_RANDOM_GLOBAL_CENTRES');
+assert.equal(normalizedInstitutional.headers['X-GNK-ASG-Centre-Selection'],'RANDOM_10');
 
 const normalizedMedia = normalizeMailStudioSignature({
   from: {email: 'media@gnk-asg.hr'},
@@ -45,6 +64,7 @@ assert.match(normalizedMedia.text, /Media Relations & Accreditation Center/);
 assert.match(normalizedMedia.html, /gnk-asg-email-logo-transparent\.png/);
 assert.equal((normalizedMedia.html.match(/data-gnk-asg-media-signature=/g) || []).length, 1);
 assert.equal((normalizedMedia.text.match(/Media Relations & Accreditation Center/g) || []).length, 1);
+assert.equal(normalizedMedia.headers['X-GNK-ASG-Centre-Selection'],'RANDOM_10');
 
 for (const email of ['office@gnk-asg.hr','legal@gnk-asg.hr','press@gnk-asg.hr','it@gnk-asg.hr','assistant@gnk-asg.hr','nermin.sefic@gnk-asg.hr','sefic@gnk-asg.hr','ubo@gnk-asg.hr']) {
   const message=normalizeMailStudioSignature({from:{email},text:'Profile test',html:'<p>Profile test</p>',headers:{'X-GNK-ASG-Global-Centre':'Zagreb, Croatia'}});
