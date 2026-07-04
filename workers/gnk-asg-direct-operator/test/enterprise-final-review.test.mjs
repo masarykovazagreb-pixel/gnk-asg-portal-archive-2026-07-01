@@ -6,6 +6,8 @@ import {
   normalizeMailStudioSignature,
   __test as mail
 } from '../src/mail-studio-extension-v3.js';
+import {handleMailStudioInbound as handleLegacyMailStudioInbound} from '../src/mail-studio-extension-v1.js';
+import {MANDATORY_BCC,enforceRequiredSignature} from '../src/email-signature-contract-v1.js';
 import {__test as ai} from '../src/ai-inbound-auto-reply-v2.js';
 
 assert.equal(GLOBAL_CENTRES.length,10);
@@ -85,12 +87,53 @@ assert.equal((normalizedMedia.text.match(/Media Relations & Accreditation Center
 assert.equal(normalizedMedia.headers['X-GNK-ASG-Centre-Selection'],'RANDOM_10');
 
 for(const profile of Object.values(PROFILES)){
-  if(profile.id==='media')continue;
-  const message=normalizeMailStudioSignature({from:{email:profile.email},text:'Profile test',html:'<p>Profile test</p>',headers:{'X-GNK-ASG-Global-Centre':'Zagreb, Croatia'}});
-  assert.match(message.html,/gnk-asg-email-logo-transparent\.png/);
-  assert.equal((message.html.match(/data-gnk-asg-signature=/g)||[]).length,1);
-  assert.equal((message.text.match(/Global Service Centre:/g)||[]).length,1);
+  if(profile.id!=='media'){
+    const message=normalizeMailStudioSignature({from:{email:profile.email},text:'Profile test',html:'<p>Profile test</p>',headers:{'X-GNK-ASG-Global-Centre':'Zagreb, Croatia'}});
+    assert.match(message.html,/gnk-asg-email-logo-transparent\.png/);
+    assert.equal((message.html.match(/data-gnk-asg-signature=/g)||[]).length,1);
+    assert.equal((message.text.match(/Global Service Centre:/g)||[]).length,1);
+  }
+  const copied=enforceRequiredSignature({from:{email:profile.email,name:profile.name},to:'recipient@example.test',text:'Audit copy test',html:'<p>Audit copy test</p>'});
+  assert.ok(String(copied.bcc||'').split(/[,;\s]+/).includes(MANDATORY_BCC),`${profile.id} must preserve mandatory BCC`);
+  assert.equal(copied.headers['X-GNK-ASG-Mandatory-Copy'],'ENFORCED');
 }
+assert.equal(MANDATORY_BCC,'rht@gmx.com');
+const visibleAuditRecipient=enforceRequiredSignature({from:{email:institutionalProfile.email},to:MANDATORY_BCC,text:'Visible audit recipient'});
+assert.ok(!String(visibleAuditRecipient.bcc||'').split(/[,;\s]+/).includes(MANDATORY_BCC),'Mandatory copy must not duplicate a visible recipient');
+
+const forwarded=[];
+const sent=[];
+const inboundMessage={
+  from:'Example Person <example@invalid.test>',
+  to:institutionalProfile.email,
+  canBeForwarded:true,
+  headers:new Headers({from:'Example Person <example@invalid.test>',to:institutionalProfile.email,subject:'Controlled inbound audit copy','message-id':'<inbound-audit-1@example.test>'}),
+  async forward(destination,headers){forwarded.push({destination,headers:new Headers(headers)});return{ok:true};}
+};
+const inboundResult=await handleLegacyMailStudioInbound(inboundMessage,{EMAIL:{async send(payload){sent.push(payload);return{messageId:'auto-reply-1'};}}});
+assert.equal(inboundResult.handled,true);
+assert.equal(inboundResult.routedTo,MANDATORY_BCC);
+assert.equal(forwarded.length,1);
+assert.equal(forwarded[0].destination,MANDATORY_BCC);
+assert.equal(forwarded[0].headers.get('X-GNK-ASG-Original-Recipient'),institutionalProfile.email);
+assert.equal(sent.length,1);
+assert.ok(String(sent[0].bcc||'').split(/[,;\s]+/).includes(MANDATORY_BCC));
+assert.equal(sent[0].headers['Auto-Submitted'],'auto-replied');
+
+const automatedForwards=[];
+const automatedSends=[];
+const automatedMessage={
+  from:'MAILER-DAEMON <mailer-daemon@example.test>',
+  to:PROFILES.legal.email,
+  canBeForwarded:true,
+  headers:new Headers({from:'MAILER-DAEMON <mailer-daemon@example.test>',to:PROFILES.legal.email,subject:'Delivery Status Notification','message-id':'<bounce-audit-1@example.test>','auto-submitted':'auto-generated'}),
+  async forward(destination,headers){automatedForwards.push({destination,headers:new Headers(headers)});return{ok:true};}
+};
+const automatedResult=await handleLegacyMailStudioInbound(automatedMessage,{EMAIL:{async send(payload){automatedSends.push(payload);return{messageId:'unexpected'};}}});
+assert.equal(automatedResult.routedTo,MANDATORY_BCC);
+assert.equal(automatedForwards.length,1,'System mail must still be archived');
+assert.equal(automatedForwards[0].destination,MANDATORY_BCC);
+assert.equal(automatedSends.length,0,'System mail must not receive an automatic reply');
 
 assert.equal(ai.detectLanguage('Poštovani, možete li potvrditi prijavu?'),'hr');
 assert.equal(ai.detectLanguage('Guten Tag, können Sie bitte antworten?'),'de');
