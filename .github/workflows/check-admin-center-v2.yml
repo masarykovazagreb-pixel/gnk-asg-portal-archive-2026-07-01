@@ -9,6 +9,7 @@ on:
       - 'apps/portal/assets/admin-center-v2.js'
       - 'apps/portal/assets/admin-center-health-v1.js'
       - 'apps/portal/assets/admin-media-applications-entry-v1.js'
+      - 'apps/portal/assets/data/operator-os-config.json'
       - '.github/workflows/check-admin-center-v2.yml'
 
 permissions:
@@ -69,7 +70,8 @@ jobs:
           grep -q "'/operator-dashboard/'" "$js"
           grep -q "'/media-command-center/'" "$js"
           grep -q "'/media-registration-admin/'" "$js"
-          grep -q "'/media-application/?lang=en'" "$js"
+          grep -q "'/media-application/'" "$js"
+          grep -q '"route": "/media-application/?lang=en"' apps/portal/assets/data/operator-os-config.json
           grep -q "'/auto-editor/'" "$js"
           grep -q "'/news-admin/'" "$js"
           grep -q "'/pdf-publisher/'" "$js"
