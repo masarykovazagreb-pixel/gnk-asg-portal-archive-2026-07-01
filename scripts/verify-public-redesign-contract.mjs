@@ -4,7 +4,7 @@ import path from 'node:path';
 const root=process.cwd();
 const requested=process.argv[2]||'all';
 const failures=[];
-const groups=new Set(requested==='all'?['mail','registration','shell','campaign']:[requested]);
+const groups=new Set(requested==='all'?['mail','registration','shell','campaign','entrypoints']:[requested]);
 const read=file=>{
   const absolute=path.join(root,file);
   if(!fs.existsSync(absolute)){
@@ -69,6 +69,10 @@ if(groups.has('shell')){
 
 if(groups.has('campaign')){
   requireAll('campaign','workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js',[
+    "export { VERSION } from './index-final-admin-gateway-v2.js';",
+    "export { default } from './index-final-admin-gateway-v2.js';"
+  ]);
+  requireAll('campaign','workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js',[
     'campaign-mailer-shell-v2.js','campaign-mailer-v2.js','isCampaignMailerApi','authorizeCampaignMailer','handleCampaignMailer','runQueue'
   ]);
   requireAll('campaign','workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js',[
@@ -79,6 +83,15 @@ if(groups.has('campaign')){
     'applyApprovalGuard','rateGate','runQueue','campaign_mailer_runner_lock'
   ]);
   requireAll('campaign','apps/portal/campaign-mailer/index.html',['Campaign Mailer']);
+}
+
+if(groups.has('entrypoints')){
+  requireAll('entrypoints','workers/gnk-asg-direct-operator/wrangler.toml',[
+    'main = "src/index-final-admin-gateway-v1.js"'
+  ]);
+  requireAll('entrypoints','workers/gnk-asg-direct-operator/wrangler.runtime.toml',[
+    'main = "src/index-final-admin-gateway-v2.js"'
+  ]);
 }
 
 if(failures.length){
