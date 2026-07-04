@@ -2,8 +2,13 @@ import {
   handleMediaRegistrationPublic as legacyPublic,
   handleMediaRegistrationAdmin as legacyAdmin
 } from './media-registration-v1.js';
+import {
+  handleMediaRegistrationReviewAdmin,
+  patchMediaRegistrationAdminPage,
+  VERSION as REVIEW_VERSION
+} from './media-registration-review-admin-v1.js';
 
-export const VERSION='GNK_ASG_MEDIA_REGISTRATION_POST_CODE_V6_20260701_VERIFIED_MEMORANDUM';
+export const VERSION=`GNK_ASG_MEDIA_REGISTRATION_POST_CODE_V7_20260704_${REVIEW_VERSION}`;
 export const PUBLIC_UI='/media-application';
 export const ADMIN_UI='/media-registration-admin';
 
@@ -67,5 +72,11 @@ async function memorandum(r,env){
 async function patchPage(r,env){const response=await legacyPublic(r,env);if(!response||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;const html=await response.text(),tag='<script defer src="/assets/media-registration-post-code-v2.js?v=20260701-5"></script>',body=html.includes(tag)?html:html.replace('</body>',`${tag}</body>`),h=new Headers(response.headers);h.delete('content-length');h.delete('content-encoding');h.delete('etag');h.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');h.set('x-gnk-asg-media-registration-post-code',VERSION);return new Response(r.method==='HEAD'?null:body,{status:response.status,statusText:response.statusText,headers:h});}
 
 export async function handleMediaRegistrationPublic(r,env){const p=pathOf(r);if(['GET','HEAD'].includes(r.method)&&(p===PUBLIC_UI||p===`${PUBLIC_UI}/`))return patchPage(r,env);if(r.method==='POST'&&p===`${PUBLIC_API}/start`)return startRegistration(r,env);if(['GET','HEAD'].includes(r.method)&&p===`${PUBLIC_API}/memorandum.pdf`)return memorandum(r,env);if(r.method==='GET'&&p===`${PUBLIC_API}/config`){const x=await legacyPublic(r,env);if(!x?.ok)return x;const d=await x.json();return json({...d,ok:true,links:{registration:REGISTRATION_URL,theCode:THE_CODE_URL,pdfDownload:PDF_DOWNLOAD_URL},codePolicy:'ISSUED_AFTER_INITIAL_REGISTRATION'});}return legacyPublic(r,env);}
-export async function handleMediaRegistrationAdmin(r,env){const p=pathOf(r);if(r.method==='POST'&&[`${ADMIN_API}/queue`,`${ADMIN_API}/send-test`,`${ADMIN_API}/dispatch-one`].includes(p))return json({ok:false,error:'legacy_code_before_registration_blocked',message:'Initial invitations may not contain access codes. Codes are issued only after initial registration.'},409);return legacyAdmin(r,env);}
+export async function handleMediaRegistrationAdmin(r,env){
+ const p=pathOf(r);
+ if(['GET','HEAD'].includes(r.method)&&(p===ADMIN_UI||p===`${ADMIN_UI}/`))return patchMediaRegistrationAdminPage(await legacyAdmin(r,env));
+ const review=await handleMediaRegistrationReviewAdmin(r,env);if(review)return review;
+ if(r.method==='POST'&&[`${ADMIN_API}/queue`,`${ADMIN_API}/send-test`,`${ADMIN_API}/dispatch-one`].includes(p))return json({ok:false,error:'legacy_code_before_registration_blocked',message:'Initial invitations may not contain access codes. Codes are issued only after initial registration.'},409);
+ return legacyAdmin(r,env);
+}
 export async function processMediaInvitationQueue(){return{ok:true,skipped:'post_registration_code_policy'};}
