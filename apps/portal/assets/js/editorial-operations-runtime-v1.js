@@ -30,6 +30,7 @@
     const toolbar=document.querySelector('header .toolbar');
     addToolbarLink(toolbar,'open-editorial-slot-editor','Draft Editor','/editorial-operations/editor/');
     addToolbarLink(toolbar,'open-editorial-release-queue','Release Queue','/editorial-operations/release-queue/');
+    addToolbarLink(toolbar,'open-editorial-launch-library','Launch Library · 60','/editorial-operations/launch-library/');
     if(toolbar&&!document.getElementById('generate-editorial-plan')){
       const button=document.createElement('button');
       button.id='generate-editorial-plan';
