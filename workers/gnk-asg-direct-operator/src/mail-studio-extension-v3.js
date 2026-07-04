@@ -2,7 +2,7 @@ import * as base from './mail-studio-extension-v2.js';
 import {enforceMediaGoldSignature,isMediaSender,VERSION as MEDIA_SIGNATURE_VERSION} from './media-email-gold-signature-v2.js';
 import {institutionalSignature,LOGO_URL,VERSION as BRAND_SIGNATURE_VERSION} from './email-brand-signature-v1.js';
 
-export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V8_20260704_RANDOM_GLOBAL_CENTRES';
+export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V9_20260704_RANDOM_GLOBAL_CENTRES_FALLBACK';
 export const UI_VERSION=base.UI_VERSION;
 export const PROFILES=base.PROFILES;
 export const GLOBAL_CENTRES=base.GLOBAL_CENTRES;
@@ -116,14 +116,16 @@ function randomCentreIndex(randomValue){
 }
 
 function randomCentreKv(binding){
-  if(!binding||typeof binding!=='object')return binding;
-  return new Proxy(binding,{get(target,property,receiver){
+  const target=binding&&typeof binding==='object'?binding:{};
+  return new Proxy(target,{get(current,property,receiver){
     if(property==='get')return async(key,...args)=>{
       if(CENTRE_INDEX_KEY.test(String(key)))return String(randomCentreIndex());
-      return typeof target.get==='function'?target.get.call(target,key,...args):null;
+      return typeof current.get==='function'?current.get.call(current,key,...args):null;
     };
-    const value=Reflect.get(target,property,receiver);
-    return typeof value==='function'?value.bind(target):value;
+    if(property==='put')return async(...args)=>typeof current.put==='function'?current.put.call(current,...args):undefined;
+    if(property==='delete')return async(...args)=>typeof current.delete==='function'?current.delete.call(current,...args):undefined;
+    const value=Reflect.get(current,property,receiver);
+    return typeof value==='function'?value.bind(current):value;
   }});
 }
 
@@ -133,9 +135,7 @@ function withNormalizedEmail(env){
   return new Proxy(env||{},{get(target,property,receiver){
     if(property==='EMAIL'&&binding&&typeof binding.send==='function')return{send(payload){return binding.send.call(binding,normalizeMailStudioSignature(payload));}};
     if(property==='GNK_ASG_KV'||property==='GNK_ASG_CONFIG_KV'){
-      const original=Reflect.get(target,property,receiver);
-      if(!original)return original;
-      if(!kvCache.has(property))kvCache.set(property,randomCentreKv(original));
+      if(!kvCache.has(property))kvCache.set(property,randomCentreKv(Reflect.get(target,property,receiver)));
       return kvCache.get(property);
     }
     return Reflect.get(target,property,receiver);
@@ -164,4 +164,4 @@ export async function handleMailStudioInbound(message,env,ctx){
   return result?{...result,signatureParity:VERSION,centreSelection:'RANDOM_10'}:result;
 }
 
-export const __test={dedupeInstitutionalText,normalizeMailStudioSignature,replaceInstitutionalText,replaceInstitutionalHtml,randomCentreIndex,randomCentreKv};
+export const __test={dedupeInstitutionalText,normalizeMailStudioSignature,replaceInstitutionalText,replaceInstitutionalHtml,randomCentreIndex,randomCentreKv,withNormalizedEmail};
