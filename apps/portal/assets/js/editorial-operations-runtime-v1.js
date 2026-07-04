@@ -5,7 +5,17 @@
 
   const API='/api/editorial-operations';
   const today=()=>new Date().toISOString().slice(0,10);
-  const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
+  const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+
+  function addToolbarLink(toolbar,id,label,href){
+    if(!toolbar||document.getElementById(id))return;
+    const link=document.createElement('a');
+    link.id=id;
+    link.className='btn secondary';
+    link.href=href;
+    link.textContent=label;
+    toolbar.appendChild(link);
+  }
 
   function installStatus(){
     const main=document.querySelector('main');
@@ -18,6 +28,8 @@
     main.prepend(status);
 
     const toolbar=document.querySelector('header .toolbar');
+    addToolbarLink(toolbar,'open-editorial-slot-editor','Draft Editor','/editorial-operations/editor/');
+    addToolbarLink(toolbar,'open-editorial-release-queue','Release Queue','/editorial-operations/release-queue/');
     if(toolbar&&!document.getElementById('generate-editorial-plan')){
       const button=document.createElement('button');
       button.id='generate-editorial-plan';
