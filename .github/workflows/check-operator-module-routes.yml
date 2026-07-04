@@ -6,6 +6,8 @@ on:
     paths:
       - 'apps/portal/**'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'
+      - 'workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs'
       - 'scripts/validate-operator-module-routes.mjs'
       - '.github/workflows/check-operator-module-routes.yml'
 
@@ -15,11 +17,28 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
+      - name: Check auth and route syntax
+        run: |
+          set -euxo pipefail
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          node --check workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
       - name: Validate all configured module routes
         run: node scripts/validate-operator-module-routes.mjs
+      - name: Test existing token and protected enterprise scope
+        run: node workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
+      - name: Preserve authentication contract
+        run: |
+          set -euxo pipefail
+          grep -q "const COOKIE='gnk_asg_admin_session'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q 'const MAX_AGE=43200' workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q 'HttpOnly; Secure; SameSite=Strict' workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "'OPERATOR_TOKEN','GNK_ASG_OPERATOR_TOKEN','ADMIN_TOKEN','GNK_ASG_ADMIN_TOKEN'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "'/enterprise','/mission-control','/editorial-operations','/registry-center','/deployment'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "'/mobile-admin','/seo','/design-review','/language-review','/strategy-performance','/entities'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          ! grep -R "review-test-token-not-a-secret" workers/gnk-asg-direct-operator/src
