@@ -6,6 +6,9 @@ on:
     paths:
       - 'apps/portal/strategy-performance/**'
       - 'apps/portal/assets/data/strategy-performance-review.json'
+      - 'apps/portal/assets/data/financial-planning-baseline.json'
+      - 'apps/portal/assets/data/financial-document-registry.json'
+      - 'apps/portal/assets/js/financial-projection-engine-v1.js'
       - 'apps/portal/assets/data/operator-os-config.json'
       - 'apps/portal/enterprise/**'
       - 'apps/portal/seo/**'
@@ -23,28 +26,90 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate models
+      - name: Validate models and projection syntax
         run: |
           set -euxo pipefail
           node -e "const fs=require('fs'); for (const f of process.argv.slice(1)) JSON.parse(fs.readFileSync(f,'utf8'));" \
             apps/portal/assets/data/operator-os-config.json \
-            apps/portal/assets/data/strategy-performance-review.json
+            apps/portal/assets/data/strategy-performance-review.json \
+            apps/portal/assets/data/financial-planning-baseline.json \
+            apps/portal/assets/data/financial-document-registry.json
+          node --check apps/portal/assets/js/financial-projection-engine-v1.js
       - name: Verify route and disclosure controls
         run: |
           set -euxo pipefail
           test -s apps/portal/strategy-performance/index.html
           grep -qi 'noindex,nofollow,noarchive' apps/portal/strategy-performance/index.html
           grep -q 'INPUT REQUIRED' apps/portal/strategy-performance/index.html
+          grep -q 'financial-planning-baseline.json' apps/portal/strategy-performance/index.html
+          grep -q 'financial-projection-engine-v1.js' apps/portal/strategy-performance/index.html
           grep -q '/strategy-performance/' apps/portal/enterprise/index.html
           grep -q '/strategy-performance/' apps/portal/seo/index.html
           grep -q 'strategy-performance' apps/portal/assets/data/operator-os-config.json
-      - name: Reject invented values
+      - name: Validate two financial bases and H1 ratio
         run: |
-          set -euxo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          const model=JSON.parse(fs.readFileSync('apps/portal/assets/data/financial-planning-baseline.json','utf8'));
+          if(model.periods.interimToBaselineRatio!==0.98)throw new Error('interim ratio must be 0.98');
+          if(model.entities.length!==2)throw new Error('exactly two financial bases required');
+          const asg=model.entities.find(item=>item.id==='gnk-asg-standalone');
+          const group=model.entities.find(item=>item.id==='gnk-dinamo-group');
+          if(!asg||!group)throw new Error('financial scopes missing');
+          const expected={
+            asg:{revenue:504000000,assets:46400000,capitalAndReserves:46210000,profit:16076.47},
+            group:{revenue:4704600000,assets:3483000000,capitalAndReserves:3414000000,profit:982480000}
+          };
+          for(const [key,value] of Object.entries(expected.asg)){
+            if(asg.baseline[key]!==value)throw new Error(`GNK ASG baseline mismatch ${key}`);
+            const calculated=Math.round(value*0.98*100)/100;
+            if(asg.interimManagementInput[key]!==calculated)throw new Error(`GNK ASG interim mismatch ${key}`);
+          }
+          for(const [key,value] of Object.entries(expected.group)){
+            if(group.baseline[key]!==value)throw new Error(`Group baseline mismatch ${key}`);
+            const calculated=Math.round(value*0.98*100)/100;
+            if(group.interimManagementInput[key]!==calculated)throw new Error(`Group interim mismatch ${key}`);
+          }
+          if(model.comparisonRules.blindSummationForbidden!==true)throw new Error('blind summation must be forbidden');
+          if(model.budgetGovernance.separateEntityBudgets!==true)throw new Error('separate budgets required');
+          if(model.budgetGovernance.spendingAuthorityCreatedByModel!==false)throw new Error('model cannot create spending authority');
+          NODE
+      - name: Validate projection engine scenarios
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const engine=require('./apps/portal/assets/js/financial-projection-engine-v1.js');
+          const model=JSON.parse(fs.readFileSync('apps/portal/assets/data/financial-planning-baseline.json','utf8'));
+          const projection=engine.buildProjection(model);
+          const asg=projection.entities.find(item=>item.id==='gnk-asg-standalone');
+          const group=projection.entities.find(item=>item.id==='gnk-dinamo-group');
+          const baseAsg=asg.scenarios.find(item=>item.id==='base');
+          const baseGroup=group.scenarios.find(item=>item.id==='base');
+          if(baseAsg.values.revenue!==987840000)throw new Error('GNK ASG base projection mismatch');
+          if(baseGroup.values.revenue!==9221016000)throw new Error('Group base projection mismatch');
+          if(baseGroup.values.profit!==1925660800)throw new Error('Group profit projection mismatch');
+          if(baseGroup.values.assets!==3413340000)throw new Error('stock metric must remain point-in-time');
+          const budget=engine.budgetCapacity(projection,{Finance:0.01,Technology:0.02});
+          if(budget.spendingAuthority!==false)throw new Error('budget reference cannot authorize spending');
+          NODE
+      - name: Validate official document source registry
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const registry=JSON.parse(fs.readFileSync('apps/portal/assets/data/financial-document-registry.json','utf8'));
+          if(registry.governance.officialRegistryIsPrimarySource!==true)throw new Error('official registry must be primary source');
+          const asg=registry.documents.find(item=>item.id==='gnk-asg-fy2025-audited');
+          const group=registry.documents.find(item=>item.id==='gnk-dinamo-group-fy2025-consolidated');
+          if(asg?.officialRegistryId!=='fina-rgfi')throw new Error('FINA source missing');
+          if(group?.officialRegistryId!=='colorado-secretary-of-state')throw new Error('Colorado source missing');
+          if(registry.governance.standaloneAndConsolidatedMustNotBeBlindlyAdded!==true)throw new Error('scope separation missing');
+          NODE
+      - name: Preserve empty strategic layer contract
+        run: |
           node <<'NODE'
           const fs=require('fs');
           const model=JSON.parse(fs.readFileSync('apps/portal/assets/data/strategy-performance-review.json','utf8'));
           const metrics=(model.layers||[]).flatMap(layer=>layer.metrics||[]);
-          if(metrics.some(metric=>metric.value!==null)) throw new Error('review metrics must remain empty until approved inputs exist');
-          if(!model.disclosure.includes('not statutory')) throw new Error('required disclosure missing');
+          if(metrics.some(metric=>metric.value!==null))throw new Error('strategic review metrics must remain empty until approved inputs exist');
+          if(!model.disclosure.includes('not statutory'))throw new Error('required disclosure missing');
           NODE
