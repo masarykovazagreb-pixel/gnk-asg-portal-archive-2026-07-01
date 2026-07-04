@@ -11,6 +11,7 @@ on:
       - 'apps/portal/media-access/**'
       - 'apps/portal/assets/admin-center-v2.js'
       - 'apps/portal/assets/admin-command-center-primary-v1.js'
+      - 'apps/portal/assets/admin-media-applications-entry-v1.js'
       - 'apps/portal/assets/media-command-center-v2.js'
       - 'apps/portal/assets/media-application-v1.js'
       - 'apps/portal/assets/media-access-v1.js'
@@ -40,6 +41,7 @@ jobs:
           set -euxo pipefail
           node --check apps/portal/assets/admin-center-v2.js
           node --check apps/portal/assets/admin-command-center-primary-v1.js
+          node --check apps/portal/assets/admin-media-applications-entry-v1.js
           node --check apps/portal/assets/media-command-center-v2.js
           node --check apps/portal/assets/media-application-v1.js
           node --check apps/portal/assets/media-access-v1.js
@@ -71,17 +73,19 @@ jobs:
           console.log(JSON.stringify({contacts:112,emails,automation,handoffTarget:42,missing:20}));
           JS
 
-      - name: Admin order and primary card
+      - name: Admin order and media application focus
         shell: bash
         run: |
           node <<'JS'
           const fs=require('node:fs');
           const admin=fs.readFileSync('apps/portal/assets/admin-center-v2.js','utf8');
-          const order=["label:'Komandni centar'","label:'Operator'","label:'Mail Studio'","label:'Auto Editor'"];
+          const mediaEntry=fs.readFileSync('apps/portal/assets/admin-media-applications-entry-v1.js','utf8');
+          const order=["label:'Komandni centar'","label:'Media prijave'","label:'Media Portal'","label:'Operator'","label:'Mail Studio'","label:'Auto Editor'"];
           let cursor=-1;
           for(const item of order){const next=admin.indexOf(item);if(next<=cursor)throw new Error(`bad Admin order: ${item}`);cursor=next;}
-          if(!admin.includes("const PRIORITIES = ['media','operator','mail']"))throw new Error('bad Admin priorities');
-          console.log('ADMIN_ORDER=VALID');
+          if(!admin.includes("const PRIORITIES = ['media','mediaApplications','mediaPortal']"))throw new Error('base media priorities missing');
+          for(const marker of ['Pregled media prijava','Javna media prijavnica','grid.prepend(protectedCard)','heroMediaReview'])if(!mediaEntry.includes(marker))throw new Error(`media focus marker missing: ${marker}`);
+          console.log('ADMIN_MEDIA_FOCUS=VALID');
           JS
 
       - name: Locked sending and human decision markers
