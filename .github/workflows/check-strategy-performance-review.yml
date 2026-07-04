@@ -28,17 +28,22 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate models and projection syntax
+      - name: Validate JSON models
         run: |
           set -euxo pipefail
-          node -e "const fs=require('fs'); for (const f of process.argv.slice(1)) JSON.parse(fs.readFileSync(f,'utf8'));" \
+          for file in \
             apps/portal/assets/data/operator-os-config.json \
             apps/portal/assets/data/strategy-performance-review.json \
             apps/portal/assets/data/financial-planning-baseline.json \
             apps/portal/assets/data/financial-document-registry.json \
-            apps/portal/assets/data/budget-planning-envelope.json
-          node --check apps/portal/assets/js/financial-projection-engine-v1.js
-          node --check apps/portal/assets/js/budget-planning-console-v1.js
+            apps/portal/assets/data/budget-planning-envelope.json; do
+            echo "VALIDATING_JSON=$file"
+            node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" "$file"
+          done
+      - name: Check projection engine syntax
+        run: node --check apps/portal/assets/js/financial-projection-engine-v1.js
+      - name: Check budget console syntax
+        run: node --check apps/portal/assets/js/budget-planning-console-v1.js
       - name: Verify route and disclosure controls
         run: |
           set -euxo pipefail
@@ -126,7 +131,7 @@ jobs:
           set -euxo pipefail
           grep -q '27-department Budget Planning Envelope' apps/portal/assets/js/budget-planning-console-v1.js
           grep -q 'Reference only' apps/portal/assets/js/budget-planning-console-v1.js
-          grep -q 'session-only' apps/portal/assets/data/budget-planning-envelope.json
+          grep -q 'customApprovedCeilingStoredInSessionOnly' apps/portal/assets/data/budget-planning-envelope.json
           ! grep -q 'localStorage' apps/portal/assets/js/budget-planning-console-v1.js
           ! grep -E "method:['\"](POST|PUT|PATCH|DELETE)" apps/portal/assets/js/budget-planning-console-v1.js
           ! grep -q 'EMAIL.send' apps/portal/assets/js/budget-planning-console-v1.js
