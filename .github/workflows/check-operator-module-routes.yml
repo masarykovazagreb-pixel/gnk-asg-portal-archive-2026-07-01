@@ -8,6 +8,7 @@ on:
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
       - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js'
       - 'workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs'
       - 'scripts/validate-operator-module-routes.mjs'
       - '.github/workflows/check-operator-module-routes.yml'
@@ -24,11 +25,14 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Check auth and route syntax
+      - name: Check auth route and review syntax
         run: |
           set -euxo pipefail
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
+          node --check apps/portal/assets/media-applications-review-v1.js
           node --check workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
       - name: Validate all configured module routes
         run: node scripts/validate-operator-module-routes.mjs
@@ -56,3 +60,21 @@ jobs:
           grep -q 'First, register your newsroom' apps/portal/media-application/index.html
           grep -q 'Create access or continue your application' apps/portal/media-application/index.html
           echo 'Public media application URL and self-registration contract preserved.'
+      - name: Verify protected applications review center
+        run: |
+          set -euxo pipefail
+          test -s apps/portal/assets/media-applications-review-v1.css
+          test -s apps/portal/assets/media-applications-review-v1.js
+          grep -q "const isAdminRegistration=path=>path==='/media-registration-admin'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q 'authorizeCampaignMailer' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q '/api/media-registration-admin/applications' workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
+          grep -q 'handleMediaRegistrationReviewAdmin' workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
+          grep -q 'patchMediaRegistrationAdminPage' workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
+          grep -q 'media-applications-review-v1.js' workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
+          grep -q 'media-applications-review-v1.css' workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
+          grep -q 'media_registration_documents' workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
+          grep -q 'media_registration_audit' workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
+          grep -q 'downloadUrl' workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
+          grep -q 'Media Applications Review Center' apps/portal/assets/media-applications-review-v1.js
+          grep -q 'Ne šalje automatski masovni e-mail' apps/portal/assets/media-applications-review-v1.js
+          echo 'Protected application review center contract verified.'
