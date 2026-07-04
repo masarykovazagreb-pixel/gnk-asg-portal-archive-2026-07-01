@@ -37,7 +37,9 @@ jobs:
       - name: Verify review-only behavior
         run: |
           set -euxo pipefail
-          if grep -Eqi 'fetch\([^)]*,[^)]*method:[[:space:]]*["'"'](POST|PUT|PATCH|DELETE)' apps/portal/design-review/index.html; then
-            echo 'Design Review Console must remain read-only.' >&2
-            exit 1
-          fi
+          node <<'NODE'
+          const fs=require('fs');
+          const source=fs.readFileSync('apps/portal/design-review/index.html','utf8');
+          const writeFetch=/fetch\s*\([\s\S]{0,400}?method\s*:\s*['"](?:POST|PUT|PATCH|DELETE)['"]/i;
+          if(writeFetch.test(source)) throw new Error('Design Review Console must remain read-only');
+          NODE
