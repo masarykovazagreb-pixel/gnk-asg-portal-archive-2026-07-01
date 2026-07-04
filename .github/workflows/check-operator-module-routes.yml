@@ -1,0 +1,25 @@
+name: Check Operator Module Routes
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
+      - 'scripts/validate-operator-module-routes.mjs'
+      - '.github/workflows/check-operator-module-routes.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate all configured module routes
+        run: node scripts/validate-operator-module-routes.mjs
