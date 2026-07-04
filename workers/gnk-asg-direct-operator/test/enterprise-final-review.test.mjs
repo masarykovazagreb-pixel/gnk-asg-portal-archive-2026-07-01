@@ -7,6 +7,7 @@ assert.deepEqual(GLOBAL_CENTRES.map(item=>item.id),['new-york','london','paris',
 for(let index=0;index<10;index+=1)assert.equal(mail.randomCentreIndex(index),index);
 assert.equal(mail.randomCentreIndex(10),0);
 assert.equal(mail.randomCentreIndex(-1),9);
+
 let originalKvReads=0;
 const randomKv=mail.randomCentreKv({
   async get(key){originalKvReads+=1;return key==='unrelated-key'?'42':'0';},
@@ -19,6 +20,18 @@ for(const key of ['mail-studio:centre-index:outbound:v1','mail-studio:centre-ind
 assert.equal(originalKvReads,0);
 assert.equal(await randomKv.get('unrelated-key'),'42');
 assert.equal(originalKvReads,1);
+
+const fallbackKv=mail.randomCentreKv();
+for(const key of ['mail-studio:centre-index:global:v1','mail-studio:centre-index:outbound:v1','mail-studio:centre-index:inbound:v1']){
+  const selected=Number(await fallbackKv.get(key));
+  assert.ok(Number.isInteger(selected)&&selected>=0&&selected<10);
+}
+assert.equal(await fallbackKv.get('unrelated-key'),null);
+await fallbackKv.put('ignored','value');
+
+const fallbackEnv=mail.withNormalizedEmail({});
+const fallbackSelected=Number(await fallbackEnv.GNK_ASG_KV.get('mail-studio:centre-index:outbound:v1'));
+assert.ok(Number.isInteger(fallbackSelected)&&fallbackSelected>=0&&fallbackSelected<10);
 
 const institutional = [
   'Body',
@@ -52,7 +65,7 @@ assert.equal(normalizedInstitutional.text, normalizedInstitutional.plainText);
 assert.equal((normalizedInstitutional.html.match(/data-gnk-asg-signature=/g) || []).length, 1);
 assert.match(normalizedInstitutional.html, /gnk-asg-email-logo-transparent\.png/);
 assert.doesNotMatch(normalizedInstitutional.html, /gnk-asg-email-logo-final\.png/);
-assert.equal(normalizedInstitutional.headers['X-GNK-ASG-Signature-Parity'], 'GNK_ASG_MAIL_STUDIO_EXTENSION_V8_20260704_RANDOM_GLOBAL_CENTRES');
+assert.equal(normalizedInstitutional.headers['X-GNK-ASG-Signature-Parity'], 'GNK_ASG_MAIL_STUDIO_EXTENSION_V9_20260704_RANDOM_GLOBAL_CENTRES_FALLBACK');
 assert.equal(normalizedInstitutional.headers['X-GNK-ASG-Centre-Selection'],'RANDOM_10');
 
 const normalizedMedia = normalizeMailStudioSignature({
