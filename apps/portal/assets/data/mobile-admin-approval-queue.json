@@ -1,0 +1,69 @@
+{
+  "version": "2026-07-04.mobile-admin-approval.01",
+  "mode": "review-only",
+  "productionChange": false,
+  "title": "Mobile Admin Approval Queue",
+  "scope": "Central review data for actions that must be approved before any operational or public effect.",
+  "guards": {
+    "noMassSending": true,
+    "noAutomaticDeployment": true,
+    "noDnsChange": true,
+    "noCloudflareRouteChange": true,
+    "noSecretsChange": true,
+    "humanApprovalRequired": true
+  },
+  "queues": [
+    {
+      "id": "deploy-review",
+      "label": "Controlled deploy review",
+      "status": "blocked-until-explicit-token",
+      "requiredApproval": "Odobravam kontrolirani deploy - token 1203",
+      "items": [
+        "branch divergence check",
+        "preview route check",
+        "noindex guard check",
+        "rollback point check",
+        "asset integrity check"
+      ]
+    },
+    {
+      "id": "mail-review",
+      "label": "Mail and campaign review",
+      "status": "paused",
+      "requiredApproval": "manual test only",
+      "items": [
+        "sender identity check",
+        "recipient allowlist check",
+        "bounce risk check",
+        "template preview check",
+        "attachment check"
+      ]
+    },
+    {
+      "id": "publishing-review",
+      "label": "Publishing and SEO review",
+      "status": "draft-only",
+      "requiredApproval": "human editorial approval",
+      "items": [
+        "metadata check",
+        "schema check",
+        "canonical and hreflang check",
+        "image alt text check",
+        "public wording check"
+      ]
+    },
+    {
+      "id": "registry-review",
+      "label": "Registry and deadline review",
+      "status": "internal-only",
+      "requiredApproval": "verified document evidence",
+      "items": [
+        "source verification",
+        "case reference verification",
+        "deadline verification",
+        "public-display eligibility check"
+      ]
+    }
+  ],
+  "nextSmallStep": "Expose these queues inside Mission Control as read-only approval cards."
+}
