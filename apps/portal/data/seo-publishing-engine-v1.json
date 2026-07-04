@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "status": "ready-for-ui-binding",
+  "title": "SEO / Publishing Engine",
+  "lastReviewed": "2026-07-04",
+  "checks": [
+    {"id":"meta-title","label":"Meta title","required":true},
+    {"id":"meta-description","label":"Meta description","required":true},
+    {"id":"canonical","label":"Canonical URL","required":true},
+    {"id":"hreflang","label":"Hreflang alternates","required":true},
+    {"id":"open-graph","label":"Open Graph metadata","required":true},
+    {"id":"twitter-card","label":"Twitter/X card metadata","required":true},
+    {"id":"schema","label":"Structured data JSON-LD","required":true},
+    {"id":"sitemap","label":"Sitemap coverage","required":true},
+    {"id":"image-alt","label":"Image alt and metadata","required":true},
+    {"id":"internal-links","label":"Internal links","required":true},
+    {"id":"print-view","label":"Print/PDF-ready layout","required":false}
+  ],
+  "publishingStates": ["draft","review","approved","published","archived"],
+  "languages": ["hr","en"],
+  "safetyPolicy": "Publishing actions require review state before public promotion. Metadata generation is allowed; production routing is not changed by this model.",
+  "reviewCadence": "During final build window, check news, publications and SEO status every two hours."
+}
