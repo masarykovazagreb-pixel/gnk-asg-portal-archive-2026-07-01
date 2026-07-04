@@ -1,0 +1,24 @@
+{
+  "version": "1.0.0",
+  "status": "approval-queue-ready",
+  "title": "Mobile Admin / Approval Queue",
+  "lastReviewed": "2026-07-04",
+  "principle": "Executive mobile view for approvals, holds, previews and audit-ready decisions.",
+  "queueTypes": [
+    {"id":"publish-content","label":"Publish content","risk":"medium","requires":"preview and SEO validation"},
+    {"id":"send-email","label":"Send email","risk":"high","requires":"recipient review, subject review and explicit send approval"},
+    {"id":"deploy-release","label":"Deploy release","risk":"critical","requires":"branch diff, build status and explicit deploy approval"},
+    {"id":"registry-review","label":"Registry review","risk":"critical","requires":"evidence file and deadline review"},
+    {"id":"media-update","label":"Media update","risk":"medium","requires":"document and public text review"}
+  ],
+  "decisionStates": ["new","needs-review","approved","rejected","on-hold","completed"],
+  "mobileCards": [
+    "Today priority",
+    "Blocked actions",
+    "Awaiting executive approval",
+    "Recent completed decisions",
+    "Risk flags",
+    "Recovery status"
+  ],
+  "auditFields": ["createdAt","createdBy","risk","summary","sourceLink","decision","decidedBy","decidedAt","notes"]
+}
