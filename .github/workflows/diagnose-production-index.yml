@@ -33,3 +33,5 @@ jobs:
         run: node scripts/verify-public-redesign-contract.mjs shell
       - name: Validate Campaign Mailer contracts
         run: node scripts/verify-public-redesign-contract.mjs campaign
+      - name: Validate compatibility and runtime entrypoints
+        run: node scripts/verify-public-redesign-contract.mjs entrypoints
