@@ -1,0 +1,51 @@
+name: Check Digital Workforce Public Contract
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/digital-workforce/**'
+      - 'apps/portal/about-the-group/**'
+      - 'apps/portal/o-grupi/**'
+      - 'apps/portal/the-code/intelligence/**'
+      - 'apps/portal/assets/data/digital-workforce-blueprint.json'
+      - 'apps/portal/assets/data/digital-workforce-governance.json'
+      - 'apps/portal/assets/data/seo-entity-registry.json'
+      - 'apps/portal/assets/js/digital-workforce-directory-v1.js'
+      - 'apps/portal/assets/js/editorial-operations-runtime-v1.js'
+      - 'apps/portal/assets/public-menu-v18.js'
+      - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
+      - 'workers/gnk-asg-direct-operator/src/editorial-workflow-v1.js'
+      - 'apps/portal/editorial-operations/release-queue/index.html'
+      - 'scripts/validate-digital-workforce-public-v2.mjs'
+      - '.github/workflows/check-digital-workforce-public.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check JavaScript syntax
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/js/digital-workforce-directory-v1.js
+          node --check apps/portal/assets/public-menu-v18.js
+          node --check apps/portal/assets/js/editorial-operations-runtime-v1.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check scripts/validate-digital-workforce-public-v2.mjs
+      - name: Validate directory governance SEO and safety locks
+        run: node scripts/validate-digital-workforce-public-v2.mjs
+      - name: Confirm review-only execution model
+        run: |
+          set -euxo pipefail
+          grep -q 'permissions:' .github/workflows/check-digital-workforce-public.yml
+          grep -q 'contents: read' .github/workflows/check-digital-workforce-public.yml
+          grep -q 'This workflow performs no deployment and no email submission.' .github/workflows/deploy-luxury-index-pr.yml
+          echo 'Review validation only. Deployment, publication, DNS, Cloudflare, secret and email actions are outside this workflow.'
