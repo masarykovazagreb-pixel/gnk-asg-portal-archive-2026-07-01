@@ -110,4 +110,19 @@ jobs:
 
       - name: Wrangler dry run
         working-directory: workers/gnk-asg-direct-operator
-        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+        shell: bash
+        run: |
+          set +e
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator > wrangler-dry-run.log 2>&1
+          status=$?
+          cat wrangler-dry-run.log
+          exit "$status"
+
+      - name: Upload Wrangler diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wrangler-dry-run-log
+          path: workers/gnk-asg-direct-operator/wrangler-dry-run.log
+          if-no-files-found: error
+          retention-days: 1
