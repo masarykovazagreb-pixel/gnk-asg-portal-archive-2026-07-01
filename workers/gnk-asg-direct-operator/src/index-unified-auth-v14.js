@@ -1,6 +1,6 @@
 import app from './index-portal-final-v13.js';
 
-const VERSION='GNK_ASG_UNIFIED_AUTH_V17_20260704_ENTERPRISE_SCOPE';
+const VERSION='GNK_ASG_UNIFIED_AUTH_V18_20260704_MEDIA_REVIEW_SCOPE';
 const COOKIE='gnk_asg_admin_session';
 const MAX_AGE=43200;
 const LOGIN='/admin-login';
@@ -34,11 +34,12 @@ const isProtectedApi=path=>path==='/operator'||path.startsWith('/operator/')||
   path.startsWith('/api/mail-center/')||path.startsWith('/api/news-admin')||
   path.startsWith('/api/pdf-publisher')||path.startsWith('/api/social-share')||
   path.startsWith('/api/wa-center')||path.startsWith('/api/media-command-center')||
-  path.startsWith('/api/media-portal-admin')||path.startsWith('/api/campaign-mailer')||
-  path.startsWith('/api/editorial-operations')||path.startsWith('/api/registry-center')||
-  path.startsWith('/api/deployment')||path.startsWith('/api/mobile-admin')||
-  path.startsWith('/api/seo')||path.startsWith('/api/strategy-performance')||
-  path.startsWith('/api/entities')||path.startsWith('/api/mission-control')||EXACT_API.has(path);
+  path.startsWith('/api/media-portal-admin')||path.startsWith('/api/media-registration-admin')||
+  path.startsWith('/api/campaign-mailer')||path.startsWith('/api/editorial-operations')||
+  path.startsWith('/api/registry-center')||path.startsWith('/api/deployment')||
+  path.startsWith('/api/mobile-admin')||path.startsWith('/api/seo')||
+  path.startsWith('/api/strategy-performance')||path.startsWith('/api/entities')||
+  path.startsWith('/api/mission-control')||EXACT_API.has(path);
 
 function json(data,status=200,extra={}){
   return new Response(JSON.stringify(data,null,2),{status,headers:{
