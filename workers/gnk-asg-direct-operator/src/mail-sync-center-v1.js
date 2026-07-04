@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_MAIL_SYNC_CENTER_V1_20260704';
+export const VERSION='GNK_ASG_MAIL_SYNC_CENTER_V1_20260704_HEADER_OBJECT_FIX';
 export const UI_PATH='/mail-sync-center';
 export const API_PREFIX='/api/mail-sync';
 
@@ -14,6 +14,7 @@ const MAX_TEXT=120000,MAX_HTML=220000,MAX_RAW=5*1024*1024;
 const emailOf=value=>{if(!value)return'';if(Array.isArray(value))return emailOf(value[0]);if(typeof value==='object')return clean(value.email||value.address).toLowerCase();const raw=clean(value),match=raw.match(/<([^>]+)>/);return clean(match?.[1]||raw).toLowerCase();};
 const nameOf=value=>{if(!value)return'';if(typeof value==='object')return clean(value.name);const match=clean(value).match(/^\s*"?([^"<]+?)"?\s*</);return clean(match?.[1]);};
 const header=(message,name)=>{try{return clean(message?.headers?.get?.(name));}catch{return'';}};
+const headerObject=(payload,name)=>{const headers=payload?.headers;if(headers instanceof Headers)return clean(headers.get(name));if(!headers||typeof headers!=='object')return'';const key=Object.keys(headers).find(item=>item.toLowerCase()===String(name).toLowerCase());return key?clean(headers[key]):'';};
 const normalizeId=value=>clean(value).replace(/^<|>$/g,'').slice(0,500);
 const referencesOf=value=>(clean(value).match(/<[^>]+>|[^\s]+/g)||[]).map(normalizeId).filter(Boolean).slice(0,100);
 const addresses=value=>{const input=Array.isArray(value)?value:[value],items=[];for(const part of input.flatMap(item=>String(item??'').split(/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)|;/))){const email=emailOf(part);if(email)items.push({email,name:nameOf(part)});}return[...new Map(items.map(item=>[item.email,item])).values()];};
