@@ -1,8 +1,9 @@
 import app from './index-mail-studio-bridge-v17.js';
 import {handleMediaCommandCenter,handleMediaCommandCenterEmail,VERSION as MEDIA_VERSION} from './media-command-center-v1.js';
 import {withoutLegacyMediaAcknowledgement,sendGlobalMediaAutoReply,VERSION as GLOBAL_REPLY_VERSION} from './media-global-auto-reply-v1.js';
+import {MANDATORY_BCC,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 
-export const VERSION=`GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260701_${GLOBAL_REPLY_VERSION}`;
+export const VERSION=`GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V22_20260704_INBOUND_ARCHIVE_${GLOBAL_REPLY_VERSION}_${SIGNATURE_VERSION}`;
 const COOKIE='gnk_asg_admin_session';
 const MAX_AGE=43200;
 const enc=new TextEncoder();
@@ -42,6 +43,12 @@ async function versionResponse(request,env,ctx){const response=await app.fetch(r
 function header(message,name){try{return clean(message?.headers?.get?.(name));}catch{return'';}}
 function address(value){const text=clean(value);const match=text.match(/<([^>]+)>/);return clean(match?.[1]||text).toLowerCase();}
 function mediaTarget(message){return address(message?.to||header(message,'to'))===MEDIA_EMAIL;}
+async function archiveMediaInbound(message){
+  if(message?.canBeForwarded===false||typeof message?.forward!=='function')return{status:'SKIPPED',reason:'forward_unavailable'};
+  const headers=new Headers();headers.set('X-GNK-ASG-Archive-Copy','media-inbound');headers.set('X-GNK-ASG-Original-Recipient',MEDIA_EMAIL);headers.set('X-GNK-ASG-Archive-Contract',SIGNATURE_VERSION);
+  try{await message.forward(MANDATORY_BCC,headers);return{status:'FORWARDED',recipient:MANDATORY_BCC};}
+  catch(error){console.error('media-inbound-archive',error);return{status:'FAILED',recipient:MANDATORY_BCC,error:String(error?.message||error).slice(0,300)};}
+}
 
 export default{
   async fetch(request,env,ctx){
@@ -62,9 +69,11 @@ export default{
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
   async email(message,env,ctx){
     if(mediaTarget(message)){
+      const archive=await archiveMediaInbound(message);
       let processingError=null;
       try{await handleMediaCommandCenterEmail(message,withoutLegacyMediaAcknowledgement(env),ctx);}catch(error){processingError=error;console.error('media-command-center-email',error);}
-      return sendGlobalMediaAutoReply(message,env,{error:processingError});
+      const reply=await sendGlobalMediaAutoReply(message,env,{error:processingError});
+      return{...reply,archive};
     }
     if(typeof app.email==='function')return app.email(message,env,ctx);
   }
