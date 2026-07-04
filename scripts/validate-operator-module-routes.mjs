@@ -14,14 +14,31 @@ assert.equal(new Set(modules.map(item=>item.id)).size,modules.length,'Module IDs
 assert.equal(new Set(modules.map(item=>item.route)).size,modules.length,'Module routes moraju biti jedinstvene.');
 
 const gateway=read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js');
+const mailSyncFacade=read('workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js');
+const authLayer=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js');
 const dynamicContracts={
-  '/email-status/':[
-    'isEmailStatusPath',
-    'handleEmailStatusRequest',
-    "path==='/email-status'",
-    "path.startsWith('/email-status/')",
-    'loginRedirect(request)'
-  ]
+  '/email-status/':{
+    source:gateway,
+    required:[
+      'isEmailStatusPath',
+      'handleEmailStatusRequest',
+      "path==='/email-status'",
+      "path.startsWith('/email-status/')",
+      'loginRedirect(request)'
+    ]
+  },
+  '/mail-studio/':{
+    source:`${gateway}\n${mailSyncFacade}\n${authLayer}`,
+    required:[
+      "from './mail-studio-extension-v4.js'",
+      "PUBLIC_PREFIX='/api/mail-center/sync'",
+      "INTERNAL_PREFIX='/api/mail-sync'",
+      'handleMailSyncCenter',
+      'gnk-mail-sync-center-ui',
+      "path.startsWith('/api/mail-center/')",
+      "'/mail-studio'"
+    ]
+  }
 };
 
 let dynamicCount=0;
@@ -31,10 +48,10 @@ for(const module of modules){
   assert.equal(parsed.origin,'https://review.gnk-asg.local',`Module ruta mora biti same-origin: ${module.route}`);
   assert.match(routePath,/^\/(?:[a-z0-9-]+\/)+$/u,`Neispravan module pathname: ${module.route}`);
   for(const key of parsed.searchParams.keys())assert.match(key,/^[a-z][a-z0-9-]*$/u,`Neispravan query ključ u ${module.route}`);
-  if(module.delivery==='worker-dynamic-authenticated'){
-    const required=dynamicContracts[routePath];
-    assert.ok(required,`Nedokumentirana dinamička ruta: ${module.route}`);
-    for(const token of required)assert.ok(gateway.includes(token),`${module.route} nema Worker dokaz: ${token}`);
+  if(['worker-dynamic-authenticated','worker-native-authenticated'].includes(module.delivery)){
+    const contract=dynamicContracts[routePath];
+    assert.ok(contract,`Nedokumentirana dinamička ruta: ${module.route}`);
+    for(const token of contract.required)assert.ok(contract.source.includes(token),`${module.route} nema Worker dokaz: ${token}`);
     dynamicCount++;
     continue;
   }
