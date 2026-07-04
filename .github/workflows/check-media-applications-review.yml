@@ -10,6 +10,7 @@ on:
       - 'apps/portal/design-review/**'
       - 'apps/portal/enterprise/**'
       - 'apps/portal/mission-control/**'
+      - 'apps/portal/mobile-admin/**'
       - 'apps/portal/assets/media-applications-review-v1.css'
       - 'apps/portal/assets/media-applications-review-v1.js'
       - 'apps/portal/assets/admin-media-applications-entry-v1.js'
@@ -94,9 +95,21 @@ jobs:
             echo 'Mission Control must not render individual application records.' >&2
             exit 1
           fi
+      - name: Verify Mobile Approval Queue privacy and action lock
+        run: |
+          set -euxo pipefail
+          grep -q '/api/media-registration-admin/applications?page=1&pageSize=10' apps/portal/mobile-admin/index.html
+          grep -q 'Prikazani su samo zbirni podaci' apps/portal/mobile-admin/index.html
+          grep -q 'Ova verzija nema aktivne Approve, Reject, Publish, Send ili Deploy akcije' apps/portal/mobile-admin/index.html
+          grep -q '/media-registration-admin/' apps/portal/mobile-admin/index.html
+          grep -q '/media-application/?lang=en' apps/portal/mobile-admin/index.html
+          if grep -q 'data\.items' apps/portal/mobile-admin/index.html; then
+            echo 'Mobile Approval Queue must not render individual application records.' >&2
+            exit 1
+          fi
       - name: Preserve review-only execution
         run: |
           set -euxo pipefail
-          ! grep -R 'wrangler deploy' apps/portal/assets/media-applications-review-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
-          ! grep -R 'EMAIL.send' apps/portal/assets/media-applications-review-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
+          ! grep -R 'wrangler deploy' apps/portal/assets/media-applications-review-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js apps/portal/mobile-admin/index.html
+          ! grep -R 'EMAIL.send' apps/portal/assets/media-applications-review-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js apps/portal/mobile-admin/index.html
           echo 'No deployment or mail send action exists in the review center.'
