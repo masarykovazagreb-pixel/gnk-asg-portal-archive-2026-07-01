@@ -39,14 +39,28 @@ const fallbackSelected=Number(await fallbackEnv.GNK_ASG_KV.get('mail-studio:cent
 assert.ok(Number.isInteger(fallbackSelected)&&fallbackSelected>=0&&fallbackSelected<10);
 
 const institutionalProfile=PROFILES.office;
+const legacyInstitutional=[
+  'Body',
+  '',
+  institutionalProfile.name,
+  'GNK ASG d.o.o.',
+  'Zagrebačka cesta 130, 10090 Zagreb',
+  'OIB: 75227917632 · MBS: 081512375',
+  'Web: https://gnk-asg.hr',
+  `E-mail: ${institutionalProfile.email}`
+].join('\n');
 const normalizedInstitutional=normalizeMailStudioSignature({
   from:{email:institutionalProfile.email,name:institutionalProfile.name},
-  text:'Body',
-  plainText:'Body',
-  html:'<html><body><p>Body</p><table data-gnk-asg-signature="legacy"><tr><td>legacy</td></tr></table></body></html>',
+  text:legacyInstitutional,
+  plainText:legacyInstitutional,
+  html:'<html><body><p>Body</p><table data-gnk-asg-signature="legacy"><tr><td>OIB: 75227917632 · MBS: 081512375</td></tr></table></body></html>',
   headers:{'X-GNK-ASG-Global-Centre':'London, United Kingdom'}
 });
 assert.match(normalizedInstitutional.text,/Global Service Centre: London, United Kingdom/);
+assert.doesNotMatch(normalizedInstitutional.text,/OIB: 75227917632/);
+assert.doesNotMatch(normalizedInstitutional.text,/MBS: 081512375/);
+assert.doesNotMatch(normalizedInstitutional.html,/OIB: 75227917632/);
+assert.doesNotMatch(normalizedInstitutional.html,/MBS: 081512375/);
 assert.equal(normalizedInstitutional.text,normalizedInstitutional.plainText);
 assert.equal((normalizedInstitutional.html.match(/data-gnk-asg-signature=/g)||[]).length,1);
 assert.match(normalizedInstitutional.html,/gnk-asg-email-logo-transparent\.png/);
