@@ -1,6 +1,7 @@
 import {validatePublicationReadiness,publicationAttribution,VERSION as PUBLICATION_READINESS_VERSION} from './publication-readiness-v1.js';
+import {renderPublicationDocument,VERSION as PUBLICATION_DOCUMENT_VERSION} from './publication-document-v1.js';
 
-export const VERSION=`GNK_DINAMO_THE_CODE_EDITORIAL_DRAFT_PLANNER_V2_20260704_${PUBLICATION_READINESS_VERSION}`;
+export const VERSION=`GNK_DINAMO_THE_CODE_EDITORIAL_DRAFT_PLANNER_V3_20260704_${PUBLICATION_READINESS_VERSION}_${PUBLICATION_DOCUMENT_VERSION}`;
 export const API_PREFIX='/api/editorial-operations';
 export const PLAN_TIMEZONE='UTC';
 
@@ -14,6 +15,7 @@ export const EDITORIAL_DESKS=Object.freeze([
 
 const clean=value=>String(value??'').trim();
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-editorial-planner':VERSION}});
+const html=(body,status=200)=>new Response(body,{status,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store','x-robots-tag':'noindex,nofollow,noarchive','x-gnk-editorial-planner':VERSION,'x-gnk-publication-preview':PUBLICATION_DOCUMENT_VERSION}});
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const kvOf=env=>env?.EDITORIAL_KV||env?.GNK_ASG_CONFIG_KV||env?.GNK_ASG_KV||null;
 const datePattern=/^\d{4}-\d{2}-\d{2}$/;
@@ -183,7 +185,7 @@ export const isEditorialOperationsApi=path=>path===API_PREFIX||path.startsWith(`
 export async function handleEditorialOperationsApi(request,env){
   const path=pathOf(request),url=new URL(request.url),binding=kvOf(env);
   if(request.method==='GET'&&path===`${API_PREFIX}/config`){
-    return json({ok:true,version:VERSION,publicationReadinessVersion:PUBLICATION_READINESS_VERSION,project:'GNK DINAMO Ltd.',editorialBrand:'THE CODE Intelligence',connectedEntity:'GNK ASG d.o.o.',profiles:EDITORIAL_DESKS,automaticPublication:false});
+    return json({ok:true,version:VERSION,publicationReadinessVersion:PUBLICATION_READINESS_VERSION,publicationDocumentVersion:PUBLICATION_DOCUMENT_VERSION,project:'GNK DINAMO Ltd.',editorialBrand:'THE CODE Intelligence',connectedEntity:'GNK ASG d.o.o.',profiles:EDITORIAL_DESKS,automaticPublication:false});
   }
   if(request.method==='GET'&&path===`${API_PREFIX}/plan`){
     const requested=clean(url.searchParams.get('date'))||utcDate();
@@ -207,6 +209,12 @@ export async function handleEditorialOperationsApi(request,env){
     const body=await request.json().catch(()=>({}));
     const readiness=validatePublicationReadiness(body);
     return json({ok:readiness.ok,readiness,attribution:publicationAttribution(body)},readiness.ok?200:422);
+  }
+  if(request.method==='POST'&&path===`${API_PREFIX}/publication/preview`){
+    const body=await request.json().catch(()=>({}));
+    const readiness=validatePublicationReadiness(body);
+    if(!readiness.ok)return json({ok:false,readiness,attribution:publicationAttribution(body)},422);
+    try{return html(renderPublicationDocument(body))}catch(error){return json({ok:false,error:String(error?.message||error),readiness:error?.readiness||readiness},422)}
   }
   return json({ok:false,error:'not_found'},404);
 }
