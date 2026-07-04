@@ -1,0 +1,32 @@
+{
+  "version": "2026-07-04-operator-inventory-01",
+  "mode": "review",
+  "productionChange": false,
+  "deploymentRequired": false,
+  "modules": [
+    { "id": "home", "path": "/", "status": "existing", "role": "public entry and group overview" },
+    { "id": "operator-dashboard", "path": "/operator-dashboard/", "status": "existing", "role": "private operator interface" },
+    { "id": "mail-studio", "path": "/mail-studio/", "status": "existing", "role": "manual message workspace" },
+    { "id": "campaign-mailer", "path": "/campaign-mailer/", "status": "to-verify", "role": "controlled campaign review" },
+    { "id": "media-center", "path": "/media-center/", "status": "to-verify", "role": "media assets and accreditation" },
+    { "id": "email-status", "path": "/email-status/", "status": "to-verify", "role": "delivery and reputation status" },
+    { "id": "registry-center", "path": "/registry-center/", "status": "target", "role": "registry deadlines and filing status" },
+    { "id": "publishing", "path": "/objave/", "status": "existing", "role": "publications" },
+    { "id": "news", "path": "/vijesti/", "status": "existing", "role": "news" },
+    { "id": "assistant", "path": "/assistant/", "status": "existing", "role": "ai assistance" }
+  ],
+  "guards": [
+    "no merge without approval",
+    "no production deploy without approval",
+    "no dns changes",
+    "no cloudflare route changes",
+    "no secrets changes",
+    "no bulk sending"
+  ],
+  "next": [
+    "read existing route files",
+    "add review dashboard from manifest",
+    "verify static links",
+    "prepare controlled deploy checklist"
+  ]
+}
