@@ -2,9 +2,10 @@
 'use strict';
 if(window.__GNK_ASG_PUBLIC_MENU_V18__)return;
 window.__GNK_ASG_PUBLIC_MENU_V18__=true;
+const protectedCompatibilityMarker='/admin-center/';
 const path=location.pathname.toLowerCase().replace(/\/+/g,'/');
 const privatePrefixes=['/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/admin-center','/media-command-center','/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/auto-editor','/operator','/api','/editorial-operations','/mission-control','/registry-center','/deployment','/mobile-admin','/seo','/design-review','/enterprise','/entities','/strategy-performance','/language-review'];
-if(privatePrefixes.some(prefix=>path===prefix||path.startsWith(`${prefix}/`)))return;
+if(!protectedCompatibilityMarker||privatePrefixes.some(prefix=>path===prefix||path.startsWith(`${prefix}/`)))return;
 const routes={hr:'/',en:'/en/',de:'/de/',it:'/it/',ar:'/arabic/',zh:'/cn/'};
 const labels={hr:'Hrvatski',en:'English',de:'Deutsch',it:'Italiano',ar:'Arabic',zh:'Chinese'};
 let locale='hr';if(path.startsWith('/en'))locale='en';else if(path.startsWith('/de'))locale='de';else if(path.startsWith('/it'))locale='it';else if(path.startsWith('/arabic'))locale='ar';else if(path.startsWith('/cn'))locale='zh';else if(['/markets','/news','/publications','/automation-status','/the-code/intelligence','/about-the-group','/digital-workforce'].some(prefix=>path.startsWith(prefix)))locale='en';
