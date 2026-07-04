@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_MEDIA_APPLICATIONS_REVIEW_V1_20260704';
+export const VERSION='GNK_ASG_MEDIA_APPLICATIONS_REVIEW_V2_20260704';
 export const ADMIN_API='/api/media-registration-admin';
 
 const clean=value=>String(value??'').trim();
@@ -30,8 +30,29 @@ function completionScore(data){
   const checks=[newsroom.legalName,newsroom.country,newsroom.website,newsroom.editorName,newsroom.editorEmail,newsroom.editorPhone,participantCount(data)>0,travel.bookingMethod,travel.departureCity,travel.preferredAirport,hotel.roomType,hotel.checkIn,hotel.checkOut,declarations.newsroomAuthorization,declarations.costPolicy,declarations.privacyConsent,declarations.accuracy,programme.mainPresentation!==undefined];
   return Math.round(checks.filter(Boolean).length/checks.length*100);
 }
+function hostname(value){
+  const raw=clean(value).toLowerCase();
+  if(!raw)return'';
+  try{return new URL(/^https?:\/\//.test(raw)?raw:`https://${raw}`).hostname.replace(/^www\./,'');}catch{return'';}
+}
+function emailDomain(value){return clean(value).toLowerCase().split('@')[1]?.replace(/^www\./,'')||'';}
+function domainsMatch(left,right){return Boolean(left&&right&&(left===right||left.endsWith(`.${right}`)||right.endsWith(`.${left}`)));}
+function ageDays(value){const time=Date.parse(value||'');return Number.isFinite(time)?Math.floor((Date.now()-time)/86400000):0;}
+function reviewFlags(row,data,score,documentCount){
+  const flags=[],status=clean(row.status).toUpperCase()||'DRAFT',website=hostname(data?.newsroom?.website),mailDomain=emailDomain(row.email||data?.newsroom?.editorEmail);
+  const add=(code,severity,label)=>flags.push({code,severity,label});
+  if(score<80)add('INCOMPLETE_PROFILE','medium','Profil je popunjen manje od 80%');
+  if(['SUBMITTED','APPROVED','NEEDS_TRAVEL_DOCUMENTS','TRAVEL_CONFIRMED'].includes(status)&&documentCount===0)add('NO_DOCUMENTS','medium','Predana prijava nema učitanih dokumenata');
+  if(Number(row.duplicate_email_count||0)>1)add('DUPLICATE_EMAIL','high','Ista e-mail adresa postoji u više profila');
+  if(Number(row.duplicate_outlet_count||0)>1)add('DUPLICATE_OUTLET','medium','Isti naziv redakcije postoji u više profila');
+  if(website&&mailDomain&&!domainsMatch(website,mailDomain))add('DOMAIN_MISMATCH','high','Domena web-stranice i službenog e-maila se ne podudaraju');
+  if(['DRAFT','NEEDS_INFORMATION'].includes(status)&&ageDays(row.updated_at)>7)add('STALE_APPLICATION','medium','Prijava nije ažurirana više od sedam dana');
+  if(clean(row.last_error))add('DELIVERY_ERROR','high','Postoji evidentirana greška dostave');
+  if(row.expires_at&&Date.parse(row.expires_at)<Date.now())add('ACCESS_EXPIRED','high','Pristupni kod je istekao');
+  return flags;
+}
 function publicListRow(row){
-  const data=parseJson(row.data_json,{}),newsroom=data.newsroom||{};
+  const data=parseJson(row.data_json,{}),newsroom=data.newsroom||{},documentCount=Number(row.document_count||0),score=completionScore(data),flags=reviewFlags(row,data,score,documentCount);
   return{
     mailCode:row.mail_code,
     applicationId:row.application_id||'',
@@ -47,10 +68,16 @@ function publicListRow(row){
     email:row.email||newsroom.editorEmail||'',
     editorName:newsroom.editorName||'',
     participants:participantCount(data),
-    completionScore:completionScore(data),
-    documentCount:Number(row.document_count||0)
+    completionScore:score,
+    documentCount,
+    duplicateEmailCount:Number(row.duplicate_email_count||0),
+    duplicateOutletCount:Number(row.duplicate_outlet_count||0),
+    reviewFlags:flags,
+    reviewPriority:flags.some(item=>item.severity==='high')?'high':flags.length?'medium':'clear',
+    hasAttention:flags.length>0
   };
 }
+const listSelect=`SELECT d.mail_code,d.application_id,d.status,d.revision,d.data_json,d.submitted_at,d.approved_at,d.created_at,d.updated_at,a.outlet,a.email,a.country,a.expires_at,a.last_error,(SELECT COUNT(*) FROM media_registration_documents x WHERE x.mail_code=d.mail_code) document_count,(SELECT COUNT(*) FROM media_invitation_access e WHERE LOWER(e.email)=LOWER(a.email) AND e.email<>'') duplicate_email_count,(SELECT COUNT(*) FROM media_invitation_access o WHERE LOWER(o.outlet)=LOWER(a.outlet) AND o.outlet<>'') duplicate_outlet_count FROM media_registration_drafts d JOIN media_invitation_access a ON a.mail_code=d.mail_code`;
 async function applications(request,env){
   const db=await ensureSchema(env),url=new URL(request.url);
   const query=clean(url.searchParams.get('query')).slice(0,120);
@@ -64,16 +91,16 @@ async function applications(request,env){
   if(country){clauses.push('a.country=?');binds.push(country);}
   const where=clauses.length?`WHERE ${clauses.join(' AND ')}`:'';
   const countRow=await db.prepare(`SELECT COUNT(*) total FROM media_registration_drafts d JOIN media_invitation_access a ON a.mail_code=d.mail_code ${where}`).bind(...binds).first();
-  const rows=(await db.prepare(`SELECT d.mail_code,d.application_id,d.status,d.revision,d.data_json,d.submitted_at,d.approved_at,d.created_at,d.updated_at,a.outlet,a.email,a.country,(SELECT COUNT(*) FROM media_registration_documents x WHERE x.mail_code=d.mail_code) document_count FROM media_registration_drafts d JOIN media_invitation_access a ON a.mail_code=d.mail_code ${where} ORDER BY CASE d.status WHEN 'SUBMITTED' THEN 0 WHEN 'NEEDS_INFORMATION' THEN 1 WHEN 'NEEDS_TRAVEL_DOCUMENTS' THEN 2 WHEN 'APPROVED' THEN 3 WHEN 'TRAVEL_CONFIRMED' THEN 4 WHEN 'DRAFT' THEN 5 ELSE 6 END,d.updated_at DESC LIMIT ? OFFSET ?`).bind(...binds,pageSize,(page-1)*pageSize).all()).results||[];
+  const rows=(await db.prepare(`${listSelect} ${where} ORDER BY CASE d.status WHEN 'SUBMITTED' THEN 0 WHEN 'NEEDS_INFORMATION' THEN 1 WHEN 'NEEDS_TRAVEL_DOCUMENTS' THEN 2 WHEN 'APPROVED' THEN 3 WHEN 'TRAVEL_CONFIRMED' THEN 4 WHEN 'DRAFT' THEN 5 ELSE 6 END,d.updated_at DESC LIMIT ? OFFSET ?`).bind(...binds,pageSize,(page-1)*pageSize).all()).results||[];
   const summaries=(await db.prepare(`SELECT status,COUNT(*) count FROM media_registration_drafts GROUP BY status ORDER BY status`).all()).results||[];
   const countries=(await db.prepare(`SELECT DISTINCT country FROM media_invitation_access WHERE country<>'' ORDER BY country`).all()).results||[];
-  const total=Number(countRow?.total||0);
-  return json({ok:true,version:VERSION,items:rows.map(publicListRow),pagination:{page,pageSize,total,pages:Math.max(1,Math.ceil(total/pageSize))},summary:Object.fromEntries(summaries.map(item=>[item.status,Number(item.count)])),countries:countries.map(item=>item.country),filters:{query,status,country},time:new Date().toISOString()});
+  const items=rows.map(publicListRow),total=Number(countRow?.total||0);
+  return json({ok:true,version:VERSION,items,pagination:{page,pageSize,total,pages:Math.max(1,Math.ceil(total/pageSize))},summary:Object.fromEntries(summaries.map(item=>[item.status,Number(item.count)])),pageAttention:items.filter(item=>item.hasAttention).length,countries:countries.map(item=>item.country),filters:{query,status,country},time:new Date().toISOString()});
 }
 async function application(request,env){
   const db=await ensureSchema(env),url=new URL(request.url),mailCode=clean(url.searchParams.get('mailCode')).toUpperCase();
   if(!validCode(mailCode))return json({ok:false,error:'invalid_mail_code'},400);
-  const row=await db.prepare(`SELECT d.mail_code,d.application_id,d.status,d.revision,d.data_json,d.submitted_at,d.approved_at,d.created_at,d.updated_at,a.outlet,a.email,a.recipient_name,a.recipient_title,a.country,a.language,a.issued_at,a.expires_at,a.status access_status,a.mail_status,a.sent_at,a.provider_message_id,a.last_error FROM media_registration_drafts d JOIN media_invitation_access a ON a.mail_code=d.mail_code WHERE d.mail_code=?`).bind(mailCode).first();
+  const row=await db.prepare(`SELECT d.mail_code,d.application_id,d.status,d.revision,d.data_json,d.submitted_at,d.approved_at,d.created_at,d.updated_at,a.outlet,a.email,a.recipient_name,a.recipient_title,a.country,a.language,a.issued_at,a.expires_at,a.status access_status,a.mail_status,a.sent_at,a.provider_message_id,a.last_error,(SELECT COUNT(*) FROM media_registration_documents x WHERE x.mail_code=d.mail_code) document_count,(SELECT COUNT(*) FROM media_invitation_access e WHERE LOWER(e.email)=LOWER(a.email) AND e.email<>'') duplicate_email_count,(SELECT COUNT(*) FROM media_invitation_access o WHERE LOWER(o.outlet)=LOWER(a.outlet) AND o.outlet<>'') duplicate_outlet_count FROM media_registration_drafts d JOIN media_invitation_access a ON a.mail_code=d.mail_code WHERE d.mail_code=?`).bind(mailCode).first();
   if(!row)return json({ok:false,error:'application_not_found'},404);
   const documents=(await db.prepare(`SELECT id,category,filename,mime_type,size_bytes,sha256,created_at FROM media_registration_documents WHERE mail_code=? ORDER BY created_at DESC`).bind(mailCode).all()).results||[];
   const auditRows=(await db.prepare(`SELECT id,event_type,detail_json,created_at FROM media_registration_audit WHERE mail_code=? ORDER BY created_at DESC LIMIT 200`).bind(mailCode).all()).results||[];
@@ -103,8 +130,8 @@ export async function handleMediaRegistrationReviewAdmin(request,env){
 export async function patchMediaRegistrationAdminPage(response){
   if(!response||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
   let html=await response.text();
-  const css='<link rel="stylesheet" href="/assets/media-applications-review-v1.css?v=20260704-1">';
-  const script='<script defer src="/assets/media-applications-review-v1.js?v=20260704-1"></script>';
+  const css='<link rel="stylesheet" href="/assets/media-applications-review-v1.css?v=20260704-2">';
+  const script='<script defer src="/assets/media-applications-review-v1.js?v=20260704-2"></script>';
   if(!html.includes('media-applications-review-v1.css'))html=html.replace('</head>',`${css}</head>`);
   if(!html.includes('media-applications-review-v1.js'))html=html.replace('</body>',`${script}</body>`);
   const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-robots-tag','noindex,nofollow,noarchive');headers.set('x-gnk-asg-media-review',VERSION);
