@@ -1,0 +1,100 @@
+name: Check Enterprise Final Review
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/enterprise/**'
+      - 'apps/portal/about-the-group/**'
+      - 'apps/portal/o-grupi/**'
+      - 'apps/portal/registry-center/**'
+      - 'apps/portal/entities/**'
+      - 'apps/portal/assets/data/group-profile-review.json'
+      - 'apps/portal/assets/data/registry-center-review.json'
+      - 'apps/portal/assets/email/gnk-media-signature.html'
+      - 'apps/portal/assets/email/gnk-media-autoresponder.html'
+      - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
+      - '.github/workflows/check-enterprise-final-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Check JavaScript module syntax
+        run: |
+          set -euxo pipefail
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+
+      - name: Validate controlled JSON models
+        run: |
+          set -euxo pipefail
+          node -e "const fs=require('fs'); for (const f of process.argv.slice(1)) JSON.parse(fs.readFileSync(f,'utf8'));" \
+            apps/portal/assets/data/group-profile-review.json \
+            apps/portal/assets/data/registry-center-review.json
+
+      - name: Verify review routes and deployment locks
+        run: |
+          set -euxo pipefail
+          for file in \
+            apps/portal/enterprise/index.html \
+            apps/portal/about-the-group/index.html \
+            apps/portal/o-grupi/index.html \
+            apps/portal/registry-center/index.html \
+            apps/portal/entities/index.html; do
+            test -s "$file"
+            grep -qi 'noindex' "$file"
+          done
+          grep -q '/registry-center/' apps/portal/enterprise/index.html
+          grep -q '/about-the-group/' apps/portal/enterprise/index.html
+          grep -q '/o-grupi/' apps/portal/enterprise/index.html
+          grep -q 'Production deploy locked' apps/portal/enterprise/index.html
+          grep -q 'Mass email locked' apps/portal/enterprise/index.html
+
+      - name: Verify logo and signature parity
+        run: |
+          set -euxo pipefail
+          logo='gnk-asg-email-logo-transparent.png'
+          grep -q "$logo" apps/portal/assets/email/gnk-media-signature.html
+          grep -q "$logo" apps/portal/assets/email/gnk-media-autoresponder.html
+          grep -q 'data-gnk-asg-media-signature' apps/portal/assets/email/gnk-media-signature.html
+          grep -q '{{personalized_greeting}}' apps/portal/assets/email/gnk-media-autoresponder.html
+          grep -q '{{personalized_response}}' apps/portal/assets/email/gnk-media-autoresponder.html
+          grep -q '{{reference}}' apps/portal/assets/email/gnk-media-autoresponder.html
+          grep -q 'mail-studio-extension-v3.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q 'normalizeMailStudioSignature' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
+          grep -q 'enforceMediaGoldSignature' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
+
+      - name: Test duplicate plain-text signature removal
+        run: |
+          set -euxo pipefail
+          node <<'NODE'
+          const pattern=/\n{2,}(?:Srdačan pozdrav,\n{2,})?[^\n]{1,220}\nGNK ASG d\.o\.o\.\nZagrebačka cesta 130, 10090 Zagreb\nOIB: 75227917632 · MBS: 081512375\nWeb: https:\/\/gnk-asg\.hr\nE-mail: [^\n]+\s*$/u;
+          const source='Body\n\nNermin Sefić | Managing Director\nManaging Director\nGlobal Service Centre: London\nnermin.sefic@gnk-asg.hr\nhttps://gnk-asg.hr\n\nSrdačan pozdrav,\n\nNermin Sefić | Managing Director\nGNK ASG d.o.o.\nZagrebačka cesta 130, 10090 Zagreb\nOIB: 75227917632 · MBS: 081512375\nWeb: https://gnk-asg.hr\nE-mail: nermin.sefic@gnk-asg.hr';
+          const result=source.replace(pattern,'').trim();
+          if(result.includes('OIB: 75227917632')) throw new Error('duplicate institutional trailer remains');
+          if(!result.includes('Global Service Centre: London')) throw new Error('primary profile signature removed');
+          NODE
+
+      - name: Verify no production infrastructure changes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euxo pipefail
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -E '(^|/)(wrangler\.toml|wrangler\.jsonc|\.dev\.vars|secrets?\.)|^(apps/portal/index\.html|apps/portal/en/index\.html)$'; then
+            echo 'Production infrastructure or locked public entry point changed.' >&2
+            exit 1
+          fi
