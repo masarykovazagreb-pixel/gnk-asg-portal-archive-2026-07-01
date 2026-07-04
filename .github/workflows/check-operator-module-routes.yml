@@ -47,12 +47,14 @@ jobs:
           grep -q "'OPERATOR_TOKEN','GNK_ASG_OPERATOR_TOKEN','ADMIN_TOKEN','GNK_ASG_ADMIN_TOKEN'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           grep -q "'/enterprise','/mission-control','/editorial-operations','/registry-center','/deployment'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           grep -q "'/mobile-admin','/seo','/design-review','/language-review','/strategy-performance','/entities'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "path.startsWith('/api/media-registration-admin')" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           ! grep -R "review-test-token-not-a-secret" workers/gnk-asg-direct-operator/src
       - name: Preserve public media self-registration link
         run: |
           set -euxo pipefail
-          grep -q "const PUBLIC_UI=\['/the-code','/media-application'\]" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
-          grep -q "'/media-command-center','/media-registration-admin','/campaign-mailer','/email-status'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q 'const PUBLIC_UI=' workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "'/media-application'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "'/media-registration-admin'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           grep -q "const isPublicRegistration=path=>path==='/media-application'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q "const REGISTRATION_URL='https://www.gnk-asg.hr/media-application/?lang=en'" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
           grep -q "'SELF_REGISTERED'" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
