@@ -1,0 +1,23 @@
+{
+  "version": "2026-07-04.registry-review.1",
+  "status": "read-only-review",
+  "registries": [
+    {"id":"dziv","label":"DZIV","jurisdiction":"Croatia","category":"trademark and intellectual property","deadlineTracking":true},
+    {"id":"euipo","label":"EUIPO","jurisdiction":"European Union","category":"EU trademark and design","deadlineTracking":true},
+    {"id":"wipo","label":"WIPO","jurisdiction":"International","category":"international intellectual property","deadlineTracking":true},
+    {"id":"colorado","label":"Colorado Secretary of State","jurisdiction":"United States / Colorado","category":"corporate registry","deadlineTracking":true},
+    {"id":"court-register","label":"Sudski registar","jurisdiction":"Croatia","category":"corporate registry","deadlineTracking":true},
+    {"id":"fina","label":"FINA","jurisdiction":"Croatia","category":"financial and publication records","deadlineTracking":true}
+  ],
+  "requiredFields": ["matter","registry","jurisdiction","reference","filingDate","deadline","owner","status","documentLink","nextAction","riskLevel","sourceStatus"],
+  "statusModel": ["draft","source-required","ready-for-review","active","response-required","completed","blocked"],
+  "riskModel": ["low","medium","high","critical"],
+  "matters": [],
+  "controls": [
+    "No legal, trademark, corporate or financial registry claim may be shown as LIVE without an approved source.",
+    "Deadline fields must include timezone and the official source date.",
+    "Registry submission requires explicit Executive Office approval.",
+    "This review page does not file, submit, amend or withdraw any registry matter.",
+    "Documents remain placeholders until an approved document store is connected."
+  ]
+}
