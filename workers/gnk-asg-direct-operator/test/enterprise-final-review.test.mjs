@@ -7,7 +7,7 @@ const institutional = [
   '',
   'Nermin Sefić | Managing Director',
   'Managing Director',
-  'Global Service Centre: London',
+  'Global Service Centre: London, United Kingdom',
   'nermin.sefic@gnk-asg.hr',
   'https://gnk-asg.hr',
   '',
@@ -22,14 +22,19 @@ const institutional = [
 ].join('\n');
 
 const normalizedInstitutional = normalizeMailStudioSignature({
-  from: {email: 'nermin.sefic@gnk-asg.hr'},
+  from: {email: 'nermin.sefic@gnk-asg.hr', name: 'Nermin Sefić | Managing Director'},
   text: institutional,
-  plainText: institutional
+  plainText: institutional,
+  html: '<html><body><p>Body</p><table data-gnk-asg-signature="legacy"><tr><td>legacy</td></tr></table></body></html>',
+  headers: {'X-GNK-ASG-Global-Centre': 'London, United Kingdom'}
 });
-assert.match(normalizedInstitutional.text, /Global Service Centre: London/);
+assert.match(normalizedInstitutional.text, /Global Service Centre: London, United Kingdom/);
 assert.doesNotMatch(normalizedInstitutional.text, /OIB: 75227917632/);
 assert.equal(normalizedInstitutional.text, normalizedInstitutional.plainText);
-assert.equal(normalizedInstitutional.headers['X-GNK-ASG-Signature-Parity'], 'GNK_ASG_MAIL_STUDIO_EXTENSION_V6_20260704_SIGNATURE_PARITY');
+assert.equal((normalizedInstitutional.html.match(/data-gnk-asg-signature=/g) || []).length, 1);
+assert.match(normalizedInstitutional.html, /gnk-asg-email-logo-transparent\.png/);
+assert.doesNotMatch(normalizedInstitutional.html, /gnk-asg-email-logo-final\.png/);
+assert.equal(normalizedInstitutional.headers['X-GNK-ASG-Signature-Parity'], 'GNK_ASG_MAIL_STUDIO_EXTENSION_V7_20260704_CANONICAL_SIGNATURES');
 
 const normalizedMedia = normalizeMailStudioSignature({
   from: {email: 'media@gnk-asg.hr'},
@@ -40,6 +45,13 @@ assert.match(normalizedMedia.text, /Media Relations & Accreditation Center/);
 assert.match(normalizedMedia.html, /gnk-asg-email-logo-transparent\.png/);
 assert.equal((normalizedMedia.html.match(/data-gnk-asg-media-signature=/g) || []).length, 1);
 assert.equal((normalizedMedia.text.match(/Media Relations & Accreditation Center/g) || []).length, 1);
+
+for (const email of ['office@gnk-asg.hr','legal@gnk-asg.hr','press@gnk-asg.hr','it@gnk-asg.hr','assistant@gnk-asg.hr','nermin.sefic@gnk-asg.hr','sefic@gnk-asg.hr','ubo@gnk-asg.hr']) {
+  const message=normalizeMailStudioSignature({from:{email},text:'Profile test',html:'<p>Profile test</p>',headers:{'X-GNK-ASG-Global-Centre':'Zagreb, Croatia'}});
+  assert.match(message.html,/gnk-asg-email-logo-transparent\.png/);
+  assert.equal((message.html.match(/data-gnk-asg-signature=/g)||[]).length,1);
+  assert.equal((message.text.match(/Global Service Centre:/g)||[]).length,1);
+}
 
 assert.equal(ai.detectLanguage('Poštovani, možete li potvrditi prijavu?'), 'hr');
 assert.equal(ai.detectLanguage('Guten Tag, können Sie bitte antworten?'), 'de');
