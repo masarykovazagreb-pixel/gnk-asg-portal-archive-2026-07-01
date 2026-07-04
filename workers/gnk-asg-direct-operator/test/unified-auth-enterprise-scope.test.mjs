@@ -11,7 +11,7 @@ async function readJson(response){return JSON.parse(await response.text());}
 for(const route of [
   '/enterprise/','/mission-control/','/editorial-operations/','/registry-center/',
   '/deployment/','/mobile-admin/','/seo/','/design-review/','/language-review/',
-  '/strategy-performance/','/entities/'
+  '/strategy-performance/','/entities/','/media-registration-admin/'
 ]){
   const response=await app.fetch(new Request(`${origin}${route}`),env,ctx);
   assert.equal(response.status,401,`${route} must require authentication`);
@@ -24,13 +24,17 @@ for(const route of [
 for(const route of [
   '/api/editorial-operations/status','/api/registry-center/status','/api/deployment/status',
   '/api/mobile-admin/status','/api/seo/status','/api/strategy-performance/status',
-  '/api/entities/status','/api/mission-control/status'
+  '/api/entities/status','/api/mission-control/status','/api/media-registration-admin/applications',
+  '/api/media-registration-admin/application?mailCode=GNK-MEDIA-20260704-XX-OPENABC-001'
 ]){
   const response=await app.fetch(new Request(`${origin}${route}`),env,ctx);
   assert.equal(response.status,401,`${route} must return API 401`);
   const payload=await readJson(response);
   assert.equal(payload.error,'unauthorized');
 }
+
+const publicApplication=await app.fetch(new Request(`${origin}/media-application/?lang=en`),env,ctx);
+assert.notEqual(publicApplication.status,401,'public media application must not require admin authentication');
 
 const loginResponse=await app.fetch(new Request(`${origin}/api/operator-session/login`,{
   method:'POST',
