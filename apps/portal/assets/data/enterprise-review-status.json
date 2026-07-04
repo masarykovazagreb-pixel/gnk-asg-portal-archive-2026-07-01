@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-04-review-status-01",
+  "version": "2026-07-04-review-status-02",
   "mode": "review-only",
   "productionChange": false,
   "mergeAllowed": false,
@@ -8,12 +8,19 @@
     "branch": "enterprise-os-v2-finalbuild",
     "base": "main",
     "state": "diverged",
-    "aheadBy": 7,
-    "behindBy": 1,
-    "note": "Before any controlled deploy, review the one commit currently on main and reconcile safely."
+    "aheadBy": 12,
+    "behindBy": 2,
+    "note": "Before any controlled deploy, review and reconcile the two commits currently on main. Do not merge or deploy until this is resolved."
   },
   "verifiedFiles": [
     "apps/portal/assets/data/operator-os-inventory.json",
+    "apps/portal/assets/data/enterprise-review-status.json",
+    "apps/portal/assets/data/registry-center-status.json",
+    "apps/portal/assets/data/mobile-admin-approval-queue.json",
+    "apps/portal/assets/data/seo-publication-readiness.json",
+    "apps/portal/assets/data/global-organization-profile.json",
+    "apps/portal/assets/data/publishing-division.json",
+    "apps/portal/assets/data/strategy-performance-monitor.json",
     "apps/portal/enterprise-platform.manifest.json",
     "apps/portal/enterprise-os-v2/index.html",
     "apps/portal/operator-dashboard/index.html"
@@ -22,11 +29,11 @@
     { "id": "operator-os-inventory", "status": "present", "risk": "low", "nextAction": "connect to visible review dashboard" },
     { "id": "enterprise-manifest", "status": "present", "risk": "low", "nextAction": "use as source of truth for final review" },
     { "id": "enterprise-os-v2-console", "status": "present", "risk": "medium", "nextAction": "refactor from one-line HTML before major edits" },
-    { "id": "operator-dashboard", "status": "present", "risk": "medium", "nextAction": "separate supervision layer from mail actions" },
-    { "id": "registry-center", "status": "planned", "risk": "medium", "nextAction": "add deadline data model first" },
-    { "id": "about-the-group", "status": "planned", "risk": "medium", "nextAction": "add transparent public copy and print structure" },
-    { "id": "publishing-seo", "status": "partial", "risk": "medium", "nextAction": "add SEO readiness checklist data model" },
-    { "id": "mobile-admin", "status": "planned", "risk": "medium", "nextAction": "define approval queue schema" }
+    { "id": "operator-dashboard", "status": "present", "risk": "medium", "nextAction": "show supervision layer and paused state above mail actions" },
+    { "id": "registry-center", "status": "model-present", "risk": "medium", "nextAction": "connect read-only status cards into Mission Control" },
+    { "id": "about-the-group", "status": "model-present", "risk": "medium", "nextAction": "connect transparent public copy and print structure" },
+    { "id": "publishing-seo", "status": "model-present", "risk": "medium", "nextAction": "connect SEO readiness panel and noindex guard" },
+    { "id": "mobile-admin", "status": "model-present", "risk": "medium", "nextAction": "connect approval queue as read-only mobile panel" }
   ],
   "guards": [
     "no mass sending",
@@ -34,7 +41,13 @@
     "no secrets changes",
     "no Cloudflare production route changes",
     "no merge without explicit approval",
-    "no deploy without explicit approval"
+    "no deploy without explicit approval",
+    "review-only public copy until approved"
   ],
-  "nextSmallStep": "Create registry deadline data model with review-only guard."
+  "currentBlockers": [
+    "branch diverged from main: 12 ahead and 2 behind at latest compare",
+    "large one-line HTML files are unsafe for major UI edits until refactored",
+    "Mission Control still needs visible read-only panels for registry, SEO, global organization and mobile approval"
+  ],
+  "nextSmallStep": "Connect review status snapshot into a visible Mission Control read-only panel."
 }
