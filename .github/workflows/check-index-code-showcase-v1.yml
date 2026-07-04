@@ -5,11 +5,14 @@ on:
     branches: [main]
     paths:
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js'
+      - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
       - 'apps/portal/assets/the-code-index-slot.css'
       - 'apps/portal/assets/the-code-visual-01.b64'
       - 'apps/portal/assets/the-code-visual-02.b64'
       - 'apps/portal/assets/gallery-brand-safety.js'
       - 'apps/portal/assets/the-code-linkedin-preview.svg'
+      - 'apps/portal/assets/the-code-new-york-countdown-v1.css'
+      - 'apps/portal/assets/the-code-new-york-countdown-v1.js'
       - 'apps/portal/the-code/**'
       - 'scripts/verify-the-code-public-launch.mjs'
       - '.github/workflows/check-index-code-showcase-v1.yml'
@@ -34,12 +37,15 @@ jobs:
         run: |
           set -euxo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-shell-v11.js
           node --check apps/portal/the-code/assets/the-code.js
           node --check apps/portal/assets/gallery-brand-safety.js
+          node --check apps/portal/assets/the-code-new-york-countdown-v1.js
           test -s apps/portal/assets/the-code-index-slot.css
           test -s apps/portal/assets/the-code-visual-01.b64
           test -s apps/portal/assets/the-code-visual-02.b64
           test -s apps/portal/assets/the-code-linkedin-preview.svg
+          test -s apps/portal/assets/the-code-new-york-countdown-v1.css
           test -s apps/portal/the-code/index.html
           test -s apps/portal/the-code/media-invitation/index.html
           test -s apps/portal/the-code/media-invitation/content-01.part
@@ -56,6 +62,9 @@ jobs:
           grep -q 'sandbox="allow-scripts"' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
           grep -q 'GNK_THE_CODE_HOME_FEATURE_20260702' apps/portal/assets/gallery-brand-safety.js
           grep -q '/the-code/media-invitation/' apps/portal/assets/gallery-brand-safety.js
+          grep -q '2026-10-07T11:30:00-04:00' apps/portal/assets/the-code-new-york-countdown-v1.js
+          grep -q '/assets/the-code-new-york-countdown-v1.js' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q '/assets/the-code-new-york-countdown-v1.css' workers/gnk-asg-direct-operator/src/public-shell-v11.js
           node scripts/verify-the-code-public-launch.mjs
       - name: Confirm both encoded files are WebP
         shell: bash
@@ -70,7 +79,7 @@ jobs:
               assert len(raw)>1000, (name,len(raw))
               print(name,len(raw),'WEBP_OK')
           PY
-      - name: Protect unrelated public index surfaces
+      - name: Protect canonical public index files
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -79,9 +88,19 @@ jobs:
           set -euxo pipefail
           changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           printf '%s\n' "$changed"
-          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/src/public-shell-v11\.js|workers/gnk-asg-direct-operator/src/index-lock-v4\.js)$'; then
-            echo 'Protected index surface changed.' >&2
+          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/src/index-lock-v4\.js)$'; then
+            echo 'Protected canonical index file changed.' >&2
             exit 1
           fi
+      - name: Preserve public shell safety contract
+        run: |
+          set -euxo pipefail
+          grep -q 'if(isPrivatePath(normalized))return html;' workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q "const indexPath=\['/','/en','/en/'\]" workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q "'/admin-center'" workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q "'/enterprise'" workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q "'/editorial-operations'" workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q "'/mobile-admin'" workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          grep -q "'/design-review'" workers/gnk-asg-direct-operator/src/public-shell-v11.js
       - name: Confirm canonical Worker validation ownership
         run: echo 'Worker syntax, import graph and dry run are validated by Validate GNK ASG Portal Release.'
