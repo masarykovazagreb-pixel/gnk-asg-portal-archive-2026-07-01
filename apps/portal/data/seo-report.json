@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-04T08:44:24.863407+00:00",
+  "generatedAt": "2026-07-04T19:40:05.916813+00:00",
   "site": "https://www.gnk-asg.hr/",
-  "publicPageCount": 128,
-  "noindexFileCount": 784,
+  "publicPageCount": 150,
+  "noindexFileCount": 786,
   "publicPages": [
     {
       "route": "/",
@@ -15,6 +15,18 @@
       "images": [],
       "priority": "1.0",
       "changefreq": "daily"
+    },
+    {
+      "route": "/about-the-group/",
+      "url": "https://www.gnk-asg.hr/about-the-group/",
+      "file": "about-the-group/index.html",
+      "lang": "en",
+      "title": "About the Group | GNK DINAMO Ltd. Group / GNK ASG",
+      "description": "Controlled review of the GNK DINAMO Ltd. Group and GNK ASG structure, governance layers, digital operations and…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
     },
     {
       "route": "/ai/",
@@ -57,6 +69,18 @@
       "changefreq": "monthly"
     },
     {
+      "route": "/arabic/",
+      "url": "https://www.gnk-asg.hr/arabic/",
+      "file": "arabic/index.html",
+      "lang": "ar",
+      "title": "GNK ASG d.o.o. | GNK DINAMO Ltd. Group | العربية",
+      "description": "نظرة مؤسسية باللغة العربية على GNK ASG d.o.o. وGNK DINAMO Ltd. Group.",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
       "route": "/assistant/",
       "url": "https://www.gnk-asg.hr/assistant/",
       "file": "assistant/index.html",
@@ -88,7 +112,7 @@
       "file": "autorske-objave/index.html",
       "lang": "hr",
       "title": "Autorske objave | GNK ASG d.o.o. | GNK DINAMO Ltd.",
-      "description": "Autorske objave o ekonomiji, kapitalu, transparentnosti, poduzetništvu, tržištima i digitalnom……………… Službeni…… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Autorske objave o ekonomiji, kapitalu, transparentnosti, poduzetništvu, tržištima i digitalnom……………… Službeni………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [
         "https://www.gnk-asg.hr/assets/logo-gnk-asg.svg"
@@ -102,7 +126,7 @@
       "file": "autorske-objave/kapital-prati-povjerenje.html",
       "lang": "hr",
       "title": "Kapital prati povjerenje | Nermin Sefić | GNK ASG d.o.o.",
-      "description": "Kapital prati povjerenje: autorski tekst Nermina Sefića o transparentnosti, ritmu objave… Službeni……………… Službeni… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Kapital prati povjerenje: autorski tekst Nermina Sefića o transparentnosti, ritmu objave… Službeni…………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [
         "https://www.gnk-asg.hr/assets/logo-gnk-asg.svg"
@@ -116,11 +140,23 @@
       "file": "autorske-objave/svjetska-ekonomija-i-lokalni-poduzetnik.html",
       "lang": "hr",
       "title": "Svjetska ekonomija i lokalni poduzetnik | Nermin Sefić | GNK ASG…",
-      "description": "Lokalni poduzetnik sve teže može ignorirati globalne trendove. Autorski tekst Nermina Sefića o…………… Službeni……… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Lokalni poduzetnik sve teže može ignorirati globalne trendove. Autorski tekst Nermina Sefića o…………… Službeni…………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [
         "https://www.gnk-asg.hr/assets/logo-gnk-asg.svg"
       ],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/cn/",
+      "url": "https://www.gnk-asg.hr/cn/",
+      "file": "cn/index.html",
+      "lang": "zh",
+      "title": "GNK ASG | 简体中文",
+      "description": "GNK ASG · GNK DINAMO Ltd. Group 面向全球运营的企业平台。 企业概况、公开财务信息、文件、THE CODE Intelligence 与受控数字运营。 财务数据 文件 English GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
       "priority": ".7",
       "changefreq": "weekly"
     },
@@ -137,12 +173,84 @@
       "changefreq": "monthly"
     },
     {
+      "route": "/de/",
+      "url": "https://www.gnk-asg.hr/de/",
+      "file": "de/index.html",
+      "lang": "de",
+      "title": "GNK ASG d.o.o. | GNK DINAMO Ltd. Group | Deutsch",
+      "description": "Deutsche Unternehmensübersicht der GNK ASG d.o.o. und der GNK DINAMO Ltd. Group: Struktur, Finanzkennzahlen…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/deployment/",
+      "url": "https://www.gnk-asg.hr/deployment/",
+      "file": "deployment/index.html",
+      "lang": "hr",
+      "title": "Deployment & Recovery Center | GNK DINAMO Ltd. Group / GNK ASG",
+      "description": "Review-only deployment, recovery, rollback and release-gate center for the GNK enterprise platform. Službeni… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/design-review/",
+      "url": "https://www.gnk-asg.hr/design-review/",
+      "file": "design-review/index.html",
+      "lang": "hr",
+      "title": "Design Review Console | GNK DINAMO Ltd. Group / GNK ASG",
+      "description": "Responsive visual review console for controlled enterprise platform modules before any production deployment…… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
       "route": "/digital-workforce/",
       "url": "https://www.gnk-asg.hr/digital-workforce/",
       "file": "digital-workforce/index.html",
-      "lang": "hr",
-      "title": "Digital Workforce | GNK DINAMO Ltd. Group / GNK ASG",
-      "description": "Global Operations Center and Digital Operations Team overview for GNK DINAMO Ltd. Group / GNK ASG Enterprise…",
+      "lang": "en",
+      "title": "Digital Workforce | GNK DINAMO Ltd. Group",
+      "description": "Review overview of 1,500 digital operations profiles across 27 departments and 43 organisational entity slots… Official content from the GNK ASG d.o.o. and GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/digital-workforce/directory/",
+      "url": "https://www.gnk-asg.hr/digital-workforce/directory/",
+      "file": "digital-workforce/directory/index.html",
+      "lang": "en",
+      "title": "Worker Directory | Digital Workforce | GNK DINAMO Ltd. Group",
+      "description": "Search and review 1,500 digital operations profiles across 27 departments and 43 GNK entity slots, with… Official… Official content from the GNK ASG d.o.o. and GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/digital-workforce/protocols/",
+      "url": "https://www.gnk-asg.hr/digital-workforce/protocols/",
+      "file": "digital-workforce/protocols/index.html",
+      "lang": "en",
+      "title": "Operating Protocols | Digital Workforce | GNK DINAMO Ltd. Group",
+      "description": "Public review of Digital Workforce intake, research, proposal, peer review, approval, execution, rollback, audit…… Official content from the GNK ASG d.o.o. and GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/digital-workforce/work-profiles/",
+      "url": "https://www.gnk-asg.hr/digital-workforce/work-profiles/",
+      "file": "digital-workforce/work-profiles/index.html",
+      "lang": "en",
+      "title": "Work Profiles | Digital Workforce | GNK DINAMO Ltd. Group",
+      "description": "Detailed review of 1,500 digital operations profiles with positions, countries, policies, work tasks, background…… Official content from the GNK ASG d.o.o. and GNK…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [],
       "priority": ".7",
@@ -244,6 +352,54 @@
         "https://www.gnk-asg.hr/assets/brand/media-kit/GNK_ASG_logo_gold_transparent.png",
         "https://www.gnk-asg.hr/assets/brand/media-kit/GNK_DINAMO_Ltd_logo_gold_transparent.png"
       ],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/editorial-operations/",
+      "url": "https://www.gnk-asg.hr/editorial-operations/",
+      "file": "editorial-operations/index.html",
+      "lang": "en",
+      "title": "Editorial Operations | GNK DINAMO Ltd. Group",
+      "description": "Review-only editorial operations console for international editorial profiles, daily draft planning, attribution…… Official content from the GNK ASG d.o.o. and GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/editorial-operations/editor/",
+      "url": "https://www.gnk-asg.hr/editorial-operations/editor/",
+      "file": "editorial-operations/editor/index.html",
+      "lang": "en",
+      "title": "Draft Editor | THE CODE Intelligence | GNK ASG d.o.o.",
+      "description": "Authenticated review-only editor for THE CODE Intelligence daily editorial slots. Official content from the GNK… Official content from the GNK ASG d.o.o. and GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/editorial-operations/launch-library/",
+      "url": "https://www.gnk-asg.hr/editorial-operations/launch-library/",
+      "file": "editorial-operations/launch-library/index.html",
+      "lang": "en",
+      "title": "Launch Library | THE CODE Intelligence | GNK ASG d.o.o.",
+      "description": "Review-only launch library of 60 planned THE CODE Intelligence publications with sourcing, attribution and human…… Official content from the GNK ASG d.o.o. and GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/editorial-operations/release-queue/",
+      "url": "https://www.gnk-asg.hr/editorial-operations/release-queue/",
+      "file": "editorial-operations/release-queue/index.html",
+      "lang": "en",
+      "title": "Release Queue | THE CODE Intelligence | GNK ASG d.o.o.",
+      "description": "Authenticated review-only release queue for THE CODE Intelligence editorial publications. Official content from… Official content from the GNK ASG d.o.o. and GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
       "priority": ".7",
       "changefreq": "weekly"
     },
@@ -374,7 +530,7 @@
       "url": "https://www.gnk-asg.hr/en/insights/2026/05/three-global-business-signals-2026-05-31/",
       "file": "en/insights/2026/05/three-global-business-signals-2026-05-31/index.html",
       "lang": "en",
-      "title": "Three Global Business Signals: AI Infrastructure, Capital……… |………",
+      "title": "Three Global Business Signals: AI Infrastructure, Capital……… |……………",
       "description": "GNK ASG Intelligence Desk reviews three global business signals for 31 May 2026: European AI data-centre…",
       "image": "https://www.gnk-asg.hr/assets/insight-global-business-brief-2026-05-31.svg",
       "images": [
@@ -532,7 +688,7 @@
       "file": "enterprise/index.html",
       "lang": "hr",
       "title": "Enterprise Platform Review Hub | GNK DINAMO Ltd. Group / GNK ASG",
-      "description": "Controlled review hub for GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform modules.",
+      "description": "Controlled review hub for Mission Control, media applications, THE CODE Intelligence, editorial operations… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [],
       "priority": ".7",
@@ -544,7 +700,7 @@
       "file": "entities/index.html",
       "lang": "hr",
       "title": "43 GNK Entity Slots | GNK DINAMO Ltd. Group / GNK ASG",
-      "description": "Controlled overview of 43 GNK organization slots and generated sample operations profiles. Službeni sadržaj………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Kontrolirani planski pregled GNK01–GNK43 entity slotova, registry pokrivenosti i digitalnih operativnih profila… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [],
       "priority": ".7",
@@ -622,7 +778,7 @@
       "file": "insights-hr/champions-final/index.html",
       "lang": "hr",
       "title": "Finale Lige prvaka kao tržište pažnje | GNK ASG",
-      "description": "Autorski osvrt o finalu Lige prvaka 2026., sportu, medijima, sigurnosti, turizmu i ekonomiji… Službeni……………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Autorski osvrt o finalu Lige prvaka 2026., sportu, medijima, sigurnosti, turizmu i ekonomiji… Službeni…………………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/insights/finale-lige-prvaka-trziste-paznje-gnk-asg.svg",
       "images": [
         "https://www.gnk-asg.hr/assets/insights/finale-lige-prvaka-trziste-paznje-gnk-asg.svg",
@@ -672,6 +828,18 @@
       "changefreq": "weekly"
     },
     {
+      "route": "/it/",
+      "url": "https://www.gnk-asg.hr/it/",
+      "file": "it/index.html",
+      "lang": "it",
+      "title": "GNK ASG d.o.o. | GNK DINAMO Ltd. Group | Italiano",
+      "description": "Panoramica aziendale in italiano di GNK ASG d.o.o. e GNK DINAMO Ltd. Group.",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
       "route": "/kontakt/",
       "url": "https://www.gnk-asg.hr/kontakt/",
       "file": "kontakt/index.html",
@@ -698,6 +866,18 @@
       "changefreq": "weekly"
     },
     {
+      "route": "/language-review/",
+      "url": "https://www.gnk-asg.hr/language-review/",
+      "file": "language-review/index.html",
+      "lang": "hr",
+      "title": "Language Review | GNK ASG",
+      "description": "Language Review HR i EN su primarne verzije. DE, IT, AR i ZH-CN ostaju noindex do jezičnog i vizualnog odobrenja…… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
       "route": "/legal/",
       "url": "https://www.gnk-asg.hr/legal/",
       "file": "legal/index.html",
@@ -710,12 +890,24 @@
       "changefreq": "monthly"
     },
     {
+      "route": "/mail-governance/",
+      "url": "https://www.gnk-asg.hr/mail-governance/",
+      "file": "mail-governance/index.html",
+      "lang": "en",
+      "title": "Mail Identity & Routing Governance — Review | GNK ASG d.o.o.",
+      "description": "Mail Identity & Routing Governance Review-only contract for sender identity, group-platform context and the…… Official content from the GNK ASG d.o.o. and GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
       "route": "/markets/",
       "url": "https://www.gnk-asg.hr/markets/",
       "file": "markets/index.html",
       "lang": "en",
       "title": "Markets | GNK ASG",
-      "description": "Home News AI Legal Contact Admin Markets and Reference Assets Market monitor, digital assets……… Official……………… Official content from the GNK ASG d.o.o. and GNK…",
+      "description": "Home News AI Legal Contact Admin Markets and Reference Assets Market monitor, digital assets……… Official…………………… Official content from the GNK ASG d.o.o. and GNK…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [],
       "priority": ".7",
@@ -739,11 +931,23 @@
       "file": "media-application/index.html",
       "lang": "hr",
       "title": "Media Application and Accreditation | GNK ASG Media Center",
-      "description": "Secure bilingual newsroom registration and travel portal for THE CODE, New York 2026. Službeni………… Službeni……… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
+      "description": "Secure bilingual newsroom registration and travel portal for THE CODE, New York 2026. Službeni………… Službeni…………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [],
       "priority": ".75",
       "changefreq": "monthly"
+    },
+    {
+      "route": "/media-center/",
+      "url": "https://www.gnk-asg.hr/media-center/",
+      "file": "media-center/index.html",
+      "lang": "en",
+      "title": "Media Command Center | GNK ASG",
+      "description": "Redirecting to Media Command Center … Official content from the GNK ASG d.o.o. and GNK DINAMO Ltd. Group portal.",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
     },
     {
       "route": "/media-kit-2026/",
@@ -792,8 +996,8 @@
       "url": "https://www.gnk-asg.hr/mission-control/",
       "file": "mission-control/index.html",
       "lang": "hr",
-      "title": "GNK DINAMO Ltd. Group / GNK ASG Mission Control",
-      "description": "Read-only Mission Control overview for the GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform.",
+      "title": "Mission Control | GNK DINAMO Ltd. Group / GNK ASG",
+      "description": "Review-only Mission Control for modules, safety gates, media applications, THE CODE Intelligence, editorial…… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [],
       "priority": ".7",
@@ -843,11 +1047,23 @@
       "file": "news/index.html",
       "lang": "en",
       "title": "Business and Technology News | GNK ASG Intelligence Desk",
-      "description": "Verified business, technology, market and economic news with a real image, summary and named…… Official content from the GNK ASG d.o.o. and GNK DINAMO Ltd. Group…",
+      "description": "Verified business, technology, market and economic news with a real image, summary and named…… Official content…… Official content from the GNK ASG d.o.o. and GNK…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [],
       "priority": ".9",
       "changefreq": "daily"
+    },
+    {
+      "route": "/o-grupi/",
+      "url": "https://www.gnk-asg.hr/o-grupi/",
+      "file": "o-grupi/index.html",
+      "lang": "hr",
+      "title": "O grupi | GNK DINAMO Ltd. Group / GNK ASG",
+      "description": "Kontrolirani pregled strukture GNK DINAMO Ltd. Group i GNK ASG, upravljačkih slojeva, digitalnih operacija i…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
     },
     {
       "route": "/objave/",
@@ -953,7 +1169,7 @@
       "url": "https://www.gnk-asg.hr/objave/aktual/analiza-lokalnog-trzista-kljuc-uspjeha-vaseg-poslovanja/",
       "file": "objave/aktual/analiza-lokalnog-trzista-kljuc-uspjeha-vaseg-poslovanja/index.html",
       "lang": "hr",
-      "title": "Analiza lokalnog tržišta: Ključ uspjeha vašeg poslovanja… |… |……",
+      "title": "Analiza lokalnog tržišta: Ključ uspjeha vašeg poslovanja… |… |………",
       "description": "Analiza lokalnog tržišta: Ključ uspjeha vašeg poslovanja — autorska kolumna Nermina Sefića, GNK ASG SEO arhiva…",
       "image": "https://www.gnk-asg.hr/assets/objave/aktual/analiza-lokalnog-trzista-kljuc-uspjeha-vaseg-poslovanja.png",
       "images": [
@@ -981,7 +1197,7 @@
       "url": "https://www.gnk-asg.hr/objave/aktual/efikasne-metode-istrazivanja-trzista-fokus-grupe-i-ankete/",
       "file": "objave/aktual/efikasne-metode-istrazivanja-trzista-fokus-grupe-i-ankete/index.html",
       "lang": "hr",
-      "title": "Efikasne metode istraživanja tržišta: Fokus grupe i ankete………………",
+      "title": "Efikasne metode istraživanja tržišta: Fokus grupe i ankete…………………",
       "description": "Efikasne metode istraživanja tržišta: Fokus grupe i ankete — autorska kolumna Nermina Sefića, GNK ASG SEO arhiva…",
       "image": "https://www.gnk-asg.hr/assets/objave/aktual/efikasne-metode-istrazivanja-trzista-fokus-grupe-i-ankete.png",
       "images": [
@@ -995,7 +1211,7 @@
       "url": "https://www.gnk-asg.hr/objave/aktual/istrazivanje-trzista-kljuc-uspjeha-za-nove-poduzetnike/",
       "file": "objave/aktual/istrazivanje-trzista-kljuc-uspjeha-za-nove-poduzetnike/index.html",
       "lang": "hr",
-      "title": "Istraživanje tržišta: Ključ uspjeha za nove poduzetnike |……………",
+      "title": "Istraživanje tržišta: Ključ uspjeha za nove poduzetnike |…………… |……",
       "description": "Istraživanje tržišta: Ključ uspjeha za nove poduzetnike — autorska kolumna Nermina Sefića, GNK ASG SEO arhiva…",
       "image": "https://www.gnk-asg.hr/assets/objave/aktual/istrazivanje-trzista-kljuc-uspjeha-za-nove-poduzetnike.png",
       "images": [
@@ -1009,7 +1225,7 @@
       "url": "https://www.gnk-asg.hr/objave/aktual/izrada-upitnika-za-istrazivanje-trzista-kljuc-uspjeha/",
       "file": "objave/aktual/izrada-upitnika-za-istrazivanje-trzista-kljuc-uspjeha/index.html",
       "lang": "hr",
-      "title": "Izrada upitnika za istraživanje tržišta: Ključ uspjeha |…… |…………",
+      "title": "Izrada upitnika za istraživanje tržišta: Ključ uspjeha |…… |……………",
       "description": "Izrada upitnika za istraživanje tržišta: Ključ uspjeha — autorska kolumna Nermina Sefića, GNK ASG SEO arhiva…",
       "image": "https://www.gnk-asg.hr/assets/objave/aktual/izrada-upitnika-za-istrazivanje-trzista-kljuc-uspjeha.png",
       "images": [
@@ -1037,7 +1253,7 @@
       "url": "https://www.gnk-asg.hr/objave/aktual/kako-pretvoriti-ideju-u-uspjesan-poduzetnicki-poduhvat/",
       "file": "objave/aktual/kako-pretvoriti-ideju-u-uspjesan-poduzetnicki-poduhvat/index.html",
       "lang": "hr",
-      "title": "Kako pretvoriti ideju u uspješan poduzetnički poduhvat |…… |…………",
+      "title": "Kako pretvoriti ideju u uspješan poduzetnički poduhvat |…… |……………",
       "description": "Kako pretvoriti ideju u uspješan poduzetnički poduhvat — autorska kolumna Nermina Sefića, GNK ASG SEO arhiva…",
       "image": "https://www.gnk-asg.hr/assets/objave/aktual/kako-pretvoriti-ideju-u-uspjesan-poduzetnicki-poduhvat.png",
       "images": [
@@ -1121,7 +1337,7 @@
       "url": "https://www.gnk-asg.hr/objave/aktual/kljucni-faktori-motivacije-za-pokretanje-vlastitog-posla/",
       "file": "objave/aktual/kljucni-faktori-motivacije-za-pokretanje-vlastitog-posla/index.html",
       "lang": "hr",
-      "title": "Ključni faktori motivacije za pokretanje vlastitog posla… |… |……",
+      "title": "Ključni faktori motivacije za pokretanje vlastitog posla… |… |………",
       "description": "Ključni faktori motivacije za pokretanje vlastitog posla — autorska kolumna Nermina Sefića, GNK ASG SEO arhiva…",
       "image": "https://www.gnk-asg.hr/assets/objave/aktual/kljucni-faktori-motivacije-za-pokretanje-vlastitog-posla.png",
       "images": [
@@ -1177,7 +1393,7 @@
       "url": "https://www.gnk-asg.hr/objave/aktual/unapredenje-prodaje-i-marketinga-za-uspjesno-poduzetnistvo/",
       "file": "objave/aktual/unapredenje-prodaje-i-marketinga-za-uspjesno-poduzetnistvo/index.html",
       "lang": "hr",
-      "title": "Unapređenje prodaje i marketinga za uspješno poduzetništvo………………",
+      "title": "Unapređenje prodaje i marketinga za uspješno poduzetništvo…………………",
       "description": "Unapređenje prodaje i marketinga za uspješno poduzetništvo — autorska kolumna Nermina Sefića, GNK ASG SEO arhiva…",
       "image": "https://www.gnk-asg.hr/assets/objave/aktual/unapredenje-prodaje-i-marketinga-za-uspjesno-poduzetnistvo.png",
       "images": [
@@ -1192,7 +1408,7 @@
       "file": "objave/automatizacija-urednickih-i-komunikacijskih-procesa/index.html",
       "lang": "hr",
       "title": "Automatizacija uredničkih i komunikacijskih procesa | GNK ASG",
-      "description": "Kako automatizirati objave, e-mail i kontaktne upite bez gubitka kontrole nad osjetljivim… Službeni……… Službeni… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Kako automatizirati objave, e-mail i kontaktne upite bez gubitka kontrole nad osjetljivim… Službeni……… Službeni……… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/automatizacija-urednickih-i-komunikacijskih-procesa-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/automatizacija-urednickih-i-komunikacijskih-procesa-gnk-asg-nermin-sefic.jpg"
@@ -1206,7 +1422,7 @@
       "file": "objave/business-intelligence-za-upravu-i-vlasnike/index.html",
       "lang": "hr",
       "title": "Business intelligence za upravu i vlasnike | GNK ASG",
-      "description": "Kako pretvoriti financijske, tržišne i operativne podatke u sustav ranog upozorenja i… Službeni sadržaj portala……… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Kako pretvoriti financijske, tržišne i operativne podatke u sustav ranog upozorenja i… Službeni sadržaj… Službeni… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/business-intelligence-za-upravu-i-vlasnike-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/business-intelligence-za-upravu-i-vlasnike-gnk-asg-nermin-sefic.jpg"
@@ -1220,7 +1436,7 @@
       "file": "objave/cloud-native-poslovni-portal-kao-operativna-infrastruktura/index.html",
       "lang": "hr",
       "title": "Cloud-native poslovni portal kao operativna infrastruktura | GNK ASG",
-      "description": "Zašto moderan poslovni portal treba povezati javni sadržaj, podatke, automatizaciju i sigurnost……………… Službeni………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Zašto moderan poslovni portal treba povezati javni sadržaj, podatke, automatizaciju i sigurnost………………… Službeni… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/cloud-native-poslovni-portal-kao-operativna-infrastruktura-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/cloud-native-poslovni-portal-kao-operativna-infrastruktura-gnk-asg-nermin-sefic.jpg"
@@ -1248,7 +1464,7 @@
       "file": "objave/esg-i-odrziva-infrastruktura-u-sportu/index.html",
       "lang": "hr",
       "title": "ESG i održiva infrastruktura u sportu | GNK ASG",
-      "description": "Održivi sportski projekti trebaju povezati energetsku učinkovitost, zajednicu, upravljanje i……… Službeni………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Održivi sportski projekti trebaju povezati energetsku učinkovitost, zajednicu, upravljanje i……… Službeni……………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/esg-i-odrziva-infrastruktura-u-sportu-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/esg-i-odrziva-infrastruktura-u-sportu-gnk-asg-nermin-sefic.jpg"
@@ -1276,7 +1492,7 @@
       "file": "objave/financijska-otpornost-bez-dugorocnih-obveza/index.html",
       "lang": "hr",
       "title": "Financijska otpornost bez dugoročnih obveza | GNK ASG",
-      "description": "Model financijske otpornosti koji povezuje kapital, rezerve, disciplinu troškova i kontrolirano……………… Službeni………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Model financijske otpornosti koji povezuje kapital, rezerve, disciplinu troškova i kontrolirano………………… Službeni… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/financijska-otpornost-bez-dugorocnih-obveza-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/financijska-otpornost-bez-dugorocnih-obveza-gnk-asg-nermin-sefic.jpg"
@@ -1290,7 +1506,7 @@
       "file": "objave/financijsko-planiranje-medunarodnih-ulaganja/index.html",
       "lang": "hr",
       "title": "Financijsko planiranje međunarodnih ulaganja | GNK ASG",
-      "description": "Međunarodna ulaganja treba analizirati kroz novčani tok, poreze, valute, jurisdikcije i izlazne………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO Ltd…",
+      "description": "Međunarodna ulaganja treba analizirati kroz novčani tok, poreze, valute, jurisdikcije i izlazne………………… Službeni…… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/financijsko-planiranje-medunarodnih-ulaganja-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/financijsko-planiranje-medunarodnih-ulaganja-gnk-asg-nermin-sefic.jpg"
@@ -1304,7 +1520,7 @@
       "file": "objave/kako-strukturirati-grupu-povezanih-drustava/index.html",
       "lang": "hr",
       "title": "Kako strukturirati grupu povezanih društava | GNK ASG",
-      "description": "Praktičan okvir za upravljanje grupom kroz jasne uloge, izvještavanje i kontrolu međudruštvenih…………… Službeni……… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Praktičan okvir za upravljanje grupom kroz jasne uloge, izvještavanje i kontrolu međudruštvenih…………… Službeni…………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/kako-strukturirati-grupu-povezanih-drustava-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/kako-strukturirati-grupu-povezanih-drustava-gnk-asg-nermin-sefic.jpg"
@@ -1318,7 +1534,7 @@
       "file": "objave/kapital-i-rezerve-kao-osnova-stabilnog-razvoja/index.html",
       "lang": "hr",
       "title": "Kapital i rezerve kao osnova stabilnog razvoja | GNK ASG",
-      "description": "Zašto kapital i rezerve predstavljaju operativni alat za ulaganja, zaštitu i dugoročni razvoj………… Službeni…… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
+      "description": "Zašto kapital i rezerve predstavljaju operativni alat za ulaganja, zaštitu i dugoročni razvoj………… Službeni………… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/kapital-i-rezerve-kao-osnova-stabilnog-razvoja-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/kapital-i-rezerve-kao-osnova-stabilnog-razvoja-gnk-asg-nermin-sefic.jpg"
@@ -1332,7 +1548,7 @@
       "file": "objave/kiberneticka-sigurnost-i-poslovni-kontinuitet/index.html",
       "lang": "hr",
       "title": "Kibernetička sigurnost i poslovni kontinuitet | GNK ASG",
-      "description": "Sigurnost poslovnog sustava zahtijeva odvojene pristupe, sigurnosne kopije, logove i provjeren…… Službeni…………… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
+      "description": "Sigurnost poslovnog sustava zahtijeva odvojene pristupe, sigurnosne kopije, logove i provjeren…… Službeni………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/kiberneticka-sigurnost-i-poslovni-kontinuitet-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/kiberneticka-sigurnost-i-poslovni-kontinuitet-gnk-asg-nermin-sefic.jpg"
@@ -1346,7 +1562,7 @@
       "file": "objave/korporativno-upravljanje-u-medunarodnom-poslovanju/index.html",
       "lang": "hr",
       "title": "Korporativno upravljanje u međunarodnom poslovanju | GNK ASG",
-      "description": "Kako uskladiti vlasničke, upravljačke i regulatorne zahtjeve kada kompanije posluju kroz više…… Službeni……………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Kako uskladiti vlasničke, upravljačke i regulatorne zahtjeve kada kompanije posluju kroz više……… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO Ltd. Group.",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/korporativno-upravljanje-u-medunarodnom-poslovanju-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/korporativno-upravljanje-u-medunarodnom-poslovanju-gnk-asg-nermin-sefic.jpg"
@@ -1360,7 +1576,7 @@
       "file": "objave/kyc-aml-u-digitalnim-financijama/index.html",
       "lang": "hr",
       "title": "KYC i AML u digitalnim financijama | GNK ASG",
-      "description": "KYC i AML procesi predstavljaju temelj upravljanja identitetom, transakcijskim rizikom i… Službeni………… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO Ltd…",
+      "description": "KYC i AML procesi predstavljaju temelj upravljanja identitetom, transakcijskim rizikom i… Službeni………… Službeni…… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/kyc-aml-u-digitalnim-financijama-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/kyc-aml-u-digitalnim-financijama-gnk-asg-nermin-sefic.jpg"
@@ -1388,7 +1604,7 @@
       "file": "objave/medijski-kit-i-reputacijski-kapital-kompanije/index.html",
       "lang": "hr",
       "title": "Medijski kit i reputacijski kapital kompanije | GNK ASG",
-      "description": "Profesionalni media kit partnerima daje provjerljive podatke, vizuale i pravila pravilnog…… Službeni… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO Ltd…",
+      "description": "Profesionalni media kit partnerima daje provjerljive podatke, vizuale i pravila pravilnog…… Službeni… Službeni…… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/medijski-kit-i-reputacijski-kapital-kompanije-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/medijski-kit-i-reputacijski-kapital-kompanije-gnk-asg-nermin-sefic.jpg"
@@ -1430,7 +1646,7 @@
       "file": "objave/povjerenje-investitora-kroz-transparentnost/index.html",
       "lang": "hr",
       "title": "Povjerenje investitora kroz transparentnost | GNK ASG",
-      "description": "Investitori traže dosljedne podatke, objašnjive odluke, dokumentirane rizike i vjerodostojnu……… Službeni………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Investitori traže dosljedne podatke, objašnjive odluke, dokumentirane rizike i vjerodostojnu……… Službeni……………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/povjerenje-investitora-kroz-transparentnost-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/povjerenje-investitora-kroz-transparentnost-gnk-asg-nermin-sefic.jpg"
@@ -1444,7 +1660,7 @@
       "file": "objave/revizorsko-izvjesce-kao-instrument-povjerenja/index.html",
       "lang": "hr",
       "title": "Revizorsko izvješće kao instrument povjerenja | GNK ASG",
-      "description": "Kako neovisna revizija povećava vjerodostojnost financijskih podataka i olakšava komunikaciju s………………… Službeni… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Kako neovisna revizija povećava vjerodostojnost financijskih podataka i olakšava komunikaciju s………………… Službeni……… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/revizorsko-izvjesce-kao-instrument-povjerenja-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/revizorsko-izvjesce-kao-instrument-povjerenja-gnk-asg-nermin-sefic.jpg"
@@ -1472,7 +1688,7 @@
       "file": "objave/seo-sadrzaj-kao-dugorocna-digitalna-imovina/index.html",
       "lang": "hr",
       "title": "SEO sadržaj kao dugoročna digitalna imovina | GNK ASG",
-      "description": "Kako autorski sadržaj, strukturirani podaci, fotografije i interne poveznice stvaraju trajnu……… Službeni…… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
+      "description": "Kako autorski sadržaj, strukturirani podaci, fotografije i interne poveznice stvaraju trajnu……… Službeni………… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/seo-sadrzaj-kao-dugorocna-digitalna-imovina-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/seo-sadrzaj-kao-dugorocna-digitalna-imovina-gnk-asg-nermin-sefic.jpg"
@@ -1486,7 +1702,7 @@
       "file": "objave/transferne-cijene-i-dokumentiranje-povezanih-transakcija/index.html",
       "lang": "hr",
       "title": "Transferne cijene i dokumentiranje povezanih transakcija | GNK ASG",
-      "description": "Zašto povezane kompanije trebaju unaprijed dokumentirati funkcije, rizike, imovinu i ekonomsku……… Službeni………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Zašto povezane kompanije trebaju unaprijed dokumentirati funkcije, rizike, imovinu i ekonomsku………… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO Ltd. Group.",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/transferne-cijene-i-dokumentiranje-povezanih-transakcija-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/transferne-cijene-i-dokumentiranje-povezanih-transakcija-gnk-asg-nermin-sefic.jpg"
@@ -1500,7 +1716,7 @@
       "file": "objave/umjetna-inteligencija-u-korporativnom-odlucivanju/index.html",
       "lang": "hr",
       "title": "Umjetna inteligencija u korporativnom odlučivanju | GNK ASG",
-      "description": "Kako koristiti AI za analizu i automatizaciju bez prepuštanja odgovornosti i konačne procjene………… Službeni…… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
+      "description": "Kako koristiti AI za analizu i automatizaciju bez prepuštanja odgovornosti i konačne procjene………… Službeni………… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/umjetna-inteligencija-u-korporativnom-odlucivanju-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/umjetna-inteligencija-u-korporativnom-odlucivanju-gnk-asg-nermin-sefic.jpg"
@@ -1514,7 +1730,7 @@
       "file": "objave/upravljanje-digitalnom-imovinom-i-poslovnim-rizicima/index.html",
       "lang": "hr",
       "title": "Upravljanje digitalnom imovinom i poslovnim rizicima | GNK ASG",
-      "description": "Okvir za evidenciju, vrednovanje i zaštitu domena, softvera, podataka i drugih oblika digitalne……………… Službeni… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Okvir za evidenciju, vrednovanje i zaštitu domena, softvera, podataka i drugih oblika digitalne……………… Službeni……… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/upravljanje-digitalnom-imovinom-i-poslovnim-rizicima-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/upravljanje-digitalnom-imovinom-i-poslovnim-rizicima-gnk-asg-nermin-sefic.jpg"
@@ -1528,7 +1744,7 @@
       "file": "objave/upravljanje-likvidnoscu-u-rastucoj-kompaniji/index.html",
       "lang": "hr",
       "title": "Upravljanje likvidnošću u rastućoj kompaniji | GNK ASG",
-      "description": "Kako povezati novčani tok, naplatu, obveze i razvojne prioritete u stabilan model upravljanja………… Službeni……………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "description": "Kako povezati novčani tok, naplatu, obveze i razvojne prioritete u stabilan model upravljanja………… Službeni…………………… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/upravljanje-likvidnoscu-u-rastucoj-kompaniji-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/upravljanje-likvidnoscu-u-rastucoj-kompaniji-gnk-asg-nermin-sefic.jpg"
@@ -1542,7 +1758,7 @@
       "file": "objave/upravljanje-projektima-u-sportu-i-tehnologiji/index.html",
       "lang": "hr",
       "title": "Upravljanje projektima u sportu i tehnologiji | GNK ASG",
-      "description": "Sportsko-tehnološki projekti zahtijevaju zajednički model upravljanja rokovima, budžetom i…… Službeni………… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO Ltd…",
+      "description": "Sportsko-tehnološki projekti zahtijevaju zajednički model upravljanja rokovima, budžetom i…… Službeni……………… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
       "image": "https://www.gnk-asg.hr/assets/objave/seo-20/upravljanje-projektima-u-sportu-i-tehnologiji-gnk-asg-nermin-sefic.jpg",
       "images": [
         "https://www.gnk-asg.hr/assets/objave/seo-20/upravljanje-projektima-u-sportu-i-tehnologiji-gnk-asg-nermin-sefic.jpg"
@@ -1618,6 +1834,18 @@
       "changefreq": "weekly"
     },
     {
+      "route": "/registry-center/",
+      "url": "https://www.gnk-asg.hr/registry-center/",
+      "file": "registry-center/index.html",
+      "lang": "hr",
+      "title": "Registry Center | GNK DINAMO Ltd. Group / GNK ASG",
+      "description": "Read-only Registry Center for controlled deadline, source, risk and action tracking across corporate and…… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
       "route": "/sadrzaj/",
       "url": "https://www.gnk-asg.hr/sadrzaj/",
       "file": "sadrzaj/index.html",
@@ -1632,12 +1860,36 @@
       "changefreq": "weekly"
     },
     {
+      "route": "/seo/",
+      "url": "https://www.gnk-asg.hr/seo/",
+      "file": "seo/index.html",
+      "lang": "hr",
+      "title": "SEO & Publishing Review Engine | GNK DINAMO Ltd. Group / GNK ASG",
+      "description": "Read-only metadata, entity, structured-data and indexing review engine for controlled GNK enterprise platform…… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
       "route": "/status-automatizacije/",
       "url": "https://www.gnk-asg.hr/status-automatizacije/",
       "file": "status-automatizacije/index.html",
       "lang": "hr",
       "title": "Status automatizacije | GNK ASG",
       "description": "Javni status poslovnih vijesti, automatskih objava i rasporeda GNK ASG portala.",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/strategy-performance/",
+      "url": "https://www.gnk-asg.hr/strategy-performance/",
+      "file": "strategy-performance/index.html",
+      "lang": "hr",
+      "title": "Strategy & Performance Monitor | GNK DINAMO Ltd. Group / GNK ASG",
+      "description": "Review-only strategic, operational and financial projection framework separating verified results, management…… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [],
       "priority": ".7",
@@ -1677,10 +1929,22 @@
       "file": "the-code/index.html",
       "lang": "en",
       "title": "THE CODE | GNK DINAMO Ltd. Group | GNK ASG d.o.o.",
-      "description": "Code activation · New York · 7 October 2026 THE CODE ▶ Play · 6 slides ♫ Uključi glazbu ⛶ Cijeli………………… Official… Official content from the GNK ASG d.o.o. and GNK…",
+      "description": "Code activation · New York · 7 October 2026 THE CODE ▶ Play · 6 slides ♫ Uključi glazbu ⛶ Cijeli…………………… Official content from the GNK ASG d.o.o. and GNK DINAMO…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [],
       "priority": ".9",
+      "changefreq": "weekly"
+    },
+    {
+      "route": "/the-code/intelligence/",
+      "url": "https://www.gnk-asg.hr/the-code/intelligence/",
+      "file": "the-code/intelligence/index.html",
+      "lang": "en",
+      "title": "THE CODE Intelligence | GNK DINAMO Ltd. Group",
+      "description": "International news, analysis and commentary for THE CODE by GNK DINAMO Ltd., published through the connected GNK…",
+      "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
+      "images": [],
+      "priority": ".7",
       "changefreq": "weekly"
     },
     {
@@ -1689,7 +1953,7 @@
       "file": "the-code/media-invitation/index.html",
       "lang": "en",
       "title": "THE CODE — Complete Interactive Media Invitation | GNK ASG d.o.o.",
-      "description": "Open the complete interactive media invitation for THE CODE in New York, 6–8 October 2026… Official……… Official……… Official content from the GNK ASG d.o.o. and GNK…",
+      "description": "Open the complete interactive media invitation for THE CODE in New York, 6–8 October 2026… Official………… Official… Official content from the GNK ASG d.o.o. and GNK…",
       "image": "https://www.gnk-asg.hr/assets/the-code-linkedin-preview.svg",
       "images": [],
       "priority": ".7",
@@ -1713,7 +1977,7 @@
       "file": "vijesti/index.html",
       "lang": "hr",
       "title": "Poslovne i tehnološke vijesti | GNK ASG Intelligence Desk",
-      "description": "Provjerene poslovne, tehnološke, tržišne i gospodarske vijesti sa slikom, sažetkom i izvorom……… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO Ltd. Group.",
+      "description": "Provjerene poslovne, tehnološke, tržišne i gospodarske vijesti sa slikom, sažetkom i izvorom……… Službeni sadržaj…… Službeni sadržaj portala GNK ASG d.o.o. i GNK…",
       "image": "https://www.gnk-asg.hr/assets/gnk-asg-social-card.png",
       "images": [],
       "priority": ".9",
@@ -1738,12 +2002,14 @@
     "admin-center/index.html",
     "assets/seo-gallery/preview.html",
     "campaign-mailer/index.html",
+    "editorial-operations/launch-library/drafts/index.html",
     "en/index-white-static-preview-v2.html",
     "index-white-static-preview-v2.html",
     "mail-studio/index.html",
     "mail-studio-stable/index.html",
     "media-command-center/index.html",
     "media-registration-admin/index.html",
+    "mobile-admin/index.html",
     "operator-dashboard/index.html",
     "operator-mobile/index.html",
     "podijeli/bpp/index.html",
