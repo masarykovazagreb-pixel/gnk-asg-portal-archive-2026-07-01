@@ -1,57 +1,94 @@
 {
-  "version": "2026-07-04.financial-planning.1",
+  "version": "2026-07-04.financial-planning.2",
   "status": "management-planning-input",
   "currency": "EUR",
-  "disclosure": "This model separates audited or source-supported historical figures, management-certified group figures, interim management inputs and forward projections. Projections are not statutory, audited or guaranteed results.",
+  "disclosure": "This model keeps the standalone GNK ASG d.o.o. financial base separate from the consolidated GNK DINAMO Ltd. Group base. Interim values are management inputs derived from the stated 98% ratio and are not statutory, audited or guaranteed results.",
   "periods": {
     "baseline": "2025-12-31",
     "interim": "2026-06-30",
     "interimToBaselineRatio": 0.98,
-    "interimStatement": "Management input states that revenue, profit, assets and related headline values at 30 June 2026 are approximately 2% below the corresponding full-year 2025 totals."
+    "interimStatement": "Management input states that revenue, profit, assets, capital and liabilities at 30 June 2026 are approximately 2% below the corresponding full-year 2025 headline values."
   },
+  "sources": [
+    {
+      "id": "public-corporate-portal-fy2025",
+      "url": "https://gnk-asg.hr/",
+      "scope": "Public FY2025 standalone GNK ASG d.o.o. and consolidated GNK DINAMO Ltd. Group financial indicators",
+      "retrievedOn": "2026-07-04"
+    },
+    {
+      "id": "management-interim-ratio-2026-06-30",
+      "scope": "Executive Office management input that 30 June 2026 headline values are approximately 98% of FY2025",
+      "status": "management-input"
+    }
+  ],
   "entities": [
     {
       "id": "gnk-asg-standalone",
       "name": "GNK ASG d.o.o.",
       "scope": "standalone",
       "baselineStatus": "audited-standalone-fy2025",
+      "sourceId": "public-corporate-portal-fy2025",
       "baseline": {
         "revenue": 504000000,
         "assets": 46400000,
         "capitalAndReserves": 46210000,
         "profit": 16076.47,
         "shortTermLiabilities": 184500,
-        "longTermLiabilities": 0
+        "longTermLiabilities": 0,
+        "totalLiabilities": 184500
       },
       "interimManagementInput": {
         "revenue": 493920000,
         "assets": 45472000,
         "capitalAndReserves": 45285800,
         "profit": 15754.94,
-        "calculation": "baseline x 0.98",
-        "asOf": "2026-06-30"
+        "shortTermLiabilities": 180810,
+        "longTermLiabilities": 0,
+        "totalLiabilities": 180810,
+        "calculation": "FY2025 baseline x 0.98",
+        "asOf": "2026-06-30",
+        "status": "management-input-not-audited"
       }
     },
     {
       "id": "gnk-dinamo-group",
       "name": "GNK DINAMO Ltd. Group",
-      "scope": "group",
-      "baselineStatus": "management-certified-internally-reviewed-fy2025",
+      "scope": "consolidated-group",
+      "baselineStatus": "consolidated-group-fy2025-public-portal",
+      "sourceId": "public-corporate-portal-fy2025",
       "baseline": {
         "revenue": 4704600000,
-        "profit": null,
-        "assets": null,
-        "note": "Exact group profit and asset values remain input-required in this model; no number is invented."
+        "profit": 982480000,
+        "assets": 3483000000,
+        "capitalAndReserves": 3414000000,
+        "totalLiabilities": 69040000,
+        "equityRatioPercent": 98.02
       },
       "interimManagementInput": {
         "revenue": 4610508000,
-        "profit": null,
-        "assets": null,
-        "calculation": "known baseline values x 0.98; unknown values remain null",
-        "asOf": "2026-06-30"
+        "profit": 962830400,
+        "assets": 3413340000,
+        "capitalAndReserves": 3345720000,
+        "totalLiabilities": 67659200,
+        "equityRatioPercent": 98.02,
+        "calculation": "FY2025 headline values x 0.98; equity ratio held at the published FY2025 percentage",
+        "asOf": "2026-06-30",
+        "status": "management-input-not-audited"
       }
     }
   ],
+  "comparisonRules": {
+    "displayMode": "side-by-side",
+    "blindSummationForbidden": true,
+    "reason": "GNK DINAMO Ltd. Group is a consolidated group view and may already include connected-company activity. Standalone and consolidated figures must not be added without a documented elimination and consolidation method.",
+    "allowed": [
+      "separate standalone projection",
+      "separate consolidated-group projection",
+      "ratio and trend comparison",
+      "budget-envelope calculation within each selected scope"
+    ]
+  },
   "projectionAssumptions": {
     "flowMetrics": {
       "description": "Revenue and profit are treated as flow metrics. H2 is modelled as a percentage of H1.",
@@ -67,12 +104,14 @@
     }
   },
   "budgetGovernance": {
-    "planningCapacitySource": "approved scenario and current management input",
+    "planningCapacitySource": "selected entity scope, approved scenario and current management input",
+    "separateEntityBudgets": true,
     "spendingAuthorityCreatedByModel": false,
     "contractAuthorityCreatedByModel": false,
     "cashPaymentAuthorityCreatedByModel": false,
-    "departmentBudgets": "relative allocation envelopes until an approved expense ceiling is entered",
+    "departmentBudgets": "relative allocation envelopes within GNK ASG standalone or GNK DINAMO Ltd. Group scope until an approved expense ceiling is entered",
     "requiredForEuroBudget": [
+      "selected entity scope",
       "approved expense ceiling",
       "cash availability",
       "committed liabilities",
