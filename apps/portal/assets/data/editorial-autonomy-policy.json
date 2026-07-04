@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-04.autonomy.1",
+  "version": "2026-07-04.autonomy.2",
   "status": "review-only",
   "timezone": "Europe/Zagreb",
   "dailyReview": {
@@ -7,18 +7,25 @@
     "rejectionDeadline": "09:00",
     "windowMinutes": 60,
     "silentAcceptanceEnabled": true,
-    "silentAcceptanceMeaning": "Standing policy acceptance for eligible low-risk organization-authored desk content only",
+    "silentAcceptanceMeaning": "Every unchanged item explicitly delivered in the 08:00 daily package is confirmed by Nermin Sefić if no rejection or hold is recorded by 09:00 Europe/Zagreb.",
+    "confirmationScope": [
+      "publication approval",
+      "Nermin Sefić authorship when displayed in the package",
+      "Nermin Sefić article-specific editor or reviewer credit when displayed in the package",
+      "automatic public release after the deadline"
+    ],
     "notificationRequired": true,
+    "notificationFailureBlocksSilentAcceptance": true,
+    "itemChangeAfterPackageBlocksSilentAcceptance": true,
     "missedRunCatchUp": true
   },
   "operatingTarget": {
     "autonomousPercent": 99,
     "escalationPercent": 1,
-    "note": "The percentage is an operating target, not a reason to suppress mandatory risk escalation."
+    "note": "The daily package is the Executive Office control point. Items omitted from that package are not approved by silence."
   },
-  "autonomousEligibility": {
-    "publicationTypes": ["desk-article"],
-    "authorEntity": "GNK DINAMO Ltd. Group Editorial Desk",
+  "packageEligibility": {
+    "publicationTypes": ["desk-article", "nermin-original", "nermin-commentary"],
     "required": [
       "title",
       "slug",
@@ -32,45 +39,32 @@
       "sourceReviewComplete"
     ],
     "minimumSupportingSources": 1,
-    "allowedRisk": ["low"],
-    "defaultPublicLabel": "THE CODE Intelligence analysis",
-    "automaticPublication": true
+    "unresolvedErrorsAllowed": 0,
+    "automaticPublicationAfterDeadline": true
   },
-  "mandatoryEscalation": {
-    "personalAuthorship": ["Nermin Sefić"],
-    "specificPersonalReviewCredit": true,
-    "categories": [
-      "Financial Results",
-      "Legal and Registry",
-      "Ownership and UBO",
-      "Tax",
-      "Litigation",
-      "Acquisitions",
-      "Regulatory Filings"
-    ],
-    "claims": [
-      "audited",
-      "official financial result",
-      "guaranteed return",
-      "legal conclusion",
-      "criminal allegation",
-      "third-party misconduct"
-    ]
+  "prePackageValidation": {
+    "factsAndSourcesMustBeComplete": true,
+    "financialClaimsMustIdentifySourcePeriodAndStatus": true,
+    "projectionsMustBeLabelledAsProjections": true,
+    "legalClaimsMustIdentifySourceAndJurisdiction": true,
+    "attributionMustBeVisibleInPackage": true,
+    "contentHashMustBeFrozenAtPackageTime": true
   },
   "attribution": {
     "defaultAuthor": "GNK DINAMO Ltd. Group Editorial Desk",
     "executiveEditor": "Nermin Sefić",
-    "executiveEditorMeaning": "Standing editorial governance role; it does not claim article-specific review unless explicitly recorded.",
-    "articleSpecificReviewedByRequiresExplicitConfirmation": true,
-    "nerminAsAuthorRequiresExplicitConfirmation": true
+    "dailyPackageCanConfirmPersonalAuthorship": true,
+    "dailyPackageCanConfirmArticleSpecificReview": true,
+    "confirmationMethod": "No rejection or hold by 09:00 for the unchanged item delivered at 08:00"
   },
   "decisionStates": [
+    "preparing",
     "awaiting-rejection-window",
     "rejected",
     "held-for-review",
-    "accepted-by-standing-policy",
+    "confirmed-by-deadline",
     "published",
-    "escalated"
+    "publication-failed"
   ],
   "hardLocks": {
     "productionDeployWithoutToken": false,
