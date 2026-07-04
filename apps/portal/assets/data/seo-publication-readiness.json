@@ -1,0 +1,91 @@
+{
+  "name": "SEO and Publication Readiness",
+  "mode": "review_only",
+  "scope": [
+    "public pages",
+    "news drafts",
+    "publishing workflow",
+    "about the group",
+    "registry center",
+    "mission control"
+  ],
+  "requiredChecks": [
+    {
+      "id": "meta_title_description",
+      "label": "Meta title and description",
+      "status": "required",
+      "riskIfMissing": "Weak search preview and inconsistent public presentation"
+    },
+    {
+      "id": "schema_org",
+      "label": "Schema.org structured data",
+      "status": "required",
+      "riskIfMissing": "Lower machine readability for organization and article pages"
+    },
+    {
+      "id": "open_graph",
+      "label": "Open Graph and social preview metadata",
+      "status": "required",
+      "riskIfMissing": "Poor previews when links are shared"
+    },
+    {
+      "id": "canonical",
+      "label": "Canonical URL policy",
+      "status": "required",
+      "riskIfMissing": "Duplicate URL signals and unclear primary page"
+    },
+    {
+      "id": "hreflang",
+      "label": "hreflang language structure",
+      "status": "required_for_multilingual_pages",
+      "riskIfMissing": "Wrong language or regional result may be shown"
+    },
+    {
+      "id": "sitemap",
+      "label": "Sitemap readiness",
+      "status": "required_before_deploy",
+      "riskIfMissing": "Incomplete discovery of approved public pages"
+    },
+    {
+      "id": "image_metadata",
+      "label": "Image alt text and metadata",
+      "status": "required",
+      "riskIfMissing": "Accessibility and media preview quality loss"
+    },
+    {
+      "id": "internal_links",
+      "label": "Internal link recommendations",
+      "status": "required",
+      "riskIfMissing": "Disconnected public narrative and weaker navigation"
+    },
+    {
+      "id": "noindex_review_guard",
+      "label": "Review-only noindex guard",
+      "status": "must_remain_until_approval",
+      "riskIfMissing": "Unapproved pages may become publicly indexable"
+    }
+  ],
+  "publicationStates": [
+    "draft",
+    "review",
+    "approved",
+    "scheduled",
+    "published",
+    "held",
+    "archived"
+  ],
+  "guardrails": [
+    "No public publication without explicit approval",
+    "No mass distribution from publishing workflow",
+    "No DNS or Cloudflare production route changes",
+    "No secret exposure",
+    "No merge or production deploy before approval token"
+  ],
+  "nextIntegrationTargets": [
+    "Mission Control SEO panel",
+    "Mobile Admin approval queue",
+    "About the Group print view",
+    "Registry Center public/private separation",
+    "Newsroom draft review checklist"
+  ]
+}
