@@ -6,7 +6,7 @@ import {handleCampaignMailer,runQueue,recordInbound,VERSION as CAMPAIGN_VERSION}
 import {isCampaignMailerApi} from './campaign-mailer-v1.js';
 import {isTransparentMediaLogo,serveTransparentMediaLogo,VERSION as LOGO_VERSION} from './media-email-logo-transparent-v1.js';
 import {addBackendContactMenuLink,VERSION as CONTACT_MENU_VERSION} from './contact-menu-backend-v1.js';
-import {handleMediaRegistrationPublic,VERSION as REGISTRATION_VERSION} from './media-registration-post-code-v2.js';
+import {handleMediaRegistrationPublic,handleMediaRegistrationAdmin,VERSION as REGISTRATION_VERSION} from './media-registration-post-code-v2.js';
 import {handleMediaBootstrapPdfForwardFix,VERSION as PDF_FORWARD_FIX_VERSION} from './media-bootstrap-pdf-forward-fix-v1.js';
 import {handlePublicTheCodePdf,VERSION as PUBLIC_THE_CODE_PDF_VERSION} from './public-the-code-pdf-v1.js';
 import {handleMailStudioExtension,patchMailStudioResponse,handleMailStudioInbound,VERSION as MAIL_STUDIO_VERSION} from './mail-studio-extension-v3.js';
@@ -29,6 +29,7 @@ const inboundAddress=(message,name)=>{try{return clean(message?.headers?.get?.(n
 const address=value=>{const raw=clean(value),match=raw.match(/<([^>]+)>/);return clean(match?.[1]||raw).toLowerCase();};
 const isMediaInbound=message=>address(message?.to||inboundAddress(message,'to'))==='media@gnk-asg.hr';
 const isPublicRegistration=path=>path==='/media-application'||path.startsWith('/media-application/')||path==='/api/media-registration'||path.startsWith('/api/media-registration/');
+const isAdminRegistration=path=>path==='/media-registration-admin'||path.startsWith('/media-registration-admin/')||path==='/api/media-registration-admin'||path.startsWith('/api/media-registration-admin/');
 const isStaticPublication=path=>(path.startsWith('/objave/')&&path!=='/objave')||(path.startsWith('/publications/')&&path!=='/publications');
 const isOpenPixel=path=>path.startsWith(`${EMAIL_STATUS_API}/open/`);
 const isEmailStatusUi=path=>path==='/email-status'||path.startsWith('/email-status/');
@@ -67,6 +68,10 @@ export default{
    if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
    const workflow=await handleEditorialWorkflowApi(request,tracked);if(workflow)return workflow;
    return handleEditorialOperationsApi(request,tracked);
+  }
+  if(isAdminRegistration(path)){
+   if(!(await authorizeCampaignMailer(request,active,ctx,app)))return path.startsWith('/media-registration-admin')&&['GET','HEAD'].includes(request.method)?loginRedirect(request):denied();
+   const registrationAdmin=await handleMediaRegistrationAdmin(request,tracked);if(registrationAdmin)return stampRegistration(registrationAdmin);
   }
   const publication=await serveStaticPublication(request,tracked,path);if(publication)return publication;
   const publicPdf=await handlePublicTheCodePdf(request,tracked);if(publicPdf)return publicPdf;
