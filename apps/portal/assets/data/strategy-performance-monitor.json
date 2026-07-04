@@ -1,0 +1,35 @@
+{
+  "version": "2026-07-04.strategy-performance.01",
+  "status": "review-only",
+  "label": "Strategic Performance Monitor",
+  "disclaimer": "Neslužbeni strateški pokazatelji, interne procjene i operativne simulacije. Ne predstavljaju revidirane financijske izvještaje, službene poslovne knjige ili zakonske financijske pokazatelje.",
+  "liveBoundary": {
+    "statutoryAccounting": "external real bookkeeping only",
+    "officialResults": "annual audited / filed results only",
+    "inYearMonitor": "strategic, non-statutory, non-official"
+  },
+  "virtualCapital": {
+    "currency": "Virtual EUR",
+    "initialAllocation": 5000000000,
+    "currentAllocation": 9400000000,
+    "changeSince2026_06_30": "+88%",
+    "realMoney": false
+  },
+  "portfolios": [
+    {"id":"PUBLISHING","name":"Publishing Division","allocation":650000000,"risk":"medium","status":"active simulation","dailyOutputTarget":12},
+    {"id":"MEDIA","name":"Media / DAM / Photo Archive","allocation":420000000,"risk":"medium","status":"active simulation","dailyOutputTarget":8},
+    {"id":"TECH","name":"Technology & AI Operations","allocation":1200000000,"risk":"medium-high","status":"active simulation","dailyOutputTarget":18},
+    {"id":"REGISTRY","name":"Registry & Legal Defense","allocation":260000000,"risk":"medium","status":"watchlist","dailyOutputTarget":6},
+    {"id":"SPORTS","name":"Sports Business Projects","allocation":900000000,"risk":"medium-high","status":"concept pipeline","dailyOutputTarget":10},
+    {"id":"REAL_ESTATE","name":"Infrastructure & Real Estate Concepts","allocation":1800000000,"risk":"high","status":"concept pipeline","dailyOutputTarget":5},
+    {"id":"MARKETING","name":"Marketing & Growth","allocation":520000000,"risk":"medium","status":"active simulation","dailyOutputTarget":15},
+    {"id":"TREASURY","name":"Treasury Reserve","allocation":3650000000,"risk":"low-medium","status":"reserve","dailyOutputTarget":3}
+  ],
+  "decisionModel": ["approve", "reject", "revise", "watch", "delegate"],
+  "publicDisplayRules": [
+    "Always label as Strategic Performance Monitor or non-official strategic indicators.",
+    "Never present simulated values as statutory accounting or audited results.",
+    "Show clear LIVE / STRATEGIC / PROPOSAL / SIMULATION boundaries.",
+    "Human approval required for real money, legal actions, public commitments and production deploys."
+  ]
+}
