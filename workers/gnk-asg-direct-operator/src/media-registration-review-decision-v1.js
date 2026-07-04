@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_MEDIA_REVIEW_DECISION_V1_20260704';
+export const VERSION='GNK_ASG_MEDIA_REVIEW_DECISION_V2_20260704';
 export const DECISION_PATH='/api/media-registration-admin/decision';
 
 const clean=value=>String(value??'').trim();
@@ -47,4 +47,17 @@ export async function handleMediaRegistrationReviewDecision(request,env){
  }
  await db.prepare(`INSERT INTO media_registration_audit(id,event_type,mail_code,detail_json,created_at) VALUES(?,?,?,?,?)`).bind(crypto.randomUUID(),'human_review_status_changed',mailCode,JSON.stringify({source:'PROTECTED_ADMIN_REVIEW',applicationId:current.application_id||'',previousStatus:current.status,nextStatus:status,previousRevision:currentRevision,nextRevision,reason,noNotification:true}),timestamp).run();
  return json({ok:true,changed:1,mailCode,applicationId:current.application_id||'',previousStatus:current.status,status,previousRevision:currentRevision,revision:nextRevision,updatedAt:timestamp,noNotification:true});
+}
+
+export async function patchMediaRegistrationDecisionGuard(response){
+ if(!response||!response.ok||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
+ let html=await response.text();
+ const script='<script defer src="/assets/media-applications-decision-guard-v1.js?v=20260704-1"></script>';
+ if(!html.includes('media-applications-decision-guard-v1.js'))html=html.replace('</body>',`${script}</body>`);
+ const headers=new Headers(response.headers);
+ headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');
+ headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+ headers.set('x-robots-tag','noindex,nofollow,noarchive');
+ headers.set('x-gnk-asg-media-decision',VERSION);
+ return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
