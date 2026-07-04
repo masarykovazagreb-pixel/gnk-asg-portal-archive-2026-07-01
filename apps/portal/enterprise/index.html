@@ -2,70 +2,119 @@
 <html lang="hr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Enterprise Platform Review Hub | GNK DINAMO Ltd. Group / GNK ASG</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Enterprise Command Dashboard | GNK DINAMO Ltd. Group / GNK ASG</title>
+<meta name="description" content="Controlled review dashboard for GNK ASG and GNK DINAMO Ltd. Group Enterprise Digital Platform: approvals, mail, inbox, contacts, reports, governance, workers and preview safety gates.">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#050814">
 <style>
-:root{--bg:#050814;--gold:#d4af37;--line:rgba(212,175,55,.3);--text:#f8fafc;--muted:#aab4c7;--ok:#22c55e;--warn:#f59e0b;--info:#3b82f6}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 20% -10%,#1d2c52 0,#050814 45%,#02040a 100%);color:var(--text)}main{max-width:1380px;margin:0 auto;padding:38px 18px}.eyebrow{color:var(--gold);font-weight:900;letter-spacing:.16em;text-transform:uppercase;font-size:12px}h1{font-size:clamp(34px,5vw,66px);letter-spacing:-.05em;margin:8px 0 12px}.sub{color:#d9e2f1;max-width:1020px;line-height:1.55}.summary{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(255,255,255,.14);border-radius:999px;color:#d9e2f1;font-size:12px;font-weight:800}.chip:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok)}.chip.warn:before{background:var(--warn)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px;margin-top:24px}.card{position:relative;display:block;text-decoration:none;color:var(--text);background:linear-gradient(180deg,rgba(16,26,49,.96),rgba(8,13,28,.96));border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.28);min-height:150px;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.card:hover,.card:focus-visible{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 26px 74px rgba(0,0,0,.36);outline:none}.card b{display:block;font-size:18px;padding-right:88px}.card span{display:block;color:var(--muted);font-size:14px;line-height:1.45;margin-top:8px}.state{position:absolute;right:14px;top:14px;padding:5px 8px;border:1px solid rgba(34,197,94,.35);border-radius:999px;color:#86efac;background:rgba(34,197,94,.08);font-size:10px;font-weight:900;text-transform:uppercase}.state.review{border-color:rgba(245,158,11,.4);color:#fde68a;background:rgba(245,158,11,.08)}.state.public{border-color:rgba(59,130,246,.4);color:#93c5fd;background:rgba(59,130,246,.08)}.card.featured{border-color:rgba(212,175,55,.68);background:linear-gradient(145deg,rgba(28,37,62,.98),rgba(9,15,30,.98));box-shadow:0 24px 80px rgba(212,175,55,.08)}.notice{margin-top:22px;border:1px solid rgba(245,158,11,.4);border-radius:22px;padding:18px;color:#fde7b0;background:rgba(245,158,11,.07)}@media print{body{background:white;color:#111}.card,.notice{background:white;color:#111;border-color:#999;box-shadow:none}.sub,.card span{color:#333}}
+:root{--bg:#050814;--panel:#0b1224;--panel2:#101a31;--gold:#d4af37;--line:rgba(212,175,55,.28);--text:#f8fafc;--muted:#aab4c7;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--info:#60a5fa}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 18% -15%,#20335f 0,#050814 42%,#02040a 100%);color:var(--text)}a{color:inherit}.shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}.side{position:sticky;top:0;height:100vh;border-right:1px solid rgba(255,255,255,.1);background:rgba(2,6,16,.78);backdrop-filter:blur(18px);padding:20px;overflow:auto}.brand{display:flex;gap:12px;align-items:center;margin-bottom:22px}.brand img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 12px 24px rgba(0,0,0,.35))}.brand b{display:block;color:#fff}.brand span{display:block;color:var(--muted);font-size:12px}.nav{display:grid;gap:8px}.nav a{display:flex;justify-content:space-between;gap:10px;text-decoration:none;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:11px 12px;color:#dbe5f6;background:rgba(255,255,255,.035);font-size:13px;font-weight:800}.nav a:hover,.nav a:focus-visible{border-color:var(--gold);outline:none}.main{padding:28px;max-width:1480px;width:100%;margin:0 auto}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:22px}.eyebrow{color:var(--gold);font-weight:950;letter-spacing:.16em;text-transform:uppercase;font-size:12px}.top h1{font-size:clamp(34px,4.8vw,68px);letter-spacing:-.055em;margin:.2rem 0 .55rem}.sub{color:#d9e2f1;max-width:980px;line-height:1.55}.lockbox{border:1px solid rgba(245,158,11,.42);background:rgba(245,158,11,.08);border-radius:20px;padding:14px;min-width:290px;color:#fde7b0}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chip{display:inline-flex;gap:7px;align-items:center;border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:7px 10px;color:#e6edf9;font-size:12px;font-weight:900;background:rgba(255,255,255,.035)}.chip:before{content:"";width:8px;height:8px;border-radius:999px;background:var(--ok)}.chip.warn:before{background:var(--warn)}.chip.bad:before{background:var(--bad)}.kpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}.metric{border:1px solid rgba(255,255,255,.1);border-radius:20px;background:linear-gradient(180deg,rgba(16,26,49,.92),rgba(8,13,28,.94));padding:16px}.metric strong{display:block;color:var(--gold);font-size:clamp(24px,3vw,40px);letter-spacing:-.04em}.metric span{display:block;color:var(--muted);font-size:13px;margin-top:3px}.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}.section{border:1px solid var(--line);border-radius:26px;background:linear-gradient(180deg,rgba(16,26,49,.94),rgba(8,13,28,.96));padding:18px;box-shadow:0 22px 70px rgba(0,0,0,.28);margin-bottom:16px}.section h2{margin:.15rem 0 0;font-size:24px;letter-spacing:-.035em}.section-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:14px}.section-head p{color:var(--muted);margin:.25rem 0 0;line-height:1.45}.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.card{position:relative;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:20px;background:rgba(255,255,255,.045);padding:15px;min-height:126px;display:block}.card:hover,.card:focus-visible{border-color:var(--gold);outline:none}.card b{display:block;font-size:17px;padding-right:74px}.card span{display:block;color:var(--muted);font-size:13px;line-height:1.42;margin-top:7px}.badge{position:absolute;right:12px;top:12px;border:1px solid rgba(34,197,94,.38);border-radius:999px;color:#86efac;background:rgba(34,197,94,.08);font-size:10px;font-weight:950;text-transform:uppercase;padding:5px 7px}.badge.warn{border-color:rgba(245,158,11,.42);color:#fde68a;background:rgba(245,158,11,.08)}.badge.lock{border-color:rgba(239,68,68,.36);color:#fca5a5;background:rgba(239,68,68,.08)}.mailgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.profile{border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.04);padding:12px}.profile b{display:block}.profile small{display:block;color:var(--muted);line-height:1.4;margin-top:5px}.timeline{display:grid;gap:10px}.step{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:flex-start;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.04);padding:12px}.step i{width:28px;height:28px;border-radius:999px;background:rgba(212,175,55,.14);display:grid;place-items:center;color:var(--gold);font-style:normal;font-weight:950}.step b{display:block}.step span{display:block;color:var(--muted);font-size:13px;margin-top:3px}.status{font-size:11px;font-weight:950;text-transform:uppercase;color:#86efac}.status.warn{color:#fde68a}.status.lock{color:#fca5a5}.worker{display:grid;gap:9px}.endpoint{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:11px;background:rgba(255,255,255,.04)}.endpoint code{color:#dbeafe;word-break:break-all}.endpoint span{color:#86efac;font-weight:950;font-size:11px;text-transform:uppercase}.notice{border:1px solid rgba(245,158,11,.45);background:rgba(245,158,11,.08);color:#fde7b0;border-radius:22px;padding:16px;line-height:1.5}.mobilebar{display:none;position:fixed;left:10px;right:10px;bottom:10px;z-index:30;background:rgba(2,6,16,.88);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:8px;grid-template-columns:repeat(5,1fr);gap:6px}.mobilebar a{text-align:center;text-decoration:none;font-size:11px;color:#fff;padding:8px 4px;border-radius:13px;background:rgba(255,255,255,.06)}@media(max-width:1040px){.shell{grid-template-columns:1fr}.side{position:relative;height:auto}.nav{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.top{display:block}.lockbox{margin-top:14px}.grid{grid-template-columns:1fr}.kpi{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:720px){.main{padding:18px 12px 88px}.side{display:none}.mobilebar{display:grid}.kpi{grid-template-columns:1fr}.section{border-radius:20px;padding:14px}.section-head{display:block}.step{grid-template-columns:auto 1fr}.step .status{grid-column:2}.endpoint{grid-template-columns:1fr}.card{min-height:118px}}@media print{body{background:white;color:#111}.shell{display:block}.side,.mobilebar{display:none}.section,.metric,.card,.profile,.step,.endpoint,.notice,.lockbox{background:white;color:#111;border-color:#999;box-shadow:none}.sub,.card span,.profile small,.step span,.section-head p,.metric span{color:#333}}
 </style>
-
-<!-- SITEWIDE-SEO:BEGIN -->
-  <meta name="description" content="Controlled review hub for Mission Control, media applications, THE CODE Intelligence, editorial operations… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…">
-  <meta name="keywords" content="GNK ASG d.o.o., GNK ASG, GNK ASG doo, GNK DINAMO Ltd., GNK DINAMO LTD, GNK Dinamo Ltd, GNK DINAMO Ltd. Group, Nermin Sefić, Nermin Sefic, Sefić Nermin, Sefic Nermin, Enterprise Platform Review Hub , GNK DINAMO Ltd. Group / GNK ASG, enterprise">
-  <meta name="author" content="GNK ASG d.o.o.; GNK DINAMO Ltd.; Nermin Sefić">
-  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <link rel="canonical" href="https://www.gnk-asg.hr/enterprise/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Enterprise Platform Review Hub | GNK DINAMO Ltd. Group / GNK ASG">
-  <meta property="og:description" content="Controlled review hub for Mission Control, media applications, THE CODE Intelligence, editorial operations… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…">
-  <meta property="og:url" content="https://www.gnk-asg.hr/enterprise/">
-  <meta property="og:site_name" content="GNK ASG d.o.o. | GNK DINAMO Ltd. Group">
-  <meta property="og:locale" content="hr_HR">
-  <meta property="og:locale:alternate" content="en_US">
-  <meta property="og:image" content="https://www.gnk-asg.hr/assets/gnk-asg-social-card.png">
-  <meta property="og:image:secure_url" content="https://www.gnk-asg.hr/assets/gnk-asg-social-card.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Enterprise Platform Review Hub | GNK DINAMO Ltd. Group / GNK ASG">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Enterprise Platform Review Hub | GNK DINAMO Ltd. Group / GNK ASG">
-  <meta name="twitter:description" content="Controlled review hub for Mission Control, media applications, THE CODE Intelligence, editorial operations… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…">
-  <meta name="twitter:image" content="https://www.gnk-asg.hr/assets/gnk-asg-social-card.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.gnk-asg.hr/#website","url":"https://www.gnk-asg.hr/","name":"GNK ASG d.o.o. | GNK DINAMO Ltd. Group","publisher":{"@id":"https://www.gnk-asg.hr/#organization"},"inLanguage":["hr","en"]},{"@type":"Organization","@id":"https://www.gnk-asg.hr/#organization","name":"GNK ASG d.o.o.","alternateName":["GNK ASG","GNK ASG doo"],"url":"https://www.gnk-asg.hr/","logo":"https://www.gnk-asg.hr/assets/logo-gnk-asg.svg","taxID":"75227917632","address":{"@type":"PostalAddress","streetAddress":"Zagrebačka cesta 130","addressLocality":"Zagreb","addressCountry":"HR"},"memberOf":{"@id":"https://www.gnk-asg.hr/#gnk-dinamo-ltd"}},{"@type":"Organization","@id":"https://www.gnk-asg.hr/#gnk-dinamo-ltd","name":"GNK DINAMO Ltd.","alternateName":["GNK DINAMO LTD","GNK Dinamo Ltd","GNK DINAMO Ltd. Group"],"url":"https://gnkdinamo.eu/","identifier":"Colorado Entity ID 20238180649","location":{"@type":"Place","name":"Boulder, Colorado, USA"}},{"@type":"Person","@id":"https://www.gnk-asg.hr/nermin-sefic/#person","name":"Nermin Sefić","alternateName":["Nermin Sefic","Sefić Nermin","Sefic Nermin"],"url":"https://www.gnk-asg.hr/nermin-sefic/","jobTitle":"Direktor GNK ASG d.o.o. i ovlašteni predstavnik GNK DINAMO Ltd.","worksFor":{"@id":"https://www.gnk-asg.hr/#organization"},"affiliation":{"@id":"https://www.gnk-asg.hr/#gnk-dinamo-ltd"}},{"@type":"WebPage","@id":"https://www.gnk-asg.hr/enterprise/#webpage","url":"https://www.gnk-asg.hr/enterprise/","name":"Enterprise Platform Review Hub | GNK DINAMO Ltd. Group / GNK ASG","description":"Controlled review hub for Mission Control, media applications, THE CODE Intelligence, editorial operations… Službeni sadržaj portala GNK ASG d.o.o. i GNK DINAMO…","inLanguage":"hr","isPartOf":{"@id":"https://www.gnk-asg.hr/#website"},"about":[{"@id":"https://www.gnk-asg.hr/#organization"},{"@id":"https://www.gnk-asg.hr/#gnk-dinamo-ltd"},{"@id":"https://www.gnk-asg.hr/nermin-sefic/#person"}],"mentions":[{"@id":"https://www.gnk-asg.hr/#organization"},{"@id":"https://www.gnk-asg.hr/#gnk-dinamo-ltd"},{"@id":"https://www.gnk-asg.hr/nermin-sefic/#person"}],"primaryImageOfPage":{"@type":"ImageObject","url":"https://www.gnk-asg.hr/assets/gnk-asg-social-card.png"},"breadcrumb":{"@id":"https://www.gnk-asg.hr/enterprise/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://www.gnk-asg.hr/enterprise/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG d.o.o.","item":"https://www.gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"Enterprise Platform Review Hub","item":"https://www.gnk-asg.hr/enterprise/"}]}]}</script>
-<!-- SITEWIDE-SEO:END -->
 </head>
 <body>
-<main>
-<div class="eyebrow">Controlled review hub</div>
-<h1>Enterprise Digital Platform</h1>
-<p class="sub">Centralna navigacija za završnu reviziju. Svi novi moduli ostaju odvojeni od produkcijskog deploya; javne tvrdnje, registry radnje, masovni mail i promjene infrastrukture zahtijevaju konačnu ljudsku odluku.</p>
-<div class="summary"><span class="chip">Review branch active</span><span class="chip">Recovery point preserved</span><span class="chip warn">Production deploy locked</span><span class="chip warn">Mass email locked</span></div>
-<section class="grid">
-<a class="card" href="/mission-control/"><span class="state">review</span><b>Mission Control</b><span>Evidence status, module map, safety gates, registry, approvals and integrations.</span></a>
-<a class="card featured" href="/media-registration-admin/"><span class="state">protected</span><b>Media Applications Review</b><span>Zaštićena centralna baza prijavljenih redakcija, predstavnika, dokumenata, putnih podataka, statusa i audit povijesti.</span></a>
-<a class="card" href="/media-application/?lang=en"><span class="state public">public</span><b>Public Media Application</b><span>Isti javni link iz poslanih HTML poziva. Redakcije samostalno stvaraju profil i dopunjuju prijavu.</span></a>
-<a class="card" href="/design-review/"><span class="state">new</span><b>Design Review Console</b><span>Desktop, laptop, tablet and mobile visual review with a per-module checklist.</span></a>
-<a class="card" href="/the-code/"><span class="state review">preserved</span><b>THE CODE</b><span>Existing strategic presentation, activation timeline and materials remain unchanged.</span></a>
-<a class="card" href="/the-code/intelligence/"><span class="state">new</span><b>THE CODE Intelligence</b><span>International news, analysis and commentary layer of the existing THE CODE project.</span></a>
-<a class="card" href="/editorial-operations/"><span class="state">new</span><b>Editorial Operations</b><span>Five international operational profiles, daily draft planning, sourcing and approval controls.</span></a>
-<a class="card" href="/about-the-group/"><span class="state">new</span><b>About the Group</b><span>English governance profile separating LIVE, strategic, digital operations and Executive Office layers.</span></a>
-<a class="card" href="/o-grupi/"><span class="state">new</span><b>O grupi</b><span>Hrvatska verzija kontroliranog profila grupe i upravljačkih pravila.</span></a>
-<a class="card" href="/strategy-performance/"><span class="state">new</span><b>Strategy & Performance</b><span>Verified results, internal targets, runtime measures and Executive Office decisions kept as separate layers.</span></a>
-<a class="card" href="/registry-center/"><span class="state">new</span><b>Registry Center</b><span>Read-only registri, obvezna polja, risk model, rokovi i source controls.</span></a>
-<a class="card" href="/deployment/"><span class="state">new</span><b>Deployment & Recovery</b><span>Release gates, recovery reference, rollback checklist and deployment lock.</span></a>
-<a class="card" href="/mobile-admin/"><span class="state">new</span><b>Mobile Approval Queue</b><span>Read-only human approval view for deployment, email, registry and publishing decisions.</span></a>
-<a class="card" href="/seo/"><span class="state">new</span><b>SEO Review Engine</b><span>Functional same-origin metadata, canonical, robots and social-card scanner.</span></a>
-<a class="card" href="/digital-workforce/"><span class="state">review</span><b>Digital Workforce</b><span>Global Operations Center, Worker ID rules, departments, countries and disclosure controls.</span></a>
-<a class="card" href="/entities/"><span class="state">review</span><b>43 Entity Slots</b><span>GNK01–GNK43 planning scaffold with an explicit non-registration disclaimer.</span></a>
-<a class="card" href="/operator-dashboard/"><span class="state review">existing</span><b>Operator Dashboard</b><span>Existing admin/operator area. Security and session review required before replacement.</span></a>
-<a class="card" href="/mail-studio/"><span class="state review">existing</span><b>Mail Studio</b><span>Manual, scheduled and individual delivery with controlled sender profiles.</span></a>
-<a class="card" href="/email-status/"><span class="state review">dynamic</span><b>Email Status</b><span>Authenticated Worker module for delivered, opened, open count, rejected and related status evidence.</span></a>
-<a class="card" href="/assets/email/gnk-media-signature.html"><span class="state">updated</span><b>Media Signature Preview</b><span>Production logo and standardized gold Media Relations signature.</span></a>
-<a class="card" href="/assets/email/gnk-media-autoresponder.html"><span class="state">updated</span><b>Autoresponder Preview</b><span>Personalization placeholders, reference field and the same production signature.</span></a>
-<a class="card" href="/media-center/"><span class="state review">existing</span><b>Media Command Center</b><span>Compatibility route to the active protected media command module.</span></a>
-<a class="card" href="/objave/"><span class="state review">existing</span><b>Objave / Publications</b><span>Controlled publication workflows in Croatian and English.</span></a>
-</section>
-<div class="notice"><b>Deploy lock:</b> ništa s ove review grane ne smije zamijeniti produkciju bez izričite odluke i završnog recovery/deploy checka.</div>
+<div class="shell">
+<aside class="side" aria-label="Enterprise navigation">
+  <div class="brand"><img src="/assets/logo-gnk-asg.svg" alt="GNK ASG logo"><div><b>GNK Enterprise</b><span>Review command layer</span></div></div>
+  <nav class="nav">
+    <a href="#overview">Pregled <em>01</em></a>
+    <a href="#actions">Brze akcije <em>02</em></a>
+    <a href="#mail">Mail/Webmail <em>03</em></a>
+    <a href="#governance">Odluke <em>04</em></a>
+    <a href="#workers">Workeri <em>05</em></a>
+    <a href="#public">Javni portal <em>06</em></a>
+    <a href="/operator-dashboard/" rel="nofollow">Admin</a>
+    <a href="/mail-studio/" rel="nofollow">Mail Studio</a>
+  </nav>
+</aside>
+<main class="main" id="overview">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Controlled enterprise review</div>
+      <h1>Enterprise Command Dashboard</h1>
+      <p class="sub">Operativni ekran za završnu reviziju platforme: odobrenja, pojedinačni mail, Inbox/Sent, statusi isporuke, kontakti, sastanci, izvješća, objave, javni governance i Worker runtime provjere. Produkcija ostaje zaključana dok se ne odobri nakon pregleda.</p>
+      <div class="chips"><span class="chip">Review branch active</span><span class="chip warn">Preview-only workers</span><span class="chip bad">Production deploy locked</span><span class="chip bad">Mass email locked</span></div>
+    </div>
+    <div class="lockbox"><b>Sigurnosna granica</b><br>Bez mergea u main, bez produkcijskog deploya, bez DNS/ruta/secrets promjena i bez stvarnih masovnih kampanja.</div>
+  </header>
+
+  <section class="kpi" aria-label="Key platform counters">
+    <div class="metric"><strong>9</strong><span>review commitova ispred maina prije ovog ciklusa</span></div>
+    <div class="metric"><strong>3</strong><span>commita maina za kasnije usklađivanje bez produkcijskog mergea</span></div>
+    <div class="metric"><strong>1.500</strong><span>digitalnih operativnih profila u javnom modelu</span></div>
+    <div class="metric"><strong>08:00</strong><span>rok za zadržavanje ili otkazivanje dnevnog izvješća</span></div>
+  </section>
+
+  <div class="grid">
+    <div>
+      <section class="section" id="actions">
+        <div class="section-head"><div><div class="eyebrow">Prioritetni pristup</div><h2>Ono što mora biti odmah dostupno</h2></div><p>Ovo mijenja staru statičnu listu u stvarni command dashboard s jasnim rutama i statusima.</p></div>
+        <div class="actions">
+          <a class="card" href="/mobile-admin/" rel="nofollow"><span class="badge warn">review</span><b>Odobrenja i odluke</b><span>Mobile Approval Queue, deploy lock, email lock, registry i publishing odluke.</span></a>
+          <a class="card" href="/mail-studio/?mode=compose" rel="nofollow"><span class="badge warn">protected</span><b>Novi pojedinačni mail</b><span>Compose ekran za ručno slanje bez kampanjskog pokretanja.</span></a>
+          <a class="card" href="/mail-studio/?folder=inbox" rel="nofollow"><span class="badge warn">protected</span><b>Inbox</b><span>Ulazne poruke, threadovi, privitci i inbound audit.</span></a>
+          <a class="card" href="/mail-studio/?folder=sent" rel="nofollow"><span class="badge warn">protected</span><b>Sent</b><span>Poslane poruke, profili pošiljatelja i dokazi isporuke.</span></a>
+          <a class="card" href="/email-status/" rel="nofollow"><span class="badge warn">dynamic</span><b>Status mailova</b><span>Delivered, opened, rejected, bounce, open-count i povezana evidencija.</span></a>
+          <a class="card" href="/contact/" rel="nofollow"><span class="badge">active</span><b>Kontakti</b><span>Javni kontakt i most prema komunikacijskoj povijesti.</span></a>
+          <a class="card" href="/editorial-operations/" rel="nofollow"><span class="badge warn">review</span><b>Izvješća i objave</b><span>THE CODE, dnevni planovi, draftovi, odobrenja i release queue.</span></a>
+          <a class="card" href="/api/public-operations/governance-board"><span class="badge">api</span><b>Javna tabla</b><span>Zadaci, prijedlozi, odluke, zapisnici i zaključci u JSON obliku.</span></a>
+        </div>
+      </section>
+
+      <section class="section" id="mail">
+        <div class="section-head"><div><div class="eyebrow">Mail Studio / Webmail</div><h2>Devet sender profila i ručni webmail tok</h2></div><p>Sljedeći ciklus mora učvrstiti UI za foldere, threadove, draftove, privitke, reply/forward i statuse.</p></div>
+        <div class="mailgrid">
+          <div class="profile"><b>media@gnk-asg.hr</b><small>Media Relations, akreditacije, prijave redakcija.</small></div>
+          <div class="profile"><b>press@gnk-asg.hr</b><small>Objave, komentari, službena priopćenja.</small></div>
+          <div class="profile"><b>office@gnk-asg.hr</b><small>Opća uredska komunikacija.</small></div>
+          <div class="profile"><b>legal@gnk-asg.hr</b><small>Pravni dopisi i kontrolirane obavijesti.</small></div>
+          <div class="profile"><b>finance@gnk-asg.hr</b><small>Financijski upiti i statusi.</small></div>
+          <div class="profile"><b>registry@gnk-asg.hr</b><small>Registry Center i dokumentacijski tijek.</small></div>
+          <div class="profile"><b>operations@gnk-asg.hr</b><small>Operativni zadaci, sastanci i izvješća.</small></div>
+          <div class="profile"><b>thecode@gnk-asg.hr</b><small>THE CODE Intelligence i editorial desk.</small></div>
+          <div class="profile"><b>noreply@gnk-asg.hr</b><small>Automatske potvrde bez ručnih odgovora.</small></div>
+        </div>
+      </section>
+    </div>
+
+    <aside>
+      <section class="section" id="governance">
+        <div class="section-head"><div><div class="eyebrow">Governance</div><h2>Odluke, zadaci i izvješća</h2></div></div>
+        <div class="timeline">
+          <div class="step"><i>1</i><div><b>Preliminarno izvješće</b><span>Prije 08:00 ostaje u review stanju.</span></div><div class="status warn">pending</div></div>
+          <div class="step"><i>2</i><div><b>Zadržavanje / otkazivanje</b><span>Executive Office može zadržati ili otkazati prije roka.</span></div><div class="status warn">controlled</div></div>
+          <div class="step"><i>3</i><div><b>Odobrenje nakon 08:00</b><span>Ako nije zadržano ili otkazano, Worker označava public-safe izvješće.</span></div><div class="status">ready</div></div>
+          <div class="step"><i>4</i><div><b>Deploy odluka</b><span>Produkcija se ne dira bez nove izričite potvrde.</span></div><div class="status lock">locked</div></div>
+        </div>
+      </section>
+
+      <section class="section" id="workers">
+        <div class="section-head"><div><div class="eyebrow">Worker runtime</div><h2>Preview endpointi</h2></div></div>
+        <div class="worker">
+          <a class="endpoint" href="/api/public-operations/health"><code>/api/public-operations/health</code><span>health</span></a>
+          <a class="endpoint" href="/api/public-operations/catalog"><code>/api/public-operations/catalog</code><span>catalog</span></a>
+          <a class="endpoint" href="/api/public-operations/report/latest"><code>/api/public-operations/report/latest</code><span>report</span></a>
+          <a class="endpoint" href="/api/public-operations/governance-board"><code>/api/public-operations/governance-board</code><span>board</span></a>
+          <a class="endpoint" href="/api/editorial-operations/public-approval/status" rel="nofollow"><code>/api/editorial-operations/public-approval/status</code><span>protected</span></a>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <section class="section" id="public">
+    <div class="section-head"><div><div class="eyebrow">Public portal layer</div><h2>Index, THE CODE, financije, vijesti, objave i tržišta</h2></div><p>Javne rute ostaju dostupne za pregled, ali interni mail, tokeni i auditi nisu javni.</p></div>
+    <div class="actions">
+      <a class="card" href="/"><span class="badge">public</span><b>Javni index</b><span>Glavni portal bez praznih zona.</span></a>
+      <a class="card" href="/the-code/"><span class="badge">public</span><b>THE CODE</b><span>Strateški blok i materijali.</span></a>
+      <a class="card" href="/#financije"><span class="badge">public</span><b>Financije</b><span>Financijski blok i dokumentacijski centar.</span></a>
+      <a class="card" href="/vijesti/"><span class="badge">public</span><b>Vijesti</b><span>News layer i javni sadržaj.</span></a>
+      <a class="card" href="/objave/"><span class="badge">public</span><b>Objave</b><span>Kontrolirane publikacije.</span></a>
+      <a class="card" href="/trzista/"><span class="badge">public</span><b>Tržišta</b><span>Market layer.</span></a>
+    </div>
+  </section>
+
+  <div class="notice"><b>Brutalna ocjena:</b> ovo još nije produkcijski release. Ovo je prvi realni pomak iz link-huba u command dashboard. Kritične točke za sljedeće cikluse su Mail Studio/Webmail UX, stvarni Worker preview runtime, usklađivanje s mainom i završni testovi.</div>
 </main>
+</div>
+<nav class="mobilebar" aria-label="Mobile quick nav"><a href="#actions">Akcije</a><a href="#mail">Mail</a><a href="#governance">Odluke</a><a href="#workers">Workeri</a><a href="/mail-studio/">Studio</a></nav>
 </body>
 </html>
