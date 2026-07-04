@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/enterprise/**'
+      - 'apps/portal/admin-center/**'
       - 'apps/portal/about-the-group/**'
       - 'apps/portal/o-grupi/**'
       - 'apps/portal/registry-center/**'
@@ -14,6 +15,7 @@ on:
       - 'apps/portal/entities/**'
       - 'apps/portal/digital-workforce/**'
       - 'apps/portal/mission-control/**'
+      - 'apps/portal/assets/admin-media-applications-entry-v1.js'
       - 'apps/portal/assets/data/group-profile-review.json'
       - 'apps/portal/assets/data/registry-center-review.json'
       - 'apps/portal/assets/email/gnk-media-signature.html'
@@ -43,6 +45,7 @@ jobs:
           set -euxo pipefail
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node --check apps/portal/assets/admin-media-applications-entry-v1.js
           node --check workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
 
       - name: Run signature and auto-reply unit tests
@@ -62,6 +65,7 @@ jobs:
           set -euxo pipefail
           for file in \
             apps/portal/enterprise/index.html \
+            apps/portal/admin-center/index.html \
             apps/portal/about-the-group/index.html \
             apps/portal/o-grupi/index.html \
             apps/portal/registry-center/index.html \
@@ -74,11 +78,24 @@ jobs:
             test -s "$file"
             grep -qi 'noindex' "$file"
           done
-          for route in /registry-center/ /about-the-group/ /o-grupi/ /deployment/ /mobile-admin/ /seo/; do
+          for route in /registry-center/ /about-the-group/ /o-grupi/ /deployment/ /mobile-admin/ /seo/ /media-registration-admin/; do
             grep -q "$route" apps/portal/enterprise/index.html
           done
+          grep -q '/media-application/?lang=en' apps/portal/enterprise/index.html
+          grep -q 'Media Applications Review' apps/portal/enterprise/index.html
+          grep -q 'Public Media Application' apps/portal/enterprise/index.html
           grep -q 'Production deploy locked' apps/portal/enterprise/index.html
           grep -q 'Mass email locked' apps/portal/enterprise/index.html
+
+      - name: Verify Admin Center media entry distinction
+        run: |
+          set -euxo pipefail
+          grep -q 'admin-media-applications-entry-v1.js' apps/portal/admin-center/index.html
+          grep -q 'Pregled media prijava' apps/portal/assets/admin-media-applications-entry-v1.js
+          grep -q 'Javna media prijavnica' apps/portal/assets/admin-media-applications-entry-v1.js
+          grep -q 'data-module="mediaPortal"' apps/portal/assets/admin-media-applications-entry-v1.js
+          grep -q 'data-module="mediaApplications"' apps/portal/assets/admin-media-applications-entry-v1.js
+          grep -q 'heroMediaReview' apps/portal/assets/admin-media-applications-entry-v1.js
 
       - name: Verify logo and signature parity
         run: |
