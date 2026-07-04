@@ -1,0 +1,25 @@
+{
+  "version": "2026-07-04.languages.2",
+  "status": "controlled-review",
+  "defaultLanguage": "hr",
+  "fallbackLanguage": "en",
+  "languages": [
+    {"code":"hr","hreflang":"hr","locale":"hr_HR","direction":"ltr","route":"/","coverage":"primary-full"},
+    {"code":"en","hreflang":"en","locale":"en_US","direction":"ltr","route":"/en/","coverage":"primary-full"},
+    {"code":"de","hreflang":"de","locale":"de_DE","direction":"ltr","route":"/de/","coverage":"secondary-corporate"},
+    {"code":"it","hreflang":"it","locale":"it_IT","direction":"ltr","route":"/it/","coverage":"secondary-corporate"},
+    {"code":"hu","hreflang":"hu","locale":"hu_HU","direction":"ltr","route":"/hu/","coverage":"secondary-corporate"},
+    {"code":"ar","hreflang":"ar","locale":"ar_AE","direction":"rtl","route":"/ar/","coverage":"secondary-corporate"},
+    {"code":"zh","hreflang":"zh-Hans","locale":"zh_CN","direction":"ltr","route":"/zh/","coverage":"secondary-corporate"}
+  ],
+  "translationGovernance": {
+    "registeredNamesRemainExact": true,
+    "numbersDatesAndCurrenciesMustMatchSource": true,
+    "legalTextRequiresHumanReview": true,
+    "officialRegistrySourceMustRemainVisible": true,
+    "fallbackMustBeClearlyLabelled": true,
+    "automaticIndexingOfIncompleteLocale": false,
+    "rtlLayoutRequiredForArabic": true,
+    "cjkTypographyRequired": true
+  }
+}
