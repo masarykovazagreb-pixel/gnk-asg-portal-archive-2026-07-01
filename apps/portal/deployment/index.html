@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deployment & Recovery Center | GNK DINAMO Ltd. Group / GNK ASG</title>
+<meta name="description" content="Review-only deployment, recovery, rollback and release-gate center for the GNK enterprise platform.">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="canonical" href="https://www.gnk-asg.hr/deployment/">
+<style>
+:root{--bg:#050814;--gold:#d4af37;--line:rgba(212,175,55,.3);--text:#f8fafc;--muted:#aab4c7;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 18% -10%,#1d2c52 0,#050814 44%,#02040a 100%);color:var(--text)}header,main{max-width:1400px;margin:auto;padding:24px}header{padding-top:40px}.eyebrow{color:var(--gold);font-size:12px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}h1{font-size:clamp(34px,5vw,64px);margin:8px 0 12px}.sub,.hint{color:var(--muted);line-height:1.55}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-block;padding:10px 14px;border-radius:999px;text-decoration:none;font-weight:900;color:#07101f;background:linear-gradient(135deg,#b98b2d,#f3d47a)}.btn.secondary{color:#fff;background:rgba(255,255,255,.06);border:1px solid var(--line)}.notice{margin-top:18px;padding:15px 17px;border:1px solid rgba(239,68,68,.45);border-radius:18px;background:rgba(239,68,68,.08);color:#fecaca}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card{background:linear-gradient(180deg,rgba(16,26,49,.97),rgba(8,13,28,.97));border:1px solid var(--line);border-radius:22px;padding:18px}.metric{font-size:30px;font-weight:950}.label{color:var(--muted);font-size:13px;margin-top:5px}.checklist{margin:0;padding:0;list-style:none;display:grid;gap:9px}.checklist li{padding:11px 13px;border-left:3px solid var(--gold);background:rgba(255,255,255,.035);line-height:1.45}.state{display:inline-block;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;text-transform:uppercase}.ok{color:#86efac;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.4)}.pending{color:#fde68a;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.4)}.locked{color:#fca5a5;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.4)}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px;text-align:left}th{color:var(--gold);font-size:11px;text-transform:uppercase}@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}@media(max-width:560px){.grid{grid-template-columns:1fr}header,main{padding:16px}}@media print{body{background:white;color:#111}.card{background:white;color:#111;border-color:#999}.toolbar,.notice{display:none}.hint,.label{color:#333}}
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">Release Governance · Read-only</div>
+<h1>Deployment & Recovery Center</h1>
+<p class="sub">Kontrolirani pregled recovery reference, release gates, rollback uvjeta i dokaznog statusa. Ova stranica ne može pokrenuti merge, deploy, DNS, Cloudflare route ili secret promjenu.</p>
+<div class="toolbar"><a class="btn" href="/mission-control/">Mission Control</a><a class="btn secondary" href="/enterprise/">Enterprise Hub</a><a class="btn secondary" href="/mobile-admin/">Approval Queue</a></div>
+<div class="notice"><strong>Release lock:</strong> produkcijski deploy ostaje zabranjen bez završnog pregleda i izričite odluke Executive Officea.</div>
+</header>
+<main>
+<section class="grid">
+<div class="card"><div class="metric">PRESERVED</div><div class="label">Recovery point</div></div>
+<div class="card"><div class="metric">#327</div><div class="label">Aktivni draft PR</div></div>
+<div class="card"><div class="metric">DRY RUN</div><div class="label">Production workflow mode</div></div>
+<div class="card"><div class="metric">LOCKED</div><div class="label">Merge / deploy</div></div>
+</section>
+<section class="grid2">
+<div class="card"><h2>Release gates</h2><table><thead><tr><th>Gate</th><th>Status</th></tr></thead><tbody><tr><td>Recovery reference</td><td><span class="state ok">present</span></td></tr><tr><td>Clean branch from current main</td><td><span class="state ok">verified</span></td></tr><tr><td>Static and unit validation</td><td><span class="state ok">passed</span></td></tr><tr><td>Browser / responsive review</td><td><span class="state pending">pending</span></td></tr><tr><td>Internal live mail matrix</td><td><span class="state pending">pending</span></td></tr><tr><td>Executive approval</td><td><span class="state locked">required</span></td></tr></tbody></table></div>
+<div class="card"><h2>Recovery reference</h2><p class="hint"><b>Branch:</b> recovery-point-20260704-1000-before-finalbuild</p><p class="hint"><b>Review branch:</b> review-final-20260704-platform-v2</p><p class="hint"><b>Rollback principle:</b> preserve current production entry points and restore the documented recovery reference if post-deploy validation fails.</p></div>
+</section>
+<section class="grid2" style="margin-top:14px">
+<div class="card"><h2>Pre-release checklist</h2><ul class="checklist"><li>All review pages render on desktop and mobile.</li><li>Every public claim has an approved source and status.</li><li>Manual, batch and automatic mail paths show exactly one correct signature.</li><li>No test message is sent to an external recipient.</li><li>Backup, recovery reference and rollback owner are confirmed.</li><li>Final diff excludes DNS, routes, secrets and locked production entry points.</li></ul></div>
+<div class="card"><h2>Post-release verification</h2><ul class="checklist"><li>Canonical homepage and English homepage return expected content.</li><li>Protected admin and mail routes remain protected.</li><li>Mission Control and review modules return expected status.</li><li>Mail status, campaign validation and logs remain available.</li><li>Rollback is initiated immediately on material regression.</li></ul></div>
+</section>
+</main>
+</body>
+</html>
