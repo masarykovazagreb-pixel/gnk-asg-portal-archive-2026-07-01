@@ -1,0 +1,53 @@
+{
+  "version": "2026-07-04.financial-documents.1",
+  "status": "document-backed-public-source-registry",
+  "publisherRecord": {
+    "name": "Nermin Sefić",
+    "relationship": "documents personally published through the GNK ASG corporate portal",
+    "recordStatus": "Executive Office statement"
+  },
+  "publicPortal": {
+    "url": "https://gnk-asg.hr/",
+    "section": "#dokumenti",
+    "label": "PDF i Download centar",
+    "publiclyVisible": true
+  },
+  "documents": [
+    {
+      "id": "gnk-asg-fy2025-audited",
+      "entity": "GNK ASG d.o.o.",
+      "scope": "standalone",
+      "periodEnd": "2025-12-31",
+      "title": "GNK ASG d.o.o. FY 2025 — Izvješće neovisnog revizora i samostalni financijski izvještaji",
+      "documentType": "independent-auditor-report-and-standalone-financial-statements",
+      "sourceStatus": "publicly-published-audited-pdf",
+      "publicPortalUrl": "https://gnk-asg.hr/#dokumenti",
+      "downloadableOnPortal": true,
+      "directDownloadUrl": null,
+      "directPathStatus": "not exposed in the current static HTML snapshot; preserve the existing portal download implementation",
+      "financialModelEntityId": "gnk-asg-standalone"
+    },
+    {
+      "id": "gnk-dinamo-group-fy2025-consolidated",
+      "entity": "GNK DINAMO Ltd.",
+      "scope": "consolidated-group",
+      "periodEnd": "2025-12-31",
+      "title": "GNK DINAMO Ltd. FY 2025 — Consolidated Financial Report of the Group",
+      "documentType": "publicly-filed-and-published-consolidated-financial-report",
+      "sourceStatus": "publicly-filed-and-published-consolidated-pdf",
+      "publicPortalUrl": "https://gnk-asg.hr/#dokumenti",
+      "corporateSourceUrl": "https://gnkdinamo.eu/",
+      "downloadableOnPortal": true,
+      "directDownloadUrl": null,
+      "directPathStatus": "not exposed in the current static HTML snapshot; preserve the existing portal download implementation",
+      "financialModelEntityId": "gnk-dinamo-group"
+    }
+  ],
+  "governance": {
+    "separateDocumentScopes": true,
+    "standaloneAndConsolidatedMustNotBeBlindlyAdded": true,
+    "projectionMustReferenceDocumentId": true,
+    "interim2026ValuesRemainManagementInputs": true,
+    "publicClaimsMustRetainPeriodAndSourceStatus": true
+  }
+}
