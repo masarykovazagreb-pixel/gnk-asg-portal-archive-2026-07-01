@@ -8,6 +8,9 @@ on:
       - 'apps/portal/about-the-group/**'
       - 'apps/portal/o-grupi/**'
       - 'apps/portal/registry-center/**'
+      - 'apps/portal/deployment/**'
+      - 'apps/portal/mobile-admin/**'
+      - 'apps/portal/seo/**'
       - 'apps/portal/entities/**'
       - 'apps/portal/digital-workforce/**'
       - 'apps/portal/mission-control/**'
@@ -62,15 +65,18 @@ jobs:
             apps/portal/about-the-group/index.html \
             apps/portal/o-grupi/index.html \
             apps/portal/registry-center/index.html \
+            apps/portal/deployment/index.html \
+            apps/portal/mobile-admin/index.html \
+            apps/portal/seo/index.html \
             apps/portal/entities/index.html \
             apps/portal/digital-workforce/index.html \
             apps/portal/mission-control/index.html; do
             test -s "$file"
             grep -qi 'noindex' "$file"
           done
-          grep -q '/registry-center/' apps/portal/enterprise/index.html
-          grep -q '/about-the-group/' apps/portal/enterprise/index.html
-          grep -q '/o-grupi/' apps/portal/enterprise/index.html
+          for route in /registry-center/ /about-the-group/ /o-grupi/ /deployment/ /mobile-admin/ /seo/; do
+            grep -q "$route" apps/portal/enterprise/index.html
+          done
           grep -q 'Production deploy locked' apps/portal/enterprise/index.html
           grep -q 'Mass email locked' apps/portal/enterprise/index.html
 
