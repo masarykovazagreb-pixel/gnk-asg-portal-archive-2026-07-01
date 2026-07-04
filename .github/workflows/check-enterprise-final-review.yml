@@ -23,6 +23,7 @@ on:
       - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js'
       - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js'
       - 'workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs'
       - '.github/workflows/check-enterprise-final-review.yml'
 
@@ -47,6 +48,7 @@ jobs:
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node --check apps/portal/assets/admin-media-applications-entry-v1.js
           node --check workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
 
@@ -113,6 +115,17 @@ jobs:
           grep -q 'mail-studio-extension-v3.js' workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
           grep -q 'normalizeMailStudioSignature' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
           grep -q 'enforceMediaGoldSignature' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
+
+      - name: Verify inbound archive and MIME pass-through
+        run: |
+          set -euxo pipefail
+          grep -q 'return{handled:false,message:prepared.message' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
+          grep -q 'const nextInbound=studio?.message||inbound' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q 'MANDATORY_BCC' workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          grep -q 'message.forward(MANDATORY_BCC,headers)' workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          grep -q "X-GNK-ASG-Original-Recipient" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
+          grep -q 'Media raw stream pass-through' workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
+          grep -q 'application\\.pdf' workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
 
       - name: Verify no production infrastructure changes
         env:
