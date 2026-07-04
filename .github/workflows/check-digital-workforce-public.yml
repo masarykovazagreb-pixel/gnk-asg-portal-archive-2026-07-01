@@ -8,11 +8,19 @@ on:
       - 'apps/portal/about-the-group/**'
       - 'apps/portal/o-grupi/**'
       - 'apps/portal/the-code/intelligence/**'
+      - 'apps/portal/de/**'
+      - 'apps/portal/it/**'
+      - 'apps/portal/arabic/**'
+      - 'apps/portal/cn/**'
+      - 'apps/portal/language-review/**'
       - 'apps/portal/assets/data/digital-workforce-blueprint.json'
       - 'apps/portal/assets/data/digital-workforce-governance.json'
       - 'apps/portal/assets/data/seo-entity-registry.json'
+      - 'apps/portal/assets/data/multilingual-review-manifest.json'
       - 'apps/portal/assets/js/digital-workforce-directory-v1.js'
       - 'apps/portal/assets/js/editorial-operations-runtime-v1.js'
+      - 'apps/portal/assets/localized-corporate-home-v1.css'
+      - 'apps/portal/assets/localized-rtl-cjk-v1.css'
       - 'apps/portal/assets/public-menu-v18.js'
       - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
       - 'workers/gnk-asg-direct-operator/src/editorial-workflow-v1.js'
@@ -42,6 +50,36 @@ jobs:
           node --check scripts/validate-digital-workforce-public-v2.mjs
       - name: Validate directory governance SEO and safety locks
         run: node scripts/validate-digital-workforce-public-v2.mjs
+      - name: Validate multilingual review contract
+        run: |
+          set -euxo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          const read=file=>fs.readFileSync(file,'utf8');
+          const manifest=JSON.parse(read('apps/portal/assets/data/multilingual-review-manifest.json'));
+          if(manifest.status!=='controlled-review')throw new Error('multilingual status invalid');
+          if(manifest.locales.length!==6)throw new Error('six locales required');
+          const expected={hr:'/',en:'/en/',de:'/de/',it:'/it/',ar:'/arabic/',zh:'/cn/'};
+          for(const [code,route] of Object.entries(expected)){
+            const locale=manifest.locales.find(item=>item.code===code);
+            if(!locale||locale.route!==route)throw new Error(`locale route mismatch ${code}`);
+          }
+          const files=['apps/portal/de/index.html','apps/portal/it/index.html','apps/portal/arabic/index.html','apps/portal/cn/index.html'];
+          for(const file of files){
+            const html=read(file);
+            if(!html.includes('noindex,nofollow,noarchive'))throw new Error(`noindex missing ${file}`);
+            if(!html.includes('GNK ASG d.o.o.')||!html.includes('GNK DINAMO Ltd.'))throw new Error(`entity names missing ${file}`);
+          }
+          const ar=read('apps/portal/arabic/index.html');
+          if(!ar.includes('lang="ar" dir="rtl"'))throw new Error('Arabic RTL missing');
+          const zh=read('apps/portal/cn/index.html');
+          if(!zh.includes('lang="zh-CN"'))throw new Error('Chinese locale missing');
+          const menu=read('apps/portal/assets/public-menu-v18.js');
+          for(const token of ["ar:'/arabic/'","zh:'/cn/'",'zh-Hans','document.documentElement.dir'])if(!menu.includes(token))throw new Error(`menu token missing ${token}`);
+          const review=read('apps/portal/language-review/index.html');
+          for(const route of ['/en/','/de/','/it/','/arabic/','/cn/'])if(!review.includes(`href="${route}"`))throw new Error(`review route missing ${route}`);
+          console.log('MULTILINGUAL_REVIEW_OK');
+          NODE
       - name: Confirm review-only execution model
         run: |
           set -euxo pipefail
