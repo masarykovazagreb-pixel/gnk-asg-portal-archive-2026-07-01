@@ -1,0 +1,87 @@
+{
+  "version": "2026-07-04.group-profile-review.1",
+  "status": "controlled-review",
+  "title": "GNK DINAMO Ltd. Group / GNK ASG Enterprise Platform",
+  "layers": [
+    {
+      "id": "live",
+      "label": "LIVE",
+      "description": "Verified corporate and operating information intended for controlled public presentation.",
+      "items": [
+        {
+          "name": "GNK DINAMO Ltd.",
+          "role": "Group headquarters and strategic platform entity",
+          "location": "Boulder, Colorado, United States",
+          "registry": "Colorado Entity ID 20238180649",
+          "status": "verified repository record"
+        },
+        {
+          "name": "GNK ASG d.o.o.",
+          "role": "Regional connected company and operating portal entity",
+          "location": "Zagreb, Croatia",
+          "registry": "OIB 75227917632 · MBS 081512375",
+          "status": "verified repository record"
+        }
+      ]
+    },
+    {
+      "id": "strategic",
+      "label": "Strategic / Performance Monitor",
+      "description": "Internal planning indicators, scenarios and performance views. They are not statutory, audited or official public reporting unless separately identified.",
+      "items": [
+        {
+          "name": "THE CODE",
+          "role": "Strategic project",
+          "status": "strategic programme"
+        },
+        {
+          "name": "GNK01–GNK43",
+          "role": "Scalable entity-slot architecture",
+          "status": "planning scaffold; not a claim that 43 companies are registered"
+        }
+      ]
+    },
+    {
+      "id": "operations",
+      "label": "Digital Operations Team",
+      "description": "Operational digital profiles used for workflow coordination, workload, KPI and accountability views. They are not represented as confirmed physical employees.",
+      "items": [
+        {
+          "name": "Global Operations Center",
+          "role": "Digital workflow coordination",
+          "status": "operational profile layer"
+        },
+        {
+          "name": "Worker IDs",
+          "role": "Deterministic role and task allocation",
+          "status": "digital operational identities"
+        }
+      ]
+    },
+    {
+      "id": "executive",
+      "label": "Executive Office",
+      "description": "Final human authority for publication, legal positions, financial representations, registry actions, mass email, DNS/Cloudflare changes and production deployment.",
+      "items": [
+        {
+          "name": "Human approval gate",
+          "role": "Final decision and accountability",
+          "status": "mandatory"
+        }
+      ]
+    }
+  ],
+  "governanceRules": [
+    "Every material value must show whether it is LIVE, strategic, simulated or operational.",
+    "Public claims require an approved source and review status.",
+    "Digital profiles must not be described as confirmed physical employees.",
+    "No production deploy, mass email, DNS, Cloudflare route or secret change without explicit Executive Office approval.",
+    "A recovery point and rollback reference must exist before controlled deployment."
+  ],
+  "reviewLinks": [
+    {"label": "Mission Control", "href": "/mission-control/"},
+    {"label": "Enterprise Hub", "href": "/enterprise/"},
+    {"label": "Digital Workforce", "href": "/digital-workforce/"},
+    {"label": "43 Entity Slots", "href": "/entities/"}
+  ]
+}
