@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0",
+  "status": "policy-ready",
+  "title": "Global Operations Center / Digital Operations Team",
+  "lastReviewed": "2026-07-04",
+  "publicPositioning": "Digital workers, AI Manager, AI Director and operations roles are platform capabilities and managed operational functions. They must not be presented as verified human employees unless a real person is identified and authorized.",
+  "roles": [
+    {"id":"ai-manager","label":"AI Manager","type":"AI-assisted operational role","authority":"prepare, classify, summarize, validate checklist state","limits":"no final legal, financial, employment, deployment or mass communication decision"},
+    {"id":"ai-director","label":"AI Director","type":"AI-assisted supervisory role","authority":"coordinate workflows, surface conflicts, recommend priorities","limits":"no claim of human executive authority"},
+    {"id":"executive-office","label":"Executive Office","type":"governance function","authority":"final approval route and decision record","limits":"must be linked to real authorized decision-maker for binding actions"},
+    {"id":"supervisory-board-view","label":"Supervisory Board View","type":"oversight interface","authority":"review status, risk and audit summaries","limits":"read/review unless formal approval is granted"},
+    {"id":"manager-wave-1","label":"Digital Operations Workers / Wave 1","type":"international digital operations function","authority":"content preparation, data checks, publishing support, CRM/media support","limits":"no independent external representation"},
+    {"id":"manager-wave-2","label":"Digital Operations Workers / Wave 2","type":"scale operations function","authority":"expanded multilingual, market, registry, media and support workflows","limits":"must follow approval queue and source-evidence rules"}
+  ],
+  "corePolicies": [
+    "Transparency: do not imply that AI roles are real human employees.",
+    "Accountability: every binding action requires a human-authorized approval state.",
+    "Traceability: every output must link to source, preview, requester and decision record when possible.",
+    "Least privilege: workers receive only the permissions required for the task.",
+    "No mass send: communication workers may prepare and validate, but sending requires explicit approval.",
+    "No production deploy: technical workers may prepare checks and notes, but deploy requires executive confirmation.",
+    "Public accuracy: public pages must distinguish existing entities, planned entities, digital roles and strategic projects."
+  ],
+  "workerGroups": [
+    {"id":"publishing-workers","label":"Publishing Workers","coverage":["news","publications","SEO","translations","internal links"]},
+    {"id":"media-workers","label":"Media Workers","coverage":["media center","accreditations","press assets","contact lists"]},
+    {"id":"registry-workers","label":"Registry Review Workers","coverage":["registry references","evidence list","deadline labels","document status"]},
+    {"id":"technical-workers","label":"Technical Workers","coverage":["Mission Control","deployment status","recovery notes","UI checks"]},
+    {"id":"finance-workers","label":"Finance Data Workers","coverage":["public financial indicators","document links","report summaries","source labels"]}
+  ]
+}
