@@ -1,0 +1,59 @@
+name: Check Editorial Launch Library
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/assets/js/editorial-launch-library-v1.js'
+      - 'apps/portal/assets/js/editorial-launch-drafts-v1.js'
+      - 'apps/portal/editorial-operations/launch-library/**'
+      - 'apps/portal/assets/js/editorial-operations-runtime-v1.js'
+      - 'apps/portal/editorial-operations/release-queue/index.html'
+      - 'scripts/validate-editorial-launch-library.mjs'
+      - '.github/workflows/check-editorial-launch-library.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check JavaScript syntax
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/js/editorial-launch-library-v1.js
+          node --check apps/portal/assets/js/editorial-launch-drafts-v1.js
+          node --check apps/portal/assets/js/editorial-operations-runtime-v1.js
+          node --check scripts/validate-editorial-launch-library.mjs
+      - name: Validate 60-item launch contract
+        run: node scripts/validate-editorial-launch-library.mjs
+      - name: Validate 60 complete first drafts
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const vm=require('vm');
+          const load=file=>{const box={module:{exports:{}},exports:{}};vm.runInNewContext(fs.readFileSync(file,'utf8'),box,{filename:file});return box.module.exports;};
+          const library=load('apps/portal/assets/js/editorial-launch-library-v1.js');
+          const drafts=load('apps/portal/assets/js/editorial-launch-drafts-v1.js').expandLibrary(library);
+          if(drafts.fullDraftCount!==60||drafts.items.length!==60)throw new Error('exactly_60_full_drafts_required');
+          for(const item of drafts.items){
+            if(item.draftBodyComplete!==true||typeof item.draftBody!=='string'||item.draftBody.length<3500)throw new Error(`incomplete_draft:${item.id}`);
+            if(!item.draftBody.includes('Option one:')||!item.draftBody.includes('Option two:'))throw new Error(`options_missing:${item.id}`);
+          }
+          const page=fs.readFileSync('apps/portal/editorial-operations/launch-library/drafts/index.html','utf8');
+          for(const token of ['noindex,nofollow,noarchive','Sixty complete first drafts','editorial-launch-drafts-v1.js','Not publishable yet'])if(!page.includes(token))throw new Error(`draft_page_missing:${token}`);
+          console.log(JSON.stringify({fullDraftCount:drafts.fullDraftCount}));
+          NODE
+      - name: Confirm review-only workflow
+        run: |
+          set -euxo pipefail
+          grep -q 'contents: read' .github/workflows/check-editorial-launch-library.yml
+          grep -qi 'noindex,nofollow,noarchive' apps/portal/editorial-operations/launch-library/index.html
+          grep -qi 'noindex,nofollow,noarchive' apps/portal/editorial-operations/launch-library/drafts/index.html
+          grep -q 'No publish action exists here' apps/portal/editorial-operations/release-queue/index.html

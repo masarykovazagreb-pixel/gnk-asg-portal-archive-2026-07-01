@@ -11,6 +11,7 @@ on:
       - 'apps/portal/media-access/**'
       - 'apps/portal/assets/admin-center-v2.js'
       - 'apps/portal/assets/admin-command-center-primary-v1.js'
+      - 'apps/portal/assets/admin-media-applications-entry-v1.js'
       - 'apps/portal/assets/media-command-center-v2.js'
       - 'apps/portal/assets/media-application-v1.js'
       - 'apps/portal/assets/media-access-v1.js'
@@ -19,6 +20,10 @@ on:
       - 'workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js'
       - 'workers/gnk-asg-direct-operator/src/media-command-center-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-application-access-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js'
+      - 'workers/gnk-asg-direct-operator/package.json'
+      - 'workers/gnk-asg-direct-operator/package-lock.json'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
 
 permissions:
@@ -30,6 +35,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
+        with:
+          show-progress: false
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
@@ -40,6 +47,7 @@ jobs:
           set -euxo pipefail
           node --check apps/portal/assets/admin-center-v2.js
           node --check apps/portal/assets/admin-command-center-primary-v1.js
+          node --check apps/portal/assets/admin-media-applications-entry-v1.js
           node --check apps/portal/assets/media-command-center-v2.js
           node --check apps/portal/assets/media-application-v1.js
           node --check apps/portal/assets/media-access-v1.js
@@ -47,6 +55,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-application-access-v1.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
           test -s apps/portal/admin-center/index.html
           test -s apps/portal/media-command-center/index.html
           test -s apps/portal/media-application/index.html
@@ -71,30 +81,54 @@ jobs:
           console.log(JSON.stringify({contacts:112,emails,automation,handoffTarget:42,missing:20}));
           JS
 
-      - name: Admin order and primary card
+      - name: Admin order and media application focus
         shell: bash
         run: |
           node <<'JS'
           const fs=require('node:fs');
           const admin=fs.readFileSync('apps/portal/assets/admin-center-v2.js','utf8');
-          const order=["label:'Komandni centar'","label:'Operator'","label:'Mail Studio'","label:'Auto Editor'"];
+          const mediaEntry=fs.readFileSync('apps/portal/assets/admin-media-applications-entry-v1.js','utf8');
+          const order=["label:'Komandni centar'","label:'Media prijave'","label:'Media Portal'","label:'Operator'","label:'Mail Studio'","label:'Auto Editor'"];
           let cursor=-1;
           for(const item of order){const next=admin.indexOf(item);if(next<=cursor)throw new Error(`bad Admin order: ${item}`);cursor=next;}
-          if(!admin.includes("const PRIORITIES = ['media','operator','mail']"))throw new Error('bad Admin priorities');
-          console.log('ADMIN_ORDER=VALID');
+          if(!admin.includes("const PRIORITIES = ['media','mediaApplications','mediaPortal']"))throw new Error('base media priorities missing');
+          for(const marker of ['Pregled media prijava','Javna media prijavnica','grid.prepend(protectedCard)','heroMediaReview'])if(!mediaEntry.includes(marker))throw new Error(`media focus marker missing: ${marker}`);
+          console.log('ADMIN_MEDIA_FOCUS=VALID');
           JS
 
-      - name: Locked sending and human decision markers
+      - name: Locked sending and human decision contract
         shell: bash
         run: |
           set -euxo pipefail
           grep -q "production_sending_locked" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           grep -q "mediaCommandSending:'LOCKED'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          grep -q "UNVERIFIED_EXTERNAL_CONFIGURATION" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "AUTO_ISSUE_AND_EMAIL_ON_APPROVAL" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "HUMAN_ONLY" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "INCOMPLETE_22_OF_42" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "legacy_code_before_registration_blocked" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
+          grep -q "processMediaInvitationQueue(){return{ok:true,skipped:'post_registration_code_policy'}" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
+          grep -q "expected_revision_required" workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q "decision_reason_required" workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q "human_review_status_changed" workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q "noNotification:true" workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+
+      - name: Install Worker dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --ignore-scripts --no-audit --no-fund
 
       - name: Wrangler dry run
         working-directory: workers/gnk-asg-direct-operator
-        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+        shell: bash
+        run: |
+          set +e
+          npx wrangler deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator > wrangler-dry-run.log 2>&1
+          status=$?
+          cat wrangler-dry-run.log
+          exit "$status"
+
+      - name: Upload Wrangler diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wrangler-dry-run-log
+          path: workers/gnk-asg-direct-operator/wrangler-dry-run.log
+          if-no-files-found: error
+          retention-days: 1

@@ -6,10 +6,10 @@ import {handleCampaignMailer,runQueue,recordInbound,VERSION as CAMPAIGN_VERSION}
 import {isCampaignMailerApi} from './campaign-mailer-v1.js';
 import {isTransparentMediaLogo,serveTransparentMediaLogo,VERSION as LOGO_VERSION} from './media-email-logo-transparent-v1.js';
 import {addBackendContactMenuLink,VERSION as CONTACT_MENU_VERSION} from './contact-menu-backend-v1.js';
-import {handleMediaRegistrationPublic,VERSION as REGISTRATION_VERSION} from './media-registration-post-code-v2.js';
+import {handleMediaRegistrationPublic,handleMediaRegistrationAdmin,VERSION as REGISTRATION_VERSION} from './media-registration-post-code-v2.js';
 import {handleMediaBootstrapPdfForwardFix,VERSION as PDF_FORWARD_FIX_VERSION} from './media-bootstrap-pdf-forward-fix-v1.js';
 import {handlePublicTheCodePdf,VERSION as PUBLIC_THE_CODE_PDF_VERSION} from './public-the-code-pdf-v1.js';
-import {handleMailStudioExtension,patchMailStudioResponse,handleMailStudioInbound,VERSION as MAIL_STUDIO_VERSION} from './mail-studio-extension-v2.js';
+import {handleMailStudioExtension,patchMailStudioResponse,handleMailStudioInbound,VERSION as MAIL_STUDIO_VERSION} from './mail-studio-extension-v4.js';
 import {prepareAiAutoReply,VERSION as AI_AUTO_REPLY_VERSION} from './ai-inbound-auto-reply-v2.js';
 import {withEmailStatusTracking,handleEmailStatusRequest,isEmailStatusPath,syncCloudflareEmailStatuses,API_PREFIX as EMAIL_STATUS_API,VERSION as EMAIL_STATUS_VERSION} from './email-status-tracking-v5.js';
 // Compatibility chain: email-status-tracking-v5.js extends email-status-tracking-v4.js.
@@ -17,8 +17,10 @@ import {addEmailStatusButtons,VERSION as EMAIL_STATUS_BUTTONS_VERSION} from './e
 import {handleEmailPingTest,isEmailPingPath,VERSION as EMAIL_PING_VERSION} from './email-ping-test-v1.js';
 import {handleManualMailScheduler,isManualMailSchedulerPath,runScheduledManualMail,VERSION as MAIL_SCHEDULER_VERSION} from './manual-mail-scheduler-v1.js';
 import {handleTemporaryMessage,isTemporaryMessageApiPath,isTemporaryMessagePublicPath,VERSION as TEMPORARY_MESSAGE_VERSION} from './temporary-message-v1.js';
+import {handleEditorialOperationsApi,isEditorialOperationsApi,runEditorialDraftPlanner,VERSION as EDITORIAL_PLANNER_VERSION} from './editorial-draft-planner-v1.js';
+import {handleEditorialWorkflowApi,VERSION as EDITORIAL_WORKFLOW_API_VERSION} from './editorial-workflow-api-v1.js';
 const PUBLICATION_ROUTE_VERSION='GNK_ASG_STATIC_PUBLICATION_ROUTE_V1_20260702';
-export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${EMAIL_STATUS_BUTTONS_VERSION}_${EMAIL_PING_VERSION}_${MAIL_SCHEDULER_VERSION}_${TEMPORARY_MESSAGE_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
+export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${EMAIL_STATUS_BUTTONS_VERSION}_${EMAIL_PING_VERSION}_${MAIL_SCHEDULER_VERSION}_${TEMPORARY_MESSAGE_VERSION}_${EDITORIAL_PLANNER_VERSION}_${EDITORIAL_WORKFLOW_API_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
 const trackedEnv=env=>withEmailStatusTracking(env);
 const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(trackedEnv(env)));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
@@ -27,6 +29,7 @@ const inboundAddress=(message,name)=>{try{return clean(message?.headers?.get?.(n
 const address=value=>{const raw=clean(value),match=raw.match(/<([^>]+)>/);return clean(match?.[1]||raw).toLowerCase();};
 const isMediaInbound=message=>address(message?.to||inboundAddress(message,'to'))==='media@gnk-asg.hr';
 const isPublicRegistration=path=>path==='/media-application'||path.startsWith('/media-application/')||path==='/api/media-registration'||path.startsWith('/api/media-registration/');
+const isAdminRegistration=path=>path==='/media-registration-admin'||path.startsWith('/media-registration-admin/')||path==='/api/media-registration-admin'||path.startsWith('/api/media-registration-admin/');
 const isStaticPublication=path=>(path.startsWith('/objave/')&&path!=='/objave')||(path.startsWith('/publications/')&&path!=='/publications');
 const isOpenPixel=path=>path.startsWith(`${EMAIL_STATUS_API}/open/`);
 const isEmailStatusUi=path=>path==='/email-status'||path.startsWith('/email-status/');
@@ -61,6 +64,15 @@ export default{
    if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
    const temporary=await handleTemporaryMessage(request,tracked);if(temporary)return temporary;
   }
+  if(isEditorialOperationsApi(path)){
+   if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
+   const workflow=await handleEditorialWorkflowApi(request,tracked);if(workflow)return workflow;
+   return handleEditorialOperationsApi(request,tracked);
+  }
+  if(isAdminRegistration(path)){
+   if(!(await authorizeCampaignMailer(request,active,ctx,app)))return path.startsWith('/media-registration-admin')&&['GET','HEAD'].includes(request.method)?loginRedirect(request):denied();
+   const registrationAdmin=await handleMediaRegistrationAdmin(request,tracked);if(registrationAdmin)return stampRegistration(registrationAdmin);
+  }
   const publication=await serveStaticPublication(request,tracked,path);if(publication)return publication;
   const publicPdf=await handlePublicTheCodePdf(request,tracked);if(publicPdf)return publicPdf;
   if(isPublicRegistration(path)){const registration=await handleMediaRegistrationPublic(request,tracked);if(registration)return stampRegistration(registration)}
@@ -74,12 +86,13 @@ export default{
   const patched=await patchMailStudioResponse(request,withContact);
   return addEmailStatusButtons(request,patched);
  },
- scheduled(event,env,ctx){const tracked=trackedEnv(env),active=protectedEnv(tracked),task=Promise.allSettled([runQueue(tracked),runScheduledManualMail(tracked),syncCloudflareEmailStatuses(tracked),typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)]);if(ctx?.waitUntil){ctx.waitUntil(task);return}return task},
+ scheduled(event,env,ctx){const tracked=trackedEnv(env),active=protectedEnv(tracked),task=Promise.allSettled([runQueue(tracked),runScheduledManualMail(tracked),syncCloudflareEmailStatuses(tracked),runEditorialDraftPlanner(tracked),typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)]);if(ctx?.waitUntil){ctx.waitUntil(task);return}return task},
  async email(message,env,ctx){
   const ai=prepareAiAutoReply(message,env),inbound=ai.message,tracked=trackedEnv(ai.env),active=protectedEnv(tracked);
   const fixed=await handleMediaBootstrapPdfForwardFix(inbound,active,ctx);if(fixed?.handled)return fixed;
   await recordInbound(inbound,tracked);
   const studio=await handleMailStudioInbound(inbound,tracked,ctx);if(studio?.handled)return studio;
-  if(typeof app.email==='function')return app.email(inbound,isMediaInbound(inbound)?tracked:active,ctx);
+  const nextInbound=studio?.message||inbound;
+  if(typeof app.email==='function')return app.email(nextInbound,isMediaInbound(nextInbound)?tracked:active,ctx);
  }
 };

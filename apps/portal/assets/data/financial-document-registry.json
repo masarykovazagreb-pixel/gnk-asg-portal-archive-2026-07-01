@@ -1,0 +1,82 @@
+{
+  "version": "2026-07-04.financial-documents.2",
+  "status": "official-registry-and-portal-source-registry",
+  "publisherRecord": {
+    "name": "Nermin Sefić",
+    "relationship": "documents personally published through the GNK ASG corporate portal in addition to their official public-registry availability",
+    "recordStatus": "Executive Office statement"
+  },
+  "publicPortal": {
+    "url": "https://gnk-asg.hr/",
+    "section": "#dokumenti",
+    "label": "PDF i Download centar",
+    "publiclyVisible": true,
+    "sourceRole": "secondary public distribution and presentation layer"
+  },
+  "officialRegistries": [
+    {
+      "id": "fina-rgfi",
+      "name": "FINA — Registar godišnjih financijskih izvještaja / Javna objava",
+      "jurisdiction": "Croatia",
+      "searchUrl": "https://rgfi.fina.hr/JavnaObjava-web/pSubjektTrazi.do",
+      "searchIdentifier": "OIB 75227917632",
+      "authorityType": "official-financial-reporting-registry"
+    },
+    {
+      "id": "colorado-secretary-of-state",
+      "name": "Colorado Secretary of State — Business Database Search",
+      "jurisdiction": "Colorado, United States",
+      "searchUrl": "https://www.sos.state.co.us/biz/BusinessEntityCriteriaExt.do",
+      "searchIdentifier": "Colorado Entity ID 20238180649",
+      "authorityType": "official-business-filing-registry"
+    }
+  ],
+  "documents": [
+    {
+      "id": "gnk-asg-fy2025-audited",
+      "entity": "GNK ASG d.o.o.",
+      "scope": "standalone",
+      "periodEnd": "2025-12-31",
+      "title": "GNK ASG d.o.o. FY 2025 — Izvješće neovisnog revizora i samostalni financijski izvještaji",
+      "documentType": "independent-auditor-report-and-standalone-financial-statements",
+      "sourceStatus": "officially-filed-and-publicly-available-in-fina-rgfi",
+      "officialRegistryId": "fina-rgfi",
+      "officialRegistrySearchIdentifier": "OIB 75227917632",
+      "officialRegistryDirectDocumentUrl": null,
+      "officialRegistryDirectDocumentStatus": "lookup required through the official public search interface",
+      "publicPortalUrl": "https://gnk-asg.hr/#dokumenti",
+      "downloadableOnPortal": true,
+      "portalDirectDownloadUrl": null,
+      "portalDirectPathStatus": "not exposed in the current static HTML snapshot; preserve the existing portal download implementation",
+      "financialModelEntityId": "gnk-asg-standalone"
+    },
+    {
+      "id": "gnk-dinamo-group-fy2025-consolidated",
+      "entity": "GNK DINAMO Ltd.",
+      "scope": "consolidated-group",
+      "periodEnd": "2025-12-31",
+      "title": "GNK DINAMO Ltd. FY 2025 — Consolidated Financial Report of the Group",
+      "documentType": "publicly-filed-and-published-consolidated-financial-report",
+      "sourceStatus": "officially-filed-and-publicly-available-in-colorado-registry",
+      "officialRegistryId": "colorado-secretary-of-state",
+      "officialRegistrySearchIdentifier": "Colorado Entity ID 20238180649",
+      "officialRegistryDirectDocumentUrl": null,
+      "officialRegistryDirectDocumentStatus": "lookup required through the official business filing record and filed-document interface",
+      "publicPortalUrl": "https://gnk-asg.hr/#dokumenti",
+      "corporateSourceUrl": "https://gnkdinamo.eu/",
+      "downloadableOnPortal": true,
+      "portalDirectDownloadUrl": null,
+      "portalDirectPathStatus": "not exposed in the current static HTML snapshot; preserve the existing portal download implementation",
+      "financialModelEntityId": "gnk-dinamo-group"
+    }
+  ],
+  "governance": {
+    "officialRegistryIsPrimarySource": true,
+    "corporatePortalIsSecondaryPublicSource": true,
+    "separateDocumentScopes": true,
+    "standaloneAndConsolidatedMustNotBeBlindlyAdded": true,
+    "projectionMustReferenceDocumentId": true,
+    "interim2026ValuesRemainManagementInputs": true,
+    "publicClaimsMustRetainPeriodAndSourceStatus": true
+  }
+}

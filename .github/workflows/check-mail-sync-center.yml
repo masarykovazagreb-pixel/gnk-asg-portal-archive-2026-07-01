@@ -1,0 +1,69 @@
+name: Check Mail Sync Center
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/assets/mail-sync-center-ui-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-sync-center-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-sync-center-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
+      - 'workers/gnk-asg-direct-operator/test/mail-sync-center.test.mjs'
+      - '.github/workflows/check-mail-sync-center.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check syntax
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/mail-sync-center-ui-v1.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-sync-center-v1.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-sync-center-v2.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node --check workers/gnk-asg-direct-operator/test/mail-sync-center.test.mjs
+      - name: Test protected routes
+        run: node workers/gnk-asg-direct-operator/test/mail-sync-center.test.mjs
+      - name: Verify storage and threading contract
+        run: |
+          set -euxo pipefail
+          grep -q 'mail_sync_messages' workers/gnk-asg-direct-operator/src/mail-sync-center-v1.js
+          grep -q 'mail_sync_attachments' workers/gnk-asg-direct-operator/src/mail-sync-center-v1.js
+          grep -q 'mail_sync_state' workers/gnk-asg-direct-operator/src/mail-sync-center-v1.js
+          grep -q 'raw.tee' workers/gnk-asg-direct-operator/src/mail-sync-center-v1.js
+          grep -q 'thread_id' workers/gnk-asg-direct-operator/src/mail-sync-center-v1.js
+          grep -q 'LEGACY_METADATA_ONLY' workers/gnk-asg-direct-operator/src/mail-sync-center-v2.js
+          grep -q 'STATUS_METADATA_ONLY' workers/gnk-asg-direct-operator/src/mail-sync-center-v2.js
+      - name: Verify Mail Studio integration
+        run: |
+          set -euxo pipefail
+          grep -q "from './mail-studio-extension-v4.js'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q "PUBLIC_PREFIX='/api/mail-center/sync'" workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
+          grep -q "INTERNAL_PREFIX='/api/mail-sync'" workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
+          grep -q 'mail-sync-center-ui-v1.js' workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
+          grep -q 'prepareMailSyncInbound' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
+          grep -q 'recordMailSyncOutbound' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
+      - name: Verify review-only UI
+        run: |
+          set -euxo pipefail
+          grep -q 'Inbox' apps/portal/assets/mail-sync-center-ui-v1.js
+          grep -q 'Sent' apps/portal/assets/mail-sync-center-ui-v1.js
+          grep -q 'Unread' apps/portal/assets/mail-sync-center-ui-v1.js
+          grep -q 'Sync Health' apps/portal/assets/mail-sync-center-ui-v1.js
+          grep -q 'Reply in Compose' apps/portal/assets/mail-sync-center-ui-v1.js
+          grep -q 'sandbox="allow-popups allow-popups-to-escape-sandbox"' apps/portal/assets/mail-sync-center-ui-v1.js
+          ! grep -q 'localStorage' apps/portal/assets/mail-sync-center-ui-v1.js
+          ! grep -q 'wrangler deploy' apps/portal/assets/mail-sync-center-ui-v1.js

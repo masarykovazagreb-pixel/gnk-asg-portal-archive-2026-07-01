@@ -1,7 +1,9 @@
 const PRIVATE_PATHS=[
   '/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/admin-center',
   '/media-command-center','/media-application','/media-registration-admin','/campaign-mailer',
-  '/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/auto-editor','/operator','/api'
+  '/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/auto-editor','/operator','/api',
+  '/enterprise','/mission-control','/editorial-operations','/registry-center','/deployment',
+  '/mobile-admin','/seo','/design-review','/language-review','/strategy-performance','/entities'
 ];
 
 const normalizePath=path=>String(path||'').toLowerCase().replace(/\/+$/,'')||'/';
@@ -20,7 +22,7 @@ function removeLegacyPublicShell(html){
     .replace(/<style[^>]+id=["']gnk-asg-single-ai-button-style["'][^>]*>[\s\S]*?<\/style>/gi,'')
     .replace(/<script[^>]+id=["']gnk-asg-single-ai-button-script["'][^>]*>[\s\S]*?<\/script>/gi,'')
     .replace(/<[^>]+class=["'][^"']*gnk-asg-fixed-menu-spacer[^"']*["'][^>]*>[\s\S]*?<\/[^>]+>/gi,'')
-    .replace(/<script[^>]+src=["'][^"']*\/assets\/(?:public-menu-final-v9|public-menu-v13|public-menu-v18|public-floating-home-v16|public-ai-badge-guard-v17|index-news-rotation-v1|index-content-resilience-v1|index-live-market-chart-v[1-4]|index-group-network-v2|index-group-network-en-bridge-v1|index-runtime-lock-v31)\.js[^"']*["'][^>]*><\/script>/gi,'')
+    .replace(/<script[^>]+src=["'][^"']*\/assets\/(?:public-menu-final-v9|public-menu-v13|public-menu-v18|public-floating-home-v16|public-ai-badge-guard-v17|index-news-rotation-v1|index-content-resilience-v1|index-live-market-chart-v[1-4]|index-group-network-v2|index-group-network-en-bridge-v1|index-runtime-lock-v31|the-code-new-york-countdown-v1)\.js[^"']*["'][^>]*><\/script>/gi,'')
     .replace(/<script[^>]+src=["'][^"']*\/assets\/brand\/gnk-asg-global-layer\.js[^"']*["'][^>]*><\/script>/gi,'')
     .replace(/<link[^>]+href=["'][^"']*\/assets\/brand\/gnk-asg-global-layer\.css[^"']*["'][^>]*>/gi,'')
     .replace(/<link[^>]+href=["'][^"']*\/assets\/public-menu-unified-v12\.css[^"']*["'][^>]*>/gi,'')
@@ -28,6 +30,7 @@ function removeLegacyPublicShell(html){
     .replace(/<link[^>]+href=["'][^"']*\/assets\/public-redesign-v1\.css[^"']*["'][^>]*>/gi,'')
     .replace(/<link[^>]+href=["'][^"']*\/assets\/(?:index-polish-v1|index-critical-v31|index-stable-polish-v30)\.css[^"']*["'][^>]*>/gi,'')
     .replace(/<link[^>]+href=["'][^"']*\/assets\/index-group-network-v2\.css[^"']*["'][^>]*>/gi,'')
+    .replace(/<link[^>]+href=["'][^"']*\/assets\/the-code-new-york-countdown-v1\.css[^"']*["'][^>]*>/gi,'')
     .replace(/<link[^>]+rel=["'](?:icon|shortcut icon|apple-touch-icon|apple-touch-icon-precomposed)["'][^>]*>/gi,'')
     .replace(/<link[^>]+rel=["']manifest["'][^>]*>/gi,'')
     .replace(/<style[^>]+id=["'](?:gnk-public-v13-reset|gnk-index-v31-reset)["'][^>]*>[\s\S]*?<\/style>/gi,'')
@@ -51,15 +54,17 @@ export function patchPublicHtml(html,path){
   const visual='<link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260626-stable-v28">';
   const redesign='<link rel="stylesheet" href="/assets/public-redesign-v1.css?v=20260701-r2">';
   const reset='<style id="gnk-public-v13-reset">html,body{max-width:100%!important;overflow-x:hidden!important}body{padding-top:0!important}.brand-head,.top-nav,body>header:not(#gnk-public-header-v18),body>.site-header,.site-header,.header-inner>.main-nav,.menu-toggle,.shell>.brand-head,.shell>.top-nav,.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-final-menu-wrap,.gnk-asg-inner-nav,.gnk-asg-floating-actions,.floating-home,.floating-ai,.gnk-global-float-home,.gnk-global-float-ai,main>nav:first-child,.news-actions,#gnk-asg-global-layer-root,#gnk-asg-single-ai-button-anchor,#gnk-asg-float-home,#gnk-asg-float-ai,#gnk-asg-ai-panel,#gnk-asg-review-modal,.gnk-asg-fixed-menu-spacer{display:none!important}body.gnk-route-contact main .card>a[href="/"],body.gnk-route-contact main .card>a[href="/en/"]{display:none!important}body.gnk-route-contact main,body.gnk-route-contact main *,body.gnk-route-publications main,body.gnk-route-publications main *{min-width:0!important;max-width:100%!important;box-sizing:border-box!important;overflow-wrap:anywhere!important}body.gnk-route-contact pre,body.gnk-route-publications pre{overflow:auto!important}body.gnk-route-contact input[type="file"]{width:100%!important}</style>';
-  const menu='<script src="/assets/public-menu-v18.js?v=20260701-r2" defer></script>';
-  const indexHead='<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260626-data-v28">';
-  const indexScripts='<script src="/assets/index-group-network-en-bridge-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-group-network-v2.js?v=20260626-data-v28" defer></script><script src="/assets/index-news-rotation-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-content-resilience-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-live-market-chart-v4.js?v=20260626-data-v28" defer></script>';
+  const menu='<script src="/assets/public-menu-v18.js?v=20260704-languages" defer></script>';
+  const indexHead='<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260626-data-v28"><link rel="stylesheet" href="/assets/the-code-new-york-countdown-v1.css?v=20260704-1">';
+  const indexScripts='<script src="/assets/index-group-network-en-bridge-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-group-network-v2.js?v=20260626-data-v28" defer></script><script src="/assets/index-news-rotation-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-content-resilience-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-live-market-chart-v4.js?v=20260626-data-v28" defer></script><script src="/assets/the-code-new-york-countdown-v1.js?v=20260704-1" defer></script>';
   html=html.replace('</head>',`${stableFavicon}\n</head>`);
   if(!html.includes('/assets/public-ux-v11.css'))html=html.replace('</head>',`${ux}</head>`);
   html=html.replace('</head>',`${visual}${reset}${redesign}</head>`);
   if(indexPath&&!html.includes('/assets/index-group-network-v2.css'))html=html.replace('</head>',`${indexHead}</head>`);
+  if(indexPath&&!html.includes('/assets/the-code-new-york-countdown-v1.css'))html=html.replace('</head>','<link rel="stylesheet" href="/assets/the-code-new-york-countdown-v1.css?v=20260704-1"></head>');
   if(indexPath&&!html.includes('/assets/index-clock-v2.js'))html=html.replace('</body>','<script src="/assets/index-clock-v2.js?v=20260625-v2" defer></script></body>');
   if(indexPath&&!html.includes('/assets/index-content-resilience-v1.js'))html=html.replace('</body>',`${indexScripts}</body>`);
+  if(indexPath&&!html.includes('/assets/the-code-new-york-countdown-v1.js'))html=html.replace('</body>','<script src="/assets/the-code-new-york-countdown-v1.js?v=20260704-1" defer></script></body>');
   return html.replace('</body>',`${menu}</body>`);
 }
 

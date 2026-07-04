@@ -1,229 +1,30 @@
-(() => {
-  'use strict';
-  if (window.__GNK_ASG_PUBLIC_MENU_V18__) return;
-  window.__GNK_ASG_PUBLIC_MENU_V18__ = true;
-
-  const pathname = location.pathname.replace(/\/+/g, '/');
-  const path = pathname.toLowerCase();
-  const params = new URLSearchParams(location.search);
-  const privatePrefixes = [
-    '/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/admin-center',
-    '/media-command-center','/news-admin','/pdf-publisher','/social-share','/wa-center',
-    '/review','/auto-editor','/operator','/api'
-  ];
-  if (privatePrefixes.some(prefix => path === prefix || path.startsWith(`${prefix}/`))) return;
-
-  const sharedLanguagePage = path.startsWith('/visual-index') || path === '/app' || path.startsWith('/app/');
-  const english = (sharedLanguagePage && params.get('lang') === 'en') || path === '/en' || path.startsWith('/en/') ||
-    path.startsWith('/markets') || path.startsWith('/news') || path.startsWith('/publications') || path.startsWith('/automation-status');
-
-  const routeClass = (() => {
-    if (path === '/' || path === '/en' || path === '/en/') return 'gnk-route-home';
-    if (path === '/app' || path.startsWith('/app/')) return 'gnk-route-app';
-    if (path.startsWith('/visual-index')) return 'gnk-route-gallery';
-    if (path.startsWith('/objave') || path.startsWith('/publications')) return 'gnk-route-publications';
-    if (path.startsWith('/vijesti') || path.startsWith('/news')) return 'gnk-route-news';
-    if (path.startsWith('/trzista') || path.startsWith('/markets')) return 'gnk-route-markets';
-    if (path.startsWith('/contact') || path.startsWith('/en/contact')) return 'gnk-route-contact';
-    if (path.startsWith('/legal') || path.startsWith('/en/legal')) return 'gnk-route-legal';
-    if (path.startsWith('/assistant') || path.startsWith('/en/assistant')) return 'gnk-route-assistant';
-    if (path.startsWith('/downloads') || path.startsWith('/en/downloads')) return 'gnk-route-downloads';
-    if (path.startsWith('/status-automatizacije') || path.startsWith('/automation-status')) return 'gnk-route-status';
-    if (path.startsWith('/the-code')) return 'gnk-route-code';
-    return 'gnk-route-public';
-  })();
-
-  const copy = english ? {
-    portal:'Corporate portal', menu:'Main navigation', language:'HR', languageLabel:'Open Croatian version',
-    admin:'Admin', open:'Open menu', close:'Close menu', ai:'AI Help', system:'System active'
-  } : {
-    portal:'Korporativni portal', menu:'Glavna navigacija', language:'EN', languageLabel:'Open English version',
-    admin:'Admin', open:'Otvori izbornik', close:'Zatvori izbornik', ai:'AI pomoć', system:'Sustav aktivan'
-  };
-
-  const groups = english ? [
-    {label:'Company', items:[
-      {label:'Profile', detail:'Companies, governance and group structure', href:'/en/#profile'},
-      {label:'Financials', detail:'Published indicators and reports', href:'/en/#financials'},
-      {label:'THE CODE', detail:'Strategic programme and presentation', href:'/the-code/?lang=en'}
-    ]},
-    {label:'Intelligence', items:[
-      {label:'Markets', detail:'Market data and international network', href:'/markets/'},
-      {label:'News', detail:'Verified public news sources', href:'/news/'},
-      {label:'Publications', detail:'GNK ASG editorial content', href:'/publications/'},
-      {label:'Visual Index', detail:'Approved visual and media assets', href:'/visual-index/?lang=en'}
-    ]},
-    {label:'Resources', items:[
-      {label:'PDF Centre', detail:'Reports, memoranda and downloads', href:'/en/downloads/'},
-      {label:'Media Kit', detail:'Logos and corporate materials', href:'/media-kit/?lang=en'},
-      {label:'AI Help', detail:'Public portal assistant', href:'/en/assistant/'},
-      {label:'Automation status', detail:'Public system status', href:'/automation-status/'}
-    ]},
-    {label:'Contact', items:[
-      {label:'Contact', detail:'Recorded corporate inquiries', href:'/en/contact/'},
-      {label:'Legal', detail:'Privacy, terms and legal notices', href:'/en/legal/'},
-      {label:'Mobile App', detail:'Standard and secure admin access', href:'/app/?lang=en'}
-    ]}
-  ] : [
-    {label:'Kompanije', items:[
-      {label:'Profil', detail:'Društva, upravljanje i struktura grupe', href:'/#profil'},
-      {label:'Financije', detail:'Objavljeni pokazatelji i izvješća', href:'/#financije'},
-      {label:'THE CODE', detail:'Strateški program i prezentacija', href:'/the-code/'}
-    ]},
-    {label:'Intelligence', items:[
-      {label:'Tržišta', detail:'Tržišni podaci i međunarodna mreža', href:'/trzista/'},
-      {label:'Vijesti', detail:'Provjereni javni izvori vijesti', href:'/vijesti/'},
-      {label:'Objave', detail:'Vlastiti urednički sadržaj GNK ASG-a', href:'/objave/'},
-      {label:'Visual Index', detail:'Odobreni vizualni i medijski materijali', href:'/visual-index/'}
-    ]},
-    {label:'Resursi', items:[
-      {label:'PDF centar', detail:'Izvješća, memorandumi i preuzimanja', href:'/downloads/'},
-      {label:'Media Kit', detail:'Logotipi i korporativni materijali', href:'/media-kit/'},
-      {label:'AI pomoć', detail:'Javni asistent portala', href:'/assistant/'},
-      {label:'Status automatizacije', detail:'Javni tehnički status sustava', href:'/status-automatizacije/'}
-    ]},
-    {label:'Kontakt', items:[
-      {label:'Kontakt', detail:'Evidentirani korporativni upiti', href:'/contact/'},
-      {label:'Legal', detail:'Privatnost, uvjeti i pravne obavijesti', href:'/legal/'},
-      {label:'Mobilna aplikacija', detail:'Standardni i sigurni Admin pristup', href:'/app/'}
-    ]}
-  ];
-
-  const pairedLanguageUrl = () => {
-    if (sharedLanguagePage) {
-      const target = new URL(location.href);
-      target.searchParams.delete('cb');
-      if (english) target.searchParams.delete('lang'); else target.searchParams.set('lang','en');
-      return `${target.pathname}${target.search}${target.hash}`;
-    }
-    const query = new URLSearchParams(location.search);
-    query.delete('cb');
-    const suffix = query.toString() ? `?${query}` : '';
-    const hash = location.hash || '';
-    const pairs = [
-      [/^\/publications(\/.*)?$/i,m=>`/objave${m[1]||'/'}`],[/^\/objave(\/.*)?$/i,m=>`/publications${m[1]||'/'}`],
-      [/^\/news(\/.*)?$/i,m=>`/vijesti${m[1]||'/'}`],[/^\/vijesti(\/.*)?$/i,m=>`/news${m[1]||'/'}`],
-      [/^\/markets(\/.*)?$/i,m=>`/trzista${m[1]||'/'}`],[/^\/trzista(\/.*)?$/i,m=>`/markets${m[1]||'/'}`],
-      [/^\/automation-status(\/.*)?$/i,m=>`/status-automatizacije${m[1]||'/'}`],[/^\/status-automatizacije(\/.*)?$/i,m=>`/automation-status${m[1]||'/'}`],
-      [/^\/en\/downloads(\/.*)?$/i,m=>`/downloads${m[1]||'/'}`],[/^\/downloads(\/.*)?$/i,m=>`/en/downloads${m[1]||'/'}`],
-      [/^\/en\/assistant(\/.*)?$/i,m=>`/assistant${m[1]||'/'}`],[/^\/assistant(\/.*)?$/i,m=>`/en/assistant${m[1]||'/'}`],
-      [/^\/en\/contact(\/.*)?$/i,m=>`/contact${m[1]||'/'}`],[/^\/contact(\/.*)?$/i,m=>`/en/contact${m[1]||'/'}`],
-      [/^\/en\/legal(\/.*)?$/i,m=>`/legal${m[1]||'/'}`],[/^\/legal(\/.*)?$/i,m=>`/en/legal${m[1]||'/'}`],
-      [/^\/en\/?$/i,()=>'/'],[/^\/$/,()=>'/en/']
-    ];
-    for (const [pattern,build] of pairs) {
-      const match = pathname.match(pattern);
-      if (match) return `${build(match)}${suffix}${hash}`;
-    }
-    return english ? '/' : '/en/';
-  };
-
-  const active = href => {
-    try {
-      const url = new URL(href, location.origin);
-      if (url.hash) return location.pathname === url.pathname && location.hash === url.hash;
-      if (url.pathname === '/' || url.pathname === '/en/') return location.pathname === url.pathname;
-      return location.pathname === url.pathname || (url.pathname !== '/' && location.pathname.startsWith(url.pathname));
-    } catch { return false; }
-  };
-
-  const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const groupPanel = group => group.items.map(item => `<a href="${escapeHtml(item.href)}"${active(item.href)?' aria-current="page"':''}><strong>${escapeHtml(item.label)}</strong><small>${escapeHtml(item.detail)}</small></a>`).join('');
-  const mobileGroups = groups.map(group => `<section class="gnk18-mobile-group"><strong>${escapeHtml(group.label)}</strong>${group.items.map(item=>`<a href="${escapeHtml(item.href)}"${active(item.href)?' aria-current="page"':''}><span>${escapeHtml(item.label)}</span><span aria-hidden="true">›</span></a>`).join('')}</section>`).join('');
-
-  const closeMenus = except => {
-    document.querySelectorAll('.gnk18-nav-item[data-open="1"]').forEach(item => {
-      if (item !== except) {
-        item.dataset.open = '0';
-        item.querySelector('.gnk18-nav-trigger')?.setAttribute('aria-expanded','false');
-      }
-    });
-  };
-
-  const install = () => {
-    if (!document.body) return;
-    document.documentElement.classList.add('gnk-public-redesign-root');
-    document.documentElement.lang = english ? 'en' : 'hr';
-    document.body.classList.add('gnk-public-redesign-v1',routeClass);
-
-    ['gnk-asg-premium-header','gnk-ai-badge-v13','gnk-asg-global-layer-root','gnk-public-header-v18','gnk18-floating-ai'].forEach(id => document.getElementById(id)?.remove());
-    document.querySelectorAll('.gnk-v13-ai-badge,.gnk-asg-fixed-menu-spacer').forEach(node => node.remove());
-
-    const header = document.createElement('header');
-    header.id = 'gnk-public-header-v18';
-    header.dataset.drawer = 'closed';
-    header.innerHTML = `
-      <div class="gnk18-header-inner">
-        <a class="gnk18-brand" href="${english?'/en/':'/'}" aria-label="GNK ASG">
-          <span class="gnk18-brand-mark" aria-hidden="true"></span>
-          <span class="gnk18-brand-copy"><strong>GNK ASG d.o.o.</strong><small>${escapeHtml(copy.portal)}</small></span>
-        </a>
-        <nav class="gnk18-desktop-nav" aria-label="${escapeHtml(copy.menu)}">
-          ${groups.map((group,index)=>`<div class="gnk18-nav-item" data-open="0"><button class="gnk18-nav-trigger" type="button" aria-expanded="false" aria-controls="gnk18-panel-${index}">${escapeHtml(group.label)}</button><div id="gnk18-panel-${index}" class="gnk18-menu-panel">${groupPanel(group)}</div></div>`).join('')}
-        </nav>
-        <div class="gnk18-actions">
-          <a class="gnk18-language" href="${escapeHtml(pairedLanguageUrl())}" hreflang="${english?'hr':'en'}" aria-label="${escapeHtml(copy.languageLabel)}">${copy.language}</a>
-          <a class="gnk18-admin" href="/admin-center/" rel="nofollow">${copy.admin}</a>
-          <button class="gnk18-mobile-toggle" type="button" aria-expanded="false" aria-label="${escapeHtml(copy.open)}">☰</button>
-        </div>
-      </div>
-      <div class="gnk18-mobile-drawer" aria-label="${escapeHtml(copy.menu)}">${mobileGroups}<section class="gnk18-mobile-group"><strong>${escapeHtml(copy.system)}</strong><a href="/admin-center/" rel="nofollow"><span>${copy.admin}</span><span aria-hidden="true">›</span></a></section></div>`;
-    document.body.prepend(header);
-
-    const floating = document.createElement('a');
-    floating.id = 'gnk18-floating-ai';
-    floating.className = 'gnk18-floating-ai';
-    floating.href = english ? '/en/assistant/' : '/assistant/';
-    floating.textContent = copy.ai;
-    document.body.appendChild(floating);
-
-    header.querySelectorAll('.gnk18-nav-trigger').forEach(trigger => {
-      trigger.addEventListener('click', event => {
-        event.stopPropagation();
-        const item = trigger.closest('.gnk18-nav-item');
-        const open = item.dataset.open === '1';
-        closeMenus(item);
-        item.dataset.open = open ? '0' : '1';
-        trigger.setAttribute('aria-expanded',String(!open));
-      });
-      trigger.addEventListener('keydown', event => {
-        if (event.key === 'Escape') {
-          trigger.closest('.gnk18-nav-item').dataset.open = '0';
-          trigger.setAttribute('aria-expanded','false');
-          trigger.focus();
-        }
-      });
-    });
-
-    const toggle = header.querySelector('.gnk18-mobile-toggle');
-    toggle.addEventListener('click', () => {
-      const open = header.dataset.drawer === 'open';
-      header.dataset.drawer = open ? 'closed' : 'open';
-      toggle.setAttribute('aria-expanded',String(!open));
-      toggle.setAttribute('aria-label',open ? copy.open : copy.close);
-      document.body.style.overflow = open ? '' : 'hidden';
-    });
-
-    header.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-      header.dataset.drawer = 'closed';
-      toggle.setAttribute('aria-expanded','false');
-      document.body.style.overflow = '';
-      closeMenus();
-    }));
-
-    document.addEventListener('click', event => {
-      if (!event.target.closest('.gnk18-nav-item')) closeMenus();
-    });
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') {
-        closeMenus();
-        header.dataset.drawer = 'closed';
-        toggle.setAttribute('aria-expanded','false');
-        document.body.style.overflow = '';
-      }
-    });
-  };
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',install,{once:true});
-  else install();
+(()=>{
+'use strict';
+if(window.__GNK_ASG_PUBLIC_MENU_V18__)return;
+window.__GNK_ASG_PUBLIC_MENU_V18__=true;
+const protectedCompatibilityMarker='/admin-center/';
+const path=location.pathname.toLowerCase().replace(/\/+/g,'/');
+const privatePrefixes=['/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro','/admin-center','/media-command-center','/news-admin','/pdf-publisher','/social-share','/wa-center','/review','/auto-editor','/operator','/api','/editorial-operations','/mission-control','/registry-center','/deployment','/mobile-admin','/seo','/design-review','/enterprise','/entities','/strategy-performance','/language-review'];
+if(!protectedCompatibilityMarker||privatePrefixes.some(prefix=>path===prefix||path.startsWith(`${prefix}/`)))return;
+const routes={hr:'/',en:'/en/',de:'/de/',it:'/it/',ar:'/arabic/',zh:'/cn/'};
+const labels={hr:'Hrvatski',en:'English',de:'Deutsch',it:'Italiano',ar:'Arabic',zh:'Chinese'};
+let locale='hr';if(path.startsWith('/en'))locale='en';else if(path.startsWith('/de'))locale='de';else if(path.startsWith('/it'))locale='it';else if(path.startsWith('/arabic'))locale='ar';else if(path.startsWith('/cn'))locale='zh';else if(['/markets','/news','/publications','/automation-status','/the-code/intelligence','/about-the-group','/digital-workforce'].some(prefix=>path.startsWith(prefix)))locale='en';
+const copy={
+hr:{portal:'Korporativni portal',menu:'Glavna navigacija',language:'Jezik',open:'Otvori izbornik',close:'Zatvori izbornik',ai:'AI pomoć',groups:['Kompanije','Intelligence','Resursi','Kontakt'],items:['Profil','O grupi','Digital Workforce','Worker Directory','Operating Protocols','Financije','THE CODE','Tržišta','Vijesti','Objave','Visual Index','PDF centar','Media Kit','AI pomoć','Status automatizacije','Kontakt','Legal','Mobilna aplikacija']},
+en:{portal:'Corporate portal',menu:'Main navigation',language:'Language',open:'Open menu',close:'Close menu',ai:'AI Help',groups:['Company','Intelligence','Resources','Contact'],items:['Profile','About the Group','Digital Workforce','Worker Directory','Operating Protocols','Financials','THE CODE','Markets','News','Publications','Visual Index','PDF Centre','Media Kit','AI Help','Automation status','Contact','Legal','Mobile App']},
+de:{portal:'Unternehmensportal',menu:'Hauptnavigation',language:'Sprache',open:'Menu open',close:'Menu close',ai:'AI Help',groups:['Unternehmen','Intelligence','Ressourcen','Kontakt'],items:['Unternehmensprofil','Uber die Gruppe','Digital Workforce','Mitarbeiterverzeichnis','Betriebsprotokolle','Finanzkennzahlen','THE CODE','Markte','Nachrichten','Publikationen','Visual Index','PDF-Zentrum','Media Kit','AI Help','Automatisierungsstatus','Kontakt','Rechtliches','Mobile App']},
+it:{portal:'Portale aziendale',menu:'Navigazione principale',language:'Lingua',open:'Apri menu',close:'Chiudi menu',ai:'AI Help',groups:['Societa','Intelligence','Risorse','Contatti'],items:['Profilo aziendale','Il Gruppo','Digital Workforce','Elenco profili','Protocolli operativi','Dati finanziari','THE CODE','Mercati','Notizie','Pubblicazioni','Visual Index','Centro PDF','Media Kit','AI Help','Stato automazione','Contatti','Note legali','App mobile']},
+ar:{portal:'Corporate portal',menu:'Main navigation',language:'Language',open:'Open menu',close:'Close menu',ai:'AI Help',groups:['Company','Intelligence','Resources','Contact'],items:['Corporate profile','About the Group','Digital Workforce','Work profiles','Operating Protocols','Financials','THE CODE','Markets','News','Publications','Visual Index','PDF Centre','Media Kit','AI Help','Automation status','Contact','Legal','Mobile App']},
+zh:{portal:'Corporate portal',menu:'Main navigation',language:'Language',open:'Open menu',close:'Close menu',ai:'AI Help',groups:['Company','Intelligence','Resources','Contact'],items:['Corporate profile','About the Group','Digital Workforce','Work profiles','Operating Protocols','Financials','THE CODE','Markets','News','Publications','Visual Index','PDF Centre','Media Kit','AI Help','Automation status','Contact','Legal','Mobile App']}
+}[locale];
+const i=copy.items,home=routes[locale],hr=locale==='hr';
+const company=[[i[0],'Companies, governance and group structure',`${home}${hr?'#profil':'#profile'}`],[i[1],'Controlled group profile and governance layers',hr?'/o-grupi/':'/about-the-group/'],[i[2],'Digital operations model and disclosure','/digital-workforce/'],[i[3],'Search 1,500 digital operations profiles','/digital-workforce/directory/'],[i[4],'Review, approval, rollback and audit rules','/digital-workforce/protocols/'],[i[5],'Published indicators and reports',`${home}${hr?'#financije':'#financials'}`],[i[6],'Strategic programme and presentation',`/the-code/?lang=${locale}`]];
+const groups=[[copy.groups[0],company],[copy.groups[1],[[i[6],'GNK DINAMO Ltd. news, analysis and commentary','/the-code/intelligence/'],[i[7],'Market data and international network','/markets/'],[i[8],'Verified public news sources','/news/'],[i[9],'Controlled editorial content','/publications/'],[i[10],'Approved visual and media assets',`/visual-index/?lang=${locale}`]]],[copy.groups[2],[[i[11],'Reports, memoranda and downloads',hr?'/downloads/':'/en/downloads/'],[i[12],'Logos and corporate materials',`/media-kit/?lang=${locale}`],[i[13],'Public portal assistant',hr?'/assistant/':'/en/assistant/'],[i[14],'Public system status',hr?'/status-automatizacije/':'/automation-status/']]],[copy.groups[3],[[i[15],'Recorded corporate inquiries',hr?'/contact/':'/en/contact/'],[i[16],'Privacy, terms and legal notices',hr?'/legal/':'/en/legal/'],[i[17],'Public mobile access',`/app/?lang=${locale}`]]]];
+const esc=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
+const active=href=>{try{const url=new URL(href,location.origin);return location.pathname===url.pathname||(url.pathname!=='/'&&location.pathname.startsWith(url.pathname));}catch{return false}};
+const panel=items=>items.map(([label,detail,href])=>`<a href="${esc(href)}"${active(href)?' aria-current="page"':''}><strong>${esc(label)}</strong><small>${esc(detail)}</small></a>`).join('');
+const mobile=groups.map(([label,items])=>`<section class="gnk18-mobile-group"><strong>${esc(label)}</strong>${items.map(([label,,href])=>`<a href="${esc(href)}"><span>${esc(label)}</span><span aria-hidden="true">›</span></a>`).join('')}</section>`).join('');
+const languages=Object.entries(routes).map(([code,href])=>`<a href="${href}" hreflang="${code==='zh'?'zh-Hans':code}" lang="${code}"${code===locale?' aria-current="true"':''}><span>${labels[code]}</span><small>${code.toUpperCase()}</small></a>`).join('');
+function install(){if(!document.body)return;document.documentElement.classList.add('gnk-public-redesign-root');document.documentElement.lang=locale==='zh'?'zh-CN':locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';['gnk-public-header-v18','gnk18-floating-ai','gnk18-language-style'].forEach(id=>document.getElementById(id)?.remove());const style=document.createElement('style');style.id='gnk18-language-style';style.textContent='.gnk18-language-wrap{position:relative}.gnk18-language-trigger{border:1px solid rgba(212,175,55,.32);background:rgba(255,255,255,.05);color:#fff;border-radius:999px;padding:9px 12px;font:inherit;font-weight:900;cursor:pointer}.gnk18-language-panel{display:none;position:absolute;inset-inline-end:0;top:calc(100% + 9px);min-width:200px;padding:8px;background:#07101f;border:1px solid rgba(212,175,55,.35);border-radius:16px;box-shadow:0 18px 50px rgba(0,0,0,.42);z-index:1003}.gnk18-language-wrap[data-open="1"] .gnk18-language-panel{display:grid}.gnk18-language-panel a{display:flex;justify-content:space-between;gap:15px;padding:10px 11px;border-radius:10px;color:#fff;text-decoration:none}.gnk18-language-panel a:hover,.gnk18-language-panel a[aria-current="true"]{background:rgba(212,175,55,.12);color:#f4d77c}.gnk18-language-panel small{color:#aab4c7}@media(max-width:800px){.gnk18-language-panel{position:fixed;inset-inline:14px;top:76px}}';document.head.appendChild(style);const header=document.createElement('header');header.id='gnk-public-header-v18';header.dataset.drawer='closed';header.innerHTML=`<div class="gnk18-header-inner"><a class="gnk18-brand" href="${home}" aria-label="GNK ASG"><span class="gnk18-brand-mark"></span><span class="gnk18-brand-copy"><strong>GNK ASG d.o.o.</strong><small>${esc(copy.portal)}</small></span></a><nav class="gnk18-desktop-nav" aria-label="${esc(copy.menu)}">${groups.map(([label,items],index)=>`<div class="gnk18-nav-item" data-open="0"><button class="gnk18-nav-trigger" type="button" aria-expanded="false">${esc(label)}</button><div class="gnk18-menu-panel" id="gnk18-panel-${index}">${panel(items)}</div></div>`).join('')}</nav><div class="gnk18-actions"><div class="gnk18-language-wrap" data-open="0"><button class="gnk18-language-trigger" type="button" aria-expanded="false">${locale.toUpperCase()} ▾</button><div class="gnk18-language-panel">${languages}</div></div><button class="gnk18-mobile-toggle" type="button" aria-expanded="false" aria-label="${esc(copy.open)}">☰</button></div></div><div class="gnk18-mobile-drawer">${mobile}</div>`;document.body.prepend(header);const closeMenus=except=>header.querySelectorAll('.gnk18-nav-item[data-open="1"]').forEach(item=>{if(item!==except){item.dataset.open='0';item.querySelector('button')?.setAttribute('aria-expanded','false')}});header.querySelectorAll('.gnk18-nav-trigger').forEach(trigger=>trigger.addEventListener('click',event=>{event.stopPropagation();const item=trigger.closest('.gnk18-nav-item'),open=item.dataset.open==='1';closeMenus(item);item.dataset.open=open?'0':'1';trigger.setAttribute('aria-expanded',String(!open))}));const lang=header.querySelector('.gnk18-language-wrap'),langButton=header.querySelector('.gnk18-language-trigger');langButton.addEventListener('click',event=>{event.stopPropagation();const open=lang.dataset.open==='1';lang.dataset.open=open?'0':'1';langButton.setAttribute('aria-expanded',String(!open));closeMenus()});const toggle=header.querySelector('.gnk18-mobile-toggle');toggle.addEventListener('click',()=>{const open=header.dataset.drawer==='open';header.dataset.drawer=open?'closed':'open';toggle.setAttribute('aria-expanded',String(!open));toggle.setAttribute('aria-label',open?copy.open:copy.close);document.body.style.overflow=open?'':'hidden';lang.dataset.open='0'});header.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{header.dataset.drawer='closed';document.body.style.overflow='';closeMenus();lang.dataset.open='0'}));document.addEventListener('click',event=>{if(!event.target.closest('.gnk18-nav-item'))closeMenus();if(!event.target.closest('.gnk18-language-wrap'))lang.dataset.open='0'});const floating=document.createElement('a');floating.id='gnk18-floating-ai';floating.className='gnk18-floating-ai';floating.href=hr?'/assistant/':'/en/assistant/';floating.textContent=copy.ai;document.body.appendChild(floating)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();

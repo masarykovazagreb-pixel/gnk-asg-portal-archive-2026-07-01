@@ -1,27 +1,29 @@
 {
-  "version": "2026-07-04.digital-workforce.01",
+  "version": "2026-07-04.digital-workforce.02",
   "status": "controlled-build",
   "purpose": "Enterprise Digital Workforce blueprint for GNK DINAMO Ltd. Group / GNK ASG Global Operations Center.",
   "publicPositioning": {
     "label": "Global Operations Center / Digital Operations Team",
-    "profileType": "operations profile",
+    "profileType": "digital operations profile",
     "identityFormat": "FirstName Initial. + Worker ID",
-    "disclosureRule": "Do not present operations profiles as confirmed physical employees. Do not label profiles as AI-generated on public cards. Use functional wording: operations profile, department, region, language, status and assigned workflow."
+    "disclosureRule": "Every public profile must be identified as a digital operations profile used for workflow coordination. A profile must not be presented as a confirmed physical employee unless a separately verified employment record exists.",
+    "directoryNotice": "Public directory entries describe operational functions, regions, languages, workflow status and assigned responsibility. They do not by themselves establish an employment relationship or personal identity."
   },
   "scale": {
     "plannedEntities": 43,
-    "phaseOneVisibleProfiles": 430,
+    "phaseOneVisibleProfiles": 1500,
     "fullGeneratedProfiles": 3000,
     "architectureCapacity": 10000,
     "entityMinimumProfiles": 25,
-    "entityTargetProfiles": 70
+    "entityTargetProfiles": 70,
+    "publicDirectoryPageSize": 50
   },
   "leadershipLayers": [
-    {"level":1,"label":"Executive Office","profilePrefix":"EXO","approvalAuthority":"final approval route"},
-    {"level":2,"label":"AI Director","profilePrefix":"AID","approvalAuthority":"workflow orchestration and escalation"},
-    {"level":3,"label":"AI Manager","profilePrefix":"AIM","approvalAuthority":"department coordination"},
-    {"level":4,"label":"Department Manager","profilePrefix":"DPM","approvalAuthority":"task routing and quality gate"},
-    {"level":5,"label":"Digital Operations Worker","profilePrefix":"OPS","approvalAuthority":"task execution profile without final binding authority"}
+    {"level":1,"label":"Executive Office","profilePrefix":"EXO","approvalAuthority":"final approval route; human-controlled"},
+    {"level":2,"label":"AI Director","profilePrefix":"AID","approvalAuthority":"workflow orchestration and escalation; no binding critical decision"},
+    {"level":3,"label":"AI Manager","profilePrefix":"AIM","approvalAuthority":"department coordination and recommendation"},
+    {"level":4,"label":"Department Manager","profilePrefix":"DPM","approvalAuthority":"task routing, low-risk operational decision and quality gate"},
+    {"level":5,"label":"Digital Operations Worker","profilePrefix":"OPS","approvalAuthority":"task execution and proposal drafting without final binding authority"}
   ],
   "departments": [
     "Mission Control",
@@ -73,8 +75,8 @@
     {"country":"Serbia","timezone":"CET","languages":["Serbian","English"],"weight":2}
   ],
   "namePools": {
-    "firstNames": ["Sofia","Daniel","Emma","Lucas","Maya","Elena","Oliver","Hana","Mateo","Nora","Liam","Lea","Noah","Mila","Elias","Eva","Adam","Sara","David","Lena","Ivan","Ana","Marko","Laura","Niko","Iva","Theo","Clara","Leo","Marta","Kenji","Aiko","Rafael","Julia","Bruno","Isabel","Amir","Priya","Arjun","Mei"],
-    "initials": ["A","B","C","D","E","F","G","H","K","L","M","N","P","R","S","T","V","Z"]
+    "firstNames": ["Sofia","Daniel","Emma","Lucas","Maya","Elena","Oliver","Hana","Mateo","Nora","Liam","Lea","Noah","Mila","Elias","Eva","Adam","Sara","David","Lena","Ivan","Ana","Marko","Laura","Niko","Iva","Theo","Clara","Leo","Marta","Kenji","Aiko","Rafael","Julia","Bruno","Isabel","Amir","Priya","Arjun","Mei","Luka","Petra","Tara","Filip","Dora","Leon","Karla","Mia","Toni","Ema","Jakov","Viktor","Helena","Gabriel","Nina","Klara","Samuel","Maja","Alex","Olivia"],
+    "initials": ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S","T","V","Z"]
   },
   "workerIdRules": {
     "format": "DEPT-ENTITY-SEQUENCE",
@@ -111,5 +113,12 @@
   },
   "statusModel": ["active","busy","scheduled","idle","approval-required","escalated","blocked"],
   "kpiModel": ["openTasks","completedTasks","qualityScore","averageHandlingTime","escalations","approvalWait"],
-  "entityAllocationRule": "Each of the 43 GNK entities receives baseline regional, finance, registry, publishing, media, support, compliance and technical operations profiles. Central departments scale above entity baseline."
+  "entityAllocationRule": "Each of the 43 GNK entity slots receives baseline regional, finance, registry, publishing, media, support, compliance and technical operations profiles. Central departments scale above entity baseline.",
+  "directory": {
+    "route": "/digital-workforce/directory/",
+    "protocolRoute": "/digital-workforce/protocols/",
+    "filters": ["name","workerId","department","country","language","status","entitySlot","role"],
+    "indexingState": "noindex-until-executive-approval",
+    "profileDetailMode": "directory-entry-not-independent-person-page"
+  }
 }

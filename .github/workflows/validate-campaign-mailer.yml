@@ -31,6 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-db-v1.js
+          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-audit-copy-v1.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
@@ -48,6 +49,15 @@ jobs:
           grep -q "runQueue" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q "recordInbound" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q "/api/campaign-mailer" workers/gnk-asg-direct-operator/src/campaign-mailer-v1.js
+      - name: Verify campaign audit-copy contract
+        run: |
+          set -euo pipefail
+          grep -q "MANDATORY_BCC" workers/gnk-asg-direct-operator/src/campaign-mailer-audit-copy-v1.js
+          grep -q "campaignAuditDescriptor" workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
+          grep -q "new EmailMessage(descriptor.from,descriptor.to,descriptor.raw)" workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
+          grep -q "X-GNK-ASG-Original-Recipient" workers/gnk-asg-direct-operator/src/campaign-mailer-audit-copy-v1.js
+          grep -q "primaryDelivered:true" workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
+          grep -q "audit_copy_failed" workers/gnk-asg-direct-operator/src/campaign-mailer-delivery-v1.js
       - name: Build Worker bundle
         working-directory: workers/gnk-asg-direct-operator
         env:

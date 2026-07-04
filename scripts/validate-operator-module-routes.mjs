@@ -1,0 +1,84 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const root=process.cwd();
+const read=file=>fs.readFileSync(path.join(root,file),'utf8');
+const exists=file=>fs.existsSync(path.join(root,file));
+const config=JSON.parse(read('apps/portal/assets/data/operator-os-config.json'));
+const modules=config.monitoredModules||[];
+const routeUrl=route=>new URL(route,'https://review.gnk-asg.local');
+
+assert.ok(modules.length>=18,'Operator OS mora pratiti najmanje 18 odobrenih modula.');
+assert.equal(new Set(modules.map(item=>item.id)).size,modules.length,'Module IDs moraju biti jedinstveni.');
+assert.equal(new Set(modules.map(item=>item.route)).size,modules.length,'Module routes moraju biti jedinstvene.');
+
+const gateway=read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js');
+const mailSyncFacade=read('workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js');
+const authLayer=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js');
+const dynamicContracts={
+  '/email-status/':{
+    source:gateway,
+    required:[
+      'isEmailStatusPath',
+      'handleEmailStatusRequest',
+      "path==='/email-status'",
+      "path.startsWith('/email-status/')",
+      'loginRedirect(request)'
+    ]
+  },
+  '/mail-studio/':{
+    source:`${gateway}\n${mailSyncFacade}\n${authLayer}`,
+    required:[
+      "from './mail-studio-extension-v4.js'",
+      "PUBLIC_PREFIX='/api/mail-center/sync'",
+      "INTERNAL_PREFIX='/api/mail-sync'",
+      'handleMailSyncCenter',
+      'gnk-mail-sync-center-ui',
+      "path.startsWith('/api/mail-center/')",
+      "'/mail-studio'"
+    ]
+  }
+};
+
+let dynamicCount=0;
+for(const module of modules){
+  assert.match(module.id,/^[a-z0-9-]+$/u,`Neispravan module ID: ${module.id}`);
+  const parsed=routeUrl(module.route),routePath=parsed.pathname;
+  assert.equal(parsed.origin,'https://review.gnk-asg.local',`Module ruta mora biti same-origin: ${module.route}`);
+  assert.match(routePath,/^\/(?:[a-z0-9-]+\/)+$/u,`Neispravan module pathname: ${module.route}`);
+  for(const key of parsed.searchParams.keys())assert.match(key,/^[a-z][a-z0-9-]*$/u,`Neispravan query ključ u ${module.route}`);
+  if(['worker-dynamic-authenticated','worker-native-authenticated'].includes(module.delivery)){
+    const contract=dynamicContracts[routePath];
+    assert.ok(contract,`Nedokumentirana dinamička ruta: ${module.route}`);
+    for(const token of contract.required)assert.ok(contract.source.includes(token),`${module.route} nema Worker dokaz: ${token}`);
+    dynamicCount++;
+    continue;
+  }
+  const folder=routePath.replace(/^\//,'').replace(/\/$/,'');
+  const file=`apps/portal/${folder}/index.html`;
+  assert.ok(exists(file),`${module.label} pokazuje na nepostojeću datoteku ${file}`);
+  assert.ok(read(file).length>120,`${file} nema dovoljan sadržaj.`);
+}
+
+assert.ok(exists('apps/portal/media-center/index.html'),'Legacy /media-center/ compatibility ruta mora postojati.');
+const mediaRedirect=read('apps/portal/media-center/index.html');
+assert.ok(mediaRedirect.includes('/media-command-center/'),'Legacy Media Center mora voditi na aktivni Media Command Center.');
+
+const originalCode=read('apps/portal/the-code/index.html');
+for(const marker of ['THE CODE','Code activation · New York · 7 October 2026','Play · 6 slides','NOTHING<br>WILL EVER<br>BE THE SAME.']){
+  assert.ok(originalCode.includes(marker),`Originalni THE CODE sadržaj mora ostati sačuvan: ${marker}`);
+}
+const intelligence=read('apps/portal/the-code/intelligence/index.html');
+assert.ok(intelligence.includes('THE CODE Intelligence'),'THE CODE Intelligence landing mora postojati.');
+assert.ok(intelligence.includes('does not replace the existing THE CODE presentation'),'THE CODE Intelligence mora sadržavati preservation disclosure.');
+
+const publicMenu=read('apps/portal/assets/public-menu-v18.js');
+assert.ok(publicMenu.includes('/the-code/intelligence/'),'Javni izbornik mora povezivati THE CODE Intelligence.');
+
+const hub=read('apps/portal/enterprise/index.html');
+for(const requiredRoute of ['/mission-control/','/design-review/','/strategy-performance/','/registry-center/','/deployment/','/mail-studio/','/media-center/','/media-registration-admin/','/media-application/?lang=en']){
+  assert.ok(hub.includes(requiredRoute),`Enterprise Hub nema ključnu rutu ${requiredRoute}`);
+}
+
+console.log(`OPERATOR_MODULE_ROUTE_CONTRACT_OK modules=${modules.length} dynamic=${dynamicCount} static=${modules.length-dynamicCount} the_code=preserved`);

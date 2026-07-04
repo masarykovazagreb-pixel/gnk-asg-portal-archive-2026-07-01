@@ -1,0 +1,99 @@
+{
+  "version": "2026-07-04.languages.1",
+  "status": "controlled-review",
+  "defaultLanguage": "hr",
+  "fallbackLanguage": "en",
+  "languages": [
+    {
+      "code": "hr",
+      "hreflang": "hr",
+      "locale": "hr_HR",
+      "label": "Hrvatski",
+      "shortLabel": "HR",
+      "route": "/",
+      "coverage": "primary-full",
+      "indexing": "existing-public-route"
+    },
+    {
+      "code": "en",
+      "hreflang": "en",
+      "locale": "en_US",
+      "label": "English",
+      "shortLabel": "EN",
+      "route": "/en/",
+      "coverage": "primary-full",
+      "indexing": "existing-public-route"
+    },
+    {
+      "code": "de",
+      "hreflang": "de",
+      "locale": "de_DE",
+      "label": "Deutsch",
+      "shortLabel": "DE",
+      "route": "/de/",
+      "coverage": "secondary-corporate",
+      "indexing": "noindex-until-executive-approval"
+    },
+    {
+      "code": "it",
+      "hreflang": "it",
+      "locale": "it_IT",
+      "label": "Italiano",
+      "shortLabel": "IT",
+      "route": "/it/",
+      "coverage": "secondary-corporate",
+      "indexing": "noindex-until-executive-approval"
+    },
+    {
+      "code": "hu",
+      "hreflang": "hu",
+      "locale": "hu_HU",
+      "label": "Magyar",
+      "shortLabel": "HU",
+      "route": "/hu/",
+      "coverage": "secondary-corporate",
+      "indexing": "noindex-until-executive-approval"
+    }
+  ],
+  "coverageRules": {
+    "primaryFull": [
+      "home",
+      "corporate profile",
+      "financial indicators",
+      "documents",
+      "publications",
+      "news",
+      "legal",
+      "contact",
+      "assistant",
+      "navigation and metadata"
+    ],
+    "secondaryCorporate": [
+      "home",
+      "corporate profile",
+      "financial overview",
+      "document source explanation",
+      "group overview",
+      "digital workforce overview",
+      "contact and English fallback links",
+      "navigation and metadata"
+    ]
+  },
+  "translationGovernance": {
+    "corporateNamesRemainUntranslated": true,
+    "registeredNamesRemainExact": true,
+    "numbersDatesAndCurrenciesMustMatchSource": true,
+    "financialDocumentsRemainInOriginalLanguageUnlessAReviewedTranslationExists": true,
+    "legalTextCannotBeMachinePublishedWithoutReview": true,
+    "officialRegistrySourceMustRemainVisible": true,
+    "fallbackMustBeClearlyLabelled": true,
+    "automaticIndexingOfIncompleteLocale": false
+  },
+  "seo": {
+    "xDefault": "/",
+    "staticHreflangRequired": true,
+    "selfCanonicalRequired": true,
+    "localeSpecificOpenGraphRequired": true,
+    "sitemapBeforeApproval": "exclude-secondary-locales"
+  }
+}
