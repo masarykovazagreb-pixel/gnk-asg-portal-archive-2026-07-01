@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-04-review-status-02",
+  "version": "2026-07-04-review-status-03",
   "mode": "review-only",
   "productionChange": false,
   "mergeAllowed": false,
@@ -8,9 +8,10 @@
     "branch": "enterprise-os-v2-finalbuild",
     "base": "main",
     "state": "diverged",
-    "aheadBy": 12,
-    "behindBy": 2,
-    "note": "Before any controlled deploy, review and reconcile the two commits currently on main. Do not merge or deploy until this is resolved."
+    "aheadBy": 13,
+    "behindBy": 272,
+    "risk": "critical-before-deploy",
+    "note": "Latest compare shows this review branch is 13 commits ahead of main and 272 commits behind main. Before any controlled deploy, reconcile main into a fresh integration branch or rebuild the review branch from current main. Do not merge or deploy until this is resolved."
   },
   "verifiedFiles": [
     "apps/portal/assets/data/operator-os-inventory.json",
@@ -23,7 +24,9 @@
     "apps/portal/assets/data/strategy-performance-monitor.json",
     "apps/portal/enterprise-platform.manifest.json",
     "apps/portal/enterprise-os-v2/index.html",
-    "apps/portal/operator-dashboard/index.html"
+    "apps/portal/operator-dashboard/index.html",
+    "apps/portal/operator-os.mission-control.status-panel.md",
+    "apps/portal/strategy-performance/index.html"
   ],
   "moduleReadiness": [
     { "id": "operator-os-inventory", "status": "present", "risk": "low", "nextAction": "connect to visible review dashboard" },
@@ -45,9 +48,16 @@
     "review-only public copy until approved"
   ],
   "currentBlockers": [
-    "branch diverged from main: 12 ahead and 2 behind at latest compare",
+    "branch diverged from main: 13 ahead and 272 behind at latest compare",
+    "deploy readiness is blocked until current main is reconciled",
     "large one-line HTML files are unsafe for major UI edits until refactored",
     "Mission Control still needs visible read-only panels for registry, SEO, global organization and mobile approval"
   ],
-  "nextSmallStep": "Connect review status snapshot into a visible Mission Control read-only panel."
+  "recommendedRecoveryPath": [
+    "Create a fresh integration branch from current main.",
+    "Cherry-pick or reapply only the verified review data models and safe UI shells from enterprise-os-v2-finalbuild.",
+    "Run static review of routes, noindex guards, mail send guards and deployment blockers.",
+    "Only after user approval, prepare controlled deploy plan."
+  ],
+  "nextSmallStep": "Create or update a visible Mission Control read-only blocker panel that states the 13 ahead / 272 behind divergence and prevents accidental deploy assumptions."
 }
