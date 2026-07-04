@@ -1,0 +1,37 @@
+name: Check Editorial Draft Planner
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
+      - 'workers/gnk-asg-direct-operator/test/editorial-draft-planner.test.mjs'
+      - '.github/workflows/check-editorial-draft-planner.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check module syntax
+        run: |
+          set -euxo pipefail
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node --check workers/gnk-asg-direct-operator/test/editorial-draft-planner.test.mjs
+      - name: Run planner tests
+        run: node workers/gnk-asg-direct-operator/test/editorial-draft-planner.test.mjs
+      - name: Verify gateway integration
+        run: |
+          set -euxo pipefail
+          grep -q 'editorial-draft-planner-v1.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q 'runEditorialDraftPlanner' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q 'isEditorialOperationsApi' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
