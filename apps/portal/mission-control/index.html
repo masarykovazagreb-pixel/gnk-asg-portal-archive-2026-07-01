@@ -1,120 +1,22 @@
 <!doctype html>
 <html lang="hr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>GNK DINAMO Ltd. Group / GNK ASG Mission Control</title>
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <style>
-    :root{--bg:#050814;--panel:#0b1324;--panel2:#101a31;--gold:#d4af37;--line:rgba(212,175,55,.30);--text:#f8fafc;--muted:#aab4c7;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--info:#60a5fa}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:radial-gradient(circle at 18% -10%,#1d2c52 0,#050814 42%,#02040a 100%);color:var(--text)}
-    header{padding:34px 22px 24px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(8,13,28,.96),rgba(14,22,42,.84))}
-    main{max-width:1480px;margin:0 auto;padding:22px}
-    h1{margin:0;font-size:clamp(28px,4vw,54px);letter-spacing:-.04em}
-    h2{margin:0 0 12px;font-size:22px}
-    .eyebrow{color:var(--gold);font-weight:900;letter-spacing:.16em;text-transform:uppercase;font-size:12px;margin-bottom:10px}
-    .sub{max-width:1040px;color:#d9e2f1;line-height:1.55;margin-top:12px}
-    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
-    .grid2{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;margin:18px 0}
-    .card{background:linear-gradient(180deg,rgba(16,26,49,.96),rgba(8,13,28,.96));border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
-    .metric{font-size:36px;font-weight:950;letter-spacing:-.05em}.label{color:var(--muted);font-size:13px;margin-top:6px}.hint{color:var(--muted);line-height:1.5;font-size:14px}
-    .pill{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);border-radius:999px;padding:7px 10px;margin:3px;color:#e5e7eb;font-size:12px;font-weight:800}.pill:before{content:"";width:8px;height:8px;border-radius:99px;background:var(--info)}.pill.ok:before{background:var(--ok)}.pill.warn:before{background:var(--warn)}.pill.bad:before{background:var(--bad)}
-    table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:14px}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px;vertical-align:top}th{color:var(--gold);text-transform:uppercase;letter-spacing:.08em;font-size:11px;background:rgba(212,175,55,.07)}td{color:#e7ecf7}.muted{color:var(--muted)}
-    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.btn{display:inline-block;text-decoration:none;color:#07101f;background:linear-gradient(135deg,#b98b2d,#f3d47a);font-weight:950;border-radius:999px;padding:11px 14px}.btn.secondary{color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(212,175,55,.25)}
-    .safe{border-color:rgba(34,197,94,.45)}.blocked{border-color:rgba(239,68,68,.42)}
-    @media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}@media(max-width:640px){main{padding:14px}.grid{grid-template-columns:1fr}header{padding:24px 16px}.metric{font-size:30px}}
-    @media print{body{background:#fff;color:#111}.card,header{box-shadow:none;background:#fff;color:#111;border-color:#999}.btn{display:none}.hint,.muted,.label{color:#333}main{max-width:none}.grid,.grid2{display:block}.card{break-inside:avoid;margin:0 0 12px}}
-  </style>
-
-<!-- SITEWIDE-SEO:BEGIN -->
-  <meta name="description" content="Read-only Mission Control overview for the GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform.">
-  <meta name="keywords" content="GNK ASG d.o.o., GNK ASG, GNK ASG doo, GNK DINAMO Ltd., GNK DINAMO LTD, GNK Dinamo Ltd, GNK DINAMO Ltd. Group, Nermin Sefić, Nermin Sefic, Sefić Nermin, Sefic Nermin, GNK DINAMO Ltd. Group / GNK ASG Mission Control, mission control">
-  <meta name="author" content="GNK ASG d.o.o.; GNK DINAMO Ltd.; Nermin Sefić">
-  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <link rel="canonical" href="https://www.gnk-asg.hr/mission-control/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="GNK DINAMO Ltd. Group / GNK ASG Mission Control">
-  <meta property="og:description" content="Read-only Mission Control overview for the GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform.">
-  <meta property="og:url" content="https://www.gnk-asg.hr/mission-control/">
-  <meta property="og:site_name" content="GNK ASG d.o.o. | GNK DINAMO Ltd. Group">
-  <meta property="og:locale" content="hr_HR">
-  <meta property="og:locale:alternate" content="en_US">
-  <meta property="og:image" content="https://www.gnk-asg.hr/assets/gnk-asg-social-card.png">
-  <meta property="og:image:secure_url" content="https://www.gnk-asg.hr/assets/gnk-asg-social-card.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="GNK DINAMO Ltd. Group / GNK ASG Mission Control">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="GNK DINAMO Ltd. Group / GNK ASG Mission Control">
-  <meta name="twitter:description" content="Read-only Mission Control overview for the GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform.">
-  <meta name="twitter:image" content="https://www.gnk-asg.hr/assets/gnk-asg-social-card.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.gnk-asg.hr/#website","url":"https://www.gnk-asg.hr/","name":"GNK ASG d.o.o. | GNK DINAMO Ltd. Group","publisher":{"@id":"https://www.gnk-asg.hr/#organization"},"inLanguage":["hr","en"]},{"@type":"Organization","@id":"https://www.gnk-asg.hr/#organization","name":"GNK ASG d.o.o.","alternateName":["GNK ASG","GNK ASG doo"],"url":"https://www.gnk-asg.hr/","logo":"https://www.gnk-asg.hr/assets/logo-gnk-asg.svg","taxID":"75227917632","address":{"@type":"PostalAddress","streetAddress":"Zagrebačka cesta 130","addressLocality":"Zagreb","addressCountry":"HR"},"memberOf":{"@id":"https://www.gnk-asg.hr/#gnk-dinamo-ltd"}},{"@type":"Organization","@id":"https://www.gnk-asg.hr/#gnk-dinamo-ltd","name":"GNK DINAMO Ltd.","alternateName":["GNK DINAMO LTD","GNK Dinamo Ltd","GNK DINAMO Ltd. Group"],"url":"https://gnkdinamo.eu/","identifier":"Colorado Entity ID 20238180649","location":{"@type":"Place","name":"Boulder, Colorado, USA"}},{"@type":"Person","@id":"https://www.gnk-asg.hr/nermin-sefic/#person","name":"Nermin Sefić","alternateName":["Nermin Sefic","Sefić Nermin","Sefic Nermin"],"url":"https://www.gnk-asg.hr/nermin-sefic/","jobTitle":"Direktor GNK ASG d.o.o. i ovlašteni predstavnik GNK DINAMO Ltd.","worksFor":{"@id":"https://www.gnk-asg.hr/#organization"},"affiliation":{"@id":"https://www.gnk-asg.hr/#gnk-dinamo-ltd"}},{"@type":"WebPage","@id":"https://www.gnk-asg.hr/mission-control/#webpage","url":"https://www.gnk-asg.hr/mission-control/","name":"GNK DINAMO Ltd. Group / GNK ASG Mission Control","description":"Read-only Mission Control overview for the GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform.","inLanguage":"hr","isPartOf":{"@id":"https://www.gnk-asg.hr/#website"},"about":[{"@id":"https://www.gnk-asg.hr/#organization"},{"@id":"https://www.gnk-asg.hr/#gnk-dinamo-ltd"},{"@id":"https://www.gnk-asg.hr/nermin-sefic/#person"}],"mentions":[{"@id":"https://www.gnk-asg.hr/#organization"},{"@id":"https://www.gnk-asg.hr/#gnk-dinamo-ltd"},{"@id":"https://www.gnk-asg.hr/nermin-sefic/#person"}],"primaryImageOfPage":{"@type":"ImageObject","url":"https://www.gnk-asg.hr/assets/gnk-asg-social-card.png"},"breadcrumb":{"@id":"https://www.gnk-asg.hr/mission-control/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://www.gnk-asg.hr/mission-control/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG d.o.o.","item":"https://www.gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"GNK DINAMO Ltd. Group / GNK ASG Mission Control","item":"https://www.gnk-asg.hr/mission-control/"}]}]}</script>
-<!-- SITEWIDE-SEO:END -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GNK DINAMO Ltd. Group / GNK ASG Mission Control</title>
+<meta name="description" content="Read-only Mission Control overview for the GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform.">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<link rel="canonical" href="https://www.gnk-asg.hr/mission-control/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GNK DINAMO Ltd. Group / GNK ASG Mission Control">
+<meta property="og:description" content="Read-only Mission Control overview for modules, safety gates, workforce, registry, approvals, SEO and integrations.">
+<meta property="og:url" content="https://www.gnk-asg.hr/mission-control/">
+<meta property="og:image" content="https://www.gnk-asg.hr/assets/gnk-asg-social-card.png">
+<style>:root{--bg:#050814;--panel:#0b1324;--gold:#d4af37;--line:rgba(212,175,55,.30);--text:#f8fafc;--muted:#aab4c7;--ok:#22c55e;--bad:#ef4444;--info:#60a5fa}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 18% -10%,#1d2c52 0,#050814 42%,#02040a 100%);color:var(--text)}header{padding:34px 22px 24px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(8,13,28,.96),rgba(14,22,42,.84))}main{max-width:1480px;margin:0 auto;padding:22px}h1{margin:0;font-size:clamp(28px,4vw,54px);letter-spacing:-.04em}h2{margin:0 0 12px}.eyebrow{color:var(--gold);font-weight:900;letter-spacing:.16em;text-transform:uppercase;font-size:12px;margin-bottom:10px}.sub{max-width:1040px;color:#d9e2f1;line-height:1.55;margin-top:12px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}.grid2{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;margin:18px 0}.card{background:linear-gradient(180deg,rgba(16,26,49,.96),rgba(8,13,28,.96));border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.28)}.metric{font-size:36px;font-weight:950;letter-spacing:-.05em}.label,.hint{color:var(--muted);font-size:14px;line-height:1.5}.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);border-radius:999px;padding:7px 10px;margin:3px;color:#e5e7eb;font-size:12px;font-weight:800}.pill:before{content:"";width:8px;height:8px;border-radius:99px;background:var(--info)}.pill.ok:before{background:var(--ok)}.pill.bad:before{background:var(--bad)}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px;vertical-align:top}th{color:var(--gold);text-transform:uppercase;letter-spacing:.08em;font-size:11px;background:rgba(212,175,55,.07)}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.btn{display:inline-block;text-decoration:none;color:#07101f;background:linear-gradient(135deg,#b98b2d,#f3d47a);font-weight:950;border-radius:999px;padding:11px 14px}.btn.secondary{color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(212,175,55,.25)}.safe{border-color:rgba(34,197,94,.45)}.blocked{border-color:rgba(239,68,68,.42)}pre{white-space:pre-wrap;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.10);padding:12px;border-radius:14px;overflow:auto}@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}@media(max-width:640px){main{padding:14px}.grid{grid-template-columns:1fr}header{padding:24px 16px}.metric{font-size:30px}}@media print{body{background:#fff;color:#111}.card,header{box-shadow:none;background:#fff;color:#111;border-color:#999}.btn{display:none}.hint,.label{color:#333}}</style>
 </head>
 <body>
-<header>
-  <div class="eyebrow">Enterprise Digital Platform · Read-only command layer</div>
-  <h1>Mission Control</h1>
-  <p class="sub">Centralni nadzor nad modulima, approval redom, registry rokovima, SEO/publishing statusom i digital operations profilima. Ova stranica je namjerno read-only: nema masovnog slanja, deploya, DNS/Cloudflare izmjena, promjene secretsa niti produkcijskog mergea.</p>
-  <div class="toolbar">
-    <a class="btn" href="/operator-dashboard/">Operator Dashboard</a>
-    <a class="btn secondary" href="/mail-studio/">Mail Studio</a>
-    <a class="btn secondary" href="/media-center/">Media Center</a>
-    <a class="btn secondary" href="/">Portal Home</a>
-  </div>
-</header>
-<main>
-  <section class="grid" id="metrics"></section>
-  <section class="grid2">
-    <div class="card"><h2>Module Health</h2><div id="modules" class="hint">Učitavam konfiguraciju...</div></div>
-    <div class="card safe"><h2>Safety Gates</h2><div id="safety" class="hint">Učitavam...</div></div>
-  </section>
-  <section class="grid2">
-    <div class="card"><h2>Digital Operations Team</h2><div id="workers" class="hint">Učitavam...</div></div>
-    <div class="card"><h2>Mission Cards</h2><div id="cards" class="hint">Učitavam...</div></div>
-  </section>
-  <section class="grid2">
-    <div class="card"><h2>Registry Center</h2><div id="registry" class="hint">Učitavam...</div></div>
-    <div class="card"><h2>Approval Queue</h2><div id="approval" class="hint">Učitavam...</div></div>
-  </section>
-  <section class="card"><h2>SEO / Publishing Engine</h2><div id="seo" class="hint">Učitavam...</div></section>
-</main>
-<script>
-(function(){
-  const cfgUrl='/assets/data/operator-os-config.json?cb='+Date.now();
-  const $=id=>document.getElementById(id);
-  const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function table(rows,cols){
-    if(!Array.isArray(rows)||!rows.length)return '<div class="hint">Nema podataka u konfiguraciji.</div>';
-    return '<table><thead><tr>'+cols.map(c=>'<th>'+esc(c.label)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>'<td>'+esc(typeof c.value==='function'?c.value(r):r[c.value])+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
-  }
-  function pills(obj){
-    return Object.entries(obj||{}).map(([k,v])=>'<span class="pill '+(String(v).includes('forbidden')||String(v).includes('disabled')?'bad':'ok')+'">'+esc(k)+': '+esc(v)+'</span>').join('');
-  }
-  function render(cfg){
-    const modules=cfg.monitoredModules||[];
-    const workers=(cfg.digitalOperations&&cfg.digitalOperations.exampleProfiles)||[];
-    const scale=(cfg.digitalOperations&&cfg.digitalOperations.targetScale)||{};
-    const approvals=cfg.approvalQueue||cfg.approvals||{};
-    const registry=cfg.registryCenter||cfg.registry||{};
-    const seo=cfg.seoPublishing||cfg.seo||{};
-    $('metrics').innerHTML=[
-      ['Monitored modules',modules.length],['Visible worker phase',scale.phaseOneVisibleProfiles||0],['Generated profiles target',scale.fullGeneratedProfiles||0],['Planned entities',(cfg.group&&cfg.group.plannedEntityCount)||0]
-    ].map(x=>'<div class="card"><div class="metric">'+esc(x[1])+'</div><div class="label">'+esc(x[0])+'</div></div>').join('');
-    $('modules').innerHTML=table(modules,[{label:'Module',value:'label'},{label:'Route',value:'route'},{label:'Risk',value:'risk'},{label:'Approval',value:r=>r.approvalRequired?'required':'not required'},{label:'Send cap',value:r=>r.sendCap||'n/a'}]);
-    $('safety').innerHTML='<div class="hint">Controlled build locks are active in config.</div><div>'+pills(cfg.safetyGates)+'</div>';
-    $('workers').innerHTML='<p class="hint">'+esc(cfg.digitalOperations&&cfg.digitalOperations.description||'Global Operations Center / Digital Operations Team')+'</p>'+table(workers,[{label:'Profile',value:'name'},{label:'Worker ID',value:'workerId'},{label:'Country',value:'country'},{label:'TZ',value:'timezone'},{label:'Department',value:'department'},{label:'Status',value:'status'}]);
-    $('cards').innerHTML=(cfg.missionControl&&cfg.missionControl.dashboardCards||[]).map(c=>'<span class="pill ok">'+esc(c)+'</span>').join('')+'<p class="hint">Roles: '+esc((cfg.missionControl&&cfg.missionControl.operatorRoles||[]).join(' · '))+'</p>';
-    $('registry').innerHTML='<pre style="white-space:pre-wrap;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.10);padding:12px;border-radius:14px;overflow:auto">'+esc(JSON.stringify(registry,null,2))+'</pre>';
-    $('approval').innerHTML='<pre style="white-space:pre-wrap;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.10);padding:12px;border-radius:14px;overflow:auto">'+esc(JSON.stringify(approvals,null,2))+'</pre>';
-    $('seo').innerHTML='<pre style="white-space:pre-wrap;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.10);padding:12px;border-radius:14px;overflow:auto">'+esc(JSON.stringify(seo,null,2))+'</pre>';
-  }
-  fetch(cfgUrl).then(r=>r.json()).then(render).catch(err=>{
-    document.querySelector('main').innerHTML='<section class="card blocked"><h2>Config load failed</h2><p class="hint">Mission Control nije mogao učitati /assets/data/operator-os-config.json. Greška: '+esc(err.message||err)+'</p></section>';
-  });
-})();
-</script>
+<header><div class="eyebrow">Enterprise Digital Platform · Read-only command layer</div><h1>Mission Control</h1><p class="sub">Centralni nadzor nad modulima, approval redom, registry rokovima, SEO/publishing statusom, integracijama i digital operations profilima. Stranica je read-only: nema masovnog slanja, deploya, DNS/Cloudflare izmjena, promjene secretsa niti produkcijskog mergea.</p><div class="toolbar"><a class="btn" href="/operator-dashboard/">Operator Dashboard</a><a class="btn secondary" href="/digital-workforce/">Digital Workforce</a><a class="btn secondary" href="/mail-studio/">Mail Studio</a><a class="btn secondary" href="/media-center/">Media Center</a><a class="btn secondary" href="/about-the-group/">About the Group</a><a class="btn secondary" href="/o-grupi/">O grupi</a><a class="btn secondary" href="/">Portal Home</a></div></header>
+<main><section class="grid" id="metrics"></section><section class="grid2"><div class="card"><h2>Module Health</h2><div id="modules" class="hint">Učitavam...</div></div><div class="card safe"><h2>Safety Gates</h2><div id="safety" class="hint">Učitavam...</div></div></section><section class="grid2"><div class="card"><h2>Digital Operations Team</h2><div id="workers" class="hint">Učitavam...</div></div><div class="card"><h2>Mission Cards</h2><div id="cards" class="hint">Učitavam...</div></div></section><section class="grid2"><div class="card"><h2>Registry Center</h2><div id="registry" class="hint">Učitavam...</div></div><div class="card"><h2>Approval Queue</h2><div id="approval" class="hint">Učitavam...</div></div></section><section class="grid2"><div class="card"><h2>SEO / Publishing Engine</h2><div id="seo" class="hint">Učitavam...</div></div><div class="card"><h2>Candidate Integrations</h2><div id="integrations" class="hint">Učitavam...</div></div></section></main>
+<script>(function(){const $=id=>document.getElementById(id);const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));function table(rows,cols){if(!Array.isArray(rows)||!rows.length)return '<div class="hint">Nema podataka.</div>';return '<table><thead><tr>'+cols.map(c=>'<th>'+esc(c.label)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>'<td>'+esc(typeof c.value==='function'?c.value(r):r[c.value])+'</td>').join('')+'</tr>').join('')+'</tbody></table>'}function pills(obj){return Object.entries(obj||{}).map(([k,v])=>'<span class="pill '+(String(v).includes('forbidden')||String(v).includes('disabled')?'bad':'ok')+'">'+esc(k)+': '+esc(v)+'</span>').join('')}function render(cfg,intg){const modules=cfg.monitoredModules||[],workers=(cfg.digitalOperations&&cfg.digitalOperations.exampleProfiles)||[],scale=(cfg.digitalOperations&&cfg.digitalOperations.targetScale)||{},registry=cfg.registryCenter||{},approvals=cfg.approvalQueue||{},seo=cfg.seoPublishing||{};$('metrics').innerHTML=[['Monitored modules',modules.length],['Visible worker phase',scale.phaseOneVisibleProfiles||0],['Generated profiles target',scale.fullGeneratedProfiles||0],['Planned entities',(cfg.group&&cfg.group.plannedEntityCount)||0]].map(x=>'<div class="card"><div class="metric">'+esc(x[1])+'</div><div class="label">'+esc(x[0])+'</div></div>').join('');$('modules').innerHTML=table(modules,[{label:'Module',value:'label'},{label:'Route',value:'route'},{label:'Risk',value:'risk'},{label:'Approval',value:r=>r.approvalRequired?'required':'not required'}]);$('safety').innerHTML=pills(cfg.safetyGates);$('workers').innerHTML='<p class="hint">'+esc(cfg.digitalOperations&&cfg.digitalOperations.description||'Global Operations Center / Digital Operations Team')+'</p>'+table(workers,[{label:'Profile',value:'name'},{label:'Worker ID',value:'workerId'},{label:'Country',value:'country'},{label:'TZ',value:'timezone'},{label:'Department',value:'department'},{label:'Status',value:'status'}])+'<p><a class="btn secondary" href="/digital-workforce/">Open full Digital Workforce</a></p>';$('cards').innerHTML=(cfg.missionControl&&cfg.missionControl.dashboardCards||[]).map(c=>'<span class="pill ok">'+esc(c)+'</span>').join('')+'<p class="hint">Roles: '+esc((cfg.missionControl&&cfg.missionControl.operatorRoles||[]).join(' · '))+'</p>';$('registry').innerHTML='<pre>'+esc(JSON.stringify(registry,null,2))+'</pre>';$('approval').innerHTML='<pre>'+esc(JSON.stringify(approvals,null,2))+'</pre>';$('seo').innerHTML='<pre>'+esc(JSON.stringify(seo,null,2))+'</pre>';$('integrations').innerHTML=table((intg&&intg.integrations)||[],[{label:'Name',value:'name'},{label:'Category',value:'category'},{label:'Status',value:'candidateStatus'},{label:'Write',value:r=>r.writeAccess||r.adapterDesign&&r.adapterDesign.writeAccess||'review'}])}Promise.all([fetch('/assets/data/operator-os-config.json?cb='+Date.now()).then(r=>r.json()),fetch('/assets/data/integrations-catalog.json?cb='+Date.now()).then(r=>r.json()).catch(()=>({integrations:[]}))]).then(([cfg,intg])=>render(cfg,intg)).catch(err=>{document.querySelector('main').innerHTML='<section class="card blocked"><h2>Config load failed</h2><p class="hint">'+esc(err.message||err)+'</p></section>'});})();</script>
 </body>
 </html>
