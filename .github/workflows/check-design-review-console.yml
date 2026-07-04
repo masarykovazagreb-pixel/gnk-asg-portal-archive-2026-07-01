@@ -6,6 +6,9 @@ on:
     paths:
       - 'apps/portal/design-review/**'
       - 'apps/portal/enterprise/**'
+      - 'apps/portal/admin-center/**'
+      - 'apps/portal/media-registration-admin/**'
+      - 'apps/portal/media-application/**'
       - 'apps/portal/assets/data/operator-os-config.json'
       - 'apps/portal/assets/the-code-new-york-countdown-v1.css'
       - 'apps/portal/assets/the-code-new-york-countdown-v1.js'
@@ -41,6 +44,9 @@ jobs:
           grep -q 'data-width="390"' apps/portal/design-review/index.html
           grep -q '/design-review/' apps/portal/enterprise/index.html
           grep -q '"id":"design-review"' apps/portal/assets/data/operator-os-config.json
+          grep -q "\['Media Applications Review','/media-registration-admin/'\]" apps/portal/design-review/index.html
+          grep -q "\['Public Media Application','/media-application/?lang=en'\]" apps/portal/design-review/index.html
+          grep -q "\['Admin Center','/admin-center/'\]" apps/portal/design-review/index.html
       - name: Verify New York countdown contract
         run: |
           set -euxo pipefail
@@ -64,6 +70,6 @@ jobs:
           const writeFetch=/fetch\s*\([\s\S]{0,400}?method\s*:\s*['"](?:POST|PUT|PATCH|DELETE)['"]/i;
           if(writeFetch.test(design))throw new Error('Design Review Console must remain read-only');
           const shell=fs.readFileSync('workers/gnk-asg-direct-operator/src/public-shell-v11.js','utf8');
-          const protectedRoutes=['/enterprise','/mission-control','/editorial-operations','/registry-center','/deployment','/mobile-admin','/seo','/design-review','/language-review','/strategy-performance','/entities'];
+          const protectedRoutes=['/enterprise','/mission-control','/editorial-operations','/registry-center','/deployment','/mobile-admin','/seo','/design-review','/language-review','/strategy-performance','/entities','/media-registration-admin'];
           for(const route of protectedRoutes){if(!shell.includes(`'${route}'`))throw new Error(`protected shell route missing ${route}`);}
           NODE
