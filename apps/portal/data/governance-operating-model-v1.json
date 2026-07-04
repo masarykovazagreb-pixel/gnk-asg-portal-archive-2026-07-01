@@ -1,0 +1,94 @@
+{
+  "version": "governance-operating-model-v1",
+  "status": "draft_for_review",
+  "lastUpdated": "2026-07-04",
+  "automationPrinciple": {
+    "target": "99 percent automated operations, 1 percent presidential decision",
+    "presidentialDecisionRole": "Nermin Sefić approves or directly issues strategic, legal, financial, reputational, ownership, security and production-impacting decisions.",
+    "operatorRole": "Operator OS prepares, routes, drafts, checks, records and executes approved workflows under policy limits."
+  },
+  "governanceCadence": [
+    {
+      "body": "Annual General Assembly / Group Annual Review",
+      "frequency": "annual",
+      "publicOutput": "Annual public summary after approval",
+      "internalOutput": ["agenda", "minutes", "annual report", "financial review", "KPI review", "next-year plan"]
+    },
+    {
+      "body": "Group Supervisory Board",
+      "frequency": "monthly",
+      "publicOutput": "Date, body, general subject and approved public decision summary",
+      "internalOutput": ["agenda", "minutes", "risk notes", "recommendations", "action list"]
+    },
+    {
+      "body": "Group Executive Board",
+      "frequency": "weekly",
+      "publicOutput": "Approved public summary only when relevant",
+      "internalOutput": ["status review", "decisions", "tasks", "owners", "deadlines"]
+    },
+    {
+      "body": "Executive Office",
+      "frequency": "business daily",
+      "publicOutput": "Not public by default",
+      "internalOutput": ["daily priorities", "blocked items", "completed work", "president briefing"]
+    },
+    {
+      "body": "Company Management Meetings",
+      "frequency": "company-specific",
+      "publicOutput": "Approved local corporate activity summary when appropriate",
+      "internalOutput": ["local agenda", "local minutes", "company-level decisions", "local KPI tracking"]
+    },
+    {
+      "body": "Department Meetings",
+      "frequency": "weekly or project-based",
+      "publicOutput": "Not public by default",
+      "internalOutput": ["work logs", "recommendations", "execution notes", "audit trail"]
+    }
+  ],
+  "approvalPolicy": {
+    "autoExecuteAllowed": [
+      "low-risk SEO corrections",
+      "metadata checks",
+      "internal categorization",
+      "draft preparation",
+      "non-sensitive status reporting",
+      "technical health checks",
+      "broken internal link proposals"
+    ],
+    "approvalRequired": [
+      "production deploy",
+      "mass email sending",
+      "DNS or Cloudflare route changes",
+      "secrets or credential changes",
+      "legal statements",
+      "financial statements",
+      "ownership and governance statements",
+      "external press statements",
+      "contracts and commitments",
+      "registry filings",
+      "public claims about third parties"
+    ]
+  },
+  "records": {
+    "publicTimeline": "Shows only approved, confirmed governance activity: date, body, title, public summary, status and public document link when approved.",
+    "internalMinutes": "Full minutes, votes, attachments, source files, drafts and sensitive details remain in the internal Governance Center.",
+    "auditTrail": "Every proposal, decision, edit, approval, rejection and execution receives an immutable record with actor, timestamp, source and linked document."
+  },
+  "decisionStates": [
+    "draft",
+    "proposed",
+    "under_review",
+    "approved",
+    "rejected",
+    "executed",
+    "published_public_summary",
+    "archived"
+  ],
+  "riskControls": [
+    "No fictional staff may be presented as real employees.",
+    "AI-supported teams must be labelled as Digital Operations Team or Global Operations Center where appropriate.",
+    "Public governance records require explicit approval before publication.",
+    "Internal records must distinguish proposed, approved and executed decisions.",
+    "Rollback path is required before production-impacting changes."
+  ]
+}
