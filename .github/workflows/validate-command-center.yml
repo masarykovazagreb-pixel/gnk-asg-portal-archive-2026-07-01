@@ -20,6 +20,8 @@ on:
       - 'workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js'
       - 'workers/gnk-asg-direct-operator/src/media-command-center-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-application-access-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
 
 permissions:
@@ -49,6 +51,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-application-access-v1.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
           test -s apps/portal/admin-center/index.html
           test -s apps/portal/media-command-center/index.html
           test -s apps/portal/media-application/index.html
@@ -88,16 +92,19 @@ jobs:
           console.log('ADMIN_MEDIA_FOCUS=VALID');
           JS
 
-      - name: Locked sending and human decision markers
+      - name: Locked sending and human decision contract
         shell: bash
         run: |
           set -euxo pipefail
           grep -q "production_sending_locked" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           grep -q "mediaCommandSending:'LOCKED'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          grep -q "UNVERIFIED_EXTERNAL_CONFIGURATION" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "AUTO_ISSUE_AND_EMAIL_ON_APPROVAL" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
-          grep -q "HUMAN_ONLY" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
           grep -q "INCOMPLETE_22_OF_42" workers/gnk-asg-direct-operator/src/index-admin-hub-v28-news-no-fallback.js
+          grep -q "legacy_code_before_registration_blocked" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
+          grep -q "processMediaInvitationQueue(){return{ok:true,skipped:'post_registration_code_policy'}" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
+          grep -q "expected_revision_required" workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q "decision_reason_required" workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q "human_review_status_changed" workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          grep -q "noNotification:true" workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
 
       - name: Wrangler dry run
         working-directory: workers/gnk-asg-direct-operator
