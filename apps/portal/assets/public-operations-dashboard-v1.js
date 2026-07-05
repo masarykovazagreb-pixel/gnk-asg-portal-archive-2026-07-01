@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
 
-  const VERSION='GNK_ASG_PUBLIC_OPERATIONS_DASHBOARD_V3_20260705_OPERATIONAL';
+  const VERSION='GNK_ASG_PUBLIC_OPERATIONS_DASHBOARD_V4_20260705_0800_0900';
   const DEFAULT_TARGET='[data-public-operations-dashboard]';
   const ENDPOINTS={
     catalog:'/api/public-operations/catalog',
@@ -51,8 +51,11 @@
 
   function publicStatus(value){
     const state=text(value).toLowerCase();
-    if(state==='preliminary'||state==='awaiting-08-review')return'PRELIMINARY';
-    if(state==='approved-by-silence'||state==='approved-explicitly'||state==='approved')return'APPROVED';
+    if(state==='preparing'||state==='preliminary')return'PREPARING';
+    if(state==='awaiting-executive-review'||state==='awaiting-review'||state==='awaiting-08-review')return'AWAITING EXECUTIVE REVIEW';
+    if(state==='approved-by-silence')return'APPROVED BY SILENCE';
+    if(state==='approved-explicitly'||state==='approved')return'APPROVED EXPLICITLY';
+    if(state==='stopped'||state==='stop')return'STOPPED';
     if(state==='held')return'HELD';
     if(state==='cancelled'||state==='canceled')return'CANCELLED';
     return text(value)||'CONTROLLED REVIEW';
@@ -69,7 +72,12 @@
   }
 
   function fallbackReport(catalog,governance){
-    const approval=governance?.approval||{state:'preliminary',approved:false,public:true,deadline:'08:00 Europe/Zagreb'};
+    const policy=catalog?.approvalPolicy||{};
+    const approval=governance?.approval||{
+      state:'preparing',approved:false,public:true,
+      reviewAt:`${policy.packageReviewTime||'08:00'} Europe/Zagreb`,
+      silentApprovalAt:`${policy.silentApprovalTime||'09:00'} Europe/Zagreb`
+    };
     return{
       version:'frontend-safe-fallback',
       approval,
@@ -91,7 +99,11 @@
     const editorial=report?.editorial||{};
     const outputs=report?.publicOutputs||{};
     const approval=report?.approval||governance?.approval||{};
+    const policy=catalog?.approvalPolicy||{};
     const files=catalogueFiles(catalog);
+    const reviewAt=approval.reviewAt||`${policy.packageReviewTime||'08:00'} Europe/Zagreb`;
+    const closesAt=approval.silentApprovalAt||`${policy.silentApprovalTime||'09:00'} Europe/Zagreb`;
+    const lockedActions=Array.isArray(policy.explicitOnlyActions)?policy.explicitOnlyActions.join(' · '):'production deploy · DNS · payments · mass delivery';
     target.innerHTML=`
       <section class="section public-ops-panel" id="dnevna-izvjesca" aria-labelledby="public-ops-title">
         <div class="section-head">
@@ -104,8 +116,8 @@
         ${warnings.length?`<div class="notice"><b>Djelomično učitavanje:</b> ${escapeHtml(warnings.join(' · '))}</div>`:''}
         <div class="trust-strip public-ops-status">
           <div class="trust"><span class="icon">◎</span><div><b>Status izvješća</b><span>${statusPill(approval.state)}</span></div></div>
-          <div class="trust"><span class="icon">◷</span><div><b>Pravilo pregleda</b><span>${escapeHtml(approval.deadline||'08:00 Europe/Zagreb')}</span></div></div>
-          <div class="trust"><span class="icon">▣</span><div><b>Katalog</b><span>${escapeHtml(catalog?.version||'public catalogue')}</span></div></div>
+          <div class="trust"><span class="icon">◷</span><div><b>Paket za pregled</b><span>${escapeHtml(reviewAt)}</span></div></div>
+          <div class="trust"><span class="icon">✓</span><div><b>Završetak odluke</b><span>${escapeHtml(closesAt)}</span></div></div>
           <div class="trust"><span class="icon">⚑</span><div><b>Governance</b><span>${statusPill(governance?.approval?.state||approval.state)}</span></div></div>
         </div>
         <div class="quick-grid public-ops-grid">
@@ -118,7 +130,7 @@
         </div>
         <div class="mega-grid public-ops-documents">
           <div class="mega-col"><h3>Javni PDF i izvori</h3>${files.length?files.map(fileLink).join(''):'<p>Nema javnih PDF zapisa u katalogu.</p>'}</div>
-          <div class="mega-col"><h3>Sigurnosna granica</h3><p>${escapeHtml(workforce.disclosure||'Operational profiles are functional workflow identities, not a confirmed employment registry.')}</p><p>Mail podaci: ${escapeHtml(report?.systems?.privateMailData||'not_public')}</p><p>Secrets: ${escapeHtml(report?.systems?.tokensAndSecrets||'never_public')}</p><p>Admin endpointi: ${escapeHtml(report?.systems?.adminEndpoints||'token_required')}</p></div>
+          <div class="mega-col"><h3>Sigurnosna granica</h3><p>${escapeHtml(workforce.disclosure||'Operational profiles are functional workflow identities, not a confirmed employment registry.')}</p><p>Mail podaci: ${escapeHtml(report?.systems?.privateMailData||'not_public')}</p><p>Secrets: ${escapeHtml(report?.systems?.tokensAndSecrets||'never_public')}</p><p>Izričito odobrenje: ${escapeHtml(lockedActions)}</p></div>
           <div class="mega-col"><h3>Javni izlazi</h3><a href="${escapeHtml(outputs.publicationsRoute||'/objave/')}">Objave</a><a href="${escapeHtml(outputs.newsRoute||'/vijesti/')}">Vijesti</a><a href="${escapeHtml(workforce.publicDirectory||'/digital-workforce/directory/')}">Operational profiles directory</a><a href="${escapeHtml(outputs.governanceRoute||ENDPOINTS.governanceBoard)}">Governance JSON</a></div>
         </div>
       </section>
