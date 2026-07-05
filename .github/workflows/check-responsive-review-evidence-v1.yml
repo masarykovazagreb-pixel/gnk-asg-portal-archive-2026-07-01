@@ -25,15 +25,16 @@ jobs:
       PREVIEW_URL: https://gnk-asg-enterprise-review-v3.beckuphome.workers.dev
     steps:
       - uses: actions/checkout@v5
-      - name: Confirm current preview revision
+      - name: Confirm current public preview revision
         shell: bash
         run: |
           set -euxo pipefail
           ready=false
           for attempt in $(seq 1 60); do
-            design=$(curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/design-review/" || true)
-            editorial=$(curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/assets/editorial-v12.js" || true)
-            if printf '%s' "$design" | grep -q 'Finance Cockpit' && printf '%s' "$design" | grep -q 'Publications EN' && printf '%s' "$editorial" | grep -q "data-editorial-release','V12.4"; then
+            finance=$(curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/financije/" || true)
+            publications=$(curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/publications/" || true)
+            document=$(curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/publications/managing-documents-versions-and-the-public-record/" || true)
+            if printf '%s' "$finance" | grep -q 'Finance Cockpit' && printf '%s' "$publications" | grep -q 'Publications and analysis' && printf '%s' "$document" | grep -q 'Managing Documents, Versions and the Public Record'; then
               ready=true
               break
             fi
