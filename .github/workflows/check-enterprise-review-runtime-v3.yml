@@ -55,9 +55,9 @@ jobs:
           grep -q 'MEDIA_OUTREACH_SCHEDULED_LIVE = "false"' "$wrangler"
           grep -q 'MEDIA_APPLICATION_AUTO_ACK = "false"' "$wrangler"
           grep -q 'EMAIL_OPEN_TRACKING_ENABLED = "false"' "$wrangler"
-          ! grep -q '^routes *=' "$wrangler"
-          ! grep -q '\[\[routes\]\]' "$wrangler"
-          ! grep -q 'zone_name' "$wrangler"
+          ! grep -Eq '^[[:space:]]*routes[[:space:]]*=' "$wrangler"
+          ! grep -Eq '^[[:space:]]*\[\[routes\]\]' "$wrangler"
+          ! grep -Eq '^[[:space:]]*zone_name[[:space:]]*=' "$wrangler"
 
       - name: Validate public operations and auth routing contract
         run: |
@@ -110,4 +110,4 @@ jobs:
           changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           printf '%s\n' "$changed"
           ! printf '%s\n' "$changed" | grep -E '(^|/)\.env($|\.)|secrets|cloudflare-production|production-deploy'
-          ! git diff "$BASE_SHA" "$HEAD_SHA" -- workers/gnk-asg-direct-operator/wrangler.toml | grep -E '^\+.*(routes|zone_name|gnk-asg\.hr/\*)'
+          ! git diff "$BASE_SHA" "$HEAD_SHA" -- workers/gnk-asg-direct-operator/wrangler.toml | grep -Eq '^\+[[:space:]]*(routes[[:space:]]*=|\[\[routes\]\]|zone_name[[:space:]]*=|pattern[[:space:]]*=.*gnk-asg\.hr/\*)'
