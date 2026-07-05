@@ -32,7 +32,8 @@ jobs:
         run: node scripts/validate-executive-portfolio-v1.mjs
       - name: Confirm protected data boundary
         run: |
-          grep -q 'credentials:.same-origin.' apps/portal/assets/admin-executive-portfolio-v1.js
-          grep -q '/api/enterprise-projects/events' apps/portal/assets/admin-executive-portfolio-v1.js
-          grep -q '/api/enterprise-projects/assignments' apps/portal/assets/admin-executive-portfolio-v1.js
-          grep -q 'automaticPublication.*false' apps/portal/data/project-portfolio-governance-v1.json
+          grep -Fq "credentials:'same-origin'" apps/portal/assets/admin-executive-portfolio-v1.js
+          grep -Fq '/api/enterprise-projects/events' apps/portal/assets/admin-executive-portfolio-v1.js
+          grep -Fq '/api/enterprise-projects/assignments' apps/portal/assets/admin-executive-portfolio-v1.js
+          grep -Eq '"automaticPublication"[[:space:]]*:[[:space:]]*false' apps/portal/data/project-portfolio-governance-v1.json
+          ! grep -Eq 'token|secret|password' apps/portal/data/project-portfolio-governance-v1.json
