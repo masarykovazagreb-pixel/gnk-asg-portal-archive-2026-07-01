@@ -1,13 +1,33 @@
 import app from './index-portal-final-v13.js';
+import {
+  handlePublicOperations,
+  handlePublicOperationsAdmin,
+  isPublicOperationsPath,
+  isPublicOperationsAdminPath,
+  runPublicOperationsCycle,
+  VERSION as PUBLIC_OPERATIONS_VERSION
+} from './public-operations-v1.js';
+import {
+  handleEnterpriseProjectApi,
+  isEnterpriseProjectApi,
+  runEnterpriseProjectCycle,
+  VERSION as ENTERPRISE_PROJECTS_VERSION
+} from './enterprise-project-operations-v1.js';
+import {
+  handleNewsMarketIntelligenceApi,
+  isNewsMarketIntelligenceApi,
+  runNewsMarketIntelligence,
+  VERSION as MARKET_INTELLIGENCE_VERSION
+} from './news-market-intelligence-v1.js';
 
-const VERSION='GNK_ASG_UNIFIED_AUTH_V18_20260704_MEDIA_REVIEW_SCOPE';
+const VERSION=`GNK_ASG_UNIFIED_AUTH_V20_20260705_ENTERPRISE_WORKFORCE_${PUBLIC_OPERATIONS_VERSION}_${ENTERPRISE_PROJECTS_VERSION}_${MARKET_INTELLIGENCE_VERSION}`;
 const COOKIE='gnk_asg_admin_session';
 const MAX_AGE=43200;
 const LOGIN='/admin-login';
 const enc=new TextEncoder();
 
 const PUBLIC_UI=[
-  '/the-code','/media-application'
+  '/the-code','/media-application','/public-operations','/media-kit'
 ];
 const UI=[
   '/admin-center','/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro',
@@ -39,20 +59,38 @@ const isProtectedApi=path=>path==='/operator'||path.startsWith('/operator/')||
   path.startsWith('/api/registry-center')||path.startsWith('/api/deployment')||
   path.startsWith('/api/mobile-admin')||path.startsWith('/api/seo')||
   path.startsWith('/api/strategy-performance')||path.startsWith('/api/entities')||
-  path.startsWith('/api/mission-control')||EXACT_API.has(path);
+  path.startsWith('/api/mission-control')||path.startsWith('/api/enterprise-projects')||
+  path.startsWith('/api/news-market-intelligence')||EXACT_API.has(path);
 
 function json(data,status=200,extra={}){
   return new Response(JSON.stringify(data,null,2),{status,headers:{
-    'content-type':'application/json; charset=utf-8','cache-control':'no-store',
-    'x-gnk-asg-auth-layer':VERSION,...extra
+    'content-type':'application/json; charset=utf-8',
+    'cache-control':'no-store',
+    'x-gnk-asg-auth-layer':VERSION,
+    ...extra
   }});
 }
-function eq(a,b){a=String(a||'');b=String(b||'');let diff=a.length^b.length;for(let i=0;i<Math.max(a.length,b.length);i++)diff|=(a.charCodeAt(i)||0)^(b.charCodeAt(i)||0);return diff===0;}
-async function sha(value){const digest=await crypto.subtle.digest('SHA-256',enc.encode(String(value||'')));return[...new Uint8Array(digest)].map(x=>x.toString(16).padStart(2,'0')).join('');}
-function b64(bytes){let value='';for(const item of new Uint8Array(bytes))value+=String.fromCharCode(item);return btoa(value).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/g,'');}
-async function mac(secret,value){const key=await crypto.subtle.importKey('raw',enc.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);return b64(await crypto.subtle.sign('HMAC',key,enc.encode(value)));}
-
-function rawSecrets(env){return [...TOKEN_NAMES].map(name=>clean(env[name])).filter(Boolean);}
+function eq(a,b){
+  a=String(a||'');
+  b=String(b||'');
+  let diff=a.length^b.length;
+  for(let i=0;i<Math.max(a.length,b.length);i++)diff|=(a.charCodeAt(i)||0)^(b.charCodeAt(i)||0);
+  return diff===0;
+}
+async function sha(value){
+  const digest=await crypto.subtle.digest('SHA-256',enc.encode(String(value||'')));
+  return[...new Uint8Array(digest)].map(item=>item.toString(16).padStart(2,'0')).join('');
+}
+function b64(bytes){
+  let value='';
+  for(const item of new Uint8Array(bytes))value+=String.fromCharCode(item);
+  return btoa(value).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/g,'');
+}
+async function mac(secret,value){
+  const key=await crypto.subtle.importKey('raw',enc.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+  return b64(await crypto.subtle.sign('HMAC',key,enc.encode(value)));
+}
+function rawSecrets(env){return[...TOKEN_NAMES].map(name=>clean(env[name])).filter(Boolean);}
 async function material(env){
   const configuredHash=clean(env.OPERATOR_TOKEN_SHA256).toLowerCase();
   if(/^[a-f0-9]{64}$/.test(configuredHash))return{configured:true,hash:configuredHash,raw:rawSecrets(env)[0]||'',source:'sha256'};
@@ -67,7 +105,9 @@ function requestToken(request){
 function cookieValue(request){
   for(const part of (request.headers.get('cookie')||'').split(';')){
     const index=part.indexOf('=');
-    if(index>0&&part.slice(0,index).trim()===COOKIE){try{return decodeURIComponent(part.slice(index+1).trim());}catch{return'';}}
+    if(index>0&&part.slice(0,index).trim()===COOKIE){
+      try{return decodeURIComponent(part.slice(index+1).trim());}catch{return'';}
+    }
   }
   return'';
 }
@@ -106,17 +146,24 @@ function safeNext(value,fallback='/admin-center/'){
     return isUi(path)?url.pathname+url.search+url.hash:fallback;
   }catch{return fallback;}
 }
-function esc(value){return String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));}
+function esc(value){
+  return String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
 function loginPage(next,message='',status=401){
   const target=safeNext(next),error=message?`<p class="error">${esc(message)}</p>`:'';
   const action=`${LOGIN}/?next=${encodeURIComponent(target)}`;
-  return new Response(`<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>GNK ASG — Sigurna prijava</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 0%,#173257,#020812 55%);color:#fff;font-family:Arial,sans-serif}.card{width:min(440px,90%);padding:28px;border:1px solid #d7aa3c;border-radius:20px;background:#07172a;box-shadow:0 28px 80px rgba(0,0,0,.55)}h1{margin:0 0 12px;color:#ffe08a}p{color:#cbd5e1;line-height:1.5}.error{color:#ffb4b4}input,button,a{width:100%;box-sizing:border-box;padding:14px;margin-top:10px;border-radius:10px}input{border:1px solid rgba(215,170,60,.55);background:#020812;color:#fff}button{border:0;background:#e6bd57;color:#07101d;font-weight:900;cursor:pointer}.back{display:block;text-align:center;color:#fff;text-decoration:none;border:1px solid rgba(215,170,60,.35)}</style></head><body><main class="card"><h1>GNK ASG sigurna prijava</h1><p>Unesite postojeći operatorski token. Nakon provjere otvara se sigurna HttpOnly sesija koja traje 12 sati.</p>${error}<form method="post" action="${esc(action)}"><input name="token" type="password" required autofocus autocomplete="current-password" placeholder="Operatorski token"><button type="submit">PRIJAVA</button></form><a class="back" href="/">Povratak na portal</a></main></body></html>`,{status,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store','x-gnk-asg-auth-layer':VERSION}});
+  return new Response(`<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>GNK ASG — Sigurna prijava</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 0%,#173257,#020812 55%);color:#fff;font-family:Arial,sans-serif}.card{width:min(440px,90%);padding:28px;border:1px solid #d7aa3c;border-radius:20px;background:#07172a;box-shadow:0 28px 80px rgba(0,0,0,.55)}h1{margin:0 0 12px;color:#ffe08a}p{color:#cbd5e1;line-height:1.5}.error{color:#ffb4b4}input,button,a{width:100%;box-sizing:border-box;padding:14px;margin-top:10px;border-radius:10px}input{border:1px solid rgba(215,170,60,.55);background:#020812;color:#fff}button{border:0;background:#e6bd57;color:#07101d;font-weight:900;cursor:pointer}.back{display:block;text-align:center;color:#fff;text-decoration:none;border:1px solid rgba(215,170,60,.35)}</style></head><body><main class="card"><h1>GNK ASG sigurna prijava</h1><p>Unesite postojeći operatorski token. Nakon provjere otvara se sigurna HttpOnly sesija koja traje 12 sati.</p>${error}<form method="post" action="${esc(action)}"><input name="token" type="password" required autofocus autocomplete="current-password" placeholder="Operatorski token"><button type="submit">PRIJAVA</button></form><a class="back" href="/">Povratak na portal</a></main></body></html>`,{status,headers:{
+    'content-type':'text/html; charset=utf-8',
+    'cache-control':'no-store',
+    'x-gnk-asg-auth-layer':VERSION
+  }});
 }
 async function submittedToken(request){
   const type=(request.headers.get('content-type')||'').toLowerCase();
   try{
     if(type.includes('application/json'))return clean((await request.json()).token);
-    const form=await request.formData();return clean(form.get('token'));
+    const form=await request.formData();
+    return clean(form.get('token'));
   }catch{return'';}
 }
 async function login(request,env,next,jsonMode=false){
@@ -126,11 +173,21 @@ async function login(request,env,next,jsonMode=false){
   if(!valid)return jsonMode?json({ok:false,error:'invalid_token'},401):loginPage(next,'Token nije valjan.',401);
   const cookie=await sessionCookie(auth);
   if(jsonMode)return json({ok:true,authenticated:true,mode:'session',expiresIn:MAX_AGE},200,{'set-cookie':cookie});
-  return new Response(null,{status:303,headers:{location:safeNext(next),'cache-control':'no-store','set-cookie':cookie,'x-gnk-asg-auth-layer':VERSION}});
+  return new Response(null,{status:303,headers:{
+    location:safeNext(next),
+    'cache-control':'no-store',
+    'set-cookie':cookie,
+    'x-gnk-asg-auth-layer':VERSION
+  }});
 }
 
 function internalToken(auth){return`gnk-auth-v14-${auth.hash}`;}
-function patchedEnv(env,token){return new Proxy(env,{get(target,property,receiver){if(TOKEN_NAMES.has(String(property)))return token;return Reflect.get(target,property,receiver);}});}
+function patchedEnv(env,token){
+  return new Proxy(env,{get(target,property,receiver){
+    if(TOKEN_NAMES.has(String(property)))return token;
+    return Reflect.get(target,property,receiver);
+  }});
+}
 function patchedRequest(request,token){
   const headers=new Headers(request.headers);
   headers.set('authorization',`Bearer ${token}`);
@@ -144,29 +201,88 @@ function stamp(response){
   headers.set('x-gnk-asg-auth-layer',VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
+async function patchProjectCenterResponse(request,response){
+  if(pathOf(request)!=='/enterprise/project-center'||response.status!==200||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
+  const html=await response.text();
+  const style='<link rel="stylesheet" href="/assets/project-command-center-runtime-v2.css?v=20260705">';
+  const script='<script src="/assets/project-command-center-v2.js?v=20260705" defer></script>';
+  const next=html.includes('project-command-center-v2.js')?html:html.replace('</head>',`${style}</head>`).replace('</body>',`${script}</body>`);
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.set('cache-control','no-store');
+  headers.set('x-gnk-project-center-runtime','2026-07-05.project-command-center.03');
+  return new Response(next,{status:response.status,statusText:response.statusText,headers});
+}
 async function forwardAuthenticated(request,env,ctx,auth){
   const token=internalToken(auth);
-  return stamp(await app.fetch(patchedRequest(request,token),patchedEnv(env,token),ctx));
+  const response=await app.fetch(patchedRequest(request,token),patchedEnv(env,token),ctx);
+  return stamp(await patchProjectCenterResponse(request,response));
 }
 async function versionResponse(request,env,ctx){
   const response=await app.fetch(request,env,ctx);
   try{
     const payload=await response.clone().json();
-    return json({...payload,authLayer:VERSION,deployedEntryPoint:'src/index-unified-auth-v14.js',backendStatusEndpoint:'/api/operator-backend-status',adminLogin:LOGIN,adminSessionSeconds:MAX_AGE,publicUi:PUBLIC_UI,protectedUi:UI});
+    return json({
+      ...payload,
+      authLayer:VERSION,
+      publicOperationsVersion:PUBLIC_OPERATIONS_VERSION,
+      enterpriseProjectsVersion:ENTERPRISE_PROJECTS_VERSION,
+      marketIntelligenceVersion:MARKET_INTELLIGENCE_VERSION,
+      deployedEntryPoint:'src/index-unified-auth-v14.js',
+      backendStatusEndpoint:'/api/operator-backend-status',
+      adminLogin:LOGIN,
+      adminSessionSeconds:MAX_AGE,
+      publicUi:PUBLIC_UI,
+      protectedUi:UI
+    });
   }catch{return stamp(response);}
 }
-function backendStatus(env){return{
-  ok:true,authLayer:VERSION,worker:'gnk-asg-direct-operator',bindings:{
-    kv:Boolean(env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV),d1:Boolean(env.GNK_ASG_D1),
-    r2:Boolean(env.GNK_ASG_MEDIA_ASSETS),email:Boolean(env.EMAIL),ai:Boolean(env.AI)
-  },modules:{operator:true,mobileAdmin:true,mail:true,autoEditor:true,publishing:true,media:true,market:true,news:true,campaignMailer:true},
-  time:new Date().toISOString()
-};}
+function backendStatus(env){
+  return{
+    ok:true,
+    authLayer:VERSION,
+    worker:'gnk-asg-direct-operator',
+    bindings:{
+      kv:Boolean(env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV),
+      d1:Boolean(env.GNK_ASG_D1),
+      r2:Boolean(env.GNK_ASG_MEDIA_ASSETS),
+      email:Boolean(env.EMAIL),
+      ai:Boolean(env.AI),
+      assets:Boolean(env.ASSETS?.fetch)
+    },
+    modules:{
+      operator:true,mobileAdmin:true,mail:true,autoEditor:true,publishing:true,
+      media:true,market:true,news:true,campaignMailer:true,publicOperations:true,
+      governanceBoard:true,enterpriseProjects:true,operationalWorkforce:true,
+      marketIntelligence:true
+    },
+    reviewSafety:{
+      productionDeploy:false,
+      bulkMail:false,
+      automaticPublication:false,
+      publicOperationsVersion:PUBLIC_OPERATIONS_VERSION,
+      enterpriseProjectsVersion:ENTERPRISE_PROJECTS_VERSION
+    },
+    time:new Date().toISOString()
+  };
+}
+async function protectedModule(request,env,ctx,handler){
+  const state=await access(request,env);
+  if(!state.ok)return json({ok:false,error:'unauthorized',message:'Unesite valjani operatorski token.',configured:state.auth.configured},401);
+  const token=internalToken(state.auth);
+  return stamp(await handler(patchedRequest(request,token),patchedEnv(env,token),ctx));
+}
 
 async function fetchHandler(request,env,ctx){
   const url=new URL(request.url),path=pathOf(request);
+  if(isPublicOperationsPath(path))return handlePublicOperations(request,env);
+  if(isPublicOperationsAdminPath(path))return protectedModule(request,env,ctx,(next,nextEnv)=>handlePublicOperationsAdmin(next,nextEnv));
+  if(isEnterpriseProjectApi(path))return protectedModule(request,env,ctx,(next,nextEnv)=>handleEnterpriseProjectApi(next,nextEnv));
+  if(isNewsMarketIntelligenceApi(path))return protectedModule(request,env,ctx,(next,nextEnv)=>handleNewsMarketIntelligenceApi(next,nextEnv));
   if(request.method==='GET'&&path==='/data/portal-version.json')return versionResponse(request,env,ctx);
   if(isPublicUi(path))return stamp(await app.fetch(request,env,ctx));
+
   if(path===LOGIN){
     const next=safeNext(url.searchParams.get('next'));
     if(request.method==='POST')return login(request,env,next,false);
@@ -177,17 +293,31 @@ async function fetchHandler(request,env,ctx){
     if(state.mode==='token')headers['set-cookie']=await sessionCookie(state.auth);
     return new Response(null,{status:303,headers});
   }
-  if(path==='/operator/session/logout')return new Response(null,{status:303,headers:{location:safeNext(url.searchParams.get('next'),'/'),'cache-control':'no-store','set-cookie':clearCookie(),'x-gnk-asg-auth-layer':VERSION}});
+  if(path==='/operator/session/logout')return new Response(null,{status:303,headers:{
+    location:safeNext(url.searchParams.get('next'),'/'),
+    'cache-control':'no-store',
+    'set-cookie':clearCookie(),
+    'x-gnk-asg-auth-layer':VERSION
+  }});
   if(path==='/api/operator-session/login'&&request.method==='POST')return login(request,env,'/admin-center/',true);
   if(path==='/api/operator-auth-check'){
     const state=await access(request,env),headers={};
     if(state.ok&&state.mode==='token')headers['set-cookie']=await sessionCookie(state.auth);
-    return json({ok:state.ok,authenticated:state.ok,mode:state.mode,configured:state.auth.configured,authLayer:VERSION,expiresIn:state.ok?MAX_AGE:0},state.ok?200:401,headers);
+    return json({
+      ok:state.ok,
+      authenticated:state.ok,
+      mode:state.mode,
+      configured:state.auth.configured,
+      authLayer:VERSION,
+      expiresIn:state.ok?MAX_AGE:0
+    },state.ok?200:401,headers);
   }
   if(isUi(path)&&request.method==='POST'&&(request.headers.get('content-type')||'').includes('application/x-www-form-urlencoded'))return login(request,env,url.pathname+url.search,false);
   if(isUi(path)||isProtectedApi(path)){
     const state=await access(request,env);
-    if(!state.ok)return isUi(path)&&['GET','HEAD'].includes(request.method)?loginPage(url.pathname+url.search):json({ok:false,error:'unauthorized',message:'Unesite valjani operatorski token.',configured:state.auth.configured},401);
+    if(!state.ok)return isUi(path)&&['GET','HEAD'].includes(request.method)
+      ?loginPage(url.pathname+url.search)
+      :json({ok:false,error:'unauthorized',message:'Unesite valjani operatorski token.',configured:state.auth.configured},401);
     if(path==='/api/operator-backend-status')return json(backendStatus(env));
     return forwardAuthenticated(request,env,ctx,state.auth);
   }
@@ -196,6 +326,17 @@ async function fetchHandler(request,env,ctx){
 
 export default{
   fetch:fetchHandler,
-  async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
-  async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx);}
+  scheduled(event,env,ctx){
+    const task=Promise.allSettled([
+      runPublicOperationsCycle(env),
+      runEnterpriseProjectCycle(env),
+      runNewsMarketIntelligence(env),
+      typeof app.scheduled==='function'?app.scheduled(event,env,ctx):Promise.resolve(null)
+    ]);
+    if(ctx?.waitUntil){ctx.waitUntil(task);return;}
+    return task;
+  },
+  async email(message,env,ctx){
+    if(typeof app.email==='function')return app.email(message,env,ctx);
+  }
 };

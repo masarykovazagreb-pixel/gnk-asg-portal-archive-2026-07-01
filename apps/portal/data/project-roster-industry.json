@@ -1,0 +1,39 @@
+{
+  "version": "GNK_PROJECT_ROSTER_INDUSTRY_V1_20260705",
+  "status": "review-ready",
+  "allocationRule": "Each programme starts with an accountable workflow owner, a cross-functional team, an evidence-based status and an immediate first backlog.",
+  "projects": [
+    {
+      "id": "FOOD-PROTEIN",
+      "name": "Organic Protein Food Programme",
+      "stage": "intake",
+      "label": "PLANNED",
+      "workstreams": ["programme management", "product research", "sourcing", "quality", "market research", "finance", "legal review", "communications"],
+      "firstBacklog": ["confirm product categories", "select target territories", "define supplier criteria", "prepare quality framework", "map initial economics", "schedule intake review"]
+    },
+    {
+      "id": "EDIBLE-OILS",
+      "name": "Edible Oils Programme",
+      "stage": "intake",
+      "label": "PLANNED",
+      "workstreams": ["programme management", "product research", "sourcing", "quality", "operations", "finance", "legal review", "communications"],
+      "firstBacklog": ["confirm product scope", "select target territories", "prepare sourcing criteria", "define quality controls", "map operating model", "schedule intake review"]
+    },
+    {
+      "id": "ENERGY-DISTRIBUTION",
+      "name": "Energy Products Distribution Feasibility",
+      "stage": "feasibility",
+      "label": "FEASIBILITY",
+      "workstreams": ["programme management", "market research", "supply chain", "risk", "finance", "legal review", "compliance", "quality"],
+      "firstBacklog": ["define feasibility questions", "select target territories", "map authorised partner requirements", "prepare risk register", "define evidence gates", "schedule feasibility review"]
+    },
+    {
+      "id": "FACTORY-PROGRAMME",
+      "name": "International Factory Development Programme",
+      "stage": "intake",
+      "label": "PLANNED",
+      "workstreams": ["programme management", "site research", "engineering", "operations", "finance", "legal review", "sustainability", "quality"],
+      "firstBacklog": ["define factory types", "select site criteria", "prepare engineering questions", "map approval dependencies", "define phased delivery model", "schedule intake review"]
+    }
+  ]
+}

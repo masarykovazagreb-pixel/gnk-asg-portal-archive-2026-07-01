@@ -17,15 +17,20 @@ on:
       - 'apps/portal/assets/data/digital-workforce-governance.json'
       - 'apps/portal/assets/data/seo-entity-registry.json'
       - 'apps/portal/assets/data/multilingual-review-manifest.json'
+      - 'apps/portal/data/operational-profile-display-policy-v1.json'
+      - 'apps/portal/data/public-profile-disclosure-policy-v1.json'
       - 'apps/portal/assets/js/digital-workforce-directory-v1.js'
       - 'apps/portal/assets/js/editorial-operations-runtime-v1.js'
       - 'apps/portal/assets/localized-corporate-home-v1.css'
       - 'apps/portal/assets/localized-rtl-cjk-v1.css'
       - 'apps/portal/assets/public-menu-v18.js'
       - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
+      - 'workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js'
       - 'workers/gnk-asg-direct-operator/src/editorial-workflow-v1.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
+      - 'workers/gnk-asg-direct-operator/wrangler.review-preview.toml'
       - 'apps/portal/editorial-operations/release-queue/index.html'
-      - 'scripts/validate-digital-workforce-public-v2.mjs'
+      - 'scripts/validate-digital-workforce-public-v3.mjs'
       - '.github/workflows/check-digital-workforce-public.yml'
 
 permissions:
@@ -47,9 +52,29 @@ jobs:
           node --check apps/portal/assets/public-menu-v18.js
           node --check apps/portal/assets/js/editorial-operations-runtime-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check scripts/validate-digital-workforce-public-v2.mjs
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
+          node --check scripts/validate-digital-workforce-public-v3.mjs
       - name: Validate directory governance SEO and safety locks
-        run: node scripts/validate-digital-workforce-public-v2.mjs
+        run: node scripts/validate-digital-workforce-public-v3.mjs
+      - name: Validate GNK operational profile display policy
+        run: |
+          set -euxo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          const policy=JSON.parse(fs.readFileSync('apps/portal/data/operational-profile-display-policy-v1.json','utf8'));
+          if(policy.status!=='executive-approved-review')throw new Error('profile display policy status invalid');
+          if(policy.identityType!=='system-generated-operational-profile')throw new Error('identity type invalid');
+          if(policy.naturalPersonClaim!==false||policy.employmentClaim!==false)throw new Error('identity boundary invalid');
+          if(policy.stableAssignment!==true)throw new Error('stable assignment missing');
+          for(const token of ['GNK profile code','first name','surname initial','position','company public name','origin country','work country','local time','availability','collaboration channel','operational status']){
+            if(!policy.visibleFields.includes(token))throw new Error(`visible field missing ${token}`);
+          }
+          for(const token of ['message content','private task','contact details','attachments','client identity','partner identity','meeting details']){
+            if(!policy.hiddenFields.includes(token))throw new Error(`hidden field missing ${token}`);
+          }
+          if(!policy.requiredPublicLabelHr||!policy.requiredPublicLabelEn)throw new Error('public synthetic-profile disclosure missing');
+          console.log('GNK_OPERATIONAL_PROFILE_DISPLAY_POLICY_OK');
+          NODE
       - name: Validate multilingual review contract
         run: |
           set -euxo pipefail

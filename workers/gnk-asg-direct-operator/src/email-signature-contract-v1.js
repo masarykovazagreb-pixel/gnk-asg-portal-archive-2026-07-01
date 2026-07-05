@@ -1,5 +1,5 @@
-export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260629_R9_INSTITUTIONAL_MEDIA';
-export const MANDATORY_BCC='rht@gmx.com';
+export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260705_R10_BACKUPHOME_COPY';
+export const MANDATORY_BCC='beckuphome@gmail.com';
 
 const COMPANY={
   name:'GNK ASG d.o.o.',

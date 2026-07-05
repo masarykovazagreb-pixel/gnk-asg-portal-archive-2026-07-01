@@ -11,8 +11,8 @@
   <script defer src="/assets/admin-command-center-primary-v1.js?v=20260628"></script>
   <script defer src="/assets/admin-center-health-v1.js?v=20260627"></script>
   <script defer src="/assets/admin-media-applications-entry-v1.js?v=20260704-1"></script>
-
-<meta name="robots" content="noindex,nofollow,noarchive">
+  <script defer src="/assets/admin-company-operations-v1.js?v=20260705-1"></script>
+  <meta name="robots" content="noindex,nofollow,noarchive">
 </head>
 <body>
   <a class="skip-link" href="#mainContent">Preskoči na glavni sadržaj</a>
@@ -23,23 +23,18 @@
         <div class="brand-copy"><strong>GNK ASG Admin</strong><small>Secure Operations Center</small></div>
         <button id="sidebarClose" class="sidebar-close" type="button" aria-label="Zatvori izbornik">×</button>
       </div>
-
       <div id="sessionCard" class="session-card" aria-live="polite">
         <span class="session-dot" aria-hidden="true"></span>
         <div><strong id="sessionText">Provjera sesije…</strong><small id="sessionHint">Privatni administrativni sloj</small></div>
       </div>
-
       <p class="sidebar-label">Radni moduli</p>
       <nav id="moduleNav" class="module-nav"></nav>
-
       <div class="sidebar-footer">
         <a href="/" target="_top">Javni portal</a>
         <button id="logoutSide" type="button">Odjava</button>
       </div>
     </aside>
-
     <button id="backdrop" class="backdrop" type="button" aria-label="Zatvori izbornik"></button>
-
     <main id="mainContent" class="admin-main">
       <header class="topbar">
         <div class="topbar-left">
@@ -58,7 +53,6 @@
           <button id="logoutButton" class="action-button danger" type="button">Odjava</button>
         </div>
       </header>
-
       <section id="overviewPanel" class="panel active" aria-labelledby="dashboardTitle">
         <div id="overview">
           <article class="dashboard-hero">
@@ -77,11 +71,9 @@
               <div><small>Operativni status</small><strong id="systemSummary">Provjera u tijeku</strong></div>
             </div>
           </article>
-
           <div id="statusGrid" class="status-grid" aria-live="polite" aria-busy="true">
             <article class="status-card"><small>Sustav</small><strong>Provjera…</strong><span>Učitavanje statusa</span></article>
           </div>
-
           <section class="dashboard-section" aria-labelledby="priorityTitle">
             <div class="section-head">
               <div><p class="eyebrow">Operativni fokus</p><h3 id="priorityTitle">Najčešće korišteni moduli</h3><p>Tri ključna radna toka dostupna su jednim klikom; svi ostali ostaju u lijevom izborniku.</p></div>
@@ -91,7 +83,6 @@
           </section>
         </div>
       </section>
-
       <section id="workspacePanel" class="panel" aria-label="Radni prostor modula">
         <div class="workspace-stage">
           <div id="workspaceLoading" class="workspace-state">
@@ -109,13 +100,11 @@
       </section>
     </main>
   </div>
-
   <dialog id="commandDialog" class="command-dialog" aria-label="Pretraživanje administratorskih modula">
     <div class="command-head"><input id="commandSearch" type="search" autocomplete="off" placeholder="Upišite naziv modula ili funkcije…" aria-label="Pretraži module"></div>
     <div id="commandList" class="command-list"></div>
     <div class="command-foot">Enter ili klik za otvaranje · Esc za zatvaranje · Alt + 1–9 za brzi pristup</div>
   </dialog>
-
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 </body>
 </html>

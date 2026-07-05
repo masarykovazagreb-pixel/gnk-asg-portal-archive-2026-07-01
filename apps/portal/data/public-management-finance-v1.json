@@ -1,0 +1,43 @@
+{
+  "version": "GNK_PUBLIC_MANAGEMENT_FINANCE_V1_20260705",
+  "asOf": "2026-06-30",
+  "currency": "EUR",
+  "status": "management-information-non-booking",
+  "publicDisclosure": "Javni operativni financijski pregled. Podaci služe za upravljanje, praćenje i projekcije; nisu knjigovodstveno knjiženje, porezna prijava, revizorsko mišljenje niti zamjena za službene financijske izvještaje.",
+  "methodology": {
+    "fy2025Baseline": "Početna točka na dan 31.12.2025.",
+    "h1_2026Rule": "Management estimate na dan 30.06.2026. iznosi 98% usporedive vrijednosti cijele 2025. godine, prema izvršnoj informaciji da je ostvarenje 2% manje od ukupne cijele 2025.",
+    "annualProjectionRule": "Jednostavna linearna projekcija: H1 2026 x 2. Projekcija nije jamstvo budućeg rezultata i mora se ažurirati stvarnim management podacima.",
+    "bookkeepingBoundary": "Konta, temeljnice, porezni tretman, ulazni dokumenti, bankovne stavke i službena knjiženja ostaju isključivo u internom financijskom i računovodstvenom sustavu."
+  },
+  "entities": [
+    {
+      "id": "GNK-ASG",
+      "name": "GNK ASG d.o.o.",
+      "baselineStatus": "public-management-baseline",
+      "metrics": {
+        "revenue": {"fy2025": 504001681.97, "h1_2026": 493921648.33, "fy2026Projection": 987843296.66},
+        "assets": {"fy2025": 46396925.72, "h1_2026": 45468987.21, "fy2026Projection": 90937974.41},
+        "capitalAndReserves": {"fy2025": 46212425.18, "h1_2026": 45288176.68, "fy2026Projection": 90576353.35},
+        "profit": {"fy2025": 16076.47, "h1_2026": 15754.94, "fy2026Projection": 31509.88}
+      }
+    },
+    {
+      "id": "GNK-DINAMO-GROUP",
+      "name": "GNK DINAMO Ltd. Group",
+      "baselineStatus": "management-confirmed-internal-not-independently-audited",
+      "metrics": {
+        "revenue": {"fy2025": 4704574873.45, "h1_2026": 4610483375.98, "fy2026Projection": 9220966751.96},
+        "netProfit": {"fy2025": 982475560.00, "h1_2026": 962826048.80, "fy2026Projection": 1925652097.60},
+        "assets": {"fy2025": 3483004916.04, "h1_2026": 3413344817.72, "fy2026Projection": 6826689635.44},
+        "capitalAndReserves": {"fy2025": 3413969339.00, "h1_2026": 3345689952.22, "fy2026Projection": 6691379904.44}
+      }
+    }
+  ],
+  "liveTracking": {
+    "publicCategories": ["investments", "operating-gains", "operating-losses", "profit", "budget", "forecast", "variance"],
+    "requiredFields": ["entity", "project", "category", "period", "amount", "currency", "status", "sourceType", "updatedAt"],
+    "allowedSourceTypes": ["management-entry", "approved-project-budget", "approved-forecast", "public-financial-document"],
+    "neverPublic": ["account-number", "journal-entry", "tax-code", "invoice-private-data", "bank-transaction-private-data", "payroll", "bookkeeping-attachment"]
+  }
+}

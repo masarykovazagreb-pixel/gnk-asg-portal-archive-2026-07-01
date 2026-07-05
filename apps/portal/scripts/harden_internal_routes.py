@@ -7,6 +7,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.parse import urlparse
 
+from apply_seo_attribution import main as apply_seo_attribution
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE_HOST = "www.gnk-asg.hr"
 INTERNAL_ROUTES = {
@@ -148,10 +150,11 @@ def main() -> None:
     removed_report = harden_report()
     removed_llms = harden_llms()
     robots_added = harden_robots()
+    apply_seo_attribution()
     print(
         "Internal-route hardening complete: "
         f"html={hardened}, sitemap={removed_sitemap}, image_sitemap={removed_images}, "
-        f"report={removed_report}, llms={removed_llms}, robots={robots_added}"
+        f"report={removed_report}, llms={removed_llms}, robots={robots_added}, attribution=applied"
     )
 
 

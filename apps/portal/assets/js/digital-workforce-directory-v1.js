@@ -5,8 +5,8 @@
   root.GNKDigitalWorkforceDirectory=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const VERSION='2026-07-04.directory.02';
-  const DISCLOSURE='The directory contains digital operations profiles and functional workflow identities. It is not, by itself, a register of natural persons or confirmed employment relationships.';
+  const VERSION='2026-07-05.directory.03';
+  const DISCLOSURE='The directory contains operational profiles and functional workflow identities. It is not, by itself, a register of natural persons or confirmed employment relationships.';
   const DEPARTMENTS=[
     ['Mission Control','MCO','Operational command intake, prioritisation and cross-department coordination'],
     ['Media Operations','MED','Media requests, accreditation workflow and controlled communications'],
@@ -91,8 +91,8 @@
     if(rank<4)return'AI Manager';
     if(rank<10)return'Department Manager';
     if(rank<18)return'Quality Gate Reviewer';
-    if(rank<45)return'Senior Digital Operations Specialist';
-    return'Digital Operations Worker';
+    if(rank<45)return'Senior Operations Specialist';
+    return'Operations Worker';
   }
   function authority(position){
     if(position==='AI Director')return'Cross-department orchestration, exception routing and recommendation; no unapproved binding commitment.';
@@ -101,7 +101,7 @@
     if(position==='Quality Gate Reviewer')return'Independent evidence, source, quality and readiness review.';
     return'Background task execution, research, analysis and proposal drafting within assigned policy.';
   }
-  const profiles=Array.from({length:1500},(_,index)=>{
+  const profiles=Array.from({length:1537},(_,index)=>{
     const department=DEPARTMENTS[index%DEPARTMENTS.length],country=COUNTRIES[(index*7)%COUNTRIES.length];
     const entitySlot=`GNK${String((index%43)+1).padStart(2,'0')}`,position=role(index),code=department[1];
     return Object.freeze({
@@ -123,7 +123,7 @@
     });
   });
   return Object.freeze({
-    version:VERSION,status:'controlled-review',profileType:'digital operations profile',disclosure:DISCLOSURE,
+    version:VERSION,status:'controlled-review',profileType:'operations profile',disclosure:DISCLOSURE,
     count:profiles.length,departments:Object.freeze(DEPARTMENTS.map(item=>item[0])),
     entitySlots:Object.freeze(Array.from({length:43},(_,i)=>`GNK${String(i+1).padStart(2,'0')}`)),
     financialPlanningBases:FINANCIAL_BASES,protocols:PROTOCOLS,profiles:Object.freeze(profiles)

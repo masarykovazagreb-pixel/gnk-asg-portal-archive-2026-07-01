@@ -1,0 +1,35 @@
+{
+  "version": "GNK_OPERATIONAL_PROFILE_DISPLAY_POLICY_V1_20260705",
+  "status": "executive-approved-review",
+  "publicFormat": "GNK-{fourDigitCode} · {firstName} {surnameInitial}. · {position} · {companyPublicName} · origin {originCountry} · works in {workCountry}",
+  "example": "GNK-3749 · Pablo S. · Regional Operations Specialist · GNK 3047 Singapore · origin Costa Rica · works in Singapore",
+  "identityType": "system-generated-operational-profile",
+  "naturalPersonClaim": false,
+  "employmentClaim": false,
+  "stableAssignment": true,
+  "countryAssignment": "deterministic-random-from-approved-country-list",
+  "requiredPublicLabelHr": "Sistemski generirani operativni profil — nije potvrđeni zaposlenik ni stvarna osoba.",
+  "requiredPublicLabelEn": "System-generated operational profile — not a confirmed employee or real person.",
+  "visibleFields": [
+    "GNK profile code",
+    "first name",
+    "surname initial",
+    "position",
+    "company public name",
+    "origin country",
+    "work country",
+    "local time",
+    "availability",
+    "collaboration channel",
+    "operational status"
+  ],
+  "hiddenFields": [
+    "message content",
+    "private task",
+    "contact details",
+    "attachments",
+    "client identity",
+    "partner identity",
+    "meeting details"
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "version": "2026-07-05.public-portal-catalog.v4",
+  "status": "public-allowlist",
+  "title": "GNK ASG Public Information Catalogue",
+  "description": "Explicit allowlist of data, reports, profiles, publications, press application routes and system information permitted on the public portal.",
+  "approvalPolicy": {
+    "timezone": "Europe/Zagreb",
+    "packageReviewTime": "08:00",
+    "silentApprovalTime": "09:00",
+    "rule": "A readiness-complete report or publication enters Executive Office review at 08:00 Europe/Zagreb. If no STOP, HOLD or CANCEL decision is recorded by 09:00, the reversible content package is treated as approved by silence. Production deployment, DNS, payments and mass delivery always require a separate explicit decision.",
+    "beforeReviewStates": ["preparing", "held", "stopped", "cancelled", "approved-explicitly"],
+    "reviewWindowStates": ["awaiting-executive-review", "held", "stopped", "cancelled", "approved-explicitly"],
+    "afterReviewStates": ["approved-by-silence", "approved-explicitly", "held", "stopped", "cancelled"],
+    "publicReleaseStates": ["approved-by-silence", "approved-explicitly", "published"],
+    "executiveCommands": ["APPROVE", "STOP", "HOLD", "CANCEL"],
+    "explicitOnlyActions": ["production-deploy", "dns-change", "payment", "mass-email", "mass-sms"]
+  },
+  "navigation": [
+    {"labelHr": "Grupa", "labelEn": "Group", "href": "/#profil"},
+    {"labelHr": "Operacije", "labelEn": "Operations", "href": "/#javne-operacije"},
+    {"labelHr": "Radnici", "labelEn": "Workforce", "href": "/digital-workforce/directory/"},
+    {"labelHr": "Dnevna izvješća", "labelEn": "Daily Reports", "href": "/#dnevna-izvjesca"},
+    {"labelHr": "Objave", "labelEn": "Publications", "href": "/objave/"},
+    {"labelHr": "Vijesti", "labelEn": "News", "href": "/vijesti/"},
+    {"labelHr": "Dokumenti", "labelEn": "Documents", "href": "/downloads/"},
+    {"labelHr": "Vizuali", "labelEn": "Visuals", "href": "/visual-index/"},
+    {"labelHr": "Media prijava", "labelEn": "Press Application", "href": "/media-application/?lang=en", "freePublicRoute": true},
+    {"labelHr": "Kontakt", "labelEn": "Contact", "href": "/contact/"},
+    {"labelHr": "Admin Center", "labelEn": "Admin Center", "href": "/admin-center/", "protected": true},
+    {"labelHr": "Mail Studio", "labelEn": "Mail Studio", "href": "/mail-studio/", "protected": true},
+    {"labelHr": "Enterprise Portal", "labelEn": "Enterprise Portal", "href": "/enterprise/", "protected": true}
+  ],
+  "datasets": [
+    {
+      "id": "digital-workforce",
+      "labelHr": "Operativni profili",
+      "labelEn": "Operational Profiles",
+      "publicRoute": "/digital-workforce/directory/",
+      "source": "/assets/js/digital-workforce-directory-v1.js",
+      "profileCount": 1537,
+      "publicFields": ["name", "workerId", "department", "role", "countryRegion", "operatingCountry", "operatingRegion", "languages", "timezone", "status", "entitySlot", "responsibility", "operatingMode", "backgroundCadence"],
+      "excludedFields": ["privateNotes", "credentials", "personalEmail", "personalPhone", "tokens", "secrets", "privateAuditTrail"],
+      "disclosure": "Profiles are functional operational workflow identities. The directory does not by itself establish natural-person identity or an employment relationship."
+    },
+    {
+      "id": "daily-public-reports",
+      "labelHr": "Dnevna javna operativna izvješća",
+      "labelEn": "Daily Public Operations Reports",
+      "publicRoute": "/#dnevna-izvjesca",
+      "api": "/api/public-operations/report/latest",
+      "publicFields": ["date", "generatedAt", "approval", "workforce", "editorial", "publicOutputs", "systems"],
+      "excludedFields": ["draftBodies", "internalComments", "privateAuditRecords", "mailRecipients", "tokens", "secrets"]
+    },
+    {
+      "id": "published-texts",
+      "labelHr": "Objavljeni tekstovi",
+      "labelEn": "Published Texts",
+      "publicRoute": "/objave/",
+      "source": "/data/auto-editor.json",
+      "publicFields": ["title", "summary", "publishedAt", "category", "url", "author", "editor", "image", "imageAlt"],
+      "excludedFields": ["draft", "internalReview", "privatePrompt", "unapprovedSources"]
+    },
+    {
+      "id": "public-news",
+      "labelHr": "Javne vijesti",
+      "labelEn": "Public News",
+      "publicRoute": "/vijesti/",
+      "source": "/data/news.json",
+      "publicFields": ["title", "summary", "source", "category", "url", "publishedAt"]
+    },
+    {
+      "id": "documents",
+      "labelHr": "Odobreni dokumenti i izvještaji",
+      "labelEn": "Approved Documents and Reports",
+      "publicRoute": "/downloads/",
+      "publicFields": ["title", "description", "date", "language", "fileType", "downloadUrl", "approvalState"]
+    },
+    {
+      "id": "visual-assets",
+      "labelHr": "Javni vizualni katalog",
+      "labelEn": "Public Visual Catalogue",
+      "publicRoute": "/visual-index/",
+      "source": "/data/gallery.catalog.json",
+      "publicFields": ["id", "src", "title", "alt", "description", "topic", "status"],
+      "requiredStatus": "published"
+    },
+    {
+      "id": "group-network",
+      "labelHr": "Mreža grupe",
+      "labelEn": "Group Network",
+      "publicRoute": "/#mreza-grupe",
+      "source": "/data/group_network.json",
+      "publicFields": ["name", "place", "region", "status"]
+    },
+    {
+      "id": "media-application",
+      "labelHr": "Besplatna javna prijava za medije",
+      "labelEn": "Free Public Press Application",
+      "publicRoute": "/media-application/?lang=en",
+      "routeCompatibility": ["/media-application/", "/media-application/?lang=en", "/media-application/?lang=hr"],
+      "freePublicAccess": true,
+      "bookingLabel": "No booking, payment or travel commitment is created by opening or submitting the form. Approval remains manual and separate.",
+      "publicFields": ["newsroomLegalName", "newsroomBrandName", "country", "officialWebsite", "editorName", "editorEmail", "applicationStatus"],
+      "excludedFields": ["privateDecisionNotes", "internalReviewer", "securityTokens", "mailDeliverySecrets", "paymentData"]
+    },
+    {
+      "id": "secure-enterprise-access",
+      "labelHr": "Sigurni administratorski pristup",
+      "labelEn": "Secure Admin and Mail Studio Access",
+      "publicRoutes": ["/admin-center/", "/mail-studio/", "/enterprise/", "/operator-dashboard/"],
+      "protected": true,
+      "publicDisclosure": "Routes may be prominently linked from the public portal, but operational content remains behind secure login and may not expose tokens, mailboxes, drafts, private recipients, SMS actions or mass delivery controls.",
+      "excludedFields": ["sessionTokens", "operatorSecrets", "mailboxBodies", "draftPrivateNotes", "recipientLists", "smsDestinations", "productionDeployCredentials"]
+    },
+    {
+      "id": "system-status",
+      "labelHr": "Javni status sustava",
+      "labelEn": "Public System Status",
+      "source": "/data/portal-version.json",
+      "publicFields": ["version", "status", "updatedAt", "publicModules"]
+    }
+  ],
+  "neverPublic": [
+    "operatorski i administratorski tokeni",
+    "API ključevi i secrets",
+    "privatne email adrese i primatelji",
+    "neodobreni nacrti i interni komentari",
+    "privatni audit tragovi i sigurnosni incidenti",
+    "interni registry dokumenti prije odobrenja",
+    "osobni podaci koji nisu izričito odobreni za objavu",
+    "booking, payment or travel commitments without separate written approval",
+    "DNS, Cloudflare i deployment secrets"
+  ]
+}

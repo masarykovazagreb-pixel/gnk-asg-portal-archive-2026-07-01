@@ -28,10 +28,11 @@ jobs:
       - name: Validate current JavaScript
         shell: bash
         run: |
-          set -euo pipefail
+          set -euxo pipefail
           node --check apps/portal/assets/public-menu-v18.js
           node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          node --check workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
@@ -44,16 +45,17 @@ jobs:
       - name: Verify public redesign and protected backend contract
         run: node scripts/verify-public-redesign-contract.mjs
 
-      - name: Verify canonical Worker entrypoints
+      - name: Verify canonical review entrypoints
         shell: bash
         run: |
-          set -euo pipefail
-          grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'main = "src/index-final-admin-gateway-v2.js"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
-          grep -q "export { VERSION } from './index-final-admin-gateway-v2.js';" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          grep -q "export { default } from './index-final-admin-gateway-v2.js';" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
+          set -euxo pipefail
+          grep -q 'main = "src/index-unified-auth-v14.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-enterprise-projects-runtime-v1.js"' workers/gnk-asg-direct-operator/wrangler.review-preview.toml
+          grep -q "from './index-final-admin-gateway-v2.js'" workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           grep -q 'campaign-mailer-shell-v2.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q 'campaign-mailer-v2.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q 'MAIL_MANUAL_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
           test -s apps/portal/contact/index.html
