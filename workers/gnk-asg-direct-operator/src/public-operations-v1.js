@@ -1,10 +1,11 @@
 import {buildDailyEditorialPlan,VERSION as EDITORIAL_PLAN_VERSION} from './editorial-draft-planner-v1.js';
 
-export const VERSION=`GNK_ASG_PUBLIC_OPERATIONS_V3_20260705_${EDITORIAL_PLAN_VERSION}`;
+export const VERSION=`GNK_ASG_PUBLIC_OPERATIONS_V4_20260705_${EDITORIAL_PLAN_VERSION}`;
 export const API_PREFIX='/api/public-operations';
 export const ADMIN_PREFIX='/api/editorial-operations/public-approval';
 export const TIMEZONE='Europe/Zagreb';
-export const APPROVAL_HOUR=8;
+export const REVIEW_HOUR=8;
+export const APPROVAL_HOUR=9;
 
 const clean=value=>String(value??'').trim();
 const kvOf=env=>env?.EDITORIAL_KV||env?.GNK_ASG_CONFIG_KV||env?.GNK_ASG_KV||null;
@@ -39,7 +40,8 @@ export function localDate(value=new Date()){
 
 function localHour(value=new Date()){return Number(zonedParts(value).hour);}
 function previousDate(value=new Date()){return localDate(new Date((value instanceof Date?value:new Date(value)).getTime()-86400000));}
-function deadlineLabel(date){return `${date} 08:00 Europe/Zagreb`;}
+function reviewLabel(date){return `${date} 08:00 Europe/Zagreb`;}
+function deadlineLabel(date){return `${date} 09:00 Europe/Zagreb`;}
 function authToken(env){return clean(env?.PUBLIC_OPERATIONS_ADMIN_TOKEN||env?.GNK_ASG_ADMIN_TOKEN||env?.ADMIN_TOKEN);}
 function adminAuthorized(request,env){
   const token=authToken(env);
@@ -81,16 +83,24 @@ async function assetJson(env,path){
 }
 
 function itemsOf(payload){return Array.isArray(payload)?payload:Array.isArray(payload?.items)?payload.items:Array.isArray(payload?.articles)?payload.articles:[];}
+function normalizeDecision(value){
+  const state=clean(value).toLowerCase();
+  if(['approved','approved-explicitly','approve'].includes(state))return'approved-explicitly';
+  if(['held','hold'].includes(state))return'held';
+  if(['stopped','stop'].includes(state))return'stopped';
+  if(['cancelled','canceled','cancel'].includes(state))return'cancelled';
+  return state;
+}
 
 export function approvalState(date,decision,now=new Date()){
-  const today=localDate(now);
-  const passed=date<today||(date===today&&localHour(now)>=APPROVAL_HOUR);
-  const state=clean(decision?.state).toLowerCase();
-  if(state==='cancelled'||state==='canceled')return{state:'cancelled',approved:false,public:true,reason:'cancelled_by_executive_office'};
-  if(state==='held')return{state:'held',approved:false,public:true,reason:'held_by_executive_office'};
-  if(state==='approved'||state==='approved-explicitly')return{state:'approved-explicitly',approved:true,public:true,reason:'approved_by_executive_office'};
-  if(passed)return{state:'approved-by-silence',approved:true,public:true,reason:'not_cancelled_before_08_review_deadline'};
-  return{state:'preliminary',approved:false,public:true,reason:'review_window_open_before_08'};
+  const today=localDate(now),hour=localHour(now),state=normalizeDecision(decision?.state);
+  if(state==='cancelled')return{state:'cancelled',approved:false,public:true,releaseAllowed:false,reason:'cancelled_by_executive_office'};
+  if(state==='stopped')return{state:'stopped',approved:false,public:true,releaseAllowed:false,reason:'stopped_by_executive_office'};
+  if(state==='held')return{state:'held',approved:false,public:true,releaseAllowed:false,reason:'held_by_executive_office'};
+  if(state==='approved-explicitly')return{state:'approved-explicitly',approved:true,public:true,releaseAllowed:true,reason:'approved_by_executive_office'};
+  if(date<today||(date===today&&hour>=APPROVAL_HOUR))return{state:'approved-by-silence',approved:true,public:true,releaseAllowed:true,reason:'no_stop_hold_or_cancel_before_09'};
+  if(date===today&&hour>=REVIEW_HOUR)return{state:'awaiting-executive-review',approved:false,public:true,releaseAllowed:false,reason:'executive_review_window_08_to_09'};
+  return{state:'preparing',approved:false,public:true,releaseAllowed:false,reason:'package_preparation_before_08'};
 }
 
 function publicPublicationCount(items){
@@ -103,8 +113,8 @@ function publicPublicationCount(items){
 
 function governanceBoard(date,decision,now=new Date()){
   const approval=approvalState(date,decision,now);
-  const reviewState=approval.state==='preliminary'?'active':'closed';
-  const finalState=approval.approved?'approved':(['held','cancelled'].includes(approval.state)?approval.state:'pending');
+  const preparationState=approval.state==='preparing'?'active':'closed';
+  const reviewState=approval.state==='awaiting-executive-review'?'active':approval.approved?'approved':(['held','stopped','cancelled'].includes(approval.state)?approval.state:'pending');
   return{
     ok:true,
     version:VERSION,
@@ -112,9 +122,10 @@ function governanceBoard(date,decision,now=new Date()){
     timezone:TIMEZONE,
     generatedAt:now.toISOString(),
     approval,
+    policy:{reviewAt:reviewLabel(date),silentApprovalAt:deadlineLabel(date),commands:['APPROVE','STOP','HOLD','CANCEL']},
     controls:[
-      {id:'reports-before-0800',title:'Preliminarna izvješća prije 08:00',state:reviewState,owner:'Executive Office',route:`${API_PREFIX}/report?date=${date}`},
-      {id:'approval-after-0800',title:'Automatsko javno odobrenje nakon 08:00 ako nije zadržano ili otkazano',state:finalState,owner:'Public Operations Worker',route:`${ADMIN_PREFIX}/status?date=${date}`},
+      {id:'reports-before-0800',title:'Priprema dnevnog paketa do 08:00',state:preparationState,owner:'Public Operations Worker',route:`${API_PREFIX}/report?date=${date}`},
+      {id:'approval-after-0800',title:'Executive review 08:00–09:00; prešutno odobrenje nakon 09:00',state:reviewState,owner:'Executive Office',route:`${ADMIN_PREFIX}/status?date=${date}`},
       {id:'mail-safety',title:'Masovni mail ostaje zaključan u review režimu',state:'locked',owner:'Mail Studio',route:'/mail-studio/'},
       {id:'worker-health',title:'Worker health/status endpoint',state:'active',owner:'Cloudflare Worker',route:`${API_PREFIX}/health`},
       {id:'governance-board',title:'Javna tabla zadataka, odluka, zapisnika i zaključaka',state:'active',owner:'Public Governance',route:`${API_PREFIX}/governance-board`},
@@ -134,12 +145,13 @@ function governanceBoard(date,decision,now=new Date()){
       {id:'admin-lock',label:'Javno-operativne odluke',state:'token-required'}
     ],
     meetings:[
-      {id:'morning-review',label:'Jutarnji pregled prije deploy odluke',state:'scheduled-review',minimumEvidence:['preview link','worker health','mail runtime check','mobile pass']}
+      {id:'morning-review',label:'08:00 izvršni paket; 09:00 završetak prozora odluke',state:'scheduled-review',minimumEvidence:['preview link','worker health','mail runtime check','mobile pass']}
     ],
     minutes:[
       {id:'minute-review-only',summary:'Svi novi moduli rade kroz review/preview režim dok ne postoji nova izričita odluka za produkciju.'},
       {id:'minute-public-data-boundary',summary:'Javni endpointi ne izlažu privatne mailove, tokene, privitke, audit zapise ni interne identifikatore.'},
-      {id:'minute-admin-lock',summary:'Admin status, audit i odluke zatvoreni su iza Bearer ili x-gnk-admin-token provjere.'}
+      {id:'minute-admin-lock',summary:'Admin status, audit i odluke zatvoreni su iza Bearer ili x-gnk-admin-token provjere.'},
+      {id:'minute-silence-policy',summary:'Prešutno odobrenje nakon 09:00 vrijedi samo za reverzibilne sadržajne i operativne pakete; produkcijski deploy, DNS, plaćanja i masovno slanje ostaju izričito zaključani.'}
     ]
   };
 }
@@ -161,8 +173,10 @@ async function buildReport(env,date,decision,now=new Date()){
     reportType:'public-daily-operations-summary',
     approval:{
       ...approval,
+      reviewAt:reviewLabel(date),
       deadline:deadlineLabel(date),
-      rule:'The report is public as PRELIMINARY before 08:00 Europe/Zagreb. At or after 08:00 it becomes APPROVED BY SILENCE unless held or cancelled. HELD and CANCELLED statuses remain public without internal reasons.'
+      silentApprovalAt:deadlineLabel(date),
+      rule:'The package is prepared before 08:00 Europe/Zagreb. From 08:00 to 09:00 it awaits the Executive Office. At or after 09:00 it becomes APPROVED BY SILENCE only if no STOP, HOLD or CANCEL exists. Production deploy, DNS, payments and mass delivery remain explicit-only.'
     },
     workforce:{
       profileType:'operations profile',
@@ -181,7 +195,8 @@ async function buildReport(env,date,decision,now=new Date()){
       totalPlannedSlots:plan.summary.totalSlots,
       automaticPublication:false,
       readinessAndApprovalRequired:true,
-      reviewTime:'08:00 Europe/Zagreb'
+      reviewTime:'08:00 Europe/Zagreb',
+      silentApprovalTime:'09:00 Europe/Zagreb'
     },
     publicOutputs:{
       publishedOrApprovedTexts:publicPublicationCount(publications),
@@ -201,7 +216,9 @@ async function buildReport(env,date,decision,now=new Date()){
       privateMailData:'not_public',
       privateAuditRecords:'not_public',
       tokensAndSecrets:'never_public',
-      adminEndpoints:'token_required'
+      adminEndpoints:'token_required',
+      productionDeploy:'explicit_approval_only',
+      massDelivery:'explicit_approval_only'
     }
   };
 }
@@ -210,7 +227,7 @@ export async function runPublicOperationsCycle(env,now=new Date()){
   const binding=kvOf(env),date=localDate(now),decision=await readJson(binding,decisionKey(date));
   const report=await buildReport(env,date,decision,now);
   await writeJson(binding,reportKey(date),report);
-  await appendAudit(binding,date,{type:'scheduled-public-operations-cycle',approval:report.approval?.state});
+  await appendAudit(binding,date,{type:'scheduled-public-operations-cycle',approval:report.approval?.state,releaseAllowed:report.approval?.releaseAllowed});
   if(report.approval.public)await writeJson(binding,latestKey,report);
   return{ok:true,report,version:VERSION};
 }
@@ -219,7 +236,7 @@ async function approvedReport(env,date,now=new Date()){
   const binding=kvOf(env),decision=await readJson(binding,decisionKey(date));
   let report=await readJson(binding,reportKey(date));
   if(!report||report.version!==VERSION){report=await buildReport(env,date,decision,now);await writeJson(binding,reportKey(date),report);}
-  else report={...report,approval:{...report.approval,...approvalState(date,decision,now),deadline:deadlineLabel(date)}};
+  else report={...report,approval:{...report.approval,...approvalState(date,decision,now),reviewAt:reviewLabel(date),deadline:deadlineLabel(date),silentApprovalAt:deadlineLabel(date)}};
   if(report.approval.public){await writeJson(binding,latestKey,report);return report;}
   return null;
 }
@@ -243,7 +260,7 @@ export async function handlePublicOperations(request,env){
   if(!['GET','HEAD'].includes(request.method))return json({ok:false,error:'method_not_allowed'},405);
   if(path===API_PREFIX||path===`${API_PREFIX}/health`){
     const binding=kvOf(env),date=localDate(now),decision=await readJson(binding,decisionKey(date));
-    return json({ok:true,service:'public-operations',version:VERSION,date,timezone:TIMEZONE,approval:approvalState(date,decision,now),bindings:{kv:Boolean(binding),assets:Boolean(env?.ASSETS?.fetch),adminTokenConfigured:Boolean(authToken(env))},routes:{catalog:`${API_PREFIX}/catalog`,latestReport:`${API_PREFIX}/report/latest`,governanceBoard:`${API_PREFIX}/governance-board`},security:{publicSecrets:false,privateMailData:false,auditRecordsPublic:false,adminEndpoints:'token_required'}});
+    return json({ok:true,service:'public-operations',version:VERSION,date,timezone:TIMEZONE,approval:approvalState(date,decision,now),policy:{reviewHour:REVIEW_HOUR,silentApprovalHour:APPROVAL_HOUR},bindings:{kv:Boolean(binding),assets:Boolean(env?.ASSETS?.fetch),adminTokenConfigured:Boolean(authToken(env))},routes:{catalog:`${API_PREFIX}/catalog`,latestReport:`${API_PREFIX}/report/latest`,governanceBoard:`${API_PREFIX}/governance-board`},security:{publicSecrets:false,privateMailData:false,auditRecordsPublic:false,adminEndpoints:'token_required'}});
   }
   if(path===`${API_PREFIX}/governance-board`){
     const date=clean(url.searchParams.get('date'))||localDate(now);
@@ -281,18 +298,18 @@ export async function handlePublicOperationsAdmin(request,env){
     return json({ok:true,date,decision,approval:report.approval,report,governance:governanceBoard(date,decision,new Date()),audit:audit||[],version:VERSION});
   }
   if(request.method==='POST'&&path===`${ADMIN_PREFIX}/decision`){
-    const body=await request.json().catch(()=>({})),date=clean(body.date)||localDate(),state=clean(body.state).toLowerCase();
+    const body=await request.json().catch(()=>({})),date=clean(body.date)||localDate(),state=normalizeDecision(body.state);
     if(!datePattern.test(date))return json({ok:false,error:'invalid_date'},400);
-    if(!['approved','approved-explicitly','held','cancelled','clear'].includes(state))return json({ok:false,error:'invalid_state'},400);
+    if(!['approved-explicitly','held','stopped','cancelled','clear'].includes(state))return json({ok:false,error:'invalid_state',allowed:['APPROVE','STOP','HOLD','CANCEL','CLEAR']},400);
     if(state==='clear')await deleteKey(binding,decisionKey(date));
     else await writeJson(binding,decisionKey(date),{date,state,reason:clean(body.reason),decidedAt:new Date().toISOString(),source:'executive-office'});
     const decision=await readJson(binding,decisionKey(date)),report=await buildReport(env,date,decision,new Date());
     await writeJson(binding,reportKey(date),report);
-    await appendAudit(binding,date,{type:'executive-decision',state,reason:clean(body.reason)});
+    await appendAudit(binding,date,{type:'executive-decision',state,reason:clean(body.reason),releaseAllowed:report.approval?.releaseAllowed});
     if(report.approval.public)await writeJson(binding,latestKey,report);
     return json({ok:true,date,decision,approval:report.approval,report,governance:governanceBoard(date,decision,new Date()),version:VERSION});
   }
   return json({ok:false,error:'admin_route_not_found'},404);
 }
 
-export const __test={localDate,approvalState,reportKey,decisionKey,latestKey,auditKey,itemsOf,governanceBoard,adminAuthorized};
+export const __test={localDate,approvalState,reportKey,decisionKey,latestKey,auditKey,itemsOf,governanceBoard,adminAuthorized,normalizeDecision};
