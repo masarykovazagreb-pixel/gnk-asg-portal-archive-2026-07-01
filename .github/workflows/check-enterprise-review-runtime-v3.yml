@@ -9,9 +9,10 @@ on:
       - 'apps/portal/public-operations/**'
       - 'apps/portal/assets/mail-studio-webmail-v25.js'
       - 'apps/portal/assets/public-operations-dashboard-v1.js'
+      - 'apps/portal/assets/project-command-center-v2.js'
+      - 'apps/portal/assets/project-command-center-runtime-v2.css'
       - 'apps/portal/assets/index-redesign-production.js'
-      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
-      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'
       - 'workers/gnk-asg-direct-operator/src/public-operations-v1.js'
       - 'workers/gnk-asg-direct-operator/src/enterprise-project-operations-v1.js'
       - 'workers/gnk-asg-direct-operator/src/news-market-intelligence-v1.js'
@@ -19,7 +20,6 @@ on:
       - 'workers/gnk-asg-direct-operator/test/public-operations.test.mjs'
       - 'workers/gnk-asg-direct-operator/test/enterprise-workforce-lifecycle.test.mjs'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
-      - 'workers/gnk-asg-direct-operator/wrangler.runtime.toml'
       - '.github/workflows/check-enterprise-review-runtime-v3.yml'
 
 permissions:
@@ -42,8 +42,9 @@ jobs:
           set -euxo pipefail
           node --check apps/portal/assets/mail-studio-webmail-v25.js
           node --check apps/portal/assets/public-operations-dashboard-v1.js
+          node --check apps/portal/assets/project-command-center-v2.js
           node --check apps/portal/assets/index-redesign-production.js
-          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-operations-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/enterprise-project-operations-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/news-market-intelligence-v1.js
@@ -57,39 +58,42 @@ jobs:
       - name: Test workforce assignment lifecycle
         run: node workers/gnk-asg-direct-operator/test/enterprise-workforce-lifecycle.test.mjs
 
-      - name: Validate review-only wrangler safety lock
+      - name: Validate isolated review entrypoint and safety locks
         run: |
           set -euxo pipefail
-          legacy=workers/gnk-asg-direct-operator/wrangler.toml
-          runtime=workers/gnk-asg-direct-operator/wrangler.runtime.toml
-          grep -q '^main = "src/index-final-admin-gateway-v1.js"' "$legacy"
-          grep -q '^main = "src/index-final-admin-gateway-v2.js"' "$runtime"
-          grep -q "export { default } from './index-final-admin-gateway-v2.js';" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          grep -q '^workers_dev = true' "$legacy"
-          grep -q '^preview_urls = true' "$legacy"
-          grep -q 'PUBLIC_ENVIRONMENT = "review-direct-operator"' "$legacy"
-          grep -q 'MAIL_MANUAL_LIVE = "false"' "$legacy"
-          grep -q 'MAIL_PROFILE_TEST_LIVE = "false"' "$legacy"
-          grep -q 'MEDIA_OUTREACH_LIVE = "false"' "$legacy"
-          grep -q 'MEDIA_OUTREACH_SCHEDULED_LIVE = "false"' "$legacy"
-          grep -q 'MEDIA_APPLICATION_AUTO_ACK = "false"' "$legacy"
-          grep -q 'EMAIL_OPEN_TRACKING_ENABLED = "false"' "$legacy"
-          ! grep -Eq '^[[:space:]]*routes[[:space:]]*=' "$legacy"
-          ! grep -Eq '^[[:space:]]*\[\[routes\]\]' "$legacy"
-          ! grep -Eq '^[[:space:]]*zone_name[[:space:]]*=' "$legacy"
+          wrangler=workers/gnk-asg-direct-operator/wrangler.toml
+          auth=workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q '^main = "src/index-unified-auth-v14.js"' "$wrangler"
+          grep -q "from './index-portal-final-v13.js'" "$auth"
+          grep -q '^workers_dev = true' "$wrangler"
+          grep -q '^preview_urls = true' "$wrangler"
+          grep -q 'PUBLIC_ENVIRONMENT = "review-direct-operator"' "$wrangler"
+          grep -q 'MAIL_MANUAL_LIVE = "false"' "$wrangler"
+          grep -q 'MAIL_PROFILE_TEST_LIVE = "false"' "$wrangler"
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' "$wrangler"
+          grep -q 'MEDIA_OUTREACH_SCHEDULED_LIVE = "false"' "$wrangler"
+          grep -q 'MEDIA_APPLICATION_AUTO_ACK = "false"' "$wrangler"
+          grep -q 'EMAIL_OPEN_TRACKING_ENABLED = "false"' "$wrangler"
+          ! grep -Eq '^[[:space:]]*routes[[:space:]]*=' "$wrangler"
+          ! grep -Eq '^[[:space:]]*\[\[routes\]\]' "$wrangler"
+          ! grep -Eq '^[[:space:]]*zone_name[[:space:]]*=' "$wrangler"
 
-      - name: Validate public operations and workforce routing contract
+      - name: Validate protected operations and workforce routing
         run: |
           set -euxo pipefail
-          gateway=workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          auth=workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           ops=workers/gnk-asg-direct-operator/src/public-operations-v1.js
           workforce=workers/gnk-asg-direct-operator/src/enterprise-project-operations-v1.js
-          grep -q 'handlePublicOperations' "$gateway"
-          grep -q 'handlePublicOperationsAdmin' "$gateway"
-          grep -q 'runPublicOperationsCycle' "$gateway"
-          grep -q 'handleEnterpriseProjectApi' "$gateway"
-          grep -q 'runEnterpriseProjectCycle' "$gateway"
-          grep -q 'runNewsMarketIntelligence' "$gateway"
+          grep -q 'handlePublicOperations' "$auth"
+          grep -q 'handlePublicOperationsAdmin' "$auth"
+          grep -q 'handleEnterpriseProjectApi' "$auth"
+          grep -q 'runEnterpriseProjectCycle' "$auth"
+          grep -q 'runNewsMarketIntelligence' "$auth"
+          grep -q 'protectedModule' "$auth"
+          grep -q "path.startsWith('/api/enterprise-projects')" "$auth"
+          grep -q 'patchProjectCenterResponse' "$auth"
+          grep -q 'operationalWorkforce:true' "$auth"
+          grep -q 'automaticPublication:false' "$auth"
           grep -q "export const API_PREFIX='/api/public-operations'" "$ops"
           grep -q "export const ADMIN_PREFIX='/api/editorial-operations/public-approval'" "$ops"
           grep -q "export const API_PREFIX='/api/enterprise-projects'" "$workforce"
@@ -106,6 +110,7 @@ jobs:
           webmail_html=apps/portal/mail-studio/index.html
           webmail_js=apps/portal/assets/mail-studio-webmail-v25.js
           dashboard=apps/portal/assets/public-operations-dashboard-v1.js
+          project_center=apps/portal/assets/project-command-center-v2.js
           grep -qi 'noindex,nofollow' "$enterprise"
           grep -q '/mail-studio/' "$enterprise"
           grep -q '/public-operations/' "$enterprise"
@@ -119,6 +124,10 @@ jobs:
           grep -q "fillReply('Fw')" "$webmail_js"
           grep -q 'Promise.allSettled' "$dashboard"
           grep -q '/api/public-operations/governance-board' "$dashboard"
+          grep -q '/api/enterprise-projects/status' "$project_center"
+          grep -q '/api/enterprise-projects/projects' "$project_center"
+          grep -q '/api/enterprise-projects/reports' "$project_center"
+          grep -q 'window.setInterval(load,60000)' "$project_center"
 
       - name: Confirm production deploy remains blocked
         env:
