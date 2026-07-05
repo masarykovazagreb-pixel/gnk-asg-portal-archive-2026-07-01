@@ -1,0 +1,57 @@
+{
+  "version": "2026-07-05.canonical-brand.1",
+  "status": "executive-supplied-canonical-source",
+  "rule": "Only the four executive-supplied GNK logo images listed here may be used as source artwork. Legacy hand-drawn, blue technology and substitute SVG marks must be removed from public and enterprise surfaces.",
+  "assets": [
+    {
+      "entity": "GNK DINAMO Ltd. Group",
+      "variant": "gold-on-black",
+      "sourceFile": "ChatGPT Image 16. lip 2026. 18_32_15.png",
+      "sha256": "0ae7df12400a6b66e1c0dfa9c6013b607867e45eee0ffceae45687d52732d18f",
+      "dimensions": "1254x1254",
+      "canonicalUse": ["dark public header", "enterprise header", "media kit", "social and presentation surfaces"]
+    },
+    {
+      "entity": "GNK ASG",
+      "variant": "gold-on-checkerboard-source",
+      "sourceFile": "ChatGPT Image 16. lip 2026. 18_35_19.png",
+      "sha256": "6737274c1183cf3eb3cf050300b94c55274bc9ff963d291f054fe4565c43af25",
+      "dimensions": "1254x1254",
+      "technicalNote": "The delivered PNG is fully opaque; the visible checkerboard is baked into the pixels and is not real alpha transparency.",
+      "canonicalUse": ["source for controlled true-alpha derivative"]
+    },
+    {
+      "entity": "GNK DINAMO Ltd. Group",
+      "variant": "gold-on-checkerboard-source",
+      "sourceFile": "ac340363-941c-48e0-bb4b-9c77e00afadf.png",
+      "sha256": "e03f3bdb089d6deab4cc6b70201b800b4eb430ed79301f5c0d0cf64426749067",
+      "dimensions": "1254x1254",
+      "technicalNote": "The delivered PNG is fully opaque; the visible checkerboard is baked into the pixels and is not real alpha transparency.",
+      "canonicalUse": ["source for controlled true-alpha derivative"]
+    },
+    {
+      "entity": "GNK ASG",
+      "variant": "gold-on-black",
+      "sourceFile": "ChatGPT Image 16. lip 2026. 18_30_14.png",
+      "sha256": "468d01e02cf699b764fca84c0e0e39245ffc6a6c234891aae6fb026efccbc2e3",
+      "dimensions": "1254x1254",
+      "canonicalUse": ["dark public header", "enterprise header", "media kit", "social and presentation surfaces"]
+    }
+  ],
+  "replacementTargets": [
+    "/assets/logo-gnk-asg.svg",
+    "/assets/brand/official-gnk-asg-gold.svg",
+    "/assets/brand/official-gnk-dinamo-ltd-group-gold.svg",
+    "legacy inline SVG marks in HR and EN index files",
+    "legacy public-menu generated marks",
+    "mail and media-kit signature marks"
+  ],
+  "acceptance": {
+    "noLegacyPublicMarks": true,
+    "sameBrandAcrossHrEn": true,
+    "sameBrandAcrossPublicEnterprise": true,
+    "browserRenderCheckRequired": true,
+    "darkAndLightSurfaceCheckRequired": true,
+    "mobileCheckRequired": true
+  }
+}
