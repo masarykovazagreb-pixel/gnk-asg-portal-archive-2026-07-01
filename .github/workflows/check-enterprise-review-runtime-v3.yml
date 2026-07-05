@@ -1,0 +1,104 @@
+name: Check Enterprise Review Runtime V3
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/enterprise/**'
+      - 'apps/portal/mail-studio/**'
+      - 'apps/portal/public-operations/**'
+      - 'apps/portal/assets/mail-studio-webmail-v25.js'
+      - 'apps/portal/assets/public-operations-dashboard-v1.js'
+      - 'apps/portal/assets/index-redesign-production.js'
+      - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'
+      - 'workers/gnk-asg-direct-operator/src/public-operations-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-sync-center-v2.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
+      - '.github/workflows/check-enterprise-review-runtime-v3.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Check JavaScript and Worker syntax
+        run: |
+          set -euxo pipefail
+          node --check apps/portal/assets/mail-studio-webmail-v25.js
+          node --check apps/portal/assets/public-operations-dashboard-v1.js
+          node --check apps/portal/assets/index-redesign-production.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-operations-v1.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-sync-center-v2.js
+
+      - name: Validate review-only wrangler safety lock
+        run: |
+          set -euxo pipefail
+          wrangler=workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q '^main = "src/index-unified-auth-v14.js"' "$wrangler"
+          grep -q '^workers_dev = true' "$wrangler"
+          grep -q '^preview_urls = true' "$wrangler"
+          grep -q 'PUBLIC_ENVIRONMENT = "review-direct-operator"' "$wrangler"
+          grep -q 'MAIL_MANUAL_LIVE = "false"' "$wrangler"
+          grep -q 'MAIL_PROFILE_TEST_LIVE = "false"' "$wrangler"
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' "$wrangler"
+          grep -q 'MEDIA_OUTREACH_SCHEDULED_LIVE = "false"' "$wrangler"
+          grep -q 'MEDIA_APPLICATION_AUTO_ACK = "false"' "$wrangler"
+          grep -q 'EMAIL_OPEN_TRACKING_ENABLED = "false"' "$wrangler"
+          ! grep -q '^routes *=' "$wrangler"
+          ! grep -q '\[\[routes\]\]' "$wrangler"
+          ! grep -q 'zone_name' "$wrangler"
+
+      - name: Validate public operations and auth routing contract
+        run: |
+          set -euxo pipefail
+          auth=workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          ops=workers/gnk-asg-direct-operator/src/public-operations-v1.js
+          grep -q 'handlePublicOperations' "$auth"
+          grep -q 'handlePublicOperationsAdmin' "$auth"
+          grep -q 'runPublicOperationsCycle' "$auth"
+          grep -q "'/public-operations'" "$auth"
+          grep -q '/api/operator-backend-status' "$auth"
+          grep -q 'publicOperations:true' "$auth"
+          grep -q 'governanceBoard:true' "$auth"
+          grep -q '/api/public-operations/health' "$ops"
+          grep -q '/api/public-operations/governance-board' "$ops"
+          grep -q '/api/public-operations/report/latest' "$ops"
+          grep -q '/api/editorial-operations/public-approval/status' "$ops"
+          grep -q '/api/editorial-operations/public-approval/decision' "$ops"
+          grep -Eq 'authorization|x-gnk-admin-token|x-admin-token' "$ops"
+
+      - name: Validate review UI contract
+        run: |
+          set -euxo pipefail
+          grep -qi 'noindex,nofollow' apps/portal/enterprise/index.html
+          grep -q '/mail-studio/' apps/portal/enterprise/index.html
+          grep -q '/public-operations/' apps/portal/enterprise/index.html
+          grep -q '/email-status/' apps/portal/enterprise/index.html
+          grep -q '/media-command-center/' apps/portal/enterprise/index.html
+          grep -q '/api/mail-sync' apps/portal/assets/mail-studio-webmail-v25.js
+          grep -q 'Inbox' apps/portal/assets/mail-studio-webmail-v25.js
+          grep -q 'Sent' apps/portal/assets/mail-studio-webmail-v25.js
+          grep -q 'Drafts' apps/portal/assets/mail-studio-webmail-v25.js
+          grep -q 'Reply' apps/portal/assets/mail-studio-webmail-v25.js
+          grep -q 'Forward' apps/portal/assets/mail-studio-webmail-v25.js
+          grep -q '/api/public-operations/governance-board' apps/portal/assets/public-operations-dashboard-v1.js
+
+      - name: Confirm production deploy remains blocked
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euxo pipefail
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          printf '%s\n' "$changed"
+          ! printf '%s\n' "$changed" | grep -E '(^|/)\.env($|\.)|secrets|cloudflare-production|production-deploy'
+          ! git diff "$BASE_SHA" "$HEAD_SHA" -- workers/gnk-asg-direct-operator/wrangler.toml | grep -E '^\+.*(routes|zone_name|gnk-asg\.hr/\*)'
