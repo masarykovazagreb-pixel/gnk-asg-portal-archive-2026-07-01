@@ -11,6 +11,7 @@ on:
       - 'apps/portal/assets/media-command-center-v1.js'
       - 'apps/portal/assets/admin-media-command-center-nav-v20.js'
       - 'apps/portal/data/media-outreach-contacts-v1.json'
+      - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-command-center-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js'
@@ -39,15 +40,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
           node --check apps/portal/assets/media-command-center-v1.js
           node --check apps/portal/assets/admin-media-command-center-nav-v20.js
-          grep -q 'main = "src/index-final-admin-gateway-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'MEDIA_OUTREACH_LIVE = ' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'MEDIA_OUTREACH_TEST_LIVE = ' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'MEDIA_APPLICATION_AUTO_ACK = "true"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-unified-auth-v14.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_APPLICATION_AUTO_ACK = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'media@gnk-asg.hr' workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js
           test -s apps/portal/media-command-center/index.html
           test -s apps/portal/data/media-outreach-contacts-v1.json
