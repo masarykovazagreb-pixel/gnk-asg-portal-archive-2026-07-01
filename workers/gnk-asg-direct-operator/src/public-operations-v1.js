@@ -1,6 +1,6 @@
 import {buildDailyEditorialPlan,VERSION as EDITORIAL_PLAN_VERSION} from './editorial-draft-planner-v1.js';
 
-export const VERSION=`GNK_ASG_PUBLIC_OPERATIONS_V1_20260705_${EDITORIAL_PLAN_VERSION}`;
+export const VERSION=`GNK_ASG_PUBLIC_OPERATIONS_V2_20260705_${EDITORIAL_PLAN_VERSION}`;
 export const API_PREFIX='/api/public-operations';
 export const ADMIN_PREFIX='/api/editorial-operations/public-approval';
 export const TIMEZONE='Europe/Zagreb';
@@ -86,11 +86,11 @@ export function approvalState(date,decision,now=new Date()){
   const today=localDate(now);
   const passed=date<today||(date===today&&localHour(now)>=APPROVAL_HOUR);
   const state=clean(decision?.state).toLowerCase();
-  if(state==='cancelled'||state==='canceled')return{state:'cancelled',approved:false,public:false,reason:clean(decision?.reason)||'cancelled_by_executive_office'};
-  if(state==='held')return{state:'held',approved:false,public:false,reason:clean(decision?.reason)||'held_by_executive_office'};
+  if(state==='cancelled'||state==='canceled')return{state:'cancelled',approved:false,public:true,reason:'cancelled_by_executive_office'};
+  if(state==='held')return{state:'held',approved:false,public:true,reason:'held_by_executive_office'};
   if(state==='approved'||state==='approved-explicitly')return{state:'approved-explicitly',approved:true,public:true,reason:'approved_by_executive_office'};
   if(passed)return{state:'approved-by-silence',approved:true,public:true,reason:'not_cancelled_before_08_review_deadline'};
-  return{state:'awaiting-08-review',approved:false,public:false,reason:'review_window_open'};
+  return{state:'preliminary',approved:false,public:true,reason:'review_window_open_before_08'};
 }
 
 function publicPublicationCount(items){
@@ -103,6 +103,8 @@ function publicPublicationCount(items){
 
 function governanceBoard(date,decision,now=new Date()){
   const approval=approvalState(date,decision,now);
+  const reviewState=approval.state==='preliminary'?'active':'closed';
+  const finalState=approval.approved?'approved':(['held','cancelled'].includes(approval.state)?approval.state:'pending');
   return{
     ok:true,
     version:VERSION,
@@ -111,12 +113,12 @@ function governanceBoard(date,decision,now=new Date()){
     generatedAt:now.toISOString(),
     approval,
     controls:[
-      {id:'reports-before-0800',title:'Preliminarna izvješća prije 08:00',state:approval.public?'closed':'active',owner:'Executive Office',route:`${API_PREFIX}/report?date=${date}`},
-      {id:'approval-after-0800',title:'Automatsko javno odobrenje nakon 08:00 ako nije zadržano ili otkazano',state:approval.public?'approved':'pending',owner:'Public Operations Worker',route:`${ADMIN_PREFIX}/status?date=${date}`},
+      {id:'reports-before-0800',title:'Preliminarna izvješća prije 08:00',state:reviewState,owner:'Executive Office',route:`${API_PREFIX}/report?date=${date}`},
+      {id:'approval-after-0800',title:'Automatsko javno odobrenje nakon 08:00 ako nije zadržano ili otkazano',state:finalState,owner:'Public Operations Worker',route:`${ADMIN_PREFIX}/status?date=${date}`},
       {id:'mail-safety',title:'Masovni mail ostaje zaključan u review režimu',state:'locked',owner:'Mail Studio',route:'/mail-studio/'},
       {id:'worker-health',title:'Worker health/status endpoint',state:'active',owner:'Cloudflare Worker',route:`${API_PREFIX}/health`},
       {id:'governance-board',title:'Javna tabla zadataka, odluka, zapisnika i zaključaka',state:'active',owner:'Public Governance',route:`${API_PREFIX}/governance-board`},
-      {id:'admin-token-lock',title:'Admin status i odluke zahtijevaju token',state:authToken? 'configured-at-runtime':'requires-secret',owner:'Security',route:ADMIN_PREFIX}
+      {id:'admin-token-lock',title:'Admin status i odluke zahtijevaju token',state:'token-required',owner:'Security',route:ADMIN_PREFIX}
     ],
     tasks:[
       {id:'task-dashboard',label:'Enterprise dashboard',status:'in-review',public:false},
@@ -145,7 +147,7 @@ function governanceBoard(date,decision,now=new Date()){
 async function buildReport(env,date,decision,now=new Date()){
   const plan=buildDailyEditorialPlan(date);
   const [publicationsPayload,newsPayload,catalog]=await Promise.all([
-    assetJson(env,'/data/auto-editor.json'),
+    assetJson(env,'/data/objave-unified.json'),
     assetJson(env,'/data/news.json'),
     assetJson(env,'/data/public-portal-catalog.json')
   ]);
@@ -160,7 +162,7 @@ async function buildReport(env,date,decision,now=new Date()){
     approval:{
       ...approval,
       deadline:deadlineLabel(date),
-      rule:'Readiness-complete reports and publications are treated as approved at 08:00 Europe/Zagreb unless cancelled or held before the deadline.'
+      rule:'The report is public as PRELIMINARY before 08:00 Europe/Zagreb. At or after 08:00 it becomes APPROVED BY SILENCE unless held or cancelled. HELD and CANCELLED statuses remain public without internal reasons.'
     },
     workforce:{
       profileType:'digital operations profile',
@@ -184,6 +186,7 @@ async function buildReport(env,date,decision,now=new Date()){
     publicOutputs:{
       publishedOrApprovedTexts:publicPublicationCount(publications),
       publicNewsEntries:news.length,
+      publicationDataSource:'/data/objave-unified.json',
       publicationsRoute:'/objave/',
       newsRoute:'/vijesti/',
       reportsRoute:'/#dnevna-izvjesca',
@@ -254,7 +257,7 @@ export async function handlePublicOperations(request,env){
   }
   if(path===`${API_PREFIX}/report/latest`){
     const report=await latestApprovedReport(env,now);
-    return report?json(report):json({ok:false,error:'approved_report_not_available'},404);
+    return report?json(report):json({ok:false,error:'public_report_not_available'},404);
   }
   if(path===`${API_PREFIX}/report`){
     const date=clean(url.searchParams.get('date'));
