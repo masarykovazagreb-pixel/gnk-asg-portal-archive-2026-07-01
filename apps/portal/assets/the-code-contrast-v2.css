@@ -1,6 +1,7 @@
 /* THE CODE readability and contrast hardening */
 body:not(.embed-mode) #app{background:radial-gradient(circle at 50% 18%,#151109 0,#070604 32%,#000 74%)!important;opacity:1!important;filter:none!important}
 body:not(.embed-mode) #app .scene.active{display:flex!important;visibility:visible!important;opacity:1!important;filter:none!important;background:radial-gradient(circle at 50% 26%,rgba(201,168,76,.1),transparent 48%)!important}
+body:not(.embed-mode) #app #s6.scene.active{animation:none!important;opacity:1!important;transform:none!important}
 body:not(.embed-mode) #app .scene.active>*{visibility:visible!important;opacity:1!important;filter:none!important;mix-blend-mode:normal!important}
 body:not(.embed-mode) #app .dim{color:#c7b886!important;text-shadow:0 0 18px rgba(201,168,76,.22)!important}
 body:not(.embed-mode) #app .narr{color:#eee9de!important;text-shadow:0 1px 0 #000,0 0 22px rgba(255,255,255,.08)!important}
