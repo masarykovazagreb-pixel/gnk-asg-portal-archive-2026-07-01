@@ -1,0 +1,34 @@
+name: Diagnose Review Contract Workflows V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/diagnose-review-contract-workflows-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Locate failing workflow definitions and entrypoint assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          for wanted in \
+            'Validate GNK ASG Portal Release' \
+            'Diagnose Current Portal Contract' \
+            'Validate Current Portal Contract' \
+            'Deploy Fresh Media Center' \
+            'Validate Current Media Command Center'; do
+            echo "===== $wanted ====="
+            file=$(grep -RIl --include='*.yml' --include='*.yaml' "name: $wanted" .github/workflows | head -n 1 || true)
+            echo "FILE=${file:-NOT_FOUND}"
+            if [ -n "$file" ]; then
+              grep -nE 'main =|wrangler|index-(unified-auth|final-admin|enterprise)|validate-|verify-|node scripts|grep -q|grep -E|grep -Eq' "$file" || true
+            fi
+          done
