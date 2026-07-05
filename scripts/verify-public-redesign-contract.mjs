@@ -5,24 +5,9 @@ const root=process.cwd();
 const requested=process.argv[2]||'all';
 const failures=[];
 const groups=new Set(requested==='all'?['mail','registration','shell','campaign','entrypoints']:[requested]);
-const read=file=>{
-  const absolute=path.join(root,file);
-  if(!fs.existsSync(absolute)){
-    failures.push(`${file}: file missing`);
-    return '';
-  }
-  return fs.readFileSync(absolute,'utf8');
-};
-const requireAll=(group,file,needles)=>{
-  if(!groups.has(group))return;
-  const value=read(file);
-  for(const needle of needles)if(!value.includes(needle))failures.push(`[${group}] ${file}: missing ${needle}`);
-};
-const requireNone=(group,file,needles)=>{
-  if(!groups.has(group))return;
-  const value=read(file);
-  for(const needle of needles)if(value.includes(needle))failures.push(`[${group}] ${file}: forbidden ${needle}`);
-};
+const read=file=>{const absolute=path.join(root,file);if(!fs.existsSync(absolute)){failures.push(`${file}: file missing`);return'';}return fs.readFileSync(absolute,'utf8');};
+const requireAll=(group,file,needles)=>{if(!groups.has(group))return;const value=read(file);for(const needle of needles)if(!value.includes(needle))failures.push(`[${group}] ${file}: missing ${needle}`);};
+const requireNone=(group,file,needles)=>{if(!groups.has(group))return;const value=read(file);for(const needle of needles)if(value.includes(needle))failures.push(`[${group}] ${file}: forbidden ${needle}`);};
 const requireCondition=(group,label,condition)=>{if(groups.has(group)&&!condition)failures.push(`[${group}] ${label}`);};
 
 if(groups.has('mail')){
@@ -55,15 +40,14 @@ if(groups.has('campaign')){
 }
 
 if(groups.has('entrypoints')){
-  requireAll('entrypoints','workers/gnk-asg-direct-operator/wrangler.toml',['main = "src/index-enterprise-projects-runtime-v1.js"','PUBLIC_ENVIRONMENT = "review-direct-operator"']);
+  const review=read('workers/gnk-asg-direct-operator/wrangler.toml');
+  requireCondition('entrypoints','main review Worker must use protected unified auth',review.includes('main = "src/index-unified-auth-v14.js"'));
+  requireCondition('entrypoints','main review environment marker missing',review.includes('PUBLIC_ENVIRONMENT = "review-direct-operator"'));
   requireAll('entrypoints','workers/gnk-asg-direct-operator/wrangler.review-preview.toml',['main = "src/index-enterprise-projects-runtime-v1.js"','PUBLIC_ENVIRONMENT = "isolated-review-preview"']);
-  requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js',["from './index-unified-auth-v14.js'",'isEnterpriseProjectApi','isNewsMarketIntelligenceApi','runEnterpriseProjectCycle','runNewsMarketIntelligence']);
+  requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js',["from './index-final-admin-gateway-v2.js'",'isEnterpriseProjectApi','isNewsMarketIntelligenceApi','runEnterpriseProjectCycle','runNewsMarketIntelligence']);
+  requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js',["from './index-mail-studio-bridge-v17.js'",'handleMailStudioInbound','recordInbound']);
   requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js',["from './index-portal-final-v13.js'",'isUi(path)','loginPage(next)']);
 }
 
-if(failures.length){
-  console.error(`Protected portal contract FAILED (${requested})`);
-  for(const failure of failures)console.error(`- ${failure}`);
-  process.exit(1);
-}
+if(failures.length){console.error(`Protected portal contract FAILED (${requested})`);for(const failure of failures)console.error(`- ${failure}`);process.exit(1);}
 console.log(`Protected portal contract PASSED (${requested})`);
