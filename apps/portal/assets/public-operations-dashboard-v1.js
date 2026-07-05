@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
 
-  const VERSION='GNK_ASG_PUBLIC_OPERATIONS_DASHBOARD_V1_20260705_GOVERNANCE';
+  const VERSION='GNK_ASG_PUBLIC_OPERATIONS_DASHBOARD_V2_20260705_RESILIENT';
   const DEFAULT_TARGET='[data-public-operations-dashboard]';
   const ENDPOINTS={
     catalog:'/api/public-operations/catalog',
@@ -49,9 +49,17 @@
     }).slice(0,6);
   }
 
+  function publicStatus(value){
+    const state=text(value).toLowerCase();
+    if(state==='preliminary'||state==='awaiting-08-review')return'PRELIMINARY';
+    if(state==='approved-by-silence'||state==='approved-explicitly'||state==='approved')return'APPROVED';
+    if(state==='held')return'HELD';
+    if(state==='cancelled'||state==='canceled')return'CANCELLED';
+    return text(value)||'CONTROLLED REVIEW';
+  }
+
   function statusPill(value){
-    const state=text(value)||'controlled-review';
-    return `<span class="state-pill public-ops-state">${escapeHtml(state)}</span>`;
+    return `<span class="state-pill public-ops-state">${escapeHtml(publicStatus(value))}</span>`;
   }
 
   function listCards(items,emptyLabel){
@@ -60,7 +68,25 @@
     return records.slice(0,8).map(item=>`<article class="pod-card public-ops-file"><span>${escapeHtml(item.state||item.status||item.owner||item.id||'record')}</span><strong>${escapeHtml(item.title||item.label||item.summary||item.id||'Javni zapis')}</strong>${item.route?`<small>${escapeHtml(item.route)}</small>`:''}${item.minimumEvidence?`<small>${escapeHtml(item.minimumEvidence.join(' · '))}</small>`:''}</article>`).join('');
   }
 
-  function render(target,{catalog,report,governance}){
+  function fallbackReport(catalog,governance){
+    const approval=governance?.approval||{state:'preliminary',approved:false,public:true,deadline:'08:00 Europe/Zagreb'};
+    return{
+      version:'frontend-safe-fallback',
+      approval,
+      workforce:{
+        configuredProfiles:number(catalog?.workforce?.configuredProfiles)||1500,
+        departments:number(catalog?.workforce?.departments)||27,
+        entitySlots:number(catalog?.workforce?.entitySlots)||43,
+        publicDirectory:'/digital-workforce/directory/',
+        disclosure:'Functional digital workflow identities. This is not by itself a register of natural persons or confirmed employment relationships.'
+      },
+      editorial:{brand:'THE CODE Intelligence',totalPlannedSlots:0},
+      publicOutputs:{publishedOrApprovedTexts:0,publicNewsEntries:0,publicationsRoute:'/objave/',newsRoute:'/vijesti/',governanceRoute:ENDPOINTS.governanceBoard},
+      systems:{privateMailData:'not_public',tokensAndSecrets:'never_public',adminEndpoints:'token_required'}
+    };
+  }
+
+  function render(target,{catalog,report,governance,warnings=[]}){
     const workforce=report?.workforce||{};
     const editorial=report?.editorial||{};
     const outputs=report?.publicOutputs||{};
@@ -75,6 +101,7 @@
           </div>
           <p>Panel čita isključivo javne API podatke. Privatni mailovi, tokeni, auditi, privitci i upravljačke odluke nisu izloženi javnosti.</p>
         </div>
+        ${warnings.length?`<div class="notice"><b>Djelomično učitavanje:</b> ${escapeHtml(warnings.join(' · '))}</div>`:''}
         <div class="trust-strip public-ops-status">
           <div class="trust"><span class="icon">◎</span><div><b>Status izvješća</b><span>${statusPill(approval.state)}</span></div></div>
           <div class="trust"><span class="icon">◷</span><div><b>Pravilo pregleda</b><span>${escapeHtml(approval.deadline||'08:00 Europe/Zagreb')}</span></div></div>
@@ -115,16 +142,20 @@
   }
 
   async function mount(target=document.querySelector(DEFAULT_TARGET)){
-    if(!target)return {ok:false,reason:'target_not_found',version:VERSION};
+    if(!target)return{ok:false,reason:'target_not_found',version:VERSION};
     target.setAttribute('data-public-operations-dashboard-version',VERSION);
-    try{
-      const [catalog,report,governance]=await Promise.all([readJson(ENDPOINTS.catalog),readJson(ENDPOINTS.latestReport),readJson(ENDPOINTS.governanceBoard)]);
-      render(target,{catalog,report,governance});
-      return {ok:true,version:VERSION,catalogVersion:catalog?.version||null,reportVersion:report?.version||null,governanceVersion:governance?.version||null};
-    }catch(error){
+    const results=await Promise.allSettled([readJson(ENDPOINTS.catalog),readJson(ENDPOINTS.latestReport),readJson(ENDPOINTS.governanceBoard)]);
+    const catalog=results[0].status==='fulfilled'?results[0].value:{};
+    const governance=results[2].status==='fulfilled'?results[2].value:{};
+    const report=results[1].status==='fulfilled'?results[1].value:fallbackReport(catalog,governance);
+    const warnings=results.map((result,index)=>result.status==='rejected'?`${['katalog','izvješće','governance'][index]} nije dostupan`:null).filter(Boolean);
+    if(results.every(result=>result.status==='rejected')){
+      const error=results.find(result=>result.status==='rejected')?.reason;
       renderError(target,error);
-      return {ok:false,version:VERSION,error:String(error?.message||error)};
+      return{ok:false,version:VERSION,error:String(error?.message||error)};
     }
+    render(target,{catalog,report,governance,warnings});
+    return{ok:true,partial:warnings.length>0,warnings,version:VERSION,catalogVersion:catalog?.version||null,reportVersion:report?.version||null,governanceVersion:governance?.version||null};
   }
 
   window.GNKPublicOperationsDashboard={VERSION,ENDPOINTS,mount};
