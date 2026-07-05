@@ -83,18 +83,23 @@ jobs:
       - name: Validate review UI contract
         run: |
           set -euxo pipefail
-          grep -qi 'noindex,nofollow' apps/portal/enterprise/index.html
-          grep -q '/mail-studio/' apps/portal/enterprise/index.html
-          grep -q '/public-operations/' apps/portal/enterprise/index.html
-          grep -q '/email-status/' apps/portal/enterprise/index.html
-          grep -q '/contact/' apps/portal/enterprise/index.html
-          grep -q '/api/mail-sync' apps/portal/assets/mail-studio-webmail-v25.js
-          grep -q 'Inbox' apps/portal/assets/mail-studio-webmail-v25.js
-          grep -q 'Sent' apps/portal/assets/mail-studio-webmail-v25.js
-          grep -q 'Drafts' apps/portal/assets/mail-studio-webmail-v25.js
-          grep -q 'Reply' apps/portal/assets/mail-studio-webmail-v25.js
-          grep -q 'Forward' apps/portal/assets/mail-studio-webmail-v25.js
-          grep -q '/api/public-operations/governance-board' apps/portal/assets/public-operations-dashboard-v1.js
+          enterprise=apps/portal/enterprise/index.html
+          webmail_html=apps/portal/mail-studio/index.html
+          webmail_js=apps/portal/assets/mail-studio-webmail-v25.js
+          dashboard=apps/portal/assets/public-operations-dashboard-v1.js
+          grep -qi 'noindex,nofollow' "$enterprise"
+          grep -q '/mail-studio/' "$enterprise"
+          grep -q '/public-operations/' "$enterprise"
+          grep -q '/email-status/' "$enterprise"
+          grep -q '/contact/' "$enterprise"
+          grep -q 'Inbox' "$webmail_html"
+          grep -q 'Sent' "$webmail_html"
+          grep -q 'Drafts' "$webmail_html"
+          grep -q '/api/mail-sync' "$webmail_js"
+          grep -q 'fillReply' "$webmail_js"
+          grep -q "fillReply('Fw')" "$webmail_js"
+          grep -q 'Promise.allSettled' "$dashboard"
+          grep -q '/api/public-operations/governance-board' "$dashboard"
 
       - name: Confirm production deploy remains blocked
         env:
