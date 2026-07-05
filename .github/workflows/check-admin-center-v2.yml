@@ -9,7 +9,10 @@ on:
       - 'apps/portal/assets/admin-center-v2.js'
       - 'apps/portal/assets/admin-center-health-v1.js'
       - 'apps/portal/assets/admin-media-applications-entry-v1.js'
+      - 'apps/portal/assets/admin-executive-portfolio-v1.js'
+      - 'apps/portal/assets/executive-project-portfolio-v1.css'
       - 'apps/portal/assets/data/operator-os-config.json'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
       - '.github/workflows/check-admin-center-v2.yml'
 
 permissions:
@@ -34,15 +37,19 @@ jobs:
           js=apps/portal/assets/admin-center-v2.js
           css=apps/portal/assets/admin-center-v2.css
           media=apps/portal/assets/admin-media-applications-entry-v1.js
+          portfolio=apps/portal/assets/admin-executive-portfolio-v1.js
           node --check "$js"
           node --check apps/portal/assets/admin-center-health-v1.js
           node --check "$media"
+          node --check "$portfolio"
           test -s "$html"
           test -s "$css"
+          test -s apps/portal/assets/executive-project-portfolio-v1.css
           grep -q '/assets/admin-center-v2.css' "$html"
           grep -q '/assets/admin-center-v2.js' "$html"
           grep -q '/assets/admin-center-health-v1.js' "$html"
           grep -q '/assets/admin-media-applications-entry-v1.js' "$html"
+          grep -q 'admin-executive-portfolio-v1.js' apps/portal/assets/admin-center-health-v1.js
           test "$(grep -c 'class="sidebar"' "$html")" -eq 1
           test "$(grep -c 'id="moduleNav"' "$html")" -eq 1
           grep -q 'id="moduleFrame"' "$html"
@@ -64,10 +71,17 @@ jobs:
           grep -q 'Javna media prijavnica' "$media"
           ! grep -E 'https?://' "$js" apps/portal/assets/admin-center-v2.css "$media"
 
-      - name: Confirm locked public entry points unchanged
+      - name: Confirm review isolation and production locks
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
+          set -euxo pipefail
           changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
-          ! printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/wrangler\.toml)$'
+          printf '%s\n' "$changed"
+          grep -q 'main = "src/index-unified-auth-v14.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'PUBLIC_ENVIRONMENT = "review-direct-operator"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MAIL_MANUAL_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          ! grep -Eq '^[[:space:]]*routes[[:space:]]*=|^[[:space:]]*\[\[routes\]\]|^[[:space:]]*zone_name[[:space:]]*=' workers/gnk-asg-direct-operator/wrangler.toml
+          ! printf '%s\n' "$changed" | grep -E '(^|/)\.env($|\.)|secrets|cloudflare-production'
