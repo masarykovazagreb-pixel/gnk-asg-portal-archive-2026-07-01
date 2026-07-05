@@ -75,23 +75,27 @@ jobs:
             apps/portal/assets/data/group-profile-review.json \
             apps/portal/assets/data/registry-center-review.json
 
-      - name: Verify command dashboard routes and locks
+      - name: Verify protected and public route contracts
         run: |
           set -euxo pipefail
           for file in \
             apps/portal/enterprise/index.html \
             apps/portal/admin-center/index.html \
-            apps/portal/about-the-group/index.html \
-            apps/portal/o-grupi/index.html \
             apps/portal/registry-center/index.html \
             apps/portal/deployment/index.html \
             apps/portal/mobile-admin/index.html \
             apps/portal/seo/index.html \
-            apps/portal/entities/index.html \
-            apps/portal/digital-workforce/index.html \
             apps/portal/mission-control/index.html; do
             test -s "$file"
             grep -qi 'noindex' "$file"
+          done
+          for file in \
+            apps/portal/about-the-group/index.html \
+            apps/portal/o-grupi/index.html \
+            apps/portal/entities/index.html \
+            apps/portal/digital-workforce/index.html; do
+            test -s "$file"
+            grep -qi 'index,follow' "$file"
           done
           for route in /mobile-admin/ /mail-studio/ /email-status/ /contact/ /public-operations/ /editorial-operations/; do
             grep -q "$route" apps/portal/enterprise/index.html
