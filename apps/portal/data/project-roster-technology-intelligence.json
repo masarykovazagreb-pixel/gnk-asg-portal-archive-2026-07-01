@@ -1,0 +1,70 @@
+{
+  "version": "GNK_PROJECT_ROSTER_TECH_INTELLIGENCE_V1_20260705",
+  "status": "review-ready",
+  "allocationRule": "Technology, research, legal, security, quality and operations profiles work in parallel across the portfolio. Each project has one accountable owner and named cross-functional support roles.",
+  "projects": [
+    {
+      "id": "BANK-SOFTWARE",
+      "name": "Banking Software Platform",
+      "stage": "design",
+      "label": "REVIEW",
+      "scope": "Software architecture and service tooling for authorised institutional use.",
+      "workstreams": ["programme management", "product architecture", "security", "data governance", "integration", "quality", "legal review", "operations"],
+      "firstBacklog": ["confirm target use cases", "define reference architecture", "map integration boundaries", "define security controls", "prepare test matrix", "schedule design review"]
+    },
+    {
+      "id": "EXCHANGE-SOFTWARE",
+      "name": "Currency and Digital Exchange Software",
+      "stage": "design",
+      "label": "REVIEW",
+      "scope": "Technology platform design only; activation depends on authorised operators and jurisdictional approval.",
+      "workstreams": ["programme management", "platform architecture", "identity and access", "transaction controls", "security", "quality", "legal review", "operations"],
+      "firstBacklog": ["define product boundaries", "map user journeys", "prepare control framework", "define audit events", "prepare failure-path tests", "schedule design gate"]
+    },
+    {
+      "id": "PAYMENTS",
+      "name": "Payment Systems Software Programme",
+      "stage": "design",
+      "label": "REVIEW",
+      "scope": "Payment software and integration framework for use by appropriately authorised partners.",
+      "workstreams": ["programme management", "product architecture", "integration", "security", "fraud controls", "quality", "legal review", "service operations"],
+      "firstBacklog": ["define supported flows", "map partner interfaces", "define control requirements", "prepare resilience design", "create test plan", "schedule architecture review"]
+    },
+    {
+      "id": "RESERVE-ASSET-STUDY",
+      "name": "Reserve-Backed Digital Asset Feasibility Programme",
+      "stage": "feasibility",
+      "label": "FEASIBILITY",
+      "scope": "Research, governance and technical feasibility only; no issuance or public offering.",
+      "workstreams": ["programme management", "legal research", "reserve governance", "technology", "risk", "audit model", "consumer disclosure", "quality"],
+      "firstBacklog": ["define research questions", "map governance options", "prepare risk register", "define evidence requirements", "prepare disclosure principles", "schedule feasibility review"]
+    },
+    {
+      "id": "GOLD-ASSET-STUDY",
+      "name": "Gold-Linked Digital Asset Feasibility Programme",
+      "stage": "feasibility",
+      "label": "FEASIBILITY",
+      "scope": "Research into governance, custody, auditability and technical design only; no issuance or public offering.",
+      "workstreams": ["programme management", "legal research", "custody research", "audit model", "technology", "risk", "disclosure", "quality"],
+      "firstBacklog": ["define feasibility scope", "map custody requirements", "prepare audit questions", "define technical assumptions", "prepare risk controls", "schedule review gate"]
+    },
+    {
+      "id": "NEWS-INTELLIGENCE",
+      "name": "News and Market Intelligence",
+      "stage": "build",
+      "label": "REVIEW",
+      "scope": "Licensed or publicly permitted metadata, summaries, links and internal analysis with no automatic publication.",
+      "workstreams": ["programme management", "source governance", "ingestion", "classification", "verification", "editorial review", "security", "quality"],
+      "firstBacklog": ["connect Worker router", "connect scheduler", "configure approved sources", "test deduplication", "test topic routing", "schedule build acceptance"]
+    },
+    {
+      "id": "PROJECT-GENERATOR",
+      "name": "Enterprise Project and Module Generator",
+      "stage": "build",
+      "label": "REVIEW",
+      "scope": "Creates controlled project records, responsibility structures, first backlogs, review modules and test plans.",
+      "workstreams": ["programme management", "workflow architecture", "template design", "security", "quality", "documentation", "operator experience", "audit"],
+      "firstBacklog": ["define generator schema", "define responsibility template", "define maturity model", "connect project registry", "prepare test fixtures", "schedule build review"]
+    }
+  ]
+}
