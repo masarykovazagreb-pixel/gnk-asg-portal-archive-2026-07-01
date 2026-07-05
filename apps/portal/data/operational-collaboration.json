@@ -1,0 +1,58 @@
+{
+  "version": "GNK_ASG_OPERATIONAL_COLLABORATION_V1_20260705",
+  "mode": "workflow-derived-operational-signal",
+  "reviewOnly": true,
+  "publicDisclosure": "Prikaz predstavlja radne veze funkcionalnih workflow profila. Ne potvrđuje stvarnu prisutnost ili razgovor fizičkih osoba.",
+  "privacy": {
+    "showParticipants": true,
+    "showChannel": true,
+    "showStatus": true,
+    "showTopic": false,
+    "showMessages": false,
+    "showAttachments": false,
+    "showPrivateIdentifiers": false
+  },
+  "learning": {
+    "mode": "supervised-continuous-improvement",
+    "aiMentor": "GNK ASG AI Assistant",
+    "inputs": ["odobreni playbookovi", "rezultati zadataka", "operator feedback", "odobrena baza znanja", "kontrolirane retrospektive"],
+    "outputs": ["prijedlog poboljšanja", "sažetak", "checklista", "preporučeni sljedeći korak", "upozorenje na rizik"],
+    "restrictions": ["bez samostalne objave", "bez samostalne promjene produkcijskih pravila", "bez javnog prikaza sadržaja razgovora", "bez pristupa tokenima i secretsima", "kritične odluke zahtijevaju odobrenje"]
+  },
+  "roles": [
+    {"id":"executive","label":"Executive Office","department":"Uprava"},
+    {"id":"director","label":"Director Office","department":"Uprava"},
+    {"id":"board","label":"Board Member Profile","department":"Governance"},
+    {"id":"marketing","label":"Marketing Operations","department":"Marketing"},
+    {"id":"media","label":"Media Relations","department":"Media"},
+    {"id":"finance","label":"Finance Control","department":"Financije"},
+    {"id":"legal","label":"Legal & Compliance","department":"Pravni poslovi"},
+    {"id":"operations","label":"Enterprise Operations","department":"Operacije"},
+    {"id":"it","label":"IT Operations","department":"IT"},
+    {"id":"editorial","label":"Editorial Desk","department":"Objave"},
+    {"id":"ai-mentor","label":"AI Learning Mentor","department":"Digital Workforce"}
+  ],
+  "channels": [
+    {"id":"internal-chat","label":"Internal Chat"},
+    {"id":"decision-room","label":"Decision Room"},
+    {"id":"operations-room","label":"Operations Room"},
+    {"id":"review-channel","label":"Review Channel"},
+    {"id":"learning-loop","label":"Learning Loop"}
+  ],
+  "collaborationRules": [
+    {"from":"board","to":"director","channel":"decision-room","weight":10},
+    {"from":"director","to":"marketing","channel":"internal-chat","weight":9},
+    {"from":"executive","to":"finance","channel":"decision-room","weight":9},
+    {"from":"executive","to":"legal","channel":"review-channel","weight":9},
+    {"from":"marketing","to":"media","channel":"internal-chat","weight":8},
+    {"from":"marketing","to":"editorial","channel":"operations-room","weight":8},
+    {"from":"operations","to":"it","channel":"operations-room","weight":10},
+    {"from":"operations","to":"finance","channel":"review-channel","weight":7},
+    {"from":"legal","to":"media","channel":"review-channel","weight":7},
+    {"from":"ai-mentor","to":"marketing","channel":"learning-loop","weight":8},
+    {"from":"ai-mentor","to":"operations","channel":"learning-loop","weight":10},
+    {"from":"ai-mentor","to":"editorial","channel":"learning-loop","weight":9},
+    {"from":"ai-mentor","to":"finance","channel":"learning-loop","weight":7},
+    {"from":"ai-mentor","to":"legal","channel":"learning-loop","weight":7}
+  ]
+}
