@@ -1,5 +1,5 @@
 name = "gnk-asg-direct-operator"
-main = "src/index-final-admin-gateway-v1.js"
+main = "src/index-unified-auth-v14.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
@@ -41,7 +41,7 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260705-enterprise-review-worker-runtime-v2"
+DEPLOY_REVISION = "20260705-enterprise-review-worker-runtime-v3"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 
