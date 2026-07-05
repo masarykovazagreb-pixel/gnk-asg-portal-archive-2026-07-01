@@ -2,7 +2,7 @@ import core from './index-portal-final-v12.js';
 import {getLiveMarket,refreshLiveMarket,VERSION as MARKET_VERSION} from './market-live-v1.js';
 import {verifiedGallery,rotateLatestArticleImage,VERSION as GALLERY_VERSION,RECENT_WINDOW as GALLERY_RECENT_WINDOW} from './gallery-rotation-v1.js';
 
-const VERSION='GNK_ASG_PORTAL_FINAL_V13_GALLERY_20260625';
+const VERSION='GNK_ASG_PORTAL_FINAL_V14_PUBLICATION_STATIC_20260705';
 const NEWS_ROTATION='GNK_ASG_INDEX_NEWS_ROTATION_V1';
 const NEWS_SCHEDULE=['09:00','15:00','21:00'];
 const FAVICON_VERSION='GNK_ASG_GOOGLE_FAVICON_V1';
@@ -66,6 +66,17 @@ async function faviconResponse(request,env,path){
   return null;
 }
 
+function isPublicationPath(path){
+  return path==='/objave'||path==='/publications'||path.startsWith('/objave/')||path.startsWith('/publications/');
+}
+
+async function staticPublicationResponse(request,env){
+  if(!env.ASSETS?.fetch)return null;
+  const response=await env.ASSETS.fetch(request);
+  if(response.status===404)return null;
+  return withHeaders(response);
+}
+
 async function injectIndexModules(response){
   const headers=new Headers(response.headers);
   headers.delete('content-length');
@@ -109,6 +120,7 @@ async function fetchHandler(request,env,ctx){
       groupNetwork:GROUP_NETWORK,
       galleryVersion:GALLERY_VERSION,
       indexDesign:'IQ200',
+      publicationRouting:'static-assets-first-dynamic-kv-fallback',
       timeZone:'Europe/Zagreb',
       deployedEntryPoint:'src/index-portal-final-v13.js'
     });
@@ -116,6 +128,11 @@ async function fetchHandler(request,env,ctx){
 
   if((request.method==='GET'||request.method==='HEAD')&&['/favicon.ico','/favicon.svg','/site.webmanifest'].includes(path)){
     const response=await faviconResponse(request,env,path);
+    if(response)return response;
+  }
+
+  if((request.method==='GET'||request.method==='HEAD')&&isPublicationPath(path)){
+    const response=await staticPublicationResponse(request,env);
     if(response)return response;
   }
 
