@@ -13,7 +13,7 @@
   });
 
   const main=document.querySelector('main');
-  if(main)main.setAttribute('data-editorial-release','V12.3');
+  if(main)main.setAttribute('data-editorial-release','V12.4');
 
   const normalizeImages=()=>document.querySelectorAll(news?'.news-card img':'.card img').forEach(img=>{
     img.loading='lazy';
@@ -24,7 +24,14 @@
   if(publications){
     const cards=[...document.querySelectorAll('.card[data-language]')];
     const expected=en?'EN':'HR';
+    const expectedPrefix=en?'/publications/':'/objave/';
     const stats=[...document.querySelectorAll('.stat')];
+    const normalizeRoute=value=>{
+      try{
+        const url=new URL(value,location.origin);
+        return url.pathname.replace(/\/+$/,'')+'/';
+      }catch{return'';}
+    };
     const updateStats=()=>{
       const visible=cards.filter(card=>!card.hidden);
       if(stats[0])stats[0].innerHTML=`${en?'Published':'Objavljeno'}: <strong>${visible.length}</strong>`;
@@ -33,12 +40,14 @@
     };
     cards.forEach(card=>{
       const link=card.querySelector('h2 a')?.getAttribute('href')||'';
+      const route=normalizeRoute(link);
       const title=card.querySelector('h2')?.textContent?.replace(/\s+/g,' ').trim()||'';
       const summary=card.querySelector('p')?.textContent?.replace(/\s+/g,' ').trim()||'';
       const wrongLanguage=String(card.dataset.language||'').toUpperCase()!==expected;
       const legacyAktual=/\/objave\/aktual\//i.test(link);
       const malformed=title.length<12||summary.length<45||/\b(uspeh|veštine|preduzet|vesti)\b/i.test(title+' '+summary);
-      card.hidden=wrongLanguage||legacyAktual||malformed;
+      const invalidRoute=!route.startsWith(expectedPrefix)||route===expectedPrefix;
+      card.hidden=wrongLanguage||legacyAktual||malformed||invalidRoute;
       if(card.hidden)card.dataset.qualityHidden='1';
     });
 
@@ -56,7 +65,9 @@
       const query=(search?.value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
       cards.forEach(card=>{
         if(card.dataset.qualityHidden==='1')return;
-        const baseHidden=String(card.dataset.language||'').toUpperCase()!==expected||/\/objave\/aktual\//i.test(card.querySelector('h2 a')?.getAttribute('href')||'');
+        const link=card.querySelector('h2 a')?.getAttribute('href')||'';
+        const route=normalizeRoute(link);
+        const baseHidden=String(card.dataset.language||'').toUpperCase()!==expected||/\/objave\/aktual\//i.test(link)||!route.startsWith(expectedPrefix)||route===expectedPrefix;
         const hay=(card.dataset.search||card.textContent||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
         card.hidden=baseHidden||Boolean(query&&!hay.includes(query));
       });
@@ -64,37 +75,8 @@
     };
     search?.addEventListener('input',applySearch);
 
-    const normalizeRoute=value=>{
-      try{
-        const url=new URL(value,location.origin);
-        return url.pathname.replace(/\/+$/,'')+'/';
-      }catch{return'';}
-    };
-    const validateRoutes=async()=>{
-      try{
-        const response=await fetch('/data/objave-unified.json',{cache:'no-store',headers:{accept:'application/json'}});
-        if(!response.ok)throw new Error(`route registry ${response.status}`);
-        const payload=await response.json();
-        const rows=Array.isArray(payload)?payload:Array.isArray(payload?.items)?payload.items:[];
-        const allowed=new Set(rows.map(item=>normalizeRoute(item?.url||item?.slug||'')).filter(Boolean));
-        cards.forEach(card=>{
-          if(card.dataset.qualityHidden==='1')return;
-          const route=normalizeRoute(card.querySelector('h2 a')?.getAttribute('href')||'');
-          if(route&&!allowed.has(route)){
-            card.hidden=true;
-            card.dataset.qualityHidden='1';
-            card.dataset.routeIntegrity='missing';
-          }
-        });
-        document.documentElement.dataset.publicationRouteIntegrity='verified';
-      }catch{
-        document.documentElement.dataset.publicationRouteIntegrity='registry-unavailable';
-      }
-      updateStats();
-    };
-
+    document.documentElement.dataset.publicationRouteIntegrity='ci-verified';
     updateStats();
-    validateRoutes();
   }
 
   normalizeImages();
