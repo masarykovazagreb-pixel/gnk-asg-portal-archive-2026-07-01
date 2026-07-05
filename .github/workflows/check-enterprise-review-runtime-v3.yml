@@ -87,7 +87,7 @@ jobs:
           grep -q '/mail-studio/' apps/portal/enterprise/index.html
           grep -q '/public-operations/' apps/portal/enterprise/index.html
           grep -q '/email-status/' apps/portal/enterprise/index.html
-          grep -q '/media-command-center/' apps/portal/enterprise/index.html
+          grep -q '/contact/' apps/portal/enterprise/index.html
           grep -q '/api/mail-sync' apps/portal/assets/mail-studio-webmail-v25.js
           grep -q 'Inbox' apps/portal/assets/mail-studio-webmail-v25.js
           grep -q 'Sent' apps/portal/assets/mail-studio-webmail-v25.js
