@@ -1,0 +1,32 @@
+/* THE CODE readability and contrast hardening */
+body:not(.embed-mode) #app{background:radial-gradient(circle at 50% 18%,#151109 0,#070604 32%,#000 74%)!important}
+body:not(.embed-mode) #app .scene.active{background:radial-gradient(circle at 50% 26%,rgba(201,168,76,.08),transparent 46%)!important}
+body:not(.embed-mode) #app .dim{color:#b5a778!important;text-shadow:0 0 18px rgba(201,168,76,.16)!important}
+body:not(.embed-mode) #app .narr{color:#e4dfd4!important;text-shadow:0 1px 0 #000,0 0 22px rgba(255,255,255,.06)!important}
+body:not(.embed-mode) #app .narr .g{color:#f0d88a!important;text-shadow:0 0 18px rgba(201,168,76,.28)!important}
+body:not(.embed-mode) #app .t-box{background:rgba(10,9,6,.94)!important;border-color:rgba(201,168,76,.22)!important}
+body:not(.embed-mode) #app .tl{color:#98938a!important}
+body:not(.embed-mode) #app .tl::before{color:#8c7a4d!important}
+body:not(.embed-mode) #app .tl.active{color:#f0d88a!important}
+body:not(.embed-mode) #app .tl.done{color:#79d89b!important}
+body:not(.embed-mode) #app .gd-lbl,
+body:not(.embed-mode) #app .cc-city,
+body:not(.embed-mode) #app .cd-l,
+body:not(.embed-mode) #app .fc-lbl,
+body:not(.embed-mode) #app .fc-note,
+body:not(.embed-mode) #app .statusline{color:#aaa18f!important}
+body:not(.embed-mode) #app .cc,
+body:not(.embed-mode) #app .fin-card{background:rgba(12,11,8,.94)!important;border-color:rgba(201,168,76,.2)!important}
+body:not(.embed-mode) #app .cc-time{color:#f5f1e7!important}
+body:not(.embed-mode) #app .cc-conf{color:#c7ad68!important}
+body:not(.embed-mode) #app .cd-n{color:#fff!important;text-shadow:0 0 18px rgba(255,255,255,.08)!important}
+body:not(.embed-mode) #app .cd-sep{color:#8c7a4d!important}
+body:not(.embed-mode) #app .fin-card .fc-val{color:#f0d88a!important}
+body:not(.embed-mode) #app [style*="color:#555"],
+body:not(.embed-mode) #app [style*="color: #555"],
+body:not(.embed-mode) #app [style*="color:#666"],
+body:not(.embed-mode) #app [style*="color: #666"]{color:#aaa18f!important}
+body:not(.embed-mode) #app [style*="color:#c9a84c"]{color:#f0d88a!important}
+body:not(.embed-mode) .gold-frame{box-shadow:0 0 0 1px rgba(240,216,138,.28) inset,0 0 54px rgba(201,168,76,.27),0 30px 90px rgba(0,0,0,.76)!important}
+@media(max-width:520px){body:not(.embed-mode) #app .narr{color:#eee9de!important}body:not(.embed-mode) #app .dim{color:#c3b685!important}}
+@media(prefers-reduced-motion:reduce){body:not(.embed-mode) #app *{animation-duration:.001ms!important;animation-iteration-count:1!important}}
