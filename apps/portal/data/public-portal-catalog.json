@@ -1,15 +1,19 @@
 {
-  "version": "2026-07-05.public-portal-catalog.v2",
+  "version": "2026-07-05.public-portal-catalog.v3",
   "status": "public-allowlist",
   "title": "GNK ASG Public Information Catalogue",
   "description": "Explicit allowlist of data, reports, profiles, publications and system information permitted on the public portal.",
   "approvalPolicy": {
     "timezone": "Europe/Zagreb",
-    "dailyReviewTime": "08:00",
-    "rule": "A readiness-complete report or publication is treated as approved at 08:00 Europe/Zagreb unless the Executive Office cancels or places it on hold before the deadline.",
-    "preDeadlineStates": ["awaiting-review", "held", "cancelled", "approved-explicitly"],
-    "postDeadlineStates": ["approved-by-silence", "approved-explicitly", "held", "cancelled"],
-    "publicStates": ["approved-by-silence", "approved-explicitly", "published"]
+    "packageReviewTime": "08:00",
+    "silentApprovalTime": "09:00",
+    "rule": "A readiness-complete report or publication enters Executive Office review at 08:00 Europe/Zagreb. If no STOP, HOLD or CANCEL decision is recorded by 09:00, the reversible content package is treated as approved by silence. Production deployment, DNS, payments and mass delivery always require a separate explicit decision.",
+    "beforeReviewStates": ["preparing", "held", "stopped", "cancelled", "approved-explicitly"],
+    "reviewWindowStates": ["awaiting-executive-review", "held", "stopped", "cancelled", "approved-explicitly"],
+    "afterReviewStates": ["approved-by-silence", "approved-explicitly", "held", "stopped", "cancelled"],
+    "publicReleaseStates": ["approved-by-silence", "approved-explicitly", "published"],
+    "executiveCommands": ["APPROVE", "STOP", "HOLD", "CANCEL"],
+    "explicitOnlyActions": ["production-deploy", "dns-change", "payment", "mass-email", "mass-sms"]
   },
   "navigation": [
     {"labelHr": "Grupa", "labelEn": "Group", "href": "/#profil"},
