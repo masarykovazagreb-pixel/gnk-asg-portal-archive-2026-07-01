@@ -129,47 +129,64 @@
     }
 
     const copy = isHr ? {
-      eyebrow:'RECOVERY PREVIEW · VIDLJIVI MODULI',
-      title:'Portal više ne smije skrivati ono što postoji.',
-      lead:'Izravni ulazi u javne podatke i zaštićene Enterprise module. Brojke su označene kao review podaci dok runtime i browser testovi ne potvrde operativno stanje.',
-      review:'REVIEW-ONLY',
-      note:'Produkcija, DNS, tajne i slanje poruka ostaju zaključani. Zaštićene rute moraju tražiti prijavu.',
-      cards:[
-        ['Projektni centar','19 projektnih zapisa · zaštićeni pregled','/enterprise/project-center/'],
-        ['Digital Workforce','1.537 generiranih operativnih profila','/digital-workforce/directory/'],
-        ['Objave','Odobreni tekstovi i javni arhiv','/objave/'],
-        ['Vijesti','Javni news dataset i kartice','/vijesti/'],
-        ['Dokumenti','Odobreni dokumenti i preuzimanja','/downloads/'],
-        ['Enterprise','Zaštićeni operativni portal','/enterprise/'],
-        ['Media Kit','Press materijali i službeni resursi','/media-kit/'],
-        ['Brand pregled','Službeni logotipi na review površini','/brand-review/']
-      ]
+      eyebrow:'RECOVERY PREVIEW · VIDLJIVI MODULI', title:'Portal više ne smije skrivati ono što postoji.', lead:'Izravni ulazi u javne podatke i zaštićene Enterprise module. Brojke su označene kao review podaci dok runtime i browser testovi ne potvrde operativno stanje.', review:'REVIEW-ONLY', note:'Produkcija, DNS, tajne i slanje poruka ostaju zaključani. Zaštićene rute moraju tražiti prijavu.',
+      cards:[['Projektni centar','19 projektnih zapisa · zaštićeni pregled','/enterprise/project-center/'],['Digital Workforce','1.537 generiranih operativnih profila','/digital-workforce/directory/'],['Objave','Odobreni tekstovi i javni arhiv','/objave/'],['Vijesti','Javni news dataset i kartice','/vijesti/'],['Dokumenti','Odobreni dokumenti i preuzimanja','/downloads/'],['Enterprise','Zaštićeni operativni portal','/enterprise/'],['Media Kit','Press materijali i službeni resursi','/media-kit/'],['Brand pregled','Službeni logotipi na review površini','/brand-review/']]
     } : {
-      eyebrow:'RECOVERY PREVIEW · VISIBLE MODULES',
-      title:'The portal must no longer hide what already exists.',
-      lead:'Direct access to public data and protected Enterprise modules. Counts remain review-labelled until runtime and browser tests prove operational state.',
-      review:'REVIEW-ONLY',
-      note:'Production, DNS, secrets and message delivery remain locked. Protected routes must require authentication.',
-      cards:[
-        ['Project Center','19 portfolio records · protected review','/enterprise/project-center/'],
-        ['Digital Workforce','1,537 generated operational profiles','/digital-workforce/directory/'],
-        ['Publications','Approved texts and public archive','/publications/'],
-        ['News','Public news dataset and cards','/news/'],
-        ['Documents','Approved documents and downloads','/downloads/'],
-        ['Enterprise','Protected operating portal','/enterprise/'],
-        ['Media Kit','Press materials and official resources','/media-kit/'],
-        ['Brand review','Official logos on a review surface','/brand-review/']
-      ]
+      eyebrow:'RECOVERY PREVIEW · VISIBLE MODULES', title:'The portal must no longer hide what already exists.', lead:'Direct access to public data and protected Enterprise modules. Counts remain review-labelled until runtime and browser tests prove operational state.', review:'REVIEW-ONLY', note:'Production, DNS, secrets and message delivery remain locked. Protected routes must require authentication.',
+      cards:[['Project Center','19 portfolio records · protected review','/enterprise/project-center/'],['Digital Workforce','1,537 generated operational profiles','/digital-workforce/directory/'],['Publications','Approved texts and public archive','/publications/'],['News','Public news dataset and cards','/news/'],['Documents','Approved documents and downloads','/downloads/'],['Enterprise','Protected operating portal','/enterprise/'],['Media Kit','Press materials and official resources','/media-kit/'],['Brand review','Official logos on a review surface','/brand-review/']]
     };
 
     const section = document.createElement('section');
     section.className = 'section gnk-recovery-access';
     section.dataset.recoveryAccess = 'GNK_RECOVERY_ACCESS_20260706';
-    section.innerHTML = `
-      <div class="gnk-recovery-access__head"><div><p class="eyebrow">${copy.eyebrow}</p><h2>${copy.title}</h2><p>${copy.lead}</p></div><span class="gnk-recovery-pill">${copy.review}</span></div>
-      <div class="gnk-recovery-grid">${copy.cards.map(([title,description,href]) => `<a class="gnk-recovery-card" href="${href}"><b>${title}</b><small>${description}</small></a>`).join('')}</div>
-      <div class="gnk-recovery-note">${copy.note}</div>`;
+    section.innerHTML = `<div class="gnk-recovery-access__head"><div><p class="eyebrow">${copy.eyebrow}</p><h2>${copy.title}</h2><p>${copy.lead}</p></div><span class="gnk-recovery-pill">${copy.review}</span></div><div class="gnk-recovery-grid">${copy.cards.map(([title,description,href]) => `<a class="gnk-recovery-card" href="${href}"><b>${title}</b><small>${description}</small></a>`).join('')}</div><div class="gnk-recovery-note">${copy.note}</div>`;
     hero.insertAdjacentElement('afterend', section);
+  }
+
+  function fixPublicationCounters() {
+    const grid = document.querySelector('.grid[aria-label="Objave"],.grid[aria-label="Publications"]');
+    if (!grid) return;
+    const count = grid.querySelectorAll('article.card').length;
+    const firstStat = document.querySelector('.stats .stat strong');
+    if (firstStat && count > 0) firstStat.textContent = String(count);
+  }
+
+  function installNewsRuntime() {
+    const grid = document.getElementById('newsGrid');
+    if (!grid || grid.dataset.recoveryRuntime === '1') return;
+    grid.dataset.recoveryRuntime = '1';
+
+    if (!document.getElementById('gnk-news-runtime-recovery-style')) {
+      const style = document.createElement('style');
+      style.id = 'gnk-news-runtime-recovery-style';
+      style.textContent = `.news-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.045);color:inherit;text-decoration:none}.news-card img{width:100%;aspect-ratio:16/10;object-fit:cover;background:#101827}.news-card__body{padding:17px}.news-card small{display:block;margin-bottom:8px;opacity:.78}.news-card h2{font-size:1.08rem;line-height:1.25;margin:.1rem 0 .55rem}.news-card p{font-size:.92rem;line-height:1.5;opacity:.86}.news-card__open{margin-top:auto;color:#d6ae5c;font-weight:800}.news-status strong{color:#d6ae5c}`;
+      document.head.appendChild(style);
+    }
+
+    const status = document.getElementById('newsStatus');
+    const esc = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    const formatDate = value => {
+      try { return new Intl.DateTimeFormat(isHr ? 'hr-HR' : 'en-GB', { dateStyle:'medium', timeStyle:'short' }).format(new Date(value)); }
+      catch (_) { return value || ''; }
+    };
+
+    const render = items => {
+      const usable = items.filter(item => item && item.title && item.url && item.summary && item.source).slice(0,12);
+      if (!usable.length) {
+        grid.innerHTML = `<article class="news-card"><div class="news-card__body"><h2>${isHr ? 'Nema potvrđenih vijesti za prikaz.' : 'No verified news available for display.'}</h2><p>${isHr ? 'Dataset nije prazan uvjet za modul: treba stvarni izvor, naslov, sažetak i URL.' : 'A non-empty dataset is not enough: the module requires a real source, title, summary and URL.'}</p></div></article>`;
+        if (status) status.textContent = isHr ? '0 provjerenih vijesti' : '0 verified news';
+        return;
+      }
+      grid.innerHTML = usable.map(item => `<a class="news-card" href="${esc(item.url)}" target="_blank" rel="noopener"><img src="${esc(item.image || '/assets/gnk-asg-social-card.png')}" alt="${esc(item.title)}" loading="lazy" decoding="async"><div class="news-card__body"><small>${esc(item.source)} · ${esc(item.category || item.region || 'News')} · ${esc(formatDate(item.published_at || item.publishedAt))}</small><h2>${esc(item.title)}</h2><p>${esc(item.summary).slice(0,220)}${String(item.summary).length > 220 ? '…' : ''}</p><span class="news-card__open">${isHr ? 'Otvori izvor →' : 'Open source →'}</span></div></a>`).join('');
+      if (status) status.innerHTML = isHr ? `Prikazano <strong>${usable.length}</strong> provjerenih vijesti iz javnog dataseta.` : `Showing <strong>${usable.length}</strong> verified news items from the public dataset.`;
+    };
+
+    fetch('/data/news.json?recovery=20260706', { cache:'no-store' })
+      .then(response => response.ok ? response.json() : Promise.reject(new Error(`HTTP_${response.status}`)))
+      .then(payload => render(Array.isArray(payload) ? payload : (payload.items || [])))
+      .catch(() => {
+        if (status) status.textContent = isHr ? 'Vijesti se ne mogu učitati u ovom previewu.' : 'News cannot be loaded in this preview.';
+      });
   }
 
   if (route === '/' || route === '/en') {
@@ -179,39 +196,26 @@
       installCodePlayFix();
       installCodeHomepageFeature();
       installRecoveryAccess();
-      [300,900,1800].forEach(delay => setTimeout(() => {
-        installCanonicalIndexLogos();
-        installCodeHomepageFeature();
-        installRecoveryAccess();
-      }, delay));
+      [300,900,1800].forEach(delay => setTimeout(() => { installCanonicalIndexLogos(); installCodeHomepageFeature(); installRecoveryAccess(); }, delay));
     };
-    document.readyState === 'loading'
-      ? document.addEventListener('DOMContentLoaded',startIndex,{once:true})
-      : startIndex();
-    window.GNK_ASG_BRAND_SAFETY = {
-      version: '2026-07-06-recovery-index-brand-and-access',
-      prohibited: () => false,
-      check: () => {}
-    };
+    document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded',startIndex,{once:true}) : startIndex();
+    window.GNK_ASG_BRAND_SAFETY = { version: '2026-07-06-recovery-index-brand-and-access', prohibited: () => false, check: () => {} };
     return;
   }
 
-  const norm = value => String(value || '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[_-]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  if (route === '/news' || route === '/vijesti') {
+    document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded',installNewsRuntime,{once:true}) : installNewsRuntime();
+  }
+
+  if (route === '/publications' || route === '/objave') {
+    document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded',fixPublicationCounters,{once:true}) : fixPublicationCounters();
+  }
+
+  const norm = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
 
   function signature(node) {
     if (!node) return '';
-    return norm([
-      node.getAttribute?.('src'), node.getAttribute?.('srcset'), node.currentSrc,
-      node.getAttribute?.('alt'), node.getAttribute?.('title'),
-      node.getAttribute?.('aria-label'), node.id, node.className,
-      node.getAttribute?.('style')
-    ].filter(Boolean).join(' '));
+    return norm([node.getAttribute?.('src'), node.getAttribute?.('srcset'), node.currentSrc, node.getAttribute?.('alt'), node.getAttribute?.('title'), node.getAttribute?.('aria-label'), node.id, node.className, node.getAttribute?.('style')].filter(Boolean).join(' '));
   }
 
   function prohibited(valueOrNode) {
@@ -242,20 +246,12 @@
     });
   }
 
-  window.GNK_ASG_BRAND_SAFETY = { version:'2026-07-06-v3', prohibited, check };
+  window.GNK_ASG_BRAND_SAFETY = { version:'2026-07-06-v4-recovery-public-runtime', prohibited, check };
 
   const observer = new MutationObserver(records => {
-    records.forEach(record => record.addedNodes.forEach(node => {
-      if (node.nodeType === 1) check(node);
-    }));
+    records.forEach(record => record.addedNodes.forEach(node => { if (node.nodeType === 1) check(node); }));
   });
 
-  const start = () => {
-    check(document);
-    observer.observe(document.documentElement,{childList:true,subtree:true});
-  };
-
-  document.readyState === 'loading'
-    ? document.addEventListener('DOMContentLoaded',start,{once:true})
-    : start();
+  const start = () => { check(document); observer.observe(document.documentElement,{childList:true,subtree:true}); };
+  document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded',start,{once:true}) : start();
 })();
