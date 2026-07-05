@@ -1,0 +1,44 @@
+name: Check Publication Detail Pages V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/objave/**'
+      - 'apps/portal/publications/**'
+      - '.github/workflows/check-publication-detail-pages-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - name: Verify current HR publication pages
+        shell: bash
+        run: |
+          set -euxo pipefail
+          pages=(
+            ai-shrinks-security-window-apple-accelerates-patches
+            how-a-structured-pdf-centre-improves-public-verifiability
+            why-legal-information-belongs-in-primary-navigation
+            bilingual-corporate-communication-as-an-operating-standard
+            artificial-intelligence-with-mandatory-human-review
+            market-data-is-information-not-investment-advice
+            structured-media-applications-reduce-organisational-risk
+            why-every-business-publication-should-carry-sources
+          )
+          for slug in "${pages[@]}"; do
+            file="apps/portal/objave/$slug/index.html"
+            test -s "$file"
+            grep -qi '<title>' "$file"
+            grep -qi 'name="description"' "$file"
+            grep -qi 'rel="canonical"' "$file"
+            grep -Fq "/objave/$slug/" apps/portal/objave/index.html
+          done
+          test "$(grep -o '<article class="card"' apps/portal/objave/index.html | wc -l | tr -d ' ')" = "8"
+          echo PUBLICATION_DETAIL_PAGES_OK
