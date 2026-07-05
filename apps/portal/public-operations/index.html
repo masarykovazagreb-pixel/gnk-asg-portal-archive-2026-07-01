@@ -4,11 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Public Operations | GNK ASG d.o.o. | GNK DINAMO Ltd. Group</title>
-<meta name="description" content="Javni pregled dnevnih izvješća, javnog kataloga, operativnih profila i sigurnosnih granica GNK ASG Enterprise Platforme.">
+<meta name="description" content="Javni pregled dnevnih izvješća, javnog kataloga, operativnih profila, suradnje i sigurnosnih granica GNK ASG Enterprise Platforme.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#020812">
 <link rel="canonical" href="https://www.gnk-asg.hr/public-operations/">
 <link rel="stylesheet" href="/assets/index-redesign-production.css?v=20260623-prod01">
+<link rel="stylesheet" href="/assets/public-operations-collaboration-v1.css?v=20260705-v1">
 <style>
 .public-ops-page .brand-logo{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 14px 28px rgba(0,0,0,.28))}.public-ops-page .public-ops-host{min-height:28rem}.public-ops-page .public-ops-metric strong{font-size:clamp(1.55rem,3vw,2.4rem)}.public-ops-page .public-ops-file{display:block;text-decoration:none}.public-ops-page .public-ops-error{border:1px solid rgba(255,110,110,.38)}@media(max-width:720px){.public-ops-page .brand-head{gap:1rem}.public-ops-page .brand-logo{width:52px;height:52px}}
 </style>
@@ -18,31 +19,35 @@
 <div class="shell">
 <header class="brand-head" id="top">
   <div class="brand-unit">
-    <img class="brand-logo" src="/assets/logo-gnk-asg.svg" alt="GNK ASG d.o.o. logo" width="64" height="64">
+    <img class="brand-logo" src="/assets/brand/official-gnk-asg-gold.svg" alt="Službeni GNK ASG d.o.o. logo" width="64" height="64">
     <div class="brand-copy"><strong>GNK ASG d.o.o.</strong><span>Enterprise public operations</span></div>
   </div>
   <div class="brand-divider"></div>
   <div class="brand-unit right">
-    <img class="brand-logo" src="/assets/logo-gnk-asg.svg" alt="GNK DINAMO Ltd. Group public portal mark" width="64" height="64">
+    <img class="brand-logo" src="/assets/brand/official-gnk-dinamo-ltd-group-gold.svg" alt="Službeni GNK DINAMO Ltd. Group znak" width="64" height="64">
     <div class="brand-copy"><strong>GNK DINAMO Ltd. Group</strong><span>Review-only public layer</span></div>
   </div>
   <div class="system-state"><span class="state-pill"><i class="dot"></i> Controlled review</span><span class="state-pill">No production deploy</span></div>
 </header>
 <nav class="top-nav" aria-label="Glavna navigacija">
-  <a href="/">⌂ Index</a><a href="/objave/">▤ Objave</a><a href="/vijesti/">▦ Vijesti</a><a href="/visual-index/">▦ Visual Index</a><a href="/operator-dashboard/" rel="nofollow">⚙ Admin</a><a href="/mail-studio/" rel="nofollow">✉ Mail Studio</a><a href="/en/" hreflang="en">EN</a>
+  <a href="/">⌂ Index</a><a href="#live-collaboration">◎ Live suradnja</a><a href="/objave/">▤ Objave</a><a href="/vijesti/">▦ Vijesti</a><a href="/visual-index/">▦ Visual Index</a><a href="/operator-dashboard/" rel="nofollow">⚙ Admin</a><a href="/mail-studio/" rel="nofollow">✉ Mail Studio</a><a href="/en/" hreflang="en">EN</a>
 </nav>
 <main id="main">
 <section class="hero">
-  <div class="hero-copy"><p class="eyebrow">GNK ASG Enterprise Platform</p><h1>Javni operativni pregled</h1><p>Ova review stranica prikazuje samo javne podatke: katalog, odobrena dnevna izvješća, status operative i sigurnosne granice. Privatni mailovi, privitci, tokeni, auditi i upravljačke odluke nisu javno izloženi.</p><div class="actions"><a class="btn gold" href="#dnevna-izvjesca">Otvori izvješće</a><a class="btn" href="/api/public-operations/catalog">JSON katalog</a><a class="btn" href="/api/public-operations/report/latest">Zadnje odobreno izvješće</a></div></div>
+  <div class="hero-copy"><p class="eyebrow">GNK ASG Enterprise Platform</p><h1>Javni operativni pregled</h1><p>Ova review stranica prikazuje samo javne podatke: katalog, odobrena dnevna izvješća, status operative, workflow-derived suradnju i sigurnosne granice. Privatni mailovi, teme razgovora, privitci, tokeni, auditi i upravljačke odluke nisu javno izloženi.</p><div class="actions"><a class="btn gold" href="#dnevna-izvjesca">Otvori izvješće</a><a class="btn" href="#live-collaboration">Live suradnja</a><a class="btn" href="/api/public-operations/catalog">JSON katalog</a><a class="btn" href="/api/public-operations/report/latest">Zadnje odobreno izvješće</a></div></div>
   <div class="hero-visual"><div class="globe"><i class="network-dot"></i><i class="network-dot"></i><i class="network-dot"></i><i class="network-dot"></i><i class="network-dot"></i><i class="network-dot"></i></div></div>
 </section>
-<div class="trust-strip"><div class="trust"><span class="icon">✓</span><div><b>Review-only</b><span>bez produkcijskog deploya</span></div></div><div class="trust"><span class="icon">▣</span><div><b>Javni API</b><span>/api/public-operations</span></div></div><div class="trust"><span class="icon">◷</span><div><b>Pravilo 08:00</b><span>odobrenje ili zadržavanje</span></div></div><div class="trust"><span class="icon">⚑</span><div><b>Transparentno</b><span>operativni workflow identiteti</span></div></div></div>
+<div class="trust-strip"><div class="trust"><span class="icon">✓</span><div><b>Review-only</b><span>bez produkcijskog deploya</span></div></div><div class="trust"><span class="icon">◎</span><div><b>Stalna suradnja</b><span>workflow profili i kanali</span></div></div><div class="trust"><span class="icon">◷</span><div><b>Pravilo 08:00</b><span>odobrenje ili zadržavanje</span></div></div><div class="trust"><span class="icon">⚑</span><div><b>Kontrolirano učenje</b><span>izvori · provjera · odobrenje</span></div></div></div>
 <div class="public-ops-host" data-public-operations-dashboard>
   <section class="section"><div class="section-head"><div><p class="eyebrow">Public Operations</p><h2>Učitavanje javnog operativnog panela…</h2></div><p>Podaci se čitaju iz javnog kataloga i zadnjeg javno odobrenog dnevnog izvješća.</p></div></section>
+</div>
+<div data-collaboration-matrix>
+  <section class="section"><div class="section-head"><div><p class="eyebrow">Live Communication Matrix</p><h2>Učitavanje suradnje i learning loopa…</h2></div><p>Prikazuju se samo dopušteni operativni signali bez teme i sadržaja razgovora.</p></div></section>
 </div>
 </main>
 <footer class="footer"><div>© 2026 GNK ASG d.o.o. &amp; GNK DINAMO Ltd. Group · Public Operations Review.</div><div><a href="/">Index</a> · <a href="/legal/">Legal</a> · <a href="/contact/">Kontakt</a> · <a href="#top">Na vrh</a></div></footer>
 </div>
 <script src="/assets/public-operations-dashboard-v1.js?v=20260705-1537" defer></script>
+<script src="/assets/public-operations-collaboration-v1.js?v=20260705-v1" defer></script>
 </body>
 </html>
