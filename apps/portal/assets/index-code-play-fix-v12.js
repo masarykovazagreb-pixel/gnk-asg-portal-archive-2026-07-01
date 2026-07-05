@@ -1,6 +1,9 @@
 (()=>{'use strict';
 if(window.__GNK_ASG_CODE_PLAY_FIX_V12__)return;
 window.__GNK_ASG_CODE_PLAY_FIX_V12__=true;
+const visualLink=document.createElement('link');visualLink.rel='stylesheet';visualLink.href='/assets/index-visual-review-v4.css?v=20260705-v4';document.head.appendChild(visualLink);
+const approveVisuals=()=>{document.body?.classList.add('gnk-index-v4');document.querySelectorAll('.brand-head img,.logo-panel img,.company-title img').forEach(image=>{image.dataset.visualApproved='true';image.hidden=false});document.querySelectorAll('.hero-visual,.featured,.world-map,.live-card:first-child').forEach(element=>element.dataset.visualApproved='true')};
+document.readyState==='loading'?document.addEventListener('DOMContentLoaded',approveVisuals,{once:true}):approveVisuals();[250,900,1800].forEach(delay=>setTimeout(approveVisuals,delay));
 const labels=()=>{const en=document.documentElement.lang==='en';return{play:en?'Play':'Pokreni',pause:en?'Pause':'Pauziraj',resume:en?'Resume':'Nastavi',replay:en?'Replay':'Ponovno'}};
 let app=null,scenes=[],button=null,current=5,timer=null,running=false,paused=false,deadline=0,remaining=0;
 const durations=[5500,7500,7000,6500,6500,99999];
