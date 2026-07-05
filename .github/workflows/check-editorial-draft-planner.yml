@@ -17,6 +17,7 @@ on:
       - 'workers/gnk-asg-direct-operator/src/publication-readiness-v1.js'
       - 'workers/gnk-asg-direct-operator/src/publication-document-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js'
       - 'workers/gnk-asg-direct-operator/test/editorial-draft-planner.test.mjs'
       - 'workers/gnk-asg-direct-operator/test/editorial-workflow.test.mjs'
       - 'workers/gnk-asg-direct-operator/test/editorial-autonomous-release-v2.test.mjs'
@@ -47,6 +48,7 @@ jobs:
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/editorial-autonomous-release-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/editorial-autonomous-release-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           node --check apps/portal/assets/js/editorial-operations-runtime-v1.js
           node --check apps/portal/assets/js/editorial-slot-editor-v1.js
           node --check apps/portal/assets/js/editorial-release-queue-v1.js
@@ -109,5 +111,9 @@ jobs:
           grep -q '/publication/queue' apps/portal/assets/js/editorial-release-queue-v1.js
           grep -q 'awaiting-executive-release' apps/portal/editorial-operations/editor/index.html
           grep -q 'No publish action exists here' apps/portal/editorial-operations/release-queue/index.html
-          for file in apps/portal/editorial-operations/index.html apps/portal/editorial-operations/editor/index.html apps/portal/editorial-operations/release-queue/index.html; do grep -qi 'noindex' "$file"; done
+          grep -qi 'noindex' apps/portal/editorial-operations/index.html
+          grep -qi 'noindex' apps/portal/editorial-operations/editor/index.html
+          grep -q 'protectedNoindex' workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
+          grep -q 'x-robots-tag' workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
+          grep -q 'noindex, nofollow, noarchive' workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           if grep -Eqi '<button[^>]*>[^<]*(publish|objavi)' apps/portal/editorial-operations/release-queue/index.html; then exit 1; fi
