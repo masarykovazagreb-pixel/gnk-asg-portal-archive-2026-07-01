@@ -1,10 +1,58 @@
 (()=>{
 'use strict';
-const VERSION='2026-07-05.project-command-center.02';
+const VERSION='2026-07-05.project-command-center.03';
 const q=(selector,root=document)=>root.querySelector(selector);
+const qa=(selector,root=document)=>[...root.querySelectorAll(selector)];
 const fmt=value=>new Intl.NumberFormat('hr-HR').format(Number(value||0));
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const state={status:null,projects:[],reports:[]};
+
+function ensureAssets(){
+  if(!q('link[href*="project-command-center-runtime-v2.css"]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href='/assets/project-command-center-runtime-v2.css?v=20260705';
+    document.head.append(link);
+  }
+}
+function installHooks(){
+  ensureAssets();
+  const heroCount=q('.hero-count');
+  if(heroCount&&!heroCount.id)heroCount.id='hero-worker-count';
+  const heroCopy=q('.hero-side p');
+  if(heroCopy)heroCopy.textContent='operativnih workflow profila s primarnim i pomoćnim zadatkom.';
+  const workforceLink=q('.toplinks a[href="/digital-workforce/"]');
+  if(workforceLink)workforceLink.textContent='Operativni profili';
+
+  const metrics=qa('.metrics .metric');
+  const metricIds=['metric-projects','metric-working','metric-workers','metric-tasks','metric-review'];
+  const metricLabels=[
+    'aktivnih projektnih programa',
+    'profila trenutačno u radu',
+    'dodijeljenih operativnih profila',
+    'primarnih i pomoćnih zadataka',
+    'paketa na review gateu'
+  ];
+  metrics.slice(0,5).forEach((card,index)=>{
+    const value=q('b',card),label=q('span',card);
+    if(value)value.id=metricIds[index];
+    if(label)label.textContent=metricLabels[index];
+  });
+
+  const projectGrid=q('.project-grid');
+  if(projectGrid)projectGrid.id='runtime-project-grid';
+  const reportList=q('.report-list');
+  if(reportList)reportList.id='runtime-report-list';
+
+  const metricsSection=q('.metrics');
+  if(metricsSection&&!q('.runtime-strip')){
+    const section=document.createElement('section');
+    section.className='runtime-strip';
+    section.setAttribute('aria-live','polite');
+    section.innerHTML='<div><span class="runtime-dot"></span><strong id="runtime-state" data-state="loading">Učitavanje zaštićenog operativnog runtimea…</strong><small>Zadnji ciklus: <span id="runtime-last-cycle">provjera u tijeku</span></small></div><button class="action" id="runtime-refresh" type="button">Osvježi status</button>';
+    metricsSection.before(section);
+  }
+}
 
 async function getJson(path){
   const response=await fetch(path,{credentials:'same-origin',headers:{accept:'application/json'}});
@@ -27,8 +75,6 @@ function renderMetrics(){
   setText('metric-working',fmt(summary.inProgress));
   setText('metric-review',fmt(summary.reviewRequired));
   setText('hero-worker-count',fmt(state.status?.assignedWorkerCount||summary.total));
-  setText('hero-working-count',fmt(summary.inProgress));
-  setText('hero-review-count',fmt(summary.reviewRequired));
   setText('runtime-last-cycle',state.status?.lastCycle?new Date(state.status.lastCycle).toLocaleString('hr-HR'):'nije još zabilježen');
 }
 function reportMap(){
@@ -109,6 +155,7 @@ async function load(){
   }
 }
 document.addEventListener('DOMContentLoaded',()=>{
+  installHooks();
   document.getElementById('runtime-refresh')?.addEventListener('click',load);
   load();
   window.setInterval(load,60000);
