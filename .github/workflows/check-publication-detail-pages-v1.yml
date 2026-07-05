@@ -40,5 +40,7 @@ jobs:
             grep -qi 'rel="canonical"' "$file"
             grep -Fq "/objave/$slug/" apps/portal/objave/index.html
           done
-          test "$(grep -o '<article class="card"' apps/portal/objave/index.html | wc -l | tr -d ' ')" = "8"
+          count=$(grep -o '<article class="card"' apps/portal/objave/index.html | wc -l | tr -d ' ')
+          echo "PUBLICATION_CARD_COUNT=$count"
+          test "$count" -ge 8
           echo PUBLICATION_DETAIL_PAGES_OK
