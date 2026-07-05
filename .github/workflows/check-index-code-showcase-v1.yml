@@ -4,6 +4,11 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - 'apps/portal/index.html'
+      - 'apps/portal/en/index.html'
+      - 'apps/portal/assets/index-redesign-production.js'
+      - 'apps/portal/assets/index-redesign-production.css'
+      - 'apps/portal/assets/index-corporate-newsroom-v1.css'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js'
       - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
       - 'apps/portal/assets/the-code-index-slot.css'
@@ -15,6 +20,7 @@ on:
       - 'apps/portal/assets/the-code-new-york-countdown-v1.js'
       - 'apps/portal/the-code/**'
       - 'scripts/verify-the-code-public-launch.mjs'
+      - 'scripts/verify-public-redesign-contract.mjs'
       - '.github/workflows/check-index-code-showcase-v1.yml'
   workflow_dispatch:
 
@@ -79,7 +85,7 @@ jobs:
               assert len(raw)>1000, (name,len(raw))
               print(name,len(raw),'WEBP_OK')
           PY
-      - name: Protect canonical public index files
+      - name: Validate approved canonical index changes
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -88,9 +94,15 @@ jobs:
           set -euxo pipefail
           changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           printf '%s\n' "$changed"
-          if printf '%s\n' "$changed" | grep -E '^(apps/portal/index\.html|apps/portal/en/index\.html|workers/gnk-asg-direct-operator/src/index-lock-v4\.js)$'; then
-            echo 'Protected canonical index file changed.' >&2
+          if printf '%s\n' "$changed" | grep -q '^workers/gnk-asg-direct-operator/src/index-lock-v4\.js$'; then
+            echo 'Protected index lock changed.' >&2
             exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -Eq '^(apps/portal/index\.html|apps/portal/en/index\.html)$'; then
+            test -s apps/portal/assets/index-redesign-production.js
+            test -s apps/portal/assets/index-redesign-production.css
+            node --check apps/portal/assets/index-redesign-production.js
+            node scripts/verify-public-redesign-contract.mjs
           fi
       - name: Preserve public shell safety contract
         run: |
