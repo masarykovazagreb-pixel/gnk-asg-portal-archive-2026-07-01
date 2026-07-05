@@ -1,0 +1,77 @@
+name: Check Responsive Review Evidence V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'workers/gnk-asg-direct-operator/src/**'
+      - '.github/workflows/check-responsive-review-evidence-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-responsive-review-evidence
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'enterprise-portal-ui-v3-20260704'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PREVIEW_URL: https://gnk-asg-enterprise-review-v3.beckuphome.workers.dev
+    steps:
+      - uses: actions/checkout@v5
+      - name: Confirm current preview revision
+        shell: bash
+        run: |
+          set -euxo pipefail
+          ready=false
+          for attempt in $(seq 1 36); do
+            if curl -fsS --max-time 20 "$PREVIEW_URL/assets/editorial-v12.js" | grep -q "data-editorial-release','V12.4"; then
+              ready=true
+              break
+            fi
+            sleep 10
+          done
+          test "$ready" = true
+          curl -fsS "$PREVIEW_URL/design-review/" | grep -q 'Finance Cockpit'
+          curl -fsS "$PREVIEW_URL/design-review/" | grep -q 'Publications EN'
+      - name: Capture desktop and mobile viewport evidence
+        shell: bash
+        run: |
+          set -euxo pipefail
+          chrome=$(command -v google-chrome-stable || command -v google-chrome || command -v chromium)
+          test -n "$chrome"
+          mkdir -p review-artifacts/responsive
+          routes=(
+            'index|/'
+            'the-code|/the-code/'
+            'objave|/objave/'
+            'publications|/publications/'
+            'finance|/financije/'
+            'public-operations|/public-operations/'
+            'group-companies|/group-companies/'
+            'media-application-en|/media-application/?lang=en'
+          )
+          for item in "${routes[@]}"; do
+            name=${item%%|*}
+            route=${item#*|}
+            url="$PREVIEW_URL$route"
+            curl -fsS --max-time 30 "$url" >/tmp/review-page.html
+            test "$(wc -c </tmp/review-page.html)" -gt 200
+            "$chrome" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1440,1100 --screenshot="review-artifacts/responsive/${name}-desktop.png" "$url"
+            "$chrome" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --force-device-scale-factor=1 --window-size=390,844 --screenshot="review-artifacts/responsive/${name}-mobile.png" "$url"
+          done
+          find review-artifacts/responsive -name '*.png' -size +10k | wc -l | grep -q '^16$'
+          printf '{"previewUrl":"%s","headSha":"%s","routes":8,"viewports":[1440,390],"screenshots":16,"productionRoutes":false,"mailSending":false}\n' "$PREVIEW_URL" "$GITHUB_SHA" > review-artifacts/responsive/manifest.json
+      - name: Upload responsive review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-responsive-review-evidence
+          path: review-artifacts/responsive
+          if-no-files-found: error
+          retention-days: 7
