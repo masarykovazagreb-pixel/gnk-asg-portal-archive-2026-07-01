@@ -6,6 +6,8 @@
   const checks=[
     {id:'auth',label:'Sigurna sesija',path:'/api/operator-auth-check',type:'json'},
     {id:'backend',label:'Operator backend',path:'/api/operator-backend-status',type:'json'},
+    {id:'projects',label:'Projektni portfolio',path:'/api/enterprise-projects/status',type:'json'},
+    {id:'assignments',label:'Operativni profili',path:'/api/enterprise-projects/assignments?offset=0&limit=1',type:'json'},
     {id:'mail',label:'Mail Studio API',path:'/api/mail-center/status',type:'json'},
     {id:'media',label:'Media Command Center API',path:'/api/media-command-center/status',type:'json'},
     {id:'deliveryPlan',label:'E-mail delivery plan',path:'/api/media-command-center/delivery-plan',type:'json'},
@@ -26,7 +28,7 @@
   ];
 
   const $=id=>document.getElementById(id);
-  const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
 
   function loadOperations(){
     if(!document.querySelector('link[data-gnk-operations="v1"]')){
@@ -41,6 +43,23 @@
       script.src='/assets/admin-operations-v1.js?v=20260627-v2';
       script.defer=true;
       script.dataset.gnkOperations='v1';
+      document.head.appendChild(script);
+    }
+  }
+
+  function loadExecutivePortfolio(){
+    if(!document.querySelector('link[data-gnk-executive-portfolio="v1"]')){
+      const link=document.createElement('link');
+      link.rel='stylesheet';
+      link.href='/assets/executive-project-portfolio-v1.css?v=20260705';
+      link.dataset.gnkExecutivePortfolio='v1';
+      document.head.appendChild(link);
+    }
+    if(!document.querySelector('script[data-gnk-executive-portfolio="v1"]')){
+      const script=document.createElement('script');
+      script.src='/assets/admin-executive-portfolio-v1.js?v=20260705';
+      script.defer=true;
+      script.dataset.gnkExecutivePortfolio='v1';
       document.head.appendChild(script);
     }
   }
@@ -101,6 +120,8 @@
 
   function detail(result){
     if(result.ok){
+      if(result.id==='projects')return`${result.data?.projectCount||0} projekata · ${result.data?.assignedTaskCount||0} zadatka`;
+      if(result.id==='assignments')return`${result.data?.total||0} operativnih profila`;
       if(result.id==='sms')return result.data?.providerConfigured?'Provider spreman':'DRY-RUN · provider nije konfiguriran';
       if(result.id==='deliveryStatus')return result.data?.live?'Produkcija otključana':'Produkcija zaključana';
       if(result.id==='pdf')return result.data?.pdf?.ok?'PDF spreman':'PDF endpoint odgovara';
@@ -139,6 +160,7 @@
 
   function boot(){
     loadOperations();
+    loadExecutivePortfolio();
     ensureUi();
     $('adminTestAll')?.addEventListener('click',runAll);
   }
