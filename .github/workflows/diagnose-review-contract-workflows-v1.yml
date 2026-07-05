@@ -19,16 +19,28 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          output="$RUNNER_TEMP/review-contracts.txt"
+          : > "$output"
           for wanted in \
             'Validate GNK ASG Portal Release' \
             'Diagnose Current Portal Contract' \
             'Validate Current Portal Contract' \
             'Deploy Fresh Media Center' \
-            'Validate Current Media Command Center'; do
-            echo "===== $wanted ====="
+            'Validate Current Media Command Center' \
+            'Deploy GNK ASG production'; do
+            echo "===== $wanted =====" | tee -a "$output"
             file=$(grep -RIl --include='*.yml' --include='*.yaml' "name: $wanted" .github/workflows | head -n 1 || true)
-            echo "FILE=${file:-NOT_FOUND}"
+            echo "FILE=${file:-NOT_FOUND}" | tee -a "$output"
             if [ -n "$file" ]; then
-              grep -nE 'main =|wrangler|index-(unified-auth|final-admin|enterprise)|validate-|verify-|node scripts|grep -q|grep -E|grep -Eq' "$file" || true
+              echo '--- full workflow ---' >> "$output"
+              cat "$file" >> "$output"
+              echo >> "$output"
             fi
           done
+          cp "$output" review-contracts.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: review-contract-workflows
+          path: review-contracts.txt
+          if-no-files-found: error
+          retention-days: 1
