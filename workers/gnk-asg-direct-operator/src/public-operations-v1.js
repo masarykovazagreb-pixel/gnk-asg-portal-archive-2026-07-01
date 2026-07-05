@@ -1,6 +1,6 @@
 import {buildDailyEditorialPlan,VERSION as EDITORIAL_PLAN_VERSION} from './editorial-draft-planner-v1.js';
 
-export const VERSION=`GNK_ASG_PUBLIC_OPERATIONS_V2_20260705_${EDITORIAL_PLAN_VERSION}`;
+export const VERSION=`GNK_ASG_PUBLIC_OPERATIONS_V3_20260705_${EDITORIAL_PLAN_VERSION}`;
 export const API_PREFIX='/api/public-operations';
 export const ADMIN_PREFIX='/api/editorial-operations/public-approval';
 export const TIMEZONE='Europe/Zagreb';
@@ -165,13 +165,13 @@ async function buildReport(env,date,decision,now=new Date()){
       rule:'The report is public as PRELIMINARY before 08:00 Europe/Zagreb. At or after 08:00 it becomes APPROVED BY SILENCE unless held or cancelled. HELD and CANCELLED statuses remain public without internal reasons.'
     },
     workforce:{
-      profileType:'digital operations profile',
-      configuredProfiles:1500,
+      profileType:'operations profile',
+      configuredProfiles:1537,
       departments:27,
       entitySlots:43,
-      statusDistribution:{active:644,busy:214,scheduled:214,idle:214,'approval-required':214},
+      statusDistribution:{active:661,busy:219,scheduled:219,idle:219,'approval-required':219},
       publicDirectory:'/digital-workforce/directory/',
-      disclosure:'Functional digital workflow identities. This is not by itself a register of natural persons or confirmed employment relationships.'
+      disclosure:'Functional operational workflow identities. This is not by itself a register of natural persons or confirmed employment relationships.'
     },
     editorial:{
       brand:'THE CODE Intelligence',

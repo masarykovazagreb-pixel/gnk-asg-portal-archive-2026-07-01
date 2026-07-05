@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-04.public-portal-catalog.v1",
+  "version": "2026-07-05.public-portal-catalog.v2",
   "status": "public-allowlist",
   "title": "GNK ASG Public Information Catalogue",
   "description": "Explicit allowlist of data, reports, profiles, publications and system information permitted on the public portal.",
@@ -26,14 +26,14 @@
   "datasets": [
     {
       "id": "digital-workforce",
-      "labelHr": "Digitalni operativni profili",
-      "labelEn": "Digital Operations Profiles",
+      "labelHr": "Operativni profili",
+      "labelEn": "Operational Profiles",
       "publicRoute": "/digital-workforce/directory/",
       "source": "/assets/js/digital-workforce-directory-v1.js",
-      "profileCount": 1500,
+      "profileCount": 1537,
       "publicFields": ["name", "workerId", "department", "role", "countryRegion", "operatingCountry", "operatingRegion", "languages", "timezone", "status", "entitySlot", "responsibility", "operatingMode", "backgroundCadence"],
       "excludedFields": ["privateNotes", "credentials", "personalEmail", "personalPhone", "tokens", "secrets", "privateAuditTrail"],
-      "disclosure": "Profiles are functional digital workflow identities. The directory does not by itself establish natural-person identity or an employment relationship."
+      "disclosure": "Profiles are functional operational workflow identities. The directory does not by itself establish natural-person identity or an employment relationship."
     },
     {
       "id": "daily-public-reports",

@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
 
-  const VERSION='GNK_ASG_PUBLIC_OPERATIONS_DASHBOARD_V2_20260705_RESILIENT';
+  const VERSION='GNK_ASG_PUBLIC_OPERATIONS_DASHBOARD_V3_20260705_OPERATIONAL';
   const DEFAULT_TARGET='[data-public-operations-dashboard]';
   const ENDPOINTS={
     catalog:'/api/public-operations/catalog',
@@ -74,11 +74,11 @@
       version:'frontend-safe-fallback',
       approval,
       workforce:{
-        configuredProfiles:number(catalog?.workforce?.configuredProfiles)||1500,
+        configuredProfiles:number(catalog?.workforce?.configuredProfiles)||1537,
         departments:number(catalog?.workforce?.departments)||27,
         entitySlots:number(catalog?.workforce?.entitySlots)||43,
         publicDirectory:'/digital-workforce/directory/',
-        disclosure:'Functional digital workflow identities. This is not by itself a register of natural persons or confirmed employment relationships.'
+        disclosure:'Functional operational workflow identities. This is not by itself a register of natural persons or confirmed employment relationships.'
       },
       editorial:{brand:'THE CODE Intelligence',totalPlannedSlots:0},
       publicOutputs:{publishedOrApprovedTexts:0,publicNewsEntries:0,publicationsRoute:'/objave/',newsRoute:'/vijesti/',governanceRoute:ENDPOINTS.governanceBoard},
@@ -97,7 +97,7 @@
         <div class="section-head">
           <div>
             <p class="eyebrow">Public Operations</p>
-            <h2 id="public-ops-title">Dnevna izvješća, javni katalog i digitalna operativa</h2>
+            <h2 id="public-ops-title">Dnevna izvješća, javni katalog i operativa</h2>
           </div>
           <p>Panel čita isključivo javne API podatke. Privatni mailovi, tokeni, auditi, privitci i upravljačke odluke nisu izloženi javnosti.</p>
         </div>
@@ -109,7 +109,7 @@
           <div class="trust"><span class="icon">⚑</span><div><b>Governance</b><span>${statusPill(governance?.approval?.state||approval.state)}</span></div></div>
         </div>
         <div class="quick-grid public-ops-grid">
-          ${metric('Digitalni operativni profili',number(workforce.configuredProfiles).toLocaleString('hr-HR'),'transparentni workflow identiteti')}
+          ${metric('Operativni profili',number(workforce.configuredProfiles).toLocaleString('hr-HR'),'transparentni workflow identiteti')}
           ${metric('Odjeli',number(workforce.departments).toLocaleString('hr-HR'),'javni operativni raspored')}
           ${metric('Entity slots',number(workforce.entitySlots).toLocaleString('hr-HR'),'grupna organizacijska mjesta')}
           ${metric('Planirani dnevni slotovi',number(editorial.totalPlannedSlots).toLocaleString('hr-HR'),editorial.brand||'THE CODE Intelligence')}
@@ -118,8 +118,8 @@
         </div>
         <div class="mega-grid public-ops-documents">
           <div class="mega-col"><h3>Javni PDF i izvori</h3>${files.length?files.map(fileLink).join(''):'<p>Nema javnih PDF zapisa u katalogu.</p>'}</div>
-          <div class="mega-col"><h3>Sigurnosna granica</h3><p>${escapeHtml(workforce.disclosure||'Digital operations profiles are functional workflow identities, not a confirmed employment registry.')}</p><p>Mail podaci: ${escapeHtml(report?.systems?.privateMailData||'not_public')}</p><p>Secrets: ${escapeHtml(report?.systems?.tokensAndSecrets||'never_public')}</p><p>Admin endpointi: ${escapeHtml(report?.systems?.adminEndpoints||'token_required')}</p></div>
-          <div class="mega-col"><h3>Javni izlazi</h3><a href="${escapeHtml(outputs.publicationsRoute||'/objave/')}">Objave</a><a href="${escapeHtml(outputs.newsRoute||'/vijesti/')}">Vijesti</a><a href="${escapeHtml(workforce.publicDirectory||'/digital-workforce/directory/')}">Digital workforce directory</a><a href="${escapeHtml(outputs.governanceRoute||ENDPOINTS.governanceBoard)}">Governance JSON</a></div>
+          <div class="mega-col"><h3>Sigurnosna granica</h3><p>${escapeHtml(workforce.disclosure||'Operational profiles are functional workflow identities, not a confirmed employment registry.')}</p><p>Mail podaci: ${escapeHtml(report?.systems?.privateMailData||'not_public')}</p><p>Secrets: ${escapeHtml(report?.systems?.tokensAndSecrets||'never_public')}</p><p>Admin endpointi: ${escapeHtml(report?.systems?.adminEndpoints||'token_required')}</p></div>
+          <div class="mega-col"><h3>Javni izlazi</h3><a href="${escapeHtml(outputs.publicationsRoute||'/objave/')}">Objave</a><a href="${escapeHtml(outputs.newsRoute||'/vijesti/')}">Vijesti</a><a href="${escapeHtml(workforce.publicDirectory||'/digital-workforce/directory/')}">Operational profiles directory</a><a href="${escapeHtml(outputs.governanceRoute||ENDPOINTS.governanceBoard)}">Governance JSON</a></div>
         </div>
       </section>
       <section class="section public-governance-panel" id="javna-tabla">
