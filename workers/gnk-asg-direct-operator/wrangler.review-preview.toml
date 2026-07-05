@@ -1,5 +1,5 @@
 name = "gnk-asg-enterprise-review-v3"
-main = "src/index-unified-auth-v14.js"
+main = "src/index-enterprise-projects-runtime-v1.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
@@ -16,7 +16,7 @@ run_worker_first = true
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "isolated-review-preview"
-DEPLOY_REVISION = "20260705-enterprise-review-preview-v1"
+DEPLOY_REVISION = "20260705-enterprise-projects-runtime-v1"
 SAFE_GET_DIRECT_MODE = "true"
 MAIL_MANUAL_LIVE = "false"
 MAIL_PROFILE_TEST_LIVE = "false"
