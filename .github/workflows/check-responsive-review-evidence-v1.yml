@@ -20,7 +20,7 @@ jobs:
   capture:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'enterprise-portal-ui-v3-20260704'
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     env:
       PREVIEW_URL: https://gnk-asg-enterprise-review-v3.beckuphome.workers.dev
     steps:
@@ -30,16 +30,16 @@ jobs:
         run: |
           set -euxo pipefail
           ready=false
-          for attempt in $(seq 1 36); do
-            if curl -fsS --max-time 20 "$PREVIEW_URL/assets/editorial-v12.js" | grep -q "data-editorial-release','V12.4"; then
+          for attempt in $(seq 1 60); do
+            design=$(curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/design-review/" || true)
+            editorial=$(curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/assets/editorial-v12.js" || true)
+            if printf '%s' "$design" | grep -q 'Finance Cockpit' && printf '%s' "$design" | grep -q 'Publications EN' && printf '%s' "$editorial" | grep -q "data-editorial-release','V12.4"; then
               ready=true
               break
             fi
             sleep 10
           done
           test "$ready" = true
-          curl -fsS "$PREVIEW_URL/design-review/" | grep -q 'Finance Cockpit'
-          curl -fsS "$PREVIEW_URL/design-review/" | grep -q 'Publications EN'
       - name: Capture desktop and mobile viewport evidence
         shell: bash
         run: |
@@ -61,7 +61,7 @@ jobs:
             name=${item%%|*}
             route=${item#*|}
             url="$PREVIEW_URL$route"
-            curl -fsS --max-time 30 "$url" >/tmp/review-page.html
+            curl -fsS --retry 3 --retry-delay 2 --max-time 30 "$url" >/tmp/review-page.html
             test "$(wc -c </tmp/review-page.html)" -gt 200
             "$chrome" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1440,1100 --screenshot="review-artifacts/responsive/${name}-desktop.png" "$url"
             "$chrome" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --force-device-scale-factor=1 --window-size=390,844 --screenshot="review-artifacts/responsive/${name}-mobile.png" "$url"
