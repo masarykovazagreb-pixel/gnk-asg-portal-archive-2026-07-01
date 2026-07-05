@@ -25,6 +25,8 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
@@ -69,11 +71,13 @@ jobs:
           grep -q '/api/operator-backend-status' "$auth"
           grep -q 'publicOperations:true' "$auth"
           grep -q 'governanceBoard:true' "$auth"
-          grep -q '/api/public-operations/health' "$ops"
-          grep -q '/api/public-operations/governance-board' "$ops"
-          grep -q '/api/public-operations/report/latest' "$ops"
-          grep -q '/api/editorial-operations/public-approval/status' "$ops"
-          grep -q '/api/editorial-operations/public-approval/decision' "$ops"
+          grep -q "export const API_PREFIX='/api/public-operations'" "$ops"
+          grep -q "export const ADMIN_PREFIX='/api/editorial-operations/public-approval'" "$ops"
+          grep -q 'API_PREFIX}/health' "$ops"
+          grep -q 'API_PREFIX}/governance-board' "$ops"
+          grep -q 'API_PREFIX}/report/latest' "$ops"
+          grep -q 'ADMIN_PREFIX}/status' "$ops"
+          grep -q 'ADMIN_PREFIX}/decision' "$ops"
           grep -Eq 'authorization|x-gnk-admin-token|x-admin-token' "$ops"
 
       - name: Validate review UI contract
