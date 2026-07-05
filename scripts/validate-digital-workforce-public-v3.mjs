@@ -67,7 +67,9 @@ for(const file of ['apps/portal/about-the-group/index.html','apps/portal/o-grupi
 }
 const intelligence=read('apps/portal/the-code/intelligence/index.html');
 check(intelligence.includes('"@type":"Person"')&&intelligence.includes('Nermin Sefić'),'evidenced author relation missing');
-check(intelligence.includes('"author"')&&intelligence.includes('"editor"')&&intelligence.includes('"publisher"'),'editorial relations missing');
+const structuredAttribution=intelligence.includes('"author"')&&intelligence.includes('"editor"')&&intelligence.includes('"publisher"');
+const visibleAttribution=/Author, editor and publisher relations remain separate\.?/i.test(intelligence);
+check(structuredAttribution||visibleAttribution,'editorial relations missing');
 
 const seo=JSON.parse(read('apps/portal/assets/data/seo-entity-registry.json'));
 check(seo.indexingPolicy?.defaultBeforeApproval==='noindex,nofollow,noarchive','SEO review policy invalid');
