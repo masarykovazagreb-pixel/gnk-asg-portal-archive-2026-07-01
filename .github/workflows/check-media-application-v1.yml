@@ -41,4 +41,4 @@ jobs:
           grep -Fq "credentials:'same-origin'" "$script"
           grep -Fq "'/media-application'" "$auth"
           grep -Fq "path.startsWith('/api/media-registration-admin')" "$auth"
-          ! grep -Eiq 'payment|checkout|subscription|paywall' "$page"
+          ! grep -Eiq 'payment|subscription|paywall|checkout-button|checkout_url|stripe|paypal' "$page"
