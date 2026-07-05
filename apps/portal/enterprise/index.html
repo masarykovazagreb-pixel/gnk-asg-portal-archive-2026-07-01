@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Enterprise Command Dashboard | GNK DINAMO Ltd. Group / GNK ASG</title>
-<meta name="description" content="Controlled review dashboard for GNK ASG and GNK DINAMO Ltd. Group Enterprise Digital Platform: approvals, mail, inbox, contacts, reports, governance, workers and preview safety gates.">
+<meta name="description" content="Controlled review dashboard for GNK ASG and GNK DINAMO Ltd. Group Enterprise Digital Platform: approvals, individual email, Inbox, Sent, contacts, reports, governance and Worker status.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="theme-color" content="#050814">
 <style>
-:root{--bg:#050814;--panel:#0b1224;--panel2:#101a31;--gold:#d4af37;--line:rgba(212,175,55,.28);--text:#f8fafc;--muted:#aab4c7;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--info:#60a5fa}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 18% -15%,#20335f 0,#050814 42%,#02040a 100%);color:var(--text)}a{color:inherit}.shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}.side{position:sticky;top:0;height:100vh;border-right:1px solid rgba(255,255,255,.1);background:rgba(2,6,16,.78);backdrop-filter:blur(18px);padding:20px;overflow:auto}.brand{display:flex;gap:12px;align-items:center;margin-bottom:22px}.brand img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 12px 24px rgba(0,0,0,.35))}.brand b{display:block;color:#fff}.brand span{display:block;color:var(--muted);font-size:12px}.nav{display:grid;gap:8px}.nav a{display:flex;justify-content:space-between;gap:10px;text-decoration:none;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:11px 12px;color:#dbe5f6;background:rgba(255,255,255,.035);font-size:13px;font-weight:800}.nav a:hover,.nav a:focus-visible{border-color:var(--gold);outline:none}.main{padding:28px;max-width:1480px;width:100%;margin:0 auto}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:22px}.eyebrow{color:var(--gold);font-weight:950;letter-spacing:.16em;text-transform:uppercase;font-size:12px}.top h1{font-size:clamp(34px,4.8vw,68px);letter-spacing:-.055em;margin:.2rem 0 .55rem}.sub{color:#d9e2f1;max-width:980px;line-height:1.55}.lockbox{border:1px solid rgba(245,158,11,.42);background:rgba(245,158,11,.08);border-radius:20px;padding:14px;min-width:290px;color:#fde7b0}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chip{display:inline-flex;gap:7px;align-items:center;border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:7px 10px;color:#e6edf9;font-size:12px;font-weight:900;background:rgba(255,255,255,.035)}.chip:before{content:"";width:8px;height:8px;border-radius:999px;background:var(--ok)}.chip.warn:before{background:var(--warn)}.chip.bad:before{background:var(--bad)}.kpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}.metric{border:1px solid rgba(255,255,255,.1);border-radius:20px;background:linear-gradient(180deg,rgba(16,26,49,.92),rgba(8,13,28,.94));padding:16px}.metric strong{display:block;color:var(--gold);font-size:clamp(24px,3vw,40px);letter-spacing:-.04em}.metric span{display:block;color:var(--muted);font-size:13px;margin-top:3px}.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}.section{border:1px solid var(--line);border-radius:26px;background:linear-gradient(180deg,rgba(16,26,49,.94),rgba(8,13,28,.96));padding:18px;box-shadow:0 22px 70px rgba(0,0,0,.28);margin-bottom:16px}.section h2{margin:.15rem 0 0;font-size:24px;letter-spacing:-.035em}.section-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:14px}.section-head p{color:var(--muted);margin:.25rem 0 0;line-height:1.45}.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.card{position:relative;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:20px;background:rgba(255,255,255,.045);padding:15px;min-height:126px;display:block}.card:hover,.card:focus-visible{border-color:var(--gold);outline:none}.card b{display:block;font-size:17px;padding-right:74px}.card span{display:block;color:var(--muted);font-size:13px;line-height:1.42;margin-top:7px}.badge{position:absolute;right:12px;top:12px;border:1px solid rgba(34,197,94,.38);border-radius:999px;color:#86efac;background:rgba(34,197,94,.08);font-size:10px;font-weight:950;text-transform:uppercase;padding:5px 7px}.badge.warn{border-color:rgba(245,158,11,.42);color:#fde68a;background:rgba(245,158,11,.08)}.badge.lock{border-color:rgba(239,68,68,.36);color:#fca5a5;background:rgba(239,68,68,.08)}.mailgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.profile{border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.04);padding:12px}.profile b{display:block}.profile small{display:block;color:var(--muted);line-height:1.4;margin-top:5px}.timeline{display:grid;gap:10px}.step{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:flex-start;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.04);padding:12px}.step i{width:28px;height:28px;border-radius:999px;background:rgba(212,175,55,.14);display:grid;place-items:center;color:var(--gold);font-style:normal;font-weight:950}.step b{display:block}.step span{display:block;color:var(--muted);font-size:13px;margin-top:3px}.status{font-size:11px;font-weight:950;text-transform:uppercase;color:#86efac}.status.warn{color:#fde68a}.status.lock{color:#fca5a5}.worker{display:grid;gap:9px}.endpoint{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:11px;background:rgba(255,255,255,.04)}.endpoint code{color:#dbeafe;word-break:break-all}.endpoint span{color:#86efac;font-weight:950;font-size:11px;text-transform:uppercase}.notice{border:1px solid rgba(245,158,11,.45);background:rgba(245,158,11,.08);color:#fde7b0;border-radius:22px;padding:16px;line-height:1.5}.mobilebar{display:none;position:fixed;left:10px;right:10px;bottom:10px;z-index:30;background:rgba(2,6,16,.88);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:8px;grid-template-columns:repeat(5,1fr);gap:6px}.mobilebar a{text-align:center;text-decoration:none;font-size:11px;color:#fff;padding:8px 4px;border-radius:13px;background:rgba(255,255,255,.06)}@media(max-width:1040px){.shell{grid-template-columns:1fr}.side{position:relative;height:auto}.nav{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.top{display:block}.lockbox{margin-top:14px}.grid{grid-template-columns:1fr}.kpi{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:720px){.main{padding:18px 12px 88px}.side{display:none}.mobilebar{display:grid}.kpi{grid-template-columns:1fr}.section{border-radius:20px;padding:14px}.section-head{display:block}.step{grid-template-columns:auto 1fr}.step .status{grid-column:2}.endpoint{grid-template-columns:1fr}.card{min-height:118px}}@media print{body{background:white;color:#111}.shell{display:block}.side,.mobilebar{display:none}.section,.metric,.card,.profile,.step,.endpoint,.notice,.lockbox{background:white;color:#111;border-color:#999;box-shadow:none}.sub,.card span,.profile small,.step span,.section-head p,.metric span{color:#333}}
+:root{--bg:#050814;--panel:#0b1428;--panel2:#111d37;--gold:#d4af37;--line:rgba(212,175,55,.28);--text:#f8fafc;--muted:#aab4c7;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 18% -10%,#20345f 0,#050814 43%,#02040a 100%);color:var(--text);font-family:Inter,Arial,sans-serif}a{color:inherit}.shell{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}.side{position:sticky;top:0;height:100vh;padding:20px;border-right:1px solid rgba(255,255,255,.1);background:rgba(2,6,16,.8);backdrop-filter:blur(18px);overflow:auto}.brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}.brand img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 12px 25px rgba(0,0,0,.4))}.brand b,.brand span{display:block}.brand span{color:var(--muted);font-size:12px;margin-top:3px}.nav{display:grid;gap:8px}.nav a{display:flex;justify-content:space-between;gap:10px;padding:11px 12px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.035);text-decoration:none;font-size:13px;font-weight:800}.nav a:hover,.nav a:focus-visible{border-color:var(--gold);outline:none}.main{width:100%;max-width:1480px;margin:0 auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:20px}.eyebrow{color:var(--gold);font-size:12px;font-weight:950;letter-spacing:.16em;text-transform:uppercase}.top h1{margin:.2rem 0 .55rem;font-size:clamp(34px,4.8vw,68px);letter-spacing:-.055em}.sub{max-width:980px;margin:0;color:#d9e2f1;line-height:1.58}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.035);font-size:12px;font-weight:900}.chip:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok)}.chip.warn:before{background:var(--warn)}.chip.bad:before{background:var(--bad)}.lockbox{min-width:290px;padding:15px;border:1px solid rgba(245,158,11,.42);border-radius:20px;background:rgba(245,158,11,.08);color:#fde7b0;line-height:1.5}.kpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}.metric{padding:16px;border:1px solid rgba(255,255,255,.1);border-radius:20px;background:linear-gradient(180deg,rgba(16,26,49,.94),rgba(8,13,28,.96))}.metric strong{display:block;color:var(--gold);font-size:clamp(22px,2.7vw,36px);letter-spacing:-.04em}.metric span{display:block;color:var(--muted);font-size:13px;line-height:1.4;margin-top:4px}.layout{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}.section{margin-bottom:16px;padding:18px;border:1px solid var(--line);border-radius:26px;background:linear-gradient(180deg,rgba(16,26,49,.94),rgba(8,13,28,.96));box-shadow:0 22px 70px rgba(0,0,0,.28)}.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px}.section h2{margin:.15rem 0 0;font-size:24px;letter-spacing:-.035em}.section-head p{max-width:560px;margin:.25rem 0 0;color:var(--muted);line-height:1.45}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.card{position:relative;display:block;min-height:126px;padding:15px;border:1px solid rgba(255,255,255,.1);border-radius:20px;background:rgba(255,255,255,.045);color:#fff;text-decoration:none}.card:hover,.card:focus-visible{border-color:var(--gold);outline:none}.card b{display:block;padding-right:74px;font-size:17px}.card span:not(.badge){display:block;margin-top:7px;color:var(--muted);font-size:13px;line-height:1.42}.badge{position:absolute;right:12px;top:12px;padding:5px 7px;border:1px solid rgba(34,197,94,.38);border-radius:999px;background:rgba(34,197,94,.08);color:#86efac;font-size:10px;font-weight:950;text-transform:uppercase}.badge.warn{border-color:rgba(245,158,11,.42);background:rgba(245,158,11,.08);color:#fde68a}.badge.lock{border-color:rgba(239,68,68,.36);background:rgba(239,68,68,.08);color:#fca5a5}.profiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px}.profile{padding:12px;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.04)}.profile b,.profile small{display:block}.profile small{margin-top:5px;color:var(--muted);line-height:1.4}.timeline,.workers{display:grid;gap:9px}.step{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:start;padding:12px;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.04)}.step i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(212,175,55,.14);color:var(--gold);font-style:normal;font-weight:950}.step b,.step span{display:block}.step span{margin-top:3px;color:var(--muted);font-size:13px}.state{font-size:10px;font-weight:950;text-transform:uppercase;color:#86efac}.state.warn{color:#fde68a}.state.lock{color:#fca5a5}.endpoint{display:grid;grid-template-columns:1fr auto;gap:10px;padding:11px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(255,255,255,.04);text-decoration:none}.endpoint code{color:#dbeafe;word-break:break-all}.endpoint span{color:#86efac;font-size:10px;font-weight:950;text-transform:uppercase}.notice{padding:16px;border:1px solid rgba(245,158,11,.45);border-radius:22px;background:rgba(245,158,11,.08);color:#fde7b0;line-height:1.5}.mobilebar{display:none;position:fixed;left:10px;right:10px;bottom:10px;z-index:40;grid-template-columns:repeat(5,1fr);gap:6px;padding:8px;border:1px solid rgba(255,255,255,.13);border-radius:20px;background:rgba(2,6,16,.9);backdrop-filter:blur(18px)}.mobilebar a{padding:8px 4px;border-radius:13px;background:rgba(255,255,255,.06);font-size:11px;text-align:center;text-decoration:none}@media(max-width:1040px){.shell{grid-template-columns:1fr}.side{position:relative;height:auto}.nav{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.top{display:block}.lockbox{margin-top:14px}.layout{grid-template-columns:1fr}.kpi{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:720px){.main{padding:18px 12px 88px}.side{display:none}.mobilebar{display:grid}.kpi{grid-template-columns:1fr}.section{padding:14px;border-radius:20px}.section-head{display:block}.step{grid-template-columns:auto 1fr}.step .state{grid-column:2}.endpoint{grid-template-columns:1fr}.card{min-height:116px}}@media print{body{background:white;color:#111}.shell{display:block}.side,.mobilebar{display:none}.section,.metric,.card,.profile,.step,.endpoint,.notice,.lockbox{background:white;color:#111;border-color:#999;box-shadow:none}.sub,.card span:not(.badge),.profile small,.step span,.section-head p,.metric span{color:#333}}
 </style>
 </head>
 <body>
 <div class="shell">
 <aside class="side" aria-label="Enterprise navigation">
-  <div class="brand"><img src="/assets/logo-gnk-asg.svg" alt="GNK ASG logo"><div><b>GNK Enterprise</b><span>Review command layer</span></div></div>
+  <div class="brand"><img src="/assets/logo-gnk-asg.svg" alt="GNK ASG logo"><div><b>GNK Enterprise</b><span>Controlled review command layer</span></div></div>
   <nav class="nav">
     <a href="#overview">Pregled <em>01</em></a>
     <a href="#actions">Brze akcije <em>02</em></a>
@@ -31,65 +31,65 @@
     <div>
       <div class="eyebrow">Controlled enterprise review</div>
       <h1>Enterprise Command Dashboard</h1>
-      <p class="sub">Operativni ekran za završnu reviziju platforme: odobrenja, pojedinačni mail, Inbox/Sent, statusi isporuke, kontakti, sastanci, izvješća, objave, javni governance i Worker runtime provjere. Produkcija ostaje zaključana dok se ne odobri nakon pregleda.</p>
-      <div class="chips"><span class="chip">Review branch active</span><span class="chip warn">Preview-only workers</span><span class="chip bad">Production deploy locked</span><span class="chip bad">Mass email locked</span></div>
+      <p class="sub">Operativni ekran za odobrenja, pojedinačni mail, Inbox/Sent, statuse isporuke, kontakte, sastanke, izvješća, objave, javni governance i Worker runtime provjere. Produkcija ostaje zaključana do zasebne odluke nakon pregleda.</p>
+      <div class="chips"><span class="chip">Review branch active</span><span class="chip warn">Preview-only workers</span><span class="chip bad">Production locked</span><span class="chip bad">Mass email locked</span></div>
     </div>
-    <div class="lockbox"><b>Sigurnosna granica</b><br>Bez mergea u main, bez produkcijskog deploya, bez DNS/ruta/secrets promjena i bez stvarnih masovnih kampanja.</div>
+    <div class="lockbox"><b>Sigurnosna granica</b><br>Bez mergea u main, produkcijskog deploya, DNS/ruta/secrets promjena i stvarnih masovnih kampanja.</div>
   </header>
 
-  <section class="kpi" aria-label="Key platform counters">
-    <div class="metric"><strong>9</strong><span>review commitova ispred maina prije ovog ciklusa</span></div>
-    <div class="metric"><strong>3</strong><span>commita maina za kasnije usklađivanje bez produkcijskog mergea</span></div>
+  <section class="kpi" aria-label="Platform status">
+    <div class="metric"><strong>4</strong><span>prioritetne akcije dostupne s prvog ekrana</span></div>
+    <div class="metric"><strong>9</strong><span>kontroliranih sender profila u webmail modelu</span></div>
     <div class="metric"><strong>1.500</strong><span>digitalnih operativnih profila u javnom modelu</span></div>
-    <div class="metric"><strong>08:00</strong><span>rok za zadržavanje ili otkazivanje dnevnog izvješća</span></div>
+    <div class="metric"><strong>08:00</strong><span>rok odluke za dnevno izvješće</span></div>
   </section>
 
-  <div class="grid">
+  <div class="layout">
     <div>
       <section class="section" id="actions">
-        <div class="section-head"><div><div class="eyebrow">Prioritetni pristup</div><h2>Ono što mora biti odmah dostupno</h2></div><p>Ovo mijenja staru statičnu listu u stvarni command dashboard s jasnim rutama i statusima.</p></div>
-        <div class="actions">
-          <a class="card" href="/mobile-admin/" rel="nofollow"><span class="badge warn">review</span><b>Odobrenja i odluke</b><span>Mobile Approval Queue, deploy lock, email lock, registry i publishing odluke.</span></a>
-          <a class="card" href="/mail-studio/?mode=compose" rel="nofollow"><span class="badge warn">protected</span><b>Novi pojedinačni mail</b><span>Compose ekran za ručno slanje bez kampanjskog pokretanja.</span></a>
-          <a class="card" href="/mail-studio/?folder=inbox" rel="nofollow"><span class="badge warn">protected</span><b>Inbox</b><span>Ulazne poruke, threadovi, privitci i inbound audit.</span></a>
-          <a class="card" href="/mail-studio/?folder=sent" rel="nofollow"><span class="badge warn">protected</span><b>Sent</b><span>Poslane poruke, profili pošiljatelja i dokazi isporuke.</span></a>
-          <a class="card" href="/email-status/" rel="nofollow"><span class="badge warn">dynamic</span><b>Status mailova</b><span>Delivered, opened, rejected, bounce, open-count i povezana evidencija.</span></a>
-          <a class="card" href="/contact/" rel="nofollow"><span class="badge">active</span><b>Kontakti</b><span>Javni kontakt i most prema komunikacijskoj povijesti.</span></a>
-          <a class="card" href="/editorial-operations/" rel="nofollow"><span class="badge warn">review</span><b>Izvješća i objave</b><span>THE CODE, dnevni planovi, draftovi, odobrenja i release queue.</span></a>
-          <a class="card" href="/api/public-operations/governance-board"><span class="badge">api</span><b>Javna tabla</b><span>Zadaci, prijedlozi, odluke, zapisnici i zaključci u JSON obliku.</span></a>
+        <div class="section-head"><div><div class="eyebrow">Prioritetni pristup</div><h2>Najvažnije funkcije odmah</h2></div><p>Odobrenje, slanje pojedinačnog maila i provjera komunikacije dostupni su bez traženja po modulima.</p></div>
+        <div class="cards">
+          <a class="card" href="/mobile-admin/" rel="nofollow"><span class="badge warn">review</span><b>Odobrenja i odluke</b><span>Zadrži, odobri, vrati ili otkaži kontrolirane radnje.</span></a>
+          <a class="card" href="/mail-studio/?mode=compose" rel="nofollow"><span class="badge warn">protected</span><b>Novi pojedinačni mail</b><span>Izbor sender profila, primatelja, potpisa i privitaka.</span></a>
+          <a class="card" href="/mail-studio/?folder=inbox" rel="nofollow"><span class="badge warn">protected</span><b>Inbox</b><span>Poruke, threadovi, privitci, reply i forward.</span></a>
+          <a class="card" href="/email-status/" rel="nofollow"><span class="badge warn">dynamic</span><b>Status mailova</b><span>Sent, delivered, opened, rejected, bounce i retry.</span></a>
+          <a class="card" href="/mail-studio/?folder=sent" rel="nofollow"><span class="badge warn">protected</span><b>Sent</b><span>Poslane poruke i dokazna evidencija isporuke.</span></a>
+          <a class="card" href="/contact/"><span class="badge">active</span><b>Kontakti</b><span>Službeni kontakti i komunikacijski ulazi.</span></a>
+          <a class="card" href="/public-operations/"><span class="badge">public</span><b>Public Operations</b><span>Javna izvješća, digitalni profili i governance tabla.</span></a>
+          <a class="card" href="/editorial-operations/" rel="nofollow"><span class="badge warn">review</span><b>Izvješća i objave</b><span>THE CODE, dnevni planovi, draftovi i release queue.</span></a>
         </div>
       </section>
 
       <section class="section" id="mail">
-        <div class="section-head"><div><div class="eyebrow">Mail Studio / Webmail</div><h2>Devet sender profila i ručni webmail tok</h2></div><p>Sljedeći ciklus mora učvrstiti UI za foldere, threadove, draftove, privitke, reply/forward i statuse.</p></div>
-        <div class="mailgrid">
-          <div class="profile"><b>media@gnk-asg.hr</b><small>Media Relations, akreditacije, prijave redakcija.</small></div>
-          <div class="profile"><b>press@gnk-asg.hr</b><small>Objave, komentari, službena priopćenja.</small></div>
+        <div class="section-head"><div><div class="eyebrow">Mail Studio / Webmail</div><h2>Devet kontroliranih sender profila</h2></div><p>Individualna komunikacija, folderi, threadovi, draftovi, privitci, reply/forward i statusi ostaju odvojeni od kampanjskog slanja.</p></div>
+        <div class="profiles">
           <div class="profile"><b>office@gnk-asg.hr</b><small>Opća uredska komunikacija.</small></div>
           <div class="profile"><b>legal@gnk-asg.hr</b><small>Pravni dopisi i kontrolirane obavijesti.</small></div>
-          <div class="profile"><b>finance@gnk-asg.hr</b><small>Financijski upiti i statusi.</small></div>
-          <div class="profile"><b>registry@gnk-asg.hr</b><small>Registry Center i dokumentacijski tijek.</small></div>
-          <div class="profile"><b>operations@gnk-asg.hr</b><small>Operativni zadaci, sastanci i izvješća.</small></div>
-          <div class="profile"><b>thecode@gnk-asg.hr</b><small>THE CODE Intelligence i editorial desk.</small></div>
-          <div class="profile"><b>noreply@gnk-asg.hr</b><small>Automatske potvrde bez ručnih odgovora.</small></div>
+          <div class="profile"><b>media@gnk-asg.hr</b><small>Media Relations i akreditacije.</small></div>
+          <div class="profile"><b>press@gnk-asg.hr</b><small>Objave, komentari i priopćenja.</small></div>
+          <div class="profile"><b>it@gnk-asg.hr</b><small>Tehnički i sigurnosni upiti.</small></div>
+          <div class="profile"><b>assistant@gnk-asg.hr</b><small>Operativna podrška i koordinacija.</small></div>
+          <div class="profile"><b>director@gnk-asg.hr</b><small>Direktorska komunikacija.</small></div>
+          <div class="profile"><b>sefic@gnk-asg.hr</b><small>Kontrolirani osobni poslovni profil.</small></div>
+          <div class="profile"><b>ubo@gnk-asg.hr</b><small>UBO i vlasničko-upravljački upiti.</small></div>
         </div>
       </section>
     </div>
 
     <aside>
       <section class="section" id="governance">
-        <div class="section-head"><div><div class="eyebrow">Governance</div><h2>Odluke, zadaci i izvješća</h2></div></div>
+        <div class="section-head"><div><div class="eyebrow">Governance</div><h2>Odluke i izvješća</h2></div></div>
         <div class="timeline">
-          <div class="step"><i>1</i><div><b>Preliminarno izvješće</b><span>Prije 08:00 ostaje u review stanju.</span></div><div class="status warn">pending</div></div>
-          <div class="step"><i>2</i><div><b>Zadržavanje / otkazivanje</b><span>Executive Office može zadržati ili otkazati prije roka.</span></div><div class="status warn">controlled</div></div>
-          <div class="step"><i>3</i><div><b>Odobrenje nakon 08:00</b><span>Ako nije zadržano ili otkazano, Worker označava public-safe izvješće.</span></div><div class="status">ready</div></div>
-          <div class="step"><i>4</i><div><b>Deploy odluka</b><span>Produkcija se ne dira bez nove izričite potvrde.</span></div><div class="status lock">locked</div></div>
+          <div class="step"><i>1</i><div><b>PRELIMINARY prije 08:00</b><span>Javno preliminarno izvješće čeka odluku Executive Officea.</span></div><div class="state warn">review</div></div>
+          <div class="step"><i>2</i><div><b>Hold / Cancel</b><span>Odluka može zaustaviti automatsko odobrenje.</span></div><div class="state warn">controlled</div></div>
+          <div class="step"><i>3</i><div><b>Odobrenje nakon 08:00</b><span>Ako nije zadržano ili otkazano, status prelazi u approved-by-silence.</span></div><div class="state">ready</div></div>
+          <div class="step"><i>4</i><div><b>Produkcijski deploy</b><span>Uvijek zahtijeva novu izričitu potvrdu.</span></div><div class="state lock">locked</div></div>
         </div>
       </section>
 
       <section class="section" id="workers">
-        <div class="section-head"><div><div class="eyebrow">Worker runtime</div><h2>Preview endpointi</h2></div></div>
-        <div class="worker">
+        <div class="section-head"><div><div class="eyebrow">Worker runtime</div><h2>Kontrolni endpointi</h2></div></div>
+        <div class="workers">
           <a class="endpoint" href="/api/public-operations/health"><code>/api/public-operations/health</code><span>health</span></a>
           <a class="endpoint" href="/api/public-operations/catalog"><code>/api/public-operations/catalog</code><span>catalog</span></a>
           <a class="endpoint" href="/api/public-operations/report/latest"><code>/api/public-operations/report/latest</code><span>report</span></a>
@@ -101,20 +101,21 @@
   </div>
 
   <section class="section" id="public">
-    <div class="section-head"><div><div class="eyebrow">Public portal layer</div><h2>Index, THE CODE, financije, vijesti, objave i tržišta</h2></div><p>Javne rute ostaju dostupne za pregled, ali interni mail, tokeni i auditi nisu javni.</p></div>
-    <div class="actions">
-      <a class="card" href="/"><span class="badge">public</span><b>Javni index</b><span>Glavni portal bez praznih zona.</span></a>
-      <a class="card" href="/the-code/"><span class="badge">public</span><b>THE CODE</b><span>Strateški blok i materijali.</span></a>
-      <a class="card" href="/#financije"><span class="badge">public</span><b>Financije</b><span>Financijski blok i dokumentacijski centar.</span></a>
-      <a class="card" href="/vijesti/"><span class="badge">public</span><b>Vijesti</b><span>News layer i javni sadržaj.</span></a>
-      <a class="card" href="/objave/"><span class="badge">public</span><b>Objave</b><span>Kontrolirane publikacije.</span></a>
-      <a class="card" href="/trzista/"><span class="badge">public</span><b>Tržišta</b><span>Market layer.</span></a>
+    <div class="section-head"><div><div class="eyebrow">Public portal layer</div><h2>Index, THE CODE, financije, vijesti i tržišta</h2></div><p>Javne informacije ostaju dostupne, dok privatni mailovi, tokeni, auditi i interni privitci nisu javno izloženi.</p></div>
+    <div class="cards">
+      <a class="card" href="/"><span class="badge">public</span><b>Javni index</b><span>Glavni korporativni portal.</span></a>
+      <a class="card" href="/public-operations/"><span class="badge">public</span><b>Operativni pregled</b><span>Izvješća, profili i javni governance.</span></a>
+      <a class="card" href="/the-code/"><span class="badge">public</span><b>THE CODE</b><span>Strateški projekt i materijali.</span></a>
+      <a class="card" href="/#financije"><span class="badge">public</span><b>Financije</b><span>Pokazatelji i dokumentacijski centar.</span></a>
+      <a class="card" href="/vijesti/"><span class="badge">public</span><b>Vijesti</b><span>Javni informativni sloj.</span></a>
+      <a class="card" href="/objave/"><span class="badge">public</span><b>Objave</b><span>Korporativne publikacije.</span></a>
+      <a class="card" href="/trzista/"><span class="badge">public</span><b>Tržišta</b><span>Referentni tržišni pregled.</span></a>
     </div>
   </section>
 
-  <div class="notice"><b>Brutalna ocjena:</b> ovo još nije produkcijski release. Ovo je prvi realni pomak iz link-huba u command dashboard. Kritične točke za sljedeće cikluse su Mail Studio/Webmail UX, stvarni Worker preview runtime, usklađivanje s mainom i završni testovi.</div>
+  <div class="notice"><b>Review stanje:</b> sučelje i kod prolaze kroz CI i runtime provjeru. Produkcija, kampanje, DNS i Cloudflare produkcijske rute ostaju zaključani.</div>
 </main>
 </div>
-<nav class="mobilebar" aria-label="Mobile quick nav"><a href="#actions">Akcije</a><a href="#mail">Mail</a><a href="#governance">Odluke</a><a href="#workers">Workeri</a><a href="/mail-studio/">Studio</a></nav>
+<nav class="mobilebar" aria-label="Mobile quick navigation"><a href="#actions">Akcije</a><a href="#mail">Mail</a><a href="#governance">Odluke</a><a href="#workers">Workeri</a><a href="/mail-studio/">Studio</a></nav>
 </body>
 </html>
