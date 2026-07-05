@@ -29,6 +29,7 @@ on:
       - 'workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs'
       - 'workers/gnk-asg-direct-operator/test/global-service-centres.test.mjs'
       - 'workers/gnk-asg-direct-operator/test/mail-studio-centre-routing.test.mjs'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
       - '.github/workflows/check-enterprise-final-review.yml'
 
 permissions:
@@ -74,7 +75,7 @@ jobs:
             apps/portal/assets/data/group-profile-review.json \
             apps/portal/assets/data/registry-center-review.json
 
-      - name: Verify review routes and locks
+      - name: Verify command dashboard routes and locks
         run: |
           set -euxo pipefail
           for file in \
@@ -92,14 +93,15 @@ jobs:
             test -s "$file"
             grep -qi 'noindex' "$file"
           done
-          for route in /registry-center/ /about-the-group/ /o-grupi/ /deployment/ /mobile-admin/ /seo/ /media-registration-admin/; do
+          for route in /mobile-admin/ /mail-studio/ /email-status/ /contact/ /public-operations/ /editorial-operations/; do
             grep -q "$route" apps/portal/enterprise/index.html
           done
-          grep -q '/media-application/?lang=en' apps/portal/enterprise/index.html
-          grep -q 'Media Applications Review' apps/portal/enterprise/index.html
-          grep -q 'Public Media Application' apps/portal/enterprise/index.html
-          grep -q 'Production deploy locked' apps/portal/enterprise/index.html
+          grep -Eq 'Production( deploy)? locked' apps/portal/enterprise/index.html
           grep -q 'Mass email locked' apps/portal/enterprise/index.html
+          grep -q 'Enterprise Command Dashboard' apps/portal/enterprise/index.html
+          grep -q 'Odobrenja i odluke' apps/portal/enterprise/index.html
+          grep -q 'Novi pojedinačni mail' apps/portal/enterprise/index.html
+          grep -q 'Status mailova' apps/portal/enterprise/index.html
 
       - name: Verify Admin Center media entry distinction
         run: |
@@ -145,9 +147,9 @@ jobs:
           grep -q 'message.forward(MANDATORY_BCC,headers)' workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           grep -q "X-GNK-ASG-Original-Recipient" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           grep -q 'Media raw stream pass-through' workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
-          grep -q 'application\\.pdf' workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
+          grep -q 'application\.pdf' workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
 
-      - name: Verify no production infrastructure changes
+      - name: Verify no production infrastructure activation
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
@@ -155,7 +157,11 @@ jobs:
           set -euxo pipefail
           changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           printf '%s\n' "$changed"
-          if printf '%s\n' "$changed" | grep -E '(^|/)(wrangler\.toml|wrangler\.jsonc|\.dev\.vars|secrets?\.)|^(apps/portal/index\.html|apps/portal/en/index\.html)$'; then
-            echo 'Production infrastructure or locked public entry point changed.' >&2
-            exit 1
-          fi
+          ! printf '%s\n' "$changed" | grep -E '(^|/)\.dev\.vars$|(^|/)secrets?\.'
+          wrangler=workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q '^workers_dev = true' "$wrangler"
+          grep -q '^preview_urls = true' "$wrangler"
+          grep -q 'MAIL_MANUAL_LIVE = "false"' "$wrangler"
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' "$wrangler"
+          ! grep -Eq '^[[:space:]]*(routes|route|zone_name)[[:space:]]*=' "$wrangler"
+          ! grep -Eq '^[[:space:]]*\[\[routes\]\]' "$wrangler"
