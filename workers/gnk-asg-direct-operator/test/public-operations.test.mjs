@@ -48,5 +48,5 @@ const approvedBoard=__test.governanceBoard(date,null,atDeadline);
 assert.equal(approvedBoard.controls.find(item=>item.id==='reports-before-0800')?.state,'closed');
 assert.equal(approvedBoard.controls.find(item=>item.id==='approval-after-0800')?.state,'approved');
 
-assert.match(VERSION,/PUBLIC_OPERATIONS_V2/);
+assert.match(VERSION,/PUBLIC_OPERATIONS_V3/);
 console.log('PUBLIC_OPERATIONS_DEADLINE_POLICY_OK');
