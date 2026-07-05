@@ -1,11 +1,12 @@
 (()=>{
   'use strict';
 
-  const VERSION='GNK_ASG_PUBLIC_OPERATIONS_DASHBOARD_V1_20260704';
+  const VERSION='GNK_ASG_PUBLIC_OPERATIONS_DASHBOARD_V1_20260705_GOVERNANCE';
   const DEFAULT_TARGET='[data-public-operations-dashboard]';
   const ENDPOINTS={
     catalog:'/api/public-operations/catalog',
-    latestReport:'/api/public-operations/report/latest'
+    latestReport:'/api/public-operations/report/latest',
+    governanceBoard:'/api/public-operations/governance-board'
   };
 
   const text=value=>String(value??'').trim();
@@ -53,11 +54,17 @@
     return `<span class="state-pill public-ops-state">${escapeHtml(state)}</span>`;
   }
 
-  function render(target,{catalog,report}){
+  function listCards(items,emptyLabel){
+    const records=Array.isArray(items)?items:[];
+    if(!records.length)return `<p>${escapeHtml(emptyLabel||'Nema javnih zapisa.')}</p>`;
+    return records.slice(0,8).map(item=>`<article class="pod-card public-ops-file"><span>${escapeHtml(item.state||item.status||item.owner||item.id||'record')}</span><strong>${escapeHtml(item.title||item.label||item.summary||item.id||'Javni zapis')}</strong>${item.route?`<small>${escapeHtml(item.route)}</small>`:''}${item.minimumEvidence?`<small>${escapeHtml(item.minimumEvidence.join(' · '))}</small>`:''}</article>`).join('');
+  }
+
+  function render(target,{catalog,report,governance}){
     const workforce=report?.workforce||{};
     const editorial=report?.editorial||{};
     const outputs=report?.publicOutputs||{};
-    const approval=report?.approval||{};
+    const approval=report?.approval||governance?.approval||{};
     const files=catalogueFiles(catalog);
     target.innerHTML=`
       <section class="section public-ops-panel" id="dnevna-izvjesca" aria-labelledby="public-ops-title">
@@ -72,6 +79,7 @@
           <div class="trust"><span class="icon">◎</span><div><b>Status izvješća</b><span>${statusPill(approval.state)}</span></div></div>
           <div class="trust"><span class="icon">◷</span><div><b>Pravilo pregleda</b><span>${escapeHtml(approval.deadline||'08:00 Europe/Zagreb')}</span></div></div>
           <div class="trust"><span class="icon">▣</span><div><b>Katalog</b><span>${escapeHtml(catalog?.version||'public catalogue')}</span></div></div>
+          <div class="trust"><span class="icon">⚑</span><div><b>Governance</b><span>${statusPill(governance?.approval?.state||approval.state)}</span></div></div>
         </div>
         <div class="quick-grid public-ops-grid">
           ${metric('Digitalni operativni profili',number(workforce.configuredProfiles).toLocaleString('hr-HR'),'transparentni workflow identiteti')}
@@ -83,8 +91,21 @@
         </div>
         <div class="mega-grid public-ops-documents">
           <div class="mega-col"><h3>Javni PDF i izvori</h3>${files.length?files.map(fileLink).join(''):'<p>Nema javnih PDF zapisa u katalogu.</p>'}</div>
-          <div class="mega-col"><h3>Sigurnosna granica</h3><p>${escapeHtml(workforce.disclosure||'Digital operations profiles are functional workflow identities, not a confirmed employment registry.')}</p><p>Mail podaci: ${escapeHtml(report?.systems?.privateMailData||'not_public')}</p><p>Secrets: ${escapeHtml(report?.systems?.tokensAndSecrets||'never_public')}</p></div>
-          <div class="mega-col"><h3>Javni izlazi</h3><a href="${escapeHtml(outputs.publicationsRoute||'/objave/')}">Objave</a><a href="${escapeHtml(outputs.newsRoute||'/vijesti/')}">Vijesti</a><a href="${escapeHtml(workforce.publicDirectory||'/digital-workforce/directory/')}">Digital workforce directory</a></div>
+          <div class="mega-col"><h3>Sigurnosna granica</h3><p>${escapeHtml(workforce.disclosure||'Digital operations profiles are functional workflow identities, not a confirmed employment registry.')}</p><p>Mail podaci: ${escapeHtml(report?.systems?.privateMailData||'not_public')}</p><p>Secrets: ${escapeHtml(report?.systems?.tokensAndSecrets||'never_public')}</p><p>Admin endpointi: ${escapeHtml(report?.systems?.adminEndpoints||'token_required')}</p></div>
+          <div class="mega-col"><h3>Javni izlazi</h3><a href="${escapeHtml(outputs.publicationsRoute||'/objave/')}">Objave</a><a href="${escapeHtml(outputs.newsRoute||'/vijesti/')}">Vijesti</a><a href="${escapeHtml(workforce.publicDirectory||'/digital-workforce/directory/')}">Digital workforce directory</a><a href="${escapeHtml(outputs.governanceRoute||ENDPOINTS.governanceBoard)}">Governance JSON</a></div>
+        </div>
+      </section>
+      <section class="section public-governance-panel" id="javna-tabla">
+        <div class="section-head"><div><p class="eyebrow">Governance board</p><h2>Javna tabla zadataka, odluka, sastanaka i zaključaka</h2></div><p>Ova tabla je javni sažetak. Admin status, audit i promjena odluka zaključani su tokenom.</p></div>
+        <div class="mega-grid">
+          <div class="mega-col"><h3>Kontrole</h3>${listCards(governance?.controls,'Nema javnih kontrola.')}</div>
+          <div class="mega-col"><h3>Zadaci</h3>${listCards(governance?.tasks,'Nema javnih zadataka.')}</div>
+          <div class="mega-col"><h3>Odluke</h3>${listCards(governance?.decisions,'Nema javnih odluka.')}</div>
+        </div>
+        <div class="mega-grid">
+          <div class="mega-col"><h3>Sastanci</h3>${listCards(governance?.meetings,'Nema javnih sastanaka.')}</div>
+          <div class="mega-col"><h3>Zapisnici i zaključci</h3>${listCards(governance?.minutes,'Nema javnih zapisnika.')}</div>
+          <div class="mega-col"><h3>Worker endpointi</h3><a href="${ENDPOINTS.catalog}">Katalog</a><a href="${ENDPOINTS.latestReport}">Zadnje izvješće</a><a href="${ENDPOINTS.governanceBoard}">Governance board</a><a href="/api/public-operations/health">Health</a></div>
         </div>
       </section>`;
   }
@@ -97,9 +118,9 @@
     if(!target)return {ok:false,reason:'target_not_found',version:VERSION};
     target.setAttribute('data-public-operations-dashboard-version',VERSION);
     try{
-      const [catalog,report]=await Promise.all([readJson(ENDPOINTS.catalog),readJson(ENDPOINTS.latestReport)]);
-      render(target,{catalog,report});
-      return {ok:true,version:VERSION,catalogVersion:catalog?.version||null,reportVersion:report?.version||null};
+      const [catalog,report,governance]=await Promise.all([readJson(ENDPOINTS.catalog),readJson(ENDPOINTS.latestReport),readJson(ENDPOINTS.governanceBoard)]);
+      render(target,{catalog,report,governance});
+      return {ok:true,version:VERSION,catalogVersion:catalog?.version||null,reportVersion:report?.version||null,governanceVersion:governance?.version||null};
     }catch(error){
       renderError(target,error);
       return {ok:false,version:VERSION,error:String(error?.message||error)};
