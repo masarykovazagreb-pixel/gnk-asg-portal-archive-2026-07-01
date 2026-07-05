@@ -35,7 +35,7 @@ assert.equal(singapore.capabilities.prepareProposals,true);
 assert.equal(singapore.capabilities.delegatedOperationalDecisions,true);
 assert.equal(singapore.capabilities.prepareCompanyPublications,true);
 assert.equal(singapore.privacy.counterparties,'hidden');
-assert.equal(singapore.privacy.collaborators,'approved-profile-view-only');
+assert.equal(singapore.privacy.collaborators,'hidden');
 assert.equal(singapore.privacy.privateAssignments,'hidden');
 assert.equal(singapore.privacy.messages,'hidden');
 assert.ok(['available','limited','on-call','offline'].includes(singapore.availability));
