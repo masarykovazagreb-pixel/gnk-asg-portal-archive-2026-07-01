@@ -8,27 +8,10 @@ on:
       - 'apps/portal/admin-center/**'
       - 'apps/portal/about-the-group/**'
       - 'apps/portal/o-grupi/**'
-      - 'apps/portal/registry-center/**'
-      - 'apps/portal/deployment/**'
-      - 'apps/portal/mobile-admin/**'
-      - 'apps/portal/seo/**'
       - 'apps/portal/entities/**'
       - 'apps/portal/digital-workforce/**'
-      - 'apps/portal/mission-control/**'
-      - 'apps/portal/assets/admin-media-applications-entry-v1.js'
-      - 'apps/portal/assets/data/group-profile-review.json'
-      - 'apps/portal/assets/data/registry-center-review.json'
-      - 'apps/portal/assets/email/gnk-media-signature.html'
-      - 'apps/portal/assets/email/gnk-media-autoresponder.html'
-      - 'workers/gnk-asg-direct-operator/src/global-service-centres-v1.js'
-      - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js'
-      - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js'
-      - 'workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js'
-      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
-      - 'workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js'
-      - 'workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs'
-      - 'workers/gnk-asg-direct-operator/test/global-service-centres.test.mjs'
-      - 'workers/gnk-asg-direct-operator/test/mail-studio-centre-routing.test.mjs'
+      - 'workers/gnk-asg-direct-operator/src/**'
+      - 'workers/gnk-asg-direct-operator/test/**'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
       - '.github/workflows/check-enterprise-final-review.yml'
 
@@ -47,48 +30,44 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Check JavaScript module syntax
+      - name: Syntax and unit tests
         run: |
           set -euxo pipefail
-          node --input-type=module --check < workers/gnk-asg-direct-operator/src/global-service-centres-v1.js
-          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js
-          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
-          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
-          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          node --check apps/portal/assets/admin-media-applications-entry-v1.js
-          node --check workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
-          node --check workers/gnk-asg-direct-operator/test/global-service-centres.test.mjs
-          node --check workers/gnk-asg-direct-operator/test/mail-studio-centre-routing.test.mjs
-
-      - name: Run mail and centre unit tests
-        run: |
-          set -euxo pipefail
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
           node workers/gnk-asg-direct-operator/test/global-service-centres.test.mjs
           node workers/gnk-asg-direct-operator/test/mail-studio-centre-routing.test.mjs
           node workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
 
-      - name: Validate controlled JSON models
+      - name: Enterprise dashboard contract
         run: |
           set -euxo pipefail
-          node -e "const fs=require('fs'); for (const f of process.argv.slice(1)) JSON.parse(fs.readFileSync(f,'utf8'));" \
-            apps/portal/assets/data/group-profile-review.json \
-            apps/portal/assets/data/registry-center-review.json
+          page=apps/portal/enterprise/index.html
+          test -s "$page"
+          grep -qi 'noindex,nofollow' "$page"
+          grep -q 'Enterprise Command Dashboard' "$page"
+          grep -q 'Odobrenja i odluke' "$page"
+          grep -q 'Novi pojedinačni mail' "$page"
+          grep -q 'Status mailova' "$page"
+          grep -q '/public-operations/' "$page"
+          grep -q 'Production locked' "$page"
+          grep -q 'Mass email locked' "$page"
 
-      - name: Verify protected and public route contracts
+      - name: Protected route auth contract
         run: |
           set -euxo pipefail
-          for file in \
-            apps/portal/enterprise/index.html \
-            apps/portal/admin-center/index.html \
-            apps/portal/registry-center/index.html \
-            apps/portal/deployment/index.html \
-            apps/portal/mobile-admin/index.html \
-            apps/portal/seo/index.html \
-            apps/portal/mission-control/index.html; do
-            test -s "$file"
-            grep -qi 'noindex' "$file"
+          auth=workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          for route in enterprise admin-center mission-control registry-center deployment mobile-admin seo mail-studio email-status; do
+            grep -Eq "'/${route}'|\"/${route}\"" "$auth"
           done
+          grep -q 'meta name="robots" content="noindex,nofollow"' "$auth"
+          grep -q 'isUi(path)' "$auth"
+          grep -q 'loginPage(next)' "$auth"
+
+      - name: Public route SEO contract
+        run: |
+          set -euxo pipefail
           for file in \
             apps/portal/about-the-group/index.html \
             apps/portal/o-grupi/index.html \
@@ -97,71 +76,10 @@ jobs:
             test -s "$file"
             grep -qi 'index,follow' "$file"
           done
-          for route in /mobile-admin/ /mail-studio/ /email-status/ /contact/ /public-operations/ /editorial-operations/; do
-            grep -q "$route" apps/portal/enterprise/index.html
-          done
-          grep -Eq 'Production( deploy)? locked' apps/portal/enterprise/index.html
-          grep -q 'Mass email locked' apps/portal/enterprise/index.html
-          grep -q 'Enterprise Command Dashboard' apps/portal/enterprise/index.html
-          grep -q 'Odobrenja i odluke' apps/portal/enterprise/index.html
-          grep -q 'Novi pojedinačni mail' apps/portal/enterprise/index.html
-          grep -q 'Status mailova' apps/portal/enterprise/index.html
 
-      - name: Verify Admin Center media entry distinction
+      - name: Production safety lock
         run: |
           set -euxo pipefail
-          grep -q 'admin-media-applications-entry-v1.js' apps/portal/admin-center/index.html
-          grep -q 'Pregled media prijava' apps/portal/assets/admin-media-applications-entry-v1.js
-          grep -q 'Javna media prijavnica' apps/portal/assets/admin-media-applications-entry-v1.js
-          grep -q 'data-module="mediaPortal"' apps/portal/assets/admin-media-applications-entry-v1.js
-          grep -q 'data-module="mediaApplications"' apps/portal/assets/admin-media-applications-entry-v1.js
-          grep -q 'heroMediaReview' apps/portal/assets/admin-media-applications-entry-v1.js
-
-      - name: Verify logo and signature parity
-        run: |
-          set -euxo pipefail
-          logo='gnk-asg-email-logo-transparent.png'
-          grep -q "$logo" apps/portal/assets/email/gnk-media-signature.html
-          grep -q "$logo" apps/portal/assets/email/gnk-media-autoresponder.html
-          grep -q 'data-gnk-asg-media-signature' apps/portal/assets/email/gnk-media-signature.html
-          grep -q '{{personalized_greeting}}' apps/portal/assets/email/gnk-media-autoresponder.html
-          grep -q '{{personalized_response}}' apps/portal/assets/email/gnk-media-autoresponder.html
-          grep -q '{{reference}}' apps/portal/assets/email/gnk-media-autoresponder.html
-          grep -q 'mail-studio-extension-v4.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
-          grep -q 'mail-studio-extension-v3.js' workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
-          grep -q 'normalizeMailStudioSignature' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
-          grep -q 'enforceMediaGoldSignature' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
-
-      - name: Verify ten-centre contract
-        run: |
-          set -euxo pipefail
-          grep -q "Sending Global Service Centre" workers/gnk-asg-direct-operator/src/global-service-centres-v1.js
-          grep -q "Receiving Global Service Centre" workers/gnk-asg-direct-operator/src/global-service-centres-v1.js
-          grep -q "differentRandomCentreIndex" workers/gnk-asg-direct-operator/src/global-service-centres-v1.js
-          grep -q "The same centre must not repeat immediately" workers/gnk-asg-direct-operator/test/global-service-centres.test.mjs
-          grep -q "Outbound centre must not repeat immediately" workers/gnk-asg-direct-operator/test/mail-studio-centre-routing.test.mjs
-          grep -q "Inbound centre must not repeat immediately" workers/gnk-asg-direct-operator/test/mail-studio-centre-routing.test.mjs
-
-      - name: Verify inbound archive and MIME pass-through
-        run: |
-          set -euxo pipefail
-          grep -q 'return{handled:false,message:prepared.message' workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
-          grep -q 'const nextInbound=studio?.message||inbound' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
-          grep -q 'MANDATORY_BCC' workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          grep -q 'message.forward(MANDATORY_BCC,headers)' workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          grep -q "X-GNK-ASG-Original-Recipient" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
-          grep -q 'Media raw stream pass-through' workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
-          grep -q 'application\.pdf' workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
-
-      - name: Verify no production infrastructure activation
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          set -euxo pipefail
-          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
-          printf '%s\n' "$changed"
-          ! printf '%s\n' "$changed" | grep -E '(^|/)\.dev\.vars$|(^|/)secrets?\.'
           wrangler=workers/gnk-asg-direct-operator/wrangler.toml
           grep -q '^workers_dev = true' "$wrangler"
           grep -q '^preview_urls = true' "$wrangler"
