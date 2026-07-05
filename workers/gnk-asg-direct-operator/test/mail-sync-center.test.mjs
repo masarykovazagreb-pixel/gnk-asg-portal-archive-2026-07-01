@@ -52,8 +52,8 @@ const outbound=await recordMailSyncOutbound({GNK_ASG_D1:d1},{
   'References':'<root@example.test> <parent@example.test>'
  })
 });
-assert.equal(outbound.ok,true);
-assert.equal(outbound.existing,false);
+assert.equal(outbound.direction,'OUTBOUND');
+assert.equal(outbound.status,'SENT');
 assert.match(outbound.threadId,/^mid:/);
 const insert=executed.find(item=>item.sql.startsWith('INSERT INTO mail_sync_messages'));
 assert.ok(insert,'outbound INSERT must execute');
