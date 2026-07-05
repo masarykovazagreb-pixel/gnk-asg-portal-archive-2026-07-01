@@ -20,8 +20,11 @@ import {handleTemporaryMessage,isTemporaryMessageApiPath,isTemporaryMessagePubli
 import {handleEditorialOperationsApi,isEditorialOperationsApi,runEditorialDraftPlanner,VERSION as EDITORIAL_PLANNER_VERSION} from './editorial-draft-planner-v1.js';
 import {handleEditorialWorkflowApi,VERSION as EDITORIAL_WORKFLOW_API_VERSION} from './editorial-workflow-api-v1.js';
 import {handlePublicOperations,handlePublicOperationsAdmin,isPublicOperationsPath,runPublicOperationsCycle,VERSION as PUBLIC_OPERATIONS_VERSION} from './public-operations-v1.js';
+import {handleEnterpriseProjectApi,isEnterpriseProjectApi,runEnterpriseProjectCycle,VERSION as ENTERPRISE_PROJECTS_VERSION} from './enterprise-project-operations-v1.js';
+import {handleNewsMarketIntelligenceApi,isNewsMarketIntelligenceApi,runNewsMarketIntelligence,VERSION as MARKET_INTELLIGENCE_VERSION} from './news-market-intelligence-v1.js';
+
 const PUBLICATION_ROUTE_VERSION='GNK_ASG_STATIC_PUBLICATION_ROUTE_V1_20260702';
-export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${EMAIL_STATUS_BUTTONS_VERSION}_${EMAIL_PING_VERSION}_${MAIL_SCHEDULER_VERSION}_${TEMPORARY_MESSAGE_VERSION}_${EDITORIAL_PLANNER_VERSION}_${EDITORIAL_WORKFLOW_API_VERSION}_${PUBLIC_OPERATIONS_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
+export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${EMAIL_STATUS_BUTTONS_VERSION}_${EMAIL_PING_VERSION}_${MAIL_SCHEDULER_VERSION}_${TEMPORARY_MESSAGE_VERSION}_${EDITORIAL_PLANNER_VERSION}_${EDITORIAL_WORKFLOW_API_VERSION}_${PUBLIC_OPERATIONS_VERSION}_${ENTERPRISE_PROJECTS_VERSION}_${MARKET_INTELLIGENCE_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
 const trackedEnv=env=>withEmailStatusTracking(env);
 const protectedEnv=env=>withEnglishEmailMetadata(withEnglishGreetingGuard(trackedEnv(env)));
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
@@ -37,65 +40,89 @@ const isEmailStatusUi=path=>path==='/email-status'||path.startsWith('/email-stat
 const denied=()=>new Response(JSON.stringify({ok:false,error:'unauthorized'}),{status:401,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
 const loginRedirect=request=>{const url=new URL(request.url),next=url.pathname+url.search;return new Response(null,{status:303,headers:{location:`/admin-login/?next=${encodeURIComponent(next)}`,'cache-control':'no-store'}});};
 const stampRegistration=response=>{const headers=new Headers(response.headers);headers.set('x-gnk-asg-media-registration',REGISTRATION_VERSION);headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return new Response(response.body,{status:response.status,statusText:response.statusText,headers});};
+
 async function serveStaticPublication(request,env,path){
- if(!['GET','HEAD'].includes(request.method)||!env.ASSETS?.fetch||!isStaticPublication(path))return null;
- const target=new URL(request.url);target.pathname=`${path}/index.html`;target.search='';
- const response=await env.ASSETS.fetch(new Request(target,{method:request.method,headers:request.headers}));
- if(response.status===404)return null;
- const headers=new Headers(response.headers);headers.set('cache-control','public, max-age=300, stale-while-revalidate=3600');headers.set('x-gnk-asg-static-publication-route',PUBLICATION_ROUTE_VERSION);headers.set('x-content-type-options','nosniff');
- return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+  if(!['GET','HEAD'].includes(request.method)||!env.ASSETS?.fetch||!isStaticPublication(path))return null;
+  const target=new URL(request.url);target.pathname=`${path}/index.html`;target.search='';
+  const response=await env.ASSETS.fetch(new Request(target,{method:request.method,headers:request.headers}));
+  if(response.status===404)return null;
+  const headers=new Headers(response.headers);headers.set('cache-control','public, max-age=300, stale-while-revalidate=3600');headers.set('x-gnk-asg-static-publication-route',PUBLICATION_ROUTE_VERSION);headers.set('x-content-type-options','nosniff');
+  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
+
 export default{
- async fetch(request,env,ctx){
-  const tracked=trackedEnv(env),active=protectedEnv(tracked),path=pathOf(request);
-  if(isPublicOperationsPath(path))return handlePublicOperations(request,tracked);
-  if(isTemporaryMessagePublicPath(path)){const temporary=await handleTemporaryMessage(request,tracked);if(temporary)return temporary;}
-  if(isEmailStatusPath(path)){
-   if(!isOpenPixel(path)&&!(await authorizeCampaignMailer(request,active,ctx,app)))return isEmailStatusUi(path)&&['GET','HEAD'].includes(request.method)?loginRedirect(request):denied();
-   const tracking=await handleEmailStatusRequest(request,tracked);if(tracking)return tracking;
+  async fetch(request,env,ctx){
+    const tracked=trackedEnv(env),active=protectedEnv(tracked),path=pathOf(request);
+    if(isPublicOperationsPath(path))return handlePublicOperations(request,tracked);
+    if(isEnterpriseProjectApi(path)){
+      if(!(await authorizeCampaignMailer(request,active,ctx,app)))return path.startsWith('/api/enterprise-projects')?denied():loginRedirect(request);
+      return handleEnterpriseProjectApi(request,tracked);
+    }
+    if(isNewsMarketIntelligenceApi(path)){
+      if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
+      return handleNewsMarketIntelligenceApi(request,tracked);
+    }
+    if(isTemporaryMessagePublicPath(path)){const temporary=await handleTemporaryMessage(request,tracked);if(temporary)return temporary;}
+    if(isEmailStatusPath(path)){
+      if(!isOpenPixel(path)&&!(await authorizeCampaignMailer(request,active,ctx,app)))return isEmailStatusUi(path)&&['GET','HEAD'].includes(request.method)?loginRedirect(request):denied();
+      const tracking=await handleEmailStatusRequest(request,tracked);if(tracking)return tracking;
+    }
+    if(isEmailPingPath(path)){
+      if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
+      const ping=await handleEmailPingTest(request,tracked);if(ping)return ping;
+    }
+    if(isManualMailSchedulerPath(path)){
+      if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
+      const scheduled=await handleManualMailScheduler(request,tracked);if(scheduled)return scheduled;
+    }
+    if(isTemporaryMessageApiPath(path)){
+      if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
+      const temporary=await handleTemporaryMessage(request,tracked);if(temporary)return temporary;
+    }
+    if(isEditorialOperationsApi(path)){
+      if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
+      const publicOperationsAdmin=await handlePublicOperationsAdmin(request,tracked);if(publicOperationsAdmin)return publicOperationsAdmin;
+      const workflow=await handleEditorialWorkflowApi(request,tracked);if(workflow)return workflow;
+      return handleEditorialOperationsApi(request,tracked);
+    }
+    if(isAdminRegistration(path)){
+      if(!(await authorizeCampaignMailer(request,active,ctx,app)))return path.startsWith('/media-registration-admin')&&['GET','HEAD'].includes(request.method)?loginRedirect(request):denied();
+      const registrationAdmin=await handleMediaRegistrationAdmin(request,tracked);if(registrationAdmin)return stampRegistration(registrationAdmin);
+    }
+    const publication=await serveStaticPublication(request,tracked,path);if(publication)return publication;
+    const publicPdf=await handlePublicTheCodePdf(request,tracked);if(publicPdf)return publicPdf;
+    if(isPublicRegistration(path)){const registration=await handleMediaRegistrationPublic(request,tracked);if(registration)return stampRegistration(registration);}
+    if(isTransparentMediaLogo(path))return serveTransparentMediaLogo(request);
+    if(isCampaignMailerApi(path)){if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();return handleCampaignMailer(request,tracked,ctx);}
+    if(isCampaignMailer(path)){const campaign=await serveCampaignMailer(request,active,ctx,app);return addEmailStatusButtons(request,campaign);}
+    const mailStudio=await handleMailStudioExtension(request,tracked,ctx,app);if(mailStudio)return addEmailStatusButtons(request,mailStudio);
+    const response=await app.fetch(request,active,ctx);
+    const linked=await addCampaignMailerLink(request,response);
+    const withContact=await addBackendContactMenuLink(request,linked);
+    const patched=await patchMailStudioResponse(request,withContact);
+    return addEmailStatusButtons(request,patched);
+  },
+  scheduled(event,env,ctx){
+    const tracked=trackedEnv(env),active=protectedEnv(tracked);
+    const task=Promise.allSettled([
+      runQueue(tracked),
+      runScheduledManualMail(tracked),
+      syncCloudflareEmailStatuses(tracked),
+      runEditorialDraftPlanner(tracked),
+      runPublicOperationsCycle(tracked),
+      runEnterpriseProjectCycle(tracked),
+      runNewsMarketIntelligence(tracked),
+      typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)
+    ]);
+    if(ctx?.waitUntil){ctx.waitUntil(task);return;}
+    return task;
+  },
+  async email(message,env,ctx){
+    const ai=prepareAiAutoReply(message,env),inbound=ai.message,tracked=trackedEnv(ai.env),active=protectedEnv(tracked);
+    const fixed=await handleMediaBootstrapPdfForwardFix(inbound,active,ctx);if(fixed?.handled)return fixed;
+    await recordInbound(inbound,tracked);
+    const studio=await handleMailStudioInbound(inbound,tracked,ctx,app);if(studio?.handled)return studio;
+    const nextInbound=studio?.message||inbound;
+    if(typeof app.email==='function')return app.email(nextInbound,isMediaInbound(nextInbound)?tracked:active,ctx);
   }
-  if(isEmailPingPath(path)){
-   if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
-   const ping=await handleEmailPingTest(request,tracked);if(ping)return ping;
-  }
-  if(isManualMailSchedulerPath(path)){
-   if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
-   const scheduled=await handleManualMailScheduler(request,tracked);if(scheduled)return scheduled;
-  }
-  if(isTemporaryMessageApiPath(path)){
-   if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
-   const temporary=await handleTemporaryMessage(request,tracked);if(temporary)return temporary;
-  }
-  if(isEditorialOperationsApi(path)){
-   if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();
-   const publicOperationsAdmin=await handlePublicOperationsAdmin(request,tracked);if(publicOperationsAdmin)return publicOperationsAdmin;
-   const workflow=await handleEditorialWorkflowApi(request,tracked);if(workflow)return workflow;
-   return handleEditorialOperationsApi(request,tracked);
-  }
-  if(isAdminRegistration(path)){
-   if(!(await authorizeCampaignMailer(request,active,ctx,app)))return path.startsWith('/media-registration-admin')&&['GET','HEAD'].includes(request.method)?loginRedirect(request):denied();
-   const registrationAdmin=await handleMediaRegistrationAdmin(request,tracked);if(registrationAdmin)return stampRegistration(registrationAdmin);
-  }
-  const publication=await serveStaticPublication(request,tracked,path);if(publication)return publication;
-  const publicPdf=await handlePublicTheCodePdf(request,tracked);if(publicPdf)return publicPdf;
-  if(isPublicRegistration(path)){const registration=await handleMediaRegistrationPublic(request,tracked);if(registration)return stampRegistration(registration)}
-  if(isTransparentMediaLogo(path))return serveTransparentMediaLogo(request);
-  if(isCampaignMailerApi(path)){if(!(await authorizeCampaignMailer(request,active,ctx,app)))return denied();return handleCampaignMailer(request,tracked,ctx)}
-  if(isCampaignMailer(path)){const campaign=await serveCampaignMailer(request,active,ctx,app);return addEmailStatusButtons(request,campaign)}
-  const mailStudio=await handleMailStudioExtension(request,tracked,ctx,app);if(mailStudio)return addEmailStatusButtons(request,mailStudio);
-  const response=await app.fetch(request,active,ctx);
-  const linked=await addCampaignMailerLink(request,response);
-  const withContact=await addBackendContactMenuLink(request,linked);
-  const patched=await patchMailStudioResponse(request,withContact);
-  return addEmailStatusButtons(request,patched);
- },
- scheduled(event,env,ctx){const tracked=trackedEnv(env),active=protectedEnv(tracked),task=Promise.allSettled([runQueue(tracked),runScheduledManualMail(tracked),syncCloudflareEmailStatuses(tracked),runEditorialDraftPlanner(tracked),runPublicOperationsCycle(tracked),typeof app.scheduled==='function'?app.scheduled(event,active,ctx):Promise.resolve(null)]);if(ctx?.waitUntil){ctx.waitUntil(task);return}return task},
- async email(message,env,ctx){
-  const ai=prepareAiAutoReply(message,env),inbound=ai.message,tracked=trackedEnv(ai.env),active=protectedEnv(tracked);
-  const fixed=await handleMediaBootstrapPdfForwardFix(inbound,active,ctx);if(fixed?.handled)return fixed;
-  await recordInbound(inbound,tracked);
-  const studio=await handleMailStudioInbound(inbound,tracked,ctx,app);if(studio?.handled)return studio;
-  const nextInbound=studio?.message||inbound;
-  if(typeof app.email==='function')return app.email(nextInbound,isMediaInbound(nextInbound)?tracked:active,ctx);
- }
 };
