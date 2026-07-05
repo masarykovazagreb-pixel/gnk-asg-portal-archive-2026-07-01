@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict';
+import {buildCompanyOperations,VERSION} from '../src/enterprise-company-operations-v1.js';
+
+const ids=['slovenia','hungary','serbia1','serbia2','serbia3','serbia4','vancouver','toronto','mexicocity','panama','bogota','lima','santiago','saopaulo','buenosaires','dubai','mumbai','singapore','jakarta','beijing','seoul','tokyo','kualalumpur','hongkong','casablanca','lagos','nairobi','johannesburg','capetown','sydney','auckland','sanjose','quito','montevideo','doha','bangkok','manila','hochiminh','accra','kigali','portlouis','daressalaam','perth'];
+const network={center:{place:'Boulder, Colorado, USA'},nodes:ids.map((id,index)=>({id,name_en:id,status:index<31?'active':'planned',place_en:`Country ${index+1}`,region:index%2?'Europe':'International'}))};
+const projects=[{id:'P1',name:'Portal',stage:'review',publicLabel:'REVIEW',territory:'global'},{id:'P2',name:'Media',stage:'build',publicLabel:'REVIEW',territory:'global'}];
+const assignments=[];
+for(let index=0;index<43;index++){
+  const slot=`GNK${String(index+1).padStart(2,'0')}`;
+  assignments.push({workerId:`MCO-${slot}-${String(index+1).padStart(4,'0')}`,workState:'in-progress',primaryProjectId:'P1',supportProjectId:'P2'});
+  assignments.push({workerId:`PUB-${slot}-${String(index+44).padStart(4,'0')}`,workState:'review-required',primaryProjectId:'P2',supportProjectId:'P1'});
+}
+const model=buildCompanyOperations(network,assignments,projects,new Date('2026-07-06T10:00:00.000Z'));
+assert.match(VERSION,/COMPANY_OPERATIONS_V1/);
+assert.equal(model.companyCount,45);
+assert.equal(model.codedCompanyCount,43);
+assert.equal(model.companies.length,43);
+assert.equal(model.group.publicName,'GNK DINAMO Ltd. Group');
+assert.equal(model.gnkAsg.publicName,'GNK ASG d.o.o.');
+assert.equal(model.group.networkTotals.profiles,86);
+assert.equal(model.group.networkTotals.inProgress,43);
+assert.equal(model.group.networkTotals.reviewRequired,43);
+const singapore=model.companies.find(item=>item.verifiedCompanyCode==='3047');
+assert.ok(singapore);
+assert.equal(singapore.publicName,'GNK 3047 Singapore');
+assert.equal(singapore.profiles.total,2);
+assert.equal(singapore.queues.decisionReviewPackages,1);
+assert.equal(singapore.queues.publicationCapacityProfiles,1);
+assert.equal(singapore.capabilities.prepareProposals,true);
+assert.equal(singapore.capabilities.delegatedOperationalDecisions,true);
+assert.equal(singapore.capabilities.prepareCompanyPublications,true);
+assert.equal(singapore.privacy.counterparties,'hidden');
+assert.equal(singapore.privacy.collaborators,'hidden');
+assert.equal(singapore.privacy.privateAssignments,'hidden');
+assert.equal(singapore.privacy.messages,'hidden');
+assert.ok(['available','limited','on-call','offline'].includes(singapore.availability));
+assert.ok(singapore.localTime);
+console.log('ENTERPRISE_COMPANY_OPERATIONS_OK');
