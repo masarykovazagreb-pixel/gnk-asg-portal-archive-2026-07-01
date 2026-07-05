@@ -9,6 +9,7 @@ on:
       - 'apps/portal/assets/delivery-history-dashboard-v3.js'
       - 'workers/gnk-asg-direct-operator/src/media-**'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-**'
+      - 'workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js'
       - '.github/workflows/deploy-media-projects-v1.yml'
 
 permissions:
@@ -36,6 +37,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/media-bootstrap-html-forward-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           node --check apps/portal/assets/media-center-fresh-v1.js
           node --check apps/portal/assets/media-center-delivery-history-v2.js
           node --check apps/portal/assets/delivery-history-dashboard-v3.js
@@ -44,7 +46,9 @@ jobs:
           grep -q 'fresh-reset' workers/gnk-asg-direct-operator/src/media-fresh-admin-v1.js
           grep -q 'delivery-history' workers/gnk-asg-direct-operator/src/media-outreach-delivery-v5.js
           grep -q 'campaign-html' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
-          grep -q "from './index-mail-studio-bridge-v17.js'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q "from './index-final-admin-gateway-projects-v1.js'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q "from './index-media-command-center-v20.js'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js
+          grep -q "from './index-mail-studio-bridge-v17.js'" workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MAIL_MANUAL_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
       - name: Confirm validation-only behavior
