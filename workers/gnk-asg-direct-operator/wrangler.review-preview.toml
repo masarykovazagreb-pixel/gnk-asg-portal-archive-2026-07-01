@@ -1,0 +1,28 @@
+name = "gnk-asg-enterprise-review-v3"
+main = "src/index-unified-auth-v14.js"
+compatibility_date = "2026-06-13"
+workers_dev = true
+preview_urls = true
+
+# Isolated review configuration.
+# No production KV, D1, R2, Email Routing, custom routes, DNS or scheduled triggers.
+# This configuration may be used for compilation and a route-less workers.dev preview only.
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "isolated-review-preview"
+DEPLOY_REVISION = "20260705-enterprise-review-preview-v1"
+SAFE_GET_DIRECT_MODE = "true"
+MAIL_MANUAL_LIVE = "false"
+MAIL_PROFILE_TEST_LIVE = "false"
+MAIL_BOOTSTRAP_SMOKE_TEST = "false"
+MEDIA_OUTREACH_LIVE = "false"
+MEDIA_OUTREACH_SCHEDULED_LIVE = "false"
+MEDIA_OUTREACH_TEST_LIVE = "false"
+MEDIA_APPLICATION_AUTO_ACK = "false"
+EMAIL_OPEN_TRACKING_ENABLED = "false"
