@@ -43,10 +43,14 @@ if(groups.has('entrypoints')){
   const review=read('workers/gnk-asg-direct-operator/wrangler.toml');
   requireCondition('entrypoints','main review Worker must use protected unified auth',review.includes('main = "src/index-unified-auth-v14.js"'));
   requireCondition('entrypoints','main review environment marker missing',review.includes('PUBLIC_ENVIRONMENT = "review-direct-operator"'));
+  requireCondition('entrypoints','review manual mail must remain disabled',review.includes('MAIL_MANUAL_LIVE = "false"'));
+  requireCondition('entrypoints','review media outreach must remain disabled',review.includes('MEDIA_OUTREACH_LIVE = "false"'));
   requireAll('entrypoints','workers/gnk-asg-direct-operator/wrangler.review-preview.toml',['main = "src/index-enterprise-projects-runtime-v1.js"','PUBLIC_ENVIRONMENT = "isolated-review-preview"']);
   requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js',["from './index-final-admin-gateway-v2.js'",'isEnterpriseProjectApi','isNewsMarketIntelligenceApi','runEnterpriseProjectCycle','runNewsMarketIntelligence']);
-  requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js',["from './index-mail-studio-bridge-v17.js'",'handleMailStudioInbound','recordInbound']);
-  requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js',["from './index-portal-final-v13.js'",'isUi(path)','loginPage(next)']);
+  requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js',["from './index-final-admin-gateway-projects-v1.js'",'handleMailStudioInbound','recordInbound']);
+  requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js',["from './index-media-command-center-v20.js'",'handleMediaProjects','handleMediaDelivery']);
+  requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js',["from './index-mail-studio-bridge-v17.js'",'handleMediaCommandCenter']);
+  requireAll('entrypoints','workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js',["from './index-portal-final-v13.js'",'isUi(path)','loginPage(next)','handleEnterpriseProjectApi','runEnterpriseProjectCycle','protectedModule','automaticPublication:false']);
 }
 
 if(failures.length){console.error(`Protected portal contract FAILED (${requested})`);for(const failure of failures)console.error(`- ${failure}`);process.exit(1);}
