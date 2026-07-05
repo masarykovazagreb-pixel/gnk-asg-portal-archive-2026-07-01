@@ -1,0 +1,38 @@
+name: Check Admin Executive Portfolio V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/assets/admin-center-health-v1.js'
+      - 'apps/portal/assets/admin-executive-portfolio-v1.js'
+      - 'apps/portal/assets/executive-project-portfolio-v1.css'
+      - 'apps/portal/data/project-portfolio-governance-v1.json'
+      - 'scripts/validate-executive-portfolio-v1.mjs'
+      - '.github/workflows/check-admin-executive-portfolio-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check JavaScript syntax
+        run: |
+          node --check apps/portal/assets/admin-center-health-v1.js
+          node --check apps/portal/assets/admin-executive-portfolio-v1.js
+          node --check scripts/validate-executive-portfolio-v1.mjs
+      - name: Validate portfolio contract
+        run: node scripts/validate-executive-portfolio-v1.mjs
+      - name: Confirm protected data boundary
+        run: |
+          grep -q 'credentials:.same-origin.' apps/portal/assets/admin-executive-portfolio-v1.js
+          grep -q '/api/enterprise-projects/events' apps/portal/assets/admin-executive-portfolio-v1.js
+          grep -q '/api/enterprise-projects/assignments' apps/portal/assets/admin-executive-portfolio-v1.js
+          grep -q 'automaticPublication.*false' apps/portal/data/project-portfolio-governance-v1.json
