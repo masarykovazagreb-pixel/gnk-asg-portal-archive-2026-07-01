@@ -13,6 +13,7 @@ on:
       - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'
       - 'workers/gnk-asg-direct-operator/src/public-operations-v1.js'
       - 'workers/gnk-asg-direct-operator/src/mail-sync-center-v2.js'
+      - 'workers/gnk-asg-direct-operator/test/public-operations.test.mjs'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
       - '.github/workflows/check-enterprise-review-runtime-v3.yml'
 
@@ -40,6 +41,10 @@ jobs:
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-operations-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-sync-center-v2.js
+          node --check workers/gnk-asg-direct-operator/test/public-operations.test.mjs
+
+      - name: Test public operations deadline policy
+        run: node workers/gnk-asg-direct-operator/test/public-operations.test.mjs
 
       - name: Validate review-only wrangler safety lock
         run: |
@@ -79,6 +84,9 @@ jobs:
           grep -q 'ADMIN_PREFIX}/status' "$ops"
           grep -q 'ADMIN_PREFIX}/decision' "$ops"
           grep -Eq 'authorization|x-gnk-admin-token|x-admin-token' "$ops"
+          grep -q "state:'preliminary'" "$ops"
+          grep -q "state:'approved-by-silence'" "$ops"
+          grep -q "assetJson(env,'/data/objave-unified.json')" "$ops"
 
       - name: Validate review UI contract
         run: |
