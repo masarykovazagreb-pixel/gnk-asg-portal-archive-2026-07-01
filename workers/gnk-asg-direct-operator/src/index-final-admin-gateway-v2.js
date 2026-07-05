@@ -41,6 +41,21 @@ const denied=()=>new Response(JSON.stringify({ok:false,error:'unauthorized'}),{s
 const loginRedirect=request=>{const url=new URL(request.url),next=url.pathname+url.search;return new Response(null,{status:303,headers:{location:`/admin-login/?next=${encodeURIComponent(next)}`,'cache-control':'no-store'}});};
 const stampRegistration=response=>{const headers=new Headers(response.headers);headers.set('x-gnk-asg-media-registration',REGISTRATION_VERSION);headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');return new Response(response.body,{status:response.status,statusText:response.statusText,headers});};
 
+const PROJECT_CENTER_PATH='/enterprise/project-center';
+async function patchProjectCenterResponse(request,response){
+  if(pathOf(request)!==PROJECT_CENTER_PATH||response.status!==200||!String(response.headers.get('content-type')||'').includes('text/html'))return response;
+  const html=await response.text();
+  const style='<link rel="stylesheet" href="/assets/project-command-center-runtime-v2.css?v=20260705">';
+  const script='<script src="/assets/project-command-center-v2.js?v=20260705" defer></script>';
+  const next=html.includes('project-command-center-v2.js')?html:html.replace('</head>',`${style}</head>`).replace('</body>',`${script}</body>`);
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.set('cache-control','no-store');
+  headers.set('x-gnk-project-center-runtime','2026-07-05.project-command-center.03');
+  return new Response(next,{status:response.status,statusText:response.statusText,headers});
+}
+
 async function serveStaticPublication(request,env,path){
   if(!['GET','HEAD'].includes(request.method)||!env.ASSETS?.fetch||!isStaticPublication(path))return null;
   const target=new URL(request.url);target.pathname=`${path}/index.html`;target.search='';
@@ -100,7 +115,8 @@ export default{
     const linked=await addCampaignMailerLink(request,response);
     const withContact=await addBackendContactMenuLink(request,linked);
     const patched=await patchMailStudioResponse(request,withContact);
-    return addEmailStatusButtons(request,patched);
+    const projectCenter=await patchProjectCenterResponse(request,patched);
+    return addEmailStatusButtons(request,projectCenter);
   },
   scheduled(event,env,ctx){
     const tracked=trackedEnv(env),active=protectedEnv(tracked);
