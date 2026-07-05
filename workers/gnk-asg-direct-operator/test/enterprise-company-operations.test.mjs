@@ -27,7 +27,7 @@ assert.equal(model.companies.every(item=>/^\d{4}$/.test(item.internalCompanyCode
 assert.equal(model.companies.every(item=>item.legalRegistrationNumber===false),true);
 const singapore=model.companies.find(item=>item.internalCompanyCode==='3047');
 assert.ok(singapore);
-assert.equal(singapore.publicName,'GNK 3047 Singapore');
+assert.equal(singapore.publicName,'GNK 3047 singapore');
 assert.equal(singapore.profiles.total,2);
 assert.equal(singapore.queues.decisionReviewPackages,1);
 assert.equal(singapore.queues.publicationCapacityProfiles,1);
