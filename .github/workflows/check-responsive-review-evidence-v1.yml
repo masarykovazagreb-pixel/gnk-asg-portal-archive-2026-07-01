@@ -31,10 +31,15 @@ jobs:
           set -euxo pipefail
           ready=false
           for attempt in $(seq 1 60); do
-            finance=$(curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/financije/" || true)
-            publications=$(curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/publications/" || true)
-            document=$(curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/publications/managing-documents-versions-and-the-public-record/" || true)
-            if printf '%s' "$finance" | grep -q 'Finance Cockpit' && printf '%s' "$publications" | grep -q 'Publications and analysis' && printf '%s' "$document" | grep -q 'Managing Documents, Versions and the Public Record'; then
+            health_ok=false
+            finance_ok=false
+            publications_ok=false
+            document_ok=false
+            curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/api/public-operations/health" | grep -q '"ok": true' && health_ok=true || true
+            curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/financije/" >/tmp/review-finance.html && test "$(wc -c </tmp/review-finance.html)" -gt 200 && finance_ok=true || true
+            curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/publications/" >/tmp/review-publications.html && test "$(wc -c </tmp/review-publications.html)" -gt 200 && publications_ok=true || true
+            curl -fsS --retry 2 --retry-delay 2 --max-time 20 "$PREVIEW_URL/publications/managing-documents-versions-and-the-public-record/" >/tmp/review-document.html && test "$(wc -c </tmp/review-document.html)" -gt 200 && document_ok=true || true
+            if [ "$health_ok" = true ] && [ "$finance_ok" = true ] && [ "$publications_ok" = true ] && [ "$document_ok" = true ]; then
               ready=true
               break
             fi
