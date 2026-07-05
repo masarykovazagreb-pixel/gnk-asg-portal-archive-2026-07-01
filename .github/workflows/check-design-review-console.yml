@@ -7,8 +7,16 @@ on:
       - 'apps/portal/design-review/**'
       - 'apps/portal/enterprise/**'
       - 'apps/portal/admin-center/**'
+      - 'apps/portal/financije/**'
+      - 'apps/portal/public-operations/**'
+      - 'apps/portal/group-companies/**'
+      - 'apps/portal/digital-workforce/**'
+      - 'apps/portal/objave/**'
+      - 'apps/portal/publications/**'
+      - 'apps/portal/media-kit/**'
       - 'apps/portal/media-registration-admin/**'
       - 'apps/portal/media-application/**'
+      - 'apps/portal/assets/editorial-v12.js'
       - 'apps/portal/assets/data/operator-os-config.json'
       - 'apps/portal/assets/the-code-new-york-countdown-v1.css'
       - 'apps/portal/assets/the-code-new-york-countdown-v1.js'
@@ -27,11 +35,12 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate Operator OS config and component syntax
+      - name: Validate review component syntax
         run: |
           set -euxo pipefail
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/assets/data/operator-os-config.json','utf8'))"
           node --check apps/portal/assets/the-code-new-york-countdown-v1.js
+          node --check apps/portal/assets/editorial-v12.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-shell-v11.js
       - name: Verify review console contract
         run: |
@@ -44,9 +53,34 @@ jobs:
           grep -q 'data-width="390"' apps/portal/design-review/index.html
           grep -q '/design-review/' apps/portal/enterprise/index.html
           grep -q '"id":"design-review"' apps/portal/assets/data/operator-os-config.json
+          grep -q "\['Public Index','/'\]" apps/portal/design-review/index.html
+          grep -q "\['Finance Cockpit','/financije/'\]" apps/portal/design-review/index.html
+          grep -q "\['Public Operations','/public-operations/'\]" apps/portal/design-review/index.html
+          grep -q "\['Group Companies','/group-companies/'\]" apps/portal/design-review/index.html
+          grep -q "\['GNK Public Profiles','/digital-workforce/directory/'\]" apps/portal/design-review/index.html
+          grep -q "\['Publications HR','/objave/'\]" apps/portal/design-review/index.html
+          grep -q "\['Publications EN','/publications/'\]" apps/portal/design-review/index.html
+          grep -q "\['Media Kit','/media-kit/'\]" apps/portal/design-review/index.html
           grep -q "\['Media Applications Review','/media-registration-admin/'\]" apps/portal/design-review/index.html
           grep -q "\['Public Media Application','/media-application/?lang=en'\]" apps/portal/design-review/index.html
           grep -q "\['Admin Center','/admin-center/'\]" apps/portal/design-review/index.html
+      - name: Verify responsive page foundations
+        run: |
+          set -euxo pipefail
+          for file in \
+            apps/portal/index.html \
+            apps/portal/financije/index.html \
+            apps/portal/public-operations/index.html \
+            apps/portal/group-companies/index.html \
+            apps/portal/digital-workforce/directory/index.html \
+            apps/portal/objave/index.html \
+            apps/portal/publications/index.html \
+            apps/portal/media-kit/index.html \
+            apps/portal/media-application/index.html
+          do
+            test -s "$file"
+            grep -qi 'name="viewport"' "$file"
+          done
       - name: Verify New York countdown contract
         run: |
           set -euxo pipefail
