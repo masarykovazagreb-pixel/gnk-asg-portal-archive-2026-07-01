@@ -1,0 +1,63 @@
+name: Check Bilingual Publication Routes V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/objave/**'
+      - 'apps/portal/publications/**'
+      - '.github/workflows/check-bilingual-publication-routes-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - name: Verify Croatian routes
+        shell: bash
+        run: |
+          set -euxo pipefail
+          for slug in \
+            ai-shrinks-security-window-apple-accelerates-patches \
+            how-a-structured-pdf-centre-improves-public-verifiability \
+            why-legal-information-belongs-in-primary-navigation \
+            bilingual-corporate-communication-as-an-operating-standard \
+            artificial-intelligence-with-mandatory-human-review \
+            market-data-is-information-not-investment-advice \
+            structured-media-applications-reduce-organisational-risk \
+            why-every-business-publication-should-carry-sources
+          do
+            file="apps/portal/objave/$slug/index.html"
+            test -s "$file"
+            grep -Fq '<title>' "$file"
+            grep -Fq 'name="description"' "$file"
+            grep -Fq 'rel="canonical"' "$file"
+            grep -Fq "/objave/$slug/" apps/portal/objave/index.html
+          done
+      - name: Verify English routes
+        shell: bash
+        run: |
+          set -euxo pipefail
+          for slug in \
+            ai-shrinks-security-window-apple-accelerates-patches \
+            how-a-structured-pdf-centre-improves-public-verifiability \
+            bilingual-corporate-communication-as-an-operating-standard \
+            artificial-intelligence-with-mandatory-human-review \
+            structured-media-applications-reduce-organisational-risk \
+            why-every-business-publication-should-carry-sources \
+            global-networks-and-business-continuity \
+            managing-documents-versions-and-the-public-record
+          do
+            file="apps/portal/publications/$slug/index.html"
+            test -s "$file"
+            grep -Fq '<title>' "$file"
+            grep -Fq 'name="description"' "$file"
+            grep -Fq 'rel="canonical"' "$file"
+            grep -Fq "/publications/$slug/" apps/portal/publications/index.html
+          done
+          echo BILINGUAL_PUBLICATION_ROUTES_OK
