@@ -13,7 +13,7 @@
   });
 
   const main=document.querySelector('main');
-  if(main)main.setAttribute('data-editorial-release','V12.2');
+  if(main)main.setAttribute('data-editorial-release','V12.3');
 
   const normalizeImages=()=>document.querySelectorAll(news?'.news-card img':'.card img').forEach(img=>{
     img.loading='lazy';
@@ -24,6 +24,13 @@
   if(publications){
     const cards=[...document.querySelectorAll('.card[data-language]')];
     const expected=en?'EN':'HR';
+    const stats=[...document.querySelectorAll('.stat')];
+    const updateStats=()=>{
+      const visible=cards.filter(card=>!card.hidden);
+      if(stats[0])stats[0].innerHTML=`${en?'Published':'Objavljeno'}: <strong>${visible.length}</strong>`;
+      if(stats[1])stats[1].innerHTML=`${en?'Language':'Jezik'}: <strong>${expected}</strong>`;
+      if(stats[2])stats[2].innerHTML=`${en?'Status':'Status'}: <strong>${en?'Verified':'Provjereno'}</strong>`;
+    };
     cards.forEach(card=>{
       const link=card.querySelector('h2 a')?.getAttribute('href')||'';
       const title=card.querySelector('h2')?.textContent?.replace(/\s+/g,' ').trim()||'';
@@ -32,9 +39,9 @@
       const legacyAktual=/\/objave\/aktual\//i.test(link);
       const malformed=title.length<12||summary.length<45||/\b(uspeh|veštine|preduzet|vesti)\b/i.test(title+' '+summary);
       card.hidden=wrongLanguage||legacyAktual||malformed;
+      if(card.hidden)card.dataset.qualityHidden='1';
     });
 
-    const visible=cards.filter(card=>!card.hidden);
     const hero=document.querySelector('.hero');
     const heading=hero?.querySelector('h1');
     const lead=hero?.querySelector('.lead');
@@ -42,11 +49,6 @@
     if(lead)lead.textContent=en
       ? 'A curated register of verified English-language corporate publications, market analysis and GNK ASG Intelligence Desk content.'
       : 'Odabrani registar provjerenih hrvatskih korporativnih objava, poslovnih analiza i sadržaja GNK ASG Intelligence Deska.';
-
-    const stats=[...document.querySelectorAll('.stat')];
-    if(stats[0])stats[0].innerHTML=`${en?'Published':'Objavljeno'}: <strong>${visible.length}</strong>`;
-    if(stats[1])stats[1].innerHTML=`${en?'Language':'Jezik'}: <strong>${expected}</strong>`;
-    if(stats[2])stats[2].innerHTML=`${en?'Status':'Status'}: <strong>${en?'Verified':'Provjereno'}</strong>`;
     document.querySelector('.filters')?.setAttribute('hidden','');
 
     const search=document.getElementById('search');
@@ -58,9 +60,41 @@
         const hay=(card.dataset.search||card.textContent||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
         card.hidden=baseHidden||Boolean(query&&!hay.includes(query));
       });
+      updateStats();
     };
-    cards.forEach(card=>{if(card.hidden)card.dataset.qualityHidden='1'});
     search?.addEventListener('input',applySearch);
+
+    const normalizeRoute=value=>{
+      try{
+        const url=new URL(value,location.origin);
+        return url.pathname.replace(/\/+$/,'')+'/';
+      }catch{return'';}
+    };
+    const validateRoutes=async()=>{
+      try{
+        const response=await fetch('/data/objave-unified.json',{cache:'no-store',headers:{accept:'application/json'}});
+        if(!response.ok)throw new Error(`route registry ${response.status}`);
+        const payload=await response.json();
+        const rows=Array.isArray(payload)?payload:Array.isArray(payload?.items)?payload.items:[];
+        const allowed=new Set(rows.map(item=>normalizeRoute(item?.url||item?.slug||'')).filter(Boolean));
+        cards.forEach(card=>{
+          if(card.dataset.qualityHidden==='1')return;
+          const route=normalizeRoute(card.querySelector('h2 a')?.getAttribute('href')||'');
+          if(route&&!allowed.has(route)){
+            card.hidden=true;
+            card.dataset.qualityHidden='1';
+            card.dataset.routeIntegrity='missing';
+          }
+        });
+        document.documentElement.dataset.publicationRouteIntegrity='verified';
+      }catch{
+        document.documentElement.dataset.publicationRouteIntegrity='registry-unavailable';
+      }
+      updateStats();
+    };
+
+    updateStats();
+    validateRoutes();
   }
 
   normalizeImages();
