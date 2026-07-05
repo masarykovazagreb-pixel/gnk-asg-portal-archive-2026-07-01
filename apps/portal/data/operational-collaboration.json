@@ -1,23 +1,37 @@
 {
-  "version": "GNK_ASG_OPERATIONAL_COLLABORATION_V1_20260705",
-  "mode": "workflow-derived-operational-signal",
+  "version": "GNK_ASG_OPERATIONAL_COLLABORATION_V2_20260705",
+  "mode": "company-level-operational-signal",
   "reviewOnly": true,
-  "publicDisclosure": "Prikaz predstavlja radne veze funkcionalnih workflow profila. Ne potvrđuje stvarnu prisutnost ili razgovor fizičkih osoba.",
+  "publicDisclosure": "Javni prikaz pokazuje operativni status društva, funkcije i dostupnost. Ne prikazuje s kim se radi, sadržaj komunikacije, privatne zadatke, kontakte ni identitet sudionika.",
   "privacy": {
-    "showParticipants": true,
-    "showChannel": true,
+    "showParticipants": false,
+    "showChannel": false,
     "showStatus": true,
+    "showCompany": true,
+    "showFunction": true,
+    "showLocalTime": true,
+    "showAvailability": true,
     "showTopic": false,
     "showMessages": false,
     "showAttachments": false,
-    "showPrivateIdentifiers": false
+    "showPrivateIdentifiers": false,
+    "showCounterparty": false,
+    "showPrivateAssignment": false
   },
+  "companyOperatingOutputs": [
+    "operational proposal",
+    "delegated decision summary",
+    "project update",
+    "company publication",
+    "risk alert",
+    "recommended next action"
+  ],
   "learning": {
     "mode": "supervised-continuous-improvement",
     "aiMentor": "GNK ASG AI Assistant",
     "inputs": ["odobreni playbookovi", "rezultati zadataka", "operator feedback", "odobrena baza znanja", "kontrolirane retrospektive"],
     "outputs": ["prijedlog poboljšanja", "sažetak", "checklista", "preporučeni sljedeći korak", "upozorenje na rizik"],
-    "restrictions": ["bez samostalne objave", "bez samostalne promjene produkcijskih pravila", "bez javnog prikaza sadržaja razgovora", "bez pristupa tokenima i secretsima", "kritične odluke zahtijevaju odobrenje"]
+    "restrictions": ["bez javnog prikaza sadržaja razgovora", "bez javnog prikaza sudionika", "bez pristupa tokenima i secretsima", "kritične odluke zahtijevaju odobrenje"]
   },
   "roles": [
     {"id":"executive","label":"Executive Office","department":"Uprava"},
@@ -33,11 +47,11 @@
     {"id":"ai-mentor","label":"AI Learning Mentor","department":"Digital Workforce"}
   ],
   "channels": [
-    {"id":"internal-chat","label":"Internal Chat"},
-    {"id":"decision-room","label":"Decision Room"},
-    {"id":"operations-room","label":"Operations Room"},
-    {"id":"review-channel","label":"Review Channel"},
-    {"id":"learning-loop","label":"Learning Loop"}
+    {"id":"internal-chat","label":"Internal Chat","public":false},
+    {"id":"decision-room","label":"Decision Room","public":false},
+    {"id":"operations-room","label":"Operations Room","public":false},
+    {"id":"review-channel","label":"Review Channel","public":false},
+    {"id":"learning-loop","label":"Learning Loop","public":false}
   ],
   "collaborationRules": [
     {"from":"board","to":"director","channel":"decision-room","weight":10},
