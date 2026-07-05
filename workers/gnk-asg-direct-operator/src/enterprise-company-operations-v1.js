@@ -1,4 +1,4 @@
-export const VERSION='GNK_ENTERPRISE_COMPANY_OPERATIONS_V1_20260705';
+export const VERSION='GNK_ENTERPRISE_COMPANY_OPERATIONS_V2_20260705_INTERNAL_CODES';
 export const API_PREFIX='/api/company-operations';
 const ASSIGNMENTS_KEY='enterprise-projects:assignments:v1';
 const PROJECTS_KEY='enterprise-projects:registry:v1';
@@ -21,7 +21,9 @@ function localState(timezone,date=new Date(),active=false){
   return{localTime:`${parts.weekday} ${parts.hour}:${parts.minute}`,availability,nextAvailability:['available','limited'].includes(availability)?'now':weekend?'next business day 08:00':'08:00 local'};
  }catch{return{localTime:'unavailable',availability:active?'on-call':'offline',nextAvailability:'not-set'}}
 }
-function companyName(node){if(node.id==='singapore')return'GNK 3047 Singapore';const city=node.name_en||node.name_hr||node.id;return`GNK [CODE NOT SET] ${city}`}
+function hash(value){let out=2166136261;for(const char of String(value||'').toLowerCase()){out^=char.charCodeAt(0);out=Math.imul(out,16777619)}return out>>>0}
+function internalCode(node){if(node.id==='singapore')return'3047';return String(1000+(hash(node.id||node.name_en||node.name_hr)%9000)).padStart(4,'0')}
+function companyName(node){const city=node.name_en||node.name_hr||node.id;return`GNK ${internalCode(node)} ${city}`}
 function projectView(project){return{id:project.id,name:project.name,stage:project.stage,publicLabel:project.publicLabel,territory:project.territory}}
 function aggregateCompany(node,index,assignments,projectMap,date){
  const slot=`GNK${String(index+1).padStart(2,'0')}`;
@@ -30,18 +32,17 @@ function aggregateCompany(node,index,assignments,projectMap,date){
  const functions=[...new Set(rows.map(item=>DEPARTMENT_NAMES[departmentOf(item.workerId)]||departmentOf(item.workerId)))].sort();
  const counts={total:rows.length,inProgress:0,scheduled:0,standby:0,reviewRequired:0,publicationProfiles:0};
  for(const item of rows){if(item.workState==='in-progress')counts.inProgress++;else if(item.workState==='scheduled')counts.scheduled++;else if(item.workState==='standby')counts.standby++;else if(item.workState==='review-required')counts.reviewRequired++;if(['MED','PUB','COD'].includes(departmentOf(item.workerId)))counts.publicationProfiles++;}
- const timezone=TIMEZONES[node.id]||'UTC';
- const state=localState(timezone,date,counts.inProgress>0);
- return{slot,publicName:companyName(node),verifiedCompanyCode:node.id==='singapore'?'3047':null,codeStatus:node.id==='singapore'?'verified':'not-set',city:node.name_en||node.name_hr||node.id,country:node.place_en||node.place_hr||'',region:node.region||'',operatingStatus:node.status||'active',timezone,...state,profiles:counts,functions,projects:projectIds.map(id=>projectMap.get(id)).filter(Boolean).map(projectView),capabilities:{prepareProposals:true,delegatedOperationalDecisions:true,prepareCompanyPublications:true,publicationMode:'company-name-with-review'},queues:{activeWorkPackages:counts.inProgress,decisionReviewPackages:counts.reviewRequired,publicationCapacityProfiles:counts.publicationProfiles},privacy:{counterparties:'hidden',collaborators:'hidden',privateAssignments:'hidden',messages:'hidden'}};
+ const timezone=TIMEZONES[node.id]||'UTC',code=internalCode(node),state=localState(timezone,date,counts.inProgress>0);
+ return{slot,publicName:companyName(node),internalCompanyCode:code,codeType:'internal-display-only',legalRegistrationNumber:false,city:node.name_en||node.name_hr||node.id,country:node.place_en||node.place_hr||'',region:node.region||'',operatingStatus:node.status||'active',timezone,...state,profiles:counts,functions,projects:projectIds.map(id=>projectMap.get(id)).filter(Boolean).map(projectView),capabilities:{prepareProposals:true,delegatedOperationalDecisions:true,prepareCompanyPublications:true,publicationMode:'company-name-with-review'},queues:{activeWorkPackages:counts.inProgress,decisionReviewPackages:counts.reviewRequired,publicationCapacityProfiles:counts.publicationProfiles},privacy:{counterparties:'hidden',collaborators:'approved-profile-view-only',privateAssignments:'hidden',messages:'hidden'}};
 }
 export function buildCompanyOperations(network,assignments,projects,date=new Date()){
  const projectMap=new Map((Array.isArray(projects)?projects:[]).map(item=>[item.id,item]));
  const nodes=(Array.isArray(network?.nodes)?network.nodes:[]).filter(node=>node.id!=='croatia').slice(0,43);
  const companies=nodes.map((node,index)=>aggregateCompany(node,index,Array.isArray(assignments)?assignments:[],projectMap,date));
  const totals=companies.reduce((out,item)=>{out.profiles+=item.profiles.total;out.inProgress+=item.profiles.inProgress;out.reviewRequired+=item.profiles.reviewRequired;out.projects+=item.projects.length;return out},{profiles:0,inProgress:0,reviewRequired:0,projects:0});
- const group={slot:'GROUP',publicName:'GNK DINAMO Ltd. Group',city:network?.center?.place||'Boulder, Colorado, USA',country:'United States',type:'group',timezone:'America/Denver',...localState('America/Denver',date,totals.inProgress>0),networkTotals:totals,capabilities:{prepareProposals:true,delegatedOperationalDecisions:true,prepareCompanyPublications:true},privacy:{counterparties:'hidden',collaborators:'hidden',privateAssignments:'hidden'}};
- const asg={slot:'GNK-ASG',publicName:'GNK ASG d.o.o.',city:'Zagreb',country:'Croatia',type:'named-operating-company',timezone:'Europe/Zagreb',...localState('Europe/Zagreb',date,true),allocationStatus:'separate profile allocation not yet baselined',capabilities:{prepareProposals:true,delegatedOperationalDecisions:true,prepareCompanyPublications:true},privacy:{counterparties:'hidden',collaborators:'hidden',privateAssignments:'hidden'}};
- return{version:VERSION,generatedAt:date.toISOString(),companyCount:45,codedCompanyCount:43,group,gnkAsg:asg,companies,disclosure:'Company-level operational aggregates only. No counterpart, collaborator, message, contact or private assignment data is exposed.'};
+ const group={slot:'GROUP',publicName:'GNK DINAMO Ltd. Group',city:network?.center?.place||'Boulder, Colorado, USA',country:'United States',type:'group',timezone:'America/Denver',...localState('America/Denver',date,totals.inProgress>0),networkTotals:totals,capabilities:{prepareProposals:true,delegatedOperationalDecisions:true,prepareCompanyPublications:true},privacy:{counterparties:'hidden',privateAssignments:'hidden'}};
+ const asg={slot:'GNK-ASG',publicName:'GNK ASG d.o.o.',city:'Zagreb',country:'Croatia',type:'named-operating-company',timezone:'Europe/Zagreb',...localState('Europe/Zagreb',date,true),allocationStatus:'separate profile allocation not yet baselined',capabilities:{prepareProposals:true,delegatedOperationalDecisions:true,prepareCompanyPublications:true},privacy:{counterparties:'hidden',privateAssignments:'hidden'}};
+ return{version:VERSION,generatedAt:date.toISOString(),companyCount:45,codedCompanyCount:43,codePolicy:{type:'internal-display-only',legalRegistrationNumber:false,disclaimer:'GNK codes are internal display identifiers and are not registration, tax or legal numbers.'},group,gnkAsg:asg,companies,disclosure:'Company-level operational aggregates. Approved public profile views may show profile identity and collaboration channel, but never message content, contacts or private assignments.'};
 }
 export const isCompanyOperationsApi=path=>path===API_PREFIX||path.startsWith(`${API_PREFIX}/`);
 export async function handleCompanyOperationsApi(request,env){
@@ -51,9 +52,9 @@ export async function handleCompanyOperationsApi(request,env){
  const [network,assignments,projects]=await Promise.all([assetJson(env,'/data/group_network.json'),read(kv,ASSIGNMENTS_KEY,[]),read(kv,PROJECTS_KEY,[])]);
  if(!network)return json({ok:false,error:'group_network_unavailable'},503);
  const model=buildCompanyOperations(network,assignments,projects,new Date());
- if(path===API_PREFIX||path===`${API_PREFIX}/status`)return json({ok:true,version:VERSION,companyCount:model.companyCount,codedCompanyCount:model.codedCompanyCount,profileCount:model.group.networkTotals.profiles,inProgress:model.group.networkTotals.inProgress,decisionReviewQueue:model.group.networkTotals.reviewRequired,privacy:model.disclosure});
+ if(path===API_PREFIX||path===`${API_PREFIX}/status`)return json({ok:true,version:VERSION,companyCount:model.companyCount,codedCompanyCount:model.codedCompanyCount,profileCount:model.group.networkTotals.profiles,inProgress:model.group.networkTotals.inProgress,decisionReviewQueue:model.group.networkTotals.reviewRequired,codePolicy:model.codePolicy,privacy:model.disclosure});
  if(path===`${API_PREFIX}/companies`)return json({ok:true,...model});
  if(path===`${API_PREFIX}/company`){const slot=new URL(request.url).searchParams.get('slot');const item=[model.group,model.gnkAsg,...model.companies].find(entry=>entry.slot===slot);return item?json({ok:true,item}):json({ok:false,error:'company_not_found'},404);}
  return json({ok:false,error:'not_found'},404);
 }
-export const __test={buildCompanyOperations,localState,slotOf,departmentOf};
+export const __test={buildCompanyOperations,localState,slotOf,departmentOf,internalCode};
