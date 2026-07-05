@@ -1,0 +1,49 @@
+name: Check SEO Attribution V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/scripts/apply_seo_attribution.py'
+      - 'apps/portal/scripts/harden_internal_routes.py'
+      - 'apps/portal/data/seo-attribution-policy-v1.json'
+      - 'apps/portal/**/index.html'
+      - '.github/workflows/check-seo-attribution-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate and apply attribution
+        run: |
+          set -euxo pipefail
+          python -m py_compile apps/portal/scripts/apply_seo_attribution.py apps/portal/scripts/harden_internal_routes.py
+          python apps/portal/scripts/apply_seo_attribution.py
+      - name: Validate corporate and editorial roles
+        run: |
+          set -euxo pipefail
+          grep -q 'SEO-ATTRIBUTION:BEGIN' apps/portal/index.html
+          grep -q 'name="author" content="GNK ASG d.o.o."' apps/portal/index.html
+          grep -q 'name="editor" content="Nermin Sefić"' apps/portal/index.html
+          grep -q 'Direktor i odgovorna izvršna osoba' apps/portal/index.html
+          grep -q 'name="author" content="Nermin Sefić"' apps/portal/objave/povjerenje-investitora-kroz-transparentnost/index.html
+          grep -q 'Autor i urednik' apps/portal/objave/povjerenje-investitora-kroz-transparentnost/index.html
+          grep -q 'Direktor i odgovorna izvršna osoba projekta' apps/portal/the-code/index.html
+          grep -q 'Direktor GNK ASG d.o.o. i ovlašteni predstavnik GNK DINAMO Ltd.' apps/portal/nermin-sefic/index.html
+          ! grep -q 'SEO-ATTRIBUTION:BEGIN' apps/portal/admin-center/index.html
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('apps/portal/data/seo-attribution-report.json').read_text(encoding='utf-8'))
+          assert data['pageCount'] >= 10
+          assert '/' in data['routes']
+          assert '/the-code/' in data['routes']
+          PY
