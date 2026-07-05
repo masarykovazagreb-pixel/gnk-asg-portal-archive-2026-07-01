@@ -1,0 +1,42 @@
+name: Check Publication Detail Pages V2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/objave/**'
+      - 'apps/portal/publications/**'
+      - '.github/workflows/check-publication-detail-pages-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - name: Verify linked HR detail pages
+        shell: bash
+        run: |
+          set -euxo pipefail
+          for slug in \
+            ai-shrinks-security-window-apple-accelerates-patches \
+            how-a-structured-pdf-centre-improves-public-verifiability \
+            why-legal-information-belongs-in-primary-navigation \
+            bilingual-corporate-communication-as-an-operating-standard \
+            artificial-intelligence-with-mandatory-human-review \
+            market-data-is-information-not-investment-advice \
+            structured-media-applications-reduce-organisational-risk \
+            why-every-business-publication-should-carry-sources
+          do
+            file="apps/portal/objave/$slug/index.html"
+            test -s "$file"
+            grep -Fq '<title>' "$file"
+            grep -Fq 'name="description"' "$file"
+            grep -Fq 'rel="canonical"' "$file"
+            grep -Fq "/objave/$slug/" apps/portal/objave/index.html
+          done
+          echo PUBLICATION_DETAIL_PAGES_OK
