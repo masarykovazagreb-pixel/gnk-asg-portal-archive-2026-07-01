@@ -5,14 +5,9 @@ workers_dev = true
 preview_urls = true
 
 # REVIEW-ONLY SAFETY LOCK
-# This branch must not be used as production approval. Production routes are kept
-# here only as the existing deployment contract, but all campaign/outreach live
-# switches below are disabled for review runtime and must be re-enabled only after
-# explicit executive deploy approval.
-routes = [
-  { pattern = "gnk-asg.hr/*", zone_name = "gnk-asg.hr" },
-  { pattern = "www.gnk-asg.hr/*", zone_name = "gnk-asg.hr" }
-]
+# This configuration is intentionally route-less for review. Production routes,
+# DNS, Cloudflare route bindings and production secrets must remain untouched
+# until a separate explicit executive production deploy approval is given.
 
 [assets]
 directory = "../../apps/portal"
@@ -46,7 +41,7 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260705-enterprise-review-worker-lock-v1"
+DEPLOY_REVISION = "20260705-enterprise-review-worker-runtime-v2"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 
