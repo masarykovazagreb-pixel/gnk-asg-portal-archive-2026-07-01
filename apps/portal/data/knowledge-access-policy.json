@@ -1,0 +1,58 @@
+{
+  "version": "GNK_ASG_KNOWLEDGE_ACCESS_POLICY_V1_20260705",
+  "reviewOnly": true,
+  "principle": "Širok pristup znanju, strogo ograničene izvršne ovlasti.",
+  "defaultAccess": "read-only",
+  "accessTiers": [
+    {"tier":"public-read","permissions":["read","search","summarize","compare","cite"]},
+    {"tier":"verified-research","permissions":["read","search","summarize","compare","cross-check","cite","propose-knowledge-update"]},
+    {"tier":"internal-analysis","permissions":["combine-approved-internal-data","model-scenarios","prepare-recommendation"]},
+    {"tier":"approval-required","permissions":["prepare-action","request-approval"],"prohibitedWithoutApproval":["trade","payment","contract","publish","deploy","change-policy"]}
+  ],
+  "sourceDomains": [
+    {"id":"markets","label":"Burze, tržišta i financijski instrumenti","examples":["dionice","obveznice","indeksi","valute","roba","digitalna imovina"],"access":"read-only-live-or-delayed-data"},
+    {"id":"projects","label":"Projekti, investicije i projektni portfelji","examples":["interni projekti","javni projekti","infrastruktura","tehnologija","sport","turizam"],"access":"read-and-analyze"},
+    {"id":"procurement","label":"Natječaji i javna nabava","examples":["tenderi","pozivi","koncesije","potpore","EU fondovi"],"access":"read-and-screen"},
+    {"id":"registries","label":"Službeni registri i pravni izvori","examples":["sudski registri","poslovni registri","regulatori","propisi","službena glasila"],"access":"read-and-verify"},
+    {"id":"news","label":"Vijesti i javne informacije","examples":["poslovne vijesti","industrijske vijesti","tehnologija","tržišta","geopolitika"],"access":"read-cross-check-and-summarize"},
+    {"id":"books","label":"Knjige, priručnici i stručne publikacije","examples":["legalno dostupne knjige","otvoreni udžbenici","istraživački radovi","standardi"],"access":"read-note-and-learn"},
+    {"id":"technology","label":"Tehnologija i stručna dokumentacija","examples":["službena dokumentacija","API specifikacije","sigurnosne preporuke","arhitektura sustava"],"access":"read-test-and-propose"},
+    {"id":"sports","label":"Sport, performanse i sportsko poslovanje","examples":["sportska ekonomija","performanse","upravljanje objektima","sportska tehnologija"],"access":"read-and-analyze"}
+  ],
+  "roleMatrix": [
+    {"role":"Executive Office","domains":["markets","projects","registries","news"],"level":"verified-research"},
+    {"role":"Director Office","domains":["markets","projects","procurement","registries","news"],"level":"verified-research"},
+    {"role":"Board Member Profile","domains":["markets","projects","registries","news"],"level":"verified-research"},
+    {"role":"Finance Control","domains":["markets","projects","registries","news"],"level":"internal-analysis"},
+    {"role":"Legal & Compliance","domains":["registries","procurement","projects","news","books"],"level":"verified-research"},
+    {"role":"Marketing Operations","domains":["news","projects","markets","books"],"level":"verified-research"},
+    {"role":"Media Relations","domains":["news","projects","registries"],"level":"verified-research"},
+    {"role":"Enterprise Operations","domains":["projects","procurement","technology","news"],"level":"internal-analysis"},
+    {"role":"IT Operations","domains":["technology","projects","news","books"],"level":"internal-analysis"},
+    {"role":"Editorial Desk","domains":["news","registries","projects","markets","books"],"level":"verified-research"},
+    {"role":"Research & Source Verification","domains":["markets","projects","procurement","registries","news","books","technology","sports"],"level":"verified-research"},
+    {"role":"AI Learning Mentor","domains":["markets","projects","procurement","registries","news","books","technology","sports"],"level":"verified-research"}
+  ],
+  "marketRules": {
+    "allowed": ["live or delayed quotes","historical prices","indices","corporate actions","public filings","economic indicators","scenario analysis","watchlists","alerts"],
+    "approvalRequired": ["placing orders","changing orders","moving funds","creating exchange accounts","accepting legal terms","executing hedges","using leverage"],
+    "publicDisplay": "Only aggregated or licensed market data may be displayed publicly.",
+    "dataQuality": "Every quote must retain provider, timestamp, currency, market status and delay information."
+  },
+  "projectRules": {
+    "allowed": ["discover projects","compare projects","track milestones","identify dependencies","score risks","prepare recommendations","link public evidence"],
+    "approvalRequired": ["commit budget","sign contract","change official milestone","publish confidential project data","contact third parties as an authorized representative"]
+  },
+  "learningRecord": {
+    "requiredFields": ["profileId","domain","source","sourceUrl","retrievedAt","summary","claims","confidence","verificationStatus","recommendedUse"],
+    "retention": "store concise notes and citations, not unauthorized full copies",
+    "promotionRule": "knowledge becomes operational only after source verification and responsible-function approval"
+  },
+  "security": {
+    "tokensAndSecrets": "never exposed to learning profiles",
+    "personalData": "minimum necessary and role-based",
+    "privateCommunications": "not used for public learning unless explicitly approved and redacted",
+    "externalActions": "disabled by default",
+    "audit": "all source ingestion, knowledge updates and approval decisions are logged"
+  }
+}

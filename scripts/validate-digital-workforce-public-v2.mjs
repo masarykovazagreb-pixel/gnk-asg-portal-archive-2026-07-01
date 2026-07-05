@@ -19,10 +19,10 @@ const requiredFinancialBases=[
   'GNK DINAMO Ltd. Group consolidated FY2025 + 30.6.2026 management input'
 ];
 
-check(directory.count===1500,'directory count must equal 1500');
-check(profiles.length===1500,'profile array must contain 1500 records');
-check(new Set(profiles.map(profile=>profile.workerId)).size===1500,'Worker IDs must be unique');
-check(new Set(profiles.map(profile=>profile.name)).size===1500,'display names must be unique');
+check(directory.count===1537,'directory count must equal 1537');
+check(profiles.length===1537,'profile array must contain 1537 records');
+check(new Set(profiles.map(profile=>profile.workerId)).size===1537,'Worker IDs must be unique');
+check(new Set(profiles.map(profile=>profile.name)).size===1537,'display names must be unique');
 check(Array.isArray(directory.financialPlanningBases)&&directory.financialPlanningBases.length===2,'directory must expose two financial planning bases');
 for(const profile of profiles){
   for(const field of fields)check(typeof profile[field]==='string'&&profile[field].trim(),`${profile.workerId||'unknown'} missing ${field}`);
@@ -80,7 +80,7 @@ for(const page of pages){
   for(const schema of schemas){try{JSON.parse(schema[1]);}catch(error){errors.push(`${page}: invalid schema ${error.message}`);}}
 }
 
-const directoryHtml=requireAll('apps/portal/digital-workforce/directory/index.html',[disclosure,'numberOfItems":1500','Export filtered CSV','Print view','aria-live="polite"']);
+const directoryHtml=requireAll('apps/portal/digital-workforce/directory/index.html',[disclosure,'numberOfItems":1537','Export filtered CSV','Print view','aria-live="polite"']);
 check(directoryHtml.includes('"@type":"ItemList"'),'directory ItemList schema missing');
 requireAll('apps/portal/digital-workforce/work-profiles/index.html',['Work Profiles','Work tasks','Policies','Financial planning bases','backgroundCadence','budgetEnvelopeKey']);
 requireAll('apps/portal/digital-workforce/protocols/index.html',['Always requires human approval','Stop and rollback protocol','Audit and escalation','minimumOptions']);

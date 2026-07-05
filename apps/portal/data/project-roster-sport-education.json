@@ -1,0 +1,71 @@
+{
+  "version": "GNK_PROJECT_ROSTER_SPORT_EDUCATION_V1_20260705",
+  "status": "review-ready",
+  "allocationRule": "Every project receives an accountable owner, a cross-functional delivery team and an immediate first backlog. Active workflow profiles participate through primary, support or review assignments based on capability.",
+  "projects": [
+    {
+      "id": "SPT",
+      "name": "Sports Performance Tracking",
+      "stage": "discovery",
+      "label": "REVIEW",
+      "workstreams": ["programme management", "sports science", "product and technology", "data quality", "operations", "legal review", "commercial planning", "testing"],
+      "firstBacklog": ["confirm product scope", "define pilot users", "map data flows", "define test metrics", "prepare risk register", "schedule review gate"]
+    },
+    {
+      "id": "SPORTSWEAR",
+      "name": "GNK DINAMO Ltd. Sportswear and Footwear",
+      "stage": "discovery",
+      "label": "REVIEW",
+      "workstreams": ["brand governance", "product design", "sourcing", "quality", "market research", "legal review", "commerce", "communications"],
+      "firstBacklog": ["define approved brand usage", "select initial categories", "prepare supplier criteria", "define prototype brief", "prepare country review", "schedule concept approval"]
+    },
+    {
+      "id": "HOSPITALS",
+      "name": "Hospitals and Sports Medicine Programme",
+      "stage": "intake",
+      "label": "PLANNED",
+      "workstreams": ["programme management", "medical advisory", "facility planning", "technology", "operations", "quality", "finance", "legal review"],
+      "firstBacklog": ["define service concept", "identify target territories", "prepare stakeholder map", "define quality standards", "prepare feasibility questions", "schedule intake review"]
+    },
+    {
+      "id": "SPORTS-PROJECTS",
+      "name": "International Sports Projects Portfolio",
+      "stage": "discovery",
+      "label": "REVIEW",
+      "workstreams": ["sports development", "partnerships", "events", "technology", "finance", "legal review", "communications", "impact measurement"],
+      "firstBacklog": ["catalogue project types", "prioritise territories", "define partner criteria", "prepare impact framework", "define pilot selection", "schedule portfolio review"]
+    },
+    {
+      "id": "UNIVERSITY-USA",
+      "name": "United States University Development Programme",
+      "stage": "feasibility",
+      "label": "FEASIBILITY",
+      "workstreams": ["academic model", "governance", "accreditation research", "finance", "campus and digital delivery", "technology", "student services", "quality"],
+      "firstBacklog": ["define academic mission", "map accreditation pathways", "identify programme families", "prepare governance concept", "define delivery model", "schedule feasibility gate"]
+    },
+    {
+      "id": "UNIVERSITY-NETWORK",
+      "name": "Three-Country Connected University Network",
+      "stage": "intake",
+      "label": "PLANNED",
+      "workstreams": ["country research", "academic partnerships", "governance", "technology", "student mobility", "finance", "quality", "communications"],
+      "firstBacklog": ["define country selection criteria", "prepare comparison model", "map partnership options", "define shared platform needs", "prepare mobility concept", "schedule intake review"]
+    },
+    {
+      "id": "GROUP-SCHOLARSHIP",
+      "name": "Group Scholarship, Talent and Development Programme",
+      "stage": "build",
+      "label": "REVIEW",
+      "workstreams": ["programme management", "applicant experience", "review operations", "technology", "privacy", "finance", "mentoring", "reporting"],
+      "firstBacklog": ["connect applicant runtime", "connect document storage", "define reviewer queue", "test status tracking", "prepare privacy controls", "schedule build acceptance"]
+    },
+    {
+      "id": "THE-CODE",
+      "name": "THE CODE",
+      "stage": "design",
+      "label": "REVIEW",
+      "workstreams": ["programme management", "creative production", "event delivery", "technology", "media relations", "partnerships", "security", "post-event impact"],
+      "firstBacklog": ["publish organisation layer", "assign workstream leads", "define milestone board", "prepare controlled disclosure", "define readiness metrics", "schedule design approval"]
+    }
+  ]
+}

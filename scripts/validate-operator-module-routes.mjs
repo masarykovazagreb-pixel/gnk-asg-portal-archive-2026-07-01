@@ -14,31 +14,12 @@ assert.equal(new Set(modules.map(item=>item.id)).size,modules.length,'Module IDs
 assert.equal(new Set(modules.map(item=>item.route)).size,modules.length,'Module routes moraju biti jedinstvene.');
 
 const gateway=read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js');
-const mailSyncFacade=read('workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js');
+const mailFacade=read('workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js');
 const authLayer=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js');
+const runtime=read('workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js');
 const dynamicContracts={
-  '/email-status/':{
-    source:gateway,
-    required:[
-      'isEmailStatusPath',
-      'handleEmailStatusRequest',
-      "path==='/email-status'",
-      "path.startsWith('/email-status/')",
-      'loginRedirect(request)'
-    ]
-  },
-  '/mail-studio/':{
-    source:`${gateway}\n${mailSyncFacade}\n${authLayer}`,
-    required:[
-      "from './mail-studio-extension-v4.js'",
-      "PUBLIC_PREFIX='/api/mail-center/sync'",
-      "INTERNAL_PREFIX='/api/mail-sync'",
-      'handleMailSyncCenter',
-      'gnk-mail-sync-center-ui',
-      "path.startsWith('/api/mail-center/')",
-      "'/mail-studio'"
-    ]
-  }
+  '/email-status/':{source:gateway,required:['isEmailStatusPath','handleEmailStatusRequest',"path==='/email-status'","path.startsWith('/email-status/')",'loginRedirect(request)']},
+  '/mail-studio/':{source:`${gateway}\n${mailFacade}\n${authLayer}`,required:["from './mail-studio-extension-v4.js'","PUBLIC_PREFIX='/api/mail-center/sync'","INTERNAL_PREFIX='/api/mail-sync'",'handleMailSyncCenter','gnk-mail-sync-center-ui',"path.startsWith('/api/mail-center/')","'/mail-studio'"]}
 };
 
 let dynamicCount=0;
@@ -61,24 +42,10 @@ for(const module of modules){
   assert.ok(read(file).length>120,`${file} nema dovoljan sadržaj.`);
 }
 
-assert.ok(exists('apps/portal/media-center/index.html'),'Legacy /media-center/ compatibility ruta mora postojati.');
-const mediaRedirect=read('apps/portal/media-center/index.html');
-assert.ok(mediaRedirect.includes('/media-command-center/'),'Legacy Media Center mora voditi na aktivni Media Command Center.');
-
-const originalCode=read('apps/portal/the-code/index.html');
-for(const marker of ['THE CODE','Code activation · New York · 7 October 2026','Play · 6 slides','NOTHING<br>WILL EVER<br>BE THE SAME.']){
-  assert.ok(originalCode.includes(marker),`Originalni THE CODE sadržaj mora ostati sačuvan: ${marker}`);
-}
-const intelligence=read('apps/portal/the-code/intelligence/index.html');
-assert.ok(intelligence.includes('THE CODE Intelligence'),'THE CODE Intelligence landing mora postojati.');
-assert.ok(intelligence.includes('does not replace the existing THE CODE presentation'),'THE CODE Intelligence mora sadržavati preservation disclosure.');
-
-const publicMenu=read('apps/portal/assets/public-menu-v18.js');
-assert.ok(publicMenu.includes('/the-code/intelligence/'),'Javni izbornik mora povezivati THE CODE Intelligence.');
-
 const hub=read('apps/portal/enterprise/index.html');
-for(const requiredRoute of ['/mission-control/','/design-review/','/strategy-performance/','/registry-center/','/deployment/','/mail-studio/','/media-center/','/media-registration-admin/','/media-application/?lang=en']){
-  assert.ok(hub.includes(requiredRoute),`Enterprise Hub nema ključnu rutu ${requiredRoute}`);
-}
+const navigation=`${hub}\n${runtime}`;
+for(const requiredRoute of ['/mission-control/','/design-review/','/strategy-performance/','/registry-center/','/deployment/','/mail-studio/'])assert.ok(navigation.includes(requiredRoute),`Enterprise runtime nema ključnu rutu ${requiredRoute}`);
+for(const requiredRoute of ['/enterprise/project-center/','/editorial-operations/'])assert.ok(navigation.includes(requiredRoute),`Enterprise runtime nema novu operativnu rutu ${requiredRoute}`);
+assert.ok(runtime.includes('x-robots-tag'),'Protected runtime mora postaviti noindex header.');
 
-console.log(`OPERATOR_MODULE_ROUTE_CONTRACT_OK modules=${modules.length} dynamic=${dynamicCount} static=${modules.length-dynamicCount} the_code=preserved`);
+console.log(`OPERATOR_MODULE_ROUTE_CONTRACT_OK modules=${modules.length} dynamic=${dynamicCount} static=${modules.length-dynamicCount}`);

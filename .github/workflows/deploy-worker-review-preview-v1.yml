@@ -1,0 +1,113 @@
+name: Deploy Worker Review Preview V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'workers/gnk-asg-direct-operator/src/**'
+      - 'workers/gnk-asg-direct-operator/package.json'
+      - 'workers/gnk-asg-direct-operator/package-lock.json'
+      - 'workers/gnk-asg-direct-operator/wrangler.review-preview.toml'
+      - '.github/workflows/deploy-worker-review-preview-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-asg-enterprise-review-preview
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'enterprise-portal-ui-v3-20260704'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: workers/gnk-asg-direct-operator
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Install Worker dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Validate isolated preview configuration
+        run: |
+          set -euxo pipefail
+          config=wrangler.review-preview.toml
+          grep -q '^name = "gnk-asg-enterprise-review-v3"' "$config"
+          grep -q '^workers_dev = true' "$config"
+          grep -q '^preview_urls = true' "$config"
+          grep -q 'PUBLIC_ENVIRONMENT = "isolated-review-preview"' "$config"
+          grep -q 'MAIL_MANUAL_LIVE = "false"' "$config"
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' "$config"
+          ! grep -Eq '^[[:space:]]*\[\[(kv_namespaces|d1_databases|r2_buckets|send_email|routes)\]\]' "$config"
+          ! grep -Eq '^[[:space:]]*(route|routes|zone_name|account_id)[[:space:]]*=' "$config"
+          ! grep -Eq 'gnk-asg\.hr/\*|database_id|bucket_name|namespace_id' "$config"
+      - name: Check preview credentials
+        id: credentials
+        run: |
+          if [ -n "${CLOUDFLARE_API_TOKEN:-}" ] && [ -n "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo 'configured=true' >> "$GITHUB_OUTPUT"
+            echo 'Cloudflare preview credentials are available.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'configured=false' >> "$GITHUB_OUTPUT"
+            echo 'Cloudflare preview credentials are not configured; deployment was safely skipped.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Deploy isolated workers.dev preview
+        id: deploy
+        if: steps.credentials.outputs.configured == 'true'
+        run: |
+          set -euxo pipefail
+          output=$(npx wrangler deploy --config wrangler.review-preview.toml 2>&1 | tee /tmp/wrangler-preview.log)
+          url=$(printf '%s\n' "$output" | grep -Eo 'https://[^[:space:]]+workers\.dev' | tail -1 || true)
+          if [ -z "$url" ]; then
+            echo 'Preview URL was not found in Wrangler output.' >&2
+            exit 1
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          printf '### Isolated Worker preview\n\n- URL: %s\n- Production routes: none\n- Mail sending: disabled\n- Production bindings: none\n' "$url" >> "$GITHUB_STEP_SUMMARY"
+      - name: Verify public preview endpoints
+        if: steps.credentials.outputs.configured == 'true'
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          set -euxo pipefail
+          curl --fail --silent --show-error --retry 5 --retry-delay 3 "$PREVIEW_URL/api/public-operations/health" | tee /tmp/public-operations-health.json
+          grep -q '"ok": true' /tmp/public-operations-health.json
+          grep -q '"service": "public-operations"' /tmp/public-operations-health.json
+          curl --fail --silent --show-error --retry 5 --retry-delay 3 "$PREVIEW_URL/public-operations/" >/tmp/public-operations.html
+          grep -q 'Public Operations' /tmp/public-operations.html
+      - name: Verify protected Enterprise route
+        if: steps.credentials.outputs.configured == 'true'
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          set -euxo pipefail
+          status=$(curl --silent --output /tmp/enterprise-login.html --write-out '%{http_code}' "$PREVIEW_URL/enterprise/")
+          test "$status" = '401'
+          grep -q 'GNK ASG sigurna prijava' /tmp/enterprise-login.html
+      - name: Record preview result
+        if: always()
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+          CONFIGURED: ${{ steps.credentials.outputs.configured }}
+        run: |
+          mkdir -p ../../review-artifacts
+          printf '{"configured":"%s","previewUrl":"%s","commit":"%s","productionRoutes":false,"mailSending":false}\n' "$CONFIGURED" "$PREVIEW_URL" "$GITHUB_SHA" > ../../review-artifacts/worker-preview.json
+      - name: Upload preview metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-worker-preview-metadata
+          path: review-artifacts/worker-preview.json
+          if-no-files-found: error
+          retention-days: 7

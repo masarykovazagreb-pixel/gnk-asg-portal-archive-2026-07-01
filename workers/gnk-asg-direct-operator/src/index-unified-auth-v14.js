@@ -1,13 +1,21 @@
 import app from './index-portal-final-v13.js';
+import {
+  handlePublicOperations,
+  handlePublicOperationsAdmin,
+  isPublicOperationsPath,
+  isPublicOperationsAdminPath,
+  runPublicOperationsCycle,
+  VERSION as PUBLIC_OPERATIONS_VERSION
+} from './public-operations-v1.js';
 
-const VERSION='GNK_ASG_UNIFIED_AUTH_V18_20260704_MEDIA_REVIEW_SCOPE';
+const VERSION='GNK_ASG_UNIFIED_AUTH_V19_20260705_PUBLIC_OPERATIONS_REVIEW_RUNTIME';
 const COOKIE='gnk_asg_admin_session';
 const MAX_AGE=43200;
 const LOGIN='/admin-login';
 const enc=new TextEncoder();
 
 const PUBLIC_UI=[
-  '/the-code','/media-application'
+  '/the-code','/media-application','/public-operations'
 ];
 const UI=[
   '/admin-center','/operator-dashboard','/operator-mobile','/mail-studio','/mail-studio-pro',
@@ -152,19 +160,22 @@ async function versionResponse(request,env,ctx){
   const response=await app.fetch(request,env,ctx);
   try{
     const payload=await response.clone().json();
-    return json({...payload,authLayer:VERSION,deployedEntryPoint:'src/index-unified-auth-v14.js',backendStatusEndpoint:'/api/operator-backend-status',adminLogin:LOGIN,adminSessionSeconds:MAX_AGE,publicUi:PUBLIC_UI,protectedUi:UI});
+    return json({...payload,authLayer:VERSION,publicOperationsVersion:PUBLIC_OPERATIONS_VERSION,deployedEntryPoint:'src/index-unified-auth-v14.js',backendStatusEndpoint:'/api/operator-backend-status',adminLogin:LOGIN,adminSessionSeconds:MAX_AGE,publicUi:PUBLIC_UI,protectedUi:UI});
   }catch{return stamp(response);}
 }
 function backendStatus(env){return{
   ok:true,authLayer:VERSION,worker:'gnk-asg-direct-operator',bindings:{
     kv:Boolean(env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV),d1:Boolean(env.GNK_ASG_D1),
-    r2:Boolean(env.GNK_ASG_MEDIA_ASSETS),email:Boolean(env.EMAIL),ai:Boolean(env.AI)
-  },modules:{operator:true,mobileAdmin:true,mail:true,autoEditor:true,publishing:true,media:true,market:true,news:true,campaignMailer:true},
+    r2:Boolean(env.GNK_ASG_MEDIA_ASSETS),email:Boolean(env.EMAIL),ai:Boolean(env.AI),assets:Boolean(env.ASSETS?.fetch)
+  },modules:{operator:true,mobileAdmin:true,mail:true,autoEditor:true,publishing:true,media:true,market:true,news:true,campaignMailer:true,publicOperations:true,governanceBoard:true},
+  reviewSafety:{productionDeploy:false,bulkMail:false,publicOperationsVersion:PUBLIC_OPERATIONS_VERSION},
   time:new Date().toISOString()
 };}
 
 async function fetchHandler(request,env,ctx){
   const url=new URL(request.url),path=pathOf(request);
+  if(isPublicOperationsPath(path))return handlePublicOperations(request,env);
+  if(isPublicOperationsAdminPath(path))return handlePublicOperationsAdmin(request,env);
   if(request.method==='GET'&&path==='/data/portal-version.json')return versionResponse(request,env,ctx);
   if(isPublicUi(path))return stamp(await app.fetch(request,env,ctx));
   if(path===LOGIN){
@@ -196,6 +207,9 @@ async function fetchHandler(request,env,ctx){
 
 export default{
   fetch:fetchHandler,
-  async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
+  async scheduled(event,env,ctx){
+    ctx?.waitUntil?.(runPublicOperationsCycle(env).catch(error=>console.error('public operations cycle failed',error)));
+    if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);
+  },
   async email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx);}
 };

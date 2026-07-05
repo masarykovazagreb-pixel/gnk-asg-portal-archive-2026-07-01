@@ -23,9 +23,12 @@ on:
       - 'apps/portal/assets/localized-rtl-cjk-v1.css'
       - 'apps/portal/assets/public-menu-v18.js'
       - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
+      - 'workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js'
       - 'workers/gnk-asg-direct-operator/src/editorial-workflow-v1.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
+      - 'workers/gnk-asg-direct-operator/wrangler.review-preview.toml'
       - 'apps/portal/editorial-operations/release-queue/index.html'
-      - 'scripts/validate-digital-workforce-public-v2.mjs'
+      - 'scripts/validate-digital-workforce-public-v3.mjs'
       - '.github/workflows/check-digital-workforce-public.yml'
 
 permissions:
@@ -47,9 +50,10 @@ jobs:
           node --check apps/portal/assets/public-menu-v18.js
           node --check apps/portal/assets/js/editorial-operations-runtime-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check scripts/validate-digital-workforce-public-v2.mjs
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
+          node --check scripts/validate-digital-workforce-public-v3.mjs
       - name: Validate directory governance SEO and safety locks
-        run: node scripts/validate-digital-workforce-public-v2.mjs
+        run: node scripts/validate-digital-workforce-public-v3.mjs
       - name: Validate multilingual review contract
         run: |
           set -euxo pipefail

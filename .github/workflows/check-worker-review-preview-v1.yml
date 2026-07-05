@@ -1,0 +1,65 @@
+name: Check Worker Review Preview V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'workers/gnk-asg-direct-operator/src/**'
+      - 'workers/gnk-asg-direct-operator/package.json'
+      - 'workers/gnk-asg-direct-operator/package-lock.json'
+      - 'workers/gnk-asg-direct-operator/wrangler.review-preview.toml'
+      - '.github/workflows/check-worker-review-preview-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: workers/gnk-asg-direct-operator
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Install Worker dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Validate isolated preview configuration
+        run: |
+          set -euxo pipefail
+          config=wrangler.review-preview.toml
+          grep -q '^name = "gnk-asg-enterprise-review-v3"' "$config"
+          grep -q '^workers_dev = true' "$config"
+          grep -q '^preview_urls = true' "$config"
+          grep -q 'PUBLIC_ENVIRONMENT = "isolated-review-preview"' "$config"
+          grep -q 'MAIL_MANUAL_LIVE = "false"' "$config"
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' "$config"
+          ! grep -Eq '^[[:space:]]*\[\[(kv_namespaces|d1_databases|r2_buckets|send_email|routes)\]\]' "$config"
+          ! grep -Eq '^[[:space:]]*(route|routes|zone_name|account_id)[[:space:]]*=' "$config"
+          ! grep -Eq 'gnk-asg\.hr/\*|database_id|bucket_name|namespace_id' "$config"
+      - name: Compile route-less Worker preview bundle
+        run: |
+          set -euxo pipefail
+          rm -rf dist-review-preview
+          npx wrangler deploy --config wrangler.review-preview.toml --dry-run --outdir dist-review-preview
+          test -d dist-review-preview
+          test -n "$(find dist-review-preview -type f -print -quit)"
+          find dist-review-preview -maxdepth 3 -type f -printf '%P %s bytes\n' | sort | tee dist-review-preview/manifest.txt
+      - name: Confirm no deployment command ran
+        run: |
+          set -euxo pipefail
+          test ! -f .wrangler/deployments.json
+          grep -q 'isolated-review-preview' wrangler.review-preview.toml
+      - name: Upload review bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnk-asg-enterprise-review-worker-bundle
+          path: workers/gnk-asg-direct-operator/dist-review-preview
+          if-no-files-found: error
+          retention-days: 7

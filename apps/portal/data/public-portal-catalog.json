@@ -1,0 +1,106 @@
+{
+  "version": "2026-07-05.public-portal-catalog.v2",
+  "status": "public-allowlist",
+  "title": "GNK ASG Public Information Catalogue",
+  "description": "Explicit allowlist of data, reports, profiles, publications and system information permitted on the public portal.",
+  "approvalPolicy": {
+    "timezone": "Europe/Zagreb",
+    "dailyReviewTime": "08:00",
+    "rule": "A readiness-complete report or publication is treated as approved at 08:00 Europe/Zagreb unless the Executive Office cancels or places it on hold before the deadline.",
+    "preDeadlineStates": ["awaiting-review", "held", "cancelled", "approved-explicitly"],
+    "postDeadlineStates": ["approved-by-silence", "approved-explicitly", "held", "cancelled"],
+    "publicStates": ["approved-by-silence", "approved-explicitly", "published"]
+  },
+  "navigation": [
+    {"labelHr": "Grupa", "labelEn": "Group", "href": "/#profil"},
+    {"labelHr": "Operacije", "labelEn": "Operations", "href": "/#javne-operacije"},
+    {"labelHr": "Radnici", "labelEn": "Workforce", "href": "/digital-workforce/directory/"},
+    {"labelHr": "Dnevna izvješća", "labelEn": "Daily Reports", "href": "/#dnevna-izvjesca"},
+    {"labelHr": "Objave", "labelEn": "Publications", "href": "/objave/"},
+    {"labelHr": "Vijesti", "labelEn": "News", "href": "/vijesti/"},
+    {"labelHr": "Dokumenti", "labelEn": "Documents", "href": "/downloads/"},
+    {"labelHr": "Vizuali", "labelEn": "Visuals", "href": "/visual-index/"},
+    {"labelHr": "Kontakt", "labelEn": "Contact", "href": "/contact/"},
+    {"labelHr": "Enterprise Portal", "labelEn": "Enterprise Portal", "href": "/enterprise/", "protected": true}
+  ],
+  "datasets": [
+    {
+      "id": "digital-workforce",
+      "labelHr": "Operativni profili",
+      "labelEn": "Operational Profiles",
+      "publicRoute": "/digital-workforce/directory/",
+      "source": "/assets/js/digital-workforce-directory-v1.js",
+      "profileCount": 1537,
+      "publicFields": ["name", "workerId", "department", "role", "countryRegion", "operatingCountry", "operatingRegion", "languages", "timezone", "status", "entitySlot", "responsibility", "operatingMode", "backgroundCadence"],
+      "excludedFields": ["privateNotes", "credentials", "personalEmail", "personalPhone", "tokens", "secrets", "privateAuditTrail"],
+      "disclosure": "Profiles are functional operational workflow identities. The directory does not by itself establish natural-person identity or an employment relationship."
+    },
+    {
+      "id": "daily-public-reports",
+      "labelHr": "Dnevna javna operativna izvješća",
+      "labelEn": "Daily Public Operations Reports",
+      "publicRoute": "/#dnevna-izvjesca",
+      "api": "/api/public-operations/report/latest",
+      "publicFields": ["date", "generatedAt", "approval", "workforce", "editorial", "publicOutputs", "systems"],
+      "excludedFields": ["draftBodies", "internalComments", "privateAuditRecords", "mailRecipients", "tokens", "secrets"]
+    },
+    {
+      "id": "published-texts",
+      "labelHr": "Objavljeni tekstovi",
+      "labelEn": "Published Texts",
+      "publicRoute": "/objave/",
+      "source": "/data/auto-editor.json",
+      "publicFields": ["title", "summary", "publishedAt", "category", "url", "author", "editor", "image", "imageAlt"],
+      "excludedFields": ["draft", "internalReview", "privatePrompt", "unapprovedSources"]
+    },
+    {
+      "id": "public-news",
+      "labelHr": "Javne vijesti",
+      "labelEn": "Public News",
+      "publicRoute": "/vijesti/",
+      "source": "/data/news.json",
+      "publicFields": ["title", "summary", "source", "category", "url", "publishedAt"]
+    },
+    {
+      "id": "documents",
+      "labelHr": "Odobreni dokumenti i izvještaji",
+      "labelEn": "Approved Documents and Reports",
+      "publicRoute": "/downloads/",
+      "publicFields": ["title", "description", "date", "language", "fileType", "downloadUrl", "approvalState"]
+    },
+    {
+      "id": "visual-assets",
+      "labelHr": "Javni vizualni katalog",
+      "labelEn": "Public Visual Catalogue",
+      "publicRoute": "/visual-index/",
+      "source": "/data/gallery.catalog.json",
+      "publicFields": ["id", "src", "title", "alt", "description", "topic", "status"],
+      "requiredStatus": "published"
+    },
+    {
+      "id": "group-network",
+      "labelHr": "Mreža grupe",
+      "labelEn": "Group Network",
+      "publicRoute": "/#mreza-grupe",
+      "source": "/data/group_network.json",
+      "publicFields": ["name", "place", "region", "status"]
+    },
+    {
+      "id": "system-status",
+      "labelHr": "Javni status sustava",
+      "labelEn": "Public System Status",
+      "source": "/data/portal-version.json",
+      "publicFields": ["version", "status", "updatedAt", "publicModules"]
+    }
+  ],
+  "neverPublic": [
+    "operatorski i administratorski tokeni",
+    "API ključevi i secrets",
+    "privatne email adrese i primatelji",
+    "neodobreni nacrti i interni komentari",
+    "privatni audit tragovi i sigurnosni incidenti",
+    "interni registry dokumenti prije odobrenja",
+    "osobni podaci koji nisu izričito odobreni za objavu",
+    "DNS, Cloudflare i deployment secrets"
+  ]
+}
