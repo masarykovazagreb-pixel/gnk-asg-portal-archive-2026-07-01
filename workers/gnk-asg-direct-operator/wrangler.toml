@@ -41,7 +41,7 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260706-mail-studio-manual-live-send-v2"
+DEPLOY_REVISION = "20260706-mail-index-menu-runtime-hotfix-v1"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 
@@ -49,6 +49,8 @@ AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 # Campaign, bulk, scheduled outreach and profile tests remain locked below.
 MAIL_STUDIO_LIVE = "true"
 MAIL_MANUAL_LIVE = "true"
+GNK_ASG_MAIL_LIVE = "true"
+MAIL_LIVE_SEND = "true"
 MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MAIL_PROFILE_TEST_LIVE = "false"
 MAIL_PROFILE_TEST_RECIPIENTS = "beckuphome@gmail.com"
