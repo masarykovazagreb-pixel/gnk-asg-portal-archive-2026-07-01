@@ -139,6 +139,16 @@
     }catch{}
   }
 
+  function addIndexNavigation(){
+    const nav=document.querySelector('header .nav, nav[aria-label="Glavna navigacija"]');
+    if(!nav)return;
+    const has=href=>[...nav.querySelectorAll('a')].some(a=>a.getAttribute('href')===href);
+    const make=(href,label)=>{const a=document.createElement('a');a.href=href;a.textContent=label;return a};
+    const media=nav.querySelector('a[href="/media-application/"]');
+    if(!has('/objave/'))nav.insertBefore(make('/objave/',lang==='en'?'Publications':'Objave'),media||null);
+    if(!has('/public-operations/'))nav.insertBefore(make('/public-operations/',lang==='en'?'Operations':'Operacije'),media||null);
+  }
+
   function activatePublicLayers(){
     if(document.getElementById('gnk-public-layers-v1'))return;
     const after=document.querySelector('#workers')||document.querySelector('#financije')||document.querySelector('main');
@@ -154,6 +164,7 @@
     after.after(section);
   }
 
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{boot();activatePublicLayers();},{once:true});else {boot();activatePublicLayers();}
-  [400,1200,2600].forEach(delay=>setTimeout(()=>{boot();activatePublicLayers();},delay));
+  function run(){boot();addIndexNavigation();activatePublicLayers();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
+  [400,1200,2600].forEach(delay=>setTimeout(run,delay));
 })();
