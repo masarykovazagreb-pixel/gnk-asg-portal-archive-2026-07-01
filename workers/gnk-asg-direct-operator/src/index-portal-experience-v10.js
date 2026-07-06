@@ -41,16 +41,18 @@ async function readAnyBody(request){
 function id(prefix){return `${prefix}-${now().replace(/[-:.TZ]/g,'').slice(0,14)}-${Math.random().toString(16).slice(2,8)}`}
 function clean(value,max=2000){return String(value||'').replace(/\u0000/g,'').trim().slice(0,max)}
 function emailList(value){return clean(value,2000).split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean).slice(0,100)}
+function requiredBcc(env){return emailList(env.MAIL_MANDATORY_BCC||'beckuphome@gmail.com')}
+function mergeEmails(...groups){return[...new Set(groups.flat().map(x=>clean(x,220).toLowerCase()).filter(Boolean))]}
 function safeAttachment(a){return{filename:clean(a?.filename||a?.name||'attachment.pdf',180),type:clean(a?.type||a?.contentType||a?.mimeType||'application/pdf',80),size:Number(a?.size||a?.sizeBytes||0)||0,hasBase64:Boolean(a?.base64||a?.content)}}
 async function mailStatus(env){return{ok:true,service:'GNK ASG Mail Center',mode:String(env.MAIL_STUDIO_LIVE||'test_record_only'),providerVersion:MAIL_PROVIDER_VERSION,kvBinding:!!store(env),emailBinding:!!(env.EMAIL&&typeof env.EMAIL.send==='function'),emailMessageAvailable:typeof EmailMessage!=='undefined',liveSendEnabled:String(env.MAIL_STUDIO_LIVE||'').toLowerCase()==='true',providerReady:canLiveSend(env),contactFormLiveEnabled:String(env.CONTACT_FORM_LIVE||'').toLowerCase()==='true',contactProviderReady:canLiveSend(env,'CONTACT_FORM_LIVE'),sentCount:(await list(env,'mail:center:sent')).length,outboxCount:(await list(env,'mail:center:outbox')).length,inboxCount:(await list(env,'mail:center:inbox')).length,updatedAt:now()}}
 async function handleMailSend(request,env){
   if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);
-  const m=await readAnyBody(request),to=emailList(m.to),cc=emailList(m.cc),bcc=emailList(m.bcc),subject=clean(m.subject,300),html=clean(m.html||m.bodyHtml||m.body||'',120000),text=clean(m.text||m.plainText||'',120000),attachments=Array.isArray(m.attachments)?m.attachments.map(safeAttachment).slice(0,20):[];
+  const m=await readAnyBody(request),to=emailList(m.to),cc=emailList(m.cc),bcc=mergeEmails(emailList(m.bcc),requiredBcc(env)),subject=clean(m.subject,300),html=clean(m.html||m.bodyHtml||m.body||'',120000),text=clean(m.text||m.plainText||'',120000),attachments=Array.isArray(m.attachments)?m.attachments.map(safeAttachment).slice(0,20):[];
   if(!to.length)return json({ok:false,error:'missing_to'},400);
   if(!subject)return json({ok:false,error:'missing_subject'},400);
   if(!html&&!text)return json({ok:false,error:'missing_body'},400);
   const live=String(env.MAIL_STUDIO_LIVE||'').toLowerCase()==='true'&&authorized(request,env)&&env.EMAIL&&typeof env.EMAIL.send==='function';
-  const item={id:id('mail'),createdAt:now(),status:live?'LIVE_SEND_ATTEMPTED':'RECORDED_REVIEW_ONLY',from:clean(m.from||'office@gnk-asg.hr',180),fromName:clean(m.fromName||m.from||'GNK ASG',180),to,cc,bcc,subject,html,text,signatureProfile:clean(m.signatureProfile,80),signatureMode:clean(m.signatureMode,120),logoUrl:clean(m.logoUrl,400),attachments,attachmentCount:attachments.length,source:'mail-studio-provider-backend-v3'};
+  const item={id:id('mail'),createdAt:now(),status:live?'LIVE_SEND_ATTEMPTED':'RECORDED_REVIEW_ONLY',from:clean(m.from||'office@gnk-asg.hr',180),fromName:clean(m.fromName||m.from||'GNK ASG',180),to,cc,bcc,mandatoryCopy:requiredBcc(env),subject,html,text,signatureProfile:clean(m.signatureProfile,80),signatureMode:clean(m.signatureMode,120),logoUrl:clean(m.logoUrl,400),attachments,attachmentCount:attachments.length,source:'mail-studio-provider-backend-v4-mandatory-bcc'};
   const delivery=await sendProviderMail(env,item).catch(error=>({ok:false,delivered:false,reason:String(error?.message||error),version:MAIL_PROVIDER_VERSION}));
   item.delivery=delivery;
   if(delivery.delivered)item.status='DELIVERED';
