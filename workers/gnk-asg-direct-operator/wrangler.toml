@@ -41,14 +41,15 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260706-mail-studio-manual-live-send-v2"
+DEPLOY_REVISION = "20260706-review-mail-manual-disabled-v1"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 
-# Manual Mail Studio is enabled for controlled individual messages only.
+# Manual Mail Studio UI may remain visible in review, but real manual delivery
+# must stay disabled until a separate explicit production approval is given.
 # Campaign, bulk, scheduled outreach and profile tests remain locked below.
 MAIL_STUDIO_LIVE = "true"
-MAIL_MANUAL_LIVE = "true"
+MAIL_MANUAL_LIVE = "false"
 MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MAIL_PROFILE_TEST_LIVE = "false"
 MAIL_PROFILE_TEST_RECIPIENTS = "beckuphome@gmail.com"
