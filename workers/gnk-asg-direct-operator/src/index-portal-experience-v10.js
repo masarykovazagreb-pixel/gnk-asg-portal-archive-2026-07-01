@@ -3,6 +3,7 @@ import {VERSION,NEWS_MINIMUM,NEWS_HOURS_ZAGREB,NEWS_SCHEDULE,FEEDS,ACTIVE_NEWS_L
 import {getIndexConfig,saveIndexConfig} from './index-config-v10.js';
 import {isPrivatePath,patchPublicHtml,patchAdminHtml,transformHtml} from './public-shell-v11.js';
 import {handleMailSyncCenter} from './mail-sync-center-v2.js';
+import {sendProviderMail,contactNotificationItem,canLiveSend,VERSION as MAIL_PROVIDER_VERSION} from './mail-provider-send-v1.js';
 
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
 const now=()=>new Date().toISOString();
@@ -41,7 +42,7 @@ function id(prefix){return `${prefix}-${now().replace(/[-:.TZ]/g,'').slice(0,14)
 function clean(value,max=2000){return String(value||'').replace(/\u0000/g,'').trim().slice(0,max)}
 function emailList(value){return clean(value,2000).split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean).slice(0,100)}
 function safeAttachment(a){return{filename:clean(a?.filename||a?.name||'attachment.pdf',180),type:clean(a?.type||a?.contentType||a?.mimeType||'application/pdf',80),size:Number(a?.size||a?.sizeBytes||0)||0,hasBase64:Boolean(a?.base64||a?.content)}}
-async function mailStatus(env){return{ok:true,service:'GNK ASG Mail Center',mode:String(env.MAIL_STUDIO_LIVE||'test_record_only'),kvBinding:!!store(env),emailBinding:!!(env.EMAIL&&typeof env.EMAIL.send==='function'),liveSendEnabled:String(env.MAIL_STUDIO_LIVE||'').toLowerCase()==='true',sentCount:(await list(env,'mail:center:sent')).length,outboxCount:(await list(env,'mail:center:outbox')).length,inboxCount:(await list(env,'mail:center:inbox')).length,updatedAt:now()}}
+async function mailStatus(env){return{ok:true,service:'GNK ASG Mail Center',mode:String(env.MAIL_STUDIO_LIVE||'test_record_only'),providerVersion:MAIL_PROVIDER_VERSION,kvBinding:!!store(env),emailBinding:!!(env.EMAIL&&typeof env.EMAIL.send==='function'),emailMessageAvailable:typeof EmailMessage!=='undefined',liveSendEnabled:String(env.MAIL_STUDIO_LIVE||'').toLowerCase()==='true',providerReady:canLiveSend(env),contactFormLiveEnabled:String(env.CONTACT_FORM_LIVE||'').toLowerCase()==='true',contactProviderReady:canLiveSend(env,'CONTACT_FORM_LIVE'),sentCount:(await list(env,'mail:center:sent')).length,outboxCount:(await list(env,'mail:center:outbox')).length,inboxCount:(await list(env,'mail:center:inbox')).length,updatedAt:now()}}
 async function handleMailSend(request,env){
   if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);
   const m=await readAnyBody(request),to=emailList(m.to),cc=emailList(m.cc),bcc=emailList(m.bcc),subject=clean(m.subject,300),html=clean(m.html||m.bodyHtml||m.body||'',120000),text=clean(m.text||m.plainText||'',120000),attachments=Array.isArray(m.attachments)?m.attachments.map(safeAttachment).slice(0,20):[];
@@ -49,11 +50,15 @@ async function handleMailSend(request,env){
   if(!subject)return json({ok:false,error:'missing_subject'},400);
   if(!html&&!text)return json({ok:false,error:'missing_body'},400);
   const live=String(env.MAIL_STUDIO_LIVE||'').toLowerCase()==='true'&&authorized(request,env)&&env.EMAIL&&typeof env.EMAIL.send==='function';
-  const item={id:id('mail'),createdAt:now(),status:live?'READY_FOR_LIVE_SEND_REVIEW':'RECORDED_REVIEW_ONLY',from:clean(m.from,180),fromName:clean(m.fromName,180),to,cc,bcc,subject,html,text,signatureProfile:clean(m.signatureProfile,80),signatureMode:clean(m.signatureMode,120),logoUrl:clean(m.logoUrl,400),attachments,attachmentCount:attachments.length,source:'mail-studio-safe-backend-v2'};
+  const item={id:id('mail'),createdAt:now(),status:live?'LIVE_SEND_ATTEMPTED':'RECORDED_REVIEW_ONLY',from:clean(m.from||'office@gnk-asg.hr',180),fromName:clean(m.fromName||m.from||'GNK ASG',180),to,cc,bcc,subject,html,text,signatureProfile:clean(m.signatureProfile,80),signatureMode:clean(m.signatureMode,120),logoUrl:clean(m.logoUrl,400),attachments,attachmentCount:attachments.length,source:'mail-studio-provider-backend-v3'};
+  const delivery=await sendProviderMail(env,item).catch(error=>({ok:false,delivered:false,reason:String(error?.message||error),version:MAIL_PROVIDER_VERSION}));
+  item.delivery=delivery;
+  if(delivery.delivered)item.status='DELIVERED';
+  else if(live)item.status='LIVE_SEND_FAILED_OR_NOT_EXECUTED';
   await push(env,'mail:center:sent',item,500);
   await push(env,'mail:center:outbox',item,500);
   await write(env,'mail:center:last',item);
-  return json({ok:true,delivered:false,recorded:true,status:item.status,message:'Message recorded in controlled review mode. Live provider send is not executed by this safe endpoint.',item});
+  return json({ok:true,delivered:Boolean(delivery.delivered),recorded:true,status:item.status,message:delivery.delivered?'Message delivered by configured provider.':'Message recorded; live provider send was not executed or not available.',delivery,item});
 }
 async function handleMailCenter(path,env){
   if(path==='/api/mail-center/status')return json(await mailStatus(env));
@@ -64,14 +69,18 @@ function aiFallback(m){const tone=clean(m.tone||m.style||'profesionalno',120),re
 async function handleAiAssist(request){if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);const m=await readAnyBody(request);return json({ok:true,ai:false,model:'safe-fallback',text:aiFallback(m)});}
 async function handleContactSubmit(request,env){
   if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);
-  const m=await readAnyBody(request),pdf=m.pdf&&typeof m.pdf==='object'?m.pdf:null,item={id:id('contact'),reference:'GNK-CONTACT-'+now().replace(/[-:.TZ]/g,'').slice(0,14),createdAt:now(),mailbox:clean(m.mailbox||'contact',80),name:clean(m.name||m.fullName,180),email:clean(m.email,220),phone:clean(m.phone,120),subject:clean(m.subject||'Upit putem GNK ASG portala',260),message:clean(m.message||m.body,6000),consent:clean(m.consent||'')==='yes'||m.consent===true,pdf:pdf?{filename:clean(pdf.filename,180),type:clean(pdf.type,80),size:Number(pdf.size||0)}:null,source:'contact-form-safe-backend-v2'};
+  const m=await readAnyBody(request),pdf=m.pdf&&typeof m.pdf==='object'?m.pdf:null,item={id:id('contact'),reference:'GNK-CONTACT-'+now().replace(/[-:.TZ]/g,'').slice(0,14),createdAt:now(),mailbox:clean(m.mailbox||'contact',80),name:clean(m.name||m.fullName,180),email:clean(m.email,220),phone:clean(m.phone,120),subject:clean(m.subject||'Upit putem GNK ASG portala',260),message:clean(m.message||m.body,6000),consent:clean(m.consent||'')==='yes'||m.consent===true,pdf:pdf?{filename:clean(pdf.filename,180),type:clean(pdf.type,80),size:Number(pdf.size||0)}:null,source:'contact-form-provider-backend-v3'};
   if(!item.email&&!item.phone)return json({ok:false,error:'missing_contact'},400);
   if(!item.message)return json({ok:false,error:'missing_message'},400);
   if(!item.consent)return json({ok:false,error:'missing_consent'},400);
   if(item.pdf&&item.pdf.type&&item.pdf.type!=='application/pdf')return json({ok:false,error:'pdf_only'},400);
+  const notifyTo=clean(env.CONTACT_NOTIFY_TO||env.CONTACT_FORM_NOTIFY_TO||'beckuphome@gmail.com',400);
+  const notification=contactNotificationItem(item,notifyTo);
+  const delivery=await sendProviderMail(env,notification,{flag:'CONTACT_FORM_LIVE'}).catch(error=>({ok:false,delivered:false,reason:String(error?.message||error),version:MAIL_PROVIDER_VERSION}));
+  item.notification={to:notifyTo,delivery};
   await push(env,'contact:submissions',item,500);
   await write(env,'contact:last',item);
-  return json({ok:true,recorded:true,reference:item.reference,caseId:item.reference,item});
+  return json({ok:true,recorded:true,notified:Boolean(delivery.delivered),reference:item.reference,caseId:item.reference,delivery,item});
 }
 
 async function handle(request,env,ctx){
