@@ -6,11 +6,37 @@ import {
 
 export const VERSION=`GNK_ASG_UNIFIED_AUTH_V16_20260706_LOGIN_ISOLATION_INDEX_CONTRACT_${INDEX_CONTRACT_INJECTION_VERSION}`;
 
+function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
+
 function stamp(response){
   const headers=new Headers(response.headers);
   headers.set('x-gnk-asg-auth-isolation',VERSION);
   headers.set('x-gnk-index-contract-injection',INDEX_CONTRACT_INJECTION_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+}
+
+async function patchVersionResponse(request,response){
+  if(pathOf(request)!=='/data/portal-version.json'||response.status!==200)return response;
+  const type=String(response.headers.get('content-type')||'').toLowerCase();
+  if(!type.includes('application/json'))return response;
+  try{
+    const payload=await response.clone().json();
+    const headers=new Headers(response.headers);
+    headers.delete('content-length');
+    headers.delete('content-encoding');
+    headers.set('content-type','application/json; charset=utf-8');
+    headers.set('cache-control','no-store');
+    headers.set('x-gnk-asg-auth-isolation',VERSION);
+    headers.set('x-gnk-index-contract-injection',INDEX_CONTRACT_INJECTION_VERSION);
+    headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
+    return new Response(JSON.stringify({
+      ...payload,
+      deployedEntryPoint:'src/index-unified-auth-v15.js',
+      wrapperEntryPoint:'src/index-unified-auth-v15.js',
+      indexContractInjectionVersion:INDEX_CONTRACT_INJECTION_VERSION,
+      authIsolationVersion:VERSION
+    },null,2),{status:response.status,statusText:response.statusText,headers});
+  }catch{return response;}
 }
 
 async function isolateLogin(response){
@@ -38,7 +64,8 @@ async function isolateLogin(response){
 export default{
   async fetch(request,env,ctx){
     const response=await app.fetch(request,env,ctx);
-    const patched=await patchIndexContractResponse(request,response);
+    const versionPatched=await patchVersionResponse(request,response);
+    const patched=await patchIndexContractResponse(request,versionPatched);
     return isolateLogin(patched);
   },
   async scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
