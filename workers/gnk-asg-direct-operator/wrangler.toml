@@ -20,7 +20,7 @@ id = "d6f5dac9fa034d8d813db0de44eb7b1b"
 
 [[kv_namespaces]]
 binding = "GNK_ASG_KV"
-id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+id = "a3e9e78c7d554d7fa10996da9e7bc"
 
 [[d1_databases]]
 binding = "GNK_ASG_D1"
@@ -41,7 +41,7 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260705-enterprise-review-worker-runtime-v3"
+DEPLOY_REVISION = "20260706-mail-studio-manual-raw-emailmessage-hotfix-v1"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 
