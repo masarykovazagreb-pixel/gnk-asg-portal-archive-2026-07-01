@@ -1,8 +1,9 @@
 import core from './index-portal-final-v12.js';
 import {getLiveMarket,refreshLiveMarket,VERSION as MARKET_VERSION} from './market-live-v1.js';
 import {verifiedGallery,rotateLatestArticleImage,VERSION as GALLERY_VERSION,RECENT_WINDOW as GALLERY_RECENT_WINDOW} from './gallery-rotation-v1.js';
+import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v1.js';
 
-const VERSION='GNK_ASG_PORTAL_FINAL_V15_MEDIA_SEO_CLEAN_20260706';
+const VERSION='GNK_ASG_PORTAL_FINAL_V16_MAIL_AUTOREPLY_20260706';
 const NEWS_ROTATION='GNK_ASG_INDEX_NEWS_ROTATION_V1';
 const NEWS_SCHEDULE=['09:00','15:00','21:00'];
 const FAVICON_VERSION='GNK_ASG_GOOGLE_FAVICON_V1';
@@ -141,6 +142,7 @@ async function fetchHandler(request,env,ctx){
       indexDesign:'IQ200',
       publicationRouting:'static-assets-first-dynamic-kv-fallback',
       mediaApplicationSeo:'clean-20260706',
+      mailAutoreply:MAIL_AUTOREPLY_VERSION,
       timeZone:'Europe/Zagreb',
       deployedEntryPoint:'src/index-portal-final-v13.js'
     });
@@ -232,6 +234,6 @@ export default{
     return Promise.all([marketTask,galleryTask]);
   },
   async email(message,env,ctx){
-    if(typeof core.email==='function')return core.email(message,env,ctx);
+    return handleIncomingEmail(message,env,ctx,core);
   }
 };
