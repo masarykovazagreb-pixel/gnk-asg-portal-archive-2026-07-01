@@ -1,0 +1,24 @@
+{
+  "version": "GNK_ASG_PUBLIC_OPERATIONAL_FEED_V1_20260706",
+  "status": "public-feed-draft",
+  "updatedAt": "2026-07-06T14:00:00+02:00",
+  "sections": [
+    {"id":"posts","title":"Objave","url":"/objave/","count":2},
+    {"id":"conclusions","title":"Zaključci","url":"/zakljucci/","count":2},
+    {"id":"workers","title":"Worker rezultati","url":"/data/worker-results-3h.json","count":8},
+    {"id":"entities","title":"Firme i projektni slojevi","url":"/corporate-entities/","count":5},
+    {"id":"project-business","title":"Projektno poslovanje","url":"/project-business/","count":9}
+  ],
+  "latest": [
+    {"type":"conclusion","title":"Workeri, firme i projektno poslovanje prelaze u javni operativni sloj","url":"/objave/zakljucak-worker-firme-projekti-20260706/"},
+    {"type":"data","title":"3-satni worker rezultati","url":"/data/worker-results-3h.json"},
+    {"type":"data","title":"Firme i projektno poslovanje","url":"/data/group-entities-project-business.json"},
+    {"type":"post","title":"THE CODE index, financije i javni workeri","url":"/objave/the-code-index-workers-finance-20260706/"}
+  ],
+  "next": [
+    "Verify live deployment",
+    "Connect feed to index runtime",
+    "Publish next worker board snapshot",
+    "Prepare HR/EN parity layer"
+  ]
+}
