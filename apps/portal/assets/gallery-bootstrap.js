@@ -1,202 +1,93 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_GALLERY_BOOTSTRAP__) return;
-  window.__GNK_ASG_GALLERY_BOOTSTRAP__ = true;
+  if (window.__GNK_ASG_HOME_NORMALIZER_V6__) return;
+  window.__GNK_ASG_HOME_NORMALIZER_V6__ = true;
 
-  const route = location.pathname.replace(/\/+$/, '') || '/';
-  const isIndex = route === '/' || route === '/en';
-  const PNG_ASG = '/assets/brand/media-kit/GNK_ASG_logo_gold_transparent.png';
-  const PNG_DINAMO = '/assets/brand/media-kit/GNK_DINAMO_Ltd_logo_gold_transparent.png';
-  const EMAIL_STATUS = 'https://gnk-asg-direct-operator.beckuphome.workers.dev/email-status?source=all&from=%2Fcampaign-mailer%2F&date=today';
-  const PDF_MEMO = '/api/media-registration/memorandum.pdf';
-  const ready = fn => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn, { once: true }) : fn();
+  const path = location.pathname.replace(/\/+$/, '') || '/';
+  const isHome = path === '/' || path === '/en';
+  const isEn = path === '/en';
+  const ASG = '/assets/brand/media-kit/GNK_ASG_logo_gold_transparent.png';
+  const DINAMO = '/assets/brand/media-kit/GNK_DINAMO_Ltd_logo_gold_transparent.png';
+  const MEMO = '/api/media-registration/memorandum.pdf';
+  const EMAIL = 'https://gnk-asg-direct-operator.beckuphome.workers.dev/email-status?source=all&from=%2Fcampaign-mailer%2F&date=today';
+  const t = (hr, en) => isEn ? en : hr;
+  const esc = v => String(v).replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const btn = (href, label, gold=false) => `<a class="gnk-v6-btn${gold?' gold':''}" href="${esc(href)}"${/^https?:/i.test(href)?' rel="noopener"':''}>${esc(label)}</a>`;
 
-  const esc = value => String(value).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
-  const link = (href, label, gold = false) => `<a class="gnk-runtime-btn${gold ? ' gold' : ''}" href="${esc(href)}"${/^https?:/i.test(href) ? ' rel="noopener"' : ''}>${esc(label)}</a>`;
-
-  const projects = [
-    ['PLANNED / FEASIBILITY', 'Međunarodne bolnice, sportska medicina i rehabilitacija', 'zdravstvo'],
-    ['REVIEW / DEVELOPMENT', 'Sportski sustavi, performance tracking i sportska oprema', 'sport i tehnologija'],
-    ['POSTOJEĆA TEHNOLOŠKA OSNOVA / MEĐUNARODNO ŠIRENJE', 'Bankarski, payment i digital exchange softver', 'FinTech'],
-    ['PRE-LAUNCH / REGULATORNA I TEHNIČKA ANALIZA', 'Stablecoin i digitalni instrument povezan sa zlatom', 'digitalna imovina'],
-    ['PLANNED / FEASIBILITY', 'Međunarodno sveučilište u SAD-u i još tri države', 'obrazovanje'],
-    ['PLANNED / MARKET STUDY', 'Organska proteinska hrana i jestiva ulja', 'hrana'],
-    ['PLANNED / SITE SELECTION', 'Tvornice i međunarodna industrijska proizvodnja', 'industrija'],
-    ['PLANNED / DUE DILIGENCE', 'Nafta, derivati i energetska trgovina', 'energija'],
-    ['JAVNO NAJAVLJENO / OGRANIČENA OBJAVA DO AKTIVACIJE', 'THE CODE – povezivanje više međunarodnih kompanija', 'grupna transformacija']
-  ];
-
-  const routes = [
-    ['GNK-WRK-HR-FIN-001', 'Financijski rezultati / PDF dokazi', 'Informativni management-finance prikaz povezan s PDF dokazima.', ['/financije/', 'Finance'], ['/downloads/', 'PDF dokazi']],
-    ['GNK-WRK-US-CODE-001', 'THE CODE announcements', 'Objave, countdown, PDF memorandum i javni materijali THE CODE programa.', ['/the-code/', 'THE CODE']],
-    ['GNK-WRK-HR-OPS-001', 'Sastanci, odluke, raspored', 'Javne operacije, zapisnici i dopušteni statusi bez internih tajni.', ['/public-operations/', 'Public Operations']],
-    ['GNK-WRK-HR-MEDIA-001', 'Novinari i media prijave', 'Newsroom intake i akreditacije. Ruta se ne mijenja.', ['/media-application/', 'Media application'], ['/media-application/?lang=en', 'EN form']],
-    ['GNK-WRK-HR-PRESS-001', 'Press objave i materijali', 'Press releases, media kit i službeni novinarski materijali.', ['/objave/', 'Objave'], ['/media-kit/', 'Media Kit']],
-    ['GNK-WRK-HR-COMMENT-001', 'Objave, komentari i analize Nermina Sefića', 'Autorski komentari odvojeni su od vijesti i press materijala.', ['/nermin-sefic/', 'Profil'], ['/autorske-objave/', 'Autorske objave']],
-    ['GNK-WRK-HR-AI-001', 'Public AI Navigation', 'Javno usmjeravanje po portalu bez pravnih, investicijskih, medicinskih ili obvezujućih odluka.', ['/assistant/', 'AI pomoć']],
-    ['GNK-WRK-HR-AI-002', 'Editorial AI Draft', 'Priprema nacrta; svaki tekst ide na odobrenje Nermina Sefića kao direktora, UBO-a i glavnog urednika.', ['/auto-editor/', 'Auto Editor']]
-  ];
-
-  function installStyle() {
-    if (document.getElementById('gnk-index-runtime-style-v3')) return;
-    const style = document.createElement('style');
-    style.id = 'gnk-index-runtime-style-v3';
-    style.textContent = `
-      .gnk-runtime-section,.gnk-routing,.gnk-code-show{padding:30px 0}.gnk-runtime-panel,.gnk-routing-panel,.gnk-code-panel{border:1px solid rgba(243,204,98,.3);border-radius:28px;background:radial-gradient(circle at 50% 0,rgba(243,204,98,.15),rgba(5,8,14,.96) 54%);box-shadow:0 28px 80px rgba(0,0,0,.42);overflow:hidden}.gnk-runtime-head,.gnk-routing-head,.gnk-code-head{display:flex;align-items:end;justify-content:space-between;gap:18px;padding:20px 22px;border-bottom:1px solid rgba(255,255,255,.10)}.gnk-runtime-head h2,.gnk-routing-head h2,.gnk-code-head h2{margin:.1rem 0 0;font:700 clamp(28px,4vw,48px)/.96 Georgia,serif;color:#fff}.gnk-runtime-head p,.gnk-routing-head p,.gnk-code-head p{margin:0;color:#aeb8c8;max-width:780px;line-height:1.5}.gnk-runtime-grid,.gnk-routing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:18px}.gnk-runtime-card,.gnk-routing-card{border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,255,255,.045);padding:16px;display:flex;flex-direction:column;gap:10px}.gnk-runtime-card.feature,.gnk-routing-card.feature{border-color:rgba(243,204,98,.45);background:rgba(243,204,98,.06)}.gnk-runtime-card h3,.gnk-routing-card h3{margin:0;color:#fff;font:700 22px/1.05 Georgia,serif}.gnk-runtime-card p,.gnk-routing-card p,.gnk-runtime-card li{margin:0;color:#aeb8c8;line-height:1.48;font-size:14px}.gnk-runtime-card ul{margin:0;padding-left:18px}.gnk-runtime-status,.gnk-routing-card code{display:inline-flex;align-self:flex-start;border:1px solid rgba(243,204,98,.28);border-radius:999px;color:#ffe8a0;background:rgba(243,204,98,.075);padding:6px 9px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}.gnk-runtime-notice,.gnk-routing-notice{margin:0 18px 18px;border:1px solid rgba(244,180,79,.42);border-radius:16px;background:rgba(244,180,79,.09);padding:13px;color:#ffe0a3;font-size:13px;line-height:1.5}.gnk-runtime-actions,.gnk-code-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.gnk-runtime-btn,.gnk-code-button,.gnk-routing-card a{border:1px solid rgba(255,255,255,.14);border-radius:999px;background:#080d16;color:#fff;padding:10px 13px;text-decoration:none;font-size:12px;font-weight:950;display:inline-flex}.gnk-runtime-btn.gold,.gnk-code-button.gold{background:linear-gradient(135deg,#c99d35,#ffe08a);color:#06101f;border-color:#f3cc62}.gnk-code-stage{position:relative;min-height:380px;background:#030508}.gnk-code-slide{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;padding:26px;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .55s ease,transform .55s ease}.gnk-code-slide.is-active{opacity:1;pointer-events:auto;transform:none}.gnk-code-copy small{display:block;color:#f3cc62;text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:900;margin-bottom:9px}.gnk-code-copy h3{font:700 clamp(30px,5vw,62px)/.9 Georgia,serif;margin:0;color:#fff}.gnk-code-copy p{color:#c9d2df;line-height:1.55;font-size:16px}.gnk-code-visual{border:1px solid rgba(243,204,98,.22);border-radius:22px;background:#04070d;min-height:250px;display:grid;place-items:center;text-align:center;padding:18px}.gnk-code-visual.light{background:#fff}.gnk-code-visual img{width:min(250px,78%);height:auto;filter:drop-shadow(0 28px 55px rgba(0,0,0,.55))}.gnk-code-count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}.gnk-code-count div{border:1px solid rgba(243,204,98,.28);border-radius:15px;padding:13px 8px;background:rgba(243,204,98,.065)}.gnk-code-count b{display:block;color:#fff;font-size:32px}.gnk-code-count span{display:block;color:#aeb8c8;font-size:10px;text-transform:uppercase;letter-spacing:.12em}.gnk-code-controls{padding:16px 22px;border-top:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18)}.gnk-code-status{margin-left:auto;color:#aeb8c8;font-size:12px}.gnk-code-progress{height:2px;background:rgba(255,255,255,.08)}.gnk-code-progress i{display:block;height:100%;width:0;background:#f3cc62;transition:width .2s linear}@media(max-width:980px){.gnk-runtime-grid,.gnk-routing-grid{grid-template-columns:1fr 1fr}.gnk-code-slide{grid-template-columns:1fr;min-height:540px}.gnk-code-stage{min-height:540px}}@media(max-width:640px){.gnk-runtime-grid,.gnk-routing-grid,.gnk-code-count{grid-template-columns:1fr}.gnk-code-slide{padding:18px;min-height:600px}.gnk-code-stage{min-height:600px}.gnk-code-status{width:100%;margin-left:0}}`;
-    document.head.appendChild(style);
-  }
-
-  function replaceSvgLogos() {
-    document.querySelectorAll('img[src$=".svg"], img[src*="official-gnk"], img[src*="logo-gnk-asg.svg"]').forEach(img => {
-      const sig = `${img.getAttribute('src') || ''} ${img.getAttribute('alt') || ''}`.toLowerCase();
-      img.dataset.visualApproved = 'true';
-      img.src = sig.includes('dinamo') ? PNG_DINAMO : PNG_ASG;
+  function logos() {
+    document.querySelectorAll('img[src$=".svg"],img[src*="official-gnk"],img[src*="logo-gnk-asg.svg"]').forEach(img => {
+      const sig = `${img.getAttribute('src')||''} ${img.getAttribute('alt')||''}`.toLowerCase();
+      img.src = sig.includes('dinamo') ? DINAMO : ASG;
     });
   }
 
-  function cleanRiskPhrases() {
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    const fixes = [[/9 projekata u tijeku/gi, '9 projekata u pripremi / razvoju / provjeri'], [/projekata u tijeku/gi, 'projekata u pripremi, razvoju, provjeri ili ograničenoj objavi']];
-    let node;
-    while ((node = walker.nextNode())) {
-      let value = node.nodeValue;
-      fixes.forEach(([from, to]) => { value = value.replace(from, to); });
-      if (value !== node.nodeValue) node.nodeValue = value;
-    }
+  function style() {
+    if (document.getElementById('gnk-home-v6-style')) return;
+    const s = document.createElement('style');
+    s.id = 'gnk-home-v6-style';
+    s.textContent = `
+      .gnk-v6{width:min(1180px,calc(100% - 32px));margin:0 auto 52px;color:#f8fafc;font-family:Inter,Arial,sans-serif}.gnk-v6 *{box-sizing:border-box}.gnk-v6 a{color:inherit}.gnk-v6-top{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 0}.gnk-v6-brand{display:flex;align-items:center;gap:13px;flex-wrap:wrap}.gnk-v6-brand img{width:62px;height:62px;object-fit:contain;filter:drop-shadow(0 18px 38px rgba(0,0,0,.55))}.gnk-v6-line{width:1px;height:46px;background:rgba(243,204,98,.28)}.gnk-v6-brand b{display:block;color:#ffe8a0;font:700 20px/1.1 Georgia,serif}.gnk-v6-brand span span{display:block;color:#aeb8c8;font-size:12px}.gnk-v6-nav{display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end}.gnk-v6-btn,.gnk-v6-nav a{border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:10px 13px;text-decoration:none;color:#fff;background:rgba(255,255,255,.04);font-size:12px;font-weight:900;display:inline-flex}.gnk-v6-btn.gold{background:linear-gradient(135deg,#c99d35,#ffe08a);color:#07101f;border-color:#f3cc62}.gnk-v6-panel{border:1px solid rgba(243,204,98,.3);border-radius:30px;background:radial-gradient(circle at 50% 0,rgba(243,204,98,.16),rgba(5,8,14,.96) 55%);box-shadow:0 28px 80px rgba(0,0,0,.42);overflow:hidden;margin:0 0 24px}.gnk-v6-head{padding:20px 22px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;gap:22px;justify-content:space-between;align-items:end;flex-wrap:wrap}.gnk-v6-eyebrow{margin:0 0 8px;color:#f3cc62;text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:950}.gnk-v6 h1,.gnk-v6 h2{margin:0;color:#fff;font:700 clamp(34px,5vw,66px)/.95 Georgia,serif}.gnk-v6 p{color:#aeb8c8;line-height:1.55}.gnk-v6-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:18px}.gnk-v6-card{border:1px solid rgba(255,255,255,.12);border-radius:20px;background:linear-gradient(180deg,rgba(17,26,42,.94),rgba(5,8,14,.96));padding:16px}.gnk-v6-card strong{display:block;color:#ffe8a0;font:700 27px/1 Georgia,serif;margin:7px 0}.gnk-v6-card small,.gnk-v6-card p{color:#d5dde9}.gnk-v6-card span,.gnk-v6-code{display:inline-flex;border:1px solid rgba(243,204,98,.28);border-radius:999px;color:#ffe8a0;background:rgba(243,204,98,.075);padding:6px 9px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}.gnk-v6-stage{position:relative;min-height:360px;background:#030508}.gnk-v6-slide{position:absolute;inset:0;display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center;padding:26px;opacity:0;pointer-events:none;transform:translateY(12px);transition:.55s ease}.gnk-v6-slide.on{opacity:1;pointer-events:auto;transform:none}.gnk-v6-slide h3{font:700 clamp(30px,5vw,62px)/.92 Georgia,serif;margin:0;color:#fff}.gnk-v6-visual{border:1px solid rgba(243,204,98,.22);border-radius:22px;background:#04070d;min-height:230px;display:grid;place-items:center;text-align:center;padding:18px}.gnk-v6-dual{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}.gnk-v6-dual img{width:min(130px,38%);height:auto}.gnk-v6-count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}.gnk-v6-count div{border:1px solid rgba(243,204,98,.28);border-radius:15px;padding:12px 7px;background:rgba(243,204,98,.065);text-align:center}.gnk-v6-count b{display:block;color:#fff;font-size:30px}.gnk-v6-count em{display:block;color:#aeb8c8;font-style:normal;font-size:10px;text-transform:uppercase}.gnk-v6-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:16px 22px;border-top:1px solid rgba(255,255,255,.1)}.gnk-v6-progress{height:2px;background:rgba(255,255,255,.08)}.gnk-v6-progress i{display:block;height:100%;width:0;background:#f3cc62}.gnk-v6-note{margin:0 18px 18px;border:1px solid rgba(244,180,79,.42);border-radius:16px;background:rgba(244,180,79,.09);padding:13px;color:#ffe0a3}.gnk-v6-status{margin-left:auto;color:#aeb8c8;font-size:12px}.gnk-v6-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 24px}.gnk-v6-strip .gnk-v6-card strong{font-size:30px}.gnk-v6-hidden{display:none!important}@media(max-width:980px){.gnk-v6-grid,.gnk-v6-strip{grid-template-columns:1fr 1fr}.gnk-v6-slide{grid-template-columns:1fr;min-height:560px}.gnk-v6-stage{min-height:560px}}@media(max-width:680px){.gnk-v6-grid,.gnk-v6-strip,.gnk-v6-count{grid-template-columns:1fr}.gnk-v6-top{align-items:flex-start;flex-direction:column}.gnk-v6-line{display:none}.gnk-v6-slide{min-height:650px;padding:18px}.gnk-v6-stage{min-height:650px}.gnk-v6-status{width:100%;margin-left:0}}
+    `;
+    document.head.appendChild(s);
   }
 
-  function ensureNavLinks() {
-    const nav = document.querySelector('.top-nav, header .nav, nav[aria-label="Glavna navigacija"], nav');
-    if (!nav) return;
-    const has = href => [...nav.querySelectorAll('a')].some(a => (a.getAttribute('href') || '') === href);
-    [['/the-code/', 'THE CODE'], ['/media-application/', 'Media'], ['/objave/', 'Objave'], ['/public-operations/', 'Operacije'], ['/financije/', 'Financije'], ['/downloads/', 'Downloads'], [EMAIL_STATUS, 'Email status']].forEach(([href, label]) => {
-      if (has(href)) return;
-      const a = document.createElement('a');
-      a.href = href;
-      a.textContent = label;
-      if (/^https?:/i.test(href)) a.rel = 'noopener';
-      nav.appendChild(a);
-    });
+  function html() {
+    const p = [
+      ['PLANNED / FEASIBILITY', t('Međunarodne bolnice, sportska medicina i rehabilitacija','International hospitals, sports medicine and rehabilitation'), t('zdravstvo','healthcare')],
+      ['REVIEW / DEVELOPMENT', t('Sportski sustavi, performance tracking i sportska oprema','Sports systems, performance tracking and sports equipment'), t('sport i tehnologija','sports and technology')],
+      [t('POSTOJEĆA TEHNOLOŠKA OSNOVA / MEĐUNARODNO ŠIRENJE','EXISTING TECHNOLOGY BASE / INTERNATIONAL EXPANSION'), t('Bankarski, payment i digital exchange softver','Banking, payment and digital exchange software'), 'FinTech'],
+      [t('PRE-LAUNCH / REGULATORNA I TEHNIČKA ANALIZA','PRE-LAUNCH / REGULATORY AND TECHNICAL ANALYSIS'), t('Stablecoin i digitalni instrument povezan sa zlatom','Stablecoin and gold-linked digital instrument'), t('digitalna imovina','digital assets')],
+      ['PLANNED / FEASIBILITY', t('Međunarodno sveučilište u SAD-u i još tri države','International university in the USA and three additional countries'), t('obrazovanje','education')],
+      ['PLANNED / MARKET STUDY', t('Organska proteinska hrana i jestiva ulja','Organic protein food and edible oils'), t('hrana','food')],
+      ['PLANNED / SITE SELECTION', t('Tvornice i međunarodna industrijska proizvodnja','Factories and international industrial production'), t('industrija','industry')],
+      ['PLANNED / DUE DILIGENCE', t('Nafta, derivati i energetska trgovina','Oil, derivatives and energy trading'), t('energija','energy')],
+      [t('JAVNO NAJAVLJENO / OGRANIČENA OBJAVA DO AKTIVACIJE','PUBLICLY ANNOUNCED / LIMITED RELEASE UNTIL ACTIVATION'), t('THE CODE – povezivanje više međunarodnih kompanija','THE CODE – connecting multiple international companies'), t('grupna transformacija','group transformation')]
+    ];
+    const workers = [
+      ['GNK-WRK-HR-FIN-001', t('Financijski rezultati / PDF dokazi','Financial results / PDF evidence'), '/financije/'],
+      ['GNK-WRK-US-CODE-001', 'THE CODE announcements', '/the-code/'],
+      ['GNK-WRK-HR-OPS-001', t('Sastanci, odluke, raspored','Meetings, decisions and schedule'), '/public-operations/'],
+      ['GNK-WRK-HR-MEDIA-001', t('Novinari i media prijave','Journalists and media applications'), '/media-application/?lang=en'],
+      ['GNK-WRK-HR-PRESS-001', t('Press objave i materijali','Press releases and materials'), '/objave/'],
+      ['GNK-WRK-HR-COMMENT-001', t('Komentari i analize','Comments and analysis'), '/nermin-sefic/'],
+      ['GNK-WRK-HR-AI-001', 'Public AI Navigation', '/assistant/'],
+      ['GNK-WRK-HR-AI-002', 'Editorial AI Draft', '/auto-editor/']
+    ];
+    return `<section class="gnk-v6" id="gnk-normalized-homepage-v6"><div class="gnk-v6-top"><div class="gnk-v6-brand"><img src="${ASG}" alt="GNK ASG d.o.o. logo"><div class="gnk-v6-line"></div><img src="${DINAMO}" alt="GNK DINAMO Ltd. Group logo"><span><b>GNK ASG d.o.o. · GNK DINAMO Ltd. Group</b><span>${t('Korporativni portal · Enterprise Digital Platform','Corporate portal · Enterprise Digital Platform')}</span></span></div><nav class="gnk-v6-nav"><a href="#financije">${t('Financije','Financials')}</a><a href="#gnk-index-code-show">THE CODE show</a><a href="#workers">Workers</a><a href="#objave">${t('Objave','Posts')}</a><a href="/media-application/?lang=en">Media</a><a href="${isEn?'/':'/en/'}">${isEn?'HR':'EN'}</a></nav></div>
+    <section class="gnk-v6-panel" id="financije"><div class="gnk-v6-head"><div><p class="gnk-v6-eyebrow">${t('Javni financijski sažetak · odmah ispod logotipa','Public financial summary · directly below the logos')}</p><h1>${t('Financijski rezultati vidljivi na indexu.','Financial results are visible on the index.')}</h1></div><p>${t('Podaci su informativni management-finance prikaz i povezani su s PDF dokazima. Prihodi, EBITDA, dobit, kapital i novčana sredstva ostaju odvojene kategorije.','The figures are an informative management-finance view linked to PDF evidence. Revenue, EBITDA, profit, capital and cash remain separate categories.')}</p></div><div class="gnk-v6-grid"><article class="gnk-v6-card"><span>GNK ASG d.o.o. · 2024</span><strong>${isEn?'€169.46M':'169,46 mil. €'}</strong><small>${t('promet / prihod','turnover / revenue')}</small></article><article class="gnk-v6-card"><span>EBITDA · 2024</span><strong>${isEn?'€3.77M':'3,77 mil. €'}</strong><small>${t('odvojeno od neto dobiti','separate from net profit')}</small></article><article class="gnk-v6-card"><span>${t('neto dobit','net profit')} · 2024</span><strong>${isEn?'€12,887':'12.887 €'}</strong><small>${t('ne miješa se s cashom','not mixed with cash')}</small></article><article class="gnk-v6-card"><span>GNK DINAMO Ltd. · 2024</span><strong>${isEn?'€1.192B':'1,192 mlrd. €'}</strong><small>management-finance</small></article></div><div class="gnk-v6-controls">${btn('/financije/',t('Otvori financije','Open financials'),true)}${btn('/downloads/',t('PDF dokazi','PDF evidence'))}${btn(MEMO,'PDF memorandum')}</div></section>
+    <section class="gnk-v6-panel" id="gnk-index-code-show"><div class="gnk-v6-head"><div><p class="gnk-v6-eyebrow">THE CODE · ${t('rotirajući slide show na indexu','rotating slide show on the index')}</p><h2>${t('Slideovi se vrte i završavaju na New York segmentu.','The slides rotate and end on the New York segment.')}</h2></div><p>${t('Nije samo countdown. Prikazuje se jedan čisti HTML show i finalni slide ostaje na međunarodnoj press konferenciji u New Yorku.','This is not only a countdown. One clean HTML show is displayed and the final slide remains on the international press conference in New York.')}</p></div><div class="gnk-v6-stage"><article class="gnk-v6-slide on" data-v6-slide><div><p class="gnk-v6-eyebrow">Slide 1 · Identity</p><h3>GNK ASG d.o.o. + GNK DINAMO Ltd. Group.</h3><p>${t('Javna prezentacija povezuje operativni hrvatski portal i međunarodnu grupnu platformu.','The public presentation connects the Croatian operating portal and the international group platform.')}</p></div><div class="gnk-v6-visual"><div class="gnk-v6-dual"><img src="${ASG}" alt="GNK ASG d.o.o. logo"><div class="gnk-v6-line"></div><img src="${DINAMO}" alt="GNK DINAMO Ltd. Group logo"></div></div></article><article class="gnk-v6-slide" data-v6-slide><div><p class="gnk-v6-eyebrow">Slide 2 · THE CODE</p><h3>${t('Ovo nije priča o devet završenih investicija.','This is not a story about nine completed investments.')}</h3><p>${t('Ovo je prijelaz iz dokazivog softverskog, IP i međunarodnog poslovanja prema devet velikih sektorskih programa.','It is a transition from demonstrable software, IP and international business toward major sector programmes.')}</p></div><div class="gnk-v6-visual"><img src="${ASG}" alt="GNK ASG d.o.o. logo" style="width:min(230px,75%)"></div></article><article class="gnk-v6-slide" data-v6-slide><div><p class="gnk-v6-eyebrow">Slide 3 · Portfolio</p><h3>${t('Priprema, razvoj, provjera i ograničena objava.','Preparation, development, review and limited release.')}</h3><p>${t('Portfelj se prikazuje po statusima i sektorima, bez tvrdnje da su svi programi jednako operativni.','The portfolio is presented by status and sector, without claiming that all programmes are equally operational.')}</p></div><div class="gnk-v6-visual"><div class="gnk-v6-count"><div><b>9</b><em>${t('programa','programmes')}</em></div><div><b>0</b><em>${t('završenih tvrdnji','completed claims')}</em></div><div><b>PDF</b><em>${t('dokazi','evidence')}</em></div><div><b>AI</b><em>${t('pomoćno','assistive')}</em></div></div></div></article><article class="gnk-v6-slide" data-v6-slide><div><p class="gnk-v6-eyebrow">Slide 4 · Governance</p><h3>${t('AI moduli ne odlučuju i ne objavljuju sami.','AI modules do not decide or publish independently.')}</h3><p>${t('Public AI Navigation usmjerava korisnike, a Editorial AI Draft priprema nacrte za ljudsko odobrenje.','Public AI Navigation guides users, while Editorial AI Draft prepares drafts for human approval.')}</p></div><div class="gnk-v6-visual"><strong style="font:700 52px/1 Georgia,serif;color:#f3cc62">AI 001 · 002</strong></div></article><article class="gnk-v6-slide" data-v6-slide><div><p class="gnk-v6-eyebrow">Final · New York</p><h3>${t('Odbrojavanje do međunarodne press konferencije u New Yorku.','Countdown to the international press conference in New York.')}</h3><p>${t('Središnja prezentacija i aktivacija projekta THE CODE održava se 7. listopada 2026. u 11:30 ET. Međunarodni izvršni medijski program traje od 6. do 8. listopada 2026.','The central presentation and activation of THE CODE will be held on 7 October 2026 at 11:30 ET. The international executive media programme runs from 6 to 8 October 2026.')}</p><div class="gnk-v6-grid" style="grid-template-columns:1fr;margin:10px 0 0;padding:0"><article class="gnk-v6-card"><strong>New York</strong><small>7 October 2026 · 11:30 ET · Program 6–8 October 2026</small></article></div></div><div class="gnk-v6-visual"><div class="gnk-v6-count"><div><b data-v6-count="days">--</b><em>days</em></div><div><b data-v6-count="hours">--</b><em>hours</em></div><div><b data-v6-count="minutes">--</b><em>min</em></div><div><b data-v6-count="seconds">--</b><em>sec</em></div></div></div></article></div><div class="gnk-v6-progress"><i data-v6-progress></i></div><div class="gnk-v6-controls"><button class="gnk-v6-btn gold" type="button" data-v6-play>${t('▶ Pokreni / ponovi slideove','▶ Start / replay slides')}</button>${btn('/the-code/',t('Otvori puni THE CODE','Open full THE CODE'))}${btn('/media-application/?lang=en','Register newsroom')}${btn(MEMO,'PDF memorandum')}<span class="gnk-v6-status" data-v6-status>Ready · slide show</span></div></section>
+    <div class="gnk-v6-strip"><article class="gnk-v6-card"><strong>Finance</strong><small>${t('javno odmah ispod logotipa','public directly below the logos')}</small></article><article class="gnk-v6-card"><strong>Slides</strong><small>${t('THE CODE show se vrti na indexu','THE CODE show rotates on the index')}</small></article><article class="gnk-v6-card"><strong>8</strong><small>${t('javnih worker ruta','public worker routes')}</small></article><article class="gnk-v6-card"><strong>PDF</strong><small>${t('dokazi i management-finance prikaz','evidence and management-finance view')}</small></article></div>
+    <section class="gnk-v6-panel" id="projects"><div class="gnk-v6-head"><div><p class="gnk-v6-eyebrow">Project portfolio</p><h2>${t('Devet međunarodnih investicijskih projekata u pripremi, razvoju, provjeri ili ograničenoj javnoj objavi.','Nine international investment projects in preparation, development, review or limited public release.')}</h2></div></div><div class="gnk-v6-grid" style="grid-template-columns:repeat(3,1fr)">${p.map(x=>`<article class="gnk-v6-card"><span>${esc(x[0])}</span><h3>${esc(x[1])}</h3><p>${t('Sektor','Sector')}: ${esc(x[2])}.</p></article>`).join('')}</div><p class="gnk-v6-note">${t('Javni portfelj prikazuje prijelaz prema sektorima, ne devet završenih investicija.','The public portfolio presents a transition toward sectors, not nine completed investments.')}</p></section>
+    <section class="gnk-v6-panel" id="workers"><div class="gnk-v6-head"><div><p class="gnk-v6-eyebrow">Public worker routing</p><h2>${t('Workeri i objave su vidljivi na indexu.','Workers and posts are visible on the index.')}</h2></div></div><div class="gnk-v6-grid">${workers.map(w=>`<article class="gnk-v6-card"><code class="gnk-v6-code">${esc(w[0])}</code><h3>${esc(w[1])}</h3>${btn(w[2],t('Otvori','Open'))}</article>`).join('')}</div><p class="gnk-v6-note">${t('AI ne odlučuje umjesto direktora i ne objavljuje bez odobrenja. Financijski rezultati su informativni i vezani uz PDF dokaze.','AI does not decide for the director and does not publish without approval. Financial results are informative and linked to PDF evidence.')}</p></section>
+    <section class="gnk-v6-panel" id="objave"><div class="gnk-v6-head"><div><p class="gnk-v6-eyebrow">${t('Objave · press · javne informacije','Posts · press · public information')}</p><h2>${t('Objave nisu skrivene u meniju.','Posts are not hidden in the menu.')}</h2></div></div><div class="gnk-v6-grid" style="grid-template-columns:repeat(3,1fr)"><article class="gnk-v6-card"><span>/objave/</span><h3>${t('Službene objave','Official posts')}</h3>${btn('/objave/',t('Otvori objave','Open posts'),true)}</article><article class="gnk-v6-card"><span>/public-operations/</span><h3>${t('Javne operacije','Public operations')}</h3>${btn('/public-operations/',t('Otvori operacije','Open operations'))}</article><article class="gnk-v6-card"><span>/media-application/</span><h3>Media application</h3>${btn('/media-application/?lang=en','Register newsroom')}</article></div></section></section>`;
   }
 
-  function wireShow(root = document) {
-    const slides = [...root.querySelectorAll('[data-code-slide]')];
-    if (!slides.length || root.dataset?.codeWired === 'true') return;
-    if (root.dataset) root.dataset.codeWired = 'true';
-    const play = root.querySelector('[data-code-play]');
-    const status = root.querySelector('[data-code-status]');
-    const bar = root.querySelector('[data-code-progress]');
-    const durations = [3600, 3900, 4200, 3900, 3900, 999999];
-    let i = 0, timer = null, progressTimer = null, countdownTimer = null;
-    const setSlide = next => { slides.forEach((slide, pos) => slide.classList.toggle('is-active', pos === next)); i = next; if (status) status.textContent = next === slides.length - 1 ? 'Countdown active · final slide' : `Slide ${next + 1} / ${slides.length}`; };
-    const tickCountdown = () => { const diff = Math.max(0, new Date('2026-10-07T11:30:00-04:00') - new Date()); const put = (name, val) => { const el = root.querySelector(`[data-code-count="${name}"]`); if (el) el.textContent = String(Math.floor(val)).padStart(2, '0'); }; put('days', diff / 86400000); put('hours', (diff % 86400000) / 3600000); put('minutes', (diff % 3600000) / 60000); put('seconds', (diff % 60000) / 1000); };
-    const animate = duration => { clearInterval(progressTimer); let elapsed = 0; if (bar) bar.style.width = '0%'; progressTimer = setInterval(() => { elapsed += 100; if (bar) bar.style.width = `${Math.min(100, elapsed / duration * 100)}%`; if (elapsed >= duration) clearInterval(progressTimer); }, 100); };
-    const finish = () => { clearTimeout(timer); clearInterval(progressTimer); clearInterval(countdownTimer); setSlide(slides.length - 1); tickCountdown(); countdownTimer = setInterval(tickCountdown, 1000); if (bar) bar.style.width = '100%'; if (play) { play.disabled = false; play.textContent = '↺ Ponovi THE CODE show'; } };
-    const next = () => { if (i >= slides.length - 2) { finish(); return; } setSlide(i + 1); animate(durations[i]); timer = setTimeout(next, durations[i]); };
-    const start = () => { clearTimeout(timer); clearInterval(progressTimer); clearInterval(countdownTimer); setSlide(0); if (play) { play.disabled = true; play.textContent = '▶ THE CODE se vrti'; } animate(durations[0]); timer = setTimeout(next, durations[0]); };
+  function wire(root) {
+    const slides = [...root.querySelectorAll('[data-v6-slide]')];
+    const play = root.querySelector('[data-v6-play]');
+    const status = root.querySelector('[data-v6-status]');
+    const bar = root.querySelector('[data-v6-progress]');
+    const dur = [3600, 3900, 4200, 3900, 999999];
+    let i = 0, timer = null, prog = null, clock = null;
+    const set = n => { slides.forEach((s,k)=>s.classList.toggle('on', k===n)); i=n; if(status) status.textContent = n===slides.length-1 ? 'Final · New York countdown' : `Slide ${n+1} / ${slides.length}`; };
+    const tick = () => { const d = Math.max(0, new Date('2026-10-07T11:30:00-04:00') - new Date()); const put=(k,v)=>{const e=root.querySelector(`[data-v6-count="${k}"]`); if(e)e.textContent=String(Math.floor(v)).padStart(2,'0')}; put('days',d/86400000); put('hours',(d%86400000)/3600000); put('minutes',(d%3600000)/60000); put('seconds',(d%60000)/1000); };
+    const anim = ms => { clearInterval(prog); let e=0; if(bar)bar.style.width='0%'; prog=setInterval(()=>{e+=100;if(bar)bar.style.width=Math.min(100,e/ms*100)+'%';if(e>=ms)clearInterval(prog)},100); };
+    const finish = () => { clearTimeout(timer); clearInterval(prog); clearInterval(clock); set(slides.length-1); tick(); clock=setInterval(tick,1000); if(bar)bar.style.width='100%'; if(play){play.disabled=false; play.textContent=t('↺ Ponovi slideove','↺ Replay slides');} };
+    const next = () => { if(i>=slides.length-2){finish();return;} set(i+1); anim(dur[i]); timer=setTimeout(next,dur[i]); };
+    const start = () => { clearTimeout(timer); clearInterval(prog); clearInterval(clock); set(0); if(play){play.disabled=true;play.textContent=t('▶ Slideovi se vrte','▶ Slides running');} anim(dur[0]); timer=setTimeout(next,dur[0]); };
     play?.addEventListener('click', start);
-    tickCountdown();
+    tick(); clock=setInterval(tick,1000); setTimeout(start, 700);
   }
 
-  function installCodeShow() {
-    if (document.getElementById('gnk-index-code-show')) { wireShow(document.getElementById('gnk-index-code-show')); return; }
-    const hero = document.querySelector('#the-code.hero, main .hero, main section, main');
-    if (!hero) return;
-    const section = document.createElement('section');
-    section.id = 'gnk-index-code-show';
-    section.className = 'wrap gnk-code-show';
-    section.dataset.visualApproved = 'true';
-    section.innerHTML = `<div class="gnk-code-panel"><div class="gnk-code-head"><div><p class="eyebrow">THE CODE front-page show</p><h2>HTML THE CODE show ugrađen je u index.</h2></div><p>Nije iframe. Rotacija se zaustavlja na zadnjem slideu s countdownom. Puni link ostaje <a href="/the-code/">/the-code/</a>, a media prijava ostaje <a href="/media-application/">/media-application/</a>.</p></div><div class="gnk-code-stage"><article class="gnk-code-slide is-active" data-code-slide><div class="gnk-code-copy"><small>Slide 1 · Origin</small><h3>Boulder → Zagreb → New York.</h3><p>THE CODE je javno najavljeni program grupne transformacije i povezivanja više međunarodnih kompanija.</p></div><div class="gnk-code-visual"><img src="${PNG_DINAMO}" alt="GNK DINAMO Ltd. Group logo"></div></article><article class="gnk-code-slide" data-code-slide><div class="gnk-code-copy"><small>Slide 2 · Existing base</small><h3>Postojeća tehnološka osnova.</h3><p>Bankarski, payment i digital exchange softver prikazuje se kao postojeća tehnološka osnova i međunarodno širenje.</p></div><div class="gnk-code-visual light"><img src="${PNG_ASG}" alt="GNK ASG d.o.o. logo"></div></article><article class="gnk-code-slide" data-code-slide><div class="gnk-code-copy"><small>Slide 3 · Portfolio</small><h3>Devet projekata, devet statusa.</h3><p>Planirano, feasibility, review, development, pre-launch, regulatorna analiza, site selection, due diligence i ograničena javna objava nisu isto.</p></div><div class="gnk-code-visual"><div class="gnk-code-count"><div><b>9</b><span>programa</span></div><div><b>0</b><span>završenih tvrdnji</span></div><div><b>PDF</b><span>dokazi</span></div><div><b>AI</b><span>pomoćno</span></div></div></div></article><article class="gnk-code-slide" data-code-slide><div class="gnk-code-copy"><small>Slide 4 · Governance</small><h3>AI ne odlučuje.</h3><p>Public AI Navigation usmjerava korisnike, a Editorial AI Draft priprema nacrte. Objavljuje se tek nakon ljudskog odobrenja.</p></div><div class="gnk-code-visual"><div style="font:700 56px/1 Georgia,serif;color:#f3cc62">AI 001 · 002</div></div></article><article class="gnk-code-slide" data-code-slide><div class="gnk-code-copy"><small>Slide 5 · Media</small><h3>Newsroom ostaje na istoj ruti.</h3><p>/media-application/ i /media-application/?lang=en ostaju službeni ulazi za redakcije.</p></div><div class="gnk-code-visual light"><img src="${PNG_DINAMO}" alt="GNK DINAMO Ltd. Group logo"></div></article><article class="gnk-code-slide" data-code-slide><div class="gnk-code-copy"><small>Final slide · Countdown</small><h3>Staje na odbrojavanju.</h3><p>Zadnji slide ne nastavlja u beskonačnu rotaciju.</p></div><div class="gnk-code-visual"><div class="gnk-code-count"><div><b data-code-count="days">--</b><span>days</span></div><div><b data-code-count="hours">--</b><span>hours</span></div><div><b data-code-count="minutes">--</b><span>min</span></div><div><b data-code-count="seconds">--</b><span>sec</span></div></div></div></article></div><div class="gnk-code-progress"><i data-code-progress></i></div><div class="gnk-code-controls"><button class="gnk-code-button gold" type="button" data-code-play>▶ Pokreni / ponovi show</button>${link('/the-code/', 'Otvori puni THE CODE')}${link('/media-application/?lang=en', 'Register newsroom')}${link(PDF_MEMO, 'PDF memorandum')}<span class="gnk-code-status" data-code-status>Ready · HTML show</span></div></div>`;
-    hero.after(section);
-    wireShow(section);
+  function normalizeHome() {
+    if (!isHome || document.getElementById('gnk-normalized-homepage-v6')) return;
+    style();
+    const main = document.querySelector('main') || document.body;
+    [...main.children].forEach(el => el.classList.add('gnk-v6-hidden'));
+    main.insertAdjacentHTML('afterbegin', html());
+    wire(document.getElementById('gnk-normalized-homepage-v6'));
   }
 
-  function installPortfolio() {
-    const current = document.querySelector('#projects');
-    if (current?.dataset?.gnkProjectPortfolioV2 === 'true') return;
-    if (current && /u tijeku/i.test(current.textContent || '')) current.remove();
-    const anchor = document.getElementById('gnk-index-code-show') || document.querySelector('main .hero') || document.querySelector('main');
-    if (!anchor) return;
-    const cards = projects.map(([status, title, sector], index) => `<article class="gnk-runtime-card${/POSTOJEĆA|JAVNO/.test(status) ? ' feature' : ''}"><span class="gnk-runtime-status">${esc(status)}</span><h3>${index + 1} · ${esc(title)}</h3><p>Sektor: ${esc(sector)}.</p><ul><li>status se prikazuje kao javno-siguran operativni opis;</li><li>nije tvrdnja o dovršenoj investiciji.</li></ul></article>`).join('');
-    const section = document.createElement('section');
-    section.className = 'wrap gnk-runtime-section';
-    section.id = 'projects';
-    section.dataset.gnkProjectPortfolioV2 = 'true';
-    section.innerHTML = `<div class="gnk-runtime-panel"><div class="gnk-runtime-head"><div><p class="eyebrow">Project portfolio · public-safe status</p><h2>Devet međunarodnih investicijskih projekata u pripremi, razvoju, provjeri ili ograničenoj javnoj objavi.</h2></div><p>Ovo nije priča o devet završenih investicija. Ovo je prijelaz iz dokazivog softverskog i međunarodnog poslovanja prema devet velikih sektorskih programa.</p></div><div class="gnk-runtime-grid">${cards}</div><div class="gnk-runtime-notice"><strong>Disclosure:</strong> Hrvatska nije ciljno tržište investicijskog portfelja. Jasno se razlikuje što postoji danas, što je u razvoju, što čeka regulatornu odluku, što je planirano i što će biti objavljeno kroz THE CODE.</div></div>`;
-    anchor.after(section);
-  }
-
-  function installAiModules() {
-    if (document.getElementById('ai-modules')) return;
-    const anchor = document.getElementById('projects') || document.getElementById('gnk-index-code-show') || document.querySelector('main');
-    if (!anchor) return;
-    const section = document.createElement('section');
-    section.className = 'wrap gnk-runtime-section';
-    section.id = 'ai-modules';
-    section.innerHTML = `<div class="gnk-runtime-panel"><div class="gnk-runtime-head"><div><p class="eyebrow">AI governance</p><h2>AI moduli su pomoćni operativni alati.</h2></div><p>Nermin Sefić ostaje direktor / UBO / glavni urednik u okviru javne prezentacije i odobrenja sadržaja. AI ne odlučuje i ne objavljuje samostalno.</p></div><div class="gnk-runtime-grid"><article class="gnk-runtime-card feature"><span class="gnk-runtime-status">GNK-WRK-HR-AI-001</span><h3>Public AI Navigation</h3><p>Javno usmjeravanje po portalu, projektima, dokumentima, media prijavi, financijama i objavama.</p><ul><li>ne daje pravne, investicijske, medicinske ili obvezujuće odluke;</li><li>služi za navigaciju i sažetak javnih ruta.</li></ul><div class="gnk-runtime-actions">${link('/assistant/', 'Javni AI chat', true)}${link('/downloads/', 'Dokumenti')}</div></article><article class="gnk-runtime-card feature"><span class="gnk-runtime-status">GNK-WRK-HR-AI-002</span><h3>Editorial AI Draft</h3><p>Priprema nacrta objava, komentara, press materijala, odluka i sažetaka.</p><ul><li>svaki tekst ide na odobrenje Nermina Sefića;</li><li>AI ne objavljuje bez odobrenja.</li></ul><div class="gnk-runtime-actions">${link('/auto-editor/', 'Auto Editor', true)}${link('/objave/', 'Objave')}</div></article></div><div class="gnk-runtime-notice"><strong>Kontrola:</strong> odluke, zapisnici, sastanci, objave, komentari i press materijali moraju imati jasne rute i ljudsko odobrenje.</div></div>`;
-    anchor.after(section);
-  }
-
-  function installRouting() {
-    if (document.getElementById('gnk-public-routing-v1')) return;
-    const anchor = document.getElementById('ai-modules') || document.getElementById('projects') || document.getElementById('gnk-index-code-show') || document.querySelector('main');
-    if (!anchor) return;
-    const cards = routes.map(route => {
-      const [code, title, desc, ...buttons] = route;
-      return `<article class="gnk-routing-card"><code>${esc(code)}</code><h3>${esc(title)}</h3><p>${esc(desc)}</p><div class="gnk-runtime-actions">${buttons.map(([href, label], i) => link(href, label, i === 0)).join('')}</div></article>`;
-    }).join('');
-    const section = document.createElement('section');
-    section.id = 'gnk-public-routing-v1';
-    section.className = 'wrap gnk-routing';
-    section.innerHTML = `<div class="gnk-routing-panel"><div class="gnk-routing-head"><div><p class="eyebrow">Worker routing & responsibility</p><h2>Jasne rute za javne operacije.</h2></div><p>Workeri su workflow uloge, ne popis zaposlenika. Financijski prikazi su informativni i vezani uz PDF dokumente.</p></div><div class="gnk-routing-grid">${cards}</div><div class="gnk-routing-notice"><strong>Napomena:</strong> AI ne odlučuje umjesto direktora i ne objavljuje bez odobrenja. Media prijava ostaje na /media-application/.</div></div>`;
-    anchor.after(section);
-  }
-
-  function installOperator() {
-    if (document.getElementById('gnk-operator-email-status')) return;
-    const anchor = document.getElementById('gnk-public-routing-v1') || document.getElementById('ai-modules') || document.querySelector('main');
-    if (!anchor) return;
-    const section = document.createElement('section');
-    section.id = 'gnk-operator-email-status';
-    section.className = 'wrap gnk-runtime-section';
-    section.innerHTML = `<div class="gnk-runtime-panel"><div class="gnk-runtime-head"><div><p class="eyebrow">Admin / operator routes</p><h2>Email status i campaign dashboard.</h2></div><p>Direktni operator status za campaign mailer ostaje odvojen od javnih press i finance tvrdnji.</p></div><div class="gnk-runtime-grid"><article class="gnk-runtime-card feature"><span class="gnk-runtime-status">operator route</span><h3>Email Status Dashboard</h3><p>Status za source=all, from=/campaign-mailer/, date=today.</p><div class="gnk-runtime-actions">${link(EMAIL_STATUS, 'Otvori email status', true)}${link('/admin/', 'Admin')}${link('/campaign-mailer/', 'Campaign mailer')}</div></article><article class="gnk-runtime-card"><span class="gnk-runtime-status">safe mode</span><h3>Bez masovnog slanja iz indexa</h3><p>Index samo povezuje dashboard. Slanje ostaje kontrolirani operator workflow.</p></article></div></div>`;
-    anchor.after(section);
-  }
-
-  function installIndex() {
-    document.body?.classList.add('gnk-iq200-home');
-    window.GNK_ASG_VISUAL_APPROVAL = { version: '2026-07-06-projects-ai-runtime-v3', required: true, productionRule: 'Index uses PNG media-kit visuals, conservative project statuses, AI governance and operator routing.' };
-    document.querySelectorAll('#gnk-asg-premium-header,.gnk-v13-header').forEach(node => node.remove());
-    installStyle();
-    replaceSvgLogos();
-    cleanRiskPhrases();
-    ensureNavLinks();
-    installCodeShow();
-    installPortfolio();
-    installAiModules();
-    installRouting();
-    installOperator();
-    const observer = new MutationObserver(() => { replaceSvgLogos(); cleanRiskPhrases(); ensureNavLinks(); wireShow(document); });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
-    window.addEventListener('pagehide', () => observer.disconnect(), { once: true });
-  }
-
-  if (isIndex) {
-    ready(installIndex);
-    return;
-  }
-
-  const runGallery = async () => {
-    if (!window.GNK_ASG_GALLERY) {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = '/assets/gallery-engine.js?v=20260626-v2';
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      }).catch(() => {});
-    }
-    if (window.GNK_ASG_GALLERY && !/\/visual-index\/?$/.test(location.pathname)) window.GNK_ASG_GALLERY.apply(document).catch(() => {});
-  };
-  ready(runGallery);
+  function init() { logos(); normalizeHome(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true}); else init();
 })();
