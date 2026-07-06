@@ -3,7 +3,7 @@ import {enforceMediaGoldSignature,isMediaSender,VERSION as MEDIA_SIGNATURE_VERSI
 import {institutionalSignature,LOGO_URL,VERSION as BRAND_SIGNATURE_VERSION} from './email-brand-signature-v1.js';
 import {prepareMailSyncInbound,recordMailSyncOutbound,VERSION as MAIL_SYNC_VERSION} from './mail-sync-center-v2.js';
 
-export const VERSION=`GNK_ASG_MAIL_STUDIO_EXTENSION_V11_20260704_MAIL_SYNC_PASS_THROUGH_${MAIL_SYNC_VERSION}`;
+export const VERSION=`GNK_ASG_MAIL_STUDIO_EXTENSION_V12_20260706_RAW_EMAILMESSAGE_MANUAL_SEND_${MAIL_SYNC_VERSION}`;
 export const UI_VERSION=base.UI_VERSION;
 export const PROFILES=base.PROFILES;
 export const GLOBAL_CENTRES=base.GLOBAL_CENTRES;
@@ -14,6 +14,37 @@ const CENTRE_INDEX_KEY=/^mail-studio:centre-index:(?:global|inbound|outbound):v1
 
 const clean=value=>String(value??'').trim();
 const escapeRegExp=value=>String(value??'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const safeHeader=value=>clean(value).replace(/[\r\n]+/g,' ').slice(0,300);
+const emailList=value=>{
+  const values=[];
+  const add=item=>{
+    if(!item)return;
+    if(Array.isArray(item)){item.forEach(add);return;}
+    if(item&&typeof item==='object'){add(item.email||item.address||'');return;}
+    String(item).split(/[;,\s]+/).forEach(part=>{const raw=clean(part),match=raw.match(/<([^>]+)>/);const email=clean(match?.[1]||raw).replace(/[<>"'()]/g,'').toLowerCase();if(email&&/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email))values.push(email);});
+  };
+  add(value);
+  return[...new Set(values)];
+};
+function htmlToText(html){return clean(String(html||'').replace(/<br\s*\/?\s*>/gi,'\n').replace(/<\/p>/gi,'\n\n').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>'),120000)}
+function boundary(){return 'gnk_asg_manual_'+Math.random().toString(16).slice(2)+Date.now().toString(16)}
+function rawEmail(payload){
+  const b=boundary();
+  const from=senderEmail(payload.from)||'office@gnk-asg.hr';
+  const fromName=payload.from&&typeof payload.from==='object'?clean(payload.from.name):'GNK ASG';
+  const to=emailList(payload.to),cc=emailList(payload.cc),bcc=emailList(payload.bcc);
+  const text=clean(payload.text||payload.plainText||payload.bodyText||htmlToText(payload.html||payload.bodyHtml||payload.htmlBody||payload.body),120000)||'GNK ASG message';
+  const html=clean(payload.html||payload.bodyHtml||payload.htmlBody||payload.messageHtml||payload.contentHtml||text.replace(/\n/g,'<br>'),120000);
+  const headers=[`From: "${safeHeader(fromName)}" <${safeHeader(from)}>`,to.length?`To: ${to.map(x=>`<${x}>`).join(', ')}`:null,cc.length?`Cc: ${cc.map(x=>`<${x}>`).join(', ')}`:null,bcc.length?`Bcc: ${bcc.map(x=>`<${x}>`).join(', ')}`:null,payload.replyTo?`Reply-To: <${safeHeader(payload.replyTo)}>`:null,`Subject: ${safeHeader(payload.subject||'GNK ASG message')}`,'MIME-Version: 1.0',`Content-Type: multipart/alternative; boundary="${b}"`,`X-GNK-ASG-Mail-Studio-Raw: ${VERSION}`].filter(Boolean);
+  return{from,to,raw:`${headers.join('\r\n')}\r\n\r\n--${b}\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n${text}\r\n\r\n--${b}\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n${html}\r\n\r\n--${b}--`};
+}
+function toProviderMessage(payload){
+  const normalized=normalizeMailStudioSignature(payload);
+  if(typeof EmailMessage==='undefined')return normalized;
+  const built=rawEmail(normalized);
+  if(!built.to.length)return normalized;
+  return new EmailMessage(built.from,built.to[0],built.raw);
+}
 
 function senderEmail(from){
   if(from&&typeof from==='object')return clean(from.email||from.address).toLowerCase();
@@ -48,7 +79,7 @@ function dedupeInstitutionalText(value){
 }
 function replaceInstitutionalText(value,profile,signature){
   let text=dedupeInstitutionalText(value);
-  const pattern=new RegExp(`\\n{2,}(?:Srdačan pozdrav,\\n{2,})?${escapeRegExp(profile.name)}\\n${escapeRegExp(profile.unit)}\\nGlobal Service Centre:[\\s\\S]*$`,'iu');
+  const pattern=new RegExp(`\n{2,}(?:Srdačan pozdrav,\n{2,})?${escapeRegExp(profile.name)}\n${escapeRegExp(profile.unit)}\nGlobal Service Centre:[\s\S]*$`,'iu');
   text=text.replace(pattern,'').trim();
   return`${text}${text?'\n\n':''}${signature.text}`;
 }
@@ -95,13 +126,13 @@ function randomCentreKv(binding){
 function withNormalizedEmail(env){
   const binding=env?.EMAIL,kvCache=new Map();
   return new Proxy(env||{},{get(target,property,receiver){
-    if(property==='EMAIL'&&binding&&typeof binding.send==='function')return{send(payload){return binding.send.call(binding,normalizeMailStudioSignature(payload));}};
+    if(property==='EMAIL'&&binding&&typeof binding.send==='function')return{send(payload){return binding.send.call(binding,toProviderMessage(payload));}};
     if(property==='GNK_ASG_KV'||property==='GNK_ASG_CONFIG_KV'){if(!kvCache.has(property))kvCache.set(property,randomCentreKv(Reflect.get(target,property,receiver)));return kvCache.get(property);}
     return Reflect.get(target,property,receiver);
   }});
 }
 function stamp(response){
-  if(!response)return response;const headers=new Headers(response.headers);headers.set('x-gnk-asg-mail-studio-extension',VERSION);headers.set('x-gnk-asg-signature-parity',VERSION);headers.set('x-gnk-asg-centre-selection','RANDOM_10');headers.set('x-gnk-asg-mail-sync',MAIL_SYNC_VERSION);return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+  if(!response)return response;const headers=new Headers(response.headers);headers.set('x-gnk-asg-mail-studio-extension',VERSION);headers.set('x-gnk-asg-signature-parity',VERSION);headers.set('x-gnk-asg-centre-selection','RANDOM_10');headers.set('x-gnk-asg-mail-sync',MAIL_SYNC_VERSION);headers.set('x-gnk-asg-manual-provider','raw-emailmessage');return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 async function requestPayload(request){try{return await request.clone().json();}catch{return null;}}
 async function indexOutbound(request,response,env,ctx){
@@ -127,4 +158,4 @@ export async function handleMailStudioInbound(message,env,ctx){
   if(result)return{...result,message:prepared.message,signatureParity:VERSION,centreSelection:'RANDOM_10',mailSync:MAIL_SYNC_VERSION};
   return{handled:false,message:prepared.message,signatureParity:VERSION,centreSelection:'RANDOM_10',mailSync:MAIL_SYNC_VERSION};
 }
-export const __test={dedupeInstitutionalText,normalizeMailStudioSignature,replaceInstitutionalText,replaceInstitutionalHtml,randomCentreIndex,randomCentreKv,withNormalizedEmail};
+export const __test={dedupeInstitutionalText,normalizeMailStudioSignature,replaceInstitutionalText,replaceInstitutionalHtml,randomCentreIndex,randomCentreKv,withNormalizedEmail,toProviderMessage,emailList,rawEmail};
