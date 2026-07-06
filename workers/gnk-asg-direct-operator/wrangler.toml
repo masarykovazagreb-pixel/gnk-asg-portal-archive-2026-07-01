@@ -41,19 +41,20 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260706-mail-studio-manual-raw-emailmessage-hotfix-v1"
+DEPLOY_REVISION = "20260706-mail-studio-manual-live-send-v2"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 
-# Mail/Webmail may render, draft, validate and run internal status checks in review,
-# but must not send real campaign or bulk traffic from this branch.
-MAIL_MANUAL_LIVE = "false"
+# Manual Mail Studio is enabled for controlled individual messages only.
+# Campaign, bulk, scheduled outreach and profile tests remain locked below.
+MAIL_STUDIO_LIVE = "true"
+MAIL_MANUAL_LIVE = "true"
 MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MAIL_PROFILE_TEST_LIVE = "false"
 MAIL_PROFILE_TEST_RECIPIENTS = "beckuphome@gmail.com"
 MAIL_BOOTSTRAP_SMOKE_TEST = "false"
 
-# Media outreach is locked down for review. These switches prevent accidental mass
+# Media outreach is locked down. These switches prevent accidental mass
 # sending while preserving UI/status validation and endpoint health checks.
 MEDIA_OUTREACH_LIVE = "false"
 MEDIA_OUTREACH_SCHEDULED_LIVE = "false"
