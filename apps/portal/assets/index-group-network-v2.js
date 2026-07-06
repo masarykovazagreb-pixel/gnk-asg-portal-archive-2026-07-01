@@ -139,6 +139,21 @@
     }catch{}
   }
 
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
-  [400,1200,2600].forEach(delay=>setTimeout(boot,delay));
+  function activatePublicLayers(){
+    if(document.getElementById('gnk-public-layers-v1'))return;
+    const after=document.querySelector('#workers')||document.querySelector('#financije')||document.querySelector('main');
+    if(!after)return;
+    const style=document.createElement('style');
+    style.id='gnk-public-layers-v1-style';
+    style.textContent='.gnk-public-layer{padding:36px 0}.gnk-public-panel{border:1px solid rgba(243,204,98,.26);border-radius:24px;background:linear-gradient(180deg,rgba(17,26,42,.92),rgba(6,10,18,.96));padding:20px;box-shadow:0 20px 70px rgba(0,0,0,.24)}.gnk-public-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.gnk-public-item{border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.04);padding:13px}.gnk-public-item b{display:block;color:#fff}.gnk-public-item code{display:block;color:#ffe8a0;margin:0 0 7px;font-size:12px}.gnk-public-item span{color:#aeb8c8;font-size:13px;line-height:1.45}.gnk-public-note{border:1px solid rgba(244,180,79,.42);border-radius:16px;background:rgba(244,180,79,.09);padding:13px;color:#ffe0a3;margin-top:12px;font-size:13px;line-height:1.5}@media(max-width:900px){.gnk-public-grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.gnk-public-grid{grid-template-columns:1fr}}';
+    document.head.appendChild(style);
+    const section=document.createElement('section');
+    section.id='gnk-public-layers-v1';
+    section.className='wrap gnk-public-layer';
+    section.innerHTML='<p class="eyebrow">Public workers and AI</p><h2>Javni workflow profili i 2 AI modula.</h2><p class="lead">Vidljivi sloj koristi GNK šifre, državu/tržište, područje rada i status. Profili su digitalne radne uloge, ne popis zaposlenika.</p><div class="gnk-public-panel"><div class="gnk-public-grid"><div class="gnk-public-item"><code>GNK-WRK-HR-MEDIA-001</code><b>Media Intake Worker</b><span>Croatia · MEDIA · public workflow · akreditacije i newsroom intake.</span></div><div class="gnk-public-item"><code>GNK-WRK-US-CODE-001</code><b>THE CODE Activation Worker</b><span>United States · CODE · in progress · New York 2026 milestones.</span></div><div class="gnk-public-item"><code>GNK-WRK-HR-FIN-001</code><b>Finance Evidence Worker</b><span>Croatia · FIN · public workflow · PDF dokazi i FY2025 pokazatelji.</span></div><div class="gnk-public-item"><code>GNK-WRK-HR-CONTENT-001</code><b>Editorial Routing Worker</b><span>Croatia · CONTENT · objave, komentari, THE CODE announcements i financijski komentari.</span></div><div class="gnk-public-item"><code>GNK-WRK-HR-AI-001</code><b>Public AI Navigation</b><span>AI modul 1 · javno usmjeravanje po portalu bez privatnih podataka.</span></div><div class="gnk-public-item"><code>GNK-WRK-HR-AI-002</code><b>Editorial AI Draft</b><span>AI modul 2 · nacrti objava uz obveznu ljudsku provjeru prije javne objave.</span></div></div><div class="gnk-public-note"><strong>Objave idu ovako:</strong> news u /objave/, English parovi u /publications/, THE CODE announcements u /the-code/ i media application, financijski komentari u /financije/ + /downloads/, a interni nacrti ostaju u zaštićenom editorial/admin sloju.</div></div>';
+    after.after(section);
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{boot();activatePublicLayers();},{once:true});else {boot();activatePublicLayers();}
+  [400,1200,2600].forEach(delay=>setTimeout(()=>{boot();activatePublicLayers();},delay));
 })();
