@@ -149,13 +149,21 @@
     if(!has('/public-operations/'))nav.insertBefore(make('/public-operations/',lang==='en'?'Operations':'Operacije'),media||null);
   }
 
+  function polishIndexLayout(){
+    if(document.getElementById('gnk-index-layout-polish-v1'))return;
+    const style=document.createElement('style');
+    style.id='gnk-index-layout-polish-v1';
+    style.textContent='.hero{padding:48px 0 24px!important;gap:24px!important}.section{padding:28px 0!important}.strip{margin:18px 0 28px!important}.card{min-height:auto!important;padding:18px!important}.card.feature{min-height:auto!important}.grid{align-items:stretch!important}.grid .card{height:auto!important}.worker-row{align-items:start!important;gap:14px!important}.worker-list{align-content:start!important}.code-stage{min-height:360px!important;padding:24px!important}.logo-card{min-height:190px!important}.section h2{margin-bottom:10px!important}.lead{margin-top:0!important}.gnk-public-layer{padding:22px 0 30px!important}.gnk-public-panel{padding:18px!important}.gnk-public-grid{align-items:stretch!important}@media(max-width:940px){.hero{padding:34px 0 20px!important}.code-stage{min-height:auto!important}.section{padding:24px 0!important}}@media(max-width:640px){.top{gap:10px!important;padding:16px 0!important}.brand-unit img{width:46px!important;height:46px!important}.hero h1{font-size:48px!important}.hero p{font-size:16px!important}.card{padding:16px!important}.count{padding:12px!important}}';
+    document.head.appendChild(style);
+  }
+
   function activatePublicLayers(){
     if(document.getElementById('gnk-public-layers-v1'))return;
     const after=document.querySelector('#workers')||document.querySelector('#financije')||document.querySelector('main');
     if(!after)return;
     const style=document.createElement('style');
     style.id='gnk-public-layers-v1-style';
-    style.textContent='.gnk-public-layer{padding:36px 0}.gnk-public-panel{border:1px solid rgba(243,204,98,.26);border-radius:24px;background:linear-gradient(180deg,rgba(17,26,42,.92),rgba(6,10,18,.96));padding:20px;box-shadow:0 20px 70px rgba(0,0,0,.24)}.gnk-public-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.gnk-public-item{border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.04);padding:13px}.gnk-public-item b{display:block;color:#fff}.gnk-public-item code{display:block;color:#ffe8a0;margin:0 0 7px;font-size:12px}.gnk-public-item span{color:#aeb8c8;font-size:13px;line-height:1.45}.gnk-public-note{border:1px solid rgba(244,180,79,.42);border-radius:16px;background:rgba(244,180,79,.09);padding:13px;color:#ffe0a3;margin-top:12px;font-size:13px;line-height:1.5}@media(max-width:900px){.gnk-public-grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.gnk-public-grid{grid-template-columns:1fr}}';
+    style.textContent='.gnk-public-layer{padding:22px 0 30px}.gnk-public-panel{border:1px solid rgba(243,204,98,.26);border-radius:24px;background:linear-gradient(180deg,rgba(17,26,42,.92),rgba(6,10,18,.96));padding:18px;box-shadow:0 20px 70px rgba(0,0,0,.24)}.gnk-public-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:stretch}.gnk-public-item{border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.04);padding:13px}.gnk-public-item b{display:block;color:#fff}.gnk-public-item code{display:block;color:#ffe8a0;margin:0 0 7px;font-size:12px}.gnk-public-item span{color:#aeb8c8;font-size:13px;line-height:1.45}.gnk-public-note{border:1px solid rgba(244,180,79,.42);border-radius:16px;background:rgba(244,180,79,.09);padding:13px;color:#ffe0a3;margin-top:12px;font-size:13px;line-height:1.5}@media(max-width:900px){.gnk-public-grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.gnk-public-grid{grid-template-columns:1fr}}';
     document.head.appendChild(style);
     const section=document.createElement('section');
     section.id='gnk-public-layers-v1';
@@ -164,7 +172,7 @@
     after.after(section);
   }
 
-  function run(){boot();addIndexNavigation();activatePublicLayers();}
+  function run(){polishIndexLayout();boot();addIndexNavigation();activatePublicLayers();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
   [400,1200,2600].forEach(delay=>setTimeout(run,delay));
 })();
