@@ -15,7 +15,9 @@
     action:'Open THE CODE',
     labels:['Days','Hours','Minutes','Seconds'],
     status:'Time remaining until the central presentation',
-    live:'THE CODE IS UNLOCKED · NEW YORK 2026'
+    live:'THE CODE IS UNLOCKED · NEW YORK 2026',
+    embedTitle:'THE CODE is embedded on the first page.',
+    embedLead:'The index now shows the programme, finance, New York countdown, media registration, documents, workers and the 33 + 12 location model in one public block.'
   }:{
     eyebrow:'THE CODE · NEW YORK 2026',
     title:'Odbrojavanje do međunarodne press konferencije u New Yorku.',
@@ -24,7 +26,9 @@
     action:'Otvori THE CODE',
     labels:['Dana','Sati','Minuta','Sekundi'],
     status:'Vrijeme do središnje prezentacije',
-    live:'THE CODE IS UNLOCKED · NEW YORK 2026'
+    live:'THE CODE IS UNLOCKED · NEW YORK 2026',
+    embedTitle:'THE CODE je ugrađen na prvu stranicu.',
+    embedLead:'Index sada odmah prikazuje program, financije, New York odbrojavanje, media prijavu, dokumente, workere i model 33 + 12 lokacija u jednom javnom bloku.'
   };
 
   const esc=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -44,24 +48,25 @@
     return section;
   }
 
+  function embedProgramme(){
+    if(document.querySelector('[data-gnk-code-index-embed]'))return;
+    const target=document.querySelector('#gnk-index-code-show,.gnk-code-show,#the-code,#gnk-ny-countdown');
+    if(!target)return;
+    const block=document.createElement('section');
+    block.className='gnk-ny-countdown gnk-code-index-embed';
+    block.dataset.gnkCodeIndexEmbed='true';
+    block.innerHTML=`<div class="gnk-ny-countdown__inner"><div class="gnk-ny-countdown__copy"><p class="gnk-ny-countdown__eyebrow">THE CODE · HTML</p><h2>${esc(text.embedTitle)}</h2><p class="gnk-ny-countdown__lead">${esc(text.embedLead)}</p><div class="gnk-ny-countdown__meta"><span>THE CODE</span><span>9 programmes</span><span>33 + 12 locations</span><span>1,537 worker profiles</span></div><a class="gnk-ny-countdown__action" href="/the-code/?lang=${locale}">${esc(text.action)} <span aria-hidden="true">→</span></a></div><div class="gnk-ny-countdown__clock"><div class="gnk-ny-countdown__unit"><span class="gnk-ny-countdown__value">33</span><span class="gnk-ny-countdown__label">existing</span></div><div class="gnk-ny-countdown__unit"><span class="gnk-ny-countdown__value">12</span><span class="gnk-ny-countdown__label">planned</span></div><div class="gnk-ny-countdown__unit"><span class="gnk-ny-countdown__value">9</span><span class="gnk-ny-countdown__label">programmes</span></div><div class="gnk-ny-countdown__unit"><span class="gnk-ny-countdown__value">AI</span><span class="gnk-ny-countdown__label">review</span></div></div></div>`;
+    target.insertAdjacentElement('beforebegin',block);
+  }
+
   function run(section){
-    const values={
-      days:section.querySelector('[data-unit="days"]'),
-      hours:section.querySelector('[data-unit="hours"]'),
-      minutes:section.querySelector('[data-unit="minutes"]'),
-      seconds:section.querySelector('[data-unit="seconds"]')
-    };
+    const values={days:section.querySelector('[data-unit="days"]'),hours:section.querySelector('[data-unit="hours"]'),minutes:section.querySelector('[data-unit="minutes"]'),seconds:section.querySelector('[data-unit="seconds"]')};
     const status=section.querySelector('.gnk-ny-countdown__status');
     let interval=0;
     const update=()=>{
       const now=Date.now();
       const remaining=Math.max(0,TARGET-now);
-      if(remaining<=0){
-        section.dataset.complete='true';
-        status.textContent=text.live;
-        if(interval)clearInterval(interval);
-        return;
-      }
+      if(remaining<=0){section.dataset.complete='true';status.textContent=text.live;if(interval)clearInterval(interval);return;}
       const totalSeconds=Math.floor(remaining/1000);
       values.days.textContent=String(Math.floor(totalSeconds/86400));
       values.hours.textContent=pad(Math.floor((totalSeconds%86400)/3600));
@@ -76,6 +81,7 @@
 
   function install(){
     const section=build();
+    embedProgramme();
     if(section)run(section);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
