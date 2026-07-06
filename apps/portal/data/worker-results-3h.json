@@ -1,0 +1,17 @@
+{
+  "version": "GNK_ASG_WORKER_RESULTS_3H_V1_20260706",
+  "status": "public-draft",
+  "cycleHours": 3,
+  "slots": ["08:00", "11:00", "14:00", "17:00", "20:00", "23:00"],
+  "rule": "Each worker must publish task, measurable result, evidence link, blocker and next step. AI does not decide or publish without human approval.",
+  "workers": [
+    {"id":"GNK-WRK-HR-FIN-001","area":"financials","task":"financial summary and PDF evidence","result":"four separated financial indicators","evidence":["/financije/","/downloads/"],"next":"verify live PDF links"},
+    {"id":"GNK-WRK-US-CODE-001","area":"THE CODE","task":"rotating show and New York final slide","result":"five-slide show ending on press segment","evidence":["/the-code/","/#gnk-index-code-show"],"next":"verify HR and EN parity"},
+    {"id":"GNK-WRK-HR-OPS-001","area":"operations","task":"public status board","result":"3-hour reporting cadence","evidence":["/public-operations/"],"next":"publish next operational result"},
+    {"id":"GNK-WRK-HR-MEDIA-001","area":"media","task":"media application route","result":"media intake route preserved","evidence":["/media-application/?lang=en"],"next":"test form flow"},
+    {"id":"GNK-WRK-HR-PRESS-001","area":"press","task":"posts and press materials","result":"first public post prepared","evidence":["/objave/"],"next":"prepare second post"},
+    {"id":"GNK-WRK-HR-COMMENT-001","area":"comments","task":"author comments and analysis","result":"channel separated from official posts","evidence":["/nermin-sefic/"],"next":"prepare approved comment"},
+    {"id":"GNK-WRK-HR-AI-001","area":"AI navigation","task":"public portal navigation","result":"route guidance only","evidence":["/assistant/"],"next":"add public FAQ"},
+    {"id":"GNK-WRK-HR-AI-002","area":"editorial draft","task":"drafting for review","result":"drafts require human approval","evidence":["/auto-editor/"],"next":"prepare review draft"}
+  ]
+}
