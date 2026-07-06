@@ -1,0 +1,135 @@
+{
+  "version": "GNK_ASG_MAIL_IDENTITY_TEST_MATRIX_20260706",
+  "status": "review_only",
+  "updatedAt": "2026-07-06T09:05:00Z",
+  "liveProviderSendExecuted": false,
+  "gmailAssistantSendAttempt": "blocked_by_tool_safety_checks",
+  "addresses": [
+    {
+      "address": "office@gnk-asg.hr",
+      "profile": "GNK ASG Office",
+      "intendedUse": "General corporate correspondence",
+      "inboundAcknowledgement": "previously_confirmed",
+      "identityStatus": "acceptable",
+      "requiredSignature": [
+        "GNK ASG Office",
+        "Office",
+        "E: office@gnk-asg.hr",
+        "W: https://gnk-asg.hr"
+      ]
+    },
+    {
+      "address": "legal@gnk-asg.hr",
+      "profile": "GNK ASG Legal & Compliance",
+      "intendedUse": "Legal and compliance correspondence",
+      "inboundAcknowledgement": "previously_confirmed",
+      "identityStatus": "acceptable",
+      "requiredSignature": [
+        "GNK ASG Legal & Compliance",
+        "Legal & Compliance",
+        "E: legal@gnk-asg.hr",
+        "W: https://gnk-asg.hr"
+      ]
+    },
+    {
+      "address": "media@gnk-asg.hr",
+      "profile": "GNK DINAMO Ltd. Group | Media Relations & Accreditation Center",
+      "intendedUse": "Media relations and accreditation",
+      "inboundAcknowledgement": "previously_confirmed",
+      "identityStatus": "acceptable",
+      "requiredSignature": [
+        "GNK DINAMO Ltd. Group",
+        "Media Relations & Accreditation Center",
+        "E: media@gnk-asg.hr",
+        "W: https://gnk-asg.hr"
+      ]
+    },
+    {
+      "address": "press@gnk-asg.hr",
+      "profile": "GNK DINAMO Ltd. Group | Press Desk",
+      "intendedUse": "Press desk and newsroom communication",
+      "inboundAcknowledgement": "previously_confirmed",
+      "identityStatus": "acceptable",
+      "requiredSignature": [
+        "GNK DINAMO Ltd. Group",
+        "Press Desk / Media Relations & Accreditation Center",
+        "E: media@gnk-asg.hr",
+        "W: https://gnk-asg.hr"
+      ]
+    },
+    {
+      "address": "it@gnk-asg.hr",
+      "profile": "GNK ASG IT",
+      "intendedUse": "IT and technical support",
+      "inboundAcknowledgement": "not_verified_in_current_gmail_sample",
+      "identityStatus": "requires_one_message_test",
+      "requiredSignature": [
+        "GNK ASG IT",
+        "Technical Support",
+        "E: it@gnk-asg.hr",
+        "W: https://gnk-asg.hr"
+      ]
+    },
+    {
+      "address": "assistant@gnk-asg.hr",
+      "profile": "GNK ASG Digital Assistant",
+      "intendedUse": "Automated communication support",
+      "inboundAcknowledgement": "previously_confirmed",
+      "identityStatus": "acceptable_for_assistant_only",
+      "requiredSignature": [
+        "GNK ASG Digital Assistant",
+        "Automated Communication Support",
+        "E: assistant@gnk-asg.hr",
+        "W: https://gnk-asg.hr"
+      ]
+    },
+    {
+      "address": "nermin.sefic@gnk-asg.hr",
+      "profile": "Nermin Sefić | Managing Director",
+      "intendedUse": "Director and authorised representative correspondence",
+      "inboundAcknowledgement": "requires_one_message_test",
+      "identityStatus": "requires_test",
+      "requiredSignature": [
+        "Nermin Sefić",
+        "Managing Director / Authorised Representative",
+        "GNK ASG d.o.o. / GNK DINAMO Ltd. Group",
+        "E: nermin.sefic@gnk-asg.hr",
+        "W: https://gnk-asg.hr"
+      ]
+    },
+    {
+      "address": "sefic@gnk-asg.hr",
+      "profile": "Nermin Sefić",
+      "intendedUse": "Personal business profile",
+      "inboundAcknowledgement": "previously_confirmed",
+      "identityStatus": "mismatch_detected",
+      "mismatch": "Recent acknowledgement used Digital Assistant identity and assistant@gnk-asg.hr signature.",
+      "requiredSignature": [
+        "Nermin Sefić",
+        "GNK ASG d.o.o. / GNK DINAMO Ltd. Group",
+        "E: sefic@gnk-asg.hr",
+        "W: https://gnk-asg.hr"
+      ]
+    },
+    {
+      "address": "ubo@gnk-asg.hr",
+      "profile": "Ultimate Beneficial Owner Office",
+      "intendedUse": "Ownership and UBO correspondence",
+      "inboundAcknowledgement": "previously_confirmed",
+      "identityStatus": "mismatch_detected",
+      "mismatch": "Recent acknowledgement used Digital Assistant identity and assistant@gnk-asg.hr signature.",
+      "requiredSignature": [
+        "Ultimate Beneficial Owner Office",
+        "GNK ASG d.o.o. / GNK DINAMO Ltd. Group",
+        "E: ubo@gnk-asg.hr",
+        "W: https://gnk-asg.hr"
+      ]
+    }
+  ],
+  "nextRequiredActions": [
+    "Correct UBO and Sefic automatic-reply identity mapping at the live email handler or provider rule level.",
+    "Run one inbound test per address from beckuphome@gmail.com once sending is allowed.",
+    "Run one outbound test per address to beckuphome@gmail.com only after provider aliases or live Worker send are confirmed.",
+    "Do not resume bulk or campaign sending until all identity checks pass."
+  ]
+}
