@@ -59,6 +59,7 @@ export function patchPublicHtml(html,path){
   const executiveScript='<script src="/assets/public-executive-access-v1.js?v=20260705-1" defer></script>';
   const indexHead='<link rel="stylesheet" href="/assets/index-group-network-v2.css?v=20260626-data-v28"><link rel="stylesheet" href="/assets/the-code-new-york-countdown-v1.css?v=20260704-1">';
   const indexScripts='<script src="/assets/index-group-network-en-bridge-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-group-network-v2.js?v=20260626-data-v28" defer></script><script src="/assets/index-news-rotation-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-content-resilience-v1.js?v=20260626-data-v28" defer></script><script src="/assets/index-live-market-chart-v4.js?v=20260626-data-v28" defer></script><script src="/assets/the-code-new-york-countdown-v1.js?v=20260704-1" defer></script>';
+  const indexCodeHotfix='<script src="/assets/index-the-code-hotfix-v1.js?v=20260706-1" defer></script>';
   const theCodeContrast='<link rel="stylesheet" href="/assets/the-code-contrast-v2.css?v=20260705-1">';
   html=html.replace('</head>',`${stableFavicon}\n</head>`);
   if(!html.includes('/assets/public-ux-v11.css'))html=html.replace('</head>',`${ux}</head>`);
@@ -69,6 +70,7 @@ export function patchPublicHtml(html,path){
   if(indexPath&&!html.includes('/assets/index-clock-v2.js'))html=html.replace('</body>','<script src="/assets/index-clock-v2.js?v=20260625-v2" defer></script></body>');
   if(indexPath&&!html.includes('/assets/index-content-resilience-v1.js'))html=html.replace('</body>',`${indexScripts}</body>`);
   if(indexPath&&!html.includes('/assets/the-code-new-york-countdown-v1.js'))html=html.replace('</body>','<script src="/assets/the-code-new-york-countdown-v1.js?v=20260704-1" defer></script></body>');
+  if(indexPath&&!html.includes('/assets/index-the-code-hotfix-v1.js'))html=html.replace('</body>',`${indexCodeHotfix}</body>`);
   return html.replace('</body>',`${menu}${executiveScript}</body>`);
 }
 
