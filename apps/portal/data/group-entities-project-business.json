@@ -1,0 +1,26 @@
+{
+  "version": "GNK_ASG_GROUP_ENTITIES_PROJECT_BUSINESS_V1_20260706",
+  "status": "public-structured-draft",
+  "governance": {
+    "publicRule": "This is a public operational map, not a legal ownership certificate. Legal ownership and financial data must be supported by source documents before publication as final.",
+    "approval": "Director / UBO / Editor approval required before final public claims."
+  },
+  "entities": [
+    {"id":"gnk-asg-doo","name":"GNK ASG d.o.o.","jurisdiction":"Croatia","role":"Croatian operating portal and public operational company","publicStatus":"active public operating entity","routes":["/","/financije/","/public-operations/","/objave/"]},
+    {"id":"gnk-dinamo-ltd","name":"GNK DINAMO Ltd. Group","jurisdiction":"United States / Colorado","role":"International group platform and THE CODE layer","publicStatus":"international group platform","routes":["/the-code/","/media-application/?lang=en"]},
+    {"id":"spt-doo","name":"Sports Performance Tracking d.o.o.","jurisdiction":"Serbia","role":"sports technology / performance tracking connection","publicStatus":"group-related project entity","routes":["/project-business/"]},
+    {"id":"omega-holding","name":"Omega Holding d.o.o.","jurisdiction":"Serbia","role":"holding and group structuring layer","publicStatus":"group structuring layer","routes":["/corporate-entities/"]},
+    {"id":"organa-aktual","name":"Organa d.o.o. / Aktual Media d.o.o.","jurisdiction":"Serbia","role":"supporting corporate and media/business structure","publicStatus":"supporting related entities","routes":["/corporate-entities/"]}
+  ],
+  "projectBusiness": [
+    {"id":"healthcare","name":"International hospitals, sports medicine and rehabilitation","worker":"GNK-WRK-HR-OPS-001","status":"PLANNED / FEASIBILITY","next":"prepare public feasibility card"},
+    {"id":"sports-tech","name":"Sports systems, performance tracking and sports equipment","worker":"GNK-WRK-HR-OPS-001","status":"REVIEW / DEVELOPMENT","next":"connect to SPT business card"},
+    {"id":"fintech","name":"Banking, payment and digital exchange software","worker":"GNK-WRK-HR-FIN-001","status":"EXISTING TECHNOLOGY BASE / INTERNATIONAL EXPANSION","next":"link financial and software evidence"},
+    {"id":"stablecoin-gold","name":"Stablecoin and gold-linked digital instrument","worker":"GNK-WRK-US-CODE-001","status":"PRE-LAUNCH / REGULATORY AND TECHNICAL ANALYSIS","next":"publish regulatory disclaimer"},
+    {"id":"university","name":"International university in USA and three additional countries","worker":"GNK-WRK-HR-OPS-001","status":"PLANNED / FEASIBILITY","next":"prepare education feasibility card"},
+    {"id":"organic-food","name":"Organic protein food and edible oils","worker":"GNK-WRK-HR-OPS-001","status":"PLANNED / MARKET STUDY","next":"market study summary"},
+    {"id":"industry","name":"Factories and international industrial production","worker":"GNK-WRK-HR-OPS-001","status":"PLANNED / SITE SELECTION","next":"site-selection public brief"},
+    {"id":"energy","name":"Oil, derivatives and energy trading","worker":"GNK-WRK-HR-OPS-001","status":"PLANNED / DUE DILIGENCE","next":"due diligence public disclaimer"},
+    {"id":"the-code","name":"THE CODE — connecting multiple international companies","worker":"GNK-WRK-US-CODE-001","status":"PUBLICLY ANNOUNCED / LIMITED RELEASE UNTIL ACTIVATION","next":"New York press programme"}
+  ]
+}
