@@ -2,12 +2,13 @@ import core from './index-portal-final-v12.js';
 import {getLiveMarket,refreshLiveMarket,VERSION as MARKET_VERSION} from './market-live-v1.js';
 import {verifiedGallery,rotateLatestArticleImage,VERSION as GALLERY_VERSION,RECENT_WINDOW as GALLERY_RECENT_WINDOW} from './gallery-rotation-v1.js';
 
-const VERSION='GNK_ASG_PORTAL_FINAL_V14_PUBLICATION_STATIC_20260705';
+const VERSION='GNK_ASG_PORTAL_FINAL_V15_MEDIA_SEO_CLEAN_20260706';
 const NEWS_ROTATION='GNK_ASG_INDEX_NEWS_ROTATION_V1';
 const NEWS_SCHEDULE=['09:00','15:00','21:00'];
 const FAVICON_VERSION='GNK_ASG_GOOGLE_FAVICON_V1';
 const MARKET_CHART='GNK_ASG_LIVE_MARKET_CHART_V3';
 const GROUP_NETWORK='GNK_ASG_GROUP_NETWORK_V2';
+const MEDIA_APPLICATION_DESCRIPTION='Secure bilingual media registration and accreditation portal for GNK ASG d.o.o. and GNK DINAMO Ltd. Group. Newsrooms can create access, save a draft and submit official media application details.';
 
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{
   status,
@@ -98,6 +99,24 @@ async function injectIndexModules(response){
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
 
+async function cleanMediaApplicationHtml(response){
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.set('content-type','text/html; charset=utf-8');
+  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('x-gnk-asg-media-application-seo','clean-20260706');
+  let body=await response.text();
+  body=body
+    .replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+MEDIA_APPLICATION_DESCRIPTION+'">')
+    .replace(/<meta property="og:description" content="[^"]*">/,'<meta property="og:description" content="'+MEDIA_APPLICATION_DESCRIPTION+'">')
+    .replace(/<meta name="twitter:description" content="[^"]*">/,'<meta name="twitter:description" content="'+MEDIA_APPLICATION_DESCRIPTION+'">')
+    .replaceAll('https://www.gnk-asg.hr/assets/logo-gnk-asg.svg','https://www.gnk-asg.hr/assets/brand/official-gnk-asg-gold.svg')
+    .replaceAll('https://gnkdinamo.eu/','https://www.gnk-asg.hr/')
+    .replace('<a class="brand" href="/"><span class="brand-mark">G</span><span><strong>GNK ASG</strong><small>THE CODE · New York 2026</small></span></a>','<a class="brand" href="/"><img src="/assets/brand/official-gnk-asg-gold.svg" alt="GNK ASG d.o.o. official logo" style="width:42px;height:42px;object-fit:contain"><span><strong>GNK ASG</strong><small>Media Relations & Accreditation Center</small></span></a>');
+  return new Response(body,{status:response.status,statusText:response.statusText,headers});
+}
+
 async function fetchHandler(request,env,ctx){
   const url=new URL(request.url);
   const path=url.pathname.replace(/\/+$/,'')||'/';
@@ -121,6 +140,7 @@ async function fetchHandler(request,env,ctx){
       galleryVersion:GALLERY_VERSION,
       indexDesign:'IQ200',
       publicationRouting:'static-assets-first-dynamic-kv-fallback',
+      mediaApplicationSeo:'clean-20260706',
       timeZone:'Europe/Zagreb',
       deployedEntryPoint:'src/index-portal-final-v13.js'
     });
@@ -195,6 +215,7 @@ async function fetchHandler(request,env,ctx){
 
   const type=String(response.headers.get('content-type')||'').toLowerCase();
   if(request.method==='GET'&&type.includes('text/html')&&['/','/en'].includes(path))return injectIndexModules(response);
+  if(request.method==='GET'&&type.includes('text/html')&&path==='/media-application')return cleanMediaApplicationHtml(response);
   return withHeaders(response);
 }
 
