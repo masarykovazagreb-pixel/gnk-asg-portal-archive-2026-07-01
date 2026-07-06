@@ -32,4 +32,16 @@ test.describe('Admin / GNEW / Index recovery contract', () => {
     await expect(page.locator('a[href="/gnew-portal/"]').first()).toBeVisible();
     await expect(page.locator('a[href="/media-application/?lang=en"]').first()).toBeVisible();
   });
+
+  test('HR index renders backend workforce, project and feed layer', async ({ page }) => {
+    await page.goto('http://127.0.0.1:4173/');
+
+    await expect(page.locator('#gnk-backend-index-layer')).toBeVisible();
+    await expect(page.locator('#workforce-runtime')).toContainText('1.537 operativnih profila');
+    await expect(page.locator('#workforce-runtime')).toContainText('GNK-');
+    await expect(page.locator('#workforce-runtime')).toContainText('coded operating companies');
+    await expect(page.locator('#worker-results')).toContainText('GNK-WRK-HR-FIN-001');
+    await expect(page.locator('#project-business')).toContainText('THE CODE');
+    await expect(page.locator('#public-feed')).toContainText('Objave');
+  });
 });
