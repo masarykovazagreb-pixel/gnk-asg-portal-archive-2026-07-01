@@ -1,0 +1,19 @@
+{
+  "version": "GNK_ASG_CORPORATE_PROJECT_WORKER_OPERATIONS_V1_20260706",
+  "purpose": "Public operational map for corporate companies, project business and worker responsibilities.",
+  "corporate_layers": [
+    {"id":"gnk-asg-doo","name":"GNK ASG d.o.o.","role":"Croatian public operating portal and document layer","public_routes":["/","/financije/","/downloads/","/objave/","/public-operations/","/media-application/?lang=en"]},
+    {"id":"gnk-dinamo-ltd-group","name":"GNK DINAMO Ltd. Group","role":"International group platform and THE CODE layer","public_routes":["/the-code/","/group-companies/"]}
+  ],
+  "project_business_rule": "Projects are shown by status: preparation, development, review, regulatory analysis, due diligence or limited public release. They are not presented as completed investments unless separately evidenced.",
+  "worker_business": [
+    {"worker":"GNK-WRK-HR-FIN-001","business_area":"Financials and PDF evidence","deliverable":"separate financial indicators linked to documents"},
+    {"worker":"GNK-WRK-US-CODE-001","business_area":"THE CODE announcements","deliverable":"rotating show, New York segment and public materials"},
+    {"worker":"GNK-WRK-HR-OPS-001","business_area":"Public operations","deliverable":"status, blockers and next steps"},
+    {"worker":"GNK-WRK-HR-MEDIA-001","business_area":"Media intake","deliverable":"media application and newsroom routing"},
+    {"worker":"GNK-WRK-HR-PRESS-001","business_area":"Press materials","deliverable":"posts, press materials and media kit links"},
+    {"worker":"GNK-WRK-HR-COMMENT-001","business_area":"Comments and analysis","deliverable":"approved author comments separated from official posts"},
+    {"worker":"GNK-WRK-HR-AI-001","business_area":"Public AI navigation","deliverable":"non-binding portal guidance"},
+    {"worker":"GNK-WRK-HR-AI-002","business_area":"Editorial AI draft","deliverable":"drafts for human approval"}
+  ]
+}
