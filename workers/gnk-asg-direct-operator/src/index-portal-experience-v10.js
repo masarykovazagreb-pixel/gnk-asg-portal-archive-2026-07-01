@@ -2,6 +2,7 @@ import core from './index-portal-repair-v9.js';
 import {VERSION,NEWS_MINIMUM,NEWS_HOURS_ZAGREB,NEWS_SCHEDULE,FEEDS,ACTIVE_NEWS_LIMIT,ARCHIVE_PRUNE_AT,ARCHIVE_DELETE_COUNT,ARCHIVE_RETAIN_AFTER_PRUNE,ARCHIVE_HARD_LIMIT,refreshCuratedNews} from './news-curation-v10.js';
 import {getIndexConfig,saveIndexConfig} from './index-config-v10.js';
 import {isPrivatePath,patchPublicHtml,patchAdminHtml,transformHtml} from './public-shell-v11.js';
+import {handleMailSyncCenter} from './mail-sync-center-v2.js';
 
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
 const now=()=>new Date().toISOString();
@@ -23,23 +24,36 @@ function editorBootstrapNeeded(last){const stamp=Date.parse(last?.finishedAt||la
 function retarget(request,path){const url=new URL(request.url);url.pathname=path;return new Request(url.toString(),request)}
 
 async function readBody(request){try{return await request.json()}catch{return{}}}
+async function readAnyBody(request){
+  const type=String(request.headers.get('content-type')||'').toLowerCase();
+  if(type.includes('multipart/form-data')||type.includes('application/x-www-form-urlencoded')){
+    const form=await request.formData();
+    const body={};
+    for(const [key,value] of form.entries()){
+      if(value&&typeof value==='object'&&'name'in value)body[key]={filename:value.name,type:value.type,size:value.size};
+      else body[key]=String(value||'');
+    }
+    return body;
+  }
+  return readBody(request);
+}
 function id(prefix){return `${prefix}-${now().replace(/[-:.TZ]/g,'').slice(0,14)}-${Math.random().toString(16).slice(2,8)}`}
 function clean(value,max=2000){return String(value||'').replace(/\u0000/g,'').trim().slice(0,max)}
 function emailList(value){return clean(value,2000).split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean).slice(0,100)}
-function safeAttachment(a){return{filename:clean(a?.filename||a?.name||'attachment.pdf',180),type:clean(a?.type||a?.contentType||a?.mimeType||'application/pdf',80),size:Number(a?.size||0)||0,hasBase64:Boolean(a?.base64||a?.content)}}
+function safeAttachment(a){return{filename:clean(a?.filename||a?.name||'attachment.pdf',180),type:clean(a?.type||a?.contentType||a?.mimeType||'application/pdf',80),size:Number(a?.size||a?.sizeBytes||0)||0,hasBase64:Boolean(a?.base64||a?.content)}}
 async function mailStatus(env){return{ok:true,service:'GNK ASG Mail Center',mode:String(env.MAIL_STUDIO_LIVE||'test_record_only'),kvBinding:!!store(env),emailBinding:!!(env.EMAIL&&typeof env.EMAIL.send==='function'),liveSendEnabled:String(env.MAIL_STUDIO_LIVE||'').toLowerCase()==='true',sentCount:(await list(env,'mail:center:sent')).length,outboxCount:(await list(env,'mail:center:outbox')).length,inboxCount:(await list(env,'mail:center:inbox')).length,updatedAt:now()}}
 async function handleMailSend(request,env){
   if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);
-  const m=await readBody(request),to=emailList(m.to),cc=emailList(m.cc),bcc=emailList(m.bcc),subject=clean(m.subject,300),html=clean(m.html||m.bodyHtml||m.body||'',120000),text=clean(m.text||m.plainText||'',120000),attachments=Array.isArray(m.attachments)?m.attachments.map(safeAttachment).slice(0,20):[];
+  const m=await readAnyBody(request),to=emailList(m.to),cc=emailList(m.cc),bcc=emailList(m.bcc),subject=clean(m.subject,300),html=clean(m.html||m.bodyHtml||m.body||'',120000),text=clean(m.text||m.plainText||'',120000),attachments=Array.isArray(m.attachments)?m.attachments.map(safeAttachment).slice(0,20):[];
   if(!to.length)return json({ok:false,error:'missing_to'},400);
   if(!subject)return json({ok:false,error:'missing_subject'},400);
   if(!html&&!text)return json({ok:false,error:'missing_body'},400);
   const live=String(env.MAIL_STUDIO_LIVE||'').toLowerCase()==='true'&&authorized(request,env)&&env.EMAIL&&typeof env.EMAIL.send==='function';
-  const item={id:id('mail'),createdAt:now(),status:live?'live_send_not_executed_by_safe_patch':'test_recorded',from:clean(m.from,180),fromName:clean(m.fromName,180),to,cc,bcc,subject,html,text,signatureProfile:clean(m.signatureProfile,80),signatureMode:clean(m.signatureMode,120),logoUrl:clean(m.logoUrl,400),attachments,attachmentCount:attachments.length,source:'mail-studio-safe-backend-v1'};
+  const item={id:id('mail'),createdAt:now(),status:live?'READY_FOR_LIVE_SEND_REVIEW':'RECORDED_REVIEW_ONLY',from:clean(m.from,180),fromName:clean(m.fromName,180),to,cc,bcc,subject,html,text,signatureProfile:clean(m.signatureProfile,80),signatureMode:clean(m.signatureMode,120),logoUrl:clean(m.logoUrl,400),attachments,attachmentCount:attachments.length,source:'mail-studio-safe-backend-v2'};
   await push(env,'mail:center:sent',item,500);
   await push(env,'mail:center:outbox',item,500);
   await write(env,'mail:center:last',item);
-  return json({ok:true,delivered:false,recorded:true,mode:item.status,item});
+  return json({ok:true,delivered:false,recorded:true,status:item.status,message:'Message recorded in controlled review mode. Live provider send is not executed by this safe endpoint.',item});
 }
 async function handleMailCenter(path,env){
   if(path==='/api/mail-center/status')return json(await mailStatus(env));
@@ -47,17 +61,28 @@ async function handleMailCenter(path,env){
   return json({ok:true,box:key.split(':').pop(),items:await list(env,key),updatedAt:now()});
 }
 function aiFallback(m){const tone=clean(m.tone||m.style||'profesionalno',120),recipient=clean(m.recipientName||'primatelju',160),goal=clean(m.goal||'odgovoriti jasno i profesionalno',260),contextText=clean(m.context||m.text||'',1200);return `Poštovani ${recipient},\n\nvezano uz Vašu poruku, potvrđujemo primitak i zahvaljujemo na dostavljenim informacijama. Cilj ovog odgovora je ${goal}.\n\n${contextText?`Uzimajući u obzir dostavljeni kontekst, postupit ćemo pažljivo i pisanim putem potvrditi sve relevantne daljnje korake.\n\n`:''}Molimo da nam, ako je potrebno, dostavite dodatnu dokumentaciju ili rokove kako bismo mogli pripremiti cjelovit odgovor.\n\nSrdačan pozdrav,`;}
-async function handleAiAssist(request){if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);const m=await readBody(request);return json({ok:true,ai:false,model:'safe-fallback',text:aiFallback(m)});}
-async function handleContactSubmit(request,env){if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);const m=await readBody(request),item={id:id('contact'),createdAt:now(),name:clean(m.name||m.fullName,180),email:clean(m.email,220),phone:clean(m.phone,120),subject:clean(m.subject,260),message:clean(m.message||m.body,6000),source:'contact-form-safe-backend-v1'};if(!item.email&&!item.phone)return json({ok:false,error:'missing_contact'},400);if(!item.message)return json({ok:false,error:'missing_message'},400);await push(env,'contact:submissions',item,500);await write(env,'contact:last',item);return json({ok:true,recorded:true,item});}
+async function handleAiAssist(request){if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);const m=await readAnyBody(request);return json({ok:true,ai:false,model:'safe-fallback',text:aiFallback(m)});}
+async function handleContactSubmit(request,env){
+  if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);
+  const m=await readAnyBody(request),pdf=m.pdf&&typeof m.pdf==='object'?m.pdf:null,item={id:id('contact'),reference:'GNK-CONTACT-'+now().replace(/[-:.TZ]/g,'').slice(0,14),createdAt:now(),mailbox:clean(m.mailbox||'contact',80),name:clean(m.name||m.fullName,180),email:clean(m.email,220),phone:clean(m.phone,120),subject:clean(m.subject||'Upit putem GNK ASG portala',260),message:clean(m.message||m.body,6000),consent:clean(m.consent||'')==='yes'||m.consent===true,pdf:pdf?{filename:clean(pdf.filename,180),type:clean(pdf.type,80),size:Number(pdf.size||0)}:null,source:'contact-form-safe-backend-v2'};
+  if(!item.email&&!item.phone)return json({ok:false,error:'missing_contact'},400);
+  if(!item.message)return json({ok:false,error:'missing_message'},400);
+  if(!item.consent)return json({ok:false,error:'missing_consent'},400);
+  if(item.pdf&&item.pdf.type&&item.pdf.type!=='application/pdf')return json({ok:false,error:'pdf_only'},400);
+  await push(env,'contact:submissions',item,500);
+  await write(env,'contact:last',item);
+  return json({ok:true,recorded:true,reference:item.reference,caseId:item.reference,item});
+}
 
 async function handle(request,env,ctx){
   const url=new URL(request.url),path=url.pathname.replace(/\/+$/,'')||'/';
-  if(request.method==='OPTIONS'&&path.startsWith('/api/'))return new Response(null,{status:204,headers:{'access-control-allow-origin':'https://gnk-asg.hr','access-control-allow-methods':'GET,POST,OPTIONS','access-control-allow-headers':'content-type,authorization,x-operator-token,x-admin-token,x-gnk-asg-token'}});
+  if(request.method==='OPTIONS'&&path.startsWith('/api/'))return new Response(null,{status:204,headers:{'access-control-allow-origin':'https://gnk-asg.hr','access-control-allow-methods':'GET,POST,DELETE,OPTIONS','access-control-allow-headers':'content-type,authorization,x-operator-token,x-admin-token,x-gnk-asg-token'}});
   if(request.method==='GET'&&path==='/data/news-feed.json')return core.fetch(retarget(request,'/data/news.json'),env,ctx);
   if(request.method==='GET'&&path==='/data/news_archive.json')return core.fetch(retarget(request,'/data/news-archive.json'),env,ctx);
-  if(path==='/api/admin-mail-send')return handleMailSend(request,env);
+  if(path==='/api/admin-mail-send'||path==='/api/studio-message/send')return handleMailSend(request,env);
   if(path.startsWith('/api/mail-center/'))return handleMailCenter(path,env);
-  if(path==='/api/ai-assist')return handleAiAssist(request,env);
+  if(path.startsWith('/api/mail-sync')){const response=await handleMailSyncCenter(request,env);if(response)return response;}
+  if(path==='/api/ai-assist')return handleAiAssist(request);
   if(path==='/api/contact-submit'||path==='/api/contact')return handleContactSubmit(request,env);
   if(request.method==='GET'&&(path==='/data/index-media-config.json'||path==='/api/index-media-config')){
     if(path==='/api/index-media-config'&&!authorized(request,env))return json({ok:false,error:'unauthorized'},401);
