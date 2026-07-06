@@ -1,0 +1,29 @@
+{
+  "version": "GNK_ASG_PUBLIC_OPERATIONS_WORKER_PROJECT_FEED_DEPLOY_RECORD_V1_20260706",
+  "status": "repository-ready-deploy-pending",
+  "deployStatus": "workflow-not-auto-started",
+  "changes": [
+    {"path":"apps/portal/data/worker-results-3h.json","commit":"8be0ef653a59c7de81970f39650111f045598c6a","purpose":"3-hour worker result data"},
+    {"path":"apps/portal/data/group-entities-project-business.json","commit":"e72c186a37ced169ca8360689597ff1c1c808978","purpose":"corporate entities and project business map"},
+    {"path":"apps/portal/corporate-entities/index.html","commit":"8d9fde18811feed656601bc7199894f9904dcc37","purpose":"public corporate entities page"},
+    {"path":"apps/portal/project-business/index.html","commit":"7793b9f7421562b98d12d9a3d23ec7b79834ec42","purpose":"project business worker matrix"},
+    {"path":"apps/portal/objave/zakljucak-worker-firme-projekti-20260706/index.html","commit":"c61c534306064f9ac776b8252d161e396cedd4ff","purpose":"public conclusion post"},
+    {"path":"apps/portal/objave/index.html","commit":"5408a9fcf6fff2e2227158b64f8e33be57ab635e","purpose":"posts index update"},
+    {"path":"apps/portal/data/public-conclusions.json","commit":"d67edceb38d91d71699c940e60457332170a2675","purpose":"public conclusions feed"},
+    {"path":"apps/portal/zakljucci/index.html","commit":"9cba1d1a08aadead9f4c723d3a3230eb505fc0cb","purpose":"public conclusions board"},
+    {"path":"apps/portal/data/public-operational-feed.json","commit":"64b123d55a0589175c0479258bc60a5d87b7fc0f","purpose":"unified public operational feed"}
+  ],
+  "mailStudio": {
+    "status": "code-fixed-live-not-verified",
+    "hotfixCommit": "aa6ab1f5c0de3a8d4c2c3d9d10467f522c729497",
+    "workerTriggerCommit": "23f698cd4a21b11ca0d737381f9a4f42cb4a67b1",
+    "expectedLiveHeader": "x-gnk-asg-manual-provider: raw-emailmessage"
+  },
+  "next": [
+    "Trigger or verify deployment workflow manually",
+    "Verify live URLs after deployment",
+    "Test Mail Studio manual send after worker deployment",
+    "Connect public operational feed to index runtime",
+    "Prepare EN parity pages"
+  ]
+}
