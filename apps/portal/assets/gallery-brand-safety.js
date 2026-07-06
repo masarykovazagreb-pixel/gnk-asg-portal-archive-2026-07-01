@@ -96,7 +96,7 @@
 
     const section = document.createElement('section');
     section.className = 'section gnk-code-feature';
-    section.dataset.theCodeHomeFeature = 'GNK_THE_CODE_HOME_FEATURE_20260706_RECOVERY';
+    section.dataset.theCodeHomeFeature = 'GNK_THE_CODE_HOME_FEATURE_20260702';
     section.setAttribute('aria-labelledby','gnk-code-feature-title');
     section.innerHTML = `
       <div class="gnk-code-feature__inner">
@@ -121,10 +121,7 @@
     if (!document.getElementById('gnk-recovery-access-style')) {
       const style = document.createElement('style');
       style.id = 'gnk-recovery-access-style';
-      style.textContent = `
-        .gnk-recovery-access{margin:22px auto;padding:30px;border:1px solid rgba(255,216,117,.28);border-radius:22px;background:linear-gradient(135deg,rgba(255,216,117,.11),rgba(4,14,29,.92));color:#fff}.gnk-recovery-access__head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:18px}.gnk-recovery-access h2{margin:.25rem 0;color:#fff;font-size:clamp(28px,4vw,46px)}.gnk-recovery-access p{color:#c8d5e7;max-width:820px}.gnk-recovery-pill{border:1px solid rgba(255,216,117,.34);border-radius:999px;padding:8px 12px;color:#ffd875;font-size:12px;font-weight:900;white-space:nowrap}.gnk-recovery-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.gnk-recovery-card{display:block;min-height:125px;padding:17px;border:1px solid rgba(255,255,255,.12);border-radius:17px;background:rgba(255,255,255,.045);color:#fff;text-decoration:none}.gnk-recovery-card:hover,.gnk-recovery-card:focus{border-color:#ffd875;transform:translateY(-2px)}.gnk-recovery-card b{display:block;color:#ffd875;margin-bottom:7px}.gnk-recovery-card small{display:block;color:#c8d5e7;line-height:1.45}.gnk-recovery-note{margin-top:16px;padding:13px;border-left:4px solid #ffd875;background:rgba(0,0,0,.22);color:#e8eef7;font-size:13px}
-        @media(max-width:900px){.gnk-recovery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gnk-recovery-access__head{align-items:flex-start;flex-direction:column}}@media(max-width:560px){.gnk-recovery-grid{grid-template-columns:1fr}.gnk-recovery-access{margin:16px 10px;padding:22px 17px}}
-      `;
+      style.textContent = `.gnk-recovery-access{margin:22px auto;padding:30px;border:1px solid rgba(255,216,117,.28);border-radius:22px;background:linear-gradient(135deg,rgba(255,216,117,.11),rgba(4,14,29,.92));color:#fff}.gnk-recovery-access__head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:18px}.gnk-recovery-access h2{margin:.25rem 0;color:#fff;font-size:clamp(28px,4vw,46px)}.gnk-recovery-access p{color:#c8d5e7;max-width:820px}.gnk-recovery-pill{border:1px solid rgba(255,216,117,.34);border-radius:999px;padding:8px 12px;color:#ffd875;font-size:12px;font-weight:900;white-space:nowrap}.gnk-recovery-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.gnk-recovery-card{display:block;min-height:125px;padding:17px;border:1px solid rgba(255,255,255,.12);border-radius:17px;background:rgba(255,255,255,.045);color:#fff;text-decoration:none}.gnk-recovery-card:hover,.gnk-recovery-card:focus{border-color:#ffd875;transform:translateY(-2px)}.gnk-recovery-card b{display:block;color:#ffd875;margin-bottom:7px}.gnk-recovery-card small{display:block;color:#c8d5e7;line-height:1.45}.gnk-recovery-note{margin-top:16px;padding:13px;border-left:4px solid #ffd875;background:rgba(0,0,0,.22);color:#e8eef7;font-size:13px}@media(max-width:900px){.gnk-recovery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gnk-recovery-access__head{align-items:flex-start;flex-direction:column}}@media(max-width:560px){.gnk-recovery-grid{grid-template-columns:1fr}.gnk-recovery-access{margin:16px 10px;padding:22px 17px}}`;
       document.head.appendChild(style);
     }
 
@@ -169,7 +166,6 @@
       try { return new Intl.DateTimeFormat(isHr ? 'hr-HR' : 'en-GB', { dateStyle:'medium', timeStyle:'short' }).format(new Date(value)); }
       catch (_) { return value || ''; }
     };
-
     const render = items => {
       const usable = items.filter(item => item && item.title && item.url && item.summary && item.source).slice(0,12);
       if (!usable.length) {
@@ -184,9 +180,7 @@
     fetch('/data/news.json?recovery=20260706', { cache:'no-store' })
       .then(response => response.ok ? response.json() : Promise.reject(new Error(`HTTP_${response.status}`)))
       .then(payload => render(Array.isArray(payload) ? payload : (payload.items || [])))
-      .catch(() => {
-        if (status) status.textContent = isHr ? 'Vijesti se ne mogu učitati u ovom previewu.' : 'News cannot be loaded in this preview.';
-      });
+      .catch(() => { if (status) status.textContent = isHr ? 'Vijesti se ne mogu učitati u ovom previewu.' : 'News cannot be loaded in this preview.'; });
   }
 
   if (route === '/' || route === '/en') {
@@ -246,7 +240,7 @@
     });
   }
 
-  window.GNK_ASG_BRAND_SAFETY = { version:'2026-07-06-v4-recovery-public-runtime', prohibited, check };
+  window.GNK_ASG_BRAND_SAFETY = { version:'2026-07-06-v5-recovery-public-runtime-ci-restored', prohibited, check };
 
   const observer = new MutationObserver(records => {
     records.forEach(record => record.addedNodes.forEach(node => { if (node.nodeType === 1) check(node); }));
