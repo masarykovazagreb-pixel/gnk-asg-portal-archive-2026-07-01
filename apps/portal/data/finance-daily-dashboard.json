@@ -1,0 +1,36 @@
+{
+  "version": "GNK_ASG_FINANCE_DAILY_DASHBOARD_V1_20260707",
+  "status": "evidence-snapshot",
+  "updatedAt": "2026-07-07T20:20:00+02:00",
+  "currency": "EUR",
+  "displayRule": "Dashboard prikazuje zadnji potvrđeni financijski snapshot. Nove dnevne brojke dodaju se nakon novog dokumenta ili provjerenog internog izvora.",
+  "sources": [
+    {"entity":"GNK ASG d.o.o.","period":"2025","document":"Financijski izvještaji 2025","url":"/documents/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf"},
+    {"entity":"GNK DINAMO Ltd. Group","period":"FY2025","document":"Consolidated Financial Report FY2025","url":"/documents/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf"}
+  ],
+  "entities": [
+    {
+      "id": "gnk-asg-doo",
+      "name": "GNK ASG d.o.o.",
+      "period": "2025",
+      "metrics": [
+        {"id":"revenue","label":"Ukupni prihodi","value":504001681.97,"display":"504,00 mil. €"},
+        {"id":"assets","label":"Ukupna aktiva","value":46396925.72,"display":"46,40 mil. €"},
+        {"id":"equity","label":"Kapital i rezerve","value":46212425.18,"display":"46,21 mil. €"},
+        {"id":"profit","label":"Dobit razdoblja","value":16076.47,"display":"16.076,47 €"}
+      ]
+    },
+    {
+      "id": "gnk-dinamo-ltd-group",
+      "name": "GNK DINAMO Ltd. Group",
+      "period": "FY2025",
+      "metrics": [
+        {"id":"revenue","label":"Konsolidirani prihodi","value":4704600000,"display":"4,7046 mlrd. €"},
+        {"id":"assets","label":"Ukupna imovina grupe","value":3483000000,"display":"3,4830 mlrd. €"},
+        {"id":"profit","label":"Neto dobit grupe","value":982480000,"display":"982,48 mil. €"},
+        {"id":"equityRatio","label":"Equity ratio","value":98.02,"display":"98,02%"}
+      ]
+    }
+  ],
+  "approvalQueue": ["nova financijska brojka", "vanjska objava", "mail slanje", "kampanja", "produkcijski deploy"]
+}
