@@ -1,6 +1,6 @@
 import {enforceRequiredSignature,MANDATORY_BCC,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 
-export const VERSION='GNK_ASG_MANUAL_MAIL_SERVICE_V1_20260627';
+export const VERSION='GNK_ASG_MANUAL_MAIL_SERVICE_V2_20260707_SAFE_ATTACHMENTS';
 export const SEND_PATH='/api/admin-mail-send';
 export const STATUS_PATH='/api/mail-center/status';
 export const SENT_PATH='/api/mail-center/sent';
@@ -15,6 +15,23 @@ const MAX_ATTACHMENTS=8;
 const MAX_ATTACHMENT_BYTES=3200000;
 const MAX_TOTAL_ATTACHMENT_BYTES=3400000;
 const DEDUPE_SECONDS=90;
+const ALLOWED_ATTACHMENT_TYPES=new Map([
+  ['pdf','application/pdf'],
+  ['doc','application/msword'],
+  ['docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  ['xls','application/vnd.ms-excel'],
+  ['xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+  ['ppt','application/vnd.ms-powerpoint'],
+  ['pptx','application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+  ['zip','application/zip'],
+  ['csv','text/csv'],
+  ['txt','text/plain'],
+  ['png','image/png'],
+  ['jpg','image/jpeg'],
+  ['jpeg','image/jpeg'],
+  ['webp','image/webp']
+]);
+const BLOCKED_ATTACHMENT_EXTENSIONS=new Set(['exe','dll','js','mjs','cjs','html','htm','xhtml','svg','bat','cmd','scr','ps1','vbs','jar','com','msi','apk','app','sh','php','py','rb','pl']);
 
 const PROFILES=new Map([
   ['office',{id:'office',name:'GNK ASG Office',email:'office@gnk-asg.hr'}],
@@ -87,6 +104,25 @@ function decodeBase64(value){
   for(let index=0;index<binary.length;index+=1)bytes[index]=binary.charCodeAt(index);
   return bytes;
 }
+function extensionOf(filename){
+  const match=String(filename||'').toLowerCase().match(/\.([a-z0-9]+)$/);
+  return match?match[1]:'';
+}
+function starts(bytes,values){return values.every((value,index)=>bytes[index]===value);}
+function hasZipSignature(bytes){return starts(bytes,[0x50,0x4b,0x03,0x04])||starts(bytes,[0x50,0x4b,0x05,0x06])||starts(bytes,[0x50,0x4b,0x07,0x08]);}
+function hasCfbSignature(bytes){return starts(bytes,[0xd0,0xcf,0x11,0xe0,0xa1,0xb1,0x1a,0xe1]);}
+function hasPngSignature(bytes){return starts(bytes,[0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]);}
+function hasJpegSignature(bytes){return starts(bytes,[0xff,0xd8,0xff]);}
+function hasWebpSignature(bytes){return starts(bytes,[0x52,0x49,0x46,0x46])&&String.fromCharCode(...bytes.slice(8,12))==='WEBP';}
+function assertAttachmentSignature(ext,bytes,filename){
+  if(ext==='pdf'&&String.fromCharCode(...bytes.slice(0,5))!=='%PDF-')throw Object.assign(new Error(`Invalid PDF signature: ${filename}`),{code:'INVALID_PDF_SIGNATURE'});
+  if(['zip','docx','xlsx','pptx'].includes(ext)&&!hasZipSignature(bytes))throw Object.assign(new Error(`Invalid ZIP/OpenXML signature: ${filename}`),{code:'INVALID_ARCHIVE_SIGNATURE'});
+  if(['doc','xls','ppt'].includes(ext)&&!hasCfbSignature(bytes))throw Object.assign(new Error(`Invalid legacy Office signature: ${filename}`),{code:'INVALID_OFFICE_SIGNATURE'});
+  if(ext==='png'&&!hasPngSignature(bytes))throw Object.assign(new Error(`Invalid PNG signature: ${filename}`),{code:'INVALID_IMAGE_SIGNATURE'});
+  if(['jpg','jpeg'].includes(ext)&&!hasJpegSignature(bytes))throw Object.assign(new Error(`Invalid JPEG signature: ${filename}`),{code:'INVALID_IMAGE_SIGNATURE'});
+  if(ext==='webp'&&!hasWebpSignature(bytes))throw Object.assign(new Error(`Invalid WEBP signature: ${filename}`),{code:'INVALID_IMAGE_SIGNATURE'});
+  if(['txt','csv'].includes(ext)&&bytes.slice(0,512).some(byte=>byte===0))throw Object.assign(new Error(`Text attachment contains binary data: ${filename}`),{code:'INVALID_TEXT_ATTACHMENT'});
+}
 function normalizeAttachments(value){
   const list=Array.isArray(value)?value:[];
   if(list.length>MAX_ATTACHMENTS)throw Object.assign(new Error('Too many attachments'),{code:'TOO_MANY_ATTACHMENTS'});
@@ -94,14 +130,16 @@ function normalizeAttachments(value){
   let total=0;
   for(const item of list){
     const filename=safeHeader(item?.filename||item?.name||'document.pdf').replace(/[^A-Za-z0-9._ -]+/g,'_')||'document.pdf';
-    const type=clean(item?.type||item?.contentType||item?.mimeType||'application/pdf').toLowerCase();
-    if(type!=='application/pdf'&&!filename.toLowerCase().endsWith('.pdf'))throw Object.assign(new Error(`Unsupported attachment: ${filename}`),{code:'ATTACHMENT_TYPE_NOT_ALLOWED'});
+    const ext=extensionOf(filename);
+    if(!ext||BLOCKED_ATTACHMENT_EXTENSIONS.has(ext)||!ALLOWED_ATTACHMENT_TYPES.has(ext))throw Object.assign(new Error(`Unsupported attachment: ${filename}`),{code:'ATTACHMENT_TYPE_NOT_ALLOWED'});
     const bytes=decodeBase64(item?.base64||item?.content||'');
     if(bytes.length>MAX_ATTACHMENT_BYTES)throw Object.assign(new Error(`Attachment too large: ${filename}`),{code:'ATTACHMENT_TOO_LARGE'});
-    if(new TextDecoder().decode(bytes.slice(0,5))!=='%PDF-')throw Object.assign(new Error(`Invalid PDF signature: ${filename}`),{code:'INVALID_PDF_SIGNATURE'});
+    assertAttachmentSignature(ext,bytes,filename);
     total+=bytes.length;
     if(total>MAX_TOTAL_ATTACHMENT_BYTES)throw Object.assign(new Error('Total attachment size exceeded'),{code:'TOTAL_ATTACHMENT_SIZE_EXCEEDED'});
-    normalized.push({content:bytes,filename,type:'application/pdf',disposition:'attachment'});
+    const declared=clean(item?.type||item?.contentType||item?.mimeType||'').toLowerCase();
+    const type=declared&&declared!=='application/octet-stream'?declared:ALLOWED_ATTACHMENT_TYPES.get(ext);
+    normalized.push({content:bytes,filename,type,disposition:'attachment'});
   }
   return{items:normalized,totalBytes:total};
 }
@@ -149,7 +187,8 @@ function readiness(env){
     mandatoryCopy:MANDATORY_BCC,
     signatureVersion:SIGNATURE_VERSION,
     profiles:[...PROFILES.values()],
-    limits:{recipients:MAX_RECIPIENTS,attachments:MAX_ATTACHMENTS,attachmentBytes:MAX_ATTACHMENT_BYTES,totalAttachmentBytes:MAX_TOTAL_ATTACHMENT_BYTES,dedupeSeconds:DEDUPE_SECONDS}
+    limits:{recipients:MAX_RECIPIENTS,attachments:MAX_ATTACHMENTS,attachmentBytes:MAX_ATTACHMENT_BYTES,totalAttachmentBytes:MAX_TOTAL_ATTACHMENT_BYTES,dedupeSeconds:DEDUPE_SECONDS},
+    attachments:{allowedExtensions:[...ALLOWED_ATTACHMENT_TYPES.keys()],blockedExtensions:[...BLOCKED_ATTACHMENT_EXTENSIONS]}
   };
 }
 async function sendManual(request,env){
@@ -221,7 +260,7 @@ async function sendManual(request,env){
   const entry={...base,status,provider:results,errorCode:firstFailure?.errorCode||'',errorMessage:firstFailure?.message||'',sentAt:sent?now():null};
   const auditResult=await audit(env,entry);
   if(!sent&&kv?.delete)await kv.delete(dedupeKey).catch(()=>{});
-  return json({ok:status==='SENT',id,status,profile:{id:profile.id,name:profile.name,email:profile.email},to,cc,bcc,mandatoryCopy:MANDATORY_BCC,subject,attachments:{count:attachmentState.items.length,totalBytes:attachmentState.totalBytes},sent,failed:to.length-sent,results,audit:auditResult,signatureVersion:SIGNATURE_VERSION},status==='SENT'?200:sent?207:502);
+  return json({ok:status==='SENT',id,status,profile:{id:profile.id,name:profile.name,email:profile.email},to,cc,bcc,mandatoryCopy:MANDATORY_BCC,subject,attachments:{count:attachmentState.items.length,totalBytes:attachmentState.totalBytes,files:attachmentState.items.map(item=>({filename:item.filename,type:item.type}))},sent,failed:to.length-sent,results,audit:auditResult,signatureVersion:SIGNATURE_VERSION},status==='SENT'?200:sent?207:502);
 }
 
 export async function handleManualMailService(request,env){
