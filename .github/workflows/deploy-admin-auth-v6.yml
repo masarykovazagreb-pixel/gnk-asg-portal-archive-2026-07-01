@@ -169,8 +169,20 @@ jobs:
           if-no-files-found: warn
           retention-days: 3
       - name: Verify public assets
+        env:
+          TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
         run: |
+          set -euo pipefail
           sleep 10
-          curl --fail --silent --show-error https://gnk-asg.hr/assets/backend-ui-shell.js?admin-v6 | grep -q gnkAdminToken
-          curl --fail --silent --show-error https://gnk-asg.hr/assets/backend-ui-shell.js?admin-v6 | grep -q gnkAdminLogout
-          curl --fail --silent --show-error https://gnk-asg.hr/operator-dashboard/?admin-v6 | grep -q backend-ui-shell.js
+          value="$TOKEN"
+          [ -n "$value" ] || value="$TOKEN_FALLBACK"
+          test -n "$value"
+          auth=(-H "Authorization: Bearer ${value}")
+          curl --fail --silent --show-error https://gnk-asg.hr/data/portal-version.json | grep -q 'asset-passthrough-first'
+          if ! curl --fail --silent --show-error https://gnk-asg.hr/assets/backend-ui-shell.js?admin-v6 -o backend-ui-shell.js; then
+            curl --fail --silent --show-error "${auth[@]}" https://gnk-asg.hr/assets/backend-ui-shell.js?admin-v6 -o backend-ui-shell.js
+          fi
+          grep -q gnkAdminToken backend-ui-shell.js
+          grep -q gnkAdminLogout backend-ui-shell.js
+          curl --fail --silent --show-error "${auth[@]}" https://gnk-asg.hr/operator-dashboard/?admin-v6 | grep -q backend-ui-shell.js
