@@ -13,9 +13,10 @@ preview_urls = true
 binding = "GNK_ASG_CONFIG_KV"
 id = "d6f5dac9fa034d8d813db0de44eb7b1b"
 
-[[kv_namespaces]]
-binding = "GNK_ASG_KV"
-id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+# GNK_ASG_KV is intentionally not bound here.
+# The worker uses GNK_ASG_CONFIG_KV as fallback storage, and this keeps deploy
+# independent from optional/legacy KV namespace IDs that may not exist in the
+# active Cloudflare account.
 
 [[d1_databases]]
 binding = "GNK_ASG_D1"
