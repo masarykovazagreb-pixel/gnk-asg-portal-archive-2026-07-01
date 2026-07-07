@@ -10,6 +10,7 @@ const FAVICON_VERSION='GNK_ASG_GOOGLE_FAVICON_V1';
 const MARKET_CHART='GNK_ASG_LIVE_MARKET_CHART_V3';
 const GROUP_NETWORK='GNK_ASG_GROUP_NETWORK_V2';
 const MEDIA_APPLICATION_DESCRIPTION='Secure bilingual media registration and accreditation portal for GNK ASG d.o.o. and GNK DINAMO Ltd. Group. Newsrooms can create access, save a draft and submit official media application details.';
+const INDEX_RESCUE='GNK_ASG_STATIC_INDEX_RESCUE_V1_20260708';
 
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{
   status,
@@ -79,6 +80,23 @@ async function staticPublicationResponse(request,env){
   return withHeaders(response);
 }
 
+async function staticIndexResponse(request,env,path){
+  if(!env.ASSETS?.fetch)return null;
+  const assetPath=path==='/en'?'/en/index.html':'/index.html';
+  const target=new URL(assetPath,request.url);
+  const response=await env.ASSETS.fetch(new Request(target,{method:'GET',headers:request.headers}));
+  if(response.status===404)return null;
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.set('content-type','text/html; charset=utf-8');
+  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('x-gnk-asg-index-rescue',INDEX_RESCUE);
+  headers.set('x-gnk-asg-portal-final',VERSION);
+  headers.set('x-robots-tag','index, follow');
+  return new Response(request.method==='HEAD'?null:response.body,{status:response.status,statusText:response.statusText,headers});
+}
+
 async function injectIndexModules(response){
   const headers=new Headers(response.headers);
   headers.delete('content-length');
@@ -139,7 +157,8 @@ async function fetchHandler(request,env,ctx){
       marketChart:MARKET_CHART,
       groupNetwork:GROUP_NETWORK,
       galleryVersion:GALLERY_VERSION,
-      indexDesign:'IQ200',
+      indexDesign:'clean-rescue-v1',
+      indexRescue:INDEX_RESCUE,
       publicationRouting:'static-assets-first-dynamic-kv-fallback',
       mediaApplicationSeo:'clean-20260706',
       mailAutoreply:MAIL_AUTOREPLY_VERSION,
@@ -150,6 +169,11 @@ async function fetchHandler(request,env,ctx){
 
   if((request.method==='GET'||request.method==='HEAD')&&['/favicon.ico','/favicon.svg','/site.webmanifest'].includes(path)){
     const response=await faviconResponse(request,env,path);
+    if(response)return response;
+  }
+
+  if((request.method==='GET'||request.method==='HEAD')&&['/','/en'].includes(path)){
+    const response=await staticIndexResponse(request,env,path);
     if(response)return response;
   }
 
