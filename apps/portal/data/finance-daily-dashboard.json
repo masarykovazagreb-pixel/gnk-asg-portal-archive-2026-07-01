@@ -1,7 +1,7 @@
 {
-  "version": "GNK_ASG_FINANCE_DAILY_DASHBOARD_V1_20260707",
+  "version": "GNK_ASG_FINANCE_DAILY_DASHBOARD_V2_20260707",
   "status": "evidence-snapshot",
-  "updatedAt": "2026-07-07T20:20:00+02:00",
+  "updatedAt": "2026-07-07T20:42:00+02:00",
   "currency": "EUR",
   "displayRule": "Dashboard prikazuje zadnji potvrđeni financijski snapshot. Nove dnevne brojke dodaju se nakon novog dokumenta ili provjerenog internog izvora.",
   "sources": [
@@ -17,8 +17,15 @@
         {"id":"revenue","label":"Ukupni prihodi","value":504001681.97,"display":"504,00 mil. €"},
         {"id":"assets","label":"Ukupna aktiva","value":46396925.72,"display":"46,40 mil. €"},
         {"id":"equity","label":"Kapital i rezerve","value":46212425.18,"display":"46,21 mil. €"},
-        {"id":"profit","label":"Dobit razdoblja","value":16076.47,"display":"16.076,47 €"}
-      ]
+        {"id":"profit","label":"Dobit razdoblja","value":16076.47,"display":"16.076,47 €"},
+        {"id":"longTermLiabilities","label":"Dugoročne obveze","value":0,"display":"0,00 €"},
+        {"id":"shortTermLiabilities","label":"Kratkoročne obveze","value":184500.54,"display":"184.500,54 €"}
+      ],
+      "liabilities": {
+        "longTerm": {"value":0,"display":"0,00 €"},
+        "shortTerm": {"value":184500.54,"display":"184.500,54 €"},
+        "total": {"value":184500.54,"display":"184.500,54 €"}
+      }
     },
     {
       "id": "gnk-dinamo-ltd-group",
@@ -28,8 +35,15 @@
         {"id":"revenue","label":"Konsolidirani prihodi","value":4704600000,"display":"4,7046 mlrd. €"},
         {"id":"assets","label":"Ukupna imovina grupe","value":3483000000,"display":"3,4830 mlrd. €"},
         {"id":"profit","label":"Neto dobit grupe","value":982480000,"display":"982,48 mil. €"},
-        {"id":"equityRatio","label":"Equity ratio","value":98.02,"display":"98,02%"}
-      ]
+        {"id":"equityRatio","label":"Equity ratio","value":98.02,"display":"98,02%"},
+        {"id":"longTermLiabilities","label":"Dugoročne obveze","value":0,"display":"0,00 €"},
+        {"id":"shortTermLiabilities","label":"Kratkoročne obveze","value":69035577.04,"display":"69,04 mil. €"}
+      ],
+      "liabilities": {
+        "longTerm": {"value":0,"display":"0,00 €"},
+        "shortTerm": {"value":69035577.04,"display":"69.035.577,04 €"},
+        "total": {"value":69035577.04,"display":"69.035.577,04 €"}
+      }
     }
   ],
   "approvalQueue": ["nova financijska brojka", "vanjska objava", "mail slanje", "kampanja", "produkcijski deploy"]
