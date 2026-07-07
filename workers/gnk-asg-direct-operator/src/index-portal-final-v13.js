@@ -11,6 +11,7 @@ const MARKET_CHART='GNK_ASG_LIVE_MARKET_CHART_V3';
 const GROUP_NETWORK='GNK_ASG_GROUP_NETWORK_V2';
 const MEDIA_APPLICATION_DESCRIPTION='Secure bilingual media registration and accreditation portal for GNK ASG d.o.o. and GNK DINAMO Ltd. Group. Newsrooms can create access, save a draft and submit official media application details.';
 const INDEX_RESCUE='GNK_ASG_THE_CODE_INDEX_V1_20260708';
+const INDEX_BOARD_CLEANUP='GNK_ASG_HIDE_LIVE_VERIFICATION_BOARD_V1_20260708';
 
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{
   status,
@@ -80,6 +81,14 @@ async function staticPublicationResponse(request,env){
   return withHeaders(response);
 }
 
+function cleanPublicIndexBody(body){
+  const cleaner='<style id="gnk-index-board-cleanup">[data-live-verification-board],#live-verification-board,.live-verification-board,.verification-board,.index-verification-board{display:none!important}</style><script id="gnk-index-board-cleanup-js">(()=>{const needles=["Live verification board","Index contract vraćen bez slanja maila","Financije, tržište, objave i mreža."];function kill(){for(const el of document.querySelectorAll("section,article,aside,footer,div")){const t=(el.innerText||el.textContent||"").replace(/\\s+/g," ");if(needles.some(n=>t.includes(n))){if(t.length<2200){el.remove();continue}const child=[...el.querySelectorAll("section,article,aside,div")].find(x=>{const s=(x.innerText||x.textContent||"").replace(/\\s+/g," ");return needles.some(n=>s.includes(n))&&s.length<2200});if(child)child.remove();}}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",kill,{once:true});else kill();})();</script>';
+  body=body.replace(/<section\b[^>]*>[\s\S]*?Live verification board[\s\S]*?Index contract vraćen bez slanja maila, kampanja ili deploy radnji\.[\s\S]*?<\/section>/i,'');
+  body=body.replace(/<div\b[^>]*>[\s\S]*?Live verification board[\s\S]*?Index contract vraćen bez slanja maila, kampanja ili deploy radnji\.[\s\S]*?<\/div>/i,'');
+  if(!body.includes('gnk-index-board-cleanup'))body=body.replace('</body>',cleaner+'</body>');
+  return body;
+}
+
 async function staticIndexResponse(request,env,path){
   if(!env.ASSETS?.fetch)return null;
   const assetPath='/the-code/';
@@ -92,10 +101,13 @@ async function staticIndexResponse(request,env,path){
   headers.set('content-type','text/html; charset=utf-8');
   headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('x-gnk-asg-index-rescue',INDEX_RESCUE);
+  headers.set('x-gnk-asg-index-board-cleanup',INDEX_BOARD_CLEANUP);
   headers.set('x-gnk-asg-portal-final',VERSION);
   headers.set('x-robots-tag','index, follow');
   headers.set('link','<https://gnk-asg.hr/the-code/>; rel="canonical"');
-  return new Response(request.method==='HEAD'?null:response.body,{status:response.status,statusText:response.statusText,headers});
+  if(request.method==='HEAD')return new Response(null,{status:response.status,statusText:response.statusText,headers});
+  const body=cleanPublicIndexBody(await response.text());
+  return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
 
 async function injectIndexModules(response){
@@ -160,6 +172,7 @@ async function fetchHandler(request,env,ctx){
       galleryVersion:GALLERY_VERSION,
       indexDesign:'the-code-homepage-v1',
       indexRescue:INDEX_RESCUE,
+      indexBoardCleanup:INDEX_BOARD_CLEANUP,
       publicationRouting:'static-assets-first-dynamic-kv-fallback',
       mediaApplicationSeo:'clean-20260706',
       mailAutoreply:MAIL_AUTOREPLY_VERSION,
