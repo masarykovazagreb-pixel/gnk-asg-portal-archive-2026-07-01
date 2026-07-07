@@ -1,13 +1,15 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_ADMIN_ONLY_MODULE_MAP_V1__) return;
-  window.__GNK_ASG_ADMIN_ONLY_MODULE_MAP_V1__ = true;
+  if (window.__GNK_ASG_ADMIN_ONLY_MODULE_MAP_V2__) return;
+  window.__GNK_ASG_ADMIN_ONLY_MODULE_MAP_V2__ = true;
   const routes = [
-    ['studio', 'Studio', 'Pojedinačna radna površina', '/ma' + 'il-studio/'],
-    ['control', 'Control', 'Kontrola pripreme i evidencije', '/cam' + 'paign-ma' + 'iler/'],
-    ['status', 'Status', 'Operativni status', '/ema' + 'il-status/'],
-    ['release', 'Release', 'Pregled statusa bez automatskog pokretanja', '/dep' + 'loyment/'],
-    ['review', 'Review', 'Pregled prije javnih radnji', '/review/']
+    ['mail-studio', 'Mail Studio', 'Pojedinačna pošta, potpisi, draftovi i pretinci', '/mail-studio/'],
+    ['mail-tracker', 'Mail Tracker', 'Pregled readinessa, reda, statusa i audit zapisa bez slanja', '/mail-tracker/'],
+    ['campaign-mailer', 'Campaign Mailer', 'Priprema kampanje, kontakti, HTML poruka, PDF privitak i red slanja', '/campaign-mailer/'],
+    ['media-command', 'Media Command Center', 'Mediji, prijave, odobrenja i radni tokovi', '/media-command-center/'],
+    ['media-login', 'Media login / application', 'Stari javni link za medije ostaje isti', '/media-application/?lang=en'],
+    ['review', 'Review', 'Pregled prije javnih radnji', '/review/'],
+    ['release', 'Deployment', 'Pregled statusa bez automatskog produkcijskog pokretanja', '/deployment/']
   ];
   const $ = id => document.getElementById(id);
   function openRoute(item) {
@@ -35,7 +37,7 @@
     const section = document.createElement('section');
     section.id = 'adminOnlyModuleMap';
     section.className = 'dashboard-section';
-    section.innerHTML = '<div class="section-head"><div><p class="eyebrow">Admin-only map</p><h3>Operativne rute</h3><p>Sve ove rute otvaraju se iz Admin Centera i ostaju iza sigurne prijave.</p></div></div>';
+    section.innerHTML = '<div class="section-head"><div><p class="eyebrow">Admin-only map</p><h3>Mail, tracker, kampanja i mediji</h3><p>Operativne rute otvaraju se iz Admin Centera i ostaju iza sigurne prijave. Javni media login link ostaje isti.</p></div></div>';
     const cards = document.createElement('div');
     cards.className = 'priority-grid';
     routes.forEach(item => {
