@@ -5,11 +5,11 @@
 
   const MODULES = [
     {id:'overview', icon:'⌂', label:'Admin pregled', short:'Kontrolna ploča', desc:'Status sustava, prioriteti i jedinstveni pristup alatima.', route:'/admin-center/'},
+    {id:'mail', icon:'✉', label:'Mail Studio', short:'Pošta i potpisi', desc:'Pošiljatelji, pretinci, potpisi, privici, Inbox/Sent evidencija i sigurne provjere.', route:'/mail-studio/'},
     {id:'media', icon:'◎', label:'Komandni centar', short:'Mediji i prijave', desc:'Globalna baza medija, kampanje, prijave, dokumenti, odobrenja i zaključani kanali.', route:'/media-command-center/'},
     {id:'mediaApplications', icon:'◇', label:'Media prijave', short:'Javna prijavnica', desc:'Javni portal na kojem pozvani mediji unose i dopunjuju podatke za registraciju.', route:'/media-application/'},
     {id:'mediaPortal', icon:'◉', label:'Media Portal', short:'Pozivi i registracije', desc:'Centralna evidencija medijskih poziva, prijava, statusa, PDF priloga i odobrenja.', route:'/media-registration-admin/'},
     {id:'operator', icon:'▣', label:'Operator', short:'Operativni nadzor', desc:'Status, evidencije i operatorske postavke.', route:'/operator-dashboard/'},
-    {id:'mail', icon:'✉', label:'Mail Studio', short:'Pošta i potpisi', desc:'Pošiljatelji, pretinci, potpisi, privici i sigurne provjere.', route:'/mail-studio/'},
     {id:'editor', icon:'✎', label:'Auto Editor', short:'Urednički procesi', desc:'Objave, priprema sadržaja i uredničke kontrole.', route:'/auto-editor/'},
     {id:'news', icon:'◫', label:'News Admin', short:'Vijesti i izvori', desc:'Izvori, vijesti, raspored i urednička kontrola.', route:'/news-admin/'},
     {id:'pdf', icon:'▤', label:'PDF Publisher', short:'Dokumenti', desc:'Službeni dokumenti, PDF objava i evidencija.', route:'/pdf-publisher/'}
@@ -22,7 +22,7 @@
     {id:'mediaPortal', label:'Media Portal', detail:'Pozivi i registracije', path:'/api/media-registration-admin/status'},
     {id:'platform', label:'Platforma', detail:'KV, D1 i javni asseti', path:'/data/platform-health.json'}
   ];
-  const PRIORITIES = ['media','mediaApplications','mediaPortal'];
+  const PRIORITIES = ['mail','media','mediaApplications','mediaPortal'];
   const $ = id => document.getElementById(id);
   const state = {current:'overview', frameTimer:null, cleanObserver:null, statusTimer:null, toastTimer:null};
 
@@ -320,7 +320,7 @@
     $('refreshButton')?.addEventListener('click',()=>state.current==='overview'?loadStatus({announce:true}):openModule(state.current,{push:false,force:true}));
     $('retryModule')?.addEventListener('click',()=>openModule(state.current,{push:false,force:true}));
     $('showAllModules')?.addEventListener('click',openCommandPalette);
-    $('heroMail')?.addEventListener('click',()=>openModule('media'));
+    $('heroMail')?.addEventListener('click',()=>openModule('mail'));
     $('heroAudit')?.addEventListener('click',()=>loadStatus({announce:true}));
     $('logoutButton')?.addEventListener('click',logout);
     $('logoutSide')?.addEventListener('click',logout);
