@@ -1,17 +1,88 @@
 {
-  "version": "GNK_ASG_WORKER_RESULTS_3H_V1_20260706",
-  "status": "public-draft",
+  "version": "GNK_ASG_WORKER_RESULTS_3H_V2_20260707",
+  "status": "active-review-board",
   "cycleHours": 3,
   "slots": ["08:00", "11:00", "14:00", "17:00", "20:00", "23:00"],
-  "rule": "Each worker must publish task, measurable result, evidence link, blocker and next step. AI does not decide or publish without human approval.",
+  "rule": "Svaki worker ima zadatak, mjerljiv rezultat, dokaz, blokadu i sljedeći korak.",
+  "chiefDesk": {
+    "id": "GNK-CHIEF-001",
+    "role": "Završna kontrola",
+    "task": "Pregledati zadnje promjene prije deploya: index, financije, THE CODE, design, javne rute i PDF poveznice.",
+    "result": "Jasan GO / FIX popis prije live objave.",
+    "next": "Odobriti samo nakon zelenog Deploy Admin Auth V6 i live pregleda."
+  },
   "workers": [
-    {"id":"GNK-WRK-HR-FIN-001","area":"financials","task":"financial summary and PDF evidence","result":"four separated financial indicators","evidence":["/financije/","/downloads/"],"next":"verify live PDF links"},
-    {"id":"GNK-WRK-US-CODE-001","area":"THE CODE","task":"rotating show and New York final slide","result":"five-slide show ending on press segment","evidence":["/the-code/","/#gnk-index-code-show"],"next":"verify HR and EN parity"},
-    {"id":"GNK-WRK-HR-OPS-001","area":"operations","task":"public status board","result":"3-hour reporting cadence","evidence":["/public-operations/"],"next":"publish next operational result"},
-    {"id":"GNK-WRK-HR-MEDIA-001","area":"media","task":"media application route","result":"media intake route preserved","evidence":["/media-application/?lang=en"],"next":"test form flow"},
-    {"id":"GNK-WRK-HR-PRESS-001","area":"press","task":"posts and press materials","result":"first public post prepared","evidence":["/objave/"],"next":"prepare second post"},
-    {"id":"GNK-WRK-HR-COMMENT-001","area":"comments","task":"author comments and analysis","result":"channel separated from official posts","evidence":["/nermin-sefic/"],"next":"prepare approved comment"},
-    {"id":"GNK-WRK-HR-AI-001","area":"AI navigation","task":"public portal navigation","result":"route guidance only","evidence":["/assistant/"],"next":"add public FAQ"},
-    {"id":"GNK-WRK-HR-AI-002","area":"editorial draft","task":"drafting for review","result":"drafts require human approval","evidence":["/auto-editor/"],"next":"prepare review draft"}
+    {
+      "id": "GNK-WRK-BE-001",
+      "area": "backend",
+      "task": "Deploy routing i asset passthrough",
+      "result": "v15 worker prvo servira index, EN index i /assets/ datoteke.",
+      "evidence": ["/", "/en/", "/assets/backend-ui-shell.js", "/data/portal-version.json"],
+      "blocker": "Deploy ne vrijedi dok live domena ne vrati novi index.",
+      "next": "Pokrenuti Deploy Admin Auth V6 i provjeriti live header / sadržaj."
+    },
+    {
+      "id": "GNK-WRK-FE-001",
+      "area": "frontend",
+      "task": "Čisti korporativni index bez internih tehničkih rečenica.",
+      "result": "Index s financijskim pokazateljima 2025, PDF izvješćima, THE CODE i javnim rutama.",
+      "evidence": ["/", "/documents/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf", "/documents/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf"],
+      "blocker": "Vizual mora biti pregledan nakon deploya.",
+      "next": "Uskladiti EN verziju nakon potvrde HR vizuala."
+    },
+    {
+      "id": "GNK-WRK-DESIGN-001",
+      "area": "design",
+      "task": "Logotipi i hero identitet.",
+      "result": "Index koristi stabilne HTML/CSS logo blokove koji se prikazuju i kad PNG asset ne radi.",
+      "evidence": ["/"],
+      "blocker": "Ako se kasnije ubace finalni PNG/SVG logotipi, treba testirati prikaz na desktopu i mobitelu.",
+      "next": "Pripremiti finalni brand asset set."
+    },
+    {
+      "id": "GNK-WRK-FIN-001",
+      "area": "financials",
+      "task": "Kratki financijski pokazatelji iz PDF dokaza.",
+      "result": "GNK ASG 2025 i GNK DINAMO Ltd. Group FY2025 prikazani odvojeno.",
+      "evidence": ["/downloads/", "/documents/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf", "/documents/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf"],
+      "blocker": "Ne miješati prihode, dobit, aktivu, kapital, novac i obveze.",
+      "next": "Provjeriti da su PDF linkovi aktivni nakon deploya."
+    },
+    {
+      "id": "GNK-WRK-CODE-001",
+      "area": "THE CODE",
+      "task": "Prezentacijska ruta i index embed.",
+      "result": "THE CODE je dostupan na /the-code/ i prikazan na indexu.",
+      "evidence": ["/the-code/", "/#the-code"],
+      "blocker": "Countdown i prezentacijski tekst pregledati vizualno na live domeni.",
+      "next": "Uskladiti kratki opis s New York 2026 briefom."
+    },
+    {
+      "id": "GNK-WRK-MEDIA-001",
+      "area": "media",
+      "task": "Media application i newsroom ruta.",
+      "result": "Media application ostaje javna i dostupna na EN ruti.",
+      "evidence": ["/media-application/?lang=en"],
+      "blocker": "Form submit se ne testira bez posebnog odobrenja.",
+      "next": "Pregledati polja i PDF/download poveznice."
+    },
+    {
+      "id": "GNK-WRK-PRESS-001",
+      "area": "newsroom",
+      "task": "Novinarski brief i javne objave.",
+      "result": "Brief podaci koriste isti redoslijed: Grupa 2025, GNK ASG 2025, mreža, New York 2026.",
+      "evidence": ["/objave/", "/downloads/"],
+      "blocker": "Ne slati mailove niti kampanje.",
+      "next": "Pripremiti javnu objavu samo kao draft za pregled."
+    },
+    {
+      "id": "GNK-WRK-QA-001",
+      "area": "qa",
+      "task": "Smoke test ruta nakon deploya.",
+      "result": "Provjeriti /, /en/, /the-code/, /gnew-portal/, /downloads/, /media-application/?lang=en, /admin/.",
+      "evidence": ["/data/worker-results-3h.json"],
+      "blocker": "Ako workflow padne, ne rerunati bez čitanja loga.",
+      "next": "Nakon zelenog workflowa napraviti hard refresh i vizualni pregled."
+    }
   ]
 }
