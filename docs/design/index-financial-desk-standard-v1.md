@@ -44,10 +44,17 @@ h1, h2 { font-family: Georgia, "Times New Roman", serif; }
 3. Hero: financije, projekti i objave u formi poslovnog tržišnog portala.
 4. Financijski sažetak: GNK ASG d.o.o. i GNK DINAMO Ltd. Group.
 5. Portal prozor: Objave, Vijesti, Tržište, Kontakt, GNK-KOD prikaz.
-6. Javni desk: SADA, FINANCIJE, THE CODE.
+6. Javni desk: SADA, FINANCIJE, THE CODE, plus backend-fed objave kad su dostupne.
 7. THE CODE: iframe `/the-code/?embed=1` i gumbi za THE CODE, medijsku prijavu i PDF dokumente.
 8. Javne rute: downloads, objave, vijesti, kontakt, media application, admin, gnew portal.
-9. Operativni sažetak: 1.537 profila, 45 lokacija, 9 projekata, 8 zadataka.
+9. Operativni sažetak: 1.537 profila, 45 lokacija, 43 društva, 27 funkcija, 9 projekata, 8 zadataka.
+
+## Implementacija u PR #353
+
+- `apps/portal/assets/gallery-bootstrap.js` je sveden na loader.
+- Loader učitava `apps/portal/assets/index-financial-desk-v1.js`.
+- Novi modul dodaje financijski ticker, javni desk i operativni sažetak bez uklanjanja postojećih sekcija.
+- Stare sekcije ostaju u HTML-u: hero, portal prozor, financije, THE CODE i javne rute.
 
 ## Backend/data contract
 
