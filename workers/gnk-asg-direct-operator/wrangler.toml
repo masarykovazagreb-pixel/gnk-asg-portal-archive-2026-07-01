@@ -1,4 +1,4 @@
-name = "gnk-asg-direct-operator"
+﻿name = "gnk-asg-direct-operator"
 main = "src/index-unified-auth-v14.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
@@ -48,7 +48,7 @@ AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 # Manual Mail Studio is enabled for controlled individual messages only.
 # Campaign, bulk, scheduled outreach and profile tests remain locked below.
 MAIL_STUDIO_LIVE = "true"
-MAIL_MANUAL_LIVE = "true"
+MAIL_MANUAL_LIVE = "false"
 MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MAIL_PROFILE_TEST_LIVE = "false"
 MAIL_PROFILE_TEST_RECIPIENTS = "beckuphome@gmail.com"
