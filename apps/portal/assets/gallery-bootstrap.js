@@ -1,168 +1,81 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_HOME_V12_MOBILE_HR_CLEAN__) return;
-  window.__GNK_ASG_HOME_V12_MOBILE_HR_CLEAN__ = true;
-
   const path = location.pathname.replace(/\/+$/, '') || '/';
   if (!(path === '/' || path === '/en')) return;
+  if (window.__GNK_ASG_FINANCIAL_HOME_V1__) return;
+  window.__GNK_ASG_FINANCIAL_HOME_V1__ = true;
+
+  // On the public index this asset owns the final homepage layout. Prevent old recovery injectors from stacking extra sections.
+  window.__GNK_ASG_GALLERY_BRAND_SAFETY__ = true;
 
   const isEn = path === '/en';
-  const hr = !isEn;
-  const tr = (hrText, enText) => isEn ? enText : hrText;
-  const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
-  const publicCode = index => String(1000 + (((index * 7919) + 2749) % 9000)).padStart(4, '0');
+  const t = (hr, en) => isEn ? en : hr;
 
-  const loadScript = src => new Promise(resolve => {
-    if ([...document.scripts].some(script => script.src && script.src.includes(src))) return resolve();
-    const el = document.createElement('script');
-    el.src = src;
-    el.onload = resolve;
-    el.onerror = resolve;
-    document.head.appendChild(el);
-  });
+  function style() {
+    const old = document.getElementById('gnk-financial-home-style');
+    if (old) old.remove();
+    const s = document.createElement('style');
+    s.id = 'gnk-financial-home-style';
+    s.textContent = `
+      :root{color-scheme:dark;--bg:#04070d;--bg2:#07111f;--ink:#f8fafc;--muted:#a9b5c8;--gold:#f3cc62;--gold2:#ffe8a0;--line:rgba(243,204,98,.24);--card:rgba(10,18,32,.92);--card2:rgba(17,28,48,.92);--blue:#102a4c}
+      *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 16% -10%,rgba(243,204,98,.14),transparent 30%),linear-gradient(180deg,#081426 0,#04070d 56%,#020409 100%);color:var(--ink);font-family:Inter,Arial,sans-serif}.gnk-fin-wrap{width:min(1240px,calc(100% - 34px));margin:0 auto}.gnk-top{position:sticky;top:0;z-index:5;background:rgba(4,7,13,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.10)}.gnk-top-inner{width:min(1240px,calc(100% - 34px));margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:14px 0}.gnk-brand{display:flex;gap:12px;align-items:center;min-width:260px}.gnk-brand img{width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 10px 24px rgba(0,0,0,.35))}.gnk-brand strong{display:block;color:#fff;font:800 21px/1.05 Georgia,serif;letter-spacing:-.02em}.gnk-brand span{display:block;color:var(--muted);font-size:11px;margin-top:3px}.gnk-nav{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.gnk-nav a,.gnk-btn{border:1px solid rgba(255,255,255,.13);border-radius:999px;background:rgba(255,255,255,.045);color:#fff;text-decoration:none;padding:9px 11px;font-size:12px;font-weight:900}.gnk-btn.gold,.gnk-nav a.gold{background:linear-gradient(135deg,#bb8d2f,#ffe08a);color:#06101f;border-color:rgba(243,204,98,.7)}.gnk-clock{font:800 11px/1.2 ui-monospace,Menlo,Consolas,monospace;color:var(--gold2);text-align:right}.gnk-ticker{border-bottom:1px solid rgba(255,255,255,.10);background:#050b14}.gnk-ticker-track{width:min(1240px,calc(100% - 34px));margin:0 auto;display:flex;gap:10px;overflow:auto;padding:8px 0;scrollbar-width:none}.gnk-ticker-track::-webkit-scrollbar{display:none}.gnk-tick{flex:0 0 auto;border:1px solid rgba(255,255,255,.10);border-radius:999px;background:rgba(255,255,255,.035);padding:7px 10px;font:800 11px/1 ui-monospace,Menlo,Consolas,monospace;color:#dbeafe}.gnk-tick b{color:var(--gold2);margin-right:8px}.gnk-tick.up span{color:#86efac}.gnk-tick.neutral span{color:#cbd5e1}.gnk-section{margin:18px 0;border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,var(--card2),rgba(4,8,15,.96));box-shadow:0 24px 70px rgba(0,0,0,.32);overflow:hidden}.gnk-hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(310px,.65fr);gap:0}.gnk-lead{padding:32px 30px;border-right:1px solid rgba(255,255,255,.10);background:radial-gradient(circle at 80% 10%,rgba(243,204,98,.12),transparent 32%)}.gnk-k{margin:0 0 10px;color:var(--gold);font-size:12px;font-weight:950;letter-spacing:.16em;text-transform:uppercase}.gnk-lead h1{margin:0;max-width:860px;font:800 clamp(42px,6vw,82px)/.9 Georgia,serif;letter-spacing:-.055em;color:#fff}.gnk-lead p{max-width:760px;color:#c5d0e0;font-size:17px;line-height:1.55}.gnk-action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.gnk-rail{padding:22px;background:rgba(255,255,255,.025)}.gnk-rail h2,.gnk-board h2,.gnk-news h2,.gnk-code h2{margin:0;color:#fff;font:760 clamp(28px,3.4vw,46px)/.98 Georgia,serif;letter-spacing:-.035em}.gnk-list{display:grid;gap:9px;margin-top:16px}.gnk-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:baseline;border-bottom:1px solid rgba(255,255,255,.09);padding:10px 0}.gnk-row small{color:var(--muted);font-size:12px}.gnk-row strong{color:var(--gold2);font:800 16px/1 ui-monospace,Menlo,Consolas,monospace}.gnk-board{padding:24px}.gnk-board-head{display:flex;justify-content:space-between;gap:14px;align-items:end;flex-wrap:wrap;margin-bottom:18px}.gnk-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.gnk-card{border:1px solid rgba(255,255,255,.11);border-radius:20px;background:linear-gradient(180deg,rgba(13,24,42,.94),rgba(5,10,19,.97));padding:16px;min-width:0}.gnk-card label{display:inline-flex;border:1px solid rgba(243,204,98,.24);border-radius:999px;color:var(--gold2);background:rgba(243,204,98,.07);padding:5px 8px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.05em}.gnk-card strong{display:block;margin:10px 0 5px;color:#fff;font:800 clamp(25px,3vw,38px)/.96 Georgia,serif;letter-spacing:-.035em}.gnk-card small{color:var(--muted);line-height:1.4}.gnk-news{display:grid;grid-template-columns:1.1fr .9fr;gap:0}.gnk-news-main{padding:24px;border-right:1px solid rgba(255,255,255,.10)}.gnk-news-side{padding:24px}.gnk-story{display:grid;grid-template-columns:120px 1fr;gap:14px;border-top:1px solid rgba(255,255,255,.09);padding:16px 0;color:#fff;text-decoration:none}.gnk-story:first-of-type{border-top:0}.gnk-story .time{color:var(--gold2);font:900 11px/1 ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase}.gnk-story h3{margin:0 0 6px;color:#fff;font-size:18px;line-height:1.2}.gnk-story p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.gnk-table{width:100%;border-collapse:collapse;margin-top:14px}.gnk-table th,.gnk-table td{border-bottom:1px solid rgba(255,255,255,.10);padding:11px 8px;text-align:left;font-size:12px}.gnk-table th{color:var(--gold);text-transform:uppercase;letter-spacing:.08em}.gnk-table td:last-child{text-align:right;color:var(--gold2);font-weight:900}.gnk-code{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:0}.gnk-code-copy{padding:26px;border-right:1px solid rgba(255,255,255,.10)}.gnk-code-frame{padding:18px}.gnk-code iframe{width:100%;height:560px;border:0;border-radius:22px;background:#000}.gnk-footer{border-top:1px solid rgba(255,255,255,.10);padding:28px 0 44px;color:var(--muted);font-size:13px}
+      @media(max-width:980px){.gnk-top-inner{grid-template-columns:1fr}.gnk-nav{justify-content:flex-start}.gnk-clock{text-align:left}.gnk-hero,.gnk-news,.gnk-code{grid-template-columns:1fr}.gnk-lead,.gnk-news-main,.gnk-code-copy{border-right:0;border-bottom:1px solid rgba(255,255,255,.10)}.gnk-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:640px){.gnk-fin-wrap,.gnk-top-inner,.gnk-ticker-track{width:calc(100% - 18px)}.gnk-top{position:relative}.gnk-top-inner{gap:10px;padding:12px 0}.gnk-brand img{width:48px;height:48px}.gnk-brand strong{font-size:19px}.gnk-brand span{font-size:10.5px}.gnk-nav{display:flex;flex-wrap:nowrap;overflow:auto;gap:7px;scrollbar-width:none}.gnk-nav::-webkit-scrollbar{display:none}.gnk-nav a{white-space:nowrap;font-size:11px;padding:8px 10px}.gnk-section{border-radius:20px;margin:14px 0}.gnk-lead{padding:22px 16px}.gnk-lead h1{font-size:clamp(34px,10vw,48px);line-height:.95}.gnk-lead p{font-size:14px}.gnk-rail,.gnk-board,.gnk-news-main,.gnk-news-side,.gnk-code-copy{padding:18px 14px}.gnk-grid{grid-template-columns:1fr;gap:10px}.gnk-card{border-radius:16px;padding:14px}.gnk-card strong{font-size:30px}.gnk-story{grid-template-columns:1fr;gap:6px}.gnk-table th,.gnk-table td{font-size:11px;padding:9px 6px}.gnk-action-row{display:grid}.gnk-btn{width:100%;text-align:center}.gnk-code-frame{padding:12px}.gnk-code iframe{height:500px;border-radius:16px}.gnk-row{grid-template-columns:1fr}.gnk-row strong{text-align:left}.gnk-tick{font-size:10px}}
+    `;
+    document.head.appendChild(s);
+  }
 
-  const json = async (url, fallback) => {
-    try {
-      const response = await fetch(url, { headers: { accept: 'application/json' }, cache: 'no-store' });
-      return response.ok ? await response.json() : fallback;
-    } catch {
-      return fallback;
-    }
+  const labels = {
+    navPortal: t('Portal', 'Portal'), navFinance: t('Financije', 'Financials'), navNews: t('Objave', 'Posts'), navCode: 'THE CODE', navMedia: t('Mediji', 'Media'), navAdmin: t('Administracija', 'Admin'),
+    eyebrow: t('GNK ASG FINANCIAL DESK', 'GNK ASG FINANCIAL DESK'),
+    h1: t('Financije, projekti i objave u formi poslovnog tržišnog portala.', 'Financials, projects and posts in a business-market portal format.'),
+    lead: t('Tamna naslovnica u našim bojama: financijski pokazatelji, službene objave, THE CODE, medijska prijava i operativni javni pregled na jednom mjestu.', 'A dark homepage in our colors: financial indicators, official posts, THE CODE, media application and public operations in one place.'),
+    openFinance: t('Financijski sažetak', 'Financial summary'), contact: t('Kontakt forma', 'Contact form'), media: t('Medijska prijava', 'Media application'), admin: t('Administracija', 'Admin'),
+    key: t('Ključni pokazatelji', 'Key indicators'), board: t('Financijska ploča', 'Financial board'), boardLead: t('GNK ASG d.o.o. i GNK DINAMO Ltd. Group — javni sažetak 2025.', 'GNK ASG d.o.o. and GNK DINAMO Ltd. Group — public FY2025 summary.'),
+    posts: t('Objave i operativni pregled', 'Posts and operating view'), market: t('Tržišni pregled', 'Market view'), codeTitle: t('THE CODE prezentacija', 'THE CODE presentation'), codeLead: t('THE CODE ostaje zaseban javni program s medijskom prijavom, dokumentima i prezentacijskim prikazom.', 'THE CODE remains a separate public program with media application, documents and presentation view.'),
+    footer: t('© GNK ASG d.o.o. · GNK DINAMO Ltd. Group · THE CODE · GNEW Portal.', '© GNK ASG d.o.o. · GNK DINAMO Ltd. Group · THE CODE · GNEW Portal.')
   };
 
-  function patchStaticCopy() {
-    if (!hr) return;
-    const brandSub = document.querySelector('.brand-sub');
-    if (brandSub) brandSub.textContent = 'Korporativni portal · GNK DINAMO Ltd. Group · digitalna poslovna platforma';
+  const metrics = [
+    ['GNK ASG d.o.o.', '504.000.000,00 €', t('ukupni prihodi', 'total revenue')],
+    ['GNK ASG d.o.o.', '46.400.000,00 €', t('ukupna aktiva', 'total assets')],
+    ['GNK ASG d.o.o.', '46.210.000,00 €', t('kapital i rezerve', 'capital and reserves')],
+    ['GNK ASG d.o.o.', '16.076,47 €', t('dobit razdoblja', 'period profit')],
+    ['GNK DINAMO Ltd. Group', '4.704.600.000,00 €', t('konsolidirani prihodi', 'consolidated revenue')],
+    ['GNK DINAMO Ltd. Group', '3.483.000.000,00 €', t('ukupna imovina grupe', 'group total assets')],
+    ['GNK DINAMO Ltd. Group', '982.480.000,00 €', t('neto dobit grupe', 'group net profit')],
+    ['GNK DINAMO Ltd. Group', '98,02%', t('omjer kapitala', 'equity ratio')]
+  ];
 
-    const replacements = new Map([
-      ['Media login', 'Mediji'],
-      ['Admin', 'Administracija'],
-      ['Admin Center', 'Administracija'],
-      ['Media Application', 'Medijska prijava'],
-      ['Register newsroom', 'Prijava redakcije'],
-      ['GNK DINAMO Ltd. — Consolidated Financial Report FY2025', 'GNK DINAMO Ltd. — konsolidirano financijsko izvješće 2025.'],
-      ['equity ratio', 'omjer kapitala'],
-      ['Review-only operativni zapisi', 'Operativni zapisi za pregled'],
-      ['GNEW Portal · international project layer', 'GNEW Portal · međunarodni projektni sloj'],
-      ['THE CODE / 9 · project portfolio', 'THE CODE / 9 · projektni portfelj']
-    ]);
+  const stories = [
+    [t('SADA', 'NOW'), t('Javni portal preuzima financijsku naslovnicu s jasnim tržišnim rasporedom.', 'The public portal moves to a clear market-style financial homepage.'), t('Financije, objave, THE CODE i medijska prijava dobivaju jedan čisti ulaz.', 'Financials, posts, THE CODE and media application now have one clean entry point.'), '/objave/'],
+    [t('FINANCIJE', 'FINANCE'), t('GNK ASG d.o.o. prikazuje prihode, aktivu, kapital i dobit za 2025.', 'GNK ASG d.o.o. displays revenue, assets, capital and profit for FY2025.'), t('Sažetak ostaje javni prikaz; puni dokumenti su u PDF centru.', 'The summary remains a public view; full documents are in the PDF center.'), '/downloads/'],
+    ['THE CODE', t('Projektni sloj ostaje vidljiv bez pretvaranja naslovnice u tehnički dump.', 'The project layer stays visible without turning the homepage into a technical dump.'), t('Prezentacija i prijava redakcija vode kroz zasebne javne rute.', 'The presentation and newsroom application use separate public routes.'), '/the-code/']
+  ];
 
-    document.querySelectorAll('a,span,small,h1,h2,h3,p,option,strong').forEach(node => {
-      const raw = node.textContent.trim();
-      if (replacements.has(raw)) node.textContent = replacements.get(raw);
-      else {
-        let next = node.textContent;
-        replacements.forEach((to, from) => { next = next.replaceAll(from, to); });
-        if (next !== node.textContent) node.textContent = next;
-      }
-    });
+  const marketRows = [
+    [t('Javni financijski dokumenti', 'Public financial documents'), 'PDF', t('aktivno', 'active')],
+    [t('Službene objave', 'Official posts'), '/objave/', t('otvoreno', 'open')],
+    [t('Medijska prijava', 'Media application'), '/media-application/', t('otvoreno', 'open')],
+    [t('Kontakt forma', 'Contact form'), '/contact/', t('otvoreno', 'open')],
+    [t('Administracija', 'Admin'), '/admin-center/', t('zaštićeno', 'protected')]
+  ];
 
-    const heroLead = document.querySelector('.hero .lead');
-    if (heroLead) heroLead.textContent = 'Administracija i operativni alati vode kroz zaštićeni centar. Javni dio ostaje čist: objave, vijesti, kontakt forma, dokumenti, THE CODE i medijska prijava.';
+  function render() {
+    style();
+    document.title = 'GNK ASG Financial Desk | GNK DINAMO Ltd. Group';
+    const main = `
+      <div class="gnk-top"><div class="gnk-top-inner"><a class="gnk-brand" href="/" aria-label="GNK ASG"><img src="/assets/brand/official-gnk-asg-gold.svg" alt="GNK ASG"><span><strong>GNK ASG d.o.o.</strong><span>${t('Korporativni portal · GNK DINAMO Ltd. Group', 'Corporate portal · GNK DINAMO Ltd. Group')}</span></span></a><nav class="gnk-nav"><a class="gold" href="#portal">${labels.navPortal}</a><a href="#financije">${labels.navFinance}</a><a href="#objave">${labels.navNews}</a><a href="#the-code">${labels.navCode}</a><a href="/media-application/?lang=en">${labels.navMedia}</a><a href="/admin-center/">${labels.navAdmin}</a><a href="${isEn ? '/' : '/en/'}">${isEn ? 'HR' : 'EN'}</a></nav><div class="gnk-clock">GNEW PORTAL<br>INDEX / THE CODE / 9</div></div></div>
+      <div class="gnk-ticker"><div class="gnk-ticker-track"><span class="gnk-tick up"><b>GNK ASG</b><span>504.000.000 €</span></span><span class="gnk-tick neutral"><b>AKTIVA</b><span>46.400.000 €</span></span><span class="gnk-tick up"><b>GROUP</b><span>4.7046 mlrd. €</span></span><span class="gnk-tick up"><b>DOBIT</b><span>982.480.000 €</span></span><span class="gnk-tick neutral"><b>THE CODE</b><span>9 projekata</span></span></div></div>
+      <main class="gnk-fin-wrap" id="portal">
+        <section class="gnk-section gnk-hero"><article class="gnk-lead"><p class="gnk-k">${labels.eyebrow}</p><h1>${labels.h1}</h1><p>${labels.lead}</p><div class="gnk-action-row"><a class="gnk-btn gold" href="#financije">${labels.openFinance}</a><a class="gnk-btn" href="/contact/">${labels.contact}</a><a class="gnk-btn" href="/media-application/?lang=en">${labels.media}</a><a class="gnk-btn" href="/admin-center/">${labels.admin}</a></div></article><aside class="gnk-rail"><h2>${labels.key}</h2><div class="gnk-list">${metrics.slice(0,4).map(m => `<div class="gnk-row"><small>${m[0]}<br>${m[2]}</small><strong>${m[1]}</strong></div>`).join('')}</div></aside></section>
+        <section class="gnk-section gnk-board" id="financije"><div class="gnk-board-head"><div><p class="gnk-k">${t('FINANCIJE 2025.', 'FY2025 FINANCIALS')}</p><h2>${labels.board}</h2></div><p>${labels.boardLead}</p></div><div class="gnk-grid">${metrics.map(m => `<article class="gnk-card"><label>${m[0]}</label><strong>${m[1]}</strong><small>${m[2]}</small></article>`).join('')}</div><div class="gnk-action-row"><a class="gnk-btn gold" href="/documents/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf">GNK ASG PDF</a><a class="gnk-btn" href="/documents/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf">GNK DINAMO PDF</a><a class="gnk-btn" href="/downloads/">${t('Svi dokumenti', 'All documents')}</a></div></section>
+        <section class="gnk-section gnk-news" id="objave"><div class="gnk-news-main"><p class="gnk-k">${t('JAVNI DESK', 'PUBLIC DESK')}</p><h2>${labels.posts}</h2>${stories.map(s => `<a class="gnk-story" href="${s[3]}"><span class="time">${s[0]}</span><span><h3>${s[1]}</h3><p>${s[2]}</p></span></a>`).join('')}</div><aside class="gnk-news-side"><p class="gnk-k">${t('RUTE I STATUS', 'ROUTES AND STATUS')}</p><h2>${labels.market}</h2><table class="gnk-table"><thead><tr><th>${t('Modul', 'Module')}</th><th>Ruta</th><th>Status</th></tr></thead><tbody>${marketRows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></aside></section>
+        <section class="gnk-section gnk-code" id="the-code"><div class="gnk-code-copy"><p class="gnk-k">THE CODE</p><h2>${labels.codeTitle}</h2><p>${labels.codeLead}</p><div class="gnk-action-row"><a class="gnk-btn gold" href="/the-code/">${t('Otvori THE CODE', 'Open THE CODE')}</a><a class="gnk-btn" href="/media-application/?lang=en">${labels.media}</a><a class="gnk-btn" href="/downloads/">PDF</a></div></div><div class="gnk-code-frame"><iframe src="/the-code/?embed=1" title="THE CODE"></iframe></div></section>
+      </main><footer class="gnk-fin-wrap gnk-footer">${labels.footer}</footer>`;
+    document.body.innerHTML = main;
   }
 
-  function addStaticMobileStyle() {
-    if (document.getElementById('gnk-hr-mobile-static-style')) return;
-    const style = document.createElement('style');
-    style.id = 'gnk-hr-mobile-static-style';
-    style.textContent = `
-      @media(max-width:650px){
-        body{background:linear-gradient(180deg,#081426,#04070d)!important}
-        .wrap{width:calc(100% - 18px)!important}
-        .top{padding:14px 0 10px!important;gap:12px!important;align-items:flex-start!important;flex-direction:column!important}
-        .brand{width:100%!important;gap:10px!important;flex-wrap:nowrap!important;align-items:center!important}
-        .brand-logo{width:52px!important;height:52px!important}
-        .brand-title{font-size:20px!important;line-height:1.08!important}
-        .brand-sub{font-size:11px!important;line-height:1.35!important}
-        .nav{display:flex!important;overflow-x:auto!important;flex-wrap:nowrap!important;width:100%!important;padding-bottom:4px!important;scrollbar-width:none!important}
-        .nav::-webkit-scrollbar{display:none!important}
-        .nav a{white-space:nowrap!important;padding:9px 11px!important;font-size:11px!important}
-        .panel{border-radius:22px!important;margin-bottom:16px!important;background:linear-gradient(180deg,rgba(14,24,40,.98),rgba(8,14,26,.99))!important;box-shadow:0 14px 34px rgba(0,0,0,.24)!important}
-        .hero{padding:20px 16px!important}
-        .head{display:block!important;padding:18px 16px!important}
-        .k{font-size:10px!important;letter-spacing:.12em!important}
-        h1,h2{font-size:clamp(28px,8.4vw,38px)!important;line-height:1.04!important;letter-spacing:-.025em!important}
-        .lead,p{font-size:14px!important}
-        .actions{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
-        .btn{width:100%!important;justify-content:center!important;text-align:center!important}
-        .grid,.grid.three,.grid.two,.portal-window{grid-template-columns:1fr!important;padding:12px!important;gap:10px!important}
-        .card,.report,.portal-item{border-radius:17px!important;padding:14px!important;background:rgba(255,255,255,.045)!important}
-        .card strong{font-size:25px!important}
-        .company-select{font-size:12px!important}
-        .code-frame{padding:12px!important}
-        .code-frame iframe{height:540px!important;border-radius:16px!important}
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  function addRuntimeStyle() {
-    if (document.getElementById('gnk9-style')) return;
-    const style = document.createElement('style');
-    style.id = 'gnk9-style';
-    style.textContent = `
-      .gnk9{width:min(1180px,calc(100% - 40px));margin:0 auto 28px;color:#f8fafc;font-family:Inter,Arial,sans-serif}.gnk9 *{box-sizing:border-box}.gnk9 a{color:inherit}
-      .gnk9-panel{border:1px solid rgba(243,204,98,.24);border-radius:28px;background:linear-gradient(180deg,rgba(12,22,39,.96),rgba(5,9,17,.98));box-shadow:0 22px 60px rgba(0,0,0,.30);overflow:hidden;margin:0 0 22px}
-      .gnk9-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.10)}.gnk9-k{margin:0 0 8px;color:#f3cc62;font-size:12px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}.gnk9 h2{max-width:960px;margin:0;color:#fff;font:700 clamp(32px,3.7vw,50px)/1 Georgia,serif;letter-spacing:-.032em}.gnk9 p{color:#b7c2d4;line-height:1.5}.gnk9-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;padding:18px}.gnk9-grid.three{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-      .gnk9-card{min-width:0;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:linear-gradient(180deg,rgba(20,31,50,.92),rgba(7,13,24,.96));padding:16px}.gnk9-card h3{margin:9px 0;color:#fff;font-size:17px;line-height:1.16}.gnk9-card strong{display:block;color:#ffe8a0;font:700 28px/1 Georgia,serif;margin:7px 0}.gnk9-card small,.gnk9-card p{color:#d5dde9}.gnk9-card p{font-size:13px}.gnk9-tag,.gnk9-code{display:inline-flex;max-width:100%;border:1px solid rgba(243,204,98,.26);border-radius:999px;color:#ffe8a0;background:rgba(243,204,98,.07);padding:6px 9px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .gnk9-actions{display:flex;gap:9px;flex-wrap:wrap;padding:0 18px 18px}.gnk9-btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:10px 13px;text-decoration:none;background:rgba(255,255,255,.045);color:#fff;font-size:12px;font-weight:950}.gnk9-btn.gold{background:linear-gradient(135deg,#b98b2d,#ffe08a);color:#07101f;border-color:#f3cc62}.gnk9-note{margin:0 18px 18px;border:1px solid rgba(244,180,79,.34);border-radius:18px;background:rgba(244,180,79,.07);padding:13px;color:#ffe0a3;line-height:1.5}.gnk9-chipbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px;padding:18px;max-height:198px;overflow:auto;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)}.gnk9-chip{min-width:0;border:1px solid rgba(147,197,253,.20);border-radius:999px;background:rgba(147,197,253,.055);color:#dbeafe;padding:7px 10px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gnk9-chip.more{border-color:rgba(243,204,98,.35);background:rgba(243,204,98,.08);color:#ffe8a0}.gnk9-table-wrap{overflow:auto;margin:18px;border:1px solid rgba(255,255,255,.11);border-radius:18px}.gnk9 table{width:100%;min-width:760px;border-collapse:collapse}.gnk9 th,.gnk9 td{padding:10px;border-bottom:1px solid rgba(255,255,255,.10);text-align:left;font-size:12px;vertical-align:top}.gnk9 th{color:#f3cc62;background:#08101d}.gnk9-profile{color:#ffe8a0;font-weight:950}.gnk9-split{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px}
-      @media(max-width:680px){.gnk9{width:calc(100% - 18px);margin-bottom:18px}.gnk9-panel{border-radius:22px;margin-bottom:16px;background:linear-gradient(180deg,rgba(14,24,40,.98),rgba(8,14,26,.99));box-shadow:0 14px 34px rgba(0,0,0,.24)}.gnk9-head{display:block;padding:18px 16px}.gnk9-k{font-size:10px;letter-spacing:.12em}.gnk9 h2{font-size:clamp(25px,8vw,34px);line-height:1.04;letter-spacing:-.025em}.gnk9 p{font-size:13px}.gnk9-grid,.gnk9-grid.three{grid-template-columns:1fr;gap:10px;padding:12px}.gnk9-card{border-radius:17px;padding:14px;background:rgba(255,255,255,.045)}.gnk9-card strong{font-size:26px}.gnk9-chipbox{grid-template-columns:1fr;max-height:170px;padding:12px}.gnk9-table-wrap{display:none}.gnk9-actions{display:grid;grid-template-columns:1fr;gap:8px;padding:0 12px 14px}.gnk9-btn{width:100%;padding:11px 12px}.gnk9-note{margin:0 12px 14px;font-size:12px}.gnk9-split{grid-template-columns:1fr;padding:12px;gap:10px}}
-    `;
-    document.head.appendChild(style);
-  }
-
-  function simpleCard(tagHr, tagEn, title, text, href) {
-    return `<article class="gnk9-card"><span class="gnk9-tag">${esc(tr(tagHr, tagEn))}</span><h3>${esc(title)}</h3><p>${esc(text)}</p>${href ? `<a class="gnk9-btn" href="${esc(href)}">${tr('Otvori', 'Open')}</a>` : ''}</article>`;
-  }
-
-  function directoryPanel(data) {
-    const profiles = data?.profiles || [];
-    const companies = data?.companies || [];
-    const rows = profiles.slice(0, 8).map((profile, index) => `<tr><td><span class="gnk9-profile">GNK-${publicCode(index)}</span><br><small>${esc(profile.name || tr('Generirani profil', 'Generated profile'))}</small></td><td>${esc(profile.positionTitle || profile.role || tr('Operativna funkcija', 'Operations profile'))}<br><small>${esc(profile.department || '')}</small></td><td>${esc(profile.companyPublicName || profile.entitySlot || tr('GNK društvo', 'GNK slot'))}<br><small>${esc(`${profile.companyCity || ''} · ${profile.companyCountry || ''}`)}</small></td><td>${esc(profile.availability || profile.status || tr('pregled', 'review'))}<br><small>${esc(profile.timezone || '')}</small></td></tr>`).join('');
-    const shownCompanies = companies.slice(0, 14);
-    const chips = shownCompanies.map(company => `<span class="gnk9-chip">${esc(company.publicName || company.slot)} · ${esc(company.city || '')} · ${esc(company.country || '')}</span>`).join('');
-    const hiddenCount = Math.max(0, companies.length - shownCompanies.length);
-    const moreChip = hiddenCount ? `<span class="gnk9-chip more">+${hiddenCount} ${tr('lokacija u punom direktoriju', 'locations in full directory')}</span>` : '';
-    return `<section class="gnk9-panel" id="workforce-runtime"><div class="gnk9-head"><div><p class="gnk9-k">${tr('Operativni profili · javni pregled', 'Operating profiles · public view')}</p><h2>${tr('Profili i lokacije prikazani su čisto, bez zatrpavanja naslovnice.', 'Profiles and locations are shown cleanly without overloading the homepage.')}</h2></div><p>${esc(data?.disclosure || tr('Generirani operativni profili za pregled platforme i usmjeravanje.', 'System-generated operational profiles for platform review and routing.'))}</p></div><div class="gnk9-grid"><article class="gnk9-card"><span class="gnk9-tag">${tr('Profili', 'Profiles')}</span><strong>${(data?.count || profiles.length || 1537).toLocaleString(isEn ? 'en-US' : 'hr-HR')}</strong><small>${tr('operativnih profila', 'operating profiles')}</small></article><article class="gnk9-card"><span class="gnk9-tag">${tr('Lokacije', 'Locations')}</span><strong>${data?.companyCount || companies.length || 45}</strong><small>${tr('sloj društava i lokacija', 'company and location layer')}</small></article><article class="gnk9-card"><span class="gnk9-tag">${tr('Društva', 'Companies')}</span><strong>${data?.operatingCompanyCount || 43}</strong><small>${tr('kodirana operativna društva', 'coded operating companies')}</small></article><article class="gnk9-card"><span class="gnk9-tag">${tr('Funkcije', 'Functions')}</span><strong>${(data?.departments || []).length || 27}</strong><small>${tr('operativnih funkcija', 'functions')}</small></article></div><div class="gnk9-chipbox">${chips}${moreChip}</div><div class="gnk9-table-wrap"><table><thead><tr><th>GNK profil</th><th>${tr('Pozicija / funkcija', 'Position / function')}</th><th>${tr('Društvo', 'Company')}</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div><div class="gnk9-actions"><a class="gnk9-btn gold" href="/digital-workforce/directory/">${tr('Otvori puni direktorij', 'Open full directory')}</a><a class="gnk9-btn" href="/digital-workforce/protocols/">${tr('Protokoli', 'Protocols')}</a><a class="gnk9-btn" href="/gnew-portal/">GNEW Portal</a></div><p class="gnk9-note"><b>${tr('Važno:', 'Important:')}</b> ${tr('ovo su generirani operativni profili i GNK šifre, ne tvrdnja o stvarnim zaposlenicima.', 'these are generated operating profiles and GNK codes, not a claim about real employees.')}</p></section>`;
-  }
-
-  function taskPanel(results) {
-    const items = (results?.workers || []).slice(0, 6);
-    return `<section class="gnk9-panel" id="worker-results"><div class="gnk9-head"><div><p class="gnk9-k">${tr('Radna ploča', 'Work board')}</p><h2>${tr('Zadatak, rezultat i sljedeći korak.', 'Task, result and next step.')}</h2></div><p>${esc(results?.rule || tr('Sustav ne objavljuje ništa bez ljudske potvrde.', 'AI does not decide or publish without human approval.'))}</p></div><div class="gnk9-grid">${items.map(item => `<article class="gnk9-card"><code class="gnk9-code">${esc(item.id)}</code><h3>${esc(item.area || tr('radni zadatak', 'task'))}</h3><p><b>${tr('Zadatak:', 'Task:')}</b> ${esc(item.task || '')}</p><p><b>${tr('Rezultat:', 'Result:')}</b> ${esc(item.result || '')}</p><p><b>${tr('Sljedeće:', 'Next:')}</b> ${esc(item.next || '')}</p></article>`).join('')}</div></section>`;
-  }
-
-  function projectPanel(group) {
-    const projects = group?.projectBusiness || [];
-    return `<section class="gnk9-panel" id="project-business"><div class="gnk9-head"><div><p class="gnk9-k">${tr('THE CODE / 9 · projektna karta', 'THE CODE / 9 · project map')}</p><h2>${tr('Devet sektora s jasnim sljedećim korakom.', 'Nine sectors with a clear next step.')}</h2></div><p>${esc(group?.governance?.publicRule || tr('Operativna karta, ne konačna pravna ili financijska potvrda.', 'Operational map, not final legal or financial certificate.'))}</p></div><div class="gnk9-grid three">${projects.map(project => simpleCard(project.status || 'status', project.status || 'status', project.name || project.id, `${project.worker || ''} · ${project.next || ''}`, '/project-business/')).join('')}</div></section>`;
-  }
-
-  function feedPanel(feed, conclusions) {
-    const latest = feed?.latest || [];
-    const items = conclusions?.items || [];
-    return `<section class="gnk9-panel" id="public-feed"><div class="gnk9-head"><div><p class="gnk9-k">${tr('Objave · zaključci · javni pregled', 'Posts · conclusions · public view')}</p><h2>${tr('Zadnje objave i operativni zaključci.', 'Latest posts and operating conclusions.')}</h2></div><p>${esc(feed?.version || tr('javni pregled', 'public feed'))}</p></div><div class="gnk9-split"><div>${latest.map(item => simpleCard(item.type || 'objava', item.type || 'feed', item.title || 'item', item.url || '', item.url)).join('')}</div><div>${items.map(item => simpleCard(item.type || 'zaključak', item.type || 'conclusion', item.title || 'conclusion', item.summary || '', item.url)).join('')}</div></div><div class="gnk9-actions"><a class="gnk9-btn gold" href="/objave/">${tr('Otvori objave', 'Open posts')}</a><a class="gnk9-btn" href="/public-operations/">${tr('Javne operacije', 'Public Operations')}</a><a class="gnk9-btn" href="/vijesti/">${tr('Vijesti', 'News')}</a><a class="gnk9-btn" href="/publications/">${tr('Publikacije', 'Publications')}</a></div></section>`;
-  }
-
-  async function boot() {
-    addStaticMobileStyle();
-    patchStaticCopy();
-    setTimeout(patchStaticCopy, 300);
-    setTimeout(patchStaticCopy, 1100);
-    addRuntimeStyle();
-    await loadScript('/assets/js/digital-workforce-directory-v1.js');
-    await loadScript('/assets/js/digital-workforce-company-layer-v1.js');
-    const directory = window.GNKDigitalWorkforceDirectory || null;
-    const group = await json('/data/group-entities-project-business.json', { projectBusiness: [] });
-    const results = await json('/data/worker-results-3h.json', { workers: [] });
-    const feed = await json('/data/public-operational-feed.json', { latest: [] });
-    const conclusions = await json('/data/public-conclusions.json', { items: [] });
-    const html = `<section class="gnk9" id="gnk-backend-index-layer"><section class="gnk9-panel"><div class="gnk9-head"><div><p class="gnk9-k">${tr('GNEW Portal · povezani javni sloj', 'GNEW Portal · connected public layer')}</p><h2>${tr('Projekti, zadaci, profili, lokacije i objave na jednom mjestu.', 'Projects, tasks, profiles, locations and posts in one place.')}</h2></div></div><div class="gnk9-grid"><article class="gnk9-card"><span class="gnk9-tag">${tr('Profili', 'Directory')}</span><strong>${directory?.count?.toLocaleString(isEn ? 'en-US' : 'hr-HR') || (isEn ? '1,537' : '1.537')}</strong><small>${tr('profila iz javnog pregleda', 'profiles from public view')}</small></article><article class="gnk9-card"><span class="gnk9-tag">${tr('Lokacije', 'Locations')}</span><strong>${directory?.companyCount || 45}</strong><small>${tr('sloj društava i lokacija', 'company/location layer')}</small></article><article class="gnk9-card"><span class="gnk9-tag">${tr('Projekti', 'Projects')}</span><strong>${group?.projectBusiness?.length || 9}</strong><small>THE CODE / 9</small></article><article class="gnk9-card"><span class="gnk9-tag">${tr('Zadaci', 'Tasks')}</span><strong>${results?.workers?.length || 8}</strong><small>${tr('javna radna ploča', 'public work board')}</small></article></div><div class="gnk9-actions"><a class="gnk9-btn gold" href="/gnew-portal/">GNEW Portal</a><a class="gnk9-btn" href="/digital-workforce/directory/">${tr('Operativni profili', 'Digital Workforce')}</a><a class="gnk9-btn" href="/admin/">${tr('Administracija', 'Admin')}</a><a class="gnk9-btn" href="/media-application/?lang=en">${tr('Medijska prijava', 'Media Application')}</a></div></section>${directory ? directoryPanel(directory) : ''}${taskPanel(results)}${projectPanel(group)}${feedPanel(feed, conclusions)}</section>`;
-    const anchor = document.getElementById('workers') || document.getElementById('projects') || document.querySelector('main');
-    if (anchor && anchor.parentNode) anchor.insertAdjacentHTML('afterend', html);
-    else document.body.insertAdjacentHTML('beforeend', html);
-    patchStaticCopy();
-  }
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
-  else boot();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render, { once:true });
+  else render();
 })();
