@@ -4,7 +4,7 @@ import {
   VERSION as INDEX_CONTRACT_INJECTION_VERSION
 } from './index-contract-injection-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V17_20260707_ASSET_INDEX_FIRST_${INDEX_CONTRACT_INJECTION_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V18_20260707_ASSET_INDEX_AND_ASSETS_FIRST_${INDEX_CONTRACT_INJECTION_VERSION}`;
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 
@@ -14,6 +14,13 @@ function stamp(response){
   headers.set('x-gnk-index-contract-injection',INDEX_CONTRACT_INJECTION_VERSION);
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+}
+
+async function assetPassthrough(request,env){
+  if(!env.ASSETS?.fetch)return null;
+  const response=await env.ASSETS.fetch(request);
+  if(response.status===404)return null;
+  return stamp(response);
 }
 
 async function assetIndex(request,env,path){
@@ -53,7 +60,8 @@ async function patchVersionResponse(request,response){
       wrapperEntryPoint:'src/index-unified-auth-v15.js',
       indexContractInjectionVersion:INDEX_CONTRACT_INJECTION_VERSION,
       authIsolationVersion:VERSION,
-      indexRouting:'asset-index-first'
+      indexRouting:'asset-index-first',
+      assetRouting:'asset-passthrough-first'
     },null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
@@ -86,6 +94,10 @@ export default{
     const path=pathOf(request);
     if(request.method==='GET'&&(path==='/'||path==='/en')){
       const response=await assetIndex(request,env,path);
+      if(response)return response;
+    }
+    if(request.method==='GET'&&path.startsWith('/assets/')){
+      const response=await assetPassthrough(request,env);
       if(response)return response;
     }
     const response=await app.fetch(request,env,ctx);
