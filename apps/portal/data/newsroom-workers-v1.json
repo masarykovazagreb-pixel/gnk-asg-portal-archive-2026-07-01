@@ -1,0 +1,71 @@
+{
+  "version": "GNK_ASG_NEWSROOM_WORKERS_V1_20260707",
+  "status": "review-safe-editorial-worker-layer",
+  "updatedAt": "2026-07-07T00:00:00+02:00",
+  "cadence": {
+    "mode": "continuous-review-cycle",
+    "cycleHours": 3,
+    "slots": ["08:00", "11:00", "14:00", "17:00", "20:00", "23:00"],
+    "rule": "Continuous means repeated review-cycle readiness inside the portal. It does not mean automatic publication, automatic emailing, scraping or third-party contact."
+  },
+  "safety": {
+    "externalOutreach": false,
+    "bulkMail": false,
+    "automaticPublishing": false,
+    "scrapingClaim": false,
+    "humanApprovalRequired": true,
+    "disclosure": "The five newsroom desks are internal editorial worker profiles for monitoring, drafting, routing and review. They are not a claim that five external journalists are employed or already publishing."
+  },
+  "desks": [
+    {
+      "id": "GNK-WRK-NEWS-HR-001",
+      "name": "Zagreb Regional Desk",
+      "region": "Croatia and Southeast Europe",
+      "language": "hr",
+      "role": "regional news brief writer",
+      "routes": ["/objave/", "/public-operations/", "/media-application/?lang=en"],
+      "deliverables": ["HR regional brief", "public post draft", "media intake note"],
+      "next": "Prepare the first Croatia / SEE public brief for review."
+    },
+    {
+      "id": "GNK-WRK-NEWS-EU-001",
+      "name": "Brussels EU Desk",
+      "region": "European Union",
+      "language": "en",
+      "role": "EU regulatory and business context editor",
+      "routes": ["/publications/", "/public-operations/", "/en/"],
+      "deliverables": ["EU context brief", "regulatory caution note", "publication draft"],
+      "next": "Prepare the first EU review note."
+    },
+    {
+      "id": "GNK-WRK-NEWS-US-001",
+      "name": "New York / USA Desk",
+      "region": "United States and North America",
+      "language": "en",
+      "role": "THE CODE and press segment editor",
+      "routes": ["/the-code/", "/en/", "/gnew-portal/"],
+      "deliverables": ["New York press segment brief", "THE CODE update", "English public post draft"],
+      "next": "Prepare New York press segment copy for review."
+    },
+    {
+      "id": "GNK-WRK-NEWS-MENA-001",
+      "name": "Dubai MENA Desk",
+      "region": "Middle East and North Africa",
+      "language": "en",
+      "role": "investor and media context note editor",
+      "routes": ["/gnew-portal/", "/public-operations/", "/media-application/?lang=en"],
+      "deliverables": ["MENA regional watch", "risk note", "media routing note"],
+      "next": "Prepare MENA watch note without investment solicitation language."
+    },
+    {
+      "id": "GNK-WRK-NEWS-ASIA-001",
+      "name": "Singapore Asia-Pacific Desk",
+      "region": "Asia-Pacific",
+      "language": "en",
+      "role": "technology and enterprise context editor",
+      "routes": ["/en/", "/public-operations/", "/project-business/"],
+      "deliverables": ["APAC technology brief", "enterprise context note", "English summary draft"],
+      "next": "Prepare APAC technology brief for operator approval."
+    }
+  ]
+}
