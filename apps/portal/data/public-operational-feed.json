@@ -1,24 +1,34 @@
 {
-  "version": "GNK_ASG_PUBLIC_OPERATIONAL_FEED_V1_20260706",
-  "status": "public-feed-draft",
-  "updatedAt": "2026-07-06T14:00:00+02:00",
+  "version": "GNK_ASG_PUBLIC_OPERATIONAL_FEED_V2_20260707_NEWSROOM_WORKERS",
+  "status": "public-feed-review-draft",
+  "updatedAt": "2026-07-07T00:00:00+02:00",
   "sections": [
     {"id":"posts","title":"Objave","url":"/objave/","count":2},
     {"id":"conclusions","title":"Zaključci","url":"/zakljucci/","count":2},
-    {"id":"workers","title":"Worker rezultati","url":"/data/worker-results-3h.json","count":8},
+    {"id":"workers","title":"Worker rezultati","url":"/data/worker-results-3h.json","count":13},
+    {"id":"newsroom-workers","title":"5 regionalnih newsroom workera","url":"/data/newsroom-workers-v1.json","count":5},
     {"id":"entities","title":"Firme i projektni slojevi","url":"/corporate-entities/","count":5},
     {"id":"project-business","title":"Projektno poslovanje","url":"/project-business/","count":9}
   ],
   "latest": [
+    {"type":"newsroom","title":"Dodano 5 regionalnih newsroom workera za Hrvatsku, EU, USA, MENA i APAC","url":"/data/newsroom-workers-v1.json"},
+    {"type":"worker-board","title":"3-satni worker rezultati sada uključuju newsroom deskove","url":"/data/worker-results-3h.json"},
     {"type":"conclusion","title":"Workeri, firme i projektno poslovanje prelaze u javni operativni sloj","url":"/objave/zakljucak-worker-firme-projekti-20260706/"},
-    {"type":"data","title":"3-satni worker rezultati","url":"/data/worker-results-3h.json"},
     {"type":"data","title":"Firme i projektno poslovanje","url":"/data/group-entities-project-business.json"},
     {"type":"post","title":"THE CODE index, financije i javni workeri","url":"/objave/the-code-index-workers-finance-20260706/"}
   ],
   "next": [
-    "Verify live deployment",
-    "Connect feed to index runtime",
-    "Publish next worker board snapshot",
-    "Prepare HR/EN parity layer"
-  ]
+    "Verify newsroom worker layer on index runtime",
+    "Connect newsroom desks to GNEW Portal visual section",
+    "Prepare first HR regional brief draft for review",
+    "Prepare first EN / New York THE CODE brief draft for review",
+    "Keep all newsroom outputs review-only until operator approval"
+  ],
+  "safety": {
+    "automaticPublishing": false,
+    "externalOutreach": false,
+    "bulkMail": false,
+    "humanApprovalRequired": true,
+    "note": "Regional newsroom workers are internal editorial worker profiles. They do not send emails, scrape sources, publish externally or contact media without explicit approval."
+  }
 }
