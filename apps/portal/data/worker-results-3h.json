@@ -1,9 +1,10 @@
 {
-  "version": "GNK_ASG_WORKER_RESULTS_3H_V1_20260706",
-  "status": "public-draft",
+  "version": "GNK_ASG_WORKER_RESULTS_3H_V2_20260707_NEWSROOM_REGIONAL_DESKS",
+  "status": "public-review-draft",
   "cycleHours": 3,
   "slots": ["08:00", "11:00", "14:00", "17:00", "20:00", "23:00"],
-  "rule": "Each worker must publish task, measurable result, evidence link, blocker and next step. AI does not decide or publish without human approval.",
+  "rule": "Each worker must publish task, measurable result, evidence link, blocker and next step. AI does not decide, publish, scrape, email or contact third parties without human approval.",
+  "newsroomRule": "Regional newsroom desks are editorial worker profiles for monitoring, drafting and routing only. They are not claims of external journalists, not live outreach and not automated publishing.",
   "workers": [
     {"id":"GNK-WRK-HR-FIN-001","area":"financials","task":"financial summary and PDF evidence","result":"four separated financial indicators","evidence":["/financije/","/downloads/"],"next":"verify live PDF links"},
     {"id":"GNK-WRK-US-CODE-001","area":"THE CODE","task":"rotating show and New York final slide","result":"five-slide show ending on press segment","evidence":["/the-code/","/#gnk-index-code-show"],"next":"verify HR and EN parity"},
@@ -12,6 +13,11 @@
     {"id":"GNK-WRK-HR-PRESS-001","area":"press","task":"posts and press materials","result":"first public post prepared","evidence":["/objave/"],"next":"prepare second post"},
     {"id":"GNK-WRK-HR-COMMENT-001","area":"comments","task":"author comments and analysis","result":"channel separated from official posts","evidence":["/nermin-sefic/"],"next":"prepare approved comment"},
     {"id":"GNK-WRK-HR-AI-001","area":"AI navigation","task":"public portal navigation","result":"route guidance only","evidence":["/assistant/"],"next":"add public FAQ"},
-    {"id":"GNK-WRK-HR-AI-002","area":"editorial draft","task":"drafting for review","result":"drafts require human approval","evidence":["/auto-editor/"],"next":"prepare review draft"}
+    {"id":"GNK-WRK-HR-AI-002","area":"editorial draft","task":"drafting for review","result":"drafts require human approval","evidence":["/auto-editor/"],"next":"prepare review draft"},
+    {"id":"GNK-WRK-NEWS-HR-001","area":"newsroom Zagreb / Croatia","region":"Croatia and Southeast Europe","desk":"Regional reporter desk 1","task":"monitor Croatian and regional public context, prepare HR news briefs and route items to public posts","result":"regional newsroom worker added to public board","evidence":["/data/newsroom-workers-v1.json","/objave/","/public-operations/"],"blocker":"no automatic external publication; human approval required","next":"prepare first HR regional brief for review"},
+    {"id":"GNK-WRK-NEWS-EU-001","area":"newsroom Brussels / EU","region":"European Union","desk":"Regional reporter desk 2","task":"monitor EU business, regulatory and media context relevant to GNK ASG / GNEW Portal","result":"EU newsroom worker added to public board","evidence":["/data/newsroom-workers-v1.json","/publications/","/public-operations/"],"blocker":"no scraping claim and no third-party outreach without approval","next":"prepare EU context brief for review"},
+    {"id":"GNK-WRK-NEWS-US-001","area":"newsroom New York / USA","region":"United States and North America","desk":"Regional reporter desk 3","task":"track New York / US THE CODE communication context and prepare English newsroom drafts","result":"US newsroom worker added to public board","evidence":["/data/newsroom-workers-v1.json","/the-code/","/en/"],"blocker":"draft-only until operator approves publication","next":"prepare New York press segment brief"},
+    {"id":"GNK-WRK-NEWS-MENA-001","area":"newsroom Dubai / MENA","region":"Middle East and North Africa","desk":"Regional reporter desk 4","task":"prepare MENA investor/media context notes for review-safe public communication","result":"MENA newsroom worker added to public board","evidence":["/data/newsroom-workers-v1.json","/gnew-portal/"],"blocker":"no investment solicitation and no automated sending","next":"prepare MENA regional watch note"},
+    {"id":"GNK-WRK-NEWS-ASIA-001","area":"newsroom Singapore / Asia-Pacific","region":"Asia-Pacific","desk":"Regional reporter desk 5","task":"monitor APAC technology and enterprise communication context and draft English summaries","result":"APAC newsroom worker added to public board","evidence":["/data/newsroom-workers-v1.json","/en/","/public-operations/"],"blocker":"review-only; no live external publishing","next":"prepare APAC technology brief"}
   ]
 }
