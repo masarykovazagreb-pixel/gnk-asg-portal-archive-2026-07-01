@@ -1,12 +1,8 @@
 {
   "ok": true,
-  "status": "ok",
-  "version": "GNK_ASG_NEWS_V14_20260626",
-  "engine": "news_v14_lifecycle",
-  "updated_at": "2026-07-06T22:48:20+00:00",
-  "checked_at": "2026-07-06T22:48:20+00:00",
-  "last_attempt_at": "2026-07-06T22:48:20+00:00",
-  "last_successful_refresh_at": "2026-07-06T22:48:20+00:00",
+  "status": "refreshed",
+  "updated_at": "2026-07-07T13:56:16.337Z",
+  "engine": "single_publication_engine_v14_isolated_github_action",
   "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
   "timezone": "Europe/Zagreb",
   "scheduled_hours_local": [
@@ -14,45 +10,85 @@
     16,
     21
   ],
-  "configured_sources": 22,
-  "minimum_healthy_sources": 15,
-  "healthy_sources": 19,
-  "failed_sources": 3,
-  "fetched_candidates": 408,
-  "verified_new_candidates": 234,
-  "public_items": 100,
-  "max_public_items": 100,
-  "public_contract": "title+summary+source+article_url+verified_real_image",
-  "archive_items": 155,
-  "archive_capacity": 1000,
-  "archive_prune_trigger": 1000,
-  "archive_prune_to": 500,
-  "archive_prune_triggered": false,
-  "discarded_archive_items": 0,
-  "fallback_images_allowed": false,
+  "public_items_target": 100,
+  "public_items_written": 100,
+  "manual_items_loaded": 10,
+  "archive_policy": "archive_latest_1000_prune_to_500_when_full",
+  "archive_items_written": 479,
   "rss_images_enabled": true,
-  "open_graph_fallback_enabled": false,
-  "by_group": {
-    "markets": 8,
-    "digital-assets": 16,
-    "international": 20,
-    "hrvatska": 15,
-    "technology": 21,
-    "business": 4,
-    "srbija": 16
-  },
-  "errors": [
+  "fallback_image": null,
+  "fallback_image_allowed": false,
+  "visual_index_fallback": "/visual-index/",
+  "feeds_checked": [
     {
-      "source": "EURACTIV",
-      "error": "HTTP Error 403: Forbidden"
+      "feed": "https://www.theverge.com/rss/index.xml",
+      "ok": true,
+      "count": 0
     },
     {
-      "source": "International Monetary Fund",
-      "error": "http_200"
+      "feed": "https://techcrunch.com/feed/",
+      "ok": true,
+      "count": 0
     },
     {
-      "source": "European Central Bank",
-      "error": "http_200"
+      "feed": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "ok": true,
+      "count": 25
+    },
+    {
+      "feed": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+      "ok": true,
+      "count": 21
+    },
+    {
+      "feed": "https://feeds.bbci.co.uk/sport/rss.xml",
+      "ok": true,
+      "count": 78
+    },
+    {
+      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+      "ok": true,
+      "count": 52
+    },
+    {
+      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
+      "ok": true,
+      "count": 18
+    },
+    {
+      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Science.xml",
+      "ok": true,
+      "count": 16
+    },
+    {
+      "feed": "https://www.theguardian.com/world/rss",
+      "ok": true,
+      "count": 45
+    },
+    {
+      "feed": "https://www.theguardian.com/technology/rss",
+      "ok": true,
+      "count": 36
+    },
+    {
+      "feed": "https://www.theguardian.com/science/rss",
+      "ok": true,
+      "count": 27
+    },
+    {
+      "feed": "https://www.nasa.gov/news-release/feed/",
+      "ok": true,
+      "count": 0
+    },
+    {
+      "feed": "https://hnrss.org/frontpage",
+      "ok": true,
+      "count": 0
+    },
+    {
+      "feed": "https://www.espn.com/espn/rss/news",
+      "ok": true,
+      "count": 0
     }
   ]
 }
