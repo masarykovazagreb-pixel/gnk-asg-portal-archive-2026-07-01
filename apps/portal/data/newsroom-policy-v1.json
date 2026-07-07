@@ -1,0 +1,39 @@
+{
+  "version": "GNK_ASG_NEWSROOM_POLICY_V1_20260707",
+  "status": "review-safe-policy",
+  "editorInChief": "Nermin Sefic",
+  "authorByline": "Nermin Sefic",
+  "dailyCommentTarget": 5,
+  "cadence": "daily editorial queue with 3-hour worker review cycles",
+  "workflow": [
+    "Fetch RSS metadata from approved sources",
+    "Classify by region, topic, risk and relevance",
+    "Create source-linked brief",
+    "Draft original comment under Nermin Sefic byline",
+    "Hold for editor approval",
+    "Publish only after approval or after explicit auto-publish mode is enabled later"
+  ],
+  "allowed": [
+    "source title",
+    "source summary where feed terms permit it",
+    "canonical source link",
+    "source name and published date",
+    "original GNK ASG / Nermin Sefic commentary"
+  ],
+  "notAllowed": [
+    "copying full third-party articles",
+    "removing source attribution",
+    "republishing paywalled content",
+    "presenting third-party reporting as GNK reporting",
+    "automatic external outreach",
+    "bulk email",
+    "automatic publication without explicit editor approval"
+  ],
+  "safety": {
+    "externalOutreach": false,
+    "bulkMail": false,
+    "automaticPublishing": false,
+    "humanApprovalRequired": true,
+    "rssDisplayMode": "metadata-link-attribution-commentary"
+  }
+}
