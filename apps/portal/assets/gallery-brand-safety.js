@@ -5,6 +5,8 @@
 
   const route = location.pathname.replace(/\/+$/, '') || '/';
   const isHr = (document.documentElement.lang || '').toLowerCase().startsWith('hr');
+  const t = (hr, en) => isHr ? hr : en;
+  const escapeHtml = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
   function installIndexLogoGuard() {
     document.addEventListener('click', event => {
@@ -21,11 +23,7 @@
     if (!document.getElementById('gnk-canonical-index-brand-style')) {
       const style = document.createElement('style');
       style.id = 'gnk-canonical-index-brand-style';
-      style.textContent = `
-        .brand-head .brand-logo{width:64px;height:64px;object-fit:contain;border-radius:12px;filter:drop-shadow(0 14px 28px rgba(0,0,0,.34))}
-        .brand-head .state-pill.warn{border-color:rgba(255,216,117,.36);color:#ffd875}
-        @media(max-width:860px){.brand-head .brand-logo{width:54px;height:54px}}
-      `;
+      style.textContent = '.brand-head .brand-logo{width:64px;height:64px;object-fit:contain;border-radius:12px;filter:drop-shadow(0 14px 28px rgba(0,0,0,.34))}.brand-head .state-pill.warn{border-color:rgba(255,216,117,.36);color:#ffd875}@media(max-width:860px){.brand-head .brand-logo{width:54px;height:54px}}';
       document.head.appendChild(style);
     }
 
@@ -77,6 +75,35 @@
     document.head.appendChild(script);
   }
 
+  function installIndexContractTargets() {
+    if (route !== '/' && route !== '/en') return;
+    if (document.getElementById('latestNews') && document.getElementById('marketRows') && document.getElementById('publicationRows')) return;
+    const main = document.querySelector('main');
+    if (!main) return;
+    if (!document.getElementById('gnk-index-contract-style')) {
+      const style = document.createElement('style');
+      style.id = 'gnk-index-contract-style';
+      style.textContent = '.gnk-index-contract{width:min(1180px,calc(100% - 32px));margin:0 auto 24px;border:1px solid rgba(243,204,98,.28);border-radius:30px;background:linear-gradient(180deg,rgba(13,22,37,.96),rgba(5,8,14,.98));box-shadow:0 24px 70px rgba(0,0,0,.36);overflow:hidden;color:#f8fafc}.gnk-index-contract__head{display:flex;gap:18px;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;padding:20px 22px;border-bottom:1px solid rgba(255,255,255,.10)}.gnk-index-contract__head p{max-width:760px;color:#aeb8c8}.gnk-index-contract__k{margin:0 0 8px;color:#f3cc62;text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:950}.gnk-index-contract h2{margin:0;font:700 clamp(30px,4vw,54px)/1 Georgia,serif}.gnk-index-contract__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:18px}.gnk-index-contract__card{border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.045);padding:16px}.gnk-index-contract__card h3{margin:0 0 8px;color:#ffe8a0}.gnk-index-contract__card p,.gnk-index-contract__card small,.gnk-index-contract__card li,.market-row span,.location span{color:#cbd5e1}.gnk-index-contract .btn,.gnk-index-contract button{display:inline-flex;border:1px solid rgba(243,204,98,.35);border-radius:999px;padding:8px 11px;background:rgba(243,204,98,.08);color:#ffe8a0;text-decoration:none;font-weight:900;font-size:12px}.gnk-index-contract .gold{background:linear-gradient(135deg,#b98b2d,#ffe08a);color:#07101f}@media(max-width:840px){.gnk-index-contract__grid{grid-template-columns:1fr}}';
+      document.head.appendChild(style);
+    }
+    const html = `<section class="gnk-index-contract" id="gnk-index-contract-v14" data-index-contract="GNK_ASG_STATIC_INDEX_CONTRACT_V1_20260707" aria-label="Live index contract">
+      <div class="gnk-index-contract__head"><div><p class="gnk-index-contract__k">Live verification board</p><h2>${t('Financije, tržište, objave i mreža.','Financials, market, publications and network.')}</h2></div><p>${t('Contract mete za javne podatke, frontend skripte i backend status bez promjene deploy entrypointa.','Contract targets for public data, frontend scripts and backend status without changing the deploy entrypoint.')}</p></div>
+      <div class="gnk-index-contract__grid">
+        <article class="gnk-index-contract__card"><h3 id="featuredTitle">GNK ASG Intelligence</h3><p id="featuredSummary">${t('Učitavanje javnih vijesti i objava.','Loading public news and publications.')}</p><a id="featuredLink" class="btn gold" href="${isHr?'/vijesti/':'/news/'}">${t('Otvori','Open')}</a></article>
+        <article class="gnk-index-contract__card"><h3>${t('Tržišni status','Market status')}</h3><div id="marketRows"><div class="market-row"><span>${t('Učitavanje tržišnog pregleda…','Loading market view…')}</span><b class="market-value">—</b></div></div></article>
+        <article class="gnk-index-contract__card"><h3>${t('Mreža','Network')}</h3><div id="continentTabs" class="tabs"><button class="active" type="button">${t('Sve','All')}</button></div><div id="locationList"><div class="location"><b>GNK ASG d.o.o.</b><span>Zagreb · ${t('Hrvatska','Croatia')}</span></div></div><ul id="plannedList"><li>${t('Učitavanje planiranih lokacija…','Loading planned locations…')}</li></ul></article>
+      </div>
+      <div class="gnk-index-contract__grid">
+        <article class="gnk-index-contract__card"><h3>${t('Najnovije vijesti','Latest news')}</h3><div id="latestNews"><a class="news-item" href="${isHr?'/vijesti/':'/news/'}"><strong>${t('Učitavanje…','Loading…')}</strong><small>GNK ASG Intelligence Desk</small></a></div></article>
+        <article class="gnk-index-contract__card"><h3>${t('Službene objave','Official publications')}</h3><div id="publicationRows"><a class="publication-row" href="${isHr?'/objave/':'/publications/'}"><span>${t('Učitavanje objava…','Loading publications…')}</span><small>GNK ASG</small></a></div></article>
+        <article class="gnk-index-contract__card"><h3>THE CODE</h3><p>${t('Index contract vraćen bez slanja maila, kampanja ili deploy radnji.','Index contract restored without mail sending, campaigns or deploy actions.')}</p></article>
+      </div>
+    </section>`;
+    const anchor = document.getElementById('the-code') || document.getElementById('gnk-index-code-show') || main.firstElementChild;
+    if (anchor) anchor.insertAdjacentHTML('afterend', html);
+    else main.insertAdjacentHTML('afterbegin', html);
+  }
+
   function installCodeHomepageFeature() {
     if (document.querySelector('[data-the-code-home-feature]')) return;
     const hero = document.querySelector('.hero');
@@ -85,12 +112,7 @@
     if (!document.getElementById('gnk-the-code-home-feature-style')) {
       const style = document.createElement('style');
       style.id = 'gnk-the-code-home-feature-style';
-      style.textContent = `
-        .gnk-code-feature{position:relative;overflow:hidden;margin:24px auto 0;padding:42px;border:1px solid rgba(210,173,100,.72);border-radius:22px;background:radial-gradient(circle at 88% 10%,rgba(42,91,143,.72),transparent 38%),linear-gradient(135deg,#030b18,#0b2445);color:#fff;box-shadow:0 24px 70px rgba(2,8,18,.25)}
-        .gnk-code-feature:after{content:"";position:absolute;right:-90px;top:-140px;width:420px;height:420px;border:1px solid rgba(210,173,100,.25);border-radius:50%;box-shadow:0 0 0 42px rgba(210,173,100,.05),0 0 0 88px rgba(210,173,100,.035);pointer-events:none}
-        .gnk-code-feature__inner{position:relative;z-index:1;max-width:940px}.gnk-code-feature .eyebrow{color:#e4c98f}.gnk-code-feature h2{max-width:900px;margin:8px 0 16px;font-family:Georgia,'Times New Roman',serif;font-size:clamp(32px,5vw,60px);line-height:1.02;color:#fff}.gnk-code-feature p{max-width:850px;margin:0;color:#d8e4f4;font-size:17px;line-height:1.65}.gnk-code-feature__statement{margin-top:18px!important;color:#e4c98f!important;font-weight:800;letter-spacing:.02em}.gnk-code-feature .actions{margin-top:25px}.gnk-code-feature .btn{position:relative;z-index:2}
-        @media(max-width:720px){.gnk-code-feature{margin:16px 10px 0;padding:28px 20px}.gnk-code-feature .actions{display:grid}.gnk-code-feature .btn{width:100%}}
-      `;
+      style.textContent = '.gnk-code-feature{position:relative;overflow:hidden;margin:24px auto 0;padding:42px;border:1px solid rgba(210,173,100,.72);border-radius:22px;background:radial-gradient(circle at 88% 10%,rgba(42,91,143,.72),transparent 38%),linear-gradient(135deg,#030b18,#0b2445);color:#fff;box-shadow:0 24px 70px rgba(2,8,18,.25)}.gnk-code-feature:after{content:"";position:absolute;right:-90px;top:-140px;width:420px;height:420px;border:1px solid rgba(210,173,100,.25);border-radius:50%;box-shadow:0 0 0 42px rgba(210,173,100,.05),0 0 0 88px rgba(210,173,100,.035);pointer-events:none}.gnk-code-feature__inner{position:relative;z-index:1;max-width:940px}.gnk-code-feature .eyebrow{color:#e4c98f}.gnk-code-feature h2{max-width:900px;margin:8px 0 16px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(32px,5vw,60px);line-height:1.02;color:#fff}.gnk-code-feature p{max-width:850px;margin:0;color:#d8e4f4;font-size:17px;line-height:1.65}.gnk-code-feature__statement{margin-top:18px!important;color:#e4c98f!important;font-weight:800;letter-spacing:.02em}.gnk-code-feature .actions{margin-top:25px}.gnk-code-feature .btn{position:relative;z-index:2}@media(max-width:720px){.gnk-code-feature{margin:16px 10px 0;padding:28px 20px}.gnk-code-feature .actions{display:grid}.gnk-code-feature .btn{width:100%}}';
       document.head.appendChild(style);
     }
 
@@ -98,18 +120,7 @@
     section.className = 'section gnk-code-feature';
     section.dataset.theCodeHomeFeature = 'GNK_THE_CODE_HOME_FEATURE_20260702';
     section.setAttribute('aria-labelledby','gnk-code-feature-title');
-    section.innerHTML = `
-      <div class="gnk-code-feature__inner">
-        <p class="eyebrow">THE CODE · NEW YORK · 7 OCTOBER 2026</p>
-        <h2 id="gnk-code-feature-title">NOT AN EVENT. NOT A PRESENTATION. NOT ONE ACQUISITION.</h2>
-        <p>A business architecture developed across decades is leaving secrecy and entering its public and operational phase. Multiple companies, markets, technologies and operating structures. One code. One activation.</p>
-        <p class="gnk-code-feature__statement">WE ARE IN YOUR CAR. IN YOUR HOME. ON YOUR ROAD. HERE ON EARTH — WITH YOU.</p>
-        <div class="actions">
-          <a class="btn gold" href="/the-code/media-invitation/" target="_blank" rel="noopener">OPEN THE INTERACTIVE INVITATION</a>
-          <a class="btn" href="/media-application/?lang=en" target="_blank" rel="noopener">REGISTER NEWSROOM</a>
-          <a class="btn" href="/api/media-registration/memorandum.pdf" target="_blank" rel="noopener">OPEN MEMORANDUM</a>
-        </div>
-      </div>`;
+    section.innerHTML = `<div class="gnk-code-feature__inner"><p class="eyebrow">THE CODE · NEW YORK · 7 OCTOBER 2026</p><h2 id="gnk-code-feature-title">NOT AN EVENT. NOT A PRESENTATION. NOT ONE ACQUISITION.</h2><p>A business architecture developed across decades is leaving secrecy and entering its public and operational phase. Multiple companies, markets, technologies and operating structures. One code. One activation.</p><p class="gnk-code-feature__statement">WE ARE IN YOUR CAR. IN YOUR HOME. ON YOUR ROAD. HERE ON EARTH — WITH YOU.</p><div class="actions"><a class="btn gold" href="/the-code/media-invitation/" target="_blank" rel="noopener">OPEN THE INTERACTIVE INVITATION</a><a class="btn" href="/media-application/?lang=en" target="_blank" rel="noopener">REGISTER NEWSROOM</a><a class="btn" href="/api/media-registration/memorandum.pdf" target="_blank" rel="noopener">OPEN MEMORANDUM</a></div></div>`;
     hero.insertAdjacentElement('afterend', section);
   }
 
@@ -121,7 +132,7 @@
     if (!document.getElementById('gnk-recovery-access-style')) {
       const style = document.createElement('style');
       style.id = 'gnk-recovery-access-style';
-      style.textContent = `.gnk-recovery-access{margin:22px auto;padding:30px;border:1px solid rgba(255,216,117,.28);border-radius:22px;background:linear-gradient(135deg,rgba(255,216,117,.11),rgba(4,14,29,.92));color:#fff}.gnk-recovery-access__head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:18px}.gnk-recovery-access h2{margin:.25rem 0;color:#fff;font-size:clamp(28px,4vw,46px)}.gnk-recovery-access p{color:#c8d5e7;max-width:820px}.gnk-recovery-pill{border:1px solid rgba(255,216,117,.34);border-radius:999px;padding:8px 12px;color:#ffd875;font-size:12px;font-weight:900;white-space:nowrap}.gnk-recovery-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.gnk-recovery-card{display:block;min-height:125px;padding:17px;border:1px solid rgba(255,255,255,.12);border-radius:17px;background:rgba(255,255,255,.045);color:#fff;text-decoration:none}.gnk-recovery-card:hover,.gnk-recovery-card:focus{border-color:#ffd875;transform:translateY(-2px)}.gnk-recovery-card b{display:block;color:#ffd875;margin-bottom:7px}.gnk-recovery-card small{display:block;color:#c8d5e7;line-height:1.45}.gnk-recovery-note{margin-top:16px;padding:13px;border-left:4px solid #ffd875;background:rgba(0,0,0,.22);color:#e8eef7;font-size:13px}@media(max-width:900px){.gnk-recovery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gnk-recovery-access__head{align-items:flex-start;flex-direction:column}}@media(max-width:560px){.gnk-recovery-grid{grid-template-columns:1fr}.gnk-recovery-access{margin:16px 10px;padding:22px 17px}}`;
+      style.textContent = '.gnk-recovery-access{margin:22px auto;padding:30px;border:1px solid rgba(255,216,117,.28);border-radius:22px;background:linear-gradient(135deg,rgba(255,216,117,.11),rgba(4,14,29,.92));color:#fff}.gnk-recovery-access__head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:18px}.gnk-recovery-access h2{margin:.25rem 0;color:#fff;font-size:clamp(28px,4vw,46px)}.gnk-recovery-access p{color:#c8d5e7;max-width:820px}.gnk-recovery-pill{border:1px solid rgba(255,216,117,.34);border-radius:999px;padding:8px 12px;color:#ffd875;font-size:12px;font-weight:900;white-space:nowrap}.gnk-recovery-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.gnk-recovery-card{display:block;min-height:125px;padding:17px;border:1px solid rgba(255,255,255,.12);border-radius:17px;background:rgba(255,255,255,.045);color:#fff;text-decoration:none}.gnk-recovery-card:hover,.gnk-recovery-card:focus{border-color:#ffd875;transform:translateY(-2px)}.gnk-recovery-card b{display:block;color:#ffd875;margin-bottom:7px}.gnk-recovery-card small{display:block;color:#c8d5e7;line-height:1.45}.gnk-recovery-note{margin-top:16px;padding:13px;border-left:4px solid #ffd875;background:rgba(0,0,0,.22);color:#e8eef7;font-size:13px}@media(max-width:900px){.gnk-recovery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gnk-recovery-access__head{align-items:flex-start;flex-direction:column}}@media(max-width:560px){.gnk-recovery-grid{grid-template-columns:1fr}.gnk-recovery-access{margin:16px 10px;padding:22px 17px}}';
       document.head.appendChild(style);
     }
 
@@ -156,12 +167,11 @@
     if (!document.getElementById('gnk-news-runtime-recovery-style')) {
       const style = document.createElement('style');
       style.id = 'gnk-news-runtime-recovery-style';
-      style.textContent = `.news-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.045);color:inherit;text-decoration:none}.news-card img{width:100%;aspect-ratio:16/10;object-fit:cover;background:#101827}.news-card__body{padding:17px}.news-card small{display:block;margin-bottom:8px;opacity:.78}.news-card h2{font-size:1.08rem;line-height:1.25;margin:.1rem 0 .55rem}.news-card p{font-size:.92rem;line-height:1.5;opacity:.86}.news-card__open{margin-top:auto;color:#d6ae5c;font-weight:800}.news-status strong{color:#d6ae5c}`;
+      style.textContent = '.news-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.045);color:inherit;text-decoration:none}.news-card img{width:100%;aspect-ratio:16/10;object-fit:cover;background:#101827}.news-card__body{padding:17px}.news-card small{display:block;margin-bottom:8px;opacity:.78}.news-card h2{font-size:1.08rem;line-height:1.25;margin:.1rem 0 .55rem}.news-card p{font-size:.92rem;line-height:1.5;opacity:.86}.news-card__open{margin-top:auto;color:#d6ae5c;font-weight:800}.news-status strong{color:#d6ae5c}';
       document.head.appendChild(style);
     }
 
     const status = document.getElementById('newsStatus');
-    const esc = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
     const formatDate = value => {
       try { return new Intl.DateTimeFormat(isHr ? 'hr-HR' : 'en-GB', { dateStyle:'medium', timeStyle:'short' }).format(new Date(value)); }
       catch (_) { return value || ''; }
@@ -173,7 +183,7 @@
         if (status) status.textContent = isHr ? '0 provjerenih vijesti' : '0 verified news';
         return;
       }
-      grid.innerHTML = usable.map(item => `<a class="news-card" href="${esc(item.url)}" target="_blank" rel="noopener"><img src="${esc(item.image || '/assets/gnk-asg-social-card.png')}" alt="${esc(item.title)}" loading="lazy" decoding="async"><div class="news-card__body"><small>${esc(item.source)} · ${esc(item.category || item.region || 'News')} · ${esc(formatDate(item.published_at || item.publishedAt))}</small><h2>${esc(item.title)}</h2><p>${esc(item.summary).slice(0,220)}${String(item.summary).length > 220 ? '…' : ''}</p><span class="news-card__open">${isHr ? 'Otvori izvor →' : 'Open source →'}</span></div></a>`).join('');
+      grid.innerHTML = usable.map(item => `<a class="news-card" href="${escapeHtml(item.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(item.image || '/assets/gnk-asg-social-card.png')}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async"><div class="news-card__body"><small>${escapeHtml(item.source)} · ${escapeHtml(item.category || item.region || 'News')} · ${escapeHtml(formatDate(item.published_at || item.publishedAt))}</small><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.summary).slice(0,220)}${String(item.summary).length > 220 ? '…' : ''}</p><span class="news-card__open">${isHr ? 'Otvori izvor →' : 'Open source →'}</span></div></a>`).join('');
       if (status) status.innerHTML = isHr ? `Prikazano <strong>${usable.length}</strong> provjerenih vijesti iz javnog dataseta.` : `Showing <strong>${usable.length}</strong> verified news items from the public dataset.`;
     };
 
@@ -185,15 +195,16 @@
 
   if (route === '/' || route === '/en') {
     const startIndex = () => {
+      installIndexContractTargets();
       installIndexLogoGuard();
       installCanonicalIndexLogos();
       installCodePlayFix();
       installCodeHomepageFeature();
       installRecoveryAccess();
-      [300,900,1800].forEach(delay => setTimeout(() => { installCanonicalIndexLogos(); installCodeHomepageFeature(); installRecoveryAccess(); }, delay));
+      [300,900,1800].forEach(delay => setTimeout(() => { installIndexContractTargets(); installCanonicalIndexLogos(); installCodeHomepageFeature(); installRecoveryAccess(); }, delay));
     };
     document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded',startIndex,{once:true}) : startIndex();
-    window.GNK_ASG_BRAND_SAFETY = { version: '2026-07-06-recovery-index-brand-and-access', prohibited: () => false, check: () => {} };
+    window.GNK_ASG_BRAND_SAFETY = { version: '2026-07-07-static-index-contract-targets', prohibited: () => false, check: () => {} };
     return;
   }
 
@@ -240,7 +251,7 @@
     });
   }
 
-  window.GNK_ASG_BRAND_SAFETY = { version:'2026-07-06-v5-recovery-public-runtime-ci-restored', prohibited, check };
+  window.GNK_ASG_BRAND_SAFETY = { version:'2026-07-07-static-index-contract-targets-brand-safety', prohibited, check };
 
   const observer = new MutationObserver(records => {
     records.forEach(record => record.addedNodes.forEach(node => { if (node.nodeType === 1) check(node); }));
