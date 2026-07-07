@@ -1,14 +1,14 @@
 {
-  "updated_at": "2026-07-06T22:48:20+00:00",
+  "updated_at": "2026-07-07T16:13:09+00:00",
   "news": {
     "ok": true,
     "status": "ok",
     "version": "GNK_ASG_NEWS_V14_20260626",
     "engine": "news_v14_lifecycle",
-    "updated_at": "2026-07-06T22:48:20+00:00",
-    "checked_at": "2026-07-06T22:48:20+00:00",
-    "last_attempt_at": "2026-07-06T22:48:20+00:00",
-    "last_successful_refresh_at": "2026-07-06T22:48:20+00:00",
+    "updated_at": "2026-07-07T16:13:09+00:00",
+    "checked_at": "2026-07-07T16:13:09+00:00",
+    "last_attempt_at": "2026-07-07T16:13:09+00:00",
+    "last_successful_refresh_at": "2026-07-07T16:13:09+00:00",
     "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb",
     "timezone": "Europe/Zagreb",
     "scheduled_hours_local": [
@@ -25,7 +25,7 @@
     "public_items": 100,
     "max_public_items": 100,
     "public_contract": "title+summary+source+article_url+verified_real_image",
-    "archive_items": 155,
+    "archive_items": 160,
     "archive_capacity": 1000,
     "archive_prune_trigger": 1000,
     "archive_prune_to": 500,
@@ -35,12 +35,12 @@
     "rss_images_enabled": true,
     "open_graph_fallback_enabled": false,
     "by_group": {
-      "markets": 8,
-      "digital-assets": 16,
-      "international": 20,
-      "hrvatska": 15,
-      "technology": 21,
-      "business": 4,
+      "digital-assets": 11,
+      "international": 27,
+      "markets": 7,
+      "hrvatska": 17,
+      "business": 7,
+      "technology": 15,
       "srbija": 16
     },
     "errors": [
@@ -49,11 +49,11 @@
         "error": "HTTP Error 403: Forbidden"
       },
       {
-        "source": "International Monetary Fund",
+        "source": "European Central Bank",
         "error": "http_200"
       },
       {
-        "source": "European Central Bank",
+        "source": "International Monetary Fund",
         "error": "http_200"
       }
     ]
