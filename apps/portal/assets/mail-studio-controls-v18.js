@@ -1,10 +1,10 @@
 (() => {
   'use strict';
-  if (window.__GNK_ASG_MAIL_STUDIO_CONTROLS_V18__) return;
-  window.__GNK_ASG_MAIL_STUDIO_CONTROLS_V18__ = true;
+  if (window.__GNK_ASG_MAIL_STUDIO_CONTROLS_V19__) return;
+  window.__GNK_ASG_MAIL_STUDIO_CONTROLS_V19__ = true;
 
-  const VERSION = 'GNK_ASG_MAIL_STUDIO_CONTROLS_V18_20260626';
-  const DRAFT_KEY = 'gnk_asg_mail_studio_draft_v18';
+  const VERSION = 'GNK_ASG_MAIL_STUDIO_CONTROLS_V19_20260707_SAFE_ATTACHMENTS';
+  const DRAFT_KEY = 'gnk_asg_mail_studio_draft_v19';
   const LEGACY_DRAFT_KEY = 'gnk_asg_mail_studio_draft';
   const ACTIONS = ['send','save','load','helper','autoReply','clear'];
 
@@ -15,6 +15,9 @@
   const escapeHtml = text => String(text || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const bodyHtml = () => escapeHtml(value('bodyText')).replace(/\r?\n/g,'<br>');
   const previewHtml = () => el('preview')?.innerHTML || bodyHtml();
+  const attachmentPool = () => Array.isArray(window.GNK_ASG_MAIL_ATTACHMENTS)
+    ? window.GNK_ASG_MAIL_ATTACHMENTS.slice()
+    : (Array.isArray(window.GNK_ASG_PDF_ATTACHMENTS_FINAL) ? window.GNK_ASG_PDF_ATTACHMENTS_FINAL.slice() : []);
 
   const profileData = () => ({
     profile:value('profile') || 'office',
@@ -107,7 +110,7 @@
       html:previewHtml(),
       bodyHtml:previewHtml(),
       text:value('bodyText'),
-      attachments:Array.isArray(window.GNK_ASG_PDF_ATTACHMENTS_FINAL) ? window.GNK_ASG_PDF_ATTACHMENTS_FINAL.slice() : []
+      attachments:attachmentPool()
     };
     payload.attachmentCount = payload.attachments.length;
 
@@ -119,23 +122,14 @@
     try {
       const headers = new Headers({'content-type':'application/json','accept':'application/json'});
       Object.entries(authHeaders()).forEach(([key,val]) => { if (val) headers.set(key,val); });
-      const response = await fetch('/api/admin-mail-send',{
-        method:'POST',
-        credentials:'same-origin',
-        cache:'no-store',
-        headers,
-        body:JSON.stringify(payload)
-      });
+      const response = await fetch('/api/admin-mail-send',{method:'POST',credentials:'same-origin',cache:'no-store',headers,body:JSON.stringify(payload)});
       const text = await response.text();
       let data;
       try { data = JSON.parse(text); } catch (_) { data = {raw:text}; }
       const list = el('list');
       if (list) list.textContent = JSON.stringify({status:response.status,ok:response.ok,data},null,2);
-      if (!response.ok) {
-        setStatus(`Greška slanja: ${response.status}`);
-        return;
-      }
-      setStatus(`Poruka je poslana/evidentirana. PDF priloga: ${payload.attachmentCount}`);
+      if (!response.ok) { setStatus(`Greška slanja: ${response.status}`); return; }
+      setStatus(`Poruka je poslana/evidentirana. Privitaka: ${payload.attachmentCount}`);
     } catch (error) {
       setStatus(`Greška slanja: ${error.message}`);
     } finally {
@@ -143,47 +137,28 @@
     }
   };
 
-  const handlers = {
-    send:sendMail,
-    save:saveDraft,
-    load:loadDraft,
-    helper:makeTemplate,
-    autoReply:makeAutoReply,
-    clear:clearForm
-  };
-
+  const handlers = {send:sendMail,save:saveDraft,load:loadDraft,helper:makeTemplate,autoReply:makeAutoReply,clear:clearForm};
   const replaceButton = action => {
     const old = el(action);
-    if (!old || old.dataset.gnkV18Replaced === '1') return;
+    if (!old || old.dataset.gnkV19Replaced === '1') return;
     const next = old.cloneNode(true);
-    next.id = `gnkMailV18_${action}`;
-    next.dataset.gnkV18Action = action;
-    next.dataset.gnkV18Replaced = '1';
+    next.id = `gnkMailV19_${action}`;
+    next.dataset.gnkV19Action = action;
+    next.dataset.gnkV19Replaced = '1';
     next.disabled = false;
     next.style.pointerEvents = 'auto';
     next.style.cursor = 'pointer';
     old.replaceWith(next);
-    next.addEventListener('click', event => {
-      event.preventDefault();
-      event.stopPropagation();
-      const fn = handlers[action];
-      if (action === 'send') fn(next);
-      else fn();
-    });
+    next.addEventListener('click', event => {event.preventDefault();event.stopPropagation();const fn = handlers[action];if (action === 'send') fn(next);else fn();});
   };
 
   const install = () => {
     ACTIONS.forEach(replaceButton);
     document.documentElement.dataset.gnkMailControls = VERSION;
-    setStatus('Mail Studio kontrole V18 su aktivne.');
+    setStatus('Mail Studio kontrole V19 su aktivne.');
   };
 
-  const boot = () => {
-    setTimeout(install,0);
-    setTimeout(install,250);
-    setTimeout(install,1000);
-  };
-
+  const boot = () => {setTimeout(install,0);setTimeout(install,250);setTimeout(install,1000);};
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',boot,{once:true});
   else boot();
 })();
