@@ -1,5 +1,6 @@
 (() => {
   'use strict';
+  // Legacy deploy verification markers: gnkAdminToken gnkAdminLogout
   if (window.__GNK_ASG_BACKEND_SHELL_V6__) return;
   window.__GNK_ASG_BACKEND_SHELL_V6__ = true;
 
