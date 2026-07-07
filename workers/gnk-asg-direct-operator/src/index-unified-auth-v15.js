@@ -4,7 +4,7 @@ import {
   VERSION as INDEX_CONTRACT_INJECTION_VERSION
 } from './index-contract-injection-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V18_20260707_ASSET_INDEX_AND_ASSETS_FIRST_${INDEX_CONTRACT_INJECTION_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V19_20260707_PRESERVE_LIVE_INDEX_ASSETS_FIRST_${INDEX_CONTRACT_INJECTION_VERSION}`;
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 
@@ -60,7 +60,7 @@ async function patchVersionResponse(request,response){
       wrapperEntryPoint:'src/index-unified-auth-v15.js',
       indexContractInjectionVersion:INDEX_CONTRACT_INJECTION_VERSION,
       authIsolationVersion:VERSION,
-      indexRouting:'asset-index-first',
+      indexRouting:'worker-index-first',
       assetRouting:'asset-passthrough-first'
     },null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
@@ -92,10 +92,6 @@ async function isolateLogin(response){
 export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
-    if(request.method==='GET'&&(path==='/'||path==='/en')){
-      const response=await assetIndex(request,env,path);
-      if(response)return response;
-    }
     if(request.method==='GET'&&path.startsWith('/assets/')){
       const response=await assetPassthrough(request,env);
       if(response)return response;
