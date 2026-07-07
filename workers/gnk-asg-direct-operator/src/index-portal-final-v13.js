@@ -10,7 +10,7 @@ const FAVICON_VERSION='GNK_ASG_GOOGLE_FAVICON_V1';
 const MARKET_CHART='GNK_ASG_LIVE_MARKET_CHART_V3';
 const GROUP_NETWORK='GNK_ASG_GROUP_NETWORK_V2';
 const MEDIA_APPLICATION_DESCRIPTION='Secure bilingual media registration and accreditation portal for GNK ASG d.o.o. and GNK DINAMO Ltd. Group. Newsrooms can create access, save a draft and submit official media application details.';
-const INDEX_RESCUE='GNK_ASG_STATIC_INDEX_RESCUE_V1_20260708';
+const INDEX_RESCUE='GNK_ASG_THE_CODE_INDEX_V1_20260708';
 
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{
   status,
@@ -82,7 +82,7 @@ async function staticPublicationResponse(request,env){
 
 async function staticIndexResponse(request,env,path){
   if(!env.ASSETS?.fetch)return null;
-  const assetPath=path==='/en'?'/en/index.html':'/index.html';
+  const assetPath='/the-code/';
   const target=new URL(assetPath,request.url);
   const response=await env.ASSETS.fetch(new Request(target,{method:'GET',headers:request.headers}));
   if(response.status===404)return null;
@@ -94,6 +94,7 @@ async function staticIndexResponse(request,env,path){
   headers.set('x-gnk-asg-index-rescue',INDEX_RESCUE);
   headers.set('x-gnk-asg-portal-final',VERSION);
   headers.set('x-robots-tag','index, follow');
+  headers.set('link','<https://gnk-asg.hr/the-code/>; rel="canonical"');
   return new Response(request.method==='HEAD'?null:response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -157,7 +158,7 @@ async function fetchHandler(request,env,ctx){
       marketChart:MARKET_CHART,
       groupNetwork:GROUP_NETWORK,
       galleryVersion:GALLERY_VERSION,
-      indexDesign:'clean-rescue-v1',
+      indexDesign:'the-code-homepage-v1',
       indexRescue:INDEX_RESCUE,
       publicationRouting:'static-assets-first-dynamic-kv-fallback',
       mediaApplicationSeo:'clean-20260706',
