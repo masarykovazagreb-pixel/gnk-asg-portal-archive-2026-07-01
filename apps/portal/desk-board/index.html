@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Desk Board | GNK ASG</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{color-scheme:dark;--gold:#f3cc62;--gold2:#ffe8a0;--muted:#b7c2d4;--line:rgba(243,204,98,.28)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -15%,rgba(243,204,98,.20),transparent 30%),#030508;color:#f8fafc;font-family:Inter,Arial,sans-serif}.wrap{width:min(1180px,calc(100% - 32px));margin:auto;padding:28px 0 64px}.top{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap}.brand{border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#071a38,#0a1020);padding:13px 16px}.brand b{display:block;font:900 20px/1 Arial,sans-serif}.brand small{display:block;color:var(--gold2);font-size:10px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;margin-top:5px}.nav{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:10px 13px;text-decoration:none;background:rgba(255,255,255,.04);color:#fff;font-size:12px;font-weight:900}.gold{background:linear-gradient(135deg,#c99d35,#ffe08a);color:#07101f}.panel{border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(17,26,42,.94),rgba(5,8,14,.96));padding:20px;margin:18px 0}.k{color:var(--gold);text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:950}h1,h2{font-family:Georgia,serif;margin:.2em 0}h1{font-size:clamp(38px,6vw,72px);line-height:.94}p{color:var(--muted);line-height:1.55}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.045);padding:15px}.card b{display:block;color:#fff}.pill{display:inline-flex;border:1px solid rgba(243,204,98,.28);border-radius:999px;color:#ffe8a0;background:rgba(243,204,98,.075);padding:6px 9px;font-size:11px;font-weight:900;text-transform:uppercase;margin-bottom:10px}.finance{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.metric strong{display:block;color:var(--gold2);font:700 24px/1 Georgia,serif;margin-top:6px}.draft{border-left:3px solid var(--gold);padding:10px 12px;background:rgba(255,255,255,.04);border-radius:12px;margin:10px 0}@media(max-width:900px){.grid,.finance{grid-template-columns:1fr 1fr}}@media(max-width:560px){.grid,.finance{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="top"><div class="brand"><b>GNK ASG Desk Board</b><small>work · review · daily finance</small></div><nav class="nav"><a class="btn" href="/admin/">Admin</a><a class="btn" href="/finance-daily/">Finance</a><a class="btn gold" href="/data/internal-desk-queue.json">Queue JSON</a></nav></header>
+<section class="panel"><p class="k">99% sustav · 1% odluke</p><h1>Radna ploča za zadatke, financije, objave i nacrte.</h1><p>Ova ploča skuplja interne zadatke, nacrte i stavke koje čekaju pregled.</p></section>
+<section class="panel"><p class="k">Financije danas</p><div id="finance"><p>Učitavanje financijskog pregleda…</p></div></section>
+<section class="panel"><p class="k">Radni red</p><div id="queue"><p>Učitavanje reda…</p></div></section>
+<section class="panel"><p class="k">Dnevni nacrti</p><div id="drafts"></div></section>
+</main>
+<script>
+const dailyDrafts=['Kritika: javni portal treba brojke, a ne tehnička objašnjenja','Izvješće: potvrđeni financijski PDF podaci','Komentar: THE CODE kao javni signal','Brief: New York 2026 i javni redoslijed komunikacije','Analiza: media application odvojena od kampanje','Pregled: backend, frontend, design i financije','Kritika: logo mora raditi uvijek','Izvješće: što sustav smije raditi sam','Komentar: financijski dashboard kao dnevna kontrolna ploča','Brief: dokumenti po firmi, zemlji i projektu','Analiza: PDF izvor i dokazni sloj','Kritika: manje tehničkog teksta, više stvarnog portala'];
+document.getElementById('drafts').innerHTML=dailyDrafts.map((d,i)=>`<div class="draft"><b>${i+1}. ${d}</b><p>Status: nacrt za pregled.</p></div>`).join('');
+fetch('/data/finance-daily-dashboard.json',{cache:'no-store'}).then(r=>r.json()).then(data=>{document.getElementById('finance').innerHTML=data.entities.map(e=>`<h2>${e.name} · ${e.period}</h2><div class="finance">${e.metrics.map(m=>`<div class="card metric"><span>${m.label}</span><strong>${m.display}</strong></div>`).join('')}</div>`).join('');}).catch(()=>document.getElementById('finance').innerHTML='<p>Financijski pregled trenutno nije dostupan.</p>');
+fetch('/data/internal-desk-queue.json',{cache:'no-store'}).then(r=>r.json()).then(data=>{document.getElementById('queue').innerHTML=data.lanes.map(l=>`<section><h2>${l.title}</h2><div class="grid">${l.items.map(item=>`<article class="card"><span class="pill">${item.status}</span><b>${item.title}</b><p>${item.area||item.type||''} ${item.action?('· '+item.action):''}</p></article>`).join('')}</div></section>`).join('');}).catch(()=>document.getElementById('queue').innerHTML='<p>Radni red trenutno nije dostupan.</p>');
+</script>
+</body>
+</html>
