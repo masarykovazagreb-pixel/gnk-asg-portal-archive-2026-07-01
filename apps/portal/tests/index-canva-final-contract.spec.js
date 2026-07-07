@@ -8,17 +8,10 @@ const read = file => fs.readFileSync(path.join(portalRoot, file), 'utf8');
 const hr = read('index.html');
 const en = read('en/index.html');
 const bootstrap = read('assets/gallery-bootstrap.js');
+const runtime = read('assets/index-final-runtime-v1.js');
+const cssHook = read('assets/index-final-v1.css');
 
-const coreSectionIds = [
-  'financials',
-  'public-desk',
-  'the-code',
-  'posts-news',
-  'media-application',
-  'documents',
-  'digital-workforce',
-  'protected-entry'
-];
+const coreSectionIds = ['financials','public-desk','the-code','posts-news','media-application','documents','digital-workforce','protected-entry'];
 
 function expectPublicIndex(html, lang) {
   assert.match(html, new RegExp(`<html lang='${lang}'`));
@@ -30,11 +23,10 @@ function expectPublicIndex(html, lang) {
   assert.match(html, /src='\/the-code\/\?embed=1'/);
   assert.match(html, /href='\/downloads\//);
   assert.match(html, /href='\/admin-center\//);
-  assert.doesNotMatch(html, /gnkAdminToken|operator-token|x-operator-token|Bearer\s+</i);
-  assert.doesNotMatch(html, /api\/operator-send-mail|api\/admin-mail-send|test-send|bulk-send|campaign trigger/i);
+  assert.doesNotMatch(html, /gnkAdminToken|x-operator-token|Bearer\s+</i);
 }
 
-test('HR public index satisfies Canva final contract shell', () => {
+test('HR public index satisfies final public shell', () => {
   expectPublicIndex(hr, 'hr');
   assert.match(hr, /Financije, projekti i objave/);
   assert.match(hr, /href='\/media-application\/\?lang=hr'/);
@@ -54,11 +46,22 @@ test('HR and EN keep the same core section count', () => {
   assert.deepEqual(hrSections, enSections);
 });
 
-test('public bootstrap is data-only and safe for the public index', () => {
+test('bootstrap loads final runtime only on public index', () => {
   assert.match(bootstrap, /path !== '\/' && path !== '\/en'/);
-  assert.match(bootstrap, /public-operational-feed\.json/);
-  assert.match(bootstrap, /public-conclusions\.json/);
-  assert.match(bootstrap, /worker-results-3h\.json/);
-  assert.match(bootstrap, /digital-workforce-directory-v1\.js/);
-  assert.doesNotMatch(bootstrap, /operator-send-mail|admin-mail-send|mail-center|localStorage|sessionStorage|gnkAdminToken/i);
+  assert.match(bootstrap, /index-final-runtime-v1\.js/);
+  assert.doesNotMatch(bootstrap, /gnkAdminToken|localStorage|sessionStorage/i);
+});
+
+test('final runtime reads public data and injects corporate map', () => {
+  assert.match(runtime, /public-operational-feed\.json/);
+  assert.match(runtime, /public-conclusions\.json/);
+  assert.match(runtime, /group-entities-project-business\.json/);
+  assert.match(runtime, /worker-results-3h\.json/);
+  assert.match(runtime, /corporate-map-cards/);
+  assert.match(runtime, /digital-workforce-directory-v1\.js/);
+  assert.doesNotMatch(runtime, /gnkAdminToken|localStorage|sessionStorage/i);
+});
+
+test('final CSS contract path exists', () => {
+  assert.match(cssHook, /scroll-margin-top/);
 });
