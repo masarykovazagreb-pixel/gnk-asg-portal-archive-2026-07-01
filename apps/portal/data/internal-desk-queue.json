@@ -1,0 +1,40 @@
+{
+  "version": "GNK_ASG_INTERNAL_DESK_QUEUE_V1_20260707",
+  "status": "review-only",
+  "updatedAt": "2026-07-07T20:30:00+02:00",
+  "principle": "99% system work, 1% approval decisions",
+  "lanes": [
+    {
+      "id": "approve-reject",
+      "title": "Odluke za pregled",
+      "items": [
+        {"id":"decision-deploy-admin-auth-v6","type":"deploy","title":"Deploy Admin Auth V6 nakon zadnjih fixeva","status":"PENDING","owner":"director","action":"approve_or_reject"},
+        {"id":"decision-index-live-visual","type":"frontend","title":"Pregled live index vizuala nakon deploya","status":"PENDING","owner":"chief-desk","action":"visual_review"},
+        {"id":"decision-finance-daily-public","type":"finance","title":"Dnevni financijski dashboard kao javna ruta","status":"PENDING","owner":"finance-desk","action":"approve_or_adjust"},
+        {"id":"decision-newsroom-brief","type":"newsroom","title":"Novinarski brief i 12 dnevnih prijedloga članaka/kritika","status":"PENDING","owner":"editorial-desk","action":"draft_only"}
+      ]
+    },
+    {
+      "id": "safe-system-work",
+      "title": "Sustav radi samostalno",
+      "items": [
+        {"id":"task-backend-routing","area":"backend","title":"Provjera worker entrypointa, asset passthrougha i portal-version rute","status":"ACTIVE"},
+        {"id":"task-frontend-index","area":"frontend","title":"Čišćenje javnog indexa i uklanjanje internih tehničkih rečenica","status":"ACTIVE"},
+        {"id":"task-design","area":"design","title":"Stabilni logo blokovi, hero, kartice i mobilni prikaz","status":"ACTIVE"},
+        {"id":"task-finance-graphs","area":"finance","title":"Dnevni financijski dashboard s grafovima i PDF izvorima","status":"ACTIVE"},
+        {"id":"task-the-code","area":"the-code","title":"THE CODE ruta, embed i New York 2026 elementi","status":"ACTIVE"},
+        {"id":"task-media","area":"media","title":"Media application, newsroom intake i PDF centar","status":"ACTIVE"}
+      ]
+    },
+    {
+      "id": "blocked-actions",
+      "title": "Radnje koje ne idu bez odobrenja",
+      "items": [
+        {"id":"block-mail-send","title":"Slanje mailova","status":"BLOCKED_APPROVAL_REQUIRED"},
+        {"id":"block-campaign","title":"Kampanje i bulk outreach","status":"BLOCKED_APPROVAL_REQUIRED"},
+        {"id":"block-production-deploy","title":"Produkcijski deploy","status":"BLOCKED_APPROVAL_REQUIRED"},
+        {"id":"block-new-financial-claims","title":"Nove financijske tvrdnje bez izvora","status":"BLOCKED_SOURCE_REQUIRED"}
+      ]
+    }
+  ]
+}
