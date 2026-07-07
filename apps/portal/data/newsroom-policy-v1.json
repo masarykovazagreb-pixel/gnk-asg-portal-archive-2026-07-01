@@ -1,39 +1,48 @@
 {
-  "version": "GNK_ASG_NEWSROOM_POLICY_V1_20260707",
-  "status": "review-safe-policy",
+  "version": "GNK_ASG_NEWSROOM_POLICY_V2_20260707_MORNING_DESK",
+  "status": "review-policy",
   "editorInChief": "Nermin Sefic",
+  "roles": ["UBO", "director", "editor-in-chief"],
   "authorByline": "Nermin Sefic",
   "dailyCommentTarget": 5,
-  "cadence": "daily editorial queue with 3-hour worker review cycles",
+  "timezone": "Europe/Zagreb",
+  "morningDesk": {
+    "deliveryTime": "08:00",
+    "decisionDeadline": "09:00",
+    "reviewWindowMinutes": 60,
+    "editorActions": ["approve", "reject", "return", "hold"],
+    "defaultAfterDeadline": "approved-lane items proceed to publication queue"
+  },
   "workflow": [
-    "Fetch RSS metadata from approved sources",
-    "Classify by region, topic, risk and relevance",
-    "Create source-linked brief",
-    "Draft original comment under Nermin Sefic byline",
-    "Hold for editor approval",
-    "Publish only after approval or after explicit auto-publish mode is enabled later"
+    "Prepare RSS metadata and worker inputs before morning desk delivery",
+    "Deliver editor package at 08:00 Croatia time",
+    "Record editor action until 09:00 Croatia time",
+    "Move approved-lane items to publication queue after the deadline",
+    "Keep sensitive items in hold lane until direct editor action"
   ],
   "allowed": [
     "source title",
-    "source summary where feed terms permit it",
-    "canonical source link",
-    "source name and published date",
-    "original GNK ASG / Nermin Sefic commentary"
+    "source link",
+    "source name",
+    "published date",
+    "original Nermin Sefic commentary",
+    "short worker minutes",
+    "public decisions without confidential data"
   ],
-  "notAllowed": [
-    "copying full third-party articles",
-    "removing source attribution",
-    "republishing paywalled content",
-    "presenting third-party reporting as GNK reporting",
-    "automatic external outreach",
-    "bulk email",
-    "automatic publication without explicit editor approval"
+  "sensitiveHoldLane": [
+    "finance evidence",
+    "legal evidence",
+    "personal data",
+    "bank data",
+    "credentials",
+    "confidential contracts",
+    "bulk mail"
   ],
   "safety": {
     "externalOutreach": false,
     "bulkMail": false,
-    "automaticPublishing": false,
-    "humanApprovalRequired": true,
+    "morningDeskEnabled": true,
+    "sensitiveHoldLaneNeedsDirectEditorAction": true,
     "rssDisplayMode": "metadata-link-attribution-commentary"
   }
 }
