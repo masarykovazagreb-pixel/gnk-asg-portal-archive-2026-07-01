@@ -1,21 +1,12 @@
 name: GNK ASG News Publications Hotfix
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'workers/gnk-asg-direct-operator/**'
-      - 'apps/portal/vijesti/**'
-      - 'apps/portal/news/**'
-      - 'apps/portal/visual-index/**'
-      - 'apps/portal/assets/business-news.css'
-      - 'apps/portal/assets/business-news.js'
-      - 'apps/portal/assets/visual-index-full-gallery.js'
-      - 'apps/portal/assets/visual-index-central-v7.js'
-      - '.github/workflows/news-publications-hotfix-live.yml'
   workflow_dispatch:
-  issues:
-    types: [opened, reopened]
+    inputs:
+      confirm_production_deploy:
+        description: "Type DEPLOY_NEWS_PUBLICATIONS_HOTFIX to run production deploy"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -27,7 +18,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event_name != 'issues' || contains(github.event.issue.title, 'RUN GNK ASG NEWS PUBLICATIONS HOTFIX')
+    if: github.event_name == 'workflow_dispatch' && inputs.confirm_production_deploy == 'DEPLOY_NEWS_PUBLICATIONS_HOTFIX'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:

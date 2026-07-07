@@ -2,22 +2,18 @@ name: Deploy Admin Auth V6
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/deploy-admin-auth-v6.yml"
-      - "apps/portal/assets/backend-ui-shell.js"
-      - "apps/portal/assets/backend-ui-shell.css"
-      - "apps/portal/auto-editor/**"
-      - "workers/gnk-asg-direct-operator/**"
-      - "workers/gnk-asg-operator-center/**"
-      - "workers/gnk-asg-contact-api-worker/src/index-session-cookie-v1.js"
+    inputs:
+      confirm_production_deploy:
+        description: "Type DEPLOY_ADMIN_AUTH_V6 to run production deploy"
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 jobs:
   deploy:
+    if: github.event_name == 'workflow_dispatch' && inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
