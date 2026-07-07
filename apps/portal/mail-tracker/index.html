@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="googlebot" content="noindex,nofollow,noarchive">
+<title>GNK ASG Mail Tracker</title>
+<style>
+:root{color-scheme:dark;--gold:#f1ca66;--muted:#b8c2d4;--line:rgba(241,202,102,.28)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% -10%,rgba(241,202,102,.20),transparent 28%),#04070d;color:#f8fafc;font-family:Inter,Arial,sans-serif}.wrap{width:min(1180px,calc(100% - 32px));margin:auto;padding:28px 0 48px}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:18px;margin-bottom:22px}.brand{display:flex;gap:14px;align-items:center}.brand img{width:58px;height:58px;object-fit:contain}.brand b{display:block;color:#ffe8a0;font-size:22px}.brand span{display:block;color:var(--muted);font-size:13px}.btn,a.btn,button{border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.06);color:#fff;text-decoration:none;padding:11px 14px;font-weight:900;cursor:pointer}.gold{background:linear-gradient(135deg,#b98b2d,#f4d37a)!important;color:#07101f!important}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.panel{border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(14,24,45,.95),rgba(5,8,14,.98));padding:16px;margin-bottom:14px}.panel h1,.panel h2{margin:0 0 8px;color:#ffe8a0;font-family:Georgia,serif}.card strong{display:block;font-size:30px;color:#ffe8a0;margin:6px 0}.muted{color:var(--muted);line-height:1.5}.actions{display:flex;flex-wrap:wrap;gap:10px}.status{white-space:pre-wrap;font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#02050b;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px;color:#dbeafe;max-height:360px;overflow:auto}.table{width:100%;border-collapse:collapse}.table th,.table td{border-bottom:1px solid rgba(255,255,255,.10);padding:10px;text-align:left;font-size:13px}.tag{display:inline-flex;border:1px solid rgba(241,202,102,.32);border-radius:999px;color:#ffe8a0;padding:4px 8px;font-size:11px;font-weight:900;text-transform:uppercase}@media(max-width:850px){.grid{grid-template-columns:1fr 1fr}.top{align-items:flex-start;flex-direction:column}}@media(max-width:560px){.grid{grid-template-columns:1fr}.brand{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="top">
+  <div class="brand"><img src="/assets/brand/official-gnk-asg-gold.svg" alt="GNK ASG"><img src="/assets/brand/official-gnk-dinamo-ltd-group-gold.svg" alt="GNK DINAMO Ltd. Group"><span><b>Mail Tracker</b><span>Admin-only pregled pošte, reda, statusa i sigurnosnih zaključavanja.</span></span></div>
+  <div class="actions"><a class="btn" href="/admin-center/">Admin Center</a><a class="btn" href="/mail-studio/">Mail Studio</a><a class="btn" href="/campaign-mailer/">Campaign Mailer</a><button id="refresh" class="gold">Osvježi</button></div>
+</header>
+<section class="panel"><h1>Mail Tracker</h1><p class="muted">Ova stranica ništa ne šalje. Služi za pregled statusa, sigurnosnih brava, reda slanja, povijesti i tehničke dostupnosti mail modula. Sve ostaje iza administratorskog tokena.</p></section>
+<section class="grid">
+  <article class="panel card"><span class="tag">Mail Studio</span><strong id="manualLive">—</strong><p class="muted">Kontrolirano pojedinačno slanje</p></article>
+  <article class="panel card"><span class="tag">Binding</span><strong id="binding">—</strong><p class="muted">Cloudflare Email binding</p></article>
+  <article class="panel card"><span class="tag">D1/KV</span><strong id="storage">—</strong><p class="muted">Audit i draft storage</p></article>
+  <article class="panel card"><span class="tag">Campaign</span><strong id="campaignState">—</strong><p class="muted">Status kampanjskog modula</p></article>
+</section>
+<section class="panel"><h2>Mail Center readiness</h2><div id="readiness" class="status">Učitavanje…</div></section>
+<section class="panel"><h2>Campaign status</h2><div id="campaign" class="status">Učitavanje…</div></section>
+<section class="panel"><h2>Sent / Outbox overview</h2><table class="table"><thead><tr><th>Izvor</th><th>Status</th><th>Broj</th><th>Napomena</th></tr></thead><tbody id="rows"><tr><td colspan="4">Učitavanje…</td></tr></tbody></table></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+async function getJson(path){const r=await fetch(path,{credentials:'same-origin',cache:'no-store',headers:{accept:'application/json'}});const text=await r.text();let data={};try{data=JSON.parse(text)}catch{data={raw:text}};return {ok:r.ok,status:r.status,data};}
+function yn(v){return v?'YES':'NO'}
+function dump(x){return JSON.stringify(x,null,2)}
+async function load(){
+ const rows=[];
+ const readiness=await getJson('/api/mail-center/send-readiness');
+ $('readiness').textContent=dump(readiness.data);
+ $('manualLive').textContent=readiness.data?.live?'OPEN':'LOCKED';
+ $('binding').textContent=readiness.data?.emailBindingConfigured?'READY':'NO';
+ $('storage').textContent=[yn(readiness.data?.d1Configured),yn(readiness.data?.kvConfigured)].join(' / ');
+ rows.push(['Mail readiness',readiness.ok?'OK':'ERROR',readiness.status,readiness.data?.error||'']);
+ const status=await getJson('/api/mail-center/status');
+ rows.push(['Mail status',status.ok?'OK':'ERROR',status.data?.recent?.length||0,status.data?.error||'recent audit records']);
+ const sent=await getJson('/api/mail-center/sent');
+ rows.push(['Sent',sent.ok?'OK':'ERROR',sent.data?.items?.length||0,sent.data?.error||'manual sent records']);
+ const outbox=await getJson('/api/mail-center/outbox');
+ rows.push(['Outbox',outbox.ok?'OK':'ERROR',outbox.data?.items?.length||0,outbox.data?.error||'pending/failed records']);
+ const camp=await getJson('/api/campaign-mailer/campaign/status');
+ $('campaign').textContent=dump(camp.data);
+ $('campaignState').textContent=camp.ok?(camp.data?.campaign?.status||camp.data?.status||'OK'):'LOCKED';
+ rows.push(['Campaign module',camp.ok?'OK':'LOCKED/ERROR',camp.status,camp.data?.error||camp.data?.message||'']);
+ $('rows').innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('');
+}
+$('refresh').addEventListener('click',load);
+load().catch(e=>{$('readiness').textContent=e.message;$('campaign').textContent=e.message});
+</script>
+</body>
+</html>
