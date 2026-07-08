@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>THE CODE OS | GNK ASG</title>
-<meta name="description" content="THE CODE OS javni pregled: vijesti, objave, procedure projekata, worker kodovi i urednički review GNK ASG portala.">
+<meta name="description" content="THE CODE OS javni pregled: tržišta, vijesti, objave, procedure projekata, worker kodovi i urednički review GNK ASG portala.">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <link rel="stylesheet" href="/assets/connected-ui-v1.css?v=20260708-1">
 </head>
@@ -14,6 +14,7 @@
     <a class="gnk-brand" href="/"><span class="gnk-mark">G</span><span>GNK ASG</span></a>
     <div class="gnk-menu">
       <a href="/the-code-os/">THE CODE</a>
+      <a href="/markets/">Tržišta</a>
       <a href="/news/">Vijesti</a>
       <a href="/worker-contact/">Worker kontakt</a>
       <a href="/contact/">Kontakt</a>
@@ -25,18 +26,24 @@
 <section class="gnk-hero">
 <p class="gnk-kicker">GNK ASG portal architecture</p>
 <h1 class="gnk-title">THE CODE OS</h1>
-<p>Javni pregled operativne arhitekture za vijesti, objave, procedure projekata, worker kodove i urednički review. Public dio prikazuje samo sigurne podatke; upravljanje ostaje u zaštićenom admin sloju.</p>
+<p>Javni pregled operativne arhitekture za tržišta, vijesti, objave, procedure projekata, worker kodove i urednički review. Public dio prikazuje samo sigurne podatke; upravljanje ostaje u zaštićenom admin sloju.</p>
 <a class="gnk-btn gold" href="/worker-contact/">Kontakt po kodu</a>
+<a class="gnk-btn" href="/markets/">Tržišta</a>
 <a class="gnk-btn" href="/news/">Vijesti</a>
-<a class="gnk-btn" href="/contact/">Kontakt</a>
+<a class="gnk-btn" href="/data/backend-modules-registry.json">19 backend modula</a>
 </section>
 <section class="gnk-grid">
 <article class="gnk-card"><h2>THE CODE</h2><p>Projektni i operativni narativ portala: struktura, firme, procedure i objave.</p><span class="gnk-pill">core</span></article>
+<article class="gnk-card"><h2>Tržišta</h2><p>Market categories i budući `/api/markets/snapshot` read-only endpoint.</p><span class="gnk-pill">markets</span></article>
 <article class="gnk-card"><h2>Vijesti</h2><p>RSS izvori, urednički nacrti, komentari i objave kroz review.</p><span class="gnk-pill">news</span></article>
 <article class="gnk-card"><h2>Procedure</h2><p>Projektni zapisi s firmom, državom, gradom, statusom i audit tragom.</p><span class="gnk-pill">projects</span></article>
 <article class="gnk-card"><h2>08:00 review</h2><p>Jutarnji dashboard za pregled pripremljenih stavki.</p><span class="gnk-pill">review</span></article>
 <article class="gnk-card"><h2>09:00 objava</h2><p>Objava samo za stavke koje su public-safe i nisu odbačene.</p><span class="gnk-pill">publish</span></article>
-<article class="gnk-card"><h2>Kontakt</h2><p>Kontakt forme, kodovi i centralna evidencija upita.</p><span class="gnk-pill">inbox</span></article>
+</section>
+<section class="gnk-panel">
+<h2>19 backend modula</h2>
+<p>U auth layeru je pronađeno 15 postojećih modula. Master scope dodaje četiri public bridge modula koji nedostaju: public status, markets snapshot, workers public results i approval public decisions.</p>
+<a class="gnk-btn gold" href="/data/backend-modules-registry.json">Otvori backend registry</a>
 </section>
 <section class="gnk-panel">
 <h2>Moduli za sljedeće povezivanje</h2>
@@ -47,6 +54,7 @@
 <li>RSS source registry</li>
 <li>publication queue</li>
 <li>project procedures registry</li>
+<li>markets snapshot</li>
 <li>morning review dashboard</li>
 <li>audit log</li>
 </ul>
