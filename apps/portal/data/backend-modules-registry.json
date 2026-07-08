@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "version": "GNK_ASG_BACKEND_MODULES_REGISTRY_V1_20260708",
+  "totalModules": 19,
+  "existingInAuthLayer": 15,
+  "missingPublicBridgeModules": 4,
+  "source": "index-unified-auth-v14 backendStatus plus master documentation public API scope",
+  "modules": [
+    {"id":"operator","label":"Operator core","status":"existing","visibility":"protected"},
+    {"id":"mobileAdmin","label":"Mobile admin","status":"existing","visibility":"protected"},
+    {"id":"mail","label":"Mail core","status":"existing","visibility":"protected"},
+    {"id":"mailStudioAdapter","label":"Mail Studio adapter","status":"existing","visibility":"protected"},
+    {"id":"autoEditor","label":"Auto editor","status":"existing","visibility":"protected"},
+    {"id":"publishing","label":"Publishing","status":"existing","visibility":"protected"},
+    {"id":"media","label":"Media operations","status":"existing","visibility":"mixed"},
+    {"id":"market","label":"Market core","status":"existing","visibility":"protected"},
+    {"id":"news","label":"News","status":"existing","visibility":"mixed"},
+    {"id":"campaignMailer","label":"Campaign mailer","status":"existing","visibility":"protected"},
+    {"id":"publicOperations","label":"Public operations","status":"existing","visibility":"public_read_only"},
+    {"id":"governanceBoard","label":"Governance board","status":"existing","visibility":"public_read_only"},
+    {"id":"enterpriseProjects","label":"Enterprise projects","status":"existing","visibility":"mixed"},
+    {"id":"operationalWorkforce","label":"Operational workforce","status":"existing","visibility":"mixed"},
+    {"id":"marketIntelligence","label":"News and market intelligence","status":"existing","visibility":"protected"},
+    {"id":"publicStatus","label":"Public status API","status":"missing_public_bridge","plannedRoute":"/api/public/status","visibility":"public_read_only"},
+    {"id":"marketsSnapshot","label":"Markets snapshot API","status":"missing_public_bridge","plannedRoute":"/api/markets/snapshot","visibility":"public_read_only"},
+    {"id":"workersPublicResults","label":"Workers public results API","status":"missing_public_bridge","plannedRoute":"/api/workers/public-results","visibility":"public_read_only"},
+    {"id":"approvalPublicDecisions","label":"Approval public decisions API","status":"missing_public_bridge","plannedRoute":"/api/approval/public-decisions","visibility":"public_read_only"}
+  ],
+  "markets": {
+    "plannedRoute": "/api/markets/snapshot",
+    "publicPage": "/markets/",
+    "categories": [
+      "foreign-exchange",
+      "digital-assets",
+      "sports-media-rights",
+      "technology-intelligence",
+      "tourism-events",
+      "real-estate-projects",
+      "financial-reports",
+      "regional-business",
+      "usa-market",
+      "europe-market",
+      "mena-market",
+      "payments-fintech"
+    ],
+    "rule": "Public page may show categories and public-safe signals. Live prices or financial recommendations require verified source integration."
+  },
+  "safety": {
+    "noSecrets": true,
+    "noPersonalWorkerMailboxes": true,
+    "publicReadOnly": true,
+    "protectedWrites": true,
+    "noDeployInThisPR": true
+  }
+}
