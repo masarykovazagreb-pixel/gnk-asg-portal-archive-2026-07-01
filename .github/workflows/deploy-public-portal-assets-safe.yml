@@ -1,0 +1,73 @@
+﻿name: Deploy Public Portal Assets Safe
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_public_assets_deploy:
+        description: "Type DEPLOY_PUBLIC_PORTAL_SAFE to deploy public portal assets"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-public-assets:
+    if: github.event_name == 'workflow_dispatch' && inputs.confirm_public_assets_deploy == 'DEPLOY_PUBLIC_PORTAL_SAFE'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate public portal assets
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -s apps/portal/index.html
+          test -s apps/portal/en/index.html
+          test -s apps/portal/the-code/index.html
+          test -s apps/portal/google46686328e30c759f.html
+          test -s apps/portal/data/finance-kpi-2025.json
+          test -s apps/portal/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf
+          test -s apps/portal/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf
+
+          grep -q "google-site-verification: google46686328e30c759f.html" apps/portal/google46686328e30c759f.html
+          grep -q '"excludedMetrics"' apps/portal/data/finance-kpi-2025.json
+          grep -q '"ebitdaEstimated"' apps/portal/data/finance-kpi-2025.json
+          grep -q '"shortTermLiabilities"' apps/portal/data/finance-kpi-2025.json
+          grep -q '"longTermLiabilities"' apps/portal/data/finance-kpi-2025.json
+
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q 'directory = "../../apps/portal"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'run_worker_first = true' workers/gnk-asg-direct-operator/wrangler.toml
+
+      - name: Dry-run public Worker and assets deploy
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Deploy public portal assets through direct operator
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify public portal assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 15
+          cb="${GITHUB_SHA}-${GITHUB_RUN_ID}"
+
+          curl --fail --silent --show-error "https://gnk-asg.hr/google46686328e30c759f.html?cb=${cb}" | grep -q "google-site-verification: google46686328e30c759f.html"
+          curl --fail --silent --show-error "https://gnk-asg.hr/the-code/?cb=${cb}" | grep -q "THE CODE"
+          curl --fail --silent --show-error "https://gnk-asg.hr/data/finance-kpi-2025.json?cb=${cb}" | grep -q "ebitdaEstimated"
+
+          test "$(curl --silent --output /tmp/asg.pdf --write-out '%{http_code}' "https://gnk-asg.hr/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf?cb=${cb}")" = "200"
+          test "$(curl --silent --output /tmp/group.pdf --write-out '%{http_code}' "https://gnk-asg.hr/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf?cb=${cb}")" = "200"
