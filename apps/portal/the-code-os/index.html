@@ -5,29 +5,40 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>THE CODE OS | GNK ASG</title>
 <meta name="description" content="THE CODE OS javni pregled: vijesti, objave, procedure projekata, worker kodovi i urednički review GNK ASG portala.">
-<style>
-body{margin:0;background:#050814;color:#f8fafc;font-family:Arial,sans-serif}.wrap{width:min(1100px,94vw);margin:auto;padding:34px 0 54px}.panel{border:1px solid rgba(214,173,79,.35);border-radius:22px;background:#0b1224;padding:20px;margin:14px 0}h1{color:#f0cc6a;font:800 64px/1 Georgia,serif;margin:0}h2{color:#fff}p,li{color:#b7c1d6;line-height:1.55}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.05);padding:16px}.btn{display:inline-block;border:1px solid rgba(214,173,79,.35);border-radius:999px;padding:10px 13px;margin:4px;color:#fff;text-decoration:none;font-weight:700}.gold{background:#f0cc6a;color:#07101f}@media(max-width:850px){.grid{display:block}h1{font-size:44px}}
-</style>
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="stylesheet" href="/assets/connected-ui-v1.css?v=20260708-1">
 </head>
 <body>
-<main class="wrap">
-<section class="panel">
-<p>GNK ASG portal architecture</p>
-<h1>THE CODE OS</h1>
+<header class="gnk-topbar">
+  <nav class="gnk-nav" aria-label="GNK ASG povezani izbornik">
+    <a class="gnk-brand" href="/"><span class="gnk-mark">G</span><span>GNK ASG</span></a>
+    <div class="gnk-menu">
+      <a href="/the-code-os/">THE CODE</a>
+      <a href="/news/">Vijesti</a>
+      <a href="/worker-contact/">Worker kontakt</a>
+      <a href="/contact/">Kontakt</a>
+      <a href="/admin-center/">Admin</a>
+    </div>
+  </nav>
+</header>
+<main class="gnk-wrap">
+<section class="gnk-hero">
+<p class="gnk-kicker">GNK ASG portal architecture</p>
+<h1 class="gnk-title">THE CODE OS</h1>
 <p>Javni pregled operativne arhitekture za vijesti, objave, procedure projekata, worker kodove i urednički review. Public dio prikazuje samo sigurne podatke; upravljanje ostaje u zaštićenom admin sloju.</p>
-<a class="btn gold" href="/worker-contact/">Kontakt po kodu</a>
-<a class="btn" href="/news/">Vijesti</a>
-<a class="btn" href="/contact/">Kontakt</a>
+<a class="gnk-btn gold" href="/worker-contact/">Kontakt po kodu</a>
+<a class="gnk-btn" href="/news/">Vijesti</a>
+<a class="gnk-btn" href="/contact/">Kontakt</a>
 </section>
-<section class="grid">
-<article class="card"><h2>THE CODE</h2><p>Projektni i operativni narativ portala: struktura, firme, procedure i objave.</p></article>
-<article class="card"><h2>Vijesti</h2><p>RSS izvori, urednički nacrti, komentari i objave kroz review.</p></article>
-<article class="card"><h2>Procedure</h2><p>Projektni zapisi s firmom, državom, gradom, statusom i audit tragom.</p></article>
-<article class="card"><h2>08:00 review</h2><p>Jutarni dashboard za pregled pripremljenih stavki.</p></article>
-<article class="card"><h2>09:00 objava</h2><p>Objava samo za stavke koje su public-safe i nisu odbačene.</p></article>
-<article class="card"><h2>Kontakt</h2><p>Kontakt forme, kodovi i centralna evidencija upita.</p></article>
+<section class="gnk-grid">
+<article class="gnk-card"><h2>THE CODE</h2><p>Projektni i operativni narativ portala: struktura, firme, procedure i objave.</p><span class="gnk-pill">core</span></article>
+<article class="gnk-card"><h2>Vijesti</h2><p>RSS izvori, urednički nacrti, komentari i objave kroz review.</p><span class="gnk-pill">news</span></article>
+<article class="gnk-card"><h2>Procedure</h2><p>Projektni zapisi s firmom, državom, gradom, statusom i audit tragom.</p><span class="gnk-pill">projects</span></article>
+<article class="gnk-card"><h2>08:00 review</h2><p>Jutarnji dashboard za pregled pripremljenih stavki.</p><span class="gnk-pill">review</span></article>
+<article class="gnk-card"><h2>09:00 objava</h2><p>Objava samo za stavke koje su public-safe i nisu odbačene.</p><span class="gnk-pill">publish</span></article>
+<article class="gnk-card"><h2>Kontakt</h2><p>Kontakt forme, kodovi i centralna evidencija upita.</p><span class="gnk-pill">inbox</span></article>
 </section>
-<section class="panel">
+<section class="gnk-panel">
 <h2>Moduli za sljedeće povezivanje</h2>
 <ul>
 <li>10 journalist-workera</li>
@@ -39,7 +50,9 @@ body{margin:0;background:#050814;color:#f8fafc;font-family:Arial,sans-serif}.wra
 <li>morning review dashboard</li>
 <li>audit log</li>
 </ul>
+<p class="gnk-note">Menu i vizualni sloj dolaze iz zajedničkog `/assets/connected-ui-v1.css` i trebaju se primijeniti na sve spojene stranice.</p>
 </section>
+<footer class="gnk-footer">GNK ASG connected portal UI — public-safe shell. Protected actions remain behind admin authorization.</footer>
 </main>
 </body>
 </html>
