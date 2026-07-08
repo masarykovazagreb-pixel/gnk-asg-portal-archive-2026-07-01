@@ -1,0 +1,50 @@
+{
+  "ok": true,
+  "version": "GNK_FINANCE_PUBLIC_SNAPSHOT_V1_20260708",
+  "currency": "EUR",
+  "sourceStatus": "user_project_documentation_pending_final_public_evidence_pack",
+  "publicDisplayMode": "summary_only",
+  "entities": [
+    {
+      "id": "gnk-asg-doo",
+      "name": "GNK ASG d.o.o.",
+      "jurisdiction": "Croatia",
+      "city": "Zagreb",
+      "period": "2024",
+      "metrics": {
+        "revenue": 169460000,
+        "ebitda": 3770000,
+        "netProfit": 12887,
+        "longTermLiabilities": 0
+      },
+      "publicNotes": [
+        "Stable operating company summary.",
+        "Public display should use final reviewed financial evidence pack before production release."
+      ]
+    },
+    {
+      "id": "gnk-dinamo-ltd-group",
+      "name": "GNK DINAMO Ltd. Group",
+      "jurisdiction": "USA / Colorado",
+      "city": "Boulder",
+      "period": "2024",
+      "metrics": {
+        "revenue": 1192456920.57,
+        "profitOrCapitalizedResult": 431493779,
+        "paidCapital": 431493779,
+        "softwareValue": 80000000,
+        "capitalItem": 351493779
+      },
+      "publicNotes": [
+        "Compilation-style group summary from project documentation.",
+        "Public display should use final reviewed financial evidence pack before production release."
+      ]
+    }
+  ],
+  "safety": {
+    "noBankData": true,
+    "noPrivateAttachments": true,
+    "noTaxOpinion": true,
+    "productionRequiresFinalReview": true
+  }
+}
