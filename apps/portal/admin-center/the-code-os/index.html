@@ -14,6 +14,7 @@
     <a class="gnk-brand" href="/admin-center/"><span class="gnk-mark">G</span><span>GNK ASG Admin</span></a>
     <div class="gnk-menu">
       <a href="/admin-center/the-code-os/">THE CODE OS</a>
+      <a href="/markets/">Tržišta</a>
       <a href="/email-status?source=all">Email status</a>
       <a href="/campaign-mailer/#dashboard">Campaign</a>
       <a href="/worker-contact/">Worker kontakt</a>
@@ -25,34 +26,45 @@
 <section class="gnk-hero">
 <p class="gnk-kicker">Protected internal shell</p>
 <h1 class="gnk-title">THE CODE OS Admin</h1>
-<p>Unutarnji dashboard za THE CODE, vijesti, objave, procedure projekata, worker kodove, jutarnji review i audit. Token se ne upisuje u stranicu; koristi se postojeći admin/session sloj.</p>
+<p>Unutarnji dashboard za THE CODE, tržišta, vijesti, objave, procedure projekata, worker kodove, jutarnji review, 19 backend modula i audit. Token se ne upisuje u stranicu; koristi se postojeći admin/session sloj.</p>
 <a class="gnk-btn gold" href="#morning-review">Morning review</a>
 <a class="gnk-btn" href="#publications">Objave</a>
-<a class="gnk-btn" href="#procedures">Procedure</a>
+<a class="gnk-btn" href="#markets">Tržišta</a>
+<a class="gnk-btn" href="#backends">Backendi</a>
 </section>
 <section class="gnk-status">
   <div class="gnk-stat"><span class="gnk-small">Journalist workeri</span><strong>10</strong><span class="gnk-small">planirano</span></div>
   <div class="gnk-stat"><span class="gnk-small">Firme</span><strong>45</strong><span class="gnk-small">registry</span></div>
   <div class="gnk-stat"><span class="gnk-small">Profili</span><strong>1500+</strong><span class="gnk-small">generated public-safe</span></div>
-  <div class="gnk-stat"><span class="gnk-small">Publish</span><strong>09:00</strong><span class="gnk-small">Europe/Zagreb</span></div>
+  <div class="gnk-stat"><span class="gnk-small">Backendi</span><strong>19</strong><span class="gnk-small">15 existing + 4 bridge</span></div>
 </section>
 <section id="morning-review" class="gnk-panel">
 <h2>Morning review</h2>
-<p>Do 08:00 dashboard mora prikazati sve pripremljene vijesti, komentare, izvješća i procedure. U review prozoru mogu se stavke odbaciti, zadržati, urediti ili odobriti.</p>
-<table class="gnk-table"><thead><tr><th>Tip</th><th>Status</th><th>Akcija</th></tr></thead><tbody><tr><td>Vijesti</td><td>ready_for_review</td><td>approve / hold / reject</td></tr><tr><td>Komentari</td><td>draft</td><td>edit / approve</td></tr><tr><td>Izvješća</td><td>public-safe check</td><td>approve / hold</td></tr><tr><td>Procedure</td><td>review</td><td>approve / reject</td></tr></tbody></table>
+<p>Do 08:00 dashboard mora prikazati sve pripremljene vijesti, komentare, izvješća, tržišne signale i procedure. U review prozoru mogu se stavke odbaciti, zadržati, urediti ili odobriti.</p>
+<table class="gnk-table"><thead><tr><th>Tip</th><th>Status</th><th>Akcija</th></tr></thead><tbody><tr><td>Vijesti</td><td>ready_for_review</td><td>approve / hold / reject</td></tr><tr><td>Komentari</td><td>draft</td><td>edit / approve</td></tr><tr><td>Izvješća</td><td>public-safe check</td><td>approve / hold</td></tr><tr><td>Procedure</td><td>review</td><td>approve / reject</td></tr><tr><td>Tržišta</td><td>read-only snapshot</td><td>review / cite / link</td></tr></tbody></table>
 </section>
 <section id="publications" class="gnk-panel">
 <h2>News / publications</h2>
-<p>RSS source registry, 10 journalist-workera, draft queue, komentari, financijska i druga izvješća, te public-safe publish queue.</p>
+<p>RSS source registry, 10 journalist-workera, draft queue, komentari, financijska i druga izvješća, procedure projekata, tržišni signali i public-safe publish queue.</p>
+</section>
+<section id="markets" class="gnk-panel">
+<h2>Markets</h2>
+<p>Tržišta su zaseban dio THE CODE OS-a. Public stranica `/markets/` prikazuje kategorije, a planirani read-only bridge endpoint je `/api/markets/snapshot`.</p>
+<a class="gnk-btn gold" href="/markets/">Public markets</a>
+</section>
+<section id="backends" class="gnk-panel">
+<h2>19 backend modula</h2>
+<p>U postojećem auth layeru je pronađeno 15 modula. Registry dodaje 4 missing public bridge modula: public status, markets snapshot, workers public results i approval public decisions.</p>
+<a class="gnk-btn gold" href="/data/backend-modules-registry.json">Backend registry JSON</a>
 </section>
 <section id="procedures" class="gnk-panel">
 <h2>Project procedures</h2>
 <p>Svaka procedura treba imati projektni kod, naziv, firmu, državu, grad, odgovornu funkciju, THE CODE sekciju, review status i audit trail.</p>
 </section>
 <section class="gnk-panel">
-<h2>Token / sigurnost</h2>
-<p>Token ne smije biti hardkodiran, prikazan u URL-u, spremljen u public HTML, JS ili localStorage. Ova stranica pretpostavlja postojeći zaštićeni admin/session sloj i ne uvodi novi secret flow.</p>
-<p class="gnk-note">Sljedeći backend korak: povezati read-only API-je za status, queue i audit, zatim odvojeno dodati kontrolirane approve/hold/reject akcije.</p>
+<h2>Sigurnost</h2>
+<p>Pristupni podaci ne smiju biti hardkodirani, prikazani u URL-u, spremljeni u public HTML, JS ili lokalnu pohranu. Ova stranica pretpostavlja postojeći zaštićeni admin/session sloj i ne uvodi novi secret flow.</p>
+<p class="gnk-note">Sljedeći backend korak: povezati read-only API-je za status, queue, markets snapshot i audit, zatim odvojeno dodati kontrolirane approve/hold/reject akcije.</p>
 </section>
 <footer class="gnk-footer">GNK ASG THE CODE OS Admin — protected shell only; no deploy, no mail, no campaign action.</footer>
 </main>
