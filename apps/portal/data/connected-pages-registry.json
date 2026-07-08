@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "version": "GNK_ASG_CONNECTED_PAGES_REGISTRY_V1_20260708",
+  "uiAsset": "/assets/connected-ui-v1.css?v=20260708-1",
+  "menu": [
+    {"label": "THE CODE", "href": "/the-code-os/", "public": true},
+    {"label": "Vijesti", "href": "/news/", "public": true},
+    {"label": "Worker kontakt", "href": "/worker-contact/", "public": true},
+    {"label": "Kontakt", "href": "/contact/", "public": true},
+    {"label": "Admin", "href": "/admin-center/", "public": false}
+  ],
+  "pages": [
+    {"id": "the-code-os", "path": "/the-code-os/", "title": "THE CODE OS", "status": "added_in_this_branch", "style": "connected-ui-v1"},
+    {"id": "news", "path": "/news/", "title": "Vijesti", "status": "must_adopt_connected_ui", "style": "connected-ui-v1"},
+    {"id": "worker-contact", "path": "/worker-contact/", "title": "Worker kontakt", "status": "pending_after_contact_pr_merge", "style": "connected-ui-v1"},
+    {"id": "contact", "path": "/contact/", "title": "Kontakt", "status": "must_adopt_connected_ui", "style": "connected-ui-v1"},
+    {"id": "email-status", "path": "/email-status", "title": "Email status", "status": "protected_ui", "style": "connected-ui-v1"},
+    {"id": "campaign-mailer", "path": "/campaign-mailer/", "title": "Campaign mailer", "status": "protected_ui", "style": "connected-ui-v1"}
+  ],
+  "rules": {
+    "publicSafeOnly": true,
+    "sharedMenuRequired": true,
+    "sharedCardStyleRequired": true,
+    "adminLinksProtected": true,
+    "noSecretsInPublicHtml": true
+  }
+}
