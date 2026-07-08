@@ -1,0 +1,67 @@
+{
+  "publicDisplayMode": "summary_and_downloads",
+  "currency": "EUR",
+  "rules": {
+    "excludedMetrics": [
+      "ROI",
+      "ROA",
+      "Return on Investment",
+      "Return on Assets"
+    ],
+    "groupDisclosureLabel": "management-certified / internally group-reviewed / Colorado public disclosure filing",
+    "asgDisclosureLabel": "audited financial statements 2025 / HSFI"
+  },
+  "gnkDinamoLtdGroup2025": {
+    "revenue": 4704574873.45,
+    "ebitdaEstimated": 1652475560.0,
+    "ebitdaMarginPercent": 35.13,
+    "netIncome": 982475560.0,
+    "netMarginPercent": 20.88,
+    "totalAssets": 3483004916.04,
+    "equityAndReserves": 3413969339.0,
+    "totalLiabilities": 69035577.04,
+    "leverageRatioPercent": 1.98,
+    "equityRatioPercent": 98.02,
+    "softwareAssets": 277600000.0
+  },
+  "gnkAsgDoo2025": {
+    "businessRevenue": 504001681.97,
+    "totalRevenue": 504001681.97,
+    "totalExpenses": 503980097.81,
+    "profitBeforeTax": 21584.16,
+    "netProfit": 16076.47,
+    "ebitdaCalculated": 22409859.66,
+    "ebitdaMarginPercentCalculated": 4.45,
+    "totalAssets": 46396925.72,
+    "equityAndReserves": 46212425.18,
+    "shortTermLiabilities": 184500.54,
+    "longTermLiabilities": 0.0,
+    "totalLiabilities": 184500.54,
+    "equityRatioPercentCalculated": 99.6,
+    "liabilityRatioPercentCalculated": 0.4,
+    "intangibleSoftwareIpAssets": 30000000.0
+  },
+  "ytd2026Tracker": {
+    "asOf": "2026-06-29",
+    "status": "pending exact daily source import",
+    "statement": "YTD 2026 reached almost FY2025 revenue level with remaining gap below 2%, once exact daily report source is attached.",
+    "requiredWorkerModules": [
+      "/api/reports/daily-revenue",
+      "/api/reports/revenue-chart",
+      "/api/reports/finance-kpi",
+      "/api/reports/liabilities",
+      "/api/reports/ebitda",
+      "/api/reports/run-rate-2026"
+    ]
+  },
+  "downloads": [
+    {
+      "label": "Download GNK DINAMO Ltd Group 2025 Report",
+      "href": "/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf"
+    },
+    {
+      "label": "Download GNK ASG d.o.o. Audited Financial Statements 2025",
+      "href": "/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf"
+    }
+  ]
+}
