@@ -10,6 +10,7 @@ Review and repair the public contact form flow for:
 
 - `/contact/`
 - `/en/contact/`
+- `/worker-contact/`
 - `/api/contact-submit`
 - `/api/contact`
 
@@ -37,6 +38,7 @@ The backend attempts notification only when `CONTACT_FORM_LIVE=true` and the Clo
 
 1. The UI says the message is routed to the selected department, but the backend previously sent notification to a single `CONTACT_NOTIFY_TO` / `CONTACT_FORM_NOTIFY_TO` / fallback address. The selected `mailbox` was recorded but not used as the primary routing address.
 2. A real browser `FormData` submission can include an empty file-input entry for `pdf` even when the user attached no file. The backend must not reject an otherwise valid contact request because an empty upload placeholder exists.
+3. The portal needs a public worker-code contact path where only first name + surname initial, city, country, company and position are visible. Full surnames, personal worker email addresses and secrets must not be public.
 
 ## Fix applied
 
@@ -60,6 +62,24 @@ Added mailbox routing map:
 Notification now goes to the selected mailbox route plus any configured `CONTACT_NOTIFY_TO` / `CONTACT_FORM_NOTIFY_TO` addresses. Mandatory copy is kept separately through `CONTACT_MANDATORY_BCC` or `MAIL_MANDATORY_BCC`.
 
 Upload handling now ignores empty file-input placeholders and validates real PDF metadata by MIME type or `.pdf` filename. This keeps the public form usable when no attachment is provided, while still rejecting non-PDF attachments.
+
+Added worker-code contact page:
+
+`apps/portal/worker-contact/index.html`
+
+Added worker-code resolver module:
+
+`workers/gnk-asg-direct-operator/src/worker-contact-directory-v1.js`
+
+Worker-code public display format:
+
+- `GNK_57698`
+- `Tajana K.`
+- Zagreb
+- Kontakt koordinator
+- GNK ASG d.o.o.
+
+The public page injects worker code, display name, city, country, company and position into the contact message body and submits through `/api/contact-submit` with mailbox `sefic`.
 
 Response now includes the resolved mailbox route for audit.
 
