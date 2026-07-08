@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GNK ASG Email Status Center</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="googlebot" content="noindex,nofollow,noarchive">
+<style>
+:root{color-scheme:dark;--bg:#050814;--panel:#0b1224;--line:rgba(214,173,79,.30);--gold:#f0cc6a;--text:#f8fafc;--muted:#aab4c7;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 16% -12%,#213b66 0,#050814 46%,#02040a 100%);color:var(--text);font-family:Inter,Arial,sans-serif}.wrap{width:min(1280px,94vw);margin:0 auto;padding:24px 0 42px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}.brand{display:flex;gap:13px;align-items:center}.brand img{width:88px;max-height:52px;object-fit:contain;padding:6px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.96)}h1{margin:0;color:var(--gold);font:700 clamp(30px,4vw,52px)/1.03 Georgia,serif}p{color:var(--muted);line-height:1.5}.actions,.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.btn,.tab{border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.07);color:#fff;font-weight:950;letter-spacing:.04em;text-transform:uppercase;padding:10px 13px;cursor:pointer;font-size:11px;text-decoration:none}.btn.gold,.tab.active{background:linear-gradient(135deg,#b98b2d,#f4d37a);color:#07101f}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}.card,.panel{border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,rgba(16,26,49,.94),rgba(8,13,28,.96));padding:15px}.card b{display:block;color:var(--gold);font-size:12px;text-transform:uppercase;letter-spacing:.09em}.card strong{display:block;font-size:30px;margin-top:6px}.small{font-size:12px;color:var(--muted)}.ok{color:#bbf7d0}.warn{color:#fde68a}.bad{color:#fecaca}.list{display:grid;gap:9px}.item{border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.045);padding:12px}.item h3{margin:.1rem 0 .35rem;color:#fff}.meta{display:flex;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:12px}.pill{display:inline-flex;border:1px solid rgba(34,197,94,.36);border-radius:999px;color:#86efac;padding:3px 8px;font-size:10px;font-weight:950;text-transform:uppercase}.pill.warn{border-color:rgba(245,158,11,.42);color:#fde68a}.pill.bad{border-color:rgba(239,68,68,.38);color:#fca5a5}.raw{white-space:pre-wrap;word-break:break-word;max-height:320px;overflow:auto;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.045);padding:12px;font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;color:#dbeafe}.toolbar{display:grid;grid-template-columns:1fr auto;gap:8px;margin:12px 0}input{width:100%;border:1px solid var(--line);border-radius:12px;background:#f8fafc;color:#07101f;padding:11px;font:inherit;outline:none}@media(max-width:860px){.top{display:block}.grid{grid-template-columns:1fr 1fr}.toolbar{grid-template-columns:1fr}.brand img{width:70px}}@media(max-width:520px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="top">
+    <div class="brand"><img src="/assets/brand/media-kit/GNK_ASG_logo_gold_transparent.png" alt="GNK ASG"><div><h1>Email Status Center</h1><p>Protected read-only pregled za Campaign Mailer, Mail Studio, Inbox, Sent, Outbox i provider readiness. Ova stranica ne šalje mailove.</p></div></div>
+    <div class="actions"><a class="btn" id="backLink" href="/admin-center/">Back</a><a class="btn" href="/mail-studio/">Mail Studio</a><a class="btn" href="/campaign-mailer/">Campaign Mailer</a><button class="btn gold" id="refresh" type="button">Refresh</button></div>
+  </section>
+  <section class="grid" aria-label="Email status summary">
+    <div class="card"><b>Provider ready</b><strong id="providerReady">—</strong><span class="small" id="providerMode">Loading</span></div>
+    <div class="card"><b>Sent</b><strong id="sentCount">0</strong><span class="small">mail:center:sent</span></div>
+    <div class="card"><b>Outbox</b><strong id="outboxCount">0</strong><span class="small">mail:center:outbox</span></div>
+    <div class="card"><b>Inbox</b><strong id="inboxCount">0</strong><span class="small">mail:center:inbox</span></div>
+  </section>
+  <section class="panel">
+    <div class="tabs"><button class="tab active" data-box="all">All</button><button class="tab" data-box="status">Status</button><button class="tab" data-box="sent">Sent</button><button class="tab" data-box="outbox">Outbox</button><button class="tab" data-box="inbox">Inbox</button><button class="tab" data-box="sync">Mail Sync</button></div>
+    <div class="toolbar"><input id="search" placeholder="Search subject, recipient, status, source"><button class="btn" id="clearSearch" type="button">Clear</button></div>
+    <div id="notice" class="small">Loading…</div>
+  </section>
+  <section class="panel"><div id="content" class="list"></div></section>
+  <section class="panel"><h2 style="color:var(--gold);margin-top:0">Runtime output</h2><div id="raw" class="raw">No response yet.</div></section>
+</main>
+<script>
+(()=>{
+'use strict';
+const VERSION='GNK_ASG_EMAIL_STATUS_CENTER_V1_20260708';
+const qs=new URLSearchParams(location.search);
+const state={box:(qs.get('source')||'all').toLowerCase(),search:'',status:null,sent:[],outbox:[],inbox:[],sync:null};
+const $=id=>document.getElementById(id);
+const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const raw=data=>{$('raw').textContent=JSON.stringify(data,null,2)};
+const setText=(id,value)=>{const node=$(id);if(node)node.textContent=String(value??'')};
+function safeBack(){const from=qs.get('from')||'/admin-center/';try{const u=new URL(from,location.origin);return u.origin===location.origin?u.pathname+u.search+u.hash:'/admin-center/'}catch{return'/admin-center/'}}
+function pill(value){const v=String(value||'UNKNOWN').toUpperCase();const cls=/FAIL|ERROR|MISSING|LOCKED|FALSE|NO/.test(v)?'bad':/PARTIAL|PENDING|RECORDED|REVIEW|TEST|WARN/.test(v)?'warn':'';return `<span class="pill ${cls}">${esc(v)}</span>`}
+async function getJson(url){const response=await fetch(url,{credentials:'same-origin',cache:'no-store',headers:{accept:'application/json'}});const text=await response.text();let data;try{data=JSON.parse(text)}catch{data={raw:text}};if(response.status===401)throw new Error('Unauthorized: open /admin-login/ first, then return here.');if(!response.ok)throw new Error(data.error||data.message||`HTTP ${response.status}`);return data}
+async function load(){setText('notice','Loading protected email status…');try{const [status,sent,outbox,inbox,sync]=await Promise.allSettled([getJson('/api/mail-center/status'),getJson('/api/mail-center/sent'),getJson('/api/mail-center/outbox'),getJson('/api/mail-center/inbox'),getJson('/api/mail-sync/health')]);state.status=status.status==='fulfilled'?status.value:null;state.sent=sent.status==='fulfilled'?(sent.value.items||[]):[];state.outbox=outbox.status==='fulfilled'?(outbox.value.items||[]):[];state.inbox=inbox.status==='fulfilled'?(inbox.value.items||[]):[];state.sync=sync.status==='fulfilled'?sync.value:null;const errors=[status,sent,outbox,inbox,sync].filter(x=>x.status==='rejected').map(x=>String(x.reason?.message||x.reason));if(state.status){setText('providerReady',state.status.providerReady?'YES':'NO');$('providerReady').className=state.status.providerReady?'ok':'bad';setText('providerMode',`mode: ${state.status.mode||'unknown'} · live: ${state.status.liveSendEnabled?'true':'false'}`);setText('sentCount',state.status.sentCount??state.sent.length);setText('outboxCount',state.status.outboxCount??state.outbox.length);setText('inboxCount',state.status.inboxCount??state.inbox.length)}else{setText('providerReady','ERR');$('providerReady').className='bad';setText('providerMode','status endpoint unavailable')}setText('notice',errors.length?`Loaded with warnings: ${errors.join(' | ')}`:`Loaded. ${VERSION}. Read-only; no mail action executed.`);raw({version:VERSION,status:state.status,sentCount:state.sent.length,outboxCount:state.outbox.length,inboxCount:state.inbox.length,sync:state.sync,errors});render()}catch(error){setText('notice',error.message);$('content').innerHTML=`<div class="item"><h3>Unable to load Email Status</h3><p class="bad">${esc(error.message)}</p><p class="small"><a class="btn gold" href="/admin-login/?next=${encodeURIComponent(location.pathname+location.search)}">Open secure login</a></p></div>`;raw({ok:false,error:error.message,version:VERSION})}}
+function allItems(){const box=state.box;if(box==='sent')return state.sent.map(x=>({...x,_box:'sent'}));if(box==='outbox')return state.outbox.map(x=>({...x,_box:'outbox'}));if(box==='inbox')return state.inbox.map(x=>({...x,_box:'inbox'}));if(box==='status')return [{id:'provider-status',_box:'status',subject:'Provider / readiness status',status:state.status?.providerReady?'READY':'NOT_READY',createdAt:state.status?.updatedAt,text:JSON.stringify(state.status||{},null,2)}];if(box==='sync')return [{id:'mail-sync-health',_box:'sync',subject:'Mail Sync health',status:state.sync?.ok?'READY':'NOT_READY',createdAt:new Date().toISOString(),text:JSON.stringify(state.sync||{},null,2)}];return [...state.sent.map(x=>({...x,_box:'sent'})),...state.outbox.map(x=>({...x,_box:'outbox'})),...state.inbox.map(x=>({...x,_box:'inbox'}))]}
+function hay(item){return JSON.stringify(item).toLowerCase()}
+function subject(item){return item.subject||item.title||item.id||'(no subject)'}
+function recipients(item){const to=Array.isArray(item.to)?item.to.join(', '):String(item.to||'');const cc=Array.isArray(item.cc)?item.cc.join(', '):String(item.cc||'');return [to,cc].filter(Boolean).join(' · ')}
+function render(){document.querySelectorAll('.tab').forEach(btn=>btn.classList.toggle('active',btn.dataset.box===state.box));const query=state.search.toLowerCase();const items=allItems().filter(item=>!query||hay(item).includes(query));if(!items.length){$('content').innerHTML='<div class="item"><h3>No records</h3><p class="small">No matching email records in selected source.</p></div>';return}$('content').innerHTML=items.map(item=>`<article class="item"><div class="meta"><span>${esc(item._box||'mail')}</span>${pill(item.status||item.delivery?.status||item.delivery?.reason||'record')}</div><h3>${esc(subject(item))}</h3><div class="meta"><span>${esc(item.from||item.fromEmail||item.fromName||'')}</span><span>${esc(recipients(item))}</span><span>${esc(item.createdAt||item.updatedAt||item.sentAt||'')}</span></div><p class="small">${esc(item.message||item.text||item.plainText||item.source||item.delivery?.reason||'No preview available.').slice(0,900)}</p></article>`).join('')}
+function bind(){const back=$('backLink');if(back)back.href=safeBack();document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{state.box=btn.dataset.box;render()}));$('refresh')?.addEventListener('click',load);$('clearSearch')?.addEventListener('click',()=>{state.search='';$('search').value='';render()});$('search')?.addEventListener('input',event=>{state.search=event.target.value||'';render()})}
+bind();document.documentElement.dataset.gnkEmailStatus=VERSION;load();
+})();
+</script>
+</body>
+</html>
