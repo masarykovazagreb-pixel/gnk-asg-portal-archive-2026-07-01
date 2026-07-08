@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>GNK ASG | THE CODE</title>
-<meta name="description" content="GNK ASG portal — THE CODE, tržišta, vijesti, objave, procedure projekata, worker kontakt i centralni admin ulaz.">
+<meta name="description" content="GNK ASG portal — THE CODE, odbrojavanje do New Yorka, tržišta, vijesti, objave, procedure projekata, worker kontakt i centralni admin ulaz.">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <link rel="stylesheet" href="/assets/connected-ui-v1.css?v=20260708-1">
+<style>.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.count{border:1px solid rgba(240,204,106,.32);border-radius:18px;background:rgba(255,255,255,.06);padding:14px;text-align:center}.count strong{display:block;color:var(--gnk-gold);font-size:34px;line-height:1}.count span{display:block;margin-top:6px;color:var(--gnk-muted);font-size:11px;text-transform:uppercase;letter-spacing:.12em}.tag{display:inline-flex;margin:3px;padding:5px 9px;border-radius:999px;border:1px solid rgba(240,204,106,.35);color:var(--gnk-gold);font-size:11px;font-weight:950;text-transform:uppercase}@media(max-width:900px){.countdown{display:block}.count{margin:10px 0}}</style>
 </head>
 <body>
 <header class="gnk-topbar">
@@ -27,6 +28,8 @@
 <p class="gnk-kicker">GNK ASG connected portal</p>
 <h1 class="gnk-title">THE CODE</h1>
 <p>Ulaz u povezani sustav za THE CODE projekt, tržišta, vijesti, objave, procedure projekata, worker kodove i centralni kontakt.</p>
+<p><span class="tag">New York</span><span class="tag">6–8 Oct 2026</span><span class="tag">7 Oct 2026 — 11:30 ET</span></p>
+<div class="countdown" aria-label="Odbrojavanje do THE CODE New York"><div class="count"><strong id="cd-days">—</strong><span>dana</span></div><div class="count"><strong id="cd-hours">—</strong><span>sati</span></div><div class="count"><strong id="cd-minutes">—</strong><span>minuta</span></div><div class="count"><strong id="cd-seconds">—</strong><span>sekundi</span></div></div>
 <a class="gnk-btn gold" href="/the-code-os/">Otvori THE CODE OS</a>
 <a class="gnk-btn" href="/markets/">Tržišta</a>
 <a class="gnk-btn" href="/worker-contact/">Kontakt po kodu</a>
@@ -42,6 +45,7 @@
 </section>
 <footer class="gnk-footer">GNK ASG portal — unified connected UI shell.</footer>
 </main>
+<script>(function(){var target=new Date('2026-10-07T15:30:00Z').getTime();function pad(n){return String(Math.max(0,Math.floor(n))).padStart(2,'0')}function tick(){var diff=target-Date.now();if(diff<0)diff=0;var sec=Math.floor(diff/1000),days=Math.floor(sec/86400);sec-=days*86400;var hours=Math.floor(sec/3600);sec-=hours*3600;var minutes=Math.floor(sec/60),seconds=sec-minutes*60;var d=document.getElementById('cd-days'),h=document.getElementById('cd-hours'),m=document.getElementById('cd-minutes'),s=document.getElementById('cd-seconds');if(d)d.textContent=String(days);if(h)h.textContent=pad(hours);if(m)m.textContent=pad(minutes);if(s)s.textContent=pad(seconds)}tick();setInterval(tick,1000)})();</script>
 <script src="/assets/gallery-bootstrap.js?v=20260626-v3"></script>
 <script src="/assets/gallery-brand-safety.js?v=20260626-v1"></script>
 </body>
