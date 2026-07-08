@@ -107,8 +107,8 @@ try {
 
   const manualMail = repoText('workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js');
   const confirmCheck = indexOfOrFail(manualMail, "clean(body.confirm)!=='SEND_MAIL'", 'manual mail requires SEND_MAIL confirmation');
-  const liveCheck = indexOfOrFail(manualMail, 'MAIL_MANUAL_LIVE', 'manual mail requires MAIL_MANUAL_LIVE gate');
-  const bindingCheck = indexOfOrFail(manualMail, 'env.EMAIL?.send', 'manual mail requires Email binding');
+  const liveCheck = indexOfOrFail(manualMail, '!boolEnv(env.MAIL_MANUAL_LIVE)', 'manual mail requires MAIL_MANUAL_LIVE gate inside send path');
+  const bindingCheck = indexOfOrFail(manualMail, '!env.EMAIL?.send', 'manual mail requires Email binding inside send path');
   const sendCall = indexOfOrFail(manualMail, 'env.EMAIL.send(payload)', 'manual mail has a single explicit provider send call');
   assert(confirmCheck < liveCheck && liveCheck < bindingCheck && bindingCheck < sendCall, 'mail send safety gate order is confirmation -> live flag -> binding -> send');
   contains(manualMail, 'MAX_RECIPIENTS=25', 'manual mail caps recipients at 25');
