@@ -1,0 +1,22 @@
+name: Public Content Guard
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'docs/**'
+      - 'scripts/guard-public-content.mjs'
+      - '.github/workflows/public-content-guard.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run public content guard
+        run: node scripts/guard-public-content.mjs
