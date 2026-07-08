@@ -33,9 +33,10 @@ The backend records submissions to KV keys:
 
 The backend attempts notification only when `CONTACT_FORM_LIVE=true` and the Cloudflare Email binding is present and usable.
 
-## Problem found
+## Problems found
 
-The UI says the message is routed to the selected department, but the backend previously sent notification to a single `CONTACT_NOTIFY_TO` / `CONTACT_FORM_NOTIFY_TO` / fallback address. The selected `mailbox` was recorded but not used as the primary routing address.
+1. The UI says the message is routed to the selected department, but the backend previously sent notification to a single `CONTACT_NOTIFY_TO` / `CONTACT_FORM_NOTIFY_TO` / fallback address. The selected `mailbox` was recorded but not used as the primary routing address.
+2. A real browser `FormData` submission can include an empty file-input entry for `pdf` even when the user attached no file. The backend must not reject an otherwise valid contact request because an empty upload placeholder exists.
 
 ## Fix applied
 
@@ -57,6 +58,8 @@ Added mailbox routing map:
 - `assistant` → `assistant@gnk-asg.hr`
 
 Notification now goes to the selected mailbox route plus any configured `CONTACT_NOTIFY_TO` / `CONTACT_FORM_NOTIFY_TO` addresses. Mandatory copy is kept separately through `CONTACT_MANDATORY_BCC` or `MAIL_MANDATORY_BCC`.
+
+Upload handling now ignores empty file-input placeholders and validates real PDF metadata by MIME type or `.pdf` filename. This keeps the public form usable when no attachment is provided, while still rejecting non-PDF attachments.
 
 Response now includes the resolved mailbox route for audit.
 
