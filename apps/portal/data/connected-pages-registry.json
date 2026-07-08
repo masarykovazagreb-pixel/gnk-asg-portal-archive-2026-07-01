@@ -1,22 +1,33 @@
 {
   "ok": true,
-  "version": "GNK_ASG_CONNECTED_PAGES_REGISTRY_V1_20260708",
+  "version": "GNK_ASG_CONNECTED_PAGES_REGISTRY_V2_20260708_MARKETS_BACKENDS",
   "uiAsset": "/assets/connected-ui-v1.css?v=20260708-1",
   "menu": [
     {"label": "THE CODE", "href": "/the-code-os/", "public": true},
+    {"label": "Tržišta", "href": "/markets/", "public": true},
     {"label": "Vijesti", "href": "/news/", "public": true},
     {"label": "Worker kontakt", "href": "/worker-contact/", "public": true},
     {"label": "Kontakt", "href": "/contact/", "public": true},
     {"label": "Admin", "href": "/admin-center/", "public": false}
   ],
   "pages": [
+    {"id": "home", "path": "/", "title": "GNK ASG / THE CODE", "status": "updated_in_this_branch", "style": "connected-ui-v1"},
     {"id": "the-code-os", "path": "/the-code-os/", "title": "THE CODE OS", "status": "added_in_this_branch", "style": "connected-ui-v1"},
+    {"id": "markets", "path": "/markets/", "title": "Tržišta", "status": "updated_in_this_branch", "style": "connected-ui-v1"},
+    {"id": "backend-modules-registry", "path": "/data/backend-modules-registry.json", "title": "19 backend module registry", "status": "added_in_this_branch", "style": "json"},
     {"id": "news", "path": "/news/", "title": "Vijesti", "status": "must_adopt_connected_ui", "style": "connected-ui-v1"},
     {"id": "worker-contact", "path": "/worker-contact/", "title": "Worker kontakt", "status": "pending_after_contact_pr_merge", "style": "connected-ui-v1"},
     {"id": "contact", "path": "/contact/", "title": "Kontakt", "status": "must_adopt_connected_ui", "style": "connected-ui-v1"},
     {"id": "email-status", "path": "/email-status", "title": "Email status", "status": "protected_ui", "style": "connected-ui-v1"},
     {"id": "campaign-mailer", "path": "/campaign-mailer/", "title": "Campaign mailer", "status": "protected_ui", "style": "connected-ui-v1"}
   ],
+  "backend": {
+    "registry": "/data/backend-modules-registry.json",
+    "targetModuleCount": 19,
+    "existingInAuthLayer": 15,
+    "missingPublicBridgeModules": 4,
+    "marketsSnapshotPlannedRoute": "/api/markets/snapshot"
+  },
   "rules": {
     "publicSafeOnly": true,
     "sharedMenuRequired": true,
