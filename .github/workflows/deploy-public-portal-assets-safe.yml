@@ -58,6 +58,11 @@ jobs:
           grep -q 'GNK_ASG_logo_gold_transparent.png' workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
           grep -q 'AUTO_REPLY_PREVIEW_PATH' workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
           grep -q 'CASE_LOOKUP_PATH' workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          grep -q 'GNK_ASG_UNIFIED_AUTH_V22_20260709_MAIL_STUDIO_V27_AUTO_REPLY_GOLD_SIGNATURE' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          grep -q "mailStudioV27" workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          grep -q "authenticated-v27-asset-first" workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          grep -q "inactive-v26-retired" workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          ! grep -q "mailStudioV26\|mail-studio-v26-bcc-utf8-hotfix.js\|GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX" workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
           grep -q '"excludedMetrics"' apps/portal/data/finance-kpi-2025.json
           grep -q '"ebitdaEstimated"' apps/portal/data/finance-kpi-2025.json
           grep -q '"shortTermLiabilities"' apps/portal/data/finance-kpi-2025.json
