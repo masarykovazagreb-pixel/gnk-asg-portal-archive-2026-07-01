@@ -32,6 +32,7 @@ jobs:
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
           test -s apps/portal/the-code/index.html
+          test -s apps/portal/the-code/media-memorandum/index.html
           test -s apps/portal/mail-studio/index.html
           test -s apps/portal/assets/mail-studio-webmail-v27.js
           test -s apps/portal/assets/mail-studio-auto-reply-panel-v1.js
@@ -43,6 +44,11 @@ jobs:
           test -s workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
           test -s workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
 
+          grep -q 'THE CODE is now the front door' apps/portal/index.html
+          grep -q '/the-code/media-memorandum/' apps/portal/index.html
+          grep -q '/media-application/?lang=en' apps/portal/index.html
+          grep -q 'Official Media Invitation and Detailed Memorandum' apps/portal/the-code/media-memorandum/index.html
+          grep -q '/media-application/?lang=en' apps/portal/the-code/media-memorandum/index.html
           grep -q "google-site-verification: google46686328e30c759f.html" apps/portal/google46686328e30c759f.html
           grep -q 'mail-studio-webmail-v27.js' apps/portal/mail-studio/index.html
           grep -q 'Jezik / language' apps/portal/mail-studio/index.html
@@ -65,7 +71,9 @@ jobs:
           grep -q 'GNK_ASG_logo_gold_transparent.png' workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
           grep -q 'AUTO_REPLY_PREVIEW_PATH' workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
           grep -q 'CASE_LOOKUP_PATH' workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
-          grep -q 'GNK_ASG_UNIFIED_AUTH_V24_20260709_MAIL_REFERENCE_CODE' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          grep -q 'GNK_ASG_UNIFIED_AUTH_V25_20260709_ROOT_INDEX_ASSET_FIRST' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          grep -q 'static-asset-index-first' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          grep -q 'x-gnk-asg-root-routing' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
           grep -q 'mail-studio-auto-reply-panel-v1.js' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
           grep -q 'mail-studio-reference-code-v1.js' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
           grep -q 'x-gnk-asg-reference-code' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
@@ -184,6 +192,8 @@ jobs:
           }
 
           check_contains "Google verification file" "https://gnk-asg.hr/google46686328e30c759f.html?cb=${cb}" "google-site-verification: google46686328e30c759f.html"
+          check_contains "Root THE CODE front door" "https://gnk-asg.hr/?cb=${cb}" "THE CODE is now the front door"
+          check_contains "THE CODE media memorandum" "https://gnk-asg.hr/the-code/media-memorandum/?cb=${cb}" "Official Media Invitation and Detailed Memorandum"
           check_contains "THE CODE page" "https://gnk-asg.hr/the-code/?cb=${cb}" "THE CODE"
           check_contains "Mail Studio v27 runtime" "https://gnk-asg.hr/assets/mail-studio-webmail-v27.js?cb=${cb}" "GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP"
           check_contains "Mail Studio auto reply panel" "https://gnk-asg.hr/assets/mail-studio-auto-reply-panel-v1.js?cb=${cb}" "GNK_ASG_MAIL_STUDIO_AUTO_REPLY_PANEL_V1_20260709"
