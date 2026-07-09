@@ -4,10 +4,11 @@ import {
   VERSION as INDEX_CONTRACT_INJECTION_VERSION
 } from './index-contract-injection-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V22_20260709_MAIL_STUDIO_V27_AUTO_REPLY_GOLD_SIGNATURE_${INDEX_CONTRACT_INJECTION_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V23_20260709_MAIL_STUDIO_AUTO_REPLY_UI_${INDEX_CONTRACT_INJECTION_VERSION}`;
 const MAIL_STUDIO_RUNTIME='GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP';
 const AUTO_REPLY_RUNTIME='GNK_ASG_AUTO_REPLY_CASE_CENTER_V1_20260709_PERSONALIZED_AI_SIGNATURES';
 const SIGNATURE_CONTRACT='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY';
+const AUTO_REPLY_PANEL='/assets/mail-studio-auto-reply-panel-v1.js?v=20260709-auto-reply-panel';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 
@@ -62,6 +63,12 @@ async function isAuthenticated(request,env,ctx){
   return response.status>=200&&response.status<300;
 }
 
+function injectAutoReplyPanel(html){
+  if(html.includes('mail-studio-auto-reply-panel-v1.js'))return html;
+  const script=`<script defer src="${AUTO_REPLY_PANEL}"></script>`;
+  return html.includes('</body>')?html.replace('</body>',`${script}</body>`):`${html}${script}`;
+}
+
 async function mailStudioV27(request,env){
   if(!env.ASSETS?.fetch)return null;
   const target=new URL('/mail-studio/index.html',request.url);
@@ -80,10 +87,11 @@ async function mailStudioV27(request,env){
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
   headers.set('x-gnk-asg-mail-studio-runtime',MAIL_STUDIO_RUNTIME);
   headers.set('x-gnk-asg-auto-reply-case-center',AUTO_REPLY_RUNTIME);
+  headers.set('x-gnk-asg-auto-reply-panel','GNK_ASG_MAIL_STUDIO_AUTO_REPLY_PANEL_V1_20260709');
   headers.set('x-gnk-asg-email-signature-contract',SIGNATURE_CONTRACT);
   headers.set('x-gnk-asg-signature-logo','gold');
   headers.set('x-robots-tag','noindex, nofollow, noarchive');
-  const html=await response.text();
+  const html=injectAutoReplyPanel(await response.text());
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -111,6 +119,7 @@ async function patchVersionResponse(request,response){
       mailStudioRuntime:MAIL_STUDIO_RUNTIME,
       mailStudioHotfix:'inactive-v26-retired',
       autoReplyCaseCenter:AUTO_REPLY_RUNTIME,
+      autoReplyPanel:'GNK_ASG_MAIL_STUDIO_AUTO_REPLY_PANEL_V1_20260709',
       emailSignatureContract:SIGNATURE_CONTRACT,
       signatureLogo:'gold',
       indexRouting:'worker-index-first',
