@@ -4,7 +4,8 @@ import {
   VERSION as INDEX_CONTRACT_INJECTION_VERSION
 } from './index-contract-injection-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V20_20260709_MAIL_STUDIO_V26_DIRECT_ASSET_${INDEX_CONTRACT_INJECTION_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V21_20260709_MAIL_STUDIO_BCC_UTF8_HOTFIX_${INDEX_CONTRACT_INJECTION_VERSION}`;
+const MAIL_STUDIO_HOTFIX='/assets/mail-studio-v26-bcc-utf8-hotfix.js?v=20260709-bcc-utf8';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 
@@ -20,7 +21,15 @@ async function assetPassthrough(request,env){
   if(!env.ASSETS?.fetch)return null;
   const response=await env.ASSETS.fetch(request);
   if(response.status===404)return null;
-  return stamp(response);
+  const headers=new Headers(response.headers);
+  const path=pathOf(request).toLowerCase();
+  if(path.endsWith('.js'))headers.set('content-type','application/javascript; charset=utf-8');
+  if(path.endsWith('.css'))headers.set('content-type','text/css; charset=utf-8');
+  headers.set('x-gnk-asg-auth-isolation',VERSION);
+  headers.set('x-gnk-index-contract-injection',INDEX_CONTRACT_INJECTION_VERSION);
+  headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
+  headers.set('x-content-type-options','nosniff');
+  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
 async function assetIndex(request,env,path){
@@ -68,8 +77,13 @@ async function mailStudioV26(request,env){
   headers.set('x-gnk-index-contract-injection',INDEX_CONTRACT_INJECTION_VERSION);
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
   headers.set('x-gnk-asg-mail-studio-runtime','GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX');
+  headers.set('x-gnk-asg-mail-studio-hotfix','GNK_ASG_MAIL_STUDIO_V26_BCC_UTF8_HOTFIX_20260709');
   headers.set('x-robots-tag','noindex, nofollow, noarchive');
-  return new Response(await response.text(),{status:response.status,statusText:response.statusText,headers});
+  let html=await response.text();
+  if(!html.includes('mail-studio-v26-bcc-utf8-hotfix.js')){
+    html=html.replace('</body>',`<script defer src="${MAIL_STUDIO_HOTFIX}"></script></body>`);
+  }
+  return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 
 async function patchVersionResponse(request,response){
@@ -94,6 +108,7 @@ async function patchVersionResponse(request,response){
       authIsolationVersion:VERSION,
       mailStudioRouting:'authenticated-v26-asset-first',
       mailStudioRuntime:'GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX',
+      mailStudioHotfix:'GNK_ASG_MAIL_STUDIO_V26_BCC_UTF8_HOTFIX_20260709',
       indexRouting:'worker-index-first',
       assetRouting:'asset-passthrough-first'
     },null,2),{status:response.status,statusText:response.statusText,headers});
