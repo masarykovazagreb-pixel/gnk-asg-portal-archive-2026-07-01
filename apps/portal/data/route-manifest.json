@@ -1,0 +1,107 @@
+{
+  "version": "GNK_ASG_ROUTE_MANIFEST_V1_20260709",
+  "origin": "https://gnk-asg.hr",
+  "deploymentPolicy": {
+    "safeWorkflow": "Deploy Public Portal Assets Safe",
+    "manualConfirmation": "DEPLOY_PUBLIC_PORTAL_SAFE",
+    "repeatGreenDeploys": "forbidden_without_new_relevant_change",
+    "dnsChangesAllowed": false,
+    "cloudflareRouteChangesAllowed": false,
+    "secretChangesAllowed": false,
+    "mailCampaignLaunchAllowed": false
+  },
+  "publicRoutes": [
+    {
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedMarkers": ["GNK ASG / GNK DINAMO Portal", "THE CODE"],
+      "purpose": "Croatian public index and portal entry"
+    },
+    {
+      "path": "/en/",
+      "expectedStatus": 200,
+      "expectedMarkers": ["THE CODE"],
+      "purpose": "English public entry; scheduled for full parity upgrade"
+    },
+    {
+      "path": "/the-code/",
+      "expectedStatus": 200,
+      "expectedMarkers": ["THE CODE", "New York", "45 Entities"],
+      "purpose": "Cinematic THE CODE public presentation"
+    },
+    {
+      "path": "/google46686328e30c759f.html",
+      "expectedStatus": 200,
+      "expectedMarkers": ["google-site-verification: google46686328e30c759f.html"],
+      "purpose": "Google verification file"
+    },
+    {
+      "path": "/data/finance-kpi-2025.json",
+      "expectedStatus": 200,
+      "expectedMarkers": ["ebitdaEstimated", "excludedMetrics", "shortTermLiabilities", "longTermLiabilities"],
+      "purpose": "Public finance KPI JSON"
+    },
+    {
+      "path": "/assets/mail-studio-webmail-v26.js",
+      "expectedStatus": 200,
+      "expectedMarkers": ["GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX"],
+      "purpose": "Mail Studio v26 runtime asset"
+    },
+    {
+      "path": "/assets/mail-studio-v26-bcc-utf8-hotfix.js",
+      "expectedStatus": 200,
+      "expectedMarkers": ["GNK_ASG_MAIL_STUDIO_V26_BCC_UTF8_HOTFIX_20260709", "beckuphome@gmail.com"],
+      "purpose": "Temporary Mail Studio BCC/UTF-8 runtime guard"
+    },
+    {
+      "path": "/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf",
+      "expectedStatus": 200,
+      "expectedMarkers": [],
+      "purpose": "GNK ASG audited financial statements PDF"
+    },
+    {
+      "path": "/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf",
+      "expectedStatus": 200,
+      "expectedMarkers": [],
+      "purpose": "GNK DINAMO Ltd consolidated financial report PDF"
+    }
+  ],
+  "protectedRoutes": [
+    "/admin-center/",
+    "/operator-dashboard/",
+    "/operator-mobile/",
+    "/mail-studio/",
+    "/campaign-mailer/",
+    "/email-status",
+    "/backend-status/",
+    "/security-center/"
+  ],
+  "protectedApiPrefixes": [
+    "/operator/",
+    "/api/operator-",
+    "/api/admin-",
+    "/api/mail-center/",
+    "/api/mail-sync",
+    "/api/studio-message",
+    "/api/campaign-mailer",
+    "/api/deployment",
+    "/api/media-registration-admin"
+  ],
+  "knownTechnicalDebt": [
+    {
+      "id": "mail-studio-source-bcc-cleanup",
+      "status": "open",
+      "description": "Legacy BCC remains in source HTML/runtime and is currently corrected by a runtime hotfix. Source should be aligned to beckuphome@gmail.com in a dedicated PR."
+    },
+    {
+      "id": "english-index-parity",
+      "status": "open",
+      "description": "English index is currently a minimal THE CODE entry and should be upgraded to match the Croatian public index structure."
+    },
+    {
+      "id": "front-module-split",
+      "status": "open",
+      "description": "Large inline public index should be split into stable CSS/JS/data modules after deploy stability is preserved."
+    }
+  ]
+}
