@@ -4,8 +4,10 @@ import {
   VERSION as INDEX_CONTRACT_INJECTION_VERSION
 } from './index-contract-injection-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V21_20260709_MAIL_STUDIO_BCC_UTF8_HOTFIX_${INDEX_CONTRACT_INJECTION_VERSION}`;
-const MAIL_STUDIO_HOTFIX='/assets/mail-studio-v26-bcc-utf8-hotfix.js?v=20260709-bcc-utf8';
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V22_20260709_MAIL_STUDIO_V27_AUTO_REPLY_GOLD_SIGNATURE_${INDEX_CONTRACT_INJECTION_VERSION}`;
+const MAIL_STUDIO_RUNTIME='GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP';
+const AUTO_REPLY_RUNTIME='GNK_ASG_AUTO_REPLY_CASE_CENTER_V1_20260709_PERSONALIZED_AI_SIGNATURES';
+const SIGNATURE_CONTRACT='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 
@@ -60,7 +62,7 @@ async function isAuthenticated(request,env,ctx){
   return response.status>=200&&response.status<300;
 }
 
-async function mailStudioV26(request,env){
+async function mailStudioV27(request,env){
   if(!env.ASSETS?.fetch)return null;
   const target=new URL('/mail-studio/index.html',request.url);
   const response=await env.ASSETS.fetch(new Request(target.toString(),{method:'GET',headers:request.headers}));
@@ -76,13 +78,12 @@ async function mailStudioV26(request,env){
   headers.set('x-gnk-asg-auth-isolation',VERSION);
   headers.set('x-gnk-index-contract-injection',INDEX_CONTRACT_INJECTION_VERSION);
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
-  headers.set('x-gnk-asg-mail-studio-runtime','GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX');
-  headers.set('x-gnk-asg-mail-studio-hotfix','GNK_ASG_MAIL_STUDIO_V26_BCC_UTF8_HOTFIX_20260709');
+  headers.set('x-gnk-asg-mail-studio-runtime',MAIL_STUDIO_RUNTIME);
+  headers.set('x-gnk-asg-auto-reply-case-center',AUTO_REPLY_RUNTIME);
+  headers.set('x-gnk-asg-email-signature-contract',SIGNATURE_CONTRACT);
+  headers.set('x-gnk-asg-signature-logo','gold');
   headers.set('x-robots-tag','noindex, nofollow, noarchive');
-  let html=await response.text();
-  if(!html.includes('mail-studio-v26-bcc-utf8-hotfix.js')){
-    html=html.replace('</body>',`<script defer src="${MAIL_STUDIO_HOTFIX}"></script></body>`);
-  }
+  const html=await response.text();
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -106,9 +107,12 @@ async function patchVersionResponse(request,response){
       wrapperEntryPoint:'src/index-unified-auth-v15.js',
       indexContractInjectionVersion:INDEX_CONTRACT_INJECTION_VERSION,
       authIsolationVersion:VERSION,
-      mailStudioRouting:'authenticated-v26-asset-first',
-      mailStudioRuntime:'GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX',
-      mailStudioHotfix:'GNK_ASG_MAIL_STUDIO_V26_BCC_UTF8_HOTFIX_20260709',
+      mailStudioRouting:'authenticated-v27-asset-first',
+      mailStudioRuntime:MAIL_STUDIO_RUNTIME,
+      mailStudioHotfix:'inactive-v26-retired',
+      autoReplyCaseCenter:AUTO_REPLY_RUNTIME,
+      emailSignatureContract:SIGNATURE_CONTRACT,
+      signatureLogo:'gold',
       indexRouting:'worker-index-first',
       assetRouting:'asset-passthrough-first'
     },null,2),{status:response.status,statusText:response.statusText,headers});
@@ -143,7 +147,7 @@ export default{
     const path=pathOf(request);
     if((request.method==='GET'||request.method==='HEAD')&&path==='/mail-studio'){
       if(await isAuthenticated(request,env,ctx)){
-        const response=await mailStudioV26(request,env);
+        const response=await mailStudioV27(request,env);
         if(response)return request.method==='HEAD'?new Response(null,{status:response.status,statusText:response.statusText,headers:response.headers}):response;
       }
     }
