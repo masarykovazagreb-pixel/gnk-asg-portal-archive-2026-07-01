@@ -4,7 +4,7 @@ import {
   VERSION as INDEX_CONTRACT_INJECTION_VERSION
 } from './index-contract-injection-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V24_20260709_MAIL_REFERENCE_CODE_${INDEX_CONTRACT_INJECTION_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V25_20260709_ROOT_INDEX_ASSET_FIRST_${INDEX_CONTRACT_INJECTION_VERSION}`;
 const MAIL_STUDIO_RUNTIME='GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP';
 const AUTO_REPLY_RUNTIME='GNK_ASG_AUTO_REPLY_CASE_CENTER_V1_20260709_PERSONALIZED_AI_SIGNATURES';
 const SIGNATURE_CONTRACT='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY';
@@ -50,6 +50,7 @@ async function assetIndex(request,env,path){
   headers.set('x-gnk-asg-auth-isolation',VERSION);
   headers.set('x-gnk-index-contract-injection',INDEX_CONTRACT_INJECTION_VERSION);
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
+  headers.set('x-gnk-asg-root-routing','static-asset-index-first');
   return new Response(await response.text(),{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -129,7 +130,8 @@ async function patchVersionResponse(request,response){
       referenceCode:'GNK_ASG_MAIL_STUDIO_REFERENCE_CODE_V1_20260709',
       emailSignatureContract:SIGNATURE_CONTRACT,
       signatureLogo:'gold',
-      indexRouting:'worker-index-first',
+      indexRouting:'static-asset-index-first',
+      rootRouting:'static-asset-index-first',
       assetRouting:'asset-passthrough-first'
     },null,2),{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
@@ -166,6 +168,10 @@ export default{
         const response=await mailStudioV27(request,env);
         if(response)return request.method==='HEAD'?new Response(null,{status:response.status,statusText:response.statusText,headers:response.headers}):response;
       }
+    }
+    if((request.method==='GET'||request.method==='HEAD')&&(path==='/'||path==='/en')){
+      const response=await assetIndex(request,env,path);
+      if(response)return request.method==='HEAD'?new Response(null,{status:response.status,statusText:response.statusText,headers:response.headers}):response;
     }
     if(request.method==='GET'&&path.startsWith('/assets/')){
       const response=await assetPassthrough(request,env);
