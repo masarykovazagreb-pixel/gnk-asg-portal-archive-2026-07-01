@@ -32,20 +32,33 @@ jobs:
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
           test -s apps/portal/the-code/index.html
+          test -s apps/portal/mail-studio/index.html
+          test -s apps/portal/assets/mail-studio-webmail-v26.js
           test -s apps/portal/google46686328e30c759f.html
           test -s apps/portal/data/finance-kpi-2025.json
           test -s apps/portal/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf
           test -s apps/portal/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf
 
           grep -q "google-site-verification: google46686328e30c759f.html" apps/portal/google46686328e30c759f.html
+          grep -q 'mail-studio-webmail-v26.js' apps/portal/mail-studio/index.html
+          grep -q 'Jezik / language' apps/portal/mail-studio/index.html
+          grep -q 'Subject / predmet' apps/portal/mail-studio/index.html
+          grep -q 'Message body / sadržaj poruke' apps/portal/mail-studio/index.html
+          grep -q 'GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX' apps/portal/assets/mail-studio-webmail-v26.js
+          grep -q 'hr:{' apps/portal/assets/mail-studio-webmail-v26.js
+          grep -q 'de:{' apps/portal/assets/mail-studio-webmail-v26.js
+          grep -q 'zh:{' apps/portal/assets/mail-studio-webmail-v26.js
           grep -q '"excludedMetrics"' apps/portal/data/finance-kpi-2025.json
           grep -q '"ebitdaEstimated"' apps/portal/data/finance-kpi-2025.json
           grep -q '"shortTermLiabilities"' apps/portal/data/finance-kpi-2025.json
           grep -q '"longTermLiabilities"' apps/portal/data/finance-kpi-2025.json
 
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          grep -q 'main = "src/index-unified-auth-v15.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'directory = "../../apps/portal"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'run_worker_first = true' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MAIL_MANUAL_LIVE = "true"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
 
       - name: Dry-run public Worker and assets deploy
         working-directory: workers/gnk-asg-direct-operator
@@ -67,6 +80,7 @@ jobs:
 
           curl --fail --silent --show-error "https://gnk-asg.hr/google46686328e30c759f.html?cb=${cb}" | grep -q "google-site-verification: google46686328e30c759f.html"
           curl --fail --silent --show-error "https://gnk-asg.hr/the-code/?cb=${cb}" | grep -q "THE CODE"
+          curl --fail --silent --show-error "https://gnk-asg.hr/assets/mail-studio-webmail-v26.js?cb=${cb}" | grep -q "GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX"
           curl --fail --silent --show-error "https://gnk-asg.hr/data/finance-kpi-2025.json?cb=${cb}" | grep -q "ebitdaEstimated"
 
           test "$(curl --silent --output /tmp/asg.pdf --write-out '%{http_code}' "https://gnk-asg.hr/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf?cb=${cb}")" = "200"

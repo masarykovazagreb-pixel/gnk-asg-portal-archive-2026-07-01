@@ -4,7 +4,7 @@ import {
   VERSION as INDEX_CONTRACT_INJECTION_VERSION
 } from './index-contract-injection-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V19_20260707_PRESERVE_LIVE_INDEX_ASSETS_FIRST_${INDEX_CONTRACT_INJECTION_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V20_20260709_MAIL_STUDIO_V26_DIRECT_ASSET_${INDEX_CONTRACT_INJECTION_VERSION}`;
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 
@@ -40,6 +40,38 @@ async function assetIndex(request,env,path){
   return new Response(await response.text(),{status:response.status,statusText:response.statusText,headers});
 }
 
+async function isAuthenticated(request,env,ctx){
+  const target=new URL('/api/operator-auth-check',request.url);
+  const check=new Request(target.toString(),{
+    method:'GET',
+    headers:request.headers,
+    redirect:'manual'
+  });
+  const response=await app.fetch(check,env,ctx);
+  return response.status>=200&&response.status<300;
+}
+
+async function mailStudioV26(request,env){
+  if(!env.ASSETS?.fetch)return null;
+  const target=new URL('/mail-studio/index.html',request.url);
+  const response=await env.ASSETS.fetch(new Request(target.toString(),{method:'GET',headers:request.headers}));
+  if(response.status===404)return null;
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.set('content-type','text/html; charset=utf-8');
+  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('pragma','no-cache');
+  headers.set('expires','0');
+  headers.set('vary','cookie');
+  headers.set('x-gnk-asg-auth-isolation',VERSION);
+  headers.set('x-gnk-index-contract-injection',INDEX_CONTRACT_INJECTION_VERSION);
+  headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
+  headers.set('x-gnk-asg-mail-studio-runtime','GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX');
+  headers.set('x-robots-tag','noindex, nofollow, noarchive');
+  return new Response(await response.text(),{status:response.status,statusText:response.statusText,headers});
+}
+
 async function patchVersionResponse(request,response){
   if(pathOf(request)!=='/data/portal-version.json'||response.status!==200)return response;
   const type=String(response.headers.get('content-type')||'').toLowerCase();
@@ -60,6 +92,8 @@ async function patchVersionResponse(request,response){
       wrapperEntryPoint:'src/index-unified-auth-v15.js',
       indexContractInjectionVersion:INDEX_CONTRACT_INJECTION_VERSION,
       authIsolationVersion:VERSION,
+      mailStudioRouting:'authenticated-v26-asset-first',
+      mailStudioRuntime:'GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX',
       indexRouting:'worker-index-first',
       assetRouting:'asset-passthrough-first'
     },null,2),{status:response.status,statusText:response.statusText,headers});
@@ -92,6 +126,12 @@ async function isolateLogin(response){
 export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
+    if((request.method==='GET'||request.method==='HEAD')&&path==='/mail-studio'){
+      if(await isAuthenticated(request,env,ctx)){
+        const response=await mailStudioV26(request,env);
+        if(response)return request.method==='HEAD'?new Response(null,{status:response.status,statusText:response.statusText,headers:response.headers}):response;
+      }
+    }
     if(request.method==='GET'&&path.startsWith('/assets/')){
       const response=await assetPassthrough(request,env);
       if(response)return response;
