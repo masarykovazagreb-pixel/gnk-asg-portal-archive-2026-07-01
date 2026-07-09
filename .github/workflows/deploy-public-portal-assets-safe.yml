@@ -38,6 +38,8 @@ jobs:
           test -s apps/portal/data/finance-kpi-2025.json
           test -s apps/portal/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf
           test -s apps/portal/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf
+          test -s workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
+          test -s workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
 
           grep -q "google-site-verification: google46686328e30c759f.html" apps/portal/google46686328e30c759f.html
           grep -q 'mail-studio-webmail-v27.js' apps/portal/mail-studio/index.html
@@ -51,12 +53,20 @@ jobs:
           grep -q 'hr:{' apps/portal/assets/mail-studio-webmail-v27.js
           grep -q 'de:{' apps/portal/assets/mail-studio-webmail-v27.js
           grep -q 'zh:{' apps/portal/assets/mail-studio-webmail-v27.js
+          grep -q 'GNK_ASG_AUTO_REPLY_CASE_CENTER_V1_20260709_PERSONALIZED_AI_SIGNATURES' workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
+          grep -q 'GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY' workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+          grep -q 'GNK_ASG_logo_gold_transparent.png' workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+          grep -q 'AUTO_REPLY_PREVIEW_PATH' workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          grep -q 'CASE_LOOKUP_PATH' workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
           grep -q '"excludedMetrics"' apps/portal/data/finance-kpi-2025.json
           grep -q '"ebitdaEstimated"' apps/portal/data/finance-kpi-2025.json
           grep -q '"shortTermLiabilities"' apps/portal/data/finance-kpi-2025.json
           grep -q '"longTermLiabilities"' apps/portal/data/finance-kpi-2025.json
 
           node --check apps/portal/assets/mail-studio-webmail-v27.js
+          node --check workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+          node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
           grep -q 'main = "src/index-unified-auth-v15.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'directory = "../../apps/portal"' workers/gnk-asg-direct-operator/wrangler.toml

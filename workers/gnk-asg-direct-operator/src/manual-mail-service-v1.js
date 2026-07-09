@@ -1,12 +1,15 @@
 import {enforceRequiredSignature,MANDATORY_BCC,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
+import {buildAutoReplyCase,lookupAutoReplyCase,saveAutoReplyCase,VERSION as AUTO_REPLY_VERSION,CENTERS as AUTO_REPLY_CENTERS} from './auto-reply-case-center-v1.js';
 
-export const VERSION='GNK_ASG_MANUAL_MAIL_SERVICE_V2_20260707_SAFE_ATTACHMENTS';
+export const VERSION='GNK_ASG_MANUAL_MAIL_SERVICE_V3_20260709_AUTO_REPLY_CASE_CENTERS';
 export const SEND_PATH='/api/admin-mail-send';
 export const STATUS_PATH='/api/mail-center/status';
 export const SENT_PATH='/api/mail-center/sent';
 export const OUTBOX_PATH='/api/mail-center/outbox';
 export const INBOX_PATH='/api/mail-center/inbox';
 export const READINESS_PATH='/api/mail-center/send-readiness';
+export const AUTO_REPLY_PREVIEW_PATH='/api/mail-center/auto-reply-preview';
+export const CASE_LOOKUP_PATH='/api/mail-center/case-lookup';
 
 const MAX_SUBJECT=240;
 const MAX_BODY=250000;
@@ -50,6 +53,7 @@ const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,h
   'cache-control':'no-store, no-cache, must-revalidate, max-age=0',
   'x-gnk-asg-manual-mail-service':VERSION,
   'x-gnk-asg-email-signature-contract':SIGNATURE_VERSION,
+  'x-gnk-asg-auto-reply-case-center':AUTO_REPLY_VERSION,
   'x-gnk-asg-mandatory-copy':'ENFORCED'
 }});
 
@@ -186,10 +190,26 @@ function readiness(env){
     kvConfigured:Boolean(kvOf(env)?.get),
     mandatoryCopy:MANDATORY_BCC,
     signatureVersion:SIGNATURE_VERSION,
+    signatureLogo:'gold',
+    autoReply:{version:AUTO_REPLY_VERSION,mode:'personalized_case_center',live:boolEnv(env.MAIL_AUTO_REPLY_LIVE),centers:AUTO_REPLY_CENTERS},
     profiles:[...PROFILES.values()],
     limits:{recipients:MAX_RECIPIENTS,attachments:MAX_ATTACHMENTS,attachmentBytes:MAX_ATTACHMENT_BYTES,totalAttachmentBytes:MAX_TOTAL_ATTACHMENT_BYTES,dedupeSeconds:DEDUPE_SECONDS},
     attachments:{allowedExtensions:[...ALLOWED_ATTACHMENT_TYPES.keys()],blockedExtensions:[...BLOCKED_ATTACHMENT_EXTENSIONS]}
   };
+}
+async function autoReplyPreview(request,env){
+  let body={};try{body=await request.json();}catch{return json({ok:false,error:'invalid_json'},400);}
+  const entry=await buildAutoReplyCase(body,env);
+  const saved=body.persist===true?await saveAutoReplyCase(env,entry):{saved:false,reason:'preview_only'};
+  const signed=enforceRequiredSignature({from:{email:'office@gnk-asg.hr',name:'GNK ASG Office'},to:entry.senderEmail||'recipient@example.com',subject:`Re: ${entry.subject||entry.caseNumber}`,text:entry.text,html:entry.html});
+  return json({ok:true,entry,saved,signedPreview:{subject:signed.subject,text:signed.text,html:signed.html,signatureVersion:SIGNATURE_VERSION,mandatoryCopy:MANDATORY_BCC}});
+}
+async function caseLookup(request,env){
+  const url=new URL(request.url);
+  const caseNumber=clean(url.searchParams.get('case')||url.searchParams.get('id')||url.searchParams.get('number'));
+  if(!caseNumber)return json({ok:false,error:'case_number_required'},400);
+  const result=await lookupAutoReplyCase(env,caseNumber);
+  return json(result,result.ok?200:404);
 }
 async function sendManual(request,env){
   let body={};try{body=await request.json();}catch{return json({ok:false,error:'invalid_json'},400);}
@@ -244,7 +264,8 @@ async function sendManual(request,env){
       headers:{
         'X-GNK-ASG-Manual-Mail':VERSION,
         'X-GNK-ASG-Manual-Mail-Id':id,
-        'X-GNK-ASG-Recipient-Index':String(index+1)
+        'X-GNK-ASG-Recipient-Index':String(index+1),
+        'X-GNK-ASG-Signature-Logo':'gold'
       }
     });
     try{
@@ -260,11 +281,13 @@ async function sendManual(request,env){
   const entry={...base,status,provider:results,errorCode:firstFailure?.errorCode||'',errorMessage:firstFailure?.message||'',sentAt:sent?now():null};
   const auditResult=await audit(env,entry);
   if(!sent&&kv?.delete)await kv.delete(dedupeKey).catch(()=>{});
-  return json({ok:status==='SENT',id,status,profile:{id:profile.id,name:profile.name,email:profile.email},to,cc,bcc,mandatoryCopy:MANDATORY_BCC,subject,attachments:{count:attachmentState.items.length,totalBytes:attachmentState.totalBytes,files:attachmentState.items.map(item=>({filename:item.filename,type:item.type}))},sent,failed:to.length-sent,results,audit:auditResult,signatureVersion:SIGNATURE_VERSION},status==='SENT'?200:sent?207:502);
+  return json({ok:status==='SENT',id,status,profile:{id:profile.id,name:profile.name,email:profile.email},to,cc,bcc,mandatoryCopy:MANDATORY_BCC,subject,attachments:{count:attachmentState.items.length,totalBytes:attachmentState.totalBytes,files:attachmentState.items.map(item=>({filename:item.filename,type:item.type}))},sent,failed:to.length-sent,results,audit:auditResult,signatureVersion:SIGNATURE_VERSION,signatureLogo:'gold'},status==='SENT'?200:sent?207:502);
 }
 
 export async function handleManualMailService(request,env){
   const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+  if(path===AUTO_REPLY_PREVIEW_PATH&&request.method==='POST')return autoReplyPreview(request,env);
+  if(path===CASE_LOOKUP_PATH&&request.method==='GET')return caseLookup(request,env);
   if(path===SEND_PATH&&request.method==='POST')return sendManual(request,env);
   if(path===READINESS_PATH&&request.method==='GET')return json(readiness(env));
   if(path===STATUS_PATH&&request.method==='GET')return json({...readiness(env),recent:await recent(env,['SENT','PARTIAL','FAILED'],20)});
