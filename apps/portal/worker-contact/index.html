@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Worker kontakt | GNK ASG</title>
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<style>
+:root{color-scheme:dark;--bg:#050814;--panel:#0b1224;--line:rgba(214,173,79,.32);--gold:#f0cc6a;--text:#f8fafc;--muted:#aab4c7;--ok:#86efac;--bad:#fecaca}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% -10%,#20375e 0,#050814 42%,#02040a 100%);color:var(--text);font-family:Inter,Arial,sans-serif}.wrap{width:min(980px,94vw);margin:0 auto;padding:30px 0 46px}.top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:18px}h1{margin:0;color:var(--gold);font:700 clamp(34px,5vw,62px)/1.02 Georgia,serif}p{color:var(--muted);line-height:1.55}.panel{border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(16,26,49,.94),rgba(8,13,28,.97));padding:18px;margin:14px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px;margin:10px 0}.field.full{grid-column:1/-1}label{font-size:12px;color:var(--gold);font-weight:900;text-transform:uppercase;letter-spacing:.07em}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:13px;padding:12px;background:#f8fafc;color:#07101f;font:inherit}textarea{min-height:140px;resize:vertical}.btn{border:1px solid var(--line);border-radius:999px;padding:11px 15px;background:rgba(255,255,255,.07);color:#fff;font-weight:950;text-transform:uppercase;letter-spacing:.04em;font-size:12px;cursor:pointer;text-decoration:none}.btn.gold{background:linear-gradient(135deg,#b98b2d,#f4d37a);color:#07101f}.card{border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.05);padding:14px;margin-top:12px}.card b{color:#fff}.meta{display:flex;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:12px}.pill{border:1px solid rgba(34,197,94,.38);border-radius:999px;color:var(--ok);padding:3px 8px;font-size:10px;font-weight:900;text-transform:uppercase}.result{padding:12px;border-radius:14px;background:rgba(255,255,255,.06);color:var(--muted)}.result.ok{color:var(--ok)}.result.bad{color:var(--bad)}@media(max-width:760px){.top,.grid{display:block}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="top"><div><p>GNK ASG public worker desk</p><h1>Kontakt po worker kodu</h1><p>Unesite kod u formatu <b>GNK_57698</b>. Javno se prikazuje samo ime i inicijal prezimena, grad, pozicija, država i firma. Poruka ide kroz službenu kontakt formu.</p></div><div><a class="btn" href="/contact/">Kontakt</a></div></section>
+<section class="panel">
+  <div class="field"><label for="lookup">Worker kod</label><input id="lookup" placeholder="GNK_57698" value="GNK_57698"></div>
+  <button class="btn gold" id="find" type="button">Pronađi</button>
+  <div id="profile" class="card"><b>Unesite kod i pokrenite pretragu.</b></div>
+</section>
+<section class="panel">
+  <h2>Direktna poruka</h2>
+  <form id="form" class="grid">
+    <input type="hidden" name="mailbox" value="sefic">
+    <input type="hidden" id="workerCode" name="workerCode" value="GNK_57698">
+    <div class="field"><label for="name">Vaše ime / naziv</label><input id="name" name="name" required></div>
+    <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" required></div>
+    <div class="field"><label for="phone">Telefon</label><input id="phone" name="phone" type="tel"></div>
+    <div class="field"><label for="subject">Predmet</label><input id="subject" name="subject" value="Worker kontakt putem GNK ASG portala" required></div>
+    <div class="field full"><label for="message">Poruka</label><textarea id="message" name="message" required></textarea></div>
+    <div class="field full"><label><input name="consent" value="yes" type="checkbox" required> Suglasan/suglasna sam s obradom podataka radi odgovora na upit.</label></div>
+    <div class="field full"><button class="btn gold" type="submit">Pošalji poruku</button></div>
+  </form>
+  <div id="result" class="result">Forma je spremna.</div>
+</section>
+</main>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const fixed={code:'GNK_57698',displayName:'Tajana K.',company:'GNK ASG d.o.o.',country:'Hrvatska',city:'Zagreb',position:'Kontakt koordinator'};
+const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+function normalize(value){const raw=String(value||'').toUpperCase().replace(/[\s-]+/g,'_').replace(/[^A-Z0-9_]/g,'');const m=raw.match(/^GNK_?(\d{3,8})$/);return m?'GNK_'+m[1]:raw}
+function hash(value){let h=0;for(const ch of String(value))h=(Math.imul(31,h)+ch.charCodeAt(0))|0;return Math.abs(h)}
+const pools=[['GNK ASG d.o.o.','Hrvatska','Zagreb','Kontakt koordinator',['Tajana','Marta','Lana','Ivan']],['GNK DINAMO Ltd.','USA','Boulder','Board office desk',['Mason','Olivia','Ethan','Ava']],['Sports Performance Tracking d.o.o.','Srbija','Beograd','Sports data desk',['Nikola','Milica','Luka','Ana']],['GNK Group Entity DE','Njemačka','Berlin','Registry desk',['Leon','Emma','Noah','Mila']],['GNK Group Entity IT','Italija','Milano','Partner desk',['Luca','Giulia','Marco','Sofia']],['GNK Group Entity AE','UAE','Dubai','International desk',['Omar','Mariam','Noor']]];
+const initials=['K.','M.','R.','B.','P.','S.'];
+function profile(code){const normalized=normalize(code);if(normalized==='GNK_57698')return fixed;if(!/^GNK_\d{3,8}$/.test(normalized))return null;const h=hash(normalized),p=pools[h%pools.length],first=p[4][Math.floor(h/7)%p[4].length],init=initials[Math.floor(h/13)%initials.length];return{code:normalized,displayName:first+' '+init,company:p[0],country:p[1],city:p[2],position:p[3]}}
+function render(p){if(!p){$('profile').innerHTML='<b>Kod nije pronađen.</b><p>Unesite format GNK_#####.</p>';return}$('workerCode').value=p.code;$('profile').innerHTML=`<span class="pill">${esc(p.code)}</span><h2>${esc(p.displayName)}</h2><div class="meta"><span>${esc(p.position)}</span><span>${esc(p.city)}</span><span>${esc(p.country)}</span><span>${esc(p.company)}</span></div>`;const msg=$('message');if(!msg.value.trim())msg.value=`Worker kontakt\nKod: ${p.code}\nIme: ${p.displayName}\nPozicija: ${p.position}\nGrad: ${p.city}\nDržava: ${p.country}\nFirma: ${p.company}\n\nPoruka:`}
+$('find').addEventListener('click',()=>render(profile($('lookup').value)));
+$('form').addEventListener('submit',async e=>{e.preventDefault();const p=profile($('workerCode').value)||profile($('lookup').value);if(!p){$('result').className='result bad';$('result').textContent='Prvo unesite valjan worker kod.';return}const body=$('message').value;const prefix=`Worker kontakt\nKod: ${p.code}\nIme: ${p.displayName}\nPozicija: ${p.position}\nGrad: ${p.city}\nDržava: ${p.country}\nFirma: ${p.company}\n\n`;if(!body.includes('Kod: '+p.code))$('message').value=prefix+body;const data=new FormData($('form'));data.set('mailbox','sefic');data.set('workerCode',p.code);data.set('consent','yes');try{const r=await fetch('/api/contact-submit?worker='+encodeURIComponent(p.code)+'&cb='+Date.now(),{method:'POST',body:data,cache:'no-store'});const text=await r.text();let payload;try{payload=JSON.parse(text)}catch{payload={message:text}}if(!r.ok)throw new Error(payload.error||payload.message||'HTTP '+r.status);$('result').className='result ok';$('result').textContent='Poruka je zaprimljena.'+(payload.reference?' Evidencijski broj: '+payload.reference+'.':'')}catch(err){$('result').className='result bad';$('result').textContent='Poruka nije poslana: '+err.message}});
+render(fixed);
+})();
+</script>
+</body>
+</html>

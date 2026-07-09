@@ -8,6 +8,7 @@ import {sendProviderMail,contactNotificationItem,canLiveSend,VERSION as MAIL_PRO
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
 const now=()=>new Date().toISOString();
 const store=env=>env.GNK_ASG_KV||env.GNK_ASG_CONFIG_KV||null;
+const CONTACT_ROUTES={info:'info@gnk-asg.hr',contact:'contact@gnk-asg.hr',media:'media@gnk-asg.hr',press:'press@gnk-asg.hr',legal:'legal@gnk-asg.hr',privacy:'privacy@gnk-asg.hr',it:'it@gnk-asg.hr',ubo:'ubo@gnk-asg.hr',sefic:'sefic@gnk-asg.hr',assistant:'assistant@gnk-asg.hr'};
 async function read(env,key,fallback){const s=store(env);if(!s)return fallback;try{const raw=await s.get(key);return raw?JSON.parse(raw):fallback}catch{return fallback}}
 async function write(env,key,value,options){const s=store(env);if(!s)return false;if(options)await s.put(key,JSON.stringify(value,null,2),options);else await s.put(key,JSON.stringify(value,null,2));return true}
 async function list(env,key){const value=await read(env,key,[]);return Array.isArray(value)?value:[]}
@@ -31,8 +32,11 @@ async function readAnyBody(request){
     const form=await request.formData();
     const body={};
     for(const [key,value] of form.entries()){
-      if(value&&typeof value==='object'&&'name'in value)body[key]={filename:value.name,type:value.type,size:value.size};
-      else body[key]=String(value||'');
+      if(value&&typeof value==='object'&&'name'in value){
+        const filename=String(value.name||'').trim(),size=Number(value.size||0)||0;
+        if(filename||size>0)body[key]={filename,type:String(value.type||''),size};
+        else body[key]='';
+      }else body[key]=String(value||'');
     }
     return body;
   }
@@ -43,6 +47,11 @@ function clean(value,max=2000){return String(value||'').replace(/\u0000/g,'').tr
 function emailList(value){return clean(value,2000).split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean).slice(0,100)}
 function requiredBcc(env){return emailList(env.MAIL_MANDATORY_BCC||'beckuphome@gmail.com')}
 function mergeEmails(...groups){return[...new Set(groups.flat().map(x=>clean(x,220).toLowerCase()).filter(Boolean))]}
+function contactRoute(mailbox){const key=clean(mailbox,80).toLowerCase();return CONTACT_ROUTES[key]||CONTACT_ROUTES.contact}
+function contactNotifyTo(env,mailbox){return mergeEmails(contactRoute(mailbox),emailList(env.CONTACT_NOTIFY_TO||env.CONTACT_FORM_NOTIFY_TO)).join(',')||CONTACT_ROUTES.contact}
+function contactBcc(env){return emailList(env.CONTACT_MANDATORY_BCC||env.MAIL_MANDATORY_BCC||'beckuphome@gmail.com')}
+function isRealFileMeta(value){return Boolean(value&&typeof value==='object'&&(clean(value.filename||value.name,180)||Number(value.size||0)>0))}
+function isPdfMeta(value){const name=clean(value?.filename||value?.name,180).toLowerCase(),type=clean(value?.type||value?.contentType||value?.mimeType,80).toLowerCase();return type==='application/pdf'||name.endsWith('.pdf')}
 function safeAttachment(a){return{filename:clean(a?.filename||a?.name||'attachment.pdf',180),type:clean(a?.type||a?.contentType||a?.mimeType||'application/pdf',80),size:Number(a?.size||a?.sizeBytes||0)||0,hasBase64:Boolean(a?.base64||a?.content)}}
 async function mailStatus(env){return{ok:true,service:'GNK ASG Mail Center',mode:String(env.MAIL_STUDIO_LIVE||'test_record_only'),providerVersion:MAIL_PROVIDER_VERSION,kvBinding:!!store(env),emailBinding:!!(env.EMAIL&&typeof env.EMAIL.send==='function'),emailMessageAvailable:typeof EmailMessage!=='undefined',liveSendEnabled:String(env.MAIL_STUDIO_LIVE||'').toLowerCase()==='true',providerReady:canLiveSend(env),contactFormLiveEnabled:String(env.CONTACT_FORM_LIVE||'').toLowerCase()==='true',contactProviderReady:canLiveSend(env,'CONTACT_FORM_LIVE'),sentCount:(await list(env,'mail:center:sent')).length,outboxCount:(await list(env,'mail:center:outbox')).length,inboxCount:(await list(env,'mail:center:inbox')).length,updatedAt:now()}}
 async function handleMailSend(request,env){
@@ -71,18 +80,19 @@ function aiFallback(m){const tone=clean(m.tone||m.style||'profesionalno',120),re
 async function handleAiAssist(request){if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);const m=await readAnyBody(request);return json({ok:true,ai:false,model:'safe-fallback',text:aiFallback(m)});}
 async function handleContactSubmit(request,env){
   if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);
-  const m=await readAnyBody(request),pdf=m.pdf&&typeof m.pdf==='object'?m.pdf:null,item={id:id('contact'),reference:'GNK-CONTACT-'+now().replace(/[-:.TZ]/g,'').slice(0,14),createdAt:now(),mailbox:clean(m.mailbox||'contact',80),name:clean(m.name||m.fullName,180),email:clean(m.email,220),phone:clean(m.phone,120),subject:clean(m.subject||'Upit putem GNK ASG portala',260),message:clean(m.message||m.body,6000),consent:clean(m.consent||'')==='yes'||m.consent===true,pdf:pdf?{filename:clean(pdf.filename,180),type:clean(pdf.type,80),size:Number(pdf.size||0)}:null,source:'contact-form-provider-backend-v3'};
+  const m=await readAnyBody(request),pdf=isRealFileMeta(m.pdf)?m.pdf:null,item={id:id('contact'),reference:'GNK-CONTACT-'+now().replace(/[-:.TZ]/g,'').slice(0,14),createdAt:now(),mailbox:clean(m.mailbox||'contact',80),name:clean(m.name||m.fullName,180),email:clean(m.email,220),phone:clean(m.phone,120),subject:clean(m.subject||'Upit putem GNK ASG portala',260),message:clean(m.message||m.body,6000),consent:clean(m.consent||'')==='yes'||m.consent===true,pdf:pdf?{filename:clean(pdf.filename,180),type:clean(pdf.type,80),size:Number(pdf.size||0)}:null,source:'contact-form-provider-backend-v5-real-form-routing'};
   if(!item.email&&!item.phone)return json({ok:false,error:'missing_contact'},400);
   if(!item.message)return json({ok:false,error:'missing_message'},400);
   if(!item.consent)return json({ok:false,error:'missing_consent'},400);
-  if(item.pdf&&item.pdf.type&&item.pdf.type!=='application/pdf')return json({ok:false,error:'pdf_only'},400);
-  const notifyTo=clean(env.CONTACT_NOTIFY_TO||env.CONTACT_FORM_NOTIFY_TO||'beckuphome@gmail.com',400);
+  if(item.pdf&&!isPdfMeta(item.pdf))return json({ok:false,error:'pdf_only'},400);
+  const notifyTo=contactNotifyTo(env,item.mailbox),copy=contactBcc(env);
   const notification=contactNotificationItem(item,notifyTo);
+  if(copy.length)notification.bcc=copy;
   const delivery=await sendProviderMail(env,notification,{flag:'CONTACT_FORM_LIVE'}).catch(error=>({ok:false,delivered:false,reason:String(error?.message||error),version:MAIL_PROVIDER_VERSION}));
-  item.notification={to:notifyTo,delivery};
+  item.notification={to:notifyTo,mailboxRoute:contactRoute(item.mailbox),mandatoryCopyCount:copy.length,delivery};
   await push(env,'contact:submissions',item,500);
   await write(env,'contact:last',item);
-  return json({ok:true,recorded:true,notified:Boolean(delivery.delivered),reference:item.reference,caseId:item.reference,delivery,item});
+  return json({ok:true,recorded:true,notified:Boolean(delivery.delivered),reference:item.reference,caseId:item.reference,route:item.notification.mailboxRoute,delivery,item});
 }
 
 async function handle(request,env,ctx){
