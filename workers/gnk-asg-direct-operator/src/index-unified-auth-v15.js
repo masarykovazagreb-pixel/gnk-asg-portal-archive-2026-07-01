@@ -4,11 +4,12 @@ import {
   VERSION as INDEX_CONTRACT_INJECTION_VERSION
 } from './index-contract-injection-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V23_20260709_MAIL_STUDIO_AUTO_REPLY_UI_${INDEX_CONTRACT_INJECTION_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V24_20260709_MAIL_REFERENCE_CODE_${INDEX_CONTRACT_INJECTION_VERSION}`;
 const MAIL_STUDIO_RUNTIME='GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP';
 const AUTO_REPLY_RUNTIME='GNK_ASG_AUTO_REPLY_CASE_CENTER_V1_20260709_PERSONALIZED_AI_SIGNATURES';
 const SIGNATURE_CONTRACT='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY';
 const AUTO_REPLY_PANEL='/assets/mail-studio-auto-reply-panel-v1.js?v=20260709-auto-reply-panel';
+const REFERENCE_GUARD='/assets/mail-studio-reference-code-v1.js?v=20260709-reference-code';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 
@@ -63,10 +64,14 @@ async function isAuthenticated(request,env,ctx){
   return response.status>=200&&response.status<300;
 }
 
-function injectAutoReplyPanel(html){
-  if(html.includes('mail-studio-auto-reply-panel-v1.js'))return html;
-  const script=`<script defer src="${AUTO_REPLY_PANEL}"></script>`;
-  return html.includes('</body>')?html.replace('</body>',`${script}</body>`):`${html}${script}`;
+function injectMailStudioScripts(html){
+  let next=html;
+  const scripts=[];
+  if(!next.includes('mail-studio-auto-reply-panel-v1.js'))scripts.push(`<script defer src="${AUTO_REPLY_PANEL}"></script>`);
+  if(!next.includes('mail-studio-reference-code-v1.js'))scripts.push(`<script defer src="${REFERENCE_GUARD}"></script>`);
+  if(!scripts.length)return next;
+  const bundle=scripts.join('');
+  return next.includes('</body>')?next.replace('</body>',`${bundle}</body>`):`${next}${bundle}`;
 }
 
 async function mailStudioV27(request,env){
@@ -88,10 +93,11 @@ async function mailStudioV27(request,env){
   headers.set('x-gnk-asg-mail-studio-runtime',MAIL_STUDIO_RUNTIME);
   headers.set('x-gnk-asg-auto-reply-case-center',AUTO_REPLY_RUNTIME);
   headers.set('x-gnk-asg-auto-reply-panel','GNK_ASG_MAIL_STUDIO_AUTO_REPLY_PANEL_V1_20260709');
+  headers.set('x-gnk-asg-reference-code','GNK_ASG_MAIL_STUDIO_REFERENCE_CODE_V1_20260709');
   headers.set('x-gnk-asg-email-signature-contract',SIGNATURE_CONTRACT);
   headers.set('x-gnk-asg-signature-logo','gold');
   headers.set('x-robots-tag','noindex, nofollow, noarchive');
-  const html=injectAutoReplyPanel(await response.text());
+  const html=injectMailStudioScripts(await response.text());
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -120,6 +126,7 @@ async function patchVersionResponse(request,response){
       mailStudioHotfix:'inactive-v26-retired',
       autoReplyCaseCenter:AUTO_REPLY_RUNTIME,
       autoReplyPanel:'GNK_ASG_MAIL_STUDIO_AUTO_REPLY_PANEL_V1_20260709',
+      referenceCode:'GNK_ASG_MAIL_STUDIO_REFERENCE_CODE_V1_20260709',
       emailSignatureContract:SIGNATURE_CONTRACT,
       signatureLogo:'gold',
       indexRouting:'worker-index-first',
