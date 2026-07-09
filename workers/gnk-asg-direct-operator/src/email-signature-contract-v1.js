@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V1_20260705_R10_BACKUPHOME_COPY';
+export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY';
 export const MANDATORY_BCC='beckuphome@gmail.com';
 
 const COMPANY={
@@ -7,7 +7,7 @@ const COMPANY={
   oib:'75227917632',
   mbs:'081512375',
   web:'https://gnk-asg.hr',
-  logo:'https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png'
+  logo:'https://gnk-asg.hr/assets/brand/media-kit/GNK_ASG_logo_gold_transparent.png'
 };
 const MEDIA_EMAIL='media@gnk-asg.hr';
 const MEDIA_SIGNATURE={
@@ -114,7 +114,7 @@ function hasHtmlSignature(value,identity){
   const html=clean(value).toLowerCase();
   if(html.includes('data-gnk-asg-signature='))return true;
   if(isMedia(identity))return html.includes('gnk dinamo ltd. group')&&html.includes('media relations &amp; accreditation center')&&html.includes(MEDIA_EMAIL);
-  return html.includes('gnk-asg-email-logo-final.png')||(html.includes('gnk asg d.o.o.')&&html.includes(COMPANY.oib));
+  return html.includes('gnk_asg_logo_gold_transparent.png')||(html.includes('gnk asg d.o.o.')&&html.includes(COMPANY.oib));
 }
 function closing(text){
   const closings=/(srdačan pozdrav|s poštovanjem|lijep pozdrav|lep pozdrav|kind regards|best regards|regards|mit freundlichen grüßen|freundliche grüße|cordialement|bien cordialement|cordiali saluti|saluti cordiali|saludos cordiales|atentamente|cumprimentos|med vänliga hälsningar|venlig hilsen|pozdrawiam|s úctou|с уважением)[,!]?\s*$/iu;
@@ -130,9 +130,9 @@ function paragraphs(value){
 }
 function signatureHtml(identity){
   if(isMedia(identity)){
-    return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="${MEDIA_SIGNATURE.web}" style="text-decoration:none"><img src="${COMPANY.logo}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${escapeHtml(MEDIA_SIGNATURE.group)}</div><div style="font-weight:700">${escapeHtml(MEDIA_SIGNATURE.centre)}</div><div>${escapeHtml(MEDIA_SIGNATURE.organiser)}</div><div><a href="mailto:${MEDIA_SIGNATURE.email}" style="color:#111827">${MEDIA_SIGNATURE.email}</a></div><div><a href="${MEDIA_SIGNATURE.web}" style="color:#111827">${MEDIA_SIGNATURE.web}</a></div></td></tr></table>`;
+    return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d6ad4f"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="${MEDIA_SIGNATURE.web}" style="text-decoration:none"><img src="${COMPANY.logo}" width="150" alt="GNK ASG gold logo" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${escapeHtml(MEDIA_SIGNATURE.group)}</div><div style="font-weight:700">${escapeHtml(MEDIA_SIGNATURE.centre)}</div><div>${escapeHtml(MEDIA_SIGNATURE.organiser)}</div><div><a href="mailto:${MEDIA_SIGNATURE.email}" style="color:#111827">${MEDIA_SIGNATURE.email}</a></div><div><a href="${MEDIA_SIGNATURE.web}" style="color:#111827">${MEDIA_SIGNATURE.web}</a></div></td></tr></table>`;
   }
-  return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="${COMPANY.web}" style="text-decoration:none"><img src="${COMPANY.logo}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${escapeHtml(identity.name)}</div><div>${escapeHtml(COMPANY.name)}</div><div>${escapeHtml(COMPANY.address)}</div><div>OIB: ${COMPANY.oib} · MBS: ${COMPANY.mbs}</div><div>Web: <a href="${COMPANY.web}" style="color:#111827">${COMPANY.web}</a></div><div>E-mail: <a href="mailto:${escapeHtml(identity.email)}" style="color:#111827">${escapeHtml(identity.email)}</a></div></td></tr></table>`;
+  return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d6ad4f"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="${COMPANY.web}" style="text-decoration:none"><img src="${COMPANY.logo}" width="150" alt="GNK ASG gold logo" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:6px">${escapeHtml(identity.name)}</div><div>${escapeHtml(COMPANY.name)}</div><div>${escapeHtml(COMPANY.address)}</div><div>OIB: ${COMPANY.oib} · MBS: ${COMPANY.mbs}</div><div>Web: <a href="${COMPANY.web}" style="color:#111827">${COMPANY.web}</a></div><div>E-mail: <a href="mailto:${escapeHtml(identity.email)}" style="color:#111827">${escapeHtml(identity.email)}</a></div></td></tr></table>`;
 }
 function appendHtml(value,text,identity){
   const html=normalizeHtmlContact(clean(value)||paragraphs(text));
@@ -148,7 +148,7 @@ export function enforceRequiredSignature(payload={}){
     ...payload,
     text:appendText(originalText,identity),
     html:appendHtml(originalHtml,originalText,identity),
-    headers:{...(payload.headers||{}),'X-GNK-ASG-Signature-Contract':VERSION,'X-GNK-ASG-Mandatory-Copy':'ENFORCED'}
+    headers:{...(payload.headers||{}),'X-GNK-ASG-Signature-Contract':VERSION,'X-GNK-ASG-Mandatory-Copy':'ENFORCED','X-GNK-ASG-Signature-Logo':'gold'}
   };
   const bcc=mandatoryBcc(payload.bcc,payload.to,payload.cc);
   if(bcc)next.bcc=bcc;
