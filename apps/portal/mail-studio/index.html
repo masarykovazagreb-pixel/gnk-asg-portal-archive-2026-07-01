@@ -38,11 +38,11 @@
   <aside class="detail">
     <section class="panel" id="composePanel">
       <h2>Nova pojedinačna poruka / New individual mail</h2>
-      <div class="grid"><div class="field"><label for="profile">Sender profile</label><select id="profile"></select></div><div class="field"><label for="language">Jezik / language</label><select id="language"><option value="hr">Hrvatski</option><option value="en">English</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="sr">Srpski</option><option value="sl">Slovenščina</option><option value="hu">Magyar</option><option value="fr">Français</option><option value="es">Español</option><option value="ar">العربية</option><option value="zh">中文</option></select></div></div>
+      <div class="grid"><div class="field"><label for="profile">Sender profile</label><select id="profile"></select></div><div class="field"><label for="language">Jezik / language</label><select id="language"><option value="hr">Hrvatski</option><option value="en">English</option><option value="de">Deutsch</option><option value="zh">中文</option></select></div></div>
       <div class="grid"><div class="field"><label for="mode">Template</label><select id="mode"><option value="reply">Formal reply</option><option value="short">Short acknowledgement</option><option value="legal">Legally cautious reply</option><option value="media">Media response</option><option value="forward">Forward note</option></select></div><div class="field"><label for="subject">Subject / predmet</label><input id="subject" maxlength="240" placeholder="Unesite predmet poruke"></div></div>
       <div class="grid"><div class="field"><label for="from">From email</label><input id="from" readonly></div><div class="field"><label for="fromName">Sender name</label><input id="fromName" readonly></div></div>
       <div class="field"><label for="to">To — separate multiple recipients with commas or semicolons</label><input id="to" autocomplete="off" placeholder="recipient@example.com"></div>
-      <div class="grid"><div class="field"><label for="cc">CC</label><input id="cc" autocomplete="off" placeholder="copy@example.com"></div><div class="field"><label for="bcc">BCC</label><input id="bcc" autocomplete="off" value="rht@gmx.com"></div></div>
+      <div class="grid"><div class="field"><label for="cc">CC</label><input id="cc" autocomplete="off" placeholder="copy@example.com"></div><div class="field"><label for="bcc">BCC</label><input id="bcc" autocomplete="off" value="beckuphome@gmail.com"></div></div>
       <div class="field"><label for="bodyText">Message body / sadržaj poruke</label><textarea id="bodyText" placeholder="Pišite na hrvatskom, engleskom ili drugom jeziku. Full HTML is also supported."></textarea></div>
       <section class="dropzone"><div class="attachment-actions"><button type="button" id="htmlFileButton">Import HTML / XHTML</button><button type="button" id="pdfFileButton">Add attachments</button><button type="button" id="clearAttachments">Remove attachments</button><input id="htmlFile" type="file" accept=".html,.htm,.xhtml,text/html,application/xhtml+xml" hidden><input id="pdfFiles" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.csv,.txt,.png,.jpg,.jpeg,.webp,application/pdf,application/zip,text/plain,text/csv,image/png,image/jpeg,image/webp" multiple hidden></div><div id="importStatus" class="note">No HTML file imported.</div><div id="attachmentList" class="attachments">No attachments selected.</div></section>
       <div class="actions"><button class="gold" id="send" type="button">Send</button><button id="save" type="button">Save draft</button><button id="load" type="button">Load local draft</button><button id="helper" type="button">Apply template</button><button id="autoReply" type="button">Auto reply</button><button id="clear" class="red" type="button">Clear</button></div>
@@ -54,6 +54,6 @@
   </aside>
 </div>
 <div class="mobilebar"><button data-folder="inbox">Inbox</button><button data-folder="sent">Sent</button><button data-folder="drafts">Drafts</button><button id="mobileCompose">Compose</button><button id="mobileRefresh">Refresh</button></div>
-<script defer src="/assets/mail-studio-webmail-v26.js?v=20260708-1"></script>
+<script defer src="/assets/mail-studio-webmail-v27.js?v=20260709-bcc-clean"></script>
 </body>
 </html>

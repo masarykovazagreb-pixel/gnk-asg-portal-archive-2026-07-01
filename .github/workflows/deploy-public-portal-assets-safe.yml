@@ -33,26 +33,30 @@ jobs:
           test -s apps/portal/en/index.html
           test -s apps/portal/the-code/index.html
           test -s apps/portal/mail-studio/index.html
-          test -s apps/portal/assets/mail-studio-webmail-v26.js
+          test -s apps/portal/assets/mail-studio-webmail-v27.js
           test -s apps/portal/google46686328e30c759f.html
           test -s apps/portal/data/finance-kpi-2025.json
           test -s apps/portal/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf
           test -s apps/portal/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf
 
           grep -q "google-site-verification: google46686328e30c759f.html" apps/portal/google46686328e30c759f.html
-          grep -q 'mail-studio-webmail-v26.js' apps/portal/mail-studio/index.html
+          grep -q 'mail-studio-webmail-v27.js' apps/portal/mail-studio/index.html
           grep -q 'Jezik / language' apps/portal/mail-studio/index.html
           grep -q 'Subject / predmet' apps/portal/mail-studio/index.html
           grep -q 'Message body / sadržaj poruke' apps/portal/mail-studio/index.html
-          grep -q 'GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX' apps/portal/assets/mail-studio-webmail-v26.js
-          grep -q 'hr:{' apps/portal/assets/mail-studio-webmail-v26.js
-          grep -q 'de:{' apps/portal/assets/mail-studio-webmail-v26.js
-          grep -q 'zh:{' apps/portal/assets/mail-studio-webmail-v26.js
+          grep -q 'GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP' apps/portal/assets/mail-studio-webmail-v27.js
+          grep -q 'beckuphome@gmail.com' apps/portal/mail-studio/index.html
+          grep -q "const BCC='beckuphome@gmail.com'" apps/portal/assets/mail-studio-webmail-v27.js
+          ! grep -q 'rht@gmx.com' apps/portal/mail-studio/index.html apps/portal/assets/mail-studio-webmail-v27.js
+          grep -q 'hr:{' apps/portal/assets/mail-studio-webmail-v27.js
+          grep -q 'de:{' apps/portal/assets/mail-studio-webmail-v27.js
+          grep -q 'zh:{' apps/portal/assets/mail-studio-webmail-v27.js
           grep -q '"excludedMetrics"' apps/portal/data/finance-kpi-2025.json
           grep -q '"ebitdaEstimated"' apps/portal/data/finance-kpi-2025.json
           grep -q '"shortTermLiabilities"' apps/portal/data/finance-kpi-2025.json
           grep -q '"longTermLiabilities"' apps/portal/data/finance-kpi-2025.json
 
+          node --check apps/portal/assets/mail-studio-webmail-v27.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
           grep -q 'main = "src/index-unified-auth-v15.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'directory = "../../apps/portal"' workers/gnk-asg-direct-operator/wrangler.toml
@@ -154,7 +158,7 @@ jobs:
 
           check_contains "Google verification file" "https://gnk-asg.hr/google46686328e30c759f.html?cb=${cb}" "google-site-verification: google46686328e30c759f.html"
           check_contains "THE CODE page" "https://gnk-asg.hr/the-code/?cb=${cb}" "THE CODE"
-          check_contains "Mail Studio v26 runtime" "https://gnk-asg.hr/assets/mail-studio-webmail-v26.js?cb=${cb}" "GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX"
+          check_contains "Mail Studio v27 runtime" "https://gnk-asg.hr/assets/mail-studio-webmail-v27.js?cb=${cb}" "GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP"
           check_contains "Finance KPI JSON" "https://gnk-asg.hr/data/finance-kpi-2025.json?cb=${cb}" "ebitdaEstimated"
           check_status "GNK ASG audited PDF" "https://gnk-asg.hr/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf?cb=${cb}"
           check_status "GNK DINAMO consolidated PDF" "https://gnk-asg.hr/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf?cb=${cb}"

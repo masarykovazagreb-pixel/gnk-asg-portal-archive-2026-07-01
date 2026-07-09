@@ -1,5 +1,5 @@
 {
-  "version": "GNK_ASG_ROUTE_MANIFEST_V1_20260709",
+  "version": "GNK_ASG_ROUTE_MANIFEST_V2_20260709_MAIL_STUDIO_V27",
   "origin": "https://gnk-asg.hr",
   "deploymentPolicy": {
     "safeWorkflow": "Deploy Public Portal Assets Safe",
@@ -20,8 +20,8 @@
     {
       "path": "/en/",
       "expectedStatus": 200,
-      "expectedMarkers": ["THE CODE"],
-      "purpose": "English public entry; scheduled for full parity upgrade"
+      "expectedMarkers": ["GNK ASG / GNK DINAMO Portal", "THE CODE"],
+      "purpose": "English public entry with parity structure"
     },
     {
       "path": "/the-code/",
@@ -42,16 +42,16 @@
       "purpose": "Public finance KPI JSON"
     },
     {
-      "path": "/assets/mail-studio-webmail-v26.js",
+      "path": "/assets/mail-studio-webmail-v27.js",
       "expectedStatus": 200,
-      "expectedMarkers": ["GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX"],
-      "purpose": "Mail Studio v26 runtime asset"
+      "expectedMarkers": ["GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP", "beckuphome@gmail.com"],
+      "purpose": "Active Mail Studio v27 runtime asset with clean mandatory BCC source"
     },
     {
       "path": "/assets/mail-studio-v26-bcc-utf8-hotfix.js",
       "expectedStatus": 200,
       "expectedMarkers": ["GNK_ASG_MAIL_STUDIO_V26_BCC_UTF8_HOTFIX_20260709", "beckuphome@gmail.com"],
-      "purpose": "Temporary Mail Studio BCC/UTF-8 runtime guard"
+      "purpose": "Legacy v26 temporary runtime guard retained during transition"
     },
     {
       "path": "/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf",
@@ -90,13 +90,13 @@
   "knownTechnicalDebt": [
     {
       "id": "mail-studio-source-bcc-cleanup",
-      "status": "open",
-      "description": "Legacy BCC remains in source HTML/runtime and is currently corrected by a runtime hotfix. Source should be aligned to beckuphome@gmail.com in a dedicated PR."
+      "status": "resolved_by_v27_pending_deploy",
+      "description": "Active Mail Studio source now points to v27 with mandatory BCC aligned to beckuphome@gmail.com. Legacy v26 remains only as an inactive transition asset."
     },
     {
       "id": "english-index-parity",
-      "status": "open",
-      "description": "English index is currently a minimal THE CODE entry and should be upgraded to match the Croatian public index structure."
+      "status": "resolved_pending_deploy",
+      "description": "English index was upgraded to a public portal entry with THE CODE, finance, network, projects and operations sections."
     },
     {
       "id": "front-module-split",
