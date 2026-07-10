@@ -1,89 +1,22 @@
 {
-  "version": "GNK_ASG_PROJECT_DAILY_FINANCE_ANALYSIS_V1_20260709",
+  "version": "GNK_ASG_PROJECT_DAILY_FINANCE_ANALYSIS_V2_20260710",
   "purpose": "Public project finance operating model for the portal index. No private ledgers, no secrets, no protected admin data.",
   "currency": "EUR",
   "cadence": "daily",
+  "dailyReportingSchema": {
+    "publicOnly": true,
+    "fields": ["date", "projectId", "traffic", "leads", "applications", "revenueSignal", "costSignal", "riskFlag", "nextAction"],
+    "privateExcluded": ["bank account data", "personal data", "auth logs", "secrets", "operator tokens", "raw e-mail content"]
+  },
   "projects": [
-    {
-      "id": "project-01-the-code-new-york",
-      "name": "THE CODE New York Activation",
-      "description": "Central media and acquisition disclosure event for New York, 7 October 2026.",
-      "revenueDrivers": ["licensing", "sponsorship", "institutional access", "strategic partnership pipeline"],
-      "costDrivers": ["venue", "media logistics", "delegation hospitality", "production", "legal review"],
-      "dailyKpis": ["approved media applications", "confirmed delegations", "press reach", "programme readiness", "deadline risk"],
-      "risk": "message control, logistics deadline, external media timing"
-    },
-    {
-      "id": "project-02-media-center-accreditation",
-      "name": "Media Center & Accreditation",
-      "description": "Media application, delegation review, secure documentation and press workflow.",
-      "revenueDrivers": ["verified media access", "partner packages", "lower manual admin cost"],
-      "costDrivers": ["support time", "identity checks", "secure document handling", "communications"],
-      "dailyKpis": ["applications received", "applications approved", "average response time", "missing documents", "secure-channel completion"],
-      "risk": "identity/document handling, support overload, deadline compression"
-    },
-    {
-      "id": "project-03-mail-studio",
-      "name": "Mail Studio",
-      "description": "Manual individual mail, auto-reply, case panel, reference code and guarded communication workflow.",
-      "revenueDrivers": ["faster conversion", "lower support cost", "controlled communication", "case traceability"],
-      "costDrivers": ["mail processing", "operator review", "draft review", "audit storage"],
-      "dailyKpis": ["cases created", "drafts generated", "manual sends", "blocked bulk attempts", "reply SLA"],
-      "risk": "bulk/campaign misuse, data leakage, inconsistent signature"
-    },
-    {
-      "id": "project-04-finance-disclosure-portal",
-      "name": "Finance Disclosure Portal",
-      "description": "Public finance KPIs, reports, PDFs and institutional due diligence layer.",
-      "revenueDrivers": ["investor trust", "partner verification", "bank/institutional readiness", "deal acceleration"],
-      "costDrivers": ["report production", "document review", "version control", "finance validation"],
-      "dailyKpis": ["finance page sessions", "PDF opens", "KPI data freshness", "report downloads", "inquiry quality"],
-      "risk": "stale figures, inconsistent source data, unreviewed public claims"
-    },
-    {
-      "id": "project-05-sports-performance-platform",
-      "name": "Sports Performance Platform",
-      "description": "Sports clubs, performance tracking, team monitoring and data-driven operating layer.",
-      "revenueDrivers": ["SaaS licence", "club subscription", "team onboarding", "performance analytics"],
-      "costDrivers": ["data ingestion", "support", "sports staff onboarding", "quality assurance"],
-      "dailyKpis": ["active clubs", "tracked sessions", "users onboarded", "data completeness", "retention"],
-      "risk": "data quality, onboarding friction, sport-specific adoption"
-    },
-    {
-      "id": "project-06-global-group-entity-map",
-      "name": "Global Group Entity Map",
-      "description": "Public/private split of 45 entities, countries, markets and operating layers.",
-      "revenueDrivers": ["market access", "local entity readiness", "global scalability", "partner confidence"],
-      "costDrivers": ["governance", "compliance", "documentation", "country-level operations"],
-      "dailyKpis": ["entity readiness", "jurisdiction tasks", "document status", "governance exceptions", "market activation"],
-      "risk": "governance consistency, outdated entity status, over-disclosure"
-    },
-    {
-      "id": "project-07-newsroom-publishing-desk",
-      "name": "Newsroom & Publishing Desk",
-      "description": "Editorial desks, verified sources, SEO, publication rhythm and public updates.",
-      "revenueDrivers": ["visibility", "search traffic", "media pipeline", "brand authority"],
-      "costDrivers": ["editorial review", "source verification", "translation", "image licensing"],
-      "dailyKpis": ["articles planned", "articles published", "indexed URLs", "source risk flags", "image clearance"],
-      "risk": "copyright, inaccurate summary, unlicensed images, reputational exposure"
-    },
-    {
-      "id": "project-08-markets-layer",
-      "name": "Markets Layer",
-      "description": "Sport, media, technology, finance, hospitality, mobility and enterprise market packaging.",
-      "revenueDrivers": ["vertical packages", "qualified leads", "licensing", "partnership conversion"],
-      "costDrivers": ["sales enablement", "market research", "content production", "landing pages"],
-      "dailyKpis": ["leads by market", "conversion path", "market page sessions", "CTA clicks", "partner replies"],
-      "risk": "message dilution, too broad positioning, weak conversion tracking"
-    },
-    {
-      "id": "project-09-protected-operations-admin",
-      "name": "Protected Operations / Admin",
-      "description": "Admin, operators, auth/session, audit trail and protected backend operations.",
-      "revenueDrivers": ["operational control", "lower leakage cost", "faster decisions", "safe execution"],
-      "costDrivers": ["security review", "operator training", "audit logs", "access management"],
-      "dailyKpis": ["successful auth", "blocked actions", "audit events", "admin errors", "operator queue"],
-      "risk": "public exposure of protected data, unauthorized access, accidental campaign execution"
-    }
+    {"id":"project-01-the-code-new-york","name":"THE CODE New York Activation","description":"Central media and acquisition disclosure event for New York, 7 October 2026.","revenueDrivers":["licensing","sponsorship","institutional access","strategic partnership pipeline"],"costDrivers":["venue","media logistics","delegation hospitality","production","legal review"],"dailyKpis":["approved media applications","confirmed delegations","press reach","programme readiness","deadline risk"],"risk":"message control, logistics deadline, external media timing"},
+    {"id":"project-02-media-center-accreditation","name":"Media Center & Accreditation","description":"Media application, delegation review, secure documentation and press workflow.","revenueDrivers":["verified media access","partner packages","lower manual admin cost"],"costDrivers":["support time","identity checks","secure document handling","communications"],"dailyKpis":["applications received","applications approved","average response time","missing documents","secure-channel completion"],"risk":"identity/document handling, support overload, deadline compression"},
+    {"id":"project-03-mail-studio","name":"Mail Studio","description":"Manual individual mail, auto-reply, case panel, reference code and guarded communication workflow.","revenueDrivers":["faster conversion","lower support cost","controlled communication","case traceability"],"costDrivers":["mail processing","operator review","draft review","audit storage"],"dailyKpis":["cases created","drafts generated","manual sends","blocked bulk attempts","reply SLA"],"risk":"bulk/campaign misuse, data leakage, inconsistent signature"},
+    {"id":"project-04-finance-disclosure-portal","name":"Finance Disclosure Portal","description":"Public finance KPIs, reports, PDFs and institutional due diligence layer.","revenueDrivers":["investor trust","partner verification","bank/institutional readiness","deal acceleration"],"costDrivers":["report production","document review","version control","finance validation"],"dailyKpis":["finance page sessions","PDF opens","KPI data freshness","report downloads","inquiry quality"],"risk":"stale figures, inconsistent source data, unreviewed public claims"},
+    {"id":"project-05-sports-performance-platform","name":"Sports Performance Platform","description":"Sports clubs, performance tracking, team monitoring and data-driven operating layer.","revenueDrivers":["SaaS licence","club subscription","team onboarding","performance analytics"],"costDrivers":["data ingestion","support","sports staff onboarding","quality assurance"],"dailyKpis":["active clubs","tracked sessions","users onboarded","data completeness","retention"],"risk":"data quality, onboarding friction, sport-specific adoption"},
+    {"id":"project-06-global-group-entity-map","name":"Global Group Entity Map","description":"Public/private split of 45 entities, countries, markets and operating layers.","revenueDrivers":["market access","local entity readiness","global scalability","partner confidence"],"costDrivers":["governance","compliance","documentation","country-level operations"],"dailyKpis":["entity readiness","jurisdiction tasks","document status","governance exceptions","market activation"],"risk":"governance consistency, outdated entity status, over-disclosure"},
+    {"id":"project-07-newsroom-publishing-desk","name":"Newsroom & Publishing Desk","description":"Editorial desks, verified sources, SEO, publication rhythm and public updates.","revenueDrivers":["visibility","search traffic","media pipeline","brand authority"],"costDrivers":["editorial review","source verification","translation","image licensing"],"dailyKpis":["articles planned","articles published","indexed URLs","source risk flags","image clearance"],"risk":"copyright, inaccurate summary, unlicensed images, reputational exposure"},
+    {"id":"project-08-markets-layer","name":"Markets Layer","description":"Sport, media, technology, finance, hospitality, mobility and enterprise market packaging.","revenueDrivers":["vertical packages","qualified leads","licensing","partnership conversion"],"costDrivers":["sales enablement","market research","content production","landing pages"],"dailyKpis":["leads by market","conversion path","market page sessions","CTA clicks","partner replies"],"risk":"message dilution, too broad positioning, weak conversion tracking"},
+    {"id":"project-09-protected-operations-admin","name":"Protected Operations / Admin","description":"Admin, operators, auth/session, audit trail and protected backend operations.","revenueDrivers":["operational control","lower leakage cost","faster decisions","safe execution"],"costDrivers":["security review","operator training","audit logs","access management"],"dailyKpis":["successful auth","blocked actions","audit events","admin errors","operator queue"],"risk":"public exposure of protected data, unauthorized access, accidental campaign execution"}
   ]
 }
