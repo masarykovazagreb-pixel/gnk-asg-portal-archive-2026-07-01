@@ -54,6 +54,8 @@ const trackingV2=await readSource('email-status-tracking-v2.js');
 const trackingV3=await readSource('email-status-tracking-v3.js');
 const trackingSchema=await readSource('email-status-tracking-v1.js');
 assert.match(trackingFacade,/export \* from '.\/email-status-tracking-v6\.js'/,'V5 facade must resolve to V6');
+assert.match(trackingV6,/GNK_ASG_EMAIL_STATUS_TRACKING_V6_20260710_/,'V6 tracking marker must reflect the restored deployment');
+assert.match(trackingV6,/email-status-dashboard-v2\.js\?v=20260710-3/,'Email Status dashboard enhancer must use the current cache key');
 assert.match(trackingV6,/import \* as base from '.\/email-status-tracking-v5-core\.js'/);
 assert.match(trackingV6,/export const API_PREFIX=base\.API_PREFIX/);
 assert.match(trackingV6,/export const withEmailStatusTracking=base\.withEmailStatusTracking/);
@@ -68,4 +70,9 @@ assert.match(trackingSchema,/last_opened_at TEXT/);
 assert.match(trackingSchema,/open_count INTEGER/);
 assert.doesNotMatch(trackingSchema,/ip_address|user_agent|cf-connecting-ip|user-agent/i,'Email Status must not store IP addresses or user-agent metadata');
 
-console.log('automation-control-v1: protected final actions, Worker Ops return and active privacy-minimized Email Status import graph locked');
+const wrangler=await readFile(new URL('../wrangler.toml',import.meta.url),'utf8');
+assert.match(wrangler,/EMAIL_OPEN_TRACKING_ENABLED = "true"/,'deploy configuration must inject the classic open-tracking pixel');
+assert.match(wrangler,/MEDIA_OUTREACH_LIVE = "false"/,'media outreach must remain disabled');
+assert.match(wrangler,/MAIL_PROFILE_TEST_LIVE = "false"/,'mail profile test sends must remain disabled');
+
+console.log('automation-control-v1: protected final actions, Worker Ops return, active Email Status tracking and deploy configuration locked');
