@@ -13,21 +13,32 @@ const ARCHIVE_PATH = `${DATA_DIR}/news_archive.json`;
 const STATUS_PATH = `${DATA_DIR}/news-automation-status.json`;
 const MANUAL_SEED_PATH = `${DATA_DIR}/news_manual_seed.json`;
 
+// Popis usklađen s politikom u news-sources.json: direktni izvori,
+// bez Google News search-wrappera kao glavnog izvora. Hrvatski poslovni
+// izvori dodani (prije nisu bili u live rotaciji, samo u planiranom
+// popisu koji nikad nije bio ožičen na ovu skriptu).
 const FEEDS = [
+  // Hrvatska poslovna scena
+  { url: 'https://www.poslovni.hr/feed', source: 'Poslovni dnevnik', group: 'business', region: 'Hrvatska' },
+  { url: 'https://lidermedia.hr/feed', source: 'Lider', group: 'business', region: 'Hrvatska' },
+  // Međunarodne poslovne/tržišne vijesti (direktni feedovi)
+  { url: 'https://www.cnbc.com/id/10001147/device/rss/rss.html', source: 'CNBC Business', group: 'business', region: 'World' },
+  { url: 'https://feeds.bbci.co.uk/news/business/rss.xml', source: 'BBC Business', group: 'business', region: 'World' },
+  { url: 'https://www.theguardian.com/uk/business/rss', source: 'The Guardian Business', group: 'business', region: 'World' },
+  { url: 'https://feeds.content.dowjones.io/public/rss/mw_topstories', source: 'MarketWatch', group: 'business', region: 'World' },
+  // Digitalna imovina / fintech (relevantno za projekt 4 u portfelju)
+  { url: 'https://www.coindesk.com/arc/outboundfeeds/rss/', source: 'CoinDesk', group: 'digital-assets', region: 'World' },
+  { url: 'https://cointelegraph.com/rss', source: 'Cointelegraph', group: 'digital-assets', region: 'World' },
+  // Tehnologija
   { url: 'https://www.theverge.com/rss/index.xml', source: 'The Verge', group: 'technology', region: 'World' },
   { url: 'https://techcrunch.com/feed/', source: 'TechCrunch', group: 'technology', region: 'World' },
-  { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', source: 'BBC', group: 'world', region: 'World' },
   { url: 'https://feeds.bbci.co.uk/news/technology/rss.xml', source: 'BBC Technology', group: 'technology', region: 'World' },
-  { url: 'https://feeds.bbci.co.uk/sport/rss.xml', source: 'BBC Sport', group: 'sports', region: 'World' },
-  { url: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml', source: 'The New York Times', group: 'world', region: 'World' },
-  { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml', source: 'The New York Times Technology', group: 'technology', region: 'World' },
-  { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Science.xml', source: 'The New York Times Science', group: 'science', region: 'World' },
-  { url: 'https://www.theguardian.com/world/rss', source: 'The Guardian', group: 'world', region: 'World' },
-  { url: 'https://www.theguardian.com/technology/rss', source: 'The Guardian Technology', group: 'technology', region: 'World' },
+  // Opći svijet i znanost (zadržano iz postojećeg popisa)
+  { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', source: 'BBC', group: 'world', region: 'World' },
   { url: 'https://www.theguardian.com/science/rss', source: 'The Guardian Science', group: 'science', region: 'World' },
   { url: 'https://www.nasa.gov/news-release/feed/', source: 'NASA', group: 'science', region: 'World' },
-  { url: 'https://hnrss.org/frontpage', source: 'Hacker News', group: 'technology', region: 'World' },
-  { url: 'https://www.espn.com/espn/rss/news', source: 'ESPN', group: 'sports', region: 'World' }
+  // Sport (relevantno za projekt 2 u portfelju)
+  { url: 'https://feeds.bbci.co.uk/sport/rss.xml', source: 'BBC Sport', group: 'sports', region: 'World' }
 ];
 
 function decodeHtmlEntities(value = '') {
