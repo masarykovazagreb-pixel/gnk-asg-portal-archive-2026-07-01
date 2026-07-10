@@ -1,0 +1,50 @@
+{
+  "version": "GNK_ASG_AI_WORKER_PROJECT_ORCHESTRATOR_V1_20260710",
+  "mode": "ai_orchestrates_workers_and_nine_projects",
+  "languageParity": "All public/frontend output must carry HR and EN versions with the same substance.",
+  "timezone": "Europe/Zagreb",
+  "operatingCycles": [
+    {"id":"cycle-01-morning","time":"08:00","hr":"AI dodjeljuje dnevne zadatke workerima, provjerava statuse 9 projekata i priprema jutarnji report.","en":"AI assigns daily tasks to workers, checks the status of the 9 projects and prepares the morning report."},
+    {"id":"cycle-02-midday","time":"13:00","hr":"AI provjerava izvršenje, publication queue, media prijave, blokade i ručni review.","en":"AI checks execution, publication queue, media applications, blocks and manual review."},
+    {"id":"cycle-03-evening","time":"18:00","hr":"AI zatvara dan, sprema izvješće, označava rizike i priprema zadatke za sljedeći ciklus.","en":"AI closes the day, stores the report, marks risks and prepares tasks for the next cycle."}
+  ],
+  "aiAuthority": {
+    "canAssignTasks": true,
+    "canPrioritize": true,
+    "canSummarize": true,
+    "canClassifyRisk": true,
+    "canPrepareDrafts": true,
+    "canQueueAllowedNews": true,
+    "canAutoPublishAllowedNews": true,
+    "cannotApproveFinanceClaims": true,
+    "cannotApproveLegalClaims": true,
+    "cannotApproveMediaAccreditation": true,
+    "cannotSendBulkMail": true,
+    "cannotRunCampaigns": true,
+    "cannotExposeProtectedData": true
+  },
+  "workers": [
+    {"id":"worker-media-intake","roleHr":"media prijave i kontakti","roleEn":"media applications and contacts","managedByAi":true,"reportsPerDay":3},
+    {"id":"worker-newsroom-business","roleHr":"business i markets vijesti","roleEn":"business and markets news","managedByAi":true,"reportsPerDay":3},
+    {"id":"worker-newsroom-tech","roleHr":"technology, fintech i crypto vijesti","roleEn":"technology, fintech and crypto news","managedByAi":true,"reportsPerDay":3},
+    {"id":"worker-finance-signal","roleHr":"javni finance/KPI signal","roleEn":"public finance/KPI signal","managedByAi":true,"reportsPerDay":3},
+    {"id":"worker-the-code-programme","roleHr":"THE CODE program i New York aktivacija","roleEn":"THE CODE programme and New York activation","managedByAi":true,"reportsPerDay":3},
+    {"id":"worker-protected-ops","roleHr":"protected ops, auth i queue audit","roleEn":"protected ops, auth and queue audit","managedByAi":true,"reportsPerDay":3}
+  ],
+  "projects": [
+    {"id":"project-01-the-code-new-york","name":"THE CODE New York Activation","aiTasksHr":["programski status","media deadline","countdown provjera","sljedeći koraci"],"aiTasksEn":["programme status","media deadline","countdown check","next steps"],"manualReview":["legal","finance","official approval"]},
+    {"id":"project-02-media-center-accreditation","name":"Media Center & Accreditation","aiTasksHr":["prijave","kontakti","nedostajuća polja","needs-info prijedlog"],"aiTasksEn":["applications","contacts","missing fields","needs-info suggestion"],"manualReview":["approval","rejection","personal data"]},
+    {"id":"project-03-mail-studio","name":"Mail Studio","aiTasksHr":["individualni nacrti","case sažetak","referentni kod","operator note"],"aiTasksEn":["individual drafts","case summary","reference code","operator note"],"manualReview":["send action","external communication"]},
+    {"id":"project-04-finance-disclosure-portal","name":"Finance Disclosure Portal","aiTasksHr":["javni KPI signal","disclaimer","PDF/link status","risk flag"],"aiTasksEn":["public KPI signal","disclaimer","PDF/link status","risk flag"],"manualReview":["financial claim","figure approval"]},
+    {"id":"project-05-sports-performance-platform","name":"Sports Performance Platform","aiTasksHr":["operativni status","SaaS signal","onboarding signal","risk"],"aiTasksEn":["operating status","SaaS signal","onboarding signal","risk"],"manualReview":["commercial claim","private data"]},
+    {"id":"project-06-global-group-entity-map","name":"Global Group Entity Map","aiTasksHr":["33+12 mapa","lokacije","funkcije","javni sažetak"],"aiTasksEn":["33+12 map","locations","functions","public summary"],"manualReview":["entity/legal claim","private records"]},
+    {"id":"project-07-newsroom-publishing-desk","name":"Newsroom & Publishing Desk","aiTasksHr":["izvori","sažeci","10+ vijesti dnevno","manual review flag"],"aiTasksEn":["sources","summaries","10+ news posts daily","manual review flag"],"manualReview":["copyright risk","legal/finance/personal claim"]},
+    {"id":"project-08-markets-layer","name":"Markets Layer","aiTasksHr":["market kategorije","lead signal","CTA signal","sažetak"],"aiTasksEn":["market categories","lead signal","CTA signal","summary"],"manualReview":["commercial claim","partner claim"]},
+    {"id":"project-09-protected-operations-admin","name":"Protected Operations / Admin","aiTasksHr":["auth audit","route audit","queue audit","incident flag"],"aiTasksEn":["auth audit","route audit","queue audit","incident flag"],"manualReview":["access decision","deployment decision"]}
+  ],
+  "dailyReportSchema": {
+    "fields": ["date", "cycle", "workerId", "projectId", "assignedTasks", "completedTasks", "queuedPosts", "publishedPosts", "manualReview", "blocked", "riskFlags", "nextActions", "summaryHr", "summaryEn"],
+    "storage": "ai-reporting-queue",
+    "visibility": "operator-admin"
+  }
+}
