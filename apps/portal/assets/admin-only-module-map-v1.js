@@ -4,7 +4,7 @@
   window.__GNK_ASG_ADMIN_ONLY_MODULE_MAP_V3__ = true;
   const routes = [
     ['mail-studio', 'Mail Studio', 'Pojedinačna pošta, potpisi, draftovi i pretinci', '/mail-studio/'],
-    ['email-status', 'Status email poruka', 'Primatelj, vrijeme slanja i dostave, prvo i zadnje otvaranje, broj otvaranja te potvrda primitka', '/email-status?source=all'],
+    ['email-status', 'Status email poruka', 'Primatelj, pošiljatelj, predmet, vrijeme slanja i dostave, prvo i zadnje otvaranje, broj otvaranja te Message ID', '/email-status?source=all'],
     ['mail-tracker', 'Mail Tracker', 'Pregled readinessa, reda, statusa i audit zapisa bez slanja', '/mail-tracker/'],
     ['campaign-mailer', 'Campaign Mailer', 'Priprema kampanje, kontakti, HTML poruka, PDF privitak i red slanja', '/campaign-mailer/'],
     ['media-command', 'Media Command Center', 'Mediji, prijave, odobrenja i radni tokovi', '/media-command-center/'],
