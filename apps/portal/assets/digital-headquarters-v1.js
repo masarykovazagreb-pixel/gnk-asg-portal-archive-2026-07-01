@@ -28,5 +28,25 @@
   if(target){document.querySelectorAll('a').forEach(anchor=>{const label=anchor.textContent.trim().toUpperCase();if(label==='EN'||label==='HR')anchor.href=target;});}
 
   const authLinks=[...document.querySelectorAll('[data-auth-only]')];
-  if(authLinks.length){fetch('/api/operator-auth-check',{credentials:'same-origin',cache:'no-store'}).then(r=>{if(r.ok)authLinks.forEach(el=>el.hidden=false);}).catch(()=>{});}
+  authLinks.forEach(el=>{
+    if(el.getAttribute('href')==='/admin-center/'){
+      el.hidden=false;
+      el.textContent='ADMIN LOGIN';
+      el.classList.add('is-primary');
+    }
+  });
+  const protectedLinks=authLinks.filter(el=>el.getAttribute('href')!=='/admin-center/');
+  if(protectedLinks.length){fetch('/api/operator-auth-check',{credentials:'same-origin',cache:'no-store'}).then(r=>{if(r.ok)protectedLinks.forEach(el=>el.hidden=false);}).catch(()=>{});}
+
+  const isHome=path==='/'||path==='/en';
+  if(isHome&&!document.querySelector('[data-gnk-network-mount]')){
+    const anchor=document.querySelector('#finance')||document.querySelector('footer');
+    const section=document.createElement('section');
+    section.className='dhq-section';
+    section.id='network';
+    section.innerHTML='<div data-gnk-network-mount data-compact></div>';
+    if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(section,anchor);else document.querySelector('main')?.appendChild(section);
+    const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/group-network-v1.css?v=20260710-v1';document.head.appendChild(css);
+    const script=document.createElement('script');script.src='/assets/group-network-v1.js?v=20260710-v1';script.defer=true;document.body.appendChild(script);
+  }
 })();
