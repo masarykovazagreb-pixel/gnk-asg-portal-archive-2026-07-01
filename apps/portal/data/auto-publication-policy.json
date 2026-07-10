@@ -1,0 +1,80 @@
+{
+  "version": "GNK_ASG_AUTO_PUBLICATION_POLICY_V1_20260710",
+  "mode": "controlled_portal_auto_publication",
+  "scope": {
+    "portalPosts": true,
+    "email": false,
+    "campaigns": false,
+    "socialMediaAutoPost": false,
+    "externalSyndication": false
+  },
+  "globalRules": {
+    "sourceAllowlistRequired": true,
+    "imageHotlinking": false,
+    "fallbackImage": "/assets/gnk-gold-logo.svg",
+    "copyFullArticleText": false,
+    "originalSummaryRequired": true,
+    "sourceAttributionRequired": true,
+    "manualReviewForLegalClaims": true,
+    "manualReviewForFinancialClaims": true,
+    "manualReviewForPersonalData": true,
+    "protectedDataExcluded": true
+  },
+  "cadence": {
+    "timezone": "Europe/Zagreb",
+    "windows": ["09:00", "16:00"],
+    "maxAutoPostsPerDay": 6,
+    "maxAutoPostsPerSourcePerDay": 2
+  },
+  "categories": [
+    {
+      "id": "official-update",
+      "label": "Official update",
+      "autoPublishAllowed": true,
+      "requiresAdminApproval": false,
+      "source": "internal-approved-template",
+      "imageMode": "fallback_or_internal"
+    },
+    {
+      "id": "source-summary-business",
+      "label": "Business source summary",
+      "autoPublishAllowed": true,
+      "requiresAdminApproval": false,
+      "source": "news-sources-allowlist",
+      "imageMode": "fallback_by_default"
+    },
+    {
+      "id": "source-summary-technology",
+      "label": "Technology source summary",
+      "autoPublishAllowed": true,
+      "requiresAdminApproval": false,
+      "source": "news-sources-allowlist",
+      "imageMode": "fallback_by_default"
+    },
+    {
+      "id": "finance-signal",
+      "label": "Finance signal",
+      "autoPublishAllowed": false,
+      "requiresAdminApproval": true,
+      "reason": "Financial claims require manual approval."
+    },
+    {
+      "id": "legal-ip-update",
+      "label": "Legal/IP update",
+      "autoPublishAllowed": false,
+      "requiresAdminApproval": true,
+      "reason": "Legal and IP claims require manual approval."
+    },
+    {
+      "id": "media-application-status",
+      "label": "Media application status",
+      "autoPublishAllowed": false,
+      "requiresAdminApproval": true,
+      "reason": "Media applications can contain personal or protected data."
+    }
+  ],
+  "postObjectSchema": {
+    "fields": ["id", "status", "category", "title", "slug", "summary", "sourceName", "sourceUrl", "imageUrl", "imageCredit", "createdAt", "scheduledFor", "publishedAt", "reviewFlags"],
+    "statuses": ["draft", "queued", "published", "manual_review", "blocked"]
+  }
+}
