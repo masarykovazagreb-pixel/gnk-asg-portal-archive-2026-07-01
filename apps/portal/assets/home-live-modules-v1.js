@@ -59,10 +59,11 @@
         target.innerHTML = `<div class="dhq-section-head"><div><div class="dhq-ey">${t.pubEy}</div><h2 class="dhq-h2">${t.pubTitle}</h2></div></div><p style="color:#8e8164">${t.pubEmpty}</p>`;
         return;
       }
+      const excerpt = (text, n) => { const s = String(text || ''); return s.length > n ? s.slice(0, n).replace(/\s+\S*$/, '') + '\u2026' : s; };
       target.innerHTML = `
         <div class="dhq-section-head"><div><div class="dhq-ey">${t.pubEy}</div><h2 class="dhq-h2">${t.pubTitle}</h2></div></div>
         <div class="dhq-grid-3">${items.map(p => `
-          <article class="dhq-card"><h3 class="dhq-h3">${esc(p.title || '')}</h3><p>${esc(p.summary || '')}</p></article>`).join('')}</div>`;
+          <article class="dhq-card">${p.image && p.image.src ? `<img src="${esc(p.image.src)}" alt="${esc(p.image.alt || p.title || '')}" loading="lazy" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:12px;border:1px solid rgba(214,173,79,.2);">` : ''}<h3 class="dhq-h3">${esc(p.title || '')}</h3><p>${esc(excerpt(p.summary, 180))}</p></article>`).join('')}</div>`;
     } catch (e) {
       target.innerHTML = `<div class="dhq-section-head"><div><div class="dhq-ey">${t.pubEy}</div><h2 class="dhq-h2">${t.pubTitle}</h2></div></div><p style="color:#8e8164">${t.pubEmpty}</p>`;
     }
