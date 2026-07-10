@@ -1,0 +1,47 @@
+{
+  "version": "2026-07-10",
+  "scope": "public",
+  "summary": {
+    "entities": 45,
+    "operatingLocations": 33,
+    "dormantLocations": 12,
+    "publishedNodes": 2
+  },
+  "nodes": [
+    {
+      "id": "GNK-DINAMO-LTD",
+      "code": "GNK-DINAMO-LTD",
+      "publicName": "GNK DINAMO Ltd.",
+      "city": "Boulder",
+      "country": "United States",
+      "countryCode": "US",
+      "latitude": 40.01499,
+      "longitude": -105.27055,
+      "workers": null,
+      "status": "operating",
+      "market": "North America",
+      "function": "Group headquarters"
+    },
+    {
+      "id": "GNK-ASG-HR",
+      "code": "GNK-ASG-HR",
+      "publicName": "GNK ASG d.o.o.",
+      "city": "Zagreb",
+      "country": "Croatia",
+      "countryCode": "HR",
+      "latitude": 45.81501,
+      "longitude": 15.98192,
+      "workers": 3,
+      "status": "operating",
+      "market": "European Union",
+      "function": "Development and operations"
+    }
+  ],
+  "links": [
+    {
+      "from": "GNK-DINAMO-LTD",
+      "to": "GNK-ASG-HR",
+      "type": "core"
+    }
+  ]
+}
