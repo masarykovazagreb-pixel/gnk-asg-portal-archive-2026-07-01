@@ -23,37 +23,44 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate public portal assets
+      - name: Validate public portal assets and protected entrypoint
         shell: bash
         run: |
           set -euo pipefail
-          test -s apps/portal/index.html
-          test -s apps/portal/en/index.html
-          test -s apps/portal/about/index.html
-          test -s apps/portal/en/about/index.html
-          test -s apps/portal/projects/index.html
-          test -s apps/portal/en/projects/index.html
-          test -s apps/portal/finance/index.html
-          test -s apps/portal/en/finance/index.html
-          test -s apps/portal/reports/index.html
-          test -s apps/portal/en/reports/index.html
-          test -s apps/portal/media-application/index.html
-          test -s apps/portal/sitemap.xml
-          test -s apps/portal/the-code/index.html
-          test -s apps/portal/the-code/media-memorandum/index.html
-          test -s apps/portal/mail-studio/index.html
-          test -s apps/portal/assets/digital-headquarters-v1.css
-          test -s apps/portal/assets/digital-headquarters-v1.js
-          test -s apps/portal/assets/media-registration-v1.js
-          test -s apps/portal/assets/mail-studio-webmail-v27.js
-          test -s apps/portal/assets/mail-studio-auto-reply-panel-v1.js
-          test -s apps/portal/assets/mail-studio-reference-code-v1.js
-          test -s apps/portal/google46686328e30c759f.html
-          test -s apps/portal/data/finance-kpi-2025.json
-          test -s apps/portal/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf
-          test -s apps/portal/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf
-          test -s workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
-          test -s workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+
+          required_files=(
+            apps/portal/index.html
+            apps/portal/en/index.html
+            apps/portal/about/index.html
+            apps/portal/en/about/index.html
+            apps/portal/projects/index.html
+            apps/portal/en/projects/index.html
+            apps/portal/finance/index.html
+            apps/portal/en/finance/index.html
+            apps/portal/reports/index.html
+            apps/portal/en/reports/index.html
+            apps/portal/media-application/index.html
+            apps/portal/the-code/index.html
+            apps/portal/the-code/media-memorandum/index.html
+            apps/portal/mail-studio/index.html
+            apps/portal/sitemap.xml
+            apps/portal/assets/digital-headquarters-v1.css
+            apps/portal/assets/digital-headquarters-v1.js
+            apps/portal/assets/media-registration-v1.js
+            apps/portal/assets/mail-studio-webmail-v27.js
+            apps/portal/assets/mail-studio-auto-reply-panel-v1.js
+            apps/portal/assets/mail-studio-reference-code-v1.js
+            apps/portal/google46686328e30c759f.html
+            apps/portal/data/finance-kpi-2025.json
+            apps/portal/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf
+            apps/portal/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
+            workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
+            workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+            workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          )
+          for file in "${required_files[@]}"; do test -s "$file"; done
 
           grep -q 'DIGITAL_HEADQUARTERS_V1' apps/portal/index.html apps/portal/en/index.html
           grep -q 'GNK DINAMO Ltd. Group is the international parent group' apps/portal/en/index.html
@@ -63,22 +70,29 @@ jobs:
           grep -q 'International hospitals, sports medicine and rehabilitation' apps/portal/en/index.html apps/portal/en/projects/index.html
           grep -q 'Arhitektura projektirana za približno 1.537 operativnih pozicija' apps/portal/index.html
           grep -q 'Architecture designed for approximately 1,537 operating positions' apps/portal/en/index.html
-          grep -q 'Izjava uprave · 29. lipnja 2026.' apps/portal/index.html
           grep -q 'Izjava uprave · stanje na 29. lipnja 2026.' apps/portal/finance/index.html
-          grep -q 'Management statement · 29 June 2026' apps/portal/en/index.html
           grep -q 'Management statement · position at 29 June 2026' apps/portal/en/finance/index.html
           grep -q 'dedicated username and password' apps/portal/media-application/index.html
-          grep -q 'This account is only for the media application and does not grant admin access' apps/portal/media-application/index.html
-          grep -q 'https://www.gnk-asg.hr/en/about/' apps/portal/sitemap.xml
-          grep -q 'https://www.gnk-asg.hr/en/projects/' apps/portal/sitemap.xml
-          grep -q 'https://www.gnk-asg.hr/en/finance/' apps/portal/sitemap.xml
-          grep -q 'https://www.gnk-asg.hr/en/reports/' apps/portal/sitemap.xml
-          grep -q 'GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf' apps/portal/index.html apps/portal/en/index.html apps/portal/about/index.html apps/portal/en/about/index.html apps/portal/finance/index.html apps/portal/en/finance/index.html apps/portal/reports/index.html apps/portal/en/reports/index.html
-          grep -q 'GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf' apps/portal/index.html apps/portal/en/index.html apps/portal/about/index.html apps/portal/en/about/index.html apps/portal/finance/index.html apps/portal/en/finance/index.html apps/portal/reports/index.html apps/portal/en/reports/index.html
+          grep -q 'does not grant admin access' apps/portal/media-application/index.html
+
+          for route in en/about en/projects en/finance en/reports; do
+            grep -q "https://www.gnk-asg.hr/${route}/" apps/portal/sitemap.xml
+          done
+
+          for page in \
+            apps/portal/index.html apps/portal/en/index.html \
+            apps/portal/about/index.html apps/portal/en/about/index.html \
+            apps/portal/finance/index.html apps/portal/en/finance/index.html \
+            apps/portal/reports/index.html apps/portal/en/reports/index.html; do
+            grep -q 'GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf' "$page"
+            grep -q 'GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf' "$page"
+          done
+
           grep -q '/the-code/media-memorandum/' apps/portal/index.html
           grep -q '/media-application/?lang=en' apps/portal/en/index.html
           grep -q 'Official Media Invitation and Detailed Memorandum' apps/portal/the-code/media-memorandum/index.html
-          grep -q "google-site-verification: google46686328e30c759f.html" apps/portal/google46686328e30c759f.html
+          grep -q 'google-site-verification: google46686328e30c759f.html' apps/portal/google46686328e30c759f.html
+
           grep -q 'GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP' apps/portal/assets/mail-studio-webmail-v27.js
           grep -q 'GNK_ASG_MAIL_STUDIO_AUTO_REPLY_PANEL_V1_20260709' apps/portal/assets/mail-studio-auto-reply-panel-v1.js
           grep -q 'GNK_ASG_MAIL_STUDIO_REFERENCE_CODE_V1_20260709' apps/portal/assets/mail-studio-reference-code-v1.js
@@ -87,12 +101,17 @@ jobs:
           ! grep -q 'rht@gmx.com' apps/portal/mail-studio/index.html apps/portal/assets/mail-studio-webmail-v27.js
           grep -q 'GNK_ASG_AUTO_REPLY_CASE_CENTER_V1_20260709_PERSONALIZED_AI_SIGNATURES' workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
           grep -q 'GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY' workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+
           grep -q 'GNK_ASG_UNIFIED_AUTH_V30_20260710_WORKER_OPS_PROTECTED' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
-          grep -q 'static-asset-index-first' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
-          grep -q 'mailStudioV27' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
-          grep -q 'authenticated-v27-asset-first' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
-          grep -q 'inactive-v26-retired' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
-          ! grep -q "mailStudioV26\|mail-studio-v26-bcc-utf8-hotfix.js\|GNK_ASG_WEBMAIL_V26_20260708_I18N_RUNTIME_FIX" workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          grep -q 'GNK_ASG_UNIFIED_AUTH_V31_20260710_WORKER_OPS_ENTRY_GUARD' workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
+          grep -q "path.startsWith('/worker-ops/')" workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
+          grep -q "workerOpsDirectAssetGuard:'operator-auth-required'" workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
+          grep -q 'main = "src/index-unified-auth-v16.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'directory = "../../apps/portal"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'run_worker_first = true' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MAIL_MANUAL_LIVE = "true"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+
           grep -q '"excludedMetrics"' apps/portal/data/finance-kpi-2025.json
           grep -q '"ebitdaEstimated"' apps/portal/data/finance-kpi-2025.json
           grep -q '"shortTermLiabilities"' apps/portal/data/finance-kpi-2025.json
@@ -103,15 +122,11 @@ jobs:
           node --check apps/portal/assets/mail-studio-webmail-v27.js
           node --check apps/portal/assets/mail-studio-auto-reply-panel-v1.js
           node --check apps/portal/assets/mail-studio-reference-code-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
           node --check workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
           node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
-          grep -q 'main = "src/index-unified-auth-v15.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'directory = "../../apps/portal"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'run_worker_first = true' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'MAIL_MANUAL_LIVE = "true"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
 
       - name: Dry-run public Worker and assets deploy
         working-directory: workers/gnk-asg-direct-operator
@@ -129,67 +144,72 @@ jobs:
         run: |
           set -euo pipefail
           cb="${GITHUB_SHA}-${GITHUB_RUN_ID}"
+
           check_contains() {
             local label="$1" url="$2" needle="$3" body status curl_exit
             body="$(mktemp)"
             echo "::group::${label}"
             for attempt in 1 2 3 4 5 6; do
               set +e
-              status="$(curl --location --silent --show-error --output "${body}" --write-out '%{http_code}' --max-time 20 "${url}")"
+              status="$(curl --location --silent --show-error --output "$body" --write-out '%{http_code}' --max-time 20 "$url")"
               curl_exit=$?
               set -e
-              if [ "${curl_exit}" = "0" ] && [ "${status}" = "200" ] && grep -q "${needle}" "${body}"; then
+              if [ "$curl_exit" = "0" ] && [ "$status" = "200" ] && grep -q "$needle" "$body"; then
                 echo "OK: ${label}"
                 echo "::endgroup::"
-                rm -f "${body}"
+                rm -f "$body"
                 return 0
               fi
-              head -c 500 "${body}" || true
+              head -c 500 "$body" || true
               echo
               sleep 10
             done
             echo "FAILED: ${label}; expected ${needle}" >&2
             echo "::endgroup::"
-            rm -f "${body}"
+            rm -f "$body"
             return 1
           }
+
           check_status() {
             local label="$1" url="$2" body status curl_exit
             body="$(mktemp)"
             echo "::group::${label}"
             for attempt in 1 2 3 4 5 6; do
               set +e
-              status="$(curl --location --silent --show-error --output "${body}" --write-out '%{http_code}' --max-time 30 "${url}")"
+              status="$(curl --location --silent --show-error --output "$body" --write-out '%{http_code}' --max-time 30 "$url")"
               curl_exit=$?
               set -e
-              if [ "${curl_exit}" = "0" ] && [ "${status}" = "200" ]; then
+              if [ "$curl_exit" = "0" ] && [ "$status" = "200" ]; then
                 echo "OK: ${label}"
                 echo "::endgroup::"
-                rm -f "${body}"
+                rm -f "$body"
                 return 0
               fi
-              head -c 200 "${body}" || true
+              head -c 200 "$body" || true
               echo
               sleep 10
             done
             echo "FAILED: ${label}" >&2
             echo "::endgroup::"
-            rm -f "${body}"
+            rm -f "$body"
             return 1
           }
-          check_contains "Google verification file" "https://gnk-asg.hr/google46686328e30c759f.html?cb=${cb}" "google-site-verification: google46686328e30c759f.html"
-          check_contains "Digital Headquarters root" "https://gnk-asg.hr/?cb=${cb}" "DIGITAL_HEADQUARTERS_V1"
-          check_contains "English Digital Headquarters" "https://gnk-asg.hr/en?cb=${cb}" "GNK DINAMO Ltd. Group is the international parent group"
+
+          check_contains "Google verification" "https://gnk-asg.hr/google46686328e30c759f.html?cb=${cb}" "google-site-verification: google46686328e30c759f.html"
+          check_contains "Digital Headquarters HR" "https://gnk-asg.hr/?cb=${cb}" "DIGITAL_HEADQUARTERS_V1"
+          check_contains "Digital Headquarters EN" "https://gnk-asg.hr/en?cb=${cb}" "GNK DINAMO Ltd. Group is the international parent group"
           check_contains "English About" "https://gnk-asg.hr/en/about/?cb=${cb}" "An international parent Group and a Croatian development company"
           check_contains "English Projects" "https://gnk-asg.hr/en/projects/?cb=${cb}" "Nine actual projects"
           check_contains "English Finance" "https://gnk-asg.hr/en/finance/?cb=${cb}" "Official documents, clear labels and direct downloads"
           check_contains "English Reports" "https://gnk-asg.hr/en/reports/?cb=${cb}" "The documents are public. Downloads are direct"
           check_contains "Media username-password flow" "https://gnk-asg.hr/media-application/?lang=en&cb=${cb}" "dedicated username and password"
-          check_contains "THE CODE media memorandum" "https://gnk-asg.hr/the-code/media-memorandum/?cb=${cb}" "Official Media Invitation and Detailed Memorandum"
-          check_contains "THE CODE page" "https://gnk-asg.hr/the-code/?cb=${cb}" "THE CODE"
-          check_contains "Finance public downloads" "https://gnk-asg.hr/finance/?cb=${cb}" "GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf"
-          check_contains "Reports public downloads" "https://gnk-asg.hr/reports/?cb=${cb}" "GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf"
+          check_contains "THE CODE memorandum" "https://gnk-asg.hr/the-code/media-memorandum/?cb=${cb}" "Official Media Invitation and Detailed Memorandum"
+          check_contains "THE CODE" "https://gnk-asg.hr/the-code/?cb=${cb}" "THE CODE"
+          check_contains "Finance downloads" "https://gnk-asg.hr/finance/?cb=${cb}" "GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf"
+          check_contains "Reports downloads" "https://gnk-asg.hr/reports/?cb=${cb}" "GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf"
+          check_contains "Active entrypoint" "https://gnk-asg.hr/data/portal-version.json?cb=${cb}" "index-unified-auth-v16.js"
+          check_contains "Worker Ops guard" "https://gnk-asg.hr/data/portal-version.json?cb=${cb}" "operator-auth-required"
           check_contains "Digital Headquarters JS" "https://gnk-asg.hr/assets/digital-headquarters-v1.js?cb=${cb}" "operator-auth-check"
           check_contains "Finance KPI JSON" "https://gnk-asg.hr/data/finance-kpi-2025.json?cb=${cb}" "ebitdaEstimated"
           check_status "GNK ASG audited PDF" "https://gnk-asg.hr/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf?cb=${cb}"
-          check_status "GNK DINAMO consolidated PDF" "https://gnk-asg.hr/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf?cb=${cb}"
+          check_status "GNK DINAMO Group PDF" "https://gnk-asg.hr/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf?cb=${cb}"
