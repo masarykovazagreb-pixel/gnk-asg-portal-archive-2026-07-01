@@ -1,0 +1,79 @@
+{
+  "version": "GNK_ASG_WORKER_PROJECT_ORCHESTRATOR_V2_20260710_DAILY_ROLLOVER_FULL_ALLOCATION",
+  "mode": "internal_orchestration_worker_labeled_output",
+  "languageParity": "All public/frontend output must carry HR and EN versions with the same substance.",
+  "timezone": "Europe/Zagreb",
+  "presentationRule": "Outputs are presented through worker roles, desks, companies and projects, not as AI-authored public content.",
+  "dailyOperatingRule": {
+    "hr": [
+      "Svaki dan se otvara novi dnevni radni ciklus za sve workere.",
+      "Stari zadaci se pregledavaju, zatvaraju, vraćaju u rad ili dijele na manje zadatke.",
+      "Novi zadaci se dodjeljuju svim workerima prema projektu, funkciji, prioritetu i kapacitetu.",
+      "Ako zadatak nema vlasnika, Worker Operations Desk ga odmah dodjeljuje odgovornom workeru.",
+      "Ako je projekt preopterećen, posao se dijeli na više workera i više manjih zadataka.",
+      "Nema statusa 'nema tko raditi'; za svaki projekt postoji minimalni dnevni worker pokrivač."
+    ],
+    "en": [
+      "Each day opens a new daily operating cycle for all workers.",
+      "Old tasks are reviewed, closed, returned to work or split into smaller tasks.",
+      "New tasks are assigned to all workers by project, function, priority and capacity.",
+      "If a task has no owner, Worker Operations Desk immediately assigns it to the responsible worker.",
+      "If a project is overloaded, work is split across more workers and smaller tasks.",
+      "There is no 'no one to work on it' status; every project has minimum daily worker coverage."
+    ]
+  },
+  "dailyMinimums": {
+    "minimumTasksPerWorkerPerDay": 3,
+    "minimumProjectTouchesPerDay": 1,
+    "minimumReportsPerWorkerPerDay": 3,
+    "minimumNewsPostsPerDay": 10,
+    "minimumPublicationWindowsPerDay": 3,
+    "reviewOldTasksEveryMorning": true,
+    "createNewTasksEveryMorning": true,
+    "reframeWorkEveryEvening": true
+  },
+  "operatingCycles": [
+    {"id":"cycle-01-morning","time":"08:00","hr":"Jutarnji ciklus: pregled starih zadataka, zatvaranje gotovog, vraćanje nedovršenog u rad, dodjela novih zadataka svim workerima i novi okvir dana.","en":"Morning cycle: review old tasks, close completed work, return unfinished work to execution, assign new tasks to all workers and set the daily frame."},
+    {"id":"cycle-02-midday","time":"13:00","hr":"Srednji ciklus: provjera izvršenja, preraspodjela ako negdje stoji, publication queue, media prijave, blokade i ručni review.","en":"Midday cycle: check execution, reassign work if blocked, publication queue, media applications, blocks and manual review."},
+    {"id":"cycle-03-evening","time":"18:00","hr":"Večernji ciklus: zatvaranje dana, izvješće, naučene lekcije, novi okvir za sutra i zadaci koji se prenose.","en":"Evening cycle: close the day, report, lessons learned, new frame for tomorrow and carried-over tasks."}
+  ],
+  "workerAuthority": {
+    "canAssignTasks": true,
+    "canPrioritize": true,
+    "canSplitTasks": true,
+    "canReassignTasks": true,
+    "canOpenDailyWorkFrame": true,
+    "canCloseCompletedTasks": true,
+    "canCreateDecisionProposals": true,
+    "canCreateMonetizationProposals": true,
+    "canPublishAllowedWorkerOutput": true,
+    "canRunPaperTradingOnly": true,
+    "realMoneyTrading": false,
+    "massCampaigns": false,
+    "publicAdminAccess": false
+  },
+  "workers": [
+    {"id":"worker-media-intake","label":"Media Intake Worker","roleHr":"media prijave, kontakti, status prijave i needs-info","roleEn":"media applications, contacts, application status and needs-info","reportsPerDay":3,"minimumDailyTasks":3,"fallbackProjects":["project-02-media-center-accreditation","project-03-mail-studio"]},
+    {"id":"worker-newsroom-business","label":"Business Newsroom Worker","roleHr":"business, markets i partner vijesti","roleEn":"business, markets and partner news","reportsPerDay":3,"minimumDailyTasks":3,"fallbackProjects":["project-07-newsroom-publishing-desk","project-08-markets-layer"]},
+    {"id":"worker-newsroom-tech","label":"Technology Newsroom Worker","roleHr":"technology, fintech, crypto i product development vijesti","roleEn":"technology, fintech, crypto and product development news","reportsPerDay":3,"minimumDailyTasks":3,"fallbackProjects":["project-07-newsroom-publishing-desk","project-05-sports-performance-platform"]},
+    {"id":"worker-finance-signal","label":"Finance Signal Worker","roleHr":"javni finance/KPI signal, projekcije i paper trading","roleEn":"public finance/KPI signal, projections and paper trading","reportsPerDay":3,"minimumDailyTasks":3,"fallbackProjects":["project-04-finance-disclosure-portal","project-08-markets-layer"]},
+    {"id":"worker-the-code-programme","label":"THE CODE Programme Worker","roleHr":"THE CODE program, New York aktivacija i media memorandum","roleEn":"THE CODE programme, New York activation and media memorandum","reportsPerDay":3,"minimumDailyTasks":3,"fallbackProjects":["project-01-the-code-new-york","project-02-media-center-accreditation"]},
+    {"id":"worker-protected-ops","label":"Protected Operations Worker","roleHr":"protected ops, auth, queue audit i radni okvir","roleEn":"protected ops, auth, queue audit and operating frame","reportsPerDay":3,"minimumDailyTasks":3,"fallbackProjects":["project-09-protected-operations-admin","project-03-mail-studio"]}
+  ],
+  "projects": [
+    {"id":"project-01-the-code-new-york","name":"THE CODE New York Activation","minimumDailyWorkerCoverage":["worker-the-code-programme","worker-newsroom-business"],"dailyTasksHr":["programski status","media deadline","countdown provjera","sljedeći koraci","monetizacijski signal"],"dailyTasksEn":["programme status","media deadline","countdown check","next steps","monetization signal"]},
+    {"id":"project-02-media-center-accreditation","name":"Media Center & Accreditation","minimumDailyWorkerCoverage":["worker-media-intake","worker-the-code-programme"],"dailyTasksHr":["nove prijave","kontakti","nedostajuća polja","needs-info","status reda"],"dailyTasksEn":["new applications","contacts","missing fields","needs-info","queue status"]},
+    {"id":"project-03-mail-studio","name":"Mail Studio","minimumDailyWorkerCoverage":["worker-protected-ops","worker-media-intake"],"dailyTasksHr":["individualni nacrti","case sažetak","referentni kod","kontakt status"],"dailyTasksEn":["individual drafts","case summary","reference code","contact status"]},
+    {"id":"project-04-finance-disclosure-portal","name":"Finance Disclosure Portal","minimumDailyWorkerCoverage":["worker-finance-signal","worker-protected-ops"],"dailyTasksHr":["javni KPI signal","finance disclaimer","projekcija","paper trading lekcija"],"dailyTasksEn":["public KPI signal","finance disclaimer","projection","paper trading lesson"]},
+    {"id":"project-05-sports-performance-platform","name":"Sports Performance Platform","minimumDailyWorkerCoverage":["worker-newsroom-tech","worker-finance-signal"],"dailyTasksHr":["product task","SaaS signal","onboarding signal","revenue experiment"],"dailyTasksEn":["product task","SaaS signal","onboarding signal","revenue experiment"]},
+    {"id":"project-06-global-group-entity-map","name":"Global Group Entity Map","minimumDailyWorkerCoverage":["worker-protected-ops","worker-newsroom-business"],"dailyTasksHr":["33+12 mapa","funkcije","lokacije","javni sažetak"],"dailyTasksEn":["33+12 map","functions","locations","public summary"]},
+    {"id":"project-07-newsroom-publishing-desk","name":"Newsroom & Publishing Desk","minimumDailyWorkerCoverage":["worker-newsroom-business","worker-newsroom-tech"],"dailyTasksHr":["izvori","sažeci","10+ vijesti dnevno","manual review flag"],"dailyTasksEn":["sources","summaries","10+ news posts daily","manual review flag"]},
+    {"id":"project-08-markets-layer","name":"Markets Layer","minimumDailyWorkerCoverage":["worker-finance-signal","worker-newsroom-business","worker-newsroom-tech"],"dailyTasksHr":["market kategorije","lead signal","CTA signal","paper trading watchlist"],"dailyTasksEn":["market categories","lead signal","CTA signal","paper trading watchlist"]},
+    {"id":"project-09-protected-operations-admin","name":"Protected Operations / Admin","minimumDailyWorkerCoverage":["worker-protected-ops"],"dailyTasksHr":["auth audit","route audit","queue audit","incident flag","radni okvir"],"dailyTasksEn":["auth audit","route audit","queue audit","incident flag","operating frame"]}
+  ],
+  "dailyReportSchema": {
+    "fields": ["date", "cycle", "workerId", "workerLabel", "projectId", "assignedTasks", "reviewedOldTasks", "completedTasks", "carriedOverTasks", "splitTasks", "queuedPosts", "publishedPosts", "manualReview", "blocked", "riskFlags", "nextActions", "summaryHr", "summaryEn"],
+    "storage": "worker-reporting-queue",
+    "visibility": "operator-admin"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "version": "GNK_ASG_PUBLIC_PAGE_NOTICES_V2_20260710_WORKER_DESK_OUTPUT",
+  "languageParity": "HR and EN notices carry the same substance.",
+  "default": {
+    "hr": [
+      "Javni portal prikazuje samo javne informacije i operativne sažetke koje pripremaju odgovorni workeri i deskovi.",
+      "Newsroom workeri provjeravaju vijesti prema allowlisti izvora i objavljuju ih u kontroliranim dnevnim terminima, najmanje 3x dnevno i ciljano 10+ objava dnevno.",
+      "Finance Signal Worker smije objavljivati javne operativne finance/KPI signale, ali ne knjigovodstvena izvješća ni službene financijske izvještaje.",
+      "Pravne, osobne i službene financijske tvrdnje idu na ručni pregled prije javne objave.",
+      "Mail Studio, admin i operator funkcije nalaze se iza zaštićenog pristupa. Nema masovnog slanja i nema kampanja."
+    ],
+    "en": [
+      "The public portal displays only public information and operating summaries prepared by responsible workers and desks.",
+      "Newsroom workers check news against the source allowlist and publish it in controlled daily windows, at least 3x daily and targeting 10+ posts per day.",
+      "Finance Signal Worker may publish public operating finance/KPI signals, but not accounting reports or official financial statements.",
+      "Legal, personal-data and official financial claims go to manual review before public publication.",
+      "Mail Studio, admin and operator functions remain behind protected access. No mass sending and no campaigns."
+    ]
+  },
+  "routes": {
+    "/": "default",
+    "/en": "default",
+    "/the-code/": "default",
+    "/the-code/media-memorandum/": "default",
+    "/media-application/": "mediaApplication",
+    "/finance/": "finance"
+  },
+  "mediaApplication": {
+    "hr": [
+      "Media korisnik sam kreira korisničko ime i lozinku te nije admin korisnik.",
+      "Prijava se može spremiti kao nacrt i kasnije nastaviti.",
+      "Slanje prijave ne znači automatsko odobrenje. Status pregledava Media Intake Worker i operator za medije.",
+      "Komunikacija je individualna; nema kampanja i nema masovnog slanja."
+    ],
+    "en": [
+      "The media user creates their own username and password and is not an admin user.",
+      "The application can be saved as a draft and continued later.",
+      "Submitting an application does not mean automatic approval. The status is reviewed by the Media Intake Worker and media operator.",
+      "Communication is individual; no campaigns and no mass sending."
+    ]
+  },
+  "finance": {
+    "hr": [
+      "Financijski prikaz je javni informativni sloj, a ne privatna knjigovodstvena evidencija.",
+      "Finance Signal Worker može pripremati javne KPI signale, projekcije i operativne komentare.",
+      "Službeni financijski izvještaji, privatni dokumenti, osobni podaci i interna evidencija nisu dio javne stranice.",
+      "Simulacije trgovanja su samo paper trading i ne koriste stvarni novac."
+    ],
+    "en": [
+      "The finance view is a public information layer, not a private accounting record.",
+      "Finance Signal Worker may prepare public KPI signals, projections and operating comments.",
+      "Official financial statements, private documents, personal data and internal records are not part of the public page.",
+      "Trading simulations are paper trading only and do not use real money."
+    ]
+  }
+}

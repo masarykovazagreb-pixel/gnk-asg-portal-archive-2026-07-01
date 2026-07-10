@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+<title id="title">GNK gold transparent logo</title>
+<desc id="desc">Gold GNK monogram on transparent background for GNK ASG / GNK DINAMO Ltd. Group portal.</desc>
+<defs>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#7a4700"/><stop offset="0.18" stop-color="#ffdf70"/><stop offset="0.38" stop-color="#b97810"/><stop offset="0.58" stop-color="#fff2a8"/><stop offset="0.78" stop-color="#c88718"/><stop offset="1" stop-color="#613700"/>
+  </linearGradient>
+  <filter id="shine" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity="0.45"/>
+    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ffd76a" flood-opacity="0.55"/>
+  </filter>
+</defs>
+<g fill="none" stroke="url(#gold)" stroke-linecap="round" stroke-linejoin="round" filter="url(#shine)">
+  <path d="M825 200a365 365 0 1 0 88 374" stroke-width="58"/>
+  <path d="M360 740c160 40 368 36 520-78" stroke-width="38"/>
+  <path d="M692 286v408" stroke-width="66"/>
+  <path d="M554 430v260" stroke-width="66"/>
+  <path d="M823 478h178v165c-58 92-143 156-244 190" stroke-width="54"/>
+</g>
+<g fill="url(#gold)" filter="url(#shine)">
+  <text x="600" y="1015" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="245" font-weight="700" letter-spacing="26">GNK</text>
+  <text x="600" y="1118" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="58" letter-spacing="22">DINAMO LTD GROUP</text>
+</g>
+</svg>

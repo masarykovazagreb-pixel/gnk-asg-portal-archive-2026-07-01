@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Worker Operations Desk · GNK ASG</title>
+  <style>
+    :root{color-scheme:dark;--bg:#070707;--panel:#101010;--gold:#d4af37;--muted:#aaa;--line:rgba(212,175,55,.28)}
+    body{margin:0;background:var(--bg);color:#f5f1df;font-family:Inter,Arial,sans-serif}main{max-width:1240px;margin:auto;padding:28px}a{color:var(--gold)}.hero{border:1px solid var(--line);border-radius:24px;padding:24px;background:linear-gradient(135deg,rgba(212,175,55,.16),rgba(255,255,255,.03))}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:18px}.card{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:16px}.k{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold)}.muted{color:var(--muted)}button{border:1px solid var(--gold);background:#151515;color:#fff;border-radius:12px;padding:10px 12px;cursor:pointer}pre{white-space:pre-wrap;word-break:break-word;background:#050505;border:1px solid #333;border-radius:12px;padding:12px;max-height:360px;overflow:auto}.status{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 9px;margin:3px;color:#f5f1df}.warn{color:#ffd66b}.ok{color:#9ee59e}
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <p class="k">Protected / Zaštićeno</p>
+    <h1>Worker Operations Desk</h1>
+    <p><strong>HR:</strong> Pregled workera, 9 projekata, dnevnih ciklusa, zadataka, reporta, publication queuea i paper trading simulacija. Ovaj ekran je za operator/admin pristup.</p>
+    <p><strong>EN:</strong> Overview of workers, 9 projects, daily cycles, tasks, reports, publication queue and paper trading simulations. This screen is for operator/admin access.</p>
+    <p class="muted">Output se prikazuje kroz worker oznake i deskove. Nema masovnog slanja, nema kampanja, nema stvarnog novca.</p>
+    <p class="muted">Output is presented through worker labels and desks. No mass sending, no campaigns, no real money.</p>
+    <button id="runMorning">08:00 Daily cycle / Dnevni ciklus</button>
+    <button id="refresh">Refresh / Osvježi</button>
+  </section>
+  <section class="grid">
+    <div class="card"><p class="k">Workers / Workeri</p><div id="workers"></div></div>
+    <div class="card"><p class="k">Projects / Projekti</p><div id="projects"></div></div>
+    <div class="card"><p class="k">Tasks / Zadaci</p><div id="tasks"></div></div>
+    <div class="card"><p class="k">Reports / Izvješća</p><div id="reports"></div></div>
+  </section>
+  <section class="grid">
+    <div class="card"><p class="k">Plan</p><pre id="plan">Loading...</pre></div>
+    <div class="card"><p class="k">Status</p><pre id="status">Loading...</pre></div>
+  </section>
+</main>
+<script>
+const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+async function j(url,opt){const r=await fetch(url,{cache:'no-store',...opt,headers:{'content-type':'application/json',...(opt&&opt.headers||{})}});return r.json()}
+function chips(el,items){el.innerHTML=(items||[]).map(x=>`<span class="status">${esc(x.id||x.projectId||x.workerId||x)}</span>`).join('')||'<span class="muted">No data / Nema podataka</span>'}
+async function load(){
+  const [plan,status,reports]=await Promise.allSettled([j('/api/ai-worker-orchestrator/plan'),j('/api/ai-worker-orchestrator/status'),j('/api/ai-operations/reports')]);
+  const p=plan.value||{};const s=status.value||{};const r=reports.value||{};
+  document.getElementById('plan').textContent=JSON.stringify(p,null,2);
+  document.getElementById('status').textContent=JSON.stringify(s,null,2);
+  chips(document.getElementById('workers'),s.workers||p.plan?.workers||[]);
+  chips(document.getElementById('projects'),s.projects||p.plan?.projects||[]);
+  chips(document.getElementById('tasks'),s.tasks||[]);
+  chips(document.getElementById('reports'),r.reports||[]);
+}
+document.getElementById('refresh').onclick=load;
+document.getElementById('runMorning').onclick=async()=>{await j('/api/ai-worker-orchestrator/daily-cycle',{method:'POST',body:JSON.stringify({cycle:'morning'})});await load()};
+load().catch(e=>{document.getElementById('status').textContent='Unauthorized or unavailable / Neautorizirano ili nedostupno\n'+e.message});
+</script>
+</body>
+</html>

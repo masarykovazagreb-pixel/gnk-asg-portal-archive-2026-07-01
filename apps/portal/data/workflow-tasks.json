@@ -1,0 +1,65 @@
+{
+  "version": "GNK_ASG_WORKFLOW_TASKS_V2_20260710_AUTO_NEWS_PUBLICATION",
+  "mode": "controlled_auto_portal_publication",
+  "rules": {
+    "noBulkMail": true,
+    "noCampaigns": true,
+    "automaticPortalNewsAllowed": true,
+    "minAutoNewsPostsPerDay": 10,
+    "targetAutoNewsPostsPerDay": 12,
+    "maxAutoNewsPostsPerDay": 18,
+    "adminApprovalRequiredForLegalFinancePersonalData": true,
+    "protectedDataExcluded": true
+  },
+  "workflows": [
+    {
+      "id": "wf-01-media-registration",
+      "name": "Media registration workflow",
+      "owner": "Media Relations",
+      "trigger": "Public media user creates username/password and submits application.",
+      "steps": ["Public user registers account", "Public user saves draft", "Public user submits application", "Admin reviews application", "Admin marks approved/rejected/needs-info", "Approved user may later add travel/document details"],
+      "guards": ["media user is not admin", "submit is not approval", "admin endpoint requires operator/auth session"]
+    },
+    {
+      "id": "wf-02-newsroom-sources",
+      "name": "Newsroom source workflow",
+      "owner": "Newsroom Desk",
+      "trigger": "Scheduled source check: 07:30, 09:30, 11:30, 14:30, 16:30, 19:30 Europe/Zagreb.",
+      "steps": ["Read allowlist from /data/news-sources.json", "Read publication policy from /data/auto-publication-policy.json", "Collect title, URL, source, category and timestamp", "Write original short HR/EN summary", "Check image rights", "Use fallback visual unless image reuse is explicitly allowed", "Queue or publish only allowed categories"],
+      "autoPublish": {"allowed": true, "minDaily": 10, "targetDaily": 12, "maxDaily": 18, "excludedCategories": ["finance-signal", "legal-ip-update", "media-application-status"]},
+      "guards": ["no full-text copying", "no hotlinking", "no paywalled image reuse", "legal/financial/personal claims require manual review"]
+    },
+    {
+      "id": "wf-03-publication-queue",
+      "name": "Automatic portal publication queue",
+      "owner": "Editorial Operations",
+      "trigger": "Allowed news or official update enters publication queue.",
+      "steps": ["Create post object", "Classify category", "Apply allowlist/source policy", "Apply image policy", "Block if legal/finance/personal data risk", "Publish if autoPublishAllowed is true", "Otherwise move to manual_review"],
+      "guards": ["portal publication only", "not e-mail", "not campaign", "not social auto-post", "manual review for blocked categories"]
+    },
+    {
+      "id": "wf-04-project-daily-finance",
+      "name": "Project daily finance workflow",
+      "owner": "Finance Desk",
+      "trigger": "Daily public operating review.",
+      "steps": ["Read project finance schema", "Collect traffic, leads, applications and risk signals", "Update public signal only", "Exclude private ledgers, bank data, personal data and raw e-mail", "Save daily public signal", "Manual approval for financial claims"],
+      "guards": ["public signal only", "no private finance ledger", "no personal data", "financial claims manual review"]
+    },
+    {
+      "id": "wf-05-mail-studio-guard",
+      "name": "Mail Studio guard workflow",
+      "owner": "Protected Operations",
+      "trigger": "Manual individual communication request.",
+      "steps": ["Require authenticated admin/operator session", "Create or review individual draft", "Block campaign/bulk actions", "Require manual send confirmation", "Log reference code"],
+      "guards": ["Mail Studio behind auth", "no bulk mail", "no automatic campaign"]
+    },
+    {
+      "id": "wf-06-safe-deploy",
+      "name": "Safe deploy workflow",
+      "owner": "Deployment",
+      "trigger": "Explicit user command only.",
+      "steps": ["Merge approved PR", "Run safe deploy workflow only when explicitly ordered", "Use confirm input DEPLOY_PUBLIC_PORTAL_SAFE", "Verify public routes", "Verify protected admin remains protected", "Disable Actions again if required"],
+      "guards": ["no deploy without explicit order", "no DNS changes", "no Cloudflare route changes", "no secret changes"]
+    }
+  ]
+}
