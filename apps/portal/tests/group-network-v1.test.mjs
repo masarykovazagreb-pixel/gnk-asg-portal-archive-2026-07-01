@@ -13,6 +13,7 @@ assert.ok(Array.isArray(data.links), 'Public network links must be an array');
 
 const ids = new Set();
 const allowedNamedEntities = new Set(['GNK DINAMO Ltd.', 'GNK ASG d.o.o.']);
+const allowedStatuses = new Set(['operating', 'dormant', 'planned', 'establishing', 'narrative']);
 const prohibitedPublicTerms = /serbia|srbija|beograd|belgrade|omega holding|sports performance tracking|organa|aktual media/i;
 
 for (const node of data.nodes) {
@@ -22,7 +23,7 @@ for (const node of data.nodes) {
   assert.ok(node.city && node.country, `Missing city/country for ${node.id}`);
   assert.ok(Number.isFinite(node.latitude) && node.latitude >= -90 && node.latitude <= 90, `Invalid latitude for ${node.id}`);
   assert.ok(Number.isFinite(node.longitude) && node.longitude >= -180 && node.longitude <= 180, `Invalid longitude for ${node.id}`);
-  assert.ok(['operating', 'dormant', 'planned'].includes(node.status), `Invalid status for ${node.id}`);
+  assert.ok(allowedStatuses.has(node.status), `Invalid status for ${node.id}`);
   if (node.publicName) assert.ok(allowedNamedEntities.has(node.publicName), `Unapproved public entity name: ${node.publicName}`);
   assert.ok(!prohibitedPublicTerms.test(JSON.stringify(node)), `Prohibited public location/entity reference in ${node.id}`);
 }

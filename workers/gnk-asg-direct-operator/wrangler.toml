@@ -1,8 +1,9 @@
-﻿name = "gnk-asg-direct-operator"
+name = "gnk-asg-direct-operator"
 main = "src/index-unified-auth-v16.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
+keep_vars = true
 
 # REVIEW-ONLY SAFETY LOCK
 # This configuration is intentionally route-less for review. Production routes,
@@ -41,7 +42,7 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260710-digital-headquarters-v31-worker-ops-guard"
+DEPLOY_REVISION = "20260710-digital-headquarters-v31-worker-ops-guard-email-status-open-tracking"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 
@@ -67,7 +68,7 @@ MEDIA_OUTREACH_MAX_PER_DAY = "3"
 MEDIA_APPLICATION_AUTO_ACK = "false"
 
 EMAIL_STATUS_PUBLIC_ORIGIN = "https://gnk-asg.hr"
-EMAIL_OPEN_TRACKING_ENABLED = "false"
+EMAIL_OPEN_TRACKING_ENABLED = "true"
 EMAIL_STATUS_SYNC_LOOKBACK_HOURS = "48"
 EMAIL_STATUS_SYNC_OVERLAP_MINUTES = "15"
 EMAIL_STATUS_SYNC_LIMIT = "5000"

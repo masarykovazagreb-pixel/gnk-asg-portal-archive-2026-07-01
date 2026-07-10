@@ -45,15 +45,20 @@ jobs:
             apps/portal/the-code/index.html
             apps/portal/the-code/media-memorandum/index.html
             apps/portal/group-network/index.html
+            apps/portal/email-status/index.html
             apps/portal/mail-studio/index.html
             apps/portal/sitemap.xml
             apps/portal/assets/digital-headquarters-v1.css
             apps/portal/assets/digital-headquarters-v1.js
+            apps/portal/assets/digital-headquarters-home-v2.css
+            apps/portal/assets/digital-headquarters-home-v2.js
             apps/portal/assets/group-network-v1.css
             apps/portal/assets/group-network-v1.js
             apps/portal/assets/strategic-project-roadmap-v1.css
             apps/portal/assets/strategic-project-roadmap-v1.js
             apps/portal/assets/media-registration-v1.js
+            apps/portal/assets/email-status-dashboard-v2.js
+            apps/portal/assets/admin-only-module-map-v1.js
             apps/portal/assets/mail-studio-webmail-v27.js
             apps/portal/assets/mail-studio-auto-reply-panel-v1.js
             apps/portal/assets/mail-studio-reference-code-v1.js
@@ -69,6 +74,9 @@ jobs:
             apps/portal/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf
             workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
             workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
+            workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js
+            workers/gnk-asg-direct-operator/src/email-status-tracking-v5.js
+            workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js
             workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
             workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
             workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
@@ -82,6 +90,8 @@ jobs:
 
           grep -q 'DIGITAL_HEADQUARTERS_V1' apps/portal/index.html apps/portal/en/index.html
           grep -q 'GNK DINAMO Ltd. Group is the international parent group' apps/portal/en/index.html
+          grep -q 'An international Group and a Croatian development company.' apps/portal/en/about/index.html
+          grep -q 'Financial indicators and publicly available reports.' apps/portal/en/finance/index.html
           grep -q '33 operativne + 12 dormant' apps/portal/index.html
           grep -q '33 operating + 12 dormant' apps/portal/en/index.html
           grep -q '/group-network/' apps/portal/index.html apps/portal/sitemap.xml
@@ -125,6 +135,14 @@ jobs:
           grep -q 'Official Media Invitation and Detailed Memorandum' apps/portal/the-code/media-memorandum/index.html
           grep -q 'google-site-verification: google46686328e30c759f.html' apps/portal/google46686328e30c759f.html
 
+          grep -q 'GNK_ASG_EMAIL_STATUS_DASHBOARD_V3' apps/portal/assets/email-status-dashboard-v2.js
+          grep -q 'GNK_ASG_EMAIL_STATUS_CLASSIC_FALLBACK_V1_20260710' apps/portal/email-status/index.html
+          grep -q 'email-status-dashboard-v2.js?v=20260710-3' workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js
+          grep -q 'EMAIL_OPEN_TRACKING_ENABLED = "true"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q "scheduledAutomation:'email-status-sync-only'" workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
+          grep -q "lowerScheduledHandlers:'disabled'" workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
+          ! grep -q 'app\.scheduled' workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
+
           grep -q 'GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP' apps/portal/assets/mail-studio-webmail-v27.js
           grep -q 'GNK_ASG_MAIL_STUDIO_AUTO_REPLY_PANEL_V1_20260709' apps/portal/assets/mail-studio-auto-reply-panel-v1.js
           grep -q 'GNK_ASG_MAIL_STUDIO_REFERENCE_CODE_V1_20260709' apps/portal/assets/mail-studio-reference-code-v1.js
@@ -144,21 +162,29 @@ jobs:
           grep -q 'run_worker_first = true' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MAIL_MANUAL_LIVE = "true"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'MAIL_PROFILE_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
 
           grep -q '"excludedMetrics"' apps/portal/data/finance-kpi-2025.json
           grep -q '"ebitdaEstimated"' apps/portal/data/finance-kpi-2025.json
           grep -q '"shortTermLiabilities"' apps/portal/data/finance-kpi-2025.json
           grep -q '"longTermLiabilities"' apps/portal/data/finance-kpi-2025.json
+          grep -q '"asgDisclosureLabel": "audited financial statements 2025 / MSFI"' apps/portal/data/finance-kpi-2025.json
+          ! grep -q 'HSFI' apps/portal/data/finance-kpi-2025.json
 
           node --check apps/portal/assets/digital-headquarters-v1.js
+          node --check apps/portal/assets/digital-headquarters-home-v2.js
           node --check apps/portal/assets/group-network-v1.js
           node --check apps/portal/assets/strategic-project-roadmap-v1.js
           node --check apps/portal/assets/media-registration-v1.js
+          node --check apps/portal/assets/email-status-dashboard-v2.js
+          node --check apps/portal/assets/admin-only-module-map-v1.js
           node --check apps/portal/assets/mail-studio-webmail-v27.js
           node --check apps/portal/assets/mail-studio-auto-reply-panel-v1.js
           node --check apps/portal/assets/mail-studio-reference-code-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js
           node --check workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
           node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
@@ -242,13 +268,13 @@ jobs:
           check_contains "Google verification" "https://gnk-asg.hr/google46686328e30c759f.html?cb=${cb}" "google-site-verification: google46686328e30c759f.html"
           check_contains "Digital Headquarters HR" "https://gnk-asg.hr/?cb=${cb}" "DIGITAL_HEADQUARTERS_V1"
           check_contains "Digital Headquarters EN" "https://gnk-asg.hr/en?cb=${cb}" "GNK DINAMO Ltd. Group is the international parent group"
-          check_contains "English About" "https://gnk-asg.hr/en/about/?cb=${cb}" "An international parent Group and a Croatian development company"
+          check_contains "English About" "https://gnk-asg.hr/en/about/?cb=${cb}" "An international Group and a Croatian development company."
           check_contains "English Projects" "https://gnk-asg.hr/en/projects/?cb=${cb}" "Nine actual projects"
           check_contains "Strategic Roadmap HR" "https://gnk-asg.hr/projects/roadmap/?cb=${cb}" "Devet projekata po fazama, gateovima i rizicima."
           check_contains "Strategic Roadmap EN" "https://gnk-asg.hr/en/projects/roadmap/?cb=${cb}" "Nine projects structured by phase, gates and risk."
           check_contains "Strategic Roadmap data" "https://gnk-asg.hr/data/strategic-project-roadmap.json?cb=${cb}" "projects"
           check_contains "Strategic Roadmap JS" "https://gnk-asg.hr/assets/strategic-project-roadmap-v1.js?cb=${cb}" "GNKStrategicRoadmap"
-          check_contains "English Finance" "https://gnk-asg.hr/en/finance/?cb=${cb}" "Official documents, clear labels and direct downloads"
+          check_contains "English Finance" "https://gnk-asg.hr/en/finance/?cb=${cb}" "Financial indicators and publicly available reports."
           check_contains "English Reports" "https://gnk-asg.hr/en/reports/?cb=${cb}" "The documents are public. Downloads are direct"
           check_contains "Group Network page" "https://gnk-asg.hr/group-network/?cb=${cb}" "Global Group Network"
           check_contains "Group Network data" "https://gnk-asg.hr/data/public-group-network.json?cb=${cb}" "operatingLocations"
@@ -260,7 +286,10 @@ jobs:
           check_contains "Reports downloads" "https://gnk-asg.hr/reports/?cb=${cb}" "GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf"
           check_contains "Active entrypoint" "https://gnk-asg.hr/data/portal-version.json?cb=${cb}" "index-unified-auth-v16.js"
           check_contains "Worker Ops guard" "https://gnk-asg.hr/data/portal-version.json?cb=${cb}" "operator-auth-required"
+          check_contains "Scheduled isolation" "https://gnk-asg.hr/data/portal-version.json?cb=${cb}" "email-status-sync-only"
           check_contains "Digital Headquarters JS" "https://gnk-asg.hr/assets/digital-headquarters-v1.js?cb=${cb}" "operator-auth-check"
+          check_contains "Email Status dashboard JS" "https://gnk-asg.hr/assets/email-status-dashboard-v2.js?cb=${cb}" "GNK_ASG_EMAIL_STATUS_DASHBOARD_V3"
           check_contains "Finance KPI JSON" "https://gnk-asg.hr/data/finance-kpi-2025.json?cb=${cb}" "ebitdaEstimated"
+          check_contains "Finance MSFI label" "https://gnk-asg.hr/data/finance-kpi-2025.json?cb=${cb}" "MSFI"
           check_status "GNK ASG audited PDF" "https://gnk-asg.hr/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf?cb=${cb}"
           check_status "GNK DINAMO Group PDF" "https://gnk-asg.hr/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf?cb=${cb}"

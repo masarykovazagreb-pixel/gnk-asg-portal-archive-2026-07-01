@@ -3,7 +3,7 @@ import {ensureEmailStatusSchema} from './email-status-tracking-v1.js';
 import {backfillManualMailStatus,VERSION as BACKFILL_VERSION} from './manual-mail-status-backfill-v1.js';
 import {emailStatusDayWindow,DEFAULT_TIME_ZONE,VERSION as DATE_WINDOW_VERSION} from './email-status-date-window-v1.js';
 
-export const VERSION=`GNK_ASG_EMAIL_STATUS_TRACKING_V6_20260703_${BACKFILL_VERSION}_${DATE_WINDOW_VERSION}_${base.VERSION}`;
+export const VERSION=`GNK_ASG_EMAIL_STATUS_TRACKING_V6_20260710_${BACKFILL_VERSION}_${DATE_WINDOW_VERSION}_${base.VERSION}`;
 export const DASHBOARD_PATH=base.DASHBOARD_PATH;
 export const API_PREFIX=base.API_PREFIX;
 export const isEmailStatusPath=base.isEmailStatusPath;
@@ -32,7 +32,7 @@ async function listRecords(request,env,backfill){
 }
 async function enhanceDashboard(response){
  const type=String(response.headers.get('content-type')||'').toLowerCase();if(!type.includes('text/html'))return response;
- let html=await response.text();const tag='<script id="gnk-email-status-dashboard-v2" src="/assets/email-status-dashboard-v2.js?v=20260703-2" defer></script>';
+ let html=await response.text();const tag='<script id="gnk-email-status-dashboard-v2" src="/assets/email-status-dashboard-v2.js?v=20260710-3" defer></script>';
  if(!html.includes('gnk-email-status-dashboard-v2'))html=/<\/body>/i.test(html)?html.replace(/<\/body>/i,`${tag}</body>`):`${html}${tag}`;
  const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-gnk-asg-email-status',VERSION);
  return new Response(html,{status:response.status,statusText:response.statusText,headers});
