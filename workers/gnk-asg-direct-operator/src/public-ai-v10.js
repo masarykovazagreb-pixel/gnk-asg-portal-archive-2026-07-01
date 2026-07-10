@@ -17,7 +17,9 @@ export async function handlePublicAi(request,env){
   const contentType=request.headers.get('content-type')||'';if(!contentType.toLowerCase().startsWith('application/json'))return json({ok:false,error:'CONTENT_TYPE_NOT_ALLOWED'},415);
   const declaredLength=Number(request.headers.get('content-length')||0);if(declaredLength>MAX_BODY_BYTES)return json({ok:false,error:'PAYLOAD_TOO_LARGE'},413);
   if(!(await rateLimit(request,env)))return json({ok:false,error:'RATE_LIMITED'},429,{'retry-after':'900'});
-  let payload;try{payload=await request.json()}catch{return json({ok:false,error:'INVALID_JSON'},400)}
+  let rawBody='';try{rawBody=await request.text()}catch{return json({ok:false,error:'INVALID_BODY'},400)}
+  if(new TextEncoder().encode(rawBody).byteLength>MAX_BODY_BYTES)return json({ok:false,error:'PAYLOAD_TOO_LARGE'},413);
+  let payload;try{payload=JSON.parse(rawBody)}catch{return json({ok:false,error:'INVALID_JSON'},400)}
   const rawMessage=String(payload?.message||'').trim();if(!rawMessage)return json({ok:false,error:'EMPTY_MESSAGE'},400);if(rawMessage.length>MAX_MESSAGE_CHARS)return json({ok:false,error:'MESSAGE_TOO_LONG',maxChars:MAX_MESSAGE_CHARS},413);
   const message=clean(rawMessage,MAX_MESSAGE_CHARS);const en=payload?.language==='en';
   const history=Array.isArray(payload?.history)?payload.history.slice(-6).map(item=>({role:item?.role==='assistant'?'assistant':'user',content:clean(item?.content,900)})).filter(x=>x.content):[];
