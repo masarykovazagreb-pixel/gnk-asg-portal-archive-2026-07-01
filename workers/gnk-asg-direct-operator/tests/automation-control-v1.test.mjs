@@ -28,9 +28,12 @@ assert.ok(status.disabledExternalActions.includes('bulkEmail'));
 
 const authSource=await readFile(new URL('../src/index-unified-auth-v14.js',import.meta.url),'utf8');
 const workerOpsGuard=await readFile(new URL('../src/index-unified-auth-v16.js',import.meta.url),'utf8');
-assert.match(authSource,/['"]\/worker-ops['"]/,'safeNext must allow the protected Worker Ops destination');
-assert.match(authSource,/function safeNext\(/,'login next values must remain sanitized');
-assert.match(workerOpsGuard,/target\.searchParams\.set\(['"]next['"],['"]\/worker-ops\/['"]\)/,'unauthenticated Worker Ops entry must preserve its return target');
-assert.match(workerOpsGuard,/path\.startsWith\(['"]\/worker-ops\/['"]\)/,'direct Worker Ops assets must stay behind the entry guard');
+assert.match(authSource,/function safeNext\(/,'shared login next values must remain sanitized');
+assert.ok(!authSource.includes("'/worker-ops'"),'shared V14 auth logic must remain unchanged by the Worker Ops fix');
+assert.match(workerOpsGuard,/WORKER_OPS_LOGIN_NEXT='\/operator-dashboard\/\?workerOpsReturn=1'/,'V16 must use a safe allowed intermediate login target');
+assert.match(workerOpsGuard,/target\.searchParams\.set\('next',WORKER_OPS_LOGIN_NEXT\)/,'the login form must preserve the isolated return marker');
+assert.match(workerOpsGuard,/target\.searchParams\.get\('workerOpsReturn'\)!=='1'/,'only the explicit Worker Ops return marker may be rewritten');
+assert.match(workerOpsGuard,/headers\.set\('location',WORKER_OPS_PATH\)/,'successful login must return to /worker-ops/');
+assert.match(workerOpsGuard,/path\.startsWith\('\/worker-ops\/'\)/,'direct Worker Ops assets must stay behind the entry guard');
 
-console.log('automation-control-v1: 99% content automation enabled, protected final actions and Worker Ops return target locked');
+console.log('automation-control-v1: protected final actions and isolated Worker Ops login return locked');
