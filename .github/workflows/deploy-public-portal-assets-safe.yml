@@ -94,8 +94,8 @@ jobs:
           grep -q 'GNK DINAMO Ltd. Group is the international parent group' apps/portal/en/index.html
           grep -q 'An international Group and a Croatian development company.' apps/portal/en/about/index.html
           grep -q 'Financial indicators and publicly available reports.' apps/portal/en/finance/index.html
-          grep -q '33 operativne + 12 dormant' apps/portal/index.html
-          grep -q '33 operating + 12 dormant' apps/portal/en/index.html
+          grep -q '45 aktivnih društava' apps/portal/index.html
+          grep -q '45 active companies' apps/portal/en/index.html
           grep -q '/group-network/' apps/portal/index.html apps/portal/sitemap.xml
           grep -q 'data-gnk-network-mount' apps/portal/index.html apps/portal/group-network/index.html
           grep -q 'group-network-v1.js' apps/portal/index.html apps/portal/group-network/index.html
