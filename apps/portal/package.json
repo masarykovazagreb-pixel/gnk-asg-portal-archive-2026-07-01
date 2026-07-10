@@ -2,7 +2,9 @@
   "name": "gnk-asg-public-portal-validation",
   "private": true,
   "scripts": {
+    "test": "npm run test:safe-smoke && npm run test:network",
     "test:safe-smoke": "node scripts/safe-mail-functions-smoke.mjs",
+    "test:network": "node tests/group-network-v1.test.mjs",
     "test:e2e": "playwright test"
   },
   "devDependencies": {
