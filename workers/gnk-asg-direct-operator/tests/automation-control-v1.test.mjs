@@ -74,8 +74,9 @@ assert.match(trackingSchema,/open_count INTEGER/);
 assert.doesNotMatch(trackingSchema,/ip_address|user_agent|cf-connecting-ip|user-agent/i,'Email Status must not store IP addresses or user-agent metadata');
 
 const wrangler=await readFile(new URL('../wrangler.toml',import.meta.url),'utf8');
+assert.match(wrangler,/keep_vars = true/,'Wrangler deploy must preserve existing dashboard variables not listed in source control');
 assert.match(wrangler,/EMAIL_OPEN_TRACKING_ENABLED = "true"/,'deploy configuration must inject the classic open-tracking pixel');
 assert.match(wrangler,/MEDIA_OUTREACH_LIVE = "false"/,'media outreach must remain disabled');
 assert.match(wrangler,/MAIL_PROFILE_TEST_LIVE = "false"/,'mail profile test sends must remain disabled');
 
-console.log('automation-control-v1: protected actions, Worker Ops, Email Status tracking and scheduled-sync isolation locked');
+console.log('automation-control-v1: protected actions, preserved dashboard variables, Worker Ops, Email Status tracking and scheduled-sync isolation locked');
