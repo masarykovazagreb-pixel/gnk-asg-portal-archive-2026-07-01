@@ -1,8 +1,9 @@
 {
-  "version": "GNK_ASG_AUTO_PUBLICATION_POLICY_V1_20260710",
+  "version": "GNK_ASG_AUTO_PUBLICATION_POLICY_V2_20260710_MIN_10_NEWS_DAILY",
   "mode": "controlled_portal_auto_publication",
   "scope": {
     "portalPosts": true,
+    "newsroomNews": true,
     "email": false,
     "campaigns": false,
     "socialMediaAutoPost": false,
@@ -18,14 +19,30 @@
     "manualReviewForLegalClaims": true,
     "manualReviewForFinancialClaims": true,
     "manualReviewForPersonalData": true,
-    "protectedDataExcluded": true
+    "protectedDataExcluded": true,
+    "duplicateWindowHours": 36,
+    "maxSummaryLengthChars": 520
   },
   "cadence": {
     "timezone": "Europe/Zagreb",
-    "windows": ["09:00", "16:00"],
-    "maxAutoPostsPerDay": 6,
+    "windows": ["07:30", "09:30", "11:30", "14:30", "16:30", "19:30"],
+    "minAutoPostsPerDay": 10,
+    "targetAutoPostsPerDay": 12,
+    "maxAutoPostsPerDay": 18,
+    "minPostsPerWindow": 1,
+    "targetPostsPerWindow": 2,
+    "maxPostsPerWindow": 4,
     "maxAutoPostsPerSourcePerDay": 2
   },
+  "priorityMix": [
+    {"category":"source-summary-business","dailyTarget":3},
+    {"category":"source-summary-markets","dailyTarget":2},
+    {"category":"source-summary-technology","dailyTarget":2},
+    {"category":"source-summary-fintech","dailyTarget":2},
+    {"category":"source-summary-crypto","dailyTarget":1},
+    {"category":"official-update","dailyTarget":1},
+    {"category":"project-operations-update","dailyTarget":1}
+  ],
   "categories": [
     {
       "id": "official-update",
@@ -36,6 +53,15 @@
       "imageMode": "fallback_or_internal"
     },
     {
+      "id": "project-operations-update",
+      "label": "Project operations update",
+      "autoPublishAllowed": true,
+      "requiresAdminApproval": false,
+      "source": "project-daily-finance-analysis-public-schema",
+      "imageMode": "fallback_or_internal",
+      "guard": "No private finance, no bank data, no personal data."
+    },
+    {
       "id": "source-summary-business",
       "label": "Business source summary",
       "autoPublishAllowed": true,
@@ -44,8 +70,32 @@
       "imageMode": "fallback_by_default"
     },
     {
+      "id": "source-summary-markets",
+      "label": "Markets source summary",
+      "autoPublishAllowed": true,
+      "requiresAdminApproval": false,
+      "source": "news-sources-allowlist",
+      "imageMode": "fallback_by_default"
+    },
+    {
       "id": "source-summary-technology",
       "label": "Technology source summary",
+      "autoPublishAllowed": true,
+      "requiresAdminApproval": false,
+      "source": "news-sources-allowlist",
+      "imageMode": "fallback_by_default"
+    },
+    {
+      "id": "source-summary-fintech",
+      "label": "Fintech source summary",
+      "autoPublishAllowed": true,
+      "requiresAdminApproval": false,
+      "source": "news-sources-allowlist",
+      "imageMode": "fallback_by_default"
+    },
+    {
+      "id": "source-summary-crypto",
+      "label": "Crypto source summary",
       "autoPublishAllowed": true,
       "requiresAdminApproval": false,
       "source": "news-sources-allowlist",
