@@ -1,147 +1,47 @@
 {
-    "generatedAt":  "2026-06-17T16:03:13.1557583+02:00",
-    "rule":  "Direktni izvori, bez Google News kao glavnog izvora. Aktualno max 100; arhiva max 1000; prihvaća samo title + text + image + original source link.",
-    "schedule":  "09:00 i 16:00 Europe/Zagreb",
-    "sources":  [
-                    {
-                        "title":  "SEEbiz naslovnica",
-                        "url":  "https://www.seebiz.eu/",
-                        "active":  true,
-                        "type":  "html",
-                        "category":  "region-business"
-                    },
-                    {
-                        "title":  "SEEbiz tržišta",
-                        "url":  "https://www.seebiz.eu/trzista/",
-                        "active":  true,
-                        "type":  "html",
-                        "category":  "markets"
-                    },
-                    {
-                        "title":  "SEEbiz ekonomija",
-                        "url":  "https://www.seebiz.eu/ekonomija/",
-                        "active":  true,
-                        "type":  "html",
-                        "category":  "economy"
-                    },
-                    {
-                        "title":  "SEEbiz energetika",
-                        "url":  "https://www.seebiz.eu/energetika/",
-                        "active":  true,
-                        "type":  "html",
-                        "category":  "energy"
-                    },
-                    {
-                        "title":  "SEEbiz tehnologija",
-                        "url":  "https://www.seebiz.eu/tehnologija/",
-                        "active":  true,
-                        "type":  "html",
-                        "category":  "technology"
-                    },
-                    {
-                        "title":  "Lider naslovnica",
-                        "url":  "https://lidermedia.hr/",
-                        "active":  true,
-                        "type":  "html",
-                        "category":  "croatia-business"
-                    },
-                    {
-                        "title":  "Lider biznis i politika",
-                        "url":  "https://lidermedia.hr/biznis-i-politika/",
-                        "active":  true,
-                        "type":  "html",
-                        "category":  "croatia-business"
-                    },
-                    {
-                        "title":  "Poslovni dnevnik",
-                        "url":  "https://www.poslovni.hr/",
-                        "active":  true,
-                        "type":  "html",
-                        "category":  "croatia-business"
-                    },
-                    {
-                        "title":  "Poslovni dnevnik feed",
-                        "url":  "https://www.poslovni.hr/feed",
-                        "active":  true,
-                        "type":  "rss",
-                        "category":  "croatia-business"
-                    },
-                    {
-                        "title":  "Tportal Biznis",
-                        "url":  "https://www.tportal.hr/biznis",
-                        "active":  true,
-                        "type":  "html",
-                        "category":  "croatia-business"
-                    },
-                    {
-                        "title":  "N1 Biznis",
-                        "url":  "https://n1info.hr/biznis/",
-                        "active":  true,
-                        "type":  "html",
-                        "category":  "croatia-business"
-                    },
-                    {
-                        "title":  "CNBC Business",
-                        "url":  "https://www.cnbc.com/id/10001147/device/rss/rss.html",
-                        "active":  true,
-                        "type":  "rss",
-                        "category":  "global-business"
-                    },
-                    {
-                        "title":  "CNBC Markets",
-                        "url":  "https://www.cnbc.com/id/15839135/device/rss/rss.html",
-                        "active":  true,
-                        "type":  "rss",
-                        "category":  "global-markets"
-                    },
-                    {
-                        "title":  "MarketWatch Top Stories",
-                        "url":  "https://feeds.content.dowjones.io/public/rss/mw_topstories",
-                        "active":  true,
-                        "type":  "rss",
-                        "category":  "global-markets"
-                    },
-                    {
-                        "title":  "CoinDesk",
-                        "url":  "https://www.coindesk.com/arc/outboundfeeds/rss/",
-                        "active":  true,
-                        "type":  "rss",
-                        "category":  "crypto"
-                    },
-                    {
-                        "title":  "Cointelegraph",
-                        "url":  "https://cointelegraph.com/rss",
-                        "active":  true,
-                        "type":  "rss",
-                        "category":  "crypto"
-                    },
-                    {
-                        "title":  "Finextra",
-                        "url":  "https://www.finextra.com/rss/headlines.aspx",
-                        "active":  true,
-                        "type":  "rss",
-                        "category":  "fintech"
-                    },
-                    {
-                        "title":  "TechCrunch",
-                        "url":  "https://techcrunch.com/feed/",
-                        "active":  true,
-                        "type":  "rss",
-                        "category":  "technology"
-                    },
-                    {
-                        "title":  "The Verge",
-                        "url":  "https://www.theverge.com/rss/index.xml",
-                        "active":  true,
-                        "type":  "rss",
-                        "category":  "technology"
-                    },
-                    {
-                        "title":  "The Guardian Business",
-                        "url":  "https://www.theguardian.com/uk/business/rss",
-                        "active":  true,
-                        "type":  "rss",
-                        "category":  "global-business"
-                    }
-                ]
+  "version": "GNK_ASG_NEWS_SOURCE_ALLOWLIST_V2_20260709",
+  "generatedAt": "2026-07-09T22:20:00Z",
+  "rule": "Direktni izvori, bez Google News kao glavnog izvora. Public portal smije prikazati title, original source link, source name, kratak vlastiti sažetak i thumbnail samo kad feed/API/licenca to dopušta.",
+  "schedule": "09:00 i 16:00 Europe/Zagreb",
+  "imagePolicy": {
+    "hotlinking": false,
+    "defaultFallback": "/assets/gnk-gold-logo.svg",
+    "allowedOnlyWhen": "RSS/API/licenca izričito dopušta image reuse ili thumbnail display.",
+    "requiredAttribution": true,
+    "proxyCacheRequired": true,
+    "blocked": ["full-size agency photos without license", "screenshots of paywalled images", "uncredited social media photos"]
+  },
+  "contentPolicy": {
+    "fullTextReuse": false,
+    "summaries": "Portal writes its own short summary in HR/EN, never copies article body.",
+    "requiredFields": ["title", "source", "url", "publishedAt", "category", "licenseStatus"],
+    "manualReviewRequiredFor": ["photos", "agency copy", "paywalled material", "legal allegations", "financial claims"]
+  },
+  "sources": [
+    {"title":"SEEbiz naslovnica","url":"https://www.seebiz.eu/","active":true,"type":"html","category":"region-business","imageMode":"fallback"},
+    {"title":"SEEbiz tržišta","url":"https://www.seebiz.eu/trzista/","active":true,"type":"html","category":"markets","imageMode":"fallback"},
+    {"title":"SEEbiz ekonomija","url":"https://www.seebiz.eu/ekonomija/","active":true,"type":"html","category":"economy","imageMode":"fallback"},
+    {"title":"SEEbiz energetika","url":"https://www.seebiz.eu/energetika/","active":true,"type":"html","category":"energy","imageMode":"fallback"},
+    {"title":"SEEbiz tehnologija","url":"https://www.seebiz.eu/tehnologija/","active":true,"type":"html","category":"technology","imageMode":"fallback"},
+    {"title":"Lider naslovnica","url":"https://lidermedia.hr/","active":true,"type":"html","category":"croatia-business","imageMode":"fallback"},
+    {"title":"Lider biznis i politika","url":"https://lidermedia.hr/biznis-i-politika/","active":true,"type":"html","category":"croatia-business","imageMode":"fallback"},
+    {"title":"Poslovni dnevnik","url":"https://www.poslovni.hr/","active":true,"type":"html","category":"croatia-business","imageMode":"fallback"},
+    {"title":"Poslovni dnevnik feed","url":"https://www.poslovni.hr/feed","active":true,"type":"rss","category":"croatia-business","imageMode":"feed_if_allowed"},
+    {"title":"Tportal Biznis","url":"https://www.tportal.hr/biznis","active":true,"type":"html","category":"croatia-business","imageMode":"fallback"},
+    {"title":"N1 Biznis","url":"https://n1info.hr/biznis/","active":true,"type":"html","category":"croatia-business","imageMode":"fallback"},
+    {"title":"CNBC Business","url":"https://www.cnbc.com/id/10001147/device/rss/rss.html","active":true,"type":"rss","category":"global-business","imageMode":"feed_if_allowed"},
+    {"title":"CNBC Markets","url":"https://www.cnbc.com/id/15839135/device/rss/rss.html","active":true,"type":"rss","category":"global-markets","imageMode":"feed_if_allowed"},
+    {"title":"MarketWatch Top Stories","url":"https://feeds.content.dowjones.io/public/rss/mw_topstories","active":true,"type":"rss","category":"global-markets","imageMode":"feed_if_allowed"},
+    {"title":"CoinDesk","url":"https://www.coindesk.com/arc/outboundfeeds/rss/","active":true,"type":"rss","category":"crypto","imageMode":"feed_if_allowed"},
+    {"title":"Cointelegraph","url":"https://cointelegraph.com/rss","active":true,"type":"rss","category":"crypto","imageMode":"feed_if_allowed"},
+    {"title":"Finextra","url":"https://www.finextra.com/rss/headlines.aspx","active":true,"type":"rss","category":"fintech","imageMode":"feed_if_allowed"},
+    {"title":"TechCrunch","url":"https://techcrunch.com/feed/","active":true,"type":"rss","category":"technology","imageMode":"feed_if_allowed"},
+    {"title":"The Verge","url":"https://www.theverge.com/rss/index.xml","active":true,"type":"rss","category":"technology","imageMode":"feed_if_allowed"},
+    {"title":"The Guardian Business","url":"https://www.theguardian.com/uk/business/rss","active":true,"type":"rss","category":"global-business","imageMode":"feed_if_allowed"},
+    {"title":"AP","url":"https://www.ap.org/","active":false,"type":"licensed-api","category":"agency","imageMode":"licensed_only"},
+    {"title":"Reuters","url":"https://www.reuters.com/","active":false,"type":"licensed-api","category":"agency","imageMode":"licensed_only"},
+    {"title":"Getty Images","url":"https://www.gettyimages.com/","active":false,"type":"licensed-api","category":"images","imageMode":"licensed_only"},
+    {"title":"EUIPO","url":"https://www.euipo.europa.eu/","active":true,"type":"official-primary","category":"ip-official","imageMode":"none"},
+    {"title":"Fina","url":"https://www.fina.hr/","active":true,"type":"official-primary","category":"finance-official","imageMode":"none"}
+  ]
 }
