@@ -66,6 +66,16 @@ const declaredTooLarge = new Request(`${origin}${API_PATH}`, {
 });
 assert.equal((await handlePublicAi(declaredTooLarge, {})).status, 413);
 
+const actualTooLarge = new Request(`${origin}${API_PATH}`, {
+  method: 'POST',
+  headers: { 'content-type': 'application/json', origin },
+  body: JSON.stringify({ message: 'test', padding: 'x'.repeat(25000) })
+});
+assert.equal(actualTooLarge.headers.get('content-length'), null);
+const actualTooLargeResponse = await handlePublicAi(actualTooLarge, {});
+assert.equal(actualTooLargeResponse.status, 413);
+assert.equal((await actualTooLargeResponse.json()).error, 'PAYLOAD_TOO_LARGE');
+
 const methodResponse = await handlePublicAi(new Request(`${origin}${API_PATH}`, { method: 'GET' }), {});
 assert.equal(methodResponse.status, 405);
 
@@ -80,4 +90,4 @@ const foreignOrigin = new Request(`${origin}${API_PATH}`, {
 });
 assert.equal((await handlePublicAi(foreignOrigin, {})).status, 403);
 
-console.log('public-ai-v11: routes, fallback, limits, headers and origin protection OK');
+console.log('public-ai-v11: routes, fallback, declared and actual body limits, headers and origin protection OK');
