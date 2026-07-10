@@ -42,16 +42,21 @@ jobs:
             apps/portal/media-application/index.html
             apps/portal/the-code/index.html
             apps/portal/the-code/media-memorandum/index.html
+            apps/portal/group-network/index.html
             apps/portal/mail-studio/index.html
             apps/portal/sitemap.xml
             apps/portal/assets/digital-headquarters-v1.css
             apps/portal/assets/digital-headquarters-v1.js
+            apps/portal/assets/group-network-v1.css
+            apps/portal/assets/group-network-v1.js
             apps/portal/assets/media-registration-v1.js
             apps/portal/assets/mail-studio-webmail-v27.js
             apps/portal/assets/mail-studio-auto-reply-panel-v1.js
             apps/portal/assets/mail-studio-reference-code-v1.js
             apps/portal/google46686328e30c759f.html
             apps/portal/data/finance-kpi-2025.json
+            apps/portal/data/public-group-network.json
+            apps/portal/tests/group-network-v1.test.mjs
             apps/portal/downloads/GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf
             apps/portal/downloads/GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf
             workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
@@ -59,6 +64,9 @@ jobs:
             workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
             workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
             workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+            workers/gnk-asg-direct-operator/src/public-ai-v10.js
+            workers/gnk-asg-direct-operator/tests/email-signature-contract-v1.test.mjs
+            workers/gnk-asg-direct-operator/tests/public-ai-v10.test.mjs
           )
           for file in "${required_files[@]}"; do test -s "$file"; done
 
@@ -66,6 +74,9 @@ jobs:
           grep -q 'GNK DINAMO Ltd. Group is the international parent group' apps/portal/en/index.html
           grep -q '33 operativne + 12 dormant' apps/portal/index.html
           grep -q '33 operating + 12 dormant' apps/portal/en/index.html
+          grep -q '/group-network/' apps/portal/index.html apps/portal/sitemap.xml
+          grep -q 'data-gnk-network-mount' apps/portal/index.html apps/portal/group-network/index.html
+          grep -q 'group-network-v1.js' apps/portal/index.html apps/portal/group-network/index.html
           grep -q 'Međunarodne bolnice, sportska medicina i rehabilitacija' apps/portal/index.html apps/portal/projects/index.html
           grep -q 'International hospitals, sports medicine and rehabilitation' apps/portal/en/index.html apps/portal/en/projects/index.html
           grep -q 'Arhitektura projektirana za približno 1.537 operativnih pozicija' apps/portal/index.html
@@ -75,7 +86,7 @@ jobs:
           grep -q 'dedicated username and password' apps/portal/media-application/index.html
           grep -q 'does not grant admin access' apps/portal/media-application/index.html
 
-          for route in en/about en/projects en/finance en/reports; do
+          for route in en/about en/projects en/finance en/reports group-network; do
             grep -q "https://www.gnk-asg.hr/${route}/" apps/portal/sitemap.xml
           done
 
@@ -101,6 +112,7 @@ jobs:
           ! grep -q 'rht@gmx.com' apps/portal/mail-studio/index.html apps/portal/assets/mail-studio-webmail-v27.js
           grep -q 'GNK_ASG_AUTO_REPLY_CASE_CENTER_V1_20260709_PERSONALIZED_AI_SIGNATURES' workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
           grep -q 'GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY' workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+          grep -q 'GNK_ASG_PUBLIC_AI_V10_20260627' workers/gnk-asg-direct-operator/src/public-ai-v10.js
 
           grep -q 'GNK_ASG_UNIFIED_AUTH_V30_20260710_WORKER_OPS_PROTECTED' workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
           grep -q 'GNK_ASG_UNIFIED_AUTH_V31_20260710_WORKER_OPS_ENTRY_GUARD' workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
@@ -118,6 +130,7 @@ jobs:
           grep -q '"longTermLiabilities"' apps/portal/data/finance-kpi-2025.json
 
           node --check apps/portal/assets/digital-headquarters-v1.js
+          node --check apps/portal/assets/group-network-v1.js
           node --check apps/portal/assets/media-registration-v1.js
           node --check apps/portal/assets/mail-studio-webmail-v27.js
           node --check apps/portal/assets/mail-studio-auto-reply-panel-v1.js
@@ -127,6 +140,11 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/auto-reply-case-center-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
           node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          node --check workers/gnk-asg-direct-operator/src/public-ai-v10.js
+
+          node apps/portal/tests/group-network-v1.test.mjs
+          node workers/gnk-asg-direct-operator/tests/email-signature-contract-v1.test.mjs
+          node workers/gnk-asg-direct-operator/tests/public-ai-v10.test.mjs
 
       - name: Dry-run public Worker and assets deploy
         working-directory: workers/gnk-asg-direct-operator
@@ -202,6 +220,9 @@ jobs:
           check_contains "English Projects" "https://gnk-asg.hr/en/projects/?cb=${cb}" "Nine actual projects"
           check_contains "English Finance" "https://gnk-asg.hr/en/finance/?cb=${cb}" "Official documents, clear labels and direct downloads"
           check_contains "English Reports" "https://gnk-asg.hr/en/reports/?cb=${cb}" "The documents are public. Downloads are direct"
+          check_contains "Group Network page" "https://gnk-asg.hr/group-network/?cb=${cb}" "Global Group Network"
+          check_contains "Group Network data" "https://gnk-asg.hr/data/public-group-network.json?cb=${cb}" "operatingLocations"
+          check_contains "Group Network JS" "https://gnk-asg.hr/assets/group-network-v1.js?cb=${cb}" "GNKGroupNetwork"
           check_contains "Media username-password flow" "https://gnk-asg.hr/media-application/?lang=en&cb=${cb}" "dedicated username and password"
           check_contains "THE CODE memorandum" "https://gnk-asg.hr/the-code/media-memorandum/?cb=${cb}" "Official Media Invitation and Detailed Memorandum"
           check_contains "THE CODE" "https://gnk-asg.hr/the-code/?cb=${cb}" "THE CODE"
