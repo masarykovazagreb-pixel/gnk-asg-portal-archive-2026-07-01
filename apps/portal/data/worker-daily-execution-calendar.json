@@ -1,0 +1,48 @@
+{
+  "version": "GNK_ASG_WORKER_DAILY_EXECUTION_CALENDAR_V1_20260710",
+  "timezone": "Europe/Zagreb",
+  "presentationRule": "All outputs are signed by worker role, desk, company and project.",
+  "dailyCycles": ["08:00", "13:00", "18:00"],
+  "defaultDailyRoutineHr": [
+    "08:00 pregled starih zadataka i dodjela novih svim workerima",
+    "13:00 provjera izvršenja, blokada, publication queuea i preraspodjela",
+    "18:00 završno izvješće, lekcije, novi okvir i zadaci za sutra"
+  ],
+  "defaultDailyRoutineEn": [
+    "08:00 review old tasks and assign new tasks to all workers",
+    "13:00 check execution, blocks, publication queue and reallocation",
+    "18:00 final report, lessons, new frame and tasks for tomorrow"
+  ],
+  "days": [
+    {"day":1,"focusHr":"baseline svih 9 projekata i dodjela prvih zadataka","focusEn":"baseline all 9 projects and assign first tasks"},
+    {"day":2,"focusHr":"media kontakti, newsroom izvori, finance signal i THE CODE status","focusEn":"media contacts, newsroom sources, finance signal and THE CODE status"},
+    {"day":3,"focusHr":"prvi puni ciklus 10+ vijesti, 3 reporta i project touch","focusEn":"first full 10+ news cycle, 3 reports and project touch"},
+    {"day":4,"focusHr":"kontaktna evidencija i needs-info workflow","focusEn":"contact records and needs-info workflow"},
+    {"day":5,"focusHr":"monetizacijski prijedlozi po projektima","focusEn":"monetization proposals by project"},
+    {"day":6,"focusHr":"paper trading watchlist i market signals bez stvarnog novca","focusEn":"paper trading watchlist and market signals without real money"},
+    {"day":7,"focusHr":"tjedni review i preraspodjela workera","focusEn":"weekly review and worker reallocation"},
+    {"day":8,"focusHr":"newsroom automatizacija i publication quality","focusEn":"newsroom automation and publication quality"},
+    {"day":9,"focusHr":"sports performance product zadaci","focusEn":"sports performance product tasks"},
+    {"day":10,"focusHr":"THE CODE program i media memorandum","focusEn":"THE CODE programme and media memorandum"},
+    {"day":11,"focusHr":"finance public signal bez knjigovodstvenih objava","focusEn":"finance public signal without accounting posts"},
+    {"day":12,"focusHr":"global group map 33+12 i javni sažetak","focusEn":"global group map 33+12 and public summary"},
+    {"day":13,"focusHr":"market layer, lead signal i CTA zadaci","focusEn":"market layer, lead signal and CTA tasks"},
+    {"day":14,"focusHr":"drugi tjedni review i backlog split","focusEn":"second weekly review and backlog split"},
+    {"day":15,"focusHr":"worker sastanci i zapisnici odluka","focusEn":"worker meetings and decision minutes"},
+    {"day":16,"focusHr":"partner pipeline i prijedlozi suradnje","focusEn":"partner pipeline and cooperation proposals"},
+    {"day":17,"focusHr":"publication queue optimizacija","focusEn":"publication queue optimization"},
+    {"day":18,"focusHr":"media intake status i kontakt follow-up nacrti","focusEn":"media intake status and contact follow-up drafts"},
+    {"day":19,"focusHr":"product development zadaci po 9 projekata","focusEn":"product development tasks across 9 projects"},
+    {"day":20,"focusHr":"paper trading lekcije i tržišni signali","focusEn":"paper trading lessons and market signals"},
+    {"day":21,"focusHr":"treći tjedni review i kapacitet workera","focusEn":"third weekly review and worker capacity"},
+    {"day":22,"focusHr":"public finance disclaimer i signal quality","focusEn":"public finance disclaimer and signal quality"},
+    {"day":23,"focusHr":"THE CODE New York activation readiness","focusEn":"THE CODE New York activation readiness"},
+    {"day":24,"focusHr":"newsroom izvori i copyright/image audit","focusEn":"newsroom sources and copyright/image audit"},
+    {"day":25,"focusHr":"admin/protected ops audit","focusEn":"admin/protected ops audit"},
+    {"day":26,"focusHr":"revenue experiments i product-market fit signali","focusEn":"revenue experiments and product-market fit signals"},
+    {"day":27,"focusHr":"PR cleanup i finalni backlog","focusEn":"PR cleanup and final backlog"},
+    {"day":28,"focusHr":"merge readiness i test ruta","focusEn":"merge readiness and route test"},
+    {"day":29,"focusHr":"safe deploy checklist bez samostalnog deploya","focusEn":"safe deploy checklist without autonomous deploy"},
+    {"day":30,"focusHr":"završno 30-dnevno izvješće i novi 30-dnevni okvir","focusEn":"final 30-day report and new 30-day frame"}
+  ]
+}
