@@ -38,6 +38,7 @@ const homeCss=await readFile(new URL('../assets/digital-headquarters-home-v2.css
 const homeJs=await readFile(new URL('../assets/digital-headquarters-home-v2.js',import.meta.url),'utf8');
 const emailDashboard=await readFile(new URL('../assets/email-status-dashboard-v2.js',import.meta.url),'utf8');
 const emailFallback=await readFile(new URL('../email-status/index.html',import.meta.url),'utf8');
+const adminModuleMap=await readFile(new URL('../assets/admin-only-module-map-v1.js',import.meta.url),'utf8');
 
 assert.match(sharedHome,/digital-headquarters-home-v2\.css/,'home-only premium CSS must be loaded from the shared runtime');
 assert.match(sharedHome,/digital-headquarters-home-v2\.js/,'home-only premium JavaScript must be loaded from the shared runtime');
@@ -54,12 +55,17 @@ assert.match(emailFallback,/GNK_ASG_EMAIL_STATUS_CLASSIC_FALLBACK_V1_20260710/,'
 for(const field of ['Primatelj','Predmet','Poslano','Isporučeno','Prvo otvaranje','Zadnje otvaranje','Otvaranja','Message ID']){
   assert.ok(emailFallback.includes(field),`classic Email Status fallback missing ${field}`);
 }
-assert.ok(!/Potvrda primitka|receipt_confirmed_at|recipient_confirmed_at/.test(emailFallback),'experimental receipt-confirmation fields must not remain in the classic fallback');
+assert.match(adminModuleMap,/Status email poruka/,'Admin Center must expose the protected classic Email Status module');
+assert.match(adminModuleMap,/Message ID/,'Admin Email Status description must reflect available classic fields');
+for(const source of [emailFallback,adminModuleMap]){
+  assert.ok(!/Potvrda primitka|receipt_confirmed_at|recipient_confirmed_at/i.test(source),'experimental receipt-confirmation language must not remain in the classic Email Status surfaces');
+}
 
 for (const [label,source] of [
   ['shared Digital Headquarters runtime',sharedHome],
   ['premium home runtime',homeJs],
-  ['classic Email Status enhancer',emailDashboard]
+  ['classic Email Status enhancer',emailDashboard],
+  ['Admin-only module map',adminModuleMap]
 ]) {
   assert.doesNotThrow(()=>new Script(source,{filename:label}),`${label} must parse as JavaScript`);
 }
