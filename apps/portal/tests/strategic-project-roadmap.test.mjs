@@ -26,7 +26,10 @@ assert.equal(announced.length, roadmap.summary.publiclyAnnounced);
 assert.equal(announced[0].id, 'the-code-acquisition-integration');
 assert.ok(Date.parse(announced[0].officialReveal), 'THE CODE reveal time must be parseable');
 
+assert.match(roadmap.disclaimer, /do not represent/i, 'Roadmap must contain an explicit non-completion disclaimer');
 const forbiddenCompletionClaims = /completed|operationally ready|regulatory approval granted|financing secured/i;
-assert.ok(!forbiddenCompletionClaims.test(JSON.stringify(roadmap)), 'Roadmap must not imply unverified completion');
+for (const project of roadmap.projects) {
+  assert.ok(!forbiddenCompletionClaims.test(JSON.stringify(project)), `Project must not imply unverified completion: ${project.id}`);
+}
 
-console.log('strategic-project-roadmap: 9 projects, bilingual content and implementation gates OK');
+console.log('strategic-project-roadmap: 9 projects, bilingual content, implementation gates and non-completion claims OK');
