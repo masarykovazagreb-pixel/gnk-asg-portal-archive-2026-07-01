@@ -32,4 +32,27 @@ for (const link of data.links) {
   assert.notEqual(link.from, link.to, 'Self-links are not allowed');
 }
 
-console.log(`group-network-v1: ${data.nodes.length} published nodes, ${data.links.length} links, contract OK`);
+const sharedHome=await readFile(new URL('../assets/digital-headquarters-v1.js',import.meta.url),'utf8');
+const homeCss=await readFile(new URL('../assets/digital-headquarters-home-v2.css',import.meta.url),'utf8');
+const homeJs=await readFile(new URL('../assets/digital-headquarters-home-v2.js',import.meta.url),'utf8');
+const emailDashboard=await readFile(new URL('../assets/email-status-dashboard-v2.js',import.meta.url),'utf8');
+const emailFallback=await readFile(new URL('../email-status/index.html',import.meta.url),'utf8');
+
+assert.match(sharedHome,/digital-headquarters-home-v2\.css/,'home-only premium CSS must be loaded from the shared runtime');
+assert.match(sharedHome,/digital-headquarters-home-v2\.js/,'home-only premium JavaScript must be loaded from the shared runtime');
+assert.match(sharedHome,/path==='\/'\|\|path==='\/en'/,'premium home layer must remain limited to HR and EN home routes');
+assert.match(homeCss,/body\.dhq-home/,'premium styling must be scoped to home pages');
+assert.match(homeCss,/#network/,'the home layer must explicitly preserve the network section boundary');
+assert.match(homeCss,/prefers-reduced-motion/,'premium motion must respect reduced-motion preferences');
+assert.match(homeJs,/IntersectionObserver/,'home reveal effects must be progressive and viewport based');
+assert.match(homeJs,/document\.querySelectorAll\('\.dhq-frame'\)/,'THE CODE frame overlay must be anchored to the frame panel');
+
+assert.match(emailDashboard,/GNK_ASG_EMAIL_STATUS_DASHBOARD_V3/,'protected Email Status must use the visually adapted classic dashboard');
+assert.match(emailDashboard,/Poslano/,'classic delivery semantics must remain Croatian and operator friendly');
+assert.match(emailFallback,/GNK_ASG_EMAIL_STATUS_CLASSIC_FALLBACK_V1_20260710/,'static fallback must match the classic dashboard contract');
+for(const field of ['Primatelj','Predmet','Poslano','Isporučeno','Prvo otvaranje','Zadnje otvaranje','Otvaranja','Message ID']){
+  assert.ok(emailFallback.includes(field),`classic Email Status fallback missing ${field}`);
+}
+assert.ok(!/Potvrda primitka|receipt_confirmed_at|recipient_confirmed_at/.test(emailFallback),'experimental receipt-confirmation fields must not remain in the classic fallback');
+
+console.log(`group-network-v1: ${data.nodes.length} published nodes, ${data.links.length} links; home and classic Email Status assets locked`);
