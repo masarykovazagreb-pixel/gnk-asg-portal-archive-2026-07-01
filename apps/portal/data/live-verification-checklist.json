@@ -1,0 +1,42 @@
+{
+  "version": "GNK_ASG_LIVE_VERIFICATION_CHECKLIST_V1_20260710",
+  "purpose": "Post-deploy public and protected route verification checklist.",
+  "publicRoutes": [
+    {"path":"/","expectedHr":"HR front door with THE CODE, finance, projects, newsroom and media application links.","expectedEn":"HR front door with THE CODE, finance, projects, newsroom and media application links."},
+    {"path":"/en","expectedHr":"EN front door with same substance as HR.","expectedEn":"EN front door with same substance as HR."},
+    {"path":"/about/","expectedHr":"O nama page with workers, 9 projects, companies/functions and 33 + 12 locations.","expectedEn":"About page with workers, 9 projects, companies/functions and 33 + 12 locations."},
+    {"path":"/the-code/","expectedHr":"THE CODE cinematic HTML countdown page.","expectedEn":"THE CODE cinematic HTML countdown page."},
+    {"path":"/the-code/media-memorandum/","expectedHr":"Media memorandum page remains available.","expectedEn":"Media memorandum page remains available."},
+    {"path":"/media-application/?lang=en","expectedHr":"Public media registration/login/draft page.","expectedEn":"Public media registration/login/draft page."},
+    {"path":"/finance/","expectedHr":"Public Finance Signal Worker and Markets page; not accounting report.","expectedEn":"Public Finance Signal Worker and Markets page; not accounting report."},
+    {"path":"/newsroom/","expectedHr":"Public Newsroom Publishing Desk page.","expectedEn":"Public Newsroom Publishing Desk page."}
+  ],
+  "protectedRoutes": [
+    {"path":"/mail-studio","expected":"Protected by operator/admin session."},
+    {"path":"/worker-ops/","expected":"Protected by operator/admin session and noindex."},
+    {"path":"/api/media-registration-admin/list","expected":"Unauthorized without operator/admin session."},
+    {"path":"/api/news-auto-publication/list","expected":"Unauthorized without operator/admin session."},
+    {"path":"/api/ai-operations/reports","expected":"Unauthorized without operator/admin session."},
+    {"path":"/api/ai-worker-orchestrator/status","expected":"Unauthorized without operator/admin session."}
+  ],
+  "dataFiles": [
+    "/data/news-sources.json",
+    "/data/project-daily-finance-analysis.json",
+    "/data/auto-publication-policy.json",
+    "/data/workflow-tasks.json",
+    "/data/operating-responsibility-matrix.json",
+    "/data/ai-operating-policy.json",
+    "/data/ai-worker-project-orchestrator.json",
+    "/data/worker-30-day-operating-plan.json",
+    "/data/worker-daily-execution-calendar.json",
+    "/data/public-page-notices.json"
+  ],
+  "boundaries": [
+    "No DNS changes.",
+    "No Cloudflare route changes.",
+    "No secret/token changes.",
+    "No bulk/campaign mail.",
+    "No real-money trading.",
+    "Admin, Mail Studio and Worker Ops remain protected."
+  ]
+}
