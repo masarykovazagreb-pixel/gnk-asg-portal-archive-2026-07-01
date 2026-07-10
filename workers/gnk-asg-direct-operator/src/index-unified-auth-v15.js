@@ -15,8 +15,18 @@ import {
   isNewsAutoPublicationApi,
   VERSION as NEWS_AUTO_PUBLICATION_VERSION
 } from './news-auto-publication-v1.js';
+import {
+  handleAiOperations,
+  isAiOperationsApi,
+  VERSION as AI_OPERATIONS_VERSION
+} from './ai-operations-v1.js';
+import {
+  handleAiWorkerOrchestrator,
+  isAiWorkerOrchestratorApi,
+  VERSION as AI_WORKER_ORCHESTRATOR_VERSION
+} from './ai-worker-orchestrator-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V28_20260710_PUBLIC_MEDIA_AUTO_NEWS_${INDEX_CONTRACT_INJECTION_VERSION}_${PUBLIC_MEDIA_REGISTRATION_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V29_20260710_AI_WORKER_ORCHESTRATOR_${INDEX_CONTRACT_INJECTION_VERSION}_${PUBLIC_MEDIA_REGISTRATION_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${AI_OPERATIONS_VERSION}_${AI_WORKER_ORCHESTRATOR_VERSION}`;
 const MAIL_STUDIO_RUNTIME='GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP';
 const AUTO_REPLY_RUNTIME='GNK_ASG_AUTO_REPLY_CASE_CENTER_V1_20260709_PERSONALIZED_AI_SIGNATURES';
 const SIGNATURE_CONTRACT='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY';
@@ -33,6 +43,8 @@ function stamp(response){
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
   headers.set('x-gnk-public-media-registration',PUBLIC_MEDIA_REGISTRATION_VERSION);
   headers.set('x-gnk-news-auto-publication',NEWS_AUTO_PUBLICATION_VERSION);
+  headers.set('x-gnk-ai-operations',AI_OPERATIONS_VERSION);
+  headers.set('x-gnk-ai-worker-orchestrator',AI_WORKER_ORCHESTRATOR_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -49,6 +61,8 @@ async function assetPassthrough(request,env){
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
   headers.set('x-gnk-public-media-registration',PUBLIC_MEDIA_REGISTRATION_VERSION);
   headers.set('x-gnk-news-auto-publication',NEWS_AUTO_PUBLICATION_VERSION);
+  headers.set('x-gnk-ai-operations',AI_OPERATIONS_VERSION);
+  headers.set('x-gnk-ai-worker-orchestrator',AI_WORKER_ORCHESTRATOR_VERSION);
   headers.set('x-content-type-options','nosniff');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
@@ -69,6 +83,8 @@ async function assetIndex(request,env,path){
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
   headers.set('x-gnk-public-media-registration',PUBLIC_MEDIA_REGISTRATION_VERSION);
   headers.set('x-gnk-news-auto-publication',NEWS_AUTO_PUBLICATION_VERSION);
+  headers.set('x-gnk-ai-operations',AI_OPERATIONS_VERSION);
+  headers.set('x-gnk-ai-worker-orchestrator',AI_WORKER_ORCHESTRATOR_VERSION);
   headers.set('x-gnk-asg-root-routing','static-asset-index-first');
   return new Response(await response.text(),{status:response.status,statusText:response.statusText,headers});
 }
@@ -112,6 +128,8 @@ async function mailStudioV27(request,env){
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
   headers.set('x-gnk-public-media-registration',PUBLIC_MEDIA_REGISTRATION_VERSION);
   headers.set('x-gnk-news-auto-publication',NEWS_AUTO_PUBLICATION_VERSION);
+  headers.set('x-gnk-ai-operations',AI_OPERATIONS_VERSION);
+  headers.set('x-gnk-ai-worker-orchestrator',AI_WORKER_ORCHESTRATOR_VERSION);
   headers.set('x-gnk-asg-mail-studio-runtime',MAIL_STUDIO_RUNTIME);
   headers.set('x-gnk-asg-auto-reply-case-center',AUTO_REPLY_RUNTIME);
   headers.set('x-gnk-asg-auto-reply-panel','GNK_ASG_MAIL_STUDIO_AUTO_REPLY_PANEL_V1_20260709');
@@ -139,6 +157,8 @@ async function patchVersionResponse(request,response){
     headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
     headers.set('x-gnk-public-media-registration',PUBLIC_MEDIA_REGISTRATION_VERSION);
     headers.set('x-gnk-news-auto-publication',NEWS_AUTO_PUBLICATION_VERSION);
+    headers.set('x-gnk-ai-operations',AI_OPERATIONS_VERSION);
+    headers.set('x-gnk-ai-worker-orchestrator',AI_WORKER_ORCHESTRATOR_VERSION);
     return new Response(JSON.stringify({
       ...payload,
       deployedEntryPoint:'src/index-unified-auth-v15.js',
@@ -150,6 +170,9 @@ async function patchVersionResponse(request,response){
       mediaRegistrationAdminReview:'operator-auth-required',
       newsAutoPublication:NEWS_AUTO_PUBLICATION_VERSION,
       newsAutoPublicationFlow:'operator-auth-required-controlled-portal-queue',
+      aiOperations:AI_OPERATIONS_VERSION,
+      aiWorkerOrchestrator:AI_WORKER_ORCHESTRATOR_VERSION,
+      aiWorkerOrchestratorFlow:'operator-auth-required-workers-and-9-projects',
       mailStudioRouting:'authenticated-v27-asset-first',
       mailStudioRuntime:MAIL_STUDIO_RUNTIME,
       mailStudioHotfix:'inactive-v26-retired',
@@ -181,6 +204,8 @@ async function isolateLogin(response){
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v15.js');
   headers.set('x-gnk-public-media-registration',PUBLIC_MEDIA_REGISTRATION_VERSION);
   headers.set('x-gnk-news-auto-publication',NEWS_AUTO_PUBLICATION_VERSION);
+  headers.set('x-gnk-ai-operations',AI_OPERATIONS_VERSION);
+  headers.set('x-gnk-ai-worker-orchestrator',AI_WORKER_ORCHESTRATOR_VERSION);
 
   let html=await response.text();
   const isolation=`<style id="gnk-auth-page-isolation">html[data-gnk-auth-login="1"] #gnk-backend-shell,html[data-gnk-auth-login="1"] #gnk-admin-module-launcher-v7,html[data-gnk-auth-login="1"] #gnk-admin-lock-notice-v7,html[data-gnk-auth-login="1"] .gnk-admin-shell-lite,html[data-gnk-auth-login="1"] .gnk-shell-wrap,html[data-gnk-auth-login="1"] .gnk-shell-nav,html[data-gnk-auth-login="1"] body>header,html[data-gnk-auth-login="1"] body>nav{display:none!important;visibility:hidden!important;pointer-events:none!important}html[data-gnk-auth-login="1"] body{padding-top:0!important}</style><script id="gnk-auth-page-isolation-script">(()=>{const ids=['gnk-backend-shell','gnk-admin-module-launcher-v7','gnk-admin-lock-notice-v7'];const clean=()=>{ids.forEach(id=>document.getElementById(id)?.remove());document.querySelectorAll('.gnk-admin-shell-lite,.gnk-shell-wrap,.gnk-shell-nav').forEach(el=>el.remove())};clean();if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',clean,{once:true});new MutationObserver(clean).observe(document.documentElement,{childList:true,subtree:true})})();</script>`;
@@ -201,6 +226,14 @@ export default{
     if(isNewsAutoPublicationApi(path)){
       if(!await isAuthenticated(request,env,ctx))return json({ok:false,error:'unauthorized',message:'Operator/admin session required.'},401);
       return handleNewsAutoPublication(request,env);
+    }
+    if(isAiOperationsApi(path)){
+      if(!await isAuthenticated(request,env,ctx))return json({ok:false,error:'unauthorized',message:'Operator/admin session required.'},401);
+      return handleAiOperations(request,env);
+    }
+    if(isAiWorkerOrchestratorApi(path)){
+      if(!await isAuthenticated(request,env,ctx))return json({ok:false,error:'unauthorized',message:'Operator/admin session required.'},401);
+      return handleAiWorkerOrchestrator(request,env);
     }
     if((request.method==='GET'||request.method==='HEAD')&&path==='/mail-studio'){
       if(await isAuthenticated(request,env,ctx)){
