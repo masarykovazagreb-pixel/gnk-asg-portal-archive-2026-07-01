@@ -45,4 +45,16 @@ assert.match(activeGuard,/const active=trackedEnv\(env\)/,'fetch, scheduled and 
 assert.match(activeGuard,/emailStatusApi:'operator-auth-required'/,'version metadata must advertise the protected API contract');
 assert.match(activeGuard,/emailStatusPixel:'public-no-request-metadata'/,'version metadata must advertise the privacy-minimized public pixel contract');
 
-console.log('automation-control-v1: protected final actions, Worker Ops return and active Email Status gateway locked');
+const emailStatus=await import('../src/email-status-tracking-v5.js');
+assert.match(emailStatus.VERSION,/^GNK_ASG_EMAIL_STATUS_TRACKING_V6_/,'V5 compatibility facade must resolve to the current V6 implementation');
+assert.equal(emailStatus.API_PREFIX,'/api/email-status');
+for(const name of ['withEmailStatusTracking','handleEmailStatusRequest','syncCloudflareEmailStatuses','isEmailStatusPath']){
+  assert.equal(typeof emailStatus[name],'function',`Email Status export ${name} must remain available`);
+}
+const emailStatusSchema=await readFile(new URL('../src/email-status-tracking-v1.js',import.meta.url),'utf8');
+assert.match(emailStatusSchema,/first_opened_at TEXT/);
+assert.match(emailStatusSchema,/last_opened_at TEXT/);
+assert.match(emailStatusSchema,/open_count INTEGER/);
+assert.doesNotMatch(emailStatusSchema,/ip_address|user_agent|cf-connecting-ip|user-agent/i,'Email Status must not store IP addresses or user-agent metadata');
+
+console.log('automation-control-v1: protected final actions, Worker Ops return and active privacy-minimized Email Status gateway locked');
