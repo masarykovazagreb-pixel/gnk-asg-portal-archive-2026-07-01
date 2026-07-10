@@ -1,0 +1,140 @@
+{
+  "version": "GNK_ASG_WORKER_30_DAY_OPERATING_PLAN_V1_20260710",
+  "languageParity": "All frontend/public notices and labels must exist in HR and EN with identical substance.",
+  "mode": "controlled_autonomous_operations",
+  "periodDays": 30,
+  "timezone": "Europe/Zagreb",
+  "globalBoundaries": {
+    "hr": [
+      "Workeri smiju pripremati, sažimati, spremati i objavljivati samo u dopuštenim javnim kategorijama.",
+      "Financijske, pravne, osobne i statusne tvrdnje idu u manual review.",
+      "Izvješća se spremaju u reporting queue i prikazuju operatoru.",
+      "Nema masovnog slanja, nema kampanja i nema javnog admin pristupa."
+    ],
+    "en": [
+      "Workers may prepare, summarize, save and publish only in allowed public categories.",
+      "Financial, legal, personal-data and status claims go to manual review.",
+      "Reports are stored in the reporting queue and displayed to the operator.",
+      "No mass sending, no campaigns and no public admin access."
+    ]
+  },
+  "dailyCycles": [
+    {
+      "id": "morning-cycle",
+      "time": "08:00",
+      "hr": "Jutarnji pregled: izvori, redakcije, prijave, rizici i plan objava.",
+      "en": "Morning review: sources, media outlets, applications, risks and publication plan."
+    },
+    {
+      "id": "midday-cycle",
+      "time": "13:00",
+      "hr": "Srednji pregled: queue objava, status kontakata, ručni review i blokade.",
+      "en": "Midday review: publication queue, contact status, manual review and blocks."
+    },
+    {
+      "id": "evening-cycle",
+      "time": "18:00",
+      "hr": "Večernje izvješće: što je objavljeno, što čeka, što je blokirano i sljedeći koraci.",
+      "en": "Evening report: what was published, what is pending, what is blocked and next steps."
+    }
+  ],
+  "workerRoles": [
+    {
+      "id": "worker-media-intake",
+      "company": "GNK ASG d.o.o.",
+      "jobHr": "Media Intake Worker",
+      "jobEn": "Media Intake Worker",
+      "functionHr": "prijave redakcija, kontakti, status prijave",
+      "functionEn": "media applications, contacts, application status",
+      "responsibilitiesHr": ["pregled novih prijava", "provjera kontaktnih polja", "označavanje needs-info", "sažetak za operatora"],
+      "responsibilitiesEn": ["review new applications", "verify contact fields", "mark needs-info", "operator summary"],
+      "mayPublish": false,
+      "reportsPerDay": 3,
+      "reportTarget": "media-registration-admin"
+    },
+    {
+      "id": "worker-newsroom-business",
+      "company": "GNK ASG d.o.o.",
+      "jobHr": "Business Newsroom Worker",
+      "jobEn": "Business Newsroom Worker",
+      "functionHr": "business vijesti i izvori",
+      "functionEn": "business news and sources",
+      "responsibilitiesHr": ["provjera allowlist izvora", "izrada originalnog sažetka", "fallback slika", "queue/publish dopuštenih objava"],
+      "responsibilitiesEn": ["check allowlisted sources", "write original summary", "fallback image", "queue/publish allowed posts"],
+      "mayPublish": true,
+      "allowedCategories": ["source-summary-business", "source-summary-markets"],
+      "reportsPerDay": 3,
+      "reportTarget": "news-auto-publication"
+    },
+    {
+      "id": "worker-newsroom-tech",
+      "company": "GNK ASG d.o.o.",
+      "jobHr": "Technology Newsroom Worker",
+      "jobEn": "Technology Newsroom Worker",
+      "functionHr": "technology, fintech i crypto vijesti",
+      "functionEn": "technology, fintech and crypto news",
+      "responsibilitiesHr": ["provjera tehnoloških izvora", "sažetak bez kopiranja", "kategorizacija", "queue/publish dopuštenih objava"],
+      "responsibilitiesEn": ["check technology sources", "summary without copying", "categorization", "queue/publish allowed posts"],
+      "mayPublish": true,
+      "allowedCategories": ["source-summary-technology", "source-summary-fintech", "source-summary-crypto"],
+      "reportsPerDay": 3,
+      "reportTarget": "news-auto-publication"
+    },
+    {
+      "id": "worker-finance-signal",
+      "company": "GNK ASG d.o.o.",
+      "jobHr": "Finance Signal Worker",
+      "jobEn": "Finance Signal Worker",
+      "functionHr": "javni KPI signali i dnevni finance review",
+      "functionEn": "public KPI signals and daily finance review",
+      "responsibilitiesHr": ["provjera public-only KPI signala", "odvajanje od privatne evidencije", "manual review financijskih tvrdnji", "dnevni sažetak"],
+      "responsibilitiesEn": ["check public-only KPI signals", "separate from private records", "manual review of financial claims", "daily summary"],
+      "mayPublish": false,
+      "manualReviewRequired": true,
+      "reportsPerDay": 3,
+      "reportTarget": "project-daily-finance-analysis"
+    },
+    {
+      "id": "worker-the-code-programme",
+      "company": "GNK DINAMO Ltd.",
+      "jobHr": "THE CODE Programme Worker",
+      "jobEn": "THE CODE Programme Worker",
+      "functionHr": "THE CODE program, memorandum i countdown status",
+      "functionEn": "THE CODE programme, memorandum and countdown status",
+      "responsibilitiesHr": ["provjera stranice THE CODE", "provjera media memoranduma", "sažetak programskog statusa", "sljedeći koraci za New York"],
+      "responsibilitiesEn": ["check THE CODE page", "check media memorandum", "programme status summary", "next steps for New York"],
+      "mayPublish": true,
+      "allowedCategories": ["official-update", "project-operations-update"],
+      "reportsPerDay": 3,
+      "reportTarget": "the-code-operations"
+    },
+    {
+      "id": "worker-protected-ops",
+      "company": "GNK ASG d.o.o.",
+      "jobHr": "Protected Operations Worker",
+      "jobEn": "Protected Operations Worker",
+      "functionHr": "auth izolacija, Mail Studio guard, queue nadzor",
+      "functionEn": "auth isolation, Mail Studio guard, queue supervision",
+      "responsibilitiesHr": ["provjera protected ruta", "provjera queue API statusa", "dnevni audit", "incident flag ako nešto odstupa"],
+      "responsibilitiesEn": ["check protected routes", "check queue API status", "daily audit", "incident flag if something deviates"],
+      "mayPublish": false,
+      "reportsPerDay": 3,
+      "reportTarget": "protected-ops-audit"
+    }
+  ],
+  "thirtyDayPlan": [
+    {"days":"1-3","hr":"stabilizacija: auth, media registracija, news queue, HR/EN paritet","en":"stabilization: auth, media registration, news queue, HR/EN parity"},
+    {"days":"4-7","hr":"media intake i kontaktna evidencija; dnevni reporti 3x dnevno","en":"media intake and contact records; daily reports 3x daily"},
+    {"days":"8-10","hr":"automatske vijesti: business/markets/tech/fintech/crypto; cilj 10+ dnevno","en":"automatic news: business/markets/tech/fintech/crypto; target 10+ daily"},
+    {"days":"11-14","hr":"publication queue optimizacija; manual review za pravne i financijske tvrdnje","en":"publication queue optimization; manual review for legal and financial claims"},
+    {"days":"15-18","hr":"THE CODE i media memorandum status; programski update bez privatnih podataka","en":"THE CODE and media memorandum status; programme update without private data"},
+    {"days":"19-22","hr":"finance public signal review; KPI disclaimer i provjera javnog sloja","en":"finance public signal review; KPI disclaimer and public layer verification"},
+    {"days":"23-26","hr":"operativna matrica po firmama, funkcijama i odgovornosti; priprema za live audit","en":"operating matrix by company, function and responsibility; preparation for live audit"},
+    {"days":"27-30","hr":"završni review, PR cleanup, merge readiness i safe deploy checklist","en":"final review, PR cleanup, merge readiness and safe deploy checklist"}
+  ],
+  "reportSchema": {
+    "fields": ["date", "cycle", "workerId", "company", "function", "completed", "published", "queued", "manualReview", "blocked", "risks", "nextActions"],
+    "deliveryHr": "Izvješće se sprema u reporting queue i prikazuje operatoru; slanje prema van samo kao individualna odobrena komunikacija.",
+    "deliveryEn": "The report is stored in the reporting queue and shown to the operator; external sending only as individually approved communication."
+  }
+}
