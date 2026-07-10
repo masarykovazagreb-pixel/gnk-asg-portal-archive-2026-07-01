@@ -6,6 +6,7 @@ Disallow: /admin/
 Disallow: /admin-center/
 Disallow: /operator-dashboard/
 Disallow: /operator-mobile/
+Disallow: /worker-ops/
 Disallow: /mail-studio/
 Disallow: /webmail/
 Disallow: /campaign-mailer/
@@ -17,6 +18,18 @@ Disallow: /queues/
 Disallow: /audit/
 Disallow: /api/
 Disallow: /podijeli/
+
+# Public high-value routes
+Allow: /about/
+Allow: /the-code/
+Allow: /the-code/media-memorandum/
+Allow: /media-application/
+Allow: /finance/
+Allow: /newsroom/
+Allow: /reports/
+Allow: /portal-map/
+Allow: /assets/
+Allow: /downloads/
 
 Sitemap: https://www.gnk-asg.hr/sitemap.xml
 Sitemap: https://www.gnk-asg.hr/image-sitemap.xml
