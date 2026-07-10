@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { Script } from 'node:vm';
 
 const data = JSON.parse(await readFile(new URL('../data/public-group-network.json', import.meta.url), 'utf8'));
 
@@ -55,4 +56,17 @@ for(const field of ['Primatelj','Predmet','Poslano','Isporučeno','Prvo otvaranj
 }
 assert.ok(!/Potvrda primitka|receipt_confirmed_at|recipient_confirmed_at/.test(emailFallback),'experimental receipt-confirmation fields must not remain in the classic fallback');
 
-console.log(`group-network-v1: ${data.nodes.length} published nodes, ${data.links.length} links; home and classic Email Status assets locked`);
+for (const [label,source] of [
+  ['shared Digital Headquarters runtime',sharedHome],
+  ['premium home runtime',homeJs],
+  ['classic Email Status enhancer',emailDashboard]
+]) {
+  assert.doesNotThrow(()=>new Script(source,{filename:label}),`${label} must parse as JavaScript`);
+}
+const inlineScripts=[...emailFallback.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match=>match[1].trim()).filter(Boolean);
+assert.ok(inlineScripts.length>0,'classic Email Status fallback must contain its runtime');
+inlineScripts.forEach((source,index)=>assert.doesNotThrow(()=>new Script(source,{filename:`email-status-inline-${index+1}.js`}),`Email Status inline runtime ${index+1} must parse`));
+
+await import('./public-surface-cleanliness.test.mjs');
+
+console.log(`group-network-v1: ${data.nodes.length} published nodes, ${data.links.length} links; public surface, premium home and classic Email Status assets locked`);
