@@ -1,0 +1,52 @@
+{
+  "version": "GNK_ASG_PUBLIC_PAGE_NOTICES_V1_20260710",
+  "languageParity": "HR and EN notices carry the same substance.",
+  "default": {
+    "hr": [
+      "Javni portal prikazuje samo javne informacije i operativne sažetke.",
+      "Vijesti se provjeravaju prema allowlisti izvora i objavljuju u kontroliranim dnevnim terminima, najmanje 3x dnevno i ciljano 10+ objava dnevno.",
+      "Financijske, pravne i osobne tvrdnje idu na ručni pregled prije javne objave.",
+      "Mail Studio, admin i operator funkcije nalaze se iza zaštićenog pristupa. Nema masovnog slanja i nema kampanja."
+    ],
+    "en": [
+      "The public portal displays only public information and operating summaries.",
+      "News is checked against the source allowlist and published in controlled daily windows, at least 3x daily and targeting 10+ posts per day.",
+      "Financial, legal and personal-data claims go to manual review before public publication.",
+      "Mail Studio, admin and operator functions remain behind protected access. No mass sending and no campaigns."
+    ]
+  },
+  "routes": {
+    "/": "default",
+    "/en": "default",
+    "/the-code/": "default",
+    "/the-code/media-memorandum/": "default",
+    "/media-application/": "mediaApplication",
+    "/finance/": "finance"
+  },
+  "mediaApplication": {
+    "hr": [
+      "Media korisnik sam kreira korisničko ime i lozinku te nije admin korisnik.",
+      "Prijava se može spremiti kao nacrt i kasnije nastaviti.",
+      "Slanje prijave ne znači automatsko odobrenje. Status pregledava operator za medije.",
+      "Komunikacija je individualna; nema kampanja i nema masovnog slanja."
+    ],
+    "en": [
+      "The media user creates their own username and password and is not an admin user.",
+      "The application can be saved as a draft and continued later.",
+      "Submitting an application does not mean automatic approval. The status is reviewed by the media operator.",
+      "Communication is individual; no campaigns and no mass sending."
+    ]
+  },
+  "finance": {
+    "hr": [
+      "Financijski prikaz je javni informativni sloj, a ne privatna knjigovodstvena evidencija.",
+      "Javni KPI brojevi zahtijevaju provjeru prije objave.",
+      "Privatni dokumenti, osobni podaci i interna evidencija nisu dio javne stranice."
+    ],
+    "en": [
+      "The finance view is a public information layer, not a private accounting record.",
+      "Public KPI figures require review before publication.",
+      "Private documents, personal data and internal records are not part of the public page."
+    ]
+  }
+}
