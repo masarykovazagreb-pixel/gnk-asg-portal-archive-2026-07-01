@@ -4,6 +4,7 @@
   window.__GNK_ASG_DHQ_HOME_V2__ = true;
 
   document.body.classList.add('dhq-home');
+  document.querySelectorAll('.dhq-frame').forEach(node => { node.style.position = 'relative'; });
 
   const progress = document.createElement('div');
   progress.className = 'dhq-progress';
