@@ -1,5 +1,4 @@
 (()=>
-{
 'use strict';
 const API='/api/media-registration';
 const $=id=>document.getElementById(id);
