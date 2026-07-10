@@ -26,8 +26,9 @@ assert.equal(status.targetAutomationPercent,99);
 assert.equal(status.manualFinalGate,true);
 assert.ok(status.disabledExternalActions.includes('bulkEmail'));
 
-const authSource=await readFile(new URL('../src/index-unified-auth-v14.js',import.meta.url),'utf8');
-const activeGuard=await readFile(new URL('../src/index-unified-auth-v16.js',import.meta.url),'utf8');
+const readSource=name=>readFile(new URL(`../src/${name}`,import.meta.url),'utf8');
+const authSource=await readSource('index-unified-auth-v14.js');
+const activeGuard=await readSource('index-unified-auth-v16.js');
 assert.match(authSource,/function safeNext\(/,'shared login next values must remain sanitized');
 assert.ok(!authSource.includes("'/worker-ops'"),'shared V14 auth logic must remain unchanged by the Worker Ops fix');
 assert.match(activeGuard,/WORKER_OPS_LOGIN_NEXT='\/operator-dashboard\/\?workerOpsReturn=1'/,'V16 must use a safe allowed intermediate login target');
@@ -45,16 +46,26 @@ assert.match(activeGuard,/const active=trackedEnv\(env\)/,'fetch, scheduled and 
 assert.match(activeGuard,/emailStatusApi:'operator-auth-required'/,'version metadata must advertise the protected API contract');
 assert.match(activeGuard,/emailStatusPixel:'public-no-request-metadata'/,'version metadata must advertise the privacy-minimized public pixel contract');
 
-const emailStatus=await import('../src/email-status-tracking-v5.js');
-assert.match(emailStatus.VERSION,/^GNK_ASG_EMAIL_STATUS_TRACKING_V6_/,'V5 compatibility facade must resolve to the current V6 implementation');
-assert.equal(emailStatus.API_PREFIX,'/api/email-status');
-for(const name of ['withEmailStatusTracking','handleEmailStatusRequest','syncCloudflareEmailStatuses','isEmailStatusPath']){
-  assert.equal(typeof emailStatus[name],'function',`Email Status export ${name} must remain available`);
-}
-const emailStatusSchema=await readFile(new URL('../src/email-status-tracking-v1.js',import.meta.url),'utf8');
-assert.match(emailStatusSchema,/first_opened_at TEXT/);
-assert.match(emailStatusSchema,/last_opened_at TEXT/);
-assert.match(emailStatusSchema,/open_count INTEGER/);
-assert.doesNotMatch(emailStatusSchema,/ip_address|user_agent|cf-connecting-ip|user-agent/i,'Email Status must not store IP addresses or user-agent metadata');
+const trackingFacade=await readSource('email-status-tracking-v5.js');
+const trackingV6=await readSource('email-status-tracking-v6.js');
+const trackingV5Core=await readSource('email-status-tracking-v5-core.js');
+const trackingV4=await readSource('email-status-tracking-v4.js');
+const trackingV2=await readSource('email-status-tracking-v2.js');
+const trackingV3=await readSource('email-status-tracking-v3.js');
+const trackingSchema=await readSource('email-status-tracking-v1.js');
+assert.match(trackingFacade,/export \* from '.\/email-status-tracking-v6\.js'/,'V5 facade must resolve to V6');
+assert.match(trackingV6,/import \* as base from '.\/email-status-tracking-v5-core\.js'/);
+assert.match(trackingV6,/export const API_PREFIX=base\.API_PREFIX/);
+assert.match(trackingV6,/export const withEmailStatusTracking=base\.withEmailStatusTracking/);
+assert.match(trackingV6,/export const syncCloudflareEmailStatuses=base\.syncCloudflareEmailStatuses/);
+assert.match(trackingV5Core,/import \* as base from '.\/email-status-tracking-v4\.js'/);
+assert.match(trackingV4,/import \* as rawTracking from '.\/email-status-tracking-v2\.js'/);
+assert.match(trackingV4,/import \* as status from '.\/email-status-tracking-v3\.js'/);
+assert.match(trackingV2,/import \{EmailMessage\} from 'cloudflare:email'/,'raw MIME tracking must retain the Cloudflare email virtual module');
+assert.match(trackingV3,/handleEmailStatusRequest/);
+assert.match(trackingSchema,/first_opened_at TEXT/);
+assert.match(trackingSchema,/last_opened_at TEXT/);
+assert.match(trackingSchema,/open_count INTEGER/);
+assert.doesNotMatch(trackingSchema,/ip_address|user_agent|cf-connecting-ip|user-agent/i,'Email Status must not store IP addresses or user-agent metadata');
 
-console.log('automation-control-v1: protected final actions, Worker Ops return and active privacy-minimized Email Status gateway locked');
+console.log('automation-control-v1: protected final actions, Worker Ops return and active privacy-minimized Email Status import graph locked');
