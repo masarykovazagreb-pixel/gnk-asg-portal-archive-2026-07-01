@@ -4,12 +4,14 @@ import {
   VERSION as INDEX_CONTRACT_INJECTION_VERSION
 } from './index-contract-injection-v1.js';
 import {
+  handleAdminMediaRegistration,
   handlePublicMediaRegistration,
+  isAdminMediaRegistrationApi,
   isPublicMediaRegistrationApi,
   VERSION as PUBLIC_MEDIA_REGISTRATION_VERSION
 } from './media-public-registration-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V26_20260710_PUBLIC_MEDIA_REGISTRATION_${INDEX_CONTRACT_INJECTION_VERSION}_${PUBLIC_MEDIA_REGISTRATION_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V27_20260710_PUBLIC_MEDIA_REGISTRATION_ADMIN_REVIEW_${INDEX_CONTRACT_INJECTION_VERSION}_${PUBLIC_MEDIA_REGISTRATION_VERSION}`;
 const MAIL_STUDIO_RUNTIME='GNK_ASG_WEBMAIL_V27_20260709_BCC_SOURCE_CLEANUP';
 const AUTO_REPLY_RUNTIME='GNK_ASG_AUTO_REPLY_CASE_CENTER_V1_20260709_PERSONALIZED_AI_SIGNATURES';
 const SIGNATURE_CONTRACT='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY';
@@ -17,6 +19,7 @@ const AUTO_REPLY_PANEL='/assets/mail-studio-auto-reply-panel-v1.js?v=20260709-au
 const REFERENCE_GUARD='/assets/mail-studio-reference-code-v1.js?v=20260709-reference-code';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
+function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-auth-isolation':VERSION}})}
 
 function stamp(response){
   const headers=new Headers(response.headers);
@@ -134,6 +137,7 @@ async function patchVersionResponse(request,response){
       authIsolationVersion:VERSION,
       publicMediaRegistration:PUBLIC_MEDIA_REGISTRATION_VERSION,
       publicMediaRegistrationFlow:'username-password-self-registration-outside-admin',
+      mediaRegistrationAdminReview:'operator-auth-required',
       mailStudioRouting:'authenticated-v27-asset-first',
       mailStudioRuntime:MAIL_STUDIO_RUNTIME,
       mailStudioHotfix:'inactive-v26-retired',
@@ -177,6 +181,10 @@ export default{
   async fetch(request,env,ctx){
     const path=pathOf(request);
     if(isPublicMediaRegistrationApi(path))return handlePublicMediaRegistration(request,env);
+    if(isAdminMediaRegistrationApi(path)){
+      if(!await isAuthenticated(request,env,ctx))return json({ok:false,error:'unauthorized',message:'Operator/admin session required.'},401);
+      return handleAdminMediaRegistration(request,env);
+    }
     if((request.method==='GET'||request.method==='HEAD')&&path==='/mail-studio'){
       if(await isAuthenticated(request,env,ctx)){
         const response=await mailStudioV27(request,env);
