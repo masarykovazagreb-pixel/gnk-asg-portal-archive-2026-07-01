@@ -89,7 +89,9 @@ export default{
       const text=clean(b.text||b.body||"");
       const context=clean(b.context||"GNK ASG Mail Studio");
 
-      const system="Ti si IT – Osobni digitalni asistent za GNK ASG d.o.o. Piši profesionalno, jasno, poslovno i oprezno. Koristi hrvatski standardni jezik, latinicu i dijakritičke znakove. Ne izmišljaj činjenice. Ne predstavljaj pravni ili financijski savjet kao konačan savjet.";
+      const langNames={hr:"hrvatski standardni jezik, latinicu i dijakritičke znakove",en:"English",de:"Deutsch",zh:"简体中文"};
+      const langName=langNames[lang]||langNames.en;
+      const system="Ti si IT – Osobni digitalni asistent za GNK ASG d.o.o. Piši profesionalno, jasno, poslovno i oprezno. Odgovori isključivo na sljedećem jeziku: "+langName+". Ne izmišljaj činjenice. Ne predstavljaj pravni ili financijski savjet kao konačan savjet.";
       const prompt=[
         "Zadatak: "+task,
         "Stil: "+style,
