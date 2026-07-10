@@ -35,7 +35,7 @@ export async function buildBrandedRawEmail({env,fromEmail='media@gnk-asg.hr',fro
   const logo=await loadEmailLogo(env),src=logo?`cid:${EMAIL_LOGO_CID}`:EMAIL_LOGO_URL;
   const signedText=ensureMediaText(text),signedHtml=ensureMediaHtml(html,signedText,src);
   const alt=`gnk_alt_${crypto.randomUUID().replace(/-/g,'')}`,rel=`gnk_rel_${crypto.randomUUID().replace(/-/g,'')}`,mix=`gnk_mix_${crypto.randomUUID().replace(/-/g,'')}`;
-  const head=[`From: ${encodeHeader(fromName)} <${clean(fromEmail)}>` ,`To: ${clean(to)}`,`Reply-To: ${clean(replyTo||fromEmail)}`,`Subject: ${encodeHeader(subject)}`,`Date: ${new Date().toUTCString()}`,`Message-ID: <${crypto.randomUUID()}@gnk-asg.hr>`,'MIME-Version: 1.0',`X-GNK-ASG-Email-Brand: ${VERSION}`];
+  const head=[`From: ${encodeHeader(fromName)} <${clean(fromEmail)}>` ,`To: ${clean(to)}`,`Reply-To: ${clean(replyTo||fromEmail)}`,`Subject: ${encodeHeader(subject)}`,`Date: ${new Date().toUTCString()}`,`Message-ID: <${crypto.randomUUID()}@gnk-asg.hr>`,'MIME-Version: 1.0',`X-GNK-ASG-Email-Brand: ${VERSION}`,`Disposition-Notification-To: ${clean(fromEmail)}`,`Return-Receipt-To: ${clean(fromEmail)}`];
   if(inReplyTo)head.push(`In-Reply-To: ${clean(inReplyTo).replace(/[\r\n]+/g,' ')}`);if(references)head.push(`References: ${clean(references).replace(/[\r\n]+/g,' ')}`);if(autoSubmitted)head.push(`Auto-Submitted: ${clean(autoSubmitted)}`);
   for(const [k,v] of Object.entries(headers||{})){const key=clean(k).replace(/[^A-Za-z0-9-]+/g,''),val=clean(v).replace(/[\r\n]+/g,' ');if(key&&val)head.push(`${key}: ${val}`);}
   const altBody=alternative(alt,signedText,signedHtml);

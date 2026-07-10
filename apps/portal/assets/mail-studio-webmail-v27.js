@@ -66,7 +66,37 @@ async function send(button){applyProfile();set('to',parseEmails(value('to')).joi
 async function save(){const draft={...payload(),id:state.draftId,profileId:value('profile')||state.profile,textBody:messageText(),htmlBody:messageHtml(),attachments:state.attachments.map(item=>({filename:item.filename,sizeBytes:item.sizeBytes,type:item.type}))};localStorage.setItem('gnk_asg_mail_studio_draft_v27',JSON.stringify({...draft,bodyText:value('bodyText'),attachments:[]}));try{const data=await jsonFetch(`${API}/drafts`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(draft)});state.draftId=data.draft?.id||state.draftId;updateCounts(data.folders);status('Draft saved to Worker runtime.');}catch(error){status(`Local draft saved; Worker draft failed: ${error.message}`);}}
 function load(){try{const draft=JSON.parse(localStorage.getItem('gnk_asg_mail_studio_draft_v27')||'{}');if(!draft.subject&&!draft.to&&!draft.bodyText){status('No saved local draft.');return;}set('profile',draft.profile||draft.profileId||state.profile);set('language',draft.language||state.language);set('to',draft.to);set('cc',draft.cc);set('bcc',mandatoryBcc(draft.bcc));set('subject',draft.subject);set('bodyText',draft.bodyText||draft.text||'');state.attachments=[];renderAttachments();applyProfile();preview();status('Local draft loaded.');}catch(error){status(`Draft error: ${error.message}`);}}
 function helper(){const mode=value('mode')||'reply',lang=value('language')||state.language,current=value('bodyText').trim(),base=(TEMPLATES[lang]||TEMPLATES.en)[mode]||(TEMPLATES[lang]||TEMPLATES.en).reply;set('bodyText',current?`${base}\n\n${current}`:base);preview();status(`${lang.toUpperCase()} template applied.`);}
-function autoReply(){const lang=value('language')||state.language;set('bodyText',(TEMPLATES[lang]||TEMPLATES.en).reply);preview();status(`${lang.toUpperCase()} automatic reply prepared.`);}
+async function autoReply(){
+  const lang=value('language')||state.language;
+  const fallbackText=(TEMPLATES[lang]||TEMPLATES.en).reply;
+  const button=$('autoReply');
+  const incomingText=($('threadDetail')?.innerText||'').trim();
+  const subject=value('subject')||'';
+  set('bodyText',fallbackText);preview();
+  status('Preparing AI-assisted reply…');
+  if(button){button.disabled=true;}
+  try{
+    const response=await fetch('/api/ai-assist',{
+      method:'POST',
+      headers:{'content-type':'application/json','accept':'application/json'},
+      body:JSON.stringify({task:'auto_reply',style:'corporate',lang,subject,text:incomingText,context:'GNK ASG Mail Studio'})
+    });
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const result=await response.json();
+    if(result&&result.text){
+      set('bodyText',result.text);
+      preview();
+      status(result.ai?`${lang.toUpperCase()} AI-assisted reply prepared. Review before sending.`:`${lang.toUpperCase()} template reply prepared (AI unavailable). Review before sending.`);
+    }else{
+      throw new Error('empty_ai_response');
+    }
+  }catch(error){
+    set('bodyText',fallbackText);preview();
+    status(`${lang.toUpperCase()} automatic reply prepared (AI unavailable: ${error.message}). Review before sending.`);
+  }finally{
+    if(button){button.disabled=false;}
+  }
+}
 function clearAll(){['to','cc','subject','bodyText'].forEach(id=>set(id,''));set('bcc',BCC);state.attachments=[];state.draftId=null;renderAttachments();const importNode=$('importStatus');if(importNode)importNode.textContent='No HTML file imported.';preview();status('Fields cleared.');}
 function fileToBase64(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||'').split(',').pop()||'');reader.onerror=()=>reject(reader.error||new Error('Unable to read file'));reader.readAsDataURL(file);});}
 async function importHtml(file){if(!file)return;if(file.size>5*1024*1024){status('HTML file exceeds 5 MB.');return;}const text=await file.text();if(!text.trim()){status('HTML file is empty.');return;}set('bodyText',text);const node=$('importStatus');if(node)node.textContent=`Imported: ${file.name}`;preview();status('HTML file imported and previewed.');}

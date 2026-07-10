@@ -1,0 +1,18 @@
+name = "gnk-asg-ai-newsroom-writer"
+main = "src/index.js"
+compatibility_date = "2026-06-13"
+workers_dev = true
+
+# Izoliran worker - NE dira postojeći gnk-asg-direct-operator cron
+# (koji ostaje isključivo email-status-sync). Ovaj worker ima vlastiti
+# cron i piše isključivo preko postojećeg /api/news-auto-publication/enqueue
+# API-ja, koji već sadrži sigurnosni klasifikator sadržaja.
+
+# REVIEW-ONLY: bez routes bloka dok se ne odobri produkcijska aktivacija.
+# Dodati route tek nakon eksplicitnog odobrenja:
+# routes = [{ pattern = "gnk-asg.hr/api/ai-newsroom-writer*", zone_name = "gnk-asg.hr" }]
+
+[triggers]
+# Jednom dnevno, 06:00 UTC (08:00 CEST) - prije 8h HR roka spomenutog
+# u internom pravilu odobravanja izvještaja.
+crons = ["0 6 * * *"]

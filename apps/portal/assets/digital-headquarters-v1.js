@@ -69,7 +69,7 @@
     const section=document.createElement('section');
     section.className='dhq-section';
     section.id='network';
-    section.innerHTML='<div data-gnk-network-mount data-compact></div>';
+    section.innerHTML='<div data-gnk-network-mount></div>';
     if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(section,anchor);else document.querySelector('main')?.appendChild(section);
     const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/group-network-v1.css?v=20260710-v1';document.head.appendChild(css);
     const script=document.createElement('script');script.src='/assets/group-network-v1.js?v=20260710-v1';script.defer=true;document.body.appendChild(script);
