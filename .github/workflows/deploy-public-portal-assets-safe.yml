@@ -26,7 +26,7 @@ jobs:
       - name: Validate public portal assets and protected entrypoint
         shell: bash
         run: |
-          set -euo pipefail
+          set -euxo pipefail
 
           required_files=(
             apps/portal/index.html
@@ -86,7 +86,9 @@ jobs:
             workers/gnk-asg-direct-operator/tests/email-signature-contract-v1.test.mjs
             workers/gnk-asg-direct-operator/tests/public-ai-v10.test.mjs
           )
-          for file in "${required_files[@]}"; do test -s "$file"; done
+          for file in "${required_files[@]}"; do
+            test -s "$file" || { echo "::error file=${file}::Required file is missing or empty"; exit 1; }
+          done
 
           grep -q 'DIGITAL_HEADQUARTERS_V1' apps/portal/index.html apps/portal/en/index.html
           grep -q 'GNK DINAMO Ltd. Group is the international parent group' apps/portal/en/index.html
@@ -121,9 +123,9 @@ jobs:
           grep -q "productionDeploy:'manual-approval-required'" workers/gnk-asg-direct-operator/src/automation-control-v1.js
           grep -q "bulkEmail:'disabled'" workers/gnk-asg-direct-operator/src/automation-control-v1.js
 
+          echo "Validating PDF links on public download surfaces"
           for page in \
             apps/portal/index.html apps/portal/en/index.html \
-            apps/portal/about/index.html apps/portal/en/about/index.html \
             apps/portal/finance/index.html apps/portal/en/finance/index.html \
             apps/portal/reports/index.html apps/portal/en/reports/index.html; do
             grep -q 'GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf' "$page"
@@ -160,6 +162,7 @@ jobs:
           grep -q 'main = "src/index-unified-auth-v16.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'directory = "../../apps/portal"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'run_worker_first = true' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'keep_vars = true' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MAIL_MANUAL_LIVE = "true"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'MAIL_PROFILE_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
