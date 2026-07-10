@@ -45,6 +45,9 @@ assert.match(activeGuard,/!isEmailStatusPixel\(path\)&&!await isAuthenticated/,'
 assert.match(activeGuard,/const active=trackedEnv\(env\)/,'fetch, scheduled and email handlers must use the tracked environment');
 assert.match(activeGuard,/emailStatusApi:'operator-auth-required'/,'version metadata must advertise the protected API contract');
 assert.match(activeGuard,/emailStatusPixel:'public-no-request-metadata'/,'version metadata must advertise the privacy-minimized public pixel contract');
+assert.match(activeGuard,/scheduledAutomation:'email-status-sync-only'/,'version metadata must disclose the only scheduled task');
+assert.match(activeGuard,/lowerScheduledHandlers:'disabled'/,'version metadata must disclose that lower scheduled handlers are disabled');
+assert.doesNotMatch(activeGuard,/app\.scheduled/,'active V16 cron must not invoke public operations, project workforce or news scheduled cycles');
 
 const trackingFacade=await readSource('email-status-tracking-v5.js');
 const trackingV6=await readSource('email-status-tracking-v6.js');
@@ -75,4 +78,4 @@ assert.match(wrangler,/EMAIL_OPEN_TRACKING_ENABLED = "true"/,'deploy configurati
 assert.match(wrangler,/MEDIA_OUTREACH_LIVE = "false"/,'media outreach must remain disabled');
 assert.match(wrangler,/MAIL_PROFILE_TEST_LIVE = "false"/,'mail profile test sends must remain disabled');
 
-console.log('automation-control-v1: protected final actions, Worker Ops return, active Email Status tracking and deploy configuration locked');
+console.log('automation-control-v1: protected actions, Worker Ops, Email Status tracking and scheduled-sync isolation locked');
