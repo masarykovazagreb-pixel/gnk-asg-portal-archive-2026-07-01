@@ -2,10 +2,11 @@
   "name": "gnk-asg-public-portal-validation",
   "private": true,
   "scripts": {
-    "test": "npm run test:safe-smoke && npm run test:network && npm run test:roadmap",
+    "test": "npm run test:safe-smoke && npm run test:network && npm run test:roadmap && npm run test:roadmap-routes",
     "test:safe-smoke": "node scripts/safe-mail-functions-smoke.mjs",
     "test:network": "node tests/group-network-v1.test.mjs",
     "test:roadmap": "node tests/strategic-project-roadmap.test.mjs",
+    "test:roadmap-routes": "node tests/strategic-roadmap-routes.test.mjs",
     "test:e2e": "playwright test"
   },
   "devDependencies": {
