@@ -1,0 +1,84 @@
+{
+  "version": "GNK_ASG_SEO_ROUTE_MANIFEST_V1_20260710",
+  "baseUrl": "https://www.gnk-asg.hr",
+  "languageParity": "HR and EN public pages must carry the same substance.",
+  "routes": [
+    {
+      "path": "/",
+      "canonical": "https://www.gnk-asg.hr/",
+      "index": true,
+      "title": "GNK ASG / GNK DINAMO Ltd. Group — THE CODE",
+      "description": "Official GNK ASG and GNK DINAMO Ltd. Group portal for THE CODE, media accreditation, finance, newsroom, workers and 9 projects.",
+      "priority": 1.0
+    },
+    {
+      "path": "/en",
+      "canonical": "https://www.gnk-asg.hr/en",
+      "index": true,
+      "title": "GNK ASG / GNK DINAMO Ltd. Group — THE CODE",
+      "description": "English public portal for THE CODE, media accreditation, finance, newsroom, workers and 9 projects.",
+      "priority": 0.95
+    },
+    {
+      "path": "/about/",
+      "canonical": "https://www.gnk-asg.hr/about/",
+      "index": true,
+      "title": "O nama / About us · GNK ASG",
+      "description": "Public profile of GNK ASG and GNK DINAMO Ltd. Group: companies, workers, 9 projects, 33 active + 12 planned locations and operating discipline.",
+      "priority": 0.92
+    },
+    {
+      "path": "/the-code/",
+      "canonical": "https://www.gnk-asg.hr/the-code/",
+      "index": true,
+      "title": "THE CODE — GNK DINAMO Ltd. Group",
+      "description": "THE CODE cinematic HTML presentation and New York activation countdown.",
+      "priority": 0.98
+    },
+    {
+      "path": "/the-code/media-memorandum/",
+      "canonical": "https://www.gnk-asg.hr/the-code/media-memorandum/",
+      "index": true,
+      "title": "THE CODE Media Memorandum · GNK ASG",
+      "description": "Official media memorandum and accreditation context for THE CODE New York activation.",
+      "priority": 0.90
+    },
+    {
+      "path": "/media-application/",
+      "canonical": "https://www.gnk-asg.hr/media-application/",
+      "index": true,
+      "title": "Media Application · GNK ASG",
+      "description": "Public media application and accreditation intake for THE CODE and GNK ASG media operations.",
+      "priority": 0.88
+    },
+    {
+      "path": "/finance/",
+      "canonical": "https://www.gnk-asg.hr/finance/",
+      "index": true,
+      "title": "Finance & Markets · GNK ASG",
+      "description": "Public Finance Signal Worker and Markets Layer page with KPI signals, market notes and paper trading simulation boundaries.",
+      "priority": 0.86
+    },
+    {
+      "path": "/newsroom/",
+      "canonical": "https://www.gnk-asg.hr/newsroom/",
+      "index": true,
+      "title": "Newsroom · GNK ASG",
+      "description": "Public Newsroom Publishing Desk with worker-labelled source summaries and controlled daily publishing.",
+      "priority": 0.86
+    }
+  ],
+  "protectedNoIndex": [
+    "/mail-studio",
+    "/worker-ops/",
+    "/api/media-registration-admin/*",
+    "/api/news-auto-publication/*",
+    "/api/ai-operations/*",
+    "/api/ai-worker-orchestrator/*"
+  ],
+  "openGraph": {
+    "siteName": "GNK ASG / GNK DINAMO Ltd. Group",
+    "image": "https://www.gnk-asg.hr/assets/gnk-gold-logo.svg",
+    "twitterCard": "summary_large_image"
+  }
+}
