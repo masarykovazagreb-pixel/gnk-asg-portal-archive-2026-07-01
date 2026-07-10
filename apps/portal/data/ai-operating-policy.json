@@ -1,82 +1,86 @@
 {
-  "version": "GNK_ASG_AI_OPERATING_POLICY_V1_20260710",
-  "mode": "ai_assisted_operations_no_secret_dependency",
+  "version": "GNK_ASG_AI_OPERATING_POLICY_V2_20260710_PERMITTED_BY_DEFAULT_BUSINESS_BUILDING",
+  "mode": "ai_led_operations_permitted_by_default_with_explicit_boundaries",
   "languageParity": "Every AI-generated public text must be available in HR and EN with identical substance.",
+  "principleHr": "AI smije operativno raditi, razvijati projekte, predlagati odluke, voditi workere, stvarati javne objave i monetizacijske prijedloge, osim onoga što je izričito zabranjeno ili traži ljudsko odobrenje.",
+  "principleEn": "AI may operate, develop projects, propose decisions, manage workers, create public posts and monetization proposals, except for actions explicitly prohibited or requiring human approval.",
   "globalRules": {
+    "permittedByDefault": true,
+    "aiCanManageWorkers": true,
+    "aiCanManageNineProjects": true,
+    "aiCanRunWorkerMeetings": true,
+    "aiCanAssignTasks": true,
+    "aiCanPrioritizeTasks": true,
+    "aiCanMakeOperationalProposals": true,
+    "aiCanPrepareDecisionMemos": true,
+    "aiCanLearnFromOutcomes": true,
     "aiCanSummarize": true,
     "aiCanClassify": true,
     "aiCanSuggestNextAction": true,
     "aiCanRiskFlag": true,
     "aiCanPrepareDrafts": true,
+    "aiCanPrepareIndividualMailDrafts": true,
     "aiCanAutoPublishAllowedNews": true,
-    "aiCannotSendBulkMail": true,
-    "aiCannotRunCampaigns": true,
-    "aiCannotApproveMediaApplications": true,
-    "aiCannotApproveFinanceClaims": true,
-    "aiCannotApproveLegalClaims": true,
-    "aiCannotExposeProtectedData": true,
-    "humanReviewRequiredFor": ["finance", "legal", "personalData", "mediaApproval", "campaign", "externalMailSend"]
+    "aiCanPublishPublicFinanceAnalysis": true,
+    "aiCanPublishProjectFinanceSignals": true,
+    "aiCanRunSandboxTrading": true,
+    "aiCanCreateMonetizationIdeas": true,
+    "aiCanCreatePartnerPipelines": true,
+    "aiCanCreateProductDevelopmentTasks": true,
+    "aiCanCreateRevenueExperiments": true,
+    "strictlyNoRealMoneyTrading": true,
+    "strictlyNoBookkeepingReportsAsPublicFinancePosts": true,
+    "strictlyNoProtectedDataExposure": true,
+    "strictlyNoMassMail": true,
+    "strictlyNoCampaignLaunchWithoutExplicitHumanApproval": true,
+    "strictlyNoInfrastructureChangesWithoutExplicitHumanApproval": true,
+    "humanApprovalRequiredFor": ["realMoneyTrading", "externalPayment", "legalCommitment", "officialFinanceStatement", "bookkeepingReport", "mediaAccreditationApproval", "bulkOrCampaignMail", "productionDeploy", "infrastructureChange"]
+  },
+  "financePublicationRules": {
+    "hr": [
+      "AI smije objavljivati javne financijske analize, projekcije, operativne signale i projektne KPI komentare.",
+      "Takve objave nisu knjigovodstvena izvješća, nisu revizorski dokumenti i nisu službeni financijski izvještaji.",
+      "Stvarni knjigovodstveni podaci, bankovni podaci, privatne evidencije i osobni podaci ne smiju u javni sloj.",
+      "Ako objava tvrdi službeni prihod, dobit, dug, kapital ili pravni učinak, ide u ljudski pregled prije objave."
+    ],
+    "en": [
+      "AI may publish public finance analyses, projections, operating signals and project KPI comments.",
+      "Such posts are not accounting reports, audit documents or official financial statements.",
+      "Real accounting data, bank data, private records and personal data must not enter the public layer.",
+      "If a post asserts official revenue, profit, debt, equity or legal effect, it goes to human review before publication."
+    ]
+  },
+  "sandboxTradingRules": {
+    "enabled": true,
+    "realMoney": false,
+    "allowedHr": ["paper trading", "tržišne simulacije", "watchlist signali", "risk score", "hipoteze i backtest bilješke", "projektni learning report"],
+    "allowedEn": ["paper trading", "market simulations", "watchlist signals", "risk score", "hypotheses and backtest notes", "project learning report"],
+    "blockedHr": ["nalozi stvarnim novcem", "broker povezivanje", "plaćanje", "financijsko savjetovanje kao obvezujuća uputa"],
+    "blockedEn": ["real-money orders", "broker connection", "payment", "financial advice as binding instruction"]
   },
   "modules": [
-    {
-      "id": "ai-media-intake",
-      "hr": "AI čita media prijavu, sažima redakciju, provjerava nedostajuća polja i predlaže status needs-info.",
-      "en": "AI reads the media application, summarizes the outlet, checks missing fields and suggests needs-info status.",
-      "input": ["media application draft", "contact fields", "document metadata"],
-      "output": ["summaryHr", "summaryEn", "missingFields", "riskFlags", "nextAction"],
-      "approval": "operator"
-    },
-    {
-      "id": "ai-newsroom-summary",
-      "hr": "AI priprema originalni HR/EN sažetak vijesti iz allowlist izvora bez kopiranja cijelog teksta.",
-      "en": "AI prepares an original HR/EN news summary from allowlisted sources without copying full article text.",
-      "input": ["title", "sourceUrl", "sourceName", "category"],
-      "output": ["titleHr", "titleEn", "summaryHr", "summaryEn", "category", "riskFlags"],
-      "approval": "auto if category is allowed and no risk flags"
-    },
-    {
-      "id": "ai-publication-guard",
-      "hr": "AI klasificira objavu i blokira je u manual review ako sadrži financijske, pravne ili osobne tvrdnje.",
-      "en": "AI classifies the post and blocks it into manual review if it contains financial, legal or personal-data claims.",
-      "input": ["post object"],
-      "output": ["autoPublishAllowed", "manualReviewRequired", "blockReason"],
-      "approval": "policy"
-    },
-    {
-      "id": "ai-finance-signal",
-      "hr": "AI izrađuje javni operativni sažetak KPI signala, ali ne odobrava financijske tvrdnje.",
-      "en": "AI creates a public operating summary of KPI signals but does not approve financial claims.",
-      "input": ["public project signal", "public KPI fields"],
-      "output": ["summaryHr", "summaryEn", "reviewFlags"],
-      "approval": "finance reviewer"
-    },
-    {
-      "id": "ai-mail-draft",
-      "hr": "AI priprema individualni nacrt maila za operatora, ali ga ne šalje samostalno.",
-      "en": "AI prepares an individual email draft for the operator but does not send it autonomously.",
-      "input": ["contact", "case context", "preferred language"],
-      "output": ["draftHr", "draftEn", "subject", "referenceCode"],
-      "approval": "operator manual send"
-    },
-    {
-      "id": "ai-worker-report",
-      "hr": "AI priprema 3 dnevna izvješća po workerima: jutro, sredina dana i večer.",
-      "en": "AI prepares 3 daily worker reports: morning, midday and evening.",
-      "input": ["worker activity", "queue status", "review flags"],
-      "output": ["reportHr", "reportEn", "completed", "blocked", "nextActions"],
-      "approval": "operator visibility"
-    }
+    {"id":"ai-orchestrator","hr":"AI upravlja workerima, 9 projekata, dnevnim ciklusima, prioritetima i reportima.","en":"AI manages workers, 9 projects, daily cycles, priorities and reports.","input":["worker status","project status","queue status","risk flags"],"output":["assignedTasks","decisionMemos","reportHr","reportEn","nextActions"],"approval":"operator visibility unless action is restricted"},
+    {"id":"ai-worker-meeting","hr":"AI organizira i vodi radne sastanke workera, generira zapisnik, odluke, prijedloge i zadatke.","en":"AI organizes and runs worker meetings, generating minutes, decisions, proposals and tasks.","input":["agenda","worker reports","project status"],"output":["minutesHr","minutesEn","decisions","tasks","risks"],"approval":"operator visibility"},
+    {"id":"ai-business-development","hr":"AI razvija monetizacijske prijedloge, partner pipeline, product tasks i revenue experiments za 9 projekata.","en":"AI develops monetization proposals, partner pipeline, product tasks and revenue experiments for the 9 projects.","input":["project data","market signals","news signals"],"output":["proposalHr","proposalEn","expectedImpact","ownerWorker","nextAction"],"approval":"operator for restricted actions"},
+    {"id":"ai-newsroom-summary","hr":"AI priprema originalni HR/EN sažetak vijesti iz allowlist izvora bez kopiranja cijelog teksta.","en":"AI prepares an original HR/EN news summary from allowlisted sources without copying full article text.","input":["title","sourceUrl","sourceName","category"],"output":["titleHr","titleEn","summaryHr","summaryEn","category","riskFlags"],"approval":"auto if category is allowed and no restricted flags"},
+    {"id":"ai-public-finance-analysis","hr":"AI priprema javne operativne finance/KPI objave koje nisu knjigovodstvena izvješća.","en":"AI prepares public operating finance/KPI posts that are not accounting reports.","input":["public project signal","public KPI fields","market context"],"output":["analysisHr","analysisEn","disclaimer","riskFlags"],"approval":"auto only for public signal; human review for official claims"},
+    {"id":"ai-sandbox-trading","hr":"AI vodi paper trading i tržišne simulacije bez stvarnog novca te uči iz rezultata.","en":"AI runs paper trading and market simulations without real money and learns from results.","input":["market watchlist","hypothesis","paper portfolio"],"output":["paperTrade","riskScore","learningReportHr","learningReportEn"],"approval":"auto inside sandbox only"},
+    {"id":"ai-media-intake","hr":"AI čita media prijavu, sažima redakciju, provjerava nedostajuća polja i predlaže status.","en":"AI reads the media application, summarizes the outlet, checks missing fields and suggests status.","input":["media application draft","contact fields","document metadata"],"output":["summaryHr","summaryEn","missingFields","riskFlags","nextAction"],"approval":"operator for approval/rejection"},
+    {"id":"ai-mail-draft","hr":"AI priprema individualni nacrt maila za operatora, ali ga ne šalje kao kampanju.","en":"AI prepares an individual email draft for the operator but does not send it as a campaign.","input":["contact","case context","preferred language"],"output":["draftHr","draftEn","subject","referenceCode"],"approval":"operator manual send"},
+    {"id":"ai-worker-report","hr":"AI priprema 3 dnevna izvješća po workerima: jutro, sredina dana i večer.","en":"AI prepares 3 daily worker reports: morning, midday and evening.","input":["worker activity","queue status","review flags"],"output":["reportHr","reportEn","completed","blocked","nextActions"],"approval":"operator visibility"}
   ],
   "publicDisclosures": {
     "hr": [
-      "AI se koristi za pomoć u sažimanju, klasifikaciji i operativnim prijedlozima.",
-      "AI ne zamjenjuje ručni pregled financijskih, pravnih i osobnih tvrdnji.",
-      "AI ne šalje masovne mailove i ne pokreće kampanje."
+      "AI se koristi kao operativni upravljački sloj za workere, projekte, sažetke, klasifikaciju, prijedloge i javne operativne objave.",
+      "AI može objavljivati dopuštene javne newsroom i projektne finance-signal objave, ali one nisu knjigovodstvena izvješća ni službeni financijski izvještaji.",
+      "AI može voditi simulacije trgovanja i paper trading bez stvarnog novca.",
+      "AI ne šalje masovne mailove, ne pokreće kampanje, ne koristi stvarni novac i ne mijenja infrastrukturu bez ljudskog odobrenja."
     ],
     "en": [
-      "AI is used to assist with summarization, classification and operating suggestions.",
-      "AI does not replace manual review of financial, legal and personal-data claims.",
-      "AI does not send mass emails and does not launch campaigns."
+      "AI is used as an operating management layer for workers, projects, summaries, classification, proposals and public operating posts.",
+      "AI may publish allowed public newsroom and project finance-signal posts, but they are not accounting reports or official financial statements.",
+      "AI may run trading simulations and paper trading without real money.",
+      "AI does not send mass emails, launch campaigns, use real money or change infrastructure without human approval."
     ]
   }
 }
