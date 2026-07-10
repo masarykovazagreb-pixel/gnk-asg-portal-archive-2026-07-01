@@ -1,0 +1,44 @@
+/* GNK ASG public rendering quality lock */
+html,body{
+  zoom:1!important;
+  transform:none!important;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-synthesis:none;
+}
+body,.ph-links,.ph-btn,.ph-lead,.ph-card,.ph-metric,.ph-kpi,.ph-worker-card,.ph-market-item{
+  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+.ph-title,.ph-section-head h2,.ph-card h3,.ph-code-mark strong{
+  font-family:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+  font-kerning:normal;
+  font-variant-ligatures:common-ligatures;
+  text-rendering:geometricPrecision;
+}
+.ph-shell,.ph-main,.ph-section,.ph-panel,.ph-card,.ph-code-stage{
+  transform:none!important;
+  perspective:none!important;
+  filter:none;
+}
+.ph-top{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(0,0,0,.97)!important}
+.ph-brand img,.ph-logo-panel img{
+  image-rendering:auto;
+  shape-rendering:geometricPrecision;
+  transform:none!important;
+  filter:drop-shadow(0 18px 34px rgba(0,0,0,.55))!important;
+}
+.ph-title,.ph-section-head h2,.ph-card h3,.ph-lead,.ph-card p,.ph-preview-row b{
+  filter:none!important;
+  text-shadow:none!important;
+  opacity:1!important;
+}
+.ph-panel,.ph-card,.ph-kpi,.ph-market-item,.ph-worker-card{
+  box-shadow:0 14px 34px rgba(0,0,0,.32)!important;
+}
+.ph-btn:hover,.ph-btn:focus-visible{transform:none!important}
+@media(min-width:1181px){
+  .ph-shell{width:min(1560px,calc(100vw - 64px))!important}
+  .ph-title{font-size:clamp(54px,5vw,82px)!important;line-height:.98!important;max-width:1000px}
+  .ph-logo-panel{min-height:520px!important}
+}
