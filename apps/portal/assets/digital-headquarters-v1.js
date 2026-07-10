@@ -4,6 +4,12 @@
   const links=document.querySelector('[data-dhq-links]');
   if(button&&links){button.addEventListener('click',()=>{const open=links.classList.toggle('is-open');button.setAttribute('aria-expanded',String(open));});}
 
+  document.querySelectorAll('.dhq-status,.dhq-note').forEach(node=>node.remove());
+  document.querySelectorAll('.dhq-disclosure').forEach(node=>{
+    const heading=(node.querySelector('strong')?.textContent||'').trim().toLowerCase();
+    if(['važno','important','javni prikaz.','public display.'].includes(heading))node.remove();
+  });
+
   document.querySelectorAll('[data-countdown]').forEach(node=>{
     const target=new Date(node.getAttribute('data-countdown'));
     const active=node.getAttribute('data-active-text')||'THE CODE activated';
@@ -15,11 +21,13 @@
     '/':'/en',
     '/about':'/en/about/',
     '/projects':'/en/projects/',
+    '/projects/roadmap':'/en/projects/roadmap/',
     '/finance':'/en/finance/',
     '/reports':'/en/reports/',
     '/en':'/',
     '/en/about':'/about/',
     '/en/projects':'/projects/',
+    '/en/projects/roadmap':'/projects/roadmap/',
     '/en/finance':'/finance/',
     '/en/reports':'/reports/'
   };
