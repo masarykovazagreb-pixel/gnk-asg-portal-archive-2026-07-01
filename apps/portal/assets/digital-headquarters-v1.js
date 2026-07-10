@@ -47,6 +47,23 @@
   if(protectedLinks.length){fetch('/api/operator-auth-check',{credentials:'same-origin',cache:'no-store'}).then(r=>{if(r.ok)protectedLinks.forEach(el=>el.hidden=false);}).catch(()=>{});}
 
   const isHome=path==='/'||path==='/en';
+  if(isHome){
+    if(!document.querySelector('link[data-dhq-home-style]')){
+      const homeCss=document.createElement('link');
+      homeCss.rel='stylesheet';
+      homeCss.href='/assets/digital-headquarters-home-v2.css?v=20260710-v2';
+      homeCss.dataset.dhqHomeStyle='1';
+      document.head.appendChild(homeCss);
+    }
+    if(!window.__GNK_ASG_DHQ_HOME_V2__&&!document.querySelector('script[data-dhq-home-script]')){
+      const homeScript=document.createElement('script');
+      homeScript.src='/assets/digital-headquarters-home-v2.js?v=20260710-v2';
+      homeScript.defer=true;
+      homeScript.dataset.dhqHomeScript='1';
+      document.body.appendChild(homeScript);
+    }
+  }
+
   if(isHome&&!document.querySelector('[data-gnk-network-mount]')){
     const anchor=document.querySelector('#finance')||document.querySelector('footer');
     const section=document.createElement('section');
