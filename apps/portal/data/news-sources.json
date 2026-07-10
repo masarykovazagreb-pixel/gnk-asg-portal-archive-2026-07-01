@@ -1,6 +1,6 @@
 {
-  "version": "GNK_ASG_NEWS_SOURCE_ALLOWLIST_V2_20260709",
-  "generatedAt": "2026-07-09T22:20:00Z",
+  "version": "GNK_ASG_NEWS_SOURCE_ALLOWLIST_V3_20260709",
+  "generatedAt": "2026-07-09T22:32:00Z",
   "rule": "Direktni izvori, bez Google News kao glavnog izvora. Public portal smije prikazati title, original source link, source name, kratak vlastiti sažetak i thumbnail samo kad feed/API/licenca to dopušta.",
   "schedule": "09:00 i 16:00 Europe/Zagreb",
   "imagePolicy": {
@@ -38,6 +38,11 @@
     {"title":"TechCrunch","url":"https://techcrunch.com/feed/","active":true,"type":"rss","category":"technology","imageMode":"feed_if_allowed"},
     {"title":"The Verge","url":"https://www.theverge.com/rss/index.xml","active":true,"type":"rss","category":"technology","imageMode":"feed_if_allowed"},
     {"title":"The Guardian Business","url":"https://www.theguardian.com/uk/business/rss","active":true,"type":"rss","category":"global-business","imageMode":"feed_if_allowed"},
+    {"title":"BBC Business","url":"https://www.bbc.com/news/business","active":true,"type":"html","category":"global-business","imageMode":"fallback"},
+    {"title":"Euronews Business","url":"https://www.euronews.com/business","active":true,"type":"html","category":"europe-business","imageMode":"fallback"},
+    {"title":"Financial Times","url":"https://www.ft.com/","active":false,"type":"licensed-or-paywalled","category":"global-finance","imageMode":"licensed_only"},
+    {"title":"Bloomberg","url":"https://www.bloomberg.com/","active":false,"type":"licensed-or-paywalled","category":"global-finance","imageMode":"licensed_only"},
+    {"title":"Le Monde Economy","url":"https://www.lemonde.fr/economie/","active":true,"type":"html","category":"europe-business","imageMode":"fallback"},
     {"title":"AP","url":"https://www.ap.org/","active":false,"type":"licensed-api","category":"agency","imageMode":"licensed_only"},
     {"title":"Reuters","url":"https://www.reuters.com/","active":false,"type":"licensed-api","category":"agency","imageMode":"licensed_only"},
     {"title":"Getty Images","url":"https://www.gettyimages.com/","active":false,"type":"licensed-api","category":"images","imageMode":"licensed_only"},
