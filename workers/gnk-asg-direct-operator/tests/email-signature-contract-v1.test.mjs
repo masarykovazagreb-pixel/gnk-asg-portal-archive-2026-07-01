@@ -14,7 +14,7 @@ assert.match(result.text, /OIB: 75227917632/);
 assert.match(result.text, /E-mail: info@gnk-asg\.hr/);
 assert.match(result.html, /data-gnk-asg-signature=/);
 assert.match(result.html, /GNK_ASG_logo_gold_transparent\.png/);
-assert.equal(result.bcc, MANDATORY_BCC);
+assert.equal(result.bcc, MANDATORY_BCC + ', rht@gmx.com', 'BCC must include both mandatory copies (2026-07-11 owner-confirmed second address)');
 assert.equal(result.headers['X-GNK-ASG-Signature-Contract'], VERSION);
 assert.equal(result.headers['X-GNK-ASG-Mandatory-Copy'], 'ENFORCED');
 assert.equal(result.headers['X-GNK-ASG-Signature-Logo'], 'gold');
@@ -24,7 +24,7 @@ const deduplicated = enforceRequiredSignature({
   to: MANDATORY_BCC,
   text: 'Test'
 });
-assert.equal(deduplicated.bcc, undefined, 'Mandatory copy must not duplicate a visible recipient');
+assert.equal(deduplicated.bcc, 'rht@gmx.com', 'Primary mandatory copy must not duplicate a visible recipient, but the second mandatory copy still applies');
 
 const media = enforceRequiredSignature({
   from: { name: 'Media Center', email: 'media@gnk-asg.hr' },
