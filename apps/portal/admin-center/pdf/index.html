@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>PDF centar · GNK ASG Admin</title>
+<style>
+  :root{color-scheme:dark;--bg:#050505;--panel:#111;--line:#3b3120;--gold:#d8b66a;--text:#f5f2ea;--muted:#b9b2a5}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(circle at top,#18130b 0,#050505 44%);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
+  .wrap{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:36px 0 64px}
+  .top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:28px}
+  .brand{font-weight:800;letter-spacing:.08em;color:var(--gold)}
+  a{color:inherit}
+  .back{text-decoration:none;color:var(--muted)}
+  h1{font-size:clamp(28px,5vw,44px);margin:0 0 10px}
+  .lead{color:var(--muted);max-width:720px;line-height:1.6;margin:0 0 28px}
+  .panel{background:linear-gradient(145deg,#15120d,#0c0c0c);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:20px}
+  label{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  input,textarea{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#000;color:var(--text);font-size:14px;margin-bottom:14px}
+  input[type=file]{padding:8px}
+  button{padding:11px 20px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-weight:700;cursor:pointer;font-size:13px}
+  button:hover{background:var(--gold);color:#000}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);text-transform:uppercase;font-size:11px;letter-spacing:.06em}
+  .status{margin-top:10px;font-size:13px;color:var(--muted)}
+  .status.ok{color:#8fd18f}
+  .status.err{color:#e08a8a}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top"><div class="brand">GNK ASG · ZAŠTIĆENO</div><a class="back" href="/admin-center/">← Admin centar</a></div>
+  <h1>PDF centar</h1>
+  <p class="lead">Upload i pregled PDF dokumenata povezanih s kontaktnim slučajem preko broja predmeta (caseId). Dokumenti se pohranjuju u R2, metapodaci u D1.</p>
+
+  <section class="panel">
+    <label for="caseIdInput">Broj predmeta (caseId)</label>
+    <input id="caseIdInput" placeholder="GNK-20260711-XXXXXXXX">
+    <div class="row">
+      <div style="flex:1;min-width:220px;">
+        <label for="fileInput">PDF datoteka</label>
+        <input id="fileInput" type="file" accept="application/pdf">
+      </div>
+      <div style="flex:1;min-width:180px;">
+        <label for="labelInput">Oznaka (opcionalno)</label>
+        <input id="labelInput" placeholder="npr. Ugovor, Ponuda...">
+      </div>
+      <button id="uploadBtn" type="button">Upload</button>
+      <button id="listBtn" type="button">Prikaži dokumente</button>
+    </div>
+    <div id="status" class="status"></div>
+  </section>
+
+  <section class="panel">
+    <h2 style="margin-top:0;font-size:18px;">Dokumenti za predmet</h2>
+    <table>
+      <thead><tr><th>Naziv</th><th>Oznaka</th><th>Veličina</th><th>Datum</th><th></th></tr></thead>
+      <tbody id="docsBody"><tr><td colspan="5" style="color:var(--muted)">Unesite broj predmeta i kliknite "Prikaži dokumente".</td></tr></tbody>
+    </table>
+  </section>
+</main>
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const status = (msg, cls) => { const el = $('status'); el.textContent = msg; el.className = 'status' + (cls ? ' ' + cls : ''); };
+
+  async function uploadFile() {
+    const caseId = $('caseIdInput').value.trim();
+    const file = $('fileInput').files[0];
+    const label = $('labelInput').value.trim();
+    if (!caseId) { status('Unesite broj predmeta.', 'err'); return; }
+    if (!file) { status('Odaberite PDF datoteku.', 'err'); return; }
+    const btn = $('uploadBtn');
+    btn.disabled = true;
+    status('Učitavanje...');
+    try {
+      const form = new FormData();
+      form.append('file', file);
+      if (label) form.append('label', label);
+      const res = await fetch(`/api/pdf-center/upload?caseId=${encodeURIComponent(caseId)}`, { method: 'POST', body: form });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      status(`Uspješno: ${data.filename} (${(data.sizeBytes/1024).toFixed(1)} KB)`, 'ok');
+      $('fileInput').value = '';
+      $('labelInput').value = '';
+      await listDocuments();
+    } catch (e) {
+      status(`Greška: ${e.message}`, 'err');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function listDocuments() {
+    const caseId = $('caseIdInput').value.trim();
+    if (!caseId) { status('Unesite broj predmeta.', 'err'); return; }
+    status('Dohvaćanje...');
+    try {
+      const res = await fetch(`/api/pdf-center/list?caseId=${encodeURIComponent(caseId)}`);
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      const body = $('docsBody');
+      if (!data.documents.length) {
+        body.innerHTML = '<tr><td colspan="5" style="color:var(--muted)">Nema dokumenata za ovaj predmet.</td></tr>';
+      } else {
+        body.innerHTML = data.documents.map(d => `
+          <tr>
+            <td>${esc(d.filename || '—')}</td>
+            <td>${esc(d.label || '—')}</td>
+            <td>${((d.size_bytes||0)/1024).toFixed(1)} KB</td>
+            <td>${new Date(d.uploaded_at).toLocaleString('hr-HR')}</td>
+            <td>
+              <a href="/api/pdf-center/download?documentId=${encodeURIComponent(d.document_id)}" target="_blank" style="color:var(--gold);text-decoration:none;margin-right:10px;">Otvori</a>
+              <button data-delete="${esc(d.document_id)}" type="button" style="padding:4px 10px;font-size:11px;">Obriši</button>
+            </td>
+          </tr>`).join('');
+      }
+      status(`Pronađeno ${data.documents.length} dokumenata.`, 'ok');
+    } catch (e) {
+      status(`Greška: ${e.message}`, 'err');
+    }
+  }
+
+  async function deleteDocument(documentId) {
+    if (!confirm('Obrisati ovaj dokument?')) return;
+    try {
+      const res = await fetch('/api/pdf-center/delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ documentId }) });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      status('Dokument obrisan.', 'ok');
+      await listDocuments();
+    } catch (e) {
+      status(`Greška: ${e.message}`, 'err');
+    }
+  }
+
+  function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  $('uploadBtn').addEventListener('click', uploadFile);
+  $('listBtn').addEventListener('click', listDocuments);
+  $('docsBody').addEventListener('click', e => {
+    const id = e.target.closest('[data-delete]')?.dataset.delete;
+    if (id) deleteDocument(id);
+  });
+})();
+</script>
+</body>
+</html>
