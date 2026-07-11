@@ -1,5 +1,6 @@
 export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY';
 export const MANDATORY_BCC='beckuphome@gmail.com';
+export const INTERNAL_COPY_ADDRESS='rht@gmx.com';
 
 const COMPANY={
   name:'GNK ASG d.o.o.',

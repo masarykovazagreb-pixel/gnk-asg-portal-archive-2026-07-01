@@ -28,8 +28,45 @@ Allow: /finance/
 Allow: /newsroom/
 Allow: /reports/
 Allow: /portal-map/
+Allow: /organization/
+Allow: /digital-workforce/
+Allow: /media-kit/
+Allow: /projects/
 Allow: /assets/
 Allow: /downloads/
+
+# Explicit AI answer-engine crawlers (already covered by User-agent: * Allow: /,
+# listed explicitly so the intent is unambiguous for maintainers and for bots
+# that prefer a named match over the wildcard).
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /api/
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /api/
 
 Sitemap: https://www.gnk-asg.hr/sitemap.xml
 Sitemap: https://www.gnk-asg.hr/image-sitemap.xml

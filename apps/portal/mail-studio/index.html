@@ -46,6 +46,11 @@
       <div class="field"><label for="bodyText">Message body / sadržaj poruke</label><textarea id="bodyText" placeholder="Pišite na hrvatskom, engleskom ili drugom jeziku. Full HTML is also supported."></textarea></div>
       <section class="dropzone"><div class="attachment-actions"><button type="button" id="htmlFileButton">Import HTML / XHTML</button><button type="button" id="pdfFileButton">Add attachments</button><button type="button" id="clearAttachments">Remove attachments</button><input id="htmlFile" type="file" accept=".html,.htm,.xhtml,text/html,application/xhtml+xml" hidden><input id="pdfFiles" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.csv,.txt,.png,.jpg,.jpeg,.webp,application/pdf,application/zip,text/plain,text/csv,image/png,image/jpeg,image/webp" multiple hidden></div><div id="importStatus" class="note">No HTML file imported.</div><div id="attachmentList" class="attachments">No attachments selected.</div></section>
       <div class="actions"><button class="gold" id="send" type="button">Send</button><button id="save" type="button">Save draft</button><button id="load" type="button">Load local draft</button><button id="helper" type="button">Apply template</button><button id="autoReply" type="button">Auto reply</button><button id="clear" class="red" type="button">Clear</button></div>
+      <div class="actions" style="margin-top:10px;align-items:center;">
+        <input type="datetime-local" id="scheduleAt" style="padding:8px 10px;border-radius:8px;border:1px solid rgba(214,173,79,.3);background:#000;color:#f2ede0;">
+        <button id="scheduleSend" type="button">Schedule send</button>
+      </div>
+      <div id="scheduleList" style="margin-top:10px;font-size:12px;color:#a8a296;"></div>
       <div id="validationSummary" class="small">Waiting for input.</div>
       <div class="preview-shell"><div class="preview-head"><b>Preview:</b> <span id="previewSubject">No subject</span></div><iframe class="preview-frame" id="previewFrame" title="Message preview" sandbox="allow-same-origin"></iframe></div>
     </section>

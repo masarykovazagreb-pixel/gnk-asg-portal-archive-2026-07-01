@@ -74,4 +74,26 @@
     const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/group-network-v1.css?v=20260710-v1';document.head.appendChild(css);
     const script=document.createElement('script');script.src='/assets/group-network-v1.js?v=20260710-v1';script.defer=true;document.body.appendChild(script);
   }
+  // Scroll-to-top gumb - pojavljuje se nakon skrola, radi na svim stranicama
+  if(!document.querySelector('[data-scroll-top]')){
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.dataset.scrollTop='1';
+    btn.setAttribute('aria-label','Vrh stranice');
+    btn.innerHTML='&#8593;';
+    btn.style.cssText='position:fixed;bottom:22px;right:22px;z-index:40;width:44px;height:44px;border-radius:50%;border:1px solid rgba(214,173,79,.4);background:rgba(10,9,7,.92);color:#d6ad4f;font-size:18px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .25s ease;box-shadow:0 8px 24px rgba(0,0,0,.4);backdrop-filter:blur(6px);';
+    document.body.appendChild(btn);
+    const toggle=()=>{const show=window.scrollY>500;btn.style.opacity=show?'1':'0';btn.style.pointerEvents=show?'auto':'none';};
+    window.addEventListener('scroll',toggle,{passive:true});
+    btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+    toggle();
+  }
+  // Site assistant widget - pretraga stranice + AI odgovori
+  if(!document.querySelector('script[data-site-assistant]')){
+    const s=document.createElement('script');
+    s.src='/assets/site-assistant-widget-v1.js?v=20260711-v1';
+    s.defer=true;
+    s.dataset.siteAssistant='1';
+    document.body.appendChild(s);
+  }
 })();

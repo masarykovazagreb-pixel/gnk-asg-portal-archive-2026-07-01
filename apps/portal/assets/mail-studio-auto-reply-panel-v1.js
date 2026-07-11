@@ -38,7 +38,7 @@ function renderPanel(){
     <div class="field"><label for="autoSubject">Inquiry subject / predmet upita</label><input id="autoSubject" placeholder="Upit / inquiry"></div>
     <div class="field"><label for="autoInquiry">Question / pitanje</label><textarea id="autoInquiry" placeholder="Zalijepi pitanje ili poruku. Sustav će pripremiti odgovor, broj predmeta i centar."></textarea></div>
     <div class="actions"><button class="gold" id="autoPreview" type="button">AI preview</button><button id="autoPersist" type="button">Save case</button><button id="autoLoadCompose" type="button">Load into compose</button></div>
-    <div class="grid"><div class="field"><label for="caseLookupInput">Case lookup / pretraga po broju</label><input id="caseLookupInput" placeholder="GNK-YYYYMMDD-ZAG-XXXXXXXX"></div><div class="field"><label>&nbsp;</label><button id="caseLookupButton" type="button">Lookup</button></div></div>
+    <div class="grid"><div class="field"><label for="caseLookupInput">Pretraga: broj predmeta, ime ili email</label><input id="caseLookupInput" placeholder="GNK-YYYYMMDD-ZAG-XXXXXXXX ili Ivan Horvat ili ivan@example.com"></div><div class="field"><label>&nbsp;</label><button id="caseLookupButton" type="button">Lookup</button></div></div>
     <div id="autoReplyResult" class="raw">${VERSION} ready.</div>`;
   compose.parentNode.insertBefore(panel,compose.nextSibling);
 }
@@ -70,13 +70,15 @@ function loadCompose(){
   $('composePanel')?.scrollIntoView({behavior:'smooth'});
 }
 async function lookup(){
-  const caseNumber=clean($('caseLookupInput')?.value);
-  if(!caseNumber){status('Enter case number.');return;}
-  status(`Looking up ${caseNumber}…`);
-  const data=await jsonFetch(`${LOOKUP_ENDPOINT}?case=${encodeURIComponent(caseNumber)}`);
+  const input=clean($('caseLookupInput')?.value);
+  if(!input){status('Unesite broj predmeta, ime ili email.');return;}
+  const looksLikeCaseNumber=/^GNK-\d{8}-[A-Z]{3}-[A-Z0-9]{6,}$/i.test(input);
+  const param=looksLikeCaseNumber?`case=${encodeURIComponent(input)}`:`q=${encodeURIComponent(input)}`;
+  status(`Tražim ${input}…`);
+  const data=await jsonFetch(`${LOOKUP_ENDPOINT}?${param}`);
   const result=$('autoReplyResult');
   if(result)result.textContent=JSON.stringify(data,null,2);
-  status(data.ok?`Case found: ${caseNumber}`:`Case not found: ${caseNumber}`);
+  status(data.ok?`Pronađeno (${data.count||1}): ${input}`:`Nije pronađeno: ${input}`);
 }
 function bind(){
   $('autoPreview')?.addEventListener('click',event=>{event.preventDefault();preview(false).catch(error=>status(`Auto-reply preview failed: ${error.message}`));});

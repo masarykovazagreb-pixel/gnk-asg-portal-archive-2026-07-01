@@ -3,9 +3,33 @@ import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-dire
 
 const VERSION = `GNK_ASG_MAIL_CENTER_AI_V3_20260703_${AI_REPLY_VERSION}`;
 const INTERNAL_COPY = 'rht@gmx.com';
+const MANDATORY_BCC = 'beckuphome@gmail.com';
 const MEDIA_EMAILS = new Set(['media@gnk-asg.hr', 'press@gnk-asg.hr']);
 const DEFAULT_FROM = 'assistant@gnk-asg.hr';
 const MAX_LOG_ITEMS = 250;
+
+// Deset globalnih centara (docs/mail/auto-reply-case-centers-20260709.md).
+// Stabilna dodjela po identitetu posiljatelja - ista osoba uvijek isti centar,
+// nove osobe se raspodjeljuju po sva 10 preko hasha.
+const CENTERS = [
+  { code: 'ZAG', city: 'Zagreb, Croatia' },
+  { code: 'TOR', city: 'Toronto, Canada' },
+  { code: 'MEX', city: 'Mexico City, Mexico' },
+  { code: 'BOG', city: 'Bogot\u00e1, Colombia' },
+  { code: 'SAO', city: 'S\u00e3o Paulo, Brazil' },
+  { code: 'DXB', city: 'Dubai, UAE' },
+  { code: 'SIN', city: 'Singapore, Singapore' },
+  { code: 'TYO', city: 'Tokyo, Japan' },
+  { code: 'CAS', city: 'Casablanca, Morocco' },
+  { code: 'BOU', city: 'Boulder / Colorado, USA' }
+];
+async function centerFor(identity) {
+  const data = new TextEncoder().encode(String(identity || '').trim().toLowerCase());
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  const bytes = new Uint8Array(digest);
+  const index = bytes[0] % CENTERS.length;
+  return CENTERS[index];
+}
 
 const JSON_HEADERS = {
   'content-type': 'application/json; charset=utf-8',
@@ -65,10 +89,12 @@ function emailAddress(value) {
   return match ? match[0].toLowerCase() : '';
 }
 
-function reference(prefix = 'GNK-INBOX') {
+function reference(prefix = 'GNK', centerCode = 'ZAG') {
   const now = new Date();
   const two = number => String(number).padStart(2, '0');
-  return `${prefix}-${now.getUTCFullYear()}${two(now.getUTCMonth() + 1)}${two(now.getUTCDate())}-${two(now.getUTCHours())}${two(now.getUTCMinutes())}${two(now.getUTCSeconds())}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+  const date = `${now.getUTCFullYear()}${two(now.getUTCMonth() + 1)}${two(now.getUTCDate())}`;
+  const fingerprint = crypto.randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase();
+  return `${prefix}-${date}-${centerCode}-${fingerprint}`;
 }
 
 async function readList(env, key) {
@@ -241,10 +267,11 @@ async function handleInbound(message, env) {
   const toAddress = emailAddress(toRaw) || DEFAULT_FROM;
   const subject = header(message, 'subject') || '(no subject)';
   const messageId = header(message, 'message-id');
-  const id = reference(MEDIA_EMAILS.has(toAddress) ? 'GNK-MEDIA-IN' : 'GNK-INBOX');
+  const center = await centerFor(sender || fromRaw);
+  const id = reference(MEDIA_EMAILS.has(toAddress) ? 'GNK-MEDIA-IN' : 'GNK-INBOX', center.code);
   const language = detectLanguage(subject, toAddress, message);
   const mediaProfile = MEDIA_EMAILS.has(toAddress);
-  const base = { id, createdAt: new Date().toISOString(), version: VERSION, from: fromRaw, to: toRaw, fromEmail: sender, toEmail: toAddress, subject, messageId, language, profile: mediaProfile ? 'media-relations' : 'general', status: 'received' };
+  const base = { id, createdAt: new Date().toISOString(), version: VERSION, from: fromRaw, to: toRaw, fromEmail: sender, toEmail: toAddress, subject, messageId, language, profile: mediaProfile ? 'media-relations' : 'general', status: 'received', center: center.code, centerCity: center.city };
   await prependLog(env, 'mail:inbox', base);
 
   try {
@@ -274,13 +301,13 @@ async function handleInbound(message, env) {
   const replySubject = /^re:/i.test(subject) ? subject : `Re: ${subject}`;
   const text = mediaProfile ? mediaText(language, id, subject) : genericText(language, id, subject);
   const html = htmlBody(text, mediaProfile);
-  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: INTERNAL_COPY };
+  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: MANDATORY_BCC };
   await prependLog(env, 'mail:outbox', outbox);
 
   try {
     const result = await env.EMAIL.send({
       to: sender,
-      bcc: INTERNAL_COPY,
+      bcc: MANDATORY_BCC,
       from: { email: fromAddress, name: fromName },
       replyTo: fromAddress,
       subject: replySubject,
@@ -300,15 +327,38 @@ async function handleInbound(message, env) {
   }
 }
 
-function preview(url) {
+async function preview(url, env) {
   const toAddress = emailAddress(url.searchParams.get('to')) || 'media@gnk-asg.hr';
+  const senderIdentity = clean(url.searchParams.get('from')) || toAddress;
   const subject = clean(url.searchParams.get('subject') || 'Controlled media test');
   const requestedLanguage = clean(url.searchParams.get('lang')).toLowerCase();
   const mediaProfile = MEDIA_EMAILS.has(toAddress);
   const language = ['hr', 'en', 'de', 'it'].includes(requestedLanguage) ? requestedLanguage : (mediaProfile ? 'en' : 'hr');
-  const receipt = reference(mediaProfile ? 'GNK-MEDIA-PREVIEW' : 'GNK-PREVIEW');
+  const center = await centerFor(senderIdentity);
+  const receipt = reference(mediaProfile ? 'GNK-MEDIA-PREVIEW' : 'GNK-PREVIEW', center.code);
   const text = mediaProfile ? mediaText(language, receipt, subject) : genericText(language, receipt, subject);
-  return json({ ok: true, version: VERSION, toAddress, profile: mediaProfile ? 'media-relations' : 'general', language, receipt, subject, text, html: htmlBody(text, mediaProfile) });
+  const persist = clean(url.searchParams.get('persist')).toLowerCase() === 'true';
+  if (persist && env) {
+    await prependLog(env, 'mail:inbox', { id: receipt, createdAt: new Date().toISOString(), version: VERSION, toEmail: toAddress, fromEmail: senderIdentity, subject, language, profile: mediaProfile ? 'media-relations' : 'general', status: 'preview_persisted', center: center.code, centerCity: center.city });
+  }
+  return json({ ok: true, version: VERSION, toAddress, profile: mediaProfile ? 'media-relations' : 'general', language, receipt, center: center.code, centerCity: center.city, subject, text, html: htmlBody(text, mediaProfile), persisted: persist });
+}
+
+async function caseLookup(url, env) {
+  const caseId = clean(url.searchParams.get('case') || url.searchParams.get('id'));
+  if (!caseId) return json({ ok: false, error: 'missing_case' }, 400);
+  const [inbox, sent, outbox] = await Promise.all([
+    readList(env, 'mail:inbox'),
+    readList(env, 'mail:sent'),
+    readList(env, 'mail:outbox')
+  ]);
+  const matches = [
+    ...inbox.filter(item => item.id === caseId).map(item => ({ ...item, source: 'inbox' })),
+    ...sent.filter(item => item.id === caseId).map(item => ({ ...item, source: 'sent' })),
+    ...outbox.filter(item => item.id === caseId).map(item => ({ ...item, source: 'outbox' }))
+  ];
+  if (!matches.length) return json({ ok: false, error: 'not_found', case: caseId }, 404);
+  return json({ ok: true, case: caseId, entries: matches });
 }
 
 export default {
@@ -319,7 +369,9 @@ export default {
     if (path === '/api/admin-mail-send' && request.method === 'POST') return sendMail(request, env);
     if (path === '/api/admin-mail-send') return json({ ok: true, version: VERSION, endpoint: '/api/admin-mail-send', method: 'POST', pdfAttachments: true, emailBinding: Boolean(env.EMAIL) });
     if (path === '/api/mail-center/status') return json({ ok: true, version: VERSION, service: 'GNK ASG Mail Center', emailBinding: Boolean(env.EMAIL), aiBinding: Boolean(env.AI), autoReply: true, mediaProfile: true, mediaDefaultLanguage: 'en', languages: ['hr', 'en', 'de', 'it'], mandatoryBcc: INTERNAL_COPY, inboxKey: 'mail:inbox', sentKey: 'mail:sent', outboxKey: 'mail:outbox', time: new Date().toISOString() });
-    if (path === '/api/mail-center/auto-reply-preview') return preview(url);
+    if (path === '/api/mail-center/auto-reply-preview') return preview(url, env);
+    if (path === '/api/mail-center/case-lookup' && request.method === 'GET') return caseLookup(url, env);
+    if (path === '/api/mail-center/centers') return json({ ok: true, centers: CENTERS });
     if (path === '/api/mail-center/inbox') return json({ ok: true, key: 'mail:inbox', items: await readList(env, 'mail:inbox') });
     if (path === '/api/mail-center/sent') return json({ ok: true, key: 'mail:sent', items: await readList(env, 'mail:sent') });
     if (path === '/api/mail-center/outbox') return json({ ok: true, key: 'mail:outbox', items: await readList(env, 'mail:outbox') });

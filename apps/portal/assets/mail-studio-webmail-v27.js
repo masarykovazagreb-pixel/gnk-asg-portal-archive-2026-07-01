@@ -101,7 +101,51 @@ function clearAll(){['to','cc','subject','bodyText'].forEach(id=>set(id,''));set
 function fileToBase64(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||'').split(',').pop()||'');reader.onerror=()=>reject(reader.error||new Error('Unable to read file'));reader.readAsDataURL(file);});}
 async function importHtml(file){if(!file)return;if(file.size>5*1024*1024){status('HTML file exceeds 5 MB.');return;}const text=await file.text();if(!text.trim()){status('HTML file is empty.');return;}set('bodyText',text);const node=$('importStatus');if(node)node.textContent=`Imported: ${file.name}`;preview();status('HTML file imported and previewed.');}
 async function addFiles(files){const selected=[...(files||[])];if(!selected.length)return;if(state.attachments.length+selected.length>MAX_ATTACHMENTS){status(`A maximum of ${MAX_ATTACHMENTS} attachments is allowed.`);return;}for(const file of selected){const ext=extOf(file.name);if(!EXT.includes(ext)){status(`${file.name} is not an allowed attachment type.`);continue;}if(file.size>MAX_ATTACHMENT_BYTES){status(`${file.name} exceeds the 3.2 MB attachment limit.`);continue;}const base64=await fileToBase64(file);state.attachments.push({filename:file.name,ext,type:file.type||MIME[ext]||'application/octet-stream',sizeBytes:file.size,base64});}renderAttachments();validation();status(`${state.attachments.length} attachment(s) ready.`);}
-function bind(){document.addEventListener('click',event=>{const folder=event.target.closest('[data-folder]')?.dataset.folder;if(folder){event.preventDefault();loadFolder(folder);}const profile=event.target.closest('[data-profile]')?.dataset.profile;if(profile){state.profile=profile;set('profile',profile);applyProfile();loadFolder(state.folder);}});$('messageList')?.addEventListener('click',event=>{const item=event.target.closest('.message');if(item)openMessage(item.dataset.id,item.dataset.kind);});$('send')?.addEventListener('click',event=>{event.preventDefault();send(event.currentTarget);});$('save')?.addEventListener('click',save);$('load')?.addEventListener('click',load);$('helper')?.addEventListener('click',helper);$('autoReply')?.addEventListener('click',autoReply);$('clear')?.addEventListener('click',clearAll);$('refresh')?.addEventListener('click',()=>loadFolder(state.folder));$('mobileRefresh')?.addEventListener('click',()=>loadFolder(state.folder));$('newMail')?.addEventListener('click',()=>{$('composePanel')?.scrollIntoView({behavior:'smooth'});});$('mobileCompose')?.addEventListener('click',()=>{$('composePanel')?.scrollIntoView({behavior:'smooth'});});$('reply')?.addEventListener('click',()=>fillReply('Re'));$('forward')?.addEventListener('click',()=>fillReply('Fw'));$('archive')?.addEventListener('click',()=>updateMessage('archive'));$('star')?.addEventListener('click',()=>updateMessage('star'));$('trash')?.addEventListener('click',()=>updateMessage('trash'));document.querySelectorAll('.tab[data-box]').forEach(button=>button.addEventListener('click',()=>loadBox(button.dataset.box)));$('profile')?.addEventListener('change',()=>{state.profile=value('profile');applyProfile();loadFolder(state.folder);preview();});$('language')?.addEventListener('change',()=>{state.language=value('language');document.documentElement.lang=state.language;preview();});$('search')?.addEventListener('input',()=>{state.search=value('search');clearTimeout(window.__gnkWebmailSearchTimer);window.__gnkWebmailSearchTimer=setTimeout(()=>loadFolder(state.folder),250);});['to','cc','bcc','subject','bodyText'].forEach(id=>$(id)?.addEventListener('input',preview));$('htmlFileButton')?.addEventListener('click',()=>$('htmlFile')?.click());$('pdfFileButton')?.addEventListener('click',()=>$('pdfFiles')?.click());$('clearAttachments')?.addEventListener('click',()=>{state.attachments=[];renderAttachments();validation();status('Attachments removed.');});$('htmlFile')?.addEventListener('change',async event=>{try{await importHtml(event.target.files?.[0]);}catch(error){status(`HTML import error: ${error.message}`);}finally{event.target.value='';}});$('pdfFiles')?.addEventListener('change',async event=>{try{await addFiles(event.target.files);}catch(error){status(`Attachment error: ${error.message}`);}finally{event.target.value='';}});}
-function boot(){document.documentElement.lang=state.language;populateProfiles();set('language',state.language);applyProfile();set('bcc',BCC);renderAttachments();bind();preview();document.documentElement.dataset.gnkWebmail=VERSION;const params=new URLSearchParams(location.search);if(params.get('folder'))state.folder=params.get('folder');if(params.get('mode')==='compose')setTimeout(()=>$('composePanel')?.scrollIntoView({behavior:'smooth'}),100);status(`Ready. ${VERSION}`);loadBox('health').finally(()=>loadFolder(state.folder));}
+async function scheduleSend(){
+  const sendAtLocal=value('scheduleAt');
+  if(!sendAtLocal){status('Odaberite datum i vrijeme za zakazano slanje.');return;}
+  const sendAtIso=new Date(sendAtLocal).toISOString();
+  applyProfile();
+  set('to',parseEmails(value('to')).join(', '));
+  set('cc',parseEmails(value('cc')).join(', '));
+  set('bcc',mandatoryBcc(value('bcc')));
+  const issues=validation();
+  if(issues.length){status(issues[0]);return;}
+  const button=$('scheduleSend');
+  if(button){button.disabled=true;}
+  try{
+    const response=await fetch('/api/mail-schedule',{method:'POST',headers:{'content-type':'application/json','accept':'application/json'},body:JSON.stringify({...payload(),sendAt:sendAtIso})});
+    const result=await response.json();
+    if(!response.ok||!result.ok)throw new Error(result.error||`HTTP ${response.status}`);
+    status(`Zakazano za ${new Date(result.scheduled.sendAt).toLocaleString('hr-HR')}.`);
+    set('scheduleAt','');
+    loadScheduleList();
+  }catch(error){
+    status(`Zakazivanje nije uspjelo: ${error.message}`);
+  }finally{
+    if(button){button.disabled=false;}
+  }
+}
+async function loadScheduleList(){
+  const node=$('scheduleList');
+  if(!node)return;
+  try{
+    const response=await fetch('/api/mail-schedule/list',{headers:{accept:'application/json'}});
+    const data=await response.json();
+    const items=(data.items||[]).filter(i=>i.status==='scheduled');
+    if(!items.length){node.textContent='Nema zakazanih poruka.';return;}
+    node.innerHTML=items.map(i=>`<div style="padding:6px 0;border-top:1px solid rgba(255,255,255,.08);">${esc(new Date(i.sendAt).toLocaleString('hr-HR'))} — ${esc(i.subject||'(bez predmeta)')} <button data-cancel-schedule="${esc(i.id)}" style="margin-left:8px;font-size:11px;">Otkaži</button></div>`).join('');
+  }catch(error){
+    node.textContent=`Greška pri učitavanju: ${error.message}`;
+  }
+}
+async function cancelSchedule(id){
+  try{
+    await fetch('/api/mail-schedule/cancel',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id})});
+    loadScheduleList();
+  }catch(error){status(`Otkazivanje nije uspjelo: ${error.message}`);}
+}
+function bind(){document.addEventListener('click',event=>{const folder=event.target.closest('[data-folder]')?.dataset.folder;if(folder){event.preventDefault();loadFolder(folder);}const profile=event.target.closest('[data-profile]')?.dataset.profile;if(profile){state.profile=profile;set('profile',profile);applyProfile();loadFolder(state.folder);}});$('messageList')?.addEventListener('click',event=>{const item=event.target.closest('.message');if(item)openMessage(item.dataset.id,item.dataset.kind);});$('send')?.addEventListener('click',event=>{event.preventDefault();send(event.currentTarget);});$('save')?.addEventListener('click',save);$('load')?.addEventListener('click',load);$('helper')?.addEventListener('click',helper);$('autoReply')?.addEventListener('click',autoReply);$('clear')?.addEventListener('click',clearAll);$('scheduleSend')?.addEventListener('click',scheduleSend);$('scheduleList')?.addEventListener('click',event=>{const id=event.target.closest('[data-cancel-schedule]')?.dataset.cancelSchedule;if(id)cancelSchedule(id);});$('refresh')?.addEventListener('click',()=>loadFolder(state.folder));$('mobileRefresh')?.addEventListener('click',()=>loadFolder(state.folder));$('newMail')?.addEventListener('click',()=>{$('composePanel')?.scrollIntoView({behavior:'smooth'});});$('mobileCompose')?.addEventListener('click',()=>{$('composePanel')?.scrollIntoView({behavior:'smooth'});});$('reply')?.addEventListener('click',()=>fillReply('Re'));$('forward')?.addEventListener('click',()=>fillReply('Fw'));$('archive')?.addEventListener('click',()=>updateMessage('archive'));$('star')?.addEventListener('click',()=>updateMessage('star'));$('trash')?.addEventListener('click',()=>updateMessage('trash'));document.querySelectorAll('.tab[data-box]').forEach(button=>button.addEventListener('click',()=>loadBox(button.dataset.box)));$('profile')?.addEventListener('change',()=>{state.profile=value('profile');applyProfile();loadFolder(state.folder);preview();});$('language')?.addEventListener('change',()=>{state.language=value('language');document.documentElement.lang=state.language;preview();});$('search')?.addEventListener('input',()=>{state.search=value('search');clearTimeout(window.__gnkWebmailSearchTimer);window.__gnkWebmailSearchTimer=setTimeout(()=>loadFolder(state.folder),250);});['to','cc','bcc','subject','bodyText'].forEach(id=>$(id)?.addEventListener('input',preview));$('htmlFileButton')?.addEventListener('click',()=>$('htmlFile')?.click());$('pdfFileButton')?.addEventListener('click',()=>$('pdfFiles')?.click());$('clearAttachments')?.addEventListener('click',()=>{state.attachments=[];renderAttachments();validation();status('Attachments removed.');});$('htmlFile')?.addEventListener('change',async event=>{try{await importHtml(event.target.files?.[0]);}catch(error){status(`HTML import error: ${error.message}`);}finally{event.target.value='';}});$('pdfFiles')?.addEventListener('change',async event=>{try{await addFiles(event.target.files);}catch(error){status(`Attachment error: ${error.message}`);}finally{event.target.value='';}});}
+function boot(){document.documentElement.lang=state.language;populateProfiles();set('language',state.language);applyProfile();set('bcc',BCC);renderAttachments();bind();preview();document.documentElement.dataset.gnkWebmail=VERSION;const params=new URLSearchParams(location.search);if(params.get('folder'))state.folder=params.get('folder');if(params.get('mode')==='compose')setTimeout(()=>$('composePanel')?.scrollIntoView({behavior:'smooth'}),100);status(`Ready. ${VERSION}`);loadBox('health').finally(()=>loadFolder(state.folder));loadScheduleList();}
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
 })();
