@@ -1,0 +1,149 @@
+{
+  "version": "2026-05-31.1",
+  "name": "GNK ASG Publishing Standards",
+  "purpose": "Standard for preparing, publishing, indexing and distributing GNK ASG Intelligence Desk articles, images and social posts.",
+  "core_entities": {
+    "publisher": "GNK ASG d.o.o.",
+    "public_content_framework": "GNK DINAMO Ltd.",
+    "editorial_responsibility": "Nermin Sefic / Nermin Sefić",
+    "author": "GNK ASG Intelligence Desk",
+    "primary_domain": "https://gnk-asg.hr"
+  },
+  "languages": {
+    "primary_publication_language": "en",
+    "secondary_publication_language": "hr",
+    "rules": [
+      "English business-intelligence articles should be published under /en/insights/ unless the topic is specifically Croatian-language only.",
+      "Croatian author posts should be published under /insights-hr/.",
+      "Each article should clearly state language using html lang, canonical URL and, when available, hreflang alternates.",
+      "Croatian text must use Croatian Latin script and standard Croatian terms."
+    ]
+  },
+  "article_structure": {
+    "minimum_words": 650,
+    "recommended_words": "800-1200",
+    "required_sections": [
+      "title",
+      "lead paragraph",
+      "byline block",
+      "main image",
+      "body with at least three H2 sections",
+      "GNK ASG Intelligence Desk view or conclusion",
+      "source notes when public/current facts are used",
+      "disclosure note"
+    ],
+    "required_byline": {
+      "prepared_by": "GNK ASG Intelligence Desk",
+      "editorial_responsibility": "Nermin Sefic, group owner and director",
+      "publisher": "GNK ASG d.o.o.",
+      "public_content_framework": "GNK DINAMO Ltd."
+    }
+  },
+  "seo_requirements": {
+    "title_max_chars": 70,
+    "meta_description_target_chars": "140-165",
+    "required_meta_tags": [
+      "title",
+      "meta description",
+      "meta keywords",
+      "meta author",
+      "meta robots index,follow",
+      "canonical",
+      "OpenGraph title",
+      "OpenGraph description",
+      "OpenGraph image",
+      "Twitter card",
+      "Twitter title",
+      "Twitter description",
+      "Twitter image"
+    ],
+    "required_keywords": [
+      "GNK ASG d.o.o.",
+      "GNK DINAMO Ltd.",
+      "Nermin Sefic",
+      "Nermin Sefić",
+      "GNK ASG Intelligence Desk"
+    ],
+    "structured_data": {
+      "article_pages": "Article",
+      "index_pages": "CollectionPage",
+      "organization": "GNK ASG d.o.o.",
+      "person": "Nermin Sefić",
+      "related_organization": "GNK DINAMO Ltd."
+    }
+  },
+  "image_requirements": {
+    "required": true,
+    "recommended_size": "1200x630",
+    "formats": ["svg", "png"],
+    "naming_pattern": "assets/insight-[topic-slug]-YYYY-MM-DD.svg",
+    "must_include_text_or_visual_identity": [
+      "GNK ASG Insight or GNK ASG Business Intelligence",
+      "short article topic",
+      "GNK ASG d.o.o. · GNK DINAMO Ltd. · Nermin Sefic / Nermin Sefić"
+    ],
+    "alt_text_required": true,
+    "open_graph_required": true
+  },
+  "registry_requirements": {
+    "file": "data/insights.json",
+    "required_fields_per_item": [
+      "id",
+      "status",
+      "language",
+      "date",
+      "category",
+      "title",
+      "seo_title",
+      "summary",
+      "url",
+      "canonical",
+      "image",
+      "og_image",
+      "keywords",
+      "linkedin_summary",
+      "facebook_summary"
+    ],
+    "status_values": ["draft", "review", "published", "archived"]
+  },
+  "sitemap_requirements": {
+    "update_required_for_published_article": true,
+    "priority_default": "0.75",
+    "changefreq_default": "weekly",
+    "lastmod_format": "YYYY-MM-DD"
+  },
+  "social_distribution": {
+    "linkedin": {
+      "target_length_chars": "900-1500",
+      "must_include": ["article link", "business angle", "GNK ASG Intelligence Desk", "GNK ASG d.o.o.", "GNK DINAMO Ltd.", "Nermin Sefic or Nermin Sefić"],
+      "recommended_hashtags": ["#GNKASG", "#GNKDINAMOLtd", "#NerminSefic", "#BusinessIntelligence", "#ArtificialIntelligence", "#CorporateTransparency", "#Technology"]
+    },
+    "facebook": {
+      "target_length_chars": "300-700",
+      "must_include": ["clear topic", "article link", "short public explanation"]
+    }
+  },
+  "source_policy": {
+    "current_business_topics": "Use current public sources and cite internally in the article notes where appropriate.",
+    "legal_tax_financial_disclaimer_required": true,
+    "avoid": [
+      "unsupported factual claims",
+      "investment advice wording",
+      "medical/legal/tax advice wording unless separately reviewed",
+      "over-promising automation capabilities"
+    ]
+  },
+  "automation_pipeline": [
+    "select topic",
+    "verify current public sources when needed",
+    "write article",
+    "generate or assign image",
+    "create page",
+    "update data/insights.json",
+    "update sitemap.xml",
+    "prepare LinkedIn text",
+    "prepare Facebook text",
+    "run visual/menu check",
+    "publish"
+  ]
+}

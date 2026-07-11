@@ -1,0 +1,65 @@
+{
+  "version": "2026-05-30",
+  "status": "preparation_only",
+  "default_inbox": "contact@gnk-asg.hr",
+  "general_email": "info@gnk-asg.hr",
+  "sender_identity_future": "GNK ASG Intelligence Desk",
+  "operating_mode": "draft_only_until_approved",
+  "categories": [
+    {
+      "id": "general_information",
+      "label": "General information",
+      "risk": "low",
+      "action": "draft_standard_reply"
+    },
+    {
+      "id": "public_documents",
+      "label": "Public documents and sources",
+      "risk": "low",
+      "action": "draft_link_reply"
+    },
+    {
+      "id": "business_cooperation",
+      "label": "Business cooperation",
+      "risk": "medium",
+      "action": "draft_intake_reply"
+    },
+    {
+      "id": "media_inquiry",
+      "label": "Media inquiry",
+      "risk": "high",
+      "action": "human_review_required"
+    },
+    {
+      "id": "legal_compliance",
+      "label": "Legal or compliance matter",
+      "risk": "high",
+      "action": "human_review_required"
+    },
+    {
+      "id": "finance_investment",
+      "label": "Finance or investment matter",
+      "risk": "high",
+      "action": "human_review_required"
+    },
+    {
+      "id": "meeting_request",
+      "label": "Meeting request",
+      "risk": "medium",
+      "action": "draft_meeting_intake"
+    },
+    {
+      "id": "technical_support",
+      "label": "Portal technical support",
+      "risk": "low",
+      "action": "draft_support_intake"
+    }
+  ],
+  "hard_rules": [
+    "Do not send automatically until approved.",
+    "Do not request or store Zoho Mail passwords on the GNK ASG portal.",
+    "Do not create legal, tax, financial, contractual or media positions without review.",
+    "Use public portal links where possible.",
+    "Route formal inquiries to contact@gnk-asg.hr."
+  ]
+}

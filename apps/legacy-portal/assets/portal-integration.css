@@ -1,0 +1,56 @@
+/* Demographic context is retained directly below the interactive globe. Hidden lower modules occupy no height. */
+.float-home{display:none!important}
+#global-network{padding:36px 0 30px}
+#global-network .section-head{margin-bottom:14px}
+#global-network .network-shell{padding:10px;border-radius:20px}
+#global-network .network-topbar{margin-bottom:8px}
+#global-network .network-stat{padding:7px 10px}
+#global-network .globe-toolbar{margin:0 0 7px}
+#global-network .globe-panel,#global-network .network-canvas{min-height:468px}
+#global-network .network-layout,#global-network .network-layout.has-location-context{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:'visual' 'context';gap:4px;align-items:start}
+#global-network .network-layout .network-canvas,#global-network .network-layout .globe-panel{grid-area:visual}
+#global-network .network-layout .location-context-dock{grid-area:context}
+.network-export-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 7px;padding:8px 10px;border:1px solid rgba(116,156,205,.2);border-radius:13px;background:rgba(5,17,34,.52)}
+.network-export-toolbar .toolbar-copy{min-width:145px;display:flex;flex-direction:column;gap:3px}
+.network-export-toolbar .toolbar-copy strong{color:#eef5fd;font:850 .64rem/1.2 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.network-export-toolbar .toolbar-copy span{color:#8da7c4;font:600 .58rem/1.3 system-ui,sans-serif}
+.network-export-toolbar .toolbar-actions{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end}
+.network-export-toolbar button{min-height:34px;padding:7px 10px;border:1px solid rgba(99,149,207,.34);border-radius:999px;background:#081b34;color:#dbe9f7;font:850 .58rem/1 system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.network-export-toolbar button:hover,.network-export-toolbar button:focus-visible{border-color:#d4af37;background:rgba(212,175,55,.1);outline:none}
+#global-network .location-context-dock.portal-context-grid{display:block!important;width:100%;margin:4px 0 0!important;padding:0!important;min-height:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-sizing:border-box}
+#global-network .portal-context-grid .network-information-panel{display:block!important;width:min(1180px,calc(100% - 18px));margin:0 auto!important;padding:10px 12px;min-height:0!important;border-radius:15px;box-sizing:border-box}
+#global-network .portal-context-grid .network-detail{margin:0;padding:0;min-height:0;height:auto}
+#global-network .portal-context-grid .network-detail>small,#global-network .portal-context-grid .network-detail>h4,#global-network .portal-context-grid .network-detail>p,#global-network .portal-context-grid .network-detail>.state{display:none}
+#global-network .portal-context-grid .location-insights{display:grid;grid-template-columns:minmax(178px,205px) minmax(410px,620px) minmax(208px,250px);grid-template-areas:'heading metrics finance' 'pulse metrics source';justify-content:center;column-gap:11px;row-gap:6px;width:100%;max-width:1120px;margin:0 auto;padding:0;border:0;align-items:start}
+#global-network .portal-context-grid .insight-heading{grid-area:heading;display:block;padding:4px 0}
+#global-network .portal-context-grid .insight-heading small{display:block;color:#8aa0bb;text-transform:uppercase;font-size:.5rem;letter-spacing:.1em;font-weight:900;margin-bottom:5px}
+#global-network .portal-context-grid .insight-heading strong{display:block;color:#fff;font-size:.95rem;line-height:1.18;margin-bottom:4px}
+#global-network .portal-context-grid .insight-heading span{display:block;color:#9db2ca;font-size:.62rem;line-height:1.28}
+#global-network .portal-context-grid .insight-grid{grid-area:metrics;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:0}
+#global-network .portal-context-grid .insight-grid div{padding:5px 6px;border-radius:8px}
+#global-network .portal-context-grid .insight-grid div.wide{grid-column:span 2}
+#global-network .portal-context-grid .insight-grid label,#global-network .portal-context-grid .insight-finance label{font-size:.45rem;margin-bottom:3px}
+#global-network .portal-context-grid .insight-grid b{font-size:.59rem}
+#global-network .portal-context-grid .insight-clock{padding:5px 6px!important}
+#global-network .portal-context-grid .insight-clock-time{font-size:.9rem!important}
+#global-network .portal-context-grid .insight-clock-date{font-size:.51rem}
+#global-network .portal-context-grid .insight-clock-zone{font-size:.44rem;margin-top:3px}
+#global-network .portal-context-grid .insight-finance{grid-area:finance;margin:0;padding:6px 7px}
+#global-network .portal-context-grid .insight-finance p{font-size:.54rem!important;line-height:1.3!important}
+#global-network .portal-context-grid .insight-source{grid-area:source;margin:0;padding:6px 7px}
+#global-network .portal-context-grid .insight-source summary{font-size:.5rem}
+#global-network .portal-context-grid .insight-source p,#global-network .portal-context-grid .insight-source a{font-size:.51rem!important}
+#global-network .portal-context-grid .insight-pulse{grid-area:pulse;margin:0!important;align-self:end;font-size:.5rem!important}
+#global-network .portal-context-grid .network-key,#global-network .portal-context-grid .network-note,#global-network #networkPdfExport,#global-network #globePdfExport{display:none!important}
+#global-network .portal-context-grid .google-location-map,#global-network .portal-context-grid .location-weather-panel,#global-network .portal-context-grid .portal-panel-loading{display:none!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
+#global-network .network-regions{gap:5px;margin-top:7px}
+#global-network .network-region{padding:6px}
+#global-network .network-overview-visual{margin-top:7px;padding:8px;border-radius:15px;row-gap:6px}
+#global-network .network-overview-kpis{margin:0;gap:5px}
+#global-network .network-overview-kpis div{padding:6px 8px}
+#global-network .network-overview-image img{height:min(18vw,205px);object-fit:contain}
+#global-network .network-overview-actions .primary{display:none}
+#global-network .network-overview-disclosure summary{min-height:42px;padding:7px 9px}
+#digital-assets.portal-market-adjacent{padding-top:30px;padding-bottom:34px}
+@media(max-width:1120px){#global-network .portal-context-grid .location-insights{display:block;max-width:none}#global-network .portal-context-grid .insight-heading{margin-bottom:8px}#global-network .portal-context-grid .insight-grid{margin-bottom:7px}#global-network .portal-context-grid .insight-finance{margin-bottom:7px}}
+@media(max-width:650px){#global-network{padding:30px 0 26px}#global-network .globe-panel,#global-network .network-canvas{min-height:410px}.network-export-toolbar{display:block}.network-export-toolbar .toolbar-copy{margin-bottom:7px}.network-export-toolbar button{flex:1 1 calc(50% - 4px)}#global-network .portal-context-grid .network-information-panel{width:100%;padding:8px}#global-network .portal-context-grid .insight-grid{grid-template-columns:1fr 1fr}#global-network .portal-context-grid .insight-grid div.wide{grid-column:1/-1}}

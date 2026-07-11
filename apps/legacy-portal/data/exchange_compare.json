@@ -1,0 +1,75 @@
+{
+  "updated_at": "2026-06-01T00:17:00+00:00",
+  "cadence": "scheduled every five minutes",
+  "asset": "Bitcoin",
+  "source": "CoinGecko exchange ticker aggregation",
+  "exchanges": [
+    {
+      "exchange": "Binance",
+      "pair": "BTC/USDT",
+      "last_usd": 73623,
+      "volume_usd": 518858402,
+      "spread_percent": 0.010013,
+      "trust_score": null,
+      "timestamp": "2026-06-01T00:14:01+00:00",
+      "trade_url": "https://www.binance.com/en/trade/BTC_USDT?ref=37754157"
+    },
+    {
+      "exchange": "Bybit",
+      "pair": "BTC/USDT",
+      "last_usd": 73726,
+      "volume_usd": 430726352,
+      "spread_percent": 0.010135,
+      "trust_score": null,
+      "timestamp": "2026-06-01T00:15:37+00:00",
+      "trade_url": "https://www.bybit.com/trade/spot/BTC/USDT"
+    },
+    {
+      "exchange": "OKX",
+      "pair": "BTC/USDT",
+      "last_usd": 73631,
+      "volume_usd": 281979393,
+      "spread_percent": 0.010136,
+      "trust_score": null,
+      "timestamp": "2026-06-01T00:14:01+00:00",
+      "trade_url": "https://www.okx.com/trade-spot/btc-usdt"
+    },
+    {
+      "exchange": "Coinbase Exchange",
+      "pair": "BTC/USD",
+      "last_usd": 73636,
+      "volume_usd": 240135028,
+      "spread_percent": 0.010014,
+      "trust_score": null,
+      "timestamp": "2026-06-01T00:14:01+00:00",
+      "trade_url": "https://www.coinbase.com/advanced-trade/spot/BTC-USD"
+    },
+    {
+      "exchange": "Crypto.com Exchange",
+      "pair": "BTC/USD",
+      "last_usd": 73674,
+      "volume_usd": 223277925,
+      "spread_percent": 0.010014,
+      "trust_score": null,
+      "timestamp": "2026-06-01T00:14:01+00:00",
+      "trade_url": "https://crypto.com/exchange/trade/spot/BTC_USD"
+    },
+    {
+      "exchange": "Kraken",
+      "pair": "XBT/USD",
+      "last_usd": 73639,
+      "volume_usd": 32423539,
+      "spread_percent": 0.010136,
+      "trust_score": null,
+      "timestamp": "2026-06-01T00:14:19+00:00",
+      "trade_url": "https://pro.kraken.com/app/trade/XBT-USD"
+    }
+  ],
+  "disclaimer": "Usporedni informativni prikaz javno dostupnih ticker podataka; nije preporuka burze niti usluga izvršenja naloga.",
+  "checked_at": "2026-06-01T00:17:00+00:00",
+  "last_attempt_at": "2026-06-01T00:17:00+00:00",
+  "heartbeat_policy": "timestamp_updates_on_every_automation_run",
+  "stale_safe": true,
+  "last_successful_refresh_at": "2026-06-01T00:17:00+00:00",
+  "data_status": "fresh_or_reference_checked"
+}

@@ -1,0 +1,56 @@
+/* Desktop Command Centre extension: GNK ASG Intelligence Desk, 2D/3D network and globe HUD */
+@media (min-width:1200px){
+  .intelligence-shell{grid-template-columns:.7fr 1.08fr .68fr;gap:18px;align-items:stretch;max-width:100%}
+  .desk-console{min-height:612px}
+  .desk-transcript{height:356px}
+  .desk-command-monitor{display:flex;flex-direction:column;min-height:612px}
+}
+.desk-command-monitor{position:relative;overflow:hidden;background:linear-gradient(165deg,#07162d 0%,#091e3a 55%,#061326 100%);color:#fff;border-radius:24px;border:1px solid rgba(212,175,55,.22);padding:20px;box-shadow:0 19px 45px rgba(7,22,45,.14)}
+.desk-command-monitor:before{content:"";position:absolute;inset:-20% -45%;background:radial-gradient(circle at 50% 35%,rgba(53,143,230,.2),transparent 34%),radial-gradient(circle at 56% 62%,rgba(212,175,55,.11),transparent 22%);pointer-events:none}
+.command-head,.command-live,.command-cards,.command-market,.command-actions,.command-foot{position:relative;z-index:1}
+.command-head .eyebrow{color:#d4af37;margin:0 0 9px;font-size:.61rem;letter-spacing:.17em;text-transform:uppercase;font-weight:900}
+.command-head h3{margin:0;color:#fff;font:500 1.55rem/1.1 Georgia,'Times New Roman',serif}
+.command-head>p:last-child{color:#b6c5d8;font-size:.77rem;line-height:1.48;margin:10px 0 16px}
+.command-live{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:13px}
+.command-live span{border:1px solid rgba(113,201,255,.23);background:rgba(118,199,255,.06);color:#b7defb;border-radius:999px;padding:7px 9px;font-size:.59rem;letter-spacing:.07em;text-transform:uppercase;font-weight:900}
+.command-live span:first-child:before{content:"";display:inline-block;width:6px;height:6px;background:#58d47e;border-radius:50%;box-shadow:0 0 9px #58d47e;margin:0 6px 1px 0}
+.command-cards{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.command-card{min-height:70px;padding:10px;border-radius:12px;border:1px solid rgba(107,152,201,.19);background:rgba(255,255,255,.035)}
+.command-card small{display:block;color:#8198b5;font-size:.56rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.command-card strong{display:block;color:#eef6ff;font-size:.74rem;line-height:1.25}
+.command-card em{display:block;color:#d4af37;font-style:normal;font-size:.57rem;margin-top:5px}
+.command-market{border:1px solid rgba(107,152,201,.17);background:rgba(2,10,23,.26);border-radius:14px;padding:12px;margin-top:auto}
+.command-market h4{margin:0 0 9px;color:#9bb1ca;font-size:.61rem;text-transform:uppercase;letter-spacing:.11em}
+.command-market-row{display:flex;align-items:center;justify-content:space-between;gap:9px;border-top:1px solid rgba(107,152,201,.12);padding:8px 0;color:#fff;font-size:.7rem}
+.command-market-row:first-of-type{border-top:0}
+.command-market-row span{font-weight:900;color:#dbe7f4}
+.command-market-row strong{font-weight:700;text-align:right;font-size:.66rem}
+.command-market-row b{margin-left:6px;font-size:.61rem}
+.command-market-row b.up{color:#67de89}.command-market-row b.down{color:#f37b7b}
+.command-actions{display:grid;gap:6px;margin:13px 0 10px}
+.command-actions button{border:1px solid rgba(212,175,55,.23);color:#dce7f5;background:rgba(212,175,55,.045);text-align:left;border-radius:10px;padding:10px 11px;font-size:.68rem;font-weight:850;cursor:pointer;transition:background .2s,border-color .2s}
+.command-actions button:hover{background:rgba(212,175,55,.13);border-color:rgba(212,175,55,.55)}
+.command-foot{color:#839bb8;font-size:.59rem;text-transform:uppercase;letter-spacing:.08em;border-top:1px solid rgba(107,152,201,.15);padding-top:10px}
+.network-command-deck{display:grid;grid-template-columns:1.2fr .92fr 1fr;gap:10px;align-items:center;margin:0 0 14px;padding:11px 12px;border:1px solid rgba(118,199,255,.15);background:rgba(255,255,255,.024);border-radius:16px}
+.network-command-title small{display:block;color:#d4af37;font-size:.57rem;letter-spacing:.13em;text-transform:uppercase;font-weight:900;margin-bottom:5px}
+.network-command-title strong{display:block;color:#f1f6ff;font-size:.74rem;letter-spacing:.05em}
+.network-command-title span{display:block;color:#8da4bf;font-size:.63rem;margin-top:5px}
+.network-locate{display:flex;gap:6px;min-width:0}
+.network-locate select{min-width:0;flex:1;border-radius:10px;border:1px solid rgba(118,199,255,.25);background:#07162d;color:#e4eef9;padding:9px 8px;font-size:.67rem}
+.network-locate button,.network-shortcuts button{appearance:none;border-radius:10px;border:1px solid rgba(118,199,255,.23);background:rgba(118,199,255,.055);color:#dce8f6;padding:9px 10px;font-size:.62rem;text-transform:uppercase;font-weight:900;cursor:pointer;white-space:nowrap}
+.network-locate button:hover,.network-shortcuts button:hover{border-color:rgba(212,175,55,.57);color:#f2cc63}
+.network-shortcuts{display:flex;gap:5px;justify-content:flex-end;flex-wrap:wrap}
+.network-focus-status{grid-column:1/-1;display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:9px 11px;border-radius:11px;background:rgba(4,12,26,.33);border:1px solid rgba(89,146,205,.14);font-size:.66rem;color:#8fa6c0}
+.network-focus-status strong{color:#fff;font-size:.73rem}.network-focus-status #networkSelectedPlace{color:#b8c9dd}.route-pill{margin-left:auto;color:#81ccff!important;text-transform:uppercase;font-size:.59rem;font-weight:900;letter-spacing:.08em}
+.network-canvas.located{box-shadow:inset 0 0 0 1px rgba(212,175,55,.55),0 0 24px rgba(212,175,55,.12)}
+.globe-command-hud{position:absolute;left:17px;top:46px;z-index:2;pointer-events:none;display:grid;gap:10px}
+.globe-selected{width:max-content;max-width:245px;background:rgba(4,12,25,.55);border:1px solid rgba(118,199,255,.17);backdrop-filter:blur(5px);border-radius:12px;padding:10px 12px}
+.globe-selected small{display:block;color:#d4af37;font-size:.55rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px}
+.globe-selected strong{display:block;color:#fff;font-size:.79rem}.globe-selected span{display:block;color:#95adc6;font-size:.64rem;margin-top:4px}
+.globe-hud-stats{display:flex;gap:5px;flex-wrap:wrap}
+.globe-hud-stats span{font-size:.54rem;font-weight:900;color:#b8dbf4;letter-spacing:.09em;border:1px solid rgba(118,199,255,.15);background:rgba(7,22,45,.55);border-radius:999px;padding:6px 8px}
+.globe-fullscreen{border-color:rgba(212,175,55,.32)!important}
+.globe-panel:fullscreen,.globe-panel.gnk-expanded{position:fixed!important;z-index:9999;inset:0!important;width:100vw;height:100vh;min-height:100vh;border-radius:0;background:#040b16}
+.globe-panel:fullscreen .globe-guide,.globe-panel.gnk-expanded .globe-guide{font-size:.77rem}
+@media (max-width:1199px){.desk-command-monitor{margin-top:16px}.network-command-deck{grid-template-columns:1fr 1fr}.network-command-title{grid-column:1/-1}.network-shortcuts{justify-content:flex-start}}
+@media (max-width:760px){.desk-command-monitor{padding:16px;border-radius:19px}.command-cards{grid-template-columns:1fr 1fr}.network-command-deck{display:block;padding:10px}.network-command-title,.network-locate,.network-shortcuts,.network-focus-status{margin-bottom:10px}.network-locate{display:flex;margin-top:12px}.network-shortcuts{justify-content:flex-start}.route-pill{margin-left:0}.globe-command-hud{left:12px;top:40px}.globe-selected{max-width:185px}.globe-hud-stats{display:none}}

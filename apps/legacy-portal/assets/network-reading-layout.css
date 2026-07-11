@@ -1,0 +1,81 @@
+@import url('/assets/network-live-selection.css?v=20260526-location-live01');
+/* Readability refinement: remove narrow expansion rail and align map/weather content. */
+#global-network .network-layout,
+#global-network .network-layout.has-location-context {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-areas:'visual' 'context';
+  gap:12px;
+  align-items:start;
+}
+#global-network .network-layout .network-canvas,
+#global-network .network-layout .globe-panel { grid-area:visual; }
+#global-network .network-layout .location-context-dock {
+  grid-area:context;
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:12px;
+  margin-top:0;
+  min-width:0;
+}
+#global-network .google-location-map {
+  min-height:340px;
+}
+#global-network .google-location-frame {
+  height:268px;
+}
+#global-network .location-weather-panel {
+  min-height:0;
+}
+#global-network .network-information-panel {
+  display:grid;
+  grid-template-columns:minmax(250px,.78fr) minmax(420px,1.72fr);
+  gap:14px;
+  margin-top:14px;
+  padding:15px;
+  align-items:start;
+}
+#global-network .network-information-panel .network-detail {
+  margin-top:0;
+  min-height:0;
+  height:100%;
+  box-sizing:border-box;
+}
+#global-network .network-key h3 {
+  margin:0 0 12px;
+}
+#global-network .network-key-items {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+#global-network .network-key-items .legend-row {
+  margin:0;
+  padding:9px;
+  border:1px solid rgba(116,156,205,.14);
+  border-radius:12px;
+  background:rgba(0,0,0,.1);
+}
+#global-network .network-information-panel .line-legend {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:12px 0 0;
+  padding-top:12px;
+}
+#global-network .network-information-panel .network-note {
+  grid-column:1/-1;
+  margin:0;
+  padding-top:12px;
+  border-top:1px solid rgba(116,156,205,.14);
+}
+@media(max-width:1060px) {
+  #global-network .network-information-panel { grid-template-columns:1fr; }
+}
+@media(max-width:820px) {
+  #global-network .google-location-map { min-height:300px; }
+  #global-network .google-location-frame { height:232px; }
+  #global-network .network-information-panel { padding:11px; gap:10px; }
+  #global-network .network-key-items,
+  #global-network .network-information-panel .line-legend { grid-template-columns:1fr; }
+}
