@@ -22,15 +22,16 @@
     {
       label:'Javni portal / Public portal',
       items:[
-        {text:'Početna',textEn:'Home',href:'/'},
+        {text:'Početna',textEn:'Home',href:'/',hrefEn:'/en/'},
         {text:'O nama',textEn:'About',href:'/about/'},
         {text:'Nermin Sefić',textEn:'Nermin Sefić',href:'/nermin-sefic/'},
         {text:'Projekti',textEn:'Projects',href:'/projects/'},
         {text:'Strateški roadmap',textEn:'Strategic roadmap',href:'/projects/roadmap/'},
         {text:'Grupna mreža',textEn:'Group network',href:'/group-network/'},
         {text:'Financije',textEn:'Finance',href:'/finance/'},
-        {text:'Newsroom',textEn:'Newsroom',href:'/newsroom/'},
-        {text:'Izvješća',textEn:'Reports',href:'/reports/'},
+        {text:'Newsroom',textEn:'Newsroom',href:'/newsroom/',hrefEn:'/en/newsroom/'},
+        {text:'Izvješća',textEn:'Reports',href:'/reports/',hrefEn:'/en/reports/'},
+        {text:'Knowledge Center',textEn:'Knowledge Center',href:'/knowledge-center/',hrefEn:'/en/knowledge-center/'},
         {text:'Tržišta',textEn:'Markets',href:'/trzista/'},
         {text:'Tehnologija',textEn:'Technology',href:'/tehnologija/'},
         {text:'Intelligence Desk',textEn:'Intelligence Desk',href:'/intelligence-desk/'},
@@ -41,7 +42,7 @@
         {text:'Workeri',textEn:'Workers',href:'/workers/'},
         {text:'Medijske prijave',textEn:'Media applications',href:'/media-application/'},
         {text:'Kontakt',textEn:'Contact',href:'/contact/'},
-        {text:'English portal',textEn:'English portal',href:'/en/'}
+        {text:'English portal',textEn:'Croatian portal',href:'/en/',hrefEn:'/'}
       ]
     },
     {
@@ -57,25 +58,27 @@
   const isEnglish=()=>document.documentElement.lang?.toLowerCase().startsWith('en')||location.pathname==='/en'||location.pathname.startsWith('/en/');
   const language=()=>isEnglish()?'en':'hr';
   const labelOf=item=>language()==='en'?(item.textEn||item.text):item.text;
+  const hrefOf=item=>language()==='en'&&item.hrefEn?item.hrefEn:item.href;
 
   function harmonizeStaticHeader(){
     const staticNav=document.querySelector('.site-header .nav-links');
     if(staticNav){
       const canonical=[
-        {text:'Početna',textEn:'Home',href:'/'},
+        {text:'Početna',textEn:'Home',href:'/',hrefEn:'/en/'},
         {text:'O nama',textEn:'About',href:'/about/'},
         {text:'Projekti',textEn:'Projects',href:'/projects/'},
         {text:'Financije',textEn:'Finance',href:'/finance/'},
-        {text:'Newsroom',textEn:'Newsroom',href:'/newsroom/'},
-        {text:'Izvješća',textEn:'Reports',href:'/reports/'},
+        {text:'Newsroom',textEn:'Newsroom',href:'/newsroom/',hrefEn:'/en/newsroom/'},
+        {text:'Izvješća',textEn:'Reports',href:'/reports/',hrefEn:'/en/reports/'},
+        {text:'Knowledge Center',textEn:'Knowledge Center',href:'/knowledge-center/',hrefEn:'/en/knowledge-center/'},
         {text:'Media',textEn:'Media',href:'/media-application/'},
         {text:'Kontakt',textEn:'Contact',href:'/contact/'},
         {text:'ADMIN',textEn:'ADMIN',href:'/admin-center/'}
       ];
       staticNav.replaceChildren(...canonical.map(item=>{
-        const link=document.createElement('a');link.href=item.href;link.textContent=labelOf(item);if(item.href==='/admin-center/'){link.rel='nofollow';link.dataset.protected='true';}return link;
+        const link=document.createElement('a');link.href=hrefOf(item);link.textContent=labelOf(item);if(item.href==='/admin-center/'){link.rel='nofollow';link.dataset.protected='true';}return link;
       }));
-      staticNav.dataset.gnkCanonicalRoutes='v3';
+      staticNav.dataset.gnkCanonicalRoutes='v4';
     }
     const headerNav=document.querySelector('.site-header .container.nav');
     if(headerNav&&!headerNav.querySelector('.gnk-language-switch')){
@@ -129,7 +132,7 @@
 
   const wrap=document.createElement('div');wrap.id='gnk-floating-menu';
   const actions=document.createElement('div');actions.className='gnk-floating-actions';
-  const home=document.createElement('a');home.href='/';home.className='gnk-home-button';home.textContent='HOME';
+  const home=document.createElement('a');home.href=language()==='en'?'/en/':'/';home.className='gnk-home-button';home.textContent='HOME';
   const button=document.createElement('button');button.type='button';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','gnk-floating-nav');button.textContent='MENU';
   actions.append(home,button);
 
@@ -140,10 +143,11 @@
     const label=document.createElement('span');label.className='gnk-menu-label';label.textContent=section.label;
     const links=document.createElement('div');links.className='gnk-menu-links';
     for(const item of section.items){
-      const a=document.createElement('a');a.href=item.href;
+      const targetHref=hrefOf(item);
+      const a=document.createElement('a');a.href=targetHref;
       const text=document.createElement('span');text.textContent=labelOf(item);
       const meta=document.createElement('span');meta.className='gnk-menu-meta';a.append(text,meta);
-      if(normalize(item.href)===current)a.setAttribute('aria-current','page');
+      if(normalize(targetHref)===current)a.setAttribute('aria-current','page');
       if(section.protected||item.protected){a.rel='nofollow';a.dataset.protected='true';}
       if(item.status)a.dataset.status=item.status;
       links.appendChild(a);
