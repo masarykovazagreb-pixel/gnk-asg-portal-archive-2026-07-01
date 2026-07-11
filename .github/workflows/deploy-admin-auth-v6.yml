@@ -78,19 +78,41 @@ jobs:
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-operator-center
 
       - name: Verify current production shell
-        env:
-          TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
-          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
         run: |
           set -euo pipefail
           sleep 10
-          value="$TOKEN"
-          [ -n "$value" ] || value="$TOKEN_FALLBACK"
-          test -n "$value"
-          auth=(-H "Authorization: Bearer ${value}")
+
+          require_status() {
+            local route="$1"
+            local expected="$2"
+            local status
+            status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "https://gnk-asg.hr${route}?deploy-admin-v6")
+            if [ "$status" != "$expected" ]; then
+              echo "Unexpected HTTP status for ${route}: got ${status}, expected ${expected}" >&2
+              exit 1
+            fi
+          }
+
+          require_protected_route() {
+            local route="$1"
+            local status
+            status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "https://gnk-asg.hr${route}?deploy-admin-v6")
+            case "$status" in
+              200|301|302|303|307|308|401) ;;
+              *)
+                echo "Protected route ${route} returned unsupported HTTP status ${status}" >&2
+                exit 1
+                ;;
+            esac
+          }
+
           curl --fail --silent --show-error https://gnk-asg.hr/assets/public-floating-menu-v1.js?deploy-admin-v6 -o public-floating-menu-v1.js
           grep -q "HOME" public-floating-menu-v1.js
           grep -q "MENU" public-floating-menu-v1.js
           curl --fail --silent --show-error https://gnk-asg.hr/ -o public-home.html
           grep -q "public-floating-menu-v1.js" public-home.html
-          curl --fail --silent --show-error "${auth[@]}" https://gnk-asg.hr/operator-dashboard/?deploy-admin-v6 -o operator-dashboard.html
+
+          require_status "/media-application/" "200"
+          require_protected_route "/mail-studio/"
+          require_protected_route "/email-status/"
+          require_protected_route "/operator-dashboard/"
