@@ -1,0 +1,20 @@
+name = "gnk-asg-scheduled-mail-sender"
+main = "src/index.js"
+compatibility_date = "2026-06-13"
+workers_dev = true
+
+# Izoliran worker - NE dira postojeci gnk-asg-direct-operator cron
+# (koji ostaje iskljucivo email-status-sync). Salje ISKLJUCIVO preko
+# postojeceg /api/admin-mail-send endpointa - mandatory BCC, potpis i
+# audit log iz manual-mail-service-v1.js ostaju primijenjeni bez izmjena.
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+# REVIEW-ONLY: bez routes bloka dok se ne odobri produkcijska aktivacija.
+# routes = [{ pattern = "gnk-asg.hr/api/mail-schedule*", zone_name = "gnk-asg.hr" }]
+
+[triggers]
+# Svakih 5 minuta - provjerava ima li zakazanih slanja kojima je doslo vrijeme.
+crons = ["*/5 * * * *"]
