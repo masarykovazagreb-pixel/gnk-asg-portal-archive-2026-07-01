@@ -1,0 +1,34 @@
+#gnk-home-dashboard{padding:64px 0;background:linear-gradient(180deg,#f7f4ed 0,#fff 48%,#f7f4ed 100%);color:#17120b;border-top:1px solid #d8b66a}
+#gnk-home-dashboard *{box-sizing:border-box}
+#gnk-home-dashboard .gnk-dashboard-shell{width:min(1180px,calc(100% - 32px));margin:0 auto}
+#gnk-home-dashboard .gnk-dashboard-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:28px}
+#gnk-home-dashboard .gnk-dashboard-eyebrow{margin:0 0 8px;color:#7d5520;font:800 12px/1.2 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+#gnk-home-dashboard h2{margin:0;font:800 clamp(32px,5vw,58px)/.98 Arial,sans-serif;letter-spacing:-.04em}
+#gnk-home-dashboard .gnk-updated{color:#6d655a;font-size:13px}
+#gnk-home-dashboard .gnk-dashboard-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+#gnk-home-dashboard .gnk-window{grid-column:span 6;background:rgba(255,255,255,.94);border:1px solid #d9c79f;border-radius:20px;box-shadow:0 18px 48px rgba(67,45,14,.09);overflow:hidden}
+#gnk-home-dashboard .gnk-window.wide{grid-column:1/-1}
+#gnk-home-dashboard .gnk-window-head{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:20px 22px;border-bottom:1px solid #eadfc6;background:linear-gradient(90deg,#fffdf8,#f4ead4)}
+#gnk-home-dashboard .gnk-window-head h3{margin:0;font-size:22px}
+#gnk-home-dashboard .gnk-window-head a{color:#6f4818;font-weight:800;text-decoration:none}
+#gnk-home-dashboard .gnk-card-list{display:grid;gap:0}
+#gnk-home-dashboard .gnk-news-card{display:grid;grid-template-columns:104px minmax(0,1fr);gap:16px;padding:16px 20px;border-bottom:1px solid #eee6d7;text-decoration:none;color:inherit}
+#gnk-home-dashboard .gnk-news-card:last-child{border-bottom:0}
+#gnk-home-dashboard .gnk-news-card:hover{background:#fff9ec}
+#gnk-home-dashboard .gnk-news-card img{width:104px;height:74px;object-fit:contain;background:#15100a;border-radius:11px;padding:8px}
+#gnk-home-dashboard .gnk-meta{display:flex;gap:10px;flex-wrap:wrap;color:#82663d;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+#gnk-home-dashboard .gnk-news-card h4,#gnk-home-dashboard .gnk-simple-card h4{margin:6px 0;font-size:17px;line-height:1.25}
+#gnk-home-dashboard .gnk-news-card p,#gnk-home-dashboard .gnk-simple-card p{margin:0;color:#655e54;line-height:1.45;font-size:14px}
+#gnk-home-dashboard .gnk-simple-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:#eee2ca}
+#gnk-home-dashboard .gnk-simple-card{padding:18px 20px;background:#fff;text-decoration:none;color:inherit;min-height:148px}
+#gnk-home-dashboard .gnk-simple-card:hover{background:#fff9ec}
+#gnk-home-dashboard .gnk-finance-empty{padding:32px 22px;text-align:center;color:#655e54}
+#gnk-home-dashboard .gnk-chart{width:100%;height:260px;display:block;background:linear-gradient(180deg,#fff,#fbf5e8)}
+#gnk-home-dashboard .gnk-worker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:18px}
+#gnk-home-dashboard .gnk-worker-card{border:1px solid #e4d6b8;border-radius:14px;padding:15px;background:#fffdf8}
+#gnk-home-dashboard .gnk-worker-card strong{display:block;margin-bottom:8px}
+#gnk-home-dashboard .gnk-worker-status{color:#6d655a;font-size:13px;line-height:1.4}
+#gnk-home-dashboard .gnk-worker-numbers{display:flex;gap:10px;margin-top:12px;font-size:11px;color:#7d5520;font-weight:800}
+#gnk-home-dashboard .gnk-placeholder{padding:24px;color:#6d655a}
+@media(max-width:900px){#gnk-home-dashboard .gnk-window{grid-column:1/-1}#gnk-home-dashboard .gnk-worker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){#gnk-home-dashboard{padding:46px 0}#gnk-home-dashboard .gnk-dashboard-head{align-items:flex-start;flex-direction:column}#gnk-home-dashboard .gnk-news-card{grid-template-columns:76px minmax(0,1fr);padding:14px}#gnk-home-dashboard .gnk-news-card img{width:76px;height:62px}#gnk-home-dashboard .gnk-simple-list,#gnk-home-dashboard .gnk-worker-grid{grid-template-columns:1fr}#gnk-home-dashboard .gnk-window-head{padding:17px}#gnk-home-dashboard .gnk-window-head h3{font-size:20px}}
