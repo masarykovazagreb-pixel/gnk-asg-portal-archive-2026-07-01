@@ -1,8 +1,8 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v16.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V37_20260711_GLOBAL_MENU_HOME_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V38_20260711_ADMIN_FIRST_MENU_${BASE_VERSION}`;
 
-const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v1.js?v=20260711-global-home';
+const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260711-admin-first';
 
 function pathOf(request){
   return new URL(request.url).pathname.replace(/\/+$/,'')||'/';
@@ -21,7 +21,8 @@ async function injectGlobalMenu(request,response){
   if(!shouldInject(request,response)||request.method==='HEAD')return response;
   try{
     let html=await response.text();
-    if(!html.includes('public-floating-menu-v1.js')){
+    html=html.replace(/<script[^>]+public-floating-menu-v1\.js[^>]*><\/script>/gi,'');
+    if(!html.includes('public-floating-menu-v2.js')){
       const script=`<script defer src="${FLOATING_MENU_SCRIPT}"></script>`;
       html=html.includes('</body>')?html.replace('</body>',`${script}</body>`):`${html}${script}`;
     }
@@ -29,7 +30,7 @@ async function injectGlobalMenu(request,response){
     headers.delete('content-length');
     headers.delete('content-encoding');
     headers.set('content-type','text/html; charset=utf-8');
-    headers.set('x-gnk-global-floating-menu','home-and-menu');
+    headers.set('x-gnk-global-floating-menu','admin-first-bilingual');
     return new Response(html,{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
