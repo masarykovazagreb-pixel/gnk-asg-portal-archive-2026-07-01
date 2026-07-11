@@ -10,6 +10,18 @@
     if(['važno','important','javni prikaz.','public display.'].includes(heading))node.remove();
   });
 
+  const path=location.pathname.replace(/\/+$/,'')||'/';
+  const isEnglish=path==='/en'||path.startsWith('/en/');
+
+  if(links){
+    const menu=isEnglish?[
+      ['Home','/en'],['About','/en/about/'],['THE CODE','/the-code/'],['Projects','/en/projects/'],['Companies','/organization/'],['Locations','/organization/#locations'],['Finance','/en/finance/'],['Newsroom','/newsroom/'],['Reports','/en/reports/'],['Media','/media-application/?lang=en'],['Contact','/en/#contact'],['HR','/']
+    ]:[
+      ['Početna','/'],['O nama','/about/'],['THE CODE','/the-code/'],['Projekti','/projects/'],['Firme','/organization/'],['Lokacije','/organization/#locations'],['Financije','/finance/'],['Newsroom','/newsroom/'],['Izvješća','/reports/'],['Media','/media-application/?lang=hr'],['Kontakt','/#contact'],['EN','/en']
+    ];
+    links.innerHTML=menu.map(([label,href])=>`<a href="${href}">${label}</a>`).join('');
+  }
+
   document.querySelectorAll('[data-countdown]').forEach(node=>{
     const target=new Date(node.getAttribute('data-countdown'));
     const active=node.getAttribute('data-active-text')||'THE CODE activated';
@@ -31,20 +43,10 @@
     '/en/finance':'/finance/',
     '/en/reports':'/reports/'
   };
-  const path=location.pathname.replace(/\/+$/,'')||'/';
   const target=counterpart[path];
   if(target){document.querySelectorAll('a').forEach(anchor=>{const label=anchor.textContent.trim().toUpperCase();if(label==='EN'||label==='HR')anchor.href=target;});}
 
-  const authLinks=[...document.querySelectorAll('[data-auth-only]')];
-  authLinks.forEach(el=>{
-    if(el.getAttribute('href')==='/admin-center/'){
-      el.hidden=false;
-      el.textContent='ADMIN LOGIN';
-      el.classList.add('is-primary');
-    }
-  });
-  const protectedLinks=authLinks.filter(el=>el.getAttribute('href')!=='/admin-center/');
-  if(protectedLinks.length){fetch('/api/operator-auth-check',{credentials:'same-origin',cache:'no-store'}).then(r=>{if(r.ok)protectedLinks.forEach(el=>el.hidden=false);}).catch(()=>{});}
+  document.querySelectorAll('[data-auth-only]').forEach(el=>el.remove());
 
   const isHome=path==='/'||path==='/en';
   if(isHome){
@@ -74,7 +76,6 @@
     const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/group-network-v1.css?v=20260710-v1';document.head.appendChild(css);
     const script=document.createElement('script');script.src='/assets/group-network-v1.js?v=20260710-v1';script.defer=true;document.body.appendChild(script);
   }
-  // Scroll-to-top gumb - pojavljuje se nakon skrola, radi na svim stranicama
   if(!document.querySelector('[data-scroll-top]')){
     const btn=document.createElement('button');
     btn.type='button';
@@ -88,7 +89,6 @@
     btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
     toggle();
   }
-  // Site assistant widget - pretraga stranice + AI odgovori
   if(!document.querySelector('script[data-site-assistant]')){
     const s=document.createElement('script');
     s.src='/assets/site-assistant-widget-v1.js?v=20260711-v1';
