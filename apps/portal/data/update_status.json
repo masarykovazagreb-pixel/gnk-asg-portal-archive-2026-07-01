@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-07-11T04:58:53+00:00",
+  "updated_at": "2026-07-11T05:44:50+00:00",
   "news": {
-    "updated_at": "2026-07-11T04:58:53+00:00",
+    "updated_at": "2026-07-11T05:44:50+00:00",
     "status": "ok",
     "engine": "github_actions_rss_refresh_v3_retention_policy",
     "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb plus manual workflow_dispatch",
@@ -15,22 +15,22 @@
     "storage_policy": "public_latest_100_archive_all_older_prune_oldest_500_repeatedly_when_archive_exceeds_1000",
     "public_items": 100,
     "max_public_items": 100,
-    "archive_items": 834,
+    "archive_items": 860,
     "archive_prune_trigger": 1000,
     "archive_delete_oldest_batch": 500,
-    "archive_items_before_prune": 1834,
+    "archive_items_before_prune": 1860,
     "archive_prune_batches": 2,
     "discarded_archive_overflow_items": 1000,
-    "fetched_candidates": 1899,
-    "duplicates_or_blocked_removed": 623,
+    "fetched_candidates": 1894,
+    "duplicates_or_blocked_removed": 868,
     "request_timeout_seconds": 10,
     "network_workers": 1,
     "share_previews_ready": 0,
     "by_group": {
       "technology": 43,
+      "hrvatska": 23,
       "international": 14,
-      "digital-assets": 20,
-      "hrvatska": 21,
+      "digital-assets": 18,
       "economy": 1,
       "srbija": 1
     },
@@ -47,12 +47,12 @@
       }
     ],
     "preview_errors": [],
-    "checked_at": "2026-07-11T04:58:53+00:00",
-    "last_attempt_at": "2026-07-11T04:58:53+00:00",
+    "checked_at": "2026-07-11T05:44:50+00:00",
+    "last_attempt_at": "2026-07-11T05:44:50+00:00",
     "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-07-11T04:58:53+00:00",
+    "last_successful_refresh_at": "2026-07-11T05:44:50+00:00",
     "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 11.85
+    "runtime_seconds": 12.98
   }
 }
