@@ -5,11 +5,10 @@ on:
   push:
     paths:
       - '.github/workflows/news-refresh.yml'
-      - 'apps/portal/scripts/refresh-news.mjs'
-      - 'apps/portal/data/news_manual_seed.json'
+      - 'apps/portal/scripts/refresh_news.py'
       - 'apps/portal/data/news.json'
       - 'apps/portal/data/news_archive.json'
-      - 'apps/portal/data/news-automation-status.json'
+      - 'apps/portal/data/update_status.json'
   schedule:
     # GitHub cron is UTC. These six slots cover 09:00, 16:00 and 21:00
     # Europe/Zagreb in both CET and CEST; the local-time guard below keeps
@@ -45,19 +44,34 @@ jobs:
         if: steps.schedule_guard.outputs.run_refresh == 'true'
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Python
         if: steps.schedule_guard.outputs.run_refresh == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-python@v5
         with:
-          node-version: '20'
+          python-version: '3.12'
 
-      - name: Refresh public news feed
+      - name: Refresh public business news feed
         if: steps.schedule_guard.outputs.run_refresh == 'true'
-        run: node apps/portal/scripts/refresh-news.mjs
+        run: python apps/portal/scripts/refresh_news.py
+
+      - name: Validate refreshed feed
+        if: steps.schedule_guard.outputs.run_refresh == 'true'
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          news = json.loads(Path('apps/portal/data/news.json').read_text(encoding='utf-8'))
+          status = json.loads(Path('apps/portal/data/update_status.json').read_text(encoding='utf-8'))
+          assert isinstance(news, list) and len(news) > 0, 'news.json is empty'
+          assert status.get('news', {}).get('status') in {'ok', 'degraded'}, 'news refresh status failed'
+          print(f'validated news items: {len(news)}')
+          PY
 
       - name: Commit refreshed feed
         if: steps.schedule_guard.outputs.run_refresh == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'Refresh public news feed'
-          file_pattern: 'apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/news-automation-status.json'
+          commit_message: 'Refresh public business news feed'
+          file_pattern: 'apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/update_status.json'
