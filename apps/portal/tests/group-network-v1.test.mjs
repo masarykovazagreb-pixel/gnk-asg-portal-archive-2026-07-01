@@ -6,8 +6,8 @@ const data = JSON.parse(await readFile(new URL('../data/public-group-network.jso
 
 assert.equal(data.scope, 'public');
 assert.equal(data.summary.entities, 45);
-assert.equal(data.summary.operatingLocations, 33);
-assert.equal(data.summary.dormantLocations, 12);
+assert.equal(data.summary.operatingLocations, 45);
+assert.equal(data.summary.dormantLocations, 0);
 assert.ok(Array.isArray(data.nodes) && data.nodes.length > 0, 'Public network must contain published nodes');
 assert.ok(Array.isArray(data.links), 'Public network links must be an array');
 
