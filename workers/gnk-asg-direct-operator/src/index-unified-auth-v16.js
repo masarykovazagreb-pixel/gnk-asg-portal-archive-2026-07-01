@@ -18,18 +18,30 @@ import {
   VERSION as CONTACT_CASE_VERSION
 } from './contact-case-center-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V35_20260711_CONTACT_CONSENT_${EMAIL_STATUS_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V36_20260711_PROTECTED_ADMIN_SHELL_${EMAIL_STATUS_VERSION}_${BASE_VERSION}`;
 
 const WORKER_OPS_PATH='/worker-ops/';
 const WORKER_OPS_LOGIN_NEXT='/operator-dashboard/?workerOpsReturn=1';
 const ADMIN_CENTER_PATH='/admin-center/';
 const ADMIN_MENU_SCRIPT='/assets/admin-menu-v1.js?v=20260711';
+const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v1.js?v=20260711-admin-protected-shell';
 const EMAIL_STATUS_PIXEL_PREFIX=`${EMAIL_STATUS_API}/open/`;
 const PUBLIC_CONTACT_SUBMIT='/api/contact-submit';
+const PROTECTED_UI_PREFIXES=[
+  '/admin-center',
+  '/mail-studio',
+  '/campaign-mailer',
+  '/media-registration-admin',
+  '/operator-dashboard',
+  '/digital-headquarters',
+  '/email-status',
+  '/worker-ops'
+];
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 function isWorkerOpsPath(path){return path==='/worker-ops'||path.startsWith('/worker-ops/');}
 function isAdminCenterPath(path){return path==='/admin-center'||path.startsWith('/admin-center/');}
+function isProtectedUiPath(path){return PROTECTED_UI_PREFIXES.some(prefix=>path===prefix||path.startsWith(`${prefix}/`));}
 function isEmailStatusApiPath(path){return path===EMAIL_STATUS_API||path.startsWith(`${EMAIL_STATUS_API}/`);}
 function isPdfCenterApiPath(path){return path===PDF_CENTER_API||path.startsWith(`${PDF_CENTER_API}/`);}
 function isContactCaseApiPath(path){return path===CONTACT_CASE_API||path.startsWith(`${CONTACT_CASE_API}/`);}
@@ -44,6 +56,7 @@ function stamp(response){
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v16.js');
   headers.set('x-gnk-worker-ops-entry-guard',VERSION);
   headers.set('x-gnk-admin-center-guard',VERSION);
+  headers.set('x-gnk-protected-ui-guard',VERSION);
   headers.set('x-gnk-email-status-tracking',EMAIL_STATUS_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
@@ -131,15 +144,14 @@ async function handlePublicContactSubmit(request,env){
   }
 }
 
-async function injectAdminMenu(request,response){
-  const path=pathOf(request);
-  if((path!=='/'&&path!=='/en')||response.status!==200)return response;
+async function injectScript(response,scriptSrc,marker,headerName,headerValue){
+  if(response.status!==200)return response;
   const type=String(response.headers.get('content-type')||'').toLowerCase();
   if(!type.includes('text/html'))return response;
   try{
     let html=await response.text();
-    if(!html.includes('admin-menu-v1.js')){
-      const script=`<script defer src="${ADMIN_MENU_SCRIPT}"></script>`;
+    if(!html.includes(marker)){
+      const script=`<script defer src="${scriptSrc}"></script>`;
       html=html.includes('</body>')?html.replace('</body>',`${script}</body>`):`${html}${script}`;
     }
     const headers=new Headers(response.headers);
@@ -147,9 +159,20 @@ async function injectAdminMenu(request,response){
     headers.delete('content-encoding');
     headers.set('content-type','text/html; charset=utf-8');
     headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
-    headers.set('x-gnk-admin-menu','protected-admin-center-v1');
+    headers.set(headerName,headerValue);
     return new Response(html,{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
+}
+
+async function injectAdminMenu(request,response){
+  const path=pathOf(request);
+  if(path!=='/'&&path!=='/en')return response;
+  return injectScript(response,ADMIN_MENU_SCRIPT,'admin-menu-v1.js','x-gnk-admin-menu','protected-admin-center-v1');
+}
+
+async function injectProtectedFloatingMenu(request,response){
+  if(!isProtectedUiPath(pathOf(request)))return response;
+  return injectScript(response,FLOATING_MENU_SCRIPT,'public-floating-menu-v1.js','x-gnk-protected-floating-menu','enabled');
 }
 
 async function patchVersionResponse(request,response){
@@ -171,7 +194,9 @@ async function patchVersionResponse(request,response){
       workerOpsDirectAssetGuard:'operator-auth-required',
       workerOpsLoginReturn:'isolated-wrapper-redirect',
       adminCenter:'operator-auth-required',
-      adminCenterModules:['/mail-studio/','/campaign-mailer/','/admin-center/mail-search/','/admin-center/pdf/','/admin-center/contacts/','/admin-center/news-publication/'],
+      protectedUiPrefixes:PROTECTED_UI_PREFIXES,
+      adminCenterModules:['/mail-studio/','/campaign-mailer/','/admin-center/mail-search/','/admin-center/pdf/','/admin-center/contacts/','/admin-center/news-publication/','/media-registration-admin/','/operator-dashboard/','/digital-headquarters/','/email-status/','/worker-ops/'],
+      protectedFloatingMenu:'enabled',
       publicContactSubmit:PUBLIC_CONTACT_SUBMIT,
       adminMenu:'public-entry-protected-destination',
       emailStatusTracking:EMAIL_STATUS_VERSION,
@@ -191,14 +216,18 @@ export default{
 
     if(path===PUBLIC_CONTACT_SUBMIT)return stamp(await handlePublicContactSubmit(request,active));
 
-    if((request.method==='GET'||request.method==='HEAD')&&isAdminCenterPath(path)){
+    if((request.method==='GET'||request.method==='HEAD')&&isProtectedUiPath(path)){
       if(!await isAuthenticated(request,active,ctx)){
         const url=new URL(request.url);
-        const next=`${url.pathname}${url.search}`;
-        return stamp(await loginResponse(request,active,ctx,next));
+        const next=isWorkerOpsPath(path)?WORKER_OPS_LOGIN_NEXT:`${url.pathname}${url.search}`;
+        const login=await loginResponse(request,active,ctx,next);
+        const patched=isWorkerOpsPath(path)?patchWorkerOpsLoginRedirect(request,login):login;
+        return stamp(request.method==='HEAD'?new Response(null,{status:patched.status,statusText:patched.statusText,headers:patched.headers}):patched);
       }
-      const response=await adminCenterResponse(request,active,path);
-      if(response)return stamp(response);
+      if(isAdminCenterPath(path)){
+        const response=await adminCenterResponse(request,active,path);
+        if(response)return stamp(await injectProtectedFloatingMenu(request,response));
+      }
     }
 
     if(isEmailStatusApiPath(path)){
@@ -219,15 +248,10 @@ export default{
       return stamp(caseResponse||json({ok:false,error:'not_found'},404));
     }
 
-    if((request.method==='GET'||request.method==='HEAD')&&isWorkerOpsPath(path)&&!await isAuthenticated(request,active,ctx)){
-      const response=await loginResponse(request,active,ctx,WORKER_OPS_LOGIN_NEXT);
-      const patched=patchWorkerOpsLoginRedirect(request,response);
-      return stamp(request.method==='HEAD'?new Response(null,{status:patched.status,statusText:patched.statusText,headers:patched.headers}):patched);
-    }
-
     const response=patchWorkerOpsLoginRedirect(request,await app.fetch(request,active,ctx));
     const versionPatched=await patchVersionResponse(request,response);
-    return stamp(await injectAdminMenu(request,versionPatched));
+    const protectedPatched=await injectProtectedFloatingMenu(request,versionPatched);
+    return stamp(await injectAdminMenu(request,protectedPatched));
   },
   scheduled(event,env,ctx){
     const active=trackedEnv(env);
