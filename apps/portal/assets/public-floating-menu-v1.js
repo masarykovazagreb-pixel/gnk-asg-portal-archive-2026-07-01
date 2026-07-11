@@ -10,12 +10,15 @@
         {text:'Projekti',href:'/projects/'},
         {text:'Strateški roadmap',href:'/projects/roadmap/'},
         {text:'Grupna mreža',href:'/group-network/'},
+        {text:'Entiteti',href:'/entities/'},
+        {text:'Digital Workforce',href:'/digital-workforce/'},
         {text:'Financije',href:'/financije/'},
         {text:'THE CODE',href:'/the-code/'},
         {text:'Workeri',href:'/workers/'},
         {text:'Vijesti',href:'/news/'},
         {text:'Objave',href:'/objave/'},
-        {text:'Kontakt',href:'/contact/'}
+        {text:'Kontakt',href:'/contact/'},
+        {text:'English portal',href:'/en/'}
       ]
     },
     {
@@ -28,15 +31,19 @@
         {text:'Pretraga mailova',href:'/admin-center/mail-search/'},
         {text:'Kontaktni slučajevi',href:'/admin-center/contacts/'},
         {text:'PDF centar',href:'/admin-center/pdf/'},
-        {text:'Statusi mailova',href:'/email-status/'}
+        {text:'Statusi mailova',href:'/email-status/'},
+        {text:'Kontakti',href:'/admin-center/contact-directory/',status:'uskoro'},
+        {text:'Nacrti',href:'/admin-center/drafts/',status:'uskoro'}
       ]
     },
     {
       label:'Mediji i sadržaj',
       items:[
         {text:'Medijske prijave',href:'/media-application/'},
-        {text:'Media Registration Admin',href:'/media-registration-admin/',protected:true},
+        {text:'Media Portal',href:'/media-registration-admin/',protected:true},
         {text:'News Auto Publication',href:'/admin-center/news-publication/',protected:true},
+        {text:'Urednički desk',href:'/admin-center/editor-desk/',protected:true,status:'uskoro'},
+        {text:'Media Command Center',href:'/admin-center/media-command-center/',protected:true,status:'uskoro'},
         {text:'THE CODE OS',href:'/the-code-os/',status:'uskoro'},
         {text:'Interni THE CODE OS',href:'/admin-center/the-code-os/',protected:true,status:'uskoro'}
       ]
@@ -50,7 +57,11 @@
         {text:'Digital Headquarters',href:'/digital-headquarters/'},
         {text:'Morning Review',href:'/admin-center/morning-review/',status:'uskoro'},
         {text:'Publish Queue',href:'/admin-center/publish-queue/',status:'uskoro'},
+        {text:'Task Center',href:'/admin-center/tasks/',status:'uskoro'},
+        {text:'Project Center',href:'/admin-center/projects/',status:'uskoro'},
         {text:'Izvještaji',href:'/admin-center/reports/',status:'uskoro'},
+        {text:'Audit i logovi',href:'/admin-center/audit/',status:'uskoro'},
+        {text:'Integracije',href:'/admin-center/integrations/',status:'uskoro'},
         {text:'Postavke',href:'/admin-center/settings/',status:'uskoro'}
       ]
     }
@@ -63,11 +74,13 @@
 
   const style=document.createElement('style');
   style.textContent=`
-    #gnk-floating-menu{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:99999;font-family:Arial,sans-serif}
+    #gnk-floating-menu{position:fixed;right:18px;top:18px;z-index:99999;font-family:Arial,sans-serif}
     #gnk-floating-menu *{box-sizing:border-box}
-    #gnk-floating-menu>button{width:62px;height:62px;border-radius:50%;border:1px solid #d8b66a;background:#111;color:#d8b66a;font-weight:900;box-shadow:0 12px 38px rgba(0,0,0,.45);cursor:pointer}
-    #gnk-floating-menu nav{display:none;position:absolute;right:74px;top:50%;transform:translateY(-50%);width:min(370px,calc(100vw - 110px));max-height:min(82vh,760px);overflow:auto;padding:14px;background:#0b0b0b;border:1px solid #3b3120;border-radius:18px;box-shadow:0 16px 50px rgba(0,0,0,.5)}
-    #gnk-floating-menu.open nav{display:block}
+    #gnk-floating-menu>button{min-width:92px;height:46px;padding:0 18px;border-radius:999px;border:1px solid #d8b66a;background:#111;color:#d8b66a;font-weight:900;letter-spacing:.08em;box-shadow:0 12px 38px rgba(0,0,0,.45);cursor:pointer}
+    #gnk-floating-menu>button:hover,#gnk-floating-menu>button:focus-visible{background:#1a160e;color:#f1d58d;outline:none}
+    #gnk-floating-menu nav{display:none;position:absolute;right:0;top:56px;width:min(390px,calc(100vw - 28px));max-height:calc(100vh - 86px);overflow:auto;padding:14px;background:#0b0b0b;border:1px solid #3b3120;border-radius:18px;box-shadow:0 16px 50px rgba(0,0,0,.5)}
+    #gnk-floating-menu.open nav{display:block;animation:gnk-menu-drop .16s ease-out}
+    @keyframes gnk-menu-drop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
     #gnk-floating-menu .gnk-menu-group+.gnk-menu-group{margin-top:13px;padding-top:13px;border-top:1px solid #2d271d}
     #gnk-floating-menu .gnk-menu-label{display:block;padding:0 10px 7px;color:#d8b66a;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
     #gnk-floating-menu .gnk-menu-links{display:grid;gap:6px}
@@ -77,7 +90,8 @@
     #gnk-floating-menu .gnk-menu-meta{color:#9c927f;font-size:9px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
     #gnk-floating-menu a[data-protected="true"] .gnk-menu-meta::before{content:'ZAŠTIĆENO';}
     #gnk-floating-menu a[data-status] .gnk-menu-meta::after{content:attr(data-status);margin-left:8px;color:#d8b66a}
-    @media(max-width:700px){#gnk-floating-menu{right:12px;top:auto;bottom:12px;transform:none}#gnk-floating-menu>button{width:56px;height:56px}#gnk-floating-menu nav{right:0;top:auto;bottom:66px;transform:none;width:min(350px,calc(100vw - 24px));max-height:74vh}}
+    @media(max-width:700px){#gnk-floating-menu{right:12px;top:12px}#gnk-floating-menu>button{min-width:84px;height:44px;padding:0 15px}#gnk-floating-menu nav{top:52px;width:min(360px,calc(100vw - 24px));max-height:calc(100vh - 76px)}}
+    @media(prefers-reduced-motion:reduce){#gnk-floating-menu.open nav{animation:none}}
   `;
   document.head.appendChild(style);
 
@@ -88,12 +102,12 @@
   button.type='button';
   button.setAttribute('aria-expanded','false');
   button.setAttribute('aria-controls','gnk-floating-nav');
-  button.setAttribute('aria-label','Otvori izbornik');
-  button.textContent='MENI';
+  button.setAttribute('aria-label','Otvori menu');
+  button.textContent='MENU';
 
   const nav=document.createElement('nav');
   nav.id='gnk-floating-nav';
-  nav.setAttribute('aria-label','Glavni brzi izbornik');
+  nav.setAttribute('aria-label','Glavni padajući menu');
 
   const current=normalize(location.pathname);
 
@@ -129,15 +143,15 @@
   const close=()=>{
     wrap.classList.remove('open');
     button.setAttribute('aria-expanded','false');
-    button.setAttribute('aria-label','Otvori izbornik');
-    button.textContent='MENI';
+    button.setAttribute('aria-label','Otvori menu');
+    button.textContent='MENU';
   };
 
   button.addEventListener('click',()=>{
     const open=wrap.classList.toggle('open');
     button.setAttribute('aria-expanded',String(open));
-    button.setAttribute('aria-label',open?'Zatvori izbornik':'Otvori izbornik');
-    button.textContent=open?'ZATVORI':'MENI';
+    button.setAttribute('aria-label',open?'Zatvori menu':'Otvori menu');
+    button.textContent=open?'ZATVORI':'MENU';
   });
 
   nav.addEventListener('click',event=>{if(event.target.closest('a'))close();});
