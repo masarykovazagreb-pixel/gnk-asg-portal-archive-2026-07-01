@@ -1,60 +1,47 @@
 (() => {
   const isEnglish = () => /\/en(?:\/|$)/.test(location.pathname);
-  const labels = () => isEnglish()
-    ? {
-        profile: 'Profile', finance: 'Financials', network: 'Network', markets: 'Markets',
-        insights: 'Insights', sources: 'Sources', contact: 'Contact', desk: 'AI Desk'
-      }
-    : {
-        profile: 'Profil', finance: 'Financije', network: 'Mreža', markets: 'Tržišta',
-        insights: 'Objave', sources: 'Izvori', contact: 'Kontakt', desk: 'AI asistent'
-      };
 
-  function ensureFloatingMenu() {
-    if (isEnglish()) return;
-    if (document.getElementById('gnk-floating-menu')) return;
-    if (document.querySelector('script[src^="/assets/public-floating-menu-v1.js"]')) return;
-    const loader = document.createElement('script');
-    loader.src = '/assets/public-floating-menu-v1.js?v=20260711-2';
-    loader.defer = true;
-    document.body.appendChild(loader);
-  }
+  const items = () => isEnglish()
+    ? [
+        ['Profile', '/en/#o-nama'],
+        ['Financials', '/en/#financials'],
+        ['Network', '/en/#grupa'],
+        ['Markets', '/en/markets/'],
+        ['Insights', '/en/insights/'],
+        ['Sources', '/en/#publicSources'],
+        ['Contact', '/en/contact/'],
+        ['AI Desk', '/en/#assistant', 'desk-entry']
+      ]
+    : [
+        ['Profil', '/#o-nama'],
+        ['Financije', '/#financials'],
+        ['Mreža', '/#grupa'],
+        ['Tržišta', '/trzista/'],
+        ['Objave', '/insights-hr/'],
+        ['Izvori', '/#publicSources'],
+        ['Kontakt', '/kontakt/'],
+        ['AI asistent', '/#assistant', 'desk-entry']
+      ];
 
   function render() {
     const nav = document.getElementById('navLinks');
-    if (!nav) {
-      ensureFloatingMenu();
-      return;
-    }
-    nav.querySelectorAll(':scope > a').forEach(link => link.classList.add('legacy-nav-item'));
-    let box = nav.querySelector('.portal-navigation');
-    if (!box) {
-      box = document.createElement('div');
-      box.className = 'portal-navigation';
-      nav.appendChild(box);
-    }
-    const en = isEnglish();
-    const t = labels();
-    const homeUrl = en ? '/en/' : '/';
-    const marketUrl = en ? '/en/markets/' : '/trzista/';
-    const insightsUrl = en ? '/en/insights/' : '/insights-hr/';
-    const contactUrl = en ? '/en/contact/' : '/kontakt/';
-    const profileUrl = homeUrl + '#o-nama';
-    const financeUrl = homeUrl + '#financials';
-    const networkUrl = homeUrl + '#grupa';
-    const sourcesUrl = homeUrl + '#publicSources';
-    const deskUrl = homeUrl + '#assistant';
-    box.innerHTML =
-      '<a href="' + profileUrl + '">' + t.profile + '</a>' +
-      '<a href="' + financeUrl + '">' + t.finance + '</a>' +
-      '<a href="' + networkUrl + '">' + t.network + '</a>' +
-      '<a href="' + marketUrl + '">' + t.markets + '</a>' +
-      '<a href="' + insightsUrl + '">' + t.insights + '</a>' +
-      '<a href="' + sourcesUrl + '">' + t.sources + '</a>' +
-      '<a href="' + contactUrl + '">' + t.contact + '</a>' +
-      '<a class="desk-entry" href="' + deskUrl + '">✦ ' + t.desk + '</a>';
-    ensureFloatingMenu();
+    if (!nav) return;
+
+    nav.replaceChildren();
+    nav.dataset.menuStable = '1';
+
+    items().forEach(([label, href, className]) => {
+      const link = document.createElement('a');
+      link.href = href;
+      link.textContent = className === 'desk-entry' ? '✦ ' + label : label;
+      if (className) link.className = className;
+      nav.appendChild(link);
+    });
   }
-  document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', render) : render();
+
+  document.readyState === 'loading'
+    ? document.addEventListener('DOMContentLoaded', render)
+    : render();
+
   window.addEventListener('gnk-language-change', render);
 })();
