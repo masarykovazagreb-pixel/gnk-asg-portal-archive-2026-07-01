@@ -2,13 +2,20 @@
   const addPortalLinks=()=>{
     const nav=document.getElementById('navLinks')||document.querySelector('.nav-links')||document.querySelector('.dhq-links');
     if(!nav)return;
+    const items=[
+      {key:'about',href:'/about/',label:'O nama'},
+      {key:'projects',href:'/projects/',label:'Projekti'},
+      {key:'the-code',href:'/the-code/',label:'THE CODE'},
+      {key:'workers',href:'/workers/',label:'Workeri'}
+    ];
     let admin=nav.querySelector('[data-gnk-admin-link]');
-    if(!nav.querySelector('[data-gnk-workers-link]')){
-      const workers=document.createElement('a');
-      workers.href='/workers/';
-      workers.textContent='Workeri';
-      workers.setAttribute('data-gnk-workers-link','1');
-      if(admin)nav.insertBefore(workers,admin);else nav.appendChild(workers);
+    for(const item of items){
+      if(nav.querySelector(`[data-gnk-${item.key}-link]`))continue;
+      const link=document.createElement('a');
+      link.href=item.href;
+      link.textContent=item.label;
+      link.setAttribute(`data-gnk-${item.key}-link`,'1');
+      if(admin)nav.insertBefore(link,admin);else nav.appendChild(link);
     }
     if(!admin){
       admin=document.createElement('a');
