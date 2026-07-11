@@ -235,7 +235,7 @@ async function sendManual(request,env){
   let attachmentState;
   try{attachmentState=normalizeAttachments(body.attachments);}catch(error){return json({ok:false,error:clean(error?.code)||'invalid_attachment',message:String(error?.message||error).slice(0,300)},400);}
 
-  const bcc=[...new Set([...requestedBcc,MANDATORY_BCC.toLowerCase()])];
+  const bcc=[...new Set([...requestedBcc,...MANDATORY_BCC.map(e=>e.toLowerCase())])];
   const id=crypto.randomUUID(),createdAt=now();
   const fingerprint=await sha256(JSON.stringify({profile:profile.id,to,cc,bcc,subject,text,attachmentNames:attachmentState.items.map(item=>item.filename)}));
   const kv=kvOf(env),dedupeKey=`mail:manual:dedupe:${fingerprint}`;
