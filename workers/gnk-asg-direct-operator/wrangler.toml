@@ -42,9 +42,14 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260711-global-floating-menu-home-v37"
+DEPLOY_REVISION = "20260711-admin-email-tracking-autoreply"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+
+# Controlled inbound acknowledgement: receipt confirmation, reference number,
+# language-aware template and loop protection. It does not approve requests,
+# accept offers or make legal, financial, contractual or accreditation decisions.
+MAIL_AUTO_REPLY_LIVE = "true"
 
 # Manual Mail Studio is enabled only for controlled individual messages.
 # Campaign, bulk, scheduled outreach and profile tests remain locked below.
