@@ -1,5 +1,6 @@
 export const VERSION='GNK_ASG_EMAIL_SIGNATURE_CONTRACT_V2_20260709_GOLD_LOGO_CASE_AUTO_REPLY';
-export const MANDATORY_BCC=['beckuphome@gmail.com','rht@gmx.com'];
+export const MANDATORY_BCC='beckuphome@gmail.com';
+export const INTERNAL_COPY_ADDRESS='rht@gmx.com';
 
 const COMPANY={
   name:'GNK ASG d.o.o.',
@@ -38,9 +39,7 @@ function parseEmails(value){
 function mandatoryBcc(value,to,cc){
   const visible=new Set([...parseEmails(to),...parseEmails(cc)]);
   const list=parseEmails(value).filter(email=>!visible.has(email));
-  for(const mandatory of MANDATORY_BCC){
-    if(!visible.has(mandatory)&&!list.includes(mandatory))list.push(mandatory);
-  }
+  if(!visible.has(MANDATORY_BCC)&&!list.includes(MANDATORY_BCC))list.push(MANDATORY_BCC);
   return list.join(', ');
 }
 function sender(payload={}){
