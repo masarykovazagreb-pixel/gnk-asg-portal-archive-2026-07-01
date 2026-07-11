@@ -38,6 +38,33 @@
   const language=()=>isEnglish()?'en':'hr';
   const labelOf=item=>language()==='en'?(item.textEn||item.text):item.text;
 
+  function harmonizeStaticHeader(){
+    const staticNav=document.querySelector('.site-header .nav-links');
+    if(staticNav){
+      const canonical=[
+        {text:'ADMIN',textEn:'ADMIN',href:'/admin-center/'},
+        {text:'O nama',textEn:'About',href:'/about/'},
+        {text:'Projekti',textEn:'Projects',href:'/projects/'},
+        {text:'Vijesti',textEn:'News',href:'/news/'},
+        {text:'Objave',textEn:'Publications',href:'/objave/'},
+        {text:'Medijske prijave',textEn:'Media applications',href:'/media-application/'},
+        {text:'Kontakt',textEn:'Contact',href:'/contact/'}
+      ];
+      staticNav.replaceChildren(...canonical.map(item=>{
+        const link=document.createElement('a');link.href=item.href;link.textContent=labelOf(item);if(item.href==='/admin-center/'){link.rel='nofollow';link.dataset.protected='true';}return link;
+      }));
+      staticNav.dataset.gnkCanonicalRoutes='v2';
+    }
+    const headerNav=document.querySelector('.site-header .container.nav');
+    if(headerNav&&!headerNav.querySelector('.gnk-language-switch')){
+      const lang=document.createElement('div');lang.className='gnk-language-switch';lang.setAttribute('aria-label','Odabir jezika / Language selection');
+      const hr=document.createElement('a');hr.href='/';hr.textContent='HR';
+      const en=document.createElement('a');en.href='/en/';en.textContent='EN';
+      if(language()==='hr')hr.setAttribute('aria-current','page');else en.setAttribute('aria-current','page');
+      lang.append(hr,document.createTextNode(' / '),en);headerNav.appendChild(lang);
+    }
+  }
+
   const style=document.createElement('style');
   style.textContent=`
     #gnk-floating-menu{position:fixed;right:18px;top:18px;z-index:99999;font-family:Arial,sans-serif}
@@ -56,9 +83,13 @@
     #gnk-floating-menu .gnk-menu-meta{color:#9c927f;font-size:9px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
     #gnk-floating-menu nav a[data-protected="true"] .gnk-menu-meta::before{content:'ZAŠTIĆENO / PROTECTED';}
     #gnk-floating-menu nav a[data-status] .gnk-menu-meta::after{content:attr(data-status);margin-left:8px;color:#d8b66a}
-    @media(max-width:700px){#gnk-floating-menu{right:12px;top:12px}#gnk-floating-menu nav{top:52px;width:min(390px,calc(100vw - 24px));max-height:calc(100vh - 76px)}}
+    .site-header .gnk-language-switch{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-weight:900}
+    .site-header .gnk-language-switch a{text-decoration:none;color:inherit;opacity:.65}
+    .site-header .gnk-language-switch a[aria-current="page"]{opacity:1;text-decoration:underline;text-underline-offset:4px}
+    @media(max-width:700px){#gnk-floating-menu{right:12px;top:12px}#gnk-floating-menu nav{top:52px;width:min(390px,calc(100vw - 24px));max-height:calc(100vh - 76px)}.site-header .gnk-language-switch{margin-left:auto}}
   `;
   document.head.appendChild(style);
+  harmonizeStaticHeader();
 
   const wrap=document.createElement('div');wrap.id='gnk-floating-menu';
   const actions=document.createElement('div');actions.className='gnk-floating-actions';
