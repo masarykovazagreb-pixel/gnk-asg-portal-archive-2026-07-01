@@ -345,21 +345,43 @@ async function preview(url, env) {
   return json({ ok: true, version: VERSION, toAddress, profile: mediaProfile ? 'media-relations' : 'general', language, receipt, center: center.code, centerCity: center.city, subject, text, html: htmlBody(text, mediaProfile), persisted: persist });
 }
 
+function extractName(fromRaw) {
+  const match = String(fromRaw || '').match(/^\s*"?([^"<]+?)"?\s*<[^>]+>\s*$/);
+  return match ? clean(match[1]) : '';
+}
+
 async function caseLookup(url, env) {
+  // Podrzava tri nacina pretrage: tocan broj predmeta (case=), ili slobodan
+  // upit (q=) koji trazi po imenu posiljatelja, email adresi (from/to) i predmetu.
   const caseId = clean(url.searchParams.get('case') || url.searchParams.get('id'));
-  if (!caseId) return json({ ok: false, error: 'missing_case' }, 400);
+  const query = clean(url.searchParams.get('q')).toLowerCase();
+  if (!caseId && !query) return json({ ok: false, error: 'missing_query' }, 400);
+
   const [inbox, sent, outbox] = await Promise.all([
     readList(env, 'mail:inbox'),
     readList(env, 'mail:sent'),
     readList(env, 'mail:outbox')
   ]);
-  const matches = [
-    ...inbox.filter(item => item.id === caseId).map(item => ({ ...item, source: 'inbox' })),
-    ...sent.filter(item => item.id === caseId).map(item => ({ ...item, source: 'sent' })),
-    ...outbox.filter(item => item.id === caseId).map(item => ({ ...item, source: 'outbox' }))
+  const all = [
+    ...inbox.map(item => ({ ...item, source: 'inbox' })),
+    ...sent.map(item => ({ ...item, source: 'sent' })),
+    ...outbox.map(item => ({ ...item, source: 'outbox' }))
   ];
-  if (!matches.length) return json({ ok: false, error: 'not_found', case: caseId }, 404);
-  return json({ ok: true, case: caseId, entries: matches });
+
+  let matches;
+  if (caseId) {
+    matches = all.filter(item => item.id === caseId);
+  } else {
+    matches = all.filter(item => {
+      const name = extractName(item.from).toLowerCase();
+      const haystack = [
+        item.fromEmail, item.toEmail, item.from, item.to, item.subject, name
+      ].filter(Boolean).join(' ').toLowerCase();
+      return haystack.includes(query);
+    });
+  }
+  if (!matches.length) return json({ ok: false, error: 'not_found', query: caseId || query }, 404);
+  return json({ ok: true, query: caseId || query, count: matches.length, entries: matches });
 }
 
 export default {
