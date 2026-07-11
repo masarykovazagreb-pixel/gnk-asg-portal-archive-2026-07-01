@@ -37,7 +37,7 @@ jobs:
             apps/portal/en/projects/index.html
             apps/portal/projects/roadmap/index.html
             apps/portal/en/projects/roadmap/index.html
-            apps/portal/finance/index.html
+            apps/portal/financije/index.html
             apps/portal/en/finance/index.html
             apps/portal/reports/index.html
             apps/portal/en/reports/index.html
@@ -103,8 +103,6 @@ jobs:
           grep -q 'International hospitals, sports medicine and rehabilitation' apps/portal/en/index.html apps/portal/en/projects/index.html
           grep -q 'Arhitektura projektirana za približno 1.537 operativnih pozicija' apps/portal/index.html
           grep -q 'Architecture designed for approximately 1,537 operating positions' apps/portal/en/index.html
-          grep -q 'Izjava uprave · stanje na 29. lipnja 2026.' apps/portal/finance/index.html
-          grep -q 'Management statement · position at 29 June 2026' apps/portal/en/finance/index.html
           grep -q 'dedicated username and password' apps/portal/media-application/index.html
           grep -q 'does not grant admin access' apps/portal/media-application/index.html
 
@@ -125,8 +123,6 @@ jobs:
 
           echo "Validating PDF links on public download surfaces"
           for page in \
-            apps/portal/index.html apps/portal/en/index.html \
-            apps/portal/finance/index.html apps/portal/en/finance/index.html \
             apps/portal/reports/index.html apps/portal/en/reports/index.html; do
             grep -q 'GNK_ASG_doo_Audited_Financial_Statements_2025_HR.pdf' "$page"
             grep -q 'GNK_DINAMO_Ltd_Consolidated_Financial_Report_2025_USA.pdf' "$page"

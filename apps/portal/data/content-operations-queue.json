@@ -1,0 +1,84 @@
+{
+  "version": "GNK_ASG_CONTENT_OPERATIONS_QUEUE_V1_20260710",
+  "enabled": true,
+  "targetAutomationPercent": 99,
+  "mode": "prepare-review-queue",
+  "finalPublishGate": "manual-approval-required",
+  "streams": [
+    {
+      "id": "strategic-projects",
+      "labelHr": "Strateški projekti",
+      "labelEn": "Strategic projects",
+      "enabled": true,
+      "cadence": "continuous-preparation",
+      "outputs": ["project-update", "roadmap-summary", "risk-summary", "social-copy", "visual-brief"],
+      "requiredChecks": ["status-gate", "completion-claim", "source", "brand", "hr-en-parity"]
+    },
+    {
+      "id": "newsroom",
+      "labelHr": "Newsroom i korporativne objave",
+      "labelEn": "Newsroom and corporate publications",
+      "enabled": true,
+      "cadence": "continuous-preparation",
+      "outputs": ["news-article", "press-note", "website-copy", "social-copy", "seo-metadata"],
+      "requiredChecks": ["factual", "source", "legal-risk", "duplicate", "brand", "accessibility"]
+    },
+    {
+      "id": "finance-reports",
+      "labelHr": "Financije i izvješća",
+      "labelEn": "Finance and reports",
+      "enabled": true,
+      "cadence": "on-data-change",
+      "outputs": ["kpi-summary", "report-summary", "management-note", "chart-brief", "seo-metadata"],
+      "requiredChecks": ["source", "figure-parity", "classification", "document-link", "hr-en-parity"]
+    },
+    {
+      "id": "media-center",
+      "labelHr": "Media Center",
+      "labelEn": "Media Center",
+      "enabled": true,
+      "cadence": "continuous-preparation",
+      "outputs": ["media-invitation", "accreditation-copy", "press-brief", "faq", "visual-brief"],
+      "requiredChecks": ["embargo", "identity-disclosure", "source", "brand", "final-human-approval"]
+    },
+    {
+      "id": "the-code",
+      "labelHr": "THE CODE",
+      "labelEn": "THE CODE",
+      "enabled": true,
+      "cadence": "milestone-driven",
+      "outputs": ["launch-copy", "countdown-copy", "press-material", "event-page-copy", "social-copy", "visual-brief"],
+      "requiredChecks": ["confidentiality", "embargo", "identity-disclosure", "event-time", "brand"]
+    },
+    {
+      "id": "group-network",
+      "labelHr": "Mreža Grupe",
+      "labelEn": "Group Network",
+      "enabled": true,
+      "cadence": "on-verified-data-change",
+      "outputs": ["location-summary", "market-summary", "map-copy", "seo-metadata", "visual-brief"],
+      "requiredChecks": ["verified-location", "public-data-only", "duplicate", "hr-en-parity", "accessibility"]
+    }
+  ],
+  "defaultWorkflow": [
+    "collect-approved-sources",
+    "draft-hr",
+    "draft-en",
+    "generate-seo",
+    "generate-visual-brief",
+    "run-quality-checks",
+    "run-duplicate-check",
+    "run-risk-check",
+    "place-in-review-queue"
+  ],
+  "blockedAutomaticActions": [
+    "publish-to-production",
+    "merge-to-main",
+    "production-deploy",
+    "bulk-email",
+    "campaign-send",
+    "dns-change",
+    "cloudflare-route-change",
+    "secret-change"
+  ]
+}
