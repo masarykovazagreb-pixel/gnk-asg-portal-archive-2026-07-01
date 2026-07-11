@@ -22,13 +22,33 @@
     {
       label:'Javni portal / Public portal',
       items:[
-        {text:'Početna',textEn:'Home',href:'/'},{text:'O nama',textEn:'About',href:'/about/'},{text:'Nermin Sefić',textEn:'Nermin Sefić',href:'/nermin-sefic/'},{text:'Projekti',textEn:'Projects',href:'/projects/'},{text:'Strateški roadmap',textEn:'Strategic roadmap',href:'/projects/roadmap/'},{text:'Tržišta',textEn:'Markets',href:'/trzista/'},{text:'Grupna mreža',textEn:'Group network',href:'/group-network/'},{text:'Financije',textEn:'Finance',href:'/financije/'},{text:'Tehnologija',textEn:'Technology',href:'/tehnologija/'},{text:'Intelligence Desk',textEn:'Intelligence Desk',href:'/intelligence-desk/'},{text:'Registri',textEn:'Registers',href:'/registri/'},{text:'Sadržaj',textEn:'Content',href:'/sadrzaj/'},{text:'Teme',textEn:'Topics',href:'/teme/'},{text:'THE CODE',textEn:'THE CODE',href:'/the-code/'},{text:'Workeri',textEn:'Workers',href:'/workers/'},{text:'Vijesti',textEn:'News',href:'/news/'},{text:'Objave',textEn:'Publications',href:'/objave/'},{text:'Medijske prijave',textEn:'Media applications',href:'/media-application/'},{text:'Kontakt',textEn:'Contact',href:'/contact/'},{text:'English portal',textEn:'English portal',href:'/en/'}
+        {text:'Početna',textEn:'Home',href:'/'},
+        {text:'O nama',textEn:'About',href:'/about/'},
+        {text:'Nermin Sefić',textEn:'Nermin Sefić',href:'/nermin-sefic/'},
+        {text:'Projekti',textEn:'Projects',href:'/projects/'},
+        {text:'Strateški roadmap',textEn:'Strategic roadmap',href:'/projects/roadmap/'},
+        {text:'Grupna mreža',textEn:'Group network',href:'/group-network/'},
+        {text:'Financije',textEn:'Finance',href:'/finance/'},
+        {text:'Newsroom',textEn:'Newsroom',href:'/newsroom/'},
+        {text:'Izvješća',textEn:'Reports',href:'/reports/'},
+        {text:'Tržišta',textEn:'Markets',href:'/trzista/'},
+        {text:'Tehnologija',textEn:'Technology',href:'/tehnologija/'},
+        {text:'Intelligence Desk',textEn:'Intelligence Desk',href:'/intelligence-desk/'},
+        {text:'Registri',textEn:'Registers',href:'/registri/'},
+        {text:'Sadržaj',textEn:'Content',href:'/sadrzaj/'},
+        {text:'Teme',textEn:'Topics',href:'/teme/'},
+        {text:'THE CODE',textEn:'THE CODE',href:'/the-code/'},
+        {text:'Workeri',textEn:'Workers',href:'/workers/'},
+        {text:'Medijske prijave',textEn:'Media applications',href:'/media-application/'},
+        {text:'Kontakt',textEn:'Contact',href:'/contact/'},
+        {text:'English portal',textEn:'English portal',href:'/en/'}
       ]
     },
     {
       label:'Mediji i objava / Media & publishing',
       items:[
-        {text:'News Auto Publication',textEn:'News Auto Publication',href:'/admin-center/news-publication/',protected:true},{text:'Campaign Mailer',textEn:'Campaign Mailer',href:'/campaign-mailer/',protected:true,status:'zaključano / locked'}
+        {text:'News Auto Publication',textEn:'News Auto Publication',href:'/admin-center/news-publication/',protected:true},
+        {text:'Campaign Mailer',textEn:'Campaign Mailer',href:'/campaign-mailer/',protected:true,status:'zaključano / locked'}
       ]
     }
   ];
@@ -42,18 +62,20 @@
     const staticNav=document.querySelector('.site-header .nav-links');
     if(staticNav){
       const canonical=[
-        {text:'ADMIN',textEn:'ADMIN',href:'/admin-center/'},
+        {text:'Početna',textEn:'Home',href:'/'},
         {text:'O nama',textEn:'About',href:'/about/'},
         {text:'Projekti',textEn:'Projects',href:'/projects/'},
-        {text:'Vijesti',textEn:'News',href:'/news/'},
-        {text:'Objave',textEn:'Publications',href:'/objave/'},
-        {text:'Medijske prijave',textEn:'Media applications',href:'/media-application/'},
-        {text:'Kontakt',textEn:'Contact',href:'/contact/'}
+        {text:'Financije',textEn:'Finance',href:'/finance/'},
+        {text:'Newsroom',textEn:'Newsroom',href:'/newsroom/'},
+        {text:'Izvješća',textEn:'Reports',href:'/reports/'},
+        {text:'Media',textEn:'Media',href:'/media-application/'},
+        {text:'Kontakt',textEn:'Contact',href:'/contact/'},
+        {text:'ADMIN',textEn:'ADMIN',href:'/admin-center/'}
       ];
       staticNav.replaceChildren(...canonical.map(item=>{
         const link=document.createElement('a');link.href=item.href;link.textContent=labelOf(item);if(item.href==='/admin-center/'){link.rel='nofollow';link.dataset.protected='true';}return link;
       }));
-      staticNav.dataset.gnkCanonicalRoutes='v2';
+      staticNav.dataset.gnkCanonicalRoutes='v3';
     }
     const headerNav=document.querySelector('.site-header .container.nav');
     if(headerNav&&!headerNav.querySelector('.gnk-language-switch')){
