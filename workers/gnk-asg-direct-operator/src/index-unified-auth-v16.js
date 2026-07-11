@@ -13,17 +13,19 @@ import {
 } from './pdf-center-v1.js';
 import {
   handleContactCaseCenter,
+  createContactCase,
   API_PREFIX as CONTACT_CASE_API,
   VERSION as CONTACT_CASE_VERSION
 } from './contact-case-center-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V33_20260711_PDF_CONTACT_CASE_CENTERS_${EMAIL_STATUS_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V34_20260711_PUBLIC_CONTACT_NEWS_ADMIN_${EMAIL_STATUS_VERSION}_${BASE_VERSION}`;
 
 const WORKER_OPS_PATH='/worker-ops/';
 const WORKER_OPS_LOGIN_NEXT='/operator-dashboard/?workerOpsReturn=1';
 const ADMIN_CENTER_PATH='/admin-center/';
 const ADMIN_MENU_SCRIPT='/assets/admin-menu-v1.js?v=20260711';
 const EMAIL_STATUS_PIXEL_PREFIX=`${EMAIL_STATUS_API}/open/`;
+const PUBLIC_CONTACT_SUBMIT='/api/contact-submit';
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 function isWorkerOpsPath(path){return path==='/worker-ops'||path.startsWith('/worker-ops/');}
@@ -34,6 +36,7 @@ function isContactCaseApiPath(path){return path===CONTACT_CASE_API||path.startsW
 function isEmailStatusPixel(path){return path.startsWith(EMAIL_STATUS_PIXEL_PREFIX);}
 function trackedEnv(env){return withEmailStatusTracking(env);}
 function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-active-entrypoint':'src/index-unified-auth-v16.js','x-gnk-email-status-tracking':EMAIL_STATUS_VERSION}});}
+function clean(value,max=1000){return String(value??'').trim().slice(0,max);}
 
 function stamp(response){
   const headers=new Headers(response.headers);
@@ -79,6 +82,7 @@ function adminAssetPath(path){
   if(path==='/admin-center/mail-search')return '/admin-center/mail-search/index.html';
   if(path==='/admin-center/pdf')return '/admin-center/pdf/index.html';
   if(path==='/admin-center/contacts')return '/admin-center/contacts/index.html';
+  if(path==='/admin-center/news-publication')return '/admin-center/news-publication/index.html';
   return null;
 }
 
@@ -99,6 +103,30 @@ async function adminCenterResponse(request,env,path){
   headers.set('x-robots-tag','noindex, nofollow, noarchive');
   headers.set('x-gnk-admin-center','operator-auth-required');
   return new Response(request.method==='HEAD'?null:await response.text(),{status:response.status,statusText:response.statusText,headers});
+}
+
+async function handlePublicContactSubmit(request,env){
+  if(request.method!=='POST')return json({ok:false,error:'method_not_allowed'},405);
+  if(!env.GNK_ASG_D1)return json({ok:false,error:'contact_storage_unavailable'},503);
+  const body=await request.json().catch(()=>null);
+  if(!body||typeof body!=='object')return json({ok:false,error:'invalid_json'},400);
+  if(clean(body.website,200))return json({ok:true,accepted:true});
+  const payload={
+    source:`public-contact:${clean(body.department,40)||'contact'}`,
+    name:clean(body.name,160),
+    email:clean(body.email,200).toLowerCase(),
+    subject:clean(body.subject,220),
+    message:clean(body.message,8000),
+    language:'hr'
+  };
+  if(!payload.name||!payload.email||!payload.subject||!payload.message)return json({ok:false,error:'missing_required_fields'},400);
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email))return json({ok:false,error:'invalid_email'},400);
+  try{
+    const result=await createContactCase(env,payload);
+    return json({ok:true,accepted:true,...result},201);
+  }catch(error){
+    return json({ok:false,error:'contact_submit_failed'},500);
+  }
 }
 
 async function injectAdminMenu(request,response){
@@ -141,7 +169,8 @@ async function patchVersionResponse(request,response){
       workerOpsDirectAssetGuard:'operator-auth-required',
       workerOpsLoginReturn:'isolated-wrapper-redirect',
       adminCenter:'operator-auth-required',
-      adminCenterModules:['/mail-studio/','/campaign-mailer/','/admin-center/mail-search/','/admin-center/pdf/','/admin-center/contacts/'],
+      adminCenterModules:['/mail-studio/','/campaign-mailer/','/admin-center/mail-search/','/admin-center/pdf/','/admin-center/contacts/','/admin-center/news-publication/'],
+      publicContactSubmit:PUBLIC_CONTACT_SUBMIT,
       adminMenu:'public-entry-protected-destination',
       emailStatusTracking:EMAIL_STATUS_VERSION,
       pdfCenter:PDF_CENTER_VERSION,
@@ -157,6 +186,8 @@ async function patchVersionResponse(request,response){
 export default{
   async fetch(request,env,ctx){
     const active=trackedEnv(env),path=pathOf(request);
+
+    if(path===PUBLIC_CONTACT_SUBMIT)return stamp(await handlePublicContactSubmit(request,active));
 
     if((request.method==='GET'||request.method==='HEAD')&&isAdminCenterPath(path)){
       if(!await isAuthenticated(request,active,ctx)){
