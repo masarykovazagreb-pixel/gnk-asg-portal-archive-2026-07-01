@@ -24,8 +24,8 @@
     const t = labels();
     const homeUrl = en ? '/en/' : '/';
     const marketUrl = en ? '/en/markets/' : '/trzista/';
-    const insightsUrl = en ? '/en/insights/' : '/objave/';
-    const contactUrl = en ? '/en/contact/' : '/contact/';
+    const insightsUrl = en ? '/en/insights/' : '/insights-hr/';
+    const contactUrl = en ? '/en/contact/' : '/kontakt/';
     const profileUrl = homeUrl + '#o-nama';
     const financeUrl = homeUrl + '#financials';
     const networkUrl = homeUrl + '#grupa';

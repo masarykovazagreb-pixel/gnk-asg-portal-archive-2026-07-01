@@ -82,7 +82,7 @@
   function mount() {
     const sidebar=document.querySelector('#global-network .network-sidebar'); if (!sidebar) return false;
     let panel=$('networkPdfExport'); const T=text(); if(!panel){panel=document.createElement('div');panel.id='networkPdfExport';panel.className='network-pdf-export';sidebar.appendChild(panel);}
-    panel.innerHTML=`<strong>PDF · 2D</strong><p>${T.note}</p>`;
+    panel.innerHTML=`<strong>PDF · 2D</strong><p>${T.note}</p><button type="button" id="networkPdfButton">↓ ${T.button}</button>`;
     $('networkPdfButton').addEventListener('click',()=>download($('networkPdfButton'))); return true;
   }
   async function init() { [S.network,S.facts]=await Promise.all([get('data/group_network.json'),get('data/group_location_facts.json')]); let tries=0; const timer=setInterval(()=>{if(mount() || ++tries>150)clearInterval(timer);},70); window.addEventListener('gnk-language-change',mount); }

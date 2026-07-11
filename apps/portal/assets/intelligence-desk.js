@@ -6,7 +6,7 @@
     insights:'/en/insights/',
     aiPortal:'/en/insights/2026/05/ai-corporate-portal-understanding/',
     aiGovernance:'/en/insights/2026/05/ai-governance-corporate-accountability/',
-    contactHr:'/contact/',
+    contactHr:'/kontakt/',
     contactEn:'/en/contact/',
     webmail:'/webmail/',
     whatsapp:'https://wa.me/385916104398',

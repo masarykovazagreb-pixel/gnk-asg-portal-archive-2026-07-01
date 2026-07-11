@@ -8,7 +8,7 @@
   let verified = false;
 
   const WHATSAPP = 'https://wa.me/385916104398';
-  const CONTACT = '/contact/';
+  const CONTACT = '/kontakt/';
   const DESK = '#assistant';
   const NEWS = '#news';
 

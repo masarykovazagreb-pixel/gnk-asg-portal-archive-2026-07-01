@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260623-index-menu-panels01';
+  var VERSION = '20260601-activity-model-fix01';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/desk-search.js');
   script('/assets/mobile-app.js');
   script('/assets/mobile-navigation.js');
-  script('/assets/menu-panels.js');
   script('/assets/floating-intelligence.js');
   script('/assets/world-geography.js');
   script('/assets/group-network.js');
@@ -108,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var href = link.getAttribute('href') || '';
       var text = (link.textContent || '').trim();
       if (href === '/en/insights/' || href === 'en/insights/' || href === '../../../../../en/insights/') link.textContent = en ? 'Insights' : 'Objave';
-      if (href === '/objave/' || href === 'insights-hr/' || href === '../../insights-hr/') link.textContent = en ? 'HR archive' : 'Objave';
+      if (href === '/insights-hr/' || href === 'insights-hr/' || href === '../../insights-hr/') link.textContent = en ? 'HR archive' : 'Objave';
       if (!en) {
         if (text === 'Technology & AI') link.textContent = 'Tehnologija i AI';
         if (text === 'Digital Assets' || text === 'Market Monitor') link.textContent = 'Digitalna imovina';

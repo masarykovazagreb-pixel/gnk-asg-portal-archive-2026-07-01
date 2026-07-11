@@ -43,7 +43,7 @@
       <div class="command-live"><span>${esc(isAiActive ? T.aiLive : T.public)}</span><span>${esc(T.market)} · ${esc(T.five)}</span></div>
       <div class="command-cards"><div class="command-card"><small>${esc(T.ai)}</small><strong>${esc(isAiActive ? T.aiLive : T.public)}</strong><em>Puter / Gemini</em></div><div class="command-card"><small>${esc(T.news)}</small><strong>${esc(T.hour)}</strong><em>${esc(T.updated)}</em></div><div class="command-card"><small>${esc(T.network)}</small><strong>${esc(T.nodes)}</strong><em>33 + 12</em></div><div class="command-card"><small>${esc(T.market)}</small><strong>${esc(T.five)}</strong><em>${esc(stamp(marketUpdated))}</em></div></div>
       <div class="command-market"><h4>${esc(T.crypto)}</h4>${coinRows.map(coin => `<div class="command-market-row"><span>${esc(coin.symbol)}</span><strong>${money(coin.prices && coin.prices.usd, 'USD')} ${change(coin.changes_24h && coin.changes_24h.usd)}</strong></div>`).join('') || '<div class="command-market-row"><span>—</span><strong>—</strong></div>'}</div>
-      <div class="command-actions"><button type="button" data-command-jump="#digital-assets">${esc(T.jumpMarket)} →</button><button type="button" data-command-jump="#dokumenti">${esc(T.jumpDocs)} →</button></div>
+      <div class="command-actions"><button type="button" data-command-jump="#digital-assets">${esc(T.jumpMarket)} →</button><button type="button" data-command-jump="#global-network">${esc(T.jumpNetwork)} →</button><button type="button" data-command-jump="#dokumenti">${esc(T.jumpDocs)} →</button></div>
       <div class="command-foot">${esc(T.updated)}: ${esc(stamp(marketUpdated))}</div>`;
     panel.querySelectorAll('[data-command-jump]').forEach(button => button.addEventListener('click', () => scrollToSection(button.dataset.commandJump)));
     return true;
@@ -85,7 +85,7 @@
     const T = c();
     const options = nodes().map(node => `<option value="${esc(node.id)}"${node.id === chosen ? ' selected' : ''}>${esc(nodeName(node))} · ${esc(nodePlace(node))}</option>`).join('');
     deck.innerHTML = `<div class="network-command-title"><small>2D / 3D · ${esc(T.ops)}</small><strong>GNK DINAMO Ltd. · 45 LOCATIONS</strong><span>${esc(T.direct)}</span></div>
-      <div class="network-locate"><select id="networkEntitySelect" aria-label="${esc(T.locate)}">${options}</select></div>
+      <div class="network-locate"><select id="networkEntitySelect" aria-label="${esc(T.locate)}">${options}</select><button id="networkEntityGo" type="button">${esc(T.locate)}</button></div>
       <div class="network-shortcuts"><button type="button" data-net-shortcut="boulder">${esc(T.hq)}</button><button type="button" data-net-filter="active">${esc(T.active)}</button><button type="button" data-net-filter="planned">${esc(T.expansion)}</button><button type="button" data-net-filter="outside">${esc(T.outside)}</button></div>
       <div class="network-focus-status"><span>${esc(T.selected)}:</span><strong id="networkSelectedName">GNK DINAMO Ltd.</strong><span id="networkSelectedPlace">Boulder, Colorado, USA</span><span class="route-pill">● ${esc(T.direct)}</span></div>`;
     $('networkEntityGo').addEventListener('click', () => chooseNode($('networkEntitySelect').value));

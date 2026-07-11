@@ -21,7 +21,7 @@
     const t = labels();
     mobile.innerHTML = '<a class="primary" href="#assistant">' + t.desk + '</a>' +
       '<a href="#global-network">' + t.network + '</a>' +
-      '' +
+      '<a href="#financials">' + t.finance + '</a>' +
       '<a href="#technology">' + t.technology + '</a>' +
       '<a href="#digital-assets">' + t.markets + '</a>' +
       '<a href="#news">' + t.news + '</a>' +

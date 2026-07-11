@@ -6,7 +6,7 @@
     trzista: ['tržište','trziste','burza','market','stocks','crypto','bitcoin','digitalna imovina','zlato','nafta'],
     global: ['global','zemlje','mreža','mreza','kanada','singapur','japan','brazil','uae','kina','australija'],
     sport: ['sport','stadion','infrastruktura','urbani razvoj','održivost'],
-    kontakt: ['/contact/','whatsapp','komunikacija','poruka','email'],
+    kontakt: ['kontakt','whatsapp','komunikacija','poruka','email'],
     kartice: ['kartice','plaćanja','placanja','fintech','payment','card']
   };
   let manifest = null;

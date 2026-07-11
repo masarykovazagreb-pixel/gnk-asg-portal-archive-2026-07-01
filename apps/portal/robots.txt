@@ -1,72 +1,12 @@
 User-agent: *
 Allow: /
-
-# Protected / non-public operational surfaces
+Allow: /visual-index/
+Allow: /visual-sitemap.xml
+Allow: /data/visual_gallery.json
+Allow: /assets/seo-gallery/
 Disallow: /admin/
-Disallow: /admin-center/
-Disallow: /operator-dashboard/
-Disallow: /operator-mobile/
-Disallow: /worker-ops/
-Disallow: /mail-studio/
 Disallow: /webmail/
-Disallow: /campaign-mailer/
-Disallow: /control/
-Disallow: /automation-status/
-Disallow: /backend-status/
-Disallow: /security-center/
-Disallow: /queues/
-Disallow: /audit/
-Disallow: /api/
 Disallow: /podijeli/
 
-# Public high-value routes
-Allow: /about/
-Allow: /the-code/
-Allow: /the-code/media-memorandum/
-Allow: /media-application/
-Allow: /finance/
-Allow: /newsroom/
-Allow: /reports/
-Allow: /portal-map/
-Allow: /organization/
-Allow: /digital-workforce/
-Allow: /media-kit/
-Allow: /projects/
-Allow: /assets/
-Allow: /downloads/
-
-# Explicit AI answer-engine crawlers (already covered by User-agent: * Allow: /,
-# listed explicitly so the intent is unambiguous for maintainers and for bots
-# that prefer a named match over the wildcard).
-User-agent: GPTBot
-Allow: /
-Disallow: /admin/
-Disallow: /admin-center/
-Disallow: /api/
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-Disallow: /admin/
-Disallow: /admin-center/
-Disallow: /api/
-
-User-agent: Claude-User
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: CCBot
-Allow: /
-Disallow: /admin/
-Disallow: /admin-center/
-Disallow: /api/
-
-Sitemap: https://www.gnk-asg.hr/sitemap.xml
-Sitemap: https://www.gnk-asg.hr/image-sitemap.xml
+Sitemap: https://gnk-asg.hr/sitemap.xml
+Sitemap: https://gnk-asg.hr/visual-sitemap.xml
