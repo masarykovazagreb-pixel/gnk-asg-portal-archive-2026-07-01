@@ -68,15 +68,15 @@
   const style=document.createElement('style');
   style.textContent=`
     :root{--gnk-event-bar-height:78px}
-    #gnk-event-bar{position:fixed;inset:0 0 auto 0;height:var(--gnk-event-bar-height);z-index:99998;overflow:hidden;background:linear-gradient(90deg,#07162d 0%,#0c4a6e 28%,#0b6b8f 52%,#0c4a6e 74%,#07162d 100%);border-bottom:2px solid #d8b66a;box-shadow:0 10px 35px rgba(0,0,0,.35);color:#fff}
+    #gnk-event-bar{position:fixed;inset:0 0 auto 0;height:var(--gnk-event-bar-height);z-index:99998;overflow:hidden;background:linear-gradient(90deg,#2a170b 0%,#4b2a12 28%,#6a3f1c 52%,#4b2a12 74%,#2a170b 100%);border-bottom:2px solid #d8b66a;box-shadow:0 10px 35px rgba(0,0,0,.35);color:#f4d37a}
     #gnk-event-bar .gnk-event-track{position:absolute;inset:0;display:flex;align-items:center;white-space:nowrap;overflow:hidden;pointer-events:none}
-    #gnk-event-bar .gnk-event-message{display:inline-block;min-width:100%;padding-left:100%;font:900 15px/1.2 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;animation:gnk-event-marquee 24s linear infinite;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+    #gnk-event-bar .gnk-event-message{display:inline-block;min-width:100%;padding-left:100%;font:900 15px/1.2 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;animation:gnk-event-marquee 24s linear infinite;text-shadow:0 1px 8px rgba(0,0,0,.7);color:#f4d37a}
     @keyframes gnk-event-marquee{from{transform:translateX(0)}to{transform:translateX(-200%)}}
     #gnk-floating-menu{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:99999;font-family:Arial,sans-serif}
     #gnk-floating-menu *{box-sizing:border-box}
     #gnk-floating-menu .gnk-floating-actions{display:flex;gap:10px;justify-content:center;align-items:center}
-    #gnk-floating-menu .gnk-home-button,#gnk-floating-menu>.gnk-floating-actions>button{height:46px;padding:0 21px;border-radius:999px;border:1px solid rgba(255,255,255,.92);background:#fff;color:#07162d;font-weight:900;letter-spacing:.08em;box-shadow:0 10px 30px rgba(0,0,0,.35);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
-    #gnk-floating-menu .gnk-home-button:hover,#gnk-floating-menu>.gnk-floating-actions>button:hover{border-color:#d8b66a;background:#fff8e6}
+    #gnk-floating-menu .gnk-home-button,#gnk-floating-menu>.gnk-floating-actions>button{height:46px;padding:0 21px;border-radius:999px;border:1px solid #d8b66a;background:#3a2110;color:#f4d37a;font-weight:900;letter-spacing:.08em;box-shadow:0 10px 30px rgba(0,0,0,.4);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+    #gnk-floating-menu .gnk-home-button:hover,#gnk-floating-menu>.gnk-floating-actions>button:hover{border-color:#f4d37a;background:#5a3518;color:#fff0b5}
     #gnk-floating-menu nav{display:none;position:absolute;left:50%;transform:translateX(-50%);top:56px;width:min(460px,calc(100vw - 28px));max-height:calc(100vh - 100px);overflow:auto;padding:14px;background:#0b0b0b;border:1px solid #d8b66a;border-radius:18px;box-shadow:0 18px 55px rgba(0,0,0,.55)}
     #gnk-floating-menu.open nav{display:block}
     #gnk-floating-menu .gnk-menu-group+.gnk-menu-group{margin-top:13px;padding-top:13px;border-top:1px solid #2d271d}
@@ -102,7 +102,7 @@
   const eventBar=document.createElement('div');eventBar.id='gnk-event-bar';eventBar.setAttribute('role','banner');
   const eventTrack=document.createElement('div');eventTrack.className='gnk-event-track';
   const eventMessage=document.createElement('div');eventMessage.className='gnk-event-message';
-  eventMessage.textContent=language()==='en'?'THE CODE · NEW YORK · 7 OCTOBER 2026 · ACTIVATION 11:30 ET · GNK ASG / GNK DINAMO LTD. GROUP':'THE CODE · NEW YORK · 7. LISTOPADA 2026. · AKTIVACIJA 11:30 ET · GNK ASG / GNK DINAMO LTD. GROUP';
+  eventMessage.textContent='THE CODE · NEW YORK · 7 OCTOBER 2026 · CODE ACTIVATION AT 11:30 AM ET · GNK ASG / GNK DINAMO LTD. GROUP';
   eventTrack.appendChild(eventMessage);eventBar.appendChild(eventTrack);document.body.appendChild(eventBar);
 
   const wrap=document.createElement('div');wrap.id='gnk-floating-menu';
