@@ -56,7 +56,15 @@
     #gnk-floating-menu .gnk-menu-meta{color:#9c927f;font-size:9px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
     #gnk-floating-menu nav a[data-protected="true"] .gnk-menu-meta::before{content:'ZAŠTIĆENO';}
     #gnk-floating-menu nav a[data-status] .gnk-menu-meta::after{content:attr(data-status);margin-left:8px;color:#d8b66a}
-    @media(max-width:700px){#gnk-floating-menu{right:12px;top:12px}#gnk-floating-menu .gnk-home-button,#gnk-floating-menu> .gnk-floating-actions>button{height:44px;padding:0 14px}#gnk-floating-menu nav{top:52px;width:min(380px,calc(100vw - 24px));max-height:calc(100vh - 76px)}}
+    @media(max-width:700px){
+      #gnk-floating-menu{right:12px;top:auto;bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+      #gnk-floating-menu .gnk-home-button{display:none}
+      #gnk-floating-menu .gnk-floating-actions{justify-content:flex-end}
+      #gnk-floating-menu> .gnk-floating-actions>button{height:40px;min-width:78px;padding:0 14px;font-size:12px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+      #gnk-floating-menu nav{top:auto;bottom:50px;width:min(380px,calc(100vw - 24px));max-height:calc(100vh - 170px)}
+      #gnk-floating-menu.open nav{animation:gnk-menu-rise .16s ease-out}
+      @keyframes gnk-menu-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    }
     @media(prefers-reduced-motion:reduce){#gnk-floating-menu.open nav{animation:none}}
   `;
   document.head.appendChild(style);
