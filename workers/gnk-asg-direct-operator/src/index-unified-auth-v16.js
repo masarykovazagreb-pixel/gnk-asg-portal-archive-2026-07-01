@@ -6,8 +6,18 @@ import {
   API_PREFIX as EMAIL_STATUS_API,
   VERSION as EMAIL_STATUS_VERSION
 } from './email-status-tracking-v5.js';
+import {
+  handlePdfCenter,
+  API_PREFIX as PDF_CENTER_API,
+  VERSION as PDF_CENTER_VERSION
+} from './pdf-center-v1.js';
+import {
+  handleContactCaseCenter,
+  API_PREFIX as CONTACT_CASE_API,
+  VERSION as CONTACT_CASE_VERSION
+} from './contact-case-center-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V32_20260711_ADMIN_CENTER_GUARD_${EMAIL_STATUS_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V33_20260711_PDF_CONTACT_CASE_CENTERS_${EMAIL_STATUS_VERSION}_${BASE_VERSION}`;
 
 const WORKER_OPS_PATH='/worker-ops/';
 const WORKER_OPS_LOGIN_NEXT='/operator-dashboard/?workerOpsReturn=1';
@@ -19,6 +29,8 @@ function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')
 function isWorkerOpsPath(path){return path==='/worker-ops'||path.startsWith('/worker-ops/');}
 function isAdminCenterPath(path){return path==='/admin-center'||path.startsWith('/admin-center/');}
 function isEmailStatusApiPath(path){return path===EMAIL_STATUS_API||path.startsWith(`${EMAIL_STATUS_API}/`);}
+function isPdfCenterApiPath(path){return path===PDF_CENTER_API||path.startsWith(`${PDF_CENTER_API}/`);}
+function isContactCaseApiPath(path){return path===CONTACT_CASE_API||path.startsWith(`${CONTACT_CASE_API}/`);}
 function isEmailStatusPixel(path){return path.startsWith(EMAIL_STATUS_PIXEL_PREFIX);}
 function trackedEnv(env){return withEmailStatusTracking(env);}
 function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-active-entrypoint':'src/index-unified-auth-v16.js','x-gnk-email-status-tracking':EMAIL_STATUS_VERSION}});}
@@ -65,6 +77,8 @@ function patchWorkerOpsLoginRedirect(request,response){
 function adminAssetPath(path){
   if(path==='/admin-center')return '/admin-center/index.html';
   if(path==='/admin-center/mail-search')return '/admin-center/mail-search/index.html';
+  if(path==='/admin-center/pdf')return '/admin-center/pdf/index.html';
+  if(path==='/admin-center/contacts')return '/admin-center/contacts/index.html';
   return null;
 }
 
@@ -127,9 +141,11 @@ async function patchVersionResponse(request,response){
       workerOpsDirectAssetGuard:'operator-auth-required',
       workerOpsLoginReturn:'isolated-wrapper-redirect',
       adminCenter:'operator-auth-required',
-      adminCenterModules:['/mail-studio/','/campaign-mailer/','/admin-center/mail-search/'],
+      adminCenterModules:['/mail-studio/','/campaign-mailer/','/admin-center/mail-search/','/admin-center/pdf/','/admin-center/contacts/'],
       adminMenu:'public-entry-protected-destination',
       emailStatusTracking:EMAIL_STATUS_VERSION,
+      pdfCenter:PDF_CENTER_VERSION,
+      contactCaseCenter:CONTACT_CASE_VERSION,
       emailStatusApi:'operator-auth-required',
       emailStatusPixel:'public-no-request-metadata',
       scheduledAutomation:'email-status-sync-only',
@@ -156,6 +172,18 @@ export default{
       if(!isEmailStatusPixel(path)&&!await isAuthenticated(request,active,ctx))return json({ok:false,error:'unauthorized',message:'Operator/admin session required.'},401);
       const tracking=await handleEmailStatusRequest(request,active);
       return stamp(tracking||json({ok:false,error:'not_found'},404));
+    }
+
+    if(isPdfCenterApiPath(path)){
+      if(!await isAuthenticated(request,active,ctx))return json({ok:false,error:'unauthorized',message:'Operator/admin session required.'},401);
+      const pdfResponse=await handlePdfCenter(request,active);
+      return stamp(pdfResponse||json({ok:false,error:'not_found'},404));
+    }
+
+    if(isContactCaseApiPath(path)){
+      if(!await isAuthenticated(request,active,ctx))return json({ok:false,error:'unauthorized',message:'Operator/admin session required.'},401);
+      const caseResponse=await handleContactCaseCenter(request,active);
+      return stamp(caseResponse||json({ok:false,error:'not_found'},404));
     }
 
     if((request.method==='GET'||request.method==='HEAD')&&isWorkerOpsPath(path)&&!await isAuthenticated(request,active,ctx)){
