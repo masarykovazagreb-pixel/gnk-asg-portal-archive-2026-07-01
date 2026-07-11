@@ -1,6 +1,6 @@
 (()=>{
   const addAdminLink=()=>{
-    const nav=document.getElementById('navLinks')||document.querySelector('.nav-links');
+    const nav=document.getElementById('navLinks')||document.querySelector('.nav-links')||document.querySelector('.dhq-links');
     if(!nav||nav.querySelector('[data-gnk-admin-link]'))return;
     const link=document.createElement('a');
     link.href='/admin-center/';
