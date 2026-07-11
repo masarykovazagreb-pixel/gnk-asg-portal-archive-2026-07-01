@@ -10,9 +10,22 @@
         insights: 'Objave', sources: 'Izvori', contact: 'Kontakt', desk: 'AI asistent'
       };
 
+  function ensureFloatingMenu() {
+    if (isEnglish()) return;
+    if (document.getElementById('gnk-floating-menu')) return;
+    if (document.querySelector('script[src^="/assets/public-floating-menu-v1.js"]')) return;
+    const loader = document.createElement('script');
+    loader.src = '/assets/public-floating-menu-v1.js?v=20260711-2';
+    loader.defer = true;
+    document.body.appendChild(loader);
+  }
+
   function render() {
     const nav = document.getElementById('navLinks');
-    if (!nav) return;
+    if (!nav) {
+      ensureFloatingMenu();
+      return;
+    }
     nav.querySelectorAll(':scope > a').forEach(link => link.classList.add('legacy-nav-item'));
     let box = nav.querySelector('.portal-navigation');
     if (!box) {
@@ -40,6 +53,7 @@
       '<a href="' + sourcesUrl + '">' + t.sources + '</a>' +
       '<a href="' + contactUrl + '">' + t.contact + '</a>' +
       '<a class="desk-entry" href="' + deskUrl + '">✦ ' + t.desk + '</a>';
+    ensureFloatingMenu();
   }
   document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', render) : render();
   window.addEventListener('gnk-language-change', render);
