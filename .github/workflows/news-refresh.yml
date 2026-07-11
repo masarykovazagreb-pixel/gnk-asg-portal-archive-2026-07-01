@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/news-refresh.yml'
       - 'apps/portal/scripts/refresh_news.py'
+      - 'apps/portal/scripts/refresh_news_policy.py'
       - 'apps/portal/data/news.json'
       - 'apps/portal/data/news_archive.json'
       - 'apps/portal/data/update_status.json'
@@ -52,9 +53,9 @@ jobs:
 
       - name: Refresh public business news feed
         if: steps.schedule_guard.outputs.run_refresh == 'true'
-        run: python apps/portal/scripts/refresh_news.py
+        run: python apps/portal/scripts/refresh_news_policy.py
 
-      - name: Validate refreshed feed
+      - name: Validate refreshed feed and retention policy
         if: steps.schedule_guard.outputs.run_refresh == 'true'
         shell: bash
         run: |
@@ -63,10 +64,18 @@ jobs:
           from pathlib import Path
 
           news = json.loads(Path('apps/portal/data/news.json').read_text(encoding='utf-8'))
+          archive = json.loads(Path('apps/portal/data/news_archive.json').read_text(encoding='utf-8'))
           status = json.loads(Path('apps/portal/data/update_status.json').read_text(encoding='utf-8'))
-          assert isinstance(news, list) and len(news) > 0, 'news.json is empty'
-          assert status.get('news', {}).get('status') in {'ok', 'degraded'}, 'news refresh status failed'
-          print(f'validated news items: {len(news)}')
+          news_status = status.get('news', {})
+
+          assert isinstance(news, list) and 0 < len(news) <= 100, 'news.json must contain 1-100 items'
+          assert isinstance(archive, list), 'news_archive.json must be a list'
+          assert news_status.get('status') in {'ok', 'degraded'}, 'news refresh status failed'
+          assert news_status.get('max_public_items') == 100, 'public limit is not 100'
+          assert news_status.get('archive_prune_trigger') == 1000, 'archive trigger is not 1000'
+          assert news_status.get('archive_delete_oldest_batch') == 500, 'archive prune batch is not 500'
+          assert len(archive) <= 1000, 'archive remains above 1000 after pruning'
+          print(f'validated public={len(news)}, archive={len(archive)}')
           PY
 
       - name: Commit refreshed feed

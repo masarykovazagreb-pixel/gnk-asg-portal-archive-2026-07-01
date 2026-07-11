@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+"""Refresh business news with the GNK ASG public/archive retention policy.
+
+Policy:
+- expose the newest 100 items in data/news.json;
+- place all older unique items in data/news_archive.json;
+- when the archive grows beyond 1,000 items, remove the oldest 500.
+
+The RSS sources, parsing, filtering and deduplication are reused from
+refresh_news.py so this file changes retention only.
+"""
+
+from __future__ import annotations
+
+import sys
+import time
+import urllib.error
+import xml.etree.ElementTree as ET
+
+import refresh_news as base
+
+PUBLIC_LIMIT = 100
+ARCHIVE_TRIGGER = 1000
+ARCHIVE_DELETE_OLDEST = 500
+
+
+def main() -> int:
+    base.DATA.mkdir(parents=True, exist_ok=True)
+    fetched = []
+    errors = []
+    success = 0
+    started = time.time()
+
+    for group, category, source, url in base.SOURCES:
+        try:
+            raw = base.fetch_url(url)
+            parsed = base.parse_feed(raw, group, category, source)
+            fetched.extend(parsed)
+            success += 1
+        except (urllib.error.URLError, TimeoutError, ET.ParseError, Exception) as exc:
+            errors.append({"source": source, "group": group, "error": str(exc)[:180]})
+
+    existing_public = base.read_json(base.NEWS_PATH, [])
+    existing_archive = base.read_json(base.ARCHIVE_PATH, [])
+    merged = base.merge_unique(fetched, existing_public, existing_archive)
+
+    public = merged[:PUBLIC_LIMIT]
+    archive_before_prune = merged[PUBLIC_LIMIT:]
+    removed_oldest = 0
+
+    if len(archive_before_prune) > ARCHIVE_TRIGGER:
+        removed_oldest = min(ARCHIVE_DELETE_OLDEST, len(archive_before_prune))
+        archive = archive_before_prune[:-removed_oldest]
+    else:
+        archive = archive_before_prune
+
+    base.write_json(base.NEWS_PATH, public)
+    base.write_json(base.ARCHIVE_PATH, archive)
+
+    by_group = {}
+    for item in public:
+        group = item.get("group", "unknown")
+        by_group[group] = by_group.get(group, 0) + 1
+
+    ratio = success / len(base.SOURCES) if base.SOURCES else 0
+    status_name = "ok" if public and ratio >= 0.5 else "degraded" if public else "failed"
+    ts = base.now_iso()
+    status = base.read_json(base.STATUS_PATH, {}) if base.STATUS_PATH.exists() else {}
+    status.update({
+        "updated_at": ts,
+        "news": {
+            "updated_at": ts,
+            "status": status_name,
+            "engine": "github_actions_rss_refresh_v3_retention_policy",
+            "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb plus manual workflow_dispatch",
+            "source_success_policy": "publish_when_public_items_available_and_at_least_50_percent_sources_synced",
+            "source_success_threshold": 0.5,
+            "source_success_ratio": round(ratio, 3),
+            "source_sync_status": "complete" if not errors else "partial_with_public_fallback",
+            "configured_sources": len(base.SOURCES),
+            "successful_sources": success,
+            "failed_sources": len(errors),
+            "storage_policy": "public_latest_100_archive_all_older_prune_oldest_500_when_archive_exceeds_1000",
+            "public_items": len(public),
+            "max_public_items": PUBLIC_LIMIT,
+            "archive_items": len(archive),
+            "archive_prune_trigger": ARCHIVE_TRIGGER,
+            "archive_delete_oldest_batch": ARCHIVE_DELETE_OLDEST,
+            "archive_items_before_prune": len(archive_before_prune),
+            "discarded_archive_overflow_items": removed_oldest,
+            "fetched_candidates": len(fetched),
+            "duplicates_or_blocked_removed": max(
+                0,
+                len(fetched) + len(existing_public) + len(existing_archive) - len(merged),
+            ),
+            "request_timeout_seconds": base.TIMEOUT,
+            "network_workers": 1,
+            "share_previews_ready": 0,
+            "by_group": by_group,
+            "errors": errors[:20],
+            "preview_errors": [],
+            "checked_at": ts,
+            "last_attempt_at": ts,
+            "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
+            "stale_safe": True,
+            "last_successful_refresh_at": ts if public else status.get("news", {}).get("last_successful_refresh_at"),
+            "data_status": "fresh_or_reference_checked",
+            "runtime_seconds": round(time.time() - started, 2),
+        },
+    })
+    base.write_json(base.STATUS_PATH, status)
+
+    print(
+        "news refresh: "
+        f"status={status_name}, public={len(public)}, archive={len(archive)}, "
+        f"archive_before_prune={len(archive_before_prune)}, removed_oldest={removed_oldest}, "
+        f"sources={success}/{len(base.SOURCES)}"
+    )
+    if errors:
+        print("source errors:")
+        for error in errors[:10]:
+            print("-", error)
+
+    return 0 if public else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
