@@ -2,8 +2,8 @@ import { EmailMessage } from 'cloudflare:email';
 import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
 
 const VERSION = `GNK_ASG_MAIL_CENTER_AI_V3_20260703_${AI_REPLY_VERSION}`;
-const INTERNAL_COPY = 'rht@gmx.com';
-const MANDATORY_BCC = 'beckuphome@gmail.com';
+const INTERNAL_COPY = ['beckuphome@gmail.com', 'rht@gmx.com'];
+const MANDATORY_BCC = ['beckuphome@gmail.com', 'rht@gmx.com'];
 const MEDIA_EMAILS = new Set(['media@gnk-asg.hr', 'press@gnk-asg.hr']);
 const DEFAULT_FROM = 'assistant@gnk-asg.hr';
 const MAX_LOG_ITEMS = 250;
@@ -274,13 +274,15 @@ async function handleInbound(message, env) {
   const base = { id, createdAt: new Date().toISOString(), version: VERSION, from: fromRaw, to: toRaw, fromEmail: sender, toEmail: toAddress, subject, messageId, language, profile: mediaProfile ? 'media-relations' : 'general', status: 'received', center: center.code, centerCity: center.city };
   await prependLog(env, 'mail:inbox', base);
 
-  try {
-    if (typeof message?.forward === 'function') {
-      await message.forward(INTERNAL_COPY);
-      await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_to_gmx_sent', copyTo: INTERNAL_COPY });
+  if (typeof message?.forward === 'function') {
+    for (const copyAddress of INTERNAL_COPY) {
+      try {
+        await message.forward(copyAddress);
+        await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_sent', copyTo: copyAddress });
+      } catch (error) {
+        await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_failed', copyTo: copyAddress, error: String(error?.message || error) });
+      }
     }
-  } catch (error) {
-    await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_to_gmx_failed', copyTo: INTERNAL_COPY, error: String(error?.message || error) });
   }
 
   if (!sender || sender.endsWith('@gnk-asg.hr') || isAutomatedInbound(message, sender)) {
@@ -301,13 +303,13 @@ async function handleInbound(message, env) {
   const replySubject = /^re:/i.test(subject) ? subject : `Re: ${subject}`;
   const text = mediaProfile ? mediaText(language, id, subject) : genericText(language, id, subject);
   const html = htmlBody(text, mediaProfile);
-  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: MANDATORY_BCC };
+  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: MANDATORY_BCC.join(', ') };
   await prependLog(env, 'mail:outbox', outbox);
 
   try {
     const result = await env.EMAIL.send({
       to: sender,
-      bcc: MANDATORY_BCC,
+      bcc: MANDATORY_BCC.join(', '),
       from: { email: fromAddress, name: fromName },
       replyTo: fromAddress,
       subject: replySubject,
