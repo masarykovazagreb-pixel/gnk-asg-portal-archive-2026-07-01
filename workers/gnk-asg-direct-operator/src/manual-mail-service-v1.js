@@ -1,4 +1,4 @@
-import {enforceRequiredSignature,MANDATORY_BCC,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
+import {enforceRequiredSignature,MANDATORY_BCC,INTERNAL_COPY_ADDRESS,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 import {buildAutoReplyCase,lookupAutoReplyCase,saveAutoReplyCase,VERSION as AUTO_REPLY_VERSION,CENTERS as AUTO_REPLY_CENTERS} from './auto-reply-case-center-v1.js';
 
 export const VERSION='GNK_ASG_MANUAL_MAIL_SERVICE_V3_20260709_AUTO_REPLY_CASE_CENTERS';
@@ -235,7 +235,7 @@ async function sendManual(request,env){
   let attachmentState;
   try{attachmentState=normalizeAttachments(body.attachments);}catch(error){return json({ok:false,error:clean(error?.code)||'invalid_attachment',message:String(error?.message||error).slice(0,300)},400);}
 
-  const bcc=[...new Set([...requestedBcc,...MANDATORY_BCC.map(e=>e.toLowerCase())])];
+  const bcc=[...new Set([...requestedBcc,MANDATORY_BCC.toLowerCase()])];
   const id=crypto.randomUUID(),createdAt=now();
   const fingerprint=await sha256(JSON.stringify({profile:profile.id,to,cc,bcc,subject,text,attachmentNames:attachmentState.items.map(item=>item.filename)}));
   const kv=kvOf(env),dedupeKey=`mail:manual:dedupe:${fingerprint}`;
@@ -280,6 +280,23 @@ async function sendManual(request,env){
   const firstFailure=results.find(item=>item.status==='FAILED');
   const entry={...base,status,provider:results,errorCode:firstFailure?.errorCode||'',errorMessage:firstFailure?.message||'',sentAt:sent?now():null};
   const auditResult=await audit(env,entry);
+  // Interna kopija (odvojeno od BCC) - salje se kao zaseban mail na INTERNAL_COPY_ADDRESS,
+  // ne kao BCC na primarnoj poruci. Ne blokira glavni rezultat ako ne uspije.
+  if(sent){
+    try{
+      await env.EMAIL.send(enforceRequiredSignature({
+        to:INTERNAL_COPY_ADDRESS,
+        from:{email:profile.email,name:profile.name},
+        replyTo:profile.email,
+        subject:`[Interna kopija] ${subject}`,
+        text:`Interna kopija poruke ${id} poslane na: ${to.join(', ')}\n\n${text}`,
+        html:`<p style="color:#666;font-size:12px;">Interna kopija poruke ${id} poslane na: ${to.join(', ')}</p>${html}`,
+        headers:{'X-GNK-ASG-Internal-Copy-Of':id}
+      }));
+    }catch(error){
+      console.error('internal-copy-send-failed',id,error);
+    }
+  }
   if(!sent&&kv?.delete)await kv.delete(dedupeKey).catch(()=>{});
   return json({ok:status==='SENT',id,status,profile:{id:profile.id,name:profile.name,email:profile.email},to,cc,bcc,mandatoryCopy:MANDATORY_BCC,subject,attachments:{count:attachmentState.items.length,totalBytes:attachmentState.totalBytes,files:attachmentState.items.map(item=>({filename:item.filename,type:item.type}))},sent,failed:to.length-sent,results,audit:auditResult,signatureVersion:SIGNATURE_VERSION,signatureLogo:'gold'},status==='SENT'?200:sent?207:502);
 }
