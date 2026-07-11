@@ -4,7 +4,8 @@
 Policy:
 - expose the newest 100 items in data/news.json;
 - place all older unique items in data/news_archive.json;
-- when the archive grows beyond 1,000 items, remove the oldest 500.
+- whenever the archive exceeds 1,000 items, remove the oldest 500;
+- repeat the 500-item prune batch until the archive is back at or below 1,000.
 
 The RSS sources, parsing, filtering and deduplication are reused from
 refresh_news.py so this file changes retention only.
@@ -45,14 +46,16 @@ def main() -> int:
     merged = base.merge_unique(fetched, existing_public, existing_archive)
 
     public = merged[:PUBLIC_LIMIT]
-    archive_before_prune = merged[PUBLIC_LIMIT:]
+    archive = merged[PUBLIC_LIMIT:]
+    archive_items_before_prune = len(archive)
     removed_oldest = 0
+    prune_batches = 0
 
-    if len(archive_before_prune) > ARCHIVE_TRIGGER:
-        removed_oldest = min(ARCHIVE_DELETE_OLDEST, len(archive_before_prune))
-        archive = archive_before_prune[:-removed_oldest]
-    else:
-        archive = archive_before_prune
+    while len(archive) > ARCHIVE_TRIGGER:
+        batch = min(ARCHIVE_DELETE_OLDEST, len(archive))
+        archive = archive[:-batch]
+        removed_oldest += batch
+        prune_batches += 1
 
     base.write_json(base.NEWS_PATH, public)
     base.write_json(base.ARCHIVE_PATH, archive)
@@ -80,13 +83,14 @@ def main() -> int:
             "configured_sources": len(base.SOURCES),
             "successful_sources": success,
             "failed_sources": len(errors),
-            "storage_policy": "public_latest_100_archive_all_older_prune_oldest_500_when_archive_exceeds_1000",
+            "storage_policy": "public_latest_100_archive_all_older_prune_oldest_500_repeatedly_when_archive_exceeds_1000",
             "public_items": len(public),
             "max_public_items": PUBLIC_LIMIT,
             "archive_items": len(archive),
             "archive_prune_trigger": ARCHIVE_TRIGGER,
             "archive_delete_oldest_batch": ARCHIVE_DELETE_OLDEST,
-            "archive_items_before_prune": len(archive_before_prune),
+            "archive_items_before_prune": archive_items_before_prune,
+            "archive_prune_batches": prune_batches,
             "discarded_archive_overflow_items": removed_oldest,
             "fetched_candidates": len(fetched),
             "duplicates_or_blocked_removed": max(
@@ -113,7 +117,8 @@ def main() -> int:
     print(
         "news refresh: "
         f"status={status_name}, public={len(public)}, archive={len(archive)}, "
-        f"archive_before_prune={len(archive_before_prune)}, removed_oldest={removed_oldest}, "
+        f"archive_before_prune={archive_items_before_prune}, "
+        f"prune_batches={prune_batches}, removed_oldest={removed_oldest}, "
         f"sources={success}/{len(base.SOURCES)}"
     )
     if errors:
