@@ -18,7 +18,7 @@ import {
   VERSION as CONTACT_CASE_VERSION
 } from './contact-case-center-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V34_20260711_PUBLIC_CONTACT_NEWS_ADMIN_${EMAIL_STATUS_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V35_20260711_CONTACT_CONSENT_${EMAIL_STATUS_VERSION}_${BASE_VERSION}`;
 
 const WORKER_OPS_PATH='/worker-ops/';
 const WORKER_OPS_LOGIN_NEXT='/operator-dashboard/?workerOpsReturn=1';
@@ -37,6 +37,7 @@ function isEmailStatusPixel(path){return path.startsWith(EMAIL_STATUS_PIXEL_PREF
 function trackedEnv(env){return withEmailStatusTracking(env);}
 function json(data,status=200){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-active-entrypoint':'src/index-unified-auth-v16.js','x-gnk-email-status-tracking':EMAIL_STATUS_VERSION}});}
 function clean(value,max=1000){return String(value??'').trim().slice(0,max);}
+function hasConsent(value){return value===true||['true','1','yes','on'].includes(String(value??'').trim().toLowerCase());}
 
 function stamp(response){
   const headers=new Headers(response.headers);
@@ -111,6 +112,7 @@ async function handlePublicContactSubmit(request,env){
   const body=await request.json().catch(()=>null);
   if(!body||typeof body!=='object')return json({ok:false,error:'invalid_json'},400);
   if(clean(body.website,200))return json({ok:true,accepted:true});
+  if(!hasConsent(body.consent))return json({ok:false,error:'consent_required'},400);
   const payload={
     source:`public-contact:${clean(body.department,40)||'contact'}`,
     name:clean(body.name,160),
