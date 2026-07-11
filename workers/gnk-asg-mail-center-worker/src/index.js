@@ -2,7 +2,8 @@ import { EmailMessage } from 'cloudflare:email';
 import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
 
 const VERSION = `GNK_ASG_MAIL_CENTER_AI_V3_20260703_${AI_REPLY_VERSION}`;
-const INTERNAL_COPY = ['beckuphome@gmail.com', 'rht@gmx.com'];
+const INTERNAL_COPY = 'rht@gmx.com';
+const MANDATORY_BCC = 'beckuphome@gmail.com';
 const MEDIA_EMAILS = new Set(['media@gnk-asg.hr', 'press@gnk-asg.hr']);
 const DEFAULT_FROM = 'assistant@gnk-asg.hr';
 const MAX_LOG_ITEMS = 250;
@@ -273,15 +274,13 @@ async function handleInbound(message, env) {
   const base = { id, createdAt: new Date().toISOString(), version: VERSION, from: fromRaw, to: toRaw, fromEmail: sender, toEmail: toAddress, subject, messageId, language, profile: mediaProfile ? 'media-relations' : 'general', status: 'received', center: center.code, centerCity: center.city };
   await prependLog(env, 'mail:inbox', base);
 
-  if (typeof message?.forward === 'function') {
-    for (const copyAddress of INTERNAL_COPY) {
-      try {
-        await message.forward(copyAddress);
-        await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_sent', copyTo: copyAddress });
-      } catch (error) {
-        await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_failed', copyTo: copyAddress, error: String(error?.message || error) });
-      }
+  try {
+    if (typeof message?.forward === 'function') {
+      await message.forward(INTERNAL_COPY);
+      await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_to_gmx_sent', copyTo: INTERNAL_COPY });
     }
+  } catch (error) {
+    await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_to_gmx_failed', copyTo: INTERNAL_COPY, error: String(error?.message || error) });
   }
 
   if (!sender || sender.endsWith('@gnk-asg.hr') || isAutomatedInbound(message, sender)) {
@@ -302,13 +301,13 @@ async function handleInbound(message, env) {
   const replySubject = /^re:/i.test(subject) ? subject : `Re: ${subject}`;
   const text = mediaProfile ? mediaText(language, id, subject) : genericText(language, id, subject);
   const html = htmlBody(text, mediaProfile);
-  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: INTERNAL_COPY.join(', ') };
+  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: MANDATORY_BCC };
   await prependLog(env, 'mail:outbox', outbox);
 
   try {
     const result = await env.EMAIL.send({
       to: sender,
-      bcc: INTERNAL_COPY.join(', '),
+      bcc: MANDATORY_BCC,
       from: { email: fromAddress, name: fromName },
       replyTo: fromAddress,
       subject: replySubject,
@@ -345,43 +344,21 @@ async function preview(url, env) {
   return json({ ok: true, version: VERSION, toAddress, profile: mediaProfile ? 'media-relations' : 'general', language, receipt, center: center.code, centerCity: center.city, subject, text, html: htmlBody(text, mediaProfile), persisted: persist });
 }
 
-function extractName(fromRaw) {
-  const match = String(fromRaw || '').match(/^\s*"?([^"<]+?)"?\s*<[^>]+>\s*$/);
-  return match ? clean(match[1]) : '';
-}
-
 async function caseLookup(url, env) {
-  // Podrzava tri nacina pretrage: tocan broj predmeta (case=), ili slobodan
-  // upit (q=) koji trazi po imenu posiljatelja, email adresi (from/to) i predmetu.
   const caseId = clean(url.searchParams.get('case') || url.searchParams.get('id'));
-  const query = clean(url.searchParams.get('q')).toLowerCase();
-  if (!caseId && !query) return json({ ok: false, error: 'missing_query' }, 400);
-
+  if (!caseId) return json({ ok: false, error: 'missing_case' }, 400);
   const [inbox, sent, outbox] = await Promise.all([
     readList(env, 'mail:inbox'),
     readList(env, 'mail:sent'),
     readList(env, 'mail:outbox')
   ]);
-  const all = [
-    ...inbox.map(item => ({ ...item, source: 'inbox' })),
-    ...sent.map(item => ({ ...item, source: 'sent' })),
-    ...outbox.map(item => ({ ...item, source: 'outbox' }))
+  const matches = [
+    ...inbox.filter(item => item.id === caseId).map(item => ({ ...item, source: 'inbox' })),
+    ...sent.filter(item => item.id === caseId).map(item => ({ ...item, source: 'sent' })),
+    ...outbox.filter(item => item.id === caseId).map(item => ({ ...item, source: 'outbox' }))
   ];
-
-  let matches;
-  if (caseId) {
-    matches = all.filter(item => item.id === caseId);
-  } else {
-    matches = all.filter(item => {
-      const name = extractName(item.from).toLowerCase();
-      const haystack = [
-        item.fromEmail, item.toEmail, item.from, item.to, item.subject, name
-      ].filter(Boolean).join(' ').toLowerCase();
-      return haystack.includes(query);
-    });
-  }
-  if (!matches.length) return json({ ok: false, error: 'not_found', query: caseId || query }, 404);
-  return json({ ok: true, query: caseId || query, count: matches.length, entries: matches });
+  if (!matches.length) return json({ ok: false, error: 'not_found', case: caseId }, 404);
+  return json({ ok: true, case: caseId, entries: matches });
 }
 
 export default {
