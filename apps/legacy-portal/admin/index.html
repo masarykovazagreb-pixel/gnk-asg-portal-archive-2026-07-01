@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ovlaštena kontrola medijskih objava | GNK ASG d.o.o.</title>
+<meta name="description" content="Kontrolni ulaz za automatsku javnu objavu i ovlašteno uklanjanje medijskih nalaza GNK ASG portala.">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#07162d">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css?v=20260523-3d1">
+<link rel="stylesheet" href="../assets/header-premium.css?v=20260523-3d1">
+<link rel="stylesheet" href="../assets/admin-console.css?v=20260523-3d1">
+</head>
+<body class="admin-page">
+<header class="site-header"><div class="container nav"><a class="brand" href="../"><img src="../assets/logo-gnk-asg.svg" alt="GNK ASG d.o.o."></a><nav class="nav-links"><a href="../">Portal</a><a href="../#global-network">Mreža</a><a href="../#publicSources">Izvori</a><a href="../#assistant">Intelligence Desk</a></nav></div></header>
+<main>
+<section class="admin-hero"><div class="container"><p class="eyebrow">Kontrolni ulaz · Autorizirano upravljanje</p><h1>Medijske objave</h1><p>Portal automatski provjerava javne izvore i prikazuje pronađene objave povezane s GNK ASG d.o.o., GNK DINAMO Ltd. i Nerminom Sefićem. Ovlašteni korisnik može ukloniti pogrešnu ili nepoželjnu javnu poveznicu, nakon čega se ona više ne vraća automatskim osvježavanjem.</p></div></section>
+<section><div class="container admin-grid">
+<article class="admin-card"><h2>Model automatske objave</h2><div class="access-row"><small>Javna stranica</small><strong>Automatski pronađene javne objave</strong></div><div class="access-row"><small>Automatska provjera</small><strong>Pretraga javnih izvora svakog sata</strong></div><div class="access-row"><small>Ovlaštena kontrola</small><strong>Trajno uklanjanje ili ručna obnova poveznice</strong></div><div class="security-callout">Kontrola promjene javne liste provodi se prijavom u GitHub račun koji ima prava nad repozitorijem. Uklonjene poveznice pohranjuju se na listu isključenja i automatska provjera ih neće ponovno objaviti.</div><div class="admin-actions"><a class="admin-action primary" target="_blank" rel="noopener nofollow" href="https://github.com/aktualmedia/gnk-asg/actions/workflows/media-monitor-status.yml"><div><strong>Pokreni automatsku provjeru</strong><span>Odmah pretražuje javne izvore i objavljuje odgovarajuće nalaze</span></div><b>→</b></a><a class="admin-action" target="_blank" rel="noopener nofollow" href="https://github.com/aktualmedia/gnk-asg/actions/workflows/manage-approved-media.yml"><div><strong>Ukloni ili obnovi javnu objavu</strong><span>Ovlaštena kontrola pojedinačne javne poveznice</span></div><b>→</b></a><a class="admin-action" target="_blank" rel="noopener nofollow" href="https://github.com/aktualmedia/gnk-asg/blob/main/data/media_approved.json"><div><strong>Pregled javne liste</strong><span>Popis medijskih objava koje portal trenutačno prikazuje</span></div><b>→</b></a></div></article>
+<article class="admin-card"><h2>Postupak kontrole</h2><div class="steps"><div class="step"><i>1</i><div><strong>Automatski nalaz</strong><p>Sustav u redovitom ciklusu traži javne objave za definirane poslovne subjekte.</p></div></div><div class="step"><i>2</i><div><strong>Javni prikaz</strong><p>Pronađena odgovarajuća objava automatski se prikazuje u rubrici „GNK ASG u medijima”.</p></div></div><div class="step"><i>3</i><div><strong>Kontrola poveznice</strong><p>Ovlašteni korisnik može ukloniti poveznicu koja nije relevantna ili ne treba ostati javno prikazana.</p></div></div><div class="step"><i>4</i><div><strong>Trajno isključenje</strong><p>Uklonjena poveznica ne vraća se u sljedećem automatskom ciklusu, osim ako je ovlašteno obnovite.</p></div></div></div><div class="approved-status"><small>Javno prikazane objave</small><strong id="approvedCount">—</strong><span id="approvedLast">Učitavanje javne liste…</span></div><div id="approvedPreview"></div></article>
+</div></section>
+<section class="review-section"><div class="container"><div class="review-head"><div><p class="eyebrow">Automatski medijski monitor</p><h2>Status automatske objave</h2><p>Ovdje se prikazuje radi li automatska provjera javnih izvora i koliko je javnih nalaza trenutačno objavljeno na portalu.</p></div><div class="queue-stats"><div class="queue-stat"><strong id="monitorState">—</strong><span>Monitor</span></div></div></div><div class="review-list"><div class="queue-empty" id="monitorMessage">Učitavanje statusa automatske objave…</div></div><div class="queue-note" id="queueUpdated">Provjera statusa monitoringa…</div></div></section>
+</main>
+<footer class="admin-footer"><div class="container">GNK ASG d.o.o. · Kontrola automatski prikazanih javnih medijskih objava · <a href="../">Povratak na portal</a></div></footer>
+<script src="../assets/admin-status-only.js?v=20260528-auto-media" defer></script>
+</body>
+</html>

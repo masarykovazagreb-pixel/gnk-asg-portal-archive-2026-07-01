@@ -1,0 +1,64 @@
+{
+  "updated_at": "2026-05-22",
+  "notice": "Informativni javni tržišni prikaz. Vrijednosti mogu biti odgođene i ne predstavljaju ponudu, investicijski savjet niti preporuku.",
+  "categories": [
+    {
+      "id": "indices",
+      "label": "Svjetske burze",
+      "assets": [
+        {"id": "sp500", "symbol": "^GSPC", "label": "S&P 500", "unit": "indeks"},
+        {"id": "nasdaq", "symbol": "^IXIC", "label": "NASDAQ Composite", "unit": "indeks"},
+        {"id": "dax", "symbol": "^GDAXI", "label": "DAX", "unit": "indeks"},
+        {"id": "stoxx50", "symbol": "^STOXX50E", "label": "EURO STOXX 50", "unit": "indeks"},
+        {"id": "nikkei", "symbol": "^N225", "label": "Nikkei 225", "unit": "indeks"}
+      ]
+    },
+    {
+      "id": "currencies",
+      "label": "Svjetske valute",
+      "assets": [
+        {"id": "usd_eur", "symbol": "EURUSD=X", "label": "USD / EUR", "unit": "EUR za 1 USD", "invert": true},
+        {"id": "chf_eur", "symbol": "EURCHF=X", "label": "CHF / EUR", "unit": "EUR za 1 CHF", "invert": true},
+        {"id": "gbp_eur", "symbol": "EURGBP=X", "label": "GBP / EUR", "unit": "EUR za 1 GBP", "invert": true},
+        {"id": "jpy_eur", "symbol": "EURJPY=X", "label": "JPY / EUR", "unit": "EUR za 1 JPY", "invert": true}
+      ]
+    },
+    {
+      "id": "metals",
+      "label": "Plemeniti metali",
+      "assets": [
+        {"id": "gold", "symbol": "GC=F", "label": "Zlato", "unit": "USD / trojska unca"},
+        {"id": "silver", "symbol": "SI=F", "label": "Srebro", "unit": "USD / trojska unca"}
+      ]
+    },
+    {
+      "id": "energy",
+      "label": "Energija",
+      "assets": [
+        {"id": "brent", "symbol": "BZ=F", "label": "Brent nafta", "unit": "USD / barel"},
+        {"id": "wti", "symbol": "CL=F", "label": "WTI nafta", "unit": "USD / barel"},
+        {"id": "gas", "symbol": "NG=F", "label": "Prirodni plin", "unit": "USD / MMBtu"}
+      ]
+    },
+    {
+      "id": "agriculture",
+      "label": "Hrana i poljoprivredne robe",
+      "assets": [
+        {"id": "wheat", "symbol": "ZW=F", "label": "Pšenica", "unit": "US centi / bušel"},
+        {"id": "corn", "symbol": "ZC=F", "label": "Kukuruz", "unit": "US centi / bušel"},
+        {"id": "soy", "symbol": "ZS=F", "label": "Soja", "unit": "US centi / bušel"},
+        {"id": "coffee", "symbol": "KC=F", "label": "Kava", "unit": "US centi / lb"},
+        {"id": "cocoa", "symbol": "CC=F", "label": "Kakao", "unit": "USD / metrička tona"},
+        {"id": "sugar", "symbol": "SB=F", "label": "Šećer", "unit": "US centi / lb"}
+      ]
+    },
+    {
+      "id": "digital",
+      "label": "Digitalna imovina",
+      "assets": [
+        {"id": "btc", "symbol": "BTC-USD", "label": "Bitcoin", "unit": "USD / BTC"},
+        {"id": "eth", "symbol": "ETH-USD", "label": "Ethereum", "unit": "USD / ETH"}
+      ]
+    }
+  ]
+}

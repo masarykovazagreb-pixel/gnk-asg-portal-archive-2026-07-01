@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>ASG Kontrola ažuriranja</title>
+  <meta name="description" content="Zasebna mobilna kontrola za provjeru i ručno pokretanje ažuriranja vijesti GNK ASG portala.">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#07162d">
+  <link rel="manifest" href="app.webmanifest">
+  <link rel="icon" href="icon-192.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="control.css?v=20260529-1">
+</head>
+<body>
+  <header class="bar">
+    <div class="brand"><span class="brand-mark">ASG</span><div><strong>GNK ASG</strong><small>KONTROLA AŽURIRANJA</small></div></div>
+    <span class="private-chip">ZASEBNO</span>
+  </header>
+
+  <main class="screen">
+    <section class="intro">
+      <p class="eyebrow">Zasebna mobilna kontrola</p>
+      <h1>Ručno osvježavanje vijesti</h1>
+      <p class="lead">Ova kontrola nije dio javne GNK ASG aplikacije. Koristi se samo kada automatsko ažuriranje vijesti zastane ili kada želite ručno provjeriti status.</p>
+    </section>
+
+    <section class="install" id="installCard">
+      <div class="install-icon">↓</div>
+      <div class="install-copy"><strong>Instaliraj kao zaseban gumb</strong><span id="installDescription">Dodajte ovu kontrolu na početni zaslon putem Chromea.</span></div>
+      <button class="install-button" id="installButton" type="button">INSTALIRAJ</button>
+    </section>
+
+    <section class="overall" aria-live="polite">
+      <span class="pill waiting" id="overallStatus">PROVJERA STANJA</span>
+      <small id="checkedAt">Učitavanje aktualnog statusa…</small>
+    </section>
+
+    <section class="tiles">
+      <article class="tile">
+        <div class="tile-head"><h2>Poslovne vijesti</h2><span class="signal waiting" id="newsSignal">PROVJERA</span></div>
+        <strong class="time" id="newsTime">—</strong>
+        <p id="newsInfo">Čitam podatke o posljednjem ažuriranju.</p>
+      </article>
+      <article class="tile">
+        <div class="tile-head"><h2>Digitalna imovina</h2><span class="signal waiting" id="marketSignal">PROVJERA</span></div>
+        <strong class="time" id="marketTime">—</strong>
+        <p id="marketInfo">Čitam podatke o tržišnom ažuriranju.</p>
+      </article>
+    </section>
+
+    <section class="commands">
+      <button class="secondary" id="checkButton" type="button">PROVJERI STATUS SADA</button>
+      <a class="primary" id="runNewsButton" href="https://github.com/aktualmedia/gnk-asg/actions/workflows/news-feed-archive-refresh.yml" target="_blank" rel="noopener">RUČNO POKRENI VIJESTI ↗</a>
+    </section>
+
+    <section class="instructions" id="instructions">
+      <h2>Kako se pokreće</h2>
+      <ol>
+        <li>Pritisnite <strong>Ručno pokreni vijesti</strong>.</li>
+        <li>Na GitHub stranici prijavite se svojim ovlaštenim računom, ako je potrebno.</li>
+        <li>Odaberite <strong>Run workflow</strong> i potvrdite ponovno <strong>Run workflow</strong>.</li>
+        <li>Vratite se ovdje i pritisnite <strong>Provjeri status sada</strong>.</li>
+      </ol>
+      <p class="security">Sigurnosno pravilo: ova zasebna kontrola ne sadrži GitHub token, lozinku niti pravo izravnog pisanja u repozitorij.</p>
+    </section>
+  </main>
+
+  <footer>GNK ASG d.o.o. · Administrativna mobilna kontrola</footer>
+  <script src="control.js?v=20260529-1" defer></script>
+</body>
+</html>

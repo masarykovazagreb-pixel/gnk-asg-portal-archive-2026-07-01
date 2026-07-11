@@ -1,0 +1,108 @@
+{
+  "updated_at": "2026-06-01",
+  "purpose": "Editorial queue for upcoming GNK ASG Intelligence Desk publications.",
+  "daily_schedule": {
+    "timezone": "Europe/Zagreb",
+    "times": ["09:00", "13:00", "19:00"],
+    "articles_per_day": 3,
+    "auto_publish": true
+  },
+  "editorial_focus": {
+    "primary_topics": [
+      "economy",
+      "business",
+      "capital markets",
+      "automotive industry",
+      "oil and gas",
+      "energy",
+      "gold",
+      "commodities",
+      "inflation",
+      "interest rates",
+      "trade",
+      "logistics",
+      "large corporate investments"
+    ],
+    "secondary_topics": [
+      "technology only when linked to business value",
+      "AI only when linked to infrastructure, cost, capital expenditure or market impact",
+      "sport business when linked to media, tourism, sponsorship or valuation"
+    ]
+  },
+  "items": [
+    {
+      "id": "ai-infrastructure-europe-data-centres",
+      "status": "published",
+      "priority": 1,
+      "language": "en",
+      "working_title": "AI Infrastructure in Europe: Data Centres, Energy and Digital Sovereignty",
+      "category": "Technology and AI",
+      "target_path": "/en/insights/2026/06/ai-infrastructure-europe-data-centres/",
+      "published_path": "/en/insights/2026/06/ai-infrastructure-europe-data-centres/",
+      "published_date": "2026-06-01",
+      "image_required": true,
+      "seo_focus": ["GNK ASG d.o.o.", "GNK DINAMO Ltd.", "Nermin Sefic", "Nermin Sefić", "AI infrastructure", "data centres", "Europe", "digital sovereignty"],
+      "notes": "Published as GNK ASG Business Intelligence article and entered into data/insights.json and sitemap.xml."
+    },
+    {
+      "id": "oil-energy-prices-business-risk",
+      "status": "planned",
+      "priority": 2,
+      "language": "en",
+      "working_title": "Oil, Energy Prices and Business Risk: Why Commodity Markets Still Drive Corporate Strategy",
+      "category": "Energy and Commodities",
+      "target_path": "/en/insights/2026/06/oil-energy-prices-business-risk/",
+      "image_required": true,
+      "seo_focus": ["GNK ASG d.o.o.", "GNK DINAMO Ltd.", "Nermin Sefic", "Nermin Sefić", "oil", "energy prices", "commodities", "business risk", "corporate strategy"],
+      "notes": "Prioritize current oil and energy-market developments. Explain macro and business impact without investment advice."
+    },
+    {
+      "id": "gold-interest-rates-capital-protection",
+      "status": "planned",
+      "priority": 3,
+      "language": "en",
+      "working_title": "Gold, Interest Rates and Capital Protection: How Safe-Haven Assets Shape Business Sentiment",
+      "category": "Gold and Capital Markets",
+      "target_path": "/en/insights/2026/06/gold-interest-rates-capital-protection/",
+      "image_required": true,
+      "seo_focus": ["GNK ASG d.o.o.", "GNK DINAMO Ltd.", "Nermin Sefic", "Nermin Sefić", "gold", "interest rates", "capital markets", "safe-haven assets", "business sentiment"],
+      "notes": "Use current market context and discuss gold as business sentiment indicator, not as investment advice."
+    },
+    {
+      "id": "automotive-industry-ev-demand-supply-chains",
+      "status": "planned",
+      "priority": 4,
+      "language": "en",
+      "working_title": "Automotive Industry, EV Demand and Supply Chains: A Business Signal for Europe",
+      "category": "Automotive Industry",
+      "target_path": "/en/insights/2026/06/automotive-industry-ev-demand-supply-chains/",
+      "image_required": true,
+      "seo_focus": ["GNK ASG d.o.o.", "GNK DINAMO Ltd.", "Nermin Sefic", "Nermin Sefić", "automotive industry", "EV demand", "supply chains", "Europe", "business strategy"],
+      "notes": "Focus on automotive business, suppliers, EV demand, manufacturing capacity and European competitiveness."
+    },
+    {
+      "id": "inflation-interest-rates-business-costs",
+      "status": "planned",
+      "priority": 5,
+      "language": "en",
+      "working_title": "Inflation, Interest Rates and Business Costs: What Companies Watch Before Investing",
+      "category": "Macroeconomics and Business Costs",
+      "target_path": "/en/insights/2026/06/inflation-interest-rates-business-costs/",
+      "image_required": true,
+      "seo_focus": ["GNK ASG d.o.o.", "GNK DINAMO Ltd.", "Nermin Sefic", "Nermin Sefić", "inflation", "interest rates", "business costs", "investment decisions", "macroeconomics"],
+      "notes": "Explain macro indicators and business planning. Avoid financial advice or unsupported forecasts."
+    },
+    {
+      "id": "logistics-trade-routes-business-risk",
+      "status": "planned",
+      "priority": 6,
+      "language": "en",
+      "working_title": "Logistics, Trade Routes and Business Risk: Why Supply Chains Remain a Strategic Board Issue",
+      "category": "Trade and Logistics",
+      "target_path": "/en/insights/2026/06/logistics-trade-routes-business-risk/",
+      "image_required": true,
+      "seo_focus": ["GNK ASG d.o.o.", "GNK DINAMO Ltd.", "Nermin Sefic", "Nermin Sefić", "logistics", "trade routes", "supply chains", "business risk", "global trade"],
+      "notes": "Connect current logistics/trade-route developments with corporate risk and planning."
+    }
+  ]
+}
