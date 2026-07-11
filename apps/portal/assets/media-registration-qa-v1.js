@@ -23,8 +23,7 @@
     const countdown=$('countdown');
     const deadlineText=$('deadlineText');
 
-    if(deadlineText&&!deadlineText.dataset.qaDeadline){
-      deadlineText.dataset.qaDeadline='true';
+    if(deadlineText){
       deadlineText.textContent=isEnglish()
         ?'20 July 2026 · 23:59 CEST'
         :'20. srpnja 2026. · 23:59 CEST';
