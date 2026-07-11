@@ -3,21 +3,28 @@
 
   const sections=[
     {
-      label:'Portal',
+      label:'Javni portal',
       items:[
         {text:'Početna',href:'/'},
         {text:'O nama',href:'/about/'},
+        {text:'Nermin Sefić',href:'/nermin-sefic/'},
         {text:'Projekti',href:'/projects/'},
         {text:'Strateški roadmap',href:'/projects/roadmap/'},
+        {text:'Tržišta',href:'/trzista/'},
         {text:'Grupna mreža',href:'/group-network/'},
-        {text:'Entiteti',href:'/entities/'},
-        {text:'Digital Workforce',href:'/digital-workforce/'},
         {text:'Financije',href:'/financije/'},
+        {text:'Tehnologija',href:'/tehnologija/'},
+        {text:'Intelligence Desk',href:'/intelligence-desk/'},
+        {text:'Registri',href:'/registri/'},
+        {text:'Sadržaj',href:'/sadrzaj/'},
+        {text:'Teme',href:'/teme/'},
         {text:'THE CODE',href:'/the-code/'},
         {text:'Workeri',href:'/workers/'},
         {text:'Vijesti',href:'/news/'},
         {text:'Objave',href:'/objave/'},
+        {text:'Medijske prijave',href:'/media-application/'},
         {text:'Kontakt',href:'/contact/'},
+        {text:'Instalacija',href:'/instalacija/'},
         {text:'English portal',href:'/en/'}
       ]
     },
@@ -37,10 +44,9 @@
       ]
     },
     {
-      label:'Mediji i sadržaj',
+      label:'Mediji i objava',
       items:[
-        {text:'Medijske prijave',href:'/media-application/'},
-        {text:'Media Portal',href:'/media-registration-admin/',protected:true},
+        {text:'Media Registration Admin',href:'/media-registration-admin/',protected:true},
         {text:'News Auto Publication',href:'/admin-center/news-publication/',protected:true},
         {text:'Urednički desk',href:'/admin-center/editor-desk/',protected:true,status:'uskoro'},
         {text:'Media Command Center',href:'/admin-center/media-command-center/',protected:true,status:'uskoro'},
@@ -64,6 +70,16 @@
         {text:'Integracije',href:'/admin-center/integrations/',status:'uskoro'},
         {text:'Postavke',href:'/admin-center/settings/',status:'uskoro'}
       ]
+    },
+    {
+      label:'Budući javni moduli',
+      items:[
+        {text:'Entiteti',href:'/entities/',status:'uskoro'},
+        {text:'Digital Workforce',href:'/digital-workforce/',status:'uskoro'},
+        {text:'Project Procedures',href:'/project-procedures/',status:'uskoro'},
+        {text:'Global Locations',href:'/locations/',status:'uskoro'},
+        {text:'Press Center',href:'/press-center/',status:'uskoro'}
+      ]
     }
   ];
 
@@ -78,7 +94,7 @@
     #gnk-floating-menu *{box-sizing:border-box}
     #gnk-floating-menu>button{min-width:92px;height:46px;padding:0 18px;border-radius:999px;border:1px solid #d8b66a;background:#111;color:#d8b66a;font-weight:900;letter-spacing:.08em;box-shadow:0 12px 38px rgba(0,0,0,.45);cursor:pointer}
     #gnk-floating-menu>button:hover,#gnk-floating-menu>button:focus-visible{background:#1a160e;color:#f1d58d;outline:none}
-    #gnk-floating-menu nav{display:none;position:absolute;right:0;top:56px;width:min(390px,calc(100vw - 28px));max-height:calc(100vh - 86px);overflow:auto;padding:14px;background:#0b0b0b;border:1px solid #3b3120;border-radius:18px;box-shadow:0 16px 50px rgba(0,0,0,.5)}
+    #gnk-floating-menu nav{display:none;position:absolute;right:0;top:56px;width:min(410px,calc(100vw - 28px));max-height:calc(100vh - 86px);overflow:auto;padding:14px;background:#0b0b0b;border:1px solid #3b3120;border-radius:18px;box-shadow:0 16px 50px rgba(0,0,0,.5)}
     #gnk-floating-menu.open nav{display:block;animation:gnk-menu-drop .16s ease-out}
     @keyframes gnk-menu-drop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
     #gnk-floating-menu .gnk-menu-group+.gnk-menu-group{margin-top:13px;padding-top:13px;border-top:1px solid #2d271d}
@@ -90,7 +106,7 @@
     #gnk-floating-menu .gnk-menu-meta{color:#9c927f;font-size:9px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
     #gnk-floating-menu a[data-protected="true"] .gnk-menu-meta::before{content:'ZAŠTIĆENO';}
     #gnk-floating-menu a[data-status] .gnk-menu-meta::after{content:attr(data-status);margin-left:8px;color:#d8b66a}
-    @media(max-width:700px){#gnk-floating-menu{right:12px;top:12px}#gnk-floating-menu>button{min-width:84px;height:44px;padding:0 15px}#gnk-floating-menu nav{top:52px;width:min(360px,calc(100vw - 24px));max-height:calc(100vh - 76px)}}
+    @media(max-width:700px){#gnk-floating-menu{right:12px;top:12px}#gnk-floating-menu>button{min-width:84px;height:44px;padding:0 15px}#gnk-floating-menu nav{top:52px;width:min(380px,calc(100vw - 24px));max-height:calc(100vh - 76px)}}
     @media(prefers-reduced-motion:reduce){#gnk-floating-menu.open nav{animation:none}}
   `;
   document.head.appendChild(style);
