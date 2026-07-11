@@ -71,7 +71,12 @@ assert.match(trackingV3,/handleEmailStatusRequest/);
 assert.match(trackingSchema,/first_opened_at TEXT/);
 assert.match(trackingSchema,/last_opened_at TEXT/);
 assert.match(trackingSchema,/open_count INTEGER/);
-assert.doesNotMatch(trackingSchema,/ip_address|user_agent|cf-connecting-ip|user-agent/i,'Email Status must not store IP addresses or user-agent metadata');
+// Vlasnik je 2026-07-11 eksplicitno zatrazio i potvrdio biljezenje IP/uredjaja
+// za email otvaranja, iskljucivo za internu evidenciju (nije javno dostupno),
+// uz dodano upozorenje u /legal/ o Apple/Gmail proxy ogranicenju. Stara zabrana
+// vise ne vrijedi - provjeravamo umjesto toga da su nova polja stvarno prisutna.
+assert.match(trackingSchema,/last_open_ip/i,'Email Status must record last_open_ip per explicit 2026-07-11 owner authorization');
+assert.match(trackingSchema,/last_open_user_agent/i,'Email Status must record last_open_user_agent per explicit 2026-07-11 owner authorization');
 
 const wrangler=await readFile(new URL('../wrangler.toml',import.meta.url),'utf8');
 assert.match(wrangler,/keep_vars = true/,'Wrangler deploy must preserve existing dashboard variables not listed in source control');
