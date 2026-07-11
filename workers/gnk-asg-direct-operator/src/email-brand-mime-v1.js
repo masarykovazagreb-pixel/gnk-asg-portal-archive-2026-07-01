@@ -1,6 +1,6 @@
-export const VERSION='GNK_ASG_EMAIL_BRAND_MIME_V1_20260629_R1_INLINE_LOGO';
-export const EMAIL_LOGO_PATH='/assets/gnk-asg-email-logo-final.png';
-export const EMAIL_LOGO_URL='https://gnk-asg.hr/assets/gnk-asg-email-logo-final.png';
+export const VERSION='GNK_ASG_EMAIL_BRAND_MIME_V2_20260711_TRANSPARENT_LOGO_FALLBACK';
+export const EMAIL_LOGO_PATH='/assets/gnk-asg-email-logo-transparent.png';
+export const EMAIL_LOGO_URL='https://gnk-asg.hr/assets/gnk-asg-email-logo-transparent.png?v=20260711';
 export const EMAIL_LOGO_CID='gnk-asg-email-logo';
 
 const enc=new TextEncoder();
@@ -11,21 +11,33 @@ export function foldBase64(value){return String(value||'').replace(/.{1,76}/g,'$
 const encodeBody=value=>foldBase64(b64(enc.encode(String(value||''))));
 const encodeHeader=value=>{const t=clean(value).replace(/[\r\n]+/g,' ');return /^[\x20-\x7E]*$/.test(t)?t:`=?UTF-8?B?${b64(enc.encode(t))}?=`;};
 
+async function logoFromResponse(response){
+  if(!response?.ok)return null;
+  const contentType=String(response.headers.get('content-type')||'').toLowerCase();
+  if(!contentType.includes('image/png'))return null;
+  const bytes=new Uint8Array(await response.arrayBuffer());
+  if(bytes.length<=100||bytes.length>=750000)return null;
+  return{bytes,contentType:'image/png',filename:'gnk-asg-logo-transparent.png'};
+}
+
 export async function loadEmailLogo(env){
   try{
     if(env?.ASSETS?.fetch){
-      const response=await env.ASSETS.fetch(new Request(`https://gnk-asg.hr${EMAIL_LOGO_PATH}`));
-      if(response.ok){
-        const bytes=new Uint8Array(await response.arrayBuffer());
-        if(bytes.length>100&&bytes.length<750000)return{bytes,contentType:response.headers.get('content-type')||'image/png',filename:'gnk-asg-logo.png'};
-      }
+      const local=await env.ASSETS.fetch(new Request(`https://gnk-asg.hr${EMAIL_LOGO_PATH}`));
+      const logo=await logoFromResponse(local);
+      if(logo)return logo;
     }
+  }catch{}
+  try{
+    const remote=await fetch(EMAIL_LOGO_URL,{headers:{accept:'image/png'},cf:{cacheTtl:86400,cacheEverything:true}});
+    const logo=await logoFromResponse(remote);
+    if(logo)return logo;
   }catch{}
   return null;
 }
 
 export function mediaSignatureText(){return['GNK DINAMO Ltd. Group','Media Relations & Accreditation Center','Organised by GNK ASG Media Center','media@gnk-asg.hr','https://gnk-asg.hr'].join('\n');}
-export function mediaSignatureHtml(src=`cid:${EMAIL_LOGO_CID}`){return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="https://gnk-asg.hr"><img src="${src}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;margin-bottom:6px">GNK DINAMO Ltd. Group</div><div style="font-weight:700">Media Relations &amp; Accreditation Center</div><div>Organised by GNK ASG Media Center</div><div><a href="mailto:media@gnk-asg.hr" style="color:#111827">media@gnk-asg.hr</a></div><div><a href="https://gnk-asg.hr" style="color:#111827">https://gnk-asg.hr</a></div></td></tr></table>`;}
+export function mediaSignatureHtml(src=`cid:${EMAIL_LOGO_CID}`){return `<table data-gnk-asg-signature="${VERSION}" role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin-top:24px;max-width:720px;width:100%;border-top:1px solid #d9d9d9"><tr><td width="170" valign="top" style="width:170px;padding:16px 22px 8px 0"><a href="https://gnk-asg.hr"><img src="${src}" width="150" alt="GNK ASG" style="display:block;width:150px;max-width:150px;height:auto;border:0;background:transparent"></a></td><td valign="top" style="padding:18px 0 8px;color:#111827;font-size:14px;line-height:1.48"><div style="font-size:20px;font-weight:700;margin-bottom:6px">GNK DINAMO Ltd. Group</div><div style="font-weight:700">Media Relations &amp; Accreditation Center</div><div>Organised by GNK ASG Media Center</div><div><a href="mailto:media@gnk-asg.hr" style="color:#111827">media@gnk-asg.hr</a></div><div><a href="https://gnk-asg.hr" style="color:#111827">https://gnk-asg.hr</a></div></td></tr></table>`;}
 export function textToHtml(value){return clean(value).split(/\n{2,}/).filter(Boolean).map(p=>`<p style="margin:0 0 14px;line-height:1.6">${esc(p).replace(/\n/g,'<br>')}</p>`).join('');}
 export function ensureMediaText(value){const t=clean(value);return /gnk dinamo ltd\. group/i.test(t)&&/media relations & accreditation center/i.test(t)?t:`${t}${t?'\n\n':''}${mediaSignatureText()}`;}
 export function ensureMediaHtml(value,text,src){const h=clean(value)||textToHtml(text);return /data-gnk-asg-signature=/i.test(h)?h:`${h}${mediaSignatureHtml(src)}`;}
