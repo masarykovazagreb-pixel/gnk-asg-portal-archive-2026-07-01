@@ -1,0 +1,71 @@
+name: Deploy Black Logo Smoke Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_black_logo_test:
+        description: "Type DEPLOY_BLACK_LOGO_TEST to deploy the temporary black logo homepage"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-black-logo-test:
+    if: github.event_name == 'workflow_dispatch' && inputs.confirm_black_logo_test == 'DEPLOY_BLACK_LOGO_TEST'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate exact smoke-test source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = "main"
+          test -s apps/portal/index.html
+          grep -Fq 'BLACK_LOGO_SMOKE_TEST_20260711' apps/portal/index.html
+          grep -Fq '/assets/brand/media-kit/GNK_DINAMO_Ltd_logo_gold_transparent.png' apps/portal/index.html
+          grep -Fq 'background:#000' apps/portal/index.html
+          echo "Deploying smoke test from $GITHUB_SHA"
+
+      - name: Dry-run Worker and assets
+        working-directory: workers/gnk-asg-direct-operator
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Deploy smoke-test homepage
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
+
+      - name: Verify Worker and production domain
+        shell: bash
+        run: |
+          set -euo pipefail
+          cb="${GITHUB_SHA}-${GITHUB_RUN_ID}"
+          verify() {
+            local label="$1" url="$2" body
+            body="$(mktemp)"
+            for attempt in 1 2 3 4 5 6; do
+              if curl --location --fail --silent --show-error --max-time 20 "$url" -o "$body" && grep -Fq 'BLACK_LOGO_SMOKE_TEST_20260711' "$body"; then
+                echo "OK: $label"
+                rm -f "$body"
+                return 0
+              fi
+              sleep 10
+            done
+            echo "FAILED: $label" >&2
+            head -c 500 "$body" || true
+            rm -f "$body"
+            return 1
+          }
+          verify "workers.dev" "https://gnk-asg-direct-operator.beckuphome.workers.dev/?cb=${cb}"
+          verify "gnk-asg.hr" "https://gnk-asg.hr/?cb=${cb}"
+          verify "www.gnk-asg.hr" "https://www.gnk-asg.hr/?cb=${cb}"
