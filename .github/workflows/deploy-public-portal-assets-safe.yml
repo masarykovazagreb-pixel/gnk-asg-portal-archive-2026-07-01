@@ -290,7 +290,7 @@ jobs:
           check_contains "Active entrypoint" "https://gnk-asg.hr/data/portal-version.json?cb=${cb}" "index-unified-auth-v16.js"
           check_contains "Worker Ops guard" "https://gnk-asg.hr/data/portal-version.json?cb=${cb}" "operator-auth-required"
           check_contains "Scheduled isolation" "https://gnk-asg.hr/data/portal-version.json?cb=${cb}" "email-status-sync-only"
-          check_contains "Digital Headquarters JS" "https://gnk-asg.hr/assets/digital-headquarters-v1.js?cb=${cb}" "operator-auth-check"
+          check_contains "Digital Headquarters JS" "https://gnk-asg.hr/assets/digital-headquarters-v1.js?cb=${cb}" "data-auth-only"
           check_contains "Email Status dashboard JS" "https://gnk-asg.hr/assets/email-status-dashboard-v2.js?cb=${cb}" "GNK_ASG_EMAIL_STATUS_DASHBOARD_V3"
           check_contains "Finance KPI JSON" "https://gnk-asg.hr/data/finance-kpi-2025.json?cb=${cb}" "ebitdaEstimated"
           check_contains "Finance MSFI label" "https://gnk-asg.hr/data/finance-kpi-2025.json?cb=${cb}" "MSFI"
