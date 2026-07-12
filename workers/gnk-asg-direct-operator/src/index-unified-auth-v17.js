@@ -3,7 +3,7 @@ import {runScheduledNewsPublication,handlePublicNews,getPublishedNewsBySlug,VERS
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v2.js';
 import {handleEmailLogo,VERSION as EMAIL_LOGO_VERSION} from './email-logo-endpoint-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V58_20260712_COMPACT_MENU_ALL_PUBLIC_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V59_20260712_NEWSROOM_INDEX_HTML_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
 const COMPACT_MENU_SCRIPT='/assets/public-compact-menu-v1.js?v=20260712-all-public-ai';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
@@ -14,7 +14,7 @@ const NEWSROOM_LIVE_SCRIPT='/assets/newsroom-live-v1.js?v=20260712-public-feed';
 const MARKET_LIVE_SCRIPT='/assets/public-market-live-v1.js?v=20260712-markets-only';
 const MARKET_LIVE_STYLE='/assets/public-market-live-v1.css?v=20260712-ecb-world-bank';
 const PROTECTED_PREFIXES=['/admin','/admin-center','/mail-studio','/campaign-mailer','/email-status','/worker-ops','/operator-dashboard','/digital-headquarters','/media-registration-admin','/webmail'];
-const PUBLIC_ASSET_ROUTES=new Map([['/newsroom','/newsroom/'],['/en/newsroom','/en/newsroom/']]);
+const PUBLIC_ASSET_ROUTES=new Map([['/newsroom','/newsroom/index.html'],['/en/newsroom','/en/newsroom/index.html']]);
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 function isProtectedPath(request){const path=pathOf(request);return PROTECTED_PREFIXES.some(prefix=>path===prefix||path.startsWith(`${prefix}/`));}
@@ -43,7 +43,8 @@ async function articleResponse(request,env){
 async function publicAssetResponse(request,env){
   if(request.method!=='GET'&&request.method!=='HEAD')return null;
   const assetPath=PUBLIC_ASSET_ROUTES.get(pathOf(request));if(!assetPath||!env.ASSETS?.fetch)return null;
-  const target=new URL(assetPath,request.url);const asset=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers}));if(asset.status===404)return null;
+  const target=new URL(assetPath,request.url);target.search='';
+  const asset=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers}));if(asset.status===404)return null;
   const headers=new Headers(asset.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','public, max-age=300');headers.set('x-gnk-public-route-source','static-asset');
   return new Response(request.method==='HEAD'?null:await asset.text(),{status:asset.status,statusText:asset.statusText,headers});
 }
