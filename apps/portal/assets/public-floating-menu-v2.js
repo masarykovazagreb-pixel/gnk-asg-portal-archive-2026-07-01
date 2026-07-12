@@ -103,7 +103,11 @@
     #gnk-floating-menu .gnk-floating-actions{display:flex;gap:10px;justify-content:center;align-items:center}
     #gnk-floating-menu .gnk-home-button,#gnk-floating-menu>.gnk-floating-actions>button{height:46px;padding:0 21px;border-radius:999px;border:1px solid #d8b66a;background:#3a2110;color:#f4d37a;font-weight:900;letter-spacing:.08em;box-shadow:0 10px 30px rgba(0,0,0,.4);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
     #gnk-floating-menu .gnk-home-button:hover,#gnk-floating-menu>.gnk-floating-actions>button:hover{border-color:#f4d37a;background:#5a3518;color:#fff0b5}
-    #gnk-floating-menu .gnk-home-button:focus-visible,#gnk-floating-menu button:focus-visible,#gnk-floating-menu nav a:focus-visible{outline:3px solid #fff0b5;outline-offset:3px}
+    #gnk-floating-menu .gnk-home-button:focus-visible,#gnk-floating-menu button:focus-visible,#gnk-floating-menu nav a:focus-visible,#gnk-floating-menu .gnk-top-language a:focus-visible{outline:3px solid #fff0b5;outline-offset:3px}
+    #gnk-floating-menu .gnk-top-language{height:46px;display:inline-flex;align-items:center;gap:5px;padding:0 14px;border:1px solid #d8b66a;border-radius:999px;background:#17100b;box-shadow:0 10px 30px rgba(0,0,0,.32);white-space:nowrap}
+    #gnk-floating-menu .gnk-top-language a{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:30px;padding:0 6px;border-radius:999px;color:#d8b66a;text-decoration:none;font-size:12px;font-weight:900;letter-spacing:.08em}
+    #gnk-floating-menu .gnk-top-language a[aria-current="page"]{background:#d8b66a;color:#211308}
+    #gnk-floating-menu .gnk-top-language-separator{color:#8f7040;font-weight:900}
     #gnk-floating-menu nav{display:none;position:absolute;left:50%;transform:translateX(-50%);top:56px;width:min(460px,calc(100vw - 28px));max-height:calc(100vh - 100px);max-height:calc(100dvh - 100px - env(safe-area-inset-bottom));overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:14px 14px calc(14px + env(safe-area-inset-bottom));background:#0b0b0b;border:1px solid #d8b66a;border-radius:18px;box-shadow:0 18px 55px rgba(0,0,0,.55)}
     #gnk-floating-menu.open nav{display:block}
     #gnk-floating-menu .gnk-menu-group+.gnk-menu-group{margin-top:13px;padding-top:13px;border-top:1px solid #2d271d}
@@ -120,7 +124,7 @@
     .site-header .gnk-language-switch{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-weight:900}
     .site-header .gnk-language-switch a{text-decoration:none;color:inherit;opacity:.65}
     .site-header .gnk-language-switch a[aria-current="page"]{opacity:1;text-decoration:underline;text-underline-offset:4px}
-    @media(max-width:700px){:root{--gnk-event-bar-height:70px}#gnk-event-bar .gnk-event-message{font-size:12px;animation-duration:19s}#gnk-floating-menu{top:max(13px,env(safe-area-inset-top))}#gnk-floating-menu .gnk-home-button,#gnk-floating-menu>.gnk-floating-actions>button{height:44px;padding:0 16px}#gnk-floating-menu nav{top:50px;width:min(390px,calc(100vw - 20px));max-height:calc(100vh - 86px);max-height:calc(100dvh - 86px - env(safe-area-inset-bottom))}.site-header .gnk-language-switch{margin-left:auto}}
+    @media(max-width:700px){:root{--gnk-event-bar-height:70px}#gnk-event-bar .gnk-event-message{font-size:12px;animation-duration:19s}#gnk-floating-menu{top:max(13px,env(safe-area-inset-top))}#gnk-floating-menu .gnk-home-button,#gnk-floating-menu>.gnk-floating-actions>button{height:44px;padding:0 16px}#gnk-floating-menu .gnk-top-language{height:42px;padding:0 8px;gap:2px}#gnk-floating-menu .gnk-top-language a{min-width:25px;height:28px;padding:0 4px;font-size:11px}#gnk-floating-menu nav{top:50px;width:min(390px,calc(100vw - 20px));max-height:calc(100vh - 86px);max-height:calc(100dvh - 86px - env(safe-area-inset-bottom))}.site-header .gnk-language-switch{margin-left:auto}}
     @media(prefers-reduced-motion:reduce){#gnk-event-bar .gnk-event-message{animation:none;padding-left:18px;white-space:normal;text-align:center;width:100%}}
   `;
   document.head.appendChild(style);
@@ -135,8 +139,14 @@
   const wrap=document.createElement('div');wrap.id='gnk-floating-menu';
   const actions=document.createElement('div');actions.className='gnk-floating-actions';
   const home=document.createElement('a');home.href=language()==='en'?'/en/':'/';home.className='gnk-home-button';home.textContent='HOME';
+  const languageSwitch=document.createElement('div');languageSwitch.className='gnk-top-language';languageSwitch.setAttribute('aria-label','Odabir jezika / Language selection');
+  const hr=document.createElement('a');hr.href='/';hr.textContent='HR';hr.lang='hr';hr.hreflang='hr';hr.setAttribute('aria-label','Hrvatski');
+  const en=document.createElement('a');en.href='/en/';en.textContent='EN';en.lang='en';en.hreflang='en';en.setAttribute('aria-label','English');
+  if(language()==='hr')hr.setAttribute('aria-current','page');else en.setAttribute('aria-current','page');
+  const languageSeparator=document.createElement('span');languageSeparator.className='gnk-top-language-separator';languageSeparator.textContent='/';languageSeparator.setAttribute('aria-hidden','true');
+  languageSwitch.append(hr,languageSeparator,en);
   const button=document.createElement('button');button.type='button';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','gnk-floating-nav');button.setAttribute('aria-label',language()==='en'?'Open main menu':'Otvori glavni izbornik');button.textContent='MENU';
-  actions.append(home,button);
+  actions.append(home,languageSwitch,button);
 
   const nav=document.createElement('nav');nav.id='gnk-floating-nav';nav.tabIndex=-1;nav.setAttribute('aria-label','Glavni padajući menu / Main dropdown menu');
   const current=normalize(location.pathname);
