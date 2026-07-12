@@ -3,7 +3,7 @@ import {runScheduledNewsPublication,handlePublicNews,getPublishedNewsBySlug,VERS
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v2.js';
 import {handleEmailLogo,VERSION as EMAIL_LOGO_VERSION} from './email-logo-endpoint-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V55_20260712_THE_CODE_MARKET_LIVE_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V56_20260712_INDEX_FIRST_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
 const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260712-index-live';
 const FLOATING_MENU_MOBILE_STYLE='/assets/public-floating-menu-mobile-v2.css?v=20260712-bottom-nav-safe';
@@ -13,9 +13,9 @@ const INDEX_LIVE_SHELL='/assets/index-live-shell-v1.css?v=20260712-hide-legacy-s
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
 const MEDIA_QA_SCRIPT='/assets/media-registration-qa-v1.js?v=20260711-deadline-a11y';
 const INDEX_HUB_SCRIPT='/assets/index-live-hub-v1.js?v=20260712-live-feed';
-const INDEX_HUB_STYLE='/assets/index-live-hub-v1.css?v=20260712-public-hub';
+const INDEX_HUB_STYLE='/assets/index-live-hub-v1.css?v=20260712-high-contrast';
 const NEWSROOM_LIVE_SCRIPT='/assets/newsroom-live-v1.js?v=20260712-public-feed';
-const MARKET_LIVE_SCRIPT='/assets/public-market-live-v1.js?v=20260712-ecb-world-bank';
+const MARKET_LIVE_SCRIPT='/assets/public-market-live-v1.js?v=20260712-markets-only';
 const MARKET_LIVE_STYLE='/assets/public-market-live-v1.css?v=20260712-ecb-world-bank';
 const PROTECTED_PREFIXES=['/admin','/admin-center','/mail-studio','/campaign-mailer','/email-status','/worker-ops','/operator-dashboard','/digital-headquarters','/media-registration-admin','/webmail'];
 const PUBLIC_ASSET_ROUTES=new Map([['/newsroom','/newsroom/index.html'],['/en/newsroom','/en/newsroom/index.html']]);
@@ -27,7 +27,7 @@ function isTheCodePath(path){return path==='/the-code'||path.startsWith('/the-co
 function isCountdownPath(path){return path==='/'||path==='/en'||isTheCodePath(path);}
 function isIndexPath(path){return path==='/'||path==='/en';}
 function isNewsroomLanding(path){return path==='/newsroom'||path==='/en/newsroom';}
-function isMarketLivePath(path){return isIndexPath(path)||path==='/trzista'||path==='/en/markets';}
+function isMarketLivePath(path){return path==='/trzista'||path==='/en/markets';}
 function shouldInject(request,response){if(request.method!=='GET'&&request.method!=='HEAD')return false;if(response.status!==200)return false;const path=pathOf(request);if(path.startsWith('/api/'))return false;return String(response.headers.get('content-type')||'').toLowerCase().includes('text/html');}
 function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
 function articleRoute(path){const match=path.match(/^\/(en\/)?newsroom\/([^/]+)$/);return match?{english:Boolean(match[1]),slug:decodeURIComponent(match[2])}:null;}
