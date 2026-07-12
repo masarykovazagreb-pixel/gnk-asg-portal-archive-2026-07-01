@@ -29,17 +29,20 @@ remote = true
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260711-v17-global-menu-admin-protected"
+DEPLOY_REVISION = "20260712-controlled-individual-mail-v48"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 
+# Controlled inbound acknowledgements and individual manual messages only.
+MAIL_AUTO_REPLY_LIVE = "true"
 MAIL_STUDIO_LIVE = "true"
-MAIL_MANUAL_LIVE = "false"
+MAIL_MANUAL_LIVE = "true"
 MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MAIL_PROFILE_TEST_LIVE = "false"
 MAIL_PROFILE_TEST_RECIPIENTS = "beckuphome@gmail.com"
 MAIL_BOOTSTRAP_SMOKE_TEST = "false"
 
+# Campaign, bulk and scheduled outreach remain locked.
 MEDIA_OUTREACH_FROM = "media@gnk-asg.hr"
 MEDIA_OUTREACH_LIVE = "false"
 MEDIA_OUTREACH_SCHEDULED_LIVE = "false"
