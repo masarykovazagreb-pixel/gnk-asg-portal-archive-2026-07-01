@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+function initPublicHub() {
   var anchor = document.getElementById('assistant');
   if (!anchor || document.getElementById('public-hub')) return;
 
@@ -23,4 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var reference = menu.querySelector('a[href="#assistant"]');
     menu.insertBefore(link, reference || null);
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPublicHub, { once: true });
+} else {
+  initPublicHub();
+}
