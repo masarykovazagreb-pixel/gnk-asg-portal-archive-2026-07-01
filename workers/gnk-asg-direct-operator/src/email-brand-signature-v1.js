@@ -1,5 +1,5 @@
-export const VERSION='GNK_ASG_EMAIL_BRAND_SIGNATURE_V1_20260704';
-export const LOGO_URL='https://gnk-asg.hr/assets/gnk-asg-email-logo-transparent.png?v=20260701-5';
+export const VERSION='GNK_ASG_EMAIL_BRAND_SIGNATURE_V2_20260712_CONFIGURABLE_LOGO';
+export const LOGO_URL='https://gnk-asg.hr/assets/gnk-asg-email-logo-transparent.png?v=20260712';
 export const WEBSITE='https://gnk-asg.hr';
 export const GOLD='#b88a2f';
 
@@ -22,16 +22,17 @@ function linkedLine(value,href,label=''){
   return `<div style="font-size:14px;line-height:1.5;color:${GOLD};margin:0 0 3px">${prefix}<a href="${escapeHtml(href)}" style="color:${GOLD};text-decoration:none">${escapeHtml(text)}</a></div>`;
 }
 
-export function renderBrandSignatureHtml({marker=VERSION,name,unit,subline,address,registry,email,web=WEBSITE}={}){
+export function renderBrandSignatureHtml({marker=VERSION,name,unit,subline,address,registry,email,web=WEBSITE,logoSrc=LOGO_URL}={}){
   const identity=clean(name)||'GNK ASG';
-  return `<table data-gnk-asg-signature="${escapeHtml(marker)}" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;max-width:620px;border-collapse:collapse;margin-top:26px;border-top:1px solid ${GOLD};font-family:Arial,Helvetica,sans-serif"><tr><td align="left" style="padding:20px 0 10px"><a href="${escapeHtml(web)}" style="display:inline-block;text-decoration:none"><img src="${LOGO_URL}" width="190" alt="GNK DINAMO Ltd. Group / GNK ASG" style="display:block;width:190px;max-width:70%;height:auto;border:0;outline:none;text-decoration:none;background:transparent"></a></td></tr><tr><td align="left" style="padding:0 0 12px;color:${GOLD};font-size:14px;line-height:1.5;word-break:normal;overflow-wrap:normal"><div style="font-size:22px;line-height:1.25;font-weight:800;color:${GOLD};margin:0 0 8px">${escapeHtml(identity)}</div>${line(unit,{strong:true})}${line(subline)}${line(address)}${line(registry)}${linkedLine(email,`mailto:${email}`)}${linkedLine(web,web)}</td></tr></table>`;
+  const logo=clean(logoSrc)||LOGO_URL;
+  return `<table data-gnk-asg-signature="${escapeHtml(marker)}" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;max-width:620px;border-collapse:collapse;margin-top:26px;border-top:1px solid ${GOLD};font-family:Arial,Helvetica,sans-serif"><tr><td align="left" style="padding:20px 0 10px"><a href="${escapeHtml(web)}" style="display:inline-block;text-decoration:none"><img src="${escapeHtml(logo)}" width="190" alt="GNK ASG d.o.o." style="display:block;width:190px;max-width:70%;height:auto;border:0;outline:none;text-decoration:none;background:transparent"></a></td></tr><tr><td align="left" style="padding:0 0 12px;color:${GOLD};font-size:14px;line-height:1.5;word-break:normal;overflow-wrap:normal"><div style="font-size:22px;line-height:1.25;font-weight:800;color:${GOLD};margin:0 0 8px">${escapeHtml(identity)}</div>${line(unit,{strong:true})}${line(subline)}${line(address)}${line(registry)}${linkedLine(email,`mailto:${email}`)}${linkedLine(web,web)}</td></tr></table>`;
 }
 
 export function renderBrandSignatureText({name,unit,subline,address,registry,email,web=WEBSITE}={}){
   return [name,unit,subline,address,registry,email,web].map(clean).filter(Boolean).join('\n');
 }
 
-export function institutionalSignature(profile,centre){
+export function institutionalSignature(profile,centre,logoSrc=LOGO_URL){
   const location=centre?.name&&centre?.country?`${centre.name}, ${centre.country}`:'';
   return{
     html:renderBrandSignatureHtml({
@@ -40,7 +41,8 @@ export function institutionalSignature(profile,centre){
       unit:profile?.unit,
       subline:location?`Global Service Centre: ${location}`:'',
       email:profile?.email,
-      web:WEBSITE
+      web:WEBSITE,
+      logoSrc
     }),
     text:renderBrandSignatureText({
       name:profile?.name,
@@ -52,7 +54,7 @@ export function institutionalSignature(profile,centre){
   };
 }
 
-export function corporateSignature(identity,company){
+export function corporateSignature(identity,company,logoSrc=LOGO_URL){
   return{
     html:renderBrandSignatureHtml({
       marker:VERSION,
@@ -61,7 +63,8 @@ export function corporateSignature(identity,company){
       address:company?.address,
       registry:company?.oib&&company?.mbs?`OIB: ${company.oib} · MBS: ${company.mbs}`:'',
       email:identity?.email,
-      web:company?.web||WEBSITE
+      web:company?.web||WEBSITE,
+      logoSrc
     }),
     text:renderBrandSignatureText({
       name:identity?.name,
@@ -74,7 +77,7 @@ export function corporateSignature(identity,company){
   };
 }
 
-export function mediaSignature(media){
+export function mediaSignature(media,logoSrc=LOGO_URL){
   return{
     html:renderBrandSignatureHtml({
       marker:VERSION,
@@ -82,7 +85,8 @@ export function mediaSignature(media){
       unit:media?.centre,
       subline:media?.organiser,
       email:media?.email,
-      web:media?.web||WEBSITE
+      web:media?.web||WEBSITE,
+      logoSrc
     }),
     text:renderBrandSignatureText({
       name:media?.group,
