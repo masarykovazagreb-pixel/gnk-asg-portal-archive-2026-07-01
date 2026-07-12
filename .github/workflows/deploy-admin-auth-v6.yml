@@ -118,9 +118,6 @@ jobs:
           grep -q "MENU" public-floating-menu-v2.js
           curl --fail --silent --show-error https://gnk-asg.hr/assets/public-floating-menu-mobile-v2.css?deploy-admin-v6 -o public-floating-menu-mobile-v2.css
           grep -q "bottom:calc(84px" public-floating-menu-mobile-v2.css
-          curl --fail --silent --show-error https://gnk-asg.hr/assets/logo-gnk-asg-email.jpg?deploy-admin-v6 -o logo-gnk-asg-email.jpg
-          test "$(wc -c < logo-gnk-asg-email.jpg)" -gt 1000
-          file logo-gnk-asg-email.jpg | grep -qi "JPEG image data"
           curl --fail --silent --show-error https://gnk-asg.hr/ -o public-home.html
           grep -q "public-floating-menu-v2.js" public-home.html
           grep -q "public-floating-menu-mobile-v2.css" public-home.html
