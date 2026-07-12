@@ -1,6 +1,7 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v16.js';
+import {runScheduledNewsPublication,VERSION as NEWS_AUTO_PUBLICATION_VERSION} from './news-auto-publication-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V44_20260712_HOME_COUNTDOWN_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V45_20260712_NEWS_SCHEDULER_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
 const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260711-admin-first';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
@@ -83,6 +84,7 @@ function stamp(request,response){
   }
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v17.js');
   headers.set('x-gnk-global-menu-version',VERSION);
+  headers.set('x-gnk-news-auto-publication',NEWS_AUTO_PUBLICATION_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -92,7 +94,12 @@ export default{
     return stamp(request,await injectGlobalMenu(request,response));
   },
   scheduled(event,env,ctx){
-    if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);
+    const tasks=[];
+    if(typeof app.scheduled==='function')tasks.push(Promise.resolve(app.scheduled(event,env,ctx)));
+    tasks.push(Promise.resolve(runScheduledNewsPublication(env)));
+    const combined=Promise.allSettled(tasks);
+    if(ctx?.waitUntil){ctx.waitUntil(combined);return;}
+    return combined;
   },
   async email(message,env,ctx){
     if(typeof app.email==='function')return app.email(message,env,ctx);
