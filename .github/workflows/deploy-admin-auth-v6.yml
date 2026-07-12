@@ -25,13 +25,21 @@ jobs:
       - name: Validate current admin and portal files
         run: |
           node --check apps/portal/assets/public-floating-menu-v2.js
-          test -s apps/portal/assets/public-floating-menu-mobile-v2.css
+          node --check apps/portal/assets/public-compact-menu-v1.js
           node --check apps/portal/assets/index-live-hub-v1.js
+          node --check apps/portal/assets/newsroom-live-v1.js
+          node --check apps/portal/assets/media-registration-qa-v1.js
+          node --check apps/portal/assets/the-code-countdown-v1.js
+          test -s apps/portal/assets/public-floating-menu-mobile-v2.css
+          test -s apps/portal/assets/index-event-bar-theme-v1.css
+          test -s apps/portal/assets/index-live-shell-v1.css
+          test -s apps/portal/assets/index-live-hub-v1.css
           node --check workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
           node --check workers/gnk-asg-operator-center/src/index.js
@@ -116,12 +124,30 @@ jobs:
           curl --fail --silent --show-error https://gnk-asg.hr/assets/public-floating-menu-v2.js?deploy-admin-v6 -o public-floating-menu-v2.js
           grep -q "HOME" public-floating-menu-v2.js
           grep -q "MENU" public-floating-menu-v2.js
-          curl --fail --silent --show-error https://gnk-asg.hr/assets/public-floating-menu-mobile-v2.css?deploy-admin-v6 -o public-floating-menu-mobile-v2.css
-          grep -q "bottom:calc(84px" public-floating-menu-mobile-v2.css
+          curl --fail --silent --show-error https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6 -o public-compact-menu-v1.js
+          grep -q "gnk-compact-menu" public-compact-menu-v1.js
+          curl --fail --silent --show-error https://gnk-asg.hr/assets/index-live-hub-v1.js?deploy-admin-v6 -o index-live-hub-v1.js
+          grep -q "/api/public-news" index-live-hub-v1.js
+          curl --fail --silent --show-error https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6 -o newsroom-live-v1.js
+          grep -q "/api/public-news" newsroom-live-v1.js
+          curl --fail --silent --show-error https://gnk-asg.hr/assets/index-live-shell-v1.css?deploy-admin-v6 -o index-live-shell-v1.css
+          grep -q ".site-header" index-live-shell-v1.css
+
           curl --fail --silent --show-error https://gnk-asg.hr/ -o public-home.html
           grep -q "public-floating-menu-v2.js" public-home.html
-          grep -q "public-floating-menu-mobile-v2.css" public-home.html
+          grep -q "index-live-shell-v1.css" public-home.html
+          grep -q "index-live-hub-v1.js" public-home.html
 
+          curl --fail --silent --show-error https://gnk-asg.hr/about/ -o public-about.html
+          grep -q "public-compact-menu-v1.js" public-about.html
+
+          curl --fail --silent --show-error https://gnk-asg.hr/newsroom/ -o public-newsroom.html
+          grep -q "newsroom-live-v1.js" public-newsroom.html
+
+          curl --fail --silent --show-error https://gnk-asg.hr/api/public-news?limit=1 -o public-news.json
+          grep -q '"ok": true' public-news.json
+
+          require_status "/projects/roadmap/" "200"
           require_status "/media-application/" "200"
           require_protected_route "/mail-studio/"
           require_protected_route "/email-status/"
