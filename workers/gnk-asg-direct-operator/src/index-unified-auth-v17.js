@@ -3,9 +3,9 @@ import {runScheduledNewsPublication,handlePublicNews,getPublishedNewsBySlug,VERS
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v2.js';
 import {handleEmailLogo,VERSION as EMAIL_LOGO_VERSION} from './email-logo-endpoint-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V59_20260712_NEWSROOM_INDEX_HTML_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V60_20260713_NEWSROOM_FALLBACK_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
-const COMPACT_MENU_SCRIPT='/assets/public-compact-menu-v1.js?v=20260712-all-public-ai';
+const COMPACT_MENU_SCRIPT='/assets/public-compact-menu-v1.js?v=20260713-compact-fit';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
 const MEDIA_QA_SCRIPT='/assets/media-registration-qa-v1.js?v=20260711-deadline-a11y';
 const INDEX_HUB_SCRIPT='/assets/index-live-hub-v1.js?v=20260712-live-feed';
@@ -28,6 +28,15 @@ function shouldInject(request,response){if(request.method!=='GET'&&request.metho
 function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
 function articleRoute(path){const match=path.match(/^\/(en\/)?newsroom\/([^/]+)$/);return match?{english:Boolean(match[1]),slug:decodeURIComponent(match[2])}:null;}
 
+function newsroomFallback(request){
+  const path=pathOf(request);if(!isNewsroomLanding(path))return null;
+  const english=path==='/en/newsroom';
+  const title=english?'GNK ASG Newsroom':'GNK ASG Newsroom';
+  const intro=english?'Official corporate news, releases and media information.':'Službene korporativne vijesti, objave i medijske informacije.';
+  const html=`<!doctype html><html lang="${english?'en':'hr'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>${title}</title><meta name="description" content="${intro}"><link rel="canonical" href="https://gnk-asg.hr${english?'/en':''}/newsroom/"><link rel="stylesheet" href="/assets/public-sections-v1.css?v=20260711"><meta name="robots" content="index,follow,max-image-preview:large"></head><body><main class="wrap"><section class="hero"><p class="eyebrow">${english?'Official media center':'Službeni medijski centar'}</p><h1>Newsroom</h1><p class="lead">${intro}</p></section><section id="newsroom-live-feed" class="card"><p>${english?'Loading latest published news…':'Učitavanje najnovijih objava…'}</p></section><section class="grid3"><article class="card"><h2>${english?'Latest news':'Aktualne vijesti'}</h2><p>${english?'Business, technology, project and group updates.':'Poslovne, tehnološke, projektne i grupne informacije.'}</p></article><article class="card"><h2>${english?'Official releases':'Službene objave'}</h2><p>${english?'Corporate releases, documents and statements.':'Korporativne objave, dokumenti i izjave.'}</p></article><article class="card"><h2>Media Center</h2><p><a class="btn gold" href="/media-application/">Media Application</a></p></article></section></main><script defer src="${NEWSROOM_LIVE_SCRIPT}"></script><script defer src="${COMPACT_MENU_SCRIPT}"></script></body></html>`;
+  return new Response(request.method==='HEAD'?null:html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'public, max-age=120, stale-while-revalidate=300','x-gnk-public-route-source':'worker-fallback'}});
+}
+
 async function articleResponse(request,env){
   if(request.method!=='GET'&&request.method!=='HEAD')return null;
   const route=articleRoute(pathOf(request));if(!route)return null;
@@ -42,9 +51,9 @@ async function articleResponse(request,env){
 
 async function publicAssetResponse(request,env){
   if(request.method!=='GET'&&request.method!=='HEAD')return null;
-  const assetPath=PUBLIC_ASSET_ROUTES.get(pathOf(request));if(!assetPath||!env.ASSETS?.fetch)return null;
+  const assetPath=PUBLIC_ASSET_ROUTES.get(pathOf(request));if(!assetPath||!env.ASSETS?.fetch)return newsroomFallback(request);
   const target=new URL(assetPath,request.url);target.search='';
-  const asset=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers}));if(asset.status===404)return null;
+  const asset=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers}));if(asset.status===404)return newsroomFallback(request);
   const headers=new Headers(asset.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','public, max-age=300');headers.set('x-gnk-public-route-source','static-asset');
   return new Response(request.method==='HEAD'?null:await asset.text(),{status:asset.status,statusText:asset.statusText,headers});
 }
