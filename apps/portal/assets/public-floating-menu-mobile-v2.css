@@ -1,4 +1,27 @@
+#gnk-event-bar::before{
+  content:"";
+  position:absolute;
+  left:18px;
+  top:50%;
+  width:180px;
+  height:46px;
+  transform:translateY(-50%);
+  background:url('/assets/logo-gnk-asg.svg') center/contain no-repeat;
+  z-index:3;
+  pointer-events:none;
+}
+#gnk-event-bar .gnk-event-track{left:214px}
+.site-header .brand,
+.site-header .site-brand,
+.site-header .brand-logo,
+.site-header .logo,
+.site-header a.logo,
+.site-header img[alt*="GNK ASG" i],
+.site-header img[alt^="GNK" i]{display:none!important}
+
 @media (max-width:700px){
+  #gnk-event-bar::before{left:10px;width:112px;height:38px}
+  #gnk-event-bar .gnk-event-track{left:128px}
   #gnk-floating-menu{left:auto!important;right:12px!important;top:auto!important;bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;transform:none!important}
   #gnk-floating-menu .gnk-home-button{display:none!important}
   #gnk-floating-menu .gnk-floating-actions{justify-content:flex-end!important}
