@@ -1,5 +1,5 @@
 const VERSION='GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V2_20260712_SENDER_GUARD';
-const LOGO='https://gnk-asg.hr/assets/brand/media-kit/GNK_ASG_logo_gold_transparent.png';
+const LOGO='https://gnk-asg.hr/assets/logo-gnk-asg.svg';
 const WEB='https://gnk-asg.hr';
 
 const PROFILES={
