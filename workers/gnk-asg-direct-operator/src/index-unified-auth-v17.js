@@ -1,11 +1,13 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v16.js';
 import {runScheduledNewsPublication,VERSION as NEWS_AUTO_PUBLICATION_VERSION} from './news-auto-publication-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V45_20260712_NEWS_SCHEDULER_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V46_20260712_INDEX_HUB_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
 const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260711-admin-first';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
 const MEDIA_QA_SCRIPT='/assets/media-registration-qa-v1.js?v=20260711-deadline-a11y';
+const INDEX_HUB_SCRIPT='/assets/index-live-hub-v1.js?v=20260712-dynamic-init';
+const INDEX_HUB_STYLE='/assets/index-live-hub-v1.css?v=20260712-public-hub';
 const PROTECTED_PREFIXES=[
   '/admin',
   '/admin-center',
@@ -36,6 +38,10 @@ function isCountdownPath(path){
   return path==='/'||path==='/en'||isTheCodePath(path);
 }
 
+function isIndexPath(path){
+  return path==='/'||path==='/en';
+}
+
 function shouldInject(request,response){
   if(request.method!=='GET'&&request.method!=='HEAD')return false;
   if(response.status!==200)return false;
@@ -45,26 +51,36 @@ function shouldInject(request,response){
   return type.includes('text/html');
 }
 
-async function injectGlobalMenu(request,response){
+async function injectGlobalAssets(request,response){
   if(!shouldInject(request,response)||request.method==='HEAD')return response;
   try{
     let html=await response.text();
     html=html.replace(/<script[^>]+public-floating-menu-v1\.js[^>]*><\/script>/gi,'');
     const scripts=[];
     const path=pathOf(request);
+
     if(!html.includes('public-floating-menu-v2.js'))scripts.push(`<script defer src="${FLOATING_MENU_SCRIPT}"></script>`);
     if(isCountdownPath(path)&&!html.includes('the-code-countdown-v1.js'))scripts.push(`<script defer src="${COUNTDOWN_SCRIPT}"></script>`);
     if(path==='/media-application'&&!html.includes('media-registration-qa-v1.js'))scripts.push(`<script defer src="${MEDIA_QA_SCRIPT}"></script>`);
+    if(isIndexPath(path)&&!html.includes('index-live-hub-v1.js'))scripts.push(`<script defer src="${INDEX_HUB_SCRIPT}"></script>`);
+
+    if(isIndexPath(path)&&!html.includes('index-live-hub-v1.css')){
+      const style=`<link rel="stylesheet" href="${INDEX_HUB_STYLE}">`;
+      html=html.includes('</head>')?html.replace('</head>',`${style}</head>`):`${style}${html}`;
+    }
+
     if(scripts.length){
       const bundle=scripts.join('');
       html=html.includes('</body>')?html.replace('</body>',`${bundle}</body>`):`${html}${bundle}`;
     }
+
     const headers=new Headers(response.headers);
     headers.delete('content-length');
     headers.delete('content-encoding');
     headers.set('content-type','text/html; charset=utf-8');
     headers.set('x-gnk-global-floating-menu','admin-first-bilingual');
     if(isCountdownPath(path))headers.set('x-gnk-the-code-countdown','enabled');
+    if(isIndexPath(path))headers.set('x-gnk-public-index-hub','dynamic-init-v1');
     if(path==='/media-application')headers.set('x-gnk-media-qa','deadline-a11y-v1');
     return new Response(html,{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
@@ -91,7 +107,7 @@ function stamp(request,response){
 export default{
   async fetch(request,env,ctx){
     const response=await app.fetch(request,env,ctx);
-    return stamp(request,await injectGlobalMenu(request,response));
+    return stamp(request,await injectGlobalAssets(request,response));
   },
   scheduled(event,env,ctx){
     const tasks=[];
