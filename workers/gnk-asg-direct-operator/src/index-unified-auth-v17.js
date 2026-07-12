@@ -3,13 +3,9 @@ import {runScheduledNewsPublication,handlePublicNews,getPublishedNewsBySlug,VERS
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v2.js';
 import {handleEmailLogo,VERSION as EMAIL_LOGO_VERSION} from './email-logo-endpoint-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V57_20260712_NEWSROOM_ROUTE_FIX_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V58_20260712_COMPACT_MENU_ALL_PUBLIC_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
-const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260712-index-live';
-const FLOATING_MENU_MOBILE_STYLE='/assets/public-floating-menu-mobile-v2.css?v=20260712-bottom-nav-safe';
-const COMPACT_MENU_SCRIPT='/assets/public-compact-menu-v1.js?v=20260712-public-subpages';
-const INDEX_EVENT_BAR_THEME='/assets/index-event-bar-theme-v1.css?v=20260712-dark-brown';
-const INDEX_LIVE_SHELL='/assets/index-live-shell-v1.css?v=20260712-hide-legacy-shell';
+const COMPACT_MENU_SCRIPT='/assets/public-compact-menu-v1.js?v=20260712-all-public-ai';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
 const MEDIA_QA_SCRIPT='/assets/media-registration-qa-v1.js?v=20260711-deadline-a11y';
 const INDEX_HUB_SCRIPT='/assets/index-live-hub-v1.js?v=20260712-live-feed';
@@ -57,7 +53,7 @@ async function injectGlobalAssets(request,response){
   try{
     let html=await response.text();const scripts=[],styles=[],path=pathOf(request),index=isIndexPath(path),publicPage=isPublicPage(path),marketLive=isMarketLivePath(path);
     html=html.replace(/<script[^>]+public-floating-menu-v1\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+public-floating-menu-v2\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+public-compact-menu-v1\.js[^>]*><\/script>/gi,'').replace(/<link[^>]+public-floating-menu-mobile-v2\.css[^>]*>/gi,'').replace(/<link[^>]+index-event-bar-theme-v1\.css[^>]*>/gi,'').replace(/<link[^>]+index-live-shell-v1\.css[^>]*>/gi,'');
-    if(index){scripts.push(`<script defer src="${FLOATING_MENU_SCRIPT}"></script>`);styles.push(`<link rel="stylesheet" href="${FLOATING_MENU_MOBILE_STYLE}"><link rel="stylesheet" href="${INDEX_EVENT_BAR_THEME}"><link rel="stylesheet" href="${INDEX_LIVE_SHELL}">`);}else if(publicPage){scripts.push(`<script defer src="${COMPACT_MENU_SCRIPT}"></script>`);}
+    if(publicPage) scripts.push(`<script defer src="${COMPACT_MENU_SCRIPT}"></script>`);
     if(isCountdownPath(path)&&!html.includes('the-code-countdown-v1.js'))scripts.push(`<script defer src="${COUNTDOWN_SCRIPT}"></script>`);
     if(path==='/media-application'&&!html.includes('media-registration-qa-v1.js'))scripts.push(`<script defer src="${MEDIA_QA_SCRIPT}"></script>`);
     if(index){scripts.push(`<script defer src="${INDEX_HUB_SCRIPT}"></script>`);styles.push(`<link rel="stylesheet" href="${INDEX_HUB_STYLE}">`);}
@@ -66,7 +62,7 @@ async function injectGlobalAssets(request,response){
     if(marketLive&&!html.includes('public-market-live-v1.css'))styles.push(`<link rel="stylesheet" href="${MARKET_LIVE_STYLE}">`);
     if(styles.length){const bundle=styles.join('');html=html.includes('</head>')?html.replace('</head>',`${bundle}</head>`):`${bundle}${html}`;}
     if(scripts.length){const bundle=scripts.join('');html=html.includes('</body>')?html.replace('</body>',`${bundle}</body>`):`${html}${bundle}`;}
-    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-global-floating-menu',index?'index-live-shell':publicPage?'compact-public-subpage':'disabled');
+    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-global-floating-menu',publicPage?'compact-top-three-button':'disabled');
     if(index)headers.set('x-gnk-public-index-hub','live-news-feed-v1');if(isNewsroomLanding(path))headers.set('x-gnk-newsroom-feed','public-kv-feed-v1');if(marketLive)headers.set('x-gnk-market-live','ecb-world-bank-v1');return new Response(html,{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
