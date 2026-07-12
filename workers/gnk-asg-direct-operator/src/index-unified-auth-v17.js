@@ -1,6 +1,6 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v16.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V40_20260711_MEDIA_QA_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V41_20260712_SECURITY_HEADERS_${BASE_VERSION}`;
 
 const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260711-admin-first';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
@@ -45,6 +45,11 @@ async function injectGlobalMenu(request,response){
 
 function stamp(response){
   const headers=new Headers(response.headers);
+  headers.set('x-content-type-options','nosniff');
+  headers.set('x-frame-options','SAMEORIGIN');
+  headers.set('referrer-policy','strict-origin-when-cross-origin');
+  headers.set('permissions-policy','camera=(), microphone=(), geolocation=(), payment=(), usb=()');
+  headers.set('cross-origin-resource-policy','same-site');
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v17.js');
   headers.set('x-gnk-global-menu-version',VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
