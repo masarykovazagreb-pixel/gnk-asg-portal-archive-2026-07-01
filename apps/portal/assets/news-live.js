@@ -7,7 +7,9 @@
   let articles = [];
   let approvedMedia = [];
   let activeFilter = 'all';
+  let loading = false;
   const NEWS_VISIBLE_LIMIT = 500;
+  const CLIENT_REFRESH_INTERVAL_MS = 15 * 60 * 1000;
   const esc = (value) => String(value || '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const english = () => window.GNK_LANG && window.GNK_LANG.get() === 'en';
   function installTopicCalloutStyle() {
@@ -90,7 +92,7 @@
     }
     const selected = collection(filter).filter(fresh).sort((a,b) => stamp(b) - stamp(a));
     if (!selected.length) {
-      const monitorText = filter === 'mentions' ? (en ? 'There is currently no public publication displayed in this section.' : 'U ovoj rubrici trenutačno nema prikazane javne objave.') : (en ? 'The public window holds up to 500 newest news items and refreshes every hour; the active archive retains the next 400 older items.' : 'Javni prozor sadrži do 500 najnovijih vijesti i osvježava se svakih sat vremena; aktivna arhiva zadržava sljedećih 400 starijih stavki.');
+      const monitorText = filter === 'mentions' ? (en ? 'There is currently no public publication displayed in this section.' : 'U ovoj rubrici trenutačno nema prikazane javne objave.') : (en ? 'The public window holds the newest news items and refreshes automatically.' : 'Javni prozor prikazuje najnovije vijesti i automatski se osvježava.');
       grid.innerHTML = '<article class="news-card"><span class="meta">' + (en ? 'PUBLIC MONITOR' : 'JAVNI PREGLED') + '</span><h3>' + (en ? 'No item in the selected section' : 'Nema stavke u odabranoj rubrici') + '</h3><p>' + monitorText + '</p></article>';
       return;
     }
@@ -108,19 +110,29 @@
     });
   }
   async function load() {
+    if (loading) return;
+    loading = true;
     try {
+      const cacheBust = Date.now();
       const responses = await Promise.all([
-        fetch('data/news.json?v=' + Date.now(), {cache:'no-store'}),
-        fetch('data/media_approved.json?v=' + Date.now(), {cache:'no-store'})
+        fetch('/data/news.json?v=' + cacheBust, {cache:'no-store'}),
+        fetch('/data/media_approved.json?v=' + cacheBust, {cache:'no-store'})
       ]);
       articles = responses[0].ok ? await responses[0].json() : [];
       approvedMedia = responses[1].ok ? await responses[1].json() : [];
       approvedMedia = approvedMedia.map(item => Object.assign({}, item, {group:'mentions', category:'mentions'}));
-    } catch (error) { articles = []; approvedMedia = []; }
+    } catch (error) {
+      articles = [];
+      approvedMedia = [];
+    } finally {
+      loading = false;
+    }
     render(activeFilter);
   }
   ensureTopicControls();
   bindTabs();
   window.addEventListener('gnk-language-change', () => { updateLabels(); render(activeFilter); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+  window.setInterval(load, CLIENT_REFRESH_INTERVAL_MS);
   load();
 })();
