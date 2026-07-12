@@ -3,9 +3,9 @@ import {runScheduledNewsPublication,VERSION as NEWS_AUTO_PUBLICATION_VERSION} fr
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v2.js';
 import {handleEmailLogo,VERSION as EMAIL_LOGO_VERSION} from './email-logo-endpoint-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V49_20260712_MOBILE_MENU_EMAIL_LOGO_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V50_20260712_INDEX_ONLY_MENU_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
-const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260711-admin-first';
+const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260712-language-switch';
 const FLOATING_MENU_MOBILE_STYLE='/assets/public-floating-menu-mobile-v2.css?v=20260712-bottom-nav-safe';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
 const MEDIA_QA_SCRIPT='/assets/media-registration-qa-v1.js?v=20260711-deadline-a11y';
@@ -24,19 +24,23 @@ async function injectGlobalAssets(request,response){
   if(!shouldInject(request,response)||request.method==='HEAD')return response;
   try{
     let html=await response.text();
+    const scripts=[],styles=[],path=pathOf(request),index=isIndexPath(path);
     html=html.replace(/<script[^>]+public-floating-menu-v1\.js[^>]*><\/script>/gi,'');
-    const scripts=[],styles=[],path=pathOf(request);
-    if(!html.includes('public-floating-menu-v2.js'))scripts.push(`<script defer src="${FLOATING_MENU_SCRIPT}"></script>`);
-    if(!html.includes('public-floating-menu-mobile-v2.css'))styles.push(`<link rel="stylesheet" href="${FLOATING_MENU_MOBILE_STYLE}">`);
+    if(!index){
+      html=html.replace(/<script[^>]+public-floating-menu-v2\.js[^>]*><\/script>/gi,'');
+      html=html.replace(/<link[^>]+public-floating-menu-mobile-v2\.css[^>]*>/gi,'');
+    }
+    if(index&&!html.includes('public-floating-menu-v2.js'))scripts.push(`<script defer src="${FLOATING_MENU_SCRIPT}"></script>`);
+    if(index&&!html.includes('public-floating-menu-mobile-v2.css'))styles.push(`<link rel="stylesheet" href="${FLOATING_MENU_MOBILE_STYLE}">`);
     if(isCountdownPath(path)&&!html.includes('the-code-countdown-v1.js'))scripts.push(`<script defer src="${COUNTDOWN_SCRIPT}"></script>`);
     if(path==='/media-application'&&!html.includes('media-registration-qa-v1.js'))scripts.push(`<script defer src="${MEDIA_QA_SCRIPT}"></script>`);
-    if(isIndexPath(path)&&!html.includes('index-live-hub-v1.js'))scripts.push(`<script defer src="${INDEX_HUB_SCRIPT}"></script>`);
-    if(isIndexPath(path)&&!html.includes('index-live-hub-v1.css'))styles.push(`<link rel="stylesheet" href="${INDEX_HUB_STYLE}">`);
+    if(index&&!html.includes('index-live-hub-v1.js'))scripts.push(`<script defer src="${INDEX_HUB_SCRIPT}"></script>`);
+    if(index&&!html.includes('index-live-hub-v1.css'))styles.push(`<link rel="stylesheet" href="${INDEX_HUB_STYLE}">`);
     if(styles.length){const bundle=styles.join('');html=html.includes('</head>')?html.replace('</head>',`${bundle}</head>`):`${bundle}${html}`;}
     if(scripts.length){const bundle=scripts.join('');html=html.includes('</body>')?html.replace('</body>',`${bundle}</body>`):`${html}${bundle}`;}
-    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-global-floating-menu','admin-first-bilingual-mobile-safe');
+    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-global-floating-menu',index?'index-only-bilingual':'disabled-off-index');
     if(isCountdownPath(path))headers.set('x-gnk-the-code-countdown','enabled');
-    if(isIndexPath(path))headers.set('x-gnk-public-index-hub','dynamic-init-v1');
+    if(index)headers.set('x-gnk-public-index-hub','dynamic-init-v1');
     if(path==='/media-application')headers.set('x-gnk-media-qa','deadline-a11y-v1');
     return new Response(html,{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
