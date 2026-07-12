@@ -1,91 +1,75 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v16.js';
-import {runScheduledNewsPublication,VERSION as NEWS_AUTO_PUBLICATION_VERSION} from './news-auto-publication-v1.js';
+import {runScheduledNewsPublication,handlePublicNews,getPublishedNewsBySlug,VERSION as NEWS_AUTO_PUBLICATION_VERSION} from './news-auto-publication-v1.js';
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v2.js';
 import {handleEmailLogo,VERSION as EMAIL_LOGO_VERSION} from './email-logo-endpoint-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V53_20260712_COMPACT_PUBLIC_MENU_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V54_20260712_LIVE_NEWS_PORTAL_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
-const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260712-index-only-hard-stop';
+const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260712-index-live';
 const FLOATING_MENU_MOBILE_STYLE='/assets/public-floating-menu-mobile-v2.css?v=20260712-bottom-nav-safe';
 const COMPACT_MENU_SCRIPT='/assets/public-compact-menu-v1.js?v=20260712-public-subpages';
 const INDEX_EVENT_BAR_THEME='/assets/index-event-bar-theme-v1.css?v=20260712-dark-brown';
+const INDEX_LIVE_SHELL='/assets/index-live-shell-v1.css?v=20260712-hide-legacy-shell';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
 const MEDIA_QA_SCRIPT='/assets/media-registration-qa-v1.js?v=20260711-deadline-a11y';
-const INDEX_HUB_SCRIPT='/assets/index-live-hub-v1.js?v=20260712-dynamic-init';
+const INDEX_HUB_SCRIPT='/assets/index-live-hub-v1.js?v=20260712-live-feed';
 const INDEX_HUB_STYLE='/assets/index-live-hub-v1.css?v=20260712-public-hub';
+const NEWSROOM_LIVE_SCRIPT='/assets/newsroom-live-v1.js?v=20260712-public-feed';
 const PROTECTED_PREFIXES=['/admin','/admin-center','/mail-studio','/campaign-mailer','/email-status','/worker-ops','/operator-dashboard','/digital-headquarters','/media-registration-admin','/webmail'];
-const PUBLIC_ASSET_ROUTES=new Map([
-  ['/newsroom','/newsroom/index.html'],
-  ['/en/newsroom','/en/newsroom/index.html']
-]);
+const PUBLIC_ASSET_ROUTES=new Map([['/newsroom','/newsroom/index.html'],['/en/newsroom','/en/newsroom/index.html']]);
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 function isProtectedPath(request){const path=pathOf(request);return PROTECTED_PREFIXES.some(prefix=>path===prefix||path.startsWith(`${prefix}/`));}
-function isPublicPage(path){return !isProtectedPath({url:`https://gnk-asg.hr${path}`})&&!path.startsWith('/api/')&&!path.startsWith('/assets/');}
+function isPublicPage(path){return !PROTECTED_PREFIXES.some(prefix=>path===prefix||path.startsWith(`${prefix}/`))&&!path.startsWith('/api/')&&!path.startsWith('/assets/');}
 function isTheCodePath(path){return path==='/the-code'||path.startsWith('/the-code/')||path==='/en/the-code'||path.startsWith('/en/the-code/');}
 function isCountdownPath(path){return path==='/'||path==='/en'||isTheCodePath(path);}
 function isIndexPath(path){return path==='/'||path==='/en';}
+function isNewsroomLanding(path){return path==='/newsroom'||path==='/en/newsroom';}
 function shouldInject(request,response){if(request.method!=='GET'&&request.method!=='HEAD')return false;if(response.status!==200)return false;const path=pathOf(request);if(path.startsWith('/api/'))return false;return String(response.headers.get('content-type')||'').toLowerCase().includes('text/html');}
+function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function articleRoute(path){const match=path.match(/^\/(en\/)?newsroom\/([^/]+)$/);return match?{english:Boolean(match[1]),slug:decodeURIComponent(match[2])}:null;}
+
+async function articleResponse(request,env){
+  if(request.method!=='GET'&&request.method!=='HEAD')return null;
+  const route=articleRoute(pathOf(request));if(!route)return null;
+  const post=await getPublishedNewsBySlug(env,route.slug);if(!post)return null;
+  const english=route.english||post.language==='en';
+  const canonical=`https://gnk-asg.hr${english?'/en':''}/newsroom/${encodeURIComponent(post.slug)}/`;
+  const source=post.sourceUrl?`<p><a href="${esc(post.sourceUrl)}" rel="noopener noreferrer">${english?'Source':'Izvor'}: ${esc(post.sourceName||post.sourceUrl)}</a></p>`:'';
+  const content=esc(post.content||post.summary).replace(/\n{2,}/g,'</p><p>').replace(/\n/g,'<br>');
+  const html=`<!doctype html><html lang="${english?'en':'hr'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>${esc(post.title)} | GNK ASG Newsroom</title><meta name="description" content="${esc(post.summary)}"><link rel="canonical" href="${canonical}"><link rel="stylesheet" href="/assets/public-sections-v1.css?v=20260711"><meta name="robots" content="index,follow,max-image-preview:large"></head><body><main class="wrap"><section class="hero"><p class="eyebrow">${esc(post.category||'Newsroom')}</p><h1>${esc(post.title)}</h1><p class="lead">${esc(post.summary)}</p><p><small>${esc(post.publishedAt||post.createdAt)}</small></p></section><article class="card"><p>${content}</p>${source}<p><a class="btn gold" href="${english?'/en/newsroom/':'/newsroom/'}">${english?'Back to Newsroom':'Natrag na Newsroom'}</a></p></article></main><script defer src="${COMPACT_MENU_SCRIPT}"></script></body></html>`;
+  return new Response(request.method==='HEAD'?null:html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'public, max-age=120, stale-while-revalidate=600','x-gnk-public-news-article':NEWS_AUTO_PUBLICATION_VERSION}});
+}
 
 async function publicAssetResponse(request,env){
   if(request.method!=='GET'&&request.method!=='HEAD')return null;
-  const assetPath=PUBLIC_ASSET_ROUTES.get(pathOf(request));
-  if(!assetPath||!env.ASSETS?.fetch)return null;
-  const target=new URL(assetPath,request.url);
-  const asset=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers}));
-  if(asset.status===404)return null;
-  const headers=new Headers(asset.headers);
-  headers.delete('content-length');
-  headers.delete('content-encoding');
-  headers.set('content-type','text/html; charset=utf-8');
-  headers.set('cache-control','public, max-age=300');
-  headers.set('x-gnk-public-route-source','static-asset');
+  const assetPath=PUBLIC_ASSET_ROUTES.get(pathOf(request));if(!assetPath||!env.ASSETS?.fetch)return null;
+  const target=new URL(assetPath,request.url);const asset=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers}));if(asset.status===404)return null;
+  const headers=new Headers(asset.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','public, max-age=300');headers.set('x-gnk-public-route-source','static-asset');
   return new Response(request.method==='HEAD'?null:await asset.text(),{status:asset.status,statusText:asset.statusText,headers});
 }
 
 async function injectGlobalAssets(request,response){
   if(!shouldInject(request,response)||request.method==='HEAD')return response;
   try{
-    let html=await response.text();
-    const scripts=[],styles=[],path=pathOf(request),index=isIndexPath(path),publicPage=isPublicPage(path);
-    html=html.replace(/<script[^>]+public-floating-menu-v1\.js[^>]*><\/script>/gi,'');
-    html=html.replace(/<script[^>]+public-floating-menu-v2\.js[^>]*><\/script>/gi,'');
-    html=html.replace(/<script[^>]+public-compact-menu-v1\.js[^>]*><\/script>/gi,'');
-    html=html.replace(/<link[^>]+public-floating-menu-mobile-v2\.css[^>]*>/gi,'');
-    html=html.replace(/<link[^>]+index-event-bar-theme-v1\.css[^>]*>/gi,'');
-
-    if(index&&!html.includes('public-floating-menu-v2.js'))scripts.push(`<script defer src="${FLOATING_MENU_SCRIPT}"></script>`);
-    if(index&&!html.includes('public-floating-menu-mobile-v2.css'))styles.push(`<link rel="stylesheet" href="${FLOATING_MENU_MOBILE_STYLE}">`);
-    if(index&&!html.includes('index-event-bar-theme-v1.css'))styles.push(`<link rel="stylesheet" href="${INDEX_EVENT_BAR_THEME}">`);
-    if(!index&&publicPage&&!html.includes('public-compact-menu-v1.js'))scripts.push(`<script defer src="${COMPACT_MENU_SCRIPT}"></script>`);
+    let html=await response.text();const scripts=[],styles=[],path=pathOf(request),index=isIndexPath(path),publicPage=isPublicPage(path);
+    html=html.replace(/<script[^>]+public-floating-menu-v1\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+public-floating-menu-v2\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+public-compact-menu-v1\.js[^>]*><\/script>/gi,'').replace(/<link[^>]+public-floating-menu-mobile-v2\.css[^>]*>/gi,'').replace(/<link[^>]+index-event-bar-theme-v1\.css[^>]*>/gi,'').replace(/<link[^>]+index-live-shell-v1\.css[^>]*>/gi,'');
+    if(index){scripts.push(`<script defer src="${FLOATING_MENU_SCRIPT}"></script>`);styles.push(`<link rel="stylesheet" href="${FLOATING_MENU_MOBILE_STYLE}"><link rel="stylesheet" href="${INDEX_EVENT_BAR_THEME}"><link rel="stylesheet" href="${INDEX_LIVE_SHELL}">`);}else if(publicPage){scripts.push(`<script defer src="${COMPACT_MENU_SCRIPT}"></script>`);}
     if(isCountdownPath(path)&&!html.includes('the-code-countdown-v1.js'))scripts.push(`<script defer src="${COUNTDOWN_SCRIPT}"></script>`);
     if(path==='/media-application'&&!html.includes('media-registration-qa-v1.js'))scripts.push(`<script defer src="${MEDIA_QA_SCRIPT}"></script>`);
-    if(index&&!html.includes('index-live-hub-v1.js'))scripts.push(`<script defer src="${INDEX_HUB_SCRIPT}"></script>`);
-    if(index&&!html.includes('index-live-hub-v1.css'))styles.push(`<link rel="stylesheet" href="${INDEX_HUB_STYLE}">`);
+    if(index){scripts.push(`<script defer src="${INDEX_HUB_SCRIPT}"></script>`);styles.push(`<link rel="stylesheet" href="${INDEX_HUB_STYLE}">`);}
+    if(isNewsroomLanding(path)&&!html.includes('newsroom-live-v1.js'))scripts.push(`<script defer src="${NEWSROOM_LIVE_SCRIPT}"></script>`);
     if(styles.length){const bundle=styles.join('');html=html.includes('</head>')?html.replace('</head>',`${bundle}</head>`):`${bundle}${html}`;}
     if(scripts.length){const bundle=scripts.join('');html=html.includes('</body>')?html.replace('</body>',`${bundle}</body>`):`${html}${bundle}`;}
-    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-global-floating-menu',index?'index-bilingual-dark-brown':publicPage?'compact-public-subpage':'disabled');
-    if(isCountdownPath(path))headers.set('x-gnk-the-code-countdown','enabled');
-    if(index)headers.set('x-gnk-public-index-hub','dynamic-init-v1');
-    if(path==='/media-application')headers.set('x-gnk-media-qa','deadline-a11y-v1');
-    return new Response(html,{status:response.status,statusText:response.statusText,headers});
+    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-global-floating-menu',index?'index-live-shell':publicPage?'compact-public-subpage':'disabled');
+    if(index)headers.set('x-gnk-public-index-hub','live-news-feed-v1');if(isNewsroomLanding(path))headers.set('x-gnk-newsroom-feed','public-kv-feed-v1');return new Response(html,{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
 
-function stamp(request,response){
-  const headers=new Headers(response.headers);headers.set('x-content-type-options','nosniff');headers.set('x-frame-options','SAMEORIGIN');headers.set('referrer-policy','strict-origin-when-cross-origin');headers.set('permissions-policy','camera=(), microphone=(), geolocation=(), payment=(), usb=()');headers.set('cross-origin-resource-policy','same-site');
-  if(isProtectedPath(request)){headers.set('x-robots-tag','noindex, nofollow, noarchive, nosnippet');headers.set('cache-control','no-store, private, max-age=0');headers.set('pragma','no-cache');}
-  headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v17.js');headers.set('x-gnk-global-menu-version',VERSION);headers.set('x-gnk-news-auto-publication',NEWS_AUTO_PUBLICATION_VERSION);headers.set('x-gnk-mail-autoreply',MAIL_AUTOREPLY_VERSION);headers.set('x-gnk-email-logo',EMAIL_LOGO_VERSION);
-  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
-}
+function stamp(request,response){const headers=new Headers(response.headers);headers.set('x-content-type-options','nosniff');headers.set('x-frame-options','SAMEORIGIN');headers.set('referrer-policy','strict-origin-when-cross-origin');headers.set('permissions-policy','camera=(), microphone=(), geolocation=(), payment=(), usb=()');headers.set('cross-origin-resource-policy','same-site');if(isProtectedPath(request)){headers.set('x-robots-tag','noindex, nofollow, noarchive, nosnippet');headers.set('cache-control','no-store, private, max-age=0');headers.set('pragma','no-cache');}headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v17.js');headers.set('x-gnk-global-menu-version',VERSION);headers.set('x-gnk-news-auto-publication',NEWS_AUTO_PUBLICATION_VERSION);headers.set('x-gnk-mail-autoreply',MAIL_AUTOREPLY_VERSION);headers.set('x-gnk-email-logo',EMAIL_LOGO_VERSION);return new Response(response.body,{status:response.status,statusText:response.statusText,headers});}
 
 export default{
-  async fetch(request,env,ctx){
-    const logo=handleEmailLogo(request);if(logo)return logo;
-    const publicAsset=await publicAssetResponse(request,env);
-    const response=publicAsset||await app.fetch(request,env,ctx);
-    return stamp(request,await injectGlobalAssets(request,response));
-  },
+  async fetch(request,env,ctx){const logo=handleEmailLogo(request);if(logo)return logo;const newsApi=await handlePublicNews(request,env);if(newsApi)return newsApi;const article=await articleResponse(request,env);if(article)return stamp(request,article);const publicAsset=await publicAssetResponse(request,env);const response=publicAsset||await app.fetch(request,env,ctx);return stamp(request,await injectGlobalAssets(request,response));},
   scheduled(event,env,ctx){const tasks=[];if(typeof app.scheduled==='function')tasks.push(Promise.resolve(app.scheduled(event,env,ctx)));tasks.push(Promise.resolve(runScheduledNewsPublication(env)));const combined=Promise.allSettled(tasks);if(ctx?.waitUntil){ctx.waitUntil(combined);return;}return combined;},
   async email(message,env,ctx){return handleIncomingEmail(message,env,ctx,app);}
 };
