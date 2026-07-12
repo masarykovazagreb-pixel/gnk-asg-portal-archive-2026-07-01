@@ -1,4 +1,6 @@
 (()=>{
+  const currentPath=(location.pathname.replace(/\/+$/,'')||'/');
+  if(currentPath!=='/'&&currentPath!=='/en')return;
   if(document.getElementById('gnk-floating-menu'))return;
 
   const sections=[
