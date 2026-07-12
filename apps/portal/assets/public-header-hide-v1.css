@@ -1,0 +1,5 @@
+:root{--gnk-public-top-offset:78px}
+html{scroll-padding-top:var(--gnk-public-top-offset)}
+body{padding-top:var(--gnk-public-top-offset)!important}
+.site-header{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;visibility:hidden!important}
+@media(max-width:700px){:root{--gnk-public-top-offset:70px}}
