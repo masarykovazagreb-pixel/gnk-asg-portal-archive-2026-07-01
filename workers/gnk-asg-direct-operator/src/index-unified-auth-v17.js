@@ -3,15 +3,19 @@ import {runScheduledNewsPublication,VERSION as NEWS_AUTO_PUBLICATION_VERSION} fr
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v2.js';
 import {handleEmailLogo,VERSION as EMAIL_LOGO_VERSION} from './email-logo-endpoint-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V50_20260712_INDEX_ONLY_MENU_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V51_20260712_NEWSROOM_PUBLIC_ASSET_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
-const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260712-language-switch';
+const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260712-index-only-hard-stop';
 const FLOATING_MENU_MOBILE_STYLE='/assets/public-floating-menu-mobile-v2.css?v=20260712-bottom-nav-safe';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
 const MEDIA_QA_SCRIPT='/assets/media-registration-qa-v1.js?v=20260711-deadline-a11y';
 const INDEX_HUB_SCRIPT='/assets/index-live-hub-v1.js?v=20260712-dynamic-init';
 const INDEX_HUB_STYLE='/assets/index-live-hub-v1.css?v=20260712-public-hub';
 const PROTECTED_PREFIXES=['/admin','/admin-center','/mail-studio','/campaign-mailer','/email-status','/worker-ops','/operator-dashboard','/digital-headquarters','/media-registration-admin','/webmail'];
+const PUBLIC_ASSET_ROUTES=new Map([
+  ['/newsroom','/newsroom/index.html'],
+  ['/en/newsroom','/en/newsroom/index.html']
+]);
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 function isProtectedPath(request){const path=pathOf(request);return PROTECTED_PREFIXES.some(prefix=>path===prefix||path.startsWith(`${prefix}/`));}
@@ -19,6 +23,22 @@ function isTheCodePath(path){return path==='/the-code'||path.startsWith('/the-co
 function isCountdownPath(path){return path==='/'||path==='/en'||isTheCodePath(path);}
 function isIndexPath(path){return path==='/'||path==='/en';}
 function shouldInject(request,response){if(request.method!=='GET'&&request.method!=='HEAD')return false;if(response.status!==200)return false;const path=pathOf(request);if(path.startsWith('/api/'))return false;return String(response.headers.get('content-type')||'').toLowerCase().includes('text/html');}
+
+async function publicAssetResponse(request,env){
+  if(request.method!=='GET'&&request.method!=='HEAD')return null;
+  const assetPath=PUBLIC_ASSET_ROUTES.get(pathOf(request));
+  if(!assetPath||!env.ASSETS?.fetch)return null;
+  const target=new URL(assetPath,request.url);
+  const asset=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers}));
+  if(asset.status===404)return null;
+  const headers=new Headers(asset.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.set('content-type','text/html; charset=utf-8');
+  headers.set('cache-control','public, max-age=300');
+  headers.set('x-gnk-public-route-source','static-asset');
+  return new Response(request.method==='HEAD'?null:await asset.text(),{status:asset.status,statusText:asset.statusText,headers});
+}
 
 async function injectGlobalAssets(request,response){
   if(!shouldInject(request,response)||request.method==='HEAD')return response;
@@ -54,7 +74,12 @@ function stamp(request,response){
 }
 
 export default{
-  async fetch(request,env,ctx){const logo=handleEmailLogo(request);if(logo)return logo;const response=await app.fetch(request,env,ctx);return stamp(request,await injectGlobalAssets(request,response));},
+  async fetch(request,env,ctx){
+    const logo=handleEmailLogo(request);if(logo)return logo;
+    const publicAsset=await publicAssetResponse(request,env);
+    const response=publicAsset||await app.fetch(request,env,ctx);
+    return stamp(request,await injectGlobalAssets(request,response));
+  },
   scheduled(event,env,ctx){const tasks=[];if(typeof app.scheduled==='function')tasks.push(Promise.resolve(app.scheduled(event,env,ctx)));tasks.push(Promise.resolve(runScheduledNewsPublication(env)));const combined=Promise.allSettled(tasks);if(ctx?.waitUntil){ctx.waitUntil(combined);return;}return combined;},
   async email(message,env,ctx){return handleIncomingEmail(message,env,ctx,app);}
 };
