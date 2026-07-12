@@ -1,6 +1,6 @@
 (()=>{
   const path=(location.pathname.replace(/\/+$/,'')||'/');
-  if(path==='/'||path==='/en'||document.getElementById('gnk-compact-menu'))return;
+  if(document.getElementById('gnk-compact-menu'))return;
   if(path.startsWith('/admin')||path.startsWith('/mail-studio')||path.startsWith('/campaign-mailer')||path.startsWith('/email-status')||path.startsWith('/operator-dashboard')||path.startsWith('/worker-ops')||path.startsWith('/digital-headquarters')||path.startsWith('/media-registration-admin')||path.startsWith('/webmail'))return;
 
   const english=document.documentElement.lang?.toLowerCase().startsWith('en')||path.startsWith('/en/');
@@ -31,7 +31,9 @@
     #gnk-compact-menu.open nav{display:grid;gap:7px}
     #gnk-compact-menu nav a{justify-content:flex-start;width:100%;height:40px;border-radius:10px;background:#17130f;color:#f5f2ea;box-shadow:none}
     #gnk-compact-menu nav a:hover,#gnk-compact-menu nav a:focus-visible{color:#f0d28c;border-color:#d8b66a}
-    @media(max-width:700px){#gnk-compact-menu{right:8px;top:calc(8px + env(safe-area-inset-top,0px))}#gnk-compact-menu .gnk-compact-actions{gap:5px;padding:5px}#gnk-compact-menu a,#gnk-compact-menu button{height:34px;padding:0 10px;font-size:10px}#gnk-compact-menu .gnk-lang{height:34px}#gnk-compact-menu nav{top:52px}}
+    #gnk-public-ai-button{position:fixed;right:18px;bottom:18px;z-index:99998;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;background:linear-gradient(145deg,#b21f36,#71101f);color:#fff;border:1px solid #ffcf78;box-shadow:0 12px 30px rgba(0,0,0,.45),0 0 0 4px rgba(178,31,54,.16);font:900 13px/1 Arial,sans-serif;letter-spacing:.04em}
+    #gnk-public-ai-button:hover,#gnk-public-ai-button:focus-visible{transform:translateY(-2px);background:linear-gradient(145deg,#c92a43,#821326);outline:none}
+    @media(max-width:700px){#gnk-compact-menu{right:8px;top:calc(8px + env(safe-area-inset-top,0px))}#gnk-compact-menu .gnk-compact-actions{gap:5px;padding:5px}#gnk-compact-menu a,#gnk-compact-menu button{height:34px;padding:0 10px;font-size:10px}#gnk-compact-menu .gnk-lang{height:34px}#gnk-compact-menu nav{top:52px}#gnk-public-ai-button{right:12px;bottom:84px;width:56px;height:56px}}
   `;
   document.head.appendChild(style);
 
@@ -50,4 +52,8 @@
   document.addEventListener('click',event=>{if(wrap.classList.contains('open')&&!wrap.contains(event.target))close();});
   document.addEventListener('keydown',event=>{if(event.key==='Escape')close();});
   actions.append(home,lang,button);wrap.append(actions,nav);document.body.appendChild(wrap);
+
+  if(!document.getElementById('gnk-public-ai-button')){
+    const ai=document.createElement('a');ai.id='gnk-public-ai-button';ai.href=english?'/en/#assistant':'/#assistant';ai.textContent='AI';ai.setAttribute('aria-label',english?'Open GNK ASG AI Assistant':'Otvori GNK ASG AI asistenta');document.body.appendChild(ai);
+  }
 })();
