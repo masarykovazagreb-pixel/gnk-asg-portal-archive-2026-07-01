@@ -30,10 +30,12 @@ jobs:
           node --check apps/portal/assets/newsroom-live-v1.js
           node --check apps/portal/assets/media-registration-qa-v1.js
           node --check apps/portal/assets/the-code-countdown-v1.js
+          node --check apps/portal/assets/public-market-live-v1.js
           test -s apps/portal/assets/public-floating-menu-mobile-v2.css
           test -s apps/portal/assets/index-event-bar-theme-v1.css
           test -s apps/portal/assets/index-live-shell-v1.css
           test -s apps/portal/assets/index-live-hub-v1.css
+          test -s apps/portal/assets/public-market-live-v1.css
           node --check workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
@@ -95,56 +97,84 @@ jobs:
       - name: Verify current production shell
         run: |
           set -euo pipefail
-          sleep 10
+          sleep 12
+
+          fetch_required() {
+            local url="$1"
+            local output="$2"
+            local attempt status
+            for attempt in 1 2 3 4 5; do
+              status=$(curl --silent --show-error --location --output "$output" --write-out '%{http_code}' "$url" || true)
+              echo "VERIFY ${url} -> HTTP ${status} (attempt ${attempt}/5)"
+              if [ "$status" = "200" ]; then
+                return 0
+              fi
+              sleep $((attempt * 4))
+            done
+            echo "Verification failed for ${url}; final HTTP status ${status}" >&2
+            return 1
+          }
 
           require_status() {
             local route="$1"
             local expected="$2"
-            local status
-            status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "https://gnk-asg.hr${route}?deploy-admin-v6")
-            if [ "$status" != "$expected" ]; then
-              echo "Unexpected HTTP status for ${route}: got ${status}, expected ${expected}" >&2
-              exit 1
-            fi
+            local url="https://gnk-asg.hr${route}?deploy-admin-v6=$(date +%s)"
+            local attempt status
+            for attempt in 1 2 3 4 5; do
+              status=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' "$url" || true)
+              echo "VERIFY ${url} -> HTTP ${status}, expected ${expected} (attempt ${attempt}/5)"
+              [ "$status" = "$expected" ] && return 0
+              sleep $((attempt * 4))
+            done
+            echo "Unexpected HTTP status for ${route}: got ${status}, expected ${expected}" >&2
+            return 1
           }
 
           require_protected_route() {
             local route="$1"
-            local status
-            status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "https://gnk-asg.hr${route}?deploy-admin-v6")
-            case "$status" in
-              200|301|302|303|307|308|401) ;;
-              *)
-                echo "Protected route ${route} returned unsupported HTTP status ${status}" >&2
-                exit 1
-                ;;
-            esac
+            local url="https://gnk-asg.hr${route}?deploy-admin-v6=$(date +%s)"
+            local attempt status
+            for attempt in 1 2 3 4 5; do
+              status=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' "$url" || true)
+              echo "VERIFY ${url} -> HTTP ${status} (attempt ${attempt}/5)"
+              case "$status" in
+                200|301|302|303|307|308|401) return 0 ;;
+              esac
+              sleep $((attempt * 4))
+            done
+            echo "Protected route ${route} returned unsupported HTTP status ${status}" >&2
+            return 1
           }
 
-          curl --fail --silent --show-error https://gnk-asg.hr/assets/public-floating-menu-v2.js?deploy-admin-v6 -o public-floating-menu-v2.js
+          cache_bust=$(date +%s)
+          fetch_required "https://gnk-asg.hr/assets/public-floating-menu-v2.js?deploy-admin-v6=${cache_bust}" public-floating-menu-v2.js
           grep -q "HOME" public-floating-menu-v2.js
           grep -q "MENU" public-floating-menu-v2.js
-          curl --fail --silent --show-error https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6 -o public-compact-menu-v1.js
-          grep -q "gnk-compact-menu" public-compact-menu-v1.js
-          curl --fail --silent --show-error https://gnk-asg.hr/assets/index-live-hub-v1.js?deploy-admin-v6 -o index-live-hub-v1.js
-          grep -q "/api/public-news" index-live-hub-v1.js
-          curl --fail --silent --show-error https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6 -o newsroom-live-v1.js
-          grep -q "/api/public-news" newsroom-live-v1.js
-          curl --fail --silent --show-error https://gnk-asg.hr/assets/index-live-shell-v1.css?deploy-admin-v6 -o index-live-shell-v1.css
-          grep -q ".site-header" index-live-shell-v1.css
 
-          curl --fail --silent --show-error https://gnk-asg.hr/ -o public-home.html
+          fetch_required "https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6=${cache_bust}" public-compact-menu-v1.js
+          grep -q "gnk-compact-menu" public-compact-menu-v1.js
+
+          fetch_required "https://gnk-asg.hr/assets/index-live-hub-v1.js?deploy-admin-v6=${cache_bust}" index-live-hub-v1.js
+          grep -q "/api/public-news" index-live-hub-v1.js
+
+          fetch_required "https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6=${cache_bust}" newsroom-live-v1.js
+          grep -q "/api/public-news" newsroom-live-v1.js
+
+          fetch_required "https://gnk-asg.hr/assets/index-live-shell-v1.css?deploy-admin-v6=${cache_bust}" index-live-shell-v1.css
+          grep -q "site-header" index-live-shell-v1.css
+
+          fetch_required "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" public-home.html
           grep -q "public-floating-menu-v2.js" public-home.html
           grep -q "index-live-shell-v1.css" public-home.html
           grep -q "index-live-hub-v1.js" public-home.html
 
-          curl --fail --silent --show-error https://gnk-asg.hr/about/ -o public-about.html
+          fetch_required "https://gnk-asg.hr/about/?deploy-admin-v6=${cache_bust}" public-about.html
           grep -q "public-compact-menu-v1.js" public-about.html
 
-          curl --fail --silent --show-error https://gnk-asg.hr/newsroom/ -o public-newsroom.html
+          fetch_required "https://gnk-asg.hr/newsroom/?deploy-admin-v6=${cache_bust}" public-newsroom.html
           grep -q "newsroom-live-v1.js" public-newsroom.html
 
-          curl --fail --silent --show-error https://gnk-asg.hr/api/public-news?limit=1 -o public-news.json
+          fetch_required "https://gnk-asg.hr/api/public-news?limit=1&deploy-admin-v6=${cache_bust}" public-news.json
           grep -q '"ok": true' public-news.json
 
           require_status "/projects/roadmap/" "200"
