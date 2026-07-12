@@ -1,6 +1,6 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v16.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V43_20260712_SCOPED_COUNTDOWN_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V44_20260712_HOME_COUNTDOWN_${BASE_VERSION}`;
 
 const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260711-admin-first';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
@@ -31,6 +31,10 @@ function isTheCodePath(path){
   return path==='/the-code'||path.startsWith('/the-code/')||path==='/en/the-code'||path.startsWith('/en/the-code/');
 }
 
+function isCountdownPath(path){
+  return path==='/'||path==='/en'||isTheCodePath(path);
+}
+
 function shouldInject(request,response){
   if(request.method!=='GET'&&request.method!=='HEAD')return false;
   if(response.status!==200)return false;
@@ -48,7 +52,7 @@ async function injectGlobalMenu(request,response){
     const scripts=[];
     const path=pathOf(request);
     if(!html.includes('public-floating-menu-v2.js'))scripts.push(`<script defer src="${FLOATING_MENU_SCRIPT}"></script>`);
-    if(isTheCodePath(path)&&!html.includes('the-code-countdown-v1.js'))scripts.push(`<script defer src="${COUNTDOWN_SCRIPT}"></script>`);
+    if(isCountdownPath(path)&&!html.includes('the-code-countdown-v1.js'))scripts.push(`<script defer src="${COUNTDOWN_SCRIPT}"></script>`);
     if(path==='/media-application'&&!html.includes('media-registration-qa-v1.js'))scripts.push(`<script defer src="${MEDIA_QA_SCRIPT}"></script>`);
     if(scripts.length){
       const bundle=scripts.join('');
@@ -59,7 +63,7 @@ async function injectGlobalMenu(request,response){
     headers.delete('content-encoding');
     headers.set('content-type','text/html; charset=utf-8');
     headers.set('x-gnk-global-floating-menu','admin-first-bilingual');
-    if(isTheCodePath(path))headers.set('x-gnk-the-code-countdown','enabled');
+    if(isCountdownPath(path))headers.set('x-gnk-the-code-countdown','enabled');
     if(path==='/media-application')headers.set('x-gnk-media-qa','deadline-a11y-v1');
     return new Response(html,{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
