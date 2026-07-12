@@ -29,7 +29,7 @@
   style.textContent=`
     :root{--gnk-compact-strip-height:54px}
     html.gnk-compact-shell body{padding-top:var(--gnk-compact-strip-height)!important}
-    .gnk-compact-shell .site-header,.gnk-compact-shell body>.top,.gnk-compact-shell main>.top{display:none!important}
+    .gnk-compact-shell .site-header,.gnk-compact-shell body>.top,.gnk-compact-shell main>.top,#gnk-event-bar,#gnk-floating-menu{display:none!important}
     #gnk-compact-strip{position:fixed;inset:0 0 auto 0;height:var(--gnk-compact-strip-height);z-index:99997;background:#0d0a08;border-bottom:1px solid #8f6b2f;box-shadow:0 8px 22px rgba(0,0,0,.35)}
     #gnk-compact-menu{position:fixed;right:14px;top:6px;z-index:99999;font-family:Arial,sans-serif}
     #gnk-compact-menu *{box-sizing:border-box}
@@ -51,7 +51,11 @@
   `;
   document.head.appendChild(style);
 
-  document.querySelectorAll('#gnk-event-bar,#gnk-floating-menu,#gnk-public-ai-button').forEach(el=>el.remove());
+  const removeLegacy=()=>document.querySelectorAll('#gnk-event-bar,#gnk-floating-menu,#gnk-public-ai-button').forEach(el=>el.remove());
+  removeLegacy();
+  const observer=new MutationObserver(removeLegacy);observer.observe(document.documentElement,{childList:true,subtree:true});
+  setTimeout(()=>observer.disconnect(),12000);
+
   const strip=document.createElement('div');strip.id='gnk-compact-strip';strip.setAttribute('aria-hidden','true');document.body.appendChild(strip);
 
   const wrap=document.createElement('div');wrap.id='gnk-compact-menu';
