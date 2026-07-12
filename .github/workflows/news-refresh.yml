@@ -7,14 +7,9 @@ on:
       - '.github/workflows/news-refresh.yml'
       - 'apps/portal/scripts/refresh_news.py'
       - 'apps/portal/scripts/refresh_news_policy.py'
-      - 'apps/portal/data/news.json'
-      - 'apps/portal/data/news_archive.json'
-      - 'apps/portal/data/update_status.json'
   schedule:
-    # GitHub cron is UTC. These six slots cover 09:00, 16:00 and 21:00
-    # Europe/Zagreb in both CET and CEST; the local-time guard below keeps
-    # scheduled refreshes limited to the intended local hours.
-    - cron: '0 7,8,14,15,19,20 * * *'
+    # GitHub cron is UTC. Run once per hour at minute 17 to avoid peak load.
+    - cron: '17 * * * *'
 
 permissions:
   contents: write
@@ -27,36 +22,18 @@ jobs:
   refresh-news:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Europe/Zagreb schedule guard
-        id: schedule_guard
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" != "schedule" ]; then
-            echo "run_refresh=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          local_hour="$(TZ=Europe/Zagreb date +%H)"
-          case "$local_hour" in
-            09|16|21) echo "run_refresh=true" >> "$GITHUB_OUTPUT" ;;
-            *) echo "run_refresh=false" >> "$GITHUB_OUTPUT" ;;
-          esac
-
       - name: Checkout repository
-        if: steps.schedule_guard.outputs.run_refresh == 'true'
         uses: actions/checkout@v4
 
       - name: Setup Python
-        if: steps.schedule_guard.outputs.run_refresh == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Refresh public business news feed
-        if: steps.schedule_guard.outputs.run_refresh == 'true'
         run: python apps/portal/scripts/refresh_news_policy.py
 
       - name: Validate refreshed feed and retention policy
-        if: steps.schedule_guard.outputs.run_refresh == 'true'
         shell: bash
         run: |
           python - <<'PY'
@@ -79,7 +56,6 @@ jobs:
           PY
 
       - name: Commit refreshed feed
-        if: steps.schedule_guard.outputs.run_refresh == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Refresh public business news feed'
