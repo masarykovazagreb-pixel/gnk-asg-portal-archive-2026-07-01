@@ -3,7 +3,7 @@ import {runScheduledNewsPublication,handlePublicNews,getPublishedNewsBySlug,VERS
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v2.js';
 import {handleEmailLogo,VERSION as EMAIL_LOGO_VERSION} from './email-logo-endpoint-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V54_20260712_LIVE_NEWS_PORTAL_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V55_20260712_THE_CODE_MARKET_LIVE_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
 const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260712-index-live';
 const FLOATING_MENU_MOBILE_STYLE='/assets/public-floating-menu-mobile-v2.css?v=20260712-bottom-nav-safe';
@@ -15,6 +15,8 @@ const MEDIA_QA_SCRIPT='/assets/media-registration-qa-v1.js?v=20260711-deadline-a
 const INDEX_HUB_SCRIPT='/assets/index-live-hub-v1.js?v=20260712-live-feed';
 const INDEX_HUB_STYLE='/assets/index-live-hub-v1.css?v=20260712-public-hub';
 const NEWSROOM_LIVE_SCRIPT='/assets/newsroom-live-v1.js?v=20260712-public-feed';
+const MARKET_LIVE_SCRIPT='/assets/public-market-live-v1.js?v=20260712-ecb-world-bank';
+const MARKET_LIVE_STYLE='/assets/public-market-live-v1.css?v=20260712-ecb-world-bank';
 const PROTECTED_PREFIXES=['/admin','/admin-center','/mail-studio','/campaign-mailer','/email-status','/worker-ops','/operator-dashboard','/digital-headquarters','/media-registration-admin','/webmail'];
 const PUBLIC_ASSET_ROUTES=new Map([['/newsroom','/newsroom/index.html'],['/en/newsroom','/en/newsroom/index.html']]);
 
@@ -25,6 +27,7 @@ function isTheCodePath(path){return path==='/the-code'||path.startsWith('/the-co
 function isCountdownPath(path){return path==='/'||path==='/en'||isTheCodePath(path);}
 function isIndexPath(path){return path==='/'||path==='/en';}
 function isNewsroomLanding(path){return path==='/newsroom'||path==='/en/newsroom';}
+function isMarketLivePath(path){return isIndexPath(path)||path==='/trzista'||path==='/en/markets';}
 function shouldInject(request,response){if(request.method!=='GET'&&request.method!=='HEAD')return false;if(response.status!==200)return false;const path=pathOf(request);if(path.startsWith('/api/'))return false;return String(response.headers.get('content-type')||'').toLowerCase().includes('text/html');}
 function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
 function articleRoute(path){const match=path.match(/^\/(en\/)?newsroom\/([^/]+)$/);return match?{english:Boolean(match[1]),slug:decodeURIComponent(match[2])}:null;}
@@ -52,17 +55,19 @@ async function publicAssetResponse(request,env){
 async function injectGlobalAssets(request,response){
   if(!shouldInject(request,response)||request.method==='HEAD')return response;
   try{
-    let html=await response.text();const scripts=[],styles=[],path=pathOf(request),index=isIndexPath(path),publicPage=isPublicPage(path);
+    let html=await response.text();const scripts=[],styles=[],path=pathOf(request),index=isIndexPath(path),publicPage=isPublicPage(path),marketLive=isMarketLivePath(path);
     html=html.replace(/<script[^>]+public-floating-menu-v1\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+public-floating-menu-v2\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+public-compact-menu-v1\.js[^>]*><\/script>/gi,'').replace(/<link[^>]+public-floating-menu-mobile-v2\.css[^>]*>/gi,'').replace(/<link[^>]+index-event-bar-theme-v1\.css[^>]*>/gi,'').replace(/<link[^>]+index-live-shell-v1\.css[^>]*>/gi,'');
     if(index){scripts.push(`<script defer src="${FLOATING_MENU_SCRIPT}"></script>`);styles.push(`<link rel="stylesheet" href="${FLOATING_MENU_MOBILE_STYLE}"><link rel="stylesheet" href="${INDEX_EVENT_BAR_THEME}"><link rel="stylesheet" href="${INDEX_LIVE_SHELL}">`);}else if(publicPage){scripts.push(`<script defer src="${COMPACT_MENU_SCRIPT}"></script>`);}
     if(isCountdownPath(path)&&!html.includes('the-code-countdown-v1.js'))scripts.push(`<script defer src="${COUNTDOWN_SCRIPT}"></script>`);
     if(path==='/media-application'&&!html.includes('media-registration-qa-v1.js'))scripts.push(`<script defer src="${MEDIA_QA_SCRIPT}"></script>`);
     if(index){scripts.push(`<script defer src="${INDEX_HUB_SCRIPT}"></script>`);styles.push(`<link rel="stylesheet" href="${INDEX_HUB_STYLE}">`);}
     if(isNewsroomLanding(path)&&!html.includes('newsroom-live-v1.js'))scripts.push(`<script defer src="${NEWSROOM_LIVE_SCRIPT}"></script>`);
+    if(marketLive&&!html.includes('public-market-live-v1.js'))scripts.push(`<script defer src="${MARKET_LIVE_SCRIPT}"></script>`);
+    if(marketLive&&!html.includes('public-market-live-v1.css'))styles.push(`<link rel="stylesheet" href="${MARKET_LIVE_STYLE}">`);
     if(styles.length){const bundle=styles.join('');html=html.includes('</head>')?html.replace('</head>',`${bundle}</head>`):`${bundle}${html}`;}
     if(scripts.length){const bundle=scripts.join('');html=html.includes('</body>')?html.replace('</body>',`${bundle}</body>`):`${html}${bundle}`;}
     const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-global-floating-menu',index?'index-live-shell':publicPage?'compact-public-subpage':'disabled');
-    if(index)headers.set('x-gnk-public-index-hub','live-news-feed-v1');if(isNewsroomLanding(path))headers.set('x-gnk-newsroom-feed','public-kv-feed-v1');return new Response(html,{status:response.status,statusText:response.statusText,headers});
+    if(index)headers.set('x-gnk-public-index-hub','live-news-feed-v1');if(isNewsroomLanding(path))headers.set('x-gnk-newsroom-feed','public-kv-feed-v1');if(marketLive)headers.set('x-gnk-market-live','ecb-world-bank-v1');return new Response(html,{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
 
