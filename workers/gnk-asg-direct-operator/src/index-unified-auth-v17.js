@@ -1,7 +1,8 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v16.js';
 import {runScheduledNewsPublication,VERSION as NEWS_AUTO_PUBLICATION_VERSION} from './news-auto-publication-v1.js';
+import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v2.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V46_20260712_INDEX_HUB_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V47_20260712_AUTOREPLY_WIRED_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
 const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260711-admin-first';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
@@ -101,6 +102,7 @@ function stamp(request,response){
   headers.set('x-gnk-active-entrypoint','src/index-unified-auth-v17.js');
   headers.set('x-gnk-global-menu-version',VERSION);
   headers.set('x-gnk-news-auto-publication',NEWS_AUTO_PUBLICATION_VERSION);
+  headers.set('x-gnk-mail-autoreply',MAIL_AUTOREPLY_VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -118,6 +120,6 @@ export default{
     return combined;
   },
   async email(message,env,ctx){
-    if(typeof app.email==='function')return app.email(message,env,ctx);
+    return handleIncomingEmail(message,env,ctx,app);
   }
 };
