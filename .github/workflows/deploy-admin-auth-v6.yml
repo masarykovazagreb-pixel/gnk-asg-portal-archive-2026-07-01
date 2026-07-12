@@ -26,6 +26,8 @@ jobs:
         run: |
           node --check apps/portal/assets/public-floating-menu-v2.js
           node --check apps/portal/assets/index-live-hub-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
