@@ -3,10 +3,11 @@ import {runScheduledNewsPublication,VERSION as NEWS_AUTO_PUBLICATION_VERSION} fr
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-identity-autoreply-v2.js';
 import {handleEmailLogo,VERSION as EMAIL_LOGO_VERSION} from './email-logo-endpoint-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V52_20260712_DARK_BROWN_INDEX_BAR_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V53_20260712_COMPACT_PUBLIC_MENU_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
 
 const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v2.js?v=20260712-index-only-hard-stop';
 const FLOATING_MENU_MOBILE_STYLE='/assets/public-floating-menu-mobile-v2.css?v=20260712-bottom-nav-safe';
+const COMPACT_MENU_SCRIPT='/assets/public-compact-menu-v1.js?v=20260712-public-subpages';
 const INDEX_EVENT_BAR_THEME='/assets/index-event-bar-theme-v1.css?v=20260712-dark-brown';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
 const MEDIA_QA_SCRIPT='/assets/media-registration-qa-v1.js?v=20260711-deadline-a11y';
@@ -20,6 +21,7 @@ const PUBLIC_ASSET_ROUTES=new Map([
 
 function pathOf(request){return new URL(request.url).pathname.replace(/\/+$/,'')||'/';}
 function isProtectedPath(request){const path=pathOf(request);return PROTECTED_PREFIXES.some(prefix=>path===prefix||path.startsWith(`${prefix}/`));}
+function isPublicPage(path){return !isProtectedPath({url:`https://gnk-asg.hr${path}`})&&!path.startsWith('/api/')&&!path.startsWith('/assets/');}
 function isTheCodePath(path){return path==='/the-code'||path.startsWith('/the-code/')||path==='/en/the-code'||path.startsWith('/en/the-code/');}
 function isCountdownPath(path){return path==='/'||path==='/en'||isTheCodePath(path);}
 function isIndexPath(path){return path==='/'||path==='/en';}
@@ -45,23 +47,24 @@ async function injectGlobalAssets(request,response){
   if(!shouldInject(request,response)||request.method==='HEAD')return response;
   try{
     let html=await response.text();
-    const scripts=[],styles=[],path=pathOf(request),index=isIndexPath(path);
+    const scripts=[],styles=[],path=pathOf(request),index=isIndexPath(path),publicPage=isPublicPage(path);
     html=html.replace(/<script[^>]+public-floating-menu-v1\.js[^>]*><\/script>/gi,'');
-    if(!index){
-      html=html.replace(/<script[^>]+public-floating-menu-v2\.js[^>]*><\/script>/gi,'');
-      html=html.replace(/<link[^>]+public-floating-menu-mobile-v2\.css[^>]*>/gi,'');
-      html=html.replace(/<link[^>]+index-event-bar-theme-v1\.css[^>]*>/gi,'');
-    }
+    html=html.replace(/<script[^>]+public-floating-menu-v2\.js[^>]*><\/script>/gi,'');
+    html=html.replace(/<script[^>]+public-compact-menu-v1\.js[^>]*><\/script>/gi,'');
+    html=html.replace(/<link[^>]+public-floating-menu-mobile-v2\.css[^>]*>/gi,'');
+    html=html.replace(/<link[^>]+index-event-bar-theme-v1\.css[^>]*>/gi,'');
+
     if(index&&!html.includes('public-floating-menu-v2.js'))scripts.push(`<script defer src="${FLOATING_MENU_SCRIPT}"></script>`);
     if(index&&!html.includes('public-floating-menu-mobile-v2.css'))styles.push(`<link rel="stylesheet" href="${FLOATING_MENU_MOBILE_STYLE}">`);
     if(index&&!html.includes('index-event-bar-theme-v1.css'))styles.push(`<link rel="stylesheet" href="${INDEX_EVENT_BAR_THEME}">`);
+    if(!index&&publicPage&&!html.includes('public-compact-menu-v1.js'))scripts.push(`<script defer src="${COMPACT_MENU_SCRIPT}"></script>`);
     if(isCountdownPath(path)&&!html.includes('the-code-countdown-v1.js'))scripts.push(`<script defer src="${COUNTDOWN_SCRIPT}"></script>`);
     if(path==='/media-application'&&!html.includes('media-registration-qa-v1.js'))scripts.push(`<script defer src="${MEDIA_QA_SCRIPT}"></script>`);
     if(index&&!html.includes('index-live-hub-v1.js'))scripts.push(`<script defer src="${INDEX_HUB_SCRIPT}"></script>`);
     if(index&&!html.includes('index-live-hub-v1.css'))styles.push(`<link rel="stylesheet" href="${INDEX_HUB_STYLE}">`);
     if(styles.length){const bundle=styles.join('');html=html.includes('</head>')?html.replace('</head>',`${bundle}</head>`):`${bundle}${html}`;}
     if(scripts.length){const bundle=scripts.join('');html=html.includes('</body>')?html.replace('</body>',`${bundle}</body>`):`${html}${bundle}`;}
-    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-global-floating-menu',index?'index-only-bilingual-dark-brown':'disabled-off-index');
+    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-global-floating-menu',index?'index-bilingual-dark-brown':publicPage?'compact-public-subpage':'disabled');
     if(isCountdownPath(path))headers.set('x-gnk-the-code-countdown','enabled');
     if(index)headers.set('x-gnk-public-index-hub','dynamic-init-v1');
     if(path==='/media-application')headers.set('x-gnk-media-qa','deadline-a11y-v1');
