@@ -7,11 +7,35 @@ function initPublicHub() {
   section.id = 'public-hub';
   section.className = 'public-hub';
 
-  if (english) {
-    section.innerHTML = '<div class="container"><div class="section-head"><div><p class="eyebrow">Public portal</p><h2>Key information in one place</h2></div><p>Direct access to current public content, projects, reports and the portal operating model.</p></div><div class="public-hub-grid"><article class="public-hub-card"><span>Newsroom</span><h3>News and official releases</h3><p>Latest public information, media content and official releases.</p><a href="/en/newsroom/">Open Newsroom</a></article><article class="public-hub-card"><span>Projects</span><h3>Active projects and development</h3><p>Overview of key initiatives and publicly released statuses.</p><a href="/en/projects/">Open projects</a></article><article class="public-hub-card"><span>THE CODE</span><h3>New York · 7 October 2026</h3><p>Central presentation and official overview of THE CODE event.</p><a href="/en/the-code/">Open THE CODE</a></article><article class="public-hub-card"><span>Reports</span><h3>Documents and releases</h3><p>Public overview of reports, summaries and corporate documents.</p><a href="/en/reports/">Open reports</a></article><article class="public-hub-card"><span>Workers</span><h3>Digital operating model</h3><p>Overview of technical and operational functions within the system.</p><a href="/workers/">Open workers</a></article><article class="public-hub-card"><span>About</span><h3>Group and corporate identity</h3><p>Story, structure, development and the publicly released Group framework.</p><a href="/en/about/">Open profile</a></article></div></div>';
-  } else {
-    section.innerHTML = '<div class="container"><div class="section-head"><div><p class="eyebrow">Javni portal</p><h2>Najvažnije informacije na jednom mjestu</h2></div><p>Izravne poveznice prema aktualnim javnim sadržajima, projektima, izvješćima i operativnom modelu portala.</p></div><div class="public-hub-grid"><article class="public-hub-card"><span>Newsroom</span><h3>Vijesti i službene objave</h3><p>Najnovije javne informacije, medijski sadržaji i službene objave.</p><a href="/newsroom/">Otvori Newsroom</a></article><article class="public-hub-card"><span>Projekti</span><h3>Aktivni projekti i razvoj</h3><p>Pregled ključnih inicijativa i javno objavljenih statusa.</p><a href="/projects/">Otvori projekte</a></article><article class="public-hub-card"><span>THE CODE</span><h3>New York · 7. listopada 2026.</h3><p>Središnja prezentacija i službeni pregled događaja THE CODE.</p><a href="/the-code/">Otvori THE CODE</a></article><article class="public-hub-card"><span>Izvješća</span><h3>Dokumenti i objave</h3><p>Javni pregled izvješća, sažetaka i korporativnih dokumenata.</p><a href="/reports/">Otvori izvješća</a></article><article class="public-hub-card"><span>Workeri</span><h3>Digitalni operativni model</h3><p>Pregled tehničkih i operativnih funkcija unutar sustava.</p><a href="/workers/">Otvori workere</a></article><article class="public-hub-card"><span>O nama</span><h3>Grupa i korporativni identitet</h3><p>Priča, struktura, razvoj i javno objavljeni okvir Grupe.</p><a href="/about/">Otvori profil</a></article></div></div>';
-  }
+  var cards = english ? [
+    ['Newsroom','Latest news and official releases','Current public information, media announcements and corporate releases.','/en/newsroom/','Open Newsroom'],
+    ['Publications','Reports and public documents','Reports, summaries, corporate publications and released documents.','/en/reports/','Open publications'],
+    ['Markets','Markets and operating regions','Public overview of markets, locations and operating areas.','/en/trzista/','Open markets'],
+    ['Projects','Projects and development','Current initiatives, development phases and publicly released statuses.','/en/projects/','Open projects'],
+    ['Network','Global Group Network','Cities, companies, locations and the publicly released Group network.','/en/group-network/','Open network'],
+    ['Finance','Finance and governance','Public financial overview, governance framework and released indicators.','/en/finance/','Open finance'],
+    ['Knowledge','Knowledge Center','Research, documentation, analyses and public knowledge resources.','/en/knowledge-center/','Open Knowledge Center'],
+    ['THE CODE','New York · 7 October 2026','Central presentation and official overview of THE CODE event.','/en/the-code/','Open THE CODE'],
+    ['Media','Media applications and press','Media registration, accreditation and press information.','/media-application/','Open media center']
+  ] : [
+    ['Vijesti','Najnovije vijesti i službene objave','Aktualne javne informacije, medijske objave i korporativna priopćenja.','/newsroom/','Otvori vijesti'],
+    ['Objave','Izvješća i javni dokumenti','Izvješća, sažeci, korporativne objave i javno dostupni dokumenti.','/reports/','Otvori objave'],
+    ['Tržišta','Tržišta i operativne regije','Javni pregled tržišta, lokacija i područja djelovanja.','/trzista/','Otvori tržišta'],
+    ['Projekti','Projekti i razvoj','Aktualne inicijative, razvojne faze i javno objavljeni statusi.','/projects/','Otvori projekte'],
+    ['Mreža','Global Group Network','Gradovi, društva, lokacije i javno objavljena mreža Grupe.','/group-network/','Otvori mrežu'],
+    ['Financije','Financije i upravljanje','Javni financijski pregled, okvir upravljanja i objavljeni pokazatelji.','/finance/','Otvori financije'],
+    ['Znanje','Knowledge Center','Istraživanja, dokumentacija, analize i javni izvori znanja.','/knowledge-center/','Otvori Knowledge Center'],
+    ['THE CODE','New York · 7. listopada 2026.','Središnja prezentacija i službeni pregled događaja THE CODE.','/the-code/','Otvori THE CODE'],
+    ['Mediji','Medijske prijave i press','Registracija medija, akreditacije i informacije za novinare.','/media-application/','Otvori medijski centar']
+  ];
+
+  var cardsHtml = cards.map(function(card){
+    return '<article class="public-hub-card"><span>'+card[0]+'</span><h3>'+card[1]+'</h3><p>'+card[2]+'</p><a href="'+card[3]+'">'+card[4]+'</a></article>';
+  }).join('');
+
+  section.innerHTML = english
+    ? '<div class="container"><div class="section-head"><div><p class="eyebrow">Public portal</p><h2>News, publications, markets and key public sections</h2></div><p>Direct access to current public content, operating markets, projects, reports, finance and the Group network.</p></div><div class="public-hub-grid">'+cardsHtml+'</div></div>'
+    : '<div class="container"><div class="section-head"><div><p class="eyebrow">Javni portal</p><h2>Vijesti, objave, tržišta i ključne javne cjeline</h2></div><p>Izravan pristup aktualnim vijestima, objavama, tržištima, projektima, financijama i mreži Grupe.</p></div><div class="public-hub-grid">'+cardsHtml+'</div></div>';
 
   anchor.parentNode.insertBefore(section, anchor);
 
