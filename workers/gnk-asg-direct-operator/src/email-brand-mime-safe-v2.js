@@ -11,11 +11,12 @@ import {
   mediaSignatureText
 } from './email-brand-mime-v1.js';
 
-export const VERSION='GNK_ASG_EMAIL_BRAND_MIME_SAFE_V2_20260713_STRICT_ADDRESS_INPUT';
+export const VERSION='GNK_ASG_EMAIL_BRAND_MIME_SAFE_V3_20260713_STRICT_ADDRESS_AND_ATTACHMENT_INPUT';
 
 const clean=value=>String(value??'').trim();
 const hasCrLf=value=>/[\r\n]/.test(String(value??''));
 const validEmail=value=>/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/i.test(clean(value));
+const validContentType=value=>/^[a-z0-9!#$&^_.+-]+\/[a-z0-9!#$&^_.+-]+(?:\s*;\s*[a-z0-9!#$&^_.+-]+=[a-z0-9!#$&^_.+-]+)*$/i.test(clean(value));
 
 function validateMailbox(value,label){
   if(hasCrLf(value))throw new Error(`invalid_${label}_email`);
@@ -31,11 +32,23 @@ function validateRecipients(value){
   return [...new Set(recipients.map(item=>item.toLowerCase()))].join(', ');
 }
 
+function normalizeAttachment(file={}){
+  const filename=String(file.filename??'document.bin')
+    .replace(/[\r\n]+/g,'_')
+    .replace(/["\\/<>:|?*\x00-\x1F]+/g,'_')
+    .slice(0,180)||'document.bin';
+  const contentType=hasCrLf(file.contentType)||!validContentType(file.contentType)
+    ?'application/octet-stream'
+    :clean(file.contentType).toLowerCase();
+  return {...file,filename,contentType};
+}
+
 export async function buildBrandedRawEmail(options={}){
   const fromEmail=validateMailbox(options.fromEmail??'media@gnk-asg.hr','from');
   const to=validateRecipients(options.to);
   const replyTo=validateMailbox(options.replyTo??fromEmail,'reply_to');
-  return buildLegacyBrandedRawEmail({...options,fromEmail,to,replyTo});
+  const attachments=(Array.isArray(options.attachments)?options.attachments:[]).map(normalizeAttachment);
+  return buildLegacyBrandedRawEmail({...options,fromEmail,to,replyTo,attachments});
 }
 
 export {
