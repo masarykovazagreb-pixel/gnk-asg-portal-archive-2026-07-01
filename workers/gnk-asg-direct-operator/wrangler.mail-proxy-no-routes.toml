@@ -5,13 +5,11 @@ workers_dev = true
 preview_urls = true
 
 # SAFETY-COMPAT CONFIG
-# Production routes are not declared here. Existing route assignment remains unchanged.
+# Production routes are not declared or modified here. Existing route assignment remains unchanged.
 
 [[kv_namespaces]]
 binding = "GNK_ASG_CONFIG_KV"
 id = "d6f5dac9fa034d8d813db0de44eb7b1b"
-
-# GNK_ASG_KV is intentionally not bound here.
 
 [[d1_databases]]
 binding = "GNK_ASG_D1"
@@ -29,31 +27,27 @@ remote = true
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260713-index-final-v19"
+DEPLOY_REVISION = "20260713-public-consolidation-v21"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
-
-# Controlled inbound acknowledgements and individual manual messages only.
+NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "false"
 MAIL_AUTO_REPLY_LIVE = "true"
 MAIL_STUDIO_LIVE = "true"
 MAIL_MANUAL_LIVE = "true"
 MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MAIL_PROFILE_TEST_LIVE = "false"
-MAIL_PROFILE_TEST_RECIPIENTS = "beckuphome@gmail.com"
+MAIL_PROFILE_TEST_RECIPIENTS = "sefic20@gmx.com"
 MAIL_BOOTSTRAP_SMOKE_TEST = "false"
-
-# Campaign, bulk and scheduled outreach remain locked.
 MEDIA_OUTREACH_FROM = "media@gnk-asg.hr"
 MEDIA_OUTREACH_LIVE = "false"
 MEDIA_OUTREACH_SCHEDULED_LIVE = "false"
 MEDIA_OUTREACH_TEST_LIVE = "false"
-MEDIA_OUTREACH_TEST_RECIPIENTS = "beckuphome@gmail.com"
-MEDIA_OUTREACH_AUTO_TEST_RECIPIENT = "beckuphome@gmail.com"
+MEDIA_OUTREACH_TEST_RECIPIENTS = "sefic20@gmx.com"
+MEDIA_OUTREACH_AUTO_TEST_RECIPIENT = "sefic20@gmx.com"
 MEDIA_OUTREACH_REPORT_RECIPIENTS = "beckuphome@gmail.com"
 MEDIA_OUTREACH_MAX_PER_HOUR = "1"
 MEDIA_OUTREACH_MAX_PER_DAY = "3"
 MEDIA_APPLICATION_AUTO_ACK = "false"
-
 EMAIL_STATUS_PUBLIC_ORIGIN = "https://gnk-asg.hr"
 EMAIL_OPEN_TRACKING_ENABLED = "false"
 EMAIL_STATUS_SYNC_LOOKBACK_HOURS = "48"

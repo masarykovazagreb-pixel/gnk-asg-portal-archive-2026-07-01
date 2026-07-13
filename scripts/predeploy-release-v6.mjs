@@ -1,21 +1,50 @@
 import fs from 'node:fs';
-const r=p=>fs.readFileSync(p,'utf8');
-const ok=(p,t)=>{const s=r(p);for(const x of t)if(!s.includes(x))throw new Error(`${p} missing ${x}`)};
-const files=['apps/portal/index.html','apps/portal/en/index.html','apps/portal/newsroom/index.html','apps/portal/en/newsroom/index.html','apps/portal/objave/index.html','apps/portal/analize/index.html','apps/portal/komentari/index.html','apps/portal/trzista/index.html','apps/portal/en/markets/index.html','apps/portal/the-code/index.html','apps/portal/assets/public-compact-menu-v1.js','apps/portal/assets/release-completion-v1.js','apps/portal/assets/index-data-resilience-v1.js','apps/portal/assets/index-editorial-order-v1.js','apps/portal/assets/newsroom-live-v1.js','apps/portal/assets/market-centre-data.js','apps/portal/assets/the-code-experience-loop-v1.html','workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js','workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js','workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js','workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js','workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js','workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml'];
-for(const f of files)if(!fs.existsSync(f)||!fs.statSync(f).size)throw new Error(`Missing ${f}`);
-const news=JSON.parse(r('apps/portal/data/news.json'));if(!Array.isArray(news)||news.length<100)throw new Error('News fallback below 100');
-const market=JSON.parse(r('apps/portal/data/market.json'));if(market.status!=='ok'||!Array.isArray(market.coins)||market.coins.length<2)throw new Error('Market fallback invalid');
-ok('apps/portal/assets/public-compact-menu-v1.js',['/newsroom/','/objave/','/analize/','/komentari/','/trzista/','/the-code/','menus.slice(1)','strips.slice(1)']);
-ok('apps/portal/assets/release-completion-v1.js',['GNK_RELEASE_COMPLETION_V6','logo-gnk-asg-gold.svg','logo-gnk-dinamo-gold.svg','renderNews','renderMarkets']);
-ok('apps/portal/assets/index-editorial-order-v1.js',['Poslovne vijesti','Analize','Komentari','/api/public-news','/data/news.json']);
-ok('apps/portal/assets/index-data-resilience-v1.js',['/data/news.json','/data/market.json']);
-ok('apps/portal/assets/newsroom-live-v1.js',['limit=100','setInterval(load,300000)','ai-infrastruktura-i-potrosnja-energije','transparentnost-podataka-kao-poslovna-infrastruktura']);
-ok('apps/portal/assets/market-centre-data.js',["fetch(`/data/${name}",'setInterval(render,60000)']);
-ok('apps/portal/assets/the-code-experience-loop-v1.html',['show(scenes.length-1)','PONOVI PROJEKCIJU',"replayBtn.addEventListener('click',replay)"]);
-ok('workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js',['STATIC_HTML_ROUTES','/newsroom/index.html','/analize/index.html','/trzista/index.html','/the-code/index.html','x-gnk-explicit-html-route']);
-ok('workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js',['scheduledEnabled','runScheduledNewsPublication']);
-ok('workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js',['logoSrc=LOGO_URL','logo(logoSrc)']);
-ok('workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js',['EMAIL_LOGO_CID','loadEmailLogo']);
-ok('workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js',['multipart/related','loadEmailLogo']);
-ok('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml',['main = "src/index-unified-auth-v19.js"','MAIL_AUTO_REPLY_LIVE = "true"','MAIL_STUDIO_LIVE = "true"','crons = ["*/15 * * * *"]']);
-console.log(JSON.stringify({ok:true,news:news.length,marketCoins:market.coins.length,worker:'v19',routes:'explicit',menu:'single',mail:'cid',scheduler:'on'},null,2));
+import {execFileSync} from 'node:child_process';
+
+const run=file=>{console.log(`PREDEPLOY ${file}`);execFileSync(process.execPath,[file],{stdio:'inherit'})};
+
+const requiredFiles=[
+  'apps/portal/index.html','apps/portal/en/index.html','apps/portal/newsroom/index.html','apps/portal/en/newsroom/index.html',
+  'apps/portal/objave/index.html','apps/portal/analize/index.html','apps/portal/komentari/index.html','apps/portal/trzista/index.html',
+  'apps/portal/en/markets/index.html','apps/portal/the-code/index.html','apps/portal/contact/index.html','apps/portal/media-application/index.html',
+  'apps/portal/assets/public-compact-menu-v1.js','apps/portal/assets/public-design-tokens-v1.css','apps/portal/assets/public-design-runtime-v1.js',
+  'apps/portal/assets/release-completion-v1.js','apps/portal/assets/index-data-resilience-v1.js','apps/portal/assets/index-editorial-order-v1.js',
+  'apps/portal/assets/newsroom-live-v1.js','apps/portal/assets/public-market-live-v1.js','apps/portal/assets/market-centre-data.js',
+  'apps/portal/assets/logo-gnk-asg-gold.svg','apps/portal/assets/logo-gnk-dinamo-gold.svg',
+  'workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js','workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js',
+  'workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js','workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js',
+  'workers/gnk-asg-direct-operator/src/email-brand-mime-safe-v2.js','workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js',
+  'workers/gnk-asg-direct-operator/src/mail-identity-autoreply-all-v1.js','workers/gnk-asg-direct-operator/src/mail-autoreply-profile-factory-v1.js',
+  'workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml'
+];
+for(const file of requiredFiles){if(!fs.existsSync(file)||!fs.statSync(file).size)throw new Error(`Missing required file: ${file}`)}
+
+for(const test of [
+  'scripts/test-deploy-approval-guardrails.mjs',
+  'scripts/test-index-runtime-ownership.mjs',
+  'scripts/test-public-design-contract.mjs',
+  'scripts/test-email-signature-contract.mjs',
+  'scripts/test-mail-transport-guardrails.mjs',
+  'scripts/test-email-mime-guardrails.mjs',
+  'scripts/test-autoreply-guardrails.mjs',
+  'scripts/test-autoreply-all-addresses.mjs',
+  'scripts/test-news-queue-guardrails.mjs',
+  'scripts/audit-public-portal-v1.mjs',
+  'scripts/audit-worker-route-ownership.mjs',
+  'scripts/test-data-fallback-contract.mjs'
+])run(test);
+
+const publicAudit=JSON.parse(fs.readFileSync('artifacts/public-portal-audit.json','utf8'));
+const routeAudit=JSON.parse(fs.readFileSync('artifacts/worker-route-ownership.json','utf8'));
+
+console.log(JSON.stringify({
+  ok:true,
+  worker:'v19-with-all-domain-autoreplies-and-public-design',
+  routes:'route-less-config-external-newsroom-owner-unresolved',
+  indexOwners:{scaffold:'release-completion-v1.js',editorial:'index-editorial-order-v1.js',marketFallback:'index-data-resilience-v1.js'},
+  design:{runtime:'v1',tokens:'v1',protectedRoutesExcluded:true},
+  mail:{goldSignature:true,allDomainAutoreplies:true,testRecipient:'sefic20@gmx.com',testSendingEnabled:false},
+  scheduler:'strict-opt-in-disabled',
+  publicAudit:publicAudit.summary,
+  routeAudit:routeAudit.summary
+},null,2));
