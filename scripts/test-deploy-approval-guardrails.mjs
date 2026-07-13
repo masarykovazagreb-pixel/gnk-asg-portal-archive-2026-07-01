@@ -5,6 +5,7 @@ const workflow=fs.readFileSync('.github/workflows/deploy-admin-auth-v6.yml','utf
 const tool=fs.readFileSync('scripts/prepare-approved-deploy-v1.mjs','utf8');
 const preflight=fs.readFileSync('scripts/check-newsroom-route-readiness.sh','utf8');
 const verifier=fs.readFileSync('scripts/verify-production-route.sh','utf8');
+const publicWorker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js','utf8');
 
 assert.match(workflow,/approved_sha:/);
 assert.match(workflow,/ref: \$\{\{ inputs\.approved_sha \}\}/);
@@ -49,7 +50,7 @@ assert.match(preflight,/error code: 1101/);
 assert.match(preflight,/known_recovery_fix_present/);
 assert.match(preflight,/git hash-object/);
 assert.match(preflight,/f113c5b77ff2572e1723274a86b687904e9b99f8/);
-assert.match(preflight,/bb7baf66e28e271bc71dfe98aead14f2e49b446f/);
+assert.match(preflight,/04404740d42aa73214c270cefc0f926b7a117b0f/);
 
 const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"');
 const recoveryCallPosition=preflight.indexOf('&& known_recovery_fix_present');
@@ -60,6 +61,13 @@ assert.match(verifier,/grep -Fq -- "\$expected_marker" "\$output"/);
 assert.match(verifier,/grep -Fiq -- "\$expected_marker" "\$headers"/);
 assert.doesNotMatch(verifier,/grep -Fq "\$expected_marker"/);
 assert.doesNotMatch(verifier,/grep -Fiq "\$expected_marker"/);
+
+assert.match(publicWorker,/GNK_ASG_UNIFIED_AUTH_V24_EXPLICIT_INDEX_ASSETS/);
+assert.match(publicWorker,/\['\/newsroom','\/newsroom\/index\.html'\]/);
+assert.match(publicWorker,/\['\/en\/newsroom','\/en\/newsroom\/index\.html'\]/);
+assert.match(publicWorker,/const target=new URL\(targetPath,request\.url\)/);
+assert.doesNotMatch(publicWorker,/assetDirectoryPath/);
+assert.doesNotMatch(publicWorker,/target=new URL\(pathOf\(request\),request\.url\)/);
 
 assert.match(tool,/branch!==\'main\'/);
 assert.match(tool,/merge-base','--is-ancestor/);
@@ -73,6 +81,7 @@ console.log(JSON.stringify({
   deployStarted:false,
   indexRuntime:'V7',
   publicDesign:'V1',
+  newsroomAssetRouting:'explicit-index-no-recursion',
   preflight:'before-secrets-and-deploy',
-  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','literal-dash-markers','route-ownership-evidence','audited-1101-recovery','bash-production-verifier','post-deploy-artifacts']
+  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','literal-dash-markers','route-ownership-evidence','audited-1101-recovery','explicit-newsroom-index-assets','bash-production-verifier','post-deploy-artifacts']
 },null,2));
