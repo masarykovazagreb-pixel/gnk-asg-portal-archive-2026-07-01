@@ -1,0 +1,9 @@
+(()=>{
+'use strict';
+if(window.__GNK_MAIL_STUDIO_UI_V28__)return;window.__GNK_MAIL_STUDIO_UI_V28__=true;
+const style=document.createElement('style');style.id='gnk-mail-studio-ui-v28';style.textContent=`#composePanel textarea#bodyText{min-height:520px!important;height:52vh;max-height:900px;resize:vertical!important;font-size:16px!important;line-height:1.65!important;padding:16px!important}#composePanel{max-width:none!important}.detail{min-width:0}.brand img{width:64px!important;height:66px!important;min-width:64px!important;max-width:64px!important;min-height:66px!important;max-height:66px!important;object-fit:contain!important;padding:0!important;border:0!important;background:transparent!important}.panel,.message,.thread-item,.status{color:#f8fafc!important}.panel p,.message p,.thread-body,.small,.note{color:#dbe4ef!important}.panel h2,.panel h3,.section-title,label{color:#f4d978!important}@media(max-width:820px){#composePanel textarea#bodyText{min-height:420px!important;height:48vh}}`;
+document.head.appendChild(style);
+function apply(){const logo=document.querySelector('.brand img');if(logo){logo.src='/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64';logo.alt='GNK ASG';logo.width=64;logo.height=66;logo.dataset.gnkCanonicalLogo='1'}const textarea=document.getElementById('bodyText');if(textarea){textarea.setAttribute('rows','22');textarea.setAttribute('aria-describedby','validationSummary')}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+document.documentElement.dataset.gnkMailStudioUi='v28-large-composer';
+})();
