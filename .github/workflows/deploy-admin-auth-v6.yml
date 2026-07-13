@@ -32,6 +32,11 @@ jobs:
           node --check apps/portal/assets/public-market-live-v1.js
           test -s apps/portal/assets/index-live-hub-v1.css
           test -s apps/portal/assets/public-market-live-v1.css
+          test -s apps/portal/sitemap.xml
+          test -s apps/portal/robots.txt
+          grep -q 'https://gnk-asg.hr/newsroom/' apps/portal/sitemap.xml
+          grep -q 'https://gnk-asg.hr/en/newsroom/' apps/portal/sitemap.xml
+          grep -q 'Sitemap: https://gnk-asg.hr/sitemap.xml' apps/portal/robots.txt
           node --check workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
@@ -165,9 +170,22 @@ jobs:
           fetch_required "https://gnk-asg.hr/newsroom/?deploy-admin-v6=${cache_bust}" public-newsroom.html
           grep -q "newsroom-live-v1.js" public-newsroom.html
           grep -q "public-compact-menu-v1.js" public-newsroom.html
+          grep -q "Newsroom" public-newsroom.html
+
+          fetch_required "https://gnk-asg.hr/en/newsroom/?deploy-admin-v6=${cache_bust}" public-newsroom-en.html
+          grep -q "newsroom-live-v1.js" public-newsroom-en.html
+          grep -q "public-compact-menu-v1.js" public-newsroom-en.html
+          grep -q "Newsroom" public-newsroom-en.html
 
           fetch_required "https://gnk-asg.hr/api/public-news?limit=1&deploy-admin-v6=${cache_bust}" public-news.json
           grep -q '"ok": true' public-news.json
+
+          fetch_required "https://gnk-asg.hr/sitemap.xml?deploy-admin-v6=${cache_bust}" sitemap.xml
+          grep -q "https://gnk-asg.hr/newsroom/" sitemap.xml
+          grep -q "https://gnk-asg.hr/en/newsroom/" sitemap.xml
+
+          fetch_required "https://gnk-asg.hr/robots.txt?deploy-admin-v6=${cache_bust}" robots.txt
+          grep -q "Sitemap: https://gnk-asg.hr/sitemap.xml" robots.txt
 
           require_status "/projects/roadmap/" "200"
           require_status "/media-application/" "200"
