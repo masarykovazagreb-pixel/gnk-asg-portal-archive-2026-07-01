@@ -10,7 +10,7 @@ known_recovery_fix_present() {
   local v17='workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js'
   local v19='workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js'
   local expected_v17='f113c5b77ff2572e1723274a86b687904e9b99f8'
-  local expected_v19='27ea3411cd55bc1fb31156fd040277449d81e113'
+  local expected_v19='6c80b068bb44fc7bd9bd5993986bdfec8df2d1e3'
   [[ -f "$v17" && -f "$v19" ]] || return 1
   [[ "$(git hash-object "$v17")" = "$expected_v17" ]] || return 1
   [[ "$(git hash-object "$v19")" = "$expected_v19" ]] || return 1
@@ -39,7 +39,7 @@ check_route() {
     && grep -Eiq '^content-type: text/plain' "$headers" \
     && grep -Fiq 'error code: 1101' "$body" \
     && known_recovery_fix_present; then
-    echo "RECOVERY PREFLIGHT ${path}: allowing the audited recovery because the approved source contains canonical asset paths, a hard-stop newsroom fallback and the unified content/contact release."
+    echo "RECOVERY PREFLIGHT ${path}: allowing the audited recovery because the approved source contains canonical asset paths, a hard-stop newsroom fallback and the V28 unified logo/content/contact release."
     return 0
   fi
 
