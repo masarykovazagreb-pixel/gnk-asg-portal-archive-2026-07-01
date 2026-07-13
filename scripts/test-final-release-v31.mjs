@@ -23,7 +23,13 @@ for(const marker of ['Newsroom','Objave','Komentari','WORKERI I OPERACIJE','WORK
 assert.match(menu,/width:64px!important;height:66px!important/);
 
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V1__/);
-assert.match(contrast,/contrast\(fg,bg\)<4\.5/);
+assert.match(contrast,/__GNK_CONTRAST_HARDENING_V2__/);
+assert.match(contrast,/GNK_CONTRAST_HARDENING_V2_20260714_DYNAMIC_RECHECK/);
+assert.match(contrast,/targetRatio\(el\)/);
+assert.match(contrast,/current\+0\.05<target/);
+assert.match(contrast,/MutationObserver/);
+assert.match(contrast,/ResizeObserver/);
+assert.match(contrast,/\.group-section \.group-card/);
 assert.match(contrast,/#f4d978/);
 assert.match(contrast,/#f8fafc/);
 assert.match(contrast,/input,select,textarea/);
@@ -95,4 +101,4 @@ const localNews=JSON.parse(read('apps/portal/data/news.json'));
 assert.ok(Array.isArray(localNews));
 assert.ok(localNews.length>=100,`local news fallback must contain >=100 items; actual=${localNews.length}`);
 
-console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-target-4.5',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520},editorial:{newTexts:5,newImages:5,collections:{publications:5,analyses:4,commentary:5}}},null,2));
+console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-dynamic-3-or-4.5',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520},editorial:{newTexts:5,newImages:5,collections:{publications:5,analyses:4,commentary:5}}},null,2));
