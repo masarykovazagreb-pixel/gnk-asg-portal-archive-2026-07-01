@@ -15,27 +15,27 @@ assert.doesNotMatch(workflow,/grep -o 'public-compact-menu-v1\.js'.*wc -l/);
 assert.match(workflow,/bash scripts\/verify-production-route\.sh "\$1" "deploy-verification\/\$2" "\$\{3:-\}"/);
 
 const preflightPosition=workflow.indexOf('Preflight Newsroom route ownership'),tokenPosition=workflow.indexOf('Resolve token hash'),firstDeployPosition=workflow.indexOf('Deploy contact session bridge');
-assert.ok(preflightPosition>=0&&tokenPosition>=0&&firstDeployPosition>=0);
-assert.ok(preflightPosition<tokenPosition);
-assert.ok(preflightPosition<firstDeployPosition);
-
+assert.ok(preflightPosition>=0&&tokenPosition>=0&&firstDeployPosition>=0&&preflightPosition<tokenPosition&&preflightPosition<firstDeployPosition);
 assert.match(preflight,/gnk-asg-news-backend/);
 assert.match(preflight,/\/newsroom\//);
 assert.match(preflight,/\/en\/newsroom\//);
 assert.match(preflight,/No production changes were made/);
 assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id|routes?\s*=|api token/i);
 assert.doesNotMatch(preflight,/curl[\s\S]{0,200}(?:--request|-X)\s*(?:POST|PUT|PATCH|DELETE)/i);
-for(const marker of [/\[\[ "\$status" = "500" \]\]/,/\^server: cloudflare/,/\^content-type: text\/plain/,/error code: 1101/,/known_recovery_fix_present/,/git hash-object/,/f113c5b77ff2572e1723274a86b687904e9b99f8/,/6c80b068bb44fc7bd9bd5993986bdfec8df2d1e3/,/V28 unified logo\/content\/contact release/])assert.match(preflight,marker);
-const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"'),recoveryPosition=preflight.indexOf('&& known_recovery_fix_present');assert.ok(blockedOwnerPosition>=0&&recoveryPosition>=0&&blockedOwnerPosition<recoveryPosition);
+for(const marker of [/\[\[ "\$status" = "500" \]\]/,/\^server: cloudflare/,/\^content-type: text\/plain/,/error code: 1101/,/known_recovery_fix_present/,/git hash-object/,/f113c5b77ff2572e1723274a86b687904e9b99f8/,/f7a20819b51d2ef515d719b82b759b2ee1883a7e/,/V29 direct-index unified release/])assert.match(preflight,marker);
+const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"'),recoveryPosition=preflight.indexOf('&&known_recovery_fix_present');assert.ok(blockedOwnerPosition>=0&&recoveryPosition>=0&&blockedOwnerPosition<recoveryPosition);
 
 assert.match(verifier,/grep -Fq -- "\$expected_marker" "\$output"/);
 assert.match(verifier,/grep -Fiq -- "\$expected_marker" "\$headers"/);
 assert.doesNotMatch(verifier,/grep -Fq "\$expected_marker"|grep -Fiq "\$expected_marker"/);
 
-assert.match(worker,/GNK_ASG_UNIFIED_AUTH_V28_CANONICAL_LOGO_CONTACT_RELEASE/);
+assert.match(worker,/GNK_ASG_UNIFIED_AUTH_V29_DIRECT_INDEX_CANONICAL_RELEASE/);
+assert.match(worker,/\['\/','\/index\.html'\]/);
+assert.match(worker,/\['\/en','\/en\/index\.html'\]/);
+assert.match(worker,/targetPath\.slice\(0,-10\)\+'\/'/);
 assert.match(worker,/new URL\(canonicalPath,'https:\/\/assets\.local'\)/);
+assert.match(worker,/headers\.delete\('location'\)/);
 assert.match(worker,/function newsroomFallback/);
-assert.match(worker,/x-gnk-static-asset-fallback/);
 assert.match(worker,/CONTACT_PATH='\/api\/contact-submit'/);
 assert.match(worker,/if\(pathOf\(request\)===CONTACT_PATH\)return handleContact/);
 assert.match(worker,/function canonicalLogoAlias/);
@@ -47,5 +47,4 @@ assert.match(worker,/public-and-protected/);
 assert.doesNotMatch(worker,/new URL\(targetPath,request\.url\)/);
 
 for(const marker of [/branch!==\'main\'/,/merge-base','--is-ancestor/,/approved_sha=\$\{expectedSha\}/,/GNK_ASG_DEPLOY_APPROVED/,/--execute/,/mode:execute\?'execute':'prepare-only'/])assert.match(tool,marker);
-
-console.log(JSON.stringify({ok:true,deployStarted:false,indexRuntime:'V8',publicDesign:'V2',menu:'V4',contact:'V2',worker:'V28',canonicalLogoAlias:true,newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',preflight:'before-secrets-and-deploy',finalAssertions:'named-and-diagnostic'},null,2));
+console.log(JSON.stringify({ok:true,deployStarted:false,indexRuntime:'V8',publicDesign:'V2',menu:'V4',contact:'V2',worker:'V29',directIndexAssets:true,canonicalLogoAlias:true,newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',preflight:'before-secrets-and-deploy',finalAssertions:'named-and-diagnostic'},null,2));
