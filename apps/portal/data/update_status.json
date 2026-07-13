@@ -1,37 +1,37 @@
 {
-  "updated_at": "2026-07-12T20:32:21+00:00",
+  "updated_at": "2026-07-13T00:17:54+00:00",
   "news": {
-    "updated_at": "2026-07-12T20:32:21+00:00",
-    "status": "ok",
+    "updated_at": "2026-07-13T00:17:54+00:00",
+    "status": "degraded",
     "engine": "github_actions_rss_refresh_v3_retention_policy",
     "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb plus manual workflow_dispatch",
     "source_success_policy": "publish_when_public_items_available_and_at_least_50_percent_sources_synced",
     "source_success_threshold": 0.5,
-    "source_success_ratio": 0.938,
+    "source_success_ratio": 0.281,
     "source_sync_status": "partial_with_public_fallback",
     "configured_sources": 32,
-    "successful_sources": 30,
-    "failed_sources": 2,
+    "successful_sources": 9,
+    "failed_sources": 23,
     "storage_policy": "public_latest_100_archive_all_older_prune_oldest_500_repeatedly_when_archive_exceeds_1000",
     "public_items": 100,
     "max_public_items": 100,
-    "archive_items": 985,
+    "archive_items": 988,
     "archive_prune_trigger": 1000,
     "archive_delete_oldest_batch": 500,
-    "archive_items_before_prune": 1985,
-    "archive_prune_batches": 2,
-    "discarded_archive_overflow_items": 1000,
-    "fetched_candidates": 1897,
-    "duplicates_or_blocked_removed": 882,
+    "archive_items_before_prune": 988,
+    "archive_prune_batches": 0,
+    "discarded_archive_overflow_items": 0,
+    "fetched_candidates": 280,
+    "duplicates_or_blocked_removed": 277,
     "request_timeout_seconds": 10,
     "network_workers": 1,
     "share_previews_ready": 0,
     "by_group": {
-      "technology": 36,
-      "hrvatska": 27,
+      "technology": 34,
+      "international": 19,
       "digital-assets": 15,
-      "srbija": 5,
-      "international": 17
+      "hrvatska": 27,
+      "srbija": 5
     },
     "errors": [
       {
@@ -43,15 +43,105 @@
         "source": "Hina",
         "group": "hrvatska",
         "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "source": "Google News HR Business",
+        "group": "hrvatska",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Google News HR Technology",
+        "group": "hrvatska",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Google News Slovenia Business",
+        "group": "slovenija",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Google News Serbia Business",
+        "group": "srbija",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Google News BiH Business",
+        "group": "bih",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Reuters Business",
+        "group": "international",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "AP Business",
+        "group": "international",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Google News AI",
+        "group": "technology",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Google News Data Centers",
+        "group": "technology",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Google News Bitcoin",
+        "group": "digital-assets",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Google News Stablecoin",
+        "group": "digital-assets",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Asia Business",
+        "group": "international",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Africa Business",
+        "group": "international",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "UAE Business",
+        "group": "international",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "India Business",
+        "group": "international",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Singapore Business",
+        "group": "international",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Kenya Nigeria Ghana Business",
+        "group": "international",
+        "error": "HTTP Error 503: Service Unavailable"
+      },
+      {
+        "source": "Food Industry",
+        "group": "economy",
+        "error": "HTTP Error 503: Service Unavailable"
       }
     ],
     "preview_errors": [],
-    "checked_at": "2026-07-12T20:32:21+00:00",
-    "last_attempt_at": "2026-07-12T20:32:21+00:00",
+    "checked_at": "2026-07-13T00:17:54+00:00",
+    "last_attempt_at": "2026-07-13T00:17:54+00:00",
     "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-07-12T20:32:21+00:00",
+    "last_successful_refresh_at": "2026-07-13T00:17:54+00:00",
     "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 14.66
+    "runtime_seconds": 165.23
   }
 }
