@@ -30,13 +30,26 @@ jobs:
           node --check apps/portal/assets/media-registration-qa-v1.js
           node --check apps/portal/assets/the-code-countdown-v1.js
           node --check apps/portal/assets/public-market-live-v1.js
+          node --check apps/portal/assets/workers-directory-v1.js
           test -s apps/portal/assets/index-live-hub-v1.css
           test -s apps/portal/assets/public-market-live-v1.css
           test -s apps/portal/sitemap.xml
+          test -s apps/portal/editorial-sitemap.xml
           test -s apps/portal/robots.txt
+          test -s apps/portal/objave/index.html
+          test -s apps/portal/komentari/index.html
+          test -s apps/portal/workers/index.html
+          test -s apps/portal/reports/index.html
+          test -s apps/portal/projects/roadmap/index.html
+          test -s apps/portal/finance/index.html
+          test -s apps/portal/the-code/index.html
+          test -s apps/portal/contact/index.html
           grep -q 'https://gnk-asg.hr/newsroom/' apps/portal/sitemap.xml
           grep -q 'https://gnk-asg.hr/en/newsroom/' apps/portal/sitemap.xml
+          grep -q 'https://gnk-asg.hr/objave/' apps/portal/editorial-sitemap.xml
+          grep -q 'https://gnk-asg.hr/komentari/' apps/portal/editorial-sitemap.xml
           grep -q 'Sitemap: https://gnk-asg.hr/sitemap.xml' apps/portal/robots.txt
+          grep -q 'Sitemap: https://gnk-asg.hr/editorial-sitemap.xml' apps/portal/robots.txt
           node --check workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
@@ -164,6 +177,9 @@ jobs:
           grep -q "public-compact-menu-v1.js" public-home.html
           grep -q "index-live-hub-v1.js" public-home.html
 
+          fetch_required "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" public-home-en.html
+          grep -q "public-compact-menu-v1.js" public-home-en.html
+
           fetch_required "https://gnk-asg.hr/about/?deploy-admin-v6=${cache_bust}" public-about.html
           grep -q "public-compact-menu-v1.js" public-about.html
 
@@ -177,6 +193,17 @@ jobs:
           grep -q "public-compact-menu-v1.js" public-newsroom-en.html
           grep -q "Newsroom" public-newsroom-en.html
 
+          fetch_required "https://gnk-asg.hr/objave/?deploy-admin-v6=${cache_bust}" public-objave.html
+          grep -q "povjerenje-investitora-kroz-transparentnost" public-objave.html
+          grep -q "kiberneticka-sigurnost-i-poslovni-kontinuitet" public-objave.html
+
+          fetch_required "https://gnk-asg.hr/komentari/?deploy-admin-v6=${cache_bust}" public-komentari.html
+          grep -q "odgovornost-se-ne-moze-automatizirati" public-komentari.html
+          grep -q "novac-je-informacija-prije-nego-kapital" public-komentari.html
+
+          fetch_required "https://gnk-asg.hr/workers/?deploy-admin-v6=${cache_bust}" public-workers.html
+          grep -q "workers-directory-v1.js" public-workers.html
+
           fetch_required "https://gnk-asg.hr/api/public-news?limit=1&deploy-admin-v6=${cache_bust}" public-news.json
           grep -q '"ok": true' public-news.json
 
@@ -184,11 +211,25 @@ jobs:
           grep -q "https://gnk-asg.hr/newsroom/" sitemap.xml
           grep -q "https://gnk-asg.hr/en/newsroom/" sitemap.xml
 
+          fetch_required "https://gnk-asg.hr/editorial-sitemap.xml?deploy-admin-v6=${cache_bust}" editorial-sitemap.xml
+          grep -q "https://gnk-asg.hr/objave/" editorial-sitemap.xml
+          grep -q "https://gnk-asg.hr/komentari/" editorial-sitemap.xml
+
           fetch_required "https://gnk-asg.hr/robots.txt?deploy-admin-v6=${cache_bust}" robots.txt
           grep -q "Sitemap: https://gnk-asg.hr/sitemap.xml" robots.txt
+          grep -q "Sitemap: https://gnk-asg.hr/editorial-sitemap.xml" robots.txt
 
+          require_status "/objave/povjerenje-investitora-kroz-transparentnost/" "200"
+          require_status "/objave/kiberneticka-sigurnost-i-poslovni-kontinuitet/" "200"
+          require_status "/komentari/odgovornost-se-ne-moze-automatizirati/" "200"
+          require_status "/komentari/novac-je-informacija-prije-nego-kapital/" "200"
+          require_status "/reports/" "200"
           require_status "/projects/roadmap/" "200"
+          require_status "/finance/" "200"
+          require_status "/the-code/" "200"
+          require_status "/contact/" "200"
           require_status "/media-application/" "200"
+          require_protected_route "/admin-center/"
           require_protected_route "/mail-studio/"
           require_protected_route "/email-status/"
           require_protected_route "/operator-dashboard/"
