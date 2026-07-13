@@ -5,18 +5,7 @@ on:
     paths:
       - 'apps/portal/**'
       - 'workers/**'
-      - 'scripts/audit-public-portal-v1.mjs'
-      - 'scripts/audit-worker-route-ownership.mjs'
-      - 'scripts/predeploy-release-v6.mjs'
-      - 'scripts/prepare-approved-deploy-v1.mjs'
-      - 'scripts/test-deploy-approval-guardrails.mjs'
-      - 'scripts/test-index-runtime-ownership.mjs'
-      - 'scripts/test-email-signature-contract.mjs'
-      - 'scripts/test-mail-transport-guardrails.mjs'
-      - 'scripts/test-email-mime-guardrails.mjs'
-      - 'scripts/test-autoreply-guardrails.mjs'
-      - 'scripts/test-news-queue-guardrails.mjs'
-      - 'scripts/verify-production-route.sh'
+      - 'scripts/**'
       - '.github/workflows/deploy-admin-auth-v6.yml'
       - '.github/workflows/public-portal-audit.yml'
   workflow_dispatch:
@@ -31,53 +20,80 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Syntax and structural audit
+
+      - name: Syntax checks
         run: |
           set -euo pipefail
           bash -n scripts/verify-production-route.sh
-          node --check scripts/audit-public-portal-v1.mjs
-          node --check scripts/audit-worker-route-ownership.mjs
-          node --check scripts/predeploy-release-v6.mjs
-          node --check scripts/prepare-approved-deploy-v1.mjs
-          node --check scripts/test-deploy-approval-guardrails.mjs
-          node --check scripts/test-index-runtime-ownership.mjs
-          node --check scripts/test-email-signature-contract.mjs
-          node --check scripts/test-mail-transport-guardrails.mjs
-          node --check scripts/test-email-mime-guardrails.mjs
-          node --check scripts/test-autoreply-guardrails.mjs
-          node --check scripts/test-news-queue-guardrails.mjs
-          node --check apps/portal/assets/public-compact-menu-v1.js
-          node --check apps/portal/assets/index-data-resilience-v1.js
-          node --check apps/portal/assets/index-editorial-order-v1.js
-          node --check apps/portal/assets/newsroom-live-v1.js
-          node --check apps/portal/assets/public-market-live-v1.js
-          node --check apps/portal/assets/market-centre-data.js
-          node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
-          node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
-          node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
-          node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
-          node scripts/test-deploy-approval-guardrails.mjs
-          node scripts/test-index-runtime-ownership.mjs
-          node scripts/test-email-signature-contract.mjs
-          node scripts/test-mail-transport-guardrails.mjs
-          node scripts/test-email-mime-guardrails.mjs
-          node scripts/test-autoreply-guardrails.mjs
-          node scripts/test-news-queue-guardrails.mjs
+          for file in \
+            scripts/audit-public-portal-v1.mjs \
+            scripts/audit-worker-route-ownership.mjs \
+            scripts/predeploy-release-v6.mjs \
+            scripts/prepare-approved-deploy-v1.mjs \
+            scripts/test-deploy-approval-guardrails.mjs \
+            scripts/test-index-runtime-ownership.mjs \
+            scripts/test-email-signature-contract.mjs \
+            scripts/test-mail-transport-guardrails.mjs \
+            scripts/test-email-mime-guardrails.mjs \
+            scripts/test-autoreply-guardrails.mjs \
+            scripts/test-news-queue-guardrails.mjs \
+            apps/portal/assets/public-compact-menu-v1.js \
+            apps/portal/assets/release-completion-v1.js \
+            apps/portal/assets/index-data-resilience-v1.js \
+            apps/portal/assets/index-editorial-order-v1.js \
+            apps/portal/assets/newsroom-live-v1.js \
+            apps/portal/assets/public-market-live-v1.js \
+            apps/portal/assets/market-centre-data.js \
+            workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js \
+            workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js \
+            workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js \
+            workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          do
+            echo "CHECK $file"
+            node --check "$file"
+          done
+
+      - name: Contract guardrails
+        run: |
+          set -euo pipefail
+          for test in \
+            scripts/test-deploy-approval-guardrails.mjs \
+            scripts/test-index-runtime-ownership.mjs \
+            scripts/test-email-signature-contract.mjs \
+            scripts/test-mail-transport-guardrails.mjs \
+            scripts/test-email-mime-guardrails.mjs \
+            scripts/test-autoreply-guardrails.mjs \
+            scripts/test-news-queue-guardrails.mjs
+          do
+            echo "RUN $test"
+            node "$test"
+          done
+
+      - name: Public portal and infrastructure audits
+        run: |
+          set -euo pipefail
+          node scripts/audit-public-portal-v1.mjs
+          node scripts/audit-worker-route-ownership.mjs
+
+      - name: Full predeploy gate
+        run: |
+          set -euo pipefail
           node scripts/predeploy-release-v6.mjs
+
       - name: Upload audit reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: public-portal-audit
+          name: public-portal-audit-${{ github.sha }}
           path: |
             artifacts/public-portal-audit.json
             artifacts/worker-route-ownership.json
