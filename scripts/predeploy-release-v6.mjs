@@ -10,7 +10,7 @@ const requiredFiles=[
   'apps/portal/index.html','apps/portal/en/index.html','apps/portal/newsroom/index.html','apps/portal/en/newsroom/index.html',
   'apps/portal/objave/index.html','apps/portal/analize/index.html','apps/portal/komentari/index.html','apps/portal/trzista/index.html',
   'apps/portal/en/markets/index.html','apps/portal/the-code/index.html','apps/portal/contact/index.html','apps/portal/media-application/index.html',
-  'apps/portal/assets/public-compact-menu-v1.js','apps/portal/assets/public-design-tokens-v1.css',
+  'apps/portal/assets/public-compact-menu-v1.js','apps/portal/assets/public-design-tokens-v1.css','apps/portal/assets/public-design-runtime-v1.js',
   'apps/portal/assets/release-completion-v1.js','apps/portal/assets/index-data-resilience-v1.js','apps/portal/assets/index-editorial-order-v1.js',
   'apps/portal/assets/newsroom-live-v1.js','apps/portal/assets/public-market-live-v1.js','apps/portal/assets/market-centre-data.js',
   'apps/portal/assets/logo-gnk-asg-gold.svg','apps/portal/assets/logo-gnk-dinamo-gold.svg',
@@ -41,9 +41,11 @@ const market=JSON.parse(read('apps/portal/data/market.json'));
 if(market.status!=='ok'||!Array.isArray(market.coins)||market.coins.length<2)throw new Error('Market fallback invalid');
 
 requireTokens('apps/portal/assets/public-compact-menu-v1.js',['/newsroom/','/objave/','/analize/','/komentari/','/trzista/','/the-code/','menus.slice(1)','strips.slice(1)']);
+requireTokens('apps/portal/assets/public-design-runtime-v1.js',['__GNK_PUBLIC_DESIGN_RUNTIME_V1__','public-design-tokens-v1.css','gnk-public-shell-v1','noopener','noreferrer']);
+requireTokens('apps/portal/assets/public-design-tokens-v1.css',['--gnk-navy-900','--gnk-gold-600','--gnk-content','prefers-reduced-motion']);
 requireTokens('apps/portal/assets/release-completion-v1.js',['GNK_RELEASE_COMPLETION_V7','data-runtime-owner="index-editorial-order"','data-runtime-owner="index-data-resilience"','release-completion-scaffold']);
 forbidTokens('apps/portal/assets/release-completion-v1.js',['renderNews','renderMarkets','/api/public-news?limit=8','www.ecb.europa.eu','api.worldbank.org']);
-requireTokens('workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js',['STATIC_HTML_ROUTES','x-gnk-explicit-html-route','mail-identity-autoreply-all-v1.js','handleIncomingEmail(message,env,ctx,app)']);
+requireTokens('workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js',['STATIC_HTML_ROUTES','x-gnk-explicit-html-route','mail-identity-autoreply-all-v1.js','handleIncomingEmail(message,env,ctx,app)','public-design-runtime-v1.js','x-gnk-public-design']);
 requireTokens('workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js',['GNK_ASG_EMAIL_BRAND_SIGNATURE_V9','logo-gnk-asg-gold.svg','gold corporate mark']);
 requireTokens('workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js',['GNK_ASG_NEWS_AUTO_PUBLICATION_V8','scheduled_publication_disabled','canonicalSourceUrl']);
 requireTokens('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml',[
@@ -66,9 +68,10 @@ console.log(JSON.stringify({
   ok:true,
   news:news.length,
   marketCoins:market.coins.length,
-  worker:'v19-with-all-domain-autoreplies',
+  worker:'v19-with-all-domain-autoreplies-and-public-design',
   routes:'route-less-config-external-newsroom-owner-unresolved',
   indexOwners:{scaffold:'release-completion-v1.js',editorial:'index-editorial-order-v1.js',marketFallback:'index-data-resilience-v1.js'},
+  design:{runtime:'v1',tokens:'v1',protectedRoutesExcluded:true},
   mail:{goldSignature:true,allDomainAutoreplies:true,testRecipient:'sefic20@gmx.com',testSendingEnabled:false},
   scheduler:'strict-opt-in-disabled',
   publicAudit:publicAudit.summary,
