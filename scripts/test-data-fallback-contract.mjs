@@ -17,6 +17,15 @@ assert.ok(market.coins.length>=2,`market fallback has ${market.coins.length} coi
 const publicAudit=JSON.parse(fs.readFileSync('artifacts/public-portal-audit.json','utf8'));
 const routeAudit=JSON.parse(fs.readFileSync('artifacts/worker-route-ownership.json','utf8'));
 assert.equal(publicAudit.summary.errors,0);
-assert.equal(routeAudit.summary.directOperatorRouteLess,true);
+assert.equal(routeAudit.summary.directDeployConfigRouteLess,true);
+assert.equal(routeAudit.directDeployConfig?.file,'workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml');
+assert.deepEqual(routeAudit.directDeployConfig?.routes,[]);
 
-console.log(JSON.stringify({ok:true,newsItems:news.length,marketCoins:market.coins.length,publicErrors:publicAudit.summary.errors,directOperatorRouteLess:routeAudit.summary.directOperatorRouteLess},null,2));
+console.log(JSON.stringify({
+  ok:true,
+  newsItems:news.length,
+  marketCoins:market.coins.length,
+  publicErrors:publicAudit.summary.errors,
+  directDeployConfig:routeAudit.directDeployConfig?.file,
+  directDeployConfigRouteLess:routeAudit.summary.directDeployConfigRouteLess
+},null,2));
