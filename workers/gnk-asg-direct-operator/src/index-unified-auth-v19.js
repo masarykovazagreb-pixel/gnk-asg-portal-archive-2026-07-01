@@ -1,8 +1,9 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v18.js';
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_ALL_VERSION} from './mail-identity-autoreply-all-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V22_INDEX_RUNTIME_V7_ALL_AUTOREPLIES_${MAIL_AUTOREPLY_ALL_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V23_PUBLIC_DESIGN_ALL_AUTOREPLIES_${MAIL_AUTOREPLY_ALL_VERSION}_${BASE_VERSION}`;
 const INDEX_RELEASE='<script defer src="/assets/release-completion-v1.js?v=20260713-index-final-v7"></script><script defer src="/assets/index-data-resilience-v1.js?v=20260713-resilience-v2"></script><script defer src="/assets/index-editorial-order-v1.js?v=20260713-editorial-v3"></script>';
+const PUBLIC_DESIGN='<script defer src="/assets/public-design-runtime-v1.js?v=20260713-v1"></script>';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const isIndex=path=>path==='/'||path==='/en';
 const isProtected=path=>['/admin','/admin-center','/mail-studio','/campaign-mailer','/email-status','/operator-dashboard','/worker-ops','/digital-headquarters','/media-registration-admin','/webmail'].some(prefix=>path===prefix||path.startsWith(prefix+'/'));
@@ -27,9 +28,10 @@ async function finalize(request,response){
   const type=String(response.headers.get('content-type')||'').toLowerCase();if(!type.includes('text/html'))return response;
   try{
     let html=await response.text();
-    html=html.replace(/<script[^>]+release-completion-v1\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+index-data-resilience-v1\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+index-editorial-order-v1\.js[^>]*><\/script>/gi,'');
-    if(isIndex(pathOf(request)))html=html.includes('</body>')?html.replace('</body>',`${INDEX_RELEASE}</body>`):`${html}${INDEX_RELEASE}`;
-    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-public-runtime',VERSION);headers.set('x-gnk-index-release',isIndex(pathOf(request))?'v7-single-runtime-owners':'not-applicable');headers.set('x-gnk-mail-autoreply',MAIL_AUTOREPLY_ALL_VERSION);
+    html=html.replace(/<script[^>]+release-completion-v1\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+index-data-resilience-v1\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+index-editorial-order-v1\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+public-design-runtime-v1\.js[^>]*><\/script>/gi,'');
+    const scripts=`${isIndex(pathOf(request))?INDEX_RELEASE:''}${PUBLIC_DESIGN}`;
+    html=html.includes('</body>')?html.replace('</body>',`${scripts}</body>`):`${html}${scripts}`;
+    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-public-runtime',VERSION);headers.set('x-gnk-index-release',isIndex(pathOf(request))?'v7-single-runtime-owners':'not-applicable');headers.set('x-gnk-public-design','v1');headers.set('x-gnk-mail-autoreply',MAIL_AUTOREPLY_ALL_VERSION);
     return new Response(html,{status:response.status,statusText:response.statusText,headers});
   }catch{return response;}
 }
