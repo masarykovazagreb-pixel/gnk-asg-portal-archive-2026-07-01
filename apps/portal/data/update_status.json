@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-07-13T18:22:28+00:00",
+  "updated_at": "2026-07-13T22:33:41+00:00",
   "news": {
-    "updated_at": "2026-07-13T18:22:28+00:00",
+    "updated_at": "2026-07-13T22:33:41+00:00",
     "status": "ok",
     "engine": "github_actions_rss_refresh_v3_retention_policy",
     "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb plus manual workflow_dispatch",
@@ -15,24 +15,24 @@
     "storage_policy": "public_latest_100_archive_all_older_prune_oldest_500_repeatedly_when_archive_exceeds_1000",
     "public_items": 100,
     "max_public_items": 100,
-    "archive_items": 611,
+    "archive_items": 637,
     "archive_prune_trigger": 1000,
     "archive_delete_oldest_batch": 500,
-    "archive_items_before_prune": 2111,
+    "archive_items_before_prune": 2137,
     "archive_prune_batches": 3,
     "discarded_archive_overflow_items": 1500,
-    "fetched_candidates": 1878,
-    "duplicates_or_blocked_removed": 344,
+    "fetched_candidates": 1880,
+    "duplicates_or_blocked_removed": 354,
     "request_timeout_seconds": 10,
     "network_workers": 1,
     "share_previews_ready": 0,
     "by_group": {
-      "technology": 38,
-      "international": 21,
-      "hrvatska": 15,
-      "digital-assets": 22,
-      "srbija": 3,
-      "economy": 1
+      "technology": 47,
+      "international": 15,
+      "digital-assets": 13,
+      "hrvatska": 23,
+      "sport": 1,
+      "srbija": 1
     },
     "errors": [
       {
@@ -47,12 +47,12 @@
       }
     ],
     "preview_errors": [],
-    "checked_at": "2026-07-13T18:22:28+00:00",
-    "last_attempt_at": "2026-07-13T18:22:28+00:00",
+    "checked_at": "2026-07-13T22:33:41+00:00",
+    "last_attempt_at": "2026-07-13T22:33:41+00:00",
     "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-07-13T18:22:28+00:00",
+    "last_successful_refresh_at": "2026-07-13T22:33:41+00:00",
     "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 16.32
+    "runtime_seconds": 12.01
   }
 }
