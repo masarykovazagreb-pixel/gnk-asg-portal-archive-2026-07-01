@@ -3,7 +3,7 @@ import {
   buildBrandedRawEmail,
   mediaSignatureHtml,
   VERSION
-} from '../workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js';
+} from '../workers/gnk-asg-direct-operator/src/email-brand-mime-safe-v2.js';
 
 const env={};
 
@@ -15,6 +15,11 @@ await assert.rejects(
 await assert.rejects(
   ()=>buildBrandedRawEmail({env,fromEmail:'media@gnk-asg.hr',to:'user@example.com\r\nBcc: attacker@example.com',subject:'Test',text:'Body'}),
   /invalid_to_email/
+);
+
+await assert.rejects(
+  ()=>buildBrandedRawEmail({env,fromEmail:'media@gnk-asg.hr',to:'user@example.com',replyTo:'media@gnk-asg.hr\r\nCc: attacker@example.com',subject:'Test',text:'Body'}),
+  /invalid_reply_to_email/
 );
 
 const raw=await buildBrandedRawEmail({
@@ -31,7 +36,8 @@ assert.doesNotMatch(raw,/X-Evil:/m);
 assert.doesNotMatch(raw,/Content-Type: text\/html$/m);
 assert.match(raw,/Content-Type: application\/octet-stream/);
 assert.match(raw,/filename="bad_name\.exe"/);
-assert.match(raw,new RegExp(VERSION.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+assert.match(raw,/X-GNK-ASG-Email-Brand:/);
+assert.match(VERSION,/MIME_SAFE_V2/);
 
 await assert.rejects(
   ()=>buildBrandedRawEmail({
@@ -49,4 +55,4 @@ const signature=mediaSignatureHtml('javascript:alert(1)');
 assert.doesNotMatch(signature,/javascript:/i);
 assert.match(signature,/https:\/\/gnk-asg\.hr\/assets\/logo-gnk-asg-email\.jpg/);
 
-console.log(JSON.stringify({ok:true,mailSent:false,headers:'guarded',attachments:{maxCount:10,maxBytes:12582912}},null,2));
+console.log(JSON.stringify({ok:true,mailSent:false,wrapper:VERSION,headers:'guarded',attachments:{maxCount:10,maxBytes:12582912}},null,2));
