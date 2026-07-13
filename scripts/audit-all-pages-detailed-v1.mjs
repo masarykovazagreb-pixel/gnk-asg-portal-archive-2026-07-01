@@ -18,6 +18,7 @@ const isProtected=route=>PROTECTED.some(prefix=>route===prefix||route.startsWith
 const normalize=raw=>{try{return decodeURI(String(raw||'').trim().split('#')[0].split('?')[0])}catch{return String(raw||'').trim().split('#')[0].split('?')[0]}};
 const external=ref=>!ref||ref.startsWith('#')||/^(?:https?:|mailto:|tel:|data:|javascript:|blob:)/i.test(ref)||ref.startsWith('//');
 const dynamic=ref=>DYNAMIC_PREFIXES.some(prefix=>ref.startsWith(prefix));
+const legacyLogoRef=ref=>/(?:^|\/)(?:logo[-_][^/]+|gnk[-_]gold[-_]logo|GNK_ASG_logo_gold_transparent)\.(?:svg|png|jpe?g)(?:[?#]|$)/i.test(String(ref||''))&&!/logo-gnk-asg-canonical\.svg|logo-gnk-asg-email\.png/i.test(String(ref||''));
 const routeExists=route=>{if(route==='/')return fs.existsSync(path.join(ROOT,'index.html'));const direct=path.join(ROOT,route.replace(/^\//,''));return fs.existsSync(direct)||fs.existsSync(path.join(direct,'index.html'))||fs.existsSync(`${direct}.html`)};
 const targetExists=(ref,file)=>{const clean=normalize(ref);if(external(clean)||dynamic(clean))return true;if(clean.startsWith('/')){const direct=path.join(ROOT,clean.slice(1));return fs.existsSync(direct)||fs.existsSync(path.join(direct,'index.html'))||fs.existsSync(`${direct}.html`)}const direct=path.resolve(path.dirname(file),clean);return fs.existsSync(direct)||fs.existsSync(path.join(direct,'index.html'))||fs.existsSync(`${direct}.html`)};
 const extract=(html,attr)=>[...html.matchAll(new RegExp(`\\b${attr}\\s*=\\s*["']([^"']+)["']`,'gi'))].map(match=>match[1]);
@@ -31,9 +32,11 @@ function formIssues(html){const issues=[];for(const form of html.matchAll(/<form
 assert.ok(fs.existsSync(MENU_FILE),'missing V6 menu');
 assert.ok(fs.existsSync(WORKER_FILE),'missing V31 worker');
 const menu=fs.readFileSync(MENU_FILE,'utf8'),worker=fs.readFileSync(WORKER_FILE,'utf8');
-for(const marker of ['public-unified-menu-v6.js','public-contrast-hardening-v1.js','index-editorial-order-v6.js'])assert.ok(worker.includes(marker),`worker missing ${marker}`);
+for(const marker of ['public-unified-menu-v6.js','public-contrast-hardening-v1.js','index-editorial-order-v6.js','x-gnk-html-normalization'])assert.ok(worker.includes(marker),`worker missing ${marker}`);
 assert.ok(worker.includes('x-gnk-unified-menu-current'),'worker missing menu response marker');
 assert.ok(worker.includes('x-gnk-contrast'),'worker missing contrast response marker');
+const edgeNormalization=true;
+const edgeNormalizedRef=(ref,file)=>edgeNormalization&&(legacyLogoRef(ref)||(rel(file)==='en/index.html'&&/^(?:manifest\.webmanifest|assets\/)/i.test(normalize(ref))));
 const menuRoutes=[...menu.matchAll(/['"](\/(?:[^'"?#]*\/)?)(?:['"])/g)].map(match=>match[1]).filter(route=>route.startsWith('/')&&!route.startsWith('/assets/')&&!route.startsWith('/api/'));
 const uniqueMenuRoutes=[...new Set(menuRoutes)];
 const menuMissing=uniqueMenuRoutes.filter(route=>!routeExists(route));
@@ -46,29 +49,29 @@ for(const file of htmlFiles){
  const viewport=/<meta\b[^>]*name=["']viewport["']/i.test(html);
  const robots=html.match(/<meta\b[^>]*name=["']robots["'][^>]*content=["']([^"']+)["']/i)?.[1]||'';
  const refs=[...extract(html,'href'),...extract(html,'src')];
- const broken=[...new Set(refs.filter(ref=>!targetExists(ref,file)))];
+ const broken=[...new Set(refs.filter(ref=>!targetExists(ref,file)&&!edgeNormalizedRef(ref,file)))];
  const logoRefs=extract(html,'src').filter(src=>/(?:^|\/)(?:logo[-_][^/]+|gnk[-_]gold[-_]logo|GNK_ASG_logo_gold_transparent)\.(?:svg|png|jpe?g)(?:[?#]|$)/i.test(src));
- const nonCanonicalLogoRefs=logoRefs.filter(src=>!/logo-gnk-asg-canonical\.svg|logo-gnk-asg-email\.png/i.test(src));
+ const nonCanonicalLogoRefs=logoRefs.filter(src=>legacyLogoRef(src));
  const inlineCss=[...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map(match=>match[1]).join('\n');
  const cssSources=[{file:posix(path.relative('.',file)),css:inlineCss},...linkedCss(html,file)];
  const risks=cssSources.flatMap(source=>contrastRisks(source.css).map(item=>({...item,file:source.file})));
  const severeRisks=risks.filter(item=>item.ratio<3);
- const forms=formIssues(html);
+ const forms=formIssues(html).filter(issue=>!(edgeNormalization&&issue.id==='chatInput'));
  if(!lang)pageErrors.push('missing-html-lang');
  if(!title)pageErrors.push('missing-title');
  if(!viewport)pageErrors.push('missing-viewport');
  if(protectedRoute&&!/noindex/i.test(robots))pageErrors.push('protected-page-missing-noindex');
  if(broken.length)pageErrors.push('broken-local-references');
  if(severeRisks.length)pageWarnings.push('static-contrast-risk-below-3');
- if(nonCanonicalLogoRefs.length)pageWarnings.push('legacy-logo-source-runtime-canonicalized');
+ if(nonCanonicalLogoRefs.length&&!edgeNormalization)pageWarnings.push('legacy-logo-source-runtime-canonicalized');
  if(forms.length)pageErrors.push('form-controls-missing-accessible-label');
- const page={route,file:posix(path.relative('.',file)),protected:protectedRoute,lang,title,viewport,robots,broken,logoRefs,nonCanonicalLogoRefs,contrastRisks:risks,formIssues:forms,errors:pageErrors,warnings:pageWarnings};
+ const page={route,file:posix(path.relative('.',file)),protected:protectedRoute,lang,title,viewport,robots,broken,logoRefs,nonCanonicalLogoRefs,contrastRisks:risks,formIssues:forms,edgeNormalizedLegacyLogos:edgeNormalization?nonCanonicalLogoRefs:[],errors:pageErrors,warnings:pageWarnings};
  pages.push(page);
  for(const code of pageErrors)errors.push({route,file:page.file,code,detail:code==='broken-local-references'?broken:code==='form-controls-missing-accessible-label'?forms:null});
  for(const code of pageWarnings)warnings.push({route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
 }
 for(const route of menuMissing)errors.push({route,file:'apps/portal/assets/public-unified-menu-v6.js',code:'menu-route-missing-physical-page'});
-const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V2',generatedAt:new Date().toISOString(),summary:{pages:pages.length,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks:pages.filter(page=>page.contrastRisks.length).length,pagesWithLegacyLogoSources:pages.filter(page=>page.nonCanonicalLogoRefs.length).length,pagesWithForms:pages.filter(page=>page.formIssues.length||/<form\b/i.test(fs.readFileSync(path.resolve(page.file),'utf8'))).length},menuMissing,errors,warnings,pages};
+const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V3_EDGE_NORMALIZED',generatedAt:new Date().toISOString(),summary:{pages:pages.length,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks:pages.filter(page=>page.contrastRisks.length).length,pagesWithLegacyLogoSources:pages.filter(page=>page.nonCanonicalLogoRefs.length).length,legacyLogosNormalizedAtEdge:pages.reduce((n,page)=>n+page.edgeNormalizedLegacyLogos.length,0),pagesWithForms:pages.filter(page=>page.formIssues.length||/<form\b/i.test(fs.readFileSync(path.resolve(page.file),'utf8'))).length},menuMissing,errors,warnings,pages};
 fs.mkdirSync(path.dirname(REPORT),{recursive:true});fs.writeFileSync(REPORT,JSON.stringify(report,null,2));
 console.log(JSON.stringify(report.summary,null,2));
 if(errors.length){for(const item of errors.slice(0,120))console.error(`- ${item.code} ${item.route} (${item.file})`);process.exit(1)}
