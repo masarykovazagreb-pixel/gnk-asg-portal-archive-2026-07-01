@@ -3,7 +3,6 @@ main = "src/index-unified-auth-v19.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
-keep_vars = true
 
 # SAFETY-COMPAT CONFIG
 # Production routes are not declared or modified here. Existing route assignment remains unchanged.
@@ -28,11 +27,10 @@ remote = true
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260713-public-consolidation-v20"
+DEPLOY_REVISION = "20260713-public-consolidation-v21"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
-
-NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "true"
+NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "false"
 MAIL_AUTO_REPLY_LIVE = "true"
 MAIL_STUDIO_LIVE = "true"
 MAIL_MANUAL_LIVE = "true"
@@ -40,8 +38,6 @@ MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MAIL_PROFILE_TEST_LIVE = "false"
 MAIL_PROFILE_TEST_RECIPIENTS = "beckuphome@gmail.com"
 MAIL_BOOTSTRAP_SMOKE_TEST = "false"
-
-# Campaign, bulk and scheduled outreach remain locked.
 MEDIA_OUTREACH_FROM = "media@gnk-asg.hr"
 MEDIA_OUTREACH_LIVE = "false"
 MEDIA_OUTREACH_SCHEDULED_LIVE = "false"
@@ -52,7 +48,6 @@ MEDIA_OUTREACH_REPORT_RECIPIENTS = "beckuphome@gmail.com"
 MEDIA_OUTREACH_MAX_PER_HOUR = "1"
 MEDIA_OUTREACH_MAX_PER_DAY = "3"
 MEDIA_APPLICATION_AUTO_ACK = "false"
-
 EMAIL_STATUS_PUBLIC_ORIGIN = "https://gnk-asg.hr"
 EMAIL_OPEN_TRACKING_ENABLED = "false"
 EMAIL_STATUS_SYNC_LOOKBACK_HOURS = "48"
