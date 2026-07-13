@@ -7,6 +7,7 @@ on:
       - 'workers/gnk-asg-direct-operator/**'
       - 'scripts/audit-public-portal-v1.mjs'
       - 'scripts/predeploy-release-v6.mjs'
+      - 'scripts/verify-production-route.sh'
       - '.github/workflows/public-portal-audit.yml'
   workflow_dispatch:
 
@@ -29,11 +30,14 @@ jobs:
       - name: Syntax and structural audit
         run: |
           set -euo pipefail
+          bash -n scripts/verify-production-route.sh
           node --check scripts/audit-public-portal-v1.mjs
           node --check scripts/predeploy-release-v6.mjs
           node --check apps/portal/assets/public-compact-menu-v1.js
           node --check apps/portal/assets/newsroom-live-v1.js
           node --check apps/portal/assets/public-market-live-v1.js
+          node --check apps/portal/assets/market-centre-data.js
+          node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
