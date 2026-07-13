@@ -61,6 +61,7 @@ jobs:
           bash -n scripts/check-newsroom-route-readiness.sh
           for file in \
             scripts/audit-public-portal-v1.mjs \
+            scripts/audit-all-pages-detailed-v1.mjs \
             scripts/audit-worker-route-ownership.mjs \
             scripts/predeploy-release-v6.mjs \
             scripts/prepare-approved-deploy-v1.mjs \
@@ -71,6 +72,8 @@ jobs:
             scripts/test-unified-shell-contract.mjs \
             scripts/test-visible-menu-logo-content-v1.mjs \
             scripts/test-final-release-v31.mjs \
+            scripts/test-worker-directory-1573.mjs \
+            scripts/test-admin-session-login-v1.mjs \
             scripts/test-contact-form-contract.mjs \
             scripts/test-the-code-index-contract.mjs \
             scripts/test-index-content-contract.mjs \
@@ -89,7 +92,10 @@ jobs:
             apps/portal/assets/public-unified-menu-v6.js \
             apps/portal/assets/public-contrast-hardening-v1.js \
             apps/portal/assets/index-editorial-order-v6.js \
+            apps/portal/assets/index-editorial-cleanup-v1.js \
             apps/portal/assets/mail-studio-ui-v28.js \
+            apps/portal/assets/workers-directory-v1.js \
+            apps/portal/assets/protected-operations-v1.js \
             apps/portal/assets/contact-form-v2.js \
             apps/portal/assets/release-completion-v1.js \
             apps/portal/assets/index-data-resilience-v1.js \
@@ -98,6 +104,7 @@ jobs:
             apps/portal/assets/public-market-live-v1.js \
             apps/portal/assets/market-centre-data.js \
             apps/portal/assets/market.js \
+            workers/gnk-asg-contact-api-worker/src/index-session-cookie-v1.js \
             workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js \
             workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js \
             workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js \
@@ -123,6 +130,8 @@ jobs:
           node scripts/test-unified-shell-contract.mjs
           node scripts/test-visible-menu-logo-content-v1.mjs
           node scripts/test-final-release-v31.mjs
+          node scripts/test-worker-directory-1573.mjs
+          node scripts/test-admin-session-login-v1.mjs
           node scripts/test-contact-form-contract.mjs
           node scripts/test-the-code-index-contract.mjs
           node scripts/test-index-content-contract.mjs
@@ -132,6 +141,7 @@ jobs:
           node scripts/test-autoreply-guardrails.mjs
           node scripts/test-autoreply-all-addresses.mjs
           node scripts/test-news-queue-guardrails.mjs
+          node scripts/audit-all-pages-detailed-v1.mjs
           node scripts/audit-public-portal-v1.mjs
           node scripts/audit-worker-route-ownership.mjs
           node scripts/test-data-fallback-contract.mjs
@@ -146,6 +156,7 @@ jobs:
             .github/workflows/deploy-admin-auth-v6.yml
             scripts
             artifacts/public-portal-audit.json
+            artifacts/all-pages-detailed-audit.json
             artifacts/worker-route-ownership.json
           if-no-files-found: error
           retention-days: 14
@@ -221,6 +232,8 @@ jobs:
           verify "https://gnk-asg.hr/assets/public-contrast-hardening-v1.js?deploy-admin-v6=${cache_bust}" contrast.js "__GNK_CONTRAST_HARDENING_V1__"
           verify "https://gnk-asg.hr/assets/index-editorial-order-v6.js?deploy-admin-v6=${cache_bust}" editorial-v6.js "__GNK_INDEX_EDITORIAL_ORDER_V6__"
           verify "https://gnk-asg.hr/assets/mail-studio-ui-v28.js?deploy-admin-v6=${cache_bust}" mail-studio-ui.js "min-height:520px"
+          verify "https://gnk-asg.hr/assets/workers-directory-v1.js?deploy-admin-v6=${cache_bust}" workers-directory.js "EXACT_1573"
+          verify "https://gnk-asg.hr/assets/protected-operations-v1.js?deploy-admin-v6=${cache_bust}" protected-operations.js "__GNK_PROTECTED_OPERATIONS_V1__"
           verify "https://gnk-asg.hr/assets/public-design-tokens-v1.css?deploy-admin-v6=${cache_bust}" public-design.css "--gnk-gold-600"
           verify "https://gnk-asg.hr/assets/release-completion-v1.js?deploy-admin-v6=${cache_bust}" release.js "GNK_RELEASE_COMPLETION_V8"
           verify "https://gnk-asg.hr/assets/index-data-resilience-v1.js?deploy-admin-v6=${cache_bust}" resilience.js "__GNK_INDEX_DATA_RESILIENCE_V2__"
@@ -231,6 +244,8 @@ jobs:
           verify "https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg?deploy-admin-v6=${cache_bust}" canonical-logo.bin
           verify "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" home.html "index-editorial-order-v6.js"
           verify "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" home-en.html "index-editorial-order-v6.js"
+          verify "https://gnk-asg.hr/workers/?deploy-admin-v6=${cache_bust}" workers.html "1.573"
+          verify "https://gnk-asg.hr/admin-login/?deploy-admin-v6=${cache_bust}" admin-login.html "id=\"loginForm\""
           verify "https://gnk-asg.hr/newsroom/?deploy-admin-v6=${cache_bust}" newsroom.html "x-gnk-explicit-html-route"
           verify "https://gnk-asg.hr/en/newsroom/?deploy-admin-v6=${cache_bust}" newsroom-en.html "x-gnk-explicit-html-route"
           verify "https://gnk-asg.hr/contact/?deploy-admin-v6=${cache_bust}" contact.html "id=\"contactForm\""
@@ -264,12 +279,22 @@ jobs:
           assert_file "English home full workers menu" grep -Fiq -- 'x-gnk-unified-menu-current: full-v6-workers' deploy-verification/home-en.html.headers
           assert_file "home contrast hardened" grep -Fiq -- 'x-gnk-contrast: hardened-v1' deploy-verification/home.html.headers
           assert_file "English home contrast hardened" grep -Fiq -- 'x-gnk-contrast: hardened-v1' deploy-verification/home-en.html.headers
+          assert_file "home HTML normalized" grep -Fiq -- 'x-gnk-html-normalization: legacy-assets-canonical-logo-a11y-news-v2' deploy-verification/home.html.headers
+          assert_file "English home HTML normalized" grep -Fiq -- 'x-gnk-html-normalization: legacy-assets-canonical-logo-a11y-news-v2' deploy-verification/home-en.html.headers
           assert_file "home 100-news editorial" grep -Fiq -- 'x-gnk-index-editorial: v6-news-100' deploy-verification/home.html.headers
+          assert_file "workers exact total source" grep -Fq -- 'EXPECTED_TOTAL=1573' deploy-verification/workers-directory.js
+          assert_file "workers final code contract" grep -Fq -- 'DWF-' deploy-verification/workers-directory.js
           assert_file "canonical alias is PNG" grep -Fiq -- 'content-type: image/png' deploy-verification/canonical-logo.bin.headers
           assert_file "canonical alias shares mail asset" grep -Fiq -- 'x-gnk-canonical-logo: same-as-portal' deploy-verification/canonical-logo.bin.headers
           assert_file "canonical alias non-empty" test -s deploy-verification/canonical-logo.bin
 
           node scripts/assert-production-news-fallback.mjs deploy-verification/news-fallback.json deploy-verification/news-fallback.json.headers 100
+
+          session_status=$(curl --silent --show-error --output deploy-verification/session-ready.json --write-out '%{http_code}' "https://gnk-asg.hr/api/operator-session-login?deploy-admin-v6=${cache_bust}" || true)
+          echo "ASSERT admin session readiness HTTP 200; actual=${session_status}"
+          [ "$session_status" = "200" ]
+          grep -q '"ready": true' deploy-verification/session-ready.json
+          grep -q '"sessionTtlSeconds": 28800' deploy-verification/session-ready.json
 
           contact_status=$(curl --silent --show-error --output deploy-verification/contact-ready.json --write-out '%{http_code}' "https://gnk-asg.hr/api/contact-submit?deploy-admin-v6=${cache_bust}" || true)
           echo "ASSERT contact readiness HTTP 200; actual=${contact_status}"
