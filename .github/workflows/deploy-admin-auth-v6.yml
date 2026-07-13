@@ -211,7 +211,7 @@ jobs:
           verify "https://gnk-asg.hr/assets/the-code-experience-loop-v1.html?deploy-admin-v6=${cache_bust}" the-code-embed.html "PLAY FROM THE BEGINNING"
           verify "https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6=${cache_bust}" newsroom-live.js "/data/news.json"
           verify "https://gnk-asg.hr/assets/market-centre-data.js?deploy-admin-v6=${cache_bust}" market-centre.js "GNK_MARKET_CENTRE_DATA_V2"
-          verify "https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg?deploy-admin-v6=${cache_bust}" canonical-logo.svg "Official gold GNK ASG corporate logo"
+          verify "https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg?deploy-admin-v6=${cache_bust}" canonical-logo.bin
           verify "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" home.html "public-design-runtime-v1.js"
           verify "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" home-en.html "public-design-runtime-v1.js"
           verify "https://gnk-asg.hr/newsroom/?deploy-admin-v6=${cache_bust}" newsroom.html "x-gnk-explicit-html-route"
@@ -225,7 +225,8 @@ jobs:
           verify "https://gnk-asg.hr/en/analyses/?deploy-admin-v6=${cache_bust}" analyses-en.html "Capital structure and operational resilience"
           verify "https://gnk-asg.hr/en/commentary/?deploy-admin-v6=${cache_bust}" commentary-en.html "Innovation without trust is not progress"
           verify "https://gnk-asg.hr/trzista/?deploy-admin-v6=${cache_bust}" trzista.html "Trži"
-          verify "https://gnk-asg.hr/the-code/?deploy-admin-v6=${cache_bust}" the-code.html "THE CODE"
+          verify "https://gnk-asg.hr/the-code/?deploy-admin-v6=${cache_bust}" the-code.html "6 scena"
+          verify "https://gnk-asg.hr/en/the-code/?deploy-admin-v6=${cache_bust}" the-code-en.html "6 scenes"
           verify "https://gnk-asg.hr/data/news.json?deploy-admin-v6=${cache_bust}" news-fallback.json '"title"'
           verify "https://gnk-asg.hr/data/market.json?deploy-admin-v6=${cache_bust}" market-fallback.json '"coins"'
           verify "https://gnk-asg.hr/api/public-news?limit=1&deploy-admin-v6=${cache_bust}" news.json '"ok": true'
@@ -233,6 +234,10 @@ jobs:
           verify "https://gnk-asg.hr/editorial-sitemap.xml?deploy-admin-v6=${cache_bust}" editorial-sitemap.xml "/en/commentary/innovation-without-trust-is-not-progress/"
           verify "https://gnk-asg.hr/robots.txt?deploy-admin-v6=${cache_bust}" robots.txt "Sitemap: https://gnk-asg.hr/sitemap-index.xml"
 
+          assert_file "home direct index owner" grep -Fiq -- 'x-gnk-explicit-html-route: /index.html' deploy-verification/home.html.headers
+          assert_file "English home direct index owner" grep -Fiq -- 'x-gnk-explicit-html-route: /en/index.html' deploy-verification/home-en.html.headers
+          assert_file "home has no redirect" bash -c '! grep -Eiq "^location:" deploy-verification/home.html.headers'
+          assert_file "English home has no redirect" bash -c '! grep -Eiq "^location:" deploy-verification/home-en.html.headers'
           assert_file "home design header" grep -Fiq -- 'x-gnk-public-design: v2-unified' deploy-verification/home.html.headers
           assert_file "English home design header" grep -Fiq -- 'x-gnk-public-design: v2-unified' deploy-verification/home-en.html.headers
           assert_file "home unified menu header" grep -Fiq -- 'x-gnk-unified-menu: public-and-protected' deploy-verification/home.html.headers
@@ -241,6 +246,9 @@ jobs:
           assert_file "legacy English index runtime absent" bash -c '! grep -q "index-live-hub-v1.js" deploy-verification/home-en.html'
           assert_file "index loads V8 release" grep -Fq -- 'release-completion-v1.js?v=20260713-index-final-v8' deploy-verification/home.html
           assert_file "English index loads V8 release" grep -Fq -- 'release-completion-v1.js?v=20260713-index-final-v8' deploy-verification/home-en.html
+          assert_file "canonical alias is PNG" grep -Fiq -- 'content-type: image/png' deploy-verification/canonical-logo.bin.headers
+          assert_file "canonical alias shares mail asset" grep -Fiq -- 'x-gnk-canonical-logo: same-as-portal' deploy-verification/canonical-logo.bin.headers
+          assert_file "canonical alias non-empty" test -s deploy-verification/canonical-logo.bin
 
           news_count=$(node -e "const n=require('./deploy-verification/news-fallback.json'); console.log(Array.isArray(n)?n.length:0)")
           echo "ASSERT fallback news count >= 100; actual=${news_count}"
