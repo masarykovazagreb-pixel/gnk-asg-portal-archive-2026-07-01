@@ -7,24 +7,66 @@ on:
         description: "Type DEPLOY_ADMIN_AUTH_V6 to run production deploy"
         required: true
         type: string
+      approved_sha:
+        description: "Full 40-character main commit SHA approved for production"
+        required: true
+        type: string
 
 permissions:
   contents: read
+
+concurrency:
+  group: gnk-asg-production-deploy
+  cancel-in-progress: false
 
 jobs:
   deploy:
     if: github.event_name == 'workflow_dispatch' && inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
+      - name: Validate approval input
+        env:
+          APPROVED_SHA: ${{ inputs.approved_sha }}
+        run: |
+          set -euo pipefail
+          [[ "$APPROVED_SHA" =~ ^[0-9a-fA-F]{40}$ ]]
+          echo "Approved production SHA: $APPROVED_SHA"
+
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.approved_sha }}
+          fetch-depth: 0
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
 
+      - name: Verify exact approved release source
+        env:
+          APPROVED_SHA: ${{ inputs.approved_sha }}
+        run: |
+          set -euo pipefail
+          actual=$(git rev-parse HEAD)
+          test "$actual" = "$APPROVED_SHA"
+          git fetch origin main --no-tags
+          git merge-base --is-ancestor "$APPROVED_SHA" origin/main
+          test -z "$(git status --porcelain)"
+          echo "DEPLOY_SOURCE_SHA=$actual" >> "$GITHUB_ENV"
+
       - name: Validate release source
         run: |
           set -euo pipefail
+          bash -n scripts/verify-production-route.sh
+          node --check scripts/audit-public-portal-v1.mjs
+          node --check scripts/audit-worker-route-ownership.mjs
+          node --check scripts/predeploy-release-v6.mjs
+          node --check scripts/prepare-approved-deploy-v1.mjs
+          node --check scripts/test-email-signature-contract.mjs
+          node --check scripts/test-mail-transport-guardrails.mjs
+          node --check scripts/test-email-mime-guardrails.mjs
+          node --check scripts/test-autoreply-guardrails.mjs
+          node --check scripts/test-news-queue-guardrails.mjs
           node --check apps/portal/assets/public-compact-menu-v1.js
           node --check apps/portal/assets/release-completion-v1.js
           node --check apps/portal/assets/index-data-resilience-v1.js
@@ -41,19 +83,25 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
-          node --check scripts/predeploy-release-v6.mjs
+          node scripts/test-email-signature-contract.mjs
+          node scripts/test-mail-transport-guardrails.mjs
+          node scripts/test-email-mime-guardrails.mjs
+          node scripts/test-autoreply-guardrails.mjs
+          node scripts/test-news-queue-guardrails.mjs
           node scripts/predeploy-release-v6.mjs
 
-      - name: Upload private Worker source snapshot
+      - name: Upload approved source and audit snapshot
         uses: actions/upload-artifact@v4
         with:
-          name: worker-source-snapshot
+          name: approved-production-source-${{ inputs.approved_sha }}
           path: |
             workers
-            .github/workflows
-            scripts/predeploy-release-v6.mjs
+            .github/workflows/deploy-admin-auth-v6.yml
+            scripts
+            artifacts/public-portal-audit.json
+            artifacts/worker-route-ownership.json
           if-no-files-found: error
-          retention-days: 3
+          retention-days: 14
 
       - name: Resolve token hash
         id: auth
@@ -61,6 +109,7 @@ jobs:
           TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
           TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
         run: |
+          set -euo pipefail
           value="$TOKEN"
           [ -n "$value" ] || value="$TOKEN_FALLBACK"
           test -n "$value"
@@ -83,7 +132,7 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.mail-proxy-no-routes.toml --name gnk-asg-direct-operator --var "OPERATOR_TOKEN_SHA256:${{ steps.auth.outputs.hash }}"
+        run: npx --yes wrangler@4 deploy --config wrangler.mail-proxy-no-routes.toml --name gnk-asg-direct-operator --var "OPERATOR_TOKEN_SHA256:${{ steps.auth.outputs.hash }}" --var "DEPLOY_REVISION:${DEPLOY_SOURCE_SHA}"
 
       - name: Deploy operator center
         working-directory: workers/gnk-asg-operator-center
@@ -92,100 +141,59 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-operator-center
 
-      - name: Verify production release
+      - name: Verify production release and route ownership
         run: |
           set -euo pipefail
+          mkdir -p deploy-verification
           sleep 15
-          cache_bust=$(date +%s)
+          cache_bust="${DEPLOY_SOURCE_SHA}-$(date +%s)"
 
-          fetch_required() {
-            local url="$1" output="$2" attempt status
-            for attempt in 1 2 3 4 5; do
-              status=$(curl --silent --show-error --location --output "$output" --write-out '%{http_code}' "$url" || true)
-              echo "VERIFY ${url} -> HTTP ${status} (attempt ${attempt}/5)"
-              [ "$status" = "200" ] && return 0
-              sleep $((attempt * 4))
-            done
-            echo "Verification failed for ${url}; final HTTP status ${status}" >&2
-            return 1
+          verify() {
+            scripts/verify-production-route.sh "$1" "deploy-verification/$2" "${3:-}"
           }
 
-          fetch_required "https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6=${cache_bust}" menu.js
-          fetch_required "https://gnk-asg.hr/assets/release-completion-v1.js?deploy-admin-v6=${cache_bust}" release.js
-          fetch_required "https://gnk-asg.hr/assets/index-data-resilience-v1.js?deploy-admin-v6=${cache_bust}" resilience.js
-          fetch_required "https://gnk-asg.hr/assets/index-editorial-order-v1.js?deploy-admin-v6=${cache_bust}" editorial-order.js
-          fetch_required "https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6=${cache_bust}" newsroom-live.js
-          fetch_required "https://gnk-asg.hr/assets/market-centre-data.js?deploy-admin-v6=${cache_bust}" market-centre.js
-          fetch_required "https://gnk-asg.hr/assets/logo-gnk-asg-gold.svg?deploy-admin-v6=${cache_bust}" asg-logo.svg
-          fetch_required "https://gnk-asg.hr/assets/logo-gnk-dinamo-gold.svg?deploy-admin-v6=${cache_bust}" dinamo-logo.svg
-          fetch_required "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" home.html
-          fetch_required "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" home-en.html
-          fetch_required "https://gnk-asg.hr/newsroom/?deploy-admin-v6=${cache_bust}" newsroom.html
-          fetch_required "https://gnk-asg.hr/en/newsroom/?deploy-admin-v6=${cache_bust}" newsroom-en.html
-          fetch_required "https://gnk-asg.hr/objave/?deploy-admin-v6=${cache_bust}" objave.html
-          fetch_required "https://gnk-asg.hr/analize/?deploy-admin-v6=${cache_bust}" analize.html
-          fetch_required "https://gnk-asg.hr/analize/ai-infrastruktura-i-potrosnja-energije/?deploy-admin-v6=${cache_bust}" analiza-ai.html
-          fetch_required "https://gnk-asg.hr/analize/transparentnost-podataka-kao-poslovna-infrastruktura/?deploy-admin-v6=${cache_bust}" analiza-data.html
-          fetch_required "https://gnk-asg.hr/komentari/?deploy-admin-v6=${cache_bust}" komentari.html
-          fetch_required "https://gnk-asg.hr/trzista/?deploy-admin-v6=${cache_bust}" trzista.html
-          fetch_required "https://gnk-asg.hr/the-code/?deploy-admin-v6=${cache_bust}" the-code.html
-          fetch_required "https://gnk-asg.hr/assets/the-code-experience-loop-v1.html?deploy-admin-v6=${cache_bust}" the-code-loop.html
-          fetch_required "https://gnk-asg.hr/data/news.json?deploy-admin-v6=${cache_bust}" news-fallback.json
-          fetch_required "https://gnk-asg.hr/data/market.json?deploy-admin-v6=${cache_bust}" market-fallback.json
-          fetch_required "https://gnk-asg.hr/api/public-news?limit=1&deploy-admin-v6=${cache_bust}" news.json
-          fetch_required "https://gnk-asg.hr/sitemap-index.xml?deploy-admin-v6=${cache_bust}" sitemap-index.xml
-          fetch_required "https://gnk-asg.hr/editorial-sitemap.xml?deploy-admin-v6=${cache_bust}" editorial-sitemap.xml
-          fetch_required "https://gnk-asg.hr/robots.txt?deploy-admin-v6=${cache_bust}" robots.txt
+          verify "https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6=${cache_bust}" menu.js "gnk-compact-menu"
+          verify "https://gnk-asg.hr/assets/release-completion-v1.js?deploy-admin-v6=${cache_bust}" release.js "GNK_RELEASE_COMPLETION_V6"
+          verify "https://gnk-asg.hr/assets/index-data-resilience-v1.js?deploy-admin-v6=${cache_bust}" resilience.js "/data/news.json"
+          verify "https://gnk-asg.hr/assets/index-editorial-order-v1.js?deploy-admin-v6=${cache_bust}" editorial-order.js "Poslovne vijesti"
+          verify "https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6=${cache_bust}" newsroom-live.js "/data/news.json"
+          verify "https://gnk-asg.hr/assets/market-centre-data.js?deploy-admin-v6=${cache_bust}" market-centre.js "GNK_MARKET_CENTRE_DATA_V2"
+          verify "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" home.html "index-data-resilience-v1.js"
+          verify "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" home-en.html "index-editorial-order-v1.js"
+          verify "https://gnk-asg.hr/newsroom/?deploy-admin-v6=${cache_bust}" newsroom.html "x-gnk-explicit-html-route"
+          verify "https://gnk-asg.hr/en/newsroom/?deploy-admin-v6=${cache_bust}" newsroom-en.html "x-gnk-explicit-html-route"
+          verify "https://gnk-asg.hr/objave/?deploy-admin-v6=${cache_bust}" objave.html "povjerenje-investitora-kroz-transparentnost"
+          verify "https://gnk-asg.hr/analize/?deploy-admin-v6=${cache_bust}" analize.html "Poslovne i tehnološke analize"
+          verify "https://gnk-asg.hr/komentari/?deploy-admin-v6=${cache_bust}" komentari.html "odgovornost-se-ne-moze-automatizirati"
+          verify "https://gnk-asg.hr/trzista/?deploy-admin-v6=${cache_bust}" trzista.html "Trži"
+          verify "https://gnk-asg.hr/the-code/?deploy-admin-v6=${cache_bust}" the-code.html "THE CODE"
+          verify "https://gnk-asg.hr/data/news.json?deploy-admin-v6=${cache_bust}" news-fallback.json '"title"'
+          verify "https://gnk-asg.hr/data/market.json?deploy-admin-v6=${cache_bust}" market-fallback.json '"coins"'
+          verify "https://gnk-asg.hr/api/public-news?limit=1&deploy-admin-v6=${cache_bust}" news.json '"ok": true'
+          verify "https://gnk-asg.hr/sitemap-index.xml?deploy-admin-v6=${cache_bust}" sitemap-index.xml "sitemap"
+          verify "https://gnk-asg.hr/editorial-sitemap.xml?deploy-admin-v6=${cache_bust}" editorial-sitemap.xml "https://gnk-asg.hr/analize/"
+          verify "https://gnk-asg.hr/robots.txt?deploy-admin-v6=${cache_bust}" robots.txt "Sitemap: https://gnk-asg.hr/sitemap-index.xml"
 
-          grep -q "gnk-compact-menu" menu.js
-          grep -q "'/objave/'" menu.js
-          grep -q "'/analize/'" menu.js
-          grep -q "'/komentari/'" menu.js
-          grep -q "GNK_RELEASE_COMPLETION_V6" release.js
-          grep -q "logo-gnk-dinamo-gold.svg" release.js
-          grep -q "/data/news.json" resilience.js
-          grep -q "/data/market.json" resilience.js
-          grep -q "Poslovne vijesti" editorial-order.js
-          grep -q "Analize" editorial-order.js
-          grep -q "Komentari" editorial-order.js
-          grep -q "/data/news.json" newsroom-live.js
-          grep -q 'fetch(`/data/${name}' market-centre.js
-          grep -q "GNK ASG" asg-logo.svg
-          grep -q "GNK DINAMO" dinamo-logo.svg
-          grep -q "release-completion-v1.js" home.html
-          grep -q "index-data-resilience-v1.js" home.html
-          grep -q "index-editorial-order-v1.js" home.html
-          grep -q "release-completion-v1.js" home-en.html
-          ! grep -q "index-live-hub-v1.js" home.html
-          ! grep -q "index-live-hub-v1.js" home-en.html
-          [ "$(grep -o 'public-compact-menu-v1.js' home.html | wc -l)" -eq 1 ]
-          [ "$(grep -o 'public-compact-menu-v1.js' home-en.html | wc -l)" -eq 1 ]
-          grep -q "Newsroom" newsroom.html
-          grep -q "Newsroom" newsroom-en.html
-          grep -q "povjerenje-investitora-kroz-transparentnost" objave.html
-          grep -q "Poslovne i tehnološke analize" analize.html
-          grep -q "AI infrastruktura i potrošnja energije" analiza-ai.html
-          grep -q "Transparentnost podataka kao poslovna infrastruktura" analiza-data.html
-          grep -q "odgovornost-se-ne-moze-automatizirati" komentari.html
-          grep -q "Trži" trzista.html
-          grep -q "THE CODE" the-code.html
-          grep -q "PONOVI PROJEKCIJU" the-code-loop.html
-          grep -q '"title"' news-fallback.json
-          grep -q '"coins"' market-fallback.json
-          grep -q '"ok": true' news.json
-          grep -q "https://gnk-asg.hr/analize/" editorial-sitemap.xml
-          grep -q "Sitemap: https://gnk-asg.hr/sitemap-index.xml" robots.txt
-
-          news_count=$(node -e "const n=require('./news-fallback.json'); console.log(Array.isArray(n)?n.length:0)")
-          echo "VERIFY fallback news count -> ${news_count}"
+          ! grep -q "index-live-hub-v1.js" deploy-verification/home.html
+          ! grep -q "index-live-hub-v1.js" deploy-verification/home-en.html
+          [ "$(grep -o 'public-compact-menu-v1.js' deploy-verification/home.html | wc -l)" -eq 1 ]
+          [ "$(grep -o 'public-compact-menu-v1.js' deploy-verification/home-en.html | wc -l)" -eq 1 ]
+          news_count=$(node -e "const n=require('./deploy-verification/news-fallback.json'); console.log(Array.isArray(n)?n.length:0)")
           [ "$news_count" -ge 100 ]
 
-          mail_status=$(curl --silent --show-error --output mail.json --write-out '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' "https://gnk-asg.hr/api/studio-message/send?deploy-admin-v6=${cache_bust}" || true)
-          echo "VERIFY Mail Studio unauthenticated JSON gate -> HTTP ${mail_status}"
-          case "$mail_status" in 400|401) ;; *) cat mail.json; exit 1;; esac
-          grep -q '"error"' mail.json
+          mail_status=$(curl --silent --show-error --output deploy-verification/mail.json --write-out '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' "https://gnk-asg.hr/api/studio-message/send?deploy-admin-v6=${cache_bust}" || true)
+          case "$mail_status" in 400|401) ;; *) cat deploy-verification/mail.json; exit 1;; esac
+          grep -q '"error"' deploy-verification/mail.json
 
-          logo_status=$(curl --silent --show-error --output mail-logo.bin --write-out '%{http_code}' "https://gnk-asg.hr/assets/logo-gnk-asg-email.jpg?deploy-admin-v6=${cache_bust}" || true)
-          echo "VERIFY mail logo asset -> HTTP ${logo_status}"
+          logo_status=$(curl --silent --show-error --output deploy-verification/mail-logo.bin --write-out '%{http_code}' "https://gnk-asg.hr/assets/logo-gnk-asg-email.jpg?deploy-admin-v6=${cache_bust}" || true)
           [ "$logo_status" = "200" ]
-          test -s mail-logo.bin
+          test -s deploy-verification/mail-logo.bin
+
+      - name: Upload production verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-verification-${{ inputs.approved_sha }}
+          path: deploy-verification
+          if-no-files-found: warn
+          retention-days: 14
