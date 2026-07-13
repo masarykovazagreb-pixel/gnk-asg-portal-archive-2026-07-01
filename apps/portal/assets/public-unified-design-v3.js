@@ -1,0 +1,12 @@
+(()=>{
+'use strict';
+if(window.__GNK_UNIFIED_DESIGN_V3__)return;window.__GNK_UNIFIED_DESIGN_V3__=true;
+const LOGO='/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64';
+const style=document.createElement('style');style.id='gnk-logo-standard-style';style.textContent=`:root{--gnk-logo-standard-w:64px;--gnk-logo-standard-h:66px}img[data-gnk-canonical-logo="1"],img[src*="logo-gnk-asg-canonical"],img[src*="logo-gnk-asg.svg"],img[src*="logo-gnk-asg-gold"],img[src*="logo-gnk-asg-email"]{display:block!important;width:64px!important;height:66px!important;min-width:64px!important;max-width:64px!important;min-height:66px!important;max-height:66px!important;object-fit:contain!important;object-position:center!important;margin-left:auto!important;margin-right:auto!important;background:transparent!important;filter:none!important}.profile-board img,.footer-logo,.gnk-index-head img,.gnk-doc-logo{width:64px!important;height:66px!important;max-width:64px!important;max-height:66px!important;object-fit:contain!important}.profile-board{display:flex;flex-direction:column;align-items:center}.profile-board .status-pill,.profile-board .quick-data{align-self:stretch}`;document.head.appendChild(style);
+function canonicalize(root=document){root.querySelectorAll?.('img').forEach(img=>{const src=String(img.getAttribute('src')||'').toLowerCase();if(/logo-gnk-asg|gnk-asg-email-logo|logo-gnk-dinamo|the-code-logo/.test(src)){img.src=LOGO;img.alt='GNK ASG';img.dataset.gnkCanonicalLogo='1';img.width=64;img.height=66;img.removeAttribute('srcset')}})}
+function ensureMenu(){if(document.getElementById('gnk-unified-header')){document.getElementById('gnk-unified-header').style.setProperty('display','block','important');return}if(!document.querySelector('script[src*="public-unified-menu-v5.js"]')){const s=document.createElement('script');s.src='/assets/public-unified-menu-v5.js?v=20260713-visible';s.defer=true;document.body.appendChild(s)}}
+function apply(root=document){canonicalize(root);ensureMenu()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>apply(),{once:true});else apply();
+const observer=new MutationObserver(records=>{for(const record of records)for(const node of record.addedNodes)if(node.nodeType===1)canonicalize(node);ensureMenu()});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),120000);
+document.documentElement.dataset.gnkPublicDesign='v3-logo-standard';
+})();

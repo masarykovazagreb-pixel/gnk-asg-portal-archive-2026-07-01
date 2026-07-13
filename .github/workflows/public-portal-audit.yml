@@ -41,6 +41,7 @@ jobs:
             scripts/test-index-runtime-ownership.mjs \
             scripts/test-public-design-contract.mjs \
             scripts/test-unified-shell-contract.mjs \
+            scripts/test-visible-menu-logo-content-v1.mjs \
             scripts/test-contact-form-contract.mjs \
             scripts/test-the-code-index-contract.mjs \
             scripts/test-index-content-contract.mjs \
@@ -53,6 +54,9 @@ jobs:
             scripts/test-news-queue-guardrails.mjs \
             apps/portal/assets/public-compact-menu-v1.js \
             apps/portal/assets/public-design-runtime-v1.js \
+            apps/portal/assets/public-unified-menu-v5.js \
+            apps/portal/assets/public-unified-design-v3.js \
+            apps/portal/assets/index-editorial-order-v5.js \
             apps/portal/assets/contact-form-v2.js \
             apps/portal/assets/release-completion-v1.js \
             apps/portal/assets/index-data-resilience-v1.js \
@@ -70,7 +74,8 @@ jobs:
             workers/gnk-asg-direct-operator/src/mail-identity-autoreply-all-v1.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js \
-            workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v20.js
           do
             echo "CHECK $file"
             node --check "$file"
@@ -87,6 +92,9 @@ jobs:
 
       - name: Unified shell contract
         run: node scripts/test-unified-shell-contract.mjs
+
+      - name: Visible menu, standard logo and content contract
+        run: node scripts/test-visible-menu-logo-content-v1.mjs
 
       - name: Contact form contract
         run: node scripts/test-contact-form-contract.mjs
