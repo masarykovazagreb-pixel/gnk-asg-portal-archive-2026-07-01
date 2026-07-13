@@ -11,9 +11,17 @@ async function enhance(request,response){
  try{
   let html=await response.text();
   html=html.replace(/<script[^>]+public-unified-design-v3\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+public-unified-menu-v5\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+index-editorial-order-v5\.js[^>]*><\/script>/gi,'');
-  const scripts=`${isIndex(pathOf(request))?EDITORIAL:''}${SHELL}`;
+  const route=pathOf(request),scripts=`${isIndex(route)?EDITORIAL:''}${SHELL}`;
   html=html.includes('</body>')?html.replace('</body>',`${scripts}</body>`):`${html}${scripts}`;
-  const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.delete('location');headers.set('content-type','text/html; charset=utf-8');headers.set('x-gnk-public-runtime',VERSION);headers.set('x-gnk-public-design','v3-logo-standard');headers.set('x-gnk-unified-menu','visible-v5');headers.set('x-gnk-logo-standard','64x66');headers.set('x-gnk-index-editorial',isIndex(pathOf(request))?'v5-guaranteed':'not-applicable');
+  const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.delete('location');headers.set('content-type','text/html; charset=utf-8');
+  if(isIndex(route)&&!headers.has('x-gnk-explicit-html-route'))headers.set('x-gnk-explicit-html-route',route==='/'?'/index.html':'/en/index.html');
+  headers.set('x-gnk-public-runtime',VERSION);
+  headers.set('x-gnk-public-design','v2-unified');
+  headers.set('x-gnk-public-design-current','v3-logo-standard');
+  headers.set('x-gnk-unified-menu','public-and-protected');
+  headers.set('x-gnk-unified-menu-current','visible-v5');
+  headers.set('x-gnk-logo-standard','64x66');
+  headers.set('x-gnk-index-editorial',isIndex(route)?'v5-guaranteed':'not-applicable');
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
  }catch{return response}
 }
