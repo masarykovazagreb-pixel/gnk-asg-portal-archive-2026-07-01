@@ -37,11 +37,13 @@ jobs:
             scripts/audit-worker-route-ownership.mjs \
             scripts/predeploy-release-v6.mjs \
             scripts/prepare-approved-deploy-v1.mjs \
+            scripts/assert-production-news-fallback.mjs \
             scripts/test-deploy-approval-guardrails.mjs \
             scripts/test-index-runtime-ownership.mjs \
             scripts/test-public-design-contract.mjs \
             scripts/test-unified-shell-contract.mjs \
             scripts/test-visible-menu-logo-content-v1.mjs \
+            scripts/test-final-release-v31.mjs \
             scripts/test-contact-form-contract.mjs \
             scripts/test-the-code-index-contract.mjs \
             scripts/test-index-content-contract.mjs \
@@ -57,6 +59,10 @@ jobs:
             apps/portal/assets/public-unified-menu-v5.js \
             apps/portal/assets/public-unified-design-v3.js \
             apps/portal/assets/index-editorial-order-v5.js \
+            apps/portal/assets/public-unified-menu-v6.js \
+            apps/portal/assets/public-contrast-hardening-v1.js \
+            apps/portal/assets/index-editorial-order-v6.js \
+            apps/portal/assets/mail-studio-ui-v28.js \
             apps/portal/assets/contact-form-v2.js \
             apps/portal/assets/release-completion-v1.js \
             apps/portal/assets/index-data-resilience-v1.js \
@@ -65,6 +71,8 @@ jobs:
             apps/portal/assets/public-market-live-v1.js \
             apps/portal/assets/market-centre-data.js \
             workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js \
+            workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js \
+            workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js \
             workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js \
             workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js \
             workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js \
@@ -75,7 +83,8 @@ jobs:
             workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js \
-            workers/gnk-asg-direct-operator/src/index-unified-auth-v20.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v20.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
           do
             echo "CHECK $file"
             node --check "$file"
@@ -95,6 +104,9 @@ jobs:
 
       - name: Visible menu, standard logo and content contract
         run: node scripts/test-visible-menu-logo-content-v1.mjs
+
+      - name: V31 final release contract
+        run: node scripts/test-final-release-v31.mjs
 
       - name: Contact form contract
         run: node scripts/test-contact-form-contract.mjs
