@@ -8,13 +8,16 @@ const REQUIRED=['/','/en/','/newsroom/','/en/newsroom/','/objave/','/analize/','
 const LEGACY=['public-floating-menu-v1.js','public-floating-menu-v2.js','index-live-hub-v1.js'];
 const MENU='public-compact-menu-v1.js';
 const DYNAMIC_PREFIXES=['/api/','/cdn-cgi/','/.well-known/'];
+const INTERNAL_PREFIXES=['.github/'];
 
 const posix=p=>p.split(path.sep).join('/');
 const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{const p=path.join(dir,entry.name);return entry.isDirectory()?walk(p):[p]});
-const htmlFiles=walk(ROOT).filter(p=>p.endsWith('.html'));
-const assetFiles=new Set(walk(ROOT).map(p=>'/'+posix(path.relative(ROOT,p))));
+const relFromRoot=file=>posix(path.relative(ROOT,file));
+const internalFile=file=>INTERNAL_PREFIXES.some(prefix=>relFromRoot(file).startsWith(prefix));
+const htmlFiles=walk(ROOT).filter(p=>p.endsWith('.html')&&!internalFile(p));
+const assetFiles=new Set(walk(ROOT).filter(p=>!internalFile(p)).map(p=>'/'+relFromRoot(p)));
 const exists=p=>fs.existsSync(p);
-const routeFor=file=>{const rel=posix(path.relative(ROOT,file));if(rel==='index.html')return '/';if(rel.endsWith('/index.html'))return '/'+rel.slice(0,-10);return '/'+rel;};
+const routeFor=file=>{const rel=relFromRoot(file);if(rel==='index.html')return '/';if(rel.endsWith('/index.html'))return '/'+rel.slice(0,-10);return '/'+rel;};
 const isProtected=route=>PROTECTED.some(prefix=>route===prefix||route.startsWith(prefix+'/'));
 const normalizeRef=raw=>{try{return decodeURI(String(raw||'').trim().split('#')[0].split('?')[0]);}catch{return String(raw||'').trim().split('#')[0].split('?')[0];}};
 const external=ref=>!ref||ref.startsWith('#')||/^(?:https?:|mailto:|tel:|data:|javascript:|blob:)/i.test(ref)||ref.startsWith('//');
@@ -62,7 +65,7 @@ else{
   for(const route of REQUIRED.filter(r=>r!=='/en/'))if(!menu.includes(route))findings.push({severity:'warning',code:'MENU_ROUTE_NOT_DECLARED',route,file:posix(path.relative('.',menuFile))});
 }
 const errors=findings.filter(x=>x.severity==='error'),warnings=findings.filter(x=>x.severity==='warning');
-const report={version:'PUBLIC_PORTAL_AUDIT_V2_20260713',generatedAt:new Date().toISOString(),summary:{htmlFiles:htmlFiles.length,pages:pages.length,errors:errors.length,warnings:warnings.length},findings,pages};
+const report={version:'PUBLIC_PORTAL_AUDIT_V3_20260713_INTERNAL_SCOPE',generatedAt:new Date().toISOString(),summary:{htmlFiles:htmlFiles.length,pages:pages.length,errors:errors.length,warnings:warnings.length},findings,pages};
 fs.mkdirSync(path.dirname(REPORT),{recursive:true});fs.writeFileSync(REPORT,JSON.stringify(report,null,2));
 console.log(JSON.stringify(report.summary,null,2));
 if(errors.length){console.error('\nCritical public audit findings:');for(const x of errors.slice(0,100))console.error(`- ${x.code} ${x.route||''} ${x.value||''} (${x.file||''})`);process.exit(1)}
