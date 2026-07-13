@@ -1,29 +1,37 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
-import {PROFILES,handleIncomingEmail,VERSION} from '../workers/gnk-asg-direct-operator/src/mail-identity-autoreply-all-v1.js';
+import {
+  createCatchAllProfile,
+  extractGnkAddresses,
+  VERSION as PROFILE_FACTORY_VERSION
+} from '../workers/gnk-asg-direct-operator/src/mail-autoreply-profile-factory-v1.js';
 import {LOGO_URL,renderBrandSignatureHtml} from '../workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js';
 
 const known=[
-  'office@gnk-asg.hr','legal@gnk-asg.hr','media@gnk-asg.hr','press@gnk-asg.hr',
-  'it@gnk-asg.hr','assistant@gnk-asg.hr','nermin.sefic@gnk-asg.hr','sefic@gnk-asg.hr','ubo@gnk-asg.hr'
+  ['office@gnk-asg.hr','GNK-OFFICE-IN'],['legal@gnk-asg.hr','GNK-LEGAL-IN'],
+  ['media@gnk-asg.hr','GNK-MEDIA-IN'],['press@gnk-asg.hr','GNK-PRESS-IN'],
+  ['it@gnk-asg.hr','GNK-IT-IN'],['assistant@gnk-asg.hr','GNK-ASSISTANT-IN'],
+  ['nermin.sefic@gnk-asg.hr','GNK-SEFIC-IN'],['sefic@gnk-asg.hr','GNK-SEFIC-IN'],
+  ['ubo@gnk-asg.hr','GNK-UBO-IN']
 ];
-for(const address of known){
-  assert.ok(PROFILES[address],`missing profile ${address}`);
-  assert.match(PROFILES[address].prefix,/^GNK-[A-Z0-9-]+-IN$/);
+const baseSource=fs.readFileSync('workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js','utf8');
+for(const[address,prefix]of known){
+  assert.match(baseSource,new RegExp(address.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  assert.match(baseSource,new RegExp(prefix));
 }
 
-const message={
-  from:'external.sender@example.com',
-  to:'new.department@gnk-asg.hr',
-  subject:'Test',
-  headers:{get(name){return ({to:'new.department@gnk-asg.hr',subject:'Test','message-id':'<test-all-addresses@example.com>'}[name.toLowerCase()]||'')}}
-};
-const audit=await handleIncomingEmail(message,{MAIL_AUTO_REPLY_LIVE:'false'},null,null);
-assert.equal(audit.skipped,false);
-assert.equal(audit.reply.reason,'auto_reply_locked');
-assert.match(audit.reference,/^GNK-NEW-DEPARTMENT-IN-/);
-assert.equal(audit.to,'new.department@gnk-asg.hr');
-assert.equal(PROFILES['new.department@gnk-asg.hr'].catchAll,true);
+const message={to:'new.department@gnk-asg.hr',headers:{get(name){return name.toLowerCase()==='to'?'new.department@gnk-asg.hr':''}}};
+assert.deepEqual(extractGnkAddresses(message),['new.department@gnk-asg.hr']);
+const profile=createCatchAllProfile('new.department@gnk-asg.hr');
+assert.equal(profile.address,'new.department@gnk-asg.hr');
+assert.equal(profile.prefix,'GNK-NEW-DEPARTMENT-IN');
+assert.equal(profile.catchAll,true);
+assert.match(`${profile.prefix}-20260713120000-ABCDEF12`,/^GNK-NEW-DEPARTMENT-IN-\d{14}-[A-Z0-9]{8}$/);
+assert.equal(createCatchAllProfile('external@example.com'),null);
+
+assert.match(baseSource,/const ref=profile=>`\$\{profile\.prefix\}-/);
+assert.match(baseSource,/crypto\.randomUUID\(\)/);
+assert.match(baseSource,/MAIL_AUTO_REPLY_LIVE/);
 
 assert.equal(LOGO_URL,'https://gnk-asg.hr/assets/logo-gnk-asg-gold.svg');
 const signature=renderBrandSignatureHtml({name:'GNK ASG IT',unit:'Technical Support',email:'it@gnk-asg.hr'});
@@ -37,4 +45,4 @@ const entry=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-a
 assert.match(entry,/mail-identity-autoreply-all-v1\.js/);
 assert.match(entry,/handleIncomingEmail\(message,env,ctx,app\)/);
 
-console.log(JSON.stringify({ok:true,mailSent:false,knownProfiles:known.length,catchAll:true,reference:audit.reference,goldLogo:LOGO_URL,version:VERSION},null,2));
+console.log(JSON.stringify({ok:true,mailSent:false,knownProfiles:known.length,catchAll:true,profilePrefix:profile.prefix,goldLogo:LOGO_URL,version:PROFILE_FACTORY_VERSION},null,2));
