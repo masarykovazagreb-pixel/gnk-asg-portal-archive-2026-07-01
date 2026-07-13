@@ -15,5 +15,8 @@ assert.match(source,/url\.hash=''/);
 assert.match(source,/url\.pathname=url\.pathname\.replace/);
 assert.match(source,/const dedupeSeed=sourceUrl\|\|normalizedTitle/);
 assert.match(source,/x-content-type-options':'nosniff'/);
+assert.match(source,/function scheduledEnabled\(value\)\{return \/\^\(1\|true\|yes\|on\)\$\/i\.test/);
+assert.match(source,/scheduled_publication_disabled/);
+assert.doesNotMatch(source,/!\['0','false','no','off','disabled'\]\.includes/);
 
-console.log(JSON.stringify({ok:true,cors:'public-only',dedupe:'canonical-source-url',trackingRemoved:['utm_*','fbclid','gclid','msclkid']},null,2));
+console.log(JSON.stringify({ok:true,cors:'public-only',dedupe:'canonical-source-url',scheduler:'strict-opt-in',trackingRemoved:['utm_*','fbclid','gclid','msclkid']},null,2));
