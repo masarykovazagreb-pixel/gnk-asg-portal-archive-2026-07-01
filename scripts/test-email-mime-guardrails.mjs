@@ -37,7 +37,7 @@ assert.doesNotMatch(raw,/Content-Type: text\/html$/m);
 assert.match(raw,/Content-Type: application\/octet-stream/);
 assert.match(raw,/filename="bad_name\.exe"/);
 assert.match(raw,/X-GNK-ASG-Email-Brand:/);
-assert.match(VERSION,/MIME_SAFE_V2/);
+assert.match(VERSION,/MIME_SAFE_V3/);
 
 await assert.rejects(
   ()=>buildBrandedRawEmail({
