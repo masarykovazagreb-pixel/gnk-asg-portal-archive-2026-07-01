@@ -29,7 +29,7 @@ assert.equal(profile.catchAll,true);
 assert.match(`${profile.prefix}-20260713120000-ABCDEF12`,/^GNK-NEW-DEPARTMENT-IN-\d{14}-[A-Z0-9]{8}$/);
 assert.equal(createCatchAllProfile('external@example.com'),null);
 
-assert.match(baseSource,/const ref=profile=>`\$\{profile\.prefix\}-/);
+assert.match(baseSource,/function ref\(profile\)\{return`\$\{profile\.prefix\}-/);
 assert.match(baseSource,/crypto\.randomUUID\(\)/);
 assert.match(baseSource,/MAIL_AUTO_REPLY_LIVE/);
 
