@@ -12,7 +12,7 @@ for attempt in 1 2 3 4 5; do
   status=$(curl --silent --show-error --location --dump-header "$headers" --output "$output" --write-out '%{http_code}' "$url" || true)
   echo "VERIFY ${url} -> HTTP ${status} (attempt ${attempt}/5)"
   if [[ "$status" == "200" ]]; then
-    if [[ -z "$expected_marker" ]] || grep -Fq "$expected_marker" "$output" || grep -Fiq "$expected_marker" "$headers"; then
+    if [[ -z "$expected_marker" ]] || grep -Fq -- "$expected_marker" "$output" || grep -Fiq -- "$expected_marker" "$headers"; then
       exit 0
     fi
     echo "HTTP 200 received, but expected marker is missing: ${expected_marker}" >&2
@@ -27,7 +27,7 @@ echo "--- response body preview ---" >&2
 head -c 1200 "$output" >&2 || true
 echo >&2
 
-if grep -Fq '"worker"' "$output"; then
+if grep -Fq -- '"worker"' "$output"; then
   echo "Worker identity was returned in the response body. Review the preview above for route ownership conflict." >&2
 fi
 exit 1
