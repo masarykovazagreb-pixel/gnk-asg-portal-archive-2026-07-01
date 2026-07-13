@@ -12,11 +12,6 @@ keep_vars = true
 binding = "GNK_ASG_CONFIG_KV"
 id = "d6f5dac9fa034d8d813db0de44eb7b1b"
 
-# Required by the public Newsroom queue/feed and scheduled publication service.
-[[kv_namespaces]]
-binding = "GNK_ASG_KV"
-id = "a3e9e78c7d554d7fa10996da9a89e7bc"
-
 [[d1_databases]]
 binding = "GNK_ASG_D1"
 database_name = "gnk_asg_operator_logs"
