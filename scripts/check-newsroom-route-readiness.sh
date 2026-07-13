@@ -9,11 +9,11 @@ mkdir -p "$workdir"
 known_recovery_fix_present() {
   local v17='workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js'
   local v19='workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js'
+  local expected_v17='dbebddc0fa1f96d2ef93d4ce1790a2a224b3517b'
+  local expected_v19='665478718978f4fb19bcc07cb79220a3cb579bc5'
   [[ -f "$v17" && -f "$v19" ]] || return 1
-  grep -Fq "assetDirectoryPath" "$v17" || return 1
-  grep -Fq "redirect:'manual'" "$v17" || return 1
-  grep -Fq "assetDirectoryPath" "$v19" || return 1
-  grep -Fq "redirect:'manual'" "$v19" || return 1
+  [[ "$(git hash-object "$v17")" = "$expected_v17" ]] || return 1
+  [[ "$(git hash-object "$v19")" = "$expected_v19" ]] || return 1
 }
 
 check_route() {
@@ -35,9 +35,11 @@ check_route() {
   fi
 
   if [[ "$status" = "500" ]] \
+    && grep -Eiq '^server: cloudflare' "$headers" \
+    && grep -Eiq '^content-type: text/plain' "$headers" \
     && grep -Fiq 'error code: 1101' "$body" \
     && known_recovery_fix_present; then
-    echo "RECOVERY PREFLIGHT ${path}: allowing deployment because the current production Worker is in confirmed 1101 failure and the approved source contains the audited redirect-loop fix."
+    echo "RECOVERY PREFLIGHT ${path}: allowing the one audited redirect-loop recovery because production returns the confirmed Cloudflare 1101 signature and the approved source contains the exact audited v17/v19 blobs."
     return 0
   fi
 
