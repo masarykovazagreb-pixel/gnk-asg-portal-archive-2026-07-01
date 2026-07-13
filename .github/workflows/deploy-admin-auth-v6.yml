@@ -24,7 +24,38 @@ jobs:
 
       - name: Validate current admin and portal files
         run: |
-          node --check apps/portal/assets/public-floating-menu-v1.js
+          node --check apps/portal/assets/public-compact-menu-v1.js
+          node --check apps/portal/assets/index-live-hub-v1.js
+          node --check apps/portal/assets/newsroom-live-v1.js
+          node --check apps/portal/assets/media-registration-qa-v1.js
+          node --check apps/portal/assets/the-code-countdown-v1.js
+          node --check apps/portal/assets/public-market-live-v1.js
+          node --check apps/portal/assets/workers-directory-v1.js
+          test -s apps/portal/assets/index-live-hub-v1.css
+          test -s apps/portal/assets/public-market-live-v1.css
+          test -s apps/portal/sitemap.xml
+          test -s apps/portal/editorial-sitemap.xml
+          test -s apps/portal/robots.txt
+          test -s apps/portal/objave/index.html
+          test -s apps/portal/komentari/index.html
+          test -s apps/portal/workers/index.html
+          test -s apps/portal/reports/index.html
+          test -s apps/portal/projects/roadmap/index.html
+          test -s apps/portal/finance/index.html
+          test -s apps/portal/the-code/index.html
+          test -s apps/portal/contact/index.html
+          grep -q 'https://gnk-asg.hr/newsroom/' apps/portal/sitemap.xml
+          grep -q 'https://gnk-asg.hr/en/newsroom/' apps/portal/sitemap.xml
+          grep -q 'https://gnk-asg.hr/objave/' apps/portal/editorial-sitemap.xml
+          grep -q 'https://gnk-asg.hr/komentari/' apps/portal/editorial-sitemap.xml
+          grep -q 'Sitemap: https://gnk-asg.hr/sitemap.xml' apps/portal/robots.txt
+          grep -q 'Sitemap: https://gnk-asg.hr/editorial-sitemap.xml' apps/portal/robots.txt
+          node --check workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          node --check workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js
+          node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v16.js
           node --check workers/gnk-asg-operator-center/src/index.js
@@ -78,19 +109,127 @@ jobs:
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-operator-center
 
       - name: Verify current production shell
-        env:
-          TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
-          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
         run: |
           set -euo pipefail
-          sleep 10
-          value="$TOKEN"
-          [ -n "$value" ] || value="$TOKEN_FALLBACK"
-          test -n "$value"
-          auth=(-H "Authorization: Bearer ${value}")
-          curl --fail --silent --show-error https://gnk-asg.hr/assets/public-floating-menu-v1.js?deploy-admin-v6 -o public-floating-menu-v1.js
-          grep -q "HOME" public-floating-menu-v1.js
-          grep -q "MENU" public-floating-menu-v1.js
-          curl --fail --silent --show-error https://gnk-asg.hr/ -o public-home.html
-          grep -q "public-floating-menu-v1.js" public-home.html
-          curl --fail --silent --show-error "${auth[@]}" https://gnk-asg.hr/operator-dashboard/?deploy-admin-v6 -o operator-dashboard.html
+          sleep 12
+
+          fetch_required() {
+            local url="$1"
+            local output="$2"
+            local attempt status
+            for attempt in 1 2 3 4 5; do
+              status=$(curl --silent --show-error --location --output "$output" --write-out '%{http_code}' "$url" || true)
+              echo "VERIFY ${url} -> HTTP ${status} (attempt ${attempt}/5)"
+              if [ "$status" = "200" ]; then
+                return 0
+              fi
+              sleep $((attempt * 4))
+            done
+            echo "Verification failed for ${url}; final HTTP status ${status}" >&2
+            return 1
+          }
+
+          require_status() {
+            local route="$1"
+            local expected="$2"
+            local url="https://gnk-asg.hr${route}?deploy-admin-v6=$(date +%s)"
+            local attempt status
+            for attempt in 1 2 3 4 5; do
+              status=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' "$url" || true)
+              echo "VERIFY ${url} -> HTTP ${status}, expected ${expected} (attempt ${attempt}/5)"
+              [ "$status" = "$expected" ] && return 0
+              sleep $((attempt * 4))
+            done
+            echo "Unexpected HTTP status for ${route}: got ${status}, expected ${expected}" >&2
+            return 1
+          }
+
+          require_protected_route() {
+            local route="$1"
+            local url="https://gnk-asg.hr${route}?deploy-admin-v6=$(date +%s)"
+            local attempt status
+            for attempt in 1 2 3 4 5; do
+              status=$(curl --silent --show-error --location --output /dev/null --write-out '%{http_code}' "$url" || true)
+              echo "VERIFY ${url} -> HTTP ${status} (attempt ${attempt}/5)"
+              case "$status" in
+                200|301|302|303|307|308|401) return 0 ;;
+              esac
+              sleep $((attempt * 4))
+            done
+            echo "Protected route ${route} returned unsupported HTTP status ${status}" >&2
+            return 1
+          }
+
+          cache_bust=$(date +%s)
+
+          fetch_required "https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6=${cache_bust}" public-compact-menu-v1.js
+          grep -q "gnk-compact-menu" public-compact-menu-v1.js
+          grep -q "ADMIN / ADMIN CENTER" public-compact-menu-v1.js
+          grep -q "JAVNI PORTAL" public-compact-menu-v1.js
+
+          fetch_required "https://gnk-asg.hr/assets/index-live-hub-v1.js?deploy-admin-v6=${cache_bust}" index-live-hub-v1.js
+          grep -q "/api/public-news" index-live-hub-v1.js
+
+          fetch_required "https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6=${cache_bust}" newsroom-live-v1.js
+          grep -q "/api/public-news" newsroom-live-v1.js
+
+          fetch_required "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" public-home.html
+          grep -q "public-compact-menu-v1.js" public-home.html
+          grep -q "index-live-hub-v1.js" public-home.html
+
+          fetch_required "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" public-home-en.html
+          grep -q "public-compact-menu-v1.js" public-home-en.html
+
+          fetch_required "https://gnk-asg.hr/about/?deploy-admin-v6=${cache_bust}" public-about.html
+          grep -q "public-compact-menu-v1.js" public-about.html
+
+          fetch_required "https://gnk-asg.hr/newsroom/?deploy-admin-v6=${cache_bust}" public-newsroom.html
+          grep -q "newsroom-live-v1.js" public-newsroom.html
+          grep -q "public-compact-menu-v1.js" public-newsroom.html
+          grep -q "Newsroom" public-newsroom.html
+
+          fetch_required "https://gnk-asg.hr/en/newsroom/?deploy-admin-v6=${cache_bust}" public-newsroom-en.html
+          grep -q "newsroom-live-v1.js" public-newsroom-en.html
+          grep -q "public-compact-menu-v1.js" public-newsroom-en.html
+          grep -q "Newsroom" public-newsroom-en.html
+
+          fetch_required "https://gnk-asg.hr/objave/?deploy-admin-v6=${cache_bust}" public-objave.html
+          grep -q "povjerenje-investitora-kroz-transparentnost" public-objave.html
+          grep -q "kiberneticka-sigurnost-i-poslovni-kontinuitet" public-objave.html
+
+          fetch_required "https://gnk-asg.hr/komentari/?deploy-admin-v6=${cache_bust}" public-komentari.html
+          grep -q "odgovornost-se-ne-moze-automatizirati" public-komentari.html
+          grep -q "novac-je-informacija-prije-nego-kapital" public-komentari.html
+
+          fetch_required "https://gnk-asg.hr/workers/?deploy-admin-v6=${cache_bust}" public-workers.html
+          grep -q "workers-directory-v1.js" public-workers.html
+
+          fetch_required "https://gnk-asg.hr/api/public-news?limit=1&deploy-admin-v6=${cache_bust}" public-news.json
+          grep -q '"ok": true' public-news.json
+
+          fetch_required "https://gnk-asg.hr/sitemap.xml?deploy-admin-v6=${cache_bust}" sitemap.xml
+          grep -q "https://gnk-asg.hr/newsroom/" sitemap.xml
+          grep -q "https://gnk-asg.hr/en/newsroom/" sitemap.xml
+
+          fetch_required "https://gnk-asg.hr/editorial-sitemap.xml?deploy-admin-v6=${cache_bust}" editorial-sitemap.xml
+          grep -q "https://gnk-asg.hr/objave/" editorial-sitemap.xml
+          grep -q "https://gnk-asg.hr/komentari/" editorial-sitemap.xml
+
+          fetch_required "https://gnk-asg.hr/robots.txt?deploy-admin-v6=${cache_bust}" robots.txt
+          grep -q "Sitemap: https://gnk-asg.hr/sitemap.xml" robots.txt
+          grep -q "Sitemap: https://gnk-asg.hr/editorial-sitemap.xml" robots.txt
+
+          require_status "/objave/povjerenje-investitora-kroz-transparentnost/" "200"
+          require_status "/objave/kiberneticka-sigurnost-i-poslovni-kontinuitet/" "200"
+          require_status "/komentari/odgovornost-se-ne-moze-automatizirati/" "200"
+          require_status "/komentari/novac-je-informacija-prije-nego-kapital/" "200"
+          require_status "/reports/" "200"
+          require_status "/projects/roadmap/" "200"
+          require_status "/finance/" "200"
+          require_status "/the-code/" "200"
+          require_status "/contact/" "200"
+          require_status "/media-application/" "200"
+          require_protected_route "/admin-center/"
+          require_protected_route "/mail-studio/"
+          require_protected_route "/email-status/"
+          require_protected_route "/operator-dashboard/"

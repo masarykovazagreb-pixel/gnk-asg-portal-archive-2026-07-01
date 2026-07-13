@@ -1,0 +1,6 @@
+:root{--gnk-public-top-offset:78px;--gnk-public-frame-width:1440px;--gnk-public-brown:#3a2110}
+html{scroll-padding-top:var(--gnk-public-top-offset);background:var(--gnk-public-brown)!important}
+body{max-width:var(--gnk-public-frame-width);min-height:100vh;margin:0 auto!important;padding-top:var(--gnk-public-top-offset)!important;background:#fff!important;box-shadow:0 0 42px rgba(0,0,0,.35)}
+.site-header{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;visibility:hidden!important}
+@media(max-width:1440px){body{box-shadow:none}}
+@media(max-width:700px){:root{--gnk-public-top-offset:70px}}

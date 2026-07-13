@@ -42,9 +42,17 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260711-global-floating-menu-home-v37"
+DEPLOY_REVISION = "20260712-news-scheduler-v45"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+
+# Controlled scheduler publishes only already queued and automatically allowed
+# newsroom items. It does not ingest external news or bypass manual-review flags.
+NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "true"
+
+# Inbound acknowledgements are enabled for individually received messages.
+# They only confirm receipt, assign a reference number and route to human review.
+MAIL_AUTO_REPLY_LIVE = "true"
 
 # Manual Mail Studio is enabled only for controlled individual messages.
 # Campaign, bulk, scheduled outreach and profile tests remain locked below.

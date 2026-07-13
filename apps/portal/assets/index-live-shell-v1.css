@@ -1,0 +1,12 @@
+/* Index-only cleanup: the live portal uses only the new floating navigation. */
+html body>header.site-header,
+html body header.site-header,
+html body .site-header,
+html body #menuToggle,
+html body #navLinks,
+html body .nav-links,
+html body .menu-toggle{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
+body{padding-top:var(--gnk-event-bar-height,64px)!important}
+.hero .profile-board>img{display:none!important}
+.hero .profile-board{display:grid!important;align-content:center!important}
+@media(max-width:700px){body{padding-top:var(--gnk-event-bar-height,58px)!important}}
