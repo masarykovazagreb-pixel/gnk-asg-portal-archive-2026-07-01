@@ -58,40 +58,57 @@ jobs:
         run: |
           set -euo pipefail
           bash -n scripts/verify-production-route.sh
-          node --check scripts/audit-public-portal-v1.mjs
-          node --check scripts/audit-worker-route-ownership.mjs
-          node --check scripts/predeploy-release-v6.mjs
-          node --check scripts/prepare-approved-deploy-v1.mjs
-          node --check scripts/test-deploy-approval-guardrails.mjs
-          node --check scripts/test-index-runtime-ownership.mjs
-          node --check scripts/test-email-signature-contract.mjs
-          node --check scripts/test-mail-transport-guardrails.mjs
-          node --check scripts/test-email-mime-guardrails.mjs
-          node --check scripts/test-autoreply-guardrails.mjs
-          node --check scripts/test-news-queue-guardrails.mjs
-          node --check apps/portal/assets/public-compact-menu-v1.js
-          node --check apps/portal/assets/release-completion-v1.js
-          node --check apps/portal/assets/index-data-resilience-v1.js
-          node --check apps/portal/assets/index-editorial-order-v1.js
-          node --check apps/portal/assets/newsroom-live-v1.js
-          node --check apps/portal/assets/public-market-live-v1.js
-          node --check apps/portal/assets/market-centre-data.js
-          node --check apps/portal/assets/market.js
-          node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
-          node --check workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js
-          node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
-          node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
-          node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          bash -n scripts/check-newsroom-route-readiness.sh
+          for file in \
+            scripts/audit-public-portal-v1.mjs \
+            scripts/audit-worker-route-ownership.mjs \
+            scripts/predeploy-release-v6.mjs \
+            scripts/prepare-approved-deploy-v1.mjs \
+            scripts/test-deploy-approval-guardrails.mjs \
+            scripts/test-index-runtime-ownership.mjs \
+            scripts/test-public-design-contract.mjs \
+            scripts/test-data-fallback-contract.mjs \
+            scripts/test-email-signature-contract.mjs \
+            scripts/test-mail-transport-guardrails.mjs \
+            scripts/test-email-mime-guardrails.mjs \
+            scripts/test-autoreply-guardrails.mjs \
+            scripts/test-autoreply-all-addresses.mjs \
+            scripts/test-news-queue-guardrails.mjs \
+            apps/portal/assets/public-compact-menu-v1.js \
+            apps/portal/assets/public-design-runtime-v1.js \
+            apps/portal/assets/release-completion-v1.js \
+            apps/portal/assets/index-data-resilience-v1.js \
+            apps/portal/assets/index-editorial-order-v1.js \
+            apps/portal/assets/newsroom-live-v1.js \
+            apps/portal/assets/public-market-live-v1.js \
+            apps/portal/assets/market-centre-data.js \
+            apps/portal/assets/market.js \
+            workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js \
+            workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js \
+            workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js \
+            workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js \
+            workers/gnk-asg-direct-operator/src/email-brand-mime-safe-v2.js \
+            workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js \
+            workers/gnk-asg-direct-operator/src/mail-identity-autoreply-all-v1.js \
+            workers/gnk-asg-direct-operator/src/mail-autoreply-profile-factory-v1.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          do
+            node --check "$file"
+          done
           node scripts/test-deploy-approval-guardrails.mjs
           node scripts/test-index-runtime-ownership.mjs
+          node scripts/test-public-design-contract.mjs
           node scripts/test-email-signature-contract.mjs
           node scripts/test-mail-transport-guardrails.mjs
           node scripts/test-email-mime-guardrails.mjs
           node scripts/test-autoreply-guardrails.mjs
+          node scripts/test-autoreply-all-addresses.mjs
           node scripts/test-news-queue-guardrails.mjs
+          node scripts/audit-public-portal-v1.mjs
+          node scripts/audit-worker-route-ownership.mjs
+          node scripts/test-data-fallback-contract.mjs
           node scripts/predeploy-release-v6.mjs
 
       - name: Upload approved source and audit snapshot
@@ -105,6 +122,18 @@ jobs:
             artifacts/public-portal-audit.json
             artifacts/worker-route-ownership.json
           if-no-files-found: error
+          retention-days: 14
+
+      - name: Preflight Newsroom route ownership
+        run: scripts/check-newsroom-route-readiness.sh deploy-preflight
+
+      - name: Upload preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-preflight-${{ inputs.approved_sha }}
+          path: deploy-preflight
+          if-no-files-found: warn
           retention-days: 14
 
       - name: Resolve token hash
@@ -157,13 +186,16 @@ jobs:
           }
 
           verify "https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6=${cache_bust}" menu.js "gnk-compact-menu"
+          verify "https://gnk-asg.hr/assets/public-design-runtime-v1.js?deploy-admin-v6=${cache_bust}" public-design.js "__GNK_PUBLIC_DESIGN_RUNTIME_V1__"
+          verify "https://gnk-asg.hr/assets/public-design-tokens-v1.css?deploy-admin-v6=${cache_bust}" public-design.css "--gnk-gold-600"
           verify "https://gnk-asg.hr/assets/release-completion-v1.js?deploy-admin-v6=${cache_bust}" release.js "GNK_RELEASE_COMPLETION_V7"
           verify "https://gnk-asg.hr/assets/index-data-resilience-v1.js?deploy-admin-v6=${cache_bust}" resilience.js "__GNK_INDEX_DATA_RESILIENCE_V2__"
           verify "https://gnk-asg.hr/assets/index-editorial-order-v1.js?deploy-admin-v6=${cache_bust}" editorial-order.js "__GNK_INDEX_EDITORIAL_ORDER_V3__"
           verify "https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6=${cache_bust}" newsroom-live.js "/data/news.json"
           verify "https://gnk-asg.hr/assets/market-centre-data.js?deploy-admin-v6=${cache_bust}" market-centre.js "GNK_MARKET_CENTRE_DATA_V2"
-          verify "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" home.html "index-data-resilience-v1.js?v=20260713-resilience-v2"
-          verify "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" home-en.html "index-editorial-order-v1.js?v=20260713-editorial-v3"
+          verify "https://gnk-asg.hr/assets/logo-gnk-asg-gold.svg?deploy-admin-v6=${cache_bust}" asg-logo.svg "GNK ASG"
+          verify "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" home.html "public-design-runtime-v1.js"
+          verify "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" home-en.html "public-design-runtime-v1.js"
           verify "https://gnk-asg.hr/newsroom/?deploy-admin-v6=${cache_bust}" newsroom.html "x-gnk-explicit-html-route"
           verify "https://gnk-asg.hr/en/newsroom/?deploy-admin-v6=${cache_bust}" newsroom-en.html "x-gnk-explicit-html-route"
           verify "https://gnk-asg.hr/objave/?deploy-admin-v6=${cache_bust}" objave.html "povjerenje-investitora-kroz-transparentnost"
@@ -178,6 +210,8 @@ jobs:
           verify "https://gnk-asg.hr/editorial-sitemap.xml?deploy-admin-v6=${cache_bust}" editorial-sitemap.xml "https://gnk-asg.hr/analize/"
           verify "https://gnk-asg.hr/robots.txt?deploy-admin-v6=${cache_bust}" robots.txt "Sitemap: https://gnk-asg.hr/sitemap-index.xml"
 
+          grep -Fiq 'x-gnk-public-design: v1' deploy-verification/home.html.headers
+          grep -Fiq 'x-gnk-public-design: v1' deploy-verification/home-en.html.headers
           ! grep -q "index-live-hub-v1.js" deploy-verification/home.html
           ! grep -q "index-live-hub-v1.js" deploy-verification/home-en.html
           [ "$(grep -o 'public-compact-menu-v1.js' deploy-verification/home.html | wc -l)" -eq 1 ]
