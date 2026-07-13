@@ -3,11 +3,12 @@ Allow: /
 Allow: /visual-index/
 Allow: /visual-sitemap.xml
 Allow: /editorial-sitemap.xml
+Allow: /sitemap-index.xml
 Allow: /data/visual_gallery.json
 Allow: /assets/seo-gallery/
 
 # Zaštićeni operativni moduli nisu namijenjeni indeksiranju.
-# Robots pravila nisu sigurnosna kontrola; pristup i dalje mora ostati iza auth/session sloja.
+# Robots pravila nisu sigurnosna kontrola; pristup ostaje iza auth/session sloja.
 Disallow: /admin/
 Disallow: /admin-center/
 Disallow: /webmail/
@@ -19,7 +20,9 @@ Disallow: /operator-dashboard/
 Disallow: /digital-headquarters/
 Disallow: /media-registration-admin/
 Disallow: /podijeli/
+Disallow: /api/
 
+Sitemap: https://gnk-asg.hr/sitemap-index.xml
 Sitemap: https://gnk-asg.hr/sitemap.xml
 Sitemap: https://gnk-asg.hr/editorial-sitemap.xml
 Sitemap: https://gnk-asg.hr/visual-sitemap.xml
