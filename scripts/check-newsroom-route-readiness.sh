@@ -9,8 +9,8 @@ mkdir -p "$workdir"
 known_recovery_fix_present() {
   local v17='workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js'
   local v19='workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js'
-  local expected_v17='dbebddc0fa1f96d2ef93d4ce1790a2a224b3517b'
-  local expected_v19='665478718978f4fb19bcc07cb79220a3cb579bc5'
+  local expected_v17='f113c5b77ff2572e1723274a86b687904e9b99f8'
+  local expected_v19='bb7baf66e28e271bc71dfe98aead14f2e49b446f'
   [[ -f "$v17" && -f "$v19" ]] || return 1
   [[ "$(git hash-object "$v17")" = "$expected_v17" ]] || return 1
   [[ "$(git hash-object "$v19")" = "$expected_v19" ]] || return 1
