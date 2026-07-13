@@ -1,15 +1,17 @@
 (()=>{
 'use strict';
-if(window.__GNK_NEWSROOM_LIVE_V4__)return;window.__GNK_NEWSROOM_LIVE_V4__=true;
+if(window.__GNK_NEWSROOM_LIVE_V5__)return;window.__GNK_NEWSROOM_LIVE_V5__=true;
 const path=location.pathname.replace(/\/+$/,'')||'/';
 const english=document.documentElement.lang?.toLowerCase().startsWith('en')||path.startsWith('/en/');
 if(!['/newsroom','/en/newsroom','/sadrzaj','/en/content'].includes(path))return;
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
 const formatDate=v=>{const d=new Date(v);return Number.isFinite(d.getTime())?new Intl.DateTimeFormat(english?'en-GB':'hr-HR',{year:'numeric',month:'short',day:'numeric'}).format(d):'';};
 const labels=english?{eyebrow:'EDITORIAL & BUSINESS CENTER',title:'Newsroom',lead:'Business news, corporate publications, commentary and analysis in one structured center.',all:'All',news:'Business news',publications:'Publications',commentary:'Commentary',analysis:'Analysis',updated:'Updated',open:'Open',empty:'No items in this section.',loading:'Loading content…'}:{eyebrow:'UREĐIVAČKI I POSLOVNI CENTAR',title:'Newsroom',lead:'Poslovne vijesti, korporativne objave, komentari i analize u jednom strukturiranom centru.',all:'Sve',news:'Poslovne vijesti',publications:'Objave',commentary:'Komentari',analysis:'Analize',updated:'Ažurirano',open:'Otvori',empty:'U ovoj rubrici nema stavki.',loading:'Učitavanje sadržaja…'};
 const internal=[
  {kind:'publications',category:english?'Publication':'Objava',title:english?'Investor confidence through transparency':'Povjerenje investitora kroz transparentnost',summary:english?'Corporate transparency as the basis of long-term trust.':'Korporativna transparentnost kao temelj dugoročnog povjerenja.',href:'/objave/povjerenje-investitora-kroz-transparentnost/'},
  {kind:'publications',category:english?'Publication':'Objava',title:english?'Cybersecurity and business continuity':'Kibernetička sigurnost i poslovni kontinuitet',summary:english?'Operational resilience and responsible digital-risk governance.':'Operativna otpornost i odgovorno upravljanje digitalnim rizicima.',href:'/objave/kiberneticka-sigurnost-i-poslovni-kontinuitet/'},
+ {kind:'analysis',category:english?'Analysis':'Analiza',title:english?'AI infrastructure and energy consumption':'AI infrastruktura i potrošnja energije',summary:english?'Computing capacity, data centres and energy as one strategic business question.':'Računalna snaga, podatkovni centri i energija kao jedno strateško poslovno pitanje.',href:'/analize/ai-infrastruktura-i-potrosnja-energije/'},
+ {kind:'analysis',category:english?'Analysis':'Analiza',title:english?'Data transparency as business infrastructure':'Transparentnost podataka kao poslovna infrastruktura',summary:english?'Documented data and audit trails as the foundation of trust and risk control.':'Dokumentirani podaci i audit tragovi kao temelj povjerenja i kontrole rizika.',href:'/analize/transparentnost-podataka-kao-poslovna-infrastruktura/'},
  {kind:'commentary',category:english?'Commentary':'Komentar',title:english?'Responsibility cannot be automated':'Odgovornost se ne može automatizirati',summary:english?'Technology accelerates decisions, but accountability remains human.':'Tehnologija ubrzava odluke, ali odgovornost ostaje ljudska.',href:'/komentari/odgovornost-se-ne-moze-automatizirati/'},
  {kind:'commentary',category:english?'Commentary':'Komentar',title:english?'Money is information before capital':'Novac je informacija prije nego kapital',summary:english?'Financial flows as a data and governance system.':'Financijski tokovi kao podatkovni i upravljački sustav.',href:'/komentari/novac-je-informacija-prije-nego-kapital/'}
 ];
