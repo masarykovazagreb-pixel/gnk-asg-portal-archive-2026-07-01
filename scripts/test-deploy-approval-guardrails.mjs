@@ -50,7 +50,8 @@ assert.match(preflight,/error code: 1101/);
 assert.match(preflight,/known_recovery_fix_present/);
 assert.match(preflight,/git hash-object/);
 assert.match(preflight,/f113c5b77ff2572e1723274a86b687904e9b99f8/);
-assert.match(preflight,/04404740d42aa73214c270cefc0f926b7a117b0f/);
+assert.match(preflight,/d15447ac568f447ab56cfa4e2042e1def1e4a6e7/);
+assert.match(preflight,/canonical asset-binding paths and a hard-stop newsroom fallback/);
 
 const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"');
 const recoveryCallPosition=preflight.indexOf('&& known_recovery_fix_present');
@@ -62,12 +63,20 @@ assert.match(verifier,/grep -Fiq -- "\$expected_marker" "\$headers"/);
 assert.doesNotMatch(verifier,/grep -Fq "\$expected_marker"/);
 assert.doesNotMatch(verifier,/grep -Fiq "\$expected_marker"/);
 
-assert.match(publicWorker,/GNK_ASG_UNIFIED_AUTH_V24_EXPLICIT_INDEX_ASSETS/);
+assert.match(publicWorker,/GNK_ASG_UNIFIED_AUTH_V25_CANONICAL_ASSETS_SAFE_FALLBACK/);
 assert.match(publicWorker,/\['\/newsroom','\/newsroom\/index\.html'\]/);
 assert.match(publicWorker,/\['\/en\/newsroom','\/en\/newsroom\/index\.html'\]/);
-assert.match(publicWorker,/const target=new URL\(targetPath,request\.url\)/);
-assert.doesNotMatch(publicWorker,/assetDirectoryPath/);
-assert.doesNotMatch(publicWorker,/target=new URL\(pathOf\(request\),request\.url\)/);
+assert.match(publicWorker,/const canonicalAssetPath=targetPath=>targetPath\.endsWith\('\/index\.html'\)\?targetPath\.slice\(0,-10\):targetPath/);
+assert.match(publicWorker,/new URL\(canonicalPath,'https:\/\/assets\.local'\)/);
+assert.match(publicWorker,/x-gnk-static-asset-path/);
+assert.match(publicWorker,/function newsroomFallback/);
+assert.match(publicWorker,/x-gnk-static-asset-fallback/);
+assert.match(publicWorker,/binding-missing/);
+assert.match(publicWorker,/asset-status-\$\{response\.status\}/);
+assert.match(publicWorker,/asset-fetch-exception/);
+assert.match(publicWorker,/return isNewsroom\(routePath\)\?newsroomFallback\(request,targetPath/);
+assert.doesNotMatch(publicWorker,/new URL\(targetPath,request\.url\)/);
+assert.doesNotMatch(publicWorker,/const direct=await explicitHtml\(request,env\);if\(!direct&&isNewsroom/);
 
 assert.match(tool,/branch!==\'main\'/);
 assert.match(tool,/merge-base','--is-ancestor/);
@@ -81,7 +90,7 @@ console.log(JSON.stringify({
   deployStarted:false,
   indexRuntime:'V7',
   publicDesign:'V1',
-  newsroomAssetRouting:'explicit-index-no-recursion',
+  newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',
   preflight:'before-secrets-and-deploy',
-  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','literal-dash-markers','route-ownership-evidence','audited-1101-recovery','explicit-newsroom-index-assets','bash-production-verifier','post-deploy-artifacts']
+  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','literal-dash-markers','route-ownership-evidence','audited-1101-recovery','canonical-assets-local-paths','newsroom-hard-stop-fallback','bash-production-verifier','post-deploy-artifacts']
 },null,2));

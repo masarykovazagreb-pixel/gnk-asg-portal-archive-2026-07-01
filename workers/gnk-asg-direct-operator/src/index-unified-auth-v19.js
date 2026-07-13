@@ -1,11 +1,13 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v18.js';
 import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_ALL_VERSION} from './mail-identity-autoreply-all-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V24_EXPLICIT_INDEX_ASSETS_${MAIL_AUTOREPLY_ALL_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V25_CANONICAL_ASSETS_SAFE_FALLBACK_${MAIL_AUTOREPLY_ALL_VERSION}_${BASE_VERSION}`;
 const INDEX_RELEASE='<script defer src="/assets/release-completion-v1.js?v=20260713-index-final-v7"></script><script defer src="/assets/index-data-resilience-v1.js?v=20260713-resilience-v2"></script><script defer src="/assets/index-editorial-order-v1.js?v=20260713-editorial-v3"></script>';
 const PUBLIC_DESIGN='<script defer src="/assets/public-design-runtime-v1.js?v=20260713-v1"></script>';
+const NEWSROOM_LIVE='<script defer src="/assets/newsroom-live-v1.js?v=20260713-v6"></script>';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const isIndex=path=>path==='/'||path==='/en';
+const isNewsroom=path=>path==='/newsroom'||path==='/en/newsroom';
 const isProtected=path=>['/admin','/admin-center','/mail-studio','/campaign-mailer','/email-status','/operator-dashboard','/worker-ops','/digital-headquarters','/media-registration-admin','/webmail'].some(prefix=>path===prefix||path.startsWith(prefix+'/'));
 const STATIC_HTML_ROUTES=new Map([
   ['/newsroom','/newsroom/index.html'],['/en/newsroom','/en/newsroom/index.html'],
@@ -14,14 +16,24 @@ const STATIC_HTML_ROUTES=new Map([
   ['/komentari','/komentari/index.html'],['/komentari/odgovornost-se-ne-moze-automatizirati','/komentari/odgovornost-se-ne-moze-automatizirati/index.html'],['/komentari/novac-je-informacija-prije-nego-kapital','/komentari/novac-je-informacija-prije-nego-kapital/index.html'],
   ['/trzista','/trzista/index.html'],['/en/markets','/en/markets/index.html'],['/the-code','/the-code/index.html'],['/en/the-code','/en/the-code/index.html']
 ]);
+const canonicalAssetPath=targetPath=>targetPath.endsWith('/index.html')?targetPath.slice(0,-10):targetPath;
+function newsroomFallback(request,targetPath,reason){
+  const route=pathOf(request),english=route==='/en/newsroom',intro=english?'Official corporate news, releases and media information.':'Službene korporativne vijesti, objave i medijske informacije.',loading=english?'Loading latest published news…':'Učitavanje najnovijih objava…';
+  const html=`<!doctype html><html lang="${english?'en':'hr'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GNK ASG Newsroom</title><meta name="description" content="${intro}"><link rel="canonical" href="https://gnk-asg.hr${english?'/en':''}/newsroom/"><link rel="stylesheet" href="/assets/public-sections-v1.css?v=20260711"></head><body><main class="wrap"><section class="hero"><p class="eyebrow">${english?'Official media center':'Službeni medijski centar'}</p><h1>Newsroom</h1><p class="lead">${intro}</p></section><section id="newsroom-live-feed" class="card"><p>${loading}</p></section></main>${NEWSROOM_LIVE}</body></html>`;
+  return new Response(request.method==='HEAD'?null:html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'public, max-age=60, stale-while-revalidate=180','x-gnk-explicit-html-route':`fallback:${targetPath}`,'x-gnk-route-owner':VERSION,'x-gnk-static-asset-fallback':reason}});
+}
 async function explicitHtml(request,env){
-  if((request.method!=='GET'&&request.method!=='HEAD')||!env.ASSETS?.fetch)return null;
-  const targetPath=STATIC_HTML_ROUTES.get(pathOf(request));if(!targetPath)return null;
-  const target=new URL(targetPath,request.url);target.search='';
-  const response=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers,redirect:'manual'}));
-  if(response.status!==200)return null;
-  const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','public, max-age=120, stale-while-revalidate=300');headers.set('x-gnk-explicit-html-route',targetPath);headers.set('x-gnk-route-owner',VERSION);
-  return new Response(request.method==='HEAD'?null:await response.text(),{status:200,headers});
+  if(request.method!=='GET'&&request.method!=='HEAD')return null;
+  const routePath=pathOf(request),targetPath=STATIC_HTML_ROUTES.get(routePath);if(!targetPath)return null;
+  if(!env.ASSETS?.fetch)return isNewsroom(routePath)?newsroomFallback(request,targetPath,'binding-missing'):null;
+  const canonicalPath=canonicalAssetPath(targetPath);
+  try{
+    const target=new URL(canonicalPath,'https://assets.local');
+    const response=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers,redirect:'manual'}));
+    if(response.status!==200)return isNewsroom(routePath)?newsroomFallback(request,targetPath,`asset-status-${response.status}`):null;
+    const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','public, max-age=120, stale-while-revalidate=300');headers.set('x-gnk-explicit-html-route',targetPath);headers.set('x-gnk-route-owner',VERSION);headers.set('x-gnk-static-asset-path',canonicalPath);
+    return new Response(request.method==='HEAD'?null:await response.text(),{status:200,headers});
+  }catch{return isNewsroom(routePath)?newsroomFallback(request,targetPath,'asset-fetch-exception'):null;}
 }
 async function finalize(request,response){
   if(request.method!=='GET'||response.status!==200||isProtected(pathOf(request)))return response;
