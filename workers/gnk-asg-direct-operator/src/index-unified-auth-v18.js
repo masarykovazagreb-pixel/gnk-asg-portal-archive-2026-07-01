@@ -1,11 +1,15 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v17.js';
 import {EmailMessage} from 'cloudflare:email';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V61_20260713_RAW_MAIL_AND_MENU_POLISH_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V62_20260713_NEWSROOM_ASSET_ROUTE_${BASE_VERSION}`;
 const SEND_PATHS=new Set(['/api/studio-message/send','/api/admin-mail-send']);
 const SCHEDULE_PREFIX='/api/mail-schedule';
 const MENU_POLISH='<script defer src="/assets/public-compact-menu-polish-v1.js?v=20260713"></script>';
 const MANDATORY_BCC=['beckuphome@gmail.com','rht@gmx.com'];
+const PUBLIC_HTML_ROUTES=new Map([
+  ['/newsroom','/newsroom/index.html'],
+  ['/en/newsroom','/en/newsroom/index.html']
+]);
 const clean=value=>String(value??'').trim();
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-mail-transport':VERSION}});
@@ -77,6 +81,23 @@ function scheduleResponse(request){
   return json({ok:false,error:'not_found'},404);
 }
 
+async function publicHtmlResponse(request,env){
+  if(request.method!=='GET'&&request.method!=='HEAD')return null;
+  const assetPath=PUBLIC_HTML_ROUTES.get(pathOf(request));
+  if(!assetPath||!env.ASSETS?.fetch)return null;
+  const target=new URL(assetPath,request.url);
+  target.search='';
+  const response=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers}));
+  if(response.status===404)return null;
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.set('content-type','text/html; charset=utf-8');
+  headers.set('cache-control','public, max-age=120, stale-while-revalidate=300');
+  headers.set('x-gnk-public-route-source','v18-explicit-static-asset');
+  return new Response(request.method==='HEAD'?null:await response.text(),{status:response.status,statusText:response.statusText,headers});
+}
+
 async function injectPolish(request,response){
   if(request.method!=='GET'||response.status!==200)return response;
   const type=String(response.headers.get('content-type')||'').toLowerCase();
@@ -96,6 +117,8 @@ export default{
     const path=pathOf(request);
     if(SEND_PATHS.has(path)&&request.method==='POST')return sendRaw(request,env,ctx);
     if(path===SCHEDULE_PREFIX||path.startsWith(`${SCHEDULE_PREFIX}/`))return scheduleResponse(request);
+    const publicHtml=await publicHtmlResponse(request,env);
+    if(publicHtml)return injectPolish(request,publicHtml);
     return injectPolish(request,await app.fetch(request,env,ctx));
   },
   scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx);},
