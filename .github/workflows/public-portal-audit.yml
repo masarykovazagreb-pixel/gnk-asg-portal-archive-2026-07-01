@@ -31,6 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           bash -n scripts/verify-production-route.sh
+          bash -n scripts/check-newsroom-route-readiness.sh
           for file in \
             scripts/audit-public-portal-v1.mjs \
             scripts/audit-worker-route-ownership.mjs \
@@ -39,6 +40,10 @@ jobs:
             scripts/test-deploy-approval-guardrails.mjs \
             scripts/test-index-runtime-ownership.mjs \
             scripts/test-public-design-contract.mjs \
+            scripts/test-unified-shell-contract.mjs \
+            scripts/test-contact-form-contract.mjs \
+            scripts/test-the-code-index-contract.mjs \
+            scripts/test-index-content-contract.mjs \
             scripts/test-data-fallback-contract.mjs \
             scripts/test-email-signature-contract.mjs \
             scripts/test-mail-transport-guardrails.mjs \
@@ -48,6 +53,7 @@ jobs:
             scripts/test-news-queue-guardrails.mjs \
             apps/portal/assets/public-compact-menu-v1.js \
             apps/portal/assets/public-design-runtime-v1.js \
+            apps/portal/assets/contact-form-v2.js \
             apps/portal/assets/release-completion-v1.js \
             apps/portal/assets/index-data-resilience-v1.js \
             apps/portal/assets/index-editorial-order-v1.js \
@@ -55,9 +61,11 @@ jobs:
             apps/portal/assets/public-market-live-v1.js \
             apps/portal/assets/market-centre-data.js \
             workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js \
+            workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js \
             workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js \
             workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js \
             workers/gnk-asg-direct-operator/src/email-brand-mime-safe-v2.js \
+            workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js \
             workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js \
             workers/gnk-asg-direct-operator/src/mail-identity-autoreply-all-v1.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js \
@@ -76,6 +84,18 @@ jobs:
 
       - name: Public design contract
         run: node scripts/test-public-design-contract.mjs
+
+      - name: Unified shell contract
+        run: node scripts/test-unified-shell-contract.mjs
+
+      - name: Contact form contract
+        run: node scripts/test-contact-form-contract.mjs
+
+      - name: THE CODE index contract
+        run: node scripts/test-the-code-index-contract.mjs
+
+      - name: Index content contract
+        run: node scripts/test-index-content-contract.mjs
 
       - name: Email signature contract
         run: node scripts/test-email-signature-contract.mjs
