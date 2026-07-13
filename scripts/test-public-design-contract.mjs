@@ -18,17 +18,21 @@ for(const token of ['--gnk-navy-900','--gnk-gold-600','--gnk-content','--gnk-rad
 assert.match(tokens,/:focus-visible/);
 assert.match(tokens,/prefers-reduced-motion:reduce/);
 
-assert.match(menu,/__GNK_COMPACT_MENU_V2__/);
-assert.match(menu,/class="brand"/);
+assert.match(menu,/__GNK_COMPACT_MENU_V3__/);
+assert.match(menu,/\/assets\/logo-gnk-asg\.svg/);
+assert.match(menu,/className='inner'/);
 assert.match(menu,/IZBORNIK/);
 assert.match(menu,/aria-controls/);
-assert.match(menu,/grid-template-columns:1fr 1fr/);
-assert.match(menu,/GNK ASG/);
+assert.match(menu,/repeat\(3,minmax\(0,1fr\)\)/);
+assert.match(menu,/background:rgba\(255,255,255,\.97\)/);
+assert.match(menu,/background:#0b2345/);
 assert.doesNotMatch(menu,/gnkMarquee|animation:gnkMarquee/);
+assert.doesNotMatch(menu,/THE CODE · NEW YORK/);
+assert.doesNotMatch(menu,/brand-mark/);
 
 assert.match(worker,/public-design-runtime-v1\.js/);
 assert.match(worker,/x-gnk-public-design/);
 assert.match(worker,/isProtected\(pathOf\(request\)\)/);
 assert.match(worker,/replace\(\/<script\[\^>\]\+public-design-runtime-v1/);
 
-console.log(JSON.stringify({ok:true,designRuntime:'v1',tokens:'v1',menu:'v2',protectedRoutesExcluded:true},null,2));
+console.log(JSON.stringify({ok:true,designRuntime:'v1',tokens:'v1',menu:'v3-light-header',protectedRoutesExcluded:true},null,2));
