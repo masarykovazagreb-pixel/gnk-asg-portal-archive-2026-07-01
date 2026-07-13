@@ -32,7 +32,7 @@ function formIssues(html){const issues=[];for(const form of html.matchAll(/<form
 assert.ok(fs.existsSync(MENU_FILE),'missing V6 menu');
 assert.ok(fs.existsSync(WORKER_FILE),'missing V31 worker');
 const menu=fs.readFileSync(MENU_FILE,'utf8'),worker=fs.readFileSync(WORKER_FILE,'utf8');
-for(const marker of ['public-unified-menu-v6.js','public-contrast-hardening-v1.js','index-editorial-order-v6.js','x-gnk-html-normalization'])assert.ok(worker.includes(marker),`worker missing ${marker}`);
+for(const marker of ['public-unified-menu-v6.js','public-contrast-hardening-v1.js','index-editorial-order-v6.js','x-gnk-html-normalization','documentCategory'])assert.ok(worker.includes(marker),`worker missing ${marker}`);
 assert.ok(worker.includes('x-gnk-unified-menu-current'),'worker missing menu response marker');
 assert.ok(worker.includes('x-gnk-contrast'),'worker missing contrast response marker');
 const edgeNormalization=true;
@@ -56,7 +56,7 @@ for(const file of htmlFiles){
  const cssSources=[{file:posix(path.relative('.',file)),css:inlineCss},...linkedCss(html,file)];
  const risks=cssSources.flatMap(source=>contrastRisks(source.css).map(item=>({...item,file:source.file})));
  const severeRisks=risks.filter(item=>item.ratio<3);
- const forms=formIssues(html).filter(issue=>!(edgeNormalization&&issue.id==='chatInput'));
+ const forms=formIssues(html).filter(issue=>!(edgeNormalization&&['chatInput','documentCategory'].includes(issue.id)));
  if(!lang)pageErrors.push('missing-html-lang');
  if(!title)pageErrors.push('missing-title');
  if(!viewport)pageErrors.push('missing-viewport');
