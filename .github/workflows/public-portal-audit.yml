@@ -39,6 +39,7 @@ jobs:
             scripts/test-deploy-approval-guardrails.mjs \
             scripts/test-index-runtime-ownership.mjs \
             scripts/test-public-design-contract.mjs \
+            scripts/test-data-fallback-contract.mjs \
             scripts/test-email-signature-contract.mjs \
             scripts/test-mail-transport-guardrails.mjs \
             scripts/test-email-mime-guardrails.mjs \
@@ -99,6 +100,9 @@ jobs:
           set -euo pipefail
           node scripts/audit-public-portal-v1.mjs
           node scripts/audit-worker-route-ownership.mjs
+
+      - name: Fallback data contract
+        run: node scripts/test-data-fallback-contract.mjs
 
       - name: Full predeploy gate
         run: node scripts/predeploy-release-v6.mjs
