@@ -1,6 +1,10 @@
 import fs from 'node:fs';
+import {execFileSync} from 'node:child_process';
 const r=p=>fs.readFileSync(p,'utf8');
 const ok=(p,t)=>{const s=r(p);for(const x of t)if(!s.includes(x))throw new Error(`${p} missing ${x}`)};
+
+execFileSync(process.execPath,['scripts/audit-public-portal-v1.mjs'],{stdio:'inherit'});
+
 const files=['apps/portal/index.html','apps/portal/en/index.html','apps/portal/newsroom/index.html','apps/portal/en/newsroom/index.html','apps/portal/objave/index.html','apps/portal/analize/index.html','apps/portal/komentari/index.html','apps/portal/trzista/index.html','apps/portal/en/markets/index.html','apps/portal/the-code/index.html','apps/portal/assets/public-compact-menu-v1.js','apps/portal/assets/release-completion-v1.js','apps/portal/assets/index-data-resilience-v1.js','apps/portal/assets/index-editorial-order-v1.js','apps/portal/assets/newsroom-live-v1.js','apps/portal/assets/market-centre-data.js','apps/portal/assets/the-code-experience-loop-v1.html','workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js','workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js','workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js','workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js','workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js','workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml'];
 for(const f of files)if(!fs.existsSync(f)||!fs.statSync(f).size)throw new Error(`Missing ${f}`);
 const news=JSON.parse(r('apps/portal/data/news.json'));if(!Array.isArray(news)||news.length<100)throw new Error('News fallback below 100');
@@ -18,4 +22,5 @@ ok('workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js',['logoSrc=L
 ok('workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js',['EMAIL_LOGO_CID','loadEmailLogo']);
 ok('workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js',['multipart/related','loadEmailLogo']);
 ok('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml',['main = "src/index-unified-auth-v19.js"','MAIL_AUTO_REPLY_LIVE = "true"','MAIL_STUDIO_LIVE = "true"','crons = ["*/15 * * * *"]']);
-console.log(JSON.stringify({ok:true,news:news.length,marketCoins:market.coins.length,worker:'v19',routes:'explicit',menu:'single',mail:'cid',scheduler:'on'},null,2));
+const audit=JSON.parse(r('artifacts/public-portal-audit.json'));
+console.log(JSON.stringify({ok:true,news:news.length,marketCoins:market.coins.length,worker:'v19',routes:'explicit',menu:'single',mail:'cid',scheduler:'on',audit:audit.summary},null,2));
