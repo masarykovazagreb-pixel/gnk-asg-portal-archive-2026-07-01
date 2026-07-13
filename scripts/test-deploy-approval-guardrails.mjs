@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 const workflow=fs.readFileSync('.github/workflows/deploy-admin-auth-v6.yml','utf8');
 const tool=fs.readFileSync('scripts/prepare-approved-deploy-v1.mjs','utf8');
 const preflight=fs.readFileSync('scripts/check-newsroom-route-readiness.sh','utf8');
+const verifier=fs.readFileSync('scripts/verify-production-route.sh','utf8');
 
 assert.match(workflow,/approved_sha:/);
 assert.match(workflow,/ref: \$\{\{ inputs\.approved_sha \}\}/);
@@ -55,6 +56,11 @@ const recoveryCallPosition=preflight.indexOf('&& known_recovery_fix_present');
 assert.ok(blockedOwnerPosition>=0&&recoveryCallPosition>=0);
 assert.ok(blockedOwnerPosition<recoveryCallPosition,'Blocked Worker ownership must be rejected before recovery is considered');
 
+assert.match(verifier,/grep -Fq -- "\$expected_marker" "\$output"/);
+assert.match(verifier,/grep -Fiq -- "\$expected_marker" "\$headers"/);
+assert.doesNotMatch(verifier,/grep -Fq "\$expected_marker"/);
+assert.doesNotMatch(verifier,/grep -Fiq "\$expected_marker"/);
+
 assert.match(tool,/branch!==\'main\'/);
 assert.match(tool,/merge-base','--is-ancestor/);
 assert.match(tool,/approved_sha=\$\{expectedSha\}/);
@@ -68,5 +74,5 @@ console.log(JSON.stringify({
   indexRuntime:'V7',
   publicDesign:'V1',
   preflight:'before-secrets-and-deploy',
-  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','route-ownership-evidence','audited-1101-recovery','bash-production-verifier','post-deploy-artifacts']
+  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','literal-dash-markers','route-ownership-evidence','audited-1101-recovery','bash-production-verifier','post-deploy-artifacts']
 },null,2));
