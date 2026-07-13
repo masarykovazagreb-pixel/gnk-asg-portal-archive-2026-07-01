@@ -4,8 +4,9 @@ on:
   pull_request:
     paths:
       - 'apps/portal/**'
-      - 'workers/gnk-asg-direct-operator/**'
+      - 'workers/**'
       - 'scripts/audit-public-portal-v1.mjs'
+      - 'scripts/audit-worker-route-ownership.mjs'
       - 'scripts/predeploy-release-v6.mjs'
       - 'scripts/verify-production-route.sh'
       - '.github/workflows/public-portal-audit.yml'
@@ -32,6 +33,7 @@ jobs:
           set -euo pipefail
           bash -n scripts/verify-production-route.sh
           node --check scripts/audit-public-portal-v1.mjs
+          node --check scripts/audit-worker-route-ownership.mjs
           node --check scripts/predeploy-release-v6.mjs
           node --check apps/portal/assets/public-compact-menu-v1.js
           node --check apps/portal/assets/newsroom-live-v1.js
@@ -41,12 +43,15 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          node scripts/audit-worker-route-ownership.mjs
           node scripts/predeploy-release-v6.mjs
-      - name: Upload audit report
+      - name: Upload audit reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: public-portal-audit
-          path: artifacts/public-portal-audit.json
+          path: |
+            artifacts/public-portal-audit.json
+            artifacts/worker-route-ownership.json
           if-no-files-found: warn
           retention-days: 14
