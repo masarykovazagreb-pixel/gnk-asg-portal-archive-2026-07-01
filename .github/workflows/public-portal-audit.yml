@@ -20,7 +20,7 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -45,6 +45,8 @@ jobs:
             scripts/test-unified-shell-contract.mjs \
             scripts/test-visible-menu-logo-content-v1.mjs \
             scripts/test-final-release-v31.mjs \
+            scripts/test-worker-directory-1573.mjs \
+            scripts/test-admin-session-login-v1.mjs \
             scripts/test-contact-form-contract.mjs \
             scripts/test-the-code-index-contract.mjs \
             scripts/test-index-content-contract.mjs \
@@ -65,6 +67,8 @@ jobs:
             apps/portal/assets/index-editorial-order-v6.js \
             apps/portal/assets/index-editorial-cleanup-v1.js \
             apps/portal/assets/mail-studio-ui-v28.js \
+            apps/portal/assets/workers-directory-v1.js \
+            apps/portal/assets/protected-operations-v1.js \
             apps/portal/assets/contact-form-v2.js \
             apps/portal/assets/release-completion-v1.js \
             apps/portal/assets/index-data-resilience-v1.js \
@@ -72,6 +76,7 @@ jobs:
             apps/portal/assets/newsroom-live-v1.js \
             apps/portal/assets/public-market-live-v1.js \
             apps/portal/assets/market-centre-data.js \
+            workers/gnk-asg-contact-api-worker/src/index-session-cookie-v1.js \
             workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js \
             workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js \
             workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js \
@@ -109,6 +114,12 @@ jobs:
 
       - name: V31 final release contract
         run: node scripts/test-final-release-v31.mjs
+
+      - name: Exact 1573 worker directory contract
+        run: node scripts/test-worker-directory-1573.mjs
+
+      - name: Secure admin session contract
+        run: node scripts/test-admin-session-login-v1.mjs
 
       - name: Contact form contract
         run: node scripts/test-contact-form-contract.mjs
