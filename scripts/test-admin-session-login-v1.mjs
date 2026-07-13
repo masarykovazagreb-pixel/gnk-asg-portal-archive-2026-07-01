@@ -26,5 +26,7 @@ for(const marker of [
  /noindex,nofollow,noarchive/,
  /logo-gnk-asg-canonical\.svg/
 ])assert.match(page,marker);
-assert.doesNotMatch(page,/localStorage|sessionStorage|token=.*location/);
+assert.doesNotMatch(page,/localStorage|sessionStorage/);
+assert.doesNotMatch(page,/location\.(?:href|assign)\s*=\s*[^;]*token/i);
+assert.doesNotMatch(page,/[?&]token=/i);
 console.log(JSON.stringify({ok:true,login:'/api/operator-session-login',logout:'/api/operator-session-logout',sessionHours:8,httpOnly:true,secure:true,sameSite:'Strict',tokenStoredClientSide:false},null,2));
