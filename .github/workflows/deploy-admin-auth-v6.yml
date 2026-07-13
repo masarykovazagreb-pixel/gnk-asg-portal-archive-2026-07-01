@@ -50,6 +50,10 @@ jobs:
           test -s apps/portal/visual-sitemap.xml
           test -s apps/portal/robots.txt
           grep -q "GNK_RELEASE_COMPLETION_V5" apps/portal/assets/release-completion-v1.js
+          grep -q "renderNews" apps/portal/assets/release-completion-v1.js
+          grep -q "renderMarkets" apps/portal/assets/release-completion-v1.js
+          grep -q "staticEditorial" apps/portal/assets/release-completion-v1.js
+          grep -q "the-code-experience-loop-v1.html" apps/portal/assets/release-completion-v1.js
           grep -q "scheduledEnabled" workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           grep -q "cid-inline" workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           grep -q "renderBrandSignatureHtml" workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
@@ -140,8 +144,14 @@ jobs:
 
           grep -q "gnk-compact-menu" menu.js
           grep -q "GNK_RELEASE_COMPLETION_V5" release.js
+          grep -q "renderNews" release.js
+          grep -q "renderMarkets" release.js
           grep -q "release-completion-v1.js" home.html
           grep -q "release-completion-v1.js" home-en.html
+          ! grep -q "index-live-hub-v1.js" home.html
+          ! grep -q "index-live-hub-v1.js" home-en.html
+          [ "$(grep -o 'public-compact-menu-v1.js' home.html | wc -l)" -eq 1 ]
+          [ "$(grep -o 'public-compact-menu-v1.js' home-en.html | wc -l)" -eq 1 ]
           grep -q "Newsroom" newsroom.html
           grep -q "Newsroom" newsroom-en.html
           grep -q "povjerenje-investitora-kroz-transparentnost" objave.html
