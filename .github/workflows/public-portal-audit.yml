@@ -9,12 +9,14 @@ on:
       - 'scripts/audit-worker-route-ownership.mjs'
       - 'scripts/predeploy-release-v6.mjs'
       - 'scripts/prepare-approved-deploy-v1.mjs'
+      - 'scripts/test-deploy-approval-guardrails.mjs'
       - 'scripts/test-email-signature-contract.mjs'
       - 'scripts/test-mail-transport-guardrails.mjs'
       - 'scripts/test-email-mime-guardrails.mjs'
       - 'scripts/test-autoreply-guardrails.mjs'
       - 'scripts/test-news-queue-guardrails.mjs'
       - 'scripts/verify-production-route.sh'
+      - '.github/workflows/deploy-admin-auth-v6.yml'
       - '.github/workflows/public-portal-audit.yml'
   workflow_dispatch:
 
@@ -42,6 +44,7 @@ jobs:
           node --check scripts/audit-worker-route-ownership.mjs
           node --check scripts/predeploy-release-v6.mjs
           node --check scripts/prepare-approved-deploy-v1.mjs
+          node --check scripts/test-deploy-approval-guardrails.mjs
           node --check scripts/test-email-signature-contract.mjs
           node --check scripts/test-mail-transport-guardrails.mjs
           node --check scripts/test-email-mime-guardrails.mjs
@@ -58,6 +61,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          node scripts/test-deploy-approval-guardrails.mjs
           node scripts/test-email-signature-contract.mjs
           node scripts/test-mail-transport-guardrails.mjs
           node scripts/test-email-mime-guardrails.mjs
