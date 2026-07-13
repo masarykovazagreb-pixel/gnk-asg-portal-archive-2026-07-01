@@ -38,7 +38,21 @@ assert.match(preflight,/gnk-asg-news-backend/);
 assert.match(preflight,/\/newsroom\//);
 assert.match(preflight,/\/en\/newsroom\//);
 assert.match(preflight,/No production changes were made/);
-assert.doesNotMatch(preflight,/wrangler|cloudflare|routes?\s*=|api token/i);
+assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id|routes?\s*=|api token/i);
+assert.doesNotMatch(preflight,/curl[\s\S]{0,200}(?:--request|-X)\s*(?:POST|PUT|PATCH|DELETE)/i);
+assert.match(preflight,/\[\[ "\$status" = "500" \]\]/);
+assert.match(preflight,/\^server: cloudflare/);
+assert.match(preflight,/\^content-type: text\/plain/);
+assert.match(preflight,/error code: 1101/);
+assert.match(preflight,/known_recovery_fix_present/);
+assert.match(preflight,/git hash-object/);
+assert.match(preflight,/dbebddc0fa1f96d2ef93d4ce1790a2a224b3517b/);
+assert.match(preflight,/665478718978f4fb19bcc07cb79220a3cb579bc5/);
+
+const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"');
+const recoveryCallPosition=preflight.indexOf('&& known_recovery_fix_present');
+assert.ok(blockedOwnerPosition>=0&&recoveryCallPosition>=0);
+assert.ok(blockedOwnerPosition<recoveryCallPosition,'Blocked Worker ownership must be rejected before recovery is considered');
 
 assert.match(tool,/branch!==\'main\'/);
 assert.match(tool,/merge-base','--is-ancestor/);
@@ -53,5 +67,5 @@ console.log(JSON.stringify({
   indexRuntime:'V7',
   publicDesign:'V1',
   preflight:'before-secrets-and-deploy',
-  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','route-ownership-evidence','post-deploy-artifacts']
+  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','route-ownership-evidence','audited-1101-recovery','post-deploy-artifacts']
 },null,2));
