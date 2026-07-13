@@ -29,6 +29,7 @@ jobs:
           node --check apps/portal/assets/release-completion-v1.js
           node --check apps/portal/assets/newsroom-live-v1.js
           node --check apps/portal/assets/public-market-live-v1.js
+          node --check apps/portal/assets/market.js
           node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
@@ -36,6 +37,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
           test -s apps/portal/index.html
           test -s apps/portal/en/index.html
           test -s apps/portal/newsroom/index.html
@@ -44,6 +46,8 @@ jobs:
           test -s apps/portal/komentari/index.html
           test -s apps/portal/trzista/index.html
           test -s apps/portal/the-code/index.html
+          test -s apps/portal/data/news.json
+          test -s apps/portal/data/market.json
           test -s apps/portal/assets/logo-gnk-asg-gold.svg
           test -s apps/portal/assets/logo-gnk-dinamo-gold.svg
           test -s apps/portal/sitemap-index.xml
@@ -57,9 +61,14 @@ jobs:
           grep -q "staticEditorial" apps/portal/assets/release-completion-v1.js
           grep -q "logo-gnk-dinamo-gold.svg" apps/portal/assets/release-completion-v1.js
           grep -q "the-code-experience-loop-v1.html" apps/portal/assets/release-completion-v1.js
+          grep -q "await stored" apps/portal/assets/market.js
+          grep -q "render();" apps/portal/assets/market.js
+          grep -q "data/news.json" apps/portal/assets/newsroom-live-v1.js
           grep -q "scheduledEnabled" workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           grep -q "cid-inline" workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           grep -q "renderBrandSignatureHtml" workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
+          grep -q "GNK_ASG_UNIFIED_AUTH_V19_INDEX_FINAL" workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          grep -q 'main = "src/index-unified-auth-v19.js"' workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
           grep -q "https://gnk-asg.hr/sitemap.xml" apps/portal/sitemap-index.xml
           grep -q "https://gnk-asg.hr/editorial-sitemap.xml" apps/portal/sitemap-index.xml
           grep -q "Sitemap: https://gnk-asg.hr/sitemap-index.xml" apps/portal/robots.txt
@@ -131,6 +140,8 @@ jobs:
 
           fetch_required "https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6=${cache_bust}" menu.js
           fetch_required "https://gnk-asg.hr/assets/release-completion-v1.js?deploy-admin-v6=${cache_bust}" release.js
+          fetch_required "https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6=${cache_bust}" newsroom-live.js
+          fetch_required "https://gnk-asg.hr/assets/market.js?deploy-admin-v6=${cache_bust}" market.js
           fetch_required "https://gnk-asg.hr/assets/logo-gnk-asg-gold.svg?deploy-admin-v6=${cache_bust}" asg-logo.svg
           fetch_required "https://gnk-asg.hr/assets/logo-gnk-dinamo-gold.svg?deploy-admin-v6=${cache_bust}" dinamo-logo.svg
           fetch_required "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" home.html
@@ -141,6 +152,8 @@ jobs:
           fetch_required "https://gnk-asg.hr/komentari/index.html?deploy-admin-v6=${cache_bust}" komentari.html
           fetch_required "https://gnk-asg.hr/trzista/index.html?deploy-admin-v6=${cache_bust}" trzista.html
           fetch_required "https://gnk-asg.hr/the-code/index.html?deploy-admin-v6=${cache_bust}" the-code.html
+          fetch_required "https://gnk-asg.hr/data/news.json?deploy-admin-v6=${cache_bust}" news-fallback.json
+          fetch_required "https://gnk-asg.hr/data/market.json?deploy-admin-v6=${cache_bust}" market-fallback.json
           fetch_required "https://gnk-asg.hr/api/public-news?limit=1&deploy-admin-v6=${cache_bust}" news.json
           fetch_required "https://gnk-asg.hr/sitemap-index.xml?deploy-admin-v6=${cache_bust}" sitemap-index.xml
           fetch_required "https://gnk-asg.hr/sitemap.xml?deploy-admin-v6=${cache_bust}" sitemap.xml
@@ -149,6 +162,8 @@ jobs:
 
           grep -q "gnk-compact-menu" menu.js
           grep -q "GNK_RELEASE_COMPLETION_V6" release.js
+          grep -q "data/news.json" newsroom-live.js
+          grep -q "await stored" market.js
           grep -q "renderNews" release.js
           grep -q "renderMarkets" release.js
           grep -q "logo-gnk-dinamo-gold.svg" release.js
@@ -166,6 +181,8 @@ jobs:
           grep -q "odgovornost-se-ne-moze-automatizirati" komentari.html
           grep -q "Trži" trzista.html
           grep -q "THE CODE" the-code.html
+          grep -q '"title"' news-fallback.json
+          grep -q '"coins"' market-fallback.json
           grep -q '"ok": true' news.json
           grep -q "https://gnk-asg.hr/editorial-sitemap.xml" sitemap-index.xml
           grep -q "https://gnk-asg.hr/newsroom/" sitemap.xml
