@@ -62,21 +62,26 @@ jobs:
             node --check "$file"
           done
 
-      - name: Contract guardrails
-        run: |
-          set -euo pipefail
-          for test in \
-            scripts/test-deploy-approval-guardrails.mjs \
-            scripts/test-index-runtime-ownership.mjs \
-            scripts/test-email-signature-contract.mjs \
-            scripts/test-mail-transport-guardrails.mjs \
-            scripts/test-email-mime-guardrails.mjs \
-            scripts/test-autoreply-guardrails.mjs \
-            scripts/test-news-queue-guardrails.mjs
-          do
-            echo "RUN $test"
-            node "$test"
-          done
+      - name: Deploy approval contract
+        run: node scripts/test-deploy-approval-guardrails.mjs
+
+      - name: Index runtime ownership contract
+        run: node scripts/test-index-runtime-ownership.mjs
+
+      - name: Email signature contract
+        run: node scripts/test-email-signature-contract.mjs
+
+      - name: Mail transport contract
+        run: node scripts/test-mail-transport-guardrails.mjs
+
+      - name: Email MIME contract
+        run: node scripts/test-email-mime-guardrails.mjs
+
+      - name: Auto-reply contract
+        run: node scripts/test-autoreply-guardrails.mjs
+
+      - name: News queue contract
+        run: node scripts/test-news-queue-guardrails.mjs
 
       - name: Public portal and infrastructure audits
         run: |
@@ -85,9 +90,7 @@ jobs:
           node scripts/audit-worker-route-ownership.mjs
 
       - name: Full predeploy gate
-        run: |
-          set -euo pipefail
-          node scripts/predeploy-release-v6.mjs
+        run: node scripts/predeploy-release-v6.mjs
 
       - name: Upload audit reports
         if: always()
