@@ -5,24 +5,38 @@ const run=file=>{console.log(`PREDEPLOY ${file}`);execFileSync(process.execPath,
 
 const requiredFiles=[
   'apps/portal/index.html','apps/portal/en/index.html','apps/portal/newsroom/index.html','apps/portal/en/newsroom/index.html',
-  'apps/portal/objave/index.html','apps/portal/analize/index.html','apps/portal/komentari/index.html','apps/portal/trzista/index.html',
-  'apps/portal/en/markets/index.html','apps/portal/the-code/index.html','apps/portal/contact/index.html','apps/portal/media-application/index.html',
-  'apps/portal/assets/public-compact-menu-v1.js','apps/portal/assets/public-design-tokens-v1.css','apps/portal/assets/public-design-runtime-v1.js',
+  'apps/portal/contact/index.html','apps/portal/en/contact/index.html','apps/portal/trzista/index.html','apps/portal/en/markets/index.html',
+  'apps/portal/objave/index.html','apps/portal/analize/index.html','apps/portal/komentari/index.html',
+  'apps/portal/en/publications/index.html','apps/portal/en/analyses/index.html','apps/portal/en/commentary/index.html',
+  'apps/portal/objave/tehnologija-kapital-i-odgovorno-upravljanje/index.html',
+  'apps/portal/analize/kapitalna-struktura-i-operativna-otpornost/index.html',
+  'apps/portal/komentari/inovacija-bez-povjerenja-nije-napredak/index.html',
+  'apps/portal/en/publications/technology-capital-and-responsible-governance/index.html',
+  'apps/portal/en/analyses/capital-structure-and-operational-resilience/index.html',
+  'apps/portal/en/commentary/innovation-without-trust-is-not-progress/index.html',
+  'apps/portal/the-code/index.html','apps/portal/en/the-code/index.html','apps/portal/media-application/index.html',
+  'apps/portal/assets/logo-gnk-asg-canonical.svg','apps/portal/assets/editorial-content-v2.css','apps/portal/assets/contact-form-v2.js',
+  'apps/portal/assets/the-code-experience-loop-v1.html','apps/portal/assets/public-compact-menu-v1.js',
+  'apps/portal/assets/public-design-tokens-v1.css','apps/portal/assets/public-design-runtime-v1.js',
   'apps/portal/assets/release-completion-v1.js','apps/portal/assets/index-data-resilience-v1.js','apps/portal/assets/index-editorial-order-v1.js',
   'apps/portal/assets/newsroom-live-v1.js','apps/portal/assets/public-market-live-v1.js','apps/portal/assets/market-centre-data.js',
-  'apps/portal/assets/logo-gnk-asg-gold.svg','apps/portal/assets/logo-gnk-dinamo-gold.svg',
   'workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js','workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js',
-  'workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js','workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js',
-  'workers/gnk-asg-direct-operator/src/email-brand-mime-safe-v2.js','workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js',
+  'workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js','workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js',
+  'workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js','workers/gnk-asg-direct-operator/src/email-brand-mime-safe-v2.js',
+  'workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js','workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js',
   'workers/gnk-asg-direct-operator/src/mail-identity-autoreply-all-v1.js','workers/gnk-asg-direct-operator/src/mail-autoreply-profile-factory-v1.js',
   'workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml'
 ];
 for(const file of requiredFiles){if(!fs.existsSync(file)||!fs.statSync(file).size)throw new Error(`Missing required file: ${file}`)}
 
-for(const test of [
+const tests=[
   'scripts/test-deploy-approval-guardrails.mjs',
   'scripts/test-index-runtime-ownership.mjs',
   'scripts/test-public-design-contract.mjs',
+  'scripts/test-unified-shell-contract.mjs',
+  'scripts/test-contact-form-contract.mjs',
+  'scripts/test-the-code-index-contract.mjs',
+  'scripts/test-index-content-contract.mjs',
   'scripts/test-email-signature-contract.mjs',
   'scripts/test-mail-transport-guardrails.mjs',
   'scripts/test-email-mime-guardrails.mjs',
@@ -32,18 +46,23 @@ for(const test of [
   'scripts/audit-public-portal-v1.mjs',
   'scripts/audit-worker-route-ownership.mjs',
   'scripts/test-data-fallback-contract.mjs'
-])run(test);
+];
+for(const test of tests)run(test);
 
 const publicAudit=JSON.parse(fs.readFileSync('artifacts/public-portal-audit.json','utf8'));
 const routeAudit=JSON.parse(fs.readFileSync('artifacts/worker-route-ownership.json','utf8'));
+if(publicAudit.summary.errors)throw new Error(`Public portal audit has ${publicAudit.summary.errors} errors`);
 
 console.log(JSON.stringify({
   ok:true,
-  worker:'v19-with-all-domain-autoreplies-and-public-design',
-  routes:'route-less-config-external-newsroom-owner-unresolved',
-  indexOwners:{scaffold:'release-completion-v1.js',editorial:'index-editorial-order-v1.js',marketFallback:'index-data-resilience-v1.js'},
-  design:{runtime:'v1',tokens:'v1',protectedRoutesExcluded:true},
-  mail:{goldSignature:true,allDomainAutoreplies:true,testRecipient:'sefic20@gmx.com',testSendingEnabled:false},
+  worker:'v19-v27-unified-content-contact-release',
+  routes:'route-less deploy config with canonical newsroom fallback',
+  indexOwners:{scaffold:'release-completion-v1.js-v8',editorial:'index-editorial-order-v1.js-v4',marketFallback:'index-data-resilience-v1.js-v2'},
+  design:{runtime:'v2',tokens:'v2',menu:'v4-public-and-protected',ticker:'index-only',canonicalLogo:'logo-gnk-asg-canonical.svg'},
+  contact:{forms:['hr','en'],storage:'D1',mail:['internal','acknowledgement'],liveSendingPerformed:false},
+  theCode:{embeddedOn:['/','/en/'],initialScene:'final-countdown',playFlow:'first-to-final'},
+  editorial:{liveNewsSources:true,collections:['publications','analyses','commentary'],cardsPerCollection:3},
+  mail:{canonicalPngLogo:true,allDomainAutoreplies:true,testSendingEnabled:false},
   scheduler:'strict-opt-in-disabled',
   publicAudit:publicAudit.summary,
   routeAudit:routeAudit.summary
