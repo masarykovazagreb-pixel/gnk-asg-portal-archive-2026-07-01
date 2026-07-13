@@ -1,0 +1,44 @@
+name: Public Portal Audit
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'workers/gnk-asg-direct-operator/**'
+      - 'scripts/audit-public-portal-v1.mjs'
+      - 'scripts/predeploy-release-v6.mjs'
+      - '.github/workflows/public-portal-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and structural audit
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-public-portal-v1.mjs
+          node --check scripts/predeploy-release-v6.mjs
+          node --check apps/portal/assets/public-compact-menu-v1.js
+          node --check apps/portal/assets/newsroom-live-v1.js
+          node --check apps/portal/assets/public-market-live-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          node scripts/predeploy-release-v6.mjs
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-portal-audit
+          path: artifacts/public-portal-audit.json
+          if-no-files-found: warn
+          retention-days: 14
