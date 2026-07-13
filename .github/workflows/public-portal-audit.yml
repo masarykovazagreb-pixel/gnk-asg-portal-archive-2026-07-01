@@ -38,6 +38,7 @@ jobs:
             scripts/prepare-approved-deploy-v1.mjs \
             scripts/test-deploy-approval-guardrails.mjs \
             scripts/test-index-runtime-ownership.mjs \
+            scripts/test-public-design-contract.mjs \
             scripts/test-email-signature-contract.mjs \
             scripts/test-mail-transport-guardrails.mjs \
             scripts/test-email-mime-guardrails.mjs \
@@ -71,6 +72,9 @@ jobs:
 
       - name: Index runtime ownership contract
         run: node scripts/test-index-runtime-ownership.mjs
+
+      - name: Public design contract
+        run: node scripts/test-public-design-contract.mjs
 
       - name: Email signature contract
         run: node scripts/test-email-signature-contract.mjs
