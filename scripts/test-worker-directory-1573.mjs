@@ -1,0 +1,32 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+
+const source=fs.readFileSync('apps/portal/assets/workers-directory-v1.js','utf8');
+const page=fs.readFileSync('apps/portal/workers/index.html','utf8');
+const controls=new Map();
+const makeControl=id=>({id,value:'',innerHTML:'',textContent:'',options:[],add(option){this.options.push(option)},addEventListener(){}});
+for(const id of ['q','sector','stage','rows'])controls.set(id,makeControl(id));
+const count=makeControl('count'),summary=makeControl('summary');
+const document={getElementById:id=>controls.get(id)||null,querySelector:selector=>selector==='[data-worker-count]'?count:selector==='[data-worker-result-count]'?summary:null,documentElement:{dataset:{}}};
+const window={};
+const sandbox={window,document,Option:function(text,value){this.text=text;this.value=value},Intl,Set,Object,Array,String,Number,Error,console};
+vm.runInNewContext(source,sandbox,{filename:'workers-directory-v1.js',timeout:5000});
+const data=window.__GNK_WORKER_DIRECTORY_DATA__,meta=window.__GNK_WORKER_DIRECTORY_META__;
+assert.ok(Array.isArray(data));
+assert.equal(data.length,1573);
+assert.equal(meta.total,1573);
+assert.equal(meta.base,1536);
+assert.equal(meta.specialists,37);
+assert.equal(new Set(data.map(x=>x.code)).size,1573);
+assert.equal(new Set(data.map(x=>x.name)).size,1573);
+assert.equal(data[0].code,'DWF-0001');
+assert.equal(data.at(-1).code,'DWF-1573');
+for(const worker of data){for(const key of ['code','name','position','location','sector','func','stage','job'])assert.ok(String(worker[key]||'').trim(),`${worker.code} missing ${key}`)}
+assert.match(page,/data-worker-count>1\.573/);
+assert.match(page,/1\.536 temeljnih profila/);
+assert.match(page,/37 specijalističkih profila/);
+assert.match(page,/1\.573 jedinstvena identiteta/);
+assert.match(page,/workers-directory-v1\.js\?v=20260713-exact-1573/);
+assert.doesNotMatch(page,/1\.536 digitalnih workflow funkcija/);
+console.log(JSON.stringify({ok:true,total:data.length,base:meta.base,specialists:meta.specialists,uniqueCodes:meta.uniqueCodes,uniqueNames:meta.uniqueNames,first:data[0].code,last:data.at(-1).code},null,2));

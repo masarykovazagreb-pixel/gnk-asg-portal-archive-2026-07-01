@@ -22,6 +22,9 @@ assert.equal(createCatchAllProfile('external@example.com'),null);
 assert.match(baseSource,/function ref\(profile\)\{return`\$\{profile\.prefix\}-/);
 assert.match(baseSource,/crypto\.randomUUID\(\)/);
 assert.match(baseSource,/MAIL_AUTO_REPLY_LIVE/);
+assert.match(baseSource,/Content-Location: \$\{EMAIL_LOGO_URL\}/);
+assert.match(baseSource,/X-Attachment-Id: \$\{EMAIL_LOGO_CID\}/);
+assert.match(baseSource,/multipart\/related; type="multipart\/alternative"/);
 
 assert.equal(LOGO_URL,'https://gnk-asg.hr/assets/logo-gnk-asg-email.png?v=20260713-canonical');
 assert.match(SIGNATURE_VERSION,/V12_20260713_STANDARD_64/);
@@ -36,9 +39,9 @@ assert.doesNotMatch(signature,/logo-gnk-asg-email\.jpg|corporate mark|width="108
 
 const config=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml','utf8');
 assert.match(config,/MAIL_AUTO_REPLY_LIVE = "true"/);
-assert.match(config,/main = "src\/index-unified-auth-v20\.js"/);
+assert.match(config,/main = "src\/index-unified-auth-v21\.js"/);
 const entry=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js','utf8');
 assert.match(entry,/mail-identity-autoreply-all-v1\.js/);
 assert.match(entry,/handleIncomingEmail\(message,env,ctx,app\)/);
 
-console.log(JSON.stringify({ok:true,mailSent:false,knownProfiles:known.length,catchAll:true,profilePrefix:profile.prefix,brandLogo:LOGO_URL,canonicalPng:true,logoSize:'64x66',version:PROFILE_FACTORY_VERSION},null,2));
+console.log(JSON.stringify({ok:true,mailSent:false,knownProfiles:known.length,catchAll:true,profilePrefix:profile.prefix,brandLogo:LOGO_URL,canonicalPng:true,inlineCompatibility:['Content-ID','Content-Location','X-Attachment-Id'],logoSize:'64x66',version:PROFILE_FACTORY_VERSION},null,2));
