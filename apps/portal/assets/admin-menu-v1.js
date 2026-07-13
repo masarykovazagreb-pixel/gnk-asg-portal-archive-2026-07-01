@@ -1,12 +1,4 @@
 (()=>{
-  const ensureFloatingMenu=()=>{
-    if(document.querySelector('script[data-gnk-floating-menu]')||document.getElementById('gnk-floating-menu'))return;
-    const script=document.createElement('script');
-    script.src='/assets/public-floating-menu-v1.js?v=20260711';
-    script.defer=true;
-    script.setAttribute('data-gnk-floating-menu','1');
-    document.head.appendChild(script);
-  };
   const addPortalLinks=()=>{
     const nav=document.getElementById('navLinks')||document.querySelector('.nav-links')||document.querySelector('.dhq-links');
     const items=[
@@ -35,7 +27,8 @@
         nav.appendChild(admin);
       }
     }
-    ensureFloatingMenu();
+    document.getElementById('gnk-floating-menu')?.remove();
+    document.querySelectorAll('script[data-gnk-floating-menu]').forEach(node=>node.remove());
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addPortalLinks,{once:true});
   else addPortalLinks();
