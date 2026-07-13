@@ -10,6 +10,7 @@ on:
       - 'scripts/predeploy-release-v6.mjs'
       - 'scripts/prepare-approved-deploy-v1.mjs'
       - 'scripts/test-deploy-approval-guardrails.mjs'
+      - 'scripts/test-index-runtime-ownership.mjs'
       - 'scripts/test-email-signature-contract.mjs'
       - 'scripts/test-mail-transport-guardrails.mjs'
       - 'scripts/test-email-mime-guardrails.mjs'
@@ -45,12 +46,15 @@ jobs:
           node --check scripts/predeploy-release-v6.mjs
           node --check scripts/prepare-approved-deploy-v1.mjs
           node --check scripts/test-deploy-approval-guardrails.mjs
+          node --check scripts/test-index-runtime-ownership.mjs
           node --check scripts/test-email-signature-contract.mjs
           node --check scripts/test-mail-transport-guardrails.mjs
           node --check scripts/test-email-mime-guardrails.mjs
           node --check scripts/test-autoreply-guardrails.mjs
           node --check scripts/test-news-queue-guardrails.mjs
           node --check apps/portal/assets/public-compact-menu-v1.js
+          node --check apps/portal/assets/index-data-resilience-v1.js
+          node --check apps/portal/assets/index-editorial-order-v1.js
           node --check apps/portal/assets/newsroom-live-v1.js
           node --check apps/portal/assets/public-market-live-v1.js
           node --check apps/portal/assets/market-centre-data.js
@@ -62,6 +66,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
           node scripts/test-deploy-approval-guardrails.mjs
+          node scripts/test-index-runtime-ownership.mjs
           node scripts/test-email-signature-contract.mjs
           node scripts/test-mail-transport-guardrails.mjs
           node scripts/test-email-mime-guardrails.mjs
