@@ -1,7 +1,7 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v20.js';
 import {handleContactStudio,handlesContactStudio,VERSION as CONTACT_STUDIO_VERSION} from './contact-studio-mail-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V31_ZERO_WARNING_NORMALIZED_${CONTACT_STUDIO_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V31_MAIL_NEWS_CONTRAST_ZERO_WARNING_NORMALIZED_${CONTACT_STUDIO_VERSION}_${BASE_VERSION}`;
 const MENU='<script defer src="/assets/public-unified-menu-v6.js?v=20260713-full-navigation"></script>';
 const CONTRAST='<script defer src="/assets/public-contrast-hardening-v1.js?v=20260713-readable"></script>';
 const EDITORIAL='<script defer src="/assets/index-editorial-order-v6.js?v=20260713-news-100"></script><script defer src="/assets/index-editorial-cleanup-v1.js?v=20260713-v6-cleanup"></script>';
