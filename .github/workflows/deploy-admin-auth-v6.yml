@@ -27,8 +27,11 @@ jobs:
           set -euo pipefail
           node --check apps/portal/assets/public-compact-menu-v1.js
           node --check apps/portal/assets/release-completion-v1.js
+          node --check apps/portal/assets/index-data-resilience-v1.js
+          node --check apps/portal/assets/index-editorial-order-v1.js
           node --check apps/portal/assets/newsroom-live-v1.js
           node --check apps/portal/assets/public-market-live-v1.js
+          node --check apps/portal/assets/market-centre-data.js
           node --check apps/portal/assets/market.js
           node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js
@@ -38,40 +41,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
-          test -s apps/portal/index.html
-          test -s apps/portal/en/index.html
-          test -s apps/portal/newsroom/index.html
-          test -s apps/portal/en/newsroom/index.html
-          test -s apps/portal/objave/index.html
-          test -s apps/portal/komentari/index.html
-          test -s apps/portal/trzista/index.html
-          test -s apps/portal/the-code/index.html
-          test -s apps/portal/data/news.json
-          test -s apps/portal/data/market.json
-          test -s apps/portal/assets/logo-gnk-asg-gold.svg
-          test -s apps/portal/assets/logo-gnk-dinamo-gold.svg
-          test -s apps/portal/sitemap-index.xml
-          test -s apps/portal/sitemap.xml
-          test -s apps/portal/editorial-sitemap.xml
-          test -s apps/portal/visual-sitemap.xml
-          test -s apps/portal/robots.txt
-          grep -q "GNK_RELEASE_COMPLETION_V6" apps/portal/assets/release-completion-v1.js
-          grep -q "renderNews" apps/portal/assets/release-completion-v1.js
-          grep -q "renderMarkets" apps/portal/assets/release-completion-v1.js
-          grep -q "staticEditorial" apps/portal/assets/release-completion-v1.js
-          grep -q "logo-gnk-dinamo-gold.svg" apps/portal/assets/release-completion-v1.js
-          grep -q "the-code-experience-loop-v1.html" apps/portal/assets/release-completion-v1.js
-          grep -q "await stored" apps/portal/assets/market.js
-          grep -q "render();" apps/portal/assets/market.js
-          grep -q "data/news.json" apps/portal/assets/newsroom-live-v1.js
-          grep -q "scheduledEnabled" workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
-          grep -q "cid-inline" workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
-          grep -q "renderBrandSignatureHtml" workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
-          grep -q "GNK_ASG_UNIFIED_AUTH_V19_INDEX_FINAL" workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
-          grep -q 'main = "src/index-unified-auth-v19.js"' workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
-          grep -q "https://gnk-asg.hr/sitemap.xml" apps/portal/sitemap-index.xml
-          grep -q "https://gnk-asg.hr/editorial-sitemap.xml" apps/portal/sitemap-index.xml
-          grep -q "Sitemap: https://gnk-asg.hr/sitemap-index.xml" apps/portal/robots.txt
+          node --check scripts/predeploy-release-v6.mjs
+          node scripts/predeploy-release-v6.mjs
 
       - name: Upload private Worker source snapshot
         uses: actions/upload-artifact@v4
@@ -80,6 +51,7 @@ jobs:
           path: |
             workers
             .github/workflows
+            scripts/predeploy-release-v6.mjs
           if-no-files-found: error
           retention-days: 3
 
@@ -123,7 +95,7 @@ jobs:
       - name: Verify production release
         run: |
           set -euo pipefail
-          sleep 12
+          sleep 15
           cache_bust=$(date +%s)
 
           fetch_required() {
@@ -140,36 +112,49 @@ jobs:
 
           fetch_required "https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6=${cache_bust}" menu.js
           fetch_required "https://gnk-asg.hr/assets/release-completion-v1.js?deploy-admin-v6=${cache_bust}" release.js
+          fetch_required "https://gnk-asg.hr/assets/index-data-resilience-v1.js?deploy-admin-v6=${cache_bust}" resilience.js
+          fetch_required "https://gnk-asg.hr/assets/index-editorial-order-v1.js?deploy-admin-v6=${cache_bust}" editorial-order.js
           fetch_required "https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6=${cache_bust}" newsroom-live.js
-          fetch_required "https://gnk-asg.hr/assets/market.js?deploy-admin-v6=${cache_bust}" market.js
+          fetch_required "https://gnk-asg.hr/assets/market-centre-data.js?deploy-admin-v6=${cache_bust}" market-centre.js
           fetch_required "https://gnk-asg.hr/assets/logo-gnk-asg-gold.svg?deploy-admin-v6=${cache_bust}" asg-logo.svg
           fetch_required "https://gnk-asg.hr/assets/logo-gnk-dinamo-gold.svg?deploy-admin-v6=${cache_bust}" dinamo-logo.svg
           fetch_required "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" home.html
           fetch_required "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" home-en.html
-          fetch_required "https://gnk-asg.hr/newsroom/index.html?deploy-admin-v6=${cache_bust}" newsroom.html
-          fetch_required "https://gnk-asg.hr/en/newsroom/index.html?deploy-admin-v6=${cache_bust}" newsroom-en.html
-          fetch_required "https://gnk-asg.hr/objave/index.html?deploy-admin-v6=${cache_bust}" objave.html
-          fetch_required "https://gnk-asg.hr/komentari/index.html?deploy-admin-v6=${cache_bust}" komentari.html
-          fetch_required "https://gnk-asg.hr/trzista/index.html?deploy-admin-v6=${cache_bust}" trzista.html
-          fetch_required "https://gnk-asg.hr/the-code/index.html?deploy-admin-v6=${cache_bust}" the-code.html
+          fetch_required "https://gnk-asg.hr/newsroom/?deploy-admin-v6=${cache_bust}" newsroom.html
+          fetch_required "https://gnk-asg.hr/en/newsroom/?deploy-admin-v6=${cache_bust}" newsroom-en.html
+          fetch_required "https://gnk-asg.hr/objave/?deploy-admin-v6=${cache_bust}" objave.html
+          fetch_required "https://gnk-asg.hr/analize/?deploy-admin-v6=${cache_bust}" analize.html
+          fetch_required "https://gnk-asg.hr/analize/ai-infrastruktura-i-potrosnja-energije/?deploy-admin-v6=${cache_bust}" analiza-ai.html
+          fetch_required "https://gnk-asg.hr/analize/transparentnost-podataka-kao-poslovna-infrastruktura/?deploy-admin-v6=${cache_bust}" analiza-data.html
+          fetch_required "https://gnk-asg.hr/komentari/?deploy-admin-v6=${cache_bust}" komentari.html
+          fetch_required "https://gnk-asg.hr/trzista/?deploy-admin-v6=${cache_bust}" trzista.html
+          fetch_required "https://gnk-asg.hr/the-code/?deploy-admin-v6=${cache_bust}" the-code.html
+          fetch_required "https://gnk-asg.hr/assets/the-code-experience-loop-v1.html?deploy-admin-v6=${cache_bust}" the-code-loop.html
           fetch_required "https://gnk-asg.hr/data/news.json?deploy-admin-v6=${cache_bust}" news-fallback.json
           fetch_required "https://gnk-asg.hr/data/market.json?deploy-admin-v6=${cache_bust}" market-fallback.json
           fetch_required "https://gnk-asg.hr/api/public-news?limit=1&deploy-admin-v6=${cache_bust}" news.json
           fetch_required "https://gnk-asg.hr/sitemap-index.xml?deploy-admin-v6=${cache_bust}" sitemap-index.xml
-          fetch_required "https://gnk-asg.hr/sitemap.xml?deploy-admin-v6=${cache_bust}" sitemap.xml
           fetch_required "https://gnk-asg.hr/editorial-sitemap.xml?deploy-admin-v6=${cache_bust}" editorial-sitemap.xml
           fetch_required "https://gnk-asg.hr/robots.txt?deploy-admin-v6=${cache_bust}" robots.txt
 
           grep -q "gnk-compact-menu" menu.js
+          grep -q "'/objave/'" menu.js
+          grep -q "'/analize/'" menu.js
+          grep -q "'/komentari/'" menu.js
           grep -q "GNK_RELEASE_COMPLETION_V6" release.js
-          grep -q "data/news.json" newsroom-live.js
-          grep -q "await stored" market.js
-          grep -q "renderNews" release.js
-          grep -q "renderMarkets" release.js
           grep -q "logo-gnk-dinamo-gold.svg" release.js
+          grep -q "/data/news.json" resilience.js
+          grep -q "/data/market.json" resilience.js
+          grep -q "Poslovne vijesti" editorial-order.js
+          grep -q "Analize" editorial-order.js
+          grep -q "Komentari" editorial-order.js
+          grep -q "/data/news.json" newsroom-live.js
+          grep -q 'fetch(`/data/${name}' market-centre.js
           grep -q "GNK ASG" asg-logo.svg
           grep -q "GNK DINAMO" dinamo-logo.svg
           grep -q "release-completion-v1.js" home.html
+          grep -q "index-data-resilience-v1.js" home.html
+          grep -q "index-editorial-order-v1.js" home.html
           grep -q "release-completion-v1.js" home-en.html
           ! grep -q "index-live-hub-v1.js" home.html
           ! grep -q "index-live-hub-v1.js" home-en.html
@@ -178,16 +163,22 @@ jobs:
           grep -q "Newsroom" newsroom.html
           grep -q "Newsroom" newsroom-en.html
           grep -q "povjerenje-investitora-kroz-transparentnost" objave.html
+          grep -q "Poslovne i tehnološke analize" analize.html
+          grep -q "AI infrastruktura i potrošnja energije" analiza-ai.html
+          grep -q "Transparentnost podataka kao poslovna infrastruktura" analiza-data.html
           grep -q "odgovornost-se-ne-moze-automatizirati" komentari.html
           grep -q "Trži" trzista.html
           grep -q "THE CODE" the-code.html
+          grep -q "PONOVI PROJEKCIJU" the-code-loop.html
           grep -q '"title"' news-fallback.json
           grep -q '"coins"' market-fallback.json
           grep -q '"ok": true' news.json
-          grep -q "https://gnk-asg.hr/editorial-sitemap.xml" sitemap-index.xml
-          grep -q "https://gnk-asg.hr/newsroom/" sitemap.xml
-          grep -q "https://gnk-asg.hr/komentari/" editorial-sitemap.xml
+          grep -q "https://gnk-asg.hr/analize/" editorial-sitemap.xml
           grep -q "Sitemap: https://gnk-asg.hr/sitemap-index.xml" robots.txt
+
+          news_count=$(node -e "const n=require('./news-fallback.json'); console.log(Array.isArray(n)?n.length:0)")
+          echo "VERIFY fallback news count -> ${news_count}"
+          [ "$news_count" -ge 100 ]
 
           mail_status=$(curl --silent --show-error --output mail.json --write-out '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' "https://gnk-asg.hr/api/studio-message/send?deploy-admin-v6=${cache_bust}" || true)
           echo "VERIFY Mail Studio unauthenticated JSON gate -> HTTP ${mail_status}"
