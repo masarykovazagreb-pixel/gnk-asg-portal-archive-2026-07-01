@@ -42,6 +42,7 @@ jobs:
             scripts/test-mail-transport-guardrails.mjs \
             scripts/test-email-mime-guardrails.mjs \
             scripts/test-autoreply-guardrails.mjs \
+            scripts/test-autoreply-all-addresses.mjs \
             scripts/test-news-queue-guardrails.mjs \
             apps/portal/assets/public-compact-menu-v1.js \
             apps/portal/assets/release-completion-v1.js \
@@ -53,7 +54,9 @@ jobs:
             workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js \
             workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js \
             workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js \
+            workers/gnk-asg-direct-operator/src/email-brand-mime-safe-v2.js \
             workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js \
+            workers/gnk-asg-direct-operator/src/mail-identity-autoreply-all-v1.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
@@ -77,8 +80,11 @@ jobs:
       - name: Email MIME contract
         run: node scripts/test-email-mime-guardrails.mjs
 
-      - name: Auto-reply contract
+      - name: Auto-reply loop contract
         run: node scripts/test-autoreply-guardrails.mjs
+
+      - name: Auto-reply all-address contract
+        run: node scripts/test-autoreply-all-addresses.mjs
 
       - name: News queue contract
         run: node scripts/test-news-queue-guardrails.mjs
