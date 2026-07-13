@@ -1,17 +1,45 @@
-export const VERSION='GNK_ASG_EMAIL_BRAND_SIGNATURE_V9_20260713_GOLD_LOGO_FALLBACK';
-export const LOGO_URL='https://gnk-asg.hr/assets/logo-gnk-asg-gold.svg';
+export const VERSION='GNK_ASG_EMAIL_BRAND_SIGNATURE_V10_20260713_BLACK_GOLD_COMPACT';
+export const LOGO_URL='https://gnk-asg.hr/assets/logo-gnk-asg-email.jpg?v=20260713-brand-v3';
 export const WEBSITE='https://gnk-asg.hr';
 export const GOLD='#b88a2f';
+export const BLACK='#111111';
+export const MUTED='#4b5563';
 const clean=value=>String(value??'').trim();
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const safeEmail=value=>{const email=clean(value).toLowerCase();return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email)?email:''};
 const safeWeb=value=>{try{const url=new URL(clean(value));return url.protocol==='https:'?url.toString():''}catch{return''}};
 const safeLogo=value=>{const raw=clean(value);if(/^cid:[A-Za-z0-9._@+-]+$/i.test(raw))return raw;const web=safeWeb(raw);return web||LOGO_URL};
-function line(value,{strong=false,label=''}={}){const text=clean(value);if(!text)return'';const prefix=label?`<strong>${escapeHtml(label)}</strong> `:'';return `<div style="font-size:14px;line-height:1.5;color:${GOLD};margin:0 0 3px;overflow-wrap:anywhere">${prefix}${strong?`<strong>${escapeHtml(text)}</strong>`:escapeHtml(text)}</div>`;}
-function linkedLine(value,href,label=''){const text=clean(value),safe=clean(href);if(!text||!safe)return'';const prefix=label?`<strong>${escapeHtml(label)}</strong> `:'';return `<div style="font-size:14px;line-height:1.5;color:${GOLD};margin:0 0 3px;overflow-wrap:anywhere">${prefix}<a href="${escapeHtml(safe)}" style="color:${GOLD};text-decoration:none">${escapeHtml(text)}</a></div>`;}
-function logo(src=LOGO_URL){const safe=safeLogo(src);return `<div style="margin:0 0 12px"><a href="${WEBSITE}" style="display:inline-block;text-decoration:none"><img src="${escapeHtml(safe)}" width="180" alt="GNK ASG — gold corporate mark" style="display:block;width:180px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;background:#ffffff"><span style="display:block;margin-top:6px;color:${GOLD};font-family:Georgia,Times New Roman,serif;font-size:19px;font-weight:800;letter-spacing:.12em">GNK ASG</span></a></div>`;}
-export function renderBrandSignatureHtml({marker=VERSION,name,unit,subline,address,registry,email,web=WEBSITE,logoSrc=LOGO_URL}={}){const identity=clean(name)||'GNK ASG',mail=safeEmail(email),site=safeWeb(web)||WEBSITE;return `<table data-gnk-asg-signature="${escapeHtml(marker)}" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;max-width:620px;border-collapse:collapse;margin-top:26px;border-top:1px solid ${GOLD};font-family:Arial,Helvetica,sans-serif;table-layout:fixed"><tr><td align="left" style="padding:18px 0 12px;color:${GOLD};font-size:14px;line-height:1.5;overflow-wrap:anywhere">${logo(logoSrc)}<div style="font-size:20px;line-height:1.3;font-weight:800;color:${GOLD};margin:0 0 8px">${escapeHtml(identity)}</div>${line(unit,{strong:true})}${line(subline)}${line(address)}${line(registry)}${mail?linkedLine(mail,`mailto:${mail}`):''}${linkedLine(site,site)}</td></tr></table>`;}
-export function renderBrandSignatureText({name,unit,subline,address,registry,email,web=WEBSITE}={}){const mail=safeEmail(email),site=safeWeb(web)||WEBSITE;return['GNK ASG',name,unit,subline,address,registry,mail,site].map(clean).filter(Boolean).join('\n');}
-export function institutionalSignature(profile,centre){const location=centre?.name&&centre?.country?`${centre.name}, ${centre.country}`:'';return{html:renderBrandSignatureHtml({marker:VERSION,name:profile?.name,unit:profile?.unit,subline:location?`Global Service Centre: ${location}`:'',email:profile?.email,web:WEBSITE}),text:renderBrandSignatureText({name:profile?.name,unit:profile?.unit,subline:location?`Global Service Centre: ${location}`:'',email:profile?.email,web:WEBSITE})};}
-export function corporateSignature(identity,company){return{html:renderBrandSignatureHtml({marker:VERSION,name:identity?.name,unit:company?.name,address:company?.address,registry:company?.oib&&company?.mbs?`OIB: ${company.oib} · MBS: ${company.mbs}`:'',email:identity?.email,web:company?.web||WEBSITE}),text:renderBrandSignatureText({name:identity?.name,unit:company?.name,address:company?.address,registry:company?.oib&&company?.mbs?`OIB: ${company.oib} · MBS: ${company.mbs}`:'',email:identity?.email,web:company?.web||WEBSITE})};}
-export function mediaSignature(media){return{html:renderBrandSignatureHtml({marker:VERSION,name:media?.group,unit:media?.centre,subline:media?.organiser,email:media?.email,web:media?.web||WEBSITE}),text:renderBrandSignatureText({name:media?.group,unit:media?.centre,subline:media?.organiser,email:media?.email,web:media?.web||WEBSITE})};}
+function line(value,{strong=false,label='',muted=false}={}){
+  const text=clean(value);
+  if(!text)return'';
+  const prefix=label?`<strong>${escapeHtml(label)}</strong> `:'';
+  return `<div style="font-size:13.5px;line-height:1.48;color:${muted?MUTED:BLACK};margin:0 0 3px;overflow-wrap:anywhere">${prefix}${strong?`<strong>${escapeHtml(text)}</strong>`:escapeHtml(text)}</div>`;
+}
+function linkedLine(value,href,label=''){
+  const text=clean(value),safe=clean(href);
+  if(!text||!safe)return'';
+  const prefix=label?`<strong>${escapeHtml(label)}</strong> `:'';
+  return `<div style="font-size:13.5px;line-height:1.48;color:${BLACK};margin:0 0 3px;overflow-wrap:anywhere">${prefix}<a href="${escapeHtml(safe)}" style="color:${BLACK};text-decoration:none;border-bottom:1px solid #d9c79c">${escapeHtml(text)}</a></div>`;
+}
+function logo(src=LOGO_URL){
+  const safe=safeLogo(src);
+  return `<a href="${WEBSITE}" style="display:inline-block;text-decoration:none"><img src="${escapeHtml(safe)}" width="118" alt="GNK ASG corporate mark" style="display:block;width:118px;max-width:118px;height:auto;border:0;outline:none;text-decoration:none;background:#ffffff"></a>`;
+}
+export function renderBrandSignatureHtml({marker=VERSION,name,unit,subline,address,registry,email,web=WEBSITE,logoSrc=LOGO_URL}={}){
+  const identity=clean(name)||'GNK ASG',mail=safeEmail(email),site=safeWeb(web)||WEBSITE;
+  return `<table data-gnk-asg-signature="${escapeHtml(marker)}" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;max-width:620px;border-collapse:collapse;margin-top:24px;border-top:2px solid ${GOLD};font-family:Arial,Helvetica,sans-serif;table-layout:fixed"><tr><td width="142" valign="top" align="left" style="width:142px;padding:17px 18px 12px 0">${logo(logoSrc)}</td><td valign="top" align="left" style="padding:17px 0 12px;color:${BLACK};font-size:13.5px;line-height:1.48;overflow-wrap:anywhere"><div style="font-size:19px;line-height:1.25;font-weight:800;color:${BLACK};margin:0 0 7px">${escapeHtml(identity)}</div>${line(unit,{strong:true})}${line(subline,{muted:true})}${line(address,{muted:true})}${line(registry,{muted:true})}${mail?linkedLine(mail,`mailto:${mail}`):''}${linkedLine(site,site)}</td></tr></table>`;
+}
+export function renderBrandSignatureText({name,unit,subline,address,registry,email,web=WEBSITE}={}){
+  const mail=safeEmail(email),site=safeWeb(web)||WEBSITE;
+  return [clean(name)||'GNK ASG',unit,subline,address,registry,mail,site].map(clean).filter(Boolean).join('\n');
+}
+export function institutionalSignature(profile,centre){
+  const location=centre?.name&&centre?.country?`${centre.name}, ${centre.country}`:'';
+  return{html:renderBrandSignatureHtml({marker:VERSION,name:profile?.name,unit:profile?.unit,subline:location?`Global Service Centre: ${location}`:'',email:profile?.email,web:WEBSITE}),text:renderBrandSignatureText({name:profile?.name,unit:profile?.unit,subline:location?`Global Service Centre: ${location}`:'',email:profile?.email,web:WEBSITE})};
+}
+export function corporateSignature(identity,company){
+  return{html:renderBrandSignatureHtml({marker:VERSION,name:identity?.name,unit:company?.name,address:company?.address,registry:company?.oib&&company?.mbs?`OIB: ${company.oib} · MBS: ${company.mbs}`:'',email:identity?.email,web:company?.web||WEBSITE}),text:renderBrandSignatureText({name:identity?.name,unit:company?.name,address:company?.address,registry:company?.oib&&company?.mbs?`OIB: ${company.oib} · MBS: ${company.mbs}`:'',email:identity?.email,web:company?.web||WEBSITE})};
+}
+export function mediaSignature(media){
+  return{html:renderBrandSignatureHtml({marker:VERSION,name:media?.group,unit:media?.centre,subline:media?.organiser,email:media?.email,web:media?.web||WEBSITE}),text:renderBrandSignatureText({name:media?.group,unit:media?.centre,subline:media?.organiser,email:media?.email,web:media?.web||WEBSITE})};
+}

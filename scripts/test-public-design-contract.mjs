@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 const runtime=fs.readFileSync('apps/portal/assets/public-design-runtime-v1.js','utf8');
 const tokens=fs.readFileSync('apps/portal/assets/public-design-tokens-v1.css','utf8');
+const menu=fs.readFileSync('apps/portal/assets/public-compact-menu-v1.js','utf8');
 const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js','utf8');
 
 assert.match(runtime,/__GNK_PUBLIC_DESIGN_RUNTIME_V1__/);
@@ -17,9 +18,17 @@ for(const token of ['--gnk-navy-900','--gnk-gold-600','--gnk-content','--gnk-rad
 assert.match(tokens,/:focus-visible/);
 assert.match(tokens,/prefers-reduced-motion:reduce/);
 
+assert.match(menu,/__GNK_COMPACT_MENU_V2__/);
+assert.match(menu,/class="brand"/);
+assert.match(menu,/IZBORNIK/);
+assert.match(menu,/aria-controls/);
+assert.match(menu,/grid-template-columns:1fr 1fr/);
+assert.match(menu,/GNK ASG/);
+assert.doesNotMatch(menu,/gnkMarquee|animation:gnkMarquee/);
+
 assert.match(worker,/public-design-runtime-v1\.js/);
 assert.match(worker,/x-gnk-public-design/);
 assert.match(worker,/isProtected\(pathOf\(request\)\)/);
 assert.match(worker,/replace\(\/<script\[\^>\]\+public-design-runtime-v1/);
 
-console.log(JSON.stringify({ok:true,designRuntime:'v1',tokens:'v1',protectedRoutesExcluded:true},null,2));
+console.log(JSON.stringify({ok:true,designRuntime:'v1',tokens:'v1',menu:'v2',protectedRoutesExcluded:true},null,2));
