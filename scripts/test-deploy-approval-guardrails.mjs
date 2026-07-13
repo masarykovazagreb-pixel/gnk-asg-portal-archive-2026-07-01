@@ -25,23 +25,27 @@ assert.match(preflight,/\/en\/newsroom\//);
 assert.match(preflight,/No production changes were made/);
 assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id|routes?\s*=|api token/i);
 assert.doesNotMatch(preflight,/curl[\s\S]{0,200}(?:--request|-X)\s*(?:POST|PUT|PATCH|DELETE)/i);
-for(const marker of [/\[\[ "\$status" = "500" \]\]/,/\^server: cloudflare/,/\^content-type: text\/plain/,/error code: 1101/,/known_recovery_fix_present/,/git hash-object/,/f113c5b77ff2572e1723274a86b687904e9b99f8/,/27ea3411cd55bc1fb31156fd040277449d81e113/,/unified content\/contact release/])assert.match(preflight,marker);
+for(const marker of [/\[\[ "\$status" = "500" \]\]/,/\^server: cloudflare/,/\^content-type: text\/plain/,/error code: 1101/,/known_recovery_fix_present/,/git hash-object/,/f113c5b77ff2572e1723274a86b687904e9b99f8/,/6c80b068bb44fc7bd9bd5993986bdfec8df2d1e3/,/V28 unified logo\/content\/contact release/])assert.match(preflight,marker);
 const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"'),recoveryPosition=preflight.indexOf('&& known_recovery_fix_present');assert.ok(blockedOwnerPosition>=0&&recoveryPosition>=0&&blockedOwnerPosition<recoveryPosition);
 
 assert.match(verifier,/grep -Fq -- "\$expected_marker" "\$output"/);
 assert.match(verifier,/grep -Fiq -- "\$expected_marker" "\$headers"/);
 assert.doesNotMatch(verifier,/grep -Fq "\$expected_marker"|grep -Fiq "\$expected_marker"/);
 
-assert.match(worker,/GNK_ASG_UNIFIED_AUTH_V27_CONTACT_UNIFIED_RELEASE/);
+assert.match(worker,/GNK_ASG_UNIFIED_AUTH_V28_CANONICAL_LOGO_CONTACT_RELEASE/);
 assert.match(worker,/new URL\(canonicalPath,'https:\/\/assets\.local'\)/);
 assert.match(worker,/function newsroomFallback/);
 assert.match(worker,/x-gnk-static-asset-fallback/);
 assert.match(worker,/CONTACT_PATH='\/api\/contact-submit'/);
 assert.match(worker,/if\(pathOf\(request\)===CONTACT_PATH\)return handleContact/);
+assert.match(worker,/function canonicalLogoAlias/);
+assert.match(worker,/logo-gnk-asg-canonical\.svg/);
+assert.match(worker,/logo-gnk-asg-email\.png/);
+assert.match(worker,/handleEmailLogo/);
 assert.match(worker,/x-gnk-unified-menu/);
 assert.match(worker,/public-and-protected/);
 assert.doesNotMatch(worker,/new URL\(targetPath,request\.url\)/);
 
 for(const marker of [/branch!==\'main\'/,/merge-base','--is-ancestor/,/approved_sha=\$\{expectedSha\}/,/GNK_ASG_DEPLOY_APPROVED/,/--execute/,/mode:execute\?'execute':'prepare-only'/])assert.match(tool,marker);
 
-console.log(JSON.stringify({ok:true,deployStarted:false,indexRuntime:'V8',publicDesign:'V2',menu:'V4',contact:'V2',newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',preflight:'before-secrets-and-deploy',finalAssertions:'named-and-diagnostic'},null,2));
+console.log(JSON.stringify({ok:true,deployStarted:false,indexRuntime:'V8',publicDesign:'V2',menu:'V4',contact:'V2',worker:'V28',canonicalLogoAlias:true,newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',preflight:'before-secrets-and-deploy',finalAssertions:'named-and-diagnostic'},null,2));
