@@ -15,7 +15,7 @@ assert.match(runtime,/repairContrast/);
 assert.match(runtime,/gnk-contrast-dark/);
 assert.match(runtime,/gnk-contrast-light/);
 assert.match(runtime,/removeLegacyTicker/);
-assert.match(runtime,/if\(!isIndex\)/);
+assert.match(runtime,/if\(isIndex\)return/);
 assert.doesNotMatch(runtime,/protectedPrefixes|isProtected/);
 
 for(const token of ['--gnk-navy-900','--gnk-gold-600','--gnk-content','--gnk-radius-lg','--gnk-shadow-md'])assert.ok(tokens.includes(token),`missing ${token}`);
