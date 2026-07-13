@@ -14,11 +14,12 @@ const STATIC_HTML_ROUTES=new Map([
   ['/komentari','/komentari/index.html'],['/komentari/odgovornost-se-ne-moze-automatizirati','/komentari/odgovornost-se-ne-moze-automatizirati/index.html'],['/komentari/novac-je-informacija-prije-nego-kapital','/komentari/novac-je-informacija-prije-nego-kapital/index.html'],
   ['/trzista','/trzista/index.html'],['/en/markets','/en/markets/index.html'],['/the-code','/the-code/index.html'],['/en/the-code','/en/the-code/index.html']
 ]);
+const assetDirectoryPath=targetPath=>targetPath.endsWith('/index.html')?targetPath.slice(0,-10):targetPath;
 async function explicitHtml(request,env){
   if((request.method!=='GET'&&request.method!=='HEAD')||!env.ASSETS?.fetch)return null;
   const targetPath=STATIC_HTML_ROUTES.get(pathOf(request));if(!targetPath)return null;
-  const target=new URL(targetPath,request.url);target.search='';
-  const response=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers}));
+  const target=new URL(assetDirectoryPath(targetPath),request.url);target.search='';
+  const response=await env.ASSETS.fetch(new Request(target.toString(),{method:request.method,headers:request.headers,redirect:'manual'}));
   if(response.status!==200)return null;
   const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','public, max-age=120, stale-while-revalidate=300');headers.set('x-gnk-explicit-html-route',targetPath);headers.set('x-gnk-route-owner',VERSION);
   return new Response(request.method==='HEAD'?null:await response.text(),{status:200,headers});
