@@ -11,7 +11,7 @@ function initPublicHub() {
   var cards = english ? [
     ['Newsroom','Latest news and official releases','Current public information, media announcements and corporate releases.','/en/newsroom/','Open Newsroom'],
     ['Publications','Reports and public documents','Reports, summaries, corporate publications and released documents.','/en/reports/','Open publications'],
-    ['Markets','Markets and operating regions','Public overview of markets, locations and operating areas.','/en/trzista/','Open markets'],
+    ['Markets','Markets and operating regions','Public overview of markets, locations and operating areas.','/en/markets/','Open markets'],
     ['Projects','Projects and development','Current initiatives, development phases and publicly released statuses.','/en/projects/','Open projects'],
     ['Network','Global Group Network','Cities, companies, locations and the publicly released Group network.','/en/group-network/','Open network'],
     ['Finance','Finance and governance','Public financial overview, governance framework and released indicators.','/en/finance/','Open finance'],
@@ -24,7 +24,7 @@ function initPublicHub() {
     ['Tržišta','Tržišta i operativne regije','Javni pregled tržišta, lokacija i područja djelovanja.','/trzista/','Otvori tržišta'],
     ['Projekti','Projekti i razvoj','Aktualne inicijative, razvojne faze i javno objavljeni statusi.','/projects/','Otvori projekte'],
     ['Mreža','Global Group Network','Gradovi, društva, lokacije i javno objavljena mreža Grupe.','/group-network/','Otvori mrežu'],
-    ['Financije','Financije i upravljanje','Javni financijski pregled, okvir upravljanja i objavljeni pokazatelji.','/finance/','Otvori financije'],
+    ['Financije','Financije i upravljanje','Javni financijski pregled, okvir upravljanja i objavljeni pokazatelji.','/financije/','Otvori financije'],
     ['Znanje','Knowledge Center','Istraživanja, dokumentacija, analize i javni izvori znanja.','/knowledge-center/','Otvori Knowledge Center'],
     ['THE CODE','New York · 7. listopada 2026.','Središnja prezentacija i službeni pregled događaja THE CODE.','/the-code/','Otvori THE CODE'],
     ['Mediji','Medijske prijave i press','Registracija medija, akreditacije i informacije za novinare.','/media-application/','Otvori medijski centar']
