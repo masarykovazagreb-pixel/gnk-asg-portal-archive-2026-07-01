@@ -8,7 +8,8 @@ function injectSecurityPatch(html) {
 
   const sharedShell = `<link rel="stylesheet" href="/assets/backend-ui-shell.css?v=20260624-backend-6">
 <style id="gnk-operator-shared-auth-only">#login{display:none!important}#gnk-asg-premium-header,#gnk-asg-overlay,#gnk-asg-drawer,#gnk-asg-admin-launcher,.gnk-asg-final-menu-wrap{display:none!important}</style>
-<script src="/assets/backend-ui-shell.js?v=20260624-backend-6"></script>`;
+<script src="/assets/backend-ui-shell.js?v=20260624-backend-6"></script>
+<script defer src="/assets/public-compact-menu-v1.js?v=20260713-shared-v4"></script>`;
 
   const patch = `<script id="gnk-asg-secure-manual-token-v3">
 (() => {
@@ -146,7 +147,7 @@ export default {
     headers.delete('content-length');
     headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
     headers.set('x-robots-tag','noindex, nofollow, noarchive');
-    headers.set('x-gnk-asg-operator-center','secure-manual-token-v3');
+    headers.set('x-gnk-asg-operator-center','secure-manual-token-v3-shared-menu-v4');
 
     if (request.method === 'HEAD') return new Response(null,{status:asset.status,headers});
     if (!String(asset.headers.get('content-type') || '').includes('text/html')) {
