@@ -46,8 +46,8 @@ assert.match(preflight,/\^content-type: text\/plain/);
 assert.match(preflight,/error code: 1101/);
 assert.match(preflight,/known_recovery_fix_present/);
 assert.match(preflight,/git hash-object/);
-assert.match(preflight,/dbebddc0fa1f96d2ef93d4ce1790a2a224b3517b/);
-assert.match(preflight,/665478718978f4fb19bcc07cb79220a3cb579bc5/);
+assert.match(preflight,/f113c5b77ff2572e1723274a86b687904e9b99f8/);
+assert.match(preflight,/bb7baf66e28e271bc71dfe98aead14f2e49b446f/);
 
 const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"');
 const recoveryCallPosition=preflight.indexOf('&& known_recovery_fix_present');
