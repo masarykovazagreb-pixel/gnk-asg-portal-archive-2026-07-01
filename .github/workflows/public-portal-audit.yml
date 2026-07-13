@@ -8,6 +8,7 @@ on:
       - 'scripts/audit-public-portal-v1.mjs'
       - 'scripts/audit-worker-route-ownership.mjs'
       - 'scripts/predeploy-release-v6.mjs'
+      - 'scripts/prepare-approved-deploy-v1.mjs'
       - 'scripts/test-email-signature-contract.mjs'
       - 'scripts/test-mail-transport-guardrails.mjs'
       - 'scripts/test-email-mime-guardrails.mjs'
@@ -40,6 +41,7 @@ jobs:
           node --check scripts/audit-public-portal-v1.mjs
           node --check scripts/audit-worker-route-ownership.mjs
           node --check scripts/predeploy-release-v6.mjs
+          node --check scripts/prepare-approved-deploy-v1.mjs
           node --check scripts/test-email-signature-contract.mjs
           node --check scripts/test-mail-transport-guardrails.mjs
           node --check scripts/test-email-mime-guardrails.mjs
