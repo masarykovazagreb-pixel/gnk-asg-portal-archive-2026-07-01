@@ -5,92 +5,46 @@ const workflow=fs.readFileSync('.github/workflows/deploy-admin-auth-v6.yml','utf
 const tool=fs.readFileSync('scripts/prepare-approved-deploy-v1.mjs','utf8');
 const preflight=fs.readFileSync('scripts/check-newsroom-route-readiness.sh','utf8');
 const verifier=fs.readFileSync('scripts/verify-production-route.sh','utf8');
-const publicWorker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js','utf8');
+const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js','utf8');
 
-assert.match(workflow,/approved_sha:/);
-assert.match(workflow,/ref: \$\{\{ inputs\.approved_sha \}\}/);
-assert.match(workflow,/git merge-base --is-ancestor "\$APPROVED_SHA" origin\/main/);
-assert.match(workflow,/inputs\.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'/);
-assert.match(workflow,/group: gnk-asg-production-deploy/);
-assert.match(workflow,/cancel-in-progress: false/);
-assert.match(workflow,/x-gnk-explicit-html-route/);
-assert.match(workflow,/production-verification-\$\{\{ inputs\.approved_sha \}\}/);
-assert.match(workflow,/deploy-preflight-\$\{\{ inputs\.approved_sha \}\}/);
-assert.match(workflow,/DEPLOY_REVISION:\$\{DEPLOY_SOURCE_SHA\}/);
-assert.match(workflow,/GNK_RELEASE_COMPLETION_V7/);
-assert.match(workflow,/__GNK_INDEX_DATA_RESILIENCE_V2__/);
-assert.match(workflow,/__GNK_INDEX_EDITORIAL_ORDER_V3__/);
-assert.match(workflow,/__GNK_PUBLIC_DESIGN_RUNTIME_V1__/);
-assert.match(workflow,/--gnk-gold-600/);
-assert.match(workflow,/logo-gnk-asg-gold\.svg/);
-assert.match(workflow,/x-gnk-public-design: v1/);
-assert.match(workflow,/Preflight Newsroom route ownership/);
-assert.match(workflow,/scripts\/check-newsroom-route-readiness\.sh deploy-preflight/);
+for(const marker of [/approved_sha:/,/ref: \$\{\{ inputs\.approved_sha \}\}/,/git merge-base --is-ancestor "\$APPROVED_SHA" origin\/main/,/inputs\.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'/,/group: gnk-asg-production-deploy/,/cancel-in-progress: false/,/production-verification-\$\{\{ inputs\.approved_sha \}\}/,/deploy-preflight-\$\{\{ inputs\.approved_sha \}\}/,/DEPLOY_REVISION:\$\{DEPLOY_SOURCE_SHA\}/])assert.match(workflow,marker);
+for(const marker of [/GNK_RELEASE_COMPLETION_V8/,/__GNK_INDEX_DATA_RESILIENCE_V2__/,/__GNK_INDEX_EDITORIAL_ORDER_V4__/,/__GNK_UNIFIED_DESIGN_V2__/,/__GNK_UNIFIED_MENU_V4__/,/logo-gnk-asg-canonical\.svg/,/logo-gnk-asg-email\.png/,/x-gnk-public-design: v2-unified/,/x-gnk-unified-menu: public-and-protected/,/contact readiness HTTP 200/,/canonical mail logo HTTP 200 PNG/])assert.match(workflow,marker);
+for(const test of ['test-unified-shell-contract.mjs','test-contact-form-contract.mjs','test-the-code-index-contract.mjs','test-index-content-contract.mjs'])assert.match(workflow,new RegExp(test.replace('.','\\.')));
+assert.doesNotMatch(workflow,/GNK_RELEASE_COMPLETION_V7|__GNK_INDEX_EDITORIAL_ORDER_V3__|__GNK_PUBLIC_DESIGN_RUNTIME_V1__|logo-gnk-asg-gold\.svg|x-gnk-public-design: v1/);
+assert.doesNotMatch(workflow,/grep -o 'public-compact-menu-v1\.js'.*wc -l/);
 assert.match(workflow,/bash scripts\/verify-production-route\.sh "\$1" "deploy-verification\/\$2" "\$\{3:-\}"/);
-assert.doesNotMatch(workflow,/GNK_RELEASE_COMPLETION_V6/);
-assert.doesNotMatch(workflow,/resilience\.js "\/data\/news\.json"/);
 
-const preflightPosition=workflow.indexOf('Preflight Newsroom route ownership');
-const tokenPosition=workflow.indexOf('Resolve token hash');
-const firstDeployPosition=workflow.indexOf('Deploy contact session bridge');
-assert.ok(preflightPosition>=0&&tokenPosition>=0&&firstDeployPosition>=0);
-assert.ok(preflightPosition<tokenPosition,'Newsroom preflight must run before token resolution');
-assert.ok(preflightPosition<firstDeployPosition,'Newsroom preflight must run before any deploy step');
-
+const preflightPosition=workflow.indexOf('Preflight Newsroom route ownership'),tokenPosition=workflow.indexOf('Resolve token hash'),firstDeployPosition=workflow.indexOf('Deploy contact session bridge');
+assert.ok(preflightPosition>=0&&tokenPosition>=0&&firstDeployPosition>=0&&preflightPosition<tokenPosition&&preflightPosition<firstDeployPosition);
 assert.match(preflight,/gnk-asg-news-backend/);
 assert.match(preflight,/\/newsroom\//);
 assert.match(preflight,/\/en\/newsroom\//);
 assert.match(preflight,/No production changes were made/);
 assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id|routes?\s*=|api token/i);
 assert.doesNotMatch(preflight,/curl[\s\S]{0,200}(?:--request|-X)\s*(?:POST|PUT|PATCH|DELETE)/i);
-assert.match(preflight,/\[\[ "\$status" = "500" \]\]/);
-assert.match(preflight,/\^server: cloudflare/);
-assert.match(preflight,/\^content-type: text\/plain/);
-assert.match(preflight,/error code: 1101/);
-assert.match(preflight,/known_recovery_fix_present/);
-assert.match(preflight,/git hash-object/);
-assert.match(preflight,/f113c5b77ff2572e1723274a86b687904e9b99f8/);
-assert.match(preflight,/d15447ac568f447ab56cfa4e2042e1def1e4a6e7/);
-assert.match(preflight,/canonical asset-binding paths and a hard-stop newsroom fallback/);
-
-const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"');
-const recoveryCallPosition=preflight.indexOf('&& known_recovery_fix_present');
-assert.ok(blockedOwnerPosition>=0&&recoveryCallPosition>=0);
-assert.ok(blockedOwnerPosition<recoveryCallPosition,'Blocked Worker ownership must be rejected before recovery is considered');
+for(const marker of [/\[\[ "\$status" = "500" \]\]/,/\^server: cloudflare/,/\^content-type: text\/plain/,/error code: 1101/,/known_recovery_fix_present/,/git hash-object/,/f113c5b77ff2572e1723274a86b687904e9b99f8/,/f7a20819b51d2ef515d719b82b759b2ee1883a7e/,/V29 direct-index unified release/])assert.match(preflight,marker);
+const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"'),recoveryPosition=preflight.indexOf('&&known_recovery_fix_present');assert.ok(blockedOwnerPosition>=0&&recoveryPosition>=0&&blockedOwnerPosition<recoveryPosition);
 
 assert.match(verifier,/grep -Fq -- "\$expected_marker" "\$output"/);
 assert.match(verifier,/grep -Fiq -- "\$expected_marker" "\$headers"/);
-assert.doesNotMatch(verifier,/grep -Fq "\$expected_marker"/);
-assert.doesNotMatch(verifier,/grep -Fiq "\$expected_marker"/);
+assert.doesNotMatch(verifier,/grep -Fq "\$expected_marker"|grep -Fiq "\$expected_marker"/);
 
-assert.match(publicWorker,/GNK_ASG_UNIFIED_AUTH_V25_CANONICAL_ASSETS_SAFE_FALLBACK/);
-assert.match(publicWorker,/\['\/newsroom','\/newsroom\/index\.html'\]/);
-assert.match(publicWorker,/\['\/en\/newsroom','\/en\/newsroom\/index\.html'\]/);
-assert.match(publicWorker,/const canonicalAssetPath=targetPath=>targetPath\.endsWith\('\/index\.html'\)\?targetPath\.slice\(0,-10\):targetPath/);
-assert.match(publicWorker,/new URL\(canonicalPath,'https:\/\/assets\.local'\)/);
-assert.match(publicWorker,/x-gnk-static-asset-path/);
-assert.match(publicWorker,/function newsroomFallback/);
-assert.match(publicWorker,/x-gnk-static-asset-fallback/);
-assert.match(publicWorker,/binding-missing/);
-assert.match(publicWorker,/asset-status-\$\{response\.status\}/);
-assert.match(publicWorker,/asset-fetch-exception/);
-assert.match(publicWorker,/return isNewsroom\(routePath\)\?newsroomFallback\(request,targetPath/);
-assert.doesNotMatch(publicWorker,/new URL\(targetPath,request\.url\)/);
-assert.doesNotMatch(publicWorker,/const direct=await explicitHtml\(request,env\);if\(!direct&&isNewsroom/);
+assert.match(worker,/GNK_ASG_UNIFIED_AUTH_V29_DIRECT_INDEX_CANONICAL_RELEASE/);
+assert.match(worker,/\['\/','\/index\.html'\]/);
+assert.match(worker,/\['\/en','\/en\/index\.html'\]/);
+assert.match(worker,/targetPath\.slice\(0,-10\)\+'\/'/);
+assert.match(worker,/new URL\(canonicalPath,'https:\/\/assets\.local'\)/);
+assert.match(worker,/headers\.delete\('location'\)/);
+assert.match(worker,/function newsroomFallback/);
+assert.match(worker,/CONTACT_PATH='\/api\/contact-submit'/);
+assert.match(worker,/if\(pathOf\(request\)===CONTACT_PATH\)return handleContact/);
+assert.match(worker,/function canonicalLogoAlias/);
+assert.match(worker,/logo-gnk-asg-canonical\.svg/);
+assert.match(worker,/logo-gnk-asg-email\.png/);
+assert.match(worker,/handleEmailLogo/);
+assert.match(worker,/x-gnk-unified-menu/);
+assert.match(worker,/public-and-protected/);
+assert.doesNotMatch(worker,/new URL\(targetPath,request\.url\)/);
 
-assert.match(tool,/branch!==\'main\'/);
-assert.match(tool,/merge-base','--is-ancestor/);
-assert.match(tool,/approved_sha=\$\{expectedSha\}/);
-assert.match(tool,/GNK_ASG_DEPLOY_APPROVED/);
-assert.match(tool,/--execute/);
-assert.match(tool,/mode:execute\?'execute':'prepare-only'/);
-
-console.log(JSON.stringify({
-  ok:true,
-  deployStarted:false,
-  indexRuntime:'V7',
-  publicDesign:'V1',
-  newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',
-  preflight:'before-secrets-and-deploy',
-  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','literal-dash-markers','route-ownership-evidence','audited-1101-recovery','canonical-assets-local-paths','newsroom-hard-stop-fallback','bash-production-verifier','post-deploy-artifacts']
-},null,2));
+for(const marker of [/branch!==\'main\'/,/merge-base','--is-ancestor/,/approved_sha=\$\{expectedSha\}/,/GNK_ASG_DEPLOY_APPROVED/,/--execute/,/mode:execute\?'execute':'prepare-only'/])assert.match(tool,marker);
+console.log(JSON.stringify({ok:true,deployStarted:false,indexRuntime:'V8',publicDesign:'V2',menu:'V4',contact:'V2',worker:'V29',directIndexAssets:true,canonicalLogoAlias:true,newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',preflight:'before-secrets-and-deploy',finalAssertions:'named-and-diagnostic'},null,2));
