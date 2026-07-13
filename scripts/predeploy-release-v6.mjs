@@ -40,12 +40,12 @@ ok('apps/portal/assets/public-market-live-v1.js',['fetchWithTimeout','Promise.al
 ok('apps/portal/assets/market-centre-data.js',["fetch(`/data/${encodeURIComponent(name)}",'setInterval(render,60000)','__GNK_MARKET_CENTRE_DATA_V2__','safeDate']);
 ok('apps/portal/assets/the-code-experience-loop-v1.html',['show(scenes.length-1)','PONOVI PROJEKCIJU',"replayBtn.addEventListener('click',replay)"]);
 ok('workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js',['STATIC_HTML_ROUTES','/newsroom/index.html','/analize/index.html','/trzista/index.html','/the-code/index.html','x-gnk-explicit-html-route']);
-ok('workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js',['scheduledEnabled','runScheduledNewsPublication','duplicate_item','invalid_source_url','keyByFingerprint']);
+ok('workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js',['GNK_ASG_NEWS_AUTO_PUBLICATION_V8','scheduledEnabled','runScheduledNewsPublication','scheduled_publication_disabled','duplicate_item','invalid_source_url','keyByFingerprint']);
 ok('workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js',['safeEmail','safeWeb','safeLogo','logo(logoSrc)']);
 ok('workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js',['EMAIL_LOGO_CID','loadEmailLogo']);
 ok('workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js',['multipart/related','loadEmailLogo']);
-ok('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml',['main = "src/index-unified-auth-v19.js"','MAIL_AUTO_REPLY_LIVE = "true"','MAIL_STUDIO_LIVE = "true"','crons = ["*/15 * * * *"]']);
-absent('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml',['binding = "GNK_ASG_KV"','routes =','route =']);
+ok('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml',['main = "src/index-unified-auth-v19.js"','MAIL_AUTO_REPLY_LIVE = "true"','MAIL_STUDIO_LIVE = "true"','crons = ["*/15 * * * *"]','NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "false"']);
+absent('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml',['binding = "GNK_ASG_KV"','routes =','route =','keep_vars = true','NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "true"']);
 
 const publicAudit=JSON.parse(r('artifacts/public-portal-audit.json'));
 const routeAudit=JSON.parse(r('artifacts/worker-route-ownership.json'));
@@ -61,7 +61,7 @@ console.log(JSON.stringify({
   indexOwners:{scaffold:'release-completion-v1.js',editorial:'index-editorial-order-v1.js',marketFallback:'index-data-resilience-v1.js'},
   menu:'single',
   mail:'cid-safe-links',
-  scheduler:'configured',
+  scheduler:'strict-opt-in-and-config-locked',
   publicAudit:publicAudit.summary,
   routeAudit:routeAudit.summary
 },null,2));
