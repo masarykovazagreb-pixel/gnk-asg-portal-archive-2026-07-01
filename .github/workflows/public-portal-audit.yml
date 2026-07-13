@@ -34,6 +34,7 @@ jobs:
           bash -n scripts/check-newsroom-route-readiness.sh
           for file in \
             scripts/audit-public-portal-v1.mjs \
+            scripts/audit-all-pages-detailed-v1.mjs \
             scripts/audit-worker-route-ownership.mjs \
             scripts/predeploy-release-v6.mjs \
             scripts/prepare-approved-deploy-v1.mjs \
@@ -62,6 +63,7 @@ jobs:
             apps/portal/assets/public-unified-menu-v6.js \
             apps/portal/assets/public-contrast-hardening-v1.js \
             apps/portal/assets/index-editorial-order-v6.js \
+            apps/portal/assets/index-editorial-cleanup-v1.js \
             apps/portal/assets/mail-studio-ui-v28.js \
             apps/portal/assets/contact-form-v2.js \
             apps/portal/assets/release-completion-v1.js \
@@ -135,6 +137,9 @@ jobs:
       - name: News queue contract
         run: node scripts/test-news-queue-guardrails.mjs
 
+      - name: Detailed page-by-page audit
+        run: node scripts/audit-all-pages-detailed-v1.mjs
+
       - name: Public portal and infrastructure audits
         run: |
           set -euo pipefail
@@ -154,6 +159,7 @@ jobs:
           name: public-portal-audit-${{ github.sha }}
           path: |
             artifacts/public-portal-audit.json
+            artifacts/all-pages-detailed-audit.json
             artifacts/worker-route-ownership.json
           if-no-files-found: warn
           retention-days: 14
