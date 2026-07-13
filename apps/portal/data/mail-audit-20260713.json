@@ -1,0 +1,39 @@
+{
+  "testedAt": "2026-07-13T23:40:21+02:00",
+  "testType": "controlled-live-inbound-autoreply",
+  "recipient": "it@gnk-asg.hr",
+  "delivery": {
+    "incomingAccepted": true,
+    "autoReplyReceived": true,
+    "elapsedSeconds": 8,
+    "referenceGenerated": true,
+    "referencePattern": "GNK-IT-IN-YYYYMMDD-HHMMSS-XXXXXXXX"
+  },
+  "reply": {
+    "fromIdentity": "GNK ASG IT | Digital Assistant <it@gnk-asg.hr>",
+    "language": "hr-en-bilingual",
+    "humanReviewNotice": true,
+    "legalDisclaimer": true,
+    "contentPersonalization": "profile-language-subject-only",
+    "generativeAiObserved": false
+  },
+  "branding": {
+    "signatureTextPresent": true,
+    "websitePresent": true,
+    "gmailReportedInlineImages": 0,
+    "gmailReportedAttachments": 0,
+    "embeddedLogoConfirmed": false,
+    "finding": "The live reply did not expose an inline image or attachment through Gmail metadata. A remote HTML image may still exist, but the embedded logo is not proven by this test."
+  },
+  "releaseComparison": {
+    "status": "production-runtime-differs-from-current-main-contract",
+    "evidence": "The live sender label and department label differ from the current main V31 profile definitions.",
+    "conclusion": "Production mail routing is active, but the latest repository mail branding contract is not yet proven deployed."
+  },
+  "safety": {
+    "businessMessage": false,
+    "humanReplyRequested": false,
+    "campaign": false,
+    "bulk": false
+  }
+}
