@@ -44,10 +44,18 @@ jobs:
           test -s apps/portal/komentari/index.html
           test -s apps/portal/trzista/index.html
           test -s apps/portal/the-code/index.html
+          test -s apps/portal/sitemap-index.xml
+          test -s apps/portal/sitemap.xml
+          test -s apps/portal/editorial-sitemap.xml
+          test -s apps/portal/visual-sitemap.xml
+          test -s apps/portal/robots.txt
           grep -q "GNK_RELEASE_COMPLETION_V5" apps/portal/assets/release-completion-v1.js
           grep -q "scheduledEnabled" workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           grep -q "cid-inline" workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           grep -q "renderBrandSignatureHtml" workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
+          grep -q "https://gnk-asg.hr/sitemap.xml" apps/portal/sitemap-index.xml
+          grep -q "https://gnk-asg.hr/editorial-sitemap.xml" apps/portal/sitemap-index.xml
+          grep -q "Sitemap: https://gnk-asg.hr/sitemap-index.xml" apps/portal/robots.txt
 
       - name: Upload private Worker source snapshot
         uses: actions/upload-artifact@v4
@@ -125,6 +133,10 @@ jobs:
           fetch_required "https://gnk-asg.hr/trzista/index.html?deploy-admin-v6=${cache_bust}" trzista.html
           fetch_required "https://gnk-asg.hr/the-code/index.html?deploy-admin-v6=${cache_bust}" the-code.html
           fetch_required "https://gnk-asg.hr/api/public-news?limit=1&deploy-admin-v6=${cache_bust}" news.json
+          fetch_required "https://gnk-asg.hr/sitemap-index.xml?deploy-admin-v6=${cache_bust}" sitemap-index.xml
+          fetch_required "https://gnk-asg.hr/sitemap.xml?deploy-admin-v6=${cache_bust}" sitemap.xml
+          fetch_required "https://gnk-asg.hr/editorial-sitemap.xml?deploy-admin-v6=${cache_bust}" editorial-sitemap.xml
+          fetch_required "https://gnk-asg.hr/robots.txt?deploy-admin-v6=${cache_bust}" robots.txt
 
           grep -q "gnk-compact-menu" menu.js
           grep -q "GNK_RELEASE_COMPLETION_V5" release.js
@@ -137,6 +149,10 @@ jobs:
           grep -q "Trži" trzista.html
           grep -q "THE CODE" the-code.html
           grep -q '"ok": true' news.json
+          grep -q "https://gnk-asg.hr/editorial-sitemap.xml" sitemap-index.xml
+          grep -q "https://gnk-asg.hr/newsroom/" sitemap.xml
+          grep -q "https://gnk-asg.hr/komentari/" editorial-sitemap.xml
+          grep -q "Sitemap: https://gnk-asg.hr/sitemap-index.xml" robots.txt
 
           mail_status=$(curl --silent --show-error --output mail.json --write-out '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' "https://gnk-asg.hr/api/studio-message/send?deploy-admin-v6=${cache_bust}" || true)
           echo "VERIFY Mail Studio unauthenticated JSON gate -> HTTP ${mail_status}"
