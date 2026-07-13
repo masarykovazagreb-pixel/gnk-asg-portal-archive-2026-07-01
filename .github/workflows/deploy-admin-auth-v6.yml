@@ -62,6 +62,8 @@ jobs:
           node --check scripts/audit-worker-route-ownership.mjs
           node --check scripts/predeploy-release-v6.mjs
           node --check scripts/prepare-approved-deploy-v1.mjs
+          node --check scripts/test-deploy-approval-guardrails.mjs
+          node --check scripts/test-index-runtime-ownership.mjs
           node --check scripts/test-email-signature-contract.mjs
           node --check scripts/test-mail-transport-guardrails.mjs
           node --check scripts/test-email-mime-guardrails.mjs
@@ -83,6 +85,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          node scripts/test-deploy-approval-guardrails.mjs
+          node scripts/test-index-runtime-ownership.mjs
           node scripts/test-email-signature-contract.mjs
           node scripts/test-mail-transport-guardrails.mjs
           node scripts/test-email-mime-guardrails.mjs
@@ -153,13 +157,13 @@ jobs:
           }
 
           verify "https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6=${cache_bust}" menu.js "gnk-compact-menu"
-          verify "https://gnk-asg.hr/assets/release-completion-v1.js?deploy-admin-v6=${cache_bust}" release.js "GNK_RELEASE_COMPLETION_V6"
-          verify "https://gnk-asg.hr/assets/index-data-resilience-v1.js?deploy-admin-v6=${cache_bust}" resilience.js "/data/news.json"
-          verify "https://gnk-asg.hr/assets/index-editorial-order-v1.js?deploy-admin-v6=${cache_bust}" editorial-order.js "Poslovne vijesti"
+          verify "https://gnk-asg.hr/assets/release-completion-v1.js?deploy-admin-v6=${cache_bust}" release.js "GNK_RELEASE_COMPLETION_V7"
+          verify "https://gnk-asg.hr/assets/index-data-resilience-v1.js?deploy-admin-v6=${cache_bust}" resilience.js "__GNK_INDEX_DATA_RESILIENCE_V2__"
+          verify "https://gnk-asg.hr/assets/index-editorial-order-v1.js?deploy-admin-v6=${cache_bust}" editorial-order.js "__GNK_INDEX_EDITORIAL_ORDER_V3__"
           verify "https://gnk-asg.hr/assets/newsroom-live-v1.js?deploy-admin-v6=${cache_bust}" newsroom-live.js "/data/news.json"
           verify "https://gnk-asg.hr/assets/market-centre-data.js?deploy-admin-v6=${cache_bust}" market-centre.js "GNK_MARKET_CENTRE_DATA_V2"
-          verify "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" home.html "index-data-resilience-v1.js"
-          verify "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" home-en.html "index-editorial-order-v1.js"
+          verify "https://gnk-asg.hr/?deploy-admin-v6=${cache_bust}" home.html "index-data-resilience-v1.js?v=20260713-resilience-v2"
+          verify "https://gnk-asg.hr/en/?deploy-admin-v6=${cache_bust}" home-en.html "index-editorial-order-v1.js?v=20260713-editorial-v3"
           verify "https://gnk-asg.hr/newsroom/?deploy-admin-v6=${cache_bust}" newsroom.html "x-gnk-explicit-html-route"
           verify "https://gnk-asg.hr/en/newsroom/?deploy-admin-v6=${cache_bust}" newsroom-en.html "x-gnk-explicit-html-route"
           verify "https://gnk-asg.hr/objave/?deploy-admin-v6=${cache_bust}" objave.html "povjerenje-investitora-kroz-transparentnost"
