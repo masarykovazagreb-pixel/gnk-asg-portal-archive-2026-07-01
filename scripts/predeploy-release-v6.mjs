@@ -30,9 +30,11 @@ const market=JSON.parse(r('apps/portal/data/market.json'));
 if(market.status!=='ok'||!Array.isArray(market.coins)||market.coins.length<2)throw new Error('Market fallback invalid');
 
 ok('apps/portal/assets/public-compact-menu-v1.js',['/newsroom/','/objave/','/analize/','/komentari/','/trzista/','/the-code/','menus.slice(1)','strips.slice(1)']);
-ok('apps/portal/assets/release-completion-v1.js',['GNK_RELEASE_COMPLETION_V6','logo-gnk-asg-gold.svg','logo-gnk-dinamo-gold.svg','renderNews','renderMarkets']);
-ok('apps/portal/assets/index-editorial-order-v1.js',['Poslovne vijesti','Analize','Komentari','/api/public-news','/data/news.json','__published']);
-ok('apps/portal/assets/index-data-resilience-v1.js',['/data/news.json','/data/market.json']);
+ok('apps/portal/assets/release-completion-v1.js',['GNK_RELEASE_COMPLETION_V7','data-runtime-owner="index-editorial-order"','data-runtime-owner="index-data-resilience"','release-completion-scaffold']);
+absent('apps/portal/assets/release-completion-v1.js',['renderNews','renderMarkets','/api/public-news?limit=8','www.ecb.europa.eu','api.worldbank.org']);
+ok('apps/portal/assets/index-editorial-order-v1.js',['__GNK_INDEX_EDITORIAL_ORDER_V3__','Poslovne vijesti','Analize','Komentari','/api/public-news','/data/news.json','Promise.allSettled','AbortController']);
+ok('apps/portal/assets/index-data-resilience-v1.js',['__GNK_INDEX_DATA_RESILIENCE_V2__','/data/market.json','marketFallback','AbortController']);
+absent('apps/portal/assets/index-data-resilience-v1.js',['gnk-editorial-grid','newsFallback','/data/news.json']);
 ok('apps/portal/assets/newsroom-live-v1.js',['limit=100','setInterval(load,300000)','__published','langAllowed','itemHref']);
 ok('apps/portal/assets/public-market-live-v1.js',['fetchWithTimeout','Promise.allSettled','PARTIAL','ECB_XML']);
 ok('apps/portal/assets/market-centre-data.js',["fetch(`/data/${encodeURIComponent(name)}",'setInterval(render,60000)','__GNK_MARKET_CENTRE_DATA_V2__','safeDate']);
@@ -56,6 +58,7 @@ console.log(JSON.stringify({
   marketCoins:market.coins.length,
   worker:'v19',
   routes:'explicit-assets-but-route-less-worker',
+  indexOwners:{scaffold:'release-completion-v1.js',editorial:'index-editorial-order-v1.js',marketFallback:'index-data-resilience-v1.js'},
   menu:'single',
   mail:'cid-safe-links',
   scheduler:'configured',
