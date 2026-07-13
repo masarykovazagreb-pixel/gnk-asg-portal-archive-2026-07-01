@@ -24,6 +24,7 @@ assert.match(workflow,/logo-gnk-asg-gold\.svg/);
 assert.match(workflow,/x-gnk-public-design: v1/);
 assert.match(workflow,/Preflight Newsroom route ownership/);
 assert.match(workflow,/scripts\/check-newsroom-route-readiness\.sh deploy-preflight/);
+assert.match(workflow,/bash scripts\/verify-production-route\.sh "\$1" "deploy-verification\/\$2" "\$\{3:-\}"/);
 assert.doesNotMatch(workflow,/GNK_RELEASE_COMPLETION_V6/);
 assert.doesNotMatch(workflow,/resilience\.js "\/data\/news\.json"/);
 
@@ -67,5 +68,5 @@ console.log(JSON.stringify({
   indexRuntime:'V7',
   publicDesign:'V1',
   preflight:'before-secrets-and-deploy',
-  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','route-ownership-evidence','audited-1101-recovery','post-deploy-artifacts']
+  guards:['exact-confirmation','approved-sha','main-only','clean-tree','ancestry','named-contract-tests','newsroom-preflight','runtime-markers','route-ownership-evidence','audited-1101-recovery','bash-production-verifier','post-deploy-artifacts']
 },null,2));

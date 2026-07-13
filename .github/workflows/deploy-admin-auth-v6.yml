@@ -182,7 +182,7 @@ jobs:
           cache_bust="${DEPLOY_SOURCE_SHA}-$(date +%s)"
 
           verify() {
-            scripts/verify-production-route.sh "$1" "deploy-verification/$2" "${3:-}"
+            bash scripts/verify-production-route.sh "$1" "deploy-verification/$2" "${3:-}"
           }
 
           verify "https://gnk-asg.hr/assets/public-compact-menu-v1.js?deploy-admin-v6=${cache_bust}" menu.js "gnk-compact-menu"
