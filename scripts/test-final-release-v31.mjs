@@ -1,0 +1,98 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+
+const read=path=>fs.readFileSync(path,'utf8');
+const menu=read('apps/portal/assets/public-unified-menu-v6.js');
+const contrast=read('apps/portal/assets/public-contrast-hardening-v1.js');
+const indexEditorial=read('apps/portal/assets/index-editorial-order-v6.js');
+const newsroom=read('apps/portal/assets/newsroom-live-v1.js');
+const mailUi=read('apps/portal/assets/mail-studio-ui-v28.js');
+const transport=read('workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js');
+const contactStudio=read('workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js');
+const newsBackend=read('workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js');
+const worker=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js');
+const config=read('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml');
+const mime=read('workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js');
+const signature=read('workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js');
+const comments=read('apps/portal/komentari/index.html');
+const publications=read('apps/portal/objave/index.html');
+const analyses=read('apps/portal/analize/index.html');
+
+assert.match(menu,/__GNK_UNIFIED_MENU_V6__/);
+for(const marker of ['Newsroom','Objave','Komentari','WORKERI I OPERACIJE','WORKERS & OPERATIONS','Worker Operations','Operator Dashboard','Mail Studio','Webmail','Campaign Mailer','Digital Headquarters'])assert.ok(menu.includes(marker),`menu missing ${marker}`);
+assert.match(menu,/width:64px!important;height:66px!important/);
+
+assert.match(contrast,/__GNK_CONTRAST_HARDENING_V1__/);
+assert.match(contrast,/contrast\(fg,bg\)<4\.5/);
+assert.match(contrast,/#f4d978/);
+assert.match(contrast,/#f8fafc/);
+assert.match(contrast,/input,select,textarea/);
+
+assert.match(indexEditorial,/__GNK_INDEX_EDITORIAL_ORDER_V6__/);
+assert.match(indexEditorial,/limit=100/);
+assert.match(indexEditorial,/Objave, vijesti, analize i komentari/);
+assert.match(indexEditorial,/gnk-news-100/);
+assert.match(newsroom,/__GNK_NEWSROOM_LIVE_V7__/);
+assert.match(newsroom,/limit=100/);
+assert.match(newsroom,/transparentno-upravljanje-kao-operativni-standard/);
+assert.match(newsroom,/automatizacija-ne-ukida-odgovornost/);
+
+assert.match(newsBackend,/VISIBLE_LIMIT=100/);
+assert.match(newsBackend,/ARCHIVE_CAP=2000/);
+assert.match(newsBackend,/PRUNE_OLDEST=1000/);
+assert.match(newsBackend,/while\(retained\.length>=ARCHIVE_CAP\)/);
+assert.doesNotMatch(newsBackend,/slice\(0,500\)/);
+
+assert.match(transport,/from 'cloudflare:email'/);
+assert.match(transport,/new EmailMessage\(prepared\.from,recipient,prepared\.raw\)/);
+assert.match(transport,/Content-ID: <\$\{EMAIL_LOGO_CID\}>/);
+assert.match(transport,/Content-Location:/);
+assert.match(transport,/X-Attachment-Id:/);
+assert.match(transport,/enforceRequiredSignature/);
+assert.match(contactStudio,/CONTACT_PATH='\/api\/contact-submit'/);
+assert.match(contactStudio,/STUDIO_PATH='\/api\/studio-message\/send'/);
+assert.match(contactStudio,/sendBrandedEmail/);
+assert.match(contactStudio,/createContactCase/);
+assert.match(contactStudio,/CONTACT_INTERNAL='rht@gmx\.com'/);
+assert.match(mime,/width="64" height="66"/);
+assert.match(mime,/Content-Location:/);
+assert.match(mime,/X-Attachment-Id:/);
+assert.match(signature,/width="64" height="66"/);
+
+assert.match(mailUi,/min-height:520px!important/);
+assert.match(mailUi,/height:52vh/);
+assert.match(mailUi,/logo-gnk-asg-canonical\.svg/);
+
+assert.match(worker,/GNK_ASG_UNIFIED_AUTH_V31_MAIL_NEWS_CONTRAST/);
+assert.match(worker,/public-unified-menu-v6\.js/);
+assert.match(worker,/public-contrast-hardening-v1\.js/);
+assert.match(worker,/index-editorial-order-v6\.js/);
+assert.match(worker,/mail-studio-ui-v28\.js/);
+assert.match(worker,/handleContactStudio/);
+assert.match(config,/main = "src\/index-unified-auth-v21\.js"/);
+
+const newPages=[
+ 'apps/portal/objave/transparentno-upravljanje-kao-operativni-standard/index.html',
+ 'apps/portal/analize/ai-infrastruktura-kapital-energija/index.html',
+ 'apps/portal/objave/kiberneticka-otpornost-i-kontinuitet/index.html',
+ 'apps/portal/komentari/trzista-traze-jasne-informacije/index.html',
+ 'apps/portal/komentari/automatizacija-ne-ukida-odgovornost/index.html'
+];
+const images=[
+ 'apps/portal/assets/editorial/transparent-governance.svg',
+ 'apps/portal/assets/editorial/ai-infrastructure.svg',
+ 'apps/portal/assets/editorial/cyber-resilience.svg',
+ 'apps/portal/assets/editorial/market-information.svg',
+ 'apps/portal/assets/editorial/responsible-automation.svg'
+];
+for(const file of [...newPages,...images])assert.ok(fs.existsSync(file)&&fs.statSync(file).size>100,`missing ${file}`);
+for(const page of newPages){const html=read(page);assert.match(html,/class="article-cover"/);assert.match(html,/editorial-content-v2\.css/);assert.match(html,/logo-gnk-asg-canonical\.svg/)}
+assert.equal((comments.match(/class="editorial-card"/g)||[]).length,5);
+assert.equal((publications.match(/class="editorial-card"/g)||[]).length,5);
+assert.equal((analyses.match(/class="editorial-card"/g)||[]).length,4);
+
+const localNews=JSON.parse(read('apps/portal/data/news.json'));
+assert.ok(Array.isArray(localNews));
+assert.ok(localNews.length>=100,`local news fallback must contain >=100 items; actual=${localNews.length}`);
+
+console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-target-4.5',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520},editorial:{newTexts:5,newImages:5,collections:{publications:5,analyses:4,commentary:5}}},null,2));
