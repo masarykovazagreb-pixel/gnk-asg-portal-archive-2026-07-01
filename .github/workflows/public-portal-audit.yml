@@ -10,6 +10,7 @@ on:
       - 'scripts/predeploy-release-v6.mjs'
       - 'scripts/test-email-signature-contract.mjs'
       - 'scripts/test-mail-transport-guardrails.mjs'
+      - 'scripts/test-email-mime-guardrails.mjs'
       - 'scripts/verify-production-route.sh'
       - '.github/workflows/public-portal-audit.yml'
   workflow_dispatch:
@@ -39,17 +40,20 @@ jobs:
           node --check scripts/predeploy-release-v6.mjs
           node --check scripts/test-email-signature-contract.mjs
           node --check scripts/test-mail-transport-guardrails.mjs
+          node --check scripts/test-email-mime-guardrails.mjs
           node --check apps/portal/assets/public-compact-menu-v1.js
           node --check apps/portal/assets/newsroom-live-v1.js
           node --check apps/portal/assets/public-market-live-v1.js
           node --check apps/portal/assets/market-centre-data.js
           node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
           node scripts/test-email-signature-contract.mjs
           node scripts/test-mail-transport-guardrails.mjs
+          node scripts/test-email-mime-guardrails.mjs
           node scripts/predeploy-release-v6.mjs
       - name: Upload audit reports
         if: always()
