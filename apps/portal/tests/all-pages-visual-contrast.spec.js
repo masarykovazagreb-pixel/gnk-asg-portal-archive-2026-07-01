@@ -27,18 +27,34 @@ function routeForFile(file) {
 function safeName(value) {
   return value.replace(/^\/+|\/+$/g, '').replace(/[^a-z0-9._-]+/gi, '-') || 'index';
 }
-async function lockInitialDocument(page) {
-  let mainNavigationSeen = false;
+async function neutralizeRedirectStub(page) {
+  let initialDocumentHandled = false;
   await page.route('**/*', async route => {
     const request = route.request();
-    if (request.isNavigationRequest() && request.frame() === page.mainFrame()) {
-      if (mainNavigationSeen) {
-        await route.abort('aborted');
-        return;
-      }
-      mainNavigationSeen = true;
+    const isInitialDocument = request.isNavigationRequest()
+      && request.frame() === page.mainFrame()
+      && !initialDocumentHandled;
+    if (!isInitialDocument) {
+      await route.continue();
+      return;
     }
-    await route.continue();
+    initialDocumentHandled = true;
+    const response = await route.fetch();
+    const contentType = response.headers()['content-type'] || '';
+    if (!contentType.toLowerCase().includes('text/html')) {
+      await route.fulfill({ response });
+      return;
+    }
+    let body = await response.text();
+    const hasMetaRefresh = /<meta\b[^>]*http-equiv\s*=\s*["']?refresh["']?[^>]*>/i.test(body);
+    const redirectExpression = /(?:window\.)?location\.(?:replace|assign)\s*\(|(?:window\.)?location(?:\.href)?\s*=/i;
+    const isSmallScriptRedirect = body.length < 8_000 && redirectExpression.test(body);
+    if (hasMetaRefresh || isSmallScriptRedirect) {
+      body = body.replace(/<meta\b[^>]*http-equiv\s*=\s*["']?refresh["']?[^>]*>/gi, '');
+      body = body.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, block => redirectExpression.test(block) ? '' : block);
+      body = body.replace(/<html\b([^>]*)>/i, '<html$1 data-gnk-audit-redirect-stub="true">');
+    }
+    await route.fulfill({ response, body });
   });
 }
 const routes = [...new Set(walkHtml(PORTAL_ROOT).map(routeForFile))].sort();
@@ -52,7 +68,7 @@ test.beforeAll(() => {
 
 for (const route of routes) {
   test(`rendered contrast ${route}`, async ({ page }, testInfo) => {
-    await lockInitialDocument(page);
+    await neutralizeRedirectStub(page);
     const response = await page.goto(route, { waitUntil: 'domcontentloaded', timeout: 12_000 });
     expect(response, `${route} did not return a response`).not.toBeNull();
     expect(response.status(), `${route} returned HTTP ${response.status()}`).toBeLessThan(500);
@@ -237,6 +253,7 @@ for (const route of routes) {
       }
       return {
         url: location.href, title: document.title, lang: document.documentElement.lang || '', checked, runtimeRepairs,
+        redirectStubNeutralized: document.documentElement.dataset.gnkAuditRedirectStub === 'true',
         violations: violations.slice(0, 80), totalViolations: violations.length,
         imageBackgroundWarnings: imageBackgroundWarnings.slice(0, 40), totalImageBackgroundWarnings: imageBackgroundWarnings.length,
         runtime: { state: document.documentElement.dataset.gnkContrast || null, version: document.documentElement.dataset.gnkContrastVersion || null, source: runtimeSource }
