@@ -1,0 +1,45 @@
+name: SEO and News Visibility Cycle
+on:
+  schedule:
+    - cron: '17 */2 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/seo-visibility-cycle-v1.mjs'
+      - 'scripts/refresh-public-news-v4.mjs'
+      - '.github/workflows/seo-news-cycle.yml'
+permissions:
+  contents: write
+concurrency:
+  group: editorial-main-writer
+  cancel-in-progress: false
+jobs:
+  improve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Refresh public news
+        run: node scripts/refresh-public-news-v4.mjs
+      - name: Audit and repair editorial SEO
+        run: node scripts/seo-visibility-cycle-v1.mjs
+      - name: Commit safe deterministic updates
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo "No safe SEO or news changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/update_status.json apps/portal/data/seo-visibility-status.json apps/portal/editorial-sitemap.xml apps/portal/objave apps/portal/komentari apps/portal/analize apps/portal/en/publications apps/portal/en/commentary apps/portal/en/analyses artifacts/seo-visibility-report.json
+          git commit -m "Refresh news and editorial SEO visibility"
+          git push origin HEAD:main
