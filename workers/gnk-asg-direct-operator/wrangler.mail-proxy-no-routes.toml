@@ -1,5 +1,5 @@
 name = "gnk-asg-direct-operator"
-main = "src/index-unified-auth-v21.js"
+main = "src/index-unified-auth-v22.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
@@ -27,7 +27,7 @@ remote = true
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260713-v31-mail-news-contrast"
+DEPLOY_REVISION = "20260714-v32-email-status-receipt-contrast"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "false"
@@ -49,7 +49,9 @@ MEDIA_OUTREACH_MAX_PER_HOUR = "1"
 MEDIA_OUTREACH_MAX_PER_DAY = "3"
 MEDIA_APPLICATION_AUTO_ACK = "false"
 EMAIL_STATUS_PUBLIC_ORIGIN = "https://gnk-asg.hr"
-EMAIL_OPEN_TRACKING_ENABLED = "false"
+EMAIL_OPEN_TRACKING_ENABLED = "true"
+EMAIL_RECEIPT_CONFIRMATION_ENABLED = "true"
+EMAIL_STATUS_EVENT_RETENTION_DAYS = "31"
 EMAIL_STATUS_SYNC_LOOKBACK_HOURS = "48"
 EMAIL_STATUS_SYNC_OVERLAP_MINUTES = "15"
 EMAIL_STATUS_SYNC_LIMIT = "5000"
