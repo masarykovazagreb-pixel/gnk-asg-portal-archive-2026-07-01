@@ -31,7 +31,21 @@ for(const route of [
  '/objave/tehnologija-kapital-i-odgovorno-upravljanje/','/analize/kapitalna-struktura-i-operativna-otpornost/','/komentari/inovacija-bez-povjerenja-nije-napredak/',
  '/en/publications/technology-capital-and-responsible-governance/','/en/analyses/capital-structure-and-operational-resilience/','/en/commentary/innovation-without-trust-is-not-progress/'
 ])assert.match(sitemap,new RegExp(route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
-const counts={objave:5,analize:4,komentari:5};
-for(const[collection,expected]of Object.entries(counts)){const html=fs.readFileSync(`apps/portal/${collection}/index.html`,'utf8');assert.equal((html.match(/class="editorial-card"/g)||[]).length,expected,`${collection} must show ${expected} cards`)}
-for(const collection of ['publications','analyses','commentary']){const html=fs.readFileSync(`apps/portal/en/${collection}/index.html`,'utf8');assert.equal((html.match(/class="editorial-card"/g)||[]).length,3,`${collection} must show three cards`)}
-console.log(JSON.stringify({ok:true,liveNewsSources:true,visibleNews:100,collections:{hr:counts,en:{publications:3,analyses:3,commentary:3}},newImageLedArticles:5,sitemap:true},null,2));
+function collectionContract(file,{minimum,prefix}){
+ const html=fs.readFileSync(file,'utf8'),count=(html.match(/class="editorial-card"/g)||[]).length;
+ assert.ok(count>=minimum,`${file} must show at least ${minimum} cards; actual=${count}`);
+ const links=[...html.matchAll(new RegExp(`<a href="(${prefix}[^"#?]+/)"`,'g'))].map(match=>match[1]);
+ assert.equal(new Set(links).size,links.length,`${file} contains duplicate collection links`);
+ return count;
+}
+const hr={
+ objave:collectionContract('apps/portal/objave/index.html',{minimum:5,prefix:'/objave/'}),
+ analize:collectionContract('apps/portal/analize/index.html',{minimum:4,prefix:'/analize/'}),
+ komentari:collectionContract('apps/portal/komentari/index.html',{minimum:5,prefix:'/komentari/'})
+};
+const en={
+ publications:collectionContract('apps/portal/en/publications/index.html',{minimum:3,prefix:'/en/publications/'}),
+ analyses:collectionContract('apps/portal/en/analyses/index.html',{minimum:3,prefix:'/en/analyses/'}),
+ commentary:collectionContract('apps/portal/en/commentary/index.html',{minimum:3,prefix:'/en/commentary/'})
+};
+console.log(JSON.stringify({ok:true,liveNewsSources:true,visibleNews:100,collections:{hr,en},newImageLedArticles:5,sitemap:true,growingCollections:true},null,2));
