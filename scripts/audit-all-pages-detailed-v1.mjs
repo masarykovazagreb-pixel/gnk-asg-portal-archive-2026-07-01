@@ -7,10 +7,11 @@ const REPORT=path.resolve('artifacts/all-pages-detailed-audit.json');
 const MENU_FILE=path.resolve('apps/portal/assets/public-unified-menu-v6.js');
 const WORKER_FILE=path.resolve('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js');
 const PROTECTED=['/admin','/admin-center','/mail-studio','/campaign-mailer','/email-status','/worker-ops','/operator-dashboard','/digital-headquarters','/media-registration-admin','/webmail'];
-const IGNORE_HTML_PREFIXES=['assets/','.github/'];
+const IGNORE_DIRS=new Set(['node_modules','test-results','playwright-report','.git']);
+const IGNORE_HTML_PREFIXES=['assets/','.github/','node_modules/','test-results/','playwright-report/'];
 const DYNAMIC_PREFIXES=['/api/','/cdn-cgi/','/.well-known/'];
 const posix=value=>value.split(path.sep).join('/');
-const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{const target=path.join(dir,entry.name);return entry.isDirectory()?walk(target):[target]});
+const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{if(entry.isDirectory()&&IGNORE_DIRS.has(entry.name))return[];const target=path.join(dir,entry.name);return entry.isDirectory()?walk(target):[target]});
 const rel=file=>posix(path.relative(ROOT,file));
 const isUtilityHtml=file=>/^google[a-f0-9]+\.html$/i.test(path.basename(file));
 const routeFor=file=>{const r=rel(file);if(r==='index.html')return'/';if(r.endsWith('/index.html'))return`/${r.slice(0,-10)}`;return`/${r}`};
@@ -71,7 +72,7 @@ for(const file of htmlFiles){
  for(const code of pageWarnings)warnings.push({route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
 }
 for(const route of menuMissing)errors.push({route,file:'apps/portal/assets/public-unified-menu-v6.js',code:'menu-route-missing-physical-page'});
-const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V3_EDGE_NORMALIZED',generatedAt:new Date().toISOString(),summary:{pages:pages.length,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks:pages.filter(page=>page.contrastRisks.length).length,pagesWithLegacyLogoSources:pages.filter(page=>page.nonCanonicalLogoRefs.length).length,legacyLogosNormalizedAtEdge:pages.reduce((n,page)=>n+page.edgeNormalizedLegacyLogos.length,0),pagesWithForms:pages.filter(page=>page.formIssues.length||/<form\b/i.test(fs.readFileSync(path.resolve(page.file),'utf8'))).length},menuMissing,errors,warnings,pages};
+const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED',generatedAt:new Date().toISOString(),summary:{pages:pages.length,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks:pages.filter(page=>page.contrastRisks.length).length,pagesWithLegacyLogoSources:pages.filter(page=>page.nonCanonicalLogoRefs.length).length,legacyLogosNormalizedAtEdge:pages.reduce((n,page)=>n+page.edgeNormalizedLegacyLogos.length,0),pagesWithForms:pages.filter(page=>page.formIssues.length||/<form\b/i.test(fs.readFileSync(path.resolve(page.file),'utf8'))).length},menuMissing,errors,warnings,pages};
 fs.mkdirSync(path.dirname(REPORT),{recursive:true});fs.writeFileSync(REPORT,JSON.stringify(report,null,2));
 console.log(JSON.stringify(report.summary,null,2));
 if(errors.length){for(const item of errors.slice(0,120))console.error(`- ${item.code} ${item.route} (${item.file})`);process.exit(1)}
