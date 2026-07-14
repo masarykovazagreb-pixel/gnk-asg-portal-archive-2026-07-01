@@ -7,6 +7,8 @@ const editorial=fs.readFileSync('apps/portal/assets/index-editorial-order-v6.js'
 const contrast=fs.readFileSync('apps/portal/assets/public-contrast-hardening-v1.js','utf8');
 const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js','utf8');
 const wrapper=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js','utf8');
+const editorialWrapper=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js','utf8');
+const editorialRouter=fs.readFileSync('workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js','utf8');
 const config=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml','utf8');
 const signature=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js','utf8');
 const contract=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js','utf8');
@@ -59,11 +61,16 @@ assert.match(worker,/handleContactStudio/);
 assert.match(wrapper,/GNK_ASG_UNIFIED_AUTH_V32_DETAILED_EMAIL_STATUS_RECEIPT/);
 assert.match(wrapper,/index-unified-auth-v21\.js/);
 assert.match(wrapper,/handleEmailStatusRequest/);
-assert.match(config,/main = "src\/index-unified-auth-v22\.js"/);
+assert.match(editorialWrapper,/GNK_ASG_UNIFIED_AUTH_V33_PUBLIC_EDITORIAL_ASSETS/);
+assert.match(editorialWrapper,/index-unified-auth-v22\.js/);
+assert.match(editorialWrapper,/servePublicEditorialAsset/);
+assert.match(editorialRouter,/GNK_PUBLIC_EDITORIAL_ASSETS_V1_20260714/);
+assert.match(editorialRouter,/x-gnk-editorial-assets/);
+assert.match(config,/main = "src\/index-unified-auth-v23\.js"/);
 
 for(const source of [signature,contract]){
  assert.match(source,/width="64" height="66"/);
  assert.doesNotMatch(source,/width="108"|height="111"/);
 }
 
-console.log(JSON.stringify({ok:true,menu:'visible-v6-full-workers',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary',contrast:'hardened-v4-all-pages-visual-repair',worker:'v32-over-v31',deployPerformed:false},null,2));
+console.log(JSON.stringify({ok:true,menu:'visible-v6-full-workers',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-direct-assets',contrast:'hardened-v4-all-pages-visual-repair',worker:'v33-over-v32-over-v31',deployPerformed:false},null,2));
