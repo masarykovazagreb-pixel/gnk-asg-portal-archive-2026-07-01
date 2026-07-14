@@ -184,7 +184,7 @@ jobs:
           npx playwright test tests/all-pages-visual-contrast.spec.js \
             --project=chromium-mobile \
             --workers=1 \
-            --grep '^rendered contrast /$' \
+            --grep 'rendered contrast /$' \
             --reporter=line
 
       - name: Validate browser contrast evidence
