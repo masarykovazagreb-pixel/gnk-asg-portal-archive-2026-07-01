@@ -30,12 +30,14 @@ const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"'),reco
 assert.match(verifier,/grep -Fq -- "\$expected_marker" "\$output"/);
 assert.match(verifier,/grep -Fiq -- "\$expected_marker" "\$headers"/);
 assert.doesNotMatch(verifier,/grep -Fq "\$expected_marker"|grep -Fiq "\$expected_marker"/);
-assert.match(verifier,/allowed_statuses="\$\{4:-200\}"/);
-assert.match(verifier,/"\$url" == https:\/\/gnk-asg\.hr\/admin-login\/\*/);
-assert.match(verifier,/allowed_statuses="200,401"/);
-assert.match(verifier,/status_allowed "\$status"/);
-assert.match(verifier,/Allowed HTTP \$\{status\} received, but expected marker is missing/);
-assert.doesNotMatch(verifier,/gnk-asg\.hr\/(?:admin-center|mail-studio|operator-dashboard)\/\*/);
+for(const marker of [
+  'allowed_statuses="${4:-200}"',
+  '"$url" == https://gnk-asg.hr/admin-login/*',
+  'allowed_statuses="200,401"',
+  'status_allowed "$status"',
+  'Allowed HTTP ${status} received, but expected marker is missing'
+])assert.ok(verifier.includes(marker),`Missing verifier marker: ${marker}`);
+for(const forbidden of ['gnk-asg.hr/admin-center/*','gnk-asg.hr/mail-studio/*','gnk-asg.hr/operator-dashboard/*'])assert.ok(!verifier.includes(forbidden),`Verifier exception too broad: ${forbidden}`);
 
 assert.match(baseWorker,/GNK_ASG_UNIFIED_AUTH_V29_DIRECT_INDEX_CANONICAL_RELEASE/);
 assert.match(baseWorker,/\['\/','\/index\.html'\]/);
