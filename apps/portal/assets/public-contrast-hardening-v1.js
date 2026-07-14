@@ -24,7 +24,7 @@ html,body{color-scheme:light dark}
 input,select,textarea{background:#fff!important;color:#07162d!important;border-color:#8b6722!important}
 input::placeholder,textarea::placeholder{color:#475569!important;opacity:1!important}
 button{font-weight:800}
-.ai-fab .ai-fab-mark{color:#07162d!important;text-shadow:none!important}
+.ai-fab .ai-fab-mark{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.7)!important}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #fff!important;outline-offset:3px!important}
 [data-theme="light"] a:focus-visible,.theme-light a:focus-visible{outline-color:#07162d!important}
 
@@ -253,9 +253,9 @@ function repairElement(el){
   const rect=el.getBoundingClientRect();
   if(style.visibility==='hidden'||style.display==='none'||Number(style.opacity)<.05||rect.width<1||rect.height<1)return;
   if(el.matches('.ai-fab-mark')){
-    el.style.setProperty('color','#07162d','important');
-    el.style.setProperty('text-shadow','none','important');
-    el.dataset.gnkContrastFixed='assistant-mark-explicit-dark';
+    el.style.setProperty('color','#fff','important');
+    el.style.setProperty('text-shadow','0 1px 2px rgba(0,0,0,.7)','important');
+    el.dataset.gnkContrastFixed='assistant-mark-explicit-light';
     el.dataset.gnkContrastCheckedAt=String(Date.now());
     return;
   }
