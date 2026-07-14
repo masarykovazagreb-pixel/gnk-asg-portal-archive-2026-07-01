@@ -1,13 +1,13 @@
 (()=>{
 'use strict';
-const URL='/data/mail-audit-20260713.json?v=20260714';
+const URL='/api/editorial-approval/mail-audit';
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 function yesNo(value){return value?'DA':'NE'}
 async function render(){
   const host=document.getElementById('policyPanel');
   if(!host)return;
   try{
-    const response=await fetch(URL,{cache:'no-store',headers:{accept:'application/json'}});
+    const response=await fetch(URL,{cache:'no-store',credentials:'same-origin',headers:{accept:'application/json'}});
     if(!response.ok)throw new Error(`HTTP ${response.status}`);
     const data=await response.json();
     const card=document.createElement('article');
