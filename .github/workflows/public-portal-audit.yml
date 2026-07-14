@@ -20,12 +20,19 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - name: Install Chromium visual-audit runtime
+        working-directory: apps/portal
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install --with-deps chromium
 
       - name: Syntax checks
         run: |
@@ -36,6 +43,7 @@ jobs:
             scripts/audit-public-portal-v1.mjs \
             scripts/audit-all-pages-detailed-v1.mjs \
             scripts/audit-worker-route-ownership.mjs \
+            scripts/audit-seo-entity-integrity-v1.mjs \
             scripts/predeploy-release-v6.mjs \
             scripts/prepare-approved-deploy-v1.mjs \
             scripts/assert-production-news-fallback.mjs \
@@ -57,6 +65,7 @@ jobs:
             scripts/test-autoreply-guardrails.mjs \
             scripts/test-autoreply-all-addresses.mjs \
             scripts/test-news-queue-guardrails.mjs \
+            apps/portal/tests/all-pages-visual-contrast.spec.js \
             apps/portal/assets/public-compact-menu-v1.js \
             apps/portal/assets/public-design-runtime-v1.js \
             apps/portal/assets/public-unified-menu-v5.js \
@@ -148,8 +157,15 @@ jobs:
       - name: News queue contract
         run: node scripts/test-news-queue-guardrails.mjs
 
+      - name: SEO entity and sitemap integrity
+        run: node scripts/audit-seo-entity-integrity-v1.mjs
+
       - name: Detailed page-by-page audit
         run: node scripts/audit-all-pages-detailed-v1.mjs
+
+      - name: Browser-rendered desktop and mobile contrast audit
+        working-directory: apps/portal
+        run: npx playwright test tests/all-pages-visual-contrast.spec.js --project=chromium-desktop --project=chromium-mobile --workers=4
 
       - name: Public portal and infrastructure audits
         run: |
@@ -172,5 +188,8 @@ jobs:
             artifacts/public-portal-audit.json
             artifacts/all-pages-detailed-audit.json
             artifacts/worker-route-ownership.json
+            apps/portal/test-results/visual-contrast/**
+            apps/portal/test-results/**/*.png
+            apps/portal/test-results/**/*.jpg
           if-no-files-found: warn
           retention-days: 14
