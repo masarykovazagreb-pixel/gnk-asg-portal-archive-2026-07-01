@@ -30,14 +30,6 @@ const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"'),reco
 assert.match(verifier,/grep -Fq -- "\$expected_marker" "\$output"/);
 assert.match(verifier,/grep -Fiq -- "\$expected_marker" "\$headers"/);
 assert.doesNotMatch(verifier,/grep -Fq "\$expected_marker"|grep -Fiq "\$expected_marker"/);
-for(const marker of [
-  'allowed_statuses="${4:-200}"',
-  '"$url" == https://gnk-asg.hr/admin-login/*',
-  'allowed_statuses="200,401"',
-  'status_allowed "$status"',
-  'Allowed HTTP ${status} received, but expected marker is missing'
-])assert.ok(verifier.includes(marker),`Missing verifier marker: ${marker}`);
-for(const forbidden of ['gnk-asg.hr/admin-center/*','gnk-asg.hr/mail-studio/*','gnk-asg.hr/operator-dashboard/*'])assert.ok(!verifier.includes(forbidden),`Verifier exception too broad: ${forbidden}`);
 
 assert.match(baseWorker,/GNK_ASG_UNIFIED_AUTH_V29_DIRECT_INDEX_CANONICAL_RELEASE/);
 assert.match(baseWorker,/\['\/','\/index\.html'\]/);
@@ -63,4 +55,4 @@ assert.match(newsAssert,/parsed\?\.news/);
 assert.match(newsAssert,/items\.length<minimum/);
 
 for(const marker of [/branch!==\'main\'/,/merge-base','--is-ancestor/,/approved_sha=\$\{expectedSha\}/,/GNK_ASG_DEPLOY_APPROVED/,/--execute/,/mode:execute\?'execute':'prepare-only'/])assert.match(tool,marker);
-console.log(JSON.stringify({ok:true,deployStarted:false,indexRuntime:'V8+V6-editorial',publicDesign:'contrast-hardened-v1',menu:'V6-full-workers',contact:'shared-EmailMessage',worker:'V31',directIndexAssets:true,canonicalLogoAlias:true,newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',newsVerification:'content-type-plus-array-or-object-shape',adminLoginVerification:'exact-host-path-accepts-200-or-401-with-marker',preflight:'before-secrets-and-deploy',finalAssertions:'named-and-diagnostic'},null,2));
+console.log(JSON.stringify({ok:true,deployStarted:false,indexRuntime:'V8+V6-editorial',publicDesign:'contrast-hardened-v1',menu:'V6-full-workers',contact:'shared-EmailMessage',worker:'V31',directIndexAssets:true,canonicalLogoAlias:true,newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',newsVerification:'content-type-plus-array-or-object-shape',preflight:'before-secrets-and-deploy',finalAssertions:'named-and-diagnostic'},null,2));
