@@ -1,0 +1,27 @@
+{
+  "version": "GNK_ASG_EMAIL_OPERATIONS_HOTFIX_20260714_V1",
+  "base_sha": "fe43ac5c4717a6debbb96fe2a80049669d2ceccd",
+  "scope": {
+    "contact_json_and_formdata_compatibility": true,
+    "ai_autoreply": true,
+    "global_communications_centres": 10,
+    "random_centre_selection": true,
+    "fallback_acknowledgement": true,
+    "inline_cid_logo_required": true,
+    "email_status_operations_dashboard": true,
+    "autoreply_audit": true,
+    "advanced_filters": true,
+    "pagination": true,
+    "csv_export": true,
+    "admin_login_401_verifier": true
+  },
+  "safety": {
+    "dns_changed": false,
+    "cloudflare_routes_changed": false,
+    "secrets_changed": false,
+    "tokens_changed": false,
+    "campaigns_started": false,
+    "emails_sent_during_tests": false,
+    "production_deploy_started": false
+  }
+}
