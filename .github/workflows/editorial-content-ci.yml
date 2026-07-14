@@ -37,3 +37,20 @@ jobs:
         run: node scripts/test-editorial-publish-seo-v1.mjs
       - name: SEO audit
         run: node scripts/seo-visibility-cycle-v1.mjs
+      - name: Prove publisher and SEO idempotency
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp=$(mktemp -d)
+          cp -R apps scripts artifacts "$tmp/"
+          cd "$tmp"
+          EDITORIAL_NOW='2026-07-14T20:53:00+02:00' node scripts/editorial-publish-scheduled-v1.mjs
+          find apps/portal/objave apps/portal/komentari apps/portal/data/editorial-plan artifacts -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/publisher-before.sha
+          EDITORIAL_NOW='2026-07-14T20:53:00+02:00' node scripts/editorial-publish-scheduled-v1.mjs
+          find apps/portal/objave apps/portal/komentari apps/portal/data/editorial-plan artifacts -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/publisher-after.sha
+          diff -u /tmp/publisher-before.sha /tmp/publisher-after.sha
+          node scripts/seo-visibility-cycle-v1.mjs
+          find apps/portal/objave apps/portal/komentari apps/portal/analize apps/portal/en/publications apps/portal/en/commentary apps/portal/en/analyses apps/portal/data/seo-visibility-status.json apps/portal/editorial-sitemap.xml artifacts/seo-visibility-report.json -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/seo-before.sha
+          node scripts/seo-visibility-cycle-v1.mjs
+          find apps/portal/objave apps/portal/komentari apps/portal/analize apps/portal/en/publications apps/portal/en/commentary apps/portal/en/analyses apps/portal/data/seo-visibility-status.json apps/portal/editorial-sitemap.xml artifacts/seo-visibility-report.json -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/seo-after.sha
+          diff -u /tmp/seo-before.sha /tmp/seo-after.sha
