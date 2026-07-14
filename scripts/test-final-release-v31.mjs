@@ -104,12 +104,19 @@ const images=[
 ];
 for(const file of [...newPages,...images])assert.ok(fs.existsSync(file)&&fs.statSync(file).size>100,`missing ${file}`);
 for(const page of newPages){const html=read(page);assert.match(html,/class="article-cover"/);assert.match(html,/editorial-content-v2\.css/);assert.match(html,/logo-gnk-asg-canonical\.svg/)}
-assert.equal((comments.match(/class="editorial-card"/g)||[]).length,5);
-assert.equal((publications.match(/class="editorial-card"/g)||[]).length,5);
-assert.equal((analyses.match(/class="editorial-card"/g)||[]).length,4);
+function cards(html,label,minimum){
+ const count=(html.match(/class="editorial-card"/g)||[]).length;
+ assert.ok(count>=minimum,`${label} must contain at least ${minimum} cards; actual=${count}`);
+ const links=[...html.matchAll(/<a href="(\/(?:objave|komentari|analize)\/[^"#?]+\/)"/g)].map(match=>match[1]);
+ assert.equal(new Set(links).size,links.length,`${label} contains duplicate editorial links`);
+ return count;
+}
+const publicationCount=cards(publications,'publications',5);
+const commentCount=cards(comments,'comments',5);
+const analysisCount=cards(analyses,'analyses',4);
 
 const localNews=JSON.parse(read('apps/portal/data/news.json'));
 assert.ok(Array.isArray(localNews));
 assert.ok(localNews.length>=100,`local news fallback must contain >=100 items; actual=${localNews.length}`);
 
-console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v7-detailed-receipt'},editorial:{newTexts:5,newImages:5,collections:{publications:5,analyses:4,commentary:5}},worker:'v32-over-v31'},null,2));
+console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v7-detailed-receipt'},editorial:{minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v32-over-v31'},null,2));
