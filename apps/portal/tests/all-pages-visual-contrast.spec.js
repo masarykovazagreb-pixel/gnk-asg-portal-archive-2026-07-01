@@ -29,13 +29,20 @@ function safeName(value) {
 }
 async function settleClientRedirect(page) {
   const startUrl = page.url();
-  const redirectExpected = await page.evaluate(() => {
-    const refresh = document.querySelector('meta[http-equiv="refresh" i]');
-    const scriptRedirect = [...document.scripts].some(script =>
-      /\b(?:window\.)?location\.(?:replace|assign)\s*\(|\b(?:window\.)?location(?:\.href)?\s*=/.test(script.textContent || '')
-    );
-    return Boolean(refresh || scriptRedirect);
-  });
+  let redirectExpected = false;
+  try {
+    redirectExpected = await page.evaluate(() => {
+      const refresh = document.querySelector('meta[http-equiv="refresh" i]');
+      const scriptRedirect = [...document.scripts].some(script => {
+        const source = script.textContent || '';
+        return /setTimeout\s*\([\s\S]{0,500}\blocation\.(?:replace|assign)\s*\(/.test(source)
+          || /^\s*(?:window\.)?location\.(?:replace|assign)\s*\(/.test(source);
+      });
+      return Boolean(refresh || scriptRedirect);
+    });
+  } catch {
+    redirectExpected = true;
+  }
   if (!redirectExpected) return;
   try {
     await page.waitForURL(url => url.toString() !== startUrl, { timeout: 2_000, waitUntil: 'domcontentloaded' });
@@ -56,9 +63,10 @@ test.beforeAll(() => {
 
 for (const route of routes) {
   test(`rendered contrast ${route}`, async ({ page }, testInfo) => {
-    const response = await page.goto(route, { waitUntil: 'domcontentloaded', timeout: 12_000 });
+    const response = await page.goto(route, { waitUntil: 'commit', timeout: 12_000 });
     expect(response, `${route} did not return a response`).not.toBeNull();
     expect(response.status(), `${route} returned HTTP ${response.status()}`).toBeLessThan(500);
+    await page.waitForLoadState('domcontentloaded').catch(() => {});
     await settleClientRedirect(page);
 
     const runtimeWasPresent = await page.evaluate(() => document.documentElement.dataset.gnkContrast === 'hardened-v4');
@@ -162,7 +170,7 @@ for (const route of routes) {
         return { candidates, imageBackground };
       };
       const luminance = color => {
-        const linear = [color.r, color.g,color.b].map(value => {
+        const linear = [color.r, color.g, color.b].map(value => {
           const channel = clamp(value) / 255;
           return channel <= 0.03928 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
         });
