@@ -7,6 +7,7 @@ const dashboard=fs.readFileSync('apps/portal/assets/email-status-dashboard-v2.js
 const contrast=fs.readFileSync('apps/portal/assets/public-contrast-hardening-v1.js','utf8');
 const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js','utf8');
 const wrangler=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml','utf8');
+const verifier=fs.readFileSync('scripts/verify-production-route.sh','utf8');
 
 for(const marker of [
   /GNK_ASG_EMAIL_STATUS_TRACKING_V2_20260714_DETAILED_RECEIPT/,
@@ -72,6 +73,13 @@ assert.match(worker,/x-gnk-contrast-runtime','hardened-v3/);
 assert.match(wrangler,/EMAIL_OPEN_TRACKING_ENABLED = "true"/);
 assert.match(wrangler,/EMAIL_RECEIPT_CONFIRMATION_ENABLED = "true"/);
 assert.match(wrangler,/EMAIL_STATUS_EVENT_RETENTION_DAYS = "31"/);
+for(const marker of [
+  'allowed_statuses="${4:-200}"',
+  '"$url" == https://gnk-asg.hr/admin-login/*',
+  'allowed_statuses="200,401"',
+  'status_allowed "$status"'
+])assert.ok(verifier.includes(marker),`Missing verifier marker: ${marker}`);
+for(const forbidden of ['gnk-asg.hr/admin-center/*','gnk-asg.hr/mail-studio/*','gnk-asg.hr/operator-dashboard/*'])assert.ok(!verifier.includes(forbidden),`Verifier exception too broad: ${forbidden}`);
 
 console.log(JSON.stringify({
   ok:true,
@@ -82,5 +90,6 @@ console.log(JSON.stringify({
   explicitReceiptConfirmation:true,
   forwardingReliable:false,
   contrastRuntime:'v3-gradient-protected-ui',
-  dashboard:'v4-detailed-receipt'
+  dashboard:'v4-detailed-receipt',
+  adminLoginVerifier:'200-or-401-with-marker'
 },null,2));
