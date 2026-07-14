@@ -21,37 +21,27 @@ css.textContent=`
   --gnk-readable-link:#68420b;
 }
 html,body{color-scheme:light dark}
-input,select,textarea{
-  background:#fff!important;
-  color:#07162d!important;
-  border-color:#8b6722!important;
-}
+input,select,textarea{background:#fff!important;color:#07162d!important;border-color:#8b6722!important}
 input::placeholder,textarea::placeholder{color:#475569!important;opacity:1!important}
 button{font-weight:800}
-a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{
-  outline:3px solid #fff!important;
-  outline-offset:3px!important;
-}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #fff!important;outline-offset:3px!important}
 [data-theme="light"] a:focus-visible,.theme-light a:focus-visible{outline-color:#07162d!important}
 
-/* Unified header is explicitly readable in both closed and open states. */
 #gnk-unified-header{color:#0f172a!important;background:rgba(255,255,255,.985)!important}
 #gnk-unified-header .lang a,#gnk-unified-header .nav-title,#gnk-unified-header .links a{color:#111827!important}
 #gnk-unified-header .toggle,#gnk-unified-header .links a[aria-current=page]{color:#fff!important;background:#0b2345!important}
 #gnk-unified-header nav{color:#111827!important;background:#fff!important}
 #gnk-unified-header .nav-note,#gnk-unified-header .label,#gnk-unified-header .protected{color:#6e4c17!important}
 #gnk-unified-header .links a[aria-current=page] .protected{color:#ffe08a!important}
+#gnk-unified-header,#gnk-unified-header *{forced-color-adjust:none}
 
-/* Known dark surfaces */
 .group-section,.market,footer,.assistant-description,.gnk-code-panel,
 [data-theme="dark"],.theme-dark,.dark-section,[class*="dark-panel"],
 html[data-gnk-email-status-dashboard="v4"] body,
 html[data-gnk-email-status-dashboard="v4"] .card,
 html[data-gnk-email-status-dashboard="v4"] td,
 html[data-gnk-email-status-dashboard="v4"] .gnk-health,
-html[data-gnk-email-status-dashboard="v4"] .gnk-status-help{
-  color:var(--gnk-readable-light)!important;
-}
+html[data-gnk-email-status-dashboard="v4"] .gnk-status-help{color:var(--gnk-readable-light)!important}
 .group-section .section-head h2,.market .section-head h2,
 .group-section h1,.group-section h2,.group-section h3,
 .market h1,.market h2,.market h3,footer h1,footer h2,footer h3,
@@ -69,45 +59,27 @@ html[data-gnk-email-status-dashboard="v4"] .muted,
 html[data-gnk-email-status-dashboard="v4"] .small{color:var(--gnk-readable-muted)!important}
 .group-section a,.market a,footer a,.assistant-description a,.gnk-code-panel a{color:var(--gnk-readable-gold)!important}
 
-/* Index group cards: prevent white-on-white and translucent inheritance errors */
-html .group-section .group-card{
-  background:#10233f!important;
-  color:var(--gnk-readable-light)!important;
-  border-color:rgba(255,224,138,.55)!important;
-}
+html .group-section .group-card{background:#10233f!important;color:var(--gnk-readable-light)!important;border-color:rgba(255,224,138,.55)!important}
 html .group-section .group-card .fact{border-bottom-color:rgba(220,230,245,.24)!important}
 html .group-section .group-card .fact dt{color:#dce6f5!important}
-html .group-section .group-card .fact dd,
-html .group-section .group-card .fact dd a{color:#f8fafc!important}
+html .group-section .group-card .fact dd,html .group-section .group-card .fact dd a{color:#f8fafc!important}
 html .group-section .group-card h3{color:#ffe08a!important}
-html .group-section .group-kpis div{
-  background:#263c5c!important;
-  border:1px solid rgba(220,230,245,.22)!important;
-}
+html .group-section .group-kpis div{background:#263c5c!important;border:1px solid rgba(220,230,245,.22)!important}
 html .group-section .group-kpis small{color:#f8fafc!important}
 html .group-section .group-kpis strong{color:#ffe08a!important}
 
-/* Unambiguously light surfaces. Generic panel classes remain runtime-evaluated. */
 .kpi,.tech-card,.news-card,.doc,.profile-board,.article-body{color:var(--gnk-readable-dark)!important}
-.kpi p,.tech-card p,.news-card p,.doc p,.profile-board p,
-.article-body p,.article-body li{color:var(--gnk-readable-muted-dark)!important}
-.kpi h1,.kpi h2,.kpi h3,
-.tech-card h1,.tech-card h2,.tech-card h3,.news-card h1,.news-card h2,.news-card h3,
-.doc h1,.doc h2,.doc h3,.profile-board h1,.profile-board h2,.profile-board h3,
-.article-body h1,.article-body h2,.article-body h3{color:#07162d!important}
+.kpi p,.tech-card p,.news-card p,.doc p,.profile-board p,.article-body p,.article-body li{color:var(--gnk-readable-muted-dark)!important}
+.kpi h1,.kpi h2,.kpi h3,.tech-card h1,.tech-card h2,.tech-card h3,.news-card h1,.news-card h2,.news-card h3,
+.doc h1,.doc h2,.doc h3,.profile-board h1,.profile-board h2,.profile-board h3,.article-body h1,.article-body h2,.article-body h3{color:#07162d!important}
 .article-body a,.kpi a,.tech-card a,.news-card a,.doc a,.profile-board a{color:var(--gnk-readable-link)!important}
 
-.editorial-card{
-  background:linear-gradient(145deg,#152d4c,#07111f)!important;
-  border-color:#b58c39!important;
-}
+.editorial-card{background:linear-gradient(145deg,#152d4c,#07111f)!important;border-color:#b58c39!important}
 .editorial-card h1,.editorial-card h2,.editorial-card h3{color:#fff!important}
 .editorial-card p,.editorial-card li,.editorial-card small,.editorial-card time{color:#dce6f5!important}
 .editorial-card a{color:#ffe08a!important}
 .contact-status,.small,.note,.status,.message .meta{color:inherit!important}
-#gnk-unified-header,#gnk-unified-header *{forced-color-adjust:none}
 
-/* Protected email-status page: explicit badge and table contrast */
 html[data-gnk-email-status-dashboard="v4"] .badge{color:#111827!important;text-shadow:none!important}
 html[data-gnk-email-status-dashboard="v4"] .CONFIRMED{background:#fde68a!important;color:#713f12!important}
 html[data-gnk-email-status-dashboard="v4"] .OPENED{background:#bfdbfe!important;color:#1e3a8a!important}
@@ -119,6 +91,7 @@ html[data-gnk-email-status-dashboard="v4"] .FAILED{background:#fecaca!important;
 `;
 document.head.appendChild(css);
 
+const TRANSPARENT={r:0,g:0,b:0,a:0};
 function parseColor(value){
   const text=String(value||'').trim();
   if(!text||text==='transparent')return null;
@@ -126,13 +99,13 @@ function parseColor(value){
   if(rgba){
     const normalized=rgba[1].replace(/\//g,',').replace(/\s+/g,',').replace(/,+/g,',');
     const parts=normalized.split(',').filter(Boolean).map(v=>Number(v.trim().replace('%','')));
-    if(parts.length>=3){
+    if(parts.length>=3&&parts.slice(0,3).every(Number.isFinite)){
       const percent=/%/.test(rgba[1]);
       return {
-        r:percent?parts[0]*2.55:parts[0]||0,
-        g:percent?parts[1]*2.55:parts[1]||0,
-        b:percent?parts[2]*2.55:parts[2]||0,
-        a:parts.length>3?Math.max(0,Math.min(1,parts[3]>1?parts[3]/100:parts[3])):1
+        r:percent?parts[0]*2.55:parts[0],
+        g:percent?parts[1]*2.55:parts[1],
+        b:percent?parts[2]*2.55:parts[2],
+        a:parts.length>3&&Number.isFinite(parts[3])?Math.max(0,Math.min(1,parts[3]>1?parts[3]/100:parts[3])):1
       };
     }
   }
@@ -146,12 +119,14 @@ function parseColor(value){
   return null;
 }
 function blend(fg,bg){
-  const a=fg.a+(bg.a||1)*(1-fg.a);
+  const fa=Number.isFinite(fg?.a)?fg.a:1;
+  const ba=Number.isFinite(bg?.a)?bg.a:1;
+  const a=fa+ba*(1-fa);
   if(!a)return {r:255,g:255,b:255,a:1};
   return {
-    r:(fg.r*fg.a+bg.r*(bg.a||1)*(1-fg.a))/a,
-    g:(fg.g*fg.a+bg.g*(bg.a||1)*(1-fg.a))/a,
-    b:(fg.b*fg.a+bg.b*(bg.a||1)*(1-fg.a))/a,
+    r:(fg.r*fa+bg.r*ba*(1-fa))/a,
+    g:(fg.g*fa+bg.g*ba*(1-fa))/a,
+    b:(fg.b*fa+bg.b*ba*(1-fa))/a,
     a
   };
 }
@@ -171,6 +146,46 @@ function gradientColors(value){
   return tokens.map(parseColor).filter(Boolean);
 }
 function gradientColor(value){return average(gradientColors(value))}
+function splitBackgroundLayers(value){
+  const text=String(value||'');
+  if(!text||text==='none')return [];
+  const layers=[];
+  let depth=0,start=0;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(ch==='(')depth++;
+    else if(ch===')')depth=Math.max(0,depth-1);
+    else if(ch===','&&depth===0){layers.push(text.slice(start,i).trim());start=i+1}
+  }
+  layers.push(text.slice(start).trim());
+  return layers.filter(Boolean);
+}
+function compactCandidates(colors,limit=48){
+  const seen=new Set(),out=[];
+  for(const color of colors){
+    const key=[color.r,color.g,color.b,color.a].map(v=>Math.round(v*10)/10).join(':');
+    if(seen.has(key))continue;
+    seen.add(key);out.push(color);
+    if(out.length>=limit)break;
+  }
+  return out;
+}
+function applyBackgroundImages(value,bases){
+  const layers=splitBackgroundLayers(value);
+  let candidates=bases;
+  let hasImage=false;
+  for(let i=layers.length-1;i>=0;i--){
+    const layer=layers[i];
+    if(/url\(/i.test(layer)){hasImage=true;continue}
+    const choices=gradientColors(layer);
+    if(/\btransparent\b/i.test(layer))choices.push(TRANSPARENT);
+    if(!choices.length)continue;
+    const next=[];
+    for(const base of candidates)for(const choice of choices)next.push(blend(choice,base));
+    candidates=compactCandidates(next);
+  }
+  return {candidates,hasImage};
+}
 function luminance(c){
   const values=[c.r,c.g,c.b].map(v=>{
     const x=Math.max(0,Math.min(255,v))/255;
@@ -184,26 +199,18 @@ function ratio(a,b){
 }
 function effectiveBackgroundCandidates(el){
   const chain=[];
-  let node=el;
-  let hasImage=false;
+  let node=el,hasImage=false;
   while(node&&node!==document){chain.unshift(node);node=node.parentElement}
   let candidates=[{r:255,g:255,b:255,a:1}];
   for(const item of chain){
     const style=getComputedStyle(item);
     const solid=parseColor(style.backgroundColor);
-    if(solid&&solid.a>0)candidates=candidates.map(base=>blend(solid,base));
-    const image=style.backgroundImage;
-    if(image&&image!=='none'){
-      if(/url\(/i.test(image))hasImage=true;
-      const stops=gradientColors(image);
-      if(stops.length){
-        const next=[];
-        for(const base of candidates)for(const stop of stops)next.push(blend(stop,base));
-        candidates=next.slice(0,24);
-      }
-    }
+    if(solid&&solid.a>0)candidates=compactCandidates(candidates.map(base=>blend(solid,base)));
+    const applied=applyBackgroundImages(style.backgroundImage,candidates);
+    candidates=applied.candidates;
+    hasImage=hasImage||applied.hasImage;
   }
-  return {candidates,hasImage};
+  return {candidates:compactCandidates(candidates),hasImage};
 }
 function effectiveBackground(el){return average(effectiveBackgroundCandidates(el).candidates)||{r:255,g:255,b:255,a:1}}
 const LEGACY_NORMAL_TARGET=4.8;
@@ -253,7 +260,7 @@ function repairElement(el){
     const next=bestColor(el,candidates,target);
     el.style.setProperty('color',next.value,'important');
     el.dataset.gnkContrastFixed=`${current.toFixed(2)}-${target.toFixed(1)}-${next.score.toFixed(2)}`;
-    if(hasImage&&getComputedStyle(el).textShadow==='none'){
+    if((hasImage||next.score<target)&&getComputedStyle(el).textShadow==='none'){
       const bg=effectiveBackground(el);
       el.style.setProperty('text-shadow',luminance(bg)<.42?'0 1px 3px rgba(0,0,0,.95)':'0 1px 2px rgba(255,255,255,.92)','important');
     }
@@ -289,7 +296,7 @@ const observer=new MutationObserver(records=>{
   let root=document;
   for(const record of records){
     if(record.type==='attributes'){root=record.target;break}
-    for(const node of record.addedNodes){if(node.nodeType===1){root=node;break}}
+    for(const node of record.addedNodes)if(node.nodeType===1){root=node;break}
   }
   queueRepair(root);
 });
