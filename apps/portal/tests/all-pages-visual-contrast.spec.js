@@ -27,6 +27,24 @@ function routeForFile(file) {
 function safeName(value) {
   return value.replace(/^\/+|\/+$/g, '').replace(/[^a-z0-9._-]+/gi, '-') || 'index';
 }
+async function settleClientRedirect(page) {
+  const startUrl = page.url();
+  const redirectExpected = await page.evaluate(() => {
+    const refresh = document.querySelector('meta[http-equiv="refresh" i]');
+    const scriptRedirect = [...document.scripts].some(script =>
+      /\b(?:window\.)?location\.(?:replace|assign)\s*\(|\b(?:window\.)?location(?:\.href)?\s*=/.test(script.textContent || '')
+    );
+    return Boolean(refresh || scriptRedirect);
+  });
+  if (!redirectExpected) return;
+  try {
+    await page.waitForURL(url => url.toString() !== startUrl, { timeout: 2_000, waitUntil: 'domcontentloaded' });
+  } catch {
+    // Some share routes may deliberately remain on the intermediate page.
+  }
+  await page.waitForLoadState('domcontentloaded').catch(() => {});
+  await page.waitForTimeout(150);
+}
 const routes = [...new Set(walkHtml(PORTAL_ROOT).map(routeForFile))].sort();
 
 test.describe.configure({ mode: 'parallel' });
@@ -41,6 +59,7 @@ for (const route of routes) {
     const response = await page.goto(route, { waitUntil: 'domcontentloaded', timeout: 12_000 });
     expect(response, `${route} did not return a response`).not.toBeNull();
     expect(response.status(), `${route} returned HTTP ${response.status()}`).toBeLessThan(500);
+    await settleClientRedirect(page);
 
     const runtimeWasPresent = await page.evaluate(() => document.documentElement.dataset.gnkContrast === 'hardened-v4');
     if (!runtimeWasPresent) await page.addScriptTag({ content: CONTRAST_RUNTIME });
@@ -143,7 +162,7 @@ for (const route of routes) {
         return { candidates, imageBackground };
       };
       const luminance = color => {
-        const linear = [color.r, color.g, color.b].map(value => {
+        const linear = [color.r, color.g,color.b].map(value => {
           const channel = clamp(value) / 255;
           return channel <= 0.03928 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
         });
