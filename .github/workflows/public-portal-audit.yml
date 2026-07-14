@@ -47,6 +47,7 @@ jobs:
             scripts/predeploy-release-v6.mjs \
             scripts/prepare-approved-deploy-v1.mjs \
             scripts/assert-production-news-fallback.mjs \
+            scripts/validate-visual-contrast-results-v1.mjs \
             scripts/test-deploy-approval-guardrails.mjs \
             scripts/test-index-runtime-ownership.mjs \
             scripts/test-public-design-contract.mjs \
@@ -164,8 +165,21 @@ jobs:
         run: node scripts/audit-all-pages-detailed-v1.mjs
 
       - name: Browser-rendered desktop and mobile contrast audit
+        id: playwright
+        continue-on-error: true
         working-directory: apps/portal
-        run: npx playwright test tests/all-pages-visual-contrast.spec.js --project=chromium-desktop --project=chromium-mobile --workers=4
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/visual-contrast
+          npx playwright test tests/all-pages-visual-contrast.spec.js --project=chromium-desktop --project=chromium-mobile --workers=4 --reporter=line 2>&1 | tee test-results/visual-contrast/playwright-output.log
+
+      - name: Validate browser contrast evidence
+        env:
+          PLAYWRIGHT_RAW_OUTCOME: ${{ steps.playwright.outcome }}
+        run: |
+          set -euo pipefail
+          echo "Raw Playwright outcome: ${PLAYWRIGHT_RAW_OUTCOME}"
+          node scripts/validate-visual-contrast-results-v1.mjs
 
       - name: Public portal and infrastructure audits
         run: |
