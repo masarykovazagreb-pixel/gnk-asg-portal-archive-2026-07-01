@@ -10,6 +10,7 @@ const routeFor=item=>`/${item.type==='objava'?'objave':'komentari'}/${item.slug}
 const fileFor=item=>path.join(ROOT,item.type==='objava'?'objave':'komentari',item.slug,'index.html');
 const labelFor=item=>item.type==='objava'?'Objava':'Komentar Nermina Sefića';
 const dateLabel=date=>new Intl.DateTimeFormat('hr-HR',{day:'2-digit',month:'long',year:'numeric',timeZone:'Europe/Zagreb'}).format(date);
+const writeIfChanged=(file,content)=>{const before=fs.existsSync(file)?fs.readFileSync(file,'utf8'):null;if(before===content)return false;fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,content);return true;};
 function articleHtml(item,dateIso){
   const route=routeFor(item),canonical=`https://gnk-asg.hr${route}`,keywords=(item.keywords||[]).join(', ');
   const author=item.type==='komentar'?{type:'Person',name:'Nermin Sefić',url:'https://gnk-asg.hr/nermin-sefic/'}:{type:'Organization',name:'GNK ASG d.o.o.',url:'https://gnk-asg.hr/'};
@@ -27,34 +28,39 @@ function appendCard(indexPath,item){
   if(html.includes(`href="${route}"`))return false;
   const card=`<article class="editorial-card"><img src="${esc(item.image)}" alt="${esc(item.title)}"><p class="eyebrow">${esc(item.section)}</p><h2>${esc(item.title)}</h2><p>${esc(item.summary)}</p><a href="${route}">Otvori ${item.type==='objava'?'objavu':'komentar'} →</a></article>`;
   html=html.replace('</section></main>',`${card}</section></main>`);
-  fs.writeFileSync(indexPath,html);return true;
+  return writeIfChanged(indexPath,html);
 }
 function appendSitemap(item,date){
   const file=path.join(ROOT,'editorial-sitemap.xml');let xml=fs.readFileSync(file,'utf8'),url=`https://gnk-asg.hr${routeFor(item)}`;
   if(xml.includes(`<loc>${url}</loc>`))return false;
   xml=xml.replace('</urlset>',`  <url><loc>${url}</loc><lastmod>${date}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>\n</urlset>`);
-  fs.writeFileSync(file,xml);return true;
+  return writeIfChanged(file,xml);
 }
 if(!fs.existsSync(PLAN))throw new Error(`Missing plan: ${PLAN}`);
-const plan=JSON.parse(fs.readFileSync(PLAN,'utf8'));
+const planSource=fs.readFileSync(PLAN,'utf8');
+const plan=JSON.parse(planSource);
 const now=new Date(process.env.EDITORIAL_NOW||Date.now());
-const summary={ok:true,version:'GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V2_20260714',now:now.toISOString(),packages:[],published:[]};
+const summary={ok:true,version:'GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714',now:now.toISOString(),packages:[],published:[],publicChanged:false,stateChanged:false};
 for(const pack of plan.packages||[]){
   const items=(pack.files||[]).flatMap(file=>JSON.parse(fs.readFileSync(path.join(PLAN_DIR,file),'utf8')));
   const publishAt=new Date(pack.publishAt),due=now>=publishAt,already=Boolean(pack.publishedAt);
   const itemSummary={id:pack.id,publishAt:pack.publishAt,due,alreadyPublished:already,published:[]};
   if(due&&!already){
     if(!pack.deployApproved)throw new Error(`Package ${pack.id} lacks deploy approval`);
+    const allRoutes=[];
     for(const item of items){
-      const target=fileFor(item);fs.mkdirSync(path.dirname(target),{recursive:true});
-      if(!fs.existsSync(target)){fs.writeFileSync(target,articleHtml(item,pack.publishAt));itemSummary.published.push(routeFor(item));summary.published.push(routeFor(item));}
-      appendCard(path.join(ROOT,item.type==='objava'?'objave':'komentari','index.html'),item);
-      appendSitemap(item,pack.publishAt.slice(0,10));
+      const target=fileFor(item),route=routeFor(item);allRoutes.push(route);
+      if(writeIfChanged(target,articleHtml(item,pack.publishAt)))summary.publicChanged=true;
+      if(appendCard(path.join(ROOT,item.type==='objava'?'objave':'komentari','index.html'),item))summary.publicChanged=true;
+      if(appendSitemap(item,pack.publishAt.slice(0,10)))summary.publicChanged=true;
+      itemSummary.published.push(route);summary.published.push(route);
     }
-    pack.publishedAt=now.toISOString();pack.status='published';pack.publishedRoutes=itemSummary.published;
+    pack.publishedAt=now.toISOString();pack.status='published';pack.publishedRoutes=allRoutes;
+    summary.stateChanged=true;
   }
   summary.packages.push(itemSummary);
 }
-fs.writeFileSync(PLAN,JSON.stringify(plan,null,2));
-fs.mkdirSync(path.dirname(REPORT),{recursive:true});fs.writeFileSync(REPORT,JSON.stringify(summary,null,2));
+const nextPlan=JSON.stringify(plan,null,2);
+if(nextPlan!==planSource){writeIfChanged(PLAN,nextPlan);summary.stateChanged=true;}
+if(summary.publicChanged||summary.stateChanged){writeIfChanged(REPORT,JSON.stringify(summary,null,2));}
 console.log(JSON.stringify(summary,null,2));
