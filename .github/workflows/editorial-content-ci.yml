@@ -1,0 +1,39 @@
+name: Editorial Content SEO Audit
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/objave/**'
+      - 'apps/portal/komentari/**'
+      - 'apps/portal/editorial-sitemap.xml'
+      - 'apps/portal/data/editorial-plan/**'
+      - 'scripts/editorial-publish-scheduled-v1.mjs'
+      - 'scripts/seo-visibility-cycle-v1.mjs'
+      - 'scripts/refresh-public-news-v4.mjs'
+      - 'scripts/test-editorial-publish-seo-v1.mjs'
+      - '.github/workflows/editorial-*.yml'
+      - '.github/workflows/seo-news-cycle.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Syntax checks
+        run: |
+          node --check scripts/editorial-publish-scheduled-v1.mjs
+          node --check scripts/seo-visibility-cycle-v1.mjs
+          node --check scripts/refresh-public-news-v4.mjs
+          node --check scripts/test-editorial-publish-seo-v1.mjs
+      - name: Materialize immediate package in CI workspace
+        env:
+          EDITORIAL_NOW: '2026-07-14T20:53:00+02:00'
+        run: node scripts/editorial-publish-scheduled-v1.mjs
+      - name: Editorial and SEO contract
+        run: node scripts/test-editorial-publish-seo-v1.mjs
+      - name: SEO audit
+        run: node scripts/seo-visibility-cycle-v1.mjs
