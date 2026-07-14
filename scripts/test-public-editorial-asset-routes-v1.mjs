@@ -31,10 +31,14 @@ for(const [path,assetPath] of cases){
  assert.equal(response.headers.get('x-gnk-editorial-assets'),VERSION);
  assert.equal(response.headers.get('x-gnk-route-owner'),'TEST_OWNER');
  assert.equal(response.headers.get('etag'),null);
+ const isCollection=EDITORIAL_ROOTS.some(root=>assetPath===`${root}/index.html`);
+ if(isCollection)assert.equal(response.headers.get('cache-control'),'no-store, max-age=0',`collection cache ${path}`);
+ else assert.equal(response.headers.get('cache-control'),'public, max-age=120, stale-while-revalidate=300',`article cache ${path}`);
  assert.match(await response.text(),/<html|<!doctype html/i);
 }
 const head=await servePublicEditorialAsset(new Request('https://gnk-asg.hr/objave/',{method:'HEAD'}),env,'TEST_OWNER');
 assert.ok(head);assert.equal(await head.text(),'');
+assert.equal(head.headers.get('cache-control'),'no-store, max-age=0');
 assert.equal(await servePublicEditorialAsset(new Request('https://gnk-asg.hr/api/public-news'),env,'TEST_OWNER'),null);
 assert.equal(await servePublicEditorialAsset(new Request('https://gnk-asg.hr/objave/ne-postoji'),env,'TEST_OWNER'),null);
 
@@ -55,4 +59,4 @@ assert.match(config,/main = "src\/index-unified-auth-v23\.js"/);
 const wrapper=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js','utf8');
 assert.match(wrapper,/servePublicEditorialAsset/);
 assert.match(wrapper,/GNK_ASG_UNIFIED_AUTH_V33_PUBLIC_EDITORIAL_ASSETS/);
-console.log(JSON.stringify({ok:true,version:VERSION,roots:EDITORIAL_ROOTS.length,runtimeCases:cases.size,assetFetches:seen.length,plannedPackages:plan.packages.length},null,2));
+console.log(JSON.stringify({ok:true,version:VERSION,roots:EDITORIAL_ROOTS.length,runtimeCases:cases.size,assetFetches:seen.length,plannedPackages:plan.packages.length,cache:{collections:'no-store',articles:'120s'}},null,2));
