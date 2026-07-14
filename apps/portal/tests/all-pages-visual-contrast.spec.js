@@ -4,11 +4,14 @@ const path = require('node:path');
 
 const PORTAL_ROOT = path.resolve(__dirname, '..');
 const REPORT_ROOT = path.join(PORTAL_ROOT, 'test-results', 'visual-contrast');
+const CONTRAST_RUNTIME_PATH = path.join(PORTAL_ROOT, 'assets', 'public-contrast-hardening-v1.js');
+const CONTRAST_RUNTIME = fs.readFileSync(CONTRAST_RUNTIME_PATH, 'utf8');
+const IGNORED_DIRECTORIES = new Set(['node_modules', 'test-results', 'playwright-report', '.git']);
 
 function walkHtml(dir) {
   const out = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (['node_modules', 'test-results', 'playwright-report', '.git'].includes(entry.name)) continue;
+    if (entry.isDirectory() && IGNORED_DIRECTORIES.has(entry.name)) continue;
     const absolute = path.join(dir, entry.name);
     if (entry.isDirectory()) out.push(...walkHtml(absolute));
     else if (entry.isFile() && entry.name.toLowerCase().endsWith('.html')) out.push(absolute);
@@ -30,9 +33,11 @@ function safeName(value) {
 const routes = [...new Set(walkHtml(PORTAL_ROOT).map(routeForFile))].sort();
 
 test.describe.configure({ mode: 'parallel' });
+test.setTimeout(20_000);
 
 test.beforeAll(() => {
   fs.mkdirSync(REPORT_ROOT, { recursive: true });
+  expect(routes.length, 'Visual audit must discover portal HTML routes').toBeGreaterThan(800);
 });
 
 for (const route of routes) {
@@ -41,12 +46,20 @@ for (const route of routes) {
     expect(response, `${route} did not return a response`).not.toBeNull();
     expect(response.status(), `${route} returned HTTP ${response.status()}`).toBeLessThan(500);
 
+    const runtimeWasPresent = await page.evaluate(() => document.documentElement.dataset.gnkContrast === 'hardened-v4');
+    if (!runtimeWasPresent) await page.addScriptTag({ content: CONTRAST_RUNTIME });
+
     await page.evaluate(async () => {
       if (document.fonts?.ready) await document.fonts.ready;
     });
-    await page.waitForTimeout(1100);
+    await page.waitForFunction(
+      () => document.documentElement.dataset.gnkContrast === 'hardened-v4',
+      null,
+      { timeout: 3_000 }
+    );
+    await page.waitForTimeout(450);
 
-    const audit = await page.evaluate(() => {
+    const audit = await page.evaluate(runtimeSource => {
       const selector = [
         'p','li','dd','dt','label','small','strong','span','a','button',
         'h1','h2','h3','h4','h5','h6','td','th','legend','summary','code',
@@ -62,7 +75,7 @@ for (const route of routes) {
         if (!match) return null;
         const normalized = match[1].replace(/\//g, ',').replace(/\s+/g, ',').replace(/,+/g, ',');
         const parts = normalized.split(',').filter(Boolean).map(part => Number(part.trim().replace('%', '')));
-        if (parts.length < 3 || parts.some((value, index) => index < 3 && !Number.isFinite(value))) return null;
+        if (parts.length < 3 || parts.some((part, index) => index < 3 && !Number.isFinite(part))) return null;
         const percent = /%/.test(match[1]);
         return {
           r: clamp(percent ? parts[0] * 2.55 : parts[0]),
@@ -131,8 +144,14 @@ for (const route of routes) {
         return size >= 24 || (size >= 18.66 && weight >= 700) ? 3 : 4.5;
       };
       const ownText = element => {
-        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName)) return element.value || element.getAttribute('placeholder') || element.getAttribute('aria-label') || '';
-        return [...element.childNodes].filter(node => node.nodeType === Node.TEXT_NODE).map(node => node.textContent).join(' ').trim();
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName)) {
+          return element.value || element.getAttribute('placeholder') || element.getAttribute('aria-label') || '';
+        }
+        return [...element.childNodes]
+          .filter(node => node.nodeType === Node.TEXT_NODE)
+          .map(node => node.textContent)
+          .join(' ')
+          .trim();
       };
       const pathFor = element => {
         if (element.id) return `#${CSS.escape(element.id)}`;
@@ -152,6 +171,7 @@ for (const route of routes) {
       const violations = [];
       const imageBackgroundWarnings = [];
       let checked = 0;
+      let runtimeRepairs = 0;
       for (const element of document.querySelectorAll(selector)) {
         const text = ownText(element);
         if (!text) continue;
@@ -162,9 +182,9 @@ for (const route of routes) {
         if (!foreground) continue;
         const { candidates, imageBackground } = backgrounds(element);
         const target = targetFor(style);
-        const ratios = candidates.map(background => ratio(blend(foreground, background), background));
-        const minimum = Math.min(...ratios);
+        const minimum = Math.min(...candidates.map(background => ratio(blend(foreground, background), background)));
         checked += 1;
+        if (element.dataset.gnkContrastFixed) runtimeRepairs += 1;
         if (imageBackground && style.textShadow === 'none') imageBackgroundWarnings.push({ selector: pathFor(element), text: text.slice(0, 100) });
         if (minimum + 0.02 < target) {
           violations.push({
@@ -187,29 +207,31 @@ for (const route of routes) {
         title: document.title,
         lang: document.documentElement.lang || '',
         checked,
+        runtimeRepairs,
         violations: violations.slice(0, 80),
         totalViolations: violations.length,
         imageBackgroundWarnings: imageBackgroundWarnings.slice(0, 40),
         totalImageBackgroundWarnings: imageBackgroundWarnings.length,
         runtime: {
           state: document.documentElement.dataset.gnkContrast || null,
-          version: document.documentElement.dataset.gnkContrastVersion || null
+          version: document.documentElement.dataset.gnkContrastVersion || null,
+          source: runtimeSource
         }
       };
-    });
+    }, runtimeWasPresent ? 'page-source' : 'edge-emulation');
 
     const projectDir = path.join(REPORT_ROOT, safeName(testInfo.project.name));
     fs.mkdirSync(projectDir, { recursive: true });
-    const base = `${safeName(route)}.json`;
-    fs.writeFileSync(path.join(projectDir, base), JSON.stringify(audit, null, 2));
+    fs.writeFileSync(path.join(projectDir, `${safeName(route)}.json`), JSON.stringify(audit, null, 2));
 
     if (audit.totalViolations > 0) {
       const screenshotPath = path.join(projectDir, `${safeName(route)}.jpg`);
-      await page.screenshot({ path: screenshotPath, type: 'jpeg', quality: 70, fullPage: true });
+      await page.screenshot({ path: screenshotPath, type: 'jpeg', quality: 68, fullPage: true });
       await testInfo.attach('contrast-report', { body: Buffer.from(JSON.stringify(audit, null, 2)), contentType: 'application/json' });
       await testInfo.attach('contrast-screenshot', { path: screenshotPath, contentType: 'image/jpeg' });
     }
 
+    expect(audit.runtime.state, `${route}: contrast runtime did not activate`).toBe('hardened-v4');
     expect(audit.totalViolations, `${route}: ${JSON.stringify(audit.violations, null, 2)}`).toBe(0);
   });
 }
