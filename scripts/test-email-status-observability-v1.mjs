@@ -56,9 +56,12 @@ for(const marker of [
 ])assert.match(dashboard,marker);
 
 for(const marker of [
+  /GNK_CONTRAST_HARDENING_V4_20260714_ALL_PAGES_VISUAL_REPAIR/,
   /GNK_CONTRAST_HARDENING_V3_20260714_GRADIENT_AND_PROTECTED_UI/,
   /GNK_CONTRAST_HARDENING_V2_20260714_DYNAMIC_RECHECK/,
   /gradientColor/,
+  /effectiveBackgroundCandidates/,
+  /bestColor/,
   /data-gnk-email-status-dashboard="v4"/,
   /targetRatio/,
   /4\.8/,
@@ -70,7 +73,7 @@ assert.doesNotMatch(contrast,/\/\* Unambiguously light surfaces[\s\S]{0,300}\.ca
 assert.match(worker,/isPublicReceiptPath/);
 assert.match(worker,/handleEmailStatusRequest/);
 assert.match(worker,/GNK_ASG_UNIFIED_AUTH_V32_DETAILED_EMAIL_STATUS_RECEIPT/);
-assert.match(worker,/x-gnk-contrast-runtime','hardened-v3/);
+assert.match(worker,/x-gnk-contrast-runtime','hardened-v4-all-pages-visual/);
 assert.match(wrangler,/EMAIL_OPEN_TRACKING_ENABLED = "true"/);
 assert.match(wrangler,/EMAIL_RECEIPT_CONFIRMATION_ENABLED = "true"/);
 assert.match(wrangler,/EMAIL_STATUS_EVENT_RETENTION_DAYS = "31"/);
@@ -90,7 +93,7 @@ console.log(JSON.stringify({
   openIpAndDevice:true,
   explicitReceiptConfirmation:true,
   forwardingReliable:false,
-  contrastRuntime:'v3-gradient-protected-ui',
+  contrastRuntime:'v4-all-pages-visual-repair',
   dashboard:'v4-detailed-receipt',
   adminLoginVerifier:'200-or-401-with-marker'
 },null,2));
