@@ -1,0 +1,45 @@
+name: Publish Scheduled Editorial Content
+on:
+  schedule:
+    - cron: '20 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/data/editorial-plan/**'
+      - 'scripts/editorial-publish-scheduled-v1.mjs'
+      - '.github/workflows/editorial-scheduled-publish.yml'
+permissions:
+  contents: write
+concurrency:
+  group: editorial-main-writer
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Materialize due editorial pages
+        run: node scripts/editorial-publish-scheduled-v1.mjs
+      - name: Validate generated editorial package
+        run: node scripts/test-editorial-publish-seo-v1.mjs
+      - name: Commit due content
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo "No scheduled content is due."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/portal/objave apps/portal/komentari apps/portal/editorial-sitemap.xml apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json
+          git commit -m "Publish scheduled editorial package"
+          git push origin HEAD:main
