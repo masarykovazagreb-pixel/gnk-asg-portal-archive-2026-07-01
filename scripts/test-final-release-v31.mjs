@@ -12,6 +12,8 @@ const contactStudio=read('workers/gnk-asg-direct-operator/src/contact-studio-mai
 const newsBackend=read('workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js');
 const worker=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js');
 const wrapper=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js');
+const editorialWrapper=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js');
+const editorialRouter=read('workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js');
 const config=read('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml');
 const mime=read('workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js');
 const signature=read('workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js');
@@ -86,14 +88,21 @@ assert.match(worker,/handleContactStudio/);
 assert.match(wrapper,/GNK_ASG_UNIFIED_AUTH_V32_DETAILED_EMAIL_STATUS_RECEIPT/);
 assert.match(wrapper,/index-unified-auth-v21\.js/);
 assert.match(wrapper,/x-gnk-contrast-runtime','hardened-v4-all-pages-visual/);
-assert.match(config,/main = "src\/index-unified-auth-v22\.js"/);
+assert.match(editorialWrapper,/GNK_ASG_UNIFIED_AUTH_V33_PUBLIC_EDITORIAL_ASSETS/);
+assert.match(editorialWrapper,/servePublicEditorialAsset/);
+assert.match(editorialWrapper,/index-unified-auth-v22\.js/);
+assert.match(editorialRouter,/GNK_PUBLIC_EDITORIAL_ASSETS_V1_20260714/);
+for(const marker of ['/objave','/komentari','/analize','/en/publications','/en/commentary','/en/analyses','x-gnk-explicit-html-route','x-gnk-editorial-assets'])assert.ok(editorialRouter.includes(marker),`editorial router missing ${marker}`);
+assert.match(config,/main = "src\/index-unified-auth-v23\.js"/);
 
 const newPages=[
  'apps/portal/objave/transparentno-upravljanje-kao-operativni-standard/index.html',
  'apps/portal/analize/ai-infrastruktura-kapital-energija/index.html',
  'apps/portal/objave/kiberneticka-otpornost-i-kontinuitet/index.html',
  'apps/portal/komentari/trzista-traze-jasne-informacije/index.html',
- 'apps/portal/komentari/automatizacija-ne-ukida-odgovornost/index.html'
+ 'apps/portal/komentari/automatizacija-ne-ukida-odgovornost/index.html',
+ 'apps/portal/objave/globalne-kamatne-stope-nakon-inflacijskog-soka/index.html',
+ 'apps/portal/komentari/brzina-bez-kontrole-nije-inovacija/index.html'
 ];
 const images=[
  'apps/portal/assets/editorial/transparent-governance.svg',
@@ -119,4 +128,4 @@ const localNews=JSON.parse(read('apps/portal/data/news.json'));
 assert.ok(Array.isArray(localNews));
 assert.ok(localNews.length>=100,`local news fallback must contain >=100 items; actual=${localNews.length}`);
 
-console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v7-detailed-receipt'},editorial:{minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v32-over-v31'},null,2));
+console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v7-detailed-receipt'},editorial:{assetRouting:'v1-direct-static',minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v33-over-v32-over-v31'},null,2));

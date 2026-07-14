@@ -66,6 +66,7 @@ jobs:
             scripts/test-autoreply-guardrails.mjs \
             scripts/test-autoreply-all-addresses.mjs \
             scripts/test-news-queue-guardrails.mjs \
+            scripts/test-public-editorial-asset-routes-v1.mjs \
             apps/portal/tests/all-pages-visual-contrast.spec.js \
             apps/portal/assets/public-compact-menu-v1.js \
             apps/portal/assets/public-design-runtime-v1.js \
@@ -101,7 +102,10 @@ jobs:
             workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v20.js \
-            workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js \
+            workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js
           do
             echo "CHECK $file"
             node --check "$file"
@@ -172,6 +176,17 @@ jobs:
           set -euo pipefail
           mkdir -p test-results/visual-contrast
           npx playwright test tests/all-pages-visual-contrast.spec.js --project=chromium-desktop --project=chromium-mobile --workers=4 --reporter=line 2>&1 | tee test-results/visual-contrast/playwright-output.log
+
+      - name: Ensure mobile homepage contrast evidence
+        working-directory: apps/portal
+        run: |
+          set -euo pipefail
+          npx playwright test tests/all-pages-visual-contrast.spec.js \
+            --project=chromium-mobile \
+            --workers=1 \
+            --grep 'rendered contrast /$' \
+            --output=test-results/playwright-homepage \
+            --reporter=line
 
       - name: Validate browser contrast evidence
         env:
