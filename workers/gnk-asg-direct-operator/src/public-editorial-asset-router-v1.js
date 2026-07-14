@@ -33,8 +33,9 @@ export async function servePublicEditorialAsset(request,env,ownerVersion){
   if(!type.includes('text/html'))return null;
   const headers=new Headers(response.headers);
   for(const name of ['content-length','content-encoding','location','etag','last-modified'])headers.delete(name);
+  const collectionIndex=EDITORIAL_ROOTS.some(root=>assetPath===`${root}/index.html`);
   headers.set('content-type','text/html; charset=utf-8');
-  headers.set('cache-control',assetPath.split('/').filter(Boolean).length===2?'no-store, max-age=0':'public, max-age=120, stale-while-revalidate=300');
+  headers.set('cache-control',collectionIndex?'no-store, max-age=0':'public, max-age=120, stale-while-revalidate=300');
   headers.set('x-content-type-options','nosniff');
   headers.set('x-gnk-explicit-html-route',assetPath);
   headers.set('x-gnk-route-owner',ownerVersion);
