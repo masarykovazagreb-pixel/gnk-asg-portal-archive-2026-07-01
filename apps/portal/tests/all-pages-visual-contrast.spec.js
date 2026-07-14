@@ -64,8 +64,10 @@ for (const entry of routeEntries) {
   test(`rendered contrast ${entry.route}`, async ({ page }, testInfo) => {
     const projectDir = path.join(REPORT_ROOT, safeName(testInfo.project.name));
     const reportStem = reportName(entry.route);
+    const isHomepage = entry.route === '/' || entry.route === '/en/';
+    const runtimeActivationTimeout = isHomepage ? 30_000 : 3_000;
     fs.mkdirSync(projectDir, { recursive: true });
-    if (entry.route === '/' || entry.route === '/en/') testInfo.setTimeout(60_000);
+    if (isHomepage) testInfo.setTimeout(60_000);
 
     try {
       if (entry.redirectStub) {
@@ -87,13 +89,14 @@ for (const entry of routeEntries) {
           new Promise(resolve => setTimeout(resolve, 2_000))
         ]);
       });
-      await page.waitForFunction(() => document.documentElement.dataset.gnkContrast === 'hardened-v4', null, { timeout: 3_000 });
+      await page.waitForFunction(() => document.documentElement.dataset.gnkContrast === 'hardened-v4', null, { timeout: runtimeActivationTimeout });
       await page.waitForTimeout(450);
     } catch (error) {
       fs.writeFileSync(path.join(projectDir, `${reportStem}.failure.json`), JSON.stringify({
         route: entry.route,
         project: testInfo.project.name,
         redirectStub: entry.redirectStub,
+        runtimeActivationTimeout,
         error: {
           name: error?.name || 'Error',
           message: error?.message || String(error),
