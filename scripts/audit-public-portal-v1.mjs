@@ -11,10 +11,11 @@ const REQUIRED=['/','/en/','/newsroom/','/en/newsroom/','/contact/','/en/contact
 const REQUIRED_ASSETS=['/assets/public-unified-menu-v6.js','/assets/public-contrast-hardening-v1.js','/assets/public-design-tokens-v1.css','/assets/logo-gnk-asg-canonical.svg','/assets/contact-form-v2.js','/assets/the-code-experience-loop-v1.html','/assets/editorial-content-v2.css','/assets/workers-directory-v1.js','/assets/protected-operations-v1.js'];
 const DYNAMIC_PREFIXES=['/api/','/cdn-cgi/','/.well-known/'];
 const EDGE_CANONICAL=new Map([['/about/','https://gnk-asg.hr/about/'],['/projects/','https://gnk-asg.hr/projects/'],['/the-code/media-memorandum/','https://gnk-asg.hr/the-code/media-memorandum/']]);
+const IGNORE_DIRS=new Set(['node_modules','test-results','playwright-report','.git']);
 const posix=value=>value.split(path.sep).join('/');
-const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{const target=path.join(dir,entry.name);return entry.isDirectory()?walk(target):[target]});
+const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{if(entry.isDirectory()&&IGNORE_DIRS.has(entry.name))return[];const target=path.join(dir,entry.name);return entry.isDirectory()?walk(target):[target]});
 const rel=file=>posix(path.relative(ROOT,file));
-const utility=file=>rel(file).startsWith('assets/')||rel(file).startsWith('.github/')||/^google[a-f0-9]+\.html$/i.test(path.basename(file));
+const utility=file=>rel(file).startsWith('assets/')||rel(file).startsWith('.github/')||rel(file).startsWith('node_modules/')||rel(file).startsWith('test-results/')||rel(file).startsWith('playwright-report/')||/^google[a-f0-9]+\.html$/i.test(path.basename(file));
 const routeFor=file=>{const value=rel(file);if(value==='index.html')return'/';if(value.endsWith('/index.html'))return`/${value.slice(0,-10)}`;return`/${value}`};
 const isProtected=route=>PROTECTED.some(prefix=>route===prefix||route.startsWith(`${prefix}/`));
 const normalizeRef=raw=>{try{return decodeURI(String(raw||'').trim().split('#')[0].split('?')[0])}catch{return String(raw||'').trim().split('#')[0].split('?')[0]}};
@@ -74,6 +75,6 @@ for(const asset of REQUIRED_ASSETS)if(!assetFiles.has(asset))findings.push({seve
 if(!fs.existsSync(MENU_FILE))findings.push({severity:'error',code:'MISSING_UNIFIED_MENU',file:posix(path.relative('.',MENU_FILE))});else{const menu=fs.readFileSync(MENU_FILE,'utf8');for(const marker of ['__GNK_UNIFIED_MENU_V6__','logo-gnk-asg-canonical.svg','ADMIN CENTER','WORKERI I OPERACIJE','/workers/','/admin-login/'])if(!menu.includes(marker))findings.push({severity:'error',code:'UNIFIED_MENU_MARKER_MISSING',value:marker,file:posix(path.relative('.',MENU_FILE))})}
 if(!fs.existsSync(CONTRAST_FILE))findings.push({severity:'error',code:'MISSING_CONTRAST_RUNTIME',file:posix(path.relative('.',CONTRAST_FILE))});else if(!fs.readFileSync(CONTRAST_FILE,'utf8').includes('__GNK_CONTRAST_HARDENING_V1__'))findings.push({severity:'error',code:'CONTRAST_RUNTIME_MARKER_MISSING',file:posix(path.relative('.',CONTRAST_FILE))});
 const errors=findings.filter(item=>item.severity==='error'),warnings=findings.filter(item=>item.severity==='warning');
-const report={version:'PUBLIC_PORTAL_AUDIT_V7_EDGE_NORMALIZED_ZERO_WARNING',generatedAt:new Date().toISOString(),summary:{htmlFiles:htmlFiles.length,pages:pages.length,requiredRoutes:REQUIRED.length,requiredAssets:REQUIRED_ASSETS.length,errors:errors.length,warnings:warnings.length},findings,pages};
+const report={version:'PUBLIC_PORTAL_AUDIT_V8_RUNTIME_DIRS_EXCLUDED',generatedAt:new Date().toISOString(),summary:{htmlFiles:htmlFiles.length,pages:pages.length,requiredRoutes:REQUIRED.length,requiredAssets:REQUIRED_ASSETS.length,errors:errors.length,warnings:warnings.length},findings,pages};
 fs.mkdirSync(path.dirname(REPORT),{recursive:true});fs.writeFileSync(REPORT,JSON.stringify(report,null,2));console.log(JSON.stringify(report.summary,null,2));
 if(errors.length||warnings.length){for(const item of findings.slice(0,120))console.error(`- ${item.severity} ${item.code} ${item.route||''} ${JSON.stringify(item.value||'')} (${item.file||''})`);process.exit(1)}
