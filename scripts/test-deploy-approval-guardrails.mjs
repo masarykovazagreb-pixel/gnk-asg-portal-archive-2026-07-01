@@ -30,6 +30,12 @@ const blockedOwnerPosition=preflight.indexOf('grep -Fiq "$blocked_worker"'),reco
 assert.match(verifier,/grep -Fq -- "\$expected_marker" "\$output"/);
 assert.match(verifier,/grep -Fiq -- "\$expected_marker" "\$headers"/);
 assert.doesNotMatch(verifier,/grep -Fq "\$expected_marker"|grep -Fiq "\$expected_marker"/);
+assert.match(verifier,/allowed_statuses="\$\{4:-200\}"/);
+assert.match(verifier,/"\$url" == https:\/\/gnk-asg\.hr\/admin-login\/\*/);
+assert.match(verifier,/allowed_statuses="200,401"/);
+assert.match(verifier,/status_allowed "\$status"/);
+assert.match(verifier,/Allowed HTTP \$\{status\} received, but expected marker is missing/);
+assert.doesNotMatch(verifier,/gnk-asg\.hr\/(?:admin-center|mail-studio|operator-dashboard)\/\*/);
 
 assert.match(baseWorker,/GNK_ASG_UNIFIED_AUTH_V29_DIRECT_INDEX_CANONICAL_RELEASE/);
 assert.match(baseWorker,/\['\/','\/index\.html'\]/);
@@ -48,11 +54,11 @@ assert.match(releaseWorker,/x-gnk-unified-menu-current','full-v6-workers/);
 assert.match(releaseWorker,/x-gnk-contrast','hardened-v1/);
 assert.match(releaseWorker,/x-gnk-index-editorial',isIndex\(route\)\?'v6-news-100'/);
 
-assert.match(newsAssert,/content-type:\\s\*application\\\/json/);
+assert.match(newsAssert,/content-type:\s\*application\\\/json/);
 assert.match(newsAssert,/parsed\?\.items/);
 assert.match(newsAssert,/parsed\?\.posts/);
 assert.match(newsAssert,/parsed\?\.news/);
 assert.match(newsAssert,/items\.length<minimum/);
 
 for(const marker of [/branch!==\'main\'/,/merge-base','--is-ancestor/,/approved_sha=\$\{expectedSha\}/,/GNK_ASG_DEPLOY_APPROVED/,/--execute/,/mode:execute\?'execute':'prepare-only'/])assert.match(tool,marker);
-console.log(JSON.stringify({ok:true,deployStarted:false,indexRuntime:'V8+V6-editorial',publicDesign:'contrast-hardened-v1',menu:'V6-full-workers',contact:'shared-EmailMessage',worker:'V31',directIndexAssets:true,canonicalLogoAlias:true,newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',newsVerification:'content-type-plus-array-or-object-shape',preflight:'before-secrets-and-deploy',finalAssertions:'named-and-diagnostic'},null,2));
+console.log(JSON.stringify({ok:true,deployStarted:false,indexRuntime:'V8+V6-editorial',publicDesign:'contrast-hardened-v1',menu:'V6-full-workers',contact:'shared-EmailMessage',worker:'V31',directIndexAssets:true,canonicalLogoAlias:true,newsroomAssetRouting:'canonical-binding-path-with-hard-stop-fallback',newsVerification:'content-type-plus-array-or-object-shape',adminLoginVerification:'exact-host-path-accepts-200-or-401-with-marker',preflight:'before-secrets-and-deploy',finalAssertions:'named-and-diagnostic'},null,2));
