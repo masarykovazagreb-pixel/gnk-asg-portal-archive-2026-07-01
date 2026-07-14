@@ -30,12 +30,16 @@ assert.match(design,/img\.width=64;img\.height=66/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V1__/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V2__/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V3__/);
+assert.match(contrast,/__GNK_CONTRAST_HARDENING_V4__/);
+assert.match(contrast,/GNK_CONTRAST_HARDENING_V4_20260714_ALL_PAGES_VISUAL_REPAIR/);
 assert.match(contrast,/GNK_CONTRAST_HARDENING_V3_20260714_GRADIENT_AND_PROTECTED_UI/);
 assert.match(contrast,/GNK_CONTRAST_HARDENING_V2_20260714_DYNAMIC_RECHECK/);
 assert.match(contrast,/targetRatio\(el\)/);
-assert.match(contrast,/current\+0\.05<target/);
+assert.match(contrast,/current\+(?:0)?\.05<target/);
 assert.match(contrast,/\.group-section \.group-card/);
 assert.match(contrast,/gradientColor/);
+assert.match(contrast,/effectiveBackgroundCandidates/);
+assert.match(contrast,/bestColor/);
 assert.match(contrast,/MutationObserver/);
 
 assert.match(editorial,/__GNK_INDEX_EDITORIAL_ORDER_V6__/);
@@ -62,4 +66,4 @@ for(const source of [signature,contract]){
  assert.doesNotMatch(source,/width="108"|height="111"/);
 }
 
-console.log(JSON.stringify({ok:true,menu:'visible-v6-full-workers',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary',contrast:'hardened-v3-gradient-protected-ui',worker:'v32-over-v31',deployPerformed:false},null,2));
+console.log(JSON.stringify({ok:true,menu:'visible-v6-full-workers',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary',contrast:'hardened-v4-all-pages-visual-repair',worker:'v32-over-v31',deployPerformed:false},null,2));
