@@ -26,16 +26,20 @@ assert.match(menu,/width:64px!important;height:66px!important/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V1__/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V2__/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V3__/);
+assert.match(contrast,/__GNK_CONTRAST_HARDENING_V4__/);
 assert.match(contrast,/GNK_CONTRAST_HARDENING_V2_20260714_DYNAMIC_RECHECK/);
 assert.match(contrast,/GNK_CONTRAST_HARDENING_V3_20260714_GRADIENT_AND_PROTECTED_UI/);
+assert.match(contrast,/GNK_CONTRAST_HARDENING_V4_20260714_ALL_PAGES_VISUAL_REPAIR/);
 assert.match(contrast,/targetRatio\(el\)/);
-assert.match(contrast,/current\+0\.05<target/);
+assert.match(contrast,/current\+(?:0)?\.05<target/);
 assert.match(contrast,/MutationObserver/);
 assert.match(contrast,/ResizeObserver/);
 assert.match(contrast,/\.group-section \.group-card/);
 assert.match(contrast,/#ffe08a/);
 assert.match(contrast,/#f8fafc/);
 assert.match(contrast,/gradientColor/);
+assert.match(contrast,/effectiveBackgroundCandidates/);
+assert.match(contrast,/bestColor/);
 assert.match(contrast,/input,select,textarea/);
 
 assert.match(indexEditorial,/__GNK_INDEX_EDITORIAL_ORDER_V6__/);
@@ -81,7 +85,7 @@ assert.match(worker,/mail-studio-ui-v28\.js/);
 assert.match(worker,/handleContactStudio/);
 assert.match(wrapper,/GNK_ASG_UNIFIED_AUTH_V32_DETAILED_EMAIL_STATUS_RECEIPT/);
 assert.match(wrapper,/index-unified-auth-v21\.js/);
-assert.match(wrapper,/x-gnk-contrast-runtime','hardened-v3/);
+assert.match(wrapper,/x-gnk-contrast-runtime','hardened-v4-all-pages-visual/);
 assert.match(config,/main = "src\/index-unified-auth-v22\.js"/);
 
 const newPages=[
@@ -108,4 +112,4 @@ const localNews=JSON.parse(read('apps/portal/data/news.json'));
 assert.ok(Array.isArray(localNews));
 assert.ok(localNews.length>=100,`local news fallback must contain >=100 items; actual=${localNews.length}`);
 
-console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-dynamic-v3-gradient',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v7-detailed-receipt'},editorial:{newTexts:5,newImages:5,collections:{publications:5,analyses:4,commentary:5}},worker:'v32-over-v31'},null,2));
+console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v7-detailed-receipt'},editorial:{newTexts:5,newImages:5,collections:{publications:5,analyses:4,commentary:5}},worker:'v32-over-v31'},null,2));
