@@ -264,7 +264,9 @@ function repairElement(el){
   const target=targetRatio(el);
   if(current+.05<target){
     const next=bestColor(el,candidates,target);
-    el.style.setProperty('color',next.value,'important');
+    const nextColor=parseColor(next.value);
+    const colorChanged=!nextColor||Math.abs(fg.r-nextColor.r)>.5||Math.abs(fg.g-nextColor.g)>.5||Math.abs(fg.b-nextColor.b)>.5||Math.abs(fg.a-nextColor.a)>.01;
+    if(colorChanged)el.style.setProperty('color',next.value,'important');
     el.dataset.gnkContrastFixed=`${current.toFixed(2)}-${target.toFixed(1)}-${next.score.toFixed(2)}`;
     if((hasImage||next.score<target)&&getComputedStyle(el).textShadow==='none'){
       const bg=effectiveBackground(el);
