@@ -8,6 +8,13 @@ allowed_statuses="${4:-200}"
 headers="${output}.headers"
 status="000"
 
+# The unauthenticated admin login shell intentionally answers with HTTP 401 while
+# returning the real login form. Accept that challenge only for this exact
+# production host/path and only when the caller did not override status policy.
+if [[ $# -lt 4 && "$url" == https://gnk-asg.hr/admin-login/* ]]; then
+  allowed_statuses="200,401"
+fi
+
 status_allowed() {
   local candidate="$1"
   local value
