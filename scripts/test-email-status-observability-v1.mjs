@@ -26,8 +26,9 @@ for(const marker of [
   /possible_forwarding_signal/,
   /forwarding_detectable:false/,
   /nije dokaz prosljeđivanja/i,
-  /api\/email-status\/records\/.*\/events/,
-  /api\/email-status\/receipt/
+  /const events=path\.match/,
+  /api\\\/email-status\\\/records/,
+  /api\\\/email-status\\\/receipt/
 ])assert.match(tracking,marker);
 
 for(const marker of [
@@ -50,7 +51,7 @@ for(const marker of [
   /Zadnji uređaj \/ IP/,
   /Nije dokaz prosljeđivanja/,
   /api\/email-status\/health/,
-  /api\/email-status\/records\/.*\/events/,
+  /api\/email-status\/records\/\$\{encodeURIComponent\(id\)\}\/events/,
   /Europe\/Zagreb/
 ])assert.match(dashboard,marker);
 
@@ -65,7 +66,7 @@ for(const marker of [
   /ResizeObserver/
 ])assert.match(contrast,marker);
 
-assert.doesNotMatch(contrast,/\/\* Known light surfaces \*\/[\s\S]{0,300}\.card,/);
+assert.doesNotMatch(contrast,/\/\* Unambiguously light surfaces[\s\S]{0,300}\.card,/);
 assert.match(worker,/isPublicReceiptPath/);
 assert.match(worker,/handleEmailStatusRequest/);
 assert.match(worker,/GNK_ASG_UNIFIED_AUTH_V32_DETAILED_EMAIL_STATUS_RECEIPT/);
