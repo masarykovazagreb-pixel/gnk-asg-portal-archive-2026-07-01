@@ -16,7 +16,7 @@ export default{
   const headers=new Headers(response.headers);
   headers.set('x-gnk-active-release',VERSION);
   headers.set('x-gnk-email-status',EMAIL_STATUS_VERSION);
-  headers.set('x-gnk-contrast-runtime','hardened-v3');
+  headers.set('x-gnk-contrast-runtime','hardened-v4-all-pages-visual');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
  },
  scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
