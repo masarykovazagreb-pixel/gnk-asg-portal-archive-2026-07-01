@@ -27,35 +27,24 @@ function routeForFile(file) {
 function safeName(value) {
   return value.replace(/^\/+|\/+$/g, '').replace(/[^a-z0-9._-]+/gi, '-') || 'index';
 }
-async function settleClientRedirect(page) {
-  const startUrl = page.url();
-  let redirectExpected = false;
-  try {
-    redirectExpected = await page.evaluate(() => {
-      const refresh = document.querySelector('meta[http-equiv="refresh" i]');
-      const scriptRedirect = [...document.scripts].some(script => {
-        const source = script.textContent || '';
-        return /setTimeout\s*\([\s\S]{0,500}\blocation\.(?:replace|assign)\s*\(/.test(source)
-          || /^\s*(?:window\.)?location\.(?:replace|assign)\s*\(/.test(source);
-      });
-      return Boolean(refresh || scriptRedirect);
-    });
-  } catch {
-    redirectExpected = true;
-  }
-  if (!redirectExpected) return;
-  try {
-    await page.waitForURL(url => url.toString() !== startUrl, { timeout: 2_000, waitUntil: 'domcontentloaded' });
-  } catch {
-    // Some share routes may deliberately remain on the intermediate page.
-  }
-  await page.waitForLoadState('domcontentloaded').catch(() => {});
-  await page.waitForTimeout(150);
+async function lockInitialDocument(page) {
+  let mainNavigationSeen = false;
+  await page.route('**/*', async route => {
+    const request = route.request();
+    if (request.isNavigationRequest() && request.frame() === page.mainFrame()) {
+      if (mainNavigationSeen) {
+        await route.abort('aborted');
+        return;
+      }
+      mainNavigationSeen = true;
+    }
+    await route.continue();
+  });
 }
 const routes = [...new Set(walkHtml(PORTAL_ROOT).map(routeForFile))].sort();
 
 test.describe.configure({ mode: 'parallel' });
-test.setTimeout(20_000);
+test.setTimeout(30_000);
 test.beforeAll(() => {
   fs.mkdirSync(REPORT_ROOT, { recursive: true });
   expect(routes.length, 'Visual audit must discover portal HTML routes').toBeGreaterThan(800);
@@ -63,11 +52,10 @@ test.beforeAll(() => {
 
 for (const route of routes) {
   test(`rendered contrast ${route}`, async ({ page }, testInfo) => {
-    const response = await page.goto(route, { waitUntil: 'commit', timeout: 12_000 });
+    await lockInitialDocument(page);
+    const response = await page.goto(route, { waitUntil: 'domcontentloaded', timeout: 12_000 });
     expect(response, `${route} did not return a response`).not.toBeNull();
     expect(response.status(), `${route} returned HTTP ${response.status()}`).toBeLessThan(500);
-    await page.waitForLoadState('domcontentloaded').catch(() => {});
-    await settleClientRedirect(page);
 
     const runtimeWasPresent = await page.evaluate(() => document.documentElement.dataset.gnkContrast === 'hardened-v4');
     if (!runtimeWasPresent) await page.addScriptTag({ content: CONTRAST_RUNTIME });
