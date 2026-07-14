@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Uredničko odobrenje | GNK ASG Admin Center</title>
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="Zaštićena kontrolna ploča za odobravanje uredničkih nacrta i projektnih zadataka GNK ASG.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/editorial-approval-v1.css?v=20260714">
+</head>
+<body>
+  <main class="approval-shell">
+    <header class="approval-hero">
+      <img src="/assets/logo-gnk-asg-canonical.svg" alt="GNK ASG" width="64" height="66">
+      <div>
+        <p class="eyebrow">ZAŠTIĆENI ADMIN CENTER</p>
+        <h1>Uredničko odobrenje i operativni pregled</h1>
+        <p>Označite više stavki i odaberite: <strong>odobri</strong>, <strong>vrati na doradu</strong> ili <strong>odbij</strong>. Odluke se čuvaju lokalno u pregledniku i mogu se izvesti kao JSON.</p>
+      </div>
+      <aside class="window-card">
+        <span>PROZOR ODLUKE</span>
+        <strong id="approvalTimer">—</strong>
+        <small id="approvalWindowText">08:00–09:00 Europe/Zagreb</small>
+      </aside>
+    </header>
+
+    <section class="notice" role="note">
+      <strong>Kontrola objave:</strong> samo izričito odobrene stavke smiju ići u objavu. Izostanak odgovora nije odobrenje. Produkcijski deploy zahtijeva zasebnu potvrdu točnog SHA-a.
+    </section>
+
+    <section class="stats" aria-label="Sažetak">
+      <article><span>Nacrti</span><strong id="statTotal">0</strong></article>
+      <article><span>Odobreno</span><strong id="statApproved">0</strong></article>
+      <article><span>Dorada</span><strong id="statRevision">0</strong></article>
+      <article><span>Odbijeno</span><strong id="statRejected">0</strong></article>
+    </section>
+
+    <nav class="tabs" aria-label="Vrsta pregleda">
+      <button type="button" class="active" data-view="editorial">Objave i komentari</button>
+      <button type="button" data-view="projects">Devet projekata</button>
+      <button type="button" data-view="policy">Pravila, SEO, AI i mail test</button>
+    </nav>
+
+    <section id="editorialView" class="view active">
+      <div class="toolbar">
+        <label><input type="checkbox" id="selectAll"> Označi sve vidljive</label>
+        <select id="statusFilter" aria-label="Filtriraj prema statusu">
+          <option value="all">Svi statusi</option>
+          <option value="pending">Čeka odluku</option>
+          <option value="approved">Odobreno</option>
+          <option value="revision">Vratiti na doradu</option>
+          <option value="rejected">Odbijeno</option>
+        </select>
+        <button type="button" data-batch="approved">Odobri označeno</button>
+        <button type="button" data-batch="revision">Vrati na doradu</button>
+        <button type="button" data-batch="rejected">Odbij označeno</button>
+        <button type="button" id="exportDecisions">Izvezi odluke</button>
+      </div>
+      <div id="editorialList" class="editorial-list" aria-live="polite"></div>
+    </section>
+
+    <section id="projectsView" class="view">
+      <div id="projectList" class="project-grid"></div>
+    </section>
+
+    <section id="policyView" class="view">
+      <div id="policyPanel" class="policy-grid"></div>
+    </section>
+  </main>
+  <script defer src="/assets/editorial-approval-v1.js?v=20260714"></script>
+  <script defer src="/assets/editorial-approval-mail-audit-v1.js?v=20260714"></script>
+</body>
+</html>
