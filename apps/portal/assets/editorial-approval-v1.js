@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const DATA_URL='/data/editorial-approval-queue.json?v=20260714';
+const DATA_URL='/api/editorial-approval/queue';
 const STORAGE_KEY='gnk-editorial-approval-decisions-v1';
 const COMMENT_KEY='gnk-editorial-approval-comments-v1';
 const state={data:null,decisions:{},comments:{},view:'editorial',filter:'all'};
@@ -169,7 +169,7 @@ async function boot(){
   state.comments=loadLocal(COMMENT_KEY);
   bind();
   try{
-    const response=await fetch(DATA_URL,{cache:'no-store',headers:{accept:'application/json'}});
+    const response=await fetch(DATA_URL,{cache:'no-store',credentials:'same-origin',headers:{accept:'application/json'}});
     if(!response.ok)throw new Error(`HTTP ${response.status}`);
     state.data=await response.json();
     renderStats();renderEditorial();renderProjects();renderPolicy();updateTimer();
