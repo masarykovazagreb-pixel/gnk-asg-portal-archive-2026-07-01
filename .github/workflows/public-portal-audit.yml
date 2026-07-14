@@ -185,6 +185,7 @@ jobs:
             --project=chromium-mobile \
             --workers=1 \
             --grep 'rendered contrast /$' \
+            --output=test-results/playwright-homepage \
             --reporter=line
 
       - name: Validate browser contrast evidence
