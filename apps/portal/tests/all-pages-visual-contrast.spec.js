@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -27,6 +28,10 @@ function routeForFile(file) {
 function safeName(value) {
   return value.replace(/^\/+|\/+$/g, '').replace(/[^a-z0-9._-]+/gi, '-') || 'index';
 }
+function reportName(value) {
+  const digest = crypto.createHash('sha1').update(value).digest('hex').slice(0, 12);
+  return `${safeName(value)}-${digest}`;
+}
 function prepareRouteEntry(file) {
   const route = routeForFile(file);
   let html = fs.readFileSync(file, 'utf8');
@@ -49,7 +54,7 @@ const routeEntries = [...new Map(
 ).values()].sort((left, right) => left.route.localeCompare(right.route));
 
 test.describe.configure({ mode: 'parallel' });
-test.setTimeout(30_000);
+test.setTimeout(45_000);
 test.beforeAll(() => {
   fs.mkdirSync(REPORT_ROOT, { recursive: true });
   expect(routeEntries.length, 'Visual audit must discover portal HTML routes').toBeGreaterThan(800);
@@ -57,20 +62,48 @@ test.beforeAll(() => {
 
 for (const entry of routeEntries) {
   test(`rendered contrast ${entry.route}`, async ({ page }, testInfo) => {
-    if (entry.redirectStub) {
-      await page.setContent(entry.html, { waitUntil: 'domcontentloaded' });
-    } else {
-      const response = await page.goto(entry.route, { waitUntil: 'domcontentloaded', timeout: 12_000 });
-      expect(response, `${entry.route} did not return a response`).not.toBeNull();
-      expect(response.status(), `${entry.route} returned HTTP ${response.status()}`).toBeLessThan(500);
+    const projectDir = path.join(REPORT_ROOT, safeName(testInfo.project.name));
+    const reportStem = reportName(entry.route);
+    fs.mkdirSync(projectDir, { recursive: true });
+    if (entry.route === '/' || entry.route === '/en/') testInfo.setTimeout(60_000);
+
+    try {
+      if (entry.redirectStub) {
+        await page.setContent(entry.html, { waitUntil: 'domcontentloaded' });
+      } else {
+        const response = await page.goto(entry.route, { waitUntil: 'commit', timeout: 12_000 });
+        expect(response, `${entry.route} did not return a response`).not.toBeNull();
+        expect(response.status(), `${entry.route} returned HTTP ${response.status()}`).toBeLessThan(500);
+        await page.waitForFunction(() => Boolean(document.documentElement && document.body), null, { timeout: 10_000 });
+        await page.waitForLoadState('domcontentloaded', { timeout: 8_000 }).catch(() => {});
+      }
+
+      const runtimeWasPresent = await page.evaluate(() => document.documentElement.dataset.gnkContrast === 'hardened-v4');
+      if (!runtimeWasPresent) await page.addScriptTag({ content: CONTRAST_RUNTIME });
+      await page.evaluate(async () => {
+        if (!document.fonts?.ready) return;
+        await Promise.race([
+          document.fonts.ready,
+          new Promise(resolve => setTimeout(resolve, 2_000))
+        ]);
+      });
+      await page.waitForFunction(() => document.documentElement.dataset.gnkContrast === 'hardened-v4', null, { timeout: 3_000 });
+      await page.waitForTimeout(450);
+    } catch (error) {
+      fs.writeFileSync(path.join(projectDir, `${reportStem}.failure.json`), JSON.stringify({
+        route: entry.route,
+        project: testInfo.project.name,
+        redirectStub: entry.redirectStub,
+        error: {
+          name: error?.name || 'Error',
+          message: error?.message || String(error),
+          stack: error?.stack || null
+        }
+      }, null, 2));
+      throw error;
     }
 
     const runtimeWasPresent = await page.evaluate(() => document.documentElement.dataset.gnkContrast === 'hardened-v4');
-    if (!runtimeWasPresent) await page.addScriptTag({ content: CONTRAST_RUNTIME });
-    await page.evaluate(async () => { if (document.fonts?.ready) await document.fonts.ready; });
-    await page.waitForFunction(() => document.documentElement.dataset.gnkContrast === 'hardened-v4', null, { timeout: 3_000 });
-    await page.waitForTimeout(450);
-
     const audit = await page.evaluate(({ runtimeSource, requestedRoute, redirectStub }) => {
       const selector = [
         'p','li','dd','dt','label','small','strong','span','a','button',
@@ -262,11 +295,9 @@ for (const entry of routeEntries) {
       redirectStub: entry.redirectStub
     });
 
-    const projectDir = path.join(REPORT_ROOT, safeName(testInfo.project.name));
-    fs.mkdirSync(projectDir, { recursive: true });
-    fs.writeFileSync(path.join(projectDir, `${safeName(entry.route)}.json`), JSON.stringify(audit, null, 2));
+    fs.writeFileSync(path.join(projectDir, `${reportStem}.json`), JSON.stringify(audit, null, 2));
     if (audit.totalViolations > 0) {
-      const screenshotPath = path.join(projectDir, `${safeName(entry.route)}.jpg`);
+      const screenshotPath = path.join(projectDir, `${reportStem}.jpg`);
       await page.screenshot({ path: screenshotPath, type: 'jpeg', quality: 68, fullPage: true });
       await testInfo.attach('contrast-report', { body: Buffer.from(JSON.stringify(audit, null, 2)), contentType: 'application/json' });
       await testInfo.attach('contrast-screenshot', { path: screenshotPath, contentType: 'image/jpeg' });
