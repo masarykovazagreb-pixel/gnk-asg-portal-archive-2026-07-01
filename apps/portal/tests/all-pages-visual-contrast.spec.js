@@ -27,51 +27,43 @@ function routeForFile(file) {
 function safeName(value) {
   return value.replace(/^\/+|\/+$/g, '').replace(/[^a-z0-9._-]+/gi, '-') || 'index';
 }
-async function neutralizeRedirectStub(page) {
-  let initialDocumentHandled = false;
-  await page.route('**/*', async route => {
-    const request = route.request();
-    const isInitialDocument = request.isNavigationRequest()
-      && request.frame() === page.mainFrame()
-      && !initialDocumentHandled;
-    if (!isInitialDocument) {
-      await route.continue();
-      return;
-    }
-    initialDocumentHandled = true;
-    const response = await route.fetch();
-    const contentType = response.headers()['content-type'] || '';
-    if (!contentType.toLowerCase().includes('text/html')) {
-      await route.fulfill({ response });
-      return;
-    }
-    let body = await response.text();
-    const hasMetaRefresh = /<meta\b[^>]*http-equiv\s*=\s*["']?refresh["']?[^>]*>/i.test(body);
-    const redirectExpression = /(?:window\.)?location\.(?:replace|assign)\s*\(|(?:window\.)?location(?:\.href)?\s*=/i;
-    const isSmallScriptRedirect = body.length < 8_000 && redirectExpression.test(body);
-    if (hasMetaRefresh || isSmallScriptRedirect) {
-      body = body.replace(/<meta\b[^>]*http-equiv\s*=\s*["']?refresh["']?[^>]*>/gi, '');
-      body = body.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, block => redirectExpression.test(block) ? '' : block);
-      body = body.replace(/<html\b([^>]*)>/i, '<html$1 data-gnk-audit-redirect-stub="true">');
-    }
-    await route.fulfill({ response, body });
-  });
+function prepareRouteEntry(file) {
+  const route = routeForFile(file);
+  let html = fs.readFileSync(file, 'utf8');
+  const hasMetaRefresh = /<meta\b[^>]*http-equiv\s*=\s*["']?refresh["']?[^>]*>/i.test(html);
+  const redirectExpression = /(?:window\.)?location\.(?:replace|assign)\s*\(|(?:window\.)?location(?:\.href)?\s*=/i;
+  const redirectStub = hasMetaRefresh || (html.length < 8_000 && redirectExpression.test(html));
+  if (redirectStub) {
+    html = html.replace(/<meta\b[^>]*http-equiv\s*=\s*["']?refresh["']?[^>]*>/gi, '');
+    html = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, block => redirectExpression.test(block) ? '' : block);
+    html = html.replace(/<html\b([^>]*)>/i, '<html$1 data-gnk-audit-redirect-stub="true">');
+    html = html.replace(/<head\b([^>]*)>/i, `<head$1><base href="http://127.0.0.1:4173${route}">`);
+  }
+  return { route, file, html, redirectStub };
 }
-const routes = [...new Set(walkHtml(PORTAL_ROOT).map(routeForFile))].sort();
+const routeEntries = [...new Map(
+  walkHtml(PORTAL_ROOT).map(file => {
+    const entry = prepareRouteEntry(file);
+    return [entry.route, entry];
+  })
+).values()].sort((left, right) => left.route.localeCompare(right.route));
 
 test.describe.configure({ mode: 'parallel' });
 test.setTimeout(30_000);
 test.beforeAll(() => {
   fs.mkdirSync(REPORT_ROOT, { recursive: true });
-  expect(routes.length, 'Visual audit must discover portal HTML routes').toBeGreaterThan(800);
+  expect(routeEntries.length, 'Visual audit must discover portal HTML routes').toBeGreaterThan(800);
 });
 
-for (const route of routes) {
-  test(`rendered contrast ${route}`, async ({ page }, testInfo) => {
-    await neutralizeRedirectStub(page);
-    const response = await page.goto(route, { waitUntil: 'domcontentloaded', timeout: 12_000 });
-    expect(response, `${route} did not return a response`).not.toBeNull();
-    expect(response.status(), `${route} returned HTTP ${response.status()}`).toBeLessThan(500);
+for (const entry of routeEntries) {
+  test(`rendered contrast ${entry.route}`, async ({ page }, testInfo) => {
+    if (entry.redirectStub) {
+      await page.setContent(entry.html, { waitUntil: 'domcontentloaded' });
+    } else {
+      const response = await page.goto(entry.route, { waitUntil: 'domcontentloaded', timeout: 12_000 });
+      expect(response, `${entry.route} did not return a response`).not.toBeNull();
+      expect(response.status(), `${entry.route} returned HTTP ${response.status()}`).toBeLessThan(500);
+    }
 
     const runtimeWasPresent = await page.evaluate(() => document.documentElement.dataset.gnkContrast === 'hardened-v4');
     if (!runtimeWasPresent) await page.addScriptTag({ content: CONTRAST_RUNTIME });
@@ -79,7 +71,7 @@ for (const route of routes) {
     await page.waitForFunction(() => document.documentElement.dataset.gnkContrast === 'hardened-v4', null, { timeout: 3_000 });
     await page.waitForTimeout(450);
 
-    const audit = await page.evaluate(runtimeSource => {
+    const audit = await page.evaluate(({ runtimeSource, requestedRoute, redirectStub }) => {
       const selector = [
         'p','li','dd','dt','label','small','strong','span','a','button',
         'h1','h2','h3','h4','h5','h6','td','th','legend','summary','code',
@@ -252,24 +244,34 @@ for (const route of routes) {
         }
       }
       return {
-        url: location.href, title: document.title, lang: document.documentElement.lang || '', checked, runtimeRepairs,
-        redirectStubNeutralized: document.documentElement.dataset.gnkAuditRedirectStub === 'true',
-        violations: violations.slice(0, 80), totalViolations: violations.length,
-        imageBackgroundWarnings: imageBackgroundWarnings.slice(0, 40), totalImageBackgroundWarnings: imageBackgroundWarnings.length,
+        url: redirectStub ? requestedRoute : location.href,
+        title: document.title,
+        lang: document.documentElement.lang || '',
+        checked,
+        runtimeRepairs,
+        redirectStubNeutralized: redirectStub,
+        violations: violations.slice(0, 80),
+        totalViolations: violations.length,
+        imageBackgroundWarnings: imageBackgroundWarnings.slice(0, 40),
+        totalImageBackgroundWarnings: imageBackgroundWarnings.length,
         runtime: { state: document.documentElement.dataset.gnkContrast || null, version: document.documentElement.dataset.gnkContrastVersion || null, source: runtimeSource }
       };
-    }, runtimeWasPresent ? 'page-source' : 'edge-emulation');
+    }, {
+      runtimeSource: runtimeWasPresent ? 'page-source' : 'edge-emulation',
+      requestedRoute: entry.route,
+      redirectStub: entry.redirectStub
+    });
 
     const projectDir = path.join(REPORT_ROOT, safeName(testInfo.project.name));
     fs.mkdirSync(projectDir, { recursive: true });
-    fs.writeFileSync(path.join(projectDir, `${safeName(route)}.json`), JSON.stringify(audit, null, 2));
+    fs.writeFileSync(path.join(projectDir, `${safeName(entry.route)}.json`), JSON.stringify(audit, null, 2));
     if (audit.totalViolations > 0) {
-      const screenshotPath = path.join(projectDir, `${safeName(route)}.jpg`);
+      const screenshotPath = path.join(projectDir, `${safeName(entry.route)}.jpg`);
       await page.screenshot({ path: screenshotPath, type: 'jpeg', quality: 68, fullPage: true });
       await testInfo.attach('contrast-report', { body: Buffer.from(JSON.stringify(audit, null, 2)), contentType: 'application/json' });
       await testInfo.attach('contrast-screenshot', { path: screenshotPath, contentType: 'image/jpeg' });
     }
-    expect(audit.runtime.state, `${route}: contrast runtime did not activate`).toBe('hardened-v4');
-    expect(audit.totalViolations, `${route}: ${JSON.stringify(audit.violations, null, 2)}`).toBe(0);
+    expect(audit.runtime.state, `${entry.route}: contrast runtime did not activate`).toBe('hardened-v4');
+    expect(audit.totalViolations, `${entry.route}: ${JSON.stringify(audit.violations, null, 2)}`).toBe(0);
   });
 }
