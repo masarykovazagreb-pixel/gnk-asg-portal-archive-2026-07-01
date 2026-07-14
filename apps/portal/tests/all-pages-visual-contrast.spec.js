@@ -18,23 +18,19 @@ function walkHtml(dir) {
   }
   return out;
 }
-
 function routeForFile(file) {
   const relative = path.relative(PORTAL_ROOT, file).split(path.sep).join('/');
   if (relative === 'index.html') return '/';
   if (relative.endsWith('/index.html')) return `/${relative.slice(0, -'index.html'.length)}`;
   return `/${relative}`;
 }
-
 function safeName(value) {
   return value.replace(/^\/+|\/+$/g, '').replace(/[^a-z0-9._-]+/gi, '-') || 'index';
 }
-
 const routes = [...new Set(walkHtml(PORTAL_ROOT).map(routeForFile))].sort();
 
 test.describe.configure({ mode: 'parallel' });
 test.setTimeout(20_000);
-
 test.beforeAll(() => {
   fs.mkdirSync(REPORT_ROOT, { recursive: true });
   expect(routes.length, 'Visual audit must discover portal HTML routes').toBeGreaterThan(800);
@@ -48,15 +44,8 @@ for (const route of routes) {
 
     const runtimeWasPresent = await page.evaluate(() => document.documentElement.dataset.gnkContrast === 'hardened-v4');
     if (!runtimeWasPresent) await page.addScriptTag({ content: CONTRAST_RUNTIME });
-
-    await page.evaluate(async () => {
-      if (document.fonts?.ready) await document.fonts.ready;
-    });
-    await page.waitForFunction(
-      () => document.documentElement.dataset.gnkContrast === 'hardened-v4',
-      null,
-      { timeout: 3_000 }
-    );
+    await page.evaluate(async () => { if (document.fonts?.ready) await document.fonts.ready; });
+    await page.waitForFunction(() => document.documentElement.dataset.gnkContrast === 'hardened-v4', null, { timeout: 3_000 });
     await page.waitForTimeout(450);
 
     const audit = await page.evaluate(runtimeSource => {
@@ -66,27 +55,34 @@ for (const route of routes) {
         'pre','blockquote','figcaption','caption','time','address','mark',
         'input','select','textarea','option'
       ].join(',');
-
+      const TRANSPARENT = { r: 0, g: 0, b: 0, a: 0 };
       const clamp = value => Math.max(0, Math.min(255, value));
       const parseColor = value => {
         const text = String(value || '').trim();
         if (!text || text === 'transparent') return null;
         const match = text.match(/^rgba?\(([^)]+)\)$/i);
-        if (!match) return null;
-        const normalized = match[1].replace(/\//g, ',').replace(/\s+/g, ',').replace(/,+/g, ',');
-        const parts = normalized.split(',').filter(Boolean).map(part => Number(part.trim().replace('%', '')));
-        if (parts.length < 3 || parts.some((part, index) => index < 3 && !Number.isFinite(part))) return null;
-        const percent = /%/.test(match[1]);
-        return {
-          r: clamp(percent ? parts[0] * 2.55 : parts[0]),
-          g: clamp(percent ? parts[1] * 2.55 : parts[1]),
-          b: clamp(percent ? parts[2] * 2.55 : parts[2]),
-          a: parts.length > 3 && Number.isFinite(parts[3]) ? Math.max(0, Math.min(1, parts[3] > 1 ? parts[3] / 100 : parts[3])) : 1
-        };
+        if (match) {
+          const normalized = match[1].replace(/\//g, ',').replace(/\s+/g, ',').replace(/,+/g, ',');
+          const parts = normalized.split(',').filter(Boolean).map(part => Number(part.trim().replace('%', '')));
+          if (parts.length >= 3 && parts.slice(0, 3).every(Number.isFinite)) {
+            const percent = /%/.test(match[1]);
+            return {
+              r: clamp(percent ? parts[0] * 2.55 : parts[0]),
+              g: clamp(percent ? parts[1] * 2.55 : parts[1]),
+              b: clamp(percent ? parts[2] * 2.55 : parts[2]),
+              a: parts.length > 3 && Number.isFinite(parts[3]) ? Math.max(0, Math.min(1, parts[3] > 1 ? parts[3] / 100 : parts[3])) : 1
+            };
+          }
+        }
+        const hex = text.match(/^#([0-9a-f]{3,8})$/i);
+        if (!hex) return null;
+        let h = hex[1];
+        if (h.length === 3 || h.length === 4) h = [...h].map(character => character + character).join('');
+        return { r: parseInt(h.slice(0, 2), 16), g: parseInt(h.slice(2, 4), 16), b: parseInt(h.slice(4, 6), 16), a: h.length === 8 ? parseInt(h.slice(6, 8), 16) / 255 : 1 };
       };
       const blend = (front, back) => {
-        const fa = front?.a ?? 1;
-        const ba = back?.a ?? 1;
+        const fa = Number.isFinite(front?.a) ? front.a : 1;
+        const ba = Number.isFinite(back?.a) ? back.a : 1;
         const alpha = fa + ba * (1 - fa);
         if (!alpha) return { r: 255, g: 255, b: 255, a: 1 };
         return {
@@ -95,6 +91,56 @@ for (const route of routes) {
           b: (front.b * fa + back.b * ba * (1 - fa)) / alpha,
           a: alpha
         };
+      };
+      const compact = (colors, limit = 48) => {
+        const seen = new Set();
+        const out = [];
+        for (const color of colors) {
+          const key = [color.r, color.g, color.b, color.a].map(value => Math.round(value * 10) / 10).join(':');
+          if (seen.has(key)) continue;
+          seen.add(key);
+          out.push(color);
+          if (out.length >= limit) break;
+        }
+        return out;
+      };
+      const splitLayers = value => {
+        const text = String(value || '');
+        if (!text || text === 'none') return [];
+        const layers = [];
+        let depth = 0;
+        let start = 0;
+        for (let index = 0; index < text.length; index += 1) {
+          const character = text[index];
+          if (character === '(') depth += 1;
+          else if (character === ')') depth = Math.max(0, depth - 1);
+          else if (character === ',' && depth === 0) {
+            layers.push(text.slice(start, index).trim());
+            start = index + 1;
+          }
+        }
+        layers.push(text.slice(start).trim());
+        return layers.filter(Boolean);
+      };
+      const gradientColors = value => {
+        const tokens = String(value || '').match(/#[0-9a-f]{3,8}\b|rgba?\([^)]+\)/gi) || [];
+        return tokens.map(parseColor).filter(Boolean);
+      };
+      const applyImages = (value, bases) => {
+        const layers = splitLayers(value);
+        let candidates = bases;
+        let imageBackground = false;
+        for (let index = layers.length - 1; index >= 0; index -= 1) {
+          const layer = layers[index];
+          if (/url\(/i.test(layer)) { imageBackground = true; continue; }
+          const choices = gradientColors(layer);
+          if (/\btransparent\b/i.test(layer)) choices.push(TRANSPARENT);
+          if (!choices.length) continue;
+          const next = [];
+          for (const base of candidates) for (const choice of choices) next.push(blend(choice, base));
+          candidates = compact(next);
+        }
+        return { candidates, imageBackground };
       };
       const luminance = color => {
         const linear = [color.r, color.g, color.b].map(value => {
@@ -108,35 +154,21 @@ for (const route of routes) {
         const bg = luminance(background);
         return (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05);
       };
-      const gradientColors = value => {
-        const tokens = String(value || '').match(/rgba?\([^)]+\)/gi) || [];
-        return tokens.map(parseColor).filter(Boolean);
-      };
       const backgrounds = element => {
         const chain = [];
         let node = element;
         let imageBackground = false;
-        while (node && node !== document) {
-          chain.unshift(node);
-          node = node.parentElement;
-        }
+        while (node && node !== document) { chain.unshift(node); node = node.parentElement; }
         let candidates = [{ r: 255, g: 255, b: 255, a: 1 }];
         for (const item of chain) {
           const style = getComputedStyle(item);
           const solid = parseColor(style.backgroundColor);
-          if (solid && solid.a > 0) candidates = candidates.map(base => blend(solid, base));
-          const image = style.backgroundImage;
-          if (image && image !== 'none') {
-            if (/url\(/i.test(image)) imageBackground = true;
-            const stops = gradientColors(image);
-            if (stops.length) {
-              const next = [];
-              for (const base of candidates) for (const stop of stops) next.push(blend(stop, base));
-              candidates = next.slice(0, 24);
-            }
-          }
+          if (solid && solid.a > 0) candidates = compact(candidates.map(base => blend(solid, base)));
+          const applied = applyImages(style.backgroundImage, candidates);
+          candidates = applied.candidates;
+          imageBackground = imageBackground || applied.imageBackground;
         }
-        return { candidates, imageBackground };
+        return { candidates: compact(candidates), imageBackground };
       };
       const targetFor = style => {
         const size = Number.parseFloat(style.fontSize) || 16;
@@ -144,14 +176,8 @@ for (const route of routes) {
         return size >= 24 || (size >= 18.66 && weight >= 700) ? 3 : 4.5;
       };
       const ownText = element => {
-        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName)) {
-          return element.value || element.getAttribute('placeholder') || element.getAttribute('aria-label') || '';
-        }
-        return [...element.childNodes]
-          .filter(node => node.nodeType === Node.TEXT_NODE)
-          .map(node => node.textContent)
-          .join(' ')
-          .trim();
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName)) return element.value || element.getAttribute('placeholder') || element.getAttribute('aria-label') || '';
+        return [...element.childNodes].filter(node => node.nodeType === Node.TEXT_NODE).map(node => node.textContent).join(' ').trim();
       };
       const pathFor = element => {
         if (element.id) return `#${CSS.escape(element.id)}`;
@@ -188,49 +214,29 @@ for (const route of routes) {
         if (imageBackground && style.textShadow === 'none') imageBackgroundWarnings.push({ selector: pathFor(element), text: text.slice(0, 100) });
         if (minimum + 0.02 < target) {
           violations.push({
-            selector: pathFor(element),
-            text: text.slice(0, 140),
-            ratio: Number(minimum.toFixed(2)),
-            target,
-            color: style.color,
-            backgroundColor: style.backgroundColor,
-            backgroundImage: style.backgroundImage,
-            fontSize: style.fontSize,
-            fontWeight: style.fontWeight,
-            repairedByRuntime: Boolean(element.dataset.gnkContrastFixed)
+            selector: pathFor(element), text: text.slice(0, 140), ratio: Number(minimum.toFixed(2)), target,
+            color: style.color, backgroundColor: style.backgroundColor, backgroundImage: style.backgroundImage,
+            fontSize: style.fontSize, fontWeight: style.fontWeight, repairedByRuntime: Boolean(element.dataset.gnkContrastFixed)
           });
         }
       }
-
       return {
-        url: location.href,
-        title: document.title,
-        lang: document.documentElement.lang || '',
-        checked,
-        runtimeRepairs,
-        violations: violations.slice(0, 80),
-        totalViolations: violations.length,
-        imageBackgroundWarnings: imageBackgroundWarnings.slice(0, 40),
-        totalImageBackgroundWarnings: imageBackgroundWarnings.length,
-        runtime: {
-          state: document.documentElement.dataset.gnkContrast || null,
-          version: document.documentElement.dataset.gnkContrastVersion || null,
-          source: runtimeSource
-        }
+        url: location.href, title: document.title, lang: document.documentElement.lang || '', checked, runtimeRepairs,
+        violations: violations.slice(0, 80), totalViolations: violations.length,
+        imageBackgroundWarnings: imageBackgroundWarnings.slice(0, 40), totalImageBackgroundWarnings: imageBackgroundWarnings.length,
+        runtime: { state: document.documentElement.dataset.gnkContrast || null, version: document.documentElement.dataset.gnkContrastVersion || null, source: runtimeSource }
       };
     }, runtimeWasPresent ? 'page-source' : 'edge-emulation');
 
     const projectDir = path.join(REPORT_ROOT, safeName(testInfo.project.name));
     fs.mkdirSync(projectDir, { recursive: true });
     fs.writeFileSync(path.join(projectDir, `${safeName(route)}.json`), JSON.stringify(audit, null, 2));
-
     if (audit.totalViolations > 0) {
       const screenshotPath = path.join(projectDir, `${safeName(route)}.jpg`);
       await page.screenshot({ path: screenshotPath, type: 'jpeg', quality: 68, fullPage: true });
       await testInfo.attach('contrast-report', { body: Buffer.from(JSON.stringify(audit, null, 2)), contentType: 'application/json' });
       await testInfo.attach('contrast-screenshot', { path: screenshotPath, contentType: 'image/jpeg' });
     }
-
     expect(audit.runtime.state, `${route}: contrast runtime did not activate`).toBe('hardened-v4');
     expect(audit.totalViolations, `${route}: ${JSON.stringify(audit.violations, null, 2)}`).toBe(0);
   });
