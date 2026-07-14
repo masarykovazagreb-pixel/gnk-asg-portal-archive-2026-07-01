@@ -31,5 +31,14 @@ for(const marker of ['OpinionNewsArticle','application/ld+json','rel="canonical"
 for(const file of ['scripts/seo-visibility-cycle-v1.mjs','scripts/refresh-public-news-v4.mjs','.github/workflows/editorial-scheduled-publish.yml','.github/workflows/seo-news-cycle.yml','.github/workflows/editorial-content-deploy.yml'])assert.ok(fs.existsSync(file)&&fs.statSync(file).size,file);
 const seo=fs.readFileSync('scripts/seo-visibility-cycle-v1.mjs','utf8');
 assert.match(seo,/artificialTraffic:false/);assert.match(seo,/keywordStuffing:false/);
-const workflow=fs.readFileSync('.github/workflows/seo-news-cycle.yml','utf8');assert.match(workflow,/timeout-minutes: 10/);assert.match(workflow,/cron: '17 \*\/2 \* \* \*'/);
-console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:10,commentaries:3,publishAt:x.publishAt})),seo:{cycleHours:2,timeoutMinutes:10,artificialTraffic:false}},null,2));
+const seoWorkflow=fs.readFileSync('.github/workflows/seo-news-cycle.yml','utf8');
+const scheduler=fs.readFileSync('.github/workflows/editorial-scheduled-publish.yml','utf8');
+for(const source of [seoWorkflow,scheduler]){
+  assert.match(source,/actions: write/);
+  assert.match(source,/gh workflow run deploy-admin-auth-v6\.yml/);
+  assert.match(source,/confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6/);
+  assert.match(source,/approved_sha="\$APPROVED_SHA"/);
+}
+assert.match(seoWorkflow,/timeout-minutes: 10/);assert.match(seoWorkflow,/cron: '17 \*\/2 \* \* \*'/);
+assert.match(scheduler,/steps\.commit\.outputs\.changed == 'true'/);
+console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:10,commentaries:3,publishAt:x.publishAt})),seo:{cycleHours:2,timeoutMinutes:10,artificialTraffic:false},deploy:{directExactShaDispatch:true}},null,2));
