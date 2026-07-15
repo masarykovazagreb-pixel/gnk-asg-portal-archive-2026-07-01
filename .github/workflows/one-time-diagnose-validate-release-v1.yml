@@ -1,0 +1,72 @@
+name: One-Time Diagnose Validate Release V1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-diagnose-validate-release-v1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run validation tests with exact failure capture
+        shell: bash
+        run: |
+          set +e
+          mkdir -p artifacts/release-validation-diagnostic
+          : > artifacts/release-validation-diagnostic/result.txt
+          tests=(
+            scripts/test-deploy-approval-guardrails.mjs
+            scripts/test-index-runtime-ownership.mjs
+            scripts/test-public-design-contract.mjs
+            scripts/test-unified-shell-contract.mjs
+            scripts/test-visible-menu-logo-content-v1.mjs
+            scripts/test-final-release-v31.mjs
+            scripts/test-worker-directory-1573.mjs
+            scripts/test-admin-session-login-v1.mjs
+            scripts/test-contact-form-contract.mjs
+            scripts/test-the-code-index-contract.mjs
+            scripts/test-index-content-contract.mjs
+            scripts/test-email-signature-contract.mjs
+            scripts/test-mail-transport-guardrails.mjs
+            scripts/test-email-mime-guardrails.mjs
+            scripts/test-autoreply-guardrails.mjs
+            scripts/test-autoreply-all-addresses.mjs
+            scripts/test-news-queue-guardrails.mjs
+            scripts/test-public-editorial-asset-routes-v1.mjs
+            scripts/audit-all-pages-detailed-v1.mjs
+            scripts/audit-public-portal-v1.mjs
+            scripts/audit-worker-route-ownership.mjs
+            scripts/test-data-fallback-contract.mjs
+            scripts/predeploy-release-v6.mjs
+          )
+          failed=0
+          for test in "${tests[@]}"; do
+            echo "=== $test ===" | tee -a artifacts/release-validation-diagnostic/result.txt
+            node "$test" >> artifacts/release-validation-diagnostic/result.txt 2>&1
+            code=$?
+            echo "EXIT=$code" | tee -a artifacts/release-validation-diagnostic/result.txt
+            if [ $code -ne 0 ]; then failed=1; break; fi
+          done
+          echo "FAILED=$failed" >> artifacts/release-validation-diagnostic/result.txt
+          exit 0
+      - name: Commit diagnostic
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add artifacts/release-validation-diagnostic/result.txt
+          git commit -m 'ci: record release validation failure' || exit 0
+          git push origin HEAD:main
