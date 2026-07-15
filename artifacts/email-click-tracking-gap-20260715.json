@@ -1,0 +1,62 @@
+{
+  "version": "GNK_ASG_EMAIL_CLICK_TRACKING_GAP_AUDIT_V1_20260715",
+  "base_sha": "740aefa131e60aa4f063bcddd60a764561d78ac1",
+  "scope": "read-only repository audit; no production deploy",
+  "verified_existing_capabilities": {
+    "provider_acceptance": true,
+    "delivery_and_failure_sync": true,
+    "open_pixel": true,
+    "first_and_last_open": true,
+    "open_count": true,
+    "ip_user_agent_device_signal": true,
+    "gmail_and_apple_proxy_classification": true,
+    "explicit_receipt_confirmation": true,
+    "event_timeline": true,
+    "forwarding_reliably_detectable": false
+  },
+  "verified_gap": {
+    "click_tracking": false,
+    "link_rewriting": false,
+    "first_click_at": false,
+    "last_click_at": false,
+    "click_count": false,
+    "clicked_destination_audit": false,
+    "click_ip_user_agent_device_signal": false
+  },
+  "evidence": {
+    "tracking_core": "workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js",
+    "status_facade": "workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js",
+    "current_tracking_version": "GNK_ASG_EMAIL_STATUS_TRACKING_V2_20260714_DETAILED_RECEIPT",
+    "current_dashboard_version": "v4-detailed-receipt"
+  },
+  "safe_implementation_contract": {
+    "new_public_path": "/api/email-status/click/<tracking-id>/<signed-token>",
+    "allowed_destination_schemes": ["https"],
+    "blocked_destination_classes": ["javascript", "data", "file", "mailto", "tel", "relative-without-canonical-resolution"],
+    "token_storage": "SHA-256 hash only",
+    "event_type": "CLICKED",
+    "record_fields": [
+      "first_clicked_at",
+      "last_clicked_at",
+      "click_count",
+      "last_click_url",
+      "last_click_ip",
+      "last_click_user_agent",
+      "last_click_device"
+    ],
+    "privacy_note": "IP, user-agent and device are technical signals. Proxy, security scanners and link-preview services can create false-positive click events.",
+    "redirect_status": 302,
+    "cache_control": "private, no-store, no-cache, must-revalidate, max-age=0",
+    "referrer_policy": "no-referrer",
+    "production_test_mail_required": false
+  },
+  "safety": {
+    "dns_changed": false,
+    "cloudflare_routes_changed": false,
+    "secrets_changed": false,
+    "mail_routing_changed": false,
+    "email_sent": false,
+    "production_deploy_started": false,
+    "main_changed": false
+  }
+}
