@@ -1,7 +1,7 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v22.js';
 import {servePublicEditorialAsset,VERSION as EDITORIAL_ASSET_VERSION} from './public-editorial-asset-router-v1.js';
 
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V33_PUBLIC_EDITORIAL_ASSETS_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;
 
 export default{
  async fetch(request,env,ctx){
