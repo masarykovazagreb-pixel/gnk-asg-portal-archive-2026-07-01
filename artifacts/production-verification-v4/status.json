@@ -1,0 +1,131 @@
+{
+  "checkedAt": "2026-07-15T08:39:19Z",
+  "targetSha": "4ef7a4246848358df0f530a3430e1ad8be44040e",
+  "deploy": {
+    "runId": "29401467128",
+    "status": "completed",
+    "conclusion": "failure",
+    "htmlUrl": "https://github.com/beckuphome-gnk/gnk-asg-portal/actions/runs/29401467128"
+  },
+  "checks": [
+    {
+      "name": "home",
+      "url": "https://gnk-asg.hr/",
+      "http": 200,
+      "location": null,
+      "marker": "index-editorial-order-v1.js?v=20260715-editorial-v6-latest-first",
+      "markerOk": false
+    },
+    {
+      "name": "news",
+      "url": "https://gnk-asg.hr/data/news.json",
+      "http": 200,
+      "latest": "2026-07-08T18:54:31.000Z",
+      "markerOk": false
+    },
+    {
+      "name": "objave",
+      "url": "https://gnk-asg.hr/objave/",
+      "http": 200,
+      "location": null,
+      "marker": "Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova",
+      "markerOk": true
+    },
+    {
+      "name": "komentari",
+      "url": "https://gnk-asg.hr/komentari/",
+      "http": 200,
+      "location": null,
+      "marker": "AI ne smije pisati konačnu odluku",
+      "markerOk": true
+    },
+    {
+      "name": "contact-page",
+      "url": "https://gnk-asg.hr/contact/",
+      "http": 200,
+      "location": null,
+      "marker": "id=\"contactForm\"",
+      "markerOk": true
+    },
+    {
+      "name": "contact-readiness",
+      "url": "https://gnk-asg.hr/api/contact-submit",
+      "http": 200,
+      "markerOk": false,
+      "response": {
+        "ok": true,
+        "worker": "gnk-asg-contact-api",
+        "version": "gnk-asg-mail-unified-v2-20260624",
+        "status": "READY",
+        "endpoint": "/api/contact-submit",
+        "mailboxes": [
+          {
+            "key": "info",
+            "address": "info@gnk-asg.hr",
+            "label": "Info Desk"
+          },
+          {
+            "key": "contact",
+            "address": "contact@gnk-asg.hr",
+            "label": "Kontakt"
+          },
+          {
+            "key": "office",
+            "address": "office@gnk-asg.hr",
+            "label": "Office"
+          },
+          {
+            "key": "it",
+            "address": "it@gnk-asg.hr",
+            "label": "IT podrška"
+          },
+          {
+            "key": "assistant",
+            "address": "assistant@gnk-asg.hr",
+            "label": "AI asistent"
+          },
+          {
+            "key": "legal",
+            "address": "legal@gnk-asg.hr",
+            "label": "Legal & Compliance"
+          },
+          {
+            "key": "privacy",
+            "address": "privacy@gnk-asg.hr",
+            "label": "Privatnost / GDPR"
+          },
+          {
+            "key": "media",
+            "address": "media@gnk-asg.hr",
+            "label": "Media"
+          },
+          {
+            "key": "press",
+            "address": "press@gnk-asg.hr",
+            "label": "Press"
+          },
+          {
+            "key": "ubo",
+            "address": "ubo@gnk-asg.hr",
+            "label": "UBO / korporativni podaci"
+          }
+        ],
+        "bindings": {
+          "kv": true,
+          "r2": true,
+          "email": true
+        },
+        "updatedAt": "2026-07-15T08:39:19.845Z"
+      }
+    },
+    {
+      "name": "mail-studio-asset",
+      "url": "https://gnk-asg.hr/assets/mail-studio-ui-v28.js",
+      "http": 200,
+      "location": null,
+      "marker": "min-height:520px",
+      "markerOk": true
+    }
+  ],
+  "ok": false
+}
