@@ -14,6 +14,8 @@ const worker=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
 const wrapper=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js');
 const editorialWrapper=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js');
 const editorialRouter=read('workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js');
+const marketApi=read('workers/gnk-asg-direct-operator/src/public-market-data-v1.js');
+const marketClient=read('apps/portal/assets/market.js');
 const config=read('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml');
 const mime=read('workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js');
 const signature=read('workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js');
@@ -93,8 +95,16 @@ assert.match(editorialWrapper,/servePublicEditorialAsset/);
 assert.match(editorialWrapper,/index-unified-auth-v22\.js/);
 assert.match(editorialWrapper,/serveCurrentNewsAsset/);
 assert.match(editorialWrapper,/serveNewsShareRedirect/);
+assert.match(editorialWrapper,/servePublicMarketData/);
+assert.match(editorialWrapper,/MARKET_ORIGIN/);
 assert.match(editorialRouter,/GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715/);
 for(const marker of ['/objave','/komentari','/analize','/en/publications','/en/commentary','/en/analyses','x-gnk-explicit-html-route','x-gnk-editorial-request-path','x-gnk-editorial-assets','redirect:\'follow\''])assert.ok(editorialRouter.includes(marker),`editorial router missing ${marker}`);
+assert.match(marketApi,/GNK_ASG_PUBLIC_MARKET_DATA_V1_20260715/);
+assert.match(marketApi,/API_PATH='\/api\/public-market'/);
+assert.match(marketApi,/x-gnk-market-source/);
+assert.match(marketApi,/fallback_reason/);
+assert.match(marketClient,/fetch\('\/api\/public-market/);
+assert.match(marketClient,/zastarjeli rezervni presjek/);
 assert.match(config,/main = "src\/index-unified-auth-v23\.js"/);
 assert.match(config,/html_handling = "auto-trailing-slash"/);
 
@@ -131,4 +141,4 @@ const localNews=JSON.parse(read('apps/portal/data/news.json'));
 assert.ok(Array.isArray(localNews));
 assert.ok(localNews.length>=100,`local news fallback must contain >=100 items; actual=${localNews.length}`);
 
-console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v8-click-tracking'},editorial:{assetRouting:'v2-canonical-trailing-slash-v38',minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v38-over-v32-over-v31'},null,2));
+console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},market:{sameOrigin:true,staleFallbackExplicit:true},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v8-click-tracking'},editorial:{assetRouting:'v2-canonical-trailing-slash-v38',minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v38-over-v32-over-v31'},null,2));
