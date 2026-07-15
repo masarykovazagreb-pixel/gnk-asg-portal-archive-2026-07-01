@@ -1,0 +1,56 @@
+name: One-Time Final Urgent Package V1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-final-urgent-package-v1.yml'
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: one-time-final-urgent-package-v1
+  cancel-in-progress: false
+
+jobs:
+  validate-and-dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate final urgent package
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          node --check apps/portal/assets/editorial-latest-index-v1.js
+          node --check apps/portal/assets/index-editorial-order-v1.js
+          grep -Fq 'const home=await serveHomeAsset' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq 'GNK_ASG_UNIFIED_AUTH_V35_HOME_AND_EDITORIAL_INDEX' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq 'GNK_EDITORIAL_LATEST_INDEX_V1_20260715' apps/portal/assets/editorial-latest-index-v1.js
+          grep -Fq 'editorial-latest-index-v1.js?v=20260715-v1' apps/portal/objave/index.html
+          grep -Fq 'editorial-latest-index-v1.js?v=20260715-v1' apps/portal/komentari/index.html
+          grep -Fq 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V6_20260715_AI_BRANDED' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'replyText=await aiMessageText' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'signature.html' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'loadEmailLogo' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq '"status": "published"' apps/portal/data/editorial-plan/manifest.json
+
+      - name: Dispatch exact-SHA production deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          approved_sha=$(git rev-parse HEAD)
+          gh workflow run deploy-admin-auth-v6.yml --repo "$GITHUB_REPOSITORY" --ref main -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 -f approved_sha="$approved_sha"
+          echo "FINAL_URGENT_SHA=$approved_sha" >> "$GITHUB_STEP_SUMMARY"
