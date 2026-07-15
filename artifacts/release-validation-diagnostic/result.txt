@@ -1,0 +1,112 @@
+=== scripts/test-deploy-approval-guardrails.mjs ===
+{
+  "ok": true,
+  "deployStarted": false,
+  "approvalInput": "exact-main-sha",
+  "adminLoginVerification": "exact-host-path-200-or-401-with-marker",
+  "adminSessionVerification": "ready-or-configured-unauthorized",
+  "editorialAssetsVerification": "canonical-trailing-slash-v34",
+  "preflight": "before-secrets-and-deploy",
+  "routeMutation": false,
+  "finalAssertions": "named-and-diagnostic"
+}
+EXIT=0
+=== scripts/test-index-runtime-ownership.mjs ===
+{
+  "ok": true,
+  "owners": {
+    "scaffold": "release-completion-v1.js",
+    "editorial": "index-editorial-order-v1.js",
+    "marketFallback": "index-data-resilience-v1.js"
+  },
+  "indexRuntime": "V8",
+  "editorialRuntime": "V4",
+  "visibleNewsSources": true,
+  "minimumStaticEditorialPerSection": 3,
+  "fetchTimeoutMs": 7000
+}
+EXIT=0
+=== scripts/test-public-design-contract.mjs ===
+{
+  "ok": true,
+  "designRuntime": "v2-unified",
+  "tokens": "v2-contrast",
+  "menu": "v4-public-and-protected",
+  "canonicalLogo": true,
+  "ticker": "index-only",
+  "protectedRoutesIncluded": true
+}
+EXIT=0
+=== scripts/test-unified-shell-contract.mjs ===
+{
+  "ok": true,
+  "canonicalPortalAlias": "logo-gnk-asg-canonical.svg -> logo-gnk-asg-email.png",
+  "canonicalEmailLogo": "logo-gnk-asg-email.png",
+  "menu": "shared-public-admin",
+  "ticker": "index-only"
+}
+EXIT=0
+=== scripts/test-visible-menu-logo-content-v1.mjs ===
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS/. Input:
+
+"import app,{VERSION as BASE_VERSION} from './index-unified-auth-v22.js';\n" +
+  "import {servePublicEditorialAsset,VERSION as EDITORIAL_ASSET_VERSION} from './public-editorial-asset-router-v1.js';\n" +
+  '\n' +
+  'export const VERSION=`GNK_ASG_UNIFIED_AUTH_V35_HOME_AND_EDITORIAL_INDEX_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;\n' +
+  "const pathOf=request=>new URL(request.url).pathname.replace(/\\/+$/,'')||'/';\n" +
+  "async function serveHomeAsset(request,env){if(!['GET','HEAD'].includes(request.method)||!env.ASSETS?.fetch)return null;const path=pathOf(request);const targetPath=path==='/'?'/index.html':path==='/en'?'/en/index.html':'';if(!targetPath)return null;try{const response=await env.ASSETS.fetch(new Request(new URL(targetPath,'https://assets.local'),{method:request.method,headers:request.headers,redirect:'follow'}));if(response.status!==200)return null;const headers=new Headers(response.headers);for(const name of ['content-length','content-encoding','location','etag','last-modified'])headers.delete(name);headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','no-store, max-age=0');headers.set('x-gnk-home-direct-asset',targetPath);headers.set('x-gnk-route-owner',VERSION);return new Response(request.method==='HEAD'?null:response.body,{status:200,headers})}catch{return null}}\n" +
+  '\n' +
+  'export default{\n' +
+  ' async fetch(request,env,ctx){\n' +
+  '  const home=await serveHomeAsset(request,env);\n' +
+  '  if(home)return home;\n' +
+  '  const editorial=await servePublicEditorialAsset(request,env,VERSION);\n' +
+  '  if(editorial)return editorial;\n' +
+  '  const response=await app.fetch(request,env,ctx);\n' +
+  '  const headers=new Headers(response.headers);\n' +
+  "  headers.set('x-gnk-active-release',VERSION);\n" +
+  '  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});\n' +
+  ' },\n' +
+  " scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},\n" +
+  " email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}\n" +
+  '};'
+
+    at file:///home/runner/work/gnk-asg-portal/gnk-asg-portal/scripts/test-visible-menu-logo-content-v1.mjs:64:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: "import app,{VERSION as BASE_VERSION} from './index-unified-auth-v22.js';\n" +
+    "import {servePublicEditorialAsset,VERSION as EDITORIAL_ASSET_VERSION} from './public-editorial-asset-router-v1.js';\n" +
+    '\n' +
+    'export const VERSION=`GNK_ASG_UNIFIED_AUTH_V35_HOME_AND_EDITORIAL_INDEX_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;\n' +
+    "const pathOf=request=>new URL(request.url).pathname.replace(/\\/+$/,'')||'/';\n" +
+    "async function serveHomeAsset(request,env){if(!['GET','HEAD'].includes(request.method)||!env.ASSETS?.fetch)return null;const path=pathOf(request);const targetPath=path==='/'?'/index.html':path==='/en'?'/en/index.html':'';if(!targetPath)return null;try{const response=await env.ASSETS.fetch(new Request(new URL(targetPath,'https://assets.local'),{method:request.method,headers:request.headers,redirect:'follow'}));if(response.status!==200)return null;const headers=new Headers(response.headers);for(const name of ['content-length','content-encoding','location','etag','last-modified'])headers.delete(name);headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','no-store, max-age=0');headers.set('x-gnk-home-direct-asset',targetPath);headers.set('x-gnk-route-owner',VERSION);return new Response(request.method==='HEAD'?null:response.body,{status:200,headers})}catch{return null}}\n" +
+    '\n' +
+    'export default{\n' +
+    ' async fetch(request,env,ctx){\n' +
+    '  const home=await serveHomeAsset(request,env);\n' +
+    '  if(home)return home;\n' +
+    '  const editorial=await servePublicEditorialAsset(request,env,VERSION);\n' +
+    '  if(editorial)return editorial;\n' +
+    '  const response=await app.fetch(request,env,ctx);\n' +
+    '  const headers=new Headers(response.headers);\n' +
+    "  headers.set('x-gnk-active-release',VERSION);\n" +
+    '  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});\n' +
+    ' },\n' +
+    " scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},\n" +
+    " email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}\n" +
+    '};',
+  expected: /GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS/,
+  operator: 'match',
+  diff: 'simple'
+}
+
+Node.js v22.23.1
+EXIT=1
+FAILED=1
