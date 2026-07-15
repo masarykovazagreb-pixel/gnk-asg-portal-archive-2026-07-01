@@ -33,7 +33,8 @@ requireText('production verifier', productionVerifier, 'x-gnk-deploy-revision: $
 requireText('direct operator', directOperator, 'GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS');
 
 requireText('click tracking runtime', clickTracking, 'CLICKED');
-requireText('click tracking contract', clickContract, 'email click tracking');
+requireText('click tracking contract', clickContract, "event:'CLICKED'");
+requireText('click tracking contract', clickContract, 'mailSent:false');
 
 requireText('media registration', mediaRegistration, "const COOKIE='gnk_asg_media_registration'");
 requireText('media registration', mediaRegistration, 'media_invitation_access');
