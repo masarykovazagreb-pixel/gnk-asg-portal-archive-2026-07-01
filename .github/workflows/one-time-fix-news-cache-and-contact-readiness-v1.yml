@@ -1,0 +1,75 @@
+name: One-Time Fix News Cache and Contact Readiness V1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-fix-news-cache-and-contact-readiness-v1.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: one-time-fix-news-cache-and-contact-readiness-v1
+  cancel-in-progress: false
+
+jobs:
+  fix-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+
+      - name: Bust homepage news cache and expose contact transport readiness
+        run: |
+          set -euo pipefail
+          node - <<'JS'
+          const fs=require('fs');
+          const path='workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js';
+          let source=fs.readFileSync(path,'utf8');
+          const oldScript='/assets/index-editorial-order-v1.js?v=20260713-editorial-v4';
+          const newScript='/assets/index-editorial-order-v1.js?v=20260715-editorial-v6-latest-first';
+          if(!source.includes(oldScript))throw new Error('old_news_script_version_not_found');
+          source=source.replace(oldScript,newScript);
+          const oldReady="storage:Boolean(env.GNK_ASG_D1),mail:Boolean(env.EMAIL?.send)";
+          const newReady="storage:Boolean(env.GNK_ASG_D1),mail:Boolean(env.EMAIL?.send),transport:env.EMAIL?.send?'cloudflare-email-binding':'unavailable'";
+          if(!source.includes(oldReady))throw new Error('contact_readiness_anchor_not_found');
+          source=source.replace(oldReady,newReady);
+          fs.writeFileSync(path,source);
+          JS
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          grep -Fq '20260715-editorial-v6-latest-first' workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          grep -Fq "transport:env.EMAIL?.send?'cloudflare-email-binding':'unavailable'" workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          node scripts/test-contact-form-contract.mjs
+
+      - name: Commit exact fix
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          git commit -m 'fix(news): force latest feed asset and expose contact transport readiness'
+          git push origin HEAD:main
+
+      - name: Dispatch exact-SHA production deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          approved_sha=$(git rev-parse HEAD)
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo beckuphome-gnk/gnk-asg-portal \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$approved_sha"
+          printf '{"ok":true,"approvedSha":"%s","changes":["news-cache-bust-v6","contact-readiness-transport"]}\n' "$approved_sha" > fix-deploy.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: news-cache-contact-readiness-deploy
+          path: fix-deploy.json
+          retention-days: 1
