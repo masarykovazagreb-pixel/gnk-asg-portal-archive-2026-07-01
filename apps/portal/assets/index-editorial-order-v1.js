@@ -1,7 +1,8 @@
 (()=>{
 'use strict';
-const VERSION='GNK_INDEX_EDITORIAL_ORDER_V5_20260714_SYNTAX_SAFE';
-if(window.__GNK_INDEX_EDITORIAL_ORDER_V5__)return;
+const VERSION='GNK_INDEX_EDITORIAL_ORDER_V6_20260715_LATEST_FIRST';
+if(window.__GNK_INDEX_EDITORIAL_ORDER_V6__)return;
+window.__GNK_INDEX_EDITORIAL_ORDER_V6__=true;
 window.__GNK_INDEX_EDITORIAL_ORDER_V5__=true;
 window.__GNK_INDEX_EDITORIAL_ORDER_V4__=true;
 
@@ -124,6 +125,8 @@ async function news(){
     const fallback=Array.isArray(data)?data:(data.items||[]);
     fallback.filter(langAllowed).forEach(item=>out.push({...item,__fallback:true}));
   }
+  const timestamp=item=>{const raw=item?.publishedAt||item?.published_at||item?.date||item?.createdAt;const value=raw?Date.parse(raw):0;return Number.isFinite(value)?value:0};
+  out.sort((a,b)=>timestamp(b)-timestamp(a));
   const seen=new Set();
   const cards=[];
   for(const item of out){
