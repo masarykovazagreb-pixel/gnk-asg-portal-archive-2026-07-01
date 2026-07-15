@@ -3,11 +3,12 @@ import assert from 'node:assert/strict';
 
 const tracking=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js','utf8');
 const facade=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-status-tracking-v6.js','utf8');
+const click=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-click-tracking-v1.js','utf8');
 const dashboard=fs.readFileSync('apps/portal/assets/email-status-dashboard-v2.js','utf8');
 const contrast=fs.readFileSync('apps/portal/assets/public-contrast-hardening-v1.js','utf8');
 const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js','utf8');
 const wrangler=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml','utf8');
-const verifier=fs.readFileSync('scripts/verify-production-route.sh','utf8');
+const verifier=fs.readFileSync('scripts/verify-production-release-v38.sh','utf8');
 
 for(const marker of [
   /GNK_ASG_EMAIL_STATUS_TRACKING_V2_20260714_DETAILED_RECEIPT/,
@@ -32,15 +33,36 @@ for(const marker of [
 ])assert.match(tracking,marker);
 
 for(const marker of [
-  /GNK_ASG_EMAIL_STATUS_TRACKING_V7_20260714_DETAILED_RECEIPT/,
+  /GNK_ASG_EMAIL_STATUS_TRACKING_V8_20260715_CLICK/,
   /distinct_open_environments/,
   /distinct_open_ips/,
   /distinct_open_devices/,
   /possible_forwarding_signal/,
+  /clickEvents:true/,
+  /clickDestination:true/,
   /explicitReceiptConfirmation:true/,
   /forwardingReliable:false/,
-  /gnk-email-status-dashboard-v4/
+  /gnk-email-status-dashboard-v4/,
+  /v5-click-tracking/,
+  /handleEmailClickRequest/
 ])assert.match(facade,marker);
+
+for(const marker of [
+  /GNK_ASG_EMAIL_CLICK_TRACKING_V1_20260715/,
+  /email_status_click_links/,
+  /token_hash/,
+  /first_clicked_at/,
+  /last_clicked_at/,
+  /click_count/,
+  /last_click_url/,
+  /last_click_ip/,
+  /last_click_user_agent/,
+  /last_click_device/,
+  /'CLICKED'/,
+  /status:302/,
+  /referrer-policy/,
+  /proxy\/security scanner/
+])assert.match(click,marker);
 
 for(const marker of [
   /__GNK_ASG_EMAIL_STATUS_DASHBOARD_V4__/,
@@ -78,12 +100,15 @@ assert.match(wrangler,/EMAIL_OPEN_TRACKING_ENABLED = "true"/);
 assert.match(wrangler,/EMAIL_RECEIPT_CONFIRMATION_ENABLED = "true"/);
 assert.match(wrangler,/EMAIL_STATUS_EVENT_RETENTION_DAYS = "31"/);
 for(const marker of [
-  'allowed_statuses="${4:-200}"',
-  '"$url" == https://gnk-asg.hr/admin-login/*',
-  'allowed_statuses="200,401"',
-  'status_allowed "$status"'
-])assert.ok(verifier.includes(marker),`Missing verifier marker: ${marker}`);
-for(const forbidden of ['gnk-asg.hr/admin-center/*','gnk-asg.hr/mail-studio/*','gnk-asg.hr/operator-dashboard/*'])assert.ok(!verifier.includes(forbidden),`Verifier exception too broad: ${forbidden}`);
+  "entrypoint='src/index-unified-auth-v23.js'",
+  "release_prefix='GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS'",
+  'x-gnk-active-entrypoint',
+  'x-gnk-active-release',
+  'x-gnk-deploy-revision',
+  'verify_release_marker mail-logo',
+  'case "$mail_status" in 400|401|403)'
+])assert.ok(verifier.includes(marker),`Missing V38 verifier marker: ${marker}`);
+for(const forbidden of ['wrangler deploy','api.cloudflare.com/client/v4/zones','cloudflare_api_token='])assert.ok(!verifier.includes(forbidden),`V38 verifier contains forbidden mutation marker: ${forbidden}`);
 
 console.log(JSON.stringify({
   ok:true,
@@ -91,9 +116,11 @@ console.log(JSON.stringify({
   rejectionDetails:true,
   openCount:true,
   openIpAndDevice:true,
+  clickTracking:true,
+  clickDestination:true,
   explicitReceiptConfirmation:true,
   forwardingReliable:false,
   contrastRuntime:'v4-all-pages-visual-repair',
-  dashboard:'v4-detailed-receipt',
-  adminLoginVerifier:'200-or-401-with-marker'
+  dashboard:'v5-click-tracking',
+  productionVerifier:'v38-exact-release-proof'
 },null,2));
