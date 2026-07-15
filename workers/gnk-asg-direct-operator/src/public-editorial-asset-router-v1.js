@@ -23,20 +23,28 @@ export function editorialAssetRequestPath(assetPath){
  return assetPath.slice(0,-'index.html'.length);
 }
 
+async function fetchHtmlAsset(env,request,assetPath,requestPath){
+ const candidates=[assetPath,requestPath].filter((value,index,all)=>value&&all.indexOf(value)===index);
+ for(const candidate of candidates){
+  const response=await env.ASSETS.fetch(new Request(new URL(candidate,'https://assets.local'),{
+   method:request.method,
+   headers:{accept:'text/html,application/xhtml+xml'},
+   redirect:'follow'
+  }));
+  const type=String(response.headers.get('content-type')||'').toLowerCase();
+  if(response.status===200&&type.includes('text/html'))return response;
+ }
+ return null;
+}
+
 export async function servePublicEditorialAsset(request,env,ownerVersion){
  if(!['GET','HEAD'].includes(request.method)||!env.ASSETS?.fetch)return null;
  const assetPath=editorialAssetPath(pathOf(request));
  const requestPath=editorialAssetRequestPath(assetPath);
  if(!assetPath||!requestPath)return null;
  try{
-  const response=await env.ASSETS.fetch(new Request(new URL(requestPath,'https://assets.local'),{
-   method:request.method,
-   headers:{accept:'text/html,application/xhtml+xml'},
-   redirect:'follow'
-  }));
-  if(response.status!==200)return null;
-  const type=String(response.headers.get('content-type')||'').toLowerCase();
-  if(!type.includes('text/html'))return null;
+  const response=await fetchHtmlAsset(env,request,assetPath,requestPath);
+  if(!response)return null;
   const headers=new Headers(response.headers);
   for(const name of ['content-length','content-encoding','location','etag','last-modified'])headers.delete(name);
   const collectionIndex=EDITORIAL_ROOTS.some(root=>assetPath===`${root}/index.html`);
