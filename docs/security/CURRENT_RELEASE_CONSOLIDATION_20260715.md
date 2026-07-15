@@ -27,6 +27,8 @@ To nije ocjena da je sustav neispravan. To znači da trenutačno ne postoji jeda
 5. Završni verifier traži V38 release marker i točan `x-gnk-deploy-revision`.
 6. Click tracking runtime i ugovorni test nalaze se na `main` nakon PR-a #465.
 7. Media Application na `main` još koristi invitation model: `mailCode` + `pin`, tablicu `media_invitation_access` i invitation session.
+8. Aktualni mail auto-reply već sadrži AI fallback, zaštitu od petlji, MIME HTML/text poruku i CID/remote PNG logo.
+9. Aktualni Email Status V8 već sadrži D1 evidenciju poruka, isporuku, odbijanje, otvaranja, potvrdu primitka, click tracking, paginaciju i tehničke signale uređaja/IP-a.
 
 ## Aktualni otvoreni rad
 
@@ -62,12 +64,28 @@ PR uvodi otvorenu registraciju s korisničkim imenom i lozinkom, ali je nastao n
 
 Odluka: ne spajati stari PR izravno. Potrebna je nova uska implementacija na aktualnom V38 `main`, ili izričita odluka da invitation model ostaje.
 
-### PR #433 i PR #454 — zahtijevaju provjeru protiv aktualnog V38
+### PR #433 — supersediran novim menu runtimeom
 
-- PR #433: mobilni položaj MENU i AI kontrola.
-- PR #454: kontakt, AI auto-reply, CID logo i prošireni status dashboard.
+PR mijenja stari `public-floating-menu-v1.js`. Na aktualnom `main` ta datoteka je samo legacy shim koji učitava `public-compact-menu-v1.js`, pa izravni stari menu kod iz PR-a više nije aktivni runtime. Aktualni `floating-intelligence.css` već na mobitelu podiže AI gumb iznad donje navigacije i safe-area zone.
 
-Oba PR-a su konfliktna sa sadašnjim `main` i ne smiju se izravno spajati. Treba usporediti jesu li njihove funkcije već prenesene novijim mergeovima te izdvojiti samo eventualno nedostajuće dijelove.
+Odluka: ne prenositi stari menu kod. PR je kandidat za zatvaranje kao supersediran, nakon kratke vizualne provjere aktivnog compact-menu runtimea.
+
+### PR #454 — djelomično supersediran; postoji uski operativni gap
+
+Aktualni `main` već sadrži:
+
+- AI-assisted auto-reply s kontroliranim fallbackom;
+- CID inline logo uz remote PNG fallback;
+- bounce/list/internal/loop/duplicate zaštite;
+- Email Status V8 s D1 evidencijom, otvaranjima, potvrdom primitka i klikovima;
+- dashboard i health prikaz.
+
+PR #454 ipak sadrži dvije funkcije koje nisu potvrđene na aktualnom `main`:
+
+1. zasebnu D1 tablicu `email_autoreply_audit` i operativna polja za AI/fallback način rada, profil, model i logo mode;
+2. dodjelu i filtriranje jednog od deset Global Communications Centre profila.
+
+Odluka: PR #454 ne spajati izravno. Ako su centre attribution i zasebni D1 auto-reply audit još poslovni zahtjev, prenijeti samo ta dva uska dijela na aktualni V38 uz novi ugovorni test.
 
 ## Klasifikacija otvorenih PR-ova
 
@@ -78,12 +96,12 @@ Oba PR-a su konfliktna sa sadašnjim `main` i ne smiju se izravno spajati. Treba
 ### Ponovno implementirati ili posebno odlučiti
 
 - #397
-- #433
-- #454
+- #454 samo za D1 auto-reply operativni audit i Global Communications Centre attribution
 
 ### Supersedirano aktualnim mainom ili novijim PR-om
 
 - #431
+- #433
 - #463
 - #464
 - #466 nakon ovog konsolidacijskog audita
@@ -98,11 +116,12 @@ Prije produkcijskog deploya obvezno je:
 
 1. donijeti odluku o PR-u #467;
 2. riješiti ili izričito odgoditi Media Application registracijski model;
-3. napraviti novi puni audit na rezultirajućem točnom `main` SHA-u;
-4. provjeriti javne i zaštićene rute bez slanja mailova;
-5. potvrditi da Mail Studio, Email Status i Contact vraćaju kontrolirane auth/readiness odgovore;
-6. odobriti zasebno točan 40-znamenkasti produkcijski SHA;
-7. tek tada ručno pokrenuti `Deploy Admin Auth V6`.
+3. odlučiti jesu li D1 auto-reply audit i Global Communications Centre attribution obvezni za ovaj release;
+4. napraviti novi puni audit na rezultirajućem točnom `main` SHA-u;
+5. provjeriti javne i zaštićene rute bez slanja mailova;
+6. potvrditi da Mail Studio, Email Status i Contact vraćaju kontrolirane auth/readiness odgovore;
+7. odobriti zasebno točan 40-znamenkasti produkcijski SHA;
+8. tek tada ručno pokrenuti `Deploy Admin Auth V6`.
 
 ## Izričite zabrane u ovoj fazi
 
@@ -121,4 +140,5 @@ Najčišći redoslijed je:
 1. završiti provjeru ovog auditnog PR-a;
 2. odlučiti o PR-u #467;
 3. izraditi aktualni V38 Media Application paket prema odabranom modelu;
-4. zatim izvesti konačni audit i pripremiti deploy zajedno s korisnikom.
+4. po potrebi dodati uski D1 auto-reply operations paket;
+5. zatim izvesti konačni audit i pripremiti deploy zajedno s korisnikom.
