@@ -2,10 +2,28 @@ import app,{VERSION as BASE_VERSION} from './index-unified-auth-v22.js';
 import {servePublicEditorialAsset,VERSION as EDITORIAL_ASSET_VERSION} from './public-editorial-asset-router-v1.js';
 
 export const PREVIOUS_PUBLIC_EDITORIAL_VERSION='GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS';
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V35_HOME_AND_EDITORIAL_INDEX_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V36_CURRENT_NEWS_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;
+const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+async function serveCurrentNewsAsset(request,env){
+ if(!['GET','HEAD'].includes(request.method)||pathOf(request)!=='/data/news.json'||!env.ASSETS?.fetch)return null;
+ try{
+  const response=await env.ASSETS.fetch(new Request(new URL('/data/news.json','https://assets.local'),{method:request.method,headers:{accept:'application/json'},redirect:'follow'}));
+  if(response.status!==200)return null;
+  const headers=new Headers(response.headers);
+  for(const name of ['content-length','content-encoding','location','etag','last-modified'])headers.delete(name);
+  headers.set('content-type','application/json; charset=utf-8');
+  headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('x-content-type-options','nosniff');
+  headers.set('x-gnk-news-source','current-static-asset-20260715');
+  headers.set('x-gnk-route-owner',VERSION);
+  return new Response(request.method==='HEAD'?null:await response.text(),{status:200,headers});
+ }catch{return null}
+}
 
 export default{
  async fetch(request,env,ctx){
+  const currentNews=await serveCurrentNewsAsset(request,env);
+  if(currentNews)return currentNews;
   const editorial=await servePublicEditorialAsset(request,env,VERSION);
   if(editorial)return editorial;
   const response=await app.fetch(request,env,ctx);
