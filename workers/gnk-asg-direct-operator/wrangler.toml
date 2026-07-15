@@ -1,5 +1,5 @@
 name = "gnk-asg-direct-operator"
-main = "src/index-unified-auth-v17.js"
+main = "src/index-digital-workforce-v1.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
@@ -42,29 +42,17 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20260712-news-scheduler-v45"
+DEPLOY_REVISION = "20260715-digital-workforce-editor-desk-v1"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
-
-# Controlled scheduler publishes only already queued and automatically allowed
-# newsroom items. It does not ingest external news or bypass manual-review flags.
 NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "true"
-
-# Inbound acknowledgements are enabled for individually received messages.
-# They only confirm receipt, assign a reference number and route to human review.
 MAIL_AUTO_REPLY_LIVE = "true"
-
-# Manual Mail Studio is enabled only for controlled individual messages.
-# Campaign, bulk, scheduled outreach and profile tests remain locked below.
 MAIL_STUDIO_LIVE = "true"
 MAIL_MANUAL_LIVE = "true"
 MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MAIL_PROFILE_TEST_LIVE = "false"
 MAIL_PROFILE_TEST_RECIPIENTS = "beckuphome@gmail.com"
 MAIL_BOOTSTRAP_SMOKE_TEST = "false"
-
-# Media outreach is locked down. These switches prevent accidental mass
-# sending while preserving UI/status validation and endpoint health checks.
 MEDIA_OUTREACH_LIVE = "false"
 MEDIA_OUTREACH_SCHEDULED_LIVE = "false"
 MEDIA_OUTREACH_TEST_LIVE = "false"
@@ -74,7 +62,6 @@ MEDIA_OUTREACH_REPORT_RECIPIENTS = "beckuphome@gmail.com"
 MEDIA_OUTREACH_MAX_PER_HOUR = "1"
 MEDIA_OUTREACH_MAX_PER_DAY = "3"
 MEDIA_APPLICATION_AUTO_ACK = "false"
-
 EMAIL_STATUS_PUBLIC_ORIGIN = "https://gnk-asg.hr"
 EMAIL_OPEN_TRACKING_ENABLED = "true"
 EMAIL_STATUS_SYNC_LOOKBACK_HOURS = "48"
