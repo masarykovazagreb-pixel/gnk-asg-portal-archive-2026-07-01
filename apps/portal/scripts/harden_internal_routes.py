@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Validate that internal and administrative routes remain protected.
 
-This is the compatibility entrypoint expected by the production workflow. It
-performs static fail-closed checks against the active Cloudflare Worker source
-and public assets; it does not mutate routes, DNS, secrets or bindings.
+This compatibility entrypoint performs static fail-closed checks against the
+active Cloudflare Worker source and public assets. It does not mutate routes,
+DNS, secrets or bindings.
 """
 from __future__ import annotations
 
@@ -49,20 +49,24 @@ def main() -> int:
     sources = {path: read(path) for path in REQUIRED_WORKER_FILES}
     api = sources[WORKER_DIR / "digital-workforce-api-v1.js"]
     wrapper = sources[WORKER_DIR / "index-digital-workforce-v1.js"]
-    auth = sources[WORKER_DIR / "index-unified-auth-v17.js"]
 
     if "/api/admin/editor-desk" not in api:
         errors.append("digital-workforce API is missing the protected admin route")
     if "unauthorized" not in api or "401" not in api:
         errors.append("admin Editor Desk route does not contain an explicit 401 unauthorized response")
-    if "operator-auth-check" not in api:
-        errors.append("admin Editor Desk route does not delegate to the existing operator session check")
+    if "/api/operator-auth-check" not in api:
+        errors.append("admin Editor Desk route does not delegate to the existing operator auth-check endpoint")
+    if "headers:request.headers" not in api.replace(" ", ""):
+        errors.append("operator auth-check request does not preserve the incoming session headers")
+    if "response.ok" not in api:
+        errors.append("operator auth-check result is not evaluated fail-closed")
+
     if "handleDigitalWorkforce" not in wrapper:
         errors.append("active wrapper does not invoke the Digital Workforce route handler")
     if "app.fetch" not in wrapper:
         errors.append("active wrapper does not preserve the existing authenticated worker runtime")
-    if "operator-auth-check" not in auth:
-        errors.append("base unified-auth runtime is missing the operator auth-check route")
+    if "./index-unified-auth-v17.js" not in wrapper:
+        errors.append("active wrapper does not import the approved unified-auth v17 runtime")
 
     # Reject accidental public exposure of common internal route prefixes.
     public_route_literals = re.findall(r"['\"](/(?:api/)?(?:admin|internal|operator)[^'\"]*)['\"]", api)
