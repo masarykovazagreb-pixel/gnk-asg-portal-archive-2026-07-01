@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from html import unescape
 import json
 from pathlib import Path
+import re
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -47,40 +49,89 @@ def page_url(relative: str) -> str:
     return "https://gnk-asg.hr" + page_route(relative)
 
 
-def public_page_records(errors: list[str]) -> list[dict[str, object]]:
+def extract_first(pattern: str, text: str) -> str:
+    match = re.search(pattern, text, flags=re.IGNORECASE | re.DOTALL)
+    if not match:
+        return ""
+    return unescape(re.sub(r"\s+", " ", match.group(1)).strip())
+
+
+def extract_meta(name: str, text: str) -> str:
+    patterns = (
+        rf'<meta[^>]+name=["\']{re.escape(name)}["\'][^>]+content=["\']([^"\']*)["\']',
+        rf'<meta[^>]+content=["\']([^"\']*)["\'][^>]+name=["\']{re.escape(name)}["\']',
+    )
+    for pattern in patterns:
+        value = extract_first(pattern, text)
+        if value:
+            return value
+    return ""
+
+
+def extract_link(rel: str, text: str) -> str:
+    patterns = (
+        rf'<link[^>]+rel=["\']{re.escape(rel)}["\'][^>]+href=["\']([^"\']*)["\']',
+        rf'<link[^>]+href=["\']([^"\']*)["\'][^>]+rel=["\']{re.escape(rel)}["\']',
+    )
+    for pattern in patterns:
+        value = extract_first(pattern, text)
+        if value:
+            return value
+    return ""
+
+
+def public_page_records() -> list[dict[str, object]]:
     records: list[dict[str, object]] = []
     for relative in REQUIRED_HTML:
         path = PORTAL / relative
-        text = path.read_text(encoding="utf-8", errors="replace").lower() if path.is_file() else ""
-        title_ok = "<title" in text
-        description_ok = 'name="description"' in text or "name='description'" in text
-        canonical_ok = 'rel="canonical"' in text or "rel='canonical'" in text
-        valid = path.is_file() and title_ok and description_ok and canonical_ok
+        exists = path.is_file()
+        text = path.read_text(encoding="utf-8", errors="replace") if exists else ""
         route = page_route(relative)
-        file_path = f"apps/portal/{relative}"
+        expected_url = page_url(relative)
+        title = extract_first(r"<title[^>]*>(.*?)</title>", text)
+        description = extract_meta("description", text)
+        canonical = extract_link("canonical", text)
+        title_ok = bool(title)
+        description_ok = bool(description)
+        canonical_ok = canonical == expected_url
+        page_errors: list[str] = []
+        if not exists:
+            page_errors.append("missing_file")
+        if not title_ok:
+            page_errors.append("missing_title")
+        if not description_ok:
+            page_errors.append("missing_description")
+        if not canonical:
+            page_errors.append("missing_canonical")
+        elif not canonical_ok:
+            page_errors.append("canonical_mismatch")
+        valid = exists and title_ok and description_ok and canonical_ok
         records.append({
             "route": route,
-            "path": file_path,
-            "file": file_path,
-            "url": page_url(relative),
-            "exists": path.is_file(),
-            "title": title_ok,
+            "path": f"apps/portal/{relative}",
+            "file": f"apps/portal/{relative}",
+            "url": expected_url,
+            "title": title,
+            "description": description,
+            "canonical": canonical,
+            "expectedCanonical": expected_url,
+            "exists": exists,
             "titleOk": title_ok,
-            "description": description_ok,
             "descriptionOk": description_ok,
-            "canonical": canonical_ok,
             "canonicalOk": canonical_ok,
             "ok": valid,
             "valid": valid,
-            "errors": [error for error in errors if file_path in error],
+            "errors": page_errors,
         })
     return records
 
 
 def write_report(*, errors: list[str], sitemap_locations: list[str]) -> None:
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    passed = not errors
-    pages = public_page_records(errors)
+    pages = public_page_records()
+    page_errors = [f"{page['route']}: {error}" for page in pages for error in page["errors"]]
+    all_errors = [*errors, *page_errors]
+    passed = not all_errors
     generated_at = datetime.now(timezone.utc).isoformat()
     report = {
         "ok": passed,
@@ -99,21 +150,19 @@ def write_report(*, errors: list[str], sitemap_locations: list[str]) -> None:
         "summary": {
             "passed": passed,
             "failed": not passed,
-            "error_count": len(errors),
-            "errorCount": len(errors),
+            "error_count": len(all_errors),
+            "errorCount": len(all_errors),
             "html_pages_checked": len(REQUIRED_HTML),
             "publicPages": len(pages),
-            "publicPageCount": len(pages),
             "required_urls_checked": len(REQUIRED_URLS),
             "sitemap_url_count": len(sitemap_locations),
-            "sitemapUrlCount": len(sitemap_locations),
         },
         "checks": {
             "html_metadata": {"ok": all(page["ok"] for page in pages), "pages": pages},
-            "sitemap": {"ok": all(url in sitemap_locations for url in REQUIRED_URLS), "required_urls": list(REQUIRED_URLS), "locations": sitemap_locations},
-            "robots": {"ok": passed, "sitemap_directive": "https://gnk-asg.hr/sitemap.xml"},
+            "sitemap": {"ok": not errors, "required_urls": list(REQUIRED_URLS), "locations": sitemap_locations},
+            "robots": {"ok": not any("robots.txt" in error for error in errors), "sitemap_directive": "https://gnk-asg.hr/sitemap.xml"},
         },
-        "errors": errors,
+        "errors": all_errors,
     }
     REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"SEO report written to {REPORT_PATH.relative_to(ROOT)}.")
@@ -147,16 +196,9 @@ def ensure_required_sitemap_entries() -> None:
 
 def validate_html() -> list[str]:
     errors: list[str] = []
-    for relative in REQUIRED_HTML:
-        path = PORTAL / relative
-        if not path.is_file():
-            errors.append(f"missing HTML file: apps/portal/{relative}")
-            continue
-        text = path.read_text(encoding="utf-8", errors="replace").lower()
-        checks = {"title": "<title", "description": 'name="description"', "canonical": 'rel="canonical"'}
-        for label, marker in checks.items():
-            if marker not in text and marker.replace('"', "'") not in text:
-                errors.append(f"apps/portal/{relative}: missing {label}")
+    for page in public_page_records():
+        for error in page["errors"]:
+            errors.append(f"{page['file']}: {error}")
     return errors
 
 
