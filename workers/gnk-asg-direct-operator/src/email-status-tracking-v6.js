@@ -2,12 +2,13 @@ import * as base from './email-status-tracking-v5-core.js';
 import {ensureEmailStatusSchema} from './email-status-tracking-v1.js';
 import {backfillManualMailStatus,VERSION as BACKFILL_VERSION} from './manual-mail-status-backfill-v1.js';
 import {emailStatusDayWindow,DEFAULT_TIME_ZONE,VERSION as DATE_WINDOW_VERSION} from './email-status-date-window-v1.js';
+import {withEmailClickTracking,isEmailClickPath,handleEmailClickRequest,VERSION as CLICK_VERSION} from './email-click-tracking-v1.js';
 
-export const VERSION=`GNK_ASG_EMAIL_STATUS_TRACKING_V7_20260714_DETAILED_RECEIPT_${BACKFILL_VERSION}_${DATE_WINDOW_VERSION}_${base.VERSION}`;
+export const VERSION=`GNK_ASG_EMAIL_STATUS_TRACKING_V8_20260715_CLICK_${CLICK_VERSION}_${BACKFILL_VERSION}_${DATE_WINDOW_VERSION}_${base.VERSION}`;
 export const DASHBOARD_PATH=base.DASHBOARD_PATH;
 export const API_PREFIX=base.API_PREFIX;
-export const isEmailStatusPath=base.isEmailStatusPath;
-export const withEmailStatusTracking=base.withEmailStatusTracking;
+export const isEmailStatusPath=request=>base.isEmailStatusPath(request)||isEmailClickPath(request);
+export const withEmailStatusTracking=env=>base.withEmailStatusTracking(withEmailClickTracking(env));
 export const syncCloudflareEmailStatuses=base.syncCloudflareEmailStatuses;
 export {backfillManualMailStatus};
 
@@ -34,22 +35,23 @@ async function listRecords(request,env,backfill){
  const summaryStatement=db.prepare(`SELECT UPPER(COALESCE(current_status,'UNKNOWN')) status,COUNT(*) count FROM email_status_records GROUP BY UPPER(COALESCE(current_status,'UNKNOWN'))`);
  const [rows,total,summary,sync]=await Promise.all([rowsStatement.all(),totalStatement.first(),summaryStatement.all(),db.prepare(`SELECT * FROM email_status_sync_state WHERE id=1`).first()]);
  const items=(rows.results||[]).map(item=>({...item,possible_forwarding_signal:Number(item.distinct_open_environments||0)>1,forwarding_detectable:false,forwarding_explanation:'Različite IP adrese ili uređaji mogu biti proxy, više uređaja ili prosljeđivanje; nisu dokaz prosljeđivanja.'}));
- return{ok:true,version:VERSION,total:Number(total?.count||0),limit,offset,summary:Object.fromEntries((summary.results||[]).map(row=>[row.status,Number(row.count||0)])),sync,items,filters:{source:source||'all',status:status||'ALL',search,date:dateWindow?.key||'all'},dateWindow,manualAuditBackfill:backfill,capabilities:{delivery:true,rejection:true,openEvents:true,ipAndDevice:true,explicitReceiptConfirmation:true,forwardingReliable:false}};
+ return{ok:true,version:VERSION,total:Number(total?.count||0),limit,offset,summary:Object.fromEntries((summary.results||[]).map(row=>[row.status,Number(row.count||0)])),sync,items,filters:{source:source||'all',status:status||'ALL',search,date:dateWindow?.key||'all'},dateWindow,manualAuditBackfill:backfill,capabilities:{delivery:true,rejection:true,openEvents:true,clickEvents:true,clickDestination:true,ipAndDevice:true,explicitReceiptConfirmation:true,forwardingReliable:false}};
 }
 async function enhanceDashboard(response){
  const type=String(response.headers.get('content-type')||'').toLowerCase();if(!type.includes('text/html'))return response;
- let html=await response.text();const tag='<script id="gnk-email-status-dashboard-v4" src="/assets/email-status-dashboard-v2.js?v=20260714-detailed-receipt-contrast" defer></script>';
+ let html=await response.text();const tag='<script id="gnk-email-status-dashboard-v4" src="/assets/email-status-dashboard-v2.js?v=20260715-click-tracking" defer></script>';
  html=html.replace(/<script[^>]+email-status-dashboard-v2\.js[^>]*><\/script>/gi,'');
  if(!html.includes('gnk-email-status-dashboard-v4'))html=/<\/body>/i.test(html)?html.replace(/<\/body>/i,`${tag}</body>`):`${html}${tag}`;
- const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-gnk-asg-email-status',VERSION);headers.set('x-gnk-email-status-dashboard','v4-detailed-receipt');
+ const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-gnk-asg-email-status',VERSION);headers.set('x-gnk-email-status-dashboard','v5-click-tracking');
  return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 export async function handleEmailStatusRequest(request,env){
+ if(isEmailClickPath(request))return handleEmailClickRequest(request,env);
  const path=pathOf(request),protectedView=path===DASHBOARD_PATH||path===`${DASHBOARD_PATH}/`||path===`${API_PREFIX}/records`||path===`${API_PREFIX}/health`||/^\/api\/email-status\/records\/[A-Za-z0-9-]{20,80}\/events$/.test(path);
  const backfill=protectedView?await backfillManualMailStatus(env).catch(error=>({ok:false,reason:'backfill_failed',message:String(error?.message||error),version:BACKFILL_VERSION})):null;
  if(path===`${API_PREFIX}/records`&&request.method==='GET')return json(await listRecords(request,env,backfill));
  const response=await base.handleEmailStatusRequest(request,env);if(!response)return response;
  if((path===DASHBOARD_PATH||path===`${DASHBOARD_PATH}/`)&&request.method==='GET')return enhanceDashboard(response);
- if(path===`${API_PREFIX}/health`&&request.method==='GET'){const payload=await response.json().catch(()=>null);if(!payload)return response;return json({...payload,manualAuditBackfill:backfill,version:VERSION},response.status);}
+ if(path===`${API_PREFIX}/health`&&request.method==='GET'){const payload=await response.json().catch(()=>null);if(!payload)return response;return json({...payload,manualAuditBackfill:backfill,clickTracking:{enabled:true,version:CLICK_VERSION},version:VERSION},response.status);}
  return response;
 }
