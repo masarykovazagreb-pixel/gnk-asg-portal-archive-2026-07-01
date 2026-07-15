@@ -1,0 +1,82 @@
+name: One-Time Verify Final Urgent V1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-verify-final-urgent-v1.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: one-time-verify-final-urgent-v1
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+
+      - name: Resolve deploy result and verify production
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: 1920a6af52756ea19613461e5e4ebcf0f4498cb7
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/final-urgent-verification
+          run_json=$(gh api --paginate "/repos/${GITHUB_REPOSITORY}/actions/workflows/deploy-admin-auth-v6.yml/runs?event=workflow_dispatch&per_page=100" | jq -c --arg sha "$TARGET_SHA" '[.workflow_runs[] | select(.head_sha==$sha)] | sort_by(.created_at) | reverse | .[0] // {}')
+          run_id=$(jq -r '.id // empty' <<<"$run_json")
+          conclusion=$(jq -r '.conclusion // "pending"' <<<"$run_json")
+          status=$(jq -r '.status // "not_found"' <<<"$run_json")
+          html_url=$(jq -r '.html_url // ""' <<<"$run_json")
+
+          cache="${TARGET_SHA}-$(date +%s)"
+          check_url(){
+            local name="$1" url="$2" marker="$3"
+            local headers="artifacts/final-urgent-verification/${name}.headers"
+            local body="artifacts/final-urgent-verification/${name}.body"
+            local code
+            code=$(curl --silent --show-error --location --dump-header "$headers" --output "$body" --write-out '%{http_code}' "${url}?verify=${cache}" || true)
+            local marker_ok=false
+            if [ -z "$marker" ] || grep -Fqi -- "$marker" "$body" "$headers"; then marker_ok=true; fi
+            jq -n --arg name "$name" --arg url "$url" --arg code "$code" --arg marker "$marker" --argjson markerOk "$marker_ok" '{name:$name,url:$url,http:($code|tonumber? // 0),marker:$marker,markerOk:$markerOk}'
+          }
+
+          checks=$(jq -s '.' < <(
+            check_url home 'https://gnk-asg.hr/' 'GNK_INDEX_EDITORIAL_ORDER_V6_20260715_LATEST_FIRST'
+            check_url news 'https://gnk-asg.hr/data/news.json' '2026-07-15'
+            check_url objave 'https://gnk-asg.hr/objave/' 'editorial-latest-index-v1.js?v=20260715-v1'
+            check_url komentari 'https://gnk-asg.hr/komentari/' 'editorial-latest-index-v1.js?v=20260715-v1'
+            check_url contact 'https://gnk-asg.hr/api/contact-submit' '"transport"'
+          ))
+          all_http=$(jq 'all(.[]; .http==200)' <<<"$checks")
+          all_markers=$(jq 'all(.[]; .markerOk==true)' <<<"$checks")
+          ok=false
+          if [ "$conclusion" = success ] && [ "$all_http" = true ] && [ "$all_markers" = true ]; then ok=true; fi
+          jq -n \
+            --arg checkedAt "$(date -u +%FT%TZ)" \
+            --arg targetSha "$TARGET_SHA" \
+            --arg runId "$run_id" \
+            --arg status "$status" \
+            --arg conclusion "$conclusion" \
+            --arg htmlUrl "$html_url" \
+            --argjson checks "$checks" \
+            --argjson ok "$ok" \
+            '{checkedAt:$checkedAt,targetSha:$targetSha,deploy:{runId:$runId,status:$status,conclusion:$conclusion,htmlUrl:$htmlUrl},checks:$checks,ok:$ok}' > artifacts/final-urgent-verification/status.json
+          cat artifacts/final-urgent-verification/status.json
+
+      - name: Commit verification evidence
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add artifacts/final-urgent-verification
+          git commit -m 'ci: record final urgent production verification' || exit 0
+          git push origin HEAD:main
