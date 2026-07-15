@@ -18,7 +18,8 @@ function requireText(name, value, expected) {
 const deployWorkflow = read('.github/workflows/deploy-admin-auth-v6.yml');
 const productionVerifier = read('scripts/verify-production-release-v38.sh');
 const directOperator = read('workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js');
-const mediaRegistration = read('workers/gnk-asg-direct-operator/src/media-registration-v1.js');
+const mediaRegistrationBackend = read('workers/gnk-asg-direct-operator/src/media-registration-v1.js');
+const mediaRegistrationFrontend = read('apps/portal/assets/media-registration-v1.js');
 const clickTracking = read('workers/gnk-asg-direct-operator/src/email-click-tracking-v1.js');
 const clickContract = read('scripts/test-email-click-tracking-v1.mjs');
 
@@ -36,23 +37,49 @@ requireText('click tracking runtime', clickTracking, 'CLICKED');
 requireText('click tracking contract', clickContract, "event:'CLICKED'");
 requireText('click tracking contract', clickContract, 'mailSent:false');
 
-requireText('media registration', mediaRegistration, "const COOKIE='gnk_asg_media_registration'");
-requireText('media registration', mediaRegistration, 'media_invitation_access');
-requireText('media registration', mediaRegistration, 'mailCode');
-requireText('media registration', mediaRegistration, 'pin');
+const frontendOpenRegistration =
+  mediaRegistrationFrontend.includes("api('/register'") &&
+  mediaRegistrationFrontend.includes('regUsername') &&
+  mediaRegistrationFrontend.includes('regPassword');
+
+const backendOpenRegistration =
+  mediaRegistrationBackend.includes('media_registration_accounts') &&
+  mediaRegistrationBackend.includes("p===`${PUBLIC_API}/register`") &&
+  mediaRegistrationBackend.includes('password_hash');
+
+const backendInvitationLogin =
+  mediaRegistrationBackend.includes('media_invitation_access') &&
+  mediaRegistrationBackend.includes('mailCode') &&
+  mediaRegistrationBackend.includes('pin');
+
+if (!frontendOpenRegistration) {
+  throw new Error('media registration frontend: open registration contract is missing');
+}
+if (!backendInvitationLogin) {
+  throw new Error('media registration backend: invitation compatibility contract is missing');
+}
+
+const mediaRegistrationContract = frontendOpenRegistration && backendOpenRegistration
+  ? 'OPEN_REGISTRATION_ALIGNED'
+  : 'BROKEN_FRONTEND_OPEN_BACKEND_INVITATION_ONLY';
 
 const result = {
-  ok: true,
+  ok: mediaRegistrationContract === 'OPEN_REGISTRATION_ALIGNED',
   auditedMainSha: AUDITED_MAIN_SHA,
   release: 'V38',
   deployMode: 'manual-exact-sha',
   clickTrackingOnMain: true,
-  mediaRegistrationModeOnMain: 'invitation-code-and-pin',
+  mediaRegistration: {
+    frontendOpenRegistration,
+    backendOpenRegistration,
+    backendInvitationLogin,
+    contract: mediaRegistrationContract
+  },
   productionDecision: 'BLOCKED_PENDING_CONSOLIDATION',
   requiredBeforeProduction: [
+    'repair the Media Application frontend/backend registration contract',
     'decide PR 467 or explicitly exclude it',
     'run a fresh full audit on the resulting exact main SHA',
-    'resolve Media Application registration model',
     'perform read-only live route verification without sending email',
     'obtain separate explicit production approval for the exact main SHA'
   ]
