@@ -6,7 +6,7 @@ for(const pack of plan.packages)pack.items=(pack.files||[]).flatMap(file=>JSON.p
 assert.equal(plan.packages.length,2);
 for(const pack of plan.packages){
   assert.equal(pack.items.filter(x=>x.type==='objava').length,10,`${pack.id} publications`);
-  assert.equal(pack.items.filter(x=>x.type==='komentar').length,3,`${pack.id} commentaries`);
+  assert.equal(pack.items.filter(x=>x.type==='komentar').length,2,`${pack.id} commentaries`);
   assert.equal(pack.deployApproved,true);
   for(const item of pack.items){
     assert.match(item.slug,/^[a-z0-9-]+$/);
@@ -57,4 +57,4 @@ assert.match(seoWorkflow,/steps\.commit\.outputs\.changed == 'true'/);
 assert.match(scheduler,/steps\.commit\.outputs\.changed == 'true'/);
 assert.match(scheduler,/github\.event_name == 'push'/);
 assert.match(scheduler,/git diff --quiet -- apps\/portal\/objave/);
-console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:10,commentaries:3,publishAt:x.publishAt})),seo:{cycleHours:2,timeoutMinutes:10,artificialTraffic:false,idempotent:true},deploy:{directExactShaDispatch:true,noOpScheduleDeploy:false}},null,2));
+console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:10,commentaries:2,publishAt:x.publishAt})),seo:{cycleHours:2,timeoutMinutes:10,artificialTraffic:false,idempotent:true},deploy:{directExactShaDispatch:true,noOpScheduleDeploy:false}},null,2));
