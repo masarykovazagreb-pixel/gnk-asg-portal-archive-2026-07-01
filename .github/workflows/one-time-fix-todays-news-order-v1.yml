@@ -1,0 +1,73 @@
+name: One-Time Fix Today's News Order V1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-fix-todays-news-order-v1.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: one-time-fix-todays-news-order-v1
+  cancel-in-progress: false
+
+jobs:
+  fix-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+
+      - name: Sort merged homepage news by actual publication date
+        run: |
+          set -euo pipefail
+          node - <<'JS'
+          const fs=require('fs');
+          const path='apps/portal/assets/index-editorial-order-v1.js';
+          let source=fs.readFileSync(path,'utf8');
+          source=source.replace("const VERSION='GNK_INDEX_EDITORIAL_ORDER_V5_20260714_SYNTAX_SAFE';","const VERSION='GNK_INDEX_EDITORIAL_ORDER_V6_20260715_LATEST_FIRST';");
+          source=source.replace("if(window.__GNK_INDEX_EDITORIAL_ORDER_V5__)return;","if(window.__GNK_INDEX_EDITORIAL_ORDER_V6__)return;");
+          source=source.replace("window.__GNK_INDEX_EDITORIAL_ORDER_V5__=true;","window.__GNK_INDEX_EDITORIAL_ORDER_V6__=true;\nwindow.__GNK_INDEX_EDITORIAL_ORDER_V5__=true;");
+          const anchor="  const seen=new Set();\n  const cards=[];";
+          const replacement="  const timestamp=item=>{const raw=item?.publishedAt||item?.published_at||item?.date||item?.createdAt;const value=raw?Date.parse(raw):0;return Number.isFinite(value)?value:0};\n  out.sort((a,b)=>timestamp(b)-timestamp(a));\n  const seen=new Set();\n  const cards=[];";
+          if(!source.includes(anchor))throw new Error('news_sort_anchor_not_found');
+          source=source.replace(anchor,replacement);
+          fs.writeFileSync(path,source);
+          JS
+          node --check apps/portal/assets/index-editorial-order-v1.js
+          grep -Fq "out.sort((a,b)=>timestamp(b)-timestamp(a))" apps/portal/assets/index-editorial-order-v1.js
+          grep -Fq "GNK_INDEX_EDITORIAL_ORDER_V6_20260715_LATEST_FIRST" apps/portal/assets/index-editorial-order-v1.js
+
+      - name: Commit freshness fix
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add apps/portal/assets/index-editorial-order-v1.js
+          git commit -m "fix(news): show today's published items before stale API entries"
+          git push origin HEAD:main
+
+      - name: Dispatch exact-SHA production deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          approved_sha=$(git rev-parse HEAD)
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo beckuphome-gnk/gnk-asg-portal \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$approved_sha"
+          printf '{"ok":true,"approvedSha":"%s","change":"homepage-news-latest-first"}\n' "$approved_sha" > news-freshness-deploy.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: news-freshness-deploy
+          path: news-freshness-deploy.json
+          retention-days: 1
