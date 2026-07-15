@@ -15,14 +15,14 @@ Ova matrica ne zatvara, ne spaja i ne mijenja nijedan postojeći PR. Služi kao 
 | PR | Razlog | Postupanje |
 |---|---|---|
 | #397 | Otvorena Media Application registracija nije prenesena na aktualni V38; stari PR je konfliktan | Ne spajati izravno; ponovno implementirati na aktualnom `main` ili zadržati invitation/PIN model |
-| #433 | Mobilni MENU/AI raspored nastao je na staroj osnovi | Usporediti s aktualnim mobilnim runtimeom; prenijeti samo nedostajući dio |
-| #454 | Kontakt, AI auto-reply, CID logo i status dashboard djelomično se preklapaju s novijim V38 kodom | Napraviti gap analizu; ne spajati konfliktni PR izravno |
+| #454 | AI auto-reply, CID logo i glavni status dashboard već su na `main`; nisu potvrđeni zasebni D1 `email_autoreply_audit` i Global Communications Centre attribution | Ne spajati konfliktni PR; po potrebi prenijeti samo ta dva uska operativna dijela uz novi test |
 
 ## C — supersedirano ili zamijenjeno
 
 | PR | Razlog | Preporuka |
 |---|---|---|
 | #431 | Deploy verifier je kasnije zamijenjen V38 exact-SHA verifierom | Kandidat za zatvaranje kao supersedirano |
+| #433 | Mijenja stari floating-menu runtime koji je na `main` zamijenjen legacy shimom prema `public-compact-menu-v1.js`; mobilni AI offset već postoji u aktualnom CSS-u | Kandidat za zatvaranje nakon kratke vizualne provjere aktivnog compact-menu runtimea |
 | #463 | Audit click-tracking praznine prethodio je implementaciji | Kandidat za zatvaranje nakon potvrde da je dokumentacija sačuvana |
 | #464 | Starija click-tracking implementacija | Kandidat za zatvaranje; novija izvedba spojena je kroz #465 |
 | #466 | Audit je vezan uz stariji `main` SHA | Zamijenjen aktualnim konsolidacijskim auditom; kandidat za zatvaranje nakon zelenog novog audita |
