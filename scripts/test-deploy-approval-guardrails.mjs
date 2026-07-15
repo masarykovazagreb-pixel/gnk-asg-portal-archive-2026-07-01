@@ -68,9 +68,9 @@ requireText('V38 production verifier',verifier,[
  'source-redirect',
  'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova',
  'AI ne smije pisati konačnu odluku',
- 'contact readiness',
- 'canonical mail logo',
- '401|403'
+ 'contact readiness HTTP 200',
+ 'verify_release_marker mail-logo',
+ 'case "$mail_status" in 400|401|403)'
 ]);
 forbidText('V38 production verifier',verifier,[
  'wrangler deploy',
