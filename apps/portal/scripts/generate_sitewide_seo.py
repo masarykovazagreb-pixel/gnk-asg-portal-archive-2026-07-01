@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Compatibility bridge for site-wide SEO generation.
-
-The production workflow invokes this historical path. If a newer SEO generator
-exists, this script delegates to it. Otherwise it performs strict validation of
-the canonical SEO artifacts already committed to the portal.
-"""
+"""Compatibility bridge for site-wide SEO generation."""
 from __future__ import annotations
 
 import subprocess
@@ -15,39 +10,17 @@ ROOT = Path(__file__).resolve().parents[3]
 SCRIPT_DIR = Path(__file__).resolve().parent
 SELF = Path(__file__).resolve()
 
-CANDIDATE_PATTERNS = (
-    "*site*seo*.py",
-    "*seo*generator*.py",
-    "*generate*seo*.py",
-    "*sitemap*.py",
-)
-
+CANDIDATE_PATTERNS = ("*site*seo*.py", "*seo*generator*.py", "*generate*seo*.py", "*sitemap*.py")
 REQUIRED_FILES = (
-    "apps/portal/index.html",
-    "apps/portal/en/index.html",
-    "apps/portal/sitemap.xml",
-    "apps/portal/robots.txt",
-    "apps/portal/objave/index.html",
-    "apps/portal/analize/index.html",
-    "apps/portal/komentari/index.html",
-    "apps/portal/en/publications/index.html",
-    "apps/portal/en/analyses/index.html",
-    "apps/portal/en/commentary/index.html",
-    "apps/portal/digital-workforce/index.html",
-    "apps/portal/editor-desk/index.html",
+    "apps/portal/index.html", "apps/portal/en/index.html", "apps/portal/sitemap.xml", "apps/portal/robots.txt",
+    "apps/portal/objave/index.html", "apps/portal/analize/index.html", "apps/portal/komentari/index.html",
+    "apps/portal/en/publications/index.html", "apps/portal/en/analyses/index.html", "apps/portal/en/commentary/index.html",
+    "apps/portal/digital-workforce/index.html", "apps/portal/editor-desk/index.html",
 )
-
-CANONICAL_FILES = (
-    "apps/portal/index.html",
-    "apps/portal/en/index.html",
-    "apps/portal/objave/index.html",
-    "apps/portal/analize/index.html",
-    "apps/portal/komentari/index.html",
-    "apps/portal/en/publications/index.html",
-    "apps/portal/en/analyses/index.html",
-    "apps/portal/en/commentary/index.html",
-    "apps/portal/digital-workforce/index.html",
-    "apps/portal/editor-desk/index.html",
+CANONICAL_FILES = tuple(path for path in REQUIRED_FILES if path.endswith("index.html"))
+SITEMAP_ENTRIES = (
+    ("https://gnk-asg.hr/digital-workforce/", "2026-07-15", "weekly", "0.8"),
+    ("https://gnk-asg.hr/editor-desk/", "2026-07-15", "daily", "0.8"),
 )
 
 
@@ -63,11 +36,28 @@ def find_delegate() -> Path | None:
     return None
 
 
+def ensure_sitemap_entries() -> None:
+    sitemap_path = ROOT / "apps/portal/sitemap.xml"
+    text = sitemap_path.read_text(encoding="utf-8")
+    additions = []
+    for url, lastmod, changefreq, priority in SITEMAP_ENTRIES:
+        if url not in text:
+            additions.append(
+                f'  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod>'
+                f'<changefreq>{changefreq}</changefreq><priority>{priority}</priority></url>'
+            )
+    if additions:
+        if "</urlset>" not in text:
+            raise SystemExit("Site-wide SEO generation failed: sitemap.xml has no closing urlset tag.")
+        text = text.replace("</urlset>", "\n".join(additions) + "\n</urlset>")
+        sitemap_path.write_text(text, encoding="utf-8")
+        print(f"Added {len(additions)} missing sitemap entries.")
+
+
 def validate_existing_seo() -> None:
     missing = [path for path in REQUIRED_FILES if not (ROOT / path).is_file()]
     if missing:
-        formatted = "\n".join(f" - {path}" for path in missing)
-        raise SystemExit(f"Site-wide SEO validation failed. Missing files:\n{formatted}")
+        raise SystemExit("Site-wide SEO validation failed. Missing files:\n" + "\n".join(f" - {p}" for p in missing))
 
     invalid: list[str] = []
     for relative in CANONICAL_FILES:
@@ -80,32 +70,25 @@ def validate_existing_seo() -> None:
             invalid.append(f"{relative}: missing meta description")
 
     sitemap = (ROOT / "apps/portal/sitemap.xml").read_text(encoding="utf-8", errors="replace")
-    for url in (
-        "https://gnk-asg.hr/",
-        "https://gnk-asg.hr/en/",
-        "https://gnk-asg.hr/digital-workforce/",
-        "https://gnk-asg.hr/editor-desk/",
-    ):
+    for url in ("https://gnk-asg.hr/", "https://gnk-asg.hr/en/", *(item[0] for item in SITEMAP_ENTRIES)):
         if url not in sitemap:
             invalid.append(f"sitemap.xml: missing {url}")
 
     robots = (ROOT / "apps/portal/robots.txt").read_text(encoding="utf-8", errors="replace").lower()
     if "sitemap:" not in robots:
         invalid.append("robots.txt: missing Sitemap directive")
-
     if invalid:
-        formatted = "\n".join(f" - {item}" for item in invalid)
-        raise SystemExit(f"Site-wide SEO validation failed:\n{formatted}")
-
-    print("Site-wide SEO artifacts already exist; compatibility validation passed.")
+        raise SystemExit("Site-wide SEO validation failed:\n" + "\n".join(f" - {item}" for item in invalid))
+    print("Site-wide SEO generation and validation passed.")
 
 
 def main() -> int:
     delegate = find_delegate()
     if delegate is not None:
-        print(f"Delegating site-wide SEO generation to {delegate.relative_to(ROOT)}")
         completed = subprocess.run([sys.executable, str(delegate)], cwd=ROOT, check=False)
-        return completed.returncode
+        if completed.returncode:
+            return completed.returncode
+    ensure_sitemap_entries()
     validate_existing_seo()
     return 0
 
