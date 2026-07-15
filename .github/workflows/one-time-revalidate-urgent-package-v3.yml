@@ -1,0 +1,138 @@
+name: One-Time Revalidate Urgent Package V3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-revalidate-urgent-package-v3.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: one-time-revalidate-urgent-package-v3
+  cancel-in-progress: false
+
+jobs:
+  validate-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate syntax, contracts and urgent functionality
+        id: validation
+        shell: bash
+        run: |
+          set +e
+          mkdir -p artifacts/revalidate-urgent-v3
+          log=artifacts/revalidate-urgent-v3/result.txt
+          : > "$log"
+          failed=0
+          failed_name=''
+          run_cmd(){
+            local name="$1"; shift
+            echo "=== $name ===" | tee -a "$log"
+            "$@" >> "$log" 2>&1
+            local code=$?
+            echo "EXIT=$code" | tee -a "$log"
+            if [ $code -ne 0 ]; then failed=1; failed_name="$name"; return 1; fi
+            return 0
+          }
+
+          syntax_files=(
+            apps/portal/assets/index-editorial-order-v1.js
+            apps/portal/assets/editorial-latest-index-v1.js
+            apps/portal/assets/contact-form-v2.js
+            apps/portal/assets/mail-studio-ui-v28.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+            workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+            workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js
+          )
+          for file in "${syntax_files[@]}"; do run_cmd "node --check $file" node --check "$file" || break; done
+
+          tests=(
+            scripts/test-deploy-approval-guardrails.mjs
+            scripts/test-index-runtime-ownership.mjs
+            scripts/test-public-design-contract.mjs
+            scripts/test-unified-shell-contract.mjs
+            scripts/test-visible-menu-logo-content-v1.mjs
+            scripts/test-final-release-v31.mjs
+            scripts/test-worker-directory-1573.mjs
+            scripts/test-admin-session-login-v1.mjs
+            scripts/test-contact-form-contract.mjs
+            scripts/test-the-code-index-contract.mjs
+            scripts/test-index-content-contract.mjs
+            scripts/test-email-signature-contract.mjs
+            scripts/test-mail-transport-guardrails.mjs
+            scripts/test-email-mime-guardrails.mjs
+            scripts/test-autoreply-guardrails.mjs
+            scripts/test-autoreply-all-addresses.mjs
+            scripts/test-news-queue-guardrails.mjs
+            scripts/test-public-editorial-asset-routes-v1.mjs
+            scripts/audit-all-pages-detailed-v1.mjs
+            scripts/audit-public-portal-v1.mjs
+            scripts/audit-worker-route-ownership.mjs
+            scripts/test-data-fallback-contract.mjs
+            scripts/predeploy-release-v6.mjs
+          )
+          if [ $failed -eq 0 ]; then
+            for test in "${tests[@]}"; do run_cmd "$test" node "$test" || break; done
+          fi
+
+          if [ $failed -eq 0 ]; then
+            run_cmd 'home uses current finalized runtime' bash -c "! grep -Fq 'serveHomeAsset' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js && grep -Fq 'index-editorial-order-v1.js?v=20260715-editorial-v6-latest-first' workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js"
+          fi
+          if [ $failed -eq 0 ]; then
+            run_cmd 'news feed contains 15 July 2026' grep -Fq '2026-07-15' apps/portal/data/news.json
+          fi
+          if [ $failed -eq 0 ]; then
+            run_cmd '15 July publications visible in collection' grep -Fq 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova' apps/portal/objave/index.html
+          fi
+          if [ $failed -eq 0 ]; then
+            run_cmd '15 July commentaries visible in collection' grep -Fq 'AI ne smije pisati konačnu odluku' apps/portal/komentari/index.html
+          fi
+          if [ $failed -eq 0 ]; then
+            run_cmd 'contact transport readiness exposed' grep -Fq "transport:env.EMAIL?.send?'cloudflare-email-binding':'unavailable'" workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+          fi
+          if [ $failed -eq 0 ]; then
+            run_cmd 'AI branded autoreply enabled' bash -c "grep -Fq 'aiMessageText' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js && grep -Fq 'loadEmailLogo' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js && grep -Fq 'signature.html' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js"
+          fi
+          if [ $failed -eq 0 ]; then
+            run_cmd 'Mail Studio branded signature and logo retained' bash -c "grep -Fq 'renderBrandSignatureHtml' workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js && grep -Fq 'loadEmailLogo' workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js"
+          fi
+
+          ok=false; [ $failed -eq 0 ] && ok=true
+          jq -n --arg checkedAt "$(date -u +%FT%TZ)" --arg failedName "$failed_name" --argjson ok "$ok" '{checkedAt:$checkedAt,ok:$ok,failedName:($failedName|select(length>0)//null)}' > artifacts/revalidate-urgent-v3/status.json
+          cat artifacts/revalidate-urgent-v3/status.json
+          echo "ok=$ok" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Dispatch exact-SHA production deploy
+        if: steps.validation.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          approved_sha=$(git rev-parse HEAD)
+          gh workflow run deploy-admin-auth-v6.yml --repo "$GITHUB_REPOSITORY" --ref main -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 -f approved_sha="$approved_sha"
+          jq --arg sha "$approved_sha" '. + {deployDispatched:true,approvedSha:$sha}' artifacts/revalidate-urgent-v3/status.json > artifacts/revalidate-urgent-v3/status.tmp
+          mv artifacts/revalidate-urgent-v3/status.tmp artifacts/revalidate-urgent-v3/status.json
+
+      - name: Record validation evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add artifacts/revalidate-urgent-v3
+          git commit -m 'ci: record urgent revalidation v3' || exit 0
+          git push origin HEAD:main
