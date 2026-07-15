@@ -1,0 +1,156 @@
+name: One-Time Direct Urgent Release V37
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-direct-urgent-release-v37.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate urgent release source
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          node --check apps/portal/assets/index-editorial-order-v1.js
+          node --check apps/portal/assets/editorial-latest-index-v1.js
+          node --check apps/portal/assets/contact-form-v2.js
+          node --check apps/portal/assets/mail-studio-ui-v28.js
+          node scripts/test-visible-menu-logo-content-v1.mjs
+          node scripts/test-contact-form-contract.mjs
+          node scripts/test-email-signature-contract.mjs
+          node scripts/test-mail-transport-guardrails.mjs
+          node scripts/test-email-mime-guardrails.mjs
+          node scripts/test-autoreply-guardrails.mjs
+          node scripts/test-autoreply-all-addresses.mjs
+          node scripts/test-public-editorial-asset-routes-v1.mjs
+          node scripts/test-data-fallback-contract.mjs
+          node scripts/predeploy-release-v6.mjs
+          grep -Fq "current-static-asset-20260715" workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq '2026-07-15' apps/portal/data/news.json
+          grep -Fq 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova' apps/portal/objave/index.html
+          grep -Fq 'AI ne smije pisati konačnu odluku' apps/portal/komentari/index.html
+          grep -Fq 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V6_20260715_AI_BRANDED' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'loadEmailLogo' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'signature.html' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+
+      - name: Resolve token hash
+        id: auth
+        env:
+          TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          value="$TOKEN"
+          [ -n "$value" ] || value="$TOKEN_FALLBACK"
+          test -n "$value"
+          hash=$(printf '%s' "$value" | sha256sum | awk '{print $1}')
+          echo "hash=$hash" >> "$GITHUB_OUTPUT"
+
+      - name: Install direct operator dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm install --no-audit --no-fund
+
+      - name: Deploy contact session bridge
+        working-directory: workers/gnk-asg-contact-api-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy src/index-session-cookie-v1.js --config wrangler.no-routes.toml --name gnk-asg-contact-api --var "OPERATOR_TOKEN_SHA256:${{ steps.auth.outputs.hash }}"
+
+      - name: Deploy direct operator and shared assets
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_sha=$(git rev-parse HEAD)
+          npx --yes wrangler@4 deploy --config wrangler.mail-proxy-no-routes.toml --name gnk-asg-direct-operator --var "OPERATOR_TOKEN_SHA256:${{ steps.auth.outputs.hash }}" --var "DEPLOY_REVISION:${release_sha}"
+
+      - name: Deploy operator center
+        working-directory: workers/gnk-asg-operator-center
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-operator-center
+
+      - name: Verify production
+        shell: bash
+        run: |
+          set -euo pipefail
+          out=artifacts/direct-urgent-release-v37
+          mkdir -p "$out"
+          sleep 15
+          release_sha=$(git rev-parse HEAD)
+          cache="${release_sha}-$(date +%s)"
+
+          fetch_check(){
+            local name="$1" url="$2" marker="$3"
+            local headers="$out/${name}.headers" body="$out/${name}.body"
+            local code location marker_ok=false
+            code=$(curl --silent --show-error --dump-header "$headers" --output "$body" --write-out '%{http_code}' "${url}?verify=${cache}" || true)
+            location=$(awk 'BEGIN{IGNORECASE=1}/^location:/{sub(/\r$/,"",$0);print substr($0,11)}' "$headers" | tail -1)
+            if grep -Fqi -- "$marker" "$body" "$headers"; then marker_ok=true; fi
+            jq -n --arg name "$name" --arg url "$url" --arg code "$code" --arg location "$location" --arg marker "$marker" --argjson markerOk "$marker_ok" '{name:$name,url:$url,http:($code|tonumber? // 0),location:($location|select(length>0)//null),marker:$marker,markerOk:$markerOk}'
+          }
+
+          home=$(fetch_check home 'https://gnk-asg.hr/' 'index-editorial-order-v6.js')
+          objave=$(fetch_check objave 'https://gnk-asg.hr/objave/' 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova')
+          komentari=$(fetch_check komentari 'https://gnk-asg.hr/komentari/' 'AI ne smije pisati konačnu odluku')
+          contact_page=$(fetch_check contact-page 'https://gnk-asg.hr/contact/' 'id="contactForm"')
+          mail_studio=$(fetch_check mail-studio 'https://gnk-asg.hr/assets/mail-studio-ui-v28.js' 'min-height:520px')
+          logo=$(fetch_check mail-logo 'https://gnk-asg.hr/assets/logo-gnk-asg-email.png' 'x-gnk-canonical-logo: same-as-portal')
+
+          news_headers="$out/news.headers"; news_body="$out/news.body"
+          news_code=$(curl --silent --show-error --dump-header "$news_headers" --output "$news_body" --write-out '%{http_code}' "https://gnk-asg.hr/data/news.json?verify=${cache}" || true)
+          news_latest=$(jq -r 'if type=="array" then .[0].published_at // .[0].publishedAt // "" else (.items[0].published_at // .items[0].publishedAt // "") end' "$news_body" 2>/dev/null || true)
+          news_source=$(awk 'BEGIN{IGNORECASE=1}/^x-gnk-news-source:/{sub(/\r$/,"",$0);print substr($0,19)}' "$news_headers" | tail -1)
+          news_ok=false
+          [[ "$news_code" = 200 && "$news_latest" == 2026-07-15* && "$news_source" == *current-static-asset-20260715* ]] && news_ok=true
+          news=$(jq -n --arg code "$news_code" --arg latest "$news_latest" --arg source "$news_source" --argjson markerOk "$news_ok" '{name:"news",url:"https://gnk-asg.hr/data/news.json",http:($code|tonumber? // 0),latest:$latest,source:$source,markerOk:$markerOk}')
+
+          contact_headers="$out/contact-ready.headers"; contact_body="$out/contact-ready.body"
+          contact_code=$(curl --silent --show-error --dump-header "$contact_headers" --output "$contact_body" --write-out '%{http_code}' "https://gnk-asg.hr/api/contact-submit?verify=${cache}" || true)
+          contact_ok=$(jq '(.ready == true and has("storage") and has("mail") and has("transport")) or (.status == "READY" and .bindings.kv == true and .bindings.r2 == true and .bindings.email == true)' "$contact_body" 2>/dev/null || echo false)
+          contact=$(jq -n --arg code "$contact_code" --argjson markerOk "$contact_ok" --slurpfile body "$contact_body" '{name:"contact-readiness",url:"https://gnk-asg.hr/api/contact-submit",http:($code|tonumber? // 0),markerOk:$markerOk,response:($body[0]//null)}')
+
+          checks=$(jq -s '.' < <(printf '%s\n' "$home" "$news" "$objave" "$komentari" "$contact_page" "$contact" "$mail_studio" "$logo"))
+          ok=$(jq 'all(.[]; .http==200 and .markerOk==true and ((.location // "")==""))' <<<"$checks")
+          jq -n --arg checkedAt "$(date -u +%FT%TZ)" --arg releaseSha "$release_sha" --argjson checks "$checks" --argjson ok "$ok" '{checkedAt:$checkedAt,releaseSha:$releaseSha,checks:$checks,ok:$ok}' > "$out/status.json"
+          cat "$out/status.json"
+          [ "$ok" = true ]
+
+      - name: Commit verification evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add artifacts/direct-urgent-release-v37
+          git commit -m 'ci: record direct urgent release v37 verification' || exit 0
+          git push origin HEAD:main
