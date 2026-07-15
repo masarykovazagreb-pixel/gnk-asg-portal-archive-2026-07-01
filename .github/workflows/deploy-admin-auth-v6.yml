@@ -168,7 +168,7 @@ jobs:
 
       - name: Verify exact production release
         shell: bash
-        run: scripts/verify-production-release-v38.sh deploy-verification
+        run: bash scripts/verify-production-release-v38.sh deploy-verification
 
       - name: Upload production verification evidence
         if: always()
