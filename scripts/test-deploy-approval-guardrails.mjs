@@ -5,9 +5,9 @@ const read=path=>fs.readFileSync(path,'utf8');
 const workflow=read('.github/workflows/deploy-admin-auth-v6.yml');
 const tool=read('scripts/prepare-approved-deploy-v1.mjs');
 const preflight=read('scripts/check-newsroom-route-readiness.sh');
-const verifier=read('scripts/verify-production-route.sh');
+const verifier=read('scripts/verify-production-release-v38.sh');
 const baseWorker=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js');
-const releaseWorker=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js');
+const releaseWorker=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js');
 const newsAssert=read('scripts/assert-production-news-fallback.mjs');
 
 function requireText(label,source,values){
@@ -27,24 +27,23 @@ requireText('workflow approval contract',workflow,[
  'production-verification-${{ inputs.approved_sha }}',
  'deploy-preflight-${{ inputs.approved_sha }}',
  'DEPLOY_REVISION:${DEPLOY_SOURCE_SHA}',
- 'bash scripts/verify-production-route.sh "$1" "deploy-verification/$2" "${3:-}"'
+ 'bash scripts/verify-production-release-v38.sh deploy-verification'
 ]);
-requireText('workflow release assertions',workflow,[
- 'public-unified-menu-v6.js','public-contrast-hardening-v1.js','index-editorial-order-v6.js','mail-studio-ui-v28.js',
- '__GNK_UNIFIED_MENU_V6__','__GNK_CONTRAST_HARDENING_V1__','__GNK_INDEX_EDITORIAL_ORDER_V6__',
- 'x-gnk-unified-menu-current: full-v6-workers','x-gnk-contrast: hardened-v1','x-gnk-index-editorial: v6-news-100',
- 'assert-production-news-fallback.mjs','contact readiness HTTP 200','canonical mail logo HTTP 200 PNG',
- 'test-unified-shell-contract.mjs','test-visible-menu-logo-content-v1.mjs','test-final-release-v31.mjs',
- 'test-contact-form-contract.mjs','test-the-code-index-contract.mjs','test-index-content-contract.mjs',
- 'test-public-editorial-asset-routes-v1.mjs','globalne-kamatne-stope-nakon-inflacijskog-soka',
- 'brzina-bez-kontrole-nije-inovacija','x-gnk-editorial-request-path',
- 'GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS_GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715',
- 'ASSERT admin session endpoint controlled','401|403','"configured"'
+requireText('workflow V38 release assertions',workflow,[
+ 'index-unified-auth-v23.js','index-unified-auth-v21.js','mail-identity-autoreply-v2.js',
+ 'index-editorial-order-v6.js','index-editorial-order-v1.js','editorial-latest-index-v1.js',
+ 'contact-form-v2.js','mail-studio-ui-v28.js','apps/portal/data/news.json',
+ 'scripts/test-news-share-routing-v1.mjs','scripts/verify-production-release-v38.sh',
+ 'current-static-asset-20260715','source-redirect','20260715-source-links-v2',
+ 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova','AI ne smije pisati konačnu odluku',
+ 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V6_20260715_AI_BRANDED','aiMessageText','loadEmailLogo','signature.html',
+ 'min-height:520px','latest news is not 2026-07-15','reference news source URL missing'
 ]);
 forbidText('workflow',workflow,[
  "grep -o 'public-compact-menu-v1.js'",
  'news_count=$(node -e',
- 'ASSERT admin session readiness HTTP 200'
+ 'ASSERT admin session readiness HTTP 200',
+ 'scripts/verify-production-route.sh'
 ]);
 
 const preflightPosition=workflow.indexOf('Preflight Newsroom route ownership');
@@ -63,16 +62,23 @@ assert.ok(preflight.indexOf('grep -Fiq "$blocked_worker"')<preflight.indexOf('&&
 assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id|routes?\s*=|api token/i);
 assert.doesNotMatch(preflight,/curl[\s\S]{0,200}(?:--request|-X)\s*(?:POST|PUT|PATCH|DELETE)/i);
 
-requireText('production verifier',verifier,[
- 'grep -Fq -- "$expected_marker" "$output"',
- 'grep -Fiq -- "$expected_marker" "$headers"',
- 'allowed_statuses="${4:-200}"',
- '"$url" == https://gnk-asg.hr/admin-login/*',
- 'allowed_statuses="200,401"',
- 'status_allowed "$status"'
+requireText('V38 production verifier',verifier,[
+ 'x-gnk-deploy-revision',
+ 'x-gnk-active-release',
+ 'x-gnk-active-entrypoint',
+ 'current-static-asset-20260715',
+ 'x-gnk-news-share',
+ 'source-redirect',
+ 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova',
+ 'AI ne smije pisati konačnu odluku',
+ 'contact readiness HTTP 200',
+ 'verify_release_marker mail-logo',
+ 'case "$mail_status" in 400|401|403)'
 ]);
-forbidText('production verifier',verifier,[
- 'gnk-asg.hr/admin-center/*','gnk-asg.hr/mail-studio/*','gnk-asg.hr/operator-dashboard/*'
+forbidText('V38 production verifier',verifier,[
+ 'wrangler deploy',
+ 'api.cloudflare.com/client/v4/zones',
+ 'cloudflare_api_token='
 ]);
 
 requireText('V29 base worker',baseWorker,[
@@ -80,26 +86,26 @@ requireText('V29 base worker',baseWorker,[
  "['/','/index.html']","['/en','/en/index.html']",
  "new URL(canonicalPath,'https://assets.local')",'function newsroomFallback','function canonicalLogoAlias'
 ]);
-requireText('V31 release worker',releaseWorker,[
- 'GNK_ASG_UNIFIED_AUTH_V31_MAIL_NEWS_CONTRAST','handleContactStudio','public-unified-menu-v6.js',
- 'public-contrast-hardening-v1.js','index-editorial-order-v6.js','mail-studio-ui-v28.js',
- "x-gnk-unified-menu-current','full-v6-workers","x-gnk-contrast','hardened-v1",
- "x-gnk-index-editorial',isIndex(route)?'v6-news-100'"
+requireText('V38 release worker',releaseWorker,[
+ 'GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS',
+ "export const ENTRYPOINT='src/index-unified-auth-v23.js'",
+ "headers.set('x-gnk-deploy-revision',revision)",
+ 'current-static-asset-20260715','source-redirect'
 ]);
 requireText('news production assertion',newsAssert,[
  'content-type','application/json','parsed?.items','parsed?.posts','parsed?.news','items.length<minimum'
 ]);
 requireText('approved deploy helper',tool,[
- "branch!=='main'","merge-base','--is-ancestor",'approved_sha=${expectedSha}','GNK_ASG_DEPLOY_APPROVED','--execute',"mode:execute?'execute':'prepare-only'"
+ "branch!=='main'",'merge-base','--is-ancestor','approved_sha=${expectedSha}','GNK_ASG_DEPLOY_APPROVED','--execute',"mode:execute?'execute':'prepare-only'"
 ]);
 
 console.log(JSON.stringify({
  ok:true,
  deployStarted:false,
  approvalInput:'exact-main-sha',
- adminLoginVerification:'exact-host-path-200-or-401-with-marker',
+ productionVerification:'V38 exact release headers and public route evidence',
  adminSessionVerification:'ready-or-configured-unauthorized',
- editorialAssetsVerification:'canonical-trailing-slash-v34',
+ editorialAssetsVerification:'current static assets and canonical routes',
  preflight:'before-secrets-and-deploy',
  routeMutation:false,
  finalAssertions:'named-and-diagnostic'
