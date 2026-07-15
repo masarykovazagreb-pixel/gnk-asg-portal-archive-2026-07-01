@@ -10,13 +10,13 @@ Ovaj dokument i prateća skripta ne mijenjaju runtime, produkciju, DNS, Cloudfla
 
 ## Izvršni zaključak
 
-Aktualni `main` sadrži V38 release paket, exact-SHA produkcijski verifier i spojenu novu implementaciju praćenja klikova iz PR-a #465. Produkcijski deploy ostaje blokiran dok se ne završi konsolidacija aktualnih grana i ne odobri točan završni `main` SHA.
+Aktualni `main` sadrži V38 release paket, exact-SHA produkcijski verifier i spojenu novu implementaciju praćenja klikova iz PR-a #465. Produkcijski deploy ostaje blokiran dok se ne popravi potvrđena Media Application neusklađenost, završi konsolidacija aktualnih grana i odobri točan završni `main` SHA.
 
 Status odluke:
 
 `BLOCKED_PENDING_CONSOLIDATION`
 
-To nije ocjena da je sustav neispravan. To znači da trenutačno ne postoji jedan konačan i potpuno konsolidiran release SHA koji obuhvaća sve otvorene projektne odluke.
+To nije ocjena da je cijeli sustav neispravan. To znači da trenutačno ne postoji jedan konačan i potpuno konsolidiran release SHA koji obuhvaća sve otvorene projektne odluke i prolazi aktualni funkcionalni ugovor.
 
 ## Potvrđeno na aktualnom mainu
 
@@ -26,9 +26,26 @@ To nije ocjena da je sustav neispravan. To znači da trenutačno ne postoji jeda
 4. Odobreni SHA mora biti predak aktualnog `origin/main`.
 5. Završni verifier traži V38 release marker i točan `x-gnk-deploy-revision`.
 6. Click tracking runtime i ugovorni test nalaze se na `main` nakon PR-a #465.
-7. Media Application na `main` još koristi invitation model: `mailCode` + `pin`, tablicu `media_invitation_access` i invitation session.
-8. Aktualni mail auto-reply već sadrži AI fallback, zaštitu od petlji, MIME HTML/text poruku i CID/remote PNG logo.
-9. Aktualni Email Status V8 već sadrži D1 evidenciju poruka, isporuku, odbijanje, otvaranja, potvrdu primitka, click tracking, paginaciju i tehničke signale uređaja/IP-a.
+7. Media Application backend na `main` još koristi invitation model: `mailCode` + `pin`, tablicu `media_invitation_access` i invitation session.
+8. Media Application frontend na `main` već prikazuje otvorenu registraciju, prikuplja korisničko ime i lozinku te šalje `POST /api/media-registration/register`.
+9. Backend na `main` nema `media_registration_accounts`, password hash polja ni `/register` endpoint.
+10. Aktualni mail auto-reply već sadrži AI fallback, zaštitu od petlji, MIME HTML/text poruku i CID/remote PNG logo.
+11. Aktualni Email Status V8 već sadrži D1 evidenciju poruka, isporuku, odbijanje, otvaranja, potvrdu primitka, click tracking, paginaciju i tehničke signale uređaja/IP-a.
+
+## Kritični nalaz — Media Application contract mismatch
+
+Aktualni frontend i backend ne provode isti autentikacijski ugovor:
+
+- frontend: otvorena registracija, username/password i `/register`;
+- backend: invitation code/PIN i bez `/register`.
+
+Posljedica: novi media korisnik može dobiti i ispuniti obrazac za kreiranje računa u pregledniku, ali backend na aktualnom `main` nema endpoint i shemu potrebnu za dovršetak tog postupka.
+
+Klasifikacija:
+
+`BROKEN_FRONTEND_OPEN_BACKEND_INVITATION_ONLY`
+
+Ovo je produkcijski blocker. Ne smije se prikrivati kao nedovršena opcionalna funkcija.
 
 ## Aktualni otvoreni rad
 
@@ -58,11 +75,11 @@ Njihova novija izvedba već je spojena u `main` preko PR-a #465.
 
 Odluka: kandidati za zatvaranje kao supersedirani nakon provjere da ne sadrže jedinstvenu dokumentaciju koju treba sačuvati.
 
-### PR #397 — Media Application odluka nije prenesena na V38
+### PR #397 — sadrži potreban backend model, ali nije siguran za izravni merge
 
-PR uvodi otvorenu registraciju s korisničkim imenom i lozinkom, ali je nastao na znatno starijoj osnovi. Aktualni V38 `main` i dalje koristi invitation/PIN model.
+PR uvodi `media_registration_accounts`, registraciju, username/password login i zadržava legacy invitation login. Nastao je na starijoj osnovi i konfliktan je s aktualnim V38.
 
-Odluka: ne spajati stari PR izravno. Potrebna je nova uska implementacija na aktualnom V38 `main`, ili izričita odluka da invitation model ostaje.
+Odluka: ne spajati stari PR izravno. Njegov backend model treba ponovno prenijeti na aktualni V38 i uskladiti s već aktivnim frontend ugovorom i aktualnim error kodovima.
 
 ### PR #433 — supersediran novim menu runtimeom
 
@@ -95,8 +112,8 @@ Odluka: PR #454 ne spajati izravno. Ako su centre attribution i zasebni D1 auto-
 
 ### Ponovno implementirati ili posebno odlučiti
 
-- #397
-- #454 samo za D1 auto-reply operativni audit i Global Communications Centre attribution
+- #397 kao aktualni V38 popravak Media Application backenda;
+- #454 samo za D1 auto-reply operativni audit i Global Communications Centre attribution.
 
 ### Supersedirano aktualnim mainom ili novijim PR-om
 
@@ -114,12 +131,12 @@ Stariji preview, release-candidate, connectivity, dijagnostički, indeksni i Med
 
 Prije produkcijskog deploya obvezno je:
 
-1. donijeti odluku o PR-u #467;
-2. riješiti ili izričito odgoditi Media Application registracijski model;
+1. popraviti Media Application frontend/backend registracijski ugovor;
+2. donijeti odluku o PR-u #467;
 3. odlučiti jesu li D1 auto-reply audit i Global Communications Centre attribution obvezni za ovaj release;
 4. napraviti novi puni audit na rezultirajućem točnom `main` SHA-u;
 5. provjeriti javne i zaštićene rute bez slanja mailova;
-6. potvrditi da Mail Studio, Email Status i Contact vraćaju kontrolirane auth/readiness odgovore;
+6. potvrditi da Mail Studio, Email Status, Contact i Media Application vraćaju kontrolirane auth/readiness odgovore;
 7. odobriti zasebno točan 40-znamenkasti produkcijski SHA;
 8. tek tada ručno pokrenuti `Deploy Admin Auth V6`.
 
@@ -138,7 +155,7 @@ Prije produkcijskog deploya obvezno je:
 Najčišći redoslijed je:
 
 1. završiti provjeru ovog auditnog PR-a;
-2. odlučiti o PR-u #467;
-3. izraditi aktualni V38 Media Application paket prema odabranom modelu;
+2. pripremiti aktualni V38 Media Application backend popravak na zasebnoj grani;
+3. odlučiti o PR-u #467;
 4. po potrebi dodati uski D1 auto-reply operations paket;
 5. zatim izvesti konačni audit i pripremiti deploy zajedno s korisnikom.
