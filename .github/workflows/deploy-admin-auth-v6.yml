@@ -56,12 +56,14 @@ jobs:
           test -z "$(git status --porcelain)"
           echo "DEPLOY_SOURCE_SHA=$actual" >> "$GITHUB_ENV"
 
-      - name: Validate current V36 release package
+      - name: Validate current V37 release package
         shell: bash
         run: |
           set -euo pipefail
           test -f workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           test -f workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          test -f workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+          test -f apps/portal/assets/index-editorial-order-v6.js
           test -f apps/portal/assets/index-editorial-order-v1.js
           test -f apps/portal/assets/editorial-latest-index-v1.js
           test -f apps/portal/assets/contact-form-v2.js
@@ -69,18 +71,25 @@ jobs:
           test -f apps/portal/data/news.json
           test -f apps/portal/objave/index.html
           test -f apps/portal/komentari/index.html
+          test -f scripts/test-news-share-routing-v1.mjs
           test -f workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
 
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+          node --check apps/portal/assets/index-editorial-order-v6.js
           node --check apps/portal/assets/index-editorial-order-v1.js
           node --check apps/portal/assets/editorial-latest-index-v1.js
           node --check apps/portal/assets/contact-form-v2.js
           node --check apps/portal/assets/mail-studio-ui-v28.js
+          node scripts/test-news-share-routing-v1.mjs
 
           grep -Fq 'main = "src/index-unified-auth-v23.js"' workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
-          grep -Fq 'GNK_ASG_UNIFIED_AUTH_V36_CURRENT_NEWS' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq 'GNK_ASG_UNIFIED_AUTH_V37_NEWS_SOURCE_LINKS' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq 'current-static-asset-20260715' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq 'source-redirect' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq '20260715-source-links-v2' workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+          grep -Fq 'item.sourceUrl||item.url||item.href||item.share_url' apps/portal/assets/index-editorial-order-v6.js
           grep -Fq 'index-editorial-order-v1.js?v=20260715-editorial-v6-latest-first' workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
           grep -Fq 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova' apps/portal/objave/index.html
           grep -Fq 'AI ne smije pisati konačnu odluku' apps/portal/komentari/index.html
@@ -97,7 +106,9 @@ jobs:
           if(!items.length)throw new Error('news feed empty');
           const value=items[0].published_at||items[0].publishedAt||items[0].date||'';
           if(!String(value).startsWith('2026-07-15'))throw new Error(`latest news is not 2026-07-15: ${value}`);
-          console.log(JSON.stringify({ok:true,latest:value,count:items.length}));
+          const reference=items.find(item=>item.id==='19fa99e0723490d640');
+          if(!reference||!String(reference.url||'').startsWith('https://www.theverge.com/policy/'))throw new Error('reference news source URL missing');
+          console.log(JSON.stringify({ok:true,latest:value,count:items.length,reference:reference.url}));
           NODE
 
       - name: Preflight Newsroom route ownership
@@ -171,8 +182,9 @@ jobs:
             grep -Fqi -- "$marker" "$body" "$headers"
           }
 
-          verify_marker home 'https://gnk-asg.hr/' 'index-editorial-order-v6.js'
-          verify_marker home-en 'https://gnk-asg.hr/en/' 'index-editorial-order-v6.js'
+          verify_marker home 'https://gnk-asg.hr/' 'index-editorial-order-v6.js?v=20260715-source-links-v2'
+          verify_marker home-en 'https://gnk-asg.hr/en/' 'index-editorial-order-v6.js?v=20260715-source-links-v2'
+          verify_marker news-runtime 'https://gnk-asg.hr/assets/index-editorial-order-v6.js' 'item.sourceUrl||item.url||item.href||item.share_url'
           verify_marker objave 'https://gnk-asg.hr/objave/' 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova'
           verify_marker komentari 'https://gnk-asg.hr/komentari/' 'AI ne smije pisati konačnu odluku'
           verify_marker contact-page 'https://gnk-asg.hr/contact/' 'id="contactForm"'
@@ -185,6 +197,13 @@ jobs:
           latest=$(jq -r 'if type=="array" then .[0].published_at // .[0].publishedAt // "" else (.items[0].published_at // .items[0].publishedAt // "") end' "$out/news.json")
           [[ "$latest" == 2026-07-15* ]]
           grep -Fiq 'x-gnk-news-source: current-static-asset-20260715' "$out/news.headers"
+
+          share_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/news-share.headers" --output "$out/news-share.body" --write-out '%{http_code}' "https://gnk-asg.hr/podijeli/vijest/19fa99e0723490d640/?deploy-admin-v6=${cache}" || true)
+          echo "ASSERT legacy news share redirect HTTP 302; actual=${share_status}"
+          [ "$share_status" = "302" ]
+          grep -Fiq 'x-gnk-news-share: source-redirect' "$out/news-share.headers"
+          grep -Fiq 'x-gnk-news-id: 19fa99e0723490d640' "$out/news-share.headers"
+          grep -Fiq 'location: https://www.theverge.com/policy/965792/google-epic-withdraw-injunction-third-party-app-stores-coming-google-play' "$out/news-share.headers"
 
           contact_status=$(curl --silent --show-error --output "$out/contact-ready.json" --write-out '%{http_code}' "https://gnk-asg.hr/api/contact-submit?deploy-admin-v6=${cache}" || true)
           echo "ASSERT contact readiness HTTP 200; actual=${contact_status}"
