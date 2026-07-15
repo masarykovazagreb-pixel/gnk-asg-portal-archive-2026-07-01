@@ -14,7 +14,7 @@ Ova matrica ne zatvara, ne spaja i ne mijenja nijedan postojeći PR. Služi kao 
 
 | PR | Razlog | Postupanje |
 |---|---|---|
-| #397 | Otvorena Media Application registracija nije prenesena na aktualni V38; stari PR je konfliktan | Ne spajati izravno; ponovno implementirati na aktualnom `main` ili zadržati invitation/PIN model |
+| #397 | Frontend na aktualnom `main` već prikazuje otvorenu username/password registraciju i zove `/register`, ali backend na `main` još koristi samo invitation code/PIN i nema account tablicu ni `/register` endpoint | Produkcijski blocker. Ne spajati konfliktni stari PR; prenijeti njegov account/register/login model na aktualni V38 i uskladiti ga s aktivnim frontend error kodovima |
 | #454 | AI auto-reply, CID logo i glavni status dashboard već su na `main`; nisu potvrđeni zasebni D1 `email_autoreply_audit` i Global Communications Centre attribution | Ne spajati konfliktni PR; po potrebi prenijeti samo ta dva uska operativna dijela uz novi test |
 
 ## C — supersedirano ili zamijenjeno
