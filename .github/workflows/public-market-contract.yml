@@ -1,0 +1,36 @@
+name: Public Market Contract
+
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/public-market-data-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js'
+      - 'apps/portal/assets/market.js'
+      - 'apps/portal/data/market.json'
+      - 'scripts/test-public-market-data-v1.mjs'
+      - 'scripts/verify-production-release-v38.sh'
+      - '.github/workflows/public-market-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/public-market-data-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          node --check apps/portal/assets/market.js
+          node --check scripts/test-public-market-data-v1.mjs
+          bash -n scripts/verify-production-release-v38.sh
+      - name: Same-origin market contract
+        run: node scripts/test-public-market-data-v1.mjs
