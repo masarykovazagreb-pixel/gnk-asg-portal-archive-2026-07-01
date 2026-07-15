@@ -45,10 +45,15 @@ PUBLIC_ENVIRONMENT = "review-direct-operator"
 DEPLOY_REVISION = "20260715-digital-workforce-editor-desk-v1"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
-NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "true"
-MAIL_AUTO_REPLY_LIVE = "true"
-MAIL_STUDIO_LIVE = "true"
-MAIL_MANUAL_LIVE = "true"
+
+# Review deployments must be fail-closed for every scheduled or outbound action.
+# The runtime remains testable, but it cannot publish, auto-reply, send manual
+# messages or execute outreach unless a separate production configuration is
+# explicitly approved and deployed.
+NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "false"
+MAIL_AUTO_REPLY_LIVE = "false"
+MAIL_STUDIO_LIVE = "false"
+MAIL_MANUAL_LIVE = "false"
 MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MAIL_PROFILE_TEST_LIVE = "false"
 MAIL_PROFILE_TEST_RECIPIENTS = "beckuphome@gmail.com"
