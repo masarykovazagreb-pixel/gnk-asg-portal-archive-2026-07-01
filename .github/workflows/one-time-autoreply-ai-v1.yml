@@ -1,0 +1,93 @@
+name: One-Time Autoreply AI V1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-autoreply-ai-v1.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: one-time-autoreply-ai-v1
+  cancel-in-progress: false
+
+jobs:
+  patch-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+
+      - name: Add AI-assisted autoreply text with safe fallback
+        run: |
+          set -euo pipefail
+          node - <<'JS'
+          const fs=require('fs');
+          const path='workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js';
+          let source=fs.readFileSync(path,'utf8');
+          source=source.replace("const VERSION='GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V5_20260713_INLINE_LOGO_COMPAT';","const VERSION='GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V6_20260715_AI_BRANDED';");
+          if(!source.includes('async function aiMessageText')){
+            const anchor="function messageText(profile,reference,subject){return profile.language==='english'?enBody(profile,reference,subject):[hrBody(profile,reference,subject),'','--- ENGLISH ---','',enBody(profile,reference,subject)].join('\\n')}";
+            const replacement=`${anchor}\nasync function aiMessageText(env,profile,reference,subject){const fallback=messageText(profile,reference,subject);if(!env.AI?.run)return fallback;const model=clean(env.AUTO_EDITOR_MODEL)||'@cf/meta/llama-3.1-8b-instruct-fast';const language=profile.language==='english'?'English':'Croatian followed by English';const prompt=[\n 'Write a concise institutional email acknowledgement for GNK ASG.',\n 'Language: '+language+'.',\n 'Recipient mailbox: '+profile.address+' ('+profile.role+').',\n 'Reference: '+reference+'.',\n 'Original subject: '+subject+'.',\n 'State only that the message was received, recorded and routed for human review.',\n 'Do not give legal, financial or commercial advice. Do not promise an outcome or response time.',\n 'Do not include a signature, logo, markdown, headings or placeholders.'\n].join('\\n');try{const result=await env.AI.run(model,{messages:[{role:'system',content:'You write precise, neutral institutional acknowledgements.'},{role:'user',content:prompt}],max_tokens:260,temperature:0.2});const text=clean(result?.response||result?.result?.response||result?.text||'');if(text.length<80||text.length>2400)return fallback;return text}catch{return fallback}}`;
+            if(!source.includes(anchor))throw new Error('message_text_anchor_not_found');
+            source=source.replace(anchor,replacement);
+          }
+          const old="async function rawMessage(env,profile,to,reference,subject,inReplyTo){const logo=await loadEmailLogo(env),logoSrc=logo?`cid:${EMAIL_LOGO_CID}`:BRAND_LOGO_URL,signature=signatureData(profile,logoSrc),text=`${messageText(profile,reference,subject)}\\n\\n${signature.text}`,html=`<!doctype html><html><body style=\"font-family:Arial,Helvetica,sans-serif;color:#111827;font-size:15px;line-height:1.6\">${block(messageText(profile,reference,subject))}${signature.html}</body></html>`";
+          const next="async function rawMessage(env,profile,to,reference,subject,inReplyTo){const logo=await loadEmailLogo(env),logoSrc=logo?`cid:${EMAIL_LOGO_CID}`:BRAND_LOGO_URL,signature=signatureData(profile,logoSrc),replyText=await aiMessageText(env,profile,reference,subject),text=`${replyText}\\n\\n${signature.text}`,html=`<!doctype html><html><body style=\"font-family:Arial,Helvetica,sans-serif;color:#111827;font-size:15px;line-height:1.6\">${block(replyText)}${signature.html}</body></html>`";
+          if(!source.includes(old))throw new Error('raw_message_anchor_not_found');
+          source=source.replace(old,next);
+          source=source.replace("signature:{logo:BRAND_LOGO_URL,renderer:BRAND_SIGNATURE_VERSION,mime:BRAND_MIME_VERSION}","signature:{logo:BRAND_LOGO_URL,renderer:BRAND_SIGNATURE_VERSION,mime:BRAND_MIME_VERSION},ai:{enabled:Boolean(env.AI?.run),model:clean(env.AUTO_EDITOR_MODEL)||'@cf/meta/llama-3.1-8b-instruct-fast'}");
+          fs.writeFileSync(path,source);
+          JS
+          node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V6_20260715_AI_BRANDED' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'async function aiMessageText' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'loadEmailLogo' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'signature.html' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+
+      - name: Validate Mail Studio remains branded and unchanged
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
+          grep -Fq 'renderBrandSignatureHtml' workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
+          grep -Fq 'loadEmailLogo' workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
+          grep -Fq "logo:'cid-inline'" workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
+
+      - name: Run mail guardrails
+        run: |
+          set -euo pipefail
+          node scripts/test-email-signature-contract.mjs
+          node scripts/test-email-mime-guardrails.mjs
+          node scripts/test-autoreply-guardrails.mjs
+          node scripts/test-autoreply-all-addresses.mjs
+          node scripts/test-mail-transport-guardrails.mjs
+
+      - name: Commit AI autoreply change
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          git commit -m 'feat(mail): generate AI-assisted branded autoreplies'
+          git push origin HEAD:main
+
+      - name: Dispatch exact-SHA production deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          approved_sha=$(git rev-parse HEAD)
+          gh workflow run deploy-admin-auth-v6.yml --repo "$GITHUB_REPOSITORY" --ref main -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 -f approved_sha="$approved_sha"
+          printf '{"ok":true,"approvedSha":"%s","scope":"ai-autoreply-branded-logo-signature"}\n' "$approved_sha" > autoreply-ai-dispatch.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: autoreply-ai-dispatch
+          path: autoreply-ai-dispatch.json
+          retention-days: 2
