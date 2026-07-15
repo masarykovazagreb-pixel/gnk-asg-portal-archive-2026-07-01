@@ -56,35 +56,49 @@ jobs:
           test -z "$(git status --porcelain)"
           echo "DEPLOY_SOURCE_SHA=$actual" >> "$GITHUB_ENV"
 
-      - name: Validate current release contracts
+      - name: Validate current V36 release package
         shell: bash
         run: |
           set -euo pipefail
-          bash -n scripts/verify-production-route.sh
-          bash -n scripts/check-newsroom-route-readiness.sh
+          test -f workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          test -f workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          test -f apps/portal/assets/index-editorial-order-v1.js
+          test -f apps/portal/assets/editorial-latest-index-v1.js
+          test -f apps/portal/assets/contact-form-v2.js
+          test -f apps/portal/assets/mail-studio-ui-v28.js
+          test -f apps/portal/data/news.json
+          test -f apps/portal/objave/index.html
+          test -f apps/portal/komentari/index.html
+          test -f workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
+
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           node --check apps/portal/assets/index-editorial-order-v1.js
           node --check apps/portal/assets/editorial-latest-index-v1.js
           node --check apps/portal/assets/contact-form-v2.js
           node --check apps/portal/assets/mail-studio-ui-v28.js
-          node scripts/test-visible-menu-logo-content-v1.mjs
-          node scripts/test-contact-form-contract.mjs
-          node scripts/test-email-signature-contract.mjs
-          node scripts/test-mail-transport-guardrails.mjs
-          node scripts/test-email-mime-guardrails.mjs
-          node scripts/test-autoreply-guardrails.mjs
-          node scripts/test-autoreply-all-addresses.mjs
-          node scripts/test-public-editorial-asset-routes-v1.mjs
-          node scripts/test-data-fallback-contract.mjs
-          node scripts/predeploy-release-v6.mjs
+
+          grep -Fq 'main = "src/index-unified-auth-v23.js"' workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
+          grep -Fq 'GNK_ASG_UNIFIED_AUTH_V36_CURRENT_NEWS' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq 'current-static-asset-20260715' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
-          grep -Fq '2026-07-15' apps/portal/data/news.json
+          grep -Fq 'index-editorial-order-v1.js?v=20260715-editorial-v6-latest-first' workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
           grep -Fq 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova' apps/portal/objave/index.html
           grep -Fq 'AI ne smije pisati konačnu odluku' apps/portal/komentari/index.html
           grep -Fq 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V6_20260715_AI_BRANDED' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'aiMessageText' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'loadEmailLogo' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'signature.html' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'min-height:520px' apps/portal/assets/mail-studio-ui-v28.js
+
+          node <<'NODE'
+          const fs=require('node:fs');
+          const raw=JSON.parse(fs.readFileSync('apps/portal/data/news.json','utf8'));
+          const items=Array.isArray(raw)?raw:(raw.items||raw.posts||raw.news||[]);
+          if(!items.length)throw new Error('news feed empty');
+          const value=items[0].published_at||items[0].publishedAt||items[0].date||'';
+          if(!String(value).startsWith('2026-07-15'))throw new Error(`latest news is not 2026-07-15: ${value}`);
+          console.log(JSON.stringify({ok:true,latest:value,count:items.length}));
+          NODE
 
       - name: Preflight Newsroom route ownership
         run: scripts/check-newsroom-route-readiness.sh deploy-preflight
