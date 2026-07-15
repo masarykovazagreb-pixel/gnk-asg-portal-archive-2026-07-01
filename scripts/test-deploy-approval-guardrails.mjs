@@ -29,12 +29,15 @@ requireText('workflow approval contract',workflow,[
  'DEPLOY_REVISION:${DEPLOY_SOURCE_SHA}',
  'bash scripts/verify-production-release-v38.sh deploy-verification'
 ]);
-requireText('workflow release assertions',workflow,[
- 'public-unified-menu-v6.js','public-contrast-hardening-v1.js','index-editorial-order-v6.js','mail-studio-ui-v28.js',
+requireText('workflow V38 release assertions',workflow,[
+ 'index-unified-auth-v23.js','index-unified-auth-v21.js','mail-identity-autoreply-v2.js',
+ 'index-editorial-order-v6.js','index-editorial-order-v1.js','editorial-latest-index-v1.js',
+ 'contact-form-v2.js','mail-studio-ui-v28.js','apps/portal/data/news.json',
+ 'scripts/test-news-share-routing-v1.mjs','scripts/verify-production-release-v38.sh',
  'current-static-asset-20260715','source-redirect','20260715-source-links-v2',
  'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova','AI ne smije pisati konačnu odluku',
  'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V6_20260715_AI_BRANDED','aiMessageText','loadEmailLogo','signature.html',
- 'min-height:520px','scripts/test-news-share-routing-v1.mjs','scripts/verify-production-release-v38.sh'
+ 'min-height:520px','latest news is not 2026-07-15','reference news source URL missing'
 ]);
 forbidText('workflow',workflow,[
  "grep -o 'public-compact-menu-v1.js'",
@@ -93,7 +96,7 @@ requireText('news production assertion',newsAssert,[
  'content-type','application/json','parsed?.items','parsed?.posts','parsed?.news','items.length<minimum'
 ]);
 requireText('approved deploy helper',tool,[
- "branch!=='main'","merge-base','--is-ancestor",'approved_sha=${expectedSha}','GNK_ASG_DEPLOY_APPROVED','--execute',"mode:execute?'execute':'prepare-only'"
+ "branch!=='main'",'merge-base','--is-ancestor','approved_sha=${expectedSha}','GNK_ASG_DEPLOY_APPROVED','--execute',"mode:execute?'execute':'prepare-only'"
 ]);
 
 console.log(JSON.stringify({
