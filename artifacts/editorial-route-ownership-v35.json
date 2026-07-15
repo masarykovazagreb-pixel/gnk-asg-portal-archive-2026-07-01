@@ -1,0 +1,299 @@
+{
+  "checkedAt": "2026-07-15T07:37:51.159Z",
+  "ok": true,
+  "targetScript": "gnk-asg-direct-operator",
+  "scope": "editorial-routes-only",
+  "desiredCount": 24,
+  "actions": [
+    {
+      "pattern": "gnk-asg.hr/objave",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "61bc6a7fd01b40bf89a5c0fae3c7b9d3"
+    },
+    {
+      "pattern": "gnk-asg.hr/objave/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "48f1500bcfc7494ba2e7d5e9ec4df1a0"
+    },
+    {
+      "pattern": "gnk-asg.hr/komentari",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "0e79dc8021b742818dc1d9913a25afdb"
+    },
+    {
+      "pattern": "gnk-asg.hr/komentari/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "676277707255477e80d09ca783d009e5"
+    },
+    {
+      "pattern": "gnk-asg.hr/analize",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "5610384358b345ae9f518e6adc42228e"
+    },
+    {
+      "pattern": "gnk-asg.hr/analize/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "04a653b25b2e4af1880ddbc8dca1763a"
+    },
+    {
+      "pattern": "gnk-asg.hr/en/publications",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "b8fb96fa39cc42d1b54b5eeffe467fe8"
+    },
+    {
+      "pattern": "gnk-asg.hr/en/publications/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "4e11b3276caa4141a0d7954832cb65a2"
+    },
+    {
+      "pattern": "gnk-asg.hr/en/commentary",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "4db88158e30f4c64afd4e71769341f2a"
+    },
+    {
+      "pattern": "gnk-asg.hr/en/commentary/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "6d914c80ea974074ac04ceaf0c029b39"
+    },
+    {
+      "pattern": "gnk-asg.hr/en/analyses",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "8d5d0eb0f33341dcadc0db4ae9adb093"
+    },
+    {
+      "pattern": "gnk-asg.hr/en/analyses/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "6c2f6da0fe6b46a7aee2fb08de122bbe"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/objave",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "f8ac507fd74141b7be3b9485965e6bf4"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/objave/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "900d59cb1ffc42b78ab115ac1c9ae535"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/komentari",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "1be834839f1c44adae6ed9fafe9bf699"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/komentari/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "5659f9706f5c4d818b1a6d574bf9722c"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/analize",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "b50fe31a336843afbc61ed875bde72e6"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/analize/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "410dacfa26814d6a85440663df324893"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/publications",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "253f9471900042ecb68ebccadf326124"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/publications/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "7af4b4d173d142b2ba5245d74d5e4cb5"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/commentary",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "55b07bc627d240299e07ab6bb77e7a54"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/commentary/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "b6b3106c4c6a4d1495108903ed5a81f5"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/analyses",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "0556c907214a42848d7544a1ab735bf1"
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/analyses/*",
+      "action": "created",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "3ea12cac2ca44ae49f78c123885ed13a"
+    }
+  ],
+  "verified": [
+    {
+      "pattern": "gnk-asg.hr/objave",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "61bc6a7fd01b40bf89a5c0fae3c7b9d3",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/objave/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "48f1500bcfc7494ba2e7d5e9ec4df1a0",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/komentari",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "0e79dc8021b742818dc1d9913a25afdb",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/komentari/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "676277707255477e80d09ca783d009e5",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/analize",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "5610384358b345ae9f518e6adc42228e",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/analize/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "04a653b25b2e4af1880ddbc8dca1763a",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/en/publications",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "b8fb96fa39cc42d1b54b5eeffe467fe8",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/en/publications/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "4e11b3276caa4141a0d7954832cb65a2",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/en/commentary",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "4db88158e30f4c64afd4e71769341f2a",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/en/commentary/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "6d914c80ea974074ac04ceaf0c029b39",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/en/analyses",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "8d5d0eb0f33341dcadc0db4ae9adb093",
+      "ok": true
+    },
+    {
+      "pattern": "gnk-asg.hr/en/analyses/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "6c2f6da0fe6b46a7aee2fb08de122bbe",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/objave",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "f8ac507fd74141b7be3b9485965e6bf4",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/objave/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "900d59cb1ffc42b78ab115ac1c9ae535",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/komentari",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "1be834839f1c44adae6ed9fafe9bf699",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/komentari/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "5659f9706f5c4d818b1a6d574bf9722c",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/analize",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "b50fe31a336843afbc61ed875bde72e6",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/analize/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "410dacfa26814d6a85440663df324893",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/publications",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "253f9471900042ecb68ebccadf326124",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/publications/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "7af4b4d173d142b2ba5245d74d5e4cb5",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/commentary",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "55b07bc627d240299e07ab6bb77e7a54",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/commentary/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "b6b3106c4c6a4d1495108903ed5a81f5",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/analyses",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "0556c907214a42848d7544a1ab735bf1",
+      "ok": true
+    },
+    {
+      "pattern": "www.gnk-asg.hr/en/analyses/*",
+      "script": "gnk-asg-direct-operator",
+      "routeId": "3ea12cac2ca44ae49f78c123885ed13a",
+      "ok": true
+    }
+  ]
+}
