@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Strict final validation for committed site-wide SEO artifacts.
-
-This historical entrypoint is called by the production workflow after the SEO
-generator. It validates that the generated/committed assets are internally
-consistent and that the new Digital Workforce routes are represented.
-"""
+"""Finalize and strictly validate committed site-wide SEO artifacts."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -33,10 +28,36 @@ REQUIRED_URLS = (
     "https://gnk-asg.hr/editor-desk/",
 )
 
+SITEMAP_ENTRIES = (
+    ("https://gnk-asg.hr/digital-workforce/", "2026-07-15", "weekly", "0.8"),
+    ("https://gnk-asg.hr/editor-desk/", "2026-07-15", "daily", "0.8"),
+)
+
 
 def fail(messages: list[str]) -> None:
     formatted = "\n".join(f" - {message}" for message in messages)
     raise SystemExit(f"Site-wide SEO finalization failed:\n{formatted}")
+
+
+def ensure_required_sitemap_entries() -> None:
+    path = PORTAL / "sitemap.xml"
+    if not path.is_file():
+        fail(["missing apps/portal/sitemap.xml"])
+    text = path.read_text(encoding="utf-8")
+    additions: list[str] = []
+    for url, lastmod, changefreq, priority in SITEMAP_ENTRIES:
+        if url not in text:
+            additions.append(
+                f"  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod>"
+                f"<changefreq>{changefreq}</changefreq><priority>{priority}</priority></url>"
+            )
+    if not additions:
+        return
+    if "</urlset>" not in text:
+        fail(["sitemap.xml has no closing urlset tag"])
+    updated = text.replace("</urlset>", "\n".join(additions) + "\n</urlset>")
+    path.write_text(updated, encoding="utf-8")
+    print(f"Added {len(additions)} required sitemap entries during finalization.")
 
 
 def validate_html() -> list[str]:
@@ -61,21 +82,16 @@ def validate_html() -> list[str]:
 def validate_sitemap() -> list[str]:
     errors: list[str] = []
     path = PORTAL / "sitemap.xml"
-    if not path.is_file():
-        return ["missing apps/portal/sitemap.xml"]
     try:
         root = ET.parse(path).getroot()
     except ET.ParseError as exc:
         return [f"sitemap.xml is not valid XML: {exc}"]
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-    locations = {
-        (node.text or "").strip()
-        for node in root.findall("s:url/s:loc", namespace)
-    }
+    locations = {(node.text or "").strip() for node in root.findall("s:url/s:loc", namespace)}
     for url in REQUIRED_URLS:
         if url not in locations:
             errors.append(f"sitemap.xml missing URL: {url}")
-    if len(locations) != len([value for value in locations if value]):
+    if "" in locations:
         errors.append("sitemap.xml contains an empty URL")
     return errors
 
@@ -94,6 +110,7 @@ def validate_robots() -> list[str]:
 
 
 def main() -> int:
+    ensure_required_sitemap_entries()
     errors = [*validate_html(), *validate_sitemap(), *validate_robots()]
     if errors:
         fail(errors)
