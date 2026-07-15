@@ -37,19 +37,55 @@ SITEMAP_ENTRIES = (
 )
 
 
+def page_url(relative: str) -> str:
+    if relative == "index.html":
+        return "https://gnk-asg.hr/"
+    return "https://gnk-asg.hr/" + relative.removesuffix("index.html")
+
+
+def public_page_records(errors: list[str]) -> list[dict[str, object]]:
+    records: list[dict[str, object]] = []
+    for relative in REQUIRED_HTML:
+        path = PORTAL / relative
+        text = path.read_text(encoding="utf-8", errors="replace").lower() if path.is_file() else ""
+        title_ok = "<title" in text
+        description_ok = 'name="description"' in text or "name='description'" in text
+        canonical_ok = 'rel="canonical"' in text or "rel='canonical'" in text
+        records.append({
+            "path": f"apps/portal/{relative}",
+            "url": page_url(relative),
+            "exists": path.is_file(),
+            "title": title_ok,
+            "description": description_ok,
+            "canonical": canonical_ok,
+            "ok": path.is_file() and title_ok and description_ok and canonical_ok,
+        })
+    return records
+
+
 def write_report(*, errors: list[str], sitemap_locations: list[str]) -> None:
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     passed = not errors
+    pages = public_page_records(errors)
     report = {
         "ok": passed,
         "status": "passed" if passed else "failed",
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
         "generator": "finalize_sitewide_seo.py",
+        "publicPages": pages,
+        "publicPageCount": len(pages),
+        "pages": pages,
+        "sitemapUrls": sitemap_locations,
+        "sitemapUrlCount": len(sitemap_locations),
+        "requiredUrls": list(REQUIRED_URLS),
         "summary": {
             "passed": passed,
             "failed": not passed,
             "error_count": len(errors),
+            "errorCount": len(errors),
             "html_pages_checked": len(REQUIRED_HTML),
+            "publicPages": len(pages),
             "required_urls_checked": len(REQUIRED_URLS),
             "sitemap_url_count": len(sitemap_locations),
         },
@@ -86,8 +122,7 @@ def ensure_required_sitemap_entries() -> None:
         return
     if "</urlset>" not in text:
         fail(["sitemap.xml has no closing urlset tag"])
-    updated = text.replace("</urlset>", "\n".join(additions) + "\n</urlset>")
-    path.write_text(updated, encoding="utf-8")
+    path.write_text(text.replace("</urlset>", "\n".join(additions) + "\n</urlset>"), encoding="utf-8")
     print(f"Added {len(additions)} required sitemap entries during finalization.")
 
 
@@ -99,11 +134,7 @@ def validate_html() -> list[str]:
             errors.append(f"missing HTML file: apps/portal/{relative}")
             continue
         text = path.read_text(encoding="utf-8", errors="replace").lower()
-        checks = {
-            "title": "<title",
-            "description": 'name="description"',
-            "canonical": 'rel="canonical"',
-        }
+        checks = {"title": "<title", "description": 'name="description"', "canonical": 'rel="canonical"'}
         for label, marker in checks.items():
             if marker not in text and marker.replace('"', "'") not in text:
                 errors.append(f"apps/portal/{relative}: missing {label}")
@@ -118,10 +149,7 @@ def sitemap_locations() -> tuple[list[str], list[str]]:
         return [], [f"sitemap.xml is not valid XML: {exc}"]
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     locations = sorted({(node.text or "").strip() for node in root.findall("s:url/s:loc", namespace)})
-    errors: list[str] = []
-    for url in REQUIRED_URLS:
-        if url not in locations:
-            errors.append(f"sitemap.xml missing URL: {url}")
+    errors = [f"sitemap.xml missing URL: {url}" for url in REQUIRED_URLS if url not in locations]
     if "" in locations:
         errors.append("sitemap.xml contains an empty URL")
     return locations, errors
