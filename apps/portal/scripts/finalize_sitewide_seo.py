@@ -37,10 +37,14 @@ SITEMAP_ENTRIES = (
 )
 
 
-def page_url(relative: str) -> str:
+def page_route(relative: str) -> str:
     if relative == "index.html":
-        return "https://gnk-asg.hr/"
-    return "https://gnk-asg.hr/" + relative.removesuffix("index.html")
+        return "/"
+    return "/" + relative.removesuffix("index.html")
+
+
+def page_url(relative: str) -> str:
+    return "https://gnk-asg.hr" + page_route(relative)
 
 
 def public_page_records(errors: list[str]) -> list[dict[str, object]]:
@@ -51,14 +55,24 @@ def public_page_records(errors: list[str]) -> list[dict[str, object]]:
         title_ok = "<title" in text
         description_ok = 'name="description"' in text or "name='description'" in text
         canonical_ok = 'rel="canonical"' in text or "rel='canonical'" in text
+        valid = path.is_file() and title_ok and description_ok and canonical_ok
+        route = page_route(relative)
+        file_path = f"apps/portal/{relative}"
         records.append({
-            "path": f"apps/portal/{relative}",
+            "route": route,
+            "path": file_path,
+            "file": file_path,
             "url": page_url(relative),
             "exists": path.is_file(),
             "title": title_ok,
+            "titleOk": title_ok,
             "description": description_ok,
+            "descriptionOk": description_ok,
             "canonical": canonical_ok,
-            "ok": path.is_file() and title_ok and description_ok and canonical_ok,
+            "canonicalOk": canonical_ok,
+            "ok": valid,
+            "valid": valid,
+            "errors": [error for error in errors if file_path in error],
         })
     return records
 
@@ -67,15 +81,18 @@ def write_report(*, errors: list[str], sitemap_locations: list[str]) -> None:
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     passed = not errors
     pages = public_page_records(errors)
+    generated_at = datetime.now(timezone.utc).isoformat()
     report = {
         "ok": passed,
+        "valid": passed,
         "status": "passed" if passed else "failed",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "generated_at": generated_at,
+        "generatedAt": generated_at,
         "generator": "finalize_sitewide_seo.py",
         "publicPages": pages,
         "publicPageCount": len(pages),
         "pages": pages,
+        "routes": [page["route"] for page in pages],
         "sitemapUrls": sitemap_locations,
         "sitemapUrlCount": len(sitemap_locations),
         "requiredUrls": list(REQUIRED_URLS),
@@ -86,12 +103,14 @@ def write_report(*, errors: list[str], sitemap_locations: list[str]) -> None:
             "errorCount": len(errors),
             "html_pages_checked": len(REQUIRED_HTML),
             "publicPages": len(pages),
+            "publicPageCount": len(pages),
             "required_urls_checked": len(REQUIRED_URLS),
             "sitemap_url_count": len(sitemap_locations),
+            "sitemapUrlCount": len(sitemap_locations),
         },
         "checks": {
-            "html_metadata": {"ok": passed, "pages": list(REQUIRED_HTML)},
-            "sitemap": {"ok": passed, "required_urls": list(REQUIRED_URLS), "locations": sitemap_locations},
+            "html_metadata": {"ok": all(page["ok"] for page in pages), "pages": pages},
+            "sitemap": {"ok": all(url in sitemap_locations for url in REQUIRED_URLS), "required_urls": list(REQUIRED_URLS), "locations": sitemap_locations},
             "robots": {"ok": passed, "sitemap_directive": "https://gnk-asg.hr/sitemap.xml"},
         },
         "errors": errors,
