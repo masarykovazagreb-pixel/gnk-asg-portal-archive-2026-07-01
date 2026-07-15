@@ -88,9 +88,11 @@ assert.match(worker,/handleContactStudio/);
 assert.match(wrapper,/GNK_ASG_UNIFIED_AUTH_V32_DETAILED_EMAIL_STATUS_RECEIPT/);
 assert.match(wrapper,/index-unified-auth-v21\.js/);
 assert.match(wrapper,/x-gnk-contrast-runtime','hardened-v4-all-pages-visual/);
-assert.match(editorialWrapper,/GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS/);
+assert.match(editorialWrapper,/GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS/);
 assert.match(editorialWrapper,/servePublicEditorialAsset/);
 assert.match(editorialWrapper,/index-unified-auth-v22\.js/);
+assert.match(editorialWrapper,/serveCurrentNewsAsset/);
+assert.match(editorialWrapper,/serveNewsShareRedirect/);
 assert.match(editorialRouter,/GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715/);
 for(const marker of ['/objave','/komentari','/analize','/en/publications','/en/commentary','/en/analyses','x-gnk-explicit-html-route','x-gnk-editorial-request-path','x-gnk-editorial-assets','redirect:\'follow\''])assert.ok(editorialRouter.includes(marker),`editorial router missing ${marker}`);
 assert.match(config,/main = "src\/index-unified-auth-v23\.js"/);
@@ -129,4 +131,4 @@ const localNews=JSON.parse(read('apps/portal/data/news.json'));
 assert.ok(Array.isArray(localNews));
 assert.ok(localNews.length>=100,`local news fallback must contain >=100 items; actual=${localNews.length}`);
 
-console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v7-detailed-receipt'},editorial:{assetRouting:'v2-canonical-trailing-slash',minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v34-over-v32-over-v31'},null,2));
+console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v8-click-tracking'},editorial:{assetRouting:'v2-canonical-trailing-slash-v38',minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v38-over-v32-over-v31'},null,2));
