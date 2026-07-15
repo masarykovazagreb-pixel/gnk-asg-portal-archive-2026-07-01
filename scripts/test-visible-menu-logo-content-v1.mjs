@@ -61,16 +61,19 @@ assert.match(worker,/handleContactStudio/);
 assert.match(wrapper,/GNK_ASG_UNIFIED_AUTH_V32_DETAILED_EMAIL_STATUS_RECEIPT/);
 assert.match(wrapper,/index-unified-auth-v21\.js/);
 assert.match(wrapper,/handleEmailStatusRequest/);
-assert.match(editorialWrapper,/GNK_ASG_UNIFIED_AUTH_V33_PUBLIC_EDITORIAL_ASSETS/);
+assert.match(editorialWrapper,/GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS/);
 assert.match(editorialWrapper,/index-unified-auth-v22\.js/);
 assert.match(editorialWrapper,/servePublicEditorialAsset/);
-assert.match(editorialRouter,/GNK_PUBLIC_EDITORIAL_ASSETS_V1_20260714/);
+assert.match(editorialRouter,/GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715/);
+assert.match(editorialRouter,/x-gnk-editorial-request-path/);
 assert.match(editorialRouter,/x-gnk-editorial-assets/);
+assert.match(editorialRouter,/redirect:'follow'/);
 assert.match(config,/main = "src\/index-unified-auth-v23\.js"/);
+assert.match(config,/html_handling = "auto-trailing-slash"/);
 
 for(const source of [signature,contract]){
  assert.match(source,/width="64" height="66"/);
  assert.doesNotMatch(source,/width="108"|height="111"/);
 }
 
-console.log(JSON.stringify({ok:true,menu:'visible-v6-full-workers',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-direct-assets',contrast:'hardened-v4-all-pages-visual-repair',worker:'v33-over-v32-over-v31',deployPerformed:false},null,2));
+console.log(JSON.stringify({ok:true,menu:'visible-v6-full-workers',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-canonical-assets-v2',contrast:'hardened-v4-all-pages-visual-repair',worker:'v34-over-v32-over-v31',deployPerformed:false},null,2));
