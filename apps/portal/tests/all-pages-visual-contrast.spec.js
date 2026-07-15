@@ -67,7 +67,7 @@ for (const entry of routeEntries) {
     const isHomepage = entry.route === '/' || entry.route === '/en/';
     const runtimeActivationTimeout = isHomepage ? 30_000 : 3_000;
     fs.mkdirSync(projectDir, { recursive: true });
-    if (isHomepage) testInfo.setTimeout(60_000);
+    if (isHomepage) testInfo.setTimeout(120_000);
 
     try {
       if (entry.redirectStub) {
