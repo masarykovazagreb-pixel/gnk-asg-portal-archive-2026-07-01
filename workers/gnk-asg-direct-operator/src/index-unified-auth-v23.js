@@ -7,6 +7,8 @@ async function serveHomeAsset(request,env){if(!['GET','HEAD'].includes(request.m
 
 export default{
  async fetch(request,env,ctx){
+  const home=await serveHomeAsset(request,env);
+  if(home)return home;
   const editorial=await servePublicEditorialAsset(request,env,VERSION);
   if(editorial)return editorial;
   const response=await app.fetch(request,env,ctx);
