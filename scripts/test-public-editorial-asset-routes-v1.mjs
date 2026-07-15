@@ -79,5 +79,5 @@ assert.match(config,/main = "src\/index-unified-auth-v23\.js"/);
 assert.match(config,/html_handling = "auto-trailing-slash"/);
 const wrapper=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js','utf8');
 assert.match(wrapper,/servePublicEditorialAsset/);
-assert.match(wrapper,/GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS/);
+assert.match(wrapper,/GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS/);
 console.log(JSON.stringify({ok:true,version:VERSION,roots:EDITORIAL_ROOTS.length,runtimeCases:cases.size,assetFetches:seen.length,plannedPackages:plan.packages.length,physicalIndexFirst:true,canonicalFallback:true,cache:{collections:'no-store',articles:'120s'}},null,2));
