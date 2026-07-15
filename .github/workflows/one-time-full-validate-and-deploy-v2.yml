@@ -1,0 +1,182 @@
+name: One-Time Full Validate and Deploy V2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-full-validate-and-deploy-v2.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: one-time-full-validate-and-deploy-v2
+  cancel-in-progress: false
+
+jobs:
+  validate-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run full production validation with diagnostics
+        id: validation
+        shell: bash
+        run: |
+          set +e
+          mkdir -p artifacts/full-validation-v2
+          log=artifacts/full-validation-v2/result.txt
+          : > "$log"
+          failed=0
+          failed_name=''
+          run_node_check(){
+            local file="$1"
+            echo "=== node --check $file ===" | tee -a "$log"
+            node --check "$file" >> "$log" 2>&1
+            local code=$?
+            echo "EXIT=$code" | tee -a "$log"
+            if [ $code -ne 0 ]; then failed=1; failed_name="node --check $file"; return 1; fi
+            return 0
+          }
+          run_test(){
+            local file="$1"
+            echo "=== node $file ===" | tee -a "$log"
+            node "$file" >> "$log" 2>&1
+            local code=$?
+            echo "EXIT=$code" | tee -a "$log"
+            if [ $code -ne 0 ]; then failed=1; failed_name="$file"; return 1; fi
+            return 0
+          }
+
+          files=(
+            scripts/audit-public-portal-v1.mjs
+            scripts/audit-all-pages-detailed-v1.mjs
+            scripts/audit-worker-route-ownership.mjs
+            scripts/predeploy-release-v6.mjs
+            scripts/prepare-approved-deploy-v1.mjs
+            scripts/assert-production-news-fallback.mjs
+            scripts/test-deploy-approval-guardrails.mjs
+            scripts/test-index-runtime-ownership.mjs
+            scripts/test-public-design-contract.mjs
+            scripts/test-unified-shell-contract.mjs
+            scripts/test-visible-menu-logo-content-v1.mjs
+            scripts/test-final-release-v31.mjs
+            scripts/test-worker-directory-1573.mjs
+            scripts/test-admin-session-login-v1.mjs
+            scripts/test-contact-form-contract.mjs
+            scripts/test-the-code-index-contract.mjs
+            scripts/test-index-content-contract.mjs
+            scripts/test-data-fallback-contract.mjs
+            scripts/test-email-signature-contract.mjs
+            scripts/test-mail-transport-guardrails.mjs
+            scripts/test-email-mime-guardrails.mjs
+            scripts/test-autoreply-guardrails.mjs
+            scripts/test-autoreply-all-addresses.mjs
+            scripts/test-news-queue-guardrails.mjs
+            scripts/test-public-editorial-asset-routes-v1.mjs
+            apps/portal/assets/public-compact-menu-v1.js
+            apps/portal/assets/public-design-runtime-v1.js
+            apps/portal/assets/public-unified-menu-v5.js
+            apps/portal/assets/public-unified-design-v3.js
+            apps/portal/assets/index-editorial-order-v5.js
+            apps/portal/assets/public-unified-menu-v6.js
+            apps/portal/assets/public-contrast-hardening-v1.js
+            apps/portal/assets/index-editorial-order-v6.js
+            apps/portal/assets/index-editorial-cleanup-v1.js
+            apps/portal/assets/mail-studio-ui-v28.js
+            apps/portal/assets/workers-directory-v1.js
+            apps/portal/assets/protected-operations-v1.js
+            apps/portal/assets/contact-form-v2.js
+            apps/portal/assets/release-completion-v1.js
+            apps/portal/assets/index-data-resilience-v1.js
+            apps/portal/assets/index-editorial-order-v1.js
+            apps/portal/assets/editorial-latest-index-v1.js
+            apps/portal/assets/newsroom-live-v1.js
+            apps/portal/assets/public-market-live-v1.js
+            apps/portal/assets/market-centre-data.js
+            apps/portal/assets/market.js
+            workers/gnk-asg-contact-api-worker/src/index-session-cookie-v1.js
+            workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
+            workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js
+            workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js
+            workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js
+            workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js
+            workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
+            workers/gnk-asg-direct-operator/src/email-brand-mime-safe-v2.js
+            workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js
+            workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+            workers/gnk-asg-direct-operator/src/mail-identity-autoreply-all-v1.js
+            workers/gnk-asg-direct-operator/src/mail-autoreply-profile-factory-v1.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v20.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+            workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js
+          )
+          for file in "${files[@]}"; do run_node_check "$file" || break; done
+
+          tests=(
+            scripts/test-deploy-approval-guardrails.mjs
+            scripts/test-index-runtime-ownership.mjs
+            scripts/test-public-design-contract.mjs
+            scripts/test-unified-shell-contract.mjs
+            scripts/test-visible-menu-logo-content-v1.mjs
+            scripts/test-final-release-v31.mjs
+            scripts/test-worker-directory-1573.mjs
+            scripts/test-admin-session-login-v1.mjs
+            scripts/test-contact-form-contract.mjs
+            scripts/test-the-code-index-contract.mjs
+            scripts/test-index-content-contract.mjs
+            scripts/test-email-signature-contract.mjs
+            scripts/test-mail-transport-guardrails.mjs
+            scripts/test-email-mime-guardrails.mjs
+            scripts/test-autoreply-guardrails.mjs
+            scripts/test-autoreply-all-addresses.mjs
+            scripts/test-news-queue-guardrails.mjs
+            scripts/test-public-editorial-asset-routes-v1.mjs
+            scripts/audit-all-pages-detailed-v1.mjs
+            scripts/audit-public-portal-v1.mjs
+            scripts/audit-worker-route-ownership.mjs
+            scripts/test-data-fallback-contract.mjs
+            scripts/predeploy-release-v6.mjs
+          )
+          if [ $failed -eq 0 ]; then
+            for test in "${tests[@]}"; do run_test "$test" || break; done
+          fi
+
+          jq -n --arg checkedAt "$(date -u +%FT%TZ)" --arg failedName "$failed_name" --argjson ok "$([ $failed -eq 0 ] && echo true || echo false)" '{checkedAt:$checkedAt,ok:$ok,failedName:($failedName|select(length>0)//null)}' > artifacts/full-validation-v2/status.json
+          cat artifacts/full-validation-v2/status.json
+          echo "ok=$([ $failed -eq 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Dispatch exact-SHA production deploy
+        if: steps.validation.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          approved_sha=$(git rev-parse HEAD)
+          gh workflow run deploy-admin-auth-v6.yml --repo "$GITHUB_REPOSITORY" --ref main -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 -f approved_sha="$approved_sha"
+          jq --arg sha "$approved_sha" '. + {deployDispatched:true,approvedSha:$sha}' artifacts/full-validation-v2/status.json > artifacts/full-validation-v2/status.tmp
+          mv artifacts/full-validation-v2/status.tmp artifacts/full-validation-v2/status.json
+
+      - name: Record validation evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add artifacts/full-validation-v2
+          git commit -m 'ci: record full validation v2 result' || exit 0
+          git push origin HEAD:main
