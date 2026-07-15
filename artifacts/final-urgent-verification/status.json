@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-07-15T08:19:42Z",
+  "targetSha": "1920a6af52756ea19613461e5e4ebcf0f4498cb7",
+  "deploy": {
+    "runId": "29399885026",
+    "status": "completed",
+    "conclusion": "failure",
+    "htmlUrl": "https://github.com/beckuphome-gnk/gnk-asg-portal/actions/runs/29399885026"
+  },
+  "checks": [
+    {
+      "name": "home",
+      "url": "https://gnk-asg.hr/",
+      "http": 200,
+      "marker": "GNK_INDEX_EDITORIAL_ORDER_V6_20260715_LATEST_FIRST",
+      "markerOk": false
+    },
+    {
+      "name": "news",
+      "url": "https://gnk-asg.hr/data/news.json",
+      "http": 200,
+      "marker": "2026-07-15",
+      "markerOk": false
+    },
+    {
+      "name": "objave",
+      "url": "https://gnk-asg.hr/objave/",
+      "http": 200,
+      "marker": "editorial-latest-index-v1.js?v=20260715-v1",
+      "markerOk": false
+    },
+    {
+      "name": "komentari",
+      "url": "https://gnk-asg.hr/komentari/",
+      "http": 200,
+      "marker": "editorial-latest-index-v1.js?v=20260715-v1",
+      "markerOk": false
+    },
+    {
+      "name": "contact",
+      "url": "https://gnk-asg.hr/api/contact-submit",
+      "http": 200,
+      "marker": "\"transport\"",
+      "markerOk": false
+    }
+  ],
+  "ok": false
+}

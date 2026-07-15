@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "worker": "gnk-asg-contact-api",
+  "version": "gnk-asg-mail-unified-v2-20260624",
+  "status": "READY",
+  "endpoint": "/api/contact-submit",
+  "mailboxes": [
+    {
+      "key": "info",
+      "address": "info@gnk-asg.hr",
+      "label": "Info Desk"
+    },
+    {
+      "key": "contact",
+      "address": "contact@gnk-asg.hr",
+      "label": "Kontakt"
+    },
+    {
+      "key": "office",
+      "address": "office@gnk-asg.hr",
+      "label": "Office"
+    },
+    {
+      "key": "it",
+      "address": "it@gnk-asg.hr",
+      "label": "IT podrška"
+    },
+    {
+      "key": "assistant",
+      "address": "assistant@gnk-asg.hr",
+      "label": "AI asistent"
+    },
+    {
+      "key": "legal",
+      "address": "legal@gnk-asg.hr",
+      "label": "Legal & Compliance"
+    },
+    {
+      "key": "privacy",
+      "address": "privacy@gnk-asg.hr",
+      "label": "Privatnost / GDPR"
+    },
+    {
+      "key": "media",
+      "address": "media@gnk-asg.hr",
+      "label": "Media"
+    },
+    {
+      "key": "press",
+      "address": "press@gnk-asg.hr",
+      "label": "Press"
+    },
+    {
+      "key": "ubo",
+      "address": "ubo@gnk-asg.hr",
+      "label": "UBO / korporativni podaci"
+    }
+  ],
+  "bindings": {
+    "kv": true,
+    "r2": true,
+    "email": true
+  },
+  "updatedAt": "2026-07-15T08:19:42.565Z"
+}
