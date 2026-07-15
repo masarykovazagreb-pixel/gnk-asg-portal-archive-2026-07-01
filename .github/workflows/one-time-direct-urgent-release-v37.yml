@@ -154,3 +154,5 @@ jobs:
           git add artifacts/direct-urgent-release-v37
           git commit -m 'ci: record direct urgent release v37 verification' || exit 0
           git push origin HEAD:main
+
+# activation: second push after workflow exists on main
