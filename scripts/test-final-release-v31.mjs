@@ -88,12 +88,13 @@ assert.match(worker,/handleContactStudio/);
 assert.match(wrapper,/GNK_ASG_UNIFIED_AUTH_V32_DETAILED_EMAIL_STATUS_RECEIPT/);
 assert.match(wrapper,/index-unified-auth-v21\.js/);
 assert.match(wrapper,/x-gnk-contrast-runtime','hardened-v4-all-pages-visual/);
-assert.match(editorialWrapper,/GNK_ASG_UNIFIED_AUTH_V33_PUBLIC_EDITORIAL_ASSETS/);
+assert.match(editorialWrapper,/GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS/);
 assert.match(editorialWrapper,/servePublicEditorialAsset/);
 assert.match(editorialWrapper,/index-unified-auth-v22\.js/);
-assert.match(editorialRouter,/GNK_PUBLIC_EDITORIAL_ASSETS_V1_20260714/);
-for(const marker of ['/objave','/komentari','/analize','/en/publications','/en/commentary','/en/analyses','x-gnk-explicit-html-route','x-gnk-editorial-assets'])assert.ok(editorialRouter.includes(marker),`editorial router missing ${marker}`);
+assert.match(editorialRouter,/GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715/);
+for(const marker of ['/objave','/komentari','/analize','/en/publications','/en/commentary','/en/analyses','x-gnk-explicit-html-route','x-gnk-editorial-request-path','x-gnk-editorial-assets','redirect:\'follow\''])assert.ok(editorialRouter.includes(marker),`editorial router missing ${marker}`);
 assert.match(config,/main = "src\/index-unified-auth-v23\.js"/);
+assert.match(config,/html_handling = "auto-trailing-slash"/);
 
 const newPages=[
  'apps/portal/objave/transparentno-upravljanje-kao-operativni-standard/index.html',
@@ -128,4 +129,4 @@ const localNews=JSON.parse(read('apps/portal/data/news.json'));
 assert.ok(Array.isArray(localNews));
 assert.ok(localNews.length>=100,`local news fallback must contain >=100 items; actual=${localNews.length}`);
 
-console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v7-detailed-receipt'},editorial:{assetRouting:'v1-direct-static',minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v33-over-v32-over-v31'},null,2));
+console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v7-detailed-receipt'},editorial:{assetRouting:'v2-canonical-trailing-slash',minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v34-over-v32-over-v31'},null,2));

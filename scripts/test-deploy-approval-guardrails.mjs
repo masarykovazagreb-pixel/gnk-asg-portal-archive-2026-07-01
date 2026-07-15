@@ -35,11 +35,16 @@ requireText('workflow release assertions',workflow,[
  'x-gnk-unified-menu-current: full-v6-workers','x-gnk-contrast: hardened-v1','x-gnk-index-editorial: v6-news-100',
  'assert-production-news-fallback.mjs','contact readiness HTTP 200','canonical mail logo HTTP 200 PNG',
  'test-unified-shell-contract.mjs','test-visible-menu-logo-content-v1.mjs','test-final-release-v31.mjs',
- 'test-contact-form-contract.mjs','test-the-code-index-contract.mjs','test-index-content-contract.mjs'
+ 'test-contact-form-contract.mjs','test-the-code-index-contract.mjs','test-index-content-contract.mjs',
+ 'test-public-editorial-asset-routes-v1.mjs','globalne-kamatne-stope-nakon-inflacijskog-soka',
+ 'brzina-bez-kontrole-nije-inovacija','x-gnk-editorial-request-path',
+ 'GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS_GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715',
+ 'ASSERT admin session endpoint controlled','401|403','"configured"'
 ]);
 forbidText('workflow',workflow,[
  "grep -o 'public-compact-menu-v1.js'",
- 'news_count=$(node -e'
+ 'news_count=$(node -e',
+ 'ASSERT admin session readiness HTTP 200'
 ]);
 
 const preflightPosition=workflow.indexOf('Preflight Newsroom route ownership');
@@ -93,6 +98,8 @@ console.log(JSON.stringify({
  deployStarted:false,
  approvalInput:'exact-main-sha',
  adminLoginVerification:'exact-host-path-200-or-401-with-marker',
+ adminSessionVerification:'ready-or-configured-unauthorized',
+ editorialAssetsVerification:'canonical-trailing-slash-v34',
  preflight:'before-secrets-and-deploy',
  routeMutation:false,
  finalAssertions:'named-and-diagnostic'

@@ -1,4 +1,4 @@
-export const VERSION='GNK_PUBLIC_EDITORIAL_ASSETS_V1_20260714';
+export const VERSION='GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715';
 export const EDITORIAL_ROOTS=Object.freeze([
  '/objave','/komentari','/analize',
  '/en/publications','/en/commentary','/en/analyses'
@@ -18,15 +18,21 @@ export function editorialAssetPath(path){
  return '';
 }
 
+export function editorialAssetRequestPath(assetPath){
+ if(!assetPath.endsWith('/index.html'))return '';
+ return assetPath.slice(0,-'index.html'.length);
+}
+
 export async function servePublicEditorialAsset(request,env,ownerVersion){
  if(!['GET','HEAD'].includes(request.method)||!env.ASSETS?.fetch)return null;
  const assetPath=editorialAssetPath(pathOf(request));
- if(!assetPath)return null;
+ const requestPath=editorialAssetRequestPath(assetPath);
+ if(!assetPath||!requestPath)return null;
  try{
-  const response=await env.ASSETS.fetch(new Request(new URL(assetPath,'https://assets.local'),{
+  const response=await env.ASSETS.fetch(new Request(new URL(requestPath,'https://assets.local'),{
    method:request.method,
    headers:{accept:'text/html,application/xhtml+xml'},
-   redirect:'manual'
+   redirect:'follow'
   }));
   if(response.status!==200)return null;
   const type=String(response.headers.get('content-type')||'').toLowerCase();
@@ -38,6 +44,7 @@ export async function servePublicEditorialAsset(request,env,ownerVersion){
   headers.set('cache-control',collectionIndex?'no-store, max-age=0':'public, max-age=120, stale-while-revalidate=300');
   headers.set('x-content-type-options','nosniff');
   headers.set('x-gnk-explicit-html-route',assetPath);
+  headers.set('x-gnk-editorial-request-path',requestPath);
   headers.set('x-gnk-route-owner',ownerVersion);
   headers.set('x-gnk-editorial-assets',VERSION);
   return new Response(request.method==='HEAD'?null:response.body,{status:200,headers});

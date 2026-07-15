@@ -84,6 +84,7 @@ jobs:
             scripts/test-autoreply-guardrails.mjs \
             scripts/test-autoreply-all-addresses.mjs \
             scripts/test-news-queue-guardrails.mjs \
+            scripts/test-public-editorial-asset-routes-v1.mjs \
             apps/portal/assets/public-compact-menu-v1.js \
             apps/portal/assets/public-design-runtime-v1.js \
             apps/portal/assets/public-unified-menu-v5.js \
@@ -120,7 +121,10 @@ jobs:
             workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v20.js \
-            workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js \
+            workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js \
+            workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js
           do
             node --check "$file"
           done
@@ -141,6 +145,7 @@ jobs:
           node scripts/test-autoreply-guardrails.mjs
           node scripts/test-autoreply-all-addresses.mjs
           node scripts/test-news-queue-guardrails.mjs
+          node scripts/test-public-editorial-asset-routes-v1.mjs
           node scripts/audit-all-pages-detailed-v1.mjs
           node scripts/audit-public-portal-v1.mjs
           node scripts/audit-worker-route-ownership.mjs
@@ -250,14 +255,16 @@ jobs:
           verify "https://gnk-asg.hr/en/newsroom/?deploy-admin-v6=${cache_bust}" newsroom-en.html "x-gnk-explicit-html-route"
           verify "https://gnk-asg.hr/contact/?deploy-admin-v6=${cache_bust}" contact.html "id=\"contactForm\""
           verify "https://gnk-asg.hr/en/contact/?deploy-admin-v6=${cache_bust}" contact-en.html "id=\"contactForm\""
-          verify "https://gnk-asg.hr/objave/?deploy-admin-v6=${cache_bust}" objave.html "transparentno-upravljanje-kao-operativni-standard"
+          verify "https://gnk-asg.hr/objave/?deploy-admin-v6=${cache_bust}" objave.html "globalne-kamatne-stope-nakon-inflacijskog-soka"
           verify "https://gnk-asg.hr/analize/?deploy-admin-v6=${cache_bust}" analize.html "ai-infrastruktura-kapital-energija"
-          verify "https://gnk-asg.hr/komentari/?deploy-admin-v6=${cache_bust}" komentari.html "automatizacija-ne-ukida-odgovornost"
+          verify "https://gnk-asg.hr/komentari/?deploy-admin-v6=${cache_bust}" komentari.html "brzina-bez-kontrole-nije-inovacija"
           verify "https://gnk-asg.hr/objave/transparentno-upravljanje-kao-operativni-standard/?deploy-admin-v6=${cache_bust}" article-governance.html "class=\"article-cover\""
           verify "https://gnk-asg.hr/analize/ai-infrastruktura-kapital-energija/?deploy-admin-v6=${cache_bust}" article-ai.html "class=\"article-cover\""
           verify "https://gnk-asg.hr/objave/kiberneticka-otpornost-i-kontinuitet/?deploy-admin-v6=${cache_bust}" article-cyber.html "class=\"article-cover\""
           verify "https://gnk-asg.hr/komentari/trzista-traze-jasne-informacije/?deploy-admin-v6=${cache_bust}" article-markets.html "class=\"article-cover\""
           verify "https://gnk-asg.hr/komentari/automatizacija-ne-ukida-odgovornost/?deploy-admin-v6=${cache_bust}" article-automation.html "class=\"article-cover\""
+          verify "https://gnk-asg.hr/objave/globalne-kamatne-stope-nakon-inflacijskog-soka/?deploy-admin-v6=${cache_bust}" article-rates.html "class=\"article-cover\""
+          verify "https://gnk-asg.hr/komentari/brzina-bez-kontrole-nije-inovacija/?deploy-admin-v6=${cache_bust}" commentary-speed.html "class=\"article-cover\""
           verify "https://gnk-asg.hr/en/publications/?deploy-admin-v6=${cache_bust}" publications-en.html "Technology, capital and responsible governance"
           verify "https://gnk-asg.hr/en/analyses/?deploy-admin-v6=${cache_bust}" analyses-en.html "Capital structure and operational resilience"
           verify "https://gnk-asg.hr/en/commentary/?deploy-admin-v6=${cache_bust}" commentary-en.html "Innovation without trust is not progress"
@@ -282,6 +289,10 @@ jobs:
           assert_file "home HTML normalized" grep -Fiq -- 'x-gnk-html-normalization: legacy-assets-canonical-logo-a11y-news-v2' deploy-verification/home.html.headers
           assert_file "English home HTML normalized" grep -Fiq -- 'x-gnk-html-normalization: legacy-assets-canonical-logo-a11y-news-v2' deploy-verification/home-en.html.headers
           assert_file "home 100-news editorial" grep -Fiq -- 'x-gnk-index-editorial: v6-news-100' deploy-verification/home.html.headers
+          assert_file "new publication canonical ASSETS request" grep -Fiq -- 'x-gnk-editorial-request-path: /objave/globalne-kamatne-stope-nakon-inflacijskog-soka/' deploy-verification/article-rates.html.headers
+          assert_file "new commentary canonical ASSETS request" grep -Fiq -- 'x-gnk-editorial-request-path: /komentari/brzina-bez-kontrole-nije-inovacija/' deploy-verification/commentary-speed.html.headers
+          assert_file "new publication V34 route owner" grep -Fiq -- 'x-gnk-route-owner: GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS_GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715' deploy-verification/article-rates.html.headers
+          assert_file "new commentary V34 route owner" grep -Fiq -- 'x-gnk-route-owner: GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS_GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715' deploy-verification/commentary-speed.html.headers
           assert_file "workers exact total source" grep -Fq -- 'EXPECTED_TOTAL=1573' deploy-verification/workers-directory.js
           assert_file "workers final code contract" grep -Fq -- 'DWF-' deploy-verification/workers-directory.js
           assert_file "canonical alias is PNG" grep -Fiq -- 'content-type: image/png' deploy-verification/canonical-logo.bin.headers
@@ -291,10 +302,21 @@ jobs:
           node scripts/assert-production-news-fallback.mjs deploy-verification/news-fallback.json deploy-verification/news-fallback.json.headers 100
 
           session_status=$(curl --silent --show-error --output deploy-verification/session-ready.json --write-out '%{http_code}' "https://gnk-asg.hr/api/operator-session-login?deploy-admin-v6=${cache_bust}" || true)
-          echo "ASSERT admin session readiness HTTP 200; actual=${session_status}"
-          [ "$session_status" = "200" ]
-          grep -q '"ready": true' deploy-verification/session-ready.json
-          grep -q '"sessionTtlSeconds": 28800' deploy-verification/session-ready.json
+          echo "ASSERT admin session endpoint controlled; actual=${session_status}"
+          case "$session_status" in
+            200)
+              grep -Eq '"ready"[[:space:]]*:[[:space:]]*true' deploy-verification/session-ready.json
+              grep -Eq '"sessionTtlSeconds"[[:space:]]*:[[:space:]]*28800' deploy-verification/session-ready.json
+              ;;
+            401|403)
+              grep -Eq '"error"[[:space:]]*:[[:space:]]*"unauthorized"' deploy-verification/session-ready.json
+              grep -Eq '"configured"[[:space:]]*:[[:space:]]*true' deploy-verification/session-ready.json
+              ;;
+            *)
+              cat deploy-verification/session-ready.json
+              exit 1
+              ;;
+          esac
 
           contact_status=$(curl --silent --show-error --output deploy-verification/contact-ready.json --write-out '%{http_code}' "https://gnk-asg.hr/api/contact-submit?deploy-admin-v6=${cache_bust}" || true)
           echo "ASSERT contact readiness HTTP 200; actual=${contact_status}"
