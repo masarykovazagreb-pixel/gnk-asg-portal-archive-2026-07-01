@@ -1,10 +1,20 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v22.js';
 import {servePublicEditorialAsset,VERSION as EDITORIAL_ASSET_VERSION} from './public-editorial-asset-router-v1.js';
 
-export const PREVIOUS_PUBLIC_EDITORIAL_VERSION='GNK_ASG_UNIFIED_AUTH_V34_PUBLIC_EDITORIAL_ASSETS';
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V37_NEWS_SOURCE_LINKS_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;
+export const PREVIOUS_PUBLIC_EDITORIAL_VERSION='GNK_ASG_UNIFIED_AUTH_V37_NEWS_SOURCE_LINKS';
+export const ENTRYPOINT='src/index-unified-auth-v23.js';
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const SHARE_ROUTE=/^\/podijeli\/vijest\/([a-z0-9]{8,64})$/i;
+
+function stampRelease(response,env){
+ const headers=new Headers(response.headers);
+ headers.set('x-gnk-active-entrypoint',ENTRYPOINT);
+ headers.set('x-gnk-active-release',VERSION);
+ const revision=String(env?.DEPLOY_REVISION||'').trim();
+ if(revision)headers.set('x-gnk-deploy-revision',revision);
+ return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+}
 
 async function fetchCurrentNews(env,method='GET'){
  if(!env.ASSETS?.fetch)return null;
@@ -51,15 +61,12 @@ async function serveNewsShareRedirect(request,env){
 export default{
  async fetch(request,env,ctx){
   const newsShare=await serveNewsShareRedirect(request,env);
-  if(newsShare)return newsShare;
+  if(newsShare)return stampRelease(newsShare,env);
   const currentNews=await serveCurrentNewsAsset(request,env);
-  if(currentNews)return currentNews;
+  if(currentNews)return stampRelease(currentNews,env);
   const editorial=await servePublicEditorialAsset(request,env,VERSION);
-  if(editorial)return editorial;
-  const response=await app.fetch(request,env,ctx);
-  const headers=new Headers(response.headers);
-  headers.set('x-gnk-active-release',VERSION);
-  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+  if(editorial)return stampRelease(editorial,env);
+  return stampRelease(await app.fetch(request,env,ctx),env);
  },
  scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
  email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}
