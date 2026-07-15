@@ -1,0 +1,895 @@
+=== node --check scripts/audit-public-portal-v1.mjs ===
+EXIT=0
+=== node --check scripts/audit-all-pages-detailed-v1.mjs ===
+EXIT=0
+=== node --check scripts/audit-worker-route-ownership.mjs ===
+EXIT=0
+=== node --check scripts/predeploy-release-v6.mjs ===
+EXIT=0
+=== node --check scripts/prepare-approved-deploy-v1.mjs ===
+EXIT=0
+=== node --check scripts/assert-production-news-fallback.mjs ===
+EXIT=0
+=== node --check scripts/test-deploy-approval-guardrails.mjs ===
+EXIT=0
+=== node --check scripts/test-index-runtime-ownership.mjs ===
+EXIT=0
+=== node --check scripts/test-public-design-contract.mjs ===
+EXIT=0
+=== node --check scripts/test-unified-shell-contract.mjs ===
+EXIT=0
+=== node --check scripts/test-visible-menu-logo-content-v1.mjs ===
+EXIT=0
+=== node --check scripts/test-final-release-v31.mjs ===
+EXIT=0
+=== node --check scripts/test-worker-directory-1573.mjs ===
+EXIT=0
+=== node --check scripts/test-admin-session-login-v1.mjs ===
+EXIT=0
+=== node --check scripts/test-contact-form-contract.mjs ===
+EXIT=0
+=== node --check scripts/test-the-code-index-contract.mjs ===
+EXIT=0
+=== node --check scripts/test-index-content-contract.mjs ===
+EXIT=0
+=== node --check scripts/test-data-fallback-contract.mjs ===
+EXIT=0
+=== node --check scripts/test-email-signature-contract.mjs ===
+EXIT=0
+=== node --check scripts/test-mail-transport-guardrails.mjs ===
+EXIT=0
+=== node --check scripts/test-email-mime-guardrails.mjs ===
+EXIT=0
+=== node --check scripts/test-autoreply-guardrails.mjs ===
+EXIT=0
+=== node --check scripts/test-autoreply-all-addresses.mjs ===
+EXIT=0
+=== node --check scripts/test-news-queue-guardrails.mjs ===
+EXIT=0
+=== node --check scripts/test-public-editorial-asset-routes-v1.mjs ===
+EXIT=0
+=== node --check apps/portal/assets/public-compact-menu-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/public-design-runtime-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/public-unified-menu-v5.js ===
+EXIT=0
+=== node --check apps/portal/assets/public-unified-design-v3.js ===
+EXIT=0
+=== node --check apps/portal/assets/index-editorial-order-v5.js ===
+EXIT=0
+=== node --check apps/portal/assets/public-unified-menu-v6.js ===
+EXIT=0
+=== node --check apps/portal/assets/public-contrast-hardening-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/index-editorial-order-v6.js ===
+EXIT=0
+=== node --check apps/portal/assets/index-editorial-cleanup-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/mail-studio-ui-v28.js ===
+EXIT=0
+=== node --check apps/portal/assets/workers-directory-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/protected-operations-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/contact-form-v2.js ===
+EXIT=0
+=== node --check apps/portal/assets/release-completion-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/index-data-resilience-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/index-editorial-order-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/editorial-latest-index-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/newsroom-live-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/public-market-live-v1.js ===
+EXIT=0
+=== node --check apps/portal/assets/market-centre-data.js ===
+EXIT=0
+=== node --check apps/portal/assets/market.js ===
+EXIT=0
+=== node --check workers/gnk-asg-contact-api-worker/src/index-session-cookie-v1.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/email-logo-endpoint-v1.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/email-brand-mime-safe-v2.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-all-v1.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/mail-autoreply-profile-factory-v1.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v18.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v20.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js ===
+EXIT=0
+=== node --check workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js ===
+EXIT=0
+=== node scripts/test-deploy-approval-guardrails.mjs ===
+{
+  "ok": true,
+  "deployStarted": false,
+  "approvalInput": "exact-main-sha",
+  "adminLoginVerification": "exact-host-path-200-or-401-with-marker",
+  "adminSessionVerification": "ready-or-configured-unauthorized",
+  "editorialAssetsVerification": "canonical-trailing-slash-v34",
+  "preflight": "before-secrets-and-deploy",
+  "routeMutation": false,
+  "finalAssertions": "named-and-diagnostic"
+}
+EXIT=0
+=== node scripts/test-index-runtime-ownership.mjs ===
+{
+  "ok": true,
+  "owners": {
+    "scaffold": "release-completion-v1.js",
+    "editorial": "index-editorial-order-v1.js",
+    "marketFallback": "index-data-resilience-v1.js"
+  },
+  "indexRuntime": "V8",
+  "editorialRuntime": "V4",
+  "visibleNewsSources": true,
+  "minimumStaticEditorialPerSection": 3,
+  "fetchTimeoutMs": 7000
+}
+EXIT=0
+=== node scripts/test-public-design-contract.mjs ===
+{
+  "ok": true,
+  "designRuntime": "v2-unified",
+  "tokens": "v2-contrast",
+  "menu": "v4-public-and-protected",
+  "canonicalLogo": true,
+  "ticker": "index-only",
+  "protectedRoutesIncluded": true
+}
+EXIT=0
+=== node scripts/test-unified-shell-contract.mjs ===
+{
+  "ok": true,
+  "canonicalPortalAlias": "logo-gnk-asg-canonical.svg -> logo-gnk-asg-email.png",
+  "canonicalEmailLogo": "logo-gnk-asg-email.png",
+  "menu": "shared-public-admin",
+  "ticker": "index-only"
+}
+EXIT=0
+=== node scripts/test-visible-menu-logo-content-v1.mjs ===
+{
+  "ok": true,
+  "menu": "visible-v6-full-workers",
+  "logo": "64x66-everywhere",
+  "editorial": "100-news-publications-analyses-commentary-canonical-assets-v2",
+  "contrast": "hardened-v4-all-pages-visual-repair",
+  "worker": "v34-over-v32-over-v31",
+  "deployPerformed": false
+}
+EXIT=0
+=== node scripts/test-final-release-v31.mjs ===
+{
+  "ok": true,
+  "deployPerformed": false,
+  "menu": "v6-full-with-workers",
+  "logo": "64x66",
+  "contrast": "WCAG-rendered-v4-all-pages",
+  "news": {
+    "visible": 100,
+    "archive": 2000,
+    "prune": 1000,
+    "localFallback": 100
+  },
+  "mail": {
+    "transport": "EmailMessage",
+    "contact": true,
+    "studio": true,
+    "inlineLogo": true,
+    "composerMinHeight": 520,
+    "emailStatus": "v7-detailed-receipt"
+  },
+  "editorial": {
+    "assetRouting": "v2-canonical-trailing-slash",
+    "minimums": {
+      "publications": 5,
+      "analyses": 4,
+      "commentary": 5
+    },
+    "actual": {
+      "publications": 25,
+      "analyses": 4,
+      "commentary": 9
+    }
+  },
+  "worker": "v34-over-v32-over-v31"
+}
+EXIT=0
+=== node scripts/test-worker-directory-1573.mjs ===
+{
+  "ok": true,
+  "total": 1573,
+  "base": 1536,
+  "specialists": 37,
+  "uniqueCodes": 1573,
+  "uniqueNames": 1573,
+  "first": "DWF-0001",
+  "last": "DWF-1573"
+}
+EXIT=0
+=== node scripts/test-admin-session-login-v1.mjs ===
+{
+  "ok": true,
+  "login": "/api/operator-session-login",
+  "logout": "/api/operator-session-logout",
+  "sessionHours": 8,
+  "httpOnly": true,
+  "secure": true,
+  "sameSite": "Strict",
+  "tokenStoredClientSide": false
+}
+EXIT=0
+=== node scripts/test-contact-form-contract.mjs ===
+{
+  "ok": true,
+  "forms": [
+    "hr",
+    "en"
+  ],
+  "endpoint": "/api/contact-submit",
+  "payloads": [
+    "json",
+    "multipart"
+  ],
+  "storage": "D1",
+  "mailTransport": "Cloudflare EmailMessage",
+  "mail": [
+    "internal",
+    "acknowledgement"
+  ],
+  "inlineLogo": true,
+  "mailSent": false
+}
+EXIT=0
+=== node scripts/test-the-code-index-contract.mjs ===
+{
+  "ok": true,
+  "embeddedOn": [
+    "/",
+    "/en/"
+  ],
+  "initialScene": "final-countdown",
+  "playFlow": "scene-1-through-scene-6",
+  "finalState": "countdown",
+  "audio": "user-initiated"
+}
+EXIT=0
+=== node scripts/test-index-content-contract.mjs ===
+{
+  "ok": true,
+  "liveNewsSources": true,
+  "visibleNews": 100,
+  "collections": {
+    "hr": {
+      "objave": 25,
+      "analize": 4,
+      "komentari": 9
+    },
+    "en": {
+      "publications": 3,
+      "analyses": 3,
+      "commentary": 3
+    }
+  },
+  "newImageLedArticles": 5,
+  "sitemap": true,
+  "growingCollections": true
+}
+EXIT=0
+=== node scripts/test-email-signature-contract.mjs ===
+{
+  "ok": true,
+  "contract": "email-signature-v12-standard-64x66",
+  "modes": [
+    "cid",
+    "canonical-png-fallback",
+    "text-brand-fallback"
+  ],
+  "mailSent": false
+}
+EXIT=0
+=== node scripts/test-mail-transport-guardrails.mjs ===
+{
+  "ok": true,
+  "mailSent": false,
+  "fromDomain": "gnk-asg.hr",
+  "mandatoryBcc": [
+    "beckuphome@gmail.com"
+  ],
+  "maxRecipients": 25
+}
+EXIT=0
+=== node scripts/test-email-mime-guardrails.mjs ===
+{
+  "ok": true,
+  "mailSent": false,
+  "wrapper": "GNK_ASG_EMAIL_BRAND_MIME_SAFE_V3_20260713_STRICT_ADDRESS_AND_ATTACHMENT_INPUT",
+  "canonicalLogo": "png",
+  "headers": "guarded",
+  "attachments": {
+    "maxCount": 10,
+    "maxBytes": 12582912
+  }
+}
+EXIT=0
+=== node scripts/test-autoreply-guardrails.mjs ===
+{
+  "ok": true,
+  "mailSent": false,
+  "guards": [
+    "internal-domain",
+    "bounce",
+    "list",
+    "auto-submitted",
+    "suppress",
+    "null-return-path",
+    "message-id-dedupe"
+  ]
+}
+EXIT=0
+=== node scripts/test-autoreply-all-addresses.mjs ===
+{
+  "ok": true,
+  "mailSent": false,
+  "knownProfiles": 9,
+  "catchAll": true,
+  "profilePrefix": "GNK-NEW-DEPARTMENT-IN",
+  "brandLogo": "https://gnk-asg.hr/assets/logo-gnk-asg-email.png?v=20260713-canonical",
+  "canonicalPng": true,
+  "inlineCompatibility": [
+    "Content-ID",
+    "Content-Location",
+    "X-Attachment-Id"
+  ],
+  "logoSize": "64x66",
+  "entry": "v23-over-v22-over-v21",
+  "version": "GNK_ASG_MAIL_AUTOREPLY_PROFILE_FACTORY_V1_20260713"
+}
+EXIT=0
+=== node scripts/test-news-queue-guardrails.mjs ===
+{
+  "ok": true,
+  "cors": "public-only",
+  "dedupe": "canonical-source-url",
+  "scheduler": "strict-opt-in",
+  "trackingRemoved": [
+    "utm_*",
+    "fbclid",
+    "gclid",
+    "msclkid"
+  ]
+}
+EXIT=0
+=== node scripts/test-public-editorial-asset-routes-v1.mjs ===
+{
+  "ok": true,
+  "version": "GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715",
+  "roots": 6,
+  "runtimeCases": 8,
+  "assetFetches": 11,
+  "plannedPackages": 2,
+  "physicalIndexFirst": true,
+  "canonicalFallback": true,
+  "cache": {
+    "collections": "no-store",
+    "articles": "120s"
+  }
+}
+EXIT=0
+=== node scripts/audit-all-pages-detailed-v1.mjs ===
+{
+  "pages": 909,
+  "menuRoutes": 52,
+  "missingMenuRoutes": 0,
+  "errors": 0,
+  "warnings": 0,
+  "pagesWithStaticContrastRisks": 0,
+  "pagesWithLegacyLogoSources": 45,
+  "legacyLogosNormalizedAtEdge": 53,
+  "pagesWithForms": 7
+}
+EXIT=0
+=== node scripts/audit-public-portal-v1.mjs ===
+{
+  "htmlFiles": 909,
+  "pages": 909,
+  "requiredRoutes": 19,
+  "requiredAssets": 9,
+  "errors": 0,
+  "warnings": 0
+}
+EXIT=0
+=== node scripts/audit-worker-route-ownership.mjs ===
+{
+  "configs": 23,
+  "workerNames": 14,
+  "declaredRoutes": 51,
+  "duplicateRoutes": 7,
+  "unmanagedKnownWorkers": 1,
+  "directOperatorAllConfigsRouteLess": false,
+  "directDeployConfigRouteLess": true
+}
+EXIT=0
+=== node scripts/test-data-fallback-contract.mjs ===
+{
+  "ok": true,
+  "newsItems": 100,
+  "marketCoins": 12,
+  "publicErrors": 0,
+  "directDeployConfig": "workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml",
+  "directDeployConfigRouteLess": true
+}
+EXIT=0
+=== node scripts/predeploy-release-v6.mjs ===
+PREDEPLOY scripts/test-deploy-approval-guardrails.mjs
+{
+  "ok": true,
+  "deployStarted": false,
+  "approvalInput": "exact-main-sha",
+  "adminLoginVerification": "exact-host-path-200-or-401-with-marker",
+  "adminSessionVerification": "ready-or-configured-unauthorized",
+  "editorialAssetsVerification": "canonical-trailing-slash-v34",
+  "preflight": "before-secrets-and-deploy",
+  "routeMutation": false,
+  "finalAssertions": "named-and-diagnostic"
+}
+PREDEPLOY scripts/test-index-runtime-ownership.mjs
+{
+  "ok": true,
+  "owners": {
+    "scaffold": "release-completion-v1.js",
+    "editorial": "index-editorial-order-v1.js",
+    "marketFallback": "index-data-resilience-v1.js"
+  },
+  "indexRuntime": "V8",
+  "editorialRuntime": "V4",
+  "visibleNewsSources": true,
+  "minimumStaticEditorialPerSection": 3,
+  "fetchTimeoutMs": 7000
+}
+PREDEPLOY scripts/test-public-design-contract.mjs
+{
+  "ok": true,
+  "designRuntime": "v2-unified",
+  "tokens": "v2-contrast",
+  "menu": "v4-public-and-protected",
+  "canonicalLogo": true,
+  "ticker": "index-only",
+  "protectedRoutesIncluded": true
+}
+PREDEPLOY scripts/test-unified-shell-contract.mjs
+{
+  "ok": true,
+  "canonicalPortalAlias": "logo-gnk-asg-canonical.svg -> logo-gnk-asg-email.png",
+  "canonicalEmailLogo": "logo-gnk-asg-email.png",
+  "menu": "shared-public-admin",
+  "ticker": "index-only"
+}
+PREDEPLOY scripts/test-visible-menu-logo-content-v1.mjs
+{
+  "ok": true,
+  "menu": "visible-v6-full-workers",
+  "logo": "64x66-everywhere",
+  "editorial": "100-news-publications-analyses-commentary-canonical-assets-v2",
+  "contrast": "hardened-v4-all-pages-visual-repair",
+  "worker": "v34-over-v32-over-v31",
+  "deployPerformed": false
+}
+PREDEPLOY scripts/test-final-release-v31.mjs
+{
+  "ok": true,
+  "deployPerformed": false,
+  "menu": "v6-full-with-workers",
+  "logo": "64x66",
+  "contrast": "WCAG-rendered-v4-all-pages",
+  "news": {
+    "visible": 100,
+    "archive": 2000,
+    "prune": 1000,
+    "localFallback": 100
+  },
+  "mail": {
+    "transport": "EmailMessage",
+    "contact": true,
+    "studio": true,
+    "inlineLogo": true,
+    "composerMinHeight": 520,
+    "emailStatus": "v7-detailed-receipt"
+  },
+  "editorial": {
+    "assetRouting": "v2-canonical-trailing-slash",
+    "minimums": {
+      "publications": 5,
+      "analyses": 4,
+      "commentary": 5
+    },
+    "actual": {
+      "publications": 25,
+      "analyses": 4,
+      "commentary": 9
+    }
+  },
+  "worker": "v34-over-v32-over-v31"
+}
+PREDEPLOY scripts/test-worker-directory-1573.mjs
+{
+  "ok": true,
+  "total": 1573,
+  "base": 1536,
+  "specialists": 37,
+  "uniqueCodes": 1573,
+  "uniqueNames": 1573,
+  "first": "DWF-0001",
+  "last": "DWF-1573"
+}
+PREDEPLOY scripts/test-admin-session-login-v1.mjs
+{
+  "ok": true,
+  "login": "/api/operator-session-login",
+  "logout": "/api/operator-session-logout",
+  "sessionHours": 8,
+  "httpOnly": true,
+  "secure": true,
+  "sameSite": "Strict",
+  "tokenStoredClientSide": false
+}
+PREDEPLOY scripts/test-contact-form-contract.mjs
+{
+  "ok": true,
+  "forms": [
+    "hr",
+    "en"
+  ],
+  "endpoint": "/api/contact-submit",
+  "payloads": [
+    "json",
+    "multipart"
+  ],
+  "storage": "D1",
+  "mailTransport": "Cloudflare EmailMessage",
+  "mail": [
+    "internal",
+    "acknowledgement"
+  ],
+  "inlineLogo": true,
+  "mailSent": false
+}
+PREDEPLOY scripts/test-the-code-index-contract.mjs
+{
+  "ok": true,
+  "embeddedOn": [
+    "/",
+    "/en/"
+  ],
+  "initialScene": "final-countdown",
+  "playFlow": "scene-1-through-scene-6",
+  "finalState": "countdown",
+  "audio": "user-initiated"
+}
+PREDEPLOY scripts/test-index-content-contract.mjs
+{
+  "ok": true,
+  "liveNewsSources": true,
+  "visibleNews": 100,
+  "collections": {
+    "hr": {
+      "objave": 25,
+      "analize": 4,
+      "komentari": 9
+    },
+    "en": {
+      "publications": 3,
+      "analyses": 3,
+      "commentary": 3
+    }
+  },
+  "newImageLedArticles": 5,
+  "sitemap": true,
+  "growingCollections": true
+}
+PREDEPLOY scripts/test-email-signature-contract.mjs
+{
+  "ok": true,
+  "contract": "email-signature-v12-standard-64x66",
+  "modes": [
+    "cid",
+    "canonical-png-fallback",
+    "text-brand-fallback"
+  ],
+  "mailSent": false
+}
+PREDEPLOY scripts/test-mail-transport-guardrails.mjs
+{
+  "ok": true,
+  "mailSent": false,
+  "fromDomain": "gnk-asg.hr",
+  "mandatoryBcc": [
+    "beckuphome@gmail.com"
+  ],
+  "maxRecipients": 25
+}
+PREDEPLOY scripts/test-email-mime-guardrails.mjs
+{
+  "ok": true,
+  "mailSent": false,
+  "wrapper": "GNK_ASG_EMAIL_BRAND_MIME_SAFE_V3_20260713_STRICT_ADDRESS_AND_ATTACHMENT_INPUT",
+  "canonicalLogo": "png",
+  "headers": "guarded",
+  "attachments": {
+    "maxCount": 10,
+    "maxBytes": 12582912
+  }
+}
+PREDEPLOY scripts/test-autoreply-guardrails.mjs
+{
+  "ok": true,
+  "mailSent": false,
+  "guards": [
+    "internal-domain",
+    "bounce",
+    "list",
+    "auto-submitted",
+    "suppress",
+    "null-return-path",
+    "message-id-dedupe"
+  ]
+}
+PREDEPLOY scripts/test-autoreply-all-addresses.mjs
+{
+  "ok": true,
+  "mailSent": false,
+  "knownProfiles": 9,
+  "catchAll": true,
+  "profilePrefix": "GNK-NEW-DEPARTMENT-IN",
+  "brandLogo": "https://gnk-asg.hr/assets/logo-gnk-asg-email.png?v=20260713-canonical",
+  "canonicalPng": true,
+  "inlineCompatibility": [
+    "Content-ID",
+    "Content-Location",
+    "X-Attachment-Id"
+  ],
+  "logoSize": "64x66",
+  "entry": "v23-over-v22-over-v21",
+  "version": "GNK_ASG_MAIL_AUTOREPLY_PROFILE_FACTORY_V1_20260713"
+}
+PREDEPLOY scripts/test-news-queue-guardrails.mjs
+{
+  "ok": true,
+  "cors": "public-only",
+  "dedupe": "canonical-source-url",
+  "scheduler": "strict-opt-in",
+  "trackingRemoved": [
+    "utm_*",
+    "fbclid",
+    "gclid",
+    "msclkid"
+  ]
+}
+PREDEPLOY scripts/test-email-status-observability-v1.mjs
+{
+  "ok": true,
+  "deliveryTimeline": true,
+  "rejectionDetails": true,
+  "openCount": true,
+  "openIpAndDevice": true,
+  "explicitReceiptConfirmation": true,
+  "forwardingReliable": false,
+  "contrastRuntime": "v4-all-pages-visual-repair",
+  "dashboard": "v4-detailed-receipt",
+  "adminLoginVerifier": "200-or-401-with-marker"
+}
+PREDEPLOY scripts/test-overnight-approval-contrast.mjs
+Overnight approval, protected data, injected editorial runtime, live-mail and contrast contract: PASS
+PREDEPLOY scripts/audit-seo-entity-integrity-v1.mjs
+{
+  "ok": true,
+  "configuredPages": 17,
+  "uniqueCanonicals": 17,
+  "warnings": [
+    "en/intelligence-desk/index.html: duplicate title with intelligence-desk/index.html"
+  ],
+  "failures": []
+}
+PREDEPLOY scripts/audit-all-pages-detailed-v1.mjs
+{
+  "pages": 909,
+  "menuRoutes": 52,
+  "missingMenuRoutes": 0,
+  "errors": 0,
+  "warnings": 0,
+  "pagesWithStaticContrastRisks": 0,
+  "pagesWithLegacyLogoSources": 45,
+  "legacyLogosNormalizedAtEdge": 53,
+  "pagesWithForms": 7
+}
+PREDEPLOY scripts/audit-public-portal-v1.mjs
+{
+  "htmlFiles": 909,
+  "pages": 909,
+  "requiredRoutes": 19,
+  "requiredAssets": 9,
+  "errors": 0,
+  "warnings": 0
+}
+PREDEPLOY scripts/audit-worker-route-ownership.mjs
+{
+  "configs": 23,
+  "workerNames": 14,
+  "declaredRoutes": 51,
+  "duplicateRoutes": 7,
+  "unmanagedKnownWorkers": 1,
+  "directOperatorAllConfigsRouteLess": false,
+  "directDeployConfigRouteLess": true
+}
+PREDEPLOY scripts/test-data-fallback-contract.mjs
+{
+  "ok": true,
+  "newsItems": 100,
+  "marketCoins": 12,
+  "publicErrors": 0,
+  "directDeployConfig": "workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml",
+  "directDeployConfigRouteLess": true
+}
+{
+  "ok": true,
+  "worker": "v32-over-v31-over-v30-over-v29",
+  "routes": "all menu routes require physical pages",
+  "workers": {
+    "total": 1573,
+    "base": 1536,
+    "specialists": 37,
+    "uniqueNames": true,
+    "uniqueCodes": true
+  },
+  "adminSession": {
+    "login": true,
+    "logout": true,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "Strict",
+    "ttlHours": 8
+  },
+  "indexOwners": {
+    "scaffold": "release-completion-v1.js-v8",
+    "editorial": "index-editorial-order-v6.js-news-100",
+    "marketFallback": "index-data-resilience-v1.js-v2"
+  },
+  "design": {
+    "runtime": "contrast-hardened-v3-gradient-protected-ui",
+    "menu": "v6-full-workers",
+    "logo": "64x66-everywhere",
+    "ticker": "index-only"
+  },
+  "contact": {
+    "forms": [
+      "hr",
+      "en"
+    ],
+    "storage": "D1",
+    "transport": "EmailMessage",
+    "mail": [
+      "internal",
+      "acknowledgement"
+    ],
+    "liveSendingPerformed": false
+  },
+  "theCode": {
+    "embeddedOn": [
+      "/",
+      "/en/"
+    ],
+    "initialScene": "final-countdown",
+    "playFlow": "first-to-final"
+  },
+  "editorial": {
+    "visibleNews": 100,
+    "archiveCap": 2000,
+    "pruneOldest": 1000,
+    "newTexts": 5,
+    "newImages": 5,
+    "approvalQueue": {
+      "publications": 10,
+      "commentaries": 3,
+      "projects": 9
+    },
+    "collections": [
+      "publications",
+      "analyses",
+      "commentary"
+    ]
+  },
+  "mail": {
+    "transport": "shared-EmailMessage",
+    "canonicalPngLogo": true,
+    "inlineCidLogo": true,
+    "logoSize": "64x66",
+    "mailStudioComposerMinHeight": 520,
+    "allDomainAutoreplies": true,
+    "emailStatus": {
+      "timeline": true,
+      "openCount": true,
+      "ipAndDevice": true,
+      "receiptConfirmation": true,
+      "forwardingReliable": false
+    },
+    "testSendingEnabled": false
+  },
+  "seo": {
+    "entityIntegrityAudit": true,
+    "entities": [
+      "Nermin Sefić",
+      "Nermin Sefic",
+      "GNK ASG d.o.o.",
+      "GNK DINAMO Ltd."
+    ],
+    "hreflang": true,
+    "canonical": true,
+    "jsonLd": true,
+    "sitemaps": [
+      "sitemap.xml",
+      "editorial-sitemap.xml",
+      "visual-sitemap.xml"
+    ]
+  },
+  "scheduler": "strict-opt-in-disabled",
+  "publicAudit": {
+    "htmlFiles": 909,
+    "pages": 909,
+    "requiredRoutes": 19,
+    "requiredAssets": 9,
+    "errors": 0,
+    "warnings": 0
+  },
+  "pageAudit": {
+    "pages": 909,
+    "menuRoutes": 52,
+    "missingMenuRoutes": 0,
+    "errors": 0,
+    "warnings": 0,
+    "pagesWithStaticContrastRisks": 0,
+    "pagesWithLegacyLogoSources": 45,
+    "legacyLogosNormalizedAtEdge": 53,
+    "pagesWithForms": 7
+  },
+  "routeAudit": {
+    "configs": 23,
+    "workerNames": 14,
+    "declaredRoutes": 51,
+    "duplicateRoutes": 7,
+    "unmanagedKnownWorkers": 1,
+    "directOperatorAllConfigsRouteLess": false,
+    "directDeployConfigRouteLess": true
+  }
+}
+EXIT=0
