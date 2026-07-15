@@ -56,7 +56,7 @@ jobs:
           test -z "$(git status --porcelain)"
           echo "DEPLOY_SOURCE_SHA=$actual" >> "$GITHUB_ENV"
 
-      - name: Validate current V37 release package
+      - name: Validate current V38 release package
         shell: bash
         run: |
           set -euo pipefail
@@ -72,6 +72,7 @@ jobs:
           test -f apps/portal/objave/index.html
           test -f apps/portal/komentari/index.html
           test -f scripts/test-news-share-routing-v1.mjs
+          test -f scripts/verify-production-release-v38.sh
           test -f workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
 
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
@@ -82,10 +83,13 @@ jobs:
           node --check apps/portal/assets/editorial-latest-index-v1.js
           node --check apps/portal/assets/contact-form-v2.js
           node --check apps/portal/assets/mail-studio-ui-v28.js
+          bash -n scripts/verify-production-release-v38.sh
           node scripts/test-news-share-routing-v1.mjs
 
           grep -Fq 'main = "src/index-unified-auth-v23.js"' workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
-          grep -Fq 'GNK_ASG_UNIFIED_AUTH_V37_NEWS_SOURCE_LINKS' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq 'GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq "export const ENTRYPOINT='src/index-unified-auth-v23.js'" workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq "headers.set('x-gnk-deploy-revision',revision)" workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq 'current-static-asset-20260715' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq 'source-redirect' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq '20260715-source-links-v2' workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
@@ -162,58 +166,9 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-operator-center
 
-      - name: Verify current production release
+      - name: Verify exact production release
         shell: bash
-        run: |
-          set -euo pipefail
-          out=deploy-verification
-          mkdir -p "$out"
-          sleep 15
-          cache="${DEPLOY_SOURCE_SHA}-$(date +%s)"
-
-          verify_marker() {
-            local name="$1" url="$2" marker="$3"
-            local headers="$out/${name}.headers" body="$out/${name}.body"
-            local code
-            code=$(curl --silent --show-error --dump-header "$headers" --output "$body" --write-out '%{http_code}' "${url}?deploy-admin-v6=${cache}" || true)
-            echo "ASSERT ${name} HTTP 200; actual=${code}"
-            [ "$code" = "200" ]
-            ! grep -Eiq '^location:' "$headers"
-            grep -Fqi -- "$marker" "$body" "$headers"
-          }
-
-          verify_marker home 'https://gnk-asg.hr/' 'index-editorial-order-v6.js?v=20260715-source-links-v2'
-          verify_marker home-en 'https://gnk-asg.hr/en/' 'index-editorial-order-v6.js?v=20260715-source-links-v2'
-          verify_marker news-runtime 'https://gnk-asg.hr/assets/index-editorial-order-v6.js' 'item.sourceUrl||item.url||item.href||item.share_url'
-          verify_marker objave 'https://gnk-asg.hr/objave/' 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova'
-          verify_marker komentari 'https://gnk-asg.hr/komentari/' 'AI ne smije pisati konačnu odluku'
-          verify_marker contact-page 'https://gnk-asg.hr/contact/' 'id="contactForm"'
-          verify_marker mail-studio 'https://gnk-asg.hr/assets/mail-studio-ui-v28.js' 'min-height:520px'
-          verify_marker mail-logo 'https://gnk-asg.hr/assets/logo-gnk-asg-email.png' 'x-gnk-canonical-logo: same-as-portal'
-
-          news_status=$(curl --silent --show-error --dump-header "$out/news.headers" --output "$out/news.json" --write-out '%{http_code}' "https://gnk-asg.hr/data/news.json?deploy-admin-v6=${cache}" || true)
-          echo "ASSERT current news HTTP 200; actual=${news_status}"
-          [ "$news_status" = "200" ]
-          latest=$(jq -r 'if type=="array" then .[0].published_at // .[0].publishedAt // "" else (.items[0].published_at // .items[0].publishedAt // "") end' "$out/news.json")
-          [[ "$latest" == 2026-07-15* ]]
-          grep -Fiq 'x-gnk-news-source: current-static-asset-20260715' "$out/news.headers"
-
-          share_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/news-share.headers" --output "$out/news-share.body" --write-out '%{http_code}' "https://gnk-asg.hr/podijeli/vijest/19fa99e0723490d640/?deploy-admin-v6=${cache}" || true)
-          echo "ASSERT legacy news share redirect HTTP 302; actual=${share_status}"
-          [ "$share_status" = "302" ]
-          grep -Fiq 'x-gnk-news-share: source-redirect' "$out/news-share.headers"
-          grep -Fiq 'x-gnk-news-id: 19fa99e0723490d640' "$out/news-share.headers"
-          grep -Fiq 'location: https://www.theverge.com/policy/965792/google-epic-withdraw-injunction-third-party-app-stores-coming-google-play' "$out/news-share.headers"
-
-          contact_status=$(curl --silent --show-error --output "$out/contact-ready.json" --write-out '%{http_code}' "https://gnk-asg.hr/api/contact-submit?deploy-admin-v6=${cache}" || true)
-          echo "ASSERT contact readiness HTTP 200; actual=${contact_status}"
-          [ "$contact_status" = "200" ]
-          jq -e '(.ready == true and has("storage") and has("mail") and has("transport")) or (.status == "READY" and .bindings.kv == true and .bindings.r2 == true and .bindings.email == true)' "$out/contact-ready.json" >/dev/null
-
-          mail_status=$(curl --silent --show-error --output "$out/mail.json" --write-out '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' "https://gnk-asg.hr/api/studio-message/send?deploy-admin-v6=${cache}" || true)
-          echo "ASSERT unauthenticated mail endpoint controlled; actual=${mail_status}"
-          case "$mail_status" in 400|401|403) ;; *) cat "$out/mail.json"; exit 1;; esac
-          grep -q '"error"' "$out/mail.json"
+        run: scripts/verify-production-release-v38.sh deploy-verification
 
       - name: Upload production verification evidence
         if: always()
