@@ -4,43 +4,25 @@ export const VERSION='GNK_ASG_CONTACT_CONTRACT_V4_20260716';
 
 const clean=value=>String(value??'').trim();
 
+function invalidJsonResponse(){
+  return new Response(JSON.stringify({
+    ok:false,
+    accepted:false,
+    stored:false,
+    mailAttempted:false,
+    deliveryOk:false,
+    error:'invalid_json',
+    message:'Forma nije pravilno poslana.'
+  },null,2),{
+    status:400,
+    headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}
+  });
+}
+
 async function jsonToMultipartRequest(request){
   let data;
-  try{
-    data=await request.json();
-  }catch{
-    return{
-      error:new Response(JSON.stringify({
-        ok:false,
-        accepted:false,
-        stored:false,
-        mailAttempted:false,
-        deliveryOk:false,
-        error:'invalid_json',
-        message:'Forma nije pravilno poslana.'
-      },null,2),{
-        status:400,
-        headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}
-      })
-    };
-  }
-
-  if(!data||typeof data!=='object'||Array.isArray(data)){
-    return{
-      error:new Response(JSON.stringify({
-        ok:false,
-        accepted:false,
-        stored:false,
-        mailAttempted:false,
-        deliveryOk:false,
-        error:'invalid_json',
-        message:'Forma nije pravilno poslana.'
-      },null,2),{
-        status:400,
-        headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}
-      })
-    };
-  }
+  try{data=await request.json();}catch{return{error:invalidJsonResponse()};}
+  if(!data||typeof data!=='object'||Array.isArray(data))return{error:invalidJsonResponse()};
 
   const form=new FormData();
   for(const [key,value] of Object.entries(data)){
@@ -75,17 +57,11 @@ async function normalizeContactResponse(response){
   const stored=Boolean(data?.stored??data?.accepted??hasCase);
   const internalAttempted=Boolean(data?.internalMail?.attempted);
   const replyAttempted=Boolean(data?.autoReply?.attempted);
-  const mailAttempted=Boolean(data?.mailAttempted??internalAttempted||replyAttempted);
+  const mailAttempted=Boolean(data?.mailAttempted??(internalAttempted||replyAttempted));
   const deliveryOk=Boolean(data?.deliveryOk??(data?.internalMail?.sent&&data?.autoReply?.sent));
   const accepted=Boolean(data?.accepted??stored);
 
-  const normalized={
-    ...data,
-    accepted,
-    stored,
-    mailAttempted,
-    deliveryOk
-  };
+  const normalized={...data,accepted,stored,mailAttempted,deliveryOk};
 
   if(stored&&!deliveryOk){
     normalized.ok=true;
