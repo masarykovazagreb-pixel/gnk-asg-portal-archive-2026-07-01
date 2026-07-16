@@ -169,7 +169,7 @@ jobs:
           require_eq "$GITHUB_REF_TYPE" 'branch' 'Git ref type'
           require_eq "$GITHUB_REF_NAME" 'main' 'Git ref name'
           require_eq "$GITHUB_REF" 'refs/heads/main' 'Full Git ref'
-          require_eq "$DEPLOY_APPROVAL" 'DEPLOY PRODUCTION' 'Executive approval phrase'
+          require_eq "$DEPLOY_APPROVAL" 'DEPLOY_ADMIN_AUTH_V6' 'Executive approval phrase'
           require_nonempty "$EXPECTED_SHA" 'Expected SHA'
           [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || fail "Expected SHA is not a full 40-character lowercase commit SHA: '$EXPECTED_SHA'"
           require_eq "$GITHUB_SHA" "$EXPECTED_SHA" 'Workflow SHA'
