@@ -1,82 +1,213 @@
-export const VERSION='GNK_ASG_MEDIA_REGISTRATION_V1_20260628';
-export const PUBLIC_UI='/media-application';
-export const ADMIN_UI='/media-registration-admin';
+import * as legacy from './media-registration-legacy-v1.js';
+
+export const VERSION='GNK_ASG_MEDIA_REGISTRATION_V2_20260715_OPEN_PBKDF2';
+export const PUBLIC_UI=legacy.PUBLIC_UI;
+export const ADMIN_UI=legacy.ADMIN_UI;
+
 const PUBLIC_API='/api/media-registration';
 const ADMIN_API='/api/media-registration-admin';
 const COOKIE='gnk_asg_media_registration';
 const SESSION_SECONDS=12*60*60;
-const CONFIG_KEY='media-registration:config:v1';
-const CAMPAIGN_KEY='media-command-center:campaign:v1';
-const DEFAULT_DEADLINE='2026-07-20T21:59:59.000Z';
 const DEFAULT_ACCESS_EXPIRY='2026-10-10T23:59:59.000Z';
-const DEFAULT_EMAIL='media@gnk-asg.hr';
-const MANDATORY_BCC='rht@gmx.com';
-const MAX_DRAFT_BYTES=180000;
-const MAX_DOCUMENT_BYTES=10*1024*1024;
+const ACCOUNT_ALGORITHM='PBKDF2-SHA256';
+const LEGACY_ALGORITHM='LEGACY-SHA256';
+const PBKDF2_ITERATIONS=210000;
 const enc=new TextEncoder();
-const dec=new TextDecoder();
 
-const clean=v=>String(v??'').trim();
+const clean=value=>String(value??'').trim();
 const now=()=>new Date().toISOString();
-const pathOf=r=>new URL(r.url).pathname.replace(/\/+$/,'')||'/';
-const dbOf=e=>e.GNK_ASG_D1||null;
-const kvOf=e=>e.GNK_ASG_KV||e.GNK_ASG_CONFIG_KV||null;
-const bucketOf=e=>e.GNK_ASG_MEDIA_ASSETS||null;
-const validEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(clean(v));
-const validCode=v=>/^GNK-MEDIA-\d{8}-[A-Z]{2}-[A-Z0-9]{1,12}-\d{3}$/i.test(clean(v));
-const validPhone=v=>/^\+[1-9]\d{7,14}$/.test(clean(v).replace(/[\s().-]/g,''));
+const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+const dbOf=env=>env?.GNK_ASG_D1||null;
+const kvOf=env=>env?.GNK_ASG_KV||env?.GNK_ASG_CONFIG_KV||null;
+const validEmail=value=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(clean(value));
+const usernameOf=value=>clean(value).toLowerCase().replace(/[^a-z0-9._-]/g,'').slice(0,64);
+const safeCountryCode=value=>{const normalized=clean(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z]/g,'');return(normalized.slice(0,2)||'WW').padEnd(2,'W')};
 
-function json(data,status=200,extra={}){return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store, no-cache, must-revalidate, max-age=0','x-content-type-options':'nosniff','x-gnk-asg-media-registration':VERSION,...extra}});}
-async function sha(v){const d=await crypto.subtle.digest('SHA-256',enc.encode(String(v||'')));return[...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,'0')).join('');}
-function equal(a,b){a=String(a||'');b=String(b||'');let x=a.length^b.length;for(let i=0;i<Math.max(a.length,b.length);i++)x|=(a.charCodeAt(i)||0)^(b.charCodeAt(i)||0);return x===0;}
-function b64(bytes){let s='';for(const x of new Uint8Array(bytes))s+=String.fromCharCode(x);return btoa(s);}
-function unb64(v){const s=atob(String(v||'')),o=new Uint8Array(s.length);for(let i=0;i<s.length;i++)o[i]=s.charCodeAt(i);return o;}
-function b64url(bytes){return b64(bytes).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/g,'');}
-function makePin(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',b=crypto.getRandomValues(new Uint8Array(10));return[...b].map(x=>a[x%a.length]).join('');}
-function secret(env){return clean(env.MEDIA_REGISTRATION_SECRET||env.OPERATOR_TOKEN||env.GNK_ASG_OPERATOR_TOKEN||env.ADMIN_TOKEN||env.GNK_ASG_ADMIN_TOKEN||env.OPERATOR_TOKEN_SHA256||'GNK-ASG-MEDIA-REGISTRATION');}
-async function key(env){const d=await crypto.subtle.digest('SHA-256',enc.encode(secret(env)));return crypto.subtle.importKey('raw',d,{name:'AES-GCM'},false,['encrypt','decrypt']);}
-async function encrypt(env,text){const iv=crypto.getRandomValues(new Uint8Array(12)),k=await key(env),c=await crypto.subtle.encrypt({name:'AES-GCM',iv},k,enc.encode(text));return{cipher:b64(c),iv:b64(iv)};}
-async function decrypt(env,cipher,iv){const k=await key(env),p=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(iv)},k,unb64(cipher));return dec.decode(p);}
-function cookieValue(r){for(const p of String(r.headers.get('cookie')||'').split(';')){const i=p.indexOf('=');if(i>0&&p.slice(0,i).trim()===COOKIE){try{return decodeURIComponent(p.slice(i+1).trim())}catch{return''}}}return'';}
-const setCookie=(t,age=SESSION_SECONDS)=>`${COOKIE}=${encodeURIComponent(t)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`;
-const clearCookie=()=>`${COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0`;
-function sameOrigin(r){const o=r.headers.get('origin');if(!o)return true;try{return new URL(o).origin===new URL(r.url).origin}catch{return false}}
+function json(data,status=200,extra={}){
+ return new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store, no-cache, must-revalidate, max-age=0','x-content-type-options':'nosniff','x-gnk-asg-media-registration':VERSION,...extra}});
+}
+function sameOrigin(request){
+ const origin=request.headers.get('origin');
+ const site=clean(request.headers.get('sec-fetch-site')).toLowerCase();
+ if(origin){try{return new URL(origin).origin===new URL(request.url).origin}catch{return false}}
+ return !site||site==='same-origin'||site==='same-site'||site==='none';
+}
+function cookieValue(request){
+ for(const part of String(request.headers.get('cookie')||'').split(';')){
+  const index=part.indexOf('=');
+  if(index>0&&part.slice(0,index).trim()===COOKIE){try{return decodeURIComponent(part.slice(index+1).trim())}catch{return''}}
+ }
+ return'';
+}
+const setCookie=(token,age=SESSION_SECONDS)=>`${COOKIE}=${encodeURIComponent(token)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`;
 
-async function schema(env){const db=dbOf(env);if(!db)throw new Error('GNK_ASG_D1 binding missing');await db.batch([
- db.prepare(`CREATE TABLE IF NOT EXISTS media_invitation_access(mail_code TEXT PRIMARY KEY,outlet TEXT NOT NULL,email TEXT NOT NULL,recipient_name TEXT,recipient_title TEXT,country TEXT,language TEXT,pin_hash TEXT NOT NULL,pin_cipher TEXT,pin_iv TEXT,issued_at TEXT NOT NULL,expires_at TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'ACTIVE',mail_status TEXT NOT NULL DEFAULT 'QUEUED',queued_at TEXT NOT NULL,start_after TEXT,sent_at TEXT,provider_message_id TEXT,last_error TEXT,updated_at TEXT NOT NULL)`),
- db.prepare(`CREATE TABLE IF NOT EXISTS media_registration_sessions(session_hash TEXT PRIMARY KEY,mail_code TEXT NOT NULL,created_at TEXT NOT NULL,expires_at TEXT NOT NULL,last_seen_at TEXT NOT NULL)`),
- db.prepare(`CREATE TABLE IF NOT EXISTS media_registration_drafts(mail_code TEXT PRIMARY KEY,application_id TEXT,status TEXT NOT NULL DEFAULT 'DRAFT',revision INTEGER NOT NULL DEFAULT 1,data_json TEXT NOT NULL DEFAULT '{}',submitted_at TEXT,approved_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL)`),
- db.prepare(`CREATE TABLE IF NOT EXISTS media_registration_documents(id TEXT PRIMARY KEY,mail_code TEXT NOT NULL,category TEXT NOT NULL,filename TEXT NOT NULL,mime_type TEXT,size_bytes INTEGER,sha256 TEXT,r2_key TEXT,created_at TEXT NOT NULL)`),
- db.prepare(`CREATE TABLE IF NOT EXISTS media_registration_audit(id TEXT PRIMARY KEY,event_type TEXT NOT NULL,mail_code TEXT,detail_json TEXT,created_at TEXT NOT NULL)`),
- db.prepare(`CREATE INDEX IF NOT EXISTS idx_media_invitation_queue ON media_invitation_access(mail_status,start_after,queued_at)`),
- db.prepare(`CREATE INDEX IF NOT EXISTS idx_media_registration_status ON media_registration_drafts(status,updated_at)`)
-]);return db;}
-async function audit(env,type,code='',detail={}){const db=await schema(env);await db.prepare(`INSERT INTO media_registration_audit(id,event_type,mail_code,detail_json,created_at) VALUES(?,?,?,?,?)`).bind(crypto.randomUUID(),type,clean(code),JSON.stringify(detail),now()).run();}
-async function readKv(env,k,fallback){const kv=kvOf(env);if(!kv)return fallback;try{const r=await kv.get(k);return r?JSON.parse(r):fallback}catch{return fallback}}
-async function config(env){return{paused:true,startAt:'',intervalMinutes:5,deadline:DEFAULT_DEADLINE,accessExpiresAt:DEFAULT_ACCESS_EXPIRY,applicationUrl:'https://www.gnk-asg.hr/media-application/',applicationEmail:DEFAULT_EMAIL,fromEmail:DEFAULT_EMAIL,fromName:'GNK ASG Media Relations',mandatoryBcc:MANDATORY_BCC,requirePdf:true,hotelStandard:'5-star',hotelPackage:'all-inclusive',...(await readKv(env,CONFIG_KEY,{}))};}
-async function saveConfig(env,data){const kv=kvOf(env);if(!kv)throw new Error('KV binding missing');const next={...(await config(env)),...data,intervalMinutes:5,updatedAt:now()};await kv.put(CONFIG_KEY,JSON.stringify(next,null,2));return next;}
-async function campaign(env){return await readKv(env,CAMPAIGN_KEY,{});}
-async function asset(r,env,p){if(!env.ASSETS?.fetch)return json({ok:false,error:'asset_binding_missing'},503);const x=await env.ASSETS.fetch(new Request(new URL(p,r.url),{method:r.method,headers:{accept:'text/html'}}));if(!x.ok)return json({ok:false,error:'asset_missing',path:p},404);const h=new Headers(x.headers);h.delete('content-length');h.delete('content-encoding');h.delete('etag');h.set('cache-control','no-store');h.set('x-robots-tag','noindex,nofollow,noarchive');h.set('x-gnk-asg-media-registration',VERSION);return new Response(r.method==='HEAD'?null:x.body,{status:x.status,statusText:x.statusText,headers:h});}
+function bytesToHex(bytes){return[...new Uint8Array(bytes)].map(value=>value.toString(16).padStart(2,'0')).join('')}
+function bytesToBase64Url(bytes){let raw='';for(const value of new Uint8Array(bytes))raw+=String.fromCharCode(value);return btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/g,'')}
+function base64UrlToBytes(value){const normalized=String(value||'').replace(/-/g,'+').replace(/_/g,'/');const padded=normalized+'='.repeat((4-normalized.length%4)%4);const raw=atob(padded);const out=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out}
+async function sha256Hex(value){return bytesToHex(await crypto.subtle.digest('SHA-256',value instanceof Uint8Array?value:enc.encode(String(value||''))))}
+async function passwordHash(password,salt,iterations=PBKDF2_ITERATIONS){
+ const key=await crypto.subtle.importKey('raw',enc.encode(String(password||'')),{name:'PBKDF2'},false,['deriveBits']);
+ const bits=await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt,iterations},key,256);
+ return bytesToHex(bits);
+}
+function equalConstantTime(left,right){
+ const a=String(left||''),b=String(right||'');let diff=a.length^b.length;
+ for(let i=0;i<Math.max(a.length,b.length);i++)diff|=(a.charCodeAt(i)||0)^(b.charCodeAt(i)||0);
+ return diff===0;
+}
+async function accessExpiry(env){
+ const kv=kvOf(env);if(!kv)return DEFAULT_ACCESS_EXPIRY;
+ try{const raw=await kv.get('media-registration:config:v1');const config=raw?JSON.parse(raw):{};return clean(config.accessExpiresAt)||DEFAULT_ACCESS_EXPIRY}catch{return DEFAULT_ACCESS_EXPIRY}
+}
 
-async function session(r,env){const token=cookieValue(r);if(!token)return null;const db=await schema(env),hash=await sha(token),row=await db.prepare(`SELECT s.session_hash,s.mail_code,s.expires_at,a.outlet,a.email,a.country,a.language,d.application_id,d.status,d.revision,d.data_json,d.updated_at FROM media_registration_sessions s JOIN media_invitation_access a ON a.mail_code=s.mail_code LEFT JOIN media_registration_drafts d ON d.mail_code=s.mail_code WHERE s.session_hash=?`).bind(hash).first();if(!row||Date.parse(row.expires_at)<=Date.now()){if(row)await db.prepare(`DELETE FROM media_registration_sessions WHERE session_hash=?`).bind(hash).run();return null}await db.prepare(`UPDATE media_registration_sessions SET last_seen_at=? WHERE session_hash=?`).bind(now(),hash).run();let data={};try{data=JSON.parse(row.data_json||'{}')}catch{}return{...row,data};}
-const publicSession=r=>({mailCode:r.mail_code,outlet:r.outlet,email:r.email,country:r.country,language:r.language,applicationId:r.application_id||'',status:r.status||'DRAFT',revision:Number(r.revision||1),updatedAt:r.updated_at||'',data:r.data||{}});
-async function login(r,env){if(!sameOrigin(r))return json({ok:false,error:'origin_not_allowed'},403);let b={};try{b=await r.json()}catch{return json({ok:false,error:'invalid_json'},400)}const code=clean(b.mailCode).toUpperCase(),pin=clean(b.pin).toUpperCase().replace(/\s+/g,'');if(!validCode(code)||!/^[A-Z2-9]{8,12}$/.test(pin))return json({ok:false,error:'invalid_credentials'},401);const db=await schema(env),a=await db.prepare(`SELECT * FROM media_invitation_access WHERE mail_code=?`).bind(code).first();if(!a||!equal(a.pin_hash,await sha(`${code}:${pin}`)))return json({ok:false,error:'invalid_credentials'},401);if(Date.parse(a.expires_at)<=Date.now())return json({ok:false,error:'code_expired'},410);if(a.status!=='ACTIVE')return json({ok:false,error:'access_revoked'},403);const token=b64url(crypto.getRandomValues(new Uint8Array(32))),hash=await sha(token),created=now(),expires=new Date(Date.now()+SESSION_SECONDS*1000).toISOString();await db.prepare(`INSERT INTO media_registration_sessions(session_hash,mail_code,created_at,expires_at,last_seen_at) VALUES(?,?,?,?,?)`).bind(hash,code,created,expires,created).run();await db.prepare(`INSERT INTO media_registration_drafts(mail_code,application_id,status,revision,data_json,created_at,updated_at) VALUES(?,'','DRAFT',1,'{}',?,?) ON CONFLICT(mail_code) DO NOTHING`).bind(code,created,created).run();await audit(env,'login_success',code,{email:a.email});return json({ok:true,session:{mailCode:code,outlet:a.outlet,email:a.email,country:a.country,language:a.language,status:'DRAFT'},sessionExpiresAt:expires},200,{'set-cookie':setCookie(token)});}
-async function draftGet(r,env){const s=await session(r,env);if(!s)return json({ok:false,error:'no_session'},401);const db=await schema(env),docs=(await db.prepare(`SELECT id,category,filename,mime_type,size_bytes,created_at FROM media_registration_documents WHERE mail_code=? ORDER BY created_at DESC`).bind(s.mail_code).all()).results||[];return json({ok:true,session:publicSession(s),documents:docs,config:await config(env)});}
-async function draftSave(r,env){if(!sameOrigin(r))return json({ok:false,error:'origin_not_allowed'},403);const s=await session(r,env);if(!s)return json({ok:false,error:'no_session'},401);let b={};try{b=await r.json()}catch{return json({ok:false,error:'invalid_json'},400)}const data=b.data&&typeof b.data==='object'?b.data:b,raw=JSON.stringify(data);if(enc.encode(raw).length>MAX_DRAFT_BYTES)return json({ok:false,error:'draft_too_large'},413);const db=await schema(env),t=now();await db.prepare(`INSERT INTO media_registration_drafts(mail_code,application_id,status,revision,data_json,created_at,updated_at) VALUES(?,'','DRAFT',1,?,?,?) ON CONFLICT(mail_code) DO UPDATE SET data_json=excluded.data_json,revision=media_registration_drafts.revision+1,updated_at=excluded.updated_at`).bind(s.mail_code,raw,t,t).run();const x=await db.prepare(`SELECT revision,status,updated_at FROM media_registration_drafts WHERE mail_code=?`).bind(s.mail_code).first();return json({ok:true,revision:Number(x.revision),status:x.status,updatedAt:x.updated_at});}
-function validate(data){const missing=[],n=data.newsroom||{},p=Array.isArray(data.participants)?data.participants:[],t=data.travel||{},h=data.hotel||{},d=data.declarations||{};for(const [k,v] of [['newsroom.legalName',n.legalName],['newsroom.country',n.country],['newsroom.website',n.website],['newsroom.editorName',n.editorName],['newsroom.editorEmail',n.editorEmail],['newsroom.editorPhone',n.editorPhone],['travel.bookingMethod',t.bookingMethod],['travel.departureCity',t.departureCity],['travel.preferredAirport',t.preferredAirport],['hotel.roomType',h.roomType],['hotel.checkIn',h.checkIn],['hotel.checkOut',h.checkOut]])if(!clean(v))missing.push(k);if(!validEmail(n.editorEmail))missing.push('newsroom.editorEmail');if(!validPhone(n.editorPhone))missing.push('newsroom.editorPhone');if(!p.length||p.length>3)missing.push('participants');p.forEach((x,i)=>{if(!clean(x.fullName))missing.push(`participants.${i}.fullName`);if(!clean(x.role))missing.push(`participants.${i}.role`);if(!validEmail(x.officialEmail))missing.push(`participants.${i}.officialEmail`);if(!validPhone(x.mobile))missing.push(`participants.${i}.mobile`)});if(!d.newsroomAuthorization||!d.costPolicy||!d.privacyConsent||!d.accuracy)missing.push('declarations');return[...new Set(missing)];}
-async function submit(r,env){if(!sameOrigin(r))return json({ok:false,error:'origin_not_allowed'},403);const s=await session(r,env);if(!s)return json({ok:false,error:'no_session'},401);const db=await schema(env),row=await db.prepare(`SELECT * FROM media_registration_drafts WHERE mail_code=?`).bind(s.mail_code).first();let data={};try{data=JSON.parse(row.data_json||'{}')}catch{}const missing=validate(data);if(missing.length)return json({ok:false,error:'required_fields_missing',missing},400);const cfg=await config(env);if(Date.now()>Date.parse(cfg.deadline)&&!['APPROVED','TRAVEL_CONFIRMED','NEEDS_INFORMATION'].includes(row.status))return json({ok:false,error:'deadline_passed'},410);const id=row.application_id||`GNK-APP-2026-${crypto.randomUUID().slice(0,8).toUpperCase()}`,t=now();await db.prepare(`UPDATE media_registration_drafts SET application_id=?,status='SUBMITTED',submitted_at=COALESCE(submitted_at,?),updated_at=? WHERE mail_code=?`).bind(id,t,t,s.mail_code).run();await audit(env,'registration_submitted',s.mail_code,{applicationId:id});return json({ok:true,applicationId:id,status:'SUBMITTED',submittedAt:t,message:'Prijava je zaprimljena i može se naknadno dopunjavati istim kodom.'},201);}
-async function upload(r,env){if(!sameOrigin(r))return json({ok:false,error:'origin_not_allowed'},403);const s=await session(r,env);if(!s)return json({ok:false,error:'no_session'},401);let f;try{f=await r.formData()}catch{return json({ok:false,error:'invalid_form'},400)}const cat=clean(f.get('category')).toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,60)||'other',file=f.get('file');if(!file||!Number(file.size||0))return json({ok:false,error:'file_missing'},400);if(file.size>MAX_DOCUMENT_BYTES)return json({ok:false,error:'file_too_large',maxBytes:MAX_DOCUMENT_BYTES},413);if(cat.includes('passport')&&!['APPROVED','TRAVEL_CONFIRMED','NEEDS_TRAVEL_DOCUMENTS'].includes(clean(s.status).toUpperCase()))return json({ok:false,error:'passport_locked_until_approval'},403);const allowed=new Set(['application/pdf','image/jpeg','image/png','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document']);if(!allowed.has(clean(file.type).toLowerCase()))return json({ok:false,error:'unsupported_file_type'},415);const bytes=new Uint8Array(await file.arrayBuffer()),hash=await sha(bytes),id=crypto.randomUUID(),name=clean(file.name||'document').replace(/[^A-Za-z0-9._ -]+/g,'_').slice(0,150),keyName=`media-registration/${s.mail_code}/${id}-${name}`,bucket=bucketOf(env);if(!bucket?.put)return json({ok:false,error:'r2_binding_missing'},503);await bucket.put(keyName,bytes,{httpMetadata:{contentType:file.type},customMetadata:{mailCode:s.mail_code,category:cat,sha256:hash}});const db=await schema(env),t=now();await db.prepare(`INSERT INTO media_registration_documents(id,mail_code,category,filename,mime_type,size_bytes,sha256,r2_key,created_at) VALUES(?,?,?,?,?,?,?,?,?)`).bind(id,s.mail_code,cat,name,file.type,bytes.length,hash,keyName,t).run();return json({ok:true,document:{id,category:cat,filename:name,mimeType:file.type,sizeBytes:bytes.length,createdAt:t}},201);}
+async function ensureLegacySchema(env){
+ const response=await legacy.handleMediaRegistrationAdmin(new Request('https://gnk-asg.internal/api/media-registration-admin/status'),env);
+ if(!response||response.status>=500)throw new Error('legacy_media_schema_unavailable');
+}
+async function ensureAccountSchema(env){
+ await ensureLegacySchema(env);
+ const db=dbOf(env);if(!db?.prepare)throw new Error('GNK_ASG_D1 binding missing');
+ await db.prepare(`CREATE TABLE IF NOT EXISTS media_registration_accounts(
+  username TEXT PRIMARY KEY,
+  mail_code TEXT NOT NULL UNIQUE,
+  email TEXT NOT NULL UNIQUE,
+  outlet TEXT NOT NULL,
+  country TEXT,
+  language TEXT,
+  password_hash TEXT NOT NULL,
+  password_salt TEXT NOT NULL,
+  password_iterations INTEGER NOT NULL DEFAULT ${PBKDF2_ITERATIONS},
+  password_algorithm TEXT NOT NULL DEFAULT '${ACCOUNT_ALGORITHM}',
+  status TEXT NOT NULL DEFAULT 'ACTIVE',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+ )`).run();
+ for(const column of [
+  `password_iterations INTEGER NOT NULL DEFAULT ${PBKDF2_ITERATIONS}`,
+  `password_algorithm TEXT NOT NULL DEFAULT '${LEGACY_ALGORITHM}'`
+ ]){try{await db.prepare(`ALTER TABLE media_registration_accounts ADD COLUMN ${column}`).run()}catch{}}
+ await db.prepare(`CREATE INDEX IF NOT EXISTS idx_media_registration_accounts_email ON media_registration_accounts(email)`).run();
+ await db.prepare(`CREATE TABLE IF NOT EXISTS media_registration_rate_limits(rate_key TEXT PRIMARY KEY,window_start TEXT NOT NULL,attempts INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL)`).run();
+ return db;
+}
+async function consumeRateLimit(db,key,limit,windowMs){
+ const stamp=now(),row=await db.prepare(`SELECT window_start,attempts FROM media_registration_rate_limits WHERE rate_key=?`).bind(key).first();
+ if(!row||Date.now()-Date.parse(row.window_start)>=windowMs){
+  await db.prepare(`INSERT INTO media_registration_rate_limits(rate_key,window_start,attempts,updated_at) VALUES(?,?,1,?) ON CONFLICT(rate_key) DO UPDATE SET window_start=excluded.window_start,attempts=1,updated_at=excluded.updated_at`).bind(key,stamp,stamp).run();
+  return true;
+ }
+ if(Number(row.attempts||0)>=limit)return false;
+ await db.prepare(`UPDATE media_registration_rate_limits SET attempts=attempts+1,updated_at=? WHERE rate_key=?`).bind(stamp,key).run();
+ return true;
+}
+async function rateLimitRegistration(request,db,email){
+ const ip=clean(request.headers.get('cf-connecting-ip')||request.headers.get('x-forwarded-for')||'unknown').split(',')[0];
+ const ipKey=`register:ip:${await sha256Hex(ip)}`;
+ const emailKey=`register:email:${await sha256Hex(email.toLowerCase())}`;
+ const ipAllowed=await consumeRateLimit(db,ipKey,8,60*60*1000);
+ const emailAllowed=await consumeRateLimit(db,emailKey,3,24*60*60*1000);
+ return ipAllowed&&emailAllowed;
+}
+async function createSession(db,mailCode,eventType,detail={}){
+ const token=bytesToBase64Url(crypto.getRandomValues(new Uint8Array(32))),hash=await sha256Hex(token),created=now(),expires=new Date(Date.now()+SESSION_SECONDS*1000).toISOString();
+ await db.batch([
+  db.prepare(`INSERT INTO media_registration_sessions(session_hash,mail_code,created_at,expires_at,last_seen_at) VALUES(?,?,?,?,?)`).bind(hash,mailCode,created,expires,created),
+  db.prepare(`INSERT INTO media_registration_drafts(mail_code,application_id,status,revision,data_json,created_at,updated_at) VALUES(?,'','DRAFT',1,'{}',?,?) ON CONFLICT(mail_code) DO NOTHING`).bind(mailCode,created,created),
+  db.prepare(`INSERT INTO media_registration_audit(id,event_type,mail_code,detail_json,created_at) VALUES(?,?,?,?,?)`).bind(crypto.randomUUID(),eventType,mailCode,JSON.stringify(detail),created)
+ ]);
+ return{token,expires};
+}
+async function makeOpenMailCode(db,country,username){
+ const date=new Date().toISOString().slice(0,10).replace(/-/g,''),countryCode=safeCountryCode(country),base=(username||'MEDIA').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8)||'MEDIA';
+ for(let attempt=0;attempt<12;attempt++){
+  const random=bytesToBase64Url(crypto.getRandomValues(new Uint8Array(5))).toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
+  const code=`GNK-MEDIA-${date}-${countryCode}-${base}-${random}`.slice(0,64);
+  const exists=await db.prepare(`SELECT mail_code FROM media_invitation_access WHERE mail_code=?`).bind(code).first();
+  if(!exists)return code;
+ }
+ throw new Error('mail_code_generation_failed');
+}
 
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function content(row,pin,cfg){const hr=/hrvat|croat|serb|srps|bosn/i.test(clean(row.language))||['Hrvatska','Srbija','Bosna i Hercegovina','Crna Gora'].includes(row.country),name=clean(row.recipient_name)||clean(row.recipient_title)||(hr?'Uredništvo':'Editorial Team'),url=`${cfg.applicationUrl}?code=${encodeURIComponent(row.mail_code)}`,subject=hr?`[${row.mail_code}] SLUŽBENI POZIV MEDIJIMA | THE CODE — ${row.outlet}`:`[${row.mail_code}] OFFICIAL MEDIA INVITATION | THE CODE — ${row.outlet}`;const text=hr?`Poštovani ${name},\n\nRedakcija ${row.outlet} pozvana je na THE CODE, New York, 6.–8. listopada 2026. Glavna prezentacija održava se 7. listopada 2026. u 11:30 ET.\n\nSigurna prijava: ${url}\nŠifra poziva: ${row.mail_code}\nOsobni pristupni kod: ${pin}\nRok: 20. srpnja 2026. u 23:59 CEST.\n\nSmještaj je već osiguran i plaćen u hotelima kategorije 5 zvjezdica, u okviru organizatorova all-inclusive paketa. Birate jednokrevetnu, dvokrevetnu sobu ili suite.\n\nZa avionske karte možete odabrati da GNK ASG rezervira i plati kartu prema vašim željama ili da, nakon pisanog odobrenja, sami rezervirate te kroz sustav dostavite ponudu, itinerar, PNR ili rezervacijski kod.\n\nPodatke možete naknadno dopunjavati istim kodom. Kod je osoban.\n\nGNK ASG Media Relations\n${cfg.applicationEmail}`:`Dear ${name},\n\nThe newsroom of ${row.outlet} is invited to THE CODE, New York, 6–8 October 2026. The main presentation takes place on 7 October 2026 at 11:30 ET.\n\nSecure application: ${url}\nInvitation reference: ${row.mail_code}\nPersonal access code: ${pin}\nDeadline: 20 July 2026 at 23:59 CEST.\n\nAccommodation has already been secured and paid in organizer-designated five-star hotels under the organizer's all-inclusive package. You may request a single room, double room or suite.\n\nFor flights, choose either GNK ASG booking and paying according to your preferences, or your newsroom booking only after written approval and submitting the quotation, itinerary, PNR or booking code through the portal.\n\nYou may update the information later using the same code. The code is personal.\n\nGNK ASG Media Relations\n${cfg.applicationEmail}`;const html=`<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef2f7;font-family:Arial,sans-serif;color:#172033"><tr><td align="center" style="padding:24px 10px"><table role="presentation" width="680" style="width:100%;max-width:680px;background:#fff;border:1px solid #c6a15b;border-radius:18px;overflow:hidden"><tr><td style="background:#081a33;padding:28px;border-bottom:4px solid #c6a15b"><div style="color:#d8be82;font-size:11px;letter-spacing:.16em;font-weight:700">GNK DINAMO LTD. GROUP · GNK ASG MEDIA RELATIONS</div><div style="font:34px Georgia,serif;color:#fff;margin-top:10px">THE CODE</div><div style="color:#dbe7f7;margin-top:8px">${hr?'SLUŽBENI POZIV MEDIJIMA':'OFFICIAL MEDIA INVITATION'} · New York · 6–8 October 2026</div></td></tr><tr><td style="padding:30px"><p style="font-size:16px;line-height:1.65">${hr?'Poštovani':'Dear'} ${esc(name)},</p><p style="font-size:16px;line-height:1.65">${hr?`Redakcija <strong>${esc(row.outlet)}</strong> pozvana je na međunarodni program THE CODE.`:`The newsroom of <strong>${esc(row.outlet)}</strong> is invited to THE CODE international programme.`}</p><div style="background:#f7f2e7;border-left:5px solid #9a6d20;padding:18px;margin:20px 0"><b>7 October 2026 · 11:30 ET</b><br>New York, United States</div><div style="background:#081a33;color:#fff;border-radius:12px;padding:18px;margin:20px 0"><div style="color:#d8be82;font-size:11px">${hr?'SIGURAN PRISTUP':'SECURE ACCESS'}</div><p>${hr?'Šifra poziva':'Invitation reference'}: <strong>${esc(row.mail_code)}</strong></p><p>${hr?'Osobni kod':'Personal code'}: <strong style="font-size:22px;letter-spacing:.12em;color:#f7d98c">${esc(pin)}</strong></p></div><p style="font-size:15px;line-height:1.6">${hr?'Smještaj u hotelima s 5 zvjezdica i organizatorov all-inclusive paket već su osigurani i plaćeni. U sustavu birate sobu, način rezervacije leta te naknadno dopunjujete podatke.':'Five-star hotel accommodation and the organizer’s all-inclusive package are secured and paid. In the portal you choose the room, flight-booking method and later update the information.'}</p><p style="text-align:center;margin:26px 0"><a href="${esc(url)}" style="display:inline-block;background:#c6a15b;color:#081a33;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:999px">${hr?'OTVORI SIGURNU PRIJAVU':'OPEN SECURE APPLICATION'}</a></p><p style="color:#64748b;font-size:13px">20 July 2026 · 23:59 CEST<br>${esc(cfg.applicationEmail)} · www.gnk-asg.hr</p></td></tr></table></td></tr></table>`;return{subject,text,html,url};}
-async function pdf(env){const c=await campaign(env),k=clean(c.pdfR2Key||env.MEDIA_OUTREACH_PDF_KEY),b=bucketOf(env);if(!k||!b?.get)return null;const o=await b.get(k);if(!o)return null;const bytes=new Uint8Array(await o.arrayBuffer());if(dec.decode(bytes.slice(0,5))!=='%PDF-')return null;return{content:bytes,filename:clean(o.customMetadata?.filename||c.pdfFilename)||'GNK-ASG-THE-CODE-media-invitation.pdf',type:'application/pdf',disposition:'attachment'};}
-async function send(env,row,pin,cfg,to=''){if(!env.EMAIL?.send)throw new Error('EMAIL binding missing');const m=content(row,pin,cfg),attachment=await pdf(env);if(cfg.requirePdf&&!attachment)throw new Error('campaign_pdf_missing');const p={to:to||row.email,bcc:cfg.mandatoryBcc||MANDATORY_BCC,from:{email:cfg.fromEmail||DEFAULT_EMAIL,name:cfg.fromName||'GNK ASG Media Relations'},replyTo:cfg.applicationEmail||DEFAULT_EMAIL,subject:m.subject,text:m.text,html:m.html,headers:{'X-GNK-Media-Code':row.mail_code,'X-GNK-Media-Registration':VERSION}};if(attachment)p.attachments=[attachment];const r=await env.EMAIL.send(p);return{messageId:clean(r?.messageId),pdfAttached:Boolean(attachment)};}
+async function register(request,env){
+ if(!sameOrigin(request))return json({ok:false,error:'origin_not_allowed'},403);
+ let body={};try{body=await request.json()}catch{return json({ok:false,error:'invalid_json'},400)}
+ const username=usernameOf(body.username||body.email),password=String(body.password||''),email=clean(body.email).toLowerCase(),outlet=clean(body.outlet||body.newsroom||body.mediaName),country=clean(body.country),language=clean(body.language||'English');
+ if(username.length<4)return json({ok:false,error:'invalid_username'},400);
+ if(password.length<8||password.length>128)return json({ok:false,error:'weak_password'},400);
+ if(!validEmail(email))return json({ok:false,error:'invalid_email'},400);
+ if(outlet.length<2||outlet.length>240)return json({ok:false,error:'outlet_required'},400);
+ const db=await ensureAccountSchema(env);
+ if(!await rateLimitRegistration(request,db,email))return json({ok:false,error:'rate_limited'},429,{'retry-after':'3600'});
+ const existing=await db.prepare(`SELECT username,email FROM media_registration_accounts WHERE username=? OR email=?`).bind(username,email).first();
+ if(existing)return json({ok:false,error:'account_exists'},409);
+ const mailCode=await makeOpenMailCode(db,country,username),saltBytes=crypto.getRandomValues(new Uint8Array(16)),salt=bytesToBase64Url(saltBytes),hash=await passwordHash(password,saltBytes),created=now(),expires=await accessExpiry(env),hiddenPin=bytesToBase64Url(crypto.getRandomValues(new Uint8Array(16))),pinHash=await sha256Hex(`${mailCode}:${hiddenPin}`),draft=JSON.stringify({newsroom:{legalName:outlet,brandName:outlet,country,website:clean(body.website),editorName:clean(body.contactName),editorRole:clean(body.contactRole),editorEmail:email,language}});
+ await db.batch([
+  db.prepare(`INSERT INTO media_invitation_access(mail_code,outlet,email,recipient_name,recipient_title,country,language,pin_hash,pin_cipher,pin_iv,issued_at,expires_at,status,mail_status,queued_at,start_after,sent_at,provider_message_id,last_error,updated_at) VALUES(?,?,?,?,?,?,?,?,NULL,NULL,?,?,'ACTIVE','OPEN_REGISTERED',?,NULL,NULL,NULL,'',?)`).bind(mailCode,outlet,email,clean(body.contactName),clean(body.contactRole),country,language,pinHash,created,expires,created,created),
+  db.prepare(`INSERT INTO media_registration_accounts(username,mail_code,email,outlet,country,language,password_hash,password_salt,password_iterations,password_algorithm,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,'ACTIVE',?,?)`).bind(username,mailCode,email,outlet,country,language,hash,salt,PBKDF2_ITERATIONS,ACCOUNT_ALGORITHM,created,created),
+  db.prepare(`INSERT INTO media_registration_drafts(mail_code,application_id,status,revision,data_json,created_at,updated_at) VALUES(?,'','DRAFT',1,?,?,?) ON CONFLICT(mail_code) DO NOTHING`).bind(mailCode,draft,created,created)
+ ]);
+ const session=await createSession(db,mailCode,'open_registration_created',{username,email,outlet,passwordAlgorithm:ACCOUNT_ALGORITHM,passwordIterations:PBKDF2_ITERATIONS});
+ return json({ok:true,session:{mailCode,username,outlet,email,country,language,status:'DRAFT'},sessionExpiresAt:session.expires,message:'Account created. You are signed in and can complete the application.'},201,{'set-cookie':setCookie(session.token)});
+}
+async function usernamePasswordLogin(request,env,body){
+ if(!sameOrigin(request))return json({ok:false,error:'origin_not_allowed'},403);
+ const rawLogin=clean(body.username||body.login||body.email).toLowerCase(),username=usernameOf(rawLogin),password=String(body.password||'');
+ if(!rawLogin||!password)return json({ok:false,error:'invalid_credentials'},401);
+ const db=await ensureAccountSchema(env),account=await db.prepare(`SELECT * FROM media_registration_accounts WHERE username=? OR email=?`).bind(username,rawLogin).first();
+ if(!account||account.status!=='ACTIVE')return json({ok:false,error:'invalid_credentials'},401);
+ const algorithm=clean(account.password_algorithm)||LEGACY_ALGORITHM,iterations=Math.max(100000,Number(account.password_iterations||PBKDF2_ITERATIONS)),salt=base64UrlToBytes(account.password_salt);
+ const candidate=algorithm===LEGACY_ALGORITHM?await sha256Hex(`${account.username}:${password}:${account.password_salt}`):await passwordHash(password,salt,iterations);
+ if(!equalConstantTime(candidate,account.password_hash))return json({ok:false,error:'invalid_credentials'},401);
+ if(algorithm===LEGACY_ALGORITHM){
+  const nextSaltBytes=crypto.getRandomValues(new Uint8Array(16)),nextSalt=bytesToBase64Url(nextSaltBytes),nextHash=await passwordHash(password,nextSaltBytes),updated=now();
+  await db.prepare(`UPDATE media_registration_accounts SET password_hash=?,password_salt=?,password_iterations=?,password_algorithm=?,updated_at=? WHERE username=?`).bind(nextHash,nextSalt,PBKDF2_ITERATIONS,ACCOUNT_ALGORITHM,updated,account.username).run();
+ }
+ const access=await db.prepare(`SELECT * FROM media_invitation_access WHERE mail_code=?`).bind(account.mail_code).first();
+ if(!access||Date.parse(access.expires_at)<=Date.now())return json({ok:false,error:'code_expired'},410);
+ if(access.status!=='ACTIVE')return json({ok:false,error:'access_revoked'},403);
+ const session=await createSession(db,account.mail_code,'login_success',{username:account.username,email:account.email,passwordAlgorithm:algorithm===LEGACY_ALGORITHM?`${LEGACY_ALGORITHM}_MIGRATED`:algorithm});
+ return json({ok:true,session:{mailCode:account.mail_code,username:account.username,outlet:access.outlet,email:access.email,country:access.country,language:access.language,status:'DRAFT'},sessionExpiresAt:session.expires},200,{'set-cookie':setCookie(session.token)});
+}
+async function enrichSessionResponse(response,env){
+ if(!response||!response.ok)return response;
+ const payload=await response.json().catch(()=>null);if(!payload?.session?.mailCode)return json(payload||{ok:false,error:'invalid_response'},response.status);
+ const db=await ensureAccountSchema(env),account=await db.prepare(`SELECT username FROM media_registration_accounts WHERE mail_code=?`).bind(payload.session.mailCode).first();
+ return json({...payload,session:{...payload.session,username:account?.username||payload.session.username||''}},response.status,Object.fromEntries([...response.headers].filter(([key])=>key.toLowerCase()==='set-cookie')));
+}
+async function enhancedConfig(request,env){
+ const response=await legacy.handleMediaRegistrationPublic(request,env);if(!response)return response;
+ const payload=await response.json().catch(()=>({ok:false,error:'invalid_config_response'}));
+ return json({...payload,openRegistration:true,loginMode:'username_password',legacyInvitationLogin:true,passwordPolicy:{algorithm:ACCOUNT_ALGORITHM,iterations:PBKDF2_ITERATIONS,minLength:8,maxLength:128}},response.status);
+}
+async function enhancedAdminStatus(request,env){
+ const response=await legacy.handleMediaRegistrationAdmin(request,env);if(!response||!response.ok)return response;
+ const payload=await response.json().catch(()=>({ok:false,error:'invalid_status_response'})),db=await ensureAccountSchema(env),accounts=(await db.prepare(`SELECT username,mail_code FROM media_registration_accounts ORDER BY updated_at DESC LIMIT 500`).all()).results||[],byCode=new Map(accounts.map(row=>[row.mail_code,row.username]));
+ return json({...payload,version:VERSION,openRegistrationAccounts:accounts.length,registrations:(payload.registrations||[]).map(item=>({...item,username:byCode.get(item.mail_code)||''})),openRegistration:true,loginMode:'username_password',legacyInvitationLogin:true,passwordPolicy:{algorithm:ACCOUNT_ALGORITHM,iterations:PBKDF2_ITERATIONS}},response.status);
+}
+async function enhancedAdminConfig(request,env){
+ const response=await legacy.handleMediaRegistrationAdmin(request,env);if(!response)return response;
+ const payload=await response.json().catch(()=>({ok:false,error:'invalid_config_response'}));
+ return json({...payload,config:{...(payload.config||{}),openRegistration:true,loginMode:'username_password',legacyInvitationLogin:true}},response.status);
+}
 
-async function queue(r,env){let b={};try{b=await r.json()}catch{return json({ok:false,error:'invalid_json'},400)}if(b.confirm!=='QUEUE_PERSONALIZED_INVITATIONS')return json({ok:false,error:'confirmation_required',required:'QUEUE_PERSONALIZED_INVITATIONS'},409);const db=await schema(env),codes=new Set((Array.isArray(b.mailCodes)?b.mailCodes:[]).map(x=>clean(x).toUpperCase()).filter(Boolean)),where=codes.size?`WHERE mail_code IN (${[...codes].map(()=>'?').join(',')})`:`WHERE approved=1 AND automation_allowed=1 AND email<>''`,rows=(await db.prepare(`SELECT mail_code,outlet,email,recipient_name,recipient_title,country,language,approved,automation_allowed FROM media_outreach_contacts ${where} ORDER BY CASE priority WHEN 'A' THEN 0 WHEN 'B' THEN 1 ELSE 2 END,country,outlet`).bind(...(codes.size?[...codes]:[])).all()).results||[],cfg=await config(env),start=clean(b.startAt||cfg.startAt)||now();let queued=0,skipped=[];for(const row of rows){if(!validCode(row.mail_code)||!validEmail(row.email)||!row.approved||!row.automation_allowed){skipped.push({mailCode:row.mail_code,reason:'not_ready'});continue}const old=await db.prepare(`SELECT mail_status FROM media_invitation_access WHERE mail_code=?`).bind(row.mail_code).first();if(old&&!b.force){skipped.push({mailCode:row.mail_code,reason:`existing_${old.mail_status}`});continue}const pin=makePin(),e=await encrypt(env,pin),hash=await sha(`${row.mail_code}:${pin}`),t=now();await db.prepare(`INSERT INTO media_invitation_access(mail_code,outlet,email,recipient_name,recipient_title,country,language,pin_hash,pin_cipher,pin_iv,issued_at,expires_at,status,mail_status,queued_at,start_after,sent_at,provider_message_id,last_error,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?, 'ACTIVE','QUEUED',?,?,NULL,NULL,'',?) ON CONFLICT(mail_code) DO UPDATE SET outlet=excluded.outlet,email=excluded.email,recipient_name=excluded.recipient_name,recipient_title=excluded.recipient_title,country=excluded.country,language=excluded.language,pin_hash=excluded.pin_hash,pin_cipher=excluded.pin_cipher,pin_iv=excluded.pin_iv,issued_at=excluded.issued_at,expires_at=excluded.expires_at,status='ACTIVE',mail_status='QUEUED',queued_at=excluded.queued_at,start_after=excluded.start_after,sent_at=NULL,provider_message_id=NULL,last_error='',updated_at=excluded.updated_at`).bind(row.mail_code,row.outlet,row.email,row.recipient_name,row.recipient_title,row.country,row.language,hash,e.cipher,e.iv,t,cfg.accessExpiresAt||DEFAULT_ACCESS_EXPIRY,t,start,t).run();queued++}await audit(env,'invitations_queued','',{queued,skipped:skipped.length,startAt:start});return json({ok:true,queued,skipped,startAt:start,paused:cfg.paused});}
-async function status(env){const db=await schema(env),cfg=await config(env),q=(await db.prepare(`SELECT mail_status,COUNT(*) count FROM media_invitation_access GROUP BY mail_status`).all()).results||[],rs=(await db.prepare(`SELECT status,COUNT(*) count FROM media_registration_drafts GROUP BY status`).all()).results||[],recent=(await db.prepare(`SELECT mail_code,outlet,email,country,language,mail_status,start_after,sent_at,last_error,updated_at FROM media_invitation_access ORDER BY updated_at DESC LIMIT 50`).all()).results||[],regs=(await db.prepare(`SELECT d.mail_code,d.application_id,d.status,d.revision,d.submitted_at,d.updated_at,a.outlet,a.email,a.country FROM media_registration_drafts d JOIN media_invitation_access a ON a.mail_code=d.mail_code ORDER BY d.updated_at DESC LIMIT 50`).all()).results||[];return{ok:true,version:VERSION,config:cfg,queue:Object.fromEntries(q.map(x=>[x.mail_status,Number(x.count)])),registrationsSummary:Object.fromEntries(rs.map(x=>[x.status,Number(x.count)])),recent,registrations:regs,pdfAvailable:Boolean(await pdf(env)),time:now()};}
-async function decision(r,env){let b={};try{b=await r.json()}catch{}const c=clean(b.mailCode).toUpperCase(),s=clean(b.status).toUpperCase(),allowed=new Set(['DRAFT','SUBMITTED','NEEDS_INFORMATION','APPROVED','NEEDS_TRAVEL_DOCUMENTS','TRAVEL_CONFIRMED','REJECTED']);if(!validCode(c)||!allowed.has(s))return json({ok:false,error:'invalid_decision'},400);const db=await schema(env),t=now(),x=await db.prepare(`UPDATE media_registration_drafts SET status=?,approved_at=CASE WHEN ?='APPROVED' THEN ? ELSE approved_at END,updated_at=? WHERE mail_code=?`).bind(s,s,t,t,c).run();await audit(env,'status_changed',c,{status:s,reason:clean(b.reason)});return json({ok:true,changed:x.meta?.changes||0,status:s});}
-async function test(r,env){let b={};try{b=await r.json()}catch{}if(b.confirm!=='SEND_PERSONALIZED_TEST')return json({ok:false,error:'confirmation_required'},409);if(!validEmail(b.email))return json({ok:false,error:'invalid_email'},400);const row={mail_code:'GNK-MEDIA-20260628-HR-TEST-001',outlet:'GNK ASG TEST NEWSROOM',email:b.email,recipient_name:'Editor',country:'Test',language:b.language||'English'};try{return json({ok:true,result:await send(env,row,'TESTCODE25',await config(env),b.email)})}catch(e){return json({ok:false,error:String(e.message||e)},502)}}
-export async function processMediaInvitationQueue(env,{manual=false}={}){const cfg=await config(env);if(cfg.paused&&!manual)return{ok:true,skipped:'paused'};if(cfg.startAt&&Date.now()<Date.parse(cfg.startAt)&&!manual)return{ok:true,skipped:'not_started',startAt:cfg.startAt};const db=await schema(env),row=await db.prepare(`SELECT * FROM media_invitation_access WHERE mail_status IN ('QUEUED','RETRY') AND (start_after IS NULL OR datetime(start_after)<=datetime('now')) ORDER BY queued_at LIMIT 1`).first();if(!row)return{ok:true,skipped:'queue_empty'};await db.prepare(`UPDATE media_invitation_access SET mail_status='SENDING',updated_at=? WHERE mail_code=?`).bind(now(),row.mail_code).run();try{const pin=await decrypt(env,row.pin_cipher,row.pin_iv),x=await send(env,row,pin,cfg),t=now();await db.prepare(`UPDATE media_invitation_access SET mail_status='SENT',sent_at=?,provider_message_id=?,pin_cipher=NULL,pin_iv=NULL,last_error='',updated_at=? WHERE mail_code=?`).bind(t,x.messageId,t,row.mail_code).run();await audit(env,'invitation_sent',row.mail_code,{outlet:row.outlet,email:row.email,messageId:x.messageId,pdfAttached:x.pdfAttached});return{ok:true,sent:{mailCode:row.mail_code,outlet:row.outlet,email:row.email,messageId:x.messageId,pdfAttached:x.pdfAttached}}}catch(e){const m=String(e.message||e).slice(0,500),t=now();await db.prepare(`UPDATE media_invitation_access SET mail_status='RETRY',last_error=?,updated_at=? WHERE mail_code=?`).bind(m,t,row.mail_code).run();return{ok:false,error:m,mailCode:row.mail_code}}}
+export const processMediaInvitationQueue=legacy.processMediaInvitationQueue;
 
-export async function handleMediaRegistrationPublic(r,env){const p=pathOf(r);if(['GET','HEAD'].includes(r.method)&&(p===PUBLIC_UI||p===`${PUBLIC_UI}/`))return asset(r,env,'/media-application/index.html');if(!p.startsWith(PUBLIC_API))return null;try{if(r.method==='GET'&&p===`${PUBLIC_API}/config`){const c=await config(env);return json({ok:true,deadline:c.deadline,applicationEmail:c.applicationEmail,maxParticipants:3,maxFileBytes:MAX_DOCUMENT_BYTES,hotel:{standard:c.hotelStandard,package:c.hotelPackage},flightMethods:['ORGANIZER_BOOKS','NEWSROOM_BOOKS_AFTER_APPROVAL']})}if(r.method==='POST'&&p===`${PUBLIC_API}/login`)return login(r,env);if(r.method==='GET'&&p===`${PUBLIC_API}/session`){const s=await session(r,env);return s?json({ok:true,session:publicSession(s)}):json({ok:false,error:'no_session'},401)}if(r.method==='POST'&&p===`${PUBLIC_API}/logout`){const t=cookieValue(r);if(t)await (await schema(env)).prepare(`DELETE FROM media_registration_sessions WHERE session_hash=?`).bind(await sha(t)).run();return json({ok:true},200,{'set-cookie':clearCookie()})}if(r.method==='GET'&&p===`${PUBLIC_API}/draft`)return draftGet(r,env);if(r.method==='PUT'&&p===`${PUBLIC_API}/draft`)return draftSave(r,env);if(r.method==='POST'&&p===`${PUBLIC_API}/submit`)return submit(r,env);if(r.method==='POST'&&p===`${PUBLIC_API}/document`)return upload(r,env);return json({ok:false,error:'not_found'},404)}catch(e){return json({ok:false,error:'registration_error',message:String(e.message||e).slice(0,400)},500)}}
-export async function handleMediaRegistrationAdmin(r,env){const p=pathOf(r);if(['GET','HEAD'].includes(r.method)&&(p===ADMIN_UI||p===`${ADMIN_UI}/`))return asset(r,env,'/media-registration-admin/index.html');if(!p.startsWith(ADMIN_API))return null;try{if(r.method==='GET'&&p===`${ADMIN_API}/status`)return json(await status(env));if(r.method==='POST'&&p===`${ADMIN_API}/config`){let b={};try{b=await r.json()}catch{}return json({ok:true,config:await saveConfig(env,{paused:Boolean(b.paused),startAt:clean(b.startAt),applicationUrl:clean(b.applicationUrl)||'https://www.gnk-asg.hr/media-application/',applicationEmail:clean(b.applicationEmail)||DEFAULT_EMAIL,requirePdf:b.requirePdf!==false,hotelStandard:'5-star',hotelPackage:'all-inclusive'})})}if(r.method==='POST'&&p===`${ADMIN_API}/queue`)return queue(r,env);if(r.method==='POST'&&p===`${ADMIN_API}/send-test`)return test(r,env);if(r.method==='POST'&&p===`${ADMIN_API}/dispatch-one`){let b={};try{b=await r.json()}catch{}if(b.confirm!=='DISPATCH_ONE_PERSONALIZED_INVITATION')return json({ok:false,error:'confirmation_required'},409);return json(await processMediaInvitationQueue(env,{manual:true}))}if(r.method==='POST'&&p===`${ADMIN_API}/decision`)return decision(r,env);return json({ok:false,error:'not_found'},404)}catch(e){return json({ok:false,error:'registration_admin_error',message:String(e.message||e).slice(0,400)},500)}}
+export async function handleMediaRegistrationPublic(request,env){
+ const path=pathOf(request);
+ if(request.method==='POST'&&path===`${PUBLIC_API}/register`)return register(request,env);
+ if(request.method==='POST'&&path===`${PUBLIC_API}/login`){
+  const body=await request.clone().json().catch(()=>null);
+  if(body&&(body.username||body.login||body.email)&&body.password)return usernamePasswordLogin(request,env,body);
+  return legacy.handleMediaRegistrationPublic(request,env);
+ }
+ if(request.method==='GET'&&path===`${PUBLIC_API}/config`)return enhancedConfig(request,env);
+ if(request.method==='GET'&&(path===`${PUBLIC_API}/session`||path===`${PUBLIC_API}/draft`))return enrichSessionResponse(await legacy.handleMediaRegistrationPublic(request,env),env);
+ return legacy.handleMediaRegistrationPublic(request,env);
+}
+
+export async function handleMediaRegistrationAdmin(request,env){
+ const path=pathOf(request);
+ if(request.method==='GET'&&path===`${ADMIN_API}/status`)return enhancedAdminStatus(request,env);
+ if(request.method==='POST'&&path===`${ADMIN_API}/config`)return enhancedAdminConfig(request,env);
+ return legacy.handleMediaRegistrationAdmin(request,env);
+}
