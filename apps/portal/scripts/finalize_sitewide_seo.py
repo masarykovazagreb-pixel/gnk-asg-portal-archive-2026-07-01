@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[3]
 PORTAL = ROOT / "apps/portal"
 REPORT_PATH = PORTAL / "data" / "seo-report.json"
+CANONICAL_HOST = "https://gnk-asg.hr"
 
 REQUIRED_HTML = (
     "index.html",
@@ -41,11 +42,6 @@ SITEMAP_ENTRIES = (
     ("https://gnk-asg.hr/digital-workforce/", "2026-07-15", "weekly", "0.8"),
     ("https://gnk-asg.hr/editor-desk/", "2026-07-15", "daily", "0.8"),
 )
-
-CANONICAL_HOST_ALIASES = (
-    "https://www.gnk-asg.hr",
-)
-CANONICAL_HOST = "https://gnk-asg.hr"
 
 
 def page_route(relative: str) -> str:
@@ -186,29 +182,6 @@ def fail(messages: list[str], sitemap_locations: list[str] | None = None) -> Non
     raise SystemExit(f"Site-wide SEO finalization failed:\n{formatted}")
 
 
-def normalize_canonical_host_aliases() -> None:
-    """Normalize known legacy host aliases in deployable public HTML.
-
-    This does not weaken canonical validation: the strict equality checks run
-    after normalization and still fail for wrong routes, missing canonicals or
-    any unrecognized host.
-    """
-    changed: list[str] = []
-    for relative in REQUIRED_HTML:
-        path = PORTAL / relative
-        if not path.is_file():
-            continue
-        text = path.read_text(encoding="utf-8", errors="replace")
-        normalized = text
-        for alias in CANONICAL_HOST_ALIASES:
-            normalized = normalized.replace(alias, CANONICAL_HOST)
-        if normalized != text:
-            path.write_text(normalized, encoding="utf-8")
-            changed.append(relative)
-    if changed:
-        print("Normalized canonical host aliases in: " + ", ".join(changed))
-
-
 def ensure_required_sitemap_entries() -> None:
     path = PORTAL / "sitemap.xml"
     if not path.is_file():
@@ -265,7 +238,6 @@ def validate_robots() -> list[str]:
 
 
 def main() -> int:
-    normalize_canonical_host_aliases()
     ensure_required_sitemap_entries()
     locations, sitemap_errors = sitemap_locations()
     errors = [*validate_html(), *sitemap_errors, *validate_robots()]
