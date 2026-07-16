@@ -16,6 +16,10 @@ REPORT_PATH = PORTAL / "data" / "seo-report.json"
 REQUIRED_HTML = (
     "index.html",
     "en/index.html",
+    "contact/index.html",
+    "media-application/index.html",
+    "the-code/index.html",
+    "publications/index.html",
     "digital-workforce/index.html",
     "editor-desk/index.html",
     "objave/index.html",
