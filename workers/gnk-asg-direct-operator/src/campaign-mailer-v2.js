@@ -2,13 +2,15 @@ import {handleCampaignMailer as baseHandle,runQueue as baseRunQueue,recordInboun
 import {ensureSchema,stateRow,stats,updateState,logEvent,timestamp,clean,int,bucketOf} from './campaign-mailer-db-v1.js';
 import {applyApprovalGuard,VERSION as APPROVAL_VERSION} from './campaign-mailer-approval-v1.js';
 
-export const VERSION=`GNK_ASG_CAMPAIGN_MAILER_SAFETY_V9_20260703_AUTO_CONTINUE_${APPROVAL_VERSION}`;
+export const VERSION=`GNK_ASG_CAMPAIGN_MAILER_SAFETY_V10_20260716_FAIL_CLOSED_${APPROVAL_VERSION}`;
 const RETRY_SECONDS=600;
 const AUTO_PAUSE_EVENTS=new Set(['quota_failed_paused','rate_limited_paused','safety_paused']);
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-asg-campaign-mailer-safety':VERSION}});
 const visible=value=>String(value||'').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,' ').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,' ').replace(/<[^>]+>/g,' ').trim();
 const nextAttemptAt=()=>new Date(Date.now()+RETRY_SECONDS*1000).toISOString();
+const enabled=value=>/^(1|true|yes|on)$/i.test(clean(value));
+const isReview=env=>/^review(?:-|$)/i.test(clean(env?.PUBLIC_ENVIRONMENT));
 
 async function acquire(env){const db=await ensureSchema(env);await db.prepare(`CREATE TABLE IF NOT EXISTS campaign_mailer_runner_lock(id INTEGER PRIMARY KEY CHECK(id=1),lease_until TEXT)`).run();await db.prepare(`INSERT OR IGNORE INTO campaign_mailer_runner_lock(id,lease_until) VALUES(1,NULL)`).run();const stamp=timestamp(),until=new Date(Date.now()+120000).toISOString();const row=await db.prepare(`UPDATE campaign_mailer_runner_lock SET lease_until=? WHERE id=1 AND (lease_until IS NULL OR lease_until<?) RETURNING id`).bind(until,stamp).first();return row?{db,until}:null}
 async function release(lock){if(lock?.db)await lock.db.prepare(`UPDATE campaign_mailer_runner_lock SET lease_until=NULL WHERE id=1 AND lease_until=?`).bind(lock.until).run()}
@@ -39,6 +41,9 @@ async function rateGate(env){
 }
 
 export async function runQueue(env,options={}){
+ if(isReview(env))return{ok:true,skipped:'review_environment'};
+ if(!enabled(env?.MEDIA_OUTREACH_LIVE))return{ok:true,skipped:'media_outreach_disabled'};
+ if(!env?.EMAIL?.send)return{ok:false,skipped:'email_binding_unavailable'};
  const lock=await acquire(env);if(!lock)return{ok:true,skipped:'runner_locked'};
  try{
   await applyApprovalGuard(env);
@@ -54,13 +59,9 @@ async function startAndDispatch(env){await applyApprovalGuard(env);const state=a
 async function resumeAndDispatch(env){await applyApprovalGuard(env);const state=await stateRow(env);if(!['paused','stopped'].includes(state.status))throw new Error('Kampanja nije pauzirana ili zaustavljena');await updateState(env,{status:'running',delay_seconds:RETRY_SECONDS,jitter_seconds:0,max_retries:1,next_send_at:timestamp()});await logEvent(env,'resumed');const delivery=await runQueue(env,{force:true});return{ok:delivery?.ok!==false,status:delivery?.status||'running',resumed:true,delivery}}
 
 async function deleteCampaignFiles(env){const bucket=bucketOf(env);if(!bucket?.list||!bucket?.delete)return 0;let cursor,deleted=0;do{const page=await bucket.list({prefix:'campaign-mailer/attachments/',cursor});const keys=(page.objects||[]).map(item=>item.key);if(keys.length){await bucket.delete(keys);deleted+=keys.length}cursor=page.truncated?page.cursor:undefined}while(cursor);return deleted}
-
 async function purgeAll(request,env){const data=await request.json().catch(()=>({}));if(clean(data.confirmation)!=='OBRIŠI SVE')throw new Error('Za potpuno brisanje potrebno je upisati OBRIŠI SVE');const db=await ensureSchema(env);const before={contacts:Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_contacts`).first())?.c||0),inbox:Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_inbox`).first())?.c||0),events:Number((await db.prepare(`SELECT COUNT(*) c FROM campaign_mailer_events`).first())?.c||0)};const deletedFiles=await deleteCampaignFiles(env);await db.batch([db.prepare(`DELETE FROM campaign_mailer_contacts`),db.prepare(`DELETE FROM campaign_mailer_inbox`),db.prepare(`DELETE FROM campaign_mailer_events`),db.prepare(`UPDATE campaign_mailer_state SET subject='',body_html='',extra_text='',delay_seconds=600,jitter_seconds=0,max_retries=1,status='draft',cursor_contact_id=NULL,attachment_r2_key=NULL,attachment_original_name=NULL,attachment_mime_type=NULL,attachment_size=NULL,started_at=NULL,next_send_at=NULL,updated_at=? WHERE id=1`).bind(timestamp())]);try{await db.prepare(`UPDATE campaign_mailer_runner_lock SET lease_until=NULL WHERE id=1`).run()}catch{}await db.prepare(`INSERT INTO campaign_mailer_events(id,event_type,contact_id,email,subject,error,detail_json,created_at) VALUES(?,?,?,?,?,?,?,?)`).bind(crypto.randomUUID(),'legacy_bootstrap_completed',null,'','','',JSON.stringify({purged:true}),timestamp()).run();return{ok:true,deleted:{...before,files:deletedFiles},status:'draft'}}
-
 async function sentHistory(env){const db=await ensureSchema(env);const result=await db.prepare(`SELECT * FROM campaign_mailer_events WHERE event_type NOT IN ('legacy_bootstrap_completed') ORDER BY created_at DESC LIMIT 200`).all();return{ok:true,items:result.results||[]}}
-
 async function attachmentPreview(request,env){const state=await stateRow(env),key=clean(state.attachment_r2_key),bucket=bucketOf(env);if(!key||!bucket?.get)return new Response('PDF nije učitan.',{status:404,headers:{'content-type':'text/plain; charset=utf-8','cache-control':'no-store'}});const head=await bucket.head(key);if(!head)return new Response('PDF nije pronađen.',{status:404,headers:{'content-type':'text/plain; charset=utf-8','cache-control':'no-store'}});const total=Number(head.size||state.attachment_size||0),rangeHeader=request.headers.get('range');let object,status=200,start=0,end=Math.max(0,total-1);if(rangeHeader){const match=/^bytes=(\d*)-(\d*)$/i.exec(rangeHeader);if(match){start=match[1]?Number(match[1]):0;end=match[2]?Math.min(Number(match[2]),total-1):total-1;if(start>end||start>=total)return new Response(null,{status:416,headers:{'content-range':`bytes */${total}`}});object=await bucket.get(key,{range:{offset:start,length:end-start+1}});status=206}}if(!object)object=await bucket.get(key);if(!object)return new Response('PDF nije pronađen.',{status:404});const filename=clean(state.attachment_original_name||'attachment.pdf').replace(/[\r\n"\\/]+/g,'_');const headers=new Headers();headers.set('content-type',state.attachment_mime_type||head.httpMetadata?.contentType||'application/pdf');headers.set('content-disposition',`inline; filename="${filename}"; filename*=UTF-8''${encodeURIComponent(filename)}`);headers.set('cache-control','private, no-store, max-age=0');headers.set('accept-ranges','bytes');headers.set('x-content-type-options','nosniff');headers.set('content-length',String(status===206?end-start+1:total));if(status===206)headers.set('content-range',`bytes ${start}-${end}/${total}`);return new Response(object.body,{status,headers})}
 
 export async function handleCampaignMailer(request,env,ctx){const path=pathOf(request);try{await applyApprovalGuard(env);if(request.method==='POST'&&path===`${API_PREFIX}/campaign/start`)return json(await startAndDispatch(env));if(request.method==='POST'&&path===`${API_PREFIX}/campaign/resume`)return json(await resumeAndDispatch(env));if(request.method==='POST'&&path===`${API_PREFIX}/dispatch`)return json(await runQueue(env,{force:false}));if(request.method==='POST'&&path===`${API_PREFIX}/purge-all`)return json(await purgeAll(request,env));if(request.method==='GET'&&path===`${API_PREFIX}/sent`)return json(await sentHistory(env));if(request.method==='GET'&&path===`${API_PREFIX}/campaign/attachment`)return attachmentPreview(request,env);return baseHandle(request,env,ctx)}catch(error){return json({ok:false,error:String(error?.message||error),version:VERSION},400)}}
-
 export {recordInbound};
