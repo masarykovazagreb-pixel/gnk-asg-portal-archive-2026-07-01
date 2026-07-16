@@ -8,6 +8,8 @@ const handler=fs.readFileSync('workers/gnk-asg-direct-operator/src/contact-studi
 const transport=fs.readFileSync('workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js','utf8');
 const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js','utf8');
 const signature=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js','utf8');
+const reviewConfig=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.toml','utf8');
+const productionConfig=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml','utf8');
 
 for(const page of [hr,en]){
  assert.match(page,/id="contactForm"/);
@@ -53,4 +55,15 @@ assert.match(worker,/handleContactStudio\(request,env,ctx,app\)/);
 assert.doesNotMatch(worker,/CLOUDFLARE_API_TOKEN|GNK_ASG_OPERATOR_TOKEN/);
 assert.match(signature,/logo-gnk-asg-email\.png/);
 assert.match(signature,/canonical-png-64x66/);
-console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','acknowledgement'],inlineLogo:true,mailSent:false},null,2));
+
+assert.match(reviewConfig,/PUBLIC_ENVIRONMENT\s*=\s*"review-[^"]+"/);
+for(const flag of ['NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE','MAIL_AUTO_REPLY_LIVE','MAIL_STUDIO_LIVE','MAIL_MANUAL_LIVE']){
+ assert.match(reviewConfig,new RegExp(`${flag}\\s*=\\s*"false"`));
+}
+assert.match(productionConfig,/PUBLIC_ENVIRONMENT\s*=\s*"production-[^"]+"/);
+assert.doesNotMatch(productionConfig,/PUBLIC_ENVIRONMENT\s*=\s*"review-[^"]+"/);
+assert.match(productionConfig,/MAIL_AUTO_REPLY_LIVE\s*=\s*"true"/);
+assert.match(productionConfig,/MAIL_STUDIO_LIVE\s*=\s*"true"/);
+assert.match(productionConfig,/MAIL_MANUAL_LIVE\s*=\s*"true"/);
+
+console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','acknowledgement'],inlineLogo:true,environments:{review:'fail-closed',production:'mail-enabled'},mailSent:false},null,2));
