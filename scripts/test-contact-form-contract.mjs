@@ -5,11 +5,12 @@ const hr=fs.readFileSync('apps/portal/contact/index.html','utf8');
 const en=fs.readFileSync('apps/portal/en/contact/index.html','utf8');
 const client=fs.readFileSync('apps/portal/assets/contact-form-v2.js','utf8');
 const handler=fs.readFileSync('workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js','utf8');
+const contactAi=fs.readFileSync('workers/gnk-asg-direct-operator/src/contact-ai-reply-v1.js','utf8');
 const transport=fs.readFileSync('workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js','utf8');
 const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js','utf8');
 const signature=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js','utf8');
 const reviewConfig=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.toml','utf8');
-const productionConfig=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml','utf8');
+const productionConfig=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.runtime.toml','utf8');
 
 for(const page of [hr,en]){
  assert.match(page,/id="contactForm"/);
@@ -35,13 +36,25 @@ assert.match(handler,/application\/json/);
 assert.match(handler,/multipart\/form-data/);
 assert.match(handler,/createContactCase/);
 assert.match(handler,/generateCaseId/);
+assert.match(handler,/createContactAcknowledgement/);
+assert.match(handler,/enforceContactRateLimit/);
+assert.match(handler,/contact:limit:ip:/);
+assert.match(handler,/contact:limit:email:/);
+assert.match(handler,/rate_limit_exceeded/);
 assert.match(handler,/sendBrandedEmail/);
 assert.match(handler,/internalMail/);
 assert.match(handler,/autoReply/);
 assert.match(handler,/deliveryOk/);
 assert.match(handler,/CONTACT_INTERNAL='rht@gmx\.com'/);
 assert.match(handler,/attachments:parsed\.attachments/);
+assert.match(handler,/Auto-Submitted':'auto-replied/);
 assert.doesNotMatch(handler,/env\.EMAIL\.send\(enforceRequiredSignature/);
+
+assert.match(contactAi,/AI_CONTACT_REPLY_LIVE/);
+assert.match(contactAi,/deterministic-fallback/);
+assert.match(contactAi,/Do not approve accreditation/);
+assert.match(contactAi,/No approval, payment confirmation, legal conclusion or binding decision/);
+assert.match(contactAi,/createContactAcknowledgement/);
 
 assert.match(transport,/import \{EmailMessage\} from 'cloudflare:email'/);
 assert.match(transport,/new EmailMessage\(prepared\.from,recipient,prepared\.raw\)/);
@@ -62,8 +75,13 @@ for(const flag of ['NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE','MAIL_AUTO_REPLY_LIVE'
 }
 assert.match(productionConfig,/PUBLIC_ENVIRONMENT\s*=\s*"production-direct-operator"/);
 assert.doesNotMatch(productionConfig,/PUBLIC_ENVIRONMENT\s*=\s*"review-[^"]+"/);
-for(const flag of ['MAIL_AUTO_REPLY_LIVE','MAIL_STUDIO_LIVE','MAIL_MANUAL_LIVE']){
+assert.match(productionConfig,/AI_CONTACT_REPLY_LIVE\s*=\s*"true"/);
+assert.match(productionConfig,/AI_CONTACT_REPLY_MODEL\s*=\s*"@cf\/meta\/llama-3\.3-70b-instruct-fp8-fast"/);
+for(const flag of ['MAIL_MANUAL_LIVE']){
  assert.match(productionConfig,new RegExp(`${flag}\\s*=\\s*"true"`));
 }
+for(const flag of ['MAIL_PROFILE_TEST_LIVE','MAIL_BOOTSTRAP_SMOKE_TEST','MEDIA_OUTREACH_LIVE','MEDIA_OUTREACH_SCHEDULED_LIVE','MEDIA_OUTREACH_TEST_LIVE','MEDIA_APPLICATION_AUTO_ACK']){
+ assert.match(productionConfig,new RegExp(`${flag}\\s*=\\s*"false"`));
+}
 
-console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','acknowledgement'],inlineLogo:true,reviewMailFailClosed:true,productionMailEnabled:true,mailSent:false},null,2));
+console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','ai-or-deterministic-acknowledgement'],inlineLogo:true,rateLimit:['ip','email'],reviewMailFailClosed:true,productionContactAiEnabled:true,mailSent:false},null,2));
