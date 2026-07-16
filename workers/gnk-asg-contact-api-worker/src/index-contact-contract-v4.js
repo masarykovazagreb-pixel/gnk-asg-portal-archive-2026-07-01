@@ -1,6 +1,6 @@
 import app from './index-signature-v3.js';
 
-export const VERSION='GNK_ASG_CONTACT_CONTRACT_V4_20260716';
+export const VERSION='GNK_ASG_CONTACT_CONTRACT_V5_20260716';
 
 const clean=value=>String(value??'').trim();
 
@@ -46,6 +46,20 @@ async function jsonToMultipartRequest(request){
   };
 }
 
+function deriveDeliveryState(data){
+  const internalAttempted=Boolean(data?.internalMail?.attempted);
+  const replyAttempted=Boolean(data?.autoReply?.attempted);
+  const mailAttempted=Boolean(data?.mailAttempted??(internalAttempted||replyAttempted));
+
+  if(data?.deliveryOk!==undefined&&data?.deliveryOk!==null){
+    return{mailAttempted,deliveryOk:Boolean(data.deliveryOk)};
+  }
+
+  const internalOk=!internalAttempted||Boolean(data?.internalMail?.sent);
+  const replyOk=!replyAttempted||Boolean(data?.autoReply?.sent);
+  return{mailAttempted,deliveryOk:mailAttempted&&internalOk&&replyOk};
+}
+
 async function normalizeContactResponse(response){
   const type=clean(response.headers.get('content-type')).toLowerCase();
   if(!type.includes('application/json'))return response;
@@ -55,10 +69,7 @@ async function normalizeContactResponse(response){
 
   const hasCase=Boolean(clean(data?.caseId));
   const stored=Boolean(data?.stored??data?.accepted??hasCase);
-  const internalAttempted=Boolean(data?.internalMail?.attempted);
-  const replyAttempted=Boolean(data?.autoReply?.attempted);
-  const mailAttempted=Boolean(data?.mailAttempted??(internalAttempted||replyAttempted));
-  const deliveryOk=Boolean(data?.deliveryOk??(data?.internalMail?.sent&&data?.autoReply?.sent));
+  const {mailAttempted,deliveryOk}=deriveDeliveryState(data);
   const accepted=Boolean(data?.accepted??stored);
 
   const normalized={...data,accepted,stored,mailAttempted,deliveryOk};
