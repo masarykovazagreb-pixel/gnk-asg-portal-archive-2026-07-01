@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       approval:
-        description: 'Enter the exact executive deploy approval phrase'
+        description: 'Type DEPLOY PRODUCTION to confirm the intentional production run'
         required: true
         type: string
 
@@ -79,9 +79,10 @@ jobs:
           ET.parse(root/'image-sitemap.xml')
           sitemap=(root/'sitemap.xml').read_text(encoding='utf-8')
           for route in internal:
-              forbidden=f'https://www.gnk-asg.hr{route}'
-              if forbidden in sitemap:
-                  raise SystemExit(f"SEO contract failed: internal route present in sitemap: {forbidden}")
+              for origin in ('https://gnk-asg.hr','https://www.gnk-asg.hr'):
+                  forbidden=f'{origin}{route}'
+                  if forbidden in sitemap:
+                      raise SystemExit(f"SEO contract failed: internal route present in sitemap: {forbidden}")
           robots=(root/'robots.txt').read_text(encoding='utf-8')
           for directive in ('Disallow: /control/','Disallow: /automation-status/'):
               if directive not in robots:
@@ -92,12 +93,21 @@ jobs:
           set -euo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --check workers/gnk-asg-direct-operator/src/enterprise-project-operations-v1.js
-          node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v2.js
+          node --check workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js
+          node --check workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js
+          node --check workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js
+          node --check workers/gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
           node scripts/validate-worker-import-graph.mjs
+          node scripts/test-contact-form-contract.mjs
           grep -q 'main = "src/index-final-admin-gateway-v2.js"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'PUBLIC_ENVIRONMENT = "production-direct-operator"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           grep -q 'MEDIA_OUTREACH_SCHEDULED_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'MEDIA_OUTREACH_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'MAIL_PROFILE_TEST_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'MAIL_BOOTSTRAP_SMOKE_TEST = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q 'MEDIA_APPLICATION_AUTO_ACK = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           cd workers/gnk-asg-direct-operator
           npx wrangler deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
       - name: Confirm validation-only pull request behavior
@@ -111,14 +121,16 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Verify branch and executive approval
+      - name: Verify intentional main-branch production request
         env:
           DEPLOY_APPROVAL: ${{ inputs.approval }}
         run: |
           set -euo pipefail
+          test "$GITHUB_REF_TYPE" = 'branch'
+          test "$GITHUB_REF_NAME" = 'main'
           test "$GITHUB_REF" = 'refs/heads/main'
-          test "$DEPLOY_APPROVAL" = 'Odobravam kontrolirani deploy - token 1203'
-          echo 'Explicit production approval verified.'
+          test "$DEPLOY_APPROVAL" = 'DEPLOY PRODUCTION'
+          echo 'Intentional main-branch production request verified; environment approval remains mandatory.'
 
   deploy-production:
     if: github.event_name == 'workflow_dispatch'
@@ -181,7 +193,7 @@ jobs:
       - name: Verify custom domain
         run: |
           set -euo pipefail
-          base='https://www.gnk-asg.hr'
+          base='https://gnk-asg.hr'
           for route in / /contact/ /media-application/; do
             code=$(curl -sS -L -o /tmp/public.html -w '%{http_code}' "${base}${route}?cb=${GITHUB_RUN_ID}" || true)
             test "$code" = 200
