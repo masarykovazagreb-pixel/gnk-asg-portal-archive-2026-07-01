@@ -16,6 +16,10 @@ REPORT_PATH = PORTAL / "data" / "seo-report.json"
 REQUIRED_HTML = (
     "index.html",
     "en/index.html",
+    "contact/index.html",
+    "media-application/index.html",
+    "the-code/index.html",
+    "publications/index.html",
     "digital-workforce/index.html",
     "editor-desk/index.html",
     "objave/index.html",
@@ -133,6 +137,7 @@ def write_report(*, errors: list[str], sitemap_locations: list[str]) -> None:
     all_errors = [*errors, *page_errors]
     passed = not all_errors
     generated_at = datetime.now(timezone.utc).isoformat()
+    sitemap_errors = [error for error in errors if "sitemap.xml" in error]
     report = {
         "ok": passed,
         "valid": passed,
@@ -154,12 +159,14 @@ def write_report(*, errors: list[str], sitemap_locations: list[str]) -> None:
             "errorCount": len(all_errors),
             "html_pages_checked": len(REQUIRED_HTML),
             "publicPages": len(pages),
+            "publicPageCount": len(pages),
             "required_urls_checked": len(REQUIRED_URLS),
             "sitemap_url_count": len(sitemap_locations),
+            "sitemapUrlCount": len(sitemap_locations),
         },
         "checks": {
             "html_metadata": {"ok": all(page["ok"] for page in pages), "pages": pages},
-            "sitemap": {"ok": not errors, "required_urls": list(REQUIRED_URLS), "locations": sitemap_locations},
+            "sitemap": {"ok": not sitemap_errors, "required_urls": list(REQUIRED_URLS), "locations": sitemap_locations},
             "robots": {"ok": not any("robots.txt" in error for error in errors), "sitemap_directive": "https://gnk-asg.hr/sitemap.xml"},
         },
         "errors": all_errors,
