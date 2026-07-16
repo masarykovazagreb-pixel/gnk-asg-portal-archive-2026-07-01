@@ -1,0 +1,70 @@
+name: Diagnose PR 487 validation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/diagnose-pr487-validation.yml'
+      - '.github/workflows/deploy-mail-studio-multilingual.yml'
+      - 'apps/portal/**'
+      - 'workers/gnk-asg-direct-operator/**'
+      - 'scripts/**'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run validation stages and capture evidence
+        shell: bash
+        run: |
+          set +e
+          mkdir -p validation-evidence
+          run_stage() {
+            local number="$1"
+            local name="$2"
+            shift 2
+            echo "=== ${name} ===" | tee "validation-evidence/${number}-${name}.log"
+            "$@" >>"validation-evidence/${number}-${name}.log" 2>&1
+            local status=$?
+            echo "$status" >"validation-evidence/${number}-${name}.status"
+            cat "validation-evidence/${number}-${name}.log"
+            return 0
+          }
+          run_stage 01 pycompile python -m py_compile \
+            apps/portal/scripts/sync_publication_indexes.py \
+            apps/portal/scripts/generate_sitewide_seo.py \
+            apps/portal/scripts/finalize_sitewide_seo.py \
+            apps/portal/scripts/harden_internal_routes.py
+          run_stage 02 sync python apps/portal/scripts/sync_publication_indexes.py
+          run_stage 03 generate python apps/portal/scripts/generate_sitewide_seo.py
+          run_stage 04 finalize python apps/portal/scripts/finalize_sitewide_seo.py
+          run_stage 05 harden python apps/portal/scripts/harden_internal_routes.py
+          cp apps/portal/data/seo-report.json validation-evidence/seo-report.json 2>/dev/null || true
+          cp apps/portal/sitemap.xml validation-evidence/sitemap.xml 2>/dev/null || true
+          cp apps/portal/image-sitemap.xml validation-evidence/image-sitemap.xml 2>/dev/null || true
+          cp apps/portal/robots.txt validation-evidence/robots.txt 2>/dev/null || true
+          failed=0
+          for status_file in validation-evidence/*.status; do
+            status=$(cat "$status_file")
+            if [ "$status" != "0" ]; then failed=1; fi
+          done
+          echo "$failed" > validation-evidence/overall.status
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pr487-validation-evidence
+          path: validation-evidence
+          if-no-files-found: error
+          retention-days: 1
+      - name: Fail when a validation stage failed
+        run: test "$(cat validation-evidence/overall.status)" = "0"
