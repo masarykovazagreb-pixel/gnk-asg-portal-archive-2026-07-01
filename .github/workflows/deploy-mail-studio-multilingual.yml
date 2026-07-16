@@ -60,38 +60,64 @@ jobs:
           import xml.etree.ElementTree as ET
           from pathlib import Path
 
+          def fail(message: str) -> None:
+              print(f'::error::{message}', file=sys.stderr)
+              raise SystemExit(1)
+
           def require(condition: bool, message: str) -> None:
               if not condition:
-                  print(f'::error::{message}', file=sys.stderr)
-                  raise SystemExit(1)
+                  fail(message)
 
           root = Path('apps/portal')
-          report = json.loads((root / 'data/seo-report.json').read_text(encoding='utf-8'))
-          routes = {page['route'] for page in report['publicPages']}
+          report_path = root / 'data/seo-report.json'
+          require(report_path.is_file(), f'Missing SEO report: {report_path}')
+          try:
+              report = json.loads(report_path.read_text(encoding='utf-8'))
+          except (OSError, json.JSONDecodeError) as exc:
+              fail(f'Cannot read valid SEO report {report_path}: {exc}')
+
+          require(isinstance(report, dict), 'SEO report root must be an object')
+          pages = report.get('publicPages')
+          require(isinstance(pages, list), 'SEO report publicPages must be an array')
+          routes = set()
+          for index, page in enumerate(pages):
+              require(isinstance(page, dict), f'publicPages[{index}] must be an object')
+              route = page.get('route')
+              require(isinstance(route, str) and route.startswith('/'), f'publicPages[{index}].route is invalid: {route!r}')
+              routes.add(route)
+
+          page_count = report.get('publicPageCount')
+          require(isinstance(page_count, int), 'SEO report publicPageCount must be an integer')
+          require(page_count == len(pages), f'publicPageCount mismatch: declared {page_count}, actual {len(pages)}')
+
           internal = {
               '/control/', '/automation-status/', '/admin/', '/operator-dashboard/',
               '/operator-mobile/', '/mail-studio/', '/webmail/', '/campaign-mailer/'
           }
           required = {'/', '/en/', '/contact/', '/media-application/', '/the-code/', '/objave/', '/publications/'}
-
           missing = sorted(required - routes)
           exposed = sorted(routes & internal)
           require(not missing, f'Missing required public routes: {missing}')
           require(not exposed, f'Internal routes exposed as public: {exposed}')
-          require(report['publicPageCount'] >= 10, f'Expected at least 10 public pages, found {report["publicPageCount"]}')
+          require(page_count >= 10, f'Expected at least 10 public pages, found {page_count}')
 
           for artifact in ('sitemap.xml', 'image-sitemap.xml'):
+              artifact_path = root / artifact
+              require(artifact_path.is_file(), f'Missing XML artifact: {artifact_path}')
               try:
-                  ET.parse(root / artifact)
-              except ET.ParseError as exc:
-                  require(False, f'Invalid XML in {artifact}: {exc}')
+                  ET.parse(artifact_path)
+              except (OSError, ET.ParseError) as exc:
+                  fail(f'Invalid XML in {artifact}: {exc}')
 
-          sitemap = (root / 'sitemap.xml').read_text(encoding='utf-8')
+          sitemap_path = root / 'sitemap.xml'
+          sitemap = sitemap_path.read_text(encoding='utf-8')
           for route in sorted(internal):
               require(f'https://gnk-asg.hr{route}' not in sitemap, f'Canonical sitemap exposes internal route: {route}')
               require(f'https://www.gnk-asg.hr{route}' not in sitemap, f'Legacy-host sitemap exposes internal route: {route}')
 
-          robots = (root / 'robots.txt').read_text(encoding='utf-8')
+          robots_path = root / 'robots.txt'
+          require(robots_path.is_file(), f'Missing robots file: {robots_path}')
+          robots = robots_path.read_text(encoding='utf-8')
           require('Disallow: /control/' in robots, 'robots.txt does not disallow /control/')
           require('Disallow: /automation-status/' in robots, 'robots.txt does not disallow /automation-status/')
           print('Portal SEO and internal-route contract passed.')
@@ -129,14 +155,26 @@ jobs:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
         run: |
           set -euo pipefail
-          test "$GITHUB_EVENT_NAME" = 'workflow_dispatch'
-          test "$GITHUB_REF_TYPE" = 'branch'
-          test "$GITHUB_REF_NAME" = 'main'
-          test "$GITHUB_REF" = 'refs/heads/main'
-          test "$DEPLOY_APPROVAL" = 'DEPLOY PRODUCTION'
-          test "$EXPECTED_SHA" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
-          test "$(git rev-parse origin/main)" = "$EXPECTED_SHA"
+          fail() { echo "::error::$1" >&2; exit 1; }
+          require_eq() {
+            local actual="$1" expected="$2" label="$3"
+            [ "$actual" = "$expected" ] || fail "$label mismatch: expected '$expected', got '$actual'"
+          }
+          require_nonempty() {
+            local value="$1" label="$2"
+            [ -n "$value" ] || fail "$label must not be empty"
+          }
+
+          require_eq "$GITHUB_EVENT_NAME" 'workflow_dispatch' 'GitHub event'
+          require_eq "$GITHUB_REF_TYPE" 'branch' 'Git ref type'
+          require_eq "$GITHUB_REF_NAME" 'main' 'Git ref name'
+          require_eq "$GITHUB_REF" 'refs/heads/main' 'Full Git ref'
+          require_eq "$DEPLOY_APPROVAL" 'DEPLOY PRODUCTION' 'Executive approval phrase'
+          require_nonempty "$EXPECTED_SHA" 'Expected SHA'
+          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || fail "Expected SHA is not a full 40-character lowercase commit SHA: '$EXPECTED_SHA'"
+          require_eq "$GITHUB_SHA" "$EXPECTED_SHA" 'Workflow SHA'
+          require_eq "$(git rev-parse HEAD)" "$EXPECTED_SHA" 'Checked-out HEAD'
+          require_eq "$(git rev-parse origin/main)" "$EXPECTED_SHA" 'origin/main SHA'
           echo "Explicit production approval verified for exact SHA $EXPECTED_SHA."
 
   deploy-production:
@@ -156,13 +194,20 @@ jobs:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
         run: |
           set -euo pipefail
-          test "$GITHUB_EVENT_NAME" = 'workflow_dispatch'
-          test "$GITHUB_REF_TYPE" = 'branch'
-          test "$GITHUB_REF_NAME" = 'main'
-          test "$GITHUB_REF" = 'refs/heads/main'
-          test "$GITHUB_SHA" = "$EXPECTED_SHA"
-          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
-          test "$(git rev-parse origin/main)" = "$EXPECTED_SHA"
+          fail() { echo "::error::$1" >&2; exit 1; }
+          require_eq() {
+            local actual="$1" expected="$2" label="$3"
+            [ "$actual" = "$expected" ] || fail "$label mismatch: expected '$expected', got '$actual'"
+          }
+
+          require_eq "$GITHUB_EVENT_NAME" 'workflow_dispatch' 'GitHub event'
+          require_eq "$GITHUB_REF_TYPE" 'branch' 'Git ref type'
+          require_eq "$GITHUB_REF_NAME" 'main' 'Git ref name'
+          require_eq "$GITHUB_REF" 'refs/heads/main' 'Full Git ref'
+          require_eq "$GITHUB_SHA" "$EXPECTED_SHA" 'Workflow SHA'
+          require_eq "$(git rev-parse HEAD)" "$EXPECTED_SHA" 'Checked-out HEAD'
+          require_eq "$(git rev-parse origin/main)" "$EXPECTED_SHA" 'origin/main SHA'
+          echo "Authorized SHA reconfirmed immediately before production deployment."
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -188,8 +233,10 @@ jobs:
       - name: Verify Worker and protected routes without sending
         run: |
           set -euo pipefail
+          fail() { echo "::error::$1" >&2; exit 1; }
           base='https://gnk-asg-direct-operator.beckuphome.workers.dev'
           ready=false
+          home=000 contact=000 media=000 mail=000 campaign=000
           for attempt in $(seq 1 30); do
             cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
             home=$(curl -sS -L -o /tmp/home.html -w '%{http_code}' "$base/?cb=$cb" || true)
@@ -208,14 +255,15 @@ jobs:
             fi
             sleep 6
           done
-          test "$ready" = true
+          [ "$ready" = true ] || fail "Worker verification failed after 30 attempts: home=$home contact=$contact media=$media mail=$mail campaign=$campaign"
       - name: Verify custom domain
         run: |
           set -euo pipefail
+          fail() { echo "::error::$1" >&2; exit 1; }
           base='https://www.gnk-asg.hr'
           for route in / /contact/ /media-application/; do
             code=$(curl -sS -L -o /tmp/public.html -w '%{http_code}' "${base}${route}?cb=${GITHUB_RUN_ID}" || true)
-            test "$code" = 200
+            [ "$code" = 200 ] || fail "Custom domain route ${route} returned HTTP ${code}, expected 200"
           done
       - name: Persist generated portal metadata
         run: |
