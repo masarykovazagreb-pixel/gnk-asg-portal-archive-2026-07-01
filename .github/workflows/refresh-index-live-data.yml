@@ -1,0 +1,58 @@
+name: Refresh index live data
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/refresh-index-live-data.yml'
+      - 'scripts/refresh_index_live_data.py'
+      - 'apps/portal/assets/market.js'
+      - 'apps/portal/assets/news-live.js'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-index-live-data
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Refresh and validate public index feeds
+        run: python scripts/refresh_index_live_data.py
+      - name: Confirm freshness contract
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+          market=json.loads(Path('apps/portal/data/market.json').read_text(encoding='utf-8'))
+          news=json.loads(Path('apps/portal/data/news.json').read_text(encoding='utf-8'))
+          age=(datetime.now(timezone.utc)-datetime.fromisoformat(market['updated_at'])).total_seconds()
+          if age > 900:
+              raise SystemExit(f'market snapshot is stale: {age:.0f}s')
+          if len(market.get('coins',[])) != 4:
+              raise SystemExit('market snapshot must contain four assets')
+          if not news:
+              raise SystemExit('business news feed is empty')
+          print({'market_age_seconds':round(age), 'market_assets':len(market['coins']), 'news_items':len(news)})
+          PY
+      - name: Commit refreshed public data
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name 'gnk-asg-live-data-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add apps/portal/data/market.json apps/portal/data/news.json apps/portal/data/news-status.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Refresh index market and business news data [skip ci]'
+          git push origin HEAD:main
