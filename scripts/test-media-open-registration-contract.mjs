@@ -56,8 +56,8 @@ for(const marker of [
   "api('/login'",
   "username:value('mailCode')",
   "password:value('pin')",
-  'account_exists',
-  'outlet_required'
+  'username_taken',
+  'missing_outlet'
 ]) assert.ok(frontend.includes(marker),`frontend missing media registration marker: ${marker}`);
 
 assert.equal(backend.includes("MAIL_AUTO_REPLY_LIVE='true'"),false,'registration repair must not enable mail');
