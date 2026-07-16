@@ -9,6 +9,7 @@ const known=[
  ['nermin.sefic@gnk-asg.hr','GNK-SEFIC-IN'],['sefic@gnk-asg.hr','GNK-SEFIC-IN'],['ubo@gnk-asg.hr','GNK-UBO-IN']
 ];
 const baseSource=fs.readFileSync('workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js','utf8');
+const mimeSource=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js','utf8');
 for(const[address,prefix]of known){assert.match(baseSource,new RegExp(address.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));assert.match(baseSource,new RegExp(prefix))}
 
 const message={to:'new.department@gnk-asg.hr',headers:{get(name){return name.toLowerCase()==='to'?'new.department@gnk-asg.hr':''}}};
@@ -22,9 +23,9 @@ assert.equal(createCatchAllProfile('external@example.com'),null);
 assert.match(baseSource,/function ref\(profile\)\{return`\$\{profile\.prefix\}-/);
 assert.match(baseSource,/crypto\.randomUUID\(\)/);
 assert.match(baseSource,/MAIL_AUTO_REPLY_LIVE/);
-assert.match(baseSource,/Content-Location: \$\{EMAIL_LOGO_URL\}/);
-assert.match(baseSource,/X-Attachment-Id: \$\{EMAIL_LOGO_CID\}/);
-assert.match(baseSource,/multipart\/related; type="multipart\/alternative"/);
+assert.match(mimeSource,/Content-Location: \$\{EMAIL_LOGO_URL\}/);
+assert.match(mimeSource,/X-Attachment-Id: \$\{EMAIL_LOGO_CID\}/);
+assert.match(mimeSource,/multipart\/related; type=\\?"multipart\/alternative\\?"/);
 
 assert.equal(LOGO_URL,'https://gnk-asg.hr/assets/logo-gnk-asg-email.png?v=20260713-canonical');
 assert.match(SIGNATURE_VERSION,/V12_20260713_STANDARD_64/);
