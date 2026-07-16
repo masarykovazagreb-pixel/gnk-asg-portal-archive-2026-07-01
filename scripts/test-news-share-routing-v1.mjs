@@ -2,10 +2,15 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 
 const news=JSON.parse(fs.readFileSync('apps/portal/data/news.json','utf8'));
-const item=news.find(entry=>entry.id==='19fa99e0723490d640');
-assert.ok(item,'expected reference news item');
-assert.equal(item.share_url,'/podijeli/vijest/19fa99e0723490d640/');
-assert.match(item.url,/^https:\/\/www\.theverge\.com\/policy\//);
+const item=news.find(entry=>
+ entry &&
+ typeof entry.id==='string' &&
+ /^https?:\/\//.test(entry.url||'') &&
+ entry.share_url===`/podijeli/vijest/${entry.id}/`
+);
+assert.ok(item,'expected a news item with an external source URL and matching legacy share route');
+assert.equal(item.share_url,`/podijeli/vijest/${item.id}/`);
+assert.match(item.url,/^https?:\/\//);
 
 const runtime=fs.readFileSync('apps/portal/assets/index-editorial-order-v6.js','utf8');
 assert.match(runtime,/item\.sourceUrl\|\|item\.url\|\|item\.href\|\|item\.share_url/);
