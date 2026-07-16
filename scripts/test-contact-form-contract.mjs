@@ -70,18 +70,16 @@ assert.match(signature,/logo-gnk-asg-email\.png/);
 assert.match(signature,/canonical-png-64x66/);
 
 assert.match(reviewConfig,/PUBLIC_ENVIRONMENT\s*=\s*"review-[^"]+"/);
-for(const flag of ['NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE','MAIL_AUTO_REPLY_LIVE','MAIL_STUDIO_LIVE','MAIL_MANUAL_LIVE']){
+for(const flag of ['NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE','MAIL_AUTO_REPLY_LIVE','MAIL_STUDIO_LIVE','MAIL_MANUAL_LIVE','AI_CONTACT_REPLY_LIVE']){
  assert.match(reviewConfig,new RegExp(`${flag}\\s*=\\s*"false"`));
 }
 assert.match(productionConfig,/PUBLIC_ENVIRONMENT\s*=\s*"production-direct-operator"/);
 assert.doesNotMatch(productionConfig,/PUBLIC_ENVIRONMENT\s*=\s*"review-[^"]+"/);
 assert.match(productionConfig,/AI_CONTACT_REPLY_LIVE\s*=\s*"true"/);
 assert.match(productionConfig,/AI_CONTACT_REPLY_MODEL\s*=\s*"@cf\/meta\/llama-3\.3-70b-instruct-fp8-fast"/);
-for(const flag of ['MAIL_MANUAL_LIVE']){
- assert.match(productionConfig,new RegExp(`${flag}\\s*=\\s*"true"`));
-}
+assert.match(productionConfig,/MAIL_MANUAL_LIVE\s*=\s*"true"/);
 for(const flag of ['MAIL_PROFILE_TEST_LIVE','MAIL_BOOTSTRAP_SMOKE_TEST','MEDIA_OUTREACH_LIVE','MEDIA_OUTREACH_SCHEDULED_LIVE','MEDIA_OUTREACH_TEST_LIVE','MEDIA_APPLICATION_AUTO_ACK']){
  assert.match(productionConfig,new RegExp(`${flag}\\s*=\\s*"false"`));
 }
 
-console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','ai-or-deterministic-acknowledgement'],inlineLogo:true,rateLimit:['ip','email'],reviewMailFailClosed:true,productionContactAiEnabled:true,mailSent:false},null,2));
+console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','ai-or-deterministic-acknowledgement'],inlineLogo:true,rateLimit:['ip','email'],reviewMailFailClosed:true,reviewContactAiDisabled:true,productionContactAiEnabled:true,mailSent:false},null,2));
