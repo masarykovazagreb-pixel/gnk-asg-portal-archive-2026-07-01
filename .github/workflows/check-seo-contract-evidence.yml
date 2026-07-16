@@ -1,0 +1,95 @@
+name: SEO Contract Evidence
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/check-seo-contract-evidence.yml'
+      - '.github/workflows/deploy-mail-studio-multilingual.yml'
+      - 'apps/portal/**'
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          show-progress: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate SEO evidence
+        id: generate
+        continue-on-error: true
+        run: |
+          set -u
+          mkdir -p apps/portal/data
+          python apps/portal/scripts/sync_publication_indexes.py > /tmp/seo-generate.log 2>&1
+          sync_status=$?
+          python apps/portal/scripts/generate_sitewide_seo.py >> /tmp/seo-generate.log 2>&1
+          generate_status=$?
+          python apps/portal/scripts/finalize_sitewide_seo.py >> /tmp/seo-generate.log 2>&1
+          finalize_status=$?
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('apps/portal')
+          report_path=root/'data/seo-report.json'
+          report=json.loads(report_path.read_text(encoding='utf-8')) if report_path.is_file() else {}
+          pages=report.get('publicPages') if isinstance(report.get('publicPages'),list) else []
+          routes=sorted({page.get('route') for page in pages if isinstance(page,dict) and isinstance(page.get('route'),str)})
+          required=sorted({'/','/en/','/contact/','/media-application/','/the-code/','/objave/','/publications/'})
+          internal=sorted({'/control/','/automation-status/','/admin/','/operator-dashboard/','/operator-mobile/','/mail-studio/','/webmail/','/campaign-mailer/'})
+          evidence={
+            'required':required,
+            'routes':routes,
+            'missingRoutes':sorted(set(required)-set(routes)),
+            'exposedInternalRoutes':sorted(set(routes)&set(internal)),
+            'publicPageCount':report.get('publicPageCount'),
+            'reportOk':report.get('ok'),
+            'reportStatus':report.get('status'),
+            'reportErrors':report.get('errors'),
+            'publicPages':pages,
+          }
+          (root/'data/seo-contract-debug.json').write_text(json.dumps(evidence,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(evidence,ensure_ascii=False,indent=2))
+          PY
+          cat /tmp/seo-generate.log
+          printf 'sync_status=%s\ngenerate_status=%s\nfinalize_status=%s\n' "$sync_status" "$generate_status" "$finalize_status" > apps/portal/data/seo-command-status.txt
+          test "$sync_status" = 0
+          test "$generate_status" = 0
+          test "$finalize_status" = 0
+      - name: Upload SEO contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-contract-evidence
+          path: |
+            apps/portal/data/seo-report.json
+            apps/portal/data/seo-contract-debug.json
+            apps/portal/data/seo-command-status.txt
+          if-no-files-found: error
+          retention-days: 7
+      - name: Enforce route contract
+        if: steps.generate.outcome == 'success'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          evidence=json.loads(Path('apps/portal/data/seo-contract-debug.json').read_text(encoding='utf-8'))
+          if evidence['missingRoutes']:
+              raise SystemExit(f"Missing public routes: {evidence['missingRoutes']}")
+          if evidence['exposedInternalRoutes']:
+              raise SystemExit(f"Internal routes exposed: {evidence['exposedInternalRoutes']}")
+          count=evidence['publicPageCount']
+          if not isinstance(count,int) or count < 10:
+              raise SystemExit(f"Invalid publicPageCount: {count!r}")
+          PY
+      - name: Fail when SEO generation failed
+        if: steps.generate.outcome != 'success'
+        run: exit 1
