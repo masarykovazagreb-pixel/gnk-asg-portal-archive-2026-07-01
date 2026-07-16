@@ -56,25 +56,45 @@ jobs:
           python apps/portal/scripts/harden_internal_routes.py
           python - <<'PY'
           import json
+          import sys
           import xml.etree.ElementTree as ET
           from pathlib import Path
-          root=Path('apps/portal')
-          report=json.loads((root/'data/seo-report.json').read_text(encoding='utf-8'))
-          routes={page['route'] for page in report['publicPages']}
-          internal={'/control/','/automation-status/','/admin/','/operator-dashboard/','/operator-mobile/','/mail-studio/','/webmail/','/campaign-mailer/'}
-          required={'/','/en/','/contact/','/media-application/','/the-code/','/objave/','/publications/'}
-          assert required <= routes
-          assert not routes & internal
-          assert report['publicPageCount'] >= 10
-          ET.parse(root/'sitemap.xml')
-          ET.parse(root/'image-sitemap.xml')
-          sitemap=(root/'sitemap.xml').read_text(encoding='utf-8')
-          for route in internal:
-              assert f'https://gnk-asg.hr{route}' not in sitemap
-              assert f'https://www.gnk-asg.hr{route}' not in sitemap
-          robots=(root/'robots.txt').read_text(encoding='utf-8')
-          assert 'Disallow: /control/' in robots
-          assert 'Disallow: /automation-status/' in robots
+
+          def require(condition: bool, message: str) -> None:
+              if not condition:
+                  print(f'::error::{message}', file=sys.stderr)
+                  raise SystemExit(1)
+
+          root = Path('apps/portal')
+          report = json.loads((root / 'data/seo-report.json').read_text(encoding='utf-8'))
+          routes = {page['route'] for page in report['publicPages']}
+          internal = {
+              '/control/', '/automation-status/', '/admin/', '/operator-dashboard/',
+              '/operator-mobile/', '/mail-studio/', '/webmail/', '/campaign-mailer/'
+          }
+          required = {'/', '/en/', '/contact/', '/media-application/', '/the-code/', '/objave/', '/publications/'}
+
+          missing = sorted(required - routes)
+          exposed = sorted(routes & internal)
+          require(not missing, f'Missing required public routes: {missing}')
+          require(not exposed, f'Internal routes exposed as public: {exposed}')
+          require(report['publicPageCount'] >= 10, f'Expected at least 10 public pages, found {report["publicPageCount"]}')
+
+          for artifact in ('sitemap.xml', 'image-sitemap.xml'):
+              try:
+                  ET.parse(root / artifact)
+              except ET.ParseError as exc:
+                  require(False, f'Invalid XML in {artifact}: {exc}')
+
+          sitemap = (root / 'sitemap.xml').read_text(encoding='utf-8')
+          for route in sorted(internal):
+              require(f'https://gnk-asg.hr{route}' not in sitemap, f'Canonical sitemap exposes internal route: {route}')
+              require(f'https://www.gnk-asg.hr{route}' not in sitemap, f'Legacy-host sitemap exposes internal route: {route}')
+
+          robots = (root / 'robots.txt').read_text(encoding='utf-8')
+          require('Disallow: /control/' in robots, 'robots.txt does not disallow /control/')
+          require('Disallow: /automation-status/' in robots, 'robots.txt does not disallow /automation-status/')
+          print('Portal SEO and internal-route contract passed.')
           PY
       - name: Validate canonical production source
         run: |
@@ -109,8 +129,11 @@ jobs:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
         run: |
           set -euo pipefail
+          test "$GITHUB_EVENT_NAME" = 'workflow_dispatch'
+          test "$GITHUB_REF_TYPE" = 'branch'
+          test "$GITHUB_REF_NAME" = 'main'
           test "$GITHUB_REF" = 'refs/heads/main'
-          test "$DEPLOY_APPROVAL" = 'Odobravam kontrolirani deploy - token 1203'
+          test "$DEPLOY_APPROVAL" = 'DEPLOY PRODUCTION'
           test "$EXPECTED_SHA" = "$GITHUB_SHA"
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           test "$(git rev-parse origin/main)" = "$EXPECTED_SHA"
@@ -133,6 +156,9 @@ jobs:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
         run: |
           set -euo pipefail
+          test "$GITHUB_EVENT_NAME" = 'workflow_dispatch'
+          test "$GITHUB_REF_TYPE" = 'branch'
+          test "$GITHUB_REF_NAME" = 'main'
           test "$GITHUB_REF" = 'refs/heads/main'
           test "$GITHUB_SHA" = "$EXPECTED_SHA"
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
