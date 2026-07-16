@@ -7,6 +7,7 @@ const client=fs.readFileSync('apps/portal/assets/contact-form-v2.js','utf8');
 const handler=fs.readFileSync('workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js','utf8');
 const contactAi=fs.readFileSync('workers/gnk-asg-direct-operator/src/contact-ai-reply-v1.js','utf8');
 const transport=fs.readFileSync('workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js','utf8');
+const scheduler=fs.readFileSync('workers/gnk-asg-direct-operator/src/manual-mail-scheduler-v1.js','utf8');
 const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js','utf8');
 const signature=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js','utf8');
 const reviewConfig=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.toml','utf8');
@@ -63,6 +64,14 @@ assert.match(transport,/Content-ID:/);
 assert.match(transport,/Content-Location:/);
 assert.match(transport,/X-Attachment-Id:/);
 
+assert.match(scheduler,/mail-studio-extension-v4\.js/);
+assert.doesNotMatch(scheduler,/mail-studio-extension-v2\.js/);
+assert.match(scheduler,/review_environment/);
+assert.match(scheduler,/manual_mail_disabled/);
+assert.match(scheduler,/email_binding_unavailable/);
+assert.match(scheduler,/MAIL_MANUAL_LIVE/);
+assert.match(scheduler,/PUBLIC_ENVIRONMENT/);
+
 assert.match(worker,/handlesContactStudio\(path\)/);
 assert.match(worker,/handleContactStudio\(request,env,ctx,app\)/);
 assert.doesNotMatch(worker,/CLOUDFLARE_API_TOKEN|GNK_ASG_OPERATOR_TOKEN/);
@@ -82,4 +91,4 @@ for(const flag of ['MAIL_PROFILE_TEST_LIVE','MAIL_BOOTSTRAP_SMOKE_TEST','MEDIA_O
  assert.match(productionConfig,new RegExp(`${flag}\\s*=\\s*"false"`));
 }
 
-console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','ai-or-deterministic-acknowledgement'],inlineLogo:true,rateLimit:['ip','email'],reviewMailFailClosed:true,reviewContactAiDisabled:true,productionContactAiEnabled:true,mailSent:false},null,2));
+console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','ai-or-deterministic-acknowledgement'],inlineLogo:true,rateLimit:['ip','email'],scheduledMail:{mailStudio:'v4',reviewFailClosed:true,featureFlagRequired:true,emailBindingRequired:true},reviewMailFailClosed:true,reviewContactAiDisabled:true,productionContactAiEnabled:true,mailSent:false},null,2));
