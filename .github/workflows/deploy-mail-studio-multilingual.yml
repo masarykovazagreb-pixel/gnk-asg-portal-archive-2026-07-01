@@ -56,19 +56,36 @@ jobs:
           from pathlib import Path
           root=Path('apps/portal')
           report=json.loads((root/'data/seo-report.json').read_text(encoding='utf-8'))
-          routes={page['route'] for page in report['publicPages']}
+          pages=report.get('publicPages')
+          if not isinstance(pages,list):
+              raise SystemExit(f"SEO contract failed: publicPages must be a list, got {type(pages).__name__}")
+          malformed=[page for page in pages if not isinstance(page,dict) or not isinstance(page.get('route'),str)]
+          if malformed:
+              raise SystemExit(f"SEO contract failed: malformed publicPages entries: {malformed!r}")
+          routes={page['route'] for page in pages}
           internal={'/control/','/automation-status/','/admin/','/operator-dashboard/','/operator-mobile/','/mail-studio/','/webmail/','/campaign-mailer/'}
           required={'/','/en/','/contact/','/media-application/','/the-code/','/objave/','/publications/'}
-          assert required <= routes
-          assert not routes & internal
-          assert report['publicPageCount'] >= 10
+          missing=sorted(required-routes)
+          exposed=sorted(routes&internal)
+          count=report.get('publicPageCount')
+          print(json.dumps({'required':sorted(required),'routes':sorted(routes),'missingRoutes':missing,'exposedInternalRoutes':exposed,'publicPageCount':count},ensure_ascii=False,indent=2))
+          if missing:
+              raise SystemExit(f"SEO contract failed: missing public routes: {missing}; generated routes: {sorted(routes)}")
+          if exposed:
+              raise SystemExit(f"SEO contract failed: internal routes exposed in publicPages: {exposed}")
+          if not isinstance(count,int) or count < 10:
+              raise SystemExit(f"SEO contract failed: publicPageCount must be an integer >= 10, got {count!r}")
           ET.parse(root/'sitemap.xml')
           ET.parse(root/'image-sitemap.xml')
           sitemap=(root/'sitemap.xml').read_text(encoding='utf-8')
-          for route in internal: assert f'https://www.gnk-asg.hr{route}' not in sitemap
+          for route in internal:
+              forbidden=f'https://www.gnk-asg.hr{route}'
+              if forbidden in sitemap:
+                  raise SystemExit(f"SEO contract failed: internal route present in sitemap: {forbidden}")
           robots=(root/'robots.txt').read_text(encoding='utf-8')
-          assert 'Disallow: /control/' in robots
-          assert 'Disallow: /automation-status/' in robots
+          for directive in ('Disallow: /control/','Disallow: /automation-status/'):
+              if directive not in robots:
+                  raise SystemExit(f"SEO contract failed: robots.txt missing directive: {directive}")
           PY
       - name: Validate canonical production source
         run: |
