@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/portal-layout.js');
   script('/assets/home-activity-model.js');
   script('/assets/index-live-hub-v1.js');
+  script('/assets/digital-workforce-entry-v1.js');
 
   function isEnglish() {
     return /\/en\/?$/.test(window.location.pathname) || /\/en\//.test(window.location.pathname) || (window.GNK_LANG && window.GNK_LANG.get && window.GNK_LANG.get() === 'en');
