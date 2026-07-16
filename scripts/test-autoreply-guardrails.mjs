@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 
 const source=fs.readFileSync('workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js','utf8');
+const mime=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js','utf8');
+const combined=`${source}\n${mime}`;
 
 assert.match(source,/import \{EmailMessage\} from 'cloudflare:email'/);
 assert.match(source,/duplicate_message_id/);
@@ -12,9 +14,9 @@ assert.match(source,/null_return_path/);
 assert.match(source,/bulk_or_list/);
 assert.match(source,/invalid_autoreply_target/);
 assert.match(source,/isGnk\(safeTo\)/);
-assert.match(source,/Precedence: bulk/);
-assert.match(source,/X-Auto-Response-Suppress: All/);
-assert.match(source,/safeHeader\(inReplyTo\)/);
+assert.match(combined,/Precedence: bulk/);
+assert.match(combined,/X-Auto-Response-Suppress: All/);
+assert.match(combined,/safeHeader\(inReplyTo\)/);
 assert.doesNotMatch(source,/typeof EmailMessage==='undefined'/);
 
-console.log(JSON.stringify({ok:true,mailSent:false,guards:['internal-domain','bounce','list','auto-submitted','suppress','null-return-path','message-id-dedupe']},null,2));
+console.log(JSON.stringify({ok:true,mailSent:false,guards:['internal-domain','bounce','list','auto-submitted','suppress','null-return-path','message-id-dedupe'],mimeBuilder:'email-autoreply-mime-v1'},null,2));
