@@ -39,9 +39,10 @@ crons = ["*/15 * * * *"]
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "production-direct-operator"
-DEPLOY_REVISION = "20260716-contact-ai-safety-v1"
+DEPLOY_REVISION = "20260716-inbound-ai-guard-v1"
 SAFE_GET_DIRECT_MODE = "true"
 AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+MAIL_AUTO_REPLY_LIVE = "true"
 AI_AUTO_REPLY_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 AI_AUTO_REPLY_FALLBACK_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
 AI_AUTO_REPLY_DISABLED = "false"
