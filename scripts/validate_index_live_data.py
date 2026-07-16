@@ -10,10 +10,6 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "apps/portal/data"
 EXPECTED = {"BTC", "ETH", "SOL", "XRP"}
 CURRENCIES = {"eur", "usd", "gbp", "chf", "jpy"}
-ALLOWED_NEWS_HOSTS = {
-    "feeds.bbci.co.uk", "www.bbc.co.uk", "bbc.co.uk", "www.bbc.com", "bbc.com",
-    "www.theverge.com", "theverge.com", "cointelegraph.com", "www.cointelegraph.com",
-}
 
 
 def parse_time(value: str) -> datetime:
@@ -62,6 +58,7 @@ def main() -> int:
     seen_ids: set[str] = set()
     seen_urls: set[str] = set()
     newest: datetime | None = None
+    hosts: set[str] = set()
     for item in news:
         item_id = str(item.get("id", "")).strip()
         title = str(item.get("title", "")).strip()
@@ -73,8 +70,9 @@ def main() -> int:
         if item_id in seen_ids or url in seen_urls:
             fail("news feed contains duplicate id or URL")
         seen_ids.add(item_id); seen_urls.add(url)
-        if parsed.scheme != "https" or parsed.hostname not in ALLOWED_NEWS_HOSTS:
-            fail(f"news URL host is not allowed: {url}")
+        if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+            fail(f"news URL is not a safe public HTTPS URL: {url}")
+        hosts.add(parsed.hostname.lower())
         if published > now + timedelta(minutes=5):
             fail(f"news item is dated in the future: {title}")
         newest = published if newest is None or published > newest else newest
@@ -98,6 +96,7 @@ def main() -> int:
         "market_age_seconds": round(age),
         "market_assets": sorted(symbols),
         "news_items": len(news),
+        "news_hosts": len(hosts),
         "newest_news_at": newest.isoformat(),
         "sources_ok": status["sources_ok"],
         "sources_total": status["sources_total"],
