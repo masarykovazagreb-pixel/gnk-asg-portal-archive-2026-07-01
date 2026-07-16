@@ -1,16 +1,10 @@
 #!/usr/bin/env python3
-"""Compatibility bridge for site-wide SEO generation."""
+"""Deterministically prepare and validate committed site-wide SEO artifacts."""
 from __future__ import annotations
 
-import subprocess
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-SCRIPT_DIR = Path(__file__).resolve().parent
-SELF = Path(__file__).resolve()
-
-CANDIDATE_PATTERNS = ("*site*seo*.py", "*seo*generator*.py", "*generate*seo*.py", "*sitemap*.py")
 REQUIRED_FILES = (
     "apps/portal/index.html", "apps/portal/en/index.html", "apps/portal/sitemap.xml", "apps/portal/robots.txt",
     "apps/portal/objave/index.html", "apps/portal/analize/index.html", "apps/portal/komentari/index.html",
@@ -22,18 +16,6 @@ SITEMAP_ENTRIES = (
     ("https://gnk-asg.hr/digital-workforce/", "2026-07-15", "weekly", "0.8"),
     ("https://gnk-asg.hr/editor-desk/", "2026-07-15", "daily", "0.8"),
 )
-
-
-def find_delegate() -> Path | None:
-    seen: set[Path] = set()
-    for pattern in CANDIDATE_PATTERNS:
-        for path in sorted(SCRIPT_DIR.glob(pattern)):
-            resolved = path.resolve()
-            if resolved == SELF or resolved in seen or not path.is_file():
-                continue
-            seen.add(resolved)
-            return path
-    return None
 
 
 def ensure_sitemap_entries() -> None:
@@ -49,8 +31,7 @@ def ensure_sitemap_entries() -> None:
     if additions:
         if "</urlset>" not in text:
             raise SystemExit("Site-wide SEO generation failed: sitemap.xml has no closing urlset tag.")
-        text = text.replace("</urlset>", "\n".join(additions) + "\n</urlset>")
-        sitemap_path.write_text(text, encoding="utf-8")
+        sitemap_path.write_text(text.replace("</urlset>", "\n".join(additions) + "\n</urlset>"), encoding="utf-8")
         print(f"Added {len(additions)} missing sitemap entries.")
 
 
@@ -83,11 +64,6 @@ def validate_existing_seo() -> None:
 
 
 def main() -> int:
-    delegate = find_delegate()
-    if delegate is not None:
-        completed = subprocess.run([sys.executable, str(delegate)], cwd=ROOT, check=False)
-        if completed.returncode:
-            return completed.returncode
     ensure_sitemap_entries()
     validate_existing_seo()
     return 0
