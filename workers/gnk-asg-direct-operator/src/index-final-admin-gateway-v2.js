@@ -21,7 +21,7 @@ import {handleEditorialOperationsApi,isEditorialOperationsApi,runEditorialDraftP
 import {handleEditorialWorkflowApi,VERSION as EDITORIAL_WORKFLOW_API_VERSION} from './editorial-workflow-api-v1.js';
 import {handlePublicOperations,handlePublicOperationsAdmin,isPublicOperationsPath,runPublicOperationsCycle,VERSION as PUBLIC_OPERATIONS_VERSION} from './public-operations-v1.js';
 import {handleEnterpriseProjectApi,isEnterpriseProjectApi,runEnterpriseProjectCycle,VERSION as ENTERPRISE_PROJECTS_VERSION} from './enterprise-project-operations-v1.js';
-import {handleNewsMarketIntelligenceApi,isNewsMarketIntelligenceApi,runNewsMarketIntelligence,VERSION as MARKET_INTELLIGENCE_VERSION} from './news-market-intelligence-v1.js';
+import {handleNewsMarketIntelligenceApi,isNewsMarketIntelligenceApi,runNewsMarketIntelligence,VERSION as MARKET_INTELLIGENCE_VERSION} from './news-market-intelligence-guard-v1.js';
 
 const PUBLICATION_ROUTE_VERSION='GNK_ASG_STATIC_PUBLICATION_ROUTE_V1_20260702';
 export const VERSION=`${BASE_VERSION}_${GREETING_VERSION}_${METADATA_VERSION}_${SHELL_VERSION}_${CAMPAIGN_VERSION}_${LOGO_VERSION}_${CONTACT_MENU_VERSION}_${REGISTRATION_VERSION}_${PDF_FORWARD_FIX_VERSION}_${PUBLIC_THE_CODE_PDF_VERSION}_${MAIL_STUDIO_VERSION}_${AI_AUTO_REPLY_VERSION}_${EMAIL_STATUS_VERSION}_${EMAIL_STATUS_BUTTONS_VERSION}_${EMAIL_PING_VERSION}_${MAIL_SCHEDULER_VERSION}_${TEMPORARY_MESSAGE_VERSION}_${EDITORIAL_PLANNER_VERSION}_${EDITORIAL_WORKFLOW_API_VERSION}_${PUBLIC_OPERATIONS_VERSION}_${ENTERPRISE_PROJECTS_VERSION}_${MARKET_INTELLIGENCE_VERSION}_${PUBLICATION_ROUTE_VERSION}`;
