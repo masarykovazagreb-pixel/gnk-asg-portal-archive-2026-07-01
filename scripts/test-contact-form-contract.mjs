@@ -16,6 +16,7 @@ const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-
 const signature=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js','utf8');
 const reviewConfig=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.toml','utf8');
 const productionConfig=fs.readFileSync('workers/gnk-asg-direct-operator/wrangler.runtime.toml','utf8');
+const productionWorkflow=fs.readFileSync('.github/workflows/deploy-mail-studio-multilingual.yml','utf8');
 
 for(const page of [hr,en]){
  assert.match(page,/id="contactForm"/);
@@ -120,4 +121,16 @@ for(const flag of ['MAIL_PROFILE_TEST_LIVE','MAIL_BOOTSTRAP_SMOKE_TEST','MEDIA_O
  assert.match(productionConfig,new RegExp(`${flag}\\s*=\\s*"false"`));
 }
 
-console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','ai-or-deterministic-acknowledgement'],inlineLogo:true,rateLimit:['ip','email'],scheduledMail:{mailStudio:'v4',reviewFailClosed:true,featureFlagRequired:true,emailBindingRequired:true},campaignQueue:{reviewFailClosed:true,featureFlagRequired:true,emailBindingRequired:true},inboundAutoReply:{reviewFailClosed:true,featureFlagRequired:true,killSwitch:true,emailBindingRequired:true},newsIntelligence:{ssrfGuard:true,httpsOnly:true,privateNetworksBlocked:true},reviewMailFailClosed:true,reviewContactAiDisabled:true,productionContactAiEnabled:true,mailSent:false},null,2));
+assert.match(productionWorkflow,/authorize-production:/);
+assert.match(productionWorkflow,/if:\s*github\.event_name == 'workflow_dispatch'/);
+assert.match(productionWorkflow,/test "\$GITHUB_REF_TYPE" = 'branch'/);
+assert.match(productionWorkflow,/test "\$GITHUB_REF_NAME" = 'main'/);
+assert.match(productionWorkflow,/test "\$GITHUB_REF" = 'refs\/heads\/main'/);
+assert.match(productionWorkflow,/test "\$DEPLOY_APPROVAL" = 'DEPLOY PRODUCTION'/);
+assert.match(productionWorkflow,/needs:\s*\[validate, authorize-production\]/);
+assert.match(productionWorkflow,/environment:\s*production/);
+assert.match(productionWorkflow,/npx wrangler deploy --config wrangler\.runtime\.toml --name gnk-asg-direct-operator/);
+assert.doesNotMatch(productionWorkflow,/Odobravam kontrolirani deploy|token 1203/);
+assert.doesNotMatch(productionWorkflow,/^\s*assert\s+/m);
+
+console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','ai-or-deterministic-acknowledgement'],inlineLogo:true,rateLimit:['ip','email'],scheduledMail:{mailStudio:'v4',reviewFailClosed:true,featureFlagRequired:true,emailBindingRequired:true},campaignQueue:{reviewFailClosed:true,featureFlagRequired:true,emailBindingRequired:true},inboundAutoReply:{reviewFailClosed:true,featureFlagRequired:true,killSwitch:true,emailBindingRequired:true},newsIntelligence:{ssrfGuard:true,httpsOnly:true,privateNetworksBlocked:true},productionAuthorization:{dispatchOnly:true,mainBranchOnly:true,explicitPhrase:true,environmentApproval:true,legacyPhraseBlocked:true,inlinePythonAssertBlocked:true},reviewMailFailClosed:true,reviewContactAiDisabled:true,productionContactAiEnabled:true,mailSent:false},null,2));
