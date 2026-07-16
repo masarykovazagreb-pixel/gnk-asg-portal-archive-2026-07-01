@@ -12,6 +12,12 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 SELF = Path(__file__).resolve()
 
 CANDIDATE_PATTERNS = ("*site*seo*.py", "*seo*generator*.py", "*generate*seo*.py", "*sitemap*.py")
+EXCLUDED_DELEGATES = {
+    SELF,
+    (SCRIPT_DIR / "finalize_sitewide_seo.py").resolve(),
+    (SCRIPT_DIR / "harden_internal_routes.py").resolve(),
+    (SCRIPT_DIR / "sync_publication_indexes.py").resolve(),
+}
 REQUIRED_FILES = (
     "apps/portal/index.html", "apps/portal/en/index.html", "apps/portal/sitemap.xml", "apps/portal/robots.txt",
     "apps/portal/contact/index.html", "apps/portal/media-application/index.html", "apps/portal/the-code/index.html",
@@ -26,7 +32,6 @@ SITEMAP_ENTRIES = (
     ("https://gnk-asg.hr/editor-desk/", "2026-07-15", "daily", "0.8"),
 )
 CANONICAL_HOST = "https://gnk-asg.hr/"
-LEGACY_CANONICAL_HOST = "https://www.gnk-asg.hr/"
 
 
 def find_delegate() -> Path | None:
@@ -34,7 +39,7 @@ def find_delegate() -> Path | None:
     for pattern in CANDIDATE_PATTERNS:
         for path in sorted(SCRIPT_DIR.glob(pattern)):
             resolved = path.resolve()
-            if resolved == SELF or resolved in seen or not path.is_file():
+            if resolved in EXCLUDED_DELEGATES or resolved in seen or not path.is_file():
                 continue
             seen.add(resolved)
             return path
