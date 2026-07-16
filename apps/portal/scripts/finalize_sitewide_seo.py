@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Finalize and strictly validate committed site-wide SEO artifacts."""
+"""Strictly validate committed site-wide SEO artifacts without mutating them."""
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -36,11 +36,6 @@ REQUIRED_URLS = (
     "https://gnk-asg.hr/en/",
     "https://gnk-asg.hr/digital-workforce/",
     "https://gnk-asg.hr/editor-desk/",
-)
-
-SITEMAP_ENTRIES = (
-    ("https://gnk-asg.hr/digital-workforce/", "2026-07-15", "weekly", "0.8"),
-    ("https://gnk-asg.hr/editor-desk/", "2026-07-15", "daily", "0.8"),
 )
 
 
@@ -179,27 +174,7 @@ def write_report(*, errors: list[str], sitemap_locations: list[str]) -> None:
 def fail(messages: list[str], sitemap_locations: list[str] | None = None) -> None:
     write_report(errors=messages, sitemap_locations=sitemap_locations or [])
     formatted = "\n".join(f" - {message}" for message in messages)
-    raise SystemExit(f"Site-wide SEO finalization failed:\n{formatted}")
-
-
-def ensure_required_sitemap_entries() -> None:
-    path = PORTAL / "sitemap.xml"
-    if not path.is_file():
-        fail(["missing apps/portal/sitemap.xml"])
-    text = path.read_text(encoding="utf-8")
-    additions: list[str] = []
-    for url, lastmod, changefreq, priority in SITEMAP_ENTRIES:
-        if url not in text:
-            additions.append(
-                f"  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod>"
-                f"<changefreq>{changefreq}</changefreq><priority>{priority}</priority></url>"
-            )
-    if not additions:
-        return
-    if "</urlset>" not in text:
-        fail(["sitemap.xml has no closing urlset tag"])
-    path.write_text(text.replace("</urlset>", "\n".join(additions) + "\n</urlset>"), encoding="utf-8")
-    print(f"Added {len(additions)} required sitemap entries during finalization.")
+    raise SystemExit(f"Site-wide SEO validation failed:\n{formatted}")
 
 
 def validate_html() -> list[str]:
@@ -212,6 +187,8 @@ def validate_html() -> list[str]:
 
 def sitemap_locations() -> tuple[list[str], list[str]]:
     path = PORTAL / "sitemap.xml"
+    if not path.is_file():
+        return [], ["missing apps/portal/sitemap.xml"]
     try:
         root = ET.parse(path).getroot()
     except ET.ParseError as exc:
@@ -238,13 +215,12 @@ def validate_robots() -> list[str]:
 
 
 def main() -> int:
-    ensure_required_sitemap_entries()
     locations, sitemap_errors = sitemap_locations()
     errors = [*validate_html(), *sitemap_errors, *validate_robots()]
     if errors:
         fail(errors, locations)
     write_report(errors=[], sitemap_locations=locations)
-    print("Site-wide SEO finalization passed.")
+    print("Site-wide SEO validation passed.")
     return 0
 
 
