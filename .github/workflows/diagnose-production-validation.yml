@@ -1,0 +1,58 @@
+name: Diagnose production validation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/diagnose-production-validation.yml'
+      - '.github/workflows/deploy-mail-studio-multilingual.yml'
+      - 'apps/portal/**'
+      - 'workers/gnk-asg-direct-operator/**'
+      - 'scripts/**'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run generators with captured output
+        id: generate
+        continue-on-error: true
+        run: |
+          set +e
+          mkdir -p /tmp/gnk-validation
+          python apps/portal/scripts/sync_publication_indexes.py > /tmp/gnk-validation/01-sync.log 2>&1
+          echo $? > /tmp/gnk-validation/01-sync.status
+          python apps/portal/scripts/generate_sitewide_seo.py > /tmp/gnk-validation/02-generate.log 2>&1
+          echo $? > /tmp/gnk-validation/02-generate.status
+          python apps/portal/scripts/finalize_sitewide_seo.py > /tmp/gnk-validation/03-finalize.log 2>&1
+          echo $? > /tmp/gnk-validation/03-finalize.status
+          python apps/portal/scripts/harden_internal_routes.py > /tmp/gnk-validation/04-harden.log 2>&1
+          echo $? > /tmp/gnk-validation/04-harden.status
+          cp apps/portal/data/seo-report.json /tmp/gnk-validation/seo-report.json 2>/dev/null || true
+          cp apps/portal/sitemap.xml /tmp/gnk-validation/sitemap.xml 2>/dev/null || true
+          cp apps/portal/image-sitemap.xml /tmp/gnk-validation/image-sitemap.xml 2>/dev/null || true
+          cp apps/portal/robots.txt /tmp/gnk-validation/robots.txt 2>/dev/null || true
+          cat /tmp/gnk-validation/*.status
+          test "$(cat /tmp/gnk-validation/01-sync.status)" = 0
+          test "$(cat /tmp/gnk-validation/02-generate.status)" = 0
+          test "$(cat /tmp/gnk-validation/03-finalize.status)" = 0
+          test "$(cat /tmp/gnk-validation/04-harden.status)" = 0
+      - name: Upload validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-validation-evidence
+          path: /tmp/gnk-validation
+          if-no-files-found: error
+          retention-days: 7
+      - name: Enforce generator success
+        if: steps.generate.outcome != 'success'
+        run: exit 1
