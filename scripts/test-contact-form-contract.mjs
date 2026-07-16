@@ -94,8 +94,8 @@ assert.match(newsGuard,/safePublicHttpsUrl/);
 assert.match(newsGuard,/unsafe_source_config/);
 assert.match(newsGuard,/invalid_source_url/);
 assert.match(newsGuard,/localhost/);
-assert.match(newsGuard,/192\.\\\.168/);
-assert.match(newsGuard,/169\.\\\.254/);
+assert.ok(newsGuard.includes('192\\.168'));
+assert.ok(newsGuard.includes('169\\.254'));
 assert.match(gateway,/news-market-intelligence-guard-v1\.js/);
 assert.doesNotMatch(gateway,/from '\.\/news-market-intelligence-v1\.js'/);
 
