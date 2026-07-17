@@ -101,7 +101,7 @@ for(const file of workflowFiles){
  if(file===approvedProductionWorkflow)continue;
  const source=read(`${workflowDirectory}/${file}`);
  const writeDeployLine=source.split(/\r?\n/).find(line=>
-  /\bwrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line)
+  /^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line)
  );
  assert.equal(writeDeployLine,undefined,`${file} contains an alternate write-capable Wrangler deploy: ${writeDeployLine||''}`);
  assert.doesNotMatch(source,/cloudflare\/wrangler-action[^\n]*[\s\S]{0,500}\bcommand:\s*["']?(?:pages\s+)?deploy\b/i,`${file} contains an alternate Wrangler Action deploy`);
