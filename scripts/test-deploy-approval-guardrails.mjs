@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 const read=path=>fs.readFileSync(path,'utf8');
 const workflow=read('.github/workflows/deploy-admin-auth-v6.yml');
+const validationWorkflow=read('.github/workflows/deploy-mail-studio-multilingual.yml');
 const tool=read('scripts/prepare-approved-deploy-v1.mjs');
 const preflight=read('scripts/check-newsroom-route-readiness.sh');
 const verifier=read('scripts/verify-production-release-v38.sh');
@@ -20,7 +21,13 @@ function forbidText(label,source,values){
 requireText('workflow approval contract',workflow,[
  'approved_sha:',
  'ref: ${{ inputs.approved_sha }}',
- 'git merge-base --is-ancestor "$APPROVED_SHA" origin/main',
+ 'authorize-production:',
+ 'deploy-production:',
+ "github.ref == 'refs/heads/main'",
+ 'needs: [authorize-production]',
+ 'environment: production',
+ 'require_eq "$GITHUB_SHA" "$APPROVED_SHA"',
+ 'require_eq "$(git rev-parse origin/main)" "$APPROVED_SHA"',
  "inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'",
  'group: gnk-asg-production-deploy',
  'cancel-in-progress: false',
@@ -36,8 +43,8 @@ requireText('workflow V38 release assertions',workflow,[
  'scripts/test-news-share-routing-v1.mjs','scripts/verify-production-release-v38.sh',
  'current-static-asset-20260715','source-redirect','20260715-source-links-v2',
  'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova','AI ne smije pisati konačnu odluku',
- 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V6_20260715_AI_BRANDED','aiMessageText','loadEmailLogo','signature.html',
- 'min-height:520px','latest news is not 2026-07-15','reference news source URL missing'
+ 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V9_20260717_UNTRUSTED_SUBJECT_DATA','aiMessageText','loadEmailLogo','signature.html',
+ 'min-height:520px'
 ]);
 forbidText('workflow',workflow,[
  "grep -o 'public-compact-menu-v1.js'",
@@ -45,6 +52,29 @@ forbidText('workflow',workflow,[
  'ASSERT admin session readiness HTTP 200',
  'scripts/verify-production-route.sh'
 ]);
+
+forbidText('production workflow bypasses',workflow,[
+ 'git merge-base --is-ancestor',
+ 'contents: write',
+ 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V6_20260715_AI_BRANDED',
+ "DEPLOY PRODUCTION"
+]);
+requireText('validation-only workflow',validationWorkflow,[
+ 'pull_request:',
+ 'wrangler deploy --dry-run',
+ 'Production deployment is not permitted from this event.'
+]);
+forbidText('validation-only workflow',validationWorkflow,[
+ 'workflow_dispatch:',
+ 'authorize-production:',
+ 'deploy-production:',
+ 'environment: production',
+ 'CLOUDFLARE_API_TOKEN',
+ 'CLOUDFLARE_ACCOUNT_ID',
+ 'git push origin',
+ 'Persist generated portal metadata'
+]);
+assert.equal(/wrangler deploy(?! --dry-run)/.test(validationWorkflow),false,'validation workflow must not contain a write-capable wrangler deploy');
 
 const preflightPosition=workflow.indexOf('Preflight Newsroom route ownership');
 const tokenPosition=workflow.indexOf('Resolve token hash');
