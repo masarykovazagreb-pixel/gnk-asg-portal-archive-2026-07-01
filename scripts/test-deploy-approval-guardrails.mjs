@@ -102,7 +102,7 @@ for(const file of workflowFiles){
  if(file===approvedProductionWorkflow)continue;
  const source=read(`${workflowDirectory}/${file}`);
  const writeDeployLine=source.split(/\r?\n/).find(line=>
-  /^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line)
+  /^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&! /--dry-run\b/i.test(line)
  );
  if(writeDeployLine)alternateDeployViolations.push(`${file}: write-capable Wrangler deploy: ${writeDeployLine.trim()}`);
  if(/cloudflare\/wrangler-action[^\n]*[\s\S]{0,500}\bcommand:\s*["']?(?:pages\s+)?deploy\b/i.test(source))alternateDeployViolations.push(`${file}: Wrangler Action deploy`);
@@ -111,10 +111,18 @@ for(const file of workflowFiles){
 assert.deepEqual(alternateDeployViolations,[],'Only deploy-admin-auth-v6.yml may contain production deployment capability');
 
 const preflightPosition=workflow.indexOf('Preflight Newsroom route ownership');
-const tokenPosition=workflow.indexOf('Resolve token hash');
+const installPosition=workflow.indexOf('Install locked direct operator dependencies without lifecycle scripts');
+const integrityPosition=workflow.indexOf('Reconfirm tracked release integrity before any production secret');
+const tokenPosition=workflow.indexOf('Resolve token hash after integrity verification');
+const operatorSecretPosition=workflow.indexOf('secrets.GNK_ASG_OPERATOR_TOKEN');
+const cloudflareSecretPosition=workflow.indexOf('secrets.CLOUDFLARE_API_TOKEN');
 const firstDeployPosition=workflow.indexOf('Deploy contact session bridge');
-assert.ok(preflightPosition>=0&&tokenPosition>=0&&firstDeployPosition>=0,'workflow preflight/deploy steps missing');
-assert.ok(preflightPosition<tokenPosition&&preflightPosition<firstDeployPosition,'preflight must run before secrets and deploy');
+assert.ok([preflightPosition,installPosition,integrityPosition,tokenPosition,operatorSecretPosition,cloudflareSecretPosition,firstDeployPosition].every(position=>position>=0),'workflow preflight/integrity/secret/deploy steps missing');
+assert.ok(preflightPosition<installPosition,'route preflight must run before dependency installation');
+assert.ok(installPosition<integrityPosition,'dependency installation must finish before final integrity verification');
+assert.ok(integrityPosition<tokenPosition&&integrityPosition<operatorSecretPosition,'operator secret must not be exposed before final integrity verification');
+assert.ok(tokenPosition<cloudflareSecretPosition&&operatorSecretPosition<cloudflareSecretPosition,'Cloudflare credentials must remain later than operator-token hashing');
+assert.ok(cloudflareSecretPosition<firstDeployPosition,'Cloudflare credentials must only appear in deploy steps');
 
 requireText('newsroom preflight',preflight,[
  'gnk-asg-news-backend','/newsroom/','/en/newsroom/','No production changes were made',
@@ -170,7 +178,7 @@ console.log(JSON.stringify({
  productionVerification:'V38 exact release headers and public route evidence',
  adminSessionVerification:'ready-or-configured-unauthorized',
  editorialAssetsVerification:'current static assets and canonical routes',
- preflight:'before-secrets-and-deploy',
+ preflight:'before-dependencies-and-all-production-secrets',
  routeMutation:false,
- finalAssertions:'named-and-diagnostic'
+ finalAssertions:'named-diagnostic-and-secret-ordered'
 },null,2));
