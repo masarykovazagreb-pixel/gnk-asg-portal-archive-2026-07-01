@@ -97,16 +97,18 @@ assert.equal(/wrangler@4 deploy(?! --dry-run)/.test(publicAssetsValidation),fals
 const workflowDirectory='.github/workflows';
 const approvedProductionWorkflow='deploy-admin-auth-v6.yml';
 const workflowFiles=fs.readdirSync(workflowDirectory).filter(file=>/\.ya?ml$/i.test(file)).sort();
+const alternateDeployViolations=[];
 for(const file of workflowFiles){
  if(file===approvedProductionWorkflow)continue;
  const source=read(`${workflowDirectory}/${file}`);
  const writeDeployLine=source.split(/\r?\n/).find(line=>
   /^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line)
  );
- assert.equal(writeDeployLine,undefined,`${file} contains an alternate write-capable Wrangler deploy: ${writeDeployLine||''}`);
- assert.doesNotMatch(source,/cloudflare\/wrangler-action[^\n]*[\s\S]{0,500}\bcommand:\s*["']?(?:pages\s+)?deploy\b/i,`${file} contains an alternate Wrangler Action deploy`);
- assert.doesNotMatch(source,/^\s*environment:\s*production\s*$/im,`${file} contains an alternate production environment job`);
+ if(writeDeployLine)alternateDeployViolations.push(`${file}: write-capable Wrangler deploy: ${writeDeployLine.trim()}`);
+ if(/cloudflare\/wrangler-action[^\n]*[\s\S]{0,500}\bcommand:\s*["']?(?:pages\s+)?deploy\b/i.test(source))alternateDeployViolations.push(`${file}: Wrangler Action deploy`);
+ if(/^\s*environment:\s*production\s*$/im.test(source))alternateDeployViolations.push(`${file}: production environment job`);
 }
+assert.deepEqual(alternateDeployViolations,[],'Only deploy-admin-auth-v6.yml may contain production deployment capability');
 
 const preflightPosition=workflow.indexOf('Preflight Newsroom route ownership');
 const tokenPosition=workflow.indexOf('Resolve token hash');
