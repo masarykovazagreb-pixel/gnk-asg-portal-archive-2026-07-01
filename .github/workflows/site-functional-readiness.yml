@@ -36,7 +36,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           node --check workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v17.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
           bash -n scripts/check-newsroom-route-readiness.sh
           bash -n scripts/verify-production-route.sh
 
@@ -91,6 +91,7 @@ jobs:
           set -euo pipefail
           node scripts/audit-seo-entity-integrity-v1.mjs
           node scripts/audit-all-pages-detailed-v1.mjs
+          node scripts/audit-public-portal-v1.mjs
           node scripts/test-data-fallback-contract.mjs
 
       - name: Newsroom route preflight
