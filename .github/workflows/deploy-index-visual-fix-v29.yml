@@ -1,74 +1,14 @@
-name: Deploy Stable Public V29
+name: Archived legacy workflow - deploy-index-visual-fix-v29.yml
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-index-visual-fix-v29.yml'
-      - 'apps/portal/assets/index-mail-link-v1.js'
-      - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'
   workflow_dispatch:
-  issue_comment:
-    types: [created]
 
 permissions:
   contents: read
 
-concurrency:
-  group: deploy-stable-public-v29
-  cancel-in-progress: true
-
 jobs:
-  deploy:
-    if: >-
-      github.event_name != 'issue_comment' ||
-      (github.event.issue.number == 65 && github.event.comment.body == '/deploy-index-download-centre')
+  archived:
+    if: ${{ false }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-      - name: Validate final public flow
-        shell: bash
-        run: |
-          set -euo pipefail
-          node --check apps/portal/assets/index-mail-link-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          grep -q "/admin-center/" apps/portal/assets/index-mail-link-v1.js
-          grep -q "PDF CENTAR" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          grep -q "MAIL STUDIO" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          grep -q "MEDIA CENTAR" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-      - name: Deploy final INDEX gateway
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy src/index-final-admin-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator
-      - name: Verify INDEX PDF and ADMIN token flow
-        shell: bash
-        run: |
-          set -euo pipefail
-          CB="${GITHUB_RUN_ID}"
-          for attempt in 1 2 3 4 5 6 7 8; do
-            curl -sS -D /tmp/hr.headers "https://gnk-asg.hr/?cb=${CB}-${attempt}" -o /tmp/hr.html || true
-            curl -sS -D /tmp/en.headers "https://gnk-asg.hr/en/?cb=${CB}-${attempt}" -o /tmp/en.html || true
-            curl -sS -D /tmp/admin.headers "https://gnk-asg.hr/admin-center/?cb=${CB}-${attempt}" -o /tmp/admin.html || true
-            curl -sS -D /tmp/pdf.headers "https://gnk-asg.hr/downloads/?cb=${CB}-${attempt}" -o /tmp/pdf.html || true
-            if grep -qi '^x-gnk-asg-final-admin-gateway:' /tmp/hr.headers \
-              && grep -qi '^x-gnk-asg-final-admin-gateway:' /tmp/en.headers \
-              && grep -q 'href="/downloads/"[^>]*>PDF CENTAR<' /tmp/hr.html \
-              && grep -q 'href="/en/downloads/"[^>]*>PDF CENTRE<' /tmp/en.html \
-              && grep -q 'href="/admin-center/"[^>]*>ADMIN<' /tmp/hr.html \
-              && grep -q 'href="/admin-center/"[^>]*>ADMIN<' /tmp/en.html \
-              && grep -qi 'operatorski token' /tmp/admin.html \
-              && grep -qi 'content-type: text/html' /tmp/pdf.headers \
-              && ! grep -q '>Tržišta<' /tmp/hr.html \
-              && ! grep -q '>Markets<' /tmp/en.html; then
-              echo 'INDEX_PDF_ADMIN_TOKEN_FLOW_OK=true'
-              exit 0
-            fi
-            sleep 8
-          done
-          exit 1
+      - run: echo "Archived. Production deployment is permitted only through deploy-admin-auth-v6.yml with DEPLOY_ADMIN_AUTH_V6."

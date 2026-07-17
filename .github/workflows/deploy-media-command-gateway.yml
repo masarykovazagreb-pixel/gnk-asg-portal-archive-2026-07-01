@@ -1,104 +1,14 @@
-name: Deploy Media Command Gateway
+name: Archived legacy workflow - deploy-media-command-gateway.yml
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-media-command-gateway.yml'
-      - 'workers/gnk-asg-direct-operator/src/index-media-command-gateway-v1.js'
-      - 'workers/gnk-asg-direct-operator/src/media-command-bridge-v1.js'
-      - 'workers/gnk-asg-direct-operator/src/media-command-center-v1.js'
-  workflow_run:
-    workflows: ["Deploy public portal"]
-    types: [completed]
   workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: gnk-asg-media-command-gateway-production
-  cancel-in-progress: true
+  contents: read
 
 jobs:
-  deploy:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+  archived:
+    if: ${{ false }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
-        with:
-          ref: main
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-
-      - name: Validate Media Center gateway
-        shell: bash
-        run: |
-          set -euo pipefail
-          printf '{"ok":false,"status":"VALIDATING_GATEWAY","recordedAt":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/gateway-status.json
-          node --check workers/gnk-asg-direct-operator/src/index-media-command-gateway-v1.js
-          node --check workers/gnk-asg-direct-operator/src/media-command-bridge-v1.js
-          node --check workers/gnk-asg-direct-operator/src/media-command-center-v1.js
-          grep -q 'GNK_ASG_MEDIA_COMMAND_GATEWAY_V1_20260628' workers/gnk-asg-direct-operator/src/index-media-command-gateway-v1.js
-          grep -q 'GNK_ASG_MEDIA_COMMAND_BRIDGE_V1_20260628' workers/gnk-asg-direct-operator/src/media-command-bridge-v1.js
-          cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy src/index-media-command-gateway-v1.js --dry-run --config wrangler.toml --name gnk-asg-direct-operator \
-            --var MEDIA_OUTREACH_LIVE:false \
-            --var 'MEDIA_OUTREACH_TEST_RECIPIENTS:beckuphome@gmail.com rht@gmx.com' \
-            --var MEDIA_OUTREACH_FROM:media@gnk-asg.hr
-
-      - name: Deploy Media Center gateway
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          set -euo pipefail
-          printf '{"ok":false,"status":"DEPLOYING_GATEWAY","recordedAt":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/gateway-status.json
-          npx --yes wrangler@4 deploy src/index-media-command-gateway-v1.js --config wrangler.toml --name gnk-asg-direct-operator \
-            --var MEDIA_OUTREACH_LIVE:false \
-            --var 'MEDIA_OUTREACH_TEST_RECIPIENTS:beckuphome@gmail.com rht@gmx.com' \
-            --var MEDIA_OUTREACH_FROM:media@gnk-asg.hr
-
-      - name: Verify Media Center gateway
-        shell: bash
-        run: |
-          set -euo pipefail
-          printf '{"ok":false,"status":"VERIFYING_GATEWAY","recordedAt":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/gateway-status.json
-          ok=false
-          for attempt in $(seq 1 24); do
-            code=$(curl -sS -D /tmp/bridge.headers -o /tmp/bridge.json -w '%{http_code}' "https://gnk-asg.hr/api/media-command-bridge/status?cb=${GITHUB_RUN_ID}-${attempt}" || true)
-            media=$(curl -sS -o /dev/null -w '%{http_code}' "https://gnk-asg.hr/media-command-center/?cb=${GITHUB_RUN_ID}-${attempt}" || true)
-            if [ "$code" = '200' ] \
-              && [ "$media" = '303' ] \
-              && grep -qi '^x-gnk-asg-media-command-gateway: GNK_ASG_MEDIA_COMMAND_GATEWAY_V1_20260628' /tmp/bridge.headers \
-              && grep -q 'GNK_ASG_MEDIA_COMMAND_BRIDGE_V1_20260628' /tmp/bridge.json \
-              && grep -q '"testRecipients": 2' /tmp/bridge.json \
-              && grep -q '"productionActionsEnabled": false' /tmp/bridge.json; then
-                ok=true
-                break
-            fi
-            sleep 10
-          done
-          if [ "$ok" = 'true' ]; then
-            jq --arg recorded "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '. + {ok:true,status:"DEPLOYED_AND_VERIFIED",recordedAt:$recorded}' /tmp/bridge.json > /tmp/gateway-status.json
-          else
-            jq -n --arg recorded "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --argjson code "${code:-0}" --argjson media "${media:-0}" '{ok:false,status:"GATEWAY_VERIFICATION_FAILED",bridgeHttp:$code,mediaHttp:$media,recordedAt:$recorded}' > /tmp/gateway-status.json
-            cat /tmp/bridge.json || true
-            exit 1
-          fi
-
-      - name: Persist gateway deployment status
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -s /tmp/gateway-status.json || printf '{"ok":false,"status":"GATEWAY_WORKFLOW_FAILED_WITHOUT_STAGE","recordedAt":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/gateway-status.json
-          cp /tmp/gateway-status.json ops/media-gateway-status.json
-          git config user.name 'GNK ASG Media Gateway'
-          git config user.email 'media@gnk-asg.hr'
-          git add ops/media-gateway-status.json
-          git commit -m 'Record Media Center gateway status [skip ci]' || exit 0
-          git push
+      - run: echo "Archived. Production deployment is permitted only through deploy-admin-auth-v6.yml with DEPLOY_ADMIN_AUTH_V6."
