@@ -36,7 +36,7 @@ for(const source of [adminCenter,headquarters]){
  assert.match(source,/href="\/digital-workforce\/"/);
 }
 assert.match(adminCenter,/href="\/workers\/"/);
-assert.match(adminCenter,/Worker Directory Admin/);
+assert.match(adminCenter,/Upravljanje radnom snagom/);
 assert.match(headquarters,/Javni portal digitalne radne snage bez internih podataka/);
 assert.match(digitalWorkforce,/Tri aktualna operativna načela/);
 assert.match(digitalWorkforce,/Rad i rezultati/);
