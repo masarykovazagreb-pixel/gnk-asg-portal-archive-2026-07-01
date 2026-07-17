@@ -52,6 +52,10 @@ assert.match(handler,/MAX_TOTAL_ATTACHMENT_BYTES=6_400_000/);
 assert.match(handler,/too_many_attachments/);
 assert.match(handler,/attachments_total_too_large/);
 assert.match(handler,/request_too_large/);
+assert.match(handler,/AUTH_PROBE_FAIL_CLOSED/);
+assert.match(handler,/return response\.ok\?null:response/);
+assert.match(handler,/auth_probe_failed/);
+assert.doesNotMatch(handler,/response\.status===401\|\|response\.status===403\?response:null/);
 assert.doesNotMatch(handler,/env\.EMAIL\.send\(enforceRequiredSignature/);
 
 assert.match(transport,/import \{EmailMessage\} from 'cloudflare:email'/);
@@ -66,4 +70,4 @@ assert.match(worker,/handleContactStudio\(request,env,ctx,app\)/);
 assert.doesNotMatch(worker,/CLOUDFLARE_API_TOKEN|GNK_ASG_OPERATOR_TOKEN/);
 assert.match(signature,/logo-gnk-asg-email\.png/);
 assert.match(signature,/canonical-png-64x66/);
-console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','acknowledgement'],rateLimit:{requests:5,windowSeconds:900,store:'existing KV',failClosed:true},attachments:{count:3,perFileBytes:3200000,totalBytes:6400000,pdfOnly:true},inlineLogo:true,mailSent:false},null,2));
+console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','acknowledgement'],rateLimit:{requests:5,windowSeconds:900,store:'existing KV',failClosed:true},attachments:{count:3,perFileBytes:3200000,totalBytes:6400000,pdfOnly:true},studioAuth:{probe:'/api/mail-sync/health',successOnly:'2xx',failClosedOn:['401','403','404','5xx','exception']},inlineLogo:true,mailSent:false},null,2));
