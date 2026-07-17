@@ -14,14 +14,14 @@ const APPROVED_DEPLOY_CONFIGS=new Set([
 const walk=dir=>fs.existsSync(dir)?fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{const p=path.join(dir,entry.name);return entry.isDirectory()?walk(p):[p]}):[];
 const files=walk(ROOT).filter(p=>/^wrangler(?:\..+)?\.toml$/i.test(path.basename(p)));
 const quoted=(raw,key)=>raw.match(new RegExp(`^\\s*${key}\\s*=\\s*["']([^"']+)["']\\s*$`,'m'))?.[1]||'';
-const arrays=(raw,key)=>{const m=raw.match(new RegExp(`^\\s*${key}\\s*=\\s*\\[([\\s\\S]*?)\\]`,'m'));return m?[...m[1].matchAll(/["']([^"']+)["']/g)].map(x=>x[1]):[]};
+const stringRoutes=raw=>{const m=raw.match(/^\\s*routes\\s*=\\s*\\[([\\s\\S]*?)\\]/m);return m?[...m[1].matchAll(/(?:^|,)\\s*["']([^"']+)["']\\s*(?=,|$)/gm)].map(x=>x[1]):[]};
 const objectPatterns=raw=>[...raw.matchAll(/pattern\s*=\s*["']([^"']+)["']/g)].map(x=>x[1]);
 
 const configs=files.map(file=>{
   const raw=fs.readFileSync(file,'utf8');
   const name=quoted(raw,'name');
   const main=quoted(raw,'main');
-  const routes=[...new Set([...arrays(raw,'routes'),...objectPatterns(raw)])];
+  const routes=[...new Set([...stringRoutes(raw),...objectPatterns(raw)])];
   const routeLess=routes.length===0;
   const relative=path.relative('.',file).split(path.sep).join('/');
   return{file:relative,name,main,routes,routeLess,approvedDeployConfig:APPROVED_DEPLOY_CONFIGS.has(relative)};
