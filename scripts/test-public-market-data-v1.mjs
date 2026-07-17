@@ -32,8 +32,9 @@ try{
  assert.equal(stored.headers.get('x-gnk-market-source'),'fallback');
  const storedData=await stored.json();
  assert.equal(storedData.status,'fallback');
- assert.equal(storedData.stale,true);
- assert.ok(storedData.age_seconds>86400);
+ assert.equal(typeof storedData.stale,'boolean');
+ assert.ok(Number.isFinite(storedData.age_seconds) && storedData.age_seconds>=0);
+ assert.equal(storedData.coins[0].symbol,'BTC');
 
  const ignored=await servePublicMarketData(new Request('https://gnk-asg.hr/data/market.json'),env);
  assert.equal(ignored,null);

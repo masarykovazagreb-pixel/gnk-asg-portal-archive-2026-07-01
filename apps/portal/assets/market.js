@@ -5,6 +5,7 @@
   let dataset = {coins: []};
   let currency = 'eur';
   let live = false;
+  let refreshing = false;
   function money(value, code) {
     const number = Number(value || 0);
     const digits = code === 'jpy' ? 0 : (number < 1 ? 5 : 2);
@@ -24,6 +25,8 @@
     if (!grid) return;
     if (!(dataset.coins || []).length) {
       grid.innerHTML = '<article class="coin"><strong>' + (en ? 'Market data are temporarily unavailable.' : 'Tržišni podatci trenutačno nisu dostupni.') + '</strong></article>';
+      const updated = $('#marketUpdated');
+      if (updated) updated.textContent = en ? 'Refresh pending…' : 'Osvježavanje u tijeku…';
       return;
     }
     grid.innerHTML = dataset.coins.map((item) => {
@@ -49,37 +52,58 @@
     convert();
   }
   async function sameOrigin() {
-    const response = await fetch('/api/public-market?v=' + Date.now(), {cache:'no-store', headers:{accept:'application/json'}});
-    if (!response.ok) throw new Error('market endpoint unavailable');
-    const data = await response.json();
-    if (!Array.isArray(data?.coins) || !data.coins.length) throw new Error('empty market endpoint');
-    dataset = data;
-    live = data.status === 'ok' && data.stale !== true;
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 8000);
+    try {
+      const response = await fetch('/api/public-market?v=' + Date.now(), {cache:'no-store', headers:{accept:'application/json'}, signal:controller.signal});
+      if (!response.ok) throw new Error('market endpoint unavailable');
+      const data = await response.json();
+      if (!Array.isArray(data?.coins) || !data.coins.length) throw new Error('empty market endpoint');
+      dataset = data;
+      live = data.status === 'ok' && data.stale !== true;
+    } finally {
+      window.clearTimeout(timeout);
+    }
   }
   async function stored() {
     try {
       const response = await fetch('/data/market.json?v=' + Date.now(), {cache:'no-store'});
-      if (!response.ok) return;
+      if (!response.ok) return false;
       const data = await response.json();
+      if (!Array.isArray(data?.coins) || !data.coins.length) return false;
       const timestamp = Date.parse(String(data?.updated_at || ''));
       const age = Number.isFinite(timestamp) ? Date.now() - timestamp : Infinity;
       dataset = {...data, status:'fallback', stale:age > 86400000, age_seconds:Number.isFinite(age)?Math.max(0,Math.floor(age/1000)):null};
       live = false;
-    } catch (_) {}
+      return true;
+    } catch (_) { return false; }
   }
   async function refresh() {
-    try { await sameOrigin(); }
-    catch (_) { await stored(); }
-    render();
-    notify();
+    if (refreshing) return;
+    refreshing = true;
+    try {
+      const hasStored = await stored();
+      if (hasStored) { render(); notify(); }
+      try {
+        await sameOrigin();
+        render();
+        notify();
+      } catch (_) {
+        if (!hasStored) { dataset = {coins:[], stale:true}; live = false; render(); notify(); }
+      }
+    } finally {
+      refreshing = false;
+    }
   }
   function init() {
     $('#currency')?.addEventListener('change', (event) => { currency = event.target.value; render(); });
     $('#convertAmount')?.addEventListener('input', convert);
     $('#convertCoin')?.addEventListener('change', convert);
     window.addEventListener('gnk-language-change', render);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+    window.addEventListener('online', refresh);
     refresh();
-    window.setInterval(refresh, 300000);
+    window.setInterval(refresh, 120000);
   }
   document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
 })();
