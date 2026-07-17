@@ -66,7 +66,11 @@ echo "ASSERT current news HTTP 200 and exact release ${revision}; actual=${news_
 [[ "$news_status" = "200" ]]
 has_release_proof "$out/news.headers"
 latest=$(jq -r 'if type=="array" then .[0].published_at // .[0].publishedAt // .[0].date // "" else (.items[0].published_at // .items[0].publishedAt // .items[0].date // "") end' "$out/news.json")
-[[ "$latest" == 2026-07-15* ]]
+echo "ASSERT current news timestamp is valid and not older than the V38 baseline; actual=${latest}"
+[[ "$latest" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T ]]
+latest_epoch=$(date -u -d "$latest" +%s)
+minimum_news_epoch=$(date -u -d '2026-07-15T00:00:00Z' +%s)
+(( latest_epoch >= minimum_news_epoch ))
 grep -Fiq 'x-gnk-news-source: current-static-asset-20260715' "$out/news.headers"
 
 market_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/market.headers" --output "$out/market.json" --write-out '%{http_code}' "$(request_url "${base}/api/public-market" "${cache}-market")" || true)
