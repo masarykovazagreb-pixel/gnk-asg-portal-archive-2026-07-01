@@ -1,80 +1,14 @@
-name: Deploy final media stack via issue 91
+name: Archived legacy workflow - deploy-delivery-issue91.yml
 
 on:
-  issue_comment:
-    types: [created]
+  workflow_dispatch:
 
 permissions:
   contents: read
-  issues: write
-
-concurrency:
-  group: gnk-asg-canonical-production
-  cancel-in-progress: true
 
 jobs:
-  deploy:
-    if: github.event.issue.number == 91 && github.event.comment.body == '/deploy-media-delivery 20260626-91'
+  archived:
+    if: ${{ false }}
     runs-on: ubuntu-latest
-    timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-
-      - name: Verify package
-        run: |
-          set -euxo pipefail
-          node --check workers/gnk-asg-direct-operator/src/media-command-control-sync-v3.js
-          node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-v3.js
-          node --check workers/gnk-asg-direct-operator/src/media-outreach-delivery-v4.js
-          node --check workers/gnk-asg-direct-operator/src/index-media-command-center-v21.js
-          node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v21.js
-          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          test -s apps/portal/assets/index-polish-v1.css
-          cd workers/gnk-asg-direct-operator
-          npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
-
-      - name: Deploy package
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-direct-operator
-
-      - name: Verify live contract
-        run: |
-          set -euo pipefail
-          sleep 60
-          base='https://gnk-asg.hr'; cb=$(date +%s)
-          curl -sS "$base/data/deployment-status.json?cb=$cb" -o /tmp/status.json
-          curl -sS -D /tmp/delivery.h "$base/api/media-command-center/delivery-status?cb=$cb" -o /tmp/delivery.json
-          curl -sS -D /tmp/private.h "$base/data/media-outreach-contacts-v1.json?cb=$cb" -o /tmp/private.json
-          curl -sS "$base/?cb=$cb" -o /tmp/root.html
-          curl -sS "$base/en/?cb=$cb" -o /tmp/en.html
-          node <<'JS'
-          const fs=require('node:fs');
-          const status=JSON.parse(fs.readFileSync('/tmp/status.json','utf8'));
-          const first=p=>fs.readFileSync(p,'utf8').split(/\r?\n/)[0];
-          const root=fs.readFileSync('/tmp/root.html','utf8'),en=fs.readFileSync('/tmp/en.html','utf8');
-          const expected={publicVisual:'GNK_ASG_PUBLIC_VISUAL_V25_INDEX_POLISH_20260626',mediaCommandWrapper:'GNK_ASG_MEDIA_COMMAND_CENTER_WRAPPER_V21_20260626_R6_DELIVERY_SYNC',mediaControlSync:'GNK_ASG_MEDIA_CONTROL_SYNC_V3_20260626',mediaDelivery:'GNK_ASG_MEDIA_OUTREACH_DELIVERY_V4_20260626_CONTROL_SYNC',emailSendApi:'CLOUDFLARE_STRUCTURED_SEND_V1',contactDataExposure:'BLOCKED',testSending:'LOCKED',productionSending:'LOCKED'};
-          const failures=[];
-          for(const [k,v] of Object.entries(expected))if(status?.[k]!==v)failures.push(`${k}=${JSON.stringify(status?.[k])}`);
-          if(!/\s(401|403)\s/.test(first('/tmp/delivery.h')))failures.push(`delivery=${first('/tmp/delivery.h')}`);
-          if(!/\s404\s/.test(first('/tmp/private.h')))failures.push(`private=${first('/tmp/private.h')}`);
-          if(!root.includes('gnk-index-title')||!root.includes('index-polish-v1.css'))failures.push('hr_polish_missing');
-          if(!en.includes('gnk-index-title')||!en.includes('index-polish-v1.css'))failures.push('en_polish_missing');
-          fs.writeFileSync('/tmp/result.json',JSON.stringify({checkedAt:new Date().toISOString(),failures,status,delivery:first('/tmp/delivery.h'),privateContacts:first('/tmp/private.h')},null,2));
-          if(failures.length)process.exit(1);
-          JS
-
-      - name: Report result
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          JOB_STATUS: ${{ job.status }}
-          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          payload=$(cat /tmp/result.json 2>/dev/null || printf '{"error":"verification_not_reached"}')
-          gh issue comment 91 --body "Final media stack deploy **${JOB_STATUS}** · ${RUN_URL}\n\n\`\`\`json\n${payload}\n\`\`\`"
+      - run: echo "Archived. Production deployment is permitted only through deploy-admin-auth-v6.yml with DEPLOY_ADMIN_AUTH_V6."
