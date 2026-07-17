@@ -92,8 +92,8 @@ assert.doesNotMatch(handler,/error:clean\(error\?\.message\|\|error/);
 assert.doesNotMatch(handler,/env\.EMAIL\.send\(enforceRequiredSignature/);
 
 const originGate=handler.indexOf("if(!sameOrigin(request))");
-const authGate=handler.indexOf('const denied=await authorised(request,env,ctx,app)');
-const sendCall=handler.indexOf('const result=await sendBrandedEmail');
+const authGate=handler.indexOf('const denied=await authorised(request,env,ctx,app)',originGate);
+const sendCall=handler.indexOf('const result=await sendBrandedEmail',authGate);
 assert.ok(originGate>=0&&authGate>=0&&sendCall>=0&&originGate<authGate&&authGate<sendCall,'Studio send must enforce origin and explicit session before transport');
 
 assert.match(transport,/import \{EmailMessage\} from 'cloudflare:email'/);
