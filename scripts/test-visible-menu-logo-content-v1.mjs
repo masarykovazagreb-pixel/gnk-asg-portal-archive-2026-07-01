@@ -37,7 +37,7 @@ for(const source of [adminCenter,headquarters]){
 }
 assert.match(adminCenter,/href="\/workers\/"/);
 assert.match(adminCenter,/Upravljanje radnom snagom/);
-assert.match(headquarters,/Javni portal digitalne radne snage bez internih podataka/);
+assert.match(headquarters,/Javni portal odluka, rada, rezultata, objava, novinara i statusa projekata bez internih podataka/);
 assert.match(digitalWorkforce,/Tri aktualna operativna načela/);
 assert.match(digitalWorkforce,/Rad i rezultati/);
 assert.match(digitalWorkforce,/Novinari i newsroom/);
