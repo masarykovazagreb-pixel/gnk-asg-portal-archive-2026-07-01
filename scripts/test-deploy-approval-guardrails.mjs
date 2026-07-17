@@ -102,7 +102,7 @@ for(const file of workflowFiles){
  if(file===approvedProductionWorkflow)continue;
  const source=read(`${workflowDirectory}/${file}`);
  const writeDeployLine=source.split(/\r?\n/).find(line=>
-  /^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&! /--dry-run\b/i.test(line)
+  /^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line)
  );
  if(writeDeployLine)alternateDeployViolations.push(`${file}: write-capable Wrangler deploy: ${writeDeployLine.trim()}`);
  if(/cloudflare\/wrangler-action[^\n]*[\s\S]{0,500}\bcommand:\s*["']?(?:pages\s+)?deploy\b/i.test(source))alternateDeployViolations.push(`${file}: Wrangler Action deploy`);
@@ -115,14 +115,14 @@ const installPosition=workflow.indexOf('Install locked direct operator dependenc
 const integrityPosition=workflow.indexOf('Reconfirm tracked release integrity before any production secret');
 const tokenPosition=workflow.indexOf('Resolve token hash after integrity verification');
 const operatorSecretPosition=workflow.indexOf('secrets.GNK_ASG_OPERATOR_TOKEN');
-const cloudflareSecretPosition=workflow.indexOf('secrets.CLOUDFLARE_API_TOKEN');
 const firstDeployPosition=workflow.indexOf('Deploy contact session bridge');
+const cloudflareSecretPosition=workflow.indexOf('secrets.CLOUDFLARE_API_TOKEN',firstDeployPosition);
 assert.ok([preflightPosition,installPosition,integrityPosition,tokenPosition,operatorSecretPosition,cloudflareSecretPosition,firstDeployPosition].every(position=>position>=0),'workflow preflight/integrity/secret/deploy steps missing');
 assert.ok(preflightPosition<installPosition,'route preflight must run before dependency installation');
 assert.ok(installPosition<integrityPosition,'dependency installation must finish before final integrity verification');
 assert.ok(integrityPosition<tokenPosition&&integrityPosition<operatorSecretPosition,'operator secret must not be exposed before final integrity verification');
-assert.ok(tokenPosition<cloudflareSecretPosition&&operatorSecretPosition<cloudflareSecretPosition,'Cloudflare credentials must remain later than operator-token hashing');
-assert.ok(cloudflareSecretPosition<firstDeployPosition,'Cloudflare credentials must only appear in deploy steps');
+assert.ok(tokenPosition<firstDeployPosition&&operatorSecretPosition<firstDeployPosition,'operator-token hashing must finish before the first deploy step');
+assert.ok(firstDeployPosition<cloudflareSecretPosition,'Cloudflare credentials must be scoped inside the first deploy step, not exposed earlier');
 
 requireText('newsroom preflight',preflight,[
  'gnk-asg-news-backend','/newsroom/','/en/newsroom/','No production changes were made',
