@@ -90,6 +90,9 @@ jobs:
       - name: Static page integrity
         run: node scripts/audit-all-pages-detailed-v1.mjs
 
+      - name: Public portal audit
+        run: node scripts/audit-public-portal-v1.mjs
+
       - name: Fallback data contract
         run: node scripts/test-data-fallback-contract.mjs
 
