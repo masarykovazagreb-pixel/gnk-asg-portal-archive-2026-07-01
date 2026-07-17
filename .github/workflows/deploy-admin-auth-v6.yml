@@ -187,9 +187,9 @@ jobs:
           hash=$(printf '%s' "$value" | sha256sum | awk '{print $1}')
           echo "hash=$hash" >> "$GITHUB_OUTPUT"
 
-      - name: Install direct operator dependencies without lifecycle scripts
+      - name: Install locked direct operator dependencies without lifecycle scripts
         working-directory: workers/gnk-asg-direct-operator
-        run: npm install --ignore-scripts --no-audit --no-fund
+        run: npm ci --ignore-scripts --no-audit --no-fund
 
       - name: Reconfirm tracked release integrity before Cloudflare credentials
         env:
