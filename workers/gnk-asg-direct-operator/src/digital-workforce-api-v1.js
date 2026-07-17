@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_API_V1_20260715';
+export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_API_V2_20260717';
 
 const PUBLIC_PACKAGE={
   publicationLane:[
@@ -43,13 +43,42 @@ const PUBLIC_PACKAGE={
 
 const SENSITIVE_HOLD=['interni administrativni podaci','vjerodajnice, tokeni i sigurnosne postavke','bankovni podaci i nejavni financijski detalji','nacrti ugovora i neobjavljeni pravni dokumenti','interni planovi akvizicija i pregovora','osobni podaci','neodobrene financijske tvrdnje ili projekcije','sadržaji koji čekaju izvršni ili pravni pregled'];
 
-const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-gnk-digital-workforce':VERSION}});
-const pathOf=r=>new URL(r.url).pathname.replace(/\/+$/,'')||'/';
+const MAX_ADMIN_BODY_BYTES=262144;
+const PUBLIC_METHODS=new Set(['GET','HEAD']);
+const ADMIN_METHODS=new Set(['GET','POST','PUT']);
+
+const json=(request,data,status=200,extraHeaders={})=>new Response(request.method==='HEAD'?null:JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-gnk-digital-workforce':VERSION,...extraHeaders}});
+const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+const methodNotAllowed=(request,allow)=>json(request,{ok:false,error:'method_not_allowed'},405,{allow:allow.join(', ')});
 
 async function auth(request,env,ctx,app){
-  const target=new URL('/api/operator-auth-check',request.url);
-  const response=await app.fetch(new Request(target,{method:'GET',headers:request.headers,redirect:'manual'}),env,ctx);
-  return response.ok;
+  try{
+    const target=new URL('/api/operator-auth-check',request.url);
+    const response=await app.fetch(new Request(target,{method:'GET',headers:request.headers,redirect:'manual'}),env,ctx);
+    if(!response.ok)return false;
+    const data=await response.clone().json().catch(()=>null);
+    return data?.authenticated===true;
+  }catch{return false;}
+}
+
+function sameOrigin(request){
+  const origin=String(request.headers.get('origin')||'').trim();
+  if(!origin)return false;
+  try{return new URL(origin).origin===new URL(request.url).origin;}catch{return false;}
+}
+
+async function readAdminJson(request){
+  const type=String(request.headers.get('content-type')||'').toLowerCase();
+  if(!type.includes('application/json'))return{error:json(request,{ok:false,error:'unsupported_media_type'},415)};
+  const declared=Number(request.headers.get('content-length')||0);
+  if(Number.isFinite(declared)&&declared>MAX_ADMIN_BODY_BYTES)return{error:json(request,{ok:false,error:'payload_too_large'},413)};
+  let text;
+  try{text=await request.text();}catch{return{error:json(request,{ok:false,error:'invalid_body'},400)}}
+  if(new TextEncoder().encode(text).byteLength>MAX_ADMIN_BODY_BYTES)return{error:json(request,{ok:false,error:'payload_too_large'},413)};
+  let body;
+  try{body=JSON.parse(text);}catch{return{error:json(request,{ok:false,error:'invalid_json'},400)}}
+  if(!body||typeof body!=='object'||Array.isArray(body))return{error:json(request,{ok:false,error:'invalid_json'},400)};
+  return{body};
 }
 
 async function ensureTable(env){
@@ -65,33 +94,54 @@ async function latest(env){
 
 export async function handleDigitalWorkforce(request,env,ctx,app){
   const path=pathOf(request);
+
   if(path==='/api/public/digital-workforce/health'){
+    if(!PUBLIC_METHODS.has(request.method))return methodNotAllowed(request,['GET','HEAD']);
     let d1=false,stored=false;
     try{d1=Boolean(await ensureTable(env));stored=Boolean(await latest(env));}catch{}
-    return json({ok:true,status:d1?'ready':'degraded',checks:{worker:true,assets:Boolean(env.ASSETS),d1,storedPackage:stored},version:VERSION,updatedAt:PUBLIC_PACKAGE.updatedAt},d1?200:503);
+    return json(request,{ok:true,status:d1?'ready':'degraded',checks:{worker:true,assets:Boolean(env.ASSETS),d1,storedPackage:stored},version:VERSION,updatedAt:PUBLIC_PACKAGE.updatedAt},d1?200:503);
   }
+
   if(path==='/api/public/editor-desk'){
-    let row=null;try{row=await latest(env);}catch{}
-    const payload=row?JSON.parse(row.public_json):PUBLIC_PACKAGE;
-    return json({ok:true,status:row?.status||'approved',package:payload,source:row?'d1':'embedded-safe-default'});
+    if(!PUBLIC_METHODS.has(request.method))return methodNotAllowed(request,['GET','HEAD']);
+    let row=null;
+    try{row=await latest(env);}catch{}
+    let payload=PUBLIC_PACKAGE;
+    if(row){
+      try{payload=JSON.parse(row.public_json);}catch{return json(request,{ok:false,error:'stored_package_invalid'},503);}
+    }
+    return json(request,{ok:true,status:row?.status||'approved',package:payload,source:row?'d1':'embedded-safe-default'});
   }
+
   if(path==='/api/admin/editor-desk'){
-    if(!await auth(request,env,ctx,app))return json({ok:false,error:'unauthorized'},401);
+    if(!ADMIN_METHODS.has(request.method))return methodNotAllowed(request,['GET','POST','PUT']);
+    if(!await auth(request,env,ctx,app))return json(request,{ok:false,error:'unauthorized'},401);
+
     if(request.method==='GET'){
-      const row=await latest(env);
-      return json({ok:true,package:row?{...row,public_json:JSON.parse(row.public_json),sensitive_json:JSON.parse(row.sensitive_json)}:{package_date:'2026-07-15',status:'approved',public_json:PUBLIC_PACKAGE,sensitive_json:SENSITIVE_HOLD}});
+      try{
+        const row=await latest(env);
+        if(!row)return json(request,{ok:true,package:{package_date:'2026-07-15',status:'approved',public_json:PUBLIC_PACKAGE,sensitive_json:SENSITIVE_HOLD},source:'embedded-safe-default'});
+        return json(request,{ok:true,package:{...row,public_json:JSON.parse(row.public_json),sensitive_json:JSON.parse(row.sensitive_json)},source:'d1'});
+      }catch{return json(request,{ok:false,error:'storage_unavailable'},503);}
     }
-    if(request.method==='PUT'||request.method==='POST'){
-      if(!await ensureTable(env))return json({ok:false,error:'d1_unavailable'},503);
-      const body=await request.json().catch(()=>null);if(!body||typeof body!=='object')return json({ok:false,error:'invalid_json'},400);
-      const date=String(body.package_date||new Date().toISOString().slice(0,10));
-      const status=['draft','review','approved','published'].includes(body.status)?body.status:'draft';
-      const pub=body.public_json&&typeof body.public_json==='object'?body.public_json:PUBLIC_PACKAGE;
-      const sensitive=Array.isArray(body.sensitive_json)?body.sensitive_json:SENSITIVE_HOLD;
+
+    if(!sameOrigin(request))return json(request,{ok:false,error:'invalid_origin'},403);
+    const parsed=await readAdminJson(request);
+    if(parsed.error)return parsed.error;
+    if(!await ensureTable(env))return json(request,{ok:false,error:'d1_unavailable'},503);
+
+    const body=parsed.body;
+    const date=String(body.package_date||new Date().toISOString().slice(0,10));
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return json(request,{ok:false,error:'invalid_package_date'},400);
+    const status=['draft','review','approved','published'].includes(body.status)?body.status:'draft';
+    const pub=body.public_json&&typeof body.public_json==='object'&&!Array.isArray(body.public_json)?body.public_json:PUBLIC_PACKAGE;
+    const sensitive=Array.isArray(body.sensitive_json)?body.sensitive_json:SENSITIVE_HOLD;
+
+    try{
       await env.GNK_ASG_D1.prepare(`INSERT INTO editor_desk_packages(package_date,status,public_json,sensitive_json,updated_at) VALUES(?,?,?,?,?) ON CONFLICT(package_date) DO UPDATE SET status=excluded.status,public_json=excluded.public_json,sensitive_json=excluded.sensitive_json,updated_at=excluded.updated_at`).bind(date,status,JSON.stringify(pub),JSON.stringify(sensitive),new Date().toISOString()).run();
-      return json({ok:true,saved:true,package_date:date,status});
-    }
-    return json({ok:false,error:'method_not_allowed'},405);
+    }catch{return json(request,{ok:false,error:'storage_unavailable'},503);}
+    return json(request,{ok:true,saved:true,package_date:date,status});
   }
+
   return null;
 }
