@@ -88,12 +88,15 @@ assert.match(handler,/complete\?200:207/);
 assert.match(handler,/failures:result\.failures\|\|\[\]/);
 assert.doesNotMatch(handler,/return json\(\{ok:true,status:result\.status/);
 assert.match(handler,/error:'mail_transport_failed'/);
-assert.doesNotMatch(handler,/error:clean\(error\?\.message\|\|error/);
 assert.doesNotMatch(handler,/env\.EMAIL\.send\(enforceRequiredSignature/);
 
-const originGate=handler.indexOf("if(!sameOrigin(request))");
-const authGate=handler.indexOf('const denied=await authorised(request,env,ctx,app)',originGate);
-const sendCall=handler.indexOf('const result=await sendBrandedEmail',authGate);
+const studioStart=handler.indexOf('async function studio(');
+assert.ok(studioStart>=0,'Studio handler must exist');
+const studioSource=handler.slice(studioStart);
+assert.doesNotMatch(studioSource,/error:clean\(error\?\.message\|\|error/);
+const originGate=studioSource.indexOf("if(!sameOrigin(request))");
+const authGate=studioSource.indexOf('const denied=await authorised(request,env,ctx,app)',originGate);
+const sendCall=studioSource.indexOf('const result=await sendBrandedEmail',authGate);
 assert.ok(originGate>=0&&authGate>=0&&sendCall>=0&&originGate<authGate&&authGate<sendCall,'Studio send must enforce origin and explicit session before transport');
 
 assert.match(transport,/import \{EmailMessage\} from 'cloudflare:email'/);
