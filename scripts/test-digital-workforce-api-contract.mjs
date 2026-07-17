@@ -8,7 +8,7 @@ const rejectedApp={fetch:async()=>jsonResponse({authenticated:false},401)};
 const call=(path,{method='GET',headers={},body,env={},app=authenticatedApp}={})=>handleDigitalWorkforce(new Request(origin+path,{method,headers,body}),env,{},app);
 const body=async response=>response.json();
 
-assert.match(VERSION,/DIGITAL_WORKFORCE_API_V2_20260717/);
+assert.match(VERSION,/DIGITAL_WORKFORCE_API_V3_20260717/);
 
 {
   const response=await call('/api/public/digital-workforce/health',{method:'POST'});
@@ -24,6 +24,27 @@ assert.match(VERSION,/DIGITAL_WORKFORCE_API_V2_20260717/);
   const response=await call('/api/public/editor-desk',{method:'HEAD'});
   assert.equal(response.status,200);
   assert.equal(await response.text(),'');
+}
+{
+  let runCalls=0;
+  const env={GNK_ASG_D1:{prepare(sql){
+    assert.doesNotMatch(sql,/CREATE\s+TABLE/i,'public health must not create schema');
+    return{first:async()=>null,run:async()=>{runCalls+=1;}};
+  }}};
+  const response=await call('/api/public/digital-workforce/health',{env});
+  assert.equal(response.status,200);
+  assert.equal(runCalls,0);
+}
+{
+  let runCalls=0;
+  const env={GNK_ASG_D1:{prepare(sql){
+    assert.doesNotMatch(sql,/CREATE\s+TABLE/i,'public editor desk must not create schema');
+    return{first:async()=>null,run:async()=>{runCalls+=1;}};
+  }}};
+  const response=await call('/api/public/editor-desk',{env});
+  assert.equal(response.status,200);
+  assert.equal((await body(response)).source,'embedded-safe-default');
+  assert.equal(runCalls,0);
 }
 {
   const response=await call('/api/admin/editor-desk',{app:rejectedApp});
@@ -60,4 +81,4 @@ assert.match(VERSION,/DIGITAL_WORKFORCE_API_V2_20260717/);
   assert.equal(response,null);
 }
 
-console.log(JSON.stringify({ok:true,version:VERSION,publicMethods:['GET','HEAD'],adminMethods:['GET','POST','PUT'],maxBodyBytes:262144,origin:'same-origin-required-for-writes',auth:'explicit-authenticated-true'},null,2));
+console.log(JSON.stringify({ok:true,version:VERSION,publicMethods:['GET','HEAD'],publicMutation:false,adminMethods:['GET','POST','PUT'],maxBodyBytes:262144,origin:'same-origin-required-for-writes',auth:'explicit-authenticated-true'},null,2));

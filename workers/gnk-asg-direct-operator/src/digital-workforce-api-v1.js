@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_API_V2_20260717';
+export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_API_V3_20260717';
 
 const PUBLIC_PACKAGE={
   publicationLane:[
@@ -88,7 +88,7 @@ async function ensureTable(env){
 }
 
 async function latest(env){
-  if(!await ensureTable(env))return null;
+  if(!env.GNK_ASG_D1)return null;
   return env.GNK_ASG_D1.prepare('SELECT * FROM editor_desk_packages ORDER BY package_date DESC,id DESC LIMIT 1').first();
 }
 
@@ -97,8 +97,9 @@ export async function handleDigitalWorkforce(request,env,ctx,app){
 
   if(path==='/api/public/digital-workforce/health'){
     if(!PUBLIC_METHODS.has(request.method))return methodNotAllowed(request,['GET','HEAD']);
-    let d1=false,stored=false;
-    try{d1=Boolean(await ensureTable(env));stored=Boolean(await latest(env));}catch{}
+    const d1=Boolean(env.GNK_ASG_D1);
+    let stored=false;
+    if(d1){try{stored=Boolean(await latest(env));}catch{}}
     return json(request,{ok:true,status:d1?'ready':'degraded',checks:{worker:true,assets:Boolean(env.ASSETS),d1,storedPackage:stored},version:VERSION,updatedAt:PUBLIC_PACKAGE.updatedAt},d1?200:503);
   }
 
@@ -122,7 +123,7 @@ export async function handleDigitalWorkforce(request,env,ctx,app){
         const row=await latest(env);
         if(!row)return json(request,{ok:true,package:{package_date:'2026-07-15',status:'approved',public_json:PUBLIC_PACKAGE,sensitive_json:SENSITIVE_HOLD},source:'embedded-safe-default'});
         return json(request,{ok:true,package:{...row,public_json:JSON.parse(row.public_json),sensitive_json:JSON.parse(row.sensitive_json)},source:'d1'});
-      }catch{return json(request,{ok:false,error:'storage_unavailable'},503);}
+      }catch{return json(request,{ok:true,package:{package_date:'2026-07-15',status:'approved',public_json:PUBLIC_PACKAGE,sensitive_json:SENSITIVE_HOLD},source:'embedded-safe-default'});}
     }
 
     if(!sameOrigin(request))return json(request,{ok:false,error:'invalid_origin'},403);
