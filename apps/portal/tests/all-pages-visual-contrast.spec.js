@@ -70,6 +70,11 @@ for (const entry of routeEntries) {
     if (isHomepage) testInfo.setTimeout(60_000);
 
     try {
+      await page.route('**/api/operator-auth-check', route => route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ authenticated: true, auditFixture: true })
+      }));
       if (entry.redirectStub) {
         await page.setContent(entry.html, { waitUntil: 'domcontentloaded' });
       } else {
