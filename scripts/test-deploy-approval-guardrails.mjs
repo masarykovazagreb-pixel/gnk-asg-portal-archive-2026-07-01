@@ -94,6 +94,20 @@ forbidText('legacy public-assets validation-only workflow',publicAssetsValidatio
 ]);
 assert.equal(/wrangler@4 deploy(?! --dry-run)/.test(publicAssetsValidation),false,'legacy public-assets workflow must not contain a write-capable wrangler deploy');
 
+const workflowDirectory='.github/workflows';
+const approvedProductionWorkflow='deploy-admin-auth-v6.yml';
+const workflowFiles=fs.readdirSync(workflowDirectory).filter(file=>/\.ya?ml$/i.test(file)).sort();
+for(const file of workflowFiles){
+ if(file===approvedProductionWorkflow)continue;
+ const source=read(`${workflowDirectory}/${file}`);
+ const writeDeployLine=source.split(/\r?\n/).find(line=>
+  /\bwrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line)
+ );
+ assert.equal(writeDeployLine,undefined,`${file} contains an alternate write-capable Wrangler deploy: ${writeDeployLine||''}`);
+ assert.doesNotMatch(source,/cloudflare\/wrangler-action[^\n]*[\s\S]{0,500}\bcommand:\s*["']?(?:pages\s+)?deploy\b/i,`${file} contains an alternate Wrangler Action deploy`);
+ assert.doesNotMatch(source,/^\s*environment:\s*production\s*$/im,`${file} contains an alternate production environment job`);
+}
+
 const preflightPosition=workflow.indexOf('Preflight Newsroom route ownership');
 const tokenPosition=workflow.indexOf('Resolve token hash');
 const firstDeployPosition=workflow.indexOf('Deploy contact session bridge');
