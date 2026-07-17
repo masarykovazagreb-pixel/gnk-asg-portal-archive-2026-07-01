@@ -39,6 +39,7 @@ jobs:
           set -euo pipefail
           node --check apps/portal/assets/contact-form-v2.js
           node --check apps/portal/assets/public-market-live-v1.js
+          node --check apps/portal/assets/market-centre-data.js
           node --check apps/portal/assets/newsroom-live-v1.js
           node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
@@ -64,6 +65,9 @@ jobs:
           grep -Fq 'setInterval(render,900000)' apps/portal/assets/public-market-live-v1.js
           grep -Fq "{cache:'no-store'}" apps/portal/assets/public-market-live-v1.js
           grep -Fq 'Promise.allSettled' apps/portal/assets/public-market-live-v1.js
+          grep -Fq 'new AbortController()' apps/portal/assets/market-centre-data.js
+          grep -Fq 'setTimeout(()=>controller.abort(),15000)' apps/portal/assets/market-centre-data.js
+          grep -Fq "window.addEventListener('pageshow',()=>refreshNow(true))" apps/portal/assets/market-centre-data.js
           grep -Fq 'crons = ["*/15 * * * *"]' workers/gnk-asg-direct-operator/wrangler.toml
 
       - name: Review environment stays fail-closed
