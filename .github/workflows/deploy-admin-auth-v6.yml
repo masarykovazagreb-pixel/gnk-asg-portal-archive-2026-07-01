@@ -156,7 +156,8 @@ jobs:
           git fetch origin main --no-tags
           require_eq "$(git rev-parse origin/main)" "$APPROVED_SHA" 'origin/main SHA'
           [ -z "$(git status --porcelain)" ] || fail 'Deployment checkout is not clean'
-          echo "Authorized SHA and approval reconfirmed immediately before production deployment.\n          echo "DEPLOY_SOURCE_SHA=$APPROVED_SHA" >> "$GITHUB_ENV""
+          echo "Authorized SHA and approval reconfirmed immediately before production deployment."
+          echo "DEPLOY_SOURCE_SHA=$APPROVED_SHA" >> "$GITHUB_ENV"
 
       - uses: actions/setup-node@v4
         with:
