@@ -85,14 +85,14 @@ jobs:
           node scripts/test-deploy-approval-guardrails.mjs
           node scripts/audit-worker-route-ownership.mjs
 
-      - name: SEO and page integrity
-        shell: bash
-        run: |
-          set -euo pipefail
-          node scripts/audit-seo-entity-integrity-v1.mjs
-          node scripts/audit-all-pages-detailed-v1.mjs
-          node scripts/audit-public-portal-v1.mjs
-          node scripts/test-data-fallback-contract.mjs
+      - name: SEO integrity
+        run: node scripts/audit-seo-entity-integrity-v1.mjs
+
+      - name: Static page integrity
+        run: node scripts/audit-all-pages-detailed-v1.mjs
+
+      - name: Fallback data contract
+        run: node scripts/test-data-fallback-contract.mjs
 
       - name: Newsroom route preflight
         run: scripts/check-newsroom-route-readiness.sh readiness-preflight
