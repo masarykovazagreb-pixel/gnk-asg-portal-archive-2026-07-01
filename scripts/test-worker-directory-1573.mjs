@@ -19,14 +19,19 @@ assert.equal(meta.total,1573);
 assert.equal(meta.base,1536);
 assert.equal(meta.specialists,37);
 assert.equal(new Set(data.map(x=>x.code)).size,1573);
+assert.equal(new Set(data.map(x=>x.firstName)).size,1573);
+assert.equal(new Set(data.map(x=>x.lastName)).size,1573);
 assert.equal(new Set(data.map(x=>x.name)).size,1573);
+assert.equal(meta.uniqueFirstNames,1573);
+assert.equal(meta.uniqueLastNames,1573);
+assert.equal(meta.uniqueNames,1573);
 assert.equal(data[0].code,'DWF-0001');
 assert.equal(data.at(-1).code,'DWF-1573');
-for(const worker of data){for(const key of ['code','name','position','location','sector','func','stage','job'])assert.ok(String(worker[key]||'').trim(),`${worker.code} missing ${key}`)}
+for(const worker of data){for(const key of ['code','firstName','lastName','name','position','location','sector','func','stage','job'])assert.ok(String(worker[key]||'').trim(),`${worker.code} missing ${key}`);assert.doesNotMatch(worker.lastName,/-/)}
 assert.match(page,/data-worker-count>1\.573/);
 assert.match(page,/1\.536 temeljnih profila/);
 assert.match(page,/37 specijalističkih profila/);
 assert.match(page,/1\.573 jedinstvena identiteta/);
-assert.match(page,/workers-directory-v1\.js\?v=20260713-exact-1573/);
+assert.match(page,/workers-directory-v1\.js\?v=20260717-aligned-identities/);
 assert.doesNotMatch(page,/1\.536 digitalnih workflow funkcija/);
-console.log(JSON.stringify({ok:true,total:data.length,base:meta.base,specialists:meta.specialists,uniqueCodes:meta.uniqueCodes,uniqueNames:meta.uniqueNames,first:data[0].code,last:data.at(-1).code},null,2));
+console.log(JSON.stringify({ok:true,total:data.length,base:meta.base,specialists:meta.specialists,uniqueCodes:meta.uniqueCodes,uniqueFirstNames:meta.uniqueFirstNames,uniqueLastNames:meta.uniqueLastNames,uniqueNames:meta.uniqueNames,first:data[0].code,last:data.at(-1).code},null,2));
