@@ -112,8 +112,6 @@ jobs:
           grep -Fq 'signature.html' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'min-height:520px' apps/portal/assets/mail-studio-ui-v28.js
 
-
-
   deploy-production:
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'
     needs: [authorize-production]
@@ -182,15 +180,28 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          fail() { echo "::error::$1" >&2; exit 1; }
           value="$TOKEN"
           [ -n "$value" ] || value="$TOKEN_FALLBACK"
-          test -n "$value"
+          [ -n "$value" ] || fail 'Neither GNK_ASG_OPERATOR_TOKEN nor OPERATOR_TOKEN is configured'
           hash=$(printf '%s' "$value" | sha256sum | awk '{print $1}')
           echo "hash=$hash" >> "$GITHUB_OUTPUT"
 
-      - name: Install direct operator dependencies
+      - name: Install locked direct operator dependencies without lifecycle scripts
         working-directory: workers/gnk-asg-direct-operator
-        run: npm install --no-audit --no-fund
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Reconfirm tracked release integrity before Cloudflare credentials
+        env:
+          APPROVED_SHA: ${{ inputs.approved_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$1" >&2; exit 1; }
+          [ "$(git rev-parse HEAD)" = "$APPROVED_SHA" ] || fail 'Checked-out HEAD changed after authorization'
+          git diff --quiet || fail 'Tracked release files changed after authorization'
+          git diff --cached --quiet || fail 'Staged release files changed after authorization'
+          echo "Tracked release integrity reconfirmed before Cloudflare credentials are exposed."
 
       - name: Deploy contact session bridge
         working-directory: workers/gnk-asg-contact-api-worker
