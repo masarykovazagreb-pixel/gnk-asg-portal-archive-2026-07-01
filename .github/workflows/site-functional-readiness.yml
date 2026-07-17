@@ -1,0 +1,114 @@
+name: Site Functional Readiness
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'workers/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-functional-readiness-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/contact-form-v2.js
+          node --check apps/portal/assets/public-market-live-v1.js
+          node --check apps/portal/assets/newsroom-live-v1.js
+          node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
+          node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          node --check workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+          bash -n scripts/check-newsroom-route-readiness.sh
+          bash -n scripts/verify-production-route.sh
+
+      - name: Contact form contract
+        run: node scripts/test-contact-form-contract.mjs
+
+      - name: News contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/test-news-queue-guardrails.mjs
+          node scripts/test-news-share-routing-v1.mjs
+
+      - name: Market refresh cadence contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'setInterval(render,900000)' apps/portal/assets/public-market-live-v1.js
+          grep -Fq "{cache:'no-store'}" apps/portal/assets/public-market-live-v1.js
+          grep -Fq 'Promise.allSettled' apps/portal/assets/public-market-live-v1.js
+          grep -Fq 'crons = ["*/15 * * * *"]' workers/gnk-asg-direct-operator/wrangler.toml
+
+      - name: Review environment stays fail-closed
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -Fq 'MAIL_AUTO_REPLY_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -Fq 'MAIL_STUDIO_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -Fq 'MEDIA_OUTREACH_SCHEDULED_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
+
+      - name: Mail and AI safety contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/test-mail-transport-guardrails.mjs
+          node scripts/test-email-mime-guardrails.mjs
+          node scripts/test-autoreply-guardrails.mjs
+          node scripts/test-autoreply-all-addresses.mjs
+          node scripts/test-autoreply-logo-ai-contract.mjs
+
+      - name: Authorization and route ownership
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/test-deploy-approval-guardrails.mjs
+          node scripts/audit-worker-route-ownership.mjs
+
+      - name: SEO integrity
+        run: node scripts/audit-seo-entity-integrity-v1.mjs
+
+      - name: Static page integrity
+        run: node scripts/audit-all-pages-detailed-v1.mjs
+
+      - name: Public portal audit
+        run: node scripts/audit-public-portal-v1.mjs
+
+      - name: Fallback data contract
+        run: node scripts/test-data-fallback-contract.mjs
+
+      - name: Newsroom route preflight
+        run: scripts/check-newsroom-route-readiness.sh readiness-preflight
+
+      - name: Full predeploy gate
+        run: node scripts/predeploy-release-v6.mjs
+
+      - name: Upload readiness evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-functional-readiness-${{ github.sha }}
+          path: |
+            readiness-preflight/**
+            artifacts/*.json
+          if-no-files-found: warn
+          retention-days: 14
