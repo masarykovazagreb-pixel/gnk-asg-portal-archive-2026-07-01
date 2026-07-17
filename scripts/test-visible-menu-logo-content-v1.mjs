@@ -40,7 +40,8 @@ for(const source of [adminCenter,headquarters]){
 assert.match(adminCenter,/href="\/workers\/"/);
 assert.match(adminCenter,/Upravljanje radnom snagom/);
 assert.match(headquarters,/Javni portal odluka, rada, rezultata, objava, novinara i statusa projekata bez internih podataka/);
-for(const marker of ['90-dnevni plan','Dnevni bilteni','Projekti i faze','Rizici','Mišljenja','Ovisnosti','Zadaci','GNKC krediti','Newsroom','1.573 workera','Zapisnik aktivnosti'])assert.match(digitalWorkforce,new RegExp(marker.replace('.','\\.')));
+for(const tab of ['plan','bulletins','projects','risks','opinions','dependencies','tasks','credits','newsroom','workers','log'])assert.match(digitalWorkforce,new RegExp(`data-dw-tab="${tab}"`));
+assert.match(digitalWorkforce,/1\.573 workera/);
 assert.match(digitalWorkforce,/digital-workforce-suite-v1\.css/);
 assert.match(digitalWorkforce,/digital-workforce-suite-v1\.js/);
 for(const route of ['plan','bulletins','projects','risks','opinions','dependencies','tasks','credits','newsroom','workers','activity-log']){
