@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_SUITE_V3_20260717';
+export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_SUITE_V2_20260717';
 const PUBLIC_METHODS=new Set(['GET','HEAD']);
 const pathOf=r=>new URL(r.url).pathname.replace(/\/+$/,'')||'/';
 const json=(r,data,status=200)=>new Response(r.method==='HEAD'?null:JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-gnk-digital-workforce-suite':VERSION}});
