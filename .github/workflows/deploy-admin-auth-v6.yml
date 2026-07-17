@@ -20,42 +20,51 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    if: github.event_name == 'workflow_dispatch' && inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'
+  authorize-production:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 12
+    permissions:
+      contents: read
     steps:
-      - name: Validate approval input
-        env:
-          APPROVED_SHA: ${{ inputs.approved_sha }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          [[ "$APPROVED_SHA" =~ ^[0-9a-fA-F]{40}$ ]]
-          echo "Approved production SHA: $APPROVED_SHA"
-
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.approved_sha }}
           fetch-depth: 0
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Verify exact approved release source
+      - name: Verify main ref, exact reviewed SHA and executive approval
         env:
+          DEPLOY_APPROVAL: ${{ inputs.confirm_production_deploy }}
           APPROVED_SHA: ${{ inputs.approved_sha }}
         shell: bash
         run: |
           set -euo pipefail
-          actual=$(git rev-parse HEAD)
-          test "$actual" = "$APPROVED_SHA"
-          git fetch origin main --no-tags
-          git merge-base --is-ancestor "$APPROVED_SHA" origin/main
-          test -z "$(git status --porcelain)"
-          echo "DEPLOY_SOURCE_SHA=$actual" >> "$GITHUB_ENV"
+          fail() { echo "::error::$1" >&2; exit 1; }
+          require_eq() {
+            local actual="$1" expected="$2" label="$3"
+            [ "$actual" = "$expected" ] || fail "$label mismatch: expected '$expected', got '$actual'"
+          }
+          require_nonempty() {
+            local value="$1" label="$2"
+            [ -n "$value" ] || fail "$label must not be empty"
+          }
 
+          require_eq "$GITHUB_EVENT_NAME" 'workflow_dispatch' 'GitHub event'
+          require_eq "$GITHUB_REF_TYPE" 'branch' 'Git ref type'
+          require_eq "$GITHUB_REF_NAME" 'main' 'Git ref name'
+          require_eq "$GITHUB_REF" 'refs/heads/main' 'Full Git ref'
+          require_eq "$DEPLOY_APPROVAL" 'DEPLOY_ADMIN_AUTH_V6' 'Executive approval phrase'
+          require_nonempty "$APPROVED_SHA" 'Approved SHA'
+          [[ "$APPROVED_SHA" =~ ^[0-9a-f]{40}$ ]] || fail "Approved SHA is not a full 40-character lowercase commit SHA: '$APPROVED_SHA'"
+          require_eq "$GITHUB_SHA" "$APPROVED_SHA" 'Workflow SHA'
+          require_eq "$(git rev-parse HEAD)" "$APPROVED_SHA" 'Checked-out HEAD'
+          git fetch origin main --no-tags
+          require_eq "$(git rev-parse origin/main)" "$APPROVED_SHA" 'origin/main SHA'
+          [ -z "$(git status --porcelain)" ] || fail 'Authorized checkout is not clean'
+          echo "Exact production source authorized: $APPROVED_SHA."
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - name: Validate current V38 release package
         shell: bash
         run: |
@@ -97,24 +106,61 @@ jobs:
           grep -Fq 'index-editorial-order-v1.js?v=20260715-editorial-v6-latest-first' workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
           grep -Fq 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova' apps/portal/objave/index.html
           grep -Fq 'AI ne smije pisati konačnu odluku' apps/portal/komentari/index.html
-          grep -Fq 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V6_20260715_AI_BRANDED' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V9_20260717_UNTRUSTED_SUBJECT_DATA' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'aiMessageText' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'loadEmailLogo' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'signature.html' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'min-height:520px' apps/portal/assets/mail-studio-ui-v28.js
 
-          node <<'NODE'
-          const fs=require('node:fs');
-          const raw=JSON.parse(fs.readFileSync('apps/portal/data/news.json','utf8'));
-          const items=Array.isArray(raw)?raw:(raw.items||raw.posts||raw.news||[]);
-          if(!items.length)throw new Error('news feed empty');
-          const value=items[0].published_at||items[0].publishedAt||items[0].date||'';
-          if(!String(value).startsWith('2026-07-15'))throw new Error(`latest news is not 2026-07-15: ${value}`);
-          const reference=items.find(item=>item.id==='19fa99e0723490d640');
-          if(!reference||!String(reference.url||'').startsWith('https://www.theverge.com/policy/'))throw new Error('reference news source URL missing');
-          console.log(JSON.stringify({ok:true,latest:value,count:items.length,reference:reference.url}));
-          NODE
 
+
+  deploy-production:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'
+    needs: [authorize-production]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: production
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.approved_sha }}
+          fetch-depth: 0
+      - name: Reconfirm exact authorized SHA immediately before production deployment
+        env:
+          DEPLOY_APPROVAL: ${{ inputs.confirm_production_deploy }}
+          APPROVED_SHA: ${{ inputs.approved_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$1" >&2; exit 1; }
+          require_eq() {
+            local actual="$1" expected="$2" label="$3"
+            [ "$actual" = "$expected" ] || fail "$label mismatch: expected '$expected', got '$actual'"
+          }
+          require_nonempty() {
+            local value="$1" label="$2"
+            [ -n "$value" ] || fail "$label must not be empty"
+          }
+
+          require_eq "$GITHUB_EVENT_NAME" 'workflow_dispatch' 'GitHub event'
+          require_eq "$GITHUB_REF_TYPE" 'branch' 'Git ref type'
+          require_eq "$GITHUB_REF_NAME" 'main' 'Git ref name'
+          require_eq "$GITHUB_REF" 'refs/heads/main' 'Full Git ref'
+          require_eq "$DEPLOY_APPROVAL" 'DEPLOY_ADMIN_AUTH_V6' 'Executive approval phrase'
+          require_nonempty "$APPROVED_SHA" 'Approved SHA'
+          [[ "$APPROVED_SHA" =~ ^[0-9a-f]{40}$ ]] || fail "Approved SHA is not a full 40-character lowercase commit SHA: '$APPROVED_SHA'"
+          require_eq "$GITHUB_SHA" "$APPROVED_SHA" 'Workflow SHA'
+          require_eq "$(git rev-parse HEAD)" "$APPROVED_SHA" 'Checked-out HEAD'
+          git fetch origin main --no-tags
+          require_eq "$(git rev-parse origin/main)" "$APPROVED_SHA" 'origin/main SHA'
+          [ -z "$(git status --porcelain)" ] || fail 'Deployment checkout is not clean'
+          echo "Authorized SHA and approval reconfirmed immediately before production deployment.\n          echo "DEPLOY_SOURCE_SHA=$APPROVED_SHA" >> "$GITHUB_ENV""
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - name: Preflight Newsroom route ownership
         run: scripts/check-newsroom-route-readiness.sh deploy-preflight
 

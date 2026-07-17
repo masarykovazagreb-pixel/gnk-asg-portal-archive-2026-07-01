@@ -1,4 +1,4 @@
-name: Deploy GNK ASG production
+name: Validate GNK ASG production package
 
 on:
   pull_request:
@@ -8,19 +8,9 @@ on:
       - 'apps/portal/**'
       - 'workers/gnk-asg-direct-operator/**'
       - 'scripts/**'
-  workflow_dispatch:
-    inputs:
-      approval:
-        description: 'Enter the exact executive deploy approval phrase'
-        required: true
-        type: string
-      expected_sha:
-        description: 'Enter the exact reviewed main commit SHA to deploy'
-        required: true
-        type: string
 
 concurrency:
-  group: ${{ github.event_name == 'pull_request' && format('gnk-asg-pr-{0}', github.event.pull_request.number) || 'gnk-asg-direct-operator-production' }}
+  group: gnk-asg-production-validation-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
@@ -122,6 +112,10 @@ jobs:
           require('Disallow: /automation-status/' in robots, 'robots.txt does not disallow /automation-status/')
           print('Portal SEO and internal-route contract passed.')
           PY
+          if ! git diff --exit-code -- apps/portal; then
+            echo '::error::Generated portal output differs from the reviewed commit. Commit and review generated artifacts before production authorization.' >&2
+            exit 1
+          fi
       - name: Validate canonical production source
         run: |
           set -euo pipefail
@@ -139,138 +133,3 @@ jobs:
         if: github.event_name == 'pull_request'
         run: echo 'Pull request validated. Production deployment is not permitted from this event.'
 
-  authorize-production:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - name: Verify branch, reviewed SHA and executive approval
-        env:
-          DEPLOY_APPROVAL: ${{ inputs.approval }}
-          EXPECTED_SHA: ${{ inputs.expected_sha }}
-        run: |
-          set -euo pipefail
-          fail() { echo "::error::$1" >&2; exit 1; }
-          require_eq() {
-            local actual="$1" expected="$2" label="$3"
-            [ "$actual" = "$expected" ] || fail "$label mismatch: expected '$expected', got '$actual'"
-          }
-          require_nonempty() {
-            local value="$1" label="$2"
-            [ -n "$value" ] || fail "$label must not be empty"
-          }
-
-          require_eq "$GITHUB_EVENT_NAME" 'workflow_dispatch' 'GitHub event'
-          require_eq "$GITHUB_REF_TYPE" 'branch' 'Git ref type'
-          require_eq "$GITHUB_REF_NAME" 'main' 'Git ref name'
-          require_eq "$GITHUB_REF" 'refs/heads/main' 'Full Git ref'
-          require_eq "$DEPLOY_APPROVAL" 'DEPLOY_ADMIN_AUTH_V6' 'Executive approval phrase'
-          require_nonempty "$EXPECTED_SHA" 'Expected SHA'
-          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || fail "Expected SHA is not a full 40-character lowercase commit SHA: '$EXPECTED_SHA'"
-          require_eq "$GITHUB_SHA" "$EXPECTED_SHA" 'Workflow SHA'
-          require_eq "$(git rev-parse HEAD)" "$EXPECTED_SHA" 'Checked-out HEAD'
-          require_eq "$(git rev-parse origin/main)" "$EXPECTED_SHA" 'origin/main SHA'
-          echo "Explicit production approval verified for exact SHA $EXPECTED_SHA."
-
-  deploy-production:
-    if: github.event_name == 'workflow_dispatch'
-    needs: [validate, authorize-production]
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    environment: production
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - name: Reconfirm exact authorized SHA
-        env:
-          EXPECTED_SHA: ${{ inputs.expected_sha }}
-        run: |
-          set -euo pipefail
-          fail() { echo "::error::$1" >&2; exit 1; }
-          require_eq() {
-            local actual="$1" expected="$2" label="$3"
-            [ "$actual" = "$expected" ] || fail "$label mismatch: expected '$expected', got '$actual'"
-          }
-
-          require_eq "$GITHUB_EVENT_NAME" 'workflow_dispatch' 'GitHub event'
-          require_eq "$GITHUB_REF_TYPE" 'branch' 'Git ref type'
-          require_eq "$GITHUB_REF_NAME" 'main' 'Git ref name'
-          require_eq "$GITHUB_REF" 'refs/heads/main' 'Full Git ref'
-          require_eq "$GITHUB_SHA" "$EXPECTED_SHA" 'Workflow SHA'
-          require_eq "$(git rev-parse HEAD)" "$EXPECTED_SHA" 'Checked-out HEAD'
-          require_eq "$(git rev-parse origin/main)" "$EXPECTED_SHA" 'origin/main SHA'
-          echo "Authorized SHA reconfirmed immediately before production deployment."
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-      - name: Install Worker dependencies
-        working-directory: workers/gnk-asg-direct-operator
-        run: npm install --no-package-lock --no-audit --no-fund
-      - name: Generate final portal output
-        run: |
-          set -euo pipefail
-          python apps/portal/scripts/sync_publication_indexes.py
-          python apps/portal/scripts/generate_sitewide_seo.py
-          python apps/portal/scripts/finalize_sitewide_seo.py
-          python apps/portal/scripts/harden_internal_routes.py
-      - name: Deploy canonical Worker
-        working-directory: workers/gnk-asg-direct-operator
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx wrangler deploy --config wrangler.runtime.toml --name gnk-asg-direct-operator
-      - name: Verify Worker and protected routes without sending
-        run: |
-          set -euo pipefail
-          fail() { echo "::error::$1" >&2; exit 1; }
-          base='https://gnk-asg-direct-operator.beckuphome.workers.dev'
-          ready=false
-          home=000 contact=000 media=000 mail=000 campaign=000
-          for attempt in $(seq 1 30); do
-            cb="${GITHUB_RUN_ID}-${attempt}-$(date +%s)"
-            home=$(curl -sS -L -o /tmp/home.html -w '%{http_code}' "$base/?cb=$cb" || true)
-            contact=$(curl -sS -L -o /tmp/contact.html -w '%{http_code}' "$base/contact/?cb=$cb" || true)
-            media=$(curl -sS -L -o /tmp/media.html -w '%{http_code}' "$base/media-application/?cb=$cb" || true)
-            mail=$(curl -sS -o /tmp/mail.html -w '%{http_code}' "$base/mail-studio/?cb=$cb" || true)
-            campaign=$(curl -sS -o /tmp/campaign.json -w '%{http_code}' "$base/api/campaign-mailer/health?cb=$cb" || true)
-            if [ "$home" = 200 ] && [ "$contact" = 200 ] && [ "$media" = 200 ] \
-              && { [ "$mail" = 200 ] || [ "$mail" = 401 ] || [ "$mail" = 403 ]; } \
-              && [ "$campaign" = 401 ] \
-              && grep -q 'SITEWIDE-SEO:BEGIN' /tmp/home.html \
-              && grep -q '/api/contact-submit' /tmp/contact.html \
-              && grep -q 'media-registration-v1.js' /tmp/media.html; then
-              ready=true
-              break
-            fi
-            sleep 6
-          done
-          [ "$ready" = true ] || fail "Worker verification failed after 30 attempts: home=$home contact=$contact media=$media mail=$mail campaign=$campaign"
-      - name: Verify custom domain
-        run: |
-          set -euo pipefail
-          fail() { echo "::error::$1" >&2; exit 1; }
-          base='https://www.gnk-asg.hr'
-          for route in / /contact/ /media-application/; do
-            code=$(curl -sS -L -o /tmp/public.html -w '%{http_code}' "${base}${route}?cb=${GITHUB_RUN_ID}" || true)
-            [ "$code" = 200 ] || fail "Custom domain route ${route} returned HTTP ${code}, expected 200"
-          done
-      - name: Persist generated portal metadata
-        run: |
-          set -euo pipefail
-          git config user.name 'gnk-asg-deploy-bot'
-          git config user.email 'actions@users.noreply.github.com'
-          git add apps/portal
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Refresh generated portal and security metadata [skip ci]'
-          git push origin HEAD:main
