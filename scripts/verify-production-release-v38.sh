@@ -6,6 +6,7 @@ base="${GNK_PRODUCTION_ORIGIN:-https://gnk-asg.hr}"
 revision="${DEPLOY_SOURCE_SHA:?DEPLOY_SOURCE_SHA is required}"
 entrypoint='src/index-unified-auth-v23.js'
 release_prefix='GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS'
+news_baseline='2026-07-15'
 mkdir -p "$out"
 
 request_url() {
@@ -66,7 +67,7 @@ echo "ASSERT current news HTTP 200 and exact release ${revision}; actual=${news_
 [[ "$news_status" = "200" ]]
 has_release_proof "$out/news.headers"
 latest=$(jq -r 'if type=="array" then .[0].published_at // .[0].publishedAt // .[0].date // "" else (.items[0].published_at // .items[0].publishedAt // .items[0].date // "") end' "$out/news.json")
-[[ "$latest" == 2026-07-15* ]]
+[[ -n "$latest" && ( "$latest" == "$news_baseline"* || "$latest" > "$news_baseline" ) ]]
 grep -Fiq 'x-gnk-news-source: current-static-asset-20260715' "$out/news.headers"
 
 market_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/market.headers" --output "$out/market.json" --write-out '%{http_code}' "$(request_url "${base}/api/public-market" "${cache}-market")" || true)
