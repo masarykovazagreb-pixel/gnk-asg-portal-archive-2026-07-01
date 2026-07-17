@@ -56,6 +56,11 @@ assert.match(handler,/AUTH_PROBE_FAIL_CLOSED/);
 assert.match(handler,/return response\.ok\?null:response/);
 assert.match(handler,/auth_probe_failed/);
 assert.doesNotMatch(handler,/response\.status===401\|\|response\.status===403\?response:null/);
+assert.match(handler,/PARTIAL_DELIVERY_TRUTH/);
+assert.match(handler,/const complete=result\.ok===true&&result\.failed===0/);
+assert.match(handler,/complete\?200:207/);
+assert.match(handler,/failures:result\.failures\|\|\[\]/);
+assert.doesNotMatch(handler,/return json\(\{ok:true,status:result\.status/);
 assert.doesNotMatch(handler,/env\.EMAIL\.send\(enforceRequiredSignature/);
 
 assert.match(transport,/import \{EmailMessage\} from 'cloudflare:email'/);
@@ -70,4 +75,4 @@ assert.match(worker,/handleContactStudio\(request,env,ctx,app\)/);
 assert.doesNotMatch(worker,/CLOUDFLARE_API_TOKEN|GNK_ASG_OPERATOR_TOKEN/);
 assert.match(signature,/logo-gnk-asg-email\.png/);
 assert.match(signature,/canonical-png-64x66/);
-console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','acknowledgement'],rateLimit:{requests:5,windowSeconds:900,store:'existing KV',failClosed:true},attachments:{count:3,perFileBytes:3200000,totalBytes:6400000,pdfOnly:true},studioAuth:{probe:'/api/mail-sync/health',successOnly:'2xx',failClosedOn:['401','403','404','5xx','exception']},inlineLogo:true,mailSent:false},null,2));
+console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','acknowledgement'],rateLimit:{requests:5,windowSeconds:900,store:'existing KV',failClosed:true},attachments:{count:3,perFileBytes:3200000,totalBytes:6400000,pdfOnly:true},studioAuth:{probe:'/api/mail-sync/health',successOnly:'2xx',failClosedOn:['401','403','404','5xx','exception']},studioDelivery:{completeStatus:200,partialStatus:207,partialOk:false,failuresExposed:true},inlineLogo:true,mailSent:false},null,2));
