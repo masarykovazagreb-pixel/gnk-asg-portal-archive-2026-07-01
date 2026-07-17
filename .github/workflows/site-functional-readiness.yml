@@ -48,6 +48,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/digital-workforce-api-v1.js
           node --check workers/gnk-asg-operator-center/src/index.js
           node --check scripts/test-operator-center-session-contract.mjs
+          node --check scripts/test-protected-operations-session-contract.mjs
           node --check scripts/test-digital-workforce-api-contract.mjs
           bash -n scripts/check-newsroom-route-readiness.sh
           bash -n scripts/verify-production-route.sh
@@ -57,6 +58,9 @@ jobs:
 
       - name: Operator center session contract
         run: node scripts/test-operator-center-session-contract.mjs
+
+      - name: Protected operations session contract
+        run: node scripts/test-protected-operations-session-contract.mjs
 
       - name: Contact form contract
         run: node scripts/test-contact-form-contract.mjs
