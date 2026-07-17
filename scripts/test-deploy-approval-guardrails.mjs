@@ -36,6 +36,12 @@ requireText('workflow approval contract',workflow,[
  'DEPLOY_REVISION:${DEPLOY_SOURCE_SHA}',
  'bash scripts/verify-production-release-v38.sh deploy-verification'
 ]);
+assert.match(
+ workflow,
+ /echo "Authorized SHA and approval reconfirmed immediately before production deployment\."\n\s+echo "DEPLOY_SOURCE_SHA=\$APPROVED_SHA" >> "\$GITHUB_ENV"/,
+ 'approved SHA must be exported to GITHUB_ENV as a separate shell command'
+);
+assert.doesNotMatch(workflow,/deployment\.\\n\s+echo "DEPLOY_SOURCE_SHA=/,'deploy revision export must not be embedded in the preceding echo');
 requireText('workflow V38 release assertions',workflow,[
  'index-unified-auth-v23.js','index-unified-auth-v21.js','mail-identity-autoreply-v2.js',
  'index-editorial-order-v6.js','index-editorial-order-v1.js','editorial-latest-index-v1.js',
