@@ -172,7 +172,23 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
-      - name: Resolve token hash
+      - name: Install locked direct operator dependencies without lifecycle scripts
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Reconfirm tracked release integrity before any production secret
+        env:
+          APPROVED_SHA: ${{ inputs.approved_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$1" >&2; exit 1; }
+          [ "$(git rev-parse HEAD)" = "$APPROVED_SHA" ] || fail 'Checked-out HEAD changed after authorization'
+          git diff --quiet || fail 'Tracked release files changed after authorization'
+          git diff --cached --quiet || fail 'Staged release files changed after authorization'
+          echo "Tracked release integrity reconfirmed before any production secret is exposed."
+
+      - name: Resolve token hash after integrity verification
         id: auth
         env:
           TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
@@ -186,22 +202,6 @@ jobs:
           [ -n "$value" ] || fail 'Neither GNK_ASG_OPERATOR_TOKEN nor OPERATOR_TOKEN is configured'
           hash=$(printf '%s' "$value" | sha256sum | awk '{print $1}')
           echo "hash=$hash" >> "$GITHUB_OUTPUT"
-
-      - name: Install locked direct operator dependencies without lifecycle scripts
-        working-directory: workers/gnk-asg-direct-operator
-        run: npm ci --ignore-scripts --no-audit --no-fund
-
-      - name: Reconfirm tracked release integrity before Cloudflare credentials
-        env:
-          APPROVED_SHA: ${{ inputs.approved_sha }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          fail() { echo "::error::$1" >&2; exit 1; }
-          [ "$(git rev-parse HEAD)" = "$APPROVED_SHA" ] || fail 'Checked-out HEAD changed after authorization'
-          git diff --quiet || fail 'Tracked release files changed after authorization'
-          git diff --cached --quiet || fail 'Staged release files changed after authorization'
-          echo "Tracked release integrity reconfirmed before Cloudflare credentials are exposed."
 
       - name: Deploy contact session bridge
         working-directory: workers/gnk-asg-contact-api-worker
