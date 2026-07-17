@@ -7,6 +7,8 @@ const adminCenter=fs.readFileSync('apps/portal/admin-center/index.html','utf8');
 const headquarters=fs.readFileSync('apps/portal/digital-headquarters/index.html','utf8');
 const digitalWorkforce=fs.readFileSync('apps/portal/digital-workforce/index.html','utf8');
 const workforceAdmin=fs.readFileSync('apps/portal/admin-center/workers/index.html','utf8');
+const workforceUi=fs.readFileSync('apps/portal/assets/digital-workforce-suite-v1.js','utf8');
+const workforceApi=fs.readFileSync('workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js','utf8');
 const editorial=fs.readFileSync('apps/portal/assets/index-editorial-order-v6.js','utf8');
 const contrast=fs.readFileSync('apps/portal/assets/public-contrast-hardening-v1.js','utf8');
 const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js','utf8');
@@ -38,10 +40,19 @@ for(const source of [adminCenter,headquarters]){
 assert.match(adminCenter,/href="\/workers\/"/);
 assert.match(adminCenter,/Upravljanje radnom snagom/);
 assert.match(headquarters,/Javni portal odluka, rada, rezultata, objava, novinara i statusa projekata bez internih podataka/);
-assert.match(digitalWorkforce,/Tri aktualna operativna načela/);
-assert.match(digitalWorkforce,/Rad i rezultati/);
-assert.match(digitalWorkforce,/Novinari i newsroom/);
-assert.match(digitalWorkforce,/Statusi projekata/);
+for(const marker of ['90-dnevni plan','Dnevni bilteni','Projekti i faze','Rizici','Mišljenja','Ovisnosti','Zadaci','GNKC krediti','Newsroom','1.573 workera','Zapisnik aktivnosti'])assert.match(digitalWorkforce,new RegExp(marker.replace('.','\\.')));
+assert.match(digitalWorkforce,/digital-workforce-suite-v1\.css/);
+assert.match(digitalWorkforce,/digital-workforce-suite-v1\.js/);
+for(const route of ['plan','bulletins','projects','risks','opinions','dependencies','tasks','credits','newsroom','workers','activity-log']){
+ assert.ok(fs.existsSync(`apps/portal/digital-workforce/${route}/index.html`),`missing workforce subpage ${route}`);
+}
+assert.match(workforceUi,/\/api\/public\/digital-workforce\//);
+assert.match(workforceUi,/data-dw-tab/);
+assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V1_20260717/);
+assert.match(workforceApi,/1573/);
+assert.match(workforceApi,/bulletins/);
+assert.match(workforceApi,/activity-log/);
+assert.match(editorialWrapper,/handleDigitalWorkforceSuite/);
 assert.match(workforceAdmin,/Dodatni zadaci i kontrole/);
 assert.match(workforceAdmin,/Pokretanje funkcija/);
 assert.match(workforceAdmin,/Zaustavljanje funkcija/);
@@ -103,4 +114,4 @@ for(const source of [signature,contract]){
  assert.doesNotMatch(source,/width="108"|height="111"/);
 }
 
-console.log(JSON.stringify({ok:true,menu:'visible-v6-single-public-digital-workforce-hub',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-canonical-assets-v2',contrast:'hardened-v4-all-pages-visual-repair',worker:'v38-over-v32-over-v31',deployPerformed:false},null,2));
+console.log(JSON.stringify({ok:true,menu:'visible-v6-complete-digital-workforce-suite',workforce:'11-public-subpages-1573-unique-identities',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-canonical-assets-v2',contrast:'hardened-v4-all-pages-visual-repair',worker:'v38-over-v32-over-v31',deployPerformed:false},null,2));
