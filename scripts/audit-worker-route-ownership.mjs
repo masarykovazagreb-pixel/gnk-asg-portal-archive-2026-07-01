@@ -14,7 +14,7 @@ const APPROVED_DEPLOY_CONFIGS=new Set([
 const walk=dir=>fs.existsSync(dir)?fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{const p=path.join(dir,entry.name);return entry.isDirectory()?walk(p):[p]}):[];
 const files=walk(ROOT).filter(p=>/^wrangler(?:\..+)?\.toml$/i.test(path.basename(p)));
 const quoted=(raw,key)=>raw.match(new RegExp(`^\\s*${key}\\s*=\\s*["']([^"']+)["']\\s*$`,'m'))?.[1]||'';
-const stringRoutes=raw=>{const m=raw.match(/^\\s*routes\\s*=\\s*\\[([\\s\\S]*?)\\]/m);return m?[...m[1].matchAll(/(?:^|,)\\s*["']([^"']+)["']\\s*(?=,|$)/gm)].map(x=>x[1]):[]};
+const stringRoutes=raw=>{const m=raw.match(/^\s*routes\s*=\s*\[([\s\S]*?)\]/m);return m?[...m[1].matchAll(/(?:^|,)\s*["']([^"']+)["']\s*(?=,|$)/gm)].map(x=>x[1]):[]};
 const objectPatterns=raw=>[...raw.matchAll(/pattern\s*=\s*["']([^"']+)["']/g)].map(x=>x[1]);
 
 const configs=files.map(file=>{
