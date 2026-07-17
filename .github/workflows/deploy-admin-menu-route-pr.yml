@@ -8,13 +8,6 @@ on:
       - "workers/gnk-asg-public-menu-fix/src/index.js"
       - "workers/gnk-asg-public-menu-fix/wrangler.toml"
       - ".github/workflows/deploy-admin-menu-route-pr.yml"
-  workflow_dispatch:
-    inputs:
-      deploy:
-        description: "Izričito odobren produkcijski deploy menu asset Workera"
-        required: true
-        default: false
-        type: boolean
 
 permissions:
   contents: read
@@ -23,6 +16,8 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 12
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,37 +32,9 @@ jobs:
           grep -Fq "['Admin', '/operator-dashboard/', 'nofollow']" apps/portal/assets/public-menu-final-v9.js
           grep -Fq "GNK_ASG_PUBLIC_MENU_ROUTE_V2_20260625" workers/gnk-asg-public-menu-fix/src/index.js
           ! grep -Fq "/operator/session/login?next=/operator-dashboard" apps/portal/assets/public-menu-final-v9.js
+          node scripts/test-deploy-approval-guardrails.mjs
       - name: Wrangler dry run
         working-directory: workers/gnk-asg-public-menu-fix
         run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml
-
-  deploy:
-    if: github.event_name == 'workflow_dispatch' && inputs.deploy == true
-    needs: validate
-    runs-on: ubuntu-latest
-    timeout-minutes: 12
-    environment: production
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Deploy explicitly approved menu asset worker
-        working-directory: workers/gnk-asg-public-menu-fix
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          set -euo pipefail
-          npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-public-menu-fix
-      - name: Verify production menu asset
-        shell: bash
-        run: |
-          set -euo pipefail
-          sleep 15
-          code=$(curl --silent --show-error --dump-header asset.headers --output menu.js --write-out '%{http_code}' "https://gnk-asg.hr/assets/public-menu-final-v9.js?cb=$(date +%s)")
-          test "$code" = "200"
-          grep -qi '^x-gnk-asg-menu-fix: GNK_ASG_PUBLIC_MENU_ROUTE_V2_20260625' asset.headers
-          node --check menu.js
-          grep -Fq "['Admin', '/operator-dashboard/', 'nofollow']" menu.js
-          ! grep -Fq "/operator/session/login?next=/operator-dashboard" menu.js
+      - name: Confirm validation-only boundary
+        run: echo "Production deployment is not permitted from this event."
