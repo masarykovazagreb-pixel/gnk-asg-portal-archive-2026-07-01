@@ -7,6 +7,7 @@ const adminCenter=fs.readFileSync('apps/portal/admin-center/index.html','utf8');
 const headquarters=fs.readFileSync('apps/portal/digital-headquarters/index.html','utf8');
 const digitalWorkforce=fs.readFileSync('apps/portal/digital-workforce/index.html','utf8');
 const workforceAdmin=fs.readFileSync('apps/portal/admin-center/workers/index.html','utf8');
+const workforceDirectory=fs.readFileSync('apps/portal/assets/workers-directory-v1.js','utf8');
 const workforceUi=fs.readFileSync('apps/portal/assets/digital-workforce-suite-v1.js','utf8');
 const workforceApi=fs.readFileSync('workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js','utf8');
 const editorial=fs.readFileSync('apps/portal/assets/index-editorial-order-v6.js','utf8');
@@ -44,13 +45,22 @@ for(const tab of ['plan','bulletins','projects','risks','opinions','dependencies
 assert.match(digitalWorkforce,/1\.573 workera/);
 assert.match(digitalWorkforce,/digital-workforce-suite-v1\.css/);
 assert.match(digitalWorkforce,/digital-workforce-suite-v1\.js/);
+assert.doesNotMatch(digitalWorkforce,/sintetički su operativni podaci/i);
 for(const route of ['plan','bulletins','projects','risks','opinions','dependencies','tasks','credits','newsroom','workers','activity-log']){
  assert.ok(fs.existsSync(`apps/portal/digital-workforce/${route}/index.html`),`missing workforce subpage ${route}`);
 }
 assert.match(workforceUi,/\/api\/public\/digital-workforce\//);
 assert.match(workforceUi,/data-dw-tab/);
-assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V1_20260717/);
+assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V2_20260717/);
 assert.match(workforceApi,/1573/);
+assert.match(workforceApi,/2026,0,1/);
+assert.doesNotMatch(workforceApi,/1969|1970/);
+assert.match(workforceApi,/2026,6,18/);
+assert.match(workforceApi,/digital_workforce_identity_collision/);
+assert.match(workforceDirectory,/GNK_ASG_WORKERS_DIRECTORY_V3_20260717_ALIGNED_IDENTITIES/);
+assert.match(workforceDirectory,/worker_directory_integrity_failed/);
+assert.match(workforceDirectory,/firstNames\.size!==EXPECTED_TOTAL/);
+assert.match(workforceDirectory,/lastNames\.size!==EXPECTED_TOTAL/);
 assert.match(workforceApi,/bulletins/);
 assert.match(workforceApi,/activity-log/);
 assert.match(editorialWrapper,/handleDigitalWorkforceSuite/);
@@ -115,4 +125,4 @@ for(const source of [signature,contract]){
  assert.doesNotMatch(source,/width="108"|height="111"/);
 }
 
-console.log(JSON.stringify({ok:true,menu:'visible-v6-complete-digital-workforce-suite',workforce:'11-public-subpages-1573-unique-identities',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-canonical-assets-v2',contrast:'hardened-v4-all-pages-visual-repair',worker:'v38-over-v32-over-v31',deployPerformed:false},null,2));
+console.log(JSON.stringify({ok:true,menu:'visible-v6-complete-digital-workforce-suite',workforce:'aligned-1573-unique-first-last-full-identities-2026-dates',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-canonical-assets-v2',contrast:'hardened-v4-all-pages-visual-repair',worker:'v38-over-v32-over-v31',deployPerformed:false},null,2));
