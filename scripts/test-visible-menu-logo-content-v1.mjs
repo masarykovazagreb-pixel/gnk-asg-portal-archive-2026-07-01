@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 
 const menu=fs.readFileSync('apps/portal/assets/public-unified-menu-v6.js','utf8');
 const design=fs.readFileSync('apps/portal/assets/public-unified-design-v3.js','utf8');
+const adminCenter=fs.readFileSync('apps/portal/admin-center/index.html','utf8');
+const headquarters=fs.readFileSync('apps/portal/digital-headquarters/index.html','utf8');
 const editorial=fs.readFileSync('apps/portal/assets/index-editorial-order-v6.js','utf8');
 const contrast=fs.readFileSync('apps/portal/assets/public-contrast-hardening-v1.js','utf8');
 const worker=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js','utf8');
@@ -21,6 +23,18 @@ assert.match(menu,/width:64px!important;height:66px!important/);
 assert.match(menu,/ADMIN CENTER/);
 assert.match(menu,/WORKERI I OPERACIJE/);
 assert.match(menu,/Worker Operations/);
+assert.match(menu,/Digitalna radna snaga','Digital workforce','\/digital-workforce\/'/);
+assert.match(menu,/Workeri','Workers','\/workers\/'/);
+assert.match(menu,/Worker Directory Admin','Worker Directory Admin','\/admin-center\/workers\/'/);
+assert.doesNotMatch(menu,/Direct Operator','Direct Operator','\/admin-center\/workers\/'/);
+
+for(const source of [adminCenter,headquarters]){
+ assert.match(source,/href="\/admin-center\/workers\/"/);
+ assert.match(source,/href="\/digital-workforce\/"/);
+}
+assert.match(adminCenter,/href="\/workers\/"/);
+assert.match(adminCenter,/Worker Directory Admin/);
+assert.match(headquarters,/Javni portal digitalne radne snage bez internih podataka/);
 assert.match(menu,/Objave/);
 assert.match(menu,/Newsroom/);
 assert.doesNotMatch(menu,/body>header,\.site-header/);
@@ -78,4 +92,4 @@ for(const source of [signature,contract]){
  assert.doesNotMatch(source,/width="108"|height="111"/);
 }
 
-console.log(JSON.stringify({ok:true,menu:'visible-v6-full-workers',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-canonical-assets-v2',contrast:'hardened-v4-all-pages-visual-repair',worker:'v38-over-v32-over-v31',deployPerformed:false},null,2));
+console.log(JSON.stringify({ok:true,menu:'visible-v6-public-protected-workers-separated',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-canonical-assets-v2',contrast:'hardened-v4-all-pages-visual-repair',worker:'v38-over-v32-over-v31',deployPerformed:false},null,2));
