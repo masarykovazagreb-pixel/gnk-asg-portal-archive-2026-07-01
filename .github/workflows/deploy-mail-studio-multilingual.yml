@@ -122,6 +122,10 @@ jobs:
           require('Disallow: /automation-status/' in robots, 'robots.txt does not disallow /automation-status/')
           print('Portal SEO and internal-route contract passed.')
           PY
+          if ! git diff --exit-code -- apps/portal; then
+            echo '::error::Generated portal output differs from the reviewed commit. Commit and review generated artifacts before production authorization.' >&2
+            exit 1
+          fi
       - name: Validate canonical production source
         run: |
           set -euo pipefail
@@ -149,6 +153,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          ref: ${{ inputs.expected_sha }}
       - name: Verify branch, reviewed SHA and executive approval
         env:
           DEPLOY_APPROVAL: ${{ inputs.approval }}
@@ -175,6 +180,7 @@ jobs:
           require_eq "$GITHUB_SHA" "$EXPECTED_SHA" 'Workflow SHA'
           require_eq "$(git rev-parse HEAD)" "$EXPECTED_SHA" 'Checked-out HEAD'
           require_eq "$(git rev-parse origin/main)" "$EXPECTED_SHA" 'origin/main SHA'
+          [ -z "$(git status --porcelain)" ] || fail 'Authorized checkout is not clean'
           echo "Explicit production approval verified for exact SHA $EXPECTED_SHA."
 
   deploy-production:
@@ -184,13 +190,15 @@ jobs:
     timeout-minutes: 30
     environment: production
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: Reconfirm exact authorized SHA
+          ref: ${{ inputs.expected_sha }}
+      - name: Reconfirm exact authorized SHA and approval
         env:
+          DEPLOY_APPROVAL: ${{ inputs.approval }}
           EXPECTED_SHA: ${{ inputs.expected_sha }}
         run: |
           set -euo pipefail
@@ -199,15 +207,23 @@ jobs:
             local actual="$1" expected="$2" label="$3"
             [ "$actual" = "$expected" ] || fail "$label mismatch: expected '$expected', got '$actual'"
           }
+          require_nonempty() {
+            local value="$1" label="$2"
+            [ -n "$value" ] || fail "$label must not be empty"
+          }
 
           require_eq "$GITHUB_EVENT_NAME" 'workflow_dispatch' 'GitHub event'
           require_eq "$GITHUB_REF_TYPE" 'branch' 'Git ref type'
           require_eq "$GITHUB_REF_NAME" 'main' 'Git ref name'
           require_eq "$GITHUB_REF" 'refs/heads/main' 'Full Git ref'
+          require_eq "$DEPLOY_APPROVAL" 'DEPLOY_ADMIN_AUTH_V6' 'Executive approval phrase'
+          require_nonempty "$EXPECTED_SHA" 'Expected SHA'
+          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || fail "Expected SHA is not a full 40-character lowercase commit SHA: '$EXPECTED_SHA'"
           require_eq "$GITHUB_SHA" "$EXPECTED_SHA" 'Workflow SHA'
           require_eq "$(git rev-parse HEAD)" "$EXPECTED_SHA" 'Checked-out HEAD'
           require_eq "$(git rev-parse origin/main)" "$EXPECTED_SHA" 'origin/main SHA'
-          echo "Authorized SHA reconfirmed immediately before production deployment."
+          [ -z "$(git status --porcelain)" ] || fail 'Deployment checkout is not clean'
+          echo "Authorized SHA and approval reconfirmed immediately before production deployment."
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -217,13 +233,17 @@ jobs:
       - name: Install Worker dependencies
         working-directory: workers/gnk-asg-direct-operator
         run: npm install --no-package-lock --no-audit --no-fund
-      - name: Generate final portal output
+      - name: Regenerate and verify immutable portal output
         run: |
           set -euo pipefail
           python apps/portal/scripts/sync_publication_indexes.py
           python apps/portal/scripts/generate_sitewide_seo.py
           python apps/portal/scripts/finalize_sitewide_seo.py
           python apps/portal/scripts/harden_internal_routes.py
+          if ! git diff --exit-code -- apps/portal; then
+            echo '::error::Production generation changed reviewed portal files. Deployment aborted before any Cloudflare write.' >&2
+            exit 1
+          fi
       - name: Deploy canonical Worker
         working-directory: workers/gnk-asg-direct-operator
         env:
@@ -265,12 +285,3 @@ jobs:
             code=$(curl -sS -L -o /tmp/public.html -w '%{http_code}' "${base}${route}?cb=${GITHUB_RUN_ID}" || true)
             [ "$code" = 200 ] || fail "Custom domain route ${route} returned HTTP ${code}, expected 200"
           done
-      - name: Persist generated portal metadata
-        run: |
-          set -euo pipefail
-          git config user.name 'gnk-asg-deploy-bot'
-          git config user.email 'actions@users.noreply.github.com'
-          git add apps/portal
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Refresh generated portal and security metadata [skip ci]'
-          git push origin HEAD:main
