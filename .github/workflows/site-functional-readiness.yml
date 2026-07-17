@@ -1,6 +1,14 @@
 name: Site Functional Readiness
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/portal/**'
+      - 'workers/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
   pull_request:
     paths:
       - 'apps/portal/**'
