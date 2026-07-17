@@ -65,6 +65,7 @@ jobs:
             scripts/test-worker-directory-1573.mjs \
             scripts/test-admin-session-login-v1.mjs \
             scripts/test-digital-workforce-api-contract.mjs \
+            scripts/test-operator-center-session-contract.mjs \
             scripts/test-contact-form-contract.mjs \
             scripts/test-the-code-index-contract.mjs \
             scripts/test-index-content-contract.mjs \
@@ -115,6 +116,7 @@ jobs:
             workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js \
             workers/gnk-asg-direct-operator/src/digital-workforce-api-v1.js \
+            workers/gnk-asg-operator-center/src/index.js \
             workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js
           do
             echo "CHECK $file"
@@ -147,6 +149,9 @@ jobs:
 
       - name: Digital workforce API contract
         run: node scripts/test-digital-workforce-api-contract.mjs
+
+      - name: Operator center session contract
+        run: node scripts/test-operator-center-session-contract.mjs
 
       - name: Contact form contract
         run: node scripts/test-contact-form-contract.mjs
