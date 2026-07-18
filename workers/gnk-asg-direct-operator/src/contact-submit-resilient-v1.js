@@ -24,17 +24,10 @@ async function fallbackRecord(request,env){
  const idempotencyKey=clean(request.headers.get('x-idempotency-key')||body.idempotencyKey,160);
  if(!validKey(idempotencyKey)||!name||!validEmail(email)||!subject||!message||!consent(body.consent))return null;
  const dedupeKey=`contact:fallback:idempotency:${idempotencyKey}`;
- try{
-  const existing=await store.get(dedupeKey);
-  if(existing){const saved=JSON.parse(existing);return json({ok:true,accepted:true,stored:true,reused:true,storage:'kv-fallback',caseId:saved.caseId,receivedAt:saved.createdAt,mailAttempted:false,deliveryOk:false,message:language==='en'?'Message was already recorded under this reference.':'Upit je već evidentiran pod ovom referencom.'},200)}
- }catch{}
+ try{const existing=await store.get(dedupeKey);if(existing){const saved=JSON.parse(existing);return json({ok:true,accepted:true,stored:true,reused:true,storage:'kv-fallback',caseId:saved.caseId,receivedAt:saved.createdAt,mailAttempted:false,deliveryOk:false,message:language==='en'?'Message was already recorded under this reference.':'Upit je već evidentiran pod ovom referencom.'},200)}}catch{}
  const caseId=generateCaseId(),createdAt=new Date().toISOString();
  const record={caseId,createdAt,source:`public-contact:${department}`,department,name,email,phone,subject,message,language,idempotencyKey,storage:'kv-fallback'};
- try{
-  await store.put(`contact:fallback:case:${caseId}`,JSON.stringify(record),{expirationTtl:60*60*24*120});
-  await store.put(dedupeKey,JSON.stringify({caseId,createdAt}),{expirationTtl:60*60*24*120});
-  await store.put('contact:fallback:last',JSON.stringify(record));
- }catch{return null}
+ try{await store.put(`contact:fallback:case:${caseId}`,JSON.stringify(record),{expirationTtl:60*60*24*120});await store.put(dedupeKey,JSON.stringify({caseId,createdAt}),{expirationTtl:60*60*24*120});await store.put('contact:fallback:last',JSON.stringify(record))}catch{return null}
  const internalText=`GNK ASG – novi upit putem kontakt forme\n\nEvidencijski broj: ${caseId}\nRezervna pohrana: KV fallback\nOdjel: ${department}\nVrijeme: ${createdAt}\nPodnositelj: ${name}\nE-mail: ${email}\nTelefon: ${phone||'-'}\nPredmet: ${subject}\nPoruka:\n${message}`;
  const ack=language==='en'?`Dear ${name},\n\nYour message was received under reference ${caseId}.\n\nSubject: ${subject}\nReceived: ${createdAt}\n\nThe message was recorded and routed for human review.\n\nKind regards,`:`Poštovani/Poštovana ${name},\n\nVaša poruka zaprimljena je pod referencom ${caseId}.\n\nPredmet: ${subject}\nVrijeme: ${createdAt}\n\nPoruka je evidentirana i proslijeđena na ljudski pregled.\n\nSrdačan pozdrav,`;
  let internal=false,acknowledgement=false;
@@ -47,6 +40,7 @@ async function fallbackRecord(request,env){
 export async function handleResilientContact(request,env,ctx,app){
  const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
  if(path!==PATH)return null;
+ if(request.method==='GET')return json({ok:true,ready:Boolean(env?.GNK_ASG_D1||storeOf(env)),endpoint:PATH,storage:{d1:Boolean(env?.GNK_ASG_D1),kv:Boolean(storeOf(env)),fallback:true},mail:Boolean(env?.EMAIL?.send),transport:'cloudflare-email',version:VERSION});
  const retry=request.method==='POST'?request.clone():null;
  const response=await handleContactStudio(request,env,ctx,app);
  if(!retry||response.status!==503)return response;
