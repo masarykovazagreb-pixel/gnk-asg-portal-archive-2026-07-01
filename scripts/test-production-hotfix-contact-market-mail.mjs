@@ -23,10 +23,11 @@ for(const marker of [
 ]) assert.ok(contact.includes(marker),`contact resilience missing ${marker}`);
 
 for(const marker of [
-  "V3_SECONDARY_LIVE",
+  "V4_20260718_INDEPENDENT_PROVIDER",
   "simplePriceLive",
   "marketsLive",
-  "coingecko-coins-markets",
+  "coinPaprikaLive",
+  "coinpaprika-tickers",
   "stale:age==null||age>3600",
   "x-gnk-market-upstream"
 ]) assert.ok(market.includes(marker),`market hotfix missing ${marker}`);
@@ -40,7 +41,8 @@ for(const marker of [
 ]) assert.ok(autoreply.includes(marker),`autoreply logo fallback missing ${marker}`);
 
 assert.ok(verify.includes("x-gnk-market-source: live"),'deploy verification must reject static market fallback');
+assert.ok(verify.includes("coinpaprika-tickers"),'deploy verification must allow independent provider');
 assert.ok(verify.includes("x-gnk-contact-resilience"),'deploy verification must require resilient contact route');
 assert.ok(verify.includes("(.coins|length) >= 8"),'deploy verification must require a complete market payload');
 
-console.log(JSON.stringify({ok:true,contact:'d1-plus-kv',market:'dual-live-before-static',autoreplyLogo:'cid-or-remote',deployPerformed:false},null,2));
+console.log(JSON.stringify({ok:true,contact:'d1-plus-kv',market:'independent-provider-before-static',autoreplyLogo:'cid-or-remote',deployPerformed:false},null,2));
