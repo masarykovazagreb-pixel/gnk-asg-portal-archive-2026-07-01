@@ -1,0 +1,43 @@
+name: Validate Production Hotfix Contact Market Mail
+
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js'
+      - 'workers/gnk-asg-direct-operator/src/contact-submit-resilient-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/public-market-data-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js'
+      - 'scripts/test-production-hotfix-contact-market-mail.mjs'
+      - 'scripts/test-public-market-data-v1.mjs'
+      - 'scripts/test-market-primary-alias-runtime.mjs'
+      - 'scripts/verify-production-release-v38.sh'
+      - '.github/workflows/validate-production-hotfix-contact-market-mail.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          node --check workers/gnk-asg-direct-operator/src/contact-submit-resilient-v1.js
+          node --check workers/gnk-asg-direct-operator/src/public-market-data-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js
+          node --check scripts/test-production-hotfix-contact-market-mail.mjs
+          bash -n scripts/verify-production-release-v38.sh
+      - name: Focused hotfix contract
+        run: node scripts/test-production-hotfix-contact-market-mail.mjs
+      - name: Market runtime contracts
+        run: |
+          node scripts/test-market-primary-alias-runtime.mjs
+          node scripts/test-public-market-data-v1.mjs
