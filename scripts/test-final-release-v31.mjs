@@ -58,7 +58,8 @@ assert.match(newsroom,/automatizacija-ne-ukida-odgovornost/);
 assert.match(newsBackend,/VISIBLE_LIMIT=100/);
 assert.match(newsBackend,/ARCHIVE_CAP=2000/);
 assert.match(newsBackend,/PRUNE_OLDEST=1000/);
-assert.match(newsBackend,/while\(retained\.length>=ARCHIVE_CAP\)/);
+assert.match(newsBackend,/TOTAL_RETENTION_LIMIT=VISIBLE_LIMIT\+ARCHIVE_CAP/);
+assert.match(newsBackend,/while\(retained\.length>=TOTAL_RETENTION_LIMIT\)/);
 assert.doesNotMatch(newsBackend,/slice\(0,500\)/);
 
 assert.match(transport,/from 'cloudflare:email'/);
@@ -103,6 +104,7 @@ assert.match(marketApi,/GNK_ASG_PUBLIC_MARKET_DATA_V1_20260715/);
 assert.match(marketApi,/API_PATH='\/api\/public-market'/);
 assert.match(marketApi,/x-gnk-market-source/);
 assert.match(marketApi,/fallback_reason/);
+assert.match(marketClient,/fetch\('\/api\/market/);
 assert.match(marketClient,/fetch\('\/api\/public-market/);
 assert.match(marketClient,/zastarjeli rezervni presjek/);
 assert.match(config,/main = "src\/index-unified-auth-v23\.js"/);
@@ -137,8 +139,8 @@ const publicationCount=cards(publications,'publications',5);
 const commentCount=cards(comments,'comments',5);
 const analysisCount=cards(analyses,'analyses',4);
 
-const localNews=JSON.parse(read('apps/portal/data/news.json'));
-assert.ok(Array.isArray(localNews));
+const localNewsPayload=JSON.parse(read('apps/portal/data/news.json'));
+const localNews=Array.isArray(localNewsPayload)?localNewsPayload:Array.isArray(localNewsPayload?.items)?localNewsPayload.items:[];
 assert.ok(localNews.length>=100,`local news fallback must contain >=100 items; actual=${localNews.length}`);
 
-console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,localFallback:localNews.length},market:{sameOrigin:true,staleFallbackExplicit:true},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v8-click-tracking'},editorial:{assetRouting:'v2-canonical-trailing-slash-v38',minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v38-over-v32-over-v31'},null,2));
+console.log(JSON.stringify({ok:true,deployPerformed:false,menu:'v6-full-with-workers',logo:'64x66',contrast:'WCAG-rendered-v4-all-pages',news:{visible:100,archive:2000,prune:1000,totalRetention:2100,localFallback:localNews.length},market:{sameOrigin:true,primary:'/api/market',fallback:'/api/public-market',staleFallbackExplicit:true},mail:{transport:'EmailMessage',contact:true,studio:true,inlineLogo:true,composerMinHeight:520,emailStatus:'v8-click-tracking'},editorial:{assetRouting:'v2-canonical-trailing-slash-v38',minimums:{publications:5,analyses:4,commentary:5},actual:{publications:publicationCount,analyses:analysisCount,commentary:commentCount}},worker:'v38-over-v32-over-v31'},null,2));
