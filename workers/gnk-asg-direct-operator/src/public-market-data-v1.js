@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_PUBLIC_MARKET_DATA_V2_20260718_PRIMARY_ALIAS';
+export const VERSION='GNK_ASG_PUBLIC_MARKET_DATA_V3_20260718_SECONDARY_LIVE';
 export const PRIMARY_API_PATH='/api/market';
 export const PUBLIC_API_PATH='/api/public-market';
 export const API_PATHS=new Set([PRIMARY_API_PATH,PUBLIC_API_PATH]);
@@ -6,24 +6,34 @@ const IDS=['bitcoin','ethereum','solana','ripple','binancecoin','cardano','chain
 const SYMBOLS={bitcoin:'BTC',ethereum:'ETH',solana:'SOL',ripple:'XRP',binancecoin:'BNB',cardano:'ADA',chainlink:'LINK','avalanche-2':'AVAX',tether:'USDT','usd-coin':'USDC',dai:'DAI','euro-coin':'EURC'};
 const FIATS=['eur','usd','gbp','chf','jpy'];
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
-const json=(data,status=200,source='live',path=PUBLIC_API_PATH)=>new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':source==='live'?'public, max-age=60, stale-while-revalidate=240':'no-store, max-age=0','x-content-type-options':'nosniff','x-gnk-market-data':VERSION,'x-gnk-market-source':source,'x-gnk-market-route':path}});
+const json=(data,status=200,source='live',path=PUBLIC_API_PATH)=>new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':source==='live'?'public, max-age=60, stale-while-revalidate=240':'no-store, max-age=0','x-content-type-options':'nosniff','x-gnk-market-data':VERSION,'x-gnk-market-source':source,'x-gnk-market-route':path,'x-gnk-market-upstream':String(data?.upstream||data?.source||source).slice(0,120)}});
 const ageSeconds=value=>{const time=Date.parse(String(value||''));return Number.isFinite(time)?Math.max(0,Math.floor((Date.now()-time)/1000)):null};
-async function live(){
+const fetchOptions={headers:{accept:'application/json','user-agent':'GNK-ASG-Public-Market/3.0'},cf:{cacheEverything:true,cacheTtl:60}};
+async function simplePriceLive(){
  const params=new URLSearchParams({ids:IDS.join(','),vs_currencies:FIATS.join(','),include_24hr_change:'true',include_last_updated_at:'true'});
- const response=await fetch(`https://api.coingecko.com/api/v3/simple/price?${params}`,{headers:{accept:'application/json','user-agent':'GNK-ASG-Public-Market/2.0'},cf:{cacheEverything:true,cacheTtl:60}});
- if(!response.ok)throw new Error(`CoinGecko ${response.status}`);
+ const response=await fetch(`https://api.coingecko.com/api/v3/simple/price?${params}`,fetchOptions);
+ if(!response.ok)throw new Error(`CoinGecko simple price ${response.status}`);
  const raw=await response.json(),coins=[];
- for(const id of IDS){const item=raw?.[id];if(!item)continue;coins.push({id,symbol:SYMBOLS[id],prices:Object.fromEntries(FIATS.map(code=>[code,item[code]])),changes_24h:Object.fromEntries(FIATS.map(code=>[code,item[`${code}_24h_change`]])),last_updated_at:item.last_updated_at||null});}
- if(!coins.length)throw new Error('CoinGecko empty response');
- return{updated_at:new Date().toISOString(),source:'CoinGecko public market data',status:'ok',stale:false,age_seconds:0,coins};
+ for(const id of IDS){const item=raw?.[id];if(!item)continue;const prices=Object.fromEntries(FIATS.map(code=>[code,item[code]])),changes=Object.fromEntries(FIATS.map(code=>[code,item[`${code}_24h_change`]]));if(!Number.isFinite(Number(prices.eur))||!Number.isFinite(Number(prices.usd)))continue;coins.push({id,symbol:SYMBOLS[id],prices,changes_24h:changes,last_updated_at:item.last_updated_at||null});}
+ if(coins.length<8)throw new Error(`CoinGecko simple price incomplete: ${coins.length}`);
+ return{updated_at:new Date().toISOString(),source:'CoinGecko simple price',upstream:'coingecko-simple-price',status:'ok',stale:false,age_seconds:0,coins};
 }
+async function marketsLive(){
+ const responses=await Promise.all(FIATS.map(async code=>{const params=new URLSearchParams({vs_currency:code,ids:IDS.join(','),order:'market_cap_desc',per_page:String(IDS.length),page:'1',sparkline:'false',price_change_percentage:'24h'});const response=await fetch(`https://api.coingecko.com/api/v3/coins/markets?${params}`,fetchOptions);if(!response.ok)throw new Error(`CoinGecko markets ${code} ${response.status}`);const rows=await response.json();if(!Array.isArray(rows)||!rows.length)throw new Error(`CoinGecko markets ${code} empty`);return[code,rows]});
+ const byId=new Map();
+ for(const[code,rows]of responses){for(const row of rows){if(!IDS.includes(row.id))continue;const current=byId.get(row.id)||{id:row.id,symbol:SYMBOLS[row.id]||String(row.symbol||'').toUpperCase(),prices:{},changes_24h:{},last_updated_at:row.last_updated||null};current.prices[code]=row.current_price;current.changes_24h[code]=row.price_change_percentage_24h;current.last_updated_at=current.last_updated_at||row.last_updated||null;byId.set(row.id,current)}}
+ const coins=IDS.map(id=>byId.get(id)).filter(item=>item&&Number.isFinite(Number(item.prices.eur))&&Number.isFinite(Number(item.prices.usd)));
+ if(coins.length<8)throw new Error(`CoinGecko markets incomplete: ${coins.length}`);
+ return{updated_at:new Date().toISOString(),source:'CoinGecko markets endpoint',upstream:'coingecko-coins-markets',status:'ok',stale:false,age_seconds:0,coins};
+}
+async function live(){try{return await simplePriceLive()}catch(primaryError){try{return await marketsLive()}catch(secondaryError){throw new Error(`${primaryError.message}; ${secondaryError.message}`)}}}
 async function fallback(env){
  if(!env?.ASSETS?.fetch)return null;
  const response=await env.ASSETS.fetch(new Request('https://assets.local/data/market.json',{headers:{accept:'application/json'}}));
  if(!response.ok)return null;
  const data=await response.json();
  const age=ageSeconds(data?.updated_at);
- return{...data,status:'fallback',stale:age==null||age>86400,age_seconds:age,fallback_reason:'Live market source temporarily unavailable.'};
+ return{...data,upstream:'static-market-json',status:'fallback',stale:age==null||age>3600,age_seconds:age,fallback_reason:'Both live market requests are temporarily unavailable.'};
 }
 export async function servePublicMarketData(request,env){
  const path=pathOf(request);
@@ -34,6 +44,6 @@ export async function servePublicMarketData(request,env){
  }catch(error){
   const data=await fallback(env);
   if(data)return request.method==='HEAD'?new Response(null,{status:200,headers:json(data,200,'fallback',path).headers}):json(data,200,'fallback',path);
-  return json({ok:false,status:'unavailable',stale:true,message:'Market data are temporarily unavailable.'},503,'unavailable',path);
+  return json({ok:false,status:'unavailable',stale:true,upstream:'none',message:'Market data are temporarily unavailable.'},503,'unavailable',path);
  }
 }
