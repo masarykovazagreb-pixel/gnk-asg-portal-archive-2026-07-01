@@ -9,11 +9,12 @@ const verify=fs.readFileSync('scripts/verify-production-release-v38.sh','utf8');
 
 for(const marker of [
   "handleResilientContact",
-  "GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS_MARKET_ORIGIN_HOTFIX_CONTACT_MAIL",
-  "GNK_ASG_CONTACT_RESILIENT_V1_20260718_D1_KV_FALLBACK"
+  "CONTACT_RESILIENCE_VERSION",
+  "GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS_MARKET_ORIGIN_HOTFIX_CONTACT_MAIL"
 ]) assert.ok(entry.includes(marker),`entrypoint missing ${marker}`);
 
 for(const marker of [
+  "GNK_ASG_CONTACT_RESILIENT_V1_20260718_D1_KV_FALLBACK",
   "contact:fallback:case:",
   "contact:fallback:idempotency:",
   "storage:'kv-fallback'",
