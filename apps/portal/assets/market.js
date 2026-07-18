@@ -77,8 +77,7 @@
     const updatedAt = timestamps.sort((a, b) => Date.parse(b) - Date.parse(a))[0] || data.updatedAt;
     return {coins, updated_at:updatedAt, status:'ok', stale:false, source:data.worker || data.module || 'GNK ASG Market Backend'};
   }
-  async function fetchMarket(url, signal) {
-    const response = await fetch(url + '?v=' + Date.now(), {cache:'no-store', headers:{accept:'application/json'}, signal});
+  async function readMarket(response) {
     if (!response.ok) throw new Error('market endpoint unavailable');
     const normalized = normalizeLiveMarket(await response.json());
     if (!normalized) throw new Error('empty market endpoint');
@@ -88,8 +87,11 @@
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 8000);
     try {
-      try { dataset = await fetchMarket('/api/market', controller.signal); }
-      catch (_) { dataset = await fetchMarket('/api/public-market', controller.signal); }
+      try {
+        dataset = await readMarket(await fetch('/api/market?v=' + Date.now(), {cache:'no-store', headers:{accept:'application/json'}, signal:controller.signal}));
+      } catch (_) {
+        dataset = await readMarket(await fetch('/api/public-market?v=' + Date.now(), {cache:'no-store', headers:{accept:'application/json'}, signal:controller.signal}));
+      }
       live = dataset.status === 'ok' && dataset.stale !== true;
     } finally {
       window.clearTimeout(timeout);
