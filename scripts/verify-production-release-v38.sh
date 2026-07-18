@@ -24,7 +24,7 @@ has_release_proof() {
 
 show_relevant_headers() {
   local headers="$1"
-  grep -Ei '^(HTTP/|location:|content-type:|cache-control:|cf-cache-status:|cf-ray:|x-gnk-active-entrypoint:|x-gnk-active-release:|x-gnk-deploy-revision:|x-gnk-route-owner:|x-gnk-news-source:|x-gnk-news-share:|x-gnk-news-id:|x-gnk-market-data:|x-gnk-market-source:)' "$headers" >&2 || true
+  grep -Ei '^(HTTP/|location:|content-type:|cache-control:|cf-cache-status:|cf-ray:|x-gnk-active-entrypoint:|x-gnk-active-release:|x-gnk-deploy-revision:|x-gnk-route-owner:|x-gnk-news-source:|x-gnk-news-share:|x-gnk-news-id:|x-gnk-market-data:|x-gnk-market-source:|x-gnk-market-route:)' "$headers" >&2 || true
 }
 
 verify_release_marker() {
@@ -74,7 +74,8 @@ market_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/ma
 echo "ASSERT same-origin market HTTP 200 and exact release ${revision}; actual=${market_status}"
 [[ "$market_status" = "200" ]]
 has_release_proof "$out/market.headers"
-grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V1_20260715' "$out/market.headers"
+grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V2_20260718_PRIMARY_ALIAS' "$out/market.headers"
+grep -Fiq 'x-gnk-market-route: /api/public-market' "$out/market.headers"
 jq -e '(.status == "ok" and .stale == false and (.coins|length) > 0) or (.status == "fallback" and has("stale") and has("age_seconds") and (.coins|length) > 0)' "$out/market.json" >/dev/null
 
 share_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/news-share.headers" --output "$out/news-share.body" --write-out '%{http_code}' "$(request_url "${base}/podijeli/vijest/19fa99e0723490d640/" "${cache}-share")" || true)
