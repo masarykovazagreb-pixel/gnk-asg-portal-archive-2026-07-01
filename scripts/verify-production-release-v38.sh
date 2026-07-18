@@ -68,7 +68,7 @@ market_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/ma
 echo "ASSERT live same-origin market HTTP 200 and exact release ${revision}; actual=${market_status}"
 [[ "$market_status" = "200" ]]
 has_release_proof "$out/market.headers"
-grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V2_20260718_PRIMARY_ALIAS' "$out/market.headers"
+grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V4_20260718_INDEPENDENT_PROVIDER' "$out/market.headers"
 grep -Fiq 'x-gnk-market-source: live' "$out/market.headers"
 grep -Fiq 'x-gnk-market-route: /api/public-market' "$out/market.headers"
 grep -Eiq 'x-gnk-market-upstream: (coingecko-(simple-price|coins-markets)|coinpaprika-tickers)' "$out/market.headers"
