@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260712-index-live-hub-v1';
+  var VERSION = '20260718-index-news-contract-v2';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -129,13 +129,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var eyebrow = head.querySelector('.eyebrow');
     var paragraph = head.querySelector('p:not(.eyebrow)');
     if (isEnglish()) {
-      if (eyebrow) eyebrow.textContent = 'Refresh every hour';
-      if (paragraph) paragraph.textContent = 'The public window displays up to the 500 newest business and technology news items. The active archive retains up to the next 400 older items. Publications about GNK ASG d.o.o., GNK DINAMO Ltd. or Nermin Sefić are displayed automatically from public sources.';
-      if (loading && /workflow|refresh/i.test(loading.textContent)) loading.textContent = 'The newest 500 public items refresh automatically every hour; the active archive retains up to 400 older items.';
+      if (eyebrow) eyebrow.textContent = 'Automatic public-news refresh';
+      if (paragraph) paragraph.textContent = 'The public window displays up to the 100 newest business and technology news items, ordered newest first. The archive retains up to 2,000 older items; at the 2,100-record threshold the oldest 1,000 archived items are removed.';
+      if (loading) loading.textContent = 'Up to 100 newest public items are shown here. Older items remain in the 2,000-item archive under the automatic retention policy.';
     } else {
-      if (eyebrow) eyebrow.textContent = 'Ažuriranje svakih sat vremena';
-      if (paragraph) paragraph.textContent = 'Javni prozor prikazuje do 500 najnovijih poslovnih i tehnoloških vijesti. Aktivna arhiva zadržava do sljedećih 400 starijih stavki. Objave o GNK ASG d.o.o., GNK DINAMO Ltd. ili Nerminu Sefiću prikazuju se automatski iz javnih izvora.';
-      if (loading && /workflow|osvjež/i.test(loading.textContent)) loading.textContent = 'Najnovijih 500 javnih stavki osvježava se automatski svakih sat vremena, a aktivna arhiva zadržava do 400 starijih stavki.';
+      if (eyebrow) eyebrow.textContent = 'Automatsko osvježavanje javnih vijesti';
+      if (paragraph) paragraph.textContent = 'Javni prozor prikazuje do 100 najnovijih poslovnih i tehnoloških vijesti, od najnovije prema najstarijoj. Arhiva zadržava do 2.000 starijih stavki; na pragu od 2.100 ukupnih zapisa briše se najstarijih 1.000 arhivskih stavki.';
+      if (loading) loading.textContent = 'Ovdje se prikazuje do 100 najnovijih javnih stavki. Starije stavke ostaju u arhivi kapaciteta 2.000 prema automatskom retention pravilu.';
     }
   }
 
