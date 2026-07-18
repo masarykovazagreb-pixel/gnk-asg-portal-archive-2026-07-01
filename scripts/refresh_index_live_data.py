@@ -22,6 +22,10 @@ RSS = [
     ("Cointelegraph", "digital-assets", "digital-assets", "https://cointelegraph.com/rss"),
 ]
 
+PUBLIC_LIMIT = 100
+ARCHIVE_TRIGGER = 2000
+ARCHIVE_DELETE_OLDEST = 1000
+
 
 def get(url: str) -> bytes:
     request = urllib.request.Request(url, headers=UA)
@@ -117,7 +121,11 @@ def parse_feed(source: str, group: str, category: str, url: str) -> list[dict]:
 
 def refresh_news() -> None:
     current_path = DATA / "news.json"
+    archive_path = DATA / "news_archive.json"
     current = json.loads(current_path.read_text(encoding="utf-8")) if current_path.exists() else []
+    archived = json.loads(archive_path.read_text(encoding="utf-8")) if archive_path.exists() else []
+    if not isinstance(current, list) or not isinstance(archived, list):
+        raise RuntimeError("News and archive payloads must be lists")
     fetched: list[dict] = []
     errors = []
     for source, group, category, url in RSS:
@@ -127,12 +135,31 @@ def refresh_news() -> None:
             errors.append(f"{source}: {exc}")
     if not fetched:
         raise RuntimeError("All configured news feeds failed: " + "; ".join(errors))
-    by_url = {item.get("url"): item for item in current if item.get("url")}
+    by_url = {item.get("url"): item for item in current + archived if item.get("url")}
     for item in fetched:
         by_url[item["url"]] = item
-    merged = sorted(by_url.values(), key=lambda item: item.get("published_at", ""), reverse=True)[:500]
-    current_path.write_text(json.dumps(merged, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    status = {"updated_at": datetime.now(timezone.utc).isoformat(), "items": len(merged), "sources_ok": len(RSS) - len(errors), "sources_total": len(RSS), "errors": errors}
+    merged = sorted(by_url.values(), key=lambda item: item.get("published_at", ""), reverse=True)
+    public = merged[:PUBLIC_LIMIT]
+    archive = merged[PUBLIC_LIMIT:]
+    pruned = 0
+    while len(archive) > ARCHIVE_TRIGGER:
+        delete_count = min(ARCHIVE_DELETE_OLDEST, len(archive))
+        archive = archive[:-delete_count]
+        pruned += delete_count
+    current_path.write_text(json.dumps(public, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    archive_path.write_text(json.dumps(archive, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    status = {
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+        "items": len(public),
+        "archive_items": len(archive),
+        "max_public_items": PUBLIC_LIMIT,
+        "archive_prune_trigger": ARCHIVE_TRIGGER,
+        "archive_delete_oldest_batch": ARCHIVE_DELETE_OLDEST,
+        "pruned_items": pruned,
+        "sources_ok": len(RSS) - len(errors),
+        "sources_total": len(RSS),
+        "errors": errors,
+    }
     (DATA / "news-status.json").write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
