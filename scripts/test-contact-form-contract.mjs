@@ -72,7 +72,7 @@ assert.match(handler,/contact_storage_unavailable/);
 assert.match(handler,/delivery:\{internal:internalSent,acknowledgement:acknowledgementSent\}/);
 assert.doesNotMatch(handler,/return json\(\{[^}]*internalMail,autoReply/);
 assert.doesNotMatch(handler,/will respond after review|odgovorit će nakon obrade/);
-assert.match(handler,/EXPLICIT_AUTH_SAME_ORIGIN/);
+assert.match(handler,/async function authorised\(request,env,ctx,app\)/);
 assert.match(handler,/new URL\('\/api\/operator-auth-check',request\.url\)/);
 assert.match(handler,/if\(!response\.ok\)return response/);
 assert.match(handler,/payload\?\.authenticated===true\?null/);
