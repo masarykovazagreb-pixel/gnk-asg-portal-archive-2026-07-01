@@ -1,0 +1,28 @@
+name: Validate News Retention Contract
+
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js'
+      - 'scripts/test-news-retention-visible-archive-contract.mjs'
+      - '.github/workflows/validate-news-retention-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-news-retention:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate syntax and retention contract
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
+          node --check scripts/test-news-retention-visible-archive-contract.mjs
+          node scripts/test-news-retention-visible-archive-contract.mjs
