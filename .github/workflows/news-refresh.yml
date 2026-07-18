@@ -44,9 +44,9 @@ jobs:
           assert isinstance(archive, list), 'news_archive.json must be a list'
           assert news_status.get('status') in {'ok', 'degraded'}, 'news refresh status failed'
           assert news_status.get('max_public_items') == 100, 'public limit is not 100'
-          assert news_status.get('archive_prune_trigger') == 1000, 'archive trigger is not 1000'
-          assert news_status.get('archive_delete_oldest_batch') == 500, 'archive prune batch is not 500'
-          assert len(archive) <= 1000, 'archive remains above 1000 after pruning'
+          assert news_status.get('archive_prune_trigger') == 2000, 'archive trigger is not 2000'
+          assert news_status.get('archive_delete_oldest_batch') == 1000, 'archive prune batch is not 1000'
+          assert len(archive) <= 2000, 'archive remains above 2000 after pruning'
           print(f'validated public={len(news)}, archive={len(archive)}')
           PY
 
