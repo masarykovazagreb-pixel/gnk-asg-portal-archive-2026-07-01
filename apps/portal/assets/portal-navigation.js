@@ -6,8 +6,11 @@
         ['Profile', '/en/#o-nama'],
         ['Financials', '/en/#financials'],
         ['Network', '/en/#grupa'],
+        ['Digital Assets', '/en/#digital-assets'],
         ['Markets', '/en/markets/'],
-        ['Insights', '/en/insights/'],
+        ['Publications', '/objave/'],
+        ['Comments', '/komentari/'],
+        ['Visual Index', '/visual-index/'],
         ['Sources', '/en/#publicSources'],
         ['Contact', '/en/contact/'],
         ['AI Desk', '/en/#assistant', 'desk-entry']
@@ -16,8 +19,11 @@
         ['Profil', '/#o-nama'],
         ['Financije', '/#financials'],
         ['Mreža', '/#grupa'],
+        ['Digitalna imovina', '/#digital-assets'],
         ['Tržišta', '/trzista/'],
-        ['Objave', '/insights-hr/'],
+        ['Objave', '/objave/'],
+        ['Komentari', '/komentari/'],
+        ['Vizualni indeks', '/visual-index/'],
         ['Izvori', '/#publicSources'],
         ['Kontakt', '/kontakt/'],
         ['AI asistent', '/#assistant', 'desk-entry']
@@ -26,10 +32,8 @@
   function render() {
     const nav = document.getElementById('navLinks');
     if (!nav) return;
-
     nav.replaceChildren();
     nav.dataset.menuStable = '1';
-
     items().forEach(([label, href, className]) => {
       const link = document.createElement('a');
       link.href = href;
@@ -42,6 +46,5 @@
   document.readyState === 'loading'
     ? document.addEventListener('DOMContentLoaded', render)
     : render();
-
   window.addEventListener('gnk-language-change', render);
 })();
