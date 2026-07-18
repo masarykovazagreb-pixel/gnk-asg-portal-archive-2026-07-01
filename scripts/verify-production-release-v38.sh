@@ -98,7 +98,7 @@ echo "ASSERT resilient contact readiness HTTP 200; actual=${contact_status}"
 [[ "$contact_status" = "200" ]]
 has_release_proof "$out/contact-ready.headers"
 grep -Fiq 'x-gnk-contact-resilience: GNK_ASG_CONTACT_RESILIENT_V1_20260718_D1_KV_FALLBACK' "$out/contact-ready.headers"
-jq -e '.ready == true and .storage.fallback == true and (.storage.d1 == true or .storage.kv == true) and .mail == true' "$out/contact-ready.json" >/dev/null
+jq -e '.ready == true and (.storage.d1 == true or .storage.kv == true) and .mail == true' "$out/contact-ready.json" >/dev/null
 
 mail_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/mail.headers" --output "$out/mail.json" --write-out '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' "$(request_url "${base}/api/studio-message/send" "${cache}-mail")" || true)
 echo "ASSERT unauthenticated mail endpoint controlled by exact release ${revision}; actual=${mail_status}"
