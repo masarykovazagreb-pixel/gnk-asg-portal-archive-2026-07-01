@@ -58,8 +58,8 @@ assert.match(newsroom,/automatizacija-ne-ukida-odgovornost/);
 assert.match(newsBackend,/VISIBLE_LIMIT=100/);
 assert.match(newsBackend,/ARCHIVE_CAP=2000/);
 assert.match(newsBackend,/PRUNE_OLDEST=1000/);
-assert.match(newsBackend,/TOTAL_RETENTION_LIMIT=VISIBLE_LIMIT\+ARCHIVE_CAP/);
-assert.match(newsBackend,/while\(retained\.length>=TOTAL_RETENTION_LIMIT\)/);
+assert.match(newsBackend,/TOTAL_RETENTION_CAP=VISIBLE_LIMIT\+ARCHIVE_CAP/);
+assert.match(newsBackend,/while\(retained\.length>=TOTAL_RETENTION_CAP\)/);
 assert.doesNotMatch(newsBackend,/slice\(0,500\)/);
 
 assert.match(transport,/from 'cloudflare:email'/);
