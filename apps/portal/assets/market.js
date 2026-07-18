@@ -51,16 +51,48 @@
     }
     convert();
   }
+  function normalizeLiveMarket(data) {
+    if (Array.isArray(data?.coins) && data.coins.length) return data;
+    if (!Array.isArray(data?.digital_assets) || !data.digital_assets.length) return null;
+    const prior = new Map((dataset.coins || []).map((item) => [item.id, item]));
+    const timestamps = [];
+    const coins = data.digital_assets.map((item) => {
+      const id = item.key || String(item.name || '').toLowerCase();
+      const previous = prior.get(id) || {};
+      const previousPrices = previous.prices || {};
+      const previousChanges = previous.changes_24h || {};
+      const eur = Number(item.price_eur);
+      const usd = Number(item.price_usd);
+      const prices = {...previousPrices, eur, usd};
+      const changes = {...previousChanges, eur:Number(item.change_24h_eur), usd:Number(item.change_24h_usd)};
+      ['gbp', 'chf', 'jpy'].forEach((code) => {
+        const ratio = Number(previousPrices[code]) / Number(previousPrices.eur);
+        if (Number.isFinite(eur) && Number.isFinite(ratio)) prices[code] = eur * ratio;
+        if (!Number.isFinite(Number(changes[code]))) changes[code] = Number(item.change_24h_eur);
+      });
+      if (Number.isFinite(Date.parse(item.updatedAt))) timestamps.push(item.updatedAt);
+      return {id, symbol:item.symbol || previous.symbol || id.toUpperCase(), prices, changes_24h:changes};
+    }).filter((item) => Number.isFinite(item.prices.eur) && Number.isFinite(item.prices.usd));
+    if (!coins.length) return null;
+    const updatedAt = timestamps.sort((a, b) => Date.parse(b) - Date.parse(a))[0] || data.updatedAt;
+    return {coins, updated_at:updatedAt, status:'ok', stale:false, source:data.worker || data.module || 'GNK ASG Market Backend'};
+  }
+  async function readMarket(response) {
+    if (!response.ok) throw new Error('market endpoint unavailable');
+    const normalized = normalizeLiveMarket(await response.json());
+    if (!normalized) throw new Error('empty market endpoint');
+    return normalized;
+  }
   async function sameOrigin() {
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 8000);
     try {
-      const response = await fetch('/api/public-market?v=' + Date.now(), {cache:'no-store', headers:{accept:'application/json'}, signal:controller.signal});
-      if (!response.ok) throw new Error('market endpoint unavailable');
-      const data = await response.json();
-      if (!Array.isArray(data?.coins) || !data.coins.length) throw new Error('empty market endpoint');
-      dataset = data;
-      live = data.status === 'ok' && data.stale !== true;
+      try {
+        dataset = await readMarket(await fetch('/api/market?v=' + Date.now(), {cache:'no-store', headers:{accept:'application/json'}, signal:controller.signal}));
+      } catch (_) {
+        dataset = await readMarket(await fetch('/api/public-market?v=' + Date.now(), {cache:'no-store', headers:{accept:'application/json'}, signal:controller.signal}));
+      }
+      live = dataset.status === 'ok' && dataset.stale !== true;
     } finally {
       window.clearTimeout(timeout);
     }
