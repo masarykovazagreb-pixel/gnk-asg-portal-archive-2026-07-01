@@ -74,9 +74,17 @@ grep -Fiq 'x-gnk-market-route: /api/public-market' "$out/market.headers"
 grep -Eiq 'x-gnk-market-upstream: (coingecko-(simple-price|coins-markets)|coinpaprika-tickers)' "$out/market.headers"
 jq -e '.status == "ok" and .stale == false and (.coins|length) >= 8 and (.age_seconds == 0)' "$out/market.json" >/dev/null
 
-share_id=$(jq -r 'def items: if type=="array" then . else (.items // .posts // .news // []) end; first(items[] | select(((.id // "")|tostring|test("^[A-Za-z0-9]{8,64}$")) and (((.sourceUrl // .url // .href // "")|tostring)|test("^https?://"))) | (.id|tostring)) // empty' "$out/news.json")
-share_target=$(jq -r --arg id "$share_id" 'def items: if type=="array" then . else (.items // .posts // .news // []) end; first(items[] | select((.id|tostring)==$id) | (.sourceUrl // .url // .href // "")) // empty' "$out/news.json")
-[[ -n "$share_id" && -n "$share_target" ]]
+share_record=$(jq -r '
+  def items: if type == "array" then . else (.items // .posts // .news // []) end;
+  [items[]
+   | {id: ((.id // "") | tostring), target: ((.sourceUrl // .url // .href // "") | tostring)}
+   | select((.id | test("^[A-Za-z0-9]{8,64}$")) and (.target | test("^https?://")))]
+  | .[0]
+  | if . == null then empty else [.id, .target] | @tsv end
+' "$out/news.json")
+IFS=$'\t' read -r share_id share_target <<< "$share_record"
+echo "ASSERT current news contains a shareable item; id=${share_id:-missing}; target=${share_target:-missing}"
+[[ -n "${share_id:-}" && -n "${share_target:-}" ]]
 share_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/news-share.headers" --output "$out/news-share.body" --write-out '%{http_code}' "$(request_url "${base}/podijeli/vijest/${share_id}/" "${cache}-share")" || true)
 echo "ASSERT current news share redirect HTTP 302 and exact release ${revision}; id=${share_id}; actual=${share_status}"
 [[ "$share_status" = "302" ]]
