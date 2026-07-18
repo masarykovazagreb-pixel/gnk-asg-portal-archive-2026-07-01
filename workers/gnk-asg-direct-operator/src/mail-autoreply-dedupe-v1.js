@@ -5,9 +5,10 @@ async function withLocalKeyLock(key,task){
   const previous=localLocks.get(key)||Promise.resolve();
   let release;
   const current=new Promise(resolve=>{release=resolve});
-  localLocks.set(key,previous.then(()=>current));
+  const chain=previous.then(()=>current);
+  localLocks.set(key,chain);
   await previous;
-  try{return await task()}finally{release();if(localLocks.get(key)===current)localLocks.delete(key)}
+  try{return await task()}finally{release();if(localLocks.get(key)===chain)localLocks.delete(key)}
 }
 
 async function reserveMessageId(kv,key,value,ttl){
