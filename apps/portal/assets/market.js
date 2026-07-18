@@ -1,5 +1,7 @@
 (() => {
   'use strict';
+  if (window.__GNK_INDEX_MARKET_V3__) return;
+  window.__GNK_INDEX_MARKET_V3__ = true;
   const $ = (s) => document.querySelector(s);
   const english = () => window.GNK_LANG && window.GNK_LANG.get && window.GNK_LANG.get() === 'en';
   let dataset = {coins: []};
@@ -16,8 +18,8 @@
   function convert() {
     const output = $('#convertResult');
     const selected = coin($('#convertCoin')?.value);
-    if (!output || !selected) return;
-    output.textContent = money(Number($('#convertAmount')?.value || 0) * Number(selected.prices[currency] || 0), currency);
+    if (!output) return;
+    output.textContent = selected ? money(Number($('#convertAmount')?.value || 0) * Number(selected.prices[currency] || 0), currency) : '—';
   }
   function render() {
     const en = english();
@@ -27,6 +29,9 @@
       grid.innerHTML = '<article class="coin"><strong>' + (en ? 'Market data are temporarily unavailable.' : 'Tržišni podatci trenutačno nisu dostupni.') + '</strong></article>';
       const updated = $('#marketUpdated');
       if (updated) updated.textContent = en ? 'Refresh pending…' : 'Osvježavanje u tijeku…';
+      const ticker = $('#ticker');
+      if (ticker) ticker.innerHTML = '<span><b>DIGITAL ASSETS</b> ' + (en ? 'Refresh pending…' : 'Osvježavanje u tijeku…') + '</span><span><b>GNK ASG</b> Technology • Finance • Governance</span>';
+      convert();
       return;
     }
     grid.innerHTML = dataset.coins.map((item) => {
@@ -67,7 +72,7 @@
   }
   async function stored() {
     try {
-      const response = await fetch('/data/market.json?v=' + Date.now(), {cache:'no-store'});
+      const response = await fetch('/data/market.json?v=' + Date.now(), {cache:'no-store', headers:{accept:'application/json'}});
       if (!response.ok) return false;
       const data = await response.json();
       if (!Array.isArray(data?.coins) || !data.coins.length) return false;
@@ -96,14 +101,17 @@
     }
   }
   function init() {
+    if (!$('#coinGrid')) return;
+    render();
     $('#currency')?.addEventListener('change', (event) => { currency = event.target.value; render(); });
     $('#convertAmount')?.addEventListener('input', convert);
     $('#convertCoin')?.addEventListener('change', convert);
     window.addEventListener('gnk-language-change', render);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+    window.addEventListener('pageshow', refresh);
     window.addEventListener('online', refresh);
     refresh();
     window.setInterval(refresh, 120000);
   }
-  document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
+  document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init, {once:true}) : init();
 })();
