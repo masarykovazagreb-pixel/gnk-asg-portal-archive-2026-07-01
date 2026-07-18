@@ -27,6 +27,7 @@ def main() -> int:
     now = datetime.now(timezone.utc)
     market = json.loads((DATA / "market.json").read_text(encoding="utf-8"))
     news = json.loads((DATA / "news.json").read_text(encoding="utf-8"))
+    archive = json.loads((DATA / "news_archive.json").read_text(encoding="utf-8"))
     status = json.loads((DATA / "news-status.json").read_text(encoding="utf-8"))
 
     updated = parse_time(market.get("updated_at", ""))
@@ -53,13 +54,15 @@ def main() -> int:
         if not isinstance(item.get("volume_24h_usd"), (int, float)) or item["volume_24h_usd"] < 0:
             fail(f"invalid volume for {item.get('symbol')}")
 
-    if not isinstance(news, list) or len(news) < 3:
-        fail("news feed must contain at least three items")
+    if not isinstance(news, list) or not 3 <= len(news) <= 100:
+        fail("public news feed must contain between 3 and 100 items")
+    if not isinstance(archive, list) or len(archive) > 2000:
+        fail("news archive must be a list capped at 2000 items")
     seen_ids: set[str] = set()
     seen_urls: set[str] = set()
     newest: datetime | None = None
     hosts: set[str] = set()
-    for item in news:
+    for item in news + archive:
         item_id = str(item.get("id", "")).strip()
         title = str(item.get("title", "")).strip()
         url = str(item.get("url", "")).strip()
@@ -68,14 +71,15 @@ def main() -> int:
         if not item_id or len(item_id) < 12 or not title or len(title) < 8:
             fail("news item has invalid id or title")
         if item_id in seen_ids or url in seen_urls:
-            fail("news feed contains duplicate id or URL")
+            fail("public feed and archive contain duplicate id or URL")
         seen_ids.add(item_id); seen_urls.add(url)
         if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
             fail(f"news URL is not a safe public HTTPS URL: {url}")
         hosts.add(parsed.hostname.lower())
         if published > now + timedelta(minutes=5):
             fail(f"news item is dated in the future: {title}")
-        newest = published if newest is None or published > newest else newest
+        if item in news:
+            newest = published if newest is None or published > newest else newest
         if item.get("share_url") != f"/podijeli/vijest/{item_id}/":
             fail(f"invalid share URL for {item_id}")
     if newest is None or now - newest > timedelta(days=3):
@@ -84,8 +88,14 @@ def main() -> int:
     status_time = parse_time(status.get("updated_at", ""))
     if now - status_time > timedelta(minutes=15):
         fail("news status is stale")
-    if status.get("items") != len(news):
-        fail("news status item count does not match feed")
+    if status.get("items") != len(news) or status.get("archive_items") != len(archive):
+        fail("news status counts do not match public feed and archive")
+    if status.get("max_public_items") != 100:
+        fail("public news limit is not 100")
+    if status.get("archive_prune_trigger") != 2000:
+        fail("archive prune trigger is not 2000")
+    if status.get("archive_delete_oldest_batch") != 1000:
+        fail("archive prune batch is not 1000")
     if not isinstance(status.get("sources_ok"), int) or status["sources_ok"] < 1:
         fail("no news source succeeded")
     if status.get("sources_total") != 3:
@@ -96,6 +106,7 @@ def main() -> int:
         "market_age_seconds": round(age),
         "market_assets": sorted(symbols),
         "news_items": len(news),
+        "archive_items": len(archive),
         "news_hosts": len(hosts),
         "newest_news_at": newest.isoformat(),
         "sources_ok": status["sources_ok"],
