@@ -5,7 +5,7 @@ const source=fs.readFileSync('workers/gnk-asg-direct-operator/src/public-market-
 const client=fs.readFileSync('apps/portal/assets/market.js','utf8');
 
 for(const marker of [
-  "GNK_ASG_PUBLIC_MARKET_DATA_V3_20260718_SECONDARY_LIVE",
+  "GNK_ASG_PUBLIC_MARKET_DATA_V2_20260718_PRIMARY_ALIAS_V3_SECONDARY_LIVE",
   "PRIMARY_API_PATH='/api/market'",
   "PUBLIC_API_PATH='/api/public-market'",
   'API_PATHS=new Set([PRIMARY_API_PATH,PUBLIC_API_PATH])',
