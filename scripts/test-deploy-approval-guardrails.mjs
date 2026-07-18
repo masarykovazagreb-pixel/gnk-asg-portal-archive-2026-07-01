@@ -42,19 +42,23 @@ assert.ok(workflow.includes(deployRevisionExport),'approved SHA must be exported
 assert.ok(!workflow.includes('deployment.\\n          echo "DEPLOY_SOURCE_SHA='),'deploy revision export must not be embedded in the preceding echo');
 requireText('workflow V38 release assertions',workflow,[
  'index-unified-auth-v23.js','index-unified-auth-v21.js','mail-identity-autoreply-v2.js',
+ 'email-brand-mime-v1.js','email-autoreply-mime-v1.js',
  'index-editorial-order-v6.js','index-editorial-order-v1.js','editorial-latest-index-v1.js',
  'contact-form-v2.js','mail-studio-ui-v28.js','apps/portal/data/news.json',
- 'scripts/test-news-share-routing-v1.mjs','scripts/verify-production-release-v38.sh',
+ 'scripts/test-news-share-routing-v1.mjs','scripts/test-production-authorization-mail-contract.mjs','scripts/verify-production-release-v38.sh',
  'current-static-asset-20260715','source-redirect','20260715-source-links-v2',
  'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova','AI ne smije pisati konačnu odluku',
- 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V9_20260717_UNTRUSTED_SUBJECT_DATA','aiMessageText','loadEmailLogo','signature.html',
+ 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V9_20260717_UNTRUSTED_SUBJECT_DATA','aiMessageText',
+ 'EMAIL_LOGO_CID,VERSION as BRAND_MIME_VERSION','signatureData(profile,`cid:${EMAIL_LOGO_CID}`)',
+ 'buildAutoreplyRawEmail(','multipart/related','Content-ID: <${EMAIL_LOGO_CID}>','signature.html',
  'min-height:520px'
 ]);
 forbidText('workflow',workflow,[
  "grep -o 'public-compact-menu-v1.js'",
  'news_count=$(node -e',
  'ASSERT admin session readiness HTTP 200',
- 'scripts/verify-production-route.sh'
+ 'scripts/verify-production-route.sh',
+ "grep -Fq 'loadEmailLogo'"
 ]);
 
 forbidText('production workflow bypasses',workflow,[
