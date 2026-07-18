@@ -71,7 +71,7 @@ has_release_proof "$out/market.headers"
 grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V2_20260718_PRIMARY_ALIAS' "$out/market.headers"
 grep -Fiq 'x-gnk-market-source: live' "$out/market.headers"
 grep -Fiq 'x-gnk-market-route: /api/public-market' "$out/market.headers"
-grep -Eiq 'x-gnk-market-upstream: coingecko-(simple-price|coins-markets)' "$out/market.headers"
+grep -Eiq 'x-gnk-market-upstream: (coingecko-(simple-price|coins-markets)|coinpaprika-tickers)' "$out/market.headers"
 jq -e '.status == "ok" and .stale == false and (.coins|length) >= 8 and (.age_seconds == 0)' "$out/market.json" >/dev/null
 
 share_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/news-share.headers" --output "$out/news-share.body" --write-out '%{http_code}' "$(request_url "${base}/podijeli/vijest/19fa99e0723490d640/" "${cache}-share")" || true)
