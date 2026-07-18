@@ -72,6 +72,8 @@ jobs:
           test -f workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           test -f workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           test -f workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+          test -f workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
+          test -f workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js
           test -f apps/portal/assets/index-editorial-order-v6.js
           test -f apps/portal/assets/index-editorial-order-v1.js
           test -f apps/portal/assets/editorial-latest-index-v1.js
@@ -87,6 +89,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+          node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js
           node --check apps/portal/assets/index-editorial-order-v6.js
           node --check apps/portal/assets/index-editorial-order-v1.js
           node --check apps/portal/assets/editorial-latest-index-v1.js
@@ -94,6 +98,7 @@ jobs:
           node --check apps/portal/assets/mail-studio-ui-v28.js
           bash -n scripts/verify-production-release-v38.sh
           node scripts/test-news-share-routing-v1.mjs
+          node scripts/test-production-authorization-mail-contract.mjs
 
           grep -Fq 'main = "src/index-unified-auth-v23.js"' workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
           grep -Fq 'GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
@@ -108,7 +113,11 @@ jobs:
           grep -Fq 'AI ne smije pisati konačnu odluku' apps/portal/komentari/index.html
           grep -Fq 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V9_20260717_UNTRUSTED_SUBJECT_DATA' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'aiMessageText' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
-          grep -Fq 'loadEmailLogo' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq "import {EMAIL_LOGO_CID,VERSION as BRAND_MIME_VERSION} from './email-brand-mime-v1.js'" workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'signatureData(profile,`cid:${EMAIL_LOGO_CID}`)' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'buildAutoreplyRawEmail(' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fqi 'multipart/related' workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js
+          grep -Fq 'Content-ID: <${EMAIL_LOGO_CID}>' workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js
           grep -Fq 'signature.html' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'min-height:520px' apps/portal/assets/mail-studio-ui-v28.js
 
