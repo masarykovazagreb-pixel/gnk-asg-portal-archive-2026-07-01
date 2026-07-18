@@ -6,6 +6,7 @@ on:
       - '.github/workflows/deploy-admin-auth-v6.yml'
       - '.github/workflows/validate-production-authorization-contract.yml'
       - 'scripts/test-production-authorization-mail-contract.mjs'
+      - 'scripts/test-production-release-v38-contract.mjs'
       - 'workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js'
       - 'workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js'
   push:
@@ -14,6 +15,7 @@ on:
       - '.github/workflows/deploy-admin-auth-v6.yml'
       - '.github/workflows/validate-production-authorization-contract.yml'
       - 'scripts/test-production-authorization-mail-contract.mjs'
+      - 'scripts/test-production-release-v38-contract.mjs'
       - 'workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js'
       - 'workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js'
   workflow_dispatch:
@@ -30,5 +32,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate exact authorization and real CID mail contract
-        run: node scripts/test-production-authorization-mail-contract.mjs
+      - name: Validate exact authorization and canonical release contracts
+        run: |
+          node scripts/test-production-release-v38-contract.mjs
+          node scripts/test-production-authorization-mail-contract.mjs
