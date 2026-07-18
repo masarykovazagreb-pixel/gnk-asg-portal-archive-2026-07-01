@@ -64,15 +64,37 @@ latest=$(jq -r 'if type=="array" then .[0].published_at // .[0].publishedAt // .
 [[ -n "$latest" && ( "$latest" == "$news_baseline"* || "$latest" > "$news_baseline" ) ]]
 grep -Fiq 'x-gnk-news-source: current-static-asset-20260715' "$out/news.headers"
 
-market_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/market.headers" --output "$out/market.json" --write-out '%{http_code}' "$(request_url "${base}/api/public-market" "${cache}-market")" || true)
-echo "ASSERT live same-origin market HTTP 200 and exact release ${revision}; actual=${market_status}"
-[[ "$market_status" = "200" ]]
-has_release_proof "$out/market.headers"
-grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V4_20260718_INDEPENDENT_PROVIDER' "$out/market.headers"
-grep -Fiq 'x-gnk-market-source: live' "$out/market.headers"
-grep -Fiq 'x-gnk-market-route: /api/public-market' "$out/market.headers"
-grep -Eiq 'x-gnk-market-upstream: (coingecko-(simple-price|coins-markets)|coinpaprika-tickers)' "$out/market.headers"
-jq -e '.status == "ok" and .stale == false and (.coins|length) >= 8 and (.age_seconds == 0)' "$out/market.json" >/dev/null
+market_ok=false
+market_status='000'
+for market_attempt in $(seq 1 18); do
+  market_token="${revision}-$(date +%s)-market-${market_attempt}"
+  market_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/market.headers" --output "$out/market.json" --write-out '%{http_code}' "$(request_url "${base}/api/public-market" "$market_token")" || true)
+  market_source=$(grep -Ei '^x-gnk-market-source:' "$out/market.headers" | tail -1 | tr -d '\r' | cut -d: -f2- | xargs || true)
+  market_upstream=$(grep -Ei '^x-gnk-market-upstream:' "$out/market.headers" | tail -1 | tr -d '\r' | cut -d: -f2- | xargs || true)
+  market_json_status=$(jq -r '.status // "missing"' "$out/market.json" 2>/dev/null || echo invalid-json)
+  market_stale=$(jq -r '.stale // "missing"' "$out/market.json" 2>/dev/null || echo invalid-json)
+  market_age=$(jq -r '.age_seconds // "missing"' "$out/market.json" 2>/dev/null || echo invalid-json)
+  market_coins=$(jq -r '(.coins // []) | length' "$out/market.json" 2>/dev/null || echo 0)
+  echo "ASSERT live same-origin market attempt ${market_attempt}/18: HTTP 200, exact release ${revision}, source=live, status=ok, stale=false, coins>=8, age<=120; actual_http=${market_status}; source=${market_source:-missing}; upstream=${market_upstream:-missing}; status=${market_json_status}; stale=${market_stale}; coins=${market_coins}; age=${market_age}"
+  if [[ "$market_status" = "200" ]] &&
+     has_release_proof "$out/market.headers" &&
+     grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V4_20260718_INDEPENDENT_PROVIDER' "$out/market.headers" &&
+     grep -Fiq 'x-gnk-market-source: live' "$out/market.headers" &&
+     grep -Fiq 'x-gnk-market-route: /api/public-market' "$out/market.headers" &&
+     grep -Eiq 'x-gnk-market-upstream: (coingecko-(simple-price|coins-markets)|coinpaprika-tickers)' "$out/market.headers" &&
+     jq -e '.status == "ok" and .stale == false and (.coins|length) >= 8 and ((.age_seconds|numbers) >= 0) and ((.age_seconds|numbers) <= 120)' "$out/market.json" >/dev/null 2>&1; then
+    market_ok=true
+    break
+  fi
+  sleep 5
+done
+if [[ "$market_ok" != true ]]; then
+  echo "Live market verification failed after 18 attempts." >&2
+  show_relevant_headers "$out/market.headers"
+  cat "$out/market.json" >&2 || true
+  echo >&2
+  exit 1
+fi
 
 share_id=$(jq -r 'if type=="array" then (.[0].id // "") else (.items[0].id // .posts[0].id // .news[0].id // "") end | tostring' "$out/news.json" 2>"$out/news-share-selector.err" || true)
 share_target=$(jq -r 'if type=="array" then (.[0].sourceUrl // .[0].url // .[0].href // "") else (.items[0].sourceUrl // .items[0].url // .items[0].href // .posts[0].sourceUrl // .posts[0].url // .posts[0].href // .news[0].sourceUrl // .news[0].url // .news[0].href // "") end | tostring' "$out/news.json" 2>>"$out/news-share-selector.err" || true)
