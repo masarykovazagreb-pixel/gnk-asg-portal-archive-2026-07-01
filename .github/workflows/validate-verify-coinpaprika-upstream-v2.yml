@@ -1,0 +1,22 @@
+name: Validate CoinPaprika Verifier V2
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/verify-production-release-v38.sh'
+      - 'scripts/test-verify-coinpaprika-upstream-v2.mjs'
+      - '.github/workflows/validate-verify-coinpaprika-upstream-v2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: bash -n scripts/verify-production-release-v38.sh
+      - run: node scripts/test-verify-coinpaprika-upstream-v2.mjs
