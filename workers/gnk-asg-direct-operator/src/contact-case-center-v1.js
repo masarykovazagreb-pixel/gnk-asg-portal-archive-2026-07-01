@@ -1,4 +1,4 @@
-// GNK_ASG_CONTACT_CASE_CENTER_V1
+// GNK_ASG_CONTACT_CASE_CENTER_V2
 // Zaštićen backend modul za kontaktne upite (contact/media formulari).
 // Svaki zapis dobiva zajednički caseId format GNK-YYYYMMDD-XXXXXXXX koji
 // se koristi i u Mail Studio predmetu i u PDF Center dokumentu, radi
@@ -7,10 +7,9 @@
 // Pohrana: D1 (GNK_ASG_D1), tablica contact_cases.
 // NE dira mail slanje, DNS, rute, tajne ni produkcijsku konfiguraciju.
 // Svaka /api/contact-cases/* ruta zahtijeva aktivnu admin/operator sesiju
-// - provjeru radi pozivatelj (index-unified-auth-v16.js) prije poziva ovog
-// modula, dosljedno postojecem obrascu (email-status-tracking-v5.js).
+// - provjeru radi pozivatelj prije poziva ovog modula.
 
-export const VERSION = 'GNK_ASG_CONTACT_CASE_CENTER_V1_20260711';
+export const VERSION = 'GNK_ASG_CONTACT_CASE_CENTER_V2_20260718_IDEMPOTENT_CREATE';
 export const API_PREFIX = '/api/contact-cases';
 
 const clean = v => String(v ?? '').trim();
@@ -27,6 +26,13 @@ export function generateCaseId() {
   return `GNK-${date}-${fingerprint}`;
 }
 
+function normalizeIdempotencyKey(value) {
+  const key = clean(value).slice(0, 160);
+  if (!key) return '';
+  if (!/^[A-Za-z0-9._:-]{16,160}$/.test(key)) throw new Error('invalid_idempotency_key');
+  return key;
+}
+
 async function ensureSchema(db) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS contact_cases(
     case_id TEXT PRIMARY KEY,
@@ -39,11 +45,15 @@ async function ensureSchema(db) {
     subject TEXT,
     message TEXT,
     language TEXT,
+    idempotency_key TEXT,
     mail_studio_thread_id TEXT,
     pdf_document_id TEXT,
     assigned_to TEXT,
     notes TEXT
   )`).run();
+  try { await db.prepare('ALTER TABLE contact_cases ADD COLUMN idempotency_key TEXT').run(); } catch {}
+  await db.prepare(`CREATE UNIQUE INDEX IF NOT EXISTS idx_contact_cases_idempotency
+    ON contact_cases(idempotency_key) WHERE idempotency_key IS NOT NULL AND idempotency_key <> ''`).run();
   await db.prepare(`CREATE INDEX IF NOT EXISTS idx_contact_cases_email ON contact_cases(email)`).run();
   await db.prepare(`CREATE INDEX IF NOT EXISTS idx_contact_cases_status ON contact_cases(status)`).run();
 }
@@ -51,20 +61,36 @@ async function ensureSchema(db) {
 export async function createContactCase(env, payload) {
   const db = env.GNK_ASG_D1;
   await ensureSchema(db);
+  const idempotencyKey = normalizeIdempotencyKey(payload.idempotencyKey);
+  if (idempotencyKey) {
+    const existing = await db.prepare('SELECT case_id, created_at FROM contact_cases WHERE idempotency_key = ?').bind(idempotencyKey).first();
+    if (existing) return { caseId: existing.case_id, createdAt: existing.created_at, reused: true };
+  }
   const caseId = generateCaseId();
   const now = new Date().toISOString();
-  await db.prepare(`INSERT INTO contact_cases
-    (case_id, created_at, updated_at, status, source, name, email, subject, message, language)
-    VALUES (?,?,?,?,?,?,?,?,?,?)`).bind(
+  const statement = idempotencyKey
+    ? `INSERT OR IGNORE INTO contact_cases
+      (case_id, created_at, updated_at, status, source, name, email, subject, message, language, idempotency_key)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?)`
+    : `INSERT INTO contact_cases
+      (case_id, created_at, updated_at, status, source, name, email, subject, message, language, idempotency_key)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
+  const result = await db.prepare(statement).bind(
     caseId, now, now, 'open',
     clean(payload.source) || 'contact-form',
     clean(payload.name),
     clean(payload.email),
     clean(payload.subject),
     clean(payload.message),
-    clean(payload.language) || 'hr'
+    clean(payload.language) || 'hr',
+    idempotencyKey || null
   ).run();
-  return { caseId, createdAt: now };
+  if (idempotencyKey && Number(result?.meta?.changes || 0) === 0) {
+    const existing = await db.prepare('SELECT case_id, created_at FROM contact_cases WHERE idempotency_key = ?').bind(idempotencyKey).first();
+    if (existing) return { caseId: existing.case_id, createdAt: existing.created_at, reused: true };
+    throw new Error('idempotent_contact_insert_failed');
+  }
+  return { caseId, createdAt: now, reused: false };
 }
 
 async function listCases(env, url) {

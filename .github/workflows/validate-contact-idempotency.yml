@@ -1,0 +1,29 @@
+name: Validate Contact Idempotency
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/assets/contact-form-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/contact-case-center-v1.js'
+      - 'scripts/test-contact-idempotency-contract.mjs'
+      - '.github/workflows/validate-contact-idempotency.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and contract checks
+        run: |
+          node --check apps/portal/assets/contact-form-v2.js
+          node --check workers/gnk-asg-direct-operator/src/contact-studio-mail-v1.js
+          node --check workers/gnk-asg-direct-operator/src/contact-case-center-v1.js
+          node scripts/test-contact-idempotency-contract.mjs
