@@ -8,7 +8,7 @@ const fallback=JSON.parse(fs.readFileSync('apps/portal/data/market.json','utf8')
 assert.equal(PRIMARY_API_PATH,'/api/market');
 assert.equal(PUBLIC_API_PATH,'/api/public-market');
 assert.deepEqual([...API_PATHS],[PRIMARY_API_PATH,PUBLIC_API_PATH]);
-assert.match(VERSION,/GNK_ASG_PUBLIC_MARKET_DATA_V2_20260718_PRIMARY_ALIAS_V3_SECONDARY_LIVE/);
+assert.match(VERSION,/GNK_ASG_PUBLIC_MARKET_DATA_V4_20260718_INDEPENDENT_PROVIDER/);
 assert.match(worker,/servePublicMarketData/);
 assert.match(worker,/MARKET_ORIGIN/);
 assert.match(client,/fetch\('\/api\/market/);
@@ -58,4 +58,4 @@ try{
  assert.equal(ignored,null);
 }finally{globalThis.fetch=originalFetch;}
 
-console.log(JSON.stringify({ok:true,version:VERSION,paths:[PRIMARY_API_PATH,PUBLIC_API_PATH],dualLive:true,staleFallbackExplicit:true},null,2));
+console.log(JSON.stringify({ok:true,version:VERSION,paths:[PRIMARY_API_PATH,PUBLIC_API_PATH],independentLiveProvider:true,staleFallbackExplicit:true},null,2));
