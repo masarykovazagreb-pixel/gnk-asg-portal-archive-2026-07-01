@@ -50,6 +50,7 @@ jobs:
           node --check scripts/test-operator-center-session-contract.mjs
           node --check scripts/test-protected-operations-session-contract.mjs
           node --check scripts/test-digital-workforce-api-contract.mjs
+          node --check scripts/test-news-publication-seo-contract.mjs
           bash -n scripts/check-newsroom-route-readiness.sh
           bash -n scripts/verify-production-route.sh
 
@@ -70,6 +71,7 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/test-news-queue-guardrails.mjs
+          node scripts/test-news-publication-seo-contract.mjs
           node scripts/test-news-share-routing-v1.mjs
 
       - name: Market refresh cadence contract
