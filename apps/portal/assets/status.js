@@ -3,8 +3,8 @@
   const path=location.pathname.replace(/\/+$/,'')||'/';
   if(path!=='/'&&path!=='/en')return;
 
-  function staleCroatianTimestamp(text){
-    const match=String(text||'').match(/\b(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})\.?(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
+  function staleLocalizedTimestamp(text){
+    const match=String(text||'').match(/\b(\d{1,2})\s*[.\/]\s*(\d{1,2})\s*[.\/]\s*(\d{4})\.?(?:,?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
     if(!match)return false;
     const timestamp=Date.UTC(Number(match[3]),Number(match[2])-1,Number(match[1]),Number(match[4]||0),Number(match[5]||0),Number(match[6]||0));
     return Number.isFinite(timestamp)&&(Date.now()-timestamp)>86400000;
@@ -13,7 +13,7 @@
   function removeStaleCrossAssetMonitor(){
     document.querySelectorAll('.macro-dashboard').forEach(panel=>{
       const updated=panel.querySelector('#macroUpdated,.macro-period');
-      if(updated&&staleCroatianTimestamp(updated.textContent))panel.remove();
+      if(updated&&staleLocalizedTimestamp(updated.textContent))panel.remove();
     });
   }
 
