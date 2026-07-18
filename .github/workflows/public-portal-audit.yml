@@ -207,7 +207,7 @@ jobs:
             --project=chromium-desktop \
             --project=chromium-mobile \
             --workers=1 \
-            --grep 'rendered contrast /$' \
+            --grep 'rendered contrast /$|rendered contrast /en/$' \
             --output=test-results/playwright-homepage \
             --reporter=line
 

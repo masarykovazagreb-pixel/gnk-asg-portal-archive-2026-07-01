@@ -4,8 +4,8 @@
 Policy:
 - expose the newest 100 items in data/news.json;
 - place all older unique items in data/news_archive.json;
-- whenever the archive exceeds 1,000 items, remove the oldest 500;
-- repeat the 500-item prune batch until the archive is back at or below 1,000.
+- whenever the archive exceeds 2,000 items, remove the oldest 1,000;
+- repeat the 1,000-item prune batch until the archive is back at or below 2,000.
 
 The RSS sources, parsing, filtering and deduplication are reused from
 refresh_news.py so this file changes retention only.
@@ -21,8 +21,8 @@ import xml.etree.ElementTree as ET
 import refresh_news as base
 
 PUBLIC_LIMIT = 100
-ARCHIVE_TRIGGER = 1000
-ARCHIVE_DELETE_OLDEST = 500
+ARCHIVE_TRIGGER = 2000
+ARCHIVE_DELETE_OLDEST = 1000
 
 
 def main() -> int:
@@ -74,8 +74,8 @@ def main() -> int:
         "news": {
             "updated_at": ts,
             "status": status_name,
-            "engine": "github_actions_rss_refresh_v3_retention_policy",
-            "cadence": "scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb plus manual workflow_dispatch",
+            "engine": "github_actions_rss_refresh_v4_retention_policy",
+            "cadence": "hourly at minute 17 UTC plus manual workflow_dispatch",
             "source_success_policy": "publish_when_public_items_available_and_at_least_50_percent_sources_synced",
             "source_success_threshold": 0.5,
             "source_success_ratio": round(ratio, 3),
@@ -83,7 +83,7 @@ def main() -> int:
             "configured_sources": len(base.SOURCES),
             "successful_sources": success,
             "failed_sources": len(errors),
-            "storage_policy": "public_latest_100_archive_all_older_prune_oldest_500_repeatedly_when_archive_exceeds_1000",
+            "storage_policy": "public_latest_100_archive_all_older_prune_oldest_1000_repeatedly_when_archive_exceeds_2000",
             "public_items": len(public),
             "max_public_items": PUBLIC_LIMIT,
             "archive_items": len(archive),
