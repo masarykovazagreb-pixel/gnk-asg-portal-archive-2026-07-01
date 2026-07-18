@@ -84,6 +84,8 @@ jobs:
           test -f apps/portal/komentari/index.html
           test -f scripts/test-news-share-routing-v1.mjs
           test -f scripts/verify-production-release-v38.sh
+          test -f scripts/deploy-direct-operator-with-retry-v1.sh
+          test -f scripts/test-deploy-assets-retry-contract-v1.mjs
           test -f workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
 
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
@@ -97,8 +99,10 @@ jobs:
           node --check apps/portal/assets/contact-form-v2.js
           node --check apps/portal/assets/mail-studio-ui-v28.js
           bash -n scripts/verify-production-release-v38.sh
+          bash -n scripts/deploy-direct-operator-with-retry-v1.sh
           node scripts/test-news-share-routing-v1.mjs
           node scripts/test-production-authorization-mail-contract.mjs
+          node scripts/test-deploy-assets-retry-contract-v1.mjs
 
           grep -Fq 'main = "src/index-unified-auth-v23.js"' workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
           grep -Fq 'GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
@@ -125,7 +129,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'
     needs: [authorize-production]
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     environment: production
     permissions:
       contents: read
@@ -219,12 +223,21 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy src/index-session-cookie-v1.js --config wrangler.no-routes.toml --name gnk-asg-contact-api --var "OPERATOR_TOKEN_SHA256:${{ steps.auth.outputs.hash }}"
 
-      - name: Deploy direct operator and shared assets
+      - name: Deploy direct operator and shared assets with bounded Cloudflare retry
         working-directory: workers/gnk-asg-direct-operator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.mail-proxy-no-routes.toml --name gnk-asg-direct-operator --var "OPERATOR_TOKEN_SHA256:${{ steps.auth.outputs.hash }}" --var "DEPLOY_REVISION:${DEPLOY_SOURCE_SHA}"
+        run: bash ../../scripts/deploy-direct-operator-with-retry-v1.sh "${{ steps.auth.outputs.hash }}" "$DEPLOY_SOURCE_SHA"
+
+      - name: Upload Wrangler deployment diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-wrangler-logs-${{ inputs.approved_sha }}
+          path: deploy-wrangler-logs
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Deploy operator center
         working-directory: workers/gnk-asg-operator-center
