@@ -1,0 +1,27 @@
+name: Validate Index News Retention Copy
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/assets/app.js'
+      - 'scripts/test-index-news-retention-copy.mjs'
+      - '.github/workflows/validate-index-news-retention-copy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax checks
+        run: |
+          node --check apps/portal/assets/app.js
+          node --check scripts/test-index-news-retention-copy.mjs
+      - name: Public news retention copy contract
+        run: node scripts/test-index-news-retention-copy.mjs
