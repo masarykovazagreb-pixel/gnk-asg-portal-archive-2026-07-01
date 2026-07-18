@@ -19,4 +19,14 @@ assert.match(source,/imageCaption/);
 assert.match(source,/imageObject/);
 assert.doesNotMatch(source,/\|\|'\/assets\/logo-gnk-asg-canonical\.svg'/);
 
-console.log(JSON.stringify({ok:true,images:'local-approved-unique',seo:'per-post',primaryEntity:'Nermin Sefić'},null,2));
+assert.match(source,/const DAILY_POST_LIMIT=10;/);
+assert.match(source,/const DAILY_COMMENTARY_LIMIT=3;/);
+assert.match(source,/const PUBLICATION_BATCH_LIMIT=4;/);
+assert.match(source,/async function publishedCategoryCounts\(store,published\)/);
+assert.match(source,/post\.category==='commentary'/);
+assert.match(source,/isCommentary&&counts\.commentaries>=DAILY_COMMENTARY_LIMIT/);
+assert.match(source,/!isCommentary&&counts\.posts>=DAILY_POST_LIMIT/);
+assert.match(source,/if\(isCommentary\)counts\.commentaries\+=1;else counts\.posts\+=1/);
+assert.doesNotMatch(source,/const day=today\(\),published=.*?,max=13/);
+
+console.log(JSON.stringify({ok:true,images:'local-approved-unique',seo:'per-post',dailyLimits:{posts:10,commentaries:3},primaryEntity:'Nermin Sefić'},null,2));
