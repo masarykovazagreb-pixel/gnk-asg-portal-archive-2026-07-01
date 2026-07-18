@@ -1,0 +1,25 @@
+name: Validate Mail MIME Type
+
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js'
+      - 'scripts/test-mail-mime-type-contract.mjs'
+      - '.github/workflows/validate-mail-mime-type.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and MIME contract
+        run: |
+          node --check workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js
+          node scripts/test-mail-mime-type-contract.mjs
