@@ -109,6 +109,21 @@
       });
     });
   }
+  function normalizeNewsPayload(payload) {
+    const items = Array.isArray(payload) ? payload : Array.isArray(payload?.items) ? payload.items : [];
+    return items.map((item) => ({
+      id:item.id,
+      title:item.title,
+      url:item.url || item.link,
+      summary:item.summary || item.excerpt || item.text,
+      source:item.source || item.sourceTitle,
+      region:item.region || item.sourceTitle,
+      group:item.group || item.sourceGroup,
+      category:item.category,
+      published_at:item.published_at || item.publishedAt,
+      share_url:item.share_url || item.shareUrl
+    })).filter((item) => item.title && item.url);
+  }
   async function load() {
     if (loading) return;
     loading = true;
@@ -118,8 +133,8 @@
         fetch('/data/news.json?v=' + cacheBust, {cache:'no-store'}),
         fetch('/data/media_approved.json?v=' + cacheBust, {cache:'no-store'})
       ]);
-      articles = responses[0].ok ? await responses[0].json() : [];
-      approvedMedia = responses[1].ok ? await responses[1].json() : [];
+      articles = normalizeNewsPayload(responses[0].ok ? await responses[0].json() : []);
+      approvedMedia = normalizeNewsPayload(responses[1].ok ? await responses[1].json() : []);
       approvedMedia = approvedMedia.map(item => Object.assign({}, item, {group:'mentions', category:'mentions'}));
     } catch (error) {
       articles = [];
