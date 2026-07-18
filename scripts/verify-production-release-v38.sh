@@ -12,7 +12,7 @@ mkdir -p "$out"
 request_url() {
   local url="$1" token="$2" separator='?'
   [[ "$url" == *'?'* ]] && separator='&'
-  printf '%s%s%s%s=%s' "$url" "$separator" 'deploy-' 'admin-v6' "$token"
+  printf '%s%sdeploy-admin-v6=%s' "$url" "$separator" "$token"
 }
 
 has_release_proof() {
