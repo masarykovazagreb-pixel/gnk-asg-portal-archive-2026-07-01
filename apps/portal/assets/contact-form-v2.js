@@ -14,7 +14,7 @@ form.addEventListener('submit',async event=>{
  const requestKey=idempotencyKey(),data=Object.fromEntries(new FormData(form).entries());data.consent=Boolean(form.elements.consent?.checked);data.language=en?'en':'hr';data.idempotencyKey=requestKey;
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),25000);let out={},response;
  try{
-  response=await fetch('/api/contact-submit',{method:'POST',headers:{'content-type':'application/json','accept':'application/json','x-idempotency-key':requestKey},credentials:'same-origin',cache:'no-store',signal:controller.signal,body:JSON.stringify(data)});
+  response=await fetch('/api/portal-contact-submit',{method:'POST',headers:{'content-type':'application/json','accept':'application/json','x-idempotency-key':requestKey},credentials:'same-origin',cache:'no-store',signal:controller.signal,body:JSON.stringify(data)});
   const raw=await response.text();try{out=JSON.parse(raw)}catch{out={message:raw}}
   if(!response.ok)throw new Error(out.message||out.error||`HTTP ${response.status}`);
   const ref=out.caseId||out.reference||out.id||'';const suffix=ref?` ${en?'Reference':'Referenca'}: ${ref}`:'';
