@@ -34,6 +34,33 @@ try{
   assert.ok(liveData.coins.length>=8);
  }
 
+
+ const paprikaSymbols={
+  'btc-bitcoin':'BTC','eth-ethereum':'ETH','sol-solana':'SOL','xrp-xrp':'XRP',
+  'bnb-binance-coin':'BNB','ada-cardano':'ADA','link-chainlink':'LINK','avax-avalanche':'AVAX',
+  'usdt-tether':'USDT','usdc-usd-coin':'USDC','dai-dai':'DAI','eurc-euro-coin':'EURC'
+ };
+ globalThis.fetch=async input=>{
+  const url=String(input);
+  if(url.includes('api.coingecko.com'))return new Response('rate limited',{status:429});
+  const match=url.match(/\/v1\/tickers\/([^?]+)/);
+  assert.ok(match,'expected bounded CoinPaprika ticker URL');
+  const paprikaId=decodeURIComponent(match[1]),symbol=paprikaSymbols[paprikaId];
+  if(!symbol)return new Response('missing',{status:404});
+  const requested=(new URL(url)).searchParams.get('quotes').split(',');
+  const quotes=Object.fromEntries(requested.map((code,index)=>[code,{price:index+10,percent_change_24h:index+1}]));
+  return new Response(JSON.stringify({id:paprikaId,symbol,rank:1,last_updated:'2026-07-19T00:00:00Z',quotes}),{status:200,headers:{'content-type':'application/json'}});
+ };
+ const paprika=await servePublicMarketData(new Request(`https://gnk-asg.hr${PUBLIC_API_PATH}`),{});
+ assert.equal(paprika.status,200);
+ assert.equal(paprika.headers.get('x-gnk-market-source'),'live');
+ assert.equal(paprika.headers.get('x-gnk-market-upstream'),'coinpaprika-tickers');
+ const paprikaData=await paprika.json();
+ assert.equal(paprikaData.status,'ok');
+ assert.equal(paprikaData.stale,false);
+ assert.ok(paprikaData.coins.length>=8);
+ assert.ok(paprikaData.coins.every(item=>['eur','usd','gbp','chf','jpy'].every(code=>Number.isFinite(Number(item.prices[code])))));
+
  globalThis.fetch=async()=>new Response('rate limited',{status:429});
  const env={ASSETS:{fetch:async()=>new Response(JSON.stringify(fallback),{status:200,headers:{'content-type':'application/json'}})}};
  for(const path of [PRIMARY_API_PATH,PUBLIC_API_PATH]){

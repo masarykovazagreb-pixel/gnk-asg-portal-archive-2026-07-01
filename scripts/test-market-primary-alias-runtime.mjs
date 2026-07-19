@@ -16,7 +16,9 @@ for(const marker of [
   'simplePriceLive',
   'marketsLive',
   'coinPaprikaLive',
-  'api.coinpaprika.com/v1/tickers',
+  'coinPaprikaTicker',
+  'PAPRIKA_IDS',
+  'api.coinpaprika.com/v1/tickers/${paprikaId}',
   'coinpaprika-tickers',
   "stale:age==null||age>3600",
   "status:'unavailable'"
@@ -25,5 +27,8 @@ for(const marker of [
 assert.ok(client.includes("fetch('/api/market"),'frontend must call primary /api/market first');
 assert.ok(client.includes("fetch('/api/public-market"),'frontend must retain /api/public-market fallback');
 assert.ok(source.includes('All live market providers are temporarily unavailable.'),'all-provider fallback reason missing');
+assert.doesNotMatch(source,/api\.coinpaprika\.com\/v1\/tickers\?quotes=/,'unbounded CoinPaprika catalog must not be used');
+assert.match(source,/Promise\.allSettled/,'bounded provider must tolerate individual ticker failures');
+assert.match(source,/ordered\.length<8/,'bounded provider must retain the eight-coin live minimum');
 
 console.log(JSON.stringify({ok:true,endpoints:['/api/market','/api/public-market'],liveUpstreams:['coingecko-simple-price','coingecko-coins-markets','coinpaprika-tickers'],fallbackStaleSeconds:3600,deployPerformed:false},null,2));
