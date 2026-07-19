@@ -113,12 +113,29 @@ async function fallback(env,reason=''){
  const age=ageSeconds(data?.updated_at);
  return{...data,upstream:'static-market-json',status:'fallback',stale:age==null||age>3600,age_seconds:age,fallback_reason:String(reason||'All live market providers are temporarily unavailable.').slice(0,240)};
 }
+const MARKET_CACHE_KEY='market:live:cache',MARKET_CACHE_TTL_SECONDS=75;
+const marketStoreOf=env=>env?.GNK_ASG_CONFIG_KV||env?.GNK_ASG_KV||null;
+async function cachedLive(env){
+ const store=marketStoreOf(env);
+ if(store){
+  try{
+   const raw=await store.get(MARKET_CACHE_KEY);
+   if(raw){
+    const entry=JSON.parse(raw),age=ageSeconds(entry?.cachedAt);
+    if(age!=null&&age<=MARKET_CACHE_TTL_SECONDS&&entry?.data)return entry.data;
+   }
+  }catch{}
+ }
+ const data=await live(env);
+ if(store){try{await store.put(MARKET_CACHE_KEY,JSON.stringify({cachedAt:new Date().toISOString(),data}),{expirationTtl:MARKET_CACHE_TTL_SECONDS+60})}catch{}}
+ return data;
+}
 export async function servePublicMarketData(request,env){
  const path=pathOf(request);
  if(!['GET','HEAD'].includes(request.method)||!API_PATHS.has(path))return null;
  const institutionalPromise=institutionalLive();
  try{
-  const data=attachInstitutional(await live(env),await institutionalPromise);
+  const data=attachInstitutional(await cachedLive(env),await institutionalPromise);
   return request.method==='HEAD'?new Response(null,{status:200,headers:json(data,200,'live',path).headers}):json(data,200,'live',path);
  }catch(error){
   const fallbackData=await fallback(env,error?.message),institutional=await institutionalPromise;
