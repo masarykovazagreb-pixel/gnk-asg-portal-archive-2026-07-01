@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_PUBLIC_MARKET_DATA_V5_20260719_KEYED_PRIMARY_COINBASE_FALLBACK';
+export const VERSION='GNK_ASG_PUBLIC_MARKET_DATA_V6_20260719_OFFICIAL_INSTITUTIONAL_SERVER_SIDE';
 export const PRIMARY_API_PATH='/api/market';
 export const PUBLIC_API_PATH='/api/public-market';
 export const API_PATHS=new Set([PRIMARY_API_PATH,PUBLIC_API_PATH]);
@@ -9,7 +9,54 @@ const FIATS=['eur','usd','gbp','chf','jpy'];
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const json=(data,status=200,source='live',path=PUBLIC_API_PATH)=>new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':source==='live'?'public, max-age=60, stale-while-revalidate=240':'no-store, max-age=0','x-content-type-options':'nosniff','x-gnk-market-data':VERSION,'x-gnk-market-source':source,'x-gnk-market-route':path,'x-gnk-market-upstream':String(data?.upstream||data?.source||source).slice(0,120)}});
 const ageSeconds=value=>{const time=Date.parse(String(value||''));return Number.isFinite(time)?Math.max(0,Math.floor((Date.now()-time)/1000)):null};
-const fetchOptions={headers:{accept:'application/json','user-agent':'GNK-ASG-Public-Market/5.0'},cf:{cacheEverything:true,cacheTtl:60}};
+const fetchOptions={headers:{accept:'application/json','user-agent':'GNK-ASG-Public-Market/6.0'},cf:{cacheEverything:true,cacheTtl:60}};
+const institutionalFetchOptions={headers:{accept:'application/json, application/xml, text/xml','user-agent':'GNK-ASG-Public-Market/6.0'},cf:{cacheEverything:true,cacheTtl:3600}};
+export const OFFICIAL_SOURCE_POLICY=Object.freeze({
+ version:'GNK_ASG_OFFICIAL_SOURCE_POLICY_V1_20260719',
+ browser_direct_external_requests:false,
+ providers:Object.freeze([
+  Object.freeze({id:'ecb-reference-rates',owner:'European Central Bank',kind:'official-public-data',original_url:'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',terms_url:'https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html',cache_ttl_seconds:3600,max_upstream_requests_per_refresh:1}),
+  Object.freeze({id:'world-bank-indicators',owner:'World Bank',kind:'official-public-data',original_url:'https://api.worldbank.org/v2/',terms_url:'https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets',cache_ttl_seconds:3600,max_upstream_requests_per_refresh:2})
+ ])
+});
+const finiteOrNull=value=>{const n=Number(value);return Number.isFinite(n)?n:null};
+async function ecbInstitutional(){
+ const source=OFFICIAL_SOURCE_POLICY.providers[0],response=await fetch(source.original_url,institutionalFetchOptions);
+ if(!response.ok)throw new Error(`ECB ${response.status}`);
+ const xml=await response.text(),date=(xml.match(/<Cube\s+time=['"]([^'"]+)['"]/i)||[])[1]||'',rates={};
+ for(const match of xml.matchAll(/<Cube\s+currency=['"]([A-Z]{3})['"]\s+rate=['"]([^'"]+)['"]/g)){const rate=finiteOrNull(match[2]);if(rate!=null)rates[match[1]]=rate;}
+ if(!date||!['USD','GBP','CHF'].every(code=>finiteOrNull(rates[code])!=null))throw new Error('ECB payload incomplete');
+ return{base:'EUR',date,rates,source_id:source.id,original_url:source.original_url,retrieved_at:new Date().toISOString()};
+}
+async function worldBankIndicator(indicator){
+ const source=OFFICIAL_SOURCE_POLICY.providers[1],url=`https://api.worldbank.org/v2/country/HRV;USA;EUU/indicator/${encodeURIComponent(indicator)}?format=json&per_page=60`;
+ const response=await fetch(url,institutionalFetchOptions);
+ if(!response.ok)throw new Error(`World Bank ${indicator} ${response.status}`);
+ const payload=await response.json(),rows=Array.isArray(payload?.[1])?payload[1]:[];
+ const values={};
+ for(const country of ['HRV','EUU','USA']){const row=rows.filter(item=>item?.countryiso3code===country&&finiteOrNull(item?.value)!=null).sort((a,b)=>Number(b.date)-Number(a.date))[0];if(row)values[country]={value:finiteOrNull(row.value),year:String(row.date||'')};}
+ if(Object.keys(values).length<2)throw new Error(`World Bank ${indicator} payload incomplete`);
+ return{indicator,values,source_id:source.id,original_url:url,retrieved_at:new Date().toISOString()};
+}
+async function institutionalLive(){
+ const [fx,gdp,inflation]=await Promise.allSettled([ecbInstitutional(),worldBankIndicator('NY.GDP.MKTP.KD.ZG'),worldBankIndicator('FP.CPI.TOTL.ZG')]);
+ const fulfilled=[fx,gdp,inflation].filter(result=>result.status==='fulfilled').length,errors={};
+ if(fx.status==='rejected')errors.fx=String(fx.reason?.message||fx.reason);
+ if(gdp.status==='rejected')errors.gdp_growth=String(gdp.reason?.message||gdp.reason);
+ if(inflation.status==='rejected')errors.inflation=String(inflation.reason?.message||inflation.reason);
+ return{
+  status:fulfilled===3?'ok':fulfilled?'partial':'unavailable',
+  updated_at:new Date().toISOString(),
+  fx:fx.status==='fulfilled'?fx.value:null,
+  indicators:{
+   gdp_growth:gdp.status==='fulfilled'?gdp.value:null,
+   inflation:inflation.status==='fulfilled'?inflation.value:null
+  },
+  errors,
+  source_policy:OFFICIAL_SOURCE_POLICY
+ };
+}
+const attachInstitutional=(data,institutional)=>({...data,institutional,source_policy:OFFICIAL_SOURCE_POLICY});
 const coinGeckoOptions=env=>{const key=String(env?.COINGECKO_DEMO_API_KEY||'').trim();return{...fetchOptions,headers:{...fetchOptions.headers,...(key?{'x-cg-demo-api-key':key}:{})}}};
 async function simplePriceLive(env){
  const params=new URLSearchParams({ids:IDS.join(','),vs_currencies:FIATS.join(','),include_24hr_change:'true',include_last_updated_at:'true'});
@@ -69,12 +116,13 @@ async function fallback(env,reason=''){
 export async function servePublicMarketData(request,env){
  const path=pathOf(request);
  if(!['GET','HEAD'].includes(request.method)||!API_PATHS.has(path))return null;
+ const institutionalPromise=institutionalLive();
  try{
-  const data=await live(env);
+  const data=attachInstitutional(await live(env),await institutionalPromise);
   return request.method==='HEAD'?new Response(null,{status:200,headers:json(data,200,'live',path).headers}):json(data,200,'live',path);
  }catch(error){
-  const data=await fallback(env,error?.message);
-  if(data)return request.method==='HEAD'?new Response(null,{status:200,headers:json(data,200,'fallback',path).headers}):json(data,200,'fallback',path);
-  return json({ok:false,status:'unavailable',stale:true,upstream:'none',message:'Market data are temporarily unavailable.'},503,'unavailable',path);
+  const fallbackData=await fallback(env,error?.message),institutional=await institutionalPromise;
+  if(fallbackData){const data=attachInstitutional(fallbackData,institutional);return request.method==='HEAD'?new Response(null,{status:200,headers:json(data,200,'fallback',path).headers}):json(data,200,'fallback',path);}
+  return json({ok:false,status:'unavailable',stale:true,upstream:'none',institutional,source_policy:OFFICIAL_SOURCE_POLICY,message:'Market data are temporarily unavailable.'},503,'unavailable',path);
  }
 }

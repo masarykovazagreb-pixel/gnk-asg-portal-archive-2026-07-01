@@ -6,6 +6,7 @@ on:
       - 'workers/gnk-asg-direct-operator/src/public-market-data-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js'
       - 'apps/portal/assets/market.js'
+      - 'apps/portal/assets/public-market-live-v1.js'
       - 'apps/portal/data/market.json'
       - 'scripts/test-public-market-data-v1.mjs'
       - 'scripts/verify-production-release-v38.sh'
@@ -30,6 +31,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/public-market-data-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           node --check apps/portal/assets/market.js
+          node --check apps/portal/assets/public-market-live-v1.js
           node --check scripts/test-public-market-data-v1.mjs
           bash -n scripts/verify-production-release-v38.sh
       - name: Same-origin market contract
