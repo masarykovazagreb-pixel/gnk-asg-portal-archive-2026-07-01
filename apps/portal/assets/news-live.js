@@ -8,7 +8,7 @@
   let approvedMedia = [];
   let activeFilter = 'all';
   let loading = false;
-  const NEWS_VISIBLE_LIMIT = 500;
+  const NEWS_VISIBLE_LIMIT = 5;
   const CLIENT_REFRESH_INTERVAL_MS = 15 * 60 * 1000;
   const esc = (value) => String(value || '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const english = () => window.GNK_LANG && window.GNK_LANG.get() === 'en';
