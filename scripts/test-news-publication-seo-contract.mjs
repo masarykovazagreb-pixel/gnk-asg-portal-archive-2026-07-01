@@ -49,6 +49,10 @@ assert.match(images,/DYNAMIC_EDITORIAL_IMAGES_V1/);
 assert.match(images,/image\/svg\+xml/);
 assert.match(images,/max-age=31536000, immutable/);
 assert.match(entrypoint,/serveDynamicEditorialImage/);
-assert.match(entrypoint,/DYNAMIC_EDITORIAL_IMAGE_VERSION/);
+assert.match(entrypoint,/DYNAMIC_EDITORIAL_IMAGE_VERSION/);\nassert.match(entrypoint,/canonical-normalized-feed-v2-assets-primary/);
+const canonicalLoader=entrypoint.slice(entrypoint.indexOf('async function loadCanonicalNews'),entrypoint.indexOf('async function serveCanonicalNewsFeed'));
+const assetRead=canonicalLoader.indexOf("fetchCurrentNews(env,'GET')");
+const legacyRead=canonicalLoader.indexOf("fetch('https://gnk-asg.hr/data/news.json'");
+assert.ok(assetRead>=0&&legacyRead>=0&&assetRead<legacyRead,'canonical news must prefer the current deployed ASSETS feed before legacy route fallback');
 
 console.log(JSON.stringify({ok:true,images:'local-approved-unique-dynamic',seo:'per-post',dailyLimits:{posts:10,commentaries:3,batch:13},writer:'fail-closed-service-auth',primaryEntity:'Nermin Sefić'},null,2));
