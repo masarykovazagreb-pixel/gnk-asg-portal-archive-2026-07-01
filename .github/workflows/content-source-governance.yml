@@ -1,0 +1,35 @@
+name: Content Source Governance
+
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/content-source-policy-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js'
+      - 'workers/gnk-asg-ai-newsroom-writer/src/index.js'
+      - 'scripts/test-content-source-governance-v1.mjs'
+      - '.github/workflows/content-source-governance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/content-source-policy-v1.js
+          node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
+          node --check workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js
+          node --check workers/gnk-asg-ai-newsroom-writer/src/index.js
+          node --check scripts/test-content-source-governance-v1.mjs
+      - name: Source provenance and publication safety contract
+        run: node scripts/test-content-source-governance-v1.mjs
