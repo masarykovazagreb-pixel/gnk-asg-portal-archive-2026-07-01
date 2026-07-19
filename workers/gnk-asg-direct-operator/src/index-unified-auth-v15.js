@@ -11,6 +11,9 @@ import {
   VERSION as PUBLIC_MEDIA_REGISTRATION_VERSION
 } from './media-public-registration-v1.js';
 import {
+  isNewsroomServiceAuthenticated
+} from './newsroom-service-auth-v1.js';
+import {
   handleNewsAutoPublication,
   isNewsAutoPublicationApi,
   VERSION as NEWS_AUTO_PUBLICATION_VERSION
@@ -94,6 +97,11 @@ async function isAuthenticated(request,env,ctx){
   const check=new Request(target.toString(),{method:'GET',headers:request.headers,redirect:'manual'});
   const response=await app.fetch(check,env,ctx);
   return response.status>=200&&response.status<300;
+}
+
+async function isNewsAutoPublicationAuthenticated(request,env,ctx){
+  if(await isNewsroomServiceAuthenticated(request,env))return true;
+  return isAuthenticated(request,env,ctx);
 }
 
 function injectMailStudioScripts(html){
@@ -231,7 +239,7 @@ export default{
       return handleAdminMediaRegistration(request,env);
     }
     if(isNewsAutoPublicationApi(path)){
-      if(!await isAuthenticated(request,env,ctx))return json({ok:false,error:'unauthorized',message:'Operator/admin session required.'},401);
+      if(!await isNewsAutoPublicationAuthenticated(request,env,ctx))return json({ok:false,error:'unauthorized',message:'Operator/admin session or valid service token required.'},401);
       return handleNewsAutoPublication(request,env);
     }
     if(isAiOperationsApi(path)){
