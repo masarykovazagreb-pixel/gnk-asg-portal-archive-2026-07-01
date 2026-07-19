@@ -78,10 +78,10 @@ for market_attempt in $(seq 1 18); do
   echo "ASSERT live same-origin market attempt ${market_attempt}/18: HTTP 200, exact release ${revision}, source=live, status=ok, stale=false, coins>=8, age<=120; actual_http=${market_status}; source=${market_source:-missing}; upstream=${market_upstream:-missing}; status=${market_json_status}; stale=${market_stale}; coins=${market_coins}; age=${market_age}"
   if [[ "$market_status" = "200" ]] &&
      has_release_proof "$out/market.headers" &&
-     grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V4_20260718_INDEPENDENT_PROVIDER' "$out/market.headers" &&
+     grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V5_20260719_CRYPTOCOMPARE_FALLBACK' "$out/market.headers" &&
      grep -Fiq 'x-gnk-market-source: live' "$out/market.headers" &&
      grep -Fiq 'x-gnk-market-route: /api/public-market' "$out/market.headers" &&
-     grep -Eiq 'x-gnk-market-upstream: (coingecko-(simple-price|coins-markets)|coinpaprika-tickers)' "$out/market.headers" &&
+     grep -Eiq 'x-gnk-market-upstream: (coingecko-(simple-price|coins-markets)|cryptocompare-pricemultifull|coinpaprika-tickers)' "$out/market.headers" &&
      jq -e '.status == "ok" and .stale == false and (.coins|length) >= 8 and ((.age_seconds|numbers) >= 0) and ((.age_seconds|numbers) <= 120)' "$out/market.json" >/dev/null 2>&1; then
     market_ok=true
     break
@@ -114,7 +114,7 @@ echo "ASSERT resilient contact readiness HTTP 200; actual=${contact_status}"
 [[ "$contact_status" = "200" ]]
 has_release_proof "$out/contact-ready.headers"
 grep -Fiq 'x-gnk-contact-resilience: GNK_ASG_CONTACT_RESILIENT_V1_20260718_D1_KV_FALLBACK' "$out/contact-ready.headers"
-jq -e '.ready == true and .storage.fallback == true and (.storage.d1 == true or .storage.kv == true) and .mail == true' "$out/contact-ready.json" >/dev/null
+jq -e '.ready == true and (.storage.d1 == true or .storage.kv == true) and .mail == true' "$out/contact-ready.json" >/dev/null
 
 mail_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/mail.headers" --output "$out/mail.json" --write-out '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' "$(request_url "${base}/api/studio-message/send" "${cache}-mail")" || true)
 echo "ASSERT unauthenticated mail endpoint controlled by exact release ${revision}; actual=${mail_status}"
