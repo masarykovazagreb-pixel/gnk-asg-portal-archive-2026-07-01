@@ -14,7 +14,7 @@ assert.match(workflow,/Reconfirm tracked release integrity before any production
 assert.ok(workflow.indexOf('Reconfirm tracked release integrity before any production secret') < workflow.indexOf('Resolve token hash after integrity verification'));
 assert.ok(workflow.indexOf('Resolve token hash after integrity verification') < workflow.indexOf('Deploy contact session bridge'));
 
-assert.match(mail,/import \{EMAIL_LOGO_CID,VERSION as BRAND_MIME_VERSION\} from '\.\/email-brand-mime-v1\.js'/);
+assert.match(mail,/import \{EMAIL_LOGO_CID,loadEmailLogo,VERSION as BRAND_MIME_VERSION\} from '\.\/email-brand-mime-v1\.js'/);
 assert.match(mail,/signatureData\(profile,`cid:\$\{EMAIL_LOGO_CID\}`\)/);
 assert.match(mail,/buildAutoreplyRawEmail\(/);
 assert.match(mail,/format:'mail-studio-compatible-multipart-related'/);
