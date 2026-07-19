@@ -7,16 +7,30 @@
     if (q.includes('ai') || q.includes('umjetn')) return 'GNK ASG tehnološki profil obuhvaća umjetnu inteligenciju, softverske platforme, fintech, digitalnu imovinu i sportsku analitiku.';
     return 'Pitajte me o GNK ASG-u, GNK DINAMO Ltd. grupnom okviru, financijskim pokazateljima, tehnologiji ili digitalnoj imovini.';
   }
+  async function smartAnswer(question) {
+    try {
+      const response = await fetch('/api/intelligence-desk-chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ message: question })
+      });
+      const data = await response.json().catch(() => null);
+      if (response.ok && data && data.ok && data.reply) return data.reply;
+    } catch (_) {}
+    return answer(question);
+  }
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('chatForm');
     const input = document.getElementById('chatInput');
     const messages = document.getElementById('messages');
     if (!form || !input || !messages) return;
-    function send(value) {
+    async function send(value) {
       if (!value.trim()) return;
       const mine = document.createElement('div'); mine.className = 'bubble user'; mine.textContent = value;
-      const bot = document.createElement('div'); bot.className = 'bubble bot'; bot.textContent = answer(value);
+      const bot = document.createElement('div'); bot.className = 'bubble bot'; bot.textContent = '…';
       messages.append(mine, bot); messages.scrollTop = messages.scrollHeight; input.value = '';
+      bot.textContent = await smartAnswer(value);
+      messages.scrollTop = messages.scrollHeight;
     }
     form.addEventListener('submit', (event) => { event.preventDefault(); send(input.value); });
     document.querySelectorAll('.prompt').forEach((button) => button.addEventListener('click', () => send(button.textContent)));
