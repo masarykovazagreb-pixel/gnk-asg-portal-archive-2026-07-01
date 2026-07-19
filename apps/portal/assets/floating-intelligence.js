@@ -219,13 +219,27 @@
       : 'Ovo izgleda kao tema izvan portala. Mogu je usmjeriti na javnu web i news pretragu: koristite Google i Google News gumbe ispod, ili pošaljite temu kroz WhatsApp/kontakt za službenu obradu.';
   }
 
-  function setResult(query) {
+  async function smartAnswer(query) {
+    try {
+      const response = await fetch('/api/intelligence-desk-chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ message: query })
+      });
+      const data = await response.json().catch(() => null);
+      if (response.ok && data && data.ok && data.reply) return data.reply;
+    } catch (_) {}
+    return answer(query);
+  }
+
+  async function setResult(query) {
     const output = document.getElementById('aiMiniResult');
     if (!output) return;
-    const text = answer(query);
-    output.textContent = text + '\n\n' + t().source + '\n' + t().action;
+    output.textContent = '…';
     output.classList.add('visible');
     setResearchLink(query);
+    const text = await smartAnswer(query);
+    output.textContent = text + '\n\n' + t().source + '\n' + t().action;
   }
 
   function render() {
