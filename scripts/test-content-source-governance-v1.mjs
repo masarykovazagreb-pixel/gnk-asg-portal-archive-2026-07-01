@@ -6,6 +6,7 @@ import {
  provenanceReviewFlags
 } from '../workers/gnk-asg-direct-operator/src/content-source-policy-v1.js';
 import {handleDigitalWorkforceSuite} from '../workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js';
+import {handleNewsAutoPublication} from '../workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js';
 
 const at='2026-07-19T10:00:00.000Z';
 const firstParty=buildContentProvenance({sourceClass:'first-party',sourceName:'GNK ASG'},{category:'official-update',at});
@@ -59,6 +60,58 @@ const mislabeledFirstPartySummary=buildContentProvenance({
  sourceName:'GNK ASG'
 },{category:'source-summary-business',at});
 assert.ok(mislabeledFirstPartySummary.errors.includes('source-summary-external-source-required'));
+
+const memory=new Map();
+const kv={
+ async get(key){return memory.has(key)?memory.get(key):null},
+ async put(key,value){memory.set(key,value)},
+ async delete(key){memory.delete(key)}
+};
+const enqueue=payload=>handleNewsAutoPublication(new Request('https://gnk-asg.hr/api/news-auto-publication/enqueue',{
+ method:'POST',
+ headers:{'content-type':'application/json'},
+ body:JSON.stringify(payload)
+}),{GNK_ASG_KV:kv});
+
+const firstPartyResponse=await enqueue({
+ title:'Interna operativna objava',
+ summary:'Potvrđen first-party operativni napredak i sljedeći kontrolirani korak.',
+ imageUrl:'/assets/editorial/generated/first-party-source-policy.svg',
+ category:'official-update',
+ sourceClass:'first-party',
+ sourceName:'GNK ASG'
+});
+assert.equal(firstPartyResponse.status,200);
+const firstPartyPost=(await firstPartyResponse.json()).post;
+assert.equal(firstPartyPost.status,'queued');
+assert.equal(firstPartyPost.provenance.sourceClass,'first-party');
+
+const externalResponse=await enqueue({
+ title:'Komentar vanjskog izvora',
+ summary:'Izvorni urednički komentar temeljen na jasno povezanom vanjskom članku.',
+ imageUrl:'/assets/editorial/generated/external-source-policy.svg',
+ category:'commentary',
+ sourceClass:'external-publisher-link',
+ sourceName:'Publisher',
+ sourceUrl:'https://publisher.example/story?utm_source=test',
+ usageBasis:'original-summary-with-link'
+});
+assert.equal(externalResponse.status,200);
+const externalPost=(await externalResponse.json()).post;
+assert.equal(externalPost.status,'manual_review');
+assert.equal(externalPost.sourceUrl,'https://publisher.example/story');
+assert.ok(externalPost.reviewFlags.includes('source-policy-review'));
+
+const invalidSummaryResponse=await enqueue({
+ title:'Sažetak bez izvora',
+ summary:'Ovaj sažetak nema obvezni vanjski izvor i zato mora biti odbijen.',
+ imageUrl:'/assets/editorial/generated/missing-source-policy.svg',
+ category:'source-summary-business',
+ sourceClass:'first-party',
+ sourceName:'GNK ASG'
+});
+assert.equal(invalidSummaryResponse.status,400);
+assert.equal((await invalidSummaryResponse.json()).error,'invalid_source_provenance');
 
 const queueSource=fs.readFileSync('workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js','utf8');
 const writerSource=fs.readFileSync('workers/gnk-asg-ai-newsroom-writer/src/index.js','utf8');
