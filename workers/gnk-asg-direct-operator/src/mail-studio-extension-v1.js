@@ -2,7 +2,7 @@ import {enforceRequiredSignature,MANDATORY_BCC,VERSION as SIGNATURE_VERSION} fro
 
 export const VERSION='GNK_ASG_MAIL_STUDIO_EXTENSION_V1_20260702_MULTILINGUAL_ROUTING';
 export const UI_VERSION='GNK_ASG_MAIL_STUDIO_MULTILINGUAL_V25_20260702';
-const ROUTE_TARGET='rht@gmx.com';
+const ROUTE_TARGET=env=>String(env?.CONTACT_INTERNAL_RECIPIENTS||'').trim()||'rht@gmx.com';
 const SEND_PATHS=new Set(['/api/admin-mail-send','/api/studio-message/send']);
 const STATUS_PATHS=new Set(['/api/mail-center/status','/api/mail-center/send-readiness','/api/studio-message/status','/api/studio-message/readiness']);
 const UI_SCRIPT='/assets/mail-studio-multilingual-v25.js?v=20260702-1';
@@ -147,7 +147,7 @@ function isStudioPage(request){const url=new URL(request.url),path=pathOf(reques
 export async function patchMailStudioResponse(request,response){
   const path=pathOf(request),type=String(response.headers.get('content-type')||'').toLowerCase();
   if(STATUS_PATHS.has(path)&&type.includes('application/json')){
-    try{const data=await response.clone().json(),headers=new Headers(response.headers);headers.delete('content-length');headers.set('cache-control','no-store');headers.set('x-gnk-asg-mail-studio-extension',VERSION);return new Response(JSON.stringify({...data,profiles:Object.values(PROFILES),languagePolicy:'MULTILINGUAL',routingTarget:ROUTE_TARGET,globalCentres:GLOBAL_CENTRES},null,2),{status:response.status,headers});}catch{return response;}
+    try{const data=await response.clone().json(),headers=new Headers(response.headers);headers.delete('content-length');headers.set('cache-control','no-store');headers.set('x-gnk-asg-mail-studio-extension',VERSION);return new Response(JSON.stringify({...data,profiles:Object.values(PROFILES),languagePolicy:'MULTILINGUAL',routingTarget:'configured-via-CONTACT_INTERNAL_RECIPIENTS',globalCentres:GLOBAL_CENTRES},null,2),{status:response.status,headers});}catch{return response;}
   }
   if(!isStudioPage(request)||!type.includes('text/html'))return response;
   const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');headers.delete('last-modified');headers.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');headers.set('x-gnk-asg-mail-studio-extension',VERSION);headers.set('x-gnk-asg-mail-language-policy','MULTILINGUAL');
@@ -179,11 +179,11 @@ export async function handleMailStudioInbound(message,env){
   const profile=inboundProfile(message);if(!profile||profile.id==='media')return null;
   const from=address(message?.from||header(message,'from')),centre=await chooseCentre(env,'inbound'),ref=reference(profile),headers=new Headers();headers.set('X-GNK-ASG-Routing-Profile',profile.id);headers.set('X-GNK-ASG-Original-Recipient',profile.email);headers.set('X-GNK-ASG-Global-Centre',`${centre.name}, ${centre.country}`);
   let forwardResult='SKIPPED',replyResult='SKIPPED',error='';
-  try{if(message.canBeForwarded!==false&&typeof message.forward==='function'){await message.forward(ROUTE_TARGET,headers);forwardResult='FORWARDED';}}catch(err){forwardResult='FAILED';error=String(err?.message||err).slice(0,300);}
+  try{if(message.canBeForwarded!==false&&typeof message.forward==='function'){await message.forward(ROUTE_TARGET(env),headers);forwardResult='FORWARDED';}}catch(err){forwardResult='FAILED';error=String(err?.message||err).slice(0,300);}
   if(validEmail(from)&&from!==profile.email&&!automatedInbound(message,from)&&env.EMAIL?.send){
     const reply=autoReply(profile,centre,ref);
     try{await env.EMAIL.send(enforceRequiredSignature({to:from,bcc:MANDATORY_BCC,from:{email:profile.email,name:profile.name},replyTo:profile.email,subject:reply.subject,text:reply.text,html:reply.html,headers:{'Auto-Submitted':'auto-replied','X-Auto-Response-Suppress':'All','X-GNK-ASG-Mail-Studio-Auto-Reply':VERSION,'X-GNK-ASG-Reference':ref,'X-GNK-ASG-Global-Centre':`${centre.name}, ${centre.country}`}}));replyResult='SENT';}catch(err){replyResult='FAILED';error=error||String(err?.message||err).slice(0,300);}
   }
   await auditInbound(message,env,`${forwardResult}_${replyResult}`);
-  return{handled:true,profile:profile.id,routedTo:ROUTE_TARGET,forward:forwardResult,autoReply:replyResult,reference:ref,globalCentre:centre,error};
+  return{handled:true,profile:profile.id,routedTo:ROUTE_TARGET(env),forward:forwardResult,autoReply:replyResult,reference:ref,globalCentre:centre,error};
 }
