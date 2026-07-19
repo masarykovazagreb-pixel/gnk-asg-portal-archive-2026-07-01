@@ -130,7 +130,7 @@
     try {
       const cacheBust = Date.now();
       const responses = await Promise.all([
-        fetch('/data/news.json?v=' + cacheBust, {cache:'no-store'}),
+        fetch('/api/public-news-feed?v=' + cacheBust, {cache:'no-store'}),
         fetch('/data/media_approved.json?v=' + cacheBust, {cache:'no-store'})
       ]);
       articles = normalizeNewsPayload(responses[0].ok ? await responses[0].json() : []);
