@@ -45,6 +45,7 @@ export async function handleResilientContact(request,env,ctx,app){
  if(request.method==='GET')return json({ok:true,ready:Boolean(env?.GNK_ASG_D1||storeOf(env)),endpoint:path,canonicalEndpoint:CANONICAL_PATH,legacyEndpoint:PATH,storage:{d1:Boolean(env?.GNK_ASG_D1),kv:Boolean(storeOf(env)),fallback:true},mail:Boolean(env?.EMAIL?.send),transport:'cloudflare-email',version:VERSION});
  const retry=request.method==='POST'?request.clone():null;
  const response=await handleContactStudio(request,env,ctx,app);
+ if(!response)return json({ok:false,error:'contact_route_unhandled',message:'Interna greška: ruta nije obrađena.'},500);
  if(!retry||response.status!==503)return response;
  let payload=null;try{payload=await response.clone().json()}catch{}
  if(payload?.error!=='contact_storage_unavailable')return response;
