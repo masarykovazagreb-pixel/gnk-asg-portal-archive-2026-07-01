@@ -4,7 +4,7 @@
   "targetLocalTime": "2026-07-20T09:00:00+02:00",
   "targetUtcTime": "2026-07-20T07:00:00Z",
   "timezone": "Europe/Zagreb",
-  "publicationNote": "Pripremljeno za uredničku provjeru. Ne aktivirati scheduler niti objavu bez zasebne potvrde.",
+  "publicationNote": "Svakodnevni paket: 10 tekstova i 3 komentara za 09:00 Europe/Zagreb. Scheduler i automatska objava ostaju deaktivirani do zasebne produkcijske potvrde.",
   "items": [
     {
       "category": "source-summary-business",
@@ -188,5 +188,16 @@
       "metaDescription": "Kako transparentno upravljanje pretvara rekordne sportske prihode u dugoročnu vrijednost za sport i zajednicu.",
       "scheduledFor": "2026-07-20T07:00:00Z"
     }
-  ]
+  ],
+  "schedule": {
+    "cadence": "daily",
+    "localTime": "09:00",
+    "timezone": "Europe/Zagreb",
+    "firstRunLocal": "2026-07-20T09:00:00+02:00",
+    "dailyNews": 10,
+    "dailyCommentaries": 3,
+    "refreshExternalMediaBeforeDrafting": true,
+    "requiresFreshSources": true,
+    "activation": "disabled_pending_explicit_production_confirmation"
+  }
 }
