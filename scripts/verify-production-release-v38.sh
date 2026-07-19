@@ -71,7 +71,7 @@ echo "ASSERT canonical news exact and cache-busted routes agree; clean=${canonic
 [[ "$canonical_clean_status" = "200" && "$canonical_busted_status" = "200" ]]
 has_release_proof "$out/news-canonical-clean.headers"
 has_release_proof "$out/news-canonical-busted.headers"
-grep -Fiq 'x-gnk-news-source: canonical-normalized-feed-v1' "$out/news-canonical-clean.headers"
+grep -Fiq 'x-gnk-news-source: canonical-normalized-feed-v2-assets-primary' "$out/news-canonical-clean.headers"
 jq -e 'type=="array" and length>0 and length<=100' "$out/news-canonical-clean.json" >/dev/null
 jq -e 'type=="array" and length>0 and length<=100' "$out/news-canonical-busted.json" >/dev/null
 clean_first=$(jq -r '.[0].id // .[0].url // .[0].link // .[0].title // ""' "$out/news-canonical-clean.json")

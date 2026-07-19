@@ -50,19 +50,23 @@ async function serveCurrentNewsAsset(request,env){
 const CANONICAL_NEWS_FEED='/api/public-news-feed';
 function newsItems(data){return Array.isArray(data)?data:(data?.items||data?.posts||data?.news||[])}
 async function loadCanonicalNews(env){
- let data=null;
- try{
-  const response=await fetch('https://gnk-asg.hr/data/news.json',{headers:{accept:'application/json','cache-control':'no-cache'},cf:{cacheTtl:60,cacheEverything:false}});
-  if(response.ok)data=await response.json();
- }catch{}
- let items=newsItems(data);
- if(!items.length){const fallback=await fetchCurrentNews(env,'GET');if(fallback)try{items=newsItems(await fallback.json())}catch{}}
+ let items=[];
+ const current=await fetchCurrentNews(env,'GET');
+ if(current)try{items=newsItems(await current.json())}catch{}
+ if(!items.length){
+  let data=null;
+  try{
+   const response=await fetch('https://gnk-asg.hr/data/news.json',{headers:{accept:'application/json','cache-control':'no-cache'},cf:{cacheTtl:60,cacheEverything:false}});
+   if(response.ok)data=await response.json();
+  }catch{}
+  items=newsItems(data);
+ }
  return items.filter(item=>item&&item.title&&(item.url||item.link||item.sourceUrl||item.href)).sort((a,b)=>Date.parse(b.published_at||b.publishedAt||b.date||0)-Date.parse(a.published_at||a.publishedAt||a.date||0)).slice(0,100);
 }
 async function serveCanonicalNewsFeed(request,env){
  if(!['GET','HEAD'].includes(request.method)||pathOf(request)!==CANONICAL_NEWS_FEED)return null;
  const items=await loadCanonicalNews(env);
- const headers={'content-type':'application/json; charset=utf-8','cache-control':'public, max-age=60, stale-while-revalidate=300','x-content-type-options':'nosniff','x-gnk-news-source':'canonical-normalized-feed-v1','x-gnk-news-visible-limit':'100','x-gnk-route-owner':VERSION};
+ const headers={'content-type':'application/json; charset=utf-8','cache-control':'public, max-age=60, stale-while-revalidate=300','x-content-type-options':'nosniff','x-gnk-news-source':'canonical-normalized-feed-v2-assets-primary','x-gnk-news-visible-limit':'100','x-gnk-route-owner':VERSION};
  return new Response(request.method==='HEAD'?null:JSON.stringify(items),{status:items.length?200:503,headers});
 }
 
