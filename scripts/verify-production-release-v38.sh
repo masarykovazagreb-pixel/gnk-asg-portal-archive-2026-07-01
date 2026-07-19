@@ -58,11 +58,34 @@ verify_release_marker mail-logo "${base}/assets/logo-gnk-asg-email.png" 'x-gnk-c
 cache="${revision}-$(date +%s)"
 news_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/news.headers" --output "$out/news.json" --write-out '%{http_code}' "$(request_url "${base}/data/news.json" "${cache}-news")" || true)
 echo "ASSERT current news HTTP 200 and exact release ${revision}; actual=${news_status}"
-[[ "$news_status" = "200" ]]
-has_release_proof "$out/news.headers"
+if [[ "$news_status" != "200" ]]; then
+  echo "current news request did not return HTTP 200." >&2
+  show_relevant_headers "$out/news.headers"
+  exit 1
+fi
+
+if ! has_release_proof "$out/news.headers"; then
+  echo "current news response is missing release-proof headers (entrypoint=${entrypoint}, release=${release_prefix}, revision=${revision})." >&2
+  show_relevant_headers "$out/news.headers"
+  exit 1
+fi
+
 latest=$(jq -r 'if type=="array" then .[0].published_at // .[0].publishedAt // .[0].date // "" else (.items[0].published_at // .items[0].publishedAt // .items[0].date // "") end' "$out/news.json")
-[[ -n "$latest" && ( "$latest" == "$news_baseline"* || "$latest" > "$news_baseline" ) ]]
-grep -Fiq 'x-gnk-news-source: current-static-asset-20260715' "$out/news.headers"
+echo "ASSERT current news latest item date >= baseline ${news_baseline}; actual=${latest:-<empty>}"
+if [[ -z "$latest" || ! ( "$latest" == "$news_baseline"* || "$latest" > "$news_baseline" ) ]]; then
+  echo "current news latest item date '${latest:-<empty>}' is not on/after baseline '${news_baseline}'." >&2
+  head -c 800 "$out/news.json" >&2 || true
+  echo >&2
+  exit 1
+fi
+
+news_source_header=$(grep -Ei '^x-gnk-news-source:' "$out/news.headers" | tail -1 | tr -d '\r' || true)
+echo "ASSERT current news x-gnk-news-source header is current-static-asset-20260715; actual=${news_source_header:-<missing>}"
+if ! grep -Fiq 'x-gnk-news-source: current-static-asset-20260715' "$out/news.headers"; then
+  echo "current news x-gnk-news-source header did not match expected value." >&2
+  show_relevant_headers "$out/news.headers"
+  exit 1
+fi
 
 
 canonical_clean_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/news-canonical-clean.headers" --output "$out/news-canonical-clean.json" --write-out '%{http_code}' "${base}/api/public-news-feed" || true)
