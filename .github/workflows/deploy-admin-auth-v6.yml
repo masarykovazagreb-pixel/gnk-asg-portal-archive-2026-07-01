@@ -70,6 +70,8 @@ jobs:
         run: |
           set -euo pipefail
           test -f workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          test -f workers/gnk-asg-direct-operator/src/dynamic-editorial-image-v1.js
+          test -f workers/gnk-asg-direct-operator/src/public-market-data-v1.js
           test -f workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           test -f workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
           test -f workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
@@ -89,6 +91,8 @@ jobs:
           test -f workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
 
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          node --check workers/gnk-asg-direct-operator/src/dynamic-editorial-image-v1.js
+          node --check workers/gnk-asg-direct-operator/src/public-market-data-v1.js
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
@@ -109,6 +113,8 @@ jobs:
           grep -Fq "export const ENTRYPOINT='src/index-unified-auth-v23.js'" workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq "headers.set('x-gnk-deploy-revision',revision)" workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq 'current-static-asset-20260715' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq '/api/public-news-feed' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq 'coinbase-spot-static-fx' workers/gnk-asg-direct-operator/src/public-market-data-v1.js
           grep -Fq 'source-redirect' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq '20260715-source-links-v2' workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
           grep -Fq 'item.sourceUrl||item.url||item.href||item.share_url' apps/portal/assets/index-editorial-order-v6.js
