@@ -5,7 +5,7 @@ const source=fs.readFileSync('workers/gnk-asg-direct-operator/src/public-market-
 const client=fs.readFileSync('apps/portal/assets/market.js','utf8');
 
 for(const marker of [
-  "GNK_ASG_PUBLIC_MARKET_DATA_V4_20260718_INDEPENDENT_PROVIDER",
+  "GNK_ASG_PUBLIC_MARKET_DATA_V5_20260719_KEYED_PRIMARY_COINBASE_FALLBACK",
   "PRIMARY_API_PATH='/api/market'",
   "PUBLIC_API_PATH='/api/public-market'",
   'API_PATHS=new Set([PRIMARY_API_PATH,PUBLIC_API_PATH])',
@@ -20,6 +20,9 @@ for(const marker of [
   'PAPRIKA_IDS',
   'api.coinpaprika.com/v1/tickers/${paprikaId}',
   'coinpaprika-tickers',
+  'coinbaseLive',
+  'coinbase-spot-static-fx',
+  'COINGECKO_DEMO_API_KEY',
   "stale:age==null||age>3600",
   "status:'unavailable'"
 ]) assert.ok(source.includes(marker),`missing market runtime contract: ${marker}`);
