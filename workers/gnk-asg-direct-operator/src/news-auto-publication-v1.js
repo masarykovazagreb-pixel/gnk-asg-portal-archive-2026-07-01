@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_NEWS_AUTO_PUBLICATION_V12_20260718_VISIBLE_100_ARCHIVE_2000';
+export const VERSION='GNK_ASG_NEWS_AUTO_PUBLICATION_V13_20260719_DAILY_10_3_SINGLE_BATCH';
 export const VISIBLE_LIMIT=100;
 export const ARCHIVE_CAP=2000;
 export const PRUNE_OLDEST=1000;
@@ -32,7 +32,7 @@ const AUTO_CATEGORIES=new Set(['official-update','project-operations-update','so
 const BLOCK_CATEGORIES=new Set(['finance-signal','legal-ip-update','media-application-status']);
 const DAILY_POST_LIMIT=10;
 const DAILY_COMMENTARY_LIMIT=3;
-const PUBLICATION_BATCH_LIMIT=4;
+const PUBLICATION_BATCH_LIMIT=13;
 function classify(post){const category=clean(post.category||'source-summary-business'),text=`${post.title||''} ${post.summary||''}`.toLowerCase(),flags=[];if(BLOCK_CATEGORIES.has(category))flags.push('blocked-category');if(/court|lawsuit|euipo|trademark|legal|sud|tužb|žig|opozic/i.test(text))flags.push('legal-review');if(/profit|revenue|debt|equity|finance|financial|dobit|prihod|dug|kapital/i.test(text)&&category!=='project-operations-update')flags.push('finance-review');if(/passport|phone|email|address|personal|osobn|putovnic|adresa/i.test(text))flags.push('personal-data-review');if(!AUTO_CATEGORIES.has(category))flags.push('category-not-auto');return{category,flags,autoAllowed:flags.length===0}}
 export function applyRetentionPolicy(queue){const retained=[...new Set(Array.isArray(queue)?queue:[])],removed=[];while(retained.length>=TOTAL_RETENTION_CAP)removed.push(...retained.splice(-PRUNE_OLDEST));return{queue:retained,removed,visibleCount:Math.min(VISIBLE_LIMIT,retained.length),archiveCount:Math.max(0,retained.length-VISIBLE_LIMIT)}}
 async function enforceRetention(store,queue){const retention=applyRetentionPolicy(queue);for(const id of retention.removed){const post=await readJson(store,keyPost(id),null);try{await store.delete(keyPost(id));if(post?.slug)await store.delete(keyBySlug(post.slug));if(post?.imageFingerprint)await store.delete(keyByImage(post.imageFingerprint))}catch{}}return retention}
