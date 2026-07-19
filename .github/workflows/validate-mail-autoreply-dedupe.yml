@@ -1,0 +1,30 @@
+name: Validate Mail Autoreply Dedupe
+
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js'
+      - 'workers/gnk-asg-direct-operator/src/mail-autoreply-dedupe-v1.js'
+      - 'scripts/test-mail-autoreply-dedupe-concurrency.mjs'
+      - '.github/workflows/validate-mail-autoreply-dedupe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-mail-autoreply-dedupe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate syntax and concurrency contract
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          node --check workers/gnk-asg-direct-operator/src/mail-autoreply-dedupe-v1.js
+          node --check scripts/test-mail-autoreply-dedupe-concurrency.mjs
+          node scripts/test-mail-autoreply-dedupe-concurrency.mjs
