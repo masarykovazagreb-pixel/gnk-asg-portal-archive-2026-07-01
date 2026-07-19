@@ -72,6 +72,7 @@ jobs:
           test -f workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           test -f workers/gnk-asg-direct-operator/src/dynamic-editorial-image-v1.js
           test -f workers/gnk-asg-direct-operator/src/public-market-data-v1.js
+          test -f workers/gnk-asg-direct-operator/src/canonical-news-feed-v1.js
           test -f workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           test -f workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
           test -f workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
@@ -85,6 +86,7 @@ jobs:
           test -f apps/portal/objave/index.html
           test -f apps/portal/komentari/index.html
           test -f scripts/test-news-share-routing-v1.mjs
+          test -f scripts/test-canonical-news-dedupe-v1.mjs
           test -f scripts/verify-production-release-v38.sh
           test -f scripts/deploy-direct-operator-with-retry-v1.sh
           test -f scripts/test-deploy-assets-retry-contract-v1.mjs
@@ -93,6 +95,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           node --check workers/gnk-asg-direct-operator/src/dynamic-editorial-image-v1.js
           node --check workers/gnk-asg-direct-operator/src/public-market-data-v1.js
+          node --check workers/gnk-asg-direct-operator/src/canonical-news-feed-v1.js
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
@@ -105,6 +108,7 @@ jobs:
           bash -n scripts/verify-production-release-v38.sh
           bash -n scripts/deploy-direct-operator-with-retry-v1.sh
           node scripts/test-news-share-routing-v1.mjs
+          node scripts/test-canonical-news-dedupe-v1.mjs
           node scripts/test-production-authorization-mail-contract.mjs
           node scripts/test-deploy-assets-retry-contract-v1.mjs
 
@@ -114,6 +118,8 @@ jobs:
           grep -Fq "headers.set('x-gnk-deploy-revision',revision)" workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq 'current-static-asset-20260715' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq '/api/public-news-feed' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq 'canonical-normalized-feed-v3-assets-primary-url-deduped' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq 'GNK_ASG_CANONICAL_NEWS_FEED_V1_20260719_URL_DEDUPLICATION' workers/gnk-asg-direct-operator/src/canonical-news-feed-v1.js
           grep -Fq 'coinbase-spot-static-fx' workers/gnk-asg-direct-operator/src/public-market-data-v1.js
           grep -Fq 'source-redirect' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq '20260715-source-links-v2' workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
