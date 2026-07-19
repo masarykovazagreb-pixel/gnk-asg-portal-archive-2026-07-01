@@ -5,7 +5,7 @@ const source=fs.readFileSync('workers/gnk-asg-direct-operator/src/public-market-
 const client=fs.readFileSync('apps/portal/assets/market.js','utf8');
 
 for(const marker of [
-  "GNK_ASG_PUBLIC_MARKET_DATA_V4_20260718_INDEPENDENT_PROVIDER",
+  "GNK_ASG_PUBLIC_MARKET_DATA_V5_20260719_CRYPTOCOMPARE_FALLBACK",
   "PRIMARY_API_PATH='/api/market'",
   "PUBLIC_API_PATH='/api/public-market'",
   'API_PATHS=new Set([PRIMARY_API_PATH,PUBLIC_API_PATH])',
@@ -15,6 +15,9 @@ for(const marker of [
   "source==='live'?'public, max-age=60, stale-while-revalidate=240':'no-store, max-age=0'",
   'simplePriceLive',
   'marketsLive',
+  'cryptoCompareLive',
+  'min-api.cryptocompare.com/data/pricemultifull',
+  'cryptocompare-pricemultifull',
   'coinPaprikaLive',
   'coinPaprikaTicker',
   'PAPRIKA_IDS',
@@ -30,5 +33,6 @@ assert.ok(source.includes('All live market providers are temporarily unavailable
 assert.doesNotMatch(source,/api\.coinpaprika\.com\/v1\/tickers\?quotes=/,'unbounded CoinPaprika catalog must not be used');
 assert.match(source,/Promise\.allSettled/,'bounded provider must tolerate individual ticker failures');
 assert.match(source,/ordered\.length<8/,'bounded provider must retain the eight-coin live minimum');
+assert.match(source,/coins\.length<8/,'CryptoCompare provider must retain the eight-coin live minimum');
 
-console.log(JSON.stringify({ok:true,endpoints:['/api/market','/api/public-market'],liveUpstreams:['coingecko-simple-price','coingecko-coins-markets','coinpaprika-tickers'],fallbackStaleSeconds:3600,deployPerformed:false},null,2));
+console.log(JSON.stringify({ok:true,endpoints:['/api/market','/api/public-market'],liveUpstreams:['coingecko-simple-price','coingecko-coins-markets','cryptocompare-pricemultifull','coinpaprika-tickers'],fallbackStaleSeconds:3600,deployPerformed:false},null,2));
