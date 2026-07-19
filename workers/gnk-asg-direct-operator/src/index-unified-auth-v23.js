@@ -3,6 +3,7 @@ import {servePublicEditorialAsset,VERSION as EDITORIAL_ASSET_VERSION} from './pu
 import {servePublicMarketData,VERSION as MARKET_DATA_VERSION} from './public-market-data-v1.js';
 import {servePublicWorldMarkets,VERSION as WORLD_MARKETS_VERSION} from './public-world-markets-v1.js';
 import {serveIntelligenceDeskChat} from './intelligence-desk-chat-v1.js';
+import {serveOperatorGithubStatus} from './operator-github-status-v1.js';
 import {handleDigitalWorkforceSuite,VERSION as DIGITAL_WORKFORCE_SUITE_VERSION} from './digital-workforce-suite-v1.js';
 import {handleResilientContact,VERSION as CONTACT_RESILIENCE_VERSION} from './contact-submit-resilient-v1.js';
 import {serveDynamicEditorialImage,VERSION as DYNAMIC_EDITORIAL_IMAGE_VERSION} from './dynamic-editorial-image-v1.js';
@@ -101,6 +102,8 @@ export default{
   if(worldMarkets)return stampRelease(worldMarkets,env);
   const deskChat=await serveIntelligenceDeskChat(request,env);
   if(deskChat)return deskChat;
+  const ghStatus=await serveOperatorGithubStatus(request,env,ctx,app);
+  if(ghStatus)return ghStatus;
   const editorialImage=serveDynamicEditorialImage(request);
   if(editorialImage)return stampRelease(editorialImage,env);
   const canonicalNews=await serveCanonicalNewsFeed(request,env);
