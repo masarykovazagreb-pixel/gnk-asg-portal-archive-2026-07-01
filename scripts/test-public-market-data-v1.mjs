@@ -8,7 +8,7 @@ const fallback=JSON.parse(fs.readFileSync('apps/portal/data/market.json','utf8')
 assert.equal(PRIMARY_API_PATH,'/api/market');
 assert.equal(PUBLIC_API_PATH,'/api/public-market');
 assert.deepEqual([...API_PATHS],[PRIMARY_API_PATH,PUBLIC_API_PATH]);
-assert.match(VERSION,/GNK_ASG_PUBLIC_MARKET_DATA_V4_20260718_INDEPENDENT_PROVIDER/);
+assert.match(VERSION,/GNK_ASG_PUBLIC_MARKET_DATA_V5_20260719_CRYPTOCOMPARE_FALLBACK/);
 assert.match(worker,/servePublicMarketData/);
 assert.match(worker,/MARKET_ORIGIN/);
 assert.match(client,/fetch\('\/api\/market/);
@@ -17,6 +17,8 @@ assert.match(client,/zastarjeli rezervni presjek/);
 assert.ok(Date.parse(fallback.updated_at),'fallback timestamp required');
 
 const ids=['bitcoin','ethereum','solana','ripple','binancecoin','cardano','chainlink','avalanche-2','tether','usd-coin','dai','euro-coin'];
+const symbols=['BTC','ETH','SOL','XRP','BNB','ADA','LINK','AVAX','USDT','USDC','DAI','EURC'];
+const fiats=['EUR','USD','GBP','CHF','JPY'];
 const simplePayload=Object.fromEntries(ids.map((id,index)=>[id,{eur:index+1,usd:index+2,gbp:index+3,chf:index+4,jpy:index+5,eur_24h_change:1,usd_24h_change:2,gbp_24h_change:3,chf_24h_change:4,jpy_24h_change:5,last_updated_at:123}]));
 const originalFetch=globalThis.fetch;
 try{
@@ -34,6 +36,22 @@ try{
   assert.ok(liveData.coins.length>=8);
  }
 
+ const cryptoRaw=Object.fromEntries(symbols.map((symbol,index)=>[symbol,Object.fromEntries(fiats.map((code,fiatIndex)=>[code,{PRICE:index+fiatIndex+10,CHANGEPCT24HOUR:fiatIndex+1,LASTUPDATE:1784440800}]))]));
+ globalThis.fetch=async input=>{
+  const url=String(input);
+  if(url.includes('api.coingecko.com'))return new Response('rate limited',{status:429});
+  if(url.includes('min-api.cryptocompare.com/data/pricemultifull'))return new Response(JSON.stringify({RAW:cryptoRaw}),{status:200,headers:{'content-type':'application/json'}});
+  throw new Error(`unexpected URL ${url}`);
+ };
+ const cryptoCompare=await servePublicMarketData(new Request(`https://gnk-asg.hr${PUBLIC_API_PATH}`),{});
+ assert.equal(cryptoCompare.status,200);
+ assert.equal(cryptoCompare.headers.get('x-gnk-market-source'),'live');
+ assert.equal(cryptoCompare.headers.get('x-gnk-market-upstream'),'cryptocompare-pricemultifull');
+ const cryptoData=await cryptoCompare.json();
+ assert.equal(cryptoData.status,'ok');
+ assert.equal(cryptoData.stale,false);
+ assert.ok(cryptoData.coins.length>=8);
+ assert.ok(cryptoData.coins.every(item=>['eur','usd','gbp','chf','jpy'].every(code=>Number.isFinite(Number(item.prices[code])))));
 
  const paprikaSymbols={
   'btc-bitcoin':'BTC','eth-ethereum':'ETH','sol-solana':'SOL','xrp-xrp':'XRP',
@@ -42,7 +60,7 @@ try{
  };
  globalThis.fetch=async input=>{
   const url=String(input);
-  if(url.includes('api.coingecko.com'))return new Response('rate limited',{status:429});
+  if(url.includes('api.coingecko.com')||url.includes('min-api.cryptocompare.com'))return new Response('rate limited',{status:429});
   const match=url.match(/\/v1\/tickers\/([^?]+)/);
   assert.ok(match,'expected bounded CoinPaprika ticker URL');
   const paprikaId=decodeURIComponent(match[1]),symbol=paprikaSymbols[paprikaId];
@@ -85,4 +103,4 @@ try{
  assert.equal(ignored,null);
 }finally{globalThis.fetch=originalFetch;}
 
-console.log(JSON.stringify({ok:true,version:VERSION,paths:[PRIMARY_API_PATH,PUBLIC_API_PATH],independentLiveProvider:true,staleFallbackExplicit:true},null,2));
+console.log(JSON.stringify({ok:true,version:VERSION,paths:[PRIMARY_API_PATH,PUBLIC_API_PATH],liveUpstreams:['coingecko-simple-price','coingecko-coins-markets','cryptocompare-pricemultifull','coinpaprika-tickers'],staleFallbackExplicit:true},null,2));
