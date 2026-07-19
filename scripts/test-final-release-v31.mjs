@@ -100,7 +100,7 @@ assert.match(editorialWrapper,/servePublicMarketData/);
 assert.match(editorialWrapper,/MARKET_ORIGIN/);
 assert.match(editorialRouter,/GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715/);
 for(const marker of ['/objave','/komentari','/analize','/en/publications','/en/commentary','/en/analyses','x-gnk-explicit-html-route','x-gnk-editorial-request-path','x-gnk-editorial-assets','redirect:\'follow\''])assert.ok(editorialRouter.includes(marker),`editorial router missing ${marker}`);
-assert.match(marketApi,/GNK_ASG_PUBLIC_MARKET_DATA_V4_20260718_INDEPENDENT_PROVIDER/);
+assert.match(marketApi,/GNK_ASG_PUBLIC_MARKET_DATA_V(?:4_20260718_INDEPENDENT_PROVIDER|5_20260719_CRYPTOCOMPARE_FALLBACK)/);
 assert.match(marketApi,/PRIMARY_API_PATH='\/api\/market'/);
 assert.match(marketApi,/PUBLIC_API_PATH='\/api\/public-market'/);
 assert.match(marketApi,/API_PATHS=new Set\(\[PRIMARY_API_PATH,PUBLIC_API_PATH\]\)/);
