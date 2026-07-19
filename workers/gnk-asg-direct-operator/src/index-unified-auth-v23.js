@@ -4,10 +4,11 @@ import {servePublicMarketData,VERSION as MARKET_DATA_VERSION} from './public-mar
 import {handleDigitalWorkforceSuite,VERSION as DIGITAL_WORKFORCE_SUITE_VERSION} from './digital-workforce-suite-v1.js';
 import {handleResilientContact,VERSION as CONTACT_RESILIENCE_VERSION} from './contact-submit-resilient-v1.js';
 import {serveDynamicEditorialImage,VERSION as DYNAMIC_EDITORIAL_IMAGE_VERSION} from './dynamic-editorial-image-v1.js';
+import {normalizeCanonicalNewsItems,VERSION as CANONICAL_NEWS_FEED_VERSION} from './canonical-news-feed-v1.js';
 
 export const PREVIOUS_PUBLIC_EDITORIAL_VERSION='GNK_ASG_UNIFIED_AUTH_V37_NEWS_SOURCE_LINKS';
 export const ENTRYPOINT='src/index-unified-auth-v23.js';
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS_MARKET_ORIGIN_HOTFIX_CONTACT_MAIL_CANONICAL_FEED_DYNAMIC_IMAGES_${DYNAMIC_EDITORIAL_IMAGE_VERSION}_${CONTACT_RESILIENCE_VERSION}_${DIGITAL_WORKFORCE_SUITE_VERSION}_${MARKET_DATA_VERSION}_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS_MARKET_ORIGIN_HOTFIX_CONTACT_MAIL_CANONICAL_FEED_${CANONICAL_NEWS_FEED_VERSION}_DYNAMIC_IMAGES_${DYNAMIC_EDITORIAL_IMAGE_VERSION}_${CONTACT_RESILIENCE_VERSION}_${DIGITAL_WORKFORCE_SUITE_VERSION}_${MARKET_DATA_VERSION}_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const SHARE_ROUTE=/^\/podijeli\/vijest\/([a-z0-9]{8,64})$/i;
 
@@ -61,12 +62,12 @@ async function loadCanonicalNews(env){
   }catch{}
   items=newsItems(data);
  }
- return items.filter(item=>item&&item.title&&(item.url||item.link||item.sourceUrl||item.href)).sort((a,b)=>Date.parse(b.published_at||b.publishedAt||b.date||0)-Date.parse(a.published_at||a.publishedAt||a.date||0)).slice(0,100);
+ return normalizeCanonicalNewsItems(items,100);
 }
 async function serveCanonicalNewsFeed(request,env){
  if(!['GET','HEAD'].includes(request.method)||pathOf(request)!==CANONICAL_NEWS_FEED)return null;
  const items=await loadCanonicalNews(env);
- const headers={'content-type':'application/json; charset=utf-8','cache-control':'public, max-age=60, stale-while-revalidate=300','x-content-type-options':'nosniff','x-gnk-news-source':'canonical-normalized-feed-v2-assets-primary','x-gnk-news-visible-limit':'100','x-gnk-route-owner':VERSION};
+ const headers={'content-type':'application/json; charset=utf-8','cache-control':'public, max-age=60, stale-while-revalidate=300','x-content-type-options':'nosniff','x-gnk-news-source':'canonical-normalized-feed-v3-assets-primary-url-deduped','x-gnk-news-visible-limit':'100','x-gnk-route-owner':VERSION};
  return new Response(request.method==='HEAD'?null:JSON.stringify(items),{status:items.length?200:503,headers});
 }
 
