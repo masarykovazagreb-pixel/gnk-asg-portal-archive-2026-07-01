@@ -26,7 +26,7 @@ const BURST_END=Date.parse('2026-06-29T23:59:59+02:00');
 const BURST_TARGET=10;
 const MEDIA_EMAIL='media@gnk-asg.hr';
 const MEDIA_NAME='GNK DINAMO Ltd. Group | Media Relations & Accreditation Center';
-const INTERNAL_COPY='rht@gmx.com';
+const INTERNAL_COPY=env=>String(env?.CONTACT_INTERNAL_RECIPIENTS||'').trim()||'rht@gmx.com';
 const INBOUND_VERSION='GNK_ASG_MEDIA_INBOUND_ACTIVE_ENTRY_V1_20260629';
 const clean=value=>String(value??'').trim();
 async function body(request){try{return await request.json();}catch{return{};}}
@@ -220,7 +220,7 @@ async function handleMediaInbound(message,env){
     try{
       if(env.EMAIL?.send){
         const copyText=`Automatic media acknowledgement copy\n\nReference: ${id}\nFrom: ${from}\nOriginal subject: ${subject}\nLanguage: ${language}\nReceived: ${receivedAt}\nStatus: SENT`;
-        await env.EMAIL.send(new EmailMessage(MEDIA_EMAIL,INTERNAL_COPY,rawEmail(INTERNAL_COPY,`[${id}] Media acknowledgement copy`,copyText,'')));
+        await env.EMAIL.send(new EmailMessage(MEDIA_EMAIL,INTERNAL_COPY(env),rawEmail(INTERNAL_COPY(env),`[${id}] Media acknowledgement copy`,copyText,'')));
       }
     }catch{}
     await saveInbound(env,{...base,autoReplyStatus:'SENT',autoReplyAt:new Date().toISOString()},rawBytes);

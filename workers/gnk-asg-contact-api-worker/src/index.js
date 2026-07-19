@@ -1,5 +1,5 @@
 const VERSION = "gnk-asg-mail-unified-v2-20260624";
-const INTERNAL_TO = "rht@gmx.com";
+const internalTo = env => String(env?.CONTACT_INTERNAL_RECIPIENTS || "").trim() || "rht@gmx.com";
 const COMPANY = {
   name: "GNK ASG d.o.o.",
   address: "Zagrebačka cesta 130, 10090 Zagreb",
@@ -178,7 +178,7 @@ async function handleContact(request,env){
 
   const record = {
     caseId,receivedAt:now.toISOString(),mailboxKey,mailboxAddress:mailbox.address,mailboxLabel:mailbox.label,
-    internalForward:INTERNAL_TO,name,email,phone,subject,message,consent:true,
+    internalForward:internalTo(env),name,email,phone,subject,message,consent:true,
     attachmentName:pdf.attachment?.filename||null,attachmentSize:pdf.attachment?.size||0,
     attachmentKey:savedPdf.key,r2Saved:savedPdf.saved,r2Error:savedPdf.error,
     source:"public-contact-form",worker:"gnk-asg-contact-api",status:"received"
@@ -189,7 +189,7 @@ async function handleContact(request,env){
   const internalHtml = contactInternalHtml(record);
   const internalAttachments = pdf.attachment ? [stripSize(pdf.attachment)] : [];
   const internalMail = await sendEmail(env,{
-    to:[INTERNAL_TO],from:{email:mailbox.address,name:mailbox.title},replyTo:email,
+    to:[internalTo(env)],from:{email:mailbox.address,name:mailbox.title},replyTo:email,
     subject:`[${caseId}] ${subject}`,text:internalText,html:internalHtml,attachments:internalAttachments
   });
 
@@ -204,7 +204,7 @@ async function handleContact(request,env){
   record.internalMail = internalMail;
   record.autoReply = autoReply;
   await saveContact(env,record);
-  await saveMailLog(env,{type:"contact",sentAt:new Date().toISOString(),caseId,from:mailbox.address,to:[INTERNAL_TO,email],subject,result:{internalMail,autoReply}});
+  await saveMailLog(env,{type:"contact",sentAt:new Date().toISOString(),caseId,from:mailbox.address,to:[internalTo(env),email],subject,result:{internalMail,autoReply}});
 
   return json({
     ok:internalMail.sent,deliveryOk:internalMail.sent&&autoReply.sent,worker:"gnk-asg-contact-api",version:VERSION,

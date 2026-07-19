@@ -6,7 +6,7 @@ export const VERSION='GNK_ASG_CONTACT_RESILIENT_V2_20260719_CANONICAL_PORTAL_ROU
 const PATH='/api/contact-submit';
 const CANONICAL_PATH='/api/portal-contact-submit';
 const PATHS=new Set([PATH,CANONICAL_PATH]);
-const INTERNAL='rht@gmx.com';
+const INTERNAL=env=>String(env?.CONTACT_INTERNAL_RECIPIENTS||'').trim()||'rht@gmx.com';
 const clean=(value,max=12000)=>String(value??'').replace(/\u0000/g,'').trim().slice(0,max);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const html=value=>clean(value).split(/\n{2,}/).filter(Boolean).map(p=>`<p style="margin:0 0 14px;line-height:1.6">${esc(p).replace(/\n/g,'<br>')}</p>`).join('');
@@ -33,7 +33,7 @@ async function fallbackRecord(request,env){
  const internalText=`GNK ASG – novi upit putem kontakt forme\n\nEvidencijski broj: ${caseId}\nRezervna pohrana: KV fallback\nOdjel: ${department}\nVrijeme: ${createdAt}\nPodnositelj: ${name}\nE-mail: ${email}\nTelefon: ${phone||'-'}\nPredmet: ${subject}\nPoruka:\n${message}`;
  const ack=language==='en'?`Dear ${name},\n\nYour message was received under reference ${caseId}.\n\nSubject: ${subject}\nReceived: ${createdAt}\n\nThe message was recorded and routed for human review.\n\nKind regards,`:`Poštovani/Poštovana ${name},\n\nVaša poruka zaprimljena je pod referencom ${caseId}.\n\nPredmet: ${subject}\nVrijeme: ${createdAt}\n\nPoruka je evidentirana i proslijeđena na ljudski pregled.\n\nSrdačan pozdrav,`;
  let internal=false,acknowledgement=false;
- try{const sent=await sendBrandedEmail(env,{from:'contact@gnk-asg.hr',fromName:'GNK ASG Contact Desk',to:INTERNAL,replyTo:email,subject:`[${caseId}] ${subject}`,text:internalText,html:html(internalText)});internal=Boolean(sent?.sent)}catch{}
+ try{const sent=await sendBrandedEmail(env,{from:'contact@gnk-asg.hr',fromName:'GNK ASG Contact Desk',to:INTERNAL(env),replyTo:email,subject:`[${caseId}] ${subject}`,text:internalText,html:html(internalText)});internal=Boolean(sent?.sent)}catch{}
  try{const sent=await sendBrandedEmail(env,{from:'contact@gnk-asg.hr',fromName:'GNK ASG Contact Desk',to:email,replyTo:'contact@gnk-asg.hr',subject:language==='en'?`[${caseId}] Message received`:`[${caseId}] Potvrda zaprimanja upita`,text:ack,html:html(ack)});acknowledgement=Boolean(sent?.sent)}catch{}
  const deliveryOk=internal&&acknowledgement;
  return json({ok:true,accepted:true,stored:true,reused:false,storage:'kv-fallback',caseId,receivedAt:createdAt,mailAttempted:true,deliveryOk,delivery:{internal,acknowledgement},message:deliveryOk?(language==='en'?'Message recorded and confirmation sent.':'Upit je evidentiran i potvrda je poslana.'):(language==='en'?'Message recorded; email delivery is pending.':'Upit je evidentiran; dostava e-pošte je u obradi.')},deliveryOk?201:202);

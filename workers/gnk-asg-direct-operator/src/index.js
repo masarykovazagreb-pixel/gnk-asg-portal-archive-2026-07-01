@@ -224,7 +224,7 @@ async function GNK_ADMIN_STATUS(env){
     kvBinding:!!env.GNK_ASG_KV,
     r2Binding:!!env.GNK_ASG_MEDIA_ASSETS,
     emailBinding:!!(env.EMAIL&&typeof env.EMAIL.send==="function"),
-    gmxForward:"rht@gmx.com",
+    gmxForward:String(env?.CONTACT_INTERNAL_RECIPIENTS||"").trim()||"rht@gmx.com",
     endpoints:[
       "/api/admin-control-status",
       "/api/admin-publish",

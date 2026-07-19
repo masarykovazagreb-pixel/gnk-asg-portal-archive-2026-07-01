@@ -1,0 +1,28 @@
+name: Validate Newsroom Enqueue Auth Contract
+
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/newsroom-service-auth-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js'
+      - 'scripts/test-newsroom-enqueue-auth-contract.mjs'
+      - '.github/workflows/validate-newsroom-enqueue-auth.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and auth contract
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/newsroom-service-auth-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v15.js
+          node scripts/test-newsroom-enqueue-auth-contract.mjs

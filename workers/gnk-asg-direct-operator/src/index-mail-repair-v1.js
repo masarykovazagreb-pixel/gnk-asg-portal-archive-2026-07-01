@@ -3,7 +3,7 @@ import { EmailMessage } from 'cloudflare:email';
 
 const SESSION_COOKIE = 'gnk_asg_admin_session';
 const encoder = new TextEncoder();
-const INTERNAL_TO = 'rht@gmx.com';
+const internalTo = env => String(env?.CONTACT_INTERNAL_RECIPIENTS || '').trim() || 'rht@gmx.com';
 
 const MAILBOXES = {
   info: { address:'info@gnk-asg.hr', label:'Info Desk' },
@@ -318,7 +318,7 @@ async function handleContact(request, env, ctx) {
   const internalMail = await sendEnvelope(env, {
     from:mailbox.address,
     fromName:`GNK ASG ${mailbox.label}`,
-    to:[INTERNAL_TO], cc:[], bcc:[],
+    to:[internalTo(env)], cc:[], bcc:[],
     subject:`[${base.caseId}] ${subject}`,
     text:internalText,
     html:`<pre style="font-family:Arial,sans-serif;white-space:pre-wrap">${internalText.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</pre>`,
@@ -339,7 +339,7 @@ async function handleContact(request, env, ctx) {
     ...base,
     selectedMailbox:mailbox.address,
     selectedMailboxLabel:mailbox.label,
-    internalForward:INTERNAL_TO,
+    internalForward:internalTo(env),
     internalMail,
     autoReply,
     mailAttempted:true,
