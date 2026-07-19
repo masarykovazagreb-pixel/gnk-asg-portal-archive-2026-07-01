@@ -71,9 +71,13 @@ echo "ASSERT canonical news exact and cache-busted routes agree; clean=${canonic
 [[ "$canonical_clean_status" = "200" && "$canonical_busted_status" = "200" ]]
 has_release_proof "$out/news-canonical-clean.headers"
 has_release_proof "$out/news-canonical-busted.headers"
-grep -Fiq 'x-gnk-news-source: canonical-normalized-feed-v2-assets-primary' "$out/news-canonical-clean.headers"
+grep -Fiq 'x-gnk-news-source: canonical-normalized-feed-v3-assets-primary-url-deduped' "$out/news-canonical-clean.headers"
 jq -e 'type=="array" and length>0 and length<=100' "$out/news-canonical-clean.json" >/dev/null
 jq -e 'type=="array" and length>0 and length<=100' "$out/news-canonical-busted.json" >/dev/null
+if ! jq -e '[.[] | (.sourceUrl // .url // .link // .href // "") | select(length>0)] as $urls | ($urls|length) == ($urls|unique|length)' "$out/news-canonical-clean.json" >/dev/null; then
+  echo 'duplicate canonical news URLs detected' >&2
+  exit 1
+fi
 clean_first=$(jq -r '.[0].id // .[0].url // .[0].link // .[0].title // ""' "$out/news-canonical-clean.json")
 busted_first=$(jq -r '.[0].id // .[0].url // .[0].link // .[0].title // ""' "$out/news-canonical-busted.json")
 [[ -n "$clean_first" && "$clean_first" = "$busted_first" ]]
