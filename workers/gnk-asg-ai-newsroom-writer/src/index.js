@@ -1,4 +1,4 @@
-// GNK_ASG_AI_NEWSROOM_WRITER_V2_DAILY_10_3_FAIL_CLOSED
+// GNK_ASG_AI_NEWSROOM_WRITER_V3_SOURCE_PROVENANCE_FAIL_CLOSED
 // Review-only worker: prepares exactly 10 source summaries and 3 commentaries.
 // Production publishing remains disabled until the scheduler and service authorization
 // are explicitly approved. No default image, anonymous write or partial daily batch.
@@ -44,7 +44,7 @@ async function writeOriginal(topic,kind,env){
 }
 async function enqueue(topic,kind,content,scheduledFor,env,batchId,batchIndex){
  const commentary=kind==='commentary',title=commentary?`Komentar: ${clean(topic.title)}`:`${clean(topic.title)} — poslovni pregled`,imageUrl=await imagePath(topic,kind);
- const payload={title:title.slice(0,240),summary:content.slice(0,700),content,sourceName:clean(topic.source||'GNK ASG Newsroom').slice(0,160),sourceUrl:clean(topic.url),imageUrl,imageCredit:'GNK ASG — izvorna generirana urednička ilustracija',category:commentary?'commentary':categoryOf(topic),language:'hr',seoTitle:`${title} | GNK ASG`.slice(0,240),metaDescription:content.slice(0,300),imageAlt:`GNK ASG urednička ilustracija: ${title}`.slice(0,240),imageTitle:title.slice(0,240),imageCaption:`${title}. Izvorna ilustracija GNK ASG.`.slice(0,320),scheduledFor,batchId,batchSize:DAILY_TOTAL,batchIndex};
+ const payload={title:title.slice(0,240),summary:content.slice(0,700),content,sourceName:clean(topic.source||new URL(topic.url).hostname).slice(0,160),sourceUrl:clean(topic.url),sourceClass:'external-publisher-link',sourcePublishedAt:clean(topic.publishedAt||topic.published_at||topic.date),retrievedAt:new Date().toISOString(),usageBasis:'original-summary-with-link',sourceTermsUrl:clean(topic.sourceTermsUrl),sourceLicense:clean(topic.sourceLicense),sourceTermsVerifiedAt:clean(topic.sourceTermsVerifiedAt),imageUrl,imageCredit:'GNK ASG — izvorna generirana urednička ilustracija',category:commentary?'commentary':categoryOf(topic),language:'hr',seoTitle:`${title} | GNK ASG`.slice(0,240),metaDescription:content.slice(0,300),imageAlt:`GNK ASG urednička ilustracija: ${title}`.slice(0,240),imageTitle:title.slice(0,240),imageCaption:`${title}. Izvorna ilustracija GNK ASG.`.slice(0,320),scheduledFor,batchId,batchSize:DAILY_TOTAL,batchIndex};
  const response=await fetch(ENQUEUE_ENDPOINT,{method:'POST',headers:authHeaders(env),body:JSON.stringify(payload)});
  if(!response.ok)throw new Error(`enqueue_failed_${response.status}`);
  const data=await response.json();if(!data?.ok||!data?.post)throw new Error('enqueue_invalid_response');return data;
@@ -73,3 +73,4 @@ export default{
  async fetch(request,env){if(request.method==='GET')return new Response(JSON.stringify({ok:true,service:'GNK ASG AI Newsroom Writer',mode:'review-only',daily:{news:DAILY_NEWS,commentaries:DAILY_COMMENTARIES,time:'09:00',timeZone:TIME_ZONE},authorizationConfigured:!!clean(env.NEWSROOM_AUTOMATION_TOKEN)},null,2),{headers:{'content-type':'application/json','cache-control':'no-store'}});if(request.method!=='POST')return new Response('Method not allowed',{status:405});const result=await runDailyNewsroom(env);return new Response(JSON.stringify(result,null,2),{status:result.ok?200:503,headers:{'content-type':'application/json','cache-control':'no-store'}})},
  async scheduled(event,env,ctx){ctx.waitUntil(runDailyNewsroom(env))}
 };
+

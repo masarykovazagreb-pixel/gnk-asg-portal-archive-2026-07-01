@@ -51,7 +51,7 @@ for(const route of ['plan','bulletins','projects','risks','opinions','dependenci
 }
 assert.match(workforceUi,/\/api\/public\/digital-workforce\//);
 assert.match(workforceUi,/data-dw-tab/);
-assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V2_20260717/);
+assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V3_20260719_FIRST_PARTY_PROVENANCE/);
 assert.match(workforceApi,/1573/);
 assert.match(workforceApi,/2026,0,1/);
 assert.doesNotMatch(workforceApi,/1969|1970/);
