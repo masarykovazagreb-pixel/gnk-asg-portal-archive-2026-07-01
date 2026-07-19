@@ -18,41 +18,41 @@
 
   const labels = {
     hr: {
-      aria: 'Otvori AL asistenta GNK ASG',
-      title: 'AL asistent',
+      aria: 'Otvori ASG Bot asistenta',
+      title: 'ASG Bot',
       subtitle: 'PLUTAJUĆI POMOĆNIK',
-      intro: 'Brzi pomoćnik za portal, vijesti po zemljama, financije, tržišta, dokumente, kontakt i javne informacije. Za pitanja izvan portala AL otvara javnu web i news pretragu.',
+      intro: 'Brzi pomoćnik za portal, vijesti po zemljama, financije, tržišta, dokumente, kontakt i javne informacije. Za pitanja izvan portala ASG Bot otvara javnu web i news pretragu.',
       send: 'PITAJ',
       placeholder: 'Upišite pitanje, državu ili temu…',
       chips: ['Vijesti po zemljama', 'Hrvatska', 'Slovenija', 'Srbija', 'BiH', 'Međunarodno', 'Financije', 'Digitalna imovina', 'AI i tehnologija', 'Kontakt'],
-      full: 'Puni AL',
+      full: 'Puni ASG Bot',
       contact: 'Kontakt',
       whatsapp: 'WhatsApp',
       research: 'Google News',
       web: 'Google',
       empty: 'Upišite pitanje, državu, regiju ili odaberite jednu od brzih tema.',
       source: 'Informativni odgovor na temelju javnih podataka portala i javne pretrage. Za službenu komunikaciju koristite kontakt kanal.',
-      verified: 'AL · JAVNI PODATCI AŽURIRANI',
-      checking: 'AL · PROVJERA AŽURIRANJA',
+      verified: 'ASG BOT · JAVNI PODATCI AŽURIRANI',
+      checking: 'ASG BOT · PROVJERA AŽURIRANJA',
       action: 'Za slanje upita otvorite WhatsApp ili kontakt stranicu. Za teme izvan portala koristite Google ili Google News poveznicu.'
     },
     en: {
-      aria: 'Open GNK ASG AL assistant',
-      title: 'AL Assistant',
+      aria: 'Open ASG Bot assistant',
+      title: 'ASG Bot',
       subtitle: 'FLOATING HELPER',
-      intro: 'Quick portal helper for country news, financials, markets, documents, contact and public information. For questions outside the portal, AL opens public web and news search.',
+      intro: 'Quick portal helper for country news, financials, markets, documents, contact and public information. For questions outside the portal, ASG Bot opens public web and news search.',
       send: 'ASK',
       placeholder: 'Enter a question, country or topic…',
       chips: ['News by country', 'Croatia', 'Slovenia', 'Serbia', 'BiH', 'International', 'Financials', 'Digital assets', 'AI and technology', 'Contact'],
-      full: 'Full AL',
+      full: 'Full ASG Bot',
       contact: 'Contact',
       whatsapp: 'WhatsApp',
       research: 'Google News',
       web: 'Google',
       empty: 'Enter a question, country, region or select a quick topic.',
       source: 'Informational answer based on public portal data and public search. Use the contact channel for official communication.',
-      verified: 'AL · PUBLIC DATA UPDATED',
-      checking: 'AL · UPDATE VERIFICATION',
+      verified: 'ASG BOT · PUBLIC DATA UPDATED',
+      checking: 'ASG BOT · UPDATE VERIFICATION',
       action: 'To send an inquiry, open WhatsApp or the contact page. For topics outside the portal, use the Google or Google News link.'
     }
   };
@@ -211,8 +211,8 @@
     }
     if (/ai|al|desk|intelligence|umjet|tehnolog|software|portal/.test(q)) {
       return en
-        ? 'AL Assistant is the portal helper for public information, technology, finance, market panels, country news and contact routing. A later backend version can provide fully open AI answers from outside sources under defined authorization rules.'
-        : 'AL asistent je pomoćnik portala za javne informacije, tehnologiju, financije, tržišne panele, vijesti po državama i kontakt. Kasnija backend verzija može davati potpuno otvorene AI odgovore iz vanjskih izvora prema definiranim ovlastima.';
+        ? 'ASG Bot is the portal helper for public information, technology, finance, market panels, country news and contact routing. A later backend version can provide fully open AI answers from outside sources under defined authorization rules.'
+        : 'ASG Bot je pomoćnik portala za javne informacije, tehnologiju, financije, tržišne panele, vijesti po državama i kontakt. Kasnija backend verzija može davati potpuno otvorene AI odgovore iz vanjskih izvora prema definiranim ovlastima.';
     }
     return en
       ? 'This appears to be outside the portal. I can still route it to public web and news search: use the Google and Google News buttons below, or send the topic through WhatsApp/contact for official handling.'
@@ -248,7 +248,7 @@
     const panel = document.getElementById('aiMini');
     if (!button || !panel) return;
     button.setAttribute('aria-label', c.aria);
-    button.innerHTML = '<span class="ai-fab-mark">AL</span><span class="ai-fab-label">AL</span><span class="ai-fab-dot"></span>';
+    button.innerHTML = '<span class="ai-fab-mark">ASG</span><span class="ai-fab-label">ASG Bot</span><span class="ai-fab-dot"></span>';
     panel.innerHTML = '<div class="ai-mini-head"><div><small>' + c.subtitle + '</small><strong>' + c.title + '</strong></div><button type="button" class="ai-mini-close" aria-label="Close">×</button></div><div class="ai-mini-status"></div><div class="ai-mini-body"><p class="ai-mini-intro">' + c.intro + '</p><div class="ai-mini-chips">' + c.chips.map(item => '<button type="button">' + item + '</button>').join('') + '</div><div class="ai-mini-result" id="aiMiniResult"></div><form class="ai-mini-form"><input autocomplete="off" placeholder="' + c.placeholder + '"><button type="submit">' + c.send + '</button></form><div class="ai-mini-links"><a class="ai-full-link" href="' + DESK + '">' + c.full + '</a><a class="ai-research-link" id="aiWhatsAppLink" target="_blank" rel="noopener nofollow" href="' + WHATSAPP + '">' + c.whatsapp + '</a><a class="ai-research-link" href="' + CONTACT + '">' + c.contact + '</a><a class="ai-research-link" id="aiResearchLink" target="_blank" rel="noopener nofollow" href="https://news.google.com/">' + c.research + '</a><a class="ai-research-link" id="aiWebLink" target="_blank" rel="noopener nofollow" href="https://www.google.com/">' + c.web + '</a></div></div>';
     panel.querySelector('.ai-mini-close').onclick = close;
     panel.querySelector('.ai-full-link').onclick = close;
