@@ -21,7 +21,7 @@ assert.doesNotMatch(source,/\|\|'\/assets\/logo-gnk-asg-canonical\.svg'/);
 
 assert.match(source,/const DAILY_POST_LIMIT=10;/);
 assert.match(source,/const DAILY_COMMENTARY_LIMIT=3;/);
-assert.match(source,/const PUBLICATION_BATCH_LIMIT=4;/);
+assert.match(source,/const PUBLICATION_BATCH_LIMIT=13;/);
 assert.match(source,/async function publishedCategoryCounts\(store,published\)/);
 assert.match(source,/post\.category==='commentary'/);
 assert.match(source,/isCommentary&&counts\.commentaries>=DAILY_COMMENTARY_LIMIT/);
