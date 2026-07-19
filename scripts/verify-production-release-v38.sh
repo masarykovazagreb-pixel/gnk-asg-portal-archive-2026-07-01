@@ -113,13 +113,13 @@ for market_attempt in $(seq 1 18); do
   market_source=$(grep -Ei '^x-gnk-market-source:' "$out/market.headers" | tail -1 | tr -d '\r' | cut -d: -f2- | xargs || true)
   market_upstream=$(grep -Ei '^x-gnk-market-upstream:' "$out/market.headers" | tail -1 | tr -d '\r' | cut -d: -f2- | xargs || true)
   market_json_status=$(jq -r '.status // "missing"' "$out/market.json" 2>/dev/null || echo invalid-json)
-  market_stale=$(jq -r '.stale // "missing"' "$out/market.json" 2>/dev/null || echo invalid-json)
+  market_stale=$(jq -r 'if has("stale") then (.stale|tostring) else "missing" end' "$out/market.json" 2>/dev/null || echo invalid-json)
   market_age=$(jq -r '.age_seconds // "missing"' "$out/market.json" 2>/dev/null || echo invalid-json)
   market_coins=$(jq -r '(.coins // []) | length' "$out/market.json" 2>/dev/null || echo 0)
   echo "ASSERT live same-origin market attempt ${market_attempt}/18: HTTP 200, exact release ${revision}, source=live, status=ok, stale=false, coins>=8, age<=120; actual_http=${market_status}; source=${market_source:-missing}; upstream=${market_upstream:-missing}; status=${market_json_status}; stale=${market_stale}; coins=${market_coins}; age=${market_age}"
   if [[ "$market_status" = "200" ]] &&
      has_release_proof "$out/market.headers" &&
-     grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V5_20260719_KEYED_PRIMARY_COINBASE_FALLBACK' "$out/market.headers" &&
+     grep -Fiq 'x-gnk-market-data: GNK_ASG_PUBLIC_MARKET_DATA_V6_20260719_OFFICIAL_INSTITUTIONAL_SERVER_SIDE' "$out/market.headers" &&
      grep -Fiq 'x-gnk-market-source: live' "$out/market.headers" &&
      grep -Fiq 'x-gnk-market-route: /api/public-market' "$out/market.headers" &&
      grep -Eiq 'x-gnk-market-upstream: (coingecko-(simple-price|coins-markets)|coinpaprika-tickers|coinbase-spot-static-fx)' "$out/market.headers" &&
