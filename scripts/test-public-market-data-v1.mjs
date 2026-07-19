@@ -8,7 +8,7 @@ const fallback=JSON.parse(fs.readFileSync('apps/portal/data/market.json','utf8')
 assert.equal(PRIMARY_API_PATH,'/api/market');
 assert.equal(PUBLIC_API_PATH,'/api/public-market');
 assert.deepEqual([...API_PATHS],[PRIMARY_API_PATH,PUBLIC_API_PATH]);
-assert.match(VERSION,/GNK_ASG_PUBLIC_MARKET_DATA_V4_20260718_INDEPENDENT_PROVIDER/);
+assert.match(VERSION,/GNK_ASG_PUBLIC_MARKET_DATA_V5_20260719_KEYED_PRIMARY_COINBASE_FALLBACK/);
 assert.match(worker,/servePublicMarketData/);
 assert.match(worker,/MARKET_ORIGIN/);
 assert.match(client,/fetch\('\/api\/market/);
