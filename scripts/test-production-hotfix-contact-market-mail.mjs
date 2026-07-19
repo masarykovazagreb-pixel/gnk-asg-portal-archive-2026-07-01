@@ -23,9 +23,12 @@ for(const marker of [
 ]) assert.ok(contact.includes(marker),`contact resilience missing ${marker}`);
 
 for(const marker of [
-  "V4_20260718_INDEPENDENT_PROVIDER",
+  "V5_20260719_CRYPTOCOMPARE_FALLBACK",
   "simplePriceLive",
   "marketsLive",
+  "cryptoCompareLive",
+  "min-api.cryptocompare.com/data/pricemultifull",
+  "cryptocompare-pricemultifull",
   "coinPaprikaLive",
   "coinPaprikaTicker",
   "PAPRIKA_IDS",
@@ -45,8 +48,9 @@ for(const marker of [
 assert.doesNotMatch(market,/api\.coinpaprika\.com\/v1\/tickers\?quotes=/,'market hotfix must not load the global ticker catalog');
 assert.match(market,/api\.coinpaprika\.com\/v1\/tickers\/\$\{paprikaId\}/,'market hotfix must use bounded individual tickers');
 assert.ok(verify.includes("x-gnk-market-source: live"),'deploy verification must reject static market fallback');
-assert.ok(verify.includes("coinpaprika-tickers"),'deploy verification must allow independent provider');
+assert.ok(verify.includes("coinpaprika-tickers"),'deploy verification must allow bounded CoinPaprika provider');
+assert.ok(verify.includes("cryptocompare-pricemultifull"),'deploy verification must allow CryptoCompare provider');
 assert.ok(verify.includes("x-gnk-contact-resilience"),'deploy verification must require resilient contact route');
 assert.ok(verify.includes("(.coins|length) >= 8"),'deploy verification must require a complete market payload');
 
-console.log(JSON.stringify({ok:true,contact:'d1-plus-kv',market:'independent-provider-before-static',autoreplyLogo:'cid-or-remote',deployPerformed:false},null,2));
+console.log(JSON.stringify({ok:true,contact:'d1-plus-kv',market:'cryptocompare-and-bounded-paprika-before-static',autoreplyLogo:'cid-or-remote',deployPerformed:false},null,2));
