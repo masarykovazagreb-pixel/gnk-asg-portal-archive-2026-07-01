@@ -1,0 +1,13 @@
+export const VERSION='GNK_ASG_DYNAMIC_EDITORIAL_IMAGES_V1_20260719';
+const ROUTE=/^\/assets\/editorial\/generated\/([a-z0-9][a-z0-9-]{7,95})\.svg$/;
+const pathOf=request=>new URL(request.url).pathname.replace(/\/{2,}/g,'/');
+const hash=value=>{let out=2166136261;for(const char of value){out^=char.charCodeAt(0);out=Math.imul(out,16777619)}return out>>>0};
+const words=value=>value.split('-').filter(Boolean).filter(word=>!/^[a-f0-9]{16,64}$/.test(word)).slice(0,5).join(' ').toUpperCase().slice(0,54)||'DNEVNI PREGLED';
+const svg=token=>{const n=hash(token),hue=n%360,accent=(hue+42)%360,label=words(token);return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc"><title id="title">${label}</title><desc id="desc">Izvorna GNK ASG urednička ilustracija.</desc><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="hsl(${hue} 58% 15%)"/><stop offset="1" stop-color="#050b16"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#f2cf72"/><stop offset="1" stop-color="hsl(${accent} 72% 62%)"/></linearGradient></defs><rect width="1200" height="630" fill="url(#bg)"/><circle cx="1030" cy="96" r="260" fill="none" stroke="url(#gold)" stroke-width="2" opacity=".32"/><circle cx="1030" cy="96" r="180" fill="none" stroke="url(#gold)" stroke-width="12" opacity=".12"/><path d="M0 510 C240 410 390 585 640 470 S1010 390 1200 455 V630 H0Z" fill="url(#gold)" opacity=".12"/><rect x="76" y="74" width="82" height="6" rx="3" fill="#e7be59"/><text x="76" y="128" fill="#f2cf72" font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="700" letter-spacing="5">GNK ASG NEWSROOM</text><text x="76" y="286" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="58" font-weight="800"><tspan x="76" dy="0">${label.slice(0,30)}</tspan><tspan x="76" dy="72">${label.slice(30)}</tspan></text><text x="76" y="548" fill="#d7deea" font-family="Arial,Helvetica,sans-serif" font-size="25">BUSINESS · TECHNOLOGY · DIGITAL ASSETS · SPORT</text><text x="1124" y="570" text-anchor="end" fill="#f2cf72" font-family="Arial,Helvetica,sans-serif" font-size="20">gnk-asg.hr</text></svg>`};
+export function serveDynamicEditorialImage(request){
+ if(!['GET','HEAD'].includes(request.method))return null;
+ const match=pathOf(request).match(ROUTE);
+ if(!match)return null;
+ const body=request.method==='HEAD'?null:svg(match[1]);
+ return new Response(body,{status:200,headers:{'content-type':'image/svg+xml; charset=utf-8','cache-control':'public, max-age=31536000, immutable','content-security-policy':"default-src 'none'; style-src 'unsafe-inline'; sandbox",'x-content-type-options':'nosniff','x-gnk-editorial-image':VERSION}});
+}

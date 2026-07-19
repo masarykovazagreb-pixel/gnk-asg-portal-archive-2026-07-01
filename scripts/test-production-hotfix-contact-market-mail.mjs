@@ -14,7 +14,7 @@ for(const marker of [
 ]) assert.ok(entry.includes(marker),`entrypoint missing ${marker}`);
 
 for(const marker of [
-  "GNK_ASG_CONTACT_RESILIENT_V1_20260718_D1_KV_FALLBACK",
+  "GNK_ASG_CONTACT_RESILIENT_V2_20260719_CANONICAL_PORTAL_ROUTE",
   "contact:fallback:case:",
   "contact:fallback:idempotency:",
   "storage:'kv-fallback'",
@@ -23,13 +23,16 @@ for(const marker of [
 ]) assert.ok(contact.includes(marker),`contact resilience missing ${marker}`);
 
 for(const marker of [
-  "V4_20260718_INDEPENDENT_PROVIDER",
+  "V5_20260719_KEYED_PRIMARY_COINBASE_FALLBACK",
   "simplePriceLive",
   "marketsLive",
   "coinPaprikaLive",
   "coinPaprikaTicker",
   "PAPRIKA_IDS",
   "coinpaprika-tickers",
+  "coinbaseLive",
+  "coinbase-spot-static-fx",
+  "COINGECKO_DEMO_API_KEY",
   "stale:age==null||age>3600",
   "x-gnk-market-upstream"
 ]) assert.ok(market.includes(marker),`market hotfix missing ${marker}`);

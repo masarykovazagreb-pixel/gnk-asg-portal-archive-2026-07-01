@@ -2,8 +2,10 @@ import {handleContactStudio} from './contact-studio-mail-v1.js';
 import {sendBrandedEmail} from './outbound-mail-transport-v1.js';
 import {generateCaseId} from './contact-case-center-v1.js';
 
-export const VERSION='GNK_ASG_CONTACT_RESILIENT_V1_20260718_D1_KV_FALLBACK';
+export const VERSION='GNK_ASG_CONTACT_RESILIENT_V2_20260719_CANONICAL_PORTAL_ROUTE';
 const PATH='/api/contact-submit';
+const CANONICAL_PATH='/api/portal-contact-submit';
+const PATHS=new Set([PATH,CANONICAL_PATH]);
 const INTERNAL='rht@gmx.com';
 const clean=(value,max=12000)=>String(value??'').replace(/\u0000/g,'').trim().slice(0,max);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -39,8 +41,8 @@ async function fallbackRecord(request,env){
 
 export async function handleResilientContact(request,env,ctx,app){
  const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
- if(path!==PATH)return null;
- if(request.method==='GET')return json({ok:true,ready:Boolean(env?.GNK_ASG_D1||storeOf(env)),endpoint:PATH,storage:{d1:Boolean(env?.GNK_ASG_D1),kv:Boolean(storeOf(env)),fallback:true},mail:Boolean(env?.EMAIL?.send),transport:'cloudflare-email',version:VERSION});
+ if(!PATHS.has(path))return null;
+ if(request.method==='GET')return json({ok:true,ready:Boolean(env?.GNK_ASG_D1||storeOf(env)),endpoint:path,canonicalEndpoint:CANONICAL_PATH,legacyEndpoint:PATH,storage:{d1:Boolean(env?.GNK_ASG_D1),kv:Boolean(storeOf(env)),fallback:true},mail:Boolean(env?.EMAIL?.send),transport:'cloudflare-email',version:VERSION});
  const retry=request.method==='POST'?request.clone():null;
  const response=await handleContactStudio(request,env,ctx,app);
  if(!retry||response.status!==503)return response;

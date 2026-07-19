@@ -3,10 +3,11 @@ import {servePublicEditorialAsset,VERSION as EDITORIAL_ASSET_VERSION} from './pu
 import {servePublicMarketData,VERSION as MARKET_DATA_VERSION} from './public-market-data-v1.js';
 import {handleDigitalWorkforceSuite,VERSION as DIGITAL_WORKFORCE_SUITE_VERSION} from './digital-workforce-suite-v1.js';
 import {handleResilientContact,VERSION as CONTACT_RESILIENCE_VERSION} from './contact-submit-resilient-v1.js';
+import {serveDynamicEditorialImage,VERSION as DYNAMIC_EDITORIAL_IMAGE_VERSION} from './dynamic-editorial-image-v1.js';
 
 export const PREVIOUS_PUBLIC_EDITORIAL_VERSION='GNK_ASG_UNIFIED_AUTH_V37_NEWS_SOURCE_LINKS';
 export const ENTRYPOINT='src/index-unified-auth-v23.js';
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS_MARKET_ORIGIN_HOTFIX_CONTACT_MAIL_${CONTACT_RESILIENCE_VERSION}_${DIGITAL_WORKFORCE_SUITE_VERSION}_${MARKET_DATA_VERSION}_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS_MARKET_ORIGIN_HOTFIX_CONTACT_MAIL_CANONICAL_FEED_DYNAMIC_IMAGES_${DYNAMIC_EDITORIAL_IMAGE_VERSION}_${CONTACT_RESILIENCE_VERSION}_${DIGITAL_WORKFORCE_SUITE_VERSION}_${MARKET_DATA_VERSION}_${EDITORIAL_ASSET_VERSION}_${BASE_VERSION}`;
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const SHARE_ROUTE=/^\/podijeli\/vijest\/([a-z0-9]{8,64})$/i;
 
@@ -45,6 +46,26 @@ async function serveCurrentNewsAsset(request,env){
  }catch{return null}
 }
 
+
+const CANONICAL_NEWS_FEED='/api/public-news-feed';
+function newsItems(data){return Array.isArray(data)?data:(data?.items||data?.posts||data?.news||[])}
+async function loadCanonicalNews(env){
+ let data=null;
+ try{
+  const response=await fetch('https://gnk-asg.hr/data/news.json',{headers:{accept:'application/json','cache-control':'no-cache'},cf:{cacheTtl:60,cacheEverything:false}});
+  if(response.ok)data=await response.json();
+ }catch{}
+ let items=newsItems(data);
+ if(!items.length){const fallback=await fetchCurrentNews(env,'GET');if(fallback)try{items=newsItems(await fallback.json())}catch{}}
+ return items.filter(item=>item&&item.title&&(item.url||item.link||item.sourceUrl||item.href)).sort((a,b)=>Date.parse(b.published_at||b.publishedAt||b.date||0)-Date.parse(a.published_at||a.publishedAt||a.date||0)).slice(0,100);
+}
+async function serveCanonicalNewsFeed(request,env){
+ if(!['GET','HEAD'].includes(request.method)||pathOf(request)!==CANONICAL_NEWS_FEED)return null;
+ const items=await loadCanonicalNews(env);
+ const headers={'content-type':'application/json; charset=utf-8','cache-control':'public, max-age=60, stale-while-revalidate=300','x-content-type-options':'nosniff','x-gnk-news-source':'canonical-normalized-feed-v1','x-gnk-news-visible-limit':'100','x-gnk-route-owner':VERSION};
+ return new Response(request.method==='HEAD'?null:JSON.stringify(items),{status:items.length?200:503,headers});
+}
+
 async function serveNewsShareRedirect(request,env){
  if(!['GET','HEAD'].includes(request.method))return null;
  const match=pathOf(request).match(SHARE_ROUTE);
@@ -69,6 +90,10 @@ export default{
   if(contact)return stampRelease(contact,env);
   const market=await servePublicMarketData(request,env);
   if(market)return stampRelease(market,env);
+  const editorialImage=serveDynamicEditorialImage(request);
+  if(editorialImage)return stampRelease(editorialImage,env);
+  const canonicalNews=await serveCanonicalNewsFeed(request,env);
+  if(canonicalNews)return stampRelease(canonicalNews,env);
   const newsShare=await serveNewsShareRedirect(request,env);
   if(newsShare)return stampRelease(newsShare,env);
   const currentNews=await serveCurrentNewsAsset(request,env);

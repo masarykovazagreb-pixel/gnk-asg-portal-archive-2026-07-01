@@ -20,7 +20,7 @@ for(const page of [hr,en]){
  assert.match(page,/contact-form-v2\.js/);
  assert.match(page,/logo-gnk-asg-canonical\.svg/);
 }
-assert.match(client,/fetch\('\/api\/contact-submit'/);
+assert.match(client,/fetch\('\/api\/portal-contact-submit'/);
 assert.match(client,/content-type':'application\/json/);
 assert.match(client,/credentials:'same-origin'/);
 assert.match(client,/deliveryOk/);
@@ -112,4 +112,4 @@ assert.match(worker,/handleContactStudio\(request,env,ctx,app\)/);
 assert.doesNotMatch(worker,/CLOUDFLARE_API_TOKEN|GNK_ASG_OPERATOR_TOKEN/);
 assert.match(signature,/logo-gnk-asg-email\.png/);
 assert.match(signature,/canonical-png-64x66/);
-console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','acknowledgement'],rateLimit:{requests:5,windowSeconds:900,store:'existing KV',failClosed:true},origin:{allowed:['https://gnk-asg.hr','https://www.gnk-asg.hr'],failClosed:true},bodyLimit:{jsonBytes:32000},storageBeforeMail:true,publicDeliveryDetailsRedacted:true,attachments:{count:3,perFileBytes:3200000,totalBytes:6400000,pdfOnly:true},studioAuth:{probe:'/api/operator-auth-check',requiresAuthenticatedTrue:true,failClosedOn:['cross-origin','401','403','404','5xx','exception','malformed-json']},studioDelivery:{completeStatus:200,partialStatus:207,partialOk:false,failuresExposed:true,transportErrorsRedacted:true},inlineLogo:true,mailSent:false},null,2));
+console.log(JSON.stringify({ok:true,forms:['hr','en'],endpoint:'/api/portal-contact-submit',payloads:['json','multipart'],storage:'D1',mailTransport:'Cloudflare EmailMessage',mail:['internal','acknowledgement'],rateLimit:{requests:5,windowSeconds:900,store:'existing KV',failClosed:true},origin:{allowed:['https://gnk-asg.hr','https://www.gnk-asg.hr'],failClosed:true},bodyLimit:{jsonBytes:32000},storageBeforeMail:true,publicDeliveryDetailsRedacted:true,attachments:{count:3,perFileBytes:3200000,totalBytes:6400000,pdfOnly:true},studioAuth:{probe:'/api/operator-auth-check',requiresAuthenticatedTrue:true,failClosedOn:['cross-origin','401','403','404','5xx','exception','malformed-json']},studioDelivery:{completeStatus:200,partialStatus:207,partialOk:false,failuresExposed:true,transportErrorsRedacted:true},inlineLogo:true,mailSent:false},null,2));
