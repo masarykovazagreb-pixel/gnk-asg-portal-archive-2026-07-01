@@ -23,7 +23,7 @@ for(const marker of [
 ]) assert.ok(contact.includes(marker),`contact resilience missing ${marker}`);
 
 for(const marker of [
-  "V4_20260718_INDEPENDENT_PROVIDER",
+  "V5_20260719_KEYED_PRIMARY_COINBASE_FALLBACK",
   "simplePriceLive",
   "marketsLive",
   "coinPaprikaLive",
