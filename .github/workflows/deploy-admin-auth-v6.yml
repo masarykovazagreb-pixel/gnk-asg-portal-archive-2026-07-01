@@ -127,9 +127,9 @@ jobs:
           grep -Fq 'index-editorial-order-v1.js?v=20260715-editorial-v6-latest-first' workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
           grep -Fq 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova' apps/portal/objave/index.html
           grep -Fq 'AI ne smije pisati konačnu odluku' apps/portal/komentari/index.html
-          grep -Fq 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V9_20260717_UNTRUSTED_SUBJECT_DATA' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V10_20260718_PRE_SEND_DEDUPE' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'aiMessageText' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
-          grep -Fq "import {EMAIL_LOGO_CID,VERSION as BRAND_MIME_VERSION} from './email-brand-mime-v1.js'" workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
+          grep -Fq "import {EMAIL_LOGO_CID,loadEmailLogo,VERSION as BRAND_MIME_VERSION} from './email-brand-mime-v1.js'" workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'signatureData(profile,`cid:${EMAIL_LOGO_CID}`)' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'buildAutoreplyRawEmail(' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fqi 'multipart/related' workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js

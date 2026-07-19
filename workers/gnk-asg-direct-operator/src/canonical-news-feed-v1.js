@@ -33,11 +33,11 @@ export function normalizeCanonicalNewsItems(data,limit=100){
  const result=[];
  const maximum=Math.max(0,Number.isFinite(Number(limit))?Math.floor(Number(limit)):100);
  for(const item of sorted){
+  if(result.length>=maximum)break;
   const key=normalizeNewsUrl(newsItemSourceUrl(item));
   if(!key||seen.has(key))continue;
   seen.add(key);
   result.push(item);
-  if(result.length>=maximum)break;
  }
  return result;
 }
