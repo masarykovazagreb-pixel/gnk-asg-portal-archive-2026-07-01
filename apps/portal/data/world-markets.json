@@ -1,0 +1,21 @@
+{
+  "updated_at": "2026-07-19T00:00:00.000000+00:00",
+  "source": "Static fallback seed",
+  "status": "ok",
+  "indices": [
+    {"symbol": "^spx", "name": "S&P 500", "country": "US", "price": 5460.5, "change_pct": 0.0},
+    {"symbol": "^dji", "name": "Dow Jones Industrial", "country": "US", "price": 39150.3, "change_pct": 0.0},
+    {"symbol": "^ndq", "name": "Nasdaq Composite", "country": "US", "price": 17600.2, "change_pct": 0.0},
+    {"symbol": "^dax", "name": "DAX", "country": "DE", "price": 18400.7, "change_pct": 0.0},
+    {"symbol": "^cac", "name": "CAC 40", "country": "FR", "price": 7900.1, "change_pct": 0.0},
+    {"symbol": "^ftse", "name": "FTSE 100", "country": "GB", "price": 8150.9, "change_pct": 0.0},
+    {"symbol": "^n225", "name": "Nikkei 225", "country": "JP", "price": 39500.4, "change_pct": 0.0},
+    {"symbol": "^hsi", "name": "Hang Seng", "country": "HK", "price": 17800.6, "change_pct": 0.0}
+  ],
+  "commodities": [
+    {"symbol": "xauusd", "name": "Zlato (Gold)", "price": 2380.5, "change_pct": 0.0},
+    {"symbol": "xagusd", "name": "Srebro (Silver)", "price": 28.4, "change_pct": 0.0},
+    {"symbol": "cl.f", "name": "Sirova nafta (WTI Crude)", "price": 79.2, "change_pct": 0.0},
+    {"symbol": "ng.f", "name": "Prirodni plin (Natural Gas)", "price": 2.6, "change_pct": 0.0}
+  ]
+}
