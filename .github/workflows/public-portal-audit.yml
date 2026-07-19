@@ -117,6 +117,9 @@ jobs:
             workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v22.js \
             workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js \
+            workers/gnk-asg-direct-operator/src/dynamic-editorial-image-v1.js \
+            workers/gnk-asg-direct-operator/src/public-market-data-v1.js \
+            workers/gnk-asg-ai-newsroom-writer/src/index.js \
             workers/gnk-asg-direct-operator/src/digital-workforce-api-v1.js \
             workers/gnk-asg-operator-center/src/index.js \
             workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js
@@ -183,7 +186,9 @@ jobs:
         run: node scripts/test-autoreply-all-addresses.mjs
 
       - name: News queue contract
-        run: node scripts/test-news-queue-guardrails.mjs
+        run: |
+          node scripts/test-news-queue-guardrails.mjs
+          node scripts/test-news-publication-seo-contract.mjs
 
       - name: SEO entity and sitemap integrity
         run: node scripts/audit-seo-entity-integrity-v1.mjs
