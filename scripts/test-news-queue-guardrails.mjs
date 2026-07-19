@@ -42,5 +42,9 @@ assert.match(source,/x-content-type-options':'nosniff'/);
 assert.match(source,/function scheduledEnabled\(value\)\{return \/\^\(1\|true\|yes\|on\)\$\/i\.test/);
 assert.match(source,/scheduled_publication_disabled/);
 assert.doesNotMatch(source,/!\['0','false','no','off','disabled'\]\.includes/);
+assert.match(source,/PUBLICATION_BATCH_LIMIT=13/);
+assert.match(source,/completeDailyBatch/);
+assert.match(source,/invalid_daily_batch_contract/);
+assert.match(source,/members\.length!==13/);
 
 console.log(JSON.stringify({ok:true,cors:'public-only',dedupe:'canonical-source-url',scheduler:'strict-opt-in',trackingRemoved:['utm_*','fbclid','gclid','msclkid']},null,2));
