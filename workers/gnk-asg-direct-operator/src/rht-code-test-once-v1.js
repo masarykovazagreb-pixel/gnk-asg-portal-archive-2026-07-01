@@ -3,7 +3,7 @@ export const VERSION='GNK_ASG_RHT_CODE_TEST_ONCE_V1_20260629';
 const PATH='/api/rht-code-test-once';
 const ACCESS_KEY='rht-code-test-20260629-8f5a2c71d3494e40';
 const STATE_KEY='controlled-media-test:20260629:rht-code-subject-v1';
-const RECIPIENT='rht@gmx.com';
+const recipient=env=>String(env?.CONTACT_INTERNAL_RECIPIENTS||'').trim()||'rht@gmx.com';
 const FROM='media@gnk-asg.hr';
 const INVITATION_CODE='GNK-MEDIA-20260629-GB-TEST-002';
 const PERSONAL_CODE='CODETEST29';
@@ -50,11 +50,11 @@ export async function handleRhtCodeTestOnce(request,env){
   if(previous){try{const parsed=JSON.parse(previous);if(parsed.status==='sent')return json({ok:true,alreadySent:true,result:parsed});}catch{}}
   const pdf=await loadPdf(request,env);
   if(!pdf)return json({ok:false,error:'verified_12_page_pdf_missing_or_mismatch',requiredFilename:PDF_FILENAME,requiredSha256:PDF_SHA256},409);
-  const started={status:'sending',to:RECIPIENT,subject:'CODE',startedAt:new Date().toISOString(),version:VERSION,pdfFilename:pdf.filename,pdfSha256:pdf.sha256,invitationCode:INVITATION_CODE,personalAccessCode:PERSONAL_CODE};
+  const started={status:'sending',to:recipient(env),subject:'CODE',startedAt:new Date().toISOString(),version:VERSION,pdfFilename:pdf.filename,pdfSha256:pdf.sha256,invitationCode:INVITATION_CODE,personalAccessCode:PERSONAL_CODE};
   if(kv)await kv.put(STATE_KEY,JSON.stringify(started));
   try{
     const result=await env.EMAIL.send({
-      to:RECIPIENT,
+      to:recipient(env),
       from:{email:FROM,name:'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center'},
       replyTo:FROM,
       subject:'CODE',

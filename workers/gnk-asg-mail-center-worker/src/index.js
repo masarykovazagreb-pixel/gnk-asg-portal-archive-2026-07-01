@@ -2,8 +2,9 @@ import { EmailMessage } from 'cloudflare:email';
 import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
 
 const VERSION = `GNK_ASG_MAIL_CENTER_AI_V3_20260703_${AI_REPLY_VERSION}`;
-const INTERNAL_COPY = ['beckuphome@gmail.com', 'rht@gmx.com'];
-const MANDATORY_BCC = ['beckuphome@gmail.com', 'rht@gmx.com'];
+const internalRecipient = env => String(env?.CONTACT_INTERNAL_RECIPIENTS || '').trim() || 'rht@gmx.com';
+const internalCopy = env => ['beckuphome@gmail.com', internalRecipient(env)];
+const mandatoryBcc = env => ['beckuphome@gmail.com', internalRecipient(env)];
 const MEDIA_EMAILS = new Set(['media@gnk-asg.hr', 'press@gnk-asg.hr']);
 const DEFAULT_FROM = 'assistant@gnk-asg.hr';
 const MAX_LOG_ITEMS = 250;
@@ -275,7 +276,7 @@ async function handleInbound(message, env) {
   await prependLog(env, 'mail:inbox', base);
 
   if (typeof message?.forward === 'function') {
-    for (const copyAddress of INTERNAL_COPY) {
+    for (const copyAddress of internalCopy(env)) {
       try {
         await message.forward(copyAddress);
         await prependLog(env, 'mail:sent', { ...base, status: 'incoming_forward_sent', copyTo: copyAddress });
@@ -303,13 +304,13 @@ async function handleInbound(message, env) {
   const replySubject = /^re:/i.test(subject) ? subject : `Re: ${subject}`;
   const text = mediaProfile ? mediaText(language, id, subject) : genericText(language, id, subject);
   const html = htmlBody(text, mediaProfile);
-  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: MANDATORY_BCC.join(', ') };
+  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: mandatoryBcc(env).join(', ') };
   await prependLog(env, 'mail:outbox', outbox);
 
   try {
     const result = await env.EMAIL.send({
       to: sender,
-      bcc: MANDATORY_BCC.join(', '),
+      bcc: mandatoryBcc(env).join(', '),
       from: { email: fromAddress, name: fromName },
       replyTo: fromAddress,
       subject: replySubject,
@@ -370,7 +371,7 @@ export default {
     const path = url.pathname.replace(/\/+$/, '') || '/';
     if (path === '/api/admin-mail-send' && request.method === 'POST') return sendMail(request, env);
     if (path === '/api/admin-mail-send') return json({ ok: true, version: VERSION, endpoint: '/api/admin-mail-send', method: 'POST', pdfAttachments: true, emailBinding: Boolean(env.EMAIL) });
-    if (path === '/api/mail-center/status') return json({ ok: true, version: VERSION, service: 'GNK ASG Mail Center', emailBinding: Boolean(env.EMAIL), aiBinding: Boolean(env.AI), autoReply: true, mediaProfile: true, mediaDefaultLanguage: 'en', languages: ['hr', 'en', 'de', 'it'], mandatoryBcc: INTERNAL_COPY, inboxKey: 'mail:inbox', sentKey: 'mail:sent', outboxKey: 'mail:outbox', time: new Date().toISOString() });
+    if (path === '/api/mail-center/status') return json({ ok: true, version: VERSION, service: 'GNK ASG Mail Center', emailBinding: Boolean(env.EMAIL), aiBinding: Boolean(env.AI), autoReply: true, mediaProfile: true, mediaDefaultLanguage: 'en', languages: ['hr', 'en', 'de', 'it'], mandatoryBcc: internalCopy(env), inboxKey: 'mail:inbox', sentKey: 'mail:sent', outboxKey: 'mail:outbox', time: new Date().toISOString() });
     if (path === '/api/mail-center/auto-reply-preview') return preview(url, env);
     if (path === '/api/mail-center/case-lookup' && request.method === 'GET') return caseLookup(url, env);
     if (path === '/api/mail-center/centers') return json({ ok: true, centers: CENTERS });

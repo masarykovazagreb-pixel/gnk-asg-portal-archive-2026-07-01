@@ -2,7 +2,7 @@ import app from './index.js';
 import {enforceRequiredSignature,VERSION as EMAIL_SIGNATURE_VERSION} from '../../gnk-asg-direct-operator/src/email-signature-contract-v1.js';
 
 export const VERSION='GNK_ASG_CONTACT_AI_MAIL_WRAPPER_V6_20260627';
-const ARCHIVE_ADDRESS='rht@gmx.com';
+const archiveAddress=env=>String(env?.CONTACT_INTERNAL_RECIPIENTS||'').trim()||'rht@gmx.com';
 const DEFAULT_MODEL='@cf/meta/llama-3.1-8b-instruct-fast';
 const CENTERS=[
   'Budapest','New York','London','Dubai','Singapore',
@@ -23,10 +23,11 @@ const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({
 const addressList=value=>(Array.isArray(value)?value:[value]).flatMap(item=>String(item||'').split(/[;,\n]+/)).map(item=>item.trim()).filter(Boolean);
 const unique=value=>[...new Set(value.map(item=>String(item).toLowerCase()))];
 
-function addArchiveBcc(payload){
+function addArchiveBcc(payload,env){
+  const archive=archiveAddress(env);
   const all=unique([...addressList(payload.to),...addressList(payload.cc),...addressList(payload.bcc)]);
-  if(all.includes(ARCHIVE_ADDRESS))return payload;
-  return{...payload,bcc:[...addressList(payload.bcc),ARCHIVE_ADDRESS]};
+  if(all.includes(archive))return payload;
+  return{...payload,bcc:[...addressList(payload.bcc),archive]};
 }
 function randomCenter(){
   const values=new Uint32Array(1);
@@ -166,7 +167,7 @@ function wrappedEnv(env){
           const acknowledgement=await aiAcknowledgement(env,context,randomCenter());
           outgoing={...outgoing,subject:acknowledgement.subject,text:acknowledgement.text,html:paragraphs(acknowledgement.text)};
         }
-        outgoing=addArchiveBcc(outgoing);
+        outgoing=addArchiveBcc(outgoing,env);
         outgoing=enforceRequiredSignature(outgoing);
         return binding.send.call(binding,outgoing);
       }
