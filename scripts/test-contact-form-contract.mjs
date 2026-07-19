@@ -20,7 +20,7 @@ for(const page of [hr,en]){
  assert.match(page,/contact-form-v2\.js/);
  assert.match(page,/logo-gnk-asg-canonical\.svg/);
 }
-assert.match(client,/fetch\('\/api\/contact-submit'/);
+assert.match(client,/fetch\('\/api\/portal-contact-submit'/);
 assert.match(client,/content-type':'application\/json/);
 assert.match(client,/credentials:'same-origin'/);
 assert.match(client,/deliveryOk/);
