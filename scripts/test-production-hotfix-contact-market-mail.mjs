@@ -27,6 +27,8 @@ for(const marker of [
   "simplePriceLive",
   "marketsLive",
   "coinPaprikaLive",
+  "coinPaprikaTicker",
+  "PAPRIKA_IDS",
   "coinpaprika-tickers",
   "stale:age==null||age>3600",
   "x-gnk-market-upstream"
@@ -40,6 +42,8 @@ for(const marker of [
   "logo?'cid-inline':'remote-png'"
 ]) assert.ok(autoreply.includes(marker),`autoreply logo fallback missing ${marker}`);
 
+assert.doesNotMatch(market,/api\.coinpaprika\.com\/v1\/tickers\?quotes=/,'market hotfix must not load the global ticker catalog');
+assert.match(market,/api\.coinpaprika\.com\/v1\/tickers\/\$\{paprikaId\}/,'market hotfix must use bounded individual tickers');
 assert.ok(verify.includes("x-gnk-market-source: live"),'deploy verification must reject static market fallback');
 assert.ok(verify.includes("coinpaprika-tickers"),'deploy verification must allow independent provider');
 assert.ok(verify.includes("x-gnk-contact-resilience"),'deploy verification must require resilient contact route');
