@@ -23,7 +23,7 @@ const newFiles=[
 ];
 for(const file of [...legacyFiles,...newFiles]){assert.ok(fs.existsSync(file),`missing ${file}`);const html=fs.readFileSync(file,'utf8');assert.match(html,/logo-gnk-asg-canonical\.svg/);assert.match(html,/editorial-content-v2\.css|contact-form-v2\.js|index-editorial-order-v1\.js/)}
 for(const file of newFiles){const html=fs.readFileSync(file,'utf8');assert.match(html,/class="article-cover"/);assert.match(html,/property="og:image"/)}
-for(const marker of ['Source','Izvor','/api/public-news?limit=100','/data/news.json','gnk-news-100','Objave, vijesti, analize i komentari'])assert.match(editorial,new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+for(const marker of ['Source','Izvor','/api/public-news?limit=100','/api/public-news-feed','gnk-news-100','Objave, vijesti, analize i komentari'])assert.match(editorial,new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
 assert.match(newsroom,/__GNK_NEWSROOM_LIVE_V7__/);
 assert.match(newsroom,/limit=100/);
 for(const route of [
