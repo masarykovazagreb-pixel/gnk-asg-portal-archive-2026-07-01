@@ -95,7 +95,7 @@ assert.match(editorial,/__GNK_INDEX_EDITORIAL_ORDER_V6__/);
 assert.match(editorial,/Objave, vijesti, analize i komentari/);
 assert.match(editorial,/Publications, news, analyses and commentary/);
 assert.match(editorial,/\/api\/public-news\?limit=100/);
-assert.match(editorial,/\/data\/news\.json/);
+assert.match(editorial,/\/api\/public-news-feed/);
 assert.match(editorial,/gnk-news-100/);
 assert.match(editorial,/transparentno-upravljanje-kao-operativni-standard/);
 
@@ -112,6 +112,8 @@ assert.match(editorialWrapper,/GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURC
 assert.match(editorialWrapper,/index-unified-auth-v22\.js/);
 assert.match(editorialWrapper,/servePublicEditorialAsset/);
 assert.match(editorialWrapper,/serveCurrentNewsAsset/);
+assert.match(editorialWrapper,/serveCanonicalNewsFeed/);
+assert.match(editorialWrapper,/serveDynamicEditorialImage/);
 assert.match(editorialWrapper,/serveNewsShareRedirect/);
 assert.match(editorialRouter,/GNK_PUBLIC_EDITORIAL_ASSETS_V2_20260715/);
 assert.match(editorialRouter,/x-gnk-editorial-request-path/);
