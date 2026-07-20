@@ -63,6 +63,94 @@ def iso_date(value: str) -> str:
             return datetime.now(timezone.utc).isoformat()
 
 
+INDEXES = {
+    "sp500": {"symbol": "^spx", "label": "S&P 500", "region": "SAD"},
+    "nasdaq": {"symbol": "^ndq", "label": "Nasdaq Composite", "region": "SAD"},
+    "dax": {"symbol": "^dax", "label": "DAX", "region": "Njemačka"},
+    "ftse": {"symbol": "^ftse", "label": "FTSE 100", "region": "UK"},
+    "nikkei": {"symbol": "^n225", "label": "Nikkei 225", "region": "Japan"},
+    "cac40": {"symbol": "^cac", "label": "CAC 40", "region": "Francuska"},
+}
+
+
+def refresh_market_indices(now: str) -> int:
+    """Refresh market_indices.json + fast_market_status.json via Stooq CSV.
+
+    Uses Stooq instead of Yahoo Finance (the prior apps/legacy-portal script's
+    source), which is unauthenticated and reliably reachable from GitHub
+    Actions runners -- the same source already proven working in the
+    Cloudflare Worker's /api/public-world-markets endpoint.
+    """
+    codes = ",".join(meta["symbol"] for meta in INDEXES.values())
+    url = f"https://stooq.com/q/l/?s={codes}&f=sd2t2ohlc&h&e=csv"
+    indices: list[dict] = []
+    errors: list[dict] = []
+    try:
+        raw = get(url).decode("utf-8", errors="replace")
+        lines = [line for line in raw.strip().splitlines() if line]
+        rows = {}
+        for line in lines[1:]:
+            cols = line.split(",")
+            if cols:
+                rows[cols[0].strip().lower()] = cols
+        for key, meta in INDEXES.items():
+            cols = rows.get(meta["symbol"].lower())
+            if not cols or len(cols) < 7:
+                errors.append({"id": key, "error": "missing_row"})
+                continue
+            try:
+                open_price = float(cols[3])
+                close_price = float(cols[6])
+            except (ValueError, IndexError):
+                errors.append({"id": key, "error": "invalid_values"})
+                continue
+            if open_price <= 0:
+                errors.append({"id": key, "error": "invalid_open"})
+                continue
+            change_percent = round(((close_price / open_price) - 1) * 100, 2)
+            indices.append({
+                "id": key,
+                "symbol": meta["symbol"],
+                "label": meta["label"],
+                "region": meta["region"],
+                "current": close_price,
+                "previous_close": open_price,
+                "change_percent": change_percent,
+                "as_of": cols[1] if len(cols) > 1 else None,
+            })
+    except Exception as exc:
+        errors.append({"id": "all", "error": str(exc)[:150]})
+
+    (DATA / "market_indices.json").write_text(
+        json.dumps(
+            {
+                "updated_at": now,
+                "cadence": "scheduled every fifteen minutes",
+                "source": "Stooq public market quote feed",
+                "indices": indices,
+                "errors": errors,
+                "notice": "Informativni prikaz posljednjih dostupnih vrijednosti; podatci mogu biti odgođeni.",
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    status = {
+        "updated_at": now,
+        "cadence": "scheduled every fifteen minutes",
+        "status": "ok" if indices and not errors else ("partial" if indices else "degraded"),
+        "indices": len(indices),
+        "errors": errors,
+    }
+    (DATA / "fast_market_status.json").write_text(
+        json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return len(indices)
+
+
 def refresh_market(now: str) -> None:
     url = (
         "https://api.coingecko.com/api/v3/simple/price"
@@ -167,6 +255,7 @@ def main() -> int:
     DATA.mkdir(parents=True, exist_ok=True)
     now = datetime.now(timezone.utc).isoformat()
     refresh_market(now)
+    refresh_market_indices(now)
     refresh_news()
     market = json.loads((DATA / "market.json").read_text(encoding="utf-8"))
     news = json.loads((DATA / "news.json").read_text(encoding="utf-8"))
