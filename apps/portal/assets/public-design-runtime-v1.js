@@ -16,7 +16,7 @@ function contrast(a,b){const x=lum(a),y=lum(b),hi=Math.max(x,y),lo=Math.min(x,y)
 function repairContrast(root=document){const selector='p,h1,h2,h3,h4,h5,h6,li,label,small,strong,span,a,button,td,th,input,select,textarea';root.querySelectorAll?.(selector).forEach(el=>{if(el.closest('#gnk-unified-header')||el.closest('svg')||el.dataset.gnkContrastChecked==='1')return;el.dataset.gnkContrastChecked='1';const fg=rgba(getComputedStyle(el).color),bg=bgFor(el);if(!fg)return;if(contrast(fg,bg)<3){el.classList.add(lum(bg)<.32?'gnk-contrast-dark':'gnk-contrast-light')}})}
 function loadMenu(){if(document.getElementById('gnk-unified-header')||document.querySelector('script[src*="public-compact-menu-v1.js"]'))return;const s=document.createElement('script');s.src='/assets/public-compact-menu-v1.js?v=20260713-unified-v4';s.defer=true;document.body.appendChild(s)}
 function apply(root=document){canonicalLogos(root);removeLegacyTicker(root);secureLinks(root);lazyImages(root);repairContrast(root)}
-apply();loadMenu();
-const observer=new MutationObserver(records=>{records.forEach(record=>record.addedNodes.forEach(node=>{if(node.nodeType===1)apply(node)}));loadMenu()});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),90000);
+apply();
+const observer=new MutationObserver(records=>{records.forEach(record=>record.addedNodes.forEach(node=>{if(node.nodeType===1)apply(node)}))});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),90000);
 document.documentElement.dataset.gnkPublicDesign='v2-unified';document.documentElement.dataset.gnkCanonicalLogo='logo-gnk-asg-canonical.svg';
 })();
