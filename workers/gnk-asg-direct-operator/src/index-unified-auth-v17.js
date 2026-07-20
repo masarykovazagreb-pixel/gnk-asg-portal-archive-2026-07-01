@@ -4,7 +4,7 @@ import {handleIncomingEmail,VERSION as MAIL_AUTOREPLY_VERSION} from './mail-iden
 import {handleEmailLogo,VERSION as EMAIL_LOGO_VERSION} from './email-logo-endpoint-v1.js';
 
 export const VERSION=`GNK_ASG_UNIFIED_AUTH_V62_20260713_SAFE_NEWS_ROUTES_${EMAIL_LOGO_VERSION}_${MAIL_AUTOREPLY_VERSION}_${NEWS_AUTO_PUBLICATION_VERSION}_${BASE_VERSION}`;
-const COMPACT_MENU_SCRIPT='/assets/public-compact-menu-v1.js?v=20260713-readable';
+const COMPACT_MENU_SCRIPT='/assets/public-compact-menu-v1.js?v=20260720-fix2';
 const COUNTDOWN_SCRIPT='/assets/the-code-countdown-v1.js?v=20260711-live';
 const MEDIA_QA_SCRIPT='/assets/media-registration-qa-v1.js?v=20260711-deadline-a11y';
 const NEWSROOM_LIVE_SCRIPT='/assets/newsroom-live-v1.js?v=20260713-v6';

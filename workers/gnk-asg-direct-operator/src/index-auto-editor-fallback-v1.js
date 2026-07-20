@@ -1,6 +1,6 @@
 import app from './index-logout-fallback-v1.js';
 
-const ADMIN_ASSETS='<link rel="stylesheet" href="/assets/private-admin-menu-v1.css?v=20260624-5"><link rel="stylesheet" href="/assets/admin-auth-controls-v1.css?v=20260624-5"><script defer src="/assets/private-admin-menu-v1.js?v=20260624-5"></script><script defer src="/assets/admin-auth-controls-v1.js?v=20260624-5"></script>';
+const ADMIN_ASSETS='<link rel="stylesheet" href="/assets/private-admin-menu-v1.css?v=20260624-5"><link rel="stylesheet" href="/assets/admin-auth-controls-v1.css?v=20260624-5"><script defer src="/assets/private-admin-menu-v1.js?v=20260720-fix2"></script><script defer src="/assets/admin-auth-controls-v1.js?v=20260624-5"></script>';
 
 function htmlResponse(response,html){
   const headers=new Headers(response.headers);

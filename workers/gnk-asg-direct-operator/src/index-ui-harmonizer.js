@@ -80,7 +80,7 @@ const PUBLIC_ASSETS =
   '<link rel="stylesheet" href="/assets/public-menu-centered-v7.css?v=20260624-menu-center-9">' +
   '<script defer src="/assets/brand/gnk-asg-global-layer.js?v=20260624-global-9"></script>' +
   '<script defer src="/assets/public-site-unified-v6.js?v=20260624-public-9"></script>' +
-  '<script defer src="/assets/public-menu-final-v9.js?v=20260624-menu-final-9"></script>' +
+  '<script defer src="/assets/public-menu-final-v9.js?v=20260720-fix2"></script>' +
   PUBLIC_LINK_GUARD;
 
 function isBackendPath(path) {
