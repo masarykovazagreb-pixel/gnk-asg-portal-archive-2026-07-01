@@ -18,7 +18,7 @@ for(const page of [hr,en]){
  assert.match(page,/name="consent"/);
  assert.match(page,/name="website"/);
  assert.match(page,/contact-form-v2\.js/);
- assert.match(page,/logo-gnk-asg-canonical\.svg/);
+ assert.match(page,/logo-gnk-asg\.svg/);
 }
 assert.match(client,/fetch\('\/api\/portal-contact-submit'/);
 assert.match(client,/content-type':'application\/json/);
@@ -40,7 +40,7 @@ assert.match(handler,/sendBrandedEmail/);
 assert.match(handler,/internalMail/);
 assert.match(handler,/autoReply/);
 assert.match(handler,/deliveryOk/);
-assert.match(handler,/CONTACT_INTERNAL='rht@gmx\.com'/);
+assert.match(handler,/CONTACT_INTERNAL=env=>String\(env\?\.CONTACT_INTERNAL_RECIPIENTS\|\|''\)\.trim\(\)\|\|'rht@gmx\.com'/);
 assert.match(handler,/attachments:parsed\.attachments/);
 assert.match(handler,/CONTACT_RATE_WINDOW_SECONDS=900/);
 assert.match(handler,/CONTACT_RATE_LIMIT=5/);
@@ -108,7 +108,7 @@ assert.match(transport,/Content-Location:/);
 assert.match(transport,/X-Attachment-Id:/);
 
 assert.match(worker,/handlesContactStudio\(path\)/);
-assert.match(worker,/handleContactStudio\(request,env,ctx,app\)/);
+assert.match(worker,/handleContactStudio\(request,withEmailStatusTracking\(env,'contact-form'\),ctx,app\)/);
 assert.doesNotMatch(worker,/CLOUDFLARE_API_TOKEN|GNK_ASG_OPERATOR_TOKEN/);
 assert.match(signature,/logo-gnk-asg-email\.png/);
 assert.match(signature,/canonical-png-64x66/);
