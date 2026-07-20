@@ -38,8 +38,6 @@ USER_AGENT = "GNK-ASG-NewsMonitor/2.0 (+https://gnk-asg.hr/)"
 SOURCES = [
     # Croatia / business
     ("hrvatska", "economy", "Poslovni dnevnik", "https://www.poslovni.hr/feed"),
-    ("hrvatska", "economy", "Lider", "https://lidermedia.hr/rss"),
-    ("hrvatska", "economy", "Hina", "https://www.hina.hr/rss"),
     ("hrvatska", "economy", "Google News HR Business", "https://news.google.com/rss/search?q=poslovanje+OR+ekonomija+OR+financije+Croatia&hl=hr&gl=HR&ceid=HR:hr"),
     ("hrvatska", "technology", "Google News HR Technology", "https://news.google.com/rss/search?q=tehnologija+OR+AI+OR+fintech+Croatia&hl=hr&gl=HR&ceid=HR:hr"),
 
