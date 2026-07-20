@@ -1,25 +1,58 @@
 {
-  "updated_at": "2026-07-20T11:22:39.765Z",
+  "updated_at": "2026-07-20T11:24:19+00:00",
   "news": {
+    "updated_at": "2026-07-20T11:24:19+00:00",
     "status": "ok",
-    "engine": "github_actions_rss_refresh_v4_official_and_technology_feeds",
-    "cadence": "every two hours plus manual",
+    "engine": "github_actions_rss_refresh_v4_retention_policy",
+    "cadence": "hourly at minute 17 UTC plus manual workflow_dispatch",
+    "source_success_policy": "publish_when_public_items_available_and_at_least_50_percent_sources_synced",
+    "source_success_threshold": 0.5,
+    "source_success_ratio": 0.938,
+    "source_sync_status": "partial_with_public_fallback",
+    "configured_sources": 32,
+    "successful_sources": 30,
+    "failed_sources": 2,
+    "storage_policy": "public_latest_100_archive_all_older_prune_oldest_1000_repeatedly_when_archive_exceeds_2000",
     "public_items": 100,
-    "archive_items": 1257,
-    "stale_safe": true,
+    "max_public_items": 100,
+    "archive_items": 1431,
+    "archive_prune_trigger": 2000,
+    "archive_delete_oldest_batch": 1000,
+    "archive_items_before_prune": 2431,
+    "archive_prune_batches": 1,
+    "discarded_archive_overflow_items": 1000,
+    "fetched_candidates": 1879,
+    "duplicates_or_blocked_removed": 705,
+    "request_timeout_seconds": 10,
+    "network_workers": 1,
+    "share_previews_ready": 0,
+    "by_group": {
+      "technology": 28,
+      "digital-assets": 32,
+      "international": 17,
+      "hrvatska": 21,
+      "srbija": 1,
+      "slovenija": 1
+    },
     "errors": [
       {
-        "source": "International Monetary Fund",
-        "error": "HTTP 403"
+        "source": "Lider",
+        "group": "hrvatska",
+        "error": "HTTP Error 404: Not Found"
       },
       {
-        "source": "OECD",
-        "error": "HTTP 403"
+        "source": "Hina",
+        "group": "hrvatska",
+        "error": "HTTP Error 403: Forbidden"
       }
     ],
-    "content_changed": true,
-    "updated_at": "2026-07-20T11:22:39.765Z",
-    "checked_at": "2026-07-20T11:22:39.765Z",
-    "last_attempt_at": "2026-07-20T11:22:39.765Z"
+    "preview_errors": [],
+    "checked_at": "2026-07-20T11:24:19+00:00",
+    "last_attempt_at": "2026-07-20T11:24:19+00:00",
+    "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
+    "stale_safe": true,
+    "last_successful_refresh_at": "2026-07-20T11:24:19+00:00",
+    "data_status": "fresh_or_reference_checked",
+    "runtime_seconds": 12.43
   }
 }
