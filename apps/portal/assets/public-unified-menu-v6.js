@@ -3,6 +3,7 @@
 if(window.__GNK_UNIFIED_MENU_V6__){document.getElementById('gnk-unified-header')?.style.setProperty('display','block','important');return}
 window.__GNK_UNIFIED_MENU_V6__=true;
 const boot=()=>{
+ if(document.querySelector('.dhq-top'))return;
  const path=location.pathname.replace(/\/+$/,'')||'/',english=document.documentElement.lang?.toLowerCase().startsWith('en')||path==='/en'||path.startsWith('/en/');
  const route=(hr,en)=>english?(en||hr):hr,logoPath='/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64';
  const groups=[
