@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gnk-asg-live-v55-menu-navigation-fix';
+const CACHE_NAME = 'gnk-asg-live-v56-sw-response-fix';
 const STATIC_ASSETS = [
   './', './index.html', './en/', './en/index.html', './sadrzaj/', './teme/', './teme/index.html', './tehnologija/',
   './nermin-sefic/', './nermin-sefic/index.html', './en/nermin-sefic/', './en/nermin-sefic/index.html',
@@ -49,8 +49,13 @@ self.addEventListener('fetch', event => {
   if (!sameOrigin) return;
   const path = new URL(event.request.url).pathname;
   const dynamicData = path.startsWith('/data/') || path === '/sw.js' || path.endsWith('/assets/status.js') || path.endsWith('/assets/app.js') || path.endsWith('/assets/portal-navigation.js') || path.endsWith('/assets/menu-fix.css');
+  const fallbackResponse = () => new Response('', { status: 504, statusText: 'Service worker fallback unavailable' });
   if (dynamicData) {
-    event.respondWith(fetch(event.request, { cache: 'no-store' }).catch(() => caches.match(event.request)));
+    event.respondWith(
+      fetch(event.request, { cache: 'no-store' })
+        .catch(() => caches.match(event.request))
+        .then(response => response || fallbackResponse())
+    );
     return;
   }
   event.respondWith(
@@ -61,5 +66,6 @@ self.addEventListener('fetch', event => {
       }
       return response;
     }).catch(() => caches.match(event.request))
+      .then(response => response || fallbackResponse())
   );
 });
