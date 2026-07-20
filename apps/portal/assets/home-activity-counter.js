@@ -1,5 +1,7 @@
 (function(){
   function isHome(){var p=location.pathname.replace(/\/+$/,'/');return p==='/'||p==='/index.html'||p==='/en/'||p==='/en/index.html';}
+  function purgeIfNotHome(){if(isHome())return false;var el=document.getElementById('readerCounter');if(el)el.remove();document.querySelectorAll('.reader-counter').forEach(function(n){n.remove();});return true;}
+  if(purgeIfNotHome()){new MutationObserver(purgeIfNotHome).observe(document.body,{childList:true,subtree:true});return;}
   function isEnglish(){return /\/en\/?$/.test(location.pathname)||/\/en\//.test(location.pathname)||(window.GNK_LANG&&window.GNK_LANG.get&&window.GNK_LANG.get()==='en');}
   function value(){var base=6792;var baseTime=Date.parse('2026-05-31T15:22:00+02:00');var now=Date.now();if(!baseTime||now<=baseTime)return base;var elapsed=now-baseTime;var hours=Math.floor(elapsed/3600000);var total=base;for(var i=1;i<=hours;i++){var d=new Date(baseTime+i*3600000);var h=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Zagreb',hour:'2-digit',hour12:false}).format(d));if(h>=0&&h<7)total+=(i%2===0?6:5);else if(h>=7&&h<9)total+=48;else if(h>=9&&h<14)total+=27;else if(h>=14&&h<17)total+=19;else if(h>=17&&h<19)total+=22;else if(h>=19&&h<23)total+=31;else total+=6;}return total+Math.floor(((elapsed%3600000)/3600000)*3);}
   function update(){var el=document.getElementById('readerCounterValue');if(!el)return;el.textContent=new Intl.NumberFormat(isEnglish()?'en-US':'hr-HR').format(value());}
