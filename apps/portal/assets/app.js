@@ -54,19 +54,12 @@ document.addEventListener('DOMContentLoaded', function () {
   style('/assets/index-live-hub-v1.css');
   script('/assets/i18n.js');
   script('/assets/language-routing.js');
-  // portal-navigation.js intentionally disabled: it unconditionally called
-  // nav.replaceChildren() on #navLinks and replaced it with its own item
-  // list on every page load, silently destroying the standardized
-  // site-header/nav-links markup already present in each page's static
-  // HTML -- independent of (and the real cause behind) tonight's menu
-  // inconsistency, which multiple other fixes failed to catch.
-  // script('/assets/portal-navigation.js');
+  script('/assets/portal-navigation.js');
   script('/assets/status.js');
   script('/assets/browser-data-refresh.js');
   script('/assets/market.js');
   script('/assets/world-markets-v1.js');
   script('/assets/gallery-auto-assign-v1.js');
-  script('/assets/homepage-editorial-feed-v1.js');
   script('/assets/live-market-pulse.js');
   script('/assets/bitcoin-chart.js');
   script('/assets/market-expansion.js');
