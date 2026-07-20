@@ -12,6 +12,9 @@ assert.match(source, /https:\/\/wa\.me\//, 'widget must use the official wa.me d
 assert.match(source, /noopener noreferrer/, 'external link must prevent opener access');
 assert.match(source, /aria-label/, 'widget must expose an accessible label');
 assert.match(source, /prefers-reduced-motion/, 'widget must respect reduced-motion preferences');
+assert.match(source, /document\.documentElement\.lang === 'en'/, 'widget must localize EN and HR text');
+assert.match(source, /bottom: max\((?:84px|76px)/, 'widget must reserve space above the existing floating home control');
+assert.match(source, /env\(safe-area-inset-bottom\)/, 'widget must respect mobile safe-area spacing');
 assert.doesNotMatch(source, /WHATSAPP_TOKEN|OPENAI_API_KEY|SMTP_PASS/, 'widget must not contain secrets');
 
 console.log('WhatsApp widget contract: PASS');
