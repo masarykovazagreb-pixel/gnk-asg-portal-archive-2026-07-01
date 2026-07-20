@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/market.js');
   script('/assets/world-markets-v1.js');
   script('/assets/gallery-auto-assign-v1.js');
+  script('/assets/homepage-editorial-feed-v1.js');
   script('/assets/live-market-pulse.js');
   script('/assets/bitcoin-chart.js');
   script('/assets/market-expansion.js');
