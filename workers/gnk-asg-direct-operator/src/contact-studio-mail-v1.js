@@ -13,7 +13,7 @@ const validEmail=value=>/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/i.test(clean(value,
 const consent=value=>value===true||['true','1','yes','on'].includes(clean(value,20).toLowerCase());
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const html=value=>clean(value).split(/\n{2,}/).filter(Boolean).map(p=>`<p style="margin:0 0 14px;line-height:1.6">${esc(p).replace(/\n/g,'<br>')}</p>`).join('');
-const brandedHtml=bodyHtml=>`<div style="font-family:Arial,Helvetica,sans-serif;color:#111"><img src="https://gnk-asg.hr/assets/logo-gnk-asg-email.png" alt="GNK ASG" width="160" style="display:block;margin:0 0 20px;border:0"><div>${bodyHtml}</div></div>`;
+const brandedHtml=bodyHtml=>`<div style="font-family:Arial,Helvetica,sans-serif;color:#111">${bodyHtml}</div>`;
 async function aiAckReply(env,{name,subject,message,language,caseId,mailboxName,createdAt,fallbackText}){
  const apiKey=env?.OPENAI_API_KEY;
  const substantive=message.split(/\s+/).filter(Boolean).length>=25;
