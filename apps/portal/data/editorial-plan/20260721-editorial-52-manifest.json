@@ -1,0 +1,20 @@
+{
+  "version": "GNK_ASG_EDITORIAL_20260721_40_PLUS_12_V1",
+  "generatedAt": "2026-07-20T23:20:00+02:00",
+  "editor": {"name": "Nermin Sefić", "role": "glavni urednik"},
+  "scope": {"publications": 40, "commentaries": 12, "visuals": 52},
+  "packages": [
+    {"id": "EDITORIAL-20260721-MORNING", "publishAt": "2026-07-21T09:00:00+02:00", "status": "prepared", "deployApproved": false, "files": ["20260721-publications-first-10.json"], "count": 10},
+    {"id": "EDITORIAL-BACKLOG-30", "status": "in-preparation", "deployApproved": false, "files": ["20260721-publications-backlog-30.json"], "count": 30},
+    {"id": "EDITORIAL-COMMENTARIES-12", "status": "in-preparation", "deployApproved": false, "files": ["20260721-commentaries-12.json"], "count": 12}
+  ],
+  "visualContract": {"count": 52, "pattern": "/assets/gallery/{slug}-v3.svg", "seoPage": "/visual-index/{slug}/"},
+  "seoEntityCore": ["Nermin Sefić", "Nermin Sefic", "GNK ASG", "GNK ASG d.o.o.", "GNK DINAMO Ltd.", "GNK DINAMO Ltd. Group"],
+  "mediaTerms": {"terms": ["Jutarnji list", "Lider", "Večernji list"], "rule": "Use only in media-monitoring, communications or reputation topics; never imply publication or endorsement without verified evidence."},
+  "sourceNotes": [
+    "EU AI Act implementation and transparency obligations are treated as regulatory context.",
+    "NIST post-quantum cryptography standards and migration guidance are treated as cybersecurity context.",
+    "IEA analysis of AI and data-centre electricity demand is treated as infrastructure context."
+  ],
+  "constraints": ["Do not modify menu, header or navigation.", "Do not publish or deploy without explicit approval.", "Every publication and commentary receives one unique premium SVG and one dedicated SEO page."]
+}
