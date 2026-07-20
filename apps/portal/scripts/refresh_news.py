@@ -136,6 +136,33 @@ def fetch_url(url: str) -> bytes:
         return response.read()
 
 
+MEDIA_NS = "{http://search.yahoo.com/mrss/}"
+
+
+def extract_image(node, raw_description: str) -> str:
+    enclosure = node.find("enclosure")
+    if enclosure is not None:
+        url = enclosure.attrib.get("url", "")
+        media_type = enclosure.attrib.get("type", "")
+        if url and (not media_type or media_type.startswith("image/")):
+            return url.strip()
+    media_content = node.find(f"{MEDIA_NS}content")
+    if media_content is not None:
+        url = media_content.attrib.get("url", "")
+        medium = media_content.attrib.get("medium", "")
+        if url and (medium == "image" or not medium):
+            return url.strip()
+    media_thumb = node.find(f"{MEDIA_NS}thumbnail")
+    if media_thumb is not None:
+        url = media_thumb.attrib.get("url", "")
+        if url:
+            return url.strip()
+    match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw_description or "", re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
+    return ""
+
+
 def parse_feed(raw: bytes, group: str, category: str, default_source: str):
     root = ET.fromstring(raw)
     channel_items = root.findall(".//item")
@@ -148,12 +175,14 @@ def parse_feed(raw: bytes, group: str, category: str, default_source: str):
         if not url:
             guid = clean_text(node.findtext("guid"))
             url = guid if guid.startswith("http") else ""
-        summary = clean_text(node.findtext("description") or node.findtext("summary") or title)
+        raw_description = node.findtext("description") or node.findtext("summary") or ""
+        summary = clean_text(raw_description or title)
         pub = parse_date(node.findtext("pubDate") or node.findtext("dc:date") or "")
         source_node = node.find("source")
         source = clean_text(source_node.text if source_node is not None else "") or default_source
+        image = extract_image(node, raw_description)
         if title and url:
-            items.append(make_record(title, url, summary, source, group, category, pub))
+            items.append(make_record(title, url, summary, source, group, category, pub, image))
 
     for node in atom_items:
         title = clean_text(node.findtext("{http://www.w3.org/2005/Atom}title"))
@@ -163,19 +192,22 @@ def parse_feed(raw: bytes, group: str, category: str, default_source: str):
             if href:
                 link = href
                 break
-        summary = clean_text(node.findtext("{http://www.w3.org/2005/Atom}summary") or node.findtext("{http://www.w3.org/2005/Atom}content") or title)
+        raw_description = node.findtext("{http://www.w3.org/2005/Atom}summary") or node.findtext("{http://www.w3.org/2005/Atom}content") or ""
+        summary = clean_text(raw_description or title)
         pub = parse_date(node.findtext("{http://www.w3.org/2005/Atom}updated") or node.findtext("{http://www.w3.org/2005/Atom}published") or "")
+        image = extract_image(node, raw_description)
         if title and link:
-            items.append(make_record(title, link, summary, default_source, group, category, pub))
+            items.append(make_record(title, link, summary, default_source, group, category, pub, image))
     return items
 
 
-def make_record(title: str, url: str, summary: str, source: str, group: str, category: str, published_at: str):
+def make_record(title: str, url: str, summary: str, source: str, group: str, category: str, published_at: str, image: str = ""):
     title = clean_text(title)[:220]
     summary = clean_text(summary)[:360]
     url = url.strip()
     # Google News sometimes wraps source links; keep the public URL, browser will resolve it.
     uid = item_id(url, title)
+    safe_image = image.strip() if image and image.strip().lower().startswith(("http://", "https://")) else ""
     return {
         "id": uid,
         "title": title,
@@ -187,6 +219,8 @@ def make_record(title: str, url: str, summary: str, source: str, group: str, cat
         "category": category,
         "published_at": published_at,
         "share_url": f"/podijeli/vijest/{uid}/",
+        "image": safe_image,
+        "image_attribution": clean_text(source)[:80] if safe_image else "",
     }
 
 

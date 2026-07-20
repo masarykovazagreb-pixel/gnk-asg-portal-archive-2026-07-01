@@ -76,7 +76,9 @@
     const summary = item.summary || (en ? 'Open the source for the full publication.' : 'Otvorite izvor za cjelovitu objavu.');
     const open = en ? 'OPEN SOURCE →' : 'OTVORI IZVOR →';
     const share = item.share_url ? ' data-share-url="' + esc(item.share_url) + '"' : '';
-    return '<article class="news-card' + type + '"' + share + '><span class="meta">' + esc(label) + (date ? ' · ' + esc(date) : '') + '</span><h3>' + esc(item.title) + '</h3><p>' + esc(summary) + '</p><a target="_blank" rel="noopener nofollow" href="' + esc(item.url) + '">' + open + '</a></article>';
+    const attribution = item.image_attribution || item.source || '';
+    const image = item.image ? '<img class="news-card-image" src="' + esc(item.image) + '" alt="' + esc(item.title) + (attribution ? ' — ' + esc(attribution) : '') + '" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">' : '';
+    return '<article class="news-card' + type + '"' + share + '>' + image + '<span class="meta">' + esc(label) + (date ? ' · ' + esc(date) : '') + '</span><h3>' + esc(item.title) + '</h3><p>' + esc(summary) + '</p><a target="_blank" rel="noopener nofollow" href="' + esc(item.url) + '">' + open + '</a></article>';
   }
   function collection(filter) {
     if (filter === 'mentions') return approvedMedia;
