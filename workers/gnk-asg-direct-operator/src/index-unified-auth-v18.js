@@ -11,7 +11,7 @@ const ALLOWED_FROM_DOMAIN='gnk-asg.hr';
 const MAX_RECIPIENTS=25;
 const PUBLIC_HTML_ROUTES=new Map([['/newsroom','/newsroom/index.html'],['/en/newsroom','/en/newsroom/index.html']]);
 const PROFILE_UNITS={office:'Office',legal:'Legal & Compliance',media:'Media Relations & Accreditation Center',it:'IT / Digital Operations',director:'Managing Director / Authorised Representative'};
-const RELEASE_SCRIPT='<script defer src="/assets/release-completion-v1.js?v=20260713-index-complete-v5"></script>';
+const RELEASE_SCRIPT='<script defer src="/assets/release-completion-v1.js?v=20260720-fix2"></script>';
 const clean=value=>String(value??'').trim();
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-mail-transport':VERSION}});

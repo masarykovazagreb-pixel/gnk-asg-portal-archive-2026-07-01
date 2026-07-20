@@ -1,7 +1,7 @@
 import app from './index-editorial-final-v1.js';
 import editorialPage from '../../../apps/portal/auto-editor/index.html';
 
-const ADMIN_ASSETS='<link rel="stylesheet" href="/assets/private-admin-menu-v1.css?v=20260624-editorial-3"><link rel="stylesheet" href="/assets/admin-auth-controls-v1.css?v=20260624-editorial-3"><script defer src="/assets/private-admin-menu-v1.js?v=20260624-editorial-3"></script><script defer src="/assets/admin-auth-controls-v1.js?v=20260624-editorial-3"></script><script defer src="/assets/editorial-burst-v1.js?v=20260627-v1"></script>';
+const ADMIN_ASSETS='<link rel="stylesheet" href="/assets/private-admin-menu-v1.css?v=20260624-editorial-3"><link rel="stylesheet" href="/assets/admin-auth-controls-v1.css?v=20260624-editorial-3"><script defer src="/assets/private-admin-menu-v1.js?v=20260720-fix2"></script><script defer src="/assets/admin-auth-controls-v1.js?v=20260624-editorial-3"></script><script defer src="/assets/editorial-burst-v1.js?v=20260627-v1"></script>';
 
 function pathOf(request){
   return new URL(request.url).pathname.replace(/\/+$/,'')||'/';

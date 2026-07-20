@@ -6,8 +6,8 @@ import {sendBrandedEmail,VERSION as OUTBOUND_TRANSPORT_VERSION} from './outbound
 import {handleEmailLogo} from './email-logo-endpoint-v1.js';
 
 export const VERSION=`GNK_ASG_UNIFIED_AUTH_V29_DIRECT_INDEX_CANONICAL_RELEASE_${MAIL_AUTOREPLY_ALL_VERSION}_${BASE_VERSION}`;
-const INDEX_RELEASE='<script defer src="/assets/release-completion-v1.js?v=20260713-index-final-v8"></script><script defer src="/assets/index-data-resilience-v1.js?v=20260713-resilience-v2"></script><script defer src="/assets/index-editorial-order-v1.js?v=20260715-editorial-v6-latest-first"></script>';
-const PUBLIC_DESIGN='<script defer src="/assets/public-design-runtime-v1.js?v=20260713-v2-unified"></script>';
+const INDEX_RELEASE='<script defer src="/assets/release-completion-v1.js?v=20260720-fix2"></script><script defer src="/assets/index-data-resilience-v1.js?v=20260713-resilience-v2"></script><script defer src="/assets/index-editorial-order-v1.js?v=20260715-editorial-v6-latest-first"></script>';
+const PUBLIC_DESIGN='<script defer src="/assets/public-design-runtime-v1.js?v=20260720-fix2"></script>';
 const NEWSROOM_LIVE='<script defer src="/assets/newsroom-live-v1.js?v=20260713-v6"></script>';
 const CONTACT_PATH='/api/contact-submit';
 const CONTACT_INTERNAL=env=>String(env?.CONTACT_INTERNAL_RECIPIENTS||'').trim()||'rht@gmx.com';

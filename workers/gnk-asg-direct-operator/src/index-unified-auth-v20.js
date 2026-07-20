@@ -1,7 +1,7 @@
 import app,{VERSION as BASE_VERSION} from './index-unified-auth-v19.js';
 
 export const VERSION=`GNK_ASG_UNIFIED_AUTH_V30_VISIBLE_MENU_STANDARD_LOGO_${BASE_VERSION}`;
-const SHELL='<script defer src="/assets/public-unified-design-v3.js?v=20260713-standard-logo"></script><script defer src="/assets/public-unified-menu-v5.js?v=20260713-visible-menu"></script>';
+const SHELL='<script defer src="/assets/public-unified-design-v3.js?v=20260713-standard-logo"></script><script defer src="/assets/public-unified-menu-v5.js?v=20260720-fix2"></script>';
 const EDITORIAL='<script defer src="/assets/index-editorial-order-v5.js?v=20260713-visible-content"></script>';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const isIndex=path=>path==='/'||path==='/en';

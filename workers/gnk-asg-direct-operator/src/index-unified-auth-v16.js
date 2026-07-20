@@ -23,8 +23,8 @@ export const VERSION=`GNK_ASG_UNIFIED_AUTH_V36_20260711_PROTECTED_ADMIN_SHELL_${
 const WORKER_OPS_PATH='/worker-ops/';
 const WORKER_OPS_LOGIN_NEXT='/operator-dashboard/?workerOpsReturn=1';
 const ADMIN_CENTER_PATH='/admin-center/';
-const ADMIN_MENU_SCRIPT='/assets/admin-menu-v1.js?v=20260711';
-const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v1.js?v=20260711-admin-protected-shell';
+const ADMIN_MENU_SCRIPT='/assets/admin-menu-v1.js?v=20260720-fix2';
+const FLOATING_MENU_SCRIPT='/assets/public-floating-menu-v1.js?v=20260720-fix2';
 const EMAIL_STATUS_PIXEL_PREFIX=`${EMAIL_STATUS_API}/open/`;
 const PUBLIC_CONTACT_SUBMIT='/api/contact-submit';
 const PROTECTED_UI_PREFIXES=[

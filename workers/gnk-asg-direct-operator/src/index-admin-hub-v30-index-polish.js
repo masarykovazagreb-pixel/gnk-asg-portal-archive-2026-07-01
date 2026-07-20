@@ -3,7 +3,7 @@ import app from './index-admin-hub-v29-index-visual-fix.js';
 export const VERSION='GNK_ASG_ADMIN_HUB_V30_MENU_CITY_FINANCE_POLISH_20260628';
 const INDEX_PATHS=new Set(['/','/en']);
 const STYLE='<link rel="stylesheet" href="/assets/index-polish-v30.css?v=20260628-v30">';
-const SCRIPT='<script defer src="/assets/index-menu-v30.js?v=20260628-v30"></script>';
+const SCRIPT='<script defer src="/assets/index-menu-v30.js?v=20260720-fix2"></script>';
 
 function pathOf(request){
   return new URL(request.url).pathname.replace(/\/+$/,'')||'/';
