@@ -12,6 +12,8 @@ on:
       - 'apps/portal/assets/market.js'
       - 'apps/portal/assets/news-live.js'
       - 'apps/portal/data/market.json'
+      - 'apps/portal/data/market_indices.json'
+      - 'apps/portal/data/fast_market_status.json'
       - 'apps/portal/data/news.json'
       - 'apps/portal/data/news_archive.json'
       - 'apps/portal/data/news-status.json'
@@ -45,6 +47,8 @@ jobs:
           name: refreshed-index-live-data
           path: |
             apps/portal/data/market.json
+            apps/portal/data/market_indices.json
+            apps/portal/data/fast_market_status.json
             apps/portal/data/news.json
             apps/portal/data/news_archive.json
             apps/portal/data/news-status.json
@@ -72,7 +76,7 @@ jobs:
         run: |
           git config user.name 'gnk-asg-live-data-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add apps/portal/data/market.json apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/news-status.json
+          git add apps/portal/data/market.json apps/portal/data/market_indices.json apps/portal/data/fast_market_status.json apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/news-status.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'Refresh index market and business news data [skip ci]'
           git push origin HEAD:main
