@@ -12,6 +12,19 @@
     return path === '/' || path === '/index.html' || path === '/en/' || path === '/en/index.html';
   }
 
+  function purgeIfNotHome() {
+    if (isHome()) return false;
+    const el = document.getElementById('readerCounter');
+    if (el) el.remove();
+    document.querySelectorAll('.reader-counter').forEach((n) => n.remove());
+    return true;
+  }
+
+  if (purgeIfNotHome()) {
+    new MutationObserver(purgeIfNotHome).observe(document.body, { childList: true, subtree: true });
+    return;
+  }
+
   function isEnglish() {
     return /\/en\/?$/.test(location.pathname) || /\/en\//.test(location.pathname) || (window.GNK_LANG && window.GNK_LANG.get && window.GNK_LANG.get() === 'en');
   }
