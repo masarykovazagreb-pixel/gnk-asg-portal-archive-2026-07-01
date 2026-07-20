@@ -22,7 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   style('/assets/fina-panel.css');
   style('/assets/advanced.css');
-  style('/assets/header-premium.css');
+  // header-premium.css and portal-navigation.js both intentionally
+  // disabled: restoring them together caused header/logo/nav to render
+  // as an empty light bar (background visible, content invisible).
+  // style.css now has a dedicated safety-net rule (!important) that
+  // guarantees the static nav-links markup stays visible without
+  // depending on either of these scripts.
+  // style('/assets/header-premium.css');
   style('/assets/group-contrast.css');
   style('/assets/group-network.css');
   style('/assets/network-motion.css');
@@ -54,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
   style('/assets/index-live-hub-v1.css');
   script('/assets/i18n.js');
   script('/assets/language-routing.js');
-  script('/assets/portal-navigation.js');
+  // script('/assets/portal-navigation.js');
   script('/assets/status.js');
   script('/assets/browser-data-refresh.js');
   script('/assets/market.js');
