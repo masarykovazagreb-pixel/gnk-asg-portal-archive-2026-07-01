@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   style('/assets/fina-panel.css');
   style('/assets/advanced.css');
-  style('/assets/header-premium.css');
+  // header-premium.css intentionally removed: caused inconsistent header
+  // appearance (top strip bar, resized logo, different nav pill styling)
+  // between pages depending on inline CSS cascade order/specificity.
   style('/assets/group-contrast.css');
   style('/assets/group-network.css');
   style('/assets/network-motion.css');
