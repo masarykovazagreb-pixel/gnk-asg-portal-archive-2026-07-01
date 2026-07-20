@@ -289,6 +289,22 @@
     panel.id = 'aiMini';
     document.body.append(backdrop, button, panel);
     render();
+    if (!sessionStorage.getItem('gnk-asg-bot-greeted')) {
+      try {
+        sessionStorage.setItem('gnk-asg-bot-greeted', '1');
+        const greet = document.createElement('div');
+        greet.id = 'aiFabGreeting';
+        const greetLang = (document.documentElement.lang || 'hr').toLowerCase().startsWith('en');
+        greet.textContent = greetLang ? "Hi, I'm your AI assistant \uD83D\uDC4B" : 'Ja sam vaš pomoćni bot \uD83D\uDC4B';
+        greet.style.cssText = 'position:fixed;z-index:2147483000;right:24px;bottom:96px;max-width:220px;padding:12px 16px;background:#0b2345;color:#fff;border:1px solid rgba(212,175,55,.5);border-radius:14px 14px 4px 14px;font:700 13px/1.4 Arial,sans-serif;box-shadow:0 14px 32px rgba(0,0,0,.3);opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease;pointer-events:none';
+        document.body.appendChild(greet);
+        requestAnimationFrame(() => { greet.style.opacity = '1'; greet.style.transform = 'translateY(0)'; });
+        window.setTimeout(() => {
+          greet.style.opacity = '0'; greet.style.transform = 'translateY(8px)';
+          window.setTimeout(() => greet.remove(), 400);
+        }, 4500);
+      } catch (_) {}
+    }
     window.addEventListener('gnk-live-market-refresh', event => { liveMarketState = event.detail || null; evaluate(); });
     try {
       const response = await fetch('/data/macro_market.json?v=' + Date.now(), { cache: 'no-store' });
