@@ -1,0 +1,35 @@
+{
+  "companyId": "gnk-asg-offline-shadow",
+  "name": "GNK ASG — offline shadow operations",
+  "timezone": "Europe/Zagreb",
+  "agents": [
+    {"id":"al-001","role":"AL — Executive Orchestrator","voice":"al","active":true},
+    {"id":"fin-001","role":"Direktor financija","voice":"finance","active":true},
+    {"id":"leg-001","role":"Direktor pravnih poslova","voice":"legal","active":true},
+    {"id":"tech-001","role":"Direktor tehnologije","voice":"technology","active":true},
+    {"id":"ops-001","role":"Direktor operacija","voice":"operations","active":true},
+    {"id":"com-001","role":"Direktor komunikacija","voice":"communications","active":true}
+  ],
+  "projects": [
+    {"id":"portal-reliability","name":"Pouzdanost javnog portala","status":"active","ownerId":"tech-001"},
+    {"id":"workforce-operations","name":"Digital Workforce operativni sustav","status":"offline-build","ownerId":"ops-001"},
+    {"id":"editorial-automation","name":"Urednička automatizacija i newsroom","status":"offline-build","ownerId":"com-001"},
+    {"id":"financial-control","name":"Financijska klasifikacija i kontrola","status":"design","ownerId":"fin-001"},
+    {"id":"governance-controls","name":"Ovlasti, odluke i pravne granice","status":"design","ownerId":"leg-001"}
+  ],
+  "financials": [
+    {"id":"sim-credit-capacity","name":"Modelirana operativna kreditna sposobnost","classification":"SIMULATED","value":1250000,"currency":"EUR","source":"offline-scenario"},
+    {"id":"forecast-platform-cost","name":"Procjena troška platforme do 15.9.","classification":"FORECAST","value":18500,"currency":"EUR","source":"offline-planning-assumption"}
+  ],
+  "activation": {
+    "adminPreview": false,
+    "activityFeed": false,
+    "projectsAndTasks": false,
+    "risksAndDependencies": false,
+    "minutesAndDecisions": false,
+    "alBriefing": false,
+    "newsroom": false,
+    "financialViews": false,
+    "automaticPublishing": false
+  }
+}
