@@ -1,0 +1,35 @@
+{
+  "version": "2026-09-15-offline-v1",
+  "timezone": "Europe/Zagreb",
+  "enabled": false,
+  "jitterMinutes": 17,
+  "windows": [
+    {"id":"system-health","localTime":"06:15","surface":"admin-only","output":"system-health-snapshot"},
+    {"id":"finance-snapshot","localTime":"06:32","surface":"admin-only","output":"financial-operating-snapshot"},
+    {"id":"al-morning-brief","localTime":"06:47","surface":"admin-only","output":"al-morning-brief"},
+    {"id":"executive-directive","localTime":"07:08","surface":"admin-only","output":"executive-directive"},
+    {"id":"department-standups","localTime":"08:03","surface":"admin-only","output":"standup-decisions"},
+    {"id":"project-update-1","localTime":"09:24","surface":"draft-queue","output":"project-update"},
+    {"id":"lead-comment-1","localTime":"10:11","surface":"draft-queue","output":"lead-comment"},
+    {"id":"dependency-review","localTime":"10:38","surface":"admin-only","output":"dependency-exceptions"},
+    {"id":"project-update-2","localTime":"11:26","surface":"draft-queue","output":"project-update"},
+    {"id":"finance-operations-sync","localTime":"12:34","surface":"admin-only","output":"variance-and-liquidity-review"},
+    {"id":"lead-comment-2","localTime":"13:17","surface":"draft-queue","output":"lead-comment"},
+    {"id":"event-meetings","localTime":"14:06","surface":"admin-only","output":"meeting-decisions"},
+    {"id":"project-update-3","localTime":"15:22","surface":"draft-queue","output":"project-update"},
+    {"id":"task-close","localTime":"16:31","surface":"admin-only","output":"task-outcomes"},
+    {"id":"al-daily-report","localTime":"17:04","surface":"admin-only","output":"al-daily-report"},
+    {"id":"public-day-summary","localTime":"17:23","surface":"draft-queue","output":"public-operational-summary"},
+    {"id":"late-risk-check","localTime":"19:12","surface":"admin-only","output":"risk-exceptions"}
+  ],
+  "rules": {
+    "neverPublishFutureDatedContent": true,
+    "skipWhenNoMaterialChange": true,
+    "maxSameRoleConsecutiveOutputs": 1,
+    "requireDifferentAuthorForAdjacentPublications": true,
+    "weekendMode":"reduced",
+    "holidayMode":"reduced",
+    "randomisation":"deterministic-per-date",
+    "outputState":"DRAFT_ONLY"
+  }
+}
