@@ -1,0 +1,24 @@
+name: Verify newsroom fixed (one-off)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  issues: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check newsroom now
+        run: |
+          echo "# Newsroom fix verification $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/d.md
+          curl -s -D - -o /tmp/body.html "https://gnk-asg.hr/newsroom/?cb=$(date +%s)" | grep -Ei '^(HTTP/|x-gnk-explicit-html-route|x-gnk-static-asset-fallback)' >> /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "has unified header: $(grep -c 'gnk-unified-header' /tmp/body.html)" >> /tmp/d.md
+          echo "has og:title: $(grep -c 'og:title' /tmp/body.html)" >> /tmp/d.md
+          wc -c /tmp/body.html >> /tmp/d.md
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "Newsroom fix verification $(date -u +%Y-%m-%dT%H:%M:%SZ)" --body-file /tmp/d.md
