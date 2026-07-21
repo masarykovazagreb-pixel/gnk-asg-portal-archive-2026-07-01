@@ -16,15 +16,15 @@
     #${WIDGET_ID} {
       position: fixed;
       left: max(16px, env(safe-area-inset-left));
-      bottom: max(92px, calc(env(safe-area-inset-bottom) + 92px));
+      bottom: max(70px, calc(env(safe-area-inset-bottom) + 70px));
       z-index: 9997;
-      width: 190px;
-      padding: 18px;
-      border-radius: 22px;
+      width: 95px;
+      padding: 9px;
+      border-radius: 11px;
       background: #c9ff66;
       color: #12211b;
       font-family: Arial, sans-serif;
-      box-shadow: 0 14px 34px rgba(0,0,0,.22);
+      box-shadow: 0 7px 17px rgba(0,0,0,.22);
       text-decoration: none;
       display: block;
       transform: rotate(-4deg);
@@ -33,44 +33,44 @@
     }
     #${WIDGET_ID}:hover,
     #${WIDGET_ID}:focus-visible {
-      transform: rotate(-2deg) translateY(-4px);
-      box-shadow: 0 18px 40px rgba(0,0,0,.28);
+      transform: rotate(-2deg) translateY(-2px);
+      box-shadow: 0 9px 20px rgba(0,0,0,.28);
       outline: none;
     }
     #${WIDGET_ID} strong {
       display: block;
-      font-size: 1.05rem;
+      font-size: .58rem;
       font-weight: 800;
       letter-spacing: -.01em;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
     #${WIDGET_ID} span.sub {
       display: block;
-      font-size: .82rem;
+      font-size: .46rem;
       font-weight: 600;
       opacity: .82;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
     #${WIDGET_ID} span.cta {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: .72rem;
+      gap: 3px;
+      font-size: .4rem;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: .04em;
       background: #12211b;
       color: #c9ff66;
-      padding: 8px 12px;
+      padding: 4px 6px;
       border-radius: 999px;
     }
     @keyframes gnkIdejeFloat {
       0%, 100% { transform: rotate(-4deg) translateY(0); }
-      50% { transform: rotate(-2deg) translateY(-10px); }
+      50% { transform: rotate(-2deg) translateY(-5px); }
     }
     @media (max-width: 640px) {
-      #${WIDGET_ID} { width: 160px; padding: 14px; }
-      #${WIDGET_ID} strong { font-size: .95rem; }
+      #${WIDGET_ID} { width: 80px; padding: 7px; }
+      #${WIDGET_ID} strong { font-size: .52rem; }
     }
     @media (prefers-reduced-motion: reduce) {
       #${WIDGET_ID} { animation: none; }
