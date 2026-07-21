@@ -1,6 +1,6 @@
 {
   "name": "gnk-asg-digital-workforce-offline",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "description": "Offline-only shadow simulation, editorial review and admin reporting for GNK ASG Digital Workforce.",
@@ -9,9 +9,10 @@
     "shadow": "node src/run-shadow.mjs",
     "review": "node src/render-review-preview.mjs",
     "admin": "node src/render-admin-summary.mjs",
-    "shadow:14": "node src/run-shadow.mjs 2026-07-22 14 && node src/render-review-preview.mjs && node src/render-admin-summary.mjs",
-    "shadow:30": "node src/run-shadow.mjs 2026-07-22 30 && node src/render-review-preview.mjs && node src/render-admin-summary.mjs",
-    "verify": "node --test test/*.test.mjs && node src/run-shadow.mjs 2026-07-22 14 && node src/render-review-preview.mjs && node src/render-admin-summary.mjs"
+    "validate": "node src/validate-package.mjs",
+    "shadow:14": "node src/validate-package.mjs && node src/run-shadow.mjs 2026-07-22 14 && node src/render-review-preview.mjs && node src/render-admin-summary.mjs",
+    "shadow:30": "node src/validate-package.mjs && node src/run-shadow.mjs 2026-07-22 30 && node src/render-review-preview.mjs && node src/render-admin-summary.mjs",
+    "verify": "node src/validate-package.mjs && node --test test/*.test.mjs && node src/run-shadow.mjs 2026-07-22 14 && node src/render-review-preview.mjs && node src/render-admin-summary.mjs"
   },
   "engines": {
     "node": ">=20"
