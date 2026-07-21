@@ -4,7 +4,7 @@ import {withEmailStatusTracking} from './email-status-tracking-v1.js';
 
 export const VERSION=`GNK_ASG_UNIFIED_AUTH_V31_MAIL_NEWS_CONTRAST_ZERO_WARNING_NORMALIZED_PROTECTED_EDITORIAL_APPROVAL_${CONTACT_STUDIO_VERSION}_${BASE_VERSION}`;
 const MENU='<script defer src="/assets/public-unified-menu-v6.js?v=20260720-fix2"></script>';
-const CONTRAST='<script defer src="/assets/public-contrast-hardening-v1.js?v=20260721-transparent"></script>';
+const CONTRAST='<script defer src="/assets/public-contrast-hardening-v1.js?v=20260721-transparency42-v2"></script>';
 const EDITORIAL='<script defer src="/assets/index-editorial-order-v6.js?v=20260715-source-links-v2"></script><script defer src="/assets/index-editorial-cleanup-v1.js?v=20260713-v6-cleanup"></script>';
 const MAIL_STUDIO='<script defer src="/assets/mail-studio-ui-v28.js?v=20260713-large-composer"></script>';
 const CANONICAL_LOGO='/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64';
