@@ -10,6 +10,10 @@ const REQUIRED_DAILY_LIMITS = [
   'executiveDirective', 'alBrief', 'projectUpdates', 'leadComments',
   'meetingSummaries', 'financialSnapshots', 'activityFeedItems'
 ];
+const REQUIRED_RUNTIME_EVENT_TYPES = new Set([
+  'MILESTONE_REACHED', 'DEPENDENCY_AT_RISK', 'QUALITY_REVIEW_REQUIRED',
+  'SCOPE_CLARIFICATION', 'QUIET_PROGRESS', 'DECISION_REQUIRED'
+]);
 const REQUIRED_IGNORES = ['generated-shadow/', 'generated-review/', 'generated-admin/'];
 const REQUIRED_FILES = [
   '.gitignore',
@@ -18,9 +22,11 @@ const REQUIRED_FILES = [
   'config/company-operating-model.json',
   'config/daily-publication-windows.json',
   'config/integration-contract.json',
+  'config/event-taxonomy.json',
   'data/seed-company-state.json',
   'src/engine.mjs',
   'src/apply-daily-limits.mjs',
+  'src/event-taxonomy.mjs',
   'src/review-gate.mjs',
   'src/run-shadow.mjs',
   'src/render-review-preview.mjs',
@@ -45,9 +51,10 @@ export async function validatePackage() {
 
   if (errors.length) return { ok: false, errors };
 
-  const [model, windows, state, pkg, gitignore] = await Promise.all([
+  const [model, windows, taxonomy, state, pkg, gitignore] = await Promise.all([
     readJson('config/company-operating-model.json'),
     readJson('config/daily-publication-windows.json'),
+    readJson('config/event-taxonomy.json'),
     readJson('data/seed-company-state.json'),
     readJson('package.json'),
     readFile(path.join(root, '.gitignore'), 'utf8')
@@ -69,6 +76,28 @@ export async function validatePackage() {
   if (windows.rules?.outputState !== 'DRAFT_ONLY') errors.push('Publication window outputState must be DRAFT_ONLY.');
   if (windows.windows?.some((window) => !['admin-only', 'draft-queue'].includes(window.surface))) {
     errors.push('Publication windows may only target admin-only or draft-queue surfaces.');
+  }
+
+  if (taxonomy.mode !== 'OFFLINE') errors.push('Event taxonomy mode must remain OFFLINE.');
+  if (taxonomy.rules?.productionWritesEnabled !== false) errors.push('Event taxonomy production writes must remain disabled.');
+  if (taxonomy.rules?.publicPublishingEnabled !== false) errors.push('Event taxonomy public publishing must remain disabled.');
+  if (taxonomy.rules?.unknownTypeDecision !== 'REJECT') errors.push('Unknown event taxonomy types must be rejected.');
+
+  const canonicalTypes = new Set(taxonomy.canonicalTypes ?? []);
+  const aliases = taxonomy.aliases ?? {};
+  for (const runtimeType of REQUIRED_RUNTIME_EVENT_TYPES) {
+    const canonicalType = aliases[runtimeType] ?? runtimeType;
+    if (!canonicalTypes.has(canonicalType)) {
+      errors.push(`Runtime event type is not covered by taxonomy: ${runtimeType}`);
+    }
+  }
+  for (const [alias, canonicalType] of Object.entries(aliases)) {
+    if (!canonicalTypes.has(canonicalType)) errors.push(`Event taxonomy alias ${alias} targets unknown type ${canonicalType}.`);
+  }
+
+  const modelEventTypes = new Set(model.eventTypes ?? []);
+  for (const modelType of modelEventTypes) {
+    if (!canonicalTypes.has(modelType)) errors.push(`Operating model event type is missing from taxonomy: ${modelType}`);
   }
 
   if (!Array.isArray(state.agents) || state.agents.length < 6) errors.push('At least six agents are required.');
@@ -109,6 +138,9 @@ export async function validatePackage() {
       requiredFiles: REQUIRED_FILES.length,
       ignoredArtifactDirectories: REQUIRED_IGNORES.length,
       dailyLimits: REQUIRED_DAILY_LIMITS.length,
+      runtimeEventTypes: REQUIRED_RUNTIME_EVENT_TYPES.size,
+      canonicalEventTypes: canonicalTypes.size,
+      eventAliases: Object.keys(aliases).length,
       agents: state.agents?.length ?? 0,
       projects: state.projects?.length ?? 0,
       financialItems: state.financials?.length ?? 0,
