@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "asg-public-market-simulation/v1",
+  "mode": "OFFLINE_SIMULATION",
+  "currency": {
+    "source": "existing-portal-adapter",
+    "fallbackSymbol": "ASG-SIM",
+    "fallbackName": "ASG simulacijska valuta",
+    "decimals": 2,
+    "realMoneyValue": 0,
+    "redeemable": false,
+    "transferableOutsideSimulation": false
+  },
+  "participants": {
+    "source": "existing-portal-adapter",
+    "fallbackAllowed": true,
+    "fallbackProfiles": [
+      {"id":"demo-001","displayName":"Plavi Strateg","startingCash":10000,"riskProfile":"balanced"},
+      {"id":"demo-002","displayName":"Maksimirski Analitičar","startingCash":10000,"riskProfile":"conservative"},
+      {"id":"demo-003","displayName":"Zagrebački Momentum","startingCash":10000,"riskProfile":"active"},
+      {"id":"demo-004","displayName":"Akademija Vrijednosti","startingCash":10000,"riskProfile":"balanced"}
+    ]
+  },
+  "market": {
+    "openingPrice": 100,
+    "minimumPrice": 1,
+    "maximumDailyMovePct": 8,
+    "spreadBps": 20,
+    "maxOrderNotional": 2500,
+    "maxPositionUnits": 150,
+    "allowShortSelling": false,
+    "allowLeverage": false,
+    "allowExternalDeposits": false,
+    "allowWithdrawals": false
+  },
+  "incentives": {
+    "dailyParticipation": 5,
+    "evidenceBasedDecision": 10,
+    "riskDiscipline": 8,
+    "diversification": 6,
+    "maximumDailyReward": 20,
+    "rewardUnit": "SIM_POINTS",
+    "cashConvertible": false
+  },
+  "publicExperience": {
+    "leaderboardEnabled": true,
+    "positionsVisible": true,
+    "tradeHistoryVisible": true,
+    "realNamesRequired": false,
+    "showSimulationBanner": true,
+    "bannerText": "SIMULACIJA — nema stvarnog novca, ulaganja, isplate ni financijskog savjeta."
+  },
+  "adminControls": {
+    "pauseMarket": false,
+    "resetSimulation": false,
+    "manualPriceOverride": false,
+    "realTradingEnabled": false,
+    "productionWritesEnabled": false
+  }
+}
