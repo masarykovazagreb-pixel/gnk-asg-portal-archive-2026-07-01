@@ -1,0 +1,27 @@
+name: Verify newsroom actual response content (one-off)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  issues: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fetch newsroom and dump full response
+        run: |
+          echo "# Newsroom full response $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## Headers" >> /tmp/d.md
+          curl -s -D - -o /tmp/body.html "https://gnk-asg.hr/newsroom/" | head -40 >> /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## Full body" >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+          cat /tmp/body.html >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "Newsroom full response $(date -u +%Y-%m-%dT%H:%M:%SZ)" --body-file /tmp/d.md
