@@ -1,0 +1,38 @@
+name: Verify real-world (no cachebust) fetch (one-off)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fetch index.html exactly like a browser would (no cachebust)
+        run: |
+          echo "# Real-world fetch verification $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/d.md
+          curl -s "https://gnk-asg.hr/" -o /tmp/index.html
+          echo "" >> /tmp/d.md
+          echo "## v6.css link tag in index.html" >> /tmp/d.md
+          grep -oE 'public-unified-menu-v6\.css\?v=[a-zA-Z0-9-]*' /tmp/index.html >> /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## Fetch that EXACT css url as referenced (no manual cachebust)" >> /tmp/d.md
+          CSSURL=$(grep -oE '/assets/public-unified-menu-v6\.css\?v=[a-zA-Z0-9-]*' /tmp/index.html | head -1)
+          echo "url: $CSSURL" >> /tmp/d.md
+          curl -s "https://gnk-asg.hr${CSSURL}" -o /tmp/v6.css
+          if grep -q 'background:#fff' /tmp/v6.css; then
+            echo "background:#fff FOUND in the exact referenced CSS" >> /tmp/d.md
+          else
+            echo "background:#fff NOT FOUND" >> /tmp/d.md
+          fi
+          curl -sD - -o /dev/null "https://gnk-asg.hr${CSSURL}" | grep -Ei '^(HTTP/|cf-cache-status|cache-control|age:)' >> /tmp/d.md
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "Real-world fetch verification $(date -u +%Y-%m-%dT%H:%M:%SZ)" --body-file /tmp/d.md
