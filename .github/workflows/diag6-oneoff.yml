@@ -1,0 +1,29 @@
+name: Verify email logo endpoint live (one-off)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check the email logo URL directly
+        run: |
+          echo "# Email logo endpoint check $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## HEAD https://gnk-asg.hr/assets/logo-gnk-asg-email.png" >> /tmp/d.md
+          curl -s -D - -o /tmp/logo.bin "https://gnk-asg.hr/assets/logo-gnk-asg-email.png?vb=$(date +%s)" | grep -Ei '^(HTTP/|content-type|content-length|cache-control|x-gnk-)' >> /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## file command on downloaded bytes" >> /tmp/d.md
+          file /tmp/logo.bin >> /tmp/d.md
+          wc -c /tmp/logo.bin >> /tmp/d.md
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "Email logo endpoint check $(date -u +%Y-%m-%dT%H:%M:%SZ)" --body-file /tmp/d.md
