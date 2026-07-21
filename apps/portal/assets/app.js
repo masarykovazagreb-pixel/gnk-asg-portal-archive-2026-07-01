@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260721-globe-toggle-fix-v1';
+  var VERSION = '20260721-remove-static-overview-v1';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
   style('/assets/group-location-weather.css');
   style('/assets/group-overview-panel.css');
   style('/assets/group-market-coverage.css');
-  style('/assets/group-static-overview.css');
   style('/assets/network-reading-layout.css');
   style('/assets/bitcoin-chart.css');
   style('/assets/market-expansion.css');
@@ -96,9 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/group-market-coverage.js');
   script('/assets/group-map-pdf.js');
   script('/assets/group-globe-pdf.js');
-  script('/assets/group-static-overview.js');
   script('/assets/group-map-viewport.js');
-  script('/assets/network-market-integration.js');
   script('/assets/group-mobile-accessible.js');
   script('/assets/network-search-3d.js');
   script('/assets/location-recovery.js');
