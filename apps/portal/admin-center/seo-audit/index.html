@@ -1,0 +1,65 @@
+<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow,noarchive"><title>SEO Audit · GNK ASG</title><meta name="description" content="Zaštićeni SEO audit GNK ASG portala: naslovi, opisi, Open Graph, Twitter Card, JSON-LD i H1 pokrivenost po stranici."><link rel="stylesheet" href="/assets/protected-operations-v1.css?v=20260713-v1"><link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260721-header-fulltransparent-v1">
+<style>
+  .seo-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+  .seo-metric{border:1px solid rgba(184,138,47,.3);border-radius:14px;padding:14px;background:#fffdf8}
+  .seo-metric strong{display:block;font-size:1.6rem;color:#07162d}
+  .seo-metric span{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:#7b5b12;font-weight:800}
+  .seo-page{border:1px solid rgba(7,22,45,.14);border-radius:16px;padding:14px 16px;margin-bottom:10px;background:#fff}
+  .seo-page-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .seo-page-head a{font-weight:800;color:#07162d;text-decoration:none;word-break:break-all}
+  .seo-score{font-weight:900;border-radius:999px;padding:4px 10px;font-size:.78rem}
+  .seo-score.good{background:rgba(65,174,96,.16);color:#1c7a3a}
+  .seo-score.mid{background:rgba(212,175,55,.2);color:#8a6410}
+  .seo-score.bad{background:rgba(220,60,60,.16);color:#a3232f}
+  .seo-issues{margin:8px 0 0;padding-left:18px;color:#52647b;font-size:.86rem;line-height:1.6}
+  .seo-issues li{margin-bottom:2px}
+  .seo-none{color:#3a8a55;font-size:.86rem;font-weight:700}
+  .seo-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .seo-controls button{border:1px solid rgba(184,138,47,.4);background:#fffdf8;color:#07162d;border-radius:999px;padding:8px 14px;font-size:.76rem;font-weight:800;cursor:pointer}
+  .seo-controls button.active{background:#d4af37;color:#07162d;border-color:#d4af37}
+  .seo-meta{color:#7c8a9c;font-size:.78rem;margin-bottom:16px}
+</style>
+</head><body><header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/" aria-label="Hrvatski" aria-current="page">HR</a><a href="/en/" aria-label="English">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">IZBORNIK</button></div><nav id="gnk-unified-nav"></nav></div></div></header><main class="ops-wrap"><header class="ops-head"><img class="ops-logo" src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG"><div><p class="ops-kicker">Zaštićeno · SEO</p><h1>SEO Audit</h1><p class="ops-lead">Automatski audit svih stranica iz glavnog sitemapa: naslovi, opisi, Open Graph, Twitter Card, JSON-LD, H1 i alt tekstovi. Osvježava se automatski svaka 24h.</p></div></header><div class="ops-session" data-ops-session data-state="checking"><span class="ops-dot"></span><strong data-ops-session-label>Provjera admin/operator sesije…</strong><a class="ops-button secondary" data-ops-login-link href="/admin-login/?next=/admin-center/seo-audit/">Prijava</a></div><section class="ops-panel"><p class="seo-meta" id="seoMeta">Učitavanje izvještaja…</p><div class="seo-summary" id="seoSummary"></div><div class="seo-controls" id="seoControls"><button type="button" data-filter="all" class="active">Sve stranice</button><button type="button" data-filter="issues">Samo s problemima</button><button type="button" data-filter="worst">8 najlošijih</button></div><div id="seoPages">Učitavanje…</div></section></main>
+<script>
+(function(){
+  var state = { report: null, filter: 'all' };
+  function scoreClass(score){ return score >= 80 ? 'good' : score >= 60 ? 'mid' : 'bad'; }
+  function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function renderSummary(r){
+    document.getElementById('seoMeta').textContent = 'Generirano: ' + new Date(r.generatedAt).toLocaleString('hr-HR') + ' · Izvor: ' + r.sitemapSource;
+    document.getElementById('seoSummary').innerHTML =
+      '<div class="seo-metric"><strong>' + r.pagesAudited + '</strong><span>Stranica</span></div>' +
+      '<div class="seo-metric"><strong>' + r.averageScore + '</strong><span>Prosječni score</span></div>' +
+      '<div class="seo-metric"><strong>' + r.totalIssues + '</strong><span>Ukupno problema</span></div>' +
+      '<div class="seo-metric"><strong>' + r.pagesFailed + '</strong><span>Nedostupno</span></div>';
+  }
+  function pageCard(p){
+    var issuesHtml = (p.issues && p.issues.length)
+      ? '<ul class="seo-issues">' + p.issues.map(function(i){ return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>'
+      : '<p class="seo-none">Nema pronađenih problema.</p>';
+    return '<div class="seo-page"><div class="seo-page-head"><a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.url) + '</a><span class="seo-score ' + scoreClass(p.score||0) + '">' + (p.ok ? (p.score + '/100') : 'GREŠKA') + '</span></div>' + issuesHtml + '</div>';
+  }
+  function render(){
+    var r = state.report; if (!r) return;
+    var pages = r.pages || [];
+    if (state.filter === 'issues') pages = pages.filter(function(p){ return p.issues && p.issues.length; });
+    if (state.filter === 'worst') pages = (r.worstPages || []).map(function(w){ return r.pages.find(function(p){ return p.url === w.url; }) || w; });
+    document.getElementById('seoPages').innerHTML = pages.length
+      ? pages.map(pageCard).join('')
+      : '<p class="seo-none">Nema stranica u ovom filteru.</p>';
+  }
+  document.getElementById('seoControls').addEventListener('click', function(e){
+    var btn = e.target.closest('button[data-filter]'); if (!btn) return;
+    state.filter = btn.dataset.filter;
+    document.querySelectorAll('#seoControls button').forEach(function(b){ b.classList.toggle('active', b === btn); });
+    render();
+  });
+  fetch('/data/seo-audit-report.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(function(r){ return r.json(); })
+    .then(function(r){ state.report = r; renderSummary(r); render(); })
+    .catch(function(){ document.getElementById('seoMeta').textContent = 'Izvještaj nije dostupan.'; document.getElementById('seoPages').textContent = ''; });
+})();
+</script>
+<script src="/assets/protected-operations-v1.js?v=20260713-v1" defer></script>
+<script src="/assets/app.js?v=20260722-seo-audit-v1" defer></script>
+</body></html>

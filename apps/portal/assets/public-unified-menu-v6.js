@@ -13,7 +13,7 @@ const boot=()=>{
    ['ADMIN — svi moduli','ADMIN — all modules','/admin-center/'],['Admin prijava','Admin login','/admin-login/'],['Digital Headquarters','Digital Headquarters','/digital-headquarters/'],['Mail Studio','Mail Studio','/mail-studio/'],['Webmail','Webmail','/webmail/'],['Campaign Mailer','Campaign Mailer','/campaign-mailer/'],['Statusi mailova','Email status','/email-status/'],['Pretraga mailova','Mail search','/admin-center/mail-search/'],['Kontaktni slučajevi','Contact cases','/admin-center/contacts/'],['PDF centar','PDF center','/admin-center/pdf/'],['Objava vijesti','News publication','/admin-center/news-publication/'],['Media Registration Admin','Media Registration Admin','/media-registration-admin/']
   ]},
   {label:english?'WORKERS & OPERATIONS':'WORKERI I OPERACIJE',protected:true,items:[
-   ['Worker Operations','Worker Operations','/worker-ops/'],['Operator Dashboard','Operator Dashboard','/operator-dashboard/'],['Upravljanje radnom snagom','Workforce management','/admin-center/workers/'],['Operativni pregled','Operations overview','/admin-center/operations/'],['Infrastruktura','Infrastructure','/admin-center/infrastructure/'],['Status sustava','System health','/admin-center/health/']
+   ['Worker Operations','Worker Operations','/worker-ops/'],['Operator Dashboard','Operator Dashboard','/operator-dashboard/'],['Upravljanje radnom snagom','Workforce management','/admin-center/workers/'],['Operativni pregled','Operations overview','/admin-center/operations/'],['Infrastruktura','Infrastructure','/admin-center/infrastructure/'],['Status sustava','System health','/admin-center/health/'],['SEO Audit','SEO Audit','/admin-center/seo-audit/']
   ]}
  ];
  const existing=document.getElementById('gnk-unified-header');
