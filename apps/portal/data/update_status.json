@@ -1,45 +1,25 @@
 {
-  "updated_at": "2026-07-21T03:47:46+00:00",
+  "updated_at": "2026-07-21T13:21:22.598Z",
   "news": {
-    "updated_at": "2026-07-21T03:47:46+00:00",
     "status": "ok",
-    "engine": "github_actions_rss_refresh_v4_retention_policy",
-    "cadence": "hourly at minute 17 UTC plus manual workflow_dispatch",
-    "source_success_policy": "publish_when_public_items_available_and_at_least_50_percent_sources_synced",
-    "source_success_threshold": 0.5,
-    "source_success_ratio": 1.0,
-    "source_sync_status": "complete",
-    "configured_sources": 30,
-    "successful_sources": 30,
-    "failed_sources": 0,
-    "storage_policy": "public_latest_100_archive_all_older_prune_oldest_1000_repeatedly_when_archive_exceeds_2000",
+    "engine": "github_actions_rss_refresh_v4_official_and_technology_feeds",
+    "cadence": "every two hours plus manual",
     "public_items": 100,
-    "max_public_items": 100,
-    "archive_items": 1596,
-    "archive_prune_trigger": 2000,
-    "archive_delete_oldest_batch": 1000,
-    "archive_items_before_prune": 2596,
-    "archive_prune_batches": 1,
-    "discarded_archive_overflow_items": 1000,
-    "fetched_candidates": 1884,
-    "duplicates_or_blocked_removed": 784,
-    "request_timeout_seconds": 10,
-    "network_workers": 1,
-    "share_previews_ready": 0,
-    "by_group": {
-      "technology": 37,
-      "digital-assets": 23,
-      "international": 24,
-      "hrvatska": 16
-    },
-    "errors": [],
-    "preview_errors": [],
-    "checked_at": "2026-07-21T03:47:46+00:00",
-    "last_attempt_at": "2026-07-21T03:47:46+00:00",
-    "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
+    "archive_items": 1610,
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-07-21T03:47:46+00:00",
-    "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 11.35
+    "errors": [
+      {
+        "source": "International Monetary Fund",
+        "error": "HTTP 403"
+      },
+      {
+        "source": "OECD",
+        "error": "HTTP 403"
+      }
+    ],
+    "content_changed": true,
+    "updated_at": "2026-07-21T13:21:22.598Z",
+    "checked_at": "2026-07-21T13:21:22.598Z",
+    "last_attempt_at": "2026-07-21T13:21:22.598Z"
   }
 }

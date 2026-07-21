@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260721-menu-labels-color';
+  var VERSION = '20260721-remove-static-overview-v1';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -81,8 +81,24 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/mobile-app.js');
   script('/assets/mobile-navigation.js');
   script('/assets/floating-intelligence.js');
+  script('/assets/world-geography.js');
+  script('/assets/network-motion.js');
   script('/assets/group-network.js');
   script('/assets/group-clarity.js');
+  script('/assets/group-globe-3d.js');
+  script('/assets/group-map-2d-geo.js');
+  script('/assets/group-location-insights.js');
+  script('/assets/group-map-selection-bridge.js');
+  script('/assets/network-selection-sync.js');
+  script('/assets/command-centre.js');
+  script('/assets/group-overview-panel.js');
+  script('/assets/group-market-coverage.js');
+  script('/assets/group-map-pdf.js');
+  script('/assets/group-globe-pdf.js');
+  script('/assets/group-map-viewport.js');
+  script('/assets/group-mobile-accessible.js');
+  script('/assets/network-search-3d.js');
+  script('/assets/location-recovery.js');
   script('/assets/public-sources.js');
   script('/assets/site-share.js');
   script('/assets/hourly-data-disclosure.js');
