@@ -6,6 +6,10 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
 
 const FINANCIAL_CLASSES = new Set(['ACTUAL', 'COMMITTED', 'FORECAST', 'SIMULATED']);
+const REQUIRED_DAILY_LIMITS = [
+  'executiveDirective', 'alBrief', 'projectUpdates', 'leadComments',
+  'meetingSummaries', 'financialSnapshots', 'activityFeedItems'
+];
 const REQUIRED_IGNORES = ['generated-shadow/', 'generated-review/', 'generated-admin/'];
 const REQUIRED_FILES = [
   '.gitignore',
@@ -13,8 +17,10 @@ const REQUIRED_FILES = [
   'package.json',
   'config/company-operating-model.json',
   'config/daily-publication-windows.json',
+  'config/integration-contract.json',
   'data/seed-company-state.json',
   'src/engine.mjs',
+  'src/apply-daily-limits.mjs',
   'src/review-gate.mjs',
   'src/run-shadow.mjs',
   'src/render-review-preview.mjs',
@@ -80,6 +86,13 @@ export async function validatePackage() {
     if (!modelLabels.has(classification)) errors.push(`Operating model is missing financial label: ${classification}`);
   }
 
+  for (const key of REQUIRED_DAILY_LIMITS) {
+    const value = model.dailyLimits?.[key];
+    if (!Number.isInteger(value) || value < 0) {
+      errors.push(`Daily limit ${key} must be configured as a non-negative integer.`);
+    }
+  }
+
   const ignoredLines = new Set(gitignore.split(/\r?\n/u).map((line) => line.trim()).filter(Boolean));
   for (const entry of REQUIRED_IGNORES) {
     if (!ignoredLines.has(entry)) errors.push(`Generated artifact directory must remain ignored: ${entry}`);
@@ -95,6 +108,7 @@ export async function validatePackage() {
     checked: {
       requiredFiles: REQUIRED_FILES.length,
       ignoredArtifactDirectories: REQUIRED_IGNORES.length,
+      dailyLimits: REQUIRED_DAILY_LIMITS.length,
       agents: state.agents?.length ?? 0,
       projects: state.projects?.length ?? 0,
       financialItems: state.financials?.length ?? 0,
