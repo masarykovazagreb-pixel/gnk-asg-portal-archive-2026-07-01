@@ -1,0 +1,61 @@
+{
+  "version": "2026-09-15-offline-v1",
+  "mode": "offline-shadow",
+  "timezone": "Europe/Zagreb",
+  "activation": {
+    "adminPreview": false,
+    "internalFeed": false,
+    "publicOperations": false,
+    "publicProjectUpdates": false,
+    "publicMeetings": false,
+    "publicAlBrief": false,
+    "publicFinancialSnapshot": false,
+    "automaticPublication": false
+  },
+  "chainOfCommand": [
+    {"id":"president","title":"Predsjednik Uprave","authority":"strategy-and-final-approval"},
+    {"id":"al","title":"AL — Executive Orchestrator / Chief of Staff","reportsTo":"president","authority":"coordinate-and-recommend"},
+    {"id":"finance","title":"Direktor financija","reportsTo":"al","voice":"numeric-sceptical-concise","evidence":["ledger","invoice","bank-statement","approved-budget"]},
+    {"id":"legal","title":"Direktor pravnih poslova","reportsTo":"al","voice":"precise-risk-first","evidence":["contract","regulation","decision","verified-record"]},
+    {"id":"technology","title":"Direktor tehnologije","reportsTo":"al","voice":"root-cause-and-reliability","evidence":["logs","tests","monitoring","source-code"]},
+    {"id":"operations","title":"Direktor operacija","reportsTo":"al","voice":"execution-dependencies-deadlines","evidence":["task-state","milestone","owner","deadline"]},
+    {"id":"communications","title":"Direktor komunikacija","reportsTo":"al","voice":"audience-relevance-reputation","evidence":["approved-facts","publication-policy","source-map"]}
+  ],
+  "financialLabels": ["ACTUAL","COMMITTED","FORECAST","SIMULATED"],
+  "eventTypes": [
+    "PROJECT_DELAYED","BUDGET_VARIANCE_DETECTED","TASK_COMPLETED","INVOICE_OVERDUE",
+    "DATA_SOURCE_FAILED","LEGAL_REVIEW_REQUIRED","MILESTONE_REACHED","PUBLICATION_REJECTED",
+    "DECISION_REQUIRED","DEPENDENCY_BLOCKED","RISK_ESCALATED","MEETING_CONCLUDED"
+  ],
+  "meetingTriggers": {
+    "deadlineDelayHours": 24,
+    "budgetVariancePct": 5,
+    "sourceFailureMinutes": 90,
+    "conflictingRecommendations": true,
+    "highLegalOrSecurityRisk": true
+  },
+  "publicationQuality": {
+    "minimumConcreteSignals": 2,
+    "requiredAny": ["number","decision","risk","cause","owner","deadline","nextStep"],
+    "semanticSimilarityMax": 0.82,
+    "lookbackDays": 30,
+    "rejectEmptyPhrases": [
+      "nastavljamo pratiti situaciju",
+      "tim radi na zadatku",
+      "projekt napreduje prema planu",
+      "ostajemo usmjereni na ciljeve"
+    ],
+    "requireSourceEvent": true,
+    "requireAuthorityMatch": true,
+    "requireFinancialLabel": true
+  },
+  "dailyLimits": {
+    "executiveDirective": 1,
+    "alBrief": 1,
+    "projectUpdates": 6,
+    "leadComments": 8,
+    "meetingSummaries": 4,
+    "financialSnapshots": 1,
+    "activityFeedItems": 18
+  }
+}
