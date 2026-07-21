@@ -1,0 +1,102 @@
+name: Diagnose Cloudflare cache/route state (one-off, read-only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      cf_token:
+        description: "Cloudflare read-only API token (masked immediately, never logged)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Mask token before anything else touches it
+        run: echo "::add-mask::${{ inputs.cf_token }}"
+
+      - name: Resolve zone id for gnk-asg.hr
+        id: zone
+        env:
+          CF_TOKEN: ${{ inputs.cf_token }}
+        run: |
+          set -euo pipefail
+          resp=$(curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr")
+          echo "$resp" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+print('success:', d.get('success'))
+if d.get('result'):
+    z = d['result'][0]
+    print('ZONE_ID=' + z['id'])
+    print('zone name:', z['name'], 'status:', z['status'], 'plan:', z.get('plan',{}).get('name'))
+else:
+    print('errors:', d.get('errors'))
+" | tee /tmp/zoneinfo.txt
+          zid=$(grep '^ZONE_ID=' /tmp/zoneinfo.txt | cut -d= -f2)
+          echo "zone_id=$zid" >> "$GITHUB_OUTPUT"
+
+      - name: List Worker routes for the zone
+        env:
+          CF_TOKEN: ${{ inputs.cf_token }}
+          ZONE_ID: ${{ steps.zone.outputs.zone_id }}
+        run: |
+          set -euo pipefail
+          curl -s -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/workers/routes" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+print('success:', d.get('success'))
+for r in d.get('result') or []:
+    print('pattern:', r.get('pattern'), '-> script:', r.get('script'))
+if not d.get('success'):
+    print('errors:', d.get('errors'))
+"
+
+      - name: Check cache-level / dev-mode / always-online zone settings
+        env:
+          CF_TOKEN: ${{ inputs.cf_token }}
+          ZONE_ID: ${{ steps.zone.outputs.zone_id }}
+        run: |
+          set -euo pipefail
+          for setting in cache_level browser_cache_ttl development_mode always_online; do
+            echo "--- $setting ---"
+            curl -s -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/settings/${setting}" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+r=d.get('result',{})
+print('value:', r.get('value'), 'editable:', r.get('editable'))
+" || echo "(failed)"
+          done
+
+      - name: List page rules (may affect caching per-path)
+        env:
+          CF_TOKEN: ${{ inputs.cf_token }}
+          ZONE_ID: ${{ steps.zone.outputs.zone_id }}
+        run: |
+          set -euo pipefail
+          curl -s -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+print('success:', d.get('success'))
+for pr in d.get('result') or []:
+    targets = [t.get('constraint',{}).get('value') for t in pr.get('targets',[])]
+    actions = [(a.get('id'), a.get('value')) for a in pr.get('actions',[])]
+    print('targets:', targets, 'status:', pr.get('status'), 'actions:', actions)
+if not d.get('success'):
+    print('errors:', d.get('errors'))
+"
+
+      - name: Live HEAD request to / and /group-network/ with cache headers
+        run: |
+          for path in "/" "/group-network/" "/en/"; do
+            echo "=== https://gnk-asg.hr${path} ==="
+            curl -s -D - -o /dev/null "https://gnk-asg.hr${path}?diagcachebust=$(date +%s)" | grep -Ei '^(HTTP/|cf-cache-status|cf-ray|cache-control|age:|last-modified|etag|x-gnk-)' || true
+            echo
+          done
