@@ -1,0 +1,18 @@
+{
+  "name": "gnk-asg-digital-workforce-offline",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Offline-only shadow simulation and editorial review for GNK ASG Digital Workforce.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "shadow": "node src/run-shadow.mjs",
+    "review": "node src/render-review-preview.mjs",
+    "shadow:14": "node src/run-shadow.mjs 2026-07-22 14 && node src/render-review-preview.mjs",
+    "shadow:30": "node src/run-shadow.mjs 2026-07-22 30 && node src/render-review-preview.mjs",
+    "verify": "node --test test/*.test.mjs && node src/run-shadow.mjs 2026-07-22 14 && node src/render-review-preview.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
