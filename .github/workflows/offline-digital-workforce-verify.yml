@@ -1,0 +1,68 @@
+name: Offline Digital Workforce Verify
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'offline/digital-workforce-automation/**'
+      - '.github/workflows/offline-digital-workforce-verify.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: offline-digital-workforce-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-offline-workforce:
+    name: Verify offline shadow engine
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: offline/digital-workforce-automation
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Run tests and generate 14-day shadow review
+        run: npm run verify
+
+      - name: Verify production controls remain disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f generated-shadow/manifest.json
+          test -f generated-review/index.json
+          test -f generated-admin/shadow-admin-summary.md
+          node --input-type=module <<'NODE'
+          import { readFile } from 'node:fs/promises';
+
+          const index = JSON.parse(await readFile('generated-review/index.json', 'utf8'));
+          const admin = JSON.parse(await readFile('generated-admin/summary.json', 'utf8'));
+
+          if (index.mode !== 'OFFLINE' || index.publicReleaseAllowed !== false) {
+            throw new Error('Review index is not strictly offline.');
+          }
+          if (admin.mode !== 'OFFLINE' || admin.publicReleaseAllowed !== false) {
+            throw new Error('Admin summary is not strictly offline.');
+          }
+          NODE
+
+      - name: Upload offline verification artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: offline-digital-workforce-verification
+          path: |
+            offline/digital-workforce-automation/generated-shadow/manifest.json
+            offline/digital-workforce-automation/generated-review/
+            offline/digital-workforce-automation/generated-admin/
+          if-no-files-found: error
+          retention-days: 7
