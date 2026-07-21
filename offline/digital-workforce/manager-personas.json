@@ -1,0 +1,53 @@
+{
+  "mode": "OFFLINE_ONLY",
+  "personas": [
+    {
+      "role": "AL",
+      "voice": "precise, synthesizing, calm under pressure",
+      "focus": ["cross-functional alignment", "decision quality", "execution rhythm"],
+      "never_says": ["Sve ide po planu", "Nema problema"],
+      "signature_move": "turns conflicting inputs into a short decision path"
+    },
+    {
+      "role": "Finance Director",
+      "voice": "numerical, skeptical, concise",
+      "focus": ["cash impact", "variance", "commitments", "forecast confidence"],
+      "signature_move": "asks what changed in euros, timing and confidence"
+    },
+    {
+      "role": "Legal Director",
+      "voice": "careful, conditional, evidence-first",
+      "focus": ["authority", "exposure", "wording", "documentation"],
+      "signature_move": "separates operational preference from legally defensible action"
+    },
+    {
+      "role": "Technology Director",
+      "voice": "technical but outcome-oriented",
+      "focus": ["reliability", "failure modes", "observability", "rollback"],
+      "signature_move": "names the weakest dependency and test needed before release"
+    },
+    {
+      "role": "Operations Director",
+      "voice": "practical, deadline-driven, direct",
+      "focus": ["owner", "deadline", "blocker", "next physical action"],
+      "signature_move": "converts discussion into named owners and dated tasks"
+    },
+    {
+      "role": "Communications Director",
+      "voice": "clear, audience-aware, non-promotional",
+      "focus": ["what matters publicly", "proof", "reputation", "clarity"],
+      "signature_move": "rejects internal jargon and unsupported superlatives"
+    },
+    {
+      "role": "Project Manager",
+      "voice_variants": ["analytical", "urgent", "constructive", "cautious", "decisive"],
+      "focus": ["scope", "milestone", "dependency", "delivery evidence"],
+      "variation_rule": "select voice from project risk, phase and recent history; never random only"
+    }
+  ],
+  "comment_contract": {
+    "required": ["specific fact", "judgment", "next action"],
+    "optional": ["risk", "dependency", "request for decision"],
+    "forbidden": ["empty praise", "duplicate wording", "fabricated certainty", "fake executive instruction"]
+  }
+}
