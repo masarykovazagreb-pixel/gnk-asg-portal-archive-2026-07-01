@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260721-header-fulltransparent-v1';
+  var VERSION = '20260721-restore-globe-network-v1';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
   style('/assets/group-location-weather.css');
   style('/assets/group-overview-panel.css');
   style('/assets/group-market-coverage.css');
+  style('/assets/group-static-overview.css');
   style('/assets/network-reading-layout.css');
   style('/assets/bitcoin-chart.css');
   style('/assets/market-expansion.css');
@@ -83,6 +84,19 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/floating-intelligence.js');
   script('/assets/group-network.js');
   script('/assets/group-clarity.js');
+  script('/assets/group-globe-3d.js');
+  script('/assets/group-map-2d-geo.js');
+  script('/assets/group-location-insights.js');
+  script('/assets/group-overview-panel.js');
+  script('/assets/group-market-coverage.js');
+  script('/assets/group-map-pdf.js');
+  script('/assets/group-globe-pdf.js');
+  script('/assets/group-static-overview.js');
+  script('/assets/group-map-viewport.js');
+  script('/assets/network-market-integration.js');
+  script('/assets/group-mobile-accessible.js');
+  script('/assets/network-search-3d.js');
+  script('/assets/location-recovery.js');
   script('/assets/public-sources.js');
   script('/assets/site-share.js');
   script('/assets/hourly-data-disclosure.js');
