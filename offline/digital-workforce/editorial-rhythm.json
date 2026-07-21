@@ -1,0 +1,52 @@
+{
+  "mode": "DRAFT_ONLY",
+  "timezone": "Europe/Zagreb",
+  "public_activation": false,
+  "daily_slots": [
+    {"window":"07:05-07:35","format":"AL morning briefing","probability":0.82,"max_items":1},
+    {"window":"08:20-09:10","format":"project stand-up note","probability":0.65,"max_items":2},
+    {"window":"10:40-11:25","format":"dependency or risk update","probability":0.48,"max_items":1},
+    {"window":"12:15-13:05","format":"finance or resource pulse","probability":0.42,"max_items":1},
+    {"window":"14:10-15:20","format":"meeting decision or expert opinion","probability":0.58,"max_items":2},
+    {"window":"16:35-17:25","format":"delivery evidence and closed tasks","probability":0.76,"max_items":2},
+    {"window":"18:20-19:40","format":"public daily summary","probability":0.70,"max_items":1}
+  ],
+  "variation": {
+    "jitter_minutes": 19,
+    "no_fixed_minute_pattern": true,
+    "weekend_mode": "lower-volume, monitoring and weekly synthesis",
+    "silent_day_allowed": true,
+    "silent_day_reason_required": true
+  },
+  "content_mix_targets": {
+    "completed_work": 0.30,
+    "project_progress": 0.22,
+    "risk_or_dependency": 0.14,
+    "decision_or_meeting": 0.14,
+    "market_or_external_signal": 0.10,
+    "finance_or_resources": 0.06,
+    "learning_or_retrospective": 0.04
+  },
+  "quality_gates": [
+    "source_or_internal_event_reference",
+    "persona_consistency",
+    "authority_check",
+    "duplicate_check",
+    "financial_classification_check",
+    "privacy_and_legal_check",
+    "human_approval_when_reserved"
+  ],
+  "existing_page_mapping": {
+    "Plan":"forward priorities and milestones",
+    "Bilten":"daily and weekly synthesis",
+    "Projekti":"project state and delivery evidence",
+    "Rizici":"risk, dependency and mitigation",
+    "Mišljenja":"role-specific expert judgments",
+    "Ovisnosti":"cross-project blockers",
+    "Zadaci":"owners, deadlines and completion proof",
+    "Krediti":"clearly simulated internal credit mechanics only",
+    "Newsroom":"approved drafts and publication queue",
+    "Workeri":"agent activity and capability state",
+    "Zapisnik":"meetings, decisions and unresolved questions"
+  }
+}
