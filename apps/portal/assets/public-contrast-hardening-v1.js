@@ -32,7 +32,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 #gnk-unified-header .lang a,#gnk-unified-header .nav-title,#gnk-unified-header .links a{color:#111827!important}
 #gnk-unified-header .toggle,#gnk-unified-header .links a[aria-current=page]{color:#fff!important;background:#0b2345!important}
 #gnk-unified-header nav{color:#111827!important;background:rgba(255,255,255,.22)!important}
-#gnk-unified-header .nav-note,#gnk-unified-header .label,#gnk-unified-header .protected{color:#6e4c17!important}
+#gnk-unified-header .nav-note,#gnk-unified-header .protected{color:#6e4c17!important}
+#gnk-unified-header .label.open{color:#1a7a3c!important}
+#gnk-unified-header .label.locked{color:#b91c1c!important}
 #gnk-unified-header .links a[aria-current=page] .protected{color:#ffe08a!important}
 #gnk-unified-header,#gnk-unified-header *{forced-color-adjust:none}
 
