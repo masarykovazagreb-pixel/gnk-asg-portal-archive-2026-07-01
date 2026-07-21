@@ -1,0 +1,38 @@
+{
+  "version": "2026-07-21-offline-v1",
+  "mode": "offline-shadow",
+  "enabled": false,
+  "publicReleaseAllowed": false,
+  "timezone": "Europe/Zagreb",
+  "disclaimer": "SIMULACIJA — nema stvarnog novca, stvarnih transakcija ni investicijskog savjetovanja.",
+  "sections": [
+    {"id":"market-overview","enabled":true,"fields":["symbol","name","date","open","high","low","close","bid","ask","volume","changePct"]},
+    {"id":"leaderboard","enabled":true,"fields":["rank","displayName","portfolioValue","dailyPnl","dailyPnlPct","incentivePoints","tradeCount"]},
+    {"id":"positions","enabled":true,"fields":["displayName","units","averagePrice","marketValue","unrealizedPnl","cashBalance"]},
+    {"id":"worker-catalog","enabled":true,"fields":["workerId","displayName","role","status","currentTask","completedTasks","qualityScore"]},
+    {"id":"projects","enabled":true,"fields":["projectId","name","status","owner","progressPct","riskLevel","nextMilestone"]},
+    {"id":"tasks","enabled":true,"fields":["taskId","title","owner","priority","status","dueAt","evidenceCount"]},
+    {"id":"risks","enabled":true,"fields":["riskId","title","severity","owner","status","mitigation","updatedAt"]},
+    {"id":"meetings","enabled":true,"fields":["meetingId","title","date","participants","agenda","outcome","status"]},
+    {"id":"newsroom","enabled":true,"fields":["draftId","title","summary","author","reviewDecision","sourceCount","updatedAt"]},
+    {"id":"system-health","enabled":true,"fields":["runId","mode","engineVersion","taxonomyVersion","validationStatus","generatedAt"]}
+  ],
+  "privacy": {
+    "allowInternalIds": false,
+    "allowEmails": false,
+    "allowIpAddresses": false,
+    "allowSecrets": false,
+    "allowPrivateNotes": false,
+    "allowRawEvidenceDocuments": false
+  },
+  "safety": {
+    "realMoney": false,
+    "payments": false,
+    "withdrawals": false,
+    "externalDeposits": false,
+    "leverage": false,
+    "shortSelling": false,
+    "productionWrites": false,
+    "automaticPublishing": false
+  }
+}
