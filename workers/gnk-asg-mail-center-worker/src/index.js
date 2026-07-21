@@ -156,9 +156,19 @@ const DISPOSABLE_EMAIL_DOMAINS = new Set([
   'tempmail.com', 'temp-mail.org', 'yopmail.com', 'throwawaymail.com',
   'trashmail.com', 'getnada.com', 'sharklasers.com', 'maildrop.cc', 'dispostable.com'
 ]);
+const BLOCKED_SENDER_DOMAINS = new Set([
+  'hraste-partneri.hr'
+]);
+const BLOCKED_SENDER_ADDRESSES = new Set([
+  'ana@talaria.hr',
+  'nikolina.pisek@gmail.com'
+]);
 function isSecurityRejected(sender, subject) {
-  const domain = String(sender || '').split('@')[1]?.toLowerCase() || '';
+  const address = String(sender || '').toLowerCase();
+  const domain = address.split('@')[1] || '';
   if (DISPOSABLE_EMAIL_DOMAINS.has(domain)) return true;
+  if (BLOCKED_SENDER_DOMAINS.has(domain)) return true;
+  if (BLOCKED_SENDER_ADDRESSES.has(address)) return true;
   const s = String(subject || '').toLowerCase();
   if (/\b(you (have )?won|claim your prize|lottery winner|inheritance fund|urgent business proposal|crypto(currency)? investment opportunity)\b/.test(s)) return true;
   return false;
