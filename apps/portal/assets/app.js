@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260721-restore-globe-network-v1';
+  var VERSION = '20260721-restore-globe-network-v2-full';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -82,11 +82,16 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/mobile-app.js');
   script('/assets/mobile-navigation.js');
   script('/assets/floating-intelligence.js');
+  script('/assets/world-geography.js');
+  script('/assets/network-motion.js');
   script('/assets/group-network.js');
   script('/assets/group-clarity.js');
   script('/assets/group-globe-3d.js');
   script('/assets/group-map-2d-geo.js');
   script('/assets/group-location-insights.js');
+  script('/assets/group-map-selection-bridge.js');
+  script('/assets/network-selection-sync.js');
+  script('/assets/command-centre.js');
   script('/assets/group-overview-panel.js');
   script('/assets/group-market-coverage.js');
   script('/assets/group-map-pdf.js');
