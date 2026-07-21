@@ -16,7 +16,7 @@
     #${WIDGET_ID} {
       position: fixed;
       left: max(16px, env(safe-area-inset-left));
-      bottom: max(20px, calc(env(safe-area-inset-bottom) + 20px));
+      bottom: max(92px, calc(env(safe-area-inset-bottom) + 92px));
       z-index: 9997;
       width: 190px;
       padding: 18px;
