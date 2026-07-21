@@ -16,14 +16,17 @@ assert.ok(limited.drafts.every((draft) => draft.status === 'DRAFT_ONLY'));
 assert.ok(limited.drafts.every((draft) => draft.public === false));
 assert.ok(limited.drafts.every((draft) => draft.publishAt === null));
 
-const counts = Object.groupBy(limited.drafts, (draft) => draft.tab);
-assert.ok((counts.plan?.length ?? 0) <= model.dailyLimits.executiveDirective);
-assert.ok((counts.bilten?.length ?? 0) <= model.dailyLimits.alBrief);
-assert.ok((counts.projekti?.length ?? 0) <= model.dailyLimits.projectUpdates);
-assert.ok((counts.misljenja?.length ?? 0) <= model.dailyLimits.leadComments);
-assert.ok((counts.zapisnik?.length ?? 0) <= model.dailyLimits.meetingSummaries);
-assert.ok((counts.krediti?.length ?? 0) <= model.dailyLimits.financialSnapshots);
-assert.ok((counts.workeri?.length ?? 0) <= model.dailyLimits.activityFeedItems);
+const counts = limited.drafts.reduce((acc, draft) => {
+  acc[draft.tab] = (acc[draft.tab] ?? 0) + 1;
+  return acc;
+}, {});
+assert.ok((counts.plan ?? 0) <= model.dailyLimits.executiveDirective);
+assert.ok((counts.bilten ?? 0) <= model.dailyLimits.alBrief);
+assert.ok((counts.projekti ?? 0) <= model.dailyLimits.projectUpdates);
+assert.ok((counts.misljenja ?? 0) <= model.dailyLimits.leadComments);
+assert.ok((counts.zapisnik ?? 0) <= model.dailyLimits.meetingSummaries);
+assert.ok((counts.krediti ?? 0) <= model.dailyLimits.financialSnapshots);
+assert.ok((counts.workeri ?? 0) <= model.dailyLimits.activityFeedItems);
 
 const validation = validateDailyLimits(limited, model.dailyLimits);
 assert.equal(validation.ok, true, validation.errors.join('\n'));
