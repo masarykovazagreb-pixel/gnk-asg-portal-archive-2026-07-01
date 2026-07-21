@@ -1,3 +1,5 @@
+import { enforceRequiredSignature } from './email-signature-contract-v1.js';
+
 export const VERSION = 'GNK_ASG_CLOUDFLARE_AI_AUTO_REPLY_V2_20260703';
 
 const PRIMARY_MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
@@ -413,29 +415,27 @@ function buildPayload(payload, reply, subject, references, signature, model) {
   let body = clean(reply.body);
   const missingReferences = references.filter((reference) => !body.includes(reference));
   if (missingReferences.length) body += `\n\nReference: ${missingReferences.join(' / ')}`;
-  const text = `${body}${signature.text ? `\n\n${signature.text}` : ''}`;
   const paragraphs = body.split(/\n{2,}/).filter(Boolean).map((item) => (
     `<p style="margin:0 0 14px;line-height:1.62">${escapeHtml(item).replace(/\n/g, '<br>')}</p>`
   )).join('');
-  const renderedSignature = signature.html || (signature.text
-    ? `<p style="margin:18px 0 0;white-space:pre-line;line-height:1.55">${escapeHtml(signature.text)}</p>`
-    : '');
-  const html = `<!doctype html><html><body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;color:#111827"><div style="max-width:720px;margin:0 auto;padding:28px 18px"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px">${paragraphs}${renderedSignature}</div></div></body></html>`;
+  const bareHtml = `<div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:28px">${paragraphs}</div>`;
   const headers = payload?.headers instanceof Headers ? Object.fromEntries(payload.headers.entries()) : { ...(payload?.headers || {}) };
   headers['Auto-Submitted'] = 'auto-replied';
   headers['X-GNK-ASG-AI-Auto-Reply'] = VERSION;
   headers['X-GNK-ASG-AI-Model'] = model;
   headers['X-GNK-ASG-AI-Language'] = reply.language || 'detected';
 
-  return {
+  const signed = enforceRequiredSignature({
     ...payload,
     subject: `Re: ${subject || 'Your inquiry'}`.slice(0, 220),
-    text,
-    plainText: text,
-    html,
-    bodyHtml: html,
+    text: body,
+    plainText: body,
+    html: bareHtml,
+    bodyHtml: bareHtml,
     headers
-  };
+  });
+  const wrappedHtml = `<!doctype html><html><body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;color:#111827"><div style="max-width:720px;margin:0 auto;padding:28px 18px">${signed.html}</div></body></html>`;
+  return { ...signed, html: wrappedHtml, bodyHtml: wrappedHtml };
 }
 
 async function personalize(payload, message, rawTextPromise, env) {
