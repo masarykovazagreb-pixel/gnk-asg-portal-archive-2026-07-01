@@ -15,62 +15,64 @@
   style.textContent = `
     #${WIDGET_ID} {
       position: fixed;
-      left: max(16px, env(safe-area-inset-left));
-      bottom: max(70px, calc(env(safe-area-inset-bottom) + 70px));
+      right: max(14px, env(safe-area-inset-right));
+      top: max(96px, calc(env(safe-area-inset-top) + 96px));
+      left: auto;
+      bottom: auto;
       z-index: 9997;
-      width: 95px;
-      padding: 9px;
-      border-radius: 11px;
+      width: 114px;
+      padding: 11px;
+      border-radius: 13px;
       background: #c9ff66;
       color: #12211b;
       font-family: Arial, sans-serif;
-      box-shadow: 0 7px 17px rgba(0,0,0,.22);
+      box-shadow: 0 8px 20px rgba(0,0,0,.22);
       text-decoration: none;
       display: block;
-      transform: rotate(-4deg);
-      animation: gnkIdejeFloat 7s ease-in-out infinite;
-      transition: transform .2s ease, box-shadow .2s ease;
+      transform-origin: top center;
+      transform: rotate(-6deg);
+      animation: gnkIdejeSway 4.5s ease-in-out infinite;
+      transition: box-shadow .2s ease;
     }
     #${WIDGET_ID}:hover,
     #${WIDGET_ID}:focus-visible {
-      transform: rotate(-2deg) translateY(-2px);
-      box-shadow: 0 9px 20px rgba(0,0,0,.28);
+      box-shadow: 0 11px 24px rgba(0,0,0,.28);
       outline: none;
     }
     #${WIDGET_ID} strong {
       display: block;
-      font-size: .58rem;
+      font-size: .7rem;
       font-weight: 800;
       letter-spacing: -.01em;
       margin-bottom: 2px;
     }
     #${WIDGET_ID} span.sub {
       display: block;
-      font-size: .46rem;
+      font-size: .55rem;
       font-weight: 600;
       opacity: .82;
-      margin-bottom: 6px;
+      margin-bottom: 7px;
     }
     #${WIDGET_ID} span.cta {
       display: inline-flex;
       align-items: center;
-      gap: 3px;
-      font-size: .4rem;
+      gap: 4px;
+      font-size: .48rem;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: .04em;
       background: #12211b;
       color: #c9ff66;
-      padding: 4px 6px;
+      padding: 5px 7px;
       border-radius: 999px;
     }
-    @keyframes gnkIdejeFloat {
-      0%, 100% { transform: rotate(-4deg) translateY(0); }
-      50% { transform: rotate(-2deg) translateY(-5px); }
+    @keyframes gnkIdejeSway {
+      0%, 100% { transform: rotate(-6deg); }
+      50% { transform: rotate(5deg); }
     }
     @media (max-width: 640px) {
-      #${WIDGET_ID} { width: 80px; padding: 7px; }
-      #${WIDGET_ID} strong { font-size: .52rem; }
+      #${WIDGET_ID} { width: 96px; padding: 8px; top: max(84px, calc(env(safe-area-inset-top) + 84px)); }
+      #${WIDGET_ID} strong { font-size: .62rem; }
     }
     @media (prefers-reduced-motion: reduce) {
       #${WIDGET_ID} { animation: none; }
