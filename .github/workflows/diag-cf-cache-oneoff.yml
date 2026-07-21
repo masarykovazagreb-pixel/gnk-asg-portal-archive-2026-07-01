@@ -26,7 +26,8 @@ jobs:
         run: |
           set -euo pipefail
           curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr" -o /tmp/zone.json
-          python3 -c "import json;d=json.load(open('/tmp/zone.json'));print('success:',d.get('success'));r=d.get('result') or [];print('zone:',r[0]['name'],'status:',r[0]['status'],'plan:',r[0].get('plan',{}).get('name')) if r else print('errors:',d.get('errors'))"
+          MSG=$(python3 -c "import json;d=json.load(open('/tmp/zone.json'));r=d.get('result') or [];print(('zone: '+r[0]['name']+' status: '+r[0]['status']+' plan: '+str(r[0].get('plan',{}).get('name'))) if r else ('errors: '+str(d.get('errors'))))")
+          echo "::notice title=Zone::${MSG}"
           zid=$(python3 -c "import json;d=json.load(open('/tmp/zone.json'));r=d.get('result') or [];print(r[0]['id'] if r else '')")
           echo "zone_id=$zid" >> "$GITHUB_OUTPUT"
 
@@ -37,7 +38,8 @@ jobs:
         run: |
           set -euo pipefail
           curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/workers/routes" -o /tmp/routes.json
-          python3 -c "import json;d=json.load(open('/tmp/routes.json'));print('success:',d.get('success'));[print('pattern:',r.get('pattern'),'-> script:',r.get('script')) for r in (d.get('result') or [])];print('errors:',d.get('errors')) if not d.get('success') else None"
+          MSG=$(python3 -c "import json;d=json.load(open('/tmp/routes.json'));rs=d.get('result') or [];print(' | '.join((r.get('pattern','?')+' -> '+str(r.get('script'))) for r in rs) if rs else 'no routes / errors: '+str(d.get('errors')))")
+          echo "::notice title=WorkerRoutes::${MSG}"
 
       - name: Check cache-level / dev-mode / always-online zone settings
         env:
@@ -46,9 +48,9 @@ jobs:
         run: |
           set -euo pipefail
           for setting in cache_level browser_cache_ttl development_mode always_online; do
-            echo "--- $setting ---"
             curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/settings/${setting}" -o /tmp/setting.json
-            python3 -c "import json;d=json.load(open('/tmp/setting.json'));r=d.get('result',{});print('value:',r.get('value'),'editable:',r.get('editable'))" || echo "(failed)"
+            MSG=$(python3 -c "import json;d=json.load(open('/tmp/setting.json'));r=d.get('result',{});print('value: '+str(r.get('value'))+' editable: '+str(r.get('editable')))" || echo "failed")
+            echo "::notice title=Setting-${setting}::${MSG}"
           done
 
       - name: List page rules (may affect caching per-path)
@@ -58,20 +60,22 @@ jobs:
         run: |
           set -euo pipefail
           curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules" -o /tmp/pagerules.json
-          python3 -c "import json;d=json.load(open('/tmp/pagerules.json'));print('success:',d.get('success'));[print('targets:',[t.get('constraint',{}).get('value') for t in pr.get('targets',[])],'status:',pr.get('status'),'actions:',[(a.get('id'),a.get('value')) for a in pr.get('actions',[])]) for pr in (d.get('result') or [])];print('errors:',d.get('errors')) if not d.get('success') else None"
+          MSG=$(python3 -c "import json;d=json.load(open('/tmp/pagerules.json'));rs=d.get('result') or [];print(' || '.join((str([t.get('constraint',{}).get('value') for t in pr.get('targets',[])])+' status='+str(pr.get('status'))+' actions='+str([(a.get('id'),a.get('value')) for a in pr.get('actions',[])])) for pr in rs) if rs else 'no page rules / errors: '+str(d.get('errors')))")
+          echo "::notice title=PageRules::${MSG}"
 
-      - name: List zones for account (in case gnk-asg.hr is under a different account/zone name)
+      - name: List zones for account
         env:
           CF_TOKEN: ${{ inputs.cf_token }}
         run: |
           set -euo pipefail
           curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones?per_page=50" -o /tmp/allzones.json
-          python3 -c "import json;d=json.load(open('/tmp/allzones.json'));print('success:',d.get('success'));[print(z.get('name'),z.get('id'),z.get('status')) for z in (d.get('result') or [])];print('errors:',d.get('errors')) if not d.get('success') else None"
+          MSG=$(python3 -c "import json;d=json.load(open('/tmp/allzones.json'));rs=d.get('result') or [];print(' | '.join(z.get('name')+':'+z.get('id')+':'+z.get('status') for z in rs) if rs else 'errors: '+str(d.get('errors')))")
+          echo "::notice title=AllZones::${MSG}"
 
       - name: Live HEAD request to / and /group-network/ with cache headers
         run: |
           for path in "/" "/group-network/" "/en/"; do
-            echo "=== https://gnk-asg.hr${path} ==="
-            curl -s -D - -o /dev/null "https://gnk-asg.hr${path}?diagcachebust=$(date +%s)" | grep -Ei '^(HTTP/|cf-cache-status|cf-ray|cache-control|age:|last-modified|etag|x-gnk-)' || true
-            echo
+            headers=$(curl -s -D - -o /dev/null "https://gnk-asg.hr${path}?diagcachebust=$(date +%s)" | tr -d '\r' | grep -Ei '^(HTTP/|cf-cache-status|cf-ray|cache-control|age:|last-modified|etag|x-gnk-)' | tr '\n' ' | ')
+            safe_path=$(echo "$path" | tr '/' '_')
+            echo "::notice title=Headers${safe_path}::${headers}"
           done
