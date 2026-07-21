@@ -1,0 +1,48 @@
+{
+  "mode": "OFFLINE_ONLY",
+  "public_publish": false,
+  "principle": "Generate believable business activity only from approved project state, source-backed facts and explicitly marked simulations.",
+  "event_families": [
+    {
+      "id": "morning-signal",
+      "purpose": "Open the day with one meaningful operational signal, never generic motivation.",
+      "examples": ["dependency cleared", "new market signal", "budget drift", "milestone at risk", "new partner response"]
+    },
+    {
+      "id": "productive-friction",
+      "purpose": "Allow controlled disagreement between finance, legal, technology and communications.",
+      "resolution_required": true,
+      "max_public_summary_length": 420
+    },
+    {
+      "id": "quiet-progress",
+      "purpose": "Record useful work that does not justify a public article but belongs in the activity feed.",
+      "examples": ["data cleanup", "contract checklist", "source verification", "test repair", "risk reduction"]
+    },
+    {
+      "id": "decision-window",
+      "purpose": "Create a concise decision memo when a project reaches a real fork.",
+      "required_fields": ["decision", "options", "tradeoffs", "recommendation", "authority_owner"]
+    },
+    {
+      "id": "red-team-challenge",
+      "purpose": "Periodically challenge optimistic project claims before publication.",
+      "frequency": "1-3 per week",
+      "public_by_default": false
+    },
+    {
+      "id": "unexpected-but-plausible",
+      "purpose": "Introduce variation without inventing facts.",
+      "allowed": ["source delay", "calendar conflict", "revised estimate", "new dependency", "quality rejection", "stakeholder question"],
+      "forbidden": ["invented contracts", "invented payments", "invented legal victories", "invented audited results"]
+    }
+  ],
+  "narrative_rules": {
+    "no_same_opening_two_days_in_row": true,
+    "no_generic_success_claims": true,
+    "must_name_concrete_change": true,
+    "must_reference_project_or_event": true,
+    "must_expose_uncertainty_when_present": true,
+    "maximum_repetition_similarity": 0.72
+  }
+}
