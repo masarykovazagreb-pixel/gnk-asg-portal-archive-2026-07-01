@@ -5,10 +5,6 @@ import { fileURLToPath } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
 
-const REQUIRED_TABS = new Set([
-  'plan', 'bilten', 'projekti', 'rizici', 'misljenja', 'ovisnosti',
-  'zadaci', 'krediti', 'newsroom', 'workeri', 'zapisnik'
-]);
 const FINANCIAL_CLASSES = new Set(['ACTUAL', 'COMMITTED', 'FORECAST', 'SIMULATED']);
 const REQUIRED_FILES = [
   'README.md',
@@ -20,7 +16,8 @@ const REQUIRED_FILES = [
   'src/review-gate.mjs',
   'src/run-shadow.mjs',
   'src/render-review-preview.mjs',
-  'src/render-admin-summary.mjs'
+  'src/render-admin-summary.mjs',
+  'src/validate-package.mjs'
 ];
 
 async function readJson(relativePath) {
@@ -47,10 +44,23 @@ export async function validatePackage() {
     readJson('package.json')
   ]);
 
-  if (model.mode !== 'OFFLINE_DRAFT') errors.push('Operating model mode must be OFFLINE_DRAFT.');
-  if (model.activation?.publicPublishing !== false) errors.push('Public publishing must be disabled in operating model.');
-  if (model.activation?.productionWrites !== false) errors.push('Production writes must be disabled in operating model.');
-  if (model.activation?.scheduler !== false) errors.push('Scheduler must be disabled in operating model.');
+  if (model.mode !== 'offline-shadow') {
+    errors.push('Operating model mode must be offline-shadow.');
+  }
+
+  const activation = model.activation ?? {};
+  const unsafeActivation = Object.entries(activation)
+    .filter(([key]) => key.startsWith('public') || key === 'automaticPublication')
+    .filter(([, value]) => value !== false);
+  if (unsafeActivation.length) {
+    errors.push(`All public activation flags must be false: ${unsafeActivation.map(([key]) => key).join(', ')}`);
+  }
+
+  if (windows.enabled !== false) errors.push('Publication windows must remain disabled.');
+  if (windows.rules?.outputState !== 'DRAFT_ONLY') errors.push('Publication window outputState must be DRAFT_ONLY.');
+  if (windows.windows?.some((window) => !['admin-only', 'draft-queue'].includes(window.surface))) {
+    errors.push('Publication windows may only target admin-only or draft-queue surfaces.');
+  }
 
   if (!Array.isArray(state.agents) || state.agents.length < 6) errors.push('At least six agents are required.');
   if (!state.agents?.some((agent) => agent.voice === 'al')) errors.push('AL orchestrator agent is required.');
@@ -62,18 +72,12 @@ export async function validatePackage() {
     }
   }
 
-  const configuredTabs = new Set(model.publicTabs ?? model.tabs ?? []);
-  if (configuredTabs.size) {
-    for (const tab of REQUIRED_TABS) {
-      if (!configuredTabs.has(tab)) errors.push(`Missing configured tab: ${tab}`);
-    }
+  const modelLabels = new Set(model.financialLabels ?? []);
+  for (const classification of FINANCIAL_CLASSES) {
+    if (!modelLabels.has(classification)) errors.push(`Operating model is missing financial label: ${classification}`);
   }
 
-  if (windows.mode && !String(windows.mode).includes('DRAFT')) {
-    errors.push('Publication windows must remain draft-only.');
-  }
-
-  for (const script of ['test', 'shadow', 'review', 'admin', 'verify']) {
+  for (const script of ['test', 'shadow', 'review', 'admin', 'validate', 'verify']) {
     if (!pkg.scripts?.[script]) errors.push(`Missing package script: ${script}`);
   }
 
@@ -84,7 +88,8 @@ export async function validatePackage() {
       requiredFiles: REQUIRED_FILES.length,
       agents: state.agents?.length ?? 0,
       projects: state.projects?.length ?? 0,
-      financialItems: state.financials?.length ?? 0
+      financialItems: state.financials?.length ?? 0,
+      publicationWindows: windows.windows?.length ?? 0
     }
   };
 }
