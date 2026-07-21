@@ -41,7 +41,8 @@ async function fetchText(url) {
 }
 
 async function auditPage(url) {
-  const { ok, status, text: html, error } = await fetchText(url);
+  const bustedUrl = url + (url.includes('?') ? '&' : '?') + 'cb=' + Date.now();
+  const { ok, status, text: html, error } = await fetchText(bustedUrl);
   if (!ok) return { url, status, ok: false, error, issues: [`Stranica nije dostupna (HTTP ${status || 'greška'})`] };
 
   const title = tag(html, /<title[^>]*>([^<]*)<\/title>/i);
@@ -100,7 +101,7 @@ async function auditPage(url) {
 async function loadSitemapUrls() {
   const urls = [];
   for (const sitemap of SITEMAPS) {
-    const { ok, text } = await fetchText(`${BASE}/${sitemap}`);
+    const { ok, text } = await fetchText(`${BASE}/${sitemap}?cb=${Date.now()}`);
     if (!ok) continue;
     const locs = [...text.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => decode(m[1]));
     urls.push(...locs);
