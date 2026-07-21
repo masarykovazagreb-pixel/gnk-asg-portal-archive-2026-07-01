@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "offline-workforce-integration/v1",
+  "mode": "OFFLINE",
+  "canonicalPackagePath": "offline/digital-workforce-automation",
+  "designSourcePath": "offline/digital-workforce",
+  "productionIntegrationEnabled": false,
+  "publicReleaseAllowed": false,
+  "targetExistingRoute": "/digital-workforce/",
+  "targetExistingTabs": [
+    "plan",
+    "bilten",
+    "projekti",
+    "rizici",
+    "misljenja",
+    "ovisnosti",
+    "zadaci",
+    "krediti",
+    "newsroom",
+    "workeri",
+    "zapisnik"
+  ],
+  "financialClasses": ["ACTUAL", "COMMITTED", "FORECAST", "SIMULATED"],
+  "hardStops": {
+    "productionWrites": true,
+    "publicPublishing": true,
+    "schedulerActivation": true,
+    "emailSending": true,
+    "secretsRequired": false
+  },
+  "notes": [
+    "The canonical executable package lives under offline/digital-workforce-automation.",
+    "The offline/digital-workforce directory contains planning and persona source material only.",
+    "No new public route is introduced; future integration targets the existing Digital Workforce route and tabs.",
+    "All generated outputs remain private DRAFT_ONLY until a separately approved activation phase."
+  ]
+}
