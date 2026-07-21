@@ -79,6 +79,17 @@ SOURCES = [
     ("economy", "economy", "Energy Oil", "https://news.google.com/rss/search?q=oil+energy+markets+business+investment&hl=en&gl=US&ceid=US:en"),
     ("sport", "technology", "Sports Performance Technology", "https://news.google.com/rss/search?q=sports+performance+tracking+wearables+analytics+technology&hl=en&gl=US&ceid=US:en"),
     ("mobilnost", "technology", "Mobility Technology", "https://news.google.com/rss/search?q=mobility+technology+electric+vehicles+markets&hl=en&gl=US&ceid=US:en"),
+
+    # Direct international feeds (better image reliability than Google News
+    # search proxies, since those return whatever outlet Google happens to
+    # index for the query and often strip media tags).
+    ("international", "economy", "Sky News Business", "https://feeds.skynews.com/feeds/rss/business.xml"),
+    ("international", "economy", "Al Jazeera", "https://www.aljazeera.com/xml/rss/all.xml"),
+    ("international", "economy", "Euronews Business", "https://www.euronews.com/rss?level=theme&name=business"),
+    ("international", "economy", "DW Business", "https://rss.dw.com/xml/rss-en-bus"),
+    ("international", "economy", "France 24", "https://www.france24.com/en/rss"),
+    ("international", "economy", "The Independent Business", "https://www.independent.co.uk/news/business/rss"),
+    ("digital-assets", "digital-assets", "WIRED Business", "https://www.wired.com/feed/category/business/latest/rss"),
 ]
 
 BLOCKED_TITLE_PATTERNS = [

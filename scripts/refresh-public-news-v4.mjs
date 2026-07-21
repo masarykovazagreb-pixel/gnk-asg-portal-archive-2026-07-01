@@ -8,7 +8,14 @@ const FALLBACK_IMAGE='/assets/news-fallback.svg';
 const SOURCES=[
  {name:'WIRED Business',url:'https://www.wired.com/feed/category/business/latest/rss',group:'technology'},
  {name:'The Guardian Business',url:'https://www.theguardian.com/uk/business/rss',group:'business'},
- {name:'CoinDesk',url:'https://www.coindesk.com/arc/outboundfeeds/rss/',group:'markets'}
+ {name:'CoinDesk',url:'https://www.coindesk.com/arc/outboundfeeds/rss/',group:'markets'},
+ {name:'BBC Business',url:'https://feeds.bbci.co.uk/news/business/rss.xml',group:'business'},
+ {name:'Al Jazeera',url:'https://www.aljazeera.com/xml/rss/all.xml',group:'international'},
+ {name:'Sky News Business',url:'https://feeds.skynews.com/feeds/rss/business.xml',group:'business'},
+ {name:'Euronews Business',url:'https://www.euronews.com/rss?level=theme&name=business',group:'business'},
+ {name:'DW Business',url:'https://rss.dw.com/xml/rss-en-bus',group:'international'},
+ {name:'France 24',url:'https://www.france24.com/en/rss',group:'international'},
+ {name:'The Independent',url:'https://www.independent.co.uk/news/business/rss',group:'business'}
 ];
 const clean=value=>String(value??'').replace(/<!\[CDATA\[|\]\]>/g,'').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/\s+/g,' ').trim();
 const pick=(block,names)=>{for(const name of names){const match=block.match(new RegExp(`<${name}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${name}>`,'i'));if(match)return clean(match[1]);}return'';};
