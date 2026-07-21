@@ -1,0 +1,29 @@
+name: Verify sitemap cache staleness (one-off)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  issues: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check sitemap.xml with and without cache-bust
+        run: |
+          echo "# Sitemap cache check $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## Plain https://gnk-asg.hr/sitemap.xml" >> /tmp/d.md
+          curl -s -D - -o /tmp/plain.xml "https://gnk-asg.hr/sitemap.xml" | grep -Ei '^(HTTP/|cache-control|cf-cache-status|age|x-gnk-)' >> /tmp/d.md
+          echo "loc count (plain): $(grep -c '<loc>' /tmp/plain.xml)" >> /tmp/d.md
+          grep -o '<loc>[^<]*</loc>' /tmp/plain.xml | grep -Ei '\.css|\.svg|manifest|\.js' >> /tmp/d.md || echo "no bad entries in plain" >> /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## Cache-busted https://gnk-asg.hr/sitemap.xml?cb=TIMESTAMP" >> /tmp/d.md
+          curl -s -D - -o /tmp/busted.xml "https://gnk-asg.hr/sitemap.xml?cb=$(date +%s)" | grep -Ei '^(HTTP/|cache-control|cf-cache-status|age|x-gnk-)' >> /tmp/d.md
+          echo "loc count (busted): $(grep -c '<loc>' /tmp/busted.xml)" >> /tmp/d.md
+          grep -o '<loc>[^<]*</loc>' /tmp/busted.xml | grep -Ei '\.css|\.svg|manifest|\.js' >> /tmp/d.md || echo "no bad entries in busted" >> /tmp/d.md
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "Sitemap cache check $(date -u +%Y-%m-%dT%H:%M:%SZ)" --body-file /tmp/d.md
