@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   diagnose:
@@ -17,7 +18,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Mask token before anything else touches it
-        run: echo "::add-mask::${{ inputs.cf_token }}"
+        run: |
+          echo "::add-mask::${{ inputs.cf_token }}"
+          echo "# Cloudflare diagnostic results ($(date -u +%Y-%m-%dT%H:%M:%SZ))" > /tmp/diag.md
 
       - name: Resolve zone id for gnk-asg.hr
         id: zone
@@ -27,7 +30,7 @@ jobs:
           set -euo pipefail
           curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr" -o /tmp/zone.json
           MSG=$(python3 -c "import json;d=json.load(open('/tmp/zone.json'));r=d.get('result') or [];print(('zone: '+r[0]['name']+' status: '+r[0]['status']+' plan: '+str(r[0].get('plan',{}).get('name'))) if r else ('errors: '+str(d.get('errors'))))")
-          echo "::notice title=Zone::${MSG}"
+          printf "\n## Zone\n%s\n" "$MSG" >> /tmp/diag.md
           zid=$(python3 -c "import json;d=json.load(open('/tmp/zone.json'));r=d.get('result') or [];print(r[0]['id'] if r else '')")
           echo "zone_id=$zid" >> "$GITHUB_OUTPUT"
 
@@ -39,7 +42,7 @@ jobs:
           set -euo pipefail
           curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/workers/routes" -o /tmp/routes.json
           MSG=$(python3 -c "import json;d=json.load(open('/tmp/routes.json'));rs=d.get('result') or [];print(' | '.join((r.get('pattern','?')+' -> '+str(r.get('script'))) for r in rs) if rs else 'no routes / errors: '+str(d.get('errors')))")
-          echo "::notice title=WorkerRoutes::${MSG}"
+          printf "\n## Worker Routes\n%s\n" "$MSG" >> /tmp/diag.md
 
       - name: Check cache-level / dev-mode / always-online zone settings
         env:
@@ -50,7 +53,7 @@ jobs:
           for setting in cache_level browser_cache_ttl development_mode always_online; do
             curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/settings/${setting}" -o /tmp/setting.json
             MSG=$(python3 -c "import json;d=json.load(open('/tmp/setting.json'));r=d.get('result',{});print('value: '+str(r.get('value'))+' editable: '+str(r.get('editable')))" || echo "failed")
-            echo "::notice title=Setting-${setting}::${MSG}"
+            printf "\n## Setting: %s\n%s\n" "$setting" "$MSG" >> /tmp/diag.md
           done
 
       - name: List page rules (may affect caching per-path)
@@ -61,7 +64,7 @@ jobs:
           set -euo pipefail
           curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules" -o /tmp/pagerules.json
           MSG=$(python3 -c "import json;d=json.load(open('/tmp/pagerules.json'));rs=d.get('result') or [];print(' || '.join((str([t.get('constraint',{}).get('value') for t in pr.get('targets',[])])+' status='+str(pr.get('status'))+' actions='+str([(a.get('id'),a.get('value')) for a in pr.get('actions',[])])) for pr in rs) if rs else 'no page rules / errors: '+str(d.get('errors')))")
-          echo "::notice title=PageRules::${MSG}"
+          printf "\n## Page Rules\n%s\n" "$MSG" >> /tmp/diag.md
 
       - name: List zones for account
         env:
@@ -70,12 +73,20 @@ jobs:
           set -euo pipefail
           curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones?per_page=50" -o /tmp/allzones.json
           MSG=$(python3 -c "import json;d=json.load(open('/tmp/allzones.json'));rs=d.get('result') or [];print(' | '.join(z.get('name')+':'+z.get('id')+':'+z.get('status') for z in rs) if rs else 'errors: '+str(d.get('errors')))")
-          echo "::notice title=AllZones::${MSG}"
+          printf "\n## All Zones\n%s\n" "$MSG" >> /tmp/diag.md
 
       - name: Live HEAD request to / and /group-network/ with cache headers
         run: |
           for path in "/" "/group-network/" "/en/"; do
             headers=$(curl -s -D - -o /dev/null "https://gnk-asg.hr${path}?diagcachebust=$(date +%s)" | tr -d '\r' | grep -Ei '^(HTTP/|cf-cache-status|cf-ray|cache-control|age:|last-modified|etag|x-gnk-)' | tr '\n' ' | ')
             safe_path=$(echo "$path" | tr '/' '_')
-            echo "::notice title=Headers${safe_path}::${headers}"
+            printf "\n## Headers for %s\n%s\n" "$path" "$headers" >> /tmp/diag.md
           done
+
+      - name: Publish results as a GitHub issue (readable via API without blob-storage access)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" \
+            --title "CF diagnostic $(date -u +%Y-%m-%dT%H:%M:%SZ) (run ${{ github.run_id }})" \
+            --body-file /tmp/diag.md || cat /tmp/diag.md
