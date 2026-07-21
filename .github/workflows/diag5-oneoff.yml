@@ -1,0 +1,39 @@
+name: Verify globe network scripts live (one-off)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check live app.js and script availability
+        run: |
+          echo "# Globe/network restoration verification $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/d.md
+          curl -s "https://gnk-asg.hr/assets/app.js" -o /tmp/app.js
+          echo "" >> /tmp/d.md
+          echo "## app.js script() calls for the restored files" >> /tmp/d.md
+          grep -oE "script\('/assets/group-[a-z0-9-]*\.js'\)|script\('/assets/network-[a-z0-9-]*\.js'\)|script\('/assets/location-recovery\.js'\)" /tmp/app.js >> /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## HTTP status of each restored script file" >> /tmp/d.md
+          for f in group-globe-3d group-map-2d-geo group-location-insights group-overview-panel group-market-coverage group-map-pdf group-globe-pdf group-static-overview group-map-viewport network-market-integration group-mobile-accessible network-search-3d location-recovery; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "https://gnk-asg.hr/assets/${f}.js")
+            echo "${f}.js: HTTP ${code}" >> /tmp/d.md
+          done
+          echo "" >> /tmp/d.md
+          echo "## data files" >> /tmp/d.md
+          for f in group_network group_network_geo group_location_facts; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "https://gnk-asg.hr/data/${f}.json")
+            echo "${f}.json: HTTP ${code}" >> /tmp/d.md
+          done
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "Globe/network verification $(date -u +%Y-%m-%dT%H:%M:%SZ)" --body-file /tmp/d.md
