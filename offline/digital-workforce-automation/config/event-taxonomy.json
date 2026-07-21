@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "offline-workforce-event-taxonomy/v1",
+  "mode": "OFFLINE",
+  "canonicalTypes": [
+    "PROJECT_DELAYED",
+    "BUDGET_VARIANCE_DETECTED",
+    "TASK_COMPLETED",
+    "INVOICE_OVERDUE",
+    "DATA_SOURCE_FAILED",
+    "LEGAL_REVIEW_REQUIRED",
+    "MILESTONE_REACHED",
+    "PUBLICATION_REJECTED",
+    "DECISION_REQUIRED",
+    "DEPENDENCY_BLOCKED",
+    "RISK_ESCALATED",
+    "MEETING_CONCLUDED",
+    "QUALITY_REVIEW_REQUIRED",
+    "SCOPE_CLARIFICATION",
+    "QUIET_PROGRESS"
+  ],
+  "aliases": {
+    "DEPENDENCY_AT_RISK": "DEPENDENCY_BLOCKED"
+  },
+  "meetingEligible": [
+    "DEPENDENCY_BLOCKED",
+    "DECISION_REQUIRED",
+    "SCOPE_CLARIFICATION",
+    "LEGAL_REVIEW_REQUIRED",
+    "RISK_ESCALATED"
+  ],
+  "publicCandidateEligible": [
+    "MILESTONE_REACHED",
+    "TASK_COMPLETED",
+    "MEETING_CONCLUDED"
+  ],
+  "rules": {
+    "unknownTypeDecision": "REJECT",
+    "preserveOriginalType": true,
+    "requireCanonicalType": true,
+    "productionWritesEnabled": false,
+    "publicPublishingEnabled": false
+  }
+}
