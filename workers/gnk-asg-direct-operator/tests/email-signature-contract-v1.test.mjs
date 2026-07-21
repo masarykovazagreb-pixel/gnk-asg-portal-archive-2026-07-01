@@ -13,7 +13,7 @@ assert.match(result.text, /GNK ASG d\.o\.o\./);
 assert.match(result.text, /OIB: 75227917632/);
 assert.match(result.text, /E-mail: info@gnk-asg\.hr/);
 assert.match(result.html, /data-gnk-asg-signature=/);
-assert.doesNotMatch(result.html, /<img/, 'signature must not include a logo image');
+assert.match(result.html, /<img[^>]*logo-gnk-asg-email\.png/, 'signature must include the working logo image');
 assert.equal(result.bcc, MANDATORY_BCC + ', rht@gmx.com', 'BCC must include both mandatory copies (2026-07-11 owner-confirmed second address)');
 assert.equal(result.headers['X-GNK-ASG-Signature-Contract'], VERSION);
 assert.equal(result.headers['X-GNK-ASG-Mandatory-Copy'], 'ENFORCED');
