@@ -6,7 +6,9 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
 
 const FINANCIAL_CLASSES = new Set(['ACTUAL', 'COMMITTED', 'FORECAST', 'SIMULATED']);
+const REQUIRED_IGNORES = ['generated-shadow/', 'generated-review/', 'generated-admin/'];
 const REQUIRED_FILES = [
+  '.gitignore',
   'README.md',
   'package.json',
   'config/company-operating-model.json',
@@ -37,11 +39,12 @@ export async function validatePackage() {
 
   if (errors.length) return { ok: false, errors };
 
-  const [model, windows, state, pkg] = await Promise.all([
+  const [model, windows, state, pkg, gitignore] = await Promise.all([
     readJson('config/company-operating-model.json'),
     readJson('config/daily-publication-windows.json'),
     readJson('data/seed-company-state.json'),
-    readJson('package.json')
+    readJson('package.json'),
+    readFile(path.join(root, '.gitignore'), 'utf8')
   ]);
 
   if (model.mode !== 'offline-shadow') {
@@ -77,6 +80,11 @@ export async function validatePackage() {
     if (!modelLabels.has(classification)) errors.push(`Operating model is missing financial label: ${classification}`);
   }
 
+  const ignoredLines = new Set(gitignore.split(/\r?\n/u).map((line) => line.trim()).filter(Boolean));
+  for (const entry of REQUIRED_IGNORES) {
+    if (!ignoredLines.has(entry)) errors.push(`Generated artifact directory must remain ignored: ${entry}`);
+  }
+
   for (const script of ['test', 'shadow', 'review', 'admin', 'validate', 'verify']) {
     if (!pkg.scripts?.[script]) errors.push(`Missing package script: ${script}`);
   }
@@ -86,6 +94,7 @@ export async function validatePackage() {
     errors,
     checked: {
       requiredFiles: REQUIRED_FILES.length,
+      ignoredArtifactDirectories: REQUIRED_IGNORES.length,
       agents: state.agents?.length ?? 0,
       projects: state.projects?.length ?? 0,
       financialItems: state.financials?.length ?? 0,
