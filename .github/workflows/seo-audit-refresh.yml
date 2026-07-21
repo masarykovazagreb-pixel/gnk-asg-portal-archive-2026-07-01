@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/portal/data/seo-audit-report.json; then
+          if git diff --quiet -- apps/portal/data/seo-audit-report.json && [ -z "$(git status --porcelain -- apps/portal/data/seo-audit-report.json)" ]; then
             echo "No SEO audit change."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
