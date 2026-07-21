@@ -75,6 +75,20 @@ jobs:
           MSG=$(python3 -c "import json;d=json.load(open('/tmp/allzones.json'));rs=d.get('result') or [];print(' | '.join(z.get('name')+':'+z.get('id')+':'+z.get('status') for z in rs) if rs else 'errors: '+str(d.get('errors')))")
           printf "\n## All Zones\n%s\n" "$MSG" >> /tmp/diag.md
 
+      - name: Verify live style.css contains the new 50% opacity value
+        run: |
+          curl -s "https://gnk-asg.hr/assets/style.css?diagcachebust=$(date +%s)" -o /tmp/live_style.css
+          {
+            echo ""
+            echo "## Live style.css check"
+            if grep -o '\.site-header{[^}]*}' /tmp/live_style.css; then :; else echo "site-header rule not found"; fi
+            if grep -q 'rgba(255,255,255,\.5)' /tmp/live_style.css; then
+              echo "CONFIRMED: rgba(255,255,255,.5) present in live style.css"
+            else
+              echo "NOT FOUND: rgba(255,255,255,.5) missing from live style.css"
+            fi
+          } >> /tmp/diag.md
+
       - name: Live HEAD request to / and /group-network/ with cache headers
         run: |
           for path in "/" "/group-network/" "/en/"; do
