@@ -25,19 +25,9 @@ jobs:
           CF_TOKEN: ${{ inputs.cf_token }}
         run: |
           set -euo pipefail
-          resp=$(curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr")
-          echo "$resp" | python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-print('success:', d.get('success'))
-if d.get('result'):
-    z = d['result'][0]
-    print('ZONE_ID=' + z['id'])
-    print('zone name:', z['name'], 'status:', z['status'], 'plan:', z.get('plan',{}).get('name'))
-else:
-    print('errors:', d.get('errors'))
-" | tee /tmp/zoneinfo.txt
-          zid=$(grep '^ZONE_ID=' /tmp/zoneinfo.txt | cut -d= -f2)
+          curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr" -o /tmp/zone.json
+          python3 -c "import json;d=json.load(open('/tmp/zone.json'));print('success:',d.get('success'));r=d.get('result') or [];print('zone:',r[0]['name'],'status:',r[0]['status'],'plan:',r[0].get('plan',{}).get('name')) if r else print('errors:',d.get('errors'))"
+          zid=$(python3 -c "import json;d=json.load(open('/tmp/zone.json'));r=d.get('result') or [];print(r[0]['id'] if r else '')")
           echo "zone_id=$zid" >> "$GITHUB_OUTPUT"
 
       - name: List Worker routes for the zone
@@ -46,16 +36,8 @@ else:
           ZONE_ID: ${{ steps.zone.outputs.zone_id }}
         run: |
           set -euo pipefail
-          curl -s -H "Authorization: Bearer $CF_TOKEN" \
-            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/workers/routes" | python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-print('success:', d.get('success'))
-for r in d.get('result') or []:
-    print('pattern:', r.get('pattern'), '-> script:', r.get('script'))
-if not d.get('success'):
-    print('errors:', d.get('errors'))
-"
+          curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/workers/routes" -o /tmp/routes.json
+          python3 -c "import json;d=json.load(open('/tmp/routes.json'));print('success:',d.get('success'));[print('pattern:',r.get('pattern'),'-> script:',r.get('script')) for r in (d.get('result') or [])];print('errors:',d.get('errors')) if not d.get('success') else None"
 
       - name: Check cache-level / dev-mode / always-online zone settings
         env:
@@ -65,13 +47,8 @@ if not d.get('success'):
           set -euo pipefail
           for setting in cache_level browser_cache_ttl development_mode always_online; do
             echo "--- $setting ---"
-            curl -s -H "Authorization: Bearer $CF_TOKEN" \
-              "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/settings/${setting}" | python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-r=d.get('result',{})
-print('value:', r.get('value'), 'editable:', r.get('editable'))
-" || echo "(failed)"
+            curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/settings/${setting}" -o /tmp/setting.json
+            python3 -c "import json;d=json.load(open('/tmp/setting.json'));r=d.get('result',{});print('value:',r.get('value'),'editable:',r.get('editable'))" || echo "(failed)"
           done
 
       - name: List page rules (may affect caching per-path)
@@ -80,18 +57,16 @@ print('value:', r.get('value'), 'editable:', r.get('editable'))
           ZONE_ID: ${{ steps.zone.outputs.zone_id }}
         run: |
           set -euo pipefail
-          curl -s -H "Authorization: Bearer $CF_TOKEN" \
-            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules" | python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-print('success:', d.get('success'))
-for pr in d.get('result') or []:
-    targets = [t.get('constraint',{}).get('value') for t in pr.get('targets',[])]
-    actions = [(a.get('id'), a.get('value')) for a in pr.get('actions',[])]
-    print('targets:', targets, 'status:', pr.get('status'), 'actions:', actions)
-if not d.get('success'):
-    print('errors:', d.get('errors'))
-"
+          curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/pagerules" -o /tmp/pagerules.json
+          python3 -c "import json;d=json.load(open('/tmp/pagerules.json'));print('success:',d.get('success'));[print('targets:',[t.get('constraint',{}).get('value') for t in pr.get('targets',[])],'status:',pr.get('status'),'actions:',[(a.get('id'),a.get('value')) for a in pr.get('actions',[])]) for pr in (d.get('result') or [])];print('errors:',d.get('errors')) if not d.get('success') else None"
+
+      - name: List zones for account (in case gnk-asg.hr is under a different account/zone name)
+        env:
+          CF_TOKEN: ${{ inputs.cf_token }}
+        run: |
+          set -euo pipefail
+          curl -s -H "Authorization: Bearer $CF_TOKEN" "https://api.cloudflare.com/client/v4/zones?per_page=50" -o /tmp/allzones.json
+          python3 -c "import json;d=json.load(open('/tmp/allzones.json'));print('success:',d.get('success'));[print(z.get('name'),z.get('id'),z.get('status')) for z in (d.get('result') or [])];print('errors:',d.get('errors')) if not d.get('success') else None"
 
       - name: Live HEAD request to / and /group-network/ with cache headers
         run: |
