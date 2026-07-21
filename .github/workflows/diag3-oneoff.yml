@@ -1,0 +1,40 @@
+name: Diagnose live v6 css nav rule precisely (one-off)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check live v6.css and index.html rendering
+        run: |
+          echo "# Precise live diagnostic $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/d.md
+          curl -s "https://gnk-asg.hr/assets/public-unified-menu-v6.css?vb=$(date +%s)" -o /tmp/v6.css
+          echo "" >> /tmp/d.md
+          echo "## v6.css: does it contain background:#fff for nav?" >> /tmp/d.md
+          grep -o '#gnk-unified-menu nav{[a-z:;#0-9,%.() -]*background:#fff' /tmp/v6.css >> /tmp/d.md || echo "PATTERN NOT FOUND" >> /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## raw grep for background:#fff anywhere in v6.css" >> /tmp/d.md
+          grep -o 'background:#fff' /tmp/v6.css | head -5 >> /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## full v6.css file size and md5" >> /tmp/d.md
+          wc -c /tmp/v6.css >> /tmp/d.md
+          md5sum /tmp/v6.css >> /tmp/d.md
+          echo "" >> /tmp/d.md
+          echo "## index.html - render dependent script order (app.js content check)" >> /tmp/d.md
+          curl -s "https://gnk-asg.hr/assets/app.js?vb=$(date +%s)" -o /tmp/app.js
+          grep -o "script('/assets/public-unified-menu-v6.js[^']*')" /tmp/app.js >> /tmp/d.md || echo "v6.js injection call NOT FOUND in live app.js" >> /tmp/d.md
+          grep -o "script('/assets/[a-z0-9-]*menu[a-z0-9-]*\.js[^']*')" /tmp/app.js >> /tmp/d.md
+
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "Precise live diagnostic $(date -u +%Y-%m-%dT%H:%M:%SZ)" --body-file /tmp/d.md
