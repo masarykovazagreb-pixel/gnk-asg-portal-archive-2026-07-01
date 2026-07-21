@@ -151,6 +151,19 @@ function detectLanguage(subject, toAddress, message) {
   return MEDIA_EMAILS.has(toAddress) ? 'en' : 'hr';
 }
 
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  'mailinator.com', 'guerrillamail.com', 'guerrillamail.info', '10minutemail.com',
+  'tempmail.com', 'temp-mail.org', 'yopmail.com', 'throwawaymail.com',
+  'trashmail.com', 'getnada.com', 'sharklasers.com', 'maildrop.cc', 'dispostable.com'
+]);
+function isSecurityRejected(sender, subject) {
+  const domain = String(sender || '').split('@')[1]?.toLowerCase() || '';
+  if (DISPOSABLE_EMAIL_DOMAINS.has(domain)) return true;
+  const s = String(subject || '').toLowerCase();
+  if (/\b(you (have )?won|claim your prize|lottery winner|inheritance fund|urgent business proposal|crypto(currency)? investment opportunity)\b/.test(s)) return true;
+  return false;
+}
+
 function isAutomatedInbound(message, sender) {
   const auto = header(message, 'auto-submitted').toLowerCase();
   const precedence = header(message, 'precedence').toLowerCase();
@@ -289,6 +302,26 @@ async function handleInbound(message, env) {
 
   if (!sender || sender.endsWith('@gnk-asg.hr') || isAutomatedInbound(message, sender)) {
     await prependLog(env, 'mail:sent', { ...base, status: 'auto_reply_skipped' });
+    return;
+  }
+  if (isSecurityRejected(sender, subject)) {
+    await prependLog(env, 'mail:sent', { ...base, status: 'rejected_security' });
+    if (env.EMAIL?.send) {
+      try {
+        const rejectLanguage = detectLanguage(subject, toAddress, message);
+        const rejectText = rejectLanguage === 'en'
+          ? 'Your message could not be delivered. The server rejected it for security reasons.'
+          : 'Vaša poruka nije mogla biti dostavljena. Server ju je odbio iz sigurnosnih razloga.';
+        await env.EMAIL.send({
+          to: sender,
+          from: { email: DEFAULT_FROM, name: 'GNK ASG Mail Security' },
+          subject: /^re:/i.test(subject) ? subject : `Re: ${subject}`,
+          text: rejectText,
+          html: `<p style="margin:0;font-family:Arial,Helvetica,sans-serif;color:#111827">${escapeHtml(rejectText)}</p>`,
+          headers: { 'Auto-Submitted': 'auto-replied', 'X-GNK-ASG-Mail-Center': VERSION, 'X-GNK-ASG-Security-Rejection': '1' }
+        });
+      } catch {}
+    }
     return;
   }
   if (!(await claimMessage(env, messageId, `${sender}|${toAddress}|${subject}`))) {
