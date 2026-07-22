@@ -21,11 +21,10 @@
   const LEFT_ITEMS = ALL_ITEMS.slice(0, 4);
   const RIGHT_ITEMS = ALL_ITEMS.slice(4, 8);
 
-  const TOOTH = 16;   // px always visible below the header's gold line — just the keyword
-  const HIDDEN = 78;  // px of extra content revealed when open (title + desc + cta)
-  const TILE_H = TOOTH + HIDDEN;
+  const TOOTH = 16;    // px visible when closed — only the label
+  const OPEN_H = 94;   // px total height when open (label + title + desc + cta)
   const AUTO_CLOSE_MS = 4000;
-  const GAP_FROM_CENTER = 76; // px each group starts away from center (clears the central logo)
+  const GAP_FROM_CENTER = 76;
 
   const style = document.createElement('style');
   style.id = `${WIDGET_ID}-style`;
@@ -33,8 +32,6 @@
     #${WIDGET_ID}-left, #${WIDGET_ID}-right {
       position: fixed;
       top: 84px;
-      height: 0;
-      overflow: visible;
       z-index: 9985;
       display: flex;
       gap: 8px;
@@ -45,31 +42,31 @@
     .gnk-tile {
       position: relative;
       width: 68px;
-      height: ${TILE_H}px;
+      height: ${TOOTH}px;
       border-radius: 0 0 12px 12px;
       overflow: hidden;
       box-shadow: 0 6px 16px rgba(0,0,0,.28);
-      transform: translateY(-${HIDDEN}px);
-      transition: transform .32s cubic-bezier(.34,1.15,.64,1);
+      transition: height .32s cubic-bezier(.34,1.15,.64,1);
       pointer-events: auto;
       cursor: pointer;
       font-family: Arial, sans-serif;
     }
-    .gnk-tile.open { transform: translateY(0); }
+    .gnk-tile.open { height: ${OPEN_H}px; }
     .gnk-tile .gnk-tile-bg { position: absolute; inset: 0; opacity: .96; }
     .gnk-tile .gnk-tile-body {
-      position: relative; height: 100%;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 7px 6px; box-sizing: border-box;
+      position: relative; width: 100%;
+      display: flex; flex-direction: column;
+      padding: 6px 6px 7px; box-sizing: border-box;
     }
-    .gnk-tile .gnk-tile-title { font-size: .6rem; font-weight: 900; line-height: 1.2; margin-bottom: 4px; opacity: 0; transition: opacity .16s ease .08s; }
-    .gnk-tile .gnk-tile-full { font-size: .54rem; font-weight: 700; line-height: 1.25; margin-bottom: 6px; opacity: 0; transition: opacity .16s ease .12s; }
-    .gnk-tile .gnk-tile-cta { font-size: .48rem; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; opacity: 0; transition: opacity .16s ease .16s; }
-    .gnk-tile.open .gnk-tile-title, .gnk-tile.open .gnk-tile-full, .gnk-tile.open .gnk-tile-cta { opacity: 1; }
     .gnk-tile .gnk-tile-label {
       font-size: .62rem; font-weight: 900; text-transform: uppercase; letter-spacing: .02em;
-      text-align: center; height: ${TOOTH}px; display: flex; align-items: center; justify-content: center;
+      text-align: center; height: ${TOOTH - 2}px; display: flex; align-items: center; justify-content: center;
+      order: -1;
     }
+    .gnk-tile .gnk-tile-title { font-size: .6rem; font-weight: 900; line-height: 1.2; margin: 4px 0 3px; opacity: 0; transition: opacity .16s ease .1s; }
+    .gnk-tile .gnk-tile-full { font-size: .54rem; font-weight: 700; line-height: 1.22; margin-bottom: 5px; opacity: 0; transition: opacity .16s ease .14s; }
+    .gnk-tile .gnk-tile-cta { font-size: .48rem; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; opacity: 0; transition: opacity .16s ease .18s; }
+    .gnk-tile.open .gnk-tile-title, .gnk-tile.open .gnk-tile-full, .gnk-tile.open .gnk-tile-cta { opacity: 1; }
     @media (max-width: 900px) {
       #${WIDGET_ID}-left, #${WIDGET_ID}-right { gap: 4px; }
       #${WIDGET_ID}-left { right: calc(50% + 44px); }
@@ -94,10 +91,10 @@
       tile.innerHTML = `
         <div class="gnk-tile-bg" style="background:${item.bg}"></div>
         <div class="gnk-tile-body" style="color:${item.fg}">
+          <div class="gnk-tile-label">${item.label}</div>
           <div class="gnk-tile-title">${item.title}</div>
           <div class="gnk-tile-full">${item.desc}</div>
           <div class="gnk-tile-cta">${isEnglish ? 'Open →' : 'Otvori →'}</div>
-          <div class="gnk-tile-label">${item.label}</div>
         </div>
       `;
 
