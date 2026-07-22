@@ -44,12 +44,15 @@
       width: 68px;
       height: ${TOOTH}px;
       border-radius: 0 0 12px 12px;
+      border: 1.5px solid #d4af37;
+      border-top: none;
       overflow: hidden;
       box-shadow: 0 6px 16px rgba(0,0,0,.28);
       transition: height .32s cubic-bezier(.34,1.15,.64,1);
       pointer-events: auto;
       cursor: pointer;
       font-family: Arial, sans-serif;
+      box-sizing: border-box;
     }
     .gnk-tile.open { height: ${OPEN_H}px; }
     .gnk-tile .gnk-tile-bg { position: absolute; inset: 0; opacity: .96; }
