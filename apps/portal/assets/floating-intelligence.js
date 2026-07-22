@@ -7,7 +7,7 @@
   let latestNews = [];
   let verified = false;
 
-  const WHATSAPP = 'https://wa.me/385916104398';
+  const WHATSAPP = 'https://wa.me/385915358365';
   const CONTACT = '/kontakt/';
   const DESK = '#assistant';
   const NEWS = '#news';
@@ -21,10 +21,10 @@
       aria: 'Otvori ASG Bot asistenta',
       title: 'ASG Bot',
       subtitle: 'PLUTAJUĆI POMOĆNIK',
-      intro: 'Brzi pomoćnik za portal, vijesti po zemljama, financije, tržišta, dokumente, kontakt i javne informacije. Za pitanja izvan portala ASG Bot otvara javnu web i news pretragu.',
+      intro: 'Koga trebate? Odaberite temu ispod (1–5) ili upišite pitanje: projekti, mediji, tržišta, ideje ili tehnička podrška. Ako ništa od ponuđenog ne odgovara, uputit ću vas na izravan kontakt.',
       send: 'PITAJ',
       placeholder: 'Upišite pitanje, državu ili temu…',
-      chips: ['Vijesti po zemljama', 'Hrvatska', 'Slovenija', 'Srbija', 'BiH', 'Međunarodno', 'Financije', 'Digitalna imovina', 'AI i tehnologija', 'Kontakt'],
+      chips: ['1. Projekti', '2. AKTUAL MEDIA', '3. Puls Tržišta', '4. Ideje u djelovanju', '5. IT / tehnička podrška', 'Vijesti po zemljama', 'Financije', 'Kontakt'],
       full: 'Puni ASG Bot',
       contact: 'Kontakt',
       whatsapp: 'WhatsApp',
@@ -40,10 +40,10 @@
       aria: 'Open ASG Bot assistant',
       title: 'ASG Bot',
       subtitle: 'FLOATING HELPER',
-      intro: 'Quick portal helper for country news, financials, markets, documents, contact and public information. For questions outside the portal, ASG Bot opens public web and news search.',
+      intro: 'Who do you need? Pick a topic below (1\u20135) or type a question: projects, media, markets, ideas or technical support. If none of these fit, I will route you to direct contact.',
       send: 'ASK',
       placeholder: 'Enter a question, country or topic…',
-      chips: ['News by country', 'Croatia', 'Slovenia', 'Serbia', 'BiH', 'International', 'Financials', 'Digital assets', 'AI and technology', 'Contact'],
+      chips: ['1. Projects', '2. AKTUAL MEDIA', '3. Puls Tržišta', '4. Ideje u djelovanju', '5. IT / technical support', 'News by country', 'Financials', 'Contact'],
       full: 'Full ASG Bot',
       contact: 'Contact',
       whatsapp: 'WhatsApp',
@@ -177,18 +177,60 @@
       : 'Zadnje vidljive javne stavke za ' + groupLabel(group) + ':\n' + titles;
   }
 
+  function menuTopicAnswer(q) {
+    const en = lang() === 'en';
+    const trimmed = q.trim();
+
+    const num = trimmed.match(/^([1-5])\b/);
+    const isProjects = (num && num[1] === '1') || /projekt|project/.test(q);
+    const isMedia = (num && num[1] === '2') || /aktual|media|medij/.test(q);
+    const isMarkets = (num && num[1] === '3') || /puls tr[žz]i[šs]t|puls-trzista/.test(q);
+    const isIdeas = (num && num[1] === '4') || /ideje u djelovanju|ideje-u-djelovanju/.test(q);
+    const isIT = (num && num[1] === '5') || /\bit\b|tehni[čc]ka podr[šs]ka|technical support|podr[šs]ka|support/.test(q);
+
+    if (isProjects) {
+      return en
+        ? '1. Projects \u2014 GNK ASG runs a nine-project strategic portfolio spanning healthcare, sports tech, fintech, a digital gold instrument, an international university, food, industrial production, energy trading and THE CODE integration. Full detail: /projects/'
+        : '1. Projekti \u2014 GNK ASG vodi strate\u0161ki portfelj od devet projekata: zdravstvo, sportski sustavi, fintech, digitalni instrument i zlato, me\u0111unarodno sveu\u010dili\u0161te, hrana, industrijska proizvodnja, energetska trgovina i THE CODE integracija. Puni detalji: /projects/';
+    }
+    if (isMedia) {
+      return en
+        ? '2. AKTUAL MEDIA \u2014 the portal\u2019s live news aggregator: business, world, technology and market news from public sources, updated continuously. Open: /gnk-aktual/'
+        : '2. AKTUAL MEDIA \u2014 u\u017eivo agregator vijesti portala: poslovne, svjetske, tehnolo\u0161ke i tr\u017ei\u0161ne vijesti iz javnih izvora, a\u017eurira se kontinuirano. Otvorite: /gnk-aktual/';
+    }
+    if (isMarkets) {
+      return en
+        ? '3. Puls Tr\u017ei\u0161ta \u2014 live world indices, stocks, commodities, currencies and crypto from public data sources, refreshed hourly. Open: /puls-trzista/'
+        : '3. Puls Tr\u017ei\u0161ta \u2014 u\u017eivo svjetski indeksi, dionice, roba, valute i kripto iz javnih izvora, osvje\u017eava se svaki sat. Otvorite: /puls-trzista/';
+    }
+    if (isIdeas) {
+      return en
+        ? '4. Ideje u djelovanju \u2014 a look at ideas the Group is actively turning into practice. Open: /ideje-u-djelovanju/'
+        : '4. Ideje u djelovanju \u2014 pregled ideja koje Grupa aktivno pretvara u praksu. Otvorite: /ideje-u-djelovanju/';
+    }
+    if (isIT) {
+      return en
+        ? '5. IT / technical support \u2014 for technical issues or IT questions, email it@gnk-asg.hr or use the contact page for phone numbers: /contact/'
+        : '5. IT / tehni\u010dka podr\u0161ka \u2014 za tehni\u010dka pitanja ili IT upite pi\u0161ite na it@gnk-asg.hr ili koristite kontakt stranicu za brojeve telefona: /kontakt/';
+    }
+    return null;
+  }
+
   function answer(question) {
     const q = String(question || '').toLowerCase();
     const en = lang() === 'en';
     if (!q.trim()) return t().empty;
+
+    const menuHit = menuTopicAnswer(q);
+    if (menuHit) return menuHit;
 
     if (/vijest|news|držav|drzav|zemlj|country|region|hrvats|croatia|sloven|srb|serbia|bih|bosn|international|global|sport|technology|tehnolog|digital|crypto|mobilnost|mobility/.test(q)) {
       return newsAnswer(question);
     }
     if (/kontakt|contact|whatsapp|telefon|phone|mail|email|poruk/.test(q)) {
       return en
-        ? 'Use the contact page or WhatsApp for the fastest communication. The active WhatsApp number is +385 91 610 4398. Other regional and US contact numbers are listed on the contact page.'
-        : 'Za najbržu komunikaciju otvorite kontakt stranicu ili WhatsApp. Aktivni WhatsApp broj je +385 91 610 4398. Ostali regionalni i američki brojevi nalaze se na kontakt stranici.';
+        ? 'Use the contact page or WhatsApp for the fastest communication. The active WhatsApp number is +385 91 535 8365. Other regional and US contact numbers, plus the IT e-mail address, are listed on the contact page: /contact/'
+        : 'Za najbržu komunikaciju otvorite kontakt stranicu ili WhatsApp. Aktivni WhatsApp broj je +385 91 535 8365. Ostali regionalni i američki brojevi, kao i IT e-mail adresa, nalaze se na kontakt stranici: /kontakt/';
     }
     if (/prihod|revenue|504|financ|bilanc|asset|kapital|obvez|equity|liabil/.test(q)) {
       return en
@@ -215,8 +257,8 @@
         : 'ASG Bot je pomoćnik portala za javne informacije, tehnologiju, financije, tržišne panele, vijesti po državama i kontakt. Kasnija backend verzija može davati potpuno otvorene AI odgovore iz vanjskih izvora prema definiranim ovlastima.';
     }
     return en
-      ? 'This appears to be outside the portal. I can still route it to public web and news search: use the Google and Google News buttons below, or send the topic through WhatsApp/contact for official handling.'
-      : 'Ovo izgleda kao tema izvan portala. Mogu je usmjeriti na javnu web i news pretragu: koristite Google i Google News gumbe ispod, ili pošaljite temu kroz WhatsApp/kontakt za službenu obradu.';
+      ? 'None of the topic options seem to match. For direct help, e-mail it@gnk-asg.hr or open the contact page for phone numbers and WhatsApp: /contact/. I can also route general topics to public web and news search using the Google buttons below.'
+      : 'Čini se da ništa od ponuđenih tema ne odgovara. Za izravnu pomoć pišite na it@gnk-asg.hr ili otvorite kontakt stranicu za brojeve telefona i WhatsApp: /kontakt/. Opće teme mogu usmjeriti i na javnu web i news pretragu preko Google gumba ispod.';
   }
 
   async function smartAnswer(query) {
