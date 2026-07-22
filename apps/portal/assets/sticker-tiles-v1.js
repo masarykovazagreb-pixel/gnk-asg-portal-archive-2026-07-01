@@ -66,8 +66,16 @@
     }
     .gnk-tile .gnk-tile-title { font-size: .6rem; font-weight: 900; line-height: 1.2; margin: 4px 0 3px; opacity: 0; transition: opacity .16s ease .1s; }
     .gnk-tile .gnk-tile-full { font-size: .54rem; font-weight: 700; line-height: 1.22; margin-bottom: 5px; opacity: 0; transition: opacity .16s ease .14s; }
-    .gnk-tile .gnk-tile-cta { font-size: .48rem; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; opacity: 0; transition: opacity .16s ease .18s; }
-    .gnk-tile.open .gnk-tile-title, .gnk-tile.open .gnk-tile-full, .gnk-tile.open .gnk-tile-cta { opacity: 1; }
+    .gnk-tile .gnk-tile-cta {
+      display: inline-block; align-self: flex-start;
+      font-size: .46rem; font-weight: 900; text-transform: uppercase; letter-spacing: .03em;
+      opacity: 0; transition: opacity .16s ease .18s;
+      background: rgba(255,255,255,.85); color: #07162d;
+      padding: 4px 8px; border-radius: 999px; box-shadow: 0 1px 3px rgba(0,0,0,.25);
+    }
+    .gnk-tile.open .gnk-tile-title, .gnk-tile.open .gnk-tile-full { opacity: 1; }
+    .gnk-tile.open .gnk-tile-cta { opacity: 1; animation: gnkCtaPulse 1.4s ease-in-out .3s 2; }
+    @keyframes gnkCtaPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
     @media (max-width: 900px) {
       #${WIDGET_ID}-left, #${WIDGET_ID}-right { gap: 4px; }
       #${WIDGET_ID}-left { right: calc(50% + 44px); }
