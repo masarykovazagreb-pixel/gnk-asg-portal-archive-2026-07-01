@@ -3,6 +3,7 @@
 
   const WIDGET_ID = 'gnk-aktual-flyer';
   if (document.getElementById(WIDGET_ID)) return;
+  if (location.pathname.replace(/\/+$/, '') === '/gnk-aktual') return;
 
   const style = document.createElement('style');
   style.id = `${WIDGET_ID}-style`;

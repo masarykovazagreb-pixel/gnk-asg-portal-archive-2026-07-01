@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260722-seo-audit-v1';
+  var VERSION = '20260722-aktual-sitewide-v1';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/gallery-auto-assign-v1.js');
   script('/assets/whatsapp-widget-v1.js');
   script('/assets/ideje-sticker-widget-v1.js');
+  script('/assets/gnk-aktual-flyer-v1.js');
   script('/assets/live-market-pulse.js');
   script('/assets/bitcoin-chart.js');
   script('/assets/market-expansion.js');
