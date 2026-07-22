@@ -7,6 +7,9 @@
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
   }[char]));
   const fmt=value=>new Intl.NumberFormat('hr-HR').format(Number(value)||0);
+  const money=(value,currency)=>new Intl.NumberFormat('hr-HR',{style:'currency',currency,maximumFractionDigits:2}).format(Number(value)||0);
+  const decimal=(value,digits=4)=>new Intl.NumberFormat('hr-HR',{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(Number(value)||0);
+  const signed=value=>`${Number(value)>=0?'+':''}${decimal(value,2)}%`;
   const date=value=>value?new Date(value).toLocaleDateString('hr-HR'):'—';
   const dateTime=value=>value?new Date(value).toLocaleString('hr-HR'):'—';
   const routeMap={plan:'plan',bulletins:'bulletins',projects:'projects',risks:'risks',opinions:'opinions',dependencies:'dependencies',tasks:'tasks',credits:'credits',newsroom:'newsroom',workers:'workers','activity-log':'log'};
@@ -15,6 +18,15 @@
     const response=await fetch(base+key,{cache:'no-store',headers:{accept:'application/json'}});
     if(!response.ok)throw new Error(`${key}:${response.status}`);
     return response.json();
+  }
+
+  async function getGnkcIndex(){
+    if(state.gnkcIndex)return state.gnkcIndex;
+    if(!window.GNKCStableIndex?.load)throw new Error('GNKC stable index nije dostupan');
+    state.gnkcIndex=await window.GNKCStableIndex.load();
+    const metric=$('#dwMetricGnkc');
+    if(metric)metric.textContent=decimal(state.gnkcIndex.priceUsd,4);
+    return state.gnkcIndex;
   }
 
   const statusClass=value=>{
@@ -26,6 +38,12 @@
   };
   const badge=value=>`<span class="dw-badge ${statusClass(value)}">${esc(value||'N/A')}</span>`;
   const cards=(items,render)=>items?.length?`<div class="dw-grid">${items.map(render).join('')}</div>`:'<div class="dw-empty">Nema zapisa za odabrani prikaz.</div>';
+
+  function gnkcSummary(index){
+    const direction=index.deviationPct>0?'is-success':index.deviationPct<0?'is-danger':'is-neutral';
+    const components=index.components.map(item=>`<span>${esc(item.symbol)} ${(item.effectiveWeight*100).toFixed(0)}%</span>`).join('');
+    return `<section class="dw-gnkc-index"><div><span class="dw-kicker">GNKC Stable Index</span><h2>1 GNKC = ${decimal(index.priceUsd,6)} USD</h2><p>${index.priceEur?`${decimal(index.priceEur,6)} EUR · `:''}Referenca iz istog market-pulse izvora kao Index stranica.</p></div><div class="dw-gnkc-stats"><article><span>Od pariteta</span><strong class="${direction}">${signed(index.deviationPct)}</strong></article><article><span>24 sata</span><strong>${signed(index.changePct24h)}</strong></article><article><span>7 dana</span><strong>${signed(index.changePct7d)}</strong></article></div><div class="dw-gnkc-components">${components}</div><small>SIMULACIJA · ažurirano ${dateTime(index.generatedAt)}</small></section>`;
+  }
 
   const views={
     plan:data=>cards(data.items,item=>`<article class="dw-card"><span class="dw-kicker">Dani ${esc(item.block)}</span><h3>${esc(item.focus)}</h3></article>`),
@@ -41,7 +59,17 @@
         return `<section><div class="dw-column-head"><h3>${label}</h3><span>${fmt(items.length)}</span></div>${items.length?items.map(item=>`<article class="dw-task"><div class="dw-card-head"><b>${esc(item.title)}</b>${badge(item.priority)}</div><span>${esc(item.projectId)} · ${esc(item.worker)}</span><small>Rok: dan ${esc(item.dueDay)}</small></article>`).join(''):'<div class="dw-empty compact">Nema zadataka.</div>'}</section>`;
       }).join('')}</div>`;
     },
-    credits:data=>cards(data.items,item=>`<article class="dw-card"><span class="dw-kicker">${esc(item.projectId)}</span><h3>${fmt(item.balance)} GNKC</h3><p>${fmt(item.transactions?.length)} prikazanih transakcija</p></article>`),
+    credits:data=>{
+      const index=state.gnkcIndex;
+      const body=cards(data.items,item=>{
+        const balance=Number(item.balance)||0;
+        const usd=balance*(index?.priceUsd||1);
+        const eur=index?.priceEur==null?null:balance*index.priceEur;
+        const nominalPnl=usd-balance;
+        return `<article class="dw-card dw-credit-card"><span class="dw-kicker">${esc(item.projectId)}</span><h3>${fmt(balance)} GNKC</h3><p><strong>${money(usd,'USD')}</strong>${eur==null?'':` · ${money(eur,'EUR')}`}</p><div class="dw-credit-meta"><span>Referentni P&amp;L</span><b class="${nominalPnl>=0?'is-success':'is-danger'}">${money(nominalPnl,'USD')}</b></div><small>${fmt(item.transactions?.length)} prikazanih transakcija · SIMULACIJA</small></article>`;
+      });
+      return `${index?gnkcSummary(index):''}${body}`;
+    },
     newsroom:data=>cards((data.items||[]).slice(0,18),item=>`<article class="dw-card"><span class="dw-kicker">${date(item.publishedAt)}</span><h3>${esc(item.title)}</h3><p>${esc(item.excerpt)}</p><small>Urednik: ${esc(item.editor)}</small></article>`),
     workers:data=>{
       const rows=(data.items||[]).map(item=>`<tr><td>${esc(item.id)}</td><td><strong>${esc(item.name)}</strong></td><td>${esc(item.projectId)}</td><td>${esc(item.function)}</td><td>${badge(item.status)}</td></tr>`).join('');
@@ -62,6 +90,7 @@
     host.innerHTML='<div class="dw-loading"><span class="dw-spinner" aria-hidden="true"></span><p>Učitavanje operativnih podataka…</p></div>';
     try{
       if(!state.projects)state.projects=await get('projects');
+      if(name==='credits')await getGnkcIndex();
       const data=await get(name+params);
       state[name]=data;
       host.innerHTML=views[name](data);
@@ -114,6 +143,7 @@
   const segment=location.pathname.replace(/\/+$/,'').split('/').pop();
   const initial=document.body.dataset.dwView||routeMap[segment]||'plan';
   activate(initial);
+  getGnkcIndex().catch(()=>{});
   get('state').then(data=>{
     state.system=data;
     const status=$('#dwState');
