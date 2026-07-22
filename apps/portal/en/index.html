@@ -52,6 +52,81 @@
 <section class="market" id="digital-assets"><div class="container"><div class="section-head"><div><p class="eyebrow">Informational Market Display</p><h2>GNK ASG Digital Exchange Monitor</h2></div><p>Current indicative values of selected digital assets and a converter into leading world currencies.</p></div><div class="market-toolbar"><label for="currency">Display currency</label><select id="currency"><option value="eur">EUR</option><option value="usd">USD</option><option value="gbp">GBP</option><option value="chf">CHF</option><option value="jpy">JPY</option></select><span id="marketUpdated" class="ticker-note">Loading…</span></div><div class="market-grid" id="coinGrid"><div class="coin">Loading markets…</div></div><div class="converter"><input id="convertAmount" inputmode="decimal" value="1" aria-label="Amount"><select id="convertCoin"><option value="bitcoin">BTC</option><option value="ethereum">ETH</option><option value="solana">SOL</option><option value="ripple">XRP</option></select><div class="result" id="convertResult">—</div></div><p class="disclaimer">Informational overview only. The portal does not provide trading, custody or individual investment advice.</p></div></section>
 <section class="market" id="world-markets"><div class="container"><div class="section-head"><div><p class="eyebrow">Informational market display</p><h2>World Markets</h2></div><p>Reference values for leading world stock indices and commodities, from publicly available sources.</p></div><div class="market-grid" id="worldMarketsGrid"><div class="coin">Loading markets…</div></div><p class="disclaimer">Informational overview only. Values may lag the actual market and do not constitute investment advice.</p></div></section>
 <section id="news"><div class="container"><div class="section-head"><div><p class="eyebrow">Refresh every 15 minutes</p><h2>Business &amp; Technology News</h2></div><p>The public window displays the 5 newest business and technology news items per selected section, from Croatian, regional and international sources. The full archive is available on the Newsroom page. Publications about GNK ASG d.o.o., GNK DINAMO Ltd. or Nermin Sefić are displayed automatically and may be removed through authorised control.</p></div><div class="news-tabs" id="newsTabs"><button class="active" data-filter="all">All</button><button data-filter="hrvatska">Croatia</button><button data-filter="slovenija">Slovenia</button><button data-filter="srbija">Serbia</button><button data-filter="bih">BiH</button><button data-filter="international">World</button><button data-filter="technology">AI &amp; Tech</button><button data-filter="mentions">GNK ASG in the Media</button><button data-filter="fina">FINA Info.BIZ</button></div><div class="news-grid" id="newsGrid"><article class="news-card"><span class="meta">SYSTEM</span><h3>Business news loading</h3><p>The newest 5 public items per section refresh automatically; the full archive is available on the Newsroom page.</p></article></div></div></section>
+<section id="marketPulsePreview"><div class="container"><div class="section-head"><div><p class="eyebrow">Puls Tržišta · live</p><h2>World markets and crypto</h2></div><p>A random snapshot of world indices, stocks, commodities, currencies and crypto markets, live from public sources.</p></div><div id="marketPulseGrid" class="mp-grid"><p class="mp-loading">Loading…</p></div><a class="mp-cta" href="/puls-trzista/">Open Puls Tržišta →</a></div></section>
+<style>
+#marketPulsePreview{padding:48px 0;background:#0a0e14;color:#f1f5f9}
+#marketPulsePreview .eyebrow{color:#38bdf8}
+#marketPulsePreview h2{color:#f1f5f9}
+#marketPulsePreview p{color:#94a3b8}
+.mp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:20px}
+.mp-card{border:1px solid #1f2937;border-radius:12px;padding:12px;background:#121822;transition:opacity .4s ease}
+.mp-card .label{font-size:.74rem;color:#94a3b8;margin-bottom:6px}
+.mp-card .price{font-size:1.05rem;font-weight:800;margin-bottom:4px;color:#f1f5f9}
+.mp-card .change{font-size:.8rem;font-weight:700}
+.mp-card .change.up{color:#22c55e}
+.mp-card .change.down{color:#ef4444}
+.mp-loading{opacity:.7;font-size:.85rem}
+.mp-cta{display:inline-block;margin-top:22px;padding:11px 20px;border-radius:999px;background:#38bdf8;color:#04121c;font-weight:800;text-decoration:none;font-size:.85rem}
+</style>
+<script>
+(function(){
+  function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var pool = [];
+  var ROTATE_MS = 12000;
+  var VISIBLE_COUNT = 6;
+
+  function buildPool(data){
+    var items = [];
+    (data.indices||[]).forEach(function(q){ if(q.ok) items.push(q); });
+    (data.commodities||[]).forEach(function(q){ if(q.ok) items.push(q); });
+    (data.currencies||[]).forEach(function(q){ if(q.ok) items.push(q); });
+    (data.stocks||[]).forEach(function(q){ if(q.ok) items.push(q); });
+    if (data.crypto && data.crypto.topCoins){
+      data.crypto.topCoins.slice(0, 10).forEach(function(c){
+        items.push({ label: c.name, price: c.price, changePct: c.changePct24h, unit: '' });
+      });
+    }
+    return items;
+  }
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function renderPicks(picks){
+    var grid = document.getElementById('marketPulseGrid');
+    if (!picks.length){ grid.innerHTML = '<p class="mp-loading">Data is currently unavailable.</p>'; return; }
+    grid.style.opacity = '0';
+    setTimeout(function(){
+      grid.innerHTML = picks.map(function(q){
+        var cls = (q.changePct>=0)?'up':'down', sign = (q.changePct>=0)?'+':'';
+        var decimals = Math.abs(q.price) < 10 ? 3 : 2;
+        return '<div class="mp-card"><div class="label">'+esc(q.label)+'</div><div class="price">'+Number(q.price).toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals})+'</div><div class="change '+cls+'">'+sign+q.changePct.toFixed(2)+'%</div></div>';
+      }).join('');
+      grid.style.opacity = '1';
+    }, 250);
+  }
+
+  function rotate(){
+    if (!pool.length) return;
+    renderPicks(shuffle(pool).slice(0, VISIBLE_COUNT));
+  }
+
+  fetch('/data/market-pulse.json?v='+Date.now(), { cache: 'no-store' })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      pool = buildPool(data);
+      rotate();
+      setInterval(rotate, ROTATE_MS);
+    })
+    .catch(function(){ document.getElementById('marketPulseGrid').innerHTML = '<p class="mp-loading">Data is currently unavailable.</p>'; });
+})();
+</script>
 <section id="editorial-feed"><div class="container"><div class="section-head"><div><p class="eyebrow">Editorial publications</p><h2>GNK ASG Posts &amp; Commentary</h2></div><p>Authored articles and commentary from the portal, with original illustrations.</p></div><div class="editorial-feed-grid" id="editorialFeedGrid"></div></div></section>
 <section id="assistant"><div class="container assistant-layout"><div class="assistant-description"><p class="eyebrow">Informational Digital Assistant</p><h2>GNK ASG Intelligence Desk</h2><p>Ask about GNK ASG, the GNK DINAMO Ltd. group framework, technology, artificial intelligence or digital assets.</p></div><div class="chat"><div class="messages" id="messages"><div class="bubble bot">Welcome. I can explain public corporate information, technology, AI and digital assets.</div></div><form class="chat-form" id="chatForm"><input id="chatInput" placeholder="Enter your question…" autocomplete="off"><button type="submit">SEND</button></form></div></div></section>
 <section class="documents" id="dokumenti"><div class="container"><div class="section-head"><div><p class="eyebrow">Transparency</p><h2>Public Documents and Sources</h2></div><p>Documentary basis for the corporate and financial indicators presented on the portal.</p></div><div class="doc-grid"><article class="doc"><span class="tag">GNK ASG d.o.o. · 2025</span><h3>Independent Auditor Report and Financial Statements</h3><p>Audited standalone annual financial statements as at 31 December 2025.</p></article><article class="doc"><span class="tag">GNK DINAMO Ltd. · FY2025</span><h3>Consolidated Financial Report of the Group</h3><p>Management-certified and internally reviewed group presentation submitted for Colorado filing disclosure.</p></article><article class="doc"><span class="tag">Official website</span><h3>GNK DINAMO Ltd. Corporate Information</h3><p>Information on the US parent company and its Zagreb branch is available at gnkdinamo.eu.</p><a href="https://gnkdinamo.eu/" target="_blank" rel="noopener">OPEN SOURCE →</a></article></div></div></section>
