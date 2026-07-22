@@ -7,7 +7,7 @@
   let latestNews = [];
   let verified = false;
 
-  const WHATSAPP = 'https://wa.me/385915358365';
+  const WHATSAPP = 'https://wa.me/385916104398';
   const CONTACT = '/kontakt/';
   const DESK = '#assistant';
   const NEWS = '#news';
@@ -229,8 +229,8 @@
     }
     if (/kontakt|contact|whatsapp|telefon|phone|mail|email|poruk/.test(q)) {
       return en
-        ? 'Use the contact page or WhatsApp for the fastest communication. The active WhatsApp number is +385 91 535 8365. Other regional and US contact numbers, plus the IT e-mail address, are listed on the contact page: /contact/'
-        : 'Za najbržu komunikaciju otvorite kontakt stranicu ili WhatsApp. Aktivni WhatsApp broj je +385 91 535 8365. Ostali regionalni i američki brojevi, kao i IT e-mail adresa, nalaze se na kontakt stranici: /kontakt/';
+        ? 'Use the contact page or WhatsApp for the fastest communication. The active WhatsApp number is +385 91 610 4398. Other regional and US contact numbers, plus the IT e-mail address, are listed on the contact page: /contact/'
+        : 'Za najbržu komunikaciju otvorite kontakt stranicu ili WhatsApp. Aktivni WhatsApp broj je +385 91 610 4398. Ostali regionalni i američki brojevi, kao i IT e-mail adresa, nalaze se na kontakt stranici: /kontakt/';
     }
     if (/prihod|revenue|504|financ|bilanc|asset|kapital|obvez|equity|liabil/.test(q)) {
       return en
