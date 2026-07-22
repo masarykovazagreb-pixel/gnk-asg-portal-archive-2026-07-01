@@ -1,13 +1,13 @@
 {
   "version": "GNK_ASG_MARKET_PULSE_V1_20260722",
-  "generatedAt": "2026-07-22T10:16:10.401Z",
+  "generatedAt": "2026-07-22T11:22:05.791Z",
   "sources": [
     "Yahoo Finance",
     "CoinGecko",
     "Alternative.me Fear & Greed Index"
   ],
-  "instrumentsOk": 16,
-  "instrumentsTotal": 16,
+  "instrumentsOk": 22,
+  "instrumentsTotal": 22,
   "indices": [
     {
       "symbol": "^GSPC",
@@ -33,15 +33,15 @@
     {
       "symbol": "^FTSE",
       "label": "FTSE 100",
-      "price": 10684.13,
-      "changePct": 1.6,
+      "price": 10707.1,
+      "changePct": 1.82,
       "ok": true
     },
     {
       "symbol": "^GDAXI",
       "label": "DAX",
-      "price": 25172.25,
-      "changePct": 0.69,
+      "price": 25079.38,
+      "changePct": 0.32,
       "ok": true
     },
     {
@@ -54,8 +54,8 @@
     {
       "symbol": "^VIX",
       "label": "VIX",
-      "price": 17.43,
-      "changePct": 4.18,
+      "price": 17.4,
+      "changePct": 4,
       "ok": true
     }
   ],
@@ -64,40 +64,84 @@
       "symbol": "GC=F",
       "label": "Zlato",
       "unit": "USD/oz",
-      "price": 4121.3,
-      "changePct": 2.71,
+      "price": 4123.6,
+      "changePct": 2.76,
       "ok": true
     },
     {
       "symbol": "SI=F",
       "label": "Srebro",
       "unit": "USD/oz",
-      "price": 59.7,
-      "changePct": 6.53,
+      "price": 59.645,
+      "changePct": 6.44,
       "ok": true
     },
     {
       "symbol": "CL=F",
       "label": "WTI nafta",
       "unit": "USD/bbl",
-      "price": 88.06,
-      "changePct": 6.75,
+      "price": 87.32,
+      "changePct": 5.86,
       "ok": true
     },
     {
       "symbol": "BZ=F",
       "label": "Brent",
       "unit": "USD/bbl",
-      "price": 84.41,
-      "changePct": -4.19,
+      "price": 84.62,
+      "changePct": -3.95,
       "ok": true
     },
     {
       "symbol": "HG=F",
       "label": "Bakar",
       "unit": "USD/lb",
-      "price": 6.5175,
-      "changePct": 4.78,
+      "price": 6.517,
+      "changePct": 4.77,
+      "ok": true
+    }
+  ],
+  "stocks": [
+    {
+      "symbol": "AAPL",
+      "label": "Apple",
+      "price": 327.74,
+      "changePct": 4.09,
+      "ok": true
+    },
+    {
+      "symbol": "MSFT",
+      "label": "Microsoft",
+      "price": 397.75,
+      "changePct": 3.33,
+      "ok": true
+    },
+    {
+      "symbol": "NVDA",
+      "label": "NVIDIA",
+      "price": 207.29,
+      "changePct": -2.13,
+      "ok": true
+    },
+    {
+      "symbol": "GOOGL",
+      "label": "Alphabet",
+      "price": 347.15,
+      "changePct": -3.44,
+      "ok": true
+    },
+    {
+      "symbol": "AMZN",
+      "label": "Amazon",
+      "price": 247.55,
+      "changePct": 0.02,
+      "ok": true
+    },
+    {
+      "symbol": "TSLA",
+      "label": "Tesla",
+      "price": 378.93,
+      "changePct": -4.35,
       "ok": true
     }
   ],
@@ -105,22 +149,22 @@
     {
       "symbol": "EURUSD=X",
       "label": "EUR/USD",
-      "price": 1.1406,
-      "changePct": -0.56,
+      "price": 1.1408,
+      "changePct": -0.54,
       "ok": true
     },
     {
       "symbol": "GBPUSD=X",
       "label": "GBP/USD",
-      "price": 1.3372,
-      "changePct": -1.25,
+      "price": 1.3369,
+      "changePct": -1.27,
       "ok": true
     },
     {
       "symbol": "USDJPY=X",
       "label": "USD/JPY",
-      "price": 163.071,
-      "changePct": 0.62,
+      "price": 163.025,
+      "changePct": 0.59,
       "ok": true
     },
     {
@@ -134,8 +178,8 @@
   "crypto": {
     "global": {
       "ok": true,
-      "totalMarketCapUsd": 2329207906690.885,
-      "marketCapChangePct24h": -0.41,
+      "totalMarketCapUsd": 2332851998693.04,
+      "marketCapChangePct24h": -0.4,
       "btcDominancePct": 56.7,
       "ethDominancePct": 10,
       "activeCryptocurrencies": 17738
@@ -150,80 +194,80 @@
         "id": "bitcoin",
         "symbol": "BTC",
         "name": "Bitcoin",
-        "price": 65877,
-        "changePct24h": -0.65,
-        "changePct7d": 1.96,
-        "marketCap": 1321352669960,
+        "price": 65972,
+        "changePct24h": -0.29,
+        "changePct7d": 2.11,
+        "marketCap": 1322987645884,
         "image": "https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400"
       },
       {
         "id": "ethereum",
         "symbol": "ETH",
         "name": "Ethereum",
-        "price": 1923.01,
-        "changePct24h": -0.99,
-        "changePct7d": 2.38,
-        "marketCap": 232084952314,
+        "price": 1927.21,
+        "changePct24h": 0,
+        "changePct7d": 2.61,
+        "marketCap": 232490187511,
         "image": "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628"
       },
       {
         "id": "tether",
         "symbol": "USDT",
         "name": "Tether",
-        "price": 0.999199,
+        "price": 0.999202,
         "changePct24h": 0,
         "changePct7d": 0,
-        "marketCap": 184077358078,
+        "marketCap": 184080077796,
         "image": "https://coin-images.coingecko.com/coins/images/325/large/Tether.png?1696501661"
       },
       {
         "id": "binancecoin",
         "symbol": "BNB",
         "name": "BNB",
-        "price": 570.62,
-        "changePct24h": -1.33,
-        "changePct7d": -0.98,
-        "marketCap": 75985602994,
+        "price": 570.57,
+        "changePct24h": -0.96,
+        "changePct7d": -0.99,
+        "marketCap": 75955024057,
         "image": "https://coin-images.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970"
       },
       {
         "id": "usd-coin",
         "symbol": "USDC",
         "name": "USDC",
-        "price": 0.999924,
+        "price": 0.999899,
         "changePct24h": 0.01,
         "changePct7d": 0.01,
-        "marketCap": 73164202705,
+        "marketCap": 73185273675,
         "image": "https://coin-images.coingecko.com/coins/images/6319/large/USDC.png?1769615602"
       },
       {
         "id": "ripple",
         "symbol": "XRP",
         "name": "XRP",
-        "price": 1.13,
-        "changePct24h": 0.06,
-        "changePct7d": 2.36,
-        "marketCap": 70824141038,
+        "price": 1.14,
+        "changePct24h": 0.57,
+        "changePct7d": 2.62,
+        "marketCap": 71007861341,
         "image": "https://coin-images.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1696501442"
       },
       {
         "id": "solana",
         "symbol": "SOL",
         "name": "Solana",
-        "price": 77.44,
-        "changePct24h": -1.16,
-        "changePct7d": -0.1,
-        "marketCap": 45128089849,
+        "price": 77.57,
+        "changePct24h": -0.69,
+        "changePct7d": 0.23,
+        "marketCap": 45203694095,
         "image": "https://coin-images.coingecko.com/coins/images/4128/large/solana.png?1718769756"
       },
       {
         "id": "tron",
         "symbol": "TRX",
         "name": "TRON",
-        "price": 0.329672,
-        "changePct24h": 0.96,
-        "changePct7d": 0.67,
-        "marketCap": 31277955353,
+        "price": 0.33008,
+        "changePct24h": 0.83,
+        "changePct7d": 0.68,
+        "marketCap": 31315945434,
         "image": "https://coin-images.coingecko.com/coins/images/1094/large/photo_2026-04-13_09-59-16.png?1776048311"
       }
     ]
