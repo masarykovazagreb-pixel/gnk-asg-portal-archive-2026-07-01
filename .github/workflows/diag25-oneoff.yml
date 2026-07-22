@@ -1,0 +1,23 @@
+name: Call diag fromname test endpoint (one-off)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  issues: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call the worker directly
+        run: |
+          echo "# fromname diag result" > /tmp/d.md
+          echo '```' >> /tmp/d.md
+          curl -s "https://gnk-asg.hr/api/mail-center/diag-fromname-test?to=sefic20@gmx.com" >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+      - name: Publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "fromname diag result" --body-file /tmp/d.md
