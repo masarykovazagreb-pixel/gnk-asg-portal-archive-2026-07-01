@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/ideje-sticker-widget-v1.js');
   script('/assets/gnk-aktual-flyer-v1.js');
   script('/assets/puls-trzista-flyer-v1.js');
+  script('/assets/synapse-flyer-v1.js');
   script('/assets/live-market-pulse.js');
   script('/assets/bitcoin-chart.js');
   script('/assets/market-expansion.js');
