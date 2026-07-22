@@ -1,1 +1,131 @@
-(()=>{const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],base='/api/public/digital-workforce/';const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fmt=n=>new Intl.NumberFormat('hr-HR').format(n);const state={};const routeMap={plan:'plan',bulletins:'bulletins',projects:'projects',risks:'risks',opinions:'opinions',dependencies:'dependencies',tasks:'tasks',credits:'credits',newsroom:'newsroom',workers:'workers','activity-log':'log'};async function get(k){const r=await fetch(base+k,{cache:'no-store'});if(!r.ok)throw new Error(`${k}:${r.status}`);return r.json()}function cards(items,render){return `<div class="dw-grid">${items.map(render).join('')}</div>`}const views={plan:d=>cards(d.items,x=>`<article class="dw-card"><span class="dw-kicker">Dani ${esc(x.block)}</span><h3>${esc(x.focus)}</h3></article>`),bulletins:d=>d.items.slice(0,18).map(x=>`<details class="dw-row"><summary>Izdanje #${x.issue} · ${new Date(x.publishedAt).toLocaleDateString('hr-HR')}</summary><p>${esc(x.summary)}</p></details>`).join(''),projects:d=>cards(d.items,x=>`<article class="dw-card"><span class="dw-kicker">${x.id} · ${x.team} workera</span><h3>${esc(x.name)}</h3><p><b>${esc(x.lead)}</b></p><p>${esc(x.phase)}</p><p>Gate: ${esc(x.gate)}</p><progress max="100" value="${x.progress}"></progress></article>`),risks:d=>cards(d.items,x=>`<article class="dw-card"><span class="dw-status">${esc(x.status)}</span><h3>${esc(x.projectId)}</h3><p>${esc(x.title)}</p><small>${esc(x.owner)}</small></article>`),opinions:d=>cards(d.items,x=>`<article class="dw-card"><span class="dw-kicker">${esc(x.projectId)}</span><h3>${esc(x.lead)}</h3><p>${esc(x.text)}</p></article>`),dependencies:d=>cards(d.items,x=>`<article class="dw-card"><h3>${esc(x.from)} → ${esc(x.to)}</h3><p>${esc(x.note)}</p><span class="dw-status">${esc(x.status)}</span></article>`),tasks:d=>{const cols=['todo','progress','done'];return `<div class="dw-kanban">${cols.map(c=>`<section><h3>${c==='todo'?'Za napraviti':c==='progress'?'U tijeku':'Završeno'}</h3>${d.items.filter(x=>x.status===c).slice(0,12).map(x=>`<article class="dw-task"><b>${esc(x.title)}</b><span>${esc(x.projectId)} · ${esc(x.worker)}</span><small>Dan ${x.dueDay} · ${esc(x.priority)}</small></article>`).join('')}</section>`).join('')}</div>`},credits:d=>cards(d.items,x=>`<article class="dw-card"><span class="dw-kicker">${esc(x.projectId)}</span><h3>${fmt(x.balance)} GNKC</h3><p>${x.transactions.length} prikazanih transakcija</p></article>`),newsroom:d=>cards(d.items.slice(0,18),x=>`<article class="dw-card"><span class="dw-kicker">${new Date(x.publishedAt).toLocaleDateString('hr-HR')}</span><h3>${esc(x.title)}</h3><p>${esc(x.excerpt)}</p><small>${esc(x.editor)}</small></article>`),workers:d=>`<div class="dw-toolbar"><input id="dwWorkerSearch" placeholder="Pretraži ime, funkciju ili projekt"><select id="dwWorkerProject"><option value="">Svi projekti</option>${state.projects.items.map(p=>`<option>${p.id}</option>`).join('')}</select><b>${fmt(d.total)} workera</b></div><div class="dw-table"><table><thead><tr><th>ID</th><th>Ime i prezime</th><th>Projekt</th><th>Funkcija</th><th>Status</th></tr></thead><tbody>${d.items.map(x=>`<tr><td>${x.id}</td><td>${esc(x.name)}</td><td>${esc(x.projectId)}</td><td>${esc(x.function)}</td><td>${esc(x.status)}</td></tr>`).join('')}</tbody></table></div>`,log:d=>d.items.slice(0,50).map(x=>`<div class="dw-log"><time>${new Date(x.at).toLocaleString('hr-HR')}</time><b>${esc(x.type)}</b><span>${esc(x.message)}</span></div>`).join('')};async function load(name,params=''){const host=$('#dwContent');host.innerHTML='<p class="dw-loading">Učitavanje…</p>';try{if(!state.projects)state.projects=await get('projects');const d=await get(name+params);state[name]=d;host.innerHTML=views[name](d);if(name==='workers'){const run=()=>load('workers',`?q=${encodeURIComponent($('#dwWorkerSearch').value)}&project=${encodeURIComponent($('#dwWorkerProject').value)}`);$('#dwWorkerSearch').addEventListener('change',run);$('#dwWorkerProject').addEventListener('change',run)}}catch(e){host.innerHTML=`<p class="dw-error">Podaci trenutačno nisu dostupni. ${esc(e.message)}</p>`}}const activate=name=>{$$('[data-dw-tab]').forEach(x=>x.classList.toggle('active',x.dataset.dwTab===name));load(name)};$$('[data-dw-tab]').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.dwTab)));const segment=location.pathname.replace(/\/+$/,'').split('/').pop();const initial=document.body.dataset.dwView||routeMap[segment]||'plan';activate(initial);get('state').then(d=>{$('#dwState').textContent=`Motor ${d.status.toUpperCase()} · dan ${d.simDay} · ${fmt(d.workers)} workera`}).catch(()=>{$('#dwState').textContent='Status nije dostupan'});})();
+(()=>{
+  const $=selector=>document.querySelector(selector);
+  const $$=selector=>[...document.querySelectorAll(selector)];
+  const base='/api/public/digital-workforce/';
+  const state={};
+  const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[char]));
+  const fmt=value=>new Intl.NumberFormat('hr-HR').format(Number(value)||0);
+  const date=value=>value?new Date(value).toLocaleDateString('hr-HR'):'—';
+  const dateTime=value=>value?new Date(value).toLocaleString('hr-HR'):'—';
+  const routeMap={plan:'plan',bulletins:'bulletins',projects:'projects',risks:'risks',opinions:'opinions',dependencies:'dependencies',tasks:'tasks',credits:'credits',newsroom:'newsroom',workers:'workers','activity-log':'log'};
+
+  async function get(key){
+    const response=await fetch(base+key,{cache:'no-store',headers:{accept:'application/json'}});
+    if(!response.ok)throw new Error(`${key}:${response.status}`);
+    return response.json();
+  }
+
+  const statusClass=value=>{
+    const text=String(value||'').toLowerCase();
+    if(/done|complete|active|green|low|ok|resolved|approved/.test(text))return 'is-success';
+    if(/progress|review|medium|pending|watch|amber/.test(text))return 'is-warning';
+    if(/blocked|critical|high|failed|red|overdue|rejected/.test(text))return 'is-danger';
+    return 'is-neutral';
+  };
+  const badge=value=>`<span class="dw-badge ${statusClass(value)}">${esc(value||'N/A')}</span>`;
+  const cards=(items,render)=>items?.length?`<div class="dw-grid">${items.map(render).join('')}</div>`:'<div class="dw-empty">Nema zapisa za odabrani prikaz.</div>';
+
+  const views={
+    plan:data=>cards(data.items,item=>`<article class="dw-card"><span class="dw-kicker">Dani ${esc(item.block)}</span><h3>${esc(item.focus)}</h3></article>`),
+    bulletins:data=>data.items?.length?data.items.slice(0,18).map(item=>`<details class="dw-row"><summary><span>Izdanje #${esc(item.issue)}</span><time>${date(item.publishedAt)}</time></summary><p>${esc(item.summary)}</p></details>`).join(''):'<div class="dw-empty">Nema objavljenih biltena.</div>',
+    projects:data=>cards(data.items,item=>`<article class="dw-card"><div class="dw-card-head"><span class="dw-kicker">${esc(item.id)} · ${fmt(item.team)} workera</span>${badge(item.phase)}</div><h3>${esc(item.name)}</h3><p><b>${esc(item.lead)}</b></p><p>Gate: ${esc(item.gate)}</p><div class="dw-progress-meta"><span>Napredak</span><strong>${fmt(item.progress)}%</strong></div><progress max="100" value="${Number(item.progress)||0}"></progress></article>`),
+    risks:data=>cards(data.items,item=>`<article class="dw-card"><div class="dw-card-head"><span class="dw-kicker">${esc(item.projectId)}</span>${badge(item.status)}</div><h3>${esc(item.title)}</h3><p>Vlasnik: <b>${esc(item.owner)}</b></p></article>`),
+    opinions:data=>cards(data.items,item=>`<article class="dw-card"><span class="dw-kicker">${esc(item.projectId)}</span><h3>${esc(item.lead)}</h3><p>${esc(item.text)}</p></article>`),
+    dependencies:data=>cards(data.items,item=>`<article class="dw-card"><div class="dw-card-head"><span class="dw-kicker">Ovisnost</span>${badge(item.status)}</div><h3>${esc(item.from)} → ${esc(item.to)}</h3><p>${esc(item.note)}</p></article>`),
+    tasks:data=>{
+      const columns=[['todo','Za napraviti'],['progress','U tijeku'],['done','Završeno']];
+      return `<div class="dw-kanban">${columns.map(([key,label])=>{
+        const items=(data.items||[]).filter(item=>item.status===key).slice(0,12);
+        return `<section><div class="dw-column-head"><h3>${label}</h3><span>${fmt(items.length)}</span></div>${items.length?items.map(item=>`<article class="dw-task"><div class="dw-card-head"><b>${esc(item.title)}</b>${badge(item.priority)}</div><span>${esc(item.projectId)} · ${esc(item.worker)}</span><small>Rok: dan ${esc(item.dueDay)}</small></article>`).join(''):'<div class="dw-empty compact">Nema zadataka.</div>'}</section>`;
+      }).join('')}</div>`;
+    },
+    credits:data=>cards(data.items,item=>`<article class="dw-card"><span class="dw-kicker">${esc(item.projectId)}</span><h3>${fmt(item.balance)} GNKC</h3><p>${fmt(item.transactions?.length)} prikazanih transakcija</p></article>`),
+    newsroom:data=>cards((data.items||[]).slice(0,18),item=>`<article class="dw-card"><span class="dw-kicker">${date(item.publishedAt)}</span><h3>${esc(item.title)}</h3><p>${esc(item.excerpt)}</p><small>Urednik: ${esc(item.editor)}</small></article>`),
+    workers:data=>{
+      const rows=(data.items||[]).map(item=>`<tr><td>${esc(item.id)}</td><td><strong>${esc(item.name)}</strong></td><td>${esc(item.projectId)}</td><td>${esc(item.function)}</td><td>${badge(item.status)}</td></tr>`).join('');
+      return `<div class="dw-toolbar"><label><span>Pretraga</span><input id="dwWorkerSearch" type="search" placeholder="Ime, funkcija ili projekt" autocomplete="off"></label><label><span>Projekt</span><select id="dwWorkerProject"><option value="">Svi projekti</option>${(state.projects?.items||[]).map(project=>`<option value="${esc(project.id)}">${esc(project.id)} · ${esc(project.name)}</option>`).join('')}</select></label><div class="dw-count"><span>Ukupno</span><strong>${fmt(data.total)}</strong></div></div><div class="dw-table"><table><thead><tr><th>ID</th><th>Ime i prezime</th><th>Projekt</th><th>Funkcija</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    },
+    log:data=>data.items?.length?data.items.slice(0,50).map(item=>`<div class="dw-log"><time>${dateTime(item.at)}</time><b>${esc(item.type)}</b><span>${esc(item.message)}</span></div>`).join(''):'<div class="dw-empty">Zapisnik je prazan.</div>'
+  };
+
+  function setBusy(active){
+    const host=$('#dwContent');
+    if(host)host.setAttribute('aria-busy',active?'true':'false');
+  }
+
+  async function load(name,params=''){
+    const host=$('#dwContent');
+    if(!host)return;
+    setBusy(true);
+    host.innerHTML='<div class="dw-loading"><span class="dw-spinner" aria-hidden="true"></span><p>Učitavanje operativnih podataka…</p></div>';
+    try{
+      if(!state.projects)state.projects=await get('projects');
+      const data=await get(name+params);
+      state[name]=data;
+      host.innerHTML=views[name](data);
+      if(name==='workers')bindWorkerFilters();
+    }catch(error){
+      host.innerHTML=`<div class="dw-error"><strong>Podaci trenutačno nisu dostupni.</strong><span>${esc(error.message)}</span><button type="button" id="dwRetry">Pokušaj ponovno</button></div>`;
+      $('#dwRetry')?.addEventListener('click',()=>load(name,params));
+    }finally{
+      setBusy(false);
+    }
+  }
+
+  function bindWorkerFilters(){
+    const search=$('#dwWorkerSearch');
+    const project=$('#dwWorkerProject');
+    let timer;
+    const run=()=>{
+      clearTimeout(timer);
+      timer=setTimeout(()=>load('workers',`?q=${encodeURIComponent(search?.value||'')}&project=${encodeURIComponent(project?.value||'')}`),250);
+    };
+    search?.addEventListener('input',run);
+    project?.addEventListener('change',run);
+  }
+
+  function activate(name){
+    $$('[data-dw-tab]').forEach(tab=>{
+      const active=tab.dataset.dwTab===name;
+      tab.classList.toggle('active',active);
+      tab.setAttribute('aria-selected',active?'true':'false');
+      tab.tabIndex=active?0:-1;
+    });
+    load(name);
+  }
+
+  $$('[data-dw-tab]').forEach(tab=>tab.addEventListener('click',()=>activate(tab.dataset.dwTab)));
+  $('.dw-tabs')?.addEventListener('keydown',event=>{
+    if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+    const tabs=$$('[data-dw-tab]');
+    const current=tabs.findIndex(tab=>tab.classList.contains('active'));
+    let next=current;
+    if(event.key==='ArrowRight')next=(current+1)%tabs.length;
+    if(event.key==='ArrowLeft')next=(current-1+tabs.length)%tabs.length;
+    if(event.key==='Home')next=0;
+    if(event.key==='End')next=tabs.length-1;
+    event.preventDefault();
+    tabs[next].focus();
+    activate(tabs[next].dataset.dwTab);
+  });
+
+  const segment=location.pathname.replace(/\/+$/,'').split('/').pop();
+  const initial=document.body.dataset.dwView||routeMap[segment]||'plan';
+  activate(initial);
+  get('state').then(data=>{
+    state.system=data;
+    const status=$('#dwState');
+    if(status)status.textContent=`Motor ${String(data.status||'unknown').toUpperCase()} · dan ${fmt(data.simDay)} · ${fmt(data.workers)} workera`;
+    const simDay=$('#dwMetricDay');
+    const workers=$('#dwMetricWorkers');
+    const projects=$('#dwMetricProjects');
+    if(simDay)simDay.textContent=fmt(data.simDay);
+    if(workers)workers.textContent=fmt(data.workers);
+    if(projects)projects.textContent=fmt(data.projects||state.projects?.items?.length||0);
+  }).catch(()=>{
+    const status=$('#dwState');
+    if(status)status.textContent='Status nije dostupan';
+  });
+})();
