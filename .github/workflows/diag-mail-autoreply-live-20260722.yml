@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Inspect current direct inbound autoreply workflow
+      - name: Inspect final direct inbound autoreply workflow
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -20,7 +20,7 @@ jobs:
           set -euo pipefail
           repo='${{ github.repository }}'
           auth=(-H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json')
-          curl -fsS "https://api.github.com/repos/$repo/actions/workflows/fix-deploy-mail-autoreply-mime-20260722.yml/runs?per_page=3" "${auth[@]}" > /tmp/runs.json
+          curl -fsS "https://api.github.com/repos/$repo/actions/workflows/fix-deploy-direct-inbound-final-20260722.yml/runs?per_page=3" "${auth[@]}" > /tmp/runs.json
           run_id=$(python3 - <<'PY'
           import json
           runs=json.load(open('/tmp/runs.json')).get('workflow_runs',[])
@@ -40,7 +40,7 @@ jobs:
             'workflowRuns':[{k:r.get(k) for k in ('id','status','conclusion','head_sha','created_at','updated_at','html_url')} for r in runs[:3]],
             'jobs':[{'id':j.get('id'),'name':j.get('name'),'status':j.get('status'),'conclusion':j.get('conclusion'),'steps':[{k:s.get(k) for k in ('number','name','status','conclusion')} for s in j.get('steps',[])]} for j in jobs]
           }
-          print('## Current direct inbound autoreply workflow')
+          print('## Final direct inbound autoreply workflow')
           print('```json')
           print(json.dumps(data,ensure_ascii=False,indent=2))
           print('```')
