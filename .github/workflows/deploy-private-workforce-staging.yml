@@ -9,6 +9,8 @@ on:
       - 'apps/portal/workers/**'
       - 'apps/portal/assets/digital-workforce-**'
       - 'apps/portal/assets/gnkc-**'
+      - 'scripts/test-digital-workforce-**'
+      - 'scripts/test-gnkc-**'
       - 'workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js'
       - 'workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml'
@@ -42,9 +44,9 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js
           node --check apps/portal/assets/digital-workforce-suite-v1.js
           node --check apps/portal/assets/gnkc-stable-index-v1.js
-          node apps/portal/tests/digital-workforce-design-contract.spec.mjs
-          node apps/portal/tests/digital-workforce-continuity-contract.spec.mjs
-          node apps/portal/tests/gnkc-stable-index-contract.spec.mjs
+          node scripts/test-digital-workforce-puls-design-contract.mjs
+          node scripts/test-digital-workforce-continuity-contract.mjs
+          node scripts/test-gnkc-stable-index-contract.mjs
           grep -Fq 'GNK DINAMO Ltd grupa' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
