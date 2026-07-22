@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="hr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nilus Bio — Izvorni Organski & Prehrambeni Proizvodi Iz Egipta</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nile: {
+                            50: '#f0fdf9',
+                            100: '#ccfbef',
+                            600: '#0d9488',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            950: '#062c2a'
+                        },
+                        gold: {
+                            100: '#fef3c7',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#d97706',
+                            600: '#b45309',
+                            700: '#92400e'
+                        },
+                        sand: {
+                            50: '#fdfbf7',
+                            100: '#f7f3e9',
+                            200: '#efe6d3',
+                            800: '#544738'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(19, 78, 74, 0.95) 0%, rgba(6, 44, 42, 0.88) 100%), 
+                        url('https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+        }
+        .gold-border-gradient {
+            border-image: linear-gradient(to right, #d97706, #fcd34d, #d97706) 1;
+        }
+        .pattern-bg {
+            background-color: #fdfbf7;
+            background-image: radial-gradient(#d97706 0.5px, transparent 0.5px), radial-gradient(#d97706 0.5px, #fdfbf7 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            background-opacity: 0.05;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7f3e9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0d9488;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #115e59;
+        }
+    </style>
+</head>
+<body class="bg-sand-50 font-sans text-gray-800 antialiased selection:bg-gold-400 selection:text-nile-950">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-nile-950/90 backdrop-blur-md border-b border-gold-500/20 text-white transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-gold-600 to-gold-300 flex items-center justify-center text-nile-950 font-serif font-bold text-xl shadow-lg group-hover:scale-105 transition-transform">
+                        N
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-serif text-xl tracking-wider font-bold text-gold-300 group-hover:text-gold-400 transition">NILUS BIO</span>
+                        <span class="text-[10px] uppercase tracking-widest text-emerald-200/70 font-light">Egiptski Organski Darovi</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                    <a href="#o-nama" class="hover:text-gold-400 transition-colors py-2">O Nama</a>
+                    <a href="#proizvodi" class="hover:text-gold-400 transition-colors py-2">Katalog Proizvoda</a>
+                    <a href="#prednosti" class="hover:text-gold-400 transition-colors py-2">Zašto Egipatsko?</a>
+                    <a href="#recepti" class="hover:text-gold-400 transition-colors py-2">Tradicija & Recepti</a>
+                    <a href="#b2b" class="hover:text-gold-400 transition-colors py-2">B2B / Veleprodaja</a>
+                </div>
+
+                <!-- CTA & Cart Indicator -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button onclick="openCartModal()" class="relative p-2 text-gold-300 hover:text-white transition">
+                        <i class="fa-solid fa-basket-shopping text-xl"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-gold-500 text-nile-950 font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                    </button>
+                    <a href="#kontakt" class="bg-gradient-to-r from-gold-500 to-gold-600 text-nile-950 font-semibold px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-gold-500/20 hover:scale-105 transition-all text-sm">
+                        Zatraži Ponudu
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center space-x-3">
+                    <button onclick="openCartModal()" class="relative p-2 text-gold-300">
+                        <i class="fa-solid fa-basket-shopping text-xl"></i>
+                        <span id="cart-count-mobile" class="absolute -top-1 -right-1 bg-gold-500 text-nile-950 font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-white hover:text-gold-400 focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-nile-950 border-b border-gold-500/20 px-4 pt-2 pb-6 space-y-3">
+            <a href="#o-nama" class="block py-2 text-gray-200 hover:text-gold-400 border-b border-gray-800">O Nama</a>
+            <a href="#proizvodi" class="block py-2 text-gray-200 hover:text-gold-400 border-b border-gray-800">Katalog Proizvoda</a>
+            <a href="#prednosti" class="block py-2 text-gray-200 hover:text-gold-400 border-b border-gray-800">Zašto Egipatsko?</a>
+            <a href="#recepti" class="block py-2 text-gray-200 hover:text-gold-400 border-b border-gray-800">Tradicija & Recepti</a>
+            <a href="#b2b" class="block py-2 text-gray-200 hover:text-gold-400 border-b border-gray-800">B2B / Veleprodaja</a>
+            <a href="#kontakt" class="block mt-4 text-center bg-gold-500 text-nile-950 font-bold py-2.5 rounded-full">Zatraži Upit</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center pt-24 pb-16 hero-gradient text-white overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold-500/10 via-transparent to-transparent pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 my-auto">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-400/30 text-gold-300 text-xs sm:text-sm font-semibold tracking-wide uppercase">
+                        <i class="fa-solid fa-leaf text-gold-400"></i> Direct From Nile Valley & Oases
+                    </div>
+
+                    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+                        Izvorna Snaga <br/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-amber-200">
+                            Egiptskih Sunčanih Polja
+                        </span>
+                    </h1>
+
+                    <p class="text-gray-300 text-base sm:text-lg max-w-2xl font-light leading-relaxed mx-auto lg:mx-0">
+                        Otkrijte premium selekciju certificiranih organskih datulja, ljekovitog bilja, hladno prešanih ulja i egzotičnih začina. Izravno iz plodnih oaza Siwa, Fajjum i doline Nila na vaš stol.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                        <a href="#proizvodi" class="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-nile-950 font-bold px-8 py-4 rounded-xl shadow-xl shadow-gold-500/10 hover:shadow-gold-500/20 transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3">
+                            <span>Istraži Proizvode</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#b2b" class="border border-white/30 hover:border-gold-400 hover:bg-white/5 text-white font-semibold px-8 py-4 rounded-xl backdrop-blur-sm transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-boxes-packing text-gold-400"></i> B2B Narudžbe
+                        </a>
+                    </div>
+
+                    <!-- Trust Stats -->
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-white/10 max-w-xl mx-auto lg:mx-0">
+                        <div>
+                            <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-300">100%</div>
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mt-1">Organska Certifikacija</div>
+                        </div>
+                        <div>
+                            <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-300">Siwa & Fajjum</div>
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mt-1">Autentična Podrijetla</div>
+                        </div>
+                        <div>
+                            <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-300">0%</div>
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mt-1">Aditiva & Pesticida</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Image Grid / Highlight Card -->
+                <div class="lg:col-span-5">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Decorative Ring -->
+                        <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-gold-500 to-emerald-500 opacity-30 blur-xl"></div>
+                        
+                        <div class="relative bg-nile-900/80 border border-gold-500/30 rounded-2xl p-6 backdrop-blur-xl shadow-2xl">
+                            <div class="relative h-64 sm:h-72 rounded-xl overflow-hidden mb-5">
+                                <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1000&q=80" alt="Organski egipatski proizvodi" class="w-full h-full object-cover">
+                                <div class="absolute top-3 right-3 bg-nile-950/80 backdrop-blur-md px-3 py-1 rounded-full border border-gold-400/40 text-gold-300 text-xs font-semibold">
+                                     Premium Selekcija
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs uppercase tracking-widest text-gold-400 font-semibold">Izdvojeno iz ponude</span>
+                                    <span class="text-xs text-emerald-300 flex items-center gap-1"><i class="fa-solid fa-certificate"></i> Bio ISO 22000</span>
+                                </div>
+                                <h3 class="font-serif text-xl font-bold text-white">Medjool Datulje iz Oaze Siwa</h3>
+                                <p class="text-xs text-gray-300 line-clamp-2">Kraljice među datuljama – bogate sočne teksture, karamelnog okusa, ručno brane u zaštićenim egipatskim oazama.</p>
+                                
+                                <div class="pt-2 flex items-center justify-between border-t border-white/10">
+                                    <div>
+                                        <span class="text-xs text-gray-400 block">Pakiranje</span>
+                                        <span class="text-sm font-semibold text-white">500g / 1kg / Rinfuza</span>
+                                    </div>
+                                    <button onclick="addToCart('Medjool Datulje Siwa', '12.50 €')" class="bg-gold-500 hover:bg-gold-400 text-nile-950 text-xs font-bold px-4 py-2 rounded-lg transition">
+                                        Dodaj u Upit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Highlights Banner (Certificates & Key Facts) -->
+    <section class="bg-nile-900 border-y border-gold-500/20 text-emerald-100 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-sun text-gold-400 text-2xl"></i>
+                    <div class="text-left">
+                        <h4 class="font-bold text-sm text-white">Sunčano Sušeno</h4>
+                        <p class="text-xs text-gray-300">Prirodna prerada bez kemije</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-seedling text-gold-400 text-2xl"></i>
+                    <div class="text-left">
+                        <h4 class="font-bold text-sm text-white">Dolina Nila</h4>
+                        <p class="text-xs text-gray-300">Najplodnije tlo Afrike</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-shield-halved text-gold-400 text-2xl"></i>
+                    <div class="text-left">
+                        <h4 class="font-bold text-sm text-white">EU Bio Certifikat</h4>
+                        <p class="text-xs text-gray-300">Stroga kontrola kvalitete</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-truck-fast text-gold-400 text-2xl"></i>
+                    <div class="text-left">
+                        <h4 class="font-bold text-sm text-white">Izravan Uvoz</h4>
+                        <p class="text-xs text-gray-300">Brza B2B i B2C dostava</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="o-nama" class="py-20 pattern-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80" alt="Egipatsko bilje i čaj" class="rounded-2xl shadow-md w-full h-64 object-cover">
+                        <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=800&q=80" alt="Egipatski začini" class="rounded-2xl shadow-md w-full h-64 object-cover mt-8">
+                    </div>
+                    <div class="absolute -bottom-6 -right-2 sm:right-6 bg-nile-800 text-white p-6 rounded-2xl border border-gold-400/40 shadow-xl max-w-xs">
+                        <div class="font-serif text-3xl font-bold text-gold-300 mb-1">3000+</div>
+                        <p class="text-xs text-emerald-100">Godina poljoprivredne tradicije duž rijeke Nil prenesene u moderne bio standarde.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="inline-block">
+                        <span class="text-gold-600 font-bold uppercase tracking-widest text-xs">Priroda, Tradicija & Čistoća</span>
+                        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-nile-950 mt-1">Tisućljetna Tradicija Egipatske Poljoprivrede</h2>
+                        <div class="h-1 w-20 bg-gold-500 mt-2"></div>
+                    </div>
+
+                    <p class="text-gray-700 leading-relaxed">
+                        Egipat nije samo kolijevka civilizacije, već i jedno od najjedinstvenijih poljoprivrednih područja na svijetu. Zahvaljujući specifičnoj mikroklimi, cjelogodišnjem suncu i mineralima bogatom sedimentu rijeke Nil, proizvodi uzgojeni u ovom podneblju imaju iznimno visoku koncentraciju eteričnih ulja, nutrijenata i prirodnog okusa.
+                    </p>
+
+                    <p class="text-gray-700 leading-relaxed">
+                        U <strong class="text-nile-900">Nilus Bio</strong> usmjereni smo na direktno partnerstvo s malim organskim poljoprivrednim zadrugama u oazama Siwa, Fajjum te gornjem Egiptu (Aswan i Luxor). Svi naši proizvodi uzgajaju se bez sintetskih pesticida i umjetnih gnojiva.
+                    </p>
+
+                    <div class="grid sm:grid-cols-2 gap-4 pt-2">
+                        <div class="flex items-start gap-3 p-3 rounded-xl bg-white border border-sand-200 shadow-sm">
+                            <div class="text-gold-500 text-xl font-bold"><i class="fa-solid fa-check-circle"></i></div>
+                            <div>
+                                <h5 class="font-bold text-sm text-nile-950">Netaknute Oaze</h5>
+                                <p class="text-xs text-gray-600">Čista voda iz dubinskih arteških bunara</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-xl bg-white border border-sand-200 shadow-sm">
+                            <div class="text-gold-500 text-xl font-bold"><i class="fa-solid fa-check-circle"></i></div>
+                            <div>
+                                <h5 class="font-bold text-sm text-nile-950">Laboratorijski Ispitano</h5>
+                                <p class="text-xs text-gray-600">Ispravnost po EU standardima za hranu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Catalog Filter Section -->
+    <section id="proizvodi" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+                <span class="text-gold-600 font-bold uppercase tracking-widest text-xs">Naš Organski Asortiman</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-nile-950">Izvorni Prehrambeni Proizvodi Iz Egipta</h2>
+                <p class="text-gray-600 text-sm sm:text-base">Odaberite kategoriju i istražite vrhunske organske datulje, autentične čajeve, hladno prešana ulja i aromatične začine.</p>
+                
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap justify-center gap-2 pt-4" id="category-filters">
+                    <button onclick="filterProducts('all')" class="filter-btn active bg-nile-900 text-gold-300 font-semibold px-5 py-2 rounded-full text-sm transition">
+                        Svi Proizvodi
+                    </button>
+                    <button onclick="filterProducts('datulje')" class="filter-btn bg-sand-100 hover:bg-sand-200 text-gray-700 font-semibold px-5 py-2 rounded-full text-sm transition">
+                        Datulje & Plodovi
+                    </button>
+                    <button onclick="filterProducts('cajevi')" class="filter-btn bg-sand-100 hover:bg-sand-200 text-gray-700 font-semibold px-5 py-2 rounded-full text-sm transition">
+                        Čajevi & Ljekovito Bilje
+                    </button>
+                    <button onclick="filterProducts('ulja')" class="filter-btn bg-sand-100 hover:bg-sand-200 text-gray-700 font-semibold px-5 py-2 rounded-full text-sm transition">
+                        Hladno Prešana Ulja
+                    </button>
+                    <button onclick="filterProducts('zacini')" class="filter-btn bg-sand-100 hover:bg-sand-200 text-gray-700 font-semibold px-5 py-2 rounded-full text-sm transition">
+                        Začini & Sjemenke
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
+                
+                <!-- Product 1 -->
+                <div class="product-card bg-sand-50 rounded-2xl overflow-hidden border border-sand-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col" data-category="datulje">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80" alt="Siwa Medjool Datulje" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-gold-500 text-nile-950 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Oaza Siwa</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                                <span>Kategorija: Datulje</span>
+                                <span class="text-emerald-700 font-semibold">100% Bio</span>
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-nile-950">Organske Medjool Datulje Premium</h3>
+                            <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                                Velike, sočne datulje prirodno sušene na suncu. Poznate kao "kraljevsko voće", prirodno bogate vlaknima, kalijem i prirodnim šećerima.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-gray-500 block">Orijentacijska cijena</span>
+                                <span class="text-lg font-bold text-nile-900">12.50 € <span class="text-xs font-normal text-gray-500">/ 500g</span></span>
+                            </div>
+                            <button onclick="addToCart('Medjool Datulje Premium 500g', '12.50 €')" class="bg-nile-900 hover:bg-nile-800 text-gold-300 p-2.5 rounded-xl transition flex items-center gap-2 text-xs font-semibold">
+                                <i class="fa-solid fa-cart-plus text-sm"></i> Dodaj
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card bg-sand-50 rounded-2xl overflow-hidden border border-sand-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col" data-category="cajevi">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80" alt="Egipatski Hibiskus Karkadeh" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-red-700 text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Aswan / Karkadeh</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                                <span>Kategorija: Čajevi</span>
+                                <span class="text-emerald-700 font-semibold">Cijeli Cvijet</span>
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-nile-950">Egipatski Crveni Hibiskus (Karkadeh)</h3>
+                            <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                                Cijeli sušeni cvjetovi organskog hibiskusa iz Aswana. Tradicionalni napitak prepoznatljive osvježavajuće kiselkaste note i bogat antioksidansima.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-gray-500 block">Orijentacijska cijena</span>
+                                <span class="text-lg font-bold text-nile-900">7.80 € <span class="text-xs font-normal text-gray-500">/ 250g</span></span>
+                            </div>
+                            <button onclick="addToCart('Crveni Hibiskus Karkadeh 250g', '7.80 €')" class="bg-nile-900 hover:bg-nile-800 text-gold-300 p-2.5 rounded-xl transition flex items-center gap-2 text-xs font-semibold">
+                                <i class="fa-solid fa-cart-plus text-sm"></i> Dodaj
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card bg-sand-50 rounded-2xl overflow-hidden border border-sand-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col" data-category="ulja">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80" alt="Ulje Crnog Kima Egipat" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-amber-800 text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Nigella Sativa</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                                <span>Kategorija: Hladno Prešana Ulja</span>
+                                <span class="text-emerald-700 font-semibold">100% Čisto</span>
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-nile-950">Ulje Crnog Kima (Habad al-Barakah)</h3>
+                            <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                                Hladno prešano ulje sjemenki egipatskog crnog kima. Izuzetno visoka koncentracija timokinona za jačanje imuniteta i vitalnosti.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-gray-500 block">Orijentacijska cijena</span>
+                                <span class="text-lg font-bold text-nile-900">18.90 € <span class="text-xs font-normal text-gray-500">/ 250ml</span></span>
+                            </div>
+                            <button onclick="addToCart('Ulje Crnog Kima 250ml', '18.90 €')" class="bg-nile-900 hover:bg-nile-800 text-gold-300 p-2.5 rounded-xl transition flex items-center gap-2 text-xs font-semibold">
+                                <i class="fa-solid fa-cart-plus text-sm"></i> Dodaj
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card bg-sand-50 rounded-2xl overflow-hidden border border-sand-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col" data-category="cajevi">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80" alt="Organska Kamilica Fajjum" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-gold-500 text-nile-950 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Oaza Fajjum</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                                <span>Kategorija: Čajevi</span>
+                                <span class="text-emerald-700 font-semibold">Cijeli Cvijet</span>
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-nile-950">Egipatska Kamilica Cijeli Cvijet</h3>
+                            <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                                Poznata po svojoj intenzivnoj slatko-jabukastoj aromi i blagotvornom umirujućem djelovanju. Pažljivo ručno brana u oazi Fajjum.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-gray-500 block">Orijentacijska cijena</span>
+                                <span class="text-lg font-bold text-nile-900">6.50 € <span class="text-xs font-normal text-gray-500">/ 200g</span></span>
+                            </div>
+                            <button onclick="addToCart('Egipatska Kamilica 200g', '6.50 €')" class="bg-nile-900 hover:bg-nile-800 text-gold-300 p-2.5 rounded-xl transition flex items-center gap-2 text-xs font-semibold">
+                                <i class="fa-solid fa-cart-plus text-sm"></i> Dodaj
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card bg-sand-50 rounded-2xl overflow-hidden border border-sand-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col" data-category="zacini">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80" alt="Aromatični Egipatski Kumin" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-emerald-800 text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Dolina Nila</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                                <span>Kategorija: Začini</span>
+                                <span class="text-emerald-700 font-semibold">Cijelo Zrno</span>
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-nile-950">Organski Egipatski Kumin (Kamoun)</h3>
+                            <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                                Neizostavan dio bliskoistočne i mediteranske kuhinje. Izuzetno intenzivne arome, uzgojen na sunčanim poljima gornjeg Egipta.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-gray-500 block">Orijentacijska cijena</span>
+                                <span class="text-lg font-bold text-nile-900">5.20 € <span class="text-xs font-normal text-gray-500">/ 200g</span></span>
+                            </div>
+                            <button onclick="addToCart('Organski Kumin Zrono 200g', '5.20 €')" class="bg-nile-900 hover:bg-nile-800 text-gold-300 p-2.5 rounded-xl transition flex items-center gap-2 text-xs font-semibold">
+                                <i class="fa-solid fa-cart-plus text-sm"></i> Dodaj
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card bg-sand-50 rounded-2xl overflow-hidden border border-sand-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col" data-category="ulja">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=800&q=80" alt="Sinajsko Maslinovo Ulje" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-gold-600 text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Sinajsko Gorje</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                                <span>Kategorija: Hladno Prešana Ulja</span>
+                                <span class="text-emerald-700 font-semibold">Extra Djevičansko</span>
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-nile-950">Ekstra Djevičansko Maslinovo Ulje Sinaj</h3>
+                            <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                                Dobiveno od maslina uzgojenih na aridnom tlu Sinaja napajanom mineralnim izvorima. Blago, voćno i iznimno niske kiselosti (< 0.3%).
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-gray-500 block">Orijentacijska cijena</span>
+                                <span class="text-lg font-bold text-nile-900">14.00 € <span class="text-xs font-normal text-gray-500">/ 750ml</span></span>
+                            </div>
+                            <button onclick="addToCart('Sinajsko Maslinovo Ulje 750ml', '14.00 €')" class="bg-nile-900 hover:bg-nile-800 text-gold-300 p-2.5 rounded-xl transition flex items-center gap-2 text-xs font-semibold">
+                                <i class="fa-solid fa-cart-plus text-sm"></i> Dodaj
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Custom Order CTA inside catalog -->
+            <div class="mt-12 p-8 rounded-2xl bg-gradient-to-r from-nile-900 to-nile-950 text-white flex flex-col md:flex-row items-center justify-between gap-6 border border-gold-500/30">
+                <div class="space-y-2 text-center md:text-left">
+                    <h3 class="font-serif text-2xl font-bold text-gold-300">Trebate veće količine ili specifičan proizvod?</h3>
+                    <p class="text-xs sm:text-sm text-gray-300">Uvozimo po narudžbi i organske sjemenke sezama, anis, korijander, fenel i sušene narove.</p>
+                </div>
+                <a href="#b2b" class="whitespace-nowrap bg-gradient-to-r from-gold-500 to-gold-600 text-nile-950 font-bold px-6 py-3 rounded-xl hover:shadow-lg transition">
+                    B2B Zatraži ponudu
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Why Egyptian Products Section -->
+    <section id="prednosti" class="py-20 pattern-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-gold-600 font-bold uppercase tracking-widest text-xs">Prednosti Podrijetla</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-nile-950 mt-1">Zašto Su Egipatski Bio Proizvodi Posebni?</h2>
+                <div class="h-1 w-20 bg-gold-500 mx-auto mt-2"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <div class="bg-white p-8 rounded-2xl border border-sand-200 shadow-sm hover:-translate-y-1 transition duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-gold-100 text-gold-600 flex items-center justify-center text-2xl font-bold mb-6">
+                        <i class="fa-solid fa-sun"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-nile-950 mb-3">Cjelogodišnje Sunce</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Preko 350 sunčanih dana godišnje u Egiptu omogućuje prirodno dozrijevanje i sušenje biljaka na polju, što zadržava prirodna eterična ulja i bogatu aromu bez potrebe za industrijskim sušarama.
+                    </p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl border border-sand-200 shadow-sm hover:-translate-y-1 transition duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl font-bold mb-6">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-nile-950 mb-3">Mineralno Tlo Nila</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Sedimentne aluvijalne ravnice uz Nil i izolirane oaze poput Siwe nude jedinstven sastav tla bogat prirodnim mineralima, dajući hranjivim tvarima iznimnu gustoću i okus.
+                    </p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl border border-sand-200 shadow-sm hover:-translate-y-1 transition duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl font-bold mb-6">
+                        <i class="fa-solid fa-scroll"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-nile-950 mb-3">Drevno Znanje i Fitoterapija</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Tradicionalne metode uzgoja kamilice, menta, karkadeha i crnog kima baštinjene su stoljećima od vremena faraona te prilagođene današnjim najstrožim EU bio normama.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Traditional Uses & Recipes Section -->
+    <section id="recepti" class="py-20 bg-nile-950 text-white relative overflow-hidden">
+        <div class="absolute right-0 top-1/2 -translate-y-1/2 opacity-5 pointer-events-none">
+            <i class="fa-solid fa-ankh text-[400px]"></i>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-gold-400 font-bold uppercase tracking-widest text-xs">Egipatski Običaji & Zdravlje</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">Kako Koristiti Egipatske Supernamirnice</h2>
+                <p class="text-gray-300 text-xs sm:text-sm mt-2">Jednostavni recepti i rituali za vašu svakodnevicu</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                
+                <!-- Recipe 1 -->
+                <div class="bg-nile-900/60 border border-gold-500/20 p-8 rounded-2xl backdrop-blur-md flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="bg-gold-500/20 text-gold-300 border border-gold-500/30 text-xs font-semibold px-3 py-1 rounded-full">Osvježavajući Napitak</span>
+                            <span class="text-xs text-gray-400"><i class="fa-regular fa-clock"></i> 15 min</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-gold-300">Tradicionalni Egipatski Hladni Karkadeh</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Savršeno ljetno osvježenje prepuno C-vitamina koje snizuje krvni tlak i osvježava organizam.
+                        </p>
+
+                        <div class="space-y-2 pt-2">
+                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Sastojci:</h4>
+                            <ul class="text-xs text-gray-300 space-y-1 list-disc list-inside">
+                                <li>4 žlice sušenih cvjetova organskog egipatskog hibiskusa</li>
+                                <li>1 litra filtrirane vode</li>
+                                <li>2-3 žlice domaćeg meda ili sirovog šećera trske</li>
+                                <li>Listići svježe metvice i kockice leda</li>
+                            </ul>
+                        </div>
+
+                        <div class="space-y-2 pt-2">
+                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Priprema:</h4>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Cvjetove hibiskusa prelijte proključalom vodom, poklopite i ostavite 10-15 minuta. Procijedite, zasladite medom po želji i dobro ohladite u hladnjaku. Poslužite s ledom i svježom metvicom.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recipe 2 -->
+                <div class="bg-nile-900/60 border border-gold-500/20 p-8 rounded-2xl backdrop-blur-md flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="bg-gold-500/20 text-gold-300 border border-gold-500/30 text-xs font-semibold px-3 py-1 rounded-full">Jjutarnji Eliksir</span>
+                            <span class="text-xs text-gray-400"><i class="fa-regular fa-clock"></i> 2 min</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-gold-300">Jutarnji Imuno-Ritual s Crnim Kimom</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Staroegipatski recept za jačanje otpornosti organizma, probavu i energiju tijekom cijelog dana.
+                        </p>
+
+                        <div class="space-y-2 pt-2">
+                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Sastojci:</h4>
+                            <ul class="text-xs text-gray-300 space-y-1 list-disc list-inside">
+                                <li>1 čajna žličica hladno prešanog ulja crnog kima</li>
+                                <li>1 čajna žličica organskog meda</li>
+                                <li>100 ml mlake vode ili toplog čaja od kamilice</li>
+                            </ul>
+                        </div>
+
+                        <div class="space-y-2 pt-2">
+                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Priprema:</h4>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                U mlakoj vodi pomiješajte med dok se ne otopi, dodajte žličicu ulja crnog kima i popijte ujutro na prazan želudac. Prirodno ublažava upalne procese i podiže razinu energije.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- B2B & Wholesale Section -->
+    <section id="b2b" class="py-20 pattern-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-3xl border border-sand-200 shadow-xl overflow-hidden">
+                <div class="grid lg:grid-cols-12">
+                    
+                    <div class="lg:col-span-5 bg-nile-900 text-white p-8 sm:p-12 flex flex-col justify-between">
+                        <div class="space-y-6">
+                            <span class="text-gold-400 font-bold uppercase tracking-widest text-xs">Veleprodaja & Distribucija</span>
+                            <h2 class="font-serif text-3xl font-bold text-white">Tražite Pouzdanog Dobavljača Iz Egipta?</h2>
+                            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                                Nudimo veleprodajna pakiranja, OEM/Private Label opcije za trgovine zdrave hrane, restorane, čajoteke i proizvođače dodataka prehrani.
+                            </p>
+
+                            <div class="space-y-4 pt-4 text-xs sm:text-sm">
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-box-open text-gold-400 text-lg"></i>
+                                    <span>Rinfuzna pakiranja (bags / barrels)</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-file-contract text-gold-400 text-lg"></i>
+                                    <span>Sva potrebna phytosanitary & EU dokumentacija</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-ship text-gold-400 text-lg"></i>
+                                    <span>Brza logistika do Vašeg skladišta u EU</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 border-t border-white/10 mt-8">
+                            <p class="text-xs text-gray-400">Kontakt veleprodaje direktno:</p>
+                            <p class="text-sm font-bold text-gold-300 mt-1">it@gnk-asg.hr | +385 91 610 4398</p>
+                        </div>
+                    </div>
+
+                    <!-- B2B Form -->
+                    <div class="lg:col-span-7 p-8 sm:p-12 bg-white" id="kontakt">
+                        <h3 class="font-serif text-2xl font-bold text-nile-950 mb-6">Zatražite B2B Katalog i Cjenik</h3>
+                        
+                        <form onsubmit="handleFormSubmit(event)" class="space-y-4" id="nilusB2bForm">
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Ime i Prezime / Tvrtka</label>
+                                    <input type="text" name="company" required placeholder="Npr. Bio Trgovina d.o.o." class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-nile-800 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Email Adresa</label>
+                                    <input type="email" name="email" required placeholder="vase.ime@tvrtka.hr" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-nile-800 focus:outline-none">
+                                </div>
+                            </div>
+
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Broj Telefona</label>
+                                    <input type="tel" name="phone" placeholder="+385 91 ..." class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-nile-800 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Zainteresirani za</label>
+                                    <select name="interest" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-nile-800 focus:outline-none bg-white">
+                                        <option>Datulje u Rinfuzi</option>
+                                        <option>Čajevi i Bilje (Karkadeh, Kamilica)</option>
+                                        <option>Hladno Prešana Ulja</option>
+                                        <option>Začini i Sjemenke</option>
+                                        <option>Kompletan Katalog</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1">Vaša Poruka ili Posebni Zahtjev</label>
+                                <textarea rows="4" name="message" placeholder="Napišite nam okvirne količine i specifične potrebe..." class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-nile-800 focus:outline-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-nile-900 hover:bg-nile-800 text-gold-300 font-bold py-3.5 rounded-xl transition shadow-md">
+                                Pošalji Upit za Veleprodaju
+                            </button>
+                            <p id="nilusFormStatus" class="text-xs text-gray-500 text-center mt-2">Upit se šalje izravno GNK ASG timu.</p>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-nile-950 text-gray-400 border-t border-gold-500/20 text-xs pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+                
+                <!-- Col 1 -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center text-nile-950 font-serif font-bold text-base">
+                            N
+                        </div>
+                        <span class="font-serif text-lg tracking-wider font-bold text-gold-300">NILUS BIO</span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed max-w-sm">
+                        Specijalizirani smo za uvoz i distribuciju najfinijih organskih i prirodnih prehrambenih proizvoda izravno s egipatskih polja i oaza.
+                    </p>
+                    <div class="flex space-x-3 text-gold-400 text-base">
+                        <a href="#" class="hover:text-white transition"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="hover:text-white transition"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2 -->
+                <div class="space-y-3">
+                    <h4 class="font-serif text-sm font-bold text-white uppercase tracking-wider">Kategorije</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#proizvodi" class="hover:text-gold-400 transition">Medjool Datulje</a></li>
+                        <li><a href="#proizvodi" class="hover:text-gold-400 transition">Egipatski Hibiskus</a></li>
+                        <li><a href="#proizvodi" class="hover:text-gold-400 transition">Ulje Crnog Kima</a></li>
+                        <li><a href="#proizvodi" class="hover:text-gold-400 transition">Kamilica iz Fajjuma</a></li>
+                        <li><a href="#proizvodi" class="hover:text-gold-400 transition">Egzotični Začini</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 -->
+                <div class="space-y-3">
+                    <h4 class="font-serif text-sm font-bold text-white uppercase tracking-wider">Informacije</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#o-nama" class="hover:text-gold-400 transition">O Nama</a></li>
+                        <li><a href="#prednosti" class="hover:text-gold-400 transition">Zašto Egipatsko?</a></li>
+                        <li><a href="#b2b" class="hover:text-gold-400 transition">B2B Suradnja</a></li>
+                        <li><a href="#" class="hover:text-gold-400 transition">Certifikati Kvalitete</a></li>
+                        <li><a href="#" class="hover:text-gold-400 transition">Uvjeti Kupnje</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4 -->
+                <div class="space-y-3">
+                    <h4 class="font-serif text-sm font-bold text-white uppercase tracking-wider">Ured & Logistika</h4>
+                    <p class="text-gray-400"><strong>Zagreb, Hrvatska:</strong><br>Radnička cesta 42</p>
+                    <p class="text-gray-400"><strong>Kairo, Egipat:</strong><br>Nile Palm District, El Maadi</p>
+                    <p class="text-gold-300 font-semibold mt-2">info@nilus-bio.com</p>
+                </div>
+
+            </div>
+
+            <div class="pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between text-gray-500 gap-4">
+                <p>© 2026 NILUS BIO. Sva prava pridržana. Egipatski organski &amp; prehrambeni proizvodi. Koncept u razvoju u sklopu GNK ASG d.o.o. projektnog portfelja (<a href="/projects/" class="hover:text-gold-400 underline">PRJ-006</a>).</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-gray-400">Privatnost</a>
+                    <a href="#" class="hover:text-gray-400">Kolačići</a>
+                    <a href="#" class="hover:text-gray-400">Uvjeti</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart / Inquiry Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-6 shadow-2xl relative animate-fade-in">
+            <button onclick="closeCartModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3 border-b border-gray-100 pb-4">
+                <div class="w-10 h-10 rounded-full bg-gold-100 text-gold-700 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                </div>
+                <div>
+                    <h3 class="font-serif text-lg font-bold text-nile-950">Vaš Upitnik Proizvoda</h3>
+                    <p class="text-xs text-gray-500">Pregledajte izabrane organske proizvode</p>
+                </div>
+            </div>
+
+            <div id="cart-items" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                <!-- Dynamic Items -->
+                <p class="text-xs text-gray-500 text-center py-4">Vaša košarica je trenutno prazna.</p>
+            </div>
+
+            <div class="border-t border-gray-100 pt-4 space-y-4">
+                <div class="flex justify-between font-bold text-sm text-nile-950">
+                    <span>Procijenjeni Iznos:</span>
+                    <span id="cart-total">0.00 €</span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs text-gray-600 font-semibold">Unesite Vaš Email za Slanje Ponude:</label>
+                    <input type="email" id="cart-email" placeholder="vas.email@domena.hr" class="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-nile-800 focus:outline-none">
+                </div>
+
+                <button onclick="submitCartInquiry()" class="w-full bg-gold-500 hover:bg-gold-400 text-nile-950 font-bold py-3 rounded-xl transition text-xs uppercase tracking-wider">
+                    Pošalji Upit za Narudžbu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Interactivity -->
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Filter products
+        function filterProducts(category) {
+            const cards = document.querySelectorAll('.product-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-nile-900', 'text-gold-300');
+                btn.classList.add('bg-sand-100', 'text-gray-700');
+            });
+
+            event.currentTarget.classList.remove('bg-sand-100', 'text-gray-700');
+            event.currentTarget.classList.add('bg-nile-900', 'text-gold-300');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Cart State
+        let cart = [];
+
+        function addToCart(title, price) {
+            cart.push({ title, price });
+            updateCartUI();
+            
+            // Notification feedback
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 bg-nile-900 text-gold-300 border border-gold-400 px-4 py-3 rounded-xl shadow-2xl z-50 text-xs font-bold flex items-center gap-2';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-gold-400"></i> Dodano u upit: ${title}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-count-mobile').innerText = cart.length;
+
+            const cartContainer = document.getElementById('cart-items');
+            if (cart.length === 0) {
+                cartContainer.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">Vaša košarica je trenutno prazna.</p>`;
+                document.getElementById('cart-total').innerText = '0.00 €';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const numericPrice = parseFloat(item.price.replace('€', '').trim()) || 0;
+                total += numericPrice;
+
+                html += `
+                    <div class="flex items-center justify-between bg-sand-50 p-2.5 rounded-lg border border-sand-200 text-xs">
+                        <div>
+                            <p class="font-bold text-nile-950">${item.title}</p>
+                            <span class="text-gold-600 font-semibold">${item.price}</span>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 p-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+            });
+
+            cartContainer.innerHTML = html;
+            document.getElementById('cart-total').innerText = total.toFixed(2) + ' €';
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function openCartModal() {
+            document.getElementById('cart-modal').classList.remove('hidden');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cart-modal').classList.add('hidden');
+        }
+
+        function submitCartInquiry() {
+            const email = document.getElementById('cart-email').value;
+            if (cart.length === 0) {
+                alert('Molimo dodajte barem jedan proizvod u upit.');
+                return;
+            }
+            if (!email) {
+                alert('Molimo unesite vašu email adresu.');
+                return;
+            }
+            const itemsList = cart.map(function(item){ return '- ' + item.title + ' (' + item.price + ')'; }).join('\n');
+            const payload = {
+                department: 'office',
+                name: email,
+                email: email,
+                subject: 'Nilus Bio — upit iz košarice (' + cart.length + ' proizvoda)',
+                message: '[Nilus Bio upit iz košarice]\n\n' + itemsList,
+                consent: true,
+                language: 'hr',
+                idempotencyKey: crypto.randomUUID()
+            };
+            fetch('/api/portal-contact-submit', {
+                method: 'POST',
+                headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+                credentials: 'same-origin',
+                cache: 'no-store',
+                body: JSON.stringify(payload)
+            }).then(function(response) {
+                return response.text().then(function(raw) {
+                    let out = {};
+                    try { out = JSON.parse(raw); } catch (_) {}
+                    if (!response.ok) throw new Error(out.message || out.error || ('HTTP ' + response.status));
+                    return out;
+                });
+            }).then(function(out) {
+                const ref = out.caseId || out.reference || out.id || '';
+                alert('Hvala Vam! Vaš upit za ' + cart.length + ' proizvoda je zaprimljen' + (ref ? (' — referenca: ' + ref) : '') + '. Javit ćemo se na ' + email + '.');
+                cart = [];
+                updateCartUI();
+                closeCartModal();
+            }).catch(function(error) {
+                alert('Slanje nije uspjelo. Pokušajte ponovno ili nas kontaktirajte na it@gnk-asg.hr.');
+                console.error('nilus-bio-cart-inquiry', error);
+            });
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const status = document.getElementById('nilusFormStatus');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const fd = new FormData(form);
+            const company = fd.get('company') || '';
+            const interest = fd.get('interest') || '';
+            const payload = {
+                department: 'office',
+                name: company,
+                email: fd.get('email') || '',
+                phone: fd.get('phone') || '',
+                subject: 'Nilus Bio B2B upit — ' + interest,
+                message: '[Nilus Bio B2B veleprodajni upit]\nZainteresirani za: ' + interest + '\n\n' + (fd.get('message') || ''),
+                consent: true,
+                language: 'hr',
+                idempotencyKey: crypto.randomUUID()
+            };
+            submitBtn.disabled = true;
+            status.textContent = 'Slanje…';
+            fetch('/api/portal-contact-submit', {
+                method: 'POST',
+                headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+                credentials: 'same-origin',
+                cache: 'no-store',
+                body: JSON.stringify(payload)
+            }).then(function(response) {
+                return response.text().then(function(raw) {
+                    let out = {};
+                    try { out = JSON.parse(raw); } catch (_) {}
+                    if (!response.ok) throw new Error(out.message || out.error || ('HTTP ' + response.status));
+                    return out;
+                });
+            }).then(function(out) {
+                const ref = out.caseId || out.reference || out.id || '';
+                status.textContent = 'Hvala! Upit je zaprimljen' + (ref ? (' — referenca: ' + ref) : '') + '. Kontaktirat ćemo Vas u najkraćem mogućem roku.';
+                form.reset();
+            }).catch(function(error) {
+                status.textContent = 'Slanje nije uspjelo. Pokušajte ponovno ili nas kontaktirajte na it@gnk-asg.hr.';
+                console.error('nilus-bio-b2b-form', error);
+            }).finally(function() {
+                submitBtn.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>
