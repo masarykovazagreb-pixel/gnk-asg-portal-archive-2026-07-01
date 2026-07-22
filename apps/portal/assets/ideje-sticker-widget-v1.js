@@ -53,6 +53,23 @@
       pointer-events: auto;
       transition: box-shadow .2s ease, transform .2s ease;
     }
+    #${WIDGET_ID} .badge::after {
+      content: "↗";
+      position: absolute;
+      bottom: -3px;
+      right: -3px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #12211b;
+      color: #c9ff66;
+      font-size: .55rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,.35);
+    }
     #${WIDGET_ID} .badge:hover,
     #${WIDGET_ID} .badge:focus-visible {
       box-shadow: 0 7px 18px rgba(0,0,0,.35);

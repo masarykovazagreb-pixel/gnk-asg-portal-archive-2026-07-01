@@ -58,6 +58,23 @@
       transform: translateX(-50%) scale(1.06);
       outline: none;
     }
+    #${WIDGET_ID} .badge::after {
+      content: "↗";
+      position: absolute;
+      bottom: -3px;
+      right: -3px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #00f0ff;
+      color: #062229;
+      font-size: .55rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,.35);
+    }
     @keyframes gnkSynapseThreadSway {
       0%, 100% { transform: rotate(-8deg); }
       50% { transform: rotate(8deg); }
