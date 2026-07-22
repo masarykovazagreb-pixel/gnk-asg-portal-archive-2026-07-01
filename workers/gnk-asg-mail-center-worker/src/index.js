@@ -344,7 +344,7 @@ async function handleInbound(message, env) {
   }
 
   const fromAddress = toAddress.endsWith('@gnk-asg.hr') ? toAddress : DEFAULT_FROM;
-  const fromName = mediaProfile ? 'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center' : 'IT – Osobni digitalni asistent';
+  const fromName = mediaProfile ? 'GNK DINAMO Ltd. Group Media Relations' : 'IT - Osobni digitalni asistent';
   const replySubject = /^re:/i.test(subject) ? subject : `Re: ${subject}`;
   const text = mediaProfile ? mediaText(language, id, subject) : genericText(language, id, subject);
   const html = htmlBody(text, mediaProfile);
