@@ -1,26 +1,14 @@
 {
   "version": "GNK_ASG_SEO_AUDIT_V1_20260722",
-  "generatedAt": "2026-07-21T21:54:50.570Z",
-  "completedAt": "2026-07-21T21:54:55.063Z",
+  "generatedAt": "2026-07-22T07:19:02.789Z",
+  "completedAt": "2026-07-22T07:19:04.464Z",
   "sitemapSource": "https://gnk-asg.hr/sitemap.xml",
   "pagesAudited": 35,
   "pagesOk": 35,
   "pagesFailed": 0,
-  "averageScore": 94,
-  "totalIssues": 20,
+  "averageScore": 96,
+  "totalIssues": 14,
   "worstPages": [
-    {
-      "url": "https://gnk-asg.hr/en/about/",
-      "score": 40,
-      "issues": [
-        "Description prekratak (21 znakova)",
-        "Nedostaje og:title",
-        "Nedostaje og:description",
-        "Nedostaje og:image",
-        "Nedostaje twitter:card",
-        "Nedostaje JSON-LD structured data"
-      ]
-    },
     {
       "url": "https://gnk-asg.hr/editor-desk/",
       "score": 70,
@@ -36,6 +24,13 @@
       "issues": [
         "Malo teksta (50 riječi, preporuka 150+)",
         "Nedostaje meta robots (nije nužno greška, ali provjeriti namjeru)"
+      ]
+    },
+    {
+      "url": "https://gnk-asg.hr/trzista/",
+      "score": 90,
+      "issues": [
+        "1 slika bez alt atributa"
       ]
     },
     {
@@ -97,7 +92,7 @@
       "hreflangCount": 3,
       "imgCount": 3,
       "imgsNoAlt": 0,
-      "wordCount": 797,
+      "wordCount": 807,
       "issues": [],
       "score": 100
     },
@@ -199,11 +194,13 @@
       ],
       "jsonLdCount": 1,
       "hreflangCount": 3,
-      "imgCount": 1,
-      "imgsNoAlt": 0,
-      "wordCount": 429,
-      "issues": [],
-      "score": 100
+      "imgCount": 2,
+      "imgsNoAlt": 1,
+      "wordCount": 457,
+      "issues": [
+        "1 slika bez alt atributa"
+      ],
+      "score": 90
     },
     {
       "url": "https://gnk-asg.hr/en/markets/",
@@ -537,28 +534,23 @@
       "descLen": 21,
       "canonical": "https://gnk-asg.hr/en/about/",
       "robots": "index,follow",
-      "ogTitle": false,
-      "ogDesc": false,
-      "ogImage": false,
-      "twitterCard": false,
+      "ogTitle": true,
+      "ogDesc": true,
+      "ogImage": true,
+      "twitterCard": true,
       "h1Count": 1,
       "h1": [
         "From an idea to an international network."
       ],
-      "jsonLdCount": 0,
+      "jsonLdCount": 1,
       "hreflangCount": 3,
       "imgCount": 1,
       "imgsNoAlt": 0,
       "wordCount": 546,
       "issues": [
-        "Description prekratak (21 znakova)",
-        "Nedostaje og:title",
-        "Nedostaje og:description",
-        "Nedostaje og:image",
-        "Nedostaje twitter:card",
-        "Nedostaje JSON-LD structured data"
+        "Description prekratak (21 znakova)"
       ],
-      "score": 40
+      "score": 90
     },
     {
       "url": "https://gnk-asg.hr/projects/",
@@ -634,11 +626,9 @@
       "hreflangCount": 0,
       "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 85,
-      "issues": [
-        "Malo teksta (85 riječi, preporuka 150+)"
-      ],
-      "score": 90
+      "wordCount": 219,
+      "issues": [],
+      "score": 100
     },
     {
       "url": "https://gnk-asg.hr/en/the-code/",
@@ -662,11 +652,9 @@
       "hreflangCount": 0,
       "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 92,
-      "issues": [
-        "Malo teksta (92 riječi, preporuka 150+)"
-      ],
-      "score": 90
+      "wordCount": 247,
+      "issues": [],
+      "score": 100
     },
     {
       "url": "https://gnk-asg.hr/contact/",
