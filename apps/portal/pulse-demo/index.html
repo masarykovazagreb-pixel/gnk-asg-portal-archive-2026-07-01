@@ -825,4 +825,33 @@ footer i { background: var(--green); border-radius: 50%; width: 5px; height: 5px
   });
 })();
 </script>
+<style>
+  #gnkBackHome {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 2147483000;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(10,10,14,.72);
+    color: #fff;
+    font: 700 .74rem/1 Arial, sans-serif;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.3);
+    transition: background .2s ease, transform .2s ease;
+  }
+  #gnkBackHome:hover, #gnkBackHome:focus-visible {
+    background: rgba(10,10,14,.9);
+    transform: translateY(-1px);
+    outline: none;
+  }
+  @media (max-width: 640px) {
+    #gnkBackHome { top: 10px; left: 10px; padding: 7px 11px; font-size: .68rem; }
+  }
+</style>
+<a id="gnkBackHome" href="/">&larr; GNK ASG</a>
 </body></html>
