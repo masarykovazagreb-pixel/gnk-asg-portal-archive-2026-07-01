@@ -30,6 +30,15 @@ const CURRENCIES = [
   { symbol: 'USDCNY=X', label: 'USD/CNY' },
 ];
 
+const STOCKS = [
+  { symbol: 'AAPL', label: 'Apple' },
+  { symbol: 'MSFT', label: 'Microsoft' },
+  { symbol: 'NVDA', label: 'NVIDIA' },
+  { symbol: 'GOOGL', label: 'Alphabet' },
+  { symbol: 'AMZN', label: 'Amazon' },
+  { symbol: 'TSLA', label: 'Tesla' },
+];
+
 async function fetchJson(url, opts = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12000);
@@ -113,16 +122,17 @@ async function fetchTopCoins() {
 }
 
 async function main() {
-  const [indices, commodities, currencies, cryptoGlobal, fearGreed, topCoins] = await Promise.all([
+  const [indices, commodities, currencies, stocks, cryptoGlobal, fearGreed, topCoins] = await Promise.all([
     Promise.all(INDICES.map((i) => fetchYahooQuote(i.symbol, i.label))),
     Promise.all(COMMODITIES.map((c) => fetchYahooQuote(c.symbol, c.label, { unit: c.unit }))),
     Promise.all(CURRENCIES.map((c) => fetchYahooQuote(c.symbol, c.label))),
+    Promise.all(STOCKS.map((s) => fetchYahooQuote(s.symbol, s.label))),
     fetchCryptoGlobal(),
     fetchFearGreed(),
     fetchTopCoins(),
   ]);
 
-  const allQuotes = [...indices, ...commodities, ...currencies];
+  const allQuotes = [...indices, ...commodities, ...currencies, ...stocks];
   const okCount = allQuotes.filter((q) => q.ok).length;
 
   const report = {
@@ -133,6 +143,7 @@ async function main() {
     instrumentsTotal: allQuotes.length,
     indices,
     commodities,
+    stocks,
     currencies,
     crypto: { global: cryptoGlobal, fearGreed, topCoins },
   };
