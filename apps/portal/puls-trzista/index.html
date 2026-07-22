@@ -305,6 +305,7 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
   </section>
 
   <p class="pt-note" data-i18n="footnote">Podaci dolaze iz javnih izvora i osvježavaju se automatski. Prikaz je informativne naravi i ne predstavlja investicijsko savjetovanje.</p>
+  <p class="pt-note"><a href="/trzisne-krize/" id="ptKrizeLink" style="color:var(--pt-accent);font-weight:800;text-decoration:none" data-i18n="krizeLinkText">Zanima vas kako su ova tržišta reagirala u prošlim krizama? Pogledajte Tržišne krize 2000–2026 →</a></p>
 </main>
 <script src="/assets/app.js?v=20260722-puls-trzista-v1" defer></script>
 <script>
@@ -333,7 +334,8 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
       commoditiesTitle: 'Roba i sirovine', commoditiesSub: 'Plemeniti metali, energija i poljoprivredni proizvodi (COMEX/NYMEX/CBOT/ICE)',
       currenciesTitle: 'Valute (Forex)', currenciesSub: 'Glavni svjetski valutni parovi uživo + službeni ECB referentni tečajevi',
       ecbTitle: 'ECB referentni tečajevi',
-      colInstrument: 'Instrument', colPrice: 'Cijena', colChange: 'Promjena', colTrend: 'Trend (7 dana)', colSource: 'Izvor', colExchange: 'Burza'
+      colInstrument: 'Instrument', colPrice: 'Cijena', colChange: 'Promjena', colTrend: 'Trend (7 dana)', colSource: 'Izvor', colExchange: 'Burza',
+      krizeLinkText: 'Zanima vas kako su ova tržišta reagirala u prošlim krizama? Pogledajte Tržišne krize 2000–2026 →', krizeLinkHref: '/trzisne-krize/'
     },
     en: {
       eyebrow: 'Live · public sources', lead: 'World indices, stocks, commodities, currencies and crypto — from real, public data sources.',
@@ -358,7 +360,8 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
       commoditiesTitle: 'Commodities & raw materials', commoditiesSub: 'Precious metals, energy and agricultural products (COMEX/NYMEX/CBOT/ICE)',
       currenciesTitle: 'Currencies (Forex)', currenciesSub: 'Major world currency pairs live + official ECB reference rates',
       ecbTitle: 'ECB reference rates',
-      colInstrument: 'Instrument', colPrice: 'Price', colChange: 'Change', colTrend: 'Trend (7d)', colSource: 'Source', colExchange: 'Exchange'
+      colInstrument: 'Instrument', colPrice: 'Price', colChange: 'Change', colTrend: 'Trend (7d)', colSource: 'Source', colExchange: 'Exchange',
+      krizeLinkText: 'Curious how these markets reacted during past crises? See Market Crises 2000–2026 →', krizeLinkHref: '/en/market-crises/'
     }
   };
   var lang = (new URLSearchParams(location.search).get('lang') === 'en') ? 'en' : 'hr';
@@ -414,6 +417,8 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
     document.querySelectorAll('.pt-lang-toggle button').forEach(function(btn){
       btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
     });
+    var krizeLink = document.getElementById('ptKrizeLink');
+    if (krizeLink && dict.krizeLinkHref) krizeLink.href = dict.krizeLinkHref;
     if (marketData) render(marketData);
   }
 
