@@ -12,7 +12,9 @@ for(const tab of ['plan','bulletins','projects','risks','opinions','dependencies
 assert.match(html,/dwMetricDay/);
 assert.match(html,/dwMetricWorkers/);
 assert.match(html,/dwMetricProjects/);
-assert.match(html,/Ilustrativni, algoritamski generirani operativni prikaz/);
+assert.match(html,/GNK DINAMO Ltd grupa/);
+assert.match(html,/GNK ASG/);
+assert.match(html,/SIMULACIJA/);
 assert.match(html,/role="tablist"/);
 assert.match(html,/role="tabpanel"/);
 
