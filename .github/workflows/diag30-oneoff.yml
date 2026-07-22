@@ -1,0 +1,32 @@
+name: Test expanded food commodities (one-off)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  issues: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Run and capture output
+        run: |
+          echo "# food commodities test" > /tmp/d.md
+          echo '```' >> /tmp/d.md
+          node scripts/refresh-market-pulse.mjs >> /tmp/d.md 2>&1 || echo "EXIT: $?" >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+          python3 -c "import json;d=json.load(open('apps/portal/data/market-pulse.json'));c=d['commodities'];print('commodities ok:',sum(1 for x in c if x['ok']),'/',len(c));[print(' FAIL:',x['label'],x.get('error')) for x in c if not x['ok']];[print(' OK:',x['label'],x.get('category'),x.get('price')) for x in c if x['ok']]" >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+      - name: Publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "food commodities test" --body-file /tmp/d.md
