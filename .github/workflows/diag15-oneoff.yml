@@ -1,0 +1,23 @@
+name: Verify the-code scroll section live (one-off)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  issues: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check the-code page
+        run: |
+          echo "# the-code check $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/d.md
+          curl -s "https://gnk-asg.hr/the-code/?cb=$(date +%s)" -o /tmp/body.html
+          echo "has code-story: $(grep -c 'code-story' /tmp/body.html)" >> /tmp/d.md
+          echo "has reveal: $(grep -c 'class=\"reveal' /tmp/body.html)" >> /tmp/d.md
+          wc -c /tmp/body.html >> /tmp/d.md
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "the-code check $(date -u +%Y-%m-%dT%H:%M:%SZ)" --body-file /tmp/d.md
