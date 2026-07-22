@@ -84,8 +84,11 @@
             background: #115e59;
         }
     </style>
-</head>
-<body class="bg-sand-50 font-sans text-gray-800 antialiased selection:bg-gold-400 selection:text-nile-950">
+<style id="gnk-gold-watermark-style">
+#gnk-gold-watermark{position:fixed;right:-40px;bottom:-40px;width:340px;height:340px;opacity:.07;pointer-events:none;z-index:1;filter:grayscale(0) saturate(1.4);}
+@media (max-width:640px){#gnk-gold-watermark{width:200px;height:200px;right:-30px;bottom:-30px;opacity:.06;}}
+</style></head>
+<body class="bg-sand-50 font-sans text-gray-800 antialiased selection:bg-gold-400 selection:text-nile-950"><img id="gnk-gold-watermark" src="/assets/logo-gnk-asg-canonical.svg" alt="" aria-hidden="true">
 
     <!-- Navigation Bar -->
     <nav class="fixed top-0 left-0 right-0 z-50 bg-nile-950/90 backdrop-blur-md border-b border-gold-500/20 text-white transition-all duration-300" id="navbar">
