@@ -1,0 +1,161 @@
+name: Fix and deploy inbound autoreply through branded MIME transport
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-deploy-mail-autoreply-mime-20260722.yml'
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: gnk-asg-mail-autoreply-mime-fix
+  cancel-in-progress: false
+jobs:
+  fix-test-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Patch inbound autoreply to proven MIME transport
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('workers/gnk-asg-mail-center-worker/src/index.js')
+          s=p.read_text()
+          import_line="import {sendBrandedEmail} from '../../gnk-asg-direct-operator/src/outbound-mail-transport-v1.js';"
+          anchor="import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';"
+          if import_line not in s:
+              if anchor not in s:
+                  raise SystemExit('AI import anchor not found')
+              s=s.replace(anchor, anchor+'\n'+import_line, 1)
+
+          old_reject="""        await env.EMAIL.send({
+          to: sender,
+          from: { email: DEFAULT_FROM, name: 'GNK ASG Mail Security' },
+          subject: /^re:/i.test(subject) ? subject : `Re: ${subject}`,
+          text: rejectText,
+          html: `<p style=\"margin:0;font-family:Arial,Helvetica,sans-serif;color:#111827\">${escapeHtml(rejectText)}</p>`,
+          headers: { 'Auto-Submitted': 'auto-replied', 'X-GNK-ASG-Mail-Center': VERSION, 'X-GNK-ASG-Security-Rejection': '1' }
+        });"""
+          new_reject="""        await sendBrandedEmail(env, {
+          to: sender,
+          from: DEFAULT_FROM,
+          fromName: 'GNK ASG Mail Security',
+          replyTo: DEFAULT_FROM,
+          subject: /^re:/i.test(subject) ? subject : `Re: ${subject}`,
+          text: rejectText,
+          html: `<p style=\"margin:0;font-family:Arial,Helvetica,sans-serif;color:#111827\">${escapeHtml(rejectText)}</p>`
+        });"""
+          if old_reject not in s:
+              raise SystemExit('security rejection direct-send block not found')
+          s=s.replace(old_reject,new_reject,1)
+
+          old_auto="""    const result = await env.EMAIL.send({
+      to: sender,
+      bcc: mandatoryBcc(env),
+      from: { email: fromAddress, name: fromName },
+      replyTo: fromAddress,
+      subject: replySubject,
+      html,
+      text,
+      headers: {
+        'Auto-Submitted': 'auto-replied',
+        'X-Auto-Response-Suppress': 'All',
+        'X-GNK-ASG-Mail-Center': VERSION,
+        'X-GNK-ASG-Receipt': id,
+        'X-GNK-ASG-Profile': mediaProfile ? 'media-relations' : 'general'
+      }
+    });"""
+          new_auto="""    const result = await sendBrandedEmail(env, {
+      to: sender,
+      bcc: mandatoryBcc(env),
+      from: fromAddress,
+      fromName,
+      replyTo: fromAddress,
+      subject: replySubject,
+      html,
+      text
+    });"""
+          if old_auto not in s:
+              raise SystemExit('autoreply direct-send block not found')
+          s=s.replace(old_auto,new_auto,1)
+          p.write_text(s)
+          PY
+          cat > scripts/test-mail-center-autoreply-mime-v1.mjs <<'EOF'
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          const source=fs.readFileSync('workers/gnk-asg-mail-center-worker/src/index.js','utf8');
+          assert.match(source,/import \{sendBrandedEmail\} from '\.\.\/\.\.\/gnk-asg-direct-operator\/src\/outbound-mail-transport-v1\.js';/);
+          assert.equal((source.match(/await sendBrandedEmail\(env,/g)||[]).length>=2,true);
+          assert.doesNotMatch(source,/const result = await env\.EMAIL\.send\(\{/);
+          assert.match(source,/prepareAiAutoReply\(message, env\)/);
+          assert.match(source,/target = \{ message, env \}/);
+          console.log('Inbound autoreply uses branded MIME transport and retains non-blocking AI fallback: PASS');
+          EOF
+          node --check workers/gnk-asg-mail-center-worker/src/index.js
+          node scripts/test-mail-center-autoreply-mime-v1.mjs
+      - name: Commit durable source fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add workers/gnk-asg-mail-center-worker/src/index.js scripts/test-mail-center-autoreply-mime-v1.mjs
+          git commit -m 'fix(mail): use branded MIME transport for inbound autoreplies'
+          git push origin HEAD:main
+          echo "FIX_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Build Mail Center runtime config
+        working-directory: workers/gnk-asg-mail-center-worker
+        shell: bash
+        run: |
+          cat > wrangler.runtime.toml <<'EOF'
+          name = "gnk-asg-mail-center-worker"
+          main = "src/index.js"
+          compatibility_date = "2026-06-18"
+          workers_dev = true
+          preview_urls = true
+
+          [ai]
+          binding = "AI"
+
+          [vars]
+          AI_AUTO_REPLY_DISABLED = "false"
+
+          [[kv_namespaces]]
+          binding = "GNK_ASG_KV"
+          id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+          [[send_email]]
+          name = "EMAIL"
+          remote = true
+          EOF
+      - name: Deploy fixed Mail Center Worker
+        working-directory: workers/gnk-asg-mail-center-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-mail-center-worker --keep-vars
+      - name: Publish result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          {
+            echo '## MIME transport autoreply fix'
+            echo
+            echo "Job status: ${{ job.status }}"
+            echo "Fix SHA: ${FIX_SHA:-not-created}"
+            echo
+            echo '- inbound autoreply routed through sendBrandedEmail'
+            echo '- same signature/logo/MIME path as contact form and Mail Studio'
+            echo '- AI binding enabled but deterministic fallback remains mandatory'
+          } > /tmp/report.md
+          gh issue edit 712 --repo "${{ github.repository }}" --body-file /tmp/report.md
