@@ -117,13 +117,12 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       return Math.round(h/24) + ' d';
     }catch(e){ return ''; }
   }
-  function fallbackImg(){ return '/assets/news-fallback.svg'; }
-
+  
   function renderFeatured(item){
     var el = document.getElementById('akFeatured');
     if(!item){ el.innerHTML=''; return; }
     el.innerHTML = '<div class="ak-featured">' +
-      '<img src="'+esc(item.image||fallbackImg())+'" alt="" loading="eager" onerror="this.src=\''+fallbackImg()+'\'">' +
+      '<img src="'+esc(item.image)+'" alt="" loading="eager">' +
       '<div class="ak-featured-body">' +
         '<span class="ak-tag">'+esc(GROUP_LABELS[item.group]||item.category||'Vijest')+'</span>' +
         '<h2><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a></h2>' +
@@ -165,7 +164,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       if (slice.length < 6) slice = slice.concat(items.slice(0, 6-slice.length));
       html += '<section class="ak-section"><div class="ak-section-head"><h2>'+esc(GROUP_LABELS[g]||g)+'</h2><span>rotira se</span></div><div class="ak-cat-grid">' +
         slice.map(function(item){
-          return '<article class="ak-card"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow"><img src="'+esc(item.image||fallbackImg())+'" alt="" loading="lazy" onerror="this.src=\''+fallbackImg()+'\'"></a><div class="ak-card-body"><h3><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a></h3><p>'+esc((item.summary||'').slice(0,120))+(item.summary&&item.summary.length>120?'…':'')+'</p><span class="ak-src">'+esc(item.source||'')+' · '+timeAgo(item.published_at)+'</span></div></article>';
+          return '<article class="ak-card"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow"><img src="'+esc(item.image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'"></a><div class="ak-card-body"><h3><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a></h3><p>'+esc((item.summary||'').slice(0,120))+(item.summary&&item.summary.length>120?'…':'')+'</p><span class="ak-src">'+esc(item.source||'')+' · '+timeAgo(item.published_at)+'</span></div></article>';
         }).join('') +
       '</div></section>';
     });
@@ -187,7 +186,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     .then(function(r){ return r.json(); })
     .then(function(data){
       var items = Array.isArray(data) ? data : (data.items || []);
-      items = items.filter(function(i){ return i && i.title && i.url; });
+      items = items.filter(function(i){ return i && i.title && i.url && i.image; });
       state.items = items;
       document.getElementById('akStatus').textContent = items.length
         ? ('Prikazano ' + items.length + ' vijesti · ažurirano ' + timeAgo(items[0] && items[0].published_at))
