@@ -1,0 +1,31 @@
+name: Debug validate_index_live_data (one-off)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  issues: write
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run and capture output
+        run: |
+          echo "# validate_index_live_data debug $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/d.md
+          echo '```' >> /tmp/d.md
+          python scripts/refresh_index_live_data.py >> /tmp/d.md 2>&1
+          echo "--- validate ---" >> /tmp/d.md
+          python scripts/validate_index_live_data.py >> /tmp/d.md 2>&1 || echo "EXIT: $?" >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+      - name: Publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "validate_index_live_data debug $(date -u +%Y-%m-%dT%H:%M:%SZ)" --body-file /tmp/d.md
