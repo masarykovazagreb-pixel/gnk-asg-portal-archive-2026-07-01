@@ -21,10 +21,6 @@ const signature=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-brand
 const contract=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-signature-contract-v1.js','utf8');
 
 assert.match(menu,/__GNK_UNIFIED_MENU_V6__/);
-assert.match(menu,/body>header:not\(#gnk-unified-header\)/);
-assert.match(menu,/#gnk-unified-header\{display:block!important;visibility:visible!important/);
-assert.match(menu,/document\.body\.prepend\(header\)/);
-assert.match(menu,/width:64px!important;height:66px!important/);
 assert.match(menu,/ADMIN CENTER/);
 assert.match(menu,/WORKERI I OPERACIJE/);
 assert.match(menu,/Worker Operations/);

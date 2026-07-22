@@ -18,7 +18,7 @@ for(const page of [hr,en]){
  assert.match(page,/name="consent"/);
  assert.match(page,/name="website"/);
  assert.match(page,/contact-form-v2\.js/);
- assert.match(page,/logo-gnk-asg\.svg/);
+ assert.match(page,/logo-gnk-asg-canonical\.svg/);
 }
 assert.match(client,/fetch\('\/api\/portal-contact-submit'/);
 assert.match(client,/content-type':'application\/json/);
