@@ -18,6 +18,13 @@ assert.match(html,/SIMULACIJA/);
 assert.match(html,/role="tablist"/);
 assert.match(html,/role="tabpanel"/);
 
+// Visual contract: the private preview must remain pure black, glass-black and gold/white.
+assert.match(html,/html,body,\.dw-private-preview\{background:#000!important;background-image:none!important/);
+assert.match(html,/#gnk-unified-header\{background:rgba\(0,0,0,\.86\)!important/);
+assert.match(html,/\.dw-shell\{background:#000!important\}/);
+assert.match(html,/\.dw-tabs button\.active\{background:rgba\(215,181,91,\.13\)!important;color:#f2d27d!important\}/);
+assert.doesNotMatch(html,/radial-gradient\([^)]*(?:06b6d4|22d3ee|0891b2|0ea5e9)/i);
+
 assert.match(css,/--dw-bg:#030303/);
 assert.match(css,/--dw-gold:#d7b55b/);
 assert.match(css,/backdrop-filter:blur/);
@@ -37,6 +44,7 @@ console.log(JSON.stringify({
   ok:true,
   contract:'digital-workforce-puls-trzista-public-redesign',
   tabs:11,
+  palette:'pure-black-glass-gold-white',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
