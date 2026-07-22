@@ -1,5 +1,5 @@
 import { EmailMessage } from 'cloudflare:email';
-import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
+import {VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
 
 const VERSION = `GNK_ASG_MAIL_CENTER_AI_V3_20260703_${AI_REPLY_VERSION}`;
 const internalRecipient = env => String(env?.CONTACT_INTERNAL_RECIPIENTS || '').trim() || 'rht@gmx.com';
@@ -416,47 +416,6 @@ export default {
     if (path === '/api/admin-mail-send' && request.method === 'POST') return sendMail(request, env);
     if (path === '/api/admin-mail-send') return json({ ok: true, version: VERSION, endpoint: '/api/admin-mail-send', method: 'POST', pdfAttachments: true, emailBinding: Boolean(env.EMAIL) });
     if (path === '/api/mail-center/status') return json({ ok: true, version: VERSION, service: 'GNK ASG Mail Center', emailBinding: Boolean(env.EMAIL), aiBinding: Boolean(env.AI), autoReply: true, mediaProfile: true, mediaDefaultLanguage: 'en', languages: ['hr', 'en', 'de', 'it'], mandatoryBcc: internalCopy(env), inboxKey: 'mail:inbox', sentKey: 'mail:sent', outboxKey: 'mail:outbox', time: new Date().toISOString() });
-    if (path === '/api/mail-center/diag-full-pipeline') {
-      const testTo = url.searchParams.get('to') || 'infoasg@gmx.com';
-      const headerMap = new Map([
-        ['from', testTo],
-        ['to', 'it@gnk-asg.hr'],
-        ['subject', 'Diag pipeline test'],
-        ['message-id', '<diag-test-123@example.com>']
-      ]);
-      const fakeMessage = {
-        from: testTo,
-        to: 'it@gnk-asg.hr',
-        raw: null,
-        headers: { get: (name) => headerMap.get(String(name).toLowerCase()) || null },
-        forward: async () => {}
-      };
-      try {
-        const prepared = prepareAiAutoReply(fakeMessage, env);
-        await handleInbound(prepared.message, prepared.env);
-        return json({ ok: true, note: 'handleInbound completed without throwing; check mail:sent for the actual outcome' });
-      } catch (error) {
-        return json({ ok: false, error: String(error?.message || error), stack: String(error?.stack || '').slice(0, 2000) });
-      }
-    }
-      const to = url.searchParams.get('to') || 'sefic20@gmx.com';
-      const results = {};
-      for (const [key, name] of [['old_endash', 'IT \u2013 Osobni digitalni asistent'], ['new_hyphen', 'IT - Osobni digitalni asistent']]) {
-        try {
-          const r = await env.EMAIL.send({
-            to,
-            from: { email: 'it@gnk-asg.hr', name },
-            subject: `[DIAG] fromName test: ${key}`,
-            text: `Test of fromName variant: ${name}`,
-            headers: { 'Auto-Submitted': 'auto-replied' }
-          });
-          results[key] = { ok: true, messageId: r?.messageId || null };
-        } catch (error) {
-          results[key] = { ok: false, error: String(error?.message || error), code: error?.code || null };
-        }
-      }
-      return json({ ok: true, results });
-    }
     if (path === '/api/mail-center/auto-reply-preview') return preview(url, env);
     if (path === '/api/mail-center/case-lookup' && request.method === 'GET') return caseLookup(url, env);
     if (path === '/api/mail-center/centers') return json({ ok: true, centers: CENTERS });
@@ -466,8 +425,7 @@ export default {
     return json({ ok: false, error: 'not_found', path }, 404);
   },
   async email(message, env, ctx) {
-    const prepared = prepareAiAutoReply(message, env);
-    const task = handleInbound(prepared.message, prepared.env);
+    const task = handleInbound(message, env);
     if (ctx?.waitUntil) {
       ctx.waitUntil(task);
       return;
