@@ -25,6 +25,13 @@
 :root{--pt-bg:#0a0e14;--pt-panel:#121822;--pt-line:#1f2937;--pt-up:#22c55e;--pt-down:#ef4444;--pt-text:#f1f5f9;--pt-sub:#94a3b8;--pt-accent:#38bdf8}
 *{box-sizing:border-box}
 body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Helvetica,sans-serif}
+.pt-ticker-wrap{overflow:hidden;background:#080b11;border-bottom:1px solid var(--pt-line);white-space:nowrap;padding:8px 0}
+.pt-ticker{display:inline-flex;gap:28px;padding-left:100%;animation:ptTicker 45s linear infinite}
+.pt-ticker span{font-size:.78rem;font-weight:700;color:var(--pt-sub);white-space:nowrap}
+.pt-ticker b{color:var(--pt-text);margin-right:4px}
+.pt-ticker .up{color:var(--pt-up)}
+.pt-ticker .down{color:var(--pt-down)}
+@keyframes ptTicker{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 .pt-wrap{max-width:1200px;margin:0 auto;padding:36px 20px 80px}
 .pt-hero{text-align:center;margin-bottom:22px}
 .pt-hero-top{display:flex;justify-content:flex-end;margin-bottom:10px}
@@ -42,7 +49,10 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
 .pt-tab.active{background:var(--pt-accent);border-color:var(--pt-accent);color:#04121c}
 .pt-panel{display:none}
 .pt-panel.active{display:block}
-.pt-section{margin-bottom:40px}
+.pt-section{margin-bottom:34px}
+.pt-section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+.pt-section-head h2{font-size:1.05rem;margin:0}
+.pt-section-head a{color:var(--pt-accent);font-size:.78rem;font-weight:800;text-decoration:none}
 .pt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
 .pt-card{border:1px solid var(--pt-line);border-radius:12px;padding:14px;background:var(--pt-panel)}
 .pt-card .label{font-size:.76rem;color:var(--pt-sub);margin-bottom:6px}
@@ -50,8 +60,29 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
 .pt-card .change{font-size:.82rem;font-weight:700}
 .pt-card .change.up{color:var(--pt-up)}
 .pt-card .change.down{color:var(--pt-down)}
-.pt-crypto-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:18px}
-.pt-crypto-summary .pt-card .price{font-size:1.4rem}
+.pt-hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.pt-stat-card{border:1px solid var(--pt-line);border-radius:14px;padding:16px;background:var(--pt-panel)}
+.pt-stat-card .label{font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--pt-sub);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.pt-stat-card .big{font-size:1.5rem;font-weight:800}
+.pt-dom-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.82rem}
+.pt-dom-row .dname{width:64px;flex:0 0 auto;font-weight:700}
+.pt-dom-bar-wrap{flex:1;height:8px;background:#1a2130;border-radius:5px;overflow:hidden}
+.pt-dom-bar{height:100%;background:linear-gradient(90deg,#f7931a,#38bdf8)}
+.pt-dom-pct{width:44px;flex:0 0 auto;text-align:right;font-weight:800}
+.pt-dom-sub{font-size:.74rem;color:var(--pt-sub);margin-top:8px}
+.pt-gauge-wrap{text-align:center}
+.pt-gauge-value{font-size:1.5rem;font-weight:900;margin-top:-8px}
+.pt-gauge-label{font-size:.8rem;color:var(--pt-sub);margin-top:2px}
+.pt-cover-row{display:flex;gap:22px;margin-top:6px}
+.pt-cover-item{flex:1}
+.pt-cover-item b{display:block;font-size:1.4rem;color:var(--pt-accent)}
+.pt-cover-item span{font-size:.72rem;color:var(--pt-sub)}
+.pt-spark-card{border:1px solid var(--pt-line);border-radius:12px;padding:14px;background:var(--pt-panel);display:flex;flex-direction:column;gap:8px}
+.pt-spark-top{display:flex;justify-content:space-between;align-items:center}
+.pt-spark-name{font-weight:700;font-size:.88rem}
+.pt-spark-sub{font-size:.72rem;color:var(--pt-sub)}
+.pt-spark-price{font-size:1.05rem;font-weight:800;margin-top:2px}
+.pt-spark-svg{width:100%;height:32px;display:block}
 .pt-coin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .pt-coin{display:flex;align-items:center;gap:10px;border:1px solid var(--pt-line);border-radius:12px;padding:12px;background:var(--pt-panel)}
 .pt-coin img{width:32px;height:32px;border-radius:50%}
@@ -59,6 +90,18 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
 .pt-coin .sym{color:var(--pt-sub);font-size:.72rem;text-transform:uppercase}
 .pt-coin .price{margin-left:auto;text-align:right}
 .pt-coin .price b{display:block;font-size:.92rem}
+.pt-movers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.pt-movers-card{border:1px solid var(--pt-line);border-radius:14px;padding:16px;background:var(--pt-panel)}
+.pt-movers-card h3{margin:0 0 10px;font-size:.9rem}
+.pt-mover-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--pt-line)}
+.pt-mover-row:last-child{border-bottom:0}
+.pt-mover-row img{width:22px;height:22px;border-radius:50%}
+.pt-mover-name{flex:1;font-size:.84rem;font-weight:700}
+.pt-mover-sym{font-size:.68rem;color:var(--pt-sub);display:block;font-weight:400}
+.pt-mover-price{font-size:.82rem;color:var(--pt-sub);margin-right:8px}
+.pt-heatmap{display:flex;gap:3px;overflow-x:auto;padding-bottom:6px}
+.pt-heat-cell{width:20px;height:20px;border-radius:3px;flex:0 0 auto}
+.pt-heat-labels{display:flex;justify-content:space-between;font-size:.7rem;color:var(--pt-sub);margin-top:6px}
 .pt-compare-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--pt-line)}
 .pt-compare-row:last-child{border-bottom:0}
 .pt-compare-label{width:140px;flex:0 0 auto;font-size:.85rem;font-weight:700}
@@ -73,13 +116,12 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
 .pt-source-card .tag{display:inline-block;font-size:.66rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--pt-accent);background:rgba(56,189,248,.12);padding:3px 8px;border-radius:6px;margin-bottom:10px}
 .pt-source-card p{color:var(--pt-sub);font-size:.85rem;line-height:1.55;margin:0 0 10px}
 .pt-source-card code{display:block;background:#080b11;border:1px solid var(--pt-line);border-radius:8px;padding:8px 10px;font-size:.76rem;color:#9ecbff;word-break:break-all}
-.pt-summary-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
-.pt-loading{text-align:center;padding:60px 0;color:var(--pt-sub)}
 .pt-note{font-size:.76rem;color:var(--pt-sub);text-align:center;margin-top:30px;line-height:1.6}
-@media(max-width:640px){.pt-wrap{padding:24px 14px 60px}.pt-grid{grid-template-columns:repeat(2,1fr)}.pt-coin-grid{grid-template-columns:1fr}.pt-tabs{gap:6px}.pt-tab{padding:7px 12px;font-size:.72rem}.pt-compare-label{width:100px}}
+@media(max-width:640px){.pt-wrap{padding:24px 14px 60px}.pt-grid{grid-template-columns:repeat(2,1fr)}.pt-coin-grid{grid-template-columns:1fr}.pt-tabs{gap:6px}.pt-tab{padding:7px 12px;font-size:.72rem}.pt-compare-label{width:100px}.pt-hero-stats{grid-template-columns:1fr 1fr}}
 </style>
 </head><body>
 <header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/" aria-label="Hrvatski" aria-current="page">HR</a><a href="/en/" aria-label="English">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">IZBORNIK</button></div><nav id="gnk-unified-nav"></nav></div></div></header>
+<div class="pt-ticker-wrap"><div class="pt-ticker" id="ptTicker"></div></div>
 <main class="pt-wrap">
   <div class="pt-hero-top"><div class="pt-lang-toggle"><button type="button" data-lang="hr" class="active">HR</button><button type="button" data-lang="en">EN</button></div></div>
   <div class="pt-hero">
@@ -101,8 +143,66 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
   </nav>
 
   <section class="pt-panel active" data-panel="home">
-    <div class="pt-summary-strip" id="ptHomeStrip"></div>
-    <div class="pt-crypto-summary" id="ptCryptoSummary"></div>
+    <div class="pt-hero-stats">
+      <div class="pt-stat-card">
+        <div class="label" data-i18n="cryptoCap">Kripto tržišna kap.</div>
+        <div class="big" id="ptCapValue">—</div>
+        <div class="change" id="ptCapChange"></div>
+      </div>
+      <div class="pt-stat-card pt-gauge-wrap">
+        <div class="label" data-i18n="fearGreedLbl">Fear &amp; Greed indeks</div>
+        <svg viewBox="0 0 120 66" width="120" height="66" id="ptGaugeSvg"></svg>
+        <div class="pt-gauge-value" id="ptGaugeValue">—</div>
+        <div class="pt-gauge-label" id="ptGaugeLabel"></div>
+      </div>
+      <div class="pt-stat-card">
+        <div class="label" data-i18n="dominanceLbl">Dominacija</div>
+        <div class="pt-dom-row"><span class="dname">Bitcoin</span><div class="pt-dom-bar-wrap"><div class="pt-dom-bar" id="ptBtcDomBar" style="width:0%"></div></div><span class="pt-dom-pct" id="ptBtcDomPct">—</span></div>
+        <div class="pt-dom-row"><span class="dname">Ethereum</span><div class="pt-dom-bar-wrap"><div class="pt-dom-bar" id="ptEthDomBar" style="width:0%"></div></div><span class="pt-dom-pct" id="ptEthDomPct">—</span></div>
+        <div class="pt-dom-sub" id="ptActiveCoins"></div>
+      </div>
+      <div class="pt-stat-card">
+        <div class="label" data-i18n="coverageLbl">Pokrivenost</div>
+        <div class="pt-cover-row">
+          <div class="pt-cover-item"><b id="ptCoverInstruments">—</b><span data-i18n="coverInstruments">instrumenata: kripto, indeksi, dionice, roba, valute</span></div>
+          <div class="pt-cover-item"><b>3</b><span data-i18n="coverApis">API izvora (CoinGecko, Yahoo Finance, Alternative.me)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-section">
+      <div class="pt-section-head"><h2 data-i18n="leadingCrypto">Vodeće kriptovalute</h2><a data-tab-link="crypto" data-i18n="seeAll">Vidi sve →</a></div>
+      <div class="pt-coin-grid" id="ptLeadingCoins"></div>
+    </div>
+
+    <div class="pt-section">
+      <div class="pt-section-head"><h2 data-i18n="mainIndices">Glavni svjetski indeksi</h2><a data-tab-link="indices" data-i18n="seeAll">Vidi sve →</a></div>
+      <div class="pt-grid" id="ptHomeIndices"></div>
+    </div>
+
+    <div class="pt-section">
+      <div class="pt-section-head"><h2 data-i18n="focusCommodities">Roba i valute u fokusu</h2><a data-tab-link="commodities" data-i18n="seeAll">Vidi sve →</a></div>
+      <div class="pt-grid" id="ptHomeFocus"></div>
+    </div>
+
+    <div class="pt-section">
+      <div class="pt-movers-grid">
+        <div class="pt-movers-card">
+          <h3 data-i18n="topGainers">Najveći rast 24h · kripto top 30</h3>
+          <div id="ptGainers"></div>
+        </div>
+        <div class="pt-movers-card">
+          <h3 data-i18n="topLosers">Najveći pad 24h · kripto top 30</h3>
+          <div id="ptLosers"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-section">
+      <div class="pt-section-head"><h2 data-i18n="fearGreedHistory">Fear &amp; Greed — zadnjih 30 dana</h2></div>
+      <div class="pt-heatmap" id="ptHeatmap"></div>
+      <div class="pt-heat-labels"><span id="ptHeatStart"></span><span id="ptHeatEnd"></span></div>
+    </div>
   </section>
 
   <section class="pt-panel" data-panel="crypto">
@@ -134,19 +234,19 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
       <div class="pt-source-card">
         <span class="tag">Kripto</span>
         <h3>CoinGecko</h3>
-        <p data-i18n="srcCoinGecko">Cijene, promjene i tržišna kapitalizacija za vodeće kriptovalute te globalna kripto statistika.</p>
+        <p data-i18n="srcCoinGecko">Cijene, promjene, sparkline grafovi i tržišna kapitalizacija za top 30 kriptovaluta te globalna kripto statistika.</p>
         <code>api.coingecko.com/api/v3</code>
       </div>
       <div class="pt-source-card">
         <span class="tag" data-i18n="srcTagOfficial">Indeksi / Dionice / Roba / Valute</span>
         <h3>Yahoo Finance</h3>
-        <p data-i18n="srcYahoo">Cijene i dnevne promjene za svjetske indekse, dionice, robu i valutne parove.</p>
+        <p data-i18n="srcYahoo">Cijene, dnevne promjene i 7-dnevni trend za svjetske indekse, dionice, robu i valutne parove.</p>
         <code>query1.finance.yahoo.com/v8/finance/chart</code>
       </div>
       <div class="pt-source-card">
         <span class="tag">Kripto sentiment</span>
         <h3>Alternative.me</h3>
-        <p data-i18n="srcFearGreed">Fear &amp; Greed indeks za kripto tržište, ažuriran dnevno.</p>
+        <p data-i18n="srcFearGreed">Fear &amp; Greed indeks za kripto tržište, s 30-dnevnom poviješću, ažuriran dnevno.</p>
         <code>api.alternative.me/fng</code>
       </div>
     </div>
@@ -163,27 +263,35 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
       eyebrow: 'Uživo · javni izvori', lead: 'Svjetski indeksi, dionice, roba, valute i kripto — iz stvarnih, javnih izvora podataka.',
       loading: 'Učitavanje podataka…', tabHome: 'Naslovnica', tabCrypto: 'Kripto', tabIndices: 'Indeksi', tabStocks: 'Dionice',
       tabCommodities: 'Roba', tabCurrencies: 'Valute', tabCompare: 'Usporedbe', tabSources: 'Izvori',
-      srcCoinGecko: 'Cijene, promjene i tržišna kapitalizacija za vodeće kriptovalute te globalna kripto statistika.',
-      srcYahoo: 'Cijene i dnevne promjene za svjetske indekse, dionice, robu i valutne parove.',
-      srcFearGreed: 'Fear & Greed indeks za kripto tržište, ažuriran dnevno.',
+      srcCoinGecko: 'Cijene, promjene, sparkline grafovi i tržišna kapitalizacija za top 30 kriptovaluta te globalna kripto statistika.',
+      srcYahoo: 'Cijene, dnevne promjene i 7-dnevni trend za svjetske indekse, dionice, robu i valutne parove.',
+      srcFearGreed: 'Fear & Greed indeks za kripto tržište, s 30-dnevnom poviješću, ažuriran dnevno.',
       srcTagOfficial: 'Indeksi / Dionice / Roba / Valute',
       srcNote: 'Svi izvori su javni i besplatni. Podaci se osvježavaju automatski svaka 2 sata.',
       footnote: 'Podaci dolaze iz javnih izvora i osvježavaju se automatski. Prikaz je informativne naravi i ne predstavlja investicijsko savjetovanje.',
-      cryptoCap: 'Kripto tržišna kap.', btcDom: 'Bitcoin dominacija', ethDom: 'Ethereum dominacija', fearGreedLbl: 'Fear & Greed indeks',
-      updated: 'Ažurirano', live: 'uživo', unavailable: 'Podaci trenutno nisu dostupni.'
+      cryptoCap: 'Kripto tržišna kap.', dominanceLbl: 'Dominacija', fearGreedLbl: 'Fear & Greed indeks', coverageLbl: 'Pokrivenost',
+      coverInstruments: 'instrumenata: kripto, indeksi, dionice, roba, valute', coverApis: 'API izvora (CoinGecko, Yahoo Finance, Alternative.me)',
+      leadingCrypto: 'Vodeće kriptovalute', mainIndices: 'Glavni svjetski indeksi', focusCommodities: 'Roba i valute u fokusu',
+      topGainers: 'Najveći rast 24h · kripto top 30', topLosers: 'Najveći pad 24h · kripto top 30', fearGreedHistory: 'Fear & Greed — zadnjih 30 dana',
+      seeAll: 'Vidi sve →', updated: 'Ažurirano', live: 'uživo', unavailable: 'Podaci trenutno nisu dostupni.',
+      fgExtreme_fear: 'Ekstremni strah', fgFear: 'Strah', fgNeutral: 'Neutralno', fgGreed: 'Pohlepa', fgExtreme_greed: 'Ekstremna pohlepa'
     },
     en: {
       eyebrow: 'Live · public sources', lead: 'World indices, stocks, commodities, currencies and crypto — from real, public data sources.',
       loading: 'Loading data…', tabHome: 'Home', tabCrypto: 'Crypto', tabIndices: 'Indices', tabStocks: 'Stocks',
       tabCommodities: 'Commodities', tabCurrencies: 'Currencies', tabCompare: 'Compare', tabSources: 'Sources',
-      srcCoinGecko: 'Prices, changes and market cap for leading cryptocurrencies plus global crypto statistics.',
-      srcYahoo: 'Prices and daily changes for world indices, stocks, commodities and currency pairs.',
-      srcFearGreed: 'Fear & Greed index for the crypto market, updated daily.',
+      srcCoinGecko: 'Prices, changes, sparkline charts and market cap for the top 30 cryptocurrencies plus global crypto statistics.',
+      srcYahoo: 'Prices, daily changes and 7-day trend for world indices, stocks, commodities and currency pairs.',
+      srcFearGreed: 'Fear & Greed index for the crypto market, with 30-day history, updated daily.',
       srcTagOfficial: 'Indices / Stocks / Commodities / Currencies',
       srcNote: 'All sources are public and free. Data refreshes automatically every 2 hours.',
       footnote: 'Data comes from public sources and refreshes automatically. This display is informational only and does not constitute investment advice.',
-      cryptoCap: 'Crypto market cap', btcDom: 'Bitcoin dominance', ethDom: 'Ethereum dominance', fearGreedLbl: 'Fear & Greed index',
-      updated: 'Updated', live: 'live', unavailable: 'Data is currently unavailable.'
+      cryptoCap: 'Crypto market cap', dominanceLbl: 'Dominance', fearGreedLbl: 'Fear & Greed index', coverageLbl: 'Coverage',
+      coverInstruments: 'instruments: crypto, indices, stocks, commodities, currencies', coverApis: 'API sources (CoinGecko, Yahoo Finance, Alternative.me)',
+      leadingCrypto: 'Leading cryptocurrencies', mainIndices: 'Major world indices', focusCommodities: 'Commodities & currencies in focus',
+      topGainers: 'Top gainers 24h · crypto top 30', topLosers: 'Top losers 24h · crypto top 30', fearGreedHistory: 'Fear & Greed — last 30 days',
+      seeAll: 'See all →', updated: 'Updated', live: 'live', unavailable: 'Data is currently unavailable.',
+      fgExtreme_fear: 'Extreme fear', fgFear: 'Fear', fgNeutral: 'Neutral', fgGreed: 'Greed', fgExtreme_greed: 'Extreme greed'
     }
   };
   var lang = (new URLSearchParams(location.search).get('lang') === 'en') ? 'en' : 'hr';
@@ -203,7 +311,30 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
   }
   function quoteCard(q){
     var decimals = Math.abs(q.price) < 10 ? 3 : 2;
-    return '<div class="pt-card"><div class="label">' + esc(q.label) + (q.unit ? ' <span style="opacity:.6">(' + esc(q.unit) + ')</span>' : '') + '</div><div class="price">' + fmt(q.price, decimals) + '</div>' + changeSpan(q.changePct) + '</div>';
+    var extra = q.country ? '<div style="font-size:.68rem;color:var(--pt-sub);margin-top:2px">' + esc(q.country) + '</div>' : '';
+    var spark = (q.sparkline && q.sparkline.length > 1) ? sparklineSvg(q.sparkline, q.changePct >= 0) : '';
+    return '<div class="pt-card"><div class="label">' + esc(q.label) + (q.unit ? ' <span style="opacity:.6">(' + esc(q.unit) + ')</span>' : '') + '</div><div class="price">' + fmt(q.price, decimals) + '</div>' + changeSpan(q.changePct) + extra + spark + '</div>';
+  }
+
+  function sparklineSvg(points, isUp){
+    if (!points || points.length < 2) return '';
+    var w = 200, h = 32, min = Math.min.apply(null, points), max = Math.max.apply(null, points);
+    var range = (max - min) || 1;
+    var step = w / (points.length - 1);
+    var path = points.map(function(v, i){
+      var x = i * step;
+      var y = h - ((v - min) / range) * h;
+      return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+    var color = isUp ? '#22c55e' : '#ef4444';
+    return '<svg class="pt-spark-svg" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none"><path d="' + path + '" fill="none" stroke="' + color + '" stroke-width="2"/></svg>';
+  }
+
+  function sparkCard(item, priceDecimals){
+    var spark = sparklineSvg(item.sparkline, item.changePct24h != null ? item.changePct24h >= 0 : item.changePct >= 0);
+    var change = item.changePct24h != null ? item.changePct24h : item.changePct;
+    var sub = item.country || (item.symbol ? item.symbol : '');
+    return '<div class="pt-spark-card"><div class="pt-spark-top"><div><div class="pt-spark-name">' + esc(item.name || item.label) + '</div><div class="pt-spark-sub">' + esc(sub) + '</div></div>' + changeSpan(change) + '</div><div class="pt-spark-price">' + fmt(item.price, priceDecimals) + (item.unit ? ' ' + esc(item.unit) : '') + '</div>' + spark + '</div>';
   }
 
   function applyI18n(){
@@ -229,13 +360,16 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
     });
   });
 
+  function activateTab(tabName){
+    document.querySelectorAll('.pt-tab').forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-tab') === tabName); });
+    document.querySelectorAll('.pt-panel').forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-panel') === tabName); });
+  }
   document.querySelectorAll('.pt-tab').forEach(function(tab){
-    tab.addEventListener('click', function(){
-      document.querySelectorAll('.pt-tab').forEach(function(t){ t.classList.remove('active'); });
-      document.querySelectorAll('.pt-panel').forEach(function(p){ p.classList.remove('active'); });
-      tab.classList.add('active');
-      document.querySelector('.pt-panel[data-panel="' + tab.getAttribute('data-tab') + '"]').classList.add('active');
-    });
+    tab.addEventListener('click', function(){ activateTab(tab.getAttribute('data-tab')); });
+  });
+  document.querySelectorAll('[data-tab-link]').forEach(function(link){
+    link.addEventListener('click', function(){ activateTab(link.getAttribute('data-tab-link')); });
+    link.style.cursor = 'pointer';
   });
 
   function renderCompare(allQuotes){
@@ -244,9 +378,36 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
     document.getElementById('ptCompareList').innerHTML = sorted.map(function(q){
       var pct = Math.min(50, Math.abs(q.changePct) / maxAbs * 50);
       var cls = q.changePct >= 0 ? 'up' : 'down';
-      var style = 'width:' + pct + '%';
-      return '<div class="pt-compare-row"><div class="pt-compare-label">' + esc(q.label) + '</div><div class="pt-compare-bar-wrap"><div class="pt-compare-bar ' + cls + '" style="' + style + '"></div></div><div class="pt-compare-value ' + cls + '">' + (q.changePct >= 0 ? '+' : '') + q.changePct.toFixed(2) + '%</div></div>';
+      return '<div class="pt-compare-row"><div class="pt-compare-label">' + esc(q.label) + '</div><div class="pt-compare-bar-wrap"><div class="pt-compare-bar ' + cls + '" style="width:' + pct + '%"></div></div><div class="pt-compare-value ' + cls + '">' + (q.changePct >= 0 ? '+' : '') + q.changePct.toFixed(2) + '%</div></div>';
     }).join('');
+  }
+
+  function renderGauge(value){
+    var svg = document.getElementById('ptGaugeSvg');
+    var pct = Math.max(0, Math.min(100, value)) / 100;
+    var angle = Math.PI * (1 - pct);
+    var cx = 60, cy = 60, r = 50;
+    var needleX = cx + 40 * Math.cos(angle);
+    var needleY = cy - 40 * Math.sin(angle);
+    svg.innerHTML =
+      '<path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="#1a2130" stroke-width="10"/>' +
+      '<path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="url(#ptGaugeGrad)" stroke-width="10"/>' +
+      '<defs><linearGradient id="ptGaugeGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ef4444"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#22c55e"/></linearGradient></defs>' +
+      '<line x1="' + cx + '" y1="' + cy + '" x2="' + needleX.toFixed(1) + '" y2="' + needleY.toFixed(1) + '" stroke="#f8fafc" stroke-width="3" stroke-linecap="round"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="4" fill="#f8fafc"/>';
+  }
+
+  function fgClassKey(classification){
+    var map = { 'Extreme Fear': 'fgExtreme_fear', 'Fear': 'fgFear', 'Neutral': 'fgNeutral', 'Greed': 'fgGreed', 'Extreme Greed': 'fgExtreme_greed' };
+    return map[classification] || classification;
+  }
+
+  function heatColor(value){
+    if (value <= 24) return '#7f1d1d';
+    if (value <= 44) return '#dc2626';
+    if (value <= 55) return '#f59e0b';
+    if (value <= 75) return '#84cc16';
+    return '#22c55e';
   }
 
   function render(data){
@@ -258,33 +419,77 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
     if (data.currencies && data.currencies.length) document.getElementById('ptCurrenciesGrid').innerHTML = data.currencies.filter(function(q){return q.ok}).map(quoteCard).join('');
     if (data.stocks && data.stocks.length) document.getElementById('ptStocksGrid').innerHTML = data.stocks.filter(function(q){return q.ok}).map(quoteCard).join('');
 
-    var homeStripItems = [];
-    (data.indices||[]).forEach(function(q){ if(q.ok && ['S&P 500','Nasdaq','FTSE 100'].indexOf(q.label)>-1) homeStripItems.push(q); });
-    (data.commodities||[]).forEach(function(q){ if(q.ok && q.label==='Zlato') homeStripItems.push(q); });
-    (data.currencies||[]).forEach(function(q){ if(q.ok && q.label==='EUR/USD') homeStripItems.push(q); });
-    document.getElementById('ptHomeStrip').innerHTML = homeStripItems.map(quoteCard).join('');
-
     var crypto = data.crypto || {};
-    var summaryHtml = '';
+
+    var tickerItems = [].concat(data.indices||[], data.commodities||[], data.currencies||[]).filter(function(q){return q.ok});
+    var tickerHtml = tickerItems.map(function(q){
+      var cls = q.changePct >= 0 ? 'up' : 'down';
+      return '<span><b>' + esc(q.label) + '</b> ' + fmt(q.price, Math.abs(q.price)<10?3:2) + ' <span class="' + cls + '">' + (q.changePct>=0?'+':'') + q.changePct.toFixed(2) + '%</span></span>';
+    }).join('');
+    document.getElementById('ptTicker').innerHTML = tickerHtml + tickerHtml;
+
     if (crypto.global && crypto.global.ok){
       var g = crypto.global;
       var capTrillions = g.totalMarketCapUsd ? (g.totalMarketCapUsd / 1e12).toFixed(2) : '—';
-      summaryHtml += '<div class="pt-card"><div class="label">' + dict.cryptoCap + '</div><div class="price">' + capTrillions + (lang==='en' ? ' trillion $' : ' bilijuna $') + '</div>' + changeSpan(g.marketCapChangePct24h) + '</div>';
-      summaryHtml += '<div class="pt-card"><div class="label">' + dict.btcDom + '</div><div class="price">' + (g.btcDominancePct != null ? g.btcDominancePct + '%' : '—') + '</div></div>';
-      summaryHtml += '<div class="pt-card"><div class="label">' + dict.ethDom + '</div><div class="price">' + (g.ethDominancePct != null ? g.ethDominancePct + '%' : '—') + '</div></div>';
+      document.getElementById('ptCapValue').textContent = capTrillions + (lang==='en' ? ' trillion $' : ' bilijuna $');
+      document.getElementById('ptCapChange').innerHTML = changeSpan(g.marketCapChangePct24h);
+      if (g.btcDominancePct != null){
+        document.getElementById('ptBtcDomBar').style.width = g.btcDominancePct + '%';
+        document.getElementById('ptBtcDomPct').textContent = g.btcDominancePct + '%';
+      }
+      if (g.ethDominancePct != null){
+        document.getElementById('ptEthDomBar').style.width = (g.ethDominancePct*3) + '%';
+        document.getElementById('ptEthDomPct').textContent = g.ethDominancePct + '%';
+      }
+      if (g.activeCryptocurrencies){
+        document.getElementById('ptActiveCoins').textContent = (lang==='en' ? 'Active cryptocurrencies: ' : 'Aktivnih kriptovaluta: ') + Number(g.activeCryptocurrencies).toLocaleString(lang==='en'?'en-US':'hr-HR');
+      }
     }
     if (crypto.fearGreed && crypto.fearGreed.ok){
-      summaryHtml += '<div class="pt-card"><div class="label">' + dict.fearGreedLbl + '</div><div class="price">' + crypto.fearGreed.value + '</div><div class="change">' + esc(crypto.fearGreed.classification) + '</div></div>';
+      renderGauge(crypto.fearGreed.value);
+      document.getElementById('ptGaugeValue').textContent = crypto.fearGreed.value;
+      document.getElementById('ptGaugeLabel').textContent = dict[fgClassKey(crypto.fearGreed.classification)] || crypto.fearGreed.classification;
     }
-    document.getElementById('ptCryptoSummary').innerHTML = summaryHtml;
+    document.getElementById('ptCoverInstruments').textContent = (data.instrumentsTotal || 0) + '+';
 
     if (crypto.topCoins && crypto.topCoins.length){
+      document.getElementById('ptLeadingCoins').innerHTML = crypto.topCoins.slice(0, 3).map(function(c){
+        return sparkCard({ name: c.name, symbol: c.symbol, price: c.price, changePct24h: c.changePct24h, sparkline: c.sparkline }, c.price < 1 ? 4 : 2);
+      }).join('');
       document.getElementById('ptCoinGrid').innerHTML = crypto.topCoins.map(function(c){
         return '<div class="pt-coin">' +
           (c.image ? '<img src="' + esc(c.image) + '" alt="" loading="lazy">' : '') +
           '<div><div class="name">' + esc(c.name) + '</div><div class="sym">' + esc(c.symbol) + '</div></div>' +
           '<div class="price"><b>$' + fmt(c.price, c.price < 1 ? 4 : 2) + '</b>' + changeSpan(c.changePct24h) + '</div></div>';
       }).join('');
+    }
+
+    if (data.indices && data.indices.length){
+      document.getElementById('ptHomeIndices').innerHTML = data.indices.filter(function(q){return q.ok && q.label !== 'VIX'}).map(function(q){
+        return sparkCard(q, Math.abs(q.price) < 10 ? 3 : 2);
+      }).join('');
+    }
+
+    var focusItems = [];
+    (data.commodities||[]).forEach(function(q){ if(q.ok) focusItems.push(q); });
+    (data.currencies||[]).forEach(function(q){ if(q.ok) focusItems.push(q); });
+    document.getElementById('ptHomeFocus').innerHTML = focusItems.map(quoteCard).join('');
+
+    function moverRow(c){
+      return '<div class="pt-mover-row">' + (c.image ? '<img src="' + esc(c.image) + '" alt="">' : '') +
+        '<div class="pt-mover-name">' + esc(c.name) + '<span class="pt-mover-sym">' + esc(c.symbol) + '</span></div>' +
+        '<span class="pt-mover-price">' + fmt(c.price, c.price < 1 ? 4 : 2) + '</span>' + changeSpan(c.changePct24h) + '</div>';
+    }
+    if (crypto.gainers && crypto.gainers.length) document.getElementById('ptGainers').innerHTML = crypto.gainers.map(moverRow).join('');
+    if (crypto.losers && crypto.losers.length) document.getElementById('ptLosers').innerHTML = crypto.losers.map(moverRow).join('');
+
+    if (crypto.fearGreed && crypto.fearGreed.history && crypto.fearGreed.history.length){
+      var hist = crypto.fearGreed.history;
+      document.getElementById('ptHeatmap').innerHTML = hist.map(function(h){
+        return '<div class="pt-heat-cell" style="background:' + heatColor(h.value) + '" title="' + esc(h.date) + ': ' + h.value + '"></div>';
+      }).join('');
+      document.getElementById('ptHeatStart').textContent = hist[0].date;
+      document.getElementById('ptHeatEnd').textContent = hist[hist.length - 1].date;
     }
 
     var allQuotes = [].concat(data.indices||[], data.commodities||[], data.currencies||[], data.stocks||[]);
