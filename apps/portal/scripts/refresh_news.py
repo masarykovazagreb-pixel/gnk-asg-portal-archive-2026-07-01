@@ -206,6 +206,8 @@ def parse_feed(raw: bytes, group: str, category: str, default_source: str):
         if not url:
             guid = clean_text(node.findtext("guid"))
             url = guid if guid.startswith("http") else ""
+        if url.startswith("http://"):
+            url = "https://" + url[len("http://"):]
         raw_description = node.findtext("description") or node.findtext("summary") or ""
         summary = clean_text(raw_description or title)
         pub = parse_date(node.findtext("pubDate") or node.findtext("dc:date") or "")
@@ -236,6 +238,8 @@ def make_record(title: str, url: str, summary: str, source: str, group: str, cat
     title = clean_text(title)[:220]
     summary = clean_text(summary)[:360]
     url = url.strip()
+    if url.startswith("http://"):
+        url = "https://" + url[len("http://"):]
     # Google News sometimes wraps source links; keep the public URL, browser will resolve it.
     uid = item_id(url, title)
     safe_image = image.strip() if image and image.strip().lower().startswith(("http://", "https://")) else ""
