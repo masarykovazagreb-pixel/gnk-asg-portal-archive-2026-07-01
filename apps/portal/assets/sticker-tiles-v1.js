@@ -95,7 +95,7 @@
           <div class="gnk-tile-label">${item.label}</div>
           <div class="gnk-tile-title">${item.title}</div>
           <div class="gnk-tile-full">${item.desc}</div>
-          <div class="gnk-tile-cta">${isEnglish ? 'Open →' : 'Otvori →'}</div>
+          <div class="gnk-tile-cta">${isEnglish ? 'Click here to open →' : 'Kliknite ovdje →'}</div>
         </div>
       `;
 
