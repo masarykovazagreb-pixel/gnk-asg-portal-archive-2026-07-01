@@ -50,6 +50,13 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-top10 b{font-family:Arial,sans-serif;color:var(--ak-red);font-size:1.1rem;font-weight:900;min-width:26px}
 .ak-top10 a{color:var(--ak-text);text-decoration:none;font-size:1rem;line-height:1.4}
 .ak-top10 a:hover{color:var(--ak-red)}
+.ak-all-list{list-style:none;margin:0;padding:0;display:grid;gap:2px;max-height:900px;overflow-y:auto}
+.ak-all-list li{display:flex;gap:12px;align-items:flex-start;padding:12px 4px;border-bottom:1px solid var(--ak-line)}
+.ak-all-list li:last-child{border-bottom:none}
+.ak-all-list .cat{font-family:Arial,sans-serif;font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--ak-red);min-width:78px;flex:0 0 auto;padding-top:2px}
+.ak-all-list a{color:var(--ak-text);text-decoration:none;font-size:.94rem;line-height:1.4;flex:1}
+.ak-all-list a:hover{color:var(--ak-red)}
+.ak-all-list .meta{font-family:Arial,sans-serif;font-size:.68rem;color:var(--ak-sub);flex:0 0 auto;white-space:nowrap;padding-top:2px}
 .ak-top10 .ak-src{display:block;font-family:Arial,sans-serif;color:var(--ak-sub);font-size:.74rem;margin-top:4px}
 .ak-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
 .ak-card{border:1px solid var(--ak-line);border-radius:12px;overflow:hidden;background:var(--ak-panel);transition:transform .25s ease,border-color .25s ease}
@@ -98,12 +105,16 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     <ol class="ak-top10" id="akTop10"></ol>
   </section>
   <div id="akCategories"></div>
+  <section class="ak-section" id="akAllSection" hidden>
+    <div class="ak-section-head"><h2>Sve vijesti <span id="akAllCount"></span></h2><span>potpuni popis</span></div>
+    <ol class="ak-all-list" id="akAllList"></ol>
+  </section>
   <p class="ak-note">Sve vijesti preuzete su iz javnih RSS izvora (Guardian, BBC, Reuters, CNN i drugi). GNK ASG ne pohranjuje puni tekst članaka — prikazuje se samo naslov, slika i kratak izvod uz poveznicu na izvornog izdavača.</p>
 </main>
 <script src="/assets/app.js?v=20260722-puls-trzista-v1" defer></script>
 <script>
 (function(){
-  var GROUP_LABELS = { hrvatska:'Hrvatska', international:'Svijet', technology:'Tehnologija', economy:'Ekonomija', 'digital-assets':'Digitalna imovina' };
+  var GROUP_LABELS = { hrvatska:'Hrvatska', international:'Svijet', technology:'Tehnologija', economy:'Burza i biznis', 'digital-assets':'Digitalna imovina' };
   var ROTATE_MS = 8000;
   var state = { items: [], top10Index: 0, catIndex: {} };
 
@@ -138,6 +149,17 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     list.innerHTML = slice.map(function(item, i){
       return '<li><b>'+(i+1)+'</b><div><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a><span class="ak-src">'+esc(item.source||'')+' · '+timeAgo(item.published_at)+'</span></div></li>';
     }).join('');
+  }
+
+  function renderAllList(){
+    var list = document.getElementById('akAllList');
+    var countEl = document.getElementById('akAllCount');
+    if (!list) return;
+    countEl.textContent = '(' + state.items.length + ')';
+    list.innerHTML = state.items.map(function(item){
+      return '<li><span class="cat">'+esc(GROUP_LABELS[item.group]||item.category||'Vijest')+'</span><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a><span class="meta">'+esc(item.source||'')+' · '+timeAgo(item.published_at)+'</span></li>';
+    }).join('');
+    document.getElementById('akAllSection').hidden = false;
   }
 
   function groupByCategory(){
@@ -196,6 +218,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       document.getElementById('akTopSection').hidden = false;
       renderTop10();
       renderCategories();
+      renderAllList();
       setInterval(rotate, ROTATE_MS);
     })
     .catch(function(){
