@@ -1,0 +1,66 @@
+name: Diagnose direct inbound autoreply patch
+on:
+  push:
+    paths:
+      - '.github/workflows/diag-direct-inbound-patch-20260722.yml'
+permissions:
+  contents: read
+  issues: write
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute exact embedded patch and tests
+        id: diagnose
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            python3 - <<'PY'
+          import base64,re
+          from pathlib import Path
+          text=Path('.github/workflows/fix-deploy-mail-autoreply-mime-20260722.yml').read_text()
+          patterns={
+            '/tmp/patch-direct-inbound.py':r"echo '([A-Za-z0-9+/=]+)' \| base64 -d > /tmp/patch-direct-inbound\.py",
+            'workers/gnk-asg-mail-center-worker/wrangler.toml':r"echo '([A-Za-z0-9+/=]+)' \| base64 -d > workers/gnk-asg-mail-center-worker/wrangler\.toml",
+            'scripts/test-mail-center-direct-inbound-pipeline-v1.mjs':r"echo '([A-Za-z0-9+/=]+)' \| base64 -d > scripts/test-mail-center-direct-inbound-pipeline-v1\.mjs"
+          }
+          for target,pattern in patterns.items():
+              match=re.search(pattern,text)
+              if not match: raise SystemExit(f'embedded payload not found: {target}')
+              path=Path(target);path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(base64.b64decode(match.group(1)))
+              print('extracted',target,path.stat().st_size)
+          PY
+            python3 /tmp/patch-direct-inbound.py
+            node --check workers/gnk-asg-mail-center-worker/src/index.js
+            node --check workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js
+            node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js
+            node scripts/test-mail-center-direct-inbound-pipeline-v1.mjs
+          } 2>&1 | tee /tmp/diag.log
+      - name: Publish exact diagnostic
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          {
+            echo '## Exact direct inbound patch diagnostic'
+            echo
+            echo "Outcome: ${{ steps.diagnose.outcome }}"
+            echo
+            echo '```'
+            tail -n 180 /tmp/diag.log 2>/dev/null || true
+            echo '```'
+          } > /tmp/report.md
+          gh issue edit 712 --repo "${{ github.repository }}" --body-file /tmp/report.md
+      - name: Fail after publishing diagnostic
+        if: steps.diagnose.outcome != 'success'
+        run: exit 1
