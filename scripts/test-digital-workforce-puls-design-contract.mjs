@@ -7,6 +7,7 @@ const js=fs.readFileSync('apps/portal/assets/digital-workforce-suite-v1.js','utf
 
 for(const tab of ['plan','bulletins','projects','risks','opinions','dependencies','tasks','credits','newsroom','workers','log']){
   assert.match(html,new RegExp(`data-dw-tab="${tab}"`));
+  assert.match(html,new RegExp(`id="dw-tab-${tab}"`));
 }
 
 assert.match(html,/dwMetricDay/);
@@ -17,6 +18,10 @@ assert.match(html,/GNK ASG/);
 assert.match(html,/SIMULACIJA/);
 assert.match(html,/role="tablist"/);
 assert.match(html,/role="tabpanel"/);
+assert.match(html,/aria-controls="dwContent"/);
+assert.match(html,/aria-labelledby="dw-tab-plan"/);
+assert.match(html,/tabindex="-1"/);
+assert.match(html,/\.dw-tabs button:focus-visible\{outline:3px solid #f2d27d!important/);
 
 // Visual contract: the private preview must remain pure black, glass-black and gold/white.
 assert.match(html,/html,body,\.dw-private-preview\{background:#000!important;background-image:none!important/);
@@ -45,6 +50,7 @@ console.log(JSON.stringify({
   contract:'digital-workforce-puls-trzista-public-redesign',
   tabs:11,
   palette:'pure-black-glass-gold-white',
+  accessibility:'linked-tabs-focus-visible-keyboard-navigation',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
