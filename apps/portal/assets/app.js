@@ -68,14 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/world-markets-v1.js');
   script('/assets/gallery-auto-assign-v1.js');
   script('/assets/whatsapp-widget-v1.js');
-  script('/assets/ideje-sticker-widget-v1.js');
-  script('/assets/gnk-aktual-flyer-v1.js');
-  script('/assets/puls-trzista-flyer-v1.js');
-  script('/assets/synapse-flyer-v1.js');
-  script('/assets/nilus-bio-flyer-v1.js');
-  script('/assets/digital-solutions-flyer-v1.js');
-  script('/assets/pulse-demo-flyer-v1.js');
-  script('/assets/mobile-stickers-dropdown-v1.js');
+  script('/assets/sticker-tiles-v1.js');
   script('/assets/header-whatsapp-button-v1.js');
   script('/assets/live-market-pulse.js');
   script('/assets/bitcoin-chart.js');
