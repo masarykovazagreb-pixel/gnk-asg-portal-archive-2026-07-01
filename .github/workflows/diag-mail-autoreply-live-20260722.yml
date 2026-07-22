@@ -23,7 +23,7 @@ jobs:
           test -n "$ACCOUNT_ID"
           service='gnk-asg-mail-center-worker'
           kv_id='a3e9e78c7d554d7fa10996da9a89e7bc'
-          subject='LIVE test autoreply nakon deploya 2026-07-22 22:xx'
+          subject='AUTOREPLY BCC FIX LIVE TEST 2026-07-22-01'
           auth=(-H "Authorization: Bearer $CF_TOKEN")
           curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/workers/services/$service/environments/production/settings" "${auth[@]}" > /tmp/settings.json
           curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/storage/kv/namespaces/$kv_id/values/mail%3Ainbox" "${auth[@]}" > /tmp/inbox.json
@@ -45,7 +45,7 @@ jobs:
                   {k: row.get(k) for k in ('id','createdAt','fromEmail','toEmail','subject','status','autoReplyFrom','autoReplyFromName','autoReplySubject','messageId','error') if row.get(k) is not None}
                   for row in items if row.get('subject') == subject
               ]
-          print('## Live autoreply verification')
+          print('## Live autoreply verification — latest BCC test')
           print('```json')
           print(json.dumps({
               'bindings': safe_bindings,
