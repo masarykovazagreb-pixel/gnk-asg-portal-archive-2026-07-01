@@ -26,9 +26,17 @@ assert.match(html,/\.dw-tabs button:focus-visible\{outline:3px solid #f2d27d!imp
 // Visual contract: the private preview must remain pure black, glass-black and gold/white.
 assert.match(html,/html,body,\.dw-private-preview\{background:#000!important;background-image:none!important/);
 assert.match(html,/#gnk-unified-header\{background:rgba\(0,0,0,\.86\)!important/);
-assert.match(html,/\.dw-shell\{background:#000!important\}/);
+assert.match(html,/\.dw-shell\{background:#000!important;min-width:0!important\}/);
 assert.match(html,/\.dw-tabs button\.active\{background:rgba\(215,181,91,\.13\)!important;color:#f2d27d!important\}/);
 assert.doesNotMatch(html,/radial-gradient\([^)]*(?:06b6d4|22d3ee|0891b2|0ea5e9)/i);
+
+// Responsive contract: wide components scroll internally and do not widen the page.
+assert.match(html,/\.dw-tabs\{display:flex!important;max-width:100%!important;overflow-x:auto!important/);
+assert.match(html,/\.dw-tabs button\{flex:0 0 auto!important;min-height:44px!important;white-space:nowrap!important/);
+assert.match(html,/\.dw-table\{max-width:100%!important;overflow-x:auto!important/);
+assert.match(html,/\.dw-table table\{min-width:760px!important\}/);
+assert.match(html,/@media \(max-width:900px\).*\.dw-metrics\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important\}.*\.dw-toolbar\{grid-template-columns:1fr!important\}/s);
+assert.match(html,/@media \(max-width:560px\).*\.dw-metrics\{grid-template-columns:1fr!important\}.*\.dw-tabs\{margin-inline:-12px!important/s);
 
 assert.match(css,/--dw-bg:#030303/);
 assert.match(css,/--dw-gold:#d7b55b/);
@@ -51,6 +59,7 @@ console.log(JSON.stringify({
   tabs:11,
   palette:'pure-black-glass-gold-white',
   accessibility:'linked-tabs-focus-visible-keyboard-navigation',
+  responsive:'contained-tabs-worker-table-touch-targets',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
