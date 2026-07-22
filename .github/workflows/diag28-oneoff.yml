@@ -22,18 +22,8 @@ jobs:
           node scripts/refresh-market-pulse.mjs >> /tmp/d.md 2>&1 || echo "EXIT: $?" >> /tmp/d.md
           echo '```' >> /tmp/d.md
           echo "## sample" >> /tmp/d.md
-          echo '```json' >> /tmp/d.md
-          python3 -c "
-import json
-d = json.load(open('apps/portal/data/market-pulse.json'))
-print('instrumentsOk', d['instrumentsOk'], 'total', d['instrumentsTotal'])
-print('sample index sparkline len:', len(d['indices'][0].get('sparkline',[])))
-print('fear greed history len:', len(d['crypto']['fearGreed'].get('history',[])))
-print('gainers:', [g['name'] for g in d['crypto']['gainers']])
-print('losers:', [g['name'] for g in d['crypto']['losers']])
-print('topCoins count:', len(d['crypto']['topCoins']))
-print('sample coin sparkline len:', len(d['crypto']['topCoins'][0].get('sparkline',[])))
-" >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+          python3 -c "import json;d=json.load(open('apps/portal/data/market-pulse.json'));print('instrumentsOk',d['instrumentsOk'],'total',d['instrumentsTotal']);print('sample index sparkline len:',len(d['indices'][0].get('sparkline',[])));print('fear greed history len:',len(d['crypto']['fearGreed'].get('history',[])));print('gainers:',[g['name'] for g in d['crypto']['gainers']]);print('losers:',[g['name'] for g in d['crypto']['losers']]);print('topCoins count:',len(d['crypto']['topCoins']));print('sample coin sparkline len:',len(d['crypto']['topCoins'][0].get('sparkline',[])))" >> /tmp/d.md
           echo '```' >> /tmp/d.md
       - name: Publish
         if: always()
