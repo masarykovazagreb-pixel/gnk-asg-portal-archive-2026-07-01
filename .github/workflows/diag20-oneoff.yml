@@ -1,0 +1,34 @@
+name: Test market pulse refresh (one-off)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  issues: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Run and capture output
+        run: |
+          echo "# market-pulse test $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/d.md
+          echo '```' >> /tmp/d.md
+          node scripts/refresh-market-pulse.mjs >> /tmp/d.md 2>&1 || echo "EXIT: $?" >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+          echo '' >> /tmp/d.md
+          echo '## Sample output' >> /tmp/d.md
+          echo '```json' >> /tmp/d.md
+          head -c 3000 apps/portal/data/market-pulse.json >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+      - name: Publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "market-pulse test $(date -u +%Y-%m-%dT%H:%M:%SZ)" --body-file /tmp/d.md
