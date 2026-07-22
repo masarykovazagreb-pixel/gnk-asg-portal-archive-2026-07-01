@@ -5,44 +5,50 @@ on:
       - '.github/workflows/diag-mail-autoreply-live-20260722.yml'
 permissions:
   contents: read
-  actions: read
   issues: write
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
-      - name: Inspect final direct inbound autoreply workflow
+      - name: Inspect final external autoreply and D1 status
         env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
           repo='${{ github.repository }}'
-          auth=(-H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json')
-          curl -fsS "https://api.github.com/repos/$repo/actions/workflows/fix-deploy-direct-inbound-final-20260722.yml/runs?per_page=3" "${auth[@]}" > /tmp/runs.json
-          run_id=$(python3 - <<'PY'
+          subject='FINALNI TEST OBIČNOG VANJSKOG MAILA 2026-07-22-03'
+          kv_id='a3e9e78c7d554d7fa10996da9a89e7bc'
+          d1_id='2116c4e5-1850-4888-91e7-c47deead3ced'
+          auth=(-H "Authorization: Bearer $CF_TOKEN")
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/storage/kv/namespaces/$kv_id/values/mail%3Ainbox" "${auth[@]}" > /tmp/inbox.json
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/storage/kv/namespaces/$kv_id/values/mail%3Asent" "${auth[@]}" > /tmp/sent.json
+          python3 - <<'PY' > /tmp/d1-request.json
           import json
-          runs=json.load(open('/tmp/runs.json')).get('workflow_runs',[])
-          print(runs[0]['id'] if runs else '')
+          print(json.dumps({
+            'sql':"SELECT tracking_id,source_system,source_id,recipient,sender,subject,provider_message_id,current_status,provider_status,error_cause,error_detail,accepted_at,delivered_at,failed_at,first_opened_at,last_opened_at,open_count,receipt_confirmed_at,receipt_confirmation_count,created_at,updated_at FROM email_status_records WHERE subject=? ORDER BY datetime(created_at) DESC LIMIT 20",
+            'params':['FINALNI TEST OBIČNOG VANJSKOG MAILA 2026-07-22-03']
+          }))
           PY
-          )
-          if [ -n "$run_id" ]; then
-            curl -fsS "https://api.github.com/repos/$repo/actions/runs/$run_id/jobs?per_page=100" "${auth[@]}" > /tmp/jobs.json
-          else
-            echo '{"jobs":[]}' > /tmp/jobs.json
-          fi
-          python3 - <<'PY' > /tmp/report.md
-          import json
-          runs=json.load(open('/tmp/runs.json')).get('workflow_runs',[])
-          jobs=json.load(open('/tmp/jobs.json')).get('jobs',[])
-          data={
-            'workflowRuns':[{k:r.get(k) for k in ('id','status','conclusion','head_sha','created_at','updated_at','html_url')} for r in runs[:3]],
-            'jobs':[{'id':j.get('id'),'name':j.get('name'),'status':j.get('status'),'conclusion':j.get('conclusion'),'steps':[{k:s.get(k) for k in ('number','name','status','conclusion')} for s in j.get('steps',[])]} for j in jobs]
-          }
-          print('## Final direct inbound autoreply workflow')
+          curl -fsS -X POST "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/d1/database/$d1_id/query" "${auth[@]}" -H 'Content-Type: application/json' --data-binary @/tmp/d1-request.json > /tmp/d1.json
+          SUBJECT="$subject" python3 - <<'PY' > /tmp/report.md
+          import json,os
+          subject=os.environ['SUBJECT']
+          inbox=json.load(open('/tmp/inbox.json'))
+          sent=json.load(open('/tmp/sent.json'))
+          d1=json.load(open('/tmp/d1.json'))
+          keys=('id','createdAt','fromEmail','toEmail','subject','status','autoReplyTo','autoReplyFrom','autoReplyFromName','autoReplySubject','messageId','sentAt','error')
+          def matches(items):
+              return [{k:r.get(k) for k in keys if r.get(k) is not None} for r in items if r.get('subject')==subject]
+          d1_rows=[]
+          for block in d1.get('result',[]):
+              d1_rows.extend(block.get('results',[]) or [])
+          print('## Final external autoreply and status verification')
           print('```json')
-          print(json.dumps(data,ensure_ascii=False,indent=2))
+          print(json.dumps({'matchingInbox':matches(inbox),'matchingSent':matches(sent),'emailStatusRecords':d1_rows},ensure_ascii=False,indent=2))
           print('```')
           PY
           gh issue edit 712 --repo "$repo" --body-file /tmp/report.md
