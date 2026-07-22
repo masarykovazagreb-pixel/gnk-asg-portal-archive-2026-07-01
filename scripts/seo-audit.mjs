@@ -59,7 +59,13 @@ async function auditPage(url) {
   const jsonLdCount = [...html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>/gi)].length;
   const hreflangCount = [...html.matchAll(/hreflang=["']([^"']+)["']/gi)].length;
   const imgs = [...html.matchAll(/<img\b[^>]*>/gi)];
-  const imgsNoAlt = imgs.filter(m => !/alt\s*=\s*["'][^"']+["']/i.test(m[0])).length;
+  const imgsNoAlt = imgs.filter(m => {
+    const isDecorative = /aria-hidden\s*=\s*["']true["']/i.test(m[0]);
+    const hasNonEmptyAlt = /alt\s*=\s*["'][^"']+["']/i.test(m[0]);
+    const hasEmptyAlt = /alt\s*=\s*["']\s*["']/i.test(m[0]);
+    if (isDecorative && hasEmptyAlt) return false; // correct a11y practice, not an issue
+    return !hasNonEmptyAlt;
+  }).length;
   const textOnly = html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
   const wordCount = textOnly.split(' ').filter(Boolean).length;
 
