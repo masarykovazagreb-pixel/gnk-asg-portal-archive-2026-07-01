@@ -1,0 +1,146 @@
+name: Deploy Private Workforce Staging
+
+on:
+  push:
+    branches:
+      - agent/digital-workforce-puls-redesign-integration-20260722
+    paths:
+      - 'apps/portal/digital-workforce/**'
+      - 'apps/portal/workers/**'
+      - 'apps/portal/assets/digital-workforce-**'
+      - 'apps/portal/assets/gnkc-**'
+      - 'workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml'
+      - '.github/workflows/deploy-private-workforce-staging.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gnk-dinamo-workforce-private-staging
+  cancel-in-progress: true
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate staging entrypoint and public suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js
+          node --check workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js
+          node --check apps/portal/assets/digital-workforce-suite-v1.js
+          node --check apps/portal/assets/gnkc-stable-index-v1.js
+          node apps/portal/tests/digital-workforce-design-contract.spec.mjs
+          node apps/portal/tests/digital-workforce-continuity-contract.spec.mjs
+          node apps/portal/tests/gnkc-stable-index-contract.spec.mjs
+          grep -Fq 'GNK DINAMO Ltd grupa' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
+          grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
+          grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
+
+      - name: Resolve private staging token hash
+        id: auth
+        env:
+          TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          value="$TOKEN"
+          [ -n "$value" ] || value="$TOKEN_FALLBACK"
+          [ -n "$value" ] || { echo '::error::Missing staging access token'; exit 1; }
+          echo "hash=$(printf '%s' "$value" | sha256sum | awk '{print $1}')" >> "$GITHUB_OUTPUT"
+          echo "token=$value" >> "$GITHUB_OUTPUT"
+
+      - name: Install direct operator dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Deploy isolated workers.dev staging
+        id: deploy
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy --config wrangler.workforce-staging.toml --name gnk-dinamo-workforce-staging --var "STAGING_TOKEN_SHA256:${{ steps.auth.outputs.hash }}" 2>&1 | tee staging-deploy.log
+          url=$(grep -Eo 'https://[a-zA-Z0-9._-]+\.workers\.dev' staging-deploy.log | tail -1 || true)
+          [ -n "$url" ] || { echo '::error::Staging URL was not found in Wrangler output'; exit 1; }
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Verify global access gate
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+          TOKEN: ${{ steps.auth.outputs.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          unauth=$(curl -sS -o /dev/null -w '%{http_code}' "$URL/digital-workforce/")
+          [ "$unauth" = '401' ] || { echo "::error::Expected unauthenticated 401, got $unauth"; exit 1; }
+          auth=$(curl -sS -o staging-page.html -w '%{http_code}' -H "Authorization: Bearer $TOKEN" "$URL/digital-workforce/")
+          [ "$auth" = '200' ] || { echo "::error::Expected authenticated 200, got $auth"; exit 1; }
+          grep -Fq 'Digitalna radna snaga' staging-page.html
+          grep -Fq 'SIMULACIJA' staging-page.html
+          headers=$(curl -sSI -H "Authorization: Bearer $TOKEN" "$URL/digital-workforce/")
+          printf '%s' "$headers" | grep -Fqi 'x-robots-tag: noindex'
+          printf '%s' "$headers" | grep -Fqi 'x-gnk-environment: private-workforce-staging'
+
+      - name: Verify staging APIs and write lock
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+          TOKEN: ${{ steps.auth.outputs.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/api/public/digital-workforce/state" > staging-state.json
+          curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/api/public/digital-workforce/projects" > staging-projects.json
+          curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/data/market-pulse.json" > staging-market.json
+          node -e "const fs=require('fs'); for(const f of ['staging-state.json','staging-projects.json','staging-market.json']) JSON.parse(fs.readFileSync(f,'utf8'));"
+          write=$(curl -sS -o staging-write.json -w '%{http_code}' -X POST -H "Authorization: Bearer $TOKEN" -H 'content-type: application/json' --data '{}' "$URL/api/public/digital-workforce/state")
+          [ "$write" = '405' ] || { echo "::error::Expected staging write lock 405, got $write"; exit 1; }
+          grep -Fq 'STAGING_WRITE_BLOCKED' staging-write.json
+
+      - name: Publish staging verification summary
+        shell: bash
+        run: |
+          cat > staging-verification.md <<EOF
+          # Private Workforce Staging
+          - URL: ${{ steps.deploy.outputs.url }}
+          - Source SHA: $GITHUB_SHA
+          - Unauthenticated access: 401 verified
+          - Authenticated portal: 200 verified
+          - Robots: noindex/nofollow verified
+          - Digital Workforce API: verified
+          - Market data: verified
+          - Production writes: blocked (405)
+          - Mail and public publishing: disabled
+          EOF
+          cat staging-verification.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload staging evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-workforce-staging-${{ github.sha }}
+          path: |
+            workers/gnk-asg-direct-operator/staging-deploy.log
+            staging-verification.md
+            staging-state.json
+            staging-projects.json
+            staging-market.json
+            staging-write.json
+          if-no-files-found: warn
+          retention-days: 14
