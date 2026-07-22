@@ -14,7 +14,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="/assets/style.css?v=20260721-header-fulltransparent-v1">
   <link rel="stylesheet" href="/assets/public-sections-v1.css?v=20260721-header-fulltransparent-v1">
-  <link rel="stylesheet" href="/assets/digital-workforce-suite-v1.css?v=20260722-puls-redesign-v6-black">
+  <link rel="stylesheet" href="/assets/digital-workforce-suite-v1.css?v=20260722-puls-redesign-v6-black-a11y">
   <link rel="stylesheet" href="/assets/gnkc-stable-index-v1.css?v=20260722">
   <link rel="stylesheet" href="/assets/digital-workforce-continuity-v1.css?v=20260722">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"GNK DINAMO Ltd grupa — Digitalna radna snaga","url":"https://gnk-asg.hr/digital-workforce/","applicationCategory":"BusinessApplication","publisher":{"@type":"Organization","name":"GNK DINAMO Ltd grupa"},"provider":{"@type":"Organization","name":"GNK ASG"},"editor":{"@type":"Person","name":"Nermin Sefić"}}</script>
@@ -35,6 +35,7 @@
     .dw-tabs{background:linear-gradient(180deg,rgba(0,0,0,.99) 0%,rgba(0,0,0,.94) 72%,transparent)!important}
     .dw-tabs button{background:rgba(10,10,10,.94)!important;color:#e7e3da!important}
     .dw-tabs button.active{background:rgba(215,181,91,.13)!important;color:#f2d27d!important}
+    .dw-tabs button:focus-visible{outline:3px solid #f2d27d!important;outline-offset:3px!important}
     .dw-badge.is-neutral{color:#f2d27d!important;border-color:rgba(215,181,91,.28)!important;background:rgba(215,181,91,.08)!important}
     .dw-disclaimer{color:#f5d978!important;opacity:1!important;font-weight:900;letter-spacing:.16em}
     @media (max-width:900px){#gnk-unified-header .brand-copy{display:none}.dw-hero{grid-template-columns:1fr!important}.dw-hero-status{width:100%;max-width:none}}
@@ -63,22 +64,22 @@
     </header>
     <p class="dw-disclaimer">SIMULACIJA</p>
     <nav class="dw-tabs" role="tablist" aria-label="Funkcije digitalne radne snage">
-      <button class="active" role="tab" aria-selected="true" data-dw-tab="plan">Plan</button>
-      <button role="tab" aria-selected="false" data-dw-tab="bulletins">Bilten</button>
-      <button role="tab" aria-selected="false" data-dw-tab="projects">Projekti</button>
-      <button role="tab" aria-selected="false" data-dw-tab="risks">Rizici</button>
-      <button role="tab" aria-selected="false" data-dw-tab="opinions">Mišljenja</button>
-      <button role="tab" aria-selected="false" data-dw-tab="dependencies">Ovisnosti</button>
-      <button role="tab" aria-selected="false" data-dw-tab="tasks">Zadaci</button>
-      <button role="tab" aria-selected="false" data-dw-tab="credits">Krediti</button>
-      <button role="tab" aria-selected="false" data-dw-tab="newsroom">Newsroom</button>
-      <button role="tab" aria-selected="false" data-dw-tab="workers">Workeri</button>
-      <button role="tab" aria-selected="false" data-dw-tab="log">Zapisnik</button>
+      <button id="dw-tab-plan" class="active" type="button" role="tab" aria-selected="true" aria-controls="dwContent" tabindex="0" data-dw-tab="plan">Plan</button>
+      <button id="dw-tab-bulletins" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="bulletins">Bilten</button>
+      <button id="dw-tab-projects" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="projects">Projekti</button>
+      <button id="dw-tab-risks" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="risks">Rizici</button>
+      <button id="dw-tab-opinions" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="opinions">Mišljenja</button>
+      <button id="dw-tab-dependencies" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="dependencies">Ovisnosti</button>
+      <button id="dw-tab-tasks" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="tasks">Zadaci</button>
+      <button id="dw-tab-credits" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="credits">Krediti</button>
+      <button id="dw-tab-newsroom" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="newsroom">Newsroom</button>
+      <button id="dw-tab-workers" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="workers">Workeri</button>
+      <button id="dw-tab-log" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="log">Zapisnik</button>
     </nav>
-    <section id="dwContent" class="dw-panel" role="tabpanel" aria-live="polite" aria-busy="false"></section>
+    <section id="dwContent" class="dw-panel" role="tabpanel" aria-live="polite" aria-busy="false" aria-labelledby="dw-tab-plan"></section>
   </main>
   <script defer src="/assets/gnkc-stable-index-v1.js?v=20260722"></script>
-  <script defer src="/assets/digital-workforce-suite-v1.js?v=20260722-puls-redesign-v6-black"></script>
+  <script defer src="/assets/digital-workforce-suite-v1.js?v=20260722-puls-redesign-v6-black-a11y"></script>
   <script defer src="/assets/digital-workforce-continuity-v1.js?v=20260722"></script>
   <script defer src="/assets/public-digital-workforce-menu-v1.js?v=20260715"></script>
 </body>
