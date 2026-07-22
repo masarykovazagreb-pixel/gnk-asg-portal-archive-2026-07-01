@@ -45,8 +45,11 @@ def main() -> int:
     existing_archive = base.read_json(base.ARCHIVE_PATH, [])
     merged = base.merge_unique(fetched, existing_public, existing_archive)
 
-    public = merged[:PUBLIC_LIMIT]
-    archive = merged[PUBLIC_LIMIT:]
+    with_image = [item for item in merged if item.get("image")]
+    without_image = [item for item in merged if not item.get("image")]
+
+    public = with_image[:PUBLIC_LIMIT]
+    archive = with_image[PUBLIC_LIMIT:] + without_image
     archive_items_before_prune = len(archive)
     removed_oldest = 0
     prune_batches = 0

@@ -9,12 +9,13 @@
   style.textContent = `
     #${WIDGET_ID} {
       position: fixed;
-      left: max(14px, env(safe-area-inset-left));
-      top: max(96px, calc(env(safe-area-inset-top) + 96px));
+      right: max(52px, calc(env(safe-area-inset-right) + 38px));
+      top: max(242px, calc(env(safe-area-inset-top) + 242px));
+      left: auto;
       z-index: 9996;
-      width: 132px;
-      padding: 13px;
-      border-radius: 14px;
+      width: 114px;
+      padding: 11px;
+      border-radius: 13px;
       background: #16171f;
       border: 1px solid #2a2b38;
       color: #f3f4f6;
@@ -29,19 +30,19 @@
     }
     #${WIDGET_ID}:hover, #${WIDGET_ID}:focus-visible { box-shadow: 0 13px 30px rgba(0,0,0,.5); outline: none; }
     #${WIDGET_ID} .flag {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: .58rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
-      color: #fff; background: #e5323a; padding: 3px 7px; border-radius: 3px; margin-bottom: 8px;
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: .5rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase;
+      color: #fff; background: #e5323a; padding: 3px 6px; border-radius: 3px; margin-bottom: 6px;
     }
-    #${WIDGET_ID} .flag::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #fff; }
-    #${WIDGET_ID} strong { display: block; font-size: .78rem; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
+    #${WIDGET_ID} .flag::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: #fff; }
+    #${WIDGET_ID} strong { display: block; font-size: .68rem; font-weight: 800; line-height: 1.3; margin-bottom: 6px; }
     #${WIDGET_ID} span.cta {
       display: inline-flex; align-items: center; gap: 3px;
-      font-size: .62rem; font-weight: 900; text-transform: uppercase; letter-spacing: .03em;
+      font-size: .55rem; font-weight: 900; text-transform: uppercase; letter-spacing: .03em;
       color: #e5323a;
     }
     @keyframes gnkAktualSway { 0%, 100% { transform: rotate(5deg); } 50% { transform: rotate(-3deg); } }
-    @media (max-width: 640px) { #${WIDGET_ID} { width: 108px; padding: 10px; } #${WIDGET_ID} strong { font-size: .68rem; } }
+    @media (max-width: 640px) { #${WIDGET_ID} { width: 96px; padding: 8px; top: max(200px, calc(env(safe-area-inset-top) + 200px)); right: max(40px, calc(env(safe-area-inset-right) + 26px)); } #${WIDGET_ID} strong { font-size: .6rem; } }
     @media (prefers-reduced-motion: reduce) { #${WIDGET_ID} { animation: none; } }
   `;
   document.head.appendChild(style);
