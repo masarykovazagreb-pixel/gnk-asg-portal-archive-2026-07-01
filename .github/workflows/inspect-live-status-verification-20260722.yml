@@ -1,0 +1,48 @@
+name: Inspect final autoreply status verification
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-live-status-verification-20260722.yml'
+permissions:
+  contents: read
+  actions: read
+  issues: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect verification workflow run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          repo='${{ github.repository }}'
+          auth=(-H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json')
+          curl -fsS "https://api.github.com/repos/$repo/actions/workflows/diag-mail-autoreply-live-20260722.yml/runs?per_page=3" "${auth[@]}" > /tmp/runs.json
+          run_id=$(python3 - <<'PY'
+          import json
+          runs=json.load(open('/tmp/runs.json')).get('workflow_runs',[])
+          print(runs[0]['id'] if runs else '')
+          PY
+          )
+          if [ -n "$run_id" ]; then
+            curl -fsS "https://api.github.com/repos/$repo/actions/runs/$run_id/jobs?per_page=100" "${auth[@]}" > /tmp/jobs.json
+          else
+            echo '{"jobs":[]}' > /tmp/jobs.json
+          fi
+          python3 - <<'PY' > /tmp/report.md
+          import json
+          runs=json.load(open('/tmp/runs.json')).get('workflow_runs',[])
+          jobs=json.load(open('/tmp/jobs.json')).get('jobs',[])
+          data={
+            'runs':[{k:r.get(k) for k in ('id','status','conclusion','head_sha','created_at','updated_at','html_url')} for r in runs[:3]],
+            'jobs':[{'id':j.get('id'),'name':j.get('name'),'status':j.get('status'),'conclusion':j.get('conclusion'),'steps':[{k:s.get(k) for k in ('number','name','status','conclusion')} for s in j.get('steps',[])]} for j in jobs]
+          }
+          print('## Final status verification workflow inspection')
+          print('```json')
+          print(json.dumps(data,ensure_ascii=False,indent=2))
+          print('```')
+          PY
+          gh issue edit 712 --repo "$repo" --body-file /tmp/report.md
