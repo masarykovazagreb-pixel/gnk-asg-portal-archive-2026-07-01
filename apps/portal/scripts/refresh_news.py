@@ -90,6 +90,33 @@ SOURCES = [
     ("international", "economy", "France 24", "https://www.france24.com/en/rss"),
     ("international", "economy", "The Independent Business", "https://www.independent.co.uk/news/business/rss"),
     ("digital-assets", "digital-assets", "WIRED Business", "https://www.wired.com/feed/category/business/latest/rss"),
+
+    # Additional international sources (explicitly excluding Croatia/Serbia/
+    # Bosnia, per request -- broader global coverage with generally reliable
+    # image tags on direct feeds).
+    ("international", "economy", "New York Times World", "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"),
+    ("international", "economy", "CNN World", "http://rss.cnn.com/rss/edition_world.rss"),
+    ("international", "economy", "Washington Post", "https://feeds.washingtonpost.com/rss/national"),
+    ("international", "economy", "NPR News", "https://feeds.npr.org/1001/rss.xml"),
+    ("international", "economy", "The Economist International", "https://www.economist.com/international/rss.xml"),
+    ("international", "economy", "Politico", "https://www.politico.com/rss/politicopicks.xml"),
+    ("technology", "technology", "Nature", "https://www.nature.com/nature.rss"),
+    ("economy", "economy", "ProPublica", "https://www.propublica.org/feeds/propublica/main"),
+    ("technology", "technology", "NASA Breaking News", "https://www.nasa.gov/rss/dyn/breaking_news.rss"),
+    ("economy", "economy", "TIME", "https://time.com/feed/"),
+    ("economy", "economy", "Fortune", "https://fortune.com/feed/"),
+    ("international", "economy", "Japan Times", "https://www.japantimes.co.jp/feed/"),
+    ("international", "economy", "South China Morning Post", "https://www.scmp.com/rss/91/feed"),
+    ("international", "economy", "The Hindu International", "https://www.thehindu.com/news/international/feed/default.rss"),
+    ("international", "economy", "ABC News Australia", "https://www.abc.net.au/news/feed/51120/rss.xml"),
+    ("international", "economy", "DW Europe", "https://rss.dw.com/xml/rss-en-eu"),
+    ("economy", "economy", "Axios", "https://api.axios.com/feed/"),
+    ("technology", "technology", "Ars Technica", "https://feeds.arstechnica.com/arstechnica/index"),
+    ("technology", "technology", "Engadget", "https://www.engadget.com/rss.xml"),
+    ("technology", "technology", "ZDNet", "https://www.zdnet.com/news/rss.xml"),
+    ("economy", "economy", "Business Insider", "https://www.businessinsider.com/rss"),
+    ("digital-assets", "digital-assets", "Decrypt", "https://decrypt.co/feed"),
+    ("economy", "economy", "MarketWatch Top Stories", "https://feeds.content.dowjones.io/public/rss/mw_topstories"),
 ]
 
 BLOCKED_TITLE_PATTERNS = [
