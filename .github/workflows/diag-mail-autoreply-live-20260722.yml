@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Inspect MIME autoreply workflow
+      - name: Inspect current direct inbound autoreply workflow
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -40,7 +40,7 @@ jobs:
             'workflowRuns':[{k:r.get(k) for k in ('id','status','conclusion','head_sha','created_at','updated_at','html_url')} for r in runs[:3]],
             'jobs':[{'id':j.get('id'),'name':j.get('name'),'status':j.get('status'),'conclusion':j.get('conclusion'),'steps':[{k:s.get(k) for k in ('number','name','status','conclusion')} for s in j.get('steps',[])]} for j in jobs]
           }
-          print('## MIME autoreply hotfix workflow')
+          print('## Current direct inbound autoreply workflow')
           print('```json')
           print(json.dumps(data,ensure_ascii=False,indent=2))
           print('```')
