@@ -280,9 +280,13 @@
     const thread = document.getElementById('aiMiniThread');
     if (!thread) return;
     thread.innerHTML = messages.map(m => {
-      const cls = m.role === 'user' ? 'ai-msg ai-msg-user' : 'ai-msg ai-msg-bot' + (m.pending ? ' pending' : '');
-      const text = m.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      return `<div class="${cls}">${text}</div>`;
+      const isUser = m.role === 'user';
+      const bubbleCls = isUser ? 'ai-msg ai-msg-user' : 'ai-msg ai-msg-bot' + (m.pending ? ' pending' : '');
+      const inner = m.pending
+        ? '<span class="ai-typing-dots"><span></span><span></span><span></span></span>'
+        : m.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const avatar = isUser ? '' : '<span class="ai-msg-avatar">ASG</span>';
+      return `<div class="ai-msg-row${isUser ? ' user' : ''}">${avatar}<div class="${bubbleCls}">${inner}</div></div>`;
     }).join('');
     thread.scrollTop = thread.scrollHeight;
   }
