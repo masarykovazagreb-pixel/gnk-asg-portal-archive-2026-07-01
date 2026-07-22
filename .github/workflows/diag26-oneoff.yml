@@ -1,0 +1,23 @@
+name: Verify mail-center-worker status after fix (one-off)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call status endpoint
+        run: |
+          echo "# mail-center-worker status after fix" > /tmp/d.md
+          echo '```' >> /tmp/d.md
+          curl -s "https://gnk-asg-mail-center-worker.beckuphome.workers.dev/api/mail-center/status" >> /tmp/d.md
+          echo '```' >> /tmp/d.md
+      - name: Publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" --title "mail-center-worker status after fix" --body-file /tmp/d.md
