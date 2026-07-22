@@ -1,6 +1,6 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V2';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V3';
 const encoder=new TextEncoder();
 const COOKIE='gnk_workforce_staging';
 
@@ -51,6 +51,16 @@ async function login(request,env){
   return new Response(null,{status:303,headers:{location,'set-cookie':`${COOKIE}=${encodeURIComponent(token)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=28800`,'cache-control':'no-store','x-robots-tag':'noindex, nofollow'}});
 }
 
+async function serveRead(request,env,ctx){
+  const url=new URL(request.url);
+  if(url.pathname.startsWith('/api/'))return app.fetch(request,env,ctx);
+  if(env.ASSETS&&typeof env.ASSETS.fetch==='function'){
+    const assetResponse=await env.ASSETS.fetch(request);
+    if(assetResponse.status!==404)return assetResponse;
+  }
+  return app.fetch(request,env,ctx);
+}
+
 export default{
   async fetch(request,env,ctx){
     const url=new URL(request.url);
@@ -60,6 +70,6 @@ export default{
     if(!['GET','HEAD','OPTIONS'].includes(request.method)){
       return secure(new Response(JSON.stringify({ok:false,error:'STAGING_WRITE_BLOCKED',mode:'SHADOW_READ_ONLY'}),{status:405,headers:{'content-type':'application/json; charset=utf-8','allow':'GET, HEAD, OPTIONS'}}));
     }
-    return secure(await app.fetch(request,env,ctx));
+    return secure(await serveRead(request,env,ctx));
   }
 };
