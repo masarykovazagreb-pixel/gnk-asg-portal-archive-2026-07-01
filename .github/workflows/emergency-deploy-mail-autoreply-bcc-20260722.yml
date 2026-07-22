@@ -20,37 +20,37 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Apply verified BCC fix in deployment workspace
-        id: patch
-        continue-on-error: true
+      - name: Patch, validate and deploy corrected Mail Center Worker
+        id: fix_deploy
+        working-directory: .
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         shell: bash
         run: |
           set -euo pipefail
-          exec > >(tee /tmp/patch.log) 2>&1
+          exec > >(tee /tmp/fix-deploy.log) 2>&1
           python3 - <<'PY'
           from pathlib import Path
           p=Path('workers/gnk-asg-mail-center-worker/src/index.js')
           s=p.read_text()
           broken="      bcc: mandatoryBcc(env).join(', '),"
           fixed="      bcc: mandatoryBcc(env),"
-          print('broken_count=', s.count(broken))
-          if broken not in s:
-              raise SystemExit('broken BCC expression not found')
+          print('broken_transport_count=', s.count(broken))
+          if s.count(broken) != 1:
+              raise SystemExit('expected exactly one broken EMAIL.send BCC expression')
           p.write_text(s.replace(broken,fixed,1))
           PY
           node --check workers/gnk-asg-mail-center-worker/src/index.js
-          grep -Fq 'bcc: mandatoryBcc(env),' workers/gnk-asg-mail-center-worker/src/index.js
-          ! grep -Fq "bcc: mandatoryBcc(env).join" workers/gnk-asg-mail-center-worker/src/index.js
-      - name: Build isolated runtime configuration
-        id: config
-        if: steps.patch.outcome == 'success'
-        continue-on-error: true
-        working-directory: workers/gnk-asg-mail-center-worker
-        shell: bash
-        run: |
-          set -euo pipefail
-          exec > >(tee /tmp/config.log) 2>&1
-          cat > wrangler.runtime.toml <<'EOF'
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('workers/gnk-asg-mail-center-worker/src/index.js').read_text()
+          assert "      bcc: mandatoryBcc(env)," in s
+          assert "      bcc: mandatoryBcc(env).join(', ')," not in s
+          assert 'prepareAiAutoReply(message, env)' in s
+          print('transport and fallback source contract: PASS')
+          PY
+          cat > workers/gnk-asg-mail-center-worker/wrangler.runtime.toml <<'EOF'
           name = "gnk-asg-mail-center-worker"
           main = "src/index.js"
           compatibility_date = "2026-06-18"
@@ -71,46 +71,21 @@ jobs:
           name = "EMAIL"
           remote = true
           EOF
-          cat wrangler.runtime.toml
-      - name: Deploy corrected Mail Center Worker
-        id: deploy
-        if: steps.patch.outcome == 'success' && steps.config.outcome == 'success'
-        continue-on-error: true
-        working-directory: workers/gnk-asg-mail-center-worker
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        shell: bash
-        run: |
-          set -o pipefail
-          npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-mail-center-worker --keep-vars 2>&1 | tee /tmp/deploy.log
-      - name: Publish exact deployment result
+          cd workers/gnk-asg-mail-center-worker
+          npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-mail-center-worker --keep-vars
+      - name: Publish atomic deployment result
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           {
-            echo '## Emergency autoreply deployment — exact step result'
+            echo '## Atomic autoreply BCC hotfix deployment'
             echo
-            echo "Patch: ${{ steps.patch.outcome }}"
-            echo "Config: ${{ steps.config.outcome }}"
-            echo "Deploy: ${{ steps.deploy.outcome }}"
+            echo "Outcome: ${{ steps.fix_deploy.outcome }}"
             echo
-            echo '### Patch log'
             echo '```'
-            tail -n 80 /tmp/patch.log 2>/dev/null || true
-            echo '```'
-            echo '### Config log'
-            echo '```'
-            tail -n 80 /tmp/config.log 2>/dev/null || true
-            echo '```'
-            echo '### Deploy log'
-            echo '```'
-            tail -n 120 /tmp/deploy.log 2>/dev/null || true
+            tail -n 160 /tmp/fix-deploy.log 2>/dev/null || true
             echo '```'
           } > /tmp/report.md
-          gh issue comment 712 --repo "${{ github.repository }}" --body-file /tmp/report.md
-      - name: Fail if deploy did not succeed
-        if: steps.deploy.outcome != 'success'
-        run: exit 1
+          gh issue edit 712 --repo "${{ github.repository }}" --body-file /tmp/report.md
