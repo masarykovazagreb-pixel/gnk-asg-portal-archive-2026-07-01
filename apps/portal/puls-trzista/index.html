@@ -117,6 +117,29 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
 .pt-source-card p{color:var(--pt-sub);font-size:.85rem;line-height:1.55;margin:0 0 10px}
 .pt-source-card code{display:block;background:#080b11;border:1px solid var(--pt-line);border-radius:8px;padding:8px 10px;font-size:.76rem;color:#9ecbff;word-break:break-all}
 .pt-note{font-size:.76rem;color:var(--pt-sub);text-align:center;margin-top:30px;line-height:1.6}
+.pt-tab-head{margin-bottom:18px}
+.pt-tab-head h2{margin:0 0 4px;font-size:1.3rem}
+.pt-tab-sub{color:var(--pt-sub);font-size:.85rem;margin:0}
+.pt-heat-region{margin-bottom:26px}
+.pt-heat-region-label{font-size:.7rem;font-weight:900;letter-spacing:.08em;color:var(--pt-sub);text-transform:uppercase;margin:16px 0 8px}
+.pt-heat-region-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.pt-heat-tile{border-radius:10px;padding:10px 12px}
+.pt-heat-tile .name{font-size:.78rem;font-weight:700;margin-bottom:4px}
+.pt-heat-tile .val{font-size:.9rem;font-weight:800}
+.pt-heat-tile .chg{font-size:.76rem;font-weight:700;margin-top:2px}
+.pt-table-wrap{overflow-x:auto;border:1px solid var(--pt-line);border-radius:12px}
+.pt-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.pt-table thead th{text-align:left;padding:10px 14px;color:var(--pt-sub);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--pt-line);white-space:nowrap}
+.pt-table td{padding:10px 14px;border-bottom:1px solid var(--pt-line);white-space:nowrap}
+.pt-table tr:last-child td{border-bottom:0}
+.pt-table .iname{font-weight:700}
+.pt-table .isym{color:var(--pt-sub);font-size:.72rem;display:block}
+.pt-table .spark-cell{width:110px}
+.pt-table .spark-cell svg{width:100px;height:24px;display:block}
+.pt-ecb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:14px}
+.pt-ecb-item{border:1px solid var(--pt-line);border-radius:10px;padding:10px 12px;background:var(--pt-panel)}
+.pt-ecb-item .code{font-weight:800;font-size:.82rem}
+.pt-ecb-item .val{font-size:.8rem;color:var(--pt-sub);margin-top:2px}
 @media(max-width:640px){.pt-wrap{padding:24px 14px 60px}.pt-grid{grid-template-columns:repeat(2,1fr)}.pt-coin-grid{grid-template-columns:1fr}.pt-tabs{gap:6px}.pt-tab{padding:7px 12px;font-size:.72rem}.pt-compare-label{width:100px}.pt-hero-stats{grid-template-columns:1fr 1fr}}
 </style>
 </head><body>
@@ -210,19 +233,41 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
   </section>
 
   <section class="pt-panel" data-panel="indices">
-    <div class="pt-grid" id="ptIndicesGrid"></div>
+    <div class="pt-tab-head">
+      <h2 data-i18n="indicesTitle">Svjetski burzovni indeksi</h2>
+      <p class="pt-tab-sub" data-i18n="indicesSub">22 ključna indeksa iz SAD-a, Europe, Azije, Južne Amerike i Australije</p>
+    </div>
+    <div class="pt-heat-region" id="ptIndicesHeatmap"></div>
+    <div class="pt-table-wrap"><table class="pt-table"><thead><tr><th data-i18n="colInstrument">Instrument</th><th data-i18n="colPrice">Cijena</th><th data-i18n="colChange">Promjena</th><th data-i18n="colTrend">Trend</th><th data-i18n="colSource">Izvor</th></tr></thead><tbody id="ptIndicesTable"></tbody></table></div>
   </section>
 
   <section class="pt-panel" data-panel="stocks">
-    <div class="pt-grid" id="ptStocksGrid"></div>
+    <div class="pt-tab-head">
+      <h2 data-i18n="stocksTitle">Globalne dionice</h2>
+      <p class="pt-tab-sub" data-i18n="stocksSub">24 najveće svjetske kompanije — SAD, Europa i Azija</p>
+    </div>
+    <div class="pt-table-wrap"><table class="pt-table"><thead><tr><th data-i18n="colInstrument">Instrument</th><th data-i18n="colPrice">Cijena</th><th data-i18n="colChange">Promjena</th><th data-i18n="colTrend">Trend</th><th data-i18n="colSource">Izvor</th></tr></thead><tbody id="ptStocksTable"></tbody></table></div>
   </section>
 
   <section class="pt-panel" data-panel="commodities">
-    <div class="pt-grid" id="ptCommoditiesGrid"></div>
+    <div class="pt-tab-head">
+      <h2 data-i18n="commoditiesTitle">Roba i sirovine</h2>
+      <p class="pt-tab-sub" data-i18n="commoditiesSub">Plemeniti metali, energija i poljoprivredni proizvodi (COMEX/NYMEX/CBOT/ICE)</p>
+    </div>
+    <div class="pt-table-wrap"><table class="pt-table"><thead><tr><th data-i18n="colInstrument">Instrument</th><th data-i18n="colExchange">Burza</th><th data-i18n="colPrice">Cijena</th><th data-i18n="colChange">Promjena</th><th data-i18n="colSource">Izvor</th></tr></thead><tbody id="ptCommoditiesTable"></tbody></table></div>
   </section>
 
   <section class="pt-panel" data-panel="currencies">
-    <div class="pt-grid" id="ptCurrenciesGrid"></div>
+    <div class="pt-tab-head">
+      <h2 data-i18n="currenciesTitle">Valute (Forex)</h2>
+      <p class="pt-tab-sub" data-i18n="currenciesSub">Glavni svjetski valutni parovi uživo + službeni ECB referentni tečajevi</p>
+    </div>
+    <div class="pt-table-wrap"><table class="pt-table"><thead><tr><th data-i18n="colInstrument">Instrument</th><th data-i18n="colPrice">Cijena</th><th data-i18n="colChange">Promjena</th><th data-i18n="colTrend">Trend</th><th data-i18n="colSource">Izvor</th></tr></thead><tbody id="ptCurrenciesTable"></tbody></table></div>
+    <div class="pt-section" style="margin-top:30px">
+      <div class="pt-section-head"><h2 data-i18n="ecbTitle">ECB referentni tečajevi</h2></div>
+      <p class="pt-tab-sub" id="ptEcbSub"></p>
+      <div class="pt-ecb-grid" id="ptEcbGrid"></div>
+    </div>
   </section>
 
   <section class="pt-panel" data-panel="compare">
@@ -249,6 +294,12 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
         <p data-i18n="srcFearGreed">Fear &amp; Greed indeks za kripto tržište, s 30-dnevnom poviješću, ažuriran dnevno.</p>
         <code>api.alternative.me/fng</code>
       </div>
+      <div class="pt-source-card">
+        <span class="tag" data-i18n="srcTagCurrencies">Valute</span>
+        <h3>Frankfurter (ECB)</h3>
+        <p data-i18n="srcEcb">Službeni referentni tečajevi Europske središnje banke za 29+ svjetskih valuta, ažurirani svaki radni dan.</p>
+        <code>api.frankfurter.app/latest</code>
+      </div>
     </div>
     <p class="pt-note" data-i18n="srcNote">Svi izvori su javni i besplatni. Podaci se osvježavaju automatski svaka 2 sata.</p>
   </section>
@@ -267,6 +318,8 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
       srcYahoo: 'Cijene, dnevne promjene i 7-dnevni trend za svjetske indekse, dionice, robu i valutne parove.',
       srcFearGreed: 'Fear & Greed indeks za kripto tržište, s 30-dnevnom poviješću, ažuriran dnevno.',
       srcTagOfficial: 'Indeksi / Dionice / Roba / Valute',
+      srcTagCurrencies: 'Valute',
+      srcEcb: 'Službeni referentni tečajevi Europske središnje banke za 29+ svjetskih valuta, ažurirani svaki radni dan.',
       srcNote: 'Svi izvori su javni i besplatni. Podaci se osvježavaju automatski svaka 2 sata.',
       footnote: 'Podaci dolaze iz javnih izvora i osvježavaju se automatski. Prikaz je informativne naravi i ne predstavlja investicijsko savjetovanje.',
       cryptoCap: 'Kripto tržišna kap.', dominanceLbl: 'Dominacija', fearGreedLbl: 'Fear & Greed indeks', coverageLbl: 'Pokrivenost',
@@ -274,7 +327,13 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
       leadingCrypto: 'Vodeće kriptovalute', mainIndices: 'Glavni svjetski indeksi', focusCommodities: 'Roba i valute u fokusu',
       topGainers: 'Najveći rast 24h · kripto top 30', topLosers: 'Najveći pad 24h · kripto top 30', fearGreedHistory: 'Fear & Greed — zadnjih 30 dana',
       seeAll: 'Vidi sve →', updated: 'Ažurirano', live: 'uživo', unavailable: 'Podaci trenutno nisu dostupni.',
-      fgExtreme_fear: 'Ekstremni strah', fgFear: 'Strah', fgNeutral: 'Neutralno', fgGreed: 'Pohlepa', fgExtreme_greed: 'Ekstremna pohlepa'
+      fgExtreme_fear: 'Ekstremni strah', fgFear: 'Strah', fgNeutral: 'Neutralno', fgGreed: 'Pohlepa', fgExtreme_greed: 'Ekstremna pohlepa',
+      indicesTitle: 'Svjetski burzovni indeksi', indicesSub: '22 ključna indeksa iz SAD-a, Europe, Azije, Južne Amerike i Australije',
+      stocksTitle: 'Globalne dionice', stocksSub: '24 najveće svjetske kompanije — SAD, Europa i Azija',
+      commoditiesTitle: 'Roba i sirovine', commoditiesSub: 'Plemeniti metali, energija i poljoprivredni proizvodi (COMEX/NYMEX/CBOT/ICE)',
+      currenciesTitle: 'Valute (Forex)', currenciesSub: 'Glavni svjetski valutni parovi uživo + službeni ECB referentni tečajevi',
+      ecbTitle: 'ECB referentni tečajevi',
+      colInstrument: 'Instrument', colPrice: 'Cijena', colChange: 'Promjena', colTrend: 'Trend (7 dana)', colSource: 'Izvor', colExchange: 'Burza'
     },
     en: {
       eyebrow: 'Live · public sources', lead: 'World indices, stocks, commodities, currencies and crypto — from real, public data sources.',
@@ -284,6 +343,8 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
       srcYahoo: 'Prices, daily changes and 7-day trend for world indices, stocks, commodities and currency pairs.',
       srcFearGreed: 'Fear & Greed index for the crypto market, with 30-day history, updated daily.',
       srcTagOfficial: 'Indices / Stocks / Commodities / Currencies',
+      srcTagCurrencies: 'Currencies',
+      srcEcb: 'Official European Central Bank reference rates for 29+ world currencies, updated every business day.',
       srcNote: 'All sources are public and free. Data refreshes automatically every 2 hours.',
       footnote: 'Data comes from public sources and refreshes automatically. This display is informational only and does not constitute investment advice.',
       cryptoCap: 'Crypto market cap', dominanceLbl: 'Dominance', fearGreedLbl: 'Fear & Greed index', coverageLbl: 'Coverage',
@@ -291,7 +352,13 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
       leadingCrypto: 'Leading cryptocurrencies', mainIndices: 'Major world indices', focusCommodities: 'Commodities & currencies in focus',
       topGainers: 'Top gainers 24h · crypto top 30', topLosers: 'Top losers 24h · crypto top 30', fearGreedHistory: 'Fear & Greed — last 30 days',
       seeAll: 'See all →', updated: 'Updated', live: 'live', unavailable: 'Data is currently unavailable.',
-      fgExtreme_fear: 'Extreme fear', fgFear: 'Fear', fgNeutral: 'Neutral', fgGreed: 'Greed', fgExtreme_greed: 'Extreme greed'
+      fgExtreme_fear: 'Extreme fear', fgFear: 'Fear', fgNeutral: 'Neutral', fgGreed: 'Greed', fgExtreme_greed: 'Extreme greed',
+      indicesTitle: 'World stock indices', indicesSub: '22 key indices from the US, Europe, Asia, South America and Australia',
+      stocksTitle: 'Global stocks', stocksSub: 'The 24 largest global companies — US, Europe and Asia',
+      commoditiesTitle: 'Commodities & raw materials', commoditiesSub: 'Precious metals, energy and agricultural products (COMEX/NYMEX/CBOT/ICE)',
+      currenciesTitle: 'Currencies (Forex)', currenciesSub: 'Major world currency pairs live + official ECB reference rates',
+      ecbTitle: 'ECB reference rates',
+      colInstrument: 'Instrument', colPrice: 'Price', colChange: 'Change', colTrend: 'Trend (7d)', colSource: 'Source', colExchange: 'Exchange'
     }
   };
   var lang = (new URLSearchParams(location.search).get('lang') === 'en') ? 'en' : 'hr';
@@ -410,14 +477,69 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
     return '#22c55e';
   }
 
+  function tableRow(item, cols){
+    var decimals = Math.abs(item.price) < 10 ? 3 : 2;
+    var spark = (item.sparkline && item.sparkline.length > 1) ? sparklineSvg(item.sparkline, item.changePct >= 0) : '—';
+    var cells = cols.map(function(col){
+      if (col === 'name') return '<td><span class="iname">' + esc(item.label) + '</span><span class="isym">' + esc(item.symbol || '') + (item.country ? ' · ' + esc(item.country) : '') + '</span></td>';
+      if (col === 'exchange') return '<td>' + esc(item.exchange || '—') + '</td>';
+      if (col === 'price') return '<td>' + fmt(item.price, decimals) + (item.unit ? ' ' + esc(item.unit) : '') + '</td>';
+      if (col === 'change') return '<td>' + changeSpan(item.changePct) + '</td>';
+      if (col === 'trend') return '<td class="spark-cell">' + spark + '</td>';
+      if (col === 'source') return '<td>Yahoo Finance</td>';
+      return '<td></td>';
+    }).join('');
+    return '<tr>' + cells + '</tr>';
+  }
+
+  function renderTable(elId, items, cols){
+    var el = document.getElementById(elId);
+    if (!el) return;
+    var sorted = items.filter(function(q){return q.ok}).slice().sort(function(a,b){ return a.label.localeCompare(b.label); });
+    el.innerHTML = sorted.map(function(item){ return tableRow(item, cols); }).join('');
+  }
+
+  function renderIndicesHeatmap(indices){
+    var regions = {};
+    indices.filter(function(q){return q.ok}).forEach(function(q){
+      var r = q.region || 'Ostalo';
+      (regions[r] = regions[r] || []).push(q);
+    });
+    var order = ['Amerika', 'Europa', 'Azija i Pacifik'];
+    var html = '';
+    order.forEach(function(region){
+      if (!regions[region]) return;
+      html += '<div class="pt-heat-region-label">' + esc(region.toUpperCase()) + '</div><div class="pt-heat-region-grid">';
+      html += regions[region].map(function(q){
+        var cls = q.changePct >= 0 ? 'up' : 'down';
+        var bg = q.changePct >= 1 ? 'rgba(34,197,94,.28)' : q.changePct >= 0 ? 'rgba(34,197,94,.14)' : q.changePct <= -1 ? 'rgba(239,68,68,.28)' : 'rgba(239,68,68,.14)';
+        return '<div class="pt-heat-tile" style="background:' + bg + '"><div class="name">' + esc(q.label) + '</div><div class="val">' + fmt(q.price, Math.abs(q.price)<10?2:2) + '</div><div class="chg ' + cls + '">' + (q.changePct>=0?'+':'') + q.changePct.toFixed(2) + '%</div></div>';
+      }).join('');
+      html += '</div>';
+    });
+    document.getElementById('ptIndicesHeatmap').innerHTML = html;
+  }
+
+  function renderEcb(ecbRates, dict){
+    if (!ecbRates || !ecbRates.ok) return;
+    var names = { AUD:'Australski dolar', BRL:'Brazilski real', CAD:'Kanadski dolar', CHF:'Švicarski franak', CNY:'Kineski juan', CZK:'Češka kruna', DKK:'Danska kruna', GBP:'Britanska funta', HKD:'Hongkonški dolar', HUF:'Mađarska forinta', IDR:'Indonezijska rupija', ILS:'Izraelski šekel', INR:'Indijska rupija', ISK:'Islandska kruna', JPY:'Japanski jen', KRW:'Južnokorejski won', MXN:'Meksički pezo', MYR:'Malezijski ringit', NOK:'Norveška kruna', NZD:'Novozelandski dolar', PHP:'Filipinski pezo', PLN:'Poljska zlota', RON:'Rumunjski lej', SEK:'Švedska kruna', SGD:'Singapurski dolar', THB:'Tajlandski baht', TRY:'Turska lira', USD:'Američki dolar', ZAR:'Južnoafrički rand' };
+    document.getElementById('ptEcbSub').textContent = (lang==='en' ? 'Source: Frankfurter (ECB) · date: ' : 'Izvor: Frankfurter (ECB) · datum: ') + ecbRates.date + ' · 1 EUR';
+    var codes = Object.keys(ecbRates.rates).sort();
+    document.getElementById('ptEcbGrid').innerHTML = codes.map(function(code){
+      var rate = ecbRates.rates[code];
+      return '<div class="pt-ecb-item"><div class="code">' + code + ' ' + rate.toFixed(4) + '</div><div class="val">' + (names[code] || code) + '</div></div>';
+    }).join('');
+  }
+
   function render(data){
     var dict = I18N[lang];
     document.getElementById('ptStatus').textContent = dict.updated + ' ' + new Date(data.generatedAt).toLocaleString(lang === 'en' ? 'en-US' : 'hr-HR') + ' · ' + data.instrumentsOk + '/' + data.instrumentsTotal + ' ' + dict.live;
 
-    if (data.indices && data.indices.length) document.getElementById('ptIndicesGrid').innerHTML = data.indices.filter(function(q){return q.ok}).map(quoteCard).join('');
-    if (data.commodities && data.commodities.length) document.getElementById('ptCommoditiesGrid').innerHTML = data.commodities.filter(function(q){return q.ok}).map(quoteCard).join('');
-    if (data.currencies && data.currencies.length) document.getElementById('ptCurrenciesGrid').innerHTML = data.currencies.filter(function(q){return q.ok}).map(quoteCard).join('');
-    if (data.stocks && data.stocks.length) document.getElementById('ptStocksGrid').innerHTML = data.stocks.filter(function(q){return q.ok}).map(quoteCard).join('');
+    if (data.indices && data.indices.length){ renderTable('ptIndicesTable', data.indices, ['name','price','change','trend','source']); renderIndicesHeatmap(data.indices); }
+    if (data.commodities && data.commodities.length) renderTable('ptCommoditiesTable', data.commodities, ['name','exchange','price','change','source']);
+    if (data.currencies && data.currencies.length) renderTable('ptCurrenciesTable', data.currencies, ['name','price','change','trend','source']);
+    if (data.stocks && data.stocks.length) renderTable('ptStocksTable', data.stocks, ['name','price','change','trend','source']);
+    renderEcb(data.ecbRates, dict);
 
     var crypto = data.crypto || {};
 
