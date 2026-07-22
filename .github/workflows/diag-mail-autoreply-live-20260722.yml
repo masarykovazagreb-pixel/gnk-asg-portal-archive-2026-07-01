@@ -5,42 +5,42 @@ on:
       - '.github/workflows/diag-mail-autoreply-live-20260722.yml'
 permissions:
   contents: read
-  actions: read
   issues: write
 jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Surface latest atomic emergency workflow result
+      - name: Verify final live autoreply record
         env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
           repo='${{ github.repository }}'
-          auth=(-H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json')
-          curl -fsS "https://api.github.com/repos/$repo/actions/workflows/emergency-deploy-mail-autoreply-bcc-20260722.yml/runs?per_page=3" "${auth[@]}" > /tmp/runs.json
-          run_id=$(python3 - <<'PY'
-          import json
-          runs=json.load(open('/tmp/runs.json')).get('workflow_runs',[])
-          print(runs[0]['id'] if runs else '')
-          PY
-          )
-          if [ -n "$run_id" ]; then
-            curl -fsS "https://api.github.com/repos/$repo/actions/runs/$run_id/jobs?per_page=100" "${auth[@]}" > /tmp/jobs.json
-          else
-            echo '{"jobs":[]}' > /tmp/jobs.json
-          fi
-          python3 - <<'PY' > /tmp/report.md
-          import json
-          runs=json.load(open('/tmp/runs.json')).get('workflow_runs',[])
-          jobs=json.load(open('/tmp/jobs.json')).get('jobs',[])
-          data={
-            'workflowRuns':[{k:r.get(k) for k in ('id','status','conclusion','head_sha','created_at','updated_at','html_url')} for r in runs[:3]],
-            'jobs':[{'id':j.get('id'),'name':j.get('name'),'status':j.get('status'),'conclusion':j.get('conclusion'),'steps':[{k:s.get(k) for k in ('number','name','status','conclusion')} for s in j.get('steps',[])]} for j in jobs]
-          }
-          print('## Latest atomic autoreply workflow result')
+          subject='AUTOREPLY FINAL LIVE TEST 2026-07-22-02'
+          service='gnk-asg-mail-center-worker'
+          kv_id='a3e9e78c7d554d7fa10996da9a89e7bc'
+          auth=(-H "Authorization: Bearer $CF_TOKEN")
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/workers/services/$service/environments/production/settings" "${auth[@]}" > /tmp/settings.json
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/storage/kv/namespaces/$kv_id/values/mail%3Ainbox" "${auth[@]}" > /tmp/inbox.json
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/storage/kv/namespaces/$kv_id/values/mail%3Asent" "${auth[@]}" > /tmp/sent.json
+          SUBJECT="$subject" python3 - <<'PY' > /tmp/report.md
+          import json, os
+          subject=os.environ['SUBJECT']
+          settings=json.load(open('/tmp/settings.json'))
+          inbox=json.load(open('/tmp/inbox.json'))
+          sent=json.load(open('/tmp/sent.json'))
+          bindings=[]
+          for item in settings.get('result',{}).get('bindings',[]):
+              if item.get('name') in {'AI','AI_AUTO_REPLY_DISABLED','EMAIL','GNK_ASG_KV'}:
+                  bindings.append({k:item.get(k) for k in ('name','type','text') if item.get(k) is not None})
+          def matches(items):
+              return [{k:r.get(k) for k in ('id','createdAt','fromEmail','toEmail','subject','status','autoReplyFrom','autoReplyFromName','autoReplySubject','messageId','sentAt','error') if r.get(k) is not None} for r in items if r.get('subject')==subject]
+          data={'bindings':bindings,'matchingInbox':matches(inbox),'matchingSent':matches(sent)}
+          print('## Final live autoreply verification')
           print('```json')
           print(json.dumps(data,ensure_ascii=False,indent=2))
           print('```')
