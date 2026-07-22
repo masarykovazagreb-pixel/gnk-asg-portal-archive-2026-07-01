@@ -1,0 +1,57 @@
+name: Verify live autoreply state after deploy
+on:
+  push:
+    paths:
+      - '.github/workflows/diag-mail-autoreply-live-20260722.yml'
+permissions:
+  contents: read
+  issues: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read live Mail Center bindings and matching KV records
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CF_TOKEN"
+          test -n "$ACCOUNT_ID"
+          service='gnk-asg-mail-center-worker'
+          kv_id='a3e9e78c7d554d7fa10996da9a89e7bc'
+          subject='LIVE test autoreply nakon deploya 2026-07-22 22:xx'
+          auth=(-H "Authorization: Bearer $CF_TOKEN")
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/workers/services/$service/environments/production/settings" "${auth[@]}" > /tmp/settings.json
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/storage/kv/namespaces/$kv_id/values/mail%3Ainbox" "${auth[@]}" > /tmp/inbox.json
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/storage/kv/namespaces/$kv_id/values/mail%3Asent" "${auth[@]}" > /tmp/sent.json
+          SUBJECT="$subject" python3 - <<'PY' > /tmp/report.md
+          import json, os
+          subject = os.environ['SUBJECT']
+          settings = json.load(open('/tmp/settings.json'))
+          inbox = json.load(open('/tmp/inbox.json'))
+          sent = json.load(open('/tmp/sent.json'))
+          bindings = settings.get('result', {}).get('bindings', [])
+          safe_bindings = []
+          for item in bindings:
+              name = item.get('name')
+              if name in {'AI', 'EMAIL', 'GNK_ASG_KV', 'AI_AUTO_REPLY_DISABLED'}:
+                  safe_bindings.append({k: item.get(k) for k in ('name','type','text') if item.get(k) is not None})
+          def matches(items):
+              return [
+                  {k: row.get(k) for k in ('id','createdAt','fromEmail','toEmail','subject','status','autoReplyFrom','autoReplyFromName','autoReplySubject','messageId','error') if row.get(k) is not None}
+                  for row in items if row.get('subject') == subject
+              ]
+          print('## Live autoreply verification')
+          print('```json')
+          print(json.dumps({
+              'bindings': safe_bindings,
+              'matchingInbox': matches(inbox),
+              'matchingSent': matches(sent),
+          }, ensure_ascii=False, indent=2))
+          print('```')
+          PY
+          gh issue comment 712 --repo "${{ github.repository }}" --body-file /tmp/report.md
