@@ -1,4 +1,4 @@
-name: Fix and deploy inbound autoreply through branded MIME transport
+name: Fix and deploy direct inbound autoreply pipeline
 on:
   push:
     paths:
@@ -7,12 +7,12 @@ permissions:
   contents: write
   issues: write
 concurrency:
-  group: gnk-asg-mail-autoreply-mime-fix
+  group: gnk-asg-mail-autoreply-pipeline
   cancel-in-progress: false
 jobs:
   fix-test-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,141 +21,239 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Patch inbound autoreply to proven MIME transport
+      - name: Patch direct inbound pipeline and lock status tracking
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          p=Path('workers/gnk-asg-mail-center-worker/src/index.js')
-          s=p.read_text()
-          import_line="import {sendBrandedEmail} from '../../gnk-asg-direct-operator/src/outbound-mail-transport-v1.js';"
-          anchor="import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';"
-          if import_line not in s:
-              if anchor not in s:
-                  raise SystemExit('AI import anchor not found')
-              s=s.replace(anchor, anchor+'\n'+import_line, 1)
 
-          old_reject="""        await env.EMAIL.send({
-          to: sender,
-          from: { email: DEFAULT_FROM, name: 'GNK ASG Mail Security' },
-          subject: /^re:/i.test(subject) ? subject : `Re: ${subject}`,
-          text: rejectText,
-          html: `<p style=\"margin:0;font-family:Arial,Helvetica,sans-serif;color:#111827\">${escapeHtml(rejectText)}</p>`,
-          headers: { 'Auto-Submitted': 'auto-replied', 'X-GNK-ASG-Mail-Center': VERSION, 'X-GNK-ASG-Security-Rejection': '1' }
-        });"""
-          new_reject="""        await sendBrandedEmail(env, {
-          to: sender,
-          from: DEFAULT_FROM,
-          fromName: 'GNK ASG Mail Security',
-          replyTo: DEFAULT_FROM,
-          subject: /^re:/i.test(subject) ? subject : `Re: ${subject}`,
-          text: rejectText,
-          html: `<p style=\"margin:0;font-family:Arial,Helvetica,sans-serif;color:#111827\">${escapeHtml(rejectText)}</p>`
-        });"""
-          if old_reject not in s:
-              raise SystemExit('security rejection direct-send block not found')
-          s=s.replace(old_reject,new_reject,1)
+          index = Path('workers/gnk-asg-mail-center-worker/src/index.js')
+          source = index.read_text()
+          ai_import = "import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';"
+          transport_import = "import {sendBrandedEmail} from '../../gnk-asg-direct-operator/src/outbound-mail-transport-v1.js';"
+          tracking_import = "import {withEmailStatusTracking} from '../../gnk-asg-direct-operator/src/email-status-tracking-v1.js';"
+          if ai_import not in source:
+              raise SystemExit('AI import anchor missing')
+          additions = []
+          if transport_import not in source:
+              additions.append(transport_import)
+          if tracking_import not in source:
+              additions.append(tracking_import)
+          if additions:
+              source = source.replace(ai_import, ai_import + '\n' + '\n'.join(additions), 1)
 
-          old_auto="""    const result = await env.EMAIL.send({
-      to: sender,
-      bcc: mandatoryBcc(env),
-      from: { email: fromAddress, name: fromName },
-      replyTo: fromAddress,
-      subject: replySubject,
-      html,
-      text,
-      headers: {
-        'Auto-Submitted': 'auto-replied',
-        'X-Auto-Response-Suppress': 'All',
-        'X-GNK-ASG-Mail-Center': VERSION,
-        'X-GNK-ASG-Receipt': id,
-        'X-GNK-ASG-Profile': mediaProfile ? 'media-relations' : 'general'
+          helper = """
+function withBrandedMimeTransport(env) {
+  const binding = env?.EMAIL;
+  if (!binding?.send) return env;
+  const wrapped = Object.create(env || null);
+  Object.defineProperty(wrapped, 'EMAIL', {
+    enumerable: true,
+    configurable: true,
+    value: {
+      send(payload) {
+        if (payload instanceof EmailMessage) return binding.send.call(binding, payload);
+        return sendBrandedEmail(env, payload);
       }
-    });"""
-          new_auto="""    const result = await sendBrandedEmail(env, {
-      to: sender,
-      bcc: mandatoryBcc(env),
-      from: fromAddress,
-      fromName,
-      replyTo: fromAddress,
-      subject: replySubject,
-      html,
-      text
-    });"""
-          if old_auto not in s:
-              raise SystemExit('autoreply direct-send block not found')
-          s=s.replace(old_auto,new_auto,1)
-          p.write_text(s)
+    }
+  });
+  return wrapped;
+}
+"""
+          helper_anchor = 'const MAX_LOG_ITEMS = 250;'
+          if 'function withBrandedMimeTransport(env)' not in source:
+              if helper_anchor not in source:
+                  raise SystemExit('transport helper anchor missing')
+              source = source.replace(helper_anchor, helper_anchor + '\n' + helper, 1)
+
+          receipt_line = "        'X-GNK-ASG-Receipt': id,"
+          reference_line = "        'X-GNK-ASG-Reference': id,"
+          if reference_line not in source:
+              if receipt_line not in source:
+                  raise SystemExit('receipt header anchor missing')
+              source = source.replace(receipt_line, receipt_line + '\n' + reference_line, 1)
+
+          old_handler = """  async email(message, env, ctx) {
+    let target = { message, env };
+    try {
+      target = prepareAiAutoReply(message, env);
+      if (!target?.message || !target?.env) target = { message, env };
+    } catch (error) {
+      console.error('prepareAiAutoReply-wrap-failed', error);
+      target = { message, env };
+    }
+    const task = handleInbound(target.message, target.env);
+    if (ctx?.waitUntil) {
+      ctx.waitUntil(task);
+      return;
+    }
+    return task;
+  }"""
+          new_handler = """  async email(message, env, ctx) {
+    let runtimeEnv = env;
+    try {
+      runtimeEnv = withEmailStatusTracking(withBrandedMimeTransport(env), 'direct-inbound-auto-reply');
+    } catch (error) {
+      console.error('mail-runtime-wrapper-failed', error);
+      runtimeEnv = withBrandedMimeTransport(env);
+    }
+    let target = { message, env: runtimeEnv };
+    try {
+      target = prepareAiAutoReply(message, runtimeEnv);
+      if (!target?.message || !target?.env) target = { message, env: runtimeEnv };
+    } catch (error) {
+      console.error('prepareAiAutoReply-wrap-failed', error);
+      target = { message, env: runtimeEnv };
+    }
+    const task = handleInbound(target.message, target.env);
+    if (ctx?.waitUntil) {
+      ctx.waitUntil(task);
+      return;
+    }
+    return task;
+  }"""
+          if old_handler in source:
+              source = source.replace(old_handler, new_handler, 1)
+          elif new_handler not in source:
+              raise SystemExit('email handler contract not found')
+          index.write_text(source)
+
+          transport = Path('workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js')
+          t = transport.read_text()
+          t = t.replace("return /^[a-z0-9!#$&^_.+-]+\\/[a-z0-9!#$&^_.+-]+$/i.test(type)?type:'application/octet-stream'", "return /^[a-z0-9!#$&^_.+-]+\\/[a-z0-9!#$&^_.+-]+$/i.test(type)?type:'application/octet-stream'")
+          old_alt = "const alt=`gnk_alt_${crypto.randomUUID().replace(/-/g,'')}`"
+          new_alt = "const messageId=`<${crypto.randomUUID()}@gnk-asg.hr>`;const alt=`gnk_alt_${crypto.randomUUID().replace(/-/g,'')}`"
+          if old_alt in t and 'const messageId=`<' not in t:
+              t = t.replace(old_alt, new_alt, 1)
+          old_message_header = "`Message-ID: <${crypto.randomUUID()}@gnk-asg.hr>`"
+          if old_message_header in t:
+              t = t.replace(old_message_header, "`Message-ID: ${messageId}`", 1)
+          old_prepared_return = "return{from,recipients,raw:[...headers,body,''].join('\\r\\n'),logo:Boolean(logo),signature:SIGNATURE_VERSION}}"
+          new_prepared_return = "return{from,recipients,raw:[...headers,body,''].join('\\r\\n'),logo:Boolean(logo),signature:SIGNATURE_VERSION,messageId}}"
+          if old_prepared_return in t:
+              t = t.replace(old_prepared_return, new_prepared_return, 1)
+          old_send_return = "return{ok:failed.length===0,status:failed.length?'PARTIAL':'SENT',sent:sent.length,failed:failed.length,recipients:sent,failures:failed,logo:prepared.logo?'cid-inline':'remote-png',signature:prepared.signature,transport:VERSION}}"
+          new_send_return = "return{ok:failed.length===0,status:failed.length?'PARTIAL':'SENT',sent:sent.length,failed:failed.length,recipients:sent,failures:failed,logo:prepared.logo?'cid-inline':'remote-png',signature:prepared.signature,transport:VERSION,messageId:prepared.messageId}}"
+          if old_send_return in t:
+              t = t.replace(old_send_return, new_send_return, 1)
+          for required in ['const messageId=`<', '`Message-ID: ${messageId}`', 'messageId:prepared.messageId']:
+              if required not in t:
+                  raise SystemExit(f'outbound Message-ID contract missing: {required}')
+          transport.write_text(t)
+
+          tracking = Path('workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js')
+          e = tracking.read_text()
+          e = e.replace("WHERE provider_message_id=?`).bind(messageId).first()", "WHERE REPLACE(REPLACE(provider_message_id,'<',''),'>','')=REPLACE(REPLACE(?,'<',''),'>','')`).bind(messageId).first()")
+          e = e.replace("WHERE provider_message_id=?`).bind(mapped,mapped", "WHERE REPLACE(REPLACE(provider_message_id,'<',''),'>','')=REPLACE(REPLACE(?,'<',''),'>','')`).bind(mapped,mapped")
+          if "REPLACE(REPLACE(provider_message_id,'<',''),'>','')" not in e:
+              raise SystemExit('normalized provider Message-ID matching contract missing')
+          tracking.write_text(e)
           PY
-          cat > scripts/test-mail-center-autoreply-mime-v1.mjs <<'EOF'
-          import assert from 'node:assert/strict';
-          import fs from 'node:fs';
-          const source=fs.readFileSync('workers/gnk-asg-mail-center-worker/src/index.js','utf8');
-          assert.match(source,/import \{sendBrandedEmail\} from '\.\.\/\.\.\/gnk-asg-direct-operator\/src\/outbound-mail-transport-v1\.js';/);
-          assert.equal((source.match(/await sendBrandedEmail\(env,/g)||[]).length>=2,true);
-          assert.doesNotMatch(source,/const result = await env\.EMAIL\.send\(\{/);
-          assert.match(source,/prepareAiAutoReply\(message, env\)/);
-          assert.match(source,/target = \{ message, env \}/);
-          console.log('Inbound autoreply uses branded MIME transport and retains non-blocking AI fallback: PASS');
-          EOF
-          node --check workers/gnk-asg-mail-center-worker/src/index.js
-          node scripts/test-mail-center-autoreply-mime-v1.mjs
-      - name: Commit durable source fix
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add workers/gnk-asg-mail-center-worker/src/index.js scripts/test-mail-center-autoreply-mime-v1.mjs
-          git commit -m 'fix(mail): use branded MIME transport for inbound autoreplies'
-          git push origin HEAD:main
-          echo "FIX_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
-      - name: Build Mail Center runtime config
-        working-directory: workers/gnk-asg-mail-center-worker
-        shell: bash
-        run: |
-          cat > wrangler.runtime.toml <<'EOF'
+
+          cat > workers/gnk-asg-mail-center-worker/wrangler.toml <<'EOF'
           name = "gnk-asg-mail-center-worker"
           main = "src/index.js"
           compatibility_date = "2026-06-18"
           workers_dev = true
           preview_urls = true
+          keep_vars = true
 
           [ai]
           binding = "AI"
 
           [vars]
           AI_AUTO_REPLY_DISABLED = "false"
+          EMAIL_STATUS_PUBLIC_ORIGIN = "https://gnk-asg.hr"
+          EMAIL_OPEN_TRACKING_ENABLED = "true"
+          EMAIL_RECEIPT_CONFIRMATION_ENABLED = "true"
 
           [[kv_namespaces]]
           binding = "GNK_ASG_KV"
           id = "a3e9e78c7d554d7fa10996da9a89e7bc"
 
+          [[d1_databases]]
+          binding = "GNK_ASG_D1"
+          database_name = "gnk_asg_operator_logs"
+          database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
+
           [[send_email]]
           name = "EMAIL"
           remote = true
           EOF
+
+          cat > scripts/test-mail-center-direct-inbound-pipeline-v1.mjs <<'EOF'
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          const mail=fs.readFileSync('workers/gnk-asg-mail-center-worker/src/index.js','utf8');
+          const transport=fs.readFileSync('workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js','utf8');
+          const status=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js','utf8');
+          const config=fs.readFileSync('workers/gnk-asg-mail-center-worker/wrangler.toml','utf8');
+          assert.match(mail,/withEmailStatusTracking\(withBrandedMimeTransport\(env\), 'direct-inbound-auto-reply'\)/);
+          assert.match(mail,/target = prepareAiAutoReply\(message, runtimeEnv\)/);
+          assert.match(mail,/return sendBrandedEmail\(env, payload\)/);
+          assert.match(mail,/'X-GNK-ASG-Reference': id/);
+          assert.match(transport,/const messageId=`<\$\{crypto\.randomUUID\(\)\}@gnk-asg\.hr>`/);
+          assert.match(transport,/`Message-ID: \$\{messageId\}`/);
+          assert.match(transport,/messageId:prepared\.messageId/);
+          assert.match(status,/REPLACE\(REPLACE\(provider_message_id,'<',''\),'>',''\)/);
+          assert.match(config,/binding = "GNK_ASG_D1"/);
+          assert.match(config,/EMAIL_OPEN_TRACKING_ENABLED = "true"/);
+          assert.match(config,/EMAIL_RECEIPT_CONFIRMATION_ENABLED = "true"/);
+          console.log('Direct inbound pipeline: AI -> Email Status -> branded MIME -> Cloudflare: PASS');
+          EOF
+          node --check workers/gnk-asg-mail-center-worker/src/index.js
+          node --check workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js
+          node --check workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js
+          node scripts/test-mail-center-direct-inbound-pipeline-v1.mjs
+      - name: Commit durable source and status fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add workers/gnk-asg-mail-center-worker/src/index.js \
+                  workers/gnk-asg-mail-center-worker/wrangler.toml \
+                  workers/gnk-asg-direct-operator/src/outbound-mail-transport-v1.js \
+                  workers/gnk-asg-direct-operator/src/email-status-tracking-v1.js \
+                  scripts/test-mail-center-direct-inbound-pipeline-v1.mjs
+          git commit -m 'fix(mail): restore direct inbound autoreply with AI, tracking and branded MIME'
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "FIX_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Deploy fixed Mail Center Worker
         working-directory: workers/gnk-asg-mail-center-worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-mail-center-worker --keep-vars
-      - name: Publish result
+        shell: bash
+        run: npx --yes wrangler@4 deploy --config wrangler.toml --name gnk-asg-mail-center-worker --keep-vars
+      - name: Verify live bindings and publish result
         if: always()
         env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          {
-            echo '## MIME transport autoreply fix'
-            echo
-            echo "Job status: ${{ job.status }}"
-            echo "Fix SHA: ${FIX_SHA:-not-created}"
-            echo
-            echo '- inbound autoreply routed through sendBrandedEmail'
-            echo '- same signature/logo/MIME path as contact form and Mail Studio'
-            echo '- AI binding enabled but deterministic fallback remains mandatory'
-          } > /tmp/report.md
-          gh issue edit 712 --repo "${{ github.repository }}" --body-file /tmp/report.md
+          set +e
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/workers/services/gnk-asg-mail-center-worker/environments/production/settings" -H "Authorization: Bearer $CF_TOKEN" > /tmp/settings.json
+          python3 - <<'PY' > /tmp/report.md
+          import json, os
+          try:
+              settings=json.load(open('/tmp/settings.json'))
+          except Exception:
+              settings={}
+          names=[]
+          for item in settings.get('result',{}).get('bindings',[]):
+              if item.get('name') in {'AI','AI_AUTO_REPLY_DISABLED','EMAIL','GNK_ASG_KV','GNK_ASG_D1','EMAIL_OPEN_TRACKING_ENABLED','EMAIL_RECEIPT_CONFIRMATION_ENABLED'}:
+                  names.append({k:item.get(k) for k in ('name','type','text') if item.get(k) is not None})
+          print('## Direct inbound autoreply pipeline deployment')
+          print()
+          print(f"Job status: {os.environ.get('JOB_STATUS','unknown')}")
+          print(f"Fix SHA: {os.environ.get('FIX_SHA','not-created')}")
+          print('```json')
+          print(json.dumps({'bindings':names},ensure_ascii=False,indent=2))
+          print('```')
+          PY
+          JOB_STATUS='${{ job.status }}' gh issue edit 712 --repo "${{ github.repository }}" --body-file /tmp/report.md
