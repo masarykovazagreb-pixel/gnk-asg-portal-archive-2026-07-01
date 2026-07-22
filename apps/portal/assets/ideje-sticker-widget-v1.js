@@ -6,9 +6,8 @@
   if (location.pathname.replace(/\/+$/, '') === '/ideje-u-djelovanju') return;
 
   const isEnglish = document.documentElement.lang === 'en';
-  const copy = isEnglish
-    ? { title: 'New ideas', sub: 'that become action', button: 'Visit us' }
-    : { title: 'Nove ideje', sub: 'koje postaju djelovanje', button: 'Posjeti nas' };
+  const label = isEnglish ? 'Ideas' : 'Ideje';
+  const title = isEnglish ? 'New ideas that become action' : 'Nove ideje koje postaju djelovanje';
 
   const style = document.createElement('style');
   style.id = `${WIDGET_ID}-style`;
@@ -16,64 +15,57 @@
     #${WIDGET_ID} {
       position: fixed;
       right: max(14px, env(safe-area-inset-right));
-      top: max(115px, calc(env(safe-area-inset-top) + 115px));
-      left: auto;
-      bottom: auto;
+      top: max(84px, env(safe-area-inset-top));
       z-index: 9997;
-      width: 91px;
-      padding: 9px;
-      border-radius: 11px;
+      width: 44px;
+      height: 66px;
+      transform-origin: top center;
+      animation: gnkIdejeThreadSway 5.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    #${WIDGET_ID} .thread {
+      display: block;
+      width: 1.5px;
+      height: 22px;
+      margin: 0 auto;
+      background: linear-gradient(to bottom, rgba(255,255,255,.05), rgba(255,255,255,.55));
+    }
+    #${WIDGET_ID} .badge {
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
       background: #c9ff66;
       color: #12211b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: Arial, sans-serif;
-      box-shadow: 0 8px 20px rgba(0,0,0,.22);
+      font-size: .62rem;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.1;
       text-decoration: none;
-      display: block;
-      transform-origin: top center;
-      transform: rotate(-4deg);
-      animation: gnkIdejeSway 6s ease-in-out infinite;
-      animation-delay: 0s;
-      transition: box-shadow .2s ease;
+      box-shadow: 0 5px 14px rgba(0,0,0,.28);
+      pointer-events: auto;
+      transition: box-shadow .2s ease, transform .2s ease;
     }
-    #${WIDGET_ID}:hover,
-    #${WIDGET_ID}:focus-visible {
-      box-shadow: 0 11px 24px rgba(0,0,0,.28);
+    #${WIDGET_ID} .badge:hover,
+    #${WIDGET_ID} .badge:focus-visible {
+      box-shadow: 0 7px 18px rgba(0,0,0,.35);
+      transform: translateX(-50%) scale(1.06);
       outline: none;
     }
-    #${WIDGET_ID} strong {
-      display: block;
-      font-size: .7rem;
-      font-weight: 800;
-      letter-spacing: -.01em;
-      margin-bottom: 2px;
-    }
-    #${WIDGET_ID} span.sub {
-      display: block;
-      font-size: .55rem;
-      font-weight: 600;
-      opacity: .82;
-      margin-bottom: 7px;
-    }
-    #${WIDGET_ID} span.cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: .48rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-      background: #12211b;
-      color: #c9ff66;
-      padding: 5px 7px;
-      border-radius: 999px;
-    }
-    @keyframes gnkIdejeSway {
-      0%, 100% { transform: rotate(-4deg); }
-      50% { transform: rotate(3deg); }
+    @keyframes gnkIdejeThreadSway {
+      0%, 100% { transform: rotate(-9deg); }
+      50% { transform: rotate(9deg); }
     }
     @media (max-width: 640px) {
-      #${WIDGET_ID} { width: 77px; padding: 7px; top: max(103px, calc(env(safe-area-inset-top) + 103px)); }
-      #${WIDGET_ID} strong { font-size: .62rem; }
+      #${WIDGET_ID} { width: 38px; height: 58px; }
+      #${WIDGET_ID} .badge { width: 38px; height: 38px; font-size: .56rem; }
     }
     @media (prefers-reduced-motion: reduce) {
       #${WIDGET_ID} { animation: none; }
@@ -81,13 +73,11 @@
   `;
   document.head.appendChild(style);
 
-  const link = document.createElement('a');
-  link.id = WIDGET_ID;
-  link.href = '/ideje-u-djelovanju/';
-  link.setAttribute('aria-label', `${copy.title} ${copy.sub} — ${copy.button}`);
-  link.innerHTML = `<strong>${copy.title}</strong><span class="sub">${copy.sub}</span><span class="cta">${copy.button} →</span>`;
+  const wrap = document.createElement('div');
+  wrap.id = WIDGET_ID;
+  wrap.innerHTML = `<span class="thread" aria-hidden="true"></span><a class="badge" href="/ideje-u-djelovanju/" aria-label="${title}">${label}</a>`;
 
-  const mount = () => document.body.appendChild(link);
+  const mount = () => document.body.appendChild(wrap);
   document.readyState === 'loading'
     ? document.addEventListener('DOMContentLoaded', mount)
     : mount();
