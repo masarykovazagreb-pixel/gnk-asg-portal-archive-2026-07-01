@@ -48,8 +48,10 @@ jobs:
           grep -Fq 'GNK DINAMO Ltd grupa' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
+          grep -Fq 'Operatorski token' workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js
+          grep -Fq 'HttpOnly; Secure; SameSite=Strict' workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js
 
-      - name: Resolve private staging token hash
+      - name: Resolve shared operator token hash
         id: auth
         env:
           TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
@@ -59,7 +61,7 @@ jobs:
           set -euo pipefail
           value="$TOKEN"
           [ -n "$value" ] || value="$TOKEN_FALLBACK"
-          [ -n "$value" ] || { echo '::error::Missing staging access token'; exit 1; }
+          [ -n "$value" ] || { echo '::error::Missing operator token'; exit 1; }
           echo "hash=$(printf '%s' "$value" | sha256sum | awk '{print $1}')" >> "$GITHUB_OUTPUT"
           echo "token=$value" >> "$GITHUB_OUTPUT"
 
@@ -81,20 +83,25 @@ jobs:
           [ -n "$url" ] || { echo '::error::Staging URL was not found in Wrangler output'; exit 1; }
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
-      - name: Verify global access gate
+      - name: Verify browser login and bearer access
         env:
           URL: ${{ steps.deploy.outputs.url }}
           TOKEN: ${{ steps.auth.outputs.token }}
         shell: bash
         run: |
           set -euo pipefail
-          unauth=$(curl -sS -o /dev/null -w '%{http_code}' "$URL/digital-workforce/")
-          [ "$unauth" = '401' ] || { echo "::error::Expected unauthenticated 401, got $unauth"; exit 1; }
-          auth=$(curl -sS -o staging-page.html -w '%{http_code}' -H "Authorization: Bearer $TOKEN" "$URL/digital-workforce/")
-          [ "$auth" = '200' ] || { echo "::error::Expected authenticated 200, got $auth"; exit 1; }
+          login=$(curl -sS -o staging-login.html -w '%{http_code}' "$URL/digital-workforce/")
+          [ "$login" = '200' ] || { echo "::error::Expected login page 200, got $login"; exit 1; }
+          grep -Fq 'PRIVATNI STAGING' staging-login.html
+          grep -Fq 'Operatorski token' staging-login.html
+          curl -fsS -c staging-cookie.txt -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login"
+          auth=$(curl -sS -b staging-cookie.txt -o staging-page.html -w '%{http_code}' "$URL/digital-workforce/")
+          [ "$auth" = '200' ] || { echo "::error::Expected cookie-authenticated 200, got $auth"; exit 1; }
           grep -Fq 'Digitalna radna snaga' staging-page.html
           grep -Fq 'SIMULACIJA' staging-page.html
-          headers=$(curl -sSI -H "Authorization: Bearer $TOKEN" "$URL/digital-workforce/")
+          bearer=$(curl -sS -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $TOKEN" "$URL/digital-workforce/")
+          [ "$bearer" = '200' ] || { echo "::error::Expected bearer-authenticated 200, got $bearer"; exit 1; }
+          headers=$(curl -sSI -b staging-cookie.txt "$URL/digital-workforce/")
           printf '%s' "$headers" | grep -Fqi 'x-robots-tag: noindex'
           printf '%s' "$headers" | grep -Fqi 'x-gnk-environment: private-workforce-staging'
 
@@ -120,8 +127,9 @@ jobs:
           # Private Workforce Staging
           - URL: ${{ steps.deploy.outputs.url }}
           - Source SHA: $GITHUB_SHA
-          - Unauthenticated access: 401 verified
+          - Browser login: same operator token verified
           - Authenticated portal: 200 verified
+          - Bearer API access: verified
           - Robots: noindex/nofollow verified
           - Digital Workforce API: verified
           - Market data: verified
@@ -138,6 +146,8 @@ jobs:
           path: |
             workers/gnk-asg-direct-operator/staging-deploy.log
             staging-verification.md
+            staging-login.html
+            staging-page.html
             staging-state.json
             staging-projects.json
             staging-market.json
