@@ -1,0 +1,88 @@
+name: Emergency deploy corrected Mail Center autoreply
+on:
+  push:
+    paths:
+      - '.github/workflows/emergency-deploy-mail-autoreply-bcc-20260722.yml'
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: gnk-asg-mail-autoreply-emergency
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply verified BCC fix in deployment workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('workers/gnk-asg-mail-center-worker/src/index.js')
+          s=p.read_text()
+          broken="      bcc: mandatoryBcc(env).join(', '),"
+          fixed="      bcc: mandatoryBcc(env),"
+          if broken not in s:
+              raise SystemExit('broken BCC expression not found')
+          p.write_text(s.replace(broken,fixed,1))
+          PY
+          node --check workers/gnk-asg-mail-center-worker/src/index.js
+          grep -Fq 'bcc: mandatoryBcc(env),' workers/gnk-asg-mail-center-worker/src/index.js
+          ! grep -Fq "bcc: mandatoryBcc(env).join" workers/gnk-asg-mail-center-worker/src/index.js
+      - name: Build isolated runtime configuration
+        working-directory: workers/gnk-asg-mail-center-worker
+        shell: bash
+        run: |
+          cat > wrangler.runtime.toml <<'EOF'
+          name = "gnk-asg-mail-center-worker"
+          main = "src/index.js"
+          compatibility_date = "2026-06-18"
+          workers_dev = true
+          preview_urls = true
+
+          [ai]
+          binding = "AI"
+
+          [vars]
+          AI_AUTO_REPLY_DISABLED = "false"
+
+          [[kv_namespaces]]
+          binding = "GNK_ASG_KV"
+          id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+          [[send_email]]
+          name = "EMAIL"
+          remote = true
+          EOF
+      - name: Deploy corrected Mail Center Worker
+        working-directory: workers/gnk-asg-mail-center-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-mail-center-worker --keep-vars
+      - name: Publish deployment result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          {
+            echo '## Emergency autoreply deployment'
+            echo
+            echo "Job status: ${{ job.status }}"
+            echo
+            echo 'Expected live contract:'
+            echo '- BCC is an address array, not a comma-joined string'
+            echo '- AI binding is present'
+            echo '- AI_AUTO_REPLY_DISABLED=false'
+            echo '- deterministic reply remains the fallback if AI is unavailable'
+          } > /tmp/report.md
+          gh issue comment 712 --repo "${{ github.repository }}" --body-file /tmp/report.md
