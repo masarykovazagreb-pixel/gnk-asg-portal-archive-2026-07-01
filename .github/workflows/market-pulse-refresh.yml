@@ -1,0 +1,55 @@
+name: Market Pulse Refresh
+on:
+  schedule:
+    - cron: '10 */2 * * *'
+  workflow_dispatch: {}
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: editorial-main-writer
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Run market pulse refresh
+        run: node scripts/refresh-market-pulse.mjs
+      - name: Commit if changed
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- apps/portal/data/market-pulse.json && [ -z "$(git status --porcelain -- apps/portal/data/market-pulse.json)" ]; then
+            echo "No market pulse change."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/portal/data/market-pulse.json
+          git commit -m "Refresh market pulse data"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Dispatch exact-SHA production deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APPROVED_SHA: ${{ steps.commit.outputs.sha }}
+        run: |
+          set -euo pipefail
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo beckuphome-gnk/gnk-asg-portal \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$APPROVED_SHA"
