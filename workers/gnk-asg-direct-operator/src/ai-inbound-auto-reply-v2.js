@@ -374,19 +374,26 @@ function validPersonalizedReply(reply, language, name) {
 }
 
 async function askModel(env, model, prompt) {
-  const result = await env.AI.run(model, {
-    messages: [
-      {
-        role: 'system',
-        content: 'Write a useful personalized preliminary email reply for GNK ASG. Use only the dominant language of the incoming message, or the explicitly requested reply language. Use the actual subject and body and answer the concrete question; never return only a generic receipt. If a reliable sender name is supplied, greet that person by the exact name and never use Dear Sir or Madam. Do not invent facts. Ask at most two precise questions only if essential information is missing. Preserve exact reference codes. Do not approve accreditation, accept an offer, create a contract, give legal advice, confirm payment, reveal confidential information, promise a deadline or make a final decision. Return JSON only with language and body. Include a greeting and courteous closing, but no institutional signature.'
-      },
-      { role: 'user', content: prompt }
-    ],
-    max_tokens: 1_000,
-    temperature: 0.15,
-    top_p: 0.85
-  });
-  return parseModelOutput(result?.response || result?.result?.response || result?.output_text || result?.text || '');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000);
+  try {
+    const result = await env.AI.run(model, {
+      messages: [
+        {
+          role: 'system',
+          content: 'Write a useful personalized preliminary email reply for GNK ASG. Use only the dominant language of the incoming message, or the explicitly requested reply language. Use the actual subject and body and answer the concrete question; never return only a generic receipt. If a reliable sender name is supplied, greet that person by the exact name and never use Dear Sir or Madam. Do not invent facts. Ask at most two precise questions only if essential information is missing. Preserve exact reference codes. Do not approve accreditation, accept an offer, create a contract, give legal advice, confirm payment, reveal confidential information, promise a deadline or make a final decision. Return JSON only with language and body. Include a greeting and courteous closing, but no institutional signature.'
+        },
+        { role: 'user', content: prompt }
+      ],
+      max_tokens: 1_000,
+      temperature: 0.15,
+      top_p: 0.85,
+      signal: controller.signal
+    });
+    return parseModelOutput(result?.response || result?.result?.response || result?.output_text || result?.text || '');
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 async function publicKnowledge(env) {
@@ -498,7 +505,16 @@ export function prepareAiAutoReply(message, env) {
     enumerable: true,
     configurable: true,
     value: {
-      send: async (payload) => binding.send.call(binding, await personalize(payload, split.message, split.rawText, wrapped))
+      send: async (payload) => {
+        let toSend = payload;
+        try {
+          const personalized = await personalize(payload, split.message, split.rawText, wrapped);
+          if (personalized && personalized.to && personalized.from) toSend = personalized;
+        } catch (error) {
+          console.error('personalize-call-failed', error);
+        }
+        return binding.send.call(binding, toSend);
+      }
     }
   });
   return { message: split.message, env: wrapped };

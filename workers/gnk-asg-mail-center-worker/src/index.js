@@ -1,5 +1,5 @@
 import { EmailMessage } from 'cloudflare:email';
-import {VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
+import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
 
 const VERSION = `GNK_ASG_MAIL_CENTER_AI_V3_20260703_${AI_REPLY_VERSION}`;
 const internalRecipient = env => String(env?.CONTACT_INTERNAL_RECIPIENTS || '').trim() || 'rht@gmx.com';
@@ -425,7 +425,15 @@ export default {
     return json({ ok: false, error: 'not_found', path }, 404);
   },
   async email(message, env, ctx) {
-    const task = handleInbound(message, env);
+    let target = { message, env };
+    try {
+      target = prepareAiAutoReply(message, env);
+      if (!target?.message || !target?.env) target = { message, env };
+    } catch (error) {
+      console.error('prepareAiAutoReply-wrap-failed', error);
+      target = { message, env };
+    }
+    const task = handleInbound(target.message, target.env);
     if (ctx?.waitUntil) {
       ctx.waitUntil(task);
       return;

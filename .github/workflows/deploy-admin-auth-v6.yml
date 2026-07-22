@@ -271,6 +271,9 @@ jobs:
           workers_dev = true
           preview_urls = true
 
+          [ai]
+          binding = "AI"
+
           [[kv_namespaces]]
           binding = "GNK_ASG_KV"
           id = "a3e9e78c7d554d7fa10996da9a89e7bc"
