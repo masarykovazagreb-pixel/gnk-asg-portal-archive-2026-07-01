@@ -132,16 +132,31 @@ body{margin:0;background:var(--kz-bg);color:var(--kz-text);font-family:Arial,Hel
   <section class="kz-live-section">
     <h2>Where things stand today</h2>
     <p class="sub" id="kzLiveStatus">Loading live data…</p>
-    <div class="kz-live-grid" id="kzLiveGrid"></div>
+    <div id="kzLiveGroups"></div>
   </section>
 
   <div class="kz-note">
-    <p><strong>On the figures:</strong> timeline values are based on publicly known, extensively documented peaks and troughs of each market period (equity indices, WTI oil, gold, agricultural commodities) and are rounded for clarity. The "Where things stand today" section pulls real, live data from the <a href="/puls-trzista/" style="color:var(--kz-accent)">Puls Tržišta</a> page. This display is informational only and does not constitute investment advice.</p>
+    <p><strong>On the figures:</strong> timeline values are based on publicly known, extensively documented peaks and troughs of each market period (equity indices, WTI oil, gold, agricultural commodities) and are rounded for clarity. The "Where things stand today" section pulls real, live data from the <a href="/puls-trzista/" style="color:var(--kz-accent)">Puls Tržišta</a> page — including a wide range of food and agricultural commodities (corn, wheat, soybeans, coffee, cocoa, sugar, meat, dairy and more) precisely because food and its raw materials were at the centre of several of the crises described above. This display is informational only and does not constitute investment advice.</p>
   </div>
 </main>
 <script src="/assets/app.js?v=20260722-puls-trzista-v1" defer></script>
 <script>
 (function(){
+  var LABELS_EN = {
+    'Zlato (futures)':'Gold (futures)','Srebro (futures)':'Silver (futures)','Paladij':'Palladium','Nafta WTI':'WTI oil','Nafta Brent':'Brent oil',
+    'Bakar':'Copper','Platina':'Platinum','Prirodni plin':'Natural gas','Kukuruz':'Corn','Pšenica':'Wheat','Zob':'Oats','Riža':'Rice','Soja':'Soybeans',
+    'Sojina sačma':'Soybean meal','Sojino ulje':'Soybean oil','Kava':'Coffee','Kakao':'Cocoa','Pamuk':'Cotton','Šećer':'Sugar','Naranča (sok)':'Orange juice',
+    'Govedina (live cattle)':'Live cattle','Junad za tov':'Feeder cattle','Svinjetina':'Lean hogs','Mlijeko':'Milk','Građevinsko drvo':'Lumber',
+    'Nasdaq Composite':'Nasdaq Composite','Dow Jones 30':'Dow Jones 30','VIX (volatilnost)':'VIX (volatility)','Bovespa':'Bovespa','IPC Meksiko':'IPC Mexico','TSX Kanada':'TSX Canada',
+    'FTSE 100':'FTSE 100','DAX 40':'DAX 40','CAC 40':'CAC 40','Euro Stoxx 50':'Euro Stoxx 50','IBEX 35':'IBEX 35','FTSE MIB':'FTSE MIB','SMI':'SMI','AEX 25':'AEX 25',
+    'Nikkei 225':'Nikkei 225','Hang Seng':'Hang Seng','SSE Composite (Šangaj)':'SSE Composite (Shanghai)','KOSPI':'KOSPI','BSE Sensex':'BSE Sensex','ASX 200':'ASX 200',
+    'Euro / američki dolar':'Euro / US dollar','Britanska funta / dolar':'British pound / dollar','Dolar / japanski jen':'Dollar / Japanese yen',
+    'Australski dolar / USD':'Australian dollar / USD','Novozelandski dolar / USD':'New Zealand dollar / USD','Dolar / kanadski dolar':'Dollar / Canadian dollar',
+    'Dolar / švicarski franak':'Dollar / Swiss franc','Dolar / kineski juan':'Dollar / Chinese yuan','Dolar / južnokorejski won':'Dollar / South Korean won',
+    'Dolar / brazilski real':'Dollar / Brazilian real','Dolar / meksički pezo':'Dollar / Mexican peso','Dolar / mađarska forinta':'Dollar / Hungarian forint',
+    'Dolar / norveška kruna':'Dollar / Norwegian krone','Dolar / poljska zlota':'Dollar / Polish zloty','Dolar / švedska kruna':'Dollar / Swedish krona',
+    'Dolar / turska lira':'Dollar / Turkish lira','Euro / britanska funta':'Euro / British pound','Euro / japanski jen':'Euro / Japanese yen','Euro / švicarski franak':'Euro / Swiss franc'
+  };
   function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function fmt(n, decimals){
     if (n == null || !isFinite(n)) return '—';
@@ -153,22 +168,40 @@ body{margin:0;background:var(--kz-bg);color:var(--kz-text);font-family:Arial,Hel
     var sign = pct >= 0 ? '+' : '';
     return '<span class="change ' + cls + '">' + sign + pct.toFixed(2) + '%</span>';
   }
+  function card(q){
+    var decimals = Math.abs(q.price) < 10 ? 3 : 2;
+    var label = LABELS_EN[q.label] || q.label;
+    var sub = q.exchange || q.country || '';
+    return '<div class="kz-live-card"><div class="label">'+esc(label)+(sub?' <span style="opacity:.55">('+esc(sub)+')</span>':'')+'</div><div class="price">'+fmt(q.price, decimals)+(q.unit?' '+esc(q.unit):'')+'</div>'+changeSpan(q.changePct)+'</div>';
+  }
+  function group(title, items){
+    if (!items.length) return '';
+    return '<div class="kz-section" style="margin-bottom:26px"><h3 style="font-size:1rem;margin:0 0 12px;color:var(--kz-sub);text-transform:uppercase;letter-spacing:.05em;font-size:.8rem;font-weight:800">'+esc(title)+' <span style="opacity:.6">('+items.length+')</span></h3><div class="kz-live-grid">'+items.map(card).join('')+'</div></div>';
+  }
+
   fetch('/data/market-pulse.json?v=' + Date.now(), { cache: 'no-store' })
     .then(function(r){ return r.json(); })
     .then(function(data){
-      document.getElementById('kzLiveStatus').textContent = 'Updated ' + new Date(data.generatedAt).toLocaleString('en-US') + ' · live from Puls Tržišta';
-      var picks = [];
-      (data.indices||[]).forEach(function(q){ if(q.ok && ['S&P 500','Nasdaq Composite'].indexOf(q.label)>-1) picks.push(q); });
-      (data.commodities||[]).forEach(function(q){ if(q.ok && ['Zlato (futures)','Nafta WTI'].indexOf(q.label)>-1) picks.push(q); });
-      if (data.crypto && data.crypto.topCoins && data.crypto.topCoins[0]){
-        var btc = data.crypto.topCoins[0];
-        picks.push({ label: 'Bitcoin', price: btc.price, changePct: btc.changePct24h });
-      }
-      document.getElementById('kzLiveGrid').innerHTML = picks.map(function(q){
-        var decimals = Math.abs(q.price) < 10 ? 3 : 2;
-        var label = q.label === 'Zlato (futures)' ? 'Gold (futures)' : (q.label === 'Nafta WTI' ? 'WTI oil' : q.label);
-        return '<div class="kz-live-card"><div class="label">'+esc(label)+'</div><div class="price">'+fmt(q.price, decimals)+'</div>'+changeSpan(q.changePct)+'</div>';
-      }).join('');
+      var total = (data.instrumentsOk||0) + (data.crypto && data.crypto.topCoins ? data.crypto.topCoins.length : 0);
+      document.getElementById('kzLiveStatus').textContent = 'Updated ' + new Date(data.generatedAt).toLocaleString('en-US') + ' · ' + total + ' live indicators from Puls Tržišta';
+
+      var food = (data.commodities||[]).filter(function(q){ return q.ok && q.category === 'hrana'; });
+      var energyMetals = (data.commodities||[]).filter(function(q){ return q.ok && (q.category === 'energija' || q.category === 'metali' || q.category === 'materijali'); });
+      var indices = (data.indices||[]).filter(function(q){ return q.ok; });
+      var currencies = (data.currencies||[]).filter(function(q){ return q.ok; });
+      var stocks = (data.stocks||[]).filter(function(q){ return q.ok; });
+      var crypto = (data.crypto && data.crypto.topCoins) ? data.crypto.topCoins.slice(0, 15).map(function(c){
+        return { label: c.name, price: c.price, changePct: c.changePct24h };
+      }) : [];
+
+      var html = '';
+      html += group('Food and agricultural commodities', food);
+      html += group('Energy, metals and materials', energyMetals);
+      html += group('World indices', indices);
+      html += group('Currencies', currencies);
+      html += group('Stocks', stocks);
+      html += group('Crypto (top 15)', crypto);
+      document.getElementById('kzLiveGroups').innerHTML = html;
     })
     .catch(function(){ document.getElementById('kzLiveStatus').textContent = 'Data is currently unavailable.'; });
 })();

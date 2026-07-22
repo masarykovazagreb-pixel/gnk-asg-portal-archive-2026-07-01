@@ -132,11 +132,11 @@ body{margin:0;background:var(--kz-bg);color:var(--kz-text);font-family:Arial,Hel
   <section class="kz-live-section">
     <h2>Stanje danas</h2>
     <p class="sub" id="kzLiveStatus">Učitavanje uživo podataka…</p>
-    <div class="kz-live-grid" id="kzLiveGrid"></div>
+    <div id="kzLiveGroups"></div>
   </section>
 
   <div class="kz-note">
-    <p><strong>O brojkama:</strong> vrijednosti u vremenskoj crti temelje se na javno poznatim, opsežno dokumentiranim vrhuncima i dnima svakog tržišnog razdoblja (dionički indeksi, nafta WTI, zlato, poljoprivredne robe) i zaokružene su radi preglednosti. Odjeljak "Stanje danas" povlači stvarne, uživo podatke s <a href="/puls-trzista/" style="color:var(--kz-accent)">Puls Tržišta</a> stranice. Prikaz je informativne naravi i ne predstavlja investicijsko savjetovanje.</p>
+    <p><strong>O brojkama:</strong> vrijednosti u vremenskoj crti temelje se na javno poznatim, opsežno dokumentiranim vrhuncima i dnima svakog tržišnog razdoblja (dionički indeksi, nafta WTI, zlato, poljoprivredne robe) i zaokružene su radi preglednosti. Odjeljak "Stanje danas" povlači stvarne, uživo podatke s <a href="/puls-trzista/" style="color:var(--kz-accent)">Puls Tržišta</a> stranice — uključujući širok raspon prehrambenih i poljoprivrednih sirovina (kukuruz, pšenica, soja, kava, kakao, šećer, meso, mlijeko i drugo) upravo zato što su hrana i njezine sirovine bile u središtu više kriza opisanih iznad. Prikaz je informativne naravi i ne predstavlja investicijsko savjetovanje.</p>
   </div>
 </main>
 <script src="/assets/app.js?v=20260722-puls-trzista-v1" defer></script>
@@ -153,21 +153,39 @@ body{margin:0;background:var(--kz-bg);color:var(--kz-text);font-family:Arial,Hel
     var sign = pct >= 0 ? '+' : '';
     return '<span class="change ' + cls + '">' + sign + pct.toFixed(2) + '%</span>';
   }
+  function card(q){
+    var decimals = Math.abs(q.price) < 10 ? 3 : 2;
+    var sub = q.exchange || q.country || '';
+    return '<div class="kz-live-card"><div class="label">'+esc(q.label)+(sub?' <span style="opacity:.55">('+esc(sub)+')</span>':'')+'</div><div class="price">'+fmt(q.price, decimals)+(q.unit?' '+esc(q.unit):'')+'</div>'+changeSpan(q.changePct)+'</div>';
+  }
+  function group(title, items){
+    if (!items.length) return '';
+    return '<div class="kz-section" style="margin-bottom:26px"><h3 style="font-size:1rem;margin:0 0 12px;color:var(--kz-sub);text-transform:uppercase;letter-spacing:.05em;font-size:.8rem;font-weight:800">'+esc(title)+' <span style="opacity:.6">('+items.length+')</span></h3><div class="kz-live-grid">'+items.map(card).join('')+'</div></div>';
+  }
+
   fetch('/data/market-pulse.json?v=' + Date.now(), { cache: 'no-store' })
     .then(function(r){ return r.json(); })
     .then(function(data){
-      document.getElementById('kzLiveStatus').textContent = 'Ažurirano ' + new Date(data.generatedAt).toLocaleString('hr-HR') + ' · uživo iz Puls Tržišta';
-      var picks = [];
-      (data.indices||[]).forEach(function(q){ if(q.ok && ['S&P 500','Nasdaq Composite'].indexOf(q.label)>-1) picks.push(q); });
-      (data.commodities||[]).forEach(function(q){ if(q.ok && ['Zlato (futures)','Nafta WTI'].indexOf(q.label)>-1) picks.push(q); });
-      if (data.crypto && data.crypto.topCoins && data.crypto.topCoins[0]){
-        var btc = data.crypto.topCoins[0];
-        picks.push({ label: 'Bitcoin', price: btc.price, changePct: btc.changePct24h });
-      }
-      document.getElementById('kzLiveGrid').innerHTML = picks.map(function(q){
-        var decimals = Math.abs(q.price) < 10 ? 3 : 2;
-        return '<div class="kz-live-card"><div class="label">'+esc(q.label)+'</div><div class="price">'+fmt(q.price, decimals)+'</div>'+changeSpan(q.changePct)+'</div>';
-      }).join('');
+      var total = (data.instrumentsOk||0) + (data.crypto && data.crypto.topCoins ? data.crypto.topCoins.length : 0);
+      document.getElementById('kzLiveStatus').textContent = 'Ažurirano ' + new Date(data.generatedAt).toLocaleString('hr-HR') + ' · ' + total + ' pokazatelja uživo iz Puls Tržišta';
+
+      var food = (data.commodities||[]).filter(function(q){ return q.ok && q.category === 'hrana'; });
+      var energyMetals = (data.commodities||[]).filter(function(q){ return q.ok && (q.category === 'energija' || q.category === 'metali' || q.category === 'materijali'); });
+      var indices = (data.indices||[]).filter(function(q){ return q.ok; });
+      var currencies = (data.currencies||[]).filter(function(q){ return q.ok; });
+      var stocks = (data.stocks||[]).filter(function(q){ return q.ok; });
+      var crypto = (data.crypto && data.crypto.topCoins) ? data.crypto.topCoins.slice(0, 15).map(function(c){
+        return { label: c.name, price: c.price, changePct: c.changePct24h };
+      }) : [];
+
+      var html = '';
+      html += group('Hrana i poljoprivredne sirovine', food);
+      html += group('Energija, metali i materijali', energyMetals);
+      html += group('Svjetski indeksi', indices);
+      html += group('Valute', currencies);
+      html += group('Dionice', stocks);
+      html += group('Kripto (top 15)', crypto);
+      document.getElementById('kzLiveGroups').innerHTML = html;
     })
     .catch(function(){ document.getElementById('kzLiveStatus').textContent = 'Podaci trenutno nisu dostupni.'; });
 })();
