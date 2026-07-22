@@ -1,0 +1,47 @@
+name = "gnk-dinamo-workforce-staging"
+main = "src/index-workforce-staging-gate-v1.js"
+compatibility_date = "2026-06-13"
+workers_dev = true
+preview_urls = true
+
+[[kv_namespaces]]
+binding = "GNK_ASG_CONFIG_KV"
+id = "d6f5dac9fa034d8d813db0de44eb7b1b"
+
+[[d1_databases]]
+binding = "GNK_ASG_D1"
+database_name = "gnk_asg_operator_logs"
+database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
+
+[[r2_buckets]]
+binding = "GNK_ASG_MEDIA_ASSETS"
+bucket_name = "gnk-asg-media-assets"
+
+[vars]
+PUBLIC_BRAND = "GNK DINAMO Ltd grupa"
+PUBLIC_ENVIRONMENT = "private-workforce-staging"
+DEPLOY_REVISION = "workforce-staging-20260722"
+SAFE_GET_DIRECT_MODE = "true"
+NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "false"
+MAIL_AUTO_REPLY_LIVE = "false"
+MAIL_STUDIO_LIVE = "false"
+MAIL_MANUAL_LIVE = "false"
+MEDIA_OUTREACH_LIVE = "false"
+MEDIA_OUTREACH_SCHEDULED_LIVE = "false"
+MEDIA_OUTREACH_TEST_LIVE = "false"
+MEDIA_APPLICATION_AUTO_ACK = "false"
+EMAIL_OPEN_TRACKING_ENABLED = "false"
+EMAIL_RECEIPT_CONFIRMATION_ENABLED = "false"
+STAGING_MODE = "true"
+SHADOW_MODE = "true"
+PRODUCTION_WRITE_ALLOWED = "false"
+PUBLIC_PUBLISHING_ALLOWED = "false"
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+html_handling = "auto-trailing-slash"
+
+[ai]
+binding = "AI"
