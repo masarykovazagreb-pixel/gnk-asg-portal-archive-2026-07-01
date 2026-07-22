@@ -21,7 +21,7 @@
   const LEFT_ITEMS = ALL_ITEMS.slice(0, 4);
   const RIGHT_ITEMS = ALL_ITEMS.slice(4, 8);
 
-  const TOOTH = 18;   // px always visible below the header's gold line
+  const TOOTH = 28;   // px always visible below the header's gold line
   const HIDDEN = 82;  // px of full tile content, clipped away when closed
   const TILE_H = TOOTH + HIDDEN;
   const AUTO_CLOSE_MS = 4000;
