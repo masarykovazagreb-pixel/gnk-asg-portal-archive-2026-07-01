@@ -66,7 +66,7 @@
       font-size: .54rem; font-weight: 900; text-transform: uppercase; letter-spacing: .01em;
       text-align: center; height: ${TOOTH - 2}px; display: flex; align-items: center; justify-content: center;
       line-height: 1.05; padding: 0 2px; word-break: break-word;
-      order: -1; color: #07162d;
+      order: -1; color: #e8c766; text-shadow: 0 1px 2px rgba(0,0,0,.55), 0 0 1px rgba(0,0,0,.35);
     }
     .gnk-tile .gnk-tile-title { font-size: .6rem; font-weight: 900; line-height: 1.2; margin: 4px 0 3px; opacity: 0; transition: opacity .16s ease .1s; }
     .gnk-tile .gnk-tile-full { font-size: .54rem; font-weight: 700; line-height: 1.22; margin-bottom: 5px; opacity: 0; transition: opacity .16s ease .14s; }
