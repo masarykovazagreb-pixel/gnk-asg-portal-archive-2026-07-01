@@ -55,7 +55,8 @@
         .map((item) => {
           const section = item.type === 'objava' ? 'objave' : 'komentari';
           const label = item.type === 'objava' ? 'Objava' : 'Komentar';
-          const img = pickImage(item.slug);
+          const ownImage = item.image || null;
+          const img = ownImage ? { src: ownImage } : pickImage(item.slug);
           const imgTag = img ? `<img class="editorial-feed-image" src="${esc(img.src)}" alt="${esc(item.title)} — GNK ASG" loading="lazy">` : '';
           return `<article class="editorial-feed-card">${imgTag}<span class="meta">${esc(label)}</span><h3>${esc(item.title)}</h3><p>${esc(item.summary || item.description || '')}</p><a href="/${section}/${esc(item.slug)}/">Pročitaj →</a></article>`;
         })

@@ -42,7 +42,7 @@
       color: #e5323a;
     }
     @keyframes gnkAktualSway { 0%, 100% { transform: rotate(5deg); } 50% { transform: rotate(-3deg); } }
-    @media (max-width: 640px) { #${WIDGET_ID} { width: 96px; padding: 8px; top: max(200px, calc(env(safe-area-inset-top) + 200px)); right: max(40px, calc(env(safe-area-inset-right) + 26px)); } #${WIDGET_ID} strong { font-size: .6rem; } }
+    @media (max-width: 640px) { #${WIDGET_ID} { width: 96px; padding: 8px; top: max(219px, calc(env(safe-area-inset-top) + 219px)); right: max(40px, calc(env(safe-area-inset-right) + 26px)); } #${WIDGET_ID} strong { font-size: .6rem; } }
     @media (prefers-reduced-motion: reduce) { #${WIDGET_ID} { animation: none; } }
   `;
   document.head.appendChild(style);

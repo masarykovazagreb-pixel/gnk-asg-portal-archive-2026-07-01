@@ -57,13 +57,16 @@ def generate_organic_svg(slug: str, title: str, description: str) -> str:
     palette = PALETTES[seed_int % len(PALETTES)]
     bg0, bg1, bg2, glow_a, glow_b = palette
 
-    r = seeded_rng(slug, 12)
+    r = seeded_rng(slug, 20)
     orb1_x = 300 + int(r[0] * 500)
     orb1_y = 250 + int(r[1] * 350)
     orb1_r = 240 + int(r[2] * 120)
     orb2_x = 950 + int(r[3] * 450)
     orb2_y = 300 + int(r[4] * 350)
     orb2_r = 260 + int(r[5] * 120)
+    orb3_x = 600 + int(r[12] * 500)
+    orb3_y = 650 + int(r[13] * 180)
+    orb3_r = 150 + int(r[14] * 90)
 
     curve1 = (
         f"M{120 + int(r[6]*120)} {520 + int(r[7]*140)}"
@@ -76,16 +79,33 @@ def generate_organic_svg(slug: str, title: str, description: str) -> str:
         f"C{500 + int(r[8]*160)} {600 + int(r[9]*160)} {860 + int(r[10]*160)} {640 + int(r[11]*160)} "
         f"{1330 + int(r[0]*80)} {260 + int(r[1]*160)}"
     )
+    aurora1 = (
+        f"M-50 {620 + int(r[15]*100)}"
+        f"C{300 + int(r[16]*160)} {420 + int(r[17]*160)} {700 + int(r[18]*160)} {700 + int(r[19]*120)} "
+        f"{1650 + int(r[15]*40)} {480 + int(r[16]*160)}"
+    )
 
     cx, cy = 800, 450
     rot_a = 10 + int(r[2] * 25)
     rot_b = -(30 + int(r[3] * 25))
     rot_c = 60 + int(r[4] * 25)
+    ry_a = 100 + int(r[15] * 40)
+    ry_b = 110 + int(r[16] * 40)
+    ry_c = 95 + int(r[17] * 40)
 
     dot_positions = [
         (cx - int(210 * math.cos(r[5] * math.pi)), cy - int(135 * math.sin(r[6] * math.pi))),
         (cx + int(230 * math.cos(r[7] * math.pi)), cy + int(150 * math.sin(r[8] * math.pi))),
     ]
+
+    stars = seeded_rng(slug + "-stars", 42)
+    star_dots = []
+    for i in range(0, len(stars) - 2, 3):
+        sx = int(stars[i] * 1600)
+        sy = int(stars[i + 1] * 900)
+        srad = 1.2 + stars[i + 2] * 1.8
+        star_dots.append(f'<circle cx="{sx}" cy="{sy}" r="{srad:.1f}" fill="#fff" opacity="{0.15 + stars[i+2]*0.35:.2f}"/>')
+    stars_svg = "".join(star_dots)
 
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" '
@@ -97,19 +117,28 @@ def generate_organic_svg(slug: str, title: str, description: str) -> str:
         f'<stop offset="1" stop-color="{glow_a}" stop-opacity="0"/></radialGradient>'
         f'<radialGradient id="g2"><stop stop-color="{glow_b}" stop-opacity=".9"/>'
         f'<stop offset="1" stop-color="{glow_b}" stop-opacity="0"/></radialGradient>'
-        f'<filter id="blur"><feGaussianBlur stdDeviation="40"/></filter></defs>'
+        f'<radialGradient id="g3"><stop stop-color="#fff" stop-opacity=".5"/>'
+        f'<stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>'
+        f'<radialGradient id="vignette" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#000" stop-opacity="0"/>'
+        f'<stop offset="1" stop-color="#000" stop-opacity=".38"/></radialGradient>'
+        f'<filter id="blur"><feGaussianBlur stdDeviation="40"/></filter>'
+        f'<filter id="blurSoft"><feGaussianBlur stdDeviation="70"/></filter></defs>'
         f'<rect width="1600" height="900" fill="url(#bg)"/>'
+        f'{stars_svg}'
+        f'<path d="{aurora1}" fill="none" stroke="{glow_a}" stroke-opacity=".22" stroke-width="140" filter="url(#blurSoft)"/>'
         f'<circle cx="{orb1_x}" cy="{orb1_y}" r="{orb1_r}" fill="url(#g1)" filter="url(#blur)"/>'
         f'<circle cx="{orb2_x}" cy="{orb2_y}" r="{orb2_r}" fill="url(#g2)" filter="url(#blur)"/>'
+        f'<circle cx="{orb3_x}" cy="{orb3_y}" r="{orb3_r}" fill="url(#g3)" filter="url(#blur)"/>'
         f'<path d="{curve1}" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="8"/>'
         f'<path d="{curve2}" fill="none" stroke="{glow_b}" stroke-opacity=".45" stroke-width="5"/>'
         f'<g fill="none" stroke="#fff" stroke-opacity=".65">'
-        f'<ellipse cx="{cx}" cy="{cy}" rx="330" ry="120" transform="rotate({rot_a} {cx} {cy})"/>'
-        f'<ellipse cx="{cx}" cy="{cy}" rx="330" ry="120" transform="rotate({rot_b} {cx} {cy})"/>'
-        f'<ellipse cx="{cx}" cy="{cy}" rx="330" ry="120" transform="rotate({rot_c} {cx} {cy})"/></g>'
+        f'<ellipse cx="{cx}" cy="{cy}" rx="330" ry="{ry_a}" transform="rotate({rot_a} {cx} {cy})"/>'
+        f'<ellipse cx="{cx}" cy="{cy}" rx="330" ry="{ry_b}" transform="rotate({rot_b} {cx} {cy})"/>'
+        f'<ellipse cx="{cx}" cy="{cy}" rx="330" ry="{ry_c}" transform="rotate({rot_c} {cx} {cy})"/></g>'
         f'<circle cx="{cx}" cy="{cy}" r="34" fill="#fff"/>'
         f'<circle cx="{dot_positions[0][0]}" cy="{dot_positions[0][1]}" r="16" fill="{glow_a}"/>'
-        f'<circle cx="{dot_positions[1][0]}" cy="{dot_positions[1][1]}" r="18" fill="{glow_b}"/></svg>'
+        f'<circle cx="{dot_positions[1][0]}" cy="{dot_positions[1][1]}" r="18" fill="{glow_b}"/>'
+        f'<rect width="1600" height="900" fill="url(#vignette)"/></svg>'
     )
 
 

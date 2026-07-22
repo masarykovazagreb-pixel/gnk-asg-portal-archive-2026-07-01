@@ -71,7 +71,7 @@
       50% { transform: rotate(5deg); }
     }
     @media (max-width: 640px) {
-      #${WIDGET_ID} { width: 96px; padding: 8px; top: max(84px, calc(env(safe-area-inset-top) + 84px)); }
+      #${WIDGET_ID} { width: 96px; padding: 8px; top: max(103px, calc(env(safe-area-inset-top) + 103px)); }
       #${WIDGET_ID} strong { font-size: .62rem; }
     }
     @media (prefers-reduced-motion: reduce) {
