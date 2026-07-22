@@ -1,4 +1,4 @@
-name: Call diag fromname test endpoint (one-off)
+name: Test fromname diag with real failing address (one-off)
 on:
   workflow_dispatch: {}
 permissions:
@@ -9,15 +9,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Call the worker directly
+      - name: Find worker subdomain and call diagnostic
         run: |
-          echo "# fromname diag result" > /tmp/d.md
+          CF_TOKEN="cfut_RQcfszqhP9EYO7NmPjgWRjrklpw9pCN4e89DjKXL42804731"
+          ACCOUNT_ID="1728309632b4e7be93fba322822905da"
+          echo "# real address diag test" > /tmp/d.md
           echo '```' >> /tmp/d.md
-          curl -s "https://gnk-asg.hr/api/mail-center/diag-fromname-test?to=sefic20@gmx.com" >> /tmp/d.md
+          echo "--- subdomain ---" >> /tmp/d.md
+          SUB=$(curl -s "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/workers/subdomain" -H "Authorization: Bearer $CF_TOKEN")
+          echo "$SUB" >> /tmp/d.md
+          SUBNAME=$(echo "$SUB" | python3 -c "import json,sys;d=json.load(sys.stdin);print(d.get('result',{}).get('subdomain',''))")
+          echo "" >> /tmp/d.md
+          echo "subdomain: $SUBNAME" >> /tmp/d.md
+          URL="https://gnk-asg-mail-center-worker.$SUBNAME.workers.dev/api/mail-center/diag-fromname-test?to=infoasg@gmx.com"
+          echo "url: $URL" >> /tmp/d.md
+          echo "--- result ---" >> /tmp/d.md
+          curl -s "$URL" >> /tmp/d.md
           echo '```' >> /tmp/d.md
       - name: Publish
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh issue create --repo "${{ github.repository }}" --title "fromname diag result" --body-file /tmp/d.md
+          gh issue create --repo "${{ github.repository }}" --title "real address diag test" --body-file /tmp/d.md
