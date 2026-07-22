@@ -61,7 +61,7 @@
     }
     @keyframes gnkAktualThreadSway { 0%, 100% { transform: rotate(6deg); } 50% { transform: rotate(-5deg); } }
     @media (max-width: 640px) {
-      #${WIDGET_ID} { width: 58px; height: 80px; top: max(84px, env(safe-area-inset-top)); right: max(12px, calc(env(safe-area-inset-right) + 0px)); }
+      #${WIDGET_ID} { display: none !important;  width: 58px; height: 80px; top: max(84px, env(safe-area-inset-top)); right: max(12px, calc(env(safe-area-inset-right) + 0px)); }
       #${WIDGET_ID} .card { width: 58px; padding: 6px; }
       #${WIDGET_ID} strong { font-size: .46rem; }
     }

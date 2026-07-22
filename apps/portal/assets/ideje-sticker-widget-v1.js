@@ -81,7 +81,7 @@
       50% { transform: rotate(9deg); }
     }
     @media (max-width: 640px) {
-      #${WIDGET_ID} { width: 38px; height: 58px; right: max(76px, calc(env(safe-area-inset-right) + 64px)); }
+      #${WIDGET_ID} { display: none !important;  width: 38px; height: 58px; right: max(76px, calc(env(safe-area-inset-right) + 64px)); }
       #${WIDGET_ID} .badge { width: 38px; height: 38px; font-size: .56rem; }
     }
     @media (prefers-reduced-motion: reduce) {
