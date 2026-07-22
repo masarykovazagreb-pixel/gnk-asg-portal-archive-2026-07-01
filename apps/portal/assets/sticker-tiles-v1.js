@@ -21,8 +21,8 @@
   const LEFT_ITEMS = ALL_ITEMS.slice(0, 4);
   const RIGHT_ITEMS = ALL_ITEMS.slice(4, 8);
 
-  const TOOTH = 28;   // px always visible below the header's gold line
-  const HIDDEN = 82;  // px of full tile content, clipped away when closed
+  const TOOTH = 16;   // px always visible below the header's gold line — just the keyword
+  const HIDDEN = 78;  // px of extra content revealed when open (title + desc + cta)
   const TILE_H = TOOTH + HIDDEN;
   const AUTO_CLOSE_MS = 4000;
   const GAP_FROM_CENTER = 76; // px each group starts away from center (clears the central logo)
@@ -33,7 +33,8 @@
     #${WIDGET_ID}-left, #${WIDGET_ID}-right {
       position: fixed;
       top: 84px;
-      height: ${TOOTH}px;
+      height: 0;
+      overflow: visible;
       z-index: 9985;
       display: flex;
       gap: 8px;
@@ -41,58 +42,50 @@
     }
     #${WIDGET_ID}-left { right: calc(50% + ${GAP_FROM_CENTER}px); justify-content: flex-end; }
     #${WIDGET_ID}-right { left: calc(50% + ${GAP_FROM_CENTER}px); justify-content: flex-start; }
-    #${WIDGET_ID}-left .gnk-tile-clip, #${WIDGET_ID}-right .gnk-tile-clip {
-      position: relative;
-      width: 70px;
-      height: ${TOOTH}px;
-      overflow: hidden;
-      border-radius: 0 0 12px 12px;
-      transition: height .32s cubic-bezier(.34,1.15,.64,1);
-      pointer-events: auto;
-      box-shadow: 0 6px 16px rgba(0,0,0,.28);
-    }
-    #${WIDGET_ID}-left .gnk-tile-clip.open, #${WIDGET_ID}-right .gnk-tile-clip.open { height: ${TILE_H}px; }
     .gnk-tile {
-      width: 70px;
+      position: relative;
+      width: 68px;
       height: ${TILE_H}px;
+      border-radius: 0 0 12px 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,.28);
+      transform: translateY(-${HIDDEN}px);
+      transition: transform .32s cubic-bezier(.34,1.15,.64,1);
+      pointer-events: auto;
       cursor: pointer;
       font-family: Arial, sans-serif;
-      position: relative;
     }
+    .gnk-tile.open { transform: translateY(0); }
     .gnk-tile .gnk-tile-bg { position: absolute; inset: 0; opacity: .96; }
     .gnk-tile .gnk-tile-body {
       position: relative; height: 100%;
       display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 8px 7px; box-sizing: border-box;
+      padding: 7px 6px; box-sizing: border-box;
     }
-    .gnk-tile .gnk-tile-title { font-size: .62rem; font-weight: 900; line-height: 1.2; margin-bottom: 4px; }
-    .gnk-tile .gnk-tile-full { font-size: .56rem; font-weight: 700; line-height: 1.25; margin-bottom: 6px; }
-    .gnk-tile .gnk-tile-cta { font-size: .5rem; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; }
+    .gnk-tile .gnk-tile-title { font-size: .6rem; font-weight: 900; line-height: 1.2; margin-bottom: 4px; opacity: 0; transition: opacity .16s ease .08s; }
+    .gnk-tile .gnk-tile-full { font-size: .54rem; font-weight: 700; line-height: 1.25; margin-bottom: 6px; opacity: 0; transition: opacity .16s ease .12s; }
+    .gnk-tile .gnk-tile-cta { font-size: .48rem; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; opacity: 0; transition: opacity .16s ease .16s; }
+    .gnk-tile.open .gnk-tile-title, .gnk-tile.open .gnk-tile-full, .gnk-tile.open .gnk-tile-cta { opacity: 1; }
     .gnk-tile .gnk-tile-label {
-      font-size: .66rem; font-weight: 900; text-transform: uppercase; letter-spacing: .03em;
+      font-size: .62rem; font-weight: 900; text-transform: uppercase; letter-spacing: .02em;
       text-align: center; height: ${TOOTH}px; display: flex; align-items: center; justify-content: center;
     }
     @media (max-width: 900px) {
       #${WIDGET_ID}-left, #${WIDGET_ID}-right { gap: 4px; }
-      #${WIDGET_ID}-left { right: calc(50% + 46px); }
-      #${WIDGET_ID}-right { left: calc(50% + 46px); }
-      #${WIDGET_ID}-left .gnk-tile-clip, #${WIDGET_ID}-right .gnk-tile-clip, .gnk-tile { width: 48px; }
-      .gnk-tile .gnk-tile-title, .gnk-tile .gnk-tile-full { font-size: .5rem; }
-      .gnk-tile .gnk-tile-cta { font-size: .44rem; }
-      .gnk-tile .gnk-tile-label { font-size: .56rem; }
+      #${WIDGET_ID}-left { right: calc(50% + 44px); }
+      #${WIDGET_ID}-right { left: calc(50% + 44px); }
+      .gnk-tile { width: 46px; }
+      .gnk-tile .gnk-tile-title, .gnk-tile .gnk-tile-full { font-size: .48rem; }
+      .gnk-tile .gnk-tile-cta { font-size: .42rem; }
+      .gnk-tile .gnk-tile-label { font-size: .52rem; }
     }
-    @media (prefers-reduced-motion: reduce) {
-      #${WIDGET_ID}-left .gnk-tile-clip, #${WIDGET_ID}-right .gnk-tile-clip { transition: none; }
-    }
+    @media (prefers-reduced-motion: reduce) { .gnk-tile { transition: none; } }
   `;
   document.head.appendChild(style);
 
   function buildGroup(items) {
     const group = document.createDocumentFragment();
     items.forEach(item => {
-      const clip = document.createElement('div');
-      clip.className = 'gnk-tile-clip';
-
       const tile = document.createElement('div');
       tile.className = 'gnk-tile';
       tile.setAttribute('role', 'button');
@@ -112,12 +105,12 @@
       let closeTimer = null;
       function closeTile() {
         openState = false;
-        clip.classList.remove('open');
+        tile.classList.remove('open');
         if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
       }
       function openTile() {
         openState = true;
-        clip.classList.add('open');
+        tile.classList.add('open');
         if (closeTimer) clearTimeout(closeTimer);
         closeTimer = setTimeout(closeTile, AUTO_CLOSE_MS);
       }
@@ -128,10 +121,8 @@
       tile.addEventListener('keydown', event => {
         if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); tile.click(); }
       });
-      tile._close = closeTile;
 
-      clip.appendChild(tile);
-      group.appendChild(clip);
+      group.appendChild(tile);
     });
     return group;
   }
@@ -147,7 +138,7 @@
   document.addEventListener('click', event => {
     [leftBar, rightBar].forEach(bar => {
       if (bar.contains(event.target)) return;
-      bar.querySelectorAll('.gnk-tile-clip.open').forEach(c => c.classList.remove('open'));
+      bar.querySelectorAll('.gnk-tile.open').forEach(t => t.classList.remove('open'));
     });
   });
 
