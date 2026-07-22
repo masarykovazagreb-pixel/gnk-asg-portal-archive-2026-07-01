@@ -1,0 +1,532 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <link rel="icon" type="image/svg+xml" href="/assets/logo-gnk-asg-canonical.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="theme-color" content="#071110">
+    <meta name="description" content="Pulse — weather, world time, finances, and digital security in one private dashboard.">
+    <title>Pulse — Personal Command Center</title>
+    
+  
+  
+  <style>@charset "utf-8";
+
+@layer properties {
+  @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))) {
+  *, ::before, ::after, ::backdrop { --tw-border-style: solid; --tw-outline-style: solid; --tw-blur: initial; --tw-brightness: initial; --tw-contrast: initial; --tw-grayscale: initial; --tw-hue-rotate: initial; --tw-invert: initial; --tw-opacity: initial; --tw-saturate: initial; --tw-sepia: initial; --tw-drop-shadow: initial; --tw-drop-shadow-color: initial; --tw-drop-shadow-alpha: 100%; --tw-drop-shadow-size: initial; --tw-ease: initial; }
+}
+}
+
+@layer theme {
+  :root, :host { --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; --spacing: .25rem; --ease-out: cubic-bezier(0, 0, .2, 1); --default-transition-duration: .15s; --default-transition-timing-function: cubic-bezier(.4, 0, .2, 1); --default-font-family: var(--font-sans); --default-mono-font-family: var(--font-mono); }
+}
+
+@layer base {
+  *, ::after, ::before, ::backdrop { box-sizing: border-box; border: 0px solid; margin: 0px; padding: 0px; }
+  ::file-selector-button { box-sizing: border-box; border: 0px solid; margin: 0px; padding: 0px; }
+  html, :host { text-size-adjust: 100%; tab-size: 4; line-height: 1.5; font-family: var(--default-font-family,ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"); font-feature-settings: var(--default-font-feature-settings,normal); font-variation-settings: var(--default-font-variation-settings,normal); -webkit-tap-highlight-color: transparent; }
+  hr { height: 0px; color: inherit; border-top-width: 1px; }
+  abbr:where([title]) { text-decoration: underline dotted; }
+  h1, h2, h3, h4, h5, h6 { font-size: inherit; font-weight: inherit; }
+  a { color: inherit; text-decoration: inherit; }
+  b, strong { font-weight: bolder; }
+  code, kbd, samp, pre { font-family: var(--default-mono-font-family,ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace); font-feature-settings: var(--default-mono-font-feature-settings,normal); font-variation-settings: var(--default-mono-font-variation-settings,normal); font-size: 1em; }
+  small { font-size: 80%; }
+  sub, sup { vertical-align: baseline; font-size: 75%; line-height: 0; position: relative; }
+  sub { bottom: -0.25em; }
+  sup { top: -0.5em; }
+  table { text-indent: 0px; border-color: inherit; border-collapse: collapse; }
+  progress { vertical-align: baseline; }
+  summary { display: list-item; }
+  ol, ul, menu { list-style: none; }
+  img, svg, video, canvas, audio, iframe, embed, object { vertical-align: middle; display: block; }
+  img, video { max-width: 100%; height: auto; }
+  button, input, select, optgroup, textarea { font: inherit; letter-spacing: inherit; color: inherit; opacity: 1; background-color: rgba(0, 0, 0, 0); border-radius: 0px; }
+  ::file-selector-button { font: inherit; letter-spacing: inherit; color: inherit; opacity: 1; background-color: rgba(0, 0, 0, 0); border-radius: 0px; }
+  :where(select:is([multiple], [size])) optgroup { font-weight: bolder; }
+  :where(select:is([multiple], [size])) optgroup option { padding-inline-start: 20px; }
+  ::file-selector-button { margin-inline-end: 4px; }
+  ::placeholder { opacity: 1; }
+  @supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intrinsic-size:1px) {
+  ::placeholder { color: currentcolor; }
+  @supports (color:color-mix(in lab,red,red)) {
+  ::placeholder { color: color-mix(currentcolor, transparent); }
+}
+}
+  textarea { resize: vertical; }
+  ::-webkit-search-decoration { appearance: none; }
+  ::-webkit-date-and-time-value { min-height: 1lh; text-align: inherit; }
+  ::-webkit-datetime-edit { display: inline-flex; }
+  ::-webkit-datetime-edit-fields-wrapper { padding: 0px; }
+  ::-webkit-datetime-edit { padding-block: 0px; }
+  ::-webkit-datetime-edit-year-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-month-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-day-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-hour-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-minute-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-second-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-millisecond-field { padding-block: 0px; }
+  ::-webkit-datetime-edit-meridiem-field { padding-block: 0px; }
+  ::-webkit-calendar-picker-indicator { line-height: 1; }
+  button, input:where([type="button"], [type="reset"], [type="submit"]) { appearance: button; }
+  ::file-selector-button { appearance: button; }
+  ::-webkit-inner-spin-button { height: auto; }
+  ::-webkit-outer-spin-button { height: auto; }
+  [hidden]:where(:not([hidden="until-found"])) { display: none !important; }
+}
+
+@layer components;
+
+@layer utilities {
+  .visible { visibility: visible; }
+  .fixed { position: fixed; }
+  .start { inset-inline-start: var(--spacing); }
+  .end { inset-inline-end: var(--spacing); }
+  .block { display: block; }
+  .contents { display: contents; }
+  .flex { display: flex; }
+  .hidden { display: none; }
+  .resize { resize: both; }
+  .border { border-style: var(--tw-border-style); border-width: 1px; }
+  .outline { outline-style: var(--tw-outline-style); outline-width: 1px; }
+  .blur { --tw-blur: blur(8px); filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,); }
+  .transition { transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events; transition-timing-function: var(--tw-ease,var(--default-transition-timing-function)); transition-duration: var(--tw-duration,var(--default-transition-duration)); }
+  .ease-out { --tw-ease: var(--ease-out); transition-timing-function: var(--ease-out); }
+  .select-all { user-select: all; }
+}
+
+:root { color: rgb(239, 245, 244); --green: #29d5a1; --muted: #839896; --border: #addcd31b; background: rgb(7, 17, 16); font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+
+html { scroll-behavior: smooth; }
+
+body { background: rgb(7, 17, 16); min-width: 320px; margin: 0px; }
+
+button, input, select { font: inherit; }
+
+button { color: inherit; cursor: pointer; }
+
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+.app-shell { background: radial-gradient(circle at 70% -10%, rgba(28, 114, 102, 0.15), rgba(0, 0, 0, 0) 32%), rgb(7, 17, 16); min-height: 100vh; display: flex; position: relative; overflow: hidden; }
+
+.ambient { filter: blur(90px); pointer-events: none; opacity: 0.15; border-radius: 50%; position: fixed; }
+
+.a1 { background: rgb(22, 165, 125); width: 360px; height: 360px; top: -200px; right: 8%; }
+
+.a2 { background: rgb(38, 120, 199); width: 260px; height: 260px; bottom: -180px; left: 38%; }
+
+.sidebar { z-index: 30; border-right: 1px solid var(--border); backdrop-filter: blur(22px); background: rgba(7, 17, 16, 0.88); flex-direction: column; width: 224px; height: 100vh; padding: 25px 16px 18px; display: flex; position: fixed; }
+
+.brand { align-items: center; gap: 10px; padding: 0px 8px 28px; font-size: 20px; font-weight: 750; display: flex; }
+
+.brand > i { color: rgb(6, 17, 15); background: linear-gradient(135deg, rgb(85, 226, 187), rgb(91, 169, 244)); border-radius: 9px; place-items: center; width: 31px; height: 31px; display: grid; }
+
+.nav-label, .section-kicker { color: rgb(95, 116, 113); letter-spacing: 1.45px; font-size: 10px; font-weight: 750; display: block; }
+
+.sidebar nav { flex-direction: column; gap: 4px; display: flex; }
+
+.sidebar nav .nav-label { padding: 0px 12px 10px; }
+
+.sidebar nav button, .side-bottom > button { color: rgb(118, 144, 141); background: 0px 0px; border: 0px; border-radius: 8px; align-items: center; gap: 12px; padding: 11px 12px; font-size: 13px; font-weight: 600; display: flex; }
+
+.sidebar nav button:hover, .side-bottom > button:hover { color: rgb(217, 232, 229); background: rgba(255, 255, 255, 0.035); }
+
+.sidebar nav button.active { color: rgb(223, 251, 242); box-shadow: inset 2px 0 var(--green); background: linear-gradient(90deg, rgba(41, 213, 161, 0.12), rgba(0, 0, 0, 0)); }
+
+.sidebar nav button.active svg { color: var(--green); }
+
+.sidebar nav button i { background: var(--green); border-radius: 50%; width: 6px; height: 6px; margin-left: auto; }
+
+.side-bottom { flex-direction: column; gap: 15px; margin-top: auto; display: flex; }
+
+.profile { border-top: 1px solid var(--border); grid-template-columns: 34px 1fr auto; align-items: center; gap: 9px; padding: 13px 8px 2px; display: grid; }
+
+.profile > b { color: rgb(200, 255, 240); background: rgb(25, 76, 67); border-radius: 50%; place-items: center; width: 34px; height: 34px; font-size: 11px; display: grid; }
+
+.profile strong, .profile span { display: block; }
+
+.profile strong { font-size: 11px; }
+
+.profile span { color: rgb(98, 119, 116); margin-top: 3px; font-size: 9px; }
+
+.close { display: none; }
+
+main { width: calc(100% - 224px); margin-left: 224px; }
+
+.topbar { border-bottom: 1px solid var(--border); backdrop-filter: blur(18px); z-index: 20; background: rgba(7, 17, 16, 0.48); justify-content: space-between; align-items: center; height: 70px; padding: 0px 28px; display: flex; position: sticky; top: 0px; }
+
+.search { border: 1px solid var(--border); color: rgb(97, 117, 114); background: rgba(255, 255, 255, 0.024); border-radius: 8px; align-items: center; gap: 9px; width: 310px; height: 36px; padding: 0px 10px; display: flex; }
+
+.search input { color: rgb(203, 217, 215); background: 0px 0px; border: 0px; outline: 0px; flex: 1 1 0%; min-width: 0px; font-size: 12px; }
+
+.search kbd { border: 1px solid var(--border); border-radius: 4px; padding: 3px 5px; font-size: 9px; }
+
+.top-actions { align-items: center; gap: 10px; display: flex; }
+
+.live { color: rgb(137, 160, 156); align-items: center; gap: 7px; margin-right: 8px; font-size: 11px; display: flex; }
+
+.live i, .zone i, .secure i { background: var(--green); width: 7px; height: 7px; box-shadow: 0 0 9px var(--green); border-radius: 50%; }
+
+.icon, .today, .menu { border: 1px solid var(--border); background: rgba(255, 255, 255, 0.024); border-radius: 8px; justify-content: center; align-items: center; height: 36px; display: flex; }
+
+.icon { width: 36px; position: relative; }
+
+.icon i { background: rgb(255, 112, 125); border-radius: 50%; width: 5px; height: 5px; position: absolute; top: 7px; right: 8px; }
+
+.today { gap: 7px; padding: 0px 12px; font-size: 11px; }
+
+.menu { width: 36px; display: none; }
+
+.content { max-width: 1500px; margin: auto; padding: 30px 28px 22px; }
+
+.welcome { justify-content: space-between; align-items: flex-end; margin-bottom: 24px; display: flex; }
+
+.eyebrow { color: var(--green); letter-spacing: 1.7px; margin: 0px 0px 9px; font-size: 9px; font-weight: 800; }
+
+.welcome h1 { letter-spacing: -0.9px; margin: 0px; font-size: 28px; line-height: 1.05; }
+
+.welcome p:last-child { color: rgb(115, 136, 133); margin: 8px 0px 0px; font-size: 12px; }
+
+.sync { color: rgb(99, 122, 118); align-items: center; gap: 7px; font-size: 10px; display: flex; }
+
+.summary-grid { grid-template-columns: repeat(4, 1fr); gap: 13px; margin-bottom: 13px; display: grid; }
+
+.summary-card, .panel { border: 1px solid var(--border); backdrop-filter: blur(18px); background: linear-gradient(145deg, rgba(20, 38, 36, 0.78), rgba(10, 25, 23, 0.84)); box-shadow: rgba(0, 0, 0, 0.12) 0px 15px 42px; }
+
+.summary-card { border-radius: 11px; min-height: 157px; padding: 18px; position: relative; overflow: hidden; }
+
+.card-top { color: rgb(101, 124, 120); letter-spacing: 1.2px; justify-content: space-between; align-items: center; font-size: 9px; font-weight: 750; display: flex; }
+
+.card-top button { background: 0px 0px; border: 0px; }
+
+.summary-card > strong { margin-top: 15px; font-size: 25px; display: block; }
+
+.positive { color: var(--green); align-items: center; gap: 4px; margin-top: 5px; font-size: 10px; display: flex; }
+
+.positive span { color: rgb(95, 119, 114); }
+
+.mini-bars { align-items: flex-end; gap: 4px; width: 90px; height: 25px; display: flex; position: absolute; bottom: 18px; right: 17px; }
+
+.mini-bars i { background: linear-gradient(rgba(41, 213, 161, 0.8), rgba(41, 213, 161, 0.13)); flex: 1 1 0%; }
+
+.weather-summary { color: rgb(118, 195, 247); align-items: center; gap: 11px; margin-top: 16px; display: flex; }
+
+.weather-summary > strong { color: rgb(238, 248, 245); font-size: 31px; }
+
+.weather-summary div b, .weather-summary div span { display: block; }
+
+.weather-summary div b { color: rgb(167, 187, 183); font-size: 11px; }
+
+.weather-summary div span { color: rgb(99, 120, 117); margin-top: 4px; font-size: 10px; }
+
+.micro { color: rgb(113, 137, 132); gap: 15px; margin-top: 12px; font-size: 9px; display: flex; }
+
+.micro span { gap: 5px; display: flex; }
+
+.clock { font-variant-numeric: tabular-nums; font-size: 29px !important; }
+
+.summary-card > p { color: rgb(129, 147, 143); margin: 5px 0px; font-size: 10px; }
+
+.zone { color: rgb(101, 124, 120); align-items: center; gap: 7px; font-size: 9px; display: flex; position: absolute; bottom: 17px; }
+
+.zone i, .secure i { width: 5px; height: 5px; }
+
+.score { align-items: baseline; gap: 2px; margin-top: 13px; display: flex; }
+
+.score > strong { font-size: 26px; }
+
+.score > span { color: rgb(102, 128, 122); font-size: 10px; }
+
+.score > i { width: 47px; height: 47px; color: var(--green); border: 3px solid rgba(41, 213, 161, 0.76); border-radius: 50%; place-items: center; display: grid; position: absolute; top: 47px; right: 18px; }
+
+.secure { color: rgb(104, 169, 149); align-items: center; gap: 6px; margin-top: 12px; font-size: 9px; display: flex; }
+
+.dashboard-grid { grid-template-columns: minmax(0px, 1.65fr) minmax(310px, 0.72fr); gap: 13px; display: grid; }
+
+.primary-column, .side-column { flex-direction: column; gap: 13px; display: flex; }
+
+.panel { border-radius: 11px; padding: 20px; }
+
+.panel-heading { justify-content: space-between; align-items: center; margin-bottom: 19px; display: flex; }
+
+.panel-heading h2 { margin: 5px 0px 0px; font-size: 16px; }
+
+.heading-actions { align-items: center; gap: 7px; display: flex; }
+
+.select, .more, .text-btn, .add { border: 1px solid var(--border); color: rgb(131, 151, 147); background: rgba(255, 255, 255, 0.02); border-radius: 7px; }
+
+.select { align-items: center; gap: 7px; height: 31px; padding: 0px 10px; font-size: 9px; display: flex; }
+
+.more { place-items: center; width: 31px; height: 31px; display: grid; }
+
+.text-btn { color: rgb(115, 205, 179); background: 0px 0px; border: 0px; align-items: center; gap: 5px; font-size: 10px; display: flex; }
+
+.add { width: 29px; height: 29px; font-size: 18px; }
+
+.finance-panel { min-height: 420px; }
+
+.finance-stats { gap: 54px; margin-bottom: 18px; display: flex; }
+
+.finance-stats > div { position: relative; }
+
+.finance-stats > div + div::before { content: ""; border-left: 1px solid var(--border); height: 36px; position: absolute; top: 4px; left: -27px; }
+
+.finance-stats span { color: rgb(94, 116, 112); font-size: 8px; display: block; }
+
+.finance-stats strong { margin-top: 5px; font-size: 18px; display: inline-block; }
+
+.finance-stats em { color: var(--green); margin-left: 7px; font-size: 8px; font-style: normal; }
+
+.finance-stats em svg { vertical-align: -3px; width: 14px; }
+
+.finance-stats em.expense { color: rgb(255, 123, 131); }
+
+.chart { height: 225px; display: flex; }
+
+.chart-labels { color: rgb(80, 100, 95); flex-direction: column; justify-content: space-between; width: 32px; padding-bottom: 19px; font-size: 8px; display: flex; }
+
+.chart-area { flex: 1 1 0%; position: relative; }
+
+.grid-lines { flex-direction: column; justify-content: space-between; display: flex; position: absolute; inset: 0px 0px 20px; }
+
+.grid-lines i { border-top: 1px solid rgba(180, 220, 212, 0.067); }
+
+.chart-area svg { width: 100%; height: calc(100% - 19px); position: absolute; inset: 0px 0px 19px; overflow: visible; }
+
+.chart-area path { fill: none; stroke-width: 2px; }
+
+.chart-area .area { fill: url("#fill"); stroke: none; }
+
+.income-line { stroke: rgb(57, 213, 166); }
+
+.expense-line { stroke: rgb(109, 145, 215); stroke-dasharray: 4, 4; }
+
+.months { color: rgb(85, 105, 101); justify-content: space-between; font-size: 8px; display: flex; position: absolute; bottom: 0px; left: 0px; right: 0px; }
+
+.legend { color: rgb(104, 125, 121); justify-content: center; gap: 22px; font-size: 9px; display: flex; }
+
+.legend span { align-items: center; gap: 6px; display: flex; }
+
+.legend i { background: var(--green); border-radius: 50%; width: 6px; height: 6px; }
+
+.legend span:last-child i { background: rgb(112, 149, 223); }
+
+.forecast-list { grid-template-columns: repeat(5, 1fr); gap: 7px; display: grid; }
+
+.forecast-day { background: rgba(255, 255, 255, 0.016); border: 1px solid rgba(255, 255, 255, 0.035); border-radius: 8px; grid-template-columns: 1fr auto auto; align-items: center; gap: 8px; padding: 13px 12px; display: grid; position: relative; }
+
+.forecast-day.active { background: rgba(41, 213, 161, 0.043); border-color: rgba(41, 213, 161, 0.2); }
+
+.forecast-day > span { color: rgb(113, 134, 130); grid-column: 1 / -1; font-size: 9px; }
+
+.forecast-day svg { color: rgb(117, 188, 233); }
+
+.forecast-day strong { font-size: 14px; }
+
+.forecast-day small { color: rgb(92, 114, 110); font-size: 10px; }
+
+.forecast-day em { color: var(--green); font-size: 7px; position: absolute; top: 8px; right: 8px; }
+
+.sun-strip { color: rgb(99, 121, 116); align-items: center; gap: 12px; margin-top: 15px; font-size: 8px; display: flex; }
+
+.sun-strip > span { white-space: nowrap; align-items: center; gap: 5px; display: flex; }
+
+.sun-strip > div { background: linear-gradient(90deg,#f6c466,var(--green)); flex: 1 1 0%; height: 1px; position: relative; }
+
+.sun-strip > div i { color: rgb(245, 193, 95); position: absolute; top: -8px; left: 34%; }
+
+.map { background: radial-gradient(circle at 58% 47%, rgba(41, 213, 161, 0.13), rgba(0, 0, 0, 0) 32%), rgb(11, 29, 26); border: 1px solid rgba(79, 194, 164, 0.11); border-radius: 8px; height: 122px; position: relative; overflow: hidden; }
+
+.map-lines { opacity: 0.25; background-image: linear-gradient(rgba(75, 143, 128, 0.17) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg, rgba(75, 143, 128, 0.17) 1px, rgba(0, 0, 0, 0) 1px); background-size: 19px 19px; position: absolute; inset: 0px; transform: rotate(-7deg) scale(1.2); }
+
+.map > i { border: 1px solid rgba(41, 213, 161, 0.18); border-radius: 50%; position: absolute; top: 45%; left: 57%; transform: translate(-50%, -50%); }
+
+.r1 { width: 62px; height: 62px; }
+
+.r2 { width: 90px; height: 90px; }
+
+.pin { width: 34px; height: 34px; color: var(--green); background: rgb(16, 44, 38); border-radius: 50%; place-items: center; display: grid; position: absolute; top: 45%; left: 57%; transform: translate(-50%, -50%); }
+
+.map-caption { position: absolute; bottom: 10px; left: 12px; }
+
+.map-caption strong, .map-caption span { display: block; }
+
+.map-caption strong { font-size: 12px; }
+
+.map-caption span { color: rgb(107, 129, 125); font-size: 8px; }
+
+.network-details > div { border-bottom: 1px solid rgba(255, 255, 255, 0.04); justify-content: space-between; align-items: center; padding: 9px 1px; display: flex; }
+
+.network-details span { color: rgb(96, 118, 114); align-items: center; gap: 7px; font-size: 8px; display: flex; }
+
+.network-details svg { width: 16px; }
+
+.network-details strong { color: rgb(165, 184, 180); text-overflow: ellipsis; white-space: nowrap; max-width: 58%; font-size: 9px; overflow: hidden; }
+
+.network-details strong.safe { color: rgb(79, 200, 163); }
+
+.privacy { color: var(--green); background: rgba(41, 213, 161, 0.03); border: 1px solid rgba(41, 213, 161, 0.09); border-radius: 7px; align-items: center; gap: 9px; margin-top: 11px; padding: 11px; display: flex; }
+
+.privacy strong, .privacy span { font-size: 9px; display: block; }
+
+.privacy span { color: rgb(100, 123, 119); margin-top: 3px; font-size: 8px; }
+
+.city { border-top: 1px solid rgba(255, 255, 255, 0.04); grid-template-columns: 28px 1fr auto 16px; align-items: center; gap: 9px; padding: 11px 0px; display: grid; }
+
+.city > i { background: rgb(23, 44, 41); border-radius: 4px; place-items: center; width: 25px; height: 19px; font-size: 7px; font-style: normal; display: grid; }
+
+.city strong, .city span { display: block; }
+
+.city strong { font-size: 10px; }
+
+.city span { color: rgb(93, 116, 112); margin-top: 3px; font-size: 8px; }
+
+.city > b { font-size: 13px; }
+
+.city > svg { color: rgb(240, 188, 85); }
+
+.bottom-grid { grid-template-columns: 1.05fr 1fr 0.8fr; gap: 13px; margin-top: 13px; display: grid; }
+
+.converter, .activity, .insight { min-height: 285px; }
+
+.converter-row { grid-template-columns: 1fr 31px 1fr; align-items: end; gap: 9px; display: grid; }
+
+.converter-row label > span { color: rgb(89, 112, 108); margin-bottom: 7px; font-size: 8px; font-weight: 700; display: block; }
+
+.converter-row label > div { border: 1px solid var(--border); border-radius: 7px; height: 47px; display: flex; overflow: hidden; }
+
+.converter-row input { color: rgb(220, 232, 229); background: 0px 0px; border: 0px; width: 100%; min-width: 0px; padding: 0px 11px; }
+
+.converter-row select { border-top: 0px; border-right: 0px; border-bottom: 0px; border-image: initial; border-left: 1px solid var(--border); color: rgb(159, 179, 175); background: rgb(17, 38, 34); width: 64px; font-size: 9px; }
+
+.swap { width: 31px; height: 31px; color: var(--green); background: rgba(41, 213, 161, 0.06); border: 1px solid rgba(41, 213, 161, 0.17); border-radius: 50%; place-items: center; margin-bottom: 8px; display: grid; }
+
+.rate { color: rgb(139, 160, 156); margin-top: 13px; font-size: 9px; }
+
+.rate span { color: rgb(85, 112, 106); margin-left: 6px; }
+
+.transaction { grid-template-columns: 33px 1fr auto; align-items: center; gap: 10px; padding: 8px 0px; display: grid; }
+
+.transaction > i { border-radius: 8px; place-items: center; width: 32px; height: 32px; font-size: 8px; font-style: normal; font-weight: 700; display: grid; }
+
+.transaction strong, .transaction span { display: block; }
+
+.transaction strong { font-size: 10px; }
+
+.transaction span { color: rgb(94, 116, 112); margin-top: 3px; font-size: 8px; }
+
+.transaction > b { font-size: 10px; }
+
+.transaction > b.credit, .insight > .panel-heading svg { color: var(--green); }
+
+.security-visual { background: rgba(41, 213, 161, 0.035); border: 1px solid rgba(41, 213, 161, 0.09); border-radius: 8px; align-items: center; gap: 12px; padding: 13px; display: flex; }
+
+.security-visual > i { width: 46px; height: 46px; color: var(--green); background: rgba(41, 213, 161, 0.08); border-radius: 50%; place-items: center; display: grid; }
+
+.security-visual strong, .security-visual span { font-size: 10px; display: block; }
+
+.security-visual span { color: rgb(94, 119, 114); font-size: 8px; }
+
+.insight ul { margin: 9px 0px; padding: 5px 0px; list-style: none; }
+
+.insight li { color: rgb(117, 139, 135); align-items: center; gap: 7px; margin: 7px 0px; font-size: 8px; display: flex; }
+
+.insight li svg { width: 14px; color: var(--green); }
+
+.scan { color: rgb(125, 215, 189); background: rgba(41, 213, 161, 0.06); border: 1px solid rgba(41, 213, 161, 0.16); border-radius: 7px; justify-content: center; align-items: center; gap: 7px; width: 100%; height: 33px; font-size: 9px; display: flex; }
+
+footer { color: rgb(76, 97, 93); justify-content: space-between; align-items: center; height: 52px; font-size: 8px; display: flex; }
+
+footer span:last-child { align-items: center; gap: 7px; display: flex; }
+
+footer i { background: var(--green); border-radius: 50%; width: 5px; height: 5px; }
+
+.toast { z-index: 100; color: rgb(191, 246, 231); background: rgb(16, 39, 35); border: 1px solid rgba(41, 213, 161, 0.22); border-radius: 8px; align-items: center; gap: 8px; padding: 10px 15px; font-size: 11px; display: flex; position: fixed; top: 18px; left: 50%; transform: translate(-50%); }
+
+.spin { animation: 1s linear 0s infinite normal none running spin; }
+
+@keyframes spin { 
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 1150px) {
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .side-column { grid-template-columns: 1.2fr 1fr; display: grid; }
+  .bottom-grid { grid-template-columns: 1fr 1fr; }
+  .insight { grid-column: 1 / -1; }
+}
+
+@media (max-width: 780px) {
+  .sidebar { transition: 0.25s; transform: translate(-100%); }
+  .sidebar.open { transform: translate(0px); }
+  .close { background: 0px 0px; border: 0px; display: block; position: absolute; top: 26px; right: 15px; }
+  .scrim { z-index: 25; background: rgba(0, 0, 0, 0.55); position: fixed; inset: 0px; }
+  .menu { display: grid; }
+  .search { flex: 1 1 0%; width: auto; }
+  .search kbd, .live, .today { display: none; }
+  main { width: 100%; margin-left: 0px; }
+  .topbar { gap: 10px; padding: 0px 16px; }
+  .content { padding: 24px 16px; }
+  .side-column, .bottom-grid { grid-template-columns: 1fr; }
+  .insight { grid-column: auto; }
+  .finance-stats { gap: 30px; }
+  .finance-stats > div + div::before { left: -15px; }
+  .forecast-list { grid-template-columns: repeat(5, 125px); overflow-x: auto; }
+}
+
+@media (max-width: 520px) {
+  .summary-grid { grid-template-columns: 1fr; }
+  .welcome { display: block; }
+  .sync { margin-top: 14px; }
+  .welcome h1 { font-size: 25px; }
+  .finance-stats { grid-template-columns: repeat(3, 1fr); gap: 12px; display: grid; }
+  .finance-stats strong { font-size: 14px; }
+  .finance-stats em { margin: 3px 0px; display: block; }
+  .finance-stats > div + div::before { display: none; }
+  .chart { height: 190px; }
+  .panel { padding: 17px; }
+  .converter-row { grid-template-columns: 1fr 28px 1fr; }
+  .converter-row input { padding: 0px 7px; font-size: 12px; }
+  .converter-row select { width: 52px; }
+  .search input::placeholder { color: rgba(0, 0, 0, 0); }
+}
+
+@property --tw-border-style { syntax: "*"; inherits: false; initial-value: solid; }
+
+@property --tw-outline-style { syntax: "*"; inherits: false; initial-value: solid; }
+
+@property --tw-blur { syntax: "*"; inherits: false; }
+
+@property --tw-brightness { syntax: "*"; inherits: false; }
+
+@property --tw-contrast { syntax: "*"; inherits: false; }
+
+@property --tw-grayscale { syntax: "*"; inherits: false; }
+
+@property --tw-hue-rotate { syntax: "*"; inherits: false; }
+
+@property --tw-invert { syntax: "*"; inherits: false; }
+
+@property --tw-opacity { syntax: "*"; inherits: false; }
+
+@property --tw-saturate { syntax: "*"; inherits: false; }
+
+@property --tw-sepia { syntax: "*"; inherits: false; }
+
+@property --tw-drop-shadow { syntax: "*"; inherits: false; }
+
+@property --tw-drop-shadow-color { syntax: "*"; inherits: false; }
+
+@property --tw-drop-shadow-alpha { syntax: "<percentage>"; inherits: false; initial-value: 100%; }
+
+@property --tw-drop-shadow-size { syntax: "*"; inherits: false; }
+
+@property --tw-ease { syntax: "*"; inherits: false; }</style>
+</head>
+  <body>
+    <div id="root"><div class="app-shell" id="top" data-source-loc="src/App.tsx:23:8"><div class="ambient a1" data-source-loc="src/App.tsx:23:44"></div><div class="ambient a2" data-source-loc="src/App.tsx:23:73"></div><aside class="sidebar" data-source-loc="src/App.tsx:24:2"><div class="brand" data-source-loc="src/App.tsx:24:51"><i data-source-loc="src/App.tsx:24:74"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap" aria-hidden="true" data-source-loc="src/App.tsx:24:77"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg></i>Pulse</div><button class="close" data-source-loc="src/App.tsx:24:128"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x" aria-hidden="true" data-source-loc="src/App.tsx:24:183"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><nav data-source-loc="src/App.tsx:24:196"><span class="nav-label" data-source-loc="src/App.tsx:24:201">WORKSPACE</span><button class="active" data-source-loc="src/App.tsx:24:280"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard" aria-hidden="true" data-source-loc="src/App.tsx:24:363"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>Overview</button><button class="" data-source-loc="src/App.tsx:24:280"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-sun" aria-hidden="true" data-source-loc="src/App.tsx:24:363"><path d="M12 2v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="M20 12h2"></path><path d="m19.07 4.93-1.41 1.41"></path><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"></path><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"></path></svg>Weather</button><button class="" data-source-loc="src/App.tsx:24:280"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-earth" aria-hidden="true" data-source-loc="src/App.tsx:24:363"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path><path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"></path><path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"></path><circle cx="12" cy="12" r="10"></circle></svg>World time</button><button class="" data-source-loc="src/App.tsx:24:280"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wallet-cards" aria-hidden="true" data-source-loc="src/App.tsx:24:363"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2"></path><path d="M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21"></path></svg>Finances</button><button class="" data-source-loc="src/App.tsx:24:280"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check" aria-hidden="true" data-source-loc="src/App.tsx:24:363"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>Security<i data-source-loc="src/App.tsx:24:408"></i></button></nav><div class="side-bottom" data-source-loc="src/App.tsx:24:430"><button data-source-loc="src/App.tsx:24:459"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings" aria-hidden="true" data-source-loc="src/App.tsx:24:511"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg>Settings</button><div class="profile" data-source-loc="src/App.tsx:24:549"><b data-source-loc="src/App.tsx:24:574">DK</b><div data-source-loc="src/App.tsx:24:583"><strong data-source-loc="src/App.tsx:24:588">Demo korisnik</strong><span data-source-loc="src/App.tsx:24:616">Personal workspace</span></div><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down" aria-hidden="true" data-source-loc="src/App.tsx:24:653"><path d="m6 9 6 6 6-6"></path></svg></div></div></aside><main data-source-loc="src/App.tsx:25:2"><header class="topbar" data-source-loc="src/App.tsx:25:8"><button class="menu" data-source-loc="src/App.tsx:25:35"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu" aria-hidden="true" data-source-loc="src/App.tsx:25:88"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button><div class="search" data-source-loc="src/App.tsx:25:104"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search" aria-hidden="true" data-source-loc="src/App.tsx:25:128"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg><input placeholder="Search your dashboard..." data-source-loc="src/App.tsx:25:147"><kbd data-source-loc="src/App.tsx:25:194">⌘ K</kbd></div><div class="top-actions" data-source-loc="src/App.tsx:25:214"><span class="live" data-source-loc="src/App.tsx:25:243"><i data-source-loc="src/App.tsx:25:266"></i>Zagreb, HR</span><button class="icon" data-source-loc="src/App.tsx:25:340"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell" aria-hidden="true" data-source-loc="src/App.tsx:25:410"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg><i data-source-loc="src/App.tsx:25:427"></i></button><button class="today" data-source-loc="src/App.tsx:25:440"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-days" aria-hidden="true" data-source-loc="src/App.tsx:25:466"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path><path d="M8 14h.01"></path><path d="M12 14h.01"></path><path d="M16 14h.01"></path><path d="M8 18h.01"></path><path d="M12 18h.01"></path><path d="M16 18h.01"></path></svg>Today</button></div></header><div class="content" data-source-loc="src/App.tsx:26:3"><section class="welcome" data-source-loc="src/App.tsx:26:28"><div data-source-loc="src/App.tsx:26:57"><p class="eyebrow" data-source-loc="src/App.tsx:26:62">PERSONAL COMMAND CENTER</p><h1 data-source-loc="src/App.tsx:26:112">Good morning, Demo.</h1><p data-source-loc="src/App.tsx:26:140">Here’s your world at a glance — everything looks steady.</p></div><span class="sync" data-source-loc="src/App.tsx:26:209"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw" aria-hidden="true" data-source-loc="src/App.tsx:26:232"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>Updated just now</span></section><section class="summary-grid" data-source-loc="src/App.tsx:27:4"><article class="summary-card" data-source-loc="src/App.tsx:27:38"><div class="card-top" data-source-loc="src/App.tsx:27:72"><span data-source-loc="src/App.tsx:27:98">NET BALANCE</span><button data-source-loc="src/App.tsx:27:122"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye" aria-hidden="true" data-source-loc="src/App.tsx:27:174"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div><strong data-source-loc="src/App.tsx:27:226">$24,820.64</strong><div class="positive" data-source-loc="src/App.tsx:27:276"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up" aria-hidden="true" data-source-loc="src/App.tsx:27:302"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg>+8.4% <span data-source-loc="src/App.tsx:27:331">this month</span></div><div class="mini-bars" data-source-loc="src/App.tsx:27:360"><i data-source-loc="src/App.tsx:27:437" style="height: 35%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 48%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 42%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 58%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 51%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 67%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 62%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 76%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 70%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 86%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 81%;"></i><i data-source-loc="src/App.tsx:27:437" style="height: 94%;"></i></div></article><article class="summary-card" data-source-loc="src/App.tsx:28:5"><div class="card-top" data-source-loc="src/App.tsx:28:39"><span data-source-loc="src/App.tsx:28:65">LOCAL WEATHER</span><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-locate-fixed" aria-hidden="true" data-source-loc="src/App.tsx:28:91"><line x1="2" x2="5" y1="12" y2="12"></line><line x1="19" x2="22" y1="12" y2="12"></line><line x1="12" x2="12" y1="2" y2="5"></line><line x1="12" x2="12" y1="19" y2="22"></line><circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="3"></circle></svg></div><div class="weather-summary" data-source-loc="src/App.tsx:28:121"><svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun" aria-hidden="true" data-source-loc="src/App.tsx:10:83"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg><strong data-source-loc="src/App.tsx:28:198">24°</strong><div data-source-loc="src/App.tsx:28:237"><b data-source-loc="src/App.tsx:28:242">25° / 15°</b><span data-source-loc="src/App.tsx:28:281">Clear skies</span></div></div><div class="micro" data-source-loc="src/App.tsx:28:383"><span data-source-loc="src/App.tsx:28:406"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wind" aria-hidden="true" data-source-loc="src/App.tsx:28:412"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"></path><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"></path><path d="M9.8 4.4A2 2 0 1 1 11 8H2"></path></svg>7 km/h</span><span data-source-loc="src/App.tsx:28:455"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-umbrella" aria-hidden="true" data-source-loc="src/App.tsx:28:461"><path d="M12 13v7a2 2 0 0 0 4 0"></path><path d="M12 2v2"></path><path d="M20.992 13a1 1 0 0 0 .97-1.274 10.284 10.284 0 0 0-19.923 0A1 1 0 0 0 3 13z"></path></svg>0%</span></div></article><article class="summary-card" data-source-loc="src/App.tsx:29:5"><div class="card-top" data-source-loc="src/App.tsx:29:39"><span data-source-loc="src/App.tsx:29:65">LOCAL TIME</span><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-earth" aria-hidden="true" data-source-loc="src/App.tsx:29:88"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path><path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"></path><path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"></path><circle cx="12" cy="12" r="10"></circle></svg></div><strong class="clock" data-source-loc="src/App.tsx:29:113">18:23</strong><p data-source-loc="src/App.tsx:29:210">srijeda, 22. srpnja</p><div class="zone" data-source-loc="src/App.tsx:29:289"><i data-source-loc="src/App.tsx:29:311"></i>Europe/Zagreb</div></article><article class="summary-card" data-source-loc="src/App.tsx:30:5"><div class="card-top" data-source-loc="src/App.tsx:30:39"><span data-source-loc="src/App.tsx:30:65">SECURITY STATUS</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check" aria-hidden="true" data-source-loc="src/App.tsx:30:93"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></div><div class="score" data-source-loc="src/App.tsx:30:123"><strong data-source-loc="src/App.tsx:30:146">94</strong><span data-source-loc="src/App.tsx:30:201">/100</span><i data-source-loc="src/App.tsx:30:218"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check" aria-hidden="true" data-source-loc="src/App.tsx:30:221"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></i></div><p data-source-loc="src/App.tsx:30:255">Your connection looks secure</p><div class="secure" data-source-loc="src/App.tsx:30:348"><i data-source-loc="src/App.tsx:30:372"></i>No threats detected</div></article></section><div class="dashboard-grid" data-source-loc="src/App.tsx:31:4"><div class="primary-column" data-source-loc="src/App.tsx:31:36"><section class="panel finance-panel" id="finances" data-source-loc="src/App.tsx:31:68"><div class="panel-heading" data-source-loc="src/App.tsx:40:104"><div data-source-loc="src/App.tsx:40:135"><span class="section-kicker" data-source-loc="src/App.tsx:40:140">FINANCE OVERVIEW</span><h2 data-source-loc="src/App.tsx:40:188">Cash flow</h2></div><div class="heading-actions" data-source-loc="src/App.tsx:40:210"><button class="select" data-source-loc="src/App.tsx:31:176">Last 6 months <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down" aria-hidden="true" data-source-loc="src/App.tsx:31:217"><path d="m6 9 6 6 6-6"></path></svg></button><button class="more" data-source-loc="src/App.tsx:31:250"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis" aria-hidden="true" data-source-loc="src/App.tsx:31:275"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button></div></div><div class="finance-stats" data-source-loc="src/App.tsx:31:311"><div data-source-loc="src/App.tsx:41:106"><span data-source-loc="src/App.tsx:41:111">INCOME</span><strong data-source-loc="src/App.tsx:41:131">$8,240</strong><em class="" data-source-loc="src/App.tsx:41:155"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true" data-source-loc="src/App.tsx:41:218"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>12.5%</em></div><div data-source-loc="src/App.tsx:41:106"><span data-source-loc="src/App.tsx:41:111">EXPENSES</span><strong data-source-loc="src/App.tsx:41:131">$4,680</strong><em class="expense" data-source-loc="src/App.tsx:41:155"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-left" aria-hidden="true" data-source-loc="src/App.tsx:41:201"><path d="M17 7 7 17"></path><path d="M17 17H7V7"></path></svg>3.2%</em></div><div data-source-loc="src/App.tsx:41:106"><span data-source-loc="src/App.tsx:41:111">SAVINGS</span><strong data-source-loc="src/App.tsx:41:131">$3,560</strong><em class="" data-source-loc="src/App.tsx:41:155"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true" data-source-loc="src/App.tsx:41:218"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>43.2% rate</em></div></div><div class="chart" data-source-loc="src/App.tsx:31:513"><div class="chart-labels" data-source-loc="src/App.tsx:31:536"><span data-source-loc="src/App.tsx:31:566">$8k</span><span data-source-loc="src/App.tsx:31:582">$6k</span><span data-source-loc="src/App.tsx:31:598">$4k</span><span data-source-loc="src/App.tsx:31:614">$2k</span><span data-source-loc="src/App.tsx:31:630">$0</span></div><div class="chart-area" data-source-loc="src/App.tsx:31:651"><div class="grid-lines" data-source-loc="src/App.tsx:31:679"><i data-source-loc="src/App.tsx:31:707"></i><i data-source-loc="src/App.tsx:31:711"></i><i data-source-loc="src/App.tsx:31:715"></i><i data-source-loc="src/App.tsx:31:719"></i><i data-source-loc="src/App.tsx:31:723"></i></div><svg viewBox="0 0 700 210" preserveAspectRatio="none" data-source-loc="src/App.tsx:31:733"><defs data-source-loc="src/App.tsx:31:787"><linearGradient id="fill" x1="0" y1="0" x2="0" y2="1" data-source-loc="src/App.tsx:31:793"><stop stop-color="#29d5a1" stop-opacity=".3" data-source-loc="src/App.tsx:31:847"></stop><stop offset="1" stop-color="#29d5a1" stop-opacity="0" data-source-loc="src/App.tsx:31:891"></stop></linearGradient></defs><path class="area" d="M0 158 C70 145 87 110 145 122 S232 60 290 82 S380 115 435 68 S535 72 580 45 S650 53 700 26 L700 210 L0 210Z" data-source-loc="src/App.tsx:31:969"></path><path class="income-line" d="M0 158 C70 145 87 110 145 122 S232 60 290 82 S380 115 435 68 S535 72 580 45 S650 53 700 26" data-source-loc="src/App.tsx:31:1105"></path><path class="expense-line" d="M0 172 C68 165 100 154 145 160 S240 130 290 145 S390 127 435 139 S520 112 580 124 S650 103 700 112" data-source-loc="src/App.tsx:31:1231"></path></svg><div class="months" data-source-loc="src/App.tsx:31:1372"><span data-source-loc="src/App.tsx:31:1442">Oct</span><span data-source-loc="src/App.tsx:31:1442">Nov</span><span data-source-loc="src/App.tsx:31:1442">Dec</span><span data-source-loc="src/App.tsx:31:1442">Jan</span><span data-source-loc="src/App.tsx:31:1442">Feb</span><span data-source-loc="src/App.tsx:31:1442">Mar</span></div></div></div><div class="legend" data-source-loc="src/App.tsx:31:1486"><span data-source-loc="src/App.tsx:31:1510"><i data-source-loc="src/App.tsx:31:1516"></i>Income</span><span data-source-loc="src/App.tsx:31:1533"><i data-source-loc="src/App.tsx:31:1539"></i>Expenses</span></div></section><section class="panel forecast" id="weather" data-source-loc="src/App.tsx:32:5"><div class="panel-heading" data-source-loc="src/App.tsx:40:104"><div data-source-loc="src/App.tsx:40:135"><span class="section-kicker" data-source-loc="src/App.tsx:40:140">WEATHER</span><h2 data-source-loc="src/App.tsx:40:188">5-day forecast</h2></div><div class="heading-actions" data-source-loc="src/App.tsx:40:210"><button class="text-btn" data-source-loc="src/App.tsx:32:103">Full forecast <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right" aria-hidden="true" data-source-loc="src/App.tsx:32:193"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button></div></div><div class="forecast-list" data-source-loc="src/App.tsx:32:235"><div class="forecast-day active" data-source-loc="src/App.tsx:32:292"><span data-source-loc="src/App.tsx:32:364">Today</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-sun" aria-hidden="true" data-source-loc="src/App.tsx:10:188"><path d="M12 2v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="M20 12h2"></path><path d="m19.07 4.93-1.41 1.41"></path><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"></path><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"></path></svg><strong data-source-loc="src/App.tsx:32:412">25°</strong><small data-source-loc="src/App.tsx:32:438">15°</small><em data-source-loc="src/App.tsx:32:469">Now</em></div><div class="forecast-day" data-source-loc="src/App.tsx:32:292"><span data-source-loc="src/App.tsx:32:364">Thu</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-rain" aria-hidden="true" data-source-loc="src/App.tsx:10:156"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M16 14v6"></path><path d="M8 14v6"></path><path d="M12 16v6"></path></svg><strong data-source-loc="src/App.tsx:32:412">26°</strong><small data-source-loc="src/App.tsx:32:438">16°</small></div><div class="forecast-day" data-source-loc="src/App.tsx:32:292"><span data-source-loc="src/App.tsx:32:364">Fri</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-rain" aria-hidden="true" data-source-loc="src/App.tsx:10:156"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M16 14v6"></path><path d="M8 14v6"></path><path d="M12 16v6"></path></svg><strong data-source-loc="src/App.tsx:32:412">25°</strong><small data-source-loc="src/App.tsx:32:438">15°</small></div><div class="forecast-day" data-source-loc="src/App.tsx:32:292"><span data-source-loc="src/App.tsx:32:364">Sat</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-sun" aria-hidden="true" data-source-loc="src/App.tsx:10:188"><path d="M12 2v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="M20 12h2"></path><path d="m19.07 4.93-1.41 1.41"></path><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"></path><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"></path></svg><strong data-source-loc="src/App.tsx:32:412">29°</strong><small data-source-loc="src/App.tsx:32:438">11°</small></div><div class="forecast-day" data-source-loc="src/App.tsx:32:292"><span data-source-loc="src/App.tsx:32:364">Sun</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-rain" aria-hidden="true" data-source-loc="src/App.tsx:10:156"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M16 14v6"></path><path d="M8 14v6"></path><path d="M12 16v6"></path></svg><strong data-source-loc="src/App.tsx:32:412">24°</strong><small data-source-loc="src/App.tsx:32:438">19°</small></div></div><div class="sun-strip" data-source-loc="src/App.tsx:32:496"><span data-source-loc="src/App.tsx:32:523"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun" aria-hidden="true" data-source-loc="src/App.tsx:32:529"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>Sunrise <b data-source-loc="src/App.tsx:32:553">05:27</b></span><div data-source-loc="src/App.tsx:32:584"><i data-source-loc="src/App.tsx:32:589"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun" aria-hidden="true" data-source-loc="src/App.tsx:32:592"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></i></div><span data-source-loc="src/App.tsx:32:618">Sunset <b data-source-loc="src/App.tsx:32:631">20:37</b></span></div></section></div><div class="side-column" data-source-loc="src/App.tsx:33:5"><section class="panel network" id="security" data-source-loc="src/App.tsx:33:34"><div class="panel-heading" data-source-loc="src/App.tsx:40:104"><div data-source-loc="src/App.tsx:40:135"><span class="section-kicker" data-source-loc="src/App.tsx:40:140">LOCATION &amp; NETWORK</span><h2 data-source-loc="src/App.tsx:40:188">Your connection</h2></div><div class="heading-actions" data-source-loc="src/App.tsx:40:210"><button class="more" data-source-loc="src/App.tsx:33:144"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw" aria-hidden="true" data-source-loc="src/App.tsx:33:187"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg></button></div></div><div class="map" data-source-loc="src/App.tsx:33:258"><div class="map-lines" data-source-loc="src/App.tsx:33:279"></div><i class="r1" data-source-loc="src/App.tsx:33:307"></i><i class="r2" data-source-loc="src/App.tsx:33:326"></i><div class="pin" data-source-loc="src/App.tsx:33:345"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-navigation" aria-hidden="true" data-source-loc="src/App.tsx:33:366"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg></div><div class="map-caption" data-source-loc="src/App.tsx:33:415"><strong data-source-loc="src/App.tsx:33:444">Zagreb</strong><span data-source-loc="src/App.tsx:33:475">Croatia</span></div></div><div class="network-details" data-source-loc="src/App.tsx:33:517"><div data-source-loc="src/App.tsx:42:111"><span data-source-loc="src/App.tsx:42:116"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wifi" aria-hidden="true" data-source-loc="src/App.tsx:33:564"><path d="M12 20h.01"></path><path d="M2 8.82a15 15 0 0 1 20 0"></path><path d="M5 12.859a10 10 0 0 1 14 0"></path><path d="M8.5 16.429a5 5 0 0 1 7 0"></path></svg>IP ADDRESS</span><strong class="" data-source-loc="src/App.tsx:42:142">188.129.81.162</strong></div><div data-source-loc="src/App.tsx:42:111"><span data-source-loc="src/App.tsx:42:116"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-earth" aria-hidden="true" data-source-loc="src/App.tsx:33:647"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path><path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"></path><path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"></path><circle cx="12" cy="12" r="10"></circle></svg>PROVIDER</span><strong class="" data-source-loc="src/App.tsx:42:142">A1 Hrvatska D.O.O.</strong></div><div data-source-loc="src/App.tsx:42:111"><span data-source-loc="src/App.tsx:42:116"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smartphone" aria-hidden="true" data-source-loc="src/App.tsx:33:710"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg>DEVICE</span><strong class="" data-source-loc="src/App.tsx:42:142">Chrome on Windows</strong></div><div data-source-loc="src/App.tsx:42:111"><span data-source-loc="src/App.tsx:42:116"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check" aria-hidden="true" data-source-loc="src/App.tsx:33:770"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>VPN / PROXY</span><strong class="safe" data-source-loc="src/App.tsx:42:142">● Not detected</strong></div></div><div class="privacy" data-source-loc="src/App.tsx:33:914"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock-keyhole" aria-hidden="true" data-source-loc="src/App.tsx:33:939"><circle cx="12" cy="16" r="1"></circle><rect x="3" y="10" width="18" height="12" rx="2"></rect><path d="M7 10V7a5 5 0 0 1 10 0v3"></path></svg><div data-source-loc="src/App.tsx:33:963"><strong data-source-loc="src/App.tsx:33:968">Privacy protected</strong><span data-source-loc="src/App.tsx:33:1002">Connection data stays in your browser.</span></div></div></section><section class="panel time" id="world-time" data-source-loc="src/App.tsx:34:6"><div class="panel-heading" data-source-loc="src/App.tsx:40:104"><div data-source-loc="src/App.tsx:40:135"><span class="section-kicker" data-source-loc="src/App.tsx:40:140">WORLD CLOCK</span><h2 data-source-loc="src/App.tsx:40:188">Across the globe</h2></div><div class="heading-actions" data-source-loc="src/App.tsx:40:210"><button class="add" data-source-loc="src/App.tsx:34:109">+</button></div></div><div class="city" data-source-loc="src/App.tsx:34:318"><i data-source-loc="src/App.tsx:34:351">GB</i><div data-source-loc="src/App.tsx:34:364"><strong data-source-loc="src/App.tsx:34:369">London</strong><span data-source-loc="src/App.tsx:34:392">-1h from you</span></div><b data-source-loc="src/App.tsx:34:431">17:23</b><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun" aria-hidden="true" data-source-loc="src/App.tsx:34:461"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></div><div class="city" data-source-loc="src/App.tsx:34:318"><i data-source-loc="src/App.tsx:34:351">JP</i><div data-source-loc="src/App.tsx:34:364"><strong data-source-loc="src/App.tsx:34:369">Tokyo</strong><span data-source-loc="src/App.tsx:34:392">+7h from you</span></div><b data-source-loc="src/App.tsx:34:431">01:23</b><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun" aria-hidden="true" data-source-loc="src/App.tsx:34:461"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></div><div class="city" data-source-loc="src/App.tsx:34:318"><i data-source-loc="src/App.tsx:34:351">AU</i><div data-source-loc="src/App.tsx:34:364"><strong data-source-loc="src/App.tsx:34:369">Sydney</strong><span data-source-loc="src/App.tsx:34:392">+8h from you</span></div><b data-source-loc="src/App.tsx:34:431">02:23</b><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun" aria-hidden="true" data-source-loc="src/App.tsx:34:461"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></div></section></div></div><div class="bottom-grid" data-source-loc="src/App.tsx:35:4"><section class="panel converter" data-source-loc="src/App.tsx:35:33"><div class="panel-heading" data-source-loc="src/App.tsx:40:104"><div data-source-loc="src/App.tsx:40:135"><span class="section-kicker" data-source-loc="src/App.tsx:40:140">SMART TOOL</span><h2 data-source-loc="src/App.tsx:40:188">Currency converter</h2></div><div class="heading-actions" data-source-loc="src/App.tsx:40:210"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dollar-sign" aria-hidden="true" data-source-loc="src/App.tsx:35:126"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg></div></div><div class="converter-row" data-source-loc="src/App.tsx:35:165"><label data-source-loc="src/App.tsx:43:204"><span data-source-loc="src/App.tsx:43:211">YOU SEND</span><div data-source-loc="src/App.tsx:43:231"><input data-source-loc="src/App.tsx:43:236" type="number" value="1000"><select data-source-loc="src/App.tsx:43:359"><option data-source-loc="src/App.tsx:43:466">USD</option><option data-source-loc="src/App.tsx:43:466">EUR</option><option data-source-loc="src/App.tsx:43:466">GBP</option><option data-source-loc="src/App.tsx:43:466">JPY</option><option data-source-loc="src/App.tsx:43:466">CAD</option></select></div></label><button class="swap" data-source-loc="src/App.tsx:35:298"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right" aria-hidden="true" data-source-loc="src/App.tsx:35:363"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button><label data-source-loc="src/App.tsx:43:204"><span data-source-loc="src/App.tsx:43:211">THEY RECEIVE</span><div data-source-loc="src/App.tsx:43:231"><input readonly="" data-source-loc="src/App.tsx:43:236" type="text" value="920"><select data-source-loc="src/App.tsx:43:359"><option data-source-loc="src/App.tsx:43:466">USD</option><option data-source-loc="src/App.tsx:43:466">EUR</option><option data-source-loc="src/App.tsx:43:466">GBP</option><option data-source-loc="src/App.tsx:43:466">JPY</option><option data-source-loc="src/App.tsx:43:466">CAD</option></select></div></label></div><p class="rate" data-source-loc="src/App.tsx:35:565">1 USD = 0.9200 EUR <span data-source-loc="src/App.tsx:35:619">Live mid-market rate</span></p></section><section class="panel activity" data-source-loc="src/App.tsx:36:5"><div class="panel-heading" data-source-loc="src/App.tsx:40:104"><div data-source-loc="src/App.tsx:40:135"><span class="section-kicker" data-source-loc="src/App.tsx:40:140">FINANCES</span><h2 data-source-loc="src/App.tsx:40:188">Recent activity</h2></div><div class="heading-actions" data-source-loc="src/App.tsx:40:210"><button class="text-btn" data-source-loc="src/App.tsx:36:92">View all</button></div></div><div class="transaction" data-source-loc="src/App.tsx:36:217"><i data-source-loc="src/App.tsx:36:259" style="background: rgba(232, 93, 107, 0.094); color: rgb(232, 93, 107);">NT</i><div data-source-loc="src/App.tsx:36:324"><strong data-source-loc="src/App.tsx:36:329">Netflix</strong><span data-source-loc="src/App.tsx:36:354">Entertainment · Today</span></div><b class="" data-source-loc="src/App.tsx:36:383">-$18.99</b></div><div class="transaction" data-source-loc="src/App.tsx:36:217"><i data-source-loc="src/App.tsx:36:259" style="background: rgba(41, 213, 161, 0.094); color: rgb(41, 213, 161);">SA</i><div data-source-loc="src/App.tsx:36:324"><strong data-source-loc="src/App.tsx:36:329">Salary deposit</strong><span data-source-loc="src/App.tsx:36:354">Income · Yesterday</span></div><b class="credit" data-source-loc="src/App.tsx:36:383">+$4,850.00</b></div><div class="transaction" data-source-loc="src/App.tsx:36:217"><i data-source-loc="src/App.tsx:36:259" style="background: rgba(245, 184, 75, 0.094); color: rgb(245, 184, 75);">WH</i><div data-source-loc="src/App.tsx:36:324"><strong data-source-loc="src/App.tsx:36:329">Whole Foods</strong><span data-source-loc="src/App.tsx:36:354">Groceries · Mar 12</span></div><b class="" data-source-loc="src/App.tsx:36:383">-$84.26</b></div><div class="transaction" data-source-loc="src/App.tsx:36:217"><i data-source-loc="src/App.tsx:36:259" style="background: rgba(116, 136, 255, 0.094); color: rgb(116, 136, 255);">UB</i><div data-source-loc="src/App.tsx:36:324"><strong data-source-loc="src/App.tsx:36:329">Uber</strong><span data-source-loc="src/App.tsx:36:354">Transport · Mar 11</span></div><b class="" data-source-loc="src/App.tsx:36:383">-$24.50</b></div></section><section class="panel insight" data-source-loc="src/App.tsx:37:5"><div class="panel-heading" data-source-loc="src/App.tsx:40:104"><div data-source-loc="src/App.tsx:40:135"><span class="section-kicker" data-source-loc="src/App.tsx:40:140">SECURITY INSIGHT</span><h2 data-source-loc="src/App.tsx:40:188">You're well protected</h2></div><div class="heading-actions" data-source-loc="src/App.tsx:40:210"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fingerprint-pattern" aria-hidden="true" data-source-loc="src/App.tsx:37:105"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"></path><path d="M14 13.12c0 2.38 0 6.38-1 8.88"></path><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"></path><path d="M2 12a10 10 0 0 1 18-6"></path><path d="M2 16h.01"></path><path d="M21.8 16c.2-2 .131-5.354 0-6"></path><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"></path><path d="M8.65 22c.21-.66.45-1.32.57-2"></path><path d="M9 6.8a6 6 0 0 1 9 5.2v2"></path></svg></div></div><div class="security-visual" data-source-loc="src/App.tsx:37:139"><i data-source-loc="src/App.tsx:37:172"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check" aria-hidden="true" data-source-loc="src/App.tsx:37:175"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></i><div data-source-loc="src/App.tsx:37:203"><strong data-source-loc="src/App.tsx:37:208">4 of 4 checks passed</strong><span data-source-loc="src/App.tsx:37:245">Last scan moments ago</span></div></div><ul data-source-loc="src/App.tsx:37:291"><li data-source-loc="src/App.tsx:37:295"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check" aria-hidden="true" data-source-loc="src/App.tsx:37:299"><path d="M20 6 9 17l-5-5"></path></svg>Encrypted connection</li><li data-source-loc="src/App.tsx:37:332"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check" aria-hidden="true" data-source-loc="src/App.tsx:37:336"><path d="M20 6 9 17l-5-5"></path></svg>Trusted network</li><li data-source-loc="src/App.tsx:37:364"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check" aria-hidden="true" data-source-loc="src/App.tsx:37:368"><path d="M20 6 9 17l-5-5"></path></svg>Device recognized</li></ul><button class="scan" data-source-loc="src/App.tsx:37:403"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gauge" aria-hidden="true" data-source-loc="src/App.tsx:37:493"><path d="m12 14 4-4"></path><path d="M3.34 19a10 10 0 1 1 17.32 0"></path></svg>Run quick scan</button></section></div><footer data-source-loc="src/App.tsx:37:550"><span data-source-loc="src/App.tsx:37:558">Pulse · Your data, clearly connected.</span><span data-source-loc="src/App.tsx:37:608">System operational <i data-source-loc="src/App.tsx:37:633"></i></span></footer></div></main></div></div>
+      
+  
+
+</body></html>

@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/synapse-flyer-v1.js');
   script('/assets/nilus-bio-flyer-v1.js');
   script('/assets/digital-solutions-flyer-v1.js');
+  script('/assets/pulse-demo-flyer-v1.js');
   script('/assets/live-market-pulse.js');
   script('/assets/bitcoin-chart.js');
   script('/assets/market-expansion.js');
