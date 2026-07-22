@@ -1,5 +1,7 @@
 import { EmailMessage } from 'cloudflare:email';
 import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
+import {sendBrandedEmail} from '../../gnk-asg-direct-operator/src/outbound-mail-transport-v1.js';
+import {withEmailStatusTracking} from '../../gnk-asg-direct-operator/src/email-status-tracking-v1.js';
 
 const VERSION = `GNK_ASG_MAIL_CENTER_AI_V3_20260703_${AI_REPLY_VERSION}`;
 const internalRecipient = env => String(env?.CONTACT_INTERNAL_RECIPIENTS || '').trim() || 'rht@gmx.com';
@@ -8,6 +10,23 @@ const mandatoryBcc = env => ['beckuphome@gmail.com', internalRecipient(env)];
 const MEDIA_EMAILS = new Set(['media@gnk-asg.hr', 'press@gnk-asg.hr']);
 const DEFAULT_FROM = 'assistant@gnk-asg.hr';
 const MAX_LOG_ITEMS = 250;
+
+function withBrandedMimeTransport(env) {
+  const binding = env?.EMAIL;
+  if (!binding?.send) return env;
+  const wrapped = Object.create(env || null);
+  Object.defineProperty(wrapped, 'EMAIL', {
+    enumerable: true,
+    configurable: true,
+    value: {
+      send(payload) {
+        if (payload instanceof EmailMessage) return binding.send.call(binding, payload);
+        return sendBrandedEmail(env, payload);
+      }
+    }
+  });
+  return wrapped;
+}
 
 // Deset globalnih centara (docs/mail/auto-reply-case-centers-20260709.md).
 // Stabilna dodjela po identitetu posiljatelja - ista osoba uvijek isti centar,
@@ -365,6 +384,7 @@ async function handleInbound(message, env) {
         'X-Auto-Response-Suppress': 'All',
         'X-GNK-ASG-Mail-Center': VERSION,
         'X-GNK-ASG-Receipt': id,
+        'X-GNK-ASG-Reference': id,
         'X-GNK-ASG-Profile': mediaProfile ? 'media-relations' : 'general'
       }
     });
@@ -425,13 +445,20 @@ export default {
     return json({ ok: false, error: 'not_found', path }, 404);
   },
   async email(message, env, ctx) {
-    let target = { message, env };
+    let runtimeEnv = env;
     try {
-      target = prepareAiAutoReply(message, env);
-      if (!target?.message || !target?.env) target = { message, env };
+      runtimeEnv = withEmailStatusTracking(withBrandedMimeTransport(env), 'direct-inbound-auto-reply');
+    } catch (error) {
+      console.error('mail-runtime-wrapper-failed', error);
+      runtimeEnv = withBrandedMimeTransport(env);
+    }
+    let target = { message, env: runtimeEnv };
+    try {
+      target = prepareAiAutoReply(message, runtimeEnv);
+      if (!target?.message || !target?.env) target = { message, env: runtimeEnv };
     } catch (error) {
       console.error('prepareAiAutoReply-wrap-failed', error);
-      target = { message, env };
+      target = { message, env: runtimeEnv };
     }
     const task = handleInbound(target.message, target.env);
     if (ctx?.waitUntil) {

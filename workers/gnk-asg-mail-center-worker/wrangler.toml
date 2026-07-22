@@ -1,0 +1,28 @@
+name = "gnk-asg-mail-center-worker"
+main = "src/index.js"
+compatibility_date = "2026-06-18"
+workers_dev = true
+preview_urls = true
+keep_vars = true
+
+[ai]
+binding = "AI"
+
+[vars]
+AI_AUTO_REPLY_DISABLED = "false"
+EMAIL_STATUS_PUBLIC_ORIGIN = "https://gnk-asg.hr"
+EMAIL_OPEN_TRACKING_ENABLED = "true"
+EMAIL_RECEIPT_CONFIRMATION_ENABLED = "true"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[[d1_databases]]
+binding = "GNK_ASG_D1"
+database_name = "gnk_asg_operator_logs"
+database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
+
+[[send_email]]
+name = "EMAIL"
+remote = true

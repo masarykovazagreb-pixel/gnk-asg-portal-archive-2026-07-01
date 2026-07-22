@@ -259,9 +259,9 @@ export async function syncCloudflareEmailStatuses(env){
   const events=payload?.data?.viewer?.zones?.[0]?.emailSendingAdaptive||[],db=await ensureEmailStatusSchema(env);let matched=0,updated=0;
   for(const event of events){
    const messageId=clean(event.messageId),mapped=statusFromProvider(event.status);if(!messageId||!mapped)continue;
-   const row=await db.prepare(`SELECT tracking_id FROM email_status_records WHERE provider_message_id=?`).bind(messageId).first();if(!row?.tracking_id)continue;
+   const row=await db.prepare(`SELECT tracking_id FROM email_status_records WHERE REPLACE(REPLACE(provider_message_id,'<',''),'>','')=REPLACE(REPLACE(?,'<',''),'>','')`).bind(messageId).first();if(!row?.tracking_id)continue;
    const stamp=clean(event.datetime)||now(),delivered=mapped==='DELIVERED'?stamp:null,failed=FINAL_FAILURES.has(mapped)?stamp:null;
-   const result=await db.prepare(`UPDATE email_status_records SET current_status=CASE WHEN current_status IN ('OPENED','CONFIRMED') AND ?='DELIVERED' THEN current_status ELSE ? END,provider_status=?,error_cause=?,error_detail=?,delivered_at=COALESCE(delivered_at,?),failed_at=COALESCE(failed_at,?),last_event_at=?,updated_at=? WHERE provider_message_id=?`).bind(mapped,mapped,clean(event.status),clean(event.errorCause),clean(event.errorDetail),delivered,failed,stamp,stamp,messageId).run();
+   const result=await db.prepare(`UPDATE email_status_records SET current_status=CASE WHEN current_status IN ('OPENED','CONFIRMED') AND ?='DELIVERED' THEN current_status ELSE ? END,provider_status=?,error_cause=?,error_detail=?,delivered_at=COALESCE(delivered_at,?),failed_at=COALESCE(failed_at,?),last_event_at=?,updated_at=? WHERE REPLACE(REPLACE(provider_message_id,'<',''),'>','')=REPLACE(REPLACE(?,'<',''),'>','')`).bind(mapped,mapped,clean(event.status),clean(event.errorCause),clean(event.errorDetail),delivered,failed,stamp,stamp,messageId).run();
    const changes=Number(result.meta?.changes||0);if(changes){matched++;updated+=changes;await addEvent(db,row.tracking_id,mapped,{eventKey:`provider:${messageId}:${stamp}:${mapped}:${clean(event.eventType)}`,stamp,status:mapped,providerStatus:clean(event.status),detail:[clean(event.eventType),clean(event.errorCause),clean(event.errorDetail)].filter(Boolean).join(' · ')});}
   }
   const retention=clamp(env.EMAIL_STATUS_EVENT_RETENTION_DAYS,1,365,31);
