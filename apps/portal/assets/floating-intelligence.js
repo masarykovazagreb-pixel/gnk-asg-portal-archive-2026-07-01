@@ -274,14 +274,29 @@
     return answer(query);
   }
 
+  let messages = [];
+
+  function renderThread() {
+    const thread = document.getElementById('aiMiniThread');
+    if (!thread) return;
+    thread.innerHTML = messages.map(m => {
+      const cls = m.role === 'user' ? 'ai-msg ai-msg-user' : 'ai-msg ai-msg-bot' + (m.pending ? ' pending' : '');
+      const text = m.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return `<div class="${cls}">${text}</div>`;
+    }).join('');
+    thread.scrollTop = thread.scrollHeight;
+  }
+
   async function setResult(query) {
-    const output = document.getElementById('aiMiniResult');
-    if (!output) return;
-    output.textContent = '…';
-    output.classList.add('visible');
+    const q = clean(query);
+    if (!q) return;
     setResearchLink(query);
+    messages.push({ role: 'user', text: q });
+    messages.push({ role: 'bot', text: '…', pending: true });
+    renderThread();
     const text = await smartAnswer(query);
-    output.textContent = text + '\n\n' + t().source + '\n' + t().action;
+    messages[messages.length - 1] = { role: 'bot', text: text + '\n\n' + t().source };
+    renderThread();
   }
 
   function render() {
@@ -291,14 +306,16 @@
     if (!button || !panel) return;
     button.setAttribute('aria-label', c.aria);
     button.innerHTML = '<span class="ai-fab-mark">ASG</span><span class="ai-fab-label">ASG Bot</span><span class="ai-fab-dot"></span>';
-    panel.innerHTML = '<div class="ai-mini-head"><div><small>' + c.subtitle + '</small><strong>' + c.title + '</strong></div><button type="button" class="ai-mini-close" aria-label="Close">×</button></div><div class="ai-mini-status"></div><div class="ai-mini-body"><p class="ai-mini-intro">' + c.intro + '</p><div class="ai-mini-chips">' + c.chips.map(item => '<button type="button">' + item + '</button>').join('') + '</div><div class="ai-mini-result" id="aiMiniResult"></div><form class="ai-mini-form"><input autocomplete="off" placeholder="' + c.placeholder + '"><button type="submit">' + c.send + '</button></form><div class="ai-mini-links"><a class="ai-full-link" href="' + DESK + '">' + c.full + '</a><a class="ai-research-link" id="aiWhatsAppLink" target="_blank" rel="noopener nofollow" href="' + WHATSAPP + '">' + c.whatsapp + '</a><a class="ai-research-link" href="' + CONTACT + '">' + c.contact + '</a><a class="ai-research-link" id="aiResearchLink" target="_blank" rel="noopener nofollow" href="https://news.google.com/">' + c.research + '</a><a class="ai-research-link" id="aiWebLink" target="_blank" rel="noopener nofollow" href="https://www.google.com/">' + c.web + '</a></div></div>';
+    panel.innerHTML = '<div class="ai-mini-head"><div><small>' + c.subtitle + '</small><strong>' + c.title + '</strong></div><button type="button" class="ai-mini-close" aria-label="Close">×</button></div><div class="ai-mini-status"></div><div class="ai-mini-body"><p class="ai-mini-intro">' + c.intro + '</p><div class="ai-mini-chips">' + c.chips.map(item => '<button type="button">' + item + '</button>').join('') + '</div><div class="ai-mini-thread" id="aiMiniThread"></div><form class="ai-mini-form"><input autocomplete="off" placeholder="' + c.placeholder + '"><button type="submit">' + c.send + '</button></form><div class="ai-mini-links"><a class="ai-full-link" href="' + DESK + '">' + c.full + '</a><a class="ai-research-link" id="aiWhatsAppLink" target="_blank" rel="noopener nofollow" href="' + WHATSAPP + '">' + c.whatsapp + '</a><a class="ai-research-link" href="' + CONTACT + '">' + c.contact + '</a><a class="ai-research-link" id="aiResearchLink" target="_blank" rel="noopener nofollow" href="https://news.google.com/">' + c.research + '</a><a class="ai-research-link" id="aiWebLink" target="_blank" rel="noopener nofollow" href="https://www.google.com/">' + c.web + '</a></div></div>';
     panel.querySelector('.ai-mini-close').onclick = close;
     panel.querySelector('.ai-full-link').onclick = close;
     panel.querySelectorAll('.ai-mini-chips button').forEach(chip => chip.onclick = () => setResult(chip.textContent));
     panel.querySelector('form').onsubmit = event => {
       event.preventDefault();
       const input = panel.querySelector('input');
-      setResult(input.value);
+      const value = input.value;
+      input.value = '';
+      setResult(value);
     };
     setResearchLink('GNK ASG d.o.o. GNK DINAMO Ltd.');
     paintStatus();
