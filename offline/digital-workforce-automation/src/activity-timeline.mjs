@@ -67,10 +67,10 @@ export function buildActivityTimeline(cycle, review, publicationPlan) {
     }));
 
     const decision = reviewByDraft.get(draft.id)?.decision;
-    const planStatus = planByDraft.get(draft.id)?.status;
+    const planState = planByDraft.get(draft.id)?.state;
     const finalStatus = decision === 'REJECT' ? 'FAILED'
-      : ['BLOCKED', 'REJECTED'].includes(planStatus) ? 'BLOCKED'
-        : planStatus === 'READY_INTERNAL' ? 'COMPLETED' : 'REVIEW_REQUIRED';
+      : ['BLOCKED', 'REJECTED'].includes(planState) ? 'BLOCKED'
+        : planState === 'READY_INTERNAL' ? 'COMPLETED' : 'REVIEW_REQUIRED';
     entries.push(eventFor(finalStatus, {
       date: cycle.date, runId, workerId,
       entityType: 'draft', entityId: draft.id, index: index++
