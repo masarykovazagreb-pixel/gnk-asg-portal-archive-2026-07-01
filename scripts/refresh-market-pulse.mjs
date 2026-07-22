@@ -6,37 +6,98 @@ const OUT = path.resolve('apps/portal/data/market-pulse.json');
 const UA = { 'user-agent': 'Mozilla/5.0 (compatible; GNK-ASG-Market-Pulse/1.0)' };
 
 const INDICES = [
-  { symbol: '^GSPC', label: 'S&P 500', country: 'SAD' },
-  { symbol: '^DJI', label: 'Dow Jones 30', country: 'SAD' },
-  { symbol: '^IXIC', label: 'Nasdaq Composite', country: 'SAD' },
-  { symbol: '^FTSE', label: 'FTSE 100', country: 'Ujedinjeno Kraljevstvo' },
-  { symbol: '^GDAXI', label: 'DAX 40', country: 'Njemačka' },
-  { symbol: '^N225', label: 'Nikkei 225', country: 'Japan' },
-  { symbol: '^VIX', label: 'VIX', country: 'SAD' },
+  // Amerika
+  { symbol: '^GSPC', label: 'S&P 500', country: 'SAD', region: 'Amerika' },
+  { symbol: '^DJI', label: 'Dow Jones 30', country: 'SAD', region: 'Amerika' },
+  { symbol: '^IXIC', label: 'Nasdaq Composite', country: 'SAD', region: 'Amerika' },
+  { symbol: '^RUT', label: 'Russell 2000', country: 'SAD', region: 'Amerika' },
+  { symbol: '^VIX', label: 'VIX (volatilnost)', country: 'SAD', region: 'Amerika' },
+  { symbol: '^BVSP', label: 'Bovespa', country: 'Brazil', region: 'Amerika' },
+  { symbol: '^MXX', label: 'IPC Meksiko', country: 'Meksiko', region: 'Amerika' },
+  { symbol: '^GSPTSE', label: 'TSX Kanada', country: 'Kanada', region: 'Amerika' },
+  // Europa
+  { symbol: '^FTSE', label: 'FTSE 100', country: 'Ujedinjeno Kraljevstvo', region: 'Europa' },
+  { symbol: '^GDAXI', label: 'DAX 40', country: 'Njemačka', region: 'Europa' },
+  { symbol: '^FCHI', label: 'CAC 40', country: 'Francuska', region: 'Europa' },
+  { symbol: '^STOXX50E', label: 'Euro Stoxx 50', country: 'Eurozona', region: 'Europa' },
+  { symbol: '^IBEX', label: 'IBEX 35', country: 'Španjolska', region: 'Europa' },
+  { symbol: 'FTSEMIB.MI', label: 'FTSE MIB', country: 'Italija', region: 'Europa' },
+  { symbol: '^SSMI', label: 'SMI', country: 'Švicarska', region: 'Europa' },
+  { symbol: '^AEX', label: 'AEX 25', country: 'Nizozemska', region: 'Europa' },
+  // Azija i Pacifik
+  { symbol: '^N225', label: 'Nikkei 225', country: 'Japan', region: 'Azija i Pacifik' },
+  { symbol: '^HSI', label: 'Hang Seng', country: 'Hong Kong', region: 'Azija i Pacifik' },
+  { symbol: '000001.SS', label: 'SSE Composite (Šangaj)', country: 'Kina', region: 'Azija i Pacifik' },
+  { symbol: '^KS11', label: 'KOSPI', country: 'Južna Koreja', region: 'Azija i Pacifik' },
+  { symbol: '^BSESN', label: 'BSE Sensex', country: 'Indija', region: 'Azija i Pacifik' },
+  { symbol: '^AXJO', label: 'ASX 200', country: 'Australija', region: 'Azija i Pacifik' },
 ];
 
 const COMMODITIES = [
-  { symbol: 'GC=F', label: 'Zlato', unit: 'USD/oz' },
-  { symbol: 'SI=F', label: 'Srebro', unit: 'USD/oz' },
-  { symbol: 'CL=F', label: 'WTI nafta', unit: 'USD/bbl' },
-  { symbol: 'BZ=F', label: 'Brent', unit: 'USD/bbl' },
-  { symbol: 'HG=F', label: 'Bakar', unit: 'USD/lb' },
+  { symbol: 'GC=F', label: 'Zlato (futures)', unit: 'USD', exchange: 'COMEX' },
+  { symbol: 'SI=F', label: 'Srebro (futures)', unit: 'USD', exchange: 'COMEX' },
+  { symbol: 'CL=F', label: 'Nafta WTI', unit: 'USD', exchange: 'NYMEX' },
+  { symbol: 'BZ=F', label: 'Nafta Brent', unit: 'USD', exchange: 'ICE' },
+  { symbol: 'HG=F', label: 'Bakar', unit: 'USD', exchange: 'COMEX' },
+  { symbol: 'PL=F', label: 'Platina', unit: 'USD', exchange: 'NYMEX' },
+  { symbol: 'NG=F', label: 'Prirodni plin', unit: 'USD', exchange: 'NYMEX' },
+  { symbol: 'ZC=F', label: 'Kukuruz', unit: 'USX', exchange: 'CBOT' },
+  { symbol: 'ZW=F', label: 'Pšenica', unit: 'USX', exchange: 'CBOT' },
+  { symbol: 'ZS=F', label: 'Soja', unit: 'USX', exchange: 'CBOT' },
+  { symbol: 'KC=F', label: 'Kava', unit: 'USX', exchange: 'ICE' },
+  { symbol: 'CC=F', label: 'Kakao', unit: 'USD', exchange: 'ICE' },
+  { symbol: 'CT=F', label: 'Pamuk', unit: 'USX', exchange: 'ICE' },
+  { symbol: 'SB=F', label: 'Šećer', unit: 'USX', exchange: 'ICE' },
+  { symbol: 'LE=F', label: 'Govedina', unit: 'USX', exchange: 'CME' },
 ];
 
 const CURRENCIES = [
-  { symbol: 'EURUSD=X', label: 'EUR/USD' },
-  { symbol: 'GBPUSD=X', label: 'GBP/USD' },
-  { symbol: 'USDJPY=X', label: 'USD/JPY' },
-  { symbol: 'USDCNY=X', label: 'USD/CNY' },
+  { symbol: 'EURUSD=X', label: 'Euro / američki dolar', country: 'Globalno' },
+  { symbol: 'GBPUSD=X', label: 'Britanska funta / dolar', country: 'Globalno' },
+  { symbol: 'USDJPY=X', label: 'Dolar / japanski jen', country: 'Japan' },
+  { symbol: 'AUDUSD=X', label: 'Australski dolar / USD', country: 'Australija' },
+  { symbol: 'NZDUSD=X', label: 'Novozelandski dolar / USD', country: 'Novi Zeland' },
+  { symbol: 'USDCAD=X', label: 'Dolar / kanadski dolar', country: 'Kanada' },
+  { symbol: 'USDCHF=X', label: 'Dolar / švicarski franak', country: 'Globalno' },
+  { symbol: 'USDCNY=X', label: 'Dolar / kineski juan', country: 'Kina' },
+  { symbol: 'USDKRW=X', label: 'Dolar / južnokorejski won', country: 'Južna Koreja' },
+  { symbol: 'USDBRL=X', label: 'Dolar / brazilski real', country: 'Brazil' },
+  { symbol: 'USDMXN=X', label: 'Dolar / meksički pezo', country: 'Meksiko' },
+  { symbol: 'USDHUF=X', label: 'Dolar / mađarska forinta', country: 'Mađarska' },
+  { symbol: 'USDNOK=X', label: 'Dolar / norveška kruna', country: 'Norveška' },
+  { symbol: 'USDPLN=X', label: 'Dolar / poljska zlota', country: 'Poljska' },
+  { symbol: 'USDSEK=X', label: 'Dolar / švedska kruna', country: 'Švedska' },
+  { symbol: 'USDTRY=X', label: 'Dolar / turska lira', country: 'Turska' },
+  { symbol: 'EURGBP=X', label: 'Euro / britanska funta', country: 'Europa' },
+  { symbol: 'EURJPY=X', label: 'Euro / japanski jen', country: 'Globalno' },
+  { symbol: 'EURCHF=X', label: 'Euro / švicarski franak', country: 'Europa' },
 ];
 
 const STOCKS = [
-  { symbol: 'AAPL', label: 'Apple' },
-  { symbol: 'MSFT', label: 'Microsoft' },
-  { symbol: 'NVDA', label: 'NVIDIA' },
-  { symbol: 'GOOGL', label: 'Alphabet' },
-  { symbol: 'AMZN', label: 'Amazon' },
-  { symbol: 'TSLA', label: 'Tesla' },
+  { symbol: 'BABA', label: 'Alibaba', country: 'Kina' },
+  { symbol: 'GOOGL', label: 'Alphabet (Google)', country: 'SAD' },
+  { symbol: 'AMZN', label: 'Amazon', country: 'SAD' },
+  { symbol: 'AMD', label: 'AMD', country: 'SAD' },
+  { symbol: 'AAPL', label: 'Apple', country: 'SAD' },
+  { symbol: 'ASML', label: 'ASML', country: 'Nizozemska' },
+  { symbol: 'AVGO', label: 'Broadcom', country: 'SAD' },
+  { symbol: 'LLY', label: 'Eli Lilly', country: 'SAD' },
+  { symbol: 'XOM', label: 'Exxon Mobil', country: 'SAD' },
+  { symbol: 'HD', label: 'Home Depot', country: 'SAD' },
+  { symbol: 'JPM', label: 'JPMorgan Chase', country: 'SAD' },
+  { symbol: 'MC.PA', label: 'LVMH', country: 'Francuska' },
+  { symbol: 'MA', label: 'Mastercard', country: 'SAD' },
+  { symbol: 'META', label: 'Meta Platforms', country: 'SAD' },
+  { symbol: 'MSFT', label: 'Microsoft', country: 'SAD' },
+  { symbol: 'NFLX', label: 'Netflix', country: 'SAD' },
+  { symbol: 'NVO', label: 'Novo Nordisk', country: 'Danska' },
+  { symbol: 'NVDA', label: 'Nvidia', country: 'SAD' },
+  { symbol: 'SAP', label: 'SAP', country: 'Njemačka' },
+  { symbol: 'TSLA', label: 'Tesla', country: 'SAD' },
+  { symbol: 'TM', label: 'Toyota', country: 'Japan' },
+  { symbol: 'TSM', label: 'TSMC', country: 'Tajvan' },
+  { symbol: 'V', label: 'Visa', country: 'SAD' },
+  { symbol: 'WMT', label: 'Walmart', country: 'SAD' },
 ];
 
 async function fetchJson(url, opts = {}) {
@@ -66,6 +127,17 @@ async function fetchYahooQuote(symbol, label, extra = {}) {
     return { symbol, label, ...extra, price: Number(price), changePct: Number(changePct.toFixed(2)), sparkline, ok: true };
   } catch (error) {
     return { symbol, label, ...extra, ok: false, error: String(error?.message || error) };
+  }
+}
+
+async function fetchEcbRates() {
+  try {
+    const data = await fetchJson('https://api.frankfurter.app/latest?from=EUR');
+    const rates = data?.rates || {};
+    if (!Object.keys(rates).length) throw new Error('no rates');
+    return { ok: true, base: 'EUR', date: data.date, rates };
+  } catch (error) {
+    return { ok: false, error: String(error?.message || error) };
   }
 }
 
@@ -134,14 +206,15 @@ async function fetchTopCoins() {
 }
 
 async function main() {
-  const [indices, commodities, currencies, stocks, cryptoGlobal, fearGreed, topCoinsResult] = await Promise.all([
-    Promise.all(INDICES.map((i) => fetchYahooQuote(i.symbol, i.label, { country: i.country }))),
-    Promise.all(COMMODITIES.map((c) => fetchYahooQuote(c.symbol, c.label, { unit: c.unit }))),
-    Promise.all(CURRENCIES.map((c) => fetchYahooQuote(c.symbol, c.label))),
-    Promise.all(STOCKS.map((s) => fetchYahooQuote(s.symbol, s.label))),
+  const [indices, commodities, currencies, stocks, cryptoGlobal, fearGreed, topCoinsResult, ecbRates] = await Promise.all([
+    Promise.all(INDICES.map((i) => fetchYahooQuote(i.symbol, i.label, { country: i.country, region: i.region }))),
+    Promise.all(COMMODITIES.map((c) => fetchYahooQuote(c.symbol, c.label, { unit: c.unit, exchange: c.exchange }))),
+    Promise.all(CURRENCIES.map((c) => fetchYahooQuote(c.symbol, c.label, { country: c.country }))),
+    Promise.all(STOCKS.map((s) => fetchYahooQuote(s.symbol, s.label, { country: s.country }))),
     fetchCryptoGlobal(),
     fetchFearGreed(),
     fetchTopCoins(),
+    fetchEcbRates(),
   ]);
 
   const allQuotes = [...indices, ...commodities, ...currencies, ...stocks];
@@ -150,15 +223,16 @@ async function main() {
   const instrumentsOk = okCount + (topCoinsResult.coins?.length || 0);
 
   const report = {
-    version: 'GNK_ASG_MARKET_PULSE_V2_20260722',
+    version: 'GNK_ASG_MARKET_PULSE_V3_20260722',
     generatedAt: new Date().toISOString(),
-    sources: ['Yahoo Finance', 'CoinGecko', 'Alternative.me Fear & Greed Index'],
+    sources: ['Yahoo Finance', 'CoinGecko', 'Alternative.me Fear & Greed Index', 'Frankfurter (ECB)'],
     instrumentsOk,
     instrumentsTotal,
     indices,
     commodities,
     stocks,
     currencies,
+    ecbRates,
     crypto: {
       global: cryptoGlobal,
       fearGreed,
