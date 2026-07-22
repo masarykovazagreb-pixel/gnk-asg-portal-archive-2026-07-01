@@ -14,7 +14,7 @@
   style.textContent = `
     #${WIDGET_ID} {
       position: fixed;
-      right: max(14px, env(safe-area-inset-right));
+      right: max(90px, calc(env(safe-area-inset-right) + 76px));
       top: max(84px, env(safe-area-inset-top));
       z-index: 9997;
       width: 44px;
@@ -81,7 +81,7 @@
       50% { transform: rotate(9deg); }
     }
     @media (max-width: 640px) {
-      #${WIDGET_ID} { width: 38px; height: 58px; }
+      #${WIDGET_ID} { width: 38px; height: 58px; right: max(76px, calc(env(safe-area-inset-right) + 64px)); }
       #${WIDGET_ID} .badge { width: 38px; height: 38px; font-size: .56rem; }
     }
     @media (prefers-reduced-motion: reduce) {

@@ -13,7 +13,7 @@
   style.textContent = `
     #${WIDGET_ID} {
       position: fixed;
-      right: max(66px, calc(env(safe-area-inset-right) + 52px));
+      right: max(142px, calc(env(safe-area-inset-right) + 128px));
       top: max(84px, env(safe-area-inset-top));
       z-index: 9996;
       width: 44px;
@@ -79,7 +79,7 @@
       50% { transform: rotate(-8deg); }
     }
     @media (max-width: 640px) {
-      #${WIDGET_ID} { width: 38px; height: 58px; right: max(52px, calc(env(safe-area-inset-right) + 40px)); }
+      #${WIDGET_ID} { width: 38px; height: 58px; right: max(122px, calc(env(safe-area-inset-right) + 110px)); }
       #${WIDGET_ID} .badge { width: 38px; height: 38px; font-size: .56rem; }
     }
     @media (prefers-reduced-motion: reduce) { #${WIDGET_ID} { animation: none; } }

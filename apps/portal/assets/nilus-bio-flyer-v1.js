@@ -14,7 +14,7 @@
   style.textContent = `
     #${WIDGET_ID} {
       position: fixed;
-      right: max(170px, calc(env(safe-area-inset-right) + 156px));
+      right: max(246px, calc(env(safe-area-inset-right) + 232px));
       top: max(84px, env(safe-area-inset-top));
       z-index: 9992;
       width: 44px;
@@ -80,7 +80,7 @@
       50% { transform: rotate(-7deg); }
     }
     @media (max-width: 640px) {
-      #${WIDGET_ID} { width: 38px; height: 58px; right: max(156px, calc(env(safe-area-inset-right) + 144px)); }
+      #${WIDGET_ID} { width: 38px; height: 58px; right: max(214px, calc(env(safe-area-inset-right) + 202px)); }
       #${WIDGET_ID} .badge { width: 38px; height: 38px; font-size: .56rem; }
     }
     @media (prefers-reduced-motion: reduce) { #${WIDGET_ID} { animation: none; } }
