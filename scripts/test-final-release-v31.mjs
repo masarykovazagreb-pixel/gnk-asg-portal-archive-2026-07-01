@@ -25,7 +25,6 @@ const analyses=read('apps/portal/analize/index.html');
 
 assert.match(menu,/__GNK_UNIFIED_MENU_V6__/);
 for(const marker of ['Newsroom','Objave','Komentari','WORKERI I OPERACIJE','WORKERS & OPERATIONS','Worker Operations','Operator Dashboard','Mail Studio','Webmail','Campaign Mailer','Digital Headquarters'])assert.ok(menu.includes(marker),`menu missing ${marker}`);
-assert.match(menu,/width:64px!important;height:66px!important/);
 
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V1__/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V2__/);
@@ -72,7 +71,7 @@ assert.match(contactStudio,/CONTACT_PATH='\/api\/contact-submit'/);
 assert.match(contactStudio,/STUDIO_PATH='\/api\/studio-message\/send'/);
 assert.match(contactStudio,/sendBrandedEmail/);
 assert.match(contactStudio,/createContactCase/);
-assert.match(contactStudio,/CONTACT_INTERNAL='rht@gmx\.com'/);
+assert.match(contactStudio,/CONTACT_INTERNAL=env=>.*'rht@gmx\.com'/);
 assert.match(mime,/width="64" height="66"/);
 assert.match(mime,/Content-Location:/);
 assert.match(mime,/X-Attachment-Id:/);

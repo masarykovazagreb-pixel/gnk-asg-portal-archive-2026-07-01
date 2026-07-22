@@ -1,0 +1,438 @@
+{
+  "version": "WORKER_ROUTE_OWNERSHIP_AUDIT_V2_20260713_DEPLOY_CONFIG",
+  "generatedAt": "2026-07-22T09:23:32.574Z",
+  "summary": {
+    "configs": 23,
+    "workerNames": 14,
+    "declaredRoutes": 50,
+    "duplicateRoutes": 6,
+    "approvedDeployConfigs": 3,
+    "approvedDeclaredRoutes": 0,
+    "duplicateApprovedRoutes": 0,
+    "missingApprovedDeployConfigs": 0,
+    "unmanagedKnownWorkers": 1,
+    "directOperatorAllConfigsRouteLess": false,
+    "directDeployConfigRouteLess": true
+  },
+  "directDeployConfig": {
+    "file": "workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml",
+    "name": "gnk-asg-direct-operator",
+    "main": "src/index-unified-auth-v23.js",
+    "routes": [],
+    "routeLess": true,
+    "approvedDeployConfig": true
+  },
+  "configs": [
+    {
+      "file": "workers/gnk-asg-ai-assist-worker/wrangler.toml",
+      "name": "gnk-asg-ai-assist-worker",
+      "main": "src/index.js",
+      "routes": [
+        "gnk-asg.hr/api/ai-assist*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-ai-newsroom-writer/wrangler.toml",
+      "name": "gnk-asg-ai-newsroom-writer",
+      "main": "src/index.js",
+      "routes": [
+        "gnk-asg.hr/api/ai-newsroom-writer*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-auto-editor-public-clean-worker/wrangler.toml",
+      "name": "gnk-asg-auto-editor-public-clean",
+      "main": "src/index.js",
+      "routes": [
+        "gnk-asg.hr/auto-editor*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-auto-editor-worker/wrangler.toml",
+      "name": "gnk-asg-auto-editor",
+      "main": "src/index.js",
+      "routes": [
+        "gnk-asg.hr/auto-editor*",
+        "www.gnk-asg.hr/auto-editor*",
+        "gnk-asg.hr/api/auto-editor*",
+        "www.gnk-asg.hr/api/auto-editor*",
+        "gnk-asg.hr/data/auto-editor.json",
+        "www.gnk-asg.hr/data/auto-editor.json"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-contact-api-worker/wrangler.no-routes.toml",
+      "name": "gnk-asg-contact-api",
+      "main": "",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": true
+    },
+    {
+      "file": "workers/gnk-asg-contact-api-worker/wrangler.routes.toml",
+      "name": "gnk-asg-contact-api",
+      "main": "src/index.js",
+      "routes": [
+        "gnk-asg.hr/api/contact-submit*",
+        "www.gnk-asg.hr/api/contact-submit*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-contact-api-worker/wrangler.toml",
+      "name": "gnk-asg-contact-api",
+      "main": "src/index-contact-contract-v4.js",
+      "routes": [
+        "gnk-asg.hr/api/contact-submit*",
+        "www.gnk-asg.hr/api/contact-submit*",
+        "gnk-asg.hr/api/contact-mailboxes*",
+        "www.gnk-asg.hr/api/contact-mailboxes*",
+        "gnk-asg.hr/api/operator-send-mail*",
+        "www.gnk-asg.hr/api/operator-send-mail*",
+        "gnk-asg.hr/api/operator-mailbox-config*",
+        "www.gnk-asg.hr/api/operator-mailbox-config*",
+        "gnk-asg.hr/api/operator-signature-load*",
+        "www.gnk-asg.hr/api/operator-signature-load*",
+        "gnk-asg.hr/api/operator-signature-save*",
+        "www.gnk-asg.hr/api/operator-signature-save*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.dark-market.toml",
+      "name": "gnk-asg-direct-operator",
+      "main": "src/index-mail-repair-v1.js",
+      "routes": [
+        "gnk-asg.hr/operator/session/*",
+        "www.gnk-asg.hr/operator/session/*",
+        "gnk-asg.hr/api/admin-mail-send*",
+        "www.gnk-asg.hr/api/admin-mail-send*",
+        "gnk-asg.hr/api/operator-send-mail*",
+        "www.gnk-asg.hr/api/operator-send-mail*",
+        "gnk-asg.hr/api/contact-submit*",
+        "www.gnk-asg.hr/api/contact-submit*",
+        "gnk-asg.hr/mail-studio*",
+        "www.gnk-asg.hr/mail-studio*",
+        "gnk-asg.hr/mail-studio-pro*",
+        "www.gnk-asg.hr/mail-studio-pro*",
+        "gnk-asg.hr/admin-center*",
+        "www.gnk-asg.hr/admin-center*",
+        "gnk-asg.hr/operator-dashboard*",
+        "www.gnk-asg.hr/operator-dashboard*",
+        "gnk-asg.hr/operator-mobile*",
+        "www.gnk-asg.hr/operator-mobile*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml",
+      "name": "gnk-asg-auto-editor",
+      "main": "src/index-editorial-loop-fix-v1.js",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.editorial-final.toml",
+      "name": "gnk-asg-direct-operator",
+      "main": "src/index-editorial-final-v1.js",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.editorial-route.toml",
+      "name": "gnk-asg-editorial-center",
+      "main": "src/index-editorial-final-v1.js",
+      "routes": [
+        "gnk-asg.hr/auto-editor*",
+        "www.gnk-asg.hr/auto-editor*",
+        "gnk-asg.hr/api/editorial-public-health*",
+        "www.gnk-asg.hr/api/editorial-public-health*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.emergency-stop.toml",
+      "name": "gnk-asg-direct-operator",
+      "main": "src/index-final-admin-gateway-v1.js",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml",
+      "name": "gnk-asg-direct-operator",
+      "main": "src/index-unified-auth-v23.js",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": true
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.review-preview.toml",
+      "name": "gnk-asg-enterprise-review-v3",
+      "main": "src/index-enterprise-projects-runtime-v1.js",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.runtime.toml",
+      "name": "gnk-asg-direct-operator",
+      "main": "src/index-final-admin-gateway-v2.js",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.toml",
+      "name": "gnk-asg-direct-operator",
+      "main": "src/index-digital-workforce-v1.js",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.v21-index-preview.toml",
+      "name": "gnk-asg-direct-operator",
+      "main": "src/index-admin-hub-v26-clean-index-v21-preview.js",
+      "routes": [
+        "gnk-asg.hr/*",
+        "www.gnk-asg.hr/*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-emergency-entry-redirect/wrangler.toml",
+      "name": "gnk-asg-emergency-entry-redirect",
+      "main": "src/index.js",
+      "routes": [
+        "gnk-asg.hr/app",
+        "gnk-asg.hr/app/*",
+        "www.gnk-asg.hr/app",
+        "www.gnk-asg.hr/app/*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-news-pages-live/wrangler.toml",
+      "name": "gnk-asg-news-pages-live",
+      "main": "src/index.js",
+      "routes": [
+        "gnk-asg.hr/vijesti/*",
+        "gnk-asg.hr/news/*",
+        "www.gnk-asg.hr/vijesti/*",
+        "www.gnk-asg.hr/news/*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-operator-center/wrangler.toml",
+      "name": "gnk-asg-operator-center",
+      "main": "src/index.js",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": true
+    },
+    {
+      "file": "workers/gnk-asg-public-menu-fix/wrangler.toml",
+      "name": "gnk-asg-public-menu-fix",
+      "main": "src/index.js",
+      "routes": [
+        "gnk-asg.hr/assets/public-menu-final-v9.js*",
+        "www.gnk-asg.hr/assets/public-menu-final-v9.js*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-publish-operator/wrangler.toml",
+      "name": "gnk-asg-publish-operator",
+      "main": "src/index.js",
+      "routes": [
+        "publish.gnk-asg.hr"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-scheduled-mail-sender/wrangler.toml",
+      "name": "gnk-asg-scheduled-mail-sender",
+      "main": "src/index.js",
+      "routes": [
+        "gnk-asg.hr/api/mail-schedule*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    }
+  ],
+  "duplicateRoutes": [
+    {
+      "route": "gnk-asg.hr/auto-editor*",
+      "owners": [
+        "workers/gnk-asg-auto-editor-public-clean-worker/wrangler.toml",
+        "workers/gnk-asg-auto-editor-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.editorial-route.toml"
+      ]
+    },
+    {
+      "route": "www.gnk-asg.hr/auto-editor*",
+      "owners": [
+        "workers/gnk-asg-auto-editor-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.editorial-route.toml"
+      ]
+    },
+    {
+      "route": "gnk-asg.hr/api/contact-submit*",
+      "owners": [
+        "workers/gnk-asg-contact-api-worker/wrangler.routes.toml",
+        "workers/gnk-asg-contact-api-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      ]
+    },
+    {
+      "route": "www.gnk-asg.hr/api/contact-submit*",
+      "owners": [
+        "workers/gnk-asg-contact-api-worker/wrangler.routes.toml",
+        "workers/gnk-asg-contact-api-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      ]
+    },
+    {
+      "route": "gnk-asg.hr/api/operator-send-mail*",
+      "owners": [
+        "workers/gnk-asg-contact-api-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      ]
+    },
+    {
+      "route": "www.gnk-asg.hr/api/operator-send-mail*",
+      "owners": [
+        "workers/gnk-asg-contact-api-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      ]
+    }
+  ],
+  "approvedDeployConfigs": [
+    {
+      "file": "workers/gnk-asg-contact-api-worker/wrangler.no-routes.toml",
+      "name": "gnk-asg-contact-api",
+      "main": "",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": true
+    },
+    {
+      "file": "workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml",
+      "name": "gnk-asg-direct-operator",
+      "main": "src/index-unified-auth-v23.js",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": true
+    },
+    {
+      "file": "workers/gnk-asg-operator-center/wrangler.toml",
+      "name": "gnk-asg-operator-center",
+      "main": "src/index.js",
+      "routes": [],
+      "routeLess": true,
+      "approvedDeployConfig": true
+    }
+  ],
+  "duplicateApprovedRoutes": [],
+  "missingApprovedDeployConfigs": [],
+  "unmanagedKnownWorkers": [
+    "gnk-asg-news-backend"
+  ],
+  "findings": [
+    {
+      "severity": "warning",
+      "code": "DORMANT_CONFIG_ROUTE_CONFLICT",
+      "route": "gnk-asg.hr/auto-editor*",
+      "owners": [
+        "workers/gnk-asg-auto-editor-public-clean-worker/wrangler.toml",
+        "workers/gnk-asg-auto-editor-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.editorial-route.toml"
+      ],
+      "message": "Conflict is outside the approved production deploy config set."
+    },
+    {
+      "severity": "warning",
+      "code": "DORMANT_CONFIG_ROUTE_CONFLICT",
+      "route": "www.gnk-asg.hr/auto-editor*",
+      "owners": [
+        "workers/gnk-asg-auto-editor-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.editorial-route.toml"
+      ],
+      "message": "Conflict is outside the approved production deploy config set."
+    },
+    {
+      "severity": "warning",
+      "code": "DORMANT_CONFIG_ROUTE_CONFLICT",
+      "route": "gnk-asg.hr/api/contact-submit*",
+      "owners": [
+        "workers/gnk-asg-contact-api-worker/wrangler.routes.toml",
+        "workers/gnk-asg-contact-api-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      ],
+      "message": "Conflict is outside the approved production deploy config set."
+    },
+    {
+      "severity": "warning",
+      "code": "DORMANT_CONFIG_ROUTE_CONFLICT",
+      "route": "www.gnk-asg.hr/api/contact-submit*",
+      "owners": [
+        "workers/gnk-asg-contact-api-worker/wrangler.routes.toml",
+        "workers/gnk-asg-contact-api-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      ],
+      "message": "Conflict is outside the approved production deploy config set."
+    },
+    {
+      "severity": "warning",
+      "code": "DORMANT_CONFIG_ROUTE_CONFLICT",
+      "route": "gnk-asg.hr/api/operator-send-mail*",
+      "owners": [
+        "workers/gnk-asg-contact-api-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      ],
+      "message": "Conflict is outside the approved production deploy config set."
+    },
+    {
+      "severity": "warning",
+      "code": "DORMANT_CONFIG_ROUTE_CONFLICT",
+      "route": "www.gnk-asg.hr/api/operator-send-mail*",
+      "owners": [
+        "workers/gnk-asg-contact-api-worker/wrangler.toml",
+        "workers/gnk-asg-direct-operator/wrangler.dark-market.toml"
+      ],
+      "message": "Conflict is outside the approved production deploy config set."
+    },
+    {
+      "severity": "warning",
+      "code": "KNOWN_PRODUCTION_WORKER_NOT_MANAGED_IN_REPO",
+      "worker": "gnk-asg-news-backend"
+    },
+    {
+      "severity": "warning",
+      "code": "DIRECT_DEPLOY_CONFIG_ROUTELESS",
+      "file": "workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml",
+      "message": "The approved deploy config is route-less and cannot take ownership of a conflicting public route by itself."
+    }
+  ]
+}

@@ -51,8 +51,8 @@
   const link = document.createElement('a');
   link.id = WIDGET_ID;
   link.href = '/gnk-aktual/';
-  link.setAttribute('aria-label', 'GNK AKTUAL — najnovije vijesti — Posjetite nas');
-  link.innerHTML = '<span class="flag">Uživo</span><strong>GNK AKTUAL — najnovije vijesti</strong><span class="cta">Posjetite nas →</span>';
+  link.setAttribute('aria-label', 'AKTUAL MEDIA — najnovije vijesti — Posjetite nas');
+  link.innerHTML = '<span class="flag">Uživo</span><strong>AKTUAL MEDIA — najnovije vijesti</strong><span class="cta">Posjetite nas →</span>';
 
   const mount = () => document.body.appendChild(link);
   document.readyState === 'loading'

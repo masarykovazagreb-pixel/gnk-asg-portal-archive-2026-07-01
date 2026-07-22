@@ -5,7 +5,7 @@ const autoreply=fs.readFileSync('workers/gnk-asg-direct-operator/src/mail-identi
 const mime=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js','utf8');
 
 for(const marker of [
-  "GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V9_20260717_UNTRUSTED_SUBJECT_DATA",
+  "GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V10_20260718_PRE_SEND_DEDUPE",
   "buildAutoreplyRawEmail",
   "cid:${EMAIL_LOGO_CID}",
   "mail-studio-compatible-multipart-related",

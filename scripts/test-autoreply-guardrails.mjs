@@ -3,12 +3,13 @@ import assert from 'node:assert/strict';
 
 const source=fs.readFileSync('workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js','utf8');
 const mime=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js','utf8');
-const combined=`${source}\n${mime}`;
+const dedupe=fs.readFileSync('workers/gnk-asg-direct-operator/src/mail-autoreply-dedupe-v1.js','utf8');
+const combined=`${source}\n${mime}\n${dedupe}`;
 
 assert.match(source,/import \{EmailMessage\} from 'cloudflare:email'/);
-assert.match(source,/duplicate_message_id/);
-assert.match(source,/mail:autoreply:message-id:/);
-assert.match(source,/MESSAGE_ID_TTL=60\*60\*24\*30/);
+assert.match(combined,/duplicate_message_id/);
+assert.match(combined,/mail:autoreply:message-id:/);
+assert.match(combined,/MESSAGE_ID_TTL=60\*60\*24\*30/);
 assert.match(source,/auto_response_suppressed/);
 assert.match(source,/null_return_path/);
 assert.match(source,/bulk_or_list/);

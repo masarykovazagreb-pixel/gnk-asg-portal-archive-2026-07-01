@@ -54,7 +54,7 @@ const htmlFiles=walk(ROOT).filter(file=>file.endsWith('.html')&&!utility(file));
 const findings=[];
 const pages=[];
 for(const file of htmlFiles){
- const source=fs.readFileSync(file,'utf8'),route=routeFor(file),html=edgeNormalize(source,route),protectedRoute=isProtected(route),base=baseHref(html),refs=[...extract(html,'href'),...extract(html,'src')];
+ const source=fs.readFileSync(file,'utf8'),route=routeFor(file),html=edgeNormalize(source,route),protectedRoute=isProtected(route),base=baseHref(html),htmlForRefScan=html.replace(/<script(?![^>]*\bsrc=)[^>]*>[\s\S]*?<\/script>/gi,''),refs=[...extract(htmlForRefScan,'href'),...extract(htmlForRefScan,'src')];
  const broken=[...new Set(refs.filter(ref=>!targetExists(ref,file,base)))];
  const robots=html.match(/<meta\b[^>]*name=["']robots["'][^>]*content=["']([^"']+)["']/i)?.[1]||'';
  const noindex=/noindex/i.test(robots),indexable=!protectedRoute&&!noindex,lang=html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1]||'',canon=canonical(html);

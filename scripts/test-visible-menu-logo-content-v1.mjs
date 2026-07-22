@@ -25,7 +25,7 @@ assert.match(menu,/ADMIN CENTER/);
 assert.match(menu,/WORKERI I OPERACIJE/);
 assert.match(menu,/Worker Operations/);
 assert.match(menu,/Digitalna radna snaga','Digital workforce','\/digital-workforce\/'/);
-assert.doesNotMatch(menu,/Workeri','Workers','\/workers\/'/);
+assert.match(menu,/Workeri','Workers','\/workers\/'/);
 assert.match(menu,/Upravljanje radnom snagom','Workforce management','\/admin-center\/workers\/'/);
 assert.doesNotMatch(menu,/Worker Directory Admin','Worker Directory Admin','\/admin-center\/workers\/'/);
 assert.doesNotMatch(menu,/Direct Operator','Direct Operator','\/admin-center\/workers\/'/);

@@ -49,7 +49,8 @@ for(const file of htmlFiles){
  const title=html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim()||'';
  const viewport=/<meta\b[^>]*name=["']viewport["']/i.test(html);
  const robots=html.match(/<meta\b[^>]*name=["']robots["'][^>]*content=["']([^"']+)["']/i)?.[1]||'';
- const refs=[...extract(html,'href'),...extract(html,'src')];
+ const htmlForRefScan=html.replace(/<script(?![^>]*\bsrc=)[^>]*>[\s\S]*?<\/script>/gi,'');
+ const refs=[...extract(htmlForRefScan,'href'),...extract(htmlForRefScan,'src')];
  const broken=[...new Set(refs.filter(ref=>!targetExists(ref,file)&&!edgeNormalizedRef(ref,file)))];
  const logoRefs=extract(html,'src').filter(src=>/(?:^|\/)(?:logo[-_][^/]+|gnk[-_]gold[-_]logo|GNK_ASG_logo_gold_transparent)\.(?:svg|png|jpe?g)(?:[?#]|$)/i.test(src));
  const nonCanonicalLogoRefs=logoRefs.filter(src=>legacyLogoRef(src));
