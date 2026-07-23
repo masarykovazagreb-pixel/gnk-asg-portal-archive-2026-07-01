@@ -28,9 +28,11 @@ button{font-weight:800}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #fff!important;outline-offset:3px!important}
 [data-theme="light"] a:focus-visible,.theme-light a:focus-visible{outline-color:#07162d!important}
 
-#gnk-unified-header{color:#0f172a!important;background:rgba(255,255,255,.42)!important}
-#gnk-unified-header .lang a,#gnk-unified-header .nav-title,#gnk-unified-header .links a{color:#111827!important}
-#gnk-unified-header .toggle,#gnk-unified-header .links a[aria-current=page]{color:#fff!important;background:#0b2345!important}
+#gnk-unified-header{color:#f5f2ea!important;background:transparent!important}
+#gnk-unified-header .lang a{color:#111827!important}
+#gnk-unified-header .nav-title,#gnk-unified-header .links a{color:#111827!important}
+#gnk-unified-header .toggle{color:#fff!important;background:#0a0c10!important}
+#gnk-unified-header .links a[aria-current=page]{color:#fff!important;background:#0b2345!important}
 #gnk-unified-header nav{color:#111827!important;background:rgba(255,255,255,.42)!important}
 #gnk-unified-header .nav-note,#gnk-unified-header .protected{color:#6e4c17!important}
 #gnk-unified-header .label.open{color:#1a7a3c!important}
