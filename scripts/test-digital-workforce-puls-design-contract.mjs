@@ -122,7 +122,7 @@ assert.match(js,/class="dw-count" role="status" aria-live="polite"/);
 assert.match(js,/<span>Workeri<\/span><strong>\$\{countLabel\}<\/strong>/);
 
 // Staging gate contract must track the currently deployed private gate.
-assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V17/);
+assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V18/);
 assert.match(gate,/function safeNext\(value\)/);
 assert.match(gate,/next\.includes\('\\\\'\)/);
 assert.match(gate,/request\.headers\.has\('authorization'\)\?401:200/);
@@ -131,8 +131,11 @@ assert.match(gate,/contentType\.startsWith\('multipart\/form-data'\)/);
 assert.match(gate,/form=await request\.formData\(\)/);
 assert.match(gate,/catch\{\s*return page\('Zahtjev za prijavu nije valjan\.',400\);\s*\}/s);
 assert.match(gate,/return page\('Token nije ispravan\.',401\)/);
-assert.match(gate,/function cookieValue\(request\)/);
-assert.match(gate,/try\{\s*return decodeURIComponent\(hit\.slice\(COOKIE\.length\+1\)\)/s);
+assert.match(gate,/COOKIE_HEADER_MAX_LENGTH=4096/);
+assert.match(gate,/COOKIE_VALUE_MAX_LENGTH=512/);
+assert.match(gate,/if\(!source\|\|source\.length>COOKIE_HEADER_MAX_LENGTH\)return ''/);
+assert.match(gate,/if\(!raw\|\|raw\.length>COOKIE_VALUE_MAX_LENGTH\)return ''/);
+assert.match(gate,/try\{\s*return decodeURIComponent\(raw\)/s);
 assert.match(gate,/catch\{\s*return ''\s*;?\s*\}/s);
 
 console.log(JSON.stringify({
@@ -145,7 +148,7 @@ console.log(JSON.stringify({
   resilience:'isolated-tab-api-failures-worker-project-dependency-only',
   concurrency:'abort-previous-request-ignore-stale-response',
   workerFilters:'persistent-query-project-focus-empty-state-one-click-reset-and-explicit-counts',
-  stagingGate:'V17-safe-redirect-controlled-login-errors-explicit-bearer-401-malformed-cookie-safe',
+  stagingGate:'V18-safe-redirect-controlled-login-errors-explicit-bearer-401-malformed-cookie-safe-bounded-cookie-parsing',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
