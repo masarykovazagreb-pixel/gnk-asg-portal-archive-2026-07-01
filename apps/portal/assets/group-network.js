@@ -25,11 +25,11 @@
     return `M ${a.x} ${a.y} Q ${mx} ${Math.min(a.y,b.y)-rise} ${b.x} ${b.y}`;
   }
   function renderSection() {
-    const group = document.getElementById('grupa');
-    if (!group || document.getElementById('global-network')) return;
+    const anchor = document.getElementById('news') || document.getElementById('grupa');
+    if (!anchor || document.getElementById('global-network')) return;
     const section = document.createElement('section');
     section.className = 'network-section'; section.id = 'global-network';
-    group.insertAdjacentElement('afterend', section);
+    anchor.insertAdjacentElement('afterend', section);
     buildShell();
   }
   function buildShell() {
