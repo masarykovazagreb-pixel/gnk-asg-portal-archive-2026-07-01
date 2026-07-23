@@ -25,14 +25,25 @@ body{
 .container, main, section{
   background:transparent;
 }
-.card,.group-card,.tech-card,.static-preview-card,.doc,.kpi{
+.card,.group-card,.tech-card,.static-preview-card,.doc,.kpi,
+.location-weather-panel,.app-install-banner,.app-sheet,.chat,.chat-form{
   background:rgba(18,21,27,.72)!important;
   backdrop-filter:blur(10px) saturate(140%);
   -webkit-backdrop-filter:blur(10px) saturate(140%);
   border:1px solid rgba(212,175,55,.28)!important;
   color:var(--ink)!important;
 }
-.card *, .group-card *, .tech-card *, .kpi *{
+.card *, .group-card *, .tech-card *, .kpi *,
+.location-weather-panel *, .app-install-banner *, .app-sheet *, .chat *{
+  color:var(--ink)!important;
+}
+.chat-form input{
+  background:rgba(255,255,255,.06)!important;
+  border:1px solid rgba(212,175,55,.3)!important;
+  color:var(--ink)!important;
+}
+.chat .bubble.bot{
+  background:rgba(255,255,255,.08)!important;
   color:var(--ink)!important;
 }
 .btn{
