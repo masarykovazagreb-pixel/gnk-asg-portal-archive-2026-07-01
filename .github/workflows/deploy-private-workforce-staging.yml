@@ -58,7 +58,7 @@ jobs:
           grep -Fq 'GNK DINAMO Ltd grupa' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
-          grep -Fq "GNK_DINAMO_WORKFORCE_STAGING_GATE_V10" "$gate"
+          grep -Fq "GNK_DINAMO_WORKFORCE_STAGING_GATE_V11" "$gate"
           grep -Fq "const COOKIE='__Host-gnk_workforce_staging'" "$gate"
           grep -Fq 'SESSION_MAX_AGE_SECONDS=28800' "$gate"
           grep -Fq 'Operatorski token' "$gate"
@@ -79,6 +79,8 @@ jobs:
           grep -Fq "img-src 'self' data:" "$gate"
           grep -Fq "connect-src 'self'" "$gate"
           grep -Fq 'function unauthorizedApi()' "$gate"
+          grep -Fq 'function randomNonce()' "$gate"
+          grep -Fq 'crypto.getRandomValues(bytes)' "$gate"
           grep -Fq 'async function createSession(env)' "$gate"
           grep -Fq 'async function sessionValid(value,env)' "$gate"
           grep -Fq "crypto.subtle.sign('HMAC'" "$gate"
@@ -138,18 +140,22 @@ jobs:
           grep -Fq '#f2d27d' staging-login.html
           ! grep -Eqi '#06b6d4|#67e8f9|#8b5cf6|#0b3344|#07111f|#030712' staging-login.html
           grep -Fqi 'x-gnk-environment: private-workforce-staging' staging-login.headers
-          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V10' staging-login.headers
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V11' staging-login.headers
           unauth_api=$(curl -sS -D staging-unauth-api.headers -o staging-unauth-api.json -w '%{http_code}' "$URL/api/public/digital-workforce/state")
           [ "$unauth_api" = '401' ] || { echo "::error::Expected unauthenticated API 401, got $unauth_api"; exit 1; }
           grep -Fq 'STAGING_AUTH_REQUIRED' staging-unauth-api.json
           grep -Fqi 'content-type: application/json' staging-unauth-api.headers
           grep -Fqi 'www-authenticate: Bearer realm="GNK DINAMO Workforce staging"' staging-unauth-api.headers
           grep -Fqi 'x-gnk-environment: private-workforce-staging' staging-unauth-api.headers
-          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V10' staging-unauth-api.headers
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V11' staging-unauth-api.headers
           curl -fsS -c staging-cookie.txt -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login"
+          curl -fsS -c staging-cookie-second.txt -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login"
           ! grep -Fq "$TOKEN" staging-cookie.txt
           cookie_value=$(awk '$6=="__Host-gnk_workforce_staging"{print $7}' staging-cookie.txt | tail -1)
-          [[ "$cookie_value" =~ ^[0-9]{10}\.[a-f0-9]{64}$ ]] || { echo '::error::Staging cookie must be a timestamped HMAC session'; exit 1; }
+          cookie_value_second=$(awk '$6=="__Host-gnk_workforce_staging"{print $7}' staging-cookie-second.txt | tail -1)
+          [[ "$cookie_value" =~ ^[0-9]{10}\.[a-f0-9]{32}\.[a-f0-9]{64}$ ]] || { echo '::error::Staging cookie must be a timestamp, random nonce and HMAC signature'; exit 1; }
+          [[ "$cookie_value_second" =~ ^[0-9]{10}\.[a-f0-9]{32}\.[a-f0-9]{64}$ ]] || { echo '::error::Second staging cookie has invalid nonce-bound HMAC format'; exit 1; }
+          [ "$cookie_value" != "$cookie_value_second" ] || { echo '::error::Two logins must produce unique session cookies'; exit 1; }
           [ "$cookie_value" != "$TOKEN_HASH" ] || { echo '::error::Staging cookie must not equal the static token hash'; exit 1; }
           issued_at=${cookie_value%%.*}
           now=$(date +%s)
@@ -172,7 +178,7 @@ jobs:
           headers=$(curl -sSI -b staging-cookie.txt "$URL/digital-workforce/")
           printf '%s' "$headers" | grep -Fqi 'x-robots-tag: noindex'
           printf '%s' "$headers" | grep -Fqi 'x-gnk-environment: private-workforce-staging'
-          printf '%s' "$headers" | grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V10'
+          printf '%s' "$headers" | grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V11'
           printf '%s' "$headers" | grep -Fqi 'x-content-type-options: nosniff'
           printf '%s' "$headers" | grep -Fqi 'x-frame-options: DENY'
           printf '%s' "$headers" | grep -Fqi 'referrer-policy: no-referrer'
@@ -218,7 +224,8 @@ jobs:
           - Source ref: $GITHUB_REF
           - Approved branch lock: verified
           - Browser login: same operator token verified
-          - Session cookie: expiring timestamped HMAC; raw token and static token hash absent
+          - Session cookie: unique random nonce-bound expiring HMAC; raw token and static token hash absent
+          - Two immediate logins: distinct session cookies verified
           - Tampered session: rejected and returned to private login
           - Staging identity headers: verified on login, unauthenticated API and authenticated portal
           - Unauthenticated API access: explicit 401 JSON with Bearer challenge verified
@@ -247,6 +254,7 @@ jobs:
             staging-login.html
             staging-page.html
             staging-cookie.txt
+            staging-cookie-second.txt
             staging-cookie-tampered.txt
             staging-tampered-session.html
             staging-unauth-api.headers
