@@ -1,6 +1,6 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V8';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V9';
 const encoder=new TextEncoder();
 const COOKIE='gnk_workforce_staging';
 const CSP="default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'";
@@ -21,7 +21,7 @@ function harden(headers){
 function page(message=''){
   const note=message?`<p class="error" role="alert">${String(message).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}</p>`:'';
   const headers=harden(new Headers({'content-type':'text/html; charset=utf-8'}));
-  return new Response(`<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Privatni staging | GNK DINAMO Ltd grupa</title><style>html{color-scheme:dark;background:#000}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;background:#000;font-family:Inter,Arial,sans-serif;color:#fff}.card{position:relative;width:min(92vw,460px);padding:34px;border:1px solid rgba(215,181,91,.34);border-radius:24px;background:rgba(8,8,8,.88);box-shadow:0 30px 80px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,255,255,.04);backdrop-filter:blur(18px)}.card:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,rgba(215,181,91,.07),transparent 42%)}.tag{position:relative;display:inline-block;padding:7px 11px;border:1px solid rgba(215,181,91,.38);border-radius:999px;background:rgba(215,181,91,.1);color:#f2d27d;font-size:12px;font-weight:800;letter-spacing:.1em}h1{position:relative;margin:18px 0 10px;font-size:30px;line-height:1.15}p{position:relative;color:#c7c7c7;line-height:1.55}.error{padding:10px 12px;border:1px solid rgba(248,113,113,.42);border-radius:10px;background:rgba(127,29,29,.2);color:#fecaca}form{position:relative}label{display:block;margin:22px 0 8px;font-weight:700;color:#f5f5f5}input{width:100%;min-height:48px;padding:14px 15px;border-radius:12px;border:1px solid rgba(215,181,91,.34);background:#050505;color:#fff;font-size:16px}input:focus-visible,button:focus-visible{outline:3px solid #f2d27d;outline-offset:3px}button{width:100%;min-height:48px;margin-top:14px;padding:14px;border:1px solid #d7b55b;border-radius:12px;background:#d7b55b;color:#090909;font-weight:900;cursor:pointer}button:hover{background:#f2d27d}small{position:relative;display:block;margin-top:18px;color:#999;line-height:1.5}@media(max-width:520px){.card{padding:26px 22px;border-radius:18px}h1{font-size:26px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}</style></head><body><main class="card"><span class="tag">PRIVATNI STAGING</span><h1>GNK DINAMO Ltd grupa</h1><p>Digitalna radna snaga · zatvoreno testno okruženje</p>${note}<form method="post" action="/_staging/login"><label for="token">Operatorski token</label><input id="token" name="token" type="password" autocomplete="current-password" required autofocus><input type="hidden" name="next" value="/digital-workforce/"><button type="submit">OTVORI STAGING</button></form><small>Koristi se isti token kao za postojeći operator/admin pristup. Token se ne sprema u URL.</small></main></body></html>`,{status:200,headers});
+  return new Response(`<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Privatni staging | GNK DINAMO Ltd grupa</title><style>html{color-scheme:dark;background:#000}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;background:#000;font-family:Inter,Arial,sans-serif;color:#fff}.card{position:relative;width:min(92vw,460px);padding:34px;border:1px solid rgba(215,181,91,.34);border-radius:24px;background:rgba(8,8,8,.88);box-shadow:0 30px 80px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,255,255,.04);backdrop-filter:blur(18px)}.card:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,rgba(215,181,91,.07),transparent 42%)}.tag{position:relative;display:inline-block;padding:7px 11px;border:1px solid rgba(215,181,91,.38);border-radius:999px;background:rgba(215,181,91,.1);color:#f2d27d;font-size:12px;font-weight:800;letter-spacing:.1em}h1{position:relative;margin:18px 0 10px;font-size:30px;line-height:1.15}p{position:relative;color:#c7c7c7;line-height:1.55}.error{padding:10px 12px;border:1px solid rgba(248,113,113,.42);border-radius:10px;background:rgba(127,29,29,.2);color:#fecaca}form{position:relative}label{display:block;margin:22px 0 8px;font-weight:700;color:#f5f5f5}input{width:100%;min-height:48px;padding:14px 15px;border-radius:12px;border:1px solid rgba(215,181,91,.34);background:#050505;color:#fff;font-size:16px}input:focus-visible,button:focus-visible{outline:3px solid #f2d27d;outline-offset:3px}button{width:100%;min-height:48px;margin-top:14px;padding:14px;border:1px solid #d7b55b;border-radius:12px;background:#d7b55b;color:#090909;font-weight:900;cursor:pointer}button:hover{background:#f2d27d}small{position:relative;display:block;margin-top:18px;color:#999;line-height:1.5}@media(max-width:520px){.card{padding:26px 22px;border-radius:18px}h1{font-size:26px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}</style></head><body><main class="card"><span class="tag">PRIVATNI STAGING</span><h1>GNK DINAMO Ltd grupa</h1><p>Digitalna radna snaga · zatvoreno testno okruženje</p>${note}<form method="post" action="/_staging/login"><label for="token">Operatorski token</label><input id="token" name="token" type="password" autocomplete="current-password" required autofocus><input type="hidden" name="next" value="/digital-workforce/"><button type="submit">OTVORI STAGING</button></form><small>Koristi se isti token kao za postojeći operator/admin pristup. Token se ne sprema u URL ni u sesijski cookie.</small></main></body></html>`,{status:200,headers});
 }
 
 function unauthorizedApi(){
@@ -37,6 +37,11 @@ async function sha256(value){
   return [...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('');
 }
 
+function expectedHash(env){
+  const expected=String(env.STAGING_TOKEN_SHA256||'').trim().toLowerCase();
+  return /^[a-f0-9]{64}$/.test(expected)?expected:'';
+}
+
 function cookieValue(request){
   const source=String(request.headers.get('cookie')||'');
   const hit=source.split(';').map(v=>v.trim()).find(v=>v.startsWith(`${COOKIE}=`));
@@ -44,16 +49,21 @@ function cookieValue(request){
 }
 
 async function tokenValid(value,env){
-  const expected=String(env.STAGING_TOKEN_SHA256||'').trim().toLowerCase();
-  if(!/^[a-f0-9]{64}$/.test(expected)||!value)return false;
+  const expected=expectedHash(env);
+  if(!expected||!value)return false;
   return (await sha256(String(value).trim()))===expected;
+}
+
+function sessionValid(value,env){
+  const expected=expectedHash(env);
+  return Boolean(expected&&/^[a-f0-9]{64}$/.test(value)&&value===expected);
 }
 
 async function authorized(request,env){
   const header=String(request.headers.get('authorization')||'');
   const match=header.match(/^Bearer\s+(.+)$/i);
   if(match&&await tokenValid(match[1],env))return true;
-  return tokenValid(cookieValue(request),env);
+  return sessionValid(cookieValue(request),env);
 }
 
 function secure(response){
@@ -67,7 +77,8 @@ async function login(request,env){
   if(!(await tokenValid(token,env)))return page('Token nije ispravan.');
   const next=String(form.get('next')||'/digital-workforce/');
   const location=next.startsWith('/')&&!next.startsWith('//')?next:'/digital-workforce/';
-  const headers=harden(new Headers({location,'set-cookie':`${COOKIE}=${encodeURIComponent(token)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=28800`}));
+  const session=await sha256(token);
+  const headers=harden(new Headers({location,'set-cookie':`${COOKIE}=${session}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=28800`}));
   return new Response(null,{status:303,headers});
 }
 
