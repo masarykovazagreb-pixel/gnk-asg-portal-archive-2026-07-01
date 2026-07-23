@@ -23,6 +23,13 @@ assert.match(html,/aria-labelledby="dw-tab-plan"/);
 assert.match(html,/tabindex="-1"/);
 assert.match(html,/\.dw-tabs button:focus-visible\{outline:3px solid #f2d27d!important/);
 
+// Keyboard bypass contract: users must be able to skip the global header and focus the main application.
+assert.match(html,/<a class="dw-skip-link" href="#dwMain">Preskoči na operativni sadržaj<\/a>/);
+assert.match(html,/<main id="dwMain" class="dw-shell" tabindex="-1">/);
+assert.match(html,/\.dw-skip-link\{position:fixed;z-index:10000/);
+assert.match(html,/\.dw-skip-link:focus-visible\{transform:translateY\(0\);outline:3px solid #f2d27d/);
+assert.match(html,/@media \(prefers-reduced-motion:reduce\)\{\.dw-skip-link\{transition:none\}\}/);
+
 // Visual contract: the private preview must remain pure black, glass-black and gold/white.
 assert.match(html,/html,body,\.dw-private-preview\{background:#000!important;background-image:none!important/);
 assert.match(html,/#gnk-unified-header\{background:rgba\(0,0,0,\.86\)!important/);
@@ -109,7 +116,7 @@ console.log(JSON.stringify({
   contract:'digital-workforce-puls-trzista-public-redesign',
   tabs:11,
   palette:'pure-black-glass-gold-white',
-  accessibility:'linked-tabs-dynamic-panel-label-focus-visible-keyboard-navigation-retry-focus',
+  accessibility:'skip-link-linked-tabs-dynamic-panel-label-focus-visible-keyboard-navigation-retry-focus',
   responsive:'contained-tabs-worker-table-touch-targets',
   resilience:'isolated-tab-api-failures-worker-project-dependency-only',
   concurrency:'abort-previous-request-ignore-stale-response',
