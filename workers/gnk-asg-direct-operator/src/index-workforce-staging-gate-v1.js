@@ -1,10 +1,12 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V19';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V20';
 const encoder=new TextEncoder();
 const COOKIE='__Host-gnk_workforce_staging';
 const COOKIE_HEADER_MAX_LENGTH=4096;
 const COOKIE_VALUE_MAX_LENGTH=512;
+const LOGIN_BODY_MAX_LENGTH=4096;
+const TOKEN_MAX_LENGTH=512;
 const SESSION_MAX_AGE_SECONDS=28800;
 const SESSION_CLOCK_SKEW_SECONDS=300;
 const CSP="default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'";
@@ -131,15 +133,19 @@ function safeNext(value){
 
 async function login(request,env){
   const contentType=String(request.headers.get('content-type')||'').toLowerCase();
-  if(!contentType.startsWith('application/x-www-form-urlencoded')&&!contentType.startsWith('multipart/form-data'))return page('Zahtjev za prijavu nije valjan.',400);
-  let form;
+  if(!contentType.startsWith('application/x-www-form-urlencoded'))return page('Zahtjev za prijavu nije valjan.',400);
+  const lengthHeader=String(request.headers.get('content-length')||'').trim();
+  if(lengthHeader&&(!/^\d+$/.test(lengthHeader)||Number(lengthHeader)>LOGIN_BODY_MAX_LENGTH))return page('Zahtjev za prijavu je prevelik.',413);
+  let body;
   try{
-    form=await request.formData();
+    body=await request.text();
   }catch{
     return page('Zahtjev za prijavu nije valjan.',400);
   }
+  if(body.length>LOGIN_BODY_MAX_LENGTH)return page('Zahtjev za prijavu je prevelik.',413);
+  const form=new URLSearchParams(body);
   const token=String(form.get('token')||'').trim();
-  if(!(await tokenValid(token,env)))return page('Token nije ispravan.',401);
+  if(!token||token.length>TOKEN_MAX_LENGTH||!(await tokenValid(token,env)))return page('Token nije ispravan.',401);
   const location=safeNext(form.get('next'));
   const session=await createSession(env);
   const headers=harden(new Headers({location,'set-cookie':`${COOKIE}=${session}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${SESSION_MAX_AGE_SECONDS}`}));
