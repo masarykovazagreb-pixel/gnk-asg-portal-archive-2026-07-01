@@ -16,6 +16,12 @@ const boot=()=>{
    ['Worker Operations','Worker Operations','/worker-ops/'],['Operator Dashboard','Operator Dashboard','/operator-dashboard/'],['Upravljanje radnom snagom','Workforce management','/admin-center/workers/'],['Operativni pregled','Operations overview','/admin-center/operations/'],['Infrastruktura','Infrastructure','/admin-center/infrastructure/'],['Status sustava','System health','/admin-center/health/'],['SEO Audit','SEO Audit','/admin-center/seo-audit/']
   ]}
  ];
+ const normalize=p=>{try{return new URL(p,location.origin).pathname.replace(/\/+$/,'')||'/'}catch(_){return p}};
+ const currentHrPath=english?path.replace(/^\/en(?:\/|$)/,'/')||'/':path;
+ let hrEquivalent='/',enEquivalent='/en/';
+ const prefixFallbacks=[['/objave/','/en/publications/'],['/komentari/','/en/commentary/'],['/analize/','/en/analyses/'],['/insights-hr/','/en/insights/']];
+ outer: for(const g of groups){for(const item of g.items){const hrHref=item[2],enHref=item[3]||item[2];if(/^https?:\/\//i.test(hrHref))continue;const normHr=normalize(hrHref),normEn=normalize(enHref);if((english&&normEn===path)||(!english&&normHr===path)||normHr===path||normEn===path){hrEquivalent=hrHref;enEquivalent=enHref;break outer}}}
+ if(hrEquivalent==='/'&&path!=='/'&&path!=='/en'){if(!english){for(const [hrPrefix,enPrefix] of prefixFallbacks){if(path.startsWith(hrPrefix)){hrEquivalent=hrPrefix;enEquivalent=enPrefix;break}}}else{for(const [hrPrefix,enPrefix] of prefixFallbacks){if(path.startsWith(enPrefix.replace(/\/$/,''))){hrEquivalent=hrPrefix;enEquivalent=enPrefix;break}}}}
  const existing=document.getElementById('gnk-unified-header');
  let header,menu,actions,lang,button,nav;
  if(existing&&existing.dataset.gnkUnifiedShell==='v6-static'){
@@ -26,6 +32,9 @@ const boot=()=>{
   lang=menu.querySelector('.lang');
   button=menu.querySelector('.toggle');
   nav=document.getElementById('gnk-unified-nav');
+  const hrLink=lang?.querySelector('a[aria-label="Hrvatski"]'),enLink=lang?.querySelector('a[aria-label="English"]');
+  if(hrLink)hrLink.href=hrEquivalent;
+  if(enLink)enLink.href=enEquivalent;
  }else{
   document.querySelectorAll('#gnk-unified-header').forEach(el=>el.remove());document.getElementById('gnk-unified-menu-style')?.remove();
   document.querySelectorAll('#gnk-event-bar,#gnk-floating-menu,#gnk-floating-menu-v2,#gnk-public-ai-button,.public-floating-menu,.floating-menu,.site-header,.menu-toggle,.nav-links,main>.top,body>.top,.dhq-top,.dhq-skip').forEach(el=>el.remove());
@@ -36,7 +45,7 @@ const boot=()=>{
   document.documentElement.classList.add('gnk-unified-shell');
   header=document.createElement('header');header.id='gnk-unified-header';header.dataset.gnkUnifiedShell='v6';
   const inner=document.createElement('div');inner.className='inner';const brand=document.createElement('a');brand.className='brand';brand.href=english?'/en/':'/';brand.setAttribute('aria-label','GNK ASG');const logo=document.createElement('img');logo.src=logoPath;logo.alt='GNK ASG';logo.width=110;logo.height=68;logo.dataset.gnkCanonicalLogo='1';brand.appendChild(logo);
-  menu=document.createElement('div');menu.id='gnk-unified-menu';actions=document.createElement('div');actions.className='actions';lang=document.createElement('div');lang.className='lang';const hr=document.createElement('a');hr.href='/';hr.textContent='HR';hr.setAttribute('aria-label','Hrvatski');const en=document.createElement('a');en.href='/en/';en.textContent='EN';en.setAttribute('aria-label','English');(english?en:hr).setAttribute('aria-current','page');lang.append(hr,en);button=document.createElement('button');button.className='toggle';button.type='button';button.textContent=english?'MENU':'IZBORNIK';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','gnk-unified-nav');nav=document.createElement('nav');nav.id='gnk-unified-nav';
+  menu=document.createElement('div');menu.id='gnk-unified-menu';actions=document.createElement('div');actions.className='actions';lang=document.createElement('div');lang.className='lang';const hr=document.createElement('a');hr.href=hrEquivalent;hr.textContent='HR';hr.setAttribute('aria-label','Hrvatski');const en=document.createElement('a');en.href=enEquivalent;en.textContent='EN';en.setAttribute('aria-label','English');(english?en:hr).setAttribute('aria-current','page');lang.append(hr,en);button=document.createElement('button');button.className='toggle';button.type='button';button.textContent=english?'MENU':'IZBORNIK';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','gnk-unified-nav');nav=document.createElement('nav');nav.id='gnk-unified-nav';
   actions.append(lang,button);menu.append(actions,nav);inner.append(brand,menu);header.appendChild(inner);document.body.prepend(header);
  }
  nav.setAttribute('aria-label',english?'Main navigation':'Glavna navigacija');
