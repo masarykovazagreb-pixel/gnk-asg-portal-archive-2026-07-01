@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260723-remove-tooth-tiles-v4';
+  var VERSION = '20260723-lazy-3d-globe-v5';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var __gnkIsHome = __gnkPath2 === '' || __gnkPath2 === '/' || __gnkPath2 === '/en';
   if (__gnkPath2.indexOf('group-network') !== -1 || __gnkIsHome) {
     script('/assets/group-clarity.js');
-    script('/assets/group-globe-3d.js');
     script('/assets/group-map-2d-geo.js');
     script('/assets/group-location-insights.js');
     script('/assets/group-map-selection-bridge.js');
@@ -82,10 +81,9 @@ document.addEventListener('DOMContentLoaded', function () {
     script('/assets/group-overview-panel.js');
     script('/assets/group-market-coverage.js');
     script('/assets/group-map-pdf.js');
-    script('/assets/group-globe-pdf.js');
     script('/assets/group-map-viewport.js');
     script('/assets/group-mobile-accessible.js');
-    script('/assets/network-search-3d.js');
+    script('/assets/group-globe-lazy-loader.js');
   }
 
   // The scripts below power widgets that are not needed for the
