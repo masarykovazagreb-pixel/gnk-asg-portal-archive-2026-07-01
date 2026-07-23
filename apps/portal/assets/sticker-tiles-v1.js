@@ -89,35 +89,38 @@
     @media (max-width: 900px) {
       #${WIDGET_ID}-left, #${WIDGET_ID}-right { display: none; }
     }
-    @media (prefers-reduced-motion: reduce) { .gnk-tile { transition: none; } }
+    @media (prefers-reduced-motion: reduce) { .gnk-tile { transition: none; } #${WIDGET_ID}-mobile-toggle { animation: none; } }
     #${WIDGET_ID}-mobile-toggle {
       display: none;
-      position: fixed;
-      top: 92px;
-      left: 8px;
-      z-index: 2147483641;
-      height: 36px;
-      padding: 0 13px;
+      height: 34px;
+      padding: 0 12px;
       border: 1px solid #d4af37;
       border-radius: 999px;
       background: #181b22;
       color: #f5f2ea;
       font: 800 10px/1 Arial, sans-serif;
-      letter-spacing: .06em;
+      letter-spacing: .05em;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
       cursor: pointer;
-      box-shadow: 0 5px 14px rgba(0,0,0,.3);
+      white-space: nowrap;
+      flex: 0 0 auto;
+      order: -1;
+      animation: gnkStickerTogglePulse 2.2s ease-in-out infinite;
+    }
+    @keyframes gnkStickerTogglePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,.55); }
+      50% { box-shadow: 0 0 0 7px rgba(212,175,55,0); }
     }
     #${WIDGET_ID}-mobile-panel {
       display: none;
       position: fixed;
-      top: 134px;
+      top: 84px;
       right: 8px;
       left: 8px;
       z-index: 2147483641;
-      max-height: calc(100vh - 150px);
+      max-height: calc(100vh - 100px);
       overflow: auto;
       background: #0d0f14;
       border: 1px solid rgba(212,175,55,.35);
@@ -132,10 +135,11 @@
       padding: 12px 13px;
       margin-bottom: 8px;
       border-radius: 12px;
-      border: 1px solid rgba(212,175,55,.22);
+      border: 1px solid rgba(255,255,255,.25);
       text-decoration: none;
-      background: #181b22;
+      transition: transform .15s ease, box-shadow .15s ease;
     }
+    #${WIDGET_ID}-mobile-panel .gnk-mp-item:active { transform: scale(.98); }
     #${WIDGET_ID}-mobile-panel .gnk-mp-title {
       display: block;
       font: 800 13px/1.3 Arial, sans-serif;
@@ -227,7 +231,7 @@
   const mobilePanel = document.createElement('div');
   mobilePanel.id = `${WIDGET_ID}-mobile-panel`;
   mobilePanel.innerHTML = ALL_ITEMS.map(item =>
-    `<a class="gnk-mp-item" href="${item.href}"><span class="gnk-mp-title">${item.title}</span><span class="gnk-mp-desc">${item.desc}</span></a>`
+    `<a class="gnk-mp-item" href="${item.href}" style="background:${item.bg};color:${item.fg}"><span class="gnk-mp-title" style="color:${item.fg}">${item.title}</span><span class="gnk-mp-desc" style="color:${item.fg};opacity:.75">${item.desc}</span></a>`
   ).join('');
 
   mobileToggle.addEventListener('click', () => {
@@ -241,7 +245,19 @@
     }
   });
 
-  const mount = () => document.body.append(leftBar, rightBar, mobileToggle, mobilePanel);
+  const mount = () => {
+    document.body.append(leftBar, rightBar, mobilePanel);
+    // Insert the mobile toggle inside the header's own actions row, right
+    // before the HR/EN language switcher, so it aligns naturally with the
+    // existing header controls instead of floating separately.
+    const actions = document.querySelector('#gnk-unified-menu .actions');
+    const langSwitch = actions && actions.querySelector('.lang');
+    if (actions && langSwitch) {
+      actions.insertBefore(mobileToggle, langSwitch);
+    } else {
+      document.body.appendChild(mobileToggle);
+    }
+  };
   document.readyState === 'loading'
     ? document.addEventListener('DOMContentLoaded', mount)
     : mount();
