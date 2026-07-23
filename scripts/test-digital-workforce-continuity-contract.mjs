@@ -20,7 +20,7 @@ assert.match(continuity,/continueNewsroomChronology:true/);
 assert.match(continuity,/neverRewritePublishedHistory:true/);
 assert.match(continuity,/deduplicateByStableId:true/);
 
-assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V15/);
+assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V17/);
 assert.match(gate,/function harden\(headers\)/);
 assert.match(gate,/cache-control','no-store, private/);
 assert.match(gate,/x-robots-tag','noindex, nofollow, noarchive, nosnippet/);
@@ -48,12 +48,18 @@ assert.match(gate,/request\.headers\.has\('authorization'\)\?401:200/);
 assert.match(gate,/return page\('Zahtjev za prijavu nije valjan\.',400\)/);
 assert.match(gate,/return page\('Token nije ispravan\.',401\)/);
 
+// Malformed percent-encoded browser cookies must be treated as an invalid session,
+// never allowed to escape decodeURIComponent as an uncontrolled runtime error.
+assert.match(gate,/function cookieValue\(request\)/);
+assert.match(gate,/try\{\s*return decodeURIComponent\(hit\.slice\(COOKIE\.length\+1\)\)/s);
+assert.match(gate,/catch\{\s*return ''\s*;?\s*\}/s);
+
 console.log(JSON.stringify({
   ok:true,
   contract:'published-digital-workforce-continuity',
   baseline:1536,
   current:1573,
   projectAreas:9,
-  stagingGate:'V15',
-  stagingSecurity:'no-store-noindex-nosniff-frame-deny-no-referrer-restricted-permissions-csp-controlled-login-errors-bearer-authoritative-browser-401'
+  stagingGate:'V17',
+  stagingSecurity:'no-store-noindex-nosniff-frame-deny-no-referrer-restricted-permissions-csp-controlled-login-errors-bearer-authoritative-browser-401-malformed-cookie-safe'
 },null,2));
