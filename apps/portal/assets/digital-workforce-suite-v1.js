@@ -75,8 +75,12 @@
     newsroom:data=>cards((data.items||[]).slice(0,18),item=>`<article class="dw-card"><span class="dw-kicker">${date(item.publishedAt)}</span><h3>${esc(item.title)}</h3><p>${esc(item.excerpt)}</p><small>Urednik: ${esc(item.editor)}</small></article>`),
     workers:data=>{
       const filters=state.workerFilters||{q:'',project:''};
-      const rows=(data.items||[]).map(item=>`<tr><td>${esc(item.id)}</td><td><strong>${esc(item.name)}</strong></td><td>${esc(item.projectId)}</td><td>${esc(item.function)}</td><td>${badge(item.status)}</td></tr>`).join('');
-      return `<div class="dw-toolbar"><label><span>Pretraga</span><input id="dwWorkerSearch" type="search" value="${esc(filters.q)}" placeholder="Ime, funkcija ili projekt" autocomplete="off"></label><label><span>Projekt</span><select id="dwWorkerProject"><option value="">Svi projekti</option>${(state.projects?.items||[]).map(project=>`<option value="${esc(project.id)}"${filters.project===String(project.id)?' selected':''}>${esc(project.id)} · ${esc(project.name)}</option>`).join('')}</select></label><div class="dw-count"><span>Ukupno</span><strong>${fmt(data.total)}</strong></div></div><div class="dw-table"><table><thead><tr><th>ID</th><th>Ime i prezime</th><th>Projekt</th><th>Funkcija</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      const items=data.items||[];
+      const hasFilters=Boolean(filters.q||filters.project);
+      const rows=items.map(item=>`<tr><td>${esc(item.id)}</td><td><strong>${esc(item.name)}</strong></td><td>${esc(item.projectId)}</td><td>${esc(item.function)}</td><td>${badge(item.status)}</td></tr>`).join('');
+      const resetButton=hasFilters?'<button type="button" id="dwWorkerReset">Poništi filtre</button>':'';
+      const result=items.length?`<div class="dw-table"><table><thead><tr><th>ID</th><th>Ime i prezime</th><th>Projekt</th><th>Funkcija</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="dw-empty dw-worker-empty" role="status"><strong>${hasFilters?'Nema workera koji odgovaraju odabranim kriterijima.':'Katalog workera je trenutačno prazan.'}</strong>${hasFilters?'<p>Promijenite kriterije ili vratite prikaz cijelog kataloga.</p><button type="button" id="dwWorkerResetEmpty">Prikaži sve workere</button>':''}</div>`;
+      return `<div class="dw-toolbar"><label><span>Pretraga</span><input id="dwWorkerSearch" type="search" value="${esc(filters.q)}" placeholder="Ime, funkcija ili projekt" autocomplete="off"></label><label><span>Projekt</span><select id="dwWorkerProject"><option value="">Svi projekti</option>${(state.projects?.items||[]).map(project=>`<option value="${esc(project.id)}"${filters.project===String(project.id)?' selected':''}>${esc(project.id)} · ${esc(project.name)}</option>`).join('')}</select></label><div class="dw-count"><span>Ukupno</span><strong>${fmt(data.total)}</strong></div>${resetButton}</div>${result}`;
     },
     log:data=>data.items?.length?data.items.slice(0,50).map(item=>`<div class="dw-log"><time>${dateTime(item.at)}</time><b>${esc(item.type)}</b><span>${esc(item.message)}</span></div>`).join(''):'<div class="dw-empty">Zapisnik je prazan.</div>'
   };
@@ -135,9 +139,17 @@
     }
   }
 
+  function resetWorkerFilters(){
+    state.workerFilters={q:'',project:''};
+    state.workerFilterFocus='dwWorkerSearch';
+    load('workers');
+  }
+
   function bindWorkerFilters(){
     const search=$('#dwWorkerSearch');
     const project=$('#dwWorkerProject');
+    const reset=$('#dwWorkerReset');
+    const resetEmpty=$('#dwWorkerResetEmpty');
     let timer;
     const run=event=>{
       clearTimeout(timer);
@@ -147,6 +159,8 @@
     };
     search?.addEventListener('input',run);
     project?.addEventListener('change',run);
+    reset?.addEventListener('click',resetWorkerFilters);
+    resetEmpty?.addEventListener('click',resetWorkerFilters);
   }
 
   function activate(name){
