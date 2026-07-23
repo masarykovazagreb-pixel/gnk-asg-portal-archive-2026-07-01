@@ -57,7 +57,7 @@ const boot=()=>{
   dinamoLogo.id='gnk-dinamo-watermark';
   dinamoLogo.src='/assets/logo-gnk-dinamo-ltd-group.png?v=20260720-transparent';
   dinamoLogo.alt='GNK DINAMO Ltd. Group';
-  dinamoLogo.style.cssText='position:fixed!important;left:50%!important;top:84px!important;transform:translateX(-50%)!important;height:68px!important;width:auto!important;max-width:180px!important;object-fit:contain!important;z-index:2147483639!important;pointer-events:none!important;transition:opacity .2s ease;filter:drop-shadow(0 1px 0 rgba(255,255,255,.85)) drop-shadow(0 2px 3px rgba(15,23,42,.28)) drop-shadow(0 -1px 0 rgba(255,255,255,.4))';
+  dinamoLogo.style.cssText='position:fixed!important;left:50%!important;top:84px!important;transform:translateX(-50%)!important;height:68px!important;width:auto!important;max-width:180px!important;object-fit:contain!important;z-index:2147483639!important;pointer-events:none!important;transition:opacity .2s ease';
   document.body.prepend(dinamoLogo);
   const toggleWatermark=()=>{dinamoLogo.style.opacity=window.scrollY<=8?'1':'0'};
   toggleWatermark();
