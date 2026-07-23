@@ -1,8 +1,10 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V9';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V10';
 const encoder=new TextEncoder();
-const COOKIE='gnk_workforce_staging';
+const COOKIE='__Host-gnk_workforce_staging';
+const SESSION_MAX_AGE_SECONDS=28800;
+const SESSION_CLOCK_SKEW_SECONDS=300;
 const CSP="default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'";
 
 function harden(headers){
@@ -54,9 +56,39 @@ async function tokenValid(value,env){
   return (await sha256(String(value).trim()))===expected;
 }
 
-function sessionValid(value,env){
-  const expected=expectedHash(env);
-  return Boolean(expected&&/^[a-f0-9]{64}$/.test(value)&&value===expected);
+async function hmacKey(secret){
+  return crypto.subtle.importKey('raw',encoder.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign','verify']);
+}
+
+function bytesToHex(bytes){
+  return [...new Uint8Array(bytes)].map(byte=>byte.toString(16).padStart(2,'0')).join('');
+}
+
+function hexToBytes(value){
+  if(!/^[a-f0-9]{64}$/.test(value))return null;
+  const bytes=new Uint8Array(32);
+  for(let i=0;i<32;i++)bytes[i]=Number.parseInt(value.slice(i*2,i*2+2),16);
+  return bytes;
+}
+
+async function createSession(env){
+  const secret=expectedHash(env);
+  if(!secret)throw new Error('Invalid staging token hash');
+  const issuedAt=Math.floor(Date.now()/1000);
+  const signature=await crypto.subtle.sign('HMAC',await hmacKey(secret),encoder.encode(String(issuedAt)));
+  return `${issuedAt}.${bytesToHex(signature)}`;
+}
+
+async function sessionValid(value,env){
+  const secret=expectedHash(env);
+  const match=String(value||'').match(/^(\d{10})\.([a-f0-9]{64})$/);
+  if(!secret||!match)return false;
+  const issuedAt=Number(match[1]);
+  const now=Math.floor(Date.now()/1000);
+  if(!Number.isSafeInteger(issuedAt)||issuedAt>now+SESSION_CLOCK_SKEW_SECONDS||now-issuedAt>SESSION_MAX_AGE_SECONDS)return false;
+  const signature=hexToBytes(match[2]);
+  if(!signature)return false;
+  return crypto.subtle.verify('HMAC',await hmacKey(secret),signature,encoder.encode(match[1]));
 }
 
 async function authorized(request,env){
@@ -77,8 +109,8 @@ async function login(request,env){
   if(!(await tokenValid(token,env)))return page('Token nije ispravan.');
   const next=String(form.get('next')||'/digital-workforce/');
   const location=next.startsWith('/')&&!next.startsWith('//')?next:'/digital-workforce/';
-  const session=await sha256(token);
-  const headers=harden(new Headers({location,'set-cookie':`${COOKIE}=${session}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=28800`}));
+  const session=await createSession(env);
+  const headers=harden(new Headers({location,'set-cookie':`${COOKIE}=${session}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${SESSION_MAX_AGE_SECONDS}`}));
   return new Response(null,{status:303,headers});
 }
 
