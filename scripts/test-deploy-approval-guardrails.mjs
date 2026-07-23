@@ -8,6 +8,7 @@ const validationWorkflow=read('.github/workflows/deploy-mail-studio-multilingual
 const publicAssetsValidation=read('.github/workflows/deploy-public-portal-assets-safe.yml');
 const preflight=read('scripts/check-newsroom-route-readiness.sh');
 const verifier=read('scripts/verify-production-release-v38.sh');
+const workforceStagingConfig=read('workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml');
 
 const requireText=(label,source,values)=>{for(const value of values)assert.ok(source.includes(value),`${label} missing: ${value}`)};
 const forbidText=(label,source,values)=>{for(const value of values)assert.ok(!source.includes(value),`${label} contains forbidden text: ${value}`)};
@@ -47,6 +48,21 @@ requireText('legacy public-assets validation',publicAssetsValidation,['pull_requ
 forbidText('legacy public-assets validation',publicAssetsValidation,['workflow_dispatch:','environment: production','CLOUDFLARE_API_TOKEN','CLOUDFLARE_ACCOUNT_ID']);
 assert.equal(/wrangler@4 deploy(?! --dry-run)/.test(publicAssetsValidation),false);
 
+requireText('private workforce staging config',workforceStagingConfig,[
+ 'workers_dev = true',
+ 'preview_urls = true',
+ 'STAGING_MODE = "true"',
+ 'SHADOW_MODE = "true"',
+ 'PRODUCTION_WRITE_ALLOWED = "false"',
+ 'PUBLIC_PUBLISHING_ALLOWED = "false"',
+ 'MAIL_AUTO_REPLY_LIVE = "false"',
+ 'MAIL_STUDIO_LIVE = "false"',
+ 'MAIL_MANUAL_LIVE = "false"'
+]);
+forbidText('private workforce staging config',workforceStagingConfig,[
+ 'routes =','custom_domain','zone_name'
+]);
+
 const approved='.github/workflows/deploy-admin-auth-v6.yml';
 const safePrivateDeploys=new Map([
  ['.github/workflows/deploy-private-workforce-staging.yml',{
@@ -56,8 +72,6 @@ const safePrivateDeploys=new Map([
    'environment: staging',
    '--config wrangler.workforce-staging.toml',
    '--name gnk-dinamo-workforce-staging',
-   'PRODUCTION_WRITE_ALLOWED = "false"',
-   'PUBLIC_PUBLISHING_ALLOWED = "false"',
    'STAGING_WRITE_BLOCKED'
   ]
  }],
@@ -68,9 +82,6 @@ const safePrivateDeploys=new Map([
    'name: staging',
    'PREVIEW_WORKER_NAME: gnk-dinamo-workforce-live-preview',
    '--config wrangler.workforce-staging.toml',
-   'PRODUCTION_WRITE_ALLOWED = "false"',
-   'PUBLIC_PUBLISHING_ALLOWED = "false"',
-   'MAIL_AUTO_REPLY_LIVE = "false"',
    'STAGING_WRITE_BLOCKED'
   ]
  }]
@@ -105,5 +116,6 @@ console.log(JSON.stringify({
  retryOnlyForAssetsSession10013:true,
  diagnosticsArtifact:true,
  alternateProductionDeploys:false,
- hardenedPrivateWorkforceDeploys:2
+ hardenedPrivateWorkforceDeploys:2,
+ privateSafetySource:'wrangler.workforce-staging.toml'
 },null,2));
