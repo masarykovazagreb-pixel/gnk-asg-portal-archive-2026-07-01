@@ -107,17 +107,31 @@ jobs:
           printf '%s' "$headers" | grep -Fqi 'x-robots-tag: noindex'
           printf '%s' "$headers" | grep -Fqi 'x-gnk-environment: private-workforce-staging'
 
-      - name: Verify staging APIs and write lock
+      - name: Verify every tab API and write lock
         env:
           URL: ${{ steps.deploy.outputs.url }}
           TOKEN: ${{ steps.auth.outputs.token }}
         shell: bash
         run: |
           set -euo pipefail
-          curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/api/public/digital-workforce/state" > staging-state.json
-          curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/api/public/digital-workforce/projects" > staging-projects.json
+          endpoints=(state plan bulletins projects risks opinions dependencies tasks credits newsroom workers log)
+          for endpoint in "${endpoints[@]}"; do
+            file="staging-${endpoint}.json"
+            code=$(curl -sS -o "$file" -w '%{http_code}' -H "Authorization: Bearer $TOKEN" "$URL/api/public/digital-workforce/$endpoint")
+            [ "$code" = '200' ] || { echo "::error::Expected $endpoint API 200, got $code"; exit 1; }
+            ENDPOINT="$endpoint" FILE="$file" node - <<'NODE'
+          const fs=require('fs');
+          const endpoint=process.env.ENDPOINT;
+          const file=process.env.FILE;
+          const payload=JSON.parse(fs.readFileSync(file,'utf8'));
+          if(!payload || typeof payload!=='object' || Array.isArray(payload))throw new Error(`${endpoint}: payload must be an object`);
+          if(endpoint!=='state' && !Array.isArray(payload.items))throw new Error(`${endpoint}: items must be an array`);
+          NODE
+          done
+          curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/api/public/digital-workforce/workers?q=a&project=" > staging-workers-filtered.json
+          node -e "const p=require('./staging-workers-filtered.json'); if(!p||!Array.isArray(p.items)) throw new Error('filtered workers payload invalid');"
           curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/data/market-pulse.json" > staging-market.json
-          node -e "const fs=require('fs'); for(const f of ['staging-state.json','staging-projects.json','staging-market.json']) JSON.parse(fs.readFileSync(f,'utf8'));"
+          node -e "JSON.parse(require('fs').readFileSync('staging-market.json','utf8'));"
           write=$(curl -sS -o staging-write.json -w '%{http_code}' -X POST -H "Authorization: Bearer $TOKEN" -H 'content-type: application/json' --data '{}' "$URL/api/public/digital-workforce/state")
           [ "$write" = '405' ] || { echo "::error::Expected staging write lock 405, got $write"; exit 1; }
           grep -Fq 'STAGING_WRITE_BLOCKED' staging-write.json
@@ -133,7 +147,8 @@ jobs:
           - Authenticated portal: 200 verified
           - Bearer API access: verified
           - Robots: noindex/nofollow verified
-          - Digital Workforce API: verified
+          - All 11 tab APIs plus state: verified
+          - Filtered Worker API: verified
           - Market data: verified
           - Production writes: blocked (405)
           - Mail and public publishing: disabled
@@ -150,9 +165,6 @@ jobs:
             staging-verification.md
             staging-login.html
             staging-page.html
-            staging-state.json
-            staging-projects.json
-            staging-market.json
-            staging-write.json
+            staging-*.json
           if-no-files-found: warn
           retention-days: 14
