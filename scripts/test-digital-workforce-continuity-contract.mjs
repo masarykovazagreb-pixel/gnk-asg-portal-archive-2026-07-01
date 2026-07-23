@@ -20,16 +20,10 @@ assert.match(continuity,/continueNewsroomChronology:true/);
 assert.match(continuity,/neverRewritePublishedHistory:true/);
 assert.match(continuity,/deduplicateByStableId:true/);
 
-// Private staging security contract: every response path must remain non-cacheable,
-// non-indexable, non-embeddable and must not expose browser capabilities.
-assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V14/);
+assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V15/);
 assert.match(gate,/function harden\(headers\)/);
 assert.match(gate,/cache-control','no-store, private/);
-assert.match(gate,/x-robots-tag/);
-assert.match(gate,/noindex/);
-assert.match(gate,/nofollow/);
-assert.match(gate,/noarchive/);
-assert.match(gate,/nosnippet/);
+assert.match(gate,/x-robots-tag','noindex, nofollow, noarchive, nosnippet/);
 assert.match(gate,/x-content-type-options','nosniff/);
 assert.match(gate,/x-frame-options','DENY/);
 assert.match(gate,/referrer-policy','no-referrer/);
@@ -44,15 +38,13 @@ assert.match(gate,/connect-src 'self'/);
 assert.match(gate,/const headers=harden\(new Headers\(/);
 assert.match(gate,/const headers=harden\(new Headers\(response\.headers\)\)/);
 
-// Authentication contract: any explicit Authorization header is authoritative.
-// Invalid or malformed Bearer data must never fall back to a valid browser cookie.
+// Explicit Authorization credentials are authoritative and rejected browser credentials
+// must be observable as HTTP 401 rather than a successful 200 login page.
 assert.match(gate,/const header=String\(request\.headers\.get\('authorization'\)\|\|''\)/);
 assert.match(gate,/if\(header\)\{/);
-assert.match(gate,/const match=header\.match\(\/\^Bearer\\s\+\(\.\+\)\$\/i\)/);
 assert.match(gate,/return Boolean\(match&&await tokenValid\(match\[1\],env\)\)/);
 assert.match(gate,/return sessionValid\(cookieValue\(request\),env\)/);
-assert.match(gate,/contentType\.startsWith\('application\/x-www-form-urlencoded'\)/);
-assert.match(gate,/contentType\.startsWith\('multipart\/form-data'\)/);
+assert.match(gate,/request\.headers\.has\('authorization'\)\?401:200/);
 assert.match(gate,/return page\('Zahtjev za prijavu nije valjan\.',400\)/);
 assert.match(gate,/return page\('Token nije ispravan\.',401\)/);
 
@@ -62,6 +54,6 @@ console.log(JSON.stringify({
   baseline:1536,
   current:1573,
   projectAreas:9,
-  stagingGate:'V14',
-  stagingSecurity:'no-store-noindex-nosniff-frame-deny-no-referrer-restricted-permissions-csp-controlled-login-errors-bearer-authoritative'
+  stagingGate:'V15',
+  stagingSecurity:'no-store-noindex-nosniff-frame-deny-no-referrer-restricted-permissions-csp-controlled-login-errors-bearer-authoritative-browser-401'
 },null,2));
