@@ -206,7 +206,16 @@ jobs:
           [ "$write" = '405' ]
           grep -Fq 'STAGING_WRITE_BLOCKED' staging-write.json
 
+      - name: Remove live staging session material
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f staging-cookie.txt
+          ! compgen -G 'staging-cookie*.txt' > /dev/null
+
       - name: Publish staging verification summary
+        if: success()
         shell: bash
         run: |
           cat > staging-verification.md <<EOF
@@ -218,6 +227,7 @@ jobs:
           - Login parser: bounded URL-encoded only
           - Duplicate token and redirect fields: rejected fail-closed
           - Cookie ambiguity and malformed encoding: rejected fail-closed
+          - Live browser session cookie: removed before artifact upload
           - Browser session and explicit Bearer behavior: verified
           - All 11 tab APIs plus state: verified
           - Filtered Worker API and market data: verified
@@ -238,6 +248,5 @@ jobs:
             staging-*.html
             staging-*.json
             staging-*.body
-            staging-cookie.txt
           if-no-files-found: warn
           retention-days: 14
