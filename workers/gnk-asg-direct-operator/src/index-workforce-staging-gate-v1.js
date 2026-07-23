@@ -1,6 +1,6 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V10';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V11';
 const encoder=new TextEncoder();
 const COOKIE='__Host-gnk_workforce_staging';
 const SESSION_MAX_AGE_SECONDS=28800;
@@ -71,24 +71,32 @@ function hexToBytes(value){
   return bytes;
 }
 
+function randomNonce(){
+  const bytes=new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  return bytesToHex(bytes);
+}
+
 async function createSession(env){
   const secret=expectedHash(env);
   if(!secret)throw new Error('Invalid staging token hash');
   const issuedAt=Math.floor(Date.now()/1000);
-  const signature=await crypto.subtle.sign('HMAC',await hmacKey(secret),encoder.encode(String(issuedAt)));
-  return `${issuedAt}.${bytesToHex(signature)}`;
+  const nonce=randomNonce();
+  const payload=`${issuedAt}.${nonce}`;
+  const signature=await crypto.subtle.sign('HMAC',await hmacKey(secret),encoder.encode(payload));
+  return `${payload}.${bytesToHex(signature)}`;
 }
 
 async function sessionValid(value,env){
   const secret=expectedHash(env);
-  const match=String(value||'').match(/^(\d{10})\.([a-f0-9]{64})$/);
+  const match=String(value||'').match(/^(\d{10})\.([a-f0-9]{32})\.([a-f0-9]{64})$/);
   if(!secret||!match)return false;
   const issuedAt=Number(match[1]);
   const now=Math.floor(Date.now()/1000);
   if(!Number.isSafeInteger(issuedAt)||issuedAt>now+SESSION_CLOCK_SKEW_SECONDS||now-issuedAt>SESSION_MAX_AGE_SECONDS)return false;
-  const signature=hexToBytes(match[2]);
+  const signature=hexToBytes(match[3]);
   if(!signature)return false;
-  return crypto.subtle.verify('HMAC',await hmacKey(secret),signature,encoder.encode(match[1]));
+  return crypto.subtle.verify('HMAC',await hmacKey(secret),signature,encoder.encode(`${match[1]}.${match[2]}`));
 }
 
 async function authorized(request,env){
