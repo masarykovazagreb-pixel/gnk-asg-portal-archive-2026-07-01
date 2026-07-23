@@ -1,8 +1,9 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V6';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V7';
 const encoder=new TextEncoder();
 const COOKIE='gnk_workforce_staging';
+const CSP="default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'";
 
 function harden(headers){
   headers.set('cache-control','no-store, private');
@@ -11,7 +12,7 @@ function harden(headers){
   headers.set('x-frame-options','DENY');
   headers.set('referrer-policy','no-referrer');
   headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
-  headers.set('content-security-policy',"default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'");
+  headers.set('content-security-policy',CSP);
   return headers;
 }
 
