@@ -38,6 +38,7 @@
     .dw-tabs button{flex:0 0 auto!important;min-height:44px!important;white-space:nowrap!important;background:rgba(10,10,10,.94)!important;color:#e7e3da!important}
     .dw-tabs button.active{background:rgba(215,181,91,.13)!important;color:#f2d27d!important}
     .dw-tabs button:focus-visible{outline:3px solid #f2d27d!important;outline-offset:3px!important}
+    .dw-panel:focus-visible{outline:3px solid #f2d27d!important;outline-offset:4px!important}
     .dw-table{max-width:100%!important;overflow-x:auto!important;overscroll-behavior-inline:contain!important;-webkit-overflow-scrolling:touch!important}
     .dw-table table{min-width:760px!important}
     .dw-badge.is-neutral{color:#f2d27d!important;border-color:rgba(215,181,91,.28)!important;background:rgba(215,181,91,.08)!important}
@@ -83,7 +84,7 @@
       <button id="dw-tab-workers" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="workers">Workeri</button>
       <button id="dw-tab-log" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="log">Zapisnik</button>
     </nav>
-    <section id="dwContent" class="dw-panel" role="tabpanel" aria-live="polite" aria-busy="false" aria-labelledby="dw-tab-plan"></section>
+    <section id="dwContent" class="dw-panel" role="tabpanel" tabindex="0" aria-live="polite" aria-busy="false" aria-labelledby="dw-tab-plan"></section>
   </main>
   <script defer src="/assets/gnkc-stable-index-v1.js?v=20260722"></script>
   <script defer src="/assets/digital-workforce-suite-v1.js?v=20260722-puls-redesign-v7-black-responsive"></script>
