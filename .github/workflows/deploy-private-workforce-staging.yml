@@ -58,7 +58,7 @@ jobs:
           grep -Fq 'GNK DINAMO Ltd grupa' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
-          grep -Fq "GNK_DINAMO_WORKFORCE_STAGING_GATE_V5" "$gate"
+          grep -Fq "GNK_DINAMO_WORKFORCE_STAGING_GATE_V6" "$gate"
           grep -Fq 'Operatorski token' "$gate"
           grep -Fq 'HttpOnly; Secure; SameSite=Strict' "$gate"
           grep -Fq 'html{color-scheme:dark;background:#000}' "$gate"
@@ -71,6 +71,9 @@ jobs:
           grep -Fq "headers.set('referrer-policy','no-referrer')" "$gate"
           grep -Fq "headers.set('permissions-policy','camera=(), microphone=(), geolocation=()')" "$gate"
           grep -Fq "frame-ancestors 'none'" "$gate"
+          grep -Fq "function unauthorizedApi()" "$gate"
+          grep -Fq "error:'STAGING_AUTH_REQUIRED'" "$gate"
+          grep -Fq "'www-authenticate':'Bearer realm=\"GNK DINAMO Workforce staging\"'" "$gate"
           ! grep -Eqi '#06b6d4|#67e8f9|#8b5cf6|#0b3344|#07111f|#030712' "$gate"
 
       - name: Resolve shared operator token hash
@@ -120,6 +123,11 @@ jobs:
           grep -Fq '#d7b55b' staging-login.html
           grep -Fq '#f2d27d' staging-login.html
           ! grep -Eqi '#06b6d4|#67e8f9|#8b5cf6|#0b3344|#07111f|#030712' staging-login.html
+          unauth_api=$(curl -sS -D staging-unauth-api.headers -o staging-unauth-api.json -w '%{http_code}' "$URL/api/public/digital-workforce/state")
+          [ "$unauth_api" = '401' ] || { echo "::error::Expected unauthenticated API 401, got $unauth_api"; exit 1; }
+          grep -Fq 'STAGING_AUTH_REQUIRED' staging-unauth-api.json
+          grep -Fqi 'content-type: application/json' staging-unauth-api.headers
+          grep -Fqi 'www-authenticate: Bearer realm="GNK DINAMO Workforce staging"' staging-unauth-api.headers
           curl -fsS -c staging-cookie.txt -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login"
           auth=$(curl -sS -b staging-cookie.txt -o staging-page.html -w '%{http_code}' "$URL/digital-workforce/")
           [ "$auth" = '200' ] || { echo "::error::Expected cookie-authenticated 200, got $auth"; exit 1; }
@@ -175,6 +183,7 @@ jobs:
           - Source ref: $GITHUB_REF
           - Approved branch lock: verified
           - Browser login: same operator token verified
+          - Unauthenticated API access: explicit 401 JSON with Bearer challenge verified
           - Login visual contract: pure black, black glass, gold and white verified
           - Authenticated portal: 200 verified
           - Bearer API access: verified
@@ -198,6 +207,7 @@ jobs:
             staging-verification.md
             staging-login.html
             staging-page.html
+            staging-unauth-api.headers
             staging-*.json
           if-no-files-found: warn
           retention-days: 14
