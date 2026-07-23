@@ -25,7 +25,7 @@
     return `M ${a.x} ${a.y} Q ${mx} ${Math.min(a.y,b.y)-rise} ${b.x} ${b.y}`;
   }
   function renderSection() {
-    const anchor = document.getElementById('news') || document.getElementById('grupa');
+    const anchor = document.getElementById('network-anchor') || document.getElementById('news') || document.getElementById('grupa');
     if (!anchor || document.getElementById('global-network')) return;
     const section = document.createElement('section');
     section.className = 'network-section'; section.id = 'global-network';
