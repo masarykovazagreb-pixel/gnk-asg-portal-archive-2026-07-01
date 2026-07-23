@@ -55,13 +55,14 @@ jobs:
           node scripts/test-digital-workforce-puls-design-contract.mjs
           node scripts/test-digital-workforce-continuity-contract.mjs
           node scripts/test-gnkc-stable-index-contract.mjs
-          grep -Fq 'GNK_DINAMO_WORKFORCE_STAGING_GATE_V18' "$gate"
+          grep -Fq 'GNK_DINAMO_WORKFORCE_STAGING_GATE_V19' "$gate"
           grep -Fq 'function safeNext(value)' "$gate"
           grep -Fq "next.includes('\\\\')" "$gate"
           grep -Fq "request.headers.has('authorization')?401:200" "$gate"
           grep -Fq 'COOKIE_HEADER_MAX_LENGTH=4096' "$gate"
           grep -Fq 'COOKIE_VALUE_MAX_LENGTH=512' "$gate"
           grep -Fq 'source.length>COOKIE_HEADER_MAX_LENGTH' "$gate"
+          grep -Fq 'matches.length!==1' "$gate"
           grep -Fq 'raw.length>COOKIE_VALUE_MAX_LENGTH' "$gate"
           grep -Fq 'return decodeURIComponent(raw)' "$gate"
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
@@ -118,7 +119,7 @@ jobs:
           grep -Fq 'PRIVATNI STAGING' staging-login.html
           grep -Fq 'background:#000' staging-login.html
           grep -Fq '#d7b55b' staging-login.html
-          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V18' staging-login.headers
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V19' staging-login.headers
 
           unauth_api=$(curl -sS -D staging-unauth-api.headers -o staging-unauth-api.json -w '%{http_code}' "$URL/api/public/digital-workforce/state")
           [ "$unauth_api" = '401' ]
@@ -142,6 +143,8 @@ jobs:
           ! grep -Fqi 'evil.example' staging-unsafe-redirect.headers
 
           curl -fsS -c staging-cookie.txt -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login"
+          cookie_value=$(awk '$6=="__Host-gnk_workforce_staging"{print $7}' staging-cookie.txt | tail -1)
+          [ -n "$cookie_value" ]
           auth=$(curl -sS -b staging-cookie.txt -o staging-page.html -w '%{http_code}' "$URL/digital-workforce/")
           [ "$auth" = '200' ]
           grep -Fq 'Digitalna radna snaga' staging-page.html
@@ -151,7 +154,7 @@ jobs:
           [ "$malformed_cookie" = '200' ]
           grep -Fq 'PRIVATNI STAGING' staging-malformed-cookie.html
           ! grep -Fq 'Digitalna radna snaga' staging-malformed-cookie.html
-          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V18' staging-malformed-cookie.headers
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V19' staging-malformed-cookie.headers
 
           oversized_cookie=$(python - <<'PY' | curl -sS -H @- -D staging-oversized-cookie.headers -o staging-oversized-cookie.html -w '%{http_code}' "$URL/digital-workforce/"
           print('Cookie: __Host-gnk_workforce_staging=' + ('a' * 5000))
@@ -160,13 +163,19 @@ jobs:
           [ "$oversized_cookie" = '200' ]
           grep -Fq 'PRIVATNI STAGING' staging-oversized-cookie.html
           ! grep -Fq 'Digitalna radna snaga' staging-oversized-cookie.html
-          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V18' staging-oversized-cookie.headers
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V19' staging-oversized-cookie.headers
+
+          duplicate_cookie=$(curl -sS -H "Cookie: __Host-gnk_workforce_staging=$cookie_value; __Host-gnk_workforce_staging=duplicate" -D staging-duplicate-cookie.headers -o staging-duplicate-cookie.html -w '%{http_code}' "$URL/digital-workforce/")
+          [ "$duplicate_cookie" = '200' ]
+          grep -Fq 'PRIVATNI STAGING' staging-duplicate-cookie.html
+          ! grep -Fq 'Digitalna radna snaga' staging-duplicate-cookie.html
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V19' staging-duplicate-cookie.headers
 
           invalid_bearer_browser=$(curl -sS -b staging-cookie.txt -H "Authorization: Bearer $invalid_token" -D staging-invalid-bearer-browser.headers -o staging-invalid-bearer-browser.html -w '%{http_code}' "$URL/digital-workforce/")
           [ "$invalid_bearer_browser" = '401' ]
           grep -Fq 'PRIVATNI STAGING' staging-invalid-bearer-browser.html
           ! grep -Fq 'Digitalna radna snaga' staging-invalid-bearer-browser.html
-          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V18' staging-invalid-bearer-browser.headers
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V19' staging-invalid-bearer-browser.headers
 
           invalid_bearer_api=$(curl -sS -b staging-cookie.txt -H "Authorization: Bearer $invalid_token" -o staging-invalid-bearer-api.json -w '%{http_code}' "$URL/api/public/digital-workforce/state")
           [ "$invalid_bearer_api" = '401' ]
@@ -215,11 +224,12 @@ jobs:
           - URL: ${{ steps.deploy.outputs.url }}
           - Source SHA: $GITHUB_SHA
           - Source ref: $GITHUB_REF
-          - Gate: V18 verified
+          - Gate: V19 verified
           - Operator token: never written to workflow outputs
           - Post-login redirects: same-origin path enforced; backslash ambiguity rejected
           - Malformed percent-encoded session cookie: rejected without runtime failure
           - Oversized Cookie header and session value: bounded and rejected
+          - Duplicate staging session cookies: rejected fail-closed
           - Invalid explicit browser Bearer: HTTP 401 verified
           - Browser session and valid Bearer: verified
           - Malformed login: controlled 400 verified
