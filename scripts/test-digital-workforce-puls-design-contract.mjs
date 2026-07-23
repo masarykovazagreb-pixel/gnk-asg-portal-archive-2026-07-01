@@ -98,6 +98,12 @@ assert.match(js,/state\.workerFilterFocus='dwWorkerSearch'/);
 assert.match(js,/reset\?\.addEventListener\('click',resetWorkerFilters\)/);
 assert.match(js,/resetEmpty\?\.addEventListener\('click',resetWorkerFilters\)/);
 
+// Worker count contract: users must see displayed rows separately from the API total.
+assert.match(js,/const total=Number\.isFinite\(Number\(data\.total\)\)\?Number\(data\.total\):items\.length/);
+assert.match(js,/const countLabel=items\.length===total\?`\$\{fmt\(total\)\} ukupno`:`\$\{fmt\(items\.length\)\} prikazano od \$\{fmt\(total\)\}`/);
+assert.match(js,/class="dw-count" role="status" aria-live="polite"/);
+assert.match(js,/<span>Workeri<\/span><strong>\$\{countLabel\}<\/strong>/);
+
 console.log(JSON.stringify({
   ok:true,
   contract:'digital-workforce-puls-trzista-public-redesign',
@@ -107,7 +113,7 @@ console.log(JSON.stringify({
   responsive:'contained-tabs-worker-table-touch-targets',
   resilience:'isolated-tab-api-failures-worker-project-dependency-only',
   concurrency:'abort-previous-request-ignore-stale-response',
-  workerFilters:'persistent-query-project-focus-empty-state-and-one-click-reset',
+  workerFilters:'persistent-query-project-focus-empty-state-one-click-reset-and-explicit-counts',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
