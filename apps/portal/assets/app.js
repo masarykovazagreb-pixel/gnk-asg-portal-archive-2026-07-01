@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260723-full-globe-index-v1';
+  var VERSION = '20260723-remove-dup-sections-v1';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -69,8 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/whatsapp-widget-v1.js');
   script('/assets/sticker-tiles-v1.js');
   script('/assets/header-whatsapp-button-v1.js');
-  script('/assets/bitcoin-chart.js');
-  script('/assets/bpp-public-card.js');
   script('/assets/assistant.js');
   script('/assets/inline-assistant.js');
   script('/assets/intelligence-desk.js');
