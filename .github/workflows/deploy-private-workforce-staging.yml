@@ -55,7 +55,9 @@ jobs:
           node scripts/test-digital-workforce-puls-design-contract.mjs
           node scripts/test-digital-workforce-continuity-contract.mjs
           node scripts/test-gnkc-stable-index-contract.mjs
-          grep -Fq 'GNK_DINAMO_WORKFORCE_STAGING_GATE_V15' "$gate"
+          grep -Fq 'GNK_DINAMO_WORKFORCE_STAGING_GATE_V16' "$gate"
+          grep -Fq 'function safeNext(value)' "$gate"
+          grep -Fq "next.includes('\\\\')" "$gate"
           grep -Fq "request.headers.has('authorization')?401:200" "$gate"
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
@@ -111,7 +113,7 @@ jobs:
           grep -Fq 'PRIVATNI STAGING' staging-login.html
           grep -Fq 'background:#000' staging-login.html
           grep -Fq '#d7b55b' staging-login.html
-          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V15' staging-login.headers
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V16' staging-login.headers
 
           unauth_api=$(curl -sS -D staging-unauth-api.headers -o staging-unauth-api.json -w '%{http_code}' "$URL/api/public/digital-workforce/state")
           [ "$unauth_api" = '401' ]
@@ -128,6 +130,12 @@ jobs:
           grep -Fq 'Token nije ispravan.' staging-invalid-login.html
           ! grep -Fqi 'set-cookie:' staging-invalid-login.headers
 
+          curl -fsS -D staging-safe-redirect.headers -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login"
+          grep -Fqi 'location: /digital-workforce/' staging-safe-redirect.headers
+          curl -fsS -D staging-unsafe-redirect.headers -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/\evil.example/' "$URL/_staging/login"
+          grep -Fqi 'location: /digital-workforce/' staging-unsafe-redirect.headers
+          ! grep -Fqi 'evil.example' staging-unsafe-redirect.headers
+
           curl -fsS -c staging-cookie.txt -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login"
           auth=$(curl -sS -b staging-cookie.txt -o staging-page.html -w '%{http_code}' "$URL/digital-workforce/")
           [ "$auth" = '200' ]
@@ -138,7 +146,7 @@ jobs:
           [ "$invalid_bearer_browser" = '401' ]
           grep -Fq 'PRIVATNI STAGING' staging-invalid-bearer-browser.html
           ! grep -Fq 'Digitalna radna snaga' staging-invalid-bearer-browser.html
-          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V15' staging-invalid-bearer-browser.headers
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V16' staging-invalid-bearer-browser.headers
 
           invalid_bearer_api=$(curl -sS -b staging-cookie.txt -H "Authorization: Bearer $invalid_token" -o staging-invalid-bearer-api.json -w '%{http_code}' "$URL/api/public/digital-workforce/state")
           [ "$invalid_bearer_api" = '401' ]
@@ -187,8 +195,9 @@ jobs:
           - URL: ${{ steps.deploy.outputs.url }}
           - Source SHA: $GITHUB_SHA
           - Source ref: $GITHUB_REF
-          - Gate: V15 verified
+          - Gate: V16 verified
           - Operator token: never written to workflow outputs
+          - Post-login redirects: same-origin path enforced; backslash ambiguity rejected
           - Invalid explicit browser Bearer: HTTP 401 verified
           - Browser session and valid Bearer: verified
           - Malformed login: controlled 400 verified
