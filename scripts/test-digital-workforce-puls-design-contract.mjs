@@ -31,8 +31,13 @@ assert.match(html,/\.dw-skip-link\{position:fixed;z-index:10000/);
 assert.match(html,/\.dw-skip-link:focus-visible\{transform:translateY\(0\);outline:3px solid #f2d27d/);
 assert.match(html,/@media \(prefers-reduced-motion:reduce\)\{\.dw-skip-link\{transition:none\}\}/);
 
-// Tabpanel focus contract: loaded tab content must be keyboard reachable and visibly focused.
-assert.match(html,/<section id="dwContent" class="dw-panel" role="tabpanel" tabindex="0"/);
+// Tab accessibility contract: loaded content is focusable without announcing the full panel as a live region.
+assert.match(html,/<p id="dwTabHelp" class="dw-sr-only">/);
+assert.match(html,/aria-describedby="dwTabHelp"/);
+assert.match(html,/Za promjenu kartice koristite tipke sa strelicama lijevo i desno\./);
+assert.match(html,/\.dw-sr-only\{position:absolute!important;width:1px!important/);
+assert.match(html,/<section id="dwContent" class="dw-panel" role="tabpanel" tabindex="0" aria-busy="false" aria-labelledby="dw-tab-plan"><\/section>/);
+assert.doesNotMatch(html,/<section id="dwContent"[^>]*aria-live=/);
 assert.match(html,/\.dw-panel:focus-visible\{outline:3px solid #f2d27d!important;outline-offset:4px!important\}/);
 
 // Visual contract: the private preview must remain pure black, glass-black and gold/white.
@@ -116,8 +121,11 @@ assert.match(js,/const countLabel=items\.length===total\?`\$\{fmt\(total\)\} uku
 assert.match(js,/class="dw-count" role="status" aria-live="polite"/);
 assert.match(js,/<span>Workeri<\/span><strong>\$\{countLabel\}<\/strong>/);
 
-// Staging login parser contract: malformed payloads must fail closed with a controlled 400.
-assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V13/);
+// Staging gate contract must track the currently deployed private gate.
+assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V16/);
+assert.match(gate,/function safeNext\(value\)/);
+assert.match(gate,/next\.includes\('\\\\'\)/);
+assert.match(gate,/request\.headers\.has\('authorization'\)\?401:200/);
 assert.match(gate,/contentType\.startsWith\('application\/x-www-form-urlencoded'\)/);
 assert.match(gate,/contentType\.startsWith\('multipart\/form-data'\)/);
 assert.match(gate,/form=await request\.formData\(\)/);
@@ -129,12 +137,12 @@ console.log(JSON.stringify({
   contract:'digital-workforce-puls-trzista-public-redesign',
   tabs:11,
   palette:'pure-black-glass-gold-white',
-  accessibility:'skip-link-focusable-tabpanel-linked-tabs-dynamic-panel-label-focus-visible-keyboard-navigation-retry-focus',
+  accessibility:'skip-link-focusable-tabpanel-linked-tabs-keyboard-instructions-no-full-panel-live-region-focus-visible-keyboard-navigation-retry-focus',
   responsive:'contained-tabs-worker-table-touch-targets',
   resilience:'isolated-tab-api-failures-worker-project-dependency-only',
   concurrency:'abort-previous-request-ignore-stale-response',
   workerFilters:'persistent-query-project-focus-empty-state-one-click-reset-and-explicit-counts',
-  stagingAuth:'malformed-login-payloads-controlled-400',
+  stagingGate:'V16-safe-redirect-controlled-login-errors-explicit-bearer-401',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
