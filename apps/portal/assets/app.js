@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260723-static-preview-v1';
+  var VERSION = '20260723-gnk-gate-v2';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -82,20 +82,23 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/world-geography.js');
   script('/assets/network-motion.js');
   script('/assets/group-network.js');
-  script('/assets/group-clarity.js');
-  script('/assets/group-globe-3d.js');
-  script('/assets/group-map-2d-geo.js');
-  script('/assets/group-location-insights.js');
-  script('/assets/group-map-selection-bridge.js');
-  script('/assets/network-selection-sync.js');
-  script('/assets/command-centre.js');
-  script('/assets/group-overview-panel.js');
-  script('/assets/group-market-coverage.js');
-  script('/assets/group-map-pdf.js');
-  script('/assets/group-globe-pdf.js');
-  script('/assets/group-map-viewport.js');
-  script('/assets/group-mobile-accessible.js');
-  script('/assets/network-search-3d.js');
+  var __gnkPath2 = (location.pathname || '/').replace(/\/+$/, '') || '/';
+  if (__gnkPath2.indexOf('group-network') !== -1) {
+    script('/assets/group-clarity.js');
+    script('/assets/group-globe-3d.js');
+    script('/assets/group-map-2d-geo.js');
+    script('/assets/group-location-insights.js');
+    script('/assets/group-map-selection-bridge.js');
+    script('/assets/network-selection-sync.js');
+    script('/assets/command-centre.js');
+    script('/assets/group-overview-panel.js');
+    script('/assets/group-market-coverage.js');
+    script('/assets/group-map-pdf.js');
+    script('/assets/group-globe-pdf.js');
+    script('/assets/group-map-viewport.js');
+    script('/assets/group-mobile-accessible.js');
+    script('/assets/network-search-3d.js');
+  }
   script('/assets/location-recovery.js');
   script('/assets/public-sources.js');
   script('/assets/site-share.js');
