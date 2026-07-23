@@ -58,9 +58,11 @@ jobs:
           grep -Fq 'GNK DINAMO Ltd grupa' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
-          grep -Fq "GNK_DINAMO_WORKFORCE_STAGING_GATE_V11" "$gate"
+          grep -Fq "GNK_DINAMO_WORKFORCE_STAGING_GATE_V12" "$gate"
           grep -Fq "const COOKIE='__Host-gnk_workforce_staging'" "$gate"
           grep -Fq 'SESSION_MAX_AGE_SECONDS=28800' "$gate"
+          grep -Fq "function page(message='',status=200)" "$gate"
+          grep -Fq "return page('Token nije ispravan.',401)" "$gate"
           grep -Fq 'Operatorski token' "$gate"
           grep -Fq 'HttpOnly; Secure; SameSite=Strict' "$gate"
           grep -Fq 'html{color-scheme:dark;background:#000}' "$gate"
@@ -140,14 +142,21 @@ jobs:
           grep -Fq '#f2d27d' staging-login.html
           ! grep -Eqi '#06b6d4|#67e8f9|#8b5cf6|#0b3344|#07111f|#030712' staging-login.html
           grep -Fqi 'x-gnk-environment: private-workforce-staging' staging-login.headers
-          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V11' staging-login.headers
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V12' staging-login.headers
           unauth_api=$(curl -sS -D staging-unauth-api.headers -o staging-unauth-api.json -w '%{http_code}' "$URL/api/public/digital-workforce/state")
           [ "$unauth_api" = '401' ] || { echo "::error::Expected unauthenticated API 401, got $unauth_api"; exit 1; }
           grep -Fq 'STAGING_AUTH_REQUIRED' staging-unauth-api.json
           grep -Fqi 'content-type: application/json' staging-unauth-api.headers
           grep -Fqi 'www-authenticate: Bearer realm="GNK DINAMO Workforce staging"' staging-unauth-api.headers
           grep -Fqi 'x-gnk-environment: private-workforce-staging' staging-unauth-api.headers
-          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V11' staging-unauth-api.headers
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V12' staging-unauth-api.headers
+          invalid_token="invalid-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          invalid_login=$(curl -sS -D staging-invalid-login.headers -o staging-invalid-login.html -w '%{http_code}' -X POST --data-urlencode "token=$invalid_token" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login")
+          [ "$invalid_login" = '401' ] || { echo "::error::Expected invalid browser login 401, got $invalid_login"; exit 1; }
+          grep -Fq 'Token nije ispravan.' staging-invalid-login.html
+          grep -Fq 'role="alert"' staging-invalid-login.html
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V12' staging-invalid-login.headers
+          ! grep -Fqi 'set-cookie:' staging-invalid-login.headers
           curl -fsS -c staging-cookie.txt -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login"
           curl -fsS -c staging-cookie-second.txt -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login"
           ! grep -Fq "$TOKEN" staging-cookie.txt
@@ -178,7 +187,7 @@ jobs:
           headers=$(curl -sSI -b staging-cookie.txt "$URL/digital-workforce/")
           printf '%s' "$headers" | grep -Fqi 'x-robots-tag: noindex'
           printf '%s' "$headers" | grep -Fqi 'x-gnk-environment: private-workforce-staging'
-          printf '%s' "$headers" | grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V11'
+          printf '%s' "$headers" | grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V12'
           printf '%s' "$headers" | grep -Fqi 'x-content-type-options: nosniff'
           printf '%s' "$headers" | grep -Fqi 'x-frame-options: DENY'
           printf '%s' "$headers" | grep -Fqi 'referrer-policy: no-referrer'
@@ -224,6 +233,7 @@ jobs:
           - Source ref: $GITHUB_REF
           - Approved branch lock: verified
           - Browser login: same operator token verified
+          - Invalid browser login: explicit 401 with accessible error and no session cookie
           - Session cookie: unique random nonce-bound expiring HMAC; raw token and static token hash absent
           - Two immediate logins: distinct session cookies verified
           - Tampered session: rejected and returned to private login
@@ -252,6 +262,8 @@ jobs:
             staging-verification.md
             staging-login.headers
             staging-login.html
+            staging-invalid-login.headers
+            staging-invalid-login.html
             staging-page.html
             staging-cookie.txt
             staging-cookie-second.txt
