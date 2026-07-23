@@ -24,14 +24,12 @@ assert.match(html,/aria-labelledby="dw-tab-plan"/);
 assert.match(html,/tabindex="-1"/);
 assert.match(html,/\.dw-tabs button:focus-visible\{outline:3px solid #f2d27d!important/);
 
-// Keyboard bypass contract: users must be able to skip the global header and focus the main application.
 assert.match(html,/<a class="dw-skip-link" href="#dwMain">Preskoči na operativni sadržaj<\/a>/);
 assert.match(html,/<main id="dwMain" class="dw-shell" tabindex="-1">/);
 assert.match(html,/\.dw-skip-link\{position:fixed;z-index:10000/);
 assert.match(html,/\.dw-skip-link:focus-visible\{transform:translateY\(0\);outline:3px solid #f2d27d/);
 assert.match(html,/@media \(prefers-reduced-motion:reduce\)\{\.dw-skip-link\{transition:none\}\}/);
 
-// Tab accessibility contract: loaded content is focusable without announcing the full panel as a live region.
 assert.match(html,/<p id="dwTabHelp" class="dw-sr-only">/);
 assert.match(html,/aria-describedby="dwTabHelp"/);
 assert.match(html,/Za promjenu kartice koristite tipke sa strelicama lijevo i desno\./);
@@ -40,14 +38,12 @@ assert.match(html,/<section id="dwContent" class="dw-panel" role="tabpanel" tabi
 assert.doesNotMatch(html,/<section id="dwContent"[^>]*aria-live=/);
 assert.match(html,/\.dw-panel:focus-visible\{outline:3px solid #f2d27d!important;outline-offset:4px!important\}/);
 
-// Visual contract: the private preview must remain pure black, glass-black and gold/white.
 assert.match(html,/html,body,\.dw-private-preview\{background:#000!important;background-image:none!important/);
 assert.match(html,/#gnk-unified-header\{background:rgba\(0,0,0,\.86\)!important/);
 assert.match(html,/\.dw-shell\{background:#000!important;min-width:0!important\}/);
 assert.match(html,/\.dw-tabs button\.active\{background:rgba\(215,181,91,\.13\)!important;color:#f2d27d!important\}/);
 assert.doesNotMatch(html,/radial-gradient\([^)]*(?:06b6d4|22d3ee|0891b2|0ea5e9)/i);
 
-// Responsive contract: wide components scroll internally and do not widen the page.
 assert.match(html,/\.dw-tabs\{display:flex!important;max-width:100%!important;overflow-x:auto!important/);
 assert.match(html,/\.dw-tabs button\{flex:0 0 auto!important;min-height:44px!important;white-space:nowrap!important/);
 assert.match(html,/\.dw-table\{max-width:100%!important;overflow-x:auto!important/);
@@ -73,14 +69,12 @@ assert.match(js,/let activeTab=null/);
 assert.match(js,/if\(active\)activeTab=tab/);
 assert.match(js,/host\.setAttribute\('aria-labelledby',activeTab\.id\)/);
 
-// Resilience contract: unrelated tabs must not depend on the projects endpoint.
 assert.match(js,/if\(name==='workers'&&!state\.projects\)state\.projects=await get\('projects',controller\.signal\)/);
 assert.doesNotMatch(js,/if\(!state\.projects\)state\.projects=await get\('projects'/);
 assert.match(js,/if\(!host\|\|!views\[name\]\)return/);
 assert.match(js,/class="dw-error" role="alert"/);
 assert.match(js,/requestAnimationFrame\(\(\)=>retry\?\.focus\(\)\)/);
 
-// Concurrency contract: stale tab and worker-filter responses must never overwrite the latest view.
 assert.match(js,/let activeRequestId=0/);
 assert.match(js,/let activeController=null/);
 assert.match(js,/const requestId=\+\+activeRequestId/);
@@ -92,7 +86,6 @@ assert.match(js,/if\(error\?\.name==='AbortError'\|\|requestId!==activeRequestId
 assert.match(js,/if\(requestId===activeRequestId\)\{/);
 assert.match(js,/if\(activeController===controller\)activeController=null/);
 
-// Worker filter contract: values and focus must survive asynchronous rerenders.
 assert.match(js,/workerFilters:\{q:'',project:''\}/);
 assert.match(js,/const filters=state\.workerFilters\|\|\{q:'',project:''\}/);
 assert.match(js,/value="\$\{esc\(filters\.q\)\}"/);
@@ -103,7 +96,6 @@ assert.match(js,/function restoreWorkerFilterFocus\(\)/);
 assert.match(js,/control\?\.focus\(\)/);
 assert.match(js,/control\.setSelectionRange\(end,end\)/);
 
-// Worker empty-state contract: filtered zero-results must be explicit and recoverable in one action.
 assert.match(js,/const hasFilters=Boolean\(filters\.q\|\|filters\.project\)/);
 assert.match(js,/Nema workera koji odgovaraju odabranim kriterijima\./);
 assert.match(js,/role="status"/);
@@ -115,21 +107,25 @@ assert.match(js,/state\.workerFilterFocus='dwWorkerSearch'/);
 assert.match(js,/reset\?\.addEventListener\('click',resetWorkerFilters\)/);
 assert.match(js,/resetEmpty\?\.addEventListener\('click',resetWorkerFilters\)/);
 
-// Worker count contract: users must see displayed rows separately from the API total.
 assert.match(js,/const total=Number\.isFinite\(Number\(data\.total\)\)\?Number\(data\.total\):items\.length/);
 assert.match(js,/const countLabel=items\.length===total\?`\$\{fmt\(total\)\} ukupno`:`\$\{fmt\(items\.length\)\} prikazano od \$\{fmt\(total\)\}`/);
 assert.match(js,/class="dw-count" role="status" aria-live="polite"/);
 assert.match(js,/<span>Workeri<\/span><strong>\$\{countLabel\}<\/strong>/);
 
-// Staging gate contract must track the currently deployed private gate.
-assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V19/);
+assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V20/);
 assert.match(gate,/function safeNext\(value\)/);
 assert.match(gate,/next\.includes\('\\\\'\)/);
 assert.match(gate,/request\.headers\.has\('authorization'\)\?401:200/);
 assert.match(gate,/contentType\.startsWith\('application\/x-www-form-urlencoded'\)/);
-assert.match(gate,/contentType\.startsWith\('multipart\/form-data'\)/);
-assert.match(gate,/form=await request\.formData\(\)/);
-assert.match(gate,/catch\{\s*return page\('Zahtjev za prijavu nije valjan\.',400\);\s*\}/s);
+assert.doesNotMatch(gate,/contentType\.startsWith\('multipart\/form-data'\)/);
+assert.match(gate,/LOGIN_BODY_MAX_LENGTH=4096/);
+assert.match(gate,/TOKEN_MAX_LENGTH=512/);
+assert.match(gate,/body=await request\.text\(\)/);
+assert.match(gate,/body\.length>LOGIN_BODY_MAX_LENGTH/);
+assert.match(gate,/const form=new URLSearchParams\(body\)/);
+assert.match(gate,/token\.length>TOKEN_MAX_LENGTH/);
+assert.match(gate,/return page\('Zahtjev za prijavu nije valjan\.',400\)/);
+assert.match(gate,/return page\('Zahtjev za prijavu je prevelik\.',413\)/);
 assert.match(gate,/return page\('Token nije ispravan\.',401\)/);
 assert.match(gate,/COOKIE_HEADER_MAX_LENGTH=4096/);
 assert.match(gate,/COOKIE_VALUE_MAX_LENGTH=512/);
@@ -151,7 +147,7 @@ console.log(JSON.stringify({
   resilience:'isolated-tab-api-failures-worker-project-dependency-only',
   concurrency:'abort-previous-request-ignore-stale-response',
   workerFilters:'persistent-query-project-focus-empty-state-one-click-reset-and-explicit-counts',
-  stagingGate:'V19-safe-redirect-controlled-login-errors-explicit-bearer-401-malformed-cookie-safe-bounded-cookie-parsing-duplicate-cookie-rejection',
+  stagingGate:'V20-safe-redirect-controlled-login-errors-explicit-bearer-401-malformed-cookie-safe-bounded-cookie-parsing-duplicate-cookie-rejection-bounded-urlencoded-login',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
