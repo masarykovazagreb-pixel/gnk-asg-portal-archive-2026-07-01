@@ -1,0 +1,99 @@
+<!doctype html><html lang="hr" class="gnk-unified-shell"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0a0c10"><title>LinkedIn Dnevna Objava | GNK ASG</title><meta name="description" content="Dnevni gotov tekst i slika za LinkedIn objavu GNK ASG d.o.o. i GNK DINAMO Ltd. grupe."><meta name="robots" content="noindex,nofollow"><link rel="canonical" href="https://gnk-asg.hr/linkedin-daily/"><link rel="manifest" href="/manifest.webmanifest"><link rel="stylesheet" href="/assets/style.css?v=20260723-dark-gold-theme-v1"><link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260723-dark-theme-v1"><style>
+.ld-wrap{max-width:640px;margin:0 auto;padding:100px 20px 60px}
+.ld-eyebrow{color:#e0bd69;font-size:.78rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px}
+.ld-title{color:#f8fafc;font-size:clamp(1.6rem,4vw,2.1rem);margin:0 0 8px;font-family:Georgia,serif;font-weight:500}
+.ld-date{color:#94a3b8;font-size:.9rem;margin:0 0 28px}
+.ld-image-wrap{border-radius:18px;overflow:hidden;border:1px solid rgba(212,175,55,.3);box-shadow:0 20px 60px rgba(0,0,0,.4);margin-bottom:22px;background:#0d0f14}
+.ld-image-wrap img{width:100%;display:block}
+.ld-text-box{background:rgba(18,21,27,.72);border:1px solid rgba(212,175,55,.28);border-radius:16px;padding:20px;color:#dbe4ef;font-size:1rem;line-height:1.7;white-space:pre-wrap;margin-bottom:20px}
+.ld-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:30px}
+.ld-btn{flex:1;min-width:140px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;border-radius:999px;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;border:1.5px solid #d4af37;background:#d4af37;color:#1a1305;transition:transform .15s ease}
+.ld-btn.ghost{background:rgba(212,175,55,.12);color:#f8fafc}
+.ld-btn:active{transform:scale(.97)}
+.ld-status{font-size:.82rem;color:#4de09e;min-height:20px;margin-top:-10px;margin-bottom:20px}
+.ld-loading{color:#94a3b8;padding:40px 0;text-align:center}
+.ld-note{color:#94a3b8;font-size:.82rem;line-height:1.6;border-top:1px solid rgba(255,255,255,.1);padding-top:18px}
+.ld-project-link{color:#e0bd69;text-decoration:none;font-weight:700}
+</style></head><body><header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/" aria-label="Hrvatski" aria-current="page">HR</a><a href="/en/" aria-label="English">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">IZBORNIK</button></div><nav id="gnk-unified-nav"></nav></div></div></header>
+<main class="ld-wrap">
+  <p class="ld-eyebrow">Dnevna priprema · LinkedIn</p>
+  <h1 class="ld-title">Objava za danas</h1>
+  <p class="ld-date" id="ldDate">Učitavanje…</p>
+
+  <div id="ldLoading" class="ld-loading">Dohvaćam današnji sadržaj…</div>
+
+  <div id="ldContent" style="display:none">
+    <div class="ld-image-wrap">
+      <img id="ldImage" src="" alt="LinkedIn objava — slika">
+    </div>
+    <div class="ld-text-box" id="ldText"></div>
+    <div class="ld-status" id="ldStatus"></div>
+    <div class="ld-actions">
+      <button class="ld-btn" id="ldShareBtn">Podijeli →</button>
+      <button class="ld-btn ghost" id="ldCopyBtn">Kopiraj tekst</button>
+      <button class="ld-btn ghost" id="ldDownloadBtn">Preuzmi sliku</button>
+    </div>
+    <p class="ld-note">Gumb <strong>Podijeli</strong> otvara izbornik telefona gdje možeš izravno odabrati LinkedIn aplikaciju (slika + link se prilažu automatski, tekst kopiraj gumbom pored i zalijepi u opis objave). Poveznica na projekt: <a class="ld-project-link" id="ldProjectLink" href="#" target="_blank" rel="noopener"></a></p>
+  </div>
+</main>
+<script>
+(function(){
+  var CACHE_BUST = Date.now();
+  fetch('/data/linkedin-content/today.json?v=' + CACHE_BUST, { cache: 'no-store' })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      document.getElementById('ldLoading').style.display = 'none';
+      document.getElementById('ldContent').style.display = 'block';
+      var d = new Date(data.generatedAt);
+      document.getElementById('ldDate').textContent = d.toLocaleDateString('hr-HR', { day:'2-digit', month:'long', year:'numeric' });
+      document.getElementById('ldImage').src = '/data/linkedin-content/today-image.png?v=' + CACHE_BUST;
+      document.getElementById('ldText').textContent = data.postText;
+      var link = document.getElementById('ldProjectLink');
+      link.href = data.projectUrl;
+      link.textContent = data.projectUrl;
+
+      var shareBtn = document.getElementById('ldShareBtn');
+      var copyBtn = document.getElementById('ldCopyBtn');
+      var downloadBtn = document.getElementById('ldDownloadBtn');
+      var status = document.getElementById('ldStatus');
+
+      copyBtn.addEventListener('click', function(){
+        navigator.clipboard.writeText(data.postText).then(function(){
+          status.textContent = 'Tekst kopiran ✓';
+          setTimeout(function(){ status.textContent = ''; }, 2500);
+        });
+      });
+
+      downloadBtn.addEventListener('click', function(){
+        var a = document.createElement('a');
+        a.href = '/data/linkedin-content/today-image.png?v=' + CACHE_BUST;
+        a.download = 'gnk-asg-linkedin-' + (data.dayOfYear || '') + '.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      });
+
+      shareBtn.addEventListener('click', function(){
+        fetch('/data/linkedin-content/today-image.png?v=' + CACHE_BUST)
+          .then(function(r){ return r.blob(); })
+          .then(function(blob){
+            var file = new File([blob], 'gnk-asg-linkedin.png', { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              return navigator.share({ files: [file], title: 'GNK ASG', text: data.postText, url: data.projectUrl });
+            } else if (navigator.share) {
+              return navigator.share({ title: 'GNK ASG', text: data.postText, url: data.projectUrl });
+            } else {
+              status.textContent = 'Dijeljenje nije podržano u ovom pregledniku — koristi Kopiraj/Preuzmi.';
+            }
+          })
+          .catch(function(err){ if (err && err.name !== 'AbortError') console.error(err); });
+      });
+    })
+    .catch(function(err){
+      document.getElementById('ldLoading').textContent = 'Sadržaj trenutačno nije dostupan.';
+      console.error(err);
+    });
+})();
+</script>
+<script src="/assets/public-unified-menu-v6.js?v=20260723-defer-widgets-safe-v2" defer></script>
+</body></html>

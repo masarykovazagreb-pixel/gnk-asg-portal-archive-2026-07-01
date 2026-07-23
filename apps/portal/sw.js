@@ -1,8 +1,8 @@
-const CACHE_NAME = 'gnk-asg-live-v56-sw-response-fix';
+const CACHE_NAME = 'gnk-asg-live-v57-linkedin-daily';
 const STATIC_ASSETS = [
   './', './index.html', './en/', './en/index.html', './sadrzaj/', './teme/', './teme/index.html', './tehnologija/',
   './nermin-sefic/', './nermin-sefic/index.html', './en/nermin-sefic/', './en/nermin-sefic/index.html',
-  './intelligence-desk/', './instalacija/', './financije/', './registri/',
+  './intelligence-desk/', './instalacija/', './financije/', './registri/', './linkedin-daily/',
   './trzista/', './trzista/index.html', './en/markets/', './en/markets/index.html',
   './en/finance/', './en/finance/index.html', './en/technology/', './en/technology/index.html',
   './en/intelligence-desk/', './en/registries/', './en/registries/index.html', './insights-hr/', './en/insights/',

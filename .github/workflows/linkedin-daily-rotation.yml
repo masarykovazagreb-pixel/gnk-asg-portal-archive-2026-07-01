@@ -20,14 +20,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Install image generation dependency
+        run: npm install sharp@0.33 --no-save
       - name: Generate today's post
         run: node scripts/linkedin-daily-rotation.mjs
-      - name: Commit the queue file
+      - name: Generate today's image
+        run: node scripts/linkedin-daily-image.mjs
+      - name: Commit the queue file and image
         run: |
           git config user.name "gnk-asg-bot"
           git config user.email "beckuphome@gmail.com"
-          git add apps/portal/data/linkedin-content/today.json
-          git diff --cached --quiet && echo "no changes" || git commit -m "chore: today's LinkedIn post preview [skip ci]"
+          git add apps/portal/data/linkedin-content/today.json apps/portal/data/linkedin-content/today-image.png apps/portal/data/linkedin-content/archive/
+          git diff --cached --quiet && echo "no changes" || git commit -m "chore: today's LinkedIn post + image preview [skip ci]"
           git push || true
       - name: Post preview as GitHub issue
         env:
@@ -40,11 +44,13 @@ jobs:
             echo ""
             echo "**Projekt:** $PROJECT_ID"
             echo ""
+            echo "**Slika za objavu:** https://gnk-asg.hr/data/linkedin-content/today-image.png"
+            echo ""
             echo '```'
             echo "$POST_TEXT"
             echo '```'
             echo ""
-            echo "Kopirajte gornji tekst i objavite ručno na LinkedIn stranici GNK ASG / GNK DINAMO Ltd. dok automatsko objavljivanje nije aktivno (čeka se LinkedIn API pristup)."
+            echo "Preuzmite sliku s gornjeg linka, kopirajte tekst, i objavite ručno na LinkedIn stranici GNK ASG / GNK DINAMO Ltd. (ili osobnom profilu) dok automatsko objavljivanje nije aktivno (čeka se LinkedIn API pristup)."
           } > /tmp/linkedin-issue.md
           gh issue create --repo "${{ github.repository }}" --title "LinkedIn prijedlog objave — $(date -u +%Y-%m-%d)" --body-file /tmp/linkedin-issue.md --label "linkedin-queue" || \
           gh issue create --repo "${{ github.repository }}" --title "LinkedIn prijedlog objave — $(date -u +%Y-%m-%d)" --body-file /tmp/linkedin-issue.md
