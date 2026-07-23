@@ -1,6 +1,6 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V20';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V21';
 const encoder=new TextEncoder();
 const COOKIE='__Host-gnk_workforce_staging';
 const COOKIE_HEADER_MAX_LENGTH=4096;
@@ -144,9 +144,12 @@ async function login(request,env){
   }
   if(body.length>LOGIN_BODY_MAX_LENGTH)return page('Zahtjev za prijavu je prevelik.',413);
   const form=new URLSearchParams(body);
-  const token=String(form.get('token')||'').trim();
+  const tokens=form.getAll('token');
+  const nextValues=form.getAll('next');
+  if(tokens.length!==1||nextValues.length>1)return page('Zahtjev za prijavu nije valjan.',400);
+  const token=String(tokens[0]||'').trim();
   if(!token||token.length>TOKEN_MAX_LENGTH||!(await tokenValid(token,env)))return page('Token nije ispravan.',401);
-  const location=safeNext(form.get('next'));
+  const location=safeNext(nextValues[0]);
   const session=await createSession(env);
   const headers=harden(new Headers({location,'set-cookie':`${COOKIE}=${session}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${SESSION_MAX_AGE_SECONDS}`}));
   return new Response(null,{status:303,headers});
