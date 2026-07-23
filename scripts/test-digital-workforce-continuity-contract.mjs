@@ -22,15 +22,34 @@ assert.match(continuity,/deduplicateByStableId:true/);
 
 // Private staging security contract: every response path must remain non-cacheable,
 // non-indexable, non-embeddable and must not expose browser capabilities.
-assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V5/);
+assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V13/);
 assert.match(gate,/function harden\(headers\)/);
+assert.match(gate,/cache-control','no-store, private/);
+assert.match(gate,/x-robots-tag','noindex, nofollow, noarchive, nosnippet/);
 assert.match(gate,/x-content-type-options','nosniff/);
 assert.match(gate,/x-frame-options','DENY/);
 assert.match(gate,/referrer-policy','no-referrer/);
 assert.match(gate,/permissions-policy','camera=\(\), microphone=\(\), geolocation=\(\)/);
-assert.match(gate,/content-security-policy',"default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'"/);
+assert.match(gate,/frame-ancestors 'none'/);
+assert.match(gate,/form-action 'self'/);
+assert.match(gate,/object-src 'none'/);
+assert.match(gate,/script-src 'self'/);
+assert.match(gate,/style-src 'self' 'unsafe-inline'/);
+assert.match(gate,/img-src 'self' data:/);
+assert.match(gate,/connect-src 'self'/);
 assert.match(gate,/const headers=harden\(new Headers\(/);
 assert.match(gate,/const headers=harden\(new Headers\(response\.headers\)\)/);
+
+// Authentication contract: explicit Bearer credentials must be evaluated before
+// browser-session fallback, and malformed login bodies must return a controlled 400.
+assert.match(gate,/const header=String\(request\.headers\.get\('authorization'\)\|\|''\)/);
+assert.match(gate,/const match=header\.match\(\/\^Bearer\\s\+\(\.\+\)\$\/i\)/);
+assert.match(gate,/if\(match&&await tokenValid\(match\[1\],env\)\)return true/);
+assert.match(gate,/return sessionValid\(cookieValue\(request\),env\)/);
+assert.match(gate,/contentType\.startsWith\('application\/x-www-form-urlencoded'\)/);
+assert.match(gate,/contentType\.startsWith\('multipart\/form-data'\)/);
+assert.match(gate,/return page\('Zahtjev za prijavu nije valjan\.',400\)/);
+assert.match(gate,/return page\('Token nije ispravan\.',401\)/);
 
 console.log(JSON.stringify({
   ok:true,
@@ -38,5 +57,6 @@ console.log(JSON.stringify({
   baseline:1536,
   current:1573,
   projectAreas:9,
-  stagingSecurity:'no-store-noindex-nosniff-frame-deny-no-referrer-restricted-permissions-csp'
+  stagingGate:'V13',
+  stagingSecurity:'no-store-noindex-nosniff-frame-deny-no-referrer-restricted-permissions-csp-controlled-login-errors'
 },null,2));
