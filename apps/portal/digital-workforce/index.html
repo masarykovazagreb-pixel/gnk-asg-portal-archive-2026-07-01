@@ -24,6 +24,7 @@
     body.dw-private-preview:before,body.dw-private-preview:after{display:none!important;content:none!important}
     .dw-skip-link{position:fixed;z-index:10000;top:12px;left:12px;transform:translateY(-160%);padding:12px 16px;border:1px solid #d7b55b;border-radius:10px;background:#000;color:#f2d27d;font-weight:900;text-decoration:none;transition:transform .16s ease}
     .dw-skip-link:focus-visible{transform:translateY(0);outline:3px solid #f2d27d;outline-offset:3px}
+    .dw-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
     #gnk-unified-header{background:rgba(0,0,0,.86)!important;border-bottom:1px solid rgba(215,181,91,.18)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important}
     #gnk-unified-header .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#f4e7bd;font-weight:900;letter-spacing:.08em}
     #gnk-unified-header .brand-mark{display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(215,181,91,.55);border-radius:14px;background:rgba(10,10,10,.94);box-shadow:inset 0 0 24px rgba(215,181,91,.08),0 0 28px rgba(215,181,91,.06)}
@@ -71,7 +72,8 @@
       </aside>
     </header>
     <p class="dw-disclaimer">SIMULACIJA</p>
-    <nav class="dw-tabs" role="tablist" aria-label="Funkcije digitalne radne snage">
+    <p id="dwTabHelp" class="dw-sr-only">Za promjenu kartice koristite tipke sa strelicama lijevo i desno. Sadržaj odabrane kartice nalazi se odmah nakon popisa kartica.</p>
+    <nav class="dw-tabs" role="tablist" aria-label="Funkcije digitalne radne snage" aria-describedby="dwTabHelp">
       <button id="dw-tab-plan" class="active" type="button" role="tab" aria-selected="true" aria-controls="dwContent" tabindex="0" data-dw-tab="plan">Plan</button>
       <button id="dw-tab-bulletins" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="bulletins">Bilten</button>
       <button id="dw-tab-projects" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="projects">Projekti</button>
@@ -84,7 +86,7 @@
       <button id="dw-tab-workers" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="workers">Workeri</button>
       <button id="dw-tab-log" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="log">Zapisnik</button>
     </nav>
-    <section id="dwContent" class="dw-panel" role="tabpanel" tabindex="0" aria-live="polite" aria-busy="false" aria-labelledby="dw-tab-plan"></section>
+    <section id="dwContent" class="dw-panel" role="tabpanel" tabindex="0" aria-busy="false" aria-labelledby="dw-tab-plan"></section>
   </main>
   <script defer src="/assets/gnkc-stable-index-v1.js?v=20260722"></script>
   <script defer src="/assets/digital-workforce-suite-v1.js?v=20260722-puls-redesign-v7-black-responsive"></script>
