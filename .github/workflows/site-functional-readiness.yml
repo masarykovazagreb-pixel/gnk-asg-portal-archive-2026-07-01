@@ -129,7 +129,11 @@ jobs:
         run: scripts/check-newsroom-route-readiness.sh readiness-preflight
 
       - name: Full predeploy gate
-        run: node scripts/predeploy-release-v6.mjs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          node scripts/predeploy-release-v6.mjs 2>&1 | tee artifacts/predeploy-release-v6.log
 
       - name: Upload readiness evidence
         if: always()
