@@ -112,7 +112,7 @@ assert.match(js,/const countLabel=items\.length===total\?`\$\{fmt\(total\)\} uku
 assert.match(js,/class="dw-count" role="status" aria-live="polite"/);
 assert.match(js,/<span>Workeri<\/span><strong>\$\{countLabel\}<\/strong>/);
 
-assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V20/);
+assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V21/);
 assert.match(gate,/function safeNext\(value\)/);
 assert.match(gate,/next\.includes\('\\\\'\)/);
 assert.match(gate,/request\.headers\.has\('authorization'\)\?401:200/);
@@ -123,7 +123,12 @@ assert.match(gate,/TOKEN_MAX_LENGTH=512/);
 assert.match(gate,/body=await request\.text\(\)/);
 assert.match(gate,/body\.length>LOGIN_BODY_MAX_LENGTH/);
 assert.match(gate,/const form=new URLSearchParams\(body\)/);
+assert.match(gate,/const tokens=form\.getAll\('token'\)/);
+assert.match(gate,/const nextValues=form\.getAll\('next'\)/);
+assert.match(gate,/if\(tokens\.length!==1\|\|nextValues\.length>1\)return page\('Zahtjev za prijavu nije valjan\.',400\)/);
+assert.match(gate,/const token=String\(tokens\[0\]\|\|''\)\.trim\(\)/);
 assert.match(gate,/token\.length>TOKEN_MAX_LENGTH/);
+assert.match(gate,/const location=safeNext\(nextValues\[0\]\)/);
 assert.match(gate,/return page\('Zahtjev za prijavu nije valjan\.',400\)/);
 assert.match(gate,/return page\('Zahtjev za prijavu je prevelik\.',413\)/);
 assert.match(gate,/return page\('Token nije ispravan\.',401\)/);
@@ -147,7 +152,7 @@ console.log(JSON.stringify({
   resilience:'isolated-tab-api-failures-worker-project-dependency-only',
   concurrency:'abort-previous-request-ignore-stale-response',
   workerFilters:'persistent-query-project-focus-empty-state-one-click-reset-and-explicit-counts',
-  stagingGate:'V20-safe-redirect-controlled-login-errors-explicit-bearer-401-malformed-cookie-safe-bounded-cookie-parsing-duplicate-cookie-rejection-bounded-urlencoded-login',
+  stagingGate:'V21-safe-redirect-controlled-login-errors-explicit-bearer-401-malformed-cookie-safe-bounded-cookie-parsing-duplicate-cookie-rejection-bounded-urlencoded-login-unambiguous-login-fields',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
