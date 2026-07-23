@@ -185,13 +185,11 @@
     bindShareButtons(document);
   }
   function mountReader() {
-    const heroActions = document.querySelector('.hero-actions');
-    const heroContainer = document.querySelector('.hero .container') || document.querySelector('.hero') || document.querySelector('main');
-    if (!document.querySelector('.gnk-reader-fixed') && !document.body.classList.contains('insights-page')) {
-      const panel = create(readerMarkup());
-      if (heroActions) heroActions.insertAdjacentElement('afterend', panel);
-      else if (heroContainer) heroContainer.insertAdjacentElement('afterbegin', panel);
-    }
+    // Disabled per request: this was a simulated/indicative visitor
+    // counter (not real measured analytics, as its own label states),
+    // appearing on the homepage and many other pages. Removed the
+    // widget entirely; share button functionality below is untouched.
+    return;
   }
   function mount() {
     startPageVisit();
