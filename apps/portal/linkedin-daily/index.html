@@ -47,6 +47,9 @@
     <p class="ld-note">Gumb <strong>Podijeli</strong> otvara izbornik telefona gdje možeš izravno odabrati LinkedIn aplikaciju (slika + link se prilažu automatski, tekst kopiraj gumbom pored i zalijepi u opis objave). Poveznica na projekt: <a class="ld-project-link" id="ldProjectLink" href="#" target="_blank" rel="noopener"></a></p>
   </div>
 
+  <div class="ld-feed-head"><p class="ld-eyebrow">Čeka odobrenje</p><h2>Prijedlozi za LinkedIn</h2></div>
+  <div id="approvalDrafts"><p class="ld-feed-loading">Provjeravam ima li novih prijedloga…</p></div>
+
   <div class="ld-feed-head"><p class="ld-eyebrow">Za dijeljenje danas</p><h2>Vijesti, objave i projekti</h2></div>
 
   <div class="ld-feed-section">
@@ -154,6 +157,55 @@
     })
     .catch(function(){
       document.getElementById('feedNews').innerHTML = '<p class="ld-feed-loading">Vijesti trenutno nisu dostupne. <a class="ld-project-link" href="https://gnk-asg.hr/gnk-aktual/">Otvori AKTUAL MEDIA →</a></p>';
+    });
+
+  function renderDrafts(drafts) {
+    var host = document.getElementById('approvalDrafts');
+    var pending = drafts.filter(function(d){ return d.status === 'pending'; });
+    if (!pending.length) { host.innerHTML = '<p class="ld-feed-loading">Trenutno nema prijedloga koji čekaju odobrenje. Novi se generiraju 3x dnevno (08h, 13h, 18h).</p>'; return; }
+    host.innerHTML = pending.map(function(d){
+      var text = (d.postText || '').replace(/</g,'&lt;');
+      var kindLabel = d.kind === 'news' ? 'Vijest' : d.kind === 'project' ? 'Projekt' : 'Objava';
+      return '<div class="ld-feed-item" data-draft-id="' + d.draftId + '">' +
+        (d.imageUrl ? '<div class="ld-image-wrap" style="margin-bottom:12px"><img src="' + d.imageUrl + '" alt="" style="width:100%;display:block"></div>' : '') +
+        '<span class="ld-feed-tag">' + kindLabel + '</span>' +
+        '<p style="color:#dbe4ef;font-size:.9rem;line-height:1.6;white-space:pre-wrap;margin:0 0 12px">' + text + '</p>' +
+        '<div class="ld-feed-actions">' +
+        '<button class="ld-feed-btn approve-btn" style="background:#d4af37;color:#1a1305">Odobri i objavi ✓</button>' +
+        '<button class="ld-feed-btn reject-btn">Odbij ✕</button>' +
+        '</div><p class="ld-status" style="margin-top:8px"></p></div>';
+    }).join('');
+
+    host.querySelectorAll('.approve-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = btn.closest('[data-draft-id]');
+        var draftId = item.dataset.draftId;
+        var status = item.querySelector('.ld-status');
+        btn.disabled = true; status.textContent = 'Objavljujem…';
+        fetch('/api/linkedin/approve', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ draftId: draftId }) })
+          .then(function(r){ return r.json(); })
+          .then(function(res){
+            if (res.ok) { status.textContent = 'Objavljeno na LinkedIn ✓'; item.querySelectorAll('button').forEach(function(b){ b.style.display='none'; }); }
+            else { status.textContent = 'Greška: ' + (res.error || 'nepoznata'); btn.disabled = false; }
+          })
+          .catch(function(err){ status.textContent = 'Greška pri objavi.'; btn.disabled = false; console.error(err); });
+      });
+    });
+    host.querySelectorAll('.reject-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = btn.closest('[data-draft-id]');
+        var draftId = item.dataset.draftId;
+        fetch('/api/linkedin/reject', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ draftId: draftId }) })
+          .then(function(){ item.remove(); });
+      });
+    });
+  }
+
+  fetch('/api/linkedin/drafts?v=' + CACHE_BUST, { cache: 'no-store' })
+    .then(function(r){ return r.json(); })
+    .then(function(data){ renderDrafts(data.drafts || []); })
+    .catch(function(){
+      document.getElementById('approvalDrafts').innerHTML = '<p class="ld-feed-loading">Sustav odobravanja još nije aktivan (čeka se LinkedIn povezivanje).</p>';
     });
 })();
 </script>

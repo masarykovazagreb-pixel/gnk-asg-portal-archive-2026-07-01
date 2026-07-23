@@ -8,6 +8,8 @@ import {handleDigitalWorkforceSuite,VERSION as DIGITAL_WORKFORCE_SUITE_VERSION} 
 import {handleResilientContact,VERSION as CONTACT_RESILIENCE_VERSION} from './contact-submit-resilient-v1.js';
 import {serveDynamicEditorialImage,VERSION as DYNAMIC_EDITORIAL_IMAGE_VERSION} from './dynamic-editorial-image-v1.js';
 import {normalizeCanonicalNewsItems,VERSION as CANONICAL_NEWS_FEED_VERSION} from './canonical-news-feed-v1.js';
+import {handlesLinkedIn,handleLinkedIn} from './linkedin-oauth-v1.js';
+import {maybeGenerateLinkedInDrafts} from './linkedin-draft-generator-v1.js';
 
 export const PREVIOUS_PUBLIC_EDITORIAL_VERSION='GNK_ASG_UNIFIED_AUTH_V37_NEWS_SOURCE_LINKS';
 export const ENTRYPOINT='src/index-unified-auth-v23.js';
@@ -92,6 +94,8 @@ async function serveNewsShareRedirect(request,env){
 
 export default{
  async fetch(request,env,ctx){
+  const linkedinPath=new URL(request.url).pathname;
+  if(handlesLinkedIn(linkedinPath))return stampRelease(await handleLinkedIn(request,env),env);
   const workforce=await handleDigitalWorkforceSuite(request,env);
   if(workforce)return stampRelease(workforce,env);
   const contact=await handleResilientContact(request,env,ctx,app);
@@ -116,6 +120,9 @@ export default{
   if(editorial)return stampRelease(editorial,env);
   return stampRelease(await app.fetch(request,env,ctx),env);
  },
- scheduled(event,env,ctx){if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)},
+ async scheduled(event,env,ctx){
+  if(ctx&&typeof ctx.waitUntil==='function')ctx.waitUntil(maybeGenerateLinkedInDrafts(env));else await maybeGenerateLinkedInDrafts(env);
+  if(typeof app.scheduled==='function')return app.scheduled(event,env,ctx)
+ },
  email(message,env,ctx){if(typeof app.email==='function')return app.email(message,env,ctx)}
 };
