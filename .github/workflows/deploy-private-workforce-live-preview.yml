@@ -29,8 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment:
-      name: workforce-live-preview
-      url: ${{ steps.deploy.outputs.url }}
+      name: staging
+      url: ${{ steps.deploy.outputs.url }}/digital-workforce/
     steps:
       - name: Enforce approved preview branch
         shell: bash
