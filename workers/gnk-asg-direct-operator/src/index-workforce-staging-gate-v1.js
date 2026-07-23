@@ -1,8 +1,10 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V17';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V18';
 const encoder=new TextEncoder();
 const COOKIE='__Host-gnk_workforce_staging';
+const COOKIE_HEADER_MAX_LENGTH=4096;
+const COOKIE_VALUE_MAX_LENGTH=512;
 const SESSION_MAX_AGE_SECONDS=28800;
 const SESSION_CLOCK_SKEW_SECONDS=300;
 const CSP="default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'";
@@ -46,10 +48,13 @@ function expectedHash(env){
 
 function cookieValue(request){
   const source=String(request.headers.get('cookie')||'');
+  if(!source||source.length>COOKIE_HEADER_MAX_LENGTH)return '';
   const hit=source.split(';').map(v=>v.trim()).find(v=>v.startsWith(`${COOKIE}=`));
   if(!hit)return '';
+  const raw=hit.slice(COOKIE.length+1);
+  if(!raw||raw.length>COOKIE_VALUE_MAX_LENGTH)return '';
   try{
-    return decodeURIComponent(hit.slice(COOKIE.length+1));
+    return decodeURIComponent(raw);
   }catch{
     return '';
   }
