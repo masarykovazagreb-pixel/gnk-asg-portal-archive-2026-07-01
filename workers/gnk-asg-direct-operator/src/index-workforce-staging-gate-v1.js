@@ -1,6 +1,6 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V7';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V8';
 const encoder=new TextEncoder();
 const COOKIE='gnk_workforce_staging';
 const CSP="default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'";
@@ -13,6 +13,8 @@ function harden(headers){
   headers.set('referrer-policy','no-referrer');
   headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
   headers.set('content-security-policy',CSP);
+  headers.set('x-gnk-environment','private-workforce-staging');
+  headers.set('x-gnk-staging-gate',VERSION);
   return headers;
 }
 
@@ -27,8 +29,6 @@ function unauthorizedApi(){
     'content-type':'application/json; charset=utf-8',
     'www-authenticate':'Bearer realm="GNK DINAMO Workforce staging"'
   }));
-  headers.set('x-gnk-environment','private-workforce-staging');
-  headers.set('x-gnk-staging-gate',VERSION);
   return new Response(JSON.stringify({ok:false,error:'STAGING_AUTH_REQUIRED'}),{status:401,headers});
 }
 
@@ -58,8 +58,6 @@ async function authorized(request,env){
 
 function secure(response){
   const headers=harden(new Headers(response.headers));
-  headers.set('x-gnk-environment','private-workforce-staging');
-  headers.set('x-gnk-staging-gate',VERSION);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
