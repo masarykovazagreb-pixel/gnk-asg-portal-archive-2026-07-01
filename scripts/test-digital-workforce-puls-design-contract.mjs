@@ -57,11 +57,23 @@ assert.match(js,/if\(active\)activeTab=tab/);
 assert.match(js,/host\.setAttribute\('aria-labelledby',activeTab\.id\)/);
 
 // Resilience contract: unrelated tabs must not depend on the projects endpoint.
-assert.match(js,/if\(name==='workers'&&!state\.projects\)state\.projects=await get\('projects'\)/);
-assert.doesNotMatch(js,/if\(!state\.projects\)state\.projects=await get\('projects'\)/);
+assert.match(js,/if\(name==='workers'&&!state\.projects\)state\.projects=await get\('projects',controller\.signal\)/);
+assert.doesNotMatch(js,/if\(!state\.projects\)state\.projects=await get\('projects'/);
 assert.match(js,/if\(!host\|\|!views\[name\]\)return/);
 assert.match(js,/class="dw-error" role="alert"/);
 assert.match(js,/requestAnimationFrame\(\(\)=>retry\?\.focus\(\)\)/);
+
+// Concurrency contract: stale tab and worker-filter responses must never overwrite the latest view.
+assert.match(js,/let activeRequestId=0/);
+assert.match(js,/let activeController=null/);
+assert.match(js,/const requestId=\+\+activeRequestId/);
+assert.match(js,/activeController\?\.abort\(\)/);
+assert.match(js,/const controller=new AbortController\(\)/);
+assert.match(js,/signal:controller\.signal|controller\.signal/);
+assert.match(js,/if\(requestId!==activeRequestId\)return/);
+assert.match(js,/if\(error\?\.name==='AbortError'\|\|requestId!==activeRequestId\)return/);
+assert.match(js,/if\(requestId===activeRequestId\)\{/);
+assert.match(js,/if\(activeController===controller\)activeController=null/);
 
 console.log(JSON.stringify({
   ok:true,
@@ -71,6 +83,7 @@ console.log(JSON.stringify({
   accessibility:'linked-tabs-dynamic-panel-label-focus-visible-keyboard-navigation-retry-focus',
   responsive:'contained-tabs-worker-table-touch-targets',
   resilience:'isolated-tab-api-failures-worker-project-dependency-only',
+  concurrency:'abort-previous-request-ignore-stale-response',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
