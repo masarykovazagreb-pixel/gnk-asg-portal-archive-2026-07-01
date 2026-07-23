@@ -1,6 +1,6 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V12';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V13';
 const encoder=new TextEncoder();
 const COOKIE='__Host-gnk_workforce_staging';
 const SESSION_MAX_AGE_SECONDS=28800;
@@ -112,7 +112,14 @@ function secure(response){
 }
 
 async function login(request,env){
-  const form=await request.formData();
+  const contentType=String(request.headers.get('content-type')||'').toLowerCase();
+  if(!contentType.startsWith('application/x-www-form-urlencoded')&&!contentType.startsWith('multipart/form-data'))return page('Zahtjev za prijavu nije valjan.',400);
+  let form;
+  try{
+    form=await request.formData();
+  }catch{
+    return page('Zahtjev za prijavu nije valjan.',400);
+  }
   const token=String(form.get('token')||'').trim();
   if(!(await tokenValid(token,env)))return page('Token nije ispravan.',401);
   const next=String(form.get('next')||'/digital-workforce/');
