@@ -1,6 +1,6 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V14';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V15';
 const encoder=new TextEncoder();
 const COOKIE='__Host-gnk_workforce_staging';
 const SESSION_MAX_AGE_SECONDS=28800;
@@ -9,7 +9,7 @@ const CSP="default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-act
 
 function harden(headers){
   headers.set('cache-control','no-store, private');
-  headers.set('x-robots-tag','noindex, nofollow,noarchive,nosnippet'.replace('nofollow,noarchive','nofollow, noarchive'));
+  headers.set('x-robots-tag','noindex, nofollow, noarchive, nosnippet');
   headers.set('x-content-type-options','nosniff');
   headers.set('x-frame-options','DENY');
   headers.set('referrer-policy','no-referrer');
@@ -151,7 +151,7 @@ export default{
     }
     if(!(await authorized(request,env))){
       if(url.pathname.startsWith('/api/'))return unauthorizedApi();
-      return page();
+      return page('',request.headers.has('authorization')?401:200);
     }
     if(!['GET','HEAD','OPTIONS'].includes(request.method)){
       return secure(new Response(JSON.stringify({ok:false,error:'STAGING_WRITE_BLOCKED',mode:'SHADOW_READ_ONLY'}),{status:405,headers:{'content-type':'application/json; charset=utf-8','allow':'GET, HEAD, OPTIONS'}}));
