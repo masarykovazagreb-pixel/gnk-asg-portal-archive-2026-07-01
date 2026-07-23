@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260723-gnk-gate-v2';
+  var VERSION = '20260723-full-globe-index-v1';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -83,7 +83,8 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/network-motion.js');
   script('/assets/group-network.js');
   var __gnkPath2 = (location.pathname || '/').replace(/\/+$/, '') || '/';
-  if (__gnkPath2.indexOf('group-network') !== -1) {
+  var __gnkIsHome = __gnkPath2 === '' || __gnkPath2 === '/' || __gnkPath2 === '/en';
+  if (__gnkPath2.indexOf('group-network') !== -1 || __gnkIsHome) {
     script('/assets/group-clarity.js');
     script('/assets/group-globe-3d.js');
     script('/assets/group-map-2d-geo.js');
