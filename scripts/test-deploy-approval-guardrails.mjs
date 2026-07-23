@@ -10,8 +10,8 @@ const preflight=read('scripts/check-newsroom-route-readiness.sh');
 const verifier=read('scripts/verify-production-release-v38.sh');
 const workforceStagingConfig=read('workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml');
 
-const requireText=(label,source,values)=>{for(const value of values)assert.ok(source.includes(value),`${label} missing: ${value}`)};
-const forbidText=(label,source,values)=>{for(const value of values)assert.ok(!source.includes(value),`${label} contains forbidden text: ${value}`)};
+const requireText=(label,source,values)=>{for(const value of values){if(!source.includes(value))console.error(`::error::${label} missing: ${value}`);assert.ok(source.includes(value),`${label} missing: ${value}`)}};
+const forbidText=(label,source,values)=>{for(const value of values){if(source.includes(value))console.error(`::error::${label} contains forbidden text: ${value}`);assert.ok(!source.includes(value),`${label} contains forbidden text: ${value}`)}};
 
 requireText('workflow approval contract',workflow,[
  'approved_sha:','ref: ${{ inputs.approved_sha }}','authorize-production:','deploy-production:',
