@@ -8,6 +8,8 @@ on:
       - 'apps/portal/digital-workforce/**'
       - 'apps/portal/workers/**'
       - 'apps/portal/assets/digital-workforce-**'
+      - 'apps/portal/assets/gnkc-**'
+      - 'scripts/test-digital-workforce-**'
       - 'workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js'
       - 'workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml'
@@ -95,13 +97,13 @@ jobs:
           echo "url=$url" >> "$GITHUB_OUTPUT"
           printf '%s\n' "$url/digital-workforce/" > live-preview-url.txt
 
-      - name: Verify live preview entry point
+      - name: Verify private login entry point
         env:
           URL: ${{ steps.deploy.outputs.url }}
         shell: bash
         run: |
           set -euo pipefail
-          code=$(curl -sS -D live-preview.headers -o live-preview.html -w '%{http_code}' "$URL/digital-workforce/")
+          code=$(curl --retry 4 --retry-all-errors --retry-delay 2 -sS -D live-preview.headers -o live-preview.html -w '%{http_code}' "$URL/digital-workforce/")
           [ "$code" = '200' ]
           grep -Fq 'PRIVATNI STAGING' live-preview.html
           grep -Fq 'background:#000' live-preview.html
@@ -109,7 +111,59 @@ jobs:
           grep -Fqi 'x-gnk-environment: private-workforce-staging' live-preview.headers
           ! grep -Fq 'Digitalna radna snaga' live-preview.html
 
-      - name: Publish live preview link
+      - name: Verify authenticated portal and every tab API
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+          TOKEN_PRIMARY: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TOKEN="$TOKEN_PRIMARY"
+          [ -n "$TOKEN" ] || TOKEN="$TOKEN_FALLBACK"
+          [ -n "$TOKEN" ] || { echo '::error::Missing operator token for authenticated preview verification'; exit 1; }
+
+          page_code=$(curl --retry 4 --retry-all-errors --retry-delay 2 -sS \
+            -H "Authorization: Bearer $TOKEN" \
+            -D live-preview-auth.headers \
+            -o live-preview-auth.html \
+            -w '%{http_code}' \
+            "$URL/digital-workforce/")
+          [ "$page_code" = '200' ] || { echo "::error::Authenticated preview page returned $page_code"; exit 1; }
+          grep -Fq 'Digitalna radna snaga' live-preview-auth.html
+          grep -Fq 'SIMULACIJA' live-preview-auth.html
+          grep -Fqi 'x-gnk-environment: private-workforce-staging' live-preview-auth.headers
+
+          endpoints=(state plan bulletins projects risks opinions dependencies tasks credits newsroom workers log)
+          for endpoint in "${endpoints[@]}"; do
+            file="live-preview-${endpoint}.json"
+            code=$(curl --retry 4 --retry-all-errors --retry-delay 2 -sS \
+              -H "Authorization: Bearer $TOKEN" \
+              -o "$file" \
+              -w '%{http_code}' \
+              "$URL/api/public/digital-workforce/$endpoint")
+            [ "$code" = '200' ] || { echo "::error::Preview API $endpoint returned $code"; exit 1; }
+            ENDPOINT="$endpoint" FILE="$file" node - <<'NODE'
+          const fs=require('fs');
+          const endpoint=process.env.ENDPOINT;
+          const payload=JSON.parse(fs.readFileSync(process.env.FILE,'utf8'));
+          if(!payload||typeof payload!=='object'||Array.isArray(payload))throw new Error(`${endpoint}: payload must be an object`);
+          if(endpoint!=='state'&&!Array.isArray(payload.items))throw new Error(`${endpoint}: items must be an array`);
+          NODE
+          done
+
+          write_code=$(curl -sS \
+            -H "Authorization: Bearer $TOKEN" \
+            -H 'content-type: application/json' \
+            -X POST --data '{}' \
+            -o live-preview-write.json \
+            -w '%{http_code}' \
+            "$URL/api/public/digital-workforce/state")
+          [ "$write_code" = '405' ]
+          grep -Fq 'STAGING_WRITE_BLOCKED' live-preview-write.json
+
+      - name: Publish verified live preview link
+        if: success()
         env:
           URL: ${{ steps.deploy.outputs.url }}
         shell: bash
@@ -121,6 +175,7 @@ jobs:
             echo "- Otvori pregled: $URL/digital-workforce/"
             echo "- Source SHA: $GITHUB_SHA"
             echo '- Pristup: postojeći operator/admin token'
+            echo '- Autentificirana stranica i svih 11 tab API-ja: provjereni'
             echo '- Produkcijski write, mail i javno objavljivanje: isključeni'
           } | tee live-preview-summary.md >> "$GITHUB_STEP_SUMMARY"
 
@@ -133,7 +188,8 @@ jobs:
             workers/gnk-asg-direct-operator/live-preview-deploy.log
             workers/gnk-asg-direct-operator/live-preview-url.txt
             live-preview-summary.md
-            live-preview.headers
-            live-preview.html
+            live-preview*.headers
+            live-preview*.html
+            live-preview*.json
           if-no-files-found: warn
           retention-days: 7
