@@ -1,6 +1,6 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V16';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V17';
 const encoder=new TextEncoder();
 const COOKIE='__Host-gnk_workforce_staging';
 const SESSION_MAX_AGE_SECONDS=28800;
@@ -47,7 +47,12 @@ function expectedHash(env){
 function cookieValue(request){
   const source=String(request.headers.get('cookie')||'');
   const hit=source.split(';').map(v=>v.trim()).find(v=>v.startsWith(`${COOKIE}=`));
-  return hit?decodeURIComponent(hit.slice(COOKIE.length+1)):'';
+  if(!hit)return '';
+  try{
+    return decodeURIComponent(hit.slice(COOKIE.length+1));
+  }catch{
+    return '';
+  }
 }
 
 async function tokenValid(value,env){
