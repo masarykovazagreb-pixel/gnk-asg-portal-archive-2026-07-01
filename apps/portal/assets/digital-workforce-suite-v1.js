@@ -2,7 +2,7 @@
   const $=selector=>document.querySelector(selector);
   const $$=selector=>[...document.querySelectorAll(selector)];
   const base='/api/public/digital-workforce/';
-  const state={};
+  const state={workerFilters:{q:'',project:''},workerFilterFocus:''};
   let activeRequestId=0;
   let activeController=null;
   const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({
@@ -74,8 +74,9 @@
     },
     newsroom:data=>cards((data.items||[]).slice(0,18),item=>`<article class="dw-card"><span class="dw-kicker">${date(item.publishedAt)}</span><h3>${esc(item.title)}</h3><p>${esc(item.excerpt)}</p><small>Urednik: ${esc(item.editor)}</small></article>`),
     workers:data=>{
+      const filters=state.workerFilters||{q:'',project:''};
       const rows=(data.items||[]).map(item=>`<tr><td>${esc(item.id)}</td><td><strong>${esc(item.name)}</strong></td><td>${esc(item.projectId)}</td><td>${esc(item.function)}</td><td>${badge(item.status)}</td></tr>`).join('');
-      return `<div class="dw-toolbar"><label><span>Pretraga</span><input id="dwWorkerSearch" type="search" placeholder="Ime, funkcija ili projekt" autocomplete="off"></label><label><span>Projekt</span><select id="dwWorkerProject"><option value="">Svi projekti</option>${(state.projects?.items||[]).map(project=>`<option value="${esc(project.id)}">${esc(project.id)} · ${esc(project.name)}</option>`).join('')}</select></label><div class="dw-count"><span>Ukupno</span><strong>${fmt(data.total)}</strong></div></div><div class="dw-table"><table><thead><tr><th>ID</th><th>Ime i prezime</th><th>Projekt</th><th>Funkcija</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      return `<div class="dw-toolbar"><label><span>Pretraga</span><input id="dwWorkerSearch" type="search" value="${esc(filters.q)}" placeholder="Ime, funkcija ili projekt" autocomplete="off"></label><label><span>Projekt</span><select id="dwWorkerProject"><option value="">Svi projekti</option>${(state.projects?.items||[]).map(project=>`<option value="${esc(project.id)}"${filters.project===String(project.id)?' selected':''}>${esc(project.id)} · ${esc(project.name)}</option>`).join('')}</select></label><div class="dw-count"><span>Ukupno</span><strong>${fmt(data.total)}</strong></div></div><div class="dw-table"><table><thead><tr><th>ID</th><th>Ime i prezime</th><th>Projekt</th><th>Funkcija</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
     },
     log:data=>data.items?.length?data.items.slice(0,50).map(item=>`<div class="dw-log"><time>${dateTime(item.at)}</time><b>${esc(item.type)}</b><span>${esc(item.message)}</span></div>`).join(''):'<div class="dw-empty">Zapisnik je prazan.</div>'
   };
@@ -83,6 +84,20 @@
   function setBusy(active){
     const host=$('#dwContent');
     if(host)host.setAttribute('aria-busy',active?'true':'false');
+  }
+
+  function restoreWorkerFilterFocus(){
+    const id=state.workerFilterFocus;
+    state.workerFilterFocus='';
+    if(!id)return;
+    requestAnimationFrame(()=>{
+      const control=document.getElementById(id);
+      control?.focus();
+      if(id==='dwWorkerSearch'&&typeof control?.setSelectionRange==='function'){
+        const end=control.value.length;
+        control.setSelectionRange(end,end);
+      }
+    });
   }
 
   async function load(name,params=''){
@@ -102,7 +117,10 @@
       if(requestId!==activeRequestId)return;
       state[name]=data;
       host.innerHTML=views[name](data);
-      if(name==='workers')bindWorkerFilters();
+      if(name==='workers'){
+        bindWorkerFilters();
+        restoreWorkerFilterFocus();
+      }
     }catch(error){
       if(error?.name==='AbortError'||requestId!==activeRequestId)return;
       host.innerHTML=`<div class="dw-error" role="alert"><strong>Podaci trenutačno nisu dostupni.</strong><span>${esc(error.message)}</span><button type="button" id="dwRetry">Pokušaj ponovno</button></div>`;
@@ -121,9 +139,11 @@
     const search=$('#dwWorkerSearch');
     const project=$('#dwWorkerProject');
     let timer;
-    const run=()=>{
+    const run=event=>{
       clearTimeout(timer);
-      timer=setTimeout(()=>load('workers',`?q=${encodeURIComponent(search?.value||'')}&project=${encodeURIComponent(project?.value||'')}`),250);
+      state.workerFilters={q:search?.value||'',project:project?.value||''};
+      state.workerFilterFocus=event?.currentTarget?.id||'';
+      timer=setTimeout(()=>load('workers',`?q=${encodeURIComponent(state.workerFilters.q)}&project=${encodeURIComponent(state.workerFilters.project)}`),250);
     };
     search?.addEventListener('input',run);
     project?.addEventListener('change',run);
