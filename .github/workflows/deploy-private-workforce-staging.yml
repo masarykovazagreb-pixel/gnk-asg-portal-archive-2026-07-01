@@ -58,7 +58,7 @@ jobs:
           grep -Fq 'GNK DINAMO Ltd grupa' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
-          grep -Fq "GNK_DINAMO_WORKFORCE_STAGING_GATE_V6" "$gate"
+          grep -Fq "GNK_DINAMO_WORKFORCE_STAGING_GATE_V7" "$gate"
           grep -Fq 'Operatorski token' "$gate"
           grep -Fq 'HttpOnly; Secure; SameSite=Strict' "$gate"
           grep -Fq 'html{color-scheme:dark;background:#000}' "$gate"
@@ -70,7 +70,10 @@ jobs:
           grep -Fq "headers.set('x-frame-options','DENY')" "$gate"
           grep -Fq "headers.set('referrer-policy','no-referrer')" "$gate"
           grep -Fq "headers.set('permissions-policy','camera=(), microphone=(), geolocation=()')" "$gate"
-          grep -Fq "frame-ancestors 'none'" "$gate"
+          grep -Fq "script-src 'self'" "$gate"
+          grep -Fq "style-src 'self' 'unsafe-inline'" "$gate"
+          grep -Fq "img-src 'self' data:" "$gate"
+          grep -Fq "connect-src 'self'" "$gate"
           grep -Fq "function unauthorizedApi()" "$gate"
           grep -Fq "error:'STAGING_AUTH_REQUIRED'" "$gate"
           grep -Fq "'www-authenticate':'Bearer realm=\"GNK DINAMO Workforce staging\"'" "$gate"
@@ -142,7 +145,7 @@ jobs:
           printf '%s' "$headers" | grep -Fqi 'x-frame-options: DENY'
           printf '%s' "$headers" | grep -Fqi 'referrer-policy: no-referrer'
           printf '%s' "$headers" | grep -Fqi 'permissions-policy: camera=(), microphone=(), geolocation=()'
-          printf '%s' "$headers" | grep -Fqi "content-security-policy: default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'"
+          printf '%s' "$headers" | grep -Fqi "content-security-policy: default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'"
 
       - name: Verify every tab API and write lock
         env:
@@ -188,7 +191,7 @@ jobs:
           - Authenticated portal: 200 verified
           - Bearer API access: verified
           - Robots: noindex/nofollow verified
-          - Security headers: nosniff, frame deny, no-referrer, restricted permissions and CSP verified
+          - Security headers: nosniff, frame deny, no-referrer, restricted permissions and asset-compatible CSP verified
           - All 11 tab APIs plus state: verified
           - Filtered Worker API: verified
           - Market data: verified
