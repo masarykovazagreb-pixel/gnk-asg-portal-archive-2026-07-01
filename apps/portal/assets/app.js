@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260723-remove-dup-sections-v1';
+  var VERSION = '20260723-defer-widgets-v1';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -63,20 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/language-routing.js');
   // script('/assets/portal-navigation.js');
   script('/assets/status.js');
-  script('/assets/browser-data-refresh.js');
-  script('/assets/market.js');
-  script('/assets/gallery-auto-assign-v1.js');
-  script('/assets/whatsapp-widget-v1.js');
-  script('/assets/sticker-tiles-v1.js');
-  script('/assets/header-whatsapp-button-v1.js');
-  script('/assets/assistant.js');
-  script('/assets/inline-assistant.js');
-  script('/assets/intelligence-desk.js');
-  script('/assets/desk-hybrid.js');
-  script('/assets/desk-search.js');
-  script('/assets/mobile-app.js');
-  script('/assets/mobile-navigation.js');
-  script('/assets/floating-intelligence.js');
+  script('/assets/portal-layout.js');
   script('/assets/world-geography.js');
   script('/assets/network-motion.js');
   script('/assets/group-network.js');
@@ -98,14 +85,41 @@ document.addEventListener('DOMContentLoaded', function () {
     script('/assets/group-mobile-accessible.js');
     script('/assets/network-search-3d.js');
   }
-  script('/assets/location-recovery.js');
-  script('/assets/public-sources.js');
-  script('/assets/site-share.js');
-  script('/assets/hourly-data-disclosure.js');
-  script('/assets/portal-layout.js');
-  script('/assets/home-activity-model.js');
-  script('/assets/index-live-hub-v1.js');
-  script('/assets/digital-workforce-entry-v1.js');
+
+  // The scripts below power widgets that are not needed for the
+  // initial paint (chat assistants, sticker tiles, WhatsApp button,
+  // weather/market card refreshers, mobile nav, etc). Deferring them
+  // until after window 'load' noticeably speeds up perceived load
+  // time without touching the globe/group-network package above,
+  // which is loaded exactly as before.
+  function loadDeferredWidgets() {
+    script('/assets/browser-data-refresh.js');
+    script('/assets/market.js');
+    script('/assets/gallery-auto-assign-v1.js');
+    script('/assets/whatsapp-widget-v1.js');
+    script('/assets/sticker-tiles-v1.js');
+    script('/assets/header-whatsapp-button-v1.js');
+    script('/assets/assistant.js');
+    script('/assets/inline-assistant.js');
+    script('/assets/intelligence-desk.js');
+    script('/assets/desk-hybrid.js');
+    script('/assets/desk-search.js');
+    script('/assets/mobile-app.js');
+    script('/assets/mobile-navigation.js');
+    script('/assets/floating-intelligence.js');
+    script('/assets/location-recovery.js');
+    script('/assets/public-sources.js');
+    script('/assets/site-share.js');
+    script('/assets/hourly-data-disclosure.js');
+    script('/assets/home-activity-model.js');
+    script('/assets/index-live-hub-v1.js');
+    script('/assets/digital-workforce-entry-v1.js');
+  }
+  if (document.readyState === 'complete') {
+    loadDeferredWidgets();
+  } else {
+    window.addEventListener('load', loadDeferredWidgets);
+  }
 
   function isEnglish() {
     return /\/en\/?$/.test(window.location.pathname) || /\/en\//.test(window.location.pathname) || (window.GNK_LANG && window.GNK_LANG.get && window.GNK_LANG.get() === 'en');
