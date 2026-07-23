@@ -1,56 +1,51 @@
 {
-  "updated_at": "2026-07-23T03:47:14+00:00",
+  "updated_at": "2026-07-23T06:41:34+00:00",
   "news": {
-    "updated_at": "2026-07-23T03:47:14+00:00",
+    "updated_at": "2026-07-23T06:41:34+00:00",
     "status": "ok",
     "engine": "github_actions_rss_refresh_v4_retention_policy",
     "cadence": "hourly at minute 17 UTC plus manual workflow_dispatch",
     "source_success_policy": "publish_when_public_items_available_and_at_least_50_percent_sources_synced",
     "source_success_threshold": 0.5,
-    "source_success_ratio": 0.964,
+    "source_success_ratio": 0.982,
     "source_sync_status": "partial_with_public_fallback",
     "configured_sources": 55,
-    "successful_sources": 53,
-    "failed_sources": 2,
+    "successful_sources": 54,
+    "failed_sources": 1,
     "storage_policy": "public_latest_100_archive_all_older_prune_oldest_1000_repeatedly_when_archive_exceeds_2000",
     "public_items": 100,
     "max_public_items": 100,
-    "archive_items": 1999,
+    "archive_items": 1057,
     "archive_prune_trigger": 2000,
     "archive_delete_oldest_batch": 1000,
-    "archive_items_before_prune": 3999,
-    "archive_prune_batches": 2,
-    "discarded_archive_overflow_items": 2000,
-    "fetched_candidates": 2796,
-    "duplicates_or_blocked_removed": 667,
+    "archive_items_before_prune": 4057,
+    "archive_prune_batches": 3,
+    "discarded_archive_overflow_items": 3000,
+    "fetched_candidates": 2781,
+    "duplicates_or_blocked_removed": 658,
     "request_timeout_seconds": 10,
     "network_workers": 1,
     "share_previews_ready": 0,
     "by_group": {
-      "economy": 40,
-      "international": 55,
-      "digital-assets": 4,
+      "economy": 25,
+      "international": 66,
+      "digital-assets": 8,
       "technology": 1
     },
     "errors": [
       {
         "source": "Poslovni dnevnik",
         "group": "hrvatska",
-        "error": "not well-formed (invalid token): line 53, column 111"
-      },
-      {
-        "source": "Nature",
-        "group": "technology",
-        "error": "not well-formed (invalid token): line 14, column 4"
+        "error": "not well-formed (invalid token): line 203, column 111"
       }
     ],
     "preview_errors": [],
-    "checked_at": "2026-07-23T03:47:14+00:00",
-    "last_attempt_at": "2026-07-23T03:47:14+00:00",
+    "checked_at": "2026-07-23T06:41:34+00:00",
+    "last_attempt_at": "2026-07-23T06:41:34+00:00",
     "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-07-23T03:47:14+00:00",
+    "last_successful_refresh_at": "2026-07-23T06:41:34+00:00",
     "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 16.15
+    "runtime_seconds": 18.54
   }
 }
