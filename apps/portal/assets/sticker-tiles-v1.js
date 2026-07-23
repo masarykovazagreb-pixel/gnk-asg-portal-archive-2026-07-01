@@ -91,12 +91,12 @@
     }
     @media (prefers-reduced-motion: reduce) { .gnk-tile { transition: none; } #${WIDGET_ID}-mobile-toggle { animation: none; } }
     #${WIDGET_ID}-mobile-toggle {
-      display: none;
+      display: flex;
       height: 34px;
-      padding: 0 12px;
-      border: 1px solid #d4af37;
+      padding: 0 13px;
+      border: 1.5px solid #d4af37;
       border-radius: 999px;
-      background: #181b22;
+      background: rgba(255,255,255,.06);
       color: #f5f2ea;
       font: 800 10px/1 Arial, sans-serif;
       letter-spacing: .05em;
@@ -107,11 +107,16 @@
       white-space: nowrap;
       flex: 0 0 auto;
       order: -1;
-      animation: gnkStickerTogglePulse 2.2s ease-in-out infinite;
+      animation: gnkStickerTogglePulse 1.8s ease-in-out infinite;
     }
+    #${WIDGET_ID}-mobile-toggle span { animation: gnkStickerTextPulse 1.8s ease-in-out infinite; }
     @keyframes gnkStickerTogglePulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,.55); }
-      50% { box-shadow: 0 0 0 7px rgba(212,175,55,0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,.65), inset 0 0 0 0 rgba(212,175,55,0); border-color: #d4af37; }
+      50% { box-shadow: 0 0 0 9px rgba(212,175,55,0), inset 0 0 8px 0 rgba(212,175,55,.25); border-color: #f3d778; }
+    }
+    @keyframes gnkStickerTextPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .55; }
     }
     #${WIDGET_ID}-mobile-panel {
       display: none;
@@ -150,9 +155,6 @@
       display: block;
       font: 400 11px/1.4 Arial, sans-serif;
       color: #94a3b8;
-    }
-    @media (max-width: 900px) {
-      #${WIDGET_ID}-mobile-toggle { display: flex; }
     }
   `;
   document.head.appendChild(style);
@@ -225,7 +227,7 @@
   const mobileToggle = document.createElement('button');
   mobileToggle.id = `${WIDGET_ID}-mobile-toggle`;
   mobileToggle.type = 'button';
-  mobileToggle.textContent = isEnglish ? '★ PROJECTS' : '★ PROJEKTI';
+  mobileToggle.innerHTML = `<span>${isEnglish ? '★ PROJECTS' : '★ PROJEKTI'}</span>`;
   mobileToggle.setAttribute('aria-expanded', 'false');
 
   const mobilePanel = document.createElement('div');
