@@ -52,13 +52,16 @@ assert.match(js,/aria-selected/);
 assert.match(js,/ArrowLeft/);
 assert.match(js,/Pokušaj ponovno/);
 assert.match(js,/Motor .*dan/);
+assert.match(js,/let activeTab=null/);
+assert.match(js,/if\(active\)activeTab=tab/);
+assert.match(js,/host\.setAttribute\('aria-labelledby',activeTab\.id\)/);
 
 console.log(JSON.stringify({
   ok:true,
   contract:'digital-workforce-puls-trzista-public-redesign',
   tabs:11,
   palette:'pure-black-glass-gold-white',
-  accessibility:'linked-tabs-focus-visible-keyboard-navigation',
+  accessibility:'linked-tabs-dynamic-panel-label-focus-visible-keyboard-navigation',
   responsive:'contained-tabs-worker-table-touch-targets',
   files:[
     'apps/portal/digital-workforce/index.html',
