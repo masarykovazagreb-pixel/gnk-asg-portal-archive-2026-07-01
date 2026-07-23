@@ -56,13 +56,21 @@ assert.match(js,/let activeTab=null/);
 assert.match(js,/if\(active\)activeTab=tab/);
 assert.match(js,/host\.setAttribute\('aria-labelledby',activeTab\.id\)/);
 
+// Resilience contract: unrelated tabs must not depend on the projects endpoint.
+assert.match(js,/if\(name==='workers'&&!state\.projects\)state\.projects=await get\('projects'\)/);
+assert.doesNotMatch(js,/if\(!state\.projects\)state\.projects=await get\('projects'\)/);
+assert.match(js,/if\(!host\|\|!views\[name\]\)return/);
+assert.match(js,/class="dw-error" role="alert"/);
+assert.match(js,/requestAnimationFrame\(\(\)=>retry\?\.focus\(\)\)/);
+
 console.log(JSON.stringify({
   ok:true,
   contract:'digital-workforce-puls-trzista-public-redesign',
   tabs:11,
   palette:'pure-black-glass-gold-white',
-  accessibility:'linked-tabs-dynamic-panel-label-focus-visible-keyboard-navigation',
+  accessibility:'linked-tabs-dynamic-panel-label-focus-visible-keyboard-navigation-retry-focus',
   responsive:'contained-tabs-worker-table-touch-targets',
+  resilience:'isolated-tab-api-failures-worker-project-dependency-only',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
