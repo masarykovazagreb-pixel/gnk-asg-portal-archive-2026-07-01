@@ -55,8 +55,14 @@
       box-sizing: border-box;
     }
     .gnk-tile.open { height: ${OPEN_H}px; }
-    .gnk-tile .gnk-tile-bg { position: absolute; inset: 0; opacity: 0; transition: opacity .28s ease; }
+    .gnk-tile .gnk-tile-bg { position: absolute; inset: 0; opacity: .38; transition: opacity .28s ease; }
     .gnk-tile.open .gnk-tile-bg { opacity: .96; }
+    .gnk-tile .gnk-tile-pulse {
+      position: absolute; inset: 0; background: #8ce89a; opacity: 0;
+      animation: gnkToothPulse 2.6s ease-in-out infinite;
+    }
+    .gnk-tile.open .gnk-tile-pulse { animation: none; opacity: 0; }
+    @keyframes gnkToothPulse { 0%, 100% { opacity: 0; } 50% { opacity: .55; } }
     .gnk-tile .gnk-tile-body {
       position: relative; width: 100%;
       display: flex; flex-direction: column;
@@ -66,7 +72,7 @@
       font-size: .54rem; font-weight: 900; text-transform: uppercase; letter-spacing: .01em;
       text-align: center; height: ${TOOTH - 2}px; display: flex; align-items: center; justify-content: center;
       line-height: 1.05; padding: 0 2px; word-break: break-word;
-      order: -1; color: #e8c766; text-shadow: 0 1px 2px rgba(0,0,0,.55), 0 0 1px rgba(0,0,0,.35);
+      order: -1; color: #0a1626; text-shadow: 0 0 3px rgba(255,255,255,.9), 0 0 1px rgba(255,255,255,.8);
     }
     .gnk-tile .gnk-tile-title { font-size: .6rem; font-weight: 900; line-height: 1.2; margin: 4px 0 3px; opacity: 0; transition: opacity .16s ease .1s; }
     .gnk-tile .gnk-tile-full { font-size: .54rem; font-weight: 700; line-height: 1.22; margin-bottom: 5px; opacity: 0; transition: opacity .16s ease .14s; }
@@ -95,14 +101,17 @@
 
   function buildGroup(items) {
     const group = document.createDocumentFragment();
-    items.forEach(item => {
+    items.forEach((item, idx) => {
       const tile = document.createElement('div');
       tile.className = 'gnk-tile';
       tile.setAttribute('role', 'button');
       tile.setAttribute('tabindex', '0');
       tile.setAttribute('aria-label', item.title);
+      const delay = (idx * 0.55).toFixed(2);
+      const duration = (2.2 + (idx % 3) * 0.5).toFixed(2);
       tile.innerHTML = `
         <div class="gnk-tile-bg" style="background:${item.bg}"></div>
+        <div class="gnk-tile-pulse" style="animation-delay:${delay}s; animation-duration:${duration}s;"></div>
         <div class="gnk-tile-body" style="color:${item.fg}">
           <div class="gnk-tile-label">${item.label}</div>
           <div class="gnk-tile-title">${item.title}</div>
