@@ -3,6 +3,8 @@
   const $$=selector=>[...document.querySelectorAll(selector)];
   const base='/api/public/digital-workforce/';
   const state={};
+  let activeRequestId=0;
+  let activeController=null;
   const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
   }[char]));
@@ -14,8 +16,8 @@
   const dateTime=value=>value?new Date(value).toLocaleString('hr-HR'):'—';
   const routeMap={plan:'plan',bulletins:'bulletins',projects:'projects',risks:'risks',opinions:'opinions',dependencies:'dependencies',tasks:'tasks',credits:'credits',newsroom:'newsroom',workers:'workers','activity-log':'log'};
 
-  async function get(key){
-    const response=await fetch(base+key,{cache:'no-store',headers:{accept:'application/json'}});
+  async function get(key,signal){
+    const response=await fetch(base+key,{cache:'no-store',headers:{accept:'application/json'},signal});
     if(!response.ok)throw new Error(`${key}:${response.status}`);
     return response.json();
   }
@@ -86,22 +88,32 @@
   async function load(name,params=''){
     const host=$('#dwContent');
     if(!host||!views[name])return;
+    const requestId=++activeRequestId;
+    activeController?.abort();
+    const controller=new AbortController();
+    activeController=controller;
     setBusy(true);
     host.innerHTML='<div class="dw-loading"><span class="dw-spinner" aria-hidden="true"></span><p>Učitavanje operativnih podataka…</p></div>';
     try{
-      if(name==='workers'&&!state.projects)state.projects=await get('projects');
+      if(name==='workers'&&!state.projects)state.projects=await get('projects',controller.signal);
       if(name==='credits')await getGnkcIndex();
-      const data=await get(name+params);
+      if(requestId!==activeRequestId)return;
+      const data=await get(name+params,controller.signal);
+      if(requestId!==activeRequestId)return;
       state[name]=data;
       host.innerHTML=views[name](data);
       if(name==='workers')bindWorkerFilters();
     }catch(error){
+      if(error?.name==='AbortError'||requestId!==activeRequestId)return;
       host.innerHTML=`<div class="dw-error" role="alert"><strong>Podaci trenutačno nisu dostupni.</strong><span>${esc(error.message)}</span><button type="button" id="dwRetry">Pokušaj ponovno</button></div>`;
       const retry=$('#dwRetry');
       retry?.addEventListener('click',()=>load(name,params));
       requestAnimationFrame(()=>retry?.focus());
     }finally{
-      setBusy(false);
+      if(requestId===activeRequestId){
+        setBusy(false);
+        if(activeController===controller)activeController=null;
+      }
     }
   }
 
