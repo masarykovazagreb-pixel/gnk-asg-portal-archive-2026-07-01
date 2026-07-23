@@ -86,6 +86,18 @@ assert.match(js,/function restoreWorkerFilterFocus\(\)/);
 assert.match(js,/control\?\.focus\(\)/);
 assert.match(js,/control\.setSelectionRange\(end,end\)/);
 
+// Worker empty-state contract: filtered zero-results must be explicit and recoverable in one action.
+assert.match(js,/const hasFilters=Boolean\(filters\.q\|\|filters\.project\)/);
+assert.match(js,/Nema workera koji odgovaraju odabranim kriterijima\./);
+assert.match(js,/role="status"/);
+assert.match(js,/id="dwWorkerReset"/);
+assert.match(js,/id="dwWorkerResetEmpty"/);
+assert.match(js,/function resetWorkerFilters\(\)/);
+assert.match(js,/state\.workerFilters=\{q:'',project:''\}/);
+assert.match(js,/state\.workerFilterFocus='dwWorkerSearch'/);
+assert.match(js,/reset\?\.addEventListener\('click',resetWorkerFilters\)/);
+assert.match(js,/resetEmpty\?\.addEventListener\('click',resetWorkerFilters\)/);
+
 console.log(JSON.stringify({
   ok:true,
   contract:'digital-workforce-puls-trzista-public-redesign',
@@ -95,7 +107,7 @@ console.log(JSON.stringify({
   responsive:'contained-tabs-worker-table-touch-targets',
   resilience:'isolated-tab-api-failures-worker-project-dependency-only',
   concurrency:'abort-previous-request-ignore-stale-response',
-  workerFilters:'persistent-query-project-and-focus',
+  workerFilters:'persistent-query-project-focus-empty-state-and-one-click-reset',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
