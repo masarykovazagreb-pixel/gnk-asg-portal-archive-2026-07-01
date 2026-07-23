@@ -157,6 +157,23 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
   </div>
   <p class="pt-status" id="ptStatus" data-i18n="loading">Učitavanje podataka…</p>
 
+  <section class="pt-narrative">
+    <h2 data-i18n="narrTitle">Globalna tržišta na jednom mjestu</h2>
+    <p data-i18n="narrP1">Puls tržišta je informativna platforma GNK ASG-a koja na jednom mjestu objedinjuje pregled najvažnijih kretanja na svjetskim financijskim tržištima.</p>
+    <p data-i18n="narrP2">Platforma obuhvaća vodeće kriptovalute, 22 ključna svjetska burzovna indeksa, 24 velike međunarodne kompanije, robu i sirovine, glavne valutne parove te službene referentne tečajeve Europske središnje banke. Posjetitelji mogu pratiti cijene, dnevne promjene, kratkoročne trendove, tržišnu kapitalizaciju i pokazatelje raspoloženja poput kripto Fear & Greed indeksa.</p>
+    <p data-i18n="narrP3">Podaci se preuzimaju iz javno dostupnih izvora, uključujući CoinGecko, Yahoo Finance, Alternative.me i ECB podatke putem Frankfurtera, a sustav ih automatski osvježava svaka dva sata.</p>
+    <p data-i18n="narrP4">Cilj platforme nije predviđanje tržišta, nego omogućiti brz, pregledan i transparentan uvid u informacije koje mogu pomoći pri razumijevanju globalnih financijskih kretanja.</p>
+    <p class="pt-narrative-tagline" data-i18n="narrTagline">Kripto. Indeksi. Dionice. Roba. Valute. Jedan pregled tržišta.</p>
+    <p class="pt-narrative-disclaimer" data-i18n="narrDisclaimer">Prikazani podaci informativne su naravi i ne predstavljaju investicijsko savjetovanje.</p>
+  </section>
+  <style>
+    .pt-narrative{max-width:820px;margin:0 auto 40px;padding:32px 28px;background:rgba(18,21,27,.72);border:1px solid rgba(212,175,55,.28);border-radius:18px}
+    .pt-narrative h2{color:#f8fafc;font-size:clamp(1.5rem,2.6vw,1.9rem);margin:0 0 16px}
+    .pt-narrative p{color:#c5cfdb;font-size:.97rem;line-height:1.7;margin:0 0 12px}
+    .pt-narrative-tagline{color:#e0bd69;font-weight:800;letter-spacing:.02em;margin-top:16px!important}
+    .pt-narrative-disclaimer{color:#8a94a3;font-size:.82rem!important;font-style:italic}
+  </style>
+
   <nav class="pt-tabs" id="ptTabs">
     <button class="pt-tab active" data-tab="home" data-i18n="tabHome">Naslovnica</button>
     <button class="pt-tab" data-tab="crypto" data-i18n="tabCrypto">Kripto</button>
@@ -316,6 +333,13 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
   var I18N = {
     hr: {
       eyebrow: 'Uživo · javni izvori', lead: 'Svjetski indeksi, dionice, roba, valute i kripto — iz stvarnih, javnih izvora podataka.',
+      narrTitle: 'Globalna tržišta na jednom mjestu',
+      narrP1: 'Puls tržišta je informativna platforma GNK ASG-a koja na jednom mjestu objedinjuje pregled najvažnijih kretanja na svjetskim financijskim tržištima.',
+      narrP2: 'Platforma obuhvaća vodeće kriptovalute, 22 ključna svjetska burzovna indeksa, 24 velike međunarodne kompanije, robu i sirovine, glavne valutne parove te službene referentne tečajeve Europske središnje banke. Posjetitelji mogu pratiti cijene, dnevne promjene, kratkoročne trendove, tržišnu kapitalizaciju i pokazatelje raspoloženja poput kripto Fear & Greed indeksa.',
+      narrP3: 'Podaci se preuzimaju iz javno dostupnih izvora, uključujući CoinGecko, Yahoo Finance, Alternative.me i ECB podatke putem Frankfurtera, a sustav ih automatski osvježava svaka dva sata.',
+      narrP4: 'Cilj platforme nije predviđanje tržišta, nego omogućiti brz, pregledan i transparentan uvid u informacije koje mogu pomoći pri razumijevanju globalnih financijskih kretanja.',
+      narrTagline: 'Kripto. Indeksi. Dionice. Roba. Valute. Jedan pregled tržišta.',
+      narrDisclaimer: 'Prikazani podaci informativne su naravi i ne predstavljaju investicijsko savjetovanje.',
       loading: 'Učitavanje podataka…', tabHome: 'Naslovnica', tabCrypto: 'Kripto', tabIndices: 'Indeksi', tabStocks: 'Dionice',
       tabCommodities: 'Roba', tabCurrencies: 'Valute', tabCompare: 'Usporedbe', tabSources: 'Izvori',
       srcCoinGecko: 'Cijene, promjene, sparkline grafovi i tržišna kapitalizacija za top 30 kriptovaluta te globalna kripto statistika.',
@@ -342,6 +366,13 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
     },
     en: {
       eyebrow: 'Live · public sources', lead: 'World indices, stocks, commodities, currencies and crypto — from real, public data sources.',
+      narrTitle: 'Global markets in one place',
+      narrP1: 'Puls Tržišta is GNK ASG\'s informational platform that brings together, in one place, an overview of the most important movements on world financial markets.',
+      narrP2: 'The platform covers leading cryptocurrencies, 22 key world stock indices, 24 major international companies, commodities and raw materials, major currency pairs, and the official European Central Bank reference rates. Visitors can track prices, daily changes, short-term trends, market capitalization and sentiment indicators such as the crypto Fear & Greed index.',
+      narrP3: 'Data is sourced from publicly available providers, including CoinGecko, Yahoo Finance, Alternative.me and ECB data via Frankfurter, and the system refreshes it automatically every two hours.',
+      narrP4: 'The platform\'s goal is not to predict markets, but to provide a fast, clear and transparent view of information that can help in understanding global financial developments.',
+      narrTagline: 'Crypto. Indices. Stocks. Commodities. Currencies. One market overview.',
+      narrDisclaimer: 'The data shown is informational in nature and does not constitute investment advice.',
       loading: 'Loading data…', tabHome: 'Home', tabCrypto: 'Crypto', tabIndices: 'Indices', tabStocks: 'Stocks',
       tabCommodities: 'Commodities', tabCurrencies: 'Currencies', tabCompare: 'Compare', tabSources: 'Sources',
       srcCoinGecko: 'Prices, changes, sparkline charts and market cap for the top 30 cryptocurrencies plus global crypto statistics.',
