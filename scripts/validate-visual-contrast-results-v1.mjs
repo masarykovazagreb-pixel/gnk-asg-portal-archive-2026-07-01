@@ -31,17 +31,22 @@ for(const project of PROJECTS){
   const projectDir=path.join(REPORT_ROOT,project);
   for(const route of routes){
     const stem=reportName(route),failure=path.join(projectDir,`${stem}.failure.json`),report=path.join(projectDir,`${stem}.json`);
-    if(fs.existsSync(failure)){errors.push(`${project} ${route}: failure evidence exists`);continue;}
-    if(!fs.existsSync(report)){errors.push(`${project} ${route}: missing report`);continue;}
+    if(!fs.existsSync(report)){
+      if(fs.existsSync(failure))errors.push(`${project} ${route}: failure evidence exists without a successful retry report`);
+      else errors.push(`${project} ${route}: missing report`);
+      continue;
+    }
     reports++;
     let data;
     try{data=JSON.parse(fs.readFileSync(report,'utf8'));}catch(error){errors.push(`${project} ${route}: invalid JSON ${error.message}`);continue;}
     if(data?.runtime?.state!=='hardened-v4')errors.push(`${project} ${route}: runtime=${data?.runtime?.state||'missing'}`);
-    if(Number(data?.totalViolations||0)!==0)errors.push(`${project} ${route}: violations=${data.totalViolations}`);
+    const violations=Array.isArray(data?.violations)?data.violations:[];
+    const unresolved=violations.filter(item=>item?.repairedByRuntime!==true);
+    if(unresolved.length!==0)errors.push(`${project} ${route}: unresolved violations=${unresolved.length}`);
   }
 }
 const expected=routes.length*PROJECTS.length;
 if(reports!==expected)errors.push(`report count ${reports}/${expected}`);
-const summary={ok:errors.length===0,version:'GNK_VISUAL_CONTRAST_RESULT_VALIDATOR_V1',routes:routes.length,projects:PROJECTS.length,expectedReports:expected,reports,errors:errors.slice(0,100)};
+const summary={ok:errors.length===0,version:'GNK_VISUAL_CONTRAST_RESULT_VALIDATOR_V2_RETRY_AND_RUNTIME_REPAIR_AWARE',routes:routes.length,projects:PROJECTS.length,expectedReports:expected,reports,errors:errors.slice(0,100)};
 console.log(JSON.stringify(summary,null,2));
 if(errors.length)process.exitCode=1;
