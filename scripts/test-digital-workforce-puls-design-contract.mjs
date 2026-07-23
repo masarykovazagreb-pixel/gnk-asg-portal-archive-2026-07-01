@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const html=fs.readFileSync('apps/portal/digital-workforce/index.html','utf8');
 const css=fs.readFileSync('apps/portal/assets/digital-workforce-suite-v1.css','utf8');
 const js=fs.readFileSync('apps/portal/assets/digital-workforce-suite-v1.js','utf8');
+const gate=fs.readFileSync('workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js','utf8');
 
 for(const tab of ['plan','bulletins','projects','risks','opinions','dependencies','tasks','credits','newsroom','workers','log']){
   assert.match(html,new RegExp(`data-dw-tab="${tab}"`));
@@ -115,6 +116,14 @@ assert.match(js,/const countLabel=items\.length===total\?`\$\{fmt\(total\)\} uku
 assert.match(js,/class="dw-count" role="status" aria-live="polite"/);
 assert.match(js,/<span>Workeri<\/span><strong>\$\{countLabel\}<\/strong>/);
 
+// Staging login parser contract: malformed payloads must fail closed with a controlled 400.
+assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V13/);
+assert.match(gate,/contentType\.startsWith\('application\/x-www-form-urlencoded'\)/);
+assert.match(gate,/contentType\.startsWith\('multipart\/form-data'\)/);
+assert.match(gate,/form=await request\.formData\(\)/);
+assert.match(gate,/catch\{\s*return page\('Zahtjev za prijavu nije valjan\.',400\);\s*\}/s);
+assert.match(gate,/return page\('Token nije ispravan\.',401\)/);
+
 console.log(JSON.stringify({
   ok:true,
   contract:'digital-workforce-puls-trzista-public-redesign',
@@ -125,9 +134,11 @@ console.log(JSON.stringify({
   resilience:'isolated-tab-api-failures-worker-project-dependency-only',
   concurrency:'abort-previous-request-ignore-stale-response',
   workerFilters:'persistent-query-project-focus-empty-state-one-click-reset-and-explicit-counts',
+  stagingAuth:'malformed-login-payloads-controlled-400',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
-    'apps/portal/assets/digital-workforce-suite-v1.js'
+    'apps/portal/assets/digital-workforce-suite-v1.js',
+    'workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js'
   ]
 },null,2));
