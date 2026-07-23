@@ -1,6 +1,6 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V15';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V16';
 const encoder=new TextEncoder();
 const COOKIE='__Host-gnk_workforce_staging';
 const SESSION_MAX_AGE_SECONDS=28800;
@@ -113,6 +113,12 @@ function secure(response){
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
+function safeNext(value){
+  const next=String(value||'');
+  if(!next.startsWith('/')||next.startsWith('//')||next.includes('\\')||/[\u0000-\u001f\u007f]/.test(next))return '/digital-workforce/';
+  return next;
+}
+
 async function login(request,env){
   const contentType=String(request.headers.get('content-type')||'').toLowerCase();
   if(!contentType.startsWith('application/x-www-form-urlencoded')&&!contentType.startsWith('multipart/form-data'))return page('Zahtjev za prijavu nije valjan.',400);
@@ -124,8 +130,7 @@ async function login(request,env){
   }
   const token=String(form.get('token')||'').trim();
   if(!(await tokenValid(token,env)))return page('Token nije ispravan.',401);
-  const next=String(form.get('next')||'/digital-workforce/');
-  const location=next.startsWith('/')&&!next.startsWith('//')?next:'/digital-workforce/';
+  const location=safeNext(form.get('next'));
   const session=await createSession(env);
   const headers=harden(new Headers({location,'set-cookie':`${COOKIE}=${session}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${SESSION_MAX_AGE_SECONDS}`}));
   return new Response(null,{status:303,headers});
