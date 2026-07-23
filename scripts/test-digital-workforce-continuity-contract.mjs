@@ -20,7 +20,7 @@ assert.match(continuity,/continueNewsroomChronology:true/);
 assert.match(continuity,/neverRewritePublishedHistory:true/);
 assert.match(continuity,/deduplicateByStableId:true/);
 
-assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V17/);
+assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V18/);
 assert.match(gate,/function harden\(headers\)/);
 assert.match(gate,/cache-control','no-store, private/);
 assert.match(gate,/x-robots-tag','noindex, nofollow, noarchive, nosnippet/);
@@ -48,10 +48,13 @@ assert.match(gate,/request\.headers\.has\('authorization'\)\?401:200/);
 assert.match(gate,/return page\('Zahtjev za prijavu nije valjan\.',400\)/);
 assert.match(gate,/return page\('Token nije ispravan\.',401\)/);
 
-// Malformed percent-encoded browser cookies must be treated as an invalid session,
-// never allowed to escape decodeURIComponent as an uncontrolled runtime error.
-assert.match(gate,/function cookieValue\(request\)/);
-assert.match(gate,/try\{\s*return decodeURIComponent\(hit\.slice\(COOKIE\.length\+1\)\)/s);
+// Cookie parsing must be bounded before splitting or decoding, and malformed
+// percent-encoding must be rejected as an invalid session rather than throwing.
+assert.match(gate,/COOKIE_HEADER_MAX_LENGTH=4096/);
+assert.match(gate,/COOKIE_VALUE_MAX_LENGTH=512/);
+assert.match(gate,/if\(!source\|\|source\.length>COOKIE_HEADER_MAX_LENGTH\)return ''/);
+assert.match(gate,/if\(!raw\|\|raw\.length>COOKIE_VALUE_MAX_LENGTH\)return ''/);
+assert.match(gate,/try\{\s*return decodeURIComponent\(raw\)/s);
 assert.match(gate,/catch\{\s*return ''\s*;?\s*\}/s);
 
 console.log(JSON.stringify({
@@ -60,6 +63,6 @@ console.log(JSON.stringify({
   baseline:1536,
   current:1573,
   projectAreas:9,
-  stagingGate:'V17',
-  stagingSecurity:'no-store-noindex-nosniff-frame-deny-no-referrer-restricted-permissions-csp-controlled-login-errors-bearer-authoritative-browser-401-malformed-cookie-safe'
+  stagingGate:'V18',
+  stagingSecurity:'no-store-noindex-nosniff-frame-deny-no-referrer-restricted-permissions-csp-controlled-login-errors-bearer-authoritative-browser-401-malformed-cookie-safe-bounded-cookie-parsing'
 },null,2));
