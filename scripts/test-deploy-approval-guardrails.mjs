@@ -88,6 +88,7 @@ const safePrivateDeploys=new Map([
 ]);
 const forbiddenPrivateDeployText=['environment: production','refs/heads/main','routes =','custom_domain','zone_name'];
 const violations=[];
+const diagnostics=[];
 for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test(f))){
  const path=`.github/workflows/${file}`;
  if(path===approved)continue;
@@ -95,13 +96,24 @@ for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test
  const writeLine=source.split(/\r?\n/).find(line=>/^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line));
  const safeContract=safePrivateDeploys.get(path);
  if(writeLine&&safeContract){
-  requireText(safeContract.label,source,safeContract.required);
-  forbidText(safeContract.label,source,forbiddenPrivateDeployText);
+  const missing=safeContract.required.filter(value=>!source.includes(value));
+  const forbidden=forbiddenPrivateDeployText.filter(value=>source.includes(value));
+  diagnostics.push({path,writeLine:writeLine.trim(),missing,forbidden});
+  if(missing.length||forbidden.length){
+   violations.push(`${file}: private deploy contract mismatch; missing=[${missing.join(', ')}]; forbidden=[${forbidden.join(', ')}]`);
+  }
   continue;
  }
- if(writeLine)violations.push(`${file}: ${writeLine.trim()}`);
- if(/^\s*environment:\s*production\s*$/im.test(source))violations.push(`${file}: production environment`);
+ if(writeLine){
+  diagnostics.push({path,writeLine:writeLine.trim(),classification:'unapproved-deploy-workflow'});
+  violations.push(`${file}: ${writeLine.trim()}`);
+ }
+ if(/^\s*environment:\s*production\s*$/im.test(source)){
+  diagnostics.push({path,classification:'production-environment-outside-approved-workflow'});
+  violations.push(`${file}: production environment`);
+ }
 }
+console.log(JSON.stringify({privateDeployGuardrailDiagnostics:diagnostics},null,2));
 assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may deploy production; only the two hardened private workforce deploys are permitted as non-production exceptions');
 
 requireText('preflight',preflight,['gnk-asg-news-backend','/newsroom/','/en/newsroom/','No production changes were made']);
