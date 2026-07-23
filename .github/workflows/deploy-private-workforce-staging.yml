@@ -58,7 +58,7 @@ jobs:
           grep -Fq 'GNK DINAMO Ltd grupa' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
-          grep -Fq "GNK_DINAMO_WORKFORCE_STAGING_GATE_V4" "$gate"
+          grep -Fq "GNK_DINAMO_WORKFORCE_STAGING_GATE_V5" "$gate"
           grep -Fq 'Operatorski token' "$gate"
           grep -Fq 'HttpOnly; Secure; SameSite=Strict' "$gate"
           grep -Fq 'html{color-scheme:dark;background:#000}' "$gate"
@@ -66,6 +66,11 @@ jobs:
           grep -Fq 'background:#d7b55b;color:#090909' "$gate"
           grep -Fq 'outline:3px solid #f2d27d' "$gate"
           grep -Fq 'class="error" role="alert"' "$gate"
+          grep -Fq "headers.set('x-content-type-options','nosniff')" "$gate"
+          grep -Fq "headers.set('x-frame-options','DENY')" "$gate"
+          grep -Fq "headers.set('referrer-policy','no-referrer')" "$gate"
+          grep -Fq "headers.set('permissions-policy','camera=(), microphone=(), geolocation=()')" "$gate"
+          grep -Fq "frame-ancestors 'none'" "$gate"
           ! grep -Eqi '#06b6d4|#67e8f9|#8b5cf6|#0b3344|#07111f|#030712' "$gate"
 
       - name: Resolve shared operator token hash
@@ -125,6 +130,11 @@ jobs:
           headers=$(curl -sSI -b staging-cookie.txt "$URL/digital-workforce/")
           printf '%s' "$headers" | grep -Fqi 'x-robots-tag: noindex'
           printf '%s' "$headers" | grep -Fqi 'x-gnk-environment: private-workforce-staging'
+          printf '%s' "$headers" | grep -Fqi 'x-content-type-options: nosniff'
+          printf '%s' "$headers" | grep -Fqi 'x-frame-options: DENY'
+          printf '%s' "$headers" | grep -Fqi 'referrer-policy: no-referrer'
+          printf '%s' "$headers" | grep -Fqi 'permissions-policy: camera=(), microphone=(), geolocation=()'
+          printf '%s' "$headers" | grep -Fqi "content-security-policy: default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; object-src 'none'"
 
       - name: Verify every tab API and write lock
         env:
@@ -169,6 +179,7 @@ jobs:
           - Authenticated portal: 200 verified
           - Bearer API access: verified
           - Robots: noindex/nofollow verified
+          - Security headers: nosniff, frame deny, no-referrer, restricted permissions and CSP verified
           - All 11 tab APIs plus state: verified
           - Filtered Worker API: verified
           - Market data: verified
