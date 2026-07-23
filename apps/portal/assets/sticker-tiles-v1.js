@@ -22,7 +22,7 @@
   const RIGHT_ITEMS = ALL_ITEMS.slice(4, 8);
 
   const TOOTH = 26;    // px visible when closed — allows 2-line 'Otvori X' label
-  const OPEN_H = 104;   // px total height when open (label + title + desc + cta)
+  const OPEN_H = 112;   // px total height when open (label + title + desc + cta)
   const AUTO_CLOSE_MS = 4000;
   const GAP_FROM_CENTER = 76;
 
@@ -71,11 +71,11 @@
     .gnk-tile .gnk-tile-title { font-size: .6rem; font-weight: 900; line-height: 1.2; margin: 4px 0 3px; opacity: 0; transition: opacity .16s ease .1s; }
     .gnk-tile .gnk-tile-full { font-size: .54rem; font-weight: 700; line-height: 1.22; margin-bottom: 5px; opacity: 0; transition: opacity .16s ease .14s; }
     .gnk-tile .gnk-tile-cta {
-      display: inline-block; align-self: flex-start;
-      font-size: .46rem; font-weight: 900; text-transform: uppercase; letter-spacing: .03em;
+      display: block; text-align: center; width: 100%; box-sizing: border-box;
+      font-size: .52rem; font-weight: 900; text-transform: uppercase; letter-spacing: .03em;
       opacity: 0; transition: opacity .16s ease .18s;
-      background: rgba(255,255,255,.85); color: #07162d;
-      padding: 4px 8px; border-radius: 999px; box-shadow: 0 1px 3px rgba(0,0,0,.25);
+      background: #ffffff; color: #07162d; border: 1.5px solid #d4af37;
+      padding: 6px 6px; border-radius: 999px; box-shadow: 0 2px 5px rgba(0,0,0,.3);
     }
     .gnk-tile.open .gnk-tile-title, .gnk-tile.open .gnk-tile-full { opacity: 1; }
     .gnk-tile.open .gnk-tile-cta { opacity: 1; animation: gnkCtaPulse 1.4s ease-in-out .3s 2; }
@@ -86,7 +86,7 @@
       #${WIDGET_ID}-right { left: calc(50% + 44px); }
       .gnk-tile { width: 46px; }
       .gnk-tile .gnk-tile-title, .gnk-tile .gnk-tile-full { font-size: .48rem; }
-      .gnk-tile .gnk-tile-cta { font-size: .42rem; }
+      .gnk-tile .gnk-tile-cta { font-size: .46rem; padding: 5px 5px; }
       .gnk-tile .gnk-tile-label { font-size: .52rem; }
     }
     @media (prefers-reduced-motion: reduce) { .gnk-tile { transition: none; } }
