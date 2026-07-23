@@ -20,7 +20,7 @@ assert.match(continuity,/continueNewsroomChronology:true/);
 assert.match(continuity,/neverRewritePublishedHistory:true/);
 assert.match(continuity,/deduplicateByStableId:true/);
 
-assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V19/);
+assert.match(gate,/GNK_DINAMO_WORKFORCE_STAGING_GATE_V20/);
 assert.match(gate,/function harden\(headers\)/);
 assert.match(gate,/cache-control','no-store, private/);
 assert.match(gate,/x-robots-tag','noindex, nofollow, noarchive, nosnippet/);
@@ -38,8 +38,6 @@ assert.match(gate,/connect-src 'self'/);
 assert.match(gate,/const headers=harden\(new Headers\(/);
 assert.match(gate,/const headers=harden\(new Headers\(response\.headers\)\)/);
 
-// Explicit Authorization credentials are authoritative and rejected browser credentials
-// must be observable as HTTP 401 rather than a successful 200 login page.
 assert.match(gate,/const header=String\(request\.headers\.get\('authorization'\)\|\|''\)/);
 assert.match(gate,/if\(header\)\{/);
 assert.match(gate,/return Boolean\(match&&await tokenValid\(match\[1\],env\)\)/);
@@ -48,7 +46,6 @@ assert.match(gate,/request\.headers\.has\('authorization'\)\?401:200/);
 assert.match(gate,/return page\('Zahtjev za prijavu nije valjan\.',400\)/);
 assert.match(gate,/return page\('Token nije ispravan\.',401\)/);
 
-// Cookie parsing must be bounded and fail closed when duplicate staging cookies are sent.
 assert.match(gate,/COOKIE_HEADER_MAX_LENGTH=4096/);
 assert.match(gate,/COOKIE_VALUE_MAX_LENGTH=512/);
 assert.match(gate,/if\(!source\|\|source\.length>COOKIE_HEADER_MAX_LENGTH\)return ''/);
@@ -59,12 +56,24 @@ assert.match(gate,/if\(!raw\|\|raw\.length>COOKIE_VALUE_MAX_LENGTH\)return ''/);
 assert.match(gate,/try\{\s*return decodeURIComponent\(raw\)/s);
 assert.match(gate,/catch\{\s*return ''\s*;?\s*\}/s);
 
+// Login parsing is deliberately narrow and bounded: only the form encoding emitted by
+// the staging page is accepted, multipart parsing is disabled and body/token sizes are capped.
+assert.match(gate,/LOGIN_BODY_MAX_LENGTH=4096/);
+assert.match(gate,/TOKEN_MAX_LENGTH=512/);
+assert.match(gate,/contentType\.startsWith\('application\/x-www-form-urlencoded'\)/);
+assert.doesNotMatch(gate,/contentType\.startsWith\('multipart\/form-data'\)/);
+assert.match(gate,/Number\(lengthHeader\)>LOGIN_BODY_MAX_LENGTH/);
+assert.match(gate,/body=await request\.text\(\)/);
+assert.match(gate,/if\(body\.length>LOGIN_BODY_MAX_LENGTH\)return page\('Zahtjev za prijavu je prevelik\.',413\)/);
+assert.match(gate,/const form=new URLSearchParams\(body\)/);
+assert.match(gate,/token\.length>TOKEN_MAX_LENGTH/);
+
 console.log(JSON.stringify({
   ok:true,
   contract:'published-digital-workforce-continuity',
   baseline:1536,
   current:1573,
   projectAreas:9,
-  stagingGate:'V19',
-  stagingSecurity:'no-store-noindex-nosniff-frame-deny-no-referrer-restricted-permissions-csp-controlled-login-errors-bearer-authoritative-browser-401-malformed-cookie-safe-bounded-cookie-parsing-duplicate-cookie-rejection'
+  stagingGate:'V20',
+  stagingSecurity:'no-store-noindex-nosniff-frame-deny-no-referrer-restricted-permissions-csp-controlled-login-errors-bearer-authoritative-browser-401-malformed-cookie-safe-bounded-cookie-parsing-duplicate-cookie-rejection-bounded-urlencoded-login'
 },null,2));
