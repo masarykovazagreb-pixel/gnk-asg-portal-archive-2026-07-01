@@ -75,6 +75,17 @@ assert.match(js,/if\(error\?\.name==='AbortError'\|\|requestId!==activeRequestId
 assert.match(js,/if\(requestId===activeRequestId\)\{/);
 assert.match(js,/if\(activeController===controller\)activeController=null/);
 
+// Worker filter contract: values and focus must survive asynchronous rerenders.
+assert.match(js,/workerFilters:\{q:'',project:''\}/);
+assert.match(js,/const filters=state\.workerFilters\|\|\{q:'',project:''\}/);
+assert.match(js,/value="\$\{esc\(filters\.q\)\}"/);
+assert.match(js,/filters\.project===String\(project\.id\)\?' selected':''/);
+assert.match(js,/state\.workerFilters=\{q:search\?\.value\|\|'',project:project\?\.value\|\|''\}/);
+assert.match(js,/state\.workerFilterFocus=event\?\.currentTarget\?\.id\|\|''/);
+assert.match(js,/function restoreWorkerFilterFocus\(\)/);
+assert.match(js,/control\?\.focus\(\)/);
+assert.match(js,/control\.setSelectionRange\(end,end\)/);
+
 console.log(JSON.stringify({
   ok:true,
   contract:'digital-workforce-puls-trzista-public-redesign',
@@ -84,6 +95,7 @@ console.log(JSON.stringify({
   responsive:'contained-tabs-worker-table-touch-targets',
   resilience:'isolated-tab-api-failures-worker-project-dependency-only',
   concurrency:'abort-previous-request-ignore-stale-response',
+  workerFilters:'persistent-query-project-and-focus',
   files:[
     'apps/portal/digital-workforce/index.html',
     'apps/portal/assets/digital-workforce-suite-v1.css',
