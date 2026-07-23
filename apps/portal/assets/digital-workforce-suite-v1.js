@@ -116,12 +116,16 @@
   }
 
   function activate(name){
+    let activeTab=null;
     $$('[data-dw-tab]').forEach(tab=>{
       const active=tab.dataset.dwTab===name;
       tab.classList.toggle('active',active);
       tab.setAttribute('aria-selected',active?'true':'false');
       tab.tabIndex=active?0:-1;
+      if(active)activeTab=tab;
     });
+    const host=$('#dwContent');
+    if(host&&activeTab?.id)host.setAttribute('aria-labelledby',activeTab.id);
     load(name);
   }
 
