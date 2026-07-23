@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260723-defer-widgets-v1';
+  var VERSION = '20260723-defer-widgets-safe-v2';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -119,6 +119,10 @@ document.addEventListener('DOMContentLoaded', function () {
     loadDeferredWidgets();
   } else {
     window.addEventListener('load', loadDeferredWidgets);
+    // Safety net: if 'load' already fired before this listener was
+    // registered (race condition), or fires later than expected,
+    // guarantee the widgets still load within 1.5s either way.
+    window.setTimeout(loadDeferredWidgets, 1500);
   }
 
   function isEnglish() {
