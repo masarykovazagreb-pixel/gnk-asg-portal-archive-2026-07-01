@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260723-defer-widgets-safe-v2';
+  var VERSION = '20260723-chat-immediate-v3';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -64,6 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // script('/assets/portal-navigation.js');
   script('/assets/status.js');
   script('/assets/portal-layout.js');
+  script('/assets/assistant.js');
+  script('/assets/inline-assistant.js');
   script('/assets/world-geography.js');
   script('/assets/network-motion.js');
   script('/assets/group-network.js');
@@ -99,8 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
     script('/assets/whatsapp-widget-v1.js');
     script('/assets/sticker-tiles-v1.js');
     script('/assets/header-whatsapp-button-v1.js');
-    script('/assets/assistant.js');
-    script('/assets/inline-assistant.js');
     script('/assets/intelligence-desk.js');
     script('/assets/desk-hybrid.js');
     script('/assets/desk-search.js');
