@@ -1,4 +1,4 @@
-<!doctype html><html lang="hr" class="gnk-unified-shell"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0a0c10"><title>LinkedIn Dnevna Objava | GNK ASG</title><meta name="description" content="Dnevni gotov tekst i slika za LinkedIn objavu GNK ASG d.o.o. i GNK DINAMO Ltd. grupe."><meta name="robots" content="noindex,nofollow"><link rel="canonical" href="https://gnk-asg.hr/linkedin-daily/"><link rel="manifest" href="/manifest.webmanifest"><link rel="stylesheet" href="/assets/style.css?v=20260723-dark-gold-theme-v1"><link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260723-dark-theme-v1"><style>
+<!doctype html><html lang="hr" class="gnk-unified-shell"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0a0c10"><title>Dnevni feed za dijeljenje | GNK ASG</title><meta name="description" content="Dnevni gotov sadržaj za dijeljenje — LinkedIn objava, vijesti, objave, komentari i projekti GNK ASG d.o.o. i GNK DINAMO Ltd. grupe."><meta name="robots" content="noindex,nofollow"><link rel="canonical" href="https://gnk-asg.hr/linkedin-daily/"><link rel="manifest" href="/manifest.webmanifest"><link rel="stylesheet" href="/assets/style.css?v=20260723-dark-gold-theme-v1"><link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260723-dark-theme-v1"><style>
 .ld-wrap{max-width:640px;margin:0 auto;padding:100px 20px 60px}
 .ld-eyebrow{color:#e0bd69;font-size:.78rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px}
 .ld-title{color:#f8fafc;font-size:clamp(1.6rem,4vw,2.1rem);margin:0 0 8px;font-family:Georgia,serif;font-weight:500}
@@ -14,10 +14,21 @@
 .ld-loading{color:#94a3b8;padding:40px 0;text-align:center}
 .ld-note{color:#94a3b8;font-size:.82rem;line-height:1.6;border-top:1px solid rgba(255,255,255,.1);padding-top:18px}
 .ld-project-link{color:#e0bd69;text-decoration:none;font-weight:700}
+.ld-feed-head{margin:44px 0 18px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1)}
+.ld-feed-head .ld-eyebrow{margin-bottom:6px}
+.ld-feed-head h2{color:#f8fafc;font-size:1.3rem;margin:0;font-family:Georgia,serif;font-weight:500}
+.ld-feed-item{background:rgba(18,21,27,.72);border:1px solid rgba(212,175,55,.22);border-radius:14px;padding:16px;margin-bottom:12px}
+.ld-feed-item .ld-feed-tag{display:inline-block;font-size:.62rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#d4af37;background:rgba(184,138,47,.14);border:1px solid rgba(184,138,47,.35);border-radius:999px;padding:3px 9px;margin-bottom:8px}
+.ld-feed-item h3{color:#f8fafc;font-size:.98rem;margin:0 0 6px;line-height:1.35}
+.ld-feed-item p{color:#94a3b8;font-size:.83rem;line-height:1.5;margin:0 0 10px}
+.ld-feed-actions{display:flex;gap:8px}
+.ld-feed-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:999px;font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.02em;cursor:pointer;border:1px solid rgba(212,175,55,.4);background:rgba(212,175,55,.1);color:#f8fafc}
+.ld-feed-loading{color:#64748b;font-size:.85rem;padding:10px 0}
+.ld-feed-section{margin-bottom:8px}
 </style></head><body><header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/" aria-label="Hrvatski" aria-current="page">HR</a><a href="/en/" aria-label="English">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">IZBORNIK</button></div><nav id="gnk-unified-nav"></nav></div></div></header>
 <main class="ld-wrap">
-  <p class="ld-eyebrow">Dnevna priprema · LinkedIn</p>
-  <h1 class="ld-title">Objava za danas</h1>
+  <p class="ld-eyebrow">Dnevna priprema · Dijeljenje</p>
+  <h1 class="ld-title">Feed za danas</h1>
   <p class="ld-date" id="ldDate">Učitavanje…</p>
 
   <div id="ldLoading" class="ld-loading">Dohvaćam današnji sadržaj…</div>
@@ -34,6 +45,18 @@
       <button class="ld-btn ghost" id="ldDownloadBtn">Preuzmi sliku</button>
     </div>
     <p class="ld-note">Gumb <strong>Podijeli</strong> otvara izbornik telefona gdje možeš izravno odabrati LinkedIn aplikaciju (slika + link se prilažu automatski, tekst kopiraj gumbom pored i zalijepi u opis objave). Poveznica na projekt: <a class="ld-project-link" id="ldProjectLink" href="#" target="_blank" rel="noopener"></a></p>
+  </div>
+
+  <div class="ld-feed-head"><p class="ld-eyebrow">Za dijeljenje danas</p><h2>Vijesti, objave i projekti</h2></div>
+
+  <div class="ld-feed-section">
+    <div id="feedNews"><p class="ld-feed-loading">Učitavam vijesti…</p></div>
+  </div>
+  <div class="ld-feed-section">
+    <div class="ld-feed-item"><span class="ld-feed-tag">Objave</span><h3>Autorski članci — financije, tehnologija, upravljanje</h3><p>30+ članaka s izvorima i uredničkim odobrenjem.</p><div class="ld-feed-actions"><button class="ld-feed-btn" data-share-url="https://gnk-asg.hr/objave/" data-share-title="GNK ASG Objave" data-share-text="Autorski članci GNK ASG o financijama, tehnologiji i korporativnom upravljanju.">Podijeli →</button></div></div>
+    <div class="ld-feed-item"><span class="ld-feed-tag">Komentari</span><h3>Autorski komentari Nermina Sefića</h3><p>Kratki uredničkI stavovi o odlučivanju, automatizaciji i odgovornosti.</p><div class="ld-feed-actions"><button class="ld-feed-btn" data-share-url="https://gnk-asg.hr/komentari/" data-share-title="GNK ASG Komentari" data-share-text="Autorski komentari Nermina Sefića o tržištima, tehnologiji i poslovnom upravljanju.">Podijeli →</button></div></div>
+    <div class="ld-feed-item"><span class="ld-feed-tag">Projekti</span><h3>Strateški portfelj GNK ASG-a</h3><p>Devet razvojnih područja povezanih u jedinstven razvojni sustav.</p><div class="ld-feed-actions"><button class="ld-feed-btn" data-share-url="https://gnk-asg.hr/projects/" data-share-title="GNK ASG Projekti" data-share-text="Strateški portfelj GNK ASG d.o.o. — devet razvojnih područja u jedinstvenom sustavu.">Podijeli →</button></div></div>
+    <div class="ld-feed-item"><span class="ld-feed-tag">Grupna mreža</span><h3>Interaktivna globalna mreža grupe</h3><p>33 povezana društva, 12 lokacija u širenju.</p><div class="ld-feed-actions"><button class="ld-feed-btn" data-share-url="https://gnk-asg.hr/group-network/" data-share-title="GNK DINAMO Ltd. Group Network" data-share-text="Interaktivna globalna mreža GNK DINAMO Ltd. Grupe — 33 povezana društva, 12 lokacija u širenju.">Podijeli →</button></div></div>
   </div>
 </main>
 <script>
@@ -92,6 +115,45 @@
     .catch(function(err){
       document.getElementById('ldLoading').textContent = 'Sadržaj trenutačno nije dostupan.';
       console.error(err);
+    });
+
+  function shareGeneric(url, title, text) {
+    if (navigator.share) {
+      navigator.share({ title: title, text: text, url: url }).catch(function(err){ if (err && err.name !== 'AbortError') console.error(err); });
+    } else {
+      navigator.clipboard.writeText(text + '\n' + url).then(function(){
+        alert('Dijeljenje nije podržano — link i tekst su kopirani, zalijepi ručno.');
+      });
+    }
+  }
+
+  document.querySelectorAll('.ld-feed-btn[data-share-url]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      shareGeneric(btn.dataset.shareUrl, btn.dataset.shareTitle, btn.dataset.shareText);
+    });
+  });
+
+  fetch('/api/public-news-feed?v=' + CACHE_BUST, { cache: 'no-store' })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var items = (Array.isArray(d) ? d : (d.posts || d.items || d.news || [])).slice(0, 5);
+      var host = document.getElementById('feedNews');
+      if (!items.length) { host.innerHTML = '<p class="ld-feed-loading">Trenutno nema dostupnih vijesti.</p>'; return; }
+      host.innerHTML = items.map(function(item){
+        var title = (item.title || '').replace(/</g,'&lt;');
+        var summary = (item.summary || item.description || '').replace(/</g,'&lt;');
+        var url = item.sourceUrl || item.url || item.share_url || 'https://gnk-asg.hr/gnk-aktual/';
+        var source = item.sourceName || item.source || 'GNK ASG Newsroom';
+        return '<div class="ld-feed-item"><span class="ld-feed-tag">' + (item.category || 'Vijest') + ' · ' + source + '</span><h3>' + title + '</h3><p>' + summary + '</p><div class="ld-feed-actions"><button class="ld-feed-btn" data-share-url="' + url.replace(/"/g,'&quot;') + '" data-share-title="' + title.replace(/"/g,'&quot;') + '" data-share-text="' + title.replace(/"/g,'&quot;') + '">Podijeli →</button></div></div>';
+      }).join('');
+      host.querySelectorAll('.ld-feed-btn[data-share-url]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          shareGeneric(btn.dataset.shareUrl, btn.dataset.shareTitle, btn.dataset.shareText);
+        });
+      });
+    })
+    .catch(function(){
+      document.getElementById('feedNews').innerHTML = '<p class="ld-feed-loading">Vijesti trenutno nisu dostupne. <a class="ld-project-link" href="https://gnk-asg.hr/gnk-aktual/">Otvori AKTUAL MEDIA →</a></p>';
     });
 })();
 </script>
