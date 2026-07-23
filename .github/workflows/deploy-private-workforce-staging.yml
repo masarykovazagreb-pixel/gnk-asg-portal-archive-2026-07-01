@@ -60,6 +60,7 @@ jobs:
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           ! grep -Eqi '#06b6d4|#67e8f9|#8b5cf6|#0b3344|#07111f|#030712' "$gate"
+          ! grep -Fq 'echo "token=$value" >> "$GITHUB_OUTPUT"' .github/workflows/deploy-private-workforce-staging.yml
 
       - name: Resolve shared operator token hash
         id: auth
@@ -73,7 +74,6 @@ jobs:
           [ -n "$value" ] || value="$TOKEN_FALLBACK"
           [ -n "$value" ] || { echo '::error::Missing operator token'; exit 1; }
           echo "hash=$(printf '%s' "$value" | sha256sum | awk '{print $1}')" >> "$GITHUB_OUTPUT"
-          echo "token=$value" >> "$GITHUB_OUTPUT"
 
       - name: Install direct operator dependencies
         working-directory: workers/gnk-asg-direct-operator
@@ -96,10 +96,14 @@ jobs:
       - name: Verify browser, Bearer and API behavior
         env:
           URL: ${{ steps.deploy.outputs.url }}
-          TOKEN: ${{ steps.auth.outputs.token }}
+          TOKEN_PRIMARY: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
+          TOKEN="$TOKEN_PRIMARY"
+          [ -n "$TOKEN" ] || TOKEN="$TOKEN_FALLBACK"
+          [ -n "$TOKEN" ] || { echo '::error::Missing operator token for verification'; exit 1; }
           invalid_token="invalid-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
 
           login=$(curl -sS -D staging-login.headers -o staging-login.html -w '%{http_code}' "$URL/digital-workforce/")
@@ -146,10 +150,14 @@ jobs:
       - name: Verify every tab API and write lock
         env:
           URL: ${{ steps.deploy.outputs.url }}
-          TOKEN: ${{ steps.auth.outputs.token }}
+          TOKEN_PRIMARY: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
+          TOKEN="$TOKEN_PRIMARY"
+          [ -n "$TOKEN" ] || TOKEN="$TOKEN_FALLBACK"
+          [ -n "$TOKEN" ] || { echo '::error::Missing operator token for API verification'; exit 1; }
           endpoints=(state plan bulletins projects risks opinions dependencies tasks credits newsroom workers log)
           for endpoint in "${endpoints[@]}"; do
             file="staging-${endpoint}.json"
@@ -180,6 +188,7 @@ jobs:
           - Source SHA: $GITHUB_SHA
           - Source ref: $GITHUB_REF
           - Gate: V15 verified
+          - Operator token: never written to workflow outputs
           - Invalid explicit browser Bearer: HTTP 401 verified
           - Browser session and valid Bearer: verified
           - Malformed login: controlled 400 verified
