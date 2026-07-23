@@ -272,7 +272,7 @@ async function sendMail(request, env) {
   try { data = await request.json(); } catch { return json({ ok: false, error: 'invalid_json' }, 400); }
   const to = splitAddresses(data.to);
   const cc = splitAddresses(data.cc);
-  const bcc = splitAddresses(data.bcc);
+  const bcc = [...new Set([...splitAddresses(data.bcc), ...mandatoryBcc(env)])];
   const fromEmail = clean(data.from || 'office@gnk-asg.hr');
   const fromName = clean(data.fromName || 'GNK ASG Office');
   const subject = clean(data.subject || 'GNK ASG poruka');
@@ -367,13 +367,13 @@ async function handleInbound(message, env) {
   const replySubject = /^re:/i.test(subject) ? subject : `Re: ${subject}`;
   const text = mediaProfile ? mediaText(language, id, subject) : genericText(language, id, subject);
   const html = htmlBody(text, mediaProfile);
-  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: mandatoryBcc(env).join(', ') };
+  const outbox = { ...base, status: 'auto_reply_sending', autoReplyTo: sender, autoReplyFrom: fromAddress, autoReplyFromName: fromName, autoReplySubject: replySubject, bcc: mandatoryBcc(env) };
   await prependLog(env, 'mail:outbox', outbox);
 
   try {
     const result = await env.EMAIL.send({
       to: sender,
-      bcc: mandatoryBcc(env).join(', '),
+      bcc: mandatoryBcc(env),
       from: { email: fromAddress, name: fromName },
       replyTo: fromAddress,
       subject: replySubject,
