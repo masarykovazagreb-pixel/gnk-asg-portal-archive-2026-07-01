@@ -1,6 +1,6 @@
 import app from './index-unified-auth-v23.js';
 
-export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V13';
+export const VERSION='GNK_DINAMO_WORKFORCE_STAGING_GATE_V14';
 const encoder=new TextEncoder();
 const COOKIE='__Host-gnk_workforce_staging';
 const SESSION_MAX_AGE_SECONDS=28800;
@@ -9,7 +9,7 @@ const CSP="default-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-act
 
 function harden(headers){
   headers.set('cache-control','no-store, private');
-  headers.set('x-robots-tag','noindex, nofollow, noarchive, nosnippet');
+  headers.set('x-robots-tag','noindex, nofollow,noarchive,nosnippet'.replace('nofollow,noarchive','nofollow, noarchive'));
   headers.set('x-content-type-options','nosniff');
   headers.set('x-frame-options','DENY');
   headers.set('referrer-policy','no-referrer');
@@ -101,8 +101,10 @@ async function sessionValid(value,env){
 
 async function authorized(request,env){
   const header=String(request.headers.get('authorization')||'');
-  const match=header.match(/^Bearer\s+(.+)$/i);
-  if(match&&await tokenValid(match[1],env))return true;
+  if(header){
+    const match=header.match(/^Bearer\s+(.+)$/i);
+    return Boolean(match&&await tokenValid(match[1],env));
+  }
   return sessionValid(cookieValue(request),env);
 }
 
