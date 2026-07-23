@@ -48,16 +48,33 @@ forbidText('legacy public-assets validation',publicAssetsValidation,['workflow_d
 assert.equal(/wrangler@4 deploy(?! --dry-run)/.test(publicAssetsValidation),false);
 
 const approved='.github/workflows/deploy-admin-auth-v6.yml';
+const safePrivatePreview='.github/workflows/deploy-private-workforce-live-preview.yml';
 const violations=[];
 for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test(f))){
  const path=`.github/workflows/${file}`;
  if(path===approved)continue;
  const source=read(path);
  const writeLine=source.split(/\r?\n/).find(line=>/^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line));
+ if(writeLine&&path===safePrivatePreview){
+  requireText('private preview deploy contract',source,[
+   'agent/digital-workforce-puls-redesign-integration-20260722',
+   'name: staging',
+   'PREVIEW_WORKER_NAME: gnk-dinamo-workforce-live-preview',
+   '--config wrangler.workforce-staging.toml',
+   'PRODUCTION_WRITE_ALLOWED = "false"',
+   'PUBLIC_PUBLISHING_ALLOWED = "false"',
+   'MAIL_AUTO_REPLY_LIVE = "false"',
+   'STAGING_WRITE_BLOCKED'
+  ]);
+  forbidText('private preview deploy contract',source,[
+   'environment: production','refs/heads/main','routes =','custom_domain','zone_name'
+  ]);
+  continue;
+ }
  if(writeLine)violations.push(`${file}: ${writeLine.trim()}`);
  if(/^\s*environment:\s*production\s*$/im.test(source))violations.push(`${file}: production environment`);
 }
-assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may contain production deployment capability');
+assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may deploy production; the hardened private preview is the sole non-production exception');
 
 requireText('preflight',preflight,['gnk-asg-news-backend','/newsroom/','/en/newsroom/','No production changes were made']);
 assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id/i);
@@ -70,5 +87,6 @@ console.log(JSON.stringify({
  boundedCloudflareRetry:true,
  retryOnlyForAssetsSession10013:true,
  diagnosticsArtifact:true,
- alternateProductionDeploys:false
+ alternateProductionDeploys:false,
+ hardenedPrivatePreviewDeploy:true
 },null,2));
