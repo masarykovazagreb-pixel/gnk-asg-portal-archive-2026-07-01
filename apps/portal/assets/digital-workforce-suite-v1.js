@@ -85,19 +85,21 @@
 
   async function load(name,params=''){
     const host=$('#dwContent');
-    if(!host)return;
+    if(!host||!views[name])return;
     setBusy(true);
     host.innerHTML='<div class="dw-loading"><span class="dw-spinner" aria-hidden="true"></span><p>Učitavanje operativnih podataka…</p></div>';
     try{
-      if(!state.projects)state.projects=await get('projects');
+      if(name==='workers'&&!state.projects)state.projects=await get('projects');
       if(name==='credits')await getGnkcIndex();
       const data=await get(name+params);
       state[name]=data;
       host.innerHTML=views[name](data);
       if(name==='workers')bindWorkerFilters();
     }catch(error){
-      host.innerHTML=`<div class="dw-error"><strong>Podaci trenutačno nisu dostupni.</strong><span>${esc(error.message)}</span><button type="button" id="dwRetry">Pokušaj ponovno</button></div>`;
-      $('#dwRetry')?.addEventListener('click',()=>load(name,params));
+      host.innerHTML=`<div class="dw-error" role="alert"><strong>Podaci trenutačno nisu dostupni.</strong><span>${esc(error.message)}</span><button type="button" id="dwRetry">Pokušaj ponovno</button></div>`;
+      const retry=$('#dwRetry');
+      retry?.addEventListener('click',()=>load(name,params));
+      requestAnimationFrame(()=>retry?.focus());
     }finally{
       setBusy(false);
     }
