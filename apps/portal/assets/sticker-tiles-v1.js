@@ -87,15 +87,69 @@
     .gnk-tile.open .gnk-tile-cta { opacity: 1; animation: gnkCtaPulse 1.4s ease-in-out .3s 2; }
     @keyframes gnkCtaPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
     @media (max-width: 900px) {
-      #${WIDGET_ID}-left, #${WIDGET_ID}-right { gap: 4px; }
-      #${WIDGET_ID}-left { right: calc(50% + 44px); }
-      #${WIDGET_ID}-right { left: calc(50% + 44px); }
-      .gnk-tile { width: 46px; }
-      .gnk-tile .gnk-tile-title, .gnk-tile .gnk-tile-full { font-size: .48rem; }
-      .gnk-tile .gnk-tile-cta { font-size: .46rem; padding: 5px 5px; }
-      .gnk-tile .gnk-tile-label { font-size: .52rem; }
+      #${WIDGET_ID}-left, #${WIDGET_ID}-right { display: none; }
     }
     @media (prefers-reduced-motion: reduce) { .gnk-tile { transition: none; } }
+    #${WIDGET_ID}-mobile-toggle {
+      display: none;
+      position: fixed;
+      top: 92px;
+      left: 8px;
+      z-index: 2147483641;
+      height: 36px;
+      padding: 0 13px;
+      border: 1px solid #d4af37;
+      border-radius: 999px;
+      background: #181b22;
+      color: #f5f2ea;
+      font: 800 10px/1 Arial, sans-serif;
+      letter-spacing: .06em;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 5px 14px rgba(0,0,0,.3);
+    }
+    #${WIDGET_ID}-mobile-panel {
+      display: none;
+      position: fixed;
+      top: 134px;
+      right: 8px;
+      left: 8px;
+      z-index: 2147483641;
+      max-height: calc(100vh - 150px);
+      overflow: auto;
+      background: #0d0f14;
+      border: 1px solid rgba(212,175,55,.35);
+      border-top: 4px solid rgba(184,138,47,.85);
+      border-radius: 16px;
+      box-shadow: 0 28px 80px rgba(0,0,0,.6);
+      padding: 14px;
+    }
+    #${WIDGET_ID}-mobile-panel.open { display: block; }
+    #${WIDGET_ID}-mobile-panel .gnk-mp-item {
+      display: block;
+      padding: 12px 13px;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(212,175,55,.22);
+      text-decoration: none;
+      background: #181b22;
+    }
+    #${WIDGET_ID}-mobile-panel .gnk-mp-title {
+      display: block;
+      font: 800 13px/1.3 Arial, sans-serif;
+      color: #f5f2ea;
+      margin-bottom: 4px;
+    }
+    #${WIDGET_ID}-mobile-panel .gnk-mp-desc {
+      display: block;
+      font: 400 11px/1.4 Arial, sans-serif;
+      color: #94a3b8;
+    }
+    @media (max-width: 900px) {
+      #${WIDGET_ID}-mobile-toggle { display: flex; }
+    }
   `;
   document.head.appendChild(style);
 
@@ -161,7 +215,33 @@
     });
   });
 
-  const mount = () => document.body.append(leftBar, rightBar);
+  // Mobile: a single toggle button opens a dropdown panel listing all
+  // sticker projects, instead of the fixed left/right tooth-tile bars
+  // (which are hidden below 900px via the stylesheet above).
+  const mobileToggle = document.createElement('button');
+  mobileToggle.id = `${WIDGET_ID}-mobile-toggle`;
+  mobileToggle.type = 'button';
+  mobileToggle.textContent = isEnglish ? '★ PROJECTS' : '★ PROJEKTI';
+  mobileToggle.setAttribute('aria-expanded', 'false');
+
+  const mobilePanel = document.createElement('div');
+  mobilePanel.id = `${WIDGET_ID}-mobile-panel`;
+  mobilePanel.innerHTML = ALL_ITEMS.map(item =>
+    `<a class="gnk-mp-item" href="${item.href}"><span class="gnk-mp-title">${item.title}</span><span class="gnk-mp-desc">${item.desc}</span></a>`
+  ).join('');
+
+  mobileToggle.addEventListener('click', () => {
+    const open = mobilePanel.classList.toggle('open');
+    mobileToggle.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', event => {
+    if (mobilePanel.classList.contains('open') && !mobilePanel.contains(event.target) && event.target !== mobileToggle) {
+      mobilePanel.classList.remove('open');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  const mount = () => document.body.append(leftBar, rightBar, mobileToggle, mobilePanel);
   document.readyState === 'loading'
     ? document.addEventListener('DOMContentLoaded', mount)
     : mount();
