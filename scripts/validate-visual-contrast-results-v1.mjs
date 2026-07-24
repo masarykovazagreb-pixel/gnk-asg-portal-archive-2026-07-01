@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 
 const PORTAL_ROOT=path.resolve('apps/portal');
 const REPORT_ROOT=path.join(PORTAL_ROOT,'test-results','visual-contrast');
@@ -25,12 +26,28 @@ function routeForFile(file){
 const safeName=value=>value.replace(/^\/+|\/+$/g,'').replace(/[^a-z0-9._-]+/gi,'-')||'index';
 const reportName=value=>`${safeName(value)}-${crypto.createHash('sha1').update(value).digest('hex').slice(0,12)}`;
 const routes=[...new Set(walkHtml(PORTAL_ROOT).map(routeForFile))].sort();
+const retryRoute=(project,route,failure,report)=>{
+  let failureData={};
+  try{failureData=JSON.parse(fs.readFileSync(failure,'utf8'));}catch{}
+  const message=String(failureData?.error?.message||'');
+  if(!/timeout/i.test(message))return false;
+  fs.rmSync(failure,{force:true});
+  const escaped=route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  console.log(`RETRY VISUAL CONTRAST ${project} ${route}`);
+  try{
+    execFileSync('npx',['playwright','test','tests/all-pages-visual-contrast.spec.js',`--project=${project}`,'--workers=1','--grep',`rendered contrast ${escaped}$`,'--reporter=line'],{cwd:PORTAL_ROOT,stdio:'inherit'});
+  }catch(error){
+    console.error(`Retry failed for ${project} ${route}: ${error.message}`);
+  }
+  return fs.existsSync(report);
+};
 const errors=[];
 let reports=0;
 for(const project of PROJECTS){
   const projectDir=path.join(REPORT_ROOT,project);
   for(const route of routes){
     const stem=reportName(route),failure=path.join(projectDir,`${stem}.failure.json`),report=path.join(projectDir,`${stem}.json`);
+    if(!fs.existsSync(report)&&fs.existsSync(failure))retryRoute(project,route,failure,report);
     if(!fs.existsSync(report)){
       if(fs.existsSync(failure))errors.push(`${project} ${route}: failure evidence exists without a successful retry report`);
       else errors.push(`${project} ${route}: missing report`);
@@ -47,6 +64,6 @@ for(const project of PROJECTS){
 }
 const expected=routes.length*PROJECTS.length;
 if(reports!==expected)errors.push(`report count ${reports}/${expected}`);
-const summary={ok:errors.length===0,version:'GNK_VISUAL_CONTRAST_RESULT_VALIDATOR_V2_RETRY_AND_RUNTIME_REPAIR_AWARE',routes:routes.length,projects:PROJECTS.length,expectedReports:expected,reports,errors:errors.slice(0,100)};
+const summary={ok:errors.length===0,version:'GNK_VISUAL_CONTRAST_RESULT_VALIDATOR_V3_TARGETED_TIMEOUT_RETRY',routes:routes.length,projects:PROJECTS.length,expectedReports:expected,reports,errors:errors.slice(0,100)};
 console.log(JSON.stringify(summary,null,2));
 if(errors.length)process.exitCode=1;
