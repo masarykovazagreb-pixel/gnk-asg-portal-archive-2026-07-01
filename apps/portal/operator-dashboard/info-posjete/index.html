@@ -1,4 +1,4 @@
-<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Analitika i praćenje posjeta | GNK ASG (interno)</title><meta name="robots" content="noindex,nofollow"><style>
+<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Info posjete | GNK ASG (interno)</title><meta name="robots" content="noindex,nofollow,noarchive"><style>
 body{margin:0;background:#0a0c10;color:#f5f2ea;font:15px/1.6 Arial,sans-serif;padding:0}
 .wrap{max-width:820px;margin:0 auto;padding:40px 20px 80px}
 h1{font-family:Georgia,serif;font-weight:500;color:#f8fafc;font-size:1.8rem;margin:0 0 6px}
@@ -15,9 +15,18 @@ a.btn{display:inline-block;margin-top:10px;padding:10px 18px;background:#d4af37;
 table{width:100%;border-collapse:collapse;margin-top:8px}
 td{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08);color:#c5cfdb;font-size:.88rem}
 td:first-child{color:#94a3b8;width:180px}
+.ops-session{display:flex;align-items:center;gap:10px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:12px 16px;margin-bottom:24px;font-size:.85rem}
+.ops-dot{width:9px;height:9px;border-radius:50%;background:#f59e0b;flex:0 0 auto}
+.ops-session[data-state="ok"] .ops-dot{background:#22c55e}
+.ops-session[data-state="denied"] .ops-dot{background:#ef4444}
+.ops-button{margin-left:auto;padding:7px 14px;background:#d4af37;color:#1a1305;font-weight:800;text-decoration:none;border-radius:999px;font-size:.78rem}
+#gate{display:none}
+#gate.show{display:block}
 </style></head><body><div class="wrap">
+<div class="ops-session" data-ops-session data-state="checking"><span class="ops-dot" aria-hidden="true"></span><strong data-ops-session-label>Provjera admin/operator sesije…</strong><a class="ops-button" data-ops-login-link href="/admin-login/?next=/operator-dashboard/info-posjete/">Prijava</a></div>
+<div id="gate">
 <p class="eyebrow">Interno · Praćenje prometa</p>
-<h1>Analitika i praćenje posjeta</h1>
+<h1>Info posjete</h1>
 <p>Ova stranica dokumentira kako pratimo dnevne posjete i promet po pojedinom dijeljenom linku (npr. LinkedIn objave). Nije javno indeksirana.</p>
 
 <h2>Google Analytics</h2>
@@ -51,4 +60,18 @@ td:first-child{color:#94a3b8;width:180px}
 </div>
 
 <p style="margin-top:40px"><a href="/" style="color:#d4af37;text-decoration:none;font-weight:700">← Povratak na portal</a></p>
-</div></body></html>
+</div></div>
+<script defer src="/assets/protected-operations-v1.js?v=20260713-v1"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var session = document.querySelector('[data-ops-session]');
+  var gate = document.getElementById('gate');
+  if (!session) { gate.classList.add('show'); return; }
+  var observer = new MutationObserver(function(){
+    var state = session.getAttribute('data-state');
+    if (state === 'ok') gate.classList.add('show');
+  });
+  observer.observe(session, { attributes: true, attributeFilter: ['data-state'] });
+});
+</script>
+</body></html>
