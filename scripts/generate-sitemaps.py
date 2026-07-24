@@ -174,6 +174,10 @@ def main():
     <loc>{BASE_URL}/visual-sitemap.xml</loc>
     <lastmod>{today}</lastmod>
   </sitemap>
+  <sitemap>
+    <loc>{BASE_URL}/image-sitemap.xml</loc>
+    <lastmod>{today}</lastmod>
+  </sitemap>
 </sitemapindex>'''
     with open(os.path.join(PORTAL_DIR, "sitemap-index.xml"), "w", encoding="utf-8") as f:
         f.write(index_xml)
