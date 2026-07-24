@@ -4,44 +4,65 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  verify-homepage-contrast-race-fix:
+  patch-homepage-contrast-race-fix:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
         with:
           ref: fix/editorial-paragraph-contract-20260724
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Install homepage visual-audit runtime
-        working-directory: apps/portal
+          fetch-depth: 2
+      - name: Add navigation retry around contrast runtime injection
+        shell: bash
         run: |
           set -euo pipefail
-          npm install --no-audit --no-fund --no-package-lock --no-save @playwright/test@1.52.0
-          npx playwright install --with-deps chromium
-      - name: Run exact homepage contrast evidence check
-        working-directory: apps/portal
+          python <<'PY'
+          from pathlib import Path
+          p = Path('apps/portal/tests/all-pages-visual-contrast.spec.js')
+          s = p.read_text()
+          anchor = "async function evaluateWithNavigationRetry(page, callback, argument) {"
+          if anchor not in s:
+              raise SystemExit('evaluateWithNavigationRetry helper missing')
+          helper = """async function addScriptTagWithNavigationRetry(page, options) {
+            const attempts = 5;
+            for (let attempt = 1; attempt <= attempts; attempt += 1) {
+              try {
+                return await page.addScriptTag(options);
+              } catch (error) {
+                const transient = /Execution context was destroyed|Cannot find context with specified id|Inspected target navigated or closed/i.test(error?.message || String(error));
+                if (!transient || attempt === attempts) throw error;
+                await page.waitForLoadState('domcontentloaded', { timeout: 10_000 }).catch(() => {});
+                await page.waitForTimeout(300);
+              }
+            }
+            throw new Error('Script-tag navigation retry exhausted without a result');
+          }
+
+          """
+          if 'async function addScriptTagWithNavigationRetry' not in s:
+              start = s.index(anchor)
+              s = s[:start] + helper + s[start:]
+          old = "if (!runtimeWasPresent) await page.addScriptTag({ content: CONTRAST_RUNTIME });"
+          new = "if (!runtimeWasPresent) await addScriptTagWithNavigationRetry(page, { content: CONTRAST_RUNTIME });"
+          if old not in s and new not in s:
+              raise SystemExit('runtime injection line missing')
+          s = s.replace(old, new)
+          p.write_text(s)
+          PY
+          node --check apps/portal/tests/all-pages-visual-contrast.spec.js
+      - name: Commit test-harness fix
+        shell: bash
         run: |
           set -euo pipefail
-          rm -rf test-results/visual-contrast test-results/playwright-homepage
-          npx playwright test tests/all-pages-visual-contrast.spec.js \
-            --project=chromium-desktop \
-            --project=chromium-mobile \
-            --workers=1 \
-            --grep 'rendered contrast /$|rendered contrast /en/$' \
-            --output=test-results/playwright-homepage \
-            --reporter=line
-      - name: Upload homepage proof
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: homepage-contrast-proof-pr754
-          path: |
-            apps/portal/test-results/visual-contrast/**
-            apps/portal/test-results/playwright-homepage/**
-          if-no-files-found: warn
-          retention-days: 7
+          if git diff --quiet -- apps/portal/tests/all-pages-visual-contrast.spec.js; then
+            echo 'Test harness already patched.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add apps/portal/tests/all-pages-visual-contrast.spec.js
+          git commit -m 'fix(test): retry contrast runtime injection across navigation'
+          git push origin HEAD:fix/editorial-paragraph-contract-20260724
