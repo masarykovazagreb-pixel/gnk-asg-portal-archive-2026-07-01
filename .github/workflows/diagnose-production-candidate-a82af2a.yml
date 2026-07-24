@@ -5,36 +5,18 @@ on:
 
 permissions:
   contents: read
-  actions: read
 
 jobs:
-  extract-production-package-failure:
+  export-contrast-audit-source:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Download exact failing production-package job log
-        env:
-          GH_TOKEN: ${{ github.token }}
-          JOB_ID: '89527032260'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p diagnostics
-          gh api \
-            -H 'Accept: application/vnd.github+json' \
-            "/repos/beckuphome-gnk/gnk-asg-portal/actions/jobs/${JOB_ID}/logs" \
-            > diagnostics/production-package-full.log
-          tail -n 240 diagnostics/production-package-full.log \
-            > diagnostics/production-package-tail.log
-          grep -E -i -C 8 '(error|failed|failure|assert|exception|not found|missing|mismatch|exit code)' \
-            diagnostics/production-package-full.log \
-            > diagnostics/production-package-errors.log || true
-          cat diagnostics/production-package-errors.log
-          echo '--- FINAL 240 LINES ---'
-          cat diagnostics/production-package-tail.log
-      - name: Upload concise production-package diagnostic
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/editorial-paragraph-contract-20260724
+      - name: Upload exact contrast audit source
         uses: actions/upload-artifact@v4
         with:
-          name: production-candidate-production-package-diagnostic
-          path: diagnostics
+          name: contrast-audit-source-pr754
+          path: apps/portal/tests/all-pages-visual-contrast.spec.js
           retention-days: 7
