@@ -46,6 +46,21 @@ function prepareRouteEntry(file) {
   }
   return { route, file, html, redirectStub };
 }
+async function addScriptTagWithNavigationRetry(page, options) {
+  const attempts = 5;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await page.addScriptTag(options);
+    } catch (error) {
+      const transient = /Execution context was destroyed|Cannot find context with specified id|Inspected target navigated or closed/i.test(error?.message || String(error));
+      if (!transient || attempt === attempts) throw error;
+      await page.waitForLoadState('domcontentloaded', { timeout: 10_000 }).catch(() => {});
+      await page.waitForTimeout(300);
+    }
+  }
+  throw new Error('Script-tag navigation retry exhausted without a result');
+}
+
 async function evaluateWithNavigationRetry(page, callback, argument) {
   const attempts = 5;
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
@@ -101,7 +116,7 @@ for (const entry of routeEntries) {
       }
 
       const runtimeWasPresent = await evaluateWithNavigationRetry(page, () => document.documentElement.dataset.gnkContrast === 'hardened-v4');
-      if (!runtimeWasPresent) await page.addScriptTag({ content: CONTRAST_RUNTIME });
+      if (!runtimeWasPresent) await addScriptTagWithNavigationRetry(page, { content: CONTRAST_RUNTIME });
       await page.evaluate(async () => {
         if (!document.fonts?.ready) return;
         await Promise.race([
