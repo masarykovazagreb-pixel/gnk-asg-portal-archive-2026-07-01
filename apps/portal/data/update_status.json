@@ -1,46 +1,52 @@
 {
-  "updated_at": "2026-07-24T06:40:52+00:00",
+  "updated_at": "2026-07-24T14:15:08+00:00",
   "news": {
-    "updated_at": "2026-07-24T06:40:52+00:00",
+    "updated_at": "2026-07-24T14:15:08+00:00",
     "status": "ok",
     "engine": "github_actions_rss_refresh_v4_retention_policy",
     "cadence": "hourly at minute 17 UTC plus manual workflow_dispatch",
     "source_success_policy": "publish_when_public_items_available_and_at_least_50_percent_sources_synced",
     "source_success_threshold": 0.5,
-    "source_success_ratio": 1.0,
-    "source_sync_status": "complete",
+    "source_success_ratio": 0.982,
+    "source_sync_status": "partial_with_public_fallback",
     "configured_sources": 55,
-    "successful_sources": 55,
-    "failed_sources": 0,
+    "successful_sources": 54,
+    "failed_sources": 1,
     "storage_policy": "public_latest_100_archive_all_older_prune_oldest_1000_repeatedly_when_archive_exceeds_2000",
     "public_items": 100,
     "max_public_items": 100,
-    "archive_items": 1634,
+    "archive_items": 1925,
     "archive_prune_trigger": 2000,
     "archive_delete_oldest_batch": 1000,
-    "archive_items_before_prune": 3634,
+    "archive_items_before_prune": 3925,
     "archive_prune_batches": 2,
     "discarded_archive_overflow_items": 2000,
-    "fetched_candidates": 2809,
-    "duplicates_or_blocked_removed": 681,
+    "fetched_candidates": 2771,
+    "duplicates_or_blocked_removed": 639,
     "request_timeout_seconds": 10,
     "network_workers": 1,
     "share_previews_ready": 0,
     "by_group": {
-      "economy": 24,
-      "international": 63,
-      "digital-assets": 8,
-      "hrvatska": 4,
-      "technology": 1
+      "economy": 45,
+      "international": 31,
+      "technology": 8,
+      "hrvatska": 6,
+      "digital-assets": 10
     },
-    "errors": [],
+    "errors": [
+      {
+        "source": "Decrypt",
+        "group": "digital-assets",
+        "error": "HTTP Error 502: Bad Gateway"
+      }
+    ],
     "preview_errors": [],
-    "checked_at": "2026-07-24T06:40:52+00:00",
-    "last_attempt_at": "2026-07-24T06:40:52+00:00",
+    "checked_at": "2026-07-24T14:15:08+00:00",
+    "last_attempt_at": "2026-07-24T14:15:08+00:00",
     "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-07-24T06:40:52+00:00",
+    "last_successful_refresh_at": "2026-07-24T14:15:08+00:00",
     "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 21.04
+    "runtime_seconds": 29.28
   }
 }
