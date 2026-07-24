@@ -28,7 +28,11 @@ function main() {
   const variantIndex = woy % project.variants.length;
   const text = project.variants[variantIndex];
 
-  const postBody = `${text}\n${project.url}\n\n#GNKASG #GNKDINAMO`;
+  const dateStamp = now.toISOString().slice(0, 10); // YYYY-MM-DD
+  const utmCampaign = `${project.id}-${dateStamp}`;
+  const trackedUrl = `${project.url}${project.url.includes('?') ? '&' : '?'}utm_source=linkedin&utm_medium=social&utm_campaign=${utmCampaign}`;
+
+  const postBody = `${text}\n${trackedUrl}\n\n#GNKASG #GNKDINAMO`;
 
   const output = {
     version: rotation.version,
@@ -36,6 +40,8 @@ function main() {
     dayOfYear: doy,
     projectId: project.id,
     projectUrl: project.url,
+    trackedUrl,
+    utmCampaign,
     variantIndex,
     postText: postBody,
     postLength: postBody.length,
