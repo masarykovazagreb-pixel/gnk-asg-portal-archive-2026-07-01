@@ -1,0 +1,49 @@
+name: Diagnose Production Candidate a82af2a
+
+on:
+  push:
+    branches:
+      - release/production-validation-a82af2a-20260724
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose-editorial-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Syntax checks
+        run: |
+          node --check scripts/editorial-publish-scheduled-v1.mjs
+          node --check scripts/test-editorial-publish-seo-v1.mjs
+      - name: Materialize CI workspace
+        env:
+          EDITORIAL_NOW: '2026-07-14T20:53:00+02:00'
+        run: |
+          mkdir -p diagnostics
+          node scripts/editorial-publish-scheduled-v1.mjs > diagnostics/materialize.log 2>&1
+      - name: Run editorial contract and capture exact failure
+        id: contract
+        shell: bash
+        run: |
+          set +e
+          node scripts/test-editorial-publish-seo-v1.mjs > diagnostics/editorial-contract.log 2>&1
+          status=$?
+          tail -n 120 diagnostics/editorial-contract.log > diagnostics/editorial-contract-tail.log
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          cat diagnostics/editorial-contract-tail.log
+          exit 0
+      - name: Upload concise diagnostic
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-candidate-a82af2a-editorial-diagnostic
+          path: diagnostics
+          retention-days: 7
+      - name: Preserve failure state
+        if: steps.contract.outputs.status != '0'
+        run: exit 1
