@@ -3,6 +3,28 @@
   const KEY = 'gnk_asg_language';
   const pathname = window.location.pathname;
   const isEnglishPage = /\/en(?:\/|$)/.test(pathname);
+
+  // First-time visitor default: if no language choice has been made yet
+  // and this HR page has a real English counterpart (declared via its own
+  // <link rel="alternate" hreflang="en">), send them there once. If the
+  // page has no English version, do nothing and let it stay in Croatian
+  // (i18n.js's in-place text translation covers those pages instead).
+  // Once a person has ever picked a language (auto or manual), KEY is set
+  // and this redirect never fires again.
+  if (!isEnglishPage) {
+    let hasStoredPreference = true;
+    try { hasStoredPreference = localStorage.getItem(KEY) !== null; } catch (error) {}
+    if (!hasStoredPreference) {
+      const enAlternate = document.querySelector('link[rel="alternate"][hreflang="en"]');
+      const enHref = enAlternate && enAlternate.getAttribute('href');
+      if (enHref) {
+        try { localStorage.setItem(KEY, 'en'); } catch (error) {}
+        window.location.replace(enHref);
+        return;
+      }
+    }
+  }
+
   const current = isEnglishPage ? 'en' : 'hr';
   try { localStorage.setItem(KEY, current); } catch (error) {}
   function applyCurrent() {
