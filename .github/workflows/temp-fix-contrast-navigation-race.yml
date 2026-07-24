@@ -1,9 +1,7 @@
 name: Temporary Fix Contrast Navigation Race
 
 on:
-  push:
-    branches:
-      - fix/editorial-paragraph-contract-20260724
+  pull_request:
 
 permissions:
   contents: write
