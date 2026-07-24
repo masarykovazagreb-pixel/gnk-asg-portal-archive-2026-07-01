@@ -5,79 +5,36 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
-  diagnose-editorial-contract:
+  extract-production-package-failure:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-      - name: Syntax checks
-        run: |
-          node --check scripts/editorial-publish-scheduled-v1.mjs
-          node --check scripts/test-editorial-publish-seo-v1.mjs
-      - name: Materialize CI workspace
+      - name: Download exact failing production-package job log
         env:
-          EDITORIAL_NOW: '2026-07-14T20:53:00+02:00'
-        run: |
-          mkdir -p diagnostics/normalized
-          node scripts/editorial-publish-scheduled-v1.mjs > diagnostics/materialize.log 2>&1
-      - name: Normalize unpublished paragraph arrays in workspace
-        run: |
-          node <<'NODE'
-          import fs from 'node:fs';
-          import path from 'node:path';
-          const root='apps/portal/data/editorial-plan';
-          const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.json'),'utf8'));
-          const changed=[];
-          for(const pack of manifest.packages){
-            if(pack.publishedAt) continue;
-            for(const file of pack.files||[]){
-              const source=path.join(root,file);
-              const items=JSON.parse(fs.readFileSync(source,'utf8'));
-              let dirty=false;
-              for(const item of items){
-                if((item.paragraphs||[]).length>=3) continue;
-                const text=(item.paragraphs||[]).join(' ').trim();
-                let parts=text.split(/(?<=[.!?])\s+(?=(?:GNK|Ovaj komentar)\b)/u).map(x=>x.trim()).filter(Boolean);
-                if(parts.length<3){
-                  parts=text.split(/(?<=[.!?])\s+(?=[A-ZČĆŽŠĐ])/u).map(x=>x.trim()).filter(Boolean);
-                }
-                if(parts.length<3) throw new Error(`${pack.id}/${item.slug}: cannot derive three paragraphs safely`);
-                item.paragraphs=[parts[0],parts[1],parts.slice(2).join(' ')];
-                dirty=true;
-                changed.push({package:pack.id,file,slug:item.slug,paragraphs:item.paragraphs.length});
-              }
-              if(dirty){
-                const normalized=JSON.stringify(items,null,2)+'\n';
-                fs.writeFileSync(source,normalized);
-                fs.writeFileSync(path.join('diagnostics/normalized',file),normalized);
-              }
-            }
-          }
-          fs.writeFileSync('diagnostics/normalization-summary.json',JSON.stringify(changed,null,2)+'\n');
-          console.log(JSON.stringify(changed,null,2));
-          NODE
-      - name: Run editorial contract and capture exact failure
-        id: contract
+          GH_TOKEN: ${{ github.token }}
+          JOB_ID: '89527032260'
         shell: bash
         run: |
-          set +e
-          node scripts/test-editorial-publish-seo-v1.mjs > diagnostics/editorial-contract.log 2>&1
-          status=$?
-          tail -n 120 diagnostics/editorial-contract.log > diagnostics/editorial-contract-tail.log
-          echo "status=$status" >> "$GITHUB_OUTPUT"
-          cat diagnostics/editorial-contract-tail.log
-          exit 0
-      - name: Upload concise diagnostic and normalized files
+          set -euo pipefail
+          mkdir -p diagnostics
+          gh api \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/beckuphome-gnk/gnk-asg-portal/actions/jobs/${JOB_ID}/logs" \
+            > diagnostics/production-package-full.log
+          tail -n 240 diagnostics/production-package-full.log \
+            > diagnostics/production-package-tail.log
+          grep -E -i -C 8 '(error|failed|failure|assert|exception|not found|missing|mismatch|exit code)' \
+            diagnostics/production-package-full.log \
+            > diagnostics/production-package-errors.log || true
+          cat diagnostics/production-package-errors.log
+          echo '--- FINAL 240 LINES ---'
+          cat diagnostics/production-package-tail.log
+      - name: Upload concise production-package diagnostic
         uses: actions/upload-artifact@v4
         with:
-          name: production-candidate-a82af2a-editorial-diagnostic
+          name: production-candidate-production-package-diagnostic
           path: diagnostics
           retention-days: 7
-      - name: Preserve failure state
-        if: steps.contract.outputs.status != '0'
-        run: exit 1
