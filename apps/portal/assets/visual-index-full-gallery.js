@@ -3,7 +3,9 @@
 
   if (!/\/visual-index\/?$/.test(location.pathname)) return;
 
-  const SETS = [
+  const IS_EN = /^\/en\//.test(location.pathname) || location.pathname === '/en';
+
+  const SETS_HR = [
     {
       folder: 'set1_financije_poslovanje',
       slug: 'financije-poslovanje',
@@ -41,6 +43,46 @@
     }
   ];
 
+  const SETS_EN = [
+    {
+      folder: 'set1_financije_poslovanje',
+      slug: 'financije-poslovanje',
+      label: 'Finance and Business',
+      topics: ['finance', 'business', 'balance sheet', 'profit', 'capital'],
+      countries: ['Croatia', 'USA', 'Canada', 'Slovenia', 'UAE']
+    },
+    {
+      folder: 'set2_tehnologija_ai',
+      slug: 'tehnologija-ai',
+      label: 'Technology and AI',
+      topics: ['AI', 'technology', 'software', 'servers', 'digital operations'],
+      countries: ['Croatia', 'USA', 'Japan', 'South Korea', 'India', 'Singapore']
+    },
+    {
+      folder: 'set3_globalno_poslovanje',
+      slug: 'globalno-poslovanje',
+      label: 'Global Business',
+      topics: ['global network', 'international business', 'countries', 'registries'],
+      countries: ['Canada', 'Mexico', 'Panama', 'Colombia', 'Brazil', 'Argentina', 'China', 'Australia', 'New Zealand']
+    },
+    {
+      folder: 'set4_digitalna_imovina_fintech_trzista',
+      slug: 'digitalna-imovina-fintech-trzista',
+      label: 'Digital Assets, Fintech and Markets',
+      topics: ['digital assets', 'fintech', 'exchanges', 'markets', 'cards', 'payments'],
+      countries: ['USA', 'UAE', 'Singapore', 'Hong Kong', 'Japan', 'China', 'Brazil']
+    },
+    {
+      folder: 'set5_infrastruktura_sport_odrzivost',
+      slug: 'infrastruktura-sport-odrzivost',
+      label: 'Infrastructure, Sport, Sustainability and Communication',
+      topics: ['sports infrastructure', 'urban development', 'sustainability', 'communication', 'contact'],
+      countries: ['Croatia', 'Serbia', 'Slovenia', 'Hungary', 'Costa Rica', 'Ghana', 'Rwanda', 'Tanzania']
+    }
+  ];
+
+  const SETS = IS_EN ? SETS_EN : SETS_HR;
+
   function escapeHtml(value) {
     return String(value || '').replace(/[&<>\"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[character]));
   }
@@ -71,19 +113,24 @@
     const padded = String(number).padStart(3, '0');
     const id = `gnk-asg-${set.slug}-${padded}`;
     const title = `GNK ASG ${set.label} ${String(number).padStart(2, '0')}`;
+    const altJoin = IS_EN ? ' — GNK ASG, GNK ASG d.o.o., GNK DINAMO Ltd., gnk-asg.hr and Nermin Sefić' : ' — GNK ASG, GNK ASG d.o.o., GNK DINAMO Ltd., gnk-asg.hr i Nermin Sefić';
+    const description = IS_EN
+      ? `Realistic business visual for the topic: ${set.topics.join(', ')}. SEO context includes GNK ASG, GNK ASG d.o.o., GNK DINAMO Ltd., gnk-asg.hr, Nermin Sefić and related countries: ${set.countries.slice(0, 5).join(', ')}.`
+      : `Realistični business vizual za temu: ${set.topics.join(', ')}. SEO kontekst uključuje GNK ASG, GNK ASG d.o.o., GNK DINAMO Ltd., gnk-asg.hr, Nermin Sefić i povezane zemlje: ${set.countries.slice(0, 5).join(', ')}.`;
     return {
       id,
       src: `/assets/seo-gallery/${id}.jpg`,
       title,
       topic: set.topics,
       countries: set.countries,
-      alt: `${title} — GNK ASG, GNK ASG d.o.o., GNK DINAMO Ltd., gnk-asg.hr i Nermin Sefić`,
-      description: `Realistični business vizual za temu: ${set.topics.join(', ')}. SEO kontekst uključuje GNK ASG, GNK ASG d.o.o., GNK DINAMO Ltd., gnk-asg.hr, Nermin Sefić i povezane zemlje: ${set.countries.slice(0, 5).join(', ')}.`
+      alt: `${title}${altJoin}`,
+      description
     };
   }
 
   function missingImageMarkup(item) {
-    return `<div class="visual-image-missing"><strong>Slika nije učitana</strong><code>${escapeHtml(item.src)}</code></div>`;
+    const label = IS_EN ? 'Image not loaded' : 'Slika nije učitana';
+    return `<div class="visual-image-missing"><strong>${label}</strong><code>${escapeHtml(item.src)}</code></div>`;
   }
 
   function card(item) {
