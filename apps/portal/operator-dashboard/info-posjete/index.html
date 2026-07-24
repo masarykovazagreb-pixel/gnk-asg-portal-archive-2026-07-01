@@ -27,6 +27,10 @@ td:first-child{color:#94a3b8;width:180px}
 <div id="gate">
 <p class="eyebrow">Interno · Praćenje prometa</p>
 <h1>Info posjete</h1>
+
+<h2>Uživo iz Google Analytics</h2>
+<div class="card" id="gaLiveStatus"><p style="margin:0">Provjera veze…</p></div>
+<div id="gaLiveData"></div>
 <p>Ova stranica dokumentira kako pratimo dnevne posjete i promet po pojedinom dijeljenom linku (npr. LinkedIn objave). Nije javno indeksirana.</p>
 
 <h2>Google Analytics</h2>
@@ -72,6 +76,24 @@ document.addEventListener('DOMContentLoaded', function(){
     if (state === 'ok') gate.classList.add('show');
   });
   observer.observe(session, { attributes: true, attributeFilter: ['data-state'] });
+
+  fetch('/api/ga/status').then(function(r){return r.json();}).then(function(d){
+    var box = document.getElementById('gaLiveStatus');
+    if (!d.connected) {
+      box.innerHTML = '<p style="margin:0">Veza s Google Analytics još nije aktivna (čeka se GA_SERVICE_ACCOUNT_JSON / GA_PROPERTY_ID u Cloudflare postavkama). Podaci ispod su statični pregled dok se ne poveže.</p>';
+      return;
+    }
+    box.innerHTML = '<p style="margin:0;color:#4de09e">✓ Veza aktivna</p>';
+    fetch('/api/ga/traffic-sources').then(function(r){return r.json();}).then(function(data){
+      var rows = (data.rows || []).map(function(row){
+        var source = row.dimensionValues[0].value;
+        var campaign = row.dimensionValues[1].value;
+        var sessions = row.metricValues[0].value;
+        return '<tr><td>' + source + (campaign && campaign !== '(not set)' ? ' / ' + campaign : '') + '</td><td>' + sessions + ' posjeta</td></tr>';
+      }).join('');
+      document.getElementById('gaLiveData').innerHTML = '<h2>Promet po izvoru (30 dana)</h2><div class="card"><table>' + (rows || '<tr><td colspan="2">Nema podataka još.</td></tr>') + '</table></div>';
+    });
+  });
 });
 </script>
 </body></html>

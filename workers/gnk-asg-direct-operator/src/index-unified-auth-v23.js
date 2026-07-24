@@ -9,6 +9,7 @@ import {handleResilientContact,VERSION as CONTACT_RESILIENCE_VERSION} from './co
 import {serveDynamicEditorialImage,VERSION as DYNAMIC_EDITORIAL_IMAGE_VERSION} from './dynamic-editorial-image-v1.js';
 import {normalizeCanonicalNewsItems,VERSION as CANONICAL_NEWS_FEED_VERSION} from './canonical-news-feed-v1.js';
 import {handlesLinkedIn,handleLinkedIn} from './linkedin-oauth-v1.js';
+import {handlesGA,handleGA} from './ga-data-api-v1.js';
 import {maybeGenerateLinkedInDrafts} from './linkedin-draft-generator-v1.js';
 
 export const PREVIOUS_PUBLIC_EDITORIAL_VERSION='GNK_ASG_UNIFIED_AUTH_V37_NEWS_SOURCE_LINKS';
@@ -96,6 +97,7 @@ export default{
  async fetch(request,env,ctx){
   const linkedinPath=new URL(request.url).pathname;
   if(handlesLinkedIn(linkedinPath))return stampRelease(await handleLinkedIn(request,env),env);
+  if(handlesGA(linkedinPath))return stampRelease(await handleGA(request,env),env);
   const workforce=await handleDigitalWorkforceSuite(request,env);
   if(workforce)return stampRelease(workforce,env);
   const contact=await handleResilientContact(request,env,ctx,app);
