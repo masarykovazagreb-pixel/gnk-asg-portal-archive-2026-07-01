@@ -1,22 +1,32 @@
 {
   "version": "GNK_ASG_SEO_AUDIT_V1_20260722",
-  "generatedAt": "2026-07-23T07:15:58.828Z",
-  "completedAt": "2026-07-23T07:16:06.925Z",
+  "generatedAt": "2026-07-24T07:15:43.681Z",
+  "completedAt": "2026-07-24T07:15:50.298Z",
   "sitemapSource": "https://gnk-asg.hr/sitemap.xml",
-  "pagesAudited": 67,
-  "pagesOk": 67,
+  "pagesAudited": 74,
+  "pagesOk": 74,
   "pagesFailed": 0,
-  "averageScore": 88,
-  "totalIssues": 83,
+  "averageScore": 92,
+  "totalIssues": 61,
   "worstPages": [
     {
-      "url": "https://gnk-asg.hr/projects/roadmap/",
-      "score": 20,
+      "url": "https://gnk-asg.hr/en/projects/roadmap/",
+      "score": 40,
       "issues": [
-        "Description prekratak (48 znakova)",
         "Nedostaje og:title",
         "Nedostaje og:description",
-        "Nedostaje og:image",
+        "Nedostaje twitter:card",
+        "Nedostaje JSON-LD structured data",
+        "Malo teksta (54 riječi, preporuka 150+)",
+        "Nedostaje meta robots (nije nužno greška, ali provjeriti namjeru)"
+      ]
+    },
+    {
+      "url": "https://gnk-asg.hr/projects/roadmap/",
+      "score": 40,
+      "issues": [
+        "Nedostaje og:title",
+        "Nedostaje og:description",
         "Nedostaje twitter:card",
         "Nedostaje JSON-LD structured data",
         "Malo teksta (58 riječi, preporuka 150+)",
@@ -25,81 +35,58 @@
     },
     {
       "url": "https://gnk-asg.hr/en/group-network/",
-      "score": 30,
+      "score": 50,
       "issues": [
         "Nedostaje H1",
         "Nedostaje og:title",
         "Nedostaje og:description",
-        "Nedostaje og:image",
         "Nedostaje twitter:card",
-        "Nedostaje JSON-LD structured data",
-        "Malo teksta (87 riječi, preporuka 150+)"
-      ]
-    },
-    {
-      "url": "https://gnk-asg.hr/en/projects/roadmap/",
-      "score": 30,
-      "issues": [
-        "Nedostaje og:title",
-        "Nedostaje og:description",
-        "Nedostaje og:image",
-        "Nedostaje twitter:card",
-        "Nedostaje JSON-LD structured data",
-        "Malo teksta (54 riječi, preporuka 150+)",
-        "Nedostaje meta robots (nije nužno greška, ali provjeriti namjeru)"
+        "Nedostaje JSON-LD structured data"
       ]
     },
     {
       "url": "https://gnk-asg.hr/group-network/",
-      "score": 30,
+      "score": 50,
       "issues": [
         "Nedostaje H1",
         "Nedostaje og:title",
         "Nedostaje og:description",
-        "Nedostaje og:image",
         "Nedostaje twitter:card",
-        "Nedostaje JSON-LD structured data",
-        "Malo teksta (86 riječi, preporuka 150+)"
+        "Nedostaje JSON-LD structured data"
       ]
     },
     {
       "url": "https://gnk-asg.hr/the-code/media-memorandum/",
-      "score": 30,
+      "score": 70,
       "issues": [
-        "Nedostaje meta description",
-        "Nedostaje og:title",
-        "Nedostaje og:description",
-        "Nedostaje og:image",
         "Nedostaje twitter:card",
         "Nedostaje JSON-LD structured data",
         "Malo teksta (141 riječi, preporuka 150+)"
       ]
     },
     {
-      "url": "https://gnk-asg.hr/editor-desk/",
+      "url": "https://gnk-asg.hr/en/visual-index/",
       "score": 70,
       "issues": [
-        "Description prekratak (38 znakova)",
-        "Malo teksta (22 riječi, preporuka 150+)",
+        "Title predugačak (61 znakova, cilj 50-60)",
+        "Nedostaje twitter:card",
+        "1 slika bez alt atributa"
+      ]
+    },
+    {
+      "url": "https://gnk-asg.hr/digital-workforce/",
+      "score": 80,
+      "issues": [
+        "Malo teksta (50 riječi, preporuka 150+)",
         "Nedostaje meta robots (nije nužno greška, ali provjeriti namjeru)"
       ]
     },
     {
-      "url": "https://gnk-asg.hr/all-desk/",
-      "score": 70,
+      "url": "https://gnk-asg.hr/editor-desk/",
+      "score": 80,
       "issues": [
-        "Title predugačak (79 znakova, cilj 50-60)",
-        "Description predugačak (163 znakova, cilj 140-160)",
-        "Nedostaje twitter:card"
-      ]
-    },
-    {
-      "url": "https://gnk-asg.hr/en/all-desk/",
-      "score": 70,
-      "issues": [
-        "Title predugačak (75 znakova, cilj 50-60)",
-        "Description predugačak (165 znakova, cilj 140-160)",
-        "Nedostaje twitter:card"
+        "Malo teksta (22 riječi, preporuka 150+)",
+        "Nedostaje meta robots (nije nužno greška, ali provjeriti namjeru)"
       ]
     }
   ],
@@ -124,9 +111,9 @@
       ],
       "jsonLdCount": 1,
       "hreflangCount": 3,
-      "imgCount": 8,
+      "imgCount": 13,
       "imgsNoAlt": 0,
-      "wordCount": 900,
+      "wordCount": 1395,
       "issues": [],
       "score": 100
     },
@@ -150,9 +137,9 @@
       ],
       "jsonLdCount": 1,
       "hreflangCount": 3,
-      "imgCount": 8,
+      "imgCount": 13,
       "imgsNoAlt": 0,
-      "wordCount": 922,
+      "wordCount": 1448,
       "issues": [],
       "score": 100
     },
@@ -281,10 +268,36 @@
         "GNK ASG korporativni portal"
       ],
       "jsonLdCount": 2,
-      "hreflangCount": 0,
+      "hreflangCount": 2,
       "imgCount": 1,
       "imgsNoAlt": 0,
       "wordCount": 233,
+      "issues": [],
+      "score": 100
+    },
+    {
+      "url": "https://gnk-asg.hr/en/sadrzaj/",
+      "status": 200,
+      "ok": true,
+      "title": "Site Content | GNK ASG d.o.o.",
+      "titleLen": 29,
+      "description": "An overview of GNK ASG d.o.o. public content: finance, the company network, technology, thematic monitoring, registries, markets and news.",
+      "descLen": 138,
+      "canonical": "https://gnk-asg.hr/en/sadrzaj/",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "ogTitle": true,
+      "ogDesc": true,
+      "ogImage": true,
+      "twitterCard": true,
+      "h1Count": 1,
+      "h1": [
+        "GNK ASG Corporate Portal"
+      ],
+      "jsonLdCount": 2,
+      "hreflangCount": 2,
+      "imgCount": 1,
+      "imgsNoAlt": 0,
+      "wordCount": 254,
       "issues": [],
       "score": 100
     },
@@ -307,10 +320,36 @@
         "Ekonomija, sport, mobilnost i tehnologija"
       ],
       "jsonLdCount": 1,
-      "hreflangCount": 0,
+      "hreflangCount": 2,
       "imgCount": 2,
       "imgsNoAlt": 0,
       "wordCount": 405,
+      "issues": [],
+      "score": 100
+    },
+    {
+      "url": "https://gnk-asg.hr/en/teme/",
+      "status": 200,
+      "ok": true,
+      "title": "Tematski monitoring | GNK ASG d.o.o.",
+      "titleLen": 36,
+      "description": "Javni tematski monitoring portala GNK ASG d.o.o.: ekonomija, javne politike, sport, košarka, tenis, savezi, mobilnost i AI.",
+      "descLen": 123,
+      "canonical": "https://gnk-asg.hr/en/teme/",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "ogTitle": true,
+      "ogDesc": true,
+      "ogImage": true,
+      "twitterCard": true,
+      "h1Count": 1,
+      "h1": [
+        "Economy, Sport, Mobility and Technology"
+      ],
+      "jsonLdCount": 1,
+      "hreflangCount": 2,
+      "imgCount": 2,
+      "imgsNoAlt": 0,
+      "wordCount": 425,
       "issues": [],
       "score": 100
     },
@@ -390,13 +429,11 @@
       ],
       "jsonLdCount": 1,
       "hreflangCount": 3,
-      "imgCount": 2,
+      "imgCount": 3,
       "imgsNoAlt": 0,
-      "wordCount": 149,
-      "issues": [
-        "Malo teksta (149 riječi, preporuka 150+)"
-      ],
-      "score": 90
+      "wordCount": 269,
+      "issues": [],
+      "score": 100
     },
     {
       "url": "https://gnk-asg.hr/en/newsroom/",
@@ -418,9 +455,9 @@
       ],
       "jsonLdCount": 1,
       "hreflangCount": 3,
-      "imgCount": 2,
+      "imgCount": 3,
       "imgsNoAlt": 0,
-      "wordCount": 157,
+      "wordCount": 291,
       "issues": [],
       "score": 100
     },
@@ -606,9 +643,9 @@
       ],
       "jsonLdCount": 1,
       "hreflangCount": 0,
-      "imgCount": 1,
+      "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 948,
+      "wordCount": 1214,
       "issues": [],
       "score": 100
     },
@@ -632,9 +669,9 @@
       ],
       "jsonLdCount": 1,
       "hreflangCount": 3,
-      "imgCount": 1,
+      "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 877,
+      "wordCount": 1166,
       "issues": [],
       "score": 100
     },
@@ -658,9 +695,9 @@
       ],
       "jsonLdCount": 1,
       "hreflangCount": 0,
-      "imgCount": 2,
+      "imgCount": 3,
       "imgsNoAlt": 0,
-      "wordCount": 219,
+      "wordCount": 412,
       "issues": [],
       "score": 100
     },
@@ -684,9 +721,9 @@
       ],
       "jsonLdCount": 1,
       "hreflangCount": 0,
-      "imgCount": 2,
+      "imgCount": 3,
       "imgsNoAlt": 0,
-      "wordCount": 247,
+      "wordCount": 468,
       "issues": [],
       "score": 100
     },
@@ -712,7 +749,7 @@
       "hreflangCount": 2,
       "imgCount": 1,
       "imgsNoAlt": 0,
-      "wordCount": 171,
+      "wordCount": 182,
       "issues": [],
       "score": 100
     },
@@ -738,7 +775,7 @@
       "hreflangCount": 2,
       "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 177,
+      "wordCount": 188,
       "issues": [],
       "score": 100
     },
@@ -761,10 +798,36 @@
         "Workera i digitalnih funkcija"
       ],
       "jsonLdCount": 1,
-      "hreflangCount": 0,
+      "hreflangCount": 2,
       "imgCount": 1,
       "imgsNoAlt": 0,
       "wordCount": 245,
+      "issues": [],
+      "score": 100
+    },
+    {
+      "url": "https://gnk-asg.hr/en/workers/",
+      "status": 200,
+      "ok": true,
+      "title": "1,573 Workers and Digital Functions · GNK ASG",
+      "titleLen": 45,
+      "description": "Public schema of 1,573 digital workers, each with a unique name, code, function, position, location, area of responsibility, stage and task type.",
+      "descLen": 145,
+      "canonical": "https://gnk-asg.hr/en/workers/",
+      "robots": "index,follow,max-image-preview:large",
+      "ogTitle": true,
+      "ogDesc": true,
+      "ogImage": true,
+      "twitterCard": true,
+      "h1Count": 1,
+      "h1": [
+        "Workers and Digital Functions"
+      ],
+      "jsonLdCount": 1,
+      "hreflangCount": 2,
+      "imgCount": 1,
+      "imgsNoAlt": 0,
+      "wordCount": 260,
       "issues": [],
       "score": 100
     },
@@ -973,10 +1036,36 @@
         "Instalirajte portal preko Chromea"
       ],
       "jsonLdCount": 1,
-      "hreflangCount": 0,
+      "hreflangCount": 2,
       "imgCount": 1,
       "imgsNoAlt": 0,
       "wordCount": 174,
+      "issues": [],
+      "score": 100
+    },
+    {
+      "url": "https://gnk-asg.hr/en/instalacija/",
+      "status": 200,
+      "ok": true,
+      "title": "Install the Portal | GNK ASG d.o.o.",
+      "titleLen": 35,
+      "description": "Install the GNK ASG d.o.o. corporate portal — with public data on the GNK DINAMO Ltd. framework and Nermin Sefić — as an app via the Google Chrome browser.",
+      "descLen": 155,
+      "canonical": "https://gnk-asg.hr/en/instalacija/",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "ogTitle": true,
+      "ogDesc": true,
+      "ogImage": true,
+      "twitterCard": true,
+      "h1Count": 1,
+      "h1": [
+        "Install the Portal via Chrome"
+      ],
+      "jsonLdCount": 1,
+      "hreflangCount": 2,
+      "imgCount": 1,
+      "imgsNoAlt": 0,
+      "wordCount": 199,
       "issues": [],
       "score": 100
     },
@@ -1036,8 +1125,8 @@
       "url": "https://gnk-asg.hr/objave/primjeri-financijskih-izvjestaja-hrvatska/",
       "status": 200,
       "ok": true,
-      "title": "Primjeri financijskih izvještaja u Hrvatskoj: vodič za 2026. | GNK ASG",
-      "titleLen": 70,
+      "title": "Primjeri financijskih izvještaja u Hrvatskoj: vodič za 2026.",
+      "titleLen": 60,
       "description": "Pregled bilance, računa dobiti i gubitka, novčanog toka i bilješki uz financijske izvještaje u Hrvatskoj — standardi, rokovi i praktična analiza za 2026.",
       "descLen": 153,
       "canonical": "https://gnk-asg.hr/objave/primjeri-financijskih-izvjestaja-hrvatska/",
@@ -1054,11 +1143,9 @@
       "hreflangCount": 0,
       "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 2441,
-      "issues": [
-        "Title predugačak (70 znakova, cilj 50-60)"
-      ],
-      "score": 90
+      "wordCount": 2454,
+      "issues": [],
+      "score": 100
     },
     {
       "url": "https://gnk-asg.hr/digital-solutions/",
@@ -1090,8 +1177,8 @@
       "url": "https://gnk-asg.hr/nilus-bio/",
       "status": 200,
       "ok": true,
-      "title": "Nilus Bio — Izvorni Organski & Prehrambeni Proizvodi Iz Egipta",
-      "titleLen": 62,
+      "title": "Nilus Bio — Izvorni Organski & Prehrambeni Proizvodi Iz",
+      "titleLen": 55,
       "description": "Nilus Bio istražuje tržište organskih egipatskih prehrambenih proizvoda — datulje, čajevi, hladno prešana ulja i začini — projekt GNK ASG d.o.o. (PRJ-006).",
       "descLen": 155,
       "canonical": "https://gnk-asg.hr/nilus-bio/",
@@ -1108,11 +1195,9 @@
       "hreflangCount": 0,
       "imgCount": 10,
       "imgsNoAlt": 0,
-      "wordCount": 1016,
-      "issues": [
-        "Title predugačak (62 znakova, cilj 50-60)"
-      ],
-      "score": 90
+      "wordCount": 1015,
+      "issues": [],
+      "score": 100
     },
     {
       "url": "https://gnk-asg.hr/gnk-aktual/",
@@ -1133,15 +1218,42 @@
         "AKTUAL MEDIA"
       ],
       "jsonLdCount": 1,
-      "hreflangCount": 0,
-      "imgCount": 4,
+      "hreflangCount": 2,
+      "imgCount": 5,
       "imgsNoAlt": 2,
-      "wordCount": 91,
+      "wordCount": 225,
       "issues": [
-        "2 slika bez alt atributa",
-        "Malo teksta (91 riječi, preporuka 150+)"
+        "2 slika bez alt atributa"
       ],
-      "score": 80
+      "score": 90
+    },
+    {
+      "url": "https://gnk-asg.hr/en/gnk-aktual/",
+      "status": 200,
+      "ok": true,
+      "title": "AKTUAL MEDIA — News | GNK ASG",
+      "titleLen": 29,
+      "description": "AKTUAL MEDIA — an overview of the latest world news by category, with images and short excerpts, linking to the original article. Updated every 2 hours.",
+      "descLen": 152,
+      "canonical": "https://gnk-asg.hr/en/gnk-aktual/",
+      "robots": "index,follow,max-image-preview:large",
+      "ogTitle": true,
+      "ogDesc": true,
+      "ogImage": true,
+      "twitterCard": true,
+      "h1Count": 1,
+      "h1": [
+        "AKTUAL MEDIA"
+      ],
+      "jsonLdCount": 1,
+      "hreflangCount": 2,
+      "imgCount": 5,
+      "imgsNoAlt": 2,
+      "wordCount": 256,
+      "issues": [
+        "2 slika bez alt atributa"
+      ],
+      "score": 90
     },
     {
       "url": "https://gnk-asg.hr/puls-trzista/",
@@ -1165,7 +1277,7 @@
       "hreflangCount": 3,
       "imgCount": 4,
       "imgsNoAlt": 2,
-      "wordCount": 306,
+      "wordCount": 440,
       "issues": [
         "2 slika bez alt atributa"
       ],
@@ -1243,9 +1355,9 @@
       ],
       "jsonLdCount": 1,
       "hreflangCount": 0,
-      "imgCount": 0,
+      "imgCount": 1,
       "imgsNoAlt": 0,
-      "wordCount": 369,
+      "wordCount": 551,
       "issues": [],
       "score": 100
     },
@@ -1284,8 +1396,8 @@
       "ok": true,
       "title": "Editor Desk · GNK ASG",
       "titleLen": 21,
-      "description": "Javni dnevni operativni paket GNK ASG.",
-      "descLen": 38,
+      "description": "Javni dnevni operativni paket GNK ASG d.o.o. — odobreni javni podaci, odvojeni od administrativnog i osjetljivog sloja portala.",
+      "descLen": 127,
       "canonical": "https://gnk-asg.hr/editor-desk/",
       "robots": "",
       "ogTitle": true,
@@ -1302,18 +1414,17 @@
       "imgsNoAlt": 0,
       "wordCount": 22,
       "issues": [
-        "Description prekratak (38 znakova)",
         "Malo teksta (22 riječi, preporuka 150+)",
         "Nedostaje meta robots (nije nužno greška, ali provjeriti namjeru)"
       ],
-      "score": 70
+      "score": 80
     },
     {
       "url": "https://gnk-asg.hr/all-desk/",
       "status": 200,
       "ok": true,
-      "title": "GNK ASG All Desk | Kontakt, e-mail, WhatsApp i Intelligence Desk automatizacija",
-      "titleLen": 79,
+      "title": "GNK ASG All Desk | Kontakt, e-mail, WhatsApp i Intelligence",
+      "titleLen": 59,
       "description": "GNK ASG All Desk je planirani okvir za strukturiranje službene komunikacije, kontakt forme, Zoho e-mail kanala, WhatsApp upita i GNK ASG Intelligence Desk procesa.",
       "descLen": 163,
       "canonical": "https://gnk-asg.hr/all-desk/",
@@ -1330,13 +1441,12 @@
       "hreflangCount": 2,
       "imgCount": 1,
       "imgsNoAlt": 0,
-      "wordCount": 262,
+      "wordCount": 260,
       "issues": [
-        "Title predugačak (79 znakova, cilj 50-60)",
         "Description predugačak (163 znakova, cilj 140-160)",
         "Nedostaje twitter:card"
       ],
-      "score": 70
+      "score": 80
     },
     {
       "url": "https://gnk-asg.hr/autorske-objave/",
@@ -1344,8 +1454,8 @@
       "ok": true,
       "title": "Autorske objave | GNK ASG d.o.o. | GNK DINAMO Ltd.",
       "titleLen": 50,
-      "description": "Autorske objave o ekonomiji, kapitalu, transparentnosti, poduzetništvu, tržištima i digitalnom kredibilitetu. Autor tekstova: Nermin Sefić. Javni sadržajni okvir GNK ASG d.o.o. i GNK DINAMO Ltd.",
-      "descLen": 194,
+      "description": "Autorske objave o ekonomiji, kapitalu, transparentnosti, poduzetništvu, tržištima i digitalnom kredibilitetu. Autor tekstova: Nermin Sefić.",
+      "descLen": 139,
       "canonical": "https://gnk-asg.hr/autorske-objave/",
       "robots": "index, follow, max-image-preview:large, max-snippet:-1",
       "ogTitle": true,
@@ -1357,22 +1467,49 @@
         "Autorske objave"
       ],
       "jsonLdCount": 1,
-      "hreflangCount": 0,
+      "hreflangCount": 2,
       "imgCount": 1,
       "imgsNoAlt": 0,
       "wordCount": 407,
       "issues": [
-        "Description predugačak (194 znakova, cilj 140-160)",
         "Nedostaje twitter:card"
       ],
-      "score": 80
+      "score": 90
+    },
+    {
+      "url": "https://gnk-asg.hr/en/autorske-objave/",
+      "status": 200,
+      "ok": true,
+      "title": "Author Publications | GNK ASG d.o.o. | GNK DINAMO Ltd.",
+      "titleLen": 54,
+      "description": "Author publications on economy, capital, transparency, entrepreneurship, markets and digital credibility. Author: Nermin Sefić.",
+      "descLen": 127,
+      "canonical": "https://gnk-asg.hr/en/autorske-objave/",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "ogTitle": true,
+      "ogDesc": true,
+      "ogImage": true,
+      "twitterCard": false,
+      "h1Count": 1,
+      "h1": [
+        "Author Publications"
+      ],
+      "jsonLdCount": 1,
+      "hreflangCount": 2,
+      "imgCount": 1,
+      "imgsNoAlt": 0,
+      "wordCount": 465,
+      "issues": [
+        "Nedostaje twitter:card"
+      ],
+      "score": 90
     },
     {
       "url": "https://gnk-asg.hr/en/all-desk/",
       "status": 200,
       "ok": true,
-      "title": "GNK ASG All Desk | Contact, Mail, WhatsApp and Intelligence Desk Automation",
-      "titleLen": 75,
+      "title": "GNK ASG All Desk | Contact, Mail, WhatsApp and Intelligence",
+      "titleLen": 59,
       "description": "GNK ASG All Desk is the planned framework for official communication, contact forms, Zoho email channels, WhatsApp inquiries and GNK ASG Intelligence Desk workflows.",
       "descLen": 165,
       "canonical": "https://gnk-asg.hr/en/all-desk/",
@@ -1389,13 +1526,12 @@
       "hreflangCount": 2,
       "imgCount": 1,
       "imgsNoAlt": 0,
-      "wordCount": 267,
+      "wordCount": 265,
       "issues": [
-        "Title predugačak (75 znakova, cilj 50-60)",
         "Description predugačak (165 znakova, cilj 140-160)",
         "Nedostaje twitter:card"
       ],
-      "score": 70
+      "score": 80
     },
     {
       "url": "https://gnk-asg.hr/en/contact-channels/",
@@ -1438,34 +1574,32 @@
       "robots": "index,follow,max-image-preview:large",
       "ogTitle": false,
       "ogDesc": false,
-      "ogImage": false,
+      "ogImage": true,
       "twitterCard": false,
       "h1Count": 0,
       "h1": [],
       "jsonLdCount": 0,
       "hreflangCount": 2,
-      "imgCount": 2,
+      "imgCount": 3,
       "imgsNoAlt": 0,
-      "wordCount": 87,
+      "wordCount": 435,
       "issues": [
         "Nedostaje H1",
         "Nedostaje og:title",
         "Nedostaje og:description",
-        "Nedostaje og:image",
         "Nedostaje twitter:card",
-        "Nedostaje JSON-LD structured data",
-        "Malo teksta (87 riječi, preporuka 150+)"
+        "Nedostaje JSON-LD structured data"
       ],
-      "score": 30
+      "score": 50
     },
     {
       "url": "https://gnk-asg.hr/en/insights/",
       "status": 200,
       "ok": true,
-      "title": "GNK ASG Insights | Business, Economy, Markets, Technology and Corporate Transparency",
-      "titleLen": 84,
-      "description": "GNK ASG Insights publishes English public summaries and business-intelligence articles connected with GNK ASG d.o.o., GNK DINAMO Ltd. and Nermin Sefić: economy, business, markets, energy, technology, AI, sport business and corporate transparency.",
-      "descLen": 246,
+      "title": "GNK ASG Insights | Business, Economy, Markets, Technology and",
+      "titleLen": 61,
+      "description": "GNK ASG Insights publishes English public summaries and business-intelligence articles connected with GNK ASG d.o.o., GNK DINAMO Ltd.",
+      "descLen": 133,
       "canonical": "https://gnk-asg.hr/en/insights/",
       "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
       "ogTitle": true,
@@ -1480,21 +1614,20 @@
       "hreflangCount": 2,
       "imgCount": 1,
       "imgsNoAlt": 0,
-      "wordCount": 431,
+      "wordCount": 429,
       "issues": [
-        "Title predugačak (84 znakova, cilj 50-60)",
-        "Description predugačak (246 znakova, cilj 140-160)"
+        "Title predugačak (61 znakova, cilj 50-60)"
       ],
-      "score": 80
+      "score": 90
     },
     {
       "url": "https://gnk-asg.hr/en/insights/2026/05/ai-corporate-portal-understanding/",
       "status": 200,
       "ok": true,
-      "title": "How AI Helps Users Understand a Corporate Portal | GNK ASG Insights",
-      "titleLen": 67,
-      "description": "GNK ASG explains how artificial intelligence can help users understand public documents, corporate data, market information and structured business communication within the GNK DINAMO Ltd. framework.",
-      "descLen": 199,
+      "title": "How AI Helps Users Understand a Corporate Portal | GNK ASG",
+      "titleLen": 58,
+      "description": "GNK ASG explains how artificial intelligence can help users understand public documents, corporate data, market information and structured business communication…",
+      "descLen": 162,
       "canonical": "https://gnk-asg.hr/en/insights/2026/05/ai-corporate-portal-understanding/",
       "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
       "ogTitle": true,
@@ -1509,12 +1642,11 @@
       "hreflangCount": 0,
       "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 486,
+      "wordCount": 485,
       "issues": [
-        "Title predugačak (67 znakova, cilj 50-60)",
-        "Description predugačak (199 znakova, cilj 140-160)"
+        "Description predugačak (162 znakova, cilj 140-160)"
       ],
-      "score": 80
+      "score": 90
     },
     {
       "url": "https://gnk-asg.hr/en/insights/2026/05/ai-governance-corporate-accountability/",
@@ -1548,10 +1680,10 @@
       "url": "https://gnk-asg.hr/en/insights/2026/05/three-global-business-signals-2026-05-31/",
       "status": 200,
       "ok": true,
-      "title": "Three Global Business Signals: AI Infrastructure, Capital and China Manufacturing | GNK ASG Insights",
-      "titleLen": 100,
-      "description": "GNK ASG Intelligence Desk reviews three global business signals for 31 May 2026: European AI data-centre investment, AI-driven capital allocation and China manufacturing/export demand.",
-      "descLen": 184,
+      "title": "Three Global Business Signals: AI Infrastructure, Capital and",
+      "titleLen": 61,
+      "description": "GNK ASG Intelligence Desk reviews three global business signals for 31 May 2026: European AI data-centre investment, AI-driven capital allocation and China…",
+      "descLen": 156,
       "canonical": "https://gnk-asg.hr/en/insights/2026/05/three-global-business-signals-2026-05-31/",
       "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
       "ogTitle": true,
@@ -1566,21 +1698,20 @@
       "hreflangCount": 0,
       "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 826,
+      "wordCount": 820,
       "issues": [
-        "Title predugačak (100 znakova, cilj 50-60)",
-        "Description predugačak (184 znakova, cilj 140-160)"
+        "Title predugačak (61 znakova, cilj 50-60)"
       ],
-      "score": 80
+      "score": 90
     },
     {
       "url": "https://gnk-asg.hr/en/insights/2026/06/ai-infrastructure-europe-data-centres/",
       "status": 200,
       "ok": true,
-      "title": "AI Infrastructure in Europe: Data Centres, Energy and Digital Sovereignty | GNK ASG Insights",
-      "titleLen": 92,
-      "description": "GNK ASG Intelligence Desk reviews why AI infrastructure in Europe is becoming a board-level issue involving data centres, energy, digital sovereignty and corporate strategy.",
-      "descLen": 173,
+      "title": "AI Infrastructure in Europe: Data Centres, Energy and Digital",
+      "titleLen": 61,
+      "description": "GNK ASG Intelligence Desk reviews why AI infrastructure in Europe is becoming a board-level issue involving data centres, energy, digital sovereignty and…",
+      "descLen": 154,
       "canonical": "https://gnk-asg.hr/en/insights/2026/06/ai-infrastructure-europe-data-centres/",
       "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
       "ogTitle": true,
@@ -1595,19 +1726,18 @@
       "hreflangCount": 0,
       "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 1007,
+      "wordCount": 1002,
       "issues": [
-        "Title predugačak (92 znakova, cilj 50-60)",
-        "Description predugačak (173 znakova, cilj 140-160)"
+        "Title predugačak (61 znakova, cilj 50-60)"
       ],
-      "score": 80
+      "score": 90
     },
     {
       "url": "https://gnk-asg.hr/en/insights/2026/06/oil-energy-prices-business-risk/",
       "status": 200,
       "ok": true,
-      "title": "Oil, Energy Prices and Business Risk: Why Commodity Markets Still Drive Corporate Strategy | GNK ASG Insights",
-      "titleLen": 109,
+      "title": "Oil, Energy Prices and Business Risk: Why Commodity Markets",
+      "titleLen": 59,
       "description": "GNK ASG Intelligence Desk reviews why oil and energy prices still shape corporate strategy, logistics, inflation, capital planning and business risk.",
       "descLen": 149,
       "canonical": "https://gnk-asg.hr/en/insights/2026/06/oil-energy-prices-business-risk/",
@@ -1624,18 +1754,16 @@
       "hreflangCount": 0,
       "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 911,
-      "issues": [
-        "Title predugačak (109 znakova, cilj 50-60)"
-      ],
-      "score": 90
+      "wordCount": 903,
+      "issues": [],
+      "score": 100
     },
     {
       "url": "https://gnk-asg.hr/en/insights/2026/06/public-corporate-documents-ai-explanations/",
       "status": 200,
       "ok": true,
-      "title": "Why Public Corporate Documents Need Artificial Intelligence Explanations | GNK ASG Insights",
-      "titleLen": 91,
+      "title": "Why Public Corporate Documents Need Artificial Intelligence",
+      "titleLen": 59,
       "description": "GNK ASG Intelligence Desk explains why public corporate documents, financial data and source-based portals benefit from artificial intelligence explanations.",
       "descLen": 157,
       "canonical": "https://gnk-asg.hr/en/insights/2026/06/public-corporate-documents-ai-explanations/",
@@ -1652,11 +1780,9 @@
       "hreflangCount": 0,
       "imgCount": 2,
       "imgsNoAlt": 0,
-      "wordCount": 450,
-      "issues": [
-        "Title predugačak (91 znakova, cilj 50-60)"
-      ],
-      "score": 90
+      "wordCount": 445,
+      "issues": [],
+      "score": 100
     },
     {
       "url": "https://gnk-asg.hr/en/projects/roadmap/",
@@ -1666,11 +1792,11 @@
       "titleLen": 41,
       "description": "Interactive roadmap for nine strategic projects with phases, implementation gates and risk classes.",
       "descLen": 99,
-      "canonical": "https://www.gnk-asg.hr/en/projects/roadmap/",
+      "canonical": "https://gnk-asg.hr/en/projects/roadmap/",
       "robots": "",
       "ogTitle": false,
       "ogDesc": false,
-      "ogImage": false,
+      "ogImage": true,
       "twitterCard": false,
       "h1Count": 1,
       "h1": [
@@ -1684,13 +1810,12 @@
       "issues": [
         "Nedostaje og:title",
         "Nedostaje og:description",
-        "Nedostaje og:image",
         "Nedostaje twitter:card",
         "Nedostaje JSON-LD structured data",
         "Malo teksta (54 riječi, preporuka 150+)",
         "Nedostaje meta robots (nije nužno greška, ali provjeriti namjeru)"
       ],
-      "score": 30
+      "score": 40
     },
     {
       "url": "https://gnk-asg.hr/group-network/",
@@ -1700,29 +1825,27 @@
       "titleLen": 44,
       "description": "Interaktivna javna mreža gradova, država, kodiranih društava, tržišta i workera GNK DINAMO Ltd. Group.",
       "descLen": 102,
-      "canonical": "https://www.gnk-asg.hr/group-network/",
+      "canonical": "https://gnk-asg.hr/group-network/",
       "robots": "index,follow,max-image-preview:large",
       "ogTitle": false,
       "ogDesc": false,
-      "ogImage": false,
+      "ogImage": true,
       "twitterCard": false,
       "h1Count": 0,
       "h1": [],
       "jsonLdCount": 0,
       "hreflangCount": 0,
-      "imgCount": 2,
+      "imgCount": 3,
       "imgsNoAlt": 0,
-      "wordCount": 86,
+      "wordCount": 386,
       "issues": [
         "Nedostaje H1",
         "Nedostaje og:title",
         "Nedostaje og:description",
-        "Nedostaje og:image",
         "Nedostaje twitter:card",
-        "Nedostaje JSON-LD structured data",
-        "Malo teksta (86 riječi, preporuka 150+)"
+        "Nedostaje JSON-LD structured data"
       ],
-      "score": 30
+      "score": 50
     },
     {
       "url": "https://gnk-asg.hr/insights-hr/",
@@ -1730,8 +1853,8 @@
       "ok": true,
       "title": "Objave i GNK ASG Insights | GNK ASG d.o.o.",
       "titleLen": 42,
-      "description": "Centralna arhiva objava GNK ASG portala: ekonomija, business, tržišta, nafta, energenti, tehnologija, AI, sport, dokumenti i korporativna komunikacija povezana s GNK ASG d.o.o., GNK DINAMO Ltd. i Nerminom Sefićem.",
-      "descLen": 213,
+      "description": "Centralna arhiva objava GNK ASG portala: ekonomija, business, tržišta, nafta, energenti, tehnologija, AI, sport, dokumenti i korporativna komunikacija povezana s…",
+      "descLen": 162,
       "canonical": "https://gnk-asg.hr/insights-hr/",
       "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
       "ogTitle": true,
@@ -1748,7 +1871,7 @@
       "imgsNoAlt": 0,
       "wordCount": 358,
       "issues": [
-        "Description predugačak (213 znakova, cilj 140-160)"
+        "Description predugačak (162 znakova, cilj 140-160)"
       ],
       "score": 90
     },
@@ -1758,8 +1881,8 @@
       "ok": true,
       "title": "AI razvojni alati ulaze u fazu stvarne cijene | GNK ASG",
       "titleLen": 55,
-      "description": "Autorski osvrt GNK ASG Intelligence Desk o promjenama naplate AI alata za razvoj softvera, GitHub Copilotu, tokenima, trošku računalne snage i poslovnom modelu umjetne inteligencije.",
-      "descLen": 182,
+      "description": "Autorski osvrt GNK ASG Intelligence Desk o promjenama naplate AI alata za razvoj softvera, GitHub Copilotu, tokenima, trošku računalne snage i poslovnom modelu…",
+      "descLen": 160,
       "canonical": "https://gnk-asg.hr/insights-hr/ai-developer-tools/",
       "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
       "ogTitle": true,
@@ -1775,10 +1898,8 @@
       "imgCount": 2,
       "imgsNoAlt": 0,
       "wordCount": 418,
-      "issues": [
-        "Description predugačak (182 znakova, cilj 140-160)"
-      ],
-      "score": 90
+      "issues": [],
+      "score": 100
     },
     {
       "url": "https://gnk-asg.hr/insights-hr/brenner-2026/",
@@ -1869,13 +1990,13 @@
       "ok": true,
       "title": "Strateški roadmap · GNK DINAMO Ltd. Group",
       "titleLen": 41,
-      "description": "Interaktivni roadmap devet strateških projekata.",
-      "descLen": 48,
+      "description": "Interaktivni roadmap devet strateških projekata GNK ASG d.o.o. — zdravstvo, sport, payment infrastruktura, digital exchange, energetska trgovina i THE CODE,…",
+      "descLen": 157,
       "canonical": "https://gnk-asg.hr/projects/roadmap/",
       "robots": "",
       "ogTitle": false,
       "ogDesc": false,
-      "ogImage": false,
+      "ogImage": true,
       "twitterCard": false,
       "h1Count": 1,
       "h1": [
@@ -1887,16 +2008,14 @@
       "imgsNoAlt": 0,
       "wordCount": 58,
       "issues": [
-        "Description prekratak (48 znakova)",
         "Nedostaje og:title",
         "Nedostaje og:description",
-        "Nedostaje og:image",
         "Nedostaje twitter:card",
         "Nedostaje JSON-LD structured data",
         "Malo teksta (58 riječi, preporuka 150+)",
         "Nedostaje meta robots (nije nužno greška, ali provjeriti namjeru)"
       ],
-      "score": 20
+      "score": 40
     },
     {
       "url": "https://gnk-asg.hr/publications/",
@@ -1910,7 +2029,7 @@
       "robots": "index,follow,max-image-preview:large,max-snippet:-1",
       "ogTitle": true,
       "ogDesc": true,
-      "ogImage": false,
+      "ogImage": true,
       "twitterCard": true,
       "h1Count": 1,
       "h1": [
@@ -1918,14 +2037,13 @@
       ],
       "jsonLdCount": 0,
       "hreflangCount": 0,
-      "imgCount": 108,
+      "imgCount": 118,
       "imgsNoAlt": 0,
-      "wordCount": 6347,
+      "wordCount": 6634,
       "issues": [
-        "Nedostaje og:image",
         "Nedostaje JSON-LD structured data"
       ],
-      "score": 80
+      "score": 90
     },
     {
       "url": "https://gnk-asg.hr/the-code/media-memorandum/",
@@ -1933,13 +2051,13 @@
       "ok": true,
       "title": "THE CODE · Medijski memorandum",
       "titleLen": 30,
-      "description": "",
-      "descLen": 0,
+      "description": "Program međunarodne medijske prezentacije THE CODE, 6.–8. listopada 2026. u New Yorku — akreditacije, središnja prezentacija 7.",
+      "descLen": 127,
       "canonical": "https://gnk-asg.hr/the-code/media-memorandum/",
       "robots": "index,follow",
-      "ogTitle": false,
-      "ogDesc": false,
-      "ogImage": false,
+      "ogTitle": true,
+      "ogDesc": true,
+      "ogImage": true,
       "twitterCard": false,
       "h1Count": 1,
       "h1": [
@@ -1951,15 +2069,41 @@
       "imgsNoAlt": 0,
       "wordCount": 141,
       "issues": [
-        "Nedostaje meta description",
-        "Nedostaje og:title",
-        "Nedostaje og:description",
-        "Nedostaje og:image",
         "Nedostaje twitter:card",
         "Nedostaje JSON-LD structured data",
         "Malo teksta (141 riječi, preporuka 150+)"
       ],
-      "score": 30
+      "score": 70
+    },
+    {
+      "url": "https://gnk-asg.hr/en/visual-index/",
+      "status": 200,
+      "ok": true,
+      "title": "GNK ASG Visual Index | SEO Gallery, Countries, Markets and AI",
+      "titleLen": 61,
+      "description": "Publicly indexable GNK ASG visual index for corporate portal topics, GNK ASG d.o.o., GNK DINAMO Ltd., Nermin Sefić, financial indicators, AI, markets, digital…",
+      "descLen": 159,
+      "canonical": "https://gnk-asg.hr/en/visual-index/",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "ogTitle": true,
+      "ogDesc": true,
+      "ogImage": true,
+      "twitterCard": false,
+      "h1Count": 1,
+      "h1": [
+        "GNK ASG Visual Gallery"
+      ],
+      "jsonLdCount": 2,
+      "hreflangCount": 2,
+      "imgCount": 2,
+      "imgsNoAlt": 1,
+      "wordCount": 408,
+      "issues": [
+        "Title predugačak (61 znakova, cilj 50-60)",
+        "Nedostaje twitter:card",
+        "1 slika bez alt atributa"
+      ],
+      "score": 70
     }
   ]
 }
