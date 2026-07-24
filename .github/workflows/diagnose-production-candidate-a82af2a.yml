@@ -7,16 +7,41 @@ permissions:
   contents: read
 
 jobs:
-  export-contrast-audit-source:
+  verify-homepage-contrast-race-fix:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
           ref: fix/editorial-paragraph-contract-20260724
-      - name: Upload exact contrast audit source
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install homepage visual-audit runtime
+        working-directory: apps/portal
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund --no-package-lock --no-save @playwright/test@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Run exact homepage contrast evidence check
+        working-directory: apps/portal
+        run: |
+          set -euo pipefail
+          rm -rf test-results/visual-contrast test-results/playwright-homepage
+          npx playwright test tests/all-pages-visual-contrast.spec.js \
+            --project=chromium-desktop \
+            --project=chromium-mobile \
+            --workers=1 \
+            --grep 'rendered contrast /$|rendered contrast /en/$' \
+            --output=test-results/playwright-homepage \
+            --reporter=line
+      - name: Upload homepage proof
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: contrast-audit-source-pr754
-          path: apps/portal/tests/all-pages-visual-contrast.spec.js
+          name: homepage-contrast-proof-pr754
+          path: |
+            apps/portal/test-results/visual-contrast/**
+            apps/portal/test-results/playwright-homepage/**
+          if-no-files-found: warn
           retention-days: 7
