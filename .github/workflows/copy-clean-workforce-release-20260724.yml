@@ -1,0 +1,55 @@
+name: Copy clean Workforce release files
+
+on:
+  push:
+    branches:
+      - release/digital-workforce-protected-production-clean-20260724
+    paths:
+      - '.github/workflows/copy-clean-workforce-release-20260724.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  copy-reviewed-files:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/digital-workforce-protected-production-clean-20260724
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Copy exact reviewed content only
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected='release/digital-workforce-protected-production-clean-20260724'
+          [ "$GITHUB_REF_NAME" = "$expected" ]
+          source_ref='release/digital-workforce-protected-production-20260724'
+          git fetch origin "$source_ref" --no-tags
+          files=(
+            apps/portal/assets/digital-workforce-protected-preview-v1.css
+            apps/portal/digital-workforce/index.html
+            apps/portal/en/autorske-objave/index.html
+            apps/portal/en/autorske-objave/kapital-prati-povjerenje.html
+            apps/portal/en/autorske-objave/svjetska-ekonomija-i-lokalni-poduzetnik.html
+            apps/portal/en/instalacija/index.html
+            apps/portal/en/sadrzaj/index.html
+            apps/portal/en/teme/index.html
+            apps/portal/komentari/dobra-odluka-treba-vrijeme-ne-oklijevanje/index.html
+            apps/portal/komentari/rizik-se-ne-eliminira-nego-upravlja/index.html
+            apps/portal/komentari/transparentnost-nije-teret-nego-prednost/index.html
+            apps/portal/nilus-bio/index.html
+            apps/portal/objave/korporativno-upravljanje-obiteljskih-tvrtki/index.html
+            apps/portal/objave/planiranje-kljucnih-nasljednih-pozicija/index.html
+            apps/portal/objave/upravljanje-intelektualnim-kapitalom-tvrtke/index.html
+          )
+          git checkout "origin/$source_ref" -- "${files[@]}"
+          rm -f .github/workflows/copy-clean-workforce-release-20260724.yml
+          git config user.name 'gnk-asg-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -- "${files[@]}" .github/workflows/copy-clean-workforce-release-20260724.yml
+          git diff --cached --quiet && exit 0
+          git commit -m 'feat(workforce): assemble clean protected production candidate'
+          git push origin HEAD:"$expected"
