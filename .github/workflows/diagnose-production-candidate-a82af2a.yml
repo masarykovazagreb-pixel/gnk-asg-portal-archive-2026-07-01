@@ -1,9 +1,7 @@
 name: Diagnose Production Candidate a82af2a
 
 on:
-  push:
-    branches:
-      - release/production-validation-a82af2a-20260724
+  pull_request:
 
 permissions:
   contents: read
