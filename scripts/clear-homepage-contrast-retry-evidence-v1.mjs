@@ -90,9 +90,17 @@ for (const project of PROJECTS) {
   }
 }
 
+const releaseAuditServer = () => {
+  if (process.platform === 'win32') return { attempted: false, status: null };
+  const result = spawnSync('fuser', ['-k', '4173/tcp'], { stdio: 'ignore' });
+  return { attempted: true, status: result.status };
+};
+
 const missingRoutes = [...new Set(missing.map(item => item.route))];
 const preflight = [];
 for (const route of missingRoutes) {
+  const releasedBeforePreflight = releaseAuditServer();
+  spawnSync('sleep', ['1'], { stdio: 'ignore' });
   const grep = `^rendered contrast ${route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`;
   const output = path.join('test-results', `playwright-homepage-preflight-${safeName(route)}`);
   const result = spawnSync(
@@ -108,7 +116,7 @@ for (const route of missingRoutes) {
     ],
     { cwd: PORTAL_ROOT, stdio: 'inherit', shell: process.platform === 'win32' }
   );
-  preflight.push({ route, status: result.status, signal: result.signal || null });
+  preflight.push({ route, releasedBeforePreflight, status: result.status, signal: result.signal || null });
 }
 
 const unresolved = [];
@@ -119,12 +127,7 @@ for (const project of PROJECTS) {
 }
 
 const ok = preflight.every(item => item.status === 0) && unresolved.length === 0;
-const releasedWebServer = process.platform === 'win32'
-  ? { attempted: false, status: null }
-  : (() => {
-      const result = spawnSync('fuser', ['-k', '4173/tcp'], { stdio: 'ignore' });
-      return { attempted: true, status: result.status };
-    })();
+const releasedWebServer = releaseAuditServer();
 
 console.log(JSON.stringify({
   ok,
