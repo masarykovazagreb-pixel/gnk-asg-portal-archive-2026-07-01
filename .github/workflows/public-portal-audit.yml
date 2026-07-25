@@ -199,24 +199,40 @@ jobs:
       - name: Browser-rendered desktop and mobile contrast audit
         id: playwright
         continue-on-error: true
+        timeout-minutes: 14
         working-directory: apps/portal
         run: |
           set -euo pipefail
           mkdir -p test-results/visual-contrast
-          npx playwright test tests/all-pages-visual-contrast.spec.js --project=chromium-desktop --project=chromium-mobile --workers=4 --reporter=line 2>&1 | tee test-results/visual-contrast/playwright-output.log
+          set +e
+          timeout --signal=TERM --kill-after=30s 12m \
+            npx playwright test tests/all-pages-visual-contrast.spec.js \
+              --project=chromium-desktop \
+              --project=chromium-mobile \
+              --workers=4 \
+              --reporter=line \
+            2>&1 | tee test-results/visual-contrast/playwright-output.log
+          status=${PIPESTATUS[0]}
+          set -e
+          if [ "$status" -eq 124 ] || [ "$status" -eq 137 ]; then
+            echo "ERROR: Playwright contrast audit exceeded the 12-minute process limit (exit $status)." | tee -a test-results/visual-contrast/playwright-output.log
+          fi
+          exit "$status"
 
       - name: Ensure homepage contrast evidence
+        timeout-minutes: 5
         working-directory: apps/portal
         run: |
           set -euo pipefail
           node ../../scripts/clear-homepage-contrast-retry-evidence-v1.mjs
-          npx playwright test tests/all-pages-visual-contrast.spec.js \
-            --project=chromium-desktop \
-            --project=chromium-mobile \
-            --workers=1 \
-            --grep 'rendered contrast /$|rendered contrast /en/$' \
-            --output=test-results/playwright-homepage \
-            --reporter=line
+          timeout --signal=TERM --kill-after=30s 4m \
+            npx playwright test tests/all-pages-visual-contrast.spec.js \
+              --project=chromium-desktop \
+              --project=chromium-mobile \
+              --workers=1 \
+              --grep 'rendered contrast /$|rendered contrast /en/$' \
+              --output=test-results/playwright-homepage \
+              --reporter=line
 
       - name: Validate browser contrast evidence
         env:
