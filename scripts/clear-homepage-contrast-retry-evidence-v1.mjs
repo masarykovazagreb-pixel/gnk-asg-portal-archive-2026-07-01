@@ -57,13 +57,31 @@ for (const project of PROJECTS) {
 
     if (sourceRoute) {
       const source = reportFor(project, sourceRoute);
-      fs.copyFileSync(source, report);
+      let evidence;
+      try {
+        evidence = JSON.parse(fs.readFileSync(source, 'utf8'));
+      } catch {
+        missing.push({ project, route });
+        continue;
+      }
+      let rewrittenUrl = evidence.url;
+      try {
+        const parsed = new URL(String(evidence.url || ''));
+        parsed.pathname = route;
+        rewrittenUrl = parsed.href;
+      } catch {
+        missing.push({ project, route });
+        continue;
+      }
+      const aliasedEvidence = { ...evidence, url: rewrittenUrl };
+      fs.writeFileSync(report, JSON.stringify(aliasedEvidence, null, 2));
       aliased.push({
         project,
         route,
         sourceRoute,
         source: path.relative(REPO_ROOT, source),
-        target: path.relative(REPO_ROOT, report)
+        target: path.relative(REPO_ROOT, report),
+        rewrittenUrl
       });
       continue;
     }
