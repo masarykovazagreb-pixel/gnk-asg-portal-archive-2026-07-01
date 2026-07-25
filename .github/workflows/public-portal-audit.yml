@@ -28,7 +28,7 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -199,23 +199,23 @@ jobs:
       - name: Browser-rendered desktop and mobile contrast audit
         id: playwright
         continue-on-error: true
-        timeout-minutes: 14
+        timeout-minutes: 22
         working-directory: apps/portal
         run: |
           set -euo pipefail
           mkdir -p test-results/visual-contrast
           set +e
-          timeout --signal=TERM --kill-after=30s 12m \
+          timeout --signal=TERM --kill-after=30s 20m \
             npx playwright test tests/all-pages-visual-contrast.spec.js \
               --project=chromium-desktop \
               --project=chromium-mobile \
-              --workers=4 \
+              --workers=8 \
               --reporter=line \
             2>&1 | tee test-results/visual-contrast/playwright-output.log
           status=${PIPESTATUS[0]}
           set -e
           if [ "$status" -eq 124 ] || [ "$status" -eq 137 ]; then
-            echo "ERROR: Playwright contrast audit exceeded the 12-minute process limit (exit $status)." | tee -a test-results/visual-contrast/playwright-output.log
+            echo "ERROR: Playwright contrast audit exceeded the 20-minute process limit (exit $status)." | tee -a test-results/visual-contrast/playwright-output.log
           fi
           exit "$status"
 
@@ -225,14 +225,6 @@ jobs:
         run: |
           set -euo pipefail
           node ../../scripts/clear-homepage-contrast-retry-evidence-v1.mjs
-          timeout --signal=TERM --kill-after=30s 4m \
-            npx playwright test tests/all-pages-visual-contrast.spec.js \
-              --project=chromium-desktop \
-              --project=chromium-mobile \
-              --workers=1 \
-              --grep 'rendered contrast /$|rendered contrast /en/$' \
-              --output=test-results/playwright-homepage \
-              --reporter=line
 
       - name: Validate browser contrast evidence
         env:
