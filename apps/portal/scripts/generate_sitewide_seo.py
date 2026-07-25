@@ -13,8 +13,10 @@ REQUIRED_FILES = (
 )
 CANONICAL_FILES = tuple(path for path in REQUIRED_FILES if path.endswith("index.html"))
 SITEMAP_ENTRIES = (
-    ("https://gnk-asg.hr/digital-workforce/", "2026-07-15", "weekly", "0.8"),
     ("https://gnk-asg.hr/editor-desk/", "2026-07-15", "daily", "0.8"),
+)
+FORBIDDEN_SITEMAP_URLS = (
+    "https://gnk-asg.hr/digital-workforce/",
 )
 
 
@@ -54,6 +56,9 @@ def validate_existing_seo() -> None:
     for url in ("https://gnk-asg.hr/", "https://gnk-asg.hr/en/", *(item[0] for item in SITEMAP_ENTRIES)):
         if url not in sitemap:
             invalid.append(f"sitemap.xml: missing {url}")
+    for url in FORBIDDEN_SITEMAP_URLS:
+        if url in sitemap:
+            invalid.append(f"sitemap.xml: forbidden noindex route present: {url}")
 
     robots = (ROOT / "apps/portal/robots.txt").read_text(encoding="utf-8", errors="replace").lower()
     if "sitemap:" not in robots:

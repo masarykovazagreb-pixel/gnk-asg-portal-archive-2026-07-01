@@ -22,7 +22,10 @@ REQUIRED_HTML = (
 )
 REQUIRED_URLS = (
     "https://gnk-asg.hr/", "https://gnk-asg.hr/en/",
-    "https://gnk-asg.hr/digital-workforce/", "https://gnk-asg.hr/editor-desk/",
+    "https://gnk-asg.hr/editor-desk/",
+)
+FORBIDDEN_SITEMAP_URLS = (
+    "https://gnk-asg.hr/digital-workforce/",
 )
 
 
@@ -114,7 +117,10 @@ def validate_xml(relative: str) -> tuple[list[str], list[str]]:
         namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
         locations = sorted({(node.text or "").strip() for node in root.findall("s:url/s:loc", namespace)})
         missing = [url for url in REQUIRED_URLS if url not in locations]
-        return locations, [f"sitemap.xml missing URL: {url}" for url in missing]
+        forbidden = [url for url in FORBIDDEN_SITEMAP_URLS if url in locations]
+        errors = [f"sitemap.xml missing URL: {url}" for url in missing]
+        errors.extend(f"sitemap.xml contains forbidden noindex URL: {url}" for url in forbidden)
+        return locations, errors
     return locations, []
 
 

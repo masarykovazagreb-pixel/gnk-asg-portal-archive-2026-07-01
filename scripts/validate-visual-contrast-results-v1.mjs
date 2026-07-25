@@ -6,6 +6,7 @@ import {execFileSync} from 'node:child_process';
 const PORTAL_ROOT=path.resolve('apps/portal');
 const REPORT_ROOT=path.join(PORTAL_ROOT,'test-results','visual-contrast');
 const PROJECTS=['chromium-desktop','chromium-mobile'];
+const LOCAL_AUDIT_ORIGIN='http://127.0.0.1:4173';
 const IGNORED_DIRECTORIES=new Set(['node_modules','test-results','playwright-report','.git']);
 function walkHtml(dir){
   const out=[];
@@ -41,6 +42,17 @@ const retryRoute=(project,route,failure,report)=>{
   }
   return fs.existsSync(report);
 };
+const validateRequestedRoute=(data,route)=>{
+  if(data?.redirectStubNeutralized===true)return data?.url===route?null:`redirect stub report url=${data?.url||'missing'}`;
+  try{
+    const actual=new URL(String(data?.url||''));
+    if(actual.origin!==LOCAL_AUDIT_ORIGIN)return `audit escaped local origin to ${actual.href}`;
+    if(actual.pathname!==route)return `audit pathname=${actual.pathname}`;
+    return null;
+  }catch{
+    return `invalid audit url=${data?.url||'missing'}`;
+  }
+};
 const errors=[];
 let reports=0;
 for(const project of PROJECTS){
@@ -56,6 +68,8 @@ for(const project of PROJECTS){
     reports++;
     let data;
     try{data=JSON.parse(fs.readFileSync(report,'utf8'));}catch(error){errors.push(`${project} ${route}: invalid JSON ${error.message}`);continue;}
+    const routeError=validateRequestedRoute(data,route);
+    if(routeError)errors.push(`${project} ${route}: ${routeError}`);
     if(data?.runtime?.state!=='hardened-v4')errors.push(`${project} ${route}: runtime=${data?.runtime?.state||'missing'}`);
     const violations=Array.isArray(data?.violations)?data.violations:[];
     const unresolved=violations.filter(item=>item?.repairedByRuntime!==true);
@@ -64,6 +78,6 @@ for(const project of PROJECTS){
 }
 const expected=routes.length*PROJECTS.length;
 if(reports!==expected)errors.push(`report count ${reports}/${expected}`);
-const summary={ok:errors.length===0,version:'GNK_VISUAL_CONTRAST_RESULT_VALIDATOR_V3_TARGETED_TIMEOUT_RETRY',routes:routes.length,projects:PROJECTS.length,expectedReports:expected,reports,errors:errors.slice(0,100)};
+const summary={ok:errors.length===0,version:'GNK_VISUAL_CONTRAST_RESULT_VALIDATOR_V4_ROUTE_INTEGRITY',routes:routes.length,projects:PROJECTS.length,expectedReports:expected,reports,errors:errors.slice(0,100)};
 console.log(JSON.stringify(summary,null,2));
 if(errors.length)process.exitCode=1;
