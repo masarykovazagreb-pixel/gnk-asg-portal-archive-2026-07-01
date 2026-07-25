@@ -25,6 +25,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Sync with latest main before running (reduces race with other auto-commit workflows)
+        run: git pull --ff-only origin main
+
       - name: Refresh public business news feed
         run: python apps/portal/scripts/refresh_news_policy.py
 
