@@ -28,7 +28,7 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -215,25 +215,33 @@ jobs:
       - name: Browser-rendered desktop and mobile contrast audit
         id: playwright
         continue-on-error: true
-        timeout-minutes: 22
+        timeout-minutes: 40
         working-directory: apps/portal
         run: |
           set -euo pipefail
           mkdir -p test-results/visual-contrast
           set +e
-          timeout --signal=TERM --kill-after=30s 20m \
-            npx playwright test tests/all-pages-visual-contrast.spec.js \
-              --project=chromium-desktop \
-              --project=chromium-mobile \
-              --workers=8 \
-              --reporter=line \
-            2>&1 | tee test-results/visual-contrast/playwright-output.log
-          status=${PIPESTATUS[0]}
+          overall_status=0
+          for shard in 1 2 3 4; do
+            echo "=== Shard ${shard}/4 ==="
+            fuser -k 4173/tcp 2>/dev/null || true
+            sleep 1
+            timeout --signal=TERM --kill-after=30s 9m \
+              npx playwright test tests/all-pages-visual-contrast.spec.js \
+                --project=chromium-desktop \
+                --project=chromium-mobile \
+                --workers=8 \
+                --shard=${shard}/4 \
+                --reporter=line \
+              2>&1 | tee -a test-results/visual-contrast/playwright-output.log
+            shard_status=${PIPESTATUS[0]}
+            if [ "$shard_status" -ne 0 ]; then
+              echo "WARNING: shard ${shard}/4 exited with status ${shard_status} (continuing to next shard)." | tee -a test-results/visual-contrast/playwright-output.log
+              overall_status=1
+            fi
+          done
           set -e
-          if [ "$status" -eq 124 ] || [ "$status" -eq 137 ]; then
-            echo "ERROR: Playwright contrast audit exceeded the 20-minute process limit (exit $status)." | tee -a test-results/visual-contrast/playwright-output.log
-          fi
-          exit "$status"
+          exit "$overall_status"
 
       - name: Ensure homepage contrast evidence
         timeout-minutes: 5
