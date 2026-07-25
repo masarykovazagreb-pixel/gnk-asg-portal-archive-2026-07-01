@@ -19,7 +19,21 @@
       const enHref = enAlternate && enAlternate.getAttribute('href');
       if (enHref) {
         try { localStorage.setItem(KEY, 'en'); } catch (error) {}
-        window.location.replace(enHref);
+        // Use only the path (+ query/hash) from the hreflang href, not its
+        // absolute origin. hreflang tags correctly point at the canonical
+        // production domain (https://gnk-asg.hr/en/...), but navigating by
+        // that full absolute URL means any same-origin test/staging/preview
+        // environment (e.g. a Playwright run against a local
+        // 127.0.0.1 server) gets redirected out to the real production
+        // site instead of staying on the page actually being tested.
+        // A same-origin relative redirect behaves identically for real
+        // visitors on gnk-asg.hr while staying on-origin everywhere else.
+        let target = enHref;
+        try {
+          const resolved = new URL(enHref, window.location.href);
+          target = resolved.pathname + resolved.search + resolved.hash;
+        } catch (error) {}
+        window.location.replace(target);
         return;
       }
     }
