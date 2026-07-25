@@ -44,10 +44,14 @@ html.dw-gate-locked header#gnk-unified-header {
 #dwGateOverlay input {
   padding: 12px 14px;
   border-radius: 10px;
-  border: 1px solid rgba(215, 181, 91, 0.3);
-  background: #0a0a0a;
-  color: #f7f5ef;
+  border: 1px solid rgba(215, 181, 91, 0.3) !important;
+  background: #0a0a0a !important;
+  color: #f7f5ef !important;
   font-size: 0.95rem;
+}
+#dwGateOverlay input::placeholder {
+  color: #cfcac0 !important;
+  opacity: 1 !important;
 }
 #dwGateOverlay input:focus-visible {
   outline: 3px solid #f2d27d;
