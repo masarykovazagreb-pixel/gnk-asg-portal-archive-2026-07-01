@@ -18,6 +18,7 @@ const retryGrep = missingHomepageRoutes.length
 
 module.exports = defineConfig({
   testDir: './tests',
+  outputDir: './test-results/playwright-runtime',
   timeout: 30000,
   retries: 0,
   grep: retryGrep,
