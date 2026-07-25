@@ -196,6 +196,22 @@ jobs:
       - name: Detailed page-by-page audit
         run: node scripts/audit-all-pages-detailed-v1.mjs
 
+      - name: Homepage contrast evidence (deterministic, runs before full audit)
+        timeout-minutes: 5
+        working-directory: apps/portal
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/visual-contrast
+          fuser -k 4173/tcp 2>/dev/null || true
+          sleep 1
+          npx playwright test tests/all-pages-visual-contrast.spec.js \
+            --project=chromium-desktop \
+            --project=chromium-mobile \
+            --workers=1 \
+            --grep 'rendered contrast /$|rendered contrast /en/$' \
+            --output=test-results/playwright-homepage-first \
+            --reporter=line
+
       - name: Browser-rendered desktop and mobile contrast audit
         id: playwright
         continue-on-error: true
