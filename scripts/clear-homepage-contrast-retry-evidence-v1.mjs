@@ -101,6 +101,13 @@ for (const project of PROJECTS) {
 }
 
 const ok = preflight.every(item => item.status === 0) && unresolved.length === 0;
+const releasedWebServer = process.platform === 'win32'
+  ? { attempted: false, status: null }
+  : (() => {
+      const result = spawnSync('fuser', ['-k', '4173/tcp'], { stdio: 'ignore' });
+      return { attempted: true, status: result.status };
+    })();
+
 console.log(JSON.stringify({
   ok,
   scope: 'homepage-retry-only',
@@ -111,7 +118,8 @@ console.log(JSON.stringify({
   aliased,
   missing,
   preflight,
-  unresolved
+  unresolved,
+  releasedWebServer
 }, null, 2));
 
 if (!ok) process.exit(1);
