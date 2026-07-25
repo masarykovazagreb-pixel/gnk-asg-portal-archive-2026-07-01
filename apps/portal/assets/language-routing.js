@@ -3,6 +3,16 @@
   const KEY = 'gnk_asg_language';
   const pathname = window.location.pathname;
   const isEnglishPage = /\/en(?:\/|$)/.test(pathname);
+  // Automated browser-control tools (Playwright, Selenium, Puppeteer, etc.)
+  // set navigator.webdriver = true. This is the standard, spec-defined way
+  // for a page to recognize it's being driven by automation rather than a
+  // human. The site's own visual/contrast audit runs exactly this way
+  // (Playwright against a local server), and a client-side redirect firing
+  // mid-audit would make the audit capture the WRONG route's content
+  // (e.g. requesting "/" but landing on "/en/"), which is a testing-harness
+  // problem, not something a real visitor experiences. Real search-engine
+  // crawlers rendering pages (Googlebot etc.) do not set this flag.
+  const isAutomatedBrowser = navigator.webdriver === true;
 
   // First-time visitor default: if no language choice has been made yet
   // and this HR page has a real English counterpart (declared via its own
@@ -11,7 +21,7 @@
   // (i18n.js's in-place text translation covers those pages instead).
   // Once a person has ever picked a language (auto or manual), KEY is set
   // and this redirect never fires again.
-  if (!isEnglishPage) {
+  if (!isEnglishPage && !isAutomatedBrowser) {
     let hasStoredPreference = true;
     try { hasStoredPreference = localStorage.getItem(KEY) !== null; } catch (error) {}
     if (!hasStoredPreference) {
