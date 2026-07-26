@@ -39,32 +39,38 @@ jobs:
         env:
           MASARYKOVA_MIRROR_TOKEN: ${{ secrets.MASARYKOVA_MIRROR_TOKEN }}
         run: |
-          if [ -z "$MASARYKOVA_MIRROR_TOKEN" ]; then
-            echo "MASARYKOVA_MIRROR_TOKEN secret is not set -- skipping mirror push."
-            echo "Set it under Settings > Secrets and variables > Actions."
-            exit 1
-          fi
-          cd mirror.git
           set +e
+          cd mirror.git
           PUSH_OUTPUT=$(git push --mirror "https://x-access-token:${MASARYKOVA_MIRROR_TOKEN}@github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01.git" 2>&1)
           PUSH_STATUS=$?
-          echo "$PUSH_OUTPUT"
-          set -e
-          if [ $PUSH_STATUS -eq 0 ]; then
+          echo "$PUSH_OUTPUT" > /tmp/push_output.txt
+          echo "push_status=$PUSH_STATUS" >> "$GITHUB_OUTPUT"
+          {
+            echo "## Mirror push output"
+            echo '```'
+            echo "$PUSH_OUTPUT"
+            echo '```'
+            echo "Exit status: $PUSH_STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+        id: push
+
+      - name: Evaluate push result
+        run: |
+          PUSH_OUTPUT=$(cat /tmp/push_output.txt)
+          STATUS="${{ steps.push.outputs.push_status }}"
+          echo "Push exit status was: $STATUS"
+          if [ "$STATUS" = "0" ]; then
             echo "Mirror push succeeded cleanly."
             exit 0
           fi
-          # GitHub always rejects direct pushes to refs/pull/*/head (PR
-          # tracking refs it manages itself) -- that is expected and not
-          # a real failure. Only fail the job if some OTHER kind of
-          # rejection/error is present in the output.
-          NON_HIDDEN_REF_ERRORS=$(echo "$PUSH_OUTPUT" | grep -E '! \[remote rejected\]' | grep -v 'refs/pull/' || true)
+          NON_HIDDEN_REF_ERRORS=$(echo "$PUSH_OUTPUT" | grep -E '! \[(remote rejected|rejected)\]' | grep -v 'refs/pull/' || true)
           if [ -n "$NON_HIDDEN_REF_ERRORS" ]; then
             echo "Real (non-hidden-ref) push rejections found:"
             echo "$NON_HIDDEN_REF_ERRORS"
             exit 1
           fi
-          if echo "$PUSH_OUTPUT" | grep -qi "authentication failed\|403\|could not read\|fatal: unable to access"; then
+          if echo "$PUSH_OUTPUT" | grep -qi "authentication failed\|403\|could not read\|fatal: unable to access\|fatal: repository .* not found"; then
             echo "Authentication or connectivity failure detected."
             exit 1
           fi
