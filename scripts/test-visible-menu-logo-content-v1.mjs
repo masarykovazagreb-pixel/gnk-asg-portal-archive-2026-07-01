@@ -49,7 +49,17 @@ assert.match(workforceUi,/\/api\/public\/digital-workforce\//);
 assert.match(workforceUi,/data-dw-tab/);
 assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V3_20260719_FIRST_PARTY_PROVENANCE/);
 assert.match(workforceApi,/1573/);
-assert.match(workforceApi,/2026,0,1/);
+// 2026-07-26: newsroom/log dates used to be permanently fixed
+// (Date.UTC(2026,0,1+...)) regardless of the actual current date --
+// fixed to be relative to the same simulation start used by
+// bulletins/PLAN (2026-07-18) and filtered so only "already published"
+// items show, exactly like publishedBulletins() already did. Assert
+// the new day-relative mechanism is in place instead of the old
+// fixed-date literal.
+assert.match(workforceApi,/SIM_START_UTC/);
+assert.match(workforceApi,/publishedNewsroom/);
+assert.match(workforceApi,/publishedLog/);
+assert.doesNotMatch(workforceApi,/2026,0,1/);
 assert.doesNotMatch(workforceApi,/1969|1970/);
 assert.match(workforceApi,/2026,6,18/);
 assert.match(workforceApi,/digital_workforce_identity_collision/);
