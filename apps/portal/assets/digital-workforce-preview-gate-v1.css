@@ -1,0 +1,77 @@
+html.dw-gate-locked .dw-shell,
+html.dw-gate-locked header#gnk-unified-header {
+  display: none !important;
+}
+#dwGateOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  color: #f7f5ef;
+  font-family: inherit;
+}
+#dwGateOverlay .dw-gate-box {
+  max-width: 360px;
+  width: calc(100% - 48px);
+  padding: 32px 28px;
+  border: 1px solid rgba(215, 181, 91, 0.35);
+  border-radius: 16px;
+  background: rgba(12, 12, 12, 0.9);
+  text-align: center;
+}
+#dwGateOverlay .dw-gate-title {
+  margin: 0 0 8px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #f2d27d;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+#dwGateOverlay .dw-gate-copy {
+  margin: 0 0 20px;
+  font-size: 0.92rem;
+  color: #cfcac0;
+  line-height: 1.5;
+}
+#dwGateOverlay form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+#dwGateOverlay input {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(215, 181, 91, 0.3) !important;
+  background: #0a0a0a !important;
+  color: #f7f5ef !important;
+  font-size: 0.95rem;
+}
+#dwGateOverlay input::placeholder {
+  color: #cfcac0 !important;
+  opacity: 1 !important;
+}
+#dwGateOverlay input:focus-visible {
+  outline: 3px solid #f2d27d;
+  outline-offset: 2px;
+}
+#dwGateOverlay button {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d7b55b;
+  background: #d7b55b;
+  color: #000;
+  font-weight: 900;
+  cursor: pointer;
+}
+#dwGateOverlay button:focus-visible {
+  outline: 3px solid #f2d27d;
+  outline-offset: 2px;
+}
+#dwGateOverlay .dw-gate-error {
+  margin: 10px 0 0;
+  color: #ff9d9d;
+  font-size: 0.85rem;
+}

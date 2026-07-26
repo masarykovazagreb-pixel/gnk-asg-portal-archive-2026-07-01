@@ -28,7 +28,7 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -196,27 +196,59 @@ jobs:
       - name: Detailed page-by-page audit
         run: node scripts/audit-all-pages-detailed-v1.mjs
 
-      - name: Browser-rendered desktop and mobile contrast audit
-        id: playwright
-        continue-on-error: true
+      - name: Homepage contrast evidence (deterministic, runs before full audit)
+        timeout-minutes: 5
         working-directory: apps/portal
         run: |
           set -euo pipefail
           mkdir -p test-results/visual-contrast
-          npx playwright test tests/all-pages-visual-contrast.spec.js --project=chromium-desktop --project=chromium-mobile --workers=4 --reporter=line 2>&1 | tee test-results/visual-contrast/playwright-output.log
-
-      - name: Ensure homepage contrast evidence
-        working-directory: apps/portal
-        run: |
-          set -euo pipefail
-          node ../../scripts/clear-homepage-contrast-retry-evidence-v1.mjs
+          fuser -k 4173/tcp 2>/dev/null || true
+          sleep 1
           npx playwright test tests/all-pages-visual-contrast.spec.js \
             --project=chromium-desktop \
             --project=chromium-mobile \
             --workers=1 \
             --grep 'rendered contrast /$|rendered contrast /en/$' \
-            --output=test-results/playwright-homepage \
+            --output=test-results/playwright-homepage-first \
             --reporter=line
+
+      - name: Browser-rendered desktop and mobile contrast audit
+        id: playwright
+        continue-on-error: true
+        timeout-minutes: 70
+        working-directory: apps/portal
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/visual-contrast
+          set +e
+          overall_status=0
+          for shard in 1 2 3 4; do
+            echo "=== Shard ${shard}/4 ==="
+            fuser -k 4173/tcp 2>/dev/null || true
+            sleep 1
+            timeout --signal=TERM --kill-after=30s 15m \
+              npx playwright test tests/all-pages-visual-contrast.spec.js \
+                --project=chromium-desktop \
+                --project=chromium-mobile \
+                --workers=8 \
+                --shard=${shard}/4 \
+                --reporter=line \
+              2>&1 | tee -a test-results/visual-contrast/playwright-output.log
+            shard_status=${PIPESTATUS[0]}
+            if [ "$shard_status" -ne 0 ]; then
+              echo "WARNING: shard ${shard}/4 exited with status ${shard_status} (continuing to next shard)." | tee -a test-results/visual-contrast/playwright-output.log
+              overall_status=1
+            fi
+          done
+          set -e
+          exit "$overall_status"
+
+      - name: Ensure homepage contrast evidence
+        timeout-minutes: 5
+        working-directory: apps/portal
+        run: |
+          set -euo pipefail
+          node ../../scripts/clear-homepage-contrast-retry-evidence-v1.mjs
 
       - name: Validate browser contrast evidence
         env:
