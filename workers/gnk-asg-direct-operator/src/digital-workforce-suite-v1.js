@@ -15,7 +15,11 @@ function projectsForDay(simDay){
   });
 }
 const PROJECTS=BASE_PROJECTS.map(p=>({id:p.id,name:p.name,lead:p.lead,phase:p.phase,gate:p.gate,team:p.team}));
-const RISKS=PROJECTS.map((p,i)=>({projectId:p.id,title:['Clinical partner timing','Data standardization','Licensing dependency','Custodian readiness','Accreditation timing','Supply-chain traceability','CAPEX closure','Counterparty sanctions','Cross-project approvals'][i],status:i%3===0?'mitigating':'under_control',owner:p.lead}));
+function risksForDay(simDay){
+  const projects=projectsForDay(simDay);
+  const titles=['Clinical partner timing','Data standardization','Licensing dependency','Custodian readiness','Accreditation timing','Supply-chain traceability','CAPEX closure','Counterparty sanctions','Cross-project approvals'];
+  return projects.map((p,i)=>({projectId:p.id,title:titles[i],status:p.progress>=85?'resolved':(i%3===0?'mitigating':'under_control'),owner:p.lead}));
+}
 const OPINION_POOL=[
   gate=>`${gate} ostaje ključni gate. Preporuka je zadržati dnevni dokaz napretka, zaključiti otvorene ovisnosti i ne prelaziti u novu fazu bez mjerljivog rezultata.`,
   gate=>`Trenutni fokus ostaje na ${gate}. Voditelj predlaže dodatnu provjeru kvalitete prije nego se stavka proglasi zatvorenom.`,
@@ -26,7 +30,16 @@ const OPINION_POOL=[
 function opinionsForDay(simDay){
   return PROJECTS.map((p,i)=>({projectId:p.id,lead:p.lead,text:OPINION_POOL[(simDay+i)%OPINION_POOL.length](p.gate),provenance:firstPartyProvenance('project-opinion','https://gnk-asg.hr/api/public/digital-workforce/opinions')}));
 }
-const DEPENDENCIES=[['PRJ-002','PRJ-001','sports analytics → rehabilitation'],['PRJ-003','PRJ-004','payment rails → digital instrument'],['PRJ-008','PRJ-007','energy supply → industrial production'],['PRJ-007','PRJ-006','production/logistics → organic food'],['PRJ-005','PRJ-002','university academy → sports systems'],['PRJ-009','ALL','shared integration and governance']].map(([from,to,note])=>({from,to,note,status:'active'}));
+const BASE_DEPENDENCIES=[['PRJ-002','PRJ-001','sports analytics → rehabilitation'],['PRJ-003','PRJ-004','payment rails → digital instrument'],['PRJ-008','PRJ-007','energy supply → industrial production'],['PRJ-007','PRJ-006','production/logistics → organic food'],['PRJ-005','PRJ-002','university academy → sports systems'],['PRJ-009','ALL','shared integration and governance']].map(([from,to,note])=>({from,to,note}));
+function dependenciesForDay(simDay){
+  const projects=projectsForDay(simDay);
+  const byId=Object.fromEntries(projects.map(p=>[p.id,p]));
+  return BASE_DEPENDENCIES.map(d=>{
+    const fromP=byId[d.from],toP=d.to==='ALL'?null:byId[d.to];
+    const bothHigh=fromP&&(toP?toP.progress>=85:true)&&fromP.progress>=85;
+    return{from:d.from,to:d.to,note:d.note,status:bothHigh?'resolved':'active'};
+  });
+}
 const PLAN=[{block:'18. 7. – 16. 8. 2026.',focus:'Potvrda partnera, licenci, skrbništva, opskrbe i regulatornih paketa.'},{block:'17. 8. – 15. 9. 2026.',focus:'Produkcijska integracija, certifikacije, platforme i sigurnosno učvršćivanje.'},{block:'16. 9. – 15. 10. 2026.',focus:'Operativno skaliranje, prvi ugovori, aktivna tržišta i grupna integracija.'}];
 const NAME_ROOT=['Avel','Neri','Sol','Mira','Kael','Lumi','Tari','Vela','Eli','Orin','Zena','Ravi','Iria','Noel','Sena','Dari','Kora','Lior','Mavi','Teno','Ari','Niva','Sori','Elan','Vian','Rina','Kian','Talia','Oren','Lena','Milo','Yara','Zori','Nelia','Amon','Cira','Vero','Isen','Ruma','Teon'];
 const NAME_END=['a','en','ia','on','el','ara','in','or','is','ea','iel','ina','aro','ira','ian','ela','ane','ora','eus','inae','aris','ione','una','eron','avia','orin','essa','elio','avel','iona','irel','irea','oren','elia','aren','onia','iris','eon','alis','uria'];
@@ -54,11 +67,17 @@ const BULLETINS=Array.from({length:90},(_,i)=>{const publishedAt=new Date(Date.U
 const publishedBulletins=()=>BULLETINS.filter(x=>Date.parse(x.publishedAt)<=Date.now());
 const SIM_START_UTC=Date.UTC(2026,6,18,7,0,0);
 const BASE_NEWSROOM=Array.from({length:42},(_,i)=>{const id=`NEWS-${String(i+1).padStart(3,'0')}`,slug=`digital-workforce-report-${String(i+1).padStart(2,'0')}`,canonical=`https://gnk-asg.hr/digital-workforce/newsroom/${slug}/`;return{id,slug,canonical,dayOffset:i*2,idx:i};});
+const NEWSROOM_THEMES=['operativni izvještaj','pregled napretka','statusni bilten','projektni sažetak'];
 function publishedNewsroom(){
   const now=Date.now();
+  const projects=projectsForDay(publishedBulletins().length);
   return BASE_NEWSROOM.filter(n=>SIM_START_UTC+n.dayOffset*86400000<=now).map(n=>{
     const publishedAt=new Date(SIM_START_UTC+n.dayOffset*86400000).toISOString();
-    return{id:n.id,slug:n.slug,title:`Digitalna radna snaga — operativni izvještaj ${n.idx+1}`,excerpt:'Sažetak mjerljivih rezultata, otvorenih ovisnosti i sljedećih projektnih koraka.',author:'GNK ASG Newsroom',editor:'Nermin Sefić',publishedAt,provenance:firstPartyProvenance('digital-workforce-newsroom',n.canonical,publishedAt),seo:{title:`Digitalna radna snaga: operativni izvještaj ${n.idx+1} | GNK ASG`,description:'Pregled rada digitalne radne snage, projekata, rizika, zadataka i rezultata.',canonical:n.canonical,image:`/assets/news/digital-workforce-${String(n.idx+1).padStart(2,'0')}.webp`}};
+    const theme=NEWSROOM_THEMES[n.idx%NEWSROOM_THEMES.length];
+    const project=projects[n.idx%projects.length];
+    const title=`Digitalna radna snaga — ${theme} ${n.idx+1}: ${project.name}`;
+    const excerpt=`Sažetak mjerljivih rezultata za ${project.name} (${project.gate}), otvorenih ovisnosti i sljedećih projektnih koraka.`;
+    return{id:n.id,slug:n.slug,title,excerpt,author:'GNK ASG Newsroom',editor:'Nermin Sefić',publishedAt,provenance:firstPartyProvenance('digital-workforce-newsroom',n.canonical,publishedAt),seo:{title:`${title} | GNK ASG`,description:excerpt,canonical:n.canonical,image:`/assets/news/digital-workforce-${String(n.idx+1).padStart(2,'0')}.webp`}};
   });
 }
 const BASE_LOG=Array.from({length:69},(_,i)=>({id:i+1,dayOffset:Math.floor(i/3),hour:8+(i%9),minute:15+(i%4)*10,type:i%3===0?'report_prepared':i%3===1?'bulletin_published':'project_progress',message:i%3===0?'Izvješća voditelja pripremljena.':i%3===1?'Dnevni bilten objavljen.':'Projektni gate ažuriran.'}));
@@ -69,6 +88,6 @@ function publishedLog(){
 function creditsForDay(simDay){
   return projectsForDay(simDay).map((p,i)=>({projectId:p.id,balance:p.credits,transactions:Array.from({length:6},(_,j)=>({id:`TR-${i+1}-${j+1}`,amount:(j%2?-1:1)*(140+j*35),type:j%2?'allocation':'delivery_reward',at:new Date(Date.UTC(2026,0,3+i*8+j,10,0,0)).toISOString()}))}));
 }
-async function payload(key,url){const bulletins=publishedBulletins();if(key==='state')return{status:'running',simDay:bulletins.length,lastRun:new Date().toISOString(),projects:PROJECTS.length,workers:WORKERS.length,bulletins:bulletins.length,newsroom:BASE_NEWSROOM.length,version:VERSION};if(key==='projects')return{items:projectsForDay(bulletins.length)};if(key==='risks')return{items:RISKS};if(key==='opinions')return{items:opinionsForDay(bulletins.length)};if(key==='dependencies')return{items:DEPENDENCIES};if(key==='plan')return{items:PLAN};if(key==='tasks')return{items:tasksForDay(bulletins.length)};if(key==='credits')return{items:creditsForDay(bulletins.length)};if(key==='bulletins')return{items:bulletins};if(key==='newsroom')return{items:publishedNewsroom().slice().reverse()};if(key==='log')return{items:publishedLog().slice().reverse()};if(key==='workers'){const project=url.searchParams.get('project'),q=(url.searchParams.get('q')||'').toLowerCase(),page=Math.max(1,Number(url.searchParams.get('page')||1)),size=Math.min(100,Math.max(20,Number(url.searchParams.get('size')||50)));let items=WORKERS;if(project)items=items.filter(x=>x.projectId===project);if(q)items=items.filter(x=>`${x.name} ${x.function} ${x.project}`.toLowerCase().includes(q));return{total:items.length,page,size,items:items.slice((page-1)*size,page*size)};}return null;}
+async function payload(key,url){const bulletins=publishedBulletins();if(key==='state'){const minuteOfHour=new Date().getUTCMinutes();const engineStatus=minuteOfHour%10<2?'syncing':'running';return{status:engineStatus,simDay:bulletins.length,lastRun:new Date().toISOString(),projects:PROJECTS.length,workers:WORKERS.length,bulletins:bulletins.length,newsroom:BASE_NEWSROOM.length,version:VERSION};}if(key==='projects')return{items:projectsForDay(bulletins.length)};if(key==='risks')return{items:risksForDay(bulletins.length)};if(key==='opinions')return{items:opinionsForDay(bulletins.length)};if(key==='dependencies')return{items:dependenciesForDay(bulletins.length)};if(key==='plan')return{items:PLAN};if(key==='tasks')return{items:tasksForDay(bulletins.length)};if(key==='credits')return{items:creditsForDay(bulletins.length)};if(key==='bulletins')return{items:bulletins};if(key==='newsroom')return{items:publishedNewsroom().slice().reverse()};if(key==='log')return{items:publishedLog().slice().reverse()};if(key==='workers'){const project=url.searchParams.get('project'),q=(url.searchParams.get('q')||'').toLowerCase(),page=Math.max(1,Number(url.searchParams.get('page')||1)),size=Math.min(100,Math.max(20,Number(url.searchParams.get('size')||50)));let items=WORKERS;if(project)items=items.filter(x=>x.projectId===project);if(q)items=items.filter(x=>`${x.name} ${x.function} ${x.project}`.toLowerCase().includes(q));const pageItems=items.slice((page-1)*size,page*size).map(w=>{const n=Number(w.id.slice(2));if(w.status==='active'){const cycle=(n+bulletins.length)%23;if(cycle===0)return{...w,status:'on_leave'};if(cycle===1)return{...w,status:'training'};}return w;});return{total:items.length,page,size,items:pageItems};}return null;}
 const ROUTES=new Map([['/api/public/digital-workforce/state','state'],['/api/public/digital-workforce/projects','projects'],['/api/public/digital-workforce/risks','risks'],['/api/public/digital-workforce/opinions','opinions'],['/api/public/digital-workforce/dependencies','dependencies'],['/api/public/digital-workforce/tasks','tasks'],['/api/public/digital-workforce/credits','credits'],['/api/public/digital-workforce/bulletins','bulletins'],['/api/public/digital-workforce/newsroom','newsroom'],['/api/public/digital-workforce/workers','workers'],['/api/public/digital-workforce/log','log'],['/api/public/digital-workforce/activity-log','log'],['/api/public/digital-workforce/plan','plan']]);
 export async function handleDigitalWorkforceSuite(request){const key=ROUTES.get(pathOf(request));if(!key)return null;if(!PUBLIC_METHODS.has(request.method))return json(request,{ok:false,error:'method_not_allowed'},405);const data=await payload(key,new URL(request.url));return json(request,{ok:true,sourcePolicyVersion:CONTENT_SOURCE_POLICY_VERSION,retrievedAt:new Date().toISOString(),...data});}
