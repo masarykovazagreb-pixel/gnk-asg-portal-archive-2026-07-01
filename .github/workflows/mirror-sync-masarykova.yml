@@ -55,6 +55,14 @@ jobs:
           exit 0
         id: push
 
+      - name: Upload push output as artifact for diagnosis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: push-output-debug
+          path: /tmp/push_output.txt
+          retention-days: 1
+
       - name: Evaluate push result
         run: |
           PUSH_OUTPUT=$(cat /tmp/push_output.txt)
