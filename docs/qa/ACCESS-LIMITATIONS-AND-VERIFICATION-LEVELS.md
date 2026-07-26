@@ -69,3 +69,7 @@ Ne smijem razinu A, B ili C predstavljati kao razinu E ili F.
 ## 8. Primjena — primjer iz ove sesije
 
 Otkriveni CSS bug na `/digital-workforce/` (metrike "spojene" u jedan red) potvrđen je na **razini A** (kod pregledan, nedostajući CSS pronađen) i **razini B** (jsdom lokalno potvrđuje `display:block` nakon popravka). Nije potvrđen na razini E (nisam vizualno vidio stranicu u pravom browseru) niti D (nisam sam dohvatio produkcijski HTML da provjerim je li popravak stigao do sajta) dok mi to netko ne potvrdi.
+
+**Nastavak (isti dan):** vlasnik je poslao stvaran screenshot (razina E) koji je pokazivao da popravak NIJE vidljiv — identično stanje kao prije. CI je potvrđivao uspjeh (razina C), kod je bio ispravan i na `main`-u (razina A), ali vizualni rezultat se nije poklapao. Nakon Cloudflare cache purgea, vlasnik je potvrdio da je popravak stvarno vidljiv (razina E, ovaj put pozitivna).
+
+**Zaključak za buduće sesije:** za CORE TEMPLATE fajlove (npr. `index.html`, ne editorial sadržaj), uspješan deploy (razina C) **ne jamči** da će promjena biti odmah vidljiva (razina E) — Cloudflare edge cache može servirati stariju verziju unatoč `cache-control: no-store` headeru na origin odgovoru. Ako vlasnik prijavi da promjena "nije vidljiva" unatoč potvrđenom uspješnom deployu, **prvo pitati je li rađen cache purge**, prije daljnje dijagnoze koda — ovo se u ovoj sesiji dogodilo dvaput (editorial-order skripta, pa Digital Workforce metrike CSS) sa istim uzrokom i istim rješenjem.
