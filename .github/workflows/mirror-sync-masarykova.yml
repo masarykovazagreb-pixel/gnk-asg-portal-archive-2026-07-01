@@ -1,0 +1,75 @@
+name: Mirror Sync to Masarykova Backup
+
+# Full mirror push (all branches + tags) from this repository to the
+# owner's private backup repository under a separate GitHub account,
+# every 6 hours, so nothing done here is lost while active development
+# continues on this repo.
+#
+# Requires a repository secret MASARYKOVA_MIRROR_TOKEN: a classic
+# Personal Access Token (scope: repo) issued on the
+# masarykovazagreb-pixel GitHub account, with write access to
+# masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01.
+# Set via: Settings > Secrets and variables > Actions > New repository
+# secret. This workflow only ever reads that secret to authenticate
+# the mirror push -- it is never logged, echoed, or written to any
+# file in this repository.
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: masarykova-mirror-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Full mirror clone of this repository
+        run: |
+          git clone --mirror "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" mirror.git
+
+      - name: Push full mirror to masarykova backup
+        env:
+          MASARYKOVA_MIRROR_TOKEN: ${{ secrets.MASARYKOVA_MIRROR_TOKEN }}
+        run: |
+          if [ -z "$MASARYKOVA_MIRROR_TOKEN" ]; then
+            echo "MASARYKOVA_MIRROR_TOKEN secret is not set -- skipping mirror push."
+            echo "Set it under Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+          cd mirror.git
+          set +e
+          PUSH_OUTPUT=$(git push --mirror "https://x-access-token:${MASARYKOVA_MIRROR_TOKEN}@github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01.git" 2>&1)
+          PUSH_STATUS=$?
+          echo "$PUSH_OUTPUT"
+          set -e
+          if [ $PUSH_STATUS -eq 0 ]; then
+            echo "Mirror push succeeded cleanly."
+            exit 0
+          fi
+          # GitHub always rejects direct pushes to refs/pull/*/head (PR
+          # tracking refs it manages itself) -- that is expected and not
+          # a real failure. Only fail the job if some OTHER kind of
+          # rejection/error is present in the output.
+          NON_HIDDEN_REF_ERRORS=$(echo "$PUSH_OUTPUT" | grep -E '! \[remote rejected\]' | grep -v 'refs/pull/' || true)
+          if [ -n "$NON_HIDDEN_REF_ERRORS" ]; then
+            echo "Real (non-hidden-ref) push rejections found:"
+            echo "$NON_HIDDEN_REF_ERRORS"
+            exit 1
+          fi
+          if echo "$PUSH_OUTPUT" | grep -qi "authentication failed\|403\|could not read\|fatal: unable to access"; then
+            echo "Authentication or connectivity failure detected."
+            exit 1
+          fi
+          echo "Only expected hidden-ref rejections (refs/pull/*) found; treating as success."
+
+      - name: Clean up
+        if: always()
+        run: rm -rf mirror.git
