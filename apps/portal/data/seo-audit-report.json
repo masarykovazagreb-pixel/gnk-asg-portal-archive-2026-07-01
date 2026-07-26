@@ -1,11 +1,11 @@
 {
   "version": "GNK_ASG_SEO_AUDIT_V1_20260722",
-  "generatedAt": "2026-07-25T07:01:05.421Z",
-  "completedAt": "2026-07-25T07:01:11.607Z",
+  "generatedAt": "2026-07-26T07:17:34.915Z",
+  "completedAt": "2026-07-26T07:17:37.639Z",
   "sitemapSource": "https://gnk-asg.hr/sitemap.xml",
-  "pagesAudited": 68,
+  "pagesAudited": 71,
   "pagesOk": 68,
-  "pagesFailed": 0,
+  "pagesFailed": 3,
   "averageScore": 93,
   "totalIssues": 51,
   "worstPages": [
@@ -1579,6 +1579,30 @@
       "wordCount": 1015,
       "issues": [],
       "score": 100
+    },
+    {
+      "url": "https://gnk-asg.hr/node_modules/playwright-core/lib/vite/htmlReport/",
+      "status": 404,
+      "ok": false,
+      "issues": [
+        "Stranica nije dostupna (HTTP 404)"
+      ]
+    },
+    {
+      "url": "https://gnk-asg.hr/node_modules/playwright-core/lib/vite/recorder/",
+      "status": 404,
+      "ok": false,
+      "issues": [
+        "Stranica nije dostupna (HTTP 404)"
+      ]
+    },
+    {
+      "url": "https://gnk-asg.hr/node_modules/playwright-core/lib/vite/traceViewer/",
+      "status": 404,
+      "ok": false,
+      "issues": [
+        "Stranica nije dostupna (HTTP 404)"
+      ]
     },
     {
       "url": "https://gnk-asg.hr/projects/",
