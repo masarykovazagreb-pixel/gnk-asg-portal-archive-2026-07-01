@@ -14,6 +14,7 @@ refresh_news.py so this file changes retention only.
 from __future__ import annotations
 
 import sys
+import json
 import time
 import urllib.error
 import xml.etree.ElementTree as ET
@@ -23,6 +24,45 @@ import refresh_news as base
 PUBLIC_LIMIT = 100
 ARCHIVE_TRIGGER = 2000
 ARCHIVE_DELETE_OLDEST = 1000
+
+DW_NEWSROOM_API = "https://gnk-asg.hr/api/public/digital-workforce/newsroom"
+
+
+def fetch_digital_workforce_items():
+    """Pull the current Digital Workforce simulation newsroom items so
+    they also surface on AKTUAL MEDIA, clearly labeled as internal
+    simulation content -- never mixed in as if it were real external
+    journalism. Uses base.make_record for a schema-consistent record,
+    with source/group/category deliberately distinct from any real
+    news source, and links back to the existing newsroom tab (no
+    individual article pages exist yet, so we do not fabricate a
+    canonical URL that would 404).
+    """
+    try:
+        raw = base.fetch_url(DW_NEWSROOM_API)
+        payload = json.loads(raw)
+    except Exception as exc:
+        print(f"digital-workforce newsroom fetch failed (non-fatal): {exc}")
+        return []
+
+    items = payload.get("items", []) if isinstance(payload, dict) else []
+    records = []
+    for item in items:
+        image = item.get("seo", {}).get("image", "")
+        if image and image.startswith("/"):
+            image = "https://gnk-asg.hr" + image
+        record = base.make_record(
+            title=item.get("title", ""),
+            url="https://gnk-asg.hr/digital-workforce/newsroom/",
+            summary=item.get("excerpt", ""),
+            source="GNK ASG Newsroom (interna simulacija)",
+            group="digital-workforce-simulation",
+            category="digital-workforce-simulation",
+            published_at=item.get("publishedAt", base.now_iso()),
+            image=image,
+        )
+        records.append(record)
+    return records
 
 
 def main() -> int:
@@ -40,6 +80,11 @@ def main() -> int:
             success += 1
         except (urllib.error.URLError, TimeoutError, ET.ParseError, Exception) as exc:
             errors.append({"source": source, "group": group, "error": str(exc)[:180]})
+
+    dw_items = fetch_digital_workforce_items()
+    if dw_items:
+        fetched.extend(dw_items)
+        print(f"digital-workforce newsroom: added {len(dw_items)} simulation items (clearly labeled, distinct category)")
 
     existing_public = base.read_json(base.NEWS_PATH, [])
     existing_archive = base.read_json(base.ARCHIVE_PATH, [])
