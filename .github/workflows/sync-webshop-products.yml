@@ -1,0 +1,42 @@
+name: Sync Webshop Products
+
+# Pulls the current product list from the live product-catalog-api-v1.js
+# Worker endpoint (GET /api/v1/products, public/read-only, no secret
+# needed) into apps/portal/data/webshop-products.json, so the
+# storefront always reflects the latest data written via
+# POST/PUT /api/v1/products (which DO require the WEBSHOP_API_KEY
+# secret, set only in the Cloudflare Worker dashboard -- never here).
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: sync-webshop-products
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Sync with latest main before running
+        run: git pull --ff-only origin main
+
+      - name: Sync products from API
+        run: node scripts/sync-webshop-products-v1.mjs
+
+      - name: Commit updated catalog if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Sync webshop products from API [skip ci]'
+          file_pattern: 'apps/portal/data/webshop-products.json'
