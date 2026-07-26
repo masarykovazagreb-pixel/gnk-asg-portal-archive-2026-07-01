@@ -102,8 +102,18 @@ def main() -> int:
     with_image = [item for item in merged if item.get("image")]
     without_image = [item for item in merged if not item.get("image")]
 
-    public = with_image[:PUBLIC_LIMIT]
-    archive = with_image[PUBLIC_LIMIT:] + without_image
+    # Digital Workforce simulation items are published on a slower
+    # (roughly every-2-day) cadence than the constantly-refreshing
+    # real-time RSS sources, so by pure recency they would almost
+    # always fall outside the "top 100 newest" window and end up in
+    # the archive tier, effectively invisible on AKTUAL MEDIA. Since
+    # there are at most a handful of them, guarantee their visibility
+    # by pulling them to the front of the public tier explicitly,
+    # rather than relying on the recency sort alone.
+    dw_items = [item for item in with_image if item.get("group") == "digital-workforce-simulation"]
+    other_items = [item for item in with_image if item.get("group") != "digital-workforce-simulation"]
+    public = dw_items + other_items[:max(0, PUBLIC_LIMIT - len(dw_items))]
+    archive = other_items[max(0, PUBLIC_LIMIT - len(dw_items)):] + without_image
     archive_items_before_prune = len(archive)
     removed_oldest = 0
     prune_batches = 0
