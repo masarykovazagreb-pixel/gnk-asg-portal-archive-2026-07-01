@@ -13,7 +13,7 @@
   }
 
   const STYLE = `
-.dw-dash{margin:32px 0;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.dw-dash{margin:12px 0 32px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .dw-dash-card{border:1px solid rgba(215,181,91,.25);border-radius:14px;padding:16px 18px;background:rgba(255,255,255,.02)}
 .dw-dash-card h3{margin:0 0 12px;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:#f2d27d}
 .dw-dash-wide{grid-column:1/-1}
@@ -33,8 +33,9 @@
 @keyframes dwCommsIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .dw-tasks-bar{display:flex;height:22px;border-radius:8px;overflow:hidden;margin-bottom:8px}
 .dw-tasks-seg{transition:width 1.2s ease}
-.dw-tasks-legend{display:flex;gap:14px;font-size:.75rem;color:#cfcac0}
-.dw-tasks-legend span{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
+.dw-tasks-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.75rem;color:#cfcac0}
+.dw-tasks-legend span.dw-legend-item{white-space:nowrap;display:inline-flex;align-items:center}
+.dw-tasks-legend span.dw-legend-dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;flex:0 0 auto}
 `;
 
   function donutSvg(segments, size = 120) {
@@ -85,7 +86,7 @@
       const labels = { todo: 'Za napraviti', progress: 'U tijeku', done: 'Završeno' };
       taskHost.innerHTML = `
         <div class="dw-tasks-bar">${Object.entries(counts).map(([k, v]) => `<div class="dw-tasks-seg" style="width:${(v / total) * 100}%;background:${colors[k]}"></div>`).join('')}</div>
-        <div class="dw-tasks-legend">${Object.entries(counts).map(([k, v]) => `<span><span style="background:${colors[k]}"></span>${labels[k]}: ${v}</span>`).join('')}</div>`;
+        <div class="dw-tasks-legend">${Object.entries(counts).map(([k, v]) => `<span class="dw-legend-item"><span class="dw-legend-dot" style="background:${colors[k]}"></span>${labels[k]}: ${v}</span>`).join('')}</div>`;
     }
   }
 
