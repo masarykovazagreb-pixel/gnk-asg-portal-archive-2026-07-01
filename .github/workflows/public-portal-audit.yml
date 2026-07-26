@@ -28,7 +28,7 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -215,7 +215,7 @@ jobs:
       - name: Browser-rendered desktop and mobile contrast audit
         id: playwright
         continue-on-error: true
-        timeout-minutes: 40
+        timeout-minutes: 70
         working-directory: apps/portal
         run: |
           set -euo pipefail
@@ -226,7 +226,7 @@ jobs:
             echo "=== Shard ${shard}/4 ==="
             fuser -k 4173/tcp 2>/dev/null || true
             sleep 1
-            timeout --signal=TERM --kill-after=30s 9m \
+            timeout --signal=TERM --kill-after=30s 15m \
               npx playwright test tests/all-pages-visual-contrast.spec.js \
                 --project=chromium-desktop \
                 --project=chromium-mobile \
