@@ -24,15 +24,13 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-
       - name: Full mirror clone of this repository
         run: |
           git clone --mirror "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" mirror.git
@@ -57,17 +55,6 @@ jobs:
           exit 0
         id: push
 
-      - name: Commit push output for diagnosis (temporary)
-        if: always()
-        run: |
-          mkdir -p docs/qa
-          cp /tmp/push_output.txt docs/qa/mirror-debug-output.txt
-          git config user.name "mirror-sync-debug"
-          git config user.email "actions@users.noreply.github.com"
-          git add docs/qa/mirror-debug-output.txt
-          git commit -m "debug: mirror push output [skip ci]" || echo "nothing to commit"
-          git push "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" HEAD:main || echo "push of debug file failed, non-fatal"
-
       - name: Evaluate push result
         run: |
           PUSH_OUTPUT=$(cat /tmp/push_output.txt)
@@ -77,13 +64,20 @@ jobs:
             echo "Mirror push succeeded cleanly."
             exit 0
           fi
+          # GitHub always rejects direct pushes to refs/pull/*/head and
+          # refs/pull/*/merge (its own PR-tracking refs) -- expected,
+          # not a real failure. Only fail if some OTHER rejection or a
+          # genuine auth/connectivity error is present. Note: keyed
+          # phrases below are deliberately specific (e.g. "HTTP 403",
+          # not bare "403") to avoid false-positiving on PR numbers
+          # like refs/pull/403/head that legitimately appear in output.
           NON_HIDDEN_REF_ERRORS=$(echo "$PUSH_OUTPUT" | grep -E '! \[(remote rejected|rejected)\]' | grep -v 'refs/pull/' || true)
           if [ -n "$NON_HIDDEN_REF_ERRORS" ]; then
             echo "Real (non-hidden-ref) push rejections found:"
             echo "$NON_HIDDEN_REF_ERRORS"
             exit 1
           fi
-          if echo "$PUSH_OUTPUT" | grep -qi "authentication failed\|403\|could not read\|fatal: unable to access\|fatal: repository .* not found"; then
+          if echo "$PUSH_OUTPUT" | grep -qi "authentication failed\|HTTP 403\|status: 403\|could not read\|fatal: unable to access\|fatal: repository .* not found"; then
             echo "Authentication or connectivity failure detected."
             exit 1
           fi
