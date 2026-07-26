@@ -96,6 +96,8 @@ const SIM_START_UTC=Date.UTC(2026,6,18,7,0,0);
 const BASE_NEWSROOM=Array.from({length:42},(_,i)=>{const id=`NEWS-${String(i+1).padStart(3,'0')}`,slug=`digital-workforce-report-${String(i+1).padStart(2,'0')}`,canonical=`https://gnk-asg.hr/digital-workforce/newsroom/${slug}/`;return{id,slug,canonical,dayOffset:i*2,idx:i};});
 const NEWSROOM_THEMES=['operativni izvještaj','pregled napretka','statusni bilten','projektni sažetak'];
 const NEWSROOM_THEMES_EN=['operational report','progress review','status bulletin','project summary'];
+const PROJECT_IMAGE_MAP={'Healthcare & Rehabilitation':'/assets/editorial/digital-workforce-healthcare.webp','Sports Systems':'/assets/editorial/digital-workforce-sports.webp','Payment & Digital Exchange':'/assets/editorial/digital-workforce-exchange.webp','Digital Instrument & Gold':'/assets/editorial/digital-workforce-gold.webp'};
+const NEWSROOM_DEFAULT_IMAGE='/assets/editorial/digital-workforce-overview.webp';
 function publishedNewsroom(lang='hr'){
   const now=Date.now();
   const projects=projectsForDay(publishedBulletins(lang).length,lang);
@@ -106,7 +108,7 @@ function publishedNewsroom(lang='hr'){
     const project=projects[n.idx%projects.length];
     const title=lang==='en'?`Digital Workforce — ${theme} ${n.idx+1}: ${project.name}`:`Digitalna radna snaga — ${theme} ${n.idx+1}: ${project.name}`;
     const excerpt=lang==='en'?`Summary of measurable results for ${project.name} (${project.gate}), open dependencies, and next project steps.`:`Sažetak mjerljivih rezultata za ${project.name} (${project.gate}), otvorenih ovisnosti i sljedećih projektnih koraka.`;
-    return{id:n.id,slug:n.slug,title,excerpt,author:'GNK ASG Newsroom',editor:'Nermin Sefić',publishedAt,provenance:firstPartyProvenance('digital-workforce-newsroom',n.canonical,publishedAt),seo:{title:`${title} | GNK ASG`,description:excerpt,canonical:n.canonical,image:'/assets/gallery/agentic-ai-orchestration-organic-v3.svg'}};
+    return{id:n.id,slug:n.slug,title,excerpt,author:'GNK ASG Newsroom',editor:'Nermin Sefić',publishedAt,provenance:firstPartyProvenance('digital-workforce-newsroom',n.canonical,publishedAt),seo:{title:`${title} | GNK ASG`,description:excerpt,canonical:n.canonical,image:PROJECT_IMAGE_MAP[project.name]||NEWSROOM_DEFAULT_IMAGE}};
   });
 }
 const BASE_LOG=Array.from({length:69},(_,i)=>({id:i+1,dayOffset:Math.floor(i/3),hour:8+(i%9),minute:15+(i%4)*10,type:i%3===0?'report_prepared':i%3===1?'bulletin_published':'project_progress',message:i%3===0?'Izvješća voditelja pripremljena.':i%3===1?'Dnevni bilten objavljen.':'Projektni gate ažuriran.',messageEn:i%3===0?'Lead reports prepared.':i%3===1?'Daily bulletin published.':'Project gate updated.'}));

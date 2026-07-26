@@ -3,11 +3,28 @@
   if (window.__GNK_DW_DASHBOARD_V1__) return;
   window.__GNK_DW_DASHBOARD_V1__ = true;
 
+  const isEn = window.location.pathname.startsWith('/en/');
   const base = '/api/public/digital-workforce/';
+  const langParam = isEn ? 'lang=en' : '';
   const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+  const T = isEn ? {
+    projectProgress: 'Project Progress', workerStatus: 'Worker Status', tasksByStatus: 'Tasks by Status',
+    commsTitle: 'Live worker communication (who talks to whom only, not content)',
+    active: 'Active', review: 'On review', onLeave: 'On leave', training: 'Training',
+    todo: 'To do', progress: 'In progress', done: 'Done',
+    donutAria: 'Worker status distribution',
+  } : {
+    projectProgress: 'Napredak projekata', workerStatus: 'Status workera', tasksByStatus: 'Zadaci po statusu',
+    commsTitle: 'Komunikacija workera uživo (samo tko s kim, ne i sadržaj)',
+    active: 'Aktivni', review: 'Na reviziji', onLeave: 'Odsutni', training: 'Edukacija',
+    todo: 'Za napraviti', progress: 'U tijeku', done: 'Završeno',
+    donutAria: 'Raspodjela statusa workera',
+  };
+
   async function get(key) {
-    const r = await fetch(base + key, { cache: 'no-store', headers: { accept: 'application/json' } });
+    const url = langParam ? `${base}${key}?${langParam}` : `${base}${key}`;
+    const r = await fetch(url, { cache: 'no-store', headers: { accept: 'application/json' } });
     if (!r.ok) throw new Error(key + ':' + r.status);
     return r.json();
   }
@@ -49,7 +66,7 @@
       offset += dash;
       return el;
     }).join('');
-    return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="Raspodjela statusa workera">${arcs}</svg>`;
+    return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="${esc(T.donutAria)}">${arcs}</svg>`;
   }
 
   function renderCharts(state, projects, tasks) {
@@ -63,18 +80,16 @@
         </div>`).join('');
     }
 
-    const statusCounts = { active: 0, review: 0, on_leave: 0, training: 0 };
-    // sample distribution from state metadata isn't per-worker; use tasks-derived proxy for now if needed
     const donutHost = document.getElementById('dwChartWorkers');
     if (donutHost && state) {
       const activePct = 0.87, reviewPct = 0.06, leavePct = 0.035, trainPct = 0.035;
       const segs = [
-        { label: 'Aktivni', value: activePct, color: '#7ddc96' },
-        { label: 'Na reviziji', value: reviewPct, color: '#ffc878' },
-        { label: 'Odsutni', value: leavePct, color: '#8a85f0' },
-        { label: 'Edukacija', value: trainPct, color: '#f2d27d' },
+        { label: T.active, value: activePct, color: '#7ddc96' },
+        { label: T.review, value: reviewPct, color: '#ffc878' },
+        { label: T.onLeave, value: leavePct, color: '#8a85f0' },
+        { label: T.training, value: trainPct, color: '#f2d27d' },
       ];
-      donutHost.innerHTML = `<div class="dw-donut-wrap">${donutSvg(segs)}<div class="dw-donut-legend">${segs.map(s => `<div><span style="background:${s.color}"></span>${s.label} · ${Math.round(s.value * 100)}%</div>`).join('')}</div></div>`;
+      donutHost.innerHTML = `<div class="dw-donut-wrap">${donutSvg(segs)}<div class="dw-donut-legend">${segs.map(s => `<div><span style="background:${s.color}"></span>${esc(s.label)} · ${Math.round(s.value * 100)}%</div>`).join('')}</div></div>`;
     }
 
     const taskHost = document.getElementById('dwChartTasks');
@@ -83,10 +98,10 @@
       tasks.forEach(t => { counts[t.status] = (counts[t.status] || 0) + 1; });
       const total = tasks.length || 1;
       const colors = { todo: '#8a857a', progress: '#f2d27d', done: '#7ddc96' };
-      const labels = { todo: 'Za napraviti', progress: 'U tijeku', done: 'Završeno' };
+      const labels = { todo: T.todo, progress: T.progress, done: T.done };
       taskHost.innerHTML = `
         <div class="dw-tasks-bar">${Object.entries(counts).map(([k, v]) => `<div class="dw-tasks-seg" style="width:${(v / total) * 100}%;background:${colors[k]}"></div>`).join('')}</div>
-        <div class="dw-tasks-legend">${Object.entries(counts).map(([k, v]) => `<span class="dw-legend-item"><span class="dw-legend-dot" style="background:${colors[k]}"></span>${labels[k]}: ${v}</span>`).join('')}</div>`;
+        <div class="dw-tasks-legend">${Object.entries(counts).map(([k, v]) => `<span class="dw-legend-item"><span class="dw-legend-dot" style="background:${colors[k]}"></span>${esc(labels[k])}: ${v}</span>`).join('')}</div>`;
     }
   }
 
@@ -120,7 +135,8 @@
   function boot() {
     const path = window.location.pathname.replace(/\/+$/, '') || '/';
     const parts = path.split('/').filter(Boolean);
-    const isDwRoot = parts.length === 1 && parts[0] === 'digital-workforce';
+    const isDwRoot = (parts.length === 1 && parts[0] === 'digital-workforce') ||
+                      (parts.length === 2 && parts[0] === 'en' && parts[1] === 'digital-workforce');
     if (!isDwRoot) return;
     const main = document.querySelector('main') || document.body;
     if (!main) return;
@@ -132,10 +148,10 @@
     const dash = document.createElement('div');
     dash.className = 'dw-dash';
     dash.innerHTML = `
-      <div class="dw-dash-card"><h3>Napredak projekata</h3><div id="dwChartProjects"></div></div>
-      <div class="dw-dash-card"><h3>Status workera</h3><div id="dwChartWorkers"></div></div>
-      <div class="dw-dash-card"><h3>Zadaci po statusu</h3><div id="dwChartTasks"></div></div>
-      <div class="dw-dash-card dw-dash-wide"><h3>Komunikacija workera uživo (samo tko s kim, ne i sadržaj)</h3><div id="dwCommsFeed" class="dw-comms-feed"></div></div>
+      <div class="dw-dash-card"><h3>${esc(T.projectProgress)}</h3><div id="dwChartProjects"></div></div>
+      <div class="dw-dash-card"><h3>${esc(T.workerStatus)}</h3><div id="dwChartWorkers"></div></div>
+      <div class="dw-dash-card"><h3>${esc(T.tasksByStatus)}</h3><div id="dwChartTasks"></div></div>
+      <div class="dw-dash-card dw-dash-wide"><h3>${esc(T.commsTitle)}</h3><div id="dwCommsFeed" class="dw-comms-feed"></div></div>
     `;
     main.appendChild(dash);
 
