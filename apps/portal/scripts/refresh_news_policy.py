@@ -26,6 +26,7 @@ ARCHIVE_TRIGGER = 2000
 ARCHIVE_DELETE_OLDEST = 1000
 
 DW_NEWSROOM_API = "https://gnk-asg.hr/api/public/digital-workforce/newsroom"
+DW_DEBUG = {}
 
 
 def fetch_digital_workforce_items():
@@ -38,22 +39,28 @@ def fetch_digital_workforce_items():
     individual article pages exist yet, so we do not fabricate a
     canonical URL that would 404).
     """
+    debug = {}
     try:
         raw = base.fetch_url(DW_NEWSROOM_API)
+        debug["raw_len"] = len(raw)
         payload = json.loads(raw)
+        debug["payload_keys"] = list(payload.keys()) if isinstance(payload, dict) else "not_a_dict"
     except Exception as exc:
+        debug["error"] = f"{type(exc).__name__}: {exc}"
         print(f"digital-workforce newsroom fetch failed (non-fatal): {exc}")
+        DW_DEBUG.update(debug)
         return []
 
     items = payload.get("items", []) if isinstance(payload, dict) else []
+    debug["item_count"] = len(items)
     records = []
-    for item in items:
+    for i, item in enumerate(items):
         image = item.get("seo", {}).get("image", "")
         if image and image.startswith("/"):
             image = "https://gnk-asg.hr" + image
         record = base.make_record(
             title=item.get("title", ""),
-            url="https://gnk-asg.hr/digital-workforce/newsroom/",
+            url=f"https://gnk-asg.hr/digital-workforce/newsroom/#item-{i}",
             summary=item.get("excerpt", ""),
             source="GNK ASG Newsroom (interna simulacija)",
             group="digital-workforce-simulation",
@@ -62,6 +69,8 @@ def fetch_digital_workforce_items():
             image=image,
         )
         records.append(record)
+    debug["records_built"] = len(records)
+    DW_DEBUG.update(debug)
     return records
 
 
@@ -159,6 +168,7 @@ def main() -> int:
             "data_status": "fresh_or_reference_checked",
             "runtime_seconds": round(time.time() - started, 2),
         },
+        "dw_integration_debug_temporary": DW_DEBUG,
     })
     base.write_json(base.STATUS_PATH, status)
 
