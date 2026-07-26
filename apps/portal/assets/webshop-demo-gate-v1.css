@@ -1,0 +1,9 @@
+html.shop-demo-gate-locked body>*:not(#shopDemoGateOverlay){display:none!important}
+#shopDemoGateOverlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;padding:24px}
+#shopDemoGateOverlay .sdg-box{max-width:420px;text-align:center;border:1px solid rgba(215,181,91,.3);border-radius:16px;padding:32px 28px;background:rgba(255,255,255,.02)}
+#shopDemoGateOverlay .sdg-kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:#f2d27d;font-weight:800;margin:0 0 10px}
+#shopDemoGateOverlay h1{font-size:1.3rem;color:#f7f5ef;margin:0 0 10px}
+#shopDemoGateOverlay p{color:#cfcac0;font-size:.9rem;margin:0 0 18px}
+#shopDemoGateOverlay input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(215,181,91,.3);background:#0a0a0a;color:#f7f5ef;font-size:.95rem;margin-bottom:12px}
+#shopDemoGateOverlay input.sdg-error{border-color:#ff8a8a}
+#shopDemoGateOverlay button{width:100%;padding:12px;border-radius:10px;border:1px solid #d7b55b;background:#d7b55b;color:#000;font-weight:800;cursor:pointer}
