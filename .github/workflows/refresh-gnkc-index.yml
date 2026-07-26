@@ -1,0 +1,43 @@
+name: Refresh GNKC Index
+
+# GNKC is an internal accounting stable-index (NOT a real cryptocurrency
+# or blockchain token) derived from a weighted basket of USDC, USDT and
+# DAI public stablecoin prices. See scripts/refresh-gnkc-index-v1.mjs
+# for the fail-closed calculation logic and explicit disclaimers.
+
+on:
+  schedule:
+    - cron: '20 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: gnkc-index-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Sync with latest main before running
+        run: git pull --ff-only origin main
+
+      - name: Refresh GNKC index
+        run: node scripts/refresh-gnkc-index-v1.mjs
+
+      - name: Validate GNKC index contract
+        run: node scripts/validate-gnkc-index-contract-v1.mjs
+
+      - name: Commit updated GNKC index
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Refresh GNKC internal stable-index [skip ci]'
+          file_pattern: 'apps/portal/data/gnkc-index.json'
