@@ -19,6 +19,7 @@
     if (!products.length) { grid.innerHTML = `<p class="shop-empty">${T.empty}</p>`; return; }
     grid.innerHTML = products.map(p => `
       <article class="shop-card">
+        ${p.image ? `<div class="shop-card-image"><img src="${esc(p.image)}" alt="" loading="lazy" width="400" height="225"></div>` : ''}
         <span class="shop-kicker">${esc(p.category)}</span>
         <h3>${esc(p.name)}</h3>
         <p>${esc(p.description)}</p>

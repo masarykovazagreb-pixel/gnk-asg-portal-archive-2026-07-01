@@ -1,0 +1,49 @@
+<!doctype html><html lang="hr" class="gnk-unified-shell"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Demo integracija — hardver katalog | GNK ASG d.o.o.</title><meta name="description" content="Interni demo prikaz funkcionalnosti kataloga i API integracije. Fiktivni testni podaci, ne stvarni proizvodi ili cijene bilo kojeg dobavljača."><meta name="robots" content="noindex,nofollow"><link rel="canonical" href="https://gnk-asg.hr/trgovina/hardver-demo/">
+  <link rel="stylesheet" href="/assets/style.css?v=20260723-dark-gold-theme-v1">
+  <link rel="stylesheet" href="/assets/public-design-tokens-v1.css?v=20260713-v2-unified">
+  <link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260723-header-transparent-v3">
+  <link rel="stylesheet" href="/assets/webshop-demo-gate-v1.css?v=20260726">
+  <style>
+    .demo-hero{padding:48px 24px 16px;max-width:1100px;margin:0 auto}
+    .demo-hero h1{font-size:2rem;margin:8px 0}
+    .demo-banner{max-width:1100px;margin:0 auto 24px;padding:14px 20px;border:1px solid rgba(255,138,138,.4);border-radius:10px;background:rgba(255,138,138,.06);color:#ffb8b8;font-size:.9rem;font-weight:600}
+    .shop-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));max-width:1100px;margin:0 auto;padding:0 24px 48px}
+    .shop-card{border:1px solid rgba(215,181,91,.25);border-radius:14px;padding:20px;background:rgba(255,255,255,.02);display:flex;flex-direction:column;gap:6px}
+    .shop-kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#f2d27d;font-weight:800}
+    .shop-card h3{margin:0;font-size:1.05rem;color:#f7f5ef}
+    .shop-price{color:#f2d27d!important;font-weight:700;font-size:1rem!important;margin-top:4px!important}
+    .shop-empty{color:#9c968a;font-style:italic;padding:24px;max-width:1100px;margin:0 auto}
+  </style>
+</head>
+<body><header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/" aria-label="Hrvatski" aria-current="page">HR</a><a href="/en/" aria-label="English">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">IZBORNIK</button></div><nav id="gnk-unified-nav"></nav></div></div></header>
+<main class="contact-main">
+  <section class="demo-hero">
+    <p class="gnk-eyebrow">Interna demonstracija</p>
+    <h1>Demo integracija — katalog i API</h1>
+  </section>
+  <div class="demo-banner">DEMO / TESTNI PODACI — potpuno fiktivni proizvodi i cijene, ne stvarni podaci nijednog dobavljača. Ova stranica postoji isključivo da pokaže funkcionalnost kataloga i API integracije prije sklapanja stvarnog partnerstva.</div>
+  <section id="shopGrid" class="shop-grid" aria-live="polite"><p class="shop-empty">Učitavanje…</p></section>
+</main>
+<script defer src="/assets/webshop-demo-gate-v1.js?v=20260726"></script>
+<script>
+(() => {
+  const grid = document.getElementById('shopGrid');
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  fetch('/data/webshop-hardware-demo.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.json())
+    .then(data => {
+      const products = data.products || [];
+      if (!products.length) { grid.innerHTML = '<p class="shop-empty">Nema demo stavki.</p>'; return; }
+      grid.innerHTML = products.map(p => `
+        <article class="shop-card">
+          <span class="shop-kicker">${esc(p.category)}</span>
+          <h3>${esc(p.name)}</h3>
+          <p class="shop-price">${Number(p.priceEur).toFixed(2)} EUR</p>
+          <small style="color:#9c968a">Dostupnost: ${esc(p.availability)}</small>
+        </article>`).join('');
+    })
+    .catch(() => { grid.innerHTML = '<p class="shop-empty">Podaci trenutačno nisu dostupni.</p>'; });
+})();
+</script>
+<script src="/assets/app.js?v=20260723-remove-tooth-tiles-v4" defer></script>
+</body></html>
