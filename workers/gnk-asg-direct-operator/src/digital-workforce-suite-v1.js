@@ -77,7 +77,7 @@ function publishedNewsroom(){
     const project=projects[n.idx%projects.length];
     const title=`Digitalna radna snaga — ${theme} ${n.idx+1}: ${project.name}`;
     const excerpt=`Sažetak mjerljivih rezultata za ${project.name} (${project.gate}), otvorenih ovisnosti i sljedećih projektnih koraka.`;
-    return{id:n.id,slug:n.slug,title,excerpt,author:'GNK ASG Newsroom',editor:'Nermin Sefić',publishedAt,provenance:firstPartyProvenance('digital-workforce-newsroom',n.canonical,publishedAt),seo:{title:`${title} | GNK ASG`,description:excerpt,canonical:n.canonical,image:`/assets/news/digital-workforce-${String(n.idx+1).padStart(2,'0')}.webp`}};
+    return{id:n.id,slug:n.slug,title,excerpt,author:'GNK ASG Newsroom',editor:'Nermin Sefić',publishedAt,provenance:firstPartyProvenance('digital-workforce-newsroom',n.canonical,publishedAt),seo:{title:`${title} | GNK ASG`,description:excerpt,canonical:n.canonical,image:'/assets/gallery/agentic-ai-orchestration-organic-v3.svg'}};
   });
 }
 const BASE_LOG=Array.from({length:69},(_,i)=>({id:i+1,dayOffset:Math.floor(i/3),hour:8+(i%9),minute:15+(i%4)*10,type:i%3===0?'report_prepared':i%3===1?'bulletin_published':'project_progress',message:i%3===0?'Izvješća voditelja pripremljena.':i%3===1?'Dnevni bilten objavljen.':'Projektni gate ažuriran.'}));
