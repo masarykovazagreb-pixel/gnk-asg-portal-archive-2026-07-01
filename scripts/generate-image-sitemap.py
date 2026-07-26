@@ -36,7 +36,6 @@ EXCLUDE_PREFIXES = [
     "admin/", "admin-center/", "admin-login/", "control/", "kontrola-azuriranja/",
     "automation-status/", "webmail/", "mail-studio/", "campaign-mailer/",
     "email-status/", "worker-ops/", "operator-dashboard/", "digital-headquarters/",
-    "digital-workforce/",
     "media-registration-admin/", "podijeli/", "dijeli/", "api/",
     "assets/", "data/", "docs/", "documents/", "downloads/", "scripts/",
     "tests/", "__preview/", ".github/", "artifacts/",

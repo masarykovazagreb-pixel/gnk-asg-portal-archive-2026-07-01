@@ -36,15 +36,16 @@ PORTAL_DIR = os.path.join(REPO_ROOT, "apps", "portal")
 BASE_URL = "https://gnk-asg.hr"
 
 # Kept in sync with apps/portal/robots.txt's Disallow list, plus a few
-# non-page directories (assets, data, scripts, tests, docs, etc.) and
-# apps/portal/digital-workforce/ which is intentionally excluded out of
-# caution since it sits adjacent to the private Digital Workforce
-# staging work-in-progress.
+# non-page directories (assets, data, scripts, tests, docs, etc.).
+# apps/portal/digital-workforce/ was excluded here from 2026-07-25
+# through 2026-07-26 per the D1 decision (noindex + preview-gate,
+# "pending production approval"). Owner explicitly confirmed public
+# launch on 2026-07-26 -- noindex and the preview gate were removed
+# from all 12 pages in the same commit that removed this exclusion.
 EXCLUDE_PREFIXES = [
     "admin/", "admin-center/", "admin-login/", "control/", "kontrola-azuriranja/",
     "automation-status/", "webmail/", "mail-studio/", "campaign-mailer/",
     "email-status/", "worker-ops/", "operator-dashboard/", "digital-headquarters/",
-    "digital-workforce/",
     "media-registration-admin/", "podijeli/", "dijeli/", "api/",
     "assets/", "data/", "docs/", "documents/", "downloads/", "scripts/",
     "tests/", "__preview/", ".github/", "artifacts/",
