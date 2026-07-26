@@ -24,13 +24,15 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - uses: actions/checkout@v4
+
       - name: Full mirror clone of this repository
         run: |
           git clone --mirror "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" mirror.git
@@ -55,13 +57,16 @@ jobs:
           exit 0
         id: push
 
-      - name: Upload push output as artifact for diagnosis
+      - name: Commit push output for diagnosis (temporary)
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: push-output-debug
-          path: /tmp/push_output.txt
-          retention-days: 1
+        run: |
+          mkdir -p docs/qa
+          cp /tmp/push_output.txt docs/qa/mirror-debug-output.txt
+          git config user.name "mirror-sync-debug"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/qa/mirror-debug-output.txt
+          git commit -m "debug: mirror push output [skip ci]" || echo "nothing to commit"
+          git push "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" HEAD:main || echo "push of debug file failed, non-fatal"
 
       - name: Evaluate push result
         run: |
