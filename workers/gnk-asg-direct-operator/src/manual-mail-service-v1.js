@@ -1,5 +1,6 @@
 import {enforceRequiredSignature,MANDATORY_BCC,ADDITIONAL_MANDATORY_BCC,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 import {buildAutoReplyCase,lookupAutoReplyCase,saveAutoReplyCase,VERSION as AUTO_REPLY_VERSION,CENTERS as AUTO_REPLY_CENTERS} from './auto-reply-case-center-v1.js';
+import {ensureMailSyncSchema} from './mail-sync-center-v1.js';
 
 export const VERSION='GNK_ASG_MANUAL_MAIL_SERVICE_V3_20260709_AUTO_REPLY_CASE_CENTERS';
 export const SEND_PATH='/api/admin-mail-send';
@@ -301,6 +302,13 @@ async function sendManual(request,env){
   return json({ok:status==='SENT',id,status,profile:{id:profile.id,name:profile.name,email:profile.email},to,cc,bcc,mandatoryCopy:MANDATORY_BCC,subject,attachments:{count:attachmentState.items.length,totalBytes:attachmentState.totalBytes,files:attachmentState.items.map(item=>({filename:item.filename,type:item.type}))},sent,failed:to.length-sent,results,audit:auditResult,signatureVersion:SIGNATURE_VERSION,signatureLogo:'gold'},status==='SENT'?200:sent?207:502);
 }
 
+export async function inboundEvidence(env,limit=50){
+  try{
+    const db=await ensureMailSyncSchema(env);
+    const result=await db.prepare(`SELECT id,from_email,from_name,to_json,cc_json,subject,status,attachment_count,created_at,received_at FROM mail_sync_messages WHERE direction='INBOUND' AND is_archived=0 ORDER BY datetime(COALESCE(received_at,created_at)) DESC LIMIT ?`).bind(limit).all();
+    return (result.results||[]).map(row=>({id:row.id,from_email:row.from_email||'',subject:row.subject||'(bez predmeta)',status:row.status||'RECEIVED',to:row.to_json||'[]',cc:row.cc_json||'[]',attachment_count:row.attachment_count||0,created_at:row.received_at||row.created_at}));
+  }catch{return [];}
+}
 export async function handleManualMailService(request,env){
   const path=new URL(request.url).pathname.replace(/\/+$/,'')||'/';
   if(path===AUTO_REPLY_PREVIEW_PATH&&request.method==='POST')return autoReplyPreview(request,env);
@@ -310,6 +318,6 @@ export async function handleManualMailService(request,env){
   if(path===STATUS_PATH&&request.method==='GET')return json({...readiness(env),recent:await recent(env,['SENT','PARTIAL','FAILED'],20)});
   if(path===SENT_PATH&&request.method==='GET')return json({ok:true,version:VERSION,items:await recent(env,['SENT','PARTIAL'],50)});
   if(path===OUTBOX_PATH&&request.method==='GET')return json({ok:true,version:VERSION,items:await recent(env,['SENDING','FAILED','PARTIAL'],50)});
-  if(path===INBOX_PATH&&request.method==='GET')return json({ok:true,version:VERSION,items:[],inboundConnected:false,message:'Inbound mailbox reading is not connected to this sending service.'});
+  if(path===INBOX_PATH&&request.method==='GET'){const items=await inboundEvidence(env);return json({ok:true,version:VERSION,items,inboundConnected:items.length>0,message:items.length?'Evidencijski prikaz primljene pošte (metapodaci); puni sadržaj poruke pohranjen je u sustavu za primanje.':'Inbound mailbox reading is not connected to this sending service.'});}
   return null;
 }
