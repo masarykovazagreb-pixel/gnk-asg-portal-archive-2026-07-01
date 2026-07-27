@@ -12,10 +12,11 @@ import {handlesLinkedIn,handleLinkedIn} from './linkedin-oauth-v1.js';
 import {handlesGA,handleGA} from './ga-data-api-v1.js';
 import {maybeGenerateLinkedInDrafts} from './linkedin-draft-generator-v1.js';
 import {handleProductCatalogApi,VERSION as PRODUCT_CATALOG_API_VERSION} from './product-catalog-api-v1.js';
+import {handleBestBuyProvider,VERSION as BESTBUY_PROVIDER_VERSION} from './bestbuy-provider-adapter-v1.js';
 
 export const PREVIOUS_PUBLIC_EDITORIAL_VERSION='GNK_ASG_UNIFIED_AUTH_V37_NEWS_SOURCE_LINKS';
 export const ENTRYPOINT='src/index-unified-auth-v23.js';
-export const VERSION=`GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS_MARKET_ORIGIN_HOTFIX_CONTACT_MAIL_CANONICAL_FEED_${CANONICAL_NEWS_FEED_VERSION}_DYNAMIC_IMAGES_${DYNAMIC_EDITORIAL_IMAGE_VERSION}_${CONTACT_RESILIENCE_VERSION}_${DIGITAL_WORKFORCE_SUITE_VERSION}_${MARKET_DATA_VERSION}_${EDITORIAL_ASSET_VERSION}_${PRODUCT_CATALOG_API_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS_MARKET_ORIGIN_HOTFIX_CONTACT_MAIL_CANONICAL_FEED_${CANONICAL_NEWS_FEED_VERSION}_DYNAMIC_IMAGES_${DYNAMIC_EDITORIAL_IMAGE_VERSION}_${CONTACT_RESILIENCE_VERSION}_${DIGITAL_WORKFORCE_SUITE_VERSION}_${MARKET_DATA_VERSION}_${EDITORIAL_ASSET_VERSION}_${PRODUCT_CATALOG_API_VERSION}_${BESTBUY_PROVIDER_VERSION}_${BASE_VERSION}`;
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
 const SHARE_ROUTE=/^\/podijeli\/vijest\/([a-z0-9]{8,64})$/i;
 
@@ -53,7 +54,6 @@ async function serveCurrentNewsAsset(request,env){
   return new Response(request.method==='HEAD'?null:await response.text(),{status:200,headers});
  }catch{return null}
 }
-
 
 const CANONICAL_NEWS_FEED='/api/public-news-feed';
 function newsItems(data){return Array.isArray(data)?data:(data?.items||data?.posts||data?.news||[])}
@@ -101,6 +101,8 @@ export default{
   if(handlesGA(linkedinPath))return stampRelease(await handleGA(request,env),env);
   const workforce=await handleDigitalWorkforceSuite(request,env);
   if(workforce)return stampRelease(workforce,env);
+  const bestbuy=await handleBestBuyProvider(request,env);
+  if(bestbuy)return stampRelease(bestbuy,env);
   const productCatalog=await handleProductCatalogApi(request,env);
   if(productCatalog)return stampRelease(productCatalog,env);
   const contact=await handleResilientContact(request,env,ctx,app);
