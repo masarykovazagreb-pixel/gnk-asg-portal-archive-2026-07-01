@@ -9,6 +9,8 @@ on:
       - 'apps/portal/en/publications/**'
       - 'apps/portal/en/commentary/**'
       - 'apps/portal/en/analyses/**'
+      - 'apps/portal/digital-workforce/newsroom/**'
+      - 'apps/portal/en/digital-workforce/newsroom/**'
       - 'apps/portal/editorial-sitemap.xml'
       - 'apps/portal/data/news.json'
       - 'apps/portal/data/news_archive.json'
@@ -36,7 +38,7 @@ jobs:
           after="${{ github.sha }}"
           git diff --name-only "$before" "$after" > /tmp/changed.txt
           cat /tmp/changed.txt
-          if grep -Ev '^(apps/portal/(objave|komentari|analize|en/publications|en/commentary|en/analyses)/|apps/portal/editorial-sitemap\.xml$|apps/portal/data/(news\.json|news_archive\.json|update_status\.json|seo-visibility-status\.json)$|apps/portal/data/editorial-plan/manifest\.json$|artifacts/(editorial-scheduled-publish|seo-visibility-report)\.json$)' /tmp/changed.txt | grep -q .; then
+          if grep -Ev '^(apps/portal/(objave|komentari|analize|en/publications|en/commentary|en/analyses)/|apps/portal/(en/)?digital-workforce/newsroom/|apps/portal/editorial-sitemap\.xml$|apps/portal/(sitemap\.xml|sitemap-index\.xml|image-sitemap\.xml)$|apps/portal/data/(news\.json|news_archive\.json|update_status\.json|seo-visibility-status\.json)$|apps/portal/data/editorial-plan/manifest\.json$|artifacts/(editorial-scheduled-publish|seo-visibility-report)\.json$)' /tmp/changed.txt | grep -q .; then
             echo "Non-editorial change detected; automatic deployment is blocked."
             exit 1
           fi

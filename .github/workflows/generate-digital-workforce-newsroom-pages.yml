@@ -1,0 +1,47 @@
+name: Generate Digital Workforce Newsroom Pages
+
+# New Digital Workforce newsroom items become "published" automatically
+# every 2 simulated days (see BASE_NEWSROOM/dayOffset in
+# digital-workforce-suite-v1.js). This workflow keeps a real, indexable
+# static page in sync for each one, rather than leaving new articles
+# reachable only through the dynamic newsroom tab.
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js'
+      - 'scripts/generate-digital-workforce-newsroom-pages-v1.mjs'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: digital-workforce-newsroom-pages
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate any newly-published newsroom pages
+        run: node scripts/generate-digital-workforce-newsroom-pages-v1.mjs
+
+      - name: Regenerate sitemaps if pages changed
+        run: |
+          if ! git diff --quiet -- apps/portal/digital-workforce/newsroom apps/portal/en/digital-workforce/newsroom; then
+            python3 scripts/generate-sitemaps.py
+            python3 scripts/generate-image-sitemap.py
+          fi
+
+      - name: Commit any new pages
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Generate newly-published Digital Workforce newsroom pages'
+          file_pattern: 'apps/portal/digital-workforce/newsroom/** apps/portal/en/digital-workforce/newsroom/** apps/portal/sitemap.xml apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/image-sitemap.xml'
