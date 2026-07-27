@@ -1,0 +1,54 @@
+export const VERSION='GNK_ASG_ADMIN_AHD_V1_20260727';
+export const PAGE_PATH='/admin-center/ahd';
+export const API_PATH='/api/admin/ahd';
+const REPO='beckuphome-gnk/gnk-asg-portal';
+const CACHE_KEY='admin:ahd:v1';
+const CACHE_TTL=300;
+const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
+const json=(request,data,status=200)=>new Response(request.method==='HEAD'?null:JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'private, no-store, max-age=0','x-content-type-options':'nosniff','x-gnk-ahd':VERSION}});
+const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store=env=>env?.GNK_ASG_CONFIG_KV||env?.GNK_ASG_KV||null;
+async function authorised(request,env,ctx,app){
+ const target=new URL('/api/operator-auth-check',request.url);
+ const headers=new Headers(request.headers);headers.delete('content-length');headers.delete('content-type');
+ try{const response=await app.fetch(new Request(target.toString(),{method:'GET',headers,redirect:'manual'}),env,ctx);if(!response.ok)return false;const data=await response.json();return data?.authenticated===true;}catch{return false}
+}
+async function gh(env,path){
+ const token=env?.GITHUB_STATUS_TOKEN;if(!token)throw new Error('GITHUB_STATUS_TOKEN nije konfiguriran');
+ const response=await fetch('https://api.github.com'+path,{headers:{authorization:'token '+token,accept:'application/vnd.github+json','user-agent':'GNK-ASG-AHD/1.0'}});
+ if(!response.ok)throw new Error('GitHub '+response.status+' na '+path);
+ return response.json();
+}
+function decodeBase64(value){try{return atob(String(value||'').replace(/\s+/g,''));}catch{return ''}}
+function cronValues(yaml){const out=[];for(const line of String(yaml||'').split(/\r?\n/)){const m=line.match(/^\s*-?\s*cron\s*:\s*['"]?([^'"#]+)['"]?/i);if(m){const value=m[1].trim();if(value&&!out.includes(value))out.push(value);}}return out;}
+function healthOf(run){if(!run)return'unknown';if(run.status!=='completed')return'running';if(run.conclusion==='success')return'healthy';if(['failure','timed_out','cancelled','action_required'].includes(run.conclusion))return'error';return'warning';}
+async function workflowRecord(env,wf){
+ let yaml='',run=null;
+ try{const file=await gh(env,'/repos/'+REPO+'/contents/'+wf.path+'?ref=main');yaml=decodeBase64(file.content);}catch{}
+ const crons=cronValues(yaml);if(!crons.length)return null;
+ try{const runs=await gh(env,'/repos/'+REPO+'/actions/workflows/'+wf.id+'/runs?per_page=1');run=runs?.workflow_runs?.[0]||null;}catch{}
+ return{id:'gh-'+wf.id,name:wf.name,type:'GitHub Actions',path:wf.path,state:wf.state,crons,timezone:'UTC',health:healthOf(run),lastRun:run?{status:run.status,conclusion:run.conclusion,event:run.event,createdAt:run.created_at,updatedAt:run.updated_at,url:run.html_url,sha:String(run.head_sha||'').slice(0,12)}:null,persistence:'Prema funkciji workflowa'};
+}
+const runtimeRecords=()=>[
+ {id:'cf-direct-operator',name:'GNK ASG Direct Operator',type:'Cloudflare Worker cron',path:'workers/gnk-asg-direct-operator/wrangler.runtime.toml',crons:['*/15 * * * *'],timezone:'UTC',health:'configured',lastRun:null,persistence:'Izvršava Worker scheduled handler; pojedine funkcije imaju vlastite intervalne uvjete.'},
+ {id:'tech-radar',name:'Aktual Tech Radar',type:'Dinamički API / edge cache',path:'/api/public-tech-radar',crons:['dvostatni logički prozor'],timezone:'UTC',health:'configured',lastRun:null,persistence:'Bez trajnog spremanja; edge cache 7.200 sekundi.'}
+];
+async function collect(env){
+ const kv=store(env);if(kv){try{const cached=JSON.parse(await kv.get(CACHE_KEY)||'null');if(cached?.cachedAt&&Date.now()-Date.parse(cached.cachedAt)<CACHE_TTL*1000)return cached.data;}catch{}}
+ const workflows=await gh(env,'/repos/'+REPO+'/actions/workflows?per_page=100');
+ const records=(await Promise.all((workflows?.workflows||[]).filter(w=>w.state==='active').map(w=>workflowRecord(env,w)))).filter(Boolean);
+ const items=[...records,...runtimeRecords()].sort((a,b)=>a.name.localeCompare(b.name,'hr'));
+ const counts=items.reduce((acc,item)=>{acc.total++;acc[item.health]=(acc[item.health]||0)+1;return acc;},{total:0,healthy:0,error:0,warning:0,running:0,configured:0,unknown:0});
+ const data={ok:true,version:VERSION,generatedAt:new Date().toISOString(),repository:REPO,items,counts,note:'GitHub rasporedi očitani su iz aktivnih workflow YAML datoteka. Cloudflare i cache ciklusi prikazani su odvojeno.'};
+ if(kv){try{await kv.put(CACHE_KEY,JSON.stringify({cachedAt:new Date().toISOString(),data}),{expirationTtl:CACHE_TTL+180})}catch{}}
+ return data;
+}
+function page(){return `<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Automation Health Dashboard | GNK ASG Admin</title><link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260721-static-header"><style>:root{color-scheme:dark;--bg:#070707;--panel:#111;--line:#342b15;--gold:#d8b45b;--text:#f5f2e9;--muted:#a9a49a;--good:#45c486;--bad:#ef6464;--warn:#e4b84c}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#1a160b 0,#070707 38%);color:var(--text);font-family:Arial,sans-serif}.wrap{max-width:1380px;margin:auto;padding:110px 22px 70px}.eyebrow{color:var(--gold);font-weight:800;letter-spacing:.14em;font-size:.72rem}.hero h1{font-size:clamp(2rem,5vw,4rem);margin:.35rem 0}.hero p{max-width:850px;color:var(--muted);line-height:1.65}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin:26px 0}.metric,.card{border:1px solid var(--line);background:rgba(17,17,17,.9);border-radius:14px}.metric{padding:18px}.metric b{display:block;font-size:1.8rem;color:var(--gold)}.metric span{color:var(--muted);font-size:.78rem}.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0}.toolbar button{background:var(--gold);border:0;border-radius:8px;padding:10px 15px;font-weight:800;cursor:pointer}.status{color:var(--muted)}.grid{display:grid;gap:12px}.card{padding:18px;display:grid;grid-template-columns:minmax(220px,1.4fr) minmax(170px,.8fr) minmax(220px,1fr) minmax(230px,1.2fr);gap:16px;align-items:start}.card h2{font-size:1rem;margin:0 0 7px}.small{color:var(--muted);font-size:.75rem;line-height:1.45;word-break:break-word}.pill{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:.68rem;font-weight:900;text-transform:uppercase;border:1px solid currentColor}.healthy{color:var(--good)}.error{color:var(--bad)}.warning,.running{color:var(--warn)}.configured,.unknown{color:var(--muted)}code{color:var(--gold)}a{color:var(--gold)}@media(max-width:900px){.card{grid-template-columns:1fr 1fr}}@media(max-width:600px){.wrap{padding:92px 14px 50px}.card{grid-template-columns:1fr}}</style></head><body><main class="wrap"><section class="hero"><div class="eyebrow">GNK ASG · ZAŠTIĆENI ADMIN MODUL</div><h1>Automation Health Dashboard</h1><p>Jedinstveni pregled aktivnih GitHub Actions rasporeda, Cloudflare cronova i dinamičkih cache ciklusa. Podaci su dostupni samo uz valjanu administratorsku sesiju.</p></section><section class="summary" id="summary"></section><div class="toolbar"><button id="refresh" type="button">Osvježi podatke</button><span class="status" id="status">Učitavanje…</span></div><section class="grid" id="grid"></section></main><script src="/assets/public-unified-menu-v6.js?v=20260727-ahd-v1"></script><script>(function(){const e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fmt=v=>v?new Date(v).toLocaleString('hr-HR',{timeZone:'Europe/Zagreb'}):'Nema podatka';async function load(){status.textContent='Učitavanje…';try{const r=await fetch('${API_PATH}',{credentials:'same-origin',cache:'no-store'});if(r.status===401){location.href='/admin-login/?next='+encodeURIComponent(location.pathname);return}const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.message||d.error||'Greška');summary.innerHTML=[['Ukupno',d.counts.total],['Zdravo',d.counts.healthy],['U tijeku',d.counts.running],['Konfigurirano',d.counts.configured],['Upozorenje',d.counts.warning],['Greška',d.counts.error]].map(x=>'<div class="metric"><b>'+e(x[1])+'</b><span>'+e(x[0])+'</span></div>').join('');grid.innerHTML=d.items.map(i=>'<article class="card"><div><span class="pill '+e(i.health)+'">'+e(i.health)+'</span><h2>'+e(i.name)+'</h2><div class="small">'+e(i.type)+'<br>'+e(i.path)+'</div></div><div><div class="small">Raspored</div><code>'+e((i.crons||[]).join(' · '))+'</code><div class="small">Zona: '+e(i.timezone||'UTC')+'</div></div><div><div class="small">Zadnje izvršenje</div><strong>'+e(i.lastRun?.conclusion||i.lastRun?.status||'Nema telemetrije')+'</strong><div class="small">'+e(fmt(i.lastRun?.updatedAt||i.lastRun?.createdAt))+'</div>'+(i.lastRun?.url?'<a target="_blank" rel="noopener" href="'+e(i.lastRun.url)+'">GitHub zapis</a>':'')+'</div><div><div class="small">Način rada / spremanje</div><div>'+e(i.persistence||'—')+'</div></article>').join('');status.textContent='Ažurirano '+fmt(d.generatedAt)+' · '+d.items.length+' automatizacija/ciklusa';}catch(err){status.textContent='Greška: '+err.message}}refresh.addEventListener('click',load);load()})();</script></body></html>`}
+export async function handleAdminAhd(request,env,ctx,app){
+ const path=pathOf(request);if(path!==PAGE_PATH&&path!==API_PATH)return null;
+ if(!['GET','HEAD'].includes(request.method))return json(request,{ok:false,error:'method_not_allowed'},405);
+ if(!await authorised(request,env,ctx,app))return path===API_PATH?json(request,{ok:false,error:'unauthorized'},401):new Response(null,{status:302,headers:{location:'/admin-login/?next='+encodeURIComponent(PAGE_PATH+'/'),'cache-control':'no-store'}});
+ if(path===API_PATH){try{return json(request,await collect(env))}catch(error){return json(request,{ok:false,error:'upstream_failed',message:String(error?.message||error).slice(0,200)},502)}}
+ const headers={'content-type':'text/html; charset=utf-8','cache-control':'private, no-store, max-age=0','x-frame-options':'DENY','content-security-policy':"frame-ancestors 'none'",'x-content-type-options':'nosniff','x-gnk-ahd':VERSION};
+ return new Response(request.method==='HEAD'?null:page(),{status:200,headers});
+}
