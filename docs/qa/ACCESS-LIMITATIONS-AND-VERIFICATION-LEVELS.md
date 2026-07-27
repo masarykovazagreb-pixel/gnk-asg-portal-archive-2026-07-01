@@ -73,3 +73,20 @@ Otkriveni CSS bug na `/digital-workforce/` (metrike "spojene" u jedan red) potvr
 **Nastavak (isti dan):** vlasnik je poslao stvaran screenshot (razina E) koji je pokazivao da popravak NIJE vidljiv — identično stanje kao prije. CI je potvrđivao uspjeh (razina C), kod je bio ispravan i na `main`-u (razina A), ali vizualni rezultat se nije poklapao. Nakon Cloudflare cache purgea, vlasnik je potvrdio da je popravak stvarno vidljiv (razina E, ovaj put pozitivna).
 
 **Zaključak za buduće sesije:** za CORE TEMPLATE fajlove (npr. `index.html`, ne editorial sadržaj), uspješan deploy (razina C) **ne jamči** da će promjena biti odmah vidljiva (razina E) — Cloudflare edge cache može servirati stariju verziju unatoč `cache-control: no-store` headeru na origin odgovoru. Ako vlasnik prijavi da promjena "nije vidljiva" unatoč potvrđenom uspješnom deployu, **prvo pitati je li rađen cache purge**, prije daljnje dijagnoze koda — ovo se u ovoj sesiji dogodilo dvaput (editorial-order skripta, pa Digital Workforce metrike CSS) sa istim uzrokom i istim rješenjem.
+
+## 9. ZAŠTIĆEN SUSTAV — mail (27.7.2026.)
+
+Cijeli mail sustav (slanje, praćenje isporuke/otvaranja, Sent/Inbox evidencija, AI auto-odgovori) je **27.7.2026. temeljito istražen, popravljen, i testiran** kroz nekoliko iteracija tijekom jedne sesije, nakon što je otkriveno **pet preklapajućih, međusobno ovisnih podsustava** (vidi puni opis u `docs/qa/HANDOFF-2026-07-26-27.md`, sekcija "RIJEŠENO 27.7.2026."):
+
+1. `outbound-mail-transport-v1.js` — `sendBrandedEmail()`, per-recipient tracking pixel
+2. `email-status-tracking-v1.js`/`-v6.js` — praćenje isporuke/otvaranja (D1: `email_status_records`)
+3. `mail-sync-center-v1.js` — INBOUND/OUTBOUND evidencija (D1: `mail_sync_messages`) — **ali ovaj sloj se u praksi NE ČITA za stvarni prikaz** (presreće ga stariji adapter, vidi #4)
+4. `mail-studio-adapter-v1.js` — presreće SVE `/api/mail-sync/*` pozive prije nego stignu do #3
+5. `manual-mail-service-v1.js` — **stvarni, autoritativni izvor** Sent popisa (D1: `manual_mail_messages`)
+6. `gnk-asg-mail-center-worker/src/index.js` — zaseban Cloudflare Worker, prima stvarnu poštu, dijeli D1 bazu (`gnk_asg_operator_logs`) s `gnk-asg-direct-operator`
+
+**Prije bilo kakve izmjene bilo kojeg od gornjih fajlova:**
+- Pročitati punu povijest istrage u `docs/qa/HANDOFF-2026-07-26-27.md` prije pretpostavljanja da je nešto "jednostavan popravak" — arhitektura je namjerno, ne slučajno, slojevita, i naizgled logičan popravak na JEDNOM sloju lako promaši STVARNI, autoritativni izvor podataka na DRUGOM sloju.
+- Svaka izmjena MORA biti testirana s mockiranim D1 + EMAIL bindingom (obrazac testova iz te sesije, uklj. `cloudflare:email` ESM loader mock) prije deploya, ne samo `node --check` sintaksa.
+- Ne pretpostavljati da su tracking/sync/manual slojevi međusobno zamjenjivi — potvrđeno testovima da SVA TRI moraju biti ažurirana zasebno da bi cijeli lanac (praćenje + Sent popis + evidencija) radio ispravno.
+- Vlasnikova eksplicitna uputa 27.7.2026.: "mailove stavi u neku kutiju, da se ne mogu slučajno više pomiješati" — ovaj odjeljak JEST ta "kutija". Bilo koja buduća sesija (ili druga Claude instanca koja radi paralelno na istom repozitoriju) treba pročitati ovo PRIJE diranja mail koda.

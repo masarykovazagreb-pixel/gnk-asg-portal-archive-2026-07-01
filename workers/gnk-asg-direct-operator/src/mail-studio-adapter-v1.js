@@ -1,3 +1,9 @@
+// ⚠️ ZAŠTIĆEN SUSTAV — dio 5-slojnog mail sustava (vidi
+// docs/qa/ACCESS-LIMITATIONS-AND-VERIFICATION-LEVELS.md sekcija 9).
+// Ovaj adapter presreće SVE /api/mail-sync/* pozive (health, folders,
+// messages) PRIJE nego stignu do mail-sync-center-v1.js -- otkriveno
+// 27.7.2026. nakon duge istrage. Za "folder=sent/inbox" interno
+// proxira na manual-mail-service-v1.js (stvaran izvor podataka).
 import {handleManualMailService,VERSION as MANUAL_MAIL_VERSION} from './manual-mail-service-v1.js';
 
 export const VERSION='GNK_ASG_MAIL_STUDIO_ADAPTER_V1_20260706';

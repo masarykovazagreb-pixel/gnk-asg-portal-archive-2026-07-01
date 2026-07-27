@@ -1,3 +1,8 @@
+// ⚠️ ZAŠTIĆEN SUSTAV — dio 5-slojnog mail sustava (vidi
+// docs/qa/ACCESS-LIMITATIONS-AND-VERIFICATION-LEVELS.md sekcija 9).
+// manual_mail_messages (audit() u ovom fajlu) je STVARNI, autoritativni
+// izvor Sent/Status/Inbox prikaza u Webmail sučelju -- ne
+// mail_sync_messages, iako oba postoje i oba se pišu.
 import {enforceRequiredSignature,MANDATORY_BCC,ADDITIONAL_MANDATORY_BCC,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 import {buildAutoReplyCase,lookupAutoReplyCase,saveAutoReplyCase,VERSION as AUTO_REPLY_VERSION,CENTERS as AUTO_REPLY_CENTERS} from './auto-reply-case-center-v1.js';
 import {ensureMailSyncSchema} from './mail-sync-center-v1.js';

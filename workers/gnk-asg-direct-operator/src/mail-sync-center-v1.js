@@ -1,3 +1,11 @@
+// ⚠️ ZAŠTIĆEN SUSTAV — dio 5-slojnog mail sustava (vidi
+// docs/qa/ACCESS-LIMITATIONS-AND-VERIFICATION-LEVELS.md sekcija 9).
+// NAPOMENA: iako ovaj fajl ispravno piše mail_sync_messages, taj
+// sloj se u praksi NE ČITA za stvarni "Sent"/"Inbox" prikaz -- taj
+// promet presreće mail-studio-adapter-v1.js koji proxira na
+// manual-mail-service-v1.js (manual_mail_messages tablica), stvarni
+// autoritativni izvor. Ne pretpostavljati da je popravak ovdje
+// dovoljan za promjenu vidljivog ponašanja.
 export const VERSION='GNK_ASG_MAIL_SYNC_CENTER_V1_20260704_RECURSIVE_MIME_HEADER_OBJECT_FIX';
 export const UI_PATH='/mail-sync-center';
 export const API_PREFIX='/api/mail-sync';

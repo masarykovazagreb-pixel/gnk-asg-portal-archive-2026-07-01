@@ -1,3 +1,8 @@
+// ⚠️ ZAŠTIĆEN SUSTAV — dio 5-slojnog mail sustava (vidi
+// docs/qa/ACCESS-LIMITATIONS-AND-VERIFICATION-LEVELS.md sekcija 9).
+// studio() ovdje poziva i recordMailSyncOutbound() i
+// recordManualMailAudit() -- OBOJE su potrebni (različiti prikazi ih
+// čitaju), uklanjanje jednog poziva tiho kvari jedan od dva prikaza.
 import {createContactCase,generateCaseId} from './contact-case-center-v1.js';
 import {sendBrandedEmail,VERSION as TRANSPORT_VERSION} from './outbound-mail-transport-v1.js';
 import {recordMailSyncOutbound,syncError} from './mail-sync-center-v1.js';
