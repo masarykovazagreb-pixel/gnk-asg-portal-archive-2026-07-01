@@ -53,6 +53,9 @@ async function callOpenAI(env,message){
 }
 
 export async function serveIntelligenceDeskChat(request,env){
+ if(pathOf(request)===`${CHAT_PATH}/diagnostic`&&request.method==='GET'){
+  return new Response(JSON.stringify({ok:true,openaiKeyConfigured:Boolean(env?.OPENAI_API_KEY),kvConfigured:Boolean(store(env)),version:VERSION}),{status:200,headers:{'content-type':'application/json','cache-control':'no-store'}});
+ }
  if(pathOf(request)!==CHAT_PATH)return null;
  if(request.method!=='POST')return new Response(JSON.stringify({ok:false,error:'method_not_allowed'}),{status:405,headers:{'content-type':'application/json'}});
  let body;
