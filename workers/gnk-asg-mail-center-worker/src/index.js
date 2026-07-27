@@ -2,6 +2,7 @@ import { EmailMessage } from 'cloudflare:email';
 import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
 import {sendBrandedEmail} from '../../gnk-asg-direct-operator/src/outbound-mail-transport-v1.js';
 import {withEmailStatusTracking} from '../../gnk-asg-direct-operator/src/email-status-tracking-v1.js';
+import {recordMailSyncInbound} from '../../gnk-asg-direct-operator/src/mail-sync-center-v1.js';
 
 const VERSION = `GNK_ASG_MAIL_CENTER_AI_V3_20260703_${AI_REPLY_VERSION}`;
 const internalRecipient = env => String(env?.CONTACT_INTERNAL_RECIPIENTS || '').trim() || 'rht@gmx.com';
@@ -317,6 +318,11 @@ async function handleInbound(message, env) {
   const mediaProfile = MEDIA_EMAILS.has(toAddress);
   const base = { id, createdAt: new Date().toISOString(), version: VERSION, from: fromRaw, to: toRaw, fromEmail: sender, toEmail: toAddress, subject, messageId, language, profile: mediaProfile ? 'media-relations' : 'general', status: 'received', center: center.code, centerCity: center.city };
   await prependLog(env, 'mail:inbox', base);
+  try{
+    await recordMailSyncInbound(env,{id,sourceId:id,from:fromRaw,to:toAddress,subject,messageId,status:'RECEIVED',sourceSystem:'mail-center-worker',createdAt:base.createdAt,receivedAt:base.createdAt});
+  }catch(syncError){
+    console.error('mail-sync-inbound-record',syncError);
+  }
 
   if (typeof message?.forward === 'function') {
     for (const copyAddress of internalCopy(env)) {
