@@ -1,3 +1,11 @@
+// ⚠️ ZAŠTIĆEN SUSTAV — dio 5-slojnog mail sustava (vidi u glavnom
+// gnk-asg-portal repozitoriju: docs/qa/ACCESS-LIMITATIONS-AND-
+// VERIFICATION-LEVELS.md sekcija 9). Ovaj Worker dijeli D1 bazu
+// (gnk_asg_operator_logs) s gnk-asg-direct-operator. withBrandedMimeTransport
+// poziva popravljeni sendBrandedEmail() iz outbound-mail-transport-v1.js
+// za strukturirane pozive -- ne omatati ponovno s
+// withEmailStatusTracking, taj stariji proxy je namjerno uklonjen
+// 27.7.2026. jer ne prepoznaje sirove EmailMessage pozive.
 import { EmailMessage } from 'cloudflare:email';
 import {prepareAiAutoReply,VERSION as AI_REPLY_VERSION} from '../../gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js';
 import {sendBrandedEmail} from '../../gnk-asg-direct-operator/src/outbound-mail-transport-v1.js';

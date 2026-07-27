@@ -1,3 +1,10 @@
+// ⚠️ ZAŠTIĆEN SUSTAV — dio 5-slojnog mail sustava temeljito istraženog
+// i popravljenog 27.7.2026. PRIJE izmjene ovog fajla, pročitati
+// docs/qa/ACCESS-LIMITATIONS-AND-VERIFICATION-LEVELS.md sekciju 9 i
+// docs/qa/HANDOFF-2026-07-26-27.md. Svaka izmjena MORA biti testirana
+// s mockiranim D1 + EMAIL bindingom (cloudflare:email ESM loader mock)
+// prije deploya, ne samo sintaksom. Vlasnikov zahtjev: ne miješati ovaj
+// sustav slučajno ubuduće.
 import {EmailMessage} from 'cloudflare:email';
 import {enforceRequiredSignature,VERSION as SIGNATURE_VERSION} from './email-signature-contract-v1.js';
 import {loadEmailLogo,EMAIL_LOGO_CID,foldBase64,VERSION as MIME_VERSION} from './email-brand-mime-v1.js';
