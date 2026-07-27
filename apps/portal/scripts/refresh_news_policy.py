@@ -26,7 +26,6 @@ ARCHIVE_TRIGGER = 2000
 ARCHIVE_DELETE_OLDEST = 1000
 
 DW_NEWSROOM_API = "https://gnk-asg.hr/api/public/digital-workforce/newsroom"
-DW_DEBUG = {}
 
 
 def fetch_digital_workforce_items():
@@ -42,17 +41,12 @@ def fetch_digital_workforce_items():
     debug = {}
     try:
         raw = base.fetch_url(DW_NEWSROOM_API)
-        debug["raw_len"] = len(raw)
         payload = json.loads(raw)
-        debug["payload_keys"] = list(payload.keys()) if isinstance(payload, dict) else "not_a_dict"
     except Exception as exc:
-        debug["error"] = f"{type(exc).__name__}: {exc}"
         print(f"digital-workforce newsroom fetch failed (non-fatal): {exc}")
-        DW_DEBUG.update(debug)
         return []
 
     items = payload.get("items", []) if isinstance(payload, dict) else []
-    debug["item_count"] = len(items)
     records = []
     for i, item in enumerate(items):
         image = item.get("seo", {}).get("image", "")
@@ -69,8 +63,6 @@ def fetch_digital_workforce_items():
             image=image,
         )
         records.append(record)
-    debug["records_built"] = len(records)
-    DW_DEBUG.update(debug)
     return records
 
 
@@ -102,18 +94,26 @@ def main() -> int:
     with_image = [item for item in merged if item.get("image")]
     without_image = [item for item in merged if not item.get("image")]
 
-    # Digital Workforce simulation items are published on a slower
-    # (roughly every-2-day) cadence than the constantly-refreshing
-    # real-time RSS sources, so by pure recency they would almost
-    # always fall outside the "top 100 newest" window and end up in
-    # the archive tier, effectively invisible on AKTUAL MEDIA. Since
-    # there are at most a handful of them, guarantee their visibility
-    # by pulling them to the front of the public tier explicitly,
-    # rather than relying on the recency sort alone.
+    # Digital Workforce simulation items publish roughly every 2 days,
+    # far slower than the constantly-refreshing real-time RSS sources.
+    # They must still be GUARANTEED a spot in the public tier (not
+    # buried in archive), but must NOT be placed ahead of fresher real
+    # news: the AKTUAL MEDIA frontend uses items[0] as the featured
+    # headline article and rotates a sliding window through array
+    # order for its "10 newest" section, so simply prepending DW items
+    # (an earlier version of this fix did exactly that) freezes the
+    # featured headline on a days-old DW item and breaks the rotation
+    # -- exactly the "glavna objava stoji" bug the owner reported.
+    # Real news is sorted newest-first as normal; DW items are
+    # APPENDED within the public budget so they remain visible in the
+    # full list and eventually cycle through "10 newest" rotation,
+    # without ever displacing genuinely fresher real news from the
+    # featured slot or the front of the rotation.
     dw_items = [item for item in with_image if item.get("group") == "digital-workforce-simulation"]
     other_items = [item for item in with_image if item.get("group") != "digital-workforce-simulation"]
-    public = dw_items + other_items[:max(0, PUBLIC_LIMIT - len(dw_items))]
-    archive = other_items[max(0, PUBLIC_LIMIT - len(dw_items)):] + without_image
+    real_slot_count = max(0, PUBLIC_LIMIT - len(dw_items))
+    public = other_items[:real_slot_count] + dw_items
+    archive = other_items[real_slot_count:] + without_image
     archive_items_before_prune = len(archive)
     removed_oldest = 0
     prune_batches = 0
@@ -178,7 +178,6 @@ def main() -> int:
             "data_status": "fresh_or_reference_checked",
             "runtime_seconds": round(time.time() - started, 2),
         },
-        "dw_integration_debug_temporary": DW_DEBUG,
     })
     base.write_json(base.STATUS_PATH, status)
 
