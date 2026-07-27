@@ -3,20 +3,23 @@ import {handleAdminAhd,PAGE_PATH,API_PATH} from '../workers/gnk-asg-direct-opera
 
 const unauthApp={fetch:async()=>new Response(JSON.stringify({authenticated:false}),{status:401,headers:{'content-type':'application/json'}})};
 const authApp={fetch:async()=>new Response(JSON.stringify({authenticated:true}),{status:200,headers:{'content-type':'application/json'}})};
-const env={GITHUB_STATUS_TOKEN:'test-token',AHD_ADMIN_TOKEN:'ahd-secret'};
+const env={GITHUB_STATUS_TOKEN:'test-token'};
 const pageRequest=new Request('https://gnk-asg.hr'+PAGE_PATH+'/',{method:'GET'});
 const apiRequest=new Request('https://gnk-asg.hr'+API_PATH,{method:'GET'});
-const apiRequestWithToken=new Request('https://gnk-asg.hr'+API_PATH,{method:'GET',headers:{'x-gnk-ahd-token':'ahd-secret'}});
-const redirect=await handleAdminAhd(pageRequest,env,{},unauthApp);
-assert.equal(redirect.status,302);
-assert.match(redirect.headers.get('location')||'',/^\/admin-login\//);
+
+const pageWithoutSession=await handleAdminAhd(pageRequest,env,{},unauthApp);
+assert.equal(pageWithoutSession.status,200);
+const gateHtml=await pageWithoutSession.text();
+assert.match(gateHtml,/Admin token/);
+assert.match(gateHtml,/\/api\/operator-session-login/);
+assert.match(gateHtml,/JSON\.stringify\(\{token\}\)/);
+assert.doesNotMatch(gateHtml,/AHD_ADMIN_TOKEN|x-gnk-ahd-token|AHD token/);
+assert.match(gateHtml,/noindex,nofollow,noarchive/);
+assert.match(gateHtml,/\/assets\/public-unified-menu-v6\.js/);
+
 const denied=await handleAdminAhd(apiRequest,env,{},unauthApp);
 assert.equal(denied.status,401);
-const deniedJson=await denied.json();
-assert.equal(deniedJson.error,'unauthorized');
-const tokenDenied=await handleAdminAhd(apiRequest,env,{},authApp);
-assert.equal(tokenDenied.status,403);
-assert.equal((await tokenDenied.json()).error,'ahd_token_required');
+assert.equal((await denied.json()).error,'unauthorized');
 
 const realFetch=globalThis.fetch;
 globalThis.fetch=async url=>{
@@ -27,7 +30,7 @@ globalThis.fetch=async url=>{
  return new Response('{}',{status:404});
 };
 try{
- const api=await handleAdminAhd(apiRequestWithToken,env,{},authApp);
+ const api=await handleAdminAhd(apiRequest,env,{},authApp);
  assert.equal(api.status,200);
  const data=await api.json();
  assert.equal(data.ok,true);
@@ -37,13 +40,5 @@ try{
  assert.equal(editorial.health,'healthy');
  assert.ok(data.items.some(item=>item.id==='cf-direct-operator'));
  assert.ok(data.items.some(item=>item.id==='tech-radar'));
- const page=await handleAdminAhd(pageRequest,env,{},authApp);
- assert.equal(page.status,200);
- const html=await page.text();
- assert.match(html,/Automation Health Dashboard/);
- assert.match(html,/AHD token/);
- assert.match(html,/x-gnk-ahd-token/);
- assert.match(html,/noindex,nofollow,noarchive/);
- assert.match(html,/\/assets\/public-unified-menu-v6\.js/);
 }finally{globalThis.fetch=realFetch}
-console.log(JSON.stringify({ok:true,page:PAGE_PATH,api:API_PATH,cron:'20 * * * *',tokenGate:true}));
+console.log(JSON.stringify({ok:true,page:PAGE_PATH,api:API_PATH,cron:'20 * * * *',existingAdminTokenGate:true}));
