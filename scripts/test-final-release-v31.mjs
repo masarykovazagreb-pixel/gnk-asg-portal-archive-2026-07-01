@@ -62,7 +62,18 @@ assert.match(newsBackend,/while\(retained\.length>=TOTAL_RETENTION_CAP\)/);
 assert.doesNotMatch(newsBackend,/slice\(0,500\)/);
 
 assert.match(transport,/from 'cloudflare:email'/);
-assert.match(transport,/new EmailMessage\(prepared\.from,recipient,prepared\.raw\)/);
+// 2026-07-27: sendBrandedEmail was refactored so each recipient gets
+// their OWN uniquely-tracked MIME body (own tracking pixel + receipt
+// link embedded per-recipient), fixing a real bug where delivery/open
+// tracking never worked because the old shared-raw-MIME approach sent
+// raw EmailMessage objects that bypassed the email-status-tracking
+// proxy's structured-payload expectations entirely. The literal
+// "new EmailMessage(prepared.from,recipient,prepared.raw)" call shape
+// is gone by design -- assert the NEW shape and the tracking
+// integration instead of the old one.
+assert.match(transport,/new EmailMessage\(base\.from,recipient,raw\)/);
+assert.match(transport,/createTrackedMessage/);
+assert.match(transport,/assembleMime\(base,htmlForRecipient\)/);
 assert.match(transport,/Content-ID: <\$\{EMAIL_LOGO_CID\}>/);
 assert.match(transport,/Content-Location:/);
 assert.match(transport,/X-Attachment-Id:/);

@@ -11,7 +11,7 @@ const checks={
   reference:mail.includes("'X-GNK-ASG-Reference': id"),
   messageIdReserved:transport.includes('const messageId=`<${crypto.randomUUID()}@gnk-asg.hr>`'),
   messageIdHeader:transport.includes('`Message-ID: ${messageId}`'),
-  messageIdReturned:transport.includes('messageId:prepared.messageId'),
+  messageIdReturned:transport.includes('messageId:base.messageId'),
   providerMatch:(status.match(/REPLACE\(REPLACE\(provider_message_id/g)||[]).length>=2,
   d1:config.includes('binding = "GNK_ASG_D1"'),
   opens:config.includes('EMAIL_OPEN_TRACKING_ENABLED = "true"'),
