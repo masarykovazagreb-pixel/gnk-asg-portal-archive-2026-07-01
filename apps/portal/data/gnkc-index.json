@@ -3,10 +3,10 @@
   "symbol": "GNKC",
   "type": "internal-stable-index",
   "baseCurrency": "USD",
-  "valueUsd": 0.99949,
-  "valueEur": 0.878363,
-  "deviationPct": -0.051,
-  "change24hPct": -0.0018,
+  "valueUsd": 0.999507,
+  "valueEur": 0.878842,
+  "deviationPct": -0.0493,
+  "change24hPct": 0.0017,
   "status": "healthy",
   "alertThresholdPct": 1,
   "normalizedFromSources": 3,
@@ -15,33 +15,33 @@
     {
       "symbol": "USDC",
       "weight": 0.4,
-      "priceUsd": 0.999624,
+      "priceUsd": 0.999593,
       "source": "coingecko",
-      "lastUpdatedAt": "2026-07-27T17:08:20.000Z",
+      "lastUpdatedAt": "2026-07-27T18:46:30.000Z",
       "ok": true,
       "rejectReason": null
     },
     {
       "symbol": "USDT",
       "weight": 0.35,
-      "priceUsd": 0.999074,
+      "priceUsd": 0.999058,
       "source": "coingecko",
-      "lastUpdatedAt": "2026-07-27T17:08:20.000Z",
+      "lastUpdatedAt": "2026-07-27T18:46:30.000Z",
       "ok": true,
       "rejectReason": null
     },
     {
       "symbol": "DAI",
       "weight": 0.25,
-      "priceUsd": 0.999857,
+      "priceUsd": 1,
       "source": "coingecko",
-      "lastUpdatedAt": "2026-07-27T17:08:20.000Z",
+      "lastUpdatedAt": "2026-07-27T18:46:30.000Z",
       "ok": true,
       "rejectReason": null
     }
   ],
-  "usdEurRate": 0.8788118463836894,
+  "usdEurRate": 0.8792754770069463,
   "usdEurSource": "market-pulse.json EURUSD=X",
   "disclaimer": "GNKC je interni obračunski stable-index GNK ASG/GNK DINAMO Ltd. grupe, izveden iz javno kotiranih stablecoina (USDC, USDT, DAI). Nije blockchain token, nema wallet, ne postoji mint/burn, nije javno utrživ niti burzovno uvršten, nema regulatorno odobrenje kao elektronički novac. Isključivo je interni obračunski i prezentacijski model.",
-  "updatedAt": "2026-07-27T17:09:35.866Z"
+  "updatedAt": "2026-07-27T18:47:53.161Z"
 }
