@@ -19,6 +19,9 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: pip install requests pillow reportlab pypdf
+      - name: Fit full-page cover flowables
+        run: |
+          sed -i 's/super().__init__(1,A4\[1\]-36\*mm)/super().__init__(1,700)/g' scripts/build_world_cookbook_premium.py
       - name: Build premium PDF and flipbook
         shell: bash
         run: |
