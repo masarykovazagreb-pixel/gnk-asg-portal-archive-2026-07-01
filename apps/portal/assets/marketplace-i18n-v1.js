@@ -49,7 +49,7 @@
       if (cards[1]) { cards[1].href = '/trgovina/prehrana/?lang=en#foodCategories'; setText('.market-card:nth-child(2) h2', T.food); setText('.market-card:nth-child(2) p', T.foodDesc); setText('.market-card:nth-child(2) strong', T.openFood); }
       if (cards[2]) { cards[2].href = '/trgovina/prehrana/?lang=en#foodMeals'; setText('.market-card:nth-child(3) h2', T.recipes); setText('.market-card:nth-child(3) p', T.recipeDesc); setText('.market-card:nth-child(3) strong', T.openRecipes); }
       setText('#technology .gnk-eyebrow', T.tech.toUpperCase()); setText('#technology .section-head h2', T.products); setText('#technology .section-head > p', T.catalogNote);
-      setText('label:has(#shopSearch)', T.search); document.getElementById('shopSearch')?.setAttribute('placeholder', T.searchPlaceholder);
+      const searchInput = document.getElementById('shopSearch'); const searchLabel = searchInput?.closest('label'); if (searchLabel) searchLabel.childNodes[0].textContent = T.search; searchInput?.setAttribute('placeholder', T.searchPlaceholder);
       const categoryLabel = document.getElementById('shopCategory')?.closest('label'); if (categoryLabel) categoryLabel.childNodes[0].textContent = T.category;
       const sortLabel = document.getElementById('shopSort')?.closest('label'); if (sortLabel) sortLabel.childNodes[0].textContent = T.sort;
       const opts = document.querySelectorAll('#shopSort option'); [T.featured,T.name,T.low,T.high].forEach((v,i)=>{if(opts[i])opts[i].textContent=v;});
