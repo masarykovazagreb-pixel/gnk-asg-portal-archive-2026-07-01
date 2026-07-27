@@ -16,7 +16,11 @@ SITEMAP_ENTRIES = (
     ("https://gnk-asg.hr/editor-desk/", "2026-07-15", "daily", "0.8"),
 )
 FORBIDDEN_SITEMAP_URLS = (
-    "https://gnk-asg.hr/digital-workforce/",
+    # Digital Workforce was intentionally made public/indexable
+    # (noindex gate removed, canonical + hreflang set) earlier this
+    # session -- it belongs in the sitemap now. Kept this tuple (empty)
+    # rather than removing the whole mechanism, so any future
+    # legitimately-forbidden route can still be added here.
 )
 
 
