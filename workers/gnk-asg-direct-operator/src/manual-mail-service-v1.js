@@ -164,7 +164,7 @@ async function ensureSchema(env){
   await db.prepare(`CREATE INDEX IF NOT EXISTS idx_manual_mail_status_created ON manual_mail_messages(status,created_at)`).run();
   return db;
 }
-async function audit(env,entry){
+export async function audit(env,entry){
   try{
     const db=await ensureSchema(env);if(!db)return{logged:false,error:'D1_BINDING_MISSING'};
     await db.prepare(`INSERT OR REPLACE INTO manual_mail_messages(id,profile_id,from_email,to_json,cc_json,bcc_json,subject,status,provider_json,error_code,error_message,attachment_count,attachment_bytes,created_at,sent_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
