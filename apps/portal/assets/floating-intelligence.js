@@ -8,7 +8,7 @@
   let verified = false;
 
   const WHATSAPP = 'https://wa.me/385916104398';
-  const CONTACT = '/kontakt/';
+  const CONTACT = '/contact/';
   const DESK = '#assistant';
   const NEWS = '#news';
 
@@ -211,7 +211,7 @@
     if (isIT) {
       return en
         ? '5. IT / technical support \u2014 for technical issues or IT questions, email it@gnk-asg.hr or use the contact page for phone numbers: /contact/'
-        : '5. IT / tehni\u010dka podr\u0161ka \u2014 za tehni\u010dka pitanja ili IT upite pi\u0161ite na it@gnk-asg.hr ili koristite kontakt stranicu za brojeve telefona: /kontakt/';
+        : '5. IT / tehni\u010dka podr\u0161ka \u2014 za tehni\u010dka pitanja ili IT upite pi\u0161ite na it@gnk-asg.hr ili koristite kontakt stranicu za brojeve telefona: /contact/';
     }
     return null;
   }
@@ -230,7 +230,7 @@
     if (/kontakt|contact|whatsapp|telefon|phone|mail|email|poruk/.test(q)) {
       return en
         ? 'Use the contact page or WhatsApp for the fastest communication. The active WhatsApp number is +385 91 610 4398. Other regional and US contact numbers, plus the IT e-mail address, are listed on the contact page: /contact/'
-        : 'Za najbržu komunikaciju otvorite kontakt stranicu ili WhatsApp. Aktivni WhatsApp broj je +385 91 610 4398. Ostali regionalni i američki brojevi, kao i IT e-mail adresa, nalaze se na kontakt stranici: /kontakt/';
+        : 'Za najbržu komunikaciju otvorite kontakt stranicu ili WhatsApp. Aktivni WhatsApp broj je +385 91 610 4398. Ostali regionalni i američki brojevi, kao i IT e-mail adresa, nalaze se na kontakt stranici: /contact/';
     }
     if (/prihod|revenue|504|financ|bilanc|asset|kapital|obvez|equity|liabil/.test(q)) {
       return en
@@ -258,7 +258,7 @@
     }
     return en
       ? 'None of the topic options seem to match. For direct help, e-mail it@gnk-asg.hr or open the contact page for phone numbers and WhatsApp: /contact/. I can also route general topics to public web and news search using the Google buttons below.'
-      : 'Čini se da ništa od ponuđenih tema ne odgovara. Za izravnu pomoć pišite na it@gnk-asg.hr ili otvorite kontakt stranicu za brojeve telefona i WhatsApp: /kontakt/. Opće teme mogu usmjeriti i na javnu web i news pretragu preko Google gumba ispod.';
+      : 'Čini se da ništa od ponuđenih tema ne odgovara. Za izravnu pomoć pišite na it@gnk-asg.hr ili otvorite kontakt stranicu za brojeve telefona i WhatsApp: /contact/. Opće teme mogu usmjeriti i na javnu web i news pretragu preko Google gumba ispod.';
   }
 
   async function smartAnswer(query) {
