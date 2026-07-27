@@ -29,7 +29,7 @@ function buildBlock({canonical,image,isEnglish}){
   {'@type':'WebSite','@id':`${ORIGIN}/#website`,url:`${ORIGIN}/`,name:'GNK ASG',publisher:{'@id':`${ORIGIN}/#organization`}},
   {'@type':'WebPage','@id':`${canonical}#webpage`,url:canonical,isPartOf:{'@id':`${ORIGIN}/#website`},publisher:{'@id':`${ORIGIN}/#organization`},mentions:[{'@id':`${PERSON_URL}#person`},{'@id':`${ORIGIN}/#organization`},{'@id':`${GROUP_URL}#gnk-dinamo-ltd`}],relatedLink:[markets,person,group]}
  ];
- if(image){graph.push({'@type':'ImageObject','@id':`${canonical}#primaryimage`,contentUrl:image,url:image,caption:imageAlt,representativeOfPage:true,about:[{'@id':`${PERSON_URL}#person`},{'@id':`${ORIGIN}/#organization`},{'@id':`${GROUP_URL}#gnk-dinamo-ltd'}]});graph[4].primaryImageOfPage={'@id':`${canonical}#primaryimage`};}
+ if(image){graph.push({'@type':'ImageObject','@id':`${canonical}#primaryimage`,contentUrl:image,url:image,caption:imageAlt,representativeOfPage:true,about:[{'@id':`${PERSON_URL}#person`},{'@id':`${ORIGIN}/#organization`},{'@id':`${GROUP_URL}#gnk-dinamo-ltd`}]});graph[4].primaryImageOfPage={'@id':`${canonical}#primaryimage`};}
  return `\n<!-- GNK ASG entity SEO -->\n<meta ${MARKER}>\n<meta name="author" content="Nermin Sefić">\n<meta name="publisher" content="GNK ASG d.o.o.">\n<meta name="keywords" content="Nermin Sefić, Nermin Sefic, GNK ASG, GNK ASG d.o.o., GNK DINAMO Ltd., tržišta, markets">\n<meta property="og:image:alt" content="${imageAlt}">\n<link rel="related" href="${markets}">\n<link rel="author" href="${person}">\n<script type="application/ld+json" id="gnk-global-entity-graph">${safeJson({'@context':'https://schema.org','@graph':graph})}</script>\n`;
 }
 
