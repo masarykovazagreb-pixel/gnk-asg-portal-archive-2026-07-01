@@ -1,0 +1,45 @@
+name: Build World Cookbook
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - artifact/world-cookbook-20260727
+    paths:
+      - scripts/build_world_cookbook.py
+      - .github/workflows/build-world-cookbook.yml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install requests pillow reportlab
+      - name: Build English PDF and flipbook
+        run: python scripts/build_world_cookbook.py
+      - name: Verify outputs
+        run: |
+          test -s artifacts/world-cookbook/GNK_ASG_WORLD_RECIPE_BOOK_EN.pdf
+          test -s artifacts/world-cookbook/index.html
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('artifacts/world-cookbook/world-recipes.json')
+          data=json.loads(p.read_text(encoding='utf-8'))
+          print('categories',len(data['categories']))
+          print('recipes',len(data['meals']))
+          assert len(data['categories']) >= 10
+          assert len(data['meals']) >= 250
+          PY
+      - name: Upload complete cookbook package
+        uses: actions/upload-artifact@v4
+        with:
+          name: GNK-ASG-WORLD-RECIPE-BOOK-EN
+          path: artifacts/world-cookbook/
+          retention-days: 30
+          compression-level: 6
