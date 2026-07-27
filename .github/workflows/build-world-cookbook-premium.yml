@@ -20,8 +20,15 @@ jobs:
       - name: Install dependencies
         run: pip install requests pillow reportlab pypdf
       - name: Build premium PDF and flipbook
-        run: python scripts/build_world_cookbook_premium.py
+        shell: bash
+        run: |
+          set +e
+          python scripts/build_world_cookbook_premium.py 2>&1 | tee cookbook-build.log
+          code=${PIPESTATUS[0]}
+          echo "build_exit_code=$code"
+          exit "$code"
       - name: Validate package
+        if: success()
         run: |
           test -s artifacts/world-cookbook-premium/THE_WORLD_TABLE_GNK_ASG_WORLD_RECIPE_BOOK_EN.pdf
           test -s artifacts/world-cookbook-premium/index.html
@@ -39,10 +46,14 @@ jobs:
           print('pages',len(pdf.pages))
           assert len(pdf.pages) >= m['recipes']
           PY
-      - name: Upload complete premium edition
+      - name: Upload complete premium edition and diagnostics
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: THE-WORLD-TABLE-PREMIUM-EN
-          path: artifacts/world-cookbook-premium/
+          path: |
+            artifacts/world-cookbook-premium/
+            cookbook-build.log
+          if-no-files-found: warn
           retention-days: 30
           compression-level: 5
