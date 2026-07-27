@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260723-lazy-3d-globe-v5';
+  var VERSION = '20260727-asg-bot-fixes-v1';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
