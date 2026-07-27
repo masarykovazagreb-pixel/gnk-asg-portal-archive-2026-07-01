@@ -39,6 +39,15 @@ export function withEmailStatusTracking(env,sourceHint='system'){
  if(!env||env.__GNK_ASG_EMAIL_STATUS_TRACKED===VERSION)return env;
  const binding=env.EMAIL;if(!binding||typeof binding.send!=='function')return env;
  const structured=base.withEmailStatusTracking(env,sourceHint);
+ // Multiple envelope-level sends (one per recipient) that share the
+ // same underlying MIME Message-ID are the same logical email --
+ // Cloudflare's EmailMessage requires one send() call per recipient,
+ // but the status dashboard should show ONE row per logical message,
+ // not one per envelope recipient. Track already-seen Message-IDs
+ // for the lifetime of this wrapped env (i.e. this request) so the
+ // 2nd/3rd/etc. recipient gets appended to the existing record
+ // instead of creating a new one.
+ const seenMessageIds=new Map();
  return new Proxy(env,{get(target,property,receiver){
   if(property==='__GNK_ASG_EMAIL_STATUS_TRACKED')return VERSION;
   if(property==='EMAIL')return{send:async payload=>{
@@ -46,9 +55,16 @@ export function withEmailStatusTracking(env,sourceHint='system'){
    if(isStructured)return structured.EMAIL.send(payload);
    let raw='';try{raw=await rawText(payload);}catch(error){console.error('email-status-raw-read',error);}
    if(!raw)return binding.send.call(binding,payload);
-   const recipient=address(payload?.to||header(raw,'To')),sender=address(payload?.from||header(raw,'From')),subject=header(raw,'Subject'),sourceSystem=source(raw,sourceHint),sourceId=header(raw,'X-GNK-ASG-Idempotency-Key')||header(raw,'X-GNK-ASG-Campaign-Contact-Id'),part=decodeHtmlPart(raw);
+   const recipient=address(payload?.to||header(raw,'To')),sender=address(payload?.from||header(raw,'From')),subject=header(raw,'Subject'),sourceSystem=source(raw,sourceHint),sourceId=header(raw,'X-GNK-ASG-Idempotency-Key')||header(raw,'X-GNK-ASG-Campaign-Contact-Id'),part=decodeHtmlPart(raw),messageId=header(raw,'Message-ID');
    let tracking={trackingId:'',html:part?.html||'',tracked:false};
-   try{tracking=await base.createTrackedMessage(target,{sourceSystem,sourceId,recipient,sender,subject,html:part?.html||''});}catch(error){console.error('email-status-raw-create',error);}
+   const priorTrackingId=messageId?seenMessageIds.get(messageId):'';
+   if(priorTrackingId){
+    tracking={trackingId:priorTrackingId,html:part?.html||'',tracked:true};
+    try{await base.appendRecipientToTrackedMessage(target,priorTrackingId,recipient);}catch(error){console.error('email-status-raw-append-recipient',error);}
+   }else{
+    try{tracking=await base.createTrackedMessage(target,{sourceSystem,sourceId,recipient,sender,subject,html:part?.html||''});}catch(error){console.error('email-status-raw-create',error);}
+    if(messageId&&tracking.tracked)seenMessageIds.set(messageId,tracking.trackingId);
+   }
    const nextRaw=tracking.tracked&&part?part.replace(tracking.html):raw,nextMessage=new EmailMessage(sender||payload?.from,recipient||payload?.to,nextRaw);
    try{const result=await binding.send.call(binding,nextMessage);await base.markEmailAccepted(target,tracking.trackingId,clean(result?.messageId)).catch(error=>console.error('email-status-raw-accepted',error));return result;}
    catch(error){await base.markEmailFailure(target,tracking.trackingId,error).catch(inner=>console.error('email-status-raw-failed',inner));console.error('email-status-raw-send',errorText(error));throw error;}

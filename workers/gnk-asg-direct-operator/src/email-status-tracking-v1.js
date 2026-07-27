@@ -155,6 +155,19 @@ async function addEvent(db,trackingId,eventType,{eventKey='',stamp=now(),status=
  await db.prepare(`UPDATE email_status_records SET last_event_at=?,updated_at=CASE WHEN datetime(updated_at)<datetime(?) THEN ? ELSE updated_at END WHERE tracking_id=?`).bind(stamp,stamp,stamp,trackingId).run();
 }
 
+export async function appendRecipientToTrackedMessage(env,trackingId,additionalRecipient){
+ if(!trackingId)return;
+ const to=emailOf(additionalRecipient);
+ if(!to)return;
+ const db=await ensureEmailStatusSchema(env),stamp=now();
+ const row=await db.prepare(`SELECT recipient FROM email_status_records WHERE tracking_id=?`).bind(trackingId).first();
+ if(!row)return;
+ const existing=String(row.recipient||'').split(',').map(v=>v.trim()).filter(Boolean);
+ if(existing.includes(to))return;
+ const merged=[...existing,to].join(', ');
+ await db.prepare(`UPDATE email_status_records SET recipient=?,updated_at=? WHERE tracking_id=?`).bind(merged,stamp,trackingId).run();
+}
+
 export async function createTrackedMessage(env,{sourceSystem='system',sourceId='',recipient='',sender='',subject='',html=''}={}){
  const trackingId=crypto.randomUUID(),receiptToken=`${crypto.randomUUID().replace(/-/g,'')}${crypto.randomUUID().replace(/-/g,'')}`,stamp=now(),to=emailOf(recipient),from=emailOf(sender);
  if(!to)return{trackingId:'',html:String(html||''),tracked:false};
