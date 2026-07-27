@@ -226,7 +226,7 @@
       : '—';
     return `<tr data-record-id="${esc(item.tracking_id)}">
       <td>${badge(item.current_status)}${item.receipt_confirmed_at && item.current_status !== 'CONFIRMED' ? `<div style="margin-top:6px">${badge('CONFIRMED')}</div>` : ''}</td>
-      <td><b>${esc(item.recipient || '—')}</b><div class="small">Od: ${esc(item.sender || '—')}</div></td>
+      <td><b>${esc(item.recipient || '—')}</b>${item.batch_recipient_count>1?`<div class="small" title="${esc((item.batch_other_recipients||[]).join(', '))}">Dio istog slanja · ${item.batch_recipient_count} primatelja ukupno</div>`:''}<div class="small">Od: ${esc(item.sender || '—')}</div></td>
       <td><b>${esc(item.subject || '—')}</b><div class="small">${esc(sourceLabels[item.source_system] || item.source_system || '—')}</div><div class="small">Izvorni ID: ${esc(item.source_id || '—')}</div></td>
       <td>${fmt(item.accepted_at)}<div class="small">Kreirano: ${fmt(item.created_at)}</div></td>
       <td>${fmt(item.delivered_at)}<div class="small">Provider: ${esc(item.provider_status || '—')}</div></td>

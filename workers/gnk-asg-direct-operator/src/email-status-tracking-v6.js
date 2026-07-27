@@ -35,7 +35,20 @@ async function listRecords(request,env,backfill){
  const summaryStatement=db.prepare(`SELECT UPPER(COALESCE(current_status,'UNKNOWN')) status,COUNT(*) count FROM email_status_records GROUP BY UPPER(COALESCE(current_status,'UNKNOWN'))`);
  const [rows,total,summary,sync]=await Promise.all([rowsStatement.all(),totalStatement.first(),summaryStatement.all(),db.prepare(`SELECT * FROM email_status_sync_state WHERE id=1`).first()]);
  const items=(rows.results||[]).map(item=>({...item,possible_forwarding_signal:Number(item.distinct_open_environments||0)>1,forwarding_detectable:false,forwarding_explanation:'Različite IP adrese ili uređaji mogu biti proxy, više uređaja ili prosljeđivanje; nisu dokaz prosljeđivanja.'}));
- return{ok:true,version:VERSION,total:Number(total?.count||0),limit,offset,summary:Object.fromEntries((summary.results||[]).map(row=>[row.status,Number(row.count||0)])),sync,items,filters:{source:source||'all',status:status||'ALL',search,date:dateWindow?.key||'all'},dateWindow,manualAuditBackfill:backfill,capabilities:{delivery:true,rejection:true,openEvents:true,clickEvents:true,clickDestination:true,ipAndDevice:true,explicitReceiptConfirmation:true,forwardingReliable:false}};
+ // Cloudflare's Email API sends one recipient per call, so a single
+ // logical send (e.g. one contact-form submission with mandatory BCC
+ // copies) produces multiple rows sharing the same source_id. Group
+ // them here for display so the UI can show "1 slanje, N primatelja"
+ // instead of N seemingly-unrelated rows -- purely additive metadata,
+ // does not change what's stored or how mail is sent.
+ const batchCounts=new Map();
+ for(const item of items){if(!item.source_id)continue;batchCounts.set(item.source_id,(batchCounts.get(item.source_id)||0)+1);}
+ for(const item of items){
+  item.batch_id=item.source_id||null;
+  item.batch_recipient_count=item.source_id?(batchCounts.get(item.source_id)||1):1;
+  item.batch_other_recipients=item.source_id?items.filter(other=>other.source_id===item.source_id&&other.tracking_id!==item.tracking_id).map(other=>other.recipient):[];
+ }
+ return{ok:true,version:VERSION,total:Number(total?.count||0),limit,offset,summary:Object.fromEntries((summary.results||[]).map(row=>[row.status,Number(row.count||0)])),sync,items,filters:{source:source||'all',status:status||'ALL',search,date:dateWindow?.key||'all'},dateWindow,manualAuditBackfill:backfill,capabilities:{delivery:true,rejection:true,openEvents:true,clickEvents:true,clickDestination:true,ipAndDevice:true,explicitReceiptConfirmation:true,forwardingReliable:false,batchGrouping:true}};
 }
 async function enhanceDashboard(response){
  const type=String(response.headers.get('content-type')||'').toLowerCase();if(!type.includes('text/html'))return response;

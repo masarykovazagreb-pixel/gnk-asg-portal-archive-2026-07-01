@@ -100,7 +100,10 @@ const sendCall=studioSource.indexOf('const result=await sendBrandedEmail',authGa
 assert.ok(originGate>=0&&authGate>=0&&sendCall>=0&&originGate<authGate&&authGate<sendCall,'Studio send must enforce origin and explicit session before transport');
 
 assert.match(transport,/import \{EmailMessage\} from 'cloudflare:email'/);
-assert.match(transport,/new EmailMessage\(prepared\.from,recipient,prepared\.raw\)/);
+// See test-final-release-v31.mjs for the full rationale: refactored
+// 2026-07-27 for real per-recipient open/delivery tracking.
+assert.match(transport,/new EmailMessage\(base\.from,recipient,raw\)/);
+assert.match(transport,/createTrackedMessage/);
 assert.match(transport,/enforceRequiredSignature/);
 assert.match(transport,/safeHeader=value=>clean\(value\)\.replace\(\/\[\\r\\n\]\+\/g,' '\)/);
 assert.match(transport,/Content-ID:/);
@@ -108,7 +111,15 @@ assert.match(transport,/Content-Location:/);
 assert.match(transport,/X-Attachment-Id:/);
 
 assert.match(worker,/handlesContactStudio\(path\)/);
-assert.match(worker,/handleContactStudio\(request,withEmailStatusTracking\(env,'contact-form'\),ctx,app\)/);
+// 2026-07-27: removed the outer withEmailStatusTracking(env,'contact-form')
+// proxy wrapper -- tracking is now created per-recipient directly
+// inside sendBrandedEmail (outbound-mail-transport-v1.js), which
+// actually injects the pixel/receipt link into the sent MIME (the old
+// proxy could not, since sendBrandedEmail sends raw EmailMessage
+// objects that never matched the proxy's structured-payload check).
+// Wrapping here too would have double-tracked every recipient.
+assert.match(worker,/handleContactStudio\(request,env,ctx,app\)/);
+assert.doesNotMatch(worker,/withEmailStatusTracking/);
 assert.doesNotMatch(worker,/CLOUDFLARE_API_TOKEN|GNK_ASG_OPERATOR_TOKEN/);
 assert.match(signature,/logo-gnk-asg-email\.png/);
 assert.match(signature,/canonical-png-64x66/);
