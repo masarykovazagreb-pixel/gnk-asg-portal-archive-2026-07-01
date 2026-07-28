@@ -117,6 +117,17 @@ SOURCES = [
 BLOCKED_TITLE_PATTERNS = [
     re.compile(r"\bhoroscope\b", re.I),
     re.compile(r"\blottery\b", re.I),
+    # First-person lifestyle/travel/food pieces that slip into otherwise
+    # business-labeled feeds (e.g. Business Insider's general RSS mixes
+    # personal essays, recipes and travel writeups into every category).
+    re.compile(r"^i (tried|made|booked|visited|love|found)\b", re.I),
+    re.compile(r"\brecipe\b", re.I),
+    re.compile(r"\b(pasta|sandwich|pizza|dinner|breakfast|lunch|dessert)\b.{0,40}\btried\b", re.I),
+    re.compile(r"\bI (tried|made)\b", re.I),
+    re.compile(r"^(the cost of|forget actors)", re.I),
+    re.compile(r"\betiquette coach\b", re.I),
+    re.compile(r"\bunderrated gem\b", re.I),
+    re.compile(r"\bfirst-class seat\b|\bfirst class fare\b", re.I),
 ]
 
 
