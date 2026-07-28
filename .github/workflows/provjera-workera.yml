@@ -1,0 +1,77 @@
+name: Provjera workera
+
+# Ispituje javne rute workera i zapisuje rezultat u datoteku, jer dnevnik
+# izvodenja nije citljiv izvana. Ne salje postu i nista ne mijenja na sajtu.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '40 6 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: provjera-workera
+  cancel-in-progress: false
+
+jobs:
+  provjeri:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ispitaj rute
+        run: |
+          set -uo pipefail
+          mkdir -p ops
+          B=https://gnk-asg.hr
+          probaj(){ curl -sS -o /dev/null -m 20 -w '%{http_code}' "$1" || echo 000; }
+          {
+            echo "provjereno: $(date -u '+%Y-%m-%d %H:%M UTC')"
+            echo
+            printf '%-46s %s\n' 'RUTA' 'ODGOVOR'
+            for r in \
+              "/" \
+              "/api/public-catalog/food/categories" \
+              "/api/public-news-feed" \
+              "/api/ai-assist" \
+              "/api/editorial-public-health" \
+              "/auto-editor" \
+              "/data/auto-editor.json" \
+              "/app" \
+              "/vijesti/" \
+              "/assets/public-menu-final-v9.js" \
+              "/api/contact-mailboxes" \
+              "/api/mail-schedule" \
+              "/mail-studio/" \
+              "/admin-center" \
+              "/gnk-aktual/" \
+              "/restaurants/" \
+              "/trgovina/" \
+              "/world-table/" \
+              "/data/news.json" \
+            ; do
+              printf '%-46s %s\n' "$r" "$(probaj "$B$r")"
+            done
+            echo
+            echo "Napomena: 401 i 403 na admin i mail rutama su ocekivani —"
+            echo "znace da worker radi i da trazi ovlastenje."
+          } > ops/provjera-workera.txt
+          cat ops/provjera-workera.txt
+
+      - name: Spremi rezultat
+        shell: bash
+        run: |
+          set -uo pipefail
+          git config user.name "gnk-provjera"
+          git config user.email "actions@github.com"
+          git add ops/provjera-workera.txt
+          git diff --cached --quiet && exit 0
+          git commit -m "Provjera workera: osvjezen rezultat"
+          for i in 1 2 3; do
+            git push origin HEAD:main && exit 0
+            git pull --rebase --autostash origin main || true
+            sleep 5
+          done
