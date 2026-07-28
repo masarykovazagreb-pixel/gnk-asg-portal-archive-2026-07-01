@@ -12,25 +12,62 @@ const ARCHIVE_PATH = `${DATA_DIR}/news_archive.json`;
 const STATUS_PATH = `${DATA_DIR}/news-automation-status.json`;
 const FALLBACK_IMAGE = '/assets/news-fallback.svg';
 
+// Grupe moraju odgovarati onima koje stranica /gnk-aktual/ poznaje:
+// economy | technology | digital-assets | international | hrvatska
+// (Reuters vise nema javni RSS — feeds.reuters.com je ugasen i zato je izbacen.)
 const FEEDS = [
+  // --- Burza i biznis ------------------------------------------------
+  { source: 'CNBC', group: 'economy', category: 'business', url: 'https://www.cnbc.com/id/100727362/device/rss/rss.html' },
+  { source: 'CNBC Business', group: 'economy', category: 'business', url: 'https://www.cnbc.com/id/10001147/device/rss/rss.html' },
+  { source: 'BBC Business', group: 'economy', category: 'business', url: 'https://feeds.bbci.co.uk/news/business/rss.xml' },
+  { source: 'The Guardian Business', group: 'economy', category: 'business', url: 'https://www.theguardian.com/uk/business/rss' },
+  { source: 'MarketWatch', group: 'economy', category: 'markets', url: 'https://feeds.content.dowjones.io/public/rss/mw_topstories' },
+  { source: 'The New York Times Business', group: 'economy', category: 'business', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Business.xml' },
+  { source: 'Sky News Business', group: 'economy', category: 'business', url: 'https://feeds.skynews.com/feeds/rss/business.xml' },
+  { source: 'The Independent Business', group: 'economy', category: 'business', url: 'https://www.independent.co.uk/news/business/rss' },
+  { source: 'Euronews Business', group: 'economy', category: 'business', url: 'https://www.euronews.com/rss?format=mrss&level=theme&name=business' },
+  { source: 'Al Jazeera Economy', group: 'economy', category: 'business', url: 'https://www.aljazeera.com/xml/rss/economy.xml' },
+  { source: 'DW Business', group: 'economy', category: 'business', url: 'https://rss.dw.com/xml/rss-en-bus' },
+
+  // --- Tehnologija ---------------------------------------------------
   { source: 'The Verge', group: 'technology', category: 'technology', url: 'https://www.theverge.com/rss/index.xml' },
-  { source: 'TechCrunch', group: 'technology', category: 'startup', url: 'https://techcrunch.com/feed/' },
-  { source: 'Reuters Business', group: 'business', category: 'business', url: 'https://feeds.reuters.com/reuters/businessNews' },
-  { source: 'Reuters Technology', group: 'technology', category: 'technology', url: 'https://feeds.reuters.com/reuters/technologyNews' },
-  { source: 'MarketWatch', group: 'markets', category: 'markets', url: 'https://feeds.content.dowjones.io/public/rss/mw_topstories' },
-  { source: 'CNBC Business', group: 'business', category: 'business', url: 'https://www.cnbc.com/id/10001147/device/rss/rss.html' },
-  { source: 'CNBC Technology', group: 'technology', category: 'technology', url: 'https://www.cnbc.com/id/19854910/device/rss/rss.html' },
-  { source: 'BBC Business', group: 'business', category: 'business', url: 'https://feeds.bbci.co.uk/news/business/rss.xml' },
-  { source: 'BBC Technology', group: 'technology', category: 'technology', url: 'https://feeds.bbci.co.uk/news/technology/rss.xml' },
-  { source: 'Decrypt', group: 'digital-assets', category: 'digital-assets', url: 'https://decrypt.co/feed' },
-  { source: 'Cointelegraph', group: 'digital-assets', category: 'digital-assets', url: 'https://cointelegraph.com/rss' },
-  { source: 'The Guardian Business', group: 'business', category: 'business', url: 'https://www.theguardian.com/uk/business/rss' },
-  { source: 'The Guardian Technology', group: 'technology', category: 'technology', url: 'https://www.theguardian.com/uk/technology/rss' },
+  { source: 'TechCrunch', group: 'technology', category: 'technology', url: 'https://techcrunch.com/feed/' },
+  { source: 'Wired', group: 'technology', category: 'technology', url: 'https://www.wired.com/feed/rss' },
   { source: 'Ars Technica', group: 'technology', category: 'technology', url: 'https://arstechnica.com/feed/' },
-  { source: 'Al Jazeera Economy', group: 'business', category: 'business', url: 'https://www.aljazeera.com/xml/rss/economy.xml' },
-  { source: 'NPR Business', group: 'business', category: 'business', url: 'https://feeds.npr.org/1006/rss.xml' },
-  { source: 'Engadget', group: 'technology', category: 'technology', url: 'https://www.engadget.com/rss.xml' }
+  { source: 'Engadget', group: 'technology', category: 'technology', url: 'https://www.engadget.com/rss.xml' },
+  { source: 'BBC Technology', group: 'technology', category: 'technology', url: 'https://feeds.bbci.co.uk/news/technology/rss.xml' },
+  { source: 'The Guardian Technology', group: 'technology', category: 'technology', url: 'https://www.theguardian.com/uk/technology/rss' },
+  { source: 'MIT Technology Review', group: 'technology', category: 'technology', url: 'https://www.technologyreview.com/feed/' },
+  { source: 'VentureBeat', group: 'technology', category: 'technology', url: 'https://venturebeat.com/feed/' },
+
+  // --- Digitalna imovina ---------------------------------------------
+  { source: 'CoinDesk', group: 'digital-assets', category: 'digital-assets', url: 'https://www.coindesk.com/arc/outboundfeeds/rss/' },
+  { source: 'Cointelegraph', group: 'digital-assets', category: 'digital-assets', url: 'https://cointelegraph.com/rss' },
+  { source: 'Decrypt', group: 'digital-assets', category: 'digital-assets', url: 'https://decrypt.co/feed' },
+  { source: 'The Block', group: 'digital-assets', category: 'digital-assets', url: 'https://www.theblock.co/rss.xml' },
+  { source: 'Bitcoin Magazine', group: 'digital-assets', category: 'digital-assets', url: 'https://bitcoinmagazine.com/feed' },
+  { source: 'CryptoSlate', group: 'digital-assets', category: 'digital-assets', url: 'https://cryptoslate.com/feed/' },
+
+  // --- Svijet ---------------------------------------------------------
+  { source: 'BBC News', group: 'international', category: 'world', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
+  { source: 'The Guardian', group: 'international', category: 'world', url: 'https://www.theguardian.com/world/rss' },
+  { source: 'Al Jazeera', group: 'international', category: 'world', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
+  { source: 'France 24', group: 'international', category: 'world', url: 'https://www.france24.com/en/rss' },
+  { source: 'The New York Times World', group: 'international', category: 'world', url: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml' },
+  { source: 'European Commission', group: 'international', category: 'world', url: 'https://ec.europa.eu/commission/presscorner/api/rss?language=en' },
+
+  // --- Hrvatska --------------------------------------------------------
+  { source: 'Index.hr', group: 'hrvatska', category: 'hrvatska', url: 'https://www.index.hr/rss/vijesti' },
+  { source: 'Index.hr Novac', group: 'hrvatska', category: 'hrvatska', url: 'https://www.index.hr/rss/vijesti-novac' },
+  { source: 'Poslovni dnevnik', group: 'hrvatska', category: 'hrvatska', url: 'https://www.poslovni.hr/feed' },
+  { source: 'tportal', group: 'hrvatska', category: 'hrvatska', url: 'https://www.tportal.hr/rss' },
+  { source: 'Lider', group: 'hrvatska', category: 'hrvatska', url: 'https://lidermedia.hr/feed/' },
+  { source: 'SEEbiz', group: 'hrvatska', category: 'hrvatska', url: 'https://www.seebiz.eu/rss/' },
+  { source: 'Netokracija', group: 'hrvatska', category: 'hrvatska', url: 'https://www.netokracija.com/feed' }
 ];
+
+// Koliko vijesti jedan medij smije zauzeti u objavljenom skupu.
+const MAX_PER_SOURCE = 6;
 
 function nowIsoZagreb() {
   const parts = new Intl.DateTimeFormat('sv-SE', {
@@ -168,6 +205,22 @@ function uniqueSorted(items) {
   return unique.sort((a, b) => Date.parse(b.publishedAt || b.published_at || 0) - Date.parse(a.publishedAt || a.published_at || 0));
 }
 
+// Ogranicava koliko vijesti jedan medij smije imati u objavljenom skupu.
+// Visak se ne baca nego ide na kraj — tako se popuni do PUBLIC_TARGET
+// i kad je dio feedova nedostupan.
+function balanceBySource(items, cap, target) {
+  const used = new Map();
+  const primary = [];
+  const overflow = [];
+  for (const item of items) {
+    const source = item.source || '?';
+    const count = (used.get(source) || 0) + 1;
+    used.set(source, count);
+    (count <= cap ? primary : overflow).push(item);
+  }
+  return primary.concat(overflow).slice(0, target);
+}
+
 async function main() {
   const results = await Promise.all(FEEDS.map(fetchFeed));
   const fresh = uniqueSorted(results.flatMap(result => result.items));
@@ -181,7 +234,7 @@ async function main() {
   // their items every time this script runs, and vice versa -- this was a real, confirmed source
   // of churn/duplication between runs of different processes.
   const merged = uniqueSorted([...fresh, ...previousPublic]);
-  const publicItems = merged.slice(0, PUBLIC_TARGET);
+  const publicItems = balanceBySource(merged, MAX_PER_SOURCE, PUBLIC_TARGET);
   let archiveItems = uniqueSorted([...fresh, ...previousPublic, ...previousArchive]);
   if (archiveItems.length > ARCHIVE_MAX_BEFORE_PRUNE) archiveItems = archiveItems.slice(0, ARCHIVE_KEEP_WHEN_FULL);
 
@@ -195,9 +248,11 @@ async function main() {
     status: publicItems.length >= 15 ? 'refreshed' : 'insufficient_items',
     updated_at: nowIsoZagreb(),
     engine: 'single_publication_engine_v14_github_actions',
-    cadence: 'scheduled at 09:00, 16:00 and 21:00 Europe/Zagreb',
+    cadence: 'every 2 hours (00:00-22:00 UTC)',
     timezone: TZ,
-    scheduled_hours_local: [9, 16, 21],
+    scheduled_interval_hours: 2,
+    max_items_per_source: MAX_PER_SOURCE,
+    feeds_configured: FEEDS.length,
     public_items_target: PUBLIC_TARGET,
     public_items_written: publicItems.length,
     archive_policy: 'archive_latest_1000_prune_to_500_when_full',

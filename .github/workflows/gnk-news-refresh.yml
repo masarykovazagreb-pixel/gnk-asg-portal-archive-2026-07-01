@@ -3,8 +3,8 @@ name: GNK News Refresh
 on:
   workflow_dispatch:
   schedule:
-    # Europe/Zagreb summer time: 09:00, 16:00, 21:00 local = 07:00, 14:00, 19:00 UTC.
-    - cron: '0 7,14,19 * * *'
+    # Svaka 2 sata.
+    - cron: '0 */2 * * *'
 
 permissions:
   contents: write
