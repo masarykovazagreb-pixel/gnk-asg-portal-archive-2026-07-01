@@ -7,7 +7,10 @@ const editorial=fs.readFileSync('apps/portal/assets/index-editorial-order-v1.js'
 
 assert.match(release,/GNK_RELEASE_COMPLETION_V8/);
 assert.match(release,/release-completion-scaffold/);
-assert.match(release,/data-runtime-owner="index-editorial-order"/);
+// Urednicka ploca je namjerno uklonjena s naslovnice 28.07.2026. — blok
+// "Objave, vijesti, analize i komentari" vise se ne prikazuje, pa se ni
+// njezin vlasnik ne ocekuje. Ostale ploce i dalje moraju postojati.
+assert.doesNotMatch(release,/data-runtime-owner="index-editorial-order"/);
 assert.match(release,/data-runtime-owner="index-data-resilience"/);
 assert.match(release,/logo-gnk-asg-canonical\.svg/);
 assert.match(release,/the-code-experience-loop-v1\.html/);
