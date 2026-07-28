@@ -40,6 +40,11 @@ jobs:
             python3 scripts/generate-image-sitemap.py
           fi
 
+      # Drugi zakazani poslovi commitaju u main u isto vrijeme, pa je spremanje
+      # padalo na zastarjelom SHA. Povlacenje neposredno prije commita to rjesava.
+      - name: Sync with latest main before committing
+        run: git pull --rebase --autostash origin main
+
       - name: Commit any new pages
         uses: stefanzweifel/git-auto-commit-action@v5
         with:

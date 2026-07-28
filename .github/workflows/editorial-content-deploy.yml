@@ -31,6 +31,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Verify editorial-only change scope
+        id: scope
         shell: bash
         run: |
           set -euo pipefail
@@ -39,10 +40,16 @@ jobs:
           git diff --name-only "$before" "$after" > /tmp/changed.txt
           cat /tmp/changed.txt
           if grep -Ev '^(apps/portal/(objave|komentari|analize|en/publications|en/commentary|en/analyses)/|apps/portal/(en/)?digital-workforce/newsroom/|apps/portal/editorial-sitemap\.xml$|apps/portal/(sitemap\.xml|sitemap-index\.xml|image-sitemap\.xml)$|apps/portal/data/(news\.json|news_archive\.json|update_status\.json|seo-visibility-status\.json)$|apps/portal/data/editorial-plan/manifest\.json$|artifacts/(editorial-scheduled-publish|seo-visibility-report)\.json$)' /tmp/changed.txt | grep -q .; then
-            echo "Non-editorial change detected; automatic deployment is blocked."
-            exit 1
+            # Push mijesa urednicke i neuredničke promjene. Automatski deploy se
+            # NE pokrece, ali posao se ne obiljezava kao pad: lazni padovi su
+            # zatrpavali prave greske u povijesti izvodenja.
+            echo "Non-editorial change detected; automatic deployment is skipped."
+            echo "editorial_only=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+          echo "editorial_only=true" >> "$GITHUB_OUTPUT"
       - name: Dispatch exact-SHA production deploy
+        if: steps.scope.outputs.editorial_only == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
