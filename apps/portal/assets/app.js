@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260727-aktual-tech-radar-v1';
+  var VERSION = '20260728-remove-tech-radar-more-sources-v1';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -71,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/group-network.js');
   var __gnkPath2 = (location.pathname || '/').replace(/\/+$/, '') || '/';
   var __gnkIsHome = __gnkPath2 === '' || __gnkPath2 === '/' || __gnkPath2 === '/en';
-  if (__gnkPath2 === '/gnk-aktual' || __gnkPath2 === '/en/gnk-aktual') script('/assets/aktual-tech-radar-v1.js');
   if (__gnkPath2.indexOf('group-network') !== -1 || __gnkIsHome) {
     script('/assets/group-clarity.js');
     script('/assets/group-map-2d-geo.js');
