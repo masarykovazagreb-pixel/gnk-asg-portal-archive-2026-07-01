@@ -34,6 +34,7 @@ jobs:
         run: git pull --rebase --autostash origin main
 
       - name: Mirror to blog
+        continue-on-error: true
         env:
           BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
           BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}

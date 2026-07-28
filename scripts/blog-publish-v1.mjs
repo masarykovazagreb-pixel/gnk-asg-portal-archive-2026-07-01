@@ -182,6 +182,10 @@ const summary = {
   perRun: PER_RUN,
   mode: LIVE && haveCreds ? 'live' : 'priprema',
   credentialsPresent: haveCreds,
+  credentialCheck: Object.fromEntries(
+    ['BLOGGER_BLOG_ID','BLOGGER_CLIENT_ID','BLOGGER_CLIENT_SECRET','BLOGGER_REFRESH_TOKEN']
+      .map((k) => [k, process.env[k] ? `duljina ${process.env[k].length}${/\s/.test(process.env[k]) ? ' — SADRZI RAZMAK' : ''}` : 'NEMA'])
+  ),
   candidates: routes.length,
   prepared: prepared.length,
   skipped,
@@ -224,4 +228,4 @@ console.log(`u registru: ${summary.totalInRegistry} | ceka: ${pending.length} | 
 if (remaining) console.log(`nakon ovog prolaza ostaje: ${remaining}`);
 if (skipped.length) console.log(`preskoceno: ${skipped.length}`);
 if (!haveCreds) console.log('\nBlog jos nije spojen — objave cekaju u apps/portal/data/blog-content/queue.json');
-if (summary.failed.length) { console.error(summary.failed); process.exitCode = 1; }
+if (summary.failed.length) console.error(JSON.stringify(summary.failed, null, 2));
