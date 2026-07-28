@@ -21,7 +21,11 @@ import xml.etree.ElementTree as ET
 
 import refresh_news as base
 
-PUBLIC_LIMIT = 100
+# /gnk-aktual/ trazi najmanje 100 vijesti sa slikom I tekstom u rotaciji.
+# Budzet je namjerno veci od 100 jer dio stavki otpadne na simulacijski feed
+# i na clanke s prekratkim sazetkom.
+PUBLIC_LIMIT = 150
+MIN_SUMMARY_CHARS = 40
 ARCHIVE_TRIGGER = 2000
 ARCHIVE_DELETE_OLDEST = 1000
 
@@ -91,8 +95,14 @@ def main() -> int:
     existing_archive = base.read_json(base.ARCHIVE_PATH, [])
     merged = base.merge_unique(fetched, existing_public, existing_archive)
 
-    with_image = [item for item in merged if item.get("image")]
-    without_image = [item for item in merged if not item.get("image")]
+    # Javni skup uzima samo stavke koje imaju i sliku i upotrebljiv sazetak —
+    # stranica ionako odbacuje kartice bez jednog od toga, pa bi inace
+    # trosile mjesta u budzetu.
+    def _usable(item):
+        return bool(item.get("image")) and len(str(item.get("summary") or "")) >= MIN_SUMMARY_CHARS
+
+    with_image = [item for item in merged if _usable(item)]
+    without_image = [item for item in merged if not _usable(item)]
 
     # Digital Workforce simulation items publish roughly every 2 days,
     # far slower than the constantly-refreshing real-time RSS sources.

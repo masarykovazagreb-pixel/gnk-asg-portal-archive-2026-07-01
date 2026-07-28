@@ -22,7 +22,7 @@ RSS = [
     ("Cointelegraph", "digital-assets", "digital-assets", "https://cointelegraph.com/rss"),
 ]
 
-PUBLIC_LIMIT = 100
+PUBLIC_LIMIT = 150
 ARCHIVE_TRIGGER = 2000
 ARCHIVE_DELETE_OLDEST = 1000
 

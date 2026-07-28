@@ -54,8 +54,8 @@ def main() -> int:
         if not isinstance(item.get("volume_24h_usd"), (int, float)) or item["volume_24h_usd"] < 0:
             fail(f"invalid volume for {item.get('symbol')}")
 
-    if not isinstance(news, list) or not 3 <= len(news) <= 100:
-        fail("public news feed must contain between 3 and 100 items")
+    if not isinstance(news, list) or not 3 <= len(news) <= 150:
+        fail("public news feed must contain between 3 and 150 items")
     if not isinstance(archive, list) or len(archive) > 2000:
         fail("news archive must be a list capped at 2000 items")
     seen_ids: set[str] = set()
@@ -90,8 +90,8 @@ def main() -> int:
         fail("news status is stale")
     if status.get("items") != len(news) or status.get("archive_items") != len(archive):
         fail("news status counts do not match public feed and archive")
-    if status.get("max_public_items") != 100:
-        fail("public news limit is not 100")
+    if status.get("max_public_items") != 150:
+        fail("public news limit is not 150")
     if status.get("archive_prune_trigger") != 2000:
         fail("archive prune trigger is not 2000")
     if status.get("archive_delete_oldest_batch") != 1000:

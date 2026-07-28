@@ -3,8 +3,8 @@ name: GNK ASG News Refresh
 on:
   workflow_dispatch:
   schedule:
-    # GitHub cron is UTC. Run once per hour at minute 17 to avoid peak load.
-    - cron: '17 * * * *'
+    # GitHub cron is UTC. Svaka 2 sata, u minuti 17 (izvan vrsnog opterecenja).
+    - cron: '17 */2 * * *'
 
 permissions:
   contents: write

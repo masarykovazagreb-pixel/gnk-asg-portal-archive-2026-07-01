@@ -121,7 +121,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 (function(){
   var GROUP_LABELS = { hrvatska:'Hrvatska', international:'Svijet', technology:'Tehnologija', economy:'Burza i biznis', 'digital-assets':'Digitalna imovina', 'digital-workforce-simulation':'GNK ASG · Simulacija' };
   var ROTATE_MS = 15000;
-  var state = { items: [], top10Index: 0, catIndex: {} };
+  var state = { items: [], stream: [], top10Index: 0, leadIndex: 0, tailIndex: 0 };
 
   function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function timeAgo(iso){
@@ -183,64 +183,117 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   };
   // Simulacijski feed ima vlastitu namjenu i ne smije zavrsiti u bloku Svijet.
   var GROUP_EXCLUDE = { 'digital-workforce-simulation': true };
-  var MAX_PER_SOURCE = 3; // koliko kartica jedan medij smije zauzeti u jednom bloku
+  var MAX_PER_SOURCE = 3;   // koliko kartica jedan medij smije zauzeti u vidljivom prozoru
+  var STREAM_TARGET = 100;  // koliko vijesti drzimo u rotaciji
+  var VIEW = 20;            // koliko ih je vidljivo odjednom
+  var LEAD = 8;             // koliko prvih mjesta je rezervirano za glavne vijesti
 
-  function groupByCategory(){
-    var raw = {};
-    state.items.forEach(function(item){
-      if (!item.image) return;
-      if (GROUP_EXCLUDE[String(item.group || '').toLowerCase()]) return;
-      var g = GROUP_ALIAS[String(item.group || '').toLowerCase()] ||
-              GROUP_ALIAS[String(item.category || '').toLowerCase()] || 'international';
-      if (!raw[g]) raw[g] = [];
-      raw[g].push(item);
+  // Tezina medija — koristi se samo za redoslijed, ne za filtriranje.
+  var WEIGHT = {
+    'Reuters Business':6,'AP Business':6,'BBC News':6,'BBC Business':6,'BBC Technology':6,
+    'The Guardian':6,'The Guardian Business':6,'The Guardian Technology':6,
+    'New York Times World':6,'New York Times Business':6,'CNBC':6,'CNBC Markets':6,
+    'Al Jazeera':5,'Al Jazeera Economy':5,'CNN World':5,'France 24':5,'DW Business':5,
+    'DW Europe':5,'MarketWatch Top Stories':5,'The Economist International':5,
+    'Sky News Business':4,'Euronews Business':4,'The Independent Business':4,
+    'Japan Times':4,'South China Morning Post':4,'ABC News Australia':4,'NPR News':4,
+    'Poslovni dnevnik':5,'Index.hr':5,'Index.hr Novac':5,'tportal':4,'Lider':4,
+    'CoinDesk':5,'Cointelegraph':4,'Decrypt':4,'The Block':4,
+    'TechCrunch':5,'The Verge':5,'Wired':5,'Ars Technica':4,'MIT Technology Review':5
+  };
+
+  // "Glavnost" vijesti: svjezina + tezina medija + potpunost sadrzaja.
+  function score(item){
+    var ageH = Math.max(0, (Date.now() - Date.parse(item.published_at || 0)) / 3600000);
+    var fresh = ageH <= 2 ? 10 : ageH <= 6 ? 8 : ageH <= 12 ? 6 : ageH <= 24 ? 4 : ageH <= 48 ? 2 : 0;
+    var weight = WEIGHT[item.source] || 3;
+    var body = (item.summary || '').length;
+    var depth = body >= 300 ? 3 : body >= 150 ? 2 : 1;
+    return fresh * 3 + weight * 2 + depth;
+  }
+
+  // "The Guardian Business" i "The Guardian" su isti izdavac — kvota i ritam
+  // moraju se racunati na razini izdavaca, inace jedna kuca zauzme pola prozora.
+  function pub(source){
+    return String(source || '?')
+      .replace(/\s+(Business|Technology|Tech|Markets?|World|Economy|Ekonomija|Novac|Top Stories|International|Europe|News)$/i, '')
+      .trim() || '?';
+  }
+
+  // Ritam: silazno po glavnosti, ali dva susjedna mjesta nikad nisu isti izdavac.
+  function buildStream(){
+    var pool = state.items.filter(function(i){
+      if (!i || !i.title || !i.url || !i.image) return false;
+      if (GROUP_EXCLUDE[String(i.group || '').toLowerCase()]) return false;
+      return (i.summary || '').length >= 40;
     });
 
-    // Kvota po mediju: sprjecava da jedan izvor preuzme cijeli blok.
-    // Ostatak se vraca na kraj liste, pa blok nikad ne ostane prazan.
-    var byGroup = {};
-    Object.keys(raw).forEach(function(g){
-      var used = {}, primary = [], overflow = [];
-      raw[g].forEach(function(item){
-        var s = item.source || '?';
-        used[s] = (used[s] || 0) + 1;
-        (used[s] <= MAX_PER_SOURCE ? primary : overflow).push(item);
-      });
-      byGroup[g] = primary.concat(overflow);
-    });
-    return byGroup;
+    var ranked = pool.slice().sort(function(a, b){ return score(b) - score(a); });
+
+    var out = [], last = '';
+    while (ranked.length) {
+      var idx = 0;
+      for (var i = 0; i < ranked.length; i++) {
+        if (pub(ranked[i].source) !== last) { idx = i; break; }
+      }
+      var pick = ranked.splice(idx, 1)[0];
+      out.push(pick);
+      last = pub(pick.source);
+    }
+    return out.slice(0, STREAM_TARGET);
+  }
+
+  function windowSlice(){
+    var s = state.stream;
+    if (!s.length) return [];
+    var lead = Math.min(LEAD, s.length);
+    var rest = s.length - lead;
+    var slots = Math.min(VIEW, s.length);
+
+    // Redoslijed kandidata: glavne se mijenjaju polako, ostatak brzo.
+    var order = [];
+    for (var i = 0; i < lead; i++) order.push(s[(state.leadIndex + i) % lead]);
+    for (var j = 0; rest > 0 && order.length < slots; j++) order.push(s[lead + ((state.tailIndex + j) % rest)]);
+
+    // Kvota po izdavacu. Visak se NE prikazuje nego se zamjenjuje sljedecom
+    // vijescu iz repertoara koja jos nije na ekranu — prozor ostaje pun.
+    var used = {}, taken = {}, keep = [], deferred = [];
+    function tryAdd(item){
+      if (!item || taken[item.url]) return false;
+      var p = pub(item.source);
+      if ((used[p] || 0) >= MAX_PER_SOURCE) return false;
+      used[p] = (used[p] || 0) + 1;
+      taken[item.url] = true;
+      keep.push(item);
+      return true;
+    }
+    order.forEach(function(item){ if (!tryAdd(item)) deferred.push(item); });
+    for (var k = 0; k < s.length && keep.length < slots; k++) tryAdd(s[k]);
+    for (var d = 0; d < deferred.length && keep.length < slots; d++) {
+      if (!taken[deferred[d].url]) { taken[deferred[d].url] = true; keep.push(deferred[d]); }
+    }
+    return keep.slice(0, slots);
   }
 
   function renderCategories(){
-    var byGroup = groupByCategory();
     var container = document.getElementById('akCategories');
-    var order = ['economy','technology','digital-assets','international','hrvatska'];
-    var html = '';
-    order.forEach(function(g){
-      var items = byGroup[g];
-      if (!items || !items.length) return;
-      if (!(g in state.catIndex)) state.catIndex[g] = 0;
-      var start = state.catIndex[g] % items.length;
-      var need = Math.min(13, items.length);
-      var slice = [];
-      for (var si = 0; si < need; si++) slice.push(items[(start + si) % items.length]);
-      html += '<section class="ak-section"><div class="ak-section-head"><h2>'+esc(GROUP_LABELS[g]||g)+'</h2><span>rotira se</span></div><div class="ak-cat-grid">' +
-        slice.map(function(item){
-          return '<article class="ak-card"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow"><img src="'+esc(item.image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'"></a><div class="ak-card-body"><h3><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a></h3><p>'+esc((item.summary||'').slice(0,120))+(item.summary&&item.summary.length>120?'…':'')+'</p><span class="ak-src">'+esc(item.source||'')+' · '+timeAgo(item.published_at)+'</span></div></article>';
-        }).join('') +
-      '</div></section>';
-    });
-    container.innerHTML = html;
+    var slice = windowSlice();
+    if (!slice.length) { container.innerHTML = ''; return; }
+    container.innerHTML = '<section class="ak-section"><div class="ak-section-head"><h2>Aktualno</h2><span>rotira se</span></div><div class="ak-cat-grid">' +
+      slice.map(function(item){
+        return '<article class="ak-card"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow"><img src="'+esc(item.image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'"></a><div class="ak-card-body"><h3><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a></h3><p>'+esc((item.summary||'').slice(0,120))+(item.summary&&item.summary.length>120?'…':'')+'</p><span class="ak-src">'+esc(item.source||'')+' · '+timeAgo(item.published_at)+'</span></div></article>';
+      }).join('') +
+    '</div></section>';
   }
 
   function rotate(){
     if (!state.items.length) return;
     state.top10Index = (state.top10Index + 3) % state.items.length;
     renderTop10();
-    var byGroup = groupByCategory();
-    Object.keys(state.catIndex).forEach(function(g){
-      if (byGroup[g] && byGroup[g].length) state.catIndex[g] = (state.catIndex[g] + 2) % byGroup[g].length;
-    });
+    var lead = Math.min(LEAD, state.stream.length);
+    var rest = Math.max(1, state.stream.length - lead);
+    state.leadIndex = (state.leadIndex + 1) % Math.max(1, lead);        // glavne: sporo
+    state.tailIndex = (state.tailIndex + (VIEW - lead)) % rest;          // ostatak: brzo
     renderCategories();
   }
 
@@ -250,8 +303,10 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       var items = Array.isArray(data) ? data : (data.items || []);
       items = items.filter(function(i){ return i && i.title && i.url && i.image; });
       state.items = items;
+      state.stream = buildStream();
       document.getElementById('akStatus').textContent = items.length
-        ? ('Prikazano ' + items.length + ' vijesti · ažurirano ' + timeAgo(items[0] && items[0].published_at))
+        ? ('U rotaciji ' + state.stream.length + ' vijesti sa slikom · ukupno ' + items.length +
+           ' · ažurirano ' + timeAgo(items[0] && items[0].published_at))
         : 'Trenutno nema dostupnih vijesti.';
       if (!items.length) return;
       renderFeatured(items[0]);
