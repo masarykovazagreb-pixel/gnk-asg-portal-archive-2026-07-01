@@ -30,7 +30,10 @@ const SITE = 'https://gnk-asg.hr';
 const BLOG = { name: 'NERMIN SEFIĆ - GNK ASG', url: 'https://nermin-sefic.blogspot.com' };
 // Koliko objava po pokretanju. Registar ima 150+ tekstova; slanje svih odjednom
 // udarilo bi u Googleovo ogranicenje, pa se stariji prenose postupno.
-const PER_RUN = Number(process.env.BLOG_PER_RUN || 10);
+const PER_RUN = Number(process.env.BLOG_PER_RUN || 6);
+// Blogger odbija prebrze uzastopne objave (429). Pauza izmedju svake.
+const PAUSE_MS = Number(process.env.BLOG_PAUSE_MS || 8000);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const AUTHOR = 'Nermin Sefić';
 const PUBLISHER = 'GNK ASG d.o.o.';
@@ -201,13 +204,21 @@ if (LIVE && haveCreds) {
     summary.failed.push({ route: '*', error: String(e.message || e) });
   }
   if (token) {
-    for (const { route, post } of prepared) {
+    for (const [index, { route, post }] of prepared.entries()) {
+      if (index) await sleep(PAUSE_MS);
       try {
         const res = await publish(post, token);
         state.posted[route] = { at: new Date().toISOString(), blogUrl: res.url || null, id: res.id || null };
         summary.posted.push({ route, blogUrl: res.url || null });
       } catch (e) {
-        summary.failed.push({ route, error: String(e.message || e) });
+        const msg = String(e.message || e);
+        summary.failed.push({ route, error: msg.slice(0, 200) });
+        // Kad Blogger javi da je kvota potrosena, nema smisla nastavljati u
+        // ovom prolazu — ostatak ceka sljedeci sat.
+        if (msg.includes('blogger_429')) {
+          summary.stoppedEarly = 'Blogger je odbio daljnje objave u ovom prolazu (kvota). Ostatak ide u sljedecem satu.';
+          break;
+        }
       }
     }
     writeJson(STATE, state);
