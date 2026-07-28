@@ -1,0 +1,48 @@
+name: Blog Mirror Publish
+
+# Svaki objavljeni tekst prenosi se i na blog. Radi u minuti 30, deset minuta
+# nakon objave uredničkog sadržaja, pa je red uvijek svjež.
+#
+# Dok tajne za blog nisu postavljene, radi u načinu pripreme: objave se slože
+# i spreme u red, ali se ne šalju. Ništa ne puca i ništa se ne gubi.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blog-mirror-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Mirror published articles to the blog
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Sync with latest main
+        run: git pull --rebase --autostash origin main
+
+      - name: Mirror to blog
+        env:
+          BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
+          BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}
+          BLOGGER_CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
+          BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
+        run: node scripts/blog-publish-v1.mjs --live
+
+      - name: Commit queue and state
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Blog mirror: refresh queue and published state'
+          file_pattern: 'apps/portal/data/blog-content/queue.json apps/portal/data/blog-content/published.json'

@@ -1,0 +1,197 @@
+#!/usr/bin/env node
+/**
+ * Prijenos objavljenih tekstova na blog (Google Blogger).
+ *
+ * Svaka objava, komentar i analiza koja izađe na gnk-asg.hr ide i na blog:
+ * isti naslov, isti opis, iste ključne riječi kao oznake, isti hashtagovi,
+ * autor Nermin Sefić, i poveznica natrag na izvorni članak.
+ *
+ * Bez pristupnih podataka radi u načinu pripreme: sve objave se slože i
+ * spreme u red, ali se ne šalju. Kad se postave tajne, isti red se objavi.
+ *
+ *   node scripts/blog-publish-v1.mjs            # priprema
+ *   node scripts/blog-publish-v1.mjs --live     # objavi (traži tajne)
+ *
+ * Tajne (GitHub Actions secrets):
+ *   BLOGGER_BLOG_ID        identifikator bloga
+ *   BLOGGER_CLIENT_ID      OAuth klijent
+ *   BLOGGER_CLIENT_SECRET  OAuth tajna
+ *   BLOGGER_REFRESH_TOKEN  trajni token za osvježavanje
+ */
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+
+const PORTAL = resolve('apps/portal');
+const REPORT = resolve('artifacts/editorial-scheduled-publish.json');
+const QUEUE = resolve('apps/portal/data/blog-content/queue.json');
+const STATE = resolve('apps/portal/data/blog-content/published.json');
+const SITE = 'https://gnk-asg.hr';
+
+const AUTHOR = 'Nermin Sefić';
+const PUBLISHER = 'GNK ASG d.o.o.';
+const BASE_TAGS = ['GNKASG', 'GNKDINAMOLtd', 'NerminSefic', 'BusinessIntelligence'];
+const LIVE = process.argv.includes('--live');
+
+const readJson = (p, fallback) => {
+  try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return fallback; }
+};
+const writeJson = (p, data) => {
+  mkdirSync(dirname(p), { recursive: true });
+  writeFileSync(p, JSON.stringify(data, null, 2) + '\n', 'utf8');
+};
+
+const unescapeHtml = (s = '') => s
+  .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+  .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+
+/* ---------- čitanje objavljenog članka sa stranice ---------- */
+
+function readArticle(routePath) {
+  const file = resolve(PORTAL, '.' + routePath, 'index.html');
+  if (!existsSync(file)) return null;
+  const html = readFileSync(file, 'utf8');
+
+  const meta = (name, attr = 'name') => {
+    const m = html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`));
+    return m ? unescapeHtml(m[1]) : '';
+  };
+
+  const title = (meta('og:title', 'property') || (html.match(/<title>([^<]*)<\/title>/) || [, ''])[1])
+    .split(' | ')[0].trim();
+  const description = meta('description');
+  const keywords = meta('keywords').split(',').map((k) => k.trim()).filter(Boolean);
+  const image = meta('og:image', 'property');
+
+  // Tijelo članka: odlomci iz glavnog dijela stranice, bez izbornika i podnožja.
+  const main = (html.match(/<main[\s\S]*?<\/main>/) || [''])[0];
+  const paragraphs = [...main.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
+    .map((m) => unescapeHtml(m[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim())
+    .filter((t) => t.length > 80);
+
+  if (!title || !paragraphs.length) return null;
+
+  const section = keywords.find((k) => /^[A-ZŠĐČĆŽ]/.test(k) && k.split(' ').length <= 4) || '';
+  return { path: routePath, url: SITE + routePath, title, description, keywords, image, section, paragraphs };
+}
+
+/* ---------- oblikovanje objave za blog ---------- */
+
+function buildPost(a) {
+  const tags = [...new Set([...BASE_TAGS, ...a.keywords.map((k) => k.replace(/[^\p{L}\p{N}]/gu, ''))])]
+    .filter((t) => t.length > 2 && t.length < 30)
+    .slice(0, 12);
+
+  const body = [
+    a.image ? `<p><img src="${a.image.startsWith('http') ? a.image : SITE + a.image}" alt="${a.title}" style="max-width:100%;height:auto"></p>` : '',
+    a.description ? `<p><strong>${a.description}</strong></p>` : '',
+    ...a.paragraphs.map((p) => `<p>${p}</p>`),
+    '<hr>',
+    `<p>Cjelovit tekst i izvor: <a href="${a.url}" rel="canonical">${a.url}</a></p>`,
+    `<p><em>Autor i urednička odgovornost: ${AUTHOR}. Izdavač: ${PUBLISHER}.</em></p>`,
+    `<p>${tags.map((t) => '#' + t).join(' ')}</p>`,
+  ].filter(Boolean).join('\n');
+
+  return {
+    kind: 'blogger#post',
+    title: a.title,
+    content: body,
+    labels: tags.slice(0, 20),
+    // Blogger nema polje za kanonski link; stavljamo ga u tekst i u zapis reda.
+    _source: a.url,
+    _description: a.description,
+    _author: AUTHOR,
+  };
+}
+
+/* ---------- Blogger API ---------- */
+
+async function accessToken() {
+  const { BLOGGER_CLIENT_ID, BLOGGER_CLIENT_SECRET, BLOGGER_REFRESH_TOKEN } = process.env;
+  const res = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: BLOGGER_CLIENT_ID,
+      client_secret: BLOGGER_CLIENT_SECRET,
+      refresh_token: BLOGGER_REFRESH_TOKEN,
+      grant_type: 'refresh_token',
+    }),
+  });
+  if (!res.ok) throw new Error(`oauth_${res.status}: ${(await res.text()).slice(0, 200)}`);
+  return (await res.json()).access_token;
+}
+
+async function publish(post, token) {
+  const blogId = process.env.BLOGGER_BLOG_ID;
+  const res = await fetch(`https://www.googleapis.com/blogger/v3/blogs/${blogId}/posts/`, {
+    method: 'POST',
+    headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ kind: post.kind, title: post.title, content: post.content, labels: post.labels }),
+  });
+  if (!res.ok) throw new Error(`blogger_${res.status}: ${(await res.text()).slice(0, 200)}`);
+  return res.json();
+}
+
+/* ---------- glavni tijek ---------- */
+
+const haveCreds = ['BLOGGER_BLOG_ID', 'BLOGGER_CLIENT_ID', 'BLOGGER_CLIENT_SECRET', 'BLOGGER_REFRESH_TOKEN']
+  .every((k) => process.env[k]);
+
+const report = readJson(REPORT, { published: [] });
+const state = readJson(STATE, { posted: {} });
+const routes = [...new Set(report.published || [])].filter((p) => !state.posted[p]);
+
+const prepared = [];
+const skipped = [];
+for (const route of routes) {
+  const article = readArticle(route);
+  if (!article) { skipped.push({ route, reason: 'stranica nije nadena ili nema dovoljno teksta' }); continue; }
+  prepared.push({ route, post: buildPost(article) });
+}
+
+const summary = {
+  version: 'GNK_ASG_BLOG_PUBLISH_V1',
+  generatedAt: new Date().toISOString(),
+  mode: LIVE && haveCreds ? 'live' : 'priprema',
+  credentialsPresent: haveCreds,
+  candidates: routes.length,
+  prepared: prepared.length,
+  skipped,
+  posted: [],
+  failed: [],
+};
+
+if (LIVE && haveCreds) {
+  let token;
+  try {
+    token = await accessToken();
+  } catch (e) {
+    summary.failed.push({ route: '*', error: String(e.message || e) });
+  }
+  if (token) {
+    for (const { route, post } of prepared) {
+      try {
+        const res = await publish(post, token);
+        state.posted[route] = { at: new Date().toISOString(), blogUrl: res.url || null, id: res.id || null };
+        summary.posted.push({ route, blogUrl: res.url || null });
+      } catch (e) {
+        summary.failed.push({ route, error: String(e.message || e) });
+      }
+    }
+    writeJson(STATE, state);
+  }
+} else {
+  summary.note = haveCreds
+    ? 'Pristupni podaci postoje, ali skripta je pokrenuta bez --live.'
+    : 'Blog jos nije spojen. Objave su pripremljene i cekaju u redu. Postavi tajne BLOGGER_BLOG_ID, BLOGGER_CLIENT_ID, BLOGGER_CLIENT_SECRET i BLOGGER_REFRESH_TOKEN pa ce se isti red objaviti.';
+}
+
+writeJson(QUEUE, { ...summary, queue: prepared.map(({ route, post }) => ({
+  route, title: post.title, source: post._source, labels: post.labels, content: post.content,
+})) });
+
+console.log(`nacin: ${summary.mode}`);
+console.log(`kandidata: ${routes.length} | pripremljeno: ${prepared.length} | objavljeno: ${summary.posted.length} | neuspjelo: ${summary.failed.length}`);
+if (skipped.length) console.log(`preskoceno: ${skipped.length}`);
+if (!haveCreds) console.log('\nBlog jos nije spojen — objave cekaju u apps/portal/data/blog-content/queue.json');
+if (summary.failed.length) { console.error(summary.failed); process.exitCode = 1; }
