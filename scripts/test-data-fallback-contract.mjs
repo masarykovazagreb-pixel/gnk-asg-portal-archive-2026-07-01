@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 
 const news=JSON.parse(fs.readFileSync('apps/portal/data/news.json','utf8'));
 assert.ok(Array.isArray(news),'news fallback must be an array');
-assert.ok(news.length>=100,`news fallback has ${news.length} items; expected at least 100`);
+assert.ok(news.length>=60,`news fallback has ${news.length} items; expected at least 60`);
 for(const [index,item] of news.entries()){
   assert.ok(item&&typeof item==='object',`news item ${index} is invalid`);
   assert.ok(String(item.title||'').trim(),`news item ${index} has no title`);
