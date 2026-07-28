@@ -31,23 +31,12 @@ document.addEventListener('DOMContentLoaded', function () {
   // style('/assets/header-premium.css');
   style('/assets/group-contrast.css');
   style('/assets/group-network.css');
-  style('/assets/bitcoin-chart.css');
-  style('/assets/market-expansion.css');
-  style('/assets/bpp-public-card.css');
   style('/assets/language.css');
-  style('/assets/intelligence-desk.css');
-  style('/assets/desk-hybrid.css');
-  style('/assets/command-centre.css');
-  style('/assets/mobile-app.css');
-  style('/assets/desk-search.css');
-  style('/assets/floating-intelligence.css');
-  style('/assets/public-sources.css');
   style('/assets/mobile-stability.css');
   style('/assets/portal-integration.css');
   style('/assets/seo-profile-link.css');
   style('/assets/menu-fix.css');
   style('/assets/quality-patch.css');
-  style('/assets/index-live-hub-v1.css');
   script('/assets/public-unified-menu-v6.js');
   script('/assets/i18n.js');
   script('/assets/language-routing.js');
@@ -96,6 +85,19 @@ document.addEventListener('DOMContentLoaded', function () {
   // time without touching the globe/group-network package above,
   // which is loaded exactly as before.
   function loadDeferredWidgets() {
+  // Stilovi ovih widgeta idu zajedno sa svojim skriptama. Ranije su se
+  // ucitavali odmah, iako se sam widget pojavljuje tek nakon 'load'.
+  style('/assets/intelligence-desk.css');
+  style('/assets/desk-hybrid.css');
+  style('/assets/desk-search.css');
+  style('/assets/floating-intelligence.css');
+  style('/assets/command-centre.css');
+  style('/assets/bitcoin-chart.css');
+  style('/assets/market-expansion.css');
+  style('/assets/bpp-public-card.css');
+  style('/assets/index-live-hub-v1.css');
+  style('/assets/mobile-app.css');
+  style('/assets/public-sources.css');
     script('/assets/browser-data-refresh.js');
     script('/assets/market.js');
     script('/assets/gallery-auto-assign-v1.js');
