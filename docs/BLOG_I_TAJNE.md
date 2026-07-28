@@ -68,6 +68,25 @@ node scripts/repo-switch-manifest.mjs
 
 ---
 
+## Pravilo objavljivanja
+
+**Sajt je izvor, blog je preslika.**
+
+Svaki tekst objavljuje se na **dva mjesta**, uvijek istim redoslijedom:
+
+1. Prvo na gnk-asg.hr — kroz raspored objava, kako je i dosad išlo
+2. Zatim na blog, u sljedećem prolazu, s poveznicom natrag na izvorni članak
+
+Ništa se ne piše izravno na blog i ništa ne postoji samo tamo. Prijenos čita
+`editorial-registry.json`, koji se gradi iz stvarnih stranica na sajtu — ako
+stranica ne postoji, objava se preskače. Time je pravilo ugrađeno u sam postupak,
+ne oslanja se na pamćenje.
+
+Blog ne mijenja ništa na sajtu: ne dira raspored objava, ne stvara stranice i ne
+utječe na SEO izvornika. Kanonski izvor ostaje gnk-asg.hr.
+
+---
+
 ## Zamjena ključeva
 
 Ključ, secret i GitHub token korišteni pri postavljanju prošli su kroz razgovor s

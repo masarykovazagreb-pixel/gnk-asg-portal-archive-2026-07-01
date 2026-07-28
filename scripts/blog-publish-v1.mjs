@@ -2,6 +2,12 @@
 /**
  * Prijenos objavljenih tekstova na blog (Google Blogger).
  *
+ * PRAVILO: sajt je izvor, blog je preslika. Nikad obrnuto.
+ * Na blog smije ici iskljucivo tekst koji je vec objavljen na gnk-asg.hr i
+ * stoji u registru. Nista se ne pise izravno na blog, nista ne postoji samo
+ * tamo. Svaka objava zavrsava na dva mjesta: prvo na stranicama, zatim na
+ * blogu, s poveznicom natrag na izvornik.
+ *
  * Svaka objava, komentar i analiza koja izađe na gnk-asg.hr ide i na blog:
  * isti naslov, isti opis, iste ključne riječi kao oznake, isti hashtagovi,
  * autor Nermin Sefić, i poveznica natrag na izvorni članak.
@@ -55,6 +61,7 @@ const unescapeHtml = (s = '') => s
 /* ---------- čitanje objavljenog članka sa stranice ---------- */
 
 function readArticle(routePath) {
+  // Provjera pravila: bez stranice na sajtu nema objave na blogu.
   const file = resolve(PORTAL, '.' + routePath, 'index.html');
   if (!existsSync(file)) return null;
   const html = readFileSync(file, 'utf8');
