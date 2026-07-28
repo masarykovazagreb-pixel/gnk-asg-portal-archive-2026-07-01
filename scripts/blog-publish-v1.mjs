@@ -22,10 +22,15 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 
 const PORTAL = resolve('apps/portal');
-const REPORT = resolve('artifacts/editorial-scheduled-publish.json');
+const REGISTRY = resolve('apps/portal/data/editorial-registry.json');
 const QUEUE = resolve('apps/portal/data/blog-content/queue.json');
 const STATE = resolve('apps/portal/data/blog-content/published.json');
 const SITE = 'https://gnk-asg.hr';
+
+const BLOG = { name: 'Nermin Sefić GNK ASG', url: 'https://nerminsefic.blogspot.com' };
+// Koliko objava po pokretanju. Registar ima 150+ tekstova; slanje svih odjednom
+// udarilo bi u Googleovo ogranicenje, pa se stariji prenose postupno.
+const PER_RUN = Number(process.env.BLOG_PER_RUN || 10);
 
 const AUTHOR = 'Nermin Sefić';
 const PUBLISHER = 'GNK ASG d.o.o.';
@@ -63,8 +68,19 @@ function readArticle(routePath) {
   const image = meta('og:image', 'property');
 
   // Tijelo članka: odlomci iz glavnog dijela stranice, bez izbornika i podnožja.
-  const main = (html.match(/<main[\s\S]*?<\/main>/) || [''])[0];
-  const paragraphs = [...main.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
+  // Dio starijih stranica nema <main> ni <article>, pa se tada uzima cijeli
+  // dokument bez zaglavlja, podnozja i navigacije.
+  const body =
+    (html.match(/<main[\s\S]*?<\/main>/) || [])[0] ||
+    (html.match(/<article[\s\S]*?<\/article>/) || [])[0] ||
+    html
+      .replace(/<header[\s\S]*?<\/header>/g, '')
+      .replace(/<footer[\s\S]*?<\/footer>/g, '')
+      .replace(/<nav[\s\S]*?<\/nav>/g, '')
+      .replace(/<script[\s\S]*?<\/script>/g, '')
+      .replace(/<style[\s\S]*?<\/style>/g, '');
+
+  const paragraphs = [...body.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
     .map((m) => unescapeHtml(m[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim())
     .filter((t) => t.length > 80);
 
@@ -137,9 +153,16 @@ async function publish(post, token) {
 const haveCreds = ['BLOGGER_BLOG_ID', 'BLOGGER_CLIENT_ID', 'BLOGGER_CLIENT_SECRET', 'BLOGGER_REFRESH_TOKEN']
   .every((k) => process.env[k]);
 
-const report = readJson(REPORT, { published: [] });
+const registry = readJson(REGISTRY, { items: [] });
 const state = readJson(STATE, { posted: {} });
-const routes = [...new Set(report.published || [])].filter((p) => !state.posted[p]);
+
+// Najstariji prvi, da blog cita kronoloski kao i sajt.
+const pending = (registry.items || [])
+  .filter((i) => !state.posted[i.path])
+  .sort((a, b) => String(a.publishedAt || '').localeCompare(String(b.publishedAt || '')));
+
+const routes = pending.slice(0, PER_RUN).map((i) => i.path);
+const remaining = Math.max(0, pending.length - routes.length);
 
 const prepared = [];
 const skipped = [];
@@ -152,6 +175,11 @@ for (const route of routes) {
 const summary = {
   version: 'GNK_ASG_BLOG_PUBLISH_V1',
   generatedAt: new Date().toISOString(),
+  blog: BLOG,
+  totalInRegistry: (registry.items || []).length,
+  pending: pending.length,
+  remainingAfterRun: remaining,
+  perRun: PER_RUN,
   mode: LIVE && haveCreds ? 'live' : 'priprema',
   credentialsPresent: haveCreds,
   candidates: routes.length,
@@ -191,7 +219,9 @@ writeJson(QUEUE, { ...summary, queue: prepared.map(({ route, post }) => ({
 })) });
 
 console.log(`nacin: ${summary.mode}`);
-console.log(`kandidata: ${routes.length} | pripremljeno: ${prepared.length} | objavljeno: ${summary.posted.length} | neuspjelo: ${summary.failed.length}`);
+console.log(`blog: ${BLOG.name} (${BLOG.url})`);
+console.log(`u registru: ${summary.totalInRegistry} | ceka: ${pending.length} | u ovom prolazu: ${routes.length} | objavljeno: ${summary.posted.length} | neuspjelo: ${summary.failed.length}`);
+if (remaining) console.log(`nakon ovog prolaza ostaje: ${remaining}`);
 if (skipped.length) console.log(`preskoceno: ${skipped.length}`);
 if (!haveCreds) console.log('\nBlog jos nije spojen — objave cekaju u apps/portal/data/blog-content/queue.json');
 if (summary.failed.length) { console.error(summary.failed); process.exitCode = 1; }
