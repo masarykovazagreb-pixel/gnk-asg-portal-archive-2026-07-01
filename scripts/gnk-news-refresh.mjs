@@ -22,7 +22,13 @@ const FEEDS = [
   { source: 'CNBC Technology', group: 'technology', category: 'technology', url: 'https://www.cnbc.com/id/19854910/device/rss/rss.html' },
   { source: 'BBC Business', group: 'business', category: 'business', url: 'https://feeds.bbci.co.uk/news/business/rss.xml' },
   { source: 'BBC Technology', group: 'technology', category: 'technology', url: 'https://feeds.bbci.co.uk/news/technology/rss.xml' },
-  { source: 'WIRED Business', group: 'technology', category: 'technology', url: 'https://www.wired.com/feed/category/business/latest/rss' }
+  { source: 'WIRED Business', group: 'technology', category: 'technology', url: 'https://www.wired.com/feed/category/business/latest/rss' },
+  { source: 'The Guardian Business', group: 'business', category: 'business', url: 'https://www.theguardian.com/uk/business/rss' },
+  { source: 'The Guardian Technology', group: 'technology', category: 'technology', url: 'https://www.theguardian.com/uk/technology/rss' },
+  { source: 'Ars Technica', group: 'technology', category: 'technology', url: 'https://arstechnica.com/feed/' },
+  { source: 'Al Jazeera Economy', group: 'business', category: 'business', url: 'https://www.aljazeera.com/xml/rss/economy.xml' },
+  { source: 'NPR Business', group: 'business', category: 'business', url: 'https://feeds.npr.org/1006/rss.xml' },
+  { source: 'Engadget', group: 'technology', category: 'technology', url: 'https://www.engadget.com/rss.xml' }
 ];
 
 function nowIsoZagreb() {
@@ -145,12 +151,16 @@ async function readJson(path, fallback) {
 }
 
 function uniqueSorted(items) {
-  const seen = new Set();
+  const seenKeys = new Set();
+  const seenTitles = new Set();
   const unique = [];
   for (const item of items) {
     const key = item.id || item.url;
-    if (!key || seen.has(key)) continue;
-    seen.add(key);
+    const titleKey = String(item.title || '').toLowerCase().trim().replace(/\s+/g, ' ');
+    if (!key || seenKeys.has(key)) continue;
+    if (titleKey && seenTitles.has(titleKey)) continue;
+    seenKeys.add(key);
+    if (titleKey) seenTitles.add(titleKey);
     unique.push(item);
   }
   return unique.sort((a, b) => Date.parse(b.publishedAt || b.published_at || 0) - Date.parse(a.publishedAt || a.published_at || 0));
