@@ -1,22 +1,69 @@
 {
   "version": "GNK_ASG_BLOG_PUBLISH_V1",
-  "generatedAt": "2026-07-28T11:06:11.995Z",
+  "generatedAt": "2026-07-28T12:00:21.551Z",
   "blog": {
-    "name": "Nermin Sefić GNK ASG",
-    "url": "https://nerminsefic.blogspot.com"
+    "name": "NERMIN SEFIĆ - GNK ASG",
+    "url": "https://nermin-sefic.blogspot.com"
   },
   "totalInRegistry": 153,
   "pending": 153,
   "remainingAfterRun": 143,
   "perRun": 10,
-  "mode": "priprema",
-  "credentialsPresent": false,
+  "mode": "live",
+  "credentialsPresent": true,
+  "credentialCheck": {
+    "BLOGGER_BLOG_ID": "duljina 18",
+    "BLOGGER_CLIENT_ID": "duljina 72",
+    "BLOGGER_CLIENT_SECRET": "duljina 35",
+    "BLOGGER_REFRESH_TOKEN": "duljina 103"
+  },
   "candidates": 10,
   "prepared": 10,
   "skipped": [],
-  "posted": [],
-  "failed": [],
-  "note": "Blog jos nije spojen. Objave su pripremljene i cekaju u redu. Postavi tajne BLOGGER_BLOG_ID, BLOGGER_CLIENT_ID, BLOGGER_CLIENT_SECRET i BLOGGER_REFRESH_TOKEN pa ce se isti red objaviti.",
+  "posted": [
+    {
+      "route": "/objave/kiberneticka-otpornost-i-kontinuitet/",
+      "blogUrl": "https://nermin-sefic.blogspot.com/2026/07/kiberneticka-otpornost-i-kontinuitet_02037339603.html"
+    },
+    {
+      "route": "/objave/tehnologija-kapital-i-odgovorno-upravljanje/",
+      "blogUrl": "https://nermin-sefic.blogspot.com/2026/07/tehnologija-kapital-i-odgovorno_01570044081.html"
+    },
+    {
+      "route": "/objave/transparentno-upravljanje-kao-operativni-standard/",
+      "blogUrl": "https://nermin-sefic.blogspot.com/2026/07/transparentno-upravljanje-kao_0419542465.html"
+    },
+    {
+      "route": "/komentari/automatizacija-ne-ukida-odgovornost/",
+      "blogUrl": "https://nermin-sefic.blogspot.com/2026/07/automatizacija-ne-ukida-odgovornost_01029000240.html"
+    },
+    {
+      "route": "/komentari/inovacija-bez-povjerenja-nije-napredak/",
+      "blogUrl": "https://nermin-sefic.blogspot.com/2026/07/inovacija-bez-povjerenja-nije-napredak_0606943977.html"
+    },
+    {
+      "route": "/komentari/trzista-traze-jasne-informacije/",
+      "blogUrl": "https://nermin-sefic.blogspot.com/2026/07/trzista-traze-jasne-informacije.html"
+    }
+  ],
+  "failed": [
+    {
+      "route": "/analize/ai-infrastruktura-kapital-energija/",
+      "error": "blogger_429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource has been exhausted (e.g. check quota).\",\n    \"errors\": [\n      {\n        \"message\": \"Resource has been exhausted (e.g. check quota).\",\n        "
+    },
+    {
+      "route": "/analize/kapitalna-struktura-i-operativna-otpornost/",
+      "error": "blogger_429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource has been exhausted (e.g. check quota).\",\n    \"errors\": [\n      {\n        \"message\": \"Resource has been exhausted (e.g. check quota).\",\n        "
+    },
+    {
+      "route": "/objave/kiberneticka-sigurnost-i-poslovni-kontinuitet/",
+      "error": "blogger_429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource has been exhausted (e.g. check quota).\",\n    \"errors\": [\n      {\n        \"message\": \"Resource has been exhausted (e.g. check quota).\",\n        "
+    },
+    {
+      "route": "/objave/povjerenje-investitora-kroz-transparentnost/",
+      "error": "blogger_429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource has been exhausted (e.g. check quota).\",\n    \"errors\": [\n      {\n        \"message\": \"Resource has been exhausted (e.g. check quota).\",\n        "
+    }
+  ],
   "queue": [
     {
       "route": "/objave/kiberneticka-otpornost-i-kontinuitet/",
