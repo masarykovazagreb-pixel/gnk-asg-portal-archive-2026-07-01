@@ -1,0 +1,772 @@
+{
+  "version": "GNK_ASG_REPO_SWITCH_MANIFEST_V1",
+  "generatedAt": "2026-07-28T10:50:01.516Z",
+  "sourceRepo": "beckuphome-gnk/gnk-asg-portal",
+  "note": "Popis svega što git mirror ne prenosi. Bez ovoga prelazak nije jedan klik.",
+  "secrets": {
+    "required": [
+      "CLOUDFLARE_ACCOUNT_ID",
+      "CLOUDFLARE_API_TOKEN",
+      "GNK_ASG_ADMIN_TOKEN",
+      "GNK_ASG_OPERATOR_TOKEN",
+      "MASARYKOVA_BACKUP_TOKEN",
+      "MASARYKOVA_MIRROR_TOKEN",
+      "OPERATOR_TOKEN"
+    ],
+    "usedBy": {
+      "CLOUDFLARE_API_TOKEN": [
+        "audit-floating-home-route-owners.yml",
+        "audit-three-public-routes.yml",
+        "cleanup-campaign-mailer-remaining.yml",
+        "deploy-admin-auth-v6.yml",
+        "deploy-admin-auth-v6.yml",
+        "deploy-admin-auth-v6.yml",
+        "deploy-admin-auth-v6.yml",
+        "deploy-worker-review-preview-v1.yml",
+        "diag-mail-autoreply-live-20260722.yml",
+        "diagnose-email-routing-now.yml",
+        "diagnose-email-routing-now.yml",
+        "diagnose-project50-unified-menu-v16.yml",
+        "export-campaign-continuation-readonly.yml",
+        "fix-floating-home-page-routes-v16.yml",
+        "fix-operator-dashboard-route-v7.yml",
+        "media-command-from-chat.yml",
+        "media-readiness-audit.yml",
+        "one-time-fix-editorial-route-ownership-v35.yml",
+        "repair-office-inbound-email.yml",
+        "upload-media-pdf-issue92.yml"
+      ],
+      "CLOUDFLARE_ACCOUNT_ID": [
+        "cleanup-campaign-mailer-remaining.yml",
+        "deploy-admin-auth-v6.yml",
+        "deploy-admin-auth-v6.yml",
+        "deploy-admin-auth-v6.yml",
+        "deploy-admin-auth-v6.yml",
+        "deploy-worker-review-preview-v1.yml",
+        "diag-mail-autoreply-live-20260722.yml",
+        "diagnose-email-routing-now.yml",
+        "diagnose-project50-unified-menu-v16.yml",
+        "export-campaign-continuation-readonly.yml",
+        "media-command-from-chat.yml",
+        "media-readiness-audit.yml",
+        "repair-office-inbound-email.yml",
+        "upload-media-pdf-issue92.yml"
+      ],
+      "GNK_ASG_OPERATOR_TOKEN": [
+        "deploy-admin-auth-v6.yml",
+        "media-command-from-chat.yml",
+        "verify-email-tools-status-v6.yml"
+      ],
+      "OPERATOR_TOKEN": [
+        "deploy-admin-auth-v6.yml",
+        "verify-email-tools-status-v6.yml"
+      ],
+      "MASARYKOVA_BACKUP_TOKEN": [
+        "disaster-recovery-mirror-v2.yml"
+      ],
+      "MASARYKOVA_MIRROR_TOKEN": [
+        "mirror-sync-masarykova.yml"
+      ],
+      "GNK_ASG_ADMIN_TOKEN": [
+        "verify-email-tools-status-v6.yml"
+      ]
+    },
+    "warning": "Vrijednosti se ne mogu procitati preko API-ja niti se smiju spremati u repozitorij. Prenose se rucno."
+  },
+  "workflows": {
+    "total": 231,
+    "activeCount": 73,
+    "active": [
+      "build-world-cookbook-premium.yml",
+      "build-world-cookbook.yml",
+      "check-seo-contract-evidence.yml",
+      "content-source-governance.yml",
+      "copy-clean-workforce-release-20260724.yml",
+      "deploy-admin-auth-v6.yml",
+      "deploy-black-logo-smoke-test.yml",
+      "deploy-mail-studio-multilingual.yml",
+      "deploy-private-workforce-live-preview.yml",
+      "deploy-private-workforce-staging.yml",
+      "deploy-public-portal-assets-safe.yml",
+      "diag-direct-inbound-patch-20260722.yml",
+      "diag-mail-autoreply-live-20260722.yml",
+      "diag12-oneoff.yml",
+      "diagnose-pr487-validation.yml",
+      "diagnose-production-candidate-a82af2a.yml",
+      "diagnose-production-validation.yml",
+      "editorial-content-ci.yml",
+      "editorial-content-deploy.yml",
+      "editorial-scheduled-publish.yml",
+      "fix-release-static-audit-20260724.yml",
+      "generate-digital-workforce-newsroom-pages.yml",
+      "inspect-live-status-verification-20260722.yml",
+      "linkedin-daily-rotation.yml",
+      "macro-market-refresh.yml",
+      "market-pulse-refresh.yml",
+      "mirror-sync-masarykova.yml",
+      "news-refresh.yml",
+      "one-time-approved-deploy-14868bc.yml",
+      "one-time-approved-deploy-77de.yml",
+      "one-time-approved-deploy-cc7c-20260715.yml",
+      "one-time-approved-deploy-cd053a-20260715.yml",
+      "one-time-autoreply-ai-v1.yml",
+      "one-time-diagnose-validate-release-v1.yml",
+      "one-time-direct-urgent-release-v37.yml",
+      "one-time-final-urgent-package-v1.yml",
+      "one-time-fix-editorial-route-ownership-v35.yml",
+      "one-time-fix-news-cache-and-contact-readiness-v1.yml",
+      "one-time-fix-todays-news-order-v1.yml",
+      "one-time-full-validate-and-deploy-v2.yml",
+      "one-time-public-content-repair-v1.yml",
+      "one-time-revalidate-urgent-package-v3.yml",
+      "one-time-verify-final-urgent-v1.yml",
+      "one-time-verify-production-v4.yml",
+      "public-editorial-assets-ci.yml",
+      "public-market-contract.yml",
+      "public-portal-audit.yml",
+      "read-latest-deploy-status-cd053a.yml",
+      "record-news-deploy-501ddc-status.yml",
+      "record-one-time-deploy-14868bc-status.yml",
+      "record-one-time-deploy-77de-status.yml",
+      "record-one-time-deploy-cd053a-status-v2.yml",
+      "record-one-time-deploy-cd053a-status.yml",
+      "refresh-gnkc-index.yml",
+      "refresh-index-live-data.yml",
+      "seo-audit-refresh.yml",
+      "seo-news-cycle.yml",
+      "site-functional-readiness.yml",
+      "site-health-check-v1.yml",
+      "sync-webshop-products.yml",
+      "temp-fix-contrast-navigation-race.yml",
+      "temp-generate-sitemap-fix-754.yml",
+      "validate-contact-idempotency.yml",
+      "validate-index-news-retention-copy.yml",
+      "validate-mail-autoreply-dedupe.yml",
+      "validate-mail-mime-type.yml",
+      "validate-market-primary-alias-runtime.yml",
+      "validate-news-retention-contract.yml",
+      "validate-newsroom-enqueue-auth.yml",
+      "validate-production-authorization-contract.yml",
+      "validate-production-hotfix-contact-market-mail.yml",
+      "validate-verify-coinpaprika-upstream-v2.yml",
+      "validate-verify-coinpaprika-upstream.yml"
+    ],
+    "note": "Nakon prelaska su SVI workflowi u novom repozitoriju u pocetnom stanju. Ukljucuju se samo oni s popisa; ostali ostaju iskljuceni."
+  },
+  "cloudflare": {
+    "workers": [
+      "EMAIL",
+      "gnk-asg-ai-assist-worker",
+      "gnk-asg-ai-newsroom-writer",
+      "gnk-asg-auto-editor",
+      "gnk-asg-auto-editor-public-clean",
+      "gnk-asg-contact-api",
+      "gnk-asg-direct-operator",
+      "gnk-asg-editorial-center",
+      "gnk-asg-emergency-entry-redirect",
+      "gnk-asg-enterprise-review-v3",
+      "gnk-asg-mail-center-worker",
+      "gnk-asg-news-pages-live",
+      "gnk-asg-operator-center",
+      "gnk-asg-public-menu-fix",
+      "gnk-asg-publish-operator",
+      "gnk-asg-scheduled-mail-sender"
+    ],
+    "configs": 25,
+    "routes": [
+      "gnk-asg.hr/*",
+      "gnk-asg.hr/admin-center*",
+      "gnk-asg.hr/api/admin-mail-send*",
+      "gnk-asg.hr/api/ai-assist*",
+      "gnk-asg.hr/api/ai-newsroom-writer*",
+      "gnk-asg.hr/api/auto-editor*",
+      "gnk-asg.hr/api/contact-mailboxes*",
+      "gnk-asg.hr/api/contact-submit*",
+      "gnk-asg.hr/api/editorial-public-health*",
+      "gnk-asg.hr/api/mail-schedule*",
+      "gnk-asg.hr/api/operator-mailbox-config*",
+      "gnk-asg.hr/api/operator-send-mail*",
+      "gnk-asg.hr/api/operator-signature-load*",
+      "gnk-asg.hr/api/operator-signature-save*",
+      "gnk-asg.hr/app",
+      "gnk-asg.hr/app/*",
+      "gnk-asg.hr/assets/public-menu-final-v9.js*",
+      "gnk-asg.hr/auto-editor*",
+      "gnk-asg.hr/data/auto-editor.json",
+      "gnk-asg.hr/mail-studio*",
+      "gnk-asg.hr/mail-studio-pro*",
+      "gnk-asg.hr/news/*",
+      "gnk-asg.hr/operator-dashboard*",
+      "gnk-asg.hr/operator-mobile*",
+      "gnk-asg.hr/operator/session/*",
+      "gnk-asg.hr/vijesti/*",
+      "publish.gnk-asg.hr",
+      "www.gnk-asg.hr/*",
+      "www.gnk-asg.hr/admin-center*",
+      "www.gnk-asg.hr/api/admin-mail-send*",
+      "www.gnk-asg.hr/api/auto-editor*",
+      "www.gnk-asg.hr/api/contact-mailboxes*",
+      "www.gnk-asg.hr/api/contact-submit*",
+      "www.gnk-asg.hr/api/editorial-public-health*",
+      "www.gnk-asg.hr/api/operator-mailbox-config*",
+      "www.gnk-asg.hr/api/operator-send-mail*",
+      "www.gnk-asg.hr/api/operator-signature-load*",
+      "www.gnk-asg.hr/api/operator-signature-save*",
+      "www.gnk-asg.hr/app",
+      "www.gnk-asg.hr/app/*",
+      "www.gnk-asg.hr/assets/public-menu-final-v9.js*",
+      "www.gnk-asg.hr/auto-editor*",
+      "www.gnk-asg.hr/data/auto-editor.json",
+      "www.gnk-asg.hr/mail-studio*",
+      "www.gnk-asg.hr/mail-studio-pro*",
+      "www.gnk-asg.hr/news/*",
+      "www.gnk-asg.hr/operator-dashboard*",
+      "www.gnk-asg.hr/operator-mobile*",
+      "www.gnk-asg.hr/operator/session/*",
+      "www.gnk-asg.hr/vijesti/*"
+    ],
+    "bindings": {
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ]
+    },
+    "note": "Identifikatori KV/D1/R2 vezuju se na Cloudflare racun, ne na repozitorij. Ako racun ostaje isti, vezanja se ne mijenjaju i samo se prespaja izvor implementacije."
+  },
+  "lockedSettings": {
+    "file": "workers/gnk-asg-direct-operator/wrangler.toml",
+    "values": [
+      {
+        "key": "NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE",
+        "value": "false"
+      },
+      {
+        "key": "MAIL_AUTO_REPLY_LIVE",
+        "value": "false"
+      },
+      {
+        "key": "MAIL_STUDIO_LIVE",
+        "value": "false"
+      },
+      {
+        "key": "MAIL_MANUAL_LIVE",
+        "value": "false"
+      },
+      {
+        "key": "MAIL_MANDATORY_BCC",
+        "value": "beckuphome@gmail.com"
+      },
+      {
+        "key": "MAIL_PROFILE_TEST_LIVE",
+        "value": "false"
+      },
+      {
+        "key": "MAIL_PROFILE_TEST_RECIPIENTS",
+        "value": "beckuphome@gmail.com"
+      },
+      {
+        "key": "MAIL_BOOTSTRAP_SMOKE_TEST",
+        "value": "false"
+      },
+      {
+        "key": "MEDIA_OUTREACH_LIVE",
+        "value": "false"
+      },
+      {
+        "key": "MEDIA_OUTREACH_SCHEDULED_LIVE",
+        "value": "false"
+      },
+      {
+        "key": "MEDIA_OUTREACH_TEST_LIVE",
+        "value": "false"
+      },
+      {
+        "key": "MEDIA_OUTREACH_TEST_RECIPIENTS",
+        "value": "beckuphome@gmail.com"
+      },
+      {
+        "key": "MEDIA_OUTREACH_AUTO_TEST_RECIPIENT",
+        "value": "beckuphome@gmail.com"
+      },
+      {
+        "key": "MEDIA_OUTREACH_REPORT_RECIPIENTS",
+        "value": "beckuphome@gmail.com"
+      },
+      {
+        "key": "MEDIA_OUTREACH_MAX_PER_HOUR",
+        "value": "1"
+      },
+      {
+        "key": "MEDIA_OUTREACH_MAX_PER_DAY",
+        "value": "3"
+      },
+      {
+        "key": "EMAIL_STATUS_PUBLIC_ORIGIN",
+        "value": "https://gnk-asg.hr"
+      },
+      {
+        "key": "EMAIL_OPEN_TRACKING_ENABLED",
+        "value": "true"
+      },
+      {
+        "key": "EMAIL_STATUS_SYNC_LOOKBACK_HOURS",
+        "value": "48"
+      },
+      {
+        "key": "EMAIL_STATUS_SYNC_OVERLAP_MINUTES",
+        "value": "15"
+      },
+      {
+        "key": "EMAIL_STATUS_SYNC_LIMIT",
+        "value": "5000"
+      }
+    ],
+    "rule": "Ove vrijednosti moraju ostati identicne nakon prelaska. Provjera Site Functional Readiness pada ako se promijene."
+  },
+  "workerDetail": [
+    {
+      "config": "workers/gnk-asg-ai-assist-worker/wrangler.toml",
+      "name": "gnk-asg-ai-assist-worker",
+      "routes": [
+        "gnk-asg.hr/api/ai-assist*"
+      ],
+      "kv": [],
+      "d1": [],
+      "r2": [],
+      "crons": [],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-ai-newsroom-writer/wrangler.toml",
+      "name": "gnk-asg-ai-newsroom-writer",
+      "routes": [
+        "gnk-asg.hr/api/ai-newsroom-writer*"
+      ],
+      "kv": [],
+      "d1": [],
+      "r2": [],
+      "crons": [
+        "\"0 6 * * *\""
+      ],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-auto-editor-public-clean-worker/wrangler.toml",
+      "name": "gnk-asg-auto-editor-public-clean",
+      "routes": [
+        "gnk-asg.hr/auto-editor*"
+      ],
+      "kv": [],
+      "d1": [],
+      "r2": [],
+      "crons": [],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-auto-editor-worker/wrangler.toml",
+      "name": "gnk-asg-auto-editor",
+      "routes": [
+        "gnk-asg.hr/auto-editor*",
+        "www.gnk-asg.hr/auto-editor*",
+        "gnk-asg.hr/api/auto-editor*",
+        "www.gnk-asg.hr/api/auto-editor*",
+        "gnk-asg.hr/data/auto-editor.json",
+        "www.gnk-asg.hr/data/auto-editor.json"
+      ],
+      "kv": [
+        "GNK_ASG_KV",
+        "GNK_ASG_CONFIG_KV"
+      ],
+      "d1": [],
+      "r2": [],
+      "crons": [
+        "\"0 6,7,10,11,15,16 * * *\""
+      ],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-contact-api-worker/wrangler.no-routes.toml",
+      "name": "EMAIL",
+      "routes": [],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-contact-api-worker/wrangler.routes.toml",
+      "name": "EMAIL",
+      "routes": [
+        "gnk-asg.hr/api/contact-submit*",
+        "www.gnk-asg.hr/api/contact-submit*"
+      ],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-contact-api-worker/wrangler.toml",
+      "name": "gnk-asg-contact-api",
+      "routes": [
+        "gnk-asg.hr/api/contact-submit*",
+        "www.gnk-asg.hr/api/contact-submit*",
+        "gnk-asg.hr/api/contact-mailboxes*",
+        "www.gnk-asg.hr/api/contact-mailboxes*",
+        "gnk-asg.hr/api/operator-send-mail*",
+        "www.gnk-asg.hr/api/operator-send-mail*",
+        "gnk-asg.hr/api/operator-mailbox-config*",
+        "www.gnk-asg.hr/api/operator-mailbox-config*",
+        "gnk-asg.hr/api/operator-signature-load*",
+        "www.gnk-asg.hr/api/operator-signature-load*",
+        "gnk-asg.hr/api/operator-signature-save*",
+        "www.gnk-asg.hr/api/operator-signature-save*"
+      ],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler-before-apex-route-removal-20260620_111835.toml",
+      "name": "EMAIL",
+      "routes": [
+        "gnk-asg.hr/*",
+        "www.gnk-asg.hr/*"
+      ],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler.dark-market.toml",
+      "name": "gnk-asg-direct-operator",
+      "routes": [
+        "gnk-asg.hr/operator/session/*",
+        "www.gnk-asg.hr/operator/session/*",
+        "gnk-asg.hr/api/admin-mail-send*",
+        "www.gnk-asg.hr/api/admin-mail-send*",
+        "gnk-asg.hr/api/operator-send-mail*",
+        "www.gnk-asg.hr/api/operator-send-mail*",
+        "gnk-asg.hr/api/contact-submit*",
+        "www.gnk-asg.hr/api/contact-submit*",
+        "gnk-asg.hr/mail-studio*",
+        "www.gnk-asg.hr/mail-studio*",
+        "gnk-asg.hr/mail-studio-pro*",
+        "www.gnk-asg.hr/mail-studio-pro*",
+        "gnk-asg.hr/admin-center*",
+        "www.gnk-asg.hr/admin-center*",
+        "gnk-asg.hr/operator-dashboard*",
+        "www.gnk-asg.hr/operator-dashboard*",
+        "gnk-asg.hr/operator-mobile*",
+        "www.gnk-asg.hr/operator-mobile*"
+      ],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [
+        "\"0 */2 * * *\""
+      ],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler.editorial-existing.toml",
+      "name": "gnk-asg-auto-editor",
+      "routes": [],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [
+        "\"*/5 * * * *\""
+      ],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler.editorial-final.toml",
+      "name": "gnk-asg-direct-operator",
+      "routes": [],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [
+        "\"0 */2 * * *\", \"0 7,8,14,15 * * *\""
+      ],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler.editorial-route.toml",
+      "name": "gnk-asg-editorial-center",
+      "routes": [
+        "gnk-asg.hr/auto-editor*",
+        "www.gnk-asg.hr/auto-editor*",
+        "gnk-asg.hr/api/editorial-public-health*",
+        "www.gnk-asg.hr/api/editorial-public-health*"
+      ],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler.emergency-stop.toml",
+      "name": "gnk-asg-direct-operator",
+      "routes": [],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [
+        ""
+      ],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml",
+      "name": "gnk-asg-direct-operator",
+      "routes": [],
+      "kv": [
+        "GNK_ASG_CONFIG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [
+        "\"*/15 * * * *\""
+      ],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler.review-preview.toml",
+      "name": "gnk-asg-enterprise-review-v3",
+      "routes": [],
+      "kv": [],
+      "d1": [],
+      "r2": [],
+      "crons": [],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler.runtime.toml",
+      "name": "gnk-asg-direct-operator",
+      "routes": [],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [
+        "\"*/3 * * * *\""
+      ],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler.toml",
+      "name": "gnk-asg-direct-operator",
+      "routes": [],
+      "kv": [
+        "GNK_ASG_CONFIG_KV",
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [
+        "GNK_ASG_MEDIA_ASSETS"
+      ],
+      "crons": [
+        "\"*/15 * * * *\""
+      ],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-direct-operator/wrangler.v21-index-preview.toml",
+      "name": "gnk-asg-direct-operator",
+      "routes": [
+        "gnk-asg.hr/*",
+        "www.gnk-asg.hr/*"
+      ],
+      "kv": [],
+      "d1": [],
+      "r2": [],
+      "crons": [],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-emergency-entry-redirect/wrangler.toml",
+      "name": "gnk-asg-emergency-entry-redirect",
+      "routes": [
+        "gnk-asg.hr/app",
+        "gnk-asg.hr/app/*",
+        "www.gnk-asg.hr/app",
+        "www.gnk-asg.hr/app/*"
+      ],
+      "kv": [],
+      "d1": [],
+      "r2": [],
+      "crons": [],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-mail-center-worker/wrangler.toml",
+      "name": "gnk-asg-mail-center-worker",
+      "routes": [],
+      "kv": [
+        "GNK_ASG_KV"
+      ],
+      "d1": [
+        "GNK_ASG_D1"
+      ],
+      "r2": [],
+      "crons": [],
+      "sendEmail": true
+    },
+    {
+      "config": "workers/gnk-asg-news-pages-live/wrangler.toml",
+      "name": "gnk-asg-news-pages-live",
+      "routes": [
+        "gnk-asg.hr/vijesti/*",
+        "gnk-asg.hr/news/*",
+        "www.gnk-asg.hr/vijesti/*",
+        "www.gnk-asg.hr/news/*"
+      ],
+      "kv": [],
+      "d1": [],
+      "r2": [],
+      "crons": [],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-operator-center/wrangler.toml",
+      "name": "gnk-asg-operator-center",
+      "routes": [],
+      "kv": [],
+      "d1": [],
+      "r2": [],
+      "crons": [],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-public-menu-fix/wrangler.toml",
+      "name": "gnk-asg-public-menu-fix",
+      "routes": [
+        "gnk-asg.hr/assets/public-menu-final-v9.js*",
+        "www.gnk-asg.hr/assets/public-menu-final-v9.js*"
+      ],
+      "kv": [],
+      "d1": [],
+      "r2": [],
+      "crons": [],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-publish-operator/wrangler.toml",
+      "name": "gnk-asg-publish-operator",
+      "routes": [
+        "publish.gnk-asg.hr"
+      ],
+      "kv": [
+        "GNK_ASG_KV"
+      ],
+      "d1": [],
+      "r2": [],
+      "crons": [],
+      "sendEmail": false
+    },
+    {
+      "config": "workers/gnk-asg-scheduled-mail-sender/wrangler.toml",
+      "name": "gnk-asg-scheduled-mail-sender",
+      "routes": [
+        "gnk-asg.hr/api/mail-schedule*"
+      ],
+      "kv": [
+        "GNK_ASG_KV"
+      ],
+      "d1": [],
+      "r2": [],
+      "crons": [
+        "\"*/5 * * * *\""
+      ],
+      "sendEmail": false
+    }
+  ]
+}
