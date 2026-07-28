@@ -126,16 +126,42 @@ def priority_and_freq(url, cat):
     return "0.7", "monthly"
 
 
+def jezicni_par(url):
+    """Vraca (hr_url, en_url) ako stranica postoji na oba jezika, inace None.
+
+    Trazilice trebaju eksplicitnu vezu izmedju jezicnih inacica; bez nje
+    hrvatska i engleska stranica natjecu se jedna s drugom za isti upit.
+    """
+    put = url.replace(BASE_URL, "")
+    if put.startswith("/en/") or put == "/en":
+        hr = "/" + put[len("/en/"):] if put != "/en" else "/"
+        en = put
+    else:
+        hr = put
+        en = "/en" + put if put != "/" else "/en/"
+    return BASE_URL + hr, BASE_URL + en
+
+
 def render_urlset(items):
+    sve_adrese = {u for u, _, _ in items}
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+        ' xmlns:xhtml="http://www.w3.org/1999/xhtml">',
     ]
     for url, lastmod, cat in sorted(items):
         pr, freq = priority_and_freq(url, cat)
+        hr_url, en_url = jezicni_par(url)
+        veze = ""
+        if hr_url in sve_adrese and en_url in sve_adrese:
+            veze = (
+                f'<xhtml:link rel="alternate" hreflang="hr" href="{hr_url}"/>'
+                f'<xhtml:link rel="alternate" hreflang="en" href="{en_url}"/>'
+                f'<xhtml:link rel="alternate" hreflang="x-default" href="{hr_url}"/>'
+            )
         lines.append(
             f"  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod>"
-            f"<changefreq>{freq}</changefreq><priority>{pr}</priority></url>"
+            f"<changefreq>{freq}</changefreq><priority>{pr}</priority>{veze}</url>"
         )
     lines.append("</urlset>")
     return "\n".join(lines)

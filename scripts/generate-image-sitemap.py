@@ -1,156 +1,155 @@
 #!/usr/bin/env python3
+"""Foto mapa — slike vezane uz stranicu na kojoj se stvarno pojavljuju.
+
+Trazilice foto mapu citaju kao popis "koja slika pripada kojoj stranici".
+Popis svih datoteka u repozitoriju tu ne pomaze: slika koja nije ni na jednoj
+stranici nema kontekst, a stranica bez navedenih slika ne dobiva nista.
+
+Zato se prolazi kroz same stranice i iz njih vade slike:
+  - <img src="...">
+  - <meta property="og:image">
+  - pozadinske slike iz CSS-a (background-image: url(...))
 """
-Generates a comprehensive image sitemap (apps/portal/image-sitemap.xml)
-covering every real, on-disk image used as the main visual on any
-indexable page — article covers, gallery hero images, and a
-homepage/og:image fallback for pages with neither.
+from __future__ import annotations
 
-This exists because Google Images only reliably discovers and indexes
-images that are explicitly listed in an image sitemap (or otherwise
-strongly linked); relying on crawlers finding <img> tags alone is much
-weaker. More indexed images for GNK ASG / Nermin Sefić content means
-more entry points into search results beyond plain text queries.
-
-Run from the repo root:
-    python3 scripts/generate-image-sitemap.py
-
-After running, remember image-sitemap.xml must stay referenced in:
-  - apps/portal/robots.txt (Sitemap: line)
-  - apps/portal/sitemap-index.xml (<sitemap> entry)
-This script does not touch those two files itself, since they're
-maintained by scripts/generate-sitemaps.py and hand edits; re-check
-both after adding a new sitemap type.
-"""
-import html
 import os
 import re
-from collections import defaultdict
+import html
+from urllib.parse import urljoin
 
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PORTAL_DIR = os.path.join(REPO_ROOT, "apps", "portal")
-BASE_URL = "https://gnk-asg.hr"
+KORIJEN = "apps/portal"
+BAZA = "https://gnk-asg.hr"
+IZLAZ = os.path.join(KORIJEN, "image-sitemap.xml")
 
-# Reuse the same exclusions as generate-sitemaps.py so we never publish
-# admin/operational pages or anything noindex'd.
-EXCLUDE_PREFIXES = [
-    "admin/", "admin-center/", "admin-login/", "control/", "kontrola-azuriranja/",
-    "automation-status/", "webmail/", "mail-studio/", "campaign-mailer/",
-    "email-status/", "worker-ops/", "operator-dashboard/", "digital-headquarters/",
-    "media-registration-admin/", "podijeli/", "dijeli/", "api/",
-    "assets/", "data/", "docs/", "documents/", "downloads/", "scripts/",
-    "tests/", "__preview/", ".github/", "artifacts/",
-]
-NOINDEX_RE = re.compile(
-    r'<meta\s+name=["\']robots["\']\s+content=["\'][^"\']*noindex', re.IGNORECASE
-)
-IMAGE_TAG_RE = re.compile(r'<img class="(?:article-cover|hero)" src="([^"]+)" alt="([^"]*)"')
-GALLERY_IMG_RE = re.compile(r'<img src="(/assets/gallery/[^"]+)" alt="([^"]*)"')
-OG_IMAGE_RE = re.compile(r'property="og:image" content="([^"]+)"')
-TITLE_RE = re.compile(r'<title>([^<]*)</title>')
+NOINDEX = re.compile(r'<meta\s+name=["\']robots["\']\s+content=["\'][^"\']*noindex', re.I)
+IMG = re.compile(r'<img[^>]+src=["\']([^"\']+)["\'][^>]*>', re.I)
+ALT = re.compile(r'alt=["\']([^"\']*)["\']', re.I)
+OG = re.compile(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', re.I)
+CSS_VEZA = re.compile(r'<link[^>]+href=["\']([^"\']+\.css[^"\']*)["\']', re.I)
+CSS_SLIKA = re.compile(r'url\(["\']?([^"\')]+\.(?:webp|jpg|jpeg|png|svg))["\']?\)', re.I)
+NASTAVAK = re.compile(r'\.(webp|jpe?g|png|svg)(\?|$)', re.I)
+
+NAJMANJE = 3000
+PRESKOCI = ("favicon", "sprite", "spacer", "pixel", "tracking")
 
 
-def is_excluded(rel_path):
-    return any(rel_path.startswith(p) for p in EXCLUDE_PREFIXES)
+def adresa_stranice(putanja):
+    rel = putanja[len(KORIJEN):]
+    if rel.endswith("/index.html"):
+        rel = rel[: -len("index.html")]
+    return BAZA + rel
 
 
-def esc(s):
-    return html.escape(s, quote=True)
+def apsolutna(izvor, temelj):
+    izvor = html.unescape(izvor.strip())
+    if not izvor or izvor.startswith(("data:", "blob:", "mailto:", "//")):
+        return None
+    if not NASTAVAK.search(izvor):
+        return None
+    if izvor.startswith("http"):
+        return izvor if izvor.startswith(BAZA) else None
+    return urljoin(temelj, izvor)
 
 
-def collect_pages():
-    """Walk apps/portal/ the same way generate-sitemaps.py does."""
-    pages = []
-    for dirpath, dirs, files in os.walk(PORTAL_DIR):
-        rel_dir = os.path.relpath(dirpath, PORTAL_DIR)
-        rel_dir = "" if rel_dir == "." else rel_dir.replace(os.sep, "/")
-        check_path = rel_dir + "/" if rel_dir else ""
-        if is_excluded(check_path):
-            dirs[:] = []
-            continue
-        if "index.html" not in files:
-            continue
-        fs_path = os.path.join(dirpath, "index.html")
-        try:
-            head = open(fs_path, encoding="utf-8", errors="ignore").read(4000)
-        except Exception:
-            continue
-        if NOINDEX_RE.search(head):
-            continue
-        url_path = "/" + rel_dir + ("/" if rel_dir else "")
-        pages.append((BASE_URL + url_path, fs_path))
-    return pages
+def lokalna(url):
+    return os.path.join(KORIJEN, url[len(BAZA):].lstrip("/").split("?")[0])
 
 
-def images_for_page(fs_path):
+def dovoljno_velika(url):
+    put = lokalna(url)
+    if not os.path.exists(put):
+        return False
+    if any(k in put.lower() for k in PRESKOCI):
+        return False
+    return os.path.getsize(put) >= NAJMANJE
+
+
+def slike_iz_css(css_url):
+    put = lokalna(css_url)
+    if not os.path.exists(put):
+        return []
     try:
-        c = open(fs_path, encoding="utf-8", errors="ignore").read()
+        return CSS_SLIKA.findall(open(put, encoding="utf-8", errors="ignore").read())
     except Exception:
         return []
-    found = []
-    for m in IMAGE_TAG_RE.finditer(c):
-        found.append((m.group(1), m.group(2)))
-    for m in GALLERY_IMG_RE.finditer(c):
-        found.append((m.group(1), m.group(2)))
-    if not found:
-        m = OG_IMAGE_RE.search(c)
-        if m:
-            title_m = TITLE_RE.search(c)
-            title = title_m.group(1) if title_m else "GNK ASG"
-            found.append((m.group(1), title))
 
-    resolved = []
-    seen = set()
-    for src, alt in found:
-        if src in seen:
+
+def skupi():
+    po_stranici = {}
+    for dirpath, _dirs, files in os.walk(KORIJEN):
+        if "index.html" not in files:
             continue
-        seen.add(src)
-        if src.startswith("http"):
-            img_url = src
-            clean = src[len(BASE_URL):] if src.startswith(BASE_URL) else None
-        elif src.startswith("/"):
-            img_url = BASE_URL + src
-            clean = src
-        else:
+        put = os.path.join(dirpath, "index.html")
+        try:
+            sadrzaj = open(put, encoding="utf-8", errors="ignore").read()
+        except Exception:
             continue
-        if clean:
-            fs_img = os.path.join(PORTAL_DIR, clean.split("?")[0].lstrip("/"))
-            if not os.path.isfile(fs_img):
+        if NOINDEX.search(sadrzaj[:4000]):
+            continue
+
+        stranica = adresa_stranice(put)
+        nadjene = {}
+
+        for oznaka in IMG.finditer(sadrzaj):
+            url = apsolutna(oznaka.group(1), stranica)
+            if url:
+                opis = ALT.search(oznaka.group(0))
+                nadjene.setdefault(url, html.unescape(opis.group(1)) if opis else "")
+
+        for m in OG.finditer(sadrzaj):
+            url = apsolutna(m.group(1), stranica)
+            if url:
+                nadjene.setdefault(url, "")
+
+        for m in CSS_SLIKA.finditer(sadrzaj):
+            url = apsolutna(m.group(1), stranica)
+            if url:
+                nadjene.setdefault(url, "")
+
+        for veza in CSS_VEZA.finditer(sadrzaj):
+            css_url = urljoin(stranica, html.unescape(veza.group(1)))
+            if not css_url.startswith(BAZA):
                 continue
-        resolved.append((img_url, alt or "GNK ASG"))
-    return resolved
+            for izvor in slike_iz_css(css_url):
+                url = apsolutna(izvor, css_url)
+                if url:
+                    nadjene.setdefault(url, "")
+
+        korisne = [(u, o) for u, o in nadjene.items() if dovoljno_velika(u)]
+        if korisne:
+            po_stranici[stranica] = sorted(korisne)[:200]
+    return po_stranici
+
+
+def ispisi(po_stranici):
+    redci = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+        ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+    ]
+    for stranica in sorted(po_stranici):
+        redci.append(f"  <url><loc>{stranica}</loc>")
+        for url, opis in po_stranici[stranica]:
+            naslov = ""
+            if opis.strip():
+                naslov = f"<image:title>{html.escape(opis.strip())[:180]}</image:title>"
+            redci.append(
+                f"    <image:image><image:loc>{html.escape(url)}</image:loc>{naslov}</image:image>"
+            )
+        redci.append("  </url>")
+    redci.append("</urlset>")
+    return "\n".join(redci) + "\n"
 
 
 def main():
-    pages = collect_pages()
-    page_images = defaultdict(list)
-    for url, fs_path in pages:
-        imgs = images_for_page(fs_path)
-        if imgs:
-            page_images[url] = imgs
-
-    total_images = sum(len(v) for v in page_images.values())
-    print(f"Pages with images: {len(page_images)}, total image entries: {total_images}")
-
-    lines = [
-        '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
-        '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
-    ]
-    for url in sorted(page_images.keys()):
-        lines.append("  <url>")
-        lines.append(f"    <loc>{esc(url)}</loc>")
-        for img_url, title in page_images[url]:
-            lines.append("    <image:image>")
-            lines.append(f"      <image:loc>{esc(img_url)}</image:loc>")
-            lines.append(f"      <image:title>{esc(title)}</image:title>")
-            lines.append("    </image:image>")
-        lines.append("  </url>")
-    lines.append("</urlset>")
-
-    out_path = os.path.join(PORTAL_DIR, "image-sitemap.xml")
-    with open(out_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
-    print(f"wrote {out_path}")
+    po_stranici = skupi()
+    unosa = sum(len(v) for v in po_stranici.values())
+    razlicitih = len({u for v in po_stranici.values() for u, _ in v})
+    open(IZLAZ, "w", encoding="utf-8").write(ispisi(po_stranici))
+    print(f"zapisano: {IZLAZ}")
+    print(f"  stranica sa slikama: {len(po_stranici)}")
+    print(f"  unosa slika:         {unosa}")
+    print(f"  razlicitih slika:    {razlicitih}")
 
 
 if __name__ == "__main__":
