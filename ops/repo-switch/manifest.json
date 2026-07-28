@@ -1,10 +1,14 @@
 {
   "version": "GNK_ASG_REPO_SWITCH_MANIFEST_V1",
-  "generatedAt": "2026-07-28T10:50:01.516Z",
+  "generatedAt": "2026-07-28T12:11:54.376Z",
   "sourceRepo": "beckuphome-gnk/gnk-asg-portal",
   "note": "Popis svega što git mirror ne prenosi. Bez ovoga prelazak nije jedan klik.",
   "secrets": {
     "required": [
+      "BLOGGER_BLOG_ID",
+      "BLOGGER_CLIENT_ID",
+      "BLOGGER_CLIENT_SECRET",
+      "BLOGGER_REFRESH_TOKEN",
       "CLOUDFLARE_ACCOUNT_ID",
       "CLOUDFLARE_API_TOKEN",
       "GNK_ASG_ADMIN_TOKEN",
@@ -35,6 +39,18 @@
         "one-time-fix-editorial-route-ownership-v35.yml",
         "repair-office-inbound-email.yml",
         "upload-media-pdf-issue92.yml"
+      ],
+      "BLOGGER_BLOG_ID": [
+        "blog-mirror-publish.yml"
+      ],
+      "BLOGGER_CLIENT_ID": [
+        "blog-mirror-publish.yml"
+      ],
+      "BLOGGER_CLIENT_SECRET": [
+        "blog-mirror-publish.yml"
+      ],
+      "BLOGGER_REFRESH_TOKEN": [
+        "blog-mirror-publish.yml"
       ],
       "CLOUDFLARE_ACCOUNT_ID": [
         "cleanup-campaign-mailer-remaining.yml",
@@ -74,9 +90,10 @@
     "warning": "Vrijednosti se ne mogu procitati preko API-ja niti se smiju spremati u repozitorij. Prenose se rucno."
   },
   "workflows": {
-    "total": 231,
-    "activeCount": 73,
+    "total": 232,
+    "activeCount": 74,
     "active": [
+      "blog-mirror-publish.yml",
       "build-world-cookbook-premium.yml",
       "build-world-cookbook.yml",
       "check-seo-contract-evidence.yml",
