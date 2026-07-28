@@ -20,3 +20,7 @@ reports/*.tmp
 Thumbs.db
 scripts/__pycache__/
 *.pyc
+
+# lokalne vrijednosti tajni — nikad u repozitorij
+ops/repo-switch/secrets.local.env
+*.local.env
