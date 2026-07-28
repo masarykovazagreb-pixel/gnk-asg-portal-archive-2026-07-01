@@ -109,7 +109,7 @@
     mobileToggle.setAttribute('aria-expanded', String(open));
   });
   document.addEventListener('click', event => {
-    if (mobilePanel.classList.contains('open') && !mobilePanel.contains(event.target) && event.target !== mobileToggle) {
+    if (mobilePanel.classList.contains('open') && !mobilePanel.contains(event.target) && !mobileToggle.contains(event.target)) {
       mobilePanel.classList.remove('open');
       mobileToggle.setAttribute('aria-expanded', 'false');
     }
