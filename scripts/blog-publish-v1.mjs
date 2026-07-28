@@ -27,7 +27,7 @@ const QUEUE = resolve('apps/portal/data/blog-content/queue.json');
 const STATE = resolve('apps/portal/data/blog-content/published.json');
 const SITE = 'https://gnk-asg.hr';
 
-const BLOG = { name: 'Nermin Sefić GNK ASG', url: 'https://nerminsefic.blogspot.com' };
+const BLOG = { name: 'NERMIN SEFIĆ - GNK ASG', url: 'https://nermin-sefic.blogspot.com' };
 // Koliko objava po pokretanju. Registar ima 150+ tekstova; slanje svih odjednom
 // udarilo bi u Googleovo ogranicenje, pa se stariji prenose postupno.
 const PER_RUN = Number(process.env.BLOG_PER_RUN || 10);
