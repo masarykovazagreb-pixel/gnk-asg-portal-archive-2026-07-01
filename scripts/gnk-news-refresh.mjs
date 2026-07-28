@@ -181,7 +181,14 @@ async function main() {
   // their items every time this script runs, and vice versa -- this was a real, confirmed source
   // of churn/duplication between runs of different processes.
   const merged = uniqueSorted([...fresh, ...previousPublic]);
-  const publicItems = merged.slice(0, PUBLIC_TARGET);
+  // Only keep items with a real image (not the generic fallback) in the public feed. Other
+  // processes writing to this same file pull from sources whose RSS feeds often omit image
+  // tags (confirmed: 38/100 items had no image at one point, all silently invisible because the
+  // frontend already filters on item.image before rendering) -- filtering here means every item
+  // that actually ends up in news.json is guaranteed to render, so the count in the file matches
+  // what visitors actually see.
+  const withImage = merged.filter(item => item.image && item.image !== FALLBACK_IMAGE);
+  const publicItems = withImage.slice(0, PUBLIC_TARGET);
   let archiveItems = uniqueSorted([...fresh, ...previousPublic, ...previousArchive]);
   if (archiveItems.length > ARCHIVE_MAX_BEFORE_PRUNE) archiveItems = archiveItems.slice(0, ARCHIVE_KEEP_WHEN_FULL);
 
