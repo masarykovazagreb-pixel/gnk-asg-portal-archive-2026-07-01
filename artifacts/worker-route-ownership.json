@@ -1,9 +1,9 @@
 {
   "version": "WORKER_ROUTE_OWNERSHIP_AUDIT_V2_20260713_DEPLOY_CONFIG",
-  "generatedAt": "2026-07-22T09:23:32.574Z",
+  "generatedAt": "2026-07-28T10:18:31.678Z",
   "summary": {
-    "configs": 23,
-    "workerNames": 14,
+    "configs": 24,
+    "workerNames": 15,
     "declaredRoutes": 50,
     "duplicateRoutes": 6,
     "approvedDeployConfigs": 3,
@@ -226,6 +226,14 @@
         "www.gnk-asg.hr/app/*"
       ],
       "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-mail-center-worker/wrangler.toml",
+      "name": "gnk-asg-mail-center-worker",
+      "main": "src/index.js",
+      "routes": [],
+      "routeLess": true,
       "approvedDeployConfig": false
     },
     {
