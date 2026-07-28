@@ -58,7 +58,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-all-list a:hover{color:var(--ak-red)}
 .ak-all-list .meta{font-family:Arial,sans-serif;font-size:.68rem;color:var(--ak-sub);flex:0 0 auto;white-space:nowrap;padding-top:2px}
 .ak-top10 .ak-src{display:block;font-family:Arial,sans-serif;color:var(--ak-sub);font-size:.74rem;margin-top:4px}
-.ak-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.ak-cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .ak-card{border:1px solid var(--ak-line);border-radius:12px;overflow:hidden;background:var(--ak-panel);transition:transform .25s ease,border-color .25s ease}
 .ak-card:hover{transform:translateY(-3px);border-color:var(--ak-red-dim)}
 .ak-card img{width:100%;height:150px;object-fit:cover;display:block;background:#1c1d26}
@@ -120,8 +120,10 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 <script>
 (function(){
   var GROUP_LABELS = { hrvatska:'Hrvatska', international:'Svijet', technology:'Tehnologija', economy:'Burza i biznis', 'digital-assets':'Digitalna imovina', 'digital-workforce-simulation':'GNK ASG · Simulacija' };
-  var ROTATE_MS = 15000;
-  var state = { items: [], stream: [], top10Index: 0, leadIndex: 0, tailIndex: 0 };
+  var ROTATE_MS = 180000;    // kartice se rotiraju svake 3 minute
+  var FEATURED_MS = 900000;  // glavna objava se mijenja svakih 15 minuta
+  var FEATURED_POOL = 12;    // iz koliko najjacih vijesti se bira glavna
+  var state = { items: [], stream: [], top10Index: 0, leadIndex: 0, tailIndex: 0, featuredIndex: 0 };
 
   function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function timeAgo(iso){
@@ -185,7 +187,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   var GROUP_EXCLUDE = { 'digital-workforce-simulation': true };
   var MAX_PER_SOURCE = 3;   // koliko kartica jedan medij smije zauzeti u vidljivom prozoru
   var STREAM_TARGET = 100;  // koliko vijesti drzimo u rotaciji
-  var VIEW = 20;            // koliko ih je vidljivo odjednom
+  var VIEW = 24;            // koliko ih je vidljivo odjednom (6 redova po 4)
   var LEAD = 8;             // koliko prvih mjesta je rezervirano za glavne vijesti
 
   // Tezina medija — koristi se samo za redoslijed, ne za filtriranje.
@@ -286,6 +288,18 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     '</div></section>';
   }
 
+  function featuredPool(){
+    return state.stream.length ? state.stream : state.items;
+  }
+
+  function rotateFeatured(){
+    var pool = featuredPool();
+    if (!pool.length) return;
+    var span = Math.min(FEATURED_POOL, pool.length);
+    state.featuredIndex = (state.featuredIndex + 1) % span;
+    renderFeatured(pool[state.featuredIndex]);
+  }
+
   function rotate(){
     if (!state.items.length) return;
     state.top10Index = (state.top10Index + 3) % state.items.length;
@@ -309,12 +323,13 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
            ' · ažurirano ' + timeAgo(items[0] && items[0].published_at))
         : 'Trenutno nema dostupnih vijesti.';
       if (!items.length) return;
-      renderFeatured(items[0]);
+      renderFeatured(featuredPool()[0] || items[0]);
       document.getElementById('akTopSection').hidden = false;
       renderTop10();
       renderCategories();
       renderAllList();
       setInterval(rotate, ROTATE_MS);
+      setInterval(rotateFeatured, FEATURED_MS);
     })
     .catch(function(){
       document.getElementById('akStatus').textContent = 'Vijesti trenutno nisu dostupne.';
