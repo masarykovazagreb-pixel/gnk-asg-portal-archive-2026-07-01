@@ -165,7 +165,7 @@ function findHost(maxAttempts=30,delay=150){
     check();
   });
 }
-async function build(){
+async function build(){/* Blok uklonjen s naslovnice 28.07.2026. */return;/* blok uklonjen */
   const host=await findHost();
   if(!host||host.dataset.editorialOrdered==='1')return;
   const old=host.querySelector('#gnk-editorial-grid');
