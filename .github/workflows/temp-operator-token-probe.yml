@@ -29,10 +29,11 @@ jobs:
             -H "authorization: Bearer $CANDIDATE" \
             "$base/mail-studio/?cb=probe-${GITHUB_RUN_ID}")
           echo "HTTP status: $code"
+          # Ishod posla nosi odgovor, jer dnevnik izvodenja nije citljiv izvana:
+          #   uspjeh = vrijednost je ispravna, pad = nije.
           if [ "$code" = "200" ]; then
             echo "REZULTAT: VRIJEDNOST JE ISPRAVNA"
-          elif [ "$code" = "401" ] || [ "$code" = "403" ]; then
-            echo "REZULTAT: VRIJEDNOST NIJE ISPRAVNA"
-          else
-            echo "REZULTAT: NEJASNO — Worker je vratio $code"
+            exit 0
           fi
+          echo "REZULTAT: vrijednost nije prihvacena (HTTP $code)"
+          exit 1
