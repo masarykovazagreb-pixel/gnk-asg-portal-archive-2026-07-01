@@ -112,8 +112,44 @@ def main() -> int:
     dw_items = [item for item in with_image if item.get("group") == "digital-workforce-simulation"]
     other_items = [item for item in with_image if item.get("group") != "digital-workforce-simulation"]
     real_slot_count = max(0, PUBLIC_LIMIT - len(dw_items))
-    public = other_items[:real_slot_count] + dw_items
-    archive = other_items[real_slot_count:] + without_image
+
+    # Kvote po kategoriji i po mediju.
+    #
+    # Bez ovoga se javni skup puni samo po vremenu objave, pa kategorije s
+    # brzim feedovima (tportal, Business Insider) pojedu mjesta, a
+    # 'Tehnologija' i 'Digitalna imovina' ostanu s 2-5 vijesti -- premalo da
+    # se blok na /gnk-aktual/ uopce popuni, zbog cega je izgledalo kao da
+    # stranica ponavlja iste vijesti.
+    #
+    # Prvi prolaz uzima do MAX_PER_SOURCE po mediju i do CATEGORY_QUOTA po
+    # kategoriji; ostatak se dodaje kronoloski da se popuni budzet.
+    CATEGORY_QUOTA = {
+        "economy": 26,
+        "international": 22,
+        "technology": 20,
+        "digital-assets": 16,
+        "hrvatska": 16,
+    }
+    MAX_PER_SOURCE = 6
+
+    per_group: dict[str, int] = {}
+    per_source: dict[str, int] = {}
+    balanced: list[dict] = []
+    leftover: list[dict] = []
+    for item in other_items:
+        group = item.get("group", "international")
+        source = item.get("source", "?")
+        quota = CATEGORY_QUOTA.get(group, 12)
+        if per_group.get(group, 0) < quota and per_source.get(source, 0) < MAX_PER_SOURCE:
+            per_group[group] = per_group.get(group, 0) + 1
+            per_source[source] = per_source.get(source, 0) + 1
+            balanced.append(item)
+        else:
+            leftover.append(item)
+
+    ordered = balanced + leftover
+    public = ordered[:real_slot_count] + dw_items
+    archive = ordered[real_slot_count:] + without_image
     archive_items_before_prune = len(archive)
     removed_oldest = 0
     prune_batches = 0
