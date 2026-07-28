@@ -42,8 +42,29 @@ jobs:
           BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
         run: node scripts/blog-publish-v1.mjs --live
 
+      # Drugi zakazani poslovi commitaju u main gotovo neprekidno, pa jedan
+      # pokusaj spremanja redovito zavrsi na zastarjelom SHA. Zato tri pokusaja
+      # s ponovnim povlacenjem izmedju.
       - name: Commit queue and state
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'Blog mirror: refresh queue and published state'
-          file_pattern: 'apps/portal/data/blog-content/queue.json apps/portal/data/blog-content/published.json'
+        shell: bash
+        run: |
+          set -uo pipefail
+          git config user.name "gnk-blog-bot"
+          git config user.email "actions@github.com"
+          git add apps/portal/data/blog-content/queue.json apps/portal/data/blog-content/published.json || true
+          if git diff --cached --quiet; then
+            echo "Nema promjena za spremanje."
+            exit 0
+          fi
+          git commit -m "Blog mirror: refresh queue and published state"
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Spremljeno iz $i. pokusaja."
+              exit 0
+            fi
+            echo "Push odbijen, povlacim i ponavljam ($i/3)..."
+            git pull --rebase --autostash origin main || true
+            sleep 5
+          done
+          echo "Spremanje nije uspjelo nakon tri pokusaja."
+          exit 1
