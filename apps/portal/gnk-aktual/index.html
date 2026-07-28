@@ -120,7 +120,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 <script>
 (function(){
   var GROUP_LABELS = { hrvatska:'Hrvatska', international:'Svijet', technology:'Tehnologija', economy:'Burza i biznis', 'digital-assets':'Digitalna imovina', 'digital-workforce-simulation':'GNK ASG · Simulacija' };
-  var ROTATE_MS = 8000;
+  var ROTATE_MS = 15000;
   var state = { items: [], top10Index: 0, catIndex: {} };
 
   function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
@@ -170,6 +170,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   function groupByCategory(){
     var byGroup = {};
     state.items.forEach(function(item){
+      if (!item.image) return;
       var g = item.group || 'international';
       if (!byGroup[g]) byGroup[g] = [];
       byGroup[g].push(item);
@@ -187,8 +188,8 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       if (!items || !items.length) return;
       if (!(g in state.catIndex)) state.catIndex[g] = 0;
       var start = state.catIndex[g] % items.length;
-      var slice = items.slice(start, start+6);
-      if (slice.length < 6) slice = slice.concat(items.slice(0, 6-slice.length));
+      var slice = items.slice(start, start+13);
+      while (slice.length < 13 && items.length) slice = slice.concat(items).slice(0, 13);
       html += '<section class="ak-section"><div class="ak-section-head"><h2>'+esc(GROUP_LABELS[g]||g)+'</h2><span>rotira se</span></div><div class="ak-cat-grid">' +
         slice.map(function(item){
           return '<article class="ak-card"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow"><img src="'+esc(item.image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'"></a><div class="ak-card-body"><h3><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a></h3><p>'+esc((item.summary||'').slice(0,120))+(item.summary&&item.summary.length>120?'…':'')+'</p><span class="ak-src">'+esc(item.source||'')+' · '+timeAgo(item.published_at)+'</span></div></article>';
