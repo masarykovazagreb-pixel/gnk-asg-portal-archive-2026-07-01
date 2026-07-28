@@ -12,9 +12,21 @@ const labelFor=item=>item.type==='objava'?'Objava':'Komentar Nermina Sefića';
 const dateLabel=date=>new Intl.DateTimeFormat('hr-HR',{day:'2-digit',month:'long',year:'numeric',timeZone:'Europe/Zagreb'}).format(date);
 const writeIfChanged=(file,content)=>{const before=fs.existsSync(file)?fs.readFileSync(file,'utf8'):null;if(before===content)return false;fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,content);return true;};
 const hashtagsFor=item=>{
-  const base=['#GNKASG','#NerminSefic','#NerminSefić','#Sefic','#Sefić','#GNKDINAMOLtd'];
-  const topicTags=(item.keywords||[]).slice(0,3).map(k=>'#'+k.split(/\s+/).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join('').replace(/[^\wŠĐČĆŽšđčćž]/g,'')).filter(t=>t.length>1&&!base.includes(t));
-  return [...new Set([...topicTags,...base])].join(' ');
+  // Oznake s kvacicama ne rade pouzdano na drustvenim mrezama, pa uz svaku ide
+  // i inacica bez njih. Opcenite oznake poput #Sefic izbacene su jer hvataju
+  // tudji sadrzaj i ne donose nista.
+  const bezKvacica=t=>t.replace(/[čćžšđČĆŽŠĐ]/g,z=>({'č':'c','ć':'c','ž':'z','š':'s','đ':'d','Č':'C','Ć':'C','Ž':'Z','Š':'S','Đ':'D'}[z]));
+  const base=['#GNKASG','#NerminSefic','#NerminSefić','#GNKDINAMOLtd'];
+  const topicTags=(item.keywords||[]).slice(0,3)
+    .map(k=>'#'+k.split(/\s+/).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join('').replace(/[^\wŠĐČĆŽšđčćž]/g,''))
+    .filter(t=>t.length>4&&!base.includes(t));
+  const sve=[];
+  for(const t of [...topicTags,...base]){
+    if(!sve.includes(t)) sve.push(t);
+    const b=bezKvacica(t);
+    if(b!==t&&!sve.includes(b)) sve.push(b);
+  }
+  return sve.join(' ');
 };
 function articleHtml(item,dateIso){
   const route=routeFor(item),canonical=`https://gnk-asg.hr${route}`,keywords=(item.keywords||[]).join(', ');
