@@ -1,0 +1,25 @@
+provjereno: 2026-07-28 17:46 UTC
+
+RUTA                                           ODGOVOR
+/                                              200
+/api/public-catalog/food/categories            200
+/api/public-news-feed                          200
+/api/ai-assist                                 200
+/api/editorial-public-health                   404
+/auto-editor                                   401000
+/data/auto-editor.json                         200
+/app                                           404
+/vijesti/                                      200
+/assets/public-menu-final-v9.js                200
+/api/contact-mailboxes                         200
+/api/mail-schedule                             404
+/mail-studio/                                  401
+/admin-center                                  401
+/gnk-aktual/                                   200
+/restaurants/                                  200
+/trgovina/                                     200
+/world-table/                                  200
+/data/news.json                                200
+
+Napomena: 401 i 403 na admin i mail rutama su ocekivani —
+znace da worker radi i da trazi ovlastenje.
