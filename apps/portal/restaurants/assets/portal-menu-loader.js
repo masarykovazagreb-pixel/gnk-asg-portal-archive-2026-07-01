@@ -1,0 +1,1 @@
+(()=>{const s=document.createElement('script');s.src='/assets/restaurants-menu-entry-v1.js?v=20260728';s.defer=true;document.head.appendChild(s)})();
