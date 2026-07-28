@@ -1,0 +1,38 @@
+name: Temp — provjera operator tokena
+
+# Privremeno. Provjerava prihvaca li Worker zadanu vrijednost operator tokena.
+# Ne salje postu, ne mijenja nista, ne ispisuje token — samo HTTP status.
+# Brise se odmah nakon upotrebe.
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate:
+        description: 'Vrijednost koja se provjerava'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Pitaj Worker prihvaca li vrijednost
+        env:
+          CANDIDATE: ${{ inputs.candidate }}
+        run: |
+          set -uo pipefail
+          base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
+          code=$(curl -sS -o /dev/null -w '%{http_code}' \
+            -H "authorization: Bearer $CANDIDATE" \
+            "$base/mail-studio/?cb=probe-${GITHUB_RUN_ID}")
+          echo "HTTP status: $code"
+          if [ "$code" = "200" ]; then
+            echo "REZULTAT: VRIJEDNOST JE ISPRAVNA"
+          elif [ "$code" = "401" ] || [ "$code" = "403" ]; then
+            echo "REZULTAT: VRIJEDNOST NIJE ISPRAVNA"
+          else
+            echo "REZULTAT: NEJASNO — Worker je vratio $code"
+          fi
