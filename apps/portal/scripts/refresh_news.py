@@ -146,6 +146,20 @@ BLOCKED_TITLE_PATTERNS = [
     re.compile(r"\betiquette coach\b", re.I),
     re.compile(r"\bunderrated gem\b", re.I),
     re.compile(r"\bfirst-class seat\b|\bfirst class fare\b", re.I),
+    # Affiliate oglasi koje CNN-ov RSS ubacuje medu vijesti. Ciljaju se
+    # promotivne formulacije, ne teme — vijest o kreditnim karticama prolazi,
+    # ponuda kreditne kartice ne prolazi.
+    re.compile(r"\b\d+\s*% intro apr\b", re.I),
+    re.compile(r"\bcash ?back card\b", re.I),
+    re.compile(r"\bhome equity (loan|line|into cash)\b", re.I),
+    re.compile(r"\bbest .{0,30}\b(card|loan|rate)s? of \d{4}\b", re.I),
+    re.compile(r"\bavoid credit card interest\b", re.I),
+    re.compile(r"^(turn your|dream big|experts?:)\b", re.I),
+    re.compile(r"\bcompare (the )?(top|best) .{0,25}(cards?|loans?|rates?)\b", re.I),
+    re.compile(r"\brefinanc(e|ing) your\b", re.I),
+    re.compile(r"\b(apply|shop|buy) now\b", re.I),
+    re.compile(r"\bclick here\b", re.I),
+    re.compile(r"\bit's official: now\b", re.I),
 ]
 
 
