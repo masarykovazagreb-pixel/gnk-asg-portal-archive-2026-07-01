@@ -31,15 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // style('/assets/header-premium.css');
   style('/assets/group-contrast.css');
   style('/assets/group-network.css');
-  style('/assets/network-motion.css');
-  style('/assets/group-globe-3d.css');
-  style('/assets/group-location-insights.css');
-  style('/assets/group-map-2d-geo.css');
-  style('/assets/group-google-map.css');
-  style('/assets/group-location-weather.css');
-  style('/assets/group-overview-panel.css');
-  style('/assets/group-market-coverage.css');
-  style('/assets/network-reading-layout.css');
   style('/assets/bitcoin-chart.css');
   style('/assets/market-expansion.css');
   style('/assets/bpp-public-card.css');
@@ -52,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
   style('/assets/floating-intelligence.css');
   style('/assets/public-sources.css');
   style('/assets/mobile-stability.css');
-  style('/assets/group-mobile-accessible.css');
   style('/assets/portal-integration.css');
   style('/assets/seo-profile-link.css');
   style('/assets/menu-fix.css');
@@ -66,12 +56,25 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/portal-layout.js');
   script('/assets/assistant.js');
   script('/assets/inline-assistant.js');
-  script('/assets/world-geography.js');
-  script('/assets/network-motion.js');
-  script('/assets/group-network.js');
   var __gnkPath2 = (location.pathname || '/').replace(/\/+$/, '') || '/';
   var __gnkIsHome = __gnkPath2 === '' || __gnkPath2 === '/' || __gnkPath2 === '/en';
   if (__gnkPath2.indexOf('group-network') !== -1 || __gnkIsHome) {
+    // Ovi stilovi i skripte sluze iskljucivo karti, globusu i panelu
+    // lokacija. Prije su se ucitavali na svakoj stranici portala, i na
+    // onima koje od njih nemaju nista — 13 datoteka i 69 KB uzalud.
+    style('/assets/group-globe-3d.css');
+    style('/assets/group-location-insights.css');
+    style('/assets/group-map-2d-geo.css');
+    style('/assets/group-google-map.css');
+    style('/assets/group-location-weather.css');
+    style('/assets/group-overview-panel.css');
+    style('/assets/group-market-coverage.css');
+    style('/assets/network-reading-layout.css');
+    style('/assets/group-mobile-accessible.css');
+    style('/assets/network-motion.css');
+    script('/assets/network-motion.js');
+    script('/assets/group-network.js');
+    script('/assets/world-geography.js');
     script('/assets/group-clarity.js');
     script('/assets/group-map-2d-geo.js');
     script('/assets/group-location-insights.js');
