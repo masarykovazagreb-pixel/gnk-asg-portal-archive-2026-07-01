@@ -9,7 +9,7 @@ const indexRefreshPolicy=fs.readFileSync('scripts/refresh_index_live_data.py','u
 const indexRefreshValidator=fs.readFileSync('scripts/validate_index_live_data.py','utf8');
 const indexRefreshWorkflow=fs.readFileSync('.github/workflows/refresh-index-live-data.yml','utf8');
 
-assert.match(retentionPolicy,/PUBLIC_LIMIT = 100/);
+assert.match(retentionPolicy,/PUBLIC_LIMIT = 150/);
 assert.match(retentionPolicy,/ARCHIVE_TRIGGER = 2000/);
 assert.match(retentionPolicy,/ARCHIVE_DELETE_OLDEST = 1000/);
 assert.match(retentionPolicy,/github_actions_rss_refresh_v4_retention_policy/);
@@ -18,11 +18,11 @@ assert.doesNotMatch(retentionPolicy,/ARCHIVE_DELETE_OLDEST = 500/);
 assert.match(refreshWorkflow,/archive_prune_trigger'\) == 2000/);
 assert.match(refreshWorkflow,/archive_delete_oldest_batch'\) == 1000/);
 assert.match(refreshWorkflow,/len\(archive\) <= 2000/);
-assert.match(indexRefreshPolicy,/PUBLIC_LIMIT = 100/);
+assert.match(indexRefreshPolicy,/PUBLIC_LIMIT = 150/);
 assert.match(indexRefreshPolicy,/ARCHIVE_TRIGGER = 2000/);
 assert.match(indexRefreshPolicy,/ARCHIVE_DELETE_OLDEST = 1000/);
 assert.doesNotMatch(indexRefreshPolicy,/reverse=True\)\[:500\]/);
-assert.match(indexRefreshValidator,/3 <= len\(news\) <= 100/);
+assert.match(indexRefreshValidator,/3 <= len\(news\) <= 150/);
 assert.match(indexRefreshValidator,/status\.get\("archive_prune_trigger"\) != 2000/);
 assert.match(indexRefreshValidator,/status\.get\("archive_delete_oldest_batch"\) != 1000/);
 assert.match(indexRefreshWorkflow,/git add[^\n]*news_archive\.json/);

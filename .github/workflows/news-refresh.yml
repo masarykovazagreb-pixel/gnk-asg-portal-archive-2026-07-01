@@ -43,10 +43,10 @@ jobs:
           status = json.loads(Path('apps/portal/data/update_status.json').read_text(encoding='utf-8'))
           news_status = status.get('news', {})
 
-          assert isinstance(news, list) and 0 < len(news) <= 100, 'news.json must contain 1-100 items'
+          assert isinstance(news, list) and 0 < len(news) <= 150, 'news.json must contain 1-150 items'
           assert isinstance(archive, list), 'news_archive.json must be a list'
           assert news_status.get('status') in {'ok', 'degraded'}, 'news refresh status failed'
-          assert news_status.get('max_public_items') == 100, 'public limit is not 100'
+          assert news_status.get('max_public_items') == 150, 'public limit is not 150'
           assert news_status.get('archive_prune_trigger') == 2000, 'archive trigger is not 2000'
           assert news_status.get('archive_delete_oldest_batch') == 1000, 'archive prune batch is not 1000'
           assert len(archive) <= 2000, 'archive remains above 2000 after pruning'

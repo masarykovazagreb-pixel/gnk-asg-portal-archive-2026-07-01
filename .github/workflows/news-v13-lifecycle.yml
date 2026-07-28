@@ -76,7 +76,7 @@ jobs:
           assert status.get('scheduled_hours_local') == [9, 16, 21]
           assert status.get('configured_sources', 0) >= 15
           assert status.get('healthy_sources', 0) >= 15
-          assert isinstance(news, list) and 1 <= len(news) <= 100
+          assert isinstance(news, list) and 1 <= len(news) <= 150
           assert all(item.get('title') and item.get('summary') and item.get('source') and item.get('url') and item.get('image') and item.get('imageVerified') is True for item in news)
           assert all(not str(item.get('image')).endswith('news-fallback.svg') for item in news)
           assert isinstance(archive, list) and len(archive) <= 1000

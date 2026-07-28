@@ -24,7 +24,7 @@ import refresh_news as base
 # /gnk-aktual/ trazi najmanje 100 vijesti sa slikom I tekstom u rotaciji.
 # Budzet je namjerno veci od 100 jer dio stavki otpadne na simulacijski feed
 # i na clanke s prekratkim sazetkom.
-PUBLIC_LIMIT = 180
+PUBLIC_LIMIT = 150
 MIN_SUMMARY_CHARS = 40
 ARCHIVE_TRIGGER = 2000
 ARCHIVE_DELETE_OLDEST = 1000
@@ -134,11 +134,11 @@ def main() -> int:
     # Prvi prolaz uzima do MAX_PER_SOURCE po mediju i do CATEGORY_QUOTA po
     # kategoriji; ostatak se dodaje kronoloski da se popuni budzet.
     CATEGORY_QUOTA = {
-        "economy": 42,
-        "international": 38,
-        "technology": 34,
-        "digital-assets": 30,
-        "hrvatska": 28,
+        "economy": 36,
+        "international": 32,
+        "technology": 30,
+        "digital-assets": 26,
+        "hrvatska": 26,
     }
     MAX_PER_SOURCE = 8
 

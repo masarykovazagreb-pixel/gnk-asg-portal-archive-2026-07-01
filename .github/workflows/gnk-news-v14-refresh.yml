@@ -42,9 +42,9 @@ jobs:
           status = json.loads((data / 'news-automation-status.json').read_text(encoding='utf-8'))
           archive = json.loads((data / 'news_archive.json').read_text(encoding='utf-8')) if (data / 'news_archive.json').exists() else []
 
-          assert isinstance(news, list) and 1 <= len(news) <= 100, f'public news count invalid: {len(news)}'
+          assert isinstance(news, list) and 1 <= len(news) <= 150, f'public news count invalid: {len(news)}'
           assert status.get('scheduled_hours_local') == [9, 16, 21], status.get('scheduled_hours_local')
-          assert status.get('max_public_items') == 100, status.get('max_public_items')
+          assert status.get('max_public_items') == 150, status.get('max_public_items')
           assert status.get('archive_capacity') == 1000, status.get('archive_capacity')
           assert status.get('archive_prune_trigger') == 1000, status.get('archive_prune_trigger')
           assert status.get('archive_prune_to') == 500, status.get('archive_prune_to')
