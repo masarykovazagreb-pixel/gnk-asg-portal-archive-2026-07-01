@@ -68,6 +68,52 @@ node scripts/repo-switch-manifest.mjs
 
 ---
 
+## Tajne u Cloudflare Workeru
+
+Ove **ne** idu u GitHub. Žive u Workeru `gnk-asg-direct-operator` i **ne mijenjaju se
+pri prelasku na drugi repozitorij** — Worker ostaje na istom Cloudflare računu.
+Postaju važne samo ako se mijenja i Cloudflare račun; tada se sve mora postaviti
+iznova jer se vrijednosti ne mogu pročitati.
+
+Popis snimljen 28.07.2026. naredbom
+`npx wrangler secret list --name gnk-asg-direct-operator` — ukupno **18**:
+
+| Tajna | Čemu služi |
+|---|---|
+| `ADMIN_TOKEN` | administratorski pristup; koristi ga 26 datoteka Workera |
+| `OPERATOR_TOKEN` | isto, zamjenski naziv |
+| `GNK_ASG_ADMIN_TOKEN` | isto, treći naziv |
+| `GNK_ASG_OPERATOR_TOKEN` | isto, četvrti naziv |
+| `NEWS_PUBLISH_TOKEN` | objava vijesti; koristi ga 13 datoteka |
+| `OPENAI_API_KEY` | prijevod recepata, kontakt studio, Intelligence Desk |
+| `RESEND_API_KEY` | slanje e-pošte preko vanjske usluge |
+| `MAILOPS_ADMIN_USER` | pristup poštanskoj administraciji |
+| `MAILOPS_ADMIN_PASS` | lozinka za isto |
+| `MAIL_SEND_APPROVAL_CODE` | odobrenje slanja pošte |
+| `MAIL_AUTO_REPLY_ENABLED` | prekidač automatskih odgovora |
+| `MAIL_BCC_TO` | obavezna skrivena kopija |
+| `MAIL_FORWARD_TO` | prosljeđivanje pošte |
+| `MAIL_AUDIT_COPY_TO` | revizijska kopija |
+| `GA_SERVICE_ACCOUNT_JSON` | Google Analytics, servisni račun |
+| `GA_PROPERTY_ID` | oznaka Analytics svojstva |
+| `GOOGLE_TAG_ID` | oznaka Google Taga |
+| `MEDIA_OUTREACH_TEST_NONCE` | zaštita testnog slanja medijima |
+
+Četiri naziva za isti operator token postoje jer su nastajali u različito vrijeme.
+Worker prihvaća bilo koji.
+
+### Ovlasti Cloudflare pristupa
+
+Prijavljeni račun: `beckuphome@gmail.com`, Account ID `1728309632b4e7be93fba322822905da`.
+
+Ovlasti pokrivaju workers, KV, D1, rute, Pages, e-poštu i AI. **R2 nije na popisu
+ovlasti**, a sustav koristi R2 spremnik `gnk-asg-media-assets` — vezanje
+`GNK_ASG_MEDIA_ASSETS` pojavljuje se 78 puta u kodu, a `media-command-from-chat`
+dohvaća PDF naredbom `wrangler r2 object get`. Provjeriti naredbom
+`npx wrangler r2 bucket list`; ako ne prođe, prijava treba proširiti ovlasti.
+
+---
+
 ## Pravilo objavljivanja
 
 **Sajt je izvor, blog je preslika.**
