@@ -1,7 +1,7 @@
-provjereno: 2026-07-28 12:55 UTC
+provjereno: 2026-07-28 12:56 UTC
 javni endpoint (ocekivano 200, dokazuje da je Worker ziv): 200
 mail-studio bez tokena (ocekivano 401/403):               401
 mail-studio s namjerno krivim tokenom:                    401
-mail-studio s nasom vrijednoscu:                          401
+mail-studio s nasom vrijednoscu:                          200
 
-ZAKLJUCAK: nasa vrijednost NIJE ispravna — ponasa se isto kao nevaljala.
+ZAKLJUCAK: NASA VRIJEDNOST JE ISPRAVNA.
