@@ -1,8 +1,8 @@
 name: Temp — provjera operator tokena
 
-# Privremeno. Provjerava prihvaca li Worker zadanu vrijednost operator tokena.
-# Ne salje postu, ne mijenja nista, ne ispisuje token — samo HTTP status.
-# Brise se odmah nakon upotrebe.
+# Privremeno. Utvrduje je li Worker ziv i prihvaca li zadanu vrijednost.
+# Ne salje postu, nista ne mijenja, ne ispisuje token. Rezultat zapisuje u
+# datoteku jer dnevnik izvodenja nije citljiv izvana. Brise se nakon upotrebe.
 
 on:
   workflow_dispatch:
@@ -12,28 +12,60 @@ on:
         required: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
-      - name: Pitaj Worker prihvaca li vrijednost
+      - uses: actions/checkout@v4
+
+      - name: Ispitaj Worker
         env:
           CANDIDATE: ${{ inputs.candidate }}
         run: |
           set -uo pipefail
           base="https://gnk-asg-direct-operator.beckuphome.workers.dev"
-          code=$(curl -sS -o /dev/null -w '%{http_code}' \
-            -H "authorization: Bearer $CANDIDATE" \
-            "$base/mail-studio/?cb=probe-${GITHUB_RUN_ID}")
-          echo "HTTP status: $code"
-          # Ishod posla nosi odgovor, jer dnevnik izvodenja nije citljiv izvana:
-          #   uspjeh = vrijednost je ispravna, pad = nije.
-          if [ "$code" = "200" ]; then
-            echo "REZULTAT: VRIJEDNOST JE ISPRAVNA"
-            exit 0
-          fi
-          echo "REZULTAT: vrijednost nije prihvacena (HTTP $code)"
-          exit 1
+          cb="probe-${GITHUB_RUN_ID}"
+          mkdir -p ops
+
+          status(){ curl -sS -o /dev/null -w '%{http_code}' -m 20 "$@" || echo 000; }
+
+          javni=$(status "$base/api/public-catalog/food/categories?cb=$cb")
+          bez=$(status "$base/mail-studio/?cb=$cb")
+          krivi=$(status -H "authorization: Bearer nevaljala-vrijednost-za-usporedbu" "$base/mail-studio/?cb=$cb")
+          nas=$(status -H "authorization: Bearer $CANDIDATE" "$base/mail-studio/?cb=$cb")
+
+          {
+            echo "provjereno: $(date -u '+%Y-%m-%d %H:%M UTC')"
+            echo "javni endpoint (ocekivano 200, dokazuje da je Worker ziv): $javni"
+            echo "mail-studio bez tokena (ocekivano 401/403):               $bez"
+            echo "mail-studio s namjerno krivim tokenom:                    $krivi"
+            echo "mail-studio s nasom vrijednoscu:                          $nas"
+            echo
+            if [ "$javni" != "200" ]; then
+              echo "ZAKLJUCAK: Worker ne odgovara — test nije mjerodavan."
+            elif [ "$nas" = "200" ] && [ "$krivi" != "200" ]; then
+              echo "ZAKLJUCAK: NASA VRIJEDNOST JE ISPRAVNA."
+            elif [ "$nas" = "$krivi" ]; then
+              echo "ZAKLJUCAK: nasa vrijednost NIJE ispravna — ponasa se isto kao nevaljala."
+            else
+              echo "ZAKLJUCAK: nejasno, usporedi brojeve gore."
+            fi
+          } > ops/probe-result.txt
+
+          cat ops/probe-result.txt
+
+      - name: Spremi rezultat
+        run: |
+          git config user.name "gnk-probe"
+          git config user.email "actions@github.com"
+          git add ops/probe-result.txt
+          git diff --cached --quiet && exit 0
+          git commit -m "Privremeno: rezultat provjere operator tokena"
+          for i in 1 2 3; do
+            git push origin HEAD:main && exit 0
+            git pull --rebase --autostash origin main || true
+            sleep 4
+          done
