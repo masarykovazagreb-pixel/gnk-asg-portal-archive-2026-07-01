@@ -83,3 +83,55 @@ node scripts/repo-switch-preflight.mjs
 ```
 
 Ispisuje što je spremno, a što fali. Ništa ne mijenja.
+
+---
+
+## Cloudflare resursi — stvarno stanje
+
+Snimljeno 28.07.2026. naredbama `wrangler kv namespace list` i `wrangler d1 list`.
+
+Račun: `beckuphome@gmail.com` · Account ID `1728309632b4e7be93fba322822905da`
+
+**Bitna razlika:** u `wrangler.toml` datotekama vezana su **2 KV prostora i 1 D1 baza**.
+Na računu ih stvarno postoji **8 KV i 2 D1**. Popis vezanja pokazuje samo ono što kod
+koristi, ne i sve što postoji. Pri seobi na drugi Cloudflare račun mora se prenijeti
+sve, ne samo vezano.
+
+### KV prostori (8)
+
+| Naziv | ID | Vezan u kodu |
+|---|---|---|
+| `GNK_ASG_KV` | a3e9e78c7d554d7fa10996da9a89e7bc | da |
+| `GNK_ASG_CONFIG_KV` | d6f5dac9fa034d8d813db0de44eb7b1b | da |
+| `ASG_DATA` | cbea240c2baf4f43848ff1e70b588eb3 | ne |
+| `ASG_DATA_preview` | 511eb59eef1b416489294784c0c72f02 | ne — testni |
+| `CONTACT_MESSAGES` | a40d83b04e9f4e4a812713b8215b4347 | ne |
+| `OPERATOR_KV` | 2f74480cc351427d96d5c68a7ebdd4a8 | ne |
+| `SEO_KV` | 6e085c5765ce447ab924e9f7d8183afd | ne |
+| `SEO_KV_preview` | d51143757f3e4226abf411e136ac47cb | ne — testni |
+
+### D1 baze (2)
+
+| Naziv | UUID | Nastala | Veličina |
+|---|---|---|---|
+| `gnk_asg_operator_logs` | 2116c4e5-1850-4888-91e7-c47deead3ced | 14.06.2026. | 1,9 MB |
+| `gnk_asg_auto_editor` | 480a8af2-259c-4a82-8a26-e8169c9acebe | 20.06.2026. | 1,1 MB |
+
+`gnk_asg_operator_logs` je ona koju koristi `media-command-from-chat`.
+
+### R2
+
+Kod koristi spremnik `gnk-asg-media-assets` (vezanje `GNK_ASG_MEDIA_ASSETS`, 78 mjesta).
+Ovlasti prijavljenog računa **ne sadrže R2**, pa to treba provjeriti zasebno:
+`npx wrangler r2 bucket list`. Ako ne prođe, prijaviti se ponovo i odobriti R2.
+
+### Sigurnosna kopija podataka
+
+Kod se zrcali na drugi repozitorij, ali **KV i D1 sadržaj nigdje se ne kopira**.
+Ako se izgubi Cloudflare račun, ti podaci nemaju pričuvu. Izvoz:
+
+```
+npx wrangler d1 export gnk_asg_operator_logs --output logs.sql --remote
+npx wrangler d1 export gnk_asg_auto_editor  --output editor.sql --remote
+npx wrangler kv key list --namespace-id <ID>
+```
