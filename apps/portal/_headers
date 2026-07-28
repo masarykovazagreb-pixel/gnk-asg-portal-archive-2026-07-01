@@ -20,5 +20,13 @@
 /data/*
   Cache-Control: public, max-age=0, must-revalidate
 
+# Restoranske stranice se mijenjaju, pa se HTML uvijek provjerava kod izvora.
+# Slike i stilovi nose verziju u upitu, pa smiju stajati dugo u kesu.
+/restaurants/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/restaurants/assets/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
