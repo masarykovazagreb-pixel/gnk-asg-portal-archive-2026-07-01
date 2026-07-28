@@ -121,9 +121,13 @@ sve, ne samo vezano.
 
 ### R2
 
-Kod koristi spremnik `gnk-asg-media-assets` (vezanje `GNK_ASG_MEDIA_ASSETS`, 78 mjesta).
-Ovlasti prijavljenog računa **ne sadrže R2**, pa to treba provjeriti zasebno:
-`npx wrangler r2 bucket list`. Ako ne prođe, prijaviti se ponovo i odobriti R2.
+| Spremnik | Nastao |
+|---|---|
+| `gnk-asg-media-assets` | 14.06.2026. |
+
+Vezanje `GNK_ASG_MEDIA_ASSETS` pojavljuje se na 78 mjesta u kodu. Provjereno
+28.07.2026. — pristup radi, iako se R2 ne pojavljuje u ispisu ovlasti računa
+(`wrangler whoami` ne navodi sve opsege).
 
 ### Sigurnosna kopija podataka
 
