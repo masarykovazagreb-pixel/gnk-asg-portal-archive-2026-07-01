@@ -214,6 +214,14 @@ def refresh_news() -> None:
     archived = json.loads(archive_path.read_text(encoding="utf-8")) if archive_path.exists() else []
     if not isinstance(current, list) or not isinstance(archived, list):
         raise RuntimeError("News and archive payloads must be lists")
+    # Purge stale WIRED Business promo/coupon items (e.g. "X Promo Codes", "Y% Off") so this
+    # merge-based writer never reintroduces them after they've been cleaned up elsewhere -- this
+    # source was removed from gnk-news-refresh.mjs's own feed list for the same reason.
+    promo_pattern = re.compile(r"promo code|coupon code|% off|discount code|deals? this|save \d+%", re.I)
+    def is_promo_spam(item: dict) -> bool:
+        return item.get("source") == "WIRED Business" or bool(promo_pattern.search(item.get("title", "")))
+    current = [item for item in current if not is_promo_spam(item)]
+    archived = [item for item in archived if not is_promo_spam(item)]
     fetched: list[dict] = []
     errors = []
     for source, group, category, url in RSS:
