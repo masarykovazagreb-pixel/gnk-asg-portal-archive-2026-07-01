@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Preuzimanja za razvoj | GNK ASG</title>
+<meta name="description" content="Paket poslužiteljskih datoteka za GNK ASG aplikaciju: API za objave, poruke, AI asistenta i LinkedIn relay, s uputama za postavljanje.">
+<meta name="keywords" content="GNK ASG, GNK ASG d.o.o., GNK DINAMO Ltd., Nermin Sefić, Nermin Sefic, preuzimanja, razvoj">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://gnk-asg.hr/preuzimanja/">
+<link rel="stylesheet" href="/assets/style.css?v=20260723-dark-gold-theme-v1">
+<link rel="stylesheet" href="/assets/public-sections-v1.css?v=20260721-header-fulltransparent-v1">
+<link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260723-header-transparent-v3">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  .dl{display:grid;gap:14px;margin:26px 0}
+  .dl-card{border:1px solid rgba(184,138,47,.3);border-radius:16px;padding:22px;
+           background:linear-gradient(135deg,#131c2e,#0b1220)}
+  .dl-card h2{margin:0 0 6px;font-size:1.2rem;color:#f7f1e5}
+  .dl-card p{margin:0 0 14px;color:#b7ad9e;line-height:1.6}
+  .dl-meta{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 16px;color:#8d8577;font-size:.82rem}
+  .dl-files{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:4px}
+  .dl-files li{color:#c9c2b5;font:400 .86rem ui-monospace,Menlo,Consolas,monospace}
+  .dl-files span{color:#8d8577}
+  .warn{border-left:4px solid #d8b66a;padding:14px 18px;background:#15120d;
+        border-radius:12px;margin:0 0 22px;line-height:1.65}
+  .warn strong{color:#e8cf91}
+</style>
+</head>
+<body>
+<header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner">
+  <a class="brand" href="/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a>
+  <div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/" aria-label="Hrvatski" aria-current="page">HR</a><a href="/en/" aria-label="English">EN</a></div>
+  <button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">IZBORNIK</button></div><nav id="gnk-unified-nav"></nav></div>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="eyebrow">Za razvoj · nije javno indeksirano</p>
+    <h1>Preuzimanja</h1>
+    <p class="lead">Datoteke koje se predaju programeru. Stranica nije u sitemapu i tražilice je ne indeksiraju, ali adresa je javna — tko je zna, može preuzeti.</p>
+  </section>
+
+  <p class="warn"><strong>Prije postavljanja pročitati:</strong> priložene <code>.php</code> datoteke traže poslužitelj s PHP-om. Portal gnk-asg.hr trenutno radi na Cloudflare Workerima i statičkim datotekama, gdje se PHP <strong>ne izvršava</strong>. Te datoteke treba postaviti na zaseban poslužitelj s PHP-om, ili ih preraditi u Worker. Uz njih je priložena i inačica u Node.js-u za LinkedIn relay.</p>
+
+  <div class="dl">
+    <article class="dl-card">
+      <h2>Poslužiteljski paket za aplikaciju</h2>
+      <p>API za objave i komentare, poruke tima, AI asistenta i LinkedIn relay, sa svim uputama za postavljanje.</p>
+      <div class="dl-meta"><span>ZIP · 18 KB</span><span>8 datoteka</span><span>28.07.2026.</span></div>
+      <ul class="dl-files">
+        <li>objave-api.php <span>— objave i komentari, prijava tokenom</span></li>
+        <li>messages-api.php <span>— poruke tima, zapis u _data/messages.jsonl</span></li>
+        <li>ai-api.php <span>— relay prema AI asistentu</span></li>
+        <li>linkedin-relay.php <span>— objava na LinkedIn, PHP inačica</span></li>
+        <li>linkedin-relay.js <span>— ista funkcija, Node 18+ i Express</span></li>
+        <li>UPUTA-objave.md <span>— postavljanje i token</span></li>
+        <li>UPUTA-messages.md <span>— postavljanje i format poruka</span></li>
+        <li>UPUTA-linkedin.md <span>— postavljanje relaya</span></li>
+      </ul>
+      <a class="btn gold" href="/preuzimanja/gnk-asg-app-server-paket.zip" download>Preuzmi paket ↓</a>
+    </article>
+  </div>
+
+  <p class="warn"><strong>Zajednička tajna:</strong> <code>GNK_TOKEN_SECRET</code> mora biti ista vrijednost u <code>objave-api.php</code> i <code>messages-api.php</code>, inače prijava iz aplikacije neće vrijediti za oboje.</p>
+</main>
+
+<footer class="site-footer"><div class="wrap">GNK ASG d.o.o. · GNK DINAMO Ltd. · Nermin Sefić</div></footer>
+<script src="/assets/app.js?v=20260728-preuzimanja-v1" defer></script>
+</body>
+</html>

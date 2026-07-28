@@ -28,5 +28,9 @@
 /restaurants/assets/images/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Paketi za razvoj: uvijek se provjeravaju kod izvora, jer se mijenjaju.
+/preuzimanja/*
+  Cache-Control: public, max-age=0, must-revalidate
+
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
