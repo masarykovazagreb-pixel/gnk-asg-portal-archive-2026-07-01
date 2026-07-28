@@ -177,14 +177,19 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     technology:'technology', tech:'technology', startup:'technology', ai:'technology',
     'digital-assets':'digital-assets', crypto:'digital-assets', blockchain:'digital-assets',
     international:'international', world:'international', svijet:'international',
+    slovenija:'international', srbija:'international', bih:'international',
+    sport:'technology', mobilnost:'technology',
     hrvatska:'hrvatska', croatia:'hrvatska', regija:'hrvatska'
   };
+  // Simulacijski feed ima vlastitu namjenu i ne smije zavrsiti u bloku Svijet.
+  var GROUP_EXCLUDE = { 'digital-workforce-simulation': true };
   var MAX_PER_SOURCE = 3; // koliko kartica jedan medij smije zauzeti u jednom bloku
 
   function groupByCategory(){
     var raw = {};
     state.items.forEach(function(item){
       if (!item.image) return;
+      if (GROUP_EXCLUDE[String(item.group || '').toLowerCase()]) return;
       var g = GROUP_ALIAS[String(item.group || '').toLowerCase()] ||
               GROUP_ALIAS[String(item.category || '').toLowerCase()] || 'international';
       if (!raw[g]) raw[g] = [];
