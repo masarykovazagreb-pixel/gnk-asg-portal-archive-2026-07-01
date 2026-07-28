@@ -22,7 +22,8 @@ const FEEDS = [
   { source: 'CNBC Technology', group: 'technology', category: 'technology', url: 'https://www.cnbc.com/id/19854910/device/rss/rss.html' },
   { source: 'BBC Business', group: 'business', category: 'business', url: 'https://feeds.bbci.co.uk/news/business/rss.xml' },
   { source: 'BBC Technology', group: 'technology', category: 'technology', url: 'https://feeds.bbci.co.uk/news/technology/rss.xml' },
-  { source: 'WIRED Business', group: 'technology', category: 'technology', url: 'https://www.wired.com/feed/category/business/latest/rss' },
+  { source: 'Decrypt', group: 'digital-assets', category: 'digital-assets', url: 'https://decrypt.co/feed' },
+  { source: 'Cointelegraph', group: 'digital-assets', category: 'digital-assets', url: 'https://cointelegraph.com/rss' },
   { source: 'The Guardian Business', group: 'business', category: 'business', url: 'https://www.theguardian.com/uk/business/rss' },
   { source: 'The Guardian Technology', group: 'technology', category: 'technology', url: 'https://www.theguardian.com/uk/technology/rss' },
   { source: 'Ars Technica', group: 'technology', category: 'technology', url: 'https://arstechnica.com/feed/' },
@@ -110,6 +111,7 @@ function parseFeed(xml, feed) {
     const publishedAt = parseDate(tag(item, 'pubDate') || tag(item, 'published') || tag(item, 'updated') || tag(item, 'dc:date'));
     const image = firstImage(item) || FALLBACK_IMAGE;
     if (!title || !url || summary.length < 40) return null;
+    if (/promo code|coupon code|% off|discount code|deals? this|save \d+%/i.test(title)) return null;
     return {
       id: idFor(url, title),
       title,
