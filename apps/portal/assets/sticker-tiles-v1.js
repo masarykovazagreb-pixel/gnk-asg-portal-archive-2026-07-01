@@ -15,7 +15,8 @@
     { key: 'bio', title: 'Nilus Bio (PRJ-006)', desc: isEnglish ? 'Organic Egyptian food products — market study project.' : 'Organski egipatski prehrambeni proizvodi — projekt u fazi studije tržišta.', href: '/nilus-bio/', bg: '#fcd34d', fg: '#241703', selfPath: '/nilus-bio' },
     { key: 'tech', title: 'GNK DINAMO Digital Solutions', desc: isEnglish ? 'Technology services within GNK DINAMO Ltd. Group.' : 'Tehnološke usluge unutar GNK DINAMO Ltd. Group.', href: '/digital-solutions/', bg: '#2563eb', fg: '#eff6ff', selfPath: '/digital-solutions' },
     { key: 'krize', title: isEnglish ? 'Market Crises' : 'Tržišne krize', desc: isEnglish ? 'Major market crises from 2000 to today, compared live.' : 'Velike tržišne krize od 2000. do danas, uživo usporedba.', href: isEnglish ? '/en/market-crises/' : '/trzisne-krize/', bg: '#fbbf24', fg: '#241703', selfPath: isEnglish ? '/en/market-crises' : '/trzisne-krize' },
-    { key: 'pulse', title: 'Pulse — Command Center', desc: isEnglish ? 'Live weather, world clock, FX and security dashboard demo.' : 'Uživo vrijeme, svjetski sat, valute i sigurnosni dashboard demo.', href: '/pulse-demo/', bg: '#29d5a1', fg: '#071110', selfPath: '/pulse-demo' }
+    { key: 'pulse', title: 'Pulse — Command Center', desc: isEnglish ? 'Live weather, world clock, FX and security dashboard demo.' : 'Uživo vrijeme, svjetski sat, valute i sigurnosni dashboard demo.', href: '/pulse-demo/', bg: '#29d5a1', fg: '#071110', selfPath: '/pulse-demo' },
+    { key: 'worldtable', title: 'The World Table', desc: isEnglish ? '789 recipes, 14 categories — free cookbook to browse or download.' : '789 recepata, 14 kategorija — besplatna kuharica za listanje ili preuzimanje.', href: isEnglish ? '/en/world-table/' : '/world-table/', bg: '#d4af37', fg: '#241703', selfPath: isEnglish ? '/en/world-table' : '/world-table' }
   ].filter(item => item.selfPath !== path);
 
   // Single "★ PROJEKTI" toggle in the header, opening a colored dropdown
@@ -109,7 +110,7 @@
     mobileToggle.setAttribute('aria-expanded', String(open));
   });
   document.addEventListener('click', event => {
-    if (mobilePanel.classList.contains('open') && !mobilePanel.contains(event.target) && event.target !== mobileToggle) {
+    if (mobilePanel.classList.contains('open') && !mobilePanel.contains(event.target) && !mobileToggle.contains(event.target)) {
       mobilePanel.classList.remove('open');
       mobileToggle.setAttribute('aria-expanded', 'false');
     }
