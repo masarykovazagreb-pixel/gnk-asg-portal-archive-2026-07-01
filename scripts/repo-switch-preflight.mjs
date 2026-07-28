@@ -72,14 +72,28 @@ if (secrets.status !== 200) {
 
 /* 4. workflowi */
 console.log('\nWORKFLOWI');
+
+// Na razini repozitorija Actions mogu biti iskljucene. Dok su iskljucene,
+// pojedinacna stanja workflowa nista ne znace jer se nista ne pokrece — i to
+// je ispravno stanje za pricuvni repozitorij, jer sprjecava dvostruke objave.
+const perms = await api('/actions/permissions');
+const actionsOn = perms.status === 200 ? perms.body.enabled : null;
+if (actionsOn === false) {
+  ok('Actions su iskljucene na razini repozitorija — pricuva miruje, nema dvostrukih objava');
+  console.log(`${C.d}     Pojedinacna stanja workflowa provjeravaju se tek pri samom prelasku.${C.x}`);
+} else if (actionsOn === true) {
+  warn('Actions su UKLJUCENE — ako su ukljucene i u izvornom repozitoriju, objave idu dvaput');
+}
 let states = {};
-for (let page = 1; page <= 6; page++) {
+for (let page = 1; actionsOn !== false && page <= 6; page++) {
   const r = await api(`/actions/workflows?per_page=100&page=${page}`);
   if (r.status !== 200) break;
   for (const w of r.body.workflows || []) states[w.path.split('/').pop()] = w.state;
   if ((r.body.workflows || []).length < 100) break;
 }
-if (!Object.keys(states).length) {
+if (actionsOn === false) {
+  /* namjerno preskoceno */
+} else if (!Object.keys(states).length) {
   warn('workflowi jos nisu registrirani — GitHub ih vidi tek nakon prvog pusha na zadanu granu');
 } else if (!m.workflows.active) {
   warn('popis nema snimljena stanja; pokreni generator s tokenom');
