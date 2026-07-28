@@ -73,3 +73,34 @@ h1,h2,h3,h4{
 .eyebrow{
   color:var(--gold)!important;
 }
+
+
+/* --- GNK mobilno dotjerivanje ---------------------------------------
+   Gumbi su na uskom zaslonu bili preveliki: puni razmak i debljina kao na
+   stolnom racunalu, pa su u nizu zauzimali vise redaka nego sto treba.
+   Smanjeni su razmjerno, bez diranja stolnog prikaza.                */
+@media (max-width: 640px) {
+  .btn {
+    padding: 10px 15px;
+    font-size: .84rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+  }
+  .btn.gold,
+  .btn.ghost { padding: 10px 16px; }
+
+  /* Redovi gumba se slazu umjesto da se lome na pola rijeci. */
+  .hero-actions,
+  .actions,
+  .contact-actions { gap: 8px; }
+  .hero-actions .btn { flex: 1 1 auto; min-width: 0; }
+
+  /* Naslovi u zaglavljima sekcija: manje praznine, citljiviji razmak. */
+  .section-head { gap: 10px; margin-bottom: 18px; }
+  .section-head h2 { font-size: 1.4rem; line-height: 1.2; }
+  .eyebrow { font-size: .68rem; letter-spacing: .12em; }
+}
+
+@media (max-width: 400px) {
+  .btn { padding: 9px 13px; font-size: .8rem; }
+}
