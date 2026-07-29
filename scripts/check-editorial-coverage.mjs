@@ -49,9 +49,22 @@ function zagrebDateKey(date) {
 }
 
 const todayKey = zagrebDateKey(new Date());
-const files = walk(PLAN_DIR).filter((file) => file.endsWith('.json'));
+const allJsonFiles = walk(PLAN_DIR).filter((file) => file.endsWith('.json'));
+const manifestFiles = allJsonFiles.filter((file) => path.basename(file) === 'manifest.json');
+const files = allJsonFiles.filter((file) => path.basename(file) !== 'manifest.json');
 const entries = [];
 const invalid = [];
+
+for (const manifestFile of manifestFiles) {
+  try {
+    const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+    if (!Array.isArray(manifest?.packages)) {
+      invalid.push({ file: path.relative(ROOT, manifestFile), reason: 'editorial manifest must contain packages array' });
+    }
+  } catch (error) {
+    invalid.push({ file: path.relative(ROOT, manifestFile), reason: `invalid manifest JSON: ${error.message}` });
+  }
+}
 
 for (const file of files) {
   let parsed;
@@ -122,6 +135,7 @@ const report = {
   requiredDays: REQUIRED_DAYS,
   replenishAtDays: REPLENISH_AT_DAYS,
   files: files.length,
+  manifestFiles: manifestFiles.length,
   scheduledItems: future.length,
   scheduledDays: days,
   consecutiveDays,
