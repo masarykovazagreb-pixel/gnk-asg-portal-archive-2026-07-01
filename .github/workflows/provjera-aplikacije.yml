@@ -1,0 +1,70 @@
+name: Provjera aplikacije
+
+# Chrome nudi instalaciju samo ako manifest, servisni radnik i ikone stvarno
+# stizu, i to s ispravnim tipom sadrzaja. Ovo mjeri sto posluzitelj vraca,
+# umjesto da se nagada iz koda. Rezultat ide u datoteku, jer dnevnik izvodenja
+# nije citljiv izvana.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  provjeri:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ispitaj sto posluzitelj vraca
+        run: |
+          set -uo pipefail
+          mkdir -p ops
+          B=https://gnk-asg.hr
+          ispitaj(){
+            printf '%-42s ' "$1"
+            curl -sS -o /tmp/t -D /tmp/h -m 20 -w '%{http_code}' "$B$1" || echo 000
+            printf '  %s\n' "$(grep -i '^content-type:' /tmp/h | head -1 | tr -d '\r' | cut -d' ' -f2-)"
+          }
+          {
+            echo "provjereno: $(date -u '+%Y-%m-%d %H:%M UTC')"
+            echo
+            printf '%-42s %s  %s\n' 'PUTANJA' 'KOD' 'TIP SADRZAJA'
+            ispitaj /app/
+            ispitaj /app/manifest.webmanifest
+            ispitaj /app/sw.js
+            ispitaj /app/support.js
+            ispitaj /app/icons/icon-192.png
+            ispitaj /app/icons/icon-512.png
+            ispitaj /app/icons/icon-maskable-512.png
+            echo
+            echo "--- manifest, prvih 400 znakova onoga sto stvarno stigne ---"
+            curl -sS -m 20 "$B/app/manifest.webmanifest" | head -c 400
+            echo
+            echo
+            echo "--- trazi li stranica manifest u zaglavlju ---"
+            curl -sS -m 20 "$B/app/" | head -c 1200 | grep -o 'rel="manifest"[^>]*' || echo "NEMA u prvih 1200 znakova"
+            echo
+            echo "Za instalaciju mora vrijediti:"
+            echo "  manifest  200  application/manifest+json  (ili application/json)"
+            echo "  sw.js     200  javascript"
+            echo "  ikone     200  image/png"
+          } > ops/provjera-aplikacije.txt
+          cat ops/provjera-aplikacije.txt
+
+      - name: Spremi rezultat
+        shell: bash
+        run: |
+          set -uo pipefail
+          git config user.name "gnk-provjera"
+          git config user.email "actions@github.com"
+          git add ops/provjera-aplikacije.txt
+          git diff --cached --quiet && exit 0
+          git commit -m "Provjera aplikacije: rezultat ispita"
+          for i in 1 2 3; do
+            git push origin HEAD:main && exit 0
+            git pull --rebase --autostash origin main || true
+            sleep 5
+          done
