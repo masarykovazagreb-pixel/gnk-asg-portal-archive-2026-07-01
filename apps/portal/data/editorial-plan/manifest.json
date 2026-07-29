@@ -1,485 +1,530 @@
 {
-  "version": "GNK_ASG_EDITORIAL_PUBLICATION_PLAN_V4_20260721_NEW_SERIES",
-  "generatedAt": "2026-07-21T08:20:00+02:00",
-  "editor": {
-    "name": "Nermin Sefić",
-    "role": "glavni urednik",
-    "approval": "Pripremljeno u draft PR-u; objava i deploy nisu odobreni."
+ "version": "GNK_ASG_EDITORIAL_PUBLICATION_PLAN_V4_20260721_NEW_SERIES",
+ "generatedAt": "2026-07-29T08:43:10+00:00",
+ "editor": {
+  "name": "Nermin Sefić",
+  "role": "glavni urednik",
+  "approval": "Pripremljeno u draft PR-u; objava i deploy nisu odobreni."
+ },
+ "packages": [
+  {
+   "id": "EDITORIAL-20260714-NOW",
+   "publishAt": "2026-07-14T20:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260714-publications-a.json",
+    "20260714-publications-b.json",
+    "20260714-commentaries.json"
+   ],
+   "publishedAt": "2026-07-14T19:17:04.660Z",
+   "publishedRoutes": [
+    "/objave/globalne-kamatne-stope-nakon-inflacijskog-soka/",
+    "/objave/industrijska-politika-sad-europa-azija-nova-faza/",
+    "/objave/umjetna-inteligencija-operativna-infrastruktura/",
+    "/objave/energija-tehnologija-financije-podatkovni-centri/",
+    "/objave/kiberneticka-otpornost-upravljanje-uprava/",
+    "/objave/transparentnost-kompanije-kapital-investitori/",
+    "/objave/dobavni-lanci-podaci-ugovori-rezervni-kapaciteti/",
+    "/objave/valutni-rizik-medunarodno-poslovanje/",
+    "/objave/upravljanje-velikim-projektima-jedna-verzija-istine/",
+    "/objave/privatnost-podataka-skaliranje-umjetne-inteligencije/",
+    "/komentari/brzina-bez-kontrole-nije-inovacija/",
+    "/komentari/kapital-ne-vjeruje-obecanjima-nego-dokazima/"
+   ]
   },
-  "packages": [
-    {
-      "id": "EDITORIAL-20260714-NOW",
-      "publishAt": "2026-07-14T20:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260714-publications-a.json",
-        "20260714-publications-b.json",
-        "20260714-commentaries.json"
-      ],
-      "publishedAt": "2026-07-14T19:17:04.660Z",
-      "publishedRoutes": [
-        "/objave/globalne-kamatne-stope-nakon-inflacijskog-soka/",
-        "/objave/industrijska-politika-sad-europa-azija-nova-faza/",
-        "/objave/umjetna-inteligencija-operativna-infrastruktura/",
-        "/objave/energija-tehnologija-financije-podatkovni-centri/",
-        "/objave/kiberneticka-otpornost-upravljanje-uprava/",
-        "/objave/transparentnost-kompanije-kapital-investitori/",
-        "/objave/dobavni-lanci-podaci-ugovori-rezervni-kapaciteti/",
-        "/objave/valutni-rizik-medunarodno-poslovanje/",
-        "/objave/upravljanje-velikim-projektima-jedna-verzija-istine/",
-        "/objave/privatnost-podataka-skaliranje-umjetne-inteligencije/",
-        "/komentari/brzina-bez-kontrole-nije-inovacija/",
-        "/komentari/kapital-ne-vjeruje-obecanjima-nego-dokazima/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260715-MORNING",
-      "publishAt": "2026-07-15T08:15:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260715-publications-a.json",
-        "20260715-publications-b.json",
-        "20260715-commentaries.json"
-      ],
-      "publishedAt": "2026-07-15T06:48:07.594Z",
-      "publishedRoutes": [
-        "/objave/kapitalna-disciplina-geopoliticki-energetski-sokovi/",
-        "/objave/ai-act-operativna-spremnost-poduzeca/",
-        "/objave/podatkovni-centri-energija-lokacijski-rizik/",
-        "/objave/kiberneticka-otpornost-dobavljaci-trece-strane/",
-        "/objave/riznica-likvidnost-scenarijsko-planiranje/",
-        "/objave/digitalni-identitet-povjerenje-poslovne-mreze/",
-        "/objave/upravljanje-prekogranicnim-projektima-odgovornost/",
-        "/objave/ugovori-dobavljaci-umjetna-inteligencija/",
-        "/objave/porijeklo-podataka-korporativno-izvjestavanje/",
-        "/objave/globalni-komunikacijski-centri-lokalna-odgovornost/",
-        "/komentari/vidljivost-bez-vjerodostojnosti-nije-reputacija/",
-        "/komentari/ai-ne-smije-pisati-konacnu-odluku/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260720-MORNING",
-      "publishAt": "2026-07-20T09:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260720-new-articles.json"
-      ],
-      "publishedAt": "2026-07-20T09:00:00+02:00",
-      "publishedRoutes": [
-        "/objave/sportska-analitika-kao-poslovni-podatak/",
-        "/objave/digitalna-imovina-upravljanje-rizikom-koncentracije/",
-        "/objave/esg-izvjestavanje-od-forme-do-dokaza/",
-        "/objave/regulatorna-uskladenost-fintech-sektor/",
-        "/objave/cloud-infrastruktura-troskovna-disciplina/",
-        "/objave/krizno-komuniciranje-i-reputacijski-rizik/",
-        "/objave/due-diligence-u-digitalnom-dobu/",
-        "/objave/automatizacija-financijskog-izvjestavanja/",
-        "/objave/geopoliticki-rizik-diversifikacija-dobavljaca/",
-        "/objave/talent-organizacijska-otpornost/",
-        "/komentari/podaci-bez-konteksta-nisu-dokaz/",
-        "/komentari/rast-bez-discipline-nije-strategija/",
-        "/komentari/sigurnost-nije-jednokratni-projekt/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260721-NEW-SERIES",
-      "publishAt": "2026-07-21T15:30:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260721-new-series.json"
-      ],
-      "target": {
-        "publications": 10,
-        "commentaries": 3
-      },
-      "completedRoutes": [
-        "/objave/operativna-otpornost-i-kontinuitet-poslovanja/",
-        "/komentari/automatizacija-bez-odgovornosti-ubrzava-pogresku/"
-      ],
-      "safety": {
-        "unverifiedBusinessClaims": false,
-        "menuHeaderNavigationModified": false,
-        "productionDeploy": false
-      },
-      "publishedAt": "2026-07-21T13:41:27.824Z",
-      "publishedRoutes": [
-        "/objave/operativna-otpornost-i-kontinuitet-poslovanja/",
-        "/objave/upravljanje-podacima-za-odgovornu-umjetnu-inteligenciju/",
-        "/objave/riznica-i-rizik-druge-ugovorne-strane/",
-        "/objave/kiberneticka-sigurnost-u-lancu-dobave/",
-        "/objave/sljedivost-odluka-uprave-i-nadzora/",
-        "/objave/upravljanje-rizikom-modela-u-poslovnim-odlukama/",
-        "/objave/digitalna-pristupacnost-kao-kvaliteta-usluge/",
-        "/objave/transparentna-nabava-i-provjerljivi-kriteriji/",
-        "/objave/scenarijsko-planiranje-troskova-energije/",
-        "/objave/upravljanje-znanjem-i-institucionalna-memorija/",
-        "/komentari/automatizacija-bez-odgovornosti-ubrzava-pogresku/",
-        "/komentari/transparentnost-pocinje-prije-izvjestaja/",
-        "/komentari/otpornost-se-gradi-prije-krize/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260721-BALANCE-SHEET",
-      "publishAt": "2026-07-21T20:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260721-balance-sheet-analysis.json"
-      ],
-      "target": {
-        "publications": 1,
-        "commentaries": 0
-      },
-      "completedRoutes": [],
-      "safety": {
-        "unverifiedBusinessClaims": false,
-        "menuHeaderNavigationModified": false,
-        "productionDeploy": false
-      },
-      "publishedAt": "2026-07-21T18:49:02.106Z",
-      "publishedRoutes": [
-        "/objave/analiza-bilance-financijska-stabilnost/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260722-DAILY",
-      "publishAt": "2026-07-22T14:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260722-daily-package.json"
-      ],
-      "target": {
-        "publications": 2,
-        "commentaries": 1
-      },
-      "completedRoutes": [],
-      "safety": {
-        "unverifiedBusinessClaims": false,
-        "menuHeaderNavigationModified": false,
-        "productionDeploy": false
-      },
-      "publishedAt": "2026-07-22T13:50:47.079Z",
-      "publishedRoutes": [
-        "/objave/poslovni-kontinuitet-u-hibridnom-radnom-modelu/",
-        "/objave/intelektualno-vlasnistvo-u-tehnoloskim-partnerstvima/",
-        "/komentari/brzina-odlucivanja-nije-kvaliteta-odluke/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260722-DAILY",
-      "publishAt": "2026-07-22T14:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260722-daily-package.json"
-      ],
-      "target": {
-        "publications": 2,
-        "commentaries": 1
-      },
-      "completedRoutes": [],
-      "safety": {
-        "unverifiedBusinessClaims": false,
-        "menuHeaderNavigationModified": false,
-        "productionDeploy": false
-      },
-      "publishedAt": "2026-07-22T13:50:47.079Z",
-      "publishedRoutes": [
-        "/objave/poslovni-kontinuitet-u-hibridnom-radnom-modelu/",
-        "/objave/intelektualno-vlasnistvo-u-tehnoloskim-partnerstvima/",
-        "/komentari/brzina-odlucivanja-nije-kvaliteta-odluke/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260724-DAILY-10PLUS3",
-      "publishAt": "2026-07-24T08:26:51+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260724-daily-10plus3.json"
-      ],
-      "publishedAt": "2026-07-24T06:27:00.568Z",
-      "publishedRoutes": [
-        "/objave/nasljedivanje-vlasnistva-kontinuitet-poduzeca/",
-        "/objave/upravljanje-valutnim-hedgingom-izvoznika/",
-        "/objave/revizija-trece-strane-dobavljaca-tehnologije/",
-        "/objave/digitalni-potpis-pravna-valjanost-dokumenata/",
-        "/objave/korporativno-upravljanje-obiteljskih-tvrtki/",
-        "/objave/planiranje-kljucnih-nasljednih-pozicija/",
-        "/objave/transparentnost-opskrbnog-lanca-minerali/",
-        "/objave/mjerenje-povrata-ulaganja-digitalizaciju/",
-        "/objave/upravljanje-intelektualnim-kapitalom-tvrtke/",
-        "/objave/otpornost-platnog-prometa-infrastruktura/",
-        "/komentari/transparentnost-nije-teret-nego-prednost/",
-        "/komentari/dobra-odluka-treba-vrijeme-ne-oklijevanje/",
-        "/komentari/rizik-se-ne-eliminira-nego-upravlja/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260724-EVENING-SLOT1",
-      "publishAt": "2026-07-24T17:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260724-evening-slot1.json"
-      ],
-      "publishedAt": "2026-07-25T07:37:05.733Z",
-      "publishedRoutes": [
-        "/objave/cyber-osiguranje-uvjeti-i-iskljucenja/",
-        "/objave/prekogranicni-transfer-podataka-uskladenost/",
-        "/objave/obnovljivi-izvori-energije-korporativni-ugovori/",
-        "/objave/revizija-pristupnih-prava-nakon-promjene-uloge/",
-        "/objave/due-diligence-dobavljaca-esg-kriteriji/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260724-EVENING-SLOT2",
-      "publishAt": "2026-07-24T20:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260724-evening-slot2.json"
-      ],
-      "publishedAt": "2026-07-25T07:37:05.733Z",
-      "publishedRoutes": [
-        "/objave/upravljanje-licencama-softvera-trosak-rizik/",
-        "/objave/krizni-fond-likvidnosne-rezerve-poduzeca/",
-        "/objave/upravljanje-reputacijskim-rizikom-drustvene-mreze/",
-        "/objave/procjena-vrijednosti-startupa-rane-faze/",
-        "/objave/digitalni-dvojnik-industrijskih-postrojenja/",
-        "/komentari/podatak-bez-vlasnika-nije-imovina/",
-        "/komentari/brzi-rast-prihoda-ne-znaci-zdravo-poslovanje/",
-        "/komentari/dobavljac-koji-ne-dijeli-podatke-nije-partner/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260725-SATURDAY-SLOT1",
-      "publishAt": "2026-07-25T09:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260725-saturday-slot1.json"
-      ],
-      "publishedAt": "2026-07-25T07:37:05.733Z",
-      "publishedRoutes": [
-        "/objave/upravljanje-garancijama-i-jamstvima-izvoznika/",
-        "/objave/sigurnost-api-sucelja-u-poslovnim-integracijama/",
-        "/objave/planiranje-poreznih-obveza-kroz-poslovnu-godinu/",
-        "/objave/upravljanje-krizom-reputacije-nakon-incidenta/",
-        "/objave/planiranje-kapaciteta-podatkovnih-centara/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260725-SATURDAY-SLOT2",
-      "publishAt": "2026-07-25T14:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260725-saturday-slot2.json"
-      ],
-      "publishedAt": "2026-07-25T12:11:37.409Z",
-      "publishedRoutes": [
-        "/objave/upravljanje-kljucnim-klijentima-koncentracija-prihoda/",
-        "/objave/upravljanje-intelektualnim-vlasnistvom-otvorenog-koda/",
-        "/objave/otpornost-opskrbe-poluvodicima-diversifikacija/",
-        "/objave/upravljanje-ugovorima-o-razini-usluge-sla/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260725-SATURDAY-SLOT3",
-      "publishAt": "2026-07-25T19:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260725-saturday-slot3.json"
-      ],
-      "publishedAt": "2026-07-25T17:18:40.288Z",
-      "publishedRoutes": [
-        "/objave/vrednovanje-nematerijalne-imovine-kod-preuzimanja/",
-        "/komentari/dokumentacija-je-jeftinija-od-spora/",
-        "/komentari/diversifikacija-nije-slabost-nego-disciplina/",
-        "/komentari/brzina-integracije-tehnologije-ne-nadomjesta-testiranje/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260726-SUNDAY-SLOT1",
-      "publishAt": "2026-07-26T09:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260726-sunday-slot1.json"
-      ],
-      "publishedAt": "2026-07-26T07:06:29.997Z",
-      "publishedRoutes": [
-        "/objave/upravljanje-multivalutnim-riznickim-racunima/",
-        "/objave/sigurnosna-kopija-kao-zadnja-linija-obrane/",
-        "/objave/upravljanje-radnim-sporovima-prevencija-eskalacije/",
-        "/objave/otpornost-opskrbe-vodom-industrijska-postrojenja/",
-        "/objave/upravljanje-podacima-o-klijentima-nakon-gdpr-a/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260726-SUNDAY-SLOT2",
-      "publishAt": "2026-07-26T14:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260726-sunday-slot2.json"
-      ],
-      "publishedAt": "2026-07-26T14:01:40.820Z",
-      "publishedRoutes": [
-        "/objave/upravljanje-projektnim-rizikom-velike-infrastrukture/",
-        "/objave/upravljanje-mreznom-infrastrukturom-privatne-5g/",
-        "/objave/upravljanje-otpadom-kao-dio-operativne-ucinkovitosti/",
-        "/objave/procjena-kreditnog-rizika-poslovnih-partnera/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260726-SUNDAY-SLOT3",
-      "publishAt": "2026-07-26T19:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260726-sunday-slot3.json"
-      ],
-      "publishedAt": "2026-07-26T17:26:58.625Z",
-      "publishedRoutes": [
-        "/objave/upravljanje-znanjem-kroz-generacijsku-promjenu/",
-        "/komentari/brza-ekspanzija-bez-infrastrukture-stvara-dug/",
-        "/komentari/javni-podatak-vrijedi-samo-ako-je-provjerljiv/",
-        "/komentari/kontinuitet-vrijedi-vise-od-brzine-jednog-poteza/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260727-MONDAY-SLOT1",
-      "publishAt": "2026-07-27T06:30:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260727-monday-slot1.json"
-      ],
-      "publishedAt": "2026-07-27T07:55:39.564Z",
-      "publishedRoutes": [
-        "/objave/upravljanje-troskovima-oblaka-finops-praksa/",
-        "/objave/otpornost-maloprodajnih-lanaca-opskrbe-sezonski-rizik/",
-        "/objave/upravljanje-kvalitetom-podataka-za-ai-modele/",
-        "/objave/upravljanje-investicijskim-portfeljem-korporativne-rezerve/",
-        "/objave/sigurnost-industrijskih-kontrolnih-sustava-ot/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260727-MONDAY-SLOT2",
-      "publishAt": "2026-07-27T08:30:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260727-monday-slot2.json"
-      ],
-      "publishedAt": "2026-07-27T07:55:39.564Z",
-      "publishedRoutes": [
-        "/objave/upravljanje-odnosima-s-investitorima-redovita-komunikacija/",
-        "/objave/upravljanje-fleksibilnim-radnim-modelima-produktivnost/",
-        "/objave/otpornost-placanja-kriptovalutama-operativni-rizik/",
-        "/objave/upravljanje-medunarodnim-carinskim-rizikom/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260727-MONDAY-SLOT3",
-      "publishAt": "2026-07-27T10:30:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260727-monday-slot3.json"
-      ],
-      "publishedAt": "2026-07-27T11:08:23.986Z",
-      "publishedRoutes": [
-        "/objave/upravljanje-kvalitetom-dobavljaca-kroz-kpi-praracenje/",
-        "/komentari/mali-broj-tocnih-pokazatelja-vrijedi-vise-od-mnogo-priblizinih/",
-        "/komentari/partner-koji-izbjegava-pitanja-vec-je-odgovorio/",
-        "/komentari/otpornost-se-ne-vidi-dok-nije-testirana/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260728-TUESDAY-SLOT1",
-      "publishAt": "2026-07-28T08:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260728-tuesday-slot1.json"
-      ],
-      "publishedAt": "2026-07-28T06:43:47.106Z",
-      "publishedRoutes": [
-        "/objave/revizija-kao-alat-upravljanja-a-ne-formalnost/",
-        "/komentari/brojka-bez-metodologije-nije-informacija/",
-        "/komentari/neovisnost-revizora-vrijedi-vise-od-brzine-izvjestaja/",
-        "/komentari/konsolidirani-izvjestaj-grupe-nije-isto-sto-i-revidirani/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260729-WEDNESDAY-SLOT1",
-      "publishAt": "2026-07-29T08:00:00+02:00",
-      "deployApproved": true,
-      "status": "published",
-      "files": [
-        "20260729-wednesday-slot1.json"
-      ],
-      "publishedAt": "2026-07-29T06:47:36.692Z",
-      "publishedRoutes": [
-        "/objave/kiberneticka-otpornost-pociva-na-slabijoj-karici/",
-        "/komentari/test-plana-oporavka-vrijedi-samo-ako-iznenadi/",
-        "/komentari/pristup-po-nacelu-najmanje-privilegije-nije-nepovjerenje/",
-        "/komentari/sigurnosni-incident-koji-se-ne-prijavljuje-postaje-veci/"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260730-THURSDAY-SLOT1",
-      "publishAt": "2026-07-30T08:00:00+02:00",
-      "deployApproved": true,
-      "status": "scheduled",
-      "files": [
-        "20260730-thursday-slot1.json"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260731-FRIDAY-SLOT1",
-      "publishAt": "2026-07-31T08:00:00+02:00",
-      "deployApproved": true,
-      "status": "scheduled",
-      "files": [
-        "20260731-friday-slot1.json"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260801-SATURDAY-SLOT1",
-      "publishAt": "2026-08-01T08:00:00+02:00",
-      "deployApproved": true,
-      "status": "scheduled",
-      "files": [
-        "20260801-saturday-slot1.json"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260802-SUNDAY-SLOT1",
-      "publishAt": "2026-08-02T08:00:00+02:00",
-      "deployApproved": true,
-      "status": "scheduled",
-      "files": [
-        "20260802-sunday-slot1.json"
-      ]
-    },
-    {
-      "id": "EDITORIAL-20260803-MONDAY-SLOT1",
-      "publishAt": "2026-08-03T08:00:00+02:00",
-      "deployApproved": true,
-      "status": "scheduled",
-      "files": [
-        "20260803-monday-slot1.json"
-      ]
-    }
-  ]
+  {
+   "id": "EDITORIAL-20260715-MORNING",
+   "publishAt": "2026-07-15T08:15:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260715-publications-a.json",
+    "20260715-publications-b.json",
+    "20260715-commentaries.json"
+   ],
+   "publishedAt": "2026-07-15T06:48:07.594Z",
+   "publishedRoutes": [
+    "/objave/kapitalna-disciplina-geopoliticki-energetski-sokovi/",
+    "/objave/ai-act-operativna-spremnost-poduzeca/",
+    "/objave/podatkovni-centri-energija-lokacijski-rizik/",
+    "/objave/kiberneticka-otpornost-dobavljaci-trece-strane/",
+    "/objave/riznica-likvidnost-scenarijsko-planiranje/",
+    "/objave/digitalni-identitet-povjerenje-poslovne-mreze/",
+    "/objave/upravljanje-prekogranicnim-projektima-odgovornost/",
+    "/objave/ugovori-dobavljaci-umjetna-inteligencija/",
+    "/objave/porijeklo-podataka-korporativno-izvjestavanje/",
+    "/objave/globalni-komunikacijski-centri-lokalna-odgovornost/",
+    "/komentari/vidljivost-bez-vjerodostojnosti-nije-reputacija/",
+    "/komentari/ai-ne-smije-pisati-konacnu-odluku/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260720-MORNING",
+   "publishAt": "2026-07-20T09:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260720-new-articles.json"
+   ],
+   "publishedAt": "2026-07-20T09:00:00+02:00",
+   "publishedRoutes": [
+    "/objave/sportska-analitika-kao-poslovni-podatak/",
+    "/objave/digitalna-imovina-upravljanje-rizikom-koncentracije/",
+    "/objave/esg-izvjestavanje-od-forme-do-dokaza/",
+    "/objave/regulatorna-uskladenost-fintech-sektor/",
+    "/objave/cloud-infrastruktura-troskovna-disciplina/",
+    "/objave/krizno-komuniciranje-i-reputacijski-rizik/",
+    "/objave/due-diligence-u-digitalnom-dobu/",
+    "/objave/automatizacija-financijskog-izvjestavanja/",
+    "/objave/geopoliticki-rizik-diversifikacija-dobavljaca/",
+    "/objave/talent-organizacijska-otpornost/",
+    "/komentari/podaci-bez-konteksta-nisu-dokaz/",
+    "/komentari/rast-bez-discipline-nije-strategija/",
+    "/komentari/sigurnost-nije-jednokratni-projekt/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260721-NEW-SERIES",
+   "publishAt": "2026-07-21T15:30:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260721-new-series.json"
+   ],
+   "target": {
+    "publications": 10,
+    "commentaries": 3
+   },
+   "completedRoutes": [
+    "/objave/operativna-otpornost-i-kontinuitet-poslovanja/",
+    "/komentari/automatizacija-bez-odgovornosti-ubrzava-pogresku/"
+   ],
+   "safety": {
+    "unverifiedBusinessClaims": false,
+    "menuHeaderNavigationModified": false,
+    "productionDeploy": false
+   },
+   "publishedAt": "2026-07-21T13:41:27.824Z",
+   "publishedRoutes": [
+    "/objave/operativna-otpornost-i-kontinuitet-poslovanja/",
+    "/objave/upravljanje-podacima-za-odgovornu-umjetnu-inteligenciju/",
+    "/objave/riznica-i-rizik-druge-ugovorne-strane/",
+    "/objave/kiberneticka-sigurnost-u-lancu-dobave/",
+    "/objave/sljedivost-odluka-uprave-i-nadzora/",
+    "/objave/upravljanje-rizikom-modela-u-poslovnim-odlukama/",
+    "/objave/digitalna-pristupacnost-kao-kvaliteta-usluge/",
+    "/objave/transparentna-nabava-i-provjerljivi-kriteriji/",
+    "/objave/scenarijsko-planiranje-troskova-energije/",
+    "/objave/upravljanje-znanjem-i-institucionalna-memorija/",
+    "/komentari/automatizacija-bez-odgovornosti-ubrzava-pogresku/",
+    "/komentari/transparentnost-pocinje-prije-izvjestaja/",
+    "/komentari/otpornost-se-gradi-prije-krize/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260721-BALANCE-SHEET",
+   "publishAt": "2026-07-21T20:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260721-balance-sheet-analysis.json"
+   ],
+   "target": {
+    "publications": 1,
+    "commentaries": 0
+   },
+   "completedRoutes": [],
+   "safety": {
+    "unverifiedBusinessClaims": false,
+    "menuHeaderNavigationModified": false,
+    "productionDeploy": false
+   },
+   "publishedAt": "2026-07-21T18:49:02.106Z",
+   "publishedRoutes": [
+    "/objave/analiza-bilance-financijska-stabilnost/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260722-DAILY",
+   "publishAt": "2026-07-22T14:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260722-daily-package.json"
+   ],
+   "target": {
+    "publications": 2,
+    "commentaries": 1
+   },
+   "completedRoutes": [],
+   "safety": {
+    "unverifiedBusinessClaims": false,
+    "menuHeaderNavigationModified": false,
+    "productionDeploy": false
+   },
+   "publishedAt": "2026-07-22T13:50:47.079Z",
+   "publishedRoutes": [
+    "/objave/poslovni-kontinuitet-u-hibridnom-radnom-modelu/",
+    "/objave/intelektualno-vlasnistvo-u-tehnoloskim-partnerstvima/",
+    "/komentari/brzina-odlucivanja-nije-kvaliteta-odluke/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260722-DAILY",
+   "publishAt": "2026-07-22T14:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260722-daily-package.json"
+   ],
+   "target": {
+    "publications": 2,
+    "commentaries": 1
+   },
+   "completedRoutes": [],
+   "safety": {
+    "unverifiedBusinessClaims": false,
+    "menuHeaderNavigationModified": false,
+    "productionDeploy": false
+   },
+   "publishedAt": "2026-07-22T13:50:47.079Z",
+   "publishedRoutes": [
+    "/objave/poslovni-kontinuitet-u-hibridnom-radnom-modelu/",
+    "/objave/intelektualno-vlasnistvo-u-tehnoloskim-partnerstvima/",
+    "/komentari/brzina-odlucivanja-nije-kvaliteta-odluke/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260724-DAILY-10PLUS3",
+   "publishAt": "2026-07-24T08:26:51+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260724-daily-10plus3.json"
+   ],
+   "publishedAt": "2026-07-24T06:27:00.568Z",
+   "publishedRoutes": [
+    "/objave/nasljedivanje-vlasnistva-kontinuitet-poduzeca/",
+    "/objave/upravljanje-valutnim-hedgingom-izvoznika/",
+    "/objave/revizija-trece-strane-dobavljaca-tehnologije/",
+    "/objave/digitalni-potpis-pravna-valjanost-dokumenata/",
+    "/objave/korporativno-upravljanje-obiteljskih-tvrtki/",
+    "/objave/planiranje-kljucnih-nasljednih-pozicija/",
+    "/objave/transparentnost-opskrbnog-lanca-minerali/",
+    "/objave/mjerenje-povrata-ulaganja-digitalizaciju/",
+    "/objave/upravljanje-intelektualnim-kapitalom-tvrtke/",
+    "/objave/otpornost-platnog-prometa-infrastruktura/",
+    "/komentari/transparentnost-nije-teret-nego-prednost/",
+    "/komentari/dobra-odluka-treba-vrijeme-ne-oklijevanje/",
+    "/komentari/rizik-se-ne-eliminira-nego-upravlja/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260724-EVENING-SLOT1",
+   "publishAt": "2026-07-24T17:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260724-evening-slot1.json"
+   ],
+   "publishedAt": "2026-07-25T07:37:05.733Z",
+   "publishedRoutes": [
+    "/objave/cyber-osiguranje-uvjeti-i-iskljucenja/",
+    "/objave/prekogranicni-transfer-podataka-uskladenost/",
+    "/objave/obnovljivi-izvori-energije-korporativni-ugovori/",
+    "/objave/revizija-pristupnih-prava-nakon-promjene-uloge/",
+    "/objave/due-diligence-dobavljaca-esg-kriteriji/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260724-EVENING-SLOT2",
+   "publishAt": "2026-07-24T20:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260724-evening-slot2.json"
+   ],
+   "publishedAt": "2026-07-25T07:37:05.733Z",
+   "publishedRoutes": [
+    "/objave/upravljanje-licencama-softvera-trosak-rizik/",
+    "/objave/krizni-fond-likvidnosne-rezerve-poduzeca/",
+    "/objave/upravljanje-reputacijskim-rizikom-drustvene-mreze/",
+    "/objave/procjena-vrijednosti-startupa-rane-faze/",
+    "/objave/digitalni-dvojnik-industrijskih-postrojenja/",
+    "/komentari/podatak-bez-vlasnika-nije-imovina/",
+    "/komentari/brzi-rast-prihoda-ne-znaci-zdravo-poslovanje/",
+    "/komentari/dobavljac-koji-ne-dijeli-podatke-nije-partner/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260725-SATURDAY-SLOT1",
+   "publishAt": "2026-07-25T09:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260725-saturday-slot1.json"
+   ],
+   "publishedAt": "2026-07-25T07:37:05.733Z",
+   "publishedRoutes": [
+    "/objave/upravljanje-garancijama-i-jamstvima-izvoznika/",
+    "/objave/sigurnost-api-sucelja-u-poslovnim-integracijama/",
+    "/objave/planiranje-poreznih-obveza-kroz-poslovnu-godinu/",
+    "/objave/upravljanje-krizom-reputacije-nakon-incidenta/",
+    "/objave/planiranje-kapaciteta-podatkovnih-centara/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260725-SATURDAY-SLOT2",
+   "publishAt": "2026-07-25T14:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260725-saturday-slot2.json"
+   ],
+   "publishedAt": "2026-07-25T12:11:37.409Z",
+   "publishedRoutes": [
+    "/objave/upravljanje-kljucnim-klijentima-koncentracija-prihoda/",
+    "/objave/upravljanje-intelektualnim-vlasnistvom-otvorenog-koda/",
+    "/objave/otpornost-opskrbe-poluvodicima-diversifikacija/",
+    "/objave/upravljanje-ugovorima-o-razini-usluge-sla/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260725-SATURDAY-SLOT3",
+   "publishAt": "2026-07-25T19:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260725-saturday-slot3.json"
+   ],
+   "publishedAt": "2026-07-25T17:18:40.288Z",
+   "publishedRoutes": [
+    "/objave/vrednovanje-nematerijalne-imovine-kod-preuzimanja/",
+    "/komentari/dokumentacija-je-jeftinija-od-spora/",
+    "/komentari/diversifikacija-nije-slabost-nego-disciplina/",
+    "/komentari/brzina-integracije-tehnologije-ne-nadomjesta-testiranje/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260726-SUNDAY-SLOT1",
+   "publishAt": "2026-07-26T09:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260726-sunday-slot1.json"
+   ],
+   "publishedAt": "2026-07-26T07:06:29.997Z",
+   "publishedRoutes": [
+    "/objave/upravljanje-multivalutnim-riznickim-racunima/",
+    "/objave/sigurnosna-kopija-kao-zadnja-linija-obrane/",
+    "/objave/upravljanje-radnim-sporovima-prevencija-eskalacije/",
+    "/objave/otpornost-opskrbe-vodom-industrijska-postrojenja/",
+    "/objave/upravljanje-podacima-o-klijentima-nakon-gdpr-a/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260726-SUNDAY-SLOT2",
+   "publishAt": "2026-07-26T14:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260726-sunday-slot2.json"
+   ],
+   "publishedAt": "2026-07-26T14:01:40.820Z",
+   "publishedRoutes": [
+    "/objave/upravljanje-projektnim-rizikom-velike-infrastrukture/",
+    "/objave/upravljanje-mreznom-infrastrukturom-privatne-5g/",
+    "/objave/upravljanje-otpadom-kao-dio-operativne-ucinkovitosti/",
+    "/objave/procjena-kreditnog-rizika-poslovnih-partnera/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260726-SUNDAY-SLOT3",
+   "publishAt": "2026-07-26T19:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260726-sunday-slot3.json"
+   ],
+   "publishedAt": "2026-07-26T17:26:58.625Z",
+   "publishedRoutes": [
+    "/objave/upravljanje-znanjem-kroz-generacijsku-promjenu/",
+    "/komentari/brza-ekspanzija-bez-infrastrukture-stvara-dug/",
+    "/komentari/javni-podatak-vrijedi-samo-ako-je-provjerljiv/",
+    "/komentari/kontinuitet-vrijedi-vise-od-brzine-jednog-poteza/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260727-MONDAY-SLOT1",
+   "publishAt": "2026-07-27T06:30:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260727-monday-slot1.json"
+   ],
+   "publishedAt": "2026-07-27T07:55:39.564Z",
+   "publishedRoutes": [
+    "/objave/upravljanje-troskovima-oblaka-finops-praksa/",
+    "/objave/otpornost-maloprodajnih-lanaca-opskrbe-sezonski-rizik/",
+    "/objave/upravljanje-kvalitetom-podataka-za-ai-modele/",
+    "/objave/upravljanje-investicijskim-portfeljem-korporativne-rezerve/",
+    "/objave/sigurnost-industrijskih-kontrolnih-sustava-ot/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260727-MONDAY-SLOT2",
+   "publishAt": "2026-07-27T08:30:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260727-monday-slot2.json"
+   ],
+   "publishedAt": "2026-07-27T07:55:39.564Z",
+   "publishedRoutes": [
+    "/objave/upravljanje-odnosima-s-investitorima-redovita-komunikacija/",
+    "/objave/upravljanje-fleksibilnim-radnim-modelima-produktivnost/",
+    "/objave/otpornost-placanja-kriptovalutama-operativni-rizik/",
+    "/objave/upravljanje-medunarodnim-carinskim-rizikom/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260727-MONDAY-SLOT3",
+   "publishAt": "2026-07-27T10:30:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260727-monday-slot3.json"
+   ],
+   "publishedAt": "2026-07-27T11:08:23.986Z",
+   "publishedRoutes": [
+    "/objave/upravljanje-kvalitetom-dobavljaca-kroz-kpi-praracenje/",
+    "/komentari/mali-broj-tocnih-pokazatelja-vrijedi-vise-od-mnogo-priblizinih/",
+    "/komentari/partner-koji-izbjegava-pitanja-vec-je-odgovorio/",
+    "/komentari/otpornost-se-ne-vidi-dok-nije-testirana/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260728-TUESDAY-SLOT1",
+   "publishAt": "2026-07-28T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260728-tuesday-slot1.json"
+   ],
+   "publishedAt": "2026-07-28T06:43:47.106Z",
+   "publishedRoutes": [
+    "/objave/revizija-kao-alat-upravljanja-a-ne-formalnost/",
+    "/komentari/brojka-bez-metodologije-nije-informacija/",
+    "/komentari/neovisnost-revizora-vrijedi-vise-od-brzine-izvjestaja/",
+    "/komentari/konsolidirani-izvjestaj-grupe-nije-isto-sto-i-revidirani/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260729-WEDNESDAY-SLOT1",
+   "publishAt": "2026-07-29T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "published",
+   "files": [
+    "20260729-wednesday-slot1.json"
+   ],
+   "publishedAt": "2026-07-29T06:47:36.692Z",
+   "publishedRoutes": [
+    "/objave/kiberneticka-otpornost-pociva-na-slabijoj-karici/",
+    "/komentari/test-plana-oporavka-vrijedi-samo-ako-iznenadi/",
+    "/komentari/pristup-po-nacelu-najmanje-privilegije-nije-nepovjerenje/",
+    "/komentari/sigurnosni-incident-koji-se-ne-prijavljuje-postaje-veci/"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260730-THURSDAY-SLOT1",
+   "publishAt": "2026-07-30T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "scheduled",
+   "files": [
+    "20260730-thursday-slot1.json"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260731-FRIDAY-SLOT1",
+   "publishAt": "2026-07-31T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "scheduled",
+   "files": [
+    "20260731-friday-slot1.json"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260801-SATURDAY-SLOT1",
+   "publishAt": "2026-08-01T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "scheduled",
+   "files": [
+    "20260801-saturday-slot1.json"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260802-SUNDAY-SLOT1",
+   "publishAt": "2026-08-02T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "scheduled",
+   "files": [
+    "20260802-sunday-slot1.json"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260803-MONDAY-SLOT1",
+   "publishAt": "2026-08-03T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "scheduled",
+   "files": [
+    "20260803-monday-slot1.json"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260804-TUESDAY-SLOT1",
+   "publishAt": "2026-08-04T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "scheduled",
+   "files": [
+    "20260804-tuesday-slot1.json"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260805-WEDNESDAY-SLOT1",
+   "publishAt": "2026-08-05T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "scheduled",
+   "files": [
+    "20260805-wednesday-slot1.json"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260806-THURSDAY-SLOT1",
+   "publishAt": "2026-08-06T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "scheduled",
+   "files": [
+    "20260806-thursday-slot1.json"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260807-FRIDAY-SLOT1",
+   "publishAt": "2026-08-07T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "scheduled",
+   "files": [
+    "20260807-friday-slot1.json"
+   ]
+  },
+  {
+   "id": "EDITORIAL-20260808-SATURDAY-SLOT1",
+   "publishAt": "2026-08-08T08:00:00+02:00",
+   "deployApproved": true,
+   "status": "scheduled",
+   "files": [
+    "20260808-saturday-slot1.json"
+   ]
+  }
+ ]
 }
