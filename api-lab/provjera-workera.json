@@ -1,0 +1,419 @@
+[
+ {
+  "worker": "gnk-asg-ai-assist-worker",
+  "ruta": "gnk-asg.hr/api/ai-assist*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-ai-newsroom-writer",
+  "ruta": "gnk-asg.hr/api/ai-newsroom-writer*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "GET",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-app-api",
+  "ruta": "gnk-asg.hr/api/objave*",
+  "metoda": "OPTIONS",
+  "zasto": "POST-only ruta, OPTIONS je siguran",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-app-api",
+  "ruta": "gnk-asg.hr/api/messages*",
+  "metoda": "OPTIONS",
+  "zasto": "POST-only ruta, OPTIONS je siguran",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-app-api",
+  "ruta": "gnk-asg.hr/api/app-health",
+  "metoda": "OPTIONS",
+  "zasto": "POST-only ruta, OPTIONS je siguran",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-auto-editor-public-clean",
+  "ruta": "gnk-asg.hr/auto-editor*",
+  "metoda": "GET",
+  "zasto": "nepoznato iz koda",
+  "vraca_405": false,
+  "metode_u_kodu": []
+ },
+ {
+  "worker": "gnk-asg-auto-editor",
+  "ruta": "gnk-asg.hr/auto-editor*",
+  "metoda": "GET",
+  "zasto": "nepoznato iz koda",
+  "vraca_405": false,
+  "metode_u_kodu": []
+ },
+ {
+  "worker": "gnk-asg-auto-editor",
+  "ruta": "www.gnk-asg.hr/auto-editor*",
+  "metoda": "GET",
+  "zasto": "nepoznato iz koda",
+  "vraca_405": false,
+  "metode_u_kodu": []
+ },
+ {
+  "worker": "gnk-asg-auto-editor",
+  "ruta": "gnk-asg.hr/api/auto-editor*",
+  "metoda": "GET",
+  "zasto": "nepoznato iz koda",
+  "vraca_405": false,
+  "metode_u_kodu": []
+ },
+ {
+  "worker": "gnk-asg-auto-editor",
+  "ruta": "www.gnk-asg.hr/api/auto-editor*",
+  "metoda": "GET",
+  "zasto": "nepoznato iz koda",
+  "vraca_405": false,
+  "metode_u_kodu": []
+ },
+ {
+  "worker": "gnk-asg-auto-editor",
+  "ruta": "gnk-asg.hr/data/auto-editor.json",
+  "metoda": "GET",
+  "zasto": "nepoznato iz koda",
+  "vraca_405": false,
+  "metode_u_kodu": []
+ },
+ {
+  "worker": "gnk-asg-auto-editor",
+  "ruta": "www.gnk-asg.hr/data/auto-editor.json",
+  "metoda": "GET",
+  "zasto": "nepoznato iz koda",
+  "vraca_405": false,
+  "metode_u_kodu": []
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "gnk-asg.hr/api/contact-submit*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "www.gnk-asg.hr/api/contact-submit*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "gnk-asg.hr/api/contact-mailboxes*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "www.gnk-asg.hr/api/contact-mailboxes*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "gnk-asg.hr/api/operator-send-mail*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "www.gnk-asg.hr/api/operator-send-mail*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "gnk-asg.hr/api/operator-mailbox-config*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "www.gnk-asg.hr/api/operator-mailbox-config*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "gnk-asg.hr/api/operator-signature-load*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "www.gnk-asg.hr/api/operator-signature-load*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "gnk-asg.hr/api/operator-signature-save*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-contact-api",
+  "ruta": "www.gnk-asg.hr/api/operator-signature-save*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "DELETE",
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-direct-operator",
+  "ruta": "(nema rute u tomlu)",
+  "metoda": "-",
+  "status": "NIJE_VEZAN",
+  "biljeska": "wrangler.toml nema pattern"
+ },
+ {
+  "worker": "gnk-asg-emergency-entry-redirect",
+  "ruta": "gnk-asg.hr/app",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "GET",
+   "HEAD"
+  ]
+ },
+ {
+  "worker": "gnk-asg-emergency-entry-redirect",
+  "ruta": "gnk-asg.hr/app/*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "GET",
+   "HEAD"
+  ]
+ },
+ {
+  "worker": "gnk-asg-emergency-entry-redirect",
+  "ruta": "www.gnk-asg.hr/app",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "GET",
+   "HEAD"
+  ]
+ },
+ {
+  "worker": "gnk-asg-emergency-entry-redirect",
+  "ruta": "www.gnk-asg.hr/app/*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "GET",
+   "HEAD"
+  ]
+ },
+ {
+  "worker": "gnk-asg-mail-center-worker",
+  "ruta": "(nema rute u tomlu)",
+  "metoda": "-",
+  "status": "NIJE_VEZAN",
+  "biljeska": "wrangler.toml nema pattern"
+ },
+ {
+  "worker": "gnk-asg-news-pages-live",
+  "ruta": "gnk-asg.hr/vijesti/*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "GET",
+   "HEAD"
+  ]
+ },
+ {
+  "worker": "gnk-asg-news-pages-live",
+  "ruta": "gnk-asg.hr/news/*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "GET",
+   "HEAD"
+  ]
+ },
+ {
+  "worker": "gnk-asg-news-pages-live",
+  "ruta": "www.gnk-asg.hr/vijesti/*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "GET",
+   "HEAD"
+  ]
+ },
+ {
+  "worker": "gnk-asg-news-pages-live",
+  "ruta": "www.gnk-asg.hr/news/*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": true,
+  "metode_u_kodu": [
+   "GET",
+   "HEAD"
+  ]
+ },
+ {
+  "worker": "gnk-asg-operator-center",
+  "ruta": "(nema rute u tomlu)",
+  "metoda": "-",
+  "status": "NIJE_VEZAN",
+  "biljeska": "wrangler.toml nema pattern"
+ },
+ {
+  "worker": "gnk-asg-public-menu-fix",
+  "ruta": "gnk-asg.hr/assets/public-menu-final-v9.js*",
+  "metoda": "GET",
+  "zasto": "nepoznato iz koda",
+  "vraca_405": false,
+  "metode_u_kodu": []
+ },
+ {
+  "worker": "gnk-asg-public-menu-fix",
+  "ruta": "www.gnk-asg.hr/assets/public-menu-final-v9.js*",
+  "metoda": "GET",
+  "zasto": "nepoznato iz koda",
+  "vraca_405": false,
+  "metode_u_kodu": []
+ },
+ {
+  "worker": "gnk-asg-publish-operator",
+  "ruta": "publish.gnk-asg.hr",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": false,
+  "metode_u_kodu": [
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ },
+ {
+  "worker": "gnk-asg-scheduled-mail-sender",
+  "ruta": "gnk-asg.hr/api/mail-schedule*",
+  "metoda": "GET",
+  "zasto": "Worker podrzava GET",
+  "vraca_405": false,
+  "metode_u_kodu": [
+   "GET",
+   "OPTIONS",
+   "POST"
+  ]
+ }
+]
