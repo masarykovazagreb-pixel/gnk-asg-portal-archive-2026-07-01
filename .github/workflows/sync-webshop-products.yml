@@ -9,7 +9,12 @@ name: Sync Webshop Products
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    # Katalog se puni preko /api/v1/products, a taj API nema postavljen
+    # WEBSHOP_API_KEY, pa u pohrani nema nicega. Skripta to prepozna i ne
+    # pregazi postojecu datoteku, ali onda nema sto raditi. U sedam dana
+    # datoteka se promijenila tri puta, uz 672 izvodenja. Jednom dnevno je
+    # dovoljno; kad se API postavi, vratiti na cesci ritam.
+    - cron: '35 5 * * *'
   workflow_dispatch:
 
 concurrency:

@@ -2,7 +2,9 @@ name: Refresh index live data
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    # Podatci naslovnice mijenjaju se oko jedanaest puta dnevno, a posao se
+    # vrtio 96 puta. Svaki sat pokriva stvarnu ucestalost s dosta zaliha.
+    - cron: '5 * * * *'
   workflow_dispatch:
   pull_request:
     branches: [main]

@@ -29,8 +29,8 @@ Worker dodaje.
 
 | Ritam | Posao | Sto radi |
 |---|---|---|
-| 15 min | Refresh index live data | podaci naslovnice |
-| 15 min | Sync Webshop Products | katalog trgovine |
+| 1 h, :05 | Refresh index live data | podaci naslovnice |
+| dnevno 05:35 | Sync Webshop Products | katalog trgovine |
 | 1 h, :10 | Market Pulse Refresh | trzisni pokazatelji |
 | 1 h, :20 | Publish Scheduled Editorial Content | objava zakazanih tekstova |
 | 1 h, :20 | Refresh GNKC Index | GNKC indeks |
