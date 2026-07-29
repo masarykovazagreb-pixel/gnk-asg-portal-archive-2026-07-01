@@ -1,0 +1,33 @@
+provjereno: 2026-07-29 10:19 UTC
+
+PUTANJA                                    KOD  TIP SADRZAJA
+/app/                                      200  text/html; charset=utf-8
+/app/manifest.webmanifest                  200  application/manifest+json
+/app/sw.js                                 200  application/javascript
+/app/support.js                            200  text/javascript
+/app/icons/icon-192.png                    200  image/png
+/app/icons/icon-512.png                    200  image/png
+/app/icons/icon-maskable-512.png           200  image/png
+
+--- manifest, prvih 400 znakova onoga sto stvarno stigne ---
+{
+  "name": "GNK ASG — Korporativni portal",
+  "short_name": "GNK ASG",
+  "description": "GNK ASG d.o.o. i GNK DINAMO Ltd. grupa: financijski pokazatelji, tržišta, vijesti, grupna mreža i projekti.",
+  "lang": "hr",
+  "dir": "ltr",
+  "id": "/app/",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+
+
+--- trazi li stranica manifest u zaglavlju ---
+NEMA u prvih 1200 znakova
+
+Za instalaciju mora vrijediti:
+  manifest  200  application/manifest+json  (ili application/json)
+  sw.js     200  javascript
+  ikone     200  image/png
