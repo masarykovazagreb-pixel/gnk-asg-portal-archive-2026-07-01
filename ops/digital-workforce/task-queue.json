@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "updated_at": "2026-07-29T16:15:00Z",
+  "tasks": [
+    {
+      "id": "DW-20260729-001",
+      "title": "Provjeri javne rute digitalnih radnika",
+      "capability": "route-audit",
+      "priority": 100,
+      "status": "queued",
+      "requested_by": "management",
+      "assigned_to": null,
+      "controller": "quality-controller",
+      "depends_on": [],
+      "approval_required": false,
+      "max_attempts": 3,
+      "attempts": 0,
+      "evidence": [],
+      "created_at": "2026-07-29T16:15:00Z"
+    },
+    {
+      "id": "DW-20260729-002",
+      "title": "Uskladi restoranske jelovnike, slike i sitemap rute",
+      "capability": "restaurants",
+      "priority": 90,
+      "status": "queued",
+      "requested_by": "management",
+      "assigned_to": null,
+      "controller": "quality-controller",
+      "depends_on": [],
+      "approval_required": false,
+      "max_attempts": 3,
+      "attempts": 0,
+      "evidence": [],
+      "created_at": "2026-07-29T16:15:00Z"
+    },
+    {
+      "id": "DW-20260729-003",
+      "title": "Pripremi dnevni završni izvještaj digitalnih radnika",
+      "capability": "daily-reporting",
+      "priority": 70,
+      "status": "queued",
+      "requested_by": "management",
+      "assigned_to": null,
+      "controller": "quality-controller",
+      "depends_on": ["DW-20260729-001", "DW-20260729-002"],
+      "approval_required": false,
+      "max_attempts": 2,
+      "attempts": 0,
+      "evidence": [],
+      "created_at": "2026-07-29T16:15:00Z"
+    }
+  ]
+}
