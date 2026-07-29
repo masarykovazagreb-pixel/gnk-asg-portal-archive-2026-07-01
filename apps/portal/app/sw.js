@@ -1,5 +1,5 @@
 /* GNK ASG PWA service worker — app shell offline, network-first for live data */
-const VERSION = 'gnk-asg-v1-instal-v2-d3';
+const VERSION = 'gnk-asg-v1-instal-v2-d3-s4';
 const SHELL = [
   './',
   './index.html',
