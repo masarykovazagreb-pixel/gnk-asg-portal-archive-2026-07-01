@@ -1,0 +1,44 @@
+name: Editorial Premium Contract
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/data/editorial-plan/**'
+      - 'scripts/validate-editorial-premium-contract.mjs'
+      - 'ops/automation-control-v1.json'
+      - '.github/workflows/editorial-premium-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate premium editorial package
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate contract
+        run: node scripts/validate-editorial-premium-contract.mjs
+
+      - name: Upload validation report
+        if: always()
+        run: |
+          mkdir -p ops/evidence
+          node scripts/validate-editorial-premium-contract.mjs > ops/evidence/editorial-premium-contract.json || true
+
+      - name: Publish evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: editorial-premium-contract
+          path: ops/evidence/editorial-premium-contract.json
+          if-no-files-found: error
