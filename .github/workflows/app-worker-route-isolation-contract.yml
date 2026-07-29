@@ -1,0 +1,41 @@
+name: App and Worker Route Isolation Contract
+
+on:
+  pull_request:
+    paths:
+      - 'ops/app-worker-route-isolation.json'
+      - 'scripts/validate-app-worker-route-isolation.mjs'
+      - '.github/workflows/**'
+      - 'scripts/**'
+      - 'apps/portal/app/**'
+      - 'apps/portal/preuzimanja/api-lab/**'
+      - '**/wrangler.toml'
+      - '**/wrangler.json'
+      - '**/wrangler.jsonc'
+      - '**/worker-configuration.d.ts'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: app-worker-route-isolation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-isolation:
+    name: Validate protected paths and route hold
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate /app/ and Worker route isolation
+        run: node scripts/validate-app-worker-route-isolation.mjs
