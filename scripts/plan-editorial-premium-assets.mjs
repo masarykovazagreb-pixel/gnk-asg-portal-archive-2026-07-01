@@ -29,11 +29,15 @@ function safeSlug(value, fallback) {
   return normalized || 'editorial-item';
 }
 
+function recordHorizon(record) {
+  return String(record?.horizon || record?.priority || '').trim().toLowerCase();
+}
+
 function assetRecord(fileRecord, item, index) {
   const slug = safeSlug(item.slug || item.title, `item-${index + 1}`);
   const base = `/assets/editorial-premium/${fileRecord.date || 'undated'}/${slug}`;
   return {
-    priority: fileRecord.priority,
+    priority: recordHorizon(fileRecord),
     date: fileRecord.date || null,
     sourceFile: fileRecord.file,
     index,
@@ -56,7 +60,7 @@ function assetRecord(fileRecord, item, index) {
 }
 
 const remediation = readJson(remediationPath);
-const selectedFiles = remediation.files.filter((record) => record.priority === 'active' || record.priority === 'future');
+const selectedFiles = remediation.files.filter((record) => ['active', 'future'].includes(recordHorizon(record)));
 const assets = [];
 
 for (const fileRecord of selectedFiles) {
