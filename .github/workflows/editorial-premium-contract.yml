@@ -6,6 +6,7 @@ on:
       - 'apps/portal/data/editorial-plan/**'
       - 'scripts/validate-editorial-premium-contract.mjs'
       - 'scripts/plan-editorial-premium-remediation.mjs'
+      - 'scripts/plan-editorial-premium-assets.mjs'
       - 'ops/automation-control-v1.json'
       - '.github/workflows/editorial-premium-contract.yml'
   workflow_dispatch:
@@ -45,6 +46,15 @@ jobs:
             ops/evidence/editorial-premium-remediation.md
           cat ops/evidence/editorial-premium-remediation.md >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Build active and future asset plan
+        if: always()
+        run: |
+          node scripts/plan-editorial-premium-assets.mjs \
+            ops/evidence/editorial-premium-remediation.json \
+            ops/evidence/editorial-premium-assets.json \
+            ops/evidence/editorial-premium-assets.md
+          cat ops/evidence/editorial-premium-assets.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Publish evidence artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -54,4 +64,6 @@ jobs:
             ops/evidence/editorial-premium-contract.json
             ops/evidence/editorial-premium-remediation.json
             ops/evidence/editorial-premium-remediation.md
+            ops/evidence/editorial-premium-assets.json
+            ops/evidence/editorial-premium-assets.md
           if-no-files-found: error
