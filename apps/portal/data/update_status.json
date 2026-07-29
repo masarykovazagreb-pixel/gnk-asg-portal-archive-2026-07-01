@@ -1,37 +1,37 @@
 {
-  "updated_at": "2026-07-29T19:47:46+00:00",
+  "updated_at": "2026-07-29T21:14:55+00:00",
   "news": {
-    "updated_at": "2026-07-29T19:47:46+00:00",
+    "updated_at": "2026-07-29T21:14:55+00:00",
     "status": "ok",
     "engine": "github_actions_rss_refresh_v4_retention_policy",
     "cadence": "hourly at minute 17 UTC plus manual workflow_dispatch",
     "source_success_policy": "publish_when_public_items_available_and_at_least_50_percent_sources_synced",
     "source_success_threshold": 0.5,
-    "source_success_ratio": 0.959,
+    "source_success_ratio": 0.932,
     "source_sync_status": "partial_with_public_fallback",
     "configured_sources": 73,
-    "successful_sources": 70,
-    "failed_sources": 3,
+    "successful_sources": 68,
+    "failed_sources": 5,
     "storage_policy": "public_latest_100_archive_all_older_prune_oldest_1000_repeatedly_when_archive_exceeds_2000",
     "public_items": 150,
     "max_public_items": 150,
-    "archive_items": 1129,
+    "archive_items": 1736,
     "archive_prune_trigger": 2000,
     "archive_delete_oldest_batch": 1000,
-    "archive_items_before_prune": 4129,
-    "archive_prune_batches": 3,
-    "discarded_archive_overflow_items": 3000,
-    "fetched_candidates": 3184,
-    "duplicates_or_blocked_removed": 976,
+    "archive_items_before_prune": 3736,
+    "archive_prune_batches": 2,
+    "discarded_archive_overflow_items": 2000,
+    "fetched_candidates": 3128,
+    "duplicates_or_blocked_removed": 546,
     "request_timeout_seconds": 10,
     "network_workers": 1,
     "share_previews_ready": 0,
     "by_group": {
       "economy": 36,
-      "technology": 30,
-      "international": 32,
-      "digital-assets": 26,
       "hrvatska": 19,
+      "digital-assets": 26,
+      "international": 32,
+      "technology": 30,
       "digital-workforce-simulation": 7
     },
     "errors": [
@@ -46,19 +46,29 @@
         "error": "HTTP Error 403: Forbidden"
       },
       {
+        "source": "Netokracija",
+        "group": "hrvatska",
+        "error": "not well-formed (invalid token): line 1, column 116"
+      },
+      {
+        "source": "Euronews Business",
+        "group": "economy",
+        "error": "not well-formed (invalid token): line 1, column 0"
+      },
+      {
         "source": "Al Jazeera Economy",
         "group": "economy",
         "error": "HTTP Error 404: Not Found"
       }
     ],
     "preview_errors": [],
-    "checked_at": "2026-07-29T19:47:46+00:00",
-    "last_attempt_at": "2026-07-29T19:47:46+00:00",
+    "checked_at": "2026-07-29T21:14:55+00:00",
+    "last_attempt_at": "2026-07-29T21:14:55+00:00",
     "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-07-29T19:47:46+00:00",
+    "last_successful_refresh_at": "2026-07-29T21:14:55+00:00",
     "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 24.63
+    "runtime_seconds": 23.91
   },
   "dw_integration_debug_temporary": {
     "raw_len": 7124,
