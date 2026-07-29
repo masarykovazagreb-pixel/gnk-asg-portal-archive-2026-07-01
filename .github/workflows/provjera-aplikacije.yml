@@ -44,8 +44,12 @@ jobs:
             curl -sS -m 20 "$B/app/manifest.webmanifest" | head -c 400
             echo
             echo
-            echo "--- trazi li stranica manifest u zaglavlju ---"
-            curl -sS -m 20 "$B/app/" | head -c 1200 | grep -o 'rel="manifest"[^>]*' || echo "NEMA u prvih 1200 znakova"
+            echo "--- zaglavlje onoga sto posjetitelj stvarno dobije ---"
+            curl -sS -m 20 "$B/app/" > /tmp/served.html
+            echo "velicina posluzene stranice: $(wc -c < /tmp/served.html) B"
+            echo "manifest igdje u stranici: $(grep -c 'rel="manifest"' /tmp/served.html || true)"
+            echo
+            sed -n '1,/<\/head>/p' /tmp/served.html | head -c 2600
             echo
             echo "Za instalaciju mora vrijediti:"
             echo "  manifest  200  application/manifest+json  (ili application/json)"
