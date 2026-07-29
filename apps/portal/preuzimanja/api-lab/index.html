@@ -110,7 +110,7 @@
 <header>
   <div>
     <h1>API Lab</h1>
-    <p class="podnaslov">provjera vanjskih izvora — <b style="color:var(--zlato)">verzija 4 · 62 izvora</b> · ako ovdje ne piše 62, gledaš keširanu stranicu (Ctrl+Shift+R)</p>
+    <p class="podnaslov">provjera vanjskih izvora — <b style="color:var(--zlato)">verzija 5 · 66 izvora</b> · ako ovdje ne piše 66, gledaš keširanu stranicu (Ctrl+Shift+R)</p>
   </div>
   <div class="ploča">
     <div class="brojka b-živa"><b id="n-živa">0</b><span>rade</span></div>
@@ -202,6 +202,11 @@ const IZVORI = [
   {id:"hn",        naziv:"HN Algolia",        grupa:"Vijesti", kljuc:0, url:"https://hn.algolia.com/api/v1/search?tags=story&hitsPerPage=8"},
   {id:"wikinews",  naziv:"Wikinews",          grupa:"Vijesti", kljuc:0, url:"https://en.wikinews.org/w/api.php?action=query&list=recentchanges&rcnamespace=0&rclimit=8&format=json&origin=*"},
   {id:"gdelt",     naziv:"GDELT",             grupa:"Vijesti", kljuc:0, url:"https://api.gdeltproject.org/api/v2/doc/doc?query=business&mode=artlist&format=json&maxrecords=8"},
+
+  {id:"openverse", naziv:"Openverse",        grupa:"Slike", kljuc:0, url:"https://api.openverse.org/v1/images/?q=business&page_size=8"},
+  {id:"commons",   naziv:"Wikimedia Commons",grupa:"Slike", kljuc:0, url:"https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=filetype:bitmap%20business%20office&gsrlimit=8&prop=imageinfo&iiprop=url|extmetadata&format=json&origin=*"},
+  {id:"nasa",      naziv:"NASA Images",      grupa:"Slike", kljuc:0, url:"https://images-api.nasa.gov/search?q=earth&media_type=image"},
+  {id:"artic",     naziv:"Art Institute",    grupa:"Slike", kljuc:0, url:"https://api.artic.edu/api/v1/artworks?limit=8&fields=id,title,image_id,is_public_domain"},
 
   // --- bez ključa, endpoint treba potvrditi ---
   {id:"noozra",  naziv:"Noozra",   grupa:"Vijesti", kljuc:0, url:"https://noozra.com/api"},
