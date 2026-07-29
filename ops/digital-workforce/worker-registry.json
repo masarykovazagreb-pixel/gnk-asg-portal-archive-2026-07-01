@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "updated_at": "2026-07-29T16:15:00Z",
+  "workers": [
+    {
+      "id": "coordination-director",
+      "name": "Koordinator digitalne radne snage",
+      "role": "coordinator",
+      "capabilities": ["prioritization", "assignment", "dependency-management", "daily-reporting"],
+      "max_active_tasks": 3,
+      "enabled": true
+    },
+    {
+      "id": "editorial-center",
+      "name": "Urednički centar",
+      "role": "executor",
+      "capabilities": ["editorial", "news", "analysis", "content-review"],
+      "max_active_tasks": 2,
+      "enabled": true
+    },
+    {
+      "id": "market-intelligence",
+      "name": "Tržišna analitika",
+      "role": "executor",
+      "capabilities": ["markets", "macro-data", "market-pulse", "financial-analysis"],
+      "max_active_tasks": 2,
+      "enabled": true
+    },
+    {
+      "id": "seo-distribution",
+      "name": "SEO i distribucija",
+      "role": "executor",
+      "capabilities": ["seo", "metadata", "sitemap", "distribution"],
+      "max_active_tasks": 2,
+      "enabled": true
+    },
+    {
+      "id": "mail-communications",
+      "name": "Mail i komunikacija",
+      "role": "executor",
+      "capabilities": ["mail", "scheduling", "notifications", "contact-routing"],
+      "max_active_tasks": 1,
+      "enabled": true,
+      "requires_approval_for": ["send-mail", "bulk-mail", "external-notification"]
+    },
+    {
+      "id": "commerce-restaurants",
+      "name": "Trgovina i restorani",
+      "role": "executor",
+      "capabilities": ["restaurants", "menus", "commerce", "catalog"],
+      "max_active_tasks": 2,
+      "enabled": true
+    },
+    {
+      "id": "project-operations",
+      "name": "Projektne operacije",
+      "role": "executor",
+      "capabilities": ["projects", "operations", "documentation", "status-reporting"],
+      "max_active_tasks": 2,
+      "enabled": true
+    },
+    {
+      "id": "technical-guardian",
+      "name": "Tehnički nadzor",
+      "role": "controller",
+      "capabilities": ["health-check", "route-audit", "runtime-validation", "quality-control"],
+      "max_active_tasks": 3,
+      "enabled": true
+    },
+    {
+      "id": "quality-controller",
+      "name": "Kontrolor kvalitete",
+      "role": "controller",
+      "capabilities": ["verification", "evidence-review", "acceptance", "rework"],
+      "max_active_tasks": 3,
+      "enabled": true
+    }
+  ]
+}
