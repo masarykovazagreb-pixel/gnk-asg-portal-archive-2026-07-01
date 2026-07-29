@@ -5,6 +5,7 @@ on:
     paths:
       - 'apps/portal/data/editorial-plan/**'
       - 'scripts/validate-editorial-premium-contract.mjs'
+      - 'scripts/plan-editorial-premium-remediation.mjs'
       - 'ops/automation-control-v1.json'
       - '.github/workflows/editorial-premium-contract.yml'
   workflow_dispatch:
@@ -35,10 +36,22 @@ jobs:
           mkdir -p ops/evidence
           node scripts/validate-editorial-premium-contract.mjs > ops/evidence/editorial-premium-contract.json || true
 
+      - name: Build remediation index
+        if: always()
+        run: |
+          node scripts/plan-editorial-premium-remediation.mjs \
+            ops/evidence/editorial-premium-contract.json \
+            ops/evidence/editorial-premium-remediation.json \
+            ops/evidence/editorial-premium-remediation.md
+          cat ops/evidence/editorial-premium-remediation.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Publish evidence artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: editorial-premium-contract
-          path: ops/evidence/editorial-premium-contract.json
+          path: |
+            ops/evidence/editorial-premium-contract.json
+            ops/evidence/editorial-premium-remediation.json
+            ops/evidence/editorial-premium-remediation.md
           if-no-files-found: error
