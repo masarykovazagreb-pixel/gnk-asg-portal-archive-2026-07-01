@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gnk-asg.hr/schemas/digital-workforce-telemetry-v1.json",
+  "title": "GNK ASG Digital Workforce Telemetry V1",
+  "type": "object",
+  "required": ["workerId", "runId", "startedAt", "status", "taskType"],
+  "properties": {
+    "workerId": { "type": "string", "minLength": 1 },
+    "runId": { "type": "string", "minLength": 1 },
+    "department": { "type": "string" },
+    "taskType": { "type": "string", "minLength": 1 },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "finishedAt": { "type": ["string", "null"], "format": "date-time" },
+    "status": { "enum": ["queued", "running", "success", "degraded", "failed", "blocked", "suspended"] },
+    "attempt": { "type": "integer", "minimum": 1 },
+    "durationMs": { "type": "integer", "minimum": 0 },
+    "inputDigest": { "type": "string" },
+    "outputDigest": { "type": "string" },
+    "evidenceUrl": { "type": "string" },
+    "sourceUrls": { "type": "array", "items": { "type": "string" } },
+    "outputArtifacts": { "type": "array", "items": { "type": "string" } },
+    "manualInterventions": { "type": "integer", "minimum": 0 },
+    "retries": { "type": "integer", "minimum": 0 },
+    "apiCostEstimateEur": { "type": "number", "minimum": 0 },
+    "quality": {
+      "type": "object",
+      "properties": {
+        "reliability": { "type": "number", "minimum": 0, "maximum": 40 },
+        "outputQuality": { "type": "number", "minimum": 0, "maximum": 20 },
+        "timeliness": { "type": "number", "minimum": 0, "maximum": 15 },
+        "autonomy": { "type": "number", "minimum": 0, "maximum": 10 },
+        "costEfficiency": { "type": "number", "minimum": 0, "maximum": 10 },
+        "documentation": { "type": "number", "minimum": 0, "maximum": 5 },
+        "total": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "incidentCode": { "type": ["string", "null"] },
+    "error": { "type": ["string", "null"] }
+  },
+  "additionalProperties": true
+}
