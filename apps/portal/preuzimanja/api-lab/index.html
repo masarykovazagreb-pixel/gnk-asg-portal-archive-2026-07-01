@@ -84,6 +84,8 @@
   .naziv{font-weight:600}
   .grupa{color:var(--prigušeno);font-size:11px}
   .stanje{font-size:11px;letter-spacing:.06em}
+  .kljuc-unos{font:inherit;font-size:11px;background:var(--tinta);border:1px solid var(--linija);color:var(--tekst);padding:4px 7px;width:130px}
+  .kljuc-unos:focus{outline:none;border-color:var(--zlato)}
   .s-ok{color:var(--živa)} .s-loše{color:var(--mrtva)} .s-čeka{color:var(--prigušeno)}
   .značka{
     display:inline-block;font-size:10px;padding:2px 6px;border:1px solid var(--linija);
@@ -110,7 +112,7 @@
 <header>
   <div>
     <h1>API Lab</h1>
-    <p class="podnaslov">provjera vanjskih izvora — <b style="color:var(--zlato)">verzija 5 · 66 izvora</b> · ako ovdje ne piše 66, gledaš keširanu stranicu (Ctrl+Shift+R)</p>
+    <p class="podnaslov">provjera vanjskih izvora — <b style="color:var(--zlato)">verzija 6 · 71 izvor</b> · ako ovdje ne piše 71, gledaš keširanu stranicu (Ctrl+Shift+R)</p>
   </div>
   <div class="ploča">
     <div class="brojka b-živa"><b id="n-živa">0</b><span>rade</span></div>
@@ -144,7 +146,7 @@
 <footer>
   Stranica ne sprema ništa i ne piše u repozitorij. Svaki poziv ide izravno iz tvog
   preglednika prema izvoru — što znači da je ovo ujedno i pravi test CORS-a.
-  Ako izvor ovdje radi, radit će i na gnk-asg.hr.
+  Ako izvor ovdje radi, radit će i na gnk-asg.hr. Ključevi koje upišeš ostaju samo u pregledniku — ne spremaju se i ne šalju nikamo osim samom izvoru.
 </footer>
 
 <script>
@@ -216,13 +218,37 @@ const IZVORI = [
   {id:"econdb",  naziv:"Econdb",   grupa:"Makro",   kljuc:0, url:null, biljeska:"treba točan endpoint"},
   {id:"openafrica",naziv:"openAFRICA",grupa:"Afrika",kljuc:0,url:null, biljeska:"treba točan endpoint"},
   {id:"apisetu", naziv:"API Setu", grupa:"Indija",  kljuc:0, url:null, biljeska:"treba točan endpoint"},
-
-  // --- traže ključ ---
-  {id:"currents",naziv:"Currents",   grupa:"Vijesti", kljuc:1},
-  {id:"newsdata",naziv:"NewsData.io", grupa:"Vijesti", kljuc:1},
-  {id:"gnews",   naziv:"GNews",       grupa:"Vijesti", kljuc:1},
-  {id:"guardian",naziv:"The Guardian",grupa:"Vijesti", kljuc:1},
-  {id:"marketaux",naziv:"MarketAux",  grupa:"Tržišta", kljuc:1},
+  // --- traže ključ: {kljuc:1, param:"naziv_parametra"} ili {zaglavlje:"Authorization"} ---
+  {id:"fred",      naziv:"FRED",            grupa:"Makro",   kljuc:1, param:"api_key",
+     url:"https://api.stlouisfed.org/fred/series/observations?series_id=GDP&file_type=json&limit=5",
+     gdje:"fred.stlouisfed.org/docs/api/api_key.html"},
+  {id:"currents",  naziv:"Currents",        grupa:"Vijesti", kljuc:1, param:"apiKey",
+     url:"https://api.currentsapi.services/v1/latest-news?language=en",
+     gdje:"currentsapi.services"},
+  {id:"gnews",     naziv:"GNews",           grupa:"Vijesti", kljuc:1, param:"apikey",
+     url:"https://gnews.io/api/v4/top-headlines?lang=en&max=8",
+     gdje:"gnews.io"},
+  {id:"newsdata",  naziv:"NewsData.io",     grupa:"Vijesti", kljuc:1, param:"apikey",
+     url:"https://newsdata.io/api/1/news?language=en&country=in,jp,ng,za",
+     gdje:"newsdata.io"},
+  {id:"guardian",  naziv:"The Guardian",    grupa:"Vijesti", kljuc:1, param:"api-key",
+     url:"https://content.guardianapis.com/search?section=world&show-fields=thumbnail",
+     gdje:"open-platform.theguardian.com/access"},
+  {id:"marketaux", naziv:"MarketAux",       grupa:"Tržišta", kljuc:1, param:"api_token",
+     url:"https://api.marketaux.com/v1/news/all?language=en&limit=8",
+     gdje:"marketaux.com"},
+  {id:"linkpreview",naziv:"LinkPreview",    grupa:"Slike",   kljuc:1, param:"key",
+     url:"https://api.linkpreview.net/?q=https://gnk-asg.hr",
+     gdje:"linkpreview.net"},
+  {id:"pexels",    naziv:"Pexels",          grupa:"Slike",   kljuc:1, zaglavlje:"Authorization",
+     url:"https://api.pexels.com/v1/search?query=business&per_page=8",
+     gdje:"pexels.com/api"},
+  {id:"serpstack", naziv:"serpstack",       grupa:"SEO",     kljuc:1, param:"access_key",
+     url:"https://api.serpstack.com/search?query=gnk+asg",
+     gdje:"serpstack.com"},
+  {id:"openverse2",naziv:"Openverse (ključ)",grupa:"Slike",  kljuc:1, zaglavlje:"Authorization",
+     url:"https://api.openverse.org/v1/images/?q=office&page_size=8",
+     gdje:"api.openverse.org/v1/auth_tokens/register"},
 ];
 
 const tijelo = document.getElementById("redovi");
@@ -236,7 +262,9 @@ function red(iz){
     <td><span class="žaruljica"></span><span class="naziv">${iz.naziv}</span>
         ${iz.kljuc ? '<span class="značka">ključ</span>' : ''}</td>
     <td class="grupa sakrij-mob">${iz.grupa}</td>
-    <td class="stanje s-čeka">${iz.kljuc ? "treba ključ" : (iz.url ? "čeka" : "nema URL")}</td>
+    <td class="stanje s-čeka">${iz.kljuc
+        ? `<input class="kljuc-unos" data-za="${iz.id}" placeholder="zalijepi ključ" title="${iz.gdje||''}">`
+        : (iz.url ? "čeka" : "nema URL")}</td>
     <td class="num ms"></td>
     <td class="num stavki sakrij-mob"></td>
     <td><div class="brzina"><i style="width:0"></i></div></td>`;
@@ -268,8 +296,16 @@ async function provjeri(iz){
   const žar = tr.querySelector(".žaruljica");
   const st  = tr.querySelector(".stanje");
 
-  if (iz.kljuc || !iz.url){
-    st.textContent = iz.kljuc ? "treba ključ" : (iz.biljeska || "nema URL");
+  let url = iz.url, zaglavlja = {};
+  if (iz.kljuc){
+    const polje = tr.querySelector(".kljuc-unos");
+    const k = polje && polje.value.trim();
+    if (!k){ return; }                      // bez ključa se preskače, bez buke
+    if (iz.param)     url += (url.includes("?") ? "&" : "?") + iz.param + "=" + encodeURIComponent(k);
+    if (iz.zaglavlje) zaglavlja[iz.zaglavlje] = k;
+  }
+  if (!url){
+    st.textContent = iz.biljeska || "nema URL";
     return;
   }
 
@@ -282,7 +318,7 @@ async function provjeri(iz){
   const tajmer = setTimeout(()=>prekid.abort(), 8000);
 
   try {
-    const r = await fetch(iz.url, {signal: prekid.signal, mode:"cors"});
+    const r = await fetch(url, {signal: prekid.signal, mode:"cors", headers: zaglavlja});
     const ms = Math.round(performance.now() - t0);
     const d  = await r.json();
 
