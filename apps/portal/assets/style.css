@@ -104,3 +104,53 @@ h1,h2,h3,h4{
 @media (max-width: 400px) {
   .btn { padding: 9px 13px; font-size: .8rem; }
 }
+
+
+/* --- GNK mobilno dotjerivanje v2 -------------------------------------
+   Prvi krug smanjio je .btn, ali na telefonu su i dalje predugi: gumb s
+   tekstom "Otvori tehnoloski katalog" u jednom redu ne stane, pa se lomi
+   preko dva. Ovdje se smanjuje razmak, velicina slova i visina, a dugi
+   natpisi se skracuju trotockom umjesto lomljenja.                    */
+@media (max-width: 640px) {
+  .btn {
+    padding: 9px 14px;
+    font-size: .8rem;
+    font-weight: 750;
+    letter-spacing: .03em;
+    line-height: 1.25;
+    border-radius: 10px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .btn.gold,
+  .btn.ghost { padding: 9px 15px; }
+  .btn.full { white-space: normal; }
+
+  /* Naslov na prvom zaslonu: 2.65rem je na telefonu skoro pola visine. */
+  .hero h1 { font-size: 2rem; line-height: 1.12; }
+  .hero p.lead { font-size: .95rem; line-height: 1.55 }
+  .hero { padding: 30px 0 }
+  section { padding: 34px 0 }
+
+  /* Kartice i ploce: manje unutarnjeg razmaka, vise sadrzaja po zaslonu. */
+  .market-card { padding: 18px }
+  .market-card h2 { font-size: 1.15rem }
+  .market-card p { font-size: .88rem; line-height: 1.5 }
+  .static-preview-card { padding: 16px }
+  .kpi, .about-kpi .kpi { padding: 13px 14px }
+  .about-kpi .kpi strong { font-size: 1.1rem }
+
+  /* Tablice se na uskom zaslonu pomicu vodoravno umjesto da se stisnu. */
+  table { display: block; overflow-x: auto; white-space: nowrap }
+
+  /* Podnozje i sitni tekst. */
+  .site-footer { font-size: .82rem; line-height: 1.6 }
+}
+
+@media (max-width: 400px) {
+  .btn { padding: 8px 12px; font-size: .76rem }
+  .hero h1 { font-size: 1.72rem }
+  .market-card { padding: 15px }
+}
