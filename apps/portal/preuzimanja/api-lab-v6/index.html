@@ -112,7 +112,7 @@
 <header>
   <div>
     <h1>API Lab</h1>
-    <p class="podnaslov">provjera vanjskih izvora — <b style="color:var(--zlato)">verzija 6 · 71 izvor</b> · ako ovdje ne piše 71, gledaš keširanu stranicu (Ctrl+Shift+R)</p>
+    <p class="podnaslov">provjera vanjskih izvora — <b style="color:var(--zlato)">verzija 7 · 71 izvor</b> · ako ovdje ne piše 7 ·, gledaš keširanu stranicu (Ctrl+Shift+R)</p>
   </div>
   <div class="ploča">
     <div class="brojka b-živa"><b id="n-živa">0</b><span>rade</span></div>
@@ -324,7 +324,7 @@ async function provjeri(iz){
 
     let n = Array.isArray(d) ? d.length : 0;
     if (!n && d && typeof d === "object"){
-      for (const k of ["results","articles","news","data","products","places","items","records"]){
+      for (const k of ["results","articles","news","data","products","places","items","records","photos","videos","hits","collection","artObjects","query","entries"]){
         if (Array.isArray(d[k])) { n = d[k].length; break; }
       }
     }
