@@ -4,7 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="./support.js"></script>
-<meta name="robots" content="noindex,follow"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0a0c10"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="GNK ASG"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="icon" href="icons/favicon.ico" sizes="any"><style id="gnk-scroll-fix">/* Pomicanje u instaliranoj aplikaciji. Runtime u support.js ubacuje html,body{height:100%} i #dc-root{height:100%}, pa dokument nema sto pomicati. Ovaj stil to nadjacava. Mora stajati u zaglavlju: runtime naredbom dc.replaceWith zamjenjuje cijeli <x-dc>, pa bi stil unutar njega bio obrisan prije nego išta napravi — zbog toga je pomicanje radilo samo povremeno. */html,body{height:auto!important;min-height:100%;overflow-y:auto!important;-webkit-overflow-scrolling:touch}#dc-root,#dc-root>.sc-host{height:auto!important;min-height:100%;overflow:visible!important}</style></head>
+<meta name="robots" content="noindex,follow"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0a0c10"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="GNK ASG"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="icon" href="icons/favicon.ico" sizes="any"><style id="gnk-scroll-fix">/* Pomicanje u instaliranoj aplikaciji.
+   Runtime u support.js postavlja html,body{height:100%} i #dc-root{height:100%},
+   pa dokument nema sto pomicati. Rub uz to ubacuje overflow-x:hidden na html I
+   body. Kad oba elementa imaju vlastiti okvir za pomicanje, preglednik gubi
+   izravno pomicanje i osjeti se kao kasnjenje za prstom.
+   Zato se ovdje samo uklanja ogranicenje visine, a pomicanje se prepusta
+   dokumentu: jedan okvir, prirodna brzina. */
+html{height:auto!important;overflow-y:visible!important;overflow-x:hidden!important;-webkit-text-size-adjust:100%}body{height:auto!important;min-height:100%;overflow-y:visible!important;overflow-x:hidden!important;overscroll-behavior-y:auto!important;-webkit-overflow-scrolling:touch}#dc-root,#dc-root>.sc-host{height:auto!important;min-height:100%;overflow:visible!important}</style></head>
 <body>
 <x-dc>
 <helmet>
@@ -4877,7 +4884,7 @@ class Component extends DCLogic {
     [document.documentElement, document.body].forEach(function (el) {
       if (!el) return;
       el.style.setProperty('height', 'auto', 'important');
-      el.style.setProperty('overflow-y', 'auto', 'important');
+      el.style.setProperty('overflow-y', 'visible', 'important');
     });
     var korijen = document.getElementById('dc-root');
     if (korijen) {
