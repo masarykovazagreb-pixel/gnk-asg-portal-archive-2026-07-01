@@ -1,0 +1,39 @@
+name: Automation and Worker Route Inventory
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'workers/**'
+      - 'scripts/inventory-automation-and-routes.mjs'
+      - 'ops/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    name: Build automation and route evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Generate inventory
+        run: |
+          mkdir -p ops/evidence
+          node scripts/inventory-automation-and-routes.mjs > ops/evidence/automation-route-inventory.json
+
+      - name: Upload inventory evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: automation-route-inventory
+          path: ops/evidence/automation-route-inventory.json
+          if-no-files-found: error
