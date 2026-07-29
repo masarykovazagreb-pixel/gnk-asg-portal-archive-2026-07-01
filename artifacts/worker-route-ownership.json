@@ -1,10 +1,10 @@
 {
   "version": "WORKER_ROUTE_OWNERSHIP_AUDIT_V2_20260713_DEPLOY_CONFIG",
-  "generatedAt": "2026-07-28T18:41:35.278Z",
+  "generatedAt": "2026-07-29T07:35:14.540Z",
   "summary": {
-    "configs": 24,
-    "workerNames": 15,
-    "declaredRoutes": 50,
+    "configs": 25,
+    "workerNames": 16,
+    "declaredRoutes": 53,
     "duplicateRoutes": 6,
     "approvedDeployConfigs": 3,
     "approvedDeclaredRoutes": 0,
@@ -39,6 +39,18 @@
       "main": "src/index.js",
       "routes": [
         "gnk-asg.hr/api/ai-newsroom-writer*"
+      ],
+      "routeLess": false,
+      "approvedDeployConfig": false
+    },
+    {
+      "file": "workers/gnk-asg-app-api/wrangler.toml",
+      "name": "gnk-asg-app-api",
+      "main": "src/index.js",
+      "routes": [
+        "gnk-asg.hr/api/objave*",
+        "gnk-asg.hr/api/messages*",
+        "gnk-asg.hr/api/app-health"
       ],
       "routeLess": false,
       "approvedDeployConfig": false

@@ -7,7 +7,10 @@ const REPORT=path.resolve('artifacts/all-pages-detailed-audit.json');
 const MENU_FILE=path.resolve('apps/portal/assets/public-unified-menu-v6.js');
 const WORKER_FILE=path.resolve('workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js');
 const PROTECTED=['/admin','/admin-center','/mail-studio','/campaign-mailer','/email-status','/worker-ops','/operator-dashboard','/digital-headquarters','/media-registration-admin','/webmail'];
-const IGNORE_DIRS=new Set(['node_modules','test-results','playwright-report','.git']);
+const IGNORE_DIRS=new Set(['node_modules','test-results','playwright-report','.git',
+  // Mobilna aplikacija je samostalan program, ne stranica portala — njezine
+  // oznake {{ }} popunjavaju se u pregledniku i nisu poveznice.
+  'app']);
 const IGNORE_HTML_PREFIXES=['assets/','.github/','node_modules/','test-results/','playwright-report/'];
 const DYNAMIC_PREFIXES=['/api/','/cdn-cgi/','/.well-known/'];
 const posix=value=>value.split(path.sep).join('/');

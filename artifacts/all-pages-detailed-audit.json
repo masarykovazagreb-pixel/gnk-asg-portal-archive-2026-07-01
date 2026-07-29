@@ -1,11 +1,11 @@
 {
   "version": "GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED",
-  "generatedAt": "2026-07-29T07:29:53.144Z",
+  "generatedAt": "2026-07-29T07:35:13.811Z",
   "summary": {
-    "pages": 1277,
+    "pages": 1275,
     "menuRoutes": 90,
     "missingMenuRoutes": 0,
-    "errors": 3,
+    "errors": 0,
     "warnings": 3,
     "pagesWithStaticContrastRisks": 3,
     "pagesWithLegacyLogoSources": 13,
@@ -13,50 +13,7 @@
     "pagesWithForms": 14
   },
   "menuMissing": [],
-  "errors": [
-    {
-      "route": "/app/",
-      "file": "apps/portal/app/index.html",
-      "code": "missing-html-lang",
-      "detail": null
-    },
-    {
-      "route": "/app/",
-      "file": "apps/portal/app/index.html",
-      "code": "missing-title",
-      "detail": null
-    },
-    {
-      "route": "/app/",
-      "file": "apps/portal/app/index.html",
-      "code": "broken-local-references",
-      "detail": [
-        "{{ n.link }}",
-        "{{ p.url }}",
-        "{{ e.url }}",
-        "{{ s.tel }}",
-        "{{ s.mail }}",
-        "{{ a.url }}",
-        "{{ n.map }}",
-        "{{ d.url }}",
-        "{{ r.url }}",
-        "{{ r.map }}",
-        "{{ s.url }}",
-        "{{ m.url }}",
-        "{{ qrSrc }}",
-        "{{ p.img }}",
-        "{{ p.photo }}",
-        "{{ draftPhoto }}",
-        "{{ g.src }}",
-        "{{ exPhoto }}",
-        "{{ e.photo }}",
-        "{{ d.preview }}",
-        "{{ d.sig }}",
-        "{{ sdFileData }}",
-        "{{ a.img }}"
-      ]
-    }
-  ],
+  "errors": [],
   "warnings": [
     {
       "route": "/admin/",
@@ -528,68 +485,6 @@
       "logoRefs": [
         "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64"
       ],
-      "nonCanonicalLogoRefs": [],
-      "contrastRisks": [],
-      "formIssues": [],
-      "edgeNormalizedLegacyLogos": [],
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "route": "/app/",
-      "file": "apps/portal/app/index.html",
-      "protected": false,
-      "lang": "",
-      "title": "",
-      "viewport": true,
-      "robots": "noindex,follow",
-      "broken": [
-        "{{ n.link }}",
-        "{{ p.url }}",
-        "{{ e.url }}",
-        "{{ s.tel }}",
-        "{{ s.mail }}",
-        "{{ a.url }}",
-        "{{ n.map }}",
-        "{{ d.url }}",
-        "{{ r.url }}",
-        "{{ r.map }}",
-        "{{ s.url }}",
-        "{{ m.url }}",
-        "{{ qrSrc }}",
-        "{{ p.img }}",
-        "{{ p.photo }}",
-        "{{ draftPhoto }}",
-        "{{ g.src }}",
-        "{{ exPhoto }}",
-        "{{ e.photo }}",
-        "{{ d.preview }}",
-        "{{ d.sig }}",
-        "{{ sdFileData }}",
-        "{{ a.img }}"
-      ],
-      "logoRefs": [],
-      "nonCanonicalLogoRefs": [],
-      "contrastRisks": [],
-      "formIssues": [],
-      "edgeNormalizedLegacyLogos": [],
-      "errors": [
-        "missing-html-lang",
-        "missing-title",
-        "broken-local-references"
-      ],
-      "warnings": []
-    },
-    {
-      "route": "/app/map.html",
-      "file": "apps/portal/app/map.html",
-      "protected": false,
-      "lang": "hr",
-      "title": "GNK DINAMO Ltd. Group — mreža lokacija",
-      "viewport": true,
-      "robots": "",
-      "broken": [],
-      "logoRefs": [],
       "nonCanonicalLogoRefs": [],
       "contrastRisks": [],
       "formIssues": [],
