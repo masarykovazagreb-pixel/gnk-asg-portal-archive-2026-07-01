@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-07-29T21:14:55+00:00",
+  "updated_at": "2026-07-29T23:16:56+00:00",
   "news": {
-    "updated_at": "2026-07-29T21:14:55+00:00",
+    "updated_at": "2026-07-29T23:16:56+00:00",
     "status": "ok",
     "engine": "github_actions_rss_refresh_v4_retention_policy",
     "cadence": "hourly at minute 17 UTC plus manual workflow_dispatch",
@@ -15,22 +15,22 @@
     "storage_policy": "public_latest_100_archive_all_older_prune_oldest_1000_repeatedly_when_archive_exceeds_2000",
     "public_items": 150,
     "max_public_items": 150,
-    "archive_items": 1736,
+    "archive_items": 1873,
     "archive_prune_trigger": 2000,
     "archive_delete_oldest_batch": 1000,
-    "archive_items_before_prune": 3736,
+    "archive_items_before_prune": 3873,
     "archive_prune_batches": 2,
     "discarded_archive_overflow_items": 2000,
-    "fetched_candidates": 3128,
-    "duplicates_or_blocked_removed": 546,
+    "fetched_candidates": 3158,
+    "duplicates_or_blocked_removed": 963,
     "request_timeout_seconds": 10,
     "network_workers": 1,
     "share_previews_ready": 0,
     "by_group": {
       "economy": 36,
-      "hrvatska": 19,
       "digital-assets": 26,
       "international": 32,
+      "hrvatska": 19,
       "technology": 30,
       "digital-workforce-simulation": 7
     },
@@ -51,24 +51,24 @@
         "error": "not well-formed (invalid token): line 1, column 116"
       },
       {
-        "source": "Euronews Business",
-        "group": "economy",
-        "error": "not well-formed (invalid token): line 1, column 0"
-      },
-      {
         "source": "Al Jazeera Economy",
         "group": "economy",
         "error": "HTTP Error 404: Not Found"
+      },
+      {
+        "source": "France 24",
+        "group": "international",
+        "error": "not well-formed (invalid token): line 9, column 92"
       }
     ],
     "preview_errors": [],
-    "checked_at": "2026-07-29T21:14:55+00:00",
-    "last_attempt_at": "2026-07-29T21:14:55+00:00",
+    "checked_at": "2026-07-29T23:16:56+00:00",
+    "last_attempt_at": "2026-07-29T23:16:56+00:00",
     "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-07-29T21:14:55+00:00",
+    "last_successful_refresh_at": "2026-07-29T23:16:56+00:00",
     "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 23.91
+    "runtime_seconds": 22.7
   },
   "dw_integration_debug_temporary": {
     "raw_len": 7124,
