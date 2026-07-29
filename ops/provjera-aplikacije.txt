@@ -1,4 +1,4 @@
-provjereno: 2026-07-29 10:19 UTC
+provjereno: 2026-07-29 10:23 UTC
 
 PUTANJA                                    KOD  TIP SADRZAJA
 /app/                                      200  text/html; charset=utf-8
@@ -24,9 +24,23 @@ PUTANJA                                    KOD  TIP SADRZAJA
   "orientation": "portrait",
 
 
---- trazi li stranica manifest u zaglavlju ---
-NEMA u prvih 1200 znakova
+--- zaglavlje onoga sto posjetitelj stvarno dobije ---
+velicina posluzene stranice: 400322 B
+manifest igdje u stranici: 1
 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="./support.js"></script>
+<meta name="robots" content="noindex,follow"><meta name="theme-color" content="#0a0c10"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="GNK ASG"><style id="gnk-scroll-fix">/* Pomicanje u instaliranoj aplikaciji. Runtime u support.js ubacuje html,body{height:100%} i #dc-root{height:100%}, pa dokument nema sto pomicati. Ovaj stil to nadjacava. Mora stajati u zaglavlju: runtime naredbom dc.replaceWith zamjenjuje cijeli <x-dc>, pa bi stil unutar njega bio obrisan prije nego išta napravi — zbog toga je pomicanje radilo samo povremeno. */html,body{height:auto!important;min-height:100%;overflow-y:auto!important;-webkit-overflow-scrolling:touch}#dc-root,#dc-root>.sc-host{height:auto!important;min-height:100%;overflow:visible!important}</style>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#05080f">
+<link rel="stylesheet" href="/assets/public-ux-v11.css?v=20260625-v12"><link rel="stylesheet" href="/assets/public-visual-v13.css?v=20260626-stable-v28"><style id="gnk-public-v13-reset">html,body{max-width:100%!important;overflow-x:hidden!important}body{padding-top:0!important}.brand-head,.top-nav,.header-inner>.main-nav,.shell>.brand-head,.shell>.top-nav,.gnk-asg-full-menu-v2,.gnk-asg-rescue-menu,.gnk-asg-final-menu-wrap,.gnk-asg-inner-nav,.gnk-asg-floating-actions,.floating-home,.floating-ai,.gnk-global-float-home,.gnk-global-float-ai,main>nav:first-child,.news-actions,#gnk-asg-global-layer-root,#gnk-asg-single-ai-button-anchor,#gnk-asg-float-home,#gnk-asg-float-ai,#gnk-asg-ai-panel,#gnk-asg-review-modal,.gnk-asg-fixed-menu-spacer{display:none!important}body:has(.dhq-top) .site-header,body:has(.dhq-top) .menu-toggle,body:has(.dhq-top) #navLinks{display:none!important}body.gnk-route-contact main .card>a[href="/"],body.gnk-route-contact main .card>a[href="/en/"]{display:none!important}body.gnk-route-contact main,body.gnk-route-contact main *,body.gnk-route-publications main,body.gnk-route-publications main *{min-width:0!important;max-width:100%!important;box-sizing:border-box!important;o
 Za instalaciju mora vrijediti:
   manifest  200  application/manifest+json  (ili application/json)
   sw.js     200  javascript
