@@ -1,0 +1,28 @@
+name: Automation Kill-Switch Contract
+
+on:
+  pull_request:
+    paths:
+      - 'ops/automation-control-v1.json'
+      - 'ops/automation-kill-switches.json'
+      - 'scripts/validate-automation-kill-switches.mjs'
+      - '.github/workflows/automation-kill-switch-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate fail-closed automation controls
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate automation kill-switch contract
+        run: node scripts/validate-automation-kill-switches.mjs
