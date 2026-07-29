@@ -1,0 +1,62 @@
+name: Digital Workforce Orchestrator
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 */4 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: digital-workforce-orchestrator
+  cancel-in-progress: false
+
+jobs:
+  coordinate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate orchestrator
+        run: |
+          python -m py_compile scripts/digital-workforce-orchestrator.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for path in (
+              Path('ops/digital-workforce/worker-registry.json'),
+              Path('ops/digital-workforce/task-queue.json'),
+          ):
+              json.loads(path.read_text(encoding='utf-8'))
+          print('Digital Workforce contracts are valid.')
+          PY
+
+      - name: Allocate tasks and generate report
+        run: python scripts/digital-workforce-orchestrator.py
+
+      - name: Store operational state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-workforce-coordinator"
+          git config user.email "actions@github.com"
+          git add \
+            ops/digital-workforce/task-queue.json \
+            ops/digital-workforce/orchestrator-state.json \
+            ops/digital-workforce/daily-report.md
+          git diff --cached --quiet && exit 0
+          git commit -m "workforce: coordinate tasks and refresh daily report [skip ci]"
+          for i in 1 2 3; do
+            git push origin HEAD:main && exit 0
+            git pull --rebase --autostash origin main
+            sleep 5
+          done
+          exit 1
