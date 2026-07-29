@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>API Lab — GNK ASG</title>
+<style>
+  :root{
+    --tinta:#0E1116;
+    --tinta-2:#161B22;
+    --linija:#242C38;
+    --tekst:#C9D1D9;
+    --prigušeno:#6E7A8A;
+    --zlato:#C9A227;
+    --živa:#3FB950;
+    --mrtva:#C2413B;
+    --čeka:#5A6472;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--tinta);color:var(--tekst);
+    font:14px/1.55 var(--mono);
+    -webkit-font-smoothing:antialiased;
+  }
+  header{
+    border-bottom:1px solid var(--linija);padding:26px 20px 20px;
+    display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;
+  }
+  h1{
+    margin:0;font-size:15px;font-weight:600;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--zlato);
+  }
+  .podnaslov{margin:6px 0 0;color:var(--prigušeno);font-size:12px}
+
+  /* signalna ploča */
+  .ploča{margin-left:auto;display:flex;gap:26px}
+  .brojka{text-align:right}
+  .brojka b{display:block;font-size:26px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+  .brojka span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--prigušeno)}
+  .b-živa b{color:var(--živa)} .b-mrtva b{color:var(--mrtva)} .b-ukupno b{color:var(--zlato)}
+
+  .traka{
+    display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+    padding:12px 20px;border-bottom:1px solid var(--linija);background:var(--tinta-2);
+  }
+  button{
+    font:inherit;font-size:12px;background:transparent;color:var(--tekst);
+    border:1px solid var(--linija);padding:7px 13px;cursor:pointer;
+    letter-spacing:.05em;transition:border-color .15s,color .15s;
+  }
+  button:hover{border-color:var(--zlato);color:var(--zlato)}
+  button:focus-visible{outline:2px solid var(--zlato);outline-offset:2px}
+  button.aktivan{border-color:var(--zlato);color:var(--zlato)}
+  button.glavni{background:var(--zlato);color:#0E1116;border-color:var(--zlato);font-weight:600}
+  button.glavni:hover{filter:brightness(1.12);color:#0E1116}
+  .traka input{
+    font:inherit;font-size:12px;background:var(--tinta);border:1px solid var(--linija);
+    color:var(--tekst);padding:7px 10px;min-width:280px;flex:1;
+  }
+  .traka input:focus{outline:none;border-color:var(--zlato)}
+
+  table{width:100%;border-collapse:collapse}
+  th{
+    text-align:left;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--prigušeno);font-weight:500;padding:11px 12px;
+    border-bottom:1px solid var(--linija);position:sticky;top:0;background:var(--tinta);
+  }
+  td{padding:9px 12px;border-bottom:1px solid #1B222C;vertical-align:middle}
+  tr:hover td{background:#131A23}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+
+  .žaruljica{
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    margin-right:9px;vertical-align:1px;background:var(--čeka);
+  }
+  .je-živa{background:var(--živa);box-shadow:0 0 7px rgba(63,185,80,.55)}
+  .je-mrtva{background:var(--mrtva)}
+  .je-radi{background:var(--zlato);animation:puls .9s ease-in-out infinite}
+  @keyframes puls{0%,100%{opacity:.25}50%{opacity:1}}
+  @media (prefers-reduced-motion:reduce){.je-radi{animation:none;opacity:.7}}
+
+  .naziv{font-weight:600}
+  .grupa{color:var(--prigušeno);font-size:11px}
+  .stanje{font-size:11px;letter-spacing:.06em}
+  .kljuc-unos{font:inherit;font-size:11px;background:var(--tinta);border:1px solid var(--linija);color:var(--tekst);padding:4px 7px;width:130px}
+  .kljuc-unos:focus{outline:none;border-color:var(--zlato)}
+  .s-ok{color:var(--živa)} .s-loše{color:var(--mrtva)} .s-čeka{color:var(--prigušeno)}
+  .značka{
+    display:inline-block;font-size:10px;padding:2px 6px;border:1px solid var(--linija);
+    color:var(--prigušeno);margin-left:6px;letter-spacing:.05em;
+  }
+  .z-cors{border-color:#1F6F3F;color:var(--živa)}
+  .z-slike{border-color:#7A6316;color:var(--zlato)}
+
+  /* mjerač brzine */
+  .brzina{position:relative;height:3px;background:#1B222C;width:64px;margin-left:auto}
+  .brzina i{position:absolute;inset:0 auto 0 0;background:var(--zlato);display:block}
+
+  footer{padding:18px 20px;color:var(--prigušeno);font-size:11px;border-top:1px solid var(--linija)}
+  a{color:var(--zlato)}
+  @media(max-width:720px){
+    .ploča{width:100%;margin-left:0;justify-content:space-between;gap:12px}
+    .sakrij-mob{display:none}
+    .traka input{min-width:0}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>API Lab</h1>
+    <p class="podnaslov">provjera vanjskih izvora — <b style="color:var(--zlato)">verzija 6 · 71 izvor</b> · ako ovdje ne piše 71, gledaš keširanu stranicu (Ctrl+Shift+R)</p>
+  </div>
+  <div class="ploča">
+    <div class="brojka b-živa"><b id="n-živa">0</b><span>rade</span></div>
+    <div class="brojka b-mrtva"><b id="n-mrtva">0</b><span>ne rade</span></div>
+    <div class="brojka b-ukupno"><b id="n-ukupno">0</b><span>ukupno</span></div>
+  </div>
+</header>
+
+<div class="traka">
+  <button class="glavni" id="pokreni">Pokreni provjeru</button>
+  <button data-filtar="sve" class="aktivan">Sve</button>
+  <button data-filtar="bez">Bez ključa</button>
+  <button data-filtar="ok">Samo ispravni</button>
+  <input id="ručni" placeholder="Zalijepi bilo koji API URL i pritisni Enter">
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:30%">Izvor</th>
+      <th class="sakrij-mob">Skupina</th>
+      <th>Stanje</th>
+      <th class="num">ms</th>
+      <th class="num sakrij-mob">Stavki</th>
+      <th style="width:80px"></th>
+    </tr>
+  </thead>
+  <tbody id="redovi"></tbody>
+</table>
+
+<footer>
+  Stranica ne sprema ništa i ne piše u repozitorij. Svaki poziv ide izravno iz tvog
+  preglednika prema izvoru — što znači da je ovo ujedno i pravi test CORS-a.
+  Ako izvor ovdje radi, radit će i na gnk-asg.hr. Ključevi koje upišeš ostaju samo u pregledniku — ne spremaju se i ne šalju nikamo osim samom izvoru.
+</footer>
+
+<script>
+const IZVORI = [
+  // --- bez ključa, endpoint poznat ---
+  {id:"worldbank",  naziv:"World Bank",        grupa:"Makro",    kljuc:0, url:"https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.MKTP.CD?format=json&per_page=5"},
+  {id:"restcount",  naziv:"REST Countries",    grupa:"Zemlje",   kljuc:0, url:"https://restcountries.com/v3.1/alpha/hr?fields=name,flags,currencies,capital"},
+  {id:"frankfurter",naziv:"Frankfurter",       grupa:"Tečajevi", kljuc:0, url:"https://api.frankfurter.dev/v1/latest?base=EUR&symbols=JPY,INR,CNY,ZAR"},
+  {id:"fawaz",      naziv:"currency-api",      grupa:"Tečajevi", kljuc:0, url:"https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json"},
+  {id:"vatcomply",  naziv:"VATComply",         grupa:"Tečajevi", kljuc:0, url:"https://api.vatcomply.com/rates?base=EUR"},
+  {id:"spaceflight",naziv:"Spaceflight News",  grupa:"Vijesti",  kljuc:0, url:"https://api.spaceflightnewsapi.net/v4/articles/?limit=8"},
+  {id:"off",        naziv:"Open Food Facts",   grupa:"Trgovina", kljuc:0, url:"https://world.openfoodfacts.org/api/v2/product/737628064502.json"},
+  {id:"fruityvice", naziv:"Fruityvice",        grupa:"Trgovina", kljuc:0, url:"https://fruityvice.com/api/fruit/all"},
+  {id:"dummyjson",  naziv:"DummyJSON",         grupa:"Trgovina", kljuc:0, url:"https://dummyjson.com/products?limit=8"},
+  {id:"fakestore",  naziv:"FakeStoreAPI",      grupa:"Trgovina", kljuc:0, url:"https://fakestoreapi.com/products?limit=8"},
+  {id:"brewery",    naziv:"Open Brewery DB",   grupa:"Trgovina", kljuc:0, url:"https://api.openbrewerydb.org/v1/breweries?per_page=5"},
+  {id:"mfapi",      naziv:"Indian Mutual Fund",grupa:"Indija",   kljuc:0, url:"https://api.mfapi.in/mf/119551"},
+  {id:"ifsc",       naziv:"Razorpay IFSC",     grupa:"Indija",   kljuc:0, url:"https://ifsc.razorpay.com/HDFC0000001"},
+  {id:"pincode",    naziv:"Indian Pincode",    grupa:"Indija",   kljuc:0, url:"https://api.postalpincode.in/pincode/110001"},
+  {id:"ibge",       naziv:"IBGE",              grupa:"Brazil",   kljuc:0, url:"https://servicodados.ibge.gov.br/api/v1/localidades/estados"},
+  {id:"brasilapi",  naziv:"Brazil Public Data",grupa:"Brazil",   kljuc:0, url:"https://brasilapi.com.br/api/banks/v1"},
+  {id:"universities",naziv:"Universities List",grupa:"Obrazovanje",kljuc:0,url:"http://universities.hipolabs.com/search?country=Croatia"},
+  {id:"nominatim",  naziv:"Nominatim",         grupa:"Geo",      kljuc:0, url:"https://nominatim.openstreetmap.org/search?q=Zagreb&format=json&limit=3"},
+  {id:"zippo",      naziv:"Zippopotam",        grupa:"Geo",      kljuc:0, url:"https://api.zippopotam.us/de/10115"},
+  {id:"meteo",      naziv:"Open-Meteo",        grupa:"Vrijeme",  kljuc:0, url:"https://api.open-meteo.com/v1/forecast?latitude=45.81&longitude=15.98&current_weather=true"},
+  {id:"holidays",   naziv:"OpenHolidays",      grupa:"Kalendar", kljuc:0, url:"https://openholidaysapi.org/PublicHolidays?countryIsoCode=DE&languageIsoCode=DE&validFrom=2026-01-01&validTo=2026-12-31"},
+  {id:"opensanctions",naziv:"OpenSanctions",   grupa:"Compliance",kljuc:0,url:"https://api.opensanctions.org/search/default?q=test&limit=3"},
+
+  {id:"gbif",     naziv:"GBIF",              grupa:"Znanost",  kljuc:0, url:"https://api.gbif.org/v1/species/search?q=quercus&limit=5"},
+  {id:"nager",    naziv:"Nager.Date",        grupa:"Kalendar", kljuc:0, url:"https://date.nager.at/api/v3/PublicHolidays/2026/HR"},
+  {id:"openplz",  naziv:"OpenPLZ",           grupa:"Geo",      kljuc:0, url:"https://openplzapi.org/de/Localities?postalCode=10115"},
+  {id:"nbp",      naziv:"NBP Poljska",       grupa:"Tečajevi", kljuc:0, url:"https://api.nbp.pl/api/exchangerates/tables/A/?format=json"},
+  {id:"viacep",   naziv:"ViaCEP",            grupa:"Brazil",   kljuc:0, url:"https://viacep.com.br/ws/01001000/json/"},
+  {id:"hdx",      naziv:"Humanitarian Data", grupa:"Afrika",   kljuc:0, url:"https://data.humdata.org/api/3/action/package_search?rows=3"},
+  {id:"openafrica2",naziv:"openAFRICA",      grupa:"Afrika",   kljuc:0, url:"https://open.africa/api/3/action/package_search?rows=3"},
+  {id:"econdb2",  naziv:"Econdb",            grupa:"Makro",    kljuc:0, url:"https://www.econdb.com/api/series/?format=json"},
+  {id:"bnm",      naziv:"Bank Negara MY",    grupa:"Azija",    kljuc:0, url:"https://api.bnm.gov.my/public/exchange-rate"},
+  {id:"wikidata", naziv:"Wikidata",          grupa:"Tvrtke",   kljuc:0, url:"https://www.wikidata.org/w/api.php?action=wbsearchentities&search=Dinamo&language=hr&format=json&origin=*"},
+  {id:"opencorp", naziv:"OpenStreetMap Geo", grupa:"Geo",      kljuc:0, url:"https://nominatim.openstreetmap.org/search?q=Masarykova+Zagreb&format=json&limit=2"},
+
+  {id:"oksurf",   naziv:"OkSurf",            grupa:"Vijesti", kljuc:0, url:"https://ok.surf/api/v1/news-feed/"},
+  {id:"nobel",    naziv:"Nobel Prize",       grupa:"Znanost", kljuc:0, url:"https://api.nobelprize.org/2.1/nobelPrizes?limit=5"},
+  {id:"jobicy",   naziv:"Jobicy",            grupa:"Poslovi", kljuc:0, url:"https://jobicy.com/api/v2/remote-jobs?count=5"},
+  {id:"dexpaprika",naziv:"DexPaprika",       grupa:"Tržišta", kljuc:0, url:"https://api.dexpaprika.com/networks"},
+  {id:"faa",      naziv:"FAA N-Number",      grupa:"Registri",kljuc:0, url:"https://n-number.starfile.org/api/N12345"},
+  {id:"idphoto",  naziv:"IDPhotoSnap",       grupa:"Putovanja",kljuc:0,url:"https://idphotosnap.com/api/specs"},
+  {id:"danepl",   naziv:"Open Gov Poljska",  grupa:"Europa",  kljuc:0, url:"https://api.dane.gov.pl/1.4/datasets?per_page=3"},
+  {id:"dadospt",  naziv:"Open Gov Portugal", grupa:"Europa",  kljuc:0, url:"https://dados.gov.pt/api/1/datasets/?page_size=3"},
+  {id:"arcnautical",naziv:"ArcNautical",     grupa:"Compliance",kljuc:0,url:null, biljeska:"provjeriti endpoint u repozitoriju"},
+  {id:"openmercantil",naziv:"OpenMercantil", grupa:"Tvrtke",  kljuc:0, url:null, biljeska:"provjeriti endpoint u dokumentaciji"},
+
+  {id:"rss2json",  naziv:"RSS2JSON (DW)",     grupa:"Vijesti", kljuc:0, url:"https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Frss.dw.com%2Frdf%2Frss-en-all"},
+  {id:"rss2json2", naziv:"RSS2JSON (UN News)",grupa:"Vijesti", kljuc:0, url:"https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fnews.un.org%2Ffeed%2Fsubscribe%2Fen%2Fnews%2Fall%2Frss.xml"},
+  {id:"reddit",    naziv:"Reddit worldnews",  grupa:"Vijesti", kljuc:0, url:"https://www.reddit.com/r/worldnews/top.json?limit=8"},
+  {id:"hn",        naziv:"HN Algolia",        grupa:"Vijesti", kljuc:0, url:"https://hn.algolia.com/api/v1/search?tags=story&hitsPerPage=8"},
+  {id:"wikinews",  naziv:"Wikinews",          grupa:"Vijesti", kljuc:0, url:"https://en.wikinews.org/w/api.php?action=query&list=recentchanges&rcnamespace=0&rclimit=8&format=json&origin=*"},
+  {id:"gdelt",     naziv:"GDELT",             grupa:"Vijesti", kljuc:0, url:"https://api.gdeltproject.org/api/v2/doc/doc?query=business&mode=artlist&format=json&maxrecords=8"},
+
+  {id:"openverse", naziv:"Openverse",        grupa:"Slike", kljuc:0, url:"https://api.openverse.org/v1/images/?q=business&page_size=8"},
+  {id:"commons",   naziv:"Wikimedia Commons",grupa:"Slike", kljuc:0, url:"https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=filetype:bitmap%20business%20office&gsrlimit=8&prop=imageinfo&iiprop=url|extmetadata&format=json&origin=*"},
+  {id:"nasa",      naziv:"NASA Images",      grupa:"Slike", kljuc:0, url:"https://images-api.nasa.gov/search?q=earth&media_type=image"},
+  {id:"artic",     naziv:"Art Institute",    grupa:"Slike", kljuc:0, url:"https://api.artic.edu/api/v1/artworks?limit=8&fields=id,title,image_id,is_public_domain"},
+
+  // --- bez ključa, endpoint treba potvrditi ---
+  {id:"noozra",  naziv:"Noozra",   grupa:"Vijesti", kljuc:0, url:"https://noozra.com/api"},
+  {id:"helium",  naziv:"Helium",   grupa:"Vijesti", kljuc:0, url:null, biljeska:"treba točan endpoint iz dokumentacije"},
+  {id:"markbase",naziv:"Markbase", grupa:"Žigovi",  kljuc:0, url:null, biljeska:"treba točan endpoint"},
+  {id:"markerapi",naziv:"MarkerAPI",grupa:"Žigovi", kljuc:0, url:null, biljeska:"treba točan endpoint"},
+  {id:"econdb",  naziv:"Econdb",   grupa:"Makro",   kljuc:0, url:null, biljeska:"treba točan endpoint"},
+  {id:"openafrica",naziv:"openAFRICA",grupa:"Afrika",kljuc:0,url:null, biljeska:"treba točan endpoint"},
+  {id:"apisetu", naziv:"API Setu", grupa:"Indija",  kljuc:0, url:null, biljeska:"treba točan endpoint"},
+  // --- traže ključ: {kljuc:1, param:"naziv_parametra"} ili {zaglavlje:"Authorization"} ---
+  {id:"fred",      naziv:"FRED",            grupa:"Makro",   kljuc:1, param:"api_key",
+     url:"https://api.stlouisfed.org/fred/series/observations?series_id=GDP&file_type=json&limit=5",
+     gdje:"fred.stlouisfed.org/docs/api/api_key.html"},
+  {id:"currents",  naziv:"Currents",        grupa:"Vijesti", kljuc:1, param:"apiKey",
+     url:"https://api.currentsapi.services/v1/latest-news?language=en",
+     gdje:"currentsapi.services"},
+  {id:"gnews",     naziv:"GNews",           grupa:"Vijesti", kljuc:1, param:"apikey",
+     url:"https://gnews.io/api/v4/top-headlines?lang=en&max=8",
+     gdje:"gnews.io"},
+  {id:"newsdata",  naziv:"NewsData.io",     grupa:"Vijesti", kljuc:1, param:"apikey",
+     url:"https://newsdata.io/api/1/news?language=en&country=in,jp,ng,za",
+     gdje:"newsdata.io"},
+  {id:"guardian",  naziv:"The Guardian",    grupa:"Vijesti", kljuc:1, param:"api-key",
+     url:"https://content.guardianapis.com/search?section=world&show-fields=thumbnail",
+     gdje:"open-platform.theguardian.com/access"},
+  {id:"marketaux", naziv:"MarketAux",       grupa:"Tržišta", kljuc:1, param:"api_token",
+     url:"https://api.marketaux.com/v1/news/all?language=en&limit=8",
+     gdje:"marketaux.com"},
+  {id:"linkpreview",naziv:"LinkPreview",    grupa:"Slike",   kljuc:1, param:"key",
+     url:"https://api.linkpreview.net/?q=https://gnk-asg.hr",
+     gdje:"linkpreview.net"},
+  {id:"pexels",    naziv:"Pexels",          grupa:"Slike",   kljuc:1, zaglavlje:"Authorization",
+     url:"https://api.pexels.com/v1/search?query=business&per_page=8",
+     gdje:"pexels.com/api"},
+  {id:"serpstack", naziv:"serpstack",       grupa:"SEO",     kljuc:1, param:"access_key",
+     url:"https://api.serpstack.com/search?query=gnk+asg",
+     gdje:"serpstack.com"},
+  {id:"openverse2",naziv:"Openverse (ključ)",grupa:"Slike",  kljuc:1, zaglavlje:"Authorization",
+     url:"https://api.openverse.org/v1/images/?q=office&page_size=8",
+     gdje:"api.openverse.org/v1/auth_tokens/register"},
+];
+
+const tijelo = document.getElementById("redovi");
+const stanje = new Map();
+let filtar = "sve";
+
+function red(iz){
+  const tr = document.createElement("tr");
+  tr.dataset.id = iz.id;
+  tr.innerHTML = `
+    <td><span class="žaruljica"></span><span class="naziv">${iz.naziv}</span>
+        ${iz.kljuc ? '<span class="značka">ključ</span>' : ''}</td>
+    <td class="grupa sakrij-mob">${iz.grupa}</td>
+    <td class="stanje s-čeka">${iz.kljuc
+        ? `<input class="kljuc-unos" data-za="${iz.id}" placeholder="zalijepi ključ" title="${iz.gdje||''}">`
+        : (iz.url ? "čeka" : "nema URL")}</td>
+    <td class="num ms"></td>
+    <td class="num stavki sakrij-mob"></td>
+    <td><div class="brzina"><i style="width:0"></i></div></td>`;
+  return tr;
+}
+
+IZVORI.forEach(iz => tijelo.appendChild(red(iz)));
+document.getElementById("n-ukupno").textContent = IZVORI.length;
+
+function osvježiPloču(){
+  const v = [...stanje.values()];
+  document.getElementById("n-živa").textContent  = v.filter(x=>x==="ok").length;
+  document.getElementById("n-mrtva").textContent = v.filter(x=>x==="loše").length;
+}
+
+function primijeniFiltar(){
+  document.querySelectorAll("#redovi tr").forEach(tr=>{
+    const iz = IZVORI.find(i=>i.id===tr.dataset.id);
+    let vidi = true;
+    if (filtar === "bez") vidi = !iz.kljuc;
+    if (filtar === "ok")  vidi = stanje.get(iz.id) === "ok";
+    tr.style.display = vidi ? "" : "none";
+  });
+}
+
+async function provjeri(iz){
+  const tr = tijelo.querySelector(`tr[data-id="${iz.id}"]`);
+  if (!tr) return;
+  const žar = tr.querySelector(".žaruljica");
+  const st  = tr.querySelector(".stanje");
+
+  let url = iz.url, zaglavlja = {};
+  if (iz.kljuc){
+    const polje = tr.querySelector(".kljuc-unos");
+    const k = polje && polje.value.trim();
+    if (!k){ return; }                      // bez ključa se preskače, bez buke
+    if (iz.param)     url += (url.includes("?") ? "&" : "?") + iz.param + "=" + encodeURIComponent(k);
+    if (iz.zaglavlje) zaglavlja[iz.zaglavlje] = k;
+  }
+  if (!url){
+    st.textContent = iz.biljeska || "nema URL";
+    return;
+  }
+
+  žar.className = "žaruljica je-radi";
+  st.className = "stanje s-čeka";
+  st.textContent = "provjeravam…";
+
+  const t0 = performance.now();
+  const prekid = new AbortController();
+  const tajmer = setTimeout(()=>prekid.abort(), 8000);
+
+  try {
+    const r = await fetch(url, {signal: prekid.signal, mode:"cors", headers: zaglavlja});
+    const ms = Math.round(performance.now() - t0);
+    const d  = await r.json();
+
+    let n = Array.isArray(d) ? d.length : 0;
+    if (!n && d && typeof d === "object"){
+      for (const k of ["results","articles","news","data","products","places","items","records"]){
+        if (Array.isArray(d[k])) { n = d[k].length; break; }
+      }
+    }
+    const tekst = JSON.stringify(d).slice(0, 60000);
+    const slike = /"(image|image_url|urlToImage|thumbnail|image_small_url|flags|png)"\s*:\s*"http/i.test(tekst);
+
+    žar.className = "žaruljica je-živa";
+    st.className  = "stanje s-ok";
+    st.textContent = "radi";
+    tr.querySelector(".ms").textContent = ms;
+    tr.querySelector(".stavki").textContent = n || "—";
+    tr.querySelector(".brzina i").style.width = Math.min(100, ms/25) + "%";
+
+    const c = tr.querySelector("td:first-child");
+    c.insertAdjacentHTML("beforeend", '<span class="značka z-cors">CORS</span>');
+    if (slike) c.insertAdjacentHTML("beforeend", '<span class="značka z-slike">slike</span>');
+
+    stanje.set(iz.id, "ok");
+  } catch (e) {
+    žar.className = "žaruljica je-mrtva";
+    st.className  = "stanje s-loše";
+    st.textContent = e.name === "AbortError" ? "prespor (8s)" : "blokiran ili CORS";
+    stanje.set(iz.id, "loše");
+  } finally {
+    clearTimeout(tajmer);
+    osvježiPloču();
+    primijeniFiltar();
+  }
+}
+
+document.getElementById("pokreni").addEventListener("click", async () => {
+  stanje.clear(); osvježiPloču();
+  document.querySelectorAll(".značka.z-cors,.značka.z-slike").forEach(e=>e.remove());
+  const red = [...IZVORI];
+  const radnik = async () => { while(red.length) await provjeri(red.shift()); };
+  await Promise.all([radnik(), radnik(), radnik(), radnik()]);
+});
+
+document.querySelectorAll("[data-filtar]").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    document.querySelectorAll("[data-filtar]").forEach(x=>x.classList.remove("aktivan"));
+    b.classList.add("aktivan");
+    filtar = b.dataset.filtar;
+    primijeniFiltar();
+  });
+});
+
+document.getElementById("ručni").addEventListener("keydown", e=>{
+  if (e.key !== "Enter" || !e.target.value.trim()) return;
+  const url = e.target.value.trim();
+  const iz = {id:"ručni-"+Date.now(), naziv:new URL(url).hostname, grupa:"Ručno", kljuc:0, url};
+  IZVORI.push(iz);
+  tijelo.prepend(red(iz));
+  document.getElementById("n-ukupno").textContent = IZVORI.length;
+  e.target.value = "";
+  provjeri(iz);
+});
+</script>
+</body>
+</html>
