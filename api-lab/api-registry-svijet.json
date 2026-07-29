@@ -1,0 +1,257 @@
+{
+  "_meta": {
+    "verzija": "3.0",
+    "datum": "2026-07-29",
+    "nadopunjuje": "api-registry.json (v1) + api-registry-global.json (v2)",
+    "pokriva": "Juzna Amerika, Europa, Sjeverna Amerika, Oceanija, Bliski istok + izvori vezani uz vertikale grupe",
+    "pravilo": "Ulazi samo ono sto v1 i v2 ne pokrivaju."
+  },
+
+  "NAJVAZNIJE_OD_SVEGA": [
+    {
+      "id": "opensanctions",
+      "naziv": "OpenSanctions",
+      "daje": "sankcije_kriminal_pep",
+      "kljuc": false,
+      "cors": true,
+      "prioritet": 100,
+      "napomena": "BEZ KLJUCA, CORS da. Medjunarodne sankcije, kriminal i politicki izlozene osobe (PEP). Ovo je najvazniji nalaz u sva tri registra. Grupa ima UBO adresu i compliance obveze - ovime se provjera protustranke automatizira. Obavezno za FinTech i digitalnu imovinu.",
+      "primjena": "Provjera svake nove protustranke, partnera i clana uprave prije potpisa. Ide uz sustav predmeta na ubo@ i legal@."
+    },
+    {
+      "id": "ibanforge",
+      "naziv": "IBANforge",
+      "daje": "iban_swift_validacija",
+      "kljuc": false,
+      "cors": true,
+      "prioritet": 95,
+      "napomena": "Validacija IBAN-a i BIC/SWIFT pretraga za 75+ zemalja, 121.000+ bankovnih zapisa. Bez kljuca. Za placanja prema Aziji i Africi nuzno - krivi IBAN znaci vracen novac i tjedan dana gubitka."
+    }
+  ],
+
+  "JUZNA_AMERIKA": [
+    {
+      "id": "brazil_receita",
+      "naziv": "Brazil Receita WS",
+      "zemlja": "Brazil",
+      "daje": "sudski_registar_br",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "napomena": "Provjera brazilskih tvrtki po CNPJ broju - ekvivalent naseg sudskog registra"
+    },
+    {
+      "id": "brazil_bcb",
+      "naziv": "Brazil Central Bank Open Data",
+      "zemlja": "Brazil",
+      "daje": "sredisnja_banka_br",
+      "kljuc": false,
+      "cors": "provjeriti"
+    },
+    {
+      "id": "brazil_public",
+      "naziv": "Brazil Public Data",
+      "zemlja": "Brazil",
+      "daje": "drzavni_podaci_br",
+      "kljuc": false,
+      "cors": true
+    },
+    {
+      "id": "ibge",
+      "naziv": "IBGE",
+      "zemlja": "Brazil",
+      "daje": "statistika_br",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "napomena": "Brazilski zavod za statistiku"
+    },
+    {
+      "id": "inei",
+      "naziv": "INEI",
+      "zemlja": "Peru",
+      "daje": "statistika_pe",
+      "kljuc": false,
+      "cors": "provjeriti"
+    },
+    {
+      "id": "cambio_uruguay",
+      "naziv": "Cambio Uruguay",
+      "zemlja": "Urugvaj",
+      "daje": "mjenjacki_tecajevi_uy",
+      "kljuc": false,
+      "cors": true
+    }
+  ],
+
+  "EUROPA": [
+    {
+      "id": "openplz",
+      "naziv": "OpenPLZ API",
+      "zemlja": "DE / AT / CH / LI",
+      "daje": "adrese_postanski_brojevi_dach",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Ulice i postanski brojevi za DACH regiju - dostava iz web shopa prema Njemackoj i Austriji"
+    },
+    {
+      "id": "arbeitnow",
+      "naziv": "Arbeitnow",
+      "regija": "Europa / remote",
+      "daje": "oglasi_za_posao_eu",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Agregator europskih i remote oglasa. Za obrazovni dio grupe i za vlastito zaposljavanje."
+    },
+    {
+      "id": "citysdk",
+      "naziv": "CitySDK",
+      "regija": "Europa",
+      "daje": "podaci_europskih_gradova",
+      "kljuc": false,
+      "cors": "provjeriti"
+    },
+    {
+      "id": "adresse_fr",
+      "naziv": "adresse.data.gouv.fr",
+      "zemlja": "Francuska",
+      "daje": "adrese_fr",
+      "kljuc": false,
+      "cors": "provjeriti"
+    },
+    {
+      "id": "gruenstrom",
+      "naziv": "GrunstromIndex",
+      "zemlja": "Njemacka",
+      "daje": "indeks_zelene_energije_de",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Poklapa se s energetskom vertikalom grupe"
+    }
+  ],
+
+  "GLOBALNO_SVE_ZEMLJE": [
+    {
+      "id": "statistics_world",
+      "naziv": "Statistics of the World",
+      "daje": "pokazatelji_218_zemalja",
+      "kljuc": false,
+      "cors": true,
+      "prioritet": 90,
+      "napomena": "BDP, populacija, inflacija i 440+ pokazatelja za 218 zemalja, bez kljuca. Djelomicno se preklapa s World Bank iz v1 - World Bank je vjerodostojniji, ovaj je brzi i ima vise pokazatelja. Testirati oba, zadrzati jedan."
+    },
+    {
+      "id": "econdb",
+      "naziv": "Econdb",
+      "daje": "makroekonomija_global",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Isto podrucje kao gornji - u finalni izbor ide samo jedan od tri (World Bank / Statistics of the World / Econdb)"
+    },
+    {
+      "id": "openholidays",
+      "naziv": "OpenHolidays API",
+      "daje": "praznici_i_radni_dani",
+      "kljuc": false,
+      "cors": true,
+      "prioritet": 85,
+      "napomena": "Drzavni i skolski praznici za mnoge zemlje. Prakticno: sustav zna da se u Indiji ili Japanu na taj dan ne odgovara na mail, pa ne racuna rok."
+    },
+    {
+      "id": "warnely",
+      "naziv": "Warnely",
+      "daje": "sigurnost_putovanja_180",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Sigurnosne ocjene za 180 zemalja iz sluzbenih izvora (FCDO, US State Dept, GPI). Za poslovna putovanja i procjenu rizika trzista."
+    },
+    {
+      "id": "open_meteo",
+      "naziv": "Open-Meteo",
+      "daje": "vrijeme_global",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Bez kljuca. Oprez: licenca je za nekomercijalnu upotrebu - provjeriti prije nego ide na poslovnu stranicu."
+    },
+    {
+      "id": "nominatim",
+      "naziv": "Nominatim",
+      "daje": "geokodiranje_global",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "OpenStreetMap geokodiranje. Za interaktivni globus i mrezu drustava."
+    },
+    {
+      "id": "openvan",
+      "naziv": "OpenVan",
+      "daje": "cijene_goriva_121_zemalja",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Poklapa se s energetskom vertikalom"
+    },
+    {
+      "id": "universities_list",
+      "naziv": "Universities List",
+      "daje": "sveucilista_global",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "napomena": "Nazivi, zemlje i domene sveucilista - za obrazovnu vertikalu grupe"
+    }
+  ],
+
+  "VERTIKALE_GRUPE": [
+    {
+      "id": "voidly",
+      "naziv": "Voidly",
+      "vertikala": "kibernetika",
+      "daje": "cenzura_i_blokiranje_interneta",
+      "kljuc": false,
+      "cors": false,
+      "napomena": "Mjerenja internetske cenzure i blokiranja na razini pruzatelja. CORS ne - mora ici preko naseg proxyja."
+    },
+    {
+      "id": "open_charge_map",
+      "naziv": "Open Charge Map",
+      "vertikala": "energija",
+      "daje": "punionice_ev_global",
+      "kljuc": true,
+      "cors": true,
+      "napomena": "Globalni registar punionica za elektricna vozila"
+    },
+    {
+      "id": "whereparcel",
+      "naziv": "WhereParcel",
+      "vertikala": "web shop",
+      "daje": "pracenje_posiljki_60_prijevoznika",
+      "kljuc": true,
+      "cors": true,
+      "napomena": "Jedinstveno pracenje kod 60+ prijevoznika (USPS, FedEx, DHL...). Za trgovinu prema Aziji nuzno."
+    },
+    {
+      "id": "orizn_visa",
+      "naziv": "Orizn Visa",
+      "vertikala": "poslovna putovanja",
+      "daje": "vizni_uvjeti_199_zemalja",
+      "kljuc": true,
+      "cors": true,
+      "napomena": "39.000+ kombinacija putovnica-odrediste. Prakticno za THE CODE i sva medjunarodna putovanja."
+    }
+  ],
+
+  "ODBACENO": [
+    "Sve javne prijevozne API-je po gradovima (Pariz, Berlin, Budimpesta, Toronto, Auckland...) — 20+ izvora, nula veze s poslovanjem grupe",
+    "Sve COVID izvore — zastarjelo",
+    "Sve IP geolokacijske izvore (ip-fast, Airtel IP, IP2Country, Geolocated, IPGeolocationAPI...) — jedan je dovoljan, i ne treba nam sada",
+    "Namedays, Czech TV, Stream, uNoGS, Squiggle, TourneyRadar, Padel Snipe, AstroWay — zabava i nisa",
+    "Postanske brojeve za Meksiko, Brazil, SAD (ViaCep, Postmon, Postali, Zippopotam, Ziptastic) — uzeti tek ako web shop stvarno krene u tu zemlju",
+    "Visual Crossing, Meteoblue, Storm Glass, DWD, IPMA, HG Weather — Open-Meteo pokriva potrebu",
+    "CPFHub — osobni podaci brazilskih gradjana, GDPR rizik, ne diramo"
+  ],
+
+  "REDOSLIJED_TESTIRANJA": [
+    "1. OpenSanctions — bez kljuca, najveca poslovna vrijednost",
+    "2. Helium (v2) — bez kljuca, rjesava AKTUAL i financije odjednom",
+    "3. IBANforge — bez kljuca, odmah upotrebljivo za placanja",
+    "4. API Setu (v2) — bez kljuca, indijski drzavni podaci",
+    "5. Markbase (v2) — bez kljuca, monitoring zigova",
+    "6. Statistics of the World vs World Bank vs Econdb — testirati sva tri, zadrzati jedan"
+  ]
+}
