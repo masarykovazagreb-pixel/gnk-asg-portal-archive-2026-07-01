@@ -185,7 +185,7 @@ if (process.env.GITHUB_ACTIONS === 'true') {
       '|---|---:|---:|',
       rows || '| nema nalaza | 0 | 0 |',
       '',
-      `Digest: \`${digest}\``,'
+      `Digest: \`${digest}\``
     ].join('\n'));
   }
 }
