@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "mode": "stabilization-hold",
+  "protectedRepositoryPrefixes": [
+    "apps/portal/app/",
+    "apps/portal/preuzimanja/api-lab/"
+  ],
+  "protectedPublicPaths": [
+    "/app/",
+    "/preuzimanja/api-lab/"
+  ],
+  "protectedBranches": [
+    "checkpoint/recovery-20260729-1617-zagreb",
+    "api-lab",
+    "api-lab-pages",
+    "api-lab-preuzimanja",
+    "tocka-vracanja/preuzimanja-20260729"
+  ],
+  "rules": {
+    "allowProtectedPathChanges": false,
+    "allowWorkerRouteChanges": false,
+    "allowCloudflareConfigurationChanges": false,
+    "allowDeploy": false,
+    "requireSingleWriterPerResource": true,
+    "requireExplicitApprovalToReleaseHold": true
+  },
+  "workerConfigurationPatterns": [
+    "wrangler.toml",
+    "wrangler.json",
+    "wrangler.jsonc",
+    "worker-configuration.d.ts"
+  ],
+  "cloudflareSensitivePatterns": [
+    "routes",
+    "route",
+    "bindings",
+    "vars",
+    "d1_databases",
+    "kv_namespaces",
+    "r2_buckets",
+    "services"
+  ],
+  "notes": [
+    "Ovaj ugovor je zaštitni CI sloj i ne mijenja produkciju.",
+    "Zaštićeni API Lab i checkpoint resursi ne smiju se mijenjati iz ovog PR-a.",
+    "LinkedIn distribucija ostaje blokirana dok pristup i zeleni gateovi nisu potvrđeni."
+  ]
+}
