@@ -6,138 +6,22 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>Kontaktni slučajevi · GNK ASG Admin</title>
 <style>
-  :root{color-scheme:dark;--bg:#050505;--panel:#111;--line:#3b3120;--gold:#d8b66a;--text:#f5f2ea;--muted:#b9b2a5}
-  *{box-sizing:border-box}
-  body{margin:0;background:radial-gradient(circle at top,#18130b 0,#050505 44%);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
-  .wrap{width:min(1200px,calc(100% - 32px));margin:0 auto;padding:36px 0 64px}
-  .top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:28px}
-  .brand{font-weight:800;letter-spacing:.08em;color:var(--gold)}
-  a{color:inherit}
-  .back{text-decoration:none;color:var(--muted)}
-  h1{font-size:clamp(28px,5vw,44px);margin:0 0 10px}
-  .lead{color:var(--muted);max-width:760px;line-height:1.6;margin:0 0 28px}
-  .panel{background:linear-gradient(145deg,#15120d,#0c0c0c);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:20px}
-  label{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
-  input,select,textarea{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#000;color:var(--text);font-size:14px;margin-bottom:14px}
-  button{padding:11px 20px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-weight:700;cursor:pointer;font-size:13px}
-  button:hover{background:var(--gold);color:#000}
-  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
-  th{color:var(--muted);text-transform:uppercase;font-size:11px;letter-spacing:.06em}
-  .status{margin-top:10px;font-size:13px;color:var(--muted)}
-  .status.ok{color:#8fd18f}
-  .status.err{color:#e08a8a}
-  .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;border:1px solid var(--line)}
-  .badge.open{color:#e0c08a;border-color:#e0c08a}
-  .badge.in_progress{color:#8ab4e0;border-color:#8ab4e0}
-  .badge.closed{color:#8fd18f;border-color:#8fd18f}
-  details{margin-top:6px}
-  summary{cursor:pointer;color:var(--gold);font-size:12px}
-  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+:root{color-scheme:dark;--bg:#050505;--panel:#111;--line:#3b3120;--gold:#d8b66a;--text:#f5f2ea;--muted:#b9b2a5}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#18130b 0,#050505 44%);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}.wrap{width:min(1200px,calc(100% - 32px));margin:0 auto;padding:36px 0 64px}.top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:28px}.brand{font-weight:800;letter-spacing:.08em;color:var(--gold)}a{color:inherit}.back{text-decoration:none;color:var(--muted)}h1{font-size:clamp(28px,5vw,44px);margin:0 0 10px}.lead{color:var(--muted);max-width:760px;line-height:1.6;margin:0 0 28px}.panel{background:linear-gradient(145deg,#15120d,#0c0c0c);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:20px}label{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}input,select,textarea{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#000;color:var(--text);font-size:14px;margin-bottom:14px}button{padding:11px 20px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-weight:700;cursor:pointer;font-size:13px}button:hover{background:var(--gold);color:#000}button:disabled{opacity:.45;cursor:not-allowed}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);text-transform:uppercase;font-size:11px;letter-spacing:.06em}.status{margin-top:10px;font-size:13px;color:var(--muted)}.status.ok{color:#8fd18f}.status.err{color:#e08a8a}.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;border:1px solid var(--line)}.badge.open{color:#e0c08a;border-color:#e0c08a}.badge.in_progress{color:#8ab4e0;border-color:#8ab4e0}.badge.closed{color:#8fd18f;border-color:#8fd18f}details{margin-top:6px}summary{cursor:pointer;color:var(--gold);font-size:12px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}@media(max-width:720px){.detail-grid{grid-template-columns:1fr}.panel{overflow:auto}}
 </style>
 <link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260721-remove-static-overview-v1"></head>
 <body><header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/" aria-label="Hrvatski" aria-current="page">HR</a><a href="/en/" aria-label="English">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">IZBORNIK</button></div><nav id="gnk-unified-nav"></nav></div></div></header>
-<main class="wrap">
-  <div class="top"><div class="brand">GNK ASG · ZAŠTIĆENO</div><a class="back" href="/admin-center/">← Admin centar</a></div>
-  <h1>Kontaktni slučajevi</h1>
-  <p class="lead">Registar kontaktnih upita s brojem predmeta (caseId) koji povezuje kontakt, Mail Studio predmet i PDF dokumente na jednom mjestu.</p>
-
-  <section class="panel">
-    <div class="row">
-      <div style="flex:1;min-width:220px;">
-        <label for="searchInput">Pretraga (broj predmeta, ime ili email)</label>
-        <input id="searchInput" placeholder="GNK-20260711-XXXXXXXX ili Ivan Horvat ili ivan@example.com">
-      </div>
-      <div style="min-width:160px;">
-        <label for="statusFilter">Status</label>
-        <select id="statusFilter">
-          <option value="">Svi statusi</option>
-          <option value="open">Otvoreno</option>
-          <option value="in_progress">U tijeku</option>
-          <option value="closed">Zatvoreno</option>
-        </select>
-      </div>
-      <button id="searchBtn" type="button">Pretraži</button>
-      <button id="listAllBtn" type="button">Prikaži sve</button>
-    </div>
-    <div id="status" class="status"></div>
-  </section>
-
-  <section class="panel">
-    <table>
-      <thead><tr><th>Predmet</th><th>Kontakt</th><th>Naslov</th><th>Status</th><th>Datum</th></tr></thead>
-      <tbody id="casesBody"><tr><td colspan="5" style="color:var(--muted)">Kliknite "Prikaži sve" ili pretražite.</td></tr></tbody>
-    </table>
-  </section>
-</main>
-<script>
-(function(){
-  const $ = id => document.getElementById(id);
-  const status = (msg, cls) => { const el = $('status'); el.textContent = msg; el.className = 'status' + (cls ? ' ' + cls : ''); };
-  function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-  function renderCases(cases) {
-    const body = $('casesBody');
-    if (!cases.length) { body.innerHTML = '<tr><td colspan="5" style="color:var(--muted)">Nema rezultata.</td></tr>'; return; }
-    body.innerHTML = cases.map(c => `
-      <tr>
-        <td>
-          <strong>${esc(c.case_id)}</strong>
-          <details>
-            <summary>Detalji</summary>
-            <div class="detail-grid">
-              <div><label style="margin:0;">Poruka</label><div>${esc(c.message || '—')}</div></div>
-              <div><label style="margin:0;">Mail Studio predmet</label><div>${esc(c.mail_studio_thread_id || '—')}</div></div>
-              <div><label style="margin:0;">PDF dokument</label><div>${c.pdf_document_id ? `<a href="/admin-center/pdf/?caseId=${encodeURIComponent(c.case_id)}" style="color:var(--gold)">Otvori PDF centar →</a>` : '—'}</div></div>
-              <div><label style="margin:0;">Napomene</label><div>${esc(c.notes || '—')}</div></div>
-            </div>
-          </details>
-        </td>
-        <td>${esc(c.name || '—')}<br><span style="color:var(--muted);font-size:12px;">${esc(c.email || '—')}</span></td>
-        <td>${esc(c.subject || '—')}</td>
-        <td><span class="badge ${esc(c.status)}">${esc(c.status)}</span></td>
-        <td>${new Date(c.created_at).toLocaleString('hr-HR')}</td>
-      </tr>`).join('');
-  }
-
-  async function search() {
-    const q = $('searchInput').value.trim();
-    if (!q) { listAll(); return; }
-    status('Pretraživanje...');
-    try {
-      const res = await fetch(`/api/contact-cases/lookup?q=${encodeURIComponent(q)}`);
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
-        if (res.status === 404) { renderCases([]); status('Nema rezultata.', 'err'); return; }
-        throw new Error(data.error || `HTTP ${res.status}`);
-      }
-      renderCases(data.cases);
-      status(`Pronađeno: ${data.cases.length}`, 'ok');
-    } catch (e) {
-      status(`Greška: ${e.message}`, 'err');
-    }
-  }
-
-  async function listAll() {
-    status('Dohvaćanje...');
-    try {
-      const statusFilter = $('statusFilter').value;
-      const url = statusFilter ? `/api/contact-cases/list?status=${encodeURIComponent(statusFilter)}` : '/api/contact-cases/list';
-      const res = await fetch(url);
-      const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
-      renderCases(data.cases);
-      status(`Ukupno: ${data.cases.length}`, 'ok');
-    } catch (e) {
-      status(`Greška: ${e.message}`, 'err');
-    }
-  }
-
-  $('searchBtn').addEventListener('click', search);
-  $('listAllBtn').addEventListener('click', listAll);
-  $('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') search(); });
-})();
-</script>
-<script src="/assets/app.js?v=20260728-remove-tech-radar-more-sources-v1" defer></script></body>
-</html>
+<main class="wrap"><div class="top"><div class="brand">GNK ASG · ZAŠTIĆENO</div><a class="back" href="/admin-center/">← Admin centar</a></div><h1>Kontaktni slučajevi</h1><p class="lead">Registar kontaktnih upita s brojem predmeta (caseId) koji povezuje kontakt, Mail Studio predmet i PDF dokumente na jednom mjestu.</p>
+<section class="panel"><div class="row"><div style="flex:1;min-width:220px"><label for="searchInput">Pretraga (broj predmeta, ime ili email)</label><input id="searchInput" placeholder="GNK-20260711-XXXXXXXX ili Ivan Horvat ili ivan@example.com"></div><div style="min-width:160px"><label for="statusFilter">Status</label><select id="statusFilter"><option value="">Svi statusi</option><option value="open">Otvoreno</option><option value="in_progress">U tijeku</option><option value="closed">Zatvoreno</option></select></div><button id="searchBtn" type="button">Pretraži</button><button id="listAllBtn" type="button">Osvježi sve</button></div><div id="status" class="status">Učitavanje kontaktnih slučajeva…</div></section>
+<section class="panel"><table><thead><tr><th>Predmet</th><th>Kontakt</th><th>Naslov</th><th>Status</th><th>Datum</th></tr></thead><tbody id="casesBody"><tr><td colspan="5" style="color:var(--muted)">Učitavanje…</td></tr></tbody></table></section></main>
+<script>(function(){
+const $=id=>document.getElementById(id);const statusEl=$('status'),bodyEl=$('casesBody'),searchBtn=$('searchBtn'),listAllBtn=$('listAllBtn');
+const setStatus=(msg,cls='')=>{statusEl.textContent=msg;statusEl.className='status'+(cls?' '+cls:'')};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function renderCases(cases){const rows=Array.isArray(cases)?cases:[];if(!rows.length){bodyEl.innerHTML='<tr><td colspan="5" style="color:var(--muted)">Nema rezultata.</td></tr>';return}bodyEl.innerHTML=rows.map(c=>`<tr><td><strong>${esc(c.case_id)}</strong><details><summary>Detalji</summary><div class="detail-grid"><div><label style="margin:0">Poruka</label><div>${esc(c.message||'—')}</div></div><div><label style="margin:0">Mail Studio predmet</label><div>${esc(c.mail_studio_thread_id||'—')}</div></div><div><label style="margin:0">PDF dokument</label><div>${c.pdf_document_id?`<a href="/admin-center/pdf/?caseId=${encodeURIComponent(c.case_id)}" style="color:var(--gold)">Otvori PDF centar →</a>`:'—'}</div></div><div><label style="margin:0">Napomene</label><div>${esc(c.notes||'—')}</div></div></div></details></td><td>${esc(c.name||'—')}<br><span style="color:var(--muted);font-size:12px">${esc(c.email||'—')}</span></td><td>${esc(c.subject||'—')}</td><td><span class="badge ${esc(c.status)}">${esc(c.status||'—')}</span></td><td>${c.created_at?new Date(c.created_at).toLocaleString('hr-HR'):'—'}</td></tr>`).join('')}
+async function requestJson(url){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),15000);try{const res=await fetch(url,{credentials:'same-origin',cache:'no-store',headers:{accept:'application/json'},signal:controller.signal});if(res.status===401||res.status===403){location.href='/admin-login/?next='+encodeURIComponent(location.pathname);return null}const text=await res.text();let data;try{data=JSON.parse(text)}catch{throw new Error('API nije vratio JSON odgovor')}if(!res.ok||!data?.ok)throw new Error(data?.error||data?.message||`HTTP ${res.status}`);return data}finally{clearTimeout(timer)}}
+async function run(url,label){searchBtn.disabled=true;listAllBtn.disabled=true;setStatus(label);try{const data=await requestJson(url);if(!data)return;renderCases(data.cases);setStatus(`Ukupno: ${Array.isArray(data.cases)?data.cases.length:0}`,'ok')}catch(e){bodyEl.innerHTML='<tr><td colspan="5" style="color:#e08a8a">Podaci trenutačno nisu dostupni.</td></tr>';setStatus(`Greška: ${e?.name==='AbortError'?'isteklo vrijeme čekanja na API':e?.message||'nepoznata greška'}`,'err')}finally{searchBtn.disabled=false;listAllBtn.disabled=false}}
+function listAll(){const f=$('statusFilter').value;run(f?`/api/contact-cases/list?status=${encodeURIComponent(f)}`:'/api/contact-cases/list','Dohvaćanje kontaktnih slučajeva…')}
+function search(){const q=$('searchInput').value.trim();if(!q){listAll();return}run(`/api/contact-cases/lookup?q=${encodeURIComponent(q)}`,'Pretraživanje…')}
+searchBtn.addEventListener('click',search);listAllBtn.addEventListener('click',listAll);$('statusFilter').addEventListener('change',listAll);$('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')search()});listAll();
+})();</script>
+<script src="/assets/app.js?v=20260728-remove-tech-radar-more-sources-v1" defer></script></body></html>
