@@ -1,0 +1,306 @@
+{
+  "_meta": {
+    "verzija": "2.0",
+    "datum": "2026-07-29",
+    "nadopunjuje": "api-registry.json (v1) — ovo su SAMO novi izvori, bez ponavljanja",
+    "izvor_pretrage": ["public-apis/public-apis", "public-api-lists/public-api-lists"],
+    "pravilo": "Izvor ulazi samo ako donosi novu regiju ili novi tip podatka. Ako daje isto sto v1 vec ima - ne ulazi."
+  },
+
+  "AZIJA": [
+    {
+      "id": "localgov_jp",
+      "naziv": "LocalGov.jp",
+      "zemlja": "Japan",
+      "daje": "javni_natjecaji_subvencije_jp",
+      "kljuc": false,
+      "cors": true,
+      "url": "https://localgov.jp",
+      "napomena": "Sredisnji J-Grants + 1.916 opcina. Japanske subvencije i potpore - konkretna poslovna prilika, ne samo sadrzaj."
+    },
+    {
+      "id": "japan_neighborhoods",
+      "naziv": "Japan Neighborhoods",
+      "zemlja": "Japan",
+      "daje": "lokalni_podaci_tokio",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Statistika po cetvrtima, sigurnosni indeks, podaci o postajama"
+    },
+    {
+      "id": "bnm_malaysia",
+      "naziv": "Bank Negara Malaysia Open Data",
+      "zemlja": "Malezija",
+      "daje": "sredisnja_banka_my",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "napomena": "Sluzbeni podaci sredisnje banke"
+    },
+    {
+      "id": "opengov_sg",
+      "naziv": "Open Government Singapore",
+      "zemlja": "Singapur",
+      "daje": "drzavni_podaci_sg",
+      "kljuc": false,
+      "cors": "provjeriti"
+    },
+    {
+      "id": "opengov_id",
+      "naziv": "Open Government Indonesia",
+      "zemlja": "Indonezija",
+      "daje": "drzavni_podaci_id",
+      "kljuc": false,
+      "cors": "provjeriti"
+    },
+    {
+      "id": "opengov_sa",
+      "naziv": "Open Government Saudi Arabia",
+      "zemlja": "Saudijska Arabija",
+      "daje": "drzavni_podaci_sa",
+      "kljuc": false,
+      "cors": "provjeriti"
+    },
+    {
+      "id": "kdata_gate",
+      "naziv": "K-Data Gate",
+      "zemlja": "Juzna Koreja",
+      "daje": "trzisni_podaci_kr",
+      "kljuc": true,
+      "cors": "provjeriti",
+      "napomena": "K-beauty i K-food proizvodi, Naver trendovi, dionice, nekretnine. Za web shop najzanimljiviji azijski izvor."
+    },
+    {
+      "id": "lowy_index",
+      "naziv": "Lowy Asia Power Index",
+      "zemlja": "Azija (regija)",
+      "daje": "geopoliticki_indeks_azija",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "napomena": "Rangiranje azijskih drzava po resursima i utjecaju - dobra podloga za analize i komentare"
+    },
+    {
+      "id": "bdapis",
+      "naziv": "BdAPIs",
+      "zemlja": "Banglades",
+      "daje": "administrativna_podjela_bd",
+      "kljuc": false,
+      "cors": "provjeriti"
+    }
+  ],
+
+  "INDIJA": [
+    {
+      "id": "api_setu",
+      "naziv": "API Setu",
+      "daje": "drzavna_platforma_in",
+      "kljuc": false,
+      "cors": true,
+      "prioritet": 95,
+      "napomena": "Sluzbena indijska drzavna platforma - KYC, poslovni podaci, verifikacija. Najozbiljniji indijski izvor na popisu."
+    },
+    {
+      "id": "indian_mutual_fund",
+      "naziv": "Indian Mutual Fund",
+      "daje": "investicijski_fondovi_in",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "prioritet": 90,
+      "napomena": "Kompletna povijest indijskih investicijskih fondova. Ovo je ono sto si trazio pod 'fondovi'."
+    },
+    {
+      "id": "razorpay_ifsc",
+      "naziv": "Razorpay IFSC",
+      "daje": "bankovni_kodovi_in",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "napomena": "IFSC kodovi indijskih banaka - nuzno za bilo kakvo placanje prema Indiji"
+    },
+    {
+      "id": "indian_pincode",
+      "naziv": "Indian Pincode",
+      "daje": "postanski_brojevi_in",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "165.000+ posta s GPS koordinatama - dostava za web shop"
+    },
+    {
+      "id": "ecourts_india",
+      "naziv": "eCourtsIndia",
+      "daje": "sudski_predmeti_in",
+      "kljuc": true,
+      "cors": true,
+      "napomena": "Status predmeta, presude, rasporedi rocista"
+    },
+    {
+      "id": "flipkart",
+      "naziv": "Flipkart Marketplace",
+      "daje": "marketplace_in",
+      "kljuc": "OAuth",
+      "cors": true,
+      "napomena": "Najveci indijski marketplace - upravljanje listinzima i narudzbama"
+    }
+  ],
+
+  "AFRIKA": [
+    {
+      "id": "openafrica",
+      "naziv": "openAFRICA",
+      "daje": "otvoreni_podaci_afrika",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "prioritet": 90,
+      "napomena": "Najveci repozitorij africkih otvorenih podataka"
+    },
+    {
+      "id": "pan_africa_data",
+      "naziv": "Pan Africa Data",
+      "daje": "makroekonomija_afrika",
+      "kljuc": true,
+      "cors": "provjeriti",
+      "prioritet": 85,
+      "napomena": "Makroekonomski podaci i raspodjela dohotka za svih 54 africke drzave"
+    },
+    {
+      "id": "mono",
+      "naziv": "Mono",
+      "daje": "bankovni_podaci_afrika",
+      "kljuc": true,
+      "cors": "provjeriti",
+      "napomena": "Pristup bankovnim racunima i transakcijama u Africi - FinTech relevantno"
+    },
+    {
+      "id": "hdx",
+      "naziv": "Humanitarian Data Exchange",
+      "daje": "humanitarni_podaci_global",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "napomena": "Jaka pokrivenost Afrike i juzne Azije"
+    }
+  ],
+
+  "TRZISTA_I_VIJESTI": [
+    {
+      "id": "helium",
+      "naziv": "Helium",
+      "daje": "vijesti_s_ocjenom_pristranosti",
+      "kljuc": false,
+      "cors": true,
+      "prioritet": 95,
+      "napomena": "BEZ KLJUCA. Vijesti s ocjenom medijske pristranosti + uravnotezena sinteza + zivi trzisni podaci. Jedini izvor koji spaja vijesti i trziste bez registracije. Prvi za testiranje."
+    },
+    {
+      "id": "sugra",
+      "naziv": "Sugra",
+      "daje": "trziste_ekonomija_robe_klima",
+      "kljuc": true,
+      "cors": true,
+      "prioritet": 85,
+      "napomena": "Jedan API za trzisne podatke, ekonomiju, robe, klimu i globalne vijesti. Zamjenjuje 4-5 zasebnih izvora."
+    },
+    {
+      "id": "predscope",
+      "naziv": "PredScope",
+      "daje": "trzista_predvidjanja",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Polymarket kvote i analitika. Novi tip podatka - ne duplicira nista."
+    },
+    {
+      "id": "valueray",
+      "naziv": "ValueRay",
+      "daje": "kvantitativna_analiza_dionica",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Bez kljuca. Kvantitativni i sentiment podaci za dionice i ETF-ove."
+    },
+    {
+      "id": "dc_hub",
+      "naziv": "DC Hub",
+      "daje": "podatkovni_centri_energija",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Podatkovni centri, trzista energije, telemetrija mreze. Poklapa se s energetskim i AI dijelom grupe."
+    }
+  ],
+
+  "TVRTKE_I_ZIGOVI": [
+    {
+      "id": "markbase",
+      "naziv": "Markbase",
+      "daje": "zigovi_uspto",
+      "kljuc": false,
+      "cors": true,
+      "prioritet": 90,
+      "napomena": "14 milijuna USPTO zigova, fuzzy pretraga. Dopunjuje markerapi iz v1 - drugi registar, ne duplikat."
+    },
+    {
+      "id": "openregistry",
+      "naziv": "OpenRegistry",
+      "daje": "sudski_registri_27_drzava",
+      "kljuc": "OAuth",
+      "cors": "provjeriti",
+      "prioritet": 85,
+      "napomena": "Upiti u 27 nacionalnih sudskih registara u stvarnom vremenu. Za mrezu povezanih drustava."
+    },
+    {
+      "id": "scala_score",
+      "naziv": "SCALA Score",
+      "daje": "baza_tvrtki_global",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "napomena": "250 milijuna zapisa o tvrtkama u 50+ zemalja, s prihodima i brojem zaposlenih"
+    }
+  ],
+
+  "WEB_SHOP": [
+    {
+      "id": "shopsavvy",
+      "naziv": "ShopSavvy",
+      "daje": "usporedba_cijena",
+      "kljuc": true,
+      "cors": true,
+      "prioritet": 85,
+      "napomena": "Cijene i povijest cijena kod tisuca trgovaca"
+    },
+    {
+      "id": "buywhere",
+      "naziv": "BuyWhere",
+      "daje": "katalog_proizvoda_7_zemalja",
+      "kljuc": true,
+      "cors": "provjeriti"
+    },
+    {
+      "id": "shopee",
+      "naziv": "Shopee",
+      "daje": "marketplace_jugoistocna_azija",
+      "kljuc": true,
+      "cors": "provjeriti",
+      "napomena": "Vodeci marketplace u jugoistocnoj Aziji"
+    },
+    {
+      "id": "dummyjson",
+      "naziv": "DummyJSON",
+      "daje": "testni_podaci_shop",
+      "kljuc": false,
+      "cors": true,
+      "napomena": "Bolji od Dummy Products iz v1 - proizvodi, korisnici, objave, komentari. Za testiranje layouta prije pravih podataka."
+    }
+  ],
+
+  "ODBACENO_ZBOG_DUPLIRANJA": [
+    "AllRatesToday, FxRatesAPI, ratesapi, Fixer, Currencylayer, ExchangeRate-API, CurrencyFreaks, ApogeoAPI — Frankfurter iz v1 vec pokriva tecajeve",
+    "1inch, Bitcambio, NovaDax, Poloniex, Gates.io, DexPaprika, INFURA — kripto vec imamo interno",
+    "Alpha Vantage, Marketstack, IEX, Polygon, Twelve Data, Financial Modeling Prep, Nasdaq, Quandl, StockData, Hotstoks, Styvio, Mboum, Barchart, World Trading Data — svi daju isto (americke dionice). Uzet je samo ValueRay jer je bez kljuca.",
+    "Amazonscraperapi, Descripio, Best Buy, Etsy, Lazada, Mercadolibre, Klarna — regionalno preklapanje ili scraping",
+    "Chomp, Kroger, Spoonacular — Open Food Facts iz v1 pokriva prehranu",
+    "CongressInvests, Disclosed Capitol, Congressional Stock Brain, WallstreetBets, Stock Sentiment — americka niša, nije relevantno",
+    "Pexels, Freepik, Shutterstock — slike vec pokrivene",
+    "Mailchimp, Sendinblue, PostStack, Tomba, Signaliz, Meirra — mail marketing, odvojena tema od mail servera"
+  ],
+
+  "NIJE_PRONADJENO": [
+    "Pakistan — ni u jednom od dva popisa nema nijedan pakistanski izvor. Ni drzavni, ni trzisni, ni medijski. Jedini put do Pakistana je preko globalnih izvora s filtrom po zemlji (NewsData.io, Currents).",
+    "Hrvatska — HNB nema javni API na popisima. Postoji sluzbeni HNB tecajni endpoint izvan ovih lista, ali ga ionako ne trebamo jer Frankfurter vuce iste ECB podatke.",
+    "Afrika, trzisni podaci — nema burzovnog API-ja za africke burze (Lagos, Nairobi, Johannesburg) ni u jednom popisu."
+  ]
+}
