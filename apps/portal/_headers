@@ -49,5 +49,9 @@
 /app/icons/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Animacija i njezina glazba: velike datoteke koje se ne mijenjaju.
+/animacija/uploads/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

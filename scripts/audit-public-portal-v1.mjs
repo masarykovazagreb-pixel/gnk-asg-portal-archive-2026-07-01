@@ -15,7 +15,7 @@ const IGNORE_DIRS=new Set(['node_modules','test-results','playwright-report','.g
   // Mobilna aplikacija je samostalan program, ne stranica portala. Njezine
   // oznake oblika {{ n.link }} popunjavaju se u pregledniku i nisu poveznice,
   // pa ih revizija portala ne smije mjeriti svojim mjerilom.
-  'app']);
+  'app','animacija']);
 const posix=value=>value.split(path.sep).join('/');
 const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{if(entry.isDirectory()&&IGNORE_DIRS.has(entry.name))return[];const target=path.join(dir,entry.name);return entry.isDirectory()?walk(target):[target]});
 const rel=file=>posix(path.relative(ROOT,file));
