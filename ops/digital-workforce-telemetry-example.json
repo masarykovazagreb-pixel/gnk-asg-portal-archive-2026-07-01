@@ -1,0 +1,29 @@
+{
+  "workerId": "editorial-orchestrator",
+  "runId": "fixture-editorial-orchestrator-001",
+  "department": "Editorial Operations",
+  "taskType": "editorial-package-validation",
+  "startedAt": "2026-07-29T16:00:00.000Z",
+  "finishedAt": "2026-07-29T16:02:00.000Z",
+  "status": "success",
+  "attempt": 1,
+  "durationMs": 120000,
+  "inputDigest": "sha256:fixture-input",
+  "outputDigest": "sha256:fixture-output",
+  "sourceUrls": [],
+  "outputArtifacts": ["ops/evidence/editorial-premium-contract.json"],
+  "manualInterventions": 0,
+  "retries": 0,
+  "apiCostEstimateEur": 0,
+  "quality": {
+    "reliability": 40,
+    "outputQuality": 20,
+    "timeliness": 15,
+    "autonomy": 10,
+    "costEfficiency": 10,
+    "documentation": 5,
+    "total": 100
+  },
+  "incidentCode": null,
+  "error": null
+}
