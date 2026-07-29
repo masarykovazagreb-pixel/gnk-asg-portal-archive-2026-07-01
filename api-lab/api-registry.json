@@ -1,0 +1,167 @@
+{
+  "_meta": {
+    "verzija": "1.0",
+    "datum": "2026-07-29",
+    "pravilo_dedupe": "Polje 'daje' mora biti jedinstveno po regiji. Ako dva izvora daju isti 'daje' za istu regiju, uzima se onaj s vecim 'prioritet'. Nikad ne ukljucuj izvor ciji je 'daje' vec pokriven internim sustavom (vidi _vec_imamo).",
+    "_vec_imamo": [
+      "kripto_tecajevi",
+      "rss_vijesti_hr",
+      "rss_vijesti_eu"
+    ],
+    "pravilo_prikaza": "Podaci se NE spremaju u repo i NE ulaze u build. Dohvat je iskljucivo klijentski, lijeno (IntersectionObserver), s sessionStorage cacheom. Nijedan izvor ne smije blokirati render stranice."
+  },
+
+  "izvori": [
+    {
+      "id": "noozra",
+      "naziv": "Noozra",
+      "regija": ["global"],
+      "daje": "naslovnice_global",
+      "endpoint": "https://noozra.com/api",
+      "kljuc": false,
+      "cors": "ocekivano_da",
+      "slike": "provjeriti",
+      "prioritet": 90,
+      "napomena": "200+ kuriranih RSS izvora, bez registracije"
+    },
+    {
+      "id": "currents",
+      "naziv": "Currents API",
+      "regija": ["global", "azija", "afrika", "juzna_amerika"],
+      "daje": "vijesti_global_filtrirano",
+      "endpoint": "https://api.currentsapi.services/v1/latest-news?language=en",
+      "kljuc": true,
+      "cors": "da",
+      "slike": "da",
+      "prioritet": 85,
+      "napomena": "1000 zahtjeva/dan besplatno, filtar po zemlji i jeziku, 70+ zemalja"
+    },
+    {
+      "id": "newsdata",
+      "naziv": "NewsData.io",
+      "regija": ["indija", "azija", "afrika", "global"],
+      "daje": "vijesti_regionalne_jezici",
+      "endpoint": "https://newsdata.io/api/1/news?country=in,jp,ng,za,ae&language=en",
+      "kljuc": true,
+      "cors": "provjeriti",
+      "slike": "djelomicno",
+      "prioritet": 80,
+      "napomena": "Jedini s 13 indijskih regionalnih jezika i drzavnom razinom filtriranja. Besplatno vraca samo isjecak teksta, ne puni clanak."
+    },
+    {
+      "id": "gnews",
+      "naziv": "GNews",
+      "regija": ["global", "japan", "indija"],
+      "daje": "vijesti_backup",
+      "endpoint": "https://gnews.io/api/v4/top-headlines?country=jp&lang=en",
+      "kljuc": true,
+      "cors": "da",
+      "slike": "da",
+      "prioritet": 60,
+      "napomena": "100/dan. Rezerva ako Currents padne."
+    },
+    {
+      "id": "guardian",
+      "naziv": "The Guardian Open Platform",
+      "regija": ["global", "afrika", "azija"],
+      "daje": "analize_dugi_tekst",
+      "endpoint": "https://content.guardianapis.com/search?section=world",
+      "kljuc": true,
+      "cors": "da",
+      "slike": "da",
+      "prioritet": 75,
+      "napomena": "Puni tekst, ozbiljan izvor, jaka africka i azijska rubrika"
+    },
+    {
+      "id": "spaceflight",
+      "naziv": "Spaceflight News",
+      "regija": ["global"],
+      "daje": "vijesti_tehnologija_svemir",
+      "endpoint": "https://api.spaceflightnewsapi.net/v4/articles/?limit=10",
+      "kljuc": false,
+      "cors": "da",
+      "slike": "da",
+      "prioritet": 50,
+      "napomena": "Bez kljuca, cist JSON, dobar za tehnolosku rubriku"
+    },
+    {
+      "id": "worldbank",
+      "naziv": "World Bank Open Data",
+      "regija": ["afrika", "azija", "indija", "global"],
+      "daje": "makro_pokazatelji_zemlje",
+      "endpoint": "https://api.worldbank.org/v2/country/IN;JP;NG;ZA;AE/indicator/NY.GDP.MKTP.CD?format=json",
+      "kljuc": false,
+      "cors": "da",
+      "slike": false,
+      "prioritet": 95,
+      "napomena": "Bez kljuca, bez limita. BDP, inflacija, populacija po zemlji. Idealno za 'Financijski pokazatelji' i interaktivni globus."
+    },
+    {
+      "id": "restcountries",
+      "naziv": "REST Countries",
+      "regija": ["global"],
+      "daje": "podaci_o_zemljama",
+      "endpoint": "https://restcountries.com/v3.1/region/asia",
+      "kljuc": false,
+      "cors": "da",
+      "slike": "zastave",
+      "prioritet": 90,
+      "napomena": "Zastave, valute, glavni gradovi, koordinate. Za globus i mrezu povezanih drustava."
+    },
+    {
+      "id": "frankfurter",
+      "naziv": "Frankfurter",
+      "regija": ["global"],
+      "daje": "tecajevi_fiat",
+      "endpoint": "https://api.frankfurter.app/latest?from=EUR&to=JPY,INR,CNY,ZAR,AED",
+      "kljuc": false,
+      "cors": "da",
+      "slike": false,
+      "prioritet": 95,
+      "napomena": "ECB izvor. NE dodavati drugi tecajni API - dupliranje."
+    },
+    {
+      "id": "openfoodfacts",
+      "naziv": "Open Food Facts",
+      "regija": ["global"],
+      "daje": "proizvodi_prehrana",
+      "endpoint": "https://world.openfoodfacts.org/api/v2/search?countries_tags=japan&page_size=10",
+      "kljuc": false,
+      "cors": "da",
+      "slike": "da",
+      "prioritet": 85,
+      "napomena": "Za /trgovina/prehrana/. Filtar po zemlji radi - moze se raditi azijska/africka polica."
+    },
+    {
+      "id": "markerapi",
+      "naziv": "MarkerAPI",
+      "regija": ["global"],
+      "daje": "pretraga_zigova",
+      "endpoint": "https://markerapi.com",
+      "kljuc": false,
+      "cors": "provjeriti",
+      "slike": false,
+      "prioritet": 70,
+      "napomena": "Monitoring zigova - odvojena namjena, ne ide na naslovnicu"
+    }
+  ],
+
+  "odbaceno_zbog_dupliranja": [
+    {
+      "izvor": "CoinGecko / CryptoCompare / bilo koji kripto API",
+      "razlog": "Kripto tecajeve vec imamo interno - ne uvoditi drugi izvor iste brojke"
+    },
+    {
+      "izvor": "ExchangeRate-API, CurrencyFreaks, Fixer, AllRatesToday",
+      "razlog": "Frankfurter vec pokriva fiat tecajeve, bez kljuca i bez limita"
+    },
+    {
+      "izvor": "NewsAPI.org",
+      "razlog": "Besplatni plan blokira produkcijsku domenu, CORS samo localhost"
+    },
+    {
+      "izvor": "Mediastack, TheNews, APITube",
+      "razlog": "Isti 'daje' kao Currents, manji besplatni limit"
+    }
+  ]
+}
