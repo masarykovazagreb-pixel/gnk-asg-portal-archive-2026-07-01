@@ -150,14 +150,14 @@
 <script>
 const IZVORI = [
   // --- bez ključa, endpoint poznat ---
-  {id:"worldbank",  naziv:"World Bank",        grupa:"Makro",    kljuc:0, url:"https://api.worldbank.org/v2/country/IN;JP;NG;ZA/indicator/NY.GDP.MKTP.CD?format=json&mrnev=1"},
-  {id:"restcount",  naziv:"REST Countries",    grupa:"Zemlje",   kljuc:0, url:"https://restcountries.com/v3.1/region/asia?fields=name,flags,currencies,capital"},
-  {id:"frankfurter",naziv:"Frankfurter",       grupa:"Tečajevi", kljuc:0, url:"https://api.frankfurter.app/latest?from=EUR&to=JPY,INR,CNY,ZAR"},
+  {id:"worldbank",  naziv:"World Bank",        grupa:"Makro",    kljuc:0, url:"https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.MKTP.CD?format=json&per_page=5"},
+  {id:"restcount",  naziv:"REST Countries",    grupa:"Zemlje",   kljuc:0, url:"https://restcountries.com/v3.1/alpha/hr?fields=name,flags,currencies,capital"},
+  {id:"frankfurter",naziv:"Frankfurter",       grupa:"Tečajevi", kljuc:0, url:"https://api.frankfurter.dev/v1/latest?base=EUR&symbols=JPY,INR,CNY,ZAR"},
   {id:"fawaz",      naziv:"currency-api",      grupa:"Tečajevi", kljuc:0, url:"https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json"},
   {id:"vatcomply",  naziv:"VATComply",         grupa:"Tečajevi", kljuc:0, url:"https://api.vatcomply.com/rates?base=EUR"},
   {id:"spaceflight",naziv:"Spaceflight News",  grupa:"Vijesti",  kljuc:0, url:"https://api.spaceflightnewsapi.net/v4/articles/?limit=8"},
-  {id:"off",        naziv:"Open Food Facts",   grupa:"Trgovina", kljuc:0, url:"https://world.openfoodfacts.org/api/v2/search?countries_tags=japan&page_size=8&fields=product_name,image_small_url,brands"},
-  {id:"fruityvice", naziv:"Fruityvice",        grupa:"Trgovina", kljuc:0, url:"https://www.fruityvice.com/api/fruit/all"},
+  {id:"off",        naziv:"Open Food Facts",   grupa:"Trgovina", kljuc:0, url:"https://world.openfoodfacts.org/api/v2/product/737628064502.json"},
+  {id:"fruityvice", naziv:"Fruityvice",        grupa:"Trgovina", kljuc:0, url:"https://fruityvice.com/api/fruit/all"},
   {id:"dummyjson",  naziv:"DummyJSON",         grupa:"Trgovina", kljuc:0, url:"https://dummyjson.com/products?limit=8"},
   {id:"fakestore",  naziv:"FakeStoreAPI",      grupa:"Trgovina", kljuc:0, url:"https://fakestoreapi.com/products?limit=8"},
   {id:"brewery",    naziv:"Open Brewery DB",   grupa:"Trgovina", kljuc:0, url:"https://api.openbrewerydb.org/v1/breweries?per_page=5"},
@@ -166,7 +166,7 @@ const IZVORI = [
   {id:"pincode",    naziv:"Indian Pincode",    grupa:"Indija",   kljuc:0, url:"https://api.postalpincode.in/pincode/110001"},
   {id:"ibge",       naziv:"IBGE",              grupa:"Brazil",   kljuc:0, url:"https://servicodados.ibge.gov.br/api/v1/localidades/estados"},
   {id:"brasilapi",  naziv:"Brazil Public Data",grupa:"Brazil",   kljuc:0, url:"https://brasilapi.com.br/api/banks/v1"},
-  {id:"universities",naziv:"Universities List",grupa:"Obrazovanje",kljuc:0,url:"https://universities.hipolabs.com/search?country=japan"},
+  {id:"universities",naziv:"Universities List",grupa:"Obrazovanje",kljuc:0,url:"http://universities.hipolabs.com/search?country=Croatia"},
   {id:"nominatim",  naziv:"Nominatim",         grupa:"Geo",      kljuc:0, url:"https://nominatim.openstreetmap.org/search?q=Zagreb&format=json&limit=3"},
   {id:"zippo",      naziv:"Zippopotam",        grupa:"Geo",      kljuc:0, url:"https://api.zippopotam.us/de/10115"},
   {id:"meteo",      naziv:"Open-Meteo",        grupa:"Vrijeme",  kljuc:0, url:"https://api.open-meteo.com/v1/forecast?latitude=45.81&longitude=15.98&current_weather=true"},
@@ -182,11 +182,10 @@ const IZVORI = [
   {id:"openafrica2",naziv:"openAFRICA",      grupa:"Afrika",   kljuc:0, url:"https://open.africa/api/3/action/package_search?rows=3"},
   {id:"econdb2",  naziv:"Econdb",            grupa:"Makro",    kljuc:0, url:"https://www.econdb.com/api/series/?format=json"},
   {id:"bnm",      naziv:"Bank Negara MY",    grupa:"Azija",    kljuc:0, url:"https://api.bnm.gov.my/public/exchange-rate"},
-  {id:"cftrace",  naziv:"Cloudflare Trace",  grupa:"Mreža",    kljuc:0, url:"https://www.cloudflare.com/cdn-cgi/trace"},
   {id:"wikidata", naziv:"Wikidata",          grupa:"Tvrtke",   kljuc:0, url:"https://www.wikidata.org/w/api.php?action=wbsearchentities&search=Dinamo&language=hr&format=json&origin=*"},
   {id:"opencorp", naziv:"OpenStreetMap Geo", grupa:"Geo",      kljuc:0, url:"https://nominatim.openstreetmap.org/search?q=Masarykova+Zagreb&format=json&limit=2"},
 
-  {id:"oksurf",   naziv:"OkSurf",            grupa:"Vijesti", kljuc:0, url:"https://ok.surf/api/v1/news-feed"},
+  {id:"oksurf",   naziv:"OkSurf",            grupa:"Vijesti", kljuc:0, url:"https://ok.surf/api/v1/news-feed/"},
   {id:"nobel",    naziv:"Nobel Prize",       grupa:"Znanost", kljuc:0, url:"https://api.nobelprize.org/2.1/nobelPrizes?limit=5"},
   {id:"jobicy",   naziv:"Jobicy",            grupa:"Poslovi", kljuc:0, url:"https://jobicy.com/api/v2/remote-jobs?count=5"},
   {id:"dexpaprika",naziv:"DexPaprika",       grupa:"Tržišta", kljuc:0, url:"https://api.dexpaprika.com/networks"},
@@ -196,6 +195,13 @@ const IZVORI = [
   {id:"dadospt",  naziv:"Open Gov Portugal", grupa:"Europa",  kljuc:0, url:"https://dados.gov.pt/api/1/datasets/?page_size=3"},
   {id:"arcnautical",naziv:"ArcNautical",     grupa:"Compliance",kljuc:0,url:null, biljeska:"provjeriti endpoint u repozitoriju"},
   {id:"openmercantil",naziv:"OpenMercantil", grupa:"Tvrtke",  kljuc:0, url:null, biljeska:"provjeriti endpoint u dokumentaciji"},
+
+  {id:"rss2json",  naziv:"RSS2JSON (DW)",     grupa:"Vijesti", kljuc:0, url:"https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Frss.dw.com%2Frdf%2Frss-en-all"},
+  {id:"rss2json2", naziv:"RSS2JSON (UN News)",grupa:"Vijesti", kljuc:0, url:"https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fnews.un.org%2Ffeed%2Fsubscribe%2Fen%2Fnews%2Fall%2Frss.xml"},
+  {id:"reddit",    naziv:"Reddit worldnews",  grupa:"Vijesti", kljuc:0, url:"https://www.reddit.com/r/worldnews/top.json?limit=8"},
+  {id:"hn",        naziv:"HN Algolia",        grupa:"Vijesti", kljuc:0, url:"https://hn.algolia.com/api/v1/search?tags=story&hitsPerPage=8"},
+  {id:"wikinews",  naziv:"Wikinews",          grupa:"Vijesti", kljuc:0, url:"https://en.wikinews.org/w/api.php?action=query&list=recentchanges&rcnamespace=0&rclimit=8&format=json&origin=*"},
+  {id:"gdelt",     naziv:"GDELT",             grupa:"Vijesti", kljuc:0, url:"https://api.gdeltproject.org/api/v2/doc/doc?query=business&mode=artlist&format=json&maxrecords=8"},
 
   // --- bez ključa, endpoint treba potvrditi ---
   {id:"noozra",  naziv:"Noozra",   grupa:"Vijesti", kljuc:0, url:"https://noozra.com/api"},
