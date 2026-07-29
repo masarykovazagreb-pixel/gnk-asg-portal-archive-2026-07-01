@@ -48,6 +48,27 @@ const FEEDS = [
   { source: 'Bitcoin Magazine', group: 'digital-assets', category: 'digital-assets', url: 'https://bitcoinmagazine.com/feed' },
   { source: 'CryptoSlate', group: 'digital-assets', category: 'digital-assets', url: 'https://cryptoslate.com/feed/' },
 
+  // --- Indija ----------------------------------------------------------
+  { source: 'The Hindu BusinessLine', group: 'regije', category: 'indija', url: 'https://www.thehindubusinessline.com/feeder/default.rss' },
+  { source: 'Economic Times', group: 'regije', category: 'indija', url: 'https://economictimes.indiatimes.com/rssfeedstopstories.cms' },
+  { source: 'Business Standard', group: 'regije', category: 'indija', url: 'https://www.business-standard.com/rss/home_page_top_stories.rss' },
+  { source: 'Livemint', group: 'regije', category: 'indija', url: 'https://www.livemint.com/rss/companies' },
+
+  // --- Azija -----------------------------------------------------------
+  { source: 'Nikkei Asia', group: 'regije', category: 'azija', url: 'https://asia.nikkei.com/rss/feed/nar' },
+  { source: 'The Japan Times', group: 'regije', category: 'azija', url: 'https://www.japantimes.co.jp/feed/' },
+  { source: 'Channel News Asia', group: 'regije', category: 'azija', url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml' },
+  { source: 'South China Morning Post', group: 'regije', category: 'azija', url: 'https://www.scmp.com/rss/92/feed' },
+
+  // --- Afrika ----------------------------------------------------------
+  { source: 'AllAfrica Business', group: 'regije', category: 'afrika', url: 'https://allafrica.com/tools/headlines/rdf/business/headlines.rdf' },
+  { source: 'Nairametrics', group: 'regije', category: 'afrika', url: 'https://nairametrics.com/feed/' },
+  { source: 'The East African', group: 'regije', category: 'afrika', url: 'https://www.theeastafrican.co.ke/rss' },
+
+  // --- Latinska Amerika i Bliski istok ---------------------------------
+  { source: 'Agencia Brasil', group: 'regije', category: 'latinska-amerika', url: 'https://agenciabrasil.ebc.com.br/rss/economia/feed.xml' },
+  { source: 'Arab News Business', group: 'regije', category: 'bliski-istok', url: 'https://www.arabnews.com/cat/3/rss.xml' },
+
   // --- Svijet ---------------------------------------------------------
   { source: 'BBC News', group: 'international', category: 'world', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
   { source: 'The Guardian', group: 'international', category: 'world', url: 'https://www.theguardian.com/world/rss' },
