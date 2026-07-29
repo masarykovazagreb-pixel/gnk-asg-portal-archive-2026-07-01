@@ -1,0 +1,22 @@
+name = "gnk-asg-app-api"
+main = "src/index.js"
+compatibility_date = "2026-07-28"
+
+# Rute koje aplikacija zove. Dodati u Cloudflare nadzornoj ploci ili ostaviti
+# ovdje i objaviti naredbom: npx wrangler deploy
+[[routes]]
+pattern = "gnk-asg.hr/api/objave*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/api/messages*"
+zone_name = "gnk-asg.hr"
+
+[[routes]]
+pattern = "gnk-asg.hr/api/app-health"
+zone_name = "gnk-asg.hr"
+
+# Pohrana: isti KV prostor koji portal vec koristi.
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
