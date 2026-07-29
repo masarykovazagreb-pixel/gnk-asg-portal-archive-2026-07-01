@@ -32,5 +32,22 @@
 /preuzimanja/*
   Cache-Control: public, max-age=0, must-revalidate
 
+# Mobilna aplikacija. Manifest mora nositi svoj MIME tip, inace ga Chrome ne
+# prihvaca i ne nudi instalaciju. Servisni radnik se ne smije kesirati, jer
+# inace uredaj zauvijek ostaje na staroj inacici aplikacije.
+/app/manifest.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: public, max-age=0, must-revalidate
+
+/app/sw.js
+  Content-Type: application/javascript
+  Cache-Control: no-cache
+
+/app/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/app/icons/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

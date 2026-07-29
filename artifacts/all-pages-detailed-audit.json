@@ -1,11 +1,11 @@
 {
   "version": "GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED",
-  "generatedAt": "2026-07-28T18:41:34.600Z",
+  "generatedAt": "2026-07-29T07:29:53.144Z",
   "summary": {
-    "pages": 1270,
+    "pages": 1277,
     "menuRoutes": 90,
     "missingMenuRoutes": 0,
-    "errors": 0,
+    "errors": 3,
     "warnings": 3,
     "pagesWithStaticContrastRisks": 3,
     "pagesWithLegacyLogoSources": 13,
@@ -13,7 +13,50 @@
     "pagesWithForms": 14
   },
   "menuMissing": [],
-  "errors": [],
+  "errors": [
+    {
+      "route": "/app/",
+      "file": "apps/portal/app/index.html",
+      "code": "missing-html-lang",
+      "detail": null
+    },
+    {
+      "route": "/app/",
+      "file": "apps/portal/app/index.html",
+      "code": "missing-title",
+      "detail": null
+    },
+    {
+      "route": "/app/",
+      "file": "apps/portal/app/index.html",
+      "code": "broken-local-references",
+      "detail": [
+        "{{ n.link }}",
+        "{{ p.url }}",
+        "{{ e.url }}",
+        "{{ s.tel }}",
+        "{{ s.mail }}",
+        "{{ a.url }}",
+        "{{ n.map }}",
+        "{{ d.url }}",
+        "{{ r.url }}",
+        "{{ r.map }}",
+        "{{ s.url }}",
+        "{{ m.url }}",
+        "{{ qrSrc }}",
+        "{{ p.img }}",
+        "{{ p.photo }}",
+        "{{ draftPhoto }}",
+        "{{ g.src }}",
+        "{{ exPhoto }}",
+        "{{ e.photo }}",
+        "{{ d.preview }}",
+        "{{ d.sig }}",
+        "{{ sdFileData }}",
+        "{{ a.img }}"
+      ]
+    }
+  ],
   "warnings": [
     {
       "route": "/admin/",
@@ -485,6 +528,68 @@
       "logoRefs": [
         "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64"
       ],
+      "nonCanonicalLogoRefs": [],
+      "contrastRisks": [],
+      "formIssues": [],
+      "edgeNormalizedLegacyLogos": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "route": "/app/",
+      "file": "apps/portal/app/index.html",
+      "protected": false,
+      "lang": "",
+      "title": "",
+      "viewport": true,
+      "robots": "noindex,follow",
+      "broken": [
+        "{{ n.link }}",
+        "{{ p.url }}",
+        "{{ e.url }}",
+        "{{ s.tel }}",
+        "{{ s.mail }}",
+        "{{ a.url }}",
+        "{{ n.map }}",
+        "{{ d.url }}",
+        "{{ r.url }}",
+        "{{ r.map }}",
+        "{{ s.url }}",
+        "{{ m.url }}",
+        "{{ qrSrc }}",
+        "{{ p.img }}",
+        "{{ p.photo }}",
+        "{{ draftPhoto }}",
+        "{{ g.src }}",
+        "{{ exPhoto }}",
+        "{{ e.photo }}",
+        "{{ d.preview }}",
+        "{{ d.sig }}",
+        "{{ sdFileData }}",
+        "{{ a.img }}"
+      ],
+      "logoRefs": [],
+      "nonCanonicalLogoRefs": [],
+      "contrastRisks": [],
+      "formIssues": [],
+      "edgeNormalizedLegacyLogos": [],
+      "errors": [
+        "missing-html-lang",
+        "missing-title",
+        "broken-local-references"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/app/map.html",
+      "file": "apps/portal/app/map.html",
+      "protected": false,
+      "lang": "hr",
+      "title": "GNK DINAMO Ltd. Group — mreža lokacija",
+      "viewport": true,
+      "robots": "",
+      "broken": [],
+      "logoRefs": [],
       "nonCanonicalLogoRefs": [],
       "contrastRisks": [],
       "formIssues": [],
@@ -4912,6 +5017,26 @@
       "warnings": []
     },
     {
+      "route": "/komentari/pristup-po-nacelu-najmanje-privilegije-nije-nepovjerenje/",
+      "file": "apps/portal/komentari/pristup-po-nacelu-najmanje-privilegije-nije-nepovjerenje/index.html",
+      "protected": false,
+      "lang": "hr",
+      "title": "Pristup po načelu najmanje privilegije nije znak nepovjerenja | GNK ASG",
+      "viewport": true,
+      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "broken": [],
+      "logoRefs": [
+        "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64",
+        "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64"
+      ],
+      "nonCanonicalLogoRefs": [],
+      "contrastRisks": [],
+      "formIssues": [],
+      "edgeNormalizedLegacyLogos": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
       "route": "/komentari/rast-bez-discipline-nije-strategija/",
       "file": "apps/portal/komentari/rast-bez-discipline-nije-strategija/index.html",
       "protected": false,
@@ -4951,6 +5076,26 @@
       "warnings": []
     },
     {
+      "route": "/komentari/sigurnosni-incident-koji-se-ne-prijavljuje-postaje-veci/",
+      "file": "apps/portal/komentari/sigurnosni-incident-koji-se-ne-prijavljuje-postaje-veci/index.html",
+      "protected": false,
+      "lang": "hr",
+      "title": "Sigurnosni incident koji se prešuti obično postaje veći problem | GNK ASG",
+      "viewport": true,
+      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "broken": [],
+      "logoRefs": [
+        "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64",
+        "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64"
+      ],
+      "nonCanonicalLogoRefs": [],
+      "contrastRisks": [],
+      "formIssues": [],
+      "edgeNormalizedLegacyLogos": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
       "route": "/komentari/sigurnost-nije-jednokratni-projekt/",
       "file": "apps/portal/komentari/sigurnost-nije-jednokratni-projekt/index.html",
       "protected": false,
@@ -4960,6 +5105,26 @@
       "robots": "index,follow,max-image-preview:large",
       "broken": [],
       "logoRefs": [
+        "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64"
+      ],
+      "nonCanonicalLogoRefs": [],
+      "contrastRisks": [],
+      "formIssues": [],
+      "edgeNormalizedLegacyLogos": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "route": "/komentari/test-plana-oporavka-vrijedi-samo-ako-iznenadi/",
+      "file": "apps/portal/komentari/test-plana-oporavka-vrijedi-samo-ako-iznenadi/index.html",
+      "protected": false,
+      "lang": "hr",
+      "title": "Test plana oporavka vrijedi samo ako nekoga iznenadi | GNK ASG",
+      "viewport": true,
+      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "broken": [],
+      "logoRefs": [
+        "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64",
         "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64"
       ],
       "nonCanonicalLogoRefs": [],
@@ -5788,6 +5953,26 @@
       "title": "Kibernetička otpornost i kontinuitet | GNK ASG",
       "viewport": true,
       "robots": "index,follow,max-image-preview:large,max-snippet:-1",
+      "broken": [],
+      "logoRefs": [
+        "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64",
+        "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64"
+      ],
+      "nonCanonicalLogoRefs": [],
+      "contrastRisks": [],
+      "formIssues": [],
+      "edgeNormalizedLegacyLogos": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "route": "/objave/kiberneticka-otpornost-pociva-na-slabijoj-karici/",
+      "file": "apps/portal/objave/kiberneticka-otpornost-pociva-na-slabijoj-karici/index.html",
+      "protected": false,
+      "lang": "hr",
+      "title": "Kibernetička otpornost grupe počiva na njezinoj najslabijoj karici | GNK ASG",
+      "viewport": true,
+      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
       "broken": [],
       "logoRefs": [
         "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64",
@@ -20633,6 +20818,25 @@
       "robots": "noindex,follow",
       "broken": [],
       "logoRefs": [],
+      "nonCanonicalLogoRefs": [],
+      "contrastRisks": [],
+      "formIssues": [],
+      "edgeNormalizedLegacyLogos": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "route": "/preuzimanja/",
+      "file": "apps/portal/preuzimanja/index.html",
+      "protected": false,
+      "lang": "hr",
+      "title": "Preuzimanja za razvoj | GNK ASG",
+      "viewport": true,
+      "robots": "noindex,nofollow",
+      "broken": [],
+      "logoRefs": [
+        "/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64"
+      ],
       "nonCanonicalLogoRefs": [],
       "contrastRisks": [],
       "formIssues": [],

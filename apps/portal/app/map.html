@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GNK DINAMO Ltd. Group — mreža lokacija</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+<style>
+  html,body{margin:0;height:100%;background:#11151c;font-family:"Archivo",system-ui,sans-serif}
+  #map{position:absolute;inset:0}
+  .leaflet-container{background:#11151c}
+  .leaflet-tile-pane{filter:grayscale(1) contrast(.92) brightness(.72)}
+  .gnk-pin{width:14px;height:14px;background:#ec3013;box-shadow:0 0 0 3px rgba(236,48,19,.28)}
+  .gnk-pin.unit{width:10px;height:10px;background:#98a0ad;box-shadow:0 0 0 2px rgba(152,160,173,.25)}
+  .gnk-pin.hq{width:18px;height:18px;background:#fff;border:4px solid #ec3013;box-shadow:none}
+  .leaflet-popup-content-wrapper{border-radius:0;background:#0a0c10;color:#f2f3f5;border:1px solid #252c38}
+  .leaflet-popup-tip{background:#0a0c10}
+  .leaflet-popup-content{margin:12px 14px;font-size:12.5px;line-height:1.5}
+  .leaflet-popup-content b{display:block;font-size:13.5px;margin-bottom:3px}
+  .leaflet-popup-content span{color:#98a0ad}
+  .leaflet-control-attribution{background:rgba(10,12,16,.8);color:#98a0ad;font-size:9.5px}
+  .leaflet-control-attribution a{color:#98a0ad}
+  .leaflet-bar a{background:#11151c;color:#f2f3f5;border-bottom-color:#252c38}
+  .leaflet-bar a:hover{background:#171c25;color:#fff}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  // Potvrđene lokacije Grupe iz javnih podataka portala.
+  var SITES = [
+    { n: 'GNK ASG d.o.o.',                r: 'Sjedište · Zagrebačka cesta 130, Zagreb, Hrvatska', ll: [45.8225, 15.9560], hq: true },
+    { n: 'GNK DINAMO Ltd.',               r: 'Matično društvo · Boulder, Colorado, USA',          ll: [40.0150, -105.2705], hq: true },
+    { n: 'THE CODE',                      r: 'Aktivacija · New York, 7.10.2026. u 11:30 ET',      ll: [40.7128, -74.0060] },
+    { n: 'GNK Royal Hong Kong',           r: 'Restoran Grupe · Hong Kong',                        ll: [22.3193, 114.1694] },
+    { n: 'GNK Royal Kairo',               r: 'Restoran Grupe · Kairo, Egipat',                    ll: [30.0444, 31.2357] },
+    { n: 'GNK Royal Singapur',            r: 'Restoran Grupe · Singapur',                         ll: [1.3521, 103.8198] },
+    { n: 'Sports Performance Tracking',   r: 'Član društva · Beograd, Srbija',                    ll: [44.7866, 20.4489] }
+  ];
+
+  var map = L.map('map', { zoomControl: true, worldCopyJump: true, attributionControl: true });
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 18
+  }).addTo(map);
+
+  var group = [];
+  SITES.forEach(function (s) {
+    var m = L.marker(s.ll, {
+      icon: L.divIcon({ className: '', html: '<div class="gnk-pin' + (s.hq ? ' hq' : '') + '"></div>', iconSize: [14, 14], iconAnchor: [7, 7] }),
+      title: s.n
+    }).addTo(map);
+    m.bindPopup('<b>' + s.n + '</b><span>' + s.r + '</span>');
+    group.push(m.getLatLng());
+  });
+
+  // Uvezena kodirana društva (kod, grad, država, tržište, status, workeri) iz aplikacije.
+  try {
+    var units = JSON.parse(localStorage.getItem('gnkasg:units') || '[]');
+    units.forEach(function (u) {
+      if (!u.ll) return;
+      var m = L.marker(u.ll, {
+        icon: L.divIcon({ className: '', html: '<div class="gnk-pin unit"></div>', iconSize: [10, 10], iconAnchor: [5, 5] }),
+        title: u.code
+      }).addTo(map);
+      var meta = [u.market, u.status, u.workers ? u.workers + ' workera' : ''].filter(Boolean).join(' · ');
+      m.bindPopup('<b>' + u.code + '</b><span>' + [u.city, u.country].filter(Boolean).join(', ') + (meta ? '<br>' + meta : '') + '</span>');
+      group.push(m.getLatLng());
+    });
+  } catch (e) {}
+
+  map.fitBounds(L.latLngBounds(group).pad(0.25));
+  if (map.getZoom() > 3) map.setZoom(2);
+</script>
+</body>
+</html>

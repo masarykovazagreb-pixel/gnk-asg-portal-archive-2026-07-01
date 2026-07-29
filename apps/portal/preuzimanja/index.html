@@ -41,24 +41,36 @@
     <p class="lead">Datoteke koje se predaju programeru. Stranica nije u sitemapu i tražilice je ne indeksiraju, ali adresa je javna — tko je zna, može preuzeti.</p>
   </section>
 
-  <p class="warn"><strong>Prije postavljanja pročitati:</strong> priložene <code>.php</code> datoteke traže poslužitelj s PHP-om. Portal gnk-asg.hr trenutno radi na Cloudflare Workerima i statičkim datotekama, gdje se PHP <strong>ne izvršava</strong>. Te datoteke treba postaviti na zaseban poslužitelj s PHP-om, ili ih preraditi u Worker. Uz njih je priložena i inačica u Node.js-u za LinkedIn relay.</p>
+  <p class="warn"><strong>Stanje:</strong> aplikacija je postavljena i radi na <a href="/app/">gnk-asg.hr/app/</a>. Poslužiteljski dio za objave i poruke još čeka —  priložene <code>.php</code> datoteke traže poslužitelj s PHP-om. Portal gnk-asg.hr trenutno radi na Cloudflare Workerima i statičkim datotekama, gdje se PHP <strong>ne izvršava</strong>. Te datoteke treba postaviti na zaseban poslužitelj s PHP-om, ili ih preraditi u Worker. Uz njih je priložena i inačica u Node.js-u za LinkedIn relay.</p>
 
   <div class="dl">
     <article class="dl-card">
-      <h2>Poslužiteljski paket za aplikaciju</h2>
-      <p>API za objave i komentare, poruke tima, AI asistenta i LinkedIn relay, sa svim uputama za postavljanje.</p>
-      <div class="dl-meta"><span>ZIP · 18 KB</span><span>8 datoteka</span><span>28.07.2026.</span></div>
+      <h2>Paket za predaju operateru</h2>
+      <p>Sve što operater treba: aplikacija, upute u tri koraka, poslužiteljski dio i plakat za tisak.</p>
+      <div class="dl-meta"><span>ZIP · 399 KB</span><span>39 datoteka</span><span>28.07.2026.</span></div>
       <ul class="dl-files">
-        <li>objave-api.php <span>— objave i komentari, prijava tokenom</span></li>
-        <li>messages-api.php <span>— poruke tima, zapis u _data/messages.jsonl</span></li>
-        <li>ai-api.php <span>— relay prema AI asistentu</span></li>
-        <li>linkedin-relay.php <span>— objava na LinkedIn, PHP inačica</span></li>
-        <li>linkedin-relay.js <span>— ista funkcija, Node 18+ i Express</span></li>
-        <li>UPUTA-objave.md <span>— postavljanje i token</span></li>
-        <li>UPUTA-messages.md <span>— postavljanje i format poruka</span></li>
-        <li>UPUTA-linkedin.md <span>— postavljanje relaya</span></li>
+        <li>UPUTA-operater.md <span>— glavni dokument, instalacija u tri koraka</span></li>
+        <li>app/ <span>— aplikacija, već postavljena na gnk-asg.hr/app/</span></li>
+        <li>server/README-cloudflare.md <span>— protokol API-ja za worker</span></li>
+        <li>server/*.php <span>— izvedba za obični hosting, ako se ide tim putem</span></li>
+        <li>QR-plakat/ <span>— A4 plakat za tisak</span></li>
+        <li>UPUTA-instalacija.md <span>— tehnički detalji</span></li>
+        <li>UPUTA-test-na-telefonu.md <span>— provjera prije puštanja</span></li>
       </ul>
-      <a class="btn gold" href="/preuzimanja/gnk-asg-app-server-paket.zip" download>Preuzmi paket ↓</a>
+      <a class="btn gold" href="/preuzimanja/gnk-asg-predaja-operateru.zip" download>Preuzmi paket ↓</a>
+    </article>
+
+    <article class="dl-card">
+      <h2>QR plakat za tisak</h2>
+      <p>A4 plakat s QR kodom koji vodi na aplikaciju, u tri koraka za instalaciju.</p>
+      <div class="dl-meta"><span>PDF · 125 KB</span><span>A4</span></div>
+      <a class="btn gold" href="/preuzimanja/GNK-ASG-QR-plakat.pdf" download>Preuzmi plakat ↓</a>
+    </article>
+
+    <article class="dl-card">
+      <h2>Aplikacija je već postavljena</h2>
+      <p>Radi na adresi ispod. Otvori je na mobitelu i Chrome će ponuditi instalaciju na početni zaslon.</p>
+      <a class="btn gold" href="/app/">Otvori aplikaciju →</a>
     </article>
   </div>
 

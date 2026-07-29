@@ -11,7 +11,11 @@ const REQUIRED=['/','/en/','/newsroom/','/en/newsroom/','/contact/','/en/contact
 const REQUIRED_ASSETS=['/assets/public-unified-menu-v6.js','/assets/public-contrast-hardening-v1.js','/assets/public-design-tokens-v1.css','/assets/logo-gnk-asg-canonical.svg','/assets/contact-form-v2.js','/assets/the-code-experience-loop-v1.html','/assets/editorial-content-v2.css','/assets/workers-directory-v1.js','/assets/protected-operations-v1.js'];
 const DYNAMIC_PREFIXES=['/api/','/cdn-cgi/','/.well-known/'];
 const EDGE_CANONICAL=new Map([['/about/','https://gnk-asg.hr/about/'],['/projects/','https://gnk-asg.hr/projects/'],['/the-code/media-memorandum/','https://gnk-asg.hr/the-code/media-memorandum/']]);
-const IGNORE_DIRS=new Set(['node_modules','test-results','playwright-report','.git']);
+const IGNORE_DIRS=new Set(['node_modules','test-results','playwright-report','.git',
+  // Mobilna aplikacija je samostalan program, ne stranica portala. Njezine
+  // oznake oblika {{ n.link }} popunjavaju se u pregledniku i nisu poveznice,
+  // pa ih revizija portala ne smije mjeriti svojim mjerilom.
+  'app']);
 const posix=value=>value.split(path.sep).join('/');
 const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{if(entry.isDirectory()&&IGNORE_DIRS.has(entry.name))return[];const target=path.join(dir,entry.name);return entry.isDirectory()?walk(target):[target]});
 const rel=file=>posix(path.relative(ROOT,file));
