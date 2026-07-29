@@ -1,0 +1,26 @@
+name: Digital Workforce Telemetry Contract
+
+on:
+  pull_request:
+    paths:
+      - 'ops/digital-workforce-telemetry-schema.json'
+      - 'ops/digital-workforce-telemetry-example.json'
+      - 'scripts/validate-digital-workforce-telemetry.mjs'
+      - '.github/workflows/digital-workforce-telemetry-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate telemetry contract
+        run: node scripts/validate-digital-workforce-telemetry.mjs
