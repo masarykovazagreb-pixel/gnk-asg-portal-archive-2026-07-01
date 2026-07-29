@@ -156,15 +156,17 @@ const report = {
   findings
 };
 
+// Stdout is a machine-readable JSON channel. CI annotations must stay on stderr
+// so redirected reports remain valid JSON for downstream remediation tooling.
 console.log(JSON.stringify(report, null, 2));
 
 if (process.env.GITHUB_ACTIONS === 'true') {
   const annotationLimit = 50;
   for (const finding of findings.slice(0, annotationLimit)) {
     const command = finding.level === 'error' ? 'error' : 'warning';
-    console.log(`::${command} file=${escapeAnnotation(finding.file)},title=Editorial premium ${escapeAnnotation(categoryFor(finding.message))}::${escapeAnnotation(`${finding.slug}: ${finding.message}`)}`);
+    console.error(`::${command} file=${escapeAnnotation(finding.file)},title=Editorial premium ${escapeAnnotation(categoryFor(finding.message))}::${escapeAnnotation(`${finding.slug}: ${finding.message}`)}`);
   }
-  if (findings.length > annotationLimit) console.log(`::notice title=Editorial premium report::Prikazano je prvih ${annotationLimit} od ukupno ${findings.length} nalaza. Potpuni JSON nalazi se u artefaktu.`);
+  if (findings.length > annotationLimit) console.error(`::notice title=Editorial premium report::Prikazano je prvih ${annotationLimit} od ukupno ${findings.length} nalaza. Potpuni JSON nalazi se u artefaktu.`);
 
   const summaryPath = process.env.GITHUB_STEP_SUMMARY;
   if (summaryPath) {
