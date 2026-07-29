@@ -1,0 +1,36 @@
+name: Editorial Seven-Day Coverage
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/data/editorial-plan/**'
+      - 'scripts/check-editorial-coverage.mjs'
+      - '.github/workflows/editorial-coverage-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: editorial-seven-day-coverage-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Verify seven-day editorial coverage
+        env:
+          EDITORIAL_REQUIRED_DAYS: '7'
+          EDITORIAL_REPLENISH_AT_DAYS: '2'
+          EDITORIAL_TIME_ZONE: Europe/Zagreb
+        run: node scripts/check-editorial-coverage.mjs
