@@ -32,6 +32,13 @@ function parseDate(value) {
   return Number.isNaN(parsed.valueOf()) ? null : parsed;
 }
 
+function dateFromFilename(file) {
+  const name = path.basename(file);
+  const match = name.match(/^(\d{4})(\d{2})(\d{2})(?:-|\.)/);
+  if (!match) return null;
+  return `${match[1]}-${match[2]}-${match[3]}`;
+}
+
 function zagrebDateKey(date) {
   return new Intl.DateTimeFormat('en-CA', {
     timeZone: TIME_ZONE,
@@ -55,11 +62,18 @@ for (const file of files) {
     continue;
   }
 
-  for (const item of extractItems(parsed)) {
-    const rawDate = item.publishAt || item.scheduledAt || item.publishDate || item.date || item.scheduled_date;
+  const fileDate = dateFromFilename(file);
+  const items = extractItems(parsed);
+  if (items.length === 0) {
+    invalid.push({ file: path.relative(ROOT, file), reason: 'editorial plan contains no items' });
+    continue;
+  }
+
+  for (const item of items) {
+    const rawDate = item.publishAt || item.scheduledAt || item.publishDate || item.date || item.scheduled_date || fileDate;
     const date = parseDate(rawDate);
     if (!date) {
-      invalid.push({ file: path.relative(ROOT, file), slug: item.slug || null, reason: 'missing or invalid publication date' });
+      invalid.push({ file: path.relative(ROOT, file), slug: item.slug || null, reason: 'missing or invalid publication date and filename has no YYYYMMDD prefix' });
       continue;
     }
     entries.push({
@@ -67,7 +81,8 @@ for (const file of files) {
       slug: item.slug || null,
       type: item.type || 'unknown',
       dateKey: zagrebDateKey(date),
-      rawDate
+      rawDate,
+      dateSource: rawDate === fileDate ? 'filename' : 'item'
     });
   }
 }
