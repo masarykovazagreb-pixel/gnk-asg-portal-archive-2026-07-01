@@ -1,0 +1,29 @@
+name: Editorial Review Cadence Contract
+
+on:
+  pull_request:
+    paths:
+      - 'ops/automation-control-v1.json'
+      - 'ops/automation-kill-switches.json'
+      - 'scripts/validate-editorial-review-cadence.mjs'
+      - '.github/workflows/editorial-review-cadence-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-review-cadence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Validate daily and weekly review cadence
+        run: node scripts/validate-editorial-review-cadence.mjs
