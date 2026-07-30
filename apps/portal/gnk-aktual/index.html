@@ -466,8 +466,10 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       var k = items && items[0];
       if (!k || !k.naslov) return;
       var uvod = (k.tekst || '').split('\n\n')[0] || '';
+      var slikaHtml = k.slika ? '<img src="' + escH(k.slika) + '" alt="" loading="lazy" style="max-width:120px;max-height:120px;object-fit:contain;float:right;margin:0 0 10px 14px" onerror="this.remove()">' : '';
       document.getElementById('akKolumnaTijelo').innerHTML =
         '<span class="oznaka">Kolumna · subotom</span>' +
+        slikaHtml +
         '<h2>' + escH(k.naslov) + '</h2>' +
         '<p>' + escH(uvod.slice(0, 260)) + (uvod.length > 260 ? '…' : '') + '</p>' +
         '<a href="' + escH(k.url || '#') + '">Pročitaj cijelu kolumnu →</a>';
