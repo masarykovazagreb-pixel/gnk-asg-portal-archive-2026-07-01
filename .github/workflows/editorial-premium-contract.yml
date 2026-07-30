@@ -5,6 +5,7 @@ on:
     paths:
       - 'apps/portal/data/editorial-plan/**'
       - 'scripts/validate-editorial-premium-contract.mjs'
+      - 'scripts/validate-editorial-premium-active-future.mjs'
       - 'scripts/plan-editorial-premium-remediation.mjs'
       - 'scripts/plan-editorial-premium-assets.mjs'
       - 'scripts/migrate-editorial-premium-metadata.mjs'
@@ -20,6 +21,8 @@ jobs:
     name: Validate premium editorial package
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      EDITORIAL_TIME_ZONE: Europe/Zagreb
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,14 +32,14 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate contract
-        run: node scripts/validate-editorial-premium-contract.mjs
+      - name: Validate active and future contract
+        run: node scripts/validate-editorial-premium-active-future.mjs
 
       - name: Upload validation report
         if: always()
         run: |
           mkdir -p ops/evidence
-          node scripts/validate-editorial-premium-contract.mjs > ops/evidence/editorial-premium-contract.json || true
+          node scripts/validate-editorial-premium-active-future.mjs > ops/evidence/editorial-premium-contract.json || true
 
       - name: Build remediation index
         if: always()
