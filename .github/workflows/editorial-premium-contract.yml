@@ -7,6 +7,7 @@ on:
       - 'scripts/validate-editorial-premium-contract.mjs'
       - 'scripts/plan-editorial-premium-remediation.mjs'
       - 'scripts/plan-editorial-premium-assets.mjs'
+      - 'scripts/migrate-editorial-premium-metadata.mjs'
       - 'ops/automation-control-v1.json'
       - '.github/workflows/editorial-premium-contract.yml'
   workflow_dispatch:
@@ -55,6 +56,14 @@ jobs:
             ops/evidence/editorial-premium-assets.md
           cat ops/evidence/editorial-premium-assets.md >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Build deterministic metadata migration preview
+        if: always()
+        run: |
+          node scripts/migrate-editorial-premium-metadata.mjs \
+            --scope=active-future \
+            > ops/evidence/editorial-premium-metadata-migration.json
+          node -e "const r=require('./ops/evidence/editorial-premium-metadata-migration.json'); console.log('## Metadata migration preview\n\n- Eligible files: **'+r.eligibleFiles+'**\n- Files requiring changes: **'+r.changedFiles+'**\n- Items requiring changes: **'+r.changedItems+'**\n- Mode: **'+r.mode+'**\n')" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Publish evidence artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -66,4 +75,5 @@ jobs:
             ops/evidence/editorial-premium-remediation.md
             ops/evidence/editorial-premium-assets.json
             ops/evidence/editorial-premium-assets.md
+            ops/evidence/editorial-premium-metadata-migration.json
           if-no-files-found: error
