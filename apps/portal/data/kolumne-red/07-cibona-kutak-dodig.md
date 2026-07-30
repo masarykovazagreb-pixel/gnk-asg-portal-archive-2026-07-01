@@ -6,6 +6,7 @@ meta_opis: Navijačka kolumna Nermina Sefića (GNK ASG) o Ciboni — pobjede, ig
 kljucne_rijeci: Cibona, Victor Dodig, Nermin Sefić, GNK ASG, GNK DINAMO Ltd., hrvatska košarka, Žan Marko Sisko, Krešimir Radovčić
 hashtagovi: Cibona, VictorDodig, NerminSefic, GNKASG, GNKDINAMOLtd, HrvatskaKosarka, ZagrebackaKosarka, CibonaKutak, ZanMarkoSisko, KresimirRadovcic, SportskoDionickoDrustvo, Navijac
 slika_upit: Cibona basketball Zagreb arena
+slika_fallback: /assets/cibona-logo.png
 red: 7
 ---
 Cibona je ove sezone tamo gdje njezini navijači vole da bude — u igri za
