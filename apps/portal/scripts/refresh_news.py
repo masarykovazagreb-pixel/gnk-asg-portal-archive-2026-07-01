@@ -130,6 +130,20 @@ SOURCES = [
     # Prosirenje izvora (srpanj 2026): dodatni mediji po kategoriji.
     ("technology", "technology", "VentureBeat", "https://venturebeat.com/feed/"),
 
+    # --- Regije: Indija, Azija, Afrika, Latinska Amerika, Bliski istok --
+    # Nova grupa "regije" - do sada nije postojala. Dodano da AKTUAL ima
+    # sirovinu za regionalnu rubriku (vidi AKTUAL-PLAN.md na api-lab grani).
+    ("regije", "indija", "The Hindu BusinessLine", "https://www.thehindubusinessline.com/feeder/default.rss"),
+    ("regije", "indija", "Economic Times", "https://economictimes.indiatimes.com/rssfeedstopstories.cms"),
+    ("regije", "indija", "Business Standard", "https://www.business-standard.com/rss/home_page_top_stories.rss"),
+    ("regije", "indija", "Livemint", "https://www.livemint.com/rss/companies"),
+    ("regije", "azija", "Nikkei Asia", "https://asia.nikkei.com/rss/feed/nar"),
+    ("regije", "azija", "Channel News Asia", "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml"),
+    ("regije", "afrika", "AllAfrica Business", "https://allafrica.com/tools/headlines/rdf/business/headlines.rdf"),
+    ("regije", "afrika", "Nairametrics", "https://nairametrics.com/feed/"),
+    ("regije", "afrika", "The East African", "https://www.theeastafrican.co.ke/rss"),
+    ("regije", "latinska-amerika", "Agencia Brasil", "https://agenciabrasil.ebc.com.br/rss/economia/feed.xml"),
+    ("regije", "bliski-istok", "Arab News Business", "https://www.arabnews.com/cat/3/rss.xml"),
 ]
 
 BLOCKED_TITLE_PATTERNS = [
