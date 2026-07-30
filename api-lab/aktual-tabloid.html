@@ -198,6 +198,45 @@
     display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
   }
   footer b{color:var(--tinta)}
+
+  .kolumna-vrh{
+    max-width:1180px;margin:22px auto 0;padding:0 20px 6px;
+  }
+  .kolumna-vrh .oznaka{
+    display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  }
+  .kolumna-vrh .oznaka b{
+    font-family:var(--naslovna);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--crvena);
+  }
+  .kolumna-vrh .oznaka span{font:11px var(--mono);color:var(--siva)}
+  .kolumna-kutija{
+    border:3px solid var(--tinta);display:grid;grid-template-columns:200px 1fr;gap:0;
+    background:var(--papir-2);
+  }
+  @media (max-width:640px){.kolumna-kutija{grid-template-columns:1fr}}
+  .kolumna-kutija .autor-slika{
+    background:var(--tinta);color:var(--papir);display:flex;flex-direction:column;
+    align-items:center;justify-content:center;padding:16px;text-align:center;
+    border-right:3px solid var(--tinta);
+  }
+  @media (max-width:640px){.kolumna-kutija .autor-slika{border-right:none;border-bottom:3px solid var(--tinta)}}
+  .autor-slika .inicijali{
+    width:64px;height:64px;border-radius:50%;border:2px solid var(--zlato);
+    display:flex;align-items:center;justify-content:center;font-family:var(--naslovna);
+    font-size:22px;color:var(--zlato);margin-bottom:8px;
+  }
+  .autor-slika b{font-family:var(--naslovna);font-size:13px;letter-spacing:.03em}
+  .autor-slika span{font:10px var(--mono);color:#B8B0A0;margin-top:3px;text-transform:uppercase;letter-spacing:.08em}
+  .kolumna-kutija .tijelo{padding:18px 22px}
+  .kolumna-kutija h2{
+    font-family:var(--naslovna);font-size:clamp(20px,3vw,28px);line-height:1.08;margin:0 0 10px;
+  }
+  .kolumna-kutija p{font-size:14px;line-height:1.55;color:#2A2822;margin:0 0 10px}
+  .kolumna-kutija .procitaj{font:700 11px var(--mono);text-transform:uppercase;letter-spacing:.07em;
+    border-bottom:2px solid var(--crvena);padding-bottom:2px;text-decoration:none;color:var(--tinta)}
+  .kolumna-arhiva{margin-top:8px;font:11px var(--mono);color:var(--siva)}
+  .kolumna-arhiva a{color:var(--crvena);text-decoration:none;font-weight:700}
 </style>
 </head>
 <body>
@@ -214,6 +253,22 @@
   <p class="podnaslov-masthead">Svijet, tržišta, znanost i kuhinja — iz izvora koje smo danas provjerili uživo, bez ijedne izmišljene rečenice.</p>
   <div class="pecat">STOP<br>TISKA</div>
 </header>
+
+
+<section class="kolumna-vrh">
+  <div class="oznaka"><b>Kolumna</b><span>subotom · Nermin Sefić</span></div>
+  <div class="kolumna-kutija" id="kolumna-najnovija">
+    <div class="autor-slika">
+      <div class="inicijali">NS</div>
+      <b>Nermin Sefić</b>
+      <span>Direktor, GNK ASG</span>
+    </div>
+    <div class="tijelo" id="kolumna-tijelo">
+      <h2>Učitavam najnoviju kolumnu…</h2>
+    </div>
+  </div>
+  <div class="kolumna-arhiva"><a href="#" onclick="return false">Sve kolumne →</a></div>
+</section>
 
 <div class="burza">
   <div class="burza-trak" id="burza-trak">
@@ -421,7 +476,20 @@ async function napuniKuhinju(){
     : '<div class="prazno-mjesto" style="flex:1">Napomena: ovo je zamjena za pravu vezu na /world-table/ — 789 recepata s vlastitim slikama, koja ide umjesto ovoga u produkciji.</div>';
 }
 
-Promise.all([napuniBurzu(), napuniSvijet(), napuniStopTiska(), napuniTehnologiju(), napuniTrzista(), napuniKuhinju()]);
+
+async function napuniKolumnu(){
+  const cilj = document.getElementById('kolumna-tijelo');
+  const d = await dohvati('kolumne-fixture.json');
+  const k = d?.items?.[0];
+  if (!k){ cilj.innerHTML = '<h2>Kolumna trenutno nedostupna</h2>'; return; }
+  const uvod = k.tekst.split('\n\n')[0];
+  cilj.innerHTML = `
+    <h2>${escapeHtml(k.naslov)}</h2>
+    <p>${escapeHtml(uvod)}</p>
+    <a class="procitaj" href="${escapeHtml(k.url)}">Pročitaj cijelu kolumnu →</a>`;
+}
+
+Promise.all([napuniKolumnu(), napuniBurzu(), napuniSvijet(), napuniStopTiska(), napuniTehnologiju(), napuniTrzista(), napuniKuhinju()]);
 </script>
 </body>
 </html>
