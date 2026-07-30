@@ -156,4 +156,8 @@ SOURCES = [
     ("ljubimci", "zivotinje", "Google News Pets", "https://news.google.com/rss/search?q=cute+animals+pets+viral&hl=en-US&gl=US&ceid=US:en"),
     ("kultura", "film", "Google News Film", "https://news.google.com/rss/search?q=film+movies+entertainment+culture&hl=en-US&gl=US&ceid=US:en"),
     ("zanimljivosti", "obitelj", "Google News Fun", "https://news.google.com/rss/search?q=heartwarming+family+kids+good+news&hl=en-US&gl=US&ceid=US:en"),
+
+    # --- Auti i stil - agregacija, globalni upiti -----
+    ("auti", "supercars", "Google News Supercars", "https://news.google.com/rss/search?q=supercars+luxury+cars+new+models&hl=en-US&gl=US&ceid=US:en"),
+    ("stil", "moda", "Google News Fashion", "https://news.google.com/rss/search?q=fashion+style+beauty+trends&hl=en-US&gl=US&ceid=US:en"),
 ]
