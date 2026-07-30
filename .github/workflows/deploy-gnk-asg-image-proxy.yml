@@ -78,10 +78,10 @@ jobs:
                   "ziv_ali_ceka_secret" if parsed and "PEXELS_API_KEY" in json.dumps(parsed) else "provjeri_rucno"
               ),
           }
-          with open("workers/gnk-asg-image-proxy/DEPLOY-STATUS.json", "w") as f:
+          with open("DEPLOY-STATUS.json", "w") as f:
               json.dump(rezultat, f, indent=2, ensure_ascii=False)
           PYEOF
-          cat workers/gnk-asg-image-proxy/DEPLOY-STATUS.json
+          cat DEPLOY-STATUS.json
 
       - name: Zabiljezi status u repozitorij
         if: always() && steps.credentials.outputs.configured == 'true'
