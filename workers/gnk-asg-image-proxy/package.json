@@ -1,0 +1,15 @@
+{
+  "name": "gnk-asg-image-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Proxy za Pexels API - drzi kljuc na serveru, nikad u pregledniku.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "secret:set": "wrangler secret put PEXELS_API_KEY"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
