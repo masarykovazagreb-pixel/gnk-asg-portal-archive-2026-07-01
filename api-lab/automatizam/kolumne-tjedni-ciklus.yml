@@ -1,0 +1,45 @@
+name: Kolumne — tjedni ciklus (PRIPREMA, nije aktivno)
+
+# NAPOMENA O OPSEGU:
+# Ovaj workflow je pripremljen kao staging artefakt, po istom obrascu kao
+# postojeci "Archived legacy workflow" (deploy-current-public-portal.yml).
+# `schedule` je namjerno zakomentiran. `if: false` sprjecava izvrsavanje
+# cak i ako netko rucno pokrene workflow_dispatch prije svjesnog odobrenja.
+#
+# Aktivacija (kad se odobri):
+#   1. otkomentirati `schedule:` blok ispod
+#   2. maknuti `if: ${{ false }}` iz joba
+#   3. potvrditi da je Worker gnk-asg-image-proxy deployan i PEXELS_API_KEY
+#      postavljen kao secret - bez toga korak dohvata slike tiho preskace sliku
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 8 * * 6'   # subota, 08:00 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  objavi-kolumnu:
+    if: ${{ false }}   # ukloniti ovaj redak tek uz izricito odobrenje aktivacije
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Objavi sljedeću kolumnu iz reda
+        env:
+          WORKER_SLIKE_URL: https://gnk-asg.hr/api/slike
+        run: node scripts/kolumne-publish-v1.mjs --uzivo
+
+      - name: Commit izmjena
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/kolumne.json apps/portal/data/editorial-registry.json
+          git diff --cached --quiet || git commit -m "Kolumne: tjedna objava"
+          git push
