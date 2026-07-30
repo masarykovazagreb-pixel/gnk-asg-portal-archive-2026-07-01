@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Galerija — kolumne ciklus 2</title>
+<style>
+  :root{
+    --papir:#F3EEE2; --tinta:#111013; --crvena:#C81E1E;
+    --zlato:#D9A61D; --siva:#6B6459; --linija:#111013;
+    --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--papir);color:var(--tinta);font:14px/1.5 var(--mono)}
+  header{padding:20px;border-bottom:4px solid var(--tinta)}
+  h1{font-size:16px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 6px;color:var(--crvena)}
+  .napomena{color:var(--siva);font-size:12px;max-width:640px}
+  .kljucevi{padding:16px 20px;border-bottom:2px solid var(--linija);display:flex;gap:14px;flex-wrap:wrap;align-items:end;background:#EAE3D2}
+  .polje label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--siva);margin-bottom:4px}
+  .polje input{font:inherit;font-size:12px;padding:7px 9px;border:2px solid var(--tinta);background:var(--papir);width:230px}
+  button{font:inherit;font-size:12px;text-transform:uppercase;letter-spacing:.06em;background:var(--crvena);color:var(--papir);border:2px solid var(--tinta);padding:9px 16px;cursor:pointer}
+  button:hover{filter:brightness(1.08)}
+  button.sivo{background:var(--tinta)}
+
+  .kolona{padding:24px 20px;border-bottom:3px solid var(--tinta)}
+  .kolona h2{font-size:15px;text-transform:uppercase;letter-spacing:.06em;margin:0 0 4px}
+  .kolona .upiti{font-size:12px;color:var(--siva);margin-bottom:14px}
+  .rezultati{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+  .kandidat{border:2px solid var(--tinta);background:#fff;cursor:pointer;position:relative}
+  .kandidat.odabran{outline:4px solid var(--zlato);outline-offset:-4px}
+  .kandidat img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+  .kandidat .meta{padding:7px 8px;font-size:10.5px;color:var(--siva);line-height:1.35}
+  .kandidat .meta b{color:var(--tinta);display:block;font-size:11px}
+  .kandidat .znacka{position:absolute;top:6px;right:6px;background:var(--zlato);color:var(--tinta);font:800 10px var(--mono);padding:2px 6px}
+
+  .izlaz{padding:20px;background:var(--tinta);color:var(--papir)}
+  .izlaz h2{color:var(--zlato);font-size:14px;text-transform:uppercase;margin:0 0 10px}
+  textarea{width:100%;min-height:160px;background:#000;color:#8FE39A;font:11px var(--mono);border:2px solid var(--zlato);padding:10px}
+  .prazno{grid-column:1/-1;color:var(--siva);font-style:italic;padding:20px 0}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Galerija — kolumne, ciklus 2</h1>
+  <p class="napomena">Ključevi ostaju samo u ovom pregledniku, ne spremaju se. Klikni na sliku da je označiš kao odabranu za kolumnu — odabir se sprema u JSON na dnu, spreman za predaju developeru.</p>
+</header>
+
+<div class="kljucevi">
+  <div class="polje"><label>Pexels ključ</label><input id="k-pexels" placeholder="zalijepi ključ"></div>
+  <div class="polje"><label>Openverse (opcionalno)</label><input id="k-openverse" placeholder="nije obavezno"></div>
+  <button onclick="pretraziSve()">Pretraži sve tri kolumne</button>
+</div>
+
+<div class="kolona" data-id="indija">
+  <h2>01 · Indija</h2>
+  <div class="upiti">mobile payment street market · QR code payment india · smartphone banking asia</div>
+  <div class="rezultati" id="rez-indija"><div class="prazno">Zalijepi ključ i pretraži.</div></div>
+</div>
+
+<div class="kolona" data-id="afrika">
+  <h2>02 · Afrika</h2>
+  <div class="upiti">mobile money africa market · african entrepreneur smartphone</div>
+  <div class="rezultati" id="rez-afrika"><div class="prazno">Zalijepi ključ i pretraži.</div></div>
+</div>
+
+<div class="kolona" data-id="brazil">
+  <h2>03 · Brazil</h2>
+  <div class="upiti">hydroelectric dam · solar panels brazil · wind turbines landscape</div>
+  <div class="rezultati" id="rez-brazil"><div class="prazno">Zalijepi ključ i pretraži.</div></div>
+</div>
+
+<div class="izlaz">
+  <h2>Odabrano — kopiraj u zadatak za developera</h2>
+  <textarea id="izlaz-json" readonly>[]</textarea>
+</div>
+
+<script>
+const UPITI = {
+  indija: ['mobile payment street market', 'QR code payment india', 'smartphone banking asia'],
+  afrika: ['mobile money africa market', 'african entrepreneur smartphone'],
+  brazil: ['hydroelectric dam', 'solar panels brazil', 'wind turbines landscape'],
+};
+
+const odabrano = {};   // { id: {url, licenca, autor, izvor_poveznica, koristi_se_za} }
+
+async function trazi(upit, pexelsKljuc){
+  try{
+    const r = await fetch('https://api.pexels.com/v1/search?query=' + encodeURIComponent(upit) + '&per_page=6',
+      { headers: { Authorization: pexelsKljuc } });
+    if(!r.ok) return [];
+    const d = await r.json();
+    return (d.photos||[]).map(p => ({
+      url: p.src.large, licenca: 'Pexels licenca (besplatna, komercijalna upotreba)',
+      autor: p.photographer, izvor_poveznica: p.url, upit
+    }));
+  } catch(e){ return []; }
+}
+
+function prikaziKandidate(kolonaId, kandidati){
+  const cilj = document.getElementById('rez-' + kolonaId);
+  if (!kandidati.length){ cilj.innerHTML = '<div class="prazno">Nema rezultata — provjeri ključ ili pokušaj drugi upit.</div>'; return; }
+  cilj.innerHTML = kandidati.map((k, i) => `
+    <div class="kandidat" data-kolona="${kolonaId}" data-idx="${i}" onclick="odaberi('${kolonaId}', ${i}, this)">
+      <span class="znacka">${escapeHtml(k.upit)}</span>
+      <img src="${escapeHtml(k.url)}" loading="lazy" alt="">
+      <div class="meta"><b>${escapeHtml(k.autor)}</b>Pexels · klikni za odabir</div>
+    </div>`).join('');
+  cilj._kandidati = kandidati;
+}
+
+function odaberi(kolonaId, idx, el){
+  document.querySelectorAll(`.kandidat[data-kolona="${kolonaId}"]`).forEach(x => x.classList.remove('odabran'));
+  el.classList.add('odabran');
+  const kandidat = document.getElementById('rez-' + kolonaId)._kandidati[idx];
+  odabrano[kolonaId] = { ...kandidat, koristi_se_za: 'kolumna-2-ciklus2-' + kolonaId };
+  osvjeziIzlaz();
+}
+
+function osvjeziIzlaz(){
+  document.getElementById('izlaz-json').value = JSON.stringify(Object.values(odabrano), null, 2);
+}
+
+function escapeHtml(s){ return String(s??'').replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
+
+async function pretraziSve(){
+  const kljuc = document.getElementById('k-pexels').value.trim();
+  if (!kljuc){ alert('Zalijepi Pexels ključ prvo.'); return; }
+  for (const [id, upiti] of Object.entries(UPITI)){
+    document.getElementById('rez-' + id).innerHTML = '<div class="prazno">Tražim…</div>';
+    let sve = [];
+    for (const u of upiti){ sve = sve.concat(await trazi(u, kljuc)); }
+    prikaziKandidate(id, sve);
+  }
+}
+</script>
+</body>
+</html>
