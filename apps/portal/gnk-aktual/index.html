@@ -19,22 +19,28 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AKTUAL MEDIA — Vijesti","description":"Pregled najnovijih svjetskih vijesti po kategorijama, sa slikama i kratkim izvodima.","url":"https://gnk-asg.hr/gnk-aktual/","inLanguage":"hr","isPartOf":{"@type":"WebSite","name":"GNK ASG","url":"https://gnk-asg.hr/"},"publisher":{"@type":"Organization","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}}</script>
 <link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260723-header-transparent-v3">
 <style>
-:root{--ak-bg:#0c0d12;--ak-panel:#15161d;--ak-line:#242531;--ak-red:#e5323a;--ak-red-dim:#b8242b;--ak-text:#f3f4f6;--ak-sub:#9aa0ad}
+:root{--ak-bg:#F0E6C4;--ak-panel:#E7DAAE;--ak-line:#241C0E;--ak-red:#C81E1E;--ak-red-dim:#9A1616;--ak-text:#241C0E;--ak-sub:#6B6455;--ak-zlato:#B8860B}
 *{box-sizing:border-box}
-body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia',serif}
+body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia',serif;
+  background-image:
+    url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.28  0 0 0 0 0.2  0 0 0 0 0.08  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(90deg, transparent calc(33% - 1px), rgba(70,48,10,.08) 33%, rgba(255,255,255,.10) calc(33% + 2px), transparent calc(33% + 6px)),
+    linear-gradient(90deg, transparent calc(67% - 1px), rgba(70,48,10,.07) 67%, rgba(255,255,255,.08) calc(67% + 2px), transparent calc(67% + 6px)),
+    radial-gradient(ellipse at center, transparent 65%, rgba(40,26,6,.10) 100%);
+}
 .ak-wrap{max-width:1180px;margin:0 auto;padding:36px 20px 80px}
 .ak-hero{text-align:center;margin-bottom:40px}
 .ak-eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--ak-red);font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px}
 .ak-eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ak-red);box-shadow:0 0 0 4px rgba(229,50,58,.25);animation:akPulse 2s ease-in-out infinite}
 @keyframes akPulse{0%,100%{opacity:1}50%{opacity:.4}}
-.ak-hero h1{font-size:clamp(2.2rem,5vw,3.4rem);margin:0 0 12px;letter-spacing:-.01em}
+.ak-hero h1{font-family:'Arial Black',Impact,'Franklin Gothic Bold',sans-serif;font-size:clamp(2.4rem,6vw,4.6rem);margin:0 0 12px;letter-spacing:-.01em;text-shadow:2px 2px 0 var(--ak-red);transform:skewX(-1.5deg)}
 .ak-hero p{color:var(--ak-sub);font-family:Arial,sans-serif;font-size:1rem;max-width:640px;margin:0 auto}
 .ak-status{font-family:Arial,sans-serif;font-size:.78rem;color:var(--ak-sub);text-align:center;margin:14px 0 44px}
-.ak-featured{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:1px solid var(--ak-line);border-radius:16px;overflow:hidden;margin-bottom:44px;background:var(--ak-panel)}
+.ak-featured{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:3px solid var(--ak-line);border-radius:4px;overflow:hidden;margin-bottom:44px;background:var(--ak-panel)}
 .ak-featured img{width:100%;height:100%;min-height:280px;object-fit:cover;display:block}
 .ak-featured-body{padding:32px}
 .ak-tag{display:inline-block;font-family:Arial,sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--ak-red);padding:4px 10px;border-radius:4px;margin-bottom:14px}
-.ak-featured-body h2{font-size:clamp(1.4rem,3vw,2rem);line-height:1.25;margin:0 0 14px}
+.ak-featured-body h2{font-family:'Arial Black',Impact,'Franklin Gothic Bold',sans-serif;font-size:clamp(1.3rem,3vw,2rem);line-height:1.15;margin:0 0 14px;letter-spacing:-.005em}
 .ak-featured-body h2 a{color:var(--ak-text);text-decoration:none}
 .ak-featured-body h2 a:hover{color:var(--ak-red)}
 .ak-featured-body p{color:var(--ak-sub);font-size:1rem;line-height:1.65;margin:0 0 16px}
@@ -59,11 +65,11 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-all-list .meta{font-family:Arial,sans-serif;font-size:.68rem;color:var(--ak-sub);flex:0 0 auto;white-space:nowrap;padding-top:2px}
 .ak-top10 .ak-src{display:block;font-family:Arial,sans-serif;color:var(--ak-sub);font-size:.74rem;margin-top:4px}
 .ak-cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.ak-card{border:1px solid var(--ak-line);border-radius:12px;overflow:hidden;background:var(--ak-panel);transition:transform .25s ease,border-color .25s ease}
+.ak-card{border:2px solid var(--ak-line);border-radius:4px;overflow:hidden;background:var(--ak-panel);box-shadow:inset 0 0 14px rgba(90,60,10,.08);transition:transform .25s ease,border-color .25s ease}
 .ak-card:hover{transform:translateY(-3px);border-color:var(--ak-red-dim)}
 .ak-card img{width:100%;height:150px;object-fit:cover;display:block;background:#1c1d26}
 .ak-card-body{padding:16px}
-.ak-card-body h3{font-size:1rem;line-height:1.35;margin:0 0 8px}
+.ak-card-body h3{font-family:'Arial Black',Impact,'Franklin Gothic Bold',sans-serif;font-size:.98rem;line-height:1.2;margin:0 0 8px}
 .ak-card-body h3 a{color:var(--ak-text);text-decoration:none}
 .ak-card-body h3 a:hover{color:var(--ak-red)}
 .ak-card-body p{color:var(--ak-sub);font-family:Arial,sans-serif;font-size:.84rem;line-height:1.55;margin:0 0 10px}
@@ -89,6 +95,29 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 @media(max-width:420px){
   .ak-cat-grid{grid-template-columns:1fr}
 }
+
+.ak-burza{background:var(--ak-line);border-radius:8px;overflow:hidden;white-space:nowrap;padding:9px 0;margin:0 0 28px;position:relative;display:none}
+.ak-burza.vidljivo{display:block}
+.ak-burza::before,.ak-burza::after{content:"";position:absolute;top:0;bottom:0;width:36px;z-index:2;pointer-events:none}
+.ak-burza::before{left:0;background:linear-gradient(90deg,var(--ak-line),transparent)}
+.ak-burza::after{right:0;background:linear-gradient(-90deg,var(--ak-line),transparent)}
+.ak-burza-trak{display:inline-flex;gap:30px;animation:akKotrljaj 38s linear infinite;padding-left:100%}
+.ak-burza:hover .ak-burza-trak{animation-play-state:paused}
+@keyframes akKotrljaj{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+.ak-burza-stavka{display:inline-flex;gap:7px;align-items:baseline;font-family:Arial,sans-serif;font-size:.78rem;font-weight:700;color:var(--ak-bg)}
+
+.ak-kolumna{display:none;border:3px solid var(--ak-line);border-radius:4px;margin-bottom:36px;background:var(--ak-panel)}
+.ak-kolumna.vidljivo{display:grid;grid-template-columns:170px 1fr}
+@media(max-width:640px){.ak-kolumna.vidljivo{grid-template-columns:1fr}}
+.ak-kolumna-autor{background:var(--ak-line);color:var(--ak-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center}
+.ak-kolumna-autor .krug{width:56px;height:56px;border-radius:50%;border:2px solid var(--ak-zlato);display:flex;align-items:center;justify-content:center;font-family:'Arial Black',sans-serif;font-size:19px;color:var(--ak-zlato);margin-bottom:8px}
+.ak-kolumna-autor b{font-family:'Arial Black',sans-serif;font-size:.82rem}
+.ak-kolumna-autor span{font-family:Arial,sans-serif;font-size:.62rem;color:#b8b0a0;margin-top:3px;text-transform:uppercase;letter-spacing:.07em}
+.ak-kolumna-tijelo{padding:22px 26px}
+.ak-kolumna-tijelo .oznaka{font-family:Arial,sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ak-red);margin-bottom:8px;display:block}
+.ak-kolumna-tijelo h2{font-family:'Arial Black',Impact,sans-serif;font-size:clamp(1.2rem,2.6vw,1.7rem);line-height:1.15;margin:0 0 10px}
+.ak-kolumna-tijelo p{font-size:.96rem;line-height:1.6;color:var(--ak-text);margin:0 0 10px}
+.ak-kolumna-tijelo a{font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);text-decoration:none;border-bottom:2px solid var(--ak-red);padding-bottom:1px}
 </style>
 <style id="gnk-gold-watermark-style">
 #gnk-gold-watermark{position:fixed;right:-40px;bottom:-40px;width:340px;height:340px;opacity:.07;pointer-events:none;z-index:1;filter:grayscale(0) saturate(1.4);}
@@ -103,6 +132,11 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   </div>
   <section class="ak-narrative"><img src="/assets/editorial/aktual-media-800.webp" alt="AKTUAL MEDIA — najvažnije svjetske vijesti na jednom mjestu" class="ak-narrative-img"><div class="ak-narrative-copy"><p class="ak-narrative-eyebrow">AKTUAL MEDIA</p><h2>Najvažnije svjetske vijesti na jednom mjestu</h2><p>AKTUAL MEDIA donosi pregled najnovijih vijesti iz gospodarstva, tehnologije, digitalne imovine i međunarodnih odnosa.</p><p>Sadržaj se automatski osvježava svaka dva sata, čime korisnicima omogućuje brz uvid u teme koje oblikuju globalno poslovno, financijsko i tehnološko okruženje. Posebno su izdvojene najnovije vijesti, dok je u proširenom pregledu dostupan cjelovit popis objavljenih sadržaja.</p><p>Svaka objava prikazuje naslov, fotografiju i kratak sažetak te vodi izravno na članak izvornog izdavača. Vijesti se preuzimaju iz javno dostupnih RSS izvora međunarodnih medija, uključujući BBC, The Guardian, Al Jazeera, CNBC, Wired i druge. GNK ASG ne preuzima niti pohranjuje puni tekst članaka, već čitatelja usmjerava prema izvornom izvoru.</p><p>Cilj platforme je omogućiti pregledno, brzo i odgovorno praćenje aktualnih događaja bez nepotrebnog traženja informacija na velikom broju različitih portala.</p><p class="ak-narrative-tagline">Ekonomija. Tehnologija. Digitalna imovina. Svijet. Jedan pregled.</p></div></section>
   <style>.ak-narrative{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center;max-width:1100px;margin:32px auto 48px;padding:0 20px}.ak-narrative-img{width:100%;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid rgba(212,175,55,.3)}.ak-narrative-eyebrow{color:#e0bd69;font-size:.75rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px}.ak-narrative-copy h2{color:#f8fafc;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.25;margin:0 0 16px}.ak-narrative-copy p{color:#c5cfdb;font-size:.98rem;line-height:1.7;margin:0 0 13px}.ak-narrative-tagline{color:#f8fafc;font-weight:800;font-size:1.05rem;border-top:1px solid rgba(255,255,255,.12);padding-top:14px;margin-top:6px!important}@media(max-width:800px){.ak-narrative{grid-template-columns:1fr}}</style>
+  <div class="ak-burza" id="akBurza"><div class="ak-burza-trak" id="akBurzaTrak"></div></div>
+  <div class="ak-kolumna" id="akKolumna">
+    <div class="ak-kolumna-autor"><div class="krug">NS</div><b>Nermin Sefić</b><span>Direktor, GNK ASG</span></div>
+    <div class="ak-kolumna-tijelo" id="akKolumnaTijelo"></div>
+  </div>
   <p class="ak-status" id="akStatus">Učitavanje najnovijih vijesti…</p>
   <div id="akFeatured"></div>
   <div id="akCategories"></div>
@@ -337,6 +371,48 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     .catch(function(){
       document.getElementById('akStatus').textContent = 'Vijesti trenutno nisu dostupne.';
     });
+})();
+
+// ===== Dodatni, neovisni blokovi: trzisna traka i kolumna =====
+// Namjerno odvojeno od gornje logike (state/score/buildStream) - ako ovo
+// padne, ne dira rotaciju vijesti; ako gornje padne, ne dira ovo.
+(function(){
+  function escH(s){ return String(s||'').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  // --- Trzisna traka: Frankfurter, bez kljuca, potvrdjeno radnim ---
+  fetch('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD,JPY,GBP,INR,CNY')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      if (!d || !d.rates) return;
+      var el = document.getElementById('akBurza');
+      var trak = document.getElementById('akBurzaTrak');
+      var stavke = Object.keys(d.rates).map(function(k){
+        return '<span class="ak-burza-stavka">EUR/' + k + ' <b>' + d.rates[k].toFixed(2) + '</b></span>';
+      });
+      if (!stavke.length) return;
+      trak.innerHTML = stavke.concat(stavke).concat(stavke).join('');
+      el.classList.add('vidljivo');
+    })
+    .catch(function(){});
+
+  // --- Kolumna: cita /data/kolumne.json ako postoji. Ako datoteke jos       ---
+  // --- nema (kolumne cekaju pregled prije nego ude u sustav), blok se      ---
+  // --- jednostavno ne prikazuje - stranica ostaje kao danas.               ---
+  fetch('/data/kolumne.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      var items = d && (Array.isArray(d) ? d : d.items);
+      var k = items && items[0];
+      if (!k || !k.naslov) return;
+      var uvod = (k.tekst || '').split('\n\n')[0] || '';
+      document.getElementById('akKolumnaTijelo').innerHTML =
+        '<span class="oznaka">Kolumna · subotom</span>' +
+        '<h2>' + escH(k.naslov) + '</h2>' +
+        '<p>' + escH(uvod.slice(0, 260)) + (uvod.length > 260 ? '…' : '') + '</p>' +
+        '<a href="' + escH(k.url || '#') + '">Pročitaj cijelu kolumnu →</a>';
+      document.getElementById('akKolumna').classList.add('vidljivo');
+    })
+    .catch(function(){});
 })();
 </script>
 </body></html>
