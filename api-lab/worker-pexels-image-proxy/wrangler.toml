@@ -1,0 +1,12 @@
+name = "gnk-asg-image-proxy"
+main = "index.js"
+compatibility_date = "2026-07-01"
+
+# NIJE JOŠ DEPLOYANO. Ruta se registrira tek pri stvarnom deployu.
+# Slijedi obrazac ostalih Workera u ovom repozitoriju (workers/*/wrangler.toml).
+[[routes]]
+pattern = "gnk-asg.hr/api/slike*"
+zone_name = "gnk-asg.hr"
+
+# Secret se postavlja ODVOJENO od ovog commita, nikad u ovoj datoteci:
+#   wrangler secret put PEXELS_API_KEY --name gnk-asg-image-proxy
