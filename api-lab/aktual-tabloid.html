@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>AKTUAL — GNK ASG</title>
+<style>
+  @font-face{font-family:'system-black';src:local('Arial Black');}
+  :root{
+    --papir:#F3EEE2;
+    --papir-2:#EAE3D2;
+    --tinta:#111013;
+    --crvena:#C81E1E;
+    --crvena-t:#9A1616;
+    --zlato:#D9A61D;
+    --zelena:#1E7A3C;
+    --siva:#6B6459;
+    --linija:#111013;
+    --naslovna: 'Arial Black', Impact, 'Franklin Gothic Bold', sans-serif;
+    --tijelo: Georgia, 'Times New Roman', serif;
+    --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--papir);color:var(--tinta);
+    font-family:var(--tijelo);
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(0,0,0,.025) 0, transparent 45%),
+      radial-gradient(circle at 80% 60%, rgba(0,0,0,.02) 0, transparent 50%);
+  }
+  a{color:inherit}
+  ::selection{background:var(--crvena);color:var(--papir)}
+
+  /* ————— TRAKA S DATUMOM ————— */
+  .traka-dana{
+    background:var(--tinta);color:var(--papir);
+    font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    padding:7px 20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;
+  }
+  .traka-dana b{color:var(--zlato)}
+
+  /* ————— MASTHEAD ————— */
+  header.masthead{
+    padding:22px 20px 16px;text-align:center;border-bottom:5px solid var(--tinta);
+    position:relative;
+  }
+  .kicker-gore{
+    font:700 11px/1 var(--mono);letter-spacing:.3em;text-transform:uppercase;
+    color:var(--crvena);margin-bottom:10px;
+  }
+  h1.naslov{
+    font-family:var(--naslovna);
+    font-size:clamp(52px, 11vw, 118px);
+    line-height:.86;margin:0;letter-spacing:-.01em;
+    text-shadow:3px 3px 0 var(--crvena);
+    transform:skewX(-2deg);
+  }
+  .podnaslov-masthead{
+    font:italic 500 15px/1.4 var(--tijelo);color:var(--siva);
+    max-width:560px;margin:12px auto 0;
+  }
+  .pecat{
+    position:absolute;top:14px;right:20px;
+    width:96px;height:96px;border:4px solid var(--crvena);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    transform:rotate(14deg);color:var(--crvena);
+    font:800 13px/1.15 var(--naslovna);letter-spacing:.02em;
+    animation:dahtaj 3.2s ease-in-out infinite;
+  }
+  @keyframes dahtaj{0%,100%{transform:rotate(14deg) scale(1)}50%{transform:rotate(14deg) scale(1.05)}}
+  @media (prefers-reduced-motion:reduce){.pecat{animation:none}}
+  @media (max-width:640px){.pecat{position:static;margin:12px auto 0;transform:rotate(-4deg)}}
+
+  /* ————— TRŽIŠNA TRAKA (potpisni element) ————— */
+  .burza{
+    background:var(--tinta);border-bottom:1px solid #000;overflow:hidden;
+    white-space:nowrap;padding:9px 0;position:relative;
+  }
+  .burza::before,.burza::after{
+    content:"";position:absolute;top:0;bottom:0;width:40px;z-index:2;pointer-events:none;
+  }
+  .burza::before{left:0;background:linear-gradient(90deg,var(--tinta),transparent)}
+  .burza::after{right:0;background:linear-gradient(-90deg,var(--tinta),transparent)}
+  .burza-trak{display:inline-flex;gap:34px;animation:kotrljaj 42s linear infinite;padding-left:100%}
+  .burza:hover .burza-trak{animation-play-state:paused}
+  @keyframes kotrljaj{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+  .stavka-burze{
+    display:inline-flex;gap:8px;align-items:baseline;
+    font:600 13px/1 var(--mono);color:var(--papir);
+  }
+  .stavka-burze .rast{color:#5FCB7A}
+  .stavka-burze .pad{color:#F08484}
+
+  /* ————— GLAVNA VIJEST ————— */
+  .glavna{
+    max-width:1180px;margin:0 auto;padding:34px 20px 10px;
+    display:grid;grid-template-columns:1.4fr 1fr;gap:28px;
+  }
+  @media (max-width:860px){.glavna{grid-template-columns:1fr}}
+  .glavna-slika{
+    aspect-ratio:16/10;background:var(--papir-2);border:3px solid var(--tinta);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+  }
+  .glavna-slika img{width:100%;height:100%;object-fit:cover;display:block}
+  .rubrika-oznaka{
+    display:inline-block;background:var(--crvena);color:var(--papir);
+    font:800 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+    padding:5px 10px;margin-bottom:10px;
+  }
+  .glavna h2{
+    font-family:var(--naslovna);font-size:clamp(28px,4.4vw,44px);line-height:1.02;
+    margin:0 0 12px;letter-spacing:-.005em;
+  }
+  .glavna p.uvod{font-size:16px;line-height:1.55;color:#2A2822;margin:0 0 14px}
+  .procitaj{
+    display:inline-block;font:700 12px/1 var(--mono);text-transform:uppercase;
+    letter-spacing:.08em;border-bottom:2px solid var(--crvena);padding-bottom:2px;text-decoration:none;
+  }
+
+  /* ————— STOP TISKA BOČNA KOLUMNA ————— */
+  .stop-tiska{
+    background:var(--tinta);color:var(--papir);padding:18px 18px 20px;
+    position:relative;
+  }
+  .stop-tiska h3{
+    font-family:var(--naslovna);font-size:20px;margin:0 0 4px;color:var(--zlato);
+    letter-spacing:.02em;
+  }
+  .stop-tiska .prat{font:11px var(--mono);color:#B8B0A0;margin-bottom:14px;letter-spacing:.1em;text-transform:uppercase}
+  .st-stavka{border-top:1px solid #333;padding:11px 0;font-size:13px;line-height:1.4}
+  .st-stavka:first-of-type{border-top:none}
+  .st-stavka a{text-decoration:none}
+  .st-stavka a:hover{color:var(--zlato)}
+  .st-broj{font:800 22px/1 var(--naslovna);color:var(--crvena-t);margin-right:8px}
+  .stop-tiska .vise{
+    display:block;margin-top:14px;font:700 11px var(--mono);letter-spacing:.1em;
+    text-transform:uppercase;color:var(--zlato);text-decoration:none;
+  }
+
+  /* ————— RUBRIKE / MREŽA ————— */
+  .presjek{max-width:1180px;margin:38px auto 0;padding:0 20px}
+  .presjek-glava{
+    display:flex;align-items:baseline;gap:14px;border-bottom:4px solid var(--tinta);
+    padding-bottom:8px;margin-bottom:18px;
+  }
+  .presjek-glava h2{
+    font-family:var(--naslovna);font-size:clamp(22px,3.2vw,30px);margin:0;
+    text-transform:uppercase;letter-spacing:.01em;
+  }
+  .presjek-glava .broj-rubrike{
+    font:800 30px/1 var(--naslovna);color:var(--crvena);opacity:.35;
+  }
+  .mreza{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding-bottom:8px}
+  @media (max-width:980px){.mreza{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.mreza{grid-template-columns:1fr}}
+
+  .kartica{
+    background:var(--papir);border:2px solid var(--tinta);display:flex;flex-direction:column;
+    transition:transform .15s;
+  }
+  .kartica:hover{transform:translateY(-3px)}
+  .kartica .slika-wrap{aspect-ratio:4/3;background:var(--papir-2);overflow:hidden;border-bottom:2px solid var(--tinta)}
+  .kartica img{width:100%;height:100%;object-fit:cover;display:block}
+  .kartica .tijelo{padding:12px 13px 14px;flex:1;display:flex;flex-direction:column}
+  .kartica .izvor{font:700 10px var(--mono);color:var(--crvena);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  .kartica h3{font-family:var(--naslovna);font-size:16px;line-height:1.15;margin:0 0 8px;letter-spacing:-.005em}
+  .kartica p{font-size:12.5px;color:#4A4638;line-height:1.4;margin:0;flex:1}
+  .kartica a.omot{text-decoration:none;color:inherit;display:flex;flex-direction:column;height:100%}
+
+  .prazno-mjesto{
+    grid-column:1/-1;padding:26px;text-align:center;color:var(--siva);
+    font:italic 13px var(--tijelo);border:2px dashed var(--siva);
+  }
+
+  /* ————— KUHINJA — traka recepata ————— */
+  .recepti-traka{display:flex;gap:16px;overflow-x:auto;padding-bottom:10px;scrollbar-width:thin}
+  .recept-kartica{
+    flex:0 0 200px;background:var(--papir);border:2px solid var(--tinta);
+  }
+  .recept-kartica .slika-wrap{aspect-ratio:1;background:var(--papir-2)}
+  .recept-kartica .tijelo{padding:10px}
+  .recept-kartica h4{font-family:var(--naslovna);font-size:13px;margin:0;line-height:1.2}
+
+  footer{
+    max-width:1180px;margin:40px auto 0;padding:20px 20px 40px;
+    border-top:3px solid var(--tinta);font:12px var(--mono);color:var(--siva);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+  footer b{color:var(--tinta)}
+</style>
+</head>
+<body>
+
+<div class="traka-dana">
+  <span>ZAGREB · GNK ASG</span>
+  <span id="datum-danas">—</span>
+  <span><b>MAKET</b> — staging, nije objavljeno</span>
+</div>
+
+<header class="masthead">
+  <div class="kicker-gore">Poslovni magazin grupe · izlazi kad ima vijesti</div>
+  <h1 class="naslov">AKTUAL</h1>
+  <p class="podnaslov-masthead">Svijet, tržišta, znanost i kuhinja — iz izvora koje smo danas provjerili uživo, bez ijedne izmišljene rečenice.</p>
+  <div class="pecat">STOP<br>TISKA</div>
+</header>
+
+<div class="burza">
+  <div class="burza-trak" id="burza-trak">
+    <span class="stavka-burze">Učitavam tečajeve…</span>
+  </div>
+</div>
+
+<section class="glavna" id="glavna-vijest">
+  <div class="glavna-slika" id="glavna-slika"><span style="color:var(--siva);font:12px var(--mono)">učitavam naslovnicu…</span></div>
+  <div>
+    <span class="rubrika-oznaka">Svijet</span>
+    <h2 id="glavna-naslov">Učitavam glavnu vijest…</h2>
+    <p class="uvod" id="glavna-uvod"></p>
+    <a class="procitaj" id="glavna-link" href="#" target="_blank" rel="noopener">Pročitaj cijelu vijest →</a>
+  </div>
+</section>
+
+<section class="presjek" style="margin-top:26px">
+  <div style="display:grid;grid-template-columns:2.3fr 1fr;gap:24px" id="raspored-stop">
+    <div>
+      <div class="presjek-glava"><span class="broj-rubrike">01</span><h2>Svijet</h2></div>
+      <div class="mreza" id="mreza-svijet"></div>
+    </div>
+    <aside class="stop-tiska">
+      <h3>Stop tiska</h3>
+      <div class="prat">Znanost i društvo · 5 komada</div>
+      <div id="stop-tiska-lista"></div>
+      <a class="vise" href="#" onclick="return false">Sve vijesti iz znanosti →</a>
+    </aside>
+  </div>
+</section>
+
+<section class="presjek">
+  <div class="presjek-glava"><span class="broj-rubrike">02</span><h2>Tehnologija</h2></div>
+  <div class="mreza" id="mreza-tehnologija"></div>
+</section>
+
+<section class="presjek">
+  <div class="presjek-glava"><span class="broj-rubrike">03</span><h2>Tržišta</h2></div>
+  <div class="mreza" id="mreza-trzista"></div>
+</section>
+
+<section class="presjek">
+  <div class="presjek-glava"><span class="broj-rubrike">04</span><h2>Kuhinja</h2></div>
+  <div class="recepti-traka" id="traka-kuhinja"></div>
+</section>
+
+<footer>
+  <span>AKTUAL — maket rubrika, grana <b>api-lab</b>, ništa objavljeno</span>
+  <span>izvori: RSS2JSON · Spaceflight News · Wikinews · Nobel Prize · Frankfurter · currency-api · VATComply · World Bank · Open Food Facts</span>
+</footer>
+
+<script>
+/* ============================================================
+   AKTUAL — maket. Svi pozivi idu iz preglednika, ništa se sprema.
+   Izvori korišteni ovdje su oni koji su danas potvrđeni kao radni.
+   ============================================================ */
+
+document.getElementById('datum-danas').textContent =
+  new Date().toLocaleDateString('hr-HR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+const TIMEOUT = 6000;
+async function dohvati(url){
+  const c = new AbortController();
+  const t = setTimeout(()=>c.abort(), TIMEOUT);
+  try{
+    const r = await fetch(url, {signal:c.signal});
+    if(!r.ok) throw new Error(r.status);
+    return await r.json();
+  } catch(e){ return null; } finally{ clearTimeout(t); }
+}
+
+function escapeHtml(s){
+  return String(s??'').replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+}
+
+/* ---------- TRŽIŠNA TRAKA ---------- */
+async function napuniBurzu(){
+  const trak = document.getElementById('burza-trak');
+  const stavke = [];
+
+  const fx = await dohvati('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD,JPY,GBP,INR,CNY');
+  if (fx && fx.rates){
+    for (const [k,v] of Object.entries(fx.rates)){
+      stavke.push(`<span class="stavka-burze">EUR/${k} <b>${v.toFixed(2)}</b></span>`);
+    }
+  }
+  const wb = await dohvati('https://api.worldbank.org/v2/country/HR/indicator/FP.CPI.TOTL.ZG?format=json&per_page=1&mrnev=1');
+  if (Array.isArray(wb) && wb[1] && wb[1][0]){
+    const d = wb[1][0];
+    stavke.push(`<span class="stavka-burze">HR INFLACIJA ${d.date} <b class="${d.value<0?'pad':'rast'}">${(d.value??0).toFixed(1)}%</b></span>`);
+  }
+
+  trak.innerHTML = (stavke.length ? stavke : ['<span class="stavka-burze">Tečajevi trenutno nedostupni</span>'])
+    .concat(stavke).concat(stavke).join('');   // ponovljeno radi neprekidnog kotrljanja
+}
+
+/* ---------- RSS preko RSS2JSON — Svijet ---------- */
+const RSS_IZVORI = [
+  { naslov:'Deutsche Welle',  rss:'https://rss.dw.com/rdf/rss-en-all' },
+  { naslov:'UN News',         rss:'https://news.un.org/feed/subscribe/en/news/all/rss.xml' },
+];
+
+async function napuniSvijet(){
+  const cilj = document.getElementById('mreza-svijet');
+  let sve = [];
+  for (const izv of RSS_IZVORI){
+    const d = await dohvati('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(izv.rss));
+    if (d && Array.isArray(d.items)){
+      sve = sve.concat(d.items.slice(0,4).map(a => ({
+        naslov: a.title, opis: (a.description||'').replace(/<[^>]+>/g,'').slice(0,120),
+        slika: a.thumbnail || a.enclosure?.link || null, link: a.link, izvor: izv.naslov
+      })));
+    }
+  }
+  if (!sve.length){
+    cilj.innerHTML = '<div class="prazno-mjesto">Izvori trenutno nedostupni — rubrika se ne prikazuje na pravoj stranici dok se ne osvježe.</div>';
+    return;
+  }
+
+  // glavna vijest = prva sa slikom
+  const glavna = sve.find(s => s.slika) || sve[0];
+  document.getElementById('glavna-slika').innerHTML = glavna.slika
+    ? `<img src="${escapeHtml(glavna.slika)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<span style=color:var(--siva)>bez slike</span>'">`
+    : '<span style="color:var(--siva);font:12px var(--mono)">bez slike</span>';
+  document.getElementById('glavna-naslov').textContent = glavna.naslov;
+  document.getElementById('glavna-uvod').textContent = glavna.opis;
+  document.getElementById('glavna-link').href = glavna.link;
+
+  cilj.innerHTML = sve.filter(s=>s!==glavna).slice(0,8).map(kartica).join('') ||
+    '<div class="prazno-mjesto">Nema dovoljno stavki za punu mrežu.</div>';
+}
+
+function kartica(s){
+  return `<div class="kartica"><a class="omot" href="${escapeHtml(s.link)}" target="_blank" rel="noopener">
+    <div class="slika-wrap">${s.slika ? `<img src="${escapeHtml(s.slika)}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'">` : ''}</div>
+    <div class="tijelo">
+      <div class="izvor">${escapeHtml(s.izvor)}</div>
+      <h3>${escapeHtml(s.naslov)}</h3>
+      <p>${escapeHtml(s.opis||'')}</p>
+    </div></a></div>`;
+}
+
+/* ---------- Stop tiska: Wikinews + Nobel ---------- */
+async function napuniStopTiska(){
+  const cilj = document.getElementById('stop-tiska-lista');
+  const stavke = [];
+
+  const wiki = await dohvati('https://en.wikinews.org/w/api.php?action=query&list=recentchanges&rcnamespace=0&rclimit=4&format=json&origin=*');
+  const promjene = wiki?.query?.recentchanges || [];
+  promjene.forEach(p => stavke.push({ naslov: p.title, link: 'https://en.wikinews.org/wiki/' + encodeURIComponent(p.title.replace(/ /g,'_')) }));
+
+  const nobel = await dohvati('https://api.nobelprize.org/2.1/nobelPrizes?limit=1&sort=desc');
+  const nagrade = nobel?.nobelPrizes?.[0]?.laureates || [];
+  nagrade.slice(0,2).forEach(l => stavke.push({
+    naslov: `Nobel ${nobel.nobelPrizes[0].categoryFullName?.en || ''}: ${l.knownName?.en || l.fullName?.en || ''}`,
+    link: '#'
+  }));
+
+  cilj.innerHTML = stavke.length
+    ? stavke.slice(0,5).map((s,i) => `<div class="st-stavka"><span class="st-broj">${String(i+1).padStart(2,'0')}</span><a href="${escapeHtml(s.link)}" target="_blank" rel="noopener">${escapeHtml(s.naslov)}</a></div>`).join('')
+    : '<div class="st-stavka" style="color:#B8B0A0">Trenutno nedostupno</div>';
+}
+
+/* ---------- Tehnologija: Spaceflight News + HN ---------- */
+async function napuniTehnologiju(){
+  const cilj = document.getElementById('mreza-tehnologija');
+  const d = await dohvati('https://api.spaceflightnewsapi.net/v4/articles/?limit=8');
+  const stavke = (d?.results || []).map(a => ({
+    naslov:a.title, opis:(a.summary||'').slice(0,120), slika:a.image_url, link:a.url, izvor:a.news_site
+  }));
+  cilj.innerHTML = stavke.length ? stavke.map(kartica).join('')
+    : '<div class="prazno-mjesto">Izvor trenutno nedostupan.</div>';
+}
+
+/* ---------- Tržišta: World Bank + Econdb naslovni pokazatelji ---------- */
+async function napuniTrzista(){
+  const cilj = document.getElementById('mreza-trzista');
+  const zemlje = [
+    {kod:'IN', naziv:'Indija'}, {kod:'JP', naziv:'Japan'},
+    {kod:'NG', naziv:'Nigerija'}, {kod:'BR', naziv:'Brazil'}
+  ];
+  const kartice = [];
+  for (const z of zemlje){
+    const d = await dohvati(`https://api.worldbank.org/v2/country/${z.kod}/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=1&mrnev=1`);
+    const t = Array.isArray(d) && d[1] && d[1][0];
+    kartice.push(`<div class="kartica"><div class="tijelo">
+      <div class="izvor">World Bank · ${z.kod}</div>
+      <h3>${z.naziv}</h3>
+      <p>Rast BDP-a (${t?.date||'—'}): <b>${t?.value!=null ? t.value.toFixed(1)+'%' : 'nema podatka'}</b></p>
+    </div></div>`);
+  }
+  cilj.innerHTML = kartice.join('');
+}
+
+/* ---------- Kuhinja: Open Food Facts (placeholder do /world-table/ integracije) ---------- */
+async function napuniKuhinju(){
+  const cilj = document.getElementById('traka-kuhinja');
+  const d = await dohvati('https://world.openfoodfacts.org/api/v2/search?categories_tags=biscuits&page_size=10&fields=product_name,image_small_url,brands');
+  const stavke = (d?.products || []).filter(p=>p.product_name).map(p => ({
+    naslov: p.product_name, slika: p.image_small_url
+  }));
+  cilj.innerHTML = stavke.length
+    ? stavke.map(s => `<div class="recept-kartica"><div class="slika-wrap">${s.slika?`<img src="${escapeHtml(s.slika)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">`:''}</div><div class="tijelo"><h4>${escapeHtml(s.naslov)}</h4></div></div>`).join('')
+    : '<div class="prazno-mjesto" style="flex:1">Napomena: ovo je zamjena za pravu vezu na /world-table/ — 789 recepata s vlastitim slikama, koja ide umjesto ovoga u produkciji.</div>';
+}
+
+Promise.all([napuniBurzu(), napuniSvijet(), napuniStopTiska(), napuniTehnologiju(), napuniTrzista(), napuniKuhinju()]);
+</script>
+</body>
+</html>
