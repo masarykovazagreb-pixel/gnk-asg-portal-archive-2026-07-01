@@ -149,4 +149,11 @@ SOURCES = [
     # 90% ovog dijela treba biti agregacija, ne izvorni tekst - isti
     # dokazan mehanizam kao HR poslovne/tech vijesti gore, ne novi izvor.
     ("cibona", "kosarka", "Google News Cibona", "https://news.google.com/rss/search?q=Cibona+ko%C5%A1arka&hl=hr&gl=HR&ceid=HR:hr"),
+
+    # --- Lifestyle: kucni ljubimci, kultura i film, zanimljivosti -----
+    # Svjetski upiti (ne HR-centricno), agregacija preko Google News RSS -
+    # isti dokazan mehanizam, bez novog tehnickog troska.
+    ("ljubimci", "zivotinje", "Google News Pets", "https://news.google.com/rss/search?q=cute+animals+pets+viral&hl=en-US&gl=US&ceid=US:en"),
+    ("kultura", "film", "Google News Film", "https://news.google.com/rss/search?q=film+movies+entertainment+culture&hl=en-US&gl=US&ceid=US:en"),
+    ("zanimljivosti", "obitelj", "Google News Fun", "https://news.google.com/rss/search?q=heartwarming+family+kids+good+news&hl=en-US&gl=US&ceid=US:en"),
 ]
