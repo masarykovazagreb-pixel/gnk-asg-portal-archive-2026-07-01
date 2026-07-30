@@ -8,9 +8,9 @@
 <style>
   @font-face{font-family:'system-black';src:local('Arial Black');}
   :root{
-    --papir:#E8D9A8;
-    --papir-2:#DCC98C;
-    --tinta:#1A1408;
+    --papir:#F0E6C4;
+    --papir-2:#E7DAAE;
+    --tinta:#241C0E;
     --crvena:#C81E1E;
     --crvena-t:#9A1616;
     --zlato:#D9A61D;
@@ -28,12 +28,15 @@
     font-family:var(--tijelo);
     background-image:
       url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.28  0 0 0 0 0.2  0 0 0 0 0.08  0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
-      radial-gradient(circle at 12% 8%, rgba(90,60,10,.16) 0, transparent 30%),
-      radial-gradient(circle at 88% 22%, rgba(90,60,10,.12) 0, transparent 26%),
-      radial-gradient(circle at 30% 92%, rgba(90,60,10,.14) 0, transparent 32%),
-      radial-gradient(circle at 70% 70%, rgba(90,60,10,.10) 0, transparent 40%),
-      radial-gradient(ellipse at center, transparent 55%, rgba(40,26,6,.28) 100%);
-    background-blend-mode: multiply, multiply, multiply, multiply, multiply, normal;
+      radial-gradient(circle at 12% 8%, rgba(90,60,10,.07) 0, transparent 28%),
+      radial-gradient(circle at 88% 22%, rgba(90,60,10,.05) 0, transparent 24%),
+      radial-gradient(circle at 30% 92%, rgba(90,60,10,.06) 0, transparent 30%),
+      /* presavijanja papira - dvije blage okomite i jedna vodoravna crta sjene */
+      linear-gradient(90deg, transparent calc(33% - 1px), rgba(70,48,10,.10) 33%, rgba(255,255,255,.12) calc(33% + 2px), transparent calc(33% + 6px)),
+      linear-gradient(90deg, transparent calc(67% - 1px), rgba(70,48,10,.09) 67%, rgba(255,255,255,.10) calc(67% + 2px), transparent calc(67% + 6px)),
+      linear-gradient(180deg, transparent calc(50% - 1px), rgba(70,48,10,.07) 50%, rgba(255,255,255,.08) calc(50% + 2px), transparent calc(50% + 6px)),
+      radial-gradient(ellipse at center, transparent 62%, rgba(40,26,6,.14) 100%);
+    background-blend-mode: multiply, multiply, multiply, normal, normal, normal, normal;
   }
   @media print{ body{ background-image:none } }
   a{color:inherit}
