@@ -8,3 +8,7 @@
   #gnk-unified-header .inner{padding:0 8px;gap:6px}
   #gnk-unified-menu .lang a{width:30px;height:28px;font-size:10px}
 }
+/* Route-specific WCAG hardening: small percentage labels must retain 4.5:1 contrast on mobile. */
+@media(max-width:640px){
+  .kz-bar-fill span{display:inline-block!important;padding:3px 5px!important;border-radius:4px!important;background:#111827!important;color:#fff!important;font-size:.75rem!important;line-height:1!important;text-shadow:none!important}
+}
