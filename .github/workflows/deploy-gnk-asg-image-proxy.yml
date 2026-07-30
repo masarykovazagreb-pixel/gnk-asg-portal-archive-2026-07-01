@@ -9,7 +9,7 @@ on:
       - '.github/workflows/deploy-gnk-asg-image-proxy.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: gnk-asg-image-proxy-deploy
@@ -53,14 +53,39 @@ jobs:
         if: steps.credentials.outputs.configured == 'true'
         run: npx wrangler@4 deploy
 
-      - name: Provjeri da ruta odgovara (ocekuje se poruka o nedostajucem secretu dok se ne postavi)
+      - name: Provjeri da ruta odgovara i zapisi rezultat u repozitorij
         if: steps.credentials.outputs.configured == 'true'
         run: |
-          set -euo pipefail
-          sleep 5
-          status=$(curl -s -o /tmp/odgovor.json -w '%{http_code}' "https://gnk-asg.hr/api/slike?upit=test")
+          set -uo pipefail
+          sleep 8
+          status=$(curl -s -o /tmp/odgovor.json -w '%{http_code}' "https://gnk-asg.hr/api/slike?upit=test" || echo "000")
+          body=$(cat /tmp/odgovor.json 2>/dev/null || echo "")
           echo "HTTP status: $status"
-          cat /tmp/odgovor.json
-          # Ocekujemo 200 (radi) ili 500 s objasnjenjem da secret nije postavljen -
-          # oboje znaci da je Worker ziv i odgovara na svojoj ruti bez rusenja sajta.
-          test "$status" = "200" || grep -q "PEXELS_API_KEY" /tmp/odgovor.json
+          echo "$body"
+          python3 - "$status" "$body" <<'PYEOF'
+          import json, sys, datetime
+          status, body = sys.argv[1], sys.argv[2]
+          try:
+              parsed = json.loads(body)
+          except Exception:
+              parsed = None
+          rezultat = {
+              "provjereno_u": datetime.datetime.utcnow().isoformat() + "Z",
+              "http_status": status,
+              "odgovor_sirovo": body[:2000],
+              "odgovor_json": parsed,
+              "ocjena": "radi" if status == "200" else (
+                  "ziv_ali_ceka_secret" if parsed and "PEXELS_API_KEY" in json.dumps(parsed) else "provjeri_rucno"
+              ),
+          }
+          with open("workers/gnk-asg-image-proxy/DEPLOY-STATUS.json", "w") as f:
+              json.dump(rezultat, f, indent=2, ensure_ascii=False)
+          PYEOF
+          cat workers/gnk-asg-image-proxy/DEPLOY-STATUS.json
+
+      - name: Zabiljezi status u repozitorij
+        if: always() && steps.credentials.outputs.configured == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'gnk-asg-image-proxy: zapis statusa nakon deploya'
+          file_pattern: 'workers/gnk-asg-image-proxy/DEPLOY-STATUS.json' 
