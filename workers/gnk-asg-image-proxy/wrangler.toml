@@ -1,0 +1,13 @@
+name = "gnk-asg-image-proxy"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+
+# Ruta se registrira pri deployu. Slijedi obrazac ostalih Workera u repozitoriju.
+# Sekret PEXELS_API_KEY nije postavljen dok ga netko izricito ne postavi -
+# do tada Worker vraca cist JSON s objasnjenjem, ne pada i ne izlaze gresku.
+[[routes]]
+pattern = "gnk-asg.hr/api/slike*"
+zone_name = "gnk-asg.hr"
+
+# Secret se postavlja ODVOJENO od ovog commita, nikad u ovoj datoteci:
+#   wrangler secret put PEXELS_API_KEY --name gnk-asg-image-proxy
