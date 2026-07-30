@@ -77,13 +77,18 @@ function parsirajKolumnu(putanja) {
   return { ...zaglavlje, tekst };
 }
 
-async function dohvatiSliku(upit) {
+async function dohvatiSliku(upit, rezervna) {
   try {
     const r = await fetch(WORKER_SLIKE + '?upit=' + encodeURIComponent(upit));
-    if (!r.ok) return null;
-    const d = await r.json();
-    return d.rezultati?.[0] || null;   // prvi rezultat; rucni odabir ostaje moguc uredivanjem .md prije pokretanja
-  } catch { return null; }
+    if (r.ok) {
+      const d = await r.json();
+      const prva = d.rezultati?.[0];
+      if (prva) return prva;
+    }
+  } catch {}
+  // Nema prave fotografije - koristi rezervnu (npr. grb kluba) ako je zadana u .md zaglavlju.
+  if (rezervna) return { url: rezervna, autor: null, licenca: 'službeni grb/logo', izvor_poveznica: null };
+  return null;
 }
 
 async function glavna() {
@@ -101,7 +106,7 @@ async function glavna() {
   const k = parsirajKolumnu(resolve(RED_MAPA, odabrana));
   console.log(`Obrađujem: ${k.slug} — ${k.naslov}`);
 
-  const slika = await dohvatiSliku(k.slika_upit || k.naslov);
+  const slika = await dohvatiSliku(k.slika_upit || k.naslov, k.slika_fallback);
   if (!slika) {
     console.log('  upozorenje: slika nije dohvaćena (Worker možda nije deployan ili nema rezultata)');
   } else {
