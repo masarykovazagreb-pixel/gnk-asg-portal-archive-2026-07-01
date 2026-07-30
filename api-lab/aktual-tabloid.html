@@ -8,9 +8,9 @@
 <style>
   @font-face{font-family:'system-black';src:local('Arial Black');}
   :root{
-    --papir:#F3EEE2;
-    --papir-2:#EAE3D2;
-    --tinta:#111013;
+    --papir:#E8D9A8;
+    --papir-2:#DCC98C;
+    --tinta:#1A1408;
     --crvena:#C81E1E;
     --crvena-t:#9A1616;
     --zlato:#D9A61D;
@@ -27,15 +27,21 @@
     margin:0;background:var(--papir);color:var(--tinta);
     font-family:var(--tijelo);
     background-image:
-      radial-gradient(circle at 20% 15%, rgba(0,0,0,.025) 0, transparent 45%),
-      radial-gradient(circle at 80% 60%, rgba(0,0,0,.02) 0, transparent 50%);
+      url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.28  0 0 0 0 0.2  0 0 0 0 0.08  0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      radial-gradient(circle at 12% 8%, rgba(90,60,10,.16) 0, transparent 30%),
+      radial-gradient(circle at 88% 22%, rgba(90,60,10,.12) 0, transparent 26%),
+      radial-gradient(circle at 30% 92%, rgba(90,60,10,.14) 0, transparent 32%),
+      radial-gradient(circle at 70% 70%, rgba(90,60,10,.10) 0, transparent 40%),
+      radial-gradient(ellipse at center, transparent 55%, rgba(40,26,6,.28) 100%);
+    background-blend-mode: multiply, multiply, multiply, multiply, multiply, normal;
   }
+  @media print{ body{ background-image:none } }
   a{color:inherit}
   ::selection{background:var(--crvena);color:var(--papir)}
 
   /* ————— TRAKA S DATUMOM ————— */
   .traka-dana{
-    background:var(--tinta);color:var(--papir);
+    background:linear-gradient(180deg,#221a0c,#150f06);color:var(--papir);
     font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
     padding:7px 20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;
   }
@@ -157,7 +163,7 @@
   @media (max-width:560px){.mreza{grid-template-columns:1fr}}
 
   .kartica{
-    background:var(--papir);border:2px solid var(--tinta);display:flex;flex-direction:column;
+    background:var(--papir-2);border:2px solid var(--tinta);box-shadow:inset 0 0 18px rgba(90,60,10,.10);display:flex;flex-direction:column;
     transition:transform .15s;
   }
   .kartica:hover{transform:translateY(-3px)}
@@ -200,7 +206,7 @@
 </div>
 
 <header class="masthead">
-  <div class="kicker-gore">Poslovni magazin grupe · izlazi kad ima vijesti</div>
+  <div class="kicker-gore">Poslovni magazin grupe · izlazi kad ima vijesti · God. I</div>
   <h1 class="naslov">AKTUAL</h1>
   <p class="podnaslov-masthead">Svijet, tržišta, znanost i kuhinja — iz izvora koje smo danas provjerili uživo, bez ijedne izmišljene rečenice.</p>
   <div class="pecat">STOP<br>TISKA</div>
