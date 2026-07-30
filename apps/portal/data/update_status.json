@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-07-30T14:36:05+00:00",
+  "updated_at": "2026-07-30T17:52:40+00:00",
   "news": {
-    "updated_at": "2026-07-30T14:36:05+00:00",
+    "updated_at": "2026-07-30T17:52:40+00:00",
     "status": "ok",
     "engine": "github_actions_rss_refresh_v4_retention_policy",
     "cadence": "hourly at minute 17 UTC plus manual workflow_dispatch",
@@ -15,24 +15,24 @@
     "storage_policy": "public_latest_100_archive_all_older_prune_oldest_1000_repeatedly_when_archive_exceeds_2000",
     "public_items": 150,
     "max_public_items": 150,
-    "archive_items": 1376,
+    "archive_items": 1251,
     "archive_prune_trigger": 2000,
     "archive_delete_oldest_batch": 1000,
-    "archive_items_before_prune": 4376,
+    "archive_items_before_prune": 4251,
     "archive_prune_batches": 3,
     "discarded_archive_overflow_items": 3000,
-    "fetched_candidates": 3400,
-    "duplicates_or_blocked_removed": 850,
+    "fetched_candidates": 3413,
+    "duplicates_or_blocked_removed": 566,
     "request_timeout_seconds": 10,
     "network_workers": 1,
     "share_previews_ready": 0,
     "by_group": {
       "economy": 36,
-      "regije": 12,
-      "international": 32,
       "digital-assets": 26,
-      "hrvatska": 16,
       "technology": 20,
+      "international": 32,
+      "regije": 12,
+      "hrvatska": 16,
       "digital-workforce-simulation": 8
     },
     "errors": [
@@ -68,13 +68,13 @@
       }
     ],
     "preview_errors": [],
-    "checked_at": "2026-07-30T14:36:05+00:00",
-    "last_attempt_at": "2026-07-30T14:36:05+00:00",
+    "checked_at": "2026-07-30T17:52:40+00:00",
+    "last_attempt_at": "2026-07-30T17:52:40+00:00",
     "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-07-30T14:36:05+00:00",
+    "last_successful_refresh_at": "2026-07-30T17:52:40+00:00",
     "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 38.15
+    "runtime_seconds": 27.94
   },
   "dw_integration_debug_temporary": {
     "raw_len": 7124,
