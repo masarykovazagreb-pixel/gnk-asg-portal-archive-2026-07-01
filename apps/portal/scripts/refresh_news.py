@@ -148,20 +148,23 @@ SOURCES = [
     # --- Cibona - agregacija tudjih clanaka preko Google News RSS -----
     ("cibona", "kosarka", "Google News Cibona", "https://news.google.com/rss/search?q=Cibona+ko%C5%A1arka&hl=hr&gl=HR&ceid=HR:hr"),
     ("cibona", "kosarka", "Sportske Novosti Kosarka", "https://sportnet.hr/rss/kosarka/"),
+    ("cibona", "kosarka", "Google News Cibona Slike", "https://news.google.com/rss/search?q=Cibona&hl=hr&gl=HR&ceid=HR:hr&num=20"),
 
     # --- Lifestyle: kucni ljubimci, kultura i film, zanimljivosti -----
     ("ljubimci", "zivotinje", "Google News Pets", "https://news.google.com/rss/search?q=cute+animals+pets+viral&hl=en-US&gl=US&ceid=US:en"),
-    ("ljubimci", "zivotinje", "The Dodo", "https://www.thedodo.com/feeds/latest"),
+    ("ljubimci", "zivotinje", "The Dodo", "https://www.thedodo.com/feeds/news.rss"),
+    ("ljubimci", "zivotinje", "Good News for Pets", "https://goodnewsforpets.com/feed"),
     ("kultura", "film", "Google News Film", "https://news.google.com/rss/search?q=film+movies+entertainment+culture&hl=en-US&gl=US&ceid=US:en"),
     ("kultura", "film", "Variety Film", "https://variety.com/v/film/feed/"),
     ("kultura", "film", "Hollywood Reporter", "https://www.hollywoodreporter.com/feed/"),
     ("zanimljivosti", "obitelj", "Google News Fun", "https://news.google.com/rss/search?q=heartwarming+family+kids+good+news&hl=en-US&gl=US&ceid=US:en"),
     ("zanimljivosti", "obitelj", "Good News Network", "https://www.goodnewsnetwork.org/feed/"),
+    ("zanimljivosti", "obitelj", "Positive.News", "https://www.positive.news/feed/"),
 
     # --- Auti i stil - agregacija, globalni upiti -----
     ("auti", "supercars", "Google News Supercars", "https://news.google.com/rss/search?q=supercars+luxury+cars+new+models&hl=en-US&gl=US&ceid=US:en"),
-    ("auti", "supercars", "Motor1", "https://www.motor1.com/rss/news/"),
-    ("auti", "supercars", "Top Gear", "https://www.topgear.com/feeds/all"),
+    ("auti", "supercars", "Car and Driver", "https://www.caranddriver.com/rss/all.xml/"),
+    ("auti", "supercars", "Motor Authority", "https://www.motorauthority.com/rss/rss.xml"),
     ("stil", "moda", "Google News Fashion", "https://news.google.com/rss/search?q=fashion+style+beauty+trends&hl=en-US&gl=US&ceid=US:en"),
     ("stil", "moda", "Vogue", "https://www.vogue.com/feed/rss"),
 ]
