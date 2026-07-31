@@ -1,0 +1,48 @@
+name: Kolumne Static Pages Contract
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/materialize-kolumne-pages-v1.mjs'
+      - 'apps/portal/data/kolumne.json'
+      - '.github/workflows/kolumne-static-pages-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate static column page materialization
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate source data and generated page contracts
+        run: node scripts/materialize-kolumne-pages-v1.mjs
+
+      - name: Materialize pages in temporary output
+        run: node scripts/materialize-kolumne-pages-v1.mjs --write --output .tmp/kolumne-pages
+
+      - name: Verify generated HTML contracts
+        run: |
+          set -euo pipefail
+          count=$(find .tmp/kolumne-pages -name index.html -type f | wc -l | tr -d ' ')
+          test "$count" -ge 1
+          while IFS= read -r file; do
+            grep -q '<link rel="canonical"' "$file"
+            grep -q 'application/ld+json' "$file"
+            grep -q 'Nermin Sefić' "$file"
+            grep -q 'GNK ASG d.o.o.' "$file"
+            grep -q 'Povratak na AKTUAL MEDIA' "$file"
+          done < <(find .tmp/kolumne-pages -name index.html -type f -print)
+
+      - name: Confirm no protected source was modified
+        run: git diff --exit-code -- apps/portal/data/kolumne.json apps/portal/data/editorial-registry.json apps/portal/gnk-aktual/index.html apps/portal/en/gnk-aktual/index.html apps/portal/_headers
