@@ -61,11 +61,12 @@ jobs:
           }
           main();
           '
-      - name: Commit
+      - name: Commit na jedinstvenu granu
         run: |
           git config user.name "gnk-asg-bot"
           git config user.email "it@gnk-asg.hr"
+          BRANCH="tumblr-rezultat-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
           git add apps/portal/data/tmp-tumblr
-          git diff --cached --quiet || git commit -m "Privremeno: Tumblr OAuth korak 1 rezultat"
-          git pull --rebase origin main
-          git push
+          git commit -m "Tumblr OAuth korak 1 rezultat"
+          git push origin "$BRANCH"
