@@ -1,0 +1,41 @@
+name: Objavi 15 dnevno (PRIPREMA, nije aktivno)
+
+# NAPOMENA O OPSEGU: isti obrazac kao kolumne-tjedni-ciklus.yml. `schedule`
+# je zakomentiran, `if: false` sprjecava izvrsavanje. Prevod svakog teksta
+# je i dalje osoban, kvalitativan rad - ovaj workflow NE prevodi automatski,
+# samo objavljuje ono sto vec ima englesku verziju spremljenu u registru.
+# Aktivacija je odluka gazde, ne moja - vidi IZVJESTAJ-AUTOMATIZACIJE za
+# kontekst zasto se automatski deploy/objava drzi na oprezu.
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 6-22/1 * * *'   # svaki sat od 6 do 22h, po jedan pokusaj -
+  #                                skripta sama uzima do 15 spremnih po danu
+  #                                preko dnevnog brojaca u published.json
+
+permissions:
+  contents: write
+
+jobs:
+  objavi:
+    if: ${{ false }}   # ukloniti tek uz izricito odobrenje aktivacije
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Dev.to - objavi spremno, do 15 po pokretanju
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          DEVTO_PER_RUN: '15'
+        run: node scripts/devto-publish-v1.mjs --live
+      - name: Commit
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/devto-content/
+          git diff --cached --quiet || git commit -m "Dev.to: dnevna serija"
+          git push
