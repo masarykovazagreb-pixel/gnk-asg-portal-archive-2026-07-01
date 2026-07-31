@@ -41,7 +41,7 @@ const writeJson = (p, data) => { mkdirSync(dirname(p), { recursive: true }); wri
 
 const unescapeHtml = (s = '') => s
   .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-  .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+  .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x27;/gi, "'");
 
 function readArticle(routePath) {
   const file = resolve(PORTAL, '.' + routePath, 'index.html');
