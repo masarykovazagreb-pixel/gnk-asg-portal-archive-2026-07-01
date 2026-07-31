@@ -72,13 +72,19 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-komentari{margin-bottom:36px;display:none}
 .ak-komentari.vidljivo{display:block}
 .ak-komentari h2{font-family:'Arial Black',Impact,sans-serif;font-size:1.1rem;margin:0 0 12px;text-transform:uppercase;letter-spacing:.02em;border-bottom:3px solid var(--ak-line);padding-bottom:8px}
-.ak-komentari-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.ak-komentar-istaknuti{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:3px solid var(--ak-line);background:var(--ak-panel);text-decoration:none;color:inherit;margin-bottom:16px}
+@media(max-width:640px){.ak-komentar-istaknuti{grid-template-columns:1fr}}
+.ak-komentar-istaknuti img{width:100%;height:100%;min-height:220px;object-fit:cover}
+.ak-komentar-istaknuti .tijelo{padding:20px 22px}
+.ak-komentar-istaknuti .oznaka{font-family:Arial,sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ak-red);display:block;margin-bottom:8px}
+.ak-komentar-istaknuti h3{font-family:'Arial Black',Impact,sans-serif;font-size:1.4rem;line-height:1.15;margin:0 0 10px}
+.ak-komentar-istaknuti p{font-size:.92rem;color:var(--ak-sub);margin:0;font-family:Arial,sans-serif;line-height:1.5}
+.ak-komentari-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 .ak-komentar-kartica{border:2px solid var(--ak-line);background:var(--ak-panel);text-decoration:none;color:inherit;display:flex;flex-direction:column;overflow:hidden}
 .ak-komentar-kartica img{width:100%;aspect-ratio:16/9;object-fit:cover}
-.ak-komentar-kartica .tijelo{padding:12px 14px}
-.ak-komentar-kartica .oznaka{font-family:Arial,sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ak-red);display:block;margin-bottom:6px}
-.ak-komentar-kartica h3{font-family:'Arial Black',Impact,sans-serif;font-size:.95rem;line-height:1.25;margin:0 0 6px}
-.ak-komentar-kartica p{font-size:.8rem;color:var(--ak-sub);margin:0;font-family:Arial,sans-serif;line-height:1.4}
+.ak-komentar-kartica .tijelo{padding:10px 12px}
+.ak-komentar-kartica .oznaka{font-family:Arial,sans-serif;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ak-red);display:block;margin-bottom:5px}
+.ak-komentar-kartica h3{font-family:'Arial Black',Impact,sans-serif;font-size:.86rem;line-height:1.22;margin:0}
 @media(max-width:640px){.ak-pecat{position:static;margin:12px auto 0;transform:rotate(-4deg)}}
 .ak-card img{width:100%;height:150px;object-fit:cover;display:block;background:#1c1d26}
 .ak-card-body{padding:16px}
@@ -185,6 +191,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   </div>
   <div class="ak-komentari" id="akKomentari">
     <h2>Komentari — Nermin Sefić</h2>
+    <div id="akKomentarIstaknuti"></div>
     <div class="ak-komentari-grid" id="akKomentariGrid"></div>
   </div>
   <div class="ak-kuhinja">
@@ -558,17 +565,31 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 
   // Komentari - cita editorial-registry.json, prikazuje najnovijih 6 tipa "komentar".
   // Odvojeno od AKTUAL vijesti (drugi izvor, druga svrha) - ako ovo padne, ne dira nista drugo.
+  // Komentari - cita editorial-registry.json. Prva/najnovija se istice
+  // veca, sa slikom; sljedecih 14 (ukupno zadnjih 15) u mrezi, takodjer
+  // sa slikom. Sve otvara u novom prozoru. Odvojeno od AKTUAL vijesti.
   fetch('/data/editorial-registry.json?v=' + Date.now(), { cache: 'no-store' })
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(d){
-      var stavke = (d && d.items || []).filter(function(i){ return i.type === 'komentar'; });
+      var stavke = (d && d.items || []).filter(function(i){ return i.type === 'komentar' || i.type === 'objava'; });
       if (!stavke.length) return;
       stavke.sort(function(a,b){ return new Date(b.publishedAt||0) - new Date(a.publishedAt||0); });
-      var html = stavke.slice(0,6).map(function(k){
-        return '<a class="ak-komentar-kartica" href="' + escH(k.url) + '">' +
+      var zadnjih15 = stavke.slice(0, 15);
+      var istaknuta = zadnjih15[0];
+      var ostalih = zadnjih15.slice(1);
+
+      if (istaknuta) {
+        document.getElementById('akKomentarIstaknuti').innerHTML =
+          '<a class="ak-komentar-istaknuti" href="' + escH(istaknuta.url) + '" target="_blank" rel="noopener">' +
+          (istaknuta.image ? '<img src="' + escH(istaknuta.image) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
+          '<div class="tijelo"><span class="oznaka">Komentar · Nermin Sefić</span><h3>' + escH(istaknuta.title) + '</h3><p>' +
+          escH((istaknuta.description||'').slice(0,160)) + '</p></div></a>';
+      }
+
+      var html = ostalih.map(function(k){
+        return '<a class="ak-komentar-kartica" href="' + escH(k.url) + '" target="_blank" rel="noopener">' +
           (k.image ? '<img src="' + escH(k.image) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
-          '<div class="tijelo"><span class="oznaka">Komentar</span><h3>' + escH(k.title) + '</h3><p>' +
-          escH((k.description||'').slice(0,110)) + '</p></div></a>';
+          '<div class="tijelo"><span class="oznaka">Komentar</span><h3>' + escH(k.title) + '</h3></div></a>';
       }).join('');
       document.getElementById('akKomentariGrid').innerHTML = html;
       document.getElementById('akKomentari').classList.add('vidljivo');
