@@ -2,7 +2,7 @@
 'use strict';
 const LEGACY_VERSION='GNK_CONTRAST_HARDENING_V2_20260714_DYNAMIC_RECHECK';
 const COMPAT_VERSION='GNK_CONTRAST_HARDENING_V3_20260714_GRADIENT_AND_PROTECTED_UI';
-const VERSION='GNK_CONTRAST_HARDENING_V4_20260731_FULL_DOCUMENT_RECHECK';
+const VERSION='GNK_CONTRAST_HARDENING_V4_20260714_ALL_PAGES_VISUAL_REPAIR';
 if(window.__GNK_CONTRAST_HARDENING_V4__)return;
 window.__GNK_CONTRAST_HARDENING_V4__=true;
 window.__GNK_CONTRAST_HARDENING_V3__=true;
@@ -292,24 +292,31 @@ function repair(root=document){
   document.documentElement.dataset.gnkContrastLegacyVersion=LEGACY_VERSION;
 }
 let queued=false;
-function queueRepair(){
+function queueRepair(root=document){
   if(queued)return;
   queued=true;
-  requestAnimationFrame(()=>{queued=false;repair(document)});
+  requestAnimationFrame(()=>{queued=false;repair(root)});
 }
 function boot(){
   repair(document);
-  [40,120,300,750,1500,3000,6000,12000,30000,60000].forEach(delay=>setTimeout(()=>repair(document),delay));
+  [120,300,750,1500,3000,6000,12000,30000,60000].forEach(delay=>setTimeout(()=>repair(document),delay));
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
 else boot();
 
-const observer=new MutationObserver(()=>queueRepair());
+const observer=new MutationObserver(records=>{
+  let root=document;
+  for(const record of records){
+    if(record.type==='attributes'){root=record.target;break}
+    for(const node of record.addedNodes)if(node.nodeType===1){root=node;break}
+  }
+  queueRepair(root);
+});
 observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style','hidden','data-theme']});
 setTimeout(()=>observer.disconnect(),300000);
 
 if('ResizeObserver'in window){
-  const resize=new ResizeObserver(()=>queueRepair());
+  const resize=new ResizeObserver(()=>queueRepair(document));
   resize.observe(document.documentElement);
   setTimeout(()=>resize.disconnect(),300000);
 }
