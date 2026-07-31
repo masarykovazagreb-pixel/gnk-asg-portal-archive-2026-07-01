@@ -1,0 +1,65 @@
+name: Obnovi evidenciju s Dev.to (jednokratno)
+
+on:
+  workflow_dispatch:
+    inputs:
+      devto_key:
+        description: "Dev.to API kljuc - samo za ovo pokretanje"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  obnovi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Maskiraj kljuc
+        run: echo "::add-mask::${{ inputs.devto_key }}"
+      - name: Povuci stvarne objave s racuna i uskladi evidenciju
+        env:
+          DEVTO_API_KEY: ${{ inputs.devto_key }}
+        run: |
+          node -e '
+          const fs = require("fs");
+          const REGISTRY = "apps/portal/data/editorial-registry.json";
+          const STATE = "apps/portal/data/devto-content/published.json";
+          const SITE = "https://gnk-asg.hr";
+
+          (async () => {
+            const r = await fetch("https://dev.to/api/articles/me/all?per_page=1000", {
+              headers: { "api-key": process.env.DEVTO_API_KEY }
+            });
+            if (!r.ok) { console.error("Greska:", r.status, await r.text()); process.exit(1); }
+            const clanci = await r.json();
+            console.log("Stvarnih objava na racunu:", clanci.length);
+
+            const registry = JSON.parse(fs.readFileSync(REGISTRY, "utf8"));
+            let state = { posted: {} };
+            try { state = JSON.parse(fs.readFileSync(STATE, "utf8")); } catch {}
+
+            let usklađeno = 0;
+            for (const c of clanci) {
+              // canonical_url je nas SITE + item.path - po tome nadjemo pravi zapis
+              const canon = c.canonical_url || "";
+              const item = (registry.items || []).find(i => canon === SITE + i.path);
+              if (!item) continue;
+              if (!state.posted[item.path]) {
+                state.posted[item.path] = { at: c.published_at || new Date().toISOString(), devtoUrl: c.url, id: c.id };
+                usklađeno++;
+              }
+            }
+            console.log("Novo uskladjenih zapisa:", usklađeno);
+            fs.writeFileSync(STATE, JSON.stringify(state, null, 2) + "\n", "utf8");
+          })();
+          '
+      - name: Commit
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/devto-content/published.json
+          git diff --cached --quiet || git commit -m "Dev.to: evidencija obnovljena iz stvarnog stanja racuna"
+          git push
