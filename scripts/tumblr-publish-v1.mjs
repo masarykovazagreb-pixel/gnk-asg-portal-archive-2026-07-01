@@ -77,13 +77,10 @@ async function objaviNaTumblru(clanak, item) {
   const url = `https://api.tumblr.com/v2/blog/${BLOG}/posts`;
   const body = {
     content: [
-      ...(clanak.image ? [{ type: 'image', media: [{ url: clanak.image }] }] : []),
-      { type: 'text', text: clanak.title, formatting: [{ start: 0, end: clanak.title.length, type: 'heading1' }] },
-      { type: 'text', text: clanak.paragraphs.join('\n\n') },
-      { type: 'text', text: `Autor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: ${SITE}${item.path}` },
+      { type: 'text', text: clanak.title },
+      { type: 'text', text: clanak.paragraphs.join('\n\n') + `\n\nAutor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: ${SITE}${item.path}` },
     ],
     tags: 'NerminSefic,GNKASG,GNKDINAMOLtd',
-    state: 'published',
   };
   const auth = oauthHeader('POST', url);
   const r = await fetch(url, {
