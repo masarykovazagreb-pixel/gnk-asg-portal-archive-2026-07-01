@@ -111,15 +111,16 @@ async function main() {
   const hrZapisiBezEn = svi.filter((i) => i.lang !== 'en' && !enZapisi.some((e) => e.path.includes(i.slug)));
 
   const pending = [];
-  for (const item of enZapisi) {
+  // Spremni prvi, uvijek - inace 150+ hrvatskih zapisa bez prijevoda ispuni
+  // cijelu seriju prije nego se uopce dodje do onih koji su stvarno spremni.
+  for (const item of enZapisi.sort((a, b) => new Date(a.publishedAt || 0) - new Date(b.publishedAt || 0))) {
     if (!item.path || state.posted[item.path]) continue;
     pending.push({ item, direktno: true });
   }
-  for (const item of hrZapisiBezEn) {
+  for (const item of hrZapisiBezEn.sort((a, b) => new Date(a.publishedAt || 0) - new Date(b.publishedAt || 0))) {
     if (!item.path || state.posted[item.path]) continue;
     pending.push({ item, direktno: false });
   }
-  pending.sort((a, b) => new Date(a.item.publishedAt || 0) - new Date(b.item.publishedAt || 0));
 
   console.log(`U registru ukupno: ${svi.length}. Cekaju na Dev.to: ${pending.length}.`);
 
