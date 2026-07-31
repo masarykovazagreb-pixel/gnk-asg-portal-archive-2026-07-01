@@ -31,6 +31,6 @@ jobs:
         run: |
           git config user.name "gnk-asg-bot"
           git config user.email "it@gnk-asg.hr"
-          git add apps/portal/data/devto-content/published.json
+          git add apps/portal/data/devto-content/
           git diff --cached --quiet || git commit -m "Dev.to: evidencija objavljenog"
           git push
