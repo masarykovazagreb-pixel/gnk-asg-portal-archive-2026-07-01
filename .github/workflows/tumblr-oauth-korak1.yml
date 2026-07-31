@@ -67,4 +67,5 @@ jobs:
           git config user.email "it@gnk-asg.hr"
           git add apps/portal/data/tmp-tumblr
           git diff --cached --quiet || git commit -m "Privremeno: Tumblr OAuth korak 1 rezultat"
+          git pull --rebase origin main
           git push
