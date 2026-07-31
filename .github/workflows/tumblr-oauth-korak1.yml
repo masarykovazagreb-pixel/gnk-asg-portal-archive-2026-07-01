@@ -22,13 +22,16 @@ jobs:
         run: |
           echo "::add-mask::${{ inputs.consumer_key }}"
           echo "::add-mask::${{ inputs.consumer_secret }}"
+      - uses: actions/checkout@v4
       - name: Zatrazi request token (OAuth 1.0a, HMAC-SHA1)
         env:
           CK: ${{ inputs.consumer_key }}
           CS: ${{ inputs.consumer_secret }}
         run: |
+          mkdir -p apps/portal/data/tmp-tumblr
           node -e '
           const crypto = require("crypto");
+          const fs = require("fs");
           const CK = process.env.CK, CS = process.env.CS;
 
           function nonce() { return crypto.randomBytes(16).toString("hex"); }
@@ -54,8 +57,14 @@ jobs:
 
             const r = await fetch(url, { method: "POST", headers: { Authorization: authHeader } });
             const text = await r.text();
-            console.log("STATUS:", r.status);
-            console.log("ODGOVOR:", text);
+            fs.writeFileSync("apps/portal/data/tmp-tumblr/rezultat.txt", "STATUS: " + r.status + "\nODGOVOR: " + text + "\n");
           }
           main();
           '
+      - name: Commit
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/tmp-tumblr
+          git commit -m "Privremeno: Tumblr OAuth korak 1 rezultat"
+          git push
