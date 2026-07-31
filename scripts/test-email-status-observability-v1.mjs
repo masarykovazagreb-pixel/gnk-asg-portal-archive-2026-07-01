@@ -78,7 +78,7 @@ for(const marker of [
 ])assert.match(dashboard,marker);
 
 for(const marker of [
-  /GNK_CONTRAST_HARDENING_V4_20260731_FULL_DOCUMENT_RECHECK/,
+  /GNK_CONTRAST_HARDENING_V4_20260714_ALL_PAGES_VISUAL_REPAIR/,
   /GNK_CONTRAST_HARDENING_V3_20260714_GRADIENT_AND_PROTECTED_UI/,
   /GNK_CONTRAST_HARDENING_V2_20260714_DYNAMIC_RECHECK/,
   /gradientColor/,
@@ -120,7 +120,7 @@ console.log(JSON.stringify({
   clickDestination:true,
   explicitReceiptConfirmation:true,
   forwardingReliable:false,
-  contrastRuntime:'v4-full-document-recheck',
+  contrastRuntime:'v4-all-pages-visual-repair',
   dashboard:'v5-click-tracking',
   productionVerifier:'v38-exact-release-proof'
 },null,2));
