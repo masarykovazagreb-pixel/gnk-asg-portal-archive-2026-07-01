@@ -103,20 +103,31 @@ async function main() {
   const registry = readJson(REGISTRY, { items: [] });
   const state = readJson(STATE, { posted: {} });
 
-  const pending = (registry.items || [])
-    .filter((i) => i.path && !state.posted[i.path])
-    .sort((a, b) => new Date(a.publishedAt || 0) - new Date(b.publishedAt || 0));
+  const svi = registry.items || [];
+  // Dvije vrste engleskog sadrzaja u registru:
+  //  1. Kolumne - HR zapis, EN stranica na zrcaljenoj putanji /en/<isti put>/
+  //  2. Komentari/objave - vlastiti EN zapis s poljem lang:"en" i vlastitim slugom
+  const enZapisi = svi.filter((i) => i.lang === 'en');
+  const hrZapisiBezEn = svi.filter((i) => i.lang !== 'en' && !enZapisi.some((e) => e.path.includes(i.slug)));
 
-  console.log(`U registru ukupno: ${(registry.items || []).length}. Cekaju na Dev.to: ${pending.length}.`);
+  const pending = [];
+  for (const item of enZapisi) {
+    if (!item.path || state.posted[item.path]) continue;
+    pending.push({ item, direktno: true });
+  }
+  for (const item of hrZapisiBezEn) {
+    if (!item.path || state.posted[item.path]) continue;
+    pending.push({ item, direktno: false });
+  }
+  pending.sort((a, b) => new Date(a.item.publishedAt || 0) - new Date(b.item.publishedAt || 0));
+
+  console.log(`U registru ukupno: ${svi.length}. Cekaju na Dev.to: ${pending.length}.`);
 
   const batch = pending.slice(0, PER_RUN);
   const rezultat = { poslano: 0, preskoceno_bez_en: 0, preskoceno_bez_sadrzaja: 0, greske: [] };
 
-  for (const item of batch) {
-    // NAPOMENA JEZIKA: dok se historijski tekstovi ne prevedu, ovo ce
-    // preskociti gotovo sve - to je namjerno, ne bug. Kolumne koje dobiju
-    // englesku verziju proci ce odmah.
-    const clanakEn = readEnglishArticle(item.path);
+  for (const { item, direktno } of batch) {
+    const clanakEn = direktno ? readArticle(item.path) : readEnglishArticle(item.path);
     if (!clanakEn) {
       rezultat.preskoceno_bez_en++;
       continue;
