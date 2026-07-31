@@ -1,0 +1,67 @@
+name: Tumblr OAuth korak 1 v2 - request token (jednokratno)
+
+on:
+  workflow_dispatch:
+    inputs:
+      consumer_key:
+        required: true
+        type: string
+      consumer_secret:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  zatrazi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Maskiraj
+        run: |
+          echo "::add-mask::${{ inputs.consumer_key }}"
+          echo "::add-mask::${{ inputs.consumer_secret }}"
+      - uses: actions/checkout@v4
+      - name: Sve u jednom - dohvati i commitaj
+        env:
+          CK: ${{ inputs.consumer_key }}
+          CS: ${{ inputs.consumer_secret }}
+        run: |
+          set -e
+          mkdir -p apps/portal/data/tmp-tumblr
+          node <<'EOF' > apps/portal/data/tmp-tumblr/rezultat.txt 2>&1 || echo "NODE JE PAO, vidi iznad"
+          const crypto = require("crypto");
+          const CK = process.env.CK, CS = process.env.CS;
+          function nonce() { return crypto.randomBytes(16).toString("hex"); }
+          function pct(s) { return encodeURIComponent(s).replace(/[!*()']/g, c => "%" + c.charCodeAt(0).toString(16).toUpperCase()); }
+          const url = "https://www.tumblr.com/oauth/request_token";
+          const params = {
+            oauth_callback: "https://gnk-asg.hr",
+            oauth_consumer_key: CK,
+            oauth_nonce: nonce(),
+            oauth_signature_method: "HMAC-SHA1",
+            oauth_timestamp: String(Math.floor(Date.now()/1000)),
+            oauth_version: "1.0",
+          };
+          const baseParams = Object.keys(params).sort().map(k => pct(k)+"="+pct(params[k])).join("&");
+          const baseString = "POST&" + pct(url) + "&" + pct(baseParams);
+          const signingKey = pct(CS) + "&";
+          const signature = crypto.createHmac("sha1", signingKey).update(baseString).digest("base64");
+          params.oauth_signature = signature;
+          const authHeader = "OAuth " + Object.keys(params).sort().map(k => pct(k)+"=\"" +pct(params[k])+"\"").join(", ");
+          console.log("Salje se zahtjev...");
+          fetch(url, { method: "POST", headers: { Authorization: authHeader } })
+            .then(async r => { console.log("STATUS:", r.status); console.log("ODGOVOR:", await r.text()); })
+            .catch(e => console.log("FETCH GRESKA:", e.message));
+          EOF
+          sleep 3
+          echo "--- sadrzaj datoteke ---"
+          cat apps/portal/data/tmp-tumblr/rezultat.txt
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          BRANCH="tumblr-v2-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-tumblr
+          git commit -m "Tumblr OAuth v2 rezultat"
+          git push origin "$BRANCH"
