@@ -32,7 +32,7 @@ assert.match(contrast,/__GNK_CONTRAST_HARDENING_V3__/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V4__/);
 assert.match(contrast,/GNK_CONTRAST_HARDENING_V2_20260714_DYNAMIC_RECHECK/);
 assert.match(contrast,/GNK_CONTRAST_HARDENING_V3_20260714_GRADIENT_AND_PROTECTED_UI/);
-assert.match(contrast,/GNK_CONTRAST_HARDENING_V4_20260731_FULL_DOCUMENT_RECHECK/);
+assert.match(contrast,/GNK_CONTRAST_HARDENING_V4_20260714_ALL_PAGES_VISUAL_REPAIR/);
 assert.match(contrast,/targetRatio\(el\)/);
 assert.match(contrast,/current\+(?:0)?\.05<target/);
 assert.match(contrast,/MutationObserver/);
@@ -62,15 +62,6 @@ assert.match(newsBackend,/while\(retained\.length>=TOTAL_RETENTION_CAP\)/);
 assert.doesNotMatch(newsBackend,/slice\(0,500\)/);
 
 assert.match(transport,/from 'cloudflare:email'/);
-// 2026-07-27: sendBrandedEmail was refactored so each recipient gets
-// their OWN uniquely-tracked MIME body (own tracking pixel + receipt
-// link embedded per-recipient), fixing a real bug where delivery/open
-// tracking never worked because the old shared-raw-MIME approach sent
-// raw EmailMessage objects that bypassed the email-status-tracking
-// proxy's structured-payload expectations entirely. The literal
-// "new EmailMessage(prepared.from,recipient,prepared.raw)" call shape
-// is gone by design -- assert the NEW shape and the tracking
-// integration instead of the old one.
 assert.match(transport,/new EmailMessage\(base\.from,recipient,raw\)/);
 assert.match(transport,/createTrackedMessage/);
 assert.match(transport,/assembleMime\(base,htmlForRecipient\)/);
