@@ -29,7 +29,7 @@ const STATE = resolve('apps/portal/data/devto-content/published.json');
 const SITE = 'https://gnk-asg.hr';
 
 const PER_RUN = Number(process.env.DEVTO_PER_RUN || 6);
-const PAUSE_MS = Number(process.env.DEVTO_PAUSE_MS || 3000);
+const PAUSE_MS = Number(process.env.DEVTO_PAUSE_MS || 300000);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const BASE_TAGS = ['business', 'croatia']; // Dev.to: max 4 oznake, samo alfanumericke, bez razmaka
