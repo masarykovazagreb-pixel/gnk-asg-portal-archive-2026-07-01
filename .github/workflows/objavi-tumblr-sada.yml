@@ -1,0 +1,46 @@
+name: Objavi na Tumblr sada (jednokratno)
+
+on:
+  workflow_dispatch:
+    inputs:
+      consumer_key: { required: true, type: string }
+      consumer_secret: { required: true, type: string }
+      token: { required: true, type: string }
+      token_secret: { required: true, type: string }
+      per_run: { required: false, type: string, default: '2' }
+
+permissions:
+  contents: write
+
+jobs:
+  objavi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Maskiraj
+        run: |
+          echo "::add-mask::${{ inputs.consumer_key }}"
+          echo "::add-mask::${{ inputs.consumer_secret }}"
+          echo "::add-mask::${{ inputs.token }}"
+          echo "::add-mask::${{ inputs.token_secret }}"
+      - name: Objavi
+        env:
+          TUMBLR_CONSUMER_KEY: ${{ inputs.consumer_key }}
+          TUMBLR_CONSUMER_SECRET: ${{ inputs.consumer_secret }}
+          TUMBLR_TOKEN: ${{ inputs.token }}
+          TUMBLR_TOKEN_SECRET: ${{ inputs.token_secret }}
+          TUMBLR_PER_RUN: ${{ inputs.per_run }}
+        run: node scripts/tumblr-publish-v1.mjs --live
+      - name: Commit na jedinstvenu granu
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          BRANCH="tumblr-objave-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tumblr-content/
+          git commit -m "Tumblr: evidencija objavljenog"
+          git push origin "$BRANCH"
