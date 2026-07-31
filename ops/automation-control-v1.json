@@ -1,0 +1,132 @@
+{
+  "version": "GNK_ASG_AUTOMATION_CONTROL_V1",
+  "effectiveFrom": "2026-07-29T16:42:00+02:00",
+  "timezone": "Europe/Zagreb",
+  "recoveryCheckpoint": {
+    "branch": "checkpoint/recovery-20260729-1617-zagreb",
+    "sha": "c38578c057655af8439aa23197cd141f90433850",
+    "createdAt": "2026-07-29T16:17:00+02:00"
+  },
+  "globalRules": {
+    "singleWriterPerResource": true,
+    "directWritesToMainForbiddenForNewAutomation": true,
+    "publicationRequiresCanonical200": true,
+    "externalDistributionRequiresCanonicalSuccess": true,
+    "duplicateExternalPublicationForbidden": true,
+    "failedQualityGateBlocksPublication": true,
+    "minimumPreparedEditorialDays": 7,
+    "replenishWhenRemainingDaysAtOrBelow": 2,
+    "humanApprovalRequiredFor": [
+      "new external publishing destination",
+      "legal or medical claims",
+      "material financial claims",
+      "changes to secrets, DNS, routes or production bindings"
+    ]
+  },
+  "editorialIdentity": {
+    "author": "Nermin Sefić",
+    "editor": "Nermin Sefić",
+    "euPublisher": "GNK ASG d.o.o.",
+    "internationalPublisher": "GNK DINAMO Ltd.",
+    "requiredHashtags": [
+      "#NerminSefić",
+      "#NerminSefic",
+      "#GNKASG",
+      "#GNKASGdoo",
+      "#GNKDINAMOLtd"
+    ]
+  },
+  "editorialCadence": {
+    "regularArticles": {
+      "preserveExistingApprovedCadence": true,
+      "rollingPreparedDays": 7,
+      "replenishTriggerDaysRemaining": 2
+    },
+    "dailyReview": {
+      "frequency": "daily",
+      "publishLocalTime": "20:30",
+      "minimumWords": 1500,
+      "targetWords": 2200,
+      "minimumVerifiedSources": 5,
+      "minimumInternalLinks": 3,
+      "minimumVisuals": 3,
+      "requiresOriginalAnalysis": true,
+      "destinations": ["portal"],
+      "externalDistribution": "disabled-until-separately-approved"
+    },
+    "weeklyReview": {
+      "frequency": "weekly",
+      "day": "SU",
+      "publishLocalTime": "18:00",
+      "minimumWords": 3500,
+      "targetWords": 5000,
+      "minimumVerifiedSources": 10,
+      "minimumInternalLinks": 8,
+      "minimumVisuals": 5,
+      "minimumOriginalCharts": 2,
+      "requiresOriginalAnalysis": true,
+      "destinations": ["portal", "blogger", "linkedin"],
+      "distributionOrder": ["portal", "blogger", "linkedin"],
+      "linkedinMode": "blocked-until-publishing-connector-or-endpoint-verified"
+    }
+  },
+  "imageStandard": {
+    "genericTemplateOnly": false,
+    "uniqueVisualPerArticle": true,
+    "requiredFormats": [
+      {"name": "web-og", "aspectRatio": "1.91:1", "minimumWidth": 1200},
+      {"name": "article-hero", "aspectRatio": "16:9", "minimumWidth": 1600},
+      {"name": "social-square", "aspectRatio": "1:1", "minimumWidth": 1080}
+    ],
+    "requiredChecks": [
+      "file exists",
+      "dimensions valid",
+      "no duplicate visual hash in current package",
+      "topic-relevant alt text",
+      "no malformed people or unreadable embedded text",
+      "open graph image reachable before publication"
+    ]
+  },
+  "qualityGates": [
+    "source URLs reachable",
+    "facts and dates internally consistent",
+    "canonical URL unique",
+    "title and description unique",
+    "author and publisher schema present",
+    "required image formats present",
+    "internal links valid",
+    "no duplicate scheduled route",
+    "publication time in Europe/Zagreb",
+    "canonical page returns HTTP 200 before external distribution"
+  ],
+  "knownCurrentSchedules": [
+    {"job": "Site Health Check", "frequency": "3/day", "localTimes": ["06:00", "12:00", "18:00"]},
+    {"job": "SEO Audit Refresh", "frequency": "daily", "localTime": "04:40"},
+    {"job": "Sync Webshop Products", "frequency": "daily", "localTime": "05:35"},
+    {"job": "Provjera workera", "frequency": "daily", "localTime": "06:40"},
+    {"job": "LinkedIn Daily Post Rotation", "frequency": "daily", "localTime": "07:00", "mode": "preview-only"},
+    {"job": "GNK ASG News Refresh", "frequency": "every-2-hours", "minute": 17},
+    {"job": "SEO and News Visibility Cycle", "frequency": "every-2-hours", "minute": 17},
+    {"job": "Macro Market Data Refresh", "frequency": "every-3-hours", "minute": 25},
+    {"job": "Mirror Sync to Masarykova Backup", "frequency": "every-4-hours"},
+    {"job": "Refresh index live data", "frequency": "hourly", "minute": 5},
+    {"job": "Market Pulse Refresh", "frequency": "hourly", "minute": 10},
+    {"job": "Publish Scheduled Editorial Content", "frequency": "hourly", "minute": 20},
+    {"job": "Refresh GNKC Index", "frequency": "hourly", "minute": 20},
+    {"job": "Blog Mirror Publish", "frequency": "hourly", "minute": 30, "maximumPerRun": 6},
+    {"job": "Generate Digital Workforce Newsroom Pages", "frequency": "every-6-hours"}
+  ],
+  "resourceOwnership": {
+    "news.json": {"status": "conflict-under-investigation", "targetWriterCount": 1},
+    "bloggerPublishState": {"status": "single-writer-required", "targetWriterCount": 1},
+    "editorialSchedule": {"status": "single-writer-required", "targetWriterCount": 1},
+    "marketData": {"status": "split-by-explicit-resource", "targetWriterCountPerResource": 1},
+    "digitalWorkforceMetrics": {"status": "to-be-created", "targetWriterCount": 1}
+  },
+  "emergencyControls": {
+    "globalPublishKillSwitchRequired": true,
+    "channelKillSwitchesRequired": ["portal", "blogger", "linkedin"],
+    "rollbackBranch": "checkpoint/recovery-20260729-1617-zagreb",
+    "automaticSuspendAfterConsecutiveFailures": 3
+  }
+}
