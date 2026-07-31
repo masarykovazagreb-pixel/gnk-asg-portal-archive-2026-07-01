@@ -134,10 +134,19 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-st-stavka a:hover{color:var(--ak-zlato)}
 .ak-st-broj{font-family:'Arial Black',sans-serif;color:var(--ak-red-dim);margin-right:8px}
 
-.ak-kuhinja{border:3px solid var(--ak-line);border-radius:4px;background:var(--ak-panel);padding:20px 24px;margin-bottom:36px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.ak-kuhinja{border:3px solid var(--ak-line);border-radius:4px;background:var(--ak-panel);margin-bottom:36px;overflow:hidden}
+.ak-kuhinja-glava{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--ak-line)}
 .ak-kuhinja h2{font-family:'Arial Black',Impact,sans-serif;font-size:1.15rem;margin:0 0 4px}
 .ak-kuhinja p{font-size:.88rem;color:var(--ak-sub);margin:0;font-family:Arial,sans-serif}
 .ak-kuhinja a{font-family:Arial,sans-serif;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);text-decoration:none;border-bottom:2px solid var(--ak-red);padding-bottom:1px;white-space:nowrap}
+.ak-recept-dana{display:grid;grid-template-columns:260px 1fr;gap:0}
+@media(max-width:640px){.ak-recept-dana{grid-template-columns:1fr}}
+.ak-recept-dana img{width:100%;height:100%;object-fit:cover;display:block;min-height:200px}
+.ak-recept-tijelo{padding:18px 22px}
+.ak-recept-tijelo .oznaka{font-family:Arial,sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ak-red);display:block;margin-bottom:6px}
+.ak-recept-tijelo h3{font-family:'Arial Black',Impact,sans-serif;font-size:1.15rem;margin:0 0 8px}
+.ak-recept-tijelo .sastojci{font-size:.82rem;color:var(--ak-sub);font-family:Arial,sans-serif;margin:0 0 8px;line-height:1.5}
+.ak-recept-tijelo .priprema{font-size:.86rem;color:var(--ak-text);margin:0 0 10px;line-height:1.5}
 </style>
 <style id="gnk-gold-watermark-style">
 #gnk-gold-watermark{position:fixed;right:-40px;bottom:-40px;width:340px;height:340px;opacity:.07;pointer-events:none;z-index:1;filter:grayscale(0) saturate(1.4);}
@@ -163,8 +172,11 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     <div id="akStopTiskaLista"></div>
   </div>
   <div class="ak-kuhinja">
-    <div><h2>Kuhinja</h2><p>789 recepata sa slikama, iz knjige World Table.</p></div>
-    <a href="/world-table/">Otvori recepte →</a>
+    <div class="ak-kuhinja-glava">
+      <div><h2>Kuhinja — recept dana</h2><p>789 recepata sa slikama, iz knjige World Table. Novi recept svaki dan.</p></div>
+      <a href="/world-table/">Sve recepte →</a>
+    </div>
+    <div class="ak-recept-dana" id="akReceptDana"></div>
   </div>
   <p class="ak-status" id="akStatus">Učitavanje najnovijih vijesti…</p>
   <div id="akFeatured"></div>
@@ -503,6 +515,30 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     document.getElementById('akStopTiskaLista').innerHTML = html;
     document.getElementById('akStopTiska').classList.add('vidljivo');
   }).catch(function(){});
+
+  // Recept dana - deterministicki po danu u godini, cita postojecu datoteku
+  // world-recipes.json (nema novog sadrzaja - koristi vec objavljenu knjigu).
+  fetch('/assets/world-cookbook/world-recipes.json')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      var obroci = d && d.meals;
+      if (!obroci || !obroci.length) return;
+      var danUGodini = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+      var recept = obroci[danUGodini % obroci.length];
+      var sastojci = (recept.ingredients || []).slice(0, 6)
+        .map(function(s){ return s.ingredient; }).join(' · ');
+      var priprema = (recept.method || '').slice(0, 220);
+      document.getElementById('akReceptDana').innerHTML =
+        '<img src="/assets/world-cookbook/' + escH(recept.image) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
+        '<div class="ak-recept-tijelo">' +
+        '<span class="oznaka">' + escH(recept.origin || '') + ' · ' + escH(recept.category || '') + '</span>' +
+        '<h3>' + escH(recept.name) + '</h3>' +
+        '<p class="sastojci">' + escH(sastojci) + '…</p>' +
+        '<p class="priprema">' + escH(priprema) + (priprema.length >= 220 ? '…' : '') + '</p>' +
+        '<a href="/world-table/" style="font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);text-decoration:none;border-bottom:2px solid var(--ak-red);padding-bottom:1px">Cijeli recept →</a>' +
+        '</div>';
+    })
+    .catch(function(){});
 })();
 </script>
 </body></html>
