@@ -1,0 +1,36 @@
+name: Objavi na Dev.to sada (jednokratno)
+
+on:
+  workflow_dispatch:
+    inputs:
+      devto_key:
+        description: "Dev.to API kljuc - koristi se samo u ovom pokretanju, nigdje se ne sprema kao secret"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  objavi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Maskiraj kljuc u logovima
+        run: echo "::add-mask::${{ inputs.devto_key }}"
+      - name: Objavi sve spremne clanke na Dev.to
+        env:
+          DEVTO_API_KEY: ${{ inputs.devto_key }}
+          DEVTO_PER_RUN: '200'
+        run: node scripts/devto-publish-v1.mjs --live
+      - name: Commit evidencije objavljenog
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/devto-content/published.json
+          git diff --cached --quiet || git commit -m "Dev.to: evidencija objavljenog"
+          git push
