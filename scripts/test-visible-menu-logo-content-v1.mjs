@@ -49,6 +49,13 @@ assert.match(workforceUi,/\/api\/public\/digital-workforce\//);
 assert.match(workforceUi,/data-dw-tab/);
 assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V3_20260719_FIRST_PARTY_PROVENANCE/);
 assert.match(workforceApi,/1573/);
+// 2026-07-26: newsroom/log dates used to be permanently fixed
+// (Date.UTC(2026,0,1+...)) regardless of the actual current date --
+// fixed to be relative to the same simulation start used by
+// bulletins/PLAN (2026-07-18) and filtered so only "already published"
+// items show, exactly like publishedBulletins() already did. Assert
+// the new day-relative mechanism is in place instead of the old
+// fixed-date literal.
 assert.match(workforceApi,/SIM_START_UTC/);
 assert.match(workforceApi,/publishedNewsroom/);
 assert.match(workforceApi,/publishedLog/);
@@ -79,7 +86,7 @@ assert.match(contrast,/__GNK_CONTRAST_HARDENING_V1__/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V2__/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V3__/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V4__/);
-assert.match(contrast,/GNK_CONTRAST_HARDENING_V4_20260731_FULL_DOCUMENT_RECHECK/);
+assert.match(contrast,/GNK_CONTRAST_HARDENING_V4_20260714_ALL_PAGES_VISUAL_REPAIR/);
 assert.match(contrast,/GNK_CONTRAST_HARDENING_V3_20260714_GRADIENT_AND_PROTECTED_UI/);
 assert.match(contrast,/GNK_CONTRAST_HARDENING_V2_20260714_DYNAMIC_RECHECK/);
 assert.match(contrast,/targetRatio\(el\)/);
@@ -126,4 +133,4 @@ for(const source of [signature,contract]){
  assert.doesNotMatch(source,/width="108"|height="111"/);
 }
 
-console.log(JSON.stringify({ok:true,menu:'visible-v6-complete-digital-workforce-suite',workforce:'aligned-1573-unique-first-last-full-identities-2026-dates',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-canonical-assets-v2',contrast:'hardened-v4-full-document-recheck',worker:'v38-over-v32-over-v31',deployPerformed:false},null,2));
+console.log(JSON.stringify({ok:true,menu:'visible-v6-complete-digital-workforce-suite',workforce:'aligned-1573-unique-first-last-full-identities-2026-dates',logo:'64x66-everywhere',editorial:'100-news-publications-analyses-commentary-canonical-assets-v2',contrast:'hardened-v4-all-pages-visual-repair',worker:'v38-over-v32-over-v31',deployPerformed:false},null,2));
