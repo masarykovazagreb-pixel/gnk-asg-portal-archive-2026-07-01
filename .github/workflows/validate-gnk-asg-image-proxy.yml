@@ -19,6 +19,7 @@ concurrency:
   group: gnk-asg-image-proxy-validation-${{ github.ref }}
   cancel-in-progress: true
 
+# Validation-only workflow. Production deployment remains delegated to the protected deploy workflow.
 jobs:
   validate:
     runs-on: ubuntu-latest
