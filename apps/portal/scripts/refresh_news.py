@@ -173,6 +173,18 @@ SOURCES = [
     ("auti", "supercars", "Motor Authority", "https://www.motorauthority.com/rss/rss.xml"),
     ("stil", "moda", "Google News Fashion", "https://news.google.com/rss/search?q=fashion+style+beauty+trends&hl=en-US&gl=US&ceid=US:en"),
     ("stil", "moda", "Vogue", "https://www.vogue.com/feed/rss"),
+
+    # --- Dodatne regije: Madjarska, Italija, Izrael, Jordan, Vijetnam -----
+    ("regije", "madjarska", "Google News Hungary", "https://news.google.com/rss/search?q=Hungary+business+economy+investment&hl=en-US&gl=US&ceid=US:en"),
+    ("regije", "italija", "Google News Italy", "https://news.google.com/rss/search?q=Italy+business+economy+investment&hl=en-US&gl=US&ceid=US:en"),
+    ("regije", "izrael", "Google News Israel", "https://news.google.com/rss/search?q=Israel+business+economy+technology&hl=en-US&gl=US&ceid=US:en"),
+    ("regije", "jordan", "Google News Jordan", "https://news.google.com/rss/search?q=Jordan+business+economy+tourism&hl=en-US&gl=US&ceid=US:en"),
+    ("regije", "vijetnam", "Google News Vietnam", "https://news.google.com/rss/search?q=Vietnam+business+economy+investment&hl=en-US&gl=US&ceid=US:en"),
+
+    # --- Turizam - agregacija, globalni upiti, plus prava slikovna podloga -----
+    ("turizam", "putovanja", "Google News Travel", "https://news.google.com/rss/search?q=travel+tourism+destinations+world&hl=en-US&gl=US&ceid=US:en"),
+    ("turizam", "putovanja", "Lonely Planet", "https://www.lonelyplanet.com/rss/news"),
+    ("turizam", "putovanja", "CNTraveler", "https://www.cntraveler.com/feed/rss"),
 ]
 
 BLOCKED_TITLE_PATTERNS = [
