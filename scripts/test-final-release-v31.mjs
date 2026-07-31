@@ -32,7 +32,7 @@ assert.match(contrast,/__GNK_CONTRAST_HARDENING_V3__/);
 assert.match(contrast,/__GNK_CONTRAST_HARDENING_V4__/);
 assert.match(contrast,/GNK_CONTRAST_HARDENING_V2_20260714_DYNAMIC_RECHECK/);
 assert.match(contrast,/GNK_CONTRAST_HARDENING_V3_20260714_GRADIENT_AND_PROTECTED_UI/);
-assert.match(contrast,/GNK_CONTRAST_HARDENING_V4_20260714_ALL_PAGES_VISUAL_REPAIR/);
+assert.match(contrast,/GNK_CONTRAST_HARDENING_V4_20260731_FULL_DOCUMENT_RECHECK/);
 assert.match(contrast,/targetRatio\(el\)/);
 assert.match(contrast,/current\+(?:0)?\.05<target/);
 assert.match(contrast,/MutationObserver/);
