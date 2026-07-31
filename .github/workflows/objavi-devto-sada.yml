@@ -22,7 +22,12 @@ jobs:
           node-version: '22'
       - name: Maskiraj kljuc u logovima
         run: echo "::add-mask::${{ inputs.devto_key }}"
-      - name: Objavi sve spremne clanke na Dev.to
+      - name: Prvo azuriraj stare objave bez slike
+        env:
+          DEVTO_API_KEY: ${{ inputs.devto_key }}
+          DEVTO_PAUSE_MS: '10000'
+        run: node scripts/devto-publish-v1.mjs --azuriraj-stare --live
+      - name: Zatim objavi sve preostalo spremno
         env:
           DEVTO_API_KEY: ${{ inputs.devto_key }}
           DEVTO_PER_RUN: '8'
