@@ -185,6 +185,15 @@ SOURCES = [
     ("turizam", "putovanja", "Google News Travel", "https://news.google.com/rss/search?q=travel+tourism+destinations+world&hl=en-US&gl=US&ceid=US:en"),
     ("turizam", "putovanja", "Lonely Planet", "https://www.lonelyplanet.com/rss/news"),
     ("turizam", "putovanja", "CNTraveler", "https://www.cntraveler.com/feed/rss"),
+
+    # --- Glazba - nova rubrika -----
+    ("glazba", "muzika", "Google News Music", "https://news.google.com/rss/search?q=music+album+concert+premiere&hl=en-US&gl=US&ceid=US:en"),
+    ("glazba", "muzika", "Billboard", "https://www.billboard.com/feed/"),
+    ("glazba", "muzika", "Rolling Stone Music", "https://www.rollingstone.com/music/feed/"),
+
+    # --- Kultura prosirena: umjetnost, izlozbe, premijere -----
+    ("kultura", "umjetnost", "Google News Arts", "https://news.google.com/rss/search?q=art+exhibition+museum+gallery&hl=en-US&gl=US&ceid=US:en"),
+    ("kultura", "premijere", "Google News Premieres", "https://news.google.com/rss/search?q=premiere+theatre+opening+event&hl=en-US&gl=US&ceid=US:en"),
 ]
 
 BLOCKED_TITLE_PATTERNS = [
