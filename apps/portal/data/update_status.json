@@ -1,41 +1,41 @@
 {
-  "updated_at": "2026-07-31T09:19:26+00:00",
+  "updated_at": "2026-07-31T10:35:34+00:00",
   "news": {
-    "updated_at": "2026-07-31T09:19:26+00:00",
+    "updated_at": "2026-07-31T10:35:34+00:00",
     "status": "ok",
     "engine": "github_actions_rss_refresh_v4_retention_policy",
     "cadence": "hourly at minute 17 UTC plus manual workflow_dispatch",
     "source_success_policy": "publish_when_public_items_available_and_at_least_50_percent_sources_synced",
     "source_success_threshold": 0.5,
-    "source_success_ratio": 0.883,
+    "source_success_ratio": 0.92,
     "source_sync_status": "partial_with_public_fallback",
-    "configured_sources": 120,
-    "successful_sources": 106,
-    "failed_sources": 14,
+    "configured_sources": 113,
+    "successful_sources": 104,
+    "failed_sources": 9,
     "storage_policy": "public_latest_100_archive_all_older_prune_oldest_1000_repeatedly_when_archive_exceeds_2000",
     "public_items": 150,
     "max_public_items": 150,
-    "archive_items": 1557,
+    "archive_items": 1648,
     "archive_prune_trigger": 2000,
     "archive_delete_oldest_batch": 1000,
-    "archive_items_before_prune": 5557,
+    "archive_items_before_prune": 5648,
     "archive_prune_batches": 4,
     "discarded_archive_overflow_items": 4000,
-    "fetched_candidates": 4918,
-    "duplicates_or_blocked_removed": 704,
+    "fetched_candidates": 4915,
+    "duplicates_or_blocked_removed": 832,
     "request_timeout_seconds": 10,
     "network_workers": 1,
     "share_previews_ready": 0,
     "by_group": {
       "economy": 36,
-      "hrvatska": 16,
-      "regije": 12,
       "international": 32,
-      "digital-assets": 18,
-      "technology": 12,
-      "kultura": 4,
+      "hrvatska": 16,
+      "digital-assets": 17,
+      "technology": 14,
+      "regije": 12,
       "cibona": 8,
-      "stil": 4,
+      "stil": 3,
+      "kultura": 4,
       "digital-workforce-simulation": 8
     },
     "errors": [
@@ -65,6 +65,11 @@
         "error": "HTTP Error 404: Not Found"
       },
       {
+        "source": "Nature",
+        "group": "technology",
+        "error": "not well-formed (invalid token): line 14, column 4"
+      },
+      {
         "source": "Business Standard",
         "group": "regije",
         "error": "HTTP Error 403: Forbidden"
@@ -78,46 +83,16 @@
         "source": "Arab News Business",
         "group": "regije",
         "error": "HTTP Error 403: Forbidden"
-      },
-      {
-        "source": "The Dodo",
-        "group": "ljubimci",
-        "error": "HTTP Error 404: Not Found"
-      },
-      {
-        "source": "Reddit aww",
-        "group": "ljubimci",
-        "error": "HTTP Error 429: Too Many Requests"
-      },
-      {
-        "source": "Reddit UpliftingNews",
-        "group": "zanimljivosti",
-        "error": "HTTP Error 429: Too Many Requests"
-      },
-      {
-        "source": "Reddit MadeMeSmile",
-        "group": "zanimljivosti",
-        "error": "HTTP Error 429: Too Many Requests"
-      },
-      {
-        "source": "Motor Authority",
-        "group": "auti",
-        "error": "HTTP Error 404: Not Found"
-      },
-      {
-        "source": "Lonely Planet",
-        "group": "turizam",
-        "error": "HTTP Error 404: Not Found"
       }
     ],
     "preview_errors": [],
-    "checked_at": "2026-07-31T09:19:26+00:00",
-    "last_attempt_at": "2026-07-31T09:19:26+00:00",
+    "checked_at": "2026-07-31T10:35:34+00:00",
+    "last_attempt_at": "2026-07-31T10:35:34+00:00",
     "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-07-31T09:19:26+00:00",
+    "last_successful_refresh_at": "2026-07-31T10:35:34+00:00",
     "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 52.36
+    "runtime_seconds": 50.42
   },
   "dw_integration_debug_temporary": {
     "raw_len": 7124,
