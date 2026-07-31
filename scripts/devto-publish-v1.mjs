@@ -99,7 +99,54 @@ async function objaviNaDevto(clanak, item) {
   return r.json();
 }
 
+async function azurirajNaDevto(clanak, devtoId) {
+  const frontmatter = {
+    title: clanak.title.slice(0, 128),
+    tags: BASE_TAGS,
+    description: clanak.description.slice(0, 200),
+  };
+  if (clanak.image) frontmatter.cover_image = clanak.image;
+  const body_markdown = clanak.body_markdown_puni;
+
+  const r = await fetch(`https://dev.to/api/articles/${devtoId}`, {
+    method: 'PUT',
+    headers: { 'api-key': API_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ article: { ...frontmatter, body_markdown } }),
+  });
+  if (!r.ok) throw new Error(`Dev.to update ${r.status}: ${await r.text()}`);
+  return r.json();
+}
+
+async function azurirajStareBezSlike() {
+  const state = readJson(STATE, { posted: {} });
+  const registry = readJson(REGISTRY, { items: [] });
+  let azurirano = 0;
+  for (const [path, zapis] of Object.entries(state.posted)) {
+    const item = (registry.items || []).find((i) => i.path === path);
+    if (!item) continue;
+    const clanak = readArticle(item.path);
+    if (!clanak || !clanak.image) continue; // nema slike ni sad, nema sto azurirati
+    clanak.body_markdown_puni =
+      `${toMarkdown(clanak.paragraphs)}\n\n---\n*Autor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: [gnk-asg.hr](${SITE}${item.path})*`;
+    if (!LIVE) { console.log(`[PRIPREMA] bi azurirao sliku za: ${clanak.title}`); azurirano++; continue; }
+    try {
+      await azurirajNaDevto(clanak, zapis.id);
+      console.log(`Azurirano sa slikom: ${zapis.devtoUrl}`);
+      azurirano++;
+    } catch (e) {
+      console.error(`Greska pri azuriranju ${path}:`, e.message || e);
+    }
+    await sleep(PAUSE_MS);
+  }
+  return azurirano;
+}
+
 async function main() {
+  if (process.argv.includes('--azuriraj-stare')) {
+    const n = await azurirajStareBezSlike();
+    console.log(`\nAzurirano objava: ${n}`);
+    return;
+  }
   const registry = readJson(REGISTRY, { items: [] });
   const state = readJson(STATE, { posted: {} });
 
