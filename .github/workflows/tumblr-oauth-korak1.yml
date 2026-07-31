@@ -66,5 +66,5 @@ jobs:
           git config user.name "gnk-asg-bot"
           git config user.email "it@gnk-asg.hr"
           git add apps/portal/data/tmp-tumblr
-          git commit -m "Privremeno: Tumblr OAuth korak 1 rezultat"
+          git diff --cached --quiet || git commit -m "Privremeno: Tumblr OAuth korak 1 rezultat"
           git push
