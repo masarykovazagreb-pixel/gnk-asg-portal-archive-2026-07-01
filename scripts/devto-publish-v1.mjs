@@ -152,6 +152,9 @@ async function main() {
   }
 
   if (LIVE) writeJson(STATE, state);
+  writeJson(resolve('apps/portal/data/devto-content/zadnji-rezultat.json'), {
+    kad: new Date().toISOString(), ...rezultat,
+  });
   console.log('\nSazetak:', JSON.stringify(rezultat, null, 2));
 }
 
