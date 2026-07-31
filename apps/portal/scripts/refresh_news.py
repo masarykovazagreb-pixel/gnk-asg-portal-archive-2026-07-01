@@ -164,6 +164,8 @@ SOURCES = [
     ("zanimljivosti", "obitelj", "Good News Network", "https://www.goodnewsnetwork.org/feed/"),
     ("zanimljivosti", "obitelj", "Positive.News", "https://www.positive.news/feed/"),
     ("zanimljivosti", "obitelj", "Upworthy", "https://www.upworthy.com/rss"),
+    ("zanimljivosti", "obitelj", "Smithsonian Magazine", "https://www.smithsonianmag.com/rss/latest_articles/"),
+    ("zanimljivosti", "obitelj", "Mental Floss", "https://www.mentalfloss.com/rss.xml"),
 
     # --- Auti i stil - agregacija, globalni upiti -----
     ("auti", "supercars", "Google News Supercars", "https://news.google.com/rss/search?q=supercars+luxury+cars+new+models&hl=en-US&gl=US&ceid=US:en"),
