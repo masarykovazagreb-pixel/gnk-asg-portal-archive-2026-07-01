@@ -154,6 +154,8 @@ SOURCES = [
     # --- Lifestyle: kucni ljubimci, kultura i film, zanimljivosti -----
     ("ljubimci", "zivotinje", "Google News Pets", "https://news.google.com/rss/search?q=cute+animals+pets+viral&hl=en-US&gl=US&ceid=US:en"),
     ("ljubimci", "zivotinje", "Good News for Pets", "https://goodnewsforpets.com/feed"),
+    ("ljubimci", "zivotinje", "iHeartDogs", "https://iheartdogs.com/feed/"),
+    ("ljubimci", "zivotinje", "Catster", "https://www.catster.com/feed/"),
     ("ljubimci", "zivotinje", "Cattitude Daily", "https://cattitudedaily.com/feed"),
     ("kultura", "film", "Google News Film", "https://news.google.com/rss/search?q=film+movies+entertainment+culture&hl=en-US&gl=US&ceid=US:en"),
     ("kultura", "film", "Variety Film", "https://variety.com/v/film/feed/"),
