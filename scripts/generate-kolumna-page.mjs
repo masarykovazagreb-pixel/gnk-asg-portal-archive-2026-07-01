@@ -25,9 +25,19 @@ const SITE = 'https://gnk-asg.hr';
 
 const escH = (s) => String(s ?? '').replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]));
 
-function stranicaHtml(k) {
-  const putanja = `/gnk-aktual/kolumne/${k.slug}/`;
-  const odlomci = (k.tekst || '')
+function stranicaHtml(k, jezik) {
+  const en = jezik === 'en';
+  const putanja = en ? `/en/gnk-aktual/kolumne/${k.slug}/` : `/gnk-aktual/kolumne/${k.slug}/`;
+  const naslov = en ? (k.naslov_en || k.naslov) : k.naslov;
+  const seoNaslov = en ? (k.seo_naslov_en || k.seo_naslov) : k.seo_naslov;
+  const metaOpis = en ? (k.meta_opis_en || k.meta_opis) : k.meta_opis;
+  const tekst = en ? (k.tekst_en || k.tekst) : k.tekst;
+  const altPutanja = en ? `/gnk-aktual/kolumne/${k.slug}/` : `/en/gnk-aktual/kolumne/${k.slug}/`;
+  const altOznaka = en ? 'Čitaj na hrvatskom' : 'Read in English';
+  const natragOznaka = en ? '← Back to AKTUAL MEDIA' : '← Natrag na AKTUAL MEDIA';
+  const natragPutanja = en ? '/en/gnk-aktual/' : '/gnk-aktual/';
+
+  const odlomci = (tekst || '')
     .split(/\n\n+/)
     .map((p) => p.trim())
     .filter(Boolean)
@@ -35,43 +45,45 @@ function stranicaHtml(k) {
     .join('\n      ');
 
   const slikaTag = k.slika
-    ? `<img src="${escH(k.slika)}" alt="${escH(k.naslov)}" style="max-width:100%;border:3px solid #241C0E;margin-bottom:20px">`
+    ? `<img src="${escH(k.slika)}" alt="${escH(naslov)}" style="max-width:100%;border:3px solid #241C0E;margin-bottom:20px">`
     : '';
 
-  return `<!doctype html><html lang="hr"><head>
+  return `<!doctype html><html lang="${en ? 'en' : 'hr'}"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${escH(k.seo_naslov || k.naslov)} | AKTUAL MEDIA</title>
-<meta name="description" content="${escH(k.meta_opis || '')}">
+<title>${escH(seoNaslov || naslov)} | AKTUAL MEDIA</title>
+<meta name="description" content="${escH(metaOpis || '')}">
 <meta name="keywords" content="${escH((k.kljucne_rijeci || []).join(', '))}">
 <meta name="author" content="Nermin Sefić">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="${SITE}${putanja}">
+<link rel="alternate" hreflang="${en ? 'hr' : 'en'}" href="${SITE}${altPutanja}">
 <meta property="og:type" content="article">
-<meta property="og:title" content="${escH(k.seo_naslov || k.naslov)}">
-<meta property="og:description" content="${escH(k.meta_opis || '')}">
+<meta property="og:title" content="${escH(seoNaslov || naslov)}">
+<meta property="og:description" content="${escH(metaOpis || '')}">
 <meta property="og:url" content="${SITE}${putanja}">
 <meta property="og:image" content="${SITE}${escH(k.slika || '/assets/gnk-asg-social-card.png')}">
 <script type="application/ld+json">${JSON.stringify({
   '@context': 'https://schema.org', '@type': 'NewsArticle',
-  headline: k.naslov, description: k.meta_opis, url: SITE + putanja,
+  headline: naslov, description: metaOpis, url: SITE + putanja,
   author: { '@type': 'Person', name: 'Nermin Sefić' },
   publisher: { '@type': 'Organization', name: 'GNK ASG d.o.o.' },
-  datePublished: k.objavljeno,
+  datePublished: k.objavljeno, inLanguage: en ? 'en' : 'hr',
 })}</script>
 <style>
 body{margin:0;background:#F0E6C4;color:#241C0E;font-family:Georgia,serif;max-width:720px;margin:0 auto;padding:40px 20px}
 h1{font-family:'Arial Black',Impact,sans-serif;font-size:2rem;line-height:1.1}
 p{font-size:1.05rem;line-height:1.65;margin:0 0 16px}
-a.natrag{font-family:Arial,sans-serif;font-size:.8rem;font-weight:800;text-transform:uppercase;color:#C81E1E;text-decoration:none}
+a.natrag,a.alt-jezik{font-family:Arial,sans-serif;font-size:.8rem;font-weight:800;text-transform:uppercase;color:#C81E1E;text-decoration:none;display:inline-block;margin-bottom:6px}
 .oznaka{font-family:Arial,sans-serif;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#C81E1E;display:block;margin-bottom:10px}
 </style>
 </head>
 <body>
-<a class="natrag" href="/gnk-aktual/">← Natrag na AKTUAL MEDIA</a>
+<a class="natrag" href="${natragPutanja}">${natragOznaka}</a><br>
+<a class="alt-jezik" href="${altPutanja}">${altOznaka} →</a>
 <article>
-  <span class="oznaka">Kolumna · Nermin Sefić</span>
-  <h1>${escH(k.naslov)}</h1>
+  <span class="oznaka">${en ? 'Column' : 'Kolumna'} · Nermin Sefić</span>
+  <h1>${escH(naslov)}</h1>
   ${slikaTag}
   ${odlomci}
 </article>
@@ -79,10 +91,17 @@ a.natrag{font-family:Arial,sans-serif;font-size:.8rem;font-weight:800;text-trans
 }
 
 function generirajZaSlug(k) {
-  const putanja = resolve(PORTAL, 'gnk-aktual', 'kolumne', k.slug, 'index.html');
-  mkdirSync(dirname(putanja), { recursive: true });
-  writeFileSync(putanja, stranicaHtml(k), 'utf8');
+  const putanjaHr = resolve(PORTAL, 'gnk-aktual', 'kolumne', k.slug, 'index.html');
+  mkdirSync(dirname(putanjaHr), { recursive: true });
+  writeFileSync(putanjaHr, stranicaHtml(k, 'hr'), 'utf8');
   console.log(`Generirano: apps/portal/gnk-aktual/kolumne/${k.slug}/index.html`);
+
+  if (k.tekst_en) {
+    const putanjaEn = resolve(PORTAL, 'en', 'gnk-aktual', 'kolumne', k.slug, 'index.html');
+    mkdirSync(dirname(putanjaEn), { recursive: true });
+    writeFileSync(putanjaEn, stranicaHtml(k, 'en'), 'utf8');
+    console.log(`Generirano: apps/portal/en/gnk-aktual/kolumne/${k.slug}/index.html`);
+  }
 }
 
 const kolumneDoc = JSON.parse(readFileSync(KOLUMNE, 'utf8'));
