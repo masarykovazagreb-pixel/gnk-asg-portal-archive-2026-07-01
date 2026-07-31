@@ -1,0 +1,27 @@
+{
+  "version": "GNK_ASG_AUTOMATION_KILL_SWITCHES_V1",
+  "defaultMode": "hold",
+  "updatedAt": "2026-07-29T17:43:00+02:00",
+  "checkpoint": {
+    "branch": "checkpoint/recovery-20260729-1617-zagreb",
+    "sha": "c38578c057655af8439aa23197cd141f90433850"
+  },
+  "channels": {
+    "portalPublish": { "enabled": false, "reason": "stabilization" },
+    "bloggerPublish": { "enabled": false, "reason": "stabilization and quota control" },
+    "linkedinPublish": { "enabled": false, "reason": "publishing connector not yet verified" },
+    "mailSend": { "enabled": false, "reason": "no live send during stabilization" },
+    "newsWrite": { "enabled": false, "reason": "multiple-writer conflict under review" },
+    "marketRefresh": { "enabled": true, "reason": "read-only data refresh" },
+    "backupMirror": { "enabled": true, "reason": "recovery protection" },
+    "workerTelemetry": { "enabled": true, "reason": "observation only" }
+  },
+  "releaseRules": {
+    "requireGreenPremiumContract": true,
+    "requireCanonical200BeforeSyndication": true,
+    "requireExternalPostIdForSuccess": true,
+    "requireIdempotencyKey": true,
+    "forbidActionEndpointSmokePost": true,
+    "safeHealthMethods": ["GET", "HEAD", "OPTIONS"]
+  }
+}
