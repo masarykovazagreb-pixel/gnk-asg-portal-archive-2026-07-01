@@ -91,6 +91,13 @@ def main() -> int:
         fetched.extend(dw_items)
         print(f"digital-workforce newsroom: added {len(dw_items)} simulation items (clearly labeled, distinct category)")
 
+    # Cibona: gazda je odlucio da rubrika mora izlaziti bez obzira na sliku -
+    # stavke bez fotografije dobivaju sluzbeni grb kluba kao zadanu sliku,
+    # umjesto da se odbace filtrom za sliku niz dolje.
+    for item in fetched:
+        if item.get("group") == "cibona" and not item.get("image"):
+            item["image"] = "/assets/cibona-logo.png"
+
     existing_public = base.read_json(base.NEWS_PATH, [])
     existing_archive = base.read_json(base.ARCHIVE_PATH, [])
     merged = base.merge_unique(fetched, existing_public, existing_archive)
