@@ -359,9 +359,9 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 
   // Redoslijed rubrika na stranici. 'regije' je nova grupa (Indija/Azija/
   // Afrika/LatAm/Bliski istok); prikazuje se s podnaslovom po kategoriji.
-  var RUBRIKA_RED = ['hrvatska', 'international', 'regije', 'cibona', 'technology', 'digital-assets', 'ljubimci', 'kultura', 'zanimljivosti', 'auti', 'stil'];
-  var RUBRIKA_NASLOV = { hrvatska:'Hrvatska', international:'Svijet', regije:'Regije — svijet izvan zapadnih medija', cibona:'Cibona', technology:'Tehnologija', 'digital-assets':'Digitalna imovina', ljubimci:'Kućni ljubimci', kultura:'Kultura i film', zanimljivosti:'Zanimljivosti', auti:'Auti', stil:'Stil i moda' };
-  var REGIJA_NASLOV = { indija:'Indija', azija:'Azija', afrika:'Afrika', 'latinska-amerika':'Latinska Amerika', 'bliski-istok':'Bliski istok' };
+  var RUBRIKA_RED = ['hrvatska', 'international', 'regije', 'cibona', 'technology', 'digital-assets', 'ljubimci', 'kultura', 'zanimljivosti', 'auti', 'stil', 'turizam'];
+  var RUBRIKA_NASLOV = { hrvatska:'Hrvatska', international:'Svijet', regije:'Regije — svijet izvan zapadnih medija', cibona:'Cibona', technology:'Tehnologija', 'digital-assets':'Digitalna imovina', ljubimci:'Kućni ljubimci', kultura:'Kultura i film', zanimljivosti:'Zanimljivosti', auti:'Auti', stil:'Stil i moda', turizam:'Turizam' };
+  var REGIJA_NASLOV = { indija:'Indija', azija:'Azija', afrika:'Afrika', 'latinska-amerika':'Latinska Amerika', 'bliski-istok':'Bliski istok', madjarska:'Mađarska', italija:'Italija', izrael:'Izrael', jordan:'Jordan', vijetnam:'Vijetnam' };
 
   function karticaHtml(item){
     return '<article class="ak-card"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow"><img src="'+esc(item.image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'"></a><div class="ak-card-body"><h3><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a></h3><p>'+esc((item.summary||'').slice(0,120))+(item.summary&&item.summary.length>120?'…':'')+'</p><span class="ak-src">'+esc(item.source||'')+' · '+timeAgo(item.published_at)+'</span></div></article>';
