@@ -140,12 +140,26 @@ def main() -> int:
     #
     # Prvi prolaz uzima do MAX_PER_SOURCE po mediju i do CATEGORY_QUOTA po
     # kategoriji; ostatak se dodaje kronoloski da se popuni budzet.
+    # Kvote su prije zbrajale tocno 150 (cijeli PUBLIC_LIMIT) samo za pet
+    # starih kategorija, pa nove rubrike (regije/cibona/stil/kultura/...)
+    # nikad nisu dobile stvarno mjesto u konacnom izrezu - ordered[:real_slot_count]
+    # je bio ispunjen prije nego se do njih uopce doslo. Sada svaka nova
+    # rubrika ima eksplicitnu, garantiranu kvotu unutar istog budzeta.
     CATEGORY_QUOTA = {
-        "economy": 36,
-        "international": 32,
-        "technology": 30,
-        "digital-assets": 26,
-        "hrvatska": 26,
+        "economy": 20,
+        "international": 18,
+        "technology": 16,
+        "digital-assets": 14,
+        "hrvatska": 14,
+        "regije": 14,
+        "cibona": 8,
+        "kultura": 8,
+        "stil": 6,
+        "ljubimci": 6,
+        "auti": 6,
+        "turizam": 6,
+        "zanimljivosti": 6,
+        "glazba": 6,
     }
     MAX_PER_SOURCE = 8
 
