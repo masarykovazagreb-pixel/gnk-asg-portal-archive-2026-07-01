@@ -69,6 +69,16 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-card:hover{transform:translateY(-4px) scale(1.015);border-color:var(--ak-red);box-shadow:0 10px 24px rgba(0,0,0,.18)}
 .ak-pecat{position:absolute;top:0;right:16px;width:84px;height:84px;border:3px solid var(--ak-red);border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;transform:rotate(12deg);color:var(--ak-red);font-family:'Arial Black',Impact,sans-serif;font-size:11px;line-height:1.15;letter-spacing:.02em;background:var(--ak-bg)}
 .ak-brand-tag{display:block;font-family:Arial,sans-serif;font-size:.78rem;font-weight:800;letter-spacing:.14em;color:var(--ak-red);margin:0 0 12px}
+.ak-komentari{margin-bottom:36px;display:none}
+.ak-komentari.vidljivo{display:block}
+.ak-komentari h2{font-family:'Arial Black',Impact,sans-serif;font-size:1.1rem;margin:0 0 12px;text-transform:uppercase;letter-spacing:.02em;border-bottom:3px solid var(--ak-line);padding-bottom:8px}
+.ak-komentari-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.ak-komentar-kartica{border:2px solid var(--ak-line);background:var(--ak-panel);text-decoration:none;color:inherit;display:flex;flex-direction:column;overflow:hidden}
+.ak-komentar-kartica img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.ak-komentar-kartica .tijelo{padding:12px 14px}
+.ak-komentar-kartica .oznaka{font-family:Arial,sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ak-red);display:block;margin-bottom:6px}
+.ak-komentar-kartica h3{font-family:'Arial Black',Impact,sans-serif;font-size:.95rem;line-height:1.25;margin:0 0 6px}
+.ak-komentar-kartica p{font-size:.8rem;color:var(--ak-sub);margin:0;font-family:Arial,sans-serif;line-height:1.4}
 @media(max-width:640px){.ak-pecat{position:static;margin:12px auto 0;transform:rotate(-4deg)}}
 .ak-card img{width:100%;height:150px;object-fit:cover;display:block;background:#1c1d26}
 .ak-card-body{padding:16px}
@@ -172,6 +182,10 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   <div class="ak-stoptiska" id="akStopTiska">
     <h2>Stop tiska</h2><div class="prat">Znanost i društvo</div>
     <div id="akStopTiskaLista"></div>
+  </div>
+  <div class="ak-komentari" id="akKomentari">
+    <h2>Komentari — Nermin Sefić</h2>
+    <div class="ak-komentari-grid" id="akKomentariGrid"></div>
   </div>
   <div class="ak-kuhinja">
     <div class="ak-kuhinja-glava">
@@ -539,6 +553,25 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
         '<p class="priprema">' + escH(priprema) + (priprema.length >= 220 ? '…' : '') + '</p>' +
         '<a href="/world-table/" style="font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);text-decoration:none;border-bottom:2px solid var(--ak-red);padding-bottom:1px">Cijeli recept →</a>' +
         '</div>';
+    })
+    .catch(function(){});
+
+  // Komentari - cita editorial-registry.json, prikazuje najnovijih 6 tipa "komentar".
+  // Odvojeno od AKTUAL vijesti (drugi izvor, druga svrha) - ako ovo padne, ne dira nista drugo.
+  fetch('/data/editorial-registry.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      var stavke = (d && d.items || []).filter(function(i){ return i.type === 'komentar'; });
+      if (!stavke.length) return;
+      stavke.sort(function(a,b){ return new Date(b.publishedAt||0) - new Date(a.publishedAt||0); });
+      var html = stavke.slice(0,6).map(function(k){
+        return '<a class="ak-komentar-kartica" href="' + escH(k.url) + '">' +
+          (k.image ? '<img src="' + escH(k.image) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
+          '<div class="tijelo"><span class="oznaka">Komentar</span><h3>' + escH(k.title) + '</h3><p>' +
+          escH((k.description||'').slice(0,110)) + '</p></div></a>';
+      }).join('');
+      document.getElementById('akKomentariGrid').innerHTML = html;
+      document.getElementById('akKomentari').classList.add('vidljivo');
     })
     .catch(function(){});
 })();
