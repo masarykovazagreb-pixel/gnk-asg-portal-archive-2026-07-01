@@ -163,6 +163,7 @@ SOURCES = [
     ("zanimljivosti", "obitelj", "Google News Fun", "https://news.google.com/rss/search?q=heartwarming+family+kids+good+news&hl=en-US&gl=US&ceid=US:en"),
     ("zanimljivosti", "obitelj", "Good News Network", "https://www.goodnewsnetwork.org/feed/"),
     ("zanimljivosti", "obitelj", "Positive.News", "https://www.positive.news/feed/"),
+    ("zanimljivosti", "obitelj", "Upworthy", "https://www.upworthy.com/rss"),
 
     # --- Auti i stil - agregacija, globalni upiti -----
     ("auti", "supercars", "Google News Supercars", "https://news.google.com/rss/search?q=supercars+luxury+cars+new+models&hl=en-US&gl=US&ceid=US:en"),
@@ -183,6 +184,8 @@ SOURCES = [
 
     # --- Glazba - nova rubrika -----
     ("glazba", "muzika", "Google News Music", "https://news.google.com/rss/search?q=music+album+concert+premiere&hl=en-US&gl=US&ceid=US:en"),
+    ("glazba", "muzika", "NME", "https://www.nme.com/feed"),
+    ("glazba", "muzika", "Pitchfork", "https://pitchfork.com/feed/rss"),
     ("glazba", "muzika", "Billboard", "https://www.billboard.com/feed/"),
     ("glazba", "muzika", "Rolling Stone Music", "https://www.rollingstone.com/music/feed/"),
 
