@@ -1,0 +1,18 @@
+name: Dohvati sliku trzista (jednokratno)
+on: workflow_dispatch
+jobs:
+  dohvati:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p apps/portal/data/tmp-trzista
+          curl -s "https://gnk-asg.hr/api/slike?upit=financial+markets+trading+screens+data" -o apps/portal/data/tmp-trzista/slika.json
+          cat apps/portal/data/tmp-trzista/slika.json
+      - run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/tmp-trzista
+          git diff --cached --quiet || git commit -m "Privremeno: slika trzista"
+          git push
