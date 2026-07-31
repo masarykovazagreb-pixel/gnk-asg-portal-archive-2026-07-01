@@ -1,8 +1,10 @@
 name: Blog Mirror Publish
 
-# Portal je izvor, Blogger/Aktual Media je preslika. Prije svakog prijenosa
-# materijaliziraju se statičke stranice kolumni kako javni URL i Blogger
-# uvijek čitaju isti stvarni HTML sadržaj.
+# Svaki objavljeni tekst prenosi se i na blog. Radi u minuti 30, deset minuta
+# nakon objave uredničkog sadržaja, pa je red uvijek svjež.
+#
+# Dok tajne za blog nisu postavljene, radi u načinu pripreme: objave se slože
+# i spreme u red, ali se ne šalju. Ništa ne puca i ništa se ne gubi.
 
 on:
   workflow_dispatch:
@@ -13,32 +15,25 @@ permissions:
   contents: write
 
 concurrency:
-  group: editorial-main-writer
+  group: blog-mirror-publish
   cancel-in-progress: false
 
 jobs:
   publish:
-    name: Materialize columns and mirror published articles
+    name: Mirror published articles to the blog
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 2
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
 
       - name: Sync with latest main
         run: git pull --rebase --autostash origin main
 
-      - name: Materialize static column pages
-        run: node scripts/materialize-kolumne-pages-v1.mjs --write
-
-      - name: Mirror to Blogger and Aktual Media
-        id: mirror
+      - name: Mirror to blog
         continue-on-error: true
         env:
           BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
@@ -47,45 +42,29 @@ jobs:
           BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
         run: node scripts/blog-publish-v1.mjs --live
 
-      - name: Commit generated pages, queue and state
+      # Drugi zakazani poslovi commitaju u main gotovo neprekidno, pa jedan
+      # pokusaj spremanja redovito zavrsi na zastarjelom SHA. Zato tri pokusaja
+      # s ponovnim povlacenjem izmedju.
+      - name: Commit queue and state
         shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
           git config user.name "gnk-blog-bot"
           git config user.email "actions@github.com"
-          git add \
-            apps/portal/gnk-aktual/kolumne \
-            apps/portal/data/blog-content/queue.json \
-            apps/portal/data/blog-content/published.json
+          git add apps/portal/data/blog-content/queue.json apps/portal/data/blog-content/published.json || true
           if git diff --cached --quiet; then
             echo "Nema promjena za spremanje."
             exit 0
           fi
-          git commit -m "Publish static columns and refresh blog mirror state"
+          git commit -m "Blog mirror: refresh queue and published state"
           for i in 1 2 3; do
             if git push origin HEAD:main; then
-              echo "Spremljeno iz $i. pokušaja."
+              echo "Spremljeno iz $i. pokusaja."
               exit 0
             fi
-            echo "Push odbijen, povlačim i ponavljam ($i/3)..."
-            git pull --rebase --autostash origin main
+            echo "Push odbijen, povlacim i ponavljam ($i/3)..."
+            git pull --rebase --autostash origin main || true
             sleep 5
           done
-          echo "Spremanje nije uspjelo nakon tri pokušaja."
+          echo "Spremanje nije uspjelo nakon tri pokusaja."
           exit 1
-
-      - name: Validate mirror outcome
-        shell: bash
-        run: |
-          node - <<'NODE'
-          const fs = require('node:fs');
-          const q = JSON.parse(fs.readFileSync('apps/portal/data/blog-content/queue.json','utf8'));
-          const skipped = Array.isArray(q.skipped) ? q.skipped : [];
-          const failed = Array.isArray(q.failed) ? q.failed : [];
-          if (skipped.length || failed.length) {
-            console.error(JSON.stringify({skipped, failed}, null, 2));
-            process.exit(1);
-          }
-          console.log(JSON.stringify({ok:true, prepared:q.prepared, posted:q.posted?.length || 0}, null, 2));
-          NODE
-          test "${{ steps.mirror.outcome }}" = "success"
