@@ -150,13 +150,10 @@ SOURCES = [
     ("cibona", "kosarka", "Sportske Novosti Kosarka", "https://sportnet.hr/rss/kosarka/"),
     ("cibona", "kosarka", "Google News Cibona Slike", "https://news.google.com/rss/search?q=Cibona&hl=hr&gl=HR&ceid=HR:hr&num=20"),
     ("cibona", "kosarka", "24sata Kosarka", "https://www.24sata.hr/feeds/sport.xml"),
-    ("cibona", "kosarka", "Reddit CroatianBasketball", "https://www.reddit.com/r/kosarka/.rss"),
 
     # --- Lifestyle: kucni ljubimci, kultura i film, zanimljivosti -----
     ("ljubimci", "zivotinje", "Google News Pets", "https://news.google.com/rss/search?q=cute+animals+pets+viral&hl=en-US&gl=US&ceid=US:en"),
-    ("ljubimci", "zivotinje", "The Dodo", "https://www.thedodo.com/feeds/news.rss"),
     ("ljubimci", "zivotinje", "Good News for Pets", "https://goodnewsforpets.com/feed"),
-    ("ljubimci", "zivotinje", "Reddit aww", "https://www.reddit.com/r/aww/.rss"),
     ("ljubimci", "zivotinje", "Cattitude Daily", "https://cattitudedaily.com/feed"),
     ("kultura", "film", "Google News Film", "https://news.google.com/rss/search?q=film+movies+entertainment+culture&hl=en-US&gl=US&ceid=US:en"),
     ("kultura", "film", "Variety Film", "https://variety.com/v/film/feed/"),
@@ -164,13 +161,10 @@ SOURCES = [
     ("zanimljivosti", "obitelj", "Google News Fun", "https://news.google.com/rss/search?q=heartwarming+family+kids+good+news&hl=en-US&gl=US&ceid=US:en"),
     ("zanimljivosti", "obitelj", "Good News Network", "https://www.goodnewsnetwork.org/feed/"),
     ("zanimljivosti", "obitelj", "Positive.News", "https://www.positive.news/feed/"),
-    ("zanimljivosti", "obitelj", "Reddit UpliftingNews", "https://www.reddit.com/r/UpliftingNews/.rss"),
-    ("zanimljivosti", "obitelj", "Reddit MadeMeSmile", "https://www.reddit.com/r/MadeMeSmile/.rss"),
 
     # --- Auti i stil - agregacija, globalni upiti -----
     ("auti", "supercars", "Google News Supercars", "https://news.google.com/rss/search?q=supercars+luxury+cars+new+models&hl=en-US&gl=US&ceid=US:en"),
     ("auti", "supercars", "Car and Driver", "https://www.caranddriver.com/rss/all.xml/"),
-    ("auti", "supercars", "Motor Authority", "https://www.motorauthority.com/rss/rss.xml"),
     ("stil", "moda", "Google News Fashion", "https://news.google.com/rss/search?q=fashion+style+beauty+trends&hl=en-US&gl=US&ceid=US:en"),
     ("stil", "moda", "Vogue", "https://www.vogue.com/feed/rss"),
 
@@ -183,7 +177,6 @@ SOURCES = [
 
     # --- Turizam - agregacija, globalni upiti, plus prava slikovna podloga -----
     ("turizam", "putovanja", "Google News Travel", "https://news.google.com/rss/search?q=travel+tourism+destinations+world&hl=en-US&gl=US&ceid=US:en"),
-    ("turizam", "putovanja", "Lonely Planet", "https://www.lonelyplanet.com/rss/news"),
     ("turizam", "putovanja", "CNTraveler", "https://www.cntraveler.com/feed/rss"),
 
     # --- Glazba - nova rubrika -----
