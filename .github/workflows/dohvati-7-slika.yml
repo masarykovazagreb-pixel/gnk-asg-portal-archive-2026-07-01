@@ -1,0 +1,37 @@
+name: Dohvati 7 slika za EN objave (jednokratno)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  dohvati:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dohvati slike
+        run: |
+          mkdir -p apps/portal/data/tmp-slike-2
+          declare -A upiti=(
+            ["otpornost"]="crisis drill emergency response team meeting"
+            ["revizija"]="financial audit accountant reviewing documents"
+            ["konsolidirano"]="corporate group business skyscrapers finance"
+            ["partner"]="business handshake meeting negotiation"
+            ["metodologija1"]="data analytics dashboard charts graphs"
+            ["metodologija2"]="statistics research analyst working data"
+            ["pokazatelji"]="precision measurement instruments dashboard"
+          )
+          for kljuc in "${!upiti[@]}"; do
+            curl -s "https://gnk-asg.hr/api/slike?upit=$(python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))" "${upiti[$kljuc]}")" -o "apps/portal/data/tmp-slike-2/$kljuc.json"
+            echo "=== $kljuc ==="
+            cat "apps/portal/data/tmp-slike-2/$kljuc.json"
+          done
+      - name: Commit
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/tmp-slike-2
+          git diff --cached --quiet || git commit -m "Privremeno: 7 slika za EN objave"
+          git push
