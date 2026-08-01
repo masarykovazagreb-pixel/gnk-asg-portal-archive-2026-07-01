@@ -3,10 +3,14 @@ import { readFileSync } from 'node:fs';
 
 const script = readFileSync('scripts/devto-publish-resilient-v1.mjs', 'utf8');
 const workflow = readFileSync('.github/workflows/devto-mirror-publish.yml', 'utf8');
+const control = JSON.parse(readFileSync('ops/automation-control-v1.json', 'utf8'));
+const switches = JSON.parse(readFileSync('ops/automation-kill-switches.json', 'utf8'));
 
 const requiredScript = [
   "LIVE_REQUESTED && API_KEY.length > 0",
   "blocked-missing-secret",
+  "blocked-kill-switch",
+  "devtoPublishEnabled",
   "canonicalIsLive",
   "canonical_url: SITE + canonicalPath",
   "state.posted[entry.canonicalPath]",
@@ -17,21 +21,30 @@ const requiredWorkflow = [
   "concurrency:",
   "cancel-in-progress: false",
   "node-version: '24'",
-  "DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}",
+  "permissions:\n  contents: read",
   "workflow_dispatch:",
   "schedule:",
-  "git push origin HEAD:main",
+  "Preview queue without secrets",
+  "actions/upload-artifact@v4",
 ];
 
 const failures = [];
 for (const token of requiredScript) if (!script.includes(token)) failures.push(`script missing: ${token}`);
 for (const token of requiredWorkflow) if (!workflow.includes(token)) failures.push(`workflow missing: ${token}`);
 
-if (/continue-on-error:\s*true/.test(workflow)) failures.push('workflow must not hide publish failures');
-if (/DEVTO_API_KEY\s*=\s*['\"][^$]/.test(workflow)) failures.push('workflow contains a literal API key');
+if (/continue-on-error:\s*true/.test(workflow)) failures.push('workflow must not hide preview failures');
+if (/DEVTO_API_KEY/.test(workflow)) failures.push('preview workflow must not access DEVTO_API_KEY');
+if (/git\s+push/.test(workflow)) failures.push('new Dev.to automation must not push directly to main');
+if (/contents:\s*write/.test(workflow)) failures.push('scheduled preview must remain read-only');
+
+const schedule = (control.knownCurrentSchedules || []).find((entry) => entry.job === 'Dev.to Mirror Preview');
+if (!schedule || schedule.mode !== 'read-only') failures.push('automation registry missing read-only Dev.to preview schedule');
+if (control.globalRules?.directWritesToMainForbiddenForNewAutomation !== true) failures.push('direct-write protection is not enabled');
+if (switches.channels?.devtoPublish?.enabled !== false) failures.push('Dev.to live kill switch must default to disabled');
+if (!(control.emergencyControls?.channelKillSwitchesRequired || []).includes('devto')) failures.push('Dev.to channel kill switch is not registered');
 
 if (failures.length) {
   console.error(failures.join('\n'));
   process.exit(1);
 }
-console.log('Dev.to mirror contract is valid.');
+console.log('Dev.to mirror contract is valid and read-only by default.');
