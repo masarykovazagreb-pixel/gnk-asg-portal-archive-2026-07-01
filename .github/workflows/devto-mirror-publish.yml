@@ -1,0 +1,84 @@
+name: Dev.to Mirror Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      live:
+        description: 'Stvarno objavi na Dev.to'
+        required: true
+        default: false
+        type: boolean
+  schedule:
+    - cron: '45 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: devto-mirror-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Controlled Dev.to mirror
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Sync with latest main
+        run: git pull --rebase --autostash origin main
+
+      - name: Preview scheduled queue
+        if: github.event_name == 'schedule' || inputs.live != true
+        env:
+          DEVTO_PER_RUN: '3'
+        run: node scripts/devto-publish-resilient-v1.mjs
+
+      - name: Publish selected batch
+        if: github.event_name == 'workflow_dispatch' && inputs.live == true
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          DEVTO_PER_RUN: '3'
+          DEVTO_PAUSE_MS: '15000'
+          DEVTO_MAX_ATTEMPTS: '2'
+          DEVTO_BACKOFF_MS: '60000'
+        run: node scripts/devto-publish-resilient-v1.mjs --live
+
+      - name: Publish health summary
+        if: always()
+        run: |
+          if [ -s apps/portal/data/devto-content/health.json ]; then
+            node -e "const h=require('./apps/portal/data/devto-content/health.json'); console.log('## Dev.to mirror\n\n- Status: **'+h.conclusion+'**\n- Način: **'+h.mode+'**\n- Preostali red: **'+(h.pending ?? 0)+'**\n- Objavljeno: **'+(h.published ?? 0)+'**\n- Generirano: **'+h.generatedAt+'**\n')" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo '## Dev.to mirror' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Health zapis nije proizveden.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Commit state and health
+        if: always()
+        shell: bash
+        run: |
+          set -uo pipefail
+          git config user.name "gnk-devto-bot"
+          git config user.email "actions@github.com"
+          git add \
+            apps/portal/data/devto-content/published.json \
+            apps/portal/data/devto-content/health.json || true
+          if git diff --cached --quiet; then
+            echo "Nema promjena za spremanje."
+            exit 0
+          fi
+          git commit -m "Dev.to mirror: refresh state and health"
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git pull --rebase --autostash origin main || true
+            sleep 5
+          done
+          exit 1
