@@ -1,0 +1,22 @@
+name: Provjera tvrdnji (jednokratno)
+on: workflow_dispatch
+jobs:
+  provjera:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-check
+          for ruta in "/gnk-aktual/" "/en/gnk-aktual/" "/trgovina/" "/sitemap.xml" "/sitemap-index.xml" "/api/slike"; do
+            kod=$(curl -s -o /dev/null -w "%{http_code}" "https://gnk-asg.hr${ruta}")
+            echo "${kod} ${ruta}" >> apps/portal/data/tmp-check/rute.txt
+          done
+          cat apps/portal/data/tmp-check/rute.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="check-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-check
+          git commit -m "check"
+          git push origin "$BRANCH"
