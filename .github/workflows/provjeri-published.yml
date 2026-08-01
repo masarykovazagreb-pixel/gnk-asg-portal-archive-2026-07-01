@@ -1,0 +1,43 @@
+name: Provjeri published status (jednokratno)
+
+on:
+  workflow_dispatch:
+    inputs:
+      devto_key:
+        description: "kljuc"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  provjeri:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Maskiraj
+        run: echo "::add-mask::${{ inputs.devto_key }}"
+      - name: Provjeri published polje
+        env:
+          DEVTO_KEY: ${{ inputs.devto_key }}
+        run: |
+          mkdir -p apps/portal/data/tmp-published-check
+          curl -s "https://dev.to/api/articles/me/all?per_page=1000" -H "api-key: $DEVTO_KEY" -o apps/portal/data/tmp-published-check/svi.json
+          python3 << 'PYEOF' > apps/portal/data/tmp-published-check/rezultat.txt
+          import json
+          d = json.load(open('apps/portal/data/tmp-published-check/svi.json'))
+          for a in d:
+              print(a['id'], '| published:', a.get('published'), '| published_at:', a.get('published_at'), '|', a['title'][:50])
+          PYEOF
+          cat apps/portal/data/tmp-published-check/rezultat.txt
+      - name: Commit
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          BRANCH="published-check-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-published-check/rezultat.txt
+          git commit -m "check"
+          git push origin "$BRANCH"
