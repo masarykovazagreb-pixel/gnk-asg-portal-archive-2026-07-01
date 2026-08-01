@@ -343,6 +343,12 @@ def parse_feed(raw: bytes, group: str, category: str, default_source: str):
 
 def make_record(title: str, url: str, summary: str, source: str, group: str, category: str, published_at: str, image: str = ""):
     title = clean_text(title)[:220]
+    clean_source = clean_text(source)[:80] or "Public RSS"
+    # Neki izvori (npr. Pitchfork recenzije albuma) imaju vrlo kratke naslove
+    # ("petal", "A*POP") koji ne prolaze donju granicu duljine kod validacije
+    # nizvodno. Dopunjujemo imenom izvora umjesto da odbacimo stvaran sadrzaj.
+    if len(title) < 8 and title:
+        title = f"{title} — {clean_source}"[:220]
     summary = clean_text(summary)[:360]
     url = url.strip()
     if url.startswith("http://"):
@@ -355,8 +361,8 @@ def make_record(title: str, url: str, summary: str, source: str, group: str, cat
         "title": title,
         "url": url,
         "summary": summary or title,
-        "source": clean_text(source)[:80] or "Public RSS",
-        "region": clean_text(source)[:80] or group,
+        "source": clean_source,
+        "region": clean_source or group,
         "group": group,
         "category": category,
         "published_at": published_at,
