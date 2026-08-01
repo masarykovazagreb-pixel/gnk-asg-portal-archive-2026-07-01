@@ -1,9 +1,8 @@
-name: Refresh index live data
+name: Refresh index market data
 
 on:
   schedule:
-    # Podatci naslovnice mijenjaju se oko jedanaest puta dnevno, a posao se
-    # vrtio 96 puta. Svaki sat pokriva stvarnu ucestalost s dosta zaliha.
+    # Tržišni podatci naslovnice osvježavaju se jednom na sat, u minuti 05 UTC.
     - cron: '5 * * * *'
   workflow_dispatch:
   pull_request:
@@ -11,20 +10,18 @@ on:
     paths:
       - '.github/workflows/refresh-index-live-data.yml'
       - 'scripts/refresh_index_live_data.py'
+      - 'scripts/refresh_index_market_only.py'
+      - 'scripts/validate_index_market_data.py'
       - 'apps/portal/assets/market.js'
-      - 'apps/portal/assets/news-live.js'
       - 'apps/portal/data/market.json'
       - 'apps/portal/data/market_indices.json'
       - 'apps/portal/data/fast_market_status.json'
-      - 'apps/portal/data/news.json'
-      - 'apps/portal/data/news_archive.json'
-      - 'apps/portal/data/news-status.json'
 
 permissions:
   contents: read
 
 concurrency:
-  group: refresh-index-live-data-${{ github.event_name }}
+  group: refresh-index-market-data-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
@@ -39,21 +36,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Refresh and validate public index feeds
-        run: python scripts/refresh_index_live_data.py
-      - name: Confirm freshness contract
-        run: python scripts/validate_index_live_data.py
-      - name: Upload refreshed data evidence
+      - name: Refresh public index market feeds
+        run: python scripts/refresh_index_market_only.py
+      - name: Confirm market freshness contract
+        run: python scripts/validate_index_market_data.py
+      - name: Upload refreshed market evidence
         uses: actions/upload-artifact@v4
         with:
-          name: refreshed-index-live-data
+          name: refreshed-index-market-data
           path: |
             apps/portal/data/market.json
             apps/portal/data/market_indices.json
             apps/portal/data/fast_market_status.json
-            apps/portal/data/news.json
-            apps/portal/data/news_archive.json
-            apps/portal/data/news-status.json
           if-no-files-found: error
           retention-days: 3
 
@@ -70,15 +64,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Refresh and validate public index feeds
+      - name: Refresh and validate public index market feeds
         run: |
-          python scripts/refresh_index_live_data.py
-          python scripts/validate_index_live_data.py
-      - name: Commit refreshed public data
+          python scripts/refresh_index_market_only.py
+          python scripts/validate_index_market_data.py
+      - name: Commit refreshed public market data
         run: |
           git config user.name 'gnk-asg-live-data-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add apps/portal/data/market.json apps/portal/data/market_indices.json apps/portal/data/fast_market_status.json apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/news-status.json
+          git add apps/portal/data/market.json apps/portal/data/market_indices.json apps/portal/data/fast_market_status.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Refresh index market and business news data [skip ci]'
+          git commit -m 'Refresh index market data [skip ci]'
           git push origin HEAD:main
