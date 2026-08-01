@@ -8,8 +8,8 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           mkdir -p apps/portal/data/tmp-4s
-          curl -s "https://gnk-asg.hr/api/slike?upit=investor+relations+meeting+presentation" -o apps/portal/data/tmp-4s/investitori.json
-          curl -s "https://gnk-asg.hr/api/slike?upit=industrial+control+system+factory+engineer" -o apps/portal/data/tmp-4s/ot.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=investor+meeting+quarterly+report+presentation" -o apps/portal/data/tmp-4s/investitori.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=industrial+control+room+factory+technician" -o apps/portal/data/tmp-4s/ot.json
       - run: |
           git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
           BRANCH="slike4-${{ github.run_id }}"
