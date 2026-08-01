@@ -1,0 +1,1476 @@
+RETRY VISUAL CONTRAST UNRESOLVED chromium-desktop /animacija/
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:31] "GET / HTTP/1.1" 200 -
+
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium-desktop] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /animacija/
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:33] "GET /animacija/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:34] "GET /animacija/uploads/Veaceslav%20Draganov%20-%20Empress.mp3 HTTP/1.1" 200 -
+
+[1A[2K  1) [chromium-desktop] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /animacija/ 
+
+    Error: /animacija/: [
+      {
+        "selector": "div > div:nth-of-type(3) > div > div:nth-of-type(2) > span:nth-of-type(2)",
+        "text": "GNK DINAMO Ltd.",
+        "ratio": 2.75,
+        "target": 3,
+        "color": "rgba(29, 31, 32, 0.45)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "backgroundImage": "none",
+        "fontSize": "26px",
+        "fontWeight": "500",
+        "repairedByRuntime": false
+      }
+    ]
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m1[39m
+
+      346 |     }
+      347 |     expect(audit.runtime.state, `${entry.route}: contrast runtime did not activate`).toBe('hardened-v4');
+    > 348 |     expect(audit.totalUnresolvedViolations, `${entry.route}: ${JSON.stringify(audit.unresolvedViolations, null, 2)}`).toBe(0);
+          |                                                                                                                       ^
+      349 |   });
+      350 | }
+      351 |
+        at /home/runner/work/gnk-asg-portal/gnk-asg-portal/apps/portal/tests/all-pages-visual-contrast.spec.js:348:119
+
+    attachment #2: contrast-screenshot (image/jpeg) ────────────────────────────────────────────────
+    test-results/playwright-runtime/all-pages-visual-contrast-rendered-contrast-animacija--chromium-desktop/attachments/contrast-screenshot-ed6ca5f5c06fe9b39240d72fa7d64e9f7f9d200b.jpg
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/playwright-runtime/all-pages-visual-contrast-rendered-contrast-animacija--chromium-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/playwright-runtime/all-pages-visual-contrast-rendered-contrast-animacija--chromium-desktop/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/playwright-runtime/all-pages-visual-contrast-rendered-contrast-animacija--chromium-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/playwright-runtime/all-pages-visual-contrast-rendered-contrast-animacija--chromium-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[1A[2K  1 failed
+    [chromium-desktop] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /animacija/ 
+Retry failed for chromium-desktop /animacija/: Command failed: npx playwright test tests/all-pages-visual-contrast.spec.js --project=chromium-desktop --workers=1 --grep rendered contrast /animacija/$ --reporter=line
+RETRY VISUAL CONTRAST UNRESOLVED chromium-desktop /en/gnk-aktual/
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:40] "GET / HTTP/1.1" 200 -
+
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium-desktop] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /en/gnk-aktual/
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:41] "GET /en/gnk-aktual/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:41] "GET /assets/public-unified-menu-v6.css?v=20260723-header-transparent-v3 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:41] "GET /assets/editorial/aktual-media-800.webp HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:41] "GET /assets/logo-gnk-asg-canonical.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:41] "GET /assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:41] "GET /data/news.json?v=1785589301926 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:41] "GET /assets/app.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/advanced.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/fina-panel.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-network.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-contrast.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/language.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/mobile-stability.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/portal-integration.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/seo-profile-link.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/menu-fix.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /sw.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/language-routing.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/quality-patch.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/status.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/i18n.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/portal-layout.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/public-unified-menu-v6.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/assistant.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/inline-assistant.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /index.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET / HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /sadrzaj/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /teme/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /teme/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /tehnologija/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /nermin-sefic/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /nermin-sefic/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/nermin-sefic/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/nermin-sefic/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /intelligence-desk/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /instalacija/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /financije/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /linkedin-daily/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /trzista/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /registri/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /trzista/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/markets/index.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/markets/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/finance/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/finance/index.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/technology/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/technology/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/intelligence-desk/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/registries/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/registries/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /insights-hr/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /en/insights/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /autorske-objave/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /podijeli/financije/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /podijeli/portal/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /podijeli/grupa/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /podijeli/trzista/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /podijeli/tehnologija/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /podijeli/vijesti/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /podijeli/bpp/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /podijeli/dokumenti/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/style.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/header-premium.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/advanced.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/menu-fix.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-network.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/logo-gnk-dinamo-ltd-group.png?v=20260720-transparent HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/seo-profile-link.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-contrast.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-globe-3d.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-location-insights.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/network-motion.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-location-weather.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-google-map.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-map-2d-geo.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-overview-panel.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-market-coverage.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/network-reading-layout.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] code 404, message File not found
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/home-reader-counter.css?v=20260601-home-button01 HTTP/1.1" 404 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/network-live-selection.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/portal-integration.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-google-map.css?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-location-weather.css?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/portal-status.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/command-centre.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/bitcoin-chart.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/market-expansion.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/floating-home-button.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/home-activity-counter.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/home-activity-model.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-google-map.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-location-weather.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/bpp-public-card.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/language.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/intelligence-desk.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/visual-gallery-link.js?v=20260601-home-button01 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/visual-gallery-picker.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/desk-hybrid.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/mobile-app.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/desk-search.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/floating-intelligence.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/public-sources.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/mobile-stability.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/site-share.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-mobile-accessible.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/market-centre.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/market-centre-panels.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/logo-gnk-asg.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/asg-gold-coin.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/gnk-asg-social-card.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/gnk-asg-social-card.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/share-financije.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/share-grupa.png HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/share-trzista.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/share-bpp.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/share-vijesti.png HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/share-tehnologija.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/share-teme.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/share-dokumenti.png HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/gnk-global-static-overview-accurate.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /favicon.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/favicon.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/app-icon-512.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/app-icon-192.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/i18n.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/language-routing.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/app.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/market.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/portal-navigation.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/status.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/live-market-pulse.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/bitcoin-chart.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/market-expansion.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/bpp-public-card.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/assistant.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/news-live.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/inline-assistant.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/desk-hybrid.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/intelligence-desk.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/desk-search.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/mobile-app.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/mobile-navigation.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/world-geography.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/floating-intelligence.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/network-motion.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-globe-3d.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-network.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-location-insights.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-map-2d-geo.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-map-selection-bridge.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-overview-panel.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-google-map.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-location-weather.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/network-selection-sync.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-market-coverage.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/command-centre.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/network-search-3d.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-map-pdf.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-globe-pdf.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-mobile-accessible.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/group-clarity.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/site-share.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/public-sources.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/content-share.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/hourly-data-disclosure.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/share-routing-fix.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/portal-layout.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:42] "GET /assets/public-tools.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/market-centre-data.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/market-constellation.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/desk_public_config.json HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/group_network.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/group_network_geo.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/public_sources.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/open_data.json HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/group_location_facts.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/stock_exchanges.json HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/asg_gold_asset.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/macro_market.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/daily_market_brief.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/media_monitor_status.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/media_approved.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /manifest.webmanifest HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /robots.txt HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /sitemap.xml HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /google46686328e30c759f.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/group_network.json?v=1785589303406 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/group_network_geo.json?v=1785589303408 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/group_location_facts.json?v=1785589303409 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/group_network.json?v=1785589303410 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/group_network_geo.json?v=1785589303414 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/group_location_facts.json?v=1785589303415 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/intelligence-desk.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/desk-hybrid.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/desk-search.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/floating-intelligence.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/market-expansion.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/index-live-hub-v1.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/bpp-public-card.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/mobile-app.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/command-centre.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/bitcoin-chart.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/public-sources.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/browser-data-refresh.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/market.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/gallery-auto-assign-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/whatsapp-widget-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/sticker-tiles-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/header-whatsapp-button-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/intelligence-desk.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/desk-hybrid.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/desk-search.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/mobile-navigation.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/mobile-app.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/floating-intelligence.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/location-recovery.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/hourly-data-disclosure.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/site-share.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/public-sources.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/index-live-hub-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /assets/digital-workforce-entry-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/stock_exchanges.json?_browser_refresh=1785589303627 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/macro_market.json?_browser_refresh=1785589303624 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/market.json?_browser_refresh=1785589303628 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:43] "GET /data/market.json?v=1785589303629 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /data/macro_market.json?v=1785589304221 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /data/news.json?v=1785589304224 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /data/macro_market.json?v=1785589304241 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /data/group_location_facts.json?v=1785589304249 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /assets/portal-status.css?v=20260526-recovery01 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /data/group_network_geo.json?v=1785589304249 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /assets/site-share.css?v=20260601-share-buttons02 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] code 404, message File not found
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /api/market?v=1785589304877 HTTP/1.1" 404 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /data/update_status.json?v=1785589304880 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /data/update_status.json?v=1785589304888 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /data/news.json?v=1785589304889 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:44] "GET /data/fast_market_status.json?v=1785589304889 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:45] code 404, message File not found
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:45] "GET /api/public-market?v=1785589305086 HTTP/1.1" 404 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:45] "GET /data/contact_channels.json?v=1785589305307 HTTP/1.1" 200 -
+
+[1A[2K  1 passed (9.8s)
+BATCH RETRY MISSING VISUAL CONTRAST chromium-mobile: 4 routes
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:50] "GET / HTTP/1.1" 200 -
+
+
+Running 4 tests using 4 workers
+
+[1A[2K[1/4] [chromium-mobile] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /synapse-demo/
+[1A[2K[2/4] [chromium-mobile] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /en/autorske-objave/ekonomija-i-cijena-vremena.html
+[1A[2K[3/4] [chromium-mobile] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /en/autorske-objave/digitalni-portal-mediji-i-osobni-kredibilitet.html
+[1A[2K[4/4] [chromium-mobile] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /en/autorske-objave/business-u-svijetu-manjih-marzi.html
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /synapse-demo/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /en/autorske-objave/digitalni-portal-mediji-i-osobni-kredibilitet.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /assets/logo-gnk-asg-canonical.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /en/autorske-objave/ekonomija-i-cijena-vremena.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /assets/style.css?v=20260723-dark-gold-theme-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /assets/public-unified-menu-v6.css?v=20260723-header-transparent-v3 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /assets/public-unified-menu-v6.css?v=20260723-header-transparent-v3 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /assets/style.css?v=20260723-dark-gold-theme-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:55] "GET /assets/app.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:56] "GET /en/autorske-objave/business-u-svijetu-manjih-marzi.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:56] "GET /assets/style.css?v=20260723-dark-gold-theme-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:56] "GET /assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:01:56] "GET /assets/public-unified-menu-v6.css?v=20260723-header-transparent-v3 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/fina-panel.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/advanced.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/group-network.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/group-contrast.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/language.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/mobile-stability.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/portal-integration.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/seo-profile-link.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/menu-fix.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/quality-patch.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /sw.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/public-unified-menu-v6.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/i18n.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/portal-layout.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/language-routing.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/status.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/assistant.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:02] "GET /assets/inline-assistant.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET / HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/index.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /sadrzaj/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /teme/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/intelligence-desk.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/desk-hybrid.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/desk-search.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/bitcoin-chart.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/command-centre.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/floating-intelligence.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/market-expansion.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/mobile-app.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/index-live-hub-v1.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/public-sources.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /teme/index.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/bpp-public-card.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /tehnologija/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /nermin-sefic/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/whatsapp-widget-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/gallery-auto-assign-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/market.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/browser-data-refresh.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /nermin-sefic/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/nermin-sefic/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/sticker-tiles-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/header-whatsapp-button-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/nermin-sefic/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/desk-hybrid.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/intelligence-desk.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/desk-search.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /instalacija/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /intelligence-desk/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /financije/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/mobile-app.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/mobile-navigation.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /registri/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/floating-intelligence.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /linkedin-daily/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/public-sources.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/location-recovery.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/site-share.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/home-activity-model.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/markets/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/hourly-data-disclosure.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /trzista/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /trzista/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/digital-workforce-entry-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/index-live-hub-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/markets/index.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/finance/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/finance/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/technology/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/technology/index.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/intelligence-desk/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/registries/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/registries/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /insights-hr/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /en/insights/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /autorske-objave/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /podijeli/portal/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /podijeli/financije/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /podijeli/grupa/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /podijeli/trzista/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /podijeli/tehnologija/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /podijeli/bpp/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /podijeli/vijesti/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /podijeli/dokumenti/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/style.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/header-premium.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/advanced.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/menu-fix.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/seo-profile-link.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-contrast.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-network.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/network-motion.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-globe-3d.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-location-insights.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-map-2d-geo.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-google-map.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-location-weather.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-market-coverage.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-overview-panel.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/network-live-selection.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/network-reading-layout.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/portal-integration.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/portal-status.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/command-centre.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/bitcoin-chart.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/market-expansion.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/bpp-public-card.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/language.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/intelligence-desk.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/desk-hybrid.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/mobile-app.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/desk-search.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/public-sources.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/floating-intelligence.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/site-share.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/mobile-stability.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-mobile-accessible.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/market-centre.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/logo-gnk-asg.svg HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/asg-gold-coin.svg HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/market-centre-panels.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/gnk-asg-social-card.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/share-financije.png HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/gnk-asg-social-card.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/share-grupa.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/share-trzista.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/share-bpp.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/share-vijesti.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/share-teme.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/share-tehnologija.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/gnk-global-static-overview-accurate.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/share-dokumenti.png HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /favicon.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/favicon.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/app-icon-512.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/app-icon-192.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/app.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/language-routing.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/i18n.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/status.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/portal-navigation.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/market.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/market-expansion.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/live-market-pulse.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/bitcoin-chart.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/assistant.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/news-live.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/bpp-public-card.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/inline-assistant.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/intelligence-desk.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/desk-hybrid.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/desk-search.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/floating-intelligence.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/mobile-app.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/mobile-navigation.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-network.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/world-geography.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/network-motion.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-globe-3d.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-location-insights.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-map-selection-bridge.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-map-2d-geo.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-google-map.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-location-weather.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/network-selection-sync.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-overview-panel.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-market-coverage.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/command-centre.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-map-pdf.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/network-search-3d.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-clarity.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-mobile-accessible.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/group-globe-pdf.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/content-share.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/public-sources.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/site-share.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/share-routing-fix.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/hourly-data-disclosure.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/public-tools.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/portal-layout.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/market-centre-data.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /assets/market-constellation.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/desk_public_config.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/group_network_geo.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/group_network.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/public_sources.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/group_location_facts.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/open_data.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/macro_market.json HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/stock_exchanges.json HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/asg_gold_asset.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/media_monitor_status.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/media_approved.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /data/daily_market_brief.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /robots.txt HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /sitemap.xml HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /manifest.webmanifest HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:04] "GET /google46686328e30c759f.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/public-unified-menu-v6.css?v=20260728-restaurants-contrast HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/logo-gnk-dinamo-ltd-group.png?v=20260720-transparent HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/floating-home-button.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] code 404, message File not found
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/home-reader-counter.css?v=20260601-home-button01 HTTP/1.1" 404 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/home-activity-counter.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/group-google-map.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/group-location-weather.css?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/group-google-map.css?v=20260601-home-button01 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/group-location-weather.js?v=20260601-home-button01 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/visual-gallery-picker.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:06] "GET /assets/visual-gallery-link.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /data/macro_market.json?_browser_refresh=1785589327772 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /data/stock_exchanges.json?_browser_refresh=1785589327773 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /data/market.json?_browser_refresh=1785589327773 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /data/market.json?v=1785589327778 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /data/macro_market.json?v=1785589327783 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /data/macro_market.json?v=1785589327789 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /data/group_location_facts.json?v=1785589327793 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /data/news.json?v=1785589327786 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /assets/portal-status.css?v=20260526-recovery01 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /data/group_network_geo.json?v=1785589327793 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:07] "GET /assets/site-share.css?v=20260601-share-buttons02 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /data/group_network.json?v=1785589329338 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /data/group_network_geo.json?v=1785589329341 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /data/group_network.json?v=1785589329343 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /data/group_location_facts.json?v=1785589329343 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /data/group_network_geo.json?v=1785589329348 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /data/group_location_facts.json?v=1785589329350 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /data/macro_market.json?_browser_refresh=1785589329379 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /data/stock_exchanges.json?_browser_refresh=1785589329379 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] code 404, message File not found
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /api/market?v=1785589329382 HTTP/1.1" 404 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /data/market.json?_browser_refresh=1785589329380 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:09] "GET /data/update_status.json?v=1785589329418 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:10] "GET /data/update_status.json?v=1785589330927 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:10] "GET /data/fast_market_status.json?v=1785589330928 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:10] "GET /data/news.json?v=1785589330928 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:10] code 404, message File not found
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:10] "GET /api/public-market?v=1785589330944 HTTP/1.1" 404 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:13] "GET /data/contact_channels.json?v=1785589333983 HTTP/1.1" 200 -
+
+[1A[2K  4 passed (43.7s)
+RETRY VISUAL CONTRAST UNRESOLVED chromium-mobile /animacija/
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:35] "GET / HTTP/1.1" 200 -
+
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium-mobile] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /animacija/
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:37] "GET /animacija/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:38] "GET /animacija/uploads/Veaceslav%20Draganov%20-%20Empress.mp3 HTTP/1.1" 200 -
+
+[1A[2K  1) [chromium-mobile] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /animacija/ 
+
+    Error: /animacija/: [
+      {
+        "selector": "div > div:nth-of-type(3) > div > div:nth-of-type(2) > span:nth-of-type(2)",
+        "text": "GNK DINAMO Ltd.",
+        "ratio": 2.75,
+        "target": 3,
+        "color": "rgba(29, 31, 32, 0.45)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "backgroundImage": "none",
+        "fontSize": "26px",
+        "fontWeight": "500",
+        "repairedByRuntime": false
+      }
+    ]
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m1[39m
+
+      346 |     }
+      347 |     expect(audit.runtime.state, `${entry.route}: contrast runtime did not activate`).toBe('hardened-v4');
+    > 348 |     expect(audit.totalUnresolvedViolations, `${entry.route}: ${JSON.stringify(audit.unresolvedViolations, null, 2)}`).toBe(0);
+          |                                                                                                                       ^
+      349 |   });
+      350 | }
+      351 |
+        at /home/runner/work/gnk-asg-portal/gnk-asg-portal/apps/portal/tests/all-pages-visual-contrast.spec.js:348:119
+
+    attachment #2: contrast-screenshot (image/jpeg) ────────────────────────────────────────────────
+    test-results/playwright-runtime/all-pages-visual-contrast-rendered-contrast-animacija--chromium-mobile/attachments/contrast-screenshot-73704e956cc07430cd1523c7404eee4a85e88622.jpg
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/playwright-runtime/all-pages-visual-contrast-rendered-contrast-animacija--chromium-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/playwright-runtime/all-pages-visual-contrast-rendered-contrast-animacija--chromium-mobile/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/playwright-runtime/all-pages-visual-contrast-rendered-contrast-animacija--chromium-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/playwright-runtime/all-pages-visual-contrast-rendered-contrast-animacija--chromium-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[1A[2K  1 failed
+    [chromium-mobile] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /animacija/ 
+Retry failed for chromium-mobile /animacija/: Command failed: npx playwright test tests/all-pages-visual-contrast.spec.js --project=chromium-mobile --workers=1 --grep rendered contrast /animacija/$ --reporter=line
+RETRY VISUAL CONTRAST UNRESOLVED chromium-mobile /en/gnk-aktual/
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:44] "GET / HTTP/1.1" 200 -
+
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium-mobile] › tests/all-pages-visual-contrast.spec.js:94:3 › rendered contrast /en/gnk-aktual/
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/gnk-aktual/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/logo-gnk-asg-canonical.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/app.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/editorial/aktual-media-800.webp HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/public-unified-menu-v6.css?v=20260723-header-transparent-v3 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /data/news.json?v=1785589366433 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/fina-panel.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/advanced.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/group-contrast.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/group-network.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/language.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/mobile-stability.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/portal-integration.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/seo-profile-link.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/language-routing.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/menu-fix.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/quality-patch.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/i18n.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/public-unified-menu-v6.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /sw.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/status.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/portal-layout.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/assistant.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /assets/inline-assistant.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET / HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /sadrzaj/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /teme/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /teme/index.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /tehnologija/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /nermin-sefic/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/nermin-sefic/index.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /nermin-sefic/index.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/nermin-sefic/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /intelligence-desk/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /financije/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /instalacija/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /registri/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /trzista/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /linkedin-daily/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /trzista/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/markets/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/markets/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/finance/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/finance/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/technology/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/intelligence-desk/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/technology/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/registries/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /insights-hr/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/insights/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /en/registries/index.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /podijeli/portal/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:46] "GET /autorske-objave/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /podijeli/financije/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /podijeli/trzista/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /podijeli/vijesti/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /podijeli/tehnologija/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /podijeli/grupa/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /podijeli/dokumenti/ HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /podijeli/bpp/ HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/style.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/menu-fix.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/advanced.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/header-premium.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-network.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/seo-profile-link.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-contrast.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/network-motion.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-location-insights.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-globe-3d.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-map-2d-geo.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-google-map.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-overview-panel.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-location-weather.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-market-coverage.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/network-reading-layout.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/network-live-selection.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/portal-integration.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/portal-status.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/command-centre.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/bitcoin-chart.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/market-expansion.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/logo-gnk-dinamo-ltd-group.png?v=20260720-transparent HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/bpp-public-card.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/language.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/intelligence-desk.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/desk-hybrid.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/mobile-app.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/desk-search.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/floating-intelligence.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/site-share.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/public-sources.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/market-centre.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-mobile-accessible.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/mobile-stability.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/market-centre-panels.css HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/logo-gnk-asg.svg HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/asg-gold-coin.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-google-map.css?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/gnk-asg-social-card.png HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-location-weather.css?v=20260601-home-button01 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/gnk-asg-social-card.svg HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] code 404, message File not found
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/home-reader-counter.css?v=20260601-home-button01 HTTP/1.1" 404 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/share-financije.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/floating-home-button.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/share-grupa.png HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/home-activity-counter.js?v=20260601-home-button01 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/home-activity-model.js?v=20260601-home-button01 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/share-trzista.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/share-bpp.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-location-weather.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/visual-gallery-picker.js?v=20260601-home-button01 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/share-tehnologija.png HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/visual-gallery-link.js?v=20260601-home-button01 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/share-vijesti.png HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-google-map.js?v=20260601-home-button01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/share-teme.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/gnk-global-static-overview-accurate.svg HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/share-dokumenti.png HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /favicon.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/favicon.svg HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/app-icon-192.svg HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/app-icon-512.svg HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/app.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/i18n.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/portal-navigation.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/status.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/language-routing.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/market.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/live-market-pulse.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/bitcoin-chart.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/market-expansion.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/bpp-public-card.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/news-live.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/assistant.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/inline-assistant.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/desk-hybrid.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/intelligence-desk.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/mobile-app.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/desk-search.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/mobile-navigation.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-network.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/floating-intelligence.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/world-geography.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/network-motion.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-globe-3d.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-map-2d-geo.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-location-insights.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-map-selection-bridge.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-google-map.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-location-weather.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-market-coverage.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-overview-panel.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/network-selection-sync.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-map-pdf.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/network-search-3d.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/command-centre.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-globe-pdf.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/public-sources.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-mobile-accessible.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/group-clarity.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/group_network.json?v=1785589367358 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/group_network_geo.json?v=1785589367361 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/group_location_facts.json?v=1785589367361 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/group_location_facts.json?v=1785589367367 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/group_network_geo.json?v=1785589367366 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/group_network.json?v=1785589367362 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/share-routing-fix.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/desk-hybrid.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/intelligence-desk.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/site-share.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/content-share.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/desk-search.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/bitcoin-chart.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/floating-intelligence.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/bpp-public-card.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/market-expansion.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/command-centre.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/index-live-hub-v1.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/public-sources.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/mobile-app.css?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/hourly-data-disclosure.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/portal-layout.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/browser-data-refresh.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/public-tools.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/gallery-auto-assign-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/market.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/market-centre-data.js HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/whatsapp-widget-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/market-constellation.js HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/desk_public_config.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/sticker-tiles-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/header-whatsapp-button-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/desk-hybrid.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/desk-search.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/mobile-app.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/intelligence-desk.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/group_network.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/group_network_geo.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/group_location_facts.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/location-recovery.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/floating-intelligence.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/public-sources.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/mobile-navigation.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/public_sources.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/open_data.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/hourly-data-disclosure.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/site-share.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/macro_market.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/index-live-hub-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /assets/digital-workforce-entry-v1.js?v=20260728-remove-tech-radar-more-sources-v1 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/stock_exchanges.json HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/asg_gold_asset.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/media_approved.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/daily_market_brief.json HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /data/media_monitor_status.json HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /manifest.webmanifest HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /robots.txt HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /sitemap.xml HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:47] "GET /google46686328e30c759f.html HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/stock_exchanges.json?_browser_refresh=1785589368372 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/macro_market.json?_browser_refresh=1785589368370 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/market.json?_browser_refresh=1785589368372 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/market.json?v=1785589368374 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/macro_market.json?v=1785589368378 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/news.json?v=1785589368383 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/macro_market.json?v=1785589368388 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /assets/portal-status.css?v=20260526-recovery01 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/group_network_geo.json?v=1785589368394 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/group_location_facts.json?v=1785589368396 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /assets/site-share.css?v=20260601-share-buttons02 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/fast_market_status.json?v=1785589368697 HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/update_status.json?v=1785589368697 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/update_status.json?v=1785589368696 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /data/news.json?v=1785589368698 HTTP/1.1" 200 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] code 404, message File not found
+[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /api/market?v=1785589368696 HTTP/1.1" 404 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] code 404, message File not found
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:48] "GET /api/public-market?v=1785589368874 HTTP/1.1" 404 -
+
+[1A[2K[WebServer] 127.0.0.1 - - [01/Aug/2026 13:02:49] "GET /data/contact_channels.json?v=1785589369022 HTTP/1.1" 200 -
+
+[1A[2K  1 passed (9.3s)
+{
+  "ok": false,
+  "version": "GNK_VISUAL_CONTRAST_RESULT_VALIDATOR_V6_BATCH_MISSING_RETRY",
+  "routes": 1292,
+  "projects": 2,
+  "expectedReports": 2584,
+  "reports": 2584,
+  "batchRetries": 4,
+  "serialRetries": 4,
+  "errors": [
+    "chromium-desktop /animacija/: unresolved violations=1",
+    "chromium-mobile /animacija/: unresolved violations=1"
+  ]
+}
+izlazni_kod=1
