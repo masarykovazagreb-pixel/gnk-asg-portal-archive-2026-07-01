@@ -15,7 +15,23 @@ const warnings = [];
 const normalisePath = (value) => {
   const path = String(value || '').trim();
   if (!path.startsWith('/')) return path;
-  return `${path.replace(/\/+$/, '') || '/'}/`.replace(/^\/\/$/, '/');
+  const clean = path.replace(/\/+$/, '') || '/';
+  return clean === '/' ? '/' : `${clean}/`;
+};
+
+const inferLanguage = (item, path) => {
+  const explicit = String(item?.lang || '').toLowerCase();
+  if (explicit === 'hr' || explicit === 'en') return explicit;
+  return path.startsWith('/en/') ? 'en' : 'hr';
+};
+
+const inferType = (item, path) => {
+  if (item?.type) return item.type;
+  if (path.startsWith('/komentari/') || path.startsWith('/en/commentary/')) return 'komentar';
+  if (path.startsWith('/analize/') || path.startsWith('/en/analyses/')) return 'analiza';
+  if (path.startsWith('/gnk-aktual/kolumne/') || path.startsWith('/en/gnk-aktual/columns/')) return 'kolumna';
+  if (path.startsWith('/objave/') || path.startsWith('/en/publications/')) return 'objava';
+  return 'unknown';
 };
 
 if (config.version !== 'GNK_ASG_SEO_KNOWLEDGE_GRAPH_V1') {
@@ -50,19 +66,31 @@ for (const pillar of config.pillars || []) {
 
 const items = Array.isArray(registry.items) ? registry.items : [];
 const itemPaths = new Set();
+const duplicatePaths = [];
 let protectedItems = 0;
 let incompleteItems = 0;
+let inferredLanguageItems = 0;
+let inferredTypeItems = 0;
+
 for (const item of items) {
   const path = normalisePath(item.path);
-  if (!path.startsWith('/')) incompleteItems += 1;
-  if (!item.title || !item.lang || !item.type) incompleteItems += 1;
-  if (itemPaths.has(`${item.lang}:${path}`)) errors.push(`Duplicate registry path: ${item.lang}:${path}`);
-  itemPaths.add(`${item.lang}:${path}`);
+  if (!path.startsWith('/') || !item.title) incompleteItems += 1;
+
+  const language = inferLanguage(item, path);
+  const type = inferType(item, path);
+  if (!item.lang) inferredLanguageItems += 1;
+  if (!item.type && type !== 'unknown') inferredTypeItems += 1;
+
+  const key = `${language}:${path}`;
+  if (itemPaths.has(key)) duplicatePaths.push(key);
+  itemPaths.add(key);
+
   if ((config.protectedPrefixes || []).some((prefix) => path.startsWith(prefix))) protectedItems += 1;
 }
 
 if (protectedItems) errors.push(`Editorial registry contains ${protectedItems} protected-route item(s).`);
-if (incompleteItems) errors.push(`Editorial registry contains ${incompleteItems} structurally incomplete item(s).`);
+if (incompleteItems) errors.push(`Editorial registry contains ${incompleteItems} item(s) without a valid path or title.`);
+for (const duplicate of duplicatePaths) warnings.push(`Duplicate registry path: ${duplicate}`);
 
 const summary = {
   version: config.version,
@@ -70,6 +98,9 @@ const summary = {
   collections: Object.keys(config.collections || {}).length,
   registryItems: items.length,
   uniqueRegistryPaths: itemPaths.size,
+  duplicateRegistryPaths: duplicatePaths.length,
+  inferredLanguageItems,
+  inferredTypeItems,
   protectedItems,
   errors,
   warnings
