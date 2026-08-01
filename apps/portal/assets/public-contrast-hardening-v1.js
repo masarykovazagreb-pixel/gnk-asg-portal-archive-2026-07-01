@@ -253,15 +253,15 @@ function hasVisibleText(el){
 }
 function repairElement(el){
   if(!(el instanceof Element)||el.closest('svg,canvas')||!hasVisibleText(el))return;
-  const style=getComputedStyle(el);
-  const rect=el.getBoundingClientRect();
-  if(style.visibility==='hidden'||style.display==='none'||Number(style.opacity)<.05||rect.width<1||rect.height<1)return;
   if(/^\/animacija\/?$/.test(location.pathname)&&el.tagName==='SPAN'&&el.textContent.trim()==='GNK DINAMO Ltd.'){
     el.style.setProperty('color','#4b5563','important');
     el.dataset.gnkContrastFixed='animacija-brand-label';
     el.dataset.gnkContrastCheckedAt=String(Date.now());
     return;
   }
+  const style=getComputedStyle(el);
+  const rect=el.getBoundingClientRect();
+  if(style.visibility==='hidden'||style.display==='none'||Number(style.opacity)<.05||rect.width<1||rect.height<1)return;
   if(el.matches('.ai-fab-mark')){
     el.dataset.gnkContrastFixed='assistant-mark-explicit-light';
     el.dataset.gnkContrastCheckedAt=String(Date.now());
