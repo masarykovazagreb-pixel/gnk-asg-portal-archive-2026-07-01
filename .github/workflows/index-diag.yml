@@ -1,0 +1,20 @@
+name: Dijagnostika index live data (jednokratno)
+on: workflow_dispatch
+jobs:
+  dijag:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-index-diag
+          python scripts/refresh_index_live_data.py > apps/portal/data/tmp-index-diag/rezultat.txt 2>&1 || echo "IZLAZNI KOD: $?" >> apps/portal/data/tmp-index-diag/rezultat.txt
+          cat apps/portal/data/tmp-index-diag/rezultat.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="index-diag-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-index-diag
+          git commit -m "diag"
+          git push origin "$BRANCH"
