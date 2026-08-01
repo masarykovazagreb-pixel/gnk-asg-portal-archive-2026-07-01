@@ -1,10 +1,8 @@
 name: Blog Mirror Publish
 
-# Svaki objavljeni tekst prenosi se i na blog. Radi u minuti 30, deset minuta
-# nakon objave uredničkog sadržaja, pa je red uvijek svjež.
-#
-# Dok tajne za blog nisu postavljene, radi u načinu pripreme: objave se slože
-# i spreme u red, ali se ne šalju. Ništa ne puca i ništa se ne gubi.
+# Portal je izvor, Blogger/Aktual Media je kontrolirana preslika.
+# Objave se salju u manjim paketima uz pauzu, ogranicen ponovni pokusaj i
+# trajni health zapis. HTTP 429 vise nije skriven kao prividno zdravo izvrsenje.
 
 on:
   workflow_dispatch:
@@ -22,41 +20,55 @@ jobs:
   publish:
     name: Mirror published articles to the blog
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Sync with latest main
         run: git pull --rebase --autostash origin main
 
-      - name: Mirror to blog
-        continue-on-error: true
+      - name: Mirror to blog with quota-aware backoff
         env:
           BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
           BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}
           BLOGGER_CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
           BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
-        run: node scripts/blog-publish-v1.mjs --live
+          BLOG_PER_RUN: '3'
+          BLOG_PAUSE_MS: '15000'
+          BLOG_MAX_ATTEMPTS: '2'
+          BLOG_BACKOFF_MS: '60000'
+        run: node scripts/blog-publish-resilient-v1.mjs
 
-      # Drugi zakazani poslovi commitaju u main gotovo neprekidno, pa jedan
-      # pokusaj spremanja redovito zavrsi na zastarjelom SHA. Zato tri pokusaja
-      # s ponovnim povlacenjem izmedju.
-      - name: Commit queue and state
+      - name: Publish mirror health summary
+        if: always()
+        run: |
+          if [ -s apps/portal/data/blog-content/health.json ]; then
+            node -e "const h=require('./apps/portal/data/blog-content/health.json'); console.log('## Aktual Media / Blogger mirror\n\n- Status: **'+h.conclusion+'**\n- Preostali red: **'+h.pending+'**\n- Pokusaji: **'+h.attempts.length+'**\n- Generirano: **'+h.generatedAt+'**\n')" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo '## Aktual Media / Blogger mirror' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Health zapis nije proizveden.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Commit queue, state and health
+        if: always()
         shell: bash
         run: |
           set -uo pipefail
           git config user.name "gnk-blog-bot"
           git config user.email "actions@github.com"
-          git add apps/portal/data/blog-content/queue.json apps/portal/data/blog-content/published.json || true
+          git add \
+            apps/portal/data/blog-content/queue.json \
+            apps/portal/data/blog-content/published.json \
+            apps/portal/data/blog-content/health.json || true
           if git diff --cached --quiet; then
             echo "Nema promjena za spremanje."
             exit 0
           fi
-          git commit -m "Blog mirror: refresh queue and published state"
+          git commit -m "Blog mirror: refresh queue, state and health"
           for i in 1 2 3; do
             if git push origin HEAD:main; then
               echo "Spremljeno iz $i. pokusaja."
