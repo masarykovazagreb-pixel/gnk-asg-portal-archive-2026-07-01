@@ -1,0 +1,39 @@
+name: Provjeri profilnu stranicu sirovo (jednokratno)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  provjeri:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dohvati sirovi HTML profila
+        run: |
+          mkdir -p apps/portal/data/tmp-profil
+          curl -s "https://dev.to/nermin-sefic" -o apps/portal/data/tmp-profil/profil.html
+          echo "broj pojavljivanja article-link u pocetnom HTML-u:"
+          grep -c "article-link" apps/portal/data/tmp-profil/profil.html || echo 0
+      - name: Provjeri javni API popis
+        run: |
+          curl -s "https://dev.to/api/articles?username=nermin-sefic&per_page=100" -o apps/portal/data/tmp-profil/api-lista.json
+          python3 << 'PYEOF'
+          import json
+          d = json.load(open('apps/portal/data/tmp-profil/api-lista.json'))
+          print('javni API vraca:', len(d), 'clanaka')
+          for a in d[:8]:
+              print(' -', a['title'])
+          PYEOF
+      - name: Commit
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          BRANCH="profil-check2-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-profil
+          git commit -m "profil check 2"
+          git push origin "$BRANCH"
