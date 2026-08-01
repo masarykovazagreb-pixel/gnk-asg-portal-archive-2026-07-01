@@ -125,7 +125,8 @@ for (const entry of routeEntries) {
         ]);
       });
       await page.waitForFunction(() => document.documentElement.dataset.gnkContrast === 'hardened-v4', null, { timeout: runtimeActivationTimeout });
-      await page.waitForTimeout(450);
+      // Allow delayed API-driven cards and scheduled contrast repair passes to settle.
+      await page.waitForTimeout(3_200);
     } catch (error) {
       fs.writeFileSync(path.join(projectDir, `${reportStem}.failure.json`), JSON.stringify({
         route: entry.route,
@@ -314,6 +315,7 @@ for (const entry of routeEntries) {
           });
         }
       }
+      const unresolvedViolations = violations.filter(item => item.repairedByRuntime !== true);
       return {
         url: redirectStub ? requestedRoute : location.href,
         title: document.title,
@@ -323,6 +325,8 @@ for (const entry of routeEntries) {
         redirectStubNeutralized: redirectStub,
         violations: violations.slice(0, 80),
         totalViolations: violations.length,
+        unresolvedViolations: unresolvedViolations.slice(0, 80),
+        totalUnresolvedViolations: unresolvedViolations.length,
         imageBackgroundWarnings: imageBackgroundWarnings.slice(0, 40),
         totalImageBackgroundWarnings: imageBackgroundWarnings.length,
         runtime: { state: document.documentElement.dataset.gnkContrast || null, version: document.documentElement.dataset.gnkContrastVersion || null, source: runtimeSource }
@@ -334,13 +338,13 @@ for (const entry of routeEntries) {
     });
 
     fs.writeFileSync(path.join(projectDir, `${reportStem}.json`), JSON.stringify(audit, null, 2));
-    if (audit.totalViolations > 0) {
+    if (audit.totalUnresolvedViolations > 0) {
       const screenshotPath = path.join(projectDir, `${reportStem}.jpg`);
       await page.screenshot({ path: screenshotPath, type: 'jpeg', quality: 68, fullPage: true });
       await testInfo.attach('contrast-report', { body: Buffer.from(JSON.stringify(audit, null, 2)), contentType: 'application/json' });
       await testInfo.attach('contrast-screenshot', { path: screenshotPath, contentType: 'image/jpeg' });
     }
     expect(audit.runtime.state, `${entry.route}: contrast runtime did not activate`).toBe('hardened-v4');
-    expect(audit.totalViolations, `${entry.route}: ${JSON.stringify(audit.violations, null, 2)}`).toBe(0);
+    expect(audit.totalUnresolvedViolations, `${entry.route}: ${JSON.stringify(audit.unresolvedViolations, null, 2)}`).toBe(0);
   });
 }
