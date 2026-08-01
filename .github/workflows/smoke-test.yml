@@ -1,0 +1,22 @@
+name: Post-deploy smoke test (jednokratno)
+on: workflow_dispatch
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p apps/portal/data/tmp-smoke
+          for ruta in "/" "/en/" "/digital-workforce/" "/gnk-aktual/" "/trgovina/" "/kontakt/" "/contact/" "/sitemap.xml" "/robots.txt" "/admin/" "/operator-center/"; do
+            kod=$(curl -s -o /dev/null -w "%{http_code}" "https://gnk-asg.hr${ruta}")
+            echo "${kod} ${ruta}" >> apps/portal/data/tmp-smoke/rezultat.txt
+          done
+          cat apps/portal/data/tmp-smoke/rezultat.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="smoke-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-smoke
+          git commit -m "smoke test"
+          git push origin "$BRANCH"
