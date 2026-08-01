@@ -1,4 +1,4 @@
-name: Dohvati 2 slike v6 (jednokratno)
+name: Dohvati 7 slika v2 (jednokratno)
 on: workflow_dispatch
 jobs:
   dohvati:
@@ -7,13 +7,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          mkdir -p apps/portal/data/tmp-7s
-          curl -s "https://gnk-asg.hr/api/slike?upit=fast+growth+startup+scaling+business" -o apps/portal/data/tmp-7s/rast.json
-          curl -s "https://gnk-asg.hr/api/slike?upit=transparency+documents+verification+data" -o apps/portal/data/tmp-7s/podatak.json
+          mkdir -p apps/portal/data/tmp-8s
+          curl -s "https://gnk-asg.hr/api/slike?upit=AI+audit+trail+corporate+governance+digital" -o apps/portal/data/tmp-8s/ai.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=5G+network+tower+industrial+factory" -o apps/portal/data/tmp-8s/mreza.json
+          cat apps/portal/data/tmp-8s/ai.json
+          echo "---"
+          cat apps/portal/data/tmp-8s/mreza.json
       - run: |
           git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
-          BRANCH="slike7-${{ github.run_id }}"
+          BRANCH="slike8b-${{ github.run_id }}"
           git checkout -b "$BRANCH"
-          git add apps/portal/data/tmp-7s
-          git commit -m "slike"
+          git add apps/portal/data/tmp-8s
+          git diff --cached --quiet || git commit -m "slike8b"
           git push origin "$BRANCH"
