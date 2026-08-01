@@ -1,0 +1,19 @@
+name: Dohvati 2 slike v6 (jednokratno)
+on: workflow_dispatch
+jobs:
+  dohvati:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p apps/portal/data/tmp-7s
+          curl -s "https://gnk-asg.hr/api/slike?upit=fast+growth+startup+scaling+business" -o apps/portal/data/tmp-7s/rast.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=transparency+documents+verification+data" -o apps/portal/data/tmp-7s/podatak.json
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="slike7-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-7s
+          git commit -m "slike"
+          git push origin "$BRANCH"
