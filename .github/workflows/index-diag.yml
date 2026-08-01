@@ -9,14 +9,22 @@ jobs:
       - uses: actions/setup-python@v5
       - run: |
           mkdir -p apps/portal/data/tmp-index-diag
-          python scripts/refresh_index_live_data.py > apps/portal/data/tmp-index-diag/rezultat.txt 2>&1
-          echo "--- validate ---" >> apps/portal/data/tmp-index-diag/rezultat.txt
-          python scripts/validate_index_live_data.py >> apps/portal/data/tmp-index-diag/rezultat.txt 2>&1 || echo "IZLAZNI KOD VALIDATE: $?" >> apps/portal/data/tmp-index-diag/rezultat.txt
-          cat apps/portal/data/tmp-index-diag/rezultat.txt
+          python scripts/refresh_index_live_data.py > /dev/null 2>&1
+          python << 'PYEOF' > apps/portal/data/tmp-index-diag/losi.txt
+          import json
+          news = json.load(open("apps/portal/data/news.json"))
+          archive = json.load(open("apps/portal/data/news_archive.json"))
+          for item in news + archive:
+              item_id = str(item.get("id","")).strip()
+              title = str(item.get("title","")).strip()
+              if not item_id or len(item_id) < 12 or not title or len(title) < 8:
+                  print("LOS ZAPIS:", json.dumps(item, ensure_ascii=False)[:400])
+          PYEOF
+          cat apps/portal/data/tmp-index-diag/losi.txt
       - run: |
           git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
-          BRANCH="index-diag2-${{ github.run_id }}"
+          BRANCH="index-diag3-${{ github.run_id }}"
           git checkout -b "$BRANCH"
           git add apps/portal/data/tmp-index-diag
-          git commit -m "diag2"
+          git commit -m "diag3"
           git push origin "$BRANCH"
