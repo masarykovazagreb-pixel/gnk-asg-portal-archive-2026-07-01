@@ -3,7 +3,8 @@ import { readFileSync } from 'node:fs';
 
 const script = readFileSync('scripts/devto-publish-resilient-v1.mjs', 'utf8');
 const workflow = readFileSync('.github/workflows/devto-mirror-publish.yml', 'utf8');
-const control = JSON.parse(readFileSync('ops/automation-control-v1.json', 'utf8'));
+const globalControl = JSON.parse(readFileSync('ops/automation-control-v1.json', 'utf8'));
+const devtoControl = JSON.parse(readFileSync('ops/devto-mirror-control-v1.json', 'utf8'));
 const switches = JSON.parse(readFileSync('ops/automation-kill-switches.json', 'utf8'));
 
 const requiredScript = [
@@ -37,11 +38,12 @@ if (/DEVTO_API_KEY/.test(workflow)) failures.push('preview workflow must not acc
 if (/git\s+push/.test(workflow)) failures.push('new Dev.to automation must not push directly to main');
 if (/contents:\s*write/.test(workflow)) failures.push('scheduled preview must remain read-only');
 
-const schedule = (control.knownCurrentSchedules || []).find((entry) => entry.job === 'Dev.to Mirror Preview');
-if (!schedule || schedule.mode !== 'read-only') failures.push('automation registry missing read-only Dev.to preview schedule');
-if (control.globalRules?.directWritesToMainForbiddenForNewAutomation !== true) failures.push('direct-write protection is not enabled');
+if (globalControl.globalRules?.directWritesToMainForbiddenForNewAutomation !== true) failures.push('direct-write protection is not enabled');
+if (devtoControl.schedule?.mode !== 'read-only-preview') failures.push('Dev.to control must register read-only preview mode');
+if (devtoControl.permissions?.directWriteToMain !== false) failures.push('Dev.to control must forbid direct writes to main');
+if (devtoControl.livePublishing?.enabledByDefault !== false) failures.push('Dev.to live publishing must default to disabled');
+if (devtoControl.livePublishing?.requiredGlobalKillSwitch !== 'devtoPublish') failures.push('Dev.to control must reference the global channel kill switch');
 if (switches.channels?.devtoPublish?.enabled !== false) failures.push('Dev.to live kill switch must default to disabled');
-if (!(control.emergencyControls?.channelKillSwitchesRequired || []).includes('devto')) failures.push('Dev.to channel kill switch is not registered');
 
 if (failures.length) {
   console.error(failures.join('\n'));
