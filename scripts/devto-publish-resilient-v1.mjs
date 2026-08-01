@@ -6,6 +6,7 @@ const PORTAL = resolve('apps/portal');
 const REGISTRY = resolve('apps/portal/data/editorial-registry.json');
 const STATE = resolve('apps/portal/data/devto-content/published.json');
 const HEALTH = resolve('apps/portal/data/devto-content/health.json');
+const KILL_SWITCHES = resolve('ops/automation-kill-switches.json');
 const SITE = 'https://gnk-asg.hr';
 
 const LIVE_REQUESTED = process.argv.includes('--live');
@@ -117,6 +118,8 @@ async function postArticle(article, canonicalPath) {
 async function main() {
   const registry = readJson(REGISTRY, { items: [] });
   const state = readJson(STATE, { posted: {} });
+  const switches = readJson(KILL_SWITCHES, { channels: {} });
+  const devtoPublishEnabled = switches.channels?.devtoPublish?.enabled === true;
   const pending = candidates(registry, state);
   const batch = pending.slice(0, PER_RUN);
   const health = {
@@ -124,6 +127,7 @@ async function main() {
     mode: LIVE ? 'live' : 'preview',
     liveRequested: LIVE_REQUESTED,
     secretAvailable: API_KEY.length > 0,
+    killSwitchEnabled: devtoPublishEnabled,
     pending: pending.length,
     processed: 0,
     published: 0,
@@ -133,6 +137,14 @@ async function main() {
     attempts: [],
     conclusion: 'success',
   };
+
+  if (LIVE_REQUESTED && !devtoPublishEnabled) {
+    health.conclusion = 'blocked-kill-switch';
+    writeJson(HEALTH, health);
+    console.error('Dev.to live slanje je blokirano kill-switchom; nije poslan nijedan zahtjev.');
+    process.exitCode = 2;
+    return;
+  }
 
   if (LIVE_REQUESTED && !API_KEY) {
     health.conclusion = 'blocked-missing-secret';
