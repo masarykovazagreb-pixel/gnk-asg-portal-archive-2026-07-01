@@ -25,20 +25,20 @@ jobs:
         run: |
           mkdir -p apps/portal/data/tmp-popis-final
           curl -s "https://dev.to/api/articles/me/all?per_page=1000" -H "api-key: $DEVTO_KEY" -o apps/portal/data/tmp-popis-final/svi.json
-          python3 -c "
-import json
-d = json.load(open('apps/portal/data/tmp-popis-final/svi.json'))
-print('ukupno:', len(d))
-for a in d:
-    print(a['id'], '|', a.get('canonical_url'), '|', a['title'])
-" > apps/portal/data/tmp-popis-final/rezultat.txt
+          python3 << 'PYEOF' > apps/portal/data/tmp-popis-final/rezultat.txt
+          import json
+          d = json.load(open('apps/portal/data/tmp-popis-final/svi.json'))
+          print('ukupno:', len(d))
+          for a in d:
+              print(a['id'], '|', a.get('canonical_url'), '|', a['title'])
+          PYEOF
           cat apps/portal/data/tmp-popis-final/rezultat.txt
       - name: Commit na jedinstvenu granu
         run: |
           git config user.name "gnk-asg-bot"
           git config user.email "it@gnk-asg.hr"
-          BRANCH="popis-final-${{ github.run_id }}"
+          BRANCH="popis-final2-${{ github.run_id }}"
           git checkout -b "$BRANCH"
           git add apps/portal/data/tmp-popis-final/rezultat.txt
-          git commit -m "popis final"
+          git commit -m "popis final 2"
           git push origin "$BRANCH"
