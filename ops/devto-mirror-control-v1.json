@@ -1,0 +1,27 @@
+{
+  "version": "GNK_ASG_DEVTO_MIRROR_CONTROL_V1",
+  "effectiveFrom": "2026-08-02T00:16:00+02:00",
+  "workflow": ".github/workflows/devto-mirror-publish.yml",
+  "schedule": {
+    "frequency": "hourly",
+    "minute": 45,
+    "mode": "read-only-preview"
+  },
+  "permissions": {
+    "repositoryContents": "read",
+    "secrets": "none",
+    "directWriteToMain": false
+  },
+  "livePublishing": {
+    "enabledByDefault": false,
+    "requiredGlobalKillSwitch": "devtoPublish",
+    "requiresCanonical200": true,
+    "requiresExternalPostId": true,
+    "requiresIdempotencyKey": true,
+    "statePersistence": "separate-reviewed-pr-required"
+  },
+  "resourceOwnership": {
+    "publishedState": "single-writer-required",
+    "healthEvidence": "workflow-artifact-only-during-preview"
+  }
+}
