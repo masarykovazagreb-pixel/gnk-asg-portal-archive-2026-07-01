@@ -4,12 +4,13 @@ on:
   pull_request:
     paths:
       - 'apps/portal/en/**'
+      - 'scripts/fix-en-double-prefix-canonical-v1.mjs'
       - 'scripts/test-no-en-en-canonical-v1.mjs'
       - '.github/workflows/no-en-en-canonical-contract.yml'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: no-en-en-canonical-${{ github.ref }}
@@ -21,8 +22,26 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Repair legacy /en/en/ metadata URLs
+        run: node scripts/fix-en-double-prefix-canonical-v1.mjs --write
+      - name: Commit deterministic repairs
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          if git diff --quiet -- apps/portal/en; then
+            echo 'No legacy EN canonical repairs required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add apps/portal/en
+          git commit -m 'fix(seo): repair legacy EN double-prefix metadata'
+          git push origin HEAD:${{ github.head_ref }}
       - name: Reject invalid /en/en/ metadata URLs
         run: node scripts/test-no-en-en-canonical-v1.mjs
