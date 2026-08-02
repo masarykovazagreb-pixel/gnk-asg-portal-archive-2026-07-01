@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       devto_key:
-        description: "Dev.to API kljuc - samo za ovo pokretanje"
+        description: "kljuc"
         required: true
         type: string
 
@@ -17,28 +17,28 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Maskiraj kljuc
+      - name: Maskiraj
         run: echo "::add-mask::${{ inputs.devto_key }}"
-      - name: Popis svih objava na racunu
+      - name: Broj i popis
         env:
           DEVTO_KEY: ${{ inputs.devto_key }}
         run: |
-          mkdir -p apps/portal/data/tmp-popis-final
-          curl -s "https://dev.to/api/articles/me/all?per_page=1000" -H "api-key: $DEVTO_KEY" -o apps/portal/data/tmp-popis-final/svi.json
-          python3 << 'PYEOF' > apps/portal/data/tmp-popis-final/rezultat.txt
+          mkdir -p apps/portal/data/tmp-devto-count
+          curl -s "https://dev.to/api/articles/me/all?per_page=1000" -H "api-key: $DEVTO_KEY" -o apps/portal/data/tmp-devto-count/svi.json
+          python3 << 'PYEOF' > apps/portal/data/tmp-devto-count/broj.txt
           import json
-          d = json.load(open('apps/portal/data/tmp-popis-final/svi.json'))
-          print('ukupno:', len(d))
-          for a in d:
-              print(a['id'], '|', a.get('canonical_url'), '|', a['title'])
+          d = json.load(open("apps/portal/data/tmp-devto-count/svi.json"))
+          print("ukupno:", len(d))
+          for a in sorted(d, key=lambda x: x["published_at"], reverse=True)[:10]:
+              print(a["published_at"], "|", a["title"])
           PYEOF
-          cat apps/portal/data/tmp-popis-final/rezultat.txt
-      - name: Commit na jedinstvenu granu
+          cat apps/portal/data/tmp-devto-count/broj.txt
+      - name: Commit
         run: |
           git config user.name "gnk-asg-bot"
           git config user.email "it@gnk-asg.hr"
-          BRANCH="popis-final2-${{ github.run_id }}"
+          BRANCH="devto-count-${{ github.run_id }}"
           git checkout -b "$BRANCH"
-          git add apps/portal/data/tmp-popis-final/rezultat.txt
-          git commit -m "popis final 2"
+          git add apps/portal/data/tmp-devto-count
+          git commit -m "count"
           git push origin "$BRANCH"
