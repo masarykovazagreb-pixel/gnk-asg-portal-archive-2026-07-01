@@ -1,0 +1,22 @@
+name: Provjera nermin-sefic stranice (jednokratno)
+on: workflow_dispatch
+jobs:
+  provjeri:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-provjera-profil
+          for ruta in "/en/nermin-sefic/" "/nermin-sefic/" "/o-nama/nermin-sefic/"; do
+            kod=$(curl -s -o /dev/null -w "%{http_code}" "https://gnk-asg.hr${ruta}")
+            echo "${kod} ${ruta}" >> apps/portal/data/tmp-provjera-profil/r.txt
+          done
+          cat apps/portal/data/tmp-provjera-profil/r.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="provjera-profil-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-provjera-profil
+          git commit -m "provjera"
+          git push origin "$BRANCH"
