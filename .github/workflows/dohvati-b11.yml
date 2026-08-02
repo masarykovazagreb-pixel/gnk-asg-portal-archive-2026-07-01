@@ -1,0 +1,20 @@
+name: Dohvati slike b11 (jednokratno)
+on: workflow_dispatch
+jobs:
+  dohvati:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-b11
+          curl -s "https://gnk-asg.hr/api/slike?upit=access+control+keycard+security+badge" -o apps/portal/data/tmp-b11/pristup.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=capital+investment+finance+building" -o apps/portal/data/tmp-b11/kapital.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=digital+procurement+warehouse+logistics" -o apps/portal/data/tmp-b11/nabava.json
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="slikeb11-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-b11
+          git commit -m "slike b11"
+          git push origin "$BRANCH"
