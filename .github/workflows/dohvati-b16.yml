@@ -1,0 +1,20 @@
+name: Dohvati slike b16 (jednokratno)
+on: workflow_dispatch
+jobs:
+  dohvati:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-b16
+          curl -s "https://gnk-asg.hr/api/slike?upit=family+business+meeting+generations" -o apps/portal/data/tmp-b16/obitelj.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=digital+transformation+ROI+analytics" -o apps/portal/data/tmp-b16/roi.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=business+succession+handshake+legacy" -o apps/portal/data/tmp-b16/nasljedivanje.json
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="slikeb16-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-b16
+          git commit -m "slike b16"
+          git push origin "$BRANCH"
