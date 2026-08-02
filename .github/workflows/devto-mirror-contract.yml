@@ -1,0 +1,25 @@
+name: Dev.to Mirror Contract
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/devto-publish-resilient-v1.mjs'
+      - 'scripts/validate-devto-mirror-contract.mjs'
+      - '.github/workflows/devto-mirror-publish.yml'
+      - '.github/workflows/devto-mirror-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node scripts/validate-devto-mirror-contract.mjs
+      - name: Preview queue without secrets
+        run: node scripts/devto-publish-resilient-v1.mjs

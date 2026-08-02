@@ -1,0 +1,49 @@
+name: Dev.to Mirror Preview
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: devto-mirror-preview
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    name: Read-only Dev.to mirror preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Preview queue without secrets
+        env:
+          DEVTO_PER_RUN: '3'
+        run: node scripts/devto-publish-resilient-v1.mjs
+
+      - name: Publish health summary
+        if: always()
+        run: |
+          if [ -s apps/portal/data/devto-content/health.json ]; then
+            node -e "const h=require('./apps/portal/data/devto-content/health.json'); console.log('## Dev.to mirror preview\n\n- Status: **'+h.conclusion+'**\n- Način: **'+h.mode+'**\n- Preostali red: **'+(h.pending ?? 0)+'**\n- Obrađeno: **'+(h.processed ?? 0)+'**\n- Generirano: **'+h.generatedAt+'**\n')" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo '## Dev.to mirror preview' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Health zapis nije proizveden.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload preview health evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: devto-preview-health-${{ github.run_id }}
+          path: apps/portal/data/devto-content/health.json
+          if-no-files-found: warn
+          retention-days: 7

@@ -1,7 +1,7 @@
 {
   "version": "GNK_ASG_AUTOMATION_KILL_SWITCHES_V1",
   "defaultMode": "hold",
-  "updatedAt": "2026-07-29T17:43:00+02:00",
+  "updatedAt": "2026-08-02T00:16:00+02:00",
   "checkpoint": {
     "branch": "checkpoint/recovery-20260729-1617-zagreb",
     "sha": "c38578c057655af8439aa23197cd141f90433850"
@@ -9,6 +9,7 @@
   "channels": {
     "portalPublish": { "enabled": false, "reason": "stabilization" },
     "bloggerPublish": { "enabled": false, "reason": "stabilization and quota control" },
+    "devtoPublish": { "enabled": false, "reason": "preview-only until reviewed PR-based state persistence is implemented" },
     "linkedinPublish": { "enabled": false, "reason": "publishing connector not yet verified" },
     "mailSend": { "enabled": false, "reason": "no live send during stabilization" },
     "newsWrite": { "enabled": false, "reason": "multiple-writer conflict under review" },
