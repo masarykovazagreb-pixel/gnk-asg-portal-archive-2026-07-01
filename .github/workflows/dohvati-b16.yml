@@ -7,14 +7,12 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          mkdir -p apps/portal/data/tmp-b16
-          curl -s "https://gnk-asg.hr/api/slike?upit=family+business+meeting+generations" -o apps/portal/data/tmp-b16/obitelj.json
-          curl -s "https://gnk-asg.hr/api/slike?upit=digital+transformation+ROI+analytics" -o apps/portal/data/tmp-b16/roi.json
-          curl -s "https://gnk-asg.hr/api/slike?upit=business+succession+handshake+legacy" -o apps/portal/data/tmp-b16/nasljedivanje.json
+          mkdir -p apps/portal/data/tmp-b16b
+          curl -s "https://gnk-asg.hr/api/slike?upit=succession+planning+keys+ownership+transfer" -o apps/portal/data/tmp-b16b/nasljedivanje2.json
       - run: |
           git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
-          BRANCH="slikeb16-${{ github.run_id }}"
+          BRANCH="slikeb16b-${{ github.run_id }}"
           git checkout -b "$BRANCH"
-          git add apps/portal/data/tmp-b16
-          git commit -m "slike b16"
+          git add apps/portal/data/tmp-b16b
+          git commit -m "slike b16b"
           git push origin "$BRANCH"
