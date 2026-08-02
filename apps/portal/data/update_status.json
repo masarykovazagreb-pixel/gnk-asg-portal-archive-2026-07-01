@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-08-01T23:14:53+00:00",
+  "updated_at": "2026-08-02T03:57:01+00:00",
   "news": {
-    "updated_at": "2026-08-01T23:14:53+00:00",
+    "updated_at": "2026-08-02T03:57:01+00:00",
     "status": "ok",
     "engine": "github_actions_rss_refresh_v4_retention_policy",
     "cadence": "hourly at minute 17 UTC plus manual workflow_dispatch",
@@ -15,27 +15,27 @@
     "storage_policy": "public_latest_100_archive_all_older_prune_oldest_1000_repeatedly_when_archive_exceeds_2000",
     "public_items": 150,
     "max_public_items": 150,
-    "archive_items": 1708,
+    "archive_items": 1746,
     "archive_prune_trigger": 2000,
     "archive_delete_oldest_batch": 1000,
-    "archive_items_before_prune": 5708,
+    "archive_items_before_prune": 5746,
     "archive_prune_batches": 4,
     "discarded_archive_overflow_items": 4000,
-    "fetched_candidates": 5155,
-    "duplicates_or_blocked_removed": 1091,
+    "fetched_candidates": 5116,
+    "duplicates_or_blocked_removed": 1071,
     "request_timeout_seconds": 10,
     "network_workers": 1,
     "share_previews_ready": 0,
     "by_group": {
       "economy": 20,
-      "digital-assets": 14,
       "international": 18,
-      "hrvatska": 14,
-      "cibona": 8,
       "regije": 14,
+      "hrvatska": 14,
+      "digital-assets": 14,
       "zanimljivosti": 6,
-      "stil": 5,
       "glazba": 6,
+      "cibona": 8,
+      "stil": 5,
       "kultura": 7,
       "technology": 16,
       "auti": 6,
@@ -53,11 +53,6 @@
         "source": "SEEbiz",
         "group": "hrvatska",
         "error": "HTTP Error 403: Forbidden"
-      },
-      {
-        "source": "Netokracija",
-        "group": "hrvatska",
-        "error": "not well-formed (invalid token): line 1, column 116"
       },
       {
         "source": "Al Jazeera Economy",
@@ -78,16 +73,21 @@
         "source": "Arab News Business",
         "group": "regije",
         "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "source": "iHeartDogs",
+        "group": "ljubimci",
+        "error": "HTTP Error 503: Service Unavailable"
       }
     ],
     "preview_errors": [],
-    "checked_at": "2026-08-01T23:14:53+00:00",
-    "last_attempt_at": "2026-08-01T23:14:53+00:00",
+    "checked_at": "2026-08-02T03:57:01+00:00",
+    "last_attempt_at": "2026-08-02T03:57:01+00:00",
     "heartbeat_policy": "news_status_updates_on_every_automation_run_even_when_content_is_unchanged",
     "stale_safe": true,
-    "last_successful_refresh_at": "2026-08-01T23:14:53+00:00",
+    "last_successful_refresh_at": "2026-08-02T03:57:01+00:00",
     "data_status": "fresh_or_reference_checked",
-    "runtime_seconds": 59.87
+    "runtime_seconds": 40.27
   },
   "dw_integration_debug_temporary": {
     "raw_len": 7124,
