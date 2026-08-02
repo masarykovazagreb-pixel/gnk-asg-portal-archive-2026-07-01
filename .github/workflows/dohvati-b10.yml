@@ -1,0 +1,20 @@
+name: Dohvati slike b10 (jednokratno)
+on: workflow_dispatch
+jobs:
+  dohvati:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-b10
+          curl -s "https://gnk-asg.hr/api/slike?upit=ESG+audit+factory+inspection+supply+chain" -o apps/portal/data/tmp-b10/esg.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=solar+wind+renewable+energy+contract" -o apps/portal/data/tmp-b10/ppa.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=world+map+data+transfer+global+network" -o apps/portal/data/tmp-b10/prijenos.json
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="slikeb10-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-b10
+          git commit -m "slike b10"
+          git push origin "$BRANCH"
