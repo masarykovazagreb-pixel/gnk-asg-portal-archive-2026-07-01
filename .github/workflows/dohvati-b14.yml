@@ -1,0 +1,20 @@
+name: Dohvati slike b14 (jednokratno)
+on: workflow_dispatch
+jobs:
+  dohvati:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-b14
+          curl -s "https://gnk-asg.hr/api/slike?upit=crisis+scenario+planning+chart" -o apps/portal/data/tmp-b14/kriza.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=whistleblower+report+confidential+documents" -o apps/portal/data/tmp-b14/whistleblowing.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=fast+growth+chart+business+building" -o apps/portal/data/tmp-b14/rast.json
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="slikeb14-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-b14
+          git commit -m "slike b14"
+          git push origin "$BRANCH"
