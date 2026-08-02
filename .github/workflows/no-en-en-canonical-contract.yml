@@ -1,0 +1,28 @@
+name: No EN Double-Prefix Canonical Contract
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/en/**'
+      - 'scripts/test-no-en-en-canonical-v1.mjs'
+      - '.github/workflows/no-en-en-canonical-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: no-en-en-canonical-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Reject invalid /en/en/ metadata URLs
+        run: node scripts/test-no-en-en-canonical-v1.mjs
