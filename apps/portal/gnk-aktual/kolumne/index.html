@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nermin Sefić — kolumnist | AKTUAL MEDIA</title>
+<meta name="description" content="Arhiva kolumni Nermina Sefića na AKTUAL MEDIA: gospodarstvo, tehnologija, financije, sport i društvo.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://gnk-asg.hr/gnk-aktual/kolumne/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/gnk-aktual/kolumne/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="AKTUAL MEDIA">
+<meta property="og:title" content="Nermin Sefić — kolumnist | AKTUAL MEDIA">
+<meta property="og:description" content="Sve kolumne Nermina Sefića na jednom mjestu, uz zasebne fotografije i pune SEO stranice svakog teksta.">
+<meta property="og:url" content="https://gnk-asg.hr/gnk-aktual/kolumne/">
+<meta property="og:image" content="https://gnk-asg.hr/assets/editorial/aktual-media-800.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nermin Sefić — kolumnist | AKTUAL MEDIA">
+<meta name="twitter:description" content="Arhiva svih kolumni Nermina Sefića na AKTUAL MEDIA.">
+<meta name="twitter:image" content="https://gnk-asg.hr/assets/editorial/aktual-media-800.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Nermin Sefić — kolumnist","url":"https://gnk-asg.hr/gnk-aktual/kolumne/","inLanguage":"hr","about":{"@type":"Person","name":"Nermin Sefić","url":"https://gnk-asg.hr/nermin-sefic/"},"isPartOf":{"@type":"WebSite","name":"AKTUAL MEDIA","url":"https://gnk-asg.hr/gnk-aktual/"},"publisher":{"@type":"Organization","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}}</script>
+<link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260723-header-transparent-v3">
+<style>
+:root{--bg:#f0e6c4;--panel:#e7daae;--ink:#241c0e;--red:#c81e1e;--muted:#6b6455;--gold:#b8860b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,serif}.wrap{max-width:1180px;margin:auto;padding:48px 20px 80px}.hero{display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:center;border:3px solid var(--ink);background:var(--panel);padding:24px;margin-bottom:36px}.hero img{width:100%;aspect-ratio:4/5;object-fit:cover;border:2px solid var(--ink)}.eyebrow{font:800 .72rem Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}h1{font:900 clamp(2rem,5vw,4.4rem)/.95 Arial Black,Impact,sans-serif;margin:8px 0 14px}.hero p{font:1rem/1.65 Arial,sans-serif;color:var(--muted);margin:0}.back{display:inline-block;margin-top:18px;color:var(--red);font:800 .78rem Arial,sans-serif;text-decoration:none;border-bottom:2px solid var(--red)}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}.card{display:flex;flex-direction:column;border:2px solid var(--ink);background:var(--panel);text-decoration:none;color:inherit;overflow:hidden;transition:.2s}.card:hover{transform:translateY(-4px);border-color:var(--red)}.card img{width:100%;aspect-ratio:16/9;object-fit:cover;background:#ddd}.body{padding:16px}.tag{font:800 .65rem Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}h2{font:900 1.05rem/1.25 Arial Black,Impact,sans-serif;margin:7px 0 9px}.summary{font:.86rem/1.55 Arial,sans-serif;color:var(--muted);margin:0 0 12px}.meta{font:.72rem Arial,sans-serif;color:var(--muted)}.empty{font-family:Arial,sans-serif;color:var(--muted);padding:30px 0}@media(max-width:700px){.hero{grid-template-columns:1fr}.hero img{max-width:220px}.wrap{padding:28px 14px 60px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="hero">
+<img src="/assets/editorial/aktual-media-800.webp" alt="Nermin Sefić — kolumnist AKTUAL MEDIA">
+<div><span class="eyebrow">AKTUAL MEDIA · KOLUMNIST</span><h1>Nermin Sefić</h1><p>Arhiva autorskih kolumni. Svaki tekst ostaje zasebna indeksabilna stranica s vlastitom fotografijom, naslovom, meta opisom, canonical oznakom, Open Graph i Twitter podacima te strukturiranim podacima za članak.</p><a class="back" href="/gnk-aktual/">← Povratak na AKTUAL MEDIA</a></div>
+</section>
+<section id="columns" class="grid" aria-live="polite"><p class="empty">Učitavanje kolumni…</p></section>
+</main>
+<script src="/assets/public-unified-menu-v6.js?v=20260728-restaurants-contrast" defer></script>
+<script>
+(function(){
+ const esc=s=>String(s||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
+ const text=s=>String(s||'').replace(/\s+/g,' ').trim();
+ fetch('/data/kolumne.json?v='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).then(data=>{
+  const items=Array.isArray(data)?data:(data.items||[]),root=document.getElementById('columns');
+  const real=items.filter(x=>x&&x.naslov&&x.url&&x.slug!=='nermin-sefic-kolumnist');
+  if(!real.length){root.innerHTML='<p class="empty">Kolumne trenutačno nisu dostupne.</p>';return}
+  root.innerHTML=real.map(k=>{const img=k.slika||'/assets/editorial/aktual-media-800.webp',summary=text(k.meta_opis||k.tekst||'').slice(0,180),date=k.objavljeno?new Date(k.objavljeno).toLocaleDateString('hr-HR'):'';return '<a class="card" href="'+esc(k.url)+'"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(k.naslov)+'"><div class="body"><span class="tag">Kolumna Nermina Sefića</span><h2>'+esc(k.naslov)+'</h2><p class="summary">'+esc(summary)+(summary.length===180?'…':'')+'</p><div class="meta">'+esc(date)+' · AKTUAL MEDIA</div></div></a>'}).join('');
+ }).catch(()=>{document.getElementById('columns').innerHTML='<p class="empty">Kolumne trenutačno nisu dostupne.</p>'});
+})();
+</script>
+</body>
+</html>

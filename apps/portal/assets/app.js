@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
   script('/assets/language-routing.js');
   // script('/assets/portal-navigation.js');
   script('/assets/status.js');
+  script('/assets/aktual-columnist-hub-v1.js');
   script('/assets/portal-layout.js');
   script('/assets/assistant.js');
   script('/assets/inline-assistant.js');
