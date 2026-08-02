@@ -1,0 +1,20 @@
+name: Dohvati slike b15 (jednokratno)
+on: workflow_dispatch
+jobs:
+  dohvati:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-b15
+          curl -s "https://gnk-asg.hr/api/slike?upit=trust+handshake+business+partnership" -o apps/portal/data/tmp-b15/povjerenje.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=transparency+glass+building+documents" -o apps/portal/data/tmp-b15/transparentnost.json
+          curl -s "https://gnk-asg.hr/api/slike?upit=digital+signature+document+laptop" -o apps/portal/data/tmp-b15/potpis.json
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="slikeb15-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-b15
+          git commit -m "slike b15"
+          git push origin "$BRANCH"
