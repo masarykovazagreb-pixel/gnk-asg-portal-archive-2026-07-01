@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Repository-wide guardrail: every static EN page must expose a single /en/ prefix.
 const root = path.resolve('apps/portal/en');
 const violations = [];
 
