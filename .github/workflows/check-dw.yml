@@ -1,0 +1,22 @@
+name: Provjeri digital-workforce nakon merge 723
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-dw
+          for ruta in "/digital-workforce/" "/" "/en/"; do
+            kod=$(curl -s -o /dev/null -w "%{http_code}" "https://gnk-asg.hr${ruta}")
+            echo "${kod} ${ruta}" >> apps/portal/data/tmp-dw/r.txt
+          done
+          cat apps/portal/data/tmp-dw/r.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="dwcheck-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-dw
+          git commit -m "dw check"
+          git push origin "$BRANCH"
