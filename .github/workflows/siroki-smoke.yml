@@ -1,0 +1,23 @@
+name: Siroki smoke test cijelog sajta
+on: workflow_dispatch
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-siroki
+          RUTE="/ /en/ /kontakt/ /contact/ /en/contact/ /en/contact-channels/ /objave/ /en/publications/ /komentari/ /en/commentary/ /analize/ /projects/ /projects/roadmap/ /financije/ /finance/ /nermin-sefic/ /en/nermin-sefic/ /gnk-aktual/ /en/gnk-aktual/ /trgovina/ /digital-workforce/ /sitemap.xml /sitemap-index.xml /editorial-sitemap.xml /image-sitemap.xml /visual-sitemap.xml /robots.txt /the-code/ /world-table/ /group-network/ /newsroom/ /intelligence-desk/ /knowledge-center/ /legal/ /about/"
+          for ruta in $RUTE; do
+            kod=$(curl -s -o /dev/null -w "%{http_code}" "https://gnk-asg.hr${ruta}")
+            echo "${kod} ${ruta}" >> apps/portal/data/tmp-siroki/r.txt
+          done
+          cat apps/portal/data/tmp-siroki/r.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="siroki-smoke-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-siroki
+          git commit -m "siroki smoke test"
+          git push origin "$BRANCH"
