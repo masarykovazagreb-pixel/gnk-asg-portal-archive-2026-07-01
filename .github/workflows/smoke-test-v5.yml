@@ -1,0 +1,22 @@
+name: Smoke test nove EN kolumne
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-smoke5
+          for ruta in "/en/gnk-aktual/columns/01-ai-za-male-tvrtke/" "/en/gnk-aktual/columns/07-cibona-kutak-dodig/" "/en/gnk-aktual/columns/08-cibona-prvak/" "/gnk-aktual/kolumne/01-ai-za-male-tvrtke/" "/api/public-operations/catalog"; do
+            kod=$(curl -s -o /dev/null -w "%{http_code}" "https://gnk-asg.hr${ruta}")
+            echo "${kod} ${ruta}" >> apps/portal/data/tmp-smoke5/r.txt
+          done
+          cat apps/portal/data/tmp-smoke5/r.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="smoke5-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-smoke5
+          git commit -m "smoke5"
+          git push origin "$BRANCH"
