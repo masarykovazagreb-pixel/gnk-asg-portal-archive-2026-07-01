@@ -79,6 +79,7 @@ async function objaviNaTumblru(clanak, item) {
     content: [
       ...(clanak.image ? [{ type: 'image', media: [{ url: clanak.image }] }] : []),
       { type: 'text', text: clanak.title },
+      { type: 'text', text: `Autor: Nermin Sefić, GNK ASG d.o.o.` },
       { type: 'text', text: clanak.paragraphs.join('\n\n') + `\n\nAutor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: ${SITE}${item.path}` },
     ],
     tags: 'NerminSefic,GNKASG,GNKDINAMOLtd',
