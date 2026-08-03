@@ -233,10 +233,10 @@ export default {
       if(assetResponse && assetResponse.status !== 404) return assetResponse;
     }
 
-    return new Response("Not found",{
+    return new Response(`<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stranica nije pronađena | GNK ASG</title><meta name="robots" content="noindex,follow"><style>body{margin:0;background:#050505;color:#f6f2e8;font-family:Arial,sans-serif;display:grid;place-items:center;min-height:100vh;text-align:center;padding:20px}h1{font-size:clamp(2.5rem,8vw,5rem);margin:0 0 10px;color:#d7b55b}p{color:#aaa59b;font-size:1.05rem;max-width:480px;margin:0 auto 26px}a.btn{display:inline-block;padding:12px 26px;border-radius:10px;background:linear-gradient(135deg,#f2d27d,#d7b55b);color:#171207;font-weight:800;text-decoration:none;margin:0 6px}a.btn2{display:inline-block;padding:12px 26px;border-radius:10px;border:1px solid #3b321c;color:#f6f2e8;text-decoration:none;margin:0 6px}</style></head><body><div><h1>404</h1><p>Stranica koju tražite ne postoji ili je premještena. Provjerite adresu ili se vratite na početnu stranicu.</p><a class="btn" href="/">Početna stranica</a><a class="btn2" href="/objave/">Objave</a></div></body></html>`,{
       status:404,
       headers:{
-        "content-type":"text/plain; charset=utf-8",
+        "content-type":"text/html; charset=utf-8",
         "cache-control":"no-store",
         "x-gnk-asg-urgent-fix":"fallback-404"
       }
