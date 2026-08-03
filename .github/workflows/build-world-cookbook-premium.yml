@@ -1,0 +1,62 @@
+name: Build Premium World Cookbook
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - scripts/build_world_cookbook_premium.py
+      - .github/workflows/build-world-cookbook-premium.yml
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install requests pillow reportlab pypdf
+      - name: Fit full-page cover flowables
+        run: |
+          sed -i 's/super().__init__(1,A4\[1\]-36\*mm)/super().__init__(1,700)/g' scripts/build_world_cookbook_premium.py
+      - name: Build premium PDF and flipbook
+        shell: bash
+        run: |
+          set +e
+          python scripts/build_world_cookbook_premium.py 2>&1 | tee cookbook-build.log
+          code=${PIPESTATUS[0]}
+          echo "build_exit_code=$code"
+          exit "$code"
+      - name: Validate package
+        if: success()
+        run: |
+          test -s artifacts/world-cookbook-premium/THE_WORLD_TABLE_GNK_ASG_WORLD_RECIPE_BOOK_EN.pdf
+          test -s artifacts/world-cookbook-premium/index.html
+          test -s artifacts/world-cookbook-premium/world-recipes.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from pypdf import PdfReader
+          root=Path('artifacts/world-cookbook-premium')
+          m=json.loads((root/'manifest.json').read_text())
+          assert m['categories'] >= 10, m
+          assert m['recipes'] >= 250, m
+          pdf=PdfReader(str(root/'THE_WORLD_TABLE_GNK_ASG_WORLD_RECIPE_BOOK_EN.pdf'))
+          print('manifest',m)
+          print('pages',len(pdf.pages))
+          assert len(pdf.pages) >= m['recipes']
+          PY
+      - name: Upload complete premium edition and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: THE-WORLD-TABLE-PREMIUM-EN
+          path: |
+            artifacts/world-cookbook-premium/
+            cookbook-build.log
+          if-no-files-found: warn
+          retention-days: 30
+          compression-level: 5
