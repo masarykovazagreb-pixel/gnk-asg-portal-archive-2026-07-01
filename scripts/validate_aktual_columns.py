@@ -12,12 +12,16 @@ def main() -> None:
     failures=[]
     for item in items:
         slug=item["slug"]
+        image=item.get("slika","")
+        if not image.startswith("/assets/people/nermin-sefic/"): failures.append(f"{slug}: approved Nermin Sefić image required")
+        if not item.get("slika_alt") or not item.get("slika_alt_en"): failures.append(f"{slug}: HR/EN image alt required")
         for lang,path in (("hr",PORTAL/"gnk-aktual"/"kolumne"/slug/"index.html"),("en",PORTAL/"en"/"gnk-aktual"/"columns"/slug/"index.html")):
             if not path.exists(): failures.append(f"{lang}:{slug}: missing {path.relative_to(ROOT)}"); continue
             text=path.read_text(encoding="utf-8")
             for needle in REQUIRED:
                 if needle not in text: failures.append(f"{lang}:{slug}: missing {needle}")
             expected=f"/gnk-aktual/kolumne/{slug}/" if lang=="hr" else f"/en/gnk-aktual/columns/{slug}/"
+            if image not in text: failures.append(f"{lang}:{slug}: author image mismatch")
             if expected not in text: failures.append(f"{lang}:{slug}: canonical/route mismatch")
     if failures: raise SystemExit("Aktual column SEO validation failed:\n- " + "\n- ".join(failures))
     print(f"Validated {len(items)*2} Aktual Media column pages")
