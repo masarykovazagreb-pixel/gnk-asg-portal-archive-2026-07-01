@@ -1,0 +1,11 @@
+=== SPF ===
+"v=spf1 include:_spf.mx.cloudflare.net ~all"
+=== DMARC ===
+"v=DMARC1; p=quarantine; rua=mailto:dmarc@gnk-asg.hr; ruf=mailto:dmarc@gnk-asg.hr; fo=1;"
+=== svi TXT zapisi ===
+"google-site-verification=_L6TfIonmMtX19SMsvMTpzmFBiICnEzUGR4v4US91Rc"
+"v=spf1 include:_spf.mx.cloudflare.net ~all"
+=== MX ===
+29 route3.mx.cloudflare.net.
+65 route2.mx.cloudflare.net.
+99 route1.mx.cloudflare.net.
