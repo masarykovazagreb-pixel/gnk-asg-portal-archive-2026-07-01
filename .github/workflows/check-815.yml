@@ -1,0 +1,22 @@
+name: Provjeri trgovina i world-table nakon 815 cherry-pick
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-815check
+          for ruta in "/trgovina/" "/world-table/" "/gnk-aktual/"; do
+            kod=$(curl -s -o /dev/null -w "%{http_code}" "https://gnk-asg.hr${ruta}")
+            echo "${kod} ${ruta}" >> apps/portal/data/tmp-815check/r.txt
+          done
+          cat apps/portal/data/tmp-815check/r.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="check815-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-815check
+          git commit -m "check"
+          git push origin "$BRANCH"
