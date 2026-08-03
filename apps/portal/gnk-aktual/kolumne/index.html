@@ -41,12 +41,12 @@
  const portrait='/assets/people/nermin-sefic/nermin-sefic-17-restaurant-roundtable.webp';
  const commentary=[
   {naslov:'Dobra odluka treba vrijeme, ne oklijevanje',url:'/komentari/dobra-odluka-treba-vrijeme-ne-oklijevanje/',meta_opis:'Brza odluka i dobra odluka nisu isto, ali ni spora odluka nije automatski bolja.',objavljeno:'2026-08-02',slika:portrait},
-  {naslov:'Brzina odluke nije kvaliteta odluke',url:'/komentari/brzina-odluke-nije-kvaliteta-odluke/',meta_opis:'Organizacije koje uspjeh mjere samo brzinom odlučivanja često zanemaruju kvalitetu provjerenih informacija.',objavljeno:'2026-08-02',slika:portrait},
-  {naslov:'Brz i nekontroliran rast gradi krhkost',url:'/komentari/brz-nekontroliran-rast-gradi-krhkost/',meta_opis:'Rast bez kontrole, likvidnosti i jasnih odgovornosti povećava ranjivost organizacije.',objavljeno:'2026-08-02',slika:portrait},
-  {naslov:'Rizik se ne uklanja — njime se upravlja',url:'/komentari/rizik-se-ne-uklanja-njime-se-upravlja/',meta_opis:'Odgovorno upravljanje ne obećava poslovanje bez rizika, nego sustav za njegovo pravodobno prepoznavanje i kontrolu.',objavljeno:'2026-08-02',slika:portrait},
+  {naslov:'Brzina odluke nije kvaliteta odluke',url:'/komentari/brzina-odlucivanja-nije-kvaliteta-odluke/',meta_opis:'Organizacije koje uspjeh mjere samo brzinom odlučivanja često zanemaruju kvalitetu provjerenih informacija.',objavljeno:'2026-08-02',slika:portrait},
+  {naslov:'Brz i nekontroliran rast gradi krhkost',url:'/komentari/brzi-rast-bez-kontrole-gradi-krhkost/',meta_opis:'Rast bez kontrole, likvidnosti i jasnih odgovornosti povećava ranjivost organizacije.',objavljeno:'2026-08-02',slika:portrait},
+  {naslov:'Rizik se ne uklanja — njime se upravlja',url:'/komentari/rizik-se-ne-eliminira-nego-upravlja/',meta_opis:'Odgovorno upravljanje ne obećava poslovanje bez rizika, nego sustav za njegovo pravodobno prepoznavanje i kontrolu.',objavljeno:'2026-08-02',slika:portrait},
   {naslov:'Transparentnost nije teret — ona je prednost',url:'/komentari/transparentnost-nije-teret-ona-je-prednost/',meta_opis:'Transparentnost smanjuje nesigurnost, ubrzava provjeru činjenica i dugoročno jača povjerenje.',objavljeno:'2026-08-02',slika:portrait},
-  {naslov:'Transparentnost se dokazuje, ne tvrdi',url:'/komentari/transparentnost-se-dokazuje-ne-tvrdi/',meta_opis:'Tvrdnja o transparentnosti vrijedi samo kada je poduprta dostupnim, provjerljivim i dosljednim dokazima.',objavljeno:'2026-08-02',slika:portrait},
-  {naslov:'Povjerenje se gradi sporo, a gubi brzo',url:'/komentari/povjerenje-se-gradi-sporo-i-gubi-brzo/',meta_opis:'Povjerenje nastaje dosljednim ponašanjem kroz vrijeme, ali ga jedna neodgovorna odluka može ozbiljno narušiti.',objavljeno:'2026-08-02',slika:portrait}
+  {naslov:'Transparentnost se dokazuje, ne tvrdi',url:'/komentari/transparentnost-se-dokazuje-a-ne-tvrdi/',meta_opis:'Tvrdnja o transparentnosti vrijedi samo kada je poduprta dostupnim, provjerljivim i dosljednim dokazima.',objavljeno:'2026-08-02',slika:portrait},
+  {naslov:'Povjerenje se gradi sporo, a gubi brzo',url:'/komentari/povjerenje-se-gradi-sporo-a-gubi-brzo/',meta_opis:'Povjerenje nastaje dosljednim ponašanjem kroz vrijeme, ali ga jedna neodgovorna odluka može ozbiljno narušiti.',objavljeno:'2026-08-02',slika:portrait}
  ];
  fetch('/data/kolumne.json?v='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).then(data=>{
   const registered=Array.isArray(data)?data:(data.items||[]);
