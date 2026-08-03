@@ -2,7 +2,9 @@
   const $=selector=>document.querySelector(selector);
   const $$=selector=>[...document.querySelectorAll(selector)];
   const base='/api/public/digital-workforce/';
-  const state={};
+  const state={workerFilters:{q:'',project:''},workerFilterFocus:''};
+  let activeRequestId=0;
+  let activeController=null;
   const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
   }[char]));
@@ -14,8 +16,8 @@
   const dateTime=value=>value?new Date(value).toLocaleString('hr-HR'):'—';
   const routeMap={plan:'plan',bulletins:'bulletins',projects:'projects',risks:'risks',opinions:'opinions',dependencies:'dependencies',tasks:'tasks',credits:'credits',newsroom:'newsroom',workers:'workers','activity-log':'log'};
 
-  async function get(key){
-    const response=await fetch(base+key,{cache:'no-store',headers:{accept:'application/json'}});
+  async function get(key,signal){
+    const response=await fetch(base+key,{cache:'no-store',headers:{accept:'application/json'},signal});
     if(!response.ok)throw new Error(`${key}:${response.status}`);
     return response.json();
   }
@@ -72,8 +74,15 @@
     },
     newsroom:data=>cards((data.items||[]).slice(0,18),item=>`<article class="dw-card"><span class="dw-kicker">${date(item.publishedAt)}</span><h3>${esc(item.title)}</h3><p>${esc(item.excerpt)}</p><small>Urednik: ${esc(item.editor)}</small></article>`),
     workers:data=>{
-      const rows=(data.items||[]).map(item=>`<tr><td>${esc(item.id)}</td><td><strong>${esc(item.name)}</strong></td><td>${esc(item.projectId)}</td><td>${esc(item.function)}</td><td>${badge(item.status)}</td></tr>`).join('');
-      return `<div class="dw-toolbar"><label><span>Pretraga</span><input id="dwWorkerSearch" type="search" placeholder="Ime, funkcija ili projekt" autocomplete="off"></label><label><span>Projekt</span><select id="dwWorkerProject"><option value="">Svi projekti</option>${(state.projects?.items||[]).map(project=>`<option value="${esc(project.id)}">${esc(project.id)} · ${esc(project.name)}</option>`).join('')}</select></label><div class="dw-count"><span>Ukupno</span><strong>${fmt(data.total)}</strong></div></div><div class="dw-table"><table><thead><tr><th>ID</th><th>Ime i prezime</th><th>Projekt</th><th>Funkcija</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      const filters=state.workerFilters||{q:'',project:''};
+      const items=data.items||[];
+      const total=Number.isFinite(Number(data.total))?Number(data.total):items.length;
+      const hasFilters=Boolean(filters.q||filters.project);
+      const countLabel=items.length===total?`${fmt(total)} ukupno`:`${fmt(items.length)} prikazano od ${fmt(total)}`;
+      const rows=items.map(item=>`<tr><td>${esc(item.id)}</td><td><strong>${esc(item.name)}</strong></td><td>${esc(item.projectId)}</td><td>${esc(item.function)}</td><td>${badge(item.status)}</td></tr>`).join('');
+      const resetButton=hasFilters?'<button type="button" id="dwWorkerReset">Poništi filtre</button>':'';
+      const result=items.length?`<div class="dw-table"><table><thead><tr><th scope="col">ID</th><th scope="col">Ime i prezime</th><th scope="col">Projekt</th><th scope="col">Funkcija</th><th scope="col">Status</th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="dw-empty dw-worker-empty" role="status"><strong>${hasFilters?'Nema workera koji odgovaraju odabranim kriterijima.':'Katalog workera je trenutačno prazan.'}</strong>${hasFilters?'<p>Promijenite kriterije ili vratite prikaz cijelog kataloga.</p><button type="button" id="dwWorkerResetEmpty">Prikaži sve workere</button>':''}</div>`;
+      return `<div class="dw-toolbar"><label><span>Pretraga</span><input id="dwWorkerSearch" type="search" value="${esc(filters.q)}" placeholder="Ime, funkcija ili projekt" autocomplete="off"></label><label><span>Projekt</span><select id="dwWorkerProject"><option value="">Svi projekti</option>${(state.projects?.items||[]).map(project=>`<option value="${esc(project.id)}"${filters.project===String(project.id)?' selected':''}>${esc(project.id)} · ${esc(project.name)}</option>`).join('')}</select></label><div class="dw-count" role="status" aria-live="polite"><span>Workeri</span><strong>${countLabel}</strong></div>${resetButton}</div>${result}`;
     },
     log:data=>data.items?.length?data.items.slice(0,50).map(item=>`<div class="dw-log"><time>${dateTime(item.at)}</time><b>${esc(item.type)}</b><span>${esc(item.message)}</span></div>`).join(''):'<div class="dw-empty">Zapisnik je prazan.</div>'
   };
@@ -83,45 +92,90 @@
     if(host)host.setAttribute('aria-busy',active?'true':'false');
   }
 
+  function restoreWorkerFilterFocus(){
+    const id=state.workerFilterFocus;
+    state.workerFilterFocus='';
+    if(!id)return;
+    requestAnimationFrame(()=>{
+      const control=document.getElementById(id);
+      control?.focus();
+      if(id==='dwWorkerSearch'&&typeof control?.setSelectionRange==='function'){
+        const end=control.value.length;
+        control.setSelectionRange(end,end);
+      }
+    });
+  }
+
   async function load(name,params=''){
     const host=$('#dwContent');
-    if(!host)return;
+    if(!host||!views[name])return;
+    const requestId=++activeRequestId;
+    activeController?.abort();
+    const controller=new AbortController();
+    activeController=controller;
     setBusy(true);
     host.innerHTML='<div class="dw-loading"><span class="dw-spinner" aria-hidden="true"></span><p>Učitavanje operativnih podataka…</p></div>';
     try{
-      if(!state.projects)state.projects=await get('projects');
+      if(name==='workers'&&!state.projects)state.projects=await get('projects',controller.signal);
       if(name==='credits')await getGnkcIndex();
-      const data=await get(name+params);
+      if(requestId!==activeRequestId)return;
+      const data=await get(name+params,controller.signal);
+      if(requestId!==activeRequestId)return;
       state[name]=data;
       host.innerHTML=views[name](data);
-      if(name==='workers')bindWorkerFilters();
+      if(name==='workers'){
+        bindWorkerFilters();
+        restoreWorkerFilterFocus();
+      }
     }catch(error){
-      host.innerHTML=`<div class="dw-error"><strong>Podaci trenutačno nisu dostupni.</strong><span>${esc(error.message)}</span><button type="button" id="dwRetry">Pokušaj ponovno</button></div>`;
-      $('#dwRetry')?.addEventListener('click',()=>load(name,params));
+      if(error?.name==='AbortError'||requestId!==activeRequestId)return;
+      host.innerHTML=`<div class="dw-error" role="alert"><strong>Podaci trenutačno nisu dostupni.</strong><span>${esc(error.message)}</span><button type="button" id="dwRetry">Pokušaj ponovno</button></div>`;
+      const retry=$('#dwRetry');
+      retry?.addEventListener('click',()=>load(name,params));
+      requestAnimationFrame(()=>retry?.focus());
     }finally{
-      setBusy(false);
+      if(requestId===activeRequestId){
+        setBusy(false);
+        if(activeController===controller)activeController=null;
+      }
     }
+  }
+
+  function resetWorkerFilters(){
+    state.workerFilters={q:'',project:''};
+    state.workerFilterFocus='dwWorkerSearch';
+    load('workers');
   }
 
   function bindWorkerFilters(){
     const search=$('#dwWorkerSearch');
     const project=$('#dwWorkerProject');
+    const reset=$('#dwWorkerReset');
+    const resetEmpty=$('#dwWorkerResetEmpty');
     let timer;
-    const run=()=>{
+    const run=event=>{
       clearTimeout(timer);
-      timer=setTimeout(()=>load('workers',`?q=${encodeURIComponent(search?.value||'')}&project=${encodeURIComponent(project?.value||'')}`),250);
+      state.workerFilters={q:search?.value||'',project:project?.value||''};
+      state.workerFilterFocus=event?.currentTarget?.id||'';
+      timer=setTimeout(()=>load('workers',`?q=${encodeURIComponent(state.workerFilters.q)}&project=${encodeURIComponent(state.workerFilters.project)}`),250);
     };
     search?.addEventListener('input',run);
     project?.addEventListener('change',run);
+    reset?.addEventListener('click',resetWorkerFilters);
+    resetEmpty?.addEventListener('click',resetWorkerFilters);
   }
 
   function activate(name){
+    let activeTab=null;
     $$('[data-dw-tab]').forEach(tab=>{
       const active=tab.dataset.dwTab===name;
       tab.classList.toggle('active',active);
       tab.setAttribute('aria-selected',active?'true':'false');
       tab.tabIndex=active?0:-1;
+      if(active)activeTab=tab;
     });
+    const host=$('#dwContent');
+    if(host&&activeTab?.id)host.setAttribute('aria-labelledby',activeTab.id);
     load(name);
   }
 

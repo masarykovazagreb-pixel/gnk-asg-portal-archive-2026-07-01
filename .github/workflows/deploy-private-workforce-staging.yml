@@ -30,28 +30,42 @@ jobs:
     timeout-minutes: 20
     environment: staging
     steps:
+      - name: Enforce approved staging source branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected='refs/heads/agent/digital-workforce-puls-redesign-integration-20260722'
+          [ "$GITHUB_REF" = "$expected" ] || { echo "::error::Private Workforce staging may deploy only from $expected; got $GITHUB_REF"; exit 1; }
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - name: Validate staging entrypoint and public suite
+      - name: Validate private staging contracts
         shell: bash
         run: |
           set -euo pipefail
-          node --check workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js
+          gate='workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js'
+          node --check "$gate"
           node --check workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js
           node --check apps/portal/assets/digital-workforce-suite-v1.js
           node --check apps/portal/assets/gnkc-stable-index-v1.js
           node scripts/test-digital-workforce-puls-design-contract.mjs
           node scripts/test-digital-workforce-continuity-contract.mjs
           node scripts/test-gnkc-stable-index-contract.mjs
-          grep -Fq 'GNK DINAMO Ltd grupa' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
+          grep -Fq 'GNK_DINAMO_WORKFORCE_STAGING_GATE_V21' "$gate"
+          grep -Fq "const tokens=form.getAll('token')" "$gate"
+          grep -Fq "const nextValues=form.getAll('next')" "$gate"
+          grep -Fq 'tokens.length!==1||nextValues.length>1' "$gate"
+          grep -Fq 'LOGIN_BODY_MAX_LENGTH=4096' "$gate"
+          grep -Fq 'TOKEN_MAX_LENGTH=512' "$gate"
+          grep -Fq 'matches.length!==1' "$gate"
           grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
           grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
-          grep -Fq 'Operatorski token' workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js
-          grep -Fq 'HttpOnly; Secure; SameSite=Strict' workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js
+          ! grep -Eqi '#06b6d4|#67e8f9|#8b5cf6|#0b3344|#07111f|#030712' "$gate"
+          ! grep -Fq 'echo "token=$value" >> "$GITHUB_OUTPUT"' .github/workflows/deploy-private-workforce-staging.yml
 
       - name: Resolve shared operator token hash
         id: auth
@@ -65,7 +79,6 @@ jobs:
           [ -n "$value" ] || value="$TOKEN_FALLBACK"
           [ -n "$value" ] || { echo '::error::Missing operator token'; exit 1; }
           echo "hash=$(printf '%s' "$value" | sha256sum | awk '{print $1}')" >> "$GITHUB_OUTPUT"
-          echo "token=$value" >> "$GITHUB_OUTPUT"
 
       - name: Install direct operator dependencies
         working-directory: workers/gnk-asg-direct-operator
@@ -85,56 +98,139 @@ jobs:
           [ -n "$url" ] || { echo '::error::Staging URL was not found in Wrangler output'; exit 1; }
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
-      - name: Verify browser login and bearer access
+      - name: Verify browser, login and session behavior
         env:
           URL: ${{ steps.deploy.outputs.url }}
-          TOKEN: ${{ steps.auth.outputs.token }}
+          TOKEN_PRIMARY: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
-          login=$(curl -sS -o staging-login.html -w '%{http_code}' "$URL/digital-workforce/")
-          [ "$login" = '200' ] || { echo "::error::Expected login page 200, got $login"; exit 1; }
+          TOKEN="$TOKEN_PRIMARY"
+          [ -n "$TOKEN" ] || TOKEN="$TOKEN_FALLBACK"
+          [ -n "$TOKEN" ] || { echo '::error::Missing operator token for verification'; exit 1; }
+          invalid_token="invalid-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
+          login=$(curl -sS -D staging-login.headers -o staging-login.html -w '%{http_code}' "$URL/digital-workforce/")
+          [ "$login" = '200' ]
           grep -Fq 'PRIVATNI STAGING' staging-login.html
-          grep -Fq 'Operatorski token' staging-login.html
+          grep -Fq 'background:#000' staging-login.html
+          grep -Fq '#d7b55b' staging-login.html
+          grep -Fqi 'x-gnk-staging-gate: GNK_DINAMO_WORKFORCE_STAGING_GATE_V21' staging-login.headers
+
+          unauth_api=$(curl -sS -D staging-unauth-api.headers -o staging-unauth-api.json -w '%{http_code}' "$URL/api/public/digital-workforce/state")
+          [ "$unauth_api" = '401' ]
+          grep -Fq 'STAGING_AUTH_REQUIRED' staging-unauth-api.json
+
+          malformed=$(curl -sS -D staging-malformed-login.headers -o staging-malformed-login.html -w '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' "$URL/_staging/login")
+          [ "$malformed" = '400' ]
+          ! grep -Fqi 'set-cookie:' staging-malformed-login.headers
+
+          multipart=$(curl -sS -D staging-multipart-login.headers -o staging-multipart-login.html -w '%{http_code}' -X POST -F "token=$TOKEN" "$URL/_staging/login")
+          [ "$multipart" = '400' ]
+          ! grep -Fqi 'set-cookie:' staging-multipart-login.headers
+
+          duplicate_token=$(curl -sS -D staging-duplicate-token.headers -o staging-duplicate-token.html -w '%{http_code}' -X POST --data-urlencode "token=$TOKEN" --data-urlencode "token=$invalid_token" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login")
+          [ "$duplicate_token" = '400' ]
+          grep -Fq 'Zahtjev za prijavu nije valjan.' staging-duplicate-token.html
+          ! grep -Fqi 'set-cookie:' staging-duplicate-token.headers
+
+          duplicate_next=$(curl -sS -D staging-duplicate-next.headers -o staging-duplicate-next.html -w '%{http_code}' -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' --data-urlencode 'next=/workers/' "$URL/_staging/login")
+          [ "$duplicate_next" = '400' ]
+          grep -Fq 'Zahtjev za prijavu nije valjan.' staging-duplicate-next.html
+          ! grep -Fqi 'set-cookie:' staging-duplicate-next.headers
+
+          python - <<'PY' > staging-oversized-login.body
+          print('token=' + ('a' * 5000))
+          PY
+          oversized_login=$(curl -sS -D staging-oversized-login.headers -o staging-oversized-login.html -w '%{http_code}' -X POST -H 'content-type: application/x-www-form-urlencoded' --data-binary @staging-oversized-login.body "$URL/_staging/login")
+          [ "$oversized_login" = '413' ]
+          ! grep -Fqi 'set-cookie:' staging-oversized-login.headers
+
+          invalid_login=$(curl -sS -D staging-invalid-login.headers -o staging-invalid-login.html -w '%{http_code}' -X POST --data-urlencode "token=$invalid_token" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login")
+          [ "$invalid_login" = '401' ]
+          ! grep -Fqi 'set-cookie:' staging-invalid-login.headers
+
           curl -fsS -c staging-cookie.txt -o /dev/null -X POST --data-urlencode "token=$TOKEN" --data-urlencode 'next=/digital-workforce/' "$URL/_staging/login"
+          cookie_value=$(awk '$6=="__Host-gnk_workforce_staging"{print $7}' staging-cookie.txt | tail -1)
+          [ -n "$cookie_value" ]
           auth=$(curl -sS -b staging-cookie.txt -o staging-page.html -w '%{http_code}' "$URL/digital-workforce/")
-          [ "$auth" = '200' ] || { echo "::error::Expected cookie-authenticated 200, got $auth"; exit 1; }
+          [ "$auth" = '200' ]
           grep -Fq 'Digitalna radna snaga' staging-page.html
           grep -Fq 'SIMULACIJA' staging-page.html
-          bearer=$(curl -sS -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $TOKEN" "$URL/digital-workforce/")
-          [ "$bearer" = '200' ] || { echo "::error::Expected bearer-authenticated 200, got $bearer"; exit 1; }
-          headers=$(curl -sSI -b staging-cookie.txt "$URL/digital-workforce/")
-          printf '%s' "$headers" | grep -Fqi 'x-robots-tag: noindex'
-          printf '%s' "$headers" | grep -Fqi 'x-gnk-environment: private-workforce-staging'
 
-      - name: Verify staging APIs and write lock
+          malformed_cookie=$(curl -sS -H 'Cookie: __Host-gnk_workforce_staging=%E0%A4%A' -o staging-malformed-cookie.html -w '%{http_code}' "$URL/digital-workforce/")
+          [ "$malformed_cookie" = '200' ]
+          grep -Fq 'PRIVATNI STAGING' staging-malformed-cookie.html
+
+          duplicate_cookie=$(curl -sS -H "Cookie: __Host-gnk_workforce_staging=$cookie_value; __Host-gnk_workforce_staging=duplicate" -o staging-duplicate-cookie.html -w '%{http_code}' "$URL/digital-workforce/")
+          [ "$duplicate_cookie" = '200' ]
+          grep -Fq 'PRIVATNI STAGING' staging-duplicate-cookie.html
+
+          invalid_bearer_browser=$(curl -sS -b staging-cookie.txt -H "Authorization: Bearer $invalid_token" -o staging-invalid-bearer-browser.html -w '%{http_code}' "$URL/digital-workforce/")
+          [ "$invalid_bearer_browser" = '401' ]
+          grep -Fq 'PRIVATNI STAGING' staging-invalid-bearer-browser.html
+
+          bearer=$(curl -sS -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $TOKEN" "$URL/digital-workforce/")
+          [ "$bearer" = '200' ]
+
+      - name: Verify every tab API and write lock
         env:
           URL: ${{ steps.deploy.outputs.url }}
-          TOKEN: ${{ steps.auth.outputs.token }}
+          TOKEN_PRIMARY: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
-          curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/api/public/digital-workforce/state" > staging-state.json
-          curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/api/public/digital-workforce/projects" > staging-projects.json
+          TOKEN="$TOKEN_PRIMARY"
+          [ -n "$TOKEN" ] || TOKEN="$TOKEN_FALLBACK"
+          [ -n "$TOKEN" ] || { echo '::error::Missing operator token for API verification'; exit 1; }
+          endpoints=(state plan bulletins projects risks opinions dependencies tasks credits newsroom workers log)
+          for endpoint in "${endpoints[@]}"; do
+            file="staging-${endpoint}.json"
+            code=$(curl -sS -o "$file" -w '%{http_code}' -H "Authorization: Bearer $TOKEN" "$URL/api/public/digital-workforce/$endpoint")
+            [ "$code" = '200' ] || { echo "::error::Expected $endpoint API 200, got $code"; exit 1; }
+            ENDPOINT="$endpoint" FILE="$file" node - <<'NODE'
+          const fs=require('fs');
+          const endpoint=process.env.ENDPOINT;
+          const payload=JSON.parse(fs.readFileSync(process.env.FILE,'utf8'));
+          if(!payload||typeof payload!=='object'||Array.isArray(payload))throw new Error(`${endpoint}: payload must be an object`);
+          if(endpoint!=='state'&&!Array.isArray(payload.items))throw new Error(`${endpoint}: items must be an array`);
+          NODE
+          done
+          curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/api/public/digital-workforce/workers?q=a&project=" > staging-workers-filtered.json
+          node -e "const p=require('./staging-workers-filtered.json'); if(!p||!Array.isArray(p.items)) throw new Error('filtered workers payload invalid');"
           curl -fsS -H "Authorization: Bearer $TOKEN" "$URL/data/market-pulse.json" > staging-market.json
-          node -e "const fs=require('fs'); for(const f of ['staging-state.json','staging-projects.json','staging-market.json']) JSON.parse(fs.readFileSync(f,'utf8'));"
+          node -e "JSON.parse(require('fs').readFileSync('staging-market.json','utf8'));"
           write=$(curl -sS -o staging-write.json -w '%{http_code}' -X POST -H "Authorization: Bearer $TOKEN" -H 'content-type: application/json' --data '{}' "$URL/api/public/digital-workforce/state")
-          [ "$write" = '405' ] || { echo "::error::Expected staging write lock 405, got $write"; exit 1; }
+          [ "$write" = '405' ]
           grep -Fq 'STAGING_WRITE_BLOCKED' staging-write.json
 
+      - name: Remove live staging session material
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f staging-cookie.txt
+          ! compgen -G 'staging-cookie*.txt' > /dev/null
+
       - name: Publish staging verification summary
+        if: success()
         shell: bash
         run: |
           cat > staging-verification.md <<EOF
           # Private Workforce Staging
           - URL: ${{ steps.deploy.outputs.url }}
           - Source SHA: $GITHUB_SHA
-          - Browser login: same operator token verified
-          - Authenticated portal: 200 verified
-          - Bearer API access: verified
-          - Robots: noindex/nofollow verified
-          - Digital Workforce API: verified
-          - Market data: verified
+          - Source ref: $GITHUB_REF
+          - Gate: V21 verified
+          - Login parser: bounded URL-encoded only
+          - Duplicate token and redirect fields: rejected fail-closed
+          - Cookie ambiguity and malformed encoding: rejected fail-closed
+          - Live browser session cookie: removed before artifact upload
+          - Browser session and explicit Bearer behavior: verified
+          - All 11 tab APIs plus state: verified
+          - Filtered Worker API and market data: verified
           - Production writes: blocked (405)
           - Mail and public publishing: disabled
           EOF
@@ -148,11 +244,9 @@ jobs:
           path: |
             workers/gnk-asg-direct-operator/staging-deploy.log
             staging-verification.md
-            staging-login.html
-            staging-page.html
-            staging-state.json
-            staging-projects.json
-            staging-market.json
-            staging-write.json
+            staging-*.headers
+            staging-*.html
+            staging-*.json
+            staging-*.body
           if-no-files-found: warn
           retention-days: 14

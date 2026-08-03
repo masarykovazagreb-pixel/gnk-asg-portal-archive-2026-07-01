@@ -14,24 +14,45 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="/assets/style.css?v=20260721-header-fulltransparent-v1">
   <link rel="stylesheet" href="/assets/public-sections-v1.css?v=20260721-header-fulltransparent-v1">
-  <link rel="stylesheet" href="/assets/digital-workforce-suite-v1.css?v=20260722-puls-redesign-v5">
+  <link rel="stylesheet" href="/assets/digital-workforce-suite-v1.css?v=20260722-puls-redesign-v7-black-responsive">
   <link rel="stylesheet" href="/assets/gnkc-stable-index-v1.css?v=20260722">
   <link rel="stylesheet" href="/assets/digital-workforce-continuity-v1.css?v=20260722">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"GNK DINAMO Ltd grupa — Digitalna radna snaga","url":"https://gnk-asg.hr/digital-workforce/","applicationCategory":"BusinessApplication","publisher":{"@type":"Organization","name":"GNK DINAMO Ltd grupa"},"provider":{"@type":"Organization","name":"GNK ASG"},"editor":{"@type":"Person","name":"Nermin Sefić"}}</script>
   <link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260721-header-fulltransparent-v1">
   <style>
+    html,body,.dw-private-preview{background:#000!important;background-image:none!important;color:#f7f5ef}
+    body.dw-private-preview:before,body.dw-private-preview:after{display:none!important;content:none!important}
+    .dw-skip-link{position:fixed;z-index:10000;top:12px;left:12px;transform:translateY(-160%);padding:12px 16px;border:1px solid #d7b55b;border-radius:10px;background:#000;color:#f2d27d;font-weight:900;text-decoration:none;transition:transform .16s ease}
+    .dw-skip-link:focus-visible{transform:translateY(0);outline:3px solid #f2d27d;outline-offset:3px}
+    .dw-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+    #gnk-unified-header{background:rgba(0,0,0,.86)!important;border-bottom:1px solid rgba(215,181,91,.18)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important}
     #gnk-unified-header .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#f4e7bd;font-weight:900;letter-spacing:.08em}
-    #gnk-unified-header .brand-mark{display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(215,181,91,.55);border-radius:14px;background:linear-gradient(145deg,rgba(215,181,91,.2),rgba(255,255,255,.04));box-shadow:inset 0 0 24px rgba(215,181,91,.08)}
+    #gnk-unified-header .brand-mark{display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(215,181,91,.55);border-radius:14px;background:rgba(10,10,10,.94);box-shadow:inset 0 0 24px rgba(215,181,91,.08),0 0 28px rgba(215,181,91,.06)}
     #gnk-unified-header .brand-copy{display:flex;flex-direction:column;line-height:1.05}
-    #gnk-unified-header .brand-copy strong{font-size:14px}
-    #gnk-unified-header .brand-copy small{font-size:9px;color:#bca66c;letter-spacing:.12em}
+    #gnk-unified-header .brand-copy strong{font-size:14px;color:#fff}
+    #gnk-unified-header .brand-copy small{font-size:9px;color:#d7b55b;letter-spacing:.12em}
+    .dw-shell{background:#000!important;min-width:0!important}
+    .dw-hero,.dw-panel,.dw-card,.dw-task,.dw-row,.dw-log,.dw-hero-status,.dw-kanban section,.dw-table,.dw-toolbar input,.dw-toolbar select,.dw-toolbar button,.dw-count{background:rgba(8,8,8,.84)!important;background-image:none!important;border-color:rgba(215,181,91,.2)!important;box-shadow:0 24px 80px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,255,255,.035)!important}
+    .dw-hero:before{background:linear-gradient(115deg,rgba(215,181,91,.10),transparent 34%,transparent 76%,rgba(215,181,91,.035))!important}
+    .dw-hero:after{background:rgba(215,181,91,.10)!important}
+    .dw-tabs{display:flex!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior-inline:contain!important;scrollbar-width:thin!important;scrollbar-color:rgba(215,181,91,.42) rgba(0,0,0,.8)!important;background:linear-gradient(180deg,rgba(0,0,0,.99) 0%,rgba(0,0,0,.94) 72%,transparent)!important}
+    .dw-tabs button{flex:0 0 auto!important;min-height:44px!important;white-space:nowrap!important;background:rgba(10,10,10,.94)!important;color:#e7e3da!important}
+    .dw-tabs button.active{background:rgba(215,181,91,.13)!important;color:#f2d27d!important}
+    .dw-tabs button:focus-visible{outline:3px solid #f2d27d!important;outline-offset:3px!important}
+    .dw-panel:focus-visible{outline:3px solid #f2d27d!important;outline-offset:4px!important}
+    .dw-table{max-width:100%!important;overflow-x:auto!important;overscroll-behavior-inline:contain!important;-webkit-overflow-scrolling:touch!important}
+    .dw-table table{min-width:760px!important}
+    .dw-badge.is-neutral{color:#f2d27d!important;border-color:rgba(215,181,91,.28)!important;background:rgba(215,181,91,.08)!important}
     .dw-disclaimer{color:#f5d978!important;opacity:1!important;font-weight:900;letter-spacing:.16em}
-    @media (max-width:900px){#gnk-unified-header .brand-copy{display:none}.dw-hero{grid-template-columns:1fr!important}.dw-hero-status{width:100%;max-width:none}}
+    @media (max-width:900px){#gnk-unified-header .brand-copy{display:none}.dw-hero{grid-template-columns:1fr!important}.dw-hero-status{width:100%;max-width:none}.dw-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}.dw-toolbar{grid-template-columns:1fr!important}}
+    @media (max-width:560px){.dw-shell{padding-inline:12px!important}.dw-hero,.dw-panel{border-radius:18px!important}.dw-metrics{grid-template-columns:1fr!important}.dw-tabs{margin-inline:-12px!important;padding-inline:12px!important}.dw-tabs button{padding-inline:14px!important}.dw-table table{min-width:680px!important}}
+    @media (prefers-reduced-motion:reduce){.dw-skip-link{transition:none}}
   </style>
 </head>
 <body class="dw-private-preview">
+  <a class="dw-skip-link" href="#dwMain">Preskoči na operativni sadržaj</a>
   <header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/" aria-label="GNK ASG — društvo unutar GNK DINAMO Ltd grupe"><span class="brand-mark">GNK</span><span class="brand-copy"><strong>GNK ASG</strong><small>GNK DINAMO Ltd GRUPA</small></span></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/" aria-label="Hrvatski" aria-current="page">HR</a><a href="/en/" aria-label="English">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">IZBORNIK</button></div><nav id="gnk-unified-nav"></nav></div></div></header>
-  <main class="dw-shell">
+  <main id="dwMain" class="dw-shell" tabindex="-1">
     <header class="dw-hero">
       <div class="dw-hero-copy">
         <span class="dw-kicker">GNK DINAMO Ltd grupa · javni operativni sustav</span>
@@ -51,23 +72,24 @@
       </aside>
     </header>
     <p class="dw-disclaimer">SIMULACIJA</p>
-    <nav class="dw-tabs" role="tablist" aria-label="Funkcije digitalne radne snage">
-      <button class="active" role="tab" aria-selected="true" data-dw-tab="plan">Plan</button>
-      <button role="tab" aria-selected="false" data-dw-tab="bulletins">Bilten</button>
-      <button role="tab" aria-selected="false" data-dw-tab="projects">Projekti</button>
-      <button role="tab" aria-selected="false" data-dw-tab="risks">Rizici</button>
-      <button role="tab" aria-selected="false" data-dw-tab="opinions">Mišljenja</button>
-      <button role="tab" aria-selected="false" data-dw-tab="dependencies">Ovisnosti</button>
-      <button role="tab" aria-selected="false" data-dw-tab="tasks">Zadaci</button>
-      <button role="tab" aria-selected="false" data-dw-tab="credits">Krediti</button>
-      <button role="tab" aria-selected="false" data-dw-tab="newsroom">Newsroom</button>
-      <button role="tab" aria-selected="false" data-dw-tab="workers">Workeri</button>
-      <button role="tab" aria-selected="false" data-dw-tab="log">Zapisnik</button>
+    <p id="dwTabHelp" class="dw-sr-only">Za promjenu kartice koristite tipke sa strelicama lijevo i desno. Sadržaj odabrane kartice nalazi se odmah nakon popisa kartica.</p>
+    <nav class="dw-tabs" role="tablist" aria-label="Funkcije digitalne radne snage" aria-describedby="dwTabHelp">
+      <button id="dw-tab-plan" class="active" type="button" role="tab" aria-selected="true" aria-controls="dwContent" tabindex="0" data-dw-tab="plan">Plan</button>
+      <button id="dw-tab-bulletins" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="bulletins">Bilten</button>
+      <button id="dw-tab-projects" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="projects">Projekti</button>
+      <button id="dw-tab-risks" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="risks">Rizici</button>
+      <button id="dw-tab-opinions" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="opinions">Mišljenja</button>
+      <button id="dw-tab-dependencies" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="dependencies">Ovisnosti</button>
+      <button id="dw-tab-tasks" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="tasks">Zadaci</button>
+      <button id="dw-tab-credits" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="credits">Krediti</button>
+      <button id="dw-tab-newsroom" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="newsroom">Newsroom</button>
+      <button id="dw-tab-workers" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="workers">Workeri</button>
+      <button id="dw-tab-log" type="button" role="tab" aria-selected="false" aria-controls="dwContent" tabindex="-1" data-dw-tab="log">Zapisnik</button>
     </nav>
-    <section id="dwContent" class="dw-panel" role="tabpanel" aria-live="polite" aria-busy="false"></section>
+    <section id="dwContent" class="dw-panel" role="tabpanel" tabindex="0" aria-busy="false" aria-labelledby="dw-tab-plan"></section>
   </main>
   <script defer src="/assets/gnkc-stable-index-v1.js?v=20260722"></script>
-  <script defer src="/assets/digital-workforce-suite-v1.js?v=20260722-puls-redesign-v5"></script>
+  <script defer src="/assets/digital-workforce-suite-v1.js?v=20260722-puls-redesign-v7-black-responsive"></script>
   <script defer src="/assets/digital-workforce-continuity-v1.js?v=20260722"></script>
   <script defer src="/assets/public-digital-workforce-menu-v1.js?v=20260715"></script>
 </body>

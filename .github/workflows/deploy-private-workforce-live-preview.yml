@@ -1,0 +1,195 @@
+name: Deploy Private Workforce Live Preview
+
+on:
+  push:
+    branches:
+      - agent/digital-workforce-puls-redesign-integration-20260722
+    paths:
+      - 'apps/portal/digital-workforce/**'
+      - 'apps/portal/workers/**'
+      - 'apps/portal/assets/digital-workforce-**'
+      - 'apps/portal/assets/gnkc-**'
+      - 'scripts/test-digital-workforce-**'
+      - 'workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js'
+      - 'workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml'
+      - '.github/workflows/deploy-private-workforce-live-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PREVIEW_WORKER_NAME: gnk-dinamo-workforce-live-preview
+
+concurrency:
+  group: gnk-dinamo-workforce-live-preview
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: staging
+      url: ${{ steps.deploy.outputs.url }}/digital-workforce/
+    steps:
+      - name: Enforce approved preview branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected='refs/heads/agent/digital-workforce-puls-redesign-integration-20260722'
+          [ "$GITHUB_REF" = "$expected" ] || { echo "::error::Live preview may deploy only from $expected; got $GITHUB_REF"; exit 1; }
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate preview contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          gate='workers/gnk-asg-direct-operator/src/index-workforce-staging-gate-v1.js'
+          node --check "$gate"
+          node --check workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js
+          node --check apps/portal/assets/digital-workforce-suite-v1.js
+          node scripts/test-digital-workforce-puls-design-contract.mjs
+          node scripts/test-digital-workforce-continuity-contract.mjs
+          grep -Fq 'PRODUCTION_WRITE_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
+          grep -Fq 'PUBLIC_PUBLISHING_ALLOWED = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
+          grep -Fq 'MAIL_AUTO_REPLY_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml
+
+      - name: Resolve preview token hash
+        id: auth
+        env:
+          TOKEN: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          value="$TOKEN"
+          [ -n "$value" ] || value="$TOKEN_FALLBACK"
+          [ -n "$value" ] || { echo '::error::Missing operator token'; exit 1; }
+          echo "hash=$(printf '%s' "$value" | sha256sum | awk '{print $1}')" >> "$GITHUB_OUTPUT"
+
+      - name: Install Worker dependencies
+        working-directory: workers/gnk-asg-direct-operator
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Deploy isolated workers.dev preview
+        id: deploy
+        working-directory: workers/gnk-asg-direct-operator
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 deploy \
+            --config wrangler.workforce-staging.toml \
+            --name "$PREVIEW_WORKER_NAME" \
+            --var "STAGING_TOKEN_SHA256:${{ steps.auth.outputs.hash }}" \
+            2>&1 | tee live-preview-deploy.log
+          url=$(grep -Eo 'https://[a-zA-Z0-9._-]+\.workers\.dev' live-preview-deploy.log | tail -1 || true)
+          [ -n "$url" ] || { echo '::error::Live preview URL was not found in Wrangler output'; exit 1; }
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$url/digital-workforce/" > live-preview-url.txt
+
+      - name: Verify private login entry point
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          code=$(curl --retry 4 --retry-all-errors --retry-delay 2 -sS -D live-preview.headers -o live-preview.html -w '%{http_code}' "$URL/digital-workforce/")
+          [ "$code" = '200' ]
+          grep -Fq 'PRIVATNI STAGING' live-preview.html
+          grep -Fq 'background:#000' live-preview.html
+          grep -Fq '#d7b55b' live-preview.html
+          grep -Fqi 'x-gnk-environment: private-workforce-staging' live-preview.headers
+          ! grep -Fq 'Digitalna radna snaga' live-preview.html
+
+      - name: Verify authenticated portal and every tab API
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+          TOKEN_PRIMARY: ${{ secrets.GNK_ASG_OPERATOR_TOKEN }}
+          TOKEN_FALLBACK: ${{ secrets.OPERATOR_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TOKEN="$TOKEN_PRIMARY"
+          [ -n "$TOKEN" ] || TOKEN="$TOKEN_FALLBACK"
+          [ -n "$TOKEN" ] || { echo '::error::Missing operator token for authenticated preview verification'; exit 1; }
+
+          page_code=$(curl --retry 4 --retry-all-errors --retry-delay 2 -sS \
+            -H "Authorization: Bearer $TOKEN" \
+            -D live-preview-auth.headers \
+            -o live-preview-auth.html \
+            -w '%{http_code}' \
+            "$URL/digital-workforce/")
+          [ "$page_code" = '200' ] || { echo "::error::Authenticated preview page returned $page_code"; exit 1; }
+          grep -Fq 'Digitalna radna snaga' live-preview-auth.html
+          grep -Fq 'SIMULACIJA' live-preview-auth.html
+          grep -Fqi 'x-gnk-environment: private-workforce-staging' live-preview-auth.headers
+
+          endpoints=(state plan bulletins projects risks opinions dependencies tasks credits newsroom workers log)
+          for endpoint in "${endpoints[@]}"; do
+            file="live-preview-${endpoint}.json"
+            code=$(curl --retry 4 --retry-all-errors --retry-delay 2 -sS \
+              -H "Authorization: Bearer $TOKEN" \
+              -o "$file" \
+              -w '%{http_code}' \
+              "$URL/api/public/digital-workforce/$endpoint")
+            [ "$code" = '200' ] || { echo "::error::Preview API $endpoint returned $code"; exit 1; }
+            ENDPOINT="$endpoint" FILE="$file" node - <<'NODE'
+          const fs=require('fs');
+          const endpoint=process.env.ENDPOINT;
+          const payload=JSON.parse(fs.readFileSync(process.env.FILE,'utf8'));
+          if(!payload||typeof payload!=='object'||Array.isArray(payload))throw new Error(`${endpoint}: payload must be an object`);
+          if(endpoint!=='state'&&!Array.isArray(payload.items))throw new Error(`${endpoint}: items must be an array`);
+          NODE
+          done
+
+          write_code=$(curl -sS \
+            -H "Authorization: Bearer $TOKEN" \
+            -H 'content-type: application/json' \
+            -X POST --data '{}' \
+            -o live-preview-write.json \
+            -w '%{http_code}' \
+            "$URL/api/public/digital-workforce/state")
+          [ "$write_code" = '405' ]
+          grep -Fq 'STAGING_WRITE_BLOCKED' live-preview-write.json
+
+      - name: Publish verified live preview link
+        if: success()
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo '# GNK DINAMO Digital Workforce — privatni pregled'
+            echo
+            echo "- Otvori pregled: $URL/digital-workforce/"
+            echo "- Source SHA: $GITHUB_SHA"
+            echo '- Pristup: postojeći operator/admin token'
+            echo '- Autentificirana stranica i svih 11 tab API-ja: provjereni'
+            echo '- Produkcijski write, mail i javno objavljivanje: isključeni'
+          } | tee live-preview-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload non-secret preview evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workforce-live-preview-${{ github.sha }}
+          path: |
+            workers/gnk-asg-direct-operator/live-preview-deploy.log
+            workers/gnk-asg-direct-operator/live-preview-url.txt
+            live-preview-summary.md
+            live-preview*.headers
+            live-preview*.html
+            live-preview*.json
+          if-no-files-found: warn
+          retention-days: 7

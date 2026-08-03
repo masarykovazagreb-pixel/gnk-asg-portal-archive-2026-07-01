@@ -8,9 +8,10 @@ const validationWorkflow=read('.github/workflows/deploy-mail-studio-multilingual
 const publicAssetsValidation=read('.github/workflows/deploy-public-portal-assets-safe.yml');
 const preflight=read('scripts/check-newsroom-route-readiness.sh');
 const verifier=read('scripts/verify-production-release-v38.sh');
+const workforceStagingConfig=read('workers/gnk-asg-direct-operator/wrangler.workforce-staging.toml');
 
-const requireText=(label,source,values)=>{for(const value of values)assert.ok(source.includes(value),`${label} missing: ${value}`)};
-const forbidText=(label,source,values)=>{for(const value of values)assert.ok(!source.includes(value),`${label} contains forbidden text: ${value}`)};
+const requireText=(label,source,values)=>{for(const value of values){if(!source.includes(value))console.error(`::error::${label} missing: ${value}`);assert.ok(source.includes(value),`${label} missing: ${value}`)}};
+const forbidText=(label,source,values)=>{for(const value of values){if(source.includes(value))console.error(`::error::${label} contains forbidden text: ${value}`);assert.ok(!source.includes(value),`${label} contains forbidden text: ${value}`)}};
 
 requireText('workflow approval contract',workflow,[
  'approved_sha:','ref: ${{ inputs.approved_sha }}','authorize-production:','deploy-production:',
@@ -47,17 +48,73 @@ requireText('legacy public-assets validation',publicAssetsValidation,['pull_requ
 forbidText('legacy public-assets validation',publicAssetsValidation,['workflow_dispatch:','environment: production','CLOUDFLARE_API_TOKEN','CLOUDFLARE_ACCOUNT_ID']);
 assert.equal(/wrangler@4 deploy(?! --dry-run)/.test(publicAssetsValidation),false);
 
+requireText('private workforce staging config',workforceStagingConfig,[
+ 'workers_dev = true',
+ 'preview_urls = true',
+ 'STAGING_MODE = "true"',
+ 'SHADOW_MODE = "true"',
+ 'PRODUCTION_WRITE_ALLOWED = "false"',
+ 'PUBLIC_PUBLISHING_ALLOWED = "false"',
+ 'MAIL_AUTO_REPLY_LIVE = "false"',
+ 'MAIL_STUDIO_LIVE = "false"',
+ 'MAIL_MANUAL_LIVE = "false"'
+]);
+forbidText('private workforce staging config',workforceStagingConfig,[
+ 'routes =','custom_domain','zone_name'
+]);
+
 const approved='.github/workflows/deploy-admin-auth-v6.yml';
+const safePrivateDeploys=new Map([
+ ['.github/workflows/deploy-private-workforce-staging.yml',{
+  label:'private workforce staging deploy contract',
+  required:[
+   'agent/digital-workforce-puls-redesign-integration-20260722',
+   'environment: staging',
+   '--config wrangler.workforce-staging.toml',
+   '--name gnk-dinamo-workforce-staging',
+   'STAGING_WRITE_BLOCKED'
+  ]
+ }],
+ ['.github/workflows/deploy-private-workforce-live-preview.yml',{
+  label:'private workforce live preview deploy contract',
+  required:[
+   'agent/digital-workforce-puls-redesign-integration-20260722',
+   'name: staging',
+   'PREVIEW_WORKER_NAME: gnk-dinamo-workforce-live-preview',
+   '--config wrangler.workforce-staging.toml',
+   'STAGING_WRITE_BLOCKED'
+  ]
+ }]
+]);
+const forbiddenPrivateDeployText=['environment: production','refs/heads/main','routes =','custom_domain','zone_name'];
 const violations=[];
+const diagnostics=[];
 for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test(f))){
  const path=`.github/workflows/${file}`;
  if(path===approved)continue;
  const source=read(path);
  const writeLine=source.split(/\r?\n/).find(line=>/^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line));
- if(writeLine)violations.push(`${file}: ${writeLine.trim()}`);
- if(/^\s*environment:\s*production\s*$/im.test(source))violations.push(`${file}: production environment`);
+ const safeContract=safePrivateDeploys.get(path);
+ if(writeLine&&safeContract){
+  const missing=safeContract.required.filter(value=>!source.includes(value));
+  const forbidden=forbiddenPrivateDeployText.filter(value=>source.includes(value));
+  diagnostics.push({path,writeLine:writeLine.trim(),missing,forbidden});
+  if(missing.length||forbidden.length){
+   violations.push(`${file}: private deploy contract mismatch; missing=[${missing.join(', ')}]; forbidden=[${forbidden.join(', ')}]`);
+  }
+  continue;
+ }
+ if(writeLine){
+  diagnostics.push({path,writeLine:writeLine.trim(),classification:'unapproved-deploy-workflow'});
+  violations.push(`${file}: ${writeLine.trim()}`);
+ }
+ if(/^\s*environment:\s*production\s*$/im.test(source)){
+  diagnostics.push({path,classification:'production-environment-outside-approved-workflow'});
+  violations.push(`${file}: production environment`);
+ }
 }
-assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may contain production deployment capability');
+console.log(JSON.stringify({privateDeployGuardrailDiagnostics:diagnostics},null,2));
+assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may deploy production; only the two hardened private workforce deploys are permitted as non-production exceptions');
 
 requireText('preflight',preflight,['gnk-asg-news-backend','/newsroom/','/en/newsroom/','No production changes were made']);
 assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id/i);
@@ -70,5 +127,7 @@ console.log(JSON.stringify({
  boundedCloudflareRetry:true,
  retryOnlyForAssetsSession10013:true,
  diagnosticsArtifact:true,
- alternateProductionDeploys:false
+ alternateProductionDeploys:false,
+ hardenedPrivateWorkforceDeploys:2,
+ privateSafetySource:'wrangler.workforce-staging.toml'
 },null,2));

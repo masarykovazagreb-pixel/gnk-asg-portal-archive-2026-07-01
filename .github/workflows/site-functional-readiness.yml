@@ -109,7 +109,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node scripts/test-deploy-approval-guardrails.mjs
+          mkdir -p artifacts
+          node scripts/test-deploy-approval-guardrails.mjs 2>&1 | tee artifacts/deploy-approval-guardrails.log
           node scripts/audit-worker-route-ownership.mjs
 
       - name: SEO integrity
@@ -128,7 +129,11 @@ jobs:
         run: scripts/check-newsroom-route-readiness.sh readiness-preflight
 
       - name: Full predeploy gate
-        run: node scripts/predeploy-release-v6.mjs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          node scripts/predeploy-release-v6.mjs 2>&1 | tee artifacts/predeploy-release-v6.log
 
       - name: Upload readiness evidence
         if: always()
@@ -138,5 +143,6 @@ jobs:
           path: |
             readiness-preflight/**
             artifacts/*.json
+            artifacts/*.log
           if-no-files-found: warn
           retention-days: 14
