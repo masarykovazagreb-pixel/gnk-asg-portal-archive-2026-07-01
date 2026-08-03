@@ -21,7 +21,7 @@ const corsHeaders={
   'access-control-allow-headers':'content-type,authorization,x-gnk-admin-token',
   'access-control-max-age':'86400'
 };
-const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-public-operations':VERSION,'x-content-type-options':'nosniff',...corsHeaders}});
+const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-gnk-public-operations':VERSION,'x-content-type-options':'nosniff','x-robots-tag':'noindex, nofollow',...corsHeaders}});
 const empty=(status=204)=>new Response(null,{status,headers:{'cache-control':'no-store','x-gnk-public-operations':VERSION,...corsHeaders}});
 
 function zonedParts(value=new Date()){

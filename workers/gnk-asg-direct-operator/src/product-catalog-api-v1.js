@@ -7,7 +7,7 @@ const PREFIX='/api/v1/products';
 const KV_INDEX_KEY='webshop:products:index';
 const KV_ITEM_PREFIX='webshop:products:item:';
 const kv=env=>env?.GNK_ASG_KV||env?.GNK_ASG_CONFIG_KV||null;
-const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-gnk-product-catalog-api':VERSION}});
+const json=(data,status=200)=>new Response(JSON.stringify(data,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-gnk-product-catalog-api':VERSION,'x-robots-tag':'noindex, nofollow'}});
 
 function timingSafeEqual(a,b){
   if(typeof a!=='string'||typeof b!=='string'||a.length!==b.length)return false;
