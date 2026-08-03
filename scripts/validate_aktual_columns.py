@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PORTAL = ROOT / "apps" / "portal"
 DATA = PORTAL / "data" / "kolumne.json"
-REQUIRED = ('<link rel="canonical"','hreflang="hr"','hreflang="en"','hreflang="x-default"','property="og:title"','property="og:description"','property="og:image"','name="twitter:card"','name="twitter:title"','name="twitter:description"','name="twitter:image"','"@type":"OpinionNewsArticle"','"image":{"@type":"ImageObject"','"publisher":{"@type":"Organization"','"logo":{"@type":"ImageObject"','"author":{"@type":"Person","name":"Nermin Sefić"}','"datePublished"')
+REQUIRED = ('<link rel="canonical"','hreflang="hr"','hreflang="en"','hreflang="x-default"','property="og:title"','property="og:description"','property="og:image"','name="twitter:card"','name="twitter:title"','name="twitter:description"','name="twitter:image"','"@type":"OpinionNewsArticle"','"image":{"@type":"ImageObject"','"publisher":{"@type":"Organization"','"logo":{"@type":"ImageObject"','"author":{"@type":"Person","@id":"https://gnk-asg.hr/#nermin-sefic"','"datePublished"')
 def main() -> None:
     items = json.loads(DATA.read_text(encoding="utf-8")).get("items", [])
     failures=[]
