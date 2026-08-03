@@ -1,0 +1,59 @@
+name: Fix Aktual Archive Links PR
+on:
+  push:
+    branches: [agent/column-seo-generator-20260803]
+    paths: [.github/workflows/fix-aktual-archive-links-pr.yml]
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/column-seo-generator-20260803
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Correct verified Croatian article routes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('apps/portal/gnk-aktual/kolumne/index.html')
+          s=p.read_text(encoding='utf-8')
+          fixes={
+            '/komentari/brzina-odluke-nije-kvaliteta-odluke/':'/komentari/brzina-odlucivanja-nije-kvaliteta-odluke/',
+            '/komentari/brz-nekontroliran-rast-gradi-krhkost/':'/komentari/brzi-rast-bez-kontrole-gradi-krhkost/',
+            '/komentari/rizik-se-ne-uklanja-njime-se-upravlja/':'/komentari/rizik-se-ne-eliminira-nego-upravlja/',
+            '/komentari/transparentnost-se-dokazuje-ne-tvrdi/':'/komentari/transparentnost-se-dokazuje-a-ne-tvrdi/',
+            '/komentari/povjerenje-se-gradi-sporo-i-gubi-brzo/':'/komentari/povjerenje-se-gradi-sporo-a-gubi-brzo/'
+          }
+          for old,new in fixes.items():
+            if old not in s: raise SystemExit(f'missing expected route: {old}')
+            s=s.replace(old,new)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Verify all archive targets exist
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          routes=[
+            'dobra-odluka-treba-vrijeme-ne-oklijevanje',
+            'brzina-odlucivanja-nije-kvaliteta-odluke',
+            'brzi-rast-bez-kontrole-gradi-krhkost',
+            'rizik-se-ne-eliminira-nego-upravlja',
+            'transparentnost-nije-teret-nego-prednost',
+            'transparentnost-se-dokazuje-a-ne-tvrdi',
+            'povjerenje-se-gradi-sporo-a-gubi-brzo'
+          ]
+          missing=[r for r in routes if not Path('apps/portal/komentari',r,'index.html').is_file()]
+          if missing: raise SystemExit('missing targets: '+', '.join(missing))
+          print('Verified 7 commentary targets')
+          PY
+      - name: Commit corrected archive
+        run: |
+          git config user.name 'gnk-asg-automation'
+          git config user.email 'actions@users.noreply.github.com'
+          git add apps/portal/gnk-aktual/kolumne/index.html
+          git commit -m 'fix(aktual): correct verified archive article routes [skip ci]'
+          git push origin HEAD:agent/column-seo-generator-20260803
