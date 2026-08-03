@@ -14,7 +14,6 @@ function canonicalFromHtml(html,fallback){const match=html.match(/<link[^>]+rel=
 function ogImageFromHtml(html){const match=html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)||html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);return match?.[1]||'';}
 function hasNoIndex(html){return /<meta[^>]+name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(html)||/<meta[^>]+content=["'][^"']*noindex[^"']*["'][^>]+name=["']robots["']/i.test(html);}
 function safeJson(value){return JSON.stringify(value).replace(/</g,'\\u003c');}
-function marketplaceScript(pathname){return pathname==='/trgovina/'||pathname==='/trgovina'||pathname==='/trgovina/prehrana/'||pathname==='/trgovina/prehrana'?'<script defer src="/assets/marketplace-i18n-v1.js?v=20260727-bilingual-v1"></script>\n':'';}
 
 function buildBlock({canonical,image,isEnglish}){
  const markets=isEnglish?EN_MARKETS:HR_MARKETS;
@@ -37,13 +36,12 @@ function buildBlock({canonical,image,isEnglish}){
 export async function enhancePublicEntitySeo(response,request){
  if(!response||request.method!=='GET'||response.status!==200||!contentType(response).includes('text/html'))return response;
  const html=await response.text();
- if(!html||hasNoIndex(html)||!/<\/head>/i.test(html))return new Response(html,{status:response.status,statusText:response.statusText,headers:response.headers});
+ if(!html||html.includes(MARKER)||hasNoIndex(html)||!/<\/head>/i.test(html))return new Response(html,{status:response.status,statusText:response.statusText,headers:response.headers});
  const url=new URL(request.url);
- const isEnglish=url.pathname==='/en'||url.pathname.startsWith('/en/')||url.searchParams.get('lang')==='en';
+ const isEnglish=url.pathname==='/en'||url.pathname.startsWith('/en/');
  const canonical=canonicalFromHtml(html,`${ORIGIN}${url.pathname}`);
  const image=ogImageFromHtml(html);
- const seoBlock=html.includes(MARKER)?'':buildBlock({canonical,image,isEnglish});
- const enriched=html.replace(/<\/head>/i,`${seoBlock}${marketplaceScript(url.pathname)}</head>`);
+ const enriched=html.replace(/<\/head>/i,`${buildBlock({canonical,image,isEnglish})}</head>`);
  const headers=new Headers(response.headers);
  for(const name of ['content-length','content-encoding','etag','last-modified'])headers.delete(name);
  headers.set('content-type','text/html; charset=utf-8');
