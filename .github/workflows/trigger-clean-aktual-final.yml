@@ -1,0 +1,12 @@
+name: Trigger Clean Aktual Final
+
+on:
+  push:
+    branches:
+      - agent/aktual-media-clean-final2-20260803
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo clean-aktual-final
