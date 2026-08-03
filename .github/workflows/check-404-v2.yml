@@ -1,0 +1,21 @@
+name: Provjeri novu 404
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-404v2
+          curl -s -o /tmp/body.html -w "%{http_code}\n" "https://gnk-asg.hr/ovo-sigurno-ne-postoji-xyz-456/" > apps/portal/data/tmp-404v2/r.txt
+          echo "---" >> apps/portal/data/tmp-404v2/r.txt
+          cat /tmp/body.html >> apps/portal/data/tmp-404v2/r.txt
+          cat apps/portal/data/tmp-404v2/r.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="check404v2-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-404v2
+          git commit -m "check"
+          git push origin "$BRANCH"
