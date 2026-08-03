@@ -109,6 +109,7 @@ function buildPost(a) {
 
   const body = [
     a.image ? `<p><img src="${a.image.startsWith('http') ? a.image : SITE + a.image}" alt="${a.title}" style="max-width:100%;height:auto"></p>` : '',
+    `<p><em>Autor: ${AUTHOR}</em></p>`,
     a.description ? `<p><strong>${a.description}</strong></p>` : '',
     ...a.paragraphs.map((p) => `<p>${p}</p>`),
     '<hr>',

@@ -32,7 +32,7 @@ const PER_RUN = Number(process.env.DEVTO_PER_RUN || 6);
 const PAUSE_MS = Number(process.env.DEVTO_PAUSE_MS || 300000);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const BASE_TAGS = ['business', 'croatia']; // Dev.to: max 4 oznake, samo alfanumericke, bez razmaka
+const BASE_TAGS = ['business', 'croatia', 'nerminsefic']; // Dev.to: max 4 oznake, samo alfanumericke, bez razmaka
 const LIVE = process.argv.includes('--live');
 const API_KEY = process.env.DEVTO_API_KEY;
 
@@ -87,6 +87,7 @@ async function objaviNaDevto(clanak, item) {
   if (clanak.image) frontmatter.cover_image = clanak.image;
 
   const body_markdown =
+    `*By Nermin Sefić, GNK ASG d.o.o.*\n\n` +
     `${toMarkdown(clanak.paragraphs)}\n\n` +
     `---\n*Autor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: [gnk-asg.hr](${SITE}${item.path})*`;
 
@@ -127,7 +128,7 @@ async function azurirajStareBezSlike() {
     const clanak = readArticle(item.path);
     if (!clanak || !clanak.image) continue; // nema slike ni sad, nema sto azurirati
     clanak.body_markdown_puni =
-      `${toMarkdown(clanak.paragraphs)}\n\n---\n*Autor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: [gnk-asg.hr](${SITE}${item.path})*`;
+      `*By Nermin Sefić, GNK ASG d.o.o.*\n\n${toMarkdown(clanak.paragraphs)}\n\n---\n*Autor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: [gnk-asg.hr](${SITE}${item.path})*`;
     if (!LIVE) { console.log(`[PRIPREMA] bi azurirao sliku za: ${clanak.title}`); azurirano++; continue; }
     try {
       await azurirajNaDevto(clanak, zapis.id);
