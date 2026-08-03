@@ -1,0 +1,55 @@
+name: Generate Aktual Media Columns PR
+
+on:
+  push:
+    branches:
+      - agent/column-seo-generator-20260803
+    paths:
+      - scripts/generate_aktual_columns.py
+      - scripts/validate_aktual_columns.py
+      - apps/portal/data/kolumne.json
+      - .github/workflows/generate-aktual-columns-pr.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-aktual-columns-pr-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  generate-and-validate:
+    if: github.repository == 'beckuphome-gnk/gnk-asg-portal'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/column-seo-generator-20260803
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generate HR and EN column pages
+        run: python scripts/generate_aktual_columns.py
+
+      - name: Validate column SEO contract
+        run: python scripts/validate_aktual_columns.py
+
+      - name: Commit generated pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'gnk-asg-automation'
+          git config user.email 'actions@users.noreply.github.com'
+          git add apps/portal/gnk-aktual/kolumne apps/portal/en/gnk-aktual/columns
+          if git diff --cached --quiet; then
+            echo 'Generated column pages are already current.'
+            exit 0
+          fi
+          git commit -m 'content(aktual): regenerate HR and EN column SEO pages [skip ci]'
+          git push origin HEAD:agent/column-seo-generator-20260803
