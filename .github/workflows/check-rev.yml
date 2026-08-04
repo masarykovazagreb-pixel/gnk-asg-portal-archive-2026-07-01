@@ -1,0 +1,19 @@
+name: Provjeri deploy revision
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-revcheck
+          curl -sI "https://gnk-asg.hr/" | grep -i "x-gnk-deploy\|x-gnk" > apps/portal/data/tmp-revcheck/r.txt
+          cat apps/portal/data/tmp-revcheck/r.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="revcheck-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-revcheck
+          git commit -m "check"
+          git push origin "$BRANCH"
