@@ -1,7 +1,7 @@
 name: SEO and News Visibility Cycle
 on:
   schedule:
-    - cron: '17 */2 * * *'
+    - cron: '17 9 * * *'
   workflow_dispatch:
     inputs:
       force_deploy:
