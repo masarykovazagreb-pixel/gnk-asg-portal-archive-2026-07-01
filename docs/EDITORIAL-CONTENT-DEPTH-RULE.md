@@ -2,10 +2,13 @@
 
 **Uvedeno:** 4. kolovoza 2026., nakon SEO audita koji je pokazao da 309 od 340
 "low word count" upozorenja dolazi od prekratkih komentara i objava.
+**Revidirano:** 4. kolovoza 2026. — cilj za komentare spušten na realniju
+profesionalnu "op-ed" dužinu, nakon uvida da 450-700 nije bio postignut
+niti nakon prvog kruga proširivanja.
 
 ## Minimalna dužina (stvarnog, ne umjetno napunjenog teksta)
 
-- **Komentari** (`/komentari/`, `/en/commentary/`): **450–700 riječi**
+- **Komentari** (`/komentari/`, `/en/commentary/`): **300–400 riječi** (revidirano s 450-700)
 - **Objave** (`/objave/`, `/en/publications/`): **500–900 riječi**
 - **Analize** (`/analize/`, `/en/analyses/`): **600–1000 riječi**
 
