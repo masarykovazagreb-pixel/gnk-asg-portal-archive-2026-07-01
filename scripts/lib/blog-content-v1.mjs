@@ -17,10 +17,22 @@ export function normalizeComparableText(value = '') {
     .toLocaleLowerCase('hr');
 }
 
+export function collapseConsecutiveDuplicateParagraphs(paragraphs = []) {
+  if (!Array.isArray(paragraphs) || paragraphs.length < 2) return paragraphs;
+  return paragraphs.filter((paragraph, index) => {
+    if (index === 0) return true;
+    const current = normalizeComparableText(paragraph);
+    const previous = normalizeComparableText(paragraphs[index - 1]);
+    return !current || current !== previous;
+  });
+}
+
 export function removeDuplicateIntroParagraph(description = '', paragraphs = []) {
-  if (!description || !Array.isArray(paragraphs) || paragraphs.length === 0) return paragraphs;
+  if (!Array.isArray(paragraphs) || paragraphs.length === 0) return paragraphs;
   const normalizedDescription = normalizeComparableText(description);
   const normalizedFirstParagraph = normalizeComparableText(paragraphs[0]);
-  if (!normalizedDescription || normalizedDescription !== normalizedFirstParagraph) return paragraphs;
-  return paragraphs.slice(1);
+  const withoutMetaDuplicate = normalizedDescription && normalizedDescription === normalizedFirstParagraph
+    ? paragraphs.slice(1)
+    : paragraphs;
+  return collapseConsecutiveDuplicateParagraphs(withoutMetaDuplicate);
 }
