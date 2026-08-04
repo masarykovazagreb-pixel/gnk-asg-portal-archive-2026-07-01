@@ -1,0 +1,16 @@
+name: Puni audit 2
+on: workflow_dispatch
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: bash audit2_script.sh
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="audit2-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-audit2
+          git commit -m "audit2"
+          git push origin "$BRANCH"
