@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # UTC windows covering CET and CEST; the Zagreb gate permits only 09:00, 16:00 and 21:00 local.
-    - cron: '0 7,8,14,15,19,20 * * *'
+    - cron: '0 7,15 * * *'
   push:
     branches: [main]
     paths:
