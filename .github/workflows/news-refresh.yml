@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # GitHub cron is UTC. Svaka 2 sata, u minuti 17 (izvan vrsnog opterecenja).
-    - cron: '17 */2 * * *'
+    - cron: '17 8 * * *'
 
 permissions:
   contents: write
