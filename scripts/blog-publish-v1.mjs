@@ -26,6 +26,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
+import { removeDuplicateIntroParagraph } from './lib/blog-content-v1.mjs';
 
 const PORTAL = resolve('apps/portal');
 const REGISTRY = resolve('apps/portal/data/editorial-registry.json');
@@ -103,6 +104,7 @@ function readArticle(routePath) {
 /* ---------- oblikovanje objave za blog ---------- */
 
 function buildPost(a) {
+  const articleParagraphs = removeDuplicateIntroParagraph(a.description, a.paragraphs);
   const tags = [...new Set([...BASE_TAGS, ...a.keywords.map((k) => k.replace(/[^\p{L}\p{N}]/gu, ''))])]
     .filter((t) => t.length > 2 && t.length < 30)
     .slice(0, 12);
@@ -111,7 +113,7 @@ function buildPost(a) {
     a.image ? `<p><img src="${a.image.startsWith('http') ? a.image : SITE + a.image}" alt="${a.title}" style="max-width:100%;height:auto"></p>` : '',
     `<p><em>Autor: ${AUTHOR}</em></p>`,
     a.description ? `<p><strong>${a.description}</strong></p>` : '',
-    ...a.paragraphs.map((p) => `<p>${p}</p>`),
+    ...articleParagraphs.map((p) => `<p>${p}</p>`),
     '<hr>',
     `<p>Cjelovit tekst i izvor: <a href="${a.url}" rel="canonical">${a.url}</a></p>`,
     `<p><em>Autor i urednička odgovornost: ${AUTHOR}. Izdavač: ${PUBLISHER}.</em></p>`,
