@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
-import { normalizeComparableText, removeDuplicateIntroParagraph } from './lib/blog-content-v1.mjs';
+import {
+  collapseConsecutiveDuplicateParagraphs,
+  normalizeComparableText,
+  removeDuplicateIntroParagraph,
+} from './lib/blog-content-v1.mjs';
 
 assert.equal(normalizeComparableText('Rizik &amp; kapital'), 'rizik & kapital');
 assert.deepEqual(
@@ -16,5 +20,21 @@ assert.deepEqual(
   ['Drugačiji uvod', 'Drugi odlomak'],
 );
 assert.deepEqual(removeDuplicateIntroParagraph('', ['Uvod']), ['Uvod']);
+assert.deepEqual(
+  collapseConsecutiveDuplicateParagraphs([
+    'A company accepting crypto payments takes on market risk.',
+    'A company accepting crypto payments takes on market risk.',
+    'Different supporting paragraph.',
+  ]),
+  ['A company accepting crypto payments takes on market risk.', 'Different supporting paragraph.'],
+);
+assert.deepEqual(
+  removeDuplicateIntroParagraph('Meta description', [
+    'Repeated article lead',
+    'Repeated   article lead',
+    'Different supporting paragraph.',
+  ]),
+  ['Repeated article lead', 'Different supporting paragraph.'],
+);
 
-console.log('blog mirror intro dedupe: 5/5 passed');
+console.log('blog mirror intro dedupe: 7/7 passed');
