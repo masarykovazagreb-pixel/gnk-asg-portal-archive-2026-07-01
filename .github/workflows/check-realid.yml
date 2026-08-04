@@ -1,0 +1,19 @@
+name: Provjeri pravi ziv ID
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p apps/portal/data/tmp-realid
+          curl -sI "https://gnk-asg.hr/podijeli/vijest/552e43ae5e35357af6/" > apps/portal/data/tmp-realid/r.txt
+          cat apps/portal/data/tmp-realid/r.txt
+      - run: |
+          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
+          BRANCH="realid-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git add apps/portal/data/tmp-realid
+          git commit -m "check"
+          git push origin "$BRANCH"
