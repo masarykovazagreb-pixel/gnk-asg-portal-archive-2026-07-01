@@ -105,7 +105,40 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-burza:hover .ak-burza-trak{animation-play-state:paused}
 @keyframes akKotrljaj{from{transform:translateX(0)}to{transform:translateX(-100%)}}
 .ak-burza-stavka{display:inline-flex;gap:7px;align-items:baseline;font-family:Arial,sans-serif;font-size:.78rem;font-weight:700;color:var(--ak-bg)}
-</style>
+.ak-komentari{margin-bottom:36px;display:none}
+.ak-komentari.vidljivo{display:block}
+.ak-komentari h2{font-family:'Arial Black',Impact,sans-serif;font-size:1.1rem;margin:0 0 12px;text-transform:uppercase;letter-spacing:.02em;border-bottom:3px solid var(--ak-line);padding-bottom:8px}
+.ak-komentar-istaknuti{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:3px solid var(--ak-line);background:var(--ak-panel);text-decoration:none;color:inherit;margin-bottom:16px}
+@media(max-width:640px){.ak-komentar-istaknuti{grid-template-columns:1fr}}
+.ak-komentar-istaknuti img{width:100%;height:100%;min-height:220px;object-fit:cover}
+.ak-komentar-istaknuti .tijelo{padding:20px 22px}
+.ak-komentar-istaknuti .oznaka{font-family:Arial,sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ak-red);display:block;margin-bottom:8px}
+.ak-komentar-istaknuti h3{font-family:'Arial Black',Impact,sans-serif;font-size:1.4rem;line-height:1.15;margin:0 0 10px}
+.ak-komentar-istaknuti p{font-size:.92rem;color:var(--ak-sub);margin:0;font-family:Arial,sans-serif;line-height:1.5}
+.ak-komentari-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.ak-komentar-kartica{border:2px solid var(--ak-line);background:var(--ak-panel);text-decoration:none;color:inherit;display:flex;flex-direction:column;overflow:hidden}
+.ak-komentar-kartica img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.ak-komentar-kartica .tijelo{padding:10px 12px}
+.ak-komentar-kartica .oznaka{font-family:Arial,sans-serif;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ak-red);display:block;margin-bottom:5px}
+.ak-komentar-kartica h3{font-family:'Arial Black',Impact,sans-serif;font-size:.86rem;line-height:1.22;margin:0}
+.ak-stoptiska{border:3px solid var(--ak-line);border-radius:4px;background:var(--ak-line);color:var(--ak-bg);padding:18px 20px;margin-bottom:36px;display:none}
+.ak-stoptiska.vidljivo{display:block}
+.ak-stoptiska h2{font-family:'Arial Black',Impact,sans-serif;font-size:1.1rem;margin:0 0 3px;color:var(--ak-zlato)}
+.ak-stoptiska .prat{font-family:Arial,sans-serif;font-size:.65rem;color:#B8B0A0;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.ak-st-stavka{border-top:1px solid #3a3324;padding:9px 0;font-size:.86rem;line-height:1.4}
+.ak-st-stavka:first-of-type{border-top:none}
+.ak-st-stavka a{color:var(--ak-bg);text-decoration:none}
+.ak-st-stavka a:hover{color:var(--ak-zlato)}
+.ak-st-broj{font-family:'Arial Black',sans-serif;color:var(--ak-red-dim);margin-right:8px}
+
+.ak-kuhinja{border:3px solid var(--ak-line);border-radius:4px;background:var(--ak-panel);margin-bottom:36px;overflow:hidden}
+.ak-kuhinja-glava{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--ak-line)}
+.ak-kuhinja h2{font-family:'Arial Black',Impact,sans-serif;font-size:1.15rem;margin:0 0 4px}
+.ak-kuhinja p{font-size:.88rem;color:var(--ak-sub);margin:0;font-family:Arial,sans-serif}
+.ak-kuhinja a{font-family:Arial,sans-serif;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);text-decoration:none;border-bottom:2px solid var(--ak-red);padding-bottom:1px;white-space:nowrap}
+.ak-recept-dana{display:grid;grid-template-columns:260px 1fr;gap:0}
+@media(max-width:640px){.ak-recept-dana{grid-template-columns:1fr}}
+.ak-recept-dana img{width:100%;height:100%;object-fit:cover;display:block;min-height:200px}</style>
 <style id="gnk-gold-watermark-style">
 #gnk-gold-watermark{position:fixed;right:-40px;bottom:-40px;width:340px;height:340px;opacity:.07;pointer-events:none;z-index:1;filter:grayscale(0) saturate(1.4);}
 @media (max-width:640px){#gnk-gold-watermark{width:200px;height:200px;right:-30px;bottom:-30px;opacity:.06;}}
@@ -120,6 +153,22 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   <section class="ak-narrative"><img src="/assets/editorial/aktual-media-800.webp" alt="AKTUAL MEDIA — the most important world news in one place" class="ak-narrative-img"><div class="ak-narrative-copy"><p class="ak-narrative-eyebrow">AKTUAL MEDIA</p><h2>The most important world news in one place</h2><p>AKTUAL MEDIA brings an overview of the latest news from economy, technology, digital assets and international affairs.</p><p>Content refreshes automatically every hour, giving users a quick view of the topics shaping the global business, financial and technology environment. The latest news is highlighted, while a full list of published content is available in the expanded view.</p><p>Every item shows a headline, photo and short summary, linking directly to the original publisher's article. News is sourced from publicly available RSS feeds of international media, including Reuters, BBC, CNN, The Guardian and others. GNK ASG does not copy or store the full text of articles, but directs readers to the original source.</p><p>The goal of the platform is to enable clear, fast and responsible tracking of current events without the need to search across dozens of different sites.</p><p class="ak-narrative-tagline">Economy. Technology. Digital assets. World. One overview.</p></div></section>
   <style>.ak-narrative{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center;max-width:1100px;margin:32px auto 48px;padding:0 20px}.ak-narrative-img{width:100%;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid rgba(212,175,55,.3)}.ak-narrative-eyebrow{color:#e0bd69;font-size:.75rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px}.ak-narrative-copy h2{color:#f8fafc;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.25;margin:0 0 16px}.ak-narrative-copy p{color:#c5cfdb;font-size:.98rem;line-height:1.7;margin:0 0 13px}.ak-narrative-tagline{color:#f8fafc;font-weight:800;font-size:1.05rem;border-top:1px solid rgba(255,255,255,.12);padding-top:14px;margin-top:6px!important}@media(max-width:800px){.ak-narrative{grid-template-columns:1fr}}</style>
   <div class="ak-burza" id="akBurza"><div class="ak-burza-trak" id="akBurzaTrak"></div></div>
+  <div class="ak-stoptiska" id="akStopTiska">
+    <h2>Stop Press</h2><div class="prat">Science &amp; Society</div>
+    <div id="akStopTiskaLista"></div>
+  </div>
+  <div class="ak-komentari" id="akKomentari">
+    <h2>Commentary — Nermin Sefić</h2>
+    <div id="akKomentarIstaknuti"></div>
+    <div class="ak-komentari-grid" id="akKomentariGrid"></div>
+  </div>
+  <div class="ak-kuhinja">
+    <div class="ak-kuhinja-glava">
+      <div><h2>Kitchen — Recipe of the Day</h2><p>789 recipes with photos, from the World Table book. A new recipe every day.</p></div>
+      <a href="/world-table/">All recipes →</a>
+    </div>
+    <div class="ak-recept-dana" id="akReceptDana"></div>
+  </div>
   <p class="ak-status" id="akStatus">Loading latest news…</p>
   <div id="akFeatured"></div>
   <div id="akCategories"></div>
@@ -262,6 +311,80 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       if (!items.length) return;
       trak.innerHTML = items.concat(items).concat(items).join('');
       el.classList.add('vidljivo');
+    })
+    .catch(function(){});
+
+  Promise.all([
+    fetch('https://en.wikinews.org/w/api.php?action=query&list=recentchanges&rcnamespace=0&rclimit=4&format=json&origin=*').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; }),
+    fetch('https://api.nobelprize.org/2.1/nobelPrizes?limit=1&sort=desc').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
+  ]).then(function(rez){
+    var wiki = rez[0], nobel = rez[1];
+    var stavke = [];
+    var promjene = (wiki && wiki.query && wiki.query.recentchanges) || [];
+    promjene.forEach(function(p){
+      stavke.push({ naslov: p.title, link: 'https://en.wikinews.org/wiki/' + encodeURIComponent(p.title.replace(/ /g,'_')) });
+    });
+    var prva = nobel && nobel.nobelPrizes && nobel.nobelPrizes[0];
+    var laureati = (prva && prva.laureates) || [];
+    laureati.slice(0,2).forEach(function(l){
+      var ime = (l.knownName && l.knownName.en) || (l.fullName && l.fullName.en) || '';
+      stavke.push({ naslov: 'Nobel ' + ((prva.categoryFullName && prva.categoryFullName.en) || '') + ': ' + ime, link: '#' });
+    });
+    if (!stavke.length) return;
+    var html = stavke.slice(0,5).map(function(s, i){
+      return '<div class="ak-st-stavka"><span class="ak-st-broj">' + String(i+1).padStart(2,'0') + '</span><a href="' + escH(s.link) + '" target="_blank" rel="noopener noreferrer nofollow">' + escH(s.naslov) + '</a></div>';
+    }).join('');
+    document.getElementById('akStopTiskaLista').innerHTML = html;
+    document.getElementById('akStopTiska').classList.add('vidljivo');
+  }).catch(function(){});
+
+  fetch('/assets/world-cookbook/world-recipes.json')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      var obroci = d && d.meals;
+      if (!obroci || !obroci.length) return;
+      var danUGodini = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+      var recept = obroci[danUGodini % obroci.length];
+      var sastojci = (recept.ingredients || []).slice(0, 6)
+        .map(function(s){ return s.ingredient; }).join(' · ');
+      var priprema = (recept.method || '').slice(0, 220);
+      document.getElementById('akReceptDana').innerHTML =
+        '<img src="/assets/world-cookbook/' + escH(recept.image) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
+        '<div class="ak-recept-tijelo">' +
+        '<span class="oznaka">' + escH(recept.origin || '') + ' · ' + escH(recept.category || '') + '</span>' +
+        '<h3>' + escH(recept.name) + '</h3>' +
+        '<p class="sastojci">' + escH(sastojci) + '…</p>' +
+        '<p class="priprema">' + escH(priprema) + (priprema.length >= 220 ? '…' : '') + '</p>' +
+        '<a href="/world-table/" style="font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);text-decoration:none;border-bottom:2px solid var(--ak-red);padding-bottom:1px">Full recipe →</a>' +
+        '</div>';
+    })
+    .catch(function(){});
+
+  fetch('/data/editorial-registry.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      var stavke = (d && d.items || []).filter(function(i){ return i.lang === 'en' && (i.type === 'komentar' || i.type === 'objava'); });
+      if (!stavke.length) return;
+      stavke.sort(function(a,b){ return new Date(b.publishedAt||0) - new Date(a.publishedAt||0); });
+      var zadnjih15 = stavke.slice(0, 15);
+      var istaknuta = zadnjih15[0];
+      var ostalih = zadnjih15.slice(1);
+
+      if (istaknuta) {
+        document.getElementById('akKomentarIstaknuti').innerHTML =
+          '<a class="ak-komentar-istaknuti" href="' + escH(istaknuta.url) + '" target="_blank" rel="noopener">' +
+          (istaknuta.image ? '<img src="' + escH(istaknuta.image) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
+          '<div class="tijelo"><span class="oznaka">Commentary · Nermin Sefić</span><h3>' + escH(istaknuta.title) + '</h3><p>' +
+          escH((istaknuta.description||'').slice(0,160)) + '</p></div></a>';
+      }
+
+      var html = ostalih.map(function(k){
+        return '<a class="ak-komentar-kartica" href="' + escH(k.url) + '" target="_blank" rel="noopener">' +
+          (k.image ? '<img src="' + escH(k.image) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
+          '<div class="tijelo"><span class="oznaka">Commentary</span><h3>' + escH(k.title) + '</h3></div></a>';
+      }).join('');
+      document.getElementById('akKomentariGrid').innerHTML = html;
+      document.getElementById('akKomentari').classList.add('vidljivo');
     })
     .catch(function(){});
 })();
