@@ -3,7 +3,7 @@ name: Dev.to Mirror Preview
 on:
   workflow_dispatch:
   schedule:
-    - cron: '45 * * * *'
+    - cron: '45 9 * * *'
 
 permissions:
   contents: read

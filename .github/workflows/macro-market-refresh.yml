@@ -1,7 +1,7 @@
 name: Macro Market Data Refresh
 on:
   schedule:
-    - cron: '25 */3 * * *'
+    - cron: '25 6,14 * * *'
   workflow_dispatch: {}
 permissions:
   contents: write

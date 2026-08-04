@@ -16,7 +16,7 @@ name: Mirror Sync to Masarykova Backup
 
 on:
   schedule:
-    - cron: '0 */4 * * *'
+    - cron: '0 10,18 * * *'
   workflow_dispatch:
 
 concurrency:
