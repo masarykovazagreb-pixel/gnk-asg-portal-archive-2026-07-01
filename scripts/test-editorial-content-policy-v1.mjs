@@ -26,18 +26,25 @@ function baseItem(overrides = {}) {
   };
 }
 
-function runCase(name, { item, packageOverrides = {}, expectedStatus, expectedMarker }) {
+function runCase(name, { item, packageOverrides = {}, holds = null, expectedStatus, expectedMarker }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), `gnk-editorial-policy-${name}-`));
   const manifestPath = path.join(dir, 'manifest.json');
+  const packageId = `TEST-${name.toUpperCase()}`;
   fs.writeFileSync(path.join(dir, 'items.json'), JSON.stringify([item], null, 2));
   fs.writeFileSync(manifestPath, JSON.stringify({
     packages: [{
-      id: `TEST-${name.toUpperCase()}`,
+      id: packageId,
       publishAt: '2026-08-06T10:20:00+02:00',
       files: ['items.json'],
       ...packageOverrides,
     }],
   }, null, 2));
+  if (holds) {
+    fs.writeFileSync(path.join(dir, 'publication-holds.json'), JSON.stringify({
+      version: 'TEST_PUBLICATION_HOLDS_V1',
+      holds: holds.map(hold => ({ packageId, active: true, reason: 'Substantive editorial rewrite and review required before publication.', ...hold })),
+    }, null, 2));
+  }
 
   const result = spawnSync(process.execPath, [validator], {
     cwd: process.cwd(),
@@ -95,6 +102,20 @@ runCase('generic-operational-is-not-exempt', {
   }),
   expectedStatus: 1,
   expectedMarker: /body has 3 words; minimum is 3000/,
+});
+
+runCase('publication-hold', {
+  item: baseItem({ paragraphs: ['Kratki nacrt koji se ne smije objaviti.'], links: [] }),
+  holds: [{}],
+  expectedStatus: 0,
+  expectedMarker: /"activePublicationHolds": \[\s*"TEST-PUBLICATION-HOLD"/,
+});
+
+runCase('unknown-publication-hold', {
+  item: baseItem(),
+  holds: [{ packageId: 'TEST-UNKNOWN-PACKAGE' }],
+  expectedStatus: 1,
+  expectedMarker: /publication hold references unknown package: TEST-UNKNOWN-PACKAGE/,
 });
 
 runCase('grandfathered', {
