@@ -62,7 +62,7 @@ runCase('fail-2999', {
   expectedMarker: /body has 2999 words; minimum is 3000/,
 });
 
-runCase('worker-exception', {
+runCase('worker-type-exception', {
   item: baseItem({
     type: 'worker',
     slug: 'digital-workforce-status',
@@ -72,6 +72,29 @@ runCase('worker-exception', {
   }),
   expectedStatus: 0,
   expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
+});
+
+runCase('explicit-workforce-exception', {
+  item: baseItem({
+    slug: 'digital-workforce-tehnicki-bilten',
+    section: 'Digital Workforce',
+    editorialPolicyException: 'digital-workforce-worker',
+    paragraphs: ['Kratki tehnički bilten.'],
+    links: [],
+  }),
+  expectedStatus: 0,
+  expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
+});
+
+runCase('generic-operational-is-not-exempt', {
+  item: baseItem({
+    slug: 'operativna-otpornost-uprave',
+    section: 'Operativna otpornost',
+    paragraphs: ['Kratki autorski tekst.'],
+    links: [],
+  }),
+  expectedStatus: 1,
+  expectedMarker: /body has 3 words; minimum is 3000/,
 });
 
 runCase('grandfathered', {
