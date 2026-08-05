@@ -1,0 +1,53 @@
+name: Direct Static Editorial Policy V1
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/objave/**/index.html'
+      - 'apps/portal/publications/**/index.html'
+      - 'apps/portal/komentari/**/index.html'
+      - 'apps/portal/comments/**/index.html'
+      - 'apps/portal/analize/**/index.html'
+      - 'apps/portal/analysis/**/index.html'
+      - 'scripts/validate-direct-static-editorial-v1.mjs'
+      - 'scripts/test-direct-static-editorial-v1.mjs'
+      - '.github/workflows/direct-static-editorial-policy-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: direct-static-editorial-policy-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run policy regression tests
+        run: node scripts/test-direct-static-editorial-v1.mjs
+
+      - name: Validate changed direct static editorial pages
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          GITHUB_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          DIRECT_EDITORIAL_MIN_WORDS: '3000'
+          DIRECT_EDITORIAL_MIN_INTERNAL_LINKS: '5'
+        run: |
+          if [ -z "$GITHUB_BASE_SHA" ] || [ "$GITHUB_BASE_SHA" = "0000000000000000000000000000000000000000" ]; then
+            GITHUB_BASE_SHA="$(git rev-parse HEAD^)"
+            export GITHUB_BASE_SHA
+          fi
+          node scripts/validate-direct-static-editorial-v1.mjs
