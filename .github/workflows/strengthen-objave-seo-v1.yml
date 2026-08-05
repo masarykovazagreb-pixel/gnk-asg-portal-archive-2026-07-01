@@ -1,0 +1,41 @@
+name: Strengthen Objave SEO V1
+
+on:
+  push:
+    branches:
+      - agent/strengthen-objave-seo-20260805
+    paths:
+      - 'scripts/strengthen-objave-seo-v1.mjs'
+      - '.github/workflows/strengthen-objave-seo-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/strengthen-objave-seo-20260805
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply stronger metadata and schema
+        run: node scripts/strengthen-objave-seo-v1.mjs
+      - name: Verify generated SEO contract
+        run: node scripts/strengthen-objave-seo-v1.mjs --check
+      - name: Commit generated page
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- apps/portal/objave/index.html; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git config user.name 'gnk-asg-seo-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add apps/portal/objave/index.html
+          git commit -m 'feat(seo): strengthen objave archive metadata and schema [skip ci]'
+          git push origin HEAD:agent/strengthen-objave-seo-20260805
