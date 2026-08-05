@@ -6,6 +6,9 @@ const PLAN_PATH = process.env.EDITORIAL_PLAN_PATH
   ? path.resolve(process.env.EDITORIAL_PLAN_PATH)
   : path.join(ROOT, 'apps/portal/data/editorial-plan/manifest.json');
 const PLAN_DIR = path.dirname(PLAN_PATH);
+const HOLDS_PATH = process.env.EDITORIAL_HOLDS_PATH
+  ? path.resolve(process.env.EDITORIAL_HOLDS_PATH)
+  : path.join(PLAN_DIR, 'publication-holds.json');
 const POLICY_CUTOFF = new Date(process.env.EDITORIAL_POLICY_CUTOFF || '2026-08-05T00:00:00+02:00');
 const MIN_WORDS = Number(process.env.EDITORIAL_MIN_WORDS || 3000);
 const MIN_INTERNAL_LINKS = Number(process.env.EDITORIAL_MIN_INTERNAL_LINKS || 5);
@@ -53,14 +56,54 @@ function isOperationalException(item, sourceFile) {
     || digitalWorkforceExceptionPattern.test(haystack);
 }
 
+function loadPublicationHolds() {
+  if (!fs.existsSync(HOLDS_PATH)) return { version: null, active: new Map() };
+  const source = JSON.parse(fs.readFileSync(HOLDS_PATH, 'utf8'));
+  if (!Array.isArray(source.holds)) {
+    errors.push(`publication holds file must contain a holds array: ${HOLDS_PATH}`);
+    return { version: source.version || null, active: new Map() };
+  }
+  const active = new Map();
+  for (const hold of source.holds) {
+    if (!hold?.active) continue;
+    if (!hold.packageId || typeof hold.packageId !== 'string') {
+      errors.push('active publication hold lacks packageId');
+      continue;
+    }
+    if (!hold.reason || String(hold.reason).trim().length < 20) {
+      errors.push(`publication hold ${hold.packageId} lacks a substantive reason`);
+      continue;
+    }
+    if (active.has(hold.packageId)) {
+      errors.push(`duplicate active publication hold: ${hold.packageId}`);
+      continue;
+    }
+    active.set(hold.packageId, hold);
+  }
+  return { version: source.version || null, active };
+}
+
 function addError(packId, item, message) {
   errors.push(`${packId}/${item.slug || item.title || 'unknown'}: ${message}`);
+}
+
+const publicationHolds = loadPublicationHolds();
+const packageIds = new Set((plan.packages || []).map(pack => pack.id));
+for (const packageId of publicationHolds.active.keys()) {
+  if (!packageIds.has(packageId)) errors.push(`publication hold references unknown package: ${packageId}`);
 }
 
 for (const pack of plan.packages || []) {
   const publishAt = new Date(pack.publishAt);
   if (!Number.isFinite(publishAt.getTime())) {
     errors.push(`${pack.id || 'unknown package'}: invalid publishAt`);
+    continue;
+  }
+
+  const hold = publicationHolds.active.get(pack.id);
+  if (hold) {
+    if (pack.publishedAt) errors.push(`${pack.id}: publication hold cannot unpublish an already published package`);
+    skipped.push({ id: pack.id, reason: 'publication-hold', detail: hold.reason });
     continue;
   }
 
@@ -133,6 +176,8 @@ const summary = {
   policyCutoff: POLICY_CUTOFF.toISOString(),
   minimumWords: MIN_WORDS,
   minimumInternalLinks: MIN_INTERNAL_LINKS,
+  publicationHoldsVersion: publicationHolds.version,
+  activePublicationHolds: [...publicationHolds.active.keys()],
   checked,
   skippedCount: skipped.length,
   errors,
