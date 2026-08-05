@@ -51,7 +51,10 @@ let result = run(html());
 assert.equal(result.status, 0, result.stderr || result.stdout);
 assert.match(result.stdout, /DIRECT_STATIC_EDITORIAL_POLICY_OK/u);
 
-result = run(html({ words: 2999 }));
+// The validator counts every visible word inside article/main, including the
+// H1, byline and link labels. Use a fixture safely below the threshold so the
+// negative test is deterministic instead of relying on body words alone.
+result = run(html({ words: 2500 }));
 assert.notEqual(result.status, 0);
 assert.match(result.stderr, /minimum is 3000/u);
 
