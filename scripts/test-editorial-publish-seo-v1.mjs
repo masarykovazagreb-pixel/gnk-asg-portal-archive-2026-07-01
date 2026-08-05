@@ -28,8 +28,17 @@ if(immediate.publishedAt){
   }
 }
 const publisher=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','utf8');
-for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged||summary.stateChanged'])assert.ok(publisher.includes(marker),marker);
-for(const file of ['scripts/seo-visibility-cycle-v1.mjs','scripts/refresh-public-news-v4.mjs','.github/workflows/editorial-scheduled-publish.yml','.github/workflows/seo-news-cycle.yml','.github/workflows/editorial-content-deploy.yml'])assert.ok(fs.existsSync(file)&&fs.statSync(file).size,file);
+for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged||summary.stateChanged','publication-holds.json','publicationHeld','summary.held'])assert.ok(publisher.includes(marker),marker);
+for(const file of ['apps/portal/data/editorial-plan/publication-holds.json','scripts/seo-visibility-cycle-v1.mjs','scripts/refresh-public-news-v4.mjs','scripts/validate-editorial-content-policy-v1.mjs','scripts/test-editorial-content-policy-v1.mjs','.github/workflows/editorial-scheduled-publish.yml','.github/workflows/seo-news-cycle.yml','.github/workflows/editorial-content-deploy.yml'])assert.ok(fs.existsSync(file)&&fs.statSync(file).size,file);
+const holds=JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/publication-holds.json','utf8'));
+assert.match(holds.version,/GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V1_20260805/);
+assert.ok(Array.isArray(holds.holds)&&holds.holds.length>=1,'expected active editorial publication holds');
+for(const hold of holds.holds){
+  assert.ok(hold.packageId&&hold.active===true&&String(hold.reason||'').length>=20,`invalid publication hold: ${JSON.stringify(hold)}`);
+  assert.ok(plan.packages.some(pack=>pack.id===hold.packageId),`publication hold references unknown package: ${hold.packageId}`);
+}
+const policy=fs.readFileSync('scripts/validate-editorial-content-policy-v1.mjs','utf8');
+for(const marker of ['GNK_ASG_EDITORIAL_CONTENT_POLICY_V1_20260805','EDITORIAL_POLICY_CUTOFF','EDITORIAL_MIN_WORDS','EDITORIAL_MIN_INTERNAL_LINKS','digital-workforce-worker','EDITORIAL_HOLDS_PATH','activePublicationHolds'])assert.ok(policy.includes(marker),marker);
 const seo=fs.readFileSync('scripts/seo-visibility-cycle-v1.mjs','utf8');
 assert.match(seo,/GNK_ASG_SEO_VISIBILITY_CYCLE_V2_20260714/);
 assert.match(seo,/artificialTraffic:false/);
@@ -52,10 +61,15 @@ for(const source of [seoWorkflow,scheduler]){
   assert.match(source,/force_deploy/);
 }
 assert.match(seoWorkflow,/timeout-minutes: 10/);
-assert.match(seoWorkflow,/cron: '17 \*\/2 \* \* \*'/);
+assert.match(seoWorkflow,/cron: '17 9 \* \* \*'/);
+assert.doesNotMatch(seoWorkflow,/cron: '17 \*\/2 \* \* \*'/);
 assert.doesNotMatch(seoWorkflow,/\n  push:/);
 assert.match(seoWorkflow,/steps\.commit\.outputs\.changed == 'true'/);
 assert.match(scheduler,/steps\.commit\.outputs\.changed == 'true'/);
 assert.match(scheduler,/github\.event_name == 'push'/);
 assert.match(scheduler,/git diff --quiet -- apps\/portal\/objave/);
-console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:x.items.filter(i=>i.type==='objava').length,commentaries:x.items.filter(i=>i.type==='komentar').length,publishAt:x.publishAt})),seo:{cycleHours:2,timeoutMinutes:10,artificialTraffic:false,idempotent:true},deploy:{directExactShaDispatch:true,noOpScheduleDeploy:false}},null,2));
+const regressionIndex=scheduler.indexOf('node scripts/test-editorial-content-policy-v1.mjs');
+const policyIndex=scheduler.indexOf('node scripts/validate-editorial-content-policy-v1.mjs');
+const materializeIndex=scheduler.indexOf('node scripts/editorial-publish-scheduled-v1.mjs');
+assert.ok(regressionIndex>=0&&policyIndex>regressionIndex&&materializeIndex>policyIndex,'policy test and gate must run before materialization');
+console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:x.items.filter(i=>i.type==='objava').length,commentaries:x.items.filter(i=>i.type==='komentar').length,publishAt:x.publishAt})),seo:{cycleHours:24,scheduleUtc:'17 9 * * *',timeoutMinutes:10,artificialTraffic:false,idempotent:true},editorialPolicy:{minimumWords:3000,minimumInternalLinks:5,preMaterialization:true,publicationHolds:holds.holds.length},deploy:{directExactShaDispatch:true,noOpScheduleDeploy:false}},null,2));

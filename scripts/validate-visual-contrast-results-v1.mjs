@@ -78,7 +78,7 @@ const retryRoute=(project,route,failure,report,reason)=>{
     let failureData={};
     try{failureData=JSON.parse(fs.readFileSync(failure,'utf8'));}catch{}
     const message=String(failureData?.error?.message||'');
-    if(!/timeout|target page, context or browser has been closed|execution context was destroyed/i.test(message))return false;
+    if(!/timeout|test ended|target page, context or browser has been closed|execution context was destroyed/i.test(message))return false;
   }
   fs.rmSync(failure,{force:true});
   fs.rmSync(report,{force:true});

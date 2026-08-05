@@ -4,6 +4,7 @@ import path from 'node:path';
 const ROOT=path.resolve('apps/portal');
 const PLAN_DIR=path.join(ROOT,'data/editorial-plan');
 const PLAN=path.join(PLAN_DIR,'manifest.json');
+const HOLDS=path.join(PLAN_DIR,'publication-holds.json');
 const REPORT=path.resolve('artifacts/editorial-scheduled-publish.json');
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const routeFor=item=>`/${item.type==='objava'?'objave':'komentari'}/${item.slug}/`;
@@ -53,15 +54,38 @@ function appendSitemap(item,date){
   xml=xml.replace('</urlset>',`  <url><loc>${url}</loc><lastmod>${date}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>\n</urlset>`);
   return writeIfChanged(file,xml);
 }
+function loadPublicationHolds(){
+  if(!fs.existsSync(HOLDS))return {version:null,active:new Map()};
+  const source=JSON.parse(fs.readFileSync(HOLDS,'utf8'));
+  if(!Array.isArray(source.holds))throw new Error(`Invalid publication holds file: ${HOLDS}`);
+  const active=new Map();
+  for(const hold of source.holds){
+    if(!hold?.active)continue;
+    if(!hold.packageId||typeof hold.packageId!=='string')throw new Error('Active publication hold lacks packageId');
+    if(!hold.reason||String(hold.reason).trim().length<20)throw new Error(`Publication hold ${hold.packageId} lacks a substantive reason`);
+    if(active.has(hold.packageId))throw new Error(`Duplicate active publication hold: ${hold.packageId}`);
+    active.set(hold.packageId,hold);
+  }
+  return {version:source.version||null,active};
+}
 if(!fs.existsSync(PLAN))throw new Error(`Missing plan: ${PLAN}`);
 const planSource=fs.readFileSync(PLAN,'utf8');
 const plan=JSON.parse(planSource);
+const publicationHolds=loadPublicationHolds();
+const packageIds=new Set((plan.packages||[]).map(pack=>pack.id));
+for(const packageId of publicationHolds.active.keys())if(!packageIds.has(packageId))throw new Error(`Publication hold references unknown package: ${packageId}`);
 const now=new Date(process.env.EDITORIAL_NOW||Date.now());
-const summary={ok:true,version:'GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714',now:now.toISOString(),packages:[],published:[],publicChanged:false,stateChanged:false};
+const summary={ok:true,version:'GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714',now:now.toISOString(),publicationHoldsVersion:publicationHolds.version,packages:[],published:[],held:[],publicChanged:false,stateChanged:false};
 for(const pack of plan.packages||[]){
   const items=(pack.files||[]).flatMap(file=>JSON.parse(fs.readFileSync(path.join(PLAN_DIR,file),'utf8')));
-  const publishAt=new Date(pack.publishAt),due=now>=publishAt,already=Boolean(pack.publishedAt);
-  const itemSummary={id:pack.id,publishAt:pack.publishAt,due,alreadyPublished:already,published:[]};
+  const publishAt=new Date(pack.publishAt),due=now>=publishAt,already=Boolean(pack.publishedAt),hold=publicationHolds.active.get(pack.id);
+  const itemSummary={id:pack.id,publishAt:pack.publishAt,due,alreadyPublished:already,publicationHeld:Boolean(hold),holdReason:hold?.reason||null,published:[]};
+  if(hold){
+    if(already)throw new Error(`Publication hold ${pack.id} was applied after publication and cannot unpublish content`);
+    summary.held.push(pack.id);
+    summary.packages.push(itemSummary);
+    continue;
+  }
   if(due&&!already){
     if(!pack.deployApproved)throw new Error(`Package ${pack.id} lacks deploy approval`);
     const allRoutes=[];

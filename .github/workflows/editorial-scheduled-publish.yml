@@ -14,6 +14,8 @@ on:
     paths:
       - 'apps/portal/data/editorial-plan/**'
       - 'scripts/editorial-publish-scheduled-v1.mjs'
+      - 'scripts/validate-editorial-content-policy-v1.mjs'
+      - 'scripts/test-editorial-content-policy-v1.mjs'
       - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js'
       - 'workers/gnk-asg-direct-operator/src/public-editorial-asset-router-v1.js'
       - 'workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml'
@@ -36,6 +38,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Test editorial policy gate
+        run: node scripts/test-editorial-content-policy-v1.mjs
+      - name: Enforce editorial policy before materialization
+        run: node scripts/validate-editorial-content-policy-v1.mjs
       - name: Materialize due editorial pages
         run: node scripts/editorial-publish-scheduled-v1.mjs
       - name: Validate generated editorial package
