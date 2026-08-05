@@ -20,7 +20,7 @@ const errors = [];
 const checked = [];
 const skipped = [];
 const authorialTypes = new Set(['objava', 'komentar', 'analiza', 'publication', 'commentary', 'analysis']);
-const operationalExceptionPattern = /(?:digital[\s-]*workforce|worker(?:i|s)?|operativn(?:i|a|o)|statusn(?:i|a|o)|tehni(?:c|č)k(?:i|a|o) bilten)/iu;
+const digitalWorkforceExceptionPattern = /(?:digital[\s-]*workforce|worker(?:i|s)?)/iu;
 const segmenter = typeof Intl.Segmenter === 'function'
   ? new Intl.Segmenter('hr', { granularity: 'word' })
   : null;
@@ -50,7 +50,7 @@ function isOperationalException(item, sourceFile) {
     sourceFile,
   ].filter(Boolean).join(' ');
   return item.editorialPolicyException === 'digital-workforce-worker'
-    || operationalExceptionPattern.test(haystack);
+    || digitalWorkforceExceptionPattern.test(haystack);
 }
 
 function addError(packId, item, message) {
