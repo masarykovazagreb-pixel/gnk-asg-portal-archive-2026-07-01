@@ -88,16 +88,52 @@ Sinkronizacije i ažuriranja rade 1–3 puta dnevno:
 
 Digital Workforce i Worker sadržaji koriste postojeće dužine, ali se ne objavljuju nepotrebno često.
 
-## 6. Distribucija
+## 6. Distribucija i stjecanje backlinkova
 
-`gnk-asg.hr` je primarni i kanonski izvor.
+`gnk-asg.hr` je primarni i kanonski izvor. Svaki autorski tekst prvo se objavljuje na GNK-ASG.hr, a tek nakon uspješne objave i SEO provjere ide u distribuciju.
 
-Nakon objave dopuštena je distribucija na Aktual Media, Blogger, Dev.to i Tumblr pod sljedećim uvjetima:
+Distribucija na Aktual Media, Blogger, Dev.to i Tumblr dopušta dva modela:
 
-- objavljuje se originalni sažetak, a ne slijepa puna kopija,
-- poveznica jasno vodi na izvorni članak na `gnk-asg.hr`,
-- canonical se postavlja prema izvorniku gdje platforma to podržava,
-- distribucija ne smije stvarati duplicirane objave ili višestruke objave istog teksta u istom ciklusu.
+### Model A — puna objava
+
+Puni tekst može se objaviti kada platforma:
+
+- tehnički podržava odobrenu duljinu,
+- zadržava čitljivu strukturu, slike i poveznice,
+- omogućuje jasno označavanje izvornog članka,
+- ne uvodi neprihvatljivo skraćivanje ili lomljenje sadržaja.
+
+Puna objava mora sadržavati barem jednu prirodnu, vidljivu poveznicu prema izvornom članku na `gnk-asg.hr`. Poveznica se postavlja u uvodnoj napomeni, uredničkoj napomeni, relevantnom dijelu teksta ili završnom bloku — ondje gdje je kontekstualno najprirodnija i najkorisnija čitatelju.
+
+Gdje platforma podržava canonical, canonical mora pokazivati na izvorni URL na `gnk-asg.hr`.
+
+### Model B — prilagođena ili skraćena verzija
+
+Sažetak ili prilagođena verzija koristi se kada:
+
+- platforma ima ograničenje duljine,
+- puna objava nije čitljiva u tom formatu,
+- sadržaj nije tematski prikladan za cijelu publiku platforme,
+- urednička verzija može dati bolji rezultat od potpune kopije.
+
+Takva verzija mora imati jasan, kontekstualan backlink prema punom izvornom članku na `gnk-asg.hr`.
+
+### Pravila po platformi
+
+- **Aktual Media:** dopuštena je puna ili urednički prilagođena verzija, ovisno o temi, publici i odobrenoj duljini. Obvezna je poveznica prema izvorniku.
+- **Blogger:** dopuštena je puna objava kada tehnički i urednički odgovara; inače se koristi prilagođena verzija. Obvezna je poveznica prema izvorniku.
+- **Dev.to:** koristi se za tehnološke, AI, softverske, automatizacijske i tržišno-tehnološke teme. Puni tekst je dopušten kada odgovara publici i formatu; inače se koristi prilagođena verzija. Obvezna je poveznica prema izvorniku i canonical gdje je podržan.
+- **Tumblr:** dopuštena je puna, vizualna ili skraćena verzija, ovisno o formatu i čitljivosti. Obvezna je poveznica prema izvorniku.
+
+Distribucijski sustav mora spriječiti:
+
+- objavu na vanjskoj platformi prije izvornog članka,
+- višestruku objavu istog teksta u istom ciklusu,
+- uklanjanje ili lomljenje backlinka,
+- pogrešan canonical,
+- distribuciju sadržaja na platformu kojoj tema ne odgovara.
+
+Povratna poveznica s GNK-ASG.hr prema vanjskoj objavi dodaje se samo kada korisniku donosi stvarnu vrijednost, primjerice kao oznaka sindicirane verzije, dodatni kontekst ili dokaz distribucije. Ne dodaje se automatski na svaku stranicu jer bi to nepotrebno pretvaralo portal u izlazni link-direktorij.
 
 ## 7. Provjera prije objave
 
@@ -116,4 +152,12 @@ Prije objave svakog autorskog teksta treba automatski provjeriti:
 - hashtagove,
 - odsutnost dupliciranih odlomaka.
 
-Ako obvezna provjera ne prođe, autorski tekst se ne objavljuje.
+Prije distribucije treba dodatno provjeriti:
+
+- da je izvorni članak već javno dostupan na `gnk-asg.hr`,
+- da vanjska verzija ima ispravan backlink,
+- da canonical pokazuje na izvorni URL gdje je podržan,
+- da odabrani model distribucije odgovara platformi i duljini teksta,
+- da isti sadržaj nije već distribuiran u istom ciklusu.
+
+Ako obvezna provjera ne prođe, autorski tekst se ne objavljuje niti distribuira.
