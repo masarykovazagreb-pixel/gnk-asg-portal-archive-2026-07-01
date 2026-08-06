@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='GNK_EDITORIAL_LATEST_INDEX_V1_20260805_DINAMO_COMMENT';
+const VERSION='GNK_EDITORIAL_LATEST_INDEX_V1_20260806_CLS_SAFE';
 if(window.__GNK_EDITORIAL_LATEST_INDEX_V1__)return;
 window.__GNK_EDITORIAL_LATEST_INDEX_V1__=true;
 const route=location.pathname.replace(/\/+$/,'')||'/';
@@ -19,7 +19,8 @@ async function run(){
  const section=document.createElement('section');section.id='gnk-latest-editorial';section.setAttribute('data-version',VERSION);section.style.cssText='margin:24px auto 34px;padding:22px;border:1px solid rgba(184,138,47,.35);border-radius:18px;background:#fff;max-width:1180px';
  const cards=items.map((item,index)=>`<a href="/${type==='objava'?'objave':'komentari'}/${encodeURIComponent(item.slug)}/" style="display:${index===0&&type==='komentar'?'grid':'block'};grid-template-columns:${index===0&&type==='komentar'?'repeat(auto-fit,minmax(190px,1fr))':'none'};grid-column:${index===0&&type==='komentar'?'1 / -1':'auto'};gap:${index===0&&type==='komentar'?'18px':'0'};padding:${index===0&&type==='komentar'?'0':'16px'};border:${index===0&&type==='komentar'?'2px solid #8c641f':'1px solid #e5e7eb'};border-radius:14px;color:#111827;text-decoration:none;background:#fff;overflow:hidden">${index===0&&type==='komentar'?`<img src="${esc(item.image)}" alt="${esc(item.title)}" style="width:100%;height:100%;min-height:210px;max-height:340px;object-fit:cover">`:''}<span style="display:block;padding:${index===0&&type==='komentar'?'22px':'0'}"><small style="font-weight:800;color:#8c641f">${index===0&&type==='komentar'?'ISTAKNUTI KOMENTAR · AKTUAL MEDIA · ':''}${esc(item.section||type)} · ${esc(date(item.publishedAt))}</small><h3 style="margin:8px 0;font-size:${index===0&&type==='komentar'?'24px':'18px'};line-height:1.3">${esc(item.title)}</h3><p style="margin:0;color:#526071;line-height:1.55">${esc(item.summary||item.description||'')}</p></span></a>`).join('');
  section.innerHTML=`<p style="margin:0 0 7px;font-weight:800;color:#8c641f;letter-spacing:.08em;text-transform:uppercase">Najnovije</p><h2 style="margin:0 0 18px;color:#071a38">${type==='objava'?'Najnovije objave':'Najnoviji komentari'}</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px">${cards}</div>`;
- const anchor=main.querySelector('h1')?.closest('section,header,div');if(anchor&&anchor.parentNode)anchor.insertAdjacentElement('afterend',section);else main.prepend(section);
+ const archiveGrid=main.querySelector('.editorial-grid');
+ if(archiveGrid&&archiveGrid.parentNode)archiveGrid.insertAdjacentElement('afterend',section);else main.append(section);
 }
 run().catch(error=>{document.documentElement.dataset.gnkEditorialLatestError=String(error?.message||error).slice(0,120)});
 })();

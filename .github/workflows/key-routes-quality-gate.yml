@@ -1,0 +1,69 @@
+name: Key Routes Quality Gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/key-routes-quality-gate.yml'
+      - 'lighthouserc.json'
+      - 'scripts/audit_key_public_routes_v1.py'
+      - 'scripts/lhci_prepare_hr_language.cjs'
+      - 'scripts/diagnose_objave_cls.cjs'
+      - 'apps/portal/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: key-routes-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: '.github/workflows/key-routes-quality-gate.yml'
+      - name: Start local portal server
+        run: |
+          python -m http.server 4173 --directory apps/portal > /tmp/gnk-asg-http.log 2>&1 &
+          echo $! > /tmp/gnk-asg-http.pid
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:4173/ >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/gnk-asg-http.log
+          exit 1
+      - name: Audit local functionality, SEO, schema, links and discovery
+        run: python scripts/audit_key_public_routes_v1.py --local
+      - name: Audit live HTTP and indexability surface
+        run: python scripts/audit_key_public_routes_v1.py --live
+      - name: Install Lighthouse CI and browser driver
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+        run: npm install --global @lhci/cli@0.14.0 puppeteer@24.16.0
+      - name: Capture /objave/ CLS element evidence
+        env:
+          NODE_PATH: ${{ runner.tool_cache }}/node/22.*/x64/lib/node_modules
+        run: NODE_PATH="$(npm root --global)" node scripts/diagnose_objave_cls.cjs
+      - name: Run Lighthouse quality thresholds
+        run: lhci autorun --config=./lighthouserc.json
+      - name: Upload quality evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: key-routes-quality-${{ github.sha }}
+          path: artifacts/key-routes-quality/
+          if-no-files-found: error
+          retention-days: 1
