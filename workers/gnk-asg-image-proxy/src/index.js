@@ -26,7 +26,7 @@ export default {
     const url = new URL(request.url);
 
     // CORS - samo s naše domene, ne sa svakog izvora
-    const dopusteni = ['https://gnk-asg.hr', 'https://www.gnk-asg.hr'];
+    const dopusteni = ['https://gnk-asg.hr', 'https://gnk-asg.hr'];
     const podrijetlo = request.headers.get('Origin') || '';
     const cors = {
       'Access-Control-Allow-Origin': dopusteni.includes(podrijetlo) ? podrijetlo : dopusteni[0],
