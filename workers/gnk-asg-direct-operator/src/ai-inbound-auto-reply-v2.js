@@ -398,10 +398,10 @@ async function askModel(env, model, prompt) {
 
 async function publicKnowledge(env) {
   const parts = [
-    'Official website: https://www.gnk-asg.hr',
+    'Official website: https://gnk-asg.hr',
     'Media contact: media@gnk-asg.hr',
-    'Media application: https://www.gnk-asg.hr/media-application/?lang=en',
-    'THE CODE: https://www.gnk-asg.hr/the-code/',
+    'Media application: https://gnk-asg.hr/media-application/?lang=en',
+    'THE CODE: https://gnk-asg.hr/the-code/',
     'GNK ASG Mail Studio is a protected operator interface. Inbox and Sent require an authenticated operator session. Cloudflare account membership by itself does not provide access to Gmail message bodies.',
     'Automatic replies are preliminary and cannot approve accreditation, accept offers, create contracts, give legal advice, confirm payments, disclose confidential information, promise deadlines or make final decisions.'
   ];
