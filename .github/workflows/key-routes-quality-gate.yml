@@ -8,6 +8,7 @@ on:
       - '.github/workflows/key-routes-quality-gate.yml'
       - 'lighthouserc.json'
       - 'scripts/audit_key_public_routes_v1.py'
+      - 'scripts/lhci_prepare_hr_language.cjs'
       - 'apps/portal/**'
 
 permissions:
@@ -47,8 +48,10 @@ jobs:
         run: python scripts/audit_key_public_routes_v1.py --local
       - name: Audit live HTTP and indexability surface
         run: python scripts/audit_key_public_routes_v1.py --live
-      - name: Install Lighthouse CI
-        run: npm install --global @lhci/cli@0.14.0
+      - name: Install Lighthouse CI and browser driver
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+        run: npm install --global @lhci/cli@0.14.0 puppeteer@24.16.0
       - name: Run Lighthouse quality thresholds
         run: lhci autorun --config=./lighthouserc.json
       - name: Upload quality evidence
@@ -58,4 +61,4 @@ jobs:
           name: key-routes-quality-${{ github.sha }}
           path: artifacts/key-routes-quality/
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 1
