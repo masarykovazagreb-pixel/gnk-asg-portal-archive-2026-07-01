@@ -12,7 +12,7 @@ export const VERSION=`GNK_ASG_CONTACT_STUDIO_MAIL_V6_20260718_IDEMPOTENT_CONTACT
 const CONTACT_PATH='/api/contact-submit',CANONICAL_CONTACT_PATH='/api/portal-contact-submit',STUDIO_PATH='/api/studio-message/send';
 const CONTACT_INTERNAL=env=>String(env?.CONTACT_INTERNAL_RECIPIENTS||'').trim()||'rht@gmx.com';
 const CONTACT_RATE_WINDOW_SECONDS=900,CONTACT_RATE_LIMIT=5,CONTACT_JSON_MAX_BYTES=32_000,MAX_ATTACHMENTS=3,MAX_ATTACHMENT_BYTES=3_200_000,MAX_TOTAL_ATTACHMENT_BYTES=6_400_000;
-const CONTACT_ORIGINS=new Set(['https://gnk-asg.hr','https://www.gnk-asg.hr']);
+const CONTACT_ORIGINS=new Set(['https://gnk-asg.hr','https://gnk-asg.hr']);
 const MAILBOXES={info:{email:'info@gnk-asg.hr',name:'GNK ASG Info Desk'},contact:{email:'contact@gnk-asg.hr',name:'GNK ASG Contact Desk'},office:{email:'office@gnk-asg.hr',name:'GNK ASG Office'},media:{email:'media@gnk-asg.hr',name:'GNK ASG Media Desk'},press:{email:'press@gnk-asg.hr',name:'GNK ASG Press Desk'},legal:{email:'legal@gnk-asg.hr',name:'GNK ASG Legal & Compliance'},privacy:{email:'privacy@gnk-asg.hr',name:'GNK ASG Privacy Desk'},it:{email:'it@gnk-asg.hr',name:'GNK ASG IT'},ubo:{email:'ubo@gnk-asg.hr',name:'GNK ASG UBO Office'},sefic:{email:'sefic@gnk-asg.hr',name:'Nermin Sefić'},assistant:{email:'assistant@gnk-asg.hr',name:'GNK ASG Digital Assistant'}};
 const ALLOWED_FROM=new Set(Object.values(MAILBOXES).map(x=>x.email).concat(['nermin.sefic@gnk-asg.hr']));
 const clean=(value,max=12000)=>String(value??'').replace(/\u0000/g,'').trim().slice(0,max);
