@@ -8,8 +8,8 @@ const json=value=>JSON.stringify(value).replace(/</g,'\\u003c');
 const paragraphs=value=>clean(value).split(/\n{2,}/u).map(part=>`<p>${esc(part).replace(/\n/g,'<br>')}</p>`).join('');
 
 function articleAuthor(attribution){
-  if(attribution.author.type==='Person')return{'@type':'Person','@id':'https://www.gnk-asg.hr/nermin-sefic/#person',name:attribution.author.name,url:'https://www.gnk-asg.hr/nermin-sefic/'};
-  return{'@type':'Organization','@id':'https://www.gnk-asg.hr/the-code/intelligence/#editorial-desk',name:attribution.author.name,url:'https://www.gnk-asg.hr/the-code/intelligence/'};
+  if(attribution.author.type==='Person')return{'@type':'Person','@id':'https://gnk-asg.hr/nermin-sefic/#person',name:attribution.author.name,url:'https://gnk-asg.hr/nermin-sefic/'};
+  return{'@type':'Organization','@id':'https://gnk-asg.hr/the-code/intelligence/#editorial-desk',name:attribution.author.name,url:'https://gnk-asg.hr/the-code/intelligence/'};
 }
 
 export function renderPublicationDocument(input={}){
@@ -38,20 +38,20 @@ export function renderPublicationDocument(input={}){
         inLanguage:clean(input.language),
         mainEntityOfPage:{'@type':'WebPage','@id':clean(input.canonical)},
         author,
-        editor:{'@type':'Person','@id':'https://www.gnk-asg.hr/nermin-sefic/#person',name:'Nermin Sefić',url:'https://www.gnk-asg.hr/nermin-sefic/'},
-        publisher:{'@type':'Organization','@id':'https://www.gnk-asg.hr/#gnk-dinamo-ltd',name:'GNK DINAMO Ltd.',url:'https://gnkdinamo.eu/'},
-        provider:{'@type':'Organization','@id':'https://www.gnk-asg.hr/#organization',name:'GNK ASG d.o.o.',url:'https://www.gnk-asg.hr/'},
+        editor:{'@type':'Person','@id':'https://gnk-asg.hr/nermin-sefic/#person',name:'Nermin Sefić',url:'https://gnk-asg.hr/nermin-sefic/'},
+        publisher:{'@type':'Organization','@id':'https://gnk-asg.hr/#gnk-dinamo-ltd',name:'GNK DINAMO Ltd.',url:'https://gnkdinamo.eu/'},
+        provider:{'@type':'Organization','@id':'https://gnk-asg.hr/#organization',name:'GNK ASG d.o.o.',url:'https://gnk-asg.hr/'},
         articleSection:clean(input.category),
         isBasedOn:sourceUrls,
-        accountablePerson:{'@id':'https://www.gnk-asg.hr/nermin-sefic/#person'},
-        reviewedBy:{'@id':'https://www.gnk-asg.hr/nermin-sefic/#person'}
+        accountablePerson:{'@id':'https://gnk-asg.hr/nermin-sefic/#person'},
+        reviewedBy:{'@id':'https://gnk-asg.hr/nermin-sefic/#person'}
       },
       {
         '@type':'BreadcrumbList',
         '@id':`${clean(input.canonical)}#breadcrumb`,
         itemListElement:[
-          {'@type':'ListItem',position:1,name:'GNK DINAMO Ltd.',item:'https://www.gnk-asg.hr/'},
-          {'@type':'ListItem',position:2,name:'THE CODE Intelligence',item:'https://www.gnk-asg.hr/the-code/intelligence/'},
+          {'@type':'ListItem',position:1,name:'GNK DINAMO Ltd.',item:'https://gnk-asg.hr/'},
+          {'@type':'ListItem',position:2,name:'THE CODE Intelligence',item:'https://gnk-asg.hr/the-code/intelligence/'},
           {'@type':'ListItem',position:3,name:clean(input.title),item:clean(input.canonical)}
         ]
       }
