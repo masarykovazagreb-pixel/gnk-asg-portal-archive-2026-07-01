@@ -128,8 +128,8 @@ async function cleanMediaApplicationHtml(response){
     .replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+MEDIA_APPLICATION_DESCRIPTION+'">')
     .replace(/<meta property="og:description" content="[^"]*">/,'<meta property="og:description" content="'+MEDIA_APPLICATION_DESCRIPTION+'">')
     .replace(/<meta name="twitter:description" content="[^"]*">/,'<meta name="twitter:description" content="'+MEDIA_APPLICATION_DESCRIPTION+'">')
-    .replaceAll('https://www.gnk-asg.hr/assets/logo-gnk-asg.svg','https://www.gnk-asg.hr/assets/brand/official-gnk-asg-gold.svg')
-    .replaceAll('https://gnkdinamo.eu/','https://www.gnk-asg.hr/')
+    .replaceAll('https://gnk-asg.hr/assets/logo-gnk-asg.svg','https://gnk-asg.hr/assets/brand/official-gnk-asg-gold.svg')
+    .replaceAll('https://gnkdinamo.eu/','https://gnk-asg.hr/')
     .replace('<a class="brand" href="/"><span class="brand-mark">G</span><span><strong>GNK ASG</strong><small>THE CODE · New York 2026</small></span></a>','<a class="brand" href="/"><img src="/assets/brand/official-gnk-asg-gold.svg" alt="GNK ASG d.o.o. official logo" style="width:42px;height:42px;object-fit:contain"><span><strong>GNK ASG</strong><small>Media Relations & Accreditation Center</small></span></a>');
   return new Response(body,{status:response.status,statusText:response.statusText,headers});
 }
