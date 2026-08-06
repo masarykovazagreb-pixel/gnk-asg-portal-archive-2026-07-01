@@ -2,10 +2,12 @@
   "ci": {
     "collect": {
       "numberOfRuns": 1,
+      "puppeteerScript": "scripts/lhci_prepare_hr_language.cjs",
       "settings": {
         "chromeFlags": "--headless --no-sandbox --disable-dev-shm-usage --lang=hr-HR",
         "preset": "desktop",
         "locale": "hr-HR",
+        "disableStorageReset": true,
         "onlyCategories": ["performance", "accessibility", "best-practices", "seo"]
       },
       "url": [
