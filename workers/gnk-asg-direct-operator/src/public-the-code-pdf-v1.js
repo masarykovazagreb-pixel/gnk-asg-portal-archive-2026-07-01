@@ -34,7 +34,7 @@ async function storeVerifiedPdf(bytes,bucket){
   if(digest!==EXPECTED_SHA256)return json({ok:false,error:'sha256_mismatch',expected:EXPECTED_SHA256,received:digest},400);
   const uploadedAt=new Date().toISOString();
   await bucket.put(R2_KEY,bytes,{httpMetadata:{contentType:'application/pdf',contentDisposition:`inline; filename="${FILE_NAME}"`},customMetadata:{sha256:digest,filename:FILE_NAME,uploadedAt,version:VERSION}});
-  return json({ok:true,url:`https://www.gnk-asg.hr${PUBLIC_THE_CODE_PDF_PATH}`,sha256:digest,sizeBytes:bytes.length,uploadedAt},201);
+  return json({ok:true,url:`https://gnk-asg.hr${PUBLIC_THE_CODE_PDF_PATH}`,sha256:digest,sizeBytes:bytes.length,uploadedAt},201);
 }
 
 async function publishDirect(request,env){
@@ -53,7 +53,7 @@ async function publishByQuery(request,env){
     const published=await bucket.head(R2_KEY);
     let received=0;
     for(let index=0;index<EXPECTED_CHUNKS;index++)if(await bucket.head(chunkKey(index)))received++;
-    return json({ok:true,version:VERSION,published:Boolean(published),publishedSha256:String(published?.customMetadata?.sha256||''),received,expected:EXPECTED_CHUNKS,url:`https://www.gnk-asg.hr${PUBLIC_THE_CODE_PDF_PATH}`});
+    return json({ok:true,version:VERSION,published:Boolean(published),publishedSha256:String(published?.customMetadata?.sha256||''),received,expected:EXPECTED_CHUNKS,url:`https://gnk-asg.hr${PUBLIC_THE_CODE_PDF_PATH}`});
   }
   if(op==='chunk'){
     const index=Number(url.searchParams.get('i')),total=Number(url.searchParams.get('n'));
