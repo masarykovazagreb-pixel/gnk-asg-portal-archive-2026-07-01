@@ -3,8 +3,9 @@
     "collect": {
       "numberOfRuns": 1,
       "settings": {
-        "chromeFlags": "--headless --no-sandbox --disable-dev-shm-usage",
+        "chromeFlags": "--headless --no-sandbox --disable-dev-shm-usage --lang=hr-HR",
         "preset": "desktop",
+        "locale": "hr-HR",
         "onlyCategories": ["performance", "accessibility", "best-practices", "seo"]
       },
       "url": [
