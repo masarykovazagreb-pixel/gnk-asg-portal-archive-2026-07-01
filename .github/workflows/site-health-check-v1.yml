@@ -1,8 +1,8 @@
-name: Site Health Check (06:00 / 12:00 / 18:00 Zagreb)
+name: Site Health Check (4x daily Zagreb)
 on:
   schedule:
-    # Zagreb is UTC+2 in summer (CEST). 06:00/12:00/18:00 local = 04:00/10:00/16:00 UTC.
-    - cron: '0 4,16 * * *'
+    # GitHub cron is UTC. In summer (CEST), 04:00/08:00/14:00/20:00 Zagreb = 02:00/06:00/12:00/18:00 UTC.
+    - cron: '0 2,6,12,18 * * *'
   workflow_dispatch: {}
 permissions:
   contents: read
@@ -13,7 +13,7 @@ concurrency:
 jobs:
   health-check:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,18 +21,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Run health check
+      - name: Run end-to-end health and freshness check
         id: check
         run: node scripts/site-health-check-v1.mjs
         continue-on-error: true
-      - name: Post report as GitHub issue
+      - name: Post report as GitHub issue only on failure
+        if: steps.check.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          STATUS="${{ steps.check.outcome }}"
-          TITLE="Provjera sustava — $(date -u +%Y-%m-%d\ %H:%M) UTC ($STATUS)"
+          TITLE="PRODUCTION DEGRADED — $(date -u +%Y-%m-%d\ %H:%M) UTC"
           gh issue create --repo "${{ github.repository }}" --title "$TITLE" --body-file /tmp/health-check-report.md --label "health-check" || \
           gh issue create --repo "${{ github.repository }}" --title "$TITLE" --body-file /tmp/health-check-report.md
+      - name: Upload health report
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-health-report-${{ github.run_id }}
+          path: /tmp/health-check-report.md
+          retention-days: 30
       - name: Fail the job if checks failed
         if: steps.check.outcome == 'failure'
         run: exit 1
