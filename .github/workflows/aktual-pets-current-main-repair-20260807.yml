@@ -1,0 +1,38 @@
+name: Aktual Pets Current Main Repair 20260807
+
+on:
+  push:
+    branches:
+      - agent/aktual-pets-current-main-20260807-v2
+    paths:
+      - 'scripts/apply-aktual-pets-current-main-20260807.mjs'
+      - '.github/workflows/aktual-pets-current-main-repair-20260807.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/aktual-pets-current-main-20260807-v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply bounded pets transform
+        run: node scripts/apply-aktual-pets-current-main-20260807.mjs
+      - name: Validate pets contract
+        run: node scripts/test-aktual-pets-sources-v1.mjs
+      - name: Diff guard
+        run: git diff --check
+      - name: Commit pets refresh change
+        run: |
+          git config user.name 'gnk-asg-aktual-fix-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add scripts/gnk-news-refresh.mjs
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'feat(aktual): add pets feeds on current main'
+          git push origin HEAD:agent/aktual-pets-current-main-20260807-v2
