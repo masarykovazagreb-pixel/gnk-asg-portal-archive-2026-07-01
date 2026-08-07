@@ -29,7 +29,15 @@ jobs:
       - name: Apply bounded seven-file repair
         run: node scripts/fix-pr1136-direct-static-structure.mjs
       - name: Validate direct static editorial policy
-        run: node scripts/validate-direct-static-editorial-v1.mjs
+        run: |
+          node scripts/validate-direct-static-editorial-v1.mjs \
+            apps/portal/objave/kontinuitet-poslovanja-za-timove-koji-rade-daljinski/index.html \
+            apps/portal/objave/naslijedivanje-dobavljackih-ugovora-nakon-akvizicije/index.html \
+            apps/portal/objave/rizik-ovisnosti-o-jednom-tehnoloskom-dobavljacu/index.html \
+            apps/portal/objave/sigurnosni-zahtjevi-za-api-integracije-s-vanjskim-partnerima/index.html \
+            apps/portal/objave/vjezbe-simulacije-krize-za-rukovodstvo/index.html \
+            apps/portal/objave/vlasnicki-poticaji-kao-alat-uskladivanja-interesa-zaposlenika/index.html \
+            apps/portal/objave/zahtjevi-za-lokalizacijom-podataka-u-medunarodnom-poslovanju/index.html
       - name: Diff guard
         run: git diff --check
       - name: Commit repaired editorial files
