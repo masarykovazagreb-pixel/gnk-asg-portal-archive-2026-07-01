@@ -1,0 +1,26 @@
+name: Digital Assets Single Writer Guard
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/refresh-index-live-data.yml'
+      - '.github/workflows/digital-assets-single-writer-guard.yml'
+      - 'ops/digital-assets-single-writer-guard-v1.json'
+      - 'scripts/test-digital-assets-single-writer-guard-v1.mjs'
+      - 'workers/gnk-asg-direct-operator/refresh-digital-assets-only.ps1'
+      - 'workers/gnk-asg-direct-operator/refresh-market-only.ps1'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Single-writer contract
+        run: node scripts/test-digital-assets-single-writer-guard-v1.mjs

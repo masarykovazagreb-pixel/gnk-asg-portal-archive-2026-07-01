@@ -11,10 +11,14 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: blog-mirror-publish
+  cancel-in-progress: false
+
 jobs:
   objavi:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,6 +35,7 @@ jobs:
         env:
           DEVTO_API_KEY: ${{ inputs.devto_key }}
           DEVTO_PER_RUN: '16'
+          DEVTO_PAUSE_MS: '10000'
         run: node scripts/devto-publish-v1.mjs --live
       - name: Commit evidencije objavljenog
         run: |

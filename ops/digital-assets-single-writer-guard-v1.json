@@ -1,0 +1,35 @@
+{
+  "version": "GNK_ASG_DIGITAL_ASSETS_SINGLE_WRITER_GUARD_V1_20260807",
+  "canonicalWriter": {
+    "type": "github-actions",
+    "workflow": ".github/workflows/refresh-index-live-data.yml",
+    "schedule": ["07:05 UTC", "15:05 UTC"],
+    "targetCadence": "2x daily",
+    "writes": [
+      "apps/portal/data/market.json",
+      "apps/portal/data/market_indices.json",
+      "apps/portal/data/fast_market_status.json",
+      "apps/portal/data/news.json",
+      "apps/portal/data/news_archive.json",
+      "apps/portal/data/news-status.json"
+    ]
+  },
+  "legacyPaths": [
+    {
+      "path": "workers/gnk-asg-direct-operator/refresh-digital-assets-only.ps1",
+      "status": "legacy-hold",
+      "reason": "Contains historical 15-minute Windows-task metadata and direct wrangler deploy logic. It is not an approved production writer under the current architecture."
+    },
+    {
+      "path": "workers/gnk-asg-direct-operator/refresh-market-only.ps1",
+      "status": "legacy-hold",
+      "reason": "Local Windows refresh path must not operate in parallel with the canonical GitHub Actions writer."
+    }
+  ],
+  "rules": [
+    "No legacy Windows task may write production market or digital-asset data in parallel with the canonical writer.",
+    "No legacy refresh script may perform a direct production wrangler deploy.",
+    "Production data cadence is controlled by the canonical workflow unless a reviewed PR changes this contract.",
+    "Freshness claims must come from generated data evidence, not from wall-clock-only status stamping."
+  ]
+}
