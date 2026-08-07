@@ -1,0 +1,49 @@
+name: PR1136 Editorial Structure Repair
+
+on:
+  push:
+    branches:
+      - content-7-topics-batch-final
+    paths:
+      - 'scripts/fix-pr1136-direct-static-structure.mjs'
+      - '.github/workflows/pr1136-editorial-structure-repair.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr1136-editorial-structure-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: content-7-topics-batch-final
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply bounded seven-file repair
+        run: node scripts/fix-pr1136-direct-static-structure.mjs
+      - name: Validate direct static editorial policy
+        run: node scripts/validate-direct-static-editorial-v1.mjs
+      - name: Diff guard
+        run: git diff --check
+      - name: Commit repaired editorial files
+        run: |
+          git config user.name 'gnk-asg-editorial-fix-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add \
+            apps/portal/objave/kontinuitet-poslovanja-za-timove-koji-rade-daljinski/index.html \
+            apps/portal/objave/naslijedivanje-dobavljackih-ugovora-nakon-akvizicije/index.html \
+            apps/portal/objave/rizik-ovisnosti-o-jednom-tehnoloskom-dobavljacu/index.html \
+            apps/portal/objave/sigurnosni-zahtjevi-za-api-integracije-s-vanjskim-partnerima/index.html \
+            apps/portal/objave/vjezbe-simulacije-krize-za-rukovodstvo/index.html \
+            apps/portal/objave/vlasnicki-poticaji-kao-alat-uskladivanja-interesa-zaposlenika/index.html \
+            apps/portal/objave/zahtjevi-za-lokalizacijom-podataka-u-medunarodnom-poslovanju/index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'fix(editorial): satisfy direct static policy for seven-topic batch'
+          git push origin HEAD:content-7-topics-batch-final
