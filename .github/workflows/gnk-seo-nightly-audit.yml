@@ -1,0 +1,94 @@
+name: GNK ASG Nightly SEO, Meta and Backlink Audit
+
+# Pokreće se svaku noć u 02:15 CET (01:15 UTC).
+# 1. Provjerava meta/SEO stanje cijelog portala i sprema izvještaj.
+# 2. Pokušava nastaviti Blogger backlink zaostatak (koristi već pohranjene tajne).
+# Tumblr i Dev.to NE mogu biti dio ovog automatskog rasporeda dok njihove
+# vjerodajnice ne budu spremljene kao repo tajne (vidi napomenu na dnu).
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 1 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  seo-audit:
+    name: Noćni SEO/meta audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Pokreni SEO audit
+        run: node scripts/gnk-seo-nightly-audit-v1.mjs
+
+      - name: Objavi sažetak u summary
+        if: always()
+        run: |
+          if [ -s apps/portal/data/seo-audit/nightly-report.json ]; then
+            node -e "
+              const r = require('./apps/portal/data/seo-audit/nightly-report.json');
+              console.log('## Noćni SEO audit — ' + r.generatedAt);
+              console.log('');
+              console.log('Ukupno stranica: **' + r.ukupnoStranica + '**');
+              console.log('');
+              console.log('### Preporuke');
+              for (const p of r.preporuke) console.log('- ' + p);
+            " >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Commit izvještaj
+        run: |
+          git config user.name "gnk-seo-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/seo-audit/nightly-report.json
+          git diff --cached --quiet || git commit -m "chore: nightly SEO audit report"
+          git pull --rebase --autostash origin main
+          git push origin main
+
+  backlink-blogger:
+    name: Nastavi Blogger backlink zaostatak
+    needs: seo-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Sync
+        run: git pull --rebase --autostash origin main
+      - name: Mirror na Blogger (backlink)
+        env:
+          BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
+          BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}
+          BLOGGER_CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
+          BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
+          BLOG_PER_RUN: '10'
+          BLOG_PAUSE_MS: '15000'
+          BLOG_MAX_ATTEMPTS: '2'
+          BLOG_BACKOFF_MS: '60000'
+        run: node scripts/blog-publish-resilient-v1.mjs
+      - name: Commit
+        run: |
+          git config user.name "gnk-seo-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/blog-content/
+          git diff --cached --quiet || git commit -m "chore: nightly blogger backlink batch"
+          git pull --rebase --autostash origin main
+          git push origin main
+
+# NAPOMENA: Tumblr i Dev.to nemaju stalne, pohranjene vjerodajnice u ovom
+# repozitoriju (samo se unose ručno pri svakom pokretanju), pa ih ovaj
+# automatski, noćni raspored NE MOŽE uključiti dok se ne spreme kao repo
+# tajne: TUMBLR_CONSUMER_KEY, TUMBLR_CONSUMER_SECRET, TUMBLR_TOKEN,
+# TUMBLR_TOKEN_SECRET, DEVTO_KEY — vidi upute u tumblr-vjerodajnice.txt.
+# Nakon što budu spremljene, ovaj workflow treba dopuniti s dodatnim
+# job blokovima po uzoru na "backlink-blogger" iznad.
