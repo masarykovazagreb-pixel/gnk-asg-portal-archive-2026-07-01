@@ -1,24 +1,9 @@
 #!/usr/bin/env node
 /**
- * Prijenos objavljenih tekstova na Dev.to.
- *
- * Isto pravilo kao za Blogger: sajt je izvor, Dev.to je preslika.
- * Nista se ne pise izravno tamo bez da vec postoji na gnk-asg.hr i stoji
- * u registru. Svaka objava zavrsava s poveznicom natrag na izvornik
- * (canonical_url), da Google zna gdje je pravi izvor.
- *
- * Bez tajne radi u nacinu pripreme: red se slozi i sprema, ali se ne salje.
- *
- *   node scripts/devto-publish-v1.mjs            # priprema
- *   node scripts/devto-publish-v1.mjs --live      # objavi (trazi DEVTO_API_KEY)
- *
- * Tajna (GitHub Actions secret):
- *   DEVTO_API_KEY   izvaditi na dev.to/settings/extensions
- *
- * VAZNO - engleski jezik: Dev.to je englesko govorno trziste. Ako zapis u
- * registru ima polja title_en/description_en/body_en, koriste se ta; ako
- * ih nema, objava se PRESKACE (ne salje se hrvatski tekst na Dev.to), dok
- * se ne prevede - v. napomenu u kodu ispod.
+ * GNK ASG -> Dev.to controlled mirror.
+ * gnk-asg.hr remains canonical. Existing Dev.to articles are reconciled by
+ * canonical_url before publishing so a lost/stale local state file cannot
+ * create endless 422 duplicate-canonical retries.
  */
 import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -26,22 +11,37 @@ import { resolve, dirname } from 'node:path';
 const PORTAL = resolve('apps/portal');
 const REGISTRY = resolve('apps/portal/data/editorial-registry.json');
 const STATE = resolve('apps/portal/data/devto-content/published.json');
+const RESULT = resolve('apps/portal/data/devto-content/zadnji-rezultat.json');
 const SITE = 'https://gnk-asg.hr';
-
 const PER_RUN = Number(process.env.DEVTO_PER_RUN || 6);
 const PAUSE_MS = Number(process.env.DEVTO_PAUSE_MS || 300000);
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-const BASE_TAGS = ['business', 'croatia', 'nerminsefic']; // Dev.to: max 4 oznake, samo alfanumericke, bez razmaka
 const LIVE = process.argv.includes('--live');
 const API_KEY = process.env.DEVTO_API_KEY;
+const BASE_TAGS = ['business', 'croatia', 'nerminsefic'];
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const readJson = (p, fallback) => { try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return fallback; } };
 const writeJson = (p, data) => { mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, JSON.stringify(data, null, 2) + '\n', 'utf8'); };
-
 const unescapeHtml = (s = '') => s
   .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
   .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x27;/gi, "'");
+
+function normalizeUrl(value = '') {
+  try {
+    const u = new URL(value);
+    u.hash = '';
+    u.search = '';
+    u.hostname = u.hostname.toLowerCase();
+    u.pathname = u.pathname.replace(/\/{2,}/g, '/').replace(/\/$/, '') || '/';
+    return u.toString().replace(/\/$/, '');
+  } catch {
+    return String(value || '').trim().replace(/\/$/, '');
+  }
+}
+
+function canonicalFor(item) {
+  return normalizeUrl(SITE + item.path);
+}
 
 function readArticle(routePath) {
   const file = resolve(PORTAL, '.' + routePath, 'index.html');
@@ -53,161 +53,161 @@ function readArticle(routePath) {
   };
   const title = (meta('og:title', 'property') || (html.match(/<title>([^<]*)<\/title>/) || [, ''])[1]).split(' | ')[0].trim();
   const description = meta('description');
-  const keywords = meta('keywords').split(',').map((k) => k.trim()).filter(Boolean);
   const image = meta('og:image', 'property');
-  const body =
-    (html.match(/<main[\s\S]*?<\/main>/) || [])[0] ||
-    (html.match(/<article[\s\S]*?<\/article>/) || [])[0] || html;
+  const body = (html.match(/<main[\s\S]*?<\/main>/) || [])[0] || (html.match(/<article[\s\S]*?<\/article>/) || [])[0] || html;
   const paragraphs = [...body.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
     .map((m) => unescapeHtml(m[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()))
     .filter((t) => t.length > 80);
   if (!title || paragraphs.length < 2) return null;
-  return { title, description, keywords, image, paragraphs };
+  return { title, description, image, paragraphs };
 }
 
-// Trazi englesku verziju stranice ako postoji na paralelnom /en/ putu -
-// isti obrazac kao apps/portal/en/gnk-aktual/ nasuprot apps/portal/gnk-aktual/.
 function readEnglishArticle(routePath) {
   const enPath = routePath.startsWith('/en/') ? routePath : '/en' + routePath;
   return readArticle(enPath);
 }
 
-function toMarkdown(paragraphs) {
-  return paragraphs.join('\n\n');
+function bodyMarkdown(clanak, item) {
+  return `*By Nermin Sefić, GNK ASG d.o.o.*\n\n${clanak.paragraphs.join('\n\n')}\n\n---\n*Autor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: [gnk-asg.hr](${SITE}${item.path})*`;
 }
 
-async function objaviNaDevto(clanak, item) {
-  const frontmatter = {
+async function fetchAllMyArticles() {
+  const all = [];
+  for (let page = 1; page <= 20; page++) {
+    const url = `https://dev.to/api/articles/me/all?per_page=1000&page=${page}`;
+    const r = await fetch(url, { headers: { 'api-key': API_KEY } });
+    if (!r.ok) throw new Error(`Dev.to reconciliation ${r.status}: ${await r.text()}`);
+    const batch = await r.json();
+    if (!Array.isArray(batch)) throw new Error('Dev.to reconciliation returned non-array payload');
+    all.push(...batch);
+    if (batch.length < 1000) break;
+  }
+  return all;
+}
+
+async function reconcileState(state, registry) {
+  if (!LIVE || !API_KEY) return { reconciled: 0, remote: 0 };
+  const remote = await fetchAllMyArticles();
+  const byCanonical = new Map();
+  for (const article of remote) {
+    const key = normalizeUrl(article?.canonical_url || '');
+    if (key) byCanonical.set(key, article);
+  }
+  let reconciled = 0;
+  for (const item of registry.items || []) {
+    if (!item?.path || state.posted[item.path]) continue;
+    const hit = byCanonical.get(canonicalFor(item));
+    if (!hit) continue;
+    state.posted[item.path] = {
+      at: hit.published_at || hit.created_at || new Date().toISOString(),
+      reconciledAt: new Date().toISOString(),
+      devtoUrl: hit.url,
+      id: hit.id,
+      canonicalUrl: hit.canonical_url,
+    };
+    reconciled++;
+  }
+  if (reconciled) writeJson(STATE, state);
+  console.log(`Dev.to reconciliation: remote=${remote.length}, local state additions=${reconciled}.`);
+  return { reconciled, remote: remote.length };
+}
+
+async function publishArticle(clanak, item) {
+  const article = {
     title: clanak.title.slice(0, 128),
     published: true,
     tags: BASE_TAGS,
     canonical_url: SITE + item.path,
     description: clanak.description.slice(0, 200),
+    body_markdown: bodyMarkdown(clanak, item),
   };
-  if (clanak.image) frontmatter.cover_image = clanak.image;
-
-  const body_markdown =
-    `*By Nermin Sefić, GNK ASG d.o.o.*\n\n` +
-    `${toMarkdown(clanak.paragraphs)}\n\n` +
-    `---\n*Autor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: [gnk-asg.hr](${SITE}${item.path})*`;
-
+  if (clanak.image) article.cover_image = clanak.image;
   const r = await fetch('https://dev.to/api/articles', {
     method: 'POST',
     headers: { 'api-key': API_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ article: { ...frontmatter, body_markdown } }),
+    body: JSON.stringify({ article }),
   });
-  if (!r.ok) throw new Error(`Dev.to ${r.status}: ${await r.text()}`);
-  return r.json();
+  const text = await r.text();
+  if (!r.ok) throw new Error(`Dev.to ${r.status}: ${text}`);
+  return JSON.parse(text);
 }
 
-async function azurirajNaDevto(clanak, devtoId) {
-  const frontmatter = {
-    title: clanak.title.slice(0, 128),
-    tags: BASE_TAGS,
-    description: clanak.description.slice(0, 200),
+async function reconcileOneAfter422(item, state) {
+  const remote = await fetchAllMyArticles();
+  const wanted = canonicalFor(item);
+  const hit = remote.find((a) => normalizeUrl(a?.canonical_url || '') === wanted);
+  if (!hit) return false;
+  state.posted[item.path] = {
+    at: hit.published_at || new Date().toISOString(),
+    reconciledAt: new Date().toISOString(),
+    devtoUrl: hit.url,
+    id: hit.id,
+    canonicalUrl: hit.canonical_url,
   };
-  if (clanak.image) frontmatter.cover_image = clanak.image;
-  const body_markdown = clanak.body_markdown_puni;
-
-  const r = await fetch(`https://dev.to/api/articles/${devtoId}`, {
-    method: 'PUT',
-    headers: { 'api-key': API_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ article: { ...frontmatter, body_markdown } }),
-  });
-  if (!r.ok) throw new Error(`Dev.to update ${r.status}: ${await r.text()}`);
-  return r.json();
-}
-
-async function azurirajStareBezSlike() {
-  const state = readJson(STATE, { posted: {} });
-  const registry = readJson(REGISTRY, { items: [] });
-  let azurirano = 0;
-  for (const [path, zapis] of Object.entries(state.posted)) {
-    const item = (registry.items || []).find((i) => i.path === path);
-    if (!item) continue;
-    const clanak = readArticle(item.path);
-    if (!clanak || !clanak.image) continue; // nema slike ni sad, nema sto azurirati
-    clanak.body_markdown_puni =
-      `*By Nermin Sefić, GNK ASG d.o.o.*\n\n${toMarkdown(clanak.paragraphs)}\n\n---\n*Autor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: [gnk-asg.hr](${SITE}${item.path})*`;
-    if (!LIVE) { console.log(`[PRIPREMA] bi azurirao sliku za: ${clanak.title}`); azurirano++; continue; }
-    try {
-      await azurirajNaDevto(clanak, zapis.id);
-      console.log(`Azurirano sa slikom: ${zapis.devtoUrl}`);
-      azurirano++;
-    } catch (e) {
-      console.error(`Greska pri azuriranju ${path}:`, e.message || e);
-    }
-    await sleep(PAUSE_MS);
-  }
-  return azurirano;
+  writeJson(STATE, state);
+  console.log(`Reconciled after 422: ${item.path} -> ${hit.url}`);
+  return true;
 }
 
 async function main() {
-  if (process.argv.includes('--azuriraj-stare')) {
-    const n = await azurirajStareBezSlike();
-    console.log(`\nAzurirano objava: ${n}`);
-    return;
-  }
   const registry = readJson(REGISTRY, { items: [] });
   const state = readJson(STATE, { posted: {} });
+  const rezultat = { poslano: 0, reconciled: 0, remote: 0, preskoceno_bez_en: 0, greske: [] };
+
+  if (LIVE && !API_KEY) throw new Error('DEVTO_API_KEY nije postavljen.');
+  try {
+    const rec = await reconcileState(state, registry);
+    rezultat.reconciled += rec.reconciled;
+    rezultat.remote = rec.remote;
+  } catch (e) {
+    rezultat.greske.push({ stage: 'reconciliation', error: String(e).slice(0, 300) });
+    writeJson(RESULT, { kad: new Date().toISOString(), ...rezultat });
+    throw e;
+  }
 
   const svi = registry.items || [];
-  // Dvije vrste engleskog sadrzaja u registru:
-  //  1. Kolumne - HR zapis, EN stranica na zrcaljenoj putanji /en/<isti put>/
-  //  2. Komentari/objave - vlastiti EN zapis s poljem lang:"en" i vlastitim slugom
   const enZapisi = svi.filter((i) => i.lang === 'en');
   const hrZapisiBezEn = svi.filter((i) => i.lang !== 'en' && !enZapisi.some((e) => e.path.includes(i.slug)));
-
   const pending = [];
-  // Spremni prvi, uvijek - inace 150+ hrvatskih zapisa bez prijevoda ispuni
-  // cijelu seriju prije nego se uopce dodje do onih koji su stvarno spremni.
   for (const item of enZapisi.sort((a, b) => new Date(a.publishedAt || 0) - new Date(b.publishedAt || 0))) {
-    if (!item.path || state.posted[item.path]) continue;
-    pending.push({ item, direktno: true });
+    if (item.path && !state.posted[item.path]) pending.push({ item, direktno: true });
   }
   for (const item of hrZapisiBezEn.sort((a, b) => new Date(a.publishedAt || 0) - new Date(b.publishedAt || 0))) {
-    if (!item.path || state.posted[item.path]) continue;
-    pending.push({ item, direktno: false });
+    if (item.path && !state.posted[item.path]) pending.push({ item, direktno: false });
   }
 
-  console.log(`U registru ukupno: ${svi.length}. Cekaju na Dev.to: ${pending.length}.`);
-
-  const batch = pending.slice(0, PER_RUN);
-  const rezultat = { poslano: 0, preskoceno_bez_en: 0, preskoceno_bez_sadrzaja: 0, greske: [] };
-
-  for (const { item, direktno } of batch) {
-    const clanakEn = direktno ? readArticle(item.path) : readEnglishArticle(item.path);
-    if (!clanakEn) {
-      rezultat.preskoceno_bez_en++;
-      continue;
-    }
-
-    if (!LIVE) {
-      console.log(`[PRIPREMA] bi poslao: ${clanakEn.title}`);
-      rezultat.poslano++;
-      continue;
-    }
-
+  console.log(`U registru ukupno: ${svi.length}. Cekaju na Dev.to nakon reconciliationa: ${pending.length}.`);
+  for (const { item, direktno } of pending.slice(0, PER_RUN)) {
+    const clanak = direktno ? readArticle(item.path) : readEnglishArticle(item.path);
+    if (!clanak) { rezultat.preskoceno_bez_en++; continue; }
+    if (!LIVE) { console.log(`[PRIPREMA] bi poslao: ${clanak.title}`); rezultat.poslano++; continue; }
     try {
-      const objava = await objaviNaDevto(clanakEn, item);
-      state.posted[item.path] = { at: new Date().toISOString(), devtoUrl: objava.url, id: objava.id };
+      const objava = await publishArticle(clanak, item);
+      state.posted[item.path] = { at: new Date().toISOString(), devtoUrl: objava.url, id: objava.id, canonicalUrl: objava.canonical_url };
       rezultat.poslano++;
       console.log(`Objavljeno: ${objava.url}`);
     } catch (e) {
-      rezultat.greske.push({ path: item.path, error: String(e).slice(0, 200) });
+      const msg = String(e);
+      if (msg.includes('Dev.to 422') && msg.toLowerCase().includes('canonical')) {
+        try {
+          if (await reconcileOneAfter422(item, state)) { rezultat.reconciled++; continue; }
+        } catch (reconcileError) {
+          rezultat.greske.push({ path: item.path, stage: '422-reconciliation', error: String(reconcileError).slice(0, 300) });
+        }
+      }
+      rezultat.greske.push({ path: item.path, error: msg.slice(0, 300) });
       console.error(`Greska za ${item.path}:`, e.message || e);
     }
     await sleep(PAUSE_MS);
   }
 
   if (LIVE) writeJson(STATE, state);
-  writeJson(resolve('apps/portal/data/devto-content/zadnji-rezultat.json'), {
-    kad: new Date().toISOString(), ...rezultat,
-  });
+  writeJson(RESULT, { kad: new Date().toISOString(), ...rezultat });
   console.log('\nSazetak:', JSON.stringify(rezultat, null, 2));
+  if (rezultat.greske.length) process.exitCode = 1;
 }
 
-if (LIVE && !API_KEY) {
-  console.error('DEVTO_API_KEY nije postavljen - radim u nacinu pripreme.');
-}
-main();
+main().catch((e) => {
+  console.error(e?.stack || e);
+  process.exitCode = 1;
+});
