@@ -1,0 +1,25 @@
+name: Workforce Runtime Health Truth
+
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js'
+      - 'scripts/test-workforce-runtime-health-truth-v1.mjs'
+      - '.github/workflows/workforce-runtime-health-truth.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: node --check workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
+      - name: Runtime-health truth contract
+        run: node scripts/test-workforce-runtime-health-truth-v1.mjs
