@@ -12,8 +12,9 @@ const ARCHIVE_PATH = `${DATA_DIR}/news_archive.json`;
 const STATUS_PATH = `${DATA_DIR}/news-automation-status.json`;
 const FALLBACK_IMAGE = '/assets/news-fallback.svg';
 
-// Grupe moraju odgovarati onima koje stranica /gnk-aktual/ poznaje:
-// economy | technology | digital-assets | international | hrvatska
+// Grupe moraju odgovarati onima koje stranica /gnk-aktual/ poznaje.
+// Glavne grupe ukljucuju economy, technology, digital-assets, international,
+// hrvatska, regije i tematske rubrike poput ljubimci.
 // (Reuters vise nema javni RSS — feeds.reuters.com je ugasen i zato je izbacen.)
 const FEEDS = [
   // --- Burza i biznis ------------------------------------------------
@@ -76,6 +77,13 @@ const FEEDS = [
   { source: 'France 24', group: 'international', category: 'world', url: 'https://www.france24.com/en/rss' },
   { source: 'The New York Times World', group: 'international', category: 'world', url: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml' },
   { source: 'European Commission', group: 'international', category: 'world', url: 'https://ec.europa.eu/commission/presscorner/api/rss?language=en' },
+
+  // --- Kucni ljubimci --------------------------------------------------
+  // Prikazuje se samo naslov, slika/izvorni media URL kada ga RSS daje,
+  // kratak izvod i poveznica na izvornog izdavaca; puni tekst se ne pohranjuje.
+  { source: 'The Guardian Pets', group: 'ljubimci', category: 'pets', url: 'https://www.theguardian.com/lifeandstyle/pets/rss' },
+  { source: 'Dogster', group: 'ljubimci', category: 'dogs', url: 'https://www.dogster.com/feed' },
+  { source: 'Catster', group: 'ljubimci', category: 'cats', url: 'https://www.catster.com/feed' },
 
   // --- Hrvatska --------------------------------------------------------
   { source: 'Index.hr', group: 'hrvatska', category: 'hrvatska', url: 'https://www.index.hr/rss/vijesti' },
