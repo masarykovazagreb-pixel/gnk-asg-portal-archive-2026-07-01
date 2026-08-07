@@ -15,6 +15,21 @@ function assertFresh(label, value, maxHours) {
   if (age > maxHours) fail(label, `${age.toFixed(1)}h old; limit ${maxHours}h`);
   else ok(label, `${age.toFixed(1)}h old; limit ${maxHours}h`);
 }
+function assertMarketPayload(file, data) {
+  if (file.endsWith('market_indices.json')) {
+    if (!Array.isArray(data.indices) || data.indices.length === 0) fail('Market indices payload', 'indices dataset is empty');
+    else ok('Market indices payload', `${data.indices.length} index item(s)`);
+    if (data.error) fail('Market indices source', String(data.error));
+  }
+  if (file.endsWith('fast_market_status.json')) {
+    const status = String(data.status || '').toLowerCase();
+    if (!status || status === 'degraded' || status === 'error' || status === 'failed') fail('Fast market operational status', status || 'missing status');
+    else ok('Fast market operational status', status);
+    if (typeof data.indices === 'number' && data.indices <= 0) fail('Fast market indices count', String(data.indices));
+    else if (typeof data.indices === 'number') ok('Fast market indices count', String(data.indices));
+    if (data.error) fail('Fast market source', String(data.error));
+  }
+}
 
 const sitemapFiles = [
   'apps/portal/sitemap.xml',
@@ -59,6 +74,7 @@ for (const [file, label] of [
   try {
     const data = JSON.parse(fs.readFileSync(file, 'utf8'));
     assertFresh(label, data.updated_at || data.checked_at || data.last_updated_at, MAX_MARKET_AGE_HOURS);
+    assertMarketPayload(file, data);
   } catch (err) { fail(label, String(err.message || err)); }
 }
 
@@ -100,7 +116,7 @@ async function main() {
   const okCount = results.filter(r => r.status === 'OK').length;
   const lines = [`# Production watchdog — ${new Date().toISOString()}`, '', `**Rezultat: ${okCount} OK, ${failCount} FAIL**`, ''];
   for (const r of results) lines.push(`${r.status === 'OK' ? '✅' : '❌'} **${r.label}**${r.detail ? ' — ' + r.detail : ''}`);
-  lines.push('', '_Automatska end-to-end provjera pokreće se 4x dnevno i kontrolira HTTP, soft-404, sitemap, JavaScript, Aktual Media, vijesti te svježinu tržišnih i kripto podataka._');
+  lines.push('', '_Automatska end-to-end provjera pokreće se 4x dnevno i kontrolira HTTP, soft-404, sitemap, JavaScript, Aktual Media, vijesti te svježinu i sadržaj tržišnih i kripto podataka._');
   const report = lines.join('\n');
   fs.writeFileSync('/tmp/health-check-report.md', report);
   console.log(report);
