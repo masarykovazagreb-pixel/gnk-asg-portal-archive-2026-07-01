@@ -6,6 +6,18 @@
   const REFRESH_KEY = 'gnk_asg_indicative_activity_refresh_bonus_v2';
   const LAST_TICK_KEY = 'gnk_asg_indicative_activity_last_tick_v2';
   const VIEW_COOLDOWN_MS = 900;
+  const HOUR_MS = 3600000;
+  const ZAGREB_HOUR_FORMATTER = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Zagreb',
+    hour: '2-digit',
+    hour12: false
+  });
+  const NUMBER_FORMATTERS = {
+    hr: new Intl.NumberFormat('hr-HR'),
+    en: new Intl.NumberFormat('en-US')
+  };
+  let cachedFullHours = -1;
+  let cachedFullHourGrowth = 0;
 
   function isHome() {
     const path = location.pathname.replace(/\/+$/, '/');
@@ -54,11 +66,7 @@
   }
 
   function zagrebHour(time) {
-    return Number(new Intl.DateTimeFormat('en-GB', {
-      timeZone: 'Europe/Zagreb',
-      hour: '2-digit',
-      hour12: false
-    }).format(new Date(time)));
+    return Number(ZAGREB_HOUR_FORMATTER.format(new Date(time)));
   }
 
   function growthForHour(hour, index) {
@@ -71,20 +79,30 @@
     return 6;
   }
 
+  function fullHourGrowth(fullHours) {
+    if (fullHours === cachedFullHours) return cachedFullHourGrowth;
+
+    let total = cachedFullHours >= 0 && fullHours > cachedFullHours ? cachedFullHourGrowth : 0;
+    let start = cachedFullHours >= 0 && fullHours > cachedFullHours ? cachedFullHours + 1 : 1;
+
+    for (let i = start; i <= fullHours; i += 1) {
+      total += growthForHour(zagrebHour(BASE_TIME + i * HOUR_MS), i);
+    }
+
+    cachedFullHours = fullHours;
+    cachedFullHourGrowth = total;
+    return total;
+  }
+
   function algorithmGrowth() {
     const now = Date.now();
     if (!BASE_TIME || now <= BASE_TIME) return 0;
 
     const elapsed = now - BASE_TIME;
-    const fullHours = Math.floor(elapsed / 3600000);
-    let total = 0;
-
-    for (let i = 1; i <= fullHours; i += 1) {
-      total += growthForHour(zagrebHour(BASE_TIME + i * 3600000), i);
-    }
-
+    const fullHours = Math.floor(elapsed / HOUR_MS);
+    let total = fullHourGrowth(fullHours);
     const currentGrowth = growthForHour(zagrebHour(now), fullHours + 1);
-    total += Math.floor(((elapsed % 3600000) / 3600000) * currentGrowth);
+    total += Math.floor(((elapsed % HOUR_MS) / HOUR_MS) * currentGrowth);
     return total;
   }
 
@@ -110,7 +128,7 @@
   function update() {
     const node = document.getElementById('readerCounterValue');
     if (!node) return;
-    node.textContent = new Intl.NumberFormat(isEnglish() ? 'en-US' : 'hr-HR').format(activityValue());
+    node.textContent = (isEnglish() ? NUMBER_FORMATTERS.en : NUMBER_FORMATTERS.hr).format(activityValue());
   }
 
   function removeDuplicates() {
