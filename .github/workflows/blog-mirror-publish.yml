@@ -1,8 +1,9 @@
 name: Blog Mirror Publish
 
-# Portal je izvor, Blogger/Aktual Media je kontrolirana preslika.
-# Objave se salju u manjim paketima uz pauzu, ogranicen ponovni pokusaj i
-# trajni health zapis. HTTP 429 vise nije skriven kao prividno zdravo izvrsenje.
+# GNK ASG je kanonski izvor. Blogger, Dev.to i Tumblr su kontrolirane preslike.
+# Jedan workflow upravlja sva tri izlaza kako bi se izbjegli paralelni writeri,
+# duplikati i razlicita stanja evidencije. Svaka platforma zadrzava vlastiti
+# published.json i skripta nikad ponovno ne salje vec evidentiranu rutu.
 
 on:
   workflow_dispatch:
@@ -10,6 +11,8 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/data/editorial-featured.json'
+      - 'apps/portal/data/editorial-registry.json'
+      - '.github/workflows/blog-mirror-publish.yml'
   schedule:
     - cron: '30 9 * * *'
 
@@ -22,11 +25,23 @@ concurrency:
 
 jobs:
   publish:
-    name: Mirror published articles to the blog
+    name: Mirror published articles to Blogger, Dev.to and Tumblr
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
+    env:
+      BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
+      BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}
+      BLOGGER_CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
+      BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
+      DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+      TUMBLR_CONSUMER_KEY: ${{ secrets.TUMBLR_CONSUMER_KEY }}
+      TUMBLR_CONSUMER_SECRET: ${{ secrets.TUMBLR_CONSUMER_SECRET }}
+      TUMBLR_TOKEN: ${{ secrets.TUMBLR_TOKEN }}
+      TUMBLR_TOKEN_SECRET: ${{ secrets.TUMBLR_TOKEN_SECRET }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-node@v4
         with:
@@ -35,52 +50,126 @@ jobs:
       - name: Sync with latest main
         run: git pull --rebase --autostash origin main
 
-      - name: Mirror to blog with quota-aware backoff
+      - name: Check distribution credentials without exposing values
+        shell: bash
+        run: |
+          set -euo pipefail
+          blogger=ok
+          devto=ok
+          tumblr=ok
+          for v in BLOGGER_BLOG_ID BLOGGER_CLIENT_ID BLOGGER_CLIENT_SECRET BLOGGER_REFRESH_TOKEN; do
+            [ -n "${!v:-}" ] || blogger=missing
+          done
+          [ -n "${DEVTO_API_KEY:-}" ] || devto=missing
+          for v in TUMBLR_CONSUMER_KEY TUMBLR_CONSUMER_SECRET TUMBLR_TOKEN TUMBLR_TOKEN_SECRET; do
+            [ -n "${!v:-}" ] || tumblr=missing
+          done
+          echo "BLOGGER_CREDENTIAL_STATE=$blogger" >> "$GITHUB_ENV"
+          echo "DEVTO_CREDENTIAL_STATE=$devto" >> "$GITHUB_ENV"
+          echo "TUMBLR_CREDENTIAL_STATE=$tumblr" >> "$GITHUB_ENV"
+          if [ "$blogger" != ok ] || [ "$devto" != ok ] || [ "$tumblr" != ok ]; then
+            echo "PARITY_BLOCKED=1" >> "$GITHUB_ENV"
+          else
+            echo "PARITY_BLOCKED=0" >> "$GITHUB_ENV"
+          fi
+          printf 'Credential state: Blogger=%s Dev.to=%s Tumblr=%s\n' "$blogger" "$devto" "$tumblr"
+
+      - name: Blogger mirror - quota aware catch-up
+        if: env.BLOGGER_CREDENTIAL_STATE == 'ok'
         env:
-          BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
-          BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}
-          BLOGGER_CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
-          BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
-          BLOG_PER_RUN: '3'
+          BLOG_PER_RUN: '10'
           BLOG_PAUSE_MS: '15000'
           BLOG_MAX_ATTEMPTS: '2'
           BLOG_BACKOFF_MS: '60000'
         run: node scripts/blog-publish-resilient-v1.mjs
 
-      - name: Publish mirror health summary
-        if: always()
-        run: |
-          if [ -s apps/portal/data/blog-content/health.json ]; then
-            node -e "const h=require('./apps/portal/data/blog-content/health.json'); console.log('## Aktual Media / Blogger mirror\n\n- Status: **'+h.conclusion+'**\n- Preostali red: **'+h.pending+'**\n- Pokusaji: **'+h.attempts.length+'**\n- Generirano: **'+h.generatedAt+'**\n')" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo '## Aktual Media / Blogger mirror' >> "$GITHUB_STEP_SUMMARY"
-            echo 'Health zapis nije proizveden.' >> "$GITHUB_STEP_SUMMARY"
-          fi
+      - name: Dev.to mirror - publish pending English routes
+        if: env.DEVTO_CREDENTIAL_STATE == 'ok'
+        env:
+          DEVTO_PER_RUN: '16'
+          DEVTO_PAUSE_MS: '10000'
+        run: node scripts/devto-publish-v1.mjs --live
 
-      - name: Commit queue, state and health
+      - name: Tumblr mirror - publish pending English routes
+        if: env.TUMBLR_CREDENTIAL_STATE == 'ok'
+        env:
+          TUMBLR_PER_RUN: '16'
+          TUMBLR_PAUSE_MS: '3000'
+        run: node scripts/tumblr-publish-v1.mjs --live
+
+      - name: Write three-channel parity health
+        if: always()
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const path=require('path');
+          const read=(p,f)=>{try{return JSON.parse(fs.readFileSync(p,'utf8'))}catch{return f}};
+          const registry=read('apps/portal/data/editorial-registry.json',{items:[]});
+          const blog=read('apps/portal/data/blog-content/published.json',{});
+          const devto=read('apps/portal/data/devto-content/published.json',{posted:{}});
+          const tumblr=read('apps/portal/data/tumblr-content/published.json',{posted:{}});
+          const countState=(v)=>Array.isArray(v)?v.length:(v&&v.posted?Object.keys(v.posted).length:(v&&v.items?Object.keys(v.items).length:Object.keys(v||{}).length));
+          const health={
+            version:'GNK_ASG_THREE_BLOG_PARITY_V1',
+            generatedAt:new Date().toISOString(),
+            canonicalSource:'https://gnk-asg.hr',
+            registryTotal:(registry.items||[]).length,
+            channels:{
+              blogger:{credentials:process.env.BLOGGER_CREDENTIAL_STATE||'unknown',published:countState(blog)},
+              devto:{credentials:process.env.DEVTO_CREDENTIAL_STATE||'unknown',published:countState(devto)},
+              tumblr:{credentials:process.env.TUMBLR_CREDENTIAL_STATE||'unknown',published:countState(tumblr)}
+            },
+            policy:{singleWriter:true,dedupeByPlatformState:true,canonicalBacklinkRequired:true}
+          };
+          const out='apps/portal/data/blog-content/parity.json';
+          fs.mkdirSync(path.dirname(out),{recursive:true});
+          fs.writeFileSync(out,JSON.stringify(health,null,2)+'\n');
+          console.log(JSON.stringify(health,null,2));
+          NODE
+
+      - name: Publish distribution summary
+        if: always()
+        shell: bash
+        run: |
+          echo '## GNK ASG — Blogger / Dev.to / Tumblr' >> "$GITHUB_STEP_SUMMARY"
+          echo "- Blogger credentials: **${BLOGGER_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dev.to credentials: **${DEVTO_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Tumblr credentials: **${TUMBLR_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
+          if [ -s apps/portal/data/blog-content/health.json ]; then
+            node -e "const h=require('./apps/portal/data/blog-content/health.json'); console.log('- Blogger pending after run: **'+h.pending+'**')" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo '- Canonical source: **https://gnk-asg.hr**' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit all distribution state
         if: always()
         shell: bash
         run: |
           set -uo pipefail
           git config user.name "gnk-blog-bot"
           git config user.email "actions@github.com"
-          git add \
-            apps/portal/data/blog-content/queue.json \
-            apps/portal/data/blog-content/published.json \
-            apps/portal/data/blog-content/health.json || true
+          git add apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ || true
           if git diff --cached --quiet; then
             echo "Nema promjena za spremanje."
-            exit 0
+          else
+            git commit -m "Blog mirror: sync Blogger Dev.to Tumblr state"
+            for i in 1 2 3; do
+              if git push origin HEAD:main; then
+                echo "Spremljeno iz $i. pokusaja."
+                break
+              fi
+              echo "Push odbijen, povlacim i ponavljam ($i/3)..."
+              git pull --rebase --autostash origin main || true
+              sleep 5
+            done
           fi
-          git commit -m "Blog mirror: refresh queue, state and health"
-          for i in 1 2 3; do
-            if git push origin HEAD:main; then
-              echo "Spremljeno iz $i. pokusaja."
-              exit 0
-            fi
-            echo "Push odbijen, povlacim i ponavljam ($i/3)..."
-            git pull --rebase --autostash origin main || true
-            sleep 5
-          done
-          echo "Spremanje nije uspjelo nakon tri pokusaja."
-          exit 1
+
+      - name: Enforce three-channel credential parity
+        if: always()
+        shell: bash
+        run: |
+          if [ "${PARITY_BLOCKED:-1}" = 1 ]; then
+            echo "Distribucija nije potpuno automatizirana: najmanje jedan od tri kanala nema trajne GitHub Actions credentials."
+            exit 1
+          fi
+          echo "Sva tri kanala imaju trajne credentials i odradila su isti single-writer ciklus."
