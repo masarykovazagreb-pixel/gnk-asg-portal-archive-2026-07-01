@@ -4,6 +4,7 @@ on:
   schedule:
     # GitHub cron uses UTC. 07:05 and 15:05 UTC map to 09:05 and 17:05
     # during Croatian summer time and remain within one hour in winter.
+    # Market P0 closes only when this workflow proves all six world indices healthy.
     - cron: '5 7,15 * * *'
   workflow_dispatch:
   pull_request:
