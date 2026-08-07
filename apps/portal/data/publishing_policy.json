@@ -1,6 +1,6 @@
 {
   "policy_name": "GNK ASG Autonomous Publishing Safety Policy",
-  "version": "2026-05-30-02",
+  "version": "2026-08-08-01",
   "language": "en",
   "default_publisher": "GNK ASG d.o.o.",
   "public_content_framework": "GNK DINAMO Ltd.",
@@ -8,6 +8,37 @@
   "editorial_responsibility": "Nermin Sefic",
   "minimum_words": 300,
   "recommended_words": {"min": 450, "max": 750},
+  "content_type_word_policy": {
+    "publication": {"hard_min": 3000, "target_min": 3000, "target_max": 4500},
+    "analysis": {"hard_min": 3000, "target_min": 3000, "target_max": 4500},
+    "comment": {"hard_min": 700, "target_min": 700, "target_max": 1500},
+    "brief": {"hard_min": 300, "target_min": 450, "target_max": 750}
+  },
+  "editorial_buffer": {
+    "required_through": "2026-08-31",
+    "daily_requirements": {
+      "publication": 1,
+      "analysis": 1,
+      "comment": 1
+    },
+    "manual_approval_required": true,
+    "silence_is_approval": false,
+    "review_ready_is_not_approved": true,
+    "scheduled_ready_is_not_approved": true
+  },
+  "required_editorial_metadata": [
+    "seo_title",
+    "meta_description",
+    "canonical_url",
+    "article_schema_or_jsonld",
+    "h1_h2_structure",
+    "internal_links",
+    "entity_links",
+    "image_plan",
+    "alt_text",
+    "byline",
+    "publication_date"
+  ],
   "autonomous_allowed_topics": [
     "official press releases and public corporate announcements",
     "corporate transparency",
@@ -58,6 +89,9 @@
     "must_have_clear_byline": true,
     "must_have_disclosure": true,
     "must_pass_blocked_topic_scan": true,
-    "must_not_copy_external_articles": true
+    "must_not_copy_external_articles": true,
+    "must_meet_content_type_word_policy": true,
+    "must_have_required_editorial_metadata": true,
+    "must_preserve_manual_approval": true
   }
 }
