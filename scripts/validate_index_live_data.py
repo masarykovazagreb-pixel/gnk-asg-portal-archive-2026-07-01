@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "apps/portal/data"
 EXPECTED = {"BTC", "ETH", "SOL", "XRP"}
 CURRENCIES = {"eur", "usd", "gbp", "chf", "jpy"}
+EXPECTED_INDEXES = {"sp500", "nasdaq", "dax", "ftse", "nikkei", "cac40"}
 
 
 def parse_time(value: str) -> datetime:
@@ -26,6 +27,8 @@ def fail(message: str) -> None:
 def main() -> int:
     now = datetime.now(timezone.utc)
     market = json.loads((DATA / "market.json").read_text(encoding="utf-8"))
+    market_indices = json.loads((DATA / "market_indices.json").read_text(encoding="utf-8"))
+    fast_market_status = json.loads((DATA / "fast_market_status.json").read_text(encoding="utf-8"))
     news = json.loads((DATA / "news.json").read_text(encoding="utf-8"))
     archive = json.loads((DATA / "news_archive.json").read_text(encoding="utf-8"))
     status = json.loads((DATA / "news-status.json").read_text(encoding="utf-8"))
@@ -53,6 +56,36 @@ def main() -> int:
             fail(f"invalid market cap for {item.get('symbol')}")
         if not isinstance(item.get("volume_24h_usd"), (int, float)) or item["volume_24h_usd"] < 0:
             fail(f"invalid volume for {item.get('symbol')}")
+
+    indices_updated = parse_time(market_indices.get("updated_at", ""))
+    indices_age = (now - indices_updated).total_seconds()
+    if indices_age < -120 or indices_age > 900:
+        fail(f"market indices timestamp outside freshness window: {indices_age:.0f}s")
+    indices = market_indices.get("indices")
+    if not isinstance(indices, list) or len(indices) != len(EXPECTED_INDEXES):
+        fail(f"market indices must contain exactly {len(EXPECTED_INDEXES)} entries")
+    index_ids = {str(item.get("id", "")) for item in indices}
+    if index_ids != EXPECTED_INDEXES:
+        fail(f"unexpected market index set: {sorted(index_ids)}")
+    if market_indices.get("errors"):
+        fail(f"market indices contain source errors: {market_indices.get('errors')}")
+    for item in indices:
+        if not isinstance(item.get("current"), (int, float)) or item["current"] <= 0:
+            fail(f"invalid current value for index {item.get('id')}")
+        if not isinstance(item.get("previous_close"), (int, float)) or item["previous_close"] <= 0:
+            fail(f"invalid previous close for index {item.get('id')}")
+        if not isinstance(item.get("change_percent"), (int, float)):
+            fail(f"invalid change percent for index {item.get('id')}")
+
+    fast_updated = parse_time(fast_market_status.get("updated_at", ""))
+    if abs((fast_updated - indices_updated).total_seconds()) > 5:
+        fail("fast market status timestamp does not match market indices payload")
+    if fast_market_status.get("status") != "ok":
+        fail(f"fast market operational status is {fast_market_status.get('status')}")
+    if fast_market_status.get("indices") != len(indices):
+        fail("fast market index count does not match market indices payload")
+    if fast_market_status.get("errors"):
+        fail(f"fast market status contains source errors: {fast_market_status.get('errors')}")
 
     if not isinstance(news, list) or not 3 <= len(news) <= 150:
         fail("public news feed must contain between 3 and 150 items")
@@ -105,6 +138,8 @@ def main() -> int:
         "ok": True,
         "market_age_seconds": round(age),
         "market_assets": sorted(symbols),
+        "market_indices": sorted(index_ids),
+        "market_indices_age_seconds": round(indices_age),
         "news_items": len(news),
         "archive_items": len(archive),
         "news_hosts": len(hosts),

@@ -11,6 +11,8 @@ on:
     paths:
       - '.github/workflows/refresh-index-live-data.yml'
       - 'scripts/refresh_index_live_data.py'
+      - 'scripts/refresh_world_market_indices.py'
+      - 'scripts/validate_index_live_data.py'
       - 'scripts/normalize_index_live_data_cadence.py'
       - 'scripts/test_index_live_data_cadence_v1.py'
       - 'apps/portal/assets/market.js'
@@ -42,7 +44,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Refresh public index feeds
-        run: python scripts/refresh_index_live_data.py
+        run: |
+          python scripts/refresh_index_live_data.py
+          python scripts/refresh_world_market_indices.py
       - name: Normalize public cadence metadata
         run: python scripts/normalize_index_live_data_cadence.py
       - name: Confirm cadence contract
@@ -79,6 +83,7 @@ jobs:
       - name: Refresh and validate public index feeds
         run: |
           python scripts/refresh_index_live_data.py
+          python scripts/refresh_world_market_indices.py
           python scripts/normalize_index_live_data_cadence.py
           python scripts/test_index_live_data_cadence_v1.py
           python scripts/validate_index_live_data.py
