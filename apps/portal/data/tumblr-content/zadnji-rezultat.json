@@ -1,11 +1,19 @@
 {
-  "kad": "2026-08-07T17:57:23.006Z",
-  "poslano": 9,
-  "preskoceno_bez_en": 0,
+  "kad": "2026-08-07T18:08:22.219Z",
+  "poslano": 134,
+  "preskoceno_bez_en": 8,
   "greske": [
     {
       "path": "/en/publications/ai-system-transparency-and-corporate-governance/",
-      "error": "Error: Tumblr 400: {\"meta\":{\"status\":400,\"msg\":\"Bad Request\"},\"errors\":[{\"title\":\"Bad Request\",\"code\":0,\"detail\":\"Unknown error. Try again.\"}],\"response\":[]}"
+      "error": "Error: Tumblr 400: {\"meta\":{\"status\":400,\"msg\":\"Bad Request\"},\"errors\":[{\"title\":\"Bad Request\",\"code\":0,\"detail\":\"Something goofed. Try again.\"}],\"response\":[]}"
+    },
+    {
+      "path": "/en/publications/debt-ratios-a-financial-analysis-guide/",
+      "error": "Error: Tumblr 400: {\"meta\":{\"status\":400,\"msg\":\"Bad Request\"},\"errors\":[{\"title\":\"Bad Request\",\"code\":0,\"detail\":\"Hit a glitch. Try again.\"}],\"response\":[]}"
+    },
+    {
+      "path": "/en/publications/financial-statement-examples-croatia/",
+      "error": "Error: Tumblr 400: {\"meta\":{\"status\":400,\"msg\":\"Bad Request\"},\"errors\":[{\"title\":\"Bad Request\",\"code\":0,\"detail\":\"Minor hiccup. Try again.\"}],\"response\":[]}"
     }
   ]
 }
