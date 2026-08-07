@@ -82,7 +82,8 @@ function provjeriStranicu(putanja) {
   }
 
   // sadržajna dubina samo za editorial putanje
-  if (/\/(objave|komentari|analize|publications|commentary|analyses)\//.test(putanja)) {
+  const jePopisnaStranica = /\/(objave|komentari|analize|publications|commentary|analyses)\/index\.html$/.test(putanja);
+  if (!jePopisnaStranica && /\/(objave|komentari|analize|publications|commentary|analyses)\//.test(putanja)) {
     const clanakMatch = html.match(/<article\b[^>]*>([\s\S]*?)<\/article>/);
     if (clanakMatch) {
       const tekst = clanakMatch[1].replace(/<[^>]+>/g, ' ');
