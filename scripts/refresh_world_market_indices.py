@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import csv
-import io
 import json
 import time
 import urllib.parse
@@ -12,32 +10,54 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "apps/portal/data"
-UA = {"User-Agent": "GNK-ASG-Public-Data-Refresh/1.0"}
+UA = {
+    "User-Agent": "Mozilla/5.0 (compatible; GNK-ASG-Public-Data-Refresh/1.0; +https://gnk-asg.hr/)"
+}
 
 INDEXES = {
-    "sp500": {"symbol": "^spx", "label": "S&P 500", "region": "SAD"},
-    "nasdaq": {"symbol": "^ndq", "label": "Nasdaq Composite", "region": "SAD"},
-    "dax": {"symbol": "^dax", "label": "DAX", "region": "Njemačka"},
-    "ftse": {"symbol": "^ftse", "label": "FTSE 100", "region": "UK"},
-    "nikkei": {"symbol": "^n225", "label": "Nikkei 225", "region": "Japan"},
-    "cac40": {"symbol": "^cac", "label": "CAC 40", "region": "Francuska"},
+    "sp500": {"symbol": "^GSPC", "label": "S&P 500", "region": "SAD"},
+    "nasdaq": {"symbol": "^IXIC", "label": "Nasdaq Composite", "region": "SAD"},
+    "dax": {"symbol": "^GDAXI", "label": "DAX", "region": "Njemačka"},
+    "ftse": {"symbol": "^FTSE", "label": "FTSE 100", "region": "UK"},
+    "nikkei": {"symbol": "^N225", "label": "Nikkei 225", "region": "Japan"},
+    "cac40": {"symbol": "^FCHI", "label": "CAC 40", "region": "Francuska"},
 }
 
 
-def get_quote(symbol: str) -> list[str]:
-    # Stooq's quote endpoint is reliable for one symbol per request; the
-    # multi-symbol `s=` form can return HTTP 404 and must not be used here.
-    query = urllib.parse.urlencode({"s": symbol, "f": "sd2t2ohlc", "h": "", "e": "csv"})
-    request = urllib.request.Request(f"https://stooq.com/q/l/?{query}", headers=UA)
-    with urllib.request.urlopen(request, timeout=30) as response:
-        raw = response.read().decode("utf-8", errors="replace")
-    rows = list(csv.reader(io.StringIO(raw)))
-    if len(rows) < 2:
-        raise RuntimeError("missing quote row")
-    row = rows[1]
-    if len(row) < 7 or row[0].strip().lower() != symbol.lower():
-        raise RuntimeError("invalid quote row")
-    return row
+def get_quote(symbol: str) -> dict:
+    encoded = urllib.parse.quote(symbol, safe="")
+    last_error: Exception | None = None
+    for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
+        url = (
+            f"https://{host}/v8/finance/chart/{encoded}"
+            "?range=5d&interval=1d&includePrePost=false&events=div%2Csplits"
+        )
+        try:
+            request = urllib.request.Request(url, headers=UA)
+            with urllib.request.urlopen(request, timeout=30) as response:
+                payload = json.loads(response.read())
+            chart = payload.get("chart") or {}
+            if chart.get("error"):
+                raise RuntimeError(str(chart["error"])[:120])
+            results = chart.get("result") or []
+            if not results:
+                raise RuntimeError("missing chart result")
+            meta = results[0].get("meta") or {}
+            current = meta.get("regularMarketPrice")
+            previous = meta.get("chartPreviousClose") or meta.get("previousClose")
+            if not isinstance(current, (int, float)) or not isinstance(previous, (int, float)):
+                raise RuntimeError("missing current/previous-close values")
+            if current <= 0 or previous <= 0:
+                raise RuntimeError("non-positive market value")
+            return {
+                "current": float(current),
+                "previous_close": float(previous),
+                "market_time": meta.get("regularMarketTime"),
+                "exchange": meta.get("exchangeName") or meta.get("fullExchangeName"),
+            }
+        except Exception as exc:
+            last_error = exc
+    raise RuntimeError(f"Yahoo chart endpoints failed: {type(last_error).__name__}: {str(last_error)[:100]}")
 
 
 def main() -> int:
@@ -48,24 +68,26 @@ def main() -> int:
 
     for key, meta in INDEXES.items():
         try:
-            row = get_quote(meta["symbol"])
-            session_open = float(row[3])
-            close_price = float(row[6])
-            if session_open <= 0 or close_price <= 0:
-                raise ValueError("non-positive market value")
+            quote = get_quote(meta["symbol"])
+            current = quote["current"]
+            previous = quote["previous_close"]
+            market_time = quote.get("market_time")
+            as_of = (
+                datetime.fromtimestamp(market_time, tz=timezone.utc).isoformat()
+                if isinstance(market_time, (int, float))
+                else now
+            )
             indices.append(
                 {
                     "id": key,
                     "symbol": meta["symbol"],
                     "label": meta["label"],
                     "region": meta["region"],
-                    "current": close_price,
-                    # Kept for compatibility with the portal contract. The
-                    # Stooq quote feed exposes session open, not prior-day
-                    # close, in this field set.
-                    "previous_close": session_open,
-                    "change_percent": round(((close_price / session_open) - 1) * 100, 2),
-                    "as_of": row[1] if len(row) > 1 else None,
+                    "current": current,
+                    "previous_close": previous,
+                    "change_percent": round(((current / previous) - 1) * 100, 2),
+                    "as_of": as_of,
+                    "exchange": quote.get("exchange"),
                 }
             )
         except Exception as exc:
@@ -75,7 +97,7 @@ def main() -> int:
     payload = {
         "updated_at": now,
         "cadence": "scheduled every fifteen minutes",
-        "source": "Stooq public market quote feed (single-symbol requests)",
+        "source": "Yahoo Finance public chart feed",
         "indices": indices,
         "errors": errors,
         "notice": "Informativni prikaz posljednjih dostupnih vrijednosti; podatci mogu biti odgođeni.",
@@ -91,6 +113,7 @@ def main() -> int:
         "status": "ok" if healthy else ("partial" if indices else "degraded"),
         "indices": len(indices),
         "errors": errors,
+        "source": "Yahoo Finance public chart feed",
     }
     (DATA / "fast_market_status.json").write_text(
         json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
