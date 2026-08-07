@@ -41,6 +41,13 @@ function sviHtmlFajlovi(dir) {
 
 function provjeriStranicu(putanja) {
   const html = fs.readFileSync(putanja, 'utf8');
+
+  // Preskoci namjerno noindex stranice (admin alati, interni redirekti) -
+  // one ne trebaju meta opis/H1 jer nikad ne bi trebale biti indeksirane.
+  if (/noindex/i.test(html)) return;
+  // Preskoci meta-refresh redirekt stranice (nemaju stvaran sadrzaj za provjeriti).
+  if (/http-equiv="refresh"/i.test(html)) return;
+
   REZULTAT.ukupnoStranica++;
 
   const metaOpisMatch = html.match(/<meta name="description" content="([^"]*)"/);
