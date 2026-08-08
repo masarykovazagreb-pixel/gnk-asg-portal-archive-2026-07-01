@@ -1,14 +1,17 @@
 name: SEO Audit Refresh
+
 on:
   schedule:
     - cron: '40 4 * * *'
   workflow_dispatch: {}
+
 permissions:
-  contents: write
-  actions: write
+  contents: read
+
 concurrency:
-  group: editorial-main-writer
+  group: seo-audit-refresh-readonly
   cancel-in-progress: false
+
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -18,38 +21,43 @@ jobs:
         with:
           ref: main
           fetch-depth: 2
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+
+      - name: Capture main SHA
+        id: before
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Run SEO audit crawl
         run: node scripts/seo-audit.mjs
-      - name: Commit if changed
-        id: commit
+
+      - name: Preserve SEO audit as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-audit-report-${{ github.run_id }}
+          path: apps/portal/data/seo-audit-report.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Enforce read-only main invariant
         shell: bash
-        run: |
-          set -euo pipefail
-          if git diff --quiet -- apps/portal/data/seo-audit-report.json && [ -z "$(git status --porcelain -- apps/portal/data/seo-audit-report.json)" ]; then
-            echo "No SEO audit change."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add apps/portal/data/seo-audit-report.json
-          git commit -m "Refresh SEO audit report"
-          git push origin HEAD:main
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      - name: Dispatch exact-SHA production deploy
-        if: steps.commit.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
-          APPROVED_SHA: ${{ steps.commit.outputs.sha }}
+          BEFORE_SHA: ${{ steps.before.outputs.sha }}
         run: |
           set -euo pipefail
-          gh workflow run deploy-admin-auth-v6.yml \
-            --repo beckuphome-gnk/gnk-asg-portal \
-            --ref main \
-            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
-            -f approved_sha="$APPROVED_SHA"
+          git fetch origin main --quiet
+          AFTER_SHA="$(git rev-parse origin/main)"
+          if [ "$BEFORE_SHA" != "$AFTER_SHA" ]; then
+            echo "main moved during audit: $BEFORE_SHA -> $AFTER_SHA"
+            exit 1
+          fi
+          CHANGED="$(git status --porcelain --untracked-files=all | awk '{print $2}' | grep -v '^apps/portal/data/seo-audit-report.json$' || true)"
+          if [ -n "$CHANGED" ]; then
+            echo "Unexpected files changed by SEO audit:"
+            printf '%s\n' "$CHANGED"
+            exit 1
+          fi
+          echo "SEO audit is read-only; report is retained only as an Actions artifact."
