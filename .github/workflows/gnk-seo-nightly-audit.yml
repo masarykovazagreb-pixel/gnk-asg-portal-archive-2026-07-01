@@ -102,3 +102,29 @@ jobs:
         run: |
           curl -s -o /dev/null -w "Google ping status: %{http_code}\n" "https://www.google.com/ping?sitemap=https://gnk-asg.hr/sitemap.xml"
           curl -s -o /dev/null -w "Bing ping status: %{http_code}\n" "https://www.bing.com/ping?sitemap=https://gnk-asg.hr/sitemap.xml"
+
+  backlink-telegraph:
+    name: Nastavi Telegraph backlink zaostatak
+    needs: seo-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Sync
+        run: git pull --rebase --autostash origin main
+      - name: Objavi na Telegraph
+        env:
+          TELEGRAPH_PER_RUN: '5'
+          TELEGRAPH_PAUSE_MS: '3000'
+        run: node scripts/telegraph-publish-v1.mjs
+      - name: Commit
+        run: |
+          git config user.name "gnk-seo-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/telegraph-content/
+          git diff --cached --quiet || git commit -m "chore: nightly telegraph backlink batch"
+          git pull --rebase --autostash origin main
+          git push origin main
