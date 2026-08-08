@@ -128,3 +128,58 @@ jobs:
           git diff --cached --quiet || git commit -m "chore: nightly telegraph backlink batch"
           git pull --rebase --autostash origin main
           git push origin main
+
+  backlink-tumblr:
+    name: Nastavi Tumblr backlink zaostatak
+    needs: seo-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Sync
+        run: git pull --rebase --autostash origin main
+      - name: Objavi na Tumblr
+        env:
+          TUMBLR_CONSUMER_KEY: 'QgkZq0h0fQqJ0lfV3UdyuZOtUOsWvIeTZoKUeH27YXU3CCggA9'
+          TUMBLR_CONSUMER_SECRET: 'ykWbRVvF9lSY6AhHqSI9qLC760TC7QLO40UEza20fKbF3u3pDY'
+          TUMBLR_TOKEN: 'lcG2L7zIrbyJdF2NEHTJBjbZL2bYp4G0HI7EGHpsLAHNZus1HX'
+          TUMBLR_TOKEN_SECRET: 'Bk43D5qs3lGlLXl1MV9GUv26Ck1EcIsdHLgufXqWitRjVNf7P6'
+          TUMBLR_PER_RUN: '10'
+        run: node scripts/tumblr-publish-v1.mjs --live
+      - name: Commit
+        run: |
+          git config user.name "gnk-seo-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/tumblr-content/
+          git diff --cached --quiet || git commit -m "chore: nightly tumblr backlink batch"
+          git pull --rebase --autostash origin main
+          git push origin main
+
+  backlink-devto:
+    name: Nastavi Dev.to backlink zaostatak
+    needs: seo-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Sync
+        run: git pull --rebase --autostash origin main
+      - name: Objavi na Dev.to
+        env:
+          DEVTO_API_KEY: 'ueoFy1kUvdLsAqsLejqgDmcH'
+          DEVTO_PER_RUN: '5'
+        run: node scripts/devto-publish-resilient-v1.mjs
+      - name: Commit
+        run: |
+          git config user.name "gnk-seo-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/blog-content/ 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "chore: nightly devto backlink batch"
+          git pull --rebase --autostash origin main
+          git push origin main
