@@ -1,10 +1,8 @@
 name: GNK ASG Nightly SEO, Meta, Backlink and IndexNow Audit
 
-# Pokreće se svaku noć u 02:15 CET (01:15 UTC), i ručno po potrebi.
-# 1. Provjerava meta/SEO stanje cijelog portala i sprema izvještaj.
-# 2. Nastavlja Blogger backlink zaostatak.
-# 3. Šalje sve stranice na IndexNow — trenutno obavještava Bing/Yandex/Seznam
-#    o novim ili promijenjenim URL-ovima, bez čekanja standardnog crawla.
+# Nightly SEO/meta audit is read-only toward production main.
+# Blogger, Dev.to and Tumblr publishing belongs to the canonical blog-mirror writer.
+# IndexNow submission is notification-only and does not mutate repository state.
 
 on:
   workflow_dispatch:
@@ -12,7 +10,11 @@ on:
     - cron: '15 1 * * *'
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: gnk-seo-nightly-audit
+  cancel-in-progress: true
 
 env:
   INDEXNOW_KEY: '2396905717b36885586139576d11142f'
@@ -24,6 +26,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -43,143 +48,40 @@ jobs:
               for (const p of r.preporuke) console.log('- ' + p);
             " >> "$GITHUB_STEP_SUMMARY"
           fi
-      - name: Commit izvještaj
-        run: |
-          git config user.name "gnk-seo-bot"
-          git config user.email "it@gnk-asg.hr"
-          git add apps/portal/data/seo-audit/nightly-report.json
-          git diff --cached --quiet || git commit -m "chore: nightly SEO audit report"
-          git pull --rebase --autostash origin main
-          git push origin main
-
-  backlink-blogger:
-    name: Nastavi Blogger backlink zaostatak
-    needs: seo-audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Spremi SEO izvještaj kao artifact
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          node-version: '24'
-      - name: Sync
-        run: git pull --rebase --autostash origin main
-      - name: Mirror na Blogger (backlink)
-        env:
-          BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
-          BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}
-          BLOGGER_CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
-          BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
-          BLOG_PER_RUN: '10'
-          BLOG_PAUSE_MS: '15000'
-          BLOG_MAX_ATTEMPTS: '2'
-          BLOG_BACKOFF_MS: '60000'
-        run: node scripts/blog-publish-resilient-v1.mjs
-      - name: Commit
+          name: gnk-seo-nightly-report-${{ github.run_id }}
+          path: apps/portal/data/seo-audit/nightly-report.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Potvrdi da audit nije pomaknuo production main
+        if: always()
+        shell: bash
         run: |
-          git config user.name "gnk-seo-bot"
-          git config user.email "it@gnk-asg.hr"
-          git add apps/portal/data/blog-content/
-          git diff --cached --quiet || git commit -m "chore: nightly blogger backlink batch"
-          git pull --rebase --autostash origin main
-          git push origin main
+          set -euo pipefail
+          git fetch origin main --no-tags
+          test "$(git rev-parse origin/main)" = "$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          if ! git diff --quiet -- . ':!apps/portal/data/seo-audit/nightly-report.json'; then
+            echo "SEO audit je neočekivano promijenio datoteke izvan nightly-report.json."
+            git status --short
+            exit 1
+          fi
+          echo "Nightly SEO audit is read-only; report remains runner-local and is uploaded as evidence."
 
   indexnow-submit:
-    name: Pošalji sve URL-ove na IndexNow (Bing/Yandex trenutno indeksiranje)
+    name: Pošalji sve URL-ove na IndexNow (notification-only)
     needs: seo-audit
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Sync
-        run: git pull --rebase --autostash origin main
       - name: Pošalji na IndexNow
         run: node scripts/gnk-indexnow-submit-v1.mjs
-      - name: Ping Google i Bing sitemap
-        run: |
-          curl -s -o /dev/null -w "Google ping status: %{http_code}\n" "https://www.google.com/ping?sitemap=https://gnk-asg.hr/sitemap.xml"
-          curl -s -o /dev/null -w "Bing ping status: %{http_code}\n" "https://www.bing.com/ping?sitemap=https://gnk-asg.hr/sitemap.xml"
-
-  backlink-telegraph:
-    name: Nastavi Telegraph backlink zaostatak
-    needs: seo-audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-      - name: Sync
-        run: git pull --rebase --autostash origin main
-      - name: Objavi na Telegraph
-        env:
-          TELEGRAPH_PER_RUN: '5'
-          TELEGRAPH_PAUSE_MS: '3000'
-        run: node scripts/telegraph-publish-v1.mjs
-      - name: Commit
-        run: |
-          git config user.name "gnk-seo-bot"
-          git config user.email "it@gnk-asg.hr"
-          git add apps/portal/data/telegraph-content/
-          git diff --cached --quiet || git commit -m "chore: nightly telegraph backlink batch"
-          git pull --rebase --autostash origin main
-          git push origin main
-
-  backlink-tumblr:
-    name: Nastavi Tumblr backlink zaostatak
-    needs: seo-audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-      - name: Sync
-        run: git pull --rebase --autostash origin main
-      - name: Objavi na Tumblr
-        env:
-          TUMBLR_CONSUMER_KEY: 'QgkZq0h0fQqJ0lfV3UdyuZOtUOsWvIeTZoKUeH27YXU3CCggA9'
-          TUMBLR_CONSUMER_SECRET: 'ykWbRVvF9lSY6AhHqSI9qLC760TC7QLO40UEza20fKbF3u3pDY'
-          TUMBLR_TOKEN: 'lcG2L7zIrbyJdF2NEHTJBjbZL2bYp4G0HI7EGHpsLAHNZus1HX'
-          TUMBLR_TOKEN_SECRET: 'Bk43D5qs3lGlLXl1MV9GUv26Ck1EcIsdHLgufXqWitRjVNf7P6'
-          TUMBLR_PER_RUN: '10'
-        run: node scripts/tumblr-publish-v1.mjs --live
-      - name: Commit
-        run: |
-          git config user.name "gnk-seo-bot"
-          git config user.email "it@gnk-asg.hr"
-          git add apps/portal/data/tumblr-content/
-          git diff --cached --quiet || git commit -m "chore: nightly tumblr backlink batch"
-          git pull --rebase --autostash origin main
-          git push origin main
-
-  backlink-devto:
-    name: Nastavi Dev.to backlink zaostatak
-    needs: seo-audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-      - name: Sync
-        run: git pull --rebase --autostash origin main
-      - name: Objavi na Dev.to
-        env:
-          DEVTO_API_KEY: 'ueoFy1kUvdLsAqsLejqgDmcH'
-          DEVTO_PER_RUN: '5'
-        run: node scripts/devto-publish-resilient-v1.mjs
-      - name: Commit
-        run: |
-          git config user.name "gnk-seo-bot"
-          git config user.email "it@gnk-asg.hr"
-          git add apps/portal/data/blog-content/ 2>/dev/null || true
-          git diff --cached --quiet || git commit -m "chore: nightly devto backlink batch"
-          git pull --rebase --autostash origin main
-          git push origin main
