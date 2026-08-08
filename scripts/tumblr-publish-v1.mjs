@@ -136,7 +136,7 @@ async function main() {
   const rezultat = { poslano: 0, preskoceno_bez_en: 0, greske: [] };
 
   for (const { item, direktno } of pending.slice(0, PER_RUN)) {
-    const clanak = direktno ? readArticle(item.path) : readEnglishArticle(item.path);
+    const clanak = readArticle(item.path); // ispravljeno 8.8.2026: obje grane (EN i HR-bez-EN) imaju ispravnu vlastitu putanju, readEnglishArticle ovdje uvijek vracao null za HR-bez-EN stavke
     if (!clanak) { rezultat.preskoceno_bez_en++; continue; }
     if (!LIVE) {
       const blocks = textBlocks(clanak, item);
