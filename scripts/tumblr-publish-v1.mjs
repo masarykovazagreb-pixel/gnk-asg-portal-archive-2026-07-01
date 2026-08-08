@@ -1,13 +1,8 @@
 #!/usr/bin/env node
 /**
- * Prijenos objavljenih tekstova na Tumblr (nermin-sefic.tumblr.com).
- * Isti obrazac kao Dev.to/Blogger - sajt je izvor, Tumblr je preslika.
- *
- *   node scripts/tumblr-publish-v1.mjs            # priprema
- *   node scripts/tumblr-publish-v1.mjs --live      # objavi
- *
- * Tajne (env): TUMBLR_CONSUMER_KEY, TUMBLR_CONSUMER_SECRET,
- *              TUMBLR_TOKEN, TUMBLR_TOKEN_SECRET
+ * GNK ASG -> Tumblr controlled mirror (nermin-sefic.tumblr.com).
+ * gnk-asg.hr remains canonical. Tumblr NPF limits each text block to 4096
+ * characters, therefore long-form articles are split into bounded blocks.
  */
 import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -16,9 +11,9 @@ import { createHmac, randomBytes } from 'node:crypto';
 const PORTAL = resolve('apps/portal');
 const REGISTRY = resolve('apps/portal/data/editorial-registry.json');
 const STATE = resolve('apps/portal/data/tumblr-content/published.json');
+const RESULT = resolve('apps/portal/data/tumblr-content/zadnji-rezultat.json');
 const SITE = 'https://gnk-asg.hr';
 const BLOG = 'nermin-sefic.tumblr.com';
-
 const PER_RUN = Number(process.env.TUMBLR_PER_RUN || 6);
 const PAUSE_MS = Number(process.env.TUMBLR_PAUSE_MS || 3000);
 const LIVE = process.argv.includes('--live');
@@ -54,6 +49,34 @@ function readEnglishArticle(routePath) {
   return readArticle(enPath);
 }
 
+function splitText(text, limit = 3800) {
+  const value = String(text || '').trim();
+  if (!value) return [];
+  if (value.length <= limit) return [value];
+  const chunks = [];
+  let rest = value;
+  while (rest.length > limit) {
+    let cut = rest.lastIndexOf(' ', limit);
+    if (cut < Math.floor(limit * 0.6)) cut = limit;
+    chunks.push(rest.slice(0, cut).trim());
+    rest = rest.slice(cut).trim();
+  }
+  if (rest) chunks.push(rest);
+  return chunks;
+}
+
+function textBlocks(clanak, item) {
+  const blocks = [
+    { type: 'text', text: clanak.title },
+    { type: 'text', text: 'Autor: Nermin Sefić, GNK ASG d.o.o.' },
+  ];
+  for (const paragraph of clanak.paragraphs) {
+    for (const chunk of splitText(paragraph)) blocks.push({ type: 'text', text: chunk });
+  }
+  blocks.push({ type: 'text', text: `Izvorni članak: ${SITE}${item.path}` });
+  return blocks;
+}
+
 function pct(s) { return encodeURIComponent(s).replace(/[!*()']/g, (c) => '%' + c.charCodeAt(0).toString(16).toUpperCase()); }
 
 function oauthHeader(method, url, extraParams = {}) {
@@ -73,16 +96,16 @@ function oauthHeader(method, url, extraParams = {}) {
   return 'OAuth ' + Object.keys(params).sort().map((k) => pct(k) + '="' + pct(params[k]) + '"').join(', ');
 }
 
-async function objaviNaTumblru(clanak, item) {
+async function publishTumblr(clanak, item) {
   const url = `https://api.tumblr.com/v2/blog/${BLOG}/posts`;
+  const content = textBlocks(clanak, item);
+  if (content.some((b) => b.type === 'text' && b.text.length > 4096)) throw new Error('Tumblr local validation: text block exceeds 4096 characters');
+  if (content.length > 1000) throw new Error('Tumblr local validation: post exceeds 1000 content blocks');
+
   const body = {
-    content: [
-      ...(clanak.image ? [{ type: 'image', media: [{ url: clanak.image }] }] : []),
-      { type: 'text', text: clanak.title },
-      { type: 'text', text: `Autor: Nermin Sefić, GNK ASG d.o.o.` },
-      { type: 'text', text: clanak.paragraphs.join('\n\n') + `\n\nAutor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: ${SITE}${item.path}` },
-    ],
+    content,
     tags: 'NerminSefic,GNKASG,GNKDINAMOLtd',
+    state: 'published',
   };
   const auth = oauthHeader('POST', url);
   const r = await fetch(url, {
@@ -100,40 +123,51 @@ async function main() {
   const state = readJson(STATE, { posted: {} });
   const enZapisi = (registry.items || []).filter((i) => i.lang === 'en');
   const hrZapisiBezEn = (registry.items || []).filter((i) => i.lang !== 'en' && !enZapisi.some((e) => e.path.includes(i.slug)));
-
   const pending = [];
+
   for (const item of enZapisi.sort((a, b) => new Date(a.publishedAt || 0) - new Date(b.publishedAt || 0))) {
-    if (!item.path || state.posted[item.path]) continue;
-    pending.push({ item, direktno: true });
+    if (item.path && !state.posted[item.path]) pending.push({ item, direktno: true });
   }
   for (const item of hrZapisiBezEn.sort((a, b) => new Date(a.publishedAt || 0) - new Date(b.publishedAt || 0))) {
-    if (!item.path || state.posted[item.path]) continue;
-    pending.push({ item, direktno: false });
+    if (item.path && !state.posted[item.path]) pending.push({ item, direktno: false });
   }
 
   console.log(`U registru ukupno: ${(registry.items || []).length}. Cekaju na Tumblr: ${pending.length}.`);
-  const batch = pending.slice(0, PER_RUN);
   const rezultat = { poslano: 0, preskoceno_bez_en: 0, greske: [] };
 
-  for (const { item, direktno } of batch) {
+  for (const { item, direktno } of pending.slice(0, PER_RUN)) {
     const clanak = direktno ? readArticle(item.path) : readEnglishArticle(item.path);
     if (!clanak) { rezultat.preskoceno_bez_en++; continue; }
-    if (!LIVE) { console.log(`[PRIPREMA] bi poslao: ${clanak.title}`); rezultat.poslano++; continue; }
+    if (!LIVE) {
+      const blocks = textBlocks(clanak, item);
+      console.log(`[PRIPREMA] ${clanak.title} -> ${blocks.length} NPF blocks; max=${Math.max(...blocks.map((b) => b.text?.length || 0))}`);
+      rezultat.poslano++;
+      continue;
+    }
     try {
-      const objava = await objaviNaTumblru(clanak, item);
-      state.posted[item.path] = { at: new Date().toISOString(), tumblrUrl: objava?.response?.post?.url || `https://${BLOG}/post/${objava?.response?.id}`, id: objava?.response?.id };
+      const objava = await publishTumblr(clanak, item);
+      const id = objava?.response?.id || objava?.response?.post?.id;
+      state.posted[item.path] = {
+        at: new Date().toISOString(),
+        tumblrUrl: objava?.response?.post?.url || (id ? `https://${BLOG}/post/${id}` : `https://${BLOG}`),
+        id,
+      };
       rezultat.poslano++;
       console.log(`Objavljeno: ${JSON.stringify(state.posted[item.path])}`);
     } catch (e) {
-      rezultat.greske.push({ path: item.path, error: String(e).slice(0, 300) });
+      rezultat.greske.push({ path: item.path, error: String(e).slice(0, 500) });
       console.error(`Greska za ${item.path}:`, e.message || e);
     }
     await sleep(PAUSE_MS);
   }
 
   if (LIVE) writeJson(STATE, state);
-  writeJson(resolve('apps/portal/data/tumblr-content/zadnji-rezultat.json'), { kad: new Date().toISOString(), ...rezultat });
+  writeJson(RESULT, { kad: new Date().toISOString(), ...rezultat });
   console.log('\nSazetak:', JSON.stringify(rezultat, null, 2));
+  if (rezultat.greske.length) process.exitCode = 1;
 }
 
-main();
+main().catch((e) => {
+  console.error(e?.stack || e);
+  process.exitCode = 1;
+});
