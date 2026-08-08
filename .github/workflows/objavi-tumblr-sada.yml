@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
       - name: Maskiraj
         run: |
           echo "::add-mask::${{ inputs.consumer_key }}"
@@ -36,11 +36,12 @@ jobs:
           TUMBLR_PER_RUN: ${{ inputs.per_run }}
         run: node scripts/tumblr-publish-v1.mjs --live
       - name: Commit na jedinstvenu granu
+        if: always()
         run: |
           git config user.name "gnk-asg-bot"
           git config user.email "it@gnk-asg.hr"
           BRANCH="tumblr-objave-${{ github.run_id }}"
           git checkout -b "$BRANCH"
           git add apps/portal/data/tumblr-content/
-          git commit -m "Tumblr: evidencija objavljenog"
-          git push origin "$BRANCH"
+          git diff --cached --quiet || git commit -m "Tumblr: evidencija objavljenog (uklj. djelomican napredak/greske)"
+          git push origin "$BRANCH" || echo "nema promjena za push"
