@@ -1,0 +1,46 @@
+name: P0 - RSS Audit (jednokratno)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rss-audit:
+    name: Provjeri sve RSS izvore
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Pokreni RSS audit
+        run: node scripts/gnk-rss-audit-v1.mjs
+      - name: Objavi sažetak
+        if: always()
+        run: |
+          if [ -s artifacts/rss-audit-report.json ]; then
+            node -e "
+              const r = require('./artifacts/rss-audit-report.json');
+              console.log('## RSS Audit — ' + r.generatedAt);
+              console.log('');
+              console.log('Whitelist: **' + r.whitelist + '/' + r.ukupnoIzvora + '**');
+              console.log('Blacklist: **' + r.blacklist + '/' + r.ukupnoIzvora + '**');
+              console.log('');
+              console.log('| Izvor | Grupa | Status | Razlog |');
+              console.log('|---|---|---|---|');
+              for (const x of r.rezultati) {
+                console.log('| ' + x.source + ' | ' + x.group + ' | ' + (x.prolazi ? '✓' : '✗') + ' | ' + x.razlog + ' |');
+              }
+            " >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Commit izvještaj
+        run: |
+          git config user.name "gnk-rss-audit-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add artifacts/rss-audit-report.json
+          git diff --cached --quiet || git commit -m "chore: RSS audit report (P0)"
+          git pull --rebase --autostash origin main
+          git push origin main
