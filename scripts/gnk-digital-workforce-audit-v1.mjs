@@ -31,26 +31,55 @@ function dohvatiJson(putanja) {
 }
 
 async function dohvatiSveWorkere() {
-  // probaj dohvatiti sve odjednom bez filtera; ako API pagira, prilagodi
   const prvi = await dohvatiJson('workers');
   const ukupno = Number(prvi.total) || prvi.items?.length || 0;
-  console.log(`API prijavljuje total: ${ukupno}, prva stranica vraća: ${prvi.items?.length || 0} stavki`);
+  const poStranici = prvi.items?.length || 0;
+  console.log(`API prijavljuje total: ${ukupno}, prva stranica vraća: ${poStranici} stavki`);
 
-  if (prvi.items && prvi.items.length >= ukupno) {
+  if (poStranici >= ukupno || poStranici === 0) {
+    return prvi.items || [];
+  }
+
+  const nacini = [
+    (offset) => `workers?offset=${offset}&limit=${poStranici}`,
+    (offset) => `workers?skip=${offset}&limit=${poStranici}`,
+    (offset) => `workers?page=${Math.floor(offset / poStranici) + 1}`,
+  ];
+
+  let svi = [...prvi.items];
+  let radniNacin = null;
+
+  for (const nacin of nacini) {
+    try {
+      const testStranica = await dohvatiJson(nacin(poStranici));
+      if (testStranica.items && testStranica.items.length > 0 && testStranica.items[0]?.id !== prvi.items[0]?.id) {
+        radniNacin = nacin;
+        svi = svi.concat(testStranica.items);
+        console.log(`Paginacija radi preko obrasca: ${nacin('{offset}')}`);
+        break;
+      }
+    } catch { /* probaj sljedeći način */ }
+  }
+
+  if (!radniNacin) {
+    console.log('UPOZORENJE: nijedan uobičajen način paginacije nije prepoznat. Audit se izvodi samo na prvoj stranici.');
     return prvi.items;
   }
 
-  // ako je paginirano, probaj dohvatiti sve preko praznog upita s velikim limitom
-  // (API dizajn nepoznat unaprijed - probamo uobičajene parametre)
-  console.log('Pokušavam dohvatiti sve stavke...');
-  try {
-    const sviPokusaj = await dohvatiJson('workers?limit=2000');
-    if (sviPokusaj.items && sviPokusaj.items.length > prvi.items.length) {
-      return sviPokusaj.items;
+  let offset = poStranici * 2;
+  while (svi.length < ukupno && offset < ukupno + poStranici) {
+    try {
+      const stranica = await dohvatiJson(radniNacin(offset));
+      if (!stranica.items || stranica.items.length === 0) break;
+      svi = svi.concat(stranica.items);
+      offset += poStranici;
+    } catch (e) {
+      console.log(`Greška pri dohvatu stranice na offsetu ${offset}: ${e.message}`);
+      break;
     }
-  } catch { /* ignoriraj, koristi ono sto imamo */ }
+  }
 
-  return prvi.items || [];
+  return svi;
 }
 
 async function main() {
@@ -101,11 +130,9 @@ async function main() {
       anomalije.push({ tip: 'neispravna_referenca', worker: w.id, detalj: `projectId "${w.projectId}" ne postoji medju ${projectIds.size} poznatih projekata` });
     }
 
-    // 5. konzistentnost statusa - provjeri je li status iz ocekivanog skupa
-    const poznatStatusi = ['active', 'idle', 'done', 'blocked', 'paused', 'archived'];
-    if (w.status && !poznatStatusi.includes(String(w.status).toLowerCase())) {
-      anomalije.push({ tip: 'neocekivan_status', worker: w.id, detalj: `status "${w.status}" nije medju ocekivanim vrijednostima (${poznatStatusi.join(', ')})` });
-    }
+    // 5. konzistentnost statusa - biljezi RASPODJELU, ne pretpostavlja unaprijed
+    // definiran popis (prvi prolaz otkrio je da su "review", "training",
+    // "on_leave" legitimne vrijednosti koje inicijalna pretpostavka nije ukljucivala)
 
     // 6. location / telemetry - dokumentiraj postoje li uopce ta polja
     if (!('location' in w)) {
