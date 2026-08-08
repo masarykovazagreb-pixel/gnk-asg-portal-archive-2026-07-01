@@ -1,0 +1,35 @@
+name: Objavi na Telegraph sada
+
+on:
+  workflow_dispatch:
+    inputs:
+      per_run:
+        description: "Koliko clanaka poslati ovaj put"
+        required: false
+        type: string
+        default: '3'
+
+permissions:
+  contents: write
+
+jobs:
+  objavi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Objavi na Telegraph
+        env:
+          TELEGRAPH_PER_RUN: ${{ inputs.per_run }}
+        run: node scripts/telegraph-publish-v1.mjs
+      - name: Commit evidencije
+        run: |
+          git config user.name "gnk-telegraph-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/telegraph-content/
+          git diff --cached --quiet || git commit -m "Telegraph: evidencija objavljenog"
+          git pull --rebase --autostash origin main
+          git push origin main
