@@ -1,22 +1,15 @@
-name: SEO and News Visibility Cycle
+name: SEO and News Visibility Audit
 on:
   schedule:
     - cron: '17 9 * * *'
   workflow_dispatch:
-    inputs:
-      force_deploy:
-        description: 'Deploy the current exact main SHA even when no SEO or news data changed'
-        required: false
-        type: boolean
-        default: false
 permissions:
-  contents: write
-  actions: write
+  contents: read
 concurrency:
-  group: editorial-main-writer
-  cancel-in-progress: false
+  group: editorial-seo-audit
+  cancel-in-progress: true
 jobs:
-  improve:
+  audit:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -27,35 +20,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Audit and repair editorial SEO
+      - name: Audit editorial SEO in read-only mode
         run: node scripts/seo-visibility-cycle-v1.mjs
-      - name: Commit safe deterministic updates
-        id: commit
+      - name: Confirm no repository writes occur
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/portal/data/update_status.json apps/portal/data/seo-visibility-status.json apps/portal/editorial-sitemap.xml apps/portal/objave apps/portal/komentari apps/portal/analize apps/portal/en/publications apps/portal/en/commentary apps/portal/en/analyses artifacts/seo-visibility-report.json; then
-            echo "No public SEO or news value changed."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add apps/portal/data/update_status.json apps/portal/data/seo-visibility-status.json apps/portal/editorial-sitemap.xml apps/portal/objave apps/portal/komentari apps/portal/analize apps/portal/en/publications apps/portal/en/commentary apps/portal/en/analyses artifacts/seo-visibility-report.json
-          git commit -m "Refresh news and editorial SEO visibility"
-          git push origin HEAD:main
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      - name: Dispatch exact-SHA production deploy
-        if: steps.commit.outputs.changed == 'true' || (github.event_name == 'workflow_dispatch' && inputs.force_deploy == true)
-        env:
-          GH_TOKEN: ${{ github.token }}
-          APPROVED_SHA: ${{ steps.commit.outputs.sha }}
-        run: |
-          set -euo pipefail
-          gh workflow run deploy-admin-auth-v6.yml \
-            --repo beckuphome-gnk/gnk-asg-portal \
-            --ref main \
-            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
-            -f approved_sha="$APPROVED_SHA"
+          echo "SEO audit is intentionally read-only. Any deterministic diff remains ephemeral and is not committed or deployed."
+          git status --short || true
+      - name: Upload SEO audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-visibility-audit-${{ github.sha }}
+          path: |
+            artifacts/seo-visibility-report.json
+            apps/portal/data/seo-visibility-status.json
+          if-no-files-found: warn
+          retention-days: 1
