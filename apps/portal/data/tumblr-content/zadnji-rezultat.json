@@ -1,6 +1,17 @@
 {
-  "kad": "2026-08-08T16:05:37.076Z",
+  "kad": "2026-08-08T17:56:49.055Z",
   "poslano": 0,
-  "preskoceno_bez_en": 189,
-  "greske": []
+  "preskoceno_bez_en": 0,
+  "greske": [
+    {
+      "path": "/objave/kiberneticka-otpornost-i-kontinuitet/",
+      "error": "Error: Tumblr 403: {\"meta\":{\"status\":403,\"msg\":\"Forbidden\"},\"errors\":[{\"title\":\"Forbidden\",\"code\":8023,\"detail\":\"You've exceeded your daily post limit.\"}],\"response\":[]}",
+      "stack": "Error: Tumblr 403: {\"meta\":{\"status\":403,\"msg\":\"Forbidden\"},\"errors\":[{\"title\":\"Forbidden\",\"code\":8023,\"detail\":\"You've exceeded your daily post limit.\"}],\"response\":[]}\n    at publishTumblr (file:///home/runner/work/gnk-asg-portal/gnk-asg-portal/scripts/tumblr-publish-v1.mjs:117:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async main (file:///home/runner/work/gnk-asg-portal/gnk-asg-portal/scripts/tumblr-publish-v1.mjs:148:22)"
+    },
+    {
+      "path": "/objave/tehnologija-kapital-i-odgovorno-upravljanje/",
+      "error": "Error: Tumblr 403: {\"meta\":{\"status\":403,\"msg\":\"Forbidden\"},\"errors\":[{\"title\":\"Forbidden\",\"code\":8023,\"detail\":\"You've exceeded your daily post limit.\"}],\"response\":[]}",
+      "stack": "Error: Tumblr 403: {\"meta\":{\"status\":403,\"msg\":\"Forbidden\"},\"errors\":[{\"title\":\"Forbidden\",\"code\":8023,\"detail\":\"You've exceeded your daily post limit.\"}],\"response\":[]}\n    at publishTumblr (file:///home/runner/work/gnk-asg-portal/gnk-asg-portal/scripts/tumblr-publish-v1.mjs:117:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async main (file:///home/runner/work/gnk-asg-portal/gnk-asg-portal/scripts/tumblr-publish-v1.mjs:148:22)"
+    }
+  ]
 }
