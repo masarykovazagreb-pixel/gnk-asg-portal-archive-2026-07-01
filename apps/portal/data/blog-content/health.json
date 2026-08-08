@@ -1,27 +1,41 @@
 {
   "version": "GNK_ASG_BLOG_PUBLISH_HEALTH_V2",
-  "generatedAt": "2026-08-08T17:44:47.303Z",
+  "generatedAt": "2026-08-08T17:51:29.107Z",
   "destination": "Blogger / Aktual Media mirror",
-  "conclusion": "healthy",
-  "pending": 20,
+  "conclusion": "degraded-quota",
+  "pending": 13,
   "registryTotal": 373,
-  "publishedTotal": 354,
+  "publishedTotal": 361,
   "publisherMode": "live",
   "credentialsConfigured": true,
   "attempts": [
     {
       "attempt": 1,
-      "startedAt": "2026-08-08T17:42:23.481Z",
-      "finishedAt": "2026-08-08T17:44:47.298Z",
+      "startedAt": "2026-08-08T17:48:38.970Z",
+      "finishedAt": "2026-08-08T17:49:26.415Z",
       "exitCode": 0,
       "publisherMode": "live",
       "credentialsConfigured": true,
-      "posted": 10,
-      "failed": 0,
-      "quotaLimited": false,
+      "posted": 3,
+      "failed": 1,
+      "quotaLimited": true,
       "operationalFailure": false,
-      "stdoutTail": "nacin: live\nblog: NERMIN SEFIĆ - GNK ASG (https://nermin-sefic.blogspot.com)\nu registru: 374 | ceka: 30 | u ovom prolazu: 10 | objavljeno: 10 | neuspjelo: 0\nnakon ovog prolaza ostaje: 20\n",
-      "stderrTail": ""
+      "stdoutTail": "nacin: live\nblog: NERMIN SEFIĆ - GNK ASG (https://nermin-sefic.blogspot.com)\nu registru: 374 | ceka: 20 | u ovom prolazu: 10 | objavljeno: 3 | neuspjelo: 1\nnakon ovog prolaza ostaje: 10\n",
+      "stderrTail": "[\n  {\n    \"route\": \"/en/commentary/a-recovery-drill-only-works-if-it-surprises-you/\",\n    \"error\": \"blogger_429: {\\n  \\\"error\\\": {\\n    \\\"code\\\": 429,\\n    \\\"message\\\": \\\"Resource has been exhausted (e.g. check quota).\\\",\\n    \\\"errors\\\": [\\n      {\\n        \\\"message\\\": \\\"Resource has been exhausted (e.g. check quota\"\n  }\n]\n"
+    },
+    {
+      "attempt": 2,
+      "startedAt": "2026-08-08T17:50:26.457Z",
+      "finishedAt": "2026-08-08T17:51:29.103Z",
+      "exitCode": 0,
+      "publisherMode": "live",
+      "credentialsConfigured": true,
+      "posted": 4,
+      "failed": 1,
+      "quotaLimited": true,
+      "operationalFailure": false,
+      "stdoutTail": "nacin: live\nblog: NERMIN SEFIĆ - GNK ASG (https://nermin-sefic.blogspot.com)\nu registru: 374 | ceka: 17 | u ovom prolazu: 10 | objavljeno: 4 | neuspjelo: 1\nnakon ovog prolaza ostaje: 7\n",
+      "stderrTail": "[\n  {\n    \"route\": \"/en/commentary/energy-efficiency-is-not-just-a-cost-its-also-a-risk/\",\n    \"error\": \"blogger_429: {\\n  \\\"error\\\": {\\n    \\\"code\\\": 429,\\n    \\\"message\\\": \\\"Resource has been exhausted (e.g. check quota).\\\",\\n    \\\"errors\\\": [\\n      {\\n        \\\"message\\\": \\\"Resource has been exhausted (e.g. check quota\"\n  }\n]\n"
     }
   ],
   "policy": {
