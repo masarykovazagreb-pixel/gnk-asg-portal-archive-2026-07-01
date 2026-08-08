@@ -53,18 +53,30 @@ assert.match(news,/statusChanged/);
 assert.match(news,/writeIfChanged/);
 const seoWorkflow=fs.readFileSync('.github/workflows/seo-news-cycle.yml','utf8');
 const scheduler=fs.readFileSync('.github/workflows/editorial-scheduled-publish.yml','utf8');
-for(const source of [seoWorkflow,scheduler]){
-  assert.match(source,/actions: write/);
-  assert.match(source,/gh workflow run deploy-admin-auth-v6\.yml/);
-  assert.match(source,/confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6/);
-  assert.match(source,/approved_sha="\$APPROVED_SHA"/);
-  assert.match(source,/force_deploy/);
-}
+
+// The scheduled SEO visibility cycle is an auditor, never a repository writer or deployer.
+assert.match(seoWorkflow,/contents: read/);
+assert.doesNotMatch(seoWorkflow,/contents: write/);
+assert.doesNotMatch(seoWorkflow,/actions: write/);
+assert.doesNotMatch(seoWorkflow,/git push/);
+assert.doesNotMatch(seoWorkflow,/git commit/);
+assert.doesNotMatch(seoWorkflow,/gh workflow run deploy-admin-auth-v6\.yml/);
+assert.doesNotMatch(seoWorkflow,/confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6/);
+assert.doesNotMatch(seoWorkflow,/approved_sha="\$APPROVED_SHA"/);
+assert.doesNotMatch(seoWorkflow,/force_deploy/);
+assert.match(seoWorkflow,/editorial-seo-audit/);
+assert.match(seoWorkflow,/Upload SEO audit evidence/);
 assert.match(seoWorkflow,/timeout-minutes: 10/);
 assert.match(seoWorkflow,/cron: '17 9 \* \* \*'/);
 assert.doesNotMatch(seoWorkflow,/cron: '17 \*\/2 \* \* \*'/);
 assert.doesNotMatch(seoWorkflow,/\n  push:/);
-assert.match(seoWorkflow,/steps\.commit\.outputs\.changed == 'true'/);
+
+// The canonical editorial scheduler retains exact-SHA deployment authority.
+assert.match(scheduler,/actions: write/);
+assert.match(scheduler,/gh workflow run deploy-admin-auth-v6\.yml/);
+assert.match(scheduler,/confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6/);
+assert.match(scheduler,/approved_sha="\$APPROVED_SHA"/);
+assert.match(scheduler,/force_deploy/);
 assert.match(scheduler,/steps\.commit\.outputs\.changed == 'true'/);
 assert.match(scheduler,/github\.event_name == 'push'/);
 assert.match(scheduler,/git diff --quiet -- apps\/portal\/objave/);
@@ -72,4 +84,4 @@ const regressionIndex=scheduler.indexOf('node scripts/test-editorial-content-pol
 const policyIndex=scheduler.indexOf('node scripts/validate-editorial-content-policy-v1.mjs');
 const materializeIndex=scheduler.indexOf('node scripts/editorial-publish-scheduled-v1.mjs');
 assert.ok(regressionIndex>=0&&policyIndex>regressionIndex&&materializeIndex>policyIndex,'policy test and gate must run before materialization');
-console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:x.items.filter(i=>i.type==='objava').length,commentaries:x.items.filter(i=>i.type==='komentar').length,publishAt:x.publishAt})),seo:{cycleHours:24,scheduleUtc:'17 9 * * *',timeoutMinutes:10,artificialTraffic:false,idempotent:true},editorialPolicy:{minimumWords:3000,minimumInternalLinks:5,preMaterialization:true,publicationHolds:holds.holds.length},deploy:{directExactShaDispatch:true,noOpScheduleDeploy:false}},null,2));
+console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:x.items.filter(i=>i.type==='objava').length,commentaries:x.items.filter(i=>i.type==='komentar').length,publishAt:x.publishAt})),seo:{cycleHours:24,scheduleUtc:'17 9 * * *',timeoutMinutes:10,artificialTraffic:false,idempotent:true,readOnlyAudit:true},editorialPolicy:{minimumWords:3000,minimumInternalLinks:5,preMaterialization:true,publicationHolds:holds.holds.length},deploy:{editorialSchedulerExactShaDispatch:true,seoAuditDeployAuthority:false,noOpScheduleDeploy:false}},null,2));
