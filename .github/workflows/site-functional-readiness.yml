@@ -51,6 +51,7 @@ jobs:
           node --check scripts/test-protected-operations-session-contract.mjs
           node --check scripts/test-digital-workforce-api-contract.mjs
           node --check scripts/test-news-publication-seo-contract.mjs
+          node --check scripts/audit-hr-en-reciprocal-parity.mjs
           bash -n scripts/check-newsroom-route-readiness.sh
           bash -n scripts/verify-production-route.sh
 
@@ -114,6 +115,9 @@ jobs:
 
       - name: SEO integrity
         run: node scripts/audit-seo-entity-integrity-v1.mjs
+
+      - name: HR/EN reciprocal parity
+        run: node scripts/audit-hr-en-reciprocal-parity.mjs
 
       - name: Static page integrity
         run: node scripts/audit-all-pages-detailed-v1.mjs
