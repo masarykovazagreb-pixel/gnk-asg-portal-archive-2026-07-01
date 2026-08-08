@@ -1,0 +1,40 @@
+name: Workforce Production Smoke
+
+on:
+  workflow_run:
+    workflows: ['Deploy Admin Auth V6']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-smoke:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Verify live Workforce public/runtime separation
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://gnk-asg.hr/api/public/digital-workforce'
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+          for view in health state plan projects risks opinions dependencies tasks credits newsroom workers activity-log bulletins; do
+            code=$(curl --retry 3 --retry-delay 3 --connect-timeout 10 --max-time 30 -fsS -o "$tmp/$view.json" -w '%{http_code}' "$base/$view")
+            test "$code" = 200
+          done
+          node - "$tmp" <<'NODE'
+          const fs=require('fs'),dir=process.argv[2];
+          const read=n=>JSON.parse(fs.readFileSync(`${dir}/${n}.json`,'utf8'));
+          const health=read('health'),state=read('state'),workers=read('workers');
+          if(health.ok!==true)throw new Error('live health is not ok');
+          if(state.ok!==true||state.runtimeEvidence!==false)throw new Error('state truth semantics invalid');
+          if(state.runtimeHealth?.verified!==true)throw new Error('state is not enriched with verified runtime health');
+          if(workers.total!==1573||workers.runtimeEvidence!==false)throw new Error('worker profile parity invalid');
+          if(!Array.isArray(workers.items)||workers.items.length!==1573)throw new Error('worker profile payload incomplete');
+          if(workers.items.some(x=>x.status==='active'))throw new Error('model profiles must not impersonate active runtime workers');
+          console.log(JSON.stringify({ok:true,health:health.status||'ok',views:13,workerProfiles:workers.total,runtimeEvidenceSeparated:true},null,2));
+          NODE
