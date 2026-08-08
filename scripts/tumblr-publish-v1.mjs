@@ -93,7 +93,7 @@ function oauthHeader(method, url, extraParams = {}) {
   const baseString = method + '&' + pct(url) + '&' + pct(baseParams);
   const signingKey = pct(CS) + '&' + pct(TOKS);
   params.oauth_signature = createHmac('sha1', signingKey).update(baseString).digest('base64');
-  return 'OAuth ' + Object.keys(params).sort().map((k) => pct(k) + '=\"' + pct(params[k]) + '\"').join(', ');
+  return 'OAuth ' + Object.keys(params).sort().map((k) => pct(k) + '="' + pct(params[k]) + '"').join(', ');
 }
 
 async function publishTumblr(clanak, item) {
