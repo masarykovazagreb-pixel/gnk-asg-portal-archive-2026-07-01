@@ -1,8 +1,10 @@
-name: GNK ASG Nightly SEO, Meta and Backlink Audit
+name: GNK ASG Nightly SEO, Meta, Backlink and IndexNow Audit
 
-# Noćni SEO/meta audit je read-only prema production main grani.
-# Blogger, Dev.to i Tumblr imaju jednog kanonskog writera u blog-mirror-publish.yml,
-# koji durable publish state sprema na automation/blog-mirror-state i ne pomiče main.
+# Pokreće se svaku noć u 02:15 CET (01:15 UTC), i ručno po potrebi.
+# 1. Provjerava meta/SEO stanje cijelog portala i sprema izvještaj.
+# 2. Nastavlja Blogger backlink zaostatak.
+# 3. Šalje sve stranice na IndexNow — trenutno obavještava Bing/Yandex/Seznam
+#    o novim ili promijenjenim URL-ovima, bez čekanja standardnog crawla.
 
 on:
   workflow_dispatch:
@@ -10,11 +12,10 @@ on:
     - cron: '15 1 * * *'
 
 permissions:
-  contents: read
+  contents: write
 
-concurrency:
-  group: gnk-seo-nightly-audit
-  cancel-in-progress: false
+env:
+  INDEXNOW_KEY: '2396905717b36885586139576d11142f'
 
 jobs:
   seo-audit:
@@ -23,17 +24,11 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 1
-
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-
       - name: Pokreni SEO audit
         run: node scripts/gnk-seo-nightly-audit-v1.mjs
-
       - name: Objavi sažetak u summary
         if: always()
         run: |
@@ -48,26 +43,58 @@ jobs:
               for (const p of r.preporuke) console.log('- ' + p);
             " >> "$GITHUB_STEP_SUMMARY"
           fi
-
-      - name: Spremi SEO izvještaj kao artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gnk-seo-nightly-report-${{ github.run_id }}
-          path: apps/portal/data/seo-audit/nightly-report.json
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Potvrdi da audit nije pomaknuo production main
-        if: always()
-        shell: bash
+      - name: Commit izvještaj
         run: |
-          set -euo pipefail
-          git fetch origin main --no-tags
-          test "$(git rev-parse origin/main)" = "$(git ls-remote origin refs/heads/main | awk '{print $1}')"
-          if ! git diff --quiet -- . ':!apps/portal/data/seo-audit/nightly-report.json'; then
-            echo "SEO audit je neočekivano promijenio datoteke izvan nightly-report.json."
-            git status --short
-            exit 1
-          fi
-          echo "Noćni SEO audit je read-only prema production main grani."
+          git config user.name "gnk-seo-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/seo-audit/nightly-report.json
+          git diff --cached --quiet || git commit -m "chore: nightly SEO audit report"
+          git pull --rebase --autostash origin main
+          git push origin main
+
+  backlink-blogger:
+    name: Nastavi Blogger backlink zaostatak
+    needs: seo-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Sync
+        run: git pull --rebase --autostash origin main
+      - name: Mirror na Blogger (backlink)
+        env:
+          BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
+          BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}
+          BLOGGER_CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
+          BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
+          BLOG_PER_RUN: '10'
+          BLOG_PAUSE_MS: '15000'
+          BLOG_MAX_ATTEMPTS: '2'
+          BLOG_BACKOFF_MS: '60000'
+        run: node scripts/blog-publish-resilient-v1.mjs
+      - name: Commit
+        run: |
+          git config user.name "gnk-seo-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/blog-content/
+          git diff --cached --quiet || git commit -m "chore: nightly blogger backlink batch"
+          git pull --rebase --autostash origin main
+          git push origin main
+
+  indexnow-submit:
+    name: Pošalji sve URL-ove na IndexNow (Bing/Yandex trenutno indeksiranje)
+    needs: seo-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Sync
+        run: git pull --rebase --autostash origin main
+      - name: Pošalji na IndexNow
+        run: node scripts/gnk-indexnow-submit-v1.mjs
