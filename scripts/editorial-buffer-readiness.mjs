@@ -5,6 +5,7 @@ import path from 'node:path';
 const root = process.cwd();
 const manifestPath = path.join(root, 'apps/portal/data/editorial_buffer_2026-08.json');
 const policyPath = path.join(root, 'apps/portal/data/publishing_policy.json');
+const editorialDir = path.join(root, 'apps/portal/content/editorial');
 const strict = process.argv.includes('--strict');
 
 function fail(message) {
@@ -14,6 +15,7 @@ function fail(message) {
 
 function words(text) {
   return text
+    .replace(/^---[\s\S]*?---/m, ' ')
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')
     .replace(/<style[\s\S]*?<\/style>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
@@ -21,6 +23,46 @@ function words(text) {
     .trim()
     .split(/\s+/)
     .filter(Boolean).length;
+}
+
+function parseFrontmatter(text) {
+  const match = text.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (!match) return {};
+  const lines = match[1].split(/\r?\n/);
+  const out = {};
+  let listKey = null;
+  for (const raw of lines) {
+    const list = raw.match(/^\s+-\s+(.+)$/);
+    if (list && listKey) {
+      out[listKey] ||= [];
+      out[listKey].push(list[1].replace(/^['"]|['"]$/g, ''));
+      continue;
+    }
+    const kv = raw.match(/^([A-Za-z0-9_]+):\s*(.*)$/);
+    if (!kv) continue;
+    const [, key, rawValue] = kv;
+    const value = rawValue.trim();
+    if (!value) {
+      out[key] = [];
+      listKey = key;
+      continue;
+    }
+    listKey = null;
+    if (value === 'true') out[key] = true;
+    else if (value === 'false') out[key] = false;
+    else out[key] = value.replace(/^['"]|['"]$/g, '');
+  }
+  return out;
+}
+
+function discoverContentPath(date, type) {
+  if (!fs.existsSync(editorialDir)) return { path: null, candidates: [] };
+  const prefix = `${date}-${type}-`;
+  const candidates = fs.readdirSync(editorialDir)
+    .filter((name) => name.startsWith(prefix) && name.endsWith('.md'))
+    .sort()
+    .map((name) => path.posix.join('apps/portal/content/editorial', name));
+  return { path: candidates.length === 1 ? candidates[0] : null, candidates };
 }
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
@@ -40,6 +82,7 @@ let contentPresent = 0;
 let wordReady = 0;
 let approved = 0;
 let metadataReady = 0;
+let autoDiscovered = 0;
 const missing = [];
 const titleSet = new Set();
 
@@ -57,13 +100,25 @@ for (const day of manifest.days || []) {
       titleSet.add(slot.title);
     }
     if (slot.approval_status === 'approved') approved += 1;
-    if (!slot.content_path) {
-      missing.push(`${day.date}:${type}:content-not-materialized`);
-      continue;
+
+    let contentPath = slot.content_path || null;
+    if (!contentPath) {
+      const discovered = discoverContentPath(day.date, type);
+      if (discovered.path) {
+        contentPath = discovered.path;
+        autoDiscovered += 1;
+      } else if (discovered.candidates.length > 1) {
+        missing.push(`${day.date}:${type}:ambiguous-content-candidates=${discovered.candidates.length}`);
+        continue;
+      } else {
+        missing.push(`${day.date}:${type}:content-not-materialized`);
+        continue;
+      }
     }
-    const full = path.join(root, slot.content_path);
+
+    const full = path.join(root, contentPath);
     if (!fs.existsSync(full)) {
-      missing.push(`${day.date}:${type}:content-path-not-found:${slot.content_path}`);
+      missing.push(`${day.date}:${type}:content-path-not-found:${contentPath}`);
       continue;
     }
     contentPresent += 1;
@@ -73,14 +128,18 @@ for (const day of manifest.days || []) {
     if (Number.isFinite(minimum) && measured >= minimum) wordReady += 1;
     else missing.push(`${day.date}:${type}:words=${measured}:required=${minimum ?? 'unknown'}`);
 
+    const frontmatter = parseFrontmatter(body);
     const requiredMetadata = [
       'seo_title', 'meta_description', 'canonical_url', 'article_schema_or_jsonld',
       'h1_h2_structure', 'internal_links', 'entity_links', 'image_plan',
       'alt_text', 'byline', 'publication_date'
     ];
-    const md = slot.metadata || {};
-    if (requiredMetadata.every((key) => Boolean(md[key]))) metadataReady += 1;
-    else missing.push(`${day.date}:${type}:metadata-incomplete`);
+    const md = { ...frontmatter, ...(slot.metadata || {}) };
+    if (requiredMetadata.every((key) => Boolean(md[key]) && (!Array.isArray(md[key]) || md[key].length > 0))) {
+      metadataReady += 1;
+    } else {
+      missing.push(`${day.date}:${type}:metadata-incomplete`);
+    }
   }
 }
 
@@ -92,6 +151,7 @@ const result = {
   unique_titles: titleSet.size,
   content_materialized: contentPresent,
   content_materialized_pct: pct(contentPresent),
+  content_auto_discovered: autoDiscovered,
   word_policy_ready: wordReady,
   word_policy_ready_pct: pct(wordReady),
   metadata_ready: metadataReady,
