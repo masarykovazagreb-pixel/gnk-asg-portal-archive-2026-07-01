@@ -1,10 +1,8 @@
 name: GNK ASG Nightly SEO, Meta and Backlink Audit
 
-# Pokreće se svaku noć u 02:15 CET (01:15 UTC).
-# 1. Provjerava meta/SEO stanje cijelog portala i sprema izvještaj.
-# 2. Pokušava nastaviti Blogger backlink zaostatak (koristi već pohranjene tajne).
-# Tumblr i Dev.to NE mogu biti dio ovog automatskog rasporeda dok njihove
-# vjerodajnice ne budu spremljene kao repo tajne (vidi napomenu na dnu).
+# Noćni SEO/meta audit je read-only prema production main grani.
+# Blogger, Dev.to i Tumblr imaju jednog kanonskog writera u blog-mirror-publish.yml,
+# koji durable publish state sprema na automation/blog-mirror-state i ne pomiče main.
 
 on:
   workflow_dispatch:
@@ -12,7 +10,11 @@ on:
     - cron: '15 1 * * *'
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: gnk-seo-nightly-audit
+  cancel-in-progress: false
 
 jobs:
   seo-audit:
@@ -21,6 +23,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
 
       - uses: actions/setup-node@v4
         with:
@@ -44,51 +49,25 @@ jobs:
             " >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Commit izvještaj
-        run: |
-          git config user.name "gnk-seo-bot"
-          git config user.email "it@gnk-asg.hr"
-          git add apps/portal/data/seo-audit/nightly-report.json
-          git diff --cached --quiet || git commit -m "chore: nightly SEO audit report"
-          git pull --rebase --autostash origin main
-          git push origin main
-
-  backlink-blogger:
-    name: Nastavi Blogger backlink zaostatak
-    needs: seo-audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Spremi SEO izvještaj kao artifact
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          node-version: '24'
-      - name: Sync
-        run: git pull --rebase --autostash origin main
-      - name: Mirror na Blogger (backlink)
-        env:
-          BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
-          BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}
-          BLOGGER_CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
-          BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
-          BLOG_PER_RUN: '10'
-          BLOG_PAUSE_MS: '15000'
-          BLOG_MAX_ATTEMPTS: '2'
-          BLOG_BACKOFF_MS: '60000'
-        run: node scripts/blog-publish-resilient-v1.mjs
-      - name: Commit
-        run: |
-          git config user.name "gnk-seo-bot"
-          git config user.email "it@gnk-asg.hr"
-          git add apps/portal/data/blog-content/
-          git diff --cached --quiet || git commit -m "chore: nightly blogger backlink batch"
-          git pull --rebase --autostash origin main
-          git push origin main
+          name: gnk-seo-nightly-report-${{ github.run_id }}
+          path: apps/portal/data/seo-audit/nightly-report.json
+          if-no-files-found: error
+          retention-days: 30
 
-# NAPOMENA: Tumblr i Dev.to nemaju stalne, pohranjene vjerodajnice u ovom
-# repozitoriju (samo se unose ručno pri svakom pokretanju), pa ih ovaj
-# automatski, noćni raspored NE MOŽE uključiti dok se ne spreme kao repo
-# tajne: TUMBLR_CONSUMER_KEY, TUMBLR_CONSUMER_SECRET, TUMBLR_TOKEN,
-# TUMBLR_TOKEN_SECRET, DEVTO_KEY — vidi upute u tumblr-vjerodajnice.txt.
-# Nakon što budu spremljene, ovaj workflow treba dopuniti s dodatnim
-# job blokovima po uzoru na "backlink-blogger" iznad.
+      - name: Potvrdi da audit nije pomaknuo production main
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --no-tags
+          test "$(git rev-parse origin/main)" = "$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          if ! git diff --quiet -- . ':!apps/portal/data/seo-audit/nightly-report.json'; then
+            echo "SEO audit je neočekivano promijenio datoteke izvan nightly-report.json."
+            git status --short
+            exit 1
+          fi
+          echo "Noćni SEO audit je read-only prema production main grani."
