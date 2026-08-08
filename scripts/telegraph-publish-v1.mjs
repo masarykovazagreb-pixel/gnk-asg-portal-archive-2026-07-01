@@ -35,13 +35,23 @@ function readArticle(routePath) {
   const html = readFileSync(file, 'utf8');
   const meta = (name, attr = 'name') => { const m = html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`)); return m ? unescapeHtml(m[1]) : ''; };
   const title = (meta('og:title', 'property') || (html.match(/<title>([^<]*)<\/title>/) || [, ''])[1]).split(' | ')[0].trim();
-  const image = meta('og:image', 'property');
+  const ogImage = meta('og:image', 'property');
   const body = (html.match(/<article[\s\S]*?<\/article>/) || [])[0] || html;
   const paragraphs = [...body.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
     .map((m) => unescapeHtml(m[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()))
     .filter((t) => t.length > 40);
   if (!title || paragraphs.length < 2) return null;
-  return { title, image, paragraphs };
+
+  // izvuci SVE slike unutar clanka (ne samo og:image), za bogatiji Telegraph zapis
+  const slikeIzTijela = [...body.matchAll(/<img\b[^>]*src="([^"]+)"[^>]*>/g)]
+    .map((m) => m[1])
+    .filter((src) => src.startsWith('http') || src.startsWith('/'))
+    .map((src) => (src.startsWith('/') ? `${SITE}${src}` : src))
+    .filter((src) => !/logo|watermark|favicon/i.test(src));
+
+  const sveSlike = [...new Set([ogImage, ...slikeIzTijela].filter(Boolean))];
+
+  return { title, images: sveSlike, paragraphs };
 }
 
 function telegraphRequest(method, body) {
@@ -96,8 +106,8 @@ async function main() {
     if (!clanak) { greske.push({ path: item.path, error: 'nema dovoljno sadržaja za člankak' }); continue; }
 
     const content = [];
-    if (clanak.image) {
-      content.push({ tag: 'figure', children: [{ tag: 'img', attrs: { src: clanak.image } }] });
+    for (const slika of clanak.images.slice(0, 8)) {
+      content.push({ tag: 'figure', children: [{ tag: 'img', attrs: { src: slika } }] });
     }
     for (const p of clanak.paragraphs.slice(0, 25)) {
       content.push({ tag: 'p', children: [p] });
