@@ -16,13 +16,9 @@ on:
       - 'scripts/normalize_index_live_data_cadence.py'
       - 'scripts/test_index_live_data_cadence_v1.py'
       - 'apps/portal/assets/market.js'
-      - 'apps/portal/assets/news-live.js'
       - 'apps/portal/data/market.json'
       - 'apps/portal/data/market_indices.json'
       - 'apps/portal/data/fast_market_status.json'
-      - 'apps/portal/data/news.json'
-      - 'apps/portal/data/news_archive.json'
-      - 'apps/portal/data/news-status.json'
 
 permissions:
   contents: read
@@ -43,7 +39,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Refresh public index feeds
+      - name: Refresh public market feeds
         run: |
           python scripts/refresh_index_live_data.py
           python scripts/refresh_world_market_indices.py
@@ -53,7 +49,7 @@ jobs:
         run: python scripts/test_index_live_data_cadence_v1.py
       - name: Confirm freshness contract
         run: python scripts/validate_index_live_data.py
-      - name: Upload refreshed data evidence
+      - name: Upload refreshed market-data evidence
         uses: actions/upload-artifact@v4
         with:
           name: refreshed-index-live-data
@@ -61,9 +57,6 @@ jobs:
             apps/portal/data/market.json
             apps/portal/data/market_indices.json
             apps/portal/data/fast_market_status.json
-            apps/portal/data/news.json
-            apps/portal/data/news_archive.json
-            apps/portal/data/news-status.json
           if-no-files-found: error
           retention-days: 3
 
@@ -80,18 +73,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Refresh and validate public index feeds
+      - name: Refresh and validate public market feeds
         run: |
           python scripts/refresh_index_live_data.py
           python scripts/refresh_world_market_indices.py
           python scripts/normalize_index_live_data_cadence.py
           python scripts/test_index_live_data_cadence_v1.py
           python scripts/validate_index_live_data.py
-      - name: Commit refreshed public data
+      - name: Commit refreshed public market data
         run: |
           git config user.name 'gnk-asg-live-data-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add apps/portal/data/market.json apps/portal/data/market_indices.json apps/portal/data/fast_market_status.json apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/news-status.json
+          git add apps/portal/data/market.json apps/portal/data/market_indices.json apps/portal/data/fast_market_status.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Refresh index market and business news data [skip ci]'
+          git commit -m 'Refresh index market data [skip ci]'
           git push origin HEAD:main
