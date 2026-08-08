@@ -50,7 +50,7 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Sync latest main and isolate durable mirror state
+      - name: Sync latest main and restore durable mirror state
         shell: bash
         run: |
           set -euo pipefail
@@ -58,12 +58,35 @@ jobs:
           git config user.email "actions@github.com"
           git fetch origin main --no-tags
           git reset --hard origin/main
-          if git fetch origin automation/blog-mirror-state:refs/remotes/origin/automation/blog-mirror-state --no-tags 2>/dev/null; then
-            git checkout -B automation/blog-mirror-state refs/remotes/origin/automation/blog-mirror-state
-            git merge --no-edit origin/main
-          else
-            git checkout -b automation/blog-mirror-state origin/main
-          fi
+          git fetch origin automation/blog-mirror-state:refs/remotes/origin/automation/blog-mirror-state --no-tags 2>/dev/null || true
+          git checkout -B automation/blog-mirror-state origin/main
+
+          restore_state() {
+            path="$1"
+            tmp="${path}.state-tmp"
+            mkdir -p "$(dirname "$path")"
+            rm -f "$tmp"
+            if git show "refs/remotes/origin/automation/blog-mirror-state:${path}" > "$tmp" 2>/dev/null \
+              && node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" "$tmp" 2>/dev/null; then
+              mv "$tmp" "$path"
+              echo "Restored durable state: $path"
+              return 0
+            fi
+            rm -f "$tmp"
+            if git show "a13f0ba51:${path}" > "$tmp" 2>/dev/null \
+              && node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" "$tmp" 2>/dev/null; then
+              mv "$tmp" "$path"
+              echo "Recovered durable state from last known-good checkpoint: $path"
+              return 0
+            fi
+            rm -f "$tmp"
+            echo "No valid historical state for $path; keeping current-main copy."
+          }
+
+          restore_state apps/portal/data/blog-content/published.json
+          restore_state apps/portal/data/devto-content/published.json
+          restore_state apps/portal/data/tumblr-content/published.json
+
           echo "Mirror state branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Release main remains: $(git rev-parse origin/main)"
 
@@ -123,12 +146,12 @@ jobs:
           const path=require('path');
           const read=(p,f)=>{try{return JSON.parse(fs.readFileSync(p,'utf8'))}catch{return f}};
           const registry=read('apps/portal/data/editorial-registry.json',{items:[]});
-          const blog=read('apps/portal/data/blog-content/published.json',{});
+          const blog=read('apps/portal/data/blog-content/published.json',{posted:{}});
           const devto=read('apps/portal/data/devto-content/published.json',{posted:{}});
           const tumblr=read('apps/portal/data/tumblr-content/published.json',{posted:{}});
           const countState=(v)=>Array.isArray(v)?v.length:(v&&v.posted?Object.keys(v.posted).length:(v&&v.items?Object.keys(v.items).length:Object.keys(v||{}).length));
           const health={
-            version:'GNK_ASG_THREE_BLOG_PARITY_V2_STATE_BRANCH',
+            version:'GNK_ASG_THREE_BLOG_PARITY_V3_STATE_OVERLAY',
             generatedAt:new Date().toISOString(),
             canonicalSource:'https://gnk-asg.hr',
             registryTotal:(registry.items||[]).length,
@@ -137,7 +160,7 @@ jobs:
               devto:{credentials:process.env.DEVTO_CREDENTIAL_STATE||'unknown',published:countState(devto)},
               tumblr:{credentials:process.env.TUMBLR_CREDENTIAL_STATE||'unknown',published:countState(tumblr)}
             },
-            policy:{singleWriter:true,dedupeByPlatformState:true,canonicalBacklinkRequired:true,stateBranch:'automation/blog-mirror-state',mainWrites:false}
+            policy:{singleWriter:true,dedupeByPlatformState:true,canonicalBacklinkRequired:true,stateBranch:'automation/blog-mirror-state',mainWrites:false,stateSync:'validated-overlay-no-branch-merge'}
           };
           const out='apps/portal/data/blog-content/parity.json';
           fs.mkdirSync(path.dirname(out),{recursive:true});
@@ -154,7 +177,7 @@ jobs:
           echo "- Dev.to credentials: **${DEVTO_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
           echo "- Tumblr credentials: **${TUMBLR_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
           if [ -s apps/portal/data/blog-content/health.json ]; then
-            node -e "const h=require('./apps/portal/data/blog-content/health.json'); console.log('- Blogger pending after run: **'+h.pending+'**')" >> "$GITHUB_STEP_SUMMARY"
+            node -e "const fs=require('fs'); try { const h=JSON.parse(fs.readFileSync('apps/portal/data/blog-content/health.json','utf8')); console.log('- Blogger pending after run: **'+h.pending+'**') } catch { console.log('- Blogger health JSON: **unavailable**') }" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo '- Canonical source: **https://gnk-asg.hr**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Durable state branch: **automation/blog-mirror-state**' >> "$GITHUB_STEP_SUMMARY"
