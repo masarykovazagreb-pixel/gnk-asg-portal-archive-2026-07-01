@@ -50,7 +50,7 @@ function fileForUrl(raw) {
   const href = normalizeUrl(raw);
   if (!href.startsWith(ORIGIN)) return null;
   const u = new URL(href);
-  let rel = decodeURIComponent(u.pathname).replace(/^\/+|\/+$/g, '');
+  const rel = decodeURIComponent(u.pathname).replace(/^\/+|\/+$/g, '');
   if (!rel) return path.join(ROOT, 'index.html');
   if (path.posix.extname(rel)) return path.join(ROOT, rel);
   return path.join(ROOT, rel, 'index.html');
@@ -73,7 +73,6 @@ function hasLanguageUi(html) {
 
 const pages = new Map();
 const errors = [];
-const warnings = [];
 
 for (const file of walk(ROOT)) {
   if (isExcluded(file)) continue;
@@ -93,7 +92,7 @@ for (const file of walk(ROOT)) {
 
   const route = routeForFile(file);
   const expectsParity = hasLanguageUi(html) || alternates.has('hr') || alternates.has('en') || alternates.has('x-default');
-  pages.set(file, { file, html, route, canonical, alternates, expectsParity });
+  pages.set(file, { file, route, canonical, alternates, expectsParity });
 }
 
 for (const page of pages.values()) {
@@ -118,8 +117,15 @@ for (const page of pages.values()) {
   const en = page.alternates.get('en');
   const xd = page.alternates.get('x-default');
 
-  if (xd && hr && xd !== hr) {
-    errors.push(`${label}: x-default must equal HR canonical target (${xd} != ${hr})`);
+  if (xd) {
+    if (!xd.startsWith(ORIGIN)) {
+      errors.push(`${label}: hreflang x-default points off-origin: ${xd}`);
+    } else {
+      const target = fileForUrl(xd);
+      if (!target || !fs.existsSync(target)) {
+        errors.push(`${label}: hreflang x-default target missing locally: ${xd}`);
+      }
+    }
   }
 
   for (const [lang, href] of [['hr', hr], ['en', en]]) {
@@ -158,10 +164,6 @@ for (const page of pages.values()) {
 
 const audited = [...pages.values()].filter(p => p.expectsParity).length;
 console.log(`HR/EN parity audit: ${pages.size} public indexable pages scanned; ${audited} parity-enabled pages checked.`);
-if (warnings.length) {
-  console.warn(`Warnings (${warnings.length}):`);
-  for (const w of warnings) console.warn(`- ${w}`);
-}
 if (errors.length) {
   console.error(`Parity errors (${errors.length}):`);
   for (const e of errors) console.error(`- ${e}`);
