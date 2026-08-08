@@ -14,7 +14,7 @@ const STATE = resolve('apps/portal/data/devto-content/published.json');
 const RESULT = resolve('apps/portal/data/devto-content/zadnji-rezultat.json');
 const SITE = 'https://gnk-asg.hr';
 const PER_RUN = Number(process.env.DEVTO_PER_RUN || 6);
-const PAUSE_MS = Number(process.env.DEVTO_PAUSE_MS || 300000);
+const PAUSE_MS = Number(process.env.DEVTO_PAUSE_MS || 35000);
 const LIVE = process.argv.includes('--live');
 const API_KEY = process.env.DEVTO_API_KEY;
 const BASE_TAGS = ['business', 'croatia', 'nerminsefic'];
@@ -149,10 +149,15 @@ async function reconcileOneAfter422(item, state) {
   return true;
 }
 
+function isRateLimitError(value) {
+  const msg = String(value || '').toLowerCase();
+  return msg.includes('dev.to 429') || msg.includes('rate limit');
+}
+
 async function main() {
   const registry = readJson(REGISTRY, { items: [] });
   const state = readJson(STATE, { posted: {} });
-  const rezultat = { poslano: 0, reconciled: 0, remote: 0, preskoceno_bez_en: 0, greske: [] };
+  const rezultat = { poslano: 0, reconciled: 0, remote: 0, preskoceno_bez_en: 0, rateLimited: false, greske: [] };
 
   if (LIVE && !API_KEY) throw new Error('DEVTO_API_KEY nije postavljen.');
   try {
@@ -184,6 +189,7 @@ async function main() {
     try {
       const objava = await publishArticle(clanak, item);
       state.posted[item.path] = { at: new Date().toISOString(), devtoUrl: objava.url, id: objava.id, canonicalUrl: objava.canonical_url };
+      writeJson(STATE, state);
       rezultat.poslano++;
       console.log(`Objavljeno: ${objava.url}`);
     } catch (e) {
@@ -197,6 +203,11 @@ async function main() {
       }
       rezultat.greske.push({ path: item.path, error: msg.slice(0, 300) });
       console.error(`Greska za ${item.path}:`, e.message || e);
+      if (isRateLimitError(msg)) {
+        rezultat.rateLimited = true;
+        console.log('Dev.to rate limit reached; stopping this batch cleanly so the next scheduled run can continue.');
+        break;
+      }
     }
     await sleep(PAUSE_MS);
   }
@@ -204,7 +215,8 @@ async function main() {
   if (LIVE) writeJson(STATE, state);
   writeJson(RESULT, { kad: new Date().toISOString(), ...rezultat });
   console.log('\nSazetak:', JSON.stringify(rezultat, null, 2));
-  if (rezultat.greske.length) process.exitCode = 1;
+  const meaningfulProgress = rezultat.poslano > 0 || rezultat.reconciled > 0;
+  if (rezultat.greske.length && !meaningfulProgress && !rezultat.rateLimited && pending.length > 0) process.exitCode = 1;
 }
 
 main().catch((e) => {
