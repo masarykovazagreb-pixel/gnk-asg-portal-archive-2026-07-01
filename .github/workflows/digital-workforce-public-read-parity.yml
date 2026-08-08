@@ -1,0 +1,39 @@
+name: Digital Workforce Public Read Parity
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/assets/digital-workforce-suite-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/digital-workforce-public-read-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js'
+      - 'scripts/test-digital-workforce-public-read-parity-v1.mjs'
+      - '.github/workflows/digital-workforce-public-read-parity.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/assets/digital-workforce-suite-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/digital-workforce-public-read-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js'
+      - 'scripts/test-digital-workforce-public-read-parity-v1.mjs'
+      - '.github/workflows/digital-workforce-public-read-parity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check workers/gnk-asg-direct-operator/src/digital-workforce-public-read-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
+          node --check scripts/test-digital-workforce-public-read-parity-v1.mjs
+      - name: Public read API parity and truthful semantics
+        run: node scripts/test-digital-workforce-public-read-parity-v1.mjs
