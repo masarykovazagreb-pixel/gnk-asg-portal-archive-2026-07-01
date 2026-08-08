@@ -1,13 +1,75 @@
 {
-  "updated_at": "2026-08-07T15:58:01.518302+00:00",
+  "updated_at": "2026-08-08T15:31:45.268615+00:00",
   "cadence": "twice daily around 09:05 and 17:05 Europe/Zagreb",
-  "source": "Stooq public market quote feed",
-  "indices": [],
-  "errors": [
+  "source": "Yahoo Finance public chart feed",
+  "indices": [
     {
-      "id": "all",
-      "error": "HTTP Error 404: Not Found"
+      "id": "sp500",
+      "symbol": "^GSPC",
+      "label": "S&P 500",
+      "region": "SAD",
+      "current": 7757.64,
+      "previous_close": 7489.72,
+      "change_percent": 3.58,
+      "as_of": "2026-08-07T20:50:24+00:00",
+      "exchange": "SNP"
+    },
+    {
+      "id": "nasdaq",
+      "symbol": "^IXIC",
+      "label": "Nasdaq Composite",
+      "region": "SAD",
+      "current": 26690.615,
+      "previous_close": 25373.85,
+      "change_percent": 5.19,
+      "as_of": "2026-08-07T21:15:59+00:00",
+      "exchange": "NIM"
+    },
+    {
+      "id": "dax",
+      "symbol": "^GDAXI",
+      "label": "DAX",
+      "region": "Njemačka",
+      "current": 26319.45,
+      "previous_close": 25629.24,
+      "change_percent": 2.69,
+      "as_of": "2026-08-07T16:00:00+00:00",
+      "exchange": "GER"
+    },
+    {
+      "id": "ftse",
+      "symbol": "^FTSE",
+      "label": "FTSE 100",
+      "region": "UK",
+      "current": 10901.09,
+      "previous_close": 10868.1,
+      "change_percent": 0.3,
+      "as_of": "2026-08-07T15:35:29+00:00",
+      "exchange": "FGI"
+    },
+    {
+      "id": "nikkei",
+      "symbol": "^N225",
+      "label": "Nikkei 225",
+      "region": "Japan",
+      "current": 65606.71,
+      "previous_close": 63754.9,
+      "change_percent": 2.9,
+      "as_of": "2026-08-07T06:45:02+00:00",
+      "exchange": "OSA"
+    },
+    {
+      "id": "cac40",
+      "symbol": "^FCHI",
+      "label": "CAC 40",
+      "region": "Francuska",
+      "current": 8714.93,
+      "previous_close": 8613.82,
+      "change_percent": 1.17,
+      "as_of": "2026-08-07T16:05:02+00:00",
+      "exchange": "PAR"
     }
   ],
+  "errors": [],
   "notice": "Informativni prikaz posljednjih dostupnih vrijednosti; podatci mogu biti odgođeni."
 }
