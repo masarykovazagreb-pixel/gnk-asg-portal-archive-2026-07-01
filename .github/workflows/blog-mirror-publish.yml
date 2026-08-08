@@ -59,6 +59,8 @@ jobs:
           git fetch origin main --no-tags
           git reset --hard origin/main
           git fetch origin automation/blog-mirror-state:refs/remotes/origin/automation/blog-mirror-state --no-tags 2>/dev/null || true
+          remote_state_sha="$(git rev-parse refs/remotes/origin/automation/blog-mirror-state 2>/dev/null || true)"
+          echo "BLOG_MIRROR_REMOTE_SHA=$remote_state_sha" >> "$GITHUB_ENV"
           git checkout -B automation/blog-mirror-state origin/main
 
           restore_state() {
@@ -115,7 +117,9 @@ jobs:
           printf 'Credential state: Blogger=%s Dev.to=%s Tumblr=%s\n' "$blogger" "$devto" "$tumblr"
 
       - name: Blogger mirror - quota aware catch-up
+        id: blogger_publish
         if: env.BLOGGER_CREDENTIAL_STATE == 'ok'
+        continue-on-error: true
         env:
           BLOG_PER_RUN: '10'
           BLOG_PAUSE_MS: '15000'
@@ -124,14 +128,18 @@ jobs:
         run: node scripts/blog-publish-resilient-v1.mjs
 
       - name: Dev.to mirror - publish pending English routes
+        id: devto_publish
         if: env.DEVTO_CREDENTIAL_STATE == 'ok'
+        continue-on-error: true
         env:
-          DEVTO_PER_RUN: '16'
-          DEVTO_PAUSE_MS: '10000'
+          DEVTO_PER_RUN: '8'
+          DEVTO_PAUSE_MS: '35000'
         run: node scripts/devto-publish-v1.mjs --live
 
       - name: Tumblr mirror - publish pending English routes
+        id: tumblr_publish
         if: env.TUMBLR_CREDENTIAL_STATE == 'ok'
+        continue-on-error: true
         env:
           TUMBLR_PER_RUN: '16'
           TUMBLR_PAUSE_MS: '3000'
@@ -151,7 +159,7 @@ jobs:
           const tumblr=read('apps/portal/data/tumblr-content/published.json',{posted:{}});
           const countState=(v)=>Array.isArray(v)?v.length:(v&&v.posted?Object.keys(v.posted).length:(v&&v.items?Object.keys(v.items).length:Object.keys(v||{}).length));
           const health={
-            version:'GNK_ASG_THREE_BLOG_PARITY_V3_STATE_OVERLAY',
+            version:'GNK_ASG_THREE_BLOG_PARITY_V4_RACE_SAFE',
             generatedAt:new Date().toISOString(),
             canonicalSource:'https://gnk-asg.hr',
             registryTotal:(registry.items||[]).length,
@@ -160,7 +168,7 @@ jobs:
               devto:{credentials:process.env.DEVTO_CREDENTIAL_STATE||'unknown',published:countState(devto)},
               tumblr:{credentials:process.env.TUMBLR_CREDENTIAL_STATE||'unknown',published:countState(tumblr)}
             },
-            policy:{singleWriter:true,dedupeByPlatformState:true,canonicalBacklinkRequired:true,stateBranch:'automation/blog-mirror-state',mainWrites:false,stateSync:'validated-overlay-no-branch-merge'}
+            policy:{singleWriter:true,dedupeByPlatformState:true,canonicalBacklinkRequired:true,stateBranch:'automation/blog-mirror-state',mainWrites:false,stateSync:'validated-overlay-force-with-lease-and-union-retry'}
           };
           const out='apps/portal/data/blog-content/parity.json';
           fs.mkdirSync(path.dirname(out),{recursive:true});
@@ -197,16 +205,62 @@ jobs:
           else
             git commit -m "Blog mirror state: sync Blogger Dev.to Tumblr"
           fi
-          git push origin HEAD:automation/blog-mirror-state
-          test "$(git rev-parse origin/main)" = "$(git ls-remote origin refs/heads/main | awk '{print $1}')"
-          echo "Mirror state spremljen bez pomicanja production main grane."
 
-      - name: Enforce three-channel credential parity
+          expected="${BLOG_MIRROR_REMOTE_SHA:-}"
+          lease="--force-with-lease=refs/heads/automation/blog-mirror-state:${expected}"
+          if git push "$lease" origin HEAD:automation/blog-mirror-state; then
+            echo "Mirror state spremljen uz lease zaštitu."
+          else
+            echo "Remote state se promijenio tijekom runa; radim union statea i jedan sigurni retry."
+            git fetch origin automation/blog-mirror-state:refs/remotes/origin/automation/blog-mirror-state --force --no-tags
+            latest="$(git rev-parse refs/remotes/origin/automation/blog-mirror-state)"
+            for state in \
+              apps/portal/data/blog-content/published.json \
+              apps/portal/data/devto-content/published.json \
+              apps/portal/data/tumblr-content/published.json; do
+              remote_tmp="/tmp/remote-$(echo "$state" | tr '/' '_')"
+              if git show "refs/remotes/origin/automation/blog-mirror-state:${state}" > "$remote_tmp" 2>/dev/null; then
+                node - "$remote_tmp" "$state" <<'NODE'
+          const fs=require('fs');
+          const [remotePath,localPath]=process.argv.slice(2);
+          const read=(p)=>{try{return JSON.parse(fs.readFileSync(p,'utf8'))}catch{return {posted:{}}}};
+          const remote=read(remotePath), local=read(localPath);
+          const merged={...remote,...local,posted:{...(remote.posted||{}),...(local.posted||{})}};
+          fs.writeFileSync(localPath,JSON.stringify(merged,null,2)+'\n');
+          NODE
+              fi
+            done
+            git add apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ || true
+            if git diff --cached --quiet; then
+              echo "Union nije dodao promjene."
+            else
+              git commit --amend --no-edit
+            fi
+            git push "--force-with-lease=refs/heads/automation/blog-mirror-state:${latest}" origin HEAD:automation/blog-mirror-state
+            echo "Mirror state spremljen nakon union retryja."
+          fi
+
+          test "$(git rev-parse origin/main)" = "$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          echo "Production main nije pomaknut ovim state zapisom."
+
+      - name: Enforce three-channel operational result
         if: always()
+        env:
+          BLOGGER_OUTCOME: ${{ steps.blogger_publish.outcome }}
+          DEVTO_OUTCOME: ${{ steps.devto_publish.outcome }}
+          TUMBLR_OUTCOME: ${{ steps.tumblr_publish.outcome }}
         shell: bash
         run: |
           if [ "${PARITY_BLOCKED:-1}" = 1 ]; then
             echo "Distribucija nije potpuno automatizirana: najmanje jedan od tri kanala nema trajne GitHub Actions credentials."
+            exit 1
+          fi
+          failed=0
+          for result in "$BLOGGER_OUTCOME" "$DEVTO_OUTCOME" "$TUMBLR_OUTCOME"; do
+            [ "$result" = failure ] && failed=1
+          done
+          if [ "$failed" = 1 ]; then
+            echo "Najmanje jedan kanal imao je operativni neuspjeh; ostali kanali su ipak odradjeni i state je sacuvan."
             exit 1
           fi
           echo "Sva tri kanala imaju trajne credentials i odradila su isti single-writer ciklus."
