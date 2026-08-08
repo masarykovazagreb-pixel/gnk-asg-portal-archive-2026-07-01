@@ -65,7 +65,22 @@ function telegraphRequest(method, body) {
 
 async function main() {
   const registry = readJson(REGISTRY, { items: [] });
-  const state = readJson(STATE, { posted: {} });
+  const state = readJson(STATE, { posted: {}, accessToken: null });
+
+  if (!state.accessToken) {
+    console.log('Nemam pohranjen access_token, kreiram novi anoniman Telegraph racun...');
+    const racun = await telegraphRequest('createAccount', {
+      short_name: AUTHOR,
+      author_name: AUTHOR,
+      author_url: `${SITE}/nermin-sefic/`,
+    });
+    if (!racun.ok || !racun.result?.access_token) {
+      console.error('Ne mogu kreirati Telegraph racun:', JSON.stringify(racun));
+      process.exit(1);
+    }
+    state.accessToken = racun.result.access_token;
+    console.log('Racun kreiran, token spremljen za buduce pokretanja.');
+  }
 
   const pending = (registry.items || [])
     .filter((i) => i.path && !state.posted[i.path])
@@ -93,6 +108,7 @@ async function main() {
 
     try {
       const rezultat = await telegraphRequest('createPage', {
+        access_token: state.accessToken,
         title: clanak.title,
         author_name: AUTHOR,
         author_url: `${SITE}/nermin-sefic/`,
