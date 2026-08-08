@@ -11,85 +11,13 @@ DATA = ROOT / "apps/portal/data"
 UA = {"User-Agent": "GNK-ASG-Public-Data-Refresh/1.0"}
 COINS = "bitcoin,ethereum,solana,ripple"
 CURRENCIES = "eur,usd,gbp,chf,jpy"
-
-INDEXES = {
-    "sp500": {"symbol": "^spx", "label": "S&P 500", "region": "SAD"},
-    "nasdaq": {"symbol": "^ndq", "label": "Nasdaq Composite", "region": "SAD"},
-    "dax": {"symbol": "^dax", "label": "DAX", "region": "Njemačka"},
-    "ftse": {"symbol": "^ftse", "label": "FTSE 100", "region": "UK"},
-    "nikkei": {"symbol": "^n225", "label": "Nikkei 225", "region": "Japan"},
-    "cac40": {"symbol": "^cac", "label": "CAC 40", "region": "Francuska"},
-}
+CADENCE = "twice daily around 09:05 and 17:05 Europe/Zagreb"
 
 
 def get(url: str) -> bytes:
     request = urllib.request.Request(url, headers=UA)
     with urllib.request.urlopen(request, timeout=30) as response:
         return response.read()
-
-
-def refresh_market_indices(now: str) -> int:
-    codes = ",".join(meta["symbol"] for meta in INDEXES.values())
-    url = f"https://stooq.com/q/l/?s={codes}&f=sd2t2ohlc&h&e=csv"
-    indices: list[dict] = []
-    errors: list[dict] = []
-    try:
-        raw = get(url).decode("utf-8", errors="replace")
-        lines = [line for line in raw.strip().splitlines() if line]
-        rows: dict[str, list[str]] = {}
-        for line in lines[1:]:
-            cols = line.split(",")
-            if cols:
-                rows[cols[0].strip().lower()] = cols
-        for key, meta in INDEXES.items():
-            cols = rows.get(meta["symbol"].lower())
-            if not cols or len(cols) < 7:
-                errors.append({"id": key, "error": "missing_row"})
-                continue
-            try:
-                open_price = float(cols[3])
-                close_price = float(cols[6])
-            except (ValueError, IndexError):
-                errors.append({"id": key, "error": "invalid_values"})
-                continue
-            if open_price <= 0:
-                errors.append({"id": key, "error": "invalid_open"})
-                continue
-            indices.append({
-                "id": key,
-                "symbol": meta["symbol"],
-                "label": meta["label"],
-                "region": meta["region"],
-                "current": close_price,
-                "previous_close": open_price,
-                "change_percent": round(((close_price / open_price) - 1) * 100, 2),
-                "as_of": cols[1] if len(cols) > 1 else None,
-            })
-    except Exception as exc:
-        errors.append({"id": "all", "error": str(exc)[:150]})
-
-    (DATA / "market_indices.json").write_text(
-        json.dumps({
-            "updated_at": now,
-            "cadence": "09:05 and 17:05 Europe/Zagreb",
-            "source": "Stooq public market quote feed",
-            "indices": indices,
-            "errors": errors,
-            "notice": "Informativni prikaz posljednjih dostupnih vrijednosti; podatci mogu biti odgođeni.",
-        }, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    status = {
-        "updated_at": now,
-        "cadence": "09:05 and 17:05 Europe/Zagreb",
-        "status": "ok" if len(indices) == len(INDEXES) else ("partial" if indices else "degraded"),
-        "indices": len(indices),
-        "errors": errors,
-    }
-    (DATA / "fast_market_status.json").write_text(
-        json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
-    return len(indices)
 
 
 def refresh_market(now: str) -> None:
@@ -116,7 +44,7 @@ def refresh_market(now: str) -> None:
         raise RuntimeError("CoinGecko response is incomplete")
     payload = {
         "updated_at": now,
-        "cadence": "09:05 and 17:05 Europe/Zagreb",
+        "cadence": CADENCE,
         "source": "CoinGecko public market data",
         "status": "ok",
         "coins": coins,
@@ -127,26 +55,24 @@ def refresh_market(now: str) -> None:
 
 
 def main() -> int:
-    """Refresh market data only.
+    """Refresh crypto market data only.
 
-    News/Aktual ownership belongs exclusively to GNK News Refresh V2. Keeping
-    market and news writers separate prevents duplicate refreshes, stale archive
-    rewrites and cross-workflow races on news.json/news_archive.json.
+    Ownership is intentionally split: this script owns market.json,
+    refresh_world_market_indices.py owns market_indices.json and
+    fast_market_status.json, and GNK News Refresh V2 exclusively owns
+    Aktual/news files. This prevents cross-workflow and intra-workflow races.
     """
     DATA.mkdir(parents=True, exist_ok=True)
     now = datetime.now(timezone.utc).isoformat()
     refresh_market(now)
-    index_count = refresh_market_indices(now)
     market = json.loads((DATA / "market.json").read_text(encoding="utf-8"))
     if market.get("updated_at") != now or len(market.get("coins", [])) != 4:
         raise SystemExit("Market live-data validation failed")
-    if index_count == 0:
-        raise SystemExit("Market index refresh returned no indices")
     print(json.dumps({
         "ok": True,
         "market_updated_at": now,
         "coins": len(market.get("coins", [])),
-        "indices": index_count,
+        "indices_writer": "refresh_world_market_indices.py",
         "news_writer": "GNK News Refresh V2",
     }, ensure_ascii=False))
     return 0
