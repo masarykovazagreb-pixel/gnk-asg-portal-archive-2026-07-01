@@ -93,7 +93,7 @@ async function main() {
   }
 
   const pending = (registry.items || [])
-    .filter((i) => i.path && !state.posted[i.path])
+    .filter((i) => i.path && i.path.startsWith('/en/') && !state.posted[i.path])
     .sort((a, b) => new Date(a.publishedAt || 0) - new Date(b.publishedAt || 0));
 
   console.log(`U registru ukupno: ${(registry.items || []).length}. Čekaju na Telegraph: ${pending.length}.`);
