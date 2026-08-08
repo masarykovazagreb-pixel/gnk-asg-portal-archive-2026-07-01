@@ -22,14 +22,16 @@ jobs:
         run: |
           lighthouse https://gnk-asg.hr/ \
             --output=json --output-path=artifacts/lh-hr-desktop.json \
-            --preset=desktop --chrome-flags="--headless --no-sandbox" \
+            --preset=desktop --chrome-flags="--headless --no-sandbox --lang=hr-HR" \
+            --extra-headers='{"Accept-Language":"hr-HR,hr;q=0.9"}' \
             --only-categories=performance,accessibility,best-practices,seo || true
 
       - name: Mobile audit - HR homepage
         run: |
           lighthouse https://gnk-asg.hr/ \
             --output=json --output-path=artifacts/lh-hr-mobile.json \
-            --chrome-flags="--headless --no-sandbox" \
+            --chrome-flags="--headless --no-sandbox --lang=hr-HR" \
+            --extra-headers='{"Accept-Language":"hr-HR,hr;q=0.9"}' \
             --only-categories=performance,accessibility,best-practices,seo || true
 
       - name: Desktop audit - EN homepage
@@ -50,14 +52,16 @@ jobs:
         run: |
           lighthouse https://gnk-asg.hr/gnk-aktual/ \
             --output=json --output-path=artifacts/lh-aktual-hr-desktop.json \
-            --preset=desktop --chrome-flags="--headless --no-sandbox" \
+            --preset=desktop --chrome-flags="--headless --no-sandbox --lang=hr-HR" \
+            --extra-headers='{"Accept-Language":"hr-HR,hr;q=0.9"}' \
             --only-categories=performance,accessibility,best-practices,seo || true
 
       - name: Mobile audit - AKTUAL (HR)
         run: |
           lighthouse https://gnk-asg.hr/gnk-aktual/ \
             --output=json --output-path=artifacts/lh-aktual-hr-mobile.json \
-            --chrome-flags="--headless --no-sandbox" \
+            --chrome-flags="--headless --no-sandbox --lang=hr-HR" \
+            --extra-headers='{"Accept-Language":"hr-HR,hr;q=0.9"}' \
             --only-categories=performance,accessibility,best-practices,seo || true
 
       - name: Sazmi rezultate
