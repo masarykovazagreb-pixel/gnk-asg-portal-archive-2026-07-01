@@ -1,0 +1,25 @@
+<!doctype html><html lang="hr" class="gnk-unified-shell"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Telegraph — svi objavljeni tekstovi | GNK ASG</title><meta name="description" content="Popis svih tekstova GNK ASG-a i Nermina Sefića objavljenih na Telegraph.ph platformi, s poveznicama na izvorne članke."><meta name="robots" content="index,follow"><link rel="canonical" href="https://gnk-asg.hr/telegraph-clanci/"><meta property="og:type" content="website"><meta property="og:locale" content="hr_HR"><meta property="og:site_name" content="GNK ASG"><meta property="og:title" content="Telegraph — svi objavljeni tekstovi | GNK ASG"><meta property="og:description" content="Popis svih tekstova objavljenih na Telegraph.ph platformi."><meta property="og:url" content="https://gnk-asg.hr/telegraph-clanci/"><link rel="stylesheet" href="/assets/style.css?v=20260723-dark-gold-theme-v1"><link rel="stylesheet" href="/assets/editorial-content-v2.css?v=20260713"></head><body><header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/telegraph-clanci/" aria-label="Hrvatski" aria-current="page">HR</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">MENU</button></div><nav id="gnk-unified-nav"></nav></div></div></header><main class="editorial-wrap article"><header class="article-header"><p class="eyebrow">Blogovi</p><h1>Telegraph — svi objavljeni tekstovi</h1><p class="lead">Popis svih engleskih tekstova GNK ASG-a objavljenih na Telegraph.ph platformi. Svaki tekst sadrži poveznicu natrag na izvorni članak na gnk-asg.hr.</p></header><article class="article-body">
+<div id="telegraphLista"><p>Učitavanje...</p></div>
+</article></main>
+<script>
+fetch('/data/telegraph-content/published.json?v=' + Date.now(), {cache: 'no-store'})
+  .then(r => r.json())
+  .then(data => {
+    const posted = data.posted || {};
+    const el = document.getElementById('telegraphLista');
+    const stavke = Object.entries(posted);
+    if (!stavke.length) {
+      el.innerHTML = '<p>Trenutno nema objavljenih tekstova.</p>';
+      return;
+    }
+    stavke.sort((a, b) => new Date(b[1].at || 0) - new Date(a[1].at || 0));
+    el.innerHTML = '<ul style="list-style:none;padding:0;margin:0">' + stavke.map(([path, info]) => {
+      const naziv = path.split('/').filter(Boolean).pop().replace(/-/g, ' ');
+      return `<li style="padding:14px 0;border-bottom:1px solid #e0d8c0"><a href="${info.url}" target="_blank" rel="noopener" style="font-weight:700;color:#c81e1e;text-decoration:none">${naziv}</a><br><small style="color:#6b6455">Izvorni članak: <a href="${path}" style="color:#6b6455">gnk-asg.hr${path}</a></small></li>`;
+    }).join('') + '</ul>';
+  })
+  .catch(() => {
+    document.getElementById('telegraphLista').innerHTML = '<p>Popis trenutno nedostupan.</p>';
+  });
+</script>
+</body></html>
