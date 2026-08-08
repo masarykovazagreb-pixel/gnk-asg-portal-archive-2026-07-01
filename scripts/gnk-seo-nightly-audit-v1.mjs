@@ -22,6 +22,7 @@ const REZULTAT = {
     slikeBezAltTeksta: [],
     nedostajeJsonLd: [],
     kratakSadrzaj: [],       // < 250 rijeci za komentare/objave/analize
+    slikeBezDimenzija: [],   // slike bez width/height (Core Web Vitals + brze indeksiranje)
   },
   preporuke: [],
 };
@@ -77,6 +78,11 @@ function provjeriStranicu(putanja) {
     REZULTAT.problemi.slikeBezAltTeksta.push({ putanja, broj: slikeBezAlt.length });
   }
 
+  const slikeBezDimenzija = slike.filter((s) => !/width="[0-9]+"/.test(s[0]) || !/height="[0-9]+"/.test(s[0]));
+  if (slikeBezDimenzija.length > 0) {
+    REZULTAT.problemi.slikeBezDimenzija.push({ putanja, broj: slikeBezDimenzija.length });
+  }
+
   if (!html.includes('application/ld+json')) {
     REZULTAT.problemi.nedostajeJsonLd.push(putanja);
   }
@@ -117,6 +123,9 @@ if (REZULTAT.problemi.kratakSadrzaj.length > 0) {
 }
 if (REZULTAT.problemi.slikeBezAltTeksta.length > 0) {
   REZULTAT.preporuke.push(`${REZULTAT.problemi.slikeBezAltTeksta.length} stranica ima slike bez alt teksta — utječe na pristupačnost i Google Images indeksiranje.`);
+}
+if (REZULTAT.problemi.slikeBezDimenzija.length > 0) {
+  REZULTAT.preporuke.push(`${REZULTAT.problemi.slikeBezDimenzija.length} stranica ima slike bez eksplicitnih width/height atributa — usporava Core Web Vitals (CLS) i indirektno indeksiranje.`);
 }
 
 fs.mkdirSync('apps/portal/data/seo-audit', { recursive: true });
