@@ -66,5 +66,19 @@ result = run(html({ words: 10, exception: true }));
 assert.equal(result.status, 0, result.stderr || result.stdout);
 assert.match(result.stdout, /digital-workforce-worker-exception/u);
 
+
+// A specifically enumerated, previously published authored statement may remain
+// text-locked even when it predates the later 3,000-word direct-static rule.
+const lockedRelative = 'apps/portal/objave/osvrt-na-2013-omega-factoring-nermin-sefic/index.html';
+const lockedAbsolute = path.join(temp, lockedRelative);
+fs.mkdirSync(path.dirname(lockedAbsolute), { recursive: true });
+fs.writeFileSync(lockedAbsolute, html({ words: 10 }));
+result = spawnSync(process.execPath, [validator, lockedRelative], {
+  cwd: temp, encoding: 'utf8',
+  env: { ...process.env, DIRECT_EDITORIAL_MIN_WORDS: '3000', DIRECT_EDITORIAL_MIN_INTERNAL_LINKS: '5' },
+});
+assert.equal(result.status, 0, result.stderr || result.stdout);
+assert.match(result.stdout, /locked-authored-statement-exception/u);
+
 fs.rmSync(temp, { recursive: true, force: true });
 console.log('DIRECT_STATIC_EDITORIAL_POLICY_TESTS_OK');
