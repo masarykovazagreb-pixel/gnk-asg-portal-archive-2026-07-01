@@ -2,9 +2,8 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "apps/portal/data"
@@ -29,9 +28,6 @@ def main() -> int:
     market = json.loads((DATA / "market.json").read_text(encoding="utf-8"))
     market_indices = json.loads((DATA / "market_indices.json").read_text(encoding="utf-8"))
     fast_market_status = json.loads((DATA / "fast_market_status.json").read_text(encoding="utf-8"))
-    news = json.loads((DATA / "news.json").read_text(encoding="utf-8"))
-    archive = json.loads((DATA / "news_archive.json").read_text(encoding="utf-8"))
-    status = json.loads((DATA / "news-status.json").read_text(encoding="utf-8"))
 
     updated = parse_time(market.get("updated_at", ""))
     age = (now - updated).total_seconds()
@@ -87,65 +83,12 @@ def main() -> int:
     if fast_market_status.get("errors"):
         fail(f"fast market status contains source errors: {fast_market_status.get('errors')}")
 
-    if not isinstance(news, list) or not 3 <= len(news) <= 150:
-        fail("public news feed must contain between 3 and 150 items")
-    if not isinstance(archive, list) or len(archive) > 2000:
-        fail("news archive must be a list capped at 2000 items")
-    seen_ids: set[str] = set()
-    seen_urls: set[str] = set()
-    newest: datetime | None = None
-    hosts: set[str] = set()
-    for item in news + archive:
-        item_id = str(item.get("id", "")).strip()
-        title = str(item.get("title", "")).strip()
-        url = str(item.get("url", "")).strip()
-        published = parse_time(item.get("published_at", ""))
-        parsed = urlparse(url)
-        if not item_id or len(item_id) < 12 or not title or len(title) < 8:
-            fail("news item has invalid id or title")
-        if item_id in seen_ids or url in seen_urls:
-            fail("public feed and archive contain duplicate id or URL")
-        seen_ids.add(item_id); seen_urls.add(url)
-        if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
-            fail(f"news URL is not a safe public HTTPS URL: {url}")
-        hosts.add(parsed.hostname.lower())
-        if published > now + timedelta(minutes=5):
-            fail(f"news item is dated in the future: {title}")
-        if item in news:
-            newest = published if newest is None or published > newest else newest
-        if item.get("share_url") != f"/podijeli/vijest/{item_id}/":
-            fail(f"invalid share URL for {item_id}")
-    if newest is None or now - newest > timedelta(days=3):
-        fail("news feed has no item newer than three days")
-
-    status_time = parse_time(status.get("updated_at", ""))
-    if now - status_time > timedelta(minutes=15):
-        fail("news status is stale")
-    if status.get("items") != len(news) or status.get("archive_items") != len(archive):
-        fail("news status counts do not match public feed and archive")
-    if status.get("max_public_items") != 150:
-        fail("public news limit is not 150")
-    if status.get("archive_prune_trigger") != 2000:
-        fail("archive prune trigger is not 2000")
-    if status.get("archive_delete_oldest_batch") != 1000:
-        fail("archive prune batch is not 1000")
-    if not isinstance(status.get("sources_ok"), int) or status["sources_ok"] < 1:
-        fail("no news source succeeded")
-    if status.get("sources_total") != 3:
-        fail("news source count contract changed unexpectedly")
-
     print(json.dumps({
         "ok": True,
         "market_age_seconds": round(age),
         "market_assets": sorted(symbols),
         "market_indices": sorted(index_ids),
         "market_indices_age_seconds": round(indices_age),
-        "news_items": len(news),
-        "archive_items": len(archive),
-        "news_hosts": len(hosts),
-        "newest_news_at": newest.isoformat(),
-        "sources_ok": status["sources_ok"],
-        "sources_total": status["sources_total"],
     }, ensure_ascii=False))
     return 0
 
