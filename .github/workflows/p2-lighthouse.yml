@@ -1,0 +1,99 @@
+name: P2 - Lighthouse Audit (jednokratno)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Instaliraj Lighthouse
+        run: npm install -g lighthouse
+
+      - name: Desktop audit - HR homepage
+        run: |
+          lighthouse https://gnk-asg.hr/ \
+            --output=json --output-path=artifacts/lh-hr-desktop.json \
+            --preset=desktop --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance,accessibility,best-practices,seo || true
+
+      - name: Mobile audit - HR homepage
+        run: |
+          lighthouse https://gnk-asg.hr/ \
+            --output=json --output-path=artifacts/lh-hr-mobile.json \
+            --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance,accessibility,best-practices,seo || true
+
+      - name: Desktop audit - EN homepage
+        run: |
+          lighthouse https://gnk-asg.hr/en/ \
+            --output=json --output-path=artifacts/lh-en-desktop.json \
+            --preset=desktop --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance,accessibility,best-practices,seo || true
+
+      - name: Mobile audit - EN homepage
+        run: |
+          lighthouse https://gnk-asg.hr/en/ \
+            --output=json --output-path=artifacts/lh-en-mobile.json \
+            --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance,accessibility,best-practices,seo || true
+
+      - name: Desktop audit - AKTUAL (HR)
+        run: |
+          lighthouse https://gnk-asg.hr/gnk-aktual/ \
+            --output=json --output-path=artifacts/lh-aktual-hr-desktop.json \
+            --preset=desktop --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance,accessibility,best-practices,seo || true
+
+      - name: Mobile audit - AKTUAL (HR)
+        run: |
+          lighthouse https://gnk-asg.hr/gnk-aktual/ \
+            --output=json --output-path=artifacts/lh-aktual-hr-mobile.json \
+            --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance,accessibility,best-practices,seo || true
+
+      - name: Sazmi rezultate
+        run: |
+          node -e "
+            const fs = require('fs');
+            const fajlovi = fs.readdirSync('artifacts').filter(f => f.startsWith('lh-'));
+            const sazetak = [];
+            for (const f of fajlovi) {
+              try {
+                const d = JSON.parse(fs.readFileSync('artifacts/' + f, 'utf8'));
+                const c = d.categories || {};
+                sazetak.push({
+                  fajl: f,
+                  url: d.finalUrl,
+                  performance: c.performance ? Math.round(c.performance.score * 100) : null,
+                  accessibility: c.accessibility ? Math.round(c.accessibility.score * 100) : null,
+                  bestPractices: c['best-practices'] ? Math.round(c['best-practices'].score * 100) : null,
+                  seo: c.seo ? Math.round(c.seo.score * 100) : null,
+                  LCP: d.audits?.['largest-contentful-paint']?.displayValue,
+                  CLS: d.audits?.['cumulative-layout-shift']?.displayValue,
+                  TBT: d.audits?.['total-blocking-time']?.displayValue,
+                });
+              } catch (e) {
+                sazetak.push({ fajl: f, greska: e.message });
+              }
+            }
+            fs.writeFileSync('artifacts/lighthouse-summary.json', JSON.stringify(sazetak, null, 2));
+            console.log(JSON.stringify(sazetak, null, 2));
+          "
+
+      - name: Commit izvještaje
+        run: |
+          git config user.name "gnk-lighthouse-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add artifacts/lh-*.json artifacts/lighthouse-summary.json
+          git diff --cached --quiet || git commit -m "chore: P2 Lighthouse audit reports"
+          git pull --rebase --autostash origin main
+          git push origin main
