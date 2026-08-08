@@ -1,0 +1,27 @@
+name: P1 - Digital Workforce Audit (jednokratno)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Pokreni audit
+        run: node scripts/gnk-digital-workforce-audit-v1.mjs
+      - name: Commit izvještaje
+        run: |
+          git config user.name "gnk-dw-audit-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add artifacts/digital-workforce-audit.json artifacts/digital-workforce-workers.csv
+          git diff --cached --quiet || git commit -m "chore: P1 Digital Workforce audit report"
+          git pull --rebase --autostash origin main
+          git push origin main
