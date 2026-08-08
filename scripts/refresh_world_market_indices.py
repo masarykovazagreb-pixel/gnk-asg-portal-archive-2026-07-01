@@ -61,6 +61,7 @@ def get_quote(symbol: str) -> dict:
 
 
 def main() -> int:
+    # P0 invariant: publish success only when all six canonical world indices resolve.
     DATA.mkdir(parents=True, exist_ok=True)
     now = datetime.now(timezone.utc).isoformat()
     indices: list[dict] = []
