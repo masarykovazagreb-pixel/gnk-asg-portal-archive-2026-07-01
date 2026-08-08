@@ -1,0 +1,30 @@
+name: P0.2 - Test Image Validator (jednokratno)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Testiraj validator
+        run: |
+          node -e "
+            import('./scripts/lib/gnk-image-validator-v1.mjs').then(async (mod) => {
+              const testovi = [
+                'https://images.pexels.com/photos/13657444/pexels-photo-13657444.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+                'https://www.gnk-asg.hr/assets/logo-gnk-asg.svg',
+                'data:image/png;base64,abc123',
+                'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1000&q=80',
+              ];
+              for (const t of testovi) {
+                const r = await mod.validirajSliku(t);
+                console.log(t, '->', JSON.stringify(r));
+              }
+            });
+          "
