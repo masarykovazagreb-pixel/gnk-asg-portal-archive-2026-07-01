@@ -154,20 +154,24 @@ async function main() {
       };
       rezultat.poslano++;
       console.log(`Objavljeno: ${JSON.stringify(state.posted[item.path])}`);
+      if (LIVE) writeJson(STATE, state); // zapisi odmah, ne cekaj kraj petlje
     } catch (e) {
-      rezultat.greske.push({ path: item.path, error: String(e).slice(0, 500) });
-      console.error(`Greska za ${item.path}:`, e.message || e);
+      rezultat.greske.push({ path: item.path, error: String(e).slice(0, 500), stack: String(e?.stack || '').slice(0, 800) });
+      console.error(`Greska za ${item.path}:`, e?.stack || e.message || e);
     }
+    writeJson(RESULT, { kad: new Date().toISOString(), ...rezultat }); // postupno stanje, prezivi crash
     await sleep(PAUSE_MS);
   }
 
   if (LIVE) writeJson(STATE, state);
   writeJson(RESULT, { kad: new Date().toISOString(), ...rezultat });
   console.log('\nSazetak:', JSON.stringify(rezultat, null, 2));
-  if (rezultat.greske.length) process.exitCode = 1;
+  // ne rusimo cijeli exit kod zbog pojedinacnih grešaka - djelomican uspjeh je i dalje uspjeh
+  // za nocnu automatizaciju; potpun neuspjeh (0 poslano, ima grešaka) i dalje signaliziramo
+  if (rezultat.greske.length && rezultat.poslano === 0 && pending.length > 0) process.exitCode = 1;
 }
 
 main().catch((e) => {
-  console.error(e?.stack || e);
+  console.error('KRITIČNA GREŠKA:', e?.stack || e);
   process.exitCode = 1;
 });
