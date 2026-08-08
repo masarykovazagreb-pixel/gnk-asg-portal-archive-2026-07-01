@@ -324,3 +324,18 @@ jobs:
           path: deploy-verification
           if-no-files-found: warn
           retention-days: 14
+
+  indexnow-notify:
+    name: Obavijesti IndexNow (Bing/Yandex) o novom deployu
+    needs: deploy-production
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      INDEXNOW_KEY: '2396905717b36885586139576d11142f'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Pošalji sve URL-ove na IndexNow
+        run: node scripts/gnk-indexnow-submit-v1.mjs
