@@ -1,0 +1,123 @@
+name: Telegraph Mirror Publish
+
+# GNK ASG (https://gnk-asg.hr) is the canonical source.
+# Telegraph is a controlled mirror channel with one dedicated writer.
+# Durable Telegraph dedupe/account state lives on automation/telegraph-mirror-state,
+# never on production main after a run.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 3,9,15,21 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: telegraph-mirror-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish live canonical articles to Telegraph
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Restore durable Telegraph state without merging branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-telegraph-bot"
+          git config user.email "actions@github.com"
+          git fetch origin main --no-tags
+          git reset --hard origin/main
+          git fetch origin automation/telegraph-mirror-state:refs/remotes/origin/automation/telegraph-mirror-state --no-tags
+          git checkout -B automation/telegraph-mirror-state origin/main
+
+          state='apps/portal/data/telegraph-content/published.json'
+          tmp="${state}.state-tmp"
+          mkdir -p "$(dirname "$state")"
+          if git show "refs/remotes/origin/automation/telegraph-mirror-state:${state}" > "$tmp" 2>/dev/null \
+            && node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" "$tmp" 2>/dev/null; then
+            mv "$tmp" "$state"
+            echo 'Restored valid durable Telegraph state.'
+          else
+            rm -f "$tmp"
+            echo 'No valid remote Telegraph state; using current-main seed.'
+          fi
+
+      - name: Restrict this run to canonical URLs already live with HTTP 200
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp apps/portal/data/editorial-registry.json /tmp/editorial-registry.full.json
+          node <<'NODE'
+          const fs=require('fs');
+          const registryPath='apps/portal/data/editorial-registry.json';
+          const statePath='apps/portal/data/telegraph-content/published.json';
+          const registry=JSON.parse(fs.readFileSync(registryPath,'utf8'));
+          const state=JSON.parse(fs.readFileSync(statePath,'utf8'));
+          const items=Array.isArray(registry.items)?registry.items:[];
+          const posted=state.posted||{};
+          const pending=items.filter(x=>x?.path&&!posted[x.path]).sort((a,b)=>new Date(a.publishedAt||0)-new Date(b.publishedAt||0));
+          const candidates=pending.slice(0,20);
+          const live=[];
+          for(const item of candidates){
+            const url='https://gnk-asg.hr'+item.path;
+            try{
+              const r=await fetch(url,{redirect:'follow',headers:{'user-agent':'GNK-ASG-Telegraph-Mirror/1.0','accept':'text/html'}});
+              if(r.status===200){live.push(item);console.log('LIVE 200',url)}
+              else console.log('SKIP HTTP '+r.status,url);
+            }catch(e){console.log('SKIP NETWORK',url,String(e?.message||e));}
+          }
+          registry.items=live;
+          fs.writeFileSync(registryPath,JSON.stringify(registry,null,2)+'\n');
+          console.log(`Telegraph candidates=${candidates.length}; live=${live.length}`);
+          NODE
+
+      - name: Publish controlled Telegraph batch
+        env:
+          TELEGRAPH_PER_RUN: '5'
+          TELEGRAPH_PAUSE_MS: '3000'
+        run: node scripts/telegraph-publish-v1.mjs
+
+      - name: Restore canonical registry and persist only Telegraph state
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f /tmp/editorial-registry.full.json ]; then
+            cp /tmp/editorial-registry.full.json apps/portal/data/editorial-registry.json
+          fi
+          git checkout -- apps/portal/data/editorial-registry.json || true
+          git add apps/portal/data/telegraph-content/ || true
+          if git diff --cached --quiet; then
+            echo 'No Telegraph state change.'
+          else
+            git commit -m 'chore(telegraph-state): persist mirror state'
+          fi
+          test "$(git rev-parse --abbrev-ref HEAD)" = 'automation/telegraph-mirror-state'
+          git push origin HEAD:automation/telegraph-mirror-state
+          echo "Production main remains untouched: $(git ls-remote origin refs/heads/main | awk '{print $1}')"
+
+      - name: Telegraph summary
+        if: always()
+        shell: bash
+        run: |
+          echo '## GNK ASG — Telegraph controlled mirror' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Canonical source: **https://gnk-asg.hr**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Canonical HTTP 200 required before mirror publish: **yes**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Durable state branch: **automation/telegraph-mirror-state**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Writes to production main: **disabled by workflow design**' >> "$GITHUB_STEP_SUMMARY"
+          if [ -s apps/portal/data/telegraph-content/zadnji-rezultat.json ]; then
+            node -e "const r=require('./apps/portal/data/telegraph-content/zadnji-rezultat.json'); console.log('- Sent this run: **'+(r.poslano||0)+'**'); console.log('- Errors: **'+((r.greske||[]).length)+'**')" >> "$GITHUB_STEP_SUMMARY"
+          fi
