@@ -637,7 +637,7 @@ body{margin:0;background:var(--pt-bg);color:var(--pt-text);font-family:Arial,Hel
     document.getElementById('ptHomeFocus').innerHTML = focusItems.map(quoteCard).join('');
 
     function moverRow(c){
-      return '<div class="pt-mover-row">' + (c.image ? '<img src="' + esc(c.image) + '" alt="">' : '') +
+      return '<div class="pt-mover-row">' + (c.image ? '<img src="' + esc(c.image) + '" alt="" loading="lazy">' : '') +
         '<div class="pt-mover-name">' + esc(c.name) + '<span class="pt-mover-sym">' + esc(c.symbol) + '</span></div>' +
         '<span class="pt-mover-price">' + fmt(c.price, c.price < 1 ? 4 : 2) + '</span>' + changeSpan(c.changePct24h) + '</div>';
     }

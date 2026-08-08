@@ -210,7 +210,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <h2 style="font-size:19px;font-weight:800;letter-spacing:-.02em;margin:8px 0 12px;">QR kod aplikacije</h2>
 <div style="border:1px solid var(--line);background:var(--surf);display:flex;align-items:stretch;">
 <div style="background:#fff;padding:10px;flex:none;border-right:1px solid var(--line);">
-<img src="{{ qrSrc }}" alt="QR kod za instalaciju aplikacije GNK ASG" style="width:84px;height:84px;image-rendering:pixelated;display:block;">
+<img src="{{ qrSrc }}" alt="QR kod za instalaciju aplikacije GNK ASG" style="width:84px;height:84px;image-rendering:pixelated;display:block;" loading="lazy">
 </div>
 <div style="flex:1;min-width:0;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;">
 <p style="margin:0;font-size:12px;line-height:1.45;color:var(--dim);text-wrap:pretty;">Skenirajte mobitelom — otvara se aplikacija i Android nudi „Instaliraj aplikaciju".</p>
@@ -359,7 +359,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <div style="background:var(--surf);padding:14px 16px;">
 <div style="font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);font-weight:700;">{{ p.label }}</div>
 <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ false }}">
-<img src="{{ p.img }}" alt="" style="width:100%;height:150px;object-fit:cover;margin-top:10px;display:block;filter:grayscale(1);">
+<img src="{{ p.img }}" alt="" style="width:100%;height:150px;object-fit:cover;margin-top:10px;display:block;filter:grayscale(1);" loading="lazy">
 </sc-if>
 <a href="{{ p.url }}" target="_blank" rel="noopener" style="display:block;font-size:14px;font-weight:700;line-height:1.35;margin-top:8px;color:var(--txt);text-wrap:pretty;">{{ p.title }}</a>
 <div style="display:flex;gap:8px;margin-top:10px;">
@@ -385,7 +385,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <span style="font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);">{{ p.status }}</span>
 </div>
 <sc-if value="{{ p.hasPhoto }}" hint-placeholder-val="{{ false }}">
-<img src="{{ p.photo }}" alt="" style="width:100%;height:180px;object-fit:cover;margin-top:12px;display:block;filter:grayscale(1);">
+<img src="{{ p.photo }}" alt="" style="width:100%;height:180px;object-fit:cover;margin-top:12px;display:block;filter:grayscale(1);" loading="lazy">
 </sc-if>
 <div style="font-size:15px;font-weight:800;line-height:1.3;margin-top:10px;letter-spacing:-.02em;text-wrap:pretty;">{{ p.title }}</div>
 <div style="font-size:12.5px;line-height:1.55;color:var(--dim);margin-top:6px;white-space:pre-wrap;">{{ p.body }}</div>
@@ -448,7 +448,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <div style="margin-top:16px;">
 <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:700;">Fotografija</div>
 <sc-if value="{{ hasDraftPhoto }}" hint-placeholder-val="{{ false }}">
-<img src="{{ draftPhoto }}" alt="" style="width:100%;height:220px;object-fit:cover;margin-top:10px;display:block;filter:grayscale(1);border:1px solid var(--line);">
+<img src="{{ draftPhoto }}" alt="" style="width:100%;height:220px;object-fit:cover;margin-top:10px;display:block;filter:grayscale(1);border:1px solid var(--line);" loading="lazy">
 </sc-if>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
 <button onClick="{{ openCamera }}" style="height:50px;background:var(--surf);border:1px solid var(--line);color:var(--txt);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:left;padding:0 14px;">Uslikaj</button>
@@ -938,7 +938,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <sc-for list="{{ galRows }}" as="g" hint-placeholder-count="4">
 <div style="background:var(--surf);">
 <button onClick="{{ g.open }}" style="width:100%;padding:0;border:none;background:transparent;display:block;">
-<img src="{{ g.src }}" alt="" style="width:100%;height:150px;object-fit:cover;display:block;filter:grayscale(1);">
+<img src="{{ g.src }}" alt="" style="width:100%;height:150px;object-fit:cover;display:block;filter:grayscale(1);" loading="lazy">
 </button>
 <div style="padding:10px 12px;">
 <div style="font-size:10.5px;color:var(--dim);">{{ g.when }}</div>
@@ -1002,7 +1002,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 </div>
 <input ref="{{ exPhotoRef }}" onChange="{{ onExPhoto }}" type="file" accept="image/*" capture="environment" style="display:none;">
 <sc-if value="{{ exHasPhoto }}" hint-placeholder-val="{{ false }}">
-<img src="{{ exPhoto }}" alt="" style="width:100%;max-height:170px;object-fit:cover;display:block;margin-top:10px;filter:grayscale(1);border:1px solid var(--line);">
+<img src="{{ exPhoto }}" alt="" style="width:100%;max-height:170px;object-fit:cover;display:block;margin-top:10px;filter:grayscale(1);border:1px solid var(--line);" loading="lazy">
 </sc-if>
 <sc-if value="{{ exMsg }}" hint-placeholder-val="{{ false }}">
 <div style="margin-top:10px;border:1px solid var(--line);background:var(--surf);padding:10px 12px;font-size:11.5px;">{{ exMsg }}</div>
@@ -1023,7 +1023,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <button onClick="{{ e.remove }}" style="height:32px;width:34px;background:transparent;border:1px solid var(--line);color:var(--dim);font-size:12px;flex:none;">✕</button>
 </div>
 <sc-if value="{{ e.hasPhoto }}" hint-placeholder-val="{{ false }}">
-<img src="{{ e.photo }}" alt="" style="width:100%;max-height:150px;object-fit:cover;display:block;margin-top:10px;filter:grayscale(1);">
+<img src="{{ e.photo }}" alt="" style="width:100%;max-height:150px;object-fit:cover;display:block;margin-top:10px;filter:grayscale(1);" loading="lazy">
 </sc-if>
 </div>
 </sc-for>
@@ -1105,14 +1105,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <button onClick="{{ d.remove }}" style="height:34px;width:36px;background:transparent;border:1px solid var(--line);color:var(--dim);font-size:13px;flex:none;">✕</button>
 </div>
 <sc-if value="{{ d.hasPreview }}" hint-placeholder-val="{{ false }}">
-<img src="{{ d.preview }}" alt="" style="width:100%;max-height:220px;object-fit:cover;display:block;margin-top:12px;filter:grayscale(1);border:1px solid var(--line);">
+<img src="{{ d.preview }}" alt="" style="width:100%;max-height:220px;object-fit:cover;display:block;margin-top:12px;filter:grayscale(1);border:1px solid var(--line);" loading="lazy">
 </sc-if>
 <sc-if value="{{ d.isPdf }}" hint-placeholder-val="{{ false }}">
 <button onClick="{{ d.openFile }}" style="width:100%;height:44px;background:transparent;border:1px solid var(--line);color:var(--txt);font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:left;padding:0 12px;margin-top:12px;">Otvori PDF</button>
 </sc-if>
 <sc-if value="{{ d.hasSig }}" hint-placeholder-val="{{ false }}">
 <div style="margin-top:12px;border:1px solid var(--line);background:#fff;padding:8px;">
-<img src="{{ d.sig }}" alt="Potpis" style="width:100%;max-height:110px;object-fit:contain;display:block;">
+<img src="{{ d.sig }}" alt="Potpis" style="width:100%;max-height:110px;object-fit:contain;display:block;" loading="lazy">
 </div>
 </sc-if>
 <sc-if value="{{ d.isSigning }}" hint-placeholder-val="{{ false }}">
@@ -1148,7 +1148,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 </div>
 <input ref="{{ sdFileRef }}" onChange="{{ onSignFile }}" type="file" accept="image/*,application/pdf" style="display:none;">
 <sc-if value="{{ sdIsImage }}" hint-placeholder-val="{{ false }}">
-<img src="{{ sdFileData }}" alt="" style="width:100%;max-height:180px;object-fit:cover;display:block;margin-top:10px;filter:grayscale(1);border:1px solid var(--line);">
+<img src="{{ sdFileData }}" alt="" style="width:100%;max-height:180px;object-fit:cover;display:block;margin-top:10px;filter:grayscale(1);border:1px solid var(--line);" loading="lazy">
 </sc-if>
 <div style="font-size:11px;color:var(--dim);margin-top:12px;line-height:1.5;">Dokumenti i potpisi ostaju na ovom uređaju. „Preuzmi" spaja dokument i potpis u jednu sliku s datumom — za pravno kvalificirani elektronički potpis potreban je certifikat (FINA, eIDAS), što je odvojena usluga.</div>
 </section>
@@ -1404,7 +1404,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <sc-for list="{{ analysisRows }}" as="a" hint-placeholder-count="4">
 <div style="background:var(--surf);padding:14px 16px;">
 <sc-if value="{{ a.hasImg }}" hint-placeholder-val="{{ false }}">
-<img src="{{ a.img }}" alt="" style="width:100%;height:140px;object-fit:cover;display:block;filter:grayscale(1);margin-bottom:10px;">
+<img src="{{ a.img }}" alt="" style="width:100%;height:140px;object-fit:cover;display:block;filter:grayscale(1);margin-bottom:10px;" loading="lazy">
 </sc-if>
 <a href="{{ a.url }}" target="_blank" rel="noopener" style="display:block;font-size:14.5px;font-weight:700;line-height:1.35;color:var(--txt);text-wrap:pretty;">{{ a.title }}</a>
 <div style="display:flex;gap:8px;margin-top:10px;">
@@ -1992,7 +1992,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <h2 style="font-size:19px;font-weight:800;letter-spacing:-.02em;margin:8px 0 8px;">QR kod za instalaciju</h2>
 <p style="font-size:12.5px;line-height:1.55;color:var(--dim);margin:0 0 14px;">Skenirajte kod mobitelom — otvara se ova aplikacija i Android nudi „Instaliraj aplikaciju". Kod je vezan na adresu aplikacije, neovisnu od instalacije web stranice.</p>
 <div style="border:1px solid var(--line);background:#fff;padding:16px;display:flex;justify-content:center;">
-<img src="{{ qrSrc }}" alt="QR kod za instalaciju aplikacije GNK ASG" style="width:200px;height:200px;image-rendering:pixelated;display:block;">
+<img src="{{ qrSrc }}" alt="QR kod za instalaciju aplikacije GNK ASG" style="width:200px;height:200px;image-rendering:pixelated;display:block;" loading="lazy">
 </div>
 <input value="{{ appUrl }}" onChange="{{ setAppUrl }}" style="width:100%;height:48px;background:var(--surf);border:1px solid var(--line);color:var(--txt);font-size:13px;padding:0 14px;margin-top:12px;">
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">

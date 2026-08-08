@@ -35,7 +35,7 @@
 
   <div id="ldContent" style="display:none">
     <div class="ld-image-wrap">
-      <img id="ldImage" src="" alt="LinkedIn objava — slika">
+      <img id="ldImage" src="" alt="LinkedIn objava — slika" loading="lazy">
     </div>
     <div class="ld-text-box" id="ldText"></div>
     <div class="ld-status" id="ldStatus"></div>
@@ -167,7 +167,7 @@
       var text = (d.postText || '').replace(/</g,'&lt;');
       var kindLabel = d.kind === 'news' ? 'Vijest' : d.kind === 'project' ? 'Projekt' : 'Objava';
       return '<div class="ld-feed-item" data-draft-id="' + d.draftId + '">' +
-        (d.imageUrl ? '<div class="ld-image-wrap" style="margin-bottom:12px"><img src="' + d.imageUrl + '" alt="" style="width:100%;display:block"></div>' : '') +
+        (d.imageUrl ? '<div class="ld-image-wrap" style="margin-bottom:12px"><img src="' + d.imageUrl + '" alt="" style="width:100%;display:block" loading="lazy"></div>' : '') +
         '<span class="ld-feed-tag">' + kindLabel + '</span>' +
         '<p style="color:#dbe4ef;font-size:.9rem;line-height:1.6;white-space:pre-wrap;margin:0 0 12px">' + text + '</p>' +
         '<div class="ld-feed-actions">' +
