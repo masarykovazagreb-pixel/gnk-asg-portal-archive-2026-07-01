@@ -66,9 +66,9 @@ result = run(html({ words: 10, exception: true }));
 assert.equal(result.status, 0, result.stderr || result.stdout);
 assert.match(result.stdout, /digital-workforce-worker-exception/u);
 
-
 // A specifically enumerated, previously published authored statement may remain
 // text-locked even when it predates the later 3,000-word direct-static rule.
+// This test prevents the narrow exception from being lost in future refactors.
 const lockedRelative = 'apps/portal/objave/osvrt-na-2013-omega-factoring-nermin-sefic/index.html';
 const lockedAbsolute = path.join(temp, lockedRelative);
 fs.mkdirSync(path.dirname(lockedAbsolute), { recursive: true });
