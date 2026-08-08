@@ -54,6 +54,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          git config user.name "gnk-blog-bot"
+          git config user.email "actions@github.com"
           git fetch origin main --no-tags
           git reset --hard origin/main
           if git fetch origin automation/blog-mirror-state:refs/remotes/origin/automation/blog-mirror-state --no-tags 2>/dev/null; then
