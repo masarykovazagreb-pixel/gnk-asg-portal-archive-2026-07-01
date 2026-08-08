@@ -9,6 +9,9 @@ const SITE_ORIGIN = 'https://gnk-asg.hr';
 const TARGET = /^apps\/portal\/(objave|publications|komentari|comments|analize|analysis)\/.+\/index\.html$/;
 const EXCEPTION_META = /<meta\s+name=["']editorial-policy-exception["']\s+content=["']digital-workforce-worker["']\s*\/?\s*>/iu;
 const ARTICLE_TYPES = new Set(['Article', 'NewsArticle', 'OpinionNewsArticle', 'AnalysisNewsArticle', 'Report']);
+const LOCKED_AUTHORED_STATEMENTS = new Set([
+  'apps/portal/objave/osvrt-na-2013-omega-factoring-nermin-sefic/index.html',
+]);
 const segmenter = typeof Intl.Segmenter === 'function'
   ? new Intl.Segmenter('hr', { granularity: 'word' })
   : null;
@@ -151,6 +154,10 @@ function validate(file) {
 
   if (EXCEPTION_META.test(html)) {
     return { file, skipped: true, reason: 'digital-workforce-worker-exception', errors };
+  }
+
+  if (LOCKED_AUTHORED_STATEMENTS.has(file)) {
+    return { file, skipped: true, reason: 'locked-authored-statement-exception', errors };
   }
 
   const articleHtml = extractArticleHtml(html);
