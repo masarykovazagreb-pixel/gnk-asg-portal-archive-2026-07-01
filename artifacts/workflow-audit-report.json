@@ -1,0 +1,2959 @@
+{
+  "generatedAt": "2026-08-08",
+  "ukupnoWorkflowa": 281,
+  "sazetak": {
+    "REVIEW": 198,
+    "KEEP": 7,
+    "REMOVE": 71,
+    "REBASE": 5
+  },
+  "stavke": [
+    {
+      "file": "audit-floating-home-route-owners.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "testni/audit alat - provjeriti koristi li se jos"
+    },
+    {
+      "file": "audit-public-portal-v1.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "testni/audit alat - provjeriti koristi li se jos"
+    },
+    {
+      "file": "audit-public-routes-v1.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "testni/audit alat - provjeriti koristi li se jos"
+    },
+    {
+      "file": "audit-three-public-routes.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "testni/audit alat - provjeriti koristi li se jos"
+    },
+    {
+      "file": "audit2.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-audit2"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "automation-kill-switch-contract.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "blog-mirror-publish.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": true,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [
+        "apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ || true"
+      ],
+      "odluka": "KEEP",
+      "razlog": "aktivno koristen danas/redovito, ima cron ili je dio glavnog pipeline-a"
+    },
+    {
+      "file": "build-world-cookbook-premium.yml",
+      "zadnja_izmjena": "2026-07-27",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "check-admin-center-v2.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-admin-executive-portfolio-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-admin-mail-media-sms.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-bilingual-publication-routes-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-company-operations-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-design-review-console.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-digital-workforce-public.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-digital-workforce-root-seo.yml",
+      "zadnja_izmjena": "2026-07-04",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-editorial-draft-planner.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-editorial-launch-library.yml",
+      "zadnja_izmjena": "2026-07-04",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-enterprise-final-review.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-enterprise-review-runtime-v3.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-index-code-showcase-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-index-existing-fields-v2.yml",
+      "zadnja_izmjena": "2026-06-27",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-live-v28.yml",
+      "zadnja_izmjena": "2026-06-28",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-mail-profile-delivery-tests.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-mail-sync-center.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-media-application-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-media-applications-review.yml",
+      "zadnja_izmjena": "2026-07-04",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-operations-suite-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-operations-visual-v1.yml",
+      "zadnja_izmjena": "2026-06-27",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-operator-module-routes.yml",
+      "zadnja_izmjena": "2026-07-04",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-publication-detail-pages-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-publication-detail-pages-v2.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-responsive-review-evidence-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-seo-attribution-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-strategy-performance-review.yml",
+      "zadnja_izmjena": "2026-07-04",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "check-worker-review-preview-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "provjera specificne funkcionalnosti - potvrditi je li ta funkcionalnost jos u produkciji"
+    },
+    {
+      "file": "cleanup-actions-artifacts.yml",
+      "zadnja_izmjena": "2026-07-01",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "cleanup-campaign-mailer-remaining.yml",
+      "zadnja_izmjena": "2026-07-03",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "exports/campaign-mailer-nastavak-nakon-the-australian-2026-07-03.csv \\"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "contact-diagnostic.yml",
+      "zadnja_izmjena": "2026-06-24",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "content-source-governance.yml",
+      "zadnja_izmjena": "2026-07-19",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "dark-menu-market-recovery.yml",
+      "zadnja_izmjena": "2026-06-28",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "deploy-admin-auth-v6.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "KEEP",
+      "razlog": "aktivno koristen danas/redovito, ima cron ili je dio glavnog pipeline-a"
+    },
+    {
+      "file": "deploy-admin-dashboard-v3.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-admin-menu-route-pr.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-bilingual-index-activation.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-black-logo-smoke-test.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-campaign-mailer-command.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-current-public-portal.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-delivery-issue91.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "referencira specifican, vjerojatno zatvoren GitHub issue"
+    },
+    {
+      "file": "deploy-editorial-center.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-email-logo-gateway-v1.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-final-admin-gateway.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-firefox-auth-issue93.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "referencira specifican, vjerojatno zatvoren GitHub issue"
+    },
+    {
+      "file": "deploy-index-code-showcase-v1.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-index-existing-fields-v2.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-index-polish-v30.yml",
+      "zadnja_izmjena": "2026-06-28",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-index-visual-fix-v29.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-luxury-index-pr.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-mail-center-worker-v2.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-mail-media-strict-english.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-mail-profile-parity.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-mail-studio-bridge-v15.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-mail-studio-multilingual.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-mail-studio-v24.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-media-application-v1.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-media-command-gateway.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-media-email-import-v1.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-media-html-v22-command.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-media-html-v22.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-media-projects-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-media-source-probe-pr.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-media-source-probe-v1.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-media-source-push-v2.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-memorandum-studio-v2.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-mobile-app-v2.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-news-publications-v17.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-news-v16.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-operations-suite-v1.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-portal-final-v12.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-private-admin-ui-main.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-private-admin-ui-v2.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-project50-unified-menu-v16-pr.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-project50-unified-menu-v16.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-public-portal-assets-safe.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-public-shell-v15.yml",
+      "zadnja_izmjena": "2026-06-29",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "apps/portal/data/media-outreach-ready-allowlist.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-public-visual-v13.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-runtime-r11-issue96.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "referencira specifican, vjerojatno zatvoren GitHub issue"
+    },
+    {
+      "file": "deploy-special-public-v13.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-unified-auth-v14.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "deploy-v21-index-preview.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "verzioniran jednokratni deploy iz proslosti"
+    },
+    {
+      "file": "deploy-v21-issue89.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "verzioniran jednokratni deploy iz proslosti"
+    },
+    {
+      "file": "deploy-v27-trigger.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "verzioniran jednokratni deploy iz proslosti"
+    },
+    {
+      "file": "deploy-v30-emergency.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "verzioniran jednokratni deploy iz proslosti"
+    },
+    {
+      "file": "deploy-v31-head-fix.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "verzioniran jednokratni deploy iz proslosti"
+    },
+    {
+      "file": "deploy-worker-review-preview-v1.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "jednokratan deploy specificne znacajke - provjeriti je li znacajka trajno zivjela ili je odbacena"
+    },
+    {
+      "file": "devto-mirror-contract.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "devto-mirror-publish.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "diag-direct-inbound-patch-20260722.yml",
+      "zadnja_izmjena": "2026-07-22",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "ima konkretan datum u nazivu - jednokratan dogadjaj"
+    },
+    {
+      "file": "diag-mail-autoreply-live-20260722.yml",
+      "zadnja_izmjena": "2026-07-22",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "ima konkretan datum u nazivu - jednokratan dogadjaj"
+    },
+    {
+      "file": "diag12-oneoff.yml",
+      "zadnja_izmjena": "2026-07-21",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu dijagnostiku"
+    },
+    {
+      "file": "diagnose-email-routing-now.yml",
+      "zadnja_izmjena": "2026-07-03",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "dijagnosticki alat - provjeriti odnosi li se na jos aktivan problem"
+    },
+    {
+      "file": "diagnose-final-routes.yml",
+      "zadnja_izmjena": "2026-06-28",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "dijagnosticki alat - provjeriti odnosi li se na jos aktivan problem"
+    },
+    {
+      "file": "diagnose-live-issue89.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "referencira specifican, vjerojatno zatvoren GitHub issue"
+    },
+    {
+      "file": "diagnose-media-projects-v1.yml",
+      "zadnja_izmjena": "2026-06-30",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [
+        "apps/portal/data/media-projects-deployment-status.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "dijagnosticki alat - provjeriti odnosi li se na jos aktivan problem"
+    },
+    {
+      "file": "diagnose-media-worker-dryrun.yml",
+      "zadnja_izmjena": "2026-06-30",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "dijagnosticki alat - provjeriti odnosi li se na jos aktivan problem"
+    },
+    {
+      "file": "diagnose-production-index.yml",
+      "zadnja_izmjena": "2026-07-04",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "dijagnosticki alat - provjeriti odnosi li se na jos aktivan problem"
+    },
+    {
+      "file": "diagnose-project50-unified-menu-v16.yml",
+      "zadnja_izmjena": "2026-06-28",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "dijagnosticki alat - provjeriti odnosi li se na jos aktivan problem"
+    },
+    {
+      "file": "diagnose-public-visual-v13-production.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "dijagnosticki alat - provjeriti odnosi li se na jos aktivan problem"
+    },
+    {
+      "file": "diagnose-special-public-routes.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "dijagnosticki alat - provjeriti odnosi li se na jos aktivan problem"
+    },
+    {
+      "file": "digital-assets-single-writer-guard.yml",
+      "zadnja_izmjena": "2026-08-07",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "digital-workforce-public-read-parity.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "direct-static-editorial-policy-v1.yml",
+      "zadnja_izmjena": "2026-08-06",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "disaster-recovery-dispatch-check.yml",
+      "zadnja_izmjena": "2026-07-02",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "disaster-recovery-mirror-v2.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": true,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "dohvati-b01.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b01"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b02.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b02"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b03.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b03"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b04.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b04"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b05.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b05"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b06.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b06"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b07.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b07"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b08.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b08"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b09.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b09"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b10.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b10"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b11.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b11"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b12.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b12"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b13.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b13"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b14.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b14"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b15.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b15"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "dohvati-b16.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b16b"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "dio numerirane serije jednokratnih batch dohvata"
+    },
+    {
+      "file": "editorial-center-check.yml",
+      "zadnja_izmjena": "2026-06-24",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "editorial-content-ci.yml",
+      "zadnja_izmjena": "2026-08-05",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "editorial-content-deploy.yml",
+      "zadnja_izmjena": "2026-07-28",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "editorial-scheduled-publish.yml",
+      "zadnja_izmjena": "2026-08-05",
+      "schedule": true,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [
+        "apps/portal/objave apps/portal/komentari apps/portal/editorial-sitemap.xml apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "emergency-stop-media-outreach.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "export-campaign-continuation-readonly.yml",
+      "zadnja_izmjena": "2026-07-03",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "exports/campaign-mailer-nastavak-nakon-the-australian-2026-07-03.csv exports/campaign-mailer-nastavak-summary-2026-07-03.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "final-v27-acceptance-issue98.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "referencira specifican, vjerojatno zatvoren GitHub issue"
+    },
+    {
+      "file": "fix-floating-home-page-routes-v16.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "fix-operator-dashboard-route-v7.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "force-deploy-fresh-media-center.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "gallery-sync.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [
+        "apps/portal scripts/gallery-sync.mjs scripts/gallery-editorial-filter.mjs"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "generate-digital-workforce-newsroom-pages.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": true,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "gnk-news-refresh-v2.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": true,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [
+        "apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/news-automation-status.json"
+      ],
+      "odluka": "REBASE",
+      "razlog": "duplicira gnk-news-refresh.yml"
+    },
+    {
+      "file": "gnk-news-refresh.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/news-automation-status.json"
+      ],
+      "odluka": "KEEP",
+      "razlog": "aktivno koristen danas/redovito, ima cron ili je dio glavnog pipeline-a"
+    },
+    {
+      "file": "gnk-news-v14-refresh.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REBASE",
+      "razlog": "duplicira gnk-news-refresh.yml (noviji, ali paralelan naziv)"
+    },
+    {
+      "file": "gnk-seo-nightly-audit.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/seo-audit/nightly-report.json",
+        "apps/portal/data/blog-content/"
+      ],
+      "odluka": "KEEP",
+      "razlog": "aktivno koristen danas/redovito, ima cron ili je dio glavnog pipeline-a"
+    },
+    {
+      "file": "homepage-browser-audit.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "inspect-live-status-verification-20260722.yml",
+      "zadnja_izmjena": "2026-07-22",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratna inspekcija"
+    },
+    {
+      "file": "inspect-public-route-owners.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratna inspekcija"
+    },
+    {
+      "file": "integration-portal-v12.yml",
+      "zadnja_izmjena": "2026-06-28",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "internal-media-email-test.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "issue-news-v16-validation.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "key-routes-quality-gate.yml",
+      "zadnja_izmjena": "2026-08-06",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "linkedin-daily-rotation.yml",
+      "zadnja_izmjena": "2026-07-23",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/linkedin-content/today.json apps/portal/data/linkedin-content/today-image.png apps/portal/data/linkedin-content/archive/"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "live-index-redesign-preview.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "macro-market-refresh.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/macro_market.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "mail-session-repair.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "market-browser-issue96.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "referencira specifican, vjerojatno zatvoren GitHub issue"
+    },
+    {
+      "file": "market-pulse-refresh.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/market-pulse.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "media-command-center-verify.yml",
+      "zadnja_izmjena": "2026-06-30",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "media-command-from-chat.yml",
+      "zadnja_izmjena": "2026-06-29",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [
+        "ops/media-command-result.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "media-readiness-audit.yml",
+      "zadnja_izmjena": "2026-06-29",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "ops/media-readiness-audit.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "mirror-sync-masarykova.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "KEEP",
+      "razlog": "aktivno koristen danas/redovito, ima cron ili je dio glavnog pipeline-a"
+    },
+    {
+      "file": "news-image-integrity-readonly-probe.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "news-live-status.yml",
+      "zadnja_izmjena": "2026-06-23",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "news-public-readonly-probe.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "news-publications-hotfix-live.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "news-refresh.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REBASE",
+      "razlog": "moguc duplikat gnk-news-refresh.yml - provjeriti razliku"
+    },
+    {
+      "file": "news-v13-lifecycle.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": true,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [
+        "data/news.json data/news_archive.json data/news_sources_health.json data/news-automation-status.json data/update_status.json"
+      ],
+      "odluka": "REBASE",
+      "razlog": "stariji broj verzije od news-v16 - kandidat za spajanje"
+    },
+    {
+      "file": "news-v16-heartbeat.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REBASE",
+      "razlog": "moguc duplikat s gnk-news-v14-refresh.yml"
+    },
+    {
+      "file": "no-en-en-canonical-contract.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/en"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "objavi-15-dnevno.yml",
+      "zadnja_izmjena": "2026-07-31",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/devto-content/"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "objavi-devto-sada.yml",
+      "zadnja_izmjena": "2026-08-07",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/devto-content/"
+      ],
+      "odluka": "KEEP",
+      "razlog": "aktivno koristen danas/redovito, ima cron ili je dio glavnog pipeline-a"
+    },
+    {
+      "file": "objavi-tumblr-sada.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tumblr-content/"
+      ],
+      "odluka": "KEEP",
+      "razlog": "aktivno koristen danas/redovito, ima cron ili je dio glavnog pipeline-a"
+    },
+    {
+      "file": "obnovi-devto-evidenciju.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-b07"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "one-time-approved-deploy-14868bc.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-approved-deploy-77de.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-approved-deploy-cc7c-20260715.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-approved-deploy-cd053a-20260715.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-autoreply-ai-v1.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-diagnose-validate-release-v1.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/release-validation-diagnostic/result.txt"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-direct-urgent-release-v37.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-final-urgent-package-v1.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-fix-editorial-route-ownership-v35.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/editorial-route-ownership-v35.json"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-fix-news-cache-and-contact-readiness-v1.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-fix-todays-news-order-v1.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "apps/portal/assets/index-editorial-order-v1.js"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-full-validate-and-deploy-v2.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/full-validation-v2"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-public-content-repair-v1.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "apps/portal/assets/editorial-latest-index-v1.js apps/portal/objave/index.html apps/portal/komentari/index.html workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-revalidate-urgent-package-v3.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/revalidate-urgent-v3"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-verify-final-urgent-v1.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/final-urgent-verification"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "one-time-verify-production-v4.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/production-verification-v4"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "naziv eksplicitno oznacava jednokratnu namjenu"
+    },
+    {
+      "file": "p0-rss-audit.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratan audit alat (P0-P2), svrha ispunjena, izvjestaj vec spremljen"
+    },
+    {
+      "file": "p0-test-image-validator.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratan audit alat (P0-P2), svrha ispunjena, izvjestaj vec spremljen"
+    },
+    {
+      "file": "p1-dw-audit.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "artifacts/digital-workforce-audit.json artifacts/digital-workforce-workers.csv"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "jednokratan audit alat (P0-P2), svrha ispunjena, izvjestaj vec spremljen"
+    },
+    {
+      "file": "p2-lighthouse.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "artifacts/lh-*.json artifacts/lighthouse-summary.json"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "jednokratan audit alat (P0-P2), svrha ispunjena, izvjestaj vec spremljen"
+    },
+    {
+      "file": "probe-mail-health-now.yml",
+      "zadnja_izmjena": "2026-06-27",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "production-live-sync.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "provjera-aplikacije.yml",
+      "zadnja_izmjena": "2026-07-29",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "ops/provjera-aplikacije.txt"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "provjera-tvrdnji.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-check"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "provjera-workera.yml",
+      "zadnja_izmjena": "2026-07-28",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "ops/provjera-workera.txt"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "provjeri-profil-stranicu.yml",
+      "zadnja_izmjena": "2026-08-02",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-provjera-profil"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "public-editorial-assets-ci.yml",
+      "zadnja_izmjena": "2026-07-14",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "public-market-contract.yml",
+      "zadnja_izmjena": "2026-07-19",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "public-portal-audit.yml",
+      "zadnja_izmjena": "2026-07-26",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "publication-sitemap-registry-gate.yml",
+      "zadnja_izmjena": "2026-08-06",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "publish-first-validated-qa-v3.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "read-latest-deploy-status-cd053a.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/latest-deploy-cd053a.json"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "jednokratna provjera statusa"
+    },
+    {
+      "file": "record-news-deploy-501ddc-status.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/news-deploy-501ddc-status.json"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "jednokratno biljezenje statusa proslog dogadjaja"
+    },
+    {
+      "file": "record-one-time-deploy-14868bc-status.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/one-time-deploy-14868bc-status.json"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "jednokratno biljezenje statusa proslog dogadjaja"
+    },
+    {
+      "file": "record-one-time-deploy-77de-status.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/one-time-deploy-77de-status.json"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "jednokratno biljezenje statusa proslog dogadjaja"
+    },
+    {
+      "file": "record-one-time-deploy-cd053a-status-v2.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/one-time-deploy-cd053a-status.json"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "jednokratno biljezenje statusa proslog dogadjaja"
+    },
+    {
+      "file": "record-one-time-deploy-cd053a-status.yml",
+      "zadnja_izmjena": "2026-07-15",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [
+        "artifacts/one-time-deploy-cd053a-status.json"
+      ],
+      "odluka": "REMOVE",
+      "razlog": "jednokratno biljezenje statusa proslog dogadjaja"
+    },
+    {
+      "file": "refresh-gnkc-index.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "refresh-index-live-data.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/market.json apps/portal/data/market_indices.json apps/portal/data/fast_market_status.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "regeneriraj-image-sitemap.yml",
+      "zadnja_izmjena": "2026-08-03",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/image-sitemap.xml"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "regeneriraj-sitemapove.yml",
+      "zadnja_izmjena": "2026-08-03",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/sitemap.xml apps/portal/editorial-sitemap.xml apps/portal/visual-sitemap.xml apps/portal/sitemap-index.xml"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "repair-office-inbound-email.yml",
+      "zadnja_izmjena": "2026-07-03",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "report-current-public-portal.yml",
+      "zadnja_izmjena": "2026-06-28",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratno izvjestavanje o proslom stanju"
+    },
+    {
+      "file": "report-iq200-deploy.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratno izvjestavanje o proslom stanju"
+    },
+    {
+      "file": "report-unified-auth-v14.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratno izvjestavanje o proslom stanju"
+    },
+    {
+      "file": "restore-iq200-index-now.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratna oporavak intervencija"
+    },
+    {
+      "file": "restore-production-2059.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratna oporavak intervencija"
+    },
+    {
+      "file": "runtime-contract-issue96.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "referencira specifican, vjerojatno zatvoren GitHub issue"
+    },
+    {
+      "file": "runtime-health-issue90.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "referencira specifican, vjerojatno zatvoren GitHub issue"
+    },
+    {
+      "file": "send-the-code-regional-mailstudio.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratna kampanja slanja"
+    },
+    {
+      "file": "seo-audit-refresh.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "seo-knowledge-graph-contract.yml",
+      "zadnja_izmjena": "2026-08-01",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "seo-news-cycle.yml",
+      "zadnja_izmjena": "2026-08-04",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/update_status.json apps/portal/data/seo-visibility-status.json apps/portal/editorial-sitemap.xml apps/portal/objave apps/portal/komentari apps/portal/analize apps/portal/en/publications apps/portal/en/commentary apps/portal/en/analyses artifacts/seo-visibility-report.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "set-pexels-secret.yml",
+      "zadnja_izmjena": "2026-07-30",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratno postavljanje tajne"
+    },
+    {
+      "file": "siroki-smoke.yml",
+      "zadnja_izmjena": "2026-08-03",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [
+        "apps/portal/data/tmp-siroki"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "site-functional-readiness.yml",
+      "zadnja_izmjena": "2026-07-18",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "site-health-check-v1.yml",
+      "zadnja_izmjena": "2026-08-07",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "strengthen-objave-seo-v2.yml",
+      "zadnja_izmjena": "2026-08-06",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [
+        "apps/portal/objave/index.html"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "sync-webshop-products.yml",
+      "zadnja_izmjena": "2026-07-29",
+      "schedule": true,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "test-media-command-center-v20.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "testni/audit alat - provjeriti koristi li se jos"
+    },
+    {
+      "file": "test-portal-repair-v9.yml",
+      "zadnja_izmjena": "2026-07-05",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "testni/audit alat - provjeriti koristi li se jos"
+    },
+    {
+      "file": "test-public-visual-v13.yml",
+      "zadnja_izmjena": "2026-06-28",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "testni/audit alat - provjeriti koristi li se jos"
+    },
+    {
+      "file": "upload-correct-memorandum.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "jednokratan upload specificne datoteke"
+    },
+    {
+      "file": "upload-media-pdf-issue92.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "referencira specifican, vjerojatno zatvoren GitHub issue"
+    },
+    {
+      "file": "validate-campaign-mailer.yml",
+      "zadnja_izmjena": "2026-07-04",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-command-center.yml",
+      "zadnja_izmjena": "2026-07-04",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-contact-idempotency.yml",
+      "zadnja_izmjena": "2026-07-18",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-index-news-retention-copy.yml",
+      "zadnja_izmjena": "2026-07-18",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-mail-autoreply-dedupe.yml",
+      "zadnja_izmjena": "2026-07-19",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-mail-mime-type.yml",
+      "zadnja_izmjena": "2026-07-19",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-market-primary-alias-runtime.yml",
+      "zadnja_izmjena": "2026-07-18",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-media-projects-v1.yml",
+      "zadnja_izmjena": "2026-06-30",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-minimum-index-contact-admin.yml",
+      "zadnja_izmjena": "2026-06-28",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-news-retention-contract.yml",
+      "zadnja_izmjena": "2026-07-18",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-newsroom-enqueue-auth.yml",
+      "zadnja_izmjena": "2026-07-19",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-production-authorization-contract.yml",
+      "zadnja_izmjena": "2026-07-18",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-production-hotfix-contact-market-mail.yml",
+      "zadnja_izmjena": "2026-07-18",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "validate-verify-coinpaprika-upstream.yml",
+      "zadnja_izmjena": "2026-07-18",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-admin-center-live.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-admin-mail-media-sms-live.yml",
+      "zadnja_izmjena": "2026-06-27",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-admin-shell-v7-quick.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-admin-shell-v7.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-ai-badge-guard-v17.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-assistant-v14.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-email-status-production.yml",
+      "zadnja_izmjena": "2026-07-03",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [
+        "docs/email-status-production-verification.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-email-tools-status-v6.yml",
+      "zadnja_izmjena": "2026-07-03",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-final-portal.yml",
+      "zadnja_izmjena": "2026-06-28",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-floating-home-v16-targeted.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-floating-home-v16.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-index-v26.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-mail-delivery-v1.yml",
+      "zadnja_izmjena": "2026-06-27",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-production-v12-issue.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-production-v12.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [
+        "reports/production-v12-latest.json"
+      ],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-public-memorandum.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-public-shell-lock-v17.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-public-shell-v12.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-public-shell-v13-now.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-public-visual-v13-production.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-single-menu-v15.yml",
+      "zadnja_izmjena": "2026-06-25",
+      "schedule": false,
+      "dispatch": true,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-the-code-production.yml",
+      "zadnja_izmjena": "2026-07-02",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "verifikacija specificne znacajke - provjeriti relevantnost"
+    },
+    {
+      "file": "verify-v30-browser.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "verzioniran jednokratni verify iz proslosti"
+    },
+    {
+      "file": "verify-v31-browser.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REMOVE",
+      "razlog": "verzioniran jednokratni verify iz proslosti"
+    },
+    {
+      "file": "visual-index-news-images-live.yml",
+      "zadnja_izmjena": "2026-07-17",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "warm-news-v16.yml",
+      "zadnja_izmjena": "2026-06-26",
+      "schedule": false,
+      "dispatch": false,
+      "push": true,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "workforce-production-smoke.yml",
+      "zadnja_izmjena": "2026-08-08",
+      "schedule": false,
+      "dispatch": true,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    },
+    {
+      "file": "workforce-runtime-health-truth.yml",
+      "zadnja_izmjena": "2026-08-07",
+      "schedule": false,
+      "dispatch": false,
+      "push": false,
+      "write_targets": [],
+      "odluka": "REVIEW",
+      "razlog": "nema jasan obrazac - potrebna rucna procjena"
+    }
+  ]
+}
