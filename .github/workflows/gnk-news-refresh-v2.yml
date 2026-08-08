@@ -1,0 +1,45 @@
+name: GNK News Refresh V2
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/gnk-news-refresh-v2.yml'
+  schedule:
+    # Zagreb ljeto (CEST): 09:00 i 17:00 = 07:00 i 15:00 UTC.
+    - cron: '0 7,15 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-news-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh-news:
+    name: Refresh public news feed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Refresh GNK ASG news data
+        run: node scripts/gnk-news-refresh.mjs
+
+      - name: Commit refreshed news data
+        run: |
+          git config user.name "gnk-news-bot"
+          git config user.email "actions@github.com"
+          git add apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/news-automation-status.json
+          if git diff --cached --quiet; then
+            echo "No news data changes to commit."
+          else
+            git commit -m "Refresh GNK ASG news feed"
+            git push
+          fi
