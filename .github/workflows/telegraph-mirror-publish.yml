@@ -41,6 +41,8 @@ jobs:
           git fetch origin main --no-tags
           git reset --hard origin/main
           git fetch origin automation/telegraph-mirror-state:refs/remotes/origin/automation/telegraph-mirror-state --no-tags
+          remote_state_sha="$(git rev-parse refs/remotes/origin/automation/telegraph-mirror-state 2>/dev/null || true)"
+          echo "TELEGRAPH_REMOTE_STATE_SHA=$remote_state_sha" >> "$GITHUB_ENV"
           git checkout -B automation/telegraph-mirror-state origin/main
 
           state='apps/portal/data/telegraph-content/published.json'
@@ -108,7 +110,33 @@ jobs:
             git commit -m 'chore(telegraph-state): persist mirror state'
           fi
           test "$(git rev-parse --abbrev-ref HEAD)" = 'automation/telegraph-mirror-state'
-          git push origin HEAD:automation/telegraph-mirror-state
+
+          expected="${TELEGRAPH_REMOTE_STATE_SHA:-}"
+          if git push "--force-with-lease=refs/heads/automation/telegraph-mirror-state:${expected}" origin HEAD:automation/telegraph-mirror-state; then
+            echo 'Telegraph state persisted with lease protection.'
+          else
+            echo 'Telegraph state moved during this run; unioning dedupe state and retrying once safely.'
+            git fetch origin automation/telegraph-mirror-state:refs/remotes/origin/automation/telegraph-mirror-state --force --no-tags
+            latest="$(git rev-parse refs/remotes/origin/automation/telegraph-mirror-state)"
+            state='apps/portal/data/telegraph-content/published.json'
+            remote_tmp='/tmp/telegraph-published-remote.json'
+            if git show "refs/remotes/origin/automation/telegraph-mirror-state:${state}" > "$remote_tmp" 2>/dev/null; then
+              node - "$remote_tmp" "$state" <<'NODE'
+          const fs=require('fs');
+          const [remotePath,localPath]=process.argv.slice(2);
+          const read=(p)=>{try{return JSON.parse(fs.readFileSync(p,'utf8'))}catch{return {posted:{}}}};
+          const remote=read(remotePath), local=read(localPath);
+          const merged={...remote,...local,posted:{...(remote.posted||{}),...(local.posted||{})}};
+          fs.writeFileSync(localPath,JSON.stringify(merged,null,2)+'\n');
+          NODE
+            fi
+            git add apps/portal/data/telegraph-content/ || true
+            if ! git diff --cached --quiet; then
+              git commit --amend --no-edit
+            fi
+            git push "--force-with-lease=refs/heads/automation/telegraph-mirror-state:${latest}" origin HEAD:automation/telegraph-mirror-state
+            echo 'Telegraph state persisted after union retry.'
+          fi
           echo "Production main remains untouched: $(git ls-remote origin refs/heads/main | awk '{print $1}')"
 
       - name: Telegraph summary
@@ -119,6 +147,7 @@ jobs:
           echo '- Canonical source: **https://gnk-asg.hr**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Canonical HTTP 200 required before mirror publish: **yes**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Durable state branch: **automation/telegraph-mirror-state**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- State persistence: **force-with-lease + dedupe union retry**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Writes to production main: **disabled by workflow design**' >> "$GITHUB_STEP_SUMMARY"
           if [ -s apps/portal/data/telegraph-content/zadnji-rezultat.json ]; then
             node -e "const r=require('./apps/portal/data/telegraph-content/zadnji-rezultat.json'); console.log('- Sent this run: **'+(r.poslano||0)+'**'); console.log('- Errors: **'+((r.greske||[]).length)+'**')" >> "$GITHUB_STEP_SUMMARY"
