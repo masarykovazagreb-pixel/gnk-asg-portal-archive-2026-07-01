@@ -23,8 +23,13 @@ jobs:
           tmp="$(mktemp -d)"
           trap 'rm -rf "$tmp"' EXIT
           for view in health state plan projects risks opinions dependencies tasks credits newsroom workers activity-log bulletins; do
-            code=$(curl --retry 3 --retry-delay 3 --connect-timeout 10 --max-time 30 -fsS -o "$tmp/$view.json" -w '%{http_code}' "$base/$view")
-            test "$code" = 200
+            code=$(curl --retry 3 --retry-delay 3 --connect-timeout 10 --max-time 30 -sS -o "$tmp/$view.json" -w '%{http_code}' "$base/$view")
+            echo "Workforce endpoint $view -> HTTP $code"
+            if [ "$code" != 200 ]; then
+              echo "::error::Workforce endpoint '$view' returned HTTP $code"
+              cat "$tmp/$view.json" || true
+              exit 1
+            fi
           done
           node - "$tmp" <<'NODE'
           const fs=require('fs'),dir=process.argv[2];

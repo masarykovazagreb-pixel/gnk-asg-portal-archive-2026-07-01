@@ -5,7 +5,14 @@ TOKEN_HASH="${1:?operator token hash is required}"
 DEPLOY_REVISION="${2:?deploy revision is required}"
 MAX_ATTEMPTS=3
 LOG_ROOT="${GITHUB_WORKSPACE:-$(pwd)}/deploy-wrangler-logs"
+CONFIG_FILE="wrangler.workforce-production-no-routes.toml"
 mkdir -p "$LOG_ROOT"
+
+# Fail closed if the production deploy path is not the reviewed Workforce wrapper.
+test -f "$CONFIG_FILE"
+grep -Fq 'main = "src/index-digital-workforce-v1.js"' "$CONFIG_FILE"
+node --check src/index-digital-workforce-v1.js
+node --check src/digital-workforce-public-read-v1.js
 
 sanitize_logs() {
   local dir="$1"
@@ -32,7 +39,7 @@ for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
 
   set +e
   npx --yes wrangler@4.112.0 deploy \
-    --config wrangler.mail-proxy-no-routes.toml \
+    --config "$CONFIG_FILE" \
     --name gnk-asg-direct-operator \
     --var "OPERATOR_TOKEN_SHA256:${TOKEN_HASH}" \
     --var "DEPLOY_REVISION:${DEPLOY_REVISION}" 2>&1 | tee "$output_file"

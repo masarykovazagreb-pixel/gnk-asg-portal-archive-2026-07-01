@@ -17,7 +17,7 @@ PORTAL_DIR = ROOT / "apps" / "portal"
 REQUIRED_WORKER_FILES = (
     WORKER_DIR / "index-digital-workforce-v1.js",
     WORKER_DIR / "digital-workforce-api-v1.js",
-    WORKER_DIR / "index-unified-auth-v17.js",
+    WORKER_DIR / "index-unified-auth-v23.js",
 )
 
 PUBLIC_HTML = (
@@ -65,8 +65,8 @@ def main() -> int:
         errors.append("active wrapper does not invoke the Digital Workforce route handler")
     if "app.fetch" not in wrapper:
         errors.append("active wrapper does not preserve the existing authenticated worker runtime")
-    if "./index-unified-auth-v17.js" not in wrapper:
-        errors.append("active wrapper does not import the approved unified-auth v17 runtime")
+    if "./index-unified-auth-v23.js" not in wrapper:
+        errors.append("active wrapper does not import the approved unified-auth v23/V38 runtime")
 
     # Reject accidental public exposure of common internal route prefixes.
     public_route_literals = re.findall(r"['\"](/(?:api/)?(?:admin|internal|operator)[^'\"]*)['\"]", api)

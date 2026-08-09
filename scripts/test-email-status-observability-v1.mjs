@@ -100,9 +100,11 @@ assert.match(wrangler,/EMAIL_OPEN_TRACKING_ENABLED = "true"/);
 assert.match(wrangler,/EMAIL_RECEIPT_CONFIRMATION_ENABLED = "true"/);
 assert.match(wrangler,/EMAIL_STATUS_EVENT_RETENTION_DAYS = "31"/);
 for(const marker of [
-  "entrypoint='src/index-unified-auth-v23.js'",
+  "entrypoint='src/index-digital-workforce-v1.js'",
   "release_prefix='GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS'",
   'x-gnk-active-entrypoint',
+  'x-gnk-base-runtime',
+  'x-gnk-digital-workforce-wrapper',
   'x-gnk-active-release',
   'x-gnk-deploy-revision',
   'verify_release_marker mail-logo',
@@ -122,5 +124,5 @@ console.log(JSON.stringify({
   forwardingReliable:false,
   contrastRuntime:'v4-all-pages-visual-repair',
   dashboard:'v5-click-tracking',
-  productionVerifier:'v38-exact-release-proof'
+  productionVerifier:'v38-workforce-wrapper-exact-release-proof'
 },null,2));
