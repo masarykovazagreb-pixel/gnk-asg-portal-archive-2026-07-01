@@ -5,6 +5,7 @@ const results = [];
 const now = Date.now();
 const MAX_NEWS_AGE_HOURS = 18;
 const MAX_MARKET_AGE_HOURS = 18;
+const MAX_NEWS_FUTURE_SKEW_MS = 5 * 60 * 1000;
 
 function ok(label, detail = '') { results.push({ label, status: 'OK', detail }); }
 function fail(label, detail = '') { results.push({ label, status: 'FAIL', detail }); }
@@ -68,8 +69,9 @@ try {
     if (Array.isArray(news)) {
       for (const item of news) {
         const candidate = item?.published_at || item?.publishedAt;
-        if (!candidate || Number.isNaN(Date.parse(candidate))) continue;
-        if (!feedTimestamp || Date.parse(candidate) > Date.parse(feedTimestamp)) feedTimestamp = candidate;
+        const candidateMs = Date.parse(candidate);
+        if (!candidate || Number.isNaN(candidateMs) || candidateMs > now + MAX_NEWS_FUTURE_SKEW_MS) continue;
+        if (!feedTimestamp || candidateMs > Date.parse(feedTimestamp)) feedTimestamp = candidate;
       }
     }
   } catch {}
