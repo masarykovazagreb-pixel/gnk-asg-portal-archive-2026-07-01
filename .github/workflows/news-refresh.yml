@@ -1,11 +1,10 @@
 name: GNK ASG News Refresh
 
+# Legacy recovery workflow only.
+# Canonical scheduled owner: .github/workflows/gnk-news-refresh-v2.yml
+# Keep manual dispatch for controlled recovery, but never schedule this writer in parallel.
 on:
   workflow_dispatch:
-  schedule:
-    # GitHub cron je UTC. Do 31.08.2026. Zagreb je CEST (UTC+2), pa 07:00/15:00 UTC
-    # daje kanonske cikluse u 09:00 i 17:00 Europe/Zagreb bez dodatnih cron poziva.
-    - cron: '0 7,15 * * *'
 
 permissions:
   contents: write
