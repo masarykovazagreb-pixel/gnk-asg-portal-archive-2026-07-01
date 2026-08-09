@@ -4,7 +4,7 @@ set -euo pipefail
 out="${1:-deploy-verification}"
 base="${GNK_PRODUCTION_ORIGIN:-https://gnk-asg.hr}"
 revision="${DEPLOY_SOURCE_SHA:?DEPLOY_SOURCE_SHA is required}"
-entrypoint='src/index-unified-auth-v23.js'
+entrypoint='src/index-digital-workforce-v1.js'
 release_prefix='GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS'
 news_baseline='2026-07-15'
 mkdir -p "$out"
@@ -24,7 +24,7 @@ has_release_proof() {
 
 show_relevant_headers() {
   local headers="$1"
-  grep -Ei '^(HTTP/|location:|content-type:|cache-control:|cf-cache-status:|cf-ray:|x-gnk-active-entrypoint:|x-gnk-active-release:|x-gnk-deploy-revision:|x-gnk-route-owner:|x-gnk-news-source:|x-gnk-news-share:|x-gnk-news-id:|x-gnk-market-data:|x-gnk-market-source:|x-gnk-market-route:|x-gnk-market-upstream:|x-gnk-contact-resilience:)' "$headers" >&2 || true
+  grep -Ei '^(HTTP/|location:|content-type:|cache-control:|cf-cache-status:|cf-ray:|x-gnk-active-entrypoint:|x-gnk-base-runtime:|x-gnk-digital-workforce-wrapper:|x-gnk-active-release:|x-gnk-deploy-revision:|x-gnk-route-owner:|x-gnk-news-source:|x-gnk-news-share:|x-gnk-news-id:|x-gnk-market-data:|x-gnk-market-source:|x-gnk-market-route:|x-gnk-market-upstream:|x-gnk-contact-resilience:)' "$headers" >&2 || true
 }
 
 verify_release_marker() {
@@ -87,7 +87,6 @@ if ! grep -Fiq 'x-gnk-news-source: current-static-asset-20260715' "$out/news.hea
   exit 1
 fi
 
-
 canonical_clean_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/news-canonical-clean.headers" --output "$out/news-canonical-clean.json" --write-out '%{http_code}' "${base}/api/public-news-feed" || true)
 canonical_busted_status=$(curl --silent --show-error --max-redirs 0 --dump-header "$out/news-canonical-busted.headers" --output "$out/news-canonical-busted.json" --write-out '%{http_code}' "$(request_url "${base}/api/public-news-feed" "${cache}-canonical")" || true)
 echo "ASSERT canonical news exact and cache-busted routes agree; clean=${canonical_clean_status}; busted=${canonical_busted_status}"
@@ -137,7 +136,7 @@ if [[ "$market_ok" != true ]]; then
   exit 1
 fi
 
-share_id=$(jq -r 'if type=="array" then (.[0].id // "") else (.items[0].id // .posts[0].id // .news[0].id // "") end | tostring' "$out/news.json" 2>"$out/news-share-selector.err" || true)
+share_id=$(jq -r 'if type=="array" then (.[0].id // "") else (.items[0].id // .items[0].id // .posts[0].id // .news[0].id // "") end | tostring' "$out/news.json" 2>"$out/news-share-selector.err" || true)
 share_target=$(jq -r 'if type=="array" then (.[0].sourceUrl // .[0].url // .[0].href // "") else (.items[0].sourceUrl // .items[0].url // .items[0].href // .posts[0].sourceUrl // .posts[0].url // .posts[0].href // .news[0].sourceUrl // .news[0].url // .news[0].href // "") end | tostring' "$out/news.json" 2>>"$out/news-share-selector.err" || true)
 echo "ASSERT current news contains a shareable first item; id=${share_id:-missing}; target=${share_target:-missing}"
 [[ "$share_id" =~ ^[A-Za-z0-9]{8,64}$ ]]
