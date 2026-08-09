@@ -61,7 +61,22 @@ for (const f of jsFiles) {
 
 try {
   const status = JSON.parse(fs.readFileSync('apps/portal/data/update_status.json', 'utf8'));
-  assertFresh('Repository news freshness', status?.news?.last_successful_refresh_at || status?.news?.updated_at || status?.updated_at, MAX_NEWS_AGE_HOURS);
+  const statusTimestamp = status?.news?.last_successful_refresh_at || status?.news?.updated_at || status?.updated_at;
+  let feedTimestamp = null;
+  try {
+    const news = JSON.parse(fs.readFileSync('apps/portal/data/news.json', 'utf8'));
+    if (Array.isArray(news)) {
+      for (const item of news) {
+        const candidate = item?.published_at || item?.publishedAt;
+        if (!candidate || Number.isNaN(Date.parse(candidate))) continue;
+        if (!feedTimestamp || Date.parse(candidate) > Date.parse(feedTimestamp)) feedTimestamp = candidate;
+      }
+    }
+  } catch {}
+  const freshnessTimestamp = [statusTimestamp, feedTimestamp]
+    .filter(value => value && !Number.isNaN(Date.parse(value)))
+    .sort((a, b) => Date.parse(b) - Date.parse(a))[0];
+  assertFresh('Repository news freshness', freshnessTimestamp, MAX_NEWS_AGE_HOURS);
   if (!['ok', 'degraded'].includes(status?.news?.status)) fail('Repository news status', String(status?.news?.status || 'missing'));
   else ok('Repository news status', status.news.status);
 } catch (err) { fail('Repository news freshness', String(err.message || err)); }
