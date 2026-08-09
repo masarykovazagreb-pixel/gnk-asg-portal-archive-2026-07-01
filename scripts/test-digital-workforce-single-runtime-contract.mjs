@@ -10,7 +10,7 @@ const [wrapper, api, publicPage, editorPage] = await Promise.all([
   read('apps/portal/editor-desk/index.html'),
 ]);
 
-assert.match(wrapper, /index-unified-auth-v17\.js/, 'Digital Workforce must preserve the canonical authenticated runtime');
+assert.match(wrapper, /index-unified-auth-v23\.js/, 'Digital Workforce must preserve the canonical authenticated V38 runtime');
 assert.match(wrapper, /handleDigitalWorkforce/, 'Canonical wrapper must delegate to the Digital Workforce API module');
 assert.match(wrapper, /scheduled\(event,env,ctx\).*app\.scheduled/s, 'Existing scheduled handler must be delegated, not replaced');
 assert.match(wrapper, /email\(message,env,ctx\).*app\.email/s, 'Existing email handler must be delegated, not replaced');
