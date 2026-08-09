@@ -1,7 +1,7 @@
-import app,{VERSION as BASE_VERSION} from './index-unified-auth-v17.js';
+import app,{VERSION as BASE_VERSION} from './index-unified-auth-v23.js';
 import {handleDigitalWorkforce,VERSION as DIGITAL_WORKFORCE_VERSION} from './digital-workforce-api-v1.js';
 import {handleDigitalWorkforcePublicRead,VERSION as PUBLIC_READ_VERSION} from './digital-workforce-public-read-v1.js';
-export const VERSION=`GNK_ASG_DIGITAL_WORKFORCE_WRAPPER_V3_20260808_PUBLIC_READ_${PUBLIC_READ_VERSION}_${DIGITAL_WORKFORCE_VERSION}_${BASE_VERSION}`;
+export const VERSION=`GNK_ASG_DIGITAL_WORKFORCE_WRAPPER_V4_20260809_PRODUCTION_V38_PUBLIC_READ_${PUBLIC_READ_VERSION}_${DIGITAL_WORKFORCE_VERSION}_${BASE_VERSION}`;
 const MENU_AUGMENT='/assets/public-digital-workforce-menu-v1.js?v=20260720-fix2';
 const STATE_PATH='/api/public/digital-workforce/state';
 const HEALTH_PATH='/api/public/digital-workforce/health';
