@@ -18,7 +18,8 @@ const publicAudit=JSON.parse(fs.readFileSync('artifacts/public-portal-audit.json
 const routeAudit=JSON.parse(fs.readFileSync('artifacts/worker-route-ownership.json','utf8'));
 assert.equal(publicAudit.summary.errors,0);
 assert.equal(routeAudit.summary.directDeployConfigRouteLess,true);
-assert.equal(routeAudit.directDeployConfig?.file,'workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml');
+assert.equal(routeAudit.directDeployConfig?.file,'workers/gnk-asg-direct-operator/wrangler.workforce-production-no-routes.toml');
+assert.equal(routeAudit.directDeployConfig?.main,'src/index-digital-workforce-v1.js');
 assert.deepEqual(routeAudit.directDeployConfig?.routes,[]);
 
 console.log(JSON.stringify({
@@ -27,5 +28,6 @@ console.log(JSON.stringify({
   marketCoins:market.coins.length,
   publicErrors:publicAudit.summary.errors,
   directDeployConfig:routeAudit.directDeployConfig?.file,
+  directDeployEntrypoint:routeAudit.directDeployConfig?.main,
   directDeployConfigRouteLess:routeAudit.summary.directDeployConfigRouteLess
 },null,2));
