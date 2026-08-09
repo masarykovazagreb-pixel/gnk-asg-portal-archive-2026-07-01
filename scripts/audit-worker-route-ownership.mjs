@@ -4,7 +4,7 @@ import path from 'node:path';
 const ROOT=path.resolve('workers');
 const REPORT=path.resolve('artifacts/worker-route-ownership.json');
 const KNOWN_EXTERNAL=['gnk-asg-news-backend'];
-const DIRECT_DEPLOY_CONFIG='workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml';
+const DIRECT_DEPLOY_CONFIG='workers/gnk-asg-direct-operator/wrangler.workforce-production-no-routes.toml';
 const APPROVED_DEPLOY_CONFIGS=new Set([
   'workers/gnk-asg-contact-api-worker/wrangler.no-routes.toml',
   DIRECT_DEPLOY_CONFIG,
@@ -50,7 +50,7 @@ if(directDeployConfigRouteLess)findings.push({severity:'warning',code:'DIRECT_DE
 if(!directDeployConfig)findings.push({severity:'error',code:'DIRECT_DEPLOY_CONFIG_MISSING',file:DIRECT_DEPLOY_CONFIG});
 
 const report={
-  version:'WORKER_ROUTE_OWNERSHIP_AUDIT_V2_20260713_DEPLOY_CONFIG',
+  version:'WORKER_ROUTE_OWNERSHIP_AUDIT_V3_20260809_WORKFORCE_PRODUCTION_CONFIG',
   generatedAt:new Date().toISOString(),
   summary:{
     configs:configs.length,
