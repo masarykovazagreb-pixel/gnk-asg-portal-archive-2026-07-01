@@ -1,0 +1,70 @@
+name = "gnk-asg-direct-operator"
+main = "src/index-digital-workforce-v1.js"
+compatibility_date = "2026-06-13"
+workers_dev = true
+preview_urls = true
+
+# PRODUCTION SAFETY-COMPAT CONFIG
+# Production routes are not declared or modified here. Existing route assignment remains unchanged.
+# This keeps the V38 production stack and adds the Digital Workforce public-read wrapper.
+
+[[kv_namespaces]]
+binding = "GNK_ASG_CONFIG_KV"
+id = "d6f5dac9fa034d8d813db0de44eb7b1b"
+
+[[d1_databases]]
+binding = "GNK_ASG_D1"
+database_name = "gnk_asg_operator_logs"
+database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
+
+[[r2_buckets]]
+binding = "GNK_ASG_MEDIA_ASSETS"
+bucket_name = "gnk-asg-media-assets"
+
+[[send_email]]
+name = "EMAIL"
+remote = true
+
+[vars]
+PUBLIC_BRAND = "GNK ASG"
+PUBLIC_ENVIRONMENT = "production-direct-operator"
+DEPLOY_REVISION = "20260714-v33-public-editorial-assets"
+SAFE_GET_DIRECT_MODE = "true"
+AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "false"
+MAIL_AUTO_REPLY_LIVE = "true"
+MAIL_STUDIO_LIVE = "true"
+MAIL_MANUAL_LIVE = "true"
+MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
+MAIL_PROFILE_TEST_LIVE = "false"
+MAIL_PROFILE_TEST_RECIPIENTS = "sefic20@gmx.com"
+MAIL_BOOTSTRAP_SMOKE_TEST = "false"
+MEDIA_OUTREACH_FROM = "media@gnk-asg.hr"
+MEDIA_OUTREACH_LIVE = "false"
+MEDIA_OUTREACH_SCHEDULED_LIVE = "false"
+MEDIA_OUTREACH_TEST_LIVE = "false"
+MEDIA_OUTREACH_TEST_RECIPIENTS = "sefic20@gmx.com"
+MEDIA_OUTREACH_AUTO_TEST_RECIPIENT = "sefic20@gmx.com"
+MEDIA_OUTREACH_REPORT_RECIPIENTS = "beckuphome@gmail.com"
+MEDIA_OUTREACH_MAX_PER_HOUR = "1"
+MEDIA_OUTREACH_MAX_PER_DAY = "3"
+MEDIA_APPLICATION_AUTO_ACK = "false"
+EMAIL_STATUS_PUBLIC_ORIGIN = "https://gnk-asg.hr"
+EMAIL_OPEN_TRACKING_ENABLED = "true"
+EMAIL_RECEIPT_CONFIRMATION_ENABLED = "true"
+EMAIL_STATUS_EVENT_RETENTION_DAYS = "31"
+EMAIL_STATUS_SYNC_LOOKBACK_HOURS = "48"
+EMAIL_STATUS_SYNC_OVERLAP_MINUTES = "15"
+EMAIL_STATUS_SYNC_LIMIT = "5000"
+
+[assets]
+directory = "../../apps/portal"
+binding = "ASSETS"
+run_worker_first = true
+html_handling = "auto-trailing-slash"
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+[ai]
+binding = "AI"
