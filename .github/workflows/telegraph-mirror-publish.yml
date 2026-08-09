@@ -62,26 +62,28 @@ jobs:
           cp apps/portal/data/editorial-registry.json /tmp/editorial-registry.full.json
           node <<'NODE'
           const fs=require('fs');
-          const registryPath='apps/portal/data/editorial-registry.json';
-          const statePath='apps/portal/data/telegraph-content/published.json';
-          const registry=JSON.parse(fs.readFileSync(registryPath,'utf8'));
-          const state=JSON.parse(fs.readFileSync(statePath,'utf8'));
-          const items=Array.isArray(registry.items)?registry.items:[];
-          const posted=state.posted||{};
-          const pending=items.filter(x=>x?.path&&!posted[x.path]).sort((a,b)=>new Date(a.publishedAt||0)-new Date(b.publishedAt||0));
-          const candidates=pending.slice(0,20);
-          const live=[];
-          for(const item of candidates){
-            const url='https://gnk-asg.hr'+item.path;
-            try{
-              const r=await fetch(url,{redirect:'follow',headers:{'user-agent':'GNK-ASG-Telegraph-Mirror/1.0','accept':'text/html'}});
-              if(r.status===200){live.push(item);console.log('LIVE 200',url)}
-              else console.log('SKIP HTTP '+r.status,url);
-            }catch(e){console.log('SKIP NETWORK',url,String(e?.message||e));}
-          }
-          registry.items=live;
-          fs.writeFileSync(registryPath,JSON.stringify(registry,null,2)+'\n');
-          console.log(`Telegraph candidates=${candidates.length}; live=${live.length}`);
+          (async()=>{
+            const registryPath='apps/portal/data/editorial-registry.json';
+            const statePath='apps/portal/data/telegraph-content/published.json';
+            const registry=JSON.parse(fs.readFileSync(registryPath,'utf8'));
+            const state=JSON.parse(fs.readFileSync(statePath,'utf8'));
+            const items=Array.isArray(registry.items)?registry.items:[];
+            const posted=state.posted||{};
+            const pending=items.filter(x=>x?.path&&!posted[x.path]).sort((a,b)=>new Date(a.publishedAt||0)-new Date(b.publishedAt||0));
+            const candidates=pending.slice(0,20);
+            const live=[];
+            for(const item of candidates){
+              const url='https://gnk-asg.hr'+item.path;
+              try{
+                const r=await fetch(url,{redirect:'follow',headers:{'user-agent':'GNK-ASG-Telegraph-Mirror/1.0','accept':'text/html'}});
+                if(r.status===200){live.push(item);console.log('LIVE 200',url)}
+                else console.log('SKIP HTTP '+r.status,url);
+              }catch(e){console.log('SKIP NETWORK',url,String(e?.message||e));}
+            }
+            registry.items=live;
+            fs.writeFileSync(registryPath,JSON.stringify(registry,null,2)+'\n');
+            console.log(`Telegraph candidates=${candidates.length}; live=${live.length}`);
+          })().catch(err=>{console.error(err);process.exit(1)});
           NODE
 
       - name: Publish controlled Telegraph batch
