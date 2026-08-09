@@ -29,6 +29,32 @@ jobs:
       - name: Sync with latest main before running (reduces race with other auto-commit workflows)
         run: git pull --ff-only origin main
 
+      - name: Normalize archive schema for canonical refresh
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('apps/portal/data/news_archive.json')
+          if not path.exists():
+              raise SystemExit(0)
+
+          payload = json.loads(path.read_text(encoding='utf-8'))
+          if isinstance(payload, list):
+              raise SystemExit(0)
+
+          if isinstance(payload, dict) and isinstance(payload.get('items'), list):
+              path.write_text(
+                  json.dumps(payload['items'], ensure_ascii=False, indent=2) + '\n',
+                  encoding='utf-8',
+              )
+              print(f"normalized archive wrapper to list: {len(payload['items'])} items")
+              raise SystemExit(0)
+
+          raise SystemExit('unsupported news_archive.json schema')
+          PY
+
       - name: Refresh public business news feed
         run: python apps/portal/scripts/refresh_news_policy.py
 
