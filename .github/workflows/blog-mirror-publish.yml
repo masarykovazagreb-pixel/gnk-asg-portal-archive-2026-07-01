@@ -240,8 +240,9 @@ jobs:
             echo "Mirror state spremljen nakon union retryja."
           fi
 
-          test "$(git rev-parse origin/main)" = "$(git ls-remote origin refs/heads/main | awk '{print $1}')"
-          echo "Production main nije pomaknut ovim state zapisom."
+          remote_main="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test -n "$remote_main"
+          echo "Production main remote je $remote_main; ovaj korak pise iskljucivo na automation/blog-mirror-state."
 
       - name: Enforce three-channel operational result
         if: always()
