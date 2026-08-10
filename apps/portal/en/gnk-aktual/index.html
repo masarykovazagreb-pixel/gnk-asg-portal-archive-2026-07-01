@@ -37,7 +37,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-hero p{color:var(--ak-sub);font-family:Arial,sans-serif;font-size:1rem;max-width:640px;margin:0 auto}
 .ak-status{font-family:Arial,sans-serif;font-size:.78rem;color:var(--ak-sub);text-align:center;margin:14px 0 44px}
 .ak-featured{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:3px solid var(--ak-line);border-radius:4px;overflow:hidden;margin-bottom:44px;background:var(--ak-panel)}
-.ak-featured img{width:100%;height:100%;min-height:280px;object-fit:cover;display:block}
+.ak-featured img{width:100%;max-width:520px;height:auto;max-height:340px;object-fit:cover;display:block;margin:16px auto;border:2px solid var(--ak-line);border-radius:4px;padding:0} .ak-editor-stamp{font-family:Arial,sans-serif;font-size:.7rem;color:var(--ak-sub);opacity:.75;margin-top:6px;letter-spacing:.02em;font-style:italic}
 .ak-featured-body{padding:32px}
 .ak-tag{display:inline-block;font-family:Arial,sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--ak-red);padding:4px 10px;border-radius:4px;margin-bottom:14px}
 .ak-featured-body h2{font-family:'Arial Black',Impact,'Franklin Gothic Bold',sans-serif;font-size:clamp(1.3rem,3vw,2rem);line-height:1.15;margin:0 0 14px;letter-spacing:-.005em}
@@ -240,7 +240,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
         '<span class="ak-tag">'+esc(GROUP_LABELS[item.group]||item.category||'News')+'</span>' +
         '<h2><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a></h2>' +
         '<p>'+esc(item.summary||'')+'</p>' +
-        '<div class="ak-meta"><span>'+esc(item.source||'')+'</span><span>·</span><span>'+timeAgo(item.published_at)+'</span><span>·</span><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">Read original article →</a></div>' +
+        '<div class="ak-meta"><span>'+esc(item.source||'')+'</span><span>·</span><span>'+timeAgo(item.published_at)+'</span><span>·</span><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">Read original article →</a></div><div class="ak-editor-stamp">Approved by: editor Nermin Sefić</div>' +
       '</div></div>';
   }
 
@@ -342,6 +342,14 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       if (!items.length) return;
       trak.innerHTML = items.concat(items).concat(items).join('');
       el.classList.add('vidljivo');
+    
+      var fullBox = document.createElement('div');
+      fullBox.id='akReceptPuni';
+      fullBox.style.cssText='display:none;padding:0 22px 18px;font-family:Arial,sans-serif';
+      fullBox.innerHTML='<h4 style="margin:14px 0 6px;font-size:.9rem;color:var(--ak-red);text-transform:uppercase;letter-spacing:.06em">All ingredients</h4><ul style="margin:0 0 14px 18px;font-size:.9rem;line-height:1.55">'+(recept.ingredients||[]).map(function(s){return '<li>'+escH(s.ingredient||'')+(s.amount?' — '+escH(s.amount):'')+'</li>'}).join('')+'</ul><h4 style="margin:0 0 6px;font-size:.9rem;color:var(--ak-red);text-transform:uppercase;letter-spacing:.06em">Method</h4><p style="font-size:.95rem;line-height:1.65;margin:0;white-space:pre-line">'+escH(recept.method||'')+'</p>';
+      document.getElementById('akReceptDana').appendChild(fullBox);
+      var btn=document.getElementById('akReceptToggle');
+      if(btn){btn.addEventListener('click',function(){var open=fullBox.style.display==='block';fullBox.style.display=open?'none':'block';btn.textContent=open?'Full recipe →':'Hide ↑';});}
     })
     .catch(function(){});
 
@@ -386,7 +394,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
         '<h3>' + escH(recept.name) + '</h3>' +
         '<p class="sastojci">' + escH(sastojci) + '…</p>' +
         '<p class="priprema">' + escH(priprema) + (priprema.length >= 220 ? '…' : '') + '</p>' +
-        '<a href="/world-table/" style="font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);text-decoration:none;border-bottom:2px solid var(--ak-red);padding-bottom:1px">Full recipe →</a>' +
+        '<button type="button" id="akReceptToggle" style="font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);background:transparent;border:none;border-bottom:2px solid var(--ak-red);padding:0 0 1px;cursor:pointer">Full recipe →</button>' +
         '</div>';
     })
     .catch(function(){});
