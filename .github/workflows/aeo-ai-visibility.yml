@@ -27,8 +27,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Generate AEO artefacts
         run: node scripts/generate-aeo-artifacts-v1.mjs
+      - name: Enrich image alt/title with entities (full name)
+        run: node scripts/image-entity-seo-v1.mjs
+      - name: Boost hashtags in article bodies
+        run: node scripts/hashtag-boost-v1.mjs
+      - name: Editorial entity linkage (JSON-LD Article + og:image fallback)
+        run: node scripts/editorial-entity-linkage-v1.mjs
+      - name: Regenerate image sitemap
+        run: python3 scripts/generate-image-sitemap.py
       - name: Commit + dispatch exact-SHA production deploy
         env:
           GH_TOKEN: ${{ github.token }}
@@ -42,7 +53,7 @@ jobs:
             echo "Nema promjena u AEO artefaktima."
             exit 0
           fi
-          git commit -m "AEO: refresh /llms.txt, /llms-full.txt, entity graph, /ai/ endpoint"
+          git commit -m "AEO+Entity: refresh /llms.txt, /llms-full.txt, entity graph, /ai/, image alt/title, hashtags, editorial JSON-LD, sitemap"
           git push origin HEAD:main
           sha="$(git rev-parse HEAD)"
           gh workflow run deploy-admin-auth-v6.yml \

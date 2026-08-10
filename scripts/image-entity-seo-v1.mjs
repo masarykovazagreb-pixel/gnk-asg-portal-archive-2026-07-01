@@ -43,7 +43,9 @@ for(const file of pages){
       t = alt===null ? t.replace(/<img\b/i,`<img alt="${val}"`) : t.replace(/alt="[^"]*"/i,`alt="${val}"`);
       stats.altAdded++; changed=true;
     } else if(isPerson&&!/sefi[ćc]/i.test(alt)){
-      t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} — Nermin Sefić, GNK ASG"`);
+      // "Nermin" -> "Nermin Sefić"; sve ostalo dobiva prefiks pune imenske kombinacije
+      const enriched=/\bnermin\b/i.test(alt) ? alt.replace(/\bnermin\b/i,'Nermin Sefić') : `${alt} — Nermin Sefić (Sefic Nermin), GNK ASG`;
+      t=t.replace(/alt="([^"]*)"/i,`alt="${enriched}"`);
       stats.altEnriched++; changed=true;
     } else if(isLogo&&!/gnk/i.test(alt)){
       t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} — GNK ASG"`);
@@ -53,7 +55,7 @@ for(const file of pages){
       stats.altEnriched++; changed=true;
     }
     if(isPerson&&!/title="/i.test(t)){
-      t=t.replace(/<img\b/i,'<img title="Nermin Sefić — GNK ASG · GNK DINAMO Ltd."');
+      t=t.replace(/<img\b/i,'<img title="Nermin Sefić (Sefic Nermin) — GNK ASG · GNK DINAMO Ltd."');
       stats.titleAdded++; changed=true;
     }
     return t;
