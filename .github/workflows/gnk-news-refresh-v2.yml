@@ -42,9 +42,11 @@ jobs:
           const switches = JSON.parse(fs.readFileSync('ops/automation-kill-switches.json', 'utf8'));
           const newsEnabled = switches.channels?.newsWrite?.enabled === true;
           const releaseFence = switches.releaseFence?.enabled === true;
-          const shouldRun = newsEnabled && !releaseFence;
+          const onMain = process.env.GITHUB_REF === 'refs/heads/main';
+          const shouldRun = newsEnabled && !releaseFence && onMain;
           fs.appendFileSync(process.env.GITHUB_OUTPUT, `should_run=${shouldRun}\n`);
-          if (!newsEnabled) console.log('GNK News Refresh V2 held: newsWrite kill-switch is disabled.');
+          if (!onMain) console.log(`GNK News Refresh V2 held: writer is main-only (current ref: ${process.env.GITHUB_REF}).`);
+          else if (!newsEnabled) console.log('GNK News Refresh V2 held: newsWrite kill-switch is disabled.');
           else if (releaseFence) console.log('GNK News Refresh V2 held: exact-SHA production release fence is active.');
           else console.log('GNK News Refresh V2 authorized by central automation control plane.');
           NODE
