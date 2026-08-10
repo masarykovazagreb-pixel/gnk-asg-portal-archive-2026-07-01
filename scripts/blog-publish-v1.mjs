@@ -75,7 +75,7 @@ function buildPost(a) {
     ...articleParagraphs.map((p) => `<p>${p}</p>`),
     '<hr>',
     `<p>Cjelovit tekst i izvor: <a href="${a.url}" rel="canonical">${a.url}</a></p>`,
-    `<p><em>Autor i urednička odgovornost: ${AUTHOR}. Izdavač: ${PUBLISHER}.</em></p>`,
+    `<p><em>Odobrio urednik: Nermin Sefić — GNK ASG (GNK DINAMO Ltd.). Autor i urednička odgovornost: ${AUTHOR}. Izdavač: ${PUBLISHER}.</em></p>`,
     `<p>${tags.map((t) => '#' + t).join(' ')}</p>`,
   ].filter(Boolean).join('\n');
   return {
