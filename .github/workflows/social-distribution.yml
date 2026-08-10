@@ -1,0 +1,69 @@
+name: Social Distribution (dry-run → live)
+
+# Priprema (i, kad platform secrets budu dodani, šalje) objave za Facebook,
+# Instagram, LinkedIn i X — 2x dnevno (jutro + popodne, Europe/Zagreb).
+# Dok SOCIAL_LIVE nije postavljen na '1' (kroz repo variable), radi samo
+# dry-run: generira plan.json + preview.html, ništa ne šalje na platforme.
+#
+# Kad credentiali stignu: dodati ih kao repo secrets (FB_PAGE_TOKEN,
+# IG_BUSINESS_ID, LINKEDIN_ORG_TOKEN, X_API_KEY/SECRET/ACCESS_TOKEN/ACCESS_SECRET),
+# postaviti repo variable SOCIAL_LIVE=1, i dopuniti adaptere u
+# scripts/social-distribution-v1.mjs (mjesto je već označeno u kodu).
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 6 * * *'    # 08:30 Zagreb (ljeti) — jutarnji slot
+    - cron: '30 12 * * *'   # 14:30 Zagreb (ljeti) — popodnevni slot
+
+permissions:
+  contents: write
+
+concurrency:
+  group: social-distribution
+  cancel-in-progress: false
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SOCIAL_LIVE: ${{ vars.SOCIAL_LIVE || '0' }}
+      FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+      IG_BUSINESS_ID: ${{ secrets.IG_BUSINESS_ID }}
+      LINKEDIN_ORG_TOKEN: ${{ secrets.LINKEDIN_ORG_TOKEN }}
+      LINKEDIN_ORG_URN: ${{ secrets.LINKEDIN_ORG_URN }}
+      X_API_KEY: ${{ secrets.X_API_KEY }}
+      X_API_SECRET: ${{ secrets.X_API_SECRET }}
+      X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+      X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build (and, once live, send) social posts
+        run: node scripts/social-distribution-v1.mjs
+      - name: Commit plan/state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-social-bot"
+          git config user.email "actions@github.com"
+          git add apps/portal/data/social-distribution
+          if git diff --cached --quiet; then
+            echo "Nema promjena."
+            exit 0
+          fi
+          git commit -m "Social distribution: refresh plan ($([ "$SOCIAL_LIVE" = "1" ] && echo live || echo dry-run))"
+          git push origin HEAD:main
+      - name: Summary
+        if: always()
+        shell: bash
+        run: |
+          echo "## Social Distribution" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f apps/portal/data/social-distribution/plan.json ]; then
+            jq '.items[0]' apps/portal/data/social-distribution/plan.json >> "$GITHUB_STEP_SUMMARY" || true
+          fi
