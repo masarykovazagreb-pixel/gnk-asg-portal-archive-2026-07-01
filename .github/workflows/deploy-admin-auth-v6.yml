@@ -346,7 +346,9 @@ jobs:
           node-version: '24'
       - name: Pošalji sve URL-ove na IndexNow
         run: node scripts/gnk-indexnow-submit-v1.mjs
-      - name: Ping Google i Bing sitemap
+      - name: Ping Google i Bing sitemap (index + editorial + image)
         run: |
-          curl -s -o /dev/null -w "Google ping status: %{http_code}\n" "https://www.google.com/ping?sitemap=https://gnk-asg.hr/sitemap.xml"
-          curl -s -o /dev/null -w "Bing ping status: %{http_code}\n" "https://www.bing.com/ping?sitemap=https://gnk-asg.hr/sitemap.xml"
+          for sm in sitemap-index.xml sitemap.xml editorial-sitemap.xml image-sitemap.xml world-topics-image-sitemap.xml; do
+            curl -s -o /dev/null -w "Google ping ($sm): %{http_code}\n" "https://www.google.com/ping?sitemap=https://gnk-asg.hr/$sm"
+            curl -s -o /dev/null -w "Bing ping ($sm): %{http_code}\n" "https://www.bing.com/ping?sitemap=https://gnk-asg.hr/$sm"
+          done
