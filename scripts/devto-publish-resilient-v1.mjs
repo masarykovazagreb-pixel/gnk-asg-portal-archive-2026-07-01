@@ -82,7 +82,7 @@ async function canonicalIsLive(path) {
 }
 
 async function postArticle(article, canonicalPath) {
-  const bodyMarkdown = `${article.paragraphs.join('\n\n')}\n\n---\n*Autor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: [gnk-asg.hr](${SITE}${canonicalPath})*`;
+  const bodyMarkdown = `${article.paragraphs.join('\n\n')}\n\n---\n*Odobrio urednik: Nermin Sefić — GNK ASG (GNK DINAMO Ltd.). Autor: Nermin Sefić, GNK ASG d.o.o. Izvorni članak: [gnk-asg.hr](${SITE}${canonicalPath})*`;
   const payload = {
     article: {
       title: article.title.slice(0, 128),

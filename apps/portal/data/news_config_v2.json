@@ -4,54 +4,363 @@
   "max_items": 500,
   "max_per_source": 80,
   "rotation_policy": "Nove vijesti ulaze prve; duplikati i blokirane objave se uklanjaju; javno se prikazuje najnovijih 500 stavki; aktivna javna arhiva zadržava sljedećih najnovijih 400 stavki; stariji višak izvan aktivnog skupa uklanja se radi stabilnog rada objave.",
-  "automation_verification": "Jedinstveni proces scripts/news_publication.py. BiH i Slovenija pojačani su dodatnim provjerljivim javnim izvorima kroz Google News upite 31.05.2026.",
+  "automation_verification": "Jedinstveni proces scripts/news_publication.py. BiH i Slovenija pojačani su dodatnim provjerljivim javnim izvorima kroz Google News upite 31.05.2026. | 2026-08-10: dodane magazin kategorije (djeca, životinje, kultura, zdravlje, okoliš, znanost, putovanja) — 14 novih upita.",
   "sources": [
-    {"name":"Poslovni dnevnik","group":"hrvatska","category":"economy","url":"https://www.poslovni.hr/feed"},
-    {"name":"Biznis.rs","group":"srbija","category":"economy","url":"https://biznis.rs/feed/"},
-    {"name":"CNBC Business","group":"international","category":"economy","url":"https://www.cnbc.com/id/10001147/device/rss/rss.html"},
-    {"name":"CNBC Technology","group":"technology","category":"technology","url":"https://www.cnbc.com/id/19854910/device/rss/rss.html"},
-    {"name":"TechCrunch","group":"technology","category":"technology","url":"https://techcrunch.com/feed/"},
-    {"name":"MIT Technology Review","group":"technology","category":"technology","url":"https://www.technologyreview.com/feed/"},
-    {"name":"CoinDesk","group":"digital-assets","category":"digital-assets","url":"https://www.coindesk.com/arc/outboundfeeds/rss/"}
+    {
+      "name": "Poslovni dnevnik",
+      "group": "hrvatska",
+      "category": "economy",
+      "url": "https://www.poslovni.hr/feed"
+    },
+    {
+      "name": "Biznis.rs",
+      "group": "srbija",
+      "category": "economy",
+      "url": "https://biznis.rs/feed/"
+    },
+    {
+      "name": "CNBC Business",
+      "group": "international",
+      "category": "economy",
+      "url": "https://www.cnbc.com/id/10001147/device/rss/rss.html"
+    },
+    {
+      "name": "CNBC Technology",
+      "group": "technology",
+      "category": "technology",
+      "url": "https://www.cnbc.com/id/19854910/device/rss/rss.html"
+    },
+    {
+      "name": "TechCrunch",
+      "group": "technology",
+      "category": "technology",
+      "url": "https://techcrunch.com/feed/"
+    },
+    {
+      "name": "MIT Technology Review",
+      "group": "technology",
+      "category": "technology",
+      "url": "https://www.technologyreview.com/feed/"
+    },
+    {
+      "name": "CoinDesk",
+      "group": "digital-assets",
+      "category": "digital-assets",
+      "url": "https://www.coindesk.com/arc/outboundfeeds/rss/"
+    }
   ],
   "queries": [
-    {"name":"Hrvatska Ekonomija","group":"hrvatska","category":"economy","q":"tvrtke gospodarstvo financije investicije Hrvatska when:14d"},
-    {"name":"Hrvatska Sport","group":"sport","category":"sport","q":"Hrvatska sport klub savez infrastruktura ulaganja when:30d"},
-    {"name":"Hrvatska Košarka","group":"sport","category":"basketball","q":"Hrvatska košarka liga reprezentacija savez klub when:30d"},
-    {"name":"Hrvatska Tenis","group":"sport","category":"tennis","q":"Hrvatska tenis turnir savez klub when:30d"},
-    {"name":"Mobilnost i Vozila","group":"mobilnost","category":"automotive","q":"automobilska industrija električna vozila mobilnost tehnologija when:30d"},
-    {"name":"Slovenija Gospodarstvo","group":"slovenija","category":"economy","q":"slovenska podjetja gospodarstvo poslovanje naložbe finance when:30d"},
-    {"name":"Slovenija Business Investments","group":"slovenija","category":"economy","q":"Slovenija podjetja investicije gospodarstvo poslovanje dobiček prihodki when:30d"},
-    {"name":"Slovenia Business English","group":"slovenija","category":"economy","q":"Slovenia business companies investment economy finance when:30d"},
-    {"name":"Slovenija Finance.si","group":"slovenija","category":"economy","q":"site:finance.si podjetja gospodarstvo naložbe Slovenija when:30d"},
-    {"name":"Slovenija Siol Gospodarstvo","group":"slovenija","category":"economy","q":"site:siol.net gospodarstvo podjetja poslovanje Slovenija when:30d"},
-    {"name":"Slovenija RTV Gospodarstvo","group":"slovenija","category":"economy","q":"site:rtvslo.si gospodarstvo podjetja poslovanje Slovenija when:30d"},
-    {"name":"Slovenija Delo Gospodarstvo","group":"slovenija","category":"economy","q":"site:delo.si gospodarstvo podjetja Slovenija when:30d"},
-    {"name":"Slovenija STA Gospodarstvo","group":"slovenija","category":"economy","q":"site:sta.si gospodarstvo podjetja Slovenija investicije when:30d"},
-    {"name":"Slovenija N1 Gospodarstvo","group":"slovenija","category":"economy","q":"site:n1info.si gospodarstvo podjetja investicije Slovenija when:30d"},
-    {"name":"Slovenija Forbes","group":"slovenija","category":"economy","q":"site:forbes.n1info.si podjetja gospodarstvo investicije Slovenija when:30d"},
-    {"name":"Slovenija Svet Kapitala","group":"slovenija","category":"economy","q":"site:svetkapitala.delo.si podjetja gospodarstvo finance Slovenija when:30d"},
-    {"name":"Srbija Business","group":"srbija","category":"economy","q":"kompanije biznis investicije tržište Srbija when:30d"},
-    {"name":"N1 BiH Poslovanje","group":"bih","category":"economy","q":"site:n1info.ba poslovanje kompanije investicije when:30d"},
-    {"name":"N1 BiH Ekonomija","group":"bih","category":"economy","q":"site:n1info.ba ekonomija privreda financije when:30d"},
-    {"name":"BiH Ekonomija","group":"bih","category":"economy","q":"Bosna Hercegovina poslovanje ekonomija kompanije investicije when:30d"},
-    {"name":"BiH Privreda Investicije","group":"bih","category":"economy","q":"BiH privreda investicije kompanije tržište poslovanje when:30d"},
-    {"name":"Bosnia Business English","group":"bih","category":"economy","q":"Bosnia Herzegovina business companies investment economy finance when:30d"},
-    {"name":"BiH Sport","group":"bih","category":"sport","q":"Bosna Hercegovina sport košarka tenis savez klub when:30d"},
-    {"name":"BiH Akta","group":"bih","category":"economy","q":"site:akta.ba kompanije investicije ekonomija privreda when:30d"},
-    {"name":"BiH Capital","group":"bih","category":"economy","q":"site:capital.ba privreda poslovanje investicije ekonomija when:30d"},
-    {"name":"BiH Klix Biznis","group":"bih","category":"economy","q":"site:klix.ba/biznis ekonomija kompanije BiH investicije when:30d"},
-    {"name":"BiH Indikator","group":"bih","category":"economy","q":"site:indikator.ba kompanije privreda investicije BiH when:30d"},
-    {"name":"BiH BiznisInfo","group":"bih","category":"economy","q":"site:biznisinfo.ba kompanije investicije privreda BiH when:30d"},
-    {"name":"BiH eKapija","group":"bih","category":"economy","q":"site:ekapija.com Bosna Hercegovina investicije kompanije privreda when:30d"},
-    {"name":"BiH Nezavisne Ekonomija","group":"bih","category":"economy","q":"site:nezavisne.com ekonomija privreda kompanije BiH when:30d"},
-    {"name":"BiH SeeNews","group":"bih","category":"economy","q":"site:seenews.com Bosnia Herzegovina business investment companies when:30d"},
-    {"name":"Global Markets","group":"international","category":"economy","q":"global business financial markets companies investment when:14d"},
-    {"name":"Global Sport Business","group":"sport","category":"sport","q":"sports business basketball tennis federation investment when:30d"},
-    {"name":"Global Mobility","group":"mobilnost","category":"automotive","q":"automotive industry electric vehicles mobility technology when:30d"},
-    {"name":"AI Technology","group":"technology","category":"technology","q":"artificial intelligence AI software semiconductor robotics when:14d"},
-    {"name":"Cyber and Cloud","group":"technology","category":"technology","q":"cybersecurity cloud computing data center software when:14d"},
-    {"name":"Digital Assets","group":"digital-assets","category":"digital-assets","q":"bitcoin ethereum blockchain digital assets market when:14d"},
-    {"name":"Crypto Regulation","group":"digital-assets","category":"digital-assets","q":"crypto regulation stablecoin digital finance when:14d"}
+    {
+      "name": "Hrvatska Ekonomija",
+      "group": "hrvatska",
+      "category": "economy",
+      "q": "tvrtke gospodarstvo financije investicije Hrvatska when:14d"
+    },
+    {
+      "name": "Hrvatska Sport",
+      "group": "sport",
+      "category": "sport",
+      "q": "Hrvatska sport klub savez infrastruktura ulaganja when:30d"
+    },
+    {
+      "name": "Hrvatska Košarka",
+      "group": "sport",
+      "category": "basketball",
+      "q": "Hrvatska košarka liga reprezentacija savez klub when:30d"
+    },
+    {
+      "name": "Hrvatska Tenis",
+      "group": "sport",
+      "category": "tennis",
+      "q": "Hrvatska tenis turnir savez klub when:30d"
+    },
+    {
+      "name": "Mobilnost i Vozila",
+      "group": "mobilnost",
+      "category": "automotive",
+      "q": "automobilska industrija električna vozila mobilnost tehnologija when:30d"
+    },
+    {
+      "name": "Slovenija Gospodarstvo",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "slovenska podjetja gospodarstvo poslovanje naložbe finance when:30d"
+    },
+    {
+      "name": "Slovenija Business Investments",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "Slovenija podjetja investicije gospodarstvo poslovanje dobiček prihodki when:30d"
+    },
+    {
+      "name": "Slovenia Business English",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "Slovenia business companies investment economy finance when:30d"
+    },
+    {
+      "name": "Slovenija Finance.si",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "site:finance.si podjetja gospodarstvo naložbe Slovenija when:30d"
+    },
+    {
+      "name": "Slovenija Siol Gospodarstvo",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "site:siol.net gospodarstvo podjetja poslovanje Slovenija when:30d"
+    },
+    {
+      "name": "Slovenija RTV Gospodarstvo",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "site:rtvslo.si gospodarstvo podjetja poslovanje Slovenija when:30d"
+    },
+    {
+      "name": "Slovenija Delo Gospodarstvo",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "site:delo.si gospodarstvo podjetja Slovenija when:30d"
+    },
+    {
+      "name": "Slovenija STA Gospodarstvo",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "site:sta.si gospodarstvo podjetja Slovenija investicije when:30d"
+    },
+    {
+      "name": "Slovenija N1 Gospodarstvo",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "site:n1info.si gospodarstvo podjetja investicije Slovenija when:30d"
+    },
+    {
+      "name": "Slovenija Forbes",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "site:forbes.n1info.si podjetja gospodarstvo investicije Slovenija when:30d"
+    },
+    {
+      "name": "Slovenija Svet Kapitala",
+      "group": "slovenija",
+      "category": "economy",
+      "q": "site:svetkapitala.delo.si podjetja gospodarstvo finance Slovenija when:30d"
+    },
+    {
+      "name": "Srbija Business",
+      "group": "srbija",
+      "category": "economy",
+      "q": "kompanije biznis investicije tržište Srbija when:30d"
+    },
+    {
+      "name": "N1 BiH Poslovanje",
+      "group": "bih",
+      "category": "economy",
+      "q": "site:n1info.ba poslovanje kompanije investicije when:30d"
+    },
+    {
+      "name": "N1 BiH Ekonomija",
+      "group": "bih",
+      "category": "economy",
+      "q": "site:n1info.ba ekonomija privreda financije when:30d"
+    },
+    {
+      "name": "BiH Ekonomija",
+      "group": "bih",
+      "category": "economy",
+      "q": "Bosna Hercegovina poslovanje ekonomija kompanije investicije when:30d"
+    },
+    {
+      "name": "BiH Privreda Investicije",
+      "group": "bih",
+      "category": "economy",
+      "q": "BiH privreda investicije kompanije tržište poslovanje when:30d"
+    },
+    {
+      "name": "Bosnia Business English",
+      "group": "bih",
+      "category": "economy",
+      "q": "Bosnia Herzegovina business companies investment economy finance when:30d"
+    },
+    {
+      "name": "BiH Sport",
+      "group": "bih",
+      "category": "sport",
+      "q": "Bosna Hercegovina sport košarka tenis savez klub when:30d"
+    },
+    {
+      "name": "BiH Akta",
+      "group": "bih",
+      "category": "economy",
+      "q": "site:akta.ba kompanije investicije ekonomija privreda when:30d"
+    },
+    {
+      "name": "BiH Capital",
+      "group": "bih",
+      "category": "economy",
+      "q": "site:capital.ba privreda poslovanje investicije ekonomija when:30d"
+    },
+    {
+      "name": "BiH Klix Biznis",
+      "group": "bih",
+      "category": "economy",
+      "q": "site:klix.ba/biznis ekonomija kompanije BiH investicije when:30d"
+    },
+    {
+      "name": "BiH Indikator",
+      "group": "bih",
+      "category": "economy",
+      "q": "site:indikator.ba kompanije privreda investicije BiH when:30d"
+    },
+    {
+      "name": "BiH BiznisInfo",
+      "group": "bih",
+      "category": "economy",
+      "q": "site:biznisinfo.ba kompanije investicije privreda BiH when:30d"
+    },
+    {
+      "name": "BiH eKapija",
+      "group": "bih",
+      "category": "economy",
+      "q": "site:ekapija.com Bosna Hercegovina investicije kompanije privreda when:30d"
+    },
+    {
+      "name": "BiH Nezavisne Ekonomija",
+      "group": "bih",
+      "category": "economy",
+      "q": "site:nezavisne.com ekonomija privreda kompanije BiH when:30d"
+    },
+    {
+      "name": "BiH SeeNews",
+      "group": "bih",
+      "category": "economy",
+      "q": "site:seenews.com Bosnia Herzegovina business investment companies when:30d"
+    },
+    {
+      "name": "Global Markets",
+      "group": "international",
+      "category": "economy",
+      "q": "global business financial markets companies investment when:14d"
+    },
+    {
+      "name": "Global Sport Business",
+      "group": "sport",
+      "category": "sport",
+      "q": "sports business basketball tennis federation investment when:30d"
+    },
+    {
+      "name": "Global Mobility",
+      "group": "mobilnost",
+      "category": "automotive",
+      "q": "automotive industry electric vehicles mobility technology when:30d"
+    },
+    {
+      "name": "AI Technology",
+      "group": "technology",
+      "category": "technology",
+      "q": "artificial intelligence AI software semiconductor robotics when:14d"
+    },
+    {
+      "name": "Cyber and Cloud",
+      "group": "technology",
+      "category": "technology",
+      "q": "cybersecurity cloud computing data center software when:14d"
+    },
+    {
+      "name": "Digital Assets",
+      "group": "digital-assets",
+      "category": "digital-assets",
+      "q": "bitcoin ethereum blockchain digital assets market when:14d"
+    },
+    {
+      "name": "Crypto Regulation",
+      "group": "digital-assets",
+      "category": "digital-assets",
+      "q": "crypto regulation stablecoin digital finance when:14d"
+    },
+    {
+      "name": "Djeca i obitelj",
+      "group": "magazin",
+      "category": "kids",
+      "q": "djeca odgoj obitelj vrtić škola aktivnosti when:14d"
+    },
+    {
+      "name": "Children & Family",
+      "group": "magazin",
+      "category": "kids",
+      "q": "children parenting family education activities when:14d"
+    },
+    {
+      "name": "Životinje i priroda",
+      "group": "magazin",
+      "category": "animals",
+      "q": "životinje priroda kućni ljubimci veterinarska zaštita when:14d"
+    },
+    {
+      "name": "Animals & Wildlife",
+      "group": "magazin",
+      "category": "animals",
+      "q": "animals wildlife pets conservation nature when:14d"
+    },
+    {
+      "name": "Kultura i umjetnost",
+      "group": "magazin",
+      "category": "culture",
+      "q": "kultura umjetnost izložba književnost film glazba when:14d"
+    },
+    {
+      "name": "Culture & Arts",
+      "group": "magazin",
+      "category": "culture",
+      "q": "culture arts exhibition literature film music when:14d"
+    },
+    {
+      "name": "Zdravlje i wellness",
+      "group": "magazin",
+      "category": "health",
+      "q": "zdravlje prevencija medicina wellness prehrana when:14d"
+    },
+    {
+      "name": "Health & Wellness",
+      "group": "magazin",
+      "category": "health",
+      "q": "health wellness prevention medicine nutrition when:14d"
+    },
+    {
+      "name": "Okoliš i klima",
+      "group": "magazin",
+      "category": "environment",
+      "q": "okoliš klima ekologija održivost obnovljivi izvori when:14d"
+    },
+    {
+      "name": "Environment & Climate",
+      "group": "magazin",
+      "category": "environment",
+      "q": "environment climate ecology sustainability renewables when:14d"
+    },
+    {
+      "name": "Znanost i istraživanja",
+      "group": "magazin",
+      "category": "science",
+      "q": "znanost istraživanje otkriće sveučilište nauka when:14d"
+    },
+    {
+      "name": "Science & Research",
+      "group": "magazin",
+      "category": "science",
+      "q": "science research discovery university physics biology when:14d"
+    },
+    {
+      "name": "Putovanja i lifestyle",
+      "group": "magazin",
+      "category": "lifestyle",
+      "q": "putovanja destinacije lifestyle turizam kulinarstvo when:14d"
+    },
+    {
+      "name": "Travel & Lifestyle",
+      "group": "magazin",
+      "category": "lifestyle",
+      "q": "travel destinations lifestyle tourism culinary when:14d"
+    }
   ]
 }
