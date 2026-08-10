@@ -10,8 +10,6 @@ const PAGES=[
  {file:'apps/portal/gnk-aktual/index.html', lang:'hr', crumbs:[['Naslovnica','/'],['AKTUAL MEDIA','/gnk-aktual/']]},
  {file:'apps/portal/en/gnk-aktual/index.html', lang:'en', crumbs:[['Home','/en/'],['AKTUAL MEDIA','/en/gnk-aktual/']]},
  {file:'apps/portal/ai/index.html', lang:'en', crumbs:[['Home','/'],['AI / LLM Endpoint','/ai/']]},
- {file:'apps/portal/feed/index.html', lang:'hr', crumbs:[['Naslovnica','/'],['Feedovi','/feed/']]},
- {file:'apps/portal/en/feed/index.html', lang:'en', crumbs:[['Home','/en/'],['Feeds','/en/feed/']]},
  {file:'apps/portal/objave/index.html', lang:'hr', crumbs:[['Naslovnica','/'],['Objave','/objave/']]},
  {file:'apps/portal/en/publications/index.html', lang:'en', crumbs:[['Home','/en/'],['Publications','/en/publications/']]},
  {file:'apps/portal/analize/index.html', lang:'hr', crumbs:[['Naslovnica','/'],['Analize','/analize/']]},

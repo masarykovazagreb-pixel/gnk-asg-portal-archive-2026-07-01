@@ -123,6 +123,17 @@ function feedIndex(lang){
 <link rel="alternate" type="application/rss+xml" title="RSS" href="${rss}">
 <link rel="alternate" type="application/atom+xml" title="Atom" href="${at}">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${esc(t)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${canonical}">
+<meta property="og:image" content="${SITE}/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg">
+<meta property="og:site_name" content="GNK ASG">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(t)}">
+<meta name="twitter:description" content="${esc(desc)}">
+<meta name="twitter:image" content="${SITE}/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg">
+<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:(lang==='hr'?'Naslovnica':'Home'),item:(lang==='hr'?SITE+'/':SITE+'/en/')},{'@type':'ListItem',position:2,name:(lang==='hr'?'Feedovi':'Feeds'),item:canonical}]})}</script>
 <style>body{font:16px/1.55 system-ui,Segoe UI,Arial,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#eee;background:#0b0d10}a{color:#8bd}code{background:#151a20;padding:2px 6px;border-radius:4px}</style>
 </head>
 <body>
