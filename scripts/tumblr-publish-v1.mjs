@@ -68,7 +68,7 @@ function splitText(text, limit = 3800) {
 function textBlocks(clanak, item) {
   const blocks = [
     { type: 'text', text: clanak.title },
-    { type: 'text', text: 'Autor: Nermin Sefić, GNK ASG d.o.o.' },
+    { type: 'text', text: 'Autor: Nermin Sefić, GNK ASG d.o.o.' }, { type: 'text', text: 'Odobrio urednik: Nermin Sefić — GNK ASG (GNK DINAMO Ltd.)' },
   ];
   for (const paragraph of clanak.paragraphs) {
     for (const chunk of splitText(paragraph)) blocks.push({ type: 'text', text: chunk });
