@@ -1,0 +1,47 @@
+name: Site Health & Speed Audit
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 2 * * *'   # svaki dan u 02:45 UTC (04:45 Zagreb), prije image-health + AEO
+
+permissions:
+  contents: write
+
+concurrency:
+  group: site-health-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run site health audit
+        env:
+          SITE_BASE: 'https://gnk-asg.hr'
+        run: node scripts/site-health-audit-v1.mjs
+      - name: Commit report
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-health-bot"
+          git config user.email "actions@github.com"
+          git add apps/portal/data/seo-audit
+          if git diff --cached --quiet; then
+            echo "Nema promjena u reportu."
+            exit 0
+          fi
+          git commit -m "Site Health: refresh health+speed report"
+          git push origin HEAD:main
+      - name: Print summary
+        if: always()
+        run: |
+          if [ -f apps/portal/data/seo-audit/health-report.json ]; then
+            python3 -c "import json; d=json.load(open('apps/portal/data/seo-audit/health-report.json')); import sys; sys.stdout.write(json.dumps({'totals':d['totals'],'html':d['htmlChecks'],'failed':len(d['failedRoutes'])}, indent=2))"
+          fi
