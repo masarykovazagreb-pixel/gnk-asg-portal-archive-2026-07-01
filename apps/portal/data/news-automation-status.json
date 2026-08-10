@@ -1,11 +1,11 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-08-10T10:25:31+02:00",
+  "updated_at": "2026-08-10T10:45:25+02:00",
   "engine": "single_publication_engine_v14_github_actions",
-  "cadence": "every 2 hours (00:00-22:00 UTC)",
+  "cadence": "hourly at minute 12 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
-  "scheduled_interval_hours": 2,
+  "scheduled_interval_hours": 1,
   "max_items_per_source": 6,
   "feeds_configured": 55,
   "public_items_target": 100,
@@ -211,7 +211,7 @@
     {
       "source": "Channel News Asia",
       "ok": true,
-      "items": 12,
+      "items": 11,
       "error": null
     },
     {
@@ -246,14 +246,14 @@
     },
     {
       "source": "Arab News Business",
-      "ok": false,
-      "items": 0,
-      "error": "HTTP 403"
+      "ok": true,
+      "items": 10,
+      "error": null
     },
     {
       "source": "BBC News",
       "ok": true,
-      "items": 26,
+      "items": 27,
       "error": null
     },
     {
@@ -277,7 +277,7 @@
     {
       "source": "The New York Times World",
       "ok": true,
-      "items": 57,
+      "items": 56,
       "error": null
     },
     {
@@ -294,15 +294,15 @@
     },
     {
       "source": "Dogster",
-      "ok": true,
-      "items": 28,
-      "error": null
+      "ok": false,
+      "items": 0,
+      "error": "HTTP 403"
     },
     {
       "source": "Catster",
-      "ok": true,
-      "items": 10,
-      "error": null
+      "ok": false,
+      "items": 0,
+      "error": "HTTP 403"
     },
     {
       "source": "Index.hr",
@@ -347,5 +347,7 @@
       "error": null
     }
   ],
-  "last_checked_issue": null
+  "last_checked_issue": null,
+  "freshness_sla_minutes": 110,
+  "watchdog": ".github/workflows/ops-automation-sla-watchdog.yml"
 }
