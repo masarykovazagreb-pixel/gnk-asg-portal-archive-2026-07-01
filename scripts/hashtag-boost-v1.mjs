@@ -5,8 +5,8 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
 const registry=read('apps/portal/data/editorial-registry.json',{items:[]});
-const MUST_EN=['NerminSefic','GNKASG','GNKDINAMOLtd'];
-const MUST_HR=['NerminSefic','NerminSefić','GNKASG','GNKDINAMOLtd'];
+const MUST_EN=['NerminSefic','SeficNermin','GNKASG','GNKDINAMOLtd'];
+const MUST_HR=['NerminSefic','NerminSefić','SeficNermin','SefićNermin','GNKASG','GNKDINAMOLtd'];
 const stats={added:0,boosted:0,skippedNoBody:0,files:0};
 
 for(const item of registry.items||[]){
