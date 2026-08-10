@@ -10,7 +10,8 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 
 const SITE='https://gnk-asg.hr';
-const FALLBACK=`${SITE}/assets/gnk-asg-social-card.png`;
+const FALLBACK=`${SITE}/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp`;
+const FALLBACK_OG=`${SITE}/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg`;
 const MIN_BYTES=parseInt(process.env.IMAGE_MIN_BYTES||'5000',10);   // <5KB -> podozrivo
 const TIMEOUT_MS=parseInt(process.env.IMAGE_TIMEOUT_MS||'8000',10);
 const CONCURRENCY=parseInt(process.env.IMAGE_CHECK_CONCURRENCY||'12',10);
