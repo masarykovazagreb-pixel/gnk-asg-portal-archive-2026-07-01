@@ -216,7 +216,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 <script src="/assets/app.js?v=20260728-remove-tech-radar-more-sources-v1" defer></script>
 <script>
 (function(){
-  var GROUP_LABELS = { hrvatska:'Croatia', international:'World', regije:'Regions', technology:'Technology', economy:'Business & Economy', 'digital-assets':'Digital Assets', 'digital-workforce-simulation':'GNK ASG · Simulation', magazin:'Magazine', sport:'Sport', bih:'BiH', slovenija:'Slovenia', srbija:'Serbia', mobilnost:'Mobility' };
+  var GROUP_LABELS = { hrvatska:'Croatia', international:'World', regije:'Regions', technology:'Technology', economy:'Business & Economy', 'digital-assets':'Digital Assets', 'digital-workforce-simulation':'GNK ASG · Simulation', magazin:'Magazine', sport:'Sport', bih:'BiH', slovenija:'Slovenia', srbija:'Serbia', mobilnost:'Mobility', znanost:'Science & Research', zdravlje:'Health & Wellness', okolis:'Environment & Climate', djeca:'Children & Family', ljubimci:'Pets & Animals', kultura:'Culture & Arts', zanimljivosti:'Curiosities', turizam:'Travel & Tourism' };
   var ROTATE_MS = 15000;
   var state = { items: [], top10Index: 0, catIndex: {} };
 
@@ -278,7 +278,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   function renderCategories(){
     var byGroup = groupByCategory();
     var container = document.getElementById('akCategories');
-    var order = ['economy','technology','digital-assets','international','regije','hrvatska'];
+    var order = ['economy','technology','digital-assets','znanost','zdravlje','okolis','djeca','ljubimci','kultura','turizam','zanimljivosti','international','regije','hrvatska'];
     var html = '';
     order.forEach(function(g){
       var items = byGroup[g];
