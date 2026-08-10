@@ -3,20 +3,27 @@ import assert from 'node:assert/strict';
 
 const source=fs.readFileSync('workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js','utf8');
 
-const retentionPolicy=fs.readFileSync('apps/portal/scripts/refresh_news_policy.py','utf8');
-const refreshWorkflow=fs.readFileSync('.github/workflows/news-refresh.yml','utf8');
+const canonicalRefresh=fs.readFileSync('scripts/gnk-news-refresh.mjs','utf8');
+const canonicalWorkflow=fs.readFileSync('.github/workflows/gnk-news-refresh-v2.yml','utf8');
+const recoveryWorkflow=fs.readFileSync('.github/workflows/news-refresh.yml','utf8');
 const indexRefreshPolicy=fs.readFileSync('scripts/refresh_index_live_data.py','utf8');
 const indexRefreshWorkflow=fs.readFileSync('.github/workflows/refresh-index-live-data.yml','utf8');
 
-assert.match(retentionPolicy,/PUBLIC_LIMIT = 150/);
-assert.match(retentionPolicy,/ARCHIVE_TRIGGER = 2000/);
-assert.match(retentionPolicy,/ARCHIVE_DELETE_OLDEST = 1000/);
-assert.match(retentionPolicy,/github_actions_rss_refresh_v4_retention_policy/);
-assert.doesNotMatch(retentionPolicy,/ARCHIVE_TRIGGER = 1000/);
-assert.doesNotMatch(retentionPolicy,/ARCHIVE_DELETE_OLDEST = 500/);
-assert.match(refreshWorkflow,/archive_prune_trigger'\) == 2000/);
-assert.match(refreshWorkflow,/archive_delete_oldest_batch'\) == 1000/);
-assert.match(refreshWorkflow,/len\(archive\) <= 2000/);
+// Canonical AKTUAL retention and ownership now live in the V2 JS engine.
+assert.match(canonicalRefresh,/const PUBLIC_TARGET = 100/);
+assert.match(canonicalRefresh,/const ARCHIVE_MAX_BEFORE_PRUNE = 1000/);
+assert.match(canonicalRefresh,/const ARCHIVE_KEEP_WHEN_FULL = 500/);
+assert.match(canonicalWorkflow,/node scripts\/gnk-news-refresh\.mjs/);
+assert.match(canonicalWorkflow,/group: gnk-news-refresh/);
+assert.match(canonicalWorkflow,/refs\/heads\/main/);
+assert.match(canonicalWorkflow,/releaseFence/);
+assert.match(canonicalWorkflow,/newsWrite/);
+
+// Legacy workflow is recovery/redispatch only: it must never become a second parser/writer.
+assert.match(recoveryWorkflow,/gh workflow run gnk-news-refresh-v2\.yml/);
+assert.doesNotMatch(recoveryWorkflow,/refresh_news_policy\.py/);
+assert.doesNotMatch(recoveryWorkflow,/git add/);
+assert.doesNotMatch(recoveryWorkflow,/git push/);
 
 // Market refresh must never own or mutate Aktual/news state. News retention
 // belongs to the canonical news refresh path; market refresh owns market data only.
@@ -49,4 +56,4 @@ assert.match(source,/completeDailyBatch/);
 assert.match(source,/invalid_daily_batch_contract/);
 assert.match(source,/members\.length!==13/);
 
-console.log(JSON.stringify({ok:true,cors:'public-only',dedupe:'canonical-source-url',scheduler:'strict-opt-in',marketNewsOwnership:'single-writer',trackingRemoved:['utm_*','fbclid','gclid','msclkid']},null,2));
+console.log(JSON.stringify({ok:true,cors:'public-only',dedupe:'canonical-source-url',scheduler:'strict-opt-in',marketNewsOwnership:'single-writer',newsWriter:'gnk-news-refresh-v2-main-only',releaseFence:'enforced',trackingRemoved:['utm_*','fbclid','gclid','msclkid']},null,2));
