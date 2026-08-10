@@ -39,9 +39,9 @@ jobs:
           fi
       - name: Upload new images to catbox.moe
         env:
-          CATBOX_PER_RUN: '40'
-          CATBOX_PAUSE_MS: '2500'
-        run: node scripts/free-image-mirror-catbox-v1.mjs
+          MIRROR_PER_RUN: '40'
+          MIRROR_PAUSE_MS: '2500'
+        run: node scripts/free-image-mirror-v2.mjs
       - name: Persist state on durable branch
         shell: bash
         env:
