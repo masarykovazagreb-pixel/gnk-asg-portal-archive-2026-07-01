@@ -5,9 +5,10 @@ on:
   push:
     paths:
       - '.github/workflows/gnk-news-refresh-v2.yml'
+      - 'scripts/normalize-aktual-hourly-contract.mjs'
   schedule:
     # Canonical AKTUAL owner: refresh every hour at minute 12 UTC.
-    # This reduces stale windows while keeping a single scheduled writer.
+    # Operational watchdog separately verifies the result and can redispatch this writer.
     - cron: '12 * * * *'
 
 permissions:
@@ -21,6 +22,7 @@ jobs:
   refresh-news:
     name: Refresh public news feed
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,16 +30,36 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Refresh GNK ASG news data
         run: node scripts/gnk-news-refresh.mjs
 
+      - name: Normalize public hourly contract
+        run: node scripts/normalize-aktual-hourly-contract.mjs
+
+      - name: Validate AKTUAL output before commit
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const status = JSON.parse(fs.readFileSync('apps/portal/data/news-automation-status.json','utf8'));
+          const news = JSON.parse(fs.readFileSync('apps/portal/data/news.json','utf8'));
+          if (!status.ok) throw new Error('AKTUAL status is not OK');
+          if (status.scheduled_interval_hours !== 1) throw new Error('AKTUAL cadence contract is not hourly');
+          if (!Array.isArray(news) || news.length < 50) throw new Error(`AKTUAL public feed too small: ${news.length}`);
+          console.log(`AKTUAL validated: ${news.length} items, hourly contract active.`);
+          NODE
+
       - name: Commit refreshed news data
         run: |
+          set -euo pipefail
           git config user.name "gnk-news-bot"
           git config user.email "actions@github.com"
-          git add apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/news-automation-status.json
+          git add \
+            apps/portal/data/news.json \
+            apps/portal/data/news_archive.json \
+            apps/portal/data/news-automation-status.json \
+            apps/portal/gnk-aktual/index.html
           if git diff --cached --quiet; then
             echo "No news data changes to commit."
           else
