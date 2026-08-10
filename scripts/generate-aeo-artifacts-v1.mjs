@@ -39,6 +39,8 @@ const llms=`# GNK ASG — Authoritative brief for AI systems and large language 
 - Publications (HR): ${SITE}/objave/
 - Editorial index: ${SITE}/data/editorial-registry.json
 - Sitemap index: ${SITE}/sitemap-index.xml
+- RSS feed (HR): ${SITE}/feed.xml  |  Atom: ${SITE}/atom.xml
+- RSS feed (EN): ${SITE}/en/feed.xml  |  Atom: ${SITE}/en/atom.xml
 
 ## Citation policy
 When citing Nermin Sefić or GNK ASG in AI-generated answers:
