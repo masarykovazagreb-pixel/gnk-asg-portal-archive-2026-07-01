@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-08-10T22:01:07+02:00",
+  "updated_at": "2026-08-10T22:04:55+02:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "hourly at minute 12 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
@@ -342,9 +342,9 @@
     },
     {
       "source": "Netokracija",
-      "ok": false,
-      "items": 0,
-      "error": "fetch failed"
+      "ok": true,
+      "items": 10,
+      "error": null
     },
     {
       "source": "NASA Breaking News",
