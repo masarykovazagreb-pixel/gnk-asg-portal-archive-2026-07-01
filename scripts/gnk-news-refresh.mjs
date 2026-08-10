@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 
 const TZ = 'Europe/Zagreb';
 const PUBLIC_TARGET = 300;
+const MIN_ITEMS_FLOOR = 200;  // ako filter previše odreže, dopuni iz arhive dok se ne dostigne minimum
 const ARCHIVE_KEEP_WHEN_FULL = 500;
 const ARCHIVE_MAX_BEFORE_PRUNE = 1000;
 const DATA_DIR = 'apps/portal/data';
@@ -344,16 +345,29 @@ async function main() {
   const isReal = it => it && it.image && !/news-fallback\.svg$/i.test(it.image);
   const merged = uniqueSorted([...freshValidated, ...previousPublic.filter(isReal)]);
   const publicItems = balanceBySource(merged, MAX_PER_SOURCE, PUBLIC_TARGET);
+  // Sigurnosni sloj: ako je publicItems < MIN_ITEMS_FLOOR, dopuni iz arhive
+  let publicItemsFinal = publicItems;
+  if (publicItemsFinal.length < MIN_ITEMS_FLOOR) {
+    const seen = new Set(publicItemsFinal.map(it => it.id));
+    const filler = [...previousPublic, ...previousArchive]
+      .filter(it => it && it.image && !seen.has(it.id) && !/news-fallback\.svg$/i.test(it.image));
+    for (const it of filler) {
+      if (publicItemsFinal.length >= MIN_ITEMS_FLOOR) break;
+      publicItemsFinal.push(it);
+      seen.add(it.id);
+    }
+    console.log(`Floor guard: filled to ${publicItemsFinal.length} items (min ${MIN_ITEMS_FLOOR})`);
+  }
   let archiveItems = uniqueSorted([...freshValidated, ...previousPublic.filter(isReal), ...previousArchive.filter(isReal)]);
   if (archiveItems.length > ARCHIVE_MAX_BEFORE_PRUNE) archiveItems = archiveItems.slice(0, ARCHIVE_KEEP_WHEN_FULL);
 
   await mkdir(dirname(NEWS_PATH), { recursive: true });
-  await writeFile(NEWS_PATH, `${JSON.stringify(publicItems, null, 2)}\n`, 'utf8');
+  await writeFile(NEWS_PATH, `${JSON.stringify(publicItemsFinal, null, 2)}\n`, 'utf8');
   await writeFile(ARCHIVE_PATH, `${JSON.stringify({ updatedAt: new Date().toISOString(), policy: 'archive_latest_1000_prune_to_500_when_full', items: archiveItems }, null, 2)}\n`, 'utf8');
 
   const okFeeds = results.filter(result => result.ok).length;
   const status = {
-    ok: publicItems.length >= 15,
+    ok: publicItemsFinal.length >= 15,
     status: publicItems.length >= 15 ? 'refreshed' : 'insufficient_items',
     updated_at: nowIsoZagreb(),
     engine: 'single_publication_engine_v14_github_actions',
