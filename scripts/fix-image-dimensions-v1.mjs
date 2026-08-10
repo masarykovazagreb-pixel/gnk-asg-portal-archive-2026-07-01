@@ -60,7 +60,9 @@ function* htmlFiles(dir){
 const cache=new Map();
 function sizeFor(src){
   let s=src.split('?')[0].split('#')[0];
-  if(!s||/^(https?:)?\/\//.test(s)||s.startsWith('data:')) return null;
+  if(!s||s.startsWith('data:')) return null;
+  s=s.replace(/^https?:\/\/(www\.)?gnk-asg\.hr/,'');
+  if(/^(https?:)?\/\//.test(s)) return null; // external hosts
   if(!s.startsWith('/')) return null; // only root-relative; relative paths are rare and dir-dependent
   const p=join(ROOT, s);
   if(cache.has(p)) return cache.get(p);
