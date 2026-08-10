@@ -46,6 +46,8 @@ jobs:
         run: node scripts/site-seo-guardian-v1.mjs
       - name: BreadcrumbList JSON-LD
         run: node scripts/add-breadcrumbs-v1.mjs
+      - name: Share buttons (FB/LinkedIn/X/WhatsApp/Copy)
+        run: node scripts/add-share-buttons-v1.mjs
       - name: Generate RSS + Atom feeds
         run: node scripts/generate-feeds-v1.mjs
       - name: Feed discovery link tags
