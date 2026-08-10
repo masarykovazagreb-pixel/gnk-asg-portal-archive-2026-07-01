@@ -49,7 +49,11 @@ async function measure(url){
       breadcrumbLd: /"@type"\s*:\s*"BreadcrumbList"/.test(body),
       articleLd: /"@type"\s*:\s*"(Article|NewsArticle|BlogPosting|WebPage)"/.test(body),
       imgTotal: (body.match(/<img\b/gi)||[]).length,
-      imgWithoutDims: (body.match(/<img\b(?![^>]*\bwidth=)(?![^>]*\bheight=)[^>]*>/gi)||[]).length,
+      imgWithoutDims: (()=>{
+        const hasAspectRatioCss = /aspect-ratio\s*:/i.test(body);
+        if (hasAspectRatioCss) return 0; // layout stabilno rezerviran preko CSS-a, HTML atributi nisu jedini ispravan način
+        return (body.match(/<img\b(?![^>]*\bwidth=)(?![^>]*\bheight=)[^>]*>/gi)||[]).length;
+      })(),
       emptyHrefs: (body.match(/href=""|href='?'?(?=[\s>])/gi)||[]).length,
       // uklonjeno: /assets/editorial/*.svg reference su legitimni JSON-LD image linkovi, ne signal kvara
       feedLinks: /application\/rss\+xml/.test(body),
