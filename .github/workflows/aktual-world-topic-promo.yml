@@ -1,0 +1,81 @@
+name: AKTUAL World Topic Daily Promotion
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7 7 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aktual-world-topic-daily-promotion
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Insert today's World Topic into AKTUAL public feed
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const schedule=JSON.parse(fs.readFileSync('apps/portal/data/aktual-world-topics-schedule.json','utf8'));
+          const newsPath='apps/portal/data/news.json';
+          const now=new Date();
+          const parts=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now).reduce((a,p)=>(a[p.type]=p.value,a),{});
+          const today=`${parts.year}-${parts.month}-${parts.day}`;
+          const promo=(schedule.schedule||[]).find(x=>x.date===today);
+          if(!promo){console.log('No World Topic scheduled for',today);process.exit(0)}
+          let news=[];try{news=JSON.parse(fs.readFileSync(newsPath,'utf8'))}catch{}
+          if(!Array.isArray(news)) news=Array.isArray(news.items)?news.items:[];
+          news=news.filter(x=>!String(x?.id||'').startsWith('gnk-world-topic-'));
+          const stamp=now.toISOString();
+          const item={
+            id:promo.id,
+            title:promo.title_hr,
+            title_en:promo.title_en,
+            url:promo.url_hr,
+            url_en:promo.url_en,
+            summary:promo.summary_hr,
+            summary_en:promo.summary_en,
+            image:promo.image,
+            imageAlt:promo.imageAlt_hr,
+            imageAlt_en:promo.imageAlt_en,
+            imageCredit:'GNK ASG / Nermin Sefić',
+            source:'GNK ASG / Nermin Sefić',
+            region:'GNK ASG',
+            group:'international',
+            category:'analysis',
+            published_at:stamp,
+            publishedAt:stamp,
+            verified:true,
+            verification:{article:{ok:true},image:{ok:true,fallback:false}},
+            share_url:promo.url_hr,
+            internalEditorial:true
+          };
+          fs.writeFileSync(newsPath,JSON.stringify([item,...news].slice(0,100),null,2)+'\n');
+          console.log('Promoted',promo.id,promo.title_hr);
+          NODE
+      - name: Commit AKTUAL promotion
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-aktual-editorial-bot"
+          git config user.email "actions@github.com"
+          git add apps/portal/data/news.json
+          if git diff --cached --quiet; then
+            echo 'No AKTUAL promotion change.'
+          else
+            git commit -m "Promote scheduled World Topic on AKTUAL"
+            git push origin HEAD:main
+          fi

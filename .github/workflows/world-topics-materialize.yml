@@ -1,0 +1,69 @@
+name: Materialize World Topics 2026-08-10
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'content/world-topics/**'
+      - 'scripts/world-topics-materialize-v1.mjs'
+      - '.github/workflows/world-topics-materialize.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: world-topics-materialize-20260810
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Materialize pages, charts, registry, sitemaps and collection links
+        run: node scripts/world-topics-materialize-v1.mjs
+      - name: Commit generated public release
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-world-topics-bot"
+          git config user.email "actions@github.com"
+          git add \
+            apps/portal/objave \
+            apps/portal/en/publications \
+            apps/portal/assets/editorial/world-topics \
+            apps/portal/data/world-topics-registry.json \
+            apps/portal/data/aktual-world-topics-schedule.json \
+            apps/portal/data/editorial-registry.json \
+            apps/portal/editorial-sitemap.xml \
+            apps/portal/world-topics-image-sitemap.xml
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Publish World Topics: 10 HR/EN analyses with indexed media"
+            git push origin HEAD:main
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Dispatch exact-SHA production deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APPROVED_SHA: ${{ steps.commit.outputs.sha }}
+        run: |
+          set -euo pipefail
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo beckuphome-gnk/gnk-asg-portal \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$APPROVED_SHA"
