@@ -38,6 +38,8 @@ jobs:
         run: node scripts/hashtag-boost-v1.mjs
       - name: Editorial entity linkage (JSON-LD Article + og:image fallback)
         run: node scripts/editorial-entity-linkage-v1.mjs
+      - name: Share buttons on editorial pages
+        run: node scripts/add-share-buttons-v1.mjs
       - name: Rich meta-descriptions from real article body
         run: node scripts/rich-descriptions-v1.mjs
       - name: Site-wide SEO guardian (non-editorial pages)
