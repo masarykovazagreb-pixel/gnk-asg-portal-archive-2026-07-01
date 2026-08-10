@@ -37,7 +37,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-hero p{color:var(--ak-sub);font-family:Arial,sans-serif;font-size:1rem;max-width:640px;margin:0 auto}
 .ak-status{font-family:Arial,sans-serif;font-size:.78rem;color:var(--ak-sub);text-align:center;margin:14px 0 44px}
 .ak-featured{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:3px solid var(--ak-line);border-radius:4px;overflow:hidden;margin-bottom:44px;background:var(--ak-panel)}
-.ak-featured img{width:100%;max-width:520px;height:auto;max-height:340px;object-fit:cover;display:block;margin:16px auto;border:2px solid var(--ak-line);border-radius:4px;padding:0} .ak-editor-stamp{font-family:Arial,sans-serif;font-size:.7rem;color:var(--ak-sub);opacity:.75;margin-top:6px;letter-spacing:.02em;font-style:italic}
+.ak-featured img{width:100%;max-width:380px;height:auto;max-height:240px;object-fit:cover;display:block;margin:20px auto;border:1px solid var(--ak-line);border-radius:6px;padding:0;box-shadow:0 6px 18px rgba(0,0,0,.25);background:#0e1116} .ak-editor-stamp{font-family:Arial,sans-serif;font-size:.7rem;color:var(--ak-sub);opacity:.75;margin-top:6px;letter-spacing:.02em;font-style:italic}
 .ak-featured-body{padding:32px}
 .ak-tag{display:inline-block;font-family:Arial,sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--ak-red);padding:4px 10px;border-radius:4px;margin-bottom:14px}
 .ak-featured-body h2{font-family:'Arial Black',Impact,'Franklin Gothic Bold',sans-serif;font-size:clamp(1.3rem,3vw,2rem);line-height:1.15;margin:0 0 14px;letter-spacing:-.005em}
@@ -138,7 +138,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-kuhinja a{font-family:Arial,sans-serif;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);text-decoration:none;border-bottom:2px solid var(--ak-red);padding-bottom:1px;white-space:nowrap}
 .ak-recept-dana{display:grid;grid-template-columns:260px 1fr;gap:0}
 @media(max-width:640px){.ak-recept-dana{grid-template-columns:1fr}}
-.ak-recept-dana img{width:100%;height:100%;object-fit:cover;display:block;min-height:200px}</style>
+.ak-recept-dana img{width:100%;height:100%;object-fit:cover;display:block;min-height:200px}.ak-editor-stamp{margin-top:8px;font-size:.72rem;font-family:Arial,sans-serif;font-style:italic;color:var(--ak-sub);letter-spacing:.02em;opacity:.85}.ak-broken-img{background:linear-gradient(135deg,#1a1f26 0%,#0b0d10 100%);min-height:120px;display:flex;align-items:center;justify-content:center;color:var(--ak-sub);font-size:.8rem}.ak-share{display:flex;gap:10px;margin:24px 0 4px;flex-wrap:wrap;font-family:Arial,sans-serif;font-size:.78rem;align-items:center}.ak-share a{color:var(--ak-red);text-decoration:none;padding:6px 12px;border:1px solid var(--ak-line);border-radius:4px;transition:background .15s}.ak-share a:hover{background:var(--ak-line)}</style>
 <style id="gnk-gold-watermark-style">
 #gnk-gold-watermark{position:fixed;right:-40px;bottom:-40px;width:340px;height:340px;opacity:.07;pointer-events:none;z-index:1;filter:grayscale(0) saturate(1.4);}
 @media (max-width:640px){#gnk-gold-watermark{width:200px;height:200px;right:-30px;bottom:-30px;opacity:.06;}}
@@ -216,7 +216,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 <script src="/assets/app.js?v=20260728-remove-tech-radar-more-sources-v1" defer></script>
 <script>
 (function(){
-  var GROUP_LABELS = { hrvatska:'Croatia', international:'World', regije:'Regions', technology:'Technology', economy:'Business & Economy', 'digital-assets':'Digital Assets', 'digital-workforce-simulation':'GNK ASG · Simulation' };
+  var GROUP_LABELS = { hrvatska:'Croatia', international:'World', regije:'Regions', technology:'Technology', economy:'Business & Economy', 'digital-assets':'Digital Assets', 'digital-workforce-simulation':'GNK ASG · Simulation', magazin:'Magazine', sport:'Sport', bih:'BiH', slovenija:'Slovenia', srbija:'Serbia', mobilnost:'Mobility' };
   var ROTATE_MS = 15000;
   var state = { items: [], top10Index: 0, catIndex: {} };
 
@@ -235,12 +235,12 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     var el = document.getElementById('akFeatured');
     if(!item){ el.innerHTML=''; return; }
     el.innerHTML = '<div class="ak-featured">' +
-      '<img src="'+esc(item.image)+'" alt="" loading="eager">' +
+      '<img src="'+esc(item.image)+'" alt="" loading="eager" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'">' +
       '<div class="ak-featured-body">' +
         '<span class="ak-tag">'+esc(GROUP_LABELS[item.group]||item.category||'News')+'</span>' +
         '<h2><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a></h2>' +
         '<p>'+esc(item.summary||'')+'</p>' +
-        '<div class="ak-meta"><span>'+esc(item.source||'')+'</span><span>·</span><span>'+timeAgo(item.published_at)+'</span><span>·</span><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">Read original article →</a></div><div class="ak-editor-stamp">Approved by: editor Nermin Sefić</div>' +
+        '<div class="ak-editor-stamp">Approved by: editor Nermin Sefić</div><div class="ak-meta"><span>'+esc(item.source||'')+'</span><span>·</span><span>'+timeAgo(item.published_at)+'</span><span>·</span><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">Read original article →</a></div><div class="ak-editor-stamp">Approved by: editor Nermin Sefić</div>' +
       '</div></div>';
   }
 
@@ -412,14 +412,14 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       if (istaknuta) {
         document.getElementById('akKomentarIstaknuti').innerHTML =
           '<a class="ak-komentar-istaknuti" href="' + escH(istaknuta.url) + '" target="_blank" rel="noopener">' +
-          (istaknuta.image ? '<img src="' + escH(istaknuta.image) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
+          (istaknuta.image ? '<img src="' + escH(istaknuta.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="" loading="lazy" onerror="this.remove()">' : '') +
           '<div class="tijelo"><span class="oznaka">Commentary · Nermin Sefić</span><h3>' + escH(istaknuta.title) + '</h3><p>' +
           escH((istaknuta.description||'').slice(0,160)) + '</p></div></a>';
       }
 
       var html = ostalih.map(function(k){
         return '<a class="ak-komentar-kartica" href="' + escH(k.url) + '" target="_blank" rel="noopener">' +
-          (k.image ? '<img src="' + escH(k.image) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
+          (k.image ? '<img src="' + escH(k.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="" loading="lazy" onerror="this.remove()">' : '') +
           '<div class="tijelo"><span class="oznaka">Commentary</span><h3>' + escH(k.title) + '</h3></div></a>';
       }).join('');
       document.getElementById('akKomentariGrid').innerHTML = html;
