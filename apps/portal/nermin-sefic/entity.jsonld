@@ -1,0 +1,101 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://gnk-asg.hr/nermin-sefic/#person",
+      "name": "Nermin Sefić",
+      "alternateName": [
+        "Nermin Sefic",
+        "NN"
+      ],
+      "jobTitle": "Director",
+      "worksFor": {
+        "@id": "https://gnk-asg.hr/#organization"
+      },
+      "url": "https://gnk-asg.hr/nermin-sefic/",
+      "image": "https://gnk-asg.hr/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp",
+      "nationality": {
+        "@type": "Country",
+        "name": "Bosnia and Herzegovina"
+      },
+      "knowsAbout": [
+        "Corporate governance",
+        "AI regulation",
+        "Fintech",
+        "Digital assets",
+        "Sports technology",
+        "Cybersecurity",
+        "Energy transition",
+        "Financial markets",
+        "Trademark law",
+        "International business strategy"
+      ],
+      "sameAs": [
+        "https://gnk-asg.hr/nermin-sefic/",
+        "https://gnk-asg.hr/en/nermin-sefic/",
+        "https://www.linkedin.com/in/nermin-sefic"
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://gnk-asg.hr/#organization",
+      "name": "GNK ASG d.o.o.",
+      "alternateName": [
+        "GNK ASG",
+        "GNK ASG doo"
+      ],
+      "legalName": "GNK ASG d.o.o.",
+      "url": "https://gnk-asg.hr",
+      "logo": "https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg",
+      "founder": {
+        "@id": "https://gnk-asg.hr/nermin-sefic/#person"
+      },
+      "employee": {
+        "@id": "https://gnk-asg.hr/nermin-sefic/#person"
+      },
+      "parentOrganization": {
+        "@type": "Organization",
+        "@id": "https://gnk-asg.hr/#group",
+        "name": "GNK DINAMO Ltd. Group",
+        "description": "International corporate group with subsidiaries in Croatia (GNK ASG d.o.o., Zagreb) and the United States (Boulder, Colorado).",
+        "areaServed": [
+          "HR",
+          "US",
+          "EU"
+        ],
+        "knowsAbout": [
+          "AI",
+          "FinTech",
+          "Digital assets",
+          "Sports technology",
+          "Cybersecurity",
+          "Energy",
+          "Healthcare",
+          "Education"
+        ]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "HR",
+        "addressLocality": "Zagreb"
+      },
+      "sameAs": [
+        "https://gnk-asg.hr"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://gnk-asg.hr/#website",
+      "url": "https://gnk-asg.hr",
+      "name": "GNK ASG",
+      "publisher": {
+        "@id": "https://gnk-asg.hr/#organization"
+      },
+      "inLanguage": [
+        "hr",
+        "en"
+      ]
+    }
+  ]
+}
