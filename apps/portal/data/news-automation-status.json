@@ -1,15 +1,15 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-08-10T21:12:03+02:00",
+  "updated_at": "2026-08-10T21:14:38+02:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "hourly at minute 12 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
   "scheduled_interval_hours": 1,
   "max_items_per_source": 6,
-  "feeds_configured": 55,
-  "public_items_target": 100,
-  "public_items_written": 100,
+  "feeds_configured": 85,
+  "public_items_target": 300,
+  "public_items_written": 300,
   "archive_policy": "archive_latest_1000_prune_to_500_when_full",
   "archive_items_written": 500,
   "rss_images_enabled": true,
@@ -19,13 +19,13 @@
     {
       "source": "CNBC",
       "ok": true,
-      "items": 30,
+      "items": 0,
       "error": null
     },
     {
       "source": "CNBC Business",
       "ok": true,
-      "items": 29,
+      "items": 0,
       "error": null
     },
     {
@@ -49,7 +49,7 @@
     {
       "source": "The New York Times Business",
       "ok": true,
-      "items": 50,
+      "items": 45,
       "error": null
     },
     {
@@ -61,7 +61,7 @@
     {
       "source": "The Independent Business",
       "ok": true,
-      "items": 12,
+      "items": 11,
       "error": null
     },
     {
@@ -79,25 +79,25 @@
     {
       "source": "DW Business",
       "ok": true,
-      "items": 20,
+      "items": 0,
       "error": null
     },
     {
       "source": "The Verge",
       "ok": true,
-      "items": 10,
+      "items": 0,
       "error": null
     },
     {
       "source": "TechCrunch",
       "ok": true,
-      "items": 20,
+      "items": 0,
       "error": null
     },
     {
       "source": "Wired",
       "ok": true,
-      "items": 43,
+      "items": 0,
       "error": null
     },
     {
@@ -127,7 +127,7 @@
     {
       "source": "MIT Technology Review",
       "ok": true,
-      "items": 10,
+      "items": 0,
       "error": null
     },
     {
@@ -175,13 +175,13 @@
     {
       "source": "The Hindu BusinessLine",
       "ok": true,
-      "items": 58,
+      "items": 57,
       "error": null
     },
     {
       "source": "Economic Times",
       "ok": true,
-      "items": 10,
+      "items": 0,
       "error": null
     },
     {
@@ -223,13 +223,13 @@
     {
       "source": "AllAfrica Business",
       "ok": true,
-      "items": 30,
+      "items": 0,
       "error": null
     },
     {
       "source": "Nairametrics",
       "ok": true,
-      "items": 20,
+      "items": 0,
       "error": null
     },
     {
@@ -241,13 +241,13 @@
     {
       "source": "Agencia Brasil",
       "ok": true,
-      "items": 10,
+      "items": 0,
       "error": null
     },
     {
       "source": "Arab News Business",
       "ok": true,
-      "items": 10,
+      "items": 0,
       "error": null
     },
     {
@@ -265,7 +265,7 @@
     {
       "source": "Al Jazeera",
       "ok": true,
-      "items": 25,
+      "items": 0,
       "error": null
     },
     {
@@ -277,13 +277,13 @@
     {
       "source": "The New York Times World",
       "ok": true,
-      "items": 55,
+      "items": 46,
       "error": null
     },
     {
       "source": "European Commission",
       "ok": true,
-      "items": 10,
+      "items": 0,
       "error": null
     },
     {
@@ -307,7 +307,7 @@
     {
       "source": "Index.hr",
       "ok": true,
-      "items": 148,
+      "items": 0,
       "error": null
     },
     {
@@ -343,7 +343,187 @@
     {
       "source": "Netokracija",
       "ok": true,
+      "items": 0,
+      "error": null
+    },
+    {
+      "source": "NASA Breaking News",
+      "ok": true,
+      "items": 0,
+      "error": null
+    },
+    {
+      "source": "ESA News",
+      "ok": true,
+      "items": 8,
+      "error": null
+    },
+    {
+      "source": "Scientific American",
+      "ok": false,
+      "items": 0,
+      "error": "fetch failed"
+    },
+    {
+      "source": "ScienceDaily",
+      "ok": true,
+      "items": 0,
+      "error": null
+    },
+    {
+      "source": "Phys.org",
+      "ok": true,
+      "items": 30,
+      "error": null
+    },
+    {
+      "source": "BBC Health",
+      "ok": true,
+      "items": 52,
+      "error": null
+    },
+    {
+      "source": "The Guardian Health",
+      "ok": true,
+      "items": 20,
+      "error": null
+    },
+    {
+      "source": "Medical News Today",
+      "ok": false,
+      "items": 0,
+      "error": "HTTP 403"
+    },
+    {
+      "source": "BBC Culture",
+      "ok": false,
+      "items": 0,
+      "error": "HTTP 404"
+    },
+    {
+      "source": "The Guardian Culture",
+      "ok": true,
+      "items": 26,
+      "error": null
+    },
+    {
+      "source": "The New York Times Arts",
+      "ok": true,
+      "items": 25,
+      "error": null
+    },
+    {
+      "source": "Smithsonian Magazine",
+      "ok": true,
       "items": 10,
+      "error": null
+    },
+    {
+      "source": "BBC Newsround",
+      "ok": true,
+      "items": 82,
+      "error": null
+    },
+    {
+      "source": "NPR Ed",
+      "ok": true,
+      "items": 0,
+      "error": null
+    },
+    {
+      "source": "The Guardian Family",
+      "ok": true,
+      "items": 17,
+      "error": null
+    },
+    {
+      "source": "National Geographic Animals",
+      "ok": true,
+      "items": 0,
+      "error": null
+    },
+    {
+      "source": "BBC Nature",
+      "ok": true,
+      "items": 42,
+      "error": null
+    },
+    {
+      "source": "The Guardian Animals",
+      "ok": false,
+      "items": 0,
+      "error": "HTTP 404"
+    },
+    {
+      "source": "The Guardian Environment",
+      "ok": true,
+      "items": 33,
+      "error": null
+    },
+    {
+      "source": "Mongabay",
+      "ok": true,
+      "items": 32,
+      "error": null
+    },
+    {
+      "source": "BBC Sport",
+      "ok": true,
+      "items": 67,
+      "error": null
+    },
+    {
+      "source": "The Guardian Sport",
+      "ok": true,
+      "items": 23,
+      "error": null
+    },
+    {
+      "source": "ESPN Top Headlines",
+      "ok": true,
+      "items": 0,
+      "error": null
+    },
+    {
+      "source": "BBC Travel",
+      "ok": true,
+      "items": 10,
+      "error": null
+    },
+    {
+      "source": "The Guardian Travel",
+      "ok": true,
+      "items": 35,
+      "error": null
+    },
+    {
+      "source": "The Guardian Food",
+      "ok": true,
+      "items": 31,
+      "error": null
+    },
+    {
+      "source": "Bon Appetit",
+      "ok": true,
+      "items": 0,
+      "error": null
+    },
+    {
+      "source": "Reuters Sustainability",
+      "ok": false,
+      "items": 0,
+      "error": "HTTP 404"
+    },
+    {
+      "source": "The Guardian Climate Crisis",
+      "ok": true,
+      "items": 13,
+      "error": null
+    },
+    {
+      "source": "Grist",
+      "ok": true,
+      "items": 0,
       "error": null
     }
   ],
