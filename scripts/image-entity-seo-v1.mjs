@@ -42,13 +42,13 @@ for(const file of pages){
       const val=isPerson?personAlt:(isLogo?logoAlt:(isEn?'Data chart · Nermin Sefić / GNK ASG':'Grafički prikaz · Nermin Sefić / GNK ASG'));
       t = alt===null ? t.replace(/<img\b/i,`<img alt="${val}"`) : t.replace(/alt="[^"]*"/i,`alt="${val}"`);
       stats.altAdded++; changed=true;
-    } else if(isPerson&&!/nermin/i.test(alt)){
+    } else if(isPerson&&!/sefi[ćc]/i.test(alt)){
       t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} — Nermin Sefić, GNK ASG"`);
       stats.altEnriched++; changed=true;
     } else if(isLogo&&!/gnk/i.test(alt)){
       t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} — GNK ASG"`);
       stats.altEnriched++; changed=true;
-    } else if(isChart&&!/(nermin|gnk)/i.test(alt)){
+    } else if(isChart&&!/sefi[ćc]|gnk/i.test(alt)){
       t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} · Nermin Sefić / GNK ASG"`);
       stats.altEnriched++; changed=true;
     }
