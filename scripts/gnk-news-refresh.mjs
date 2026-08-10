@@ -311,9 +311,11 @@ async function main() {
   // file with their own sources, using URL-keyed merge; overwriting here would silently erase
   // their items every time this script runs, and vice versa -- this was a real, confirmed source
   // of churn/duplication between runs of different processes.
-  const merged = uniqueSorted([...fresh, ...previousPublic]);
+  // Drop legacy items that still point to fallback SVG (korisnicki zahtjev: bez slike se ne prikazuje).
+  const isReal = it => it && it.image && !/news-fallback\.svg$/i.test(it.image);
+  const merged = uniqueSorted([...fresh, ...previousPublic.filter(isReal)]);
   const publicItems = balanceBySource(merged, MAX_PER_SOURCE, PUBLIC_TARGET);
-  let archiveItems = uniqueSorted([...fresh, ...previousPublic, ...previousArchive]);
+  let archiveItems = uniqueSorted([...fresh, ...previousPublic.filter(isReal), ...previousArchive.filter(isReal)]);
   if (archiveItems.length > ARCHIVE_MAX_BEFORE_PRUNE) archiveItems = archiveItems.slice(0, ARCHIVE_KEEP_WHEN_FULL);
 
   await mkdir(dirname(NEWS_PATH), { recursive: true });
