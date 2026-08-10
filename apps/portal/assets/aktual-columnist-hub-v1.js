@@ -24,7 +24,7 @@ function renderHub(image,count){
   if(!card||!author||!body)return;
   const safeImage=image||'/assets/editorial/aktual-media-800.webp';
   author.innerHTML='<img src="'+safeImage.replace(/"/g,'&quot;')+'" alt="Nermin Sefić" loading="lazy" style="width:92px;height:92px;border-radius:50%;object-fit:cover;border:3px solid var(--ak-zlato);margin-bottom:10px" onerror="this.src=\'/assets/editorial/aktual-media-800.webp\'"><b>Nermin Sefić</b><span>'+(english?'Columnist, GNK ASG':'Kolumnist, GNK ASG')+'</span>';
-  body.innerHTML='<span class="oznaka">'+eyebrow+'</span><h2>'+title+'</h2><p>'+description+(count?' '+(english?'Published columns: ':'Objavljene kolumne: ')+count+'.':'')+'</p><a href="'+archiveUrl+'">'+cta+'</a>';
+  body.innerHTML='<span class="oznaka">'+eyebrow+'</span><h2>'+title+'</h2><p>'+description+'</p><a href="'+archiveUrl+'">'+cta+'</a>';
   card.classList.add('vidljivo');
 }
 
