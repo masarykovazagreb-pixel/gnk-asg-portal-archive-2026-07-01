@@ -21,9 +21,9 @@ for(const it of registry.items||[]){
   const orig=html;
   // A) fix generic og:image within editorial pages
   const isEditorial=/^\/(en\/)?(publications|analyses|kolumne|komentari|analize|objave)\//.test(it.path)||/^\/(en\/)?tematske\//.test(it.path);
-  if(isEditorial&&/og:image[^>]+market-information\.svg/i.test(html)){
-    html=html.replace(/(<meta[^>]+og:image[^>]+content=")[^"]*market-information\.svg([^"]*)"/gi,`$1${OG_ABS}"`)
-             .replace(/(<meta[^>]+twitter:image[^>]+content=")[^"]*market-information\.svg([^"]*)"/gi,`$1${OG_ABS}"`);
+  if(isEditorial&&/og:image[^>]+\/assets\/editorial\/[a-z-]+\.svg/i.test(html)){
+    html=html.replace(/(<meta[^>]+og:image[^>]+content=")[^"]*\/assets\/editorial\/[a-z-]+\.svg([^"]*)"/gi,`$1${OG_ABS}"`)
+             .replace(/(<meta[^>]+twitter:image[^>]+content=")[^"]*\/assets\/editorial\/[a-z-]+\.svg([^"]*)"/gi,`$1${OG_ABS}"`);
     stats.ogFixed++;
   }
   // B) add Article JSON-LD linked to canonical Person + Organization if none present
