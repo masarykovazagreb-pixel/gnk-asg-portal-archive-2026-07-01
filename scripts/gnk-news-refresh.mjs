@@ -3,7 +3,7 @@ import { dirname } from 'node:path';
 import crypto from 'node:crypto';
 
 const TZ = 'Europe/Zagreb';
-const PUBLIC_TARGET = 100;
+const PUBLIC_TARGET = 300;
 const ARCHIVE_KEEP_WHEN_FULL = 500;
 const ARCHIVE_MAX_BEFORE_PRUNE = 1000;
 const DATA_DIR = 'apps/portal/data';
@@ -92,7 +92,53 @@ const FEEDS = [
   { source: 'tportal', group: 'hrvatska', category: 'hrvatska', url: 'https://www.tportal.hr/rss' },
   { source: 'Lider', group: 'hrvatska', category: 'hrvatska', url: 'https://lidermedia.hr/feed/' },
   { source: 'SEEbiz', group: 'hrvatska', category: 'hrvatska', url: 'https://www.seebiz.eu/rss/' },
-  { source: 'Netokracija', group: 'hrvatska', category: 'hrvatska', url: 'https://www.netokracija.com/feed' }
+  { source: 'Netokracija', group: 'hrvatska', category: 'hrvatska', url: 'https://www.netokracija.com/feed' },
+  // --- Znanost i istrazivanje ---------------------------------------
+  { source: 'NASA Breaking News', group: 'science', category: 'science', url: 'https://www.nasa.gov/rss/dyn/breaking_news.rss' },
+  { source: 'ESA News', group: 'science', category: 'science', url: 'https://www.esa.int/rssfeed/Our_Activities/Space_News' },
+  { source: 'Scientific American', group: 'science', category: 'science', url: 'https://rss.sciam.com/ScientificAmerican-Global' },
+  { source: 'ScienceDaily', group: 'science', category: 'science', url: 'https://www.sciencedaily.com/rss/all.xml' },
+  { source: 'Phys.org', group: 'science', category: 'science', url: 'https://phys.org/rss-feed/' },
+
+  // --- Zdravlje i medicina ------------------------------------------
+  { source: 'BBC Health', group: 'health', category: 'health', url: 'https://feeds.bbci.co.uk/news/health/rss.xml' },
+  { source: 'The Guardian Health', group: 'health', category: 'health', url: 'https://www.theguardian.com/society/health/rss' },
+  { source: 'Medical News Today', group: 'health', category: 'health', url: 'https://www.medicalnewstoday.com/newsfeeds/rss/medical_all.xml' },
+
+  // --- Kultura i umjetnost ------------------------------------------
+  { source: 'BBC Culture', group: 'culture', category: 'culture', url: 'https://feeds.bbci.co.uk/culture/feed.rss' },
+  { source: 'The Guardian Culture', group: 'culture', category: 'culture', url: 'https://www.theguardian.com/culture/rss' },
+  { source: 'The New York Times Arts', group: 'culture', category: 'culture', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml' },
+  { source: 'Smithsonian Magazine', group: 'culture', category: 'culture', url: 'https://www.smithsonianmag.com/rss/latest_articles/' },
+
+  // --- Djeca, obitelj, obrazovanje ----------------------------------
+  { source: 'BBC Newsround', group: 'djeca-obitelj', category: 'family', url: 'https://feeds.bbci.co.uk/newsround/rss.xml' },
+  { source: 'NPR Ed', group: 'djeca-obitelj', category: 'education', url: 'https://feeds.npr.org/1013/rss.xml' },
+  { source: 'The Guardian Family', group: 'djeca-obitelj', category: 'family', url: 'https://www.theguardian.com/lifeandstyle/family/rss' },
+
+  // --- Priroda, zivotinje, okolis -----------------------------------
+  { source: 'National Geographic Animals', group: 'priroda-zivotinje', category: 'animals', url: 'https://feeds.feedburner.com/ng/News/News_Main' },
+  { source: 'BBC Nature', group: 'priroda-zivotinje', category: 'nature', url: 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml' },
+  { source: 'The Guardian Animals', group: 'priroda-zivotinje', category: 'animals', url: 'https://www.theguardian.com/environment/animals/rss' },
+  { source: 'The Guardian Environment', group: 'priroda-zivotinje', category: 'environment', url: 'https://www.theguardian.com/environment/rss' },
+  { source: 'Mongabay', group: 'priroda-zivotinje', category: 'environment', url: 'https://news.mongabay.com/feed/' },
+
+  // --- Sport --------------------------------------------------------
+  { source: 'BBC Sport', group: 'sport', category: 'sport', url: 'https://feeds.bbci.co.uk/sport/rss.xml' },
+  { source: 'The Guardian Sport', group: 'sport', category: 'sport', url: 'https://www.theguardian.com/sport/rss' },
+  { source: 'ESPN Top Headlines', group: 'sport', category: 'sport', url: 'https://www.espn.com/espn/rss/news' },
+
+  // --- Zivotni stil, hrana, putovanja -------------------------------
+  { source: 'BBC Travel', group: 'lifestyle', category: 'travel', url: 'https://www.bbc.co.uk/travel/feed.rss' },
+  { source: 'The Guardian Travel', group: 'lifestyle', category: 'travel', url: 'https://www.theguardian.com/travel/rss' },
+  { source: 'The Guardian Food', group: 'lifestyle', category: 'food', url: 'https://www.theguardian.com/food/rss' },
+  { source: 'Bon Appetit', group: 'lifestyle', category: 'food', url: 'https://www.bonappetit.com/feed/rss' },
+
+  // --- Klima i energija ---------------------------------------------
+  { source: 'Reuters Sustainability', group: 'klima-energija', category: 'climate', url: 'https://www.euronews.com/rss?format=mrss&level=theme&name=green' },
+  { source: 'The Guardian Climate Crisis', group: 'klima-energija', category: 'climate', url: 'https://www.theguardian.com/environment/climate-crisis/rss' },
+  { source: 'Grist', group: 'klima-energija', category: 'climate', url: 'https://grist.org/feed/' },
+
 ];
 
 // Koliko vijesti jedan medij smije zauzeti u objavljenom skupu.
@@ -175,8 +221,9 @@ function parseFeed(xml, feed) {
     if (!url) url = normalizeUrl(attr(item.match(/<link\b[^>]*>/i)?.[0] || '', 'href'));
     const summary = decode(tag(item, 'description') || tag(item, 'summary') || tag(item, 'content:encoded'));
     const publishedAt = parseDate(tag(item, 'pubDate') || tag(item, 'published') || tag(item, 'updated') || tag(item, 'dc:date'));
-    const image = firstImage(item) || FALLBACK_IMAGE;
+    const image = firstImage(item);
     if (!title || !url || summary.length < 40) return null;
+    if (!image) return null;  // korisnicki zahtjev: preskoci vijesti bez prave slike
     if (/promo code|coupon code|% off|discount code|deals? this|save \d+%/i.test(title)) return null;
     return {
       id: idFor(url, title),
@@ -184,8 +231,8 @@ function parseFeed(xml, feed) {
       url,
       summary: summary.slice(0, 600),
       image,
-      imageAlt: image === FALLBACK_IMAGE ? 'GNK ASG zamjenska slika' : title,
-      imageCredit: image === FALLBACK_IMAGE ? 'GNK ASG' : feed.source,
+      imageAlt: title,
+      imageCredit: feed.source,
       source: feed.source,
       region: feed.source,
       group: feed.group,
@@ -193,8 +240,10 @@ function parseFeed(xml, feed) {
       published_at: publishedAt,
       publishedAt,
       verified: true,
-      verification: { article: { ok: true }, image: { ok: image === FALLBACK_IMAGE ? false : true, fallback: image === FALLBACK_IMAGE } },
-      share_url: `/podijeli/vijest/${idFor(url, title)}/`
+      verification: { article: { ok: true }, image: { ok: true, fallback: false } },
+      share_url: `/podijeli/vijest/${idFor(url, title)}/`,
+      editor_approved: 'Nermin Sefić',
+      editor_role: 'urednik'
     };
   }).filter(Boolean);
 }
