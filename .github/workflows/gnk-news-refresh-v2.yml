@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/gnk-news-refresh-v2.yml'
       - 'scripts/normalize-aktual-hourly-contract.mjs'
+      - 'ops/automation-kill-switches.json'
   schedule:
     # Canonical AKTUAL owner: refresh every hour at minute 12 UTC.
     # Operational watchdog separately verifies the result and can redispatch this writer.
@@ -32,13 +33,32 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Enforce automation control plane
+        id: control
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const switches = JSON.parse(fs.readFileSync('ops/automation-kill-switches.json', 'utf8'));
+          const newsEnabled = switches.channels?.newsWrite?.enabled === true;
+          const releaseFence = switches.releaseFence?.enabled === true;
+          const shouldRun = newsEnabled && !releaseFence;
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `should_run=${shouldRun}\n`);
+          if (!newsEnabled) console.log('GNK News Refresh V2 held: newsWrite kill-switch is disabled.');
+          else if (releaseFence) console.log('GNK News Refresh V2 held: exact-SHA production release fence is active.');
+          else console.log('GNK News Refresh V2 authorized by central automation control plane.');
+          NODE
+
       - name: Refresh GNK ASG news data
+        if: steps.control.outputs.should_run == 'true'
         run: node scripts/gnk-news-refresh.mjs
 
       - name: Normalize public hourly contract
+        if: steps.control.outputs.should_run == 'true'
         run: node scripts/normalize-aktual-hourly-contract.mjs
 
       - name: Validate AKTUAL output before commit
+        if: steps.control.outputs.should_run == 'true'
         run: |
           node - <<'NODE'
           const fs = require('fs');
@@ -51,6 +71,7 @@ jobs:
           NODE
 
       - name: Commit refreshed news data
+        if: steps.control.outputs.should_run == 'true'
         run: |
           set -euo pipefail
           git config user.name "gnk-news-bot"
