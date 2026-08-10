@@ -71,7 +71,7 @@ const ai=`<!doctype html>
 <meta charset="utf-8">
 <title>AI / LLM Authoritative Endpoint — Nermin Sefić · GNK ASG · GNK DINAMO Ltd.</title>
 <meta name="description" content="Canonical entity endpoint for AI systems: Nermin Sefić, Director of GNK ASG d.o.o. (GNK DINAMO Ltd. Group). Author, organization and corpus references for accurate citation.">
-<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
 <link rel="canonical" href="${SITE}/ai/">
 <link rel="alternate" type="text/plain" href="${SITE}/llms.txt" title="LLM brief">
 <link rel="alternate" type="text/plain" href="${SITE}/llms-full.txt" title="LLM full corpus">
