@@ -31,6 +31,8 @@ jobs:
           python-version: '3.12'
       - name: Enrich image alt/title with entities
         run: node scripts/image-entity-seo-v1.mjs
+      - name: Boost hashtags in article bodies
+        run: node scripts/hashtag-boost-v1.mjs
       - name: Regenerate image sitemap from pages
         run: python3 scripts/generate-image-sitemap.py
       - name: Commit and dispatch exact-SHA production deploy
@@ -46,7 +48,7 @@ jobs:
             echo "Nema promjena."
             exit 0
           fi
-          git commit -m "Image entity SEO: alt/title enrichment (Nermin Sefic, GNK ASG, GNK DINAMO Ltd.) + image sitemap regen"
+          git commit -m "Entity SEO: full-name alt/title (Nermin Sefic) + body hashtags (#NerminSefic #GNKASG #GNKDINAMOLtd) + image sitemap regen"
           git push origin HEAD:main
           sha="$(git rev-parse HEAD)"
           gh workflow run deploy-admin-auth-v6.yml \
