@@ -78,7 +78,7 @@ const rows=(list,badge)=>list.map(x=>`<tr><td>${badge}</td><td>${x.source}</td><
 const html=`<!doctype html>
 <html lang="hr"><head>
 <meta charset="utf-8"><title>Image Health Report — GNK ASG</title>
-<meta name="robots" content="noindex,follow">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow">
 <style>body{font:15px/1.5 system-ui,Arial,sans-serif;background:#0b0d10;color:#eee;max-width:1100px;margin:2rem auto;padding:0 1rem}
 a{color:#8bd}code{background:#151a20;padding:2px 6px;border-radius:4px}
 table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:.88rem}
