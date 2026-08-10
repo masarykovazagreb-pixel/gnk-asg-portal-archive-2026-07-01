@@ -21,6 +21,14 @@ for(const it of registry.items||[]){
   const orig=html;
   // A) fix generic og:image within editorial pages
   const isEditorial=/^\/(en\/)?(publications|analyses|kolumne|komentari|analize|objave)\//.test(it.path)||/^\/(en\/)?tematske\//.test(it.path);
+  // Body <img> references to /assets/editorial/*.svg (broken 404) → replace with author portrait
+  if(isEditorial){
+    const bodyRe=/<img\b([^>]*?)src="([^"]*\/assets\/editorial\/[a-z-]+\.svg[^"]*)"/gi;
+    if(bodyRe.test(html)){
+      html=html.replace(bodyRe, `<img$1src="${SITE}/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp"`);
+      stats.bodyImgFixed=(stats.bodyImgFixed||0)+1;
+    }
+  }
   if(isEditorial&&/og:image[^>]+\/assets\/editorial\/[a-z-]+\.svg/i.test(html)){
     html=html.replace(/(<meta[^>]+og:image[^>]+content=")[^"]*\/assets\/editorial\/[a-z-]+\.svg([^"]*)"/gi,`$1${OG_ABS}"`)
              .replace(/(<meta[^>]+twitter:image[^>]+content=")[^"]*\/assets\/editorial\/[a-z-]+\.svg([^"]*)"/gi,`$1${OG_ABS}"`);

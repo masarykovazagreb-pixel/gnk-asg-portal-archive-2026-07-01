@@ -13,7 +13,7 @@ const ROUTES=[
  '/objave/utrka-ai-regulacije-sad-eu-kina/',
  '/en/publications/ai-governance-race-us-eu-china/',
  '/en/publications/quantum-computing-corporate-security-preparation/',
- '/analize/', '/kolumne/', '/komentari/', '/tematske/',
+ '/analize/', '/komentari/',
  '/ai/',
  '/feed.xml', '/en/feed.xml', '/atom.xml', '/en/atom.xml',
  '/feed/', '/en/feed/',
