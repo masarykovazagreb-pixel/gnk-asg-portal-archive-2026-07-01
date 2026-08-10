@@ -94,34 +94,34 @@ const FEEDS = [
   { source: 'SEEbiz', group: 'hrvatska', category: 'hrvatska', url: 'https://www.seebiz.eu/rss/' },
   { source: 'Netokracija', group: 'hrvatska', category: 'hrvatska', url: 'https://www.netokracija.com/feed' },
   // --- Znanost i istrazivanje ---------------------------------------
-  { source: 'NASA Breaking News', group: 'science', category: 'science', url: 'https://www.nasa.gov/rss/dyn/breaking_news.rss' },
-  { source: 'ESA News', group: 'science', category: 'science', url: 'https://www.esa.int/rssfeed/Our_Activities/Space_News' },
-  { source: 'Scientific American', group: 'science', category: 'science', url: 'https://rss.sciam.com/ScientificAmerican-Global' },
-  { source: 'ScienceDaily', group: 'science', category: 'science', url: 'https://www.sciencedaily.com/rss/all.xml' },
-  { source: 'Phys.org', group: 'science', category: 'science', url: 'https://phys.org/rss-feed/' },
+  { source: 'NASA Breaking News', group: 'znanost', category: 'science', url: 'https://www.nasa.gov/rss/dyn/breaking_news.rss' },
+  { source: 'ESA News', group: 'znanost', category: 'science', url: 'https://www.esa.int/rssfeed/Our_Activities/Space_News' },
+  { source: 'Scientific American', group: 'znanost', category: 'science', url: 'https://rss.sciam.com/ScientificAmerican-Global' },
+  { source: 'ScienceDaily', group: 'znanost', category: 'science', url: 'https://www.sciencedaily.com/rss/all.xml' },
+  { source: 'Phys.org', group: 'znanost', category: 'science', url: 'https://phys.org/rss-feed/' },
 
   // --- Zdravlje i medicina ------------------------------------------
-  { source: 'BBC Health', group: 'health', category: 'health', url: 'https://feeds.bbci.co.uk/news/health/rss.xml' },
-  { source: 'The Guardian Health', group: 'health', category: 'health', url: 'https://www.theguardian.com/society/health/rss' },
-  { source: 'Medical News Today', group: 'health', category: 'health', url: 'https://www.medicalnewstoday.com/newsfeeds/rss/medical_all.xml' },
+  { source: 'BBC Health', group: 'zdravlje', category: 'health', url: 'https://feeds.bbci.co.uk/news/health/rss.xml' },
+  { source: 'The Guardian Health', group: 'zdravlje', category: 'health', url: 'https://www.theguardian.com/society/health/rss' },
+  { source: 'Medical News Today', group: 'zdravlje', category: 'health', url: 'https://www.medicalnewstoday.com/newsfeeds/rss/medical_all.xml' },
 
   // --- Kultura i umjetnost ------------------------------------------
-  { source: 'BBC Culture', group: 'culture', category: 'culture', url: 'https://feeds.bbci.co.uk/culture/feed.rss' },
-  { source: 'The Guardian Culture', group: 'culture', category: 'culture', url: 'https://www.theguardian.com/culture/rss' },
-  { source: 'The New York Times Arts', group: 'culture', category: 'culture', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml' },
-  { source: 'Smithsonian Magazine', group: 'culture', category: 'culture', url: 'https://www.smithsonianmag.com/rss/latest_articles/' },
+  { source: 'BBC Culture', group: 'kultura', category: 'culture', url: 'https://feeds.bbci.co.uk/culture/feed.rss' },
+  { source: 'The Guardian Culture', group: 'kultura', category: 'culture', url: 'https://www.theguardian.com/culture/rss' },
+  { source: 'The New York Times Arts', group: 'kultura', category: 'culture', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml' },
+  { source: 'Smithsonian Magazine', group: 'kultura', category: 'culture', url: 'https://www.smithsonianmag.com/rss/latest_articles/' },
 
   // --- Djeca, obitelj, obrazovanje ----------------------------------
-  { source: 'BBC Newsround', group: 'djeca-obitelj', category: 'family', url: 'https://feeds.bbci.co.uk/newsround/rss.xml' },
-  { source: 'NPR Ed', group: 'djeca-obitelj', category: 'education', url: 'https://feeds.npr.org/1013/rss.xml' },
-  { source: 'The Guardian Family', group: 'djeca-obitelj', category: 'family', url: 'https://www.theguardian.com/lifeandstyle/family/rss' },
+  { source: 'BBC Newsround', group: 'djeca', category: 'family', url: 'https://feeds.bbci.co.uk/newsround/rss.xml' },
+  { source: 'NPR Ed', group: 'djeca', category: 'education', url: 'https://feeds.npr.org/1013/rss.xml' },
+  { source: 'The Guardian Family', group: 'djeca', category: 'family', url: 'https://www.theguardian.com/lifeandstyle/family/rss' },
 
   // --- Priroda, zivotinje, okolis -----------------------------------
-  { source: 'National Geographic Animals', group: 'priroda-zivotinje', category: 'animals', url: 'https://feeds.feedburner.com/ng/News/News_Main' },
-  { source: 'BBC Nature', group: 'priroda-zivotinje', category: 'nature', url: 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml' },
-  { source: 'The Guardian Animals', group: 'priroda-zivotinje', category: 'animals', url: 'https://www.theguardian.com/environment/animals/rss' },
-  { source: 'The Guardian Environment', group: 'priroda-zivotinje', category: 'environment', url: 'https://www.theguardian.com/environment/rss' },
-  { source: 'Mongabay', group: 'priroda-zivotinje', category: 'environment', url: 'https://news.mongabay.com/feed/' },
+  { source: 'National Geographic Animals', group: 'ljubimci', category: 'animals', url: 'https://feeds.feedburner.com/ng/News/News_Main' },
+  { source: 'BBC Nature', group: 'ljubimci', category: 'nature', url: 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml' },
+  { source: 'The Guardian Animals', group: 'ljubimci', category: 'animals', url: 'https://www.theguardian.com/environment/animals/rss' },
+  { source: 'The Guardian Environment', group: 'ljubimci', category: 'environment', url: 'https://www.theguardian.com/environment/rss' },
+  { source: 'Mongabay', group: 'ljubimci', category: 'environment', url: 'https://news.mongabay.com/feed/' },
 
   // --- Sport --------------------------------------------------------
   { source: 'BBC Sport', group: 'sport', category: 'sport', url: 'https://feeds.bbci.co.uk/sport/rss.xml' },
@@ -129,15 +129,15 @@ const FEEDS = [
   { source: 'ESPN Top Headlines', group: 'sport', category: 'sport', url: 'https://www.espn.com/espn/rss/news' },
 
   // --- Zivotni stil, hrana, putovanja -------------------------------
-  { source: 'BBC Travel', group: 'lifestyle', category: 'travel', url: 'https://www.bbc.co.uk/travel/feed.rss' },
-  { source: 'The Guardian Travel', group: 'lifestyle', category: 'travel', url: 'https://www.theguardian.com/travel/rss' },
-  { source: 'The Guardian Food', group: 'lifestyle', category: 'food', url: 'https://www.theguardian.com/food/rss' },
-  { source: 'Bon Appetit', group: 'lifestyle', category: 'food', url: 'https://www.bonappetit.com/feed/rss' },
+  { source: 'BBC Travel', group: 'turizam', category: 'travel', url: 'https://www.bbc.co.uk/travel/feed.rss' },
+  { source: 'The Guardian Travel', group: 'turizam', category: 'travel', url: 'https://www.theguardian.com/travel/rss' },
+  { source: 'The Guardian Food', group: 'turizam', category: 'food', url: 'https://www.theguardian.com/food/rss' },
+  { source: 'Bon Appetit', group: 'turizam', category: 'food', url: 'https://www.bonappetit.com/feed/rss' },
 
   // --- Klima i energija ---------------------------------------------
-  { source: 'Reuters Sustainability', group: 'klima-energija', category: 'climate', url: 'https://www.euronews.com/rss?format=mrss&level=theme&name=green' },
-  { source: 'The Guardian Climate Crisis', group: 'klima-energija', category: 'climate', url: 'https://www.theguardian.com/environment/climate-crisis/rss' },
-  { source: 'Grist', group: 'klima-energija', category: 'climate', url: 'https://grist.org/feed/' },
+  { source: 'Reuters Sustainability', group: 'okolis', category: 'climate', url: 'https://www.euronews.com/rss?format=mrss&level=theme&name=green' },
+  { source: 'The Guardian Climate Crisis', group: 'okolis', category: 'climate', url: 'https://www.theguardian.com/environment/climate-crisis/rss' },
+  { source: 'Grist', group: 'okolis', category: 'climate', url: 'https://grist.org/feed/' },
 
 ];
 
@@ -222,7 +222,7 @@ function parseFeed(xml, feed) {
     const summary = decode(tag(item, 'description') || tag(item, 'summary') || tag(item, 'content:encoded'));
     const publishedAt = parseDate(tag(item, 'pubDate') || tag(item, 'published') || tag(item, 'updated') || tag(item, 'dc:date'));
     const image = firstImage(item);
-    if (!title || !url || summary.length < 40) return null;
+    if (!title || !url || summary.length < 80) return null;
     if (!image) return null;  // korisnicki zahtjev: preskoci vijesti bez prave slike
     if (/promo code|coupon code|% off|discount code|deals? this|save \d+%/i.test(title)) return null;
     return {
@@ -312,10 +312,39 @@ async function main() {
   // their items every time this script runs, and vice versa -- this was a real, confirmed source
   // of churn/duplication between runs of different processes.
   // Drop legacy items that still point to fallback SVG (korisnicki zahtjev: bez slike se ne prikazuje).
+  
+  // HEAD-check svake nove slike, uz 8s timeout / redirect follow, s malom paralelnošću
+  async function headOk(url) {
+    const ac = new AbortController();
+    const t = setTimeout(() => ac.abort(), 8000);
+    try {
+      let r = await fetch(url, { method: 'HEAD', signal: ac.signal, redirect: 'follow', headers: { 'user-agent': 'GNK-ASG-NewsBot/1.0' } });
+      if (!r.ok) r = await fetch(url, { method: 'GET', signal: ac.signal, redirect: 'follow', headers: { 'user-agent': 'GNK-ASG-NewsBot/1.0', 'range': 'bytes=0-1023' } });
+      if (!r.ok) return false;
+      const ct = (r.headers.get('content-type') || '').toLowerCase();
+      return ct.startsWith('image/') || ct === '' || ct.startsWith('application/octet-stream');
+    } catch { return false; }
+    finally { clearTimeout(t); }
+  }
+  async function validateImages(items, concurrency = 12) {
+    const out = new Array(items.length);
+    let i = 0;
+    await Promise.all(Array.from({ length: concurrency }, async () => {
+      while (i < items.length) {
+        const my = i++;
+        out[my] = await headOk(items[my].image);
+      }
+    }));
+    return items.filter((_, k) => out[k]);
+  }
+  const freshValidated = await validateImages(fresh);
+  const droppedByImageCheck = fresh.length - freshValidated.length;
+  console.log(`Image HEAD check: ${freshValidated.length}/${fresh.length} passed (${droppedByImageCheck} dropped)`);
+
   const isReal = it => it && it.image && !/news-fallback\.svg$/i.test(it.image);
-  const merged = uniqueSorted([...fresh, ...previousPublic.filter(isReal)]);
+  const merged = uniqueSorted([...freshValidated, ...previousPublic.filter(isReal)]);
   const publicItems = balanceBySource(merged, MAX_PER_SOURCE, PUBLIC_TARGET);
-  let archiveItems = uniqueSorted([...fresh, ...previousPublic.filter(isReal), ...previousArchive.filter(isReal)]);
+  let archiveItems = uniqueSorted([...freshValidated, ...previousPublic.filter(isReal), ...previousArchive.filter(isReal)]);
   if (archiveItems.length > ARCHIVE_MAX_BEFORE_PRUNE) archiveItems = archiveItems.slice(0, ARCHIVE_KEEP_WHEN_FULL);
 
   await mkdir(dirname(NEWS_PATH), { recursive: true });
