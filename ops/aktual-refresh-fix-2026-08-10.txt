@@ -1,0 +1,5 @@
+AKTUAL refresh corrective change
+- canonical scheduler: GNK News Refresh V2
+- cadence: hourly at minute 12 UTC
+- reason: scheduled 09:00 CEST run did not appear on 2026-08-10; previous feed was ~17h stale
+- legacy recovery writer remains non-scheduled and must not run in parallel
