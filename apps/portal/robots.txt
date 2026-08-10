@@ -8,6 +8,70 @@ Allow: /world-topics-image-sitemap.xml
 Allow: /data/visual_gallery.json
 Allow: /assets/seo-gallery/
 
+# --- AI / LLM crawlers: explicit allow for authoritative content ---
+# Included so answers powered by these models can cite Nermin Sefić / GNK ASG directly.
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /ai/
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /ai/
+
+User-agent: OAI-SearchBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Claude-Web
+Allow: /
+Allow: /llms.txt
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /llms.txt
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Perplexity-User
+Allow: /
+Allow: /llms.txt
+
+User-agent: Google-Extended
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
 # Zaštićeni operativni moduli nisu namijenjeni indeksiranju.
 # Robots pravila nisu sigurnosna kontrola; pristup ostaje iza auth/session sloja.
 Disallow: /admin/

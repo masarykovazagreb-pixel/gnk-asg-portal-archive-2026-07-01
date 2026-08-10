@@ -1,0 +1,52 @@
+name: AEO / AI Visibility Boost
+
+# Generira /llms.txt, /llms-full.txt, entity JSON-LD graf, /ai/ endpoint;
+# ažurira robots.txt s eksplicitnim dozvolama za AI crawlere; commit + exact-SHA deploy.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 3 * * *'   # svaki dan u 03:30 UTC (05:30 Zagreb) — nakon noćnog SEO audita
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: aeo-ai-visibility
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Generate AEO artefacts
+        run: node scripts/generate-aeo-artifacts-v1.mjs
+      - name: Commit + dispatch exact-SHA production deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-aeo-bot"
+          git config user.email "actions@github.com"
+          git add apps/portal
+          if git diff --cached --quiet; then
+            echo "Nema promjena u AEO artefaktima."
+            exit 0
+          fi
+          git commit -m "AEO: refresh /llms.txt, /llms-full.txt, entity graph, /ai/ endpoint"
+          git push origin HEAD:main
+          sha="$(git rev-parse HEAD)"
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo beckuphome-gnk/gnk-asg-portal \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$sha"
