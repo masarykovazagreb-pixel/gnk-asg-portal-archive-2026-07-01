@@ -175,6 +175,32 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     <div id="akKomentarIstaknuti"></div>
     <div class="ak-komentari-grid" id="akKomentariGrid"></div>
   </div>
+  <!-- WORLD_TOPICS_DAILY_START -->
+  <div class="ak-worldtopics" id="akWorldTopics" style="margin:26px 0;border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:18px" hidden>
+    <div class="ak-section-head"><h2>World Topics — analysis of the day</h2><span>Nermin Sefić · a new analysis every day</span></div>
+    <div id="akWorldTopicsToday"></div>
+    <div id="akWorldTopicsPrev" style="margin-top:12px"></div>
+  </div>
+  <script>
+  (function(){
+   fetch('/data/aktual-world-topics-schedule.json?v='+Date.now()).then(function(r){return r.json()}).then(function(d){
+    var today=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Zagreb'}).format(new Date());
+    var items=(d.schedule||[]).filter(function(x){return x.date<=today});
+    if(!items.length)return;
+    items.sort(function(a,b){return a.date<b.date?1:-1});
+    var t=items[0];
+    var el=document.getElementById('akWorldTopics'); el.hidden=false;
+    document.getElementById('akWorldTopicsToday').innerHTML=
+     '<a href="'+t.url_en+'" style="display:flex;gap:16px;align-items:center;text-decoration:none;color:inherit;flex-wrap:wrap">'+
+     '<img src="'+t.image+'" alt="'+(t.imageAlt_en||'')+'" width="220" height="124" loading="lazy" decoding="async" style="width:220px;height:124px;object-fit:cover;border-radius:6px">'+
+     '<span style="flex:1;min-width:240px"><strong style="font-size:1.05rem;display:block;margin-bottom:6px">'+t.title_en+'</strong>'+
+     '<span>'+(t.summary_en||'')+'</span></span></a>';
+    var prev=items.slice(1).map(function(x){return '<a href="'+x.url_en+'" style="display:block;padding:4px 0;text-decoration:none">'+x.date.slice(8,10)+'.'+x.date.slice(5,7)+'. — '+x.title_en+'</a>'}).join('');
+    if(prev)document.getElementById('akWorldTopicsPrev').innerHTML='<details><summary>Previous analyses in the series</summary>'+prev+'</details>';
+   }).catch(function(){});
+  })();
+  </script>
+  <!-- WORLD_TOPICS_DAILY_END -->
   <div class="ak-kuhinja">
     <div class="ak-kuhinja-glava">
       <div><h2>Kitchen — Recipe of the Day</h2><p>789 recipes with photos, from the World Table book. A new recipe every day.</p></div>
