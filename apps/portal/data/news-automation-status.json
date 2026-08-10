@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-08-10T21:26:14+02:00",
+  "updated_at": "2026-08-10T22:01:07+02:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "hourly at minute 12 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
@@ -342,9 +342,9 @@
     },
     {
       "source": "Netokracija",
-      "ok": true,
-      "items": 10,
-      "error": null
+      "ok": false,
+      "items": 0,
+      "error": "fetch failed"
     },
     {
       "source": "NASA Breaking News",
@@ -409,7 +409,7 @@
     {
       "source": "The New York Times Arts",
       "ok": true,
-      "items": 25,
+      "items": 24,
       "error": null
     },
     {
@@ -475,7 +475,7 @@
     {
       "source": "The Guardian Sport",
       "ok": true,
-      "items": 23,
+      "items": 24,
       "error": null
     },
     {
