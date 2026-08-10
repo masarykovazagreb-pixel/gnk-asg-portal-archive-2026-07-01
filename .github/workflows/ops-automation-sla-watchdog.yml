@@ -1,0 +1,184 @@
+name: GNK ASG Automation SLA Watchdog
+
+# Read/verify first, then dispatch ONLY the existing canonical writer when stale.
+# This workflow never writes news, editorial content, blog state or mirror state itself.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ops-automation-sla-watchdog.yml'
+  schedule:
+    - cron: '42 * * * *'
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: gnk-asg-automation-sla-watchdog
+  cancel-in-progress: true
+
+jobs:
+  verify-and-heal:
+    name: Verify automation SLAs and dispatch canonical recovery
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Verify live AKTUAL freshness, workflow SLAs and self-heal stale owners
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import sys
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          repo = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_TOKEN']
+          api = f'https://api.github.com/repos/{repo}'
+          now = datetime.now(timezone.utc)
+          zagreb = ZoneInfo('Europe/Zagreb')
+          now_local = now.astimezone(zagreb)
+          failures = []
+          recoveries = []
+          observations = []
+
+          def request_json(url, method='GET', payload=None):
+              data = None if payload is None else json.dumps(payload).encode('utf-8')
+              req = urllib.request.Request(url, data=data, method=method, headers={
+                  'Authorization': f'Bearer {token}',
+                  'Accept': 'application/vnd.github+json',
+                  'X-GitHub-Api-Version': '2022-11-28',
+                  'User-Agent': 'GNK-ASG-SLA-Watchdog/1.0',
+                  'Content-Type': 'application/json',
+              })
+              with urllib.request.urlopen(req, timeout=20) as res:
+                  raw = res.read()
+                  return json.loads(raw) if raw else {}
+
+          def latest_success(workflow):
+              workflow_q = urllib.parse.quote(workflow, safe='')
+              payload = request_json(f'{api}/actions/workflows/{workflow_q}/runs?status=completed&per_page=20')
+              for run in payload.get('workflow_runs', []):
+                  if run.get('conclusion') == 'success':
+                      stamp = run.get('updated_at') or run.get('created_at')
+                      if stamp:
+                          return datetime.fromisoformat(stamp.replace('Z', '+00:00')), run
+              return None, None
+
+          def dispatch(workflow, inputs=None):
+              workflow_q = urllib.parse.quote(workflow, safe='')
+              body = {'ref': 'main'}
+              if inputs:
+                  body['inputs'] = inputs
+              request_json(f'{api}/actions/workflows/{workflow_q}/dispatches', method='POST', payload=body)
+              recoveries.append(workflow)
+              print(f'RECOVERY DISPATCHED: {workflow}')
+
+          def ensure_age(workflow, max_minutes, label, inputs=None):
+              stamp, run = latest_success(workflow)
+              if not stamp:
+                  failures.append(f'{label}: no successful run found')
+                  dispatch(workflow, inputs)
+                  return
+              age = (now - stamp).total_seconds() / 60
+              observations.append(f'{label}: last success {age:.1f} min ago (run #{run.get("run_number")})')
+              if age > max_minutes:
+                  failures.append(f'{label}: stale {age:.1f} min > {max_minutes} min SLA')
+                  dispatch(workflow, inputs)
+
+          # 1) AKTUAL data contract: hard freshness and minimum content.
+          status_path = Path('apps/portal/data/news-automation-status.json')
+          try:
+              status = json.loads(status_path.read_text(encoding='utf-8'))
+              stamp = datetime.fromisoformat(str(status.get('updated_at', '')).replace('Z', '+00:00'))
+              if stamp.tzinfo is None:
+                  stamp = stamp.replace(tzinfo=zagreb)
+              age = (now - stamp.astimezone(timezone.utc)).total_seconds() / 60
+              observations.append(f'AKTUAL data: {age:.1f} min old, {status.get("public_items_written")} public items')
+              if not status.get('ok'):
+                  failures.append('AKTUAL data status ok=false')
+              if int(status.get('public_items_written') or 0) < 50:
+                  failures.append(f'AKTUAL public feed too small: {status.get("public_items_written")}')
+              if age > 110:
+                  failures.append(f'AKTUAL data stale {age:.1f} min > 110 min SLA')
+                  dispatch('gnk-news-refresh-v2.yml')
+          except Exception as exc:
+              failures.append(f'AKTUAL status unreadable: {exc}')
+              dispatch('gnk-news-refresh-v2.yml')
+
+          # 2) Live routes: both language surfaces must answer successfully.
+          for label, url in [
+              ('AKTUAL HR', 'https://gnk-asg.hr/gnk-aktual/'),
+              ('AKTUAL EN', 'https://gnk-asg.hr/en/gnk-aktual/'),
+          ]:
+              try:
+                  req = urllib.request.Request(url, headers={'User-Agent': 'GNK-ASG-SLA-Watchdog/1.0'})
+                  with urllib.request.urlopen(req, timeout=20) as res:
+                      code = res.getcode()
+                  observations.append(f'{label}: HTTP {code}')
+                  if code != 200:
+                      failures.append(f'{label}: HTTP {code}')
+              except Exception as exc:
+                  failures.append(f'{label}: live check failed: {exc}')
+
+          # 3) Canonical writer/control SLAs. A stale check dispatches the EXISTING owner only.
+          ensure_age('gnk-news-refresh-v2.yml', 130, 'AKTUAL canonical refresh')
+          ensure_age('blog-mirror-publish.yml', 420, 'Blogger + Dev.to + Tumblr distribution')
+          ensure_age('telegraph-mirror-publish.yml', 420, 'Telegraph distribution')
+          ensure_age('mirror-sync-masarykova.yml', 480, 'Masarykova backup mirror')
+          ensure_age('gnk-seo-nightly-audit.yml', 1800, 'Nightly SEO/IndexNow audit')
+
+          # 4) Daily editorial must have a successful run today after the 10:20 CEST slot + grace.
+          if (now_local.hour, now_local.minute) >= (10, 35):
+              stamp, run = latest_success('editorial-scheduled-publish.yml')
+              if not stamp or stamp.astimezone(zagreb).date() != now_local.date():
+                  last = 'none' if not stamp else stamp.astimezone(zagreb).isoformat()
+                  failures.append(f'Editorial daily publisher missing today; last success={last}')
+                  dispatch('editorial-scheduled-publish.yml')
+              else:
+                  observations.append(f'Editorial publisher: today success run #{run.get("run_number")}')
+
+          print('\nOBSERVATIONS')
+          for row in observations:
+              print('-', row)
+          if recoveries:
+              print('\nRECOVERIES')
+              for row in sorted(set(recoveries)):
+                  print('-', row)
+          if failures:
+              print('\nSLA FAILURES')
+              for row in failures:
+                  print('-', row)
+              print('\nCanonical recovery was dispatched where applicable. This run remains RED by design; the next watchdog must prove recovery.')
+              sys.exit(1)
+
+          print('\nALL AUTOMATION SLA CHECKS PASS')
+          PY
+
+      - name: Publish watchdog summary
+        if: always()
+        run: |
+          echo '## GNK ASG Automation SLA Watchdog' >> "$GITHUB_STEP_SUMMARY"
+          echo '- AKTUAL freshness target: **<= 110 min**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Canonical AKTUAL run target: **<= 130 min**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Blogger / Dev.to / Tumblr target: **<= 7 h**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Telegraph target: **<= 7 h**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Masarykova mirror target: **<= 8 h**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Nightly SEO/IndexNow target: **<= 30 h**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Editorial: **successful run required each Zagreb day after 10:35**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Recovery policy: **dispatch canonical owner only; watchdog never becomes a second writer**' >> "$GITHUB_STEP_SUMMARY"

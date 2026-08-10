@@ -1,60 +1,30 @@
 name: GNK ASG News Refresh
 
-# Legacy recovery workflow only.
-# Canonical scheduled owner: .github/workflows/gnk-news-refresh-v2.yml
-# Keep manual dispatch for controlled recovery, but never schedule this writer in parallel.
+# Recovery entrypoint only.
+# Canonical scheduled/writer implementation: .github/workflows/gnk-news-refresh-v2.yml
+# This workflow MUST NOT maintain a second parser, archive schema or publication writer.
 on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  actions: write
 
 concurrency:
-  group: gnk-asg-news-refresh
+  group: gnk-asg-news-recovery
   cancel-in-progress: false
 
 jobs:
-  refresh-news:
+  recover-news:
+    name: Dispatch canonical AKTUAL refresh
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Sync with latest main before running (reduces race with other auto-commit workflows)
-        run: git pull --ff-only origin main
-
-      - name: Refresh public business news feed
-        run: python apps/portal/scripts/refresh_news_policy.py
-
-      - name: Validate refreshed feed and retention policy
-        shell: bash
+      - name: Dispatch canonical single writer
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          news = json.loads(Path('apps/portal/data/news.json').read_text(encoding='utf-8'))
-          archive = json.loads(Path('apps/portal/data/news_archive.json').read_text(encoding='utf-8'))
-          status = json.loads(Path('apps/portal/data/update_status.json').read_text(encoding='utf-8'))
-          news_status = status.get('news', {})
-
-          assert isinstance(news, list) and 0 < len(news) <= 150, 'news.json must contain 1-150 items'
-          assert isinstance(archive, list), 'news_archive.json must be a list'
-          assert news_status.get('status') in {'ok', 'degraded'}, 'news refresh status failed'
-          assert news_status.get('max_public_items') == 150, 'public limit is not 150'
-          assert news_status.get('archive_prune_trigger') == 2000, 'archive trigger is not 2000'
-          assert news_status.get('archive_delete_oldest_batch') == 1000, 'archive prune batch is not 1000'
-          assert len(archive) <= 2000, 'archive remains above 2000 after pruning'
-          print(f'validated public={len(news)}, archive={len(archive)}')
-          PY
-
-      - name: Commit refreshed feed
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'Refresh public business news feed'
-          file_pattern: 'apps/portal/data/news.json apps/portal/data/news_archive.json apps/portal/data/update_status.json'
+          set -euo pipefail
+          gh workflow run gnk-news-refresh-v2.yml \
+            --repo beckuphome-gnk/gnk-asg-portal \
+            --ref main
+          echo "Canonical GNK News Refresh V2 dispatched. Legacy Python writer is disabled."
