@@ -317,7 +317,7 @@ async function main() {
   // HEAD-check svake nove slike, uz 8s timeout / redirect follow, s malom paralelnošću
   async function headOk(url) {
     const ac = new AbortController();
-    const t = setTimeout(() => ac.abort(), 8000);
+    const t = setTimeout(() => ac.abort(), 5000);
     try {
       let r = await fetch(url, { method: 'HEAD', signal: ac.signal, redirect: 'follow', headers: { 'user-agent': 'GNK-ASG-NewsBot/1.0' } });
       if (!r.ok) r = await fetch(url, { method: 'GET', signal: ac.signal, redirect: 'follow', headers: { 'user-agent': 'GNK-ASG-NewsBot/1.0', 'range': 'bytes=0-1023' } });
@@ -327,7 +327,7 @@ async function main() {
     } catch { return false; }
     finally { clearTimeout(t); }
   }
-  async function validateImages(items, concurrency = 12) {
+  async function validateImages(items, concurrency = 24) {
     const out = new Array(items.length);
     let i = 0;
     await Promise.all(Array.from({ length: concurrency }, async () => {
@@ -338,7 +338,12 @@ async function main() {
     }));
     return items.filter((_, k) => out[k]);
   }
-  const freshValidated = await validateImages(fresh);
+  // samo NOVE stavke koje nisu već u previousPublic (ubrzava refresh):
+  const previouslyKnown = new Set((previousPublic || []).map(it => it && it.id).filter(Boolean));
+  const [alreadyKnown, actuallyFresh] = fresh.reduce((acc, it) => (previouslyKnown.has(it.id) ? acc[0].push(it) : acc[1].push(it), acc), [[], []]);
+  const validatedNew = await validateImages(actuallyFresh);
+  const freshValidated = [...alreadyKnown, ...validatedNew];
+  console.log(`Skipped HEAD for ${alreadyKnown.length} previously-known items; validated ${validatedNew.length}/${actuallyFresh.length} new`);
   const droppedByImageCheck = fresh.length - freshValidated.length;
   console.log(`Image HEAD check: ${freshValidated.length}/${fresh.length} passed (${droppedByImageCheck} dropped)`);
 
