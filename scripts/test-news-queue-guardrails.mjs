@@ -3,20 +3,35 @@ import assert from 'node:assert/strict';
 
 const source=fs.readFileSync('workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js','utf8');
 
-const retentionPolicy=fs.readFileSync('apps/portal/scripts/refresh_news_policy.py','utf8');
-const refreshWorkflow=fs.readFileSync('.github/workflows/news-refresh.yml','utf8');
+// --- Canonical news retention owner: scripts/gnk-news-refresh.mjs (JS pipeline),
+// dispatched by the canonical writer workflow .github/workflows/gnk-news-refresh-v2.yml
+// (hourly cron, single writer). The old Python-based retention system
+// (apps/portal/scripts/refresh_news_policy.py) and the workflow that used to embed
+// its inline logic were both retired; news-refresh.yml is now recovery-only and
+// MUST NOT re-embed a second parser/archive/writer implementation.
+const canonicalPipeline=fs.readFileSync('scripts/gnk-news-refresh.mjs','utf8');
+const canonicalWriterWorkflow=fs.readFileSync('.github/workflows/gnk-news-refresh-v2.yml','utf8');
+const legacyRecoveryWorkflow=fs.readFileSync('.github/workflows/news-refresh.yml','utf8');
 const indexRefreshPolicy=fs.readFileSync('scripts/refresh_index_live_data.py','utf8');
 const indexRefreshWorkflow=fs.readFileSync('.github/workflows/refresh-index-live-data.yml','utf8');
 
-assert.match(retentionPolicy,/PUBLIC_LIMIT = 150/);
-assert.match(retentionPolicy,/ARCHIVE_TRIGGER = 2000/);
-assert.match(retentionPolicy,/ARCHIVE_DELETE_OLDEST = 1000/);
-assert.match(retentionPolicy,/github_actions_rss_refresh_v4_retention_policy/);
-assert.doesNotMatch(retentionPolicy,/ARCHIVE_TRIGGER = 1000/);
-assert.doesNotMatch(retentionPolicy,/ARCHIVE_DELETE_OLDEST = 500/);
-assert.match(refreshWorkflow,/archive_prune_trigger'\) == 2000/);
-assert.match(refreshWorkflow,/archive_delete_oldest_batch'\) == 1000/);
-assert.match(refreshWorkflow,/len\(archive\) <= 2000/);
+// Retention constants live in the canonical JS pipeline, not a retired Python file.
+assert.match(canonicalPipeline,/const PUBLIC_TARGET = \d+;/);
+assert.match(canonicalPipeline,/const MIN_ITEMS_FLOOR = 200;/);
+assert.match(canonicalPipeline,/const ARCHIVE_MAX_BEFORE_PRUNE = \d+;/);
+assert.match(canonicalPipeline,/const ARCHIVE_KEEP_WHEN_FULL = \d+;/);
+
+// Canonical writer workflow must be the single owner: hourly cron, invokes the
+// canonical pipeline script, and is the one that commits news.json / news_archive.json.
+assert.match(canonicalWriterWorkflow,/cron: '12 \* \* \* \*'/);
+assert.match(canonicalWriterWorkflow,/node scripts\/gnk-news-refresh\.mjs/);
+assert.match(canonicalWriterWorkflow,/git add[\s\S]{0,80}news\.json[\s\S]{0,80}news_archive\.json/);
+
+// Legacy news-refresh.yml must stay a recovery-only dispatcher: workflow_dispatch
+// only (no schedule of its own), and it must not re-embed a second writer/parser -
+// it should just redispatch the canonical workflow, never touch news.json directly.
+assert.doesNotMatch(legacyRecoveryWorkflow,/^\s*schedule:/m);
+assert.doesNotMatch(legacyRecoveryWorkflow,/git add[^\n]*news(?:_archive)?\.json/);
 
 // Market refresh must never own or mutate Aktual/news state. News retention
 // belongs to the canonical news refresh path; market refresh owns market data only.
@@ -49,4 +64,4 @@ assert.match(source,/completeDailyBatch/);
 assert.match(source,/invalid_daily_batch_contract/);
 assert.match(source,/members\.length!==13/);
 
-console.log(JSON.stringify({ok:true,cors:'public-only',dedupe:'canonical-source-url',scheduler:'strict-opt-in',marketNewsOwnership:'single-writer',trackingRemoved:['utm_*','fbclid','gclid','msclkid']},null,2));
+console.log(JSON.stringify({ok:true,cors:'public-only',dedupe:'canonical-source-url',scheduler:'strict-opt-in',marketNewsOwnership:'single-writer',retentionOwner:'scripts/gnk-news-refresh.mjs',trackingRemoved:['utm_*','fbclid','gclid','msclkid']},null,2));
