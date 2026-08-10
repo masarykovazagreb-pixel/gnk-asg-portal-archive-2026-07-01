@@ -35,6 +35,7 @@ const LOG_PATH = `${DATA_DIR}/log.json`;
 
 const read = (p, fallback) => { try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return fallback; } };
 const write = (p, obj) => { mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, JSON.stringify(obj, null, 2) + '\n'); };
+const writeText = (p, text) => { mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, text); };
 
 // ---------------------------------------------------------------------------
 // Platform konfiguracija: limiti, ton, format. Mijenjati SAMO ovdje kad se
@@ -381,7 +382,7 @@ const html = `<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta n
 ${previewRows}
 <p style="margin-top:24px;font-size:.8rem;color:#888">LIVE=${LIVE ? 'da' : 'ne (dry-run — postavi SOCIAL_LIVE=1 i adaptere kad credentiali budu dodani)'}</p>
 </body></html>`;
-write(`${DATA_DIR}/preview.html`, html);
+writeText(`${DATA_DIR}/preview.html`, html);
 
 console.log(JSON.stringify({
   slot,
