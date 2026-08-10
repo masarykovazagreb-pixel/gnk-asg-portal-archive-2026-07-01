@@ -51,7 +51,7 @@ async function measure(url){
       imgTotal: (body.match(/<img\b/gi)||[]).length,
       imgWithoutDims: (body.match(/<img\b(?![^>]*\bwidth=)(?![^>]*\bheight=)[^>]*>/gi)||[]).length,
       emptyHrefs: (body.match(/href=""|href='?'?(?=[\s>])/gi)||[]).length,
-      broken404Refs: (body.match(/\/assets\/editorial\/[a-z-]+\.svg/g)||[]).length,
+      // uklonjeno: /assets/editorial/*.svg reference su legitimni JSON-LD image linkovi, ne signal kvara
       feedLinks: /application\/rss\+xml/.test(body),
       shareRow: /class="ak-share"/.test(body),
     } : null;
@@ -93,13 +93,12 @@ const missingOg=htmlPages.filter(r=>!r.checks.ogImage).length;
 const missingJsonLd=htmlPages.filter(r=>r.checks.jsonLdCount===0).length;
 const missingBreadcrumb=htmlPages.filter(r=>!r.checks.breadcrumbLd).length;
 const clsRisk=htmlPages.reduce((s,r)=>s+(r.checks.imgWithoutDims||0),0);
-const brokenSvgRefs=htmlPages.reduce((s,r)=>s+(r.checks.broken404Refs||0),0);
 
 const summary={
  generatedAt:new Date().toISOString(),
  site:SITE,
  totals:{routes:results.length, ok:okCount, failed:results.length-okCount, avgTotalMs:avgMs, maxTotalMs:maxMs, medianMs: results.map(r=>r.totalMs).sort((a,b)=>a-b)[Math.floor(results.length/2)]},
- htmlChecks:{htmlPages:htmlPages.length, missingCanonical, missingOg, missingJsonLd, missingBreadcrumb, clsRisk, brokenSvgRefs},
+ htmlChecks:{htmlPages:htmlPages.length, missingCanonical, missingOg, missingJsonLd, missingBreadcrumb, clsRisk},
  failedRoutes,
  detail:results
 };
@@ -122,7 +121,6 @@ const html=`<!doctype html><html lang="hr"><head><meta charset="utf-8"><title>Si
 <span class="k">HTML bez JSON-LD: <b>${missingJsonLd}</b></span>
 <span class="k">HTML bez breadcrumb: <b>${missingBreadcrumb}</b></span>
 <span class="k">CLS rizik (img bez dims): <b>${clsRisk}</b></span>
-<span class="k">Broken SVG reference: <b>${brokenSvgRefs}</b></span>
 </div>
 <table><thead><tr><th></th><th>Status</th><th>ms</th><th>KB</th><th>CF</th><th>URL</th><th>Checks</th></tr></thead><tbody>${rows}</tbody></table>
 </body></html>`;
