@@ -1,0 +1,65 @@
+name: Content Queue Publish
+
+# GNK ASG Content Factory — objavljuje READY stavke po kalendaru (3 slota dnevno, Europe/Zagreb).
+# Nakon objave: commit na main -> exact-SHA production deploy (verifikacija + IndexNow),
+# a promjena editorial-registry.json automatski okida Blog Mirror Publish (Blogger/Dev.to/Tumblr/Telegraph).
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 7,11,15 * * *'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: content-queue-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Publish due calendar items
+        id: pub
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/content-queue-publish-v1.mjs | tee /tmp/queue-out.txt
+          if grep -Eq '"changed": ?true' /tmp/queue-out.txt; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Commit and dispatch exact-SHA production deploy
+        if: steps.pub.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-content-queue-bot"
+          git config user.email "actions@github.com"
+          git add apps/portal
+          git commit -m "Content queue: publish scheduled calendar items"
+          git push origin HEAD:main
+          sha="$(git rev-parse HEAD)"
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo beckuphome-gnk/gnk-asg-portal \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$sha"
+      - name: Summary
+        if: always()
+        shell: bash
+        run: |
+          echo '## Content Queue' >> "$GITHUB_STEP_SUMMARY"
+          sed -n '1,60p' /tmp/queue-out.txt >> "$GITHUB_STEP_SUMMARY" || true
