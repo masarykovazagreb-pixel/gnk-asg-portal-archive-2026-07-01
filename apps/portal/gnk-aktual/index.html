@@ -37,7 +37,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-hero p{color:var(--ak-sub);font-family:Arial,sans-serif;font-size:1rem;max-width:640px;margin:0 auto}
 .ak-status{font-family:Arial,sans-serif;font-size:.78rem;color:var(--ak-sub);text-align:center;margin:14px 0 44px}
 .ak-featured{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:3px solid var(--ak-line);border-radius:4px;overflow:hidden;margin-bottom:44px;background:var(--ak-panel)}
-.ak-editor-stamp{font-family:Arial,sans-serif;font-size:.7rem;color:var(--ak-sub);opacity:.75;margin-top:6px;letter-spacing:.02em;font-style:italic} .ak-featured img{width:100%;max-width:520px;height:auto;max-height:340px;object-fit:cover;display:block;margin:16px auto;border:2px solid var(--ak-line);border-radius:4px;padding:0}
+.ak-editor-stamp{font-family:Arial,sans-serif;font-size:.7rem;color:var(--ak-sub);opacity:.75;margin-top:6px;letter-spacing:.02em;font-style:italic} .ak-featured img{width:100%;max-width:380px;height:auto;max-height:240px;object-fit:cover;display:block;margin:20px auto;border:1px solid var(--ak-line);border-radius:6px;padding:0;box-shadow:0 6px 18px rgba(0,0,0,.25);background:#0e1116}
 .ak-featured-body{padding:32px}
 .ak-tag{display:inline-block;font-family:Arial,sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--ak-red);padding:4px 10px;border-radius:4px;margin-bottom:14px}
 .ak-featured-body h2{font-family:'Arial Black',Impact,'Franklin Gothic Bold',sans-serif;font-size:clamp(1.3rem,3vw,2rem);line-height:1.15;margin:0 0 14px;letter-spacing:-.005em}
@@ -164,7 +164,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 .ak-recept-tijelo h3{font-family:'Arial Black',Impact,sans-serif;font-size:1.15rem;margin:0 0 8px}
 .ak-recept-tijelo .sastojci{font-size:.82rem;color:var(--ak-sub);font-family:Arial,sans-serif;margin:0 0 8px;line-height:1.5}
 .ak-recept-tijelo .priprema{font-size:.86rem;color:var(--ak-text);margin:0 0 10px;line-height:1.5}
-</style>
+.ak-editor-stamp{margin-top:8px;font-size:.72rem;font-family:Arial,sans-serif;font-style:italic;color:var(--ak-sub);letter-spacing:.02em;opacity:.85}.ak-broken-img{background:linear-gradient(135deg,#1a1f26 0%,#0b0d10 100%);min-height:120px;display:flex;align-items:center;justify-content:center;color:var(--ak-sub);font-size:.8rem}.ak-share{display:flex;gap:10px;margin:24px 0 4px;flex-wrap:wrap;font-family:Arial,sans-serif;font-size:.78rem;align-items:center}.ak-share a{color:var(--ak-red);text-decoration:none;padding:6px 12px;border:1px solid var(--ak-line);border-radius:4px;transition:background .15s}.ak-share a:hover{background:var(--ak-line)}</style>
 <style id="gnk-gold-watermark-style">
 #gnk-gold-watermark{position:fixed;right:-40px;bottom:-40px;width:340px;height:340px;opacity:.07;pointer-events:none;z-index:1;filter:grayscale(0) saturate(1.4);}
 @media (max-width:640px){#gnk-gold-watermark{width:200px;height:200px;right:-30px;bottom:-30px;opacity:.06;}}
@@ -243,7 +243,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 <script src="/assets/app.js?v=20260728-aktual-grid4-rotate3m-v2" defer></script>
 <script>
 (function(){
-  var GROUP_LABELS = { hrvatska:'Hrvatska', international:'Svijet', technology:'Tehnologija', economy:'Burza i biznis', 'digital-assets':'Digitalna imovina', 'digital-workforce-simulation':'GNK ASG · Simulacija' };
+  var GROUP_LABELS = { hrvatska:'Hrvatska', international:'Svijet', technology:'Tehnologija', economy:'Burza i biznis', 'digital-assets':'Digitalna imovina', 'digital-workforce-simulation':'GNK ASG · Simulacija', magazin:'Magazin', sport:'Sport', bih:'BiH', slovenija:'Slovenija', srbija:'Srbija', mobilnost:'Mobilnost' };
   var ROTATE_MS = 180000;    // kartice se rotiraju svake 3 minute
   var FEATURED_MS = 900000;  // glavna objava se mijenja svakih 15 minuta
   var FEATURED_POOL = 12;    // iz koliko najjacih vijesti se bira glavna
@@ -264,7 +264,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     var el = document.getElementById('akFeatured');
     if(!item){ el.innerHTML=''; return; }
     el.innerHTML = '<div class="ak-featured">' +
-      '<img src="'+esc(item.image)+'" alt="" loading="eager">' +
+      '<img src="'+esc(item.image)+'" alt="" loading="eager" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'">' +
       '<div class="ak-featured-body">' +
         '<span class="ak-tag">'+esc(GROUP_LABELS[item.group]||item.category||'Vijest')+'</span>' +
         '<h2><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a></h2>' +
@@ -523,7 +523,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     
       var fullBox = document.createElement('div');
       fullBox.id='akReceptPuni';
-      fullBox.style.cssText='display:none;padding:0 22px 18px;font-family:Arial,sans-serif';
+      fullBox.style.cssText='display:block;padding:0 22px 18px;font-family:Arial,sans-serif';
       fullBox.innerHTML='<h4 style="margin:14px 0 6px;font-size:.9rem;color:var(--ak-red);text-transform:uppercase;letter-spacing:.06em">Svi sastojci</h4><ul style="margin:0 0 14px 18px;font-size:.9rem;line-height:1.55">'+(recept.ingredients||[]).map(function(s){return '<li>'+escH(s.ingredient||'')+(s.amount?' — '+escH(s.amount):'')+'</li>'}).join('')+'</ul><h4 style="margin:0 0 6px;font-size:.9rem;color:var(--ak-red);text-transform:uppercase;letter-spacing:.06em">Priprema</h4><p style="font-size:.95rem;line-height:1.65;margin:0;white-space:pre-line">'+escH(recept.method||'')+'</p>';
       document.getElementById('akReceptDana').appendChild(fullBox);
       var btn=document.getElementById('akReceptToggle');
@@ -538,7 +538,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       var k = items && items[0];
       if (!k || !k.naslov) return;
       var uvod = (k.tekst || '').split('\n\n')[0] || '';
-      var slikaHtml = k.slika ? '<img src="' + escH(k.slika) + '" alt="" loading="lazy" style="max-width:120px;max-height:120px;object-fit:contain;float:right;margin:0 0 10px 14px" onerror="this.remove()">' : '';
+      var slikaHtml = k.slika ? '<img src="' + escH(k.slika) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="" loading="lazy" style="max-width:120px;max-height:120px;object-fit:contain;float:right;margin:0 0 10px 14px" onerror="this.remove()">' : '';
       document.getElementById('akKolumnaTijelo').innerHTML =
         '<span class="oznaka">Kolumna · subotom</span>' +
         slikaHtml +
@@ -592,7 +592,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
         '<h3>' + escH(recept.name) + '</h3>' +
         '<p class="sastojci">' + escH(sastojci) + '…</p>' +
         '<p class="priprema">' + escH(priprema) + (priprema.length >= 220 ? '…' : '') + '</p>' +
-        '<button type="button" id="akReceptToggle" style="font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);background:transparent;border:none;border-bottom:2px solid var(--ak-red);padding:0 0 1px;cursor:pointer">Cijeli recept →</button>' +
+        '<button type="button" id="akReceptToggle" style="font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);background:transparent;border:none;border-bottom:2px solid var(--ak-red);padding:0 0 1px;cursor:pointer">Sakrij recept ↑</button>' +
         '</div>';
     })
     .catch(function(){});
@@ -615,14 +615,14 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       if (istaknuta) {
         document.getElementById('akKomentarIstaknuti').innerHTML =
           '<a class="ak-komentar-istaknuti" href="' + escH(istaknuta.url) + '" target="_blank" rel="noopener">' +
-          (istaknuta.image ? '<img src="' + escH(istaknuta.image) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
+          (istaknuta.image ? '<img src="' + escH(istaknuta.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="" loading="lazy" onerror="this.remove()">' : '') +
           '<div class="tijelo"><span class="oznaka">Komentar · Nermin Sefić</span><h3>' + escH(istaknuta.title) + '</h3><p>' +
           escH((istaknuta.description||'').slice(0,160)) + '</p></div></a>';
       }
 
       var html = ostalih.map(function(k){
         return '<a class="ak-komentar-kartica" href="' + escH(k.url) + '" target="_blank" rel="noopener">' +
-          (k.image ? '<img src="' + escH(k.image) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
+          (k.image ? '<img src="' + escH(k.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="" loading="lazy" onerror="this.remove()">' : '') +
           '<div class="tijelo"><span class="oznaka">Komentar</span><h3>' + escH(k.title) + '</h3></div></a>';
       }).join('');
       document.getElementById('akKomentariGrid').innerHTML = html;
