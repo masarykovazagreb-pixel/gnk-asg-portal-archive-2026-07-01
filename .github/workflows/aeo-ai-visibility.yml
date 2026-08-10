@@ -40,6 +40,8 @@ jobs:
         run: node scripts/editorial-entity-linkage-v1.mjs
       - name: Rich meta-descriptions from real article body
         run: node scripts/rich-descriptions-v1.mjs
+      - name: Site-wide SEO guardian (non-editorial pages)
+        run: node scripts/site-seo-guardian-v1.mjs
       - name: Regenerate image sitemap
         run: python3 scripts/generate-image-sitemap.py
       - name: Commit + dispatch exact-SHA production deploy
