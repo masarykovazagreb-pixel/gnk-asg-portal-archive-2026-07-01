@@ -4,7 +4,7 @@
   "max_items": 500,
   "max_per_source": 80,
   "rotation_policy": "Nove vijesti ulaze prve; duplikati i blokirane objave se uklanjaju; javno se prikazuje najnovijih 500 stavki; aktivna javna arhiva zadržava sljedećih najnovijih 400 stavki; stariji višak izvan aktivnog skupa uklanja se radi stabilnog rada objave.",
-  "automation_verification": "Jedinstveni proces scripts/news_publication.py. BiH i Slovenija pojačani su dodatnim provjerljivim javnim izvorima kroz Google News upite 31.05.2026. | 2026-08-10: dodane magazin kategorije (djeca, životinje, kultura, zdravlje, okoliš, znanost, putovanja) — 14 novih upita.",
+  "automation_verification": "Jedinstveni proces scripts/news_publication.py. BiH i Slovenija pojačani su dodatnim provjerljivim javnim izvorima kroz Google News upite 31.05.2026. | 2026-08-10: remapirano na AKTUAL rubrike (ljubimci/kultura/turizam/zanimljivosti) i dodane 4 nove rubrike (djeca, zdravlje, okoliš, znanost) — 15 upita ukupno.",
   "sources": [
     {
       "name": "Poslovni dnevnik",
@@ -279,88 +279,94 @@
       "q": "crypto regulation stablecoin digital finance when:14d"
     },
     {
-      "name": "Djeca i obitelj",
-      "group": "magazin",
-      "category": "kids",
-      "q": "djeca odgoj obitelj vrtić škola aktivnosti when:14d"
-    },
-    {
-      "name": "Children & Family",
-      "group": "magazin",
-      "category": "kids",
-      "q": "children parenting family education activities when:14d"
-    },
-    {
       "name": "Životinje i priroda",
-      "group": "magazin",
+      "group": "ljubimci",
       "category": "animals",
       "q": "životinje priroda kućni ljubimci veterinarska zaštita when:14d"
     },
     {
       "name": "Animals & Wildlife",
-      "group": "magazin",
+      "group": "ljubimci",
       "category": "animals",
       "q": "animals wildlife pets conservation nature when:14d"
     },
     {
       "name": "Kultura i umjetnost",
-      "group": "magazin",
+      "group": "kultura",
       "category": "culture",
       "q": "kultura umjetnost izložba književnost film glazba when:14d"
     },
     {
       "name": "Culture & Arts",
-      "group": "magazin",
+      "group": "kultura",
       "category": "culture",
       "q": "culture arts exhibition literature film music when:14d"
     },
     {
+      "name": "Putovanja i turizam",
+      "group": "turizam",
+      "category": "travel",
+      "q": "putovanja destinacije lifestyle turizam kulinarstvo when:14d"
+    },
+    {
+      "name": "Travel & Tourism",
+      "group": "turizam",
+      "category": "travel",
+      "q": "travel destinations lifestyle tourism culinary when:14d"
+    },
+    {
+      "name": "Djeca i obitelj",
+      "group": "djeca",
+      "category": "kids",
+      "q": "djeca odgoj obitelj vrtić škola aktivnosti when:14d"
+    },
+    {
+      "name": "Children & Family",
+      "group": "djeca",
+      "category": "kids",
+      "q": "children parenting family education activities when:14d"
+    },
+    {
       "name": "Zdravlje i wellness",
-      "group": "magazin",
+      "group": "zdravlje",
       "category": "health",
       "q": "zdravlje prevencija medicina wellness prehrana when:14d"
     },
     {
       "name": "Health & Wellness",
-      "group": "magazin",
+      "group": "zdravlje",
       "category": "health",
       "q": "health wellness prevention medicine nutrition when:14d"
     },
     {
       "name": "Okoliš i klima",
-      "group": "magazin",
+      "group": "okolis",
       "category": "environment",
       "q": "okoliš klima ekologija održivost obnovljivi izvori when:14d"
     },
     {
       "name": "Environment & Climate",
-      "group": "magazin",
+      "group": "okolis",
       "category": "environment",
       "q": "environment climate ecology sustainability renewables when:14d"
     },
     {
       "name": "Znanost i istraživanja",
-      "group": "magazin",
+      "group": "znanost",
       "category": "science",
       "q": "znanost istraživanje otkriće sveučilište nauka when:14d"
     },
     {
       "name": "Science & Research",
-      "group": "magazin",
+      "group": "znanost",
       "category": "science",
       "q": "science research discovery university physics biology when:14d"
     },
     {
-      "name": "Putovanja i lifestyle",
-      "group": "magazin",
+      "name": "Zanimljivosti dana",
+      "group": "zanimljivosti",
       "category": "lifestyle",
-      "q": "putovanja destinacije lifestyle turizam kulinarstvo when:14d"
-    },
-    {
-      "name": "Travel & Lifestyle",
-      "group": "magazin",
-      "category": "lifestyle",
-      "q": "travel destinations lifestyle tourism culinary when:14d"
+      "q": "zanimljivosti neobično priča inovacije lifestyle when:14d"
     }
   ]
 }
