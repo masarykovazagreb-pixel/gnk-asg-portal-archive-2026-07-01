@@ -45,6 +45,7 @@ function toNodes(html, item){
   }
   const tags=(item.hashtags||[]).map(x=>'#'+x).join(' ');
   if(tags) nodes.push({tag:'p',children:[{tag:'em',children:[tags]}]});
+  nodes.push({tag:'p',children:[{tag:'em',children:['Odobrio urednik: Nermin Sefić']}]});
   nodes.push({tag:'p',children:['Cijeli tekst: ',{tag:'a',attrs:{href:item.url},children:[item.url]}]});
   return nodes;
 }
