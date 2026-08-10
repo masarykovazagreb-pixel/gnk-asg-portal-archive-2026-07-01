@@ -1,0 +1,69 @@
+name: Free Image Mirror (catbox.moe)
+
+# Objavljuje World Topics chartove i autorske fotografije na catbox.moe
+# (anonimni, trajni, direktni URL-ovi). Stanje se čuva na durable state grani
+# 'automation/free-image-mirror-state' isto kao blog-mirror-state.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 4 * * *'   # svaki dan u 06:45 Zagreb, nakon AEO boosta
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: free-image-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Restore state from durable branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p apps/portal/data/free-image-mirrors
+          if git ls-remote --heads origin automation/free-image-mirror-state | grep -q .; then
+            git fetch origin automation/free-image-mirror-state
+            git show origin/automation/free-image-mirror-state:apps/portal/data/free-image-mirrors/published.json > apps/portal/data/free-image-mirrors/published.json || true
+          fi
+      - name: Upload new images to catbox.moe
+        env:
+          CATBOX_PER_RUN: '40'
+          CATBOX_PAUSE_MS: '2500'
+        run: node scripts/free-image-mirror-catbox-v1.mjs
+      - name: Persist state on durable branch
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          f=apps/portal/data/free-image-mirrors/published.json
+          [ -s "$f" ] || exit 0
+          git config user.name "gnk-free-image-mirror-bot"
+          git config user.email "actions@github.com"
+          tmp="$(mktemp)"
+          cp "$f" "$tmp"
+          if git ls-remote --heads origin automation/free-image-mirror-state | grep -q .; then
+            git fetch origin automation/free-image-mirror-state
+            git checkout -B automation/free-image-mirror-state origin/automation/free-image-mirror-state
+          else
+            git checkout --orphan automation/free-image-mirror-state
+            git rm -rf . >/dev/null 2>&1 || true
+          fi
+          mkdir -p apps/portal/data/free-image-mirrors
+          cp "$tmp" apps/portal/data/free-image-mirrors/published.json
+          git add apps/portal/data/free-image-mirrors/published.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Free image mirror state: $(date -u +%FT%TZ)"
+          git push origin automation/free-image-mirror-state
