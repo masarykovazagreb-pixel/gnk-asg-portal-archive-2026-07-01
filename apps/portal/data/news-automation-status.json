@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-08-10T17:19:15+02:00",
+  "updated_at": "2026-08-10T19:04:55+02:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "hourly at minute 12 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
@@ -37,7 +37,7 @@
     {
       "source": "The Guardian Business",
       "ok": true,
-      "items": 41,
+      "items": 40,
       "error": null
     },
     {
@@ -61,7 +61,7 @@
     {
       "source": "The Independent Business",
       "ok": true,
-      "items": 11,
+      "items": 12,
       "error": null
     },
     {
@@ -175,7 +175,7 @@
     {
       "source": "The Hindu BusinessLine",
       "ok": true,
-      "items": 55,
+      "items": 58,
       "error": null
     },
     {
@@ -211,7 +211,7 @@
     {
       "source": "Channel News Asia",
       "ok": true,
-      "items": 3,
+      "items": 4,
       "error": null
     },
     {
@@ -223,7 +223,7 @@
     {
       "source": "AllAfrica Business",
       "ok": true,
-      "items": 29,
+      "items": 30,
       "error": null
     },
     {
@@ -253,7 +253,7 @@
     {
       "source": "BBC News",
       "ok": true,
-      "items": 22,
+      "items": 23,
       "error": null
     },
     {
@@ -270,14 +270,14 @@
     },
     {
       "source": "France 24",
-      "ok": false,
-      "items": 0,
-      "error": "HTTP 404"
+      "ok": true,
+      "items": 22,
+      "error": null
     },
     {
       "source": "The New York Times World",
       "ok": true,
-      "items": 55,
+      "items": 56,
       "error": null
     },
     {
@@ -324,9 +324,9 @@
     },
     {
       "source": "tportal",
-      "ok": true,
-      "items": 20,
-      "error": null
+      "ok": false,
+      "items": 0,
+      "error": "fetch failed"
     },
     {
       "source": "Lider",
@@ -342,9 +342,9 @@
     },
     {
       "source": "Netokracija",
-      "ok": false,
+      "ok": true,
       "items": 0,
-      "error": "fetch failed"
+      "error": null
     }
   ],
   "last_checked_issue": null,
