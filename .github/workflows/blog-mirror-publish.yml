@@ -88,6 +88,8 @@ jobs:
           restore_state apps/portal/data/blog-content/published.json
           restore_state apps/portal/data/devto-content/published.json
           restore_state apps/portal/data/tumblr-content/published.json
+          restore_state apps/portal/data/telegraph-content/published.json
+          restore_state apps/portal/data/telegraph-content/account.json
 
           echo "Mirror state branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Release main remains: $(git rev-parse origin/main)"
@@ -145,6 +147,14 @@ jobs:
           TUMBLR_PAUSE_MS: '3000'
         run: node scripts/tumblr-publish-v1.mjs --live
 
+      - name: Telegraph mirror - self-bootstrap channel
+        id: telegraph_publish
+        continue-on-error: true
+        env:
+          TELEGRAPH_PER_RUN: '12'
+          TELEGRAPH_PAUSE_MS: '4000'
+        run: node scripts/telegraph-publish-v1.mjs
+
       - name: Write three-channel parity health
         if: always()
         shell: bash
@@ -157,6 +167,7 @@ jobs:
           const blog=read('apps/portal/data/blog-content/published.json',{posted:{}});
           const devto=read('apps/portal/data/devto-content/published.json',{posted:{}});
           const tumblr=read('apps/portal/data/tumblr-content/published.json',{posted:{}});
+          const telegraph=read('apps/portal/data/telegraph-content/published.json',{posted:{}});
           const countState=(v)=>Array.isArray(v)?v.length:(v&&v.posted?Object.keys(v.posted).length:(v&&v.items?Object.keys(v.items).length:Object.keys(v||{}).length));
           const health={
             version:'GNK_ASG_THREE_BLOG_PARITY_V4_RACE_SAFE',
@@ -166,7 +177,8 @@ jobs:
             channels:{
               blogger:{credentials:process.env.BLOGGER_CREDENTIAL_STATE||'unknown',published:countState(blog)},
               devto:{credentials:process.env.DEVTO_CREDENTIAL_STATE||'unknown',published:countState(devto)},
-              tumblr:{credentials:process.env.TUMBLR_CREDENTIAL_STATE||'unknown',published:countState(tumblr)}
+              tumblr:{credentials:process.env.TUMBLR_CREDENTIAL_STATE||'unknown',published:countState(tumblr)},
+              telegraph:{credentials:'self-bootstrap',published:countState(telegraph)}
             },
             policy:{singleWriter:true,dedupeByPlatformState:true,canonicalBacklinkRequired:true,stateBranch:'automation/blog-mirror-state',mainWrites:false,stateSync:'validated-overlay-force-with-lease-and-union-retry'}
           };
@@ -184,6 +196,7 @@ jobs:
           echo "- Blogger credentials: **${BLOGGER_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
           echo "- Dev.to credentials: **${DEVTO_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
           echo "- Tumblr credentials: **${TUMBLR_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Telegraph: **self-bootstrap**" >> "$GITHUB_STEP_SUMMARY"
           if [ -s apps/portal/data/blog-content/health.json ]; then
             node -e "const fs=require('fs'); try { const h=JSON.parse(fs.readFileSync('apps/portal/data/blog-content/health.json','utf8')); console.log('- Blogger pending after run: **'+h.pending+'**') } catch { console.log('- Blogger health JSON: **unavailable**') }" >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -199,7 +212,7 @@ jobs:
           test "$(git rev-parse --abbrev-ref HEAD)" = "automation/blog-mirror-state"
           git config user.name "gnk-blog-bot"
           git config user.email "actions@github.com"
-          git add apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ || true
+          git add apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ apps/portal/data/telegraph-content/ || true
           if git diff --cached --quiet; then
             echo "Nema promjena za spremanje."
           else
@@ -217,7 +230,8 @@ jobs:
             for state in \
               apps/portal/data/blog-content/published.json \
               apps/portal/data/devto-content/published.json \
-              apps/portal/data/tumblr-content/published.json; do
+              apps/portal/data/tumblr-content/published.json \
+              apps/portal/data/telegraph-content/published.json; do
               remote_tmp="/tmp/remote-$(echo "$state" | tr '/' '_')"
               if git show "refs/remotes/origin/automation/blog-mirror-state:${state}" > "$remote_tmp" 2>/dev/null; then
                 node - "$remote_tmp" "$state" <<'NODE'
@@ -230,7 +244,7 @@ jobs:
           NODE
               fi
             done
-            git add apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ || true
+            git add apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ apps/portal/data/telegraph-content/ || true
             if git diff --cached --quiet; then
               echo "Union nije dodao promjene."
             else
