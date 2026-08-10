@@ -70,6 +70,7 @@ jobs:
         run: |
           set -euo pipefail
           test -f workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          test -f workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
           test -f workers/gnk-asg-direct-operator/src/dynamic-editorial-image-v1.js
           test -f workers/gnk-asg-direct-operator/src/public-market-data-v1.js
           test -f workers/gnk-asg-direct-operator/src/canonical-news-feed-v1.js
@@ -91,8 +92,10 @@ jobs:
           test -f scripts/deploy-direct-operator-with-retry-v1.sh
           test -f scripts/test-deploy-assets-retry-contract-v1.mjs
           test -f workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
+          test -f workers/gnk-asg-direct-operator/wrangler.workforce-production-no-routes.toml
 
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          node --check workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
           node --check workers/gnk-asg-direct-operator/src/dynamic-editorial-image-v1.js
           node --check workers/gnk-asg-direct-operator/src/public-market-data-v1.js
           node --check workers/gnk-asg-direct-operator/src/canonical-news-feed-v1.js
@@ -113,6 +116,10 @@ jobs:
           node scripts/test-deploy-assets-retry-contract-v1.mjs
 
           grep -Fq 'main = "src/index-unified-auth-v23.js"' workers/gnk-asg-direct-operator/wrangler.mail-proxy-no-routes.toml
+          grep -Fq 'main = "src/index-digital-workforce-v1.js"' workers/gnk-asg-direct-operator/wrangler.workforce-production-no-routes.toml
+          grep -Fq "import app,{VERSION as BASE_VERSION} from './index-unified-auth-v23.js';" workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
+          grep -Fq "h.set('x-gnk-active-entrypoint','src/index-digital-workforce-v1.js')" workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
+          grep -Fq "h.set('x-gnk-base-runtime','src/index-unified-auth-v23.js')" workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
           grep -Fq 'GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq "export const ENTRYPOINT='src/index-unified-auth-v23.js'" workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq "headers.set('x-gnk-deploy-revision',revision)" workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
