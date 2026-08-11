@@ -24,9 +24,13 @@ if (switches.defaultMode !== 'hold') fail('defaultMode must remain hold while PR
 if (control.recoveryCheckpoint?.branch !== switches.checkpoint?.branch) fail('Checkpoint branch mismatch.');
 if (control.recoveryCheckpoint?.sha !== switches.checkpoint?.sha) fail('Checkpoint SHA mismatch.');
 
+if (typeof switches.releaseFence?.enabled !== 'boolean') fail('releaseFence.enabled must be boolean.');
+if (!switches.releaseFence?.reason) fail('releaseFence.reason is required.');
+
 const requiredChannels = [
   'portalPublish',
   'bloggerPublish',
+  'devtoPublish',
   'linkedinPublish',
   'mailSend',
   'newsWrite',
@@ -40,9 +44,10 @@ for (const channel of requiredChannels) {
   if (!switches.channels?.[channel]?.reason) fail(`Kill-switch ${channel} must define a reason.`);
 }
 
-for (const channel of ['portalPublish', 'bloggerPublish', 'linkedinPublish', 'mailSend', 'newsWrite']) {
+for (const channel of ['portalPublish', 'bloggerPublish', 'linkedinPublish', 'mailSend']) {
   if (switches.channels?.[channel]?.enabled !== false) fail(`${channel} must remain disabled during stabilization.`);
 }
+if (switches.channels?.newsWrite?.enabled !== true) fail('newsWrite must be enabled for the canonical GNK News Refresh V2 single writer.');
 
 if (switches.channels?.workerTelemetry?.enabled !== true) fail('workerTelemetry must remain enabled for observation-only telemetry.');
 if (switches.releaseRules?.requireGreenPremiumContract !== true) fail('Premium contract must be required before release.');
@@ -60,4 +65,4 @@ if (safeMethods.some((method) => ['POST', 'PUT', 'PATCH', 'DELETE'].includes(met
 }
 
 if (process.exitCode) process.exit(process.exitCode);
-console.log('Automation kill-switch contract is valid and fail-closed.');
+console.log(`Automation kill-switch contract is valid; release fence is ${switches.releaseFence.enabled ? 'ACTIVE' : 'inactive'}.`);
