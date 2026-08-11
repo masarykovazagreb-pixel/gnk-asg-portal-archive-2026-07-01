@@ -6,9 +6,9 @@ name: Social Distribution (dry-run → live)
 # dry-run: generira plan.json + preview.html, ništa ne šalje na platforme.
 #
 # Kad credentiali stignu: dodati ih kao repo secrets (FB_PAGE_TOKEN,
-# IG_BUSINESS_ID, LINKEDIN_ORG_TOKEN, X_API_KEY/SECRET/ACCESS_TOKEN/ACCESS_SECRET),
-# postaviti repo variable SOCIAL_LIVE=1, i dopuniti adaptere u
-# scripts/social-distribution-v1.mjs (mjesto je već označeno u kodu).
+# FB_PAGE_ID, IG_BUSINESS_ID, LINKEDIN_ORG_TOKEN, LINKEDIN_ORG_URN,
+# X_API_KEY/SECRET/ACCESS_TOKEN/ACCESS_SECRET), zatim postaviti repo variable
+# SOCIAL_LIVE=1 tek nakon kontroliranog dry-run pregleda i testa adaptera.
 
 on:
   workflow_dispatch:
@@ -30,6 +30,7 @@ jobs:
     env:
       SOCIAL_LIVE: ${{ vars.SOCIAL_LIVE || '0' }}
       FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+      FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
       IG_BUSINESS_ID: ${{ secrets.IG_BUSINESS_ID }}
       LINKEDIN_ORG_TOKEN: ${{ secrets.LINKEDIN_ORG_TOKEN }}
       LINKEDIN_ORG_URN: ${{ secrets.LINKEDIN_ORG_URN }}
