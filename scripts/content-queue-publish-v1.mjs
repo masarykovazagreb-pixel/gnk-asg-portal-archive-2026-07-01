@@ -17,12 +17,13 @@ const COLL={kolumna:'Kolumne',komentar:'Komentari',analiza:'Analize',objava:'Obj
 const meta=(html,name)=>{const m=html.match(new RegExp(`<meta[^>]+(?:name|property)="${name}"[^>]+content="([^"]*)"`,'i'))||html.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+(?:name|property)="${name}"`,'i'));return m?m[1]:''};
 const camel=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9 ]/g,' ').trim().split(/\s+/).map(w=>w[0]?w[0].toUpperCase()+w.slice(1):'').join('');
 
-const queue=read('content/factory-queue/queue.json',{items:[]});
+const queue=read('content/factory-queue/queue.json',{items:[],skipped:[]});
+const skipped=new Set(Array.isArray(queue.skipped)?queue.skipped:[]);
 const statePath='apps/portal/data/content-queue-state.json';
 const state=read(statePath,{version:'GNK_ASG_CONTENT_QUEUE_V1',published:{}});
 const {date,time}=nowZg();
-const due=queue.items.filter(x=>!state.published[x.id]&&(x.date<date||(x.date===date&&x.time<=time)));
-console.log(`Zagreb now: ${date} ${time} | due & unpublished: ${due.length}`);
+const due=queue.items.filter(x=>!skipped.has(x.id)&&!state.published[x.id]&&(x.date<date||(x.date===date&&x.time<=time)));
+console.log(`Zagreb now: ${date} ${time} | due & unpublished: ${due.length} | skipped: ${skipped.size}`);
 if(!due.length){console.log(JSON.stringify({changed:false}));process.exit(0);}
 
 const registryPath='apps/portal/data/editorial-registry.json';
