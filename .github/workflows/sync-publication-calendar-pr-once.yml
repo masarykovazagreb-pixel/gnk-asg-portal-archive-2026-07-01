@@ -1,0 +1,33 @@
+name: Sync publication calendar PR once
+
+on:
+  push:
+    branches:
+      - fix/publication-calendar-sot-guard-20260811
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/publication-calendar-sot-guard-20260811
+          fetch-depth: 0
+      - name: Synchronize calendar from canonical queue
+        run: node scripts/sync-publication-calendar-v1.mjs
+      - name: Commit deterministic calendar delta only
+        shell: bash
+        run: |
+          if git diff --quiet -- apps/portal/data/publication-calendar.json; then
+            echo "Calendar already synchronized."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/portal/data/publication-calendar.json
+          git commit -m "chore: sync publication calendar from canonical queue"
+          git push origin HEAD:fix/publication-calendar-sot-guard-20260811
