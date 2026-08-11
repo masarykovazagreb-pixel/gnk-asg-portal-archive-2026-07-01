@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var VERSION = '20260728-remove-tech-radar-more-sources-v1';
+  var VERSION = '20260812-aktual-image-hardening-v1';
 
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (nativeFetch && !window.__gnkRootDataFetch) {
@@ -179,11 +179,34 @@ document.addEventListener('DOMContentLoaded', function () {
       Array.prototype.forEach.call(card.querySelectorAll('a:not(.wa):not(.in):not(.mail)'), function (link) { link.remove(); });
     });
   }
+
+  function hardenAktualImages(root) {
+    if (__gnkPath2.indexOf('/gnk-aktual') === -1) return;
+    var scope = root || document;
+    Array.prototype.forEach.call(scope.querySelectorAll('#akFeatured img,#akCategories img,#akKolumna img,#akReceptDana img,#akKomentari img'), function (img) {
+      var context = img.closest('article,a,.ak-featured,.ak-recept-dana,.ak-kolumna') || img.parentNode;
+      var heading = context && context.querySelector && context.querySelector('h2,h3');
+      var label = heading && heading.textContent ? heading.textContent.trim() : '';
+      if (!img.getAttribute('alt') || !img.getAttribute('alt').trim()) img.setAttribute('alt', label || (isEnglish() ? 'AKTUAL MEDIA story image' : 'AKTUAL MEDIA — slika uz vijest'));
+      if (!img.getAttribute('width') || !img.getAttribute('height')) {
+        if (img.closest('#akReceptDana')) { img.setAttribute('width', '800'); img.setAttribute('height', '600'); }
+        else if (img.closest('#akKolumna')) { img.setAttribute('width', '120'); img.setAttribute('height', '120'); }
+        else { img.setAttribute('width', '640'); img.setAttribute('height', '400'); }
+      }
+      if (!img.getAttribute('decoding')) img.setAttribute('decoding', 'async');
+    });
+  }
   normaliseMenuLabels();
   alignNewsAutomationText();
-  window.addEventListener('gnk-language-change', function () { alignNewsAutomationText(); });
+  window.addEventListener('gnk-language-change', function () { alignNewsAutomationText(); hardenAktualImages(document); });
   removeCorporateInformationExternalAction(document);
-  new MutationObserver(function () { removeCorporateInformationExternalAction(document); }).observe(document.body, { childList: true, subtree: true });
+  hardenAktualImages(document);
+  new MutationObserver(function (mutations) {
+    removeCorporateInformationExternalAction(document);
+    for (var i = 0; i < mutations.length; i++) {
+      if (mutations[i].addedNodes && mutations[i].addedNodes.length) { hardenAktualImages(document); break; }
+    }
+  }).observe(document.body, { childList: true, subtree: true });
 
   var menuButton = document.getElementById('menuToggle');
   var menu = document.getElementById('navLinks');
