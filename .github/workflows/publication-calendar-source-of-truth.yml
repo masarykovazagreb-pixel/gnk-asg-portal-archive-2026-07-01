@@ -1,0 +1,54 @@
+name: Publication Calendar Source-of-Truth Guard
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/data/content-execution-queue.json'
+      - 'apps/portal/data/publication-calendar.json'
+      - 'scripts/sync-publication-calendar-v1.mjs'
+      - '.github/workflows/publication-calendar-source-of-truth.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/data/content-execution-queue.json'
+      - 'apps/portal/data/publication-calendar.json'
+      - 'scripts/sync-publication-calendar-v1.mjs'
+      - '.github/workflows/publication-calendar-source-of-truth.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publication-calendar-source-of-truth-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify-calendar-derived-from-queue:
+    name: Verify queue → calendar consistency
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact revision
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Verify publication calendar is derived from canonical queue
+        run: node scripts/sync-publication-calendar-v1.mjs --check
+      - name: Explicitly protect skipped IDs
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const queue = JSON.parse(fs.readFileSync('apps/portal/data/content-execution-queue.json', 'utf8'));
+          const calendar = JSON.parse(fs.readFileSync('apps/portal/data/publication-calendar.json', 'utf8'));
+          const skipped = new Set((queue.skipped || []).map((x) => typeof x === 'string' ? x : x?.id).filter(Boolean));
+          const leaked = (calendar.items || []).map((x) => x?.id).filter((id) => skipped.has(id));
+          if (leaked.length) {
+            console.error(`Skipped queue IDs leaked into publication calendar: ${[...new Set(leaked)].join(', ')}`);
+            process.exit(1);
+          }
+          console.log(`OK: ${skipped.size} skipped queue IDs are absent from publication calendar.`);
+          NODE
