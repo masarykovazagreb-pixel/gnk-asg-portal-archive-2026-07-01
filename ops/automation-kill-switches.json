@@ -1,14 +1,14 @@
 {
   "version": "GNK_ASG_AUTOMATION_KILL_SWITCHES_V2",
   "defaultMode": "hold",
-  "updatedAt": "2026-08-11T23:59:00+02:00",
+  "updatedAt": "2026-08-12T00:05:00+02:00",
   "checkpoint": {
     "branch": "checkpoint/recovery-20260729-1617-zagreb",
     "sha": "c38578c057655af8439aa23197cd141f90433850"
   },
   "releaseFence": {
-    "enabled": true,
-    "reason": "controlled exact-SHA production release window"
+    "enabled": false,
+    "reason": "inactive by default; enable only for a controlled exact-SHA production release window"
   },
   "channels": {
     "portalPublish": { "enabled": false, "reason": "stabilization" },
