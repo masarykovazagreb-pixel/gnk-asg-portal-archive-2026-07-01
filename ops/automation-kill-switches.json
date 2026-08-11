@@ -1,10 +1,14 @@
 {
-  "version": "GNK_ASG_AUTOMATION_KILL_SWITCHES_V1",
+  "version": "GNK_ASG_AUTOMATION_KILL_SWITCHES_V2",
   "defaultMode": "hold",
-  "updatedAt": "2026-08-02T00:16:00+02:00",
+  "updatedAt": "2026-08-11T23:00:00+02:00",
   "checkpoint": {
     "branch": "checkpoint/recovery-20260729-1617-zagreb",
     "sha": "c38578c057655af8439aa23197cd141f90433850"
+  },
+  "releaseFence": {
+    "enabled": false,
+    "reason": "inactive by default; enable only for a controlled exact-SHA production release window"
   },
   "channels": {
     "portalPublish": { "enabled": false, "reason": "stabilization" },
@@ -12,7 +16,7 @@
     "devtoPublish": { "enabled": false, "reason": "preview-only until reviewed PR-based state persistence is implemented" },
     "linkedinPublish": { "enabled": false, "reason": "publishing connector not yet verified" },
     "mailSend": { "enabled": false, "reason": "no live send during stabilization" },
-    "newsWrite": { "enabled": false, "reason": "multiple-writer conflict under review" },
+    "newsWrite": { "enabled": true, "reason": "GNK News Refresh V2 is the canonical hourly single writer for AKTUAL/news data" },
     "marketRefresh": { "enabled": true, "reason": "read-only data refresh" },
     "backupMirror": { "enabled": true, "reason": "recovery protection" },
     "workerTelemetry": { "enabled": true, "reason": "observation only" }
