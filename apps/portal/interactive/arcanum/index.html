@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Arcanum — Memory of the Spheres | GNK ASG Interactive Lab</title>
+<meta name="description" content="Arcanum — lightweight interactive memory experience in the GNK ASG Interactive Lab.">
+<meta name="robots" content="noindex,follow,max-image-preview:large">
+<link rel="canonical" href="https://gnk-asg.hr/interactive/arcanum/">
+<style>
+:root{--bg:#07121b;--panel:#102536;--gold:#e8b65a;--gold2:#fff0bd;--muted:#8ba3b8;--cream:#f5e6d3;--ok:#3dd68c;--bad:#ff6b6b}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07121b;color:var(--cream);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{background:radial-gradient(circle at 18% 16%,rgba(61,214,140,.08),transparent 34%),radial-gradient(circle at 84% 78%,rgba(232,182,90,.11),transparent 38%),linear-gradient(#0a1722,#050b11);overflow-x:hidden}
+main{width:min(1100px,calc(100% - 28px));margin:auto;padding:24px 0 18px;min-height:100vh;display:flex;flex-direction:column;gap:20px}
+header{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-bottom:1px solid rgba(232,182,90,.25);padding-bottom:16px}
+.brand{display:flex;align-items:center;gap:12px}.seal{width:48px;height:48px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-size:25px;box-shadow:0 0 30px rgba(232,182,90,.12)}
+h1{margin:0;font:800 clamp(25px,5vw,34px)/1 Georgia,serif;letter-spacing:.16em;color:var(--gold2)}.sub{margin-top:5px;color:var(--muted);font-size:10px;letter-spacing:.24em;text-transform:uppercase}
+.stats{display:flex;gap:7px;flex-wrap:wrap}.stat{min-width:78px;padding:8px 10px;text-align:center;border:1px solid rgba(232,182,90,.2);border-radius:10px;background:rgba(16,37,54,.72)}.stat b{display:block;color:var(--gold2);font:700 18px Georgia,serif}.stat span{font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted)}
+.controls,.levels{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid rgba(232,182,90,.28);background:rgba(16,37,54,.82);color:var(--cream);border-radius:10px;padding:10px 13px;cursor:pointer;font:700 11px/1 system-ui;letter-spacing:.08em;text-transform:uppercase}.btn:hover,.btn:focus-visible,.btn.active{border-color:var(--gold);outline:none;box-shadow:0 0 0 2px rgba(232,182,90,.12)}.btn.active{background:linear-gradient(135deg,#9f742d,#e8b65a);color:#07121b}
+.board-wrap{flex:1;display:grid;place-items:center;min-height:0}.board{display:grid;gap:10px;width:100%;max-width:480px}.card{aspect-ratio:3/4;perspective:800px;cursor:pointer;border:0;background:transparent;padding:0}.inner{position:relative;display:block;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.7,.2,1)}.card.flipped .inner{transform:rotateY(180deg)}.face{position:absolute;inset:0;border-radius:12px;display:grid;place-items:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid rgba(232,182,90,.34);box-shadow:0 8px 22px rgba(0,0,0,.32)}.back{background:radial-gradient(circle,rgba(232,182,90,.13),transparent 58%),linear-gradient(135deg,#18384c,#091822)}.back::after{content:"✦";font-size:clamp(25px,6vw,48px);color:rgba(232,182,90,.76)}.front{transform:rotateY(180deg);background:radial-gradient(circle,rgba(232,182,90,.2),transparent 62%),#173346;border-color:var(--gold)}.sym{font-size:clamp(30px,7vw,58px);color:var(--gold2);text-shadow:0 0 22px rgba(232,182,90,.5)}.card.matched{opacity:0;transform:scale(.78);pointer-events:none;transition:opacity .4s,transform .4s}.card.miss .face{border-color:var(--bad)}
+footer{border-top:1px solid rgba(232,182,90,.2);padding-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}.note{width:100%;text-align:center;color:var(--muted);font-size:10px;margin-top:6px}
+.modal{position:fixed;inset:0;background:rgba(2,7,11,.84);display:none;place-items:center;padding:20px;z-index:20}.modal.open{display:grid}.panel{width:min(440px,100%);padding:34px 26px;border:1px solid var(--gold);border-radius:20px;background:radial-gradient(circle at top,rgba(232,182,90,.12),transparent 55%),#0d2130;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.55)}.panel h2{font:800 28px Georgia,serif;color:var(--gold2);margin:0 0 8px}.stars{font-size:38px;letter-spacing:8px;color:var(--gold);margin:18px 0}.final{display:flex;gap:10px;justify-content:center;margin:18px 0 24px}.final div{min-width:85px;padding:10px;border-radius:10px;background:#081722}.final b{display:block;color:var(--gold2);font-size:20px}
+@media(max-width:720px){main{padding-top:16px}header{justify-content:center}.brand{width:100%;justify-content:center}.stats{width:100%;justify-content:center}.controls{width:100%;justify-content:center}.board{gap:7px}.stat{min-width:65px;flex:1}.btn{padding:9px 10px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="brand"><div class="seal" aria-hidden="true">✦</div><div><h1>ARCANUM</h1><div class="sub">Memory of the Spheres · GNK ASG Interactive Lab</div></div></div>
+  <div class="stats" aria-live="polite">
+    <div class="stat"><b id="streak">0</b><span>Streak</span></div>
+    <div class="stat"><b id="moves">0</b><span>Moves</span></div>
+    <div class="stat"><b id="pairs">0/8</b><span>Pairs</span></div>
+    <div class="stat"><b id="time">0:00</b><span>Time</span></div>
+  </div>
+  <div class="controls"><button class="btn" id="sound" type="button">Sound: off</button><button class="btn" id="reset" type="button">Reset</button></div>
+</header>
+<section class="board-wrap"><div id="board" class="board" role="grid" aria-label="Arcanum memory game"></div></section>
+<footer>
+  <button class="btn active" data-level="apprentice">Apprentice 4×4</button>
+  <button class="btn" data-level="adept">Adept 6×4</button>
+  <button class="btn" data-level="master">Master 6×6</button>
+  <div class="note">Standalone route: no global bundle, no third-party fonts, no background network requests.</div>
+</footer>
+</main>
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="done-title">
+  <div class="panel"><h2 id="done-title">Mastery achieved</h2><div id="stars" class="stars">★☆☆</div><div class="final"><div><b id="fm">0</b>moves</div><div><b id="ft">0:00</b>time</div><div><b id="fs">0</b>streak</div></div><button class="btn active" id="again">Begin anew</button></div>
+</div>
+<script>
+(()=>{"use strict";
+const symbols=["☉","☽","★","✦","♄","♃","♂","♀","☿","♆","♅","⚹","✧","☄","❋","⚛","◊","❖"];
+const levels={apprentice:{c:4,p:8,w:480},adept:{c:6,p:12,w:660},master:{c:6,p:18,w:720}};
+let level="apprentice",deck=[],open=[],matched=0,moves=0,streak=0,best=0,start=0,timer=0,locked=true,sound=false,ctx=null;
+const $=id=>document.getElementById(id), board=$("board");
+function tone(freq=640,d=.12,type="sine"){if(!sound)return;ctx??=new (window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime;o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+d)}
+function shuffle(a){for(let i=a.length-1;i;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function fmt(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function update(){ $("streak").textContent=streak;$("moves").textContent=moves;$("pairs").textContent=matched+"/"+levels[level].p;$("time").textContent=fmt(start?Math.floor((Date.now()-start)/1000):0)}
+function beginTimer(){if(start)return;start=Date.now();timer=setInterval(update,500)}
+function init(){clearInterval(timer);start=0;timer=0;open=[];matched=0;moves=0;streak=0;best=0;locked=true;const L=levels[level],s=symbols.slice(0,L.p);deck=shuffle([...s,...s].map((v,i)=>({v,i,done:false})));board.style.gridTemplateColumns=`repeat(${L.c},1fr)`;board.style.maxWidth=L.w+"px";board.innerHTML="";
+deck.forEach((card,i)=>{const e=document.createElement("button");e.className="card";e.type="button";e.dataset.i=i;e.setAttribute("role","gridcell");e.setAttribute("aria-label","Hidden card "+(i+1));e.innerHTML=`<span class="inner"><span class="face back"></span><span class="face front"><span class="sym">${card.v}</span></span></span>`;e.addEventListener("click",()=>flip(i));board.appendChild(e)});
+update();setTimeout(()=>{[...board.children].forEach(e=>e.classList.add("flipped"));setTimeout(()=>{[...board.children].forEach(e=>e.classList.remove("flipped"));locked=false},850)},250)}
+function flip(i){if(locked||open.includes(i)||deck[i].done)return;beginTimer();tone(760,.07,"triangle");const e=board.children[i];e.classList.add("flipped");e.setAttribute("aria-label","Revealed "+deck[i].v);open.push(i);if(open.length<2)return;locked=true;moves++;const[a,b]=open,ea=board.children[a],eb=board.children[b];if(deck[a].v===deck[b].v){deck[a].done=deck[b].done=true;matched++;streak++;best=Math.max(best,streak);tone(520+matched*22,.24);setTimeout(()=>{ea.classList.add("matched");eb.classList.add("matched");open=[];locked=false;update();if(matched===levels[level].p)setTimeout(done,350)},260)}else{streak=0;tone(180,.18,"sawtooth");ea.classList.add("miss");eb.classList.add("miss");setTimeout(()=>{ea.classList.remove("flipped","miss");eb.classList.remove("flipped","miss");ea.setAttribute("aria-label","Hidden card "+(a+1));eb.setAttribute("aria-label","Hidden card "+(b+1));open=[];locked=false;update()},520)}update()}
+function done(){clearInterval(timer);const sec=Math.floor((Date.now()-start)/1000),ratio=moves/levels[level].p,stars=ratio<=1.6?3:ratio<=2.3?2:1;$("fm").textContent=moves;$("ft").textContent=fmt(sec);$("fs").textContent=best;$("stars").textContent="★".repeat(stars)+"☆".repeat(3-stars);$("modal").classList.add("open");tone(880,.4)}
+document.querySelectorAll("[data-level]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-level]").forEach(x=>x.classList.remove("active"));b.classList.add("active");level=b.dataset.level;init()}));
+$("reset").addEventListener("click",init);$("again").addEventListener("click",()=>{$("modal").classList.remove("open");init()});$("sound").addEventListener("click",e=>{sound=!sound;e.currentTarget.textContent="Sound: "+(sound?"on":"off");if(sound)tone(700,.1)});
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&timer){clearInterval(timer);timer=0}else if(!document.hidden&&start&&!timer)timer=setInterval(update,500)});
+init();
+})();
+</script>
+</body>
+</html>
