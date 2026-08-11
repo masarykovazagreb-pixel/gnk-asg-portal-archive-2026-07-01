@@ -22,10 +22,16 @@ assert.match(canonicalPipeline,/const ARCHIVE_MAX_BEFORE_PRUNE = \d+;/);
 assert.match(canonicalPipeline,/const ARCHIVE_KEEP_WHEN_FULL = \d+;/);
 
 // Canonical writer workflow must be the single owner: hourly cron, invokes the
-// canonical pipeline script, and is the one that commits news.json / news_archive.json.
+// canonical pipeline script, reads the central release fence, and is the one that
+// commits news.json / news_archive.json only when the control plane authorizes it.
 assert.match(canonicalWriterWorkflow,/cron: '12 \* \* \* \*'/);
 assert.match(canonicalWriterWorkflow,/node scripts\/gnk-news-refresh\.mjs/);
-assert.match(canonicalWriterWorkflow,/git add[\s\S]{0,80}news\.json[\s\S]{0,80}news_archive\.json/);
+assert.match(canonicalWriterWorkflow,/git add[\s\S]{0,120}news\.json[\s\S]{0,120}news_archive\.json/);
+assert.match(canonicalWriterWorkflow,/automation-kill-switches\.json/);
+assert.match(canonicalWriterWorkflow,/releaseFence/);
+assert.match(canonicalWriterWorkflow,/newsWrite/);
+assert.match(canonicalWriterWorkflow,/refs\/heads\/main/);
+assert.match(canonicalWriterWorkflow,/steps\.control\.outputs\.should_run == 'true'/);
 
 // Legacy news-refresh.yml must stay a recovery-only dispatcher: workflow_dispatch
 // only (no schedule of its own), and it must not re-embed a second writer/parser -
@@ -64,4 +70,4 @@ assert.match(source,/completeDailyBatch/);
 assert.match(source,/invalid_daily_batch_contract/);
 assert.match(source,/members\.length!==13/);
 
-console.log(JSON.stringify({ok:true,cors:'public-only',dedupe:'canonical-source-url',scheduler:'strict-opt-in',marketNewsOwnership:'single-writer',retentionOwner:'scripts/gnk-news-refresh.mjs',trackingRemoved:['utm_*','fbclid','gclid','msclkid']},null,2));
+console.log(JSON.stringify({ok:true,cors:'public-only',dedupe:'canonical-source-url',scheduler:'strict-opt-in',marketNewsOwnership:'single-writer',retentionOwner:'scripts/gnk-news-refresh.mjs',newsWriter:'gnk-news-refresh-v2-main-only',releaseFence:'enforced',trackingRemoved:['utm_*','fbclid','gclid','msclkid']},null,2));
