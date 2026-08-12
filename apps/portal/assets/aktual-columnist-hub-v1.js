@@ -14,6 +14,14 @@ const commentaryEyebrow=english?'Commentary · archive':'Komentari · arhiva';
 const commentaryDescription=english?'Open all GNK ASG commentary in one place. The complete commentary archive stays behind this single AKTUAL entry.':'Otvorite sve komentare GNK ASG na jednom mjestu. Cjelovita arhiva komentara ostaje iza ovog jednog AKTUAL ulaza.';
 const commentaryCta=english?'Open all commentary →':'Otvori sve komentare →';
 
+function ensureHubStyles(){
+  if(!english||document.getElementById('ak-shared-hub-styles'))return;
+  const style=document.createElement('style');
+  style.id='ak-shared-hub-styles';
+  style.textContent='.ak-kolumna{display:none;border:3px solid var(--ak-line);border-radius:4px;margin-bottom:36px;background:var(--ak-panel)}.ak-kolumna.vidljivo{display:grid;grid-template-columns:170px 1fr}.ak-kolumna-autor{background:var(--ak-line);color:var(--ak-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center}.ak-kolumna-autor .krug{width:56px;height:56px;border-radius:50%;border:2px solid var(--ak-zlato);display:flex;align-items:center;justify-content:center;font-family:Arial Black,sans-serif;font-size:19px;color:var(--ak-zlato);margin-bottom:8px}.ak-kolumna-autor b{font-family:Arial Black,sans-serif;font-size:.82rem}.ak-kolumna-autor span{font-family:Arial,sans-serif;font-size:.62rem;color:#b8b0a0;margin-top:3px;text-transform:uppercase;letter-spacing:.07em}.ak-kolumna-tijelo{padding:22px 26px}.ak-kolumna-tijelo .oznaka{font-family:Arial,sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ak-red);margin-bottom:8px;display:block}.ak-kolumna-tijelo h2{font-family:Arial Black,Impact,sans-serif;font-size:clamp(1.2rem,2.6vw,1.7rem);line-height:1.15;margin:0 0 10px}.ak-kolumna-tijelo p{font-size:1.08rem;line-height:1.65;color:var(--ak-text);margin:0 0 12px}.ak-kolumna-tijelo a{font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);text-decoration:none;border-bottom:2px solid var(--ak-red);padding-bottom:1px}@media(max-width:640px){.ak-kolumna.vidljivo{grid-template-columns:1fr}}';
+  document.head.appendChild(style);
+}
+
 function hideLegacyGrid(){
   // #akKomentari is intentionally converted into a single hub card below.
 }
@@ -47,6 +55,7 @@ function removeColumnsFromNews(root){
 }
 
 function boot(){
+  ensureHubStyles();
   hideLegacyGrid();
   renderCommentaryHub();
   fetch('/data/kolumne.json?v='+Date.now(),{cache:'no-store'})
