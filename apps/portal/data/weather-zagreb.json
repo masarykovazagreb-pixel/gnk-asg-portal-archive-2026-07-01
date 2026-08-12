@@ -1,6 +1,44 @@
 {
   "city": "Zagreb",
-  "state": "unavailable",
-  "checked_at": "2026-08-12T06:00:00.000Z",
-  "error": "not yet fetched — first scheduled run pending"
+  "lat": 45.815,
+  "lon": 15.9819,
+  "updated_at": "2026-08-12T06:24:44.077Z",
+  "source": "open-meteo.com",
+  "state": "live",
+  "current": {
+    "temperature_c": 25,
+    "feels_like_c": 23.4,
+    "humidity_pct": 41,
+    "wind_kmh": 12.3,
+    "is_day": true,
+    "weather_code": 2,
+    "condition_hr": "Djelomično oblačno",
+    "condition_en": "Partly cloudy"
+  },
+  "forecast": [
+    {
+      "date": "2026-08-12",
+      "max_c": 31.4,
+      "min_c": 24.2,
+      "weather_code": 3,
+      "condition_hr": "Oblačno",
+      "condition_en": "Overcast"
+    },
+    {
+      "date": "2026-08-13",
+      "max_c": 29.9,
+      "min_c": 19,
+      "weather_code": 1,
+      "condition_hr": "Pretežno vedro",
+      "condition_en": "Mainly clear"
+    },
+    {
+      "date": "2026-08-14",
+      "max_c": 31,
+      "min_c": 15.7,
+      "weather_code": 0,
+      "condition_hr": "Vedro",
+      "condition_en": "Clear sky"
+    }
+  ]
 }
