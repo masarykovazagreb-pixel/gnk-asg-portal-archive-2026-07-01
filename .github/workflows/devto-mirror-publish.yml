@@ -1,49 +1,83 @@
-name: Dev.to Mirror Preview
+name: Dev.to Mirror Publish
+
+# Automatska, planirana objava na Dev.to (scripts/devto-publish-resilient-v1.mjs).
+# Skripta ima ugradenu reconciliation logiku (cross-referencira Dev.to API prije
+# svakog pokusaja objave, pa retry nikad ne stvara duplikat) i self-heal nakon
+# 422 "canonical url already taken" gresaka.
+#
+# Cadenca: 3x dnevno dok se ne isprazni pocetni backlog, zatim moze preci na
+# rjede (npr. 1x dnevno) - promijeniti raspored kasnije ako treba usporiti.
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '45 9 * * *'
+    - cron: '45 6 * * *'    # 08:45 Zagreb
+    - cron: '45 12 * * *'   # 14:45 Zagreb
+    - cron: '45 18 * * *'   # 20:45 Zagreb
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: devto-mirror-preview
+  group: devto-mirror-publish
   cancel-in-progress: false
 
 jobs:
-  preview:
-    name: Read-only Dev.to mirror preview
+  publish:
+    name: Objavi na Dev.to (live)
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
+    env:
+      DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+      DEVTO_PER_RUN: '10'
+      DEVTO_PAUSE_MS: '20000'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
 
-      - name: Preview queue without secrets
-        env:
-          DEVTO_PER_RUN: '3'
-        run: node scripts/devto-publish-resilient-v1.mjs
+      - name: Objavi (live)
+        run: node scripts/devto-publish-resilient-v1.mjs --live
 
       - name: Publish health summary
         if: always()
         run: |
           if [ -s apps/portal/data/devto-content/health.json ]; then
-            node -e "const h=require('./apps/portal/data/devto-content/health.json'); console.log('## Dev.to mirror preview\n\n- Status: **'+h.conclusion+'**\n- Način: **'+h.mode+'**\n- Preostali red: **'+(h.pending ?? 0)+'**\n- Obrađeno: **'+(h.processed ?? 0)+'**\n- Generirano: **'+h.generatedAt+'**\n')" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo '## Dev.to mirror preview' >> "$GITHUB_STEP_SUMMARY"
-            echo 'Health zapis nije proizveden.' >> "$GITHUB_STEP_SUMMARY"
+            node -e "const h=require('./apps/portal/data/devto-content/health.json'); console.log('## Dev.to mirror publish\n\n- Status: **'+h.conclusion+'**\n- Nacin: **'+h.mode+'**\n- Preostali red: **'+(h.pending ?? 0)+'**\n- Obradeno: **'+(h.processed ?? 0)+'**\n- Generirano: **'+h.generatedAt+'**\n')" >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Upload preview health evidence
+      - name: Commit evidencije objavljenog
+        if: always()
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/data/devto-content/
+          if git diff --cached --quiet; then
+            echo "Nema promjena za commit."
+            exit 0
+          fi
+          git commit -m "Dev.to: evidencija objavljenog (automatski)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              echo "Push uspio (pokusaj $attempt)."
+              exit 0
+            fi
+            echo "Push odbijen, radim fetch+rebase i pokusavam ponovno."
+            git fetch origin main
+            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
+            sleep $((attempt * 5))
+          done
+          exit 1
+
+      - name: Upload health evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: devto-preview-health-${{ github.run_id }}
+          name: devto-publish-health-${{ github.run_id }}
           path: apps/portal/data/devto-content/health.json
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 14
