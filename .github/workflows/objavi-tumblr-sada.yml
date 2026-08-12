@@ -35,13 +35,26 @@ jobs:
           TUMBLR_TOKEN_SECRET: ${{ inputs.token_secret }}
           TUMBLR_PER_RUN: ${{ inputs.per_run }}
         run: node scripts/tumblr-publish-v1.mjs --live
-      - name: Commit na jedinstvenu granu
+      - name: Commit evidencije objavljenog
         if: always()
         run: |
           git config user.name "gnk-asg-bot"
           git config user.email "it@gnk-asg.hr"
-          BRANCH="tumblr-objave-${{ github.run_id }}"
-          git checkout -b "$BRANCH"
           git add apps/portal/data/tumblr-content/
-          git diff --cached --quiet || git commit -m "Tumblr: evidencija objavljenog (uklj. djelomican napredak/greske)"
-          git push origin "$BRANCH" || echo "nema promjena za push"
+          if git diff --cached --quiet; then
+            echo "Nema promjena za commit."
+            exit 0
+          fi
+          git commit -m "Tumblr: evidencija objavljenog (uklj. djelomican napredak/greske)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              echo "Push uspio (pokusaj $attempt)."
+              exit 0
+            fi
+            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase i pokusavam ponovno."
+            git fetch origin main
+            git rebase origin/main || { echo "Rebase konflikt - zaustavljam se, evidencija ostaje u workflow logu."; exit 1; }
+            sleep $((attempt * 5))
+          done
+          echo "Push nije uspio nakon 5 pokusaja."
+          exit 1
