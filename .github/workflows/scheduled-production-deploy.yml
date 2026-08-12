@@ -1,0 +1,74 @@
+name: Scheduled Production Deploy
+
+# Automatski pokrece postojeci "Deploy Admin Auth V6" pipeline (potpuno
+# netaknut, ista logika/provjere kao i ručni deploy) svaka 2 sata, ali
+# SAMO ako je main odmakao od zadnjeg uspješno deployanog SHA-a - izbjegava
+# nepotrebne deployeve kad se ništa nije promijenilo. Ovo automatizira
+# isključivo KORAK OKIDANJA (workflow_dispatch poziv), ne mijenja nikakvu
+# sigurnosnu logiku unutar samog deploy pipelinea.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 */2 * * *'   # svaka 2 sata u :20
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: scheduled-production-deploy-trigger
+  cancel-in-progress: false
+
+jobs:
+  maybe-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Provjeri treba li deploy (ima li novih commitova od zadnjeg uspješnog deploya)
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          CURRENT_SHA=$(git rev-parse HEAD)
+          echo "current_sha=$CURRENT_SHA" >> "$GITHUB_OUTPUT"
+
+          LAST_DEPLOYED_SHA=$(gh run list --workflow=deploy-admin-auth-v6.yml --status=success --limit=1 --json headSha --jq '.[0].headSha // empty')
+
+          if [ -z "$LAST_DEPLOYED_SHA" ]; then
+            echo "Nema prethodnog uspješnog deploya - deployam."
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+          elif [ "$LAST_DEPLOYED_SHA" = "$CURRENT_SHA" ]; then
+            echo "Main nepromijenjen od zadnjeg deploya ($CURRENT_SHA) - preskačem."
+            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Main odmaknuo ($LAST_DEPLOYED_SHA -> $CURRENT_SHA) - deployam."
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Pokreni postojeći deploy pipeline (nepromijenjen)
+        if: steps.check.outputs.should_deploy == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run deploy-admin-auth-v6.yml \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="${{ steps.check.outputs.current_sha }}"
+          echo "Deploy pokrenut za SHA ${{ steps.check.outputs.current_sha }}."
+
+      - name: Sažetak
+        if: always()
+        run: |
+          {
+            echo "## Scheduled Production Deploy"
+            echo ""
+            echo "- Current main SHA: \`${{ steps.check.outputs.current_sha }}\`"
+            echo "- Deploy pokrenut: **${{ steps.check.outputs.should_deploy }}**"
+          } >> "$GITHUB_STEP_SUMMARY"
