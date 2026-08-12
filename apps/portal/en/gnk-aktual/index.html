@@ -152,7 +152,42 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   </div>
   <section class="ak-narrative"><img src="/assets/editorial/aktual-media-800.webp" width="600" height="600" alt="AKTUAL MEDIA — the most important world news in one place" class="ak-narrative-img" loading="lazy"><div class="ak-narrative-copy"><p class="ak-narrative-eyebrow">AKTUAL MEDIA</p><h2>The most important world news in one place</h2><p>AKTUAL MEDIA brings an overview of the latest news from economy, technology, digital assets and international affairs.</p><p>Content refreshes automatically every hour, giving users a quick view of the topics shaping the global business, financial and technology environment. The latest news is highlighted, while a full list of published content is available in the expanded view.</p><p>Every item shows a headline, photo and short summary, linking directly to the original publisher's article. News is sourced from publicly available RSS feeds of international media, including Reuters, BBC, CNN, The Guardian and others. GNK ASG does not copy or store the full text of articles, but directs readers to the original source.</p><p>The goal of the platform is to enable clear, fast and responsible tracking of current events without the need to search across dozens of different sites.</p><p class="ak-narrative-tagline">Economy. Technology. Digital assets. World. One overview.</p></div></section>
   <style>.ak-narrative{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center;max-width:1100px;margin:32px auto 48px;padding:0 20px}.ak-narrative-img{width:100%;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid rgba(212,175,55,.3)}.ak-narrative-eyebrow{color:#e0bd69;font-size:.75rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px}.ak-narrative-copy h2{color:#f8fafc;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.25;margin:0 0 16px}.ak-narrative-copy p{color:#c5cfdb;font-size:.98rem;line-height:1.7;margin:0 0 13px}.ak-narrative-tagline{color:#f8fafc;font-weight:800;font-size:1.05rem;border-top:1px solid rgba(255,255,255,.12);padding-top:14px;margin-top:6px!important}@media(max-width:800px){.ak-narrative{grid-template-columns:1fr}}</style>
-  <div class="ak-burza" id="akBurza"><div class="ak-burza-trak" id="akBurzaTrak"></div></div>
+    <div class="ak-datahub-section" id="akDataHub">
+    <h2>Data Hub</h2>
+    <div class="ak-datahub-grid">
+      <a class="ak-datahub-card" href="/en/gnk-aktual/world-monitor/">
+        <span class="ak-datahub-icon">🌍</span>
+        <h3>World Monitor</h3>
+        <p>A live global intelligence map — bases, cables, pipelines, AIS, sanctions, weather and trade routes.</p>
+        <span class="ak-datahub-cta">Open the map →</span>
+      </a>
+      <a class="ak-datahub-card" href="#akWeather">
+        <span class="ak-datahub-icon">🌤️</span>
+        <h3>Weather</h3>
+        <p>Current temperature, conditions and a 3-day forecast for Zagreb.</p>
+        <span class="ak-datahub-cta">View forecast →</span>
+      </a>
+      <a class="ak-datahub-card" href="#akBurza">
+        <span class="ak-datahub-icon">📈</span>
+        <h3>Markets</h3>
+        <p>An overview of key stock indices and market indicators.</p>
+        <span class="ak-datahub-cta">View markets →</span>
+      </a>
+    </div>
+  </div>
+  <style>
+  .ak-datahub-section{max-width:1100px;margin:0 auto 28px;padding:0 20px}
+  .ak-datahub-section h2{color:#f8fafc;font-size:1.5rem;margin:0 0 16px}
+  .ak-datahub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .ak-datahub-card{display:block;background:linear-gradient(135deg,#0d1b2e,#152a45);border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:18px 20px;color:#e8edf3;text-decoration:none;transition:border-color .2s,transform .2s}
+  .ak-datahub-card:hover{border-color:rgba(224,189,105,.6);transform:translateY(-2px)}
+  .ak-datahub-icon{font-size:1.6rem;display:block;margin-bottom:8px}
+  .ak-datahub-card h3{margin:0 0 6px;font-size:1.05rem;color:#fff}
+  .ak-datahub-card p{margin:0 0 10px;font-size:.85rem;line-height:1.5;color:#c5d3e0}
+  .ak-datahub-cta{font-size:.8rem;font-weight:700;color:#e0bd69}
+  @media(max-width:800px){.ak-datahub-grid{grid-template-columns:1fr}}
+  </style>
+<div class="ak-burza" id="akBurza"><div class="ak-burza-trak" id="akBurzaTrak"></div></div>
   <div class="ak-weather" id="akWeather">
     <div class="ak-weather-head">
       <span class="ak-weather-city">Zagreb</span>
