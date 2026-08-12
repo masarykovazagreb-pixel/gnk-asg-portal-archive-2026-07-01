@@ -1,10 +1,139 @@
 {
-  "updated_at": "2026-08-12T17:19:18.235Z",
-  "source": "api.worldmonitor.app",
+  "updated_at": "2026-08-12T17:32:29.928Z",
+  "source": "api.worldmonitor.app + GDELT + CISA KEV",
   "categories": {
     "geopolitical": {
       "conflicts": {
-        "state": "needs-key"
+        "state": "unavailable",
+        "error": "fetch failed"
+      },
+      "cyber": {
+        "state": "live",
+        "items": [
+          {
+            "cveId": "CVE-2026-20349",
+            "vendor": "Cisco",
+            "product": "Secure Firewall Adaptive Security Appliance (ASA) and Secure Firewall Threat Defense (FTD) ",
+            "name": "Cisco Secure Firewall Adaptive Security Appliance (ASA) and Secure Firewall Threat Defense (FTD) Heap Inspection Vulnerability",
+            "dateAdded": "2026-08-11",
+            "dueDate": "2026-08-14",
+            "ransomware": false,
+            "description": "Cisco Secure Firewall Adaptive Security Appliance (ASA) and Secure Firewall Threat Defense (FTD) contain a heap inspection vulnerability that could allow an unauthenticated, remote attacker to cause the device to reload "
+          },
+          {
+            "cveId": "CVE-2026-68820",
+            "vendor": "Microsoft",
+            "product": "Windows Ancillary Function Driver for WinSock ",
+            "name": "Microsoft Windows Ancillary Function Driver for WinSock Use-After-Free Vulnerability",
+            "dateAdded": "2026-08-11",
+            "dueDate": "2026-08-25",
+            "ransomware": false,
+            "description": "Microsoft Windows Ancillary Function Driver for WinSock contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally."
+          },
+          {
+            "cveId": "CVE-2026-72898",
+            "vendor": "Metabase",
+            "product": "Metabase",
+            "name": "Metabase SQL Injection Vulnerability",
+            "dateAdded": "2026-08-11",
+            "dueDate": "2026-08-14",
+            "ransomware": false,
+            "description": "Metabase contains a SQL Injection vulnerability that allows an unauthenticated remote attacker to inject arbitrary SQL into the Metabase application database, which can give them administrator access to the instance. Fro"
+          },
+          {
+            "cveId": "CVE-2026-8037",
+            "vendor": "Progress",
+            "product": "LoadMaster",
+            "name": "Progress LoadMaster Command Injection Vulnerability",
+            "dateAdded": "2026-08-07",
+            "dueDate": "2026-08-10",
+            "ransomware": false,
+            "description": "Progress LoadMaster contains a command injection vulnerability that allows an un-authenticated attacker to execute arbitrary commands on the LoadMaster appliance by exploiting unsanitized input in multiple command endpoi"
+          },
+          {
+            "cveId": "CVE-2026-63077",
+            "vendor": "JetBrains",
+            "product": "TeamCity",
+            "name": "JetBrains TeamCity Deserialization of Untrusted Data Vulnerability",
+            "dateAdded": "2026-08-05",
+            "dueDate": "2026-08-08",
+            "ransomware": false,
+            "description": "JetBrains TeamCity contains a deserialization of untrusted data vulnerability that could allow unauthenticated remote code execution via the agent polling protocol."
+          },
+          {
+            "cveId": "CVE-2026-18556",
+            "vendor": "N-able",
+            "product": "N-central",
+            "name": "N-able N-central Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+            "dateAdded": "2026-08-04",
+            "dueDate": "2026-08-07",
+            "ransomware": false,
+            "description": "N-able N-central contains an authentication bypass using an alternate path or channel that allows for authentication bypass."
+          },
+          {
+            "cveId": "CVE-2026-34486",
+            "vendor": "Apache",
+            "product": "Tomcat",
+            "name": "Apache Tomcat Missing Encryption of Sensitive Data Vulnerability",
+            "dateAdded": "2026-08-04",
+            "dueDate": "2026-08-07",
+            "ransomware": false,
+            "description": "Apache Tomcat contains a missing encryption of sensitive data vulnerability that allows the bypass of the EncryptInterceptor. This vulnerability can be chained with CVE‑2025‑24813."
+          },
+          {
+            "cveId": "CVE-2026-9198",
+            "vendor": "IBM",
+            "product": "Langflow",
+            "name": "IBM Langflow Code Injection Vulnerability",
+            "dateAdded": "2026-08-04",
+            "dueDate": "2026-08-07",
+            "ransomware": false,
+            "description": "Langflow contains a code injection vulnerability that allows unauthenticated attackers to achieve full remote code execution on default Langflow deployments."
+          },
+          {
+            "cveId": "CVE-2026-18577",
+            "vendor": "N-able",
+            "product": "N-central",
+            "name": "N-able N-central Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+            "dateAdded": "2026-08-03",
+            "dueDate": "2026-08-06",
+            "ransomware": false,
+            "description": "N-able N-central contains an authentication bypass using an alternate path or channel allows for authentication bypass and account takeover in N-central. This vulnerability is the result of an incomplete patch for CVE-20"
+          },
+          {
+            "cveId": "CVE-2026-20316",
+            "vendor": "Cisco",
+            "product": "Secure Firewall Management Center (FMC)",
+            "name": "Cisco Secure Firewall Management Center Use of Hard-coded Password Vulnerability",
+            "dateAdded": "2026-07-29",
+            "dueDate": "2026-08-01",
+            "ransomware": false,
+            "description": "Cisco Secure Firewall Management Center (FMC) formerly known as Firepower Management Center contains a use of hard-coded password vulnerability that could allow an unauthenticated, remote attacker to log in to an affecte"
+          },
+          {
+            "cveId": "CVE-2025-68686",
+            "vendor": "Fortinet",
+            "product": "FortiOS",
+            "name": "Fortinet FortiOS Exposure of Sensitive Information to an Unauthorized Actor Vulnerability",
+            "dateAdded": "2026-07-27",
+            "dueDate": "2026-08-10",
+            "ransomware": false,
+            "description": "Fortinet FortiOS contains an exposure of sensitive information to an unauthorized actor vulnerability. This may allow a remote unauthenticated attacker to bypass the patch developed for the symbolic link persistency mech"
+          },
+          {
+            "cveId": "CVE-2026-16812",
+            "vendor": "Arista",
+            "product": "VeloCloud Orchestrator",
+            "name": "Arista VeloCloud Orchestrator On-Prem OS Command Injection Vulnerability",
+            "dateAdded": "2026-07-27",
+            "dueDate": "2026-07-30",
+            "ransomware": false,
+            "description": "Arista VeloCloud Orchestrator On-Prem contains an OS command injection vulnerability that may allow a remote attacker to access privileged internal functionality and impact the VCO host. Successful exploitation may compr"
+          }
+        ],
+        "fetched_at": "2026-08-12T17:32:41.087Z",
+        "source_name": "CISA Known Exploited Vulnerabilities Catalog",
+        "catalogVersion": "2026.08.11"
       },
       "intelligence": {
         "state": "needs-key"
