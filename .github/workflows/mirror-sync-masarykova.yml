@@ -1,9 +1,10 @@
 name: Mirror Sync to Masarykova Backup
 
 # Full mirror push (all branches + tags) from this repository to the
-# owner's private backup repository under a separate GitHub account,
-# every 6 hours, so nothing done here is lost while active development
-# continues on this repo.
+# owner's private backup repository under a separate GitHub account.
+# A successful Deploy Admin Auth V6 run remains the preferred trigger;
+# hourly scheduling is a release-phase fallback so automation commits
+# cannot leave the backup several hours behind if workflow_run is missed.
 #
 # Requires a repository secret MASARYKOVA_MIRROR_TOKEN: a classic
 # Personal Access Token (scope: repo) issued on the
@@ -16,7 +17,7 @@ name: Mirror Sync to Masarykova Backup
 
 on:
   schedule:
-    - cron: '0 0,6,12,18 * * *'
+    - cron: '35 * * * *'
   workflow_dispatch:
   workflow_run:
     workflows: ["Deploy Admin Auth V6"]
