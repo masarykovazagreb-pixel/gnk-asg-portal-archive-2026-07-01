@@ -1,9 +1,10 @@
 name: Mirror Sync to Masarykova Backup
 
 # Full mirror push (all branches + tags) from this repository to the
-# owner's private backup repository under a separate GitHub account,
-# every 6 hours, so nothing done here is lost while active development
-# continues on this repo.
+# owner's private backup repository under a separate GitHub account.
+# A successful Deploy Admin Auth V6 run remains the preferred trigger;
+# hourly scheduling is only a release-phase fallback so bot/API commits
+# cannot leave the backup several hours behind if workflow_run is missed.
 #
 # Requires a repository secret MASARYKOVA_MIRROR_TOKEN: a classic
 # Personal Access Token (scope: repo) issued on the
@@ -16,7 +17,7 @@ name: Mirror Sync to Masarykova Backup
 
 on:
   schedule:
-    - cron: '0 0,6,12,18 * * *'
+    - cron: '35 * * * *'
   workflow_dispatch:
   workflow_run:
     workflows: ["Deploy Admin Auth V6"]
@@ -68,13 +69,6 @@ jobs:
             echo "Mirror push succeeded cleanly."
             exit 0
           fi
-          # GitHub always rejects direct pushes to refs/pull/*/head and
-          # refs/pull/*/merge (its own PR-tracking refs) -- expected,
-          # not a real failure. Only fail if some OTHER rejection or a
-          # genuine auth/connectivity error is present. Note: keyed
-          # phrases below are deliberately specific (e.g. "HTTP 403",
-          # not bare "403") to avoid false-positiving on PR numbers
-          # like refs/pull/403/head that legitimately appear in output.
           NON_HIDDEN_REF_ERRORS=$(echo "$PUSH_OUTPUT" | grep -E '! \[(remote rejected|rejected)\]' | grep -v 'refs/pull/' || true)
           if [ -n "$NON_HIDDEN_REF_ERRORS" ]; then
             echo "Real (non-hidden-ref) push rejections found:"
