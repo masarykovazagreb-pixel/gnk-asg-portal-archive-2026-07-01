@@ -1,13 +1,17 @@
 name: Puni audit 2
+
 on:
   workflow_dispatch:
   schedule:
     - cron: '15 3 * * *'
+
 permissions:
-  contents: write
+  contents: read
+
 concurrency:
   group: audit2
-  cancel-in-progress: false
+  cancel-in-progress: true
+
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -16,7 +20,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - run: bash audit2_script.sh
+          fetch-depth: 1
+
+      - name: Pokreni puni audit
+        run: bash audit2_script.sh
+
       - name: Sazetak
         if: always()
         run: |
@@ -34,23 +42,25 @@ jobs:
               fi
             } >> "$GITHUB_STEP_SUMMARY"
           fi
-      - name: Commit rezultata
+
+      - name: Spremi rezultate kao artifact
         if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit2-results-${{ github.run_id }}
+          path: apps/portal/data/tmp-audit2
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Potvrdi da audit ne pise u main
+        if: always()
+        shell: bash
         run: |
-          git config user.name "gnk-asg-bot"
-          git config user.email "it@gnk-asg.hr"
-          git add apps/portal/data/tmp-audit2
-          if git diff --cached --quiet; then
-            echo "Nema promjena za commit."
-            exit 0
+          set -euo pipefail
+          git fetch origin main --no-tags
+          if ! git diff --quiet -- . ':!apps/portal/data/tmp-audit2'; then
+            echo "Audit2 je neocekivano promijenio datoteke izvan privremenih rezultata."
+            git status --short
+            exit 1
           fi
-          git commit -m "audit2: rezultati"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              exit 0
-            fi
-            git fetch origin main
-            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
-            sleep $((attempt * 5))
-          done
-          exit 1
+          echo "Audit2 je read-only; rezultati ostaju runner-local i spremaju se kao artifact."
