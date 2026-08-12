@@ -1,0 +1,1 @@
+GNK ASG Global Intelligence uses the portal's existing public news feed for its native dashboard. World Monitor remains an external interactive deep link only.
