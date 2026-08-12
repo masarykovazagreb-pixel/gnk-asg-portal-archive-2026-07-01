@@ -6,6 +6,13 @@ name: Scheduled Production Deploy
 # nepotrebne deployeve kad se ništa nije promijenilo. Ovo automatizira
 # isključivo KORAK OKIDANJA (workflow_dispatch poziv), ne mijenja nikakvu
 # sigurnosnu logiku unutar samog deploy pipelinea.
+#
+# Uključuje retry: automatizirani commitovi (npr. hourly news refresh)
+# mogu pomaknuti main IZMEĐU authorize i deploy koraka unutar samog
+# deploy pipelinea, uzrokujući namjerno, ispravno odbijanje (SHA se
+# više ne poklapa s odobrenim). To nije bug - to je zaštita koja radi
+# kako treba. Ovaj wrapper to prepoznaje i sam ponovno pokušava s
+# svježim SHA-om umjesto da čeka sljedeći ciklus za 2 sata.
 
 on:
   workflow_dispatch:
@@ -23,45 +30,68 @@ concurrency:
 jobs:
   maybe-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
 
-      - name: Provjeri treba li deploy (ima li novih commitova od zadnjeg uspješnog deploya)
+      - name: Provjeri i deployaj (s retry na SHA-race)
         id: check
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          CURRENT_SHA=$(git rev-parse HEAD)
-          echo "current_sha=$CURRENT_SHA" >> "$GITHUB_OUTPUT"
 
           LAST_DEPLOYED_SHA=$(gh run list --workflow=deploy-admin-auth-v6.yml --status=success --limit=1 --json headSha --jq '.[0].headSha // empty')
+          CURRENT_SHA=$(git rev-parse HEAD)
 
-          if [ -z "$LAST_DEPLOYED_SHA" ]; then
-            echo "Nema prethodnog uspješnog deploya - deployam."
-            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
-          elif [ "$LAST_DEPLOYED_SHA" = "$CURRENT_SHA" ]; then
+          if [ "$LAST_DEPLOYED_SHA" = "$CURRENT_SHA" ] && [ -n "$LAST_DEPLOYED_SHA" ]; then
             echo "Main nepromijenjen od zadnjeg deploya ($CURRENT_SHA) - preskačem."
             echo "should_deploy=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "Main odmaknuo ($LAST_DEPLOYED_SHA -> $CURRENT_SHA) - deployam."
-            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
-      - name: Pokreni postojeći deploy pipeline (nepromijenjen)
-        if: steps.check.outputs.should_deploy == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh workflow run deploy-admin-auth-v6.yml \
-            --ref main \
-            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
-            -f approved_sha="${{ steps.check.outputs.current_sha }}"
-          echo "Deploy pokrenut za SHA ${{ steps.check.outputs.current_sha }}."
+          echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+
+          for attempt in 1 2 3; do
+            git fetch origin main -q
+            DEPLOY_SHA=$(git rev-parse origin/main)
+            echo "Pokusaj ${attempt}: deployam SHA ${DEPLOY_SHA}"
+
+            BEFORE=$(gh run list --workflow=deploy-admin-auth-v6.yml --limit=1 --json databaseId --jq '.[0].databaseId // empty')
+
+            gh workflow run deploy-admin-auth-v6.yml \
+              --ref main \
+              -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+              -f approved_sha="$DEPLOY_SHA"
+
+            # Pricekaj da se novi run pojavi (razlicit od proslog)
+            NEW_RUN_ID=""
+            for i in $(seq 1 20); do
+              sleep 6
+              CANDIDATE=$(gh run list --workflow=deploy-admin-auth-v6.yml --limit=1 --json databaseId --jq '.[0].databaseId // empty')
+              if [ -n "$CANDIDATE" ] && [ "$CANDIDATE" != "$BEFORE" ]; then
+                NEW_RUN_ID="$CANDIDATE"
+                break
+              fi
+            done
+            if [ -z "$NEW_RUN_ID" ]; then
+              echo "Novi run se nije pojavio na vrijeme, odustajem od cekanja ovog pokusaja."
+              continue
+            fi
+
+            echo "Pratim run $NEW_RUN_ID..."
+            gh run watch "$NEW_RUN_ID" --exit-status && { echo "Deploy uspio na pokusaju ${attempt}."; echo "final_conclusion=success" >> "$GITHUB_OUTPUT"; exit 0; } || true
+
+            echo "Deploy pao na pokusaju ${attempt} (vjerojatno SHA-race s automatikom) - pokusavam ponovno."
+            sleep 15
+          done
+
+          echo "Deploy nije uspio nakon 3 pokusaja."
+          echo "final_conclusion=failure" >> "$GITHUB_OUTPUT"
+          exit 1
 
       - name: Sažetak
         if: always()
@@ -69,6 +99,6 @@ jobs:
           {
             echo "## Scheduled Production Deploy"
             echo ""
-            echo "- Current main SHA: \`${{ steps.check.outputs.current_sha }}\`"
             echo "- Deploy pokrenut: **${{ steps.check.outputs.should_deploy }}**"
+            echo "- Konacni ishod: **${{ steps.check.outputs.final_conclusion || 'n/a' }}**"
           } >> "$GITHUB_STEP_SUMMARY"
