@@ -1,11 +1,11 @@
 {
-  "updated_at": "2026-08-12T17:42:26.643Z",
+  "updated_at": "2026-08-12T18:10:01.598Z",
   "source": "api.worldmonitor.app + GDELT + CISA KEV",
   "categories": {
     "geopolitical": {
       "conflicts": {
         "state": "unavailable",
-        "error": "HTTP 429"
+        "error": "fetch failed"
       },
       "cyber": {
         "state": "live",
@@ -131,7 +131,7 @@
             "description": "Arista VeloCloud Orchestrator On-Prem contains an OS command injection vulnerability that may allow a remote attacker to access privileged internal functionality and impact the VCO host. Successful exploitation may compr"
           }
         ],
-        "fetched_at": "2026-08-12T17:42:38.956Z",
+        "fetched_at": "2026-08-12T18:10:12.653Z",
         "source_name": "CISA Known Exploited Vulnerabilities Catalog",
         "catalogVersion": "2026.08.11"
       },
