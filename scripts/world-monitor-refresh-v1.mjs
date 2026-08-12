@@ -15,7 +15,7 @@ mkdirSync('apps/portal/data', { recursive: true });
 
 async function fetchJson(url, opts = {}) {
   const ac = new AbortController();
-  const t = setTimeout(() => ac.abort(), 10000);
+  const t = setTimeout(() => ac.abort(), 20000);
   try {
     const r = await fetch(url, { signal: ac.signal, headers: { accept: 'application/json', 'user-agent': 'gnk-asg-portal/1.0 (contact: it@gnk-asg.hr)', ...opts.headers } });
     clearTimeout(t);
