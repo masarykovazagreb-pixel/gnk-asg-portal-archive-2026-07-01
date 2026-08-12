@@ -209,6 +209,24 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   .ak-weather.state-unavailable .ak-weather-body{color:#c98a8a}
   @media(max-width:640px){.ak-weather{padding:14px 16px}.ak-weather-temp{font-size:1.7rem}.ak-weather-forecast{gap:8px}.ak-weather-day{min-width:60px;padding:5px 8px}}
   </style>
+    <div class="ak-cibona-section" id="akCibona">
+    <h2>Cibona</h2>
+    <p class="ak-cibona-intro">Vijesti o aktualnom prvaku Hrvatske, ručno kurirane iz javnih izvora — Cibona nema javni feed pogodan za automatsko strojno praćenje.</p>
+    <div id="akCibonaBody"><span class="ak-cibona-loading">Učitavanje vijesti…</span></div>
+  </div>
+  <style>
+  .ak-cibona-section{max-width:1100px;margin:0 auto 24px;padding:0 20px}
+  .ak-cibona-section h2{color:#f8fafc;font-size:1.5rem;margin:0 0 6px}
+  .ak-cibona-intro{color:#9db3c9;font-size:.85rem;margin:0 0 16px}
+  .ak-cibona-loading,.ak-cibona-empty{color:#9db3c9;font-size:.9rem}
+  .ak-cibona-card{background:linear-gradient(135deg,#0d1b2e,#152a45);border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:18px 20px;margin-bottom:14px;color:#e8edf3}
+  .ak-cibona-meta{display:flex;gap:8px;font-size:.75rem;color:#9db3c9;margin-bottom:8px}
+  .ak-cibona-card h3{margin:0 0 8px;font-size:1.1rem;line-height:1.35;color:#fff}
+  .ak-cibona-card p{margin:0 0 12px;font-size:.92rem;line-height:1.6;color:#c5d3e0}
+  .ak-cibona-link{color:#e0bd69;font-size:.85rem;font-weight:700;text-decoration:none}
+  .ak-cibona-link:hover{text-decoration:underline}
+  @media(max-width:640px){.ak-cibona-card{padding:14px 16px}}
+  </style>
   <div class="ak-kolumna" id="akKolumna">
     <div class="ak-kolumna-autor"><div class="krug">NS</div><b>Nermin Sefić</b><span>Direktor, GNK ASG</span></div>
     <div class="ak-kolumna-tijelo" id="akKolumnaTijelo"></div>
@@ -660,4 +678,5 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 })();
 </script>
 <script src="/assets/weather-render-v1.js?v=20260812-weather-v2-cachefix" defer></script>
+<script src="/assets/cibona-render-v1.js?v=20260812-cibona-v1" defer></script>
 </body></html>
