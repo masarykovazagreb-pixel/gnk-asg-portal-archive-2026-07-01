@@ -1,10 +1,6 @@
 (function(){
 'use strict';
 // GNK ASG — Cibona section renderer za AKTUAL MEDIA.
-// Čita /data/cibona-news.json (ručno kurirano, ne RSS - Cibona nema javni feed
-// pogodan za automatsko strojno prikupljanje na razini cijele momčadi).
-// Prikazuje naslov, kratak sažetak, izvor, datum, link na puni sadržaj.
-// Pravi empty-state ako nema stavki - nikad prazan/skriven blok bez objašnjenja.
 function isEnglish(){
   return (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0 ||
     /\/en\//.test(location.pathname) || /\/en$/.test(location.pathname);
