@@ -1,152 +1,118 @@
 {
-  "updated_at": "2026-08-12T18:10:01.598Z",
-  "source": "api.worldmonitor.app + GDELT + CISA KEV",
+  "updated_at": "2026-08-12T18:53:49.187Z",
   "categories": {
-    "geopolitical": {
-      "conflicts": {
-        "state": "unavailable",
-        "error": "fetch failed"
-      },
-      "cyber": {
+    "natural": {
+      "seismology": {
         "state": "live",
         "items": [
           {
-            "cveId": "CVE-2026-20349",
-            "vendor": "Cisco",
-            "product": "Secure Firewall Adaptive Security Appliance (ASA) and Secure Firewall Threat Defense (FTD) ",
-            "name": "Cisco Secure Firewall Adaptive Security Appliance (ASA) and Secure Firewall Threat Defense (FTD) Heap Inspection Vulnerability",
-            "dateAdded": "2026-08-11",
-            "dueDate": "2026-08-14",
-            "ransomware": false,
-            "description": "Cisco Secure Firewall Adaptive Security Appliance (ASA) and Secure Firewall Threat Defense (FTD) contain a heap inspection vulnerability that could allow an unauthenticated, remote attacker to cause the device to reload "
+            "title": "M 4.6 - 55 km SW of Champerico, Guatemala",
+            "magnitude": 4.6,
+            "place": "55 km SW of Champerico, Guatemala",
+            "time": "2026-08-12T11:56:29.774Z",
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tk75"
           },
           {
-            "cveId": "CVE-2026-68820",
-            "vendor": "Microsoft",
-            "product": "Windows Ancillary Function Driver for WinSock ",
-            "name": "Microsoft Windows Ancillary Function Driver for WinSock Use-After-Free Vulnerability",
-            "dateAdded": "2026-08-11",
-            "dueDate": "2026-08-25",
-            "ransomware": false,
-            "description": "Microsoft Windows Ancillary Function Driver for WinSock contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally."
+            "title": "M 6.0 - South Sandwich Islands region",
+            "magnitude": 6,
+            "place": "South Sandwich Islands region",
+            "time": "2026-08-12T11:47:12.117Z",
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tk74"
           },
           {
-            "cveId": "CVE-2026-72898",
-            "vendor": "Metabase",
-            "product": "Metabase",
-            "name": "Metabase SQL Injection Vulnerability",
-            "dateAdded": "2026-08-11",
-            "dueDate": "2026-08-14",
-            "ransomware": false,
-            "description": "Metabase contains a SQL Injection vulnerability that allows an unauthenticated remote attacker to inject arbitrary SQL into the Metabase application database, which can give them administrator access to the instance. Fro"
+            "title": "M 4.5 - 125 km NNW of Ambon, Indonesia",
+            "magnitude": 4.5,
+            "place": "125 km NNW of Ambon, Indonesia",
+            "time": "2026-08-12T10:15:28.554Z",
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tk6n"
           },
           {
-            "cveId": "CVE-2026-8037",
-            "vendor": "Progress",
-            "product": "LoadMaster",
-            "name": "Progress LoadMaster Command Injection Vulnerability",
-            "dateAdded": "2026-08-07",
-            "dueDate": "2026-08-10",
-            "ransomware": false,
-            "description": "Progress LoadMaster contains a command injection vulnerability that allows an un-authenticated attacker to execute arbitrary commands on the LoadMaster appliance by exploiting unsanitized input in multiple command endpoi"
+            "title": "M 5.0 - 66 km E of Chayek, Kyrgyzstan",
+            "magnitude": 5,
+            "place": "66 km E of Chayek, Kyrgyzstan",
+            "time": "2026-08-12T07:14:52.581Z",
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tk5x"
           },
           {
-            "cveId": "CVE-2026-63077",
-            "vendor": "JetBrains",
-            "product": "TeamCity",
-            "name": "JetBrains TeamCity Deserialization of Untrusted Data Vulnerability",
-            "dateAdded": "2026-08-05",
-            "dueDate": "2026-08-08",
-            "ransomware": false,
-            "description": "JetBrains TeamCity contains a deserialization of untrusted data vulnerability that could allow unauthenticated remote code execution via the agent polling protocol."
+            "title": "M 5.1 - Pacific-Antarctic Ridge",
+            "magnitude": 5.1,
+            "place": "Pacific-Antarctic Ridge",
+            "time": "2026-08-12T05:11:27.487Z",
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tk5j"
           },
           {
-            "cveId": "CVE-2026-18556",
-            "vendor": "N-able",
-            "product": "N-central",
-            "name": "N-able N-central Authentication Bypass Using an Alternate Path or Channel Vulnerability",
-            "dateAdded": "2026-08-04",
-            "dueDate": "2026-08-07",
-            "ransomware": false,
-            "description": "N-able N-central contains an authentication bypass using an alternate path or channel that allows for authentication bypass."
+            "title": "M 4.9 - 14 km WSW of Honmachi, Japan",
+            "magnitude": 4.9,
+            "place": "14 km WSW of Honmachi, Japan",
+            "time": "2026-08-12T04:05:51.903Z",
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tk5c"
           },
           {
-            "cveId": "CVE-2026-34486",
-            "vendor": "Apache",
-            "product": "Tomcat",
-            "name": "Apache Tomcat Missing Encryption of Sensitive Data Vulnerability",
-            "dateAdded": "2026-08-04",
-            "dueDate": "2026-08-07",
-            "ransomware": false,
-            "description": "Apache Tomcat contains a missing encryption of sensitive data vulnerability that allows the bypass of the EncryptInterceptor. This vulnerability can be chained with CVE‑2025‑24813."
+            "title": "M 5.2 - 42 km ESE of Naalehu, Hawaii",
+            "magnitude": 5.2,
+            "place": "42 km ESE of Naalehu, Hawaii",
+            "time": "2026-08-12T03:48:33.980Z",
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv75018296"
           },
           {
-            "cveId": "CVE-2026-9198",
-            "vendor": "IBM",
-            "product": "Langflow",
-            "name": "IBM Langflow Code Injection Vulnerability",
-            "dateAdded": "2026-08-04",
-            "dueDate": "2026-08-07",
-            "ransomware": false,
-            "description": "Langflow contains a code injection vulnerability that allows unauthenticated attackers to achieve full remote code execution on default Langflow deployments."
-          },
-          {
-            "cveId": "CVE-2026-18577",
-            "vendor": "N-able",
-            "product": "N-central",
-            "name": "N-able N-central Authentication Bypass Using an Alternate Path or Channel Vulnerability",
-            "dateAdded": "2026-08-03",
-            "dueDate": "2026-08-06",
-            "ransomware": false,
-            "description": "N-able N-central contains an authentication bypass using an alternate path or channel allows for authentication bypass and account takeover in N-central. This vulnerability is the result of an incomplete patch for CVE-20"
-          },
-          {
-            "cveId": "CVE-2026-20316",
-            "vendor": "Cisco",
-            "product": "Secure Firewall Management Center (FMC)",
-            "name": "Cisco Secure Firewall Management Center Use of Hard-coded Password Vulnerability",
-            "dateAdded": "2026-07-29",
-            "dueDate": "2026-08-01",
-            "ransomware": false,
-            "description": "Cisco Secure Firewall Management Center (FMC) formerly known as Firepower Management Center contains a use of hard-coded password vulnerability that could allow an unauthenticated, remote attacker to log in to an affecte"
-          },
-          {
-            "cveId": "CVE-2025-68686",
-            "vendor": "Fortinet",
-            "product": "FortiOS",
-            "name": "Fortinet FortiOS Exposure of Sensitive Information to an Unauthorized Actor Vulnerability",
-            "dateAdded": "2026-07-27",
-            "dueDate": "2026-08-10",
-            "ransomware": false,
-            "description": "Fortinet FortiOS contains an exposure of sensitive information to an unauthorized actor vulnerability. This may allow a remote unauthenticated attacker to bypass the patch developed for the symbolic link persistency mech"
-          },
-          {
-            "cveId": "CVE-2026-16812",
-            "vendor": "Arista",
-            "product": "VeloCloud Orchestrator",
-            "name": "Arista VeloCloud Orchestrator On-Prem OS Command Injection Vulnerability",
-            "dateAdded": "2026-07-27",
-            "dueDate": "2026-07-30",
-            "ransomware": false,
-            "description": "Arista VeloCloud Orchestrator On-Prem contains an OS command injection vulnerability that may allow a remote attacker to access privileged internal functionality and impact the VCO host. Successful exploitation may compr"
+            "title": "M 4.7 - 167 km SSW of Abepura, Indonesia",
+            "magnitude": 4.7,
+            "place": "167 km SSW of Abepura, Indonesia",
+            "time": "2026-08-11T23:33:14.884Z",
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tk41"
           }
         ],
-        "fetched_at": "2026-08-12T18:10:12.653Z",
-        "source_name": "CISA Known Exploited Vulnerabilities Catalog",
-        "catalogVersion": "2026.08.11"
+        "source_name": "USGS Earthquake Hazards Program",
+        "source_url": "https://earthquake.usgs.gov/"
+      }
+    },
+    "geopolitical": {
+      "conflicts": {
+        "state": "unavailable",
+        "error": "This operation was aborted"
       },
-      "intelligence": {
-        "state": "needs-key"
+      "unrest": {
+        "state": "unavailable",
+        "error": "This operation was aborted"
       }
     },
     "economy": {
-      "markets": {
-        "state": "needs-key"
-      }
-    },
-    "infrastructure": {
-      "resilience": {
-        "state": "needs-key"
+      "economic": {
+        "state": "live",
+        "items": [
+          {
+            "title": "World GDP growth 2025: 2.92%",
+            "year": "2025",
+            "value": 2.92127318539153
+          },
+          {
+            "title": "World GDP growth 2024: 2.90%",
+            "year": "2024",
+            "value": 2.90001340156714
+          },
+          {
+            "title": "World GDP growth 2023: 2.86%",
+            "year": "2023",
+            "value": 2.85938493335973
+          },
+          {
+            "title": "World GDP growth 2022: 3.44%",
+            "year": "2022",
+            "value": 3.44001097265647
+          },
+          {
+            "title": "World GDP growth 2021: 6.49%",
+            "year": "2021",
+            "value": 6.48508887596752
+          },
+          {
+            "title": "World GDP growth 2020: -2.89%",
+            "year": "2020",
+            "value": -2.88621185457086
+          }
+        ],
+        "source_name": "World Bank Open Data",
+        "source_url": "https://data.worldbank.org/"
       }
     }
   }
